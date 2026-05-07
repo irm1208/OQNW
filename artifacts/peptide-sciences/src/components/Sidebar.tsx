@@ -1,13 +1,15 @@
-import { capsuleProducts, purchaseProducts } from "@/data/products";
+import { Link } from "wouter";
+import { products } from "@/data/products";
 
 interface SidebarProps {
   selectedCategory: string;
   onCategoryChange: (cat: string) => void;
 }
 
-const allCategories = [
-  { label: "All Peptides", href: "#", key: "All Peptides" },
-];
+const capsuleItems = products.filter((p) => p.category === "Peptide Capsules");
+const purchaseItems = products
+  .filter((p) => p.category === "Purchase Peptides")
+  .sort((a, b) => a.name.localeCompare(b.name));
 
 export default function Sidebar({ selectedCategory, onCategoryChange }: SidebarProps) {
   return (
@@ -22,15 +24,15 @@ export default function Sidebar({ selectedCategory, onCategoryChange }: SidebarP
           Peptide Capsules
         </button>
         <ul className="space-y-1">
-          {capsuleProducts.map((p) => (
-            <li key={p.slug}>
-              <a
-                href={`https://www.peptidesciences.com${p.slug}`}
+          {capsuleItems.map((p) => (
+            <li key={p.id}>
+              <Link
+                href={`/product/${p.id}`}
                 className="text-gray-700 hover:underline hover:text-gray-900 leading-tight block py-0.5"
                 style={{ fontSize: "12.5px" }}
               >
                 {p.name}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -46,15 +48,15 @@ export default function Sidebar({ selectedCategory, onCategoryChange }: SidebarP
           Purchase Peptides
         </button>
         <ul className="space-y-1">
-          {purchaseProducts.map((p) => (
-            <li key={`${p.slug}-${p.name}`}>
-              <a
-                href={`https://www.peptidesciences.com${p.slug}`}
+          {purchaseItems.map((p) => (
+            <li key={p.id}>
+              <Link
+                href={`/product/${p.id}`}
                 className="text-gray-700 hover:underline hover:text-gray-900 leading-tight block py-0.5"
                 style={{ fontSize: "12.5px" }}
               >
                 {p.name}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
