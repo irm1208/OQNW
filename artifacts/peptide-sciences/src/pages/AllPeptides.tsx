@@ -4,6 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import ProductCard from "@/components/ProductCard";
 import { products } from "@/data/products";
 
+
 const categoryTabs = [
   { label: "Popular Peptides", key: "Popular Peptides" },
   { label: "Peptide Capsules", key: "Peptide Capsules" },
@@ -17,7 +18,7 @@ const categoryTabs = [
 type SortOption = "name" | "price-low" | "price-high" | "bestsellers";
 
 export default function AllPeptides() {
-  const [location] = useLocation();
+  const [location, navigate] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("All Peptides");
   const [sortBy, setSortBy] = useState<SortOption>("name");
 
@@ -66,6 +67,10 @@ export default function AllPeptides() {
   }, [selectedCategory, sortBy]);
 
   const handleCategoryChange = (cat: string) => {
+    if (cat === "Popular Peptides") {
+      navigate("/popular-peptides");
+      return;
+    }
     setSelectedCategory(cat);
     const params = cat !== "All Peptides" ? `?category=${encodeURIComponent(cat)}` : "";
     window.history.pushState(null, "", window.location.pathname + params);

@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import AllPeptides from "@/pages/AllPeptides";
+import PopularPeptides from "@/pages/PopularPeptides";
 import ProductPage from "@/pages/ProductPage";
 import NotFound from "@/pages/not-found";
 
@@ -29,6 +30,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={AllPeptides} />
+      <Route path="/popular-peptides" component={PopularPeptides} />
       <Route path="/product/:id" component={ProductPage} />
       <Route path="/bundles">
         <PlaceholderPage title="Bundle & Save" description="Save on multi-peptide research bundles." />

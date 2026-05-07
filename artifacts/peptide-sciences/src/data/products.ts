@@ -185,6 +185,8 @@ export const products: Product[] = [
   { id: "170", name: "Humanin 10mg", slug: "/humanin-10mg", price: 155.00, image: `${BASE_IMG}/h/u/humanin_peptide.png`, category: "Purchase Peptides" },
   { id: "171", name: "P21 (P021) 5mg", slug: "/p21-p021-5mg", price: 65.00, image: `${BASE_IMG}/p/2/p21_peptide.png`, category: "Purchase Peptides" },
   { id: "172", name: "CJC1295, Ipamorelin, GHRP2 Blend", slug: "/cjc1295-ipamorelin-ghrp-2-blend", price: 95.00, image: `${BASE_IMG}/c/j/cjc1295_ipamorelin_ghrp2_blend.png`, category: "Peptide Blends" },
+  { id: "173", name: "BPC-157, TB-500, KPV, GHK-Cu 80mg (Klow Blend)", slug: "/bpc-157-tb-500-kpv-ghk-cu-80mg-klow-blend", price: 395.00, image: `${BASE_IMG}/b/p/bpc157_tb500_kpv_ghkcu_peptide_glow_blend.png`, badge: "NEW", category: "Peptide Blends" },
+  { id: "174", name: "Longevity, Performance & Obesity Research (60 Capsules)", slug: "/longevity-performance-obesity-research-60-capsules-5-amino-1mq-nmn-jbsnf", price: 300.00, image: `${BASE_IMG}/l/o/longevity_performance_ovesity_research_1.png`, badge: "CAPSULES", category: "Peptide Capsules" },
 ];
 
 export const categories = [

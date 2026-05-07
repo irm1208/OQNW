@@ -6,7 +6,7 @@ const LOGO_URL = "https://web.archive.org/web/20251012125939im_/https://www.pept
 
 const navItems = [
   { label: "All Peptides", href: "/" },
-  { label: "Popular Peptides", href: "/?category=Popular+Peptides" },
+  { label: "Popular Peptides", href: "/popular-peptides" },
   { label: "Bundle & Save", href: "/bundles" },
   { label: "Peptide Research", href: "/research" },
   { label: "Peptide Information", href: "/info" },
