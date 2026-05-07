@@ -7,7 +7,6 @@ import { products } from "@/data/products";
 
 const categoryTabs = [
   { label: "Popular Peptides", key: "Popular Peptides" },
-  { label: "Peptide Capsules", key: "Peptide Capsules" },
   { label: "Peptide Blends", key: "Peptide Blends" },
   { label: "IGF-1 Proteins", key: "IGF-1 Proteins" },
   { label: "Melanotan Peptides", key: "Melanotan Peptides" },
