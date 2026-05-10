@@ -29,8 +29,6 @@ export default function ProductPage() {
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
-  const price5 = product.price != null ? +(product.price * 0.96).toFixed(2) : null;
-  const price10 = product.price != null ? +(product.price * 0.92).toFixed(2) : null;
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#fff" }}>
@@ -238,18 +236,8 @@ export default function ProductPage() {
                 </span>
               </div>
 
-            {/* Price */}
-            {product.price != null && (
-              <div className="mb-4 flex items-baseline gap-2">
-                <span className="font-bold" style={{ fontSize: "32px", color: "#E7461E" }}>
-                  ${product.price.toFixed(2)}
-                </span>
-              </div>
-            )}
-
             {/* Quantity selector + Add to Cart */}
-            {product.price != null && (
-              <div className="mb-4">
+            <div className="mb-4">
                 <p className="text-xs font-semibold mb-2 uppercase tracking-wide" style={{ color: "#666" }}>
                   Quantity
                 </p>
@@ -291,31 +279,7 @@ export default function ProductPage() {
                   </button>
                 </div>
 
-                {/* Bulk discount buttons */}
-                {price5 != null && price10 != null && (
-                  <div className="flex flex-col sm:flex-row gap-2 mt-1">
-                    <button
-                      className="flex-1 text-left px-3 py-2.5 rounded text-xs hover:border-orange-400 transition-colors"
-                      style={{ border: "1px solid #ddd", color: "#333" }}
-                      onClick={() => setQuantity(5)}
-                    >
-                      <span className="font-semibold" style={{ color: "#E7461E" }}>Buy 5</span>{" "}
-                      and save 4%{" "}
-                      <span className="font-bold">${price5.toFixed(2)} each</span>
-                    </button>
-                    <button
-                      className="flex-1 text-left px-3 py-2.5 rounded text-xs hover:border-orange-400 transition-colors"
-                      style={{ border: "1px solid #ddd", color: "#333" }}
-                      onClick={() => setQuantity(10)}
-                    >
-                      <span className="font-semibold" style={{ color: "#E7461E" }}>Buy 10</span>{" "}
-                      and save 8%{" "}
-                      <span className="font-bold">${price10.toFixed(2)} each</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
+            </div>
 
             {/* Quick specs table */}
             <div className="rounded border border-gray-200 overflow-hidden mb-4">
@@ -660,13 +624,6 @@ export default function ProductPage() {
                     >
                       {related.name}
                     </p>
-                    {related.price != null ? (
-                      <p className="text-sm font-bold" style={{ color: "#E7461E" }}>
-                        ${related.price.toFixed(2)}
-                      </p>
-                    ) : (
-                      <p className="text-xs" style={{ color: "#999" }}>Out of stock</p>
-                    )}
                   </div>
                 </Link>
               ))}

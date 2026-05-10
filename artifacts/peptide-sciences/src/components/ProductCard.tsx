@@ -60,7 +60,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           }}
         >
           Add to Cart
-          {product.price != null ? ` — $${product.price.toFixed(2)}` : ""}
         </button>
       </div>
     </div>
