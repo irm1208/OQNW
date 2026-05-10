@@ -3,8 +3,6 @@ import { Link } from "wouter";
 import type { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 
-const BLUE_VIAL_IDS = new Set(["17", "18", "22", "35"]);
-
 function parseName(name: string): { baseName: string; strength: string } {
   const match = name.match(/^(.*?)\s+(\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g))(\s+.*)?$/i);
   if (match) {
@@ -70,18 +68,6 @@ export default function ProductCard({ product }: ProductCardProps) {
             alt={product.name}
             style={{ width: "100%", height: "100%", objectFit: "contain", padding: "6px" }}
           />
-          {BLUE_VIAL_IDS.has(product.id) && (
-            <div
-              aria-hidden
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "radial-gradient(ellipse 42% 32% at 50% 66%, rgba(14,90,195,0.82) 0%, rgba(20,100,200,0.55) 38%, rgba(30,110,210,0.18) 65%, transparent 80%)",
-                mixBlendMode: "multiply",
-                pointerEvents: "none",
-              }}
-            />
-          )}
         </div>
 
         <div style={{ height: "1px", backgroundColor: "#EEF4FF" }} />

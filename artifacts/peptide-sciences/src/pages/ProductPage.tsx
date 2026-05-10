@@ -7,8 +7,6 @@ import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
 import { useCart } from "@/context/CartContext";
 
-const BLUE_VIAL_IDS = new Set(["17", "18", "22", "35"]);
-
 export default function ProductPage() {
   const params = useParams<{ id: string }>();
   const product = products.find((p) => p.id === params.id);
@@ -147,18 +145,6 @@ export default function ProductPage() {
                   style={{ width: "100%", height: "100%" }}
                   onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = "0.2"; }}
                 />
-                {BLUE_VIAL_IDS.has(product.id) && (
-                  <div
-                    aria-hidden
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      background: "radial-gradient(ellipse 38% 28% at 50% 65%, rgba(14,90,195,0.85) 0%, rgba(20,100,200,0.58) 38%, rgba(30,110,210,0.20) 65%, transparent 80%)",
-                      mixBlendMode: "multiply",
-                      pointerEvents: "none",
-                    }}
-                  />
-                )}
               </div>
 
               {/* Quality badges */}
