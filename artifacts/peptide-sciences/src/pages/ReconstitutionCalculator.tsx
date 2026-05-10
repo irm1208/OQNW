@@ -7,7 +7,8 @@ function round(n: number, d: number) {
 
 const VIAL_PRESETS = [2, 5, 10, 20, 50];
 const WATER_PRESETS = [1, 2, 3, 5];
-const DOSE_PRESETS = [100, 250, 500, 1000];
+const DOSE_PRESETS_MCG = [100, 250, 500, 1000];
+const DOSE_PRESETS_MG = [0.1, 0.25, 0.5, 1, 2];
 
 function Chip({
   label,
@@ -113,20 +114,26 @@ function Field({
 export default function ReconstitutionCalculator() {
   const [peptideMg, setPeptideMg] = useState("10");
   const [waterMl, setWaterMl] = useState("2");
-  const [doseMcg, setDoseMcg] = useState("250");
+  const [doseValue, setDoseValue] = useState("250");
+  const [doseUnit, setDoseUnit] = useState<"mcg" | "mg">("mcg");
   const [guideOpen, setGuideOpen] = useState(false);
 
   const pNum = parseFloat(peptideMg) || 0;
   const wNum = parseFloat(waterMl) || 0;
-  const dNum = parseFloat(doseMcg) || 0;
+  const dNum = parseFloat(doseValue) || 0;
+
+  // Always work in mcg internally
+  const doseMcgNorm = doseUnit === "mg" ? dNum * 1000 : dNum;
 
   const concentrationMcgMl = pNum && wNum ? (pNum * 1000) / wNum : 0;
-  const volumeMl = concentrationMcgMl && dNum ? dNum / concentrationMcgMl : 0;
+  const volumeMl = concentrationMcgMl && doseMcgNorm ? doseMcgNorm / concentrationMcgMl : 0;
   const volumeUl = volumeMl * 1000;
   const insulinIU = volumeMl * 100;
-  const totalDoses = dNum && pNum ? (pNum * 1000) / dNum : 0;
+  const totalDoses = doseMcgNorm && pNum ? (pNum * 1000) / doseMcgNorm : 0;
 
-  const ready = concentrationMcgMl > 0 && dNum > 0;
+  const ready = concentrationMcgMl > 0 && doseMcgNorm > 0;
+
+  const DOSE_PRESETS = doseUnit === "mcg" ? DOSE_PRESETS_MCG : DOSE_PRESETS_MG;
 
   const activeVial = useMemo(
     () => (VIAL_PRESETS.includes(parseFloat(peptideMg)) ? parseFloat(peptideMg) : null),
@@ -137,8 +144,8 @@ export default function ReconstitutionCalculator() {
     [waterMl]
   );
   const activeDose = useMemo(
-    () => (DOSE_PRESETS.includes(parseFloat(doseMcg)) ? parseFloat(doseMcg) : null),
-    [doseMcg]
+    () => (DOSE_PRESETS.includes(parseFloat(doseValue)) ? parseFloat(doseValue) : null),
+    [doseValue, DOSE_PRESETS]
   );
 
   return (
@@ -237,15 +244,88 @@ export default function ReconstitutionCalculator() {
               {/* Divider */}
               <div style={{ height: "1px", backgroundColor: "#F1F5F9", margin: "0 -28px" }} />
 
-              <Field
-                label="Desired dose per injection"
-                unit="mcg"
-                value={doseMcg}
-                onChange={setDoseMcg}
-                presets={DOSE_PRESETS}
-                onPreset={(v) => setDoseMcg(String(v))}
-                activePreset={activeDose}
-              />
+              {/* Dose field with mcg/mg toggle */}
+              <div>
+                <label
+                  style={{
+                    display: "block",
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.08em",
+                    color: "#94A3B8",
+                    marginBottom: "8px",
+                  }}
+                >
+                  Desired dose per injection
+                </label>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+                  <input
+                    type="number"
+                    min="0"
+                    step="any"
+                    value={doseValue}
+                    onChange={(e) => setDoseValue(e.target.value)}
+                    style={{
+                      flex: 1,
+                      padding: "12px 14px",
+                      fontSize: "20px",
+                      fontWeight: 700,
+                      color: "#0F172A",
+                      border: "2px solid #E2E8F0",
+                      borderRadius: "12px",
+                      outline: "none",
+                      backgroundColor: "#fff",
+                      fontFamily: "'Arimo', Arial, sans-serif",
+                    }}
+                    onFocus={(e) => (e.currentTarget.style.borderColor = "#1B5CB5")}
+                    onBlur={(e) => (e.currentTarget.style.borderColor = "#E2E8F0")}
+                  />
+                  {/* Unit toggle */}
+                  <div
+                    style={{
+                      display: "flex",
+                      borderRadius: "10px",
+                      border: "2px solid #E2E8F0",
+                      overflow: "hidden",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {(["mcg", "mg"] as const).map((u) => (
+                      <button
+                        key={u}
+                        onClick={() => {
+                          setDoseUnit(u);
+                          setDoseValue(u === "mcg" ? "250" : "0.25");
+                        }}
+                        style={{
+                          padding: "10px 14px",
+                          fontSize: "13px",
+                          fontWeight: 700,
+                          cursor: "pointer",
+                          border: "none",
+                          backgroundColor: doseUnit === u ? "#1B5CB5" : "#fff",
+                          color: doseUnit === u ? "#fff" : "#64748B",
+                          transition: "all 0.15s",
+                          fontFamily: "'Arimo', Arial, sans-serif",
+                        }}
+                      >
+                        {u}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                  {DOSE_PRESETS.map((v) => (
+                    <Chip
+                      key={v}
+                      label={`${v}${doseUnit}`}
+                      active={activeDose === v}
+                      onClick={() => setDoseValue(String(v))}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -361,7 +441,7 @@ export default function ReconstitutionCalculator() {
                   const ml = dose / concentrationMcgMl;
                   const ul = ml * 1000;
                   const iu = ml * 100;
-                  const isActive = parseFloat(doseMcg) === dose;
+                  const isActive = doseMcgNorm === dose;
                   return (
                     <tr
                       key={dose}
