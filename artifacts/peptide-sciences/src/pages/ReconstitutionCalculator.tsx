@@ -34,10 +34,10 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
 
   const indicatorX = fillStartX; // "draw to this line" indicator is at stopper
 
-  // Ticks every 5 IU, labels every 20 IU
+  // Ticks every 5 IU, labels every 10 IU
   const ticks: { x: number; iu: number; major: boolean }[] = [];
   for (let i = 0; i <= MAX; i += 5) {
-    ticks.push({ x: iuToX(i), iu: i, major: i % 20 === 0 });
+    ticks.push({ x: iuToX(i), iu: i, major: i % 10 === 0 });
   }
 
   const overflowing = iuValue > MAX;
