@@ -1,477 +1,595 @@
 import { useState, useMemo } from "react";
 import { Link } from "wouter";
-import { peptideResearchData, type PeptideResearchEntry } from "@/data/peptideResearch";
-import { Search, ExternalLink, FlaskConical, BookOpen, ChevronRight, X, ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronRight, ChevronDown, ChevronUp, FlaskConical } from "lucide-react";
+import { protocols, CATEGORY_ORDER, type ProtocolCategory, type ProtocolEntry, type ResearchLevel } from "@/data/protocols";
 
-const CATEGORIES = [
-  "All",
-  "Growth Peptides",
-  "Healing Peptides",
-  "Weight Management",
-  "Longevity Peptides",
-  "Cellular Health",
-  "Nootropics",
-  "Immune Support",
-  "Research Peptides",
-  "Peptide Blends",
-  "Skin & Repair",
-  "Hormonal Peptides",
-  "Growth Hormone",
-  "Anti-Inflammatory",
-  "Cognitive Peptides",
-];
+const TABS: ("All" | ProtocolCategory)[] = ["All", ...CATEGORY_ORDER];
 
-const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  "Growth Peptides":    { bg: "#EEF4FF", text: "#1B5CB5", border: "#BFDBFE" },
-  "Healing Peptides":  { bg: "#F0FDF4", text: "#16A34A", border: "#BBF7D0" },
-  "Weight Management": { bg: "#FFF7ED", text: "#C2410C", border: "#FED7AA" },
-  "Longevity Peptides":{ bg: "#F5F3FF", text: "#7C3AED", border: "#DDD6FE" },
-  "Cellular Health":   { bg: "#ECFEFF", text: "#0E7490", border: "#A5F3FC" },
-  "Nootropics":        { bg: "#FFF1F2", text: "#BE185D", border: "#FBCFE8" },
-  "Immune Support":    { bg: "#F0FDF4", text: "#166534", border: "#86EFAC" },
-  "Research Peptides": { bg: "#F8FAFC", text: "#475569", border: "#CBD5E1" },
-  "Peptide Blends":    { bg: "#FFFBEB", text: "#92400E", border: "#FDE68A" },
-  "Skin & Repair":     { bg: "#FFF1F2", text: "#9F1239", border: "#FECDD3" },
-  "Hormonal Peptides": { bg: "#EFF6FF", text: "#1D4ED8", border: "#BFDBFE" },
-  "Growth Hormone":    { bg: "#F0F9FF", text: "#0369A1", border: "#BAE6FD" },
-  "Anti-Inflammatory": { bg: "#FFF7ED", text: "#9A3412", border: "#FDBA74" },
-  "Cognitive Peptides":{ bg: "#F5F3FF", text: "#6D28D9", border: "#C4B5FD" },
+const CATEGORY_LABELS: Record<ProtocolCategory, string> = {
+  "GLP-1": "GLP-1",
+  "Healing": "Healing",
+  "GH Peptides": "GH Peptides",
+  "Cognitive": "Cognitive",
+  "Other": "Other",
 };
 
-function StudyCard({ study, index }: { study: PeptideResearchEntry["studies"][0]; index: number }) {
+const LEVEL_STYLE: Record<ResearchLevel, { bg: string; text: string; border: string; dot: string }> = {
+  "Extensively Studied": { bg: "#EEF4FF", text: "#1B5CB5", border: "#BFDBFE", dot: "#1B5CB5" },
+  "Well Researched":     { bg: "#F0FDF4", text: "#16A34A", border: "#BBF7D0", dot: "#16A34A" },
+  "Limited Research":    { bg: "#FFFBEB", text: "#B45309", border: "#FDE68A", dot: "#D97706" },
+  "Early Research":      { bg: "#FFF1F2", text: "#BE185D", border: "#FBCFE8", dot: "#BE185D" },
+};
+
+const ABBR_COLORS: Record<ProtocolCategory, { bg: string; text: string }> = {
+  "GLP-1":      { bg: "#EEF4FF", text: "#1240A0" },
+  "Healing":    { bg: "#F0FDF4", text: "#166534" },
+  "GH Peptides":{ bg: "#F0F9FF", text: "#075985" },
+  "Cognitive":  { bg: "#F5F3FF", text: "#5B21B6" },
+  "Other":      { bg: "#FFF7ED", text: "#92400E" },
+};
+
+const TAG_COLORS = [
+  { bg: "#EEF4FF", text: "#1B5CB5", border: "#BFDBFE" },
+  { bg: "#F0FDF4", text: "#15803D", border: "#BBF7D0" },
+  { bg: "#F5F3FF", text: "#7C3AED", border: "#DDD6FE" },
+  { bg: "#FFF7ED", text: "#C2410C", border: "#FED7AA" },
+  { bg: "#ECFEFF", text: "#0E7490", border: "#A5F3FC" },
+];
+
+function getTagColor(index: number) {
+  return TAG_COLORS[index % TAG_COLORS.length];
+}
+
+function ProtocolCard({ entry }: { entry: ProtocolEntry }) {
+  const [open, setOpen] = useState(false);
+  const levelStyle = LEVEL_STYLE[entry.level];
+  const abbrStyle = ABBR_COLORS[entry.category];
+
   return (
     <div
       style={{
-        padding: "16px 18px",
-        borderRadius: "12px",
-        backgroundColor: "#F8FAFC",
-        border: "1px solid #E8EDF5",
+        backgroundColor: "#fff",
+        borderRadius: "16px",
+        border: `1.5px solid ${open ? "#BFDBFE" : "#E8EDF5"}`,
+        boxShadow: open
+          ? "0 6px 28px rgba(27,92,181,0.10)"
+          : "0 1px 6px rgba(15,23,42,0.05)",
+        overflow: "hidden",
+        transition: "border-color 0.2s, box-shadow 0.2s",
       }}
     >
-      <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+      {/* Card body */}
+      <div style={{ display: "flex", gap: "0", alignItems: "stretch" }}>
+
+        {/* Abbreviation column */}
         <div
           style={{
             flexShrink: 0,
-            width: "22px",
-            height: "22px",
-            borderRadius: "50%",
-            backgroundColor: "#1B5CB5",
+            width: "80px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: "#fff",
-            fontSize: "10px",
-            fontWeight: 700,
-            marginTop: "2px",
+            backgroundColor: abbrStyle.bg,
+            borderRight: `1.5px solid ${open ? "#BFDBFE" : "#E8EDF5"}`,
+            padding: "20px 8px",
+            transition: "border-color 0.2s",
           }}
         >
-          {index + 1}
-        </div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ fontSize: "14px", fontWeight: 600, color: "#0F172A", lineHeight: 1.5, marginBottom: "4px" }}>
-            {study.title}
-          </p>
-          <p style={{ fontSize: "12px", color: "#64748B", marginBottom: "10px" }}>
-            {study.authors} — <em>{study.journal}</em>, {study.year}
-          </p>
-          <div
+          <span
             style={{
-              backgroundColor: "#fff",
-              border: "1px solid #E2E8F0",
-              borderRadius: "8px",
-              padding: "10px 14px",
+              fontFamily: "'Courier New', Courier, monospace",
+              fontSize: "13px",
+              fontWeight: 700,
+              color: abbrStyle.text,
+              textAlign: "center",
+              wordBreak: "break-all",
+              letterSpacing: "0.04em",
+              lineHeight: 1.3,
             }}
           >
-            <p style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: "#94A3B8", marginBottom: "5px" }}>
-              Key Finding
-            </p>
-            <p style={{ fontSize: "13.5px", color: "#334155", lineHeight: 1.7 }}>
-              {study.finding}
-            </p>
+            {entry.abbr}
+          </span>
+        </div>
+
+        {/* Main content */}
+        <div style={{ flex: 1, minWidth: 0, padding: "18px 20px 0" }}>
+          {/* Name + tagline */}
+          <h2
+            style={{
+              fontSize: "16px",
+              fontWeight: 700,
+              color: "#0F172A",
+              margin: "0 0 4px",
+              lineHeight: 1.25,
+            }}
+          >
+            {entry.name}
+          </h2>
+          <p
+            style={{
+              fontSize: "13px",
+              color: "#64748B",
+              margin: "0 0 12px",
+              lineHeight: 1.5,
+            }}
+          >
+            {entry.tagline}
+          </p>
+
+          {/* Tags */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "14px" }}>
+            {entry.tags.map((tag, i) => {
+              const c = getTagColor(i);
+              return (
+                <span
+                  key={tag}
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 600,
+                    padding: "3px 9px",
+                    borderRadius: "999px",
+                    backgroundColor: c.bg,
+                    color: c.text,
+                    border: `1px solid ${c.border}`,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {tag}
+                </span>
+              );
+            })}
           </div>
-          {(study.doi || study.pmid) && (
-            <div style={{ marginTop: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
-              <ExternalLink size={11} style={{ color: "#94A3B8", flexShrink: 0 }} />
-              {study.doi && (
-                <a
-                  href={`https://doi.org/${study.doi}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: "11.5px", color: "#1B5CB5", textDecoration: "none" }}
-                  onMouseOver={(e) => (e.currentTarget.style.textDecoration = "underline")}
-                  onMouseOut={(e) => (e.currentTarget.style.textDecoration = "none")}
+
+          {/* Research Uses toggle */}
+          <button
+            onClick={() => setOpen((o) => !o)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+              background: "none",
+              border: "none",
+              padding: "0",
+              cursor: "pointer",
+              fontSize: "12.5px",
+              fontWeight: 700,
+              color: open ? "#1B5CB5" : "#475569",
+              fontFamily: "'Arimo', Arial, sans-serif",
+              marginBottom: "16px",
+              transition: "color 0.15s",
+            }}
+          >
+            Research Uses
+            {open
+              ? <ChevronUp size={14} style={{ color: "#1B5CB5" }} />
+              : <ChevronDown size={14} style={{ color: "#94A3B8" }} />}
+          </button>
+
+          {/* Expanded bullet list */}
+          {open && (
+            <ul
+              style={{
+                listStyle: "none",
+                padding: "0",
+                margin: "0 0 18px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px",
+              }}
+            >
+              {entry.researchUses.map((use, i) => (
+                <li
+                  key={i}
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "10px",
+                    fontSize: "13.5px",
+                    color: "#334155",
+                    lineHeight: 1.65,
+                  }}
                 >
-                  doi:{study.doi}
-                </a>
-              )}
-              {study.pmid && !study.doi && (
-                <a
-                  href={`https://pubmed.ncbi.nlm.nih.gov/${study.pmid}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: "11.5px", color: "#1B5CB5", textDecoration: "none" }}
-                  onMouseOver={(e) => (e.currentTarget.style.textDecoration = "underline")}
-                  onMouseOut={(e) => (e.currentTarget.style.textDecoration = "none")}
-                >
-                  PubMed PMID: {study.pmid}
-                </a>
-              )}
-            </div>
+                  <span
+                    style={{
+                      flexShrink: 0,
+                      marginTop: "5px",
+                      width: "6px",
+                      height: "6px",
+                      borderRadius: "50%",
+                      backgroundColor: LEVEL_STYLE[entry.level].dot,
+                    }}
+                  />
+                  {use}
+                </li>
+              ))}
+            </ul>
           )}
+
+          {/* Bottom row: level badge + shop link */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              paddingBottom: "18px",
+              flexWrap: "wrap",
+              gap: "8px",
+            }}
+          >
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "5px",
+                fontSize: "11.5px",
+                fontWeight: 700,
+                padding: "4px 11px",
+                borderRadius: "999px",
+                backgroundColor: levelStyle.bg,
+                color: levelStyle.text,
+                border: `1px solid ${levelStyle.border}`,
+              }}
+            >
+              <span
+                style={{
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "50%",
+                  backgroundColor: levelStyle.dot,
+                  flexShrink: 0,
+                }}
+              />
+              {entry.level}
+            </span>
+
+            <Link
+              href="/all-peptides"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "3px",
+                fontSize: "12px",
+                fontWeight: 600,
+                color: "#1B5CB5",
+                textDecoration: "none",
+                opacity: 0.85,
+              }}
+              onMouseOver={(e) => ((e.currentTarget as HTMLElement).style.opacity = "1")}
+              onMouseOut={(e) => ((e.currentTarget as HTMLElement).style.opacity = "0.85")}
+            >
+              Shop <ChevronRight size={13} />
+            </Link>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function PeptideCard({ entry }: { entry: PeptideResearchEntry }) {
-  const [expanded, setExpanded] = useState(false);
-  const color = CATEGORY_COLORS[entry.category] ?? CATEGORY_COLORS["Research Peptides"];
-
-  // One-sentence preview: up to first period or 120 chars
-  const preview = (() => {
-    const dot = entry.description.indexOf(".");
-    const cut = dot > 0 && dot < 140 ? dot + 1 : 120;
-    return entry.description.slice(0, cut) + (entry.description.length > cut ? "…" : "");
-  })();
-
+function CategorySection({
+  category,
+  entries,
+}: {
+  category: ProtocolCategory;
+  entries: ProtocolEntry[];
+}) {
+  if (entries.length === 0) return null;
   return (
-    <div
-      id={entry.compound.toLowerCase().replace(/\s+/g, "-")}
-      style={{
-        backgroundColor: "#fff",
-        borderRadius: "16px",
-        border: `1px solid ${expanded ? "#BFDBFE" : "#E8EDF5"}`,
-        boxShadow: expanded ? "0 4px 24px rgba(27,92,181,0.10)" : "0 2px 8px rgba(15,23,42,0.04)",
-        overflow: "hidden",
-        transition: "box-shadow 0.2s, border-color 0.2s",
-      }}
-    >
-      {/* Always-visible header row */}
-      <button
-        onClick={() => setExpanded((o) => !o)}
+    <div style={{ marginBottom: "40px" }}>
+      <div
         style={{
-          width: "100%",
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
-          gap: "16px",
-          padding: "16px 20px",
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          textAlign: "left",
-          fontFamily: "'Arimo', Arial, sans-serif",
-          borderBottom: expanded ? "1px solid #F1F5F9" : "none",
+          gap: "10px",
+          marginBottom: "18px",
+          paddingBottom: "12px",
+          borderBottom: "2px solid #E8EDF5",
         }}
       >
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap", marginBottom: "5px" }}>
-            <h2 style={{ fontSize: "17px", fontWeight: 700, color: "#0F172A", margin: 0, lineHeight: 1.2 }}>
-              {entry.compound}
-            </h2>
-            <span
-              style={{
-                display: "inline-block",
-                padding: "2px 9px",
-                borderRadius: "999px",
-                fontSize: "11px",
-                fontWeight: 600,
-                backgroundColor: color.bg,
-                color: color.text,
-                border: `1px solid ${color.border}`,
-                flexShrink: 0,
-              }}
-            >
-              {entry.category}
-            </span>
-          </div>
-          {!expanded && (
-            <p style={{ fontSize: "13px", color: "#64748B", lineHeight: 1.5, margin: 0 }}>
-              {preview}
-            </p>
-          )}
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
-          <span style={{ fontSize: "11.5px", color: "#94A3B8", fontWeight: 500 }}>
-            {entry.studies.length} {entry.studies.length === 1 ? "study" : "studies"}
-          </span>
-          <div
-            style={{
-              width: "28px",
-              height: "28px",
-              borderRadius: "8px",
-              backgroundColor: expanded ? "#EEF4FF" : "#F1F5F9",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-            }}
-          >
-            {expanded
-              ? <ChevronUp size={15} style={{ color: "#1B5CB5" }} />
-              : <ChevronDown size={15} style={{ color: "#64748B" }} />
-            }
-          </div>
-        </div>
-      </button>
-
-      {/* Expanded content */}
-      {expanded && (
-        <div style={{ padding: "20px 20px 22px" }}>
-
-          {/* Product links */}
-          {entry.productIds.length > 0 && (
-            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "18px" }}>
-              {entry.productIds.map((pid) => (
-                <Link
-                  key={pid}
-                  href={`/product/${pid}`}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "4px",
-                    padding: "7px 14px",
-                    borderRadius: "9px",
-                    backgroundColor: "#1B5CB5",
-                    color: "#fff",
-                    fontSize: "12.5px",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                  }}
-                >
-                  View Product <ChevronRight size={13} />
-                </Link>
-              ))}
-            </div>
-          )}
-
-          {/* Description */}
-          <p style={{ fontSize: "14.5px", color: "#475569", lineHeight: 1.8, marginBottom: "18px" }}>
-            {entry.description}
-          </p>
-
-          {/* Mechanism */}
-          <div
-            style={{
-              backgroundColor: "#EEF4FF",
-              border: "1px solid #BFDBFE",
-              borderRadius: "12px",
-              padding: "14px 18px",
-              marginBottom: "20px",
-            }}
-          >
-            <p style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "#1B5CB5", marginBottom: "7px" }}>
-              Mechanism of Action
-            </p>
-            <p style={{ fontSize: "14px", color: "#1E3A6A", lineHeight: 1.8, margin: 0 }}>
-              {entry.mechanism}
-            </p>
-          </div>
-
-          {/* Studies */}
-          <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "12px" }}>
-            <BookOpen size={13} style={{ color: "#64748B" }} />
-            <span style={{ fontSize: "12px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-              Research Literature — {entry.studies.length} {entry.studies.length === 1 ? "study" : "studies"}
-            </span>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            {entry.studies.map((study, i) => (
-              <StudyCard key={i} study={study} index={i} />
-            ))}
-          </div>
-        </div>
-      )}
+        <h2
+          style={{
+            fontSize: "18px",
+            fontWeight: 700,
+            color: "#0F172A",
+            margin: 0,
+          }}
+        >
+          {CATEGORY_LABELS[category]} Peptides
+        </h2>
+        <span
+          style={{
+            fontSize: "13px",
+            fontWeight: 600,
+            color: "#94A3B8",
+          }}
+        >
+          {entries.length}
+        </span>
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))",
+          gap: "14px",
+        }}
+      >
+        {entries.map((e) => (
+          <ProtocolCard key={e.abbr + e.name} entry={e} />
+        ))}
+      </div>
     </div>
   );
 }
 
 export default function PeptideResearch() {
-  const [query, setQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeTab, setActiveTab] = useState<"All" | ProtocolCategory>("All");
 
-  const filtered = useMemo(() => {
-    const q = query.toLowerCase().trim();
-    return peptideResearchData.filter((entry) => {
-      const catMatch = activeCategory === "All" || entry.category === activeCategory;
-      if (!catMatch) return false;
-      if (!q) return true;
-      return (
-        entry.compound.toLowerCase().includes(q) ||
-        entry.category.toLowerCase().includes(q) ||
-        entry.description.toLowerCase().includes(q) ||
-        entry.studies.some(
-          (s) =>
-            s.title.toLowerCase().includes(q) ||
-            s.authors.toLowerCase().includes(q) ||
-            s.journal.toLowerCase().includes(q) ||
-            s.finding.toLowerCase().includes(q)
-        )
-      );
-    });
-  }, [query, activeCategory]);
+  const grouped = useMemo(() => {
+    const cats = activeTab === "All" ? CATEGORY_ORDER : [activeTab];
+    return cats.map((cat) => ({
+      category: cat,
+      entries: protocols.filter((p) => p.category === cat),
+    }));
+  }, [activeTab]);
 
-  const totalStudies = peptideResearchData.reduce((sum, e) => sum + e.studies.length, 0);
+  const totalShown = grouped.reduce((sum, g) => sum + g.entries.length, 0);
+
+  const levelCounts = useMemo(() => {
+    const all = activeTab === "All" ? protocols : protocols.filter((p) => p.category === activeTab);
+    return {
+      "Extensively Studied": all.filter((p) => p.level === "Extensively Studied").length,
+      "Well Researched": all.filter((p) => p.level === "Well Researched").length,
+      "Limited Research": all.filter((p) => p.level === "Limited Research").length,
+      "Early Research": all.filter((p) => p.level === "Early Research").length,
+    };
+  }, [activeTab]);
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
 
-      {/* Hero */}
-      <div style={{ background: "linear-gradient(135deg, #1240A0 0%, #1B5CB5 60%, #2563EB 100%)", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, opacity: 0.05, backgroundImage: "radial-gradient(circle at 70% 50%, #fff 0%, transparent 60%)" }} />
-        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "40px 24px 44px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-            <FlaskConical size={15} style={{ color: "#93C5FD" }} />
-            <span style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.08em", color: "#93C5FD", textTransform: "uppercase" }}>
+      {/* ── Hero ──────────────────────────────────────────────────────────────── */}
+      <div
+        style={{
+          background: "linear-gradient(135deg, #020B1E 0%, #1240A0 55%, #1B5CB5 100%)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage:
+              "radial-gradient(ellipse at 80% 60%, rgba(255,255,255,0.06) 0%, transparent 60%)",
+          }}
+        />
+        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "48px 24px 52px", position: "relative" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "14px" }}>
+            <FlaskConical size={14} style={{ color: "#93C5FD" }} />
+            <span
+              style={{
+                fontSize: "11px",
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                color: "#93C5FD",
+                textTransform: "uppercase",
+              }}
+            >
               OmniQure Research Library
             </span>
           </div>
-          <h1 style={{ fontSize: "clamp(26px,4vw,40px)", fontWeight: 700, color: "#fff", lineHeight: 1.15, marginBottom: "12px" }}>
-            Peptide Research &amp; Literature
+          <h1
+            style={{
+              fontSize: "clamp(28px, 4vw, 44px)",
+              fontWeight: 700,
+              color: "#fff",
+              lineHeight: 1.12,
+              marginBottom: "12px",
+            }}
+          >
+            Peptide Research Protocols
           </h1>
-          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.78)", maxWidth: "600px", lineHeight: 1.75, marginBottom: "24px" }}>
-            Peer-reviewed studies and mechanisms of action for all {peptideResearchData.length} peptide compounds available through OmniQure. For laboratory research purposes only.
+          <p
+            style={{
+              fontSize: "15px",
+              color: "rgba(255,255,255,0.72)",
+              maxWidth: "560px",
+              lineHeight: 1.8,
+              marginBottom: "32px",
+            }}
+          >
+            Research peptides — healing, GH, GLP-1 &amp; cognitive — {protocols.length} entries.
+            For qualified researchers only.
           </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+
+          {/* Stat strip */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
             {[
-              { n: peptideResearchData.length, label: "Peptide Compounds" },
-              { n: totalStudies, label: "Research Citations" },
-              { n: CATEGORIES.length - 1, label: "Research Categories" },
-            ].map(({ n, label }) => (
-              <div key={label} style={{ borderRadius: "12px", padding: "10px 20px", textAlign: "center", backgroundColor: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)" }}>
-                <p style={{ fontSize: "24px", fontWeight: 700, color: "#fff", lineHeight: 1 }}>{n}</p>
-                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.7)", marginTop: "3px" }}>{label}</p>
+              { n: protocols.length, label: "Peptides" },
+              { n: levelCounts["Extensively Studied"], label: "Extensively Studied", color: "#93C5FD" },
+              { n: levelCounts["Well Researched"], label: "Well Researched", color: "#86EFAC" },
+              { n: levelCounts["Limited Research"], label: "Limited Research", color: "#FDE68A" },
+              { n: levelCounts["Early Research"], label: "Early Research", color: "#FBCFE8" },
+            ].map(({ n, label, color }) => (
+              <div
+                key={label}
+                style={{
+                  padding: "10px 18px",
+                  borderRadius: "12px",
+                  backgroundColor: "rgba(255,255,255,0.10)",
+                  border: "1px solid rgba(255,255,255,0.18)",
+                  textAlign: "center",
+                  minWidth: "80px",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: "22px",
+                    fontWeight: 700,
+                    color: color ?? "#fff",
+                    lineHeight: 1,
+                    margin: "0 0 3px",
+                  }}
+                >
+                  {n}
+                </p>
+                <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.6)", margin: 0, whiteSpace: "nowrap" }}>
+                  {label}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Disclaimer */}
-      <div style={{ backgroundColor: "#FFFBEB", borderBottom: "1px solid #FDE68A", padding: "10px 24px", textAlign: "center" }}>
-        <p style={{ fontSize: "12.5px", color: "#92400E", lineHeight: 1.6 }}>
-          <strong>Research Use Only:</strong> All studies cited are for in-vitro and preclinical/clinical research contexts. These peptides are not approved for human therapeutic use. For qualified researchers only.
-        </p>
-      </div>
-
-      {/* Sticky search + filter bar */}
-      <div style={{ backgroundColor: "#fff", borderBottom: "1px solid #E8EDF5", boxShadow: "0 2px 8px rgba(15,23,42,0.04)", position: "sticky", top: 0, zIndex: 10 }}>
-        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "12px 20px" }}>
-          <div style={{ position: "relative", marginBottom: "10px" }}>
-            <Search size={15} style={{ position: "absolute", left: "13px", top: "50%", transform: "translateY(-50%)", color: "#94A3B8" }} />
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search peptides, journals, authors, or findings..."
-              style={{
-                width: "100%",
-                paddingLeft: "38px",
-                paddingRight: query ? "38px" : "14px",
-                paddingTop: "10px",
-                paddingBottom: "10px",
-                fontSize: "14px",
-                border: "1.5px solid #E2E8F0",
-                borderRadius: "10px",
-                backgroundColor: "#F8FAFC",
-                color: "#0F172A",
-                outline: "none",
-                fontFamily: "'Arimo', Arial, sans-serif",
-                boxSizing: "border-box",
-              }}
-            />
-            {query && (
+      {/* ── Sticky tab bar ────────────────────────────────────────────────────── */}
+      <div
+        style={{
+          backgroundColor: "#fff",
+          borderBottom: "1px solid #E8EDF5",
+          boxShadow: "0 2px 10px rgba(15,23,42,0.06)",
+          position: "sticky",
+          top: 0,
+          zIndex: 20,
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "1280px",
+            margin: "0 auto",
+            padding: "0 20px",
+            display: "flex",
+            gap: "0",
+            overflowX: "auto",
+            scrollbarWidth: "none",
+          }}
+        >
+          {TABS.map((tab) => {
+            const active = tab === activeTab;
+            const count =
+              tab === "All"
+                ? protocols.length
+                : protocols.filter((p) => p.category === tab).length;
+            return (
               <button
-                onClick={() => setQuery("")}
-                style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", color: "#94A3B8", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                style={{
+                  flexShrink: 0,
+                  padding: "14px 18px",
+                  fontSize: "13.5px",
+                  fontWeight: active ? 700 : 500,
+                  color: active ? "#1B5CB5" : "#475569",
+                  background: "none",
+                  border: "none",
+                  borderBottom: `2.5px solid ${active ? "#1B5CB5" : "transparent"}`,
+                  cursor: "pointer",
+                  fontFamily: "'Arimo', Arial, sans-serif",
+                  whiteSpace: "nowrap",
+                  transition: "color 0.15s, border-color 0.15s",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
               >
-                <X size={14} />
-              </button>
-            )}
-          </div>
-          <div style={{ display: "flex", gap: "6px", overflowX: "auto", paddingBottom: "2px", scrollbarWidth: "none" }}>
-            {CATEGORIES.map((cat) => {
-              const active = cat === activeCategory;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
+                {tab}
+                <span
                   style={{
-                    flexShrink: 0,
-                    padding: "5px 13px",
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    padding: "1px 6px",
                     borderRadius: "999px",
-                    fontSize: "12.5px",
-                    fontWeight: active ? 700 : 500,
-                    backgroundColor: active ? "#1B5CB5" : "#F1F5F9",
-                    color: active ? "#fff" : "#475569",
-                    border: "1px solid " + (active ? "#1B5CB5" : "#E2E8F0"),
-                    whiteSpace: "nowrap",
-                    cursor: "pointer",
-                    fontFamily: "'Arimo', Arial, sans-serif",
+                    backgroundColor: active ? "#EEF4FF" : "#F1F5F9",
+                    color: active ? "#1B5CB5" : "#94A3B8",
                   }}
                 >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Content */}
-      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "28px 20px 60px" }}>
-
-        {/* Result count + clear */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
-          <p style={{ fontSize: "13.5px", color: "#64748B" }}>
-            {filtered.length === peptideResearchData.length
-              ? `Showing all ${filtered.length} peptide compounds`
-              : `${filtered.length} compound${filtered.length !== 1 ? "s" : ""} found`}
-          </p>
-          {(query || activeCategory !== "All") && (
-            <button
-              onClick={() => { setQuery(""); setActiveCategory("All"); }}
+      {/* ── Research level legend ─────────────────────────────────────────────── */}
+      <div style={{ backgroundColor: "#F8FAFC", borderBottom: "1px solid #E8EDF5" }}>
+        <div
+          style={{
+            maxWidth: "1280px",
+            margin: "0 auto",
+            padding: "10px 24px",
+            display: "flex",
+            gap: "16px",
+            flexWrap: "wrap",
+            alignItems: "center",
+          }}
+        >
+          <span style={{ fontSize: "11px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+            Research Level:
+          </span>
+          {(Object.entries(LEVEL_STYLE) as [ResearchLevel, typeof LEVEL_STYLE[ResearchLevel]][]).map(([label, style]) => (
+            <span
+              key={label}
               style={{
-                display: "flex",
+                display: "inline-flex",
                 alignItems: "center",
                 gap: "5px",
-                padding: "5px 12px",
-                borderRadius: "999px",
-                fontSize: "12.5px",
-                color: "#64748B",
-                border: "1px solid #E2E8F0",
-                backgroundColor: "#fff",
-                cursor: "pointer",
-                fontFamily: "'Arimo', Arial, sans-serif",
+                fontSize: "11px",
+                fontWeight: 600,
+                color: style.text,
               }}
             >
-              <X size={11} /> Clear filters
-            </button>
-          )}
+              <span
+                style={{
+                  width: "7px",
+                  height: "7px",
+                  borderRadius: "50%",
+                  backgroundColor: style.dot,
+                  flexShrink: 0,
+                }}
+              />
+              {label}
+            </span>
+          ))}
         </div>
-
-        {filtered.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "80px 0", color: "#94A3B8" }}>
-            <FlaskConical size={40} style={{ margin: "0 auto 16px", opacity: 0.3 }} />
-            <p style={{ fontSize: "16px", fontWeight: 600, color: "#64748B", marginBottom: "6px" }}>No results found</p>
-            <p style={{ fontSize: "13.5px" }}>Try a different search term or category filter.</p>
-          </div>
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            {filtered.map((entry) => (
-              <PeptideCard key={entry.compound} entry={entry} />
-            ))}
-          </div>
-        )}
       </div>
 
-      {/* Bottom CTA */}
-      <div style={{ backgroundColor: "#0F172A", padding: "48px 24px", textAlign: "center" }}>
-        <p style={{ fontSize: "22px", fontWeight: 700, color: "#fff", marginBottom: "10px" }}>
+      {/* ── Content ───────────────────────────────────────────────────────────── */}
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "32px 20px 72px" }}>
+
+        <p style={{ fontSize: "13px", color: "#94A3B8", marginBottom: "28px" }}>
+          Showing {totalShown} protocol{totalShown !== 1 ? "s" : ""}
+          {activeTab !== "All" ? ` in ${activeTab}` : ""}
+        </p>
+
+        {grouped.map(({ category, entries }) => (
+          <CategorySection key={category} category={category} entries={entries} />
+        ))}
+      </div>
+
+      {/* ── Bottom CTA ────────────────────────────────────────────────────────── */}
+      <div
+        style={{
+          background: "linear-gradient(135deg, #020B1E 0%, #1240A0 100%)",
+          padding: "56px 24px",
+          textAlign: "center",
+        }}
+      >
+        <p style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", color: "#93C5FD", textTransform: "uppercase", marginBottom: "14px" }}>
+          OmniQure Research Institute
+        </p>
+        <p style={{ fontSize: "24px", fontWeight: 700, color: "#fff", marginBottom: "10px", lineHeight: 1.3 }}>
           Ready to start your research?
         </p>
-        <p style={{ fontSize: "14px", color: "#64748B", maxWidth: "500px", margin: "0 auto 24px", lineHeight: 1.7 }}>
+        <p
+          style={{
+            fontSize: "14px",
+            color: "rgba(255,255,255,0.6)",
+            maxWidth: "480px",
+            margin: "0 auto 28px",
+            lineHeight: 1.75,
+          }}
+        >
           All 81 peptides are HPLC verified at 98%+ purity with full COA, HPLC chromatograms, and ESI-MS data.
         </p>
         <Link
@@ -480,13 +598,14 @@ export default function PeptideResearch() {
             display: "inline-flex",
             alignItems: "center",
             gap: "8px",
-            padding: "12px 24px",
+            padding: "13px 28px",
             borderRadius: "12px",
             backgroundColor: "#1B5CB5",
             color: "#fff",
             fontSize: "14px",
             fontWeight: 700,
             textDecoration: "none",
+            border: "1.5px solid rgba(255,255,255,0.18)",
           }}
         >
           Browse All Peptides <ChevronRight size={16} />
