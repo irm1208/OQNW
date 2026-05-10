@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import type { Product } from "@/data/products";
 
@@ -17,6 +18,11 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const productUrl = `/product/${product.id}`;
   const { baseName, strength } = parseName(product.name);
+  const [qty, setQty] = useState(1);
+
+  const stop = (e: React.MouseEvent) => e.preventDefault();
+  const dec = (e: React.MouseEvent) => { stop(e); setQty(q => Math.max(1, q - 1)); };
+  const inc = (e: React.MouseEvent) => { stop(e); setQty(q => q + 1); };
 
   return (
     <Link href={productUrl} style={{ textDecoration: "none", display: "block", height: "100%" }}>
@@ -36,42 +42,24 @@ export default function ProductCard({ product }: ProductCardProps) {
           el.style.borderColor = "#E8EDF5";
         }}
       >
-        {/* Image — fills the box, white bg so the label design pops */}
+        {/* Image */}
         <div
           className="relative w-full overflow-hidden"
-          style={{
-            height: "260px",
-            backgroundColor: "#fff",
-            boxShadow: "inset 0 -2px 8px rgba(0,0,0,0.04)",
-          }}
+          style={{ height: "260px", backgroundColor: "#fff", boxShadow: "inset 0 -2px 8px rgba(0,0,0,0.04)" }}
         >
-          {/* HPLC badge */}
           <span
             className="absolute top-2.5 right-2.5 z-10 rounded-full font-bold"
-            style={{
-              backgroundColor: "#EEF4FF",
-              color: "#1B5CB5",
-              fontSize: "10px",
-              padding: "2px 8px",
-              border: "1px solid #BFDBFE",
-              letterSpacing: "0.03em",
-            }}
+            style={{ backgroundColor: "#EEF4FF", color: "#1B5CB5", fontSize: "10px", padding: "2px 8px", border: "1px solid #BFDBFE", letterSpacing: "0.03em" }}
           >
             99% HPLC
           </span>
           <img
             src={product.image}
             alt={product.name}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-              padding: "6px",
-            }}
+            style={{ width: "100%", height: "100%", objectFit: "contain", padding: "6px" }}
           />
         </div>
 
-        {/* Divider */}
         <div style={{ height: "1px", backgroundColor: "#EEF4FF" }} />
 
         {/* Info */}
@@ -84,20 +72,54 @@ export default function ProductCard({ product }: ProductCardProps) {
               {strength}
             </p>
           )}
+
           <div className="mt-auto pt-3 flex flex-col gap-2">
+            {/* Learn More */}
             <div
               className="w-full text-center py-2 font-semibold rounded-xl transition-all hover:opacity-80"
               style={{ border: "1.5px solid #1B5CB5", color: "#1B5CB5", backgroundColor: "#fff", fontSize: "13px" }}
             >
               Learn More
             </div>
-            <button
-              onClick={(e) => e.preventDefault()}
-              className="w-full text-center py-2 font-semibold rounded-xl transition-opacity hover:opacity-90"
-              style={{ backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px" }}
-            >
-              Add to Cart
-            </button>
+
+            {/* Quantity + Add to Cart row */}
+            <div className="flex items-center gap-2">
+              {/* Stepper */}
+              <div
+                className="flex items-center rounded-xl overflow-hidden flex-shrink-0"
+                style={{ border: "1.5px solid #E2E8F0", height: "36px" }}
+              >
+                <button
+                  onClick={dec}
+                  className="flex items-center justify-center font-bold transition-colors hover:bg-blue-50"
+                  style={{ width: "30px", height: "100%", background: "none", border: "none", color: "#1B5CB5", fontSize: "16px", cursor: "pointer" }}
+                >
+                  −
+                </button>
+                <span
+                  className="font-bold text-center"
+                  style={{ minWidth: "28px", fontSize: "13px", color: "#0F172A", borderLeft: "1px solid #E2E8F0", borderRight: "1px solid #E2E8F0", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}
+                >
+                  {qty}
+                </span>
+                <button
+                  onClick={inc}
+                  className="flex items-center justify-center font-bold transition-colors hover:bg-blue-50"
+                  style={{ width: "30px", height: "100%", background: "none", border: "none", color: "#1B5CB5", fontSize: "16px", cursor: "pointer" }}
+                >
+                  +
+                </button>
+              </div>
+
+              {/* Add to Cart */}
+              <button
+                onClick={stop}
+                className="flex-1 font-semibold rounded-xl transition-opacity hover:opacity-90"
+                style={{ backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px", height: "36px" }}
+              >
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
       </div>
