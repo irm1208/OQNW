@@ -307,41 +307,71 @@ export default function Header() {
                   right: 0,
                   backgroundColor: "#fff",
                   border: "1.5px solid #E2E8F0",
-                  borderRadius: "12px",
-                  boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                  borderRadius: "14px",
+                  boxShadow: "0 12px 32px rgba(0,0,0,0.14)",
                   zIndex: 300,
-                  minWidth: "200px",
-                  overflow: "hidden",
-                  padding: "4px",
+                  minWidth: "220px",
+                  maxHeight: "360px",
+                  overflowY: "auto",
+                  overflowX: "hidden",
+                  padding: "6px",
+                  scrollbarWidth: "thin",
+                  scrollbarColor: "#CBD5E1 transparent",
                 }}
               >
-                {CURRENCIES.map(c => (
-                  <button
-                    key={c.code}
-                    onMouseDown={() => {
-                      setCurrency(c.code as CurrencyCode);
-                      setCurrencyOpen(false);
-                    }}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "10px",
-                      width: "100%",
-                      padding: "8px 12px",
-                      borderRadius: "8px",
-                      border: "none",
-                      cursor: "pointer",
-                      backgroundColor: c.code === currency.code ? "#EEF4FF" : "transparent",
-                      textAlign: "left",
-                    }}
-                  >
-                    <span style={{ fontSize: "16px" }}>{c.flag}</span>
-                    <span style={{ fontSize: "12.5px", fontWeight: 600, color: "#0F172A", minWidth: "36px" }}>{c.code}</span>
-                    <span style={{ fontSize: "12px", color: "#64748B" }}>{c.label}</span>
-                    {c.code === currency.code && (
-                      <span style={{ marginLeft: "auto", color: "#1B5CB5", fontSize: "12px" }}>✓</span>
-                    )}
-                  </button>
+                {[
+                  { label: "Popular", codes: ["GBP","USD","EUR","AUD","CAD","CHF","NZD"] },
+                  { label: "Scandinavia", codes: ["DKK","NOK","SEK"] },
+                  { label: "Europe", codes: ["PLN","CZK","HUF"] },
+                  { label: "Asia Pacific", codes: ["JPY","SGD","HKD","KRW","TWD","MYR","THB"] },
+                  { label: "Middle East", codes: ["AED"] },
+                ].map(group => (
+                  <div key={group.label}>
+                    <p style={{
+                      fontSize: "10px", fontWeight: 700, color: "#94A3B8",
+                      textTransform: "uppercase", letterSpacing: "0.08em",
+                      padding: "6px 10px 3px",
+                    }}>
+                      {group.label}
+                    </p>
+                    {CURRENCIES.filter(c => group.codes.includes(c.code)).map(c => (
+                      <button
+                        key={c.code}
+                        onMouseDown={() => {
+                          setCurrency(c.code as CurrencyCode);
+                          setCurrencyOpen(false);
+                        }}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
+                          width: "100%",
+                          padding: "7px 10px",
+                          borderRadius: "8px",
+                          border: "none",
+                          cursor: "pointer",
+                          backgroundColor: c.code === currency.code ? "#EEF4FF" : "transparent",
+                          textAlign: "left",
+                          transition: "background-color 0.1s",
+                        }}
+                        onMouseEnter={e => {
+                          if (c.code !== currency.code)
+                            (e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC";
+                        }}
+                        onMouseLeave={e => {
+                          if (c.code !== currency.code)
+                            (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+                        }}
+                      >
+                        <span style={{ fontSize: "15px", flexShrink: 0 }}>{c.flag}</span>
+                        <span style={{ fontSize: "12.5px", fontWeight: 700, color: c.code === currency.code ? "#1240A0" : "#0F172A", minWidth: "34px" }}>{c.code}</span>
+                        <span style={{ fontSize: "12px", color: "#64748B", flex: 1 }}>{c.label}</span>
+                        {c.code === currency.code && (
+                          <span style={{ color: "#1B5CB5", fontSize: "13px", flexShrink: 0 }}>✓</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
                 ))}
               </div>
             )}
