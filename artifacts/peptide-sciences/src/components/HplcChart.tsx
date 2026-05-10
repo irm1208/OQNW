@@ -31,8 +31,8 @@ export default function HplcChart({ productId, productName, purity }: HplcChartP
   const displayPurity = purity ?? `${computedPurity}%`;
 
   // SVG layout
-  const W = 560, H = 240;
-  const pl = 58, pr = 20, pt = 18, pb = 38;
+  const W = 560, H = 275;
+  const pl = 58, pr = 20, pt = 52, pb = 38;
   const plotW = W - pl - pr;
   const plotH = H - pt - pb;
   const T_MAX = 25;
