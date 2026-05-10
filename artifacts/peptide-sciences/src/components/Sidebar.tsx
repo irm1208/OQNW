@@ -18,7 +18,7 @@ export default function Sidebar({ selectedCategory, onCategoryChange }: SidebarP
         <button
           onClick={() => onCategoryChange("Purchase Peptides")}
           className="block font-bold mb-2 hover:underline text-left w-full"
-          style={{ color: "#E7461E", fontSize: "13px" }}
+          style={{ color: "#1B5CB5", fontSize: "13px" }}
         >
           Purchase Peptides
         </button>

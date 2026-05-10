@@ -38,10 +38,10 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="flex flex-col p-3 mt-auto space-y-2">
         <Link
           href={productUrl}
-          className="block w-full text-center py-2 border font-medium transition-colors hover:bg-orange-50"
+          className="block w-full text-center py-2 border font-medium transition-colors hover:bg-blue-50"
           style={{
-            borderColor: "#E7461E",
-            color: "#E7461E",
+            borderColor: "#1B5CB5",
+            color: "#1B5CB5",
             fontSize: "13px",
             borderRadius: "4px",
           }}
@@ -52,7 +52,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <button
           className="w-full py-2 text-white text-center font-medium hover:opacity-90 transition-opacity"
           style={{
-            backgroundColor: "#E7461E",
+            backgroundColor: "#1B5CB5",
             fontSize: "13px",
             borderRadius: "4px",
             border: "none",

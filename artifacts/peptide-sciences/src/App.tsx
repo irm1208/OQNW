@@ -19,7 +19,7 @@ function PlaceholderPage({ title, description }: { title: string; description?: 
         {title}
       </h1>
       <p className="text-gray-500 mb-6 text-sm">{description || "This page is coming soon."}</p>
-      <a href="/" className="text-sm hover:underline" style={{ color: "#E7461E" }}>
+      <a href="/" className="text-sm hover:underline" style={{ color: "#1B5CB5" }}>
         ← Back to All Peptides
       </a>
     </div>

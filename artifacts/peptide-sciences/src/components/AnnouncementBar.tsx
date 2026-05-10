@@ -8,7 +8,7 @@ export default function AnnouncementBar() {
   return (
     <div
       className="relative flex items-center justify-center px-10 py-2 text-center text-white text-sm"
-      style={{ backgroundColor: "#E7461E" }}
+      style={{ backgroundColor: "#1B5CB5" }}
     >
       <span style={{ fontSize: "13px" }}>
         🔬 <strong>US-Made Research Peptides</strong> — 99% HPLC Purity Guaranteed | Free Shipping on Orders $200+

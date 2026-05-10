@@ -80,8 +80,8 @@ export default function Header() {
                 href={item.href}
                 className="px-3 py-3 text-sm whitespace-nowrap border-b-2 transition-colors inline-block"
                 style={{
-                  borderBottomColor: location === item.href ? "#E7461E" : "transparent",
-                  color: location === item.href ? "#E7461E" : "#333",
+                  borderBottomColor: location === item.href ? "#1B5CB5" : "transparent",
+                  color: location === item.href ? "#1B5CB5" : "#333",
                   fontWeight: location === item.href ? 600 : 400,
                   textDecoration: "none",
                 }}

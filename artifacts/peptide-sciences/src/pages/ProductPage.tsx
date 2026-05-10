@@ -17,7 +17,7 @@ export default function ProductPage() {
     return (
       <div className="max-w-[1280px] mx-auto px-4 py-16 text-center">
         <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
-        <Link href="/" className="hover:underline" style={{ color: "#E7461E" }}>
+        <Link href="/" className="hover:underline" style={{ color: "#1B5CB5" }}>
           ← Back to All Peptides
         </Link>
       </div>
@@ -50,18 +50,18 @@ export default function ProductPage() {
       {/* Breadcrumb */}
       <div style={{ backgroundColor: "#f5f5f5", borderBottom: "1px solid #e0e0e0" }}>
         <div className="max-w-[1280px] mx-auto px-4 py-2 flex items-center gap-2 text-sm" style={{ color: "#666" }}>
-          <Link href="/" className="hover:underline" style={{ color: "#1979C3" }}>
+          <Link href="/" className="hover:underline" style={{ color: "#1B5CB5" }}>
             Home
           </Link>
           <span>/</span>
-          <Link href="/" className="hover:underline" style={{ color: "#1979C3" }}>
+          <Link href="/" className="hover:underline" style={{ color: "#1B5CB5" }}>
             All Peptides
           </Link>
           <span>/</span>
           <Link
             href={`/?category=${encodeURIComponent(product.category)}`}
             className="hover:underline"
-            style={{ color: "#1979C3" }}
+            style={{ color: "#1B5CB5" }}
           >
             {product.category}
           </Link>
@@ -86,7 +86,7 @@ export default function ProductPage() {
               >
                 <span
                   className="text-xs font-bold tracking-widest uppercase"
-                  style={{ color: "#E7461E", letterSpacing: "0.12em" }}
+                  style={{ color: "#1B5CB5", letterSpacing: "0.12em" }}
                 >
                   OmniQure
                 </span>
@@ -99,7 +99,7 @@ export default function ProductPage() {
                   {detail.capsuleCount && (
                     <span
                       className="text-xs font-bold px-2 py-0.5 rounded"
-                      style={{ backgroundColor: "#E7461E", color: "#fff" }}
+                      style={{ backgroundColor: "#1B5CB5", color: "#fff" }}
                     >
                       {detail.capsuleCount}
                     </span>
@@ -151,12 +151,12 @@ export default function ProductPage() {
                 className="px-3 py-2 flex items-center gap-2"
                 style={{ borderBottom: "1px solid #e8e8e8" }}
               >
-                <span className="text-xs font-bold" style={{ color: "#006BB4" }}>PURITY</span>
+                <span className="text-xs font-bold" style={{ color: "#1B5CB5" }}>PURITY</span>
                 <span className="text-xs font-semibold" style={{ color: "#222" }}>
                   {detail.purity || "99% HPLC"}
                 </span>
                 <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "#e0e0e0" }}>
-                  <div className="h-full rounded-full" style={{ width: "99%", backgroundColor: "#006BB4" }} />
+                  <div className="h-full rounded-full" style={{ width: "99%", backgroundColor: "#1B5CB5" }} />
                 </div>
               </div>
 
@@ -202,7 +202,7 @@ export default function ProductPage() {
                     className="flex items-center gap-1.5 px-2 py-2 text-xs"
                     style={{ backgroundColor: "#fff", color: "#555" }}
                   >
-                    <span style={{ color: "#E7461E" }}>{b.icon}</span>
+                    <span style={{ color: "#1B5CB5" }}>{b.icon}</span>
                     {b.text}
                   </div>
                 ))}
@@ -216,7 +216,7 @@ export default function ProductPage() {
             <Link
               href={`/?category=${encodeURIComponent(product.category)}`}
               className="inline-block text-xs px-2 py-1 rounded mb-2 hover:opacity-80"
-              style={{ backgroundColor: "#fff3f0", color: "#E7461E", border: "1px solid #fdddd6" }}
+              style={{ backgroundColor: "#fff3f0", color: "#1B5CB5", border: "1px solid #fdddd6" }}
             >
               {product.category}
             </Link>
@@ -272,7 +272,7 @@ export default function ProductPage() {
                   {/* Add to Cart */}
                   <button
                     className="flex-1 flex items-center justify-center gap-2 rounded font-semibold text-white hover:opacity-90 transition-opacity"
-                    style={{ backgroundColor: "#E7461E", height: "40px", fontSize: "15px", padding: "0 20px" }}
+                    style={{ backgroundColor: "#1B5CB5", height: "40px", fontSize: "15px", padding: "0 20px" }}
                   >
                     <ShoppingCart size={17} />
                     Add to Cart
@@ -359,7 +359,7 @@ export default function ProductPage() {
                     <span
                       key={area}
                       className="px-2 py-0.5 rounded-sm text-xs"
-                      style={{ backgroundColor: "#fff3f0", color: "#E7461E", border: "1px solid #fdddd6" }}
+                      style={{ backgroundColor: "#fff3f0", color: "#1B5CB5", border: "1px solid #fdddd6" }}
                     >
                       {area}
                     </span>
@@ -385,8 +385,8 @@ export default function ProductPage() {
               onClick={() => setActiveTab("description")}
               className="px-5 py-2.5 text-sm font-semibold transition-colors"
               style={{
-                color: activeTab === "description" ? "#E7461E" : "#555",
-                borderBottom: activeTab === "description" ? "2px solid #E7461E" : "2px solid transparent",
+                color: activeTab === "description" ? "#1B5CB5" : "#555",
+                borderBottom: activeTab === "description" ? "2px solid #1B5CB5" : "2px solid transparent",
                 marginBottom: "-1px",
                 backgroundColor: "transparent",
               }}
@@ -397,8 +397,8 @@ export default function ProductPage() {
               onClick={() => setActiveTab("coa")}
               className="px-5 py-2.5 text-sm font-semibold transition-colors"
               style={{
-                color: activeTab === "coa" ? "#E7461E" : "#555",
-                borderBottom: activeTab === "coa" ? "2px solid #E7461E" : "2px solid transparent",
+                color: activeTab === "coa" ? "#1B5CB5" : "#555",
+                borderBottom: activeTab === "coa" ? "2px solid #1B5CB5" : "2px solid transparent",
                 marginBottom: "-1px",
                 backgroundColor: "transparent",
               }}
@@ -474,7 +474,7 @@ export default function ProductPage() {
                     style={{ backgroundColor: "#f8f8f8", border: "1px solid #e0e0e0" }}
                   >
                     <div className="mb-3">
-                      <Shield size={36} className="mx-auto mb-2" style={{ color: "#006BB4" }} />
+                      <Shield size={36} className="mx-auto mb-2" style={{ color: "#1B5CB5" }} />
                       <p className="font-semibold text-sm" style={{ color: "#333" }}>Certificate of Analysis</p>
                       <p className="text-xs mt-1" style={{ color: "#666" }}>
                         {product.name} — Purity: {detail.purity || "99% HPLC"}
@@ -539,7 +539,7 @@ export default function ProductPage() {
                     className="p-6 rounded text-center"
                     style={{ backgroundColor: "#f8f8f8", border: "1px solid #e0e0e0" }}
                   >
-                    <FlaskConical size={32} className="mx-auto mb-2" style={{ color: "#006BB4" }} />
+                    <FlaskConical size={32} className="mx-auto mb-2" style={{ color: "#1B5CB5" }} />
                     <p className="text-sm font-semibold mb-1" style={{ color: "#333" }}>HPLC Analysis</p>
                     <p className="text-xs" style={{ color: "#666" }}>
                       HPLC chromatogram confirms purity of{" "}
@@ -559,7 +559,7 @@ export default function ProductPage() {
                     className="p-6 rounded text-center"
                     style={{ backgroundColor: "#f8f8f8", border: "1px solid #e0e0e0" }}
                   >
-                    <Package size={32} className="mx-auto mb-2" style={{ color: "#006BB4" }} />
+                    <Package size={32} className="mx-auto mb-2" style={{ color: "#1B5CB5" }} />
                     <p className="text-sm font-semibold mb-1" style={{ color: "#333" }}>Mass Spectrometry Analysis</p>
                     {detail.molecularWeight && (
                       <p className="text-xs" style={{ color: "#666" }}>
@@ -581,7 +581,7 @@ export default function ProductPage() {
           className="mb-8 p-4 rounded"
           style={{ backgroundColor: "#fff8f0", border: "1px solid #fdddd6" }}
         >
-          <h3 className="font-bold mb-2" style={{ fontSize: "13px", color: "#E7461E" }}>
+          <h3 className="font-bold mb-2" style={{ fontSize: "13px", color: "#1B5CB5" }}>
             ⚠ Research Use Only Disclaimer
           </h3>
           <p className="text-xs leading-relaxed" style={{ color: "#666" }}>
@@ -598,7 +598,7 @@ export default function ProductPage() {
           <div className="mt-8">
             <h2
               className="font-bold mb-4 pb-2"
-              style={{ fontSize: "18px", borderBottom: "2px solid #E7461E" }}
+              style={{ fontSize: "18px", borderBottom: "2px solid #1B5CB5" }}
             >
               Related Products — {product.category}
             </h2>
@@ -620,7 +620,7 @@ export default function ProductPage() {
                     />
                     <p
                       className="text-sm font-medium leading-tight mb-2 flex-1 hover:underline"
-                      style={{ color: "#1979C3" }}
+                      style={{ color: "#1B5CB5" }}
                     >
                       {related.name}
                     </p>

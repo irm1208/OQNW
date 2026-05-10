@@ -89,9 +89,9 @@ export default function AllPeptides() {
                 onClick={() => handleCategoryChange(tab.key)}
                 className="px-4 py-1.5 border text-sm transition-colors"
                 style={{
-                  borderColor: selectedCategory === tab.key ? "#E7461E" : "#ccc",
-                  color: selectedCategory === tab.key ? "#E7461E" : "#333",
-                  backgroundColor: selectedCategory === tab.key ? "#fff8f6" : "#fff",
+                  borderColor: selectedCategory === tab.key ? "#1B5CB5" : "#ccc",
+                  color: selectedCategory === tab.key ? "#1B5CB5" : "#333",
+                  backgroundColor: selectedCategory === tab.key ? "#eef3fb" : "#fff",
                   fontSize: "13px",
                   borderRadius: "4px",
                 }}
@@ -120,7 +120,7 @@ export default function AllPeptides() {
             <div className="mb-4">
               <div
                 className="flex items-center justify-between px-3 py-2"
-                style={{ backgroundColor: "#E7461E", color: "#fff", fontSize: "13px" }}
+                style={{ backgroundColor: "#1B5CB5", color: "#fff", fontSize: "13px" }}
               >
                 <span className="font-semibold">Product List</span>
                 <svg

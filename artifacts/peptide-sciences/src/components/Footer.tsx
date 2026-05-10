@@ -69,7 +69,7 @@ export default function Footer() {
       {/* Research disclaimer bar */}
       <div
         className="text-center py-3 text-xs font-semibold"
-        style={{ backgroundColor: "#E7461E", color: "#fff" }}
+        style={{ backgroundColor: "#1B5CB5", color: "#fff" }}
       >
         FOR IN-VITRO LABORATORY RESEARCH USE ONLY | NOT FOR HUMAN OR VETERINARY USE | YOU MUST BE 21+ TO PURCHASE
       </div>
@@ -112,7 +112,7 @@ export default function Footer() {
                   <Link
                     href={col.href}
                     className="block font-bold mb-3 hover:underline"
-                    style={{ color: "#E7461E", fontSize: "13px" }}
+                    style={{ color: "#1B5CB5", fontSize: "13px" }}
                   >
                     {col.title}
                   </Link>

@@ -81,9 +81,9 @@ export default function PopularPeptides() {
                 onClick={() => handleTabClick(tab.key)}
                 className="px-4 py-1.5 border text-sm transition-colors"
                 style={{
-                  borderColor: tab.key === "Popular Peptides" ? "#E7461E" : "#ccc",
-                  color: tab.key === "Popular Peptides" ? "#E7461E" : "#333",
-                  backgroundColor: tab.key === "Popular Peptides" ? "#fff8f6" : "#fff",
+                  borderColor: tab.key === "Popular Peptides" ? "#1B5CB5" : "#ccc",
+                  color: tab.key === "Popular Peptides" ? "#1B5CB5" : "#333",
+                  backgroundColor: tab.key === "Popular Peptides" ? "#eef3fb" : "#fff",
                   fontSize: "13px",
                   borderRadius: "4px",
                   cursor: tab.key === "Popular Peptides" ? "default" : "pointer",
@@ -104,7 +104,7 @@ export default function PopularPeptides() {
             <div className="mb-4">
               <div
                 className="flex items-center justify-between px-3 py-2"
-                style={{ backgroundColor: "#E7461E", color: "#fff", fontSize: "13px" }}
+                style={{ backgroundColor: "#1B5CB5", color: "#fff", fontSize: "13px" }}
               >
                 <span className="font-semibold">Product List</span>
                 <svg
