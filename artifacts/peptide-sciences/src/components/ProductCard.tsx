@@ -30,7 +30,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="relative bg-white" style={{ padding: "8px 8px 0" }}>
         {/* Header card strip */}
         <div
-          className="flex items-center justify-between px-2 py-1 mb-1 rounded-t-sm"
+          className="flex items-center justify-center gap-2 px-2 py-1 mb-1 rounded-t-sm"
           style={{ backgroundColor: "#1B5CB5" }}
         >
           <div
@@ -42,7 +42,6 @@ export default function ProductCard({ product }: ProductCardProps) {
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
-              maxWidth: "70%",
             }}
           >
             {baseName}
@@ -55,7 +54,6 @@ export default function ProductCard({ product }: ProductCardProps) {
                 fontFamily: "Arimo, Arial",
                 fontWeight: 500,
                 flexShrink: 0,
-                marginLeft: "4px",
               }}
             >
               {strength}
