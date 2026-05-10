@@ -1,6 +1,7 @@
 import { jsPDF } from "jspdf";
 import type { Product } from "@/data/products";
 import type { ProductDetail } from "@/data/productDetails";
+import { getPurityStr } from "@/utils/productPurity";
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -229,7 +230,7 @@ export function generateCOA(product: Product, detail: ProductDetail) {
   const rows: [string, string, string, string, string, boolean][] = [
     ["Appearance",              "Visual Inspection (Ph. Eur. 2.9.20)", "White lyophilised powder", detail.appearance?.split(" ").slice(0,3).join(" ") ?? "White lyo. powder", "—",         true],
     ["Identity (ESI-MS)",       "Electrospray Ionisation-MS",           "Matches reference spectrum", "Confirmed",              "—",         true],
-    ["Purity (HPLC-UV)",        "RP-HPLC, 220 nm, C18 column",          "≥ 98.0 %",                  "≥ 98.0 %",               "%",         true],
+    ["Purity (HPLC-UV)",        "RP-HPLC, 220 nm, C18 column",          "≥ 98.0 %",                  getPurityStr(product.id), "%",         true],
     ["Peptide Content",         "Amino Acid Analysis (AAA)",             "≥ 95.0 %",                  "≥ 95.0 %",               "%",         true],
     ["Water Content",           "Karl Fischer Titration (USP <921>)",    "≤ 8.0 %",                   "≤ 8.0 %",                "%",         true],
     ["Residual Solvents",       "GC-Headspace (ICH Q3C)",                "Within ICH Q3C limits",     "Conforms",               "—",         true],

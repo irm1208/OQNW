@@ -1,34 +1,49 @@
+import { getPurity } from "@/utils/productPurity";
+
 interface HplcChartProps {
   productId: string;
   productName: string;
-  purity?: string;
 }
 
 function gaussian(t: number, mu: number, amplitude: number, sigma: number): number {
   return amplitude * Math.exp(-Math.pow(t - mu, 2) / (2 * sigma * sigma));
 }
 
-export default function HplcChart({ productId, productName, purity }: HplcChartProps) {
+export default function HplcChart({ productId, productName }: HplcChartProps) {
   const seed = parseInt(productId) || 1;
 
-  // Vary retention time 9–17 min, peak width, and impurity sizes per product
+  // Vary retention time 9–17 min, peak width per product
   const retentionTime = 9 + (seed % 9);
   const sigma = 0.30 + (seed % 5) * 0.02;
-  const imp1Amp = 5.5 + (seed % 4) * 0.8;          // 5.5–8.3 mAU
-  const imp1RT  = retentionTime - 3.5 - (seed % 2);
-  const imp2Amp = 3.0 + (seed % 3) * 0.7;          // 3.0–4.4 mAU
-  const imp2RT  = retentionTime + 3.8 + (seed % 3) * 0.5;
-  const imp1Sigma = 0.22 + (seed % 3) * 0.03;
-  const imp2Sigma = 0.18 + (seed % 2) * 0.03;
 
-  // Compute displayed purity from peak areas: area = A * sigma * sqrt(2π)
-  const ROOT2PI = 2.5066;
-  const mainArea = 1000 * sigma * ROOT2PI;
-  const i1Area   = imp1Amp * imp1Sigma * ROOT2PI;
-  const i2Area   = imp2Amp * imp2Sigma * ROOT2PI;
+  // Base impurity shape parameters (unscaled)
+  const baseImp1Amp = 5.5 + (seed % 4) * 0.8;
+  const imp1RT      = retentionTime - 3.5 - (seed % 2);
+  const baseImp2Amp = 3.0 + (seed % 3) * 0.7;
+  const imp2RT      = retentionTime + 3.8 + (seed % 3) * 0.5;
+  const imp1Sigma   = 0.22 + (seed % 3) * 0.03;
+  const imp2Sigma   = 0.18 + (seed % 2) * 0.03;
+
+  // Deterministic target purity for this product
+  const targetPurity = getPurity(productId); // e.g. 98.7
+  const displayPurity = targetPurity.toFixed(1) + "%";
+
+  // Scale impurity amplitudes so that computed peak-area purity == targetPurity
+  // area = amplitude * sigma * ROOT2PI  →  purity = mainArea / totalArea
+  const ROOT2PI   = 2.5066;
+  const mainArea  = 1000 * sigma * ROOT2PI;
+  const baseI1    = baseImp1Amp * imp1Sigma * ROOT2PI;
+  const baseI2    = baseImp2Amp * imp2Sigma * ROOT2PI;
+  // totalArea needed for exact match
+  const totalAreaTarget = mainArea / (targetPurity / 100);
+  const impuritiesArea  = totalAreaTarget - mainArea;
+  const impScale        = impuritiesArea / (baseI1 + baseI2);
+  const imp1Amp = baseImp1Amp * impScale;
+  const imp2Amp = baseImp2Amp * impScale;
+
+  const i1Area    = imp1Amp * imp1Sigma * ROOT2PI;
+  const i2Area    = imp2Amp * imp2Sigma * ROOT2PI;
   const totalArea = mainArea + i1Area + i2Area;
-  const computedPurity = ((mainArea / totalArea) * 100).toFixed(1);
-  const displayPurity = purity ?? `${computedPurity}%`;
 
   // SVG layout
   const W = 560, H = 275;
