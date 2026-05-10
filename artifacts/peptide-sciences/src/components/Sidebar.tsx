@@ -32,32 +32,35 @@ const grouped = CATEGORY_ORDER.map((cat) => ({
 
 export default function Sidebar({ selectedCategory, onCategoryChange }: SidebarProps) {
   return (
-    <aside className="w-[220px] flex-shrink-0 text-sm">
+    <aside className="w-[210px] flex-shrink-0">
       {grouped.map(({ category, items }) => {
         const isActive = selectedCategory === category;
         return (
-          <div key={category} className="mb-2">
+          <div key={category} className="mb-4">
             <button
               onClick={() => onCategoryChange(category)}
-              className="flex items-center justify-between w-full px-2 py-1.5 text-left transition-colors"
+              className="w-full text-left px-2.5 py-2 rounded-lg transition-all"
               style={{
-                backgroundColor: isActive ? "#eef3fb" : "#f5f7fa",
-                borderLeft: isActive ? "3px solid #1B5CB5" : "3px solid transparent",
-                fontSize: "12px",
+                backgroundColor: isActive ? "#EEF4FF" : "transparent",
+                borderLeft: `3px solid ${isActive ? "#1B5CB5" : "transparent"}`,
+                color: isActive ? "#1B5CB5" : "#374151",
+                fontSize: "11px",
                 fontWeight: 700,
-                color: isActive ? "#1B5CB5" : "#333",
-                borderRadius: "2px",
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
               }}
             >
-              <span>{category}</span>
+              {category}
             </button>
-            <ul className="pl-3 mt-0.5">
+            <ul className="ml-5 pl-3 mt-1" style={{ borderLeft: "1px solid #E8EDF5" }}>
               {items.map((p) => (
                 <li key={p.id}>
                   <Link
                     href={`/product/${p.id}`}
-                    className="block py-0.5 hover:underline leading-snug"
-                    style={{ fontSize: "12px", color: "#444" }}
+                    className="block py-0.5 leading-snug transition-colors"
+                    style={{ fontSize: "12px", color: "#64748B" }}
+                    onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#1B5CB5"}
+                    onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
                   >
                     {p.name}
                   </Link>
