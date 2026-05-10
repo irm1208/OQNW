@@ -1,6 +1,6 @@
-# [Project name]
+# OmniQure
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Research-grade peptide e-commerce site for OmniQure Peptide Research Institute, featuring 81 HPLC-verified peptides with COA, HPLC chromatograms, and ESI-MS data per product.
 
 ## Run & Operate
 
