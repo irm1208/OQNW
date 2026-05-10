@@ -9,6 +9,7 @@ import HomePage from "@/pages/HomePage";
 import AllPeptides from "@/pages/AllPeptides";
 import PopularPeptides from "@/pages/PopularPeptides";
 import ProductPage from "@/pages/ProductPage";
+import PeptideResearch from "@/pages/PeptideResearch";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -37,9 +38,7 @@ function Router() {
       <Route path="/bundles">
         <PlaceholderPage title="Bundle & Save" description="Save on multi-peptide research bundles." />
       </Route>
-      <Route path="/research">
-        <PlaceholderPage title="Peptide Research" description="Scientific literature and research resources." />
-      </Route>
+      <Route path="/research" component={PeptideResearch} />
       <Route path="/info">
         <PlaceholderPage title="Peptide Information" description="Educational information about research peptides." />
       </Route>
