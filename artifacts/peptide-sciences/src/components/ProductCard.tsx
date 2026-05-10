@@ -71,13 +71,20 @@ export default function ProductCard({ product }: ProductCardProps) {
               {strength}
             </p>
           )}
-          <div className="mt-auto pt-3">
+          <div className="mt-auto pt-3 flex flex-col gap-2">
             <div
-              className="w-full text-center py-2 text-sm font-semibold rounded-xl transition-opacity"
-              style={{ backgroundColor: "#1B5CB5", color: "#fff" }}
+              className="w-full text-center py-2 text-sm font-semibold rounded-xl transition-all hover:opacity-80"
+              style={{ border: "1.5px solid #1B5CB5", color: "#1B5CB5", backgroundColor: "#fff" }}
             >
-              View Details
+              Learn More
             </div>
+            <button
+              onClick={(e) => e.preventDefault()}
+              className="w-full text-center py-2 text-sm font-semibold rounded-xl transition-opacity hover:opacity-90"
+              style={{ backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer" }}
+            >
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>
