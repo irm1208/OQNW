@@ -82,23 +82,23 @@ export default function AllPeptides() {
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
       {/* Category strip */}
       <div className="bg-white" style={{ borderBottom: "1px solid #E8EDF5" }}>
-        <div className="max-w-[1280px] mx-auto px-4 py-4">
-          <h2 className="font-bold mb-3" style={{ fontSize: "13px", color: "#94A3B8", letterSpacing: "0.07em", textTransform: "uppercase" }}>
+        <div className="max-w-[1280px] mx-auto px-4 py-3 md:py-4">
+          <h2 className="font-bold mb-2 md:mb-3" style={{ fontSize: "13px", color: "#94A3B8", letterSpacing: "0.07em", textTransform: "uppercase" }}>
             Shop by Category
           </h2>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5 md:gap-2">
             {categoryTabs.map((tab) => {
               const active = selectedCategory === tab.key;
               return (
                 <button
                   key={tab.key}
                   onClick={() => handleCategoryChange(tab.key)}
-                  className="px-3.5 py-1.5 text-sm font-medium transition-all rounded-full"
+                  className="px-3 py-1 md:px-3.5 md:py-1.5 font-medium transition-all rounded-full"
                   style={{
                     backgroundColor: active ? "#1B5CB5" : "#F1F5F9",
                     color: active ? "#fff" : "#475569",
                     border: "1px solid " + (active ? "#1B5CB5" : "#E2E8F0"),
-                    fontSize: "12.5px",
+                    fontSize: "12px",
                   }}
                 >
                   {tab.label}
@@ -108,8 +108,8 @@ export default function AllPeptides() {
             {selectedCategory !== "All Peptides" && (
               <button
                 onClick={() => handleCategoryChange("All Peptides")}
-                className="px-3 py-1.5 text-sm transition-colors rounded-full"
-                style={{ color: "#94A3B8", fontSize: "12.5px", border: "1px solid #E2E8F0", backgroundColor: "#fff" }}
+                className="px-3 py-1 transition-colors rounded-full"
+                style={{ color: "#94A3B8", fontSize: "12px", border: "1px solid #E2E8F0", backgroundColor: "#fff" }}
               >
                 ✕ Clear
               </button>
@@ -119,10 +119,10 @@ export default function AllPeptides() {
       </div>
 
       {/* Main content */}
-      <div className="max-w-[1280px] mx-auto px-4 py-6">
-        <div className="flex gap-7">
-          {/* Sidebar */}
-          <div className="hidden lg:block">
+      <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-4 md:py-6">
+        <div className="flex gap-6">
+          {/* Sidebar — desktop only */}
+          <div className="hidden lg:block flex-shrink-0">
             <div
               className="flex items-center gap-2 px-3 py-2.5 rounded-t-xl mb-3"
               style={{ backgroundColor: "#1B5CB5", color: "#fff" }}
@@ -137,35 +137,35 @@ export default function AllPeptides() {
 
           {/* Products */}
           <div className="flex-1 min-w-0">
-            <div className="mb-5">
-              <h1 className="font-bold" style={{ fontSize: "22px", color: "#0F172A" }}>
+            <div className="mb-4">
+              <h1 className="font-bold" style={{ fontSize: "20px", color: "#0F172A" }}>
                 {selectedCategory === "All Peptides" ? "All Peptides" : selectedCategory}
               </h1>
-              <p style={{ fontSize: "13.5px", color: "#64748B", marginTop: "4px" }}>
+              <p className="hidden sm:block" style={{ fontSize: "13px", color: "#64748B", marginTop: "3px" }}>
                 Research peptides available direct from our online catalogue.
               </p>
             </div>
 
             {/* Count + Sort */}
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center justify-between mb-4">
               <span
                 className="px-3 py-1 rounded-full font-medium"
-                style={{ fontSize: "12.5px", color: "#475569", backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}
+                style={{ fontSize: "12px", color: "#475569", backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}
               >
                 {filteredProducts.length} Products
               </span>
-              <div className="flex items-center gap-2">
-                <span style={{ fontSize: "12.5px", color: "#94A3B8" }}>Sort by</span>
+              <div className="flex items-center gap-1.5">
+                <span className="hidden sm:inline" style={{ fontSize: "12px", color: "#94A3B8" }}>Sort by</span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as SortOption)}
-                  className="outline-none text-sm"
+                  className="outline-none"
                   style={{
-                    fontSize: "12.5px",
+                    fontSize: "12px",
                     color: "#374151",
                     border: "1px solid #E2E8F0",
                     borderRadius: "8px",
-                    padding: "5px 10px",
+                    padding: "4px 8px",
                     backgroundColor: "#fff",
                     cursor: "pointer",
                   }}
@@ -178,11 +178,8 @@ export default function AllPeptides() {
               </div>
             </div>
 
-            {/* Grid */}
-            <div
-              className="grid gap-4"
-              style={{ gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}
-            >
+            {/* Responsive grid: 2 cols mobile, 3 tablet, 4 desktop */}
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

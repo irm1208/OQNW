@@ -72,8 +72,8 @@ export default function HomePage() {
         <div style={{ position: "absolute", top: "-80px", right: "-80px", width: "420px", height: "420px", borderRadius: "50%", background: "rgba(255,255,255,0.04)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: "-60px", left: "-60px", width: "300px", height: "300px", borderRadius: "50%", background: "rgba(255,255,255,0.04)", pointerEvents: "none" }} />
 
-        <div className="max-w-[1280px] mx-auto px-4" style={{ paddingTop: "72px", paddingBottom: "80px" }}>
-          <div className="flex flex-col lg:flex-row items-center gap-12">
+        <div className="max-w-[1280px] mx-auto px-4 py-12 lg:py-20">
+          <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-12">
 
             {/* Left copy */}
             <div className="flex-1 text-white">
@@ -123,8 +123,8 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right stats grid */}
-            <div className="grid grid-cols-2 gap-4 flex-shrink-0">
+            {/* Stats — 3-col row */}
+            <div className="grid grid-cols-3 gap-3 flex-shrink-0 w-full lg:w-auto">
               {stats.map(s => (
                 <div
                   key={s.label}
@@ -133,12 +133,12 @@ export default function HomePage() {
                     backgroundColor: "rgba(255,255,255,0.1)",
                     border: "1px solid rgba(255,255,255,0.15)",
                     backdropFilter: "blur(8px)",
-                    padding: "24px 28px",
-                    minWidth: "140px",
+                    padding: "20px 16px",
+                    minWidth: "100px",
                   }}
                 >
-                  <p className="font-bold text-white" style={{ fontSize: "32px", lineHeight: 1 }}>{s.value}</p>
-                  <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "12px", marginTop: "6px", fontWeight: 500 }}>{s.label}</p>
+                  <p className="font-bold text-white" style={{ fontSize: "clamp(24px,5vw,36px)", lineHeight: 1 }}>{s.value}</p>
+                  <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "11px", marginTop: "6px", fontWeight: 500 }}>{s.label}</p>
                 </div>
               ))}
             </div>
@@ -195,7 +195,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-3">
             {categories.map(cat => (
               <Link
                 key={cat.name}
@@ -249,7 +249,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
             {featuredProducts.map(product => (
               <ProductCard key={product.id} product={product} />
             ))}
