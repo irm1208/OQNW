@@ -14,21 +14,23 @@ function parseName(name: string): { baseName: string; strength: string } {
   return { baseName: name, strength: "" };
 }
 
+const BLUE = { color: "#1B5CB5", bg: "#EEF4FF", gradient: "linear-gradient(90deg, #1240A0, #2563EB)" };
+
 const CATEGORY_COLORS: Record<string, { color: string; bg: string; gradient: string }> = {
-  "Growth Peptides":    { color: "#1B5CB5", bg: "#EEF4FF", gradient: "linear-gradient(90deg, #1B5CB5, #2563EB)" },
-  "Healing Peptides":   { color: "#DC2626", bg: "#FEF2F2", gradient: "linear-gradient(90deg, #DC2626, #F87171)" },
-  "Weight Management":  { color: "#7C3AED", bg: "#F5F3FF", gradient: "linear-gradient(90deg, #7C3AED, #A78BFA)" },
-  "Longevity Peptides": { color: "#0E7490", bg: "#ECFEFF", gradient: "linear-gradient(90deg, #0E7490, #22D3EE)" },
-  "Cellular Health":    { color: "#065F46", bg: "#ECFDF5", gradient: "linear-gradient(90deg, #065F46, #34D399)" },
-  "Nootropics":         { color: "#9333EA", bg: "#FAF5FF", gradient: "linear-gradient(90deg, #9333EA, #C084FC)" },
-  "Immune Support":     { color: "#1B5CB5", bg: "#EEF4FF", gradient: "linear-gradient(90deg, #1B5CB5, #60A5FA)" },
-  "Research Peptides":  { color: "#B45309", bg: "#FFFBEB", gradient: "linear-gradient(90deg, #B45309, #FBBF24)" },
-  "Peptide Blends":     { color: "#DC2626", bg: "#FEF2F2", gradient: "linear-gradient(90deg, #DC2626, #F97316)" },
-  "Skin & Repair":      { color: "#BE185D", bg: "#FDF2F8", gradient: "linear-gradient(90deg, #BE185D, #F472B6)" },
-  "Hormonal Peptides":  { color: "#0E7490", bg: "#ECFEFF", gradient: "linear-gradient(90deg, #0E7490, #67E8F9)" },
-  "Growth Hormone":     { color: "#065F46", bg: "#ECFDF5", gradient: "linear-gradient(90deg, #065F46, #10B981)" },
-  "Anti-Inflammatory":  { color: "#7C3AED", bg: "#F5F3FF", gradient: "linear-gradient(90deg, #7C3AED, #818CF8)" },
-  "Cognitive Peptides": { color: "#B45309", bg: "#FFFBEB", gradient: "linear-gradient(90deg, #B45309, #F59E0B)" },
+  "Growth Peptides":    BLUE,
+  "Healing Peptides":   BLUE,
+  "Weight Management":  BLUE,
+  "Longevity Peptides": BLUE,
+  "Cellular Health":    BLUE,
+  "Nootropics":         BLUE,
+  "Immune Support":     BLUE,
+  "Research Peptides":  BLUE,
+  "Peptide Blends":     BLUE,
+  "Skin & Repair":      BLUE,
+  "Hormonal Peptides":  BLUE,
+  "Growth Hormone":     BLUE,
+  "Anti-Inflammatory":  BLUE,
+  "Cognitive Peptides": BLUE,
 };
 
 interface ProductCardProps {
