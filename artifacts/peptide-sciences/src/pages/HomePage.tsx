@@ -362,7 +362,7 @@ export default function HomePage() {
       <section style={{ backgroundColor: "#F5F8FC", borderTop: "1px solid #E8EDF5", padding: "20px 0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
           <p className="text-center" style={{ fontSize: "11px", color: "#94A3B8", lineHeight: 1.6 }}>
-            <strong style={{ color: "#64748B" }}>Research Use Only.</strong> All products are intended strictly for in-vitro laboratory research. Not approved by the FDA. Not for human or animal use. Must be 21+ and a qualified researcher to purchase.
+            <strong style={{ color: "#64748B" }}>Research Use Only.</strong> All products are intended strictly for in-vitro laboratory research. Not approved by the FDA. Not for human or animal use. Must be 18+ and a qualified researcher to purchase.
           </p>
         </div>
       </section>

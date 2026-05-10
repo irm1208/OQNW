@@ -63,7 +63,7 @@ export default function Footer() {
         className="text-center py-2.5 px-4 text-xs font-semibold"
         style={{ background: "linear-gradient(90deg, #1240A0 0%, #1B5CB5 100%)", color: "#fff", letterSpacing: "0.04em" }}
       >
-        FOR IN-VITRO LABORATORY RESEARCH USE ONLY · NOT FOR HUMAN USE · 21+ TO PURCHASE
+        FOR IN-VITRO LABORATORY RESEARCH USE ONLY · NOT FOR HUMAN USE · 18+ TO PURCHASE
       </div>
 
       {/* Main footer */}
@@ -129,7 +129,7 @@ export default function Footer() {
             style={{ backgroundColor: "#1E293B", border: "1px solid #334155" }}
           >
             <p className="text-xs leading-relaxed mb-1.5" style={{ color: "#475569" }}>
-              <strong style={{ color: "#64748B" }}>IMPORTANT LEGAL NOTICE:</strong> All products sold by OmniQure are intended for in-vitro laboratory research use only. These products are not for human or veterinary use. By purchasing, you confirm you are at least 21 years of age and a qualified researcher.
+              <strong style={{ color: "#64748B" }}>IMPORTANT LEGAL NOTICE:</strong> All products sold by OmniQure are intended for in-vitro laboratory research use only. These products are not for human or veterinary use. By purchasing, you confirm you are at least 18 years of age and a qualified researcher.
             </p>
             <p className="text-xs leading-relaxed" style={{ color: "#475569" }}>
               Products have not been approved by the FDA or any other regulatory body. OmniQure is not responsible for the misuse of any of its products.

@@ -49,7 +49,7 @@ export default function ProductPage() {
         <div className="max-w-[1280px] mx-auto px-4 py-2.5 flex items-start gap-2">
           <span style={{ fontSize: "14px", flexShrink: 0, marginTop: "1px" }}>⚠️</span>
           <p className="text-xs leading-relaxed" style={{ color: "#92400E" }}>
-            <strong>Research Chemical Only:</strong> Intended strictly for in-vitro laboratory testing. Not approved by the FDA. Bodily introduction into humans or animals is strictly forbidden. Must be 21+ and a qualified researcher to purchase.
+            <strong>Research Chemical Only:</strong> Intended strictly for in-vitro laboratory testing. Not approved by the FDA. Bodily introduction into humans or animals is strictly forbidden. Must be 18+ and a qualified researcher to purchase.
           </p>
         </div>
       </div>
@@ -335,7 +335,7 @@ export default function ProductPage() {
             )}
 
             <p className="text-xs" style={{ color: "#94A3B8" }}>
-              For research purposes only. Not for human or veterinary use. Must be 21+ to purchase.
+              For research purposes only. Not for human or veterinary use. Must be 18+ to purchase.
             </p>
           </div>
         </div>
@@ -483,7 +483,7 @@ export default function ProductPage() {
             ⚠ Research Use Only Disclaimer
           </p>
           <p className="text-xs leading-relaxed" style={{ color: "#7C2D12" }}>
-            The product described on this page is intended for in-vitro laboratory research use only. It is not a drug and has not been approved by the FDA or any other regulatory body. It is not intended to diagnose, treat, cure, or prevent any disease or condition. Only qualified researchers should purchase this product. You must be at least 21 years of age to purchase.
+            The product described on this page is intended for in-vitro laboratory research use only. It is not a drug and has not been approved by the FDA or any other regulatory body. It is not intended to diagnose, treat, cure, or prevent any disease or condition. Only qualified researchers should purchase this product. You must be at least 18 years of age to purchase.
           </p>
         </div>
 

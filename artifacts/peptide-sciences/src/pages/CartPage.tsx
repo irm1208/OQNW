@@ -40,7 +40,7 @@ export default function CartPage() {
         <div className="max-w-[1280px] mx-auto px-4 py-2.5 flex items-start gap-2">
           <span style={{ fontSize: "14px", flexShrink: 0 }}>⚠️</span>
           <p className="text-xs leading-relaxed" style={{ color: "#92400E" }}>
-            <strong>Research Use Only:</strong> All products are for in-vitro laboratory research. Not for human or veterinary use. Must be 21+ to purchase.
+            <strong>Research Use Only:</strong> All products are for in-vitro laboratory research. Not for human or veterinary use. Must be 18+ to purchase.
           </p>
         </div>
       </div>
