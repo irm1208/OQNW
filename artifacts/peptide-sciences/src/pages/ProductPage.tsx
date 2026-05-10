@@ -19,7 +19,7 @@ export default function ProductPage() {
     return (
       <div className="max-w-[1280px] mx-auto px-4 py-20 text-center">
         <h1 className="text-2xl font-bold mb-4" style={{ color: "#0F172A" }}>Product Not Found</h1>
-        <Link href="/" className="hover:underline" style={{ color: "#1B5CB5" }}>
+        <Link href="/all-peptides" className="hover:underline" style={{ color: "#1B5CB5" }}>
           ← Back to All Peptides
         </Link>
       </div>
@@ -49,9 +49,9 @@ export default function ProductPage() {
         <div className="max-w-[1280px] mx-auto px-4 py-2.5 flex items-center gap-1.5 text-xs" style={{ color: "#94A3B8" }}>
           <Link href="/" className="hover:text-blue-600 transition-colors" style={{ color: "#1B5CB5", textDecoration: "none" }}>Home</Link>
           <ChevronRight size={12} />
-          <Link href="/" className="hover:text-blue-600 transition-colors" style={{ color: "#1B5CB5", textDecoration: "none" }}>All Peptides</Link>
+          <Link href="/all-peptides" className="hover:text-blue-600 transition-colors" style={{ color: "#1B5CB5", textDecoration: "none" }}>All Peptides</Link>
           <ChevronRight size={12} />
-          <Link href={`/?category=${encodeURIComponent(product.category)}`} className="hover:text-blue-600 transition-colors" style={{ color: "#1B5CB5", textDecoration: "none" }}>
+          <Link href={`/all-peptides?category=${encodeURIComponent(product.category)}`} className="hover:text-blue-600 transition-colors" style={{ color: "#1B5CB5", textDecoration: "none" }}>
             {product.category}
           </Link>
           <ChevronRight size={12} />

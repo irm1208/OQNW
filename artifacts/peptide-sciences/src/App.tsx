@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AnnouncementBar from "@/components/AnnouncementBar";
+import HomePage from "@/pages/HomePage";
 import AllPeptides from "@/pages/AllPeptides";
 import PopularPeptides from "@/pages/PopularPeptides";
 import ProductPage from "@/pages/ProductPage";
@@ -19,7 +20,7 @@ function PlaceholderPage({ title, description }: { title: string; description?: 
         {title}
       </h1>
       <p className="text-gray-500 mb-6 text-sm">{description || "This page is coming soon."}</p>
-      <a href="/" className="text-sm hover:underline" style={{ color: "#1B5CB5" }}>
+      <a href="/all-peptides" className="text-sm hover:underline" style={{ color: "#1B5CB5" }}>
         ← Back to All Peptides
       </a>
     </div>
@@ -29,7 +30,8 @@ function PlaceholderPage({ title, description }: { title: string; description?: 
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={AllPeptides} />
+      <Route path="/" component={HomePage} />
+      <Route path="/all-peptides" component={AllPeptides} />
       <Route path="/popular-peptides" component={PopularPeptides} />
       <Route path="/product/:id" component={ProductPage} />
       <Route path="/bundles">

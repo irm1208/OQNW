@@ -3,7 +3,8 @@ import { Link, useLocation } from "wouter";
 import { Search, User, ShoppingCart, Menu, X } from "lucide-react";
 
 const navItems = [
-  { label: "All Peptides", href: "/" },
+  { label: "Home", href: "/" },
+  { label: "All Peptides", href: "/all-peptides" },
   { label: "Popular Peptides", href: "/popular-peptides" },
   { label: "Bundle & Save", href: "/bundles" },
   { label: "Peptide Research", href: "/research" },
