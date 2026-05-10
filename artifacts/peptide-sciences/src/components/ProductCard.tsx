@@ -5,12 +5,7 @@ interface ProductCardProps {
   product: Product;
 }
 
-const BADGE_COLORS: Record<string, { bg: string; text: string }> = {
-  "SAVE 15%": { bg: "#006BB4", text: "#fff" },
-};
-
 export default function ProductCard({ product }: ProductCardProps) {
-  const badgeColor = product.badge ? BADGE_COLORS[product.badge] : null;
   const productUrl = `/product/${product.id}`;
 
   return (
@@ -20,34 +15,13 @@ export default function ProductCard({ product }: ProductCardProps) {
     >
       {/* Product image area */}
       <div className="relative bg-white" style={{ padding: "8px 8px 0" }}>
-        {/* Badge */}
-        {product.badge && (
-          <div
-            className="absolute top-2 right-2 z-10 px-2 py-0.5 text-xs font-semibold rounded-sm uppercase"
-            style={{
-              backgroundColor: badgeColor?.bg,
-              color: badgeColor?.text,
-              fontSize: "10px",
-            }}
-          >
-            {product.badge}
-          </div>
-        )}
-
         {/* Header card strip */}
         <div
-          className="flex items-center justify-between px-2 py-1 mb-1 rounded-t-sm"
+          className="flex items-center px-2 py-1 mb-1 rounded-t-sm"
           style={{ backgroundColor: "#f5f5f5", border: "1px solid #e0e0e0" }}
         >
           <div style={{ fontSize: "8px", color: "#888", fontFamily: "Arimo, Arial" }}>
             OMNIQURE
-          </div>
-          <div style={{ fontSize: "7px" }}>
-            {product.badge === "TOPICAL" && (
-              <span style={{ color: "#E7461E", fontWeight: 700, textTransform: "uppercase" }}>
-                TOPICAL
-              </span>
-            )}
           </div>
         </div>
 

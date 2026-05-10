@@ -177,17 +177,6 @@ export default function ProductPage() {
                 className="relative flex items-center justify-center bg-white"
                 style={{ minHeight: "260px", padding: "20px" }}
               >
-                {product.badge && (
-                  <div
-                    className="absolute top-3 right-3 px-3 py-1 text-xs font-bold uppercase rounded-sm z-10"
-                    style={{
-                      backgroundColor: product.badge === "SAVE 15%" ? "#006BB4" : "#E7461E",
-                      color: "#fff",
-                    }}
-                  >
-                    {product.badge}
-                  </div>
-                )}
                 <img
                   src={product.image}
                   alt={product.name}

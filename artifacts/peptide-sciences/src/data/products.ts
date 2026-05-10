@@ -4,7 +4,6 @@ export type Product = {
   slug: string;
   price: number | null;
   image: string;
-  badge?: 'SAVE 15%';
   category: string;
 };
 
@@ -48,19 +47,19 @@ export const products: Product[] = [
   { id: "49", name: "GHRH 5mg", slug: "/ghrh-5mg", price: 95.00, image: `${BASE_IMG}/g/h/ghrh_peptide.png`, category: "Purchase Peptides" },
   { id: "50", name: "GHRP-2 (5mg x 5) and CJC-1295 no DAC (5mg x 5)", slug: "/ghrp-2-5mg-x-5-and-cjc-1295-5mg-x-5", price: 345.00, image: `${BASE_IMG}/g/h/ghrp-2-5mg_cjc-1295-no-dac_peptide_combination.png`, category: "Purchase Peptides" },
   { id: "51", name: "GHRP-2 (5mg x 5) and Ipamorelin (5mg x 5)", slug: "/ghrp-2-5mg-x-5-and-ipamorelin-5mg-x-5", price: 310.00, image: `${BASE_IMG}/g/2/g25x5ipa5x5.png`, category: "Purchase Peptides" },
-  { id: "52", name: "GHRP-2 (5mg x 10), CJC-1295 no DAC (5mg x 10)", slug: "/ghrp-2-5mg-x-10-modgrf-1-29-5mg-x-10", price: 726.75, image: `${BASE_IMG}/g/h/ghrp-2_cjc-1295-no-dac_peptide_combination_1.png`, badge: "SAVE 15%", category: "Purchase Peptides" },
-  { id: "53", name: "GHRP-2 (5mg x 10) Ipamorelin (5mg x 10)", slug: "/ghrp-2-5mg-x-10-ipamorelin-5mg-x-10", price: 697.00, image: `${BASE_IMG}/g/2/g25x10ipa5x10.png`, badge: "SAVE 15%", category: "Purchase Peptides" },
+  { id: "52", name: "GHRP-2 (5mg x 10), CJC-1295 no DAC (5mg x 10)", slug: "/ghrp-2-5mg-x-10-modgrf-1-29-5mg-x-10", price: 726.75, image: `${BASE_IMG}/g/h/ghrp-2_cjc-1295-no-dac_peptide_combination_1.png`, category: "Purchase Peptides" },
+  { id: "53", name: "GHRP-2 (5mg x 10) Ipamorelin (5mg x 10)", slug: "/ghrp-2-5mg-x-10-ipamorelin-5mg-x-10", price: 697.00, image: `${BASE_IMG}/g/2/g25x10ipa5x10.png`, category: "Purchase Peptides" },
   { id: "54", name: "GHRP-2 5mg", slug: "/ghrp-2?size=5mg", price: 36.00, image: `${BASE_IMG}/g/h/ghrp-2_5mg_peptide.png`, category: "Purchase Peptides" },
   { id: "55", name: "GHRP-2 10mg", slug: "/ghrp-2?size=10mg", price: 50.00, image: `${BASE_IMG}/g/h/ghrp-2_10mg_peptide.png`, category: "Purchase Peptides" },
   { id: "56", name: "GHRP-6 (5mg x 5) and CJC-1295 no DAC (5mg x 5)", slug: "/ghrp-6-5mg-x-5-and-cjc-1295-5mg-x-5", price: 345.00, image: `${BASE_IMG}/g/h/ghrp-6-5mg_cjc-1295-no-dac_peptide_combination.png`, category: "Purchase Peptides" },
   { id: "57", name: "GHRP-6 (5mg x 5) and Ipamorelin (5mg x 5)", slug: "/ghrp-6-5mg-x-5-and-ipamorelin-5mg-x-5", price: 310.00, image: `${BASE_IMG}/g/h/ghrp-6_ipamorelin_peptide_combination.png`, category: "Purchase Peptides" },
-  { id: "58", name: "GHRP-6 (5mg x 10), CJC-1295 no DAC (5mg x 10)", slug: "/ghrp-6-5mg-x-10-modgrf-1-29-5mg-x-10", price: 726.75, image: `${BASE_IMG}/g/h/ghrp-6_cjc-1295-no-dac_peptide_combination.png`, badge: "SAVE 15%", category: "Purchase Peptides" },
-  { id: "59", name: "GHRP-6 (5mg x 10) Ipamorelin (5mg x 10)", slug: "/ghrp-6-5mg-x-10-ipamorelin-5mg-x-10", price: 697.00, image: `${BASE_IMG}/g/h/ghrp-6_ipamorelin_peptide_combination_2.png`, badge: "SAVE 15%", category: "Purchase Peptides" },
+  { id: "58", name: "GHRP-6 (5mg x 10), CJC-1295 no DAC (5mg x 10)", slug: "/ghrp-6-5mg-x-10-modgrf-1-29-5mg-x-10", price: 726.75, image: `${BASE_IMG}/g/h/ghrp-6_cjc-1295-no-dac_peptide_combination.png`, category: "Purchase Peptides" },
+  { id: "59", name: "GHRP-6 (5mg x 10) Ipamorelin (5mg x 10)", slug: "/ghrp-6-5mg-x-10-ipamorelin-5mg-x-10", price: 697.00, image: `${BASE_IMG}/g/h/ghrp-6_ipamorelin_peptide_combination_2.png`, category: "Purchase Peptides" },
   { id: "60", name: "GHRP-6 5mg", slug: "/ghrp-6?size=5mg", price: 36.00, image: `${BASE_IMG}/g/h/ghrp-6_5mg_peptide.png`, category: "Purchase Peptides" },
   { id: "61", name: "GHRP-6 10mg", slug: "/ghrp-6?size=10mg", price: 50.00, image: `${BASE_IMG}/g/h/ghrp-6_10mg_peptide.png`, category: "Purchase Peptides" },
   { id: "62", name: "Gonadorelin 10mg", slug: "/gonadorelin-10mg", price: 85.00, image: `${BASE_IMG}/g/o/gonadorelin_peptide.png`, category: "Purchase Peptides" },
-  { id: "64", name: "Hexarelin (2mg x 10), CJC-1295 no DAC (2mg x 10)", slug: "/hexarelin-2mg-x-10-modgrf-1-29-2mg-x-10", price: 552.50, image: `${BASE_IMG}/h/e/hexarelin_cjc-1295-no-dac_peptide_combination.png`, badge: "SAVE 15%", category: "Purchase Peptides" },
-  { id: "65", name: "Hexarelin (5mg x 10), CJC-1295 no DAC (5mg x 10)", slug: "/hexarelin-5mg-x-10-modgrf-1-29-5mg-x-10", price: 803.25, image: `${BASE_IMG}/h/e/hexarelin5mg_cjc-1295-no-dac_peptide_combination.png`, badge: "SAVE 15%", category: "Purchase Peptides" },
+  { id: "64", name: "Hexarelin (2mg x 10), CJC-1295 no DAC (2mg x 10)", slug: "/hexarelin-2mg-x-10-modgrf-1-29-2mg-x-10", price: 552.50, image: `${BASE_IMG}/h/e/hexarelin_cjc-1295-no-dac_peptide_combination.png`, category: "Purchase Peptides" },
+  { id: "65", name: "Hexarelin (5mg x 10), CJC-1295 no DAC (5mg x 10)", slug: "/hexarelin-5mg-x-10-modgrf-1-29-5mg-x-10", price: 803.25, image: `${BASE_IMG}/h/e/hexarelin5mg_cjc-1295-no-dac_peptide_combination.png`, category: "Purchase Peptides" },
   { id: "66", name: "Hexarelin 2mg", slug: "/hexarelin?size=2mg", price: 30.00, image: `${BASE_IMG}/h/e/hexarelin_2mg_peptide.png`, category: "Purchase Peptides" },
   { id: "67", name: "Hexarelin 5mg", slug: "/hexarelin?size=5mg", price: 45.00, image: `${BASE_IMG}/h/e/hexarelin_5mg_peptide.png`, category: "Purchase Peptides" },
   { id: "68", name: "hGH Fragment 176-191 6mg", slug: "/hgh-fragment-176-191-6mg", price: 65.00, image: `${BASE_IMG}/h/g/hgh_fragment_176-191_peptide.png`, category: "Purchase Peptides" },
@@ -68,8 +67,8 @@ export const products: Product[] = [
   { id: "70", name: "IGF-1 DES 1mg", slug: "/igf1-des-1mg", price: 110.00, image: `${BASE_IMG}/i/g/igf-1_des_peptide.png`, category: "IGF-1 Proteins" },
   { id: "71", name: "IGF-1 LR3 (Receptor Grade) 1mg", slug: "/igf-1-lr3-receptor-grade-1mg", price: 250.00, image: `${BASE_IMG}/i/g/igf-1_lr3_peptide.png`, category: "IGF-1 Proteins" },
   { id: "72", name: "IGF-1 LR3 1mg", slug: "/igf-1-lr3-1mg", price: 110.00, image: `${BASE_IMG}/i/g/igf-1_lr3_peptide_2.png`, category: "IGF-1 Proteins" },
-  { id: "73", name: "Ipamorelin (2mg x 10), CJC-1295 no DAC (2mg x 10)", slug: "/ipamorelin-2mg-x-10-modgrf-1-29-2mg-x-10", price: 552.50, image: `${BASE_IMG}/i/p/ipamorelin_cjc-1295-no-dac_peptide_combination.png`, badge: "SAVE 15%", category: "Purchase Peptides" },
-  { id: "74", name: "Ipamorelin (5mg x 10), CJC-1295 no DAC (5mg x 10)", slug: "/ipamorelin-5mg-x-10-mod-grf-1-29-5mg-x-10", price: 811.75, image: `${BASE_IMG}/i/p/ipamorelin5mg_cjc-1295-no-dac_peptide_combination.png`, badge: "SAVE 15%", category: "Purchase Peptides" },
+  { id: "73", name: "Ipamorelin (2mg x 10), CJC-1295 no DAC (2mg x 10)", slug: "/ipamorelin-2mg-x-10-modgrf-1-29-2mg-x-10", price: 552.50, image: `${BASE_IMG}/i/p/ipamorelin_cjc-1295-no-dac_peptide_combination.png`, category: "Purchase Peptides" },
+  { id: "74", name: "Ipamorelin (5mg x 10), CJC-1295 no DAC (5mg x 10)", slug: "/ipamorelin-5mg-x-10-mod-grf-1-29-5mg-x-10", price: 811.75, image: `${BASE_IMG}/i/p/ipamorelin5mg_cjc-1295-no-dac_peptide_combination.png`, category: "Purchase Peptides" },
   { id: "75", name: "Ipamorelin 2mg", slug: "/ipamorelin?size=2mg", price: 30.00, image: `${BASE_IMG}/i/p/ipamorelin_2mg_peptide.png`, category: "Purchase Peptides" },
   { id: "76", name: "Ipamorelin 5mg", slug: "/ipamorelin?size=5mg", price: 45.00, image: `${BASE_IMG}/i/p/ipamorelin_5mg_peptide.png`, category: "Purchase Peptides" },
   { id: "77", name: "Ipamorelin 10mg", slug: "/ipamorelin?size=10mg", price: 85.00, image: `${BASE_IMG}/i/p/ipamorelin_10mg_peptide.png`, category: "Purchase Peptides" },
