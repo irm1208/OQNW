@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Search, User, ShoppingCart, Menu, X } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { products } from "@/data/products";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -20,8 +21,72 @@ const rightNavItems = [
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [location] = useLocation();
+  const [open, setOpen] = useState(false);
+  const [highlighted, setHighlighted] = useState(-1);
+  const [location, navigate] = useLocation();
   const { totalItems } = useCart();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const q = searchQuery.trim().toLowerCase();
+  const results = q.length >= 1
+    ? products.filter(p =>
+        p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)
+      ).slice(0, 7)
+    : [];
+
+  useEffect(() => {
+    setHighlighted(-1);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (!open || results.length === 0) {
+      if (e.key === "Enter" && q) {
+        navigate(`/all-peptides?search=${encodeURIComponent(searchQuery.trim())}`);
+        setOpen(false);
+        inputRef.current?.blur();
+      }
+      return;
+    }
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setHighlighted(h => Math.min(h + 1, results.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setHighlighted(h => Math.max(h - 1, -1));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (highlighted >= 0 && results[highlighted]) {
+        navigate(`/product/${results[highlighted].id}`);
+        setSearchQuery("");
+        setOpen(false);
+        inputRef.current?.blur();
+      } else if (q) {
+        navigate(`/all-peptides?search=${encodeURIComponent(searchQuery.trim())}`);
+        setOpen(false);
+        inputRef.current?.blur();
+      }
+    } else if (e.key === "Escape") {
+      setOpen(false);
+      inputRef.current?.blur();
+    }
+  }
+
+  function handleSelectResult(id: string) {
+    navigate(`/product/${id}`);
+    setSearchQuery("");
+    setOpen(false);
+  }
 
   return (
     <header style={{ fontFamily: "'Arimo', Arial, sans-serif" }} className="sticky top-0 z-50">
@@ -38,36 +103,149 @@ export default function Header() {
           </Link>
 
           {/* Search */}
-          <div className="flex-1 max-w-[520px]">
+          <div className="flex-1 max-w-[520px]" ref={containerRef} style={{ position: "relative" }}>
             <div className="relative flex items-center">
               <input
+                ref={inputRef}
                 type="search"
                 placeholder="Search peptides, categories..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-10 pl-4 pr-11 text-sm outline-none transition-all"
-                style={{
-                  backgroundColor: "#F1F5F9",
-                  color: "#0F172A",
-                  border: "1.5px solid #F1F5F9",
-                  borderRadius: "10px",
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setOpen(true);
                 }}
                 onFocus={(e) => {
                   e.currentTarget.style.borderColor = "#1B5CB5";
                   e.currentTarget.style.backgroundColor = "#fff";
+                  if (searchQuery.trim().length >= 1) setOpen(true);
                 }}
                 onBlur={(e) => {
                   e.currentTarget.style.borderColor = "#F1F5F9";
                   e.currentTarget.style.backgroundColor = "#F1F5F9";
                 }}
+                onKeyDown={handleKeyDown}
+                className="w-full h-10 pl-4 pr-11 text-sm outline-none transition-all"
+                style={{
+                  backgroundColor: "#F1F5F9",
+                  color: "#0F172A",
+                  border: "1.5px solid #F1F5F9",
+                  borderRadius: open && results.length > 0 ? "10px 10px 0 0" : "10px",
+                }}
+                autoComplete="off"
               />
               <button
                 className="absolute right-0 h-10 w-11 flex items-center justify-center"
                 style={{ color: "#94A3B8" }}
+                onClick={() => {
+                  if (q) {
+                    navigate(`/all-peptides?search=${encodeURIComponent(searchQuery.trim())}`);
+                    setOpen(false);
+                    inputRef.current?.blur();
+                  }
+                }}
               >
                 <Search size={16} />
               </button>
             </div>
+
+            {/* Dropdown */}
+            {open && results.length > 0 && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  left: 0,
+                  right: 0,
+                  backgroundColor: "#fff",
+                  border: "1.5px solid #1B5CB5",
+                  borderTop: "none",
+                  borderRadius: "0 0 12px 12px",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                  zIndex: 200,
+                  overflow: "hidden",
+                }}
+              >
+                {results.map((p, i) => (
+                  <button
+                    key={p.id}
+                    onMouseDown={() => handleSelectResult(p.id)}
+                    onMouseEnter={() => setHighlighted(i)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                      width: "100%",
+                      padding: "9px 14px",
+                      textAlign: "left",
+                      border: "none",
+                      cursor: "pointer",
+                      backgroundColor: i === highlighted ? "#F0F5FF" : "#fff",
+                      borderBottom: i < results.length - 1 ? "1px solid #F1F5F9" : "none",
+                      transition: "background-color 0.1s",
+                    }}
+                  >
+                    <img
+                      src={p.image}
+                      alt={p.name}
+                      style={{ width: "36px", height: "36px", objectFit: "cover", borderRadius: "6px", flexShrink: 0 }}
+                    />
+                    <div style={{ minWidth: 0 }}>
+                      <p style={{ fontSize: "13px", fontWeight: 600, color: "#0F172A", margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        {p.name}
+                      </p>
+                      <p style={{ fontSize: "11px", color: "#64748B", margin: 0 }}>{p.category}</p>
+                    </div>
+                  </button>
+                ))}
+                {results.length === 7 && (
+                  <button
+                    onMouseDown={() => {
+                      navigate(`/all-peptides?search=${encodeURIComponent(searchQuery.trim())}`);
+                      setOpen(false);
+                    }}
+                    style={{
+                      display: "block",
+                      width: "100%",
+                      padding: "9px 14px",
+                      textAlign: "center",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      color: "#1B5CB5",
+                      backgroundColor: "#F8FAFF",
+                      border: "none",
+                      borderTop: "1px solid #E8EDF5",
+                      cursor: "pointer",
+                    }}
+                  >
+                    View all results for "{searchQuery.trim()}" →
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* No results */}
+            {open && q.length >= 1 && results.length === 0 && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  left: 0,
+                  right: 0,
+                  backgroundColor: "#fff",
+                  border: "1.5px solid #1B5CB5",
+                  borderTop: "none",
+                  borderRadius: "0 0 12px 12px",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                  zIndex: 200,
+                  padding: "14px",
+                  textAlign: "center",
+                  fontSize: "13px",
+                  color: "#64748B",
+                }}
+              >
+                No peptides found for "{searchQuery.trim()}"
+              </div>
+            )}
           </div>
 
           {/* Right actions */}
