@@ -80,44 +80,6 @@ export default function AllPeptides() {
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
-      {/* Category strip */}
-      <div className="bg-white" style={{ borderBottom: "1px solid #E8EDF5" }}>
-        <div className="max-w-[1280px] mx-auto px-4 py-3 md:py-4">
-          <h2 className="font-bold mb-2 md:mb-3" style={{ fontSize: "13px", color: "#94A3B8", letterSpacing: "0.07em", textTransform: "uppercase" }}>
-            Shop by Category
-          </h2>
-          <div className="flex flex-wrap gap-1.5 md:gap-2">
-            {categoryTabs.map((tab) => {
-              const active = selectedCategory === tab.key;
-              return (
-                <button
-                  key={tab.key}
-                  onClick={() => handleCategoryChange(tab.key)}
-                  className="px-3 py-1 md:px-3.5 md:py-1.5 font-medium transition-all rounded-full"
-                  style={{
-                    backgroundColor: active ? "#1B5CB5" : "#F1F5F9",
-                    color: active ? "#fff" : "#475569",
-                    border: "1px solid " + (active ? "#1B5CB5" : "#E2E8F0"),
-                    fontSize: "12px",
-                  }}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
-            {selectedCategory !== "All Peptides" && (
-              <button
-                onClick={() => handleCategoryChange("All Peptides")}
-                className="px-3 py-1 transition-colors rounded-full"
-                style={{ color: "#94A3B8", fontSize: "12px", border: "1px solid #E2E8F0", backgroundColor: "#fff" }}
-              >
-                ✕ Clear
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-
       {/* Main content */}
       <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-4 md:py-6">
         <div className="flex gap-6">
