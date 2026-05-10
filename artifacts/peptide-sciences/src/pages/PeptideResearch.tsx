@@ -2,6 +2,41 @@ import { useState, useMemo } from "react";
 import { Link } from "wouter";
 import { ChevronRight, ChevronDown, ChevronUp, FlaskConical } from "lucide-react";
 import { protocols, CATEGORY_ORDER, type ProtocolCategory, type ProtocolEntry, type ResearchLevel } from "@/data/protocols";
+import { products } from "@/data/products";
+
+// Manual overrides for names that won't match automatically
+const ABBR_TO_PRODUCT_ID: Record<string, string> = {
+  "GLOW":    "22",  // GLOW BLEND 70mg
+  "KLOW":    "35",  // KLOW BLEND 80mg
+  "WOLV":    "7",   // BPC-157 + TB-500 Blend 10mg
+  "HGH":     "26",  // Somatropin HGH 10 IU
+  "CJC-I":   "11",  // CJC-1295 No DAC 5mg (closest)
+  "NASAM":   "48",  // N-Acetyl Semax Amidate 10mg
+  "OXT":     "50",  // Oxytocin 5mg
+  "KISS":    "33",  // Kisspeptin-10 5mg
+  "MT1":     "39",  // Melanotan 1 10mg
+  "MT2":     "40",  // Melanotan 2 10mg
+  "Tα1":     "75",  // Thymosin Alpha-1 10mg
+  "SEL":     "62",  // Selank 10mg
+  "SMX":     "64",  // Semax 10mg
+  "TES":     "74",  // Tesamorelin + Ipamorelin Blend 8mg
+  "PEGMGF":  "54",  // PEG MGF 2mg
+  "PE22":    "53",  // PE-22-28 10mg
+};
+
+// Strip trailing strength token from product name to get base name
+function productBaseName(name: string): string {
+  return name.replace(/\s+\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g)(?:\s*\(.*?\))?$/i, "").trim();
+}
+
+function findProductId(entry: ProtocolEntry): string | null {
+  if (ABBR_TO_PRODUCT_ID[entry.abbr]) return ABBR_TO_PRODUCT_ID[entry.abbr];
+  const protocolName = entry.name.toLowerCase();
+  const match = products.find((p) =>
+    productBaseName(p.name).toLowerCase() === protocolName
+  );
+  return match?.id ?? null;
+}
 
 const TABS: ("All" | ProtocolCategory)[] = ["All", ...CATEGORY_ORDER];
 
@@ -44,6 +79,8 @@ function ProtocolCard({ entry }: { entry: ProtocolEntry }) {
   const [open, setOpen] = useState(false);
   const levelStyle = LEVEL_STYLE[entry.level];
   const abbrStyle = ABBR_COLORS[entry.category];
+  const productId = findProductId(entry);
+  const shopHref = productId ? `/product/${productId}` : `/all-peptides`;
 
   return (
     <div
@@ -243,7 +280,7 @@ function ProtocolCard({ entry }: { entry: ProtocolEntry }) {
             </span>
 
             <Link
-              href="/all-peptides"
+              href={shopHref}
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -257,7 +294,7 @@ function ProtocolCard({ entry }: { entry: ProtocolEntry }) {
               onMouseOver={(e) => ((e.currentTarget as HTMLElement).style.opacity = "1")}
               onMouseOut={(e) => ((e.currentTarget as HTMLElement).style.opacity = "0.85")}
             >
-              Shop <ChevronRight size={13} />
+              {productId ? "View Details" : "Shop"} <ChevronRight size={13} />
             </Link>
           </div>
         </div>
