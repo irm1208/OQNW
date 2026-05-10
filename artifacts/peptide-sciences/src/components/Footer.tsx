@@ -46,7 +46,6 @@ const footerCategories = [
     links: [
       { label: "IGF-1 Proteins", href: "/?category=IGF-1+Proteins" },
       { label: "Melanotan Peptides", href: "/?category=Melanotan+Peptides" },
-      { label: "Cosmetic Peptides", href: "/?category=Cosmetic+Peptides" },
       { label: "Popular Peptides", href: "/popular-peptides" },
       { label: "All Peptides", href: "/" },
     ],

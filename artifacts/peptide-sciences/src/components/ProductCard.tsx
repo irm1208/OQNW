@@ -6,9 +6,7 @@ interface ProductCardProps {
 }
 
 const BADGE_COLORS: Record<string, { bg: string; text: string }> = {
-  NEW: { bg: "#E7461E", text: "#fff" },
   "SAVE 15%": { bg: "#006BB4", text: "#fff" },
-  TOPICAL: { bg: "#E7461E", text: "#fff" },
 };
 
 export default function ProductCard({ product }: ProductCardProps) {

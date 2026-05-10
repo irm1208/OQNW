@@ -11,7 +11,6 @@ const categoryTabs = [
   { label: "IGF-1 Proteins", key: "IGF-1 Proteins" },
   { label: "Melanotan Peptides", key: "Melanotan Peptides" },
   { label: "Bioregulators", key: "Bioregulators" },
-  { label: "Cosmetic Peptides", key: "Cosmetic Peptides" },
 ];
 
 type SortOption = "position" | "name" | "price-low" | "price-high";
