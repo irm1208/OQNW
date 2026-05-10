@@ -10,6 +10,111 @@ const WATER_PRESETS = [1, 2, 3, 5];
 const DOSE_PRESETS_MCG = [100, 250, 500, 1000];
 const DOSE_PRESETS_MG = [0.1, 0.25, 0.5, 1, 2];
 
+function SyringeSVG({ iuValue }: { iuValue: number }) {
+  const MAX = 100;
+  const clamped = Math.min(Math.max(iuValue, 0), MAX);
+  const pct = clamped / MAX;
+
+  // layout
+  const W = 460;
+  const H = 88;
+  const bx = 52;   // barrel start x
+  const bw = 340;  // barrel width (0→100 IU span)
+  const by = 28;   // barrel top y
+  const bh = 26;   // barrel height
+  const midY = by + bh / 2;
+
+  const fillW = pct * bw;
+  const indicatorX = bx + fillW;
+
+  const ticks: { x: number; label: string | null }[] = [];
+  for (let i = 0; i <= MAX; i += 2) {
+    ticks.push({
+      x: bx + (i / MAX) * bw,
+      label: i % 20 === 0 ? String(i) : null,
+    });
+  }
+
+  const overflowing = iuValue > MAX;
+
+  return (
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      width="100%"
+      style={{ display: "block", maxWidth: "460px", margin: "0 auto" }}
+    >
+      {/* Plunger handle */}
+      <rect x={0} y={by - 8} width={6} height={bh + 16} rx={2} fill="#90A4C8" />
+      <rect x={0} y={by - 14} width={28} height={7} rx={3} fill="#7090B8" />
+      <rect x={0} y={by + bh + 7} width={28} height={7} rx={3} fill="#7090B8" />
+      {/* Plunger rod */}
+      <rect x={6} y={midY - 4} width={bx - 6} height={8} rx={2} fill="#B8C8E0" />
+
+      {/* Barrel background */}
+      <rect x={bx} y={by} width={bw} height={bh} rx={4} fill="#EEF4FF" stroke="#BFDBFE" strokeWidth={1.5} />
+
+      {/* Fill */}
+      {fillW > 0 && (
+        <rect x={bx} y={by} width={fillW} height={bh} rx={4} fill="rgba(27,92,181,0.22)" />
+      )}
+
+      {/* Ticks */}
+      {ticks.map(({ x, label }) => (
+        <g key={x}>
+          <line
+            x1={x} y1={label ? by : by + bh * 0.5}
+            x2={x} y2={by + bh}
+            stroke={label ? "#64748B" : "#CBD5E1"}
+            strokeWidth={label ? 1.5 : 1}
+          />
+          {label && (
+            <text x={x} y={by - 5} textAnchor="middle" fontSize="8.5" fill="#64748B" fontWeight="600" fontFamily="Arimo, Arial, sans-serif">
+              {label}
+            </text>
+          )}
+        </g>
+      ))}
+
+      {/* Needle hub (tapered) */}
+      <polygon
+        points={`${bx + bw},${by} ${bx + bw + 22},${midY - 5} ${bx + bw + 22},${midY + 5} ${bx + bw},${by + bh}`}
+        fill="#B8C8E0"
+      />
+      {/* Needle shaft */}
+      <line x1={bx + bw + 22} y1={midY - 3} x2={bx + bw + 22} y2={midY + 3} stroke="#B8C8E0" strokeWidth={1} />
+      <polygon
+        points={`${bx + bw + 22},${midY - 2.5} ${W - 4},${midY} ${bx + bw + 22},${midY + 2.5}`}
+        fill="#94A3B8"
+      />
+
+      {/* Indicator line at current IU */}
+      {clamped > 0 && !overflowing && (
+        <>
+          <line
+            x1={indicatorX} y1={by + bh}
+            x2={indicatorX} y2={H - 10}
+            stroke="#1B5CB5" strokeWidth={2} strokeDasharray="3,2"
+          />
+          <circle cx={indicatorX} cy={by + bh} r={3} fill="#1B5CB5" />
+          <text
+            x={indicatorX} y={H - 1}
+            textAnchor={pct > 0.85 ? "end" : pct < 0.15 ? "start" : "middle"}
+            fontSize="9.5" fill="#1B5CB5" fontWeight="700" fontFamily="Arimo, Arial, sans-serif"
+          >
+            {round(iuValue, 1)} IU
+          </text>
+        </>
+      )}
+
+      {overflowing && (
+        <text x={bx + bw / 2} y={H - 1} textAnchor="middle" fontSize="9" fill="#DC2626" fontWeight="700" fontFamily="Arimo, Arial, sans-serif">
+          &gt;100 IU — split across multiple injections
+        </text>
+      )}
+    </svg>
+  );
+}
+
 function Chip({
   label,
   active,
@@ -390,6 +495,34 @@ export default function ReconstitutionCalculator() {
             )}
           </div>
         </div>
+
+        {/* Syringe visual */}
+        {ready && (
+          <div
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: "16px",
+              border: "1px solid #E8EDF5",
+              boxShadow: "0 2px 12px rgba(15,23,42,0.05)",
+              padding: "20px 20px 14px",
+              marginTop: "12px",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "10px",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+                color: "#94A3B8",
+                margin: "0 0 14px",
+              }}
+            >
+              Insulin syringe — draw to this line
+            </p>
+            <SyringeSVG iuValue={insulinIU} />
+          </div>
+        )}
 
         {/* Quick reference table */}
         {concentrationMcgMl > 0 && (
