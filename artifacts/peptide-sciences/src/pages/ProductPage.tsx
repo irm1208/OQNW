@@ -380,9 +380,16 @@ export default function ProductPage() {
 
                 {detail.longDescription && (
                   <div className="mb-5 leading-relaxed" style={{ fontSize: "14px", color: "#374151", lineHeight: "1.8" }}>
-                    {detail.longDescription.split("\n\n").map((para, i) => (
-                      <p key={i} className="mb-4">{para}</p>
-                    ))}
+                    {detail.longDescription.split("\n\n").map((para, i) => {
+                      const isHeader = para.length < 100 && !para.endsWith(".");
+                      return isHeader ? (
+                        <p key={i} className="mb-2 mt-5 first:mt-0" style={{ fontWeight: 700, color: "#0F172A", fontSize: "15px" }}>
+                          {para}
+                        </p>
+                      ) : (
+                        <p key={i} className="mb-4">{para}</p>
+                      );
+                    })}
                   </div>
                 )}
 
