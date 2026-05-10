@@ -30,7 +30,7 @@ const featuredProducts = featuredIds
 const stats = [
   { value: "81+", label: "Research Peptides" },
   { value: "99%+", label: "HPLC Purity" },
-  { value: "COA", label: "Every Batch Tested" },
+  { value: "COA", label: "Tested" },
 ];
 
 const pillars = [
@@ -41,7 +41,7 @@ const pillars = [
   },
   {
     icon: <Award size={28} />,
-    title: "COA on Every Batch",
+    title: "COA Tested",
     body: "Certificates of Analysis, HPLC chromatograms, and ESI-TOF mass spectra are available for every product.",
   },
   {
