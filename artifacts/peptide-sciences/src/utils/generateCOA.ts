@@ -1,37 +1,12 @@
 import { jsPDF } from "jspdf";
 import type { Product } from "@/data/products";
 import type { ProductDetail } from "@/data/productDetails";
-import { getPurityStr } from "@/utils/productPurity";
+import { getPurityStr, getLotDates } from "@/utils/productPurity";
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
-function pad(n: number) { return n.toString().padStart(2, "0"); }
-
-function fmtDate(d: Date) {
-  return `${pad(d.getDate())} ${d.toLocaleString("en-GB",{month:"short"})} ${d.getFullYear()}`;
-}
-
-function lotNo(id: string) {
-  const n = parseInt(id, 10);
-  const yr = new Date().getFullYear();
-  const seq = ((n * 1234567 + 998877) % 90000) + 10000;
-  return `OQ${yr}${pad(n)}${seq}`;
-}
-
 function docNo(id: string, refNumber?: string) {
   return refNumber ? `COA-${refNumber}` : `COA-OQ-${id.padStart(3,"0")}`;
-}
-
-function mfgDate(id: string): Date {
-  const d = new Date();
-  d.setDate(d.getDate() - ((parseInt(id,10) * 17) % 200));
-  return d;
-}
-
-function expDate(id: string): Date {
-  const d = mfgDate(id);
-  d.setFullYear(d.getFullYear() + 2);
-  return d;
 }
 
 function fill(doc: jsPDF, x: number, y: number, w: number, h: number, r: number, g: number, b: number) {
@@ -69,11 +44,8 @@ export function generateCOA(product: Product, detail: ProductDetail) {
   const CW = W - M * 2;  // content width
   const FOOTER_Y = 274;  // everything must end before this
 
-  const lot      = lotNo(product.id);
-  const docRef   = docNo(product.id, detail.refNumber);
-  const issued   = fmtDate(mfgDate(product.id));
-  const expires  = fmtDate(expDate(product.id));
-  const analysis = fmtDate(mfgDate(product.id));
+  const { lot, analysis, issued, expires } = getLotDates(product.id);
+  const docRef = docNo(product.id, detail.refNumber);
 
   // ── 1. HEADER BANNER (0 → 32) ──────────────────────────────────────────────
   // Deep navy background

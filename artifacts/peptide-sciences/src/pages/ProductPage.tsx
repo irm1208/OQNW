@@ -8,7 +8,7 @@ import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
-import { getPurity, getPurityStr } from "@/utils/productPurity";
+import { getPurity, getPurityStr, getLotNumber } from "@/utils/productPurity";
 
 function parseBaseName(name: string): { base: string; strength: string } {
   const match = name.match(/^(.*?)\s+(\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g)(?:\s+\(.*?\))?)$/i);
@@ -370,7 +370,7 @@ export default function ProductPage() {
                 </div>
                 <div>
                   <p className="font-bold text-sm" style={{ color: "#1240A0" }}>Certificate of Analysis</p>
-                  <p className="text-xs" style={{ color: "#3B82F6" }}>Full HPLC · ESI-MS · QC report — Lot {`OQ-${new Date().getFullYear()}-${product.id.padStart(2,"0")}`}</p>
+                  <p className="text-xs" style={{ color: "#3B82F6" }}>Full HPLC · ESI-MS · QC report — Lot {getLotNumber(product.id)}</p>
                 </div>
               </div>
               <button
