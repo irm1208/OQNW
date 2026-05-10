@@ -156,20 +156,19 @@ export default function HomePage() {
 
             {/* Left — copy */}
             <div className="flex-1 text-white" style={{ zIndex: 1 }}>
-              {/* Pill badge */}
-              <div
-                className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full"
-                style={{
-                  background: "rgba(255,255,255,0.08)",
-                  border: "1px solid rgba(255,255,255,0.18)",
-                  fontSize: "11.5px",
-                  fontWeight: 700,
-                  letterSpacing: "0.08em",
-                  color: "#93C5FD",
-                }}
-              >
-                <span style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#34D399", display: "inline-block", boxShadow: "0 0 6px #34D399" }} />
-                OMNIQURE PEPTIDE RESEARCH INSTITUTE
+              {/* Brand logo badge */}
+              <div className="mb-6">
+                <img
+                  src="/omniqure-logo.jpeg"
+                  alt="OmniQure Peptide Research Institute"
+                  style={{
+                    height: "56px",
+                    width: "auto",
+                    display: "block",
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+                  }}
+                />
               </div>
 
               <h1
