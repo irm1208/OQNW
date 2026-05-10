@@ -14,7 +14,6 @@ const navItems = [
 ];
 
 const rightNavItems = [
-  { label: "Our Company", href: "/company" },
   { label: "Contact Us", href: "/contact" },
 ];
 
