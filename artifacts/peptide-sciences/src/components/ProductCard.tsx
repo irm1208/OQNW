@@ -1,12 +1,22 @@
 import { Link } from "wouter";
 import type { Product } from "@/data/products";
 
+function parseName(name: string): { baseName: string; strength: string } {
+  const match = name.match(/^(.*?)\s+(\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g))(\s+.*)?$/i);
+  if (match) {
+    const suffix = match[3] ? match[3].trim() : "";
+    return { baseName: match[1].trim(), strength: suffix ? `${match[2]} ${suffix}` : match[2] };
+  }
+  return { baseName: name, strength: "" };
+}
+
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
   const productUrl = `/product/${product.id}`;
+  const { baseName, strength } = parseName(product.name);
 
   return (
     <div
@@ -45,6 +55,18 @@ export default function ProductCard({ product }: ProductCardProps) {
           />
         </div>
       </Link>
+
+      {/* Product name & strength */}
+      <div className="px-3 pt-3 pb-1 text-center">
+        <p style={{ fontSize: "15px", fontWeight: 700, color: "#111", lineHeight: 1.3 }}>
+          {baseName}
+        </p>
+        {strength && (
+          <p style={{ fontSize: "13px", fontWeight: 700, color: "#1B5CB5", marginTop: "2px" }}>
+            {strength}
+          </p>
+        )}
+      </div>
 
       {/* Buttons */}
       <div className="flex flex-col px-3 pb-3 pt-2 mt-auto gap-2">
