@@ -681,6 +681,7 @@ export default function ReconstitutionCalculator() {
                   "Draw the calculated BAC water volume into a sterile syringe.",
                   "Insert the needle and slowly inject water down the vial wall — don't aim at the powder.",
                   "Gently swirl (don't shake) until the powder fully dissolves.",
+                  "Store reconstituted peptide at 2–8°C and use within 28 days.",
                 ].map((step, i) => (
                   <li key={i} style={{ fontSize: "13px", color: "#475569", lineHeight: 1.6 }}>
                     {step}
