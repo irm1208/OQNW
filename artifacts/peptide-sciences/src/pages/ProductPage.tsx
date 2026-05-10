@@ -188,35 +188,15 @@ export default function ProductPage() {
                     {product.badge}
                   </div>
                 )}
-                <div className="relative inline-block">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="max-w-full object-contain"
-                    style={{ maxHeight: "220px" }}
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.opacity = "0.25";
-                    }}
-                  />
-                  {/* OmniQure brand overlay — covers "PEPTIDE SCIENCES" on vial label */}
-                  <div
-                    className="absolute inset-x-0 flex items-center justify-center pointer-events-none"
-                    style={{ top: "15%", height: "20px", backgroundColor: "#E7461E" }}
-                  >
-                    <span
-                      style={{
-                        color: "#fff",
-                        fontSize: "9px",
-                        fontWeight: 800,
-                        letterSpacing: "0.15em",
-                        fontFamily: "Arimo, Arial, sans-serif",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      OmniQure
-                    </span>
-                  </div>
-                </div>
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="max-w-full object-contain"
+                  style={{ maxHeight: "220px" }}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.opacity = "0.25";
+                  }}
+                />
               </div>
 
               {/* Quality badges strip */}
