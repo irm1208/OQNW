@@ -12,6 +12,8 @@ import ProductPage from "@/pages/ProductPage";
 import PeptideResearch from "@/pages/PeptideResearch";
 import ReconstitutionCalculator from "@/pages/ReconstitutionCalculator";
 import CartPage from "@/pages/CartPage";
+import SignIn from "@/pages/SignIn";
+import Register from "@/pages/Register";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
@@ -47,9 +49,8 @@ function Router() {
       <Route path="/contact">
         <PlaceholderPage title="Contact Us" description="Get in touch with our research team." />
       </Route>
-      <Route path="/sign-in">
-        <PlaceholderPage title="Sign In" description="Sign in to your research account." />
-      </Route>
+      <Route path="/sign-in" component={SignIn} />
+      <Route path="/register" component={Register} />
       <Route path="/cart" component={CartPage} />
       <Route path="/terms">
         <PlaceholderPage title="Terms & Conditions" description="Our terms and conditions of use." />
