@@ -1,9 +1,10 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { Trash2, Plus, Minus, ShoppingCart, ChevronRight, FlaskConical } from "lucide-react";
 
 export default function CartPage() {
+  const [, navigate] = useLocation();
   const { items, totalItems, removeFromCart, updateQuantity, clearCart } = useCart();
   const { formatPrice, currency } = useCurrency();
 
@@ -198,6 +199,7 @@ export default function CartPage() {
                 </div>
 
                 <button
+                  onClick={() => navigate("/checkout")}
                   className="w-full rounded-xl font-bold flex items-center justify-center gap-2 transition-opacity hover:opacity-90 mb-3"
                   style={{ height: "48px", background: "linear-gradient(135deg, #1B5CB5 0%, #1240A0 100%)", color: "#fff", border: "none", cursor: "pointer", fontSize: "14px" }}
                 >

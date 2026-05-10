@@ -12,6 +12,8 @@ import ProductPage from "@/pages/ProductPage";
 import PeptideResearch from "@/pages/PeptideResearch";
 import ReconstitutionCalculator from "@/pages/ReconstitutionCalculator";
 import CartPage from "@/pages/CartPage";
+import CheckoutPage from "@/pages/CheckoutPage";
+import OrderConfirmation from "@/pages/OrderConfirmation";
 import SignIn from "@/pages/SignIn";
 import Register from "@/pages/Register";
 import NotFound from "@/pages/not-found";
@@ -52,6 +54,8 @@ function Router() {
       <Route path="/sign-in" component={SignIn} />
       <Route path="/register" component={Register} />
       <Route path="/cart" component={CartPage} />
+      <Route path="/checkout" component={CheckoutPage} />
+      <Route path="/order-confirmation" component={OrderConfirmation} />
       <Route path="/terms">
         <PlaceholderPage title="Terms & Conditions" description="Our terms and conditions of use." />
       </Route>
