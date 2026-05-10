@@ -58,18 +58,38 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         </div>
 
-        <Link href={productUrl}>
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full object-contain cursor-pointer"
-            style={{ height: "160px" }}
-            onError={(e) => {
-              const target = e.currentTarget;
-              target.style.display = "none";
-            }}
-          />
-        </Link>
+        <div className="relative">
+          <Link href={productUrl}>
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full object-contain cursor-pointer"
+              style={{ height: "160px" }}
+              onError={(e) => {
+                const target = e.currentTarget;
+                target.style.display = "none";
+              }}
+            />
+          </Link>
+          {/* OmniQure brand overlay — covers "PEPTIDE SCIENCES" on vial label */}
+          <div
+            className="absolute inset-x-0 flex items-center justify-center pointer-events-none"
+            style={{ top: "15%", height: "15px", backgroundColor: "#E7461E" }}
+          >
+            <span
+              style={{
+                color: "#fff",
+                fontSize: "7px",
+                fontWeight: 800,
+                letterSpacing: "0.15em",
+                fontFamily: "Arimo, Arial, sans-serif",
+                textTransform: "uppercase",
+              }}
+            >
+              OmniQure
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Product info */}
