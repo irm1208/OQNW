@@ -80,6 +80,53 @@ export default function AllPeptides() {
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
+
+      {/* Premium page header */}
+      <div style={{
+        background: "linear-gradient(135deg, #020B1E 0%, #071A4A 35%, #0D2565 65%, #1240A0 100%)",
+        padding: "36px 0 30px",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+        {/* Dot grid */}
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)",
+          backgroundSize: "28px 28px", pointerEvents: "none",
+        }} />
+        {/* Glow */}
+        <div style={{
+          position: "absolute", top: "-60px", right: "10%",
+          width: "280px", height: "280px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }} />
+        <div className="max-w-[1280px] mx-auto px-3 md:px-4" style={{ position: "relative", zIndex: 1 }}>
+          <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.14em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", marginBottom: "8px" }}>
+            OmniQure · Research Catalogue
+          </p>
+          <h1 style={{ fontSize: "clamp(22px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: "9px" }}>
+            {selectedCategory === "All Peptides" ? "All Research Peptides" : selectedCategory}
+          </h1>
+          <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", maxWidth: "540px", lineHeight: 1.65, marginBottom: "16px" }}>
+            {selectedCategory === "All Peptides"
+              ? "81 HPLC-verified compounds — each backed by full COA, ESI-TOF mass spectrometry data, and professional cold-chain delivery."
+              : `Precision peptides for ${selectedCategory.toLowerCase()} research, each HPLC-verified at 98%+ purity with full COA documentation.`}
+          </p>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+            {["98%+ HPLC Purity", "Full COA", "ESI-TOF MS", "Cold Chain"].map(t => (
+              <span key={t} style={{
+                fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.6)",
+                backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)",
+                padding: "4px 12px", borderRadius: "20px",
+              }}>
+                ✓ {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Main content */}
       <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-4 md:py-6">
         <div className="flex gap-6">

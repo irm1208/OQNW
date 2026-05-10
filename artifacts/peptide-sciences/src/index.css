@@ -225,9 +225,7 @@
 }
 
 .product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(18,64,160,0.14);
-  border-color: #93C5FD !important;
+  transform: translateY(-5px);
 }
 
 /* ── HERO GRADIENT TEXT ──────────────────────────────── */

@@ -253,56 +253,102 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right — stats + molecule decoration */}
-            <div className="flex-shrink-0 flex flex-col items-center gap-5" style={{ zIndex: 1 }}>
-              {/* Molecule art */}
+            {/* Right — Premium Product Showcase */}
+            <div className="hidden lg:flex flex-shrink-0 flex-col items-center gap-4" style={{ zIndex: 1, position: "relative", width: "280px" }}>
+
+              {/* Floating badge — top right */}
+              <div style={{ position: "absolute", top: "-14px", right: "-22px", zIndex: 20 }}>
+                <div
+                  className="animate-float-medium glass-card"
+                  style={{ padding: "6px 13px", borderRadius: "30px", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                >
+                  <div style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#A78BFA", flexShrink: 0 }} />
+                  <span style={{ fontSize: "10px", fontWeight: 700, color: "#fff", letterSpacing: "0.04em" }}>ESI-TOF MS ✓</span>
+                </div>
+              </div>
+
+              {/* Floating badge — bottom left */}
+              <div style={{ position: "absolute", bottom: "72px", left: "-24px", zIndex: 20 }}>
+                <div
+                  className="animate-float-slow glass-card"
+                  style={{ padding: "6px 13px", borderRadius: "30px", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                >
+                  <div style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#60A5FA", flexShrink: 0 }} />
+                  <span style={{ fontSize: "10px", fontWeight: 700, color: "#fff", letterSpacing: "0.04em" }}>Cold Chain −20°C</span>
+                </div>
+              </div>
+
+              {/* Main product card */}
               <div
-                className="animate-float-slow"
-                style={{ width: "200px", height: "200px", opacity: 0.85 }}
+                className="glass-card animate-float-slow"
+                style={{ borderRadius: "22px", padding: "18px", width: "100%", position: "relative", overflow: "hidden" }}
               >
-                <MoleculeSVG />
+                {/* Shimmer glow */}
+                <div style={{ position: "absolute", top: "-40px", right: "-40px", width: "120px", height: "120px", borderRadius: "50%", background: "radial-gradient(circle, rgba(147,197,253,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+                {/* Header: label + popular pill */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "13px" }}>
+                  <span style={{ fontSize: "9px", fontWeight: 800, letterSpacing: "0.12em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" }}>
+                    Featured Compound
+                  </span>
+                  <span style={{
+                    fontSize: "9px", fontWeight: 700, color: "#FDE68A",
+                    backgroundColor: "rgba(251,191,36,0.12)", padding: "3px 9px",
+                    borderRadius: "8px", border: "1px solid rgba(251,191,36,0.22)", letterSpacing: "0.06em"
+                  }}>
+                    ★ MOST POPULAR
+                  </span>
+                </div>
+
+                {/* Image box */}
+                <div style={{
+                  borderRadius: "14px",
+                  backgroundColor: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.09)",
+                  padding: "10px",
+                  marginBottom: "14px",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  height: "138px",
+                }}>
+                  <img src="/products/3.jpg" alt="BPC-157 5mg" style={{ maxHeight: "118px", objectFit: "contain" }} />
+                </div>
+
+                {/* Name + category */}
+                <p style={{ fontSize: "15px", fontWeight: 800, color: "#fff", marginBottom: "2px", lineHeight: 1.2 }}>BPC-157</p>
+                <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.48)", marginBottom: "13px" }}>5mg · Healing Peptide</p>
+
+                {/* Price + badges */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: "20px", fontWeight: 900, color: "#fff" }}>£65.00</span>
+                  <div style={{ display: "flex", gap: "5px" }}>
+                    <span style={{ fontSize: "9px", fontWeight: 700, color: "#93C5FD", backgroundColor: "rgba(147,197,253,0.12)", padding: "3px 8px", borderRadius: "7px", border: "1px solid rgba(147,197,253,0.2)" }}>98%+</span>
+                    <span style={{ fontSize: "9px", fontWeight: 700, color: "#6EE7B7", backgroundColor: "rgba(110,231,183,0.12)", padding: "3px 8px", borderRadius: "7px", border: "1px solid rgba(110,231,183,0.2)" }}>COA ✓</span>
+                  </div>
+                </div>
               </div>
 
               {/* Stats row */}
-              <div className="grid grid-cols-3 gap-3 w-full">
+              <div className="grid grid-cols-3 gap-2.5 w-full">
                 {[
-                  { value: "81+",   label: "Peptides" },
-                  { value: "98%+",  label: "HPLC Purity" },
-                  { value: "COA",   label: "Every Product" },
+                  { value: "81+",  label: "Peptides" },
+                  { value: "98%+", label: "HPLC" },
+                  { value: "COA",  label: "Certified" },
                 ].map(s => (
-                  <div
-                    key={s.label}
-                    className="glass-card text-center rounded-2xl"
-                    style={{ padding: "18px 10px" }}
-                  >
-                    <p className="font-bold text-white" style={{ fontSize: "clamp(20px, 4vw, 30px)", lineHeight: 1 }}>{s.value}</p>
-                    <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "11px", marginTop: "5px", fontWeight: 500 }}>{s.label}</p>
+                  <div key={s.label} className="glass-card text-center rounded-2xl" style={{ padding: "14px 8px" }}>
+                    <p className="font-bold text-white" style={{ fontSize: "clamp(16px,3vw,24px)", lineHeight: 1 }}>{s.value}</p>
+                    <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "10px", marginTop: "4px", fontWeight: 500 }}>{s.label}</p>
                   </div>
                 ))}
               </div>
 
-              {/* RUO badge */}
-              <div
-                className="glass-card rounded-2xl w-full flex items-center gap-3"
-                style={{ padding: "14px 18px" }}
-              >
-                <div
-                  style={{
-                    width: "38px",
-                    height: "38px",
-                    borderRadius: "10px",
-                    background: "rgba(255,255,255,0.12)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                  }}
-                >
-                  <FlaskConical size={18} style={{ color: "#93C5FD" }} />
+              {/* RUO */}
+              <div className="glass-card rounded-2xl w-full flex items-center gap-3" style={{ padding: "12px 16px" }}>
+                <div style={{ width: "34px", height: "34px", borderRadius: "9px", background: "rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <FlaskConical size={16} style={{ color: "#93C5FD" }} />
                 </div>
                 <div>
-                  <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#fff" }}>RUO Certified</p>
-                  <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.55)" }}>Research Use Only · 18+ Required</p>
+                  <p style={{ fontSize: "12px", fontWeight: 700, color: "#fff" }}>RUO Certified</p>
+                  <p style={{ fontSize: "10.5px", color: "rgba(255,255,255,0.5)" }}>Research Use Only · 18+ Required</p>
                 </div>
               </div>
             </div>
@@ -346,12 +392,12 @@ export default function HomePage() {
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <p
-                className="font-bold uppercase tracking-widest mb-1.5"
-                style={{ fontSize: "11px", color: "#1B5CB5", letterSpacing: "0.1em" }}
-              >
-                EXPLORE
-              </p>
+              <div className="flex items-center gap-2 mb-2">
+                <div style={{ width: "3px", height: "16px", background: "linear-gradient(180deg, #1B5CB5, #2563EB)", borderRadius: "2px" }} />
+                <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#1B5CB5", letterSpacing: "0.1em" }}>
+                  EXPLORE
+                </p>
+              </div>
               <h2 className="font-bold" style={{ fontSize: "30px", color: "#0F172A", letterSpacing: "-0.02em" }}>
                 Shop by Category
               </h2>
@@ -416,9 +462,12 @@ export default function HomePage() {
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <p className="font-bold uppercase tracking-widest mb-1.5" style={{ fontSize: "11px", color: "#1B5CB5", letterSpacing: "0.1em" }}>
-                MOST RESEARCHED
-              </p>
+              <div className="flex items-center gap-2 mb-2">
+                <div style={{ width: "3px", height: "16px", background: "linear-gradient(180deg, #059669, #34D399)", borderRadius: "2px" }} />
+                <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#059669", letterSpacing: "0.1em" }}>
+                  MOST RESEARCHED
+                </p>
+              </div>
               <h2 className="font-bold" style={{ fontSize: "30px", color: "#0F172A", letterSpacing: "-0.02em" }}>
                 Featured Peptides
               </h2>
@@ -449,9 +498,13 @@ export default function HomePage() {
       <section style={{ backgroundColor: "#F7FAFF", padding: "68px 0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="text-center mb-12">
-            <p className="font-bold uppercase tracking-widest mb-1.5" style={{ fontSize: "11px", color: "#1B5CB5", letterSpacing: "0.1em" }}>
-              OUR COMMITMENT
-            </p>
+            <div className="inline-flex items-center gap-2 mb-2">
+              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #7C3AED, #A78BFA)", borderRadius: "2px" }} />
+              <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#7C3AED", letterSpacing: "0.1em" }}>
+                OUR COMMITMENT
+              </p>
+              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #A78BFA, #7C3AED)", borderRadius: "2px" }} />
+            </div>
             <h2 className="font-bold" style={{ fontSize: "30px", color: "#0F172A", letterSpacing: "-0.02em" }}>
               Why Choose OmniQure?
             </h2>
@@ -468,37 +521,52 @@ export default function HomePage() {
                 style={{
                   backgroundColor: "#fff",
                   border: "1.5px solid #E8EDF5",
-                  padding: "28px 24px 24px",
+                  padding: "0",
                   boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
+                  transition: "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = `0 16px 40px ${p.color}18`;
+                  (e.currentTarget as HTMLElement).style.borderColor = p.color + "44";
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(15,23,42,0.04)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "#E8EDF5";
                 }}
               >
-                {/* Number accent */}
-                <span
-                  style={{
-                    position: "absolute",
-                    top: "18px",
-                    right: "20px",
-                    fontSize: "36px",
-                    fontWeight: 900,
-                    color: "#F1F5F9",
-                    lineHeight: 1,
-                    letterSpacing: "-0.04em",
-                    userSelect: "none",
-                  }}
-                >
-                  {p.num}
-                </span>
+                {/* Gradient top accent */}
+                <div style={{ height: "3px", background: `linear-gradient(90deg, ${p.color}, ${p.color}66)`, borderRadius: "12px 12px 0 0" }} />
+                <div style={{ padding: "26px 22px 22px" }}>
+                  {/* Number accent */}
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "18px",
+                      right: "18px",
+                      fontSize: "42px",
+                      fontWeight: 900,
+                      color: "#F1F5F9",
+                      lineHeight: 1,
+                      letterSpacing: "-0.04em",
+                      userSelect: "none",
+                    }}
+                  >
+                    {p.num}
+                  </span>
 
-                <div
-                  className="flex items-center justify-center rounded-xl mb-4"
-                  style={{ width: "52px", height: "52px", backgroundColor: p.bg, color: p.color }}
-                >
-                  {p.icon}
+                  <div
+                    className="flex items-center justify-center rounded-xl mb-4"
+                    style={{ width: "50px", height: "50px", backgroundColor: p.bg, color: p.color }}
+                  >
+                    {p.icon}
+                  </div>
+                  <h3 className="font-bold mb-2" style={{ fontSize: "15px", color: "#0F172A" }}>
+                    {p.title}
+                  </h3>
+                  <p style={{ fontSize: "13px", color: "#64748B", lineHeight: 1.65 }}>{p.body}</p>
                 </div>
-                <h3 className="font-bold mb-2" style={{ fontSize: "15px", color: "#0F172A" }}>
-                  {p.title}
-                </h3>
-                <p style={{ fontSize: "13px", color: "#64748B", lineHeight: 1.65 }}>{p.body}</p>
               </div>
             ))}
           </div>

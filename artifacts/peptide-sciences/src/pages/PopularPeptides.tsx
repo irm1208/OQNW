@@ -57,32 +57,44 @@ export default function PopularPeptides() {
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
-      {/* Category strip */}
-      <div className="bg-white" style={{ borderBottom: "1px solid #E8EDF5" }}>
-        <div className="max-w-[1280px] mx-auto px-4 py-4">
-          <h2 className="font-bold mb-3" style={{ fontSize: "13px", color: "#94A3B8", letterSpacing: "0.07em", textTransform: "uppercase" }}>
-            Shop by Category
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {categoryTabs.map((tab) => {
-              const active = tab.key === "Popular Peptides";
-              return (
-                <button
-                  key={tab.key}
-                  onClick={() => handleTabClick(tab.key)}
-                  className="px-3.5 py-1.5 text-sm font-medium transition-all rounded-full"
-                  style={{
-                    backgroundColor: active ? "#1B5CB5" : "#F1F5F9",
-                    color: active ? "#fff" : "#475569",
-                    border: "1px solid " + (active ? "#1B5CB5" : "#E2E8F0"),
-                    fontSize: "12.5px",
-                    cursor: active ? "default" : "pointer",
-                  }}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
+      {/* Premium page header */}
+      <div style={{
+        background: "linear-gradient(135deg, #020B1E 0%, #071A4A 35%, #0D2565 65%, #1240A0 100%)",
+        padding: "36px 0 30px",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)",
+          backgroundSize: "28px 28px", pointerEvents: "none",
+        }} />
+        <div style={{
+          position: "absolute", top: "-60px", right: "10%",
+          width: "280px", height: "280px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }} />
+        <div className="max-w-[1280px] mx-auto px-4" style={{ position: "relative", zIndex: 1 }}>
+          <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.14em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", marginBottom: "8px" }}>
+            OmniQure · Most Researched
+          </p>
+          <h1 style={{ fontSize: "clamp(22px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: "9px" }}>
+            Popular Peptides
+          </h1>
+          <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", maxWidth: "540px", lineHeight: 1.65, marginBottom: "16px" }}>
+            Our most researched compounds — hand-picked by the OmniQure team. Each 98%+ HPLC verified with full COA documentation.
+          </p>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+            {["98%+ HPLC Purity", "Full COA", "ESI-TOF MS", "Cold Chain"].map(t => (
+              <span key={t} style={{
+                fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.6)",
+                backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)",
+                padding: "4px 12px", borderRadius: "20px",
+              }}>
+                ✓ {t}
+              </span>
+            ))}
           </div>
         </div>
       </div>

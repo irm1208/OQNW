@@ -24,12 +24,19 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(-1);
   const [currencyOpen, setCurrencyOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [location, navigate] = useLocation();
   const { totalItems } = useCart();
   const { currency, setCurrency } = useCurrency();
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const currencyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     function handleClickOutsideCurrency(e: MouseEvent) {
@@ -102,9 +109,15 @@ export default function Header() {
   }
 
   return (
-    <header style={{ fontFamily: "'Arimo', Arial, sans-serif" }} className="sticky top-0 z-50">
+    <header style={{ fontFamily: "'Arimo', Arial, sans-serif", transition: "filter 0.3s ease" }} className="sticky top-0 z-50">
       {/* Top bar */}
-      <div className="bg-white" style={{ boxShadow: "0 1px 0 #E8EDF5" }}>
+      <div style={{
+        backgroundColor: scrolled ? "rgba(255,255,255,0.94)" : "#fff",
+        backdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
+        WebkitBackdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
+        boxShadow: scrolled ? "0 4px 32px rgba(15,23,42,0.13), 0 1px 0 #E8EDF5" : "0 1px 0 #E8EDF5",
+        transition: "background-color 0.3s ease, box-shadow 0.3s ease",
+      }}>
         <div className="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-4">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 mr-2" style={{ textDecoration: "none" }}>
