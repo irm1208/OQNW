@@ -39,7 +39,6 @@ const footerCategories = [
     title: "Company",
     href: "/company",
     links: [
-      { label: "About Us", href: "/company" },
       { label: "Contact Us", href: "/contact" },
       { label: "Peptide Research", href: "/research" },
       { label: "Popular Peptides", href: "/popular-peptides" },
