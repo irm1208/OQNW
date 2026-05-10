@@ -374,7 +374,7 @@ export default function ProductPage() {
                 </div>
               </div>
               <button
-                onClick={() => generateCOA(product, detail)}
+                onClick={() => void generateCOA(product, detail)}
                 className="flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90 flex-shrink-0"
                 style={{ height: "36px", padding: "0 16px", backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px" }}
               >
