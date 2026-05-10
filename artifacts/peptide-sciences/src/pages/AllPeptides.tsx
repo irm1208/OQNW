@@ -79,97 +79,57 @@ export default function AllPeptides() {
   };
 
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#04080F", minHeight: "100vh" }}>
-      <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-6 md:py-8">
+    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
+      {/* Main content */}
+      <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-4 md:py-6">
         <div className="flex gap-6">
-
           {/* Sidebar — desktop only */}
           <div className="hidden lg:block flex-shrink-0">
-            {/* Sidebar header */}
             <div
               className="flex items-center gap-2 px-3 py-2.5 rounded-t-xl mb-3"
-              style={{
-                background: "linear-gradient(135deg, rgba(0,212,255,0.1) 0%, rgba(0,212,255,0.05) 100%)",
-                border: "1px solid rgba(0,212,255,0.25)",
-                borderBottom: "1px solid rgba(0,212,255,0.15)",
-              }}
+              style={{ backgroundColor: "#1B5CB5", color: "#fff" }}
             >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" strokeWidth="2.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
               </svg>
-              <span
-                style={{
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  color: "#00D4FF",
-                  letterSpacing: "0.1em",
-                  fontFamily: "'Share Tech Mono', monospace",
-                }}
-              >
-                PRODUCT LIST
-              </span>
+              <span className="font-semibold" style={{ fontSize: "13px" }}>Product List</span>
             </div>
             <Sidebar selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
           </div>
 
           {/* Products */}
           <div className="flex-1 min-w-0">
-            {/* Page title */}
-            <div className="mb-5">
-              <div className="flex items-center gap-2 mb-1">
-                <span
-                  style={{
-                    fontSize: "10px",
-                    fontWeight: 700,
-                    color: "#00D4FF",
-                    fontFamily: "'Share Tech Mono', monospace",
-                    letterSpacing: "0.12em",
-                    opacity: 0.7,
-                  }}
-                >
-                  // CATALOGUE
-                </span>
-              </div>
-              <h1 className="font-bold" style={{ fontSize: "22px", color: "#D4E8F5", letterSpacing: "-0.01em" }}>
+            <div className="mb-4">
+              <h1 className="font-bold" style={{ fontSize: "20px", color: "#0F172A" }}>
                 {selectedCategory === "All Peptides" ? "All Peptides" : selectedCategory}
               </h1>
-              <p className="hidden sm:block" style={{ fontSize: "13px", color: "#3A5470", marginTop: "3px" }}>
+              <p className="hidden sm:block" style={{ fontSize: "13px", color: "#64748B", marginTop: "3px" }}>
                 Research peptides available direct from our online catalogue.
               </p>
             </div>
 
             {/* Count + Sort */}
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center justify-between mb-4">
               <span
                 className="px-3 py-1 rounded-full font-medium"
-                style={{
-                  fontSize: "11.5px",
-                  color: "#00D4FF",
-                  background: "rgba(0,212,255,0.08)",
-                  border: "1px solid rgba(0,212,255,0.25)",
-                  fontFamily: "'Share Tech Mono', monospace",
-                  letterSpacing: "0.04em",
-                }}
+                style={{ fontSize: "12px", color: "#475569", backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}
               >
-                {filteredProducts.length} PRODUCTS
+                {filteredProducts.length} Products
               </span>
-              <div className="flex items-center gap-2">
-                <span className="hidden sm:inline" style={{ fontSize: "11px", color: "#2A4058", fontFamily: "'Share Tech Mono', monospace", letterSpacing: "0.06em" }}>
-                  SORT:
-                </span>
+              <div className="flex items-center gap-1.5">
+                <span className="hidden sm:inline" style={{ fontSize: "12px", color: "#94A3B8" }}>Sort by</span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as SortOption)}
                   className="outline-none"
                   style={{
                     fontSize: "12px",
-                    color: "#C8D8EE",
-                    border: "1px solid rgba(0,212,255,0.2)",
+                    color: "#374151",
+                    border: "1px solid #E2E8F0",
                     borderRadius: "8px",
-                    padding: "5px 10px",
-                    backgroundColor: "#080F1E",
+                    padding: "4px 8px",
+                    backgroundColor: "#fff",
                     cursor: "pointer",
-                    fontFamily: "'Share Tech Mono', monospace",
                   }}
                 >
                   <option value="name">Product Name</option>
@@ -180,6 +140,7 @@ export default function AllPeptides() {
               </div>
             </div>
 
+            {/* Responsive grid: 2 cols mobile, 3 tablet, 4 desktop */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
@@ -187,8 +148,8 @@ export default function AllPeptides() {
             </div>
 
             {filteredProducts.length === 0 && (
-              <div className="text-center py-20" style={{ color: "#2A4058", fontFamily: "'Share Tech Mono', monospace" }}>
-                // NO PRODUCTS FOUND IN THIS CATEGORY
+              <div className="text-center py-20" style={{ color: "#94A3B8" }}>
+                No products found in this category.
               </div>
             )}
           </div>

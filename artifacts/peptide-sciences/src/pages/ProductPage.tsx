@@ -45,29 +45,29 @@ export default function ProductPage() {
     .slice(0, 4);
 
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#04080F", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
       {/* Research warning */}
-      <div style={{ background: "rgba(0,212,255,0.04)", borderBottom: "1px solid rgba(0,212,255,0.12)" }}>
+      <div style={{ backgroundColor: "#FFFBEB", borderBottom: "1px solid #FDE68A" }}>
         <div className="max-w-[1280px] mx-auto px-4 py-2.5 flex items-start gap-2">
-          <span style={{ fontSize: "13px", flexShrink: 0, marginTop: "1px", color: "#00D4FF" }}>⚠</span>
-          <p className="text-xs leading-relaxed" style={{ color: "#2A5070" }}>
-            <strong style={{ color: "#2A6080" }}>Research Chemical Only:</strong> Intended strictly for in-vitro laboratory testing. Not approved by the FDA. Bodily introduction into humans or animals is strictly forbidden. Must be 18+ and a qualified researcher to purchase.
+          <span style={{ fontSize: "14px", flexShrink: 0, marginTop: "1px" }}>⚠️</span>
+          <p className="text-xs leading-relaxed" style={{ color: "#92400E" }}>
+            <strong>Research Chemical Only:</strong> Intended strictly for in-vitro laboratory testing. Not approved by the FDA. Bodily introduction into humans or animals is strictly forbidden. Must be 18+ and a qualified researcher to purchase.
           </p>
         </div>
       </div>
 
       {/* Breadcrumb */}
-      <div style={{ backgroundColor: "rgba(4,8,15,0.9)", borderBottom: "1px solid rgba(0,212,255,0.08)" }}>
-        <div className="max-w-[1280px] mx-auto px-4 py-2.5 flex items-center gap-1.5 text-xs" style={{ color: "#1E3A50" }}>
-          <Link href="/" style={{ color: "#2A5070", textDecoration: "none" }}>Home</Link>
+      <div className="bg-white" style={{ borderBottom: "1px solid #E8EDF5" }}>
+        <div className="max-w-[1280px] mx-auto px-4 py-2.5 flex items-center gap-1.5 text-xs" style={{ color: "#94A3B8" }}>
+          <Link href="/" className="hover:text-blue-600 transition-colors" style={{ color: "#1B5CB5", textDecoration: "none" }}>Home</Link>
           <ChevronRight size={12} />
-          <Link href="/all-peptides" style={{ color: "#2A5070", textDecoration: "none" }}>All Peptides</Link>
+          <Link href="/all-peptides" className="hover:text-blue-600 transition-colors" style={{ color: "#1B5CB5", textDecoration: "none" }}>All Peptides</Link>
           <ChevronRight size={12} />
-          <Link href={`/all-peptides?category=${encodeURIComponent(product.category)}`} style={{ color: "#2A5070", textDecoration: "none" }}>
+          <Link href={`/all-peptides?category=${encodeURIComponent(product.category)}`} className="hover:text-blue-600 transition-colors" style={{ color: "#1B5CB5", textDecoration: "none" }}>
             {product.category}
           </Link>
           <ChevronRight size={12} />
-          <span style={{ color: "#3A6880" }}>{product.name}</span>
+          <span style={{ color: "#475569" }}>{product.name}</span>
         </div>
       </div>
 
@@ -78,12 +78,12 @@ export default function ProductPage() {
           <div className="lg:w-[460px] flex-shrink-0">
             <div
               className="rounded-2xl overflow-hidden"
-              style={{ backgroundColor: "#080F1E", boxShadow: "0 4px 24px rgba(0,0,0,0.5), 0 0 30px rgba(0,212,255,0.06)", border: "1px solid rgba(0,212,255,0.18)" }}
+              style={{ backgroundColor: "#fff", boxShadow: "0 4px 24px rgba(15,23,42,0.08)", border: "1px solid #E8EDF5" }}
             >
               {/* Label header */}
               <div
                 className="flex items-center justify-between px-4 py-3"
-                style={{ background: "linear-gradient(90deg, #020D1E 0%, #071826 100%)", color: "#00D4FF", borderBottom: "1px solid rgba(0,212,255,0.2)" }}
+                style={{ background: "linear-gradient(90deg, #1240A0 0%, #1B5CB5 100%)", color: "#fff" }}
               >
                 <span className="font-bold tracking-widest text-xs" style={{ letterSpacing: "0.14em" }}>OMNIQURE</span>
                 {detail.refNumber && (
@@ -92,45 +92,45 @@ export default function ProductPage() {
               </div>
 
               {/* Product name on label */}
-              <div className="px-4 pt-3 pb-2.5" style={{ borderBottom: "1px solid rgba(0,212,255,0.1)" }}>
-                <p className="font-bold leading-tight" style={{ fontSize: "17px", color: "#D4E8F5" }}>
+              <div className="px-4 pt-3 pb-2.5" style={{ borderBottom: "1px solid #F1F5F9" }}>
+                <p className="font-bold leading-tight" style={{ fontSize: "17px", color: "#0F172A" }}>
                   {product.name}
                 </p>
               </div>
 
               {/* Specs */}
               {(detail.casNumber || detail.formula || detail.molecularWeight) && (
-                <div className="px-4 py-2.5 space-y-1" style={{ borderBottom: "1px solid rgba(0,212,255,0.1)", backgroundColor: "rgba(0,212,255,0.03)" }}>
+                <div className="px-4 py-2.5 space-y-1" style={{ borderBottom: "1px solid #F1F5F9", backgroundColor: "#FAFBFF" }}>
                   {detail.casNumber && (
-                    <p className="text-xs" style={{ color: "#2A5070" }}>
-                      <span className="font-semibold" style={{ color: "#2A6080" }}>CAS:</span> {detail.casNumber}
+                    <p className="text-xs" style={{ color: "#64748B" }}>
+                      <span className="font-semibold text-slate-500">CAS:</span> {detail.casNumber}
                     </p>
                   )}
                   {detail.formula && (
-                    <p className="text-xs" style={{ color: "#2A5070" }}>
-                      <span className="font-semibold" style={{ color: "#2A6080" }}>Formula:</span> {detail.formula}
+                    <p className="text-xs" style={{ color: "#64748B" }}>
+                      <span className="font-semibold text-slate-500">Formula:</span> {detail.formula}
                     </p>
                   )}
                   {detail.molecularWeight && (
-                    <p className="text-xs" style={{ color: "#2A5070" }}>
-                      <span className="font-semibold" style={{ color: "#2A6080" }}>M.W.:</span> {detail.molecularWeight}
+                    <p className="text-xs" style={{ color: "#64748B" }}>
+                      <span className="font-semibold text-slate-500">M.W.:</span> {detail.molecularWeight}
                     </p>
                   )}
                 </div>
               )}
 
               {/* Purity bar */}
-              <div className="px-4 py-3 flex items-center gap-2.5" style={{ borderBottom: "1px solid rgba(0,212,255,0.1)" }}>
-                <span className="text-xs font-bold" style={{ color: "#00D4FF", fontFamily: "'Share Tech Mono', monospace", letterSpacing: "0.06em" }}>PURITY</span>
-                <span className="text-xs font-semibold" style={{ color: "#00D4FF" }}>{detail.purity || "99% HPLC"}</span>
-                <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "rgba(0,212,255,0.1)" }}>
-                  <div className="h-full rounded-full" style={{ width: "99%", background: "linear-gradient(90deg, #00D4FF, #8B5CF6)", boxShadow: "0 0 8px rgba(0,212,255,0.5)" }} />
+              <div className="px-4 py-3 flex items-center gap-2.5" style={{ borderBottom: "1px solid #F1F5F9" }}>
+                <span className="text-xs font-bold" style={{ color: "#1B5CB5" }}>PURITY</span>
+                <span className="text-xs font-semibold" style={{ color: "#0F172A" }}>{detail.purity || "99% HPLC"}</span>
+                <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "#E2E8F0" }}>
+                  <div className="h-full rounded-full" style={{ width: "99%", background: "linear-gradient(90deg, #1B5CB5, #2563EB)" }} />
                 </div>
               </div>
 
               {/* RUO */}
-              <div className="px-4 py-2" style={{ borderBottom: "1px solid rgba(0,212,255,0.08)", backgroundColor: "rgba(255,77,109,0.04)" }}>
-                <p className="text-xs font-medium" style={{ color: "#6A2030", fontFamily: "'Share Tech Mono', monospace" }}>
+              <div className="px-4 py-2" style={{ borderBottom: "1px solid #F1F5F9", backgroundColor: "#FFF8F8" }}>
+                <p className="text-xs font-medium" style={{ color: "#DC2626" }}>
                   RUO — Research Use Only. Not for human or veterinary diagnostic use.
                 </p>
               </div>
@@ -138,7 +138,7 @@ export default function ProductPage() {
               {/* Product image — scales with screen */}
               <div
                 className="flex items-center justify-center"
-                style={{ height: "clamp(200px, 40vw, 380px)", padding: "8px", backgroundColor: "#050D1C", position: "relative" }}
+                style={{ height: "clamp(200px, 40vw, 380px)", padding: "8px", backgroundColor: "#fff", position: "relative" }}
               >
                 <img
                   src={product.image}

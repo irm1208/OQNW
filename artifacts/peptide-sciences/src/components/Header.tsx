@@ -6,10 +6,10 @@ import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyCo
 import { products } from "@/data/products";
 
 const navItems = [
-  { label: "Home",             href: "/" },
-  { label: "All Peptides",     href: "/all-peptides" },
+  { label: "Home", href: "/" },
+  { label: "All Peptides", href: "/all-peptides" },
   { label: "Popular Peptides", href: "/popular-peptides" },
-  { label: "Bundle & Save",    href: "/bundles" },
+  { label: "Bundle & Save", href: "/bundles" },
   { label: "Peptide Research", href: "/research" },
   { label: "Peptide Calculator", href: "/calculator" },
 ];
@@ -19,17 +19,17 @@ const rightNavItems = [
 ];
 
 export default function Header() {
-  const [searchQuery, setSearchQuery]   = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [open, setOpen]                 = useState(false);
-  const [highlighted, setHighlighted]   = useState(-1);
+  const [open, setOpen] = useState(false);
+  const [highlighted, setHighlighted] = useState(-1);
   const [currencyOpen, setCurrencyOpen] = useState(false);
-  const [location, navigate]            = useLocation();
-  const { totalItems }                  = useCart();
-  const { currency, setCurrency }       = useCurrency();
-  const inputRef     = useRef<HTMLInputElement>(null);
+  const [location, navigate] = useLocation();
+  const { totalItems } = useCart();
+  const { currency, setCurrency } = useCurrency();
+  const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const currencyRef  = useRef<HTMLDivElement>(null);
+  const currencyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutsideCurrency(e: MouseEvent) {
@@ -48,7 +48,9 @@ export default function Header() {
       ).slice(0, 7)
     : [];
 
-  useEffect(() => { setHighlighted(-1); }, [searchQuery]);
+  useEffect(() => {
+    setHighlighted(-1);
+  }, [searchQuery]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -79,44 +81,37 @@ export default function Header() {
       e.preventDefault();
       if (highlighted >= 0 && results[highlighted]) {
         navigate(`/product/${results[highlighted].id}`);
-        setSearchQuery(""); setOpen(false); inputRef.current?.blur();
+        setSearchQuery("");
+        setOpen(false);
+        inputRef.current?.blur();
       } else if (q) {
         navigate(`/all-peptides?search=${encodeURIComponent(searchQuery.trim())}`);
-        setOpen(false); inputRef.current?.blur();
+        setOpen(false);
+        inputRef.current?.blur();
       }
     } else if (e.key === "Escape") {
-      setOpen(false); inputRef.current?.blur();
+      setOpen(false);
+      inputRef.current?.blur();
     }
   }
 
   function handleSelectResult(id: string) {
     navigate(`/product/${id}`);
-    setSearchQuery(""); setOpen(false);
+    setSearchQuery("");
+    setOpen(false);
   }
-
-  /* shared dark-glass style */
-  const glassBar: React.CSSProperties = {
-    background: "rgba(4, 8, 15, 0.92)",
-    backdropFilter: "blur(18px)",
-    WebkitBackdropFilter: "blur(18px)",
-  };
 
   return (
     <header style={{ fontFamily: "'Arimo', Arial, sans-serif" }} className="sticky top-0 z-50">
-
-      {/* Neon top line */}
-      <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, #00D4FF 25%, #8B5CF6 75%, transparent)", opacity: 0.6 }} />
-
-      {/* ── TOP BAR ───────────────────────────────────── */}
-      <div style={{ ...glassBar, borderBottom: "1px solid rgba(0,212,255,0.12)" }}>
+      {/* Top bar */}
+      <div className="bg-white" style={{ boxShadow: "0 1px 0 #E8EDF5" }}>
         <div className="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-4">
-
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 mr-2" style={{ textDecoration: "none" }}>
             <img
               src="/omniqure-logo.jpeg"
               alt="OmniQure Peptide Research Institute"
-              style={{ height: "52px", width: "auto", display: "block", borderRadius: "8px", filter: "brightness(1.05)" }}
+              style={{ height: "52px", width: "auto", display: "block", borderRadius: "8px" }}
             />
           </Link>
 
@@ -128,30 +123,32 @@ export default function Header() {
                 type="search"
                 placeholder="Search peptides, categories..."
                 value={searchQuery}
-                onChange={(e) => { setSearchQuery(e.target.value); setOpen(true); }}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setOpen(true);
+                }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(0,212,255,0.6)";
-                  e.currentTarget.style.boxShadow = "0 0 12px rgba(0,212,255,0.15)";
+                  e.currentTarget.style.borderColor = "#1B5CB5";
+                  e.currentTarget.style.backgroundColor = "#fff";
                   if (searchQuery.trim().length >= 1) setOpen(true);
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(0,212,255,0.2)";
-                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = "#F1F5F9";
+                  e.currentTarget.style.backgroundColor = "#F1F5F9";
                 }}
                 onKeyDown={handleKeyDown}
-                className="w-full h-10 pl-4 pr-11 outline-none transition-all"
+                className="w-full h-10 pl-4 pr-11 text-sm outline-none transition-all"
                 style={{
-                  backgroundColor: "rgba(0,212,255,0.04)",
-                  color: "#C8D8EE",
-                  border: "1.5px solid rgba(0,212,255,0.2)",
+                  backgroundColor: "#F1F5F9",
+                  color: "#0F172A",
+                  border: "1.5px solid #F1F5F9",
                   borderRadius: open && results.length > 0 ? "10px 10px 0 0" : "10px",
-                  fontSize: "13.5px",
                 }}
                 autoComplete="off"
               />
               <button
                 className="absolute right-0 h-10 w-11 flex items-center justify-center"
-                style={{ color: "#2A4870", border: "none", background: "none", cursor: "pointer" }}
+                style={{ color: "#94A3B8" }}
                 onClick={() => {
                   if (q) {
                     navigate(`/all-peptides?search=${encodeURIComponent(searchQuery.trim())}`);
@@ -168,13 +165,17 @@ export default function Header() {
             {open && results.length > 0 && (
               <div
                 style={{
-                  position: "absolute", top: "100%", left: 0, right: 0,
-                  background: "#060E1C",
-                  border: "1.5px solid rgba(0,212,255,0.3)",
+                  position: "absolute",
+                  top: "100%",
+                  left: 0,
+                  right: 0,
+                  backgroundColor: "#fff",
+                  border: "1.5px solid #1B5CB5",
                   borderTop: "none",
                   borderRadius: "0 0 12px 12px",
-                  boxShadow: "0 12px 32px rgba(0,0,0,0.6), 0 0 24px rgba(0,212,255,0.08)",
-                  zIndex: 200, overflow: "hidden",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                  zIndex: 200,
+                  overflow: "hidden",
                 }}
               >
                 {results.map((p, i) => (
@@ -183,34 +184,50 @@ export default function Header() {
                     onMouseDown={() => handleSelectResult(p.id)}
                     onMouseEnter={() => setHighlighted(i)}
                     style={{
-                      display: "flex", alignItems: "center", gap: "10px",
-                      width: "100%", padding: "9px 14px", textAlign: "left",
-                      border: "none", cursor: "pointer",
-                      backgroundColor: i === highlighted ? "rgba(0,212,255,0.08)" : "transparent",
-                      borderBottom: i < results.length - 1 ? "1px solid rgba(0,212,255,0.07)" : "none",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                      width: "100%",
+                      padding: "9px 14px",
+                      textAlign: "left",
+                      border: "none",
+                      cursor: "pointer",
+                      backgroundColor: i === highlighted ? "#F0F5FF" : "#fff",
+                      borderBottom: i < results.length - 1 ? "1px solid #F1F5F9" : "none",
                       transition: "background-color 0.1s",
                     }}
                   >
-                    <img src={p.image} alt={p.name}
-                      style={{ width: "36px", height: "36px", objectFit: "cover", borderRadius: "6px", flexShrink: 0, border: "1px solid rgba(0,212,255,0.15)" }}
+                    <img
+                      src={p.image}
+                      alt={p.name}
+                      style={{ width: "36px", height: "36px", objectFit: "cover", borderRadius: "6px", flexShrink: 0 }}
                     />
                     <div style={{ minWidth: 0 }}>
-                      <p style={{ fontSize: "13px", fontWeight: 600, color: "#C8D8EE", margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      <p style={{ fontSize: "13px", fontWeight: 600, color: "#0F172A", margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                         {p.name}
                       </p>
-                      <p style={{ fontSize: "11px", color: "#2A4870", margin: 0 }}>{p.category}</p>
+                      <p style={{ fontSize: "11px", color: "#64748B", margin: 0 }}>{p.category}</p>
                     </div>
                   </button>
                 ))}
                 {results.length === 7 && (
                   <button
-                    onMouseDown={() => { navigate(`/all-peptides?search=${encodeURIComponent(searchQuery.trim())}`); setOpen(false); }}
+                    onMouseDown={() => {
+                      navigate(`/all-peptides?search=${encodeURIComponent(searchQuery.trim())}`);
+                      setOpen(false);
+                    }}
                     style={{
-                      display: "block", width: "100%", padding: "9px 14px",
-                      textAlign: "center", fontSize: "12px", fontWeight: 600, color: "#00D4FF",
-                      background: "rgba(0,212,255,0.04)", border: "none",
-                      borderTop: "1px solid rgba(0,212,255,0.1)", cursor: "pointer",
-                      fontFamily: "'Share Tech Mono', monospace",
+                      display: "block",
+                      width: "100%",
+                      padding: "9px 14px",
+                      textAlign: "center",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      color: "#1B5CB5",
+                      backgroundColor: "#F8FAFF",
+                      border: "none",
+                      borderTop: "1px solid #E8EDF5",
+                      cursor: "pointer",
                     }}
                   >
                     View all results for "{searchQuery.trim()}" →
@@ -223,14 +240,20 @@ export default function Header() {
             {open && q.length >= 1 && results.length === 0 && (
               <div
                 style={{
-                  position: "absolute", top: "100%", left: 0, right: 0,
-                  background: "#060E1C",
-                  border: "1.5px solid rgba(0,212,255,0.3)",
+                  position: "absolute",
+                  top: "100%",
+                  left: 0,
+                  right: 0,
+                  backgroundColor: "#fff",
+                  border: "1.5px solid #1B5CB5",
                   borderTop: "none",
                   borderRadius: "0 0 12px 12px",
-                  boxShadow: "0 12px 32px rgba(0,0,0,0.5)",
-                  zIndex: 200, padding: "14px", textAlign: "center",
-                  fontSize: "13px", color: "#2A4870",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                  zIndex: 200,
+                  padding: "14px",
+                  textAlign: "center",
+                  fontSize: "13px",
+                  color: "#64748B",
                 }}
               >
                 No peptides found for "{searchQuery.trim()}"
@@ -243,47 +266,65 @@ export default function Header() {
             <button
               onClick={() => setCurrencyOpen(o => !o)}
               style={{
-                display: "flex", alignItems: "center", gap: "5px",
-                padding: "5px 10px", borderRadius: "8px",
-                border: "1px solid rgba(0,212,255,0.22)",
-                backgroundColor: "rgba(0,212,255,0.05)",
-                cursor: "pointer", fontSize: "13px", fontWeight: 600,
-                color: "#7AAFCC",
-                fontFamily: "'Share Tech Mono', monospace",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                padding: "5px 10px",
+                borderRadius: "8px",
+                border: "1.5px solid #E2E8F0",
+                backgroundColor: "#F8FAFC",
+                cursor: "pointer",
+                fontSize: "13px",
+                fontWeight: 600,
+                color: "#475569",
               }}
             >
               <span style={{ fontSize: "15px" }}>{currency.flag}</span>
               {currency.code}
-              <ChevronDown size={12} style={{ color: "#2A4870" }} />
+              <ChevronDown size={13} style={{ color: "#94A3B8" }} />
             </button>
 
             {currencyOpen && (
               <div
                 style={{
-                  position: "absolute", top: "calc(100% + 6px)", right: 0,
-                  background: "#060E1C",
-                  border: "1px solid rgba(0,212,255,0.2)",
+                  position: "absolute",
+                  top: "calc(100% + 6px)",
+                  right: 0,
+                  backgroundColor: "#fff",
+                  border: "1.5px solid #E2E8F0",
                   borderRadius: "12px",
-                  boxShadow: "0 12px 32px rgba(0,0,0,0.7), 0 0 24px rgba(0,212,255,0.08)",
-                  zIndex: 300, minWidth: "200px", overflow: "hidden", padding: "4px",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                  zIndex: 300,
+                  minWidth: "200px",
+                  overflow: "hidden",
+                  padding: "4px",
                 }}
               >
                 {CURRENCIES.map(c => (
                   <button
                     key={c.code}
-                    onMouseDown={() => { setCurrency(c.code as CurrencyCode); setCurrencyOpen(false); }}
+                    onMouseDown={() => {
+                      setCurrency(c.code as CurrencyCode);
+                      setCurrencyOpen(false);
+                    }}
                     style={{
-                      display: "flex", alignItems: "center", gap: "10px",
-                      width: "100%", padding: "8px 12px", borderRadius: "8px",
-                      border: "none", cursor: "pointer", textAlign: "left",
-                      backgroundColor: c.code === currency.code ? "rgba(0,212,255,0.1)" : "transparent",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                      width: "100%",
+                      padding: "8px 12px",
+                      borderRadius: "8px",
+                      border: "none",
+                      cursor: "pointer",
+                      backgroundColor: c.code === currency.code ? "#EEF4FF" : "transparent",
+                      textAlign: "left",
                     }}
                   >
                     <span style={{ fontSize: "16px" }}>{c.flag}</span>
-                    <span style={{ fontSize: "12.5px", fontWeight: 700, color: "#A8C8DC", minWidth: "36px", fontFamily: "'Share Tech Mono', monospace" }}>{c.code}</span>
-                    <span style={{ fontSize: "12px", color: "#2A4870" }}>{c.label}</span>
+                    <span style={{ fontSize: "12.5px", fontWeight: 600, color: "#0F172A", minWidth: "36px" }}>{c.code}</span>
+                    <span style={{ fontSize: "12px", color: "#64748B" }}>{c.label}</span>
                     {c.code === currency.code && (
-                      <span style={{ marginLeft: "auto", color: "#00D4FF", fontSize: "12px" }}>✓</span>
+                      <span style={{ marginLeft: "auto", color: "#1B5CB5", fontSize: "12px" }}>✓</span>
                     )}
                   </button>
                 ))}
@@ -295,33 +336,33 @@ export default function Header() {
           <div className="flex items-center gap-5 ml-auto">
             <Link
               href="/sign-in"
-              className="flex items-center gap-1.5 font-medium transition-colors"
-              style={{ color: "#2A4870", textDecoration: "none", fontSize: "13.5px" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#00D4FF"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#2A4870"; }}
+              className="flex items-center gap-1.5 text-sm font-medium transition-colors"
+              style={{ color: "#475569", textDecoration: "none" }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#1B5CB5"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#475569"}
             >
-              <User size={17} />
+              <User size={18} />
               <span className="hidden sm:inline">Sign in</span>
             </Link>
             <Link
               href="/cart"
-              className="flex items-center gap-1.5 font-medium transition-colors relative"
-              style={{ color: "#2A4870", textDecoration: "none", fontSize: "13.5px" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#00D4FF"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#2A4870"; }}
+              className="flex items-center gap-1.5 text-sm font-medium transition-colors relative"
+              style={{ color: "#475569", textDecoration: "none" }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#1B5CB5"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#475569"}
             >
               <span className="relative">
-                <ShoppingCart size={17} />
+                <ShoppingCart size={18} />
                 {totalItems > 0 && (
                   <span
-                    className="absolute flex items-center justify-center font-bold rounded-full"
+                    className="absolute flex items-center justify-center font-bold text-white rounded-full"
                     style={{
                       top: "-7px", right: "-8px",
                       minWidth: "16px", height: "16px",
-                      backgroundColor: "#00D4FF",
-                      color: "#04080F",
-                      fontSize: "9px", padding: "0 3px", lineHeight: 1,
-                      boxShadow: "0 0 8px rgba(0,212,255,0.7)",
+                      backgroundColor: "#EF4444",
+                      fontSize: "9px",
+                      padding: "0 3px",
+                      lineHeight: 1,
                     }}
                   >
                     {totalItems > 99 ? "99+" : totalItems}
@@ -336,17 +377,17 @@ export default function Header() {
           <button
             className="lg:hidden ml-2 p-1"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{ color: "#2A4870", border: "none", background: "none", cursor: "pointer" }}
+            style={{ color: "#475569" }}
           >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
 
-      {/* ── MAIN NAV ──────────────────────────────────── */}
+      {/* Main nav */}
       <nav
-        className="hidden lg:block"
-        style={{ ...glassBar, borderBottom: "1px solid rgba(0,212,255,0.1)" }}
+        className="bg-white hidden lg:block"
+        style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.06)", borderTop: "1px solid #F8FAFC" }}
       >
         <div className="max-w-[1280px] mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center">
@@ -356,22 +397,13 @@ export default function Header() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="px-4 py-3 text-sm whitespace-nowrap inline-block transition-all"
+                  className="px-4 py-3 text-sm whitespace-nowrap inline-block transition-colors"
                   style={{
-                    borderBottom: active ? "2px solid #00D4FF" : "2px solid transparent",
-                    color: active ? "#00D4FF" : "#2A4870",
-                    fontWeight: active ? 700 : 500,
+                    borderBottom: active ? "2px solid #1B5CB5" : "2px solid transparent",
+                    color: active ? "#1B5CB5" : "#475569",
+                    fontWeight: active ? 600 : 500,
                     textDecoration: "none",
                     marginBottom: "-1px",
-                    textShadow: active ? "0 0 10px rgba(0,212,255,0.5)" : "none",
-                    fontSize: "13px",
-                    letterSpacing: "0.01em",
-                  }}
-                  onMouseEnter={e => {
-                    if (!active) (e.currentTarget as HTMLElement).style.color = "#7AAFCC";
-                  }}
-                  onMouseLeave={e => {
-                    if (!active) (e.currentTarget as HTMLElement).style.color = "#2A4870";
                   }}
                 >
                   {item.label}
@@ -385,9 +417,7 @@ export default function Header() {
                 key={item.label}
                 href={item.href}
                 className="px-4 py-3 text-sm whitespace-nowrap transition-colors"
-                style={{ color: "#1E3A50", textDecoration: "none", fontWeight: 500, fontSize: "13px" }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#2A5F80"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#1E3A50"; }}
+                style={{ color: "#64748B", textDecoration: "none", fontWeight: 500 }}
               >
                 {item.label}
               </Link>
@@ -396,20 +426,15 @@ export default function Header() {
         </div>
       </nav>
 
-      {/* ── MOBILE MENU ───────────────────────────────── */}
+      {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div style={{ ...glassBar, borderBottom: "1px solid rgba(0,212,255,0.1)" }}>
+        <div className="lg:hidden bg-white border-b border-gray-100 shadow-xl">
           {[...navItems, ...rightNavItems].map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className="block px-4 py-3 font-medium transition-colors"
-              style={{
-                color: "#2A5070", textDecoration: "none", fontSize: "13.5px",
-                borderBottom: "1px solid rgba(0,212,255,0.07)",
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#00D4FF"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#2A5070"; }}
+              className="block px-4 py-3 text-sm font-medium border-b border-gray-50 transition-colors"
+              style={{ color: "#374151", textDecoration: "none" }}
               onClick={() => setMobileMenuOpen(false)}
             >
               {item.label}
