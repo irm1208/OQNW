@@ -5,36 +5,74 @@ interface ProductCardProps {
   product: Product;
 }
 
+function parseName(name: string): { baseName: string; strength: string } {
+  const match = name.match(/^(.*?)\s+(\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g))(\s+.*)?$/i);
+  if (match) {
+    const suffix = match[3] ? match[3].trim() : "";
+    return {
+      baseName: match[1].trim(),
+      strength: suffix ? `${match[2]} ${suffix}` : match[2],
+    };
+  }
+  return { baseName: name, strength: "" };
+}
+
 export default function ProductCard({ product }: ProductCardProps) {
   const productUrl = `/product/${product.id}`;
+  const { baseName, strength } = parseName(product.name);
 
   return (
     <div
       className="flex flex-col bg-white border border-gray-200 rounded-sm overflow-hidden hover:shadow-md transition-shadow"
-      style={{ minHeight: "320px" }}
+      style={{ minHeight: "340px" }}
     >
       {/* Product image area */}
       <div className="relative bg-white" style={{ padding: "8px 8px 0" }}>
         {/* Header card strip */}
         <div
-          className="flex items-center px-2 py-1 mb-1 rounded-t-sm"
-          style={{ backgroundColor: "#f5f5f5", border: "1px solid #e0e0e0" }}
+          className="flex items-center justify-between px-2 py-1 mb-1 rounded-t-sm"
+          style={{ backgroundColor: "#1B5CB5" }}
         >
-          <div style={{ fontSize: "8px", color: "#888", fontFamily: "Arimo, Arial" }}>
-            OMNIQURE
+          <div
+            style={{
+              fontSize: "11px",
+              color: "#fff",
+              fontFamily: "Arimo, Arial",
+              fontWeight: 600,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              maxWidth: "70%",
+            }}
+          >
+            {baseName}
           </div>
+          {strength && (
+            <div
+              style={{
+                fontSize: "10px",
+                color: "#fff",
+                fontFamily: "Arimo, Arial",
+                fontWeight: 500,
+                flexShrink: 0,
+                marginLeft: "4px",
+              }}
+            >
+              {strength}
+            </div>
+          )}
         </div>
 
         {/* Product image */}
         <Link href={productUrl}>
           <div
             className="w-full flex items-center justify-center cursor-pointer overflow-hidden"
-            style={{ height: "160px", backgroundColor: "#f9f9f9" }}
+            style={{ height: "180px", backgroundColor: "#fff" }}
           >
             <img
               src={product.image}
               alt={product.name}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              style={{ width: "100%", height: "100%", objectFit: "contain" }}
             />
           </div>
         </Link>
