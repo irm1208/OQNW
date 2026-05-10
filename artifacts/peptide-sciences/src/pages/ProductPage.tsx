@@ -179,12 +179,6 @@ export default function ProductPage() {
                 className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
                 style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}
               >
-                <Truck size={11} /> FREE Shipping
-              </span>
-              <span
-                className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
-                style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}
-              >
                 ✓ In Stock
               </span>
             </div>
