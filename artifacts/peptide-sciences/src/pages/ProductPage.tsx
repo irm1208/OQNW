@@ -63,7 +63,7 @@ export default function ProductPage() {
         {/* Main product section */}
         <div className="flex flex-col lg:flex-row gap-8 mb-10">
           {/* Left: Product card panel */}
-          <div className="lg:w-[380px] flex-shrink-0">
+          <div className="lg:w-[500px] flex-shrink-0">
             <div
               className="rounded-2xl overflow-hidden"
               style={{ backgroundColor: "#fff", boxShadow: "0 4px 24px rgba(15,23,42,0.08)", border: "1px solid #E8EDF5" }}
@@ -126,13 +126,13 @@ export default function ProductPage() {
               {/* Product image */}
               <div
                 className="flex items-center justify-center"
-                style={{ height: "240px", padding: "20px", background: "linear-gradient(145deg, #F4F8FF 0%, #EBF2FF 100%)" }}
+                style={{ height: "380px", padding: "8px", backgroundColor: "#fff" }}
               >
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="max-w-full object-contain"
-                  style={{ maxHeight: "200px" }}
+                  className="object-contain"
+                  style={{ width: "100%", height: "100%" }}
                   onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = "0.2"; }}
                 />
               </div>
