@@ -12,6 +12,7 @@ import ProductPage from "@/pages/ProductPage";
 import PeptideResearch from "@/pages/PeptideResearch";
 import ReconstitutionCalculator from "@/pages/ReconstitutionCalculator";
 import CartPage from "@/pages/CartPage";
+import CompanyPage from "@/pages/CompanyPage";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
 
@@ -43,9 +44,7 @@ function Router() {
       </Route>
       <Route path="/research" component={PeptideResearch} />
       <Route path="/calculator" component={ReconstitutionCalculator} />
-      <Route path="/company">
-        <PlaceholderPage title="Our Company" description="Learn about OmniQure." />
-      </Route>
+      <Route path="/company" component={CompanyPage} />
       <Route path="/contact">
         <PlaceholderPage title="Contact Us" description="Get in touch with our research team." />
       </Route>
