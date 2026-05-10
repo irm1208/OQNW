@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import type { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
+import { useCurrency } from "@/context/CurrencyContext";
 
 function parseName(name: string): { baseName: string; strength: string } {
   const match = name.match(/^(.*?)\s+(\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g))(\s+.*)?$/i);
@@ -22,6 +23,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const { addToCart } = useCart();
+  const { formatPrice } = useCurrency();
 
   const stop = (e: React.MouseEvent) => e.preventDefault();
   const dec = (e: React.MouseEvent) => { stop(e); setQty(q => Math.max(1, q - 1)); };
@@ -80,6 +82,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           {strength && (
             <p style={{ fontSize: "13px", fontWeight: 700, color: "#1B5CB5", marginTop: "3px" }}>
               {strength}
+            </p>
+          )}
+
+          {product.price != null && (
+            <p style={{ fontSize: "16px", fontWeight: 800, color: "#1240A0", marginTop: "6px" }}>
+              {formatPrice(product.price)}
             </p>
           )}
 

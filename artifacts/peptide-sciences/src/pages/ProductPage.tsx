@@ -6,6 +6,7 @@ import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus,
 import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
 import { useCart } from "@/context/CartContext";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function ProductPage() {
   const params = useParams<{ id: string }>();
@@ -14,6 +15,7 @@ export default function ProductPage() {
   const [activeTab, setActiveTab] = useState<"description" | "coa">("description");
   const [added, setAdded] = useState(false);
   const { addToCart } = useCart();
+  const { formatPrice } = useCurrency();
 
   const decreaseQty = () => setQuantity((q) => Math.max(1, q - 1));
   const increaseQty = () => setQuantity((q) => q + 1);
@@ -192,6 +194,18 @@ export default function ProductPage() {
                 ✓ In Stock
               </span>
             </div>
+
+            {/* Price */}
+            {product.price != null && (
+              <div className="mb-4">
+                <p style={{ fontSize: "28px", fontWeight: 800, color: "#1240A0", lineHeight: 1 }}>
+                  {formatPrice(product.price)}
+                </p>
+                <p style={{ fontSize: "11.5px", color: "#94A3B8", marginTop: "4px" }}>
+                  Prices shown are indicative. Final invoice in GBP.
+                </p>
+              </div>
+            )}
 
             {/* Quantity + CTA */}
             <div

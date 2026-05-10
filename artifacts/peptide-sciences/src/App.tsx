@@ -14,6 +14,7 @@ import ReconstitutionCalculator from "@/pages/ReconstitutionCalculator";
 import CartPage from "@/pages/CartPage";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
+import { CurrencyProvider } from "@/context/CurrencyContext";
 
 const queryClient = new QueryClient();
 
@@ -68,19 +69,21 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <CartProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-            <div className="min-h-screen bg-white flex flex-col">
-              <AnnouncementBar />
-              <Header />
-              <main className="flex-1">
-                <Router />
-              </main>
-              <Footer />
-            </div>
-          </WouterRouter>
-          <Toaster />
-        </CartProvider>
+        <CurrencyProvider>
+          <CartProvider>
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+              <div className="min-h-screen bg-white flex flex-col">
+                <AnnouncementBar />
+                <Header />
+                <main className="flex-1">
+                  <Router />
+                </main>
+                <Footer />
+              </div>
+            </WouterRouter>
+            <Toaster />
+          </CartProvider>
+        </CurrencyProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

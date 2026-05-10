@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, User, ShoppingCart, Menu, X } from "lucide-react";
+import { Search, User, ShoppingCart, Menu, X, ChevronDown } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { products } from "@/data/products";
 
 const navItems = [
@@ -22,10 +23,23 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(-1);
+  const [currencyOpen, setCurrencyOpen] = useState(false);
   const [location, navigate] = useLocation();
   const { totalItems } = useCart();
+  const { currency, setCurrency } = useCurrency();
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const currencyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutsideCurrency(e: MouseEvent) {
+      if (currencyRef.current && !currencyRef.current.contains(e.target as Node)) {
+        setCurrencyOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutsideCurrency);
+    return () => document.removeEventListener("mousedown", handleClickOutsideCurrency);
+  }, []);
 
   const q = searchQuery.trim().toLowerCase();
   const results = q.length >= 1
@@ -243,6 +257,77 @@ export default function Header() {
                 }}
               >
                 No peptides found for "{searchQuery.trim()}"
+              </div>
+            )}
+          </div>
+
+          {/* Currency selector */}
+          <div ref={currencyRef} style={{ position: "relative", flexShrink: 0 }}>
+            <button
+              onClick={() => setCurrencyOpen(o => !o)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                padding: "5px 10px",
+                borderRadius: "8px",
+                border: "1.5px solid #E2E8F0",
+                backgroundColor: "#F8FAFC",
+                cursor: "pointer",
+                fontSize: "13px",
+                fontWeight: 600,
+                color: "#475569",
+              }}
+            >
+              <span style={{ fontSize: "15px" }}>{currency.flag}</span>
+              {currency.code}
+              <ChevronDown size={13} style={{ color: "#94A3B8" }} />
+            </button>
+
+            {currencyOpen && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "calc(100% + 6px)",
+                  right: 0,
+                  backgroundColor: "#fff",
+                  border: "1.5px solid #E2E8F0",
+                  borderRadius: "12px",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                  zIndex: 300,
+                  minWidth: "200px",
+                  overflow: "hidden",
+                  padding: "4px",
+                }}
+              >
+                {CURRENCIES.map(c => (
+                  <button
+                    key={c.code}
+                    onMouseDown={() => {
+                      setCurrency(c.code as CurrencyCode);
+                      setCurrencyOpen(false);
+                    }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                      width: "100%",
+                      padding: "8px 12px",
+                      borderRadius: "8px",
+                      border: "none",
+                      cursor: "pointer",
+                      backgroundColor: c.code === currency.code ? "#EEF4FF" : "transparent",
+                      textAlign: "left",
+                    }}
+                  >
+                    <span style={{ fontSize: "16px" }}>{c.flag}</span>
+                    <span style={{ fontSize: "12.5px", fontWeight: 600, color: "#0F172A", minWidth: "36px" }}>{c.code}</span>
+                    <span style={{ fontSize: "12px", color: "#64748B" }}>{c.label}</span>
+                    {c.code === currency.code && (
+                      <span style={{ marginLeft: "auto", color: "#1B5CB5", fontSize: "12px" }}>✓</span>
+                    )}
+                  </button>
+                ))}
               </div>
             )}
           </div>

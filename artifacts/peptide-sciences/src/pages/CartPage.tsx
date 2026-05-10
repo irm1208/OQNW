@@ -1,9 +1,11 @@
 import { Link } from "wouter";
 import { useCart } from "@/context/CartContext";
+import { useCurrency } from "@/context/CurrencyContext";
 import { Trash2, Plus, Minus, ShoppingCart, ChevronRight, FlaskConical } from "lucide-react";
 
 export default function CartPage() {
   const { items, totalItems, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { formatPrice, currency } = useCurrency();
 
   if (items.length === 0) {
     return (
@@ -172,9 +174,7 @@ export default function CartPage() {
                       {product.name} <span style={{ color: "#94A3B8" }}>× {quantity}</span>
                     </p>
                     <p className="font-medium" style={{ fontSize: "12.5px", color: "#0F172A", flexShrink: 0 }}>
-                      {product.price != null
-                        ? `$${(product.price * quantity).toFixed(2)}`
-                        : "—"}
+                      {product.price != null ? formatPrice(product.price * quantity) : "—"}
                     </p>
                   </div>
                 ))}
@@ -192,7 +192,7 @@ export default function CartPage() {
                   <div className="flex items-center gap-2">
                     <FlaskConical size={13} style={{ color: "#16A34A", flexShrink: 0 }} />
                     <p style={{ fontSize: "11.5px", color: "#166534", lineHeight: 1.5 }}>
-                      Free shipping on orders over $200. Cold-chain packaging included.
+                      Free shipping on orders over {currency.symbol}200. Cold-chain packaging included.
                     </p>
                   </div>
                 </div>
