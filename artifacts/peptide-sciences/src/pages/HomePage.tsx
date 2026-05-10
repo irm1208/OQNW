@@ -31,7 +31,6 @@ const stats = [
   { value: "81+", label: "Research Peptides" },
   { value: "99%+", label: "HPLC Purity" },
   { value: "COA", label: "Every Batch Tested" },
-  { value: "24h", label: "Fast Dispatch" },
 ];
 
 const pillars = [
