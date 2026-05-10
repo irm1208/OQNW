@@ -42,22 +42,44 @@ export function getLotNumber(productId: string): string {
 }
 
 /**
- * Date of analysis: a deterministic day in the current calendar month (1–20).
- * Changes month automatically.
+ * Date of analysis: a deterministic past day in the current calendar month.
+ * Raw value is 1–10; capped so it is always at least 4 days before today.
+ * If today is very early in the month (day ≤ 4) we back up into last month.
  */
 export function getAnalysisDate(productId: string): Date {
   const n   = parseInt(productId, 10) || 1;
   const now = new Date();
-  const day = ((n * 7 + 3) % 20) + 1;      // 1–20
-  return new Date(now.getFullYear(), now.getMonth(), day);
+  const rawDay = ((n * 7 + 3) % 10) + 1;   // 1–10
+  const latestAllowed = now.getDate() - 4;   // must be at least 4 days ago
+
+  if (latestAllowed >= 1) {
+    // Enough room in the current month
+    const day = Math.min(rawDay, latestAllowed);
+    return new Date(now.getFullYear(), now.getMonth(), day);
+  } else {
+    // We're in the first 4 days of the month — use last month instead
+    const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const daysInLastMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+    const day = Math.min(rawDay + 18, daysInLastMonth); // land near end of last month
+    return new Date(lastMonth.getFullYear(), lastMonth.getMonth(), day);
+  }
 }
 
-/** Date of issue: 2–5 days after analysis, still within the same month cycle. */
+/**
+ * Date of issue: 1–3 days after analysis, always capped to yesterday at the latest.
+ */
 export function getIssueDate(productId: string): Date {
-  const n = parseInt(productId, 10) || 1;
-  const d = getAnalysisDate(productId);
-  d.setDate(d.getDate() + ((n % 4) + 2));   // +2 to +5 days
-  return d;
+  const n        = parseInt(productId, 10) || 1;
+  const analysis = getAnalysisDate(productId);
+  const offset   = (n % 3) + 1;             // 1–3 days after analysis
+  const issue    = new Date(analysis);
+  issue.setDate(analysis.getDate() + offset);
+
+  // Never allow a future or today date
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  yesterday.setHours(0, 0, 0, 0);
+  return issue > yesterday ? yesterday : issue;
 }
 
 /** Expiry date: exactly 2 years from the date of issue. */

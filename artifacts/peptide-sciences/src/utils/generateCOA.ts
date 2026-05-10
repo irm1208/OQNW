@@ -272,56 +272,13 @@ export function generateCOA(product: Product, detail: ProductDetail) {
     y += 14;
   }
 
-  // ── 7. AUTHORISATION (fixed at y, must end before FOOTER_Y) ───────────────
-  if (y < FOOTER_Y - 48) {
-    sectionLabel(doc, "QUALITY CONTROL AUTHORISATION", M, y, CW);
-    y += 8;
-
-    const sigW = (CW - 8) / 3;
-    const signatories = [
-      { name: "Dr. A. Blackwood PhD",  role: "QC Director",              ref: "QCD-2024-001" },
-      { name: "Dr. S. Patel MSc",      role: "Analytical Sciences Lead", ref: "ASL-2024-047" },
-      { name: "Dr. R. Chen MRPharmS",  role: "Regulatory Compliance",    ref: "RCO-2024-023" },
-    ];
-
-    signatories.forEach((sig, i) => {
-      const sx = M + i * (sigW + 4);
-
-      fill(doc, sx, y, sigW, 36, 250, 251, 255);
-      border(doc, sx, y, sigW, 36, 213, 222, 235);
-
-      // Signature area placeholder
-      fill(doc, sx + 3, y + 3, sigW - 6, 18, 245, 247, 250);
-      border(doc, sx + 3, y + 3, sigW - 6, 18, 226, 232, 240, 0.2);
-      doc.setFont("helvetica", "italic");
-      doc.setFontSize(6);
-      doc.setTextColor(148, 163, 184);
-      doc.text("[ Authorised Signature ]", sx + sigW / 2, y + 13.5, { align: "center" });
-
-      hline(doc, sx + 3, y + 24, sigW - 6, 100, 116, 139, 0.3);
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(7);
-      doc.setTextColor(15, 23, 42);
-      doc.text(sig.name, sx + sigW / 2, y + 28.5, { align: "center" });
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(6);
-      doc.setTextColor(100, 116, 139);
-      doc.text(sig.role, sx + sigW / 2, y + 32.5, { align: "center" });
-      doc.text(`Ref: ${sig.ref}`, sx + sigW / 2, y + 36, { align: "center" });
-    });
-
-    y += 42;
-  }
-
-  // Accreditation note
+  // ── 7. ACCREDITATION NOTE ──────────────────────────────────────────────────
   if (y < FOOTER_Y - 12) {
     doc.setFont("helvetica", "italic");
     doc.setFontSize(6);
     doc.setTextColor(148, 163, 184);
     doc.text(
-      `This document was generated electronically and is valid without a wet signature. Analysed at OmniQure QC Laboratory, Hertfordshire, UK.  ISO/IEC 17025:2017 accredited facility.`,
+      `This certificate is generated electronically and is valid for the lot number stated above. Analysed at OmniQure QC Laboratory, Hertfordshire, UK.  ISO/IEC 17025:2017 accredited facility.`,
       M, y + 5, { maxWidth: CW }
     );
   }
