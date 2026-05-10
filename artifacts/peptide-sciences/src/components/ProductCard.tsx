@@ -79,7 +79,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Image area */}
         <div
           className="relative w-full overflow-hidden"
-          style={{ height: "240px", background: `linear-gradient(160deg, #F8FAFE 0%, ${cat.bg} 100%)` }}
+          style={{ height: "300px", background: `linear-gradient(160deg, #F8FAFE 0%, ${cat.bg} 100%)` }}
           onMouseEnter={() => setImgHovered(true)}
           onMouseLeave={() => setImgHovered(false)}
         >
