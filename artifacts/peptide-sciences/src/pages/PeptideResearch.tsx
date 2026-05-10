@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "wouter";
 import { peptideResearchData, type PeptideResearchEntry } from "@/data/peptideResearch";
-import { Search, ExternalLink, FlaskConical, BookOpen, ChevronRight, X } from "lucide-react";
+import { Search, ExternalLink, FlaskConical, BookOpen, ChevronRight, X, ChevronDown, ChevronUp } from "lucide-react";
 
 const CATEGORIES = [
   "All",
@@ -39,48 +39,67 @@ const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string
 };
 
 function StudyCard({ study, index }: { study: PeptideResearchEntry["studies"][0]; index: number }) {
-  const [expanded, setExpanded] = useState(false);
   return (
     <div
-      className="rounded-xl p-4"
-      style={{ backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5" }}
+      style={{
+        padding: "16px 18px",
+        borderRadius: "12px",
+        backgroundColor: "#F8FAFC",
+        border: "1px solid #E8EDF5",
+      }}
     >
-      <div className="flex items-start gap-3">
+      <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
         <div
-          className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white font-bold mt-0.5"
-          style={{ backgroundColor: "#1B5CB5", fontSize: "11px" }}
+          style={{
+            flexShrink: 0,
+            width: "22px",
+            height: "22px",
+            borderRadius: "50%",
+            backgroundColor: "#1B5CB5",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            fontSize: "10px",
+            fontWeight: 700,
+            marginTop: "2px",
+          }}
         >
           {index + 1}
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="font-semibold leading-snug mb-1" style={{ fontSize: "13px", color: "#0F172A" }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{ fontSize: "14px", fontWeight: 600, color: "#0F172A", lineHeight: 1.5, marginBottom: "4px" }}>
             {study.title}
           </p>
-          <p style={{ fontSize: "11.5px", color: "#64748B" }}>
+          <p style={{ fontSize: "12px", color: "#64748B", marginBottom: "10px" }}>
             {study.authors} — <em>{study.journal}</em>, {study.year}
           </p>
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="mt-2 text-left"
-            style={{ fontSize: "12px", color: "#1B5CB5", fontWeight: 500 }}
+          <div
+            style={{
+              backgroundColor: "#fff",
+              border: "1px solid #E2E8F0",
+              borderRadius: "8px",
+              padding: "10px 14px",
+            }}
           >
-            {expanded ? "▲ Hide finding" : "▼ Key finding"}
-          </button>
-          {expanded && (
-            <p className="mt-2 leading-relaxed" style={{ fontSize: "12.5px", color: "#334155" }}>
+            <p style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: "#94A3B8", marginBottom: "5px" }}>
+              Key Finding
+            </p>
+            <p style={{ fontSize: "13.5px", color: "#334155", lineHeight: 1.7 }}>
               {study.finding}
             </p>
-          )}
+          </div>
           {(study.doi || study.pmid) && (
-            <div className="mt-2 flex items-center gap-1.5">
-              <ExternalLink size={11} style={{ color: "#94A3B8" }} />
+            <div style={{ marginTop: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
+              <ExternalLink size={11} style={{ color: "#94A3B8", flexShrink: 0 }} />
               {study.doi && (
                 <a
                   href={`https://doi.org/${study.doi}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:underline"
-                  style={{ fontSize: "11px", color: "#64748B" }}
+                  style={{ fontSize: "11.5px", color: "#1B5CB5", textDecoration: "none" }}
+                  onMouseOver={(e) => (e.currentTarget.style.textDecoration = "underline")}
+                  onMouseOut={(e) => (e.currentTarget.style.textDecoration = "none")}
                 >
                   doi:{study.doi}
                 </a>
@@ -90,10 +109,11 @@ function StudyCard({ study, index }: { study: PeptideResearchEntry["studies"][0]
                   href={`https://pubmed.ncbi.nlm.nih.gov/${study.pmid}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:underline"
-                  style={{ fontSize: "11px", color: "#64748B" }}
+                  style={{ fontSize: "11.5px", color: "#1B5CB5", textDecoration: "none" }}
+                  onMouseOver={(e) => (e.currentTarget.style.textDecoration = "underline")}
+                  onMouseOut={(e) => (e.currentTarget.style.textDecoration = "none")}
                 >
-                  PMID: {study.pmid}
+                  PubMed PMID: {study.pmid}
                 </a>
               )}
             </div>
@@ -105,72 +125,135 @@ function StudyCard({ study, index }: { study: PeptideResearchEntry["studies"][0]
 }
 
 function PeptideCard({ entry }: { entry: PeptideResearchEntry }) {
+  const [studiesOpen, setStudiesOpen] = useState(true);
   const color = CATEGORY_COLORS[entry.category] ?? CATEGORY_COLORS["Research Peptides"];
+
   return (
     <div
       id={entry.compound.toLowerCase().replace(/\s+/g, "-")}
-      className="rounded-2xl overflow-hidden"
-      style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}
+      style={{
+        backgroundColor: "#fff",
+        borderRadius: "20px",
+        border: "1px solid #E8EDF5",
+        boxShadow: "0 4px 20px rgba(15,23,42,0.06)",
+        overflow: "hidden",
+      }}
     >
-      {/* Header */}
-      <div className="px-5 py-4" style={{ borderBottom: "1px solid #F1F5F9" }}>
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <h2 className="font-bold" style={{ fontSize: "18px", color: "#0F172A" }}>
-              {entry.compound}
-            </h2>
-            <span
-              className="inline-block mt-1 px-2.5 py-0.5 rounded-full text-xs font-medium"
-              style={{ backgroundColor: color.bg, color: color.text, border: `1px solid ${color.border}` }}
+      {/* Card header */}
+      <div
+        style={{
+          padding: "20px 24px",
+          borderBottom: "1px solid #F1F5F9",
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          gap: "16px",
+          flexWrap: "wrap",
+        }}
+      >
+        <div>
+          <h2 style={{ fontSize: "20px", fontWeight: 700, color: "#0F172A", marginBottom: "6px", lineHeight: 1.2 }}>
+            {entry.compound}
+          </h2>
+          <span
+            style={{
+              display: "inline-block",
+              padding: "3px 10px",
+              borderRadius: "999px",
+              fontSize: "11.5px",
+              fontWeight: 600,
+              backgroundColor: color.bg,
+              color: color.text,
+              border: `1px solid ${color.border}`,
+            }}
+          >
+            {entry.category}
+          </span>
+        </div>
+        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
+          {entry.productIds.map((pid) => (
+            <Link
+              key={pid}
+              href={`/product/${pid}`}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+                padding: "8px 14px",
+                borderRadius: "10px",
+                backgroundColor: "#1B5CB5",
+                color: "#fff",
+                fontSize: "12.5px",
+                fontWeight: 600,
+                textDecoration: "none",
+              }}
             >
-              {entry.category}
-            </span>
-          </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            {entry.productIds.map((pid) => (
-              <Link
-                key={pid}
-                href={`/product/${pid}`}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-medium transition-colors hover:opacity-90"
-                style={{ backgroundColor: "#1B5CB5", color: "#fff", fontSize: "12px", textDecoration: "none" }}
-              >
-                View Product <ChevronRight size={12} />
-              </Link>
-            ))}
-          </div>
+              View Product <ChevronRight size={13} />
+            </Link>
+          ))}
         </div>
       </div>
 
       {/* Body */}
-      <div className="px-5 py-4">
-        <p className="leading-relaxed mb-4" style={{ fontSize: "13.5px", color: "#475569" }}>
+      <div style={{ padding: "22px 24px" }}>
+
+        {/* Description */}
+        <p style={{ fontSize: "15px", color: "#475569", lineHeight: 1.8, marginBottom: "20px" }}>
           {entry.description}
         </p>
 
         {/* Mechanism */}
         <div
-          className="rounded-xl px-4 py-3 mb-5"
-          style={{ backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}
+          style={{
+            backgroundColor: "#EEF4FF",
+            border: "1px solid #BFDBFE",
+            borderRadius: "14px",
+            padding: "16px 18px",
+            marginBottom: "22px",
+          }}
         >
-          <p className="font-semibold mb-1" style={{ fontSize: "11px", color: "#1B5CB5", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+          <p style={{ fontSize: "10.5px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "#1B5CB5", marginBottom: "8px" }}>
             Mechanism of Action
           </p>
-          <p style={{ fontSize: "12.5px", color: "#1E3A6A", lineHeight: 1.6 }}>
+          <p style={{ fontSize: "14px", color: "#1E3A6A", lineHeight: 1.8 }}>
             {entry.mechanism}
           </p>
         </div>
 
-        {/* Studies */}
-        <div>
-          <p className="font-semibold mb-3 flex items-center gap-2" style={{ fontSize: "12px", color: "#94A3B8", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-            <BookOpen size={13} /> Research Literature ({entry.studies.length} {entry.studies.length === 1 ? "study" : "studies"})
-          </p>
-          <div className="space-y-3">
+        {/* Studies toggle */}
+        <button
+          onClick={() => setStudiesOpen((o) => !o)}
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "12px 16px",
+            borderRadius: "12px",
+            backgroundColor: "#F8FAFC",
+            border: "1px solid #E8EDF5",
+            cursor: "pointer",
+            marginBottom: studiesOpen ? "16px" : "0",
+            fontFamily: "'Arimo', Arial, sans-serif",
+          }}
+        >
+          <span style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", fontWeight: 700, color: "#334155" }}>
+            <BookOpen size={14} style={{ color: "#64748B" }} />
+            Research Literature — {entry.studies.length} {entry.studies.length === 1 ? "study" : "studies"}
+          </span>
+          {studiesOpen
+            ? <ChevronUp size={15} style={{ color: "#64748B" }} />
+            : <ChevronDown size={15} style={{ color: "#64748B" }} />
+          }
+        </button>
+
+        {studiesOpen && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {entry.studies.map((study, i) => (
               <StudyCard key={i} study={study} index={i} />
             ))}
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
@@ -205,105 +288,99 @@ export default function PeptideResearch() {
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
+
       {/* Hero */}
-      <div
-        style={{
-          background: "linear-gradient(135deg, #1240A0 0%, #1B5CB5 60%, #2563EB 100%)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
+      <div style={{ background: "linear-gradient(135deg, #1240A0 0%, #1B5CB5 60%, #2563EB 100%)", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, opacity: 0.05, backgroundImage: "radial-gradient(circle at 70% 50%, #fff 0%, transparent 60%)" }} />
-        <div className="max-w-[1280px] mx-auto px-4 py-10 md:py-14">
-          <div className="flex items-center gap-2 mb-3">
-            <FlaskConical size={16} style={{ color: "#93C5FD" }} />
+        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "40px 24px 44px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
+            <FlaskConical size={15} style={{ color: "#93C5FD" }} />
             <span style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.08em", color: "#93C5FD", textTransform: "uppercase" }}>
               OmniQure Research Library
             </span>
           </div>
-          <h1 className="font-bold text-white mb-3" style={{ fontSize: "clamp(26px,4vw,42px)", lineHeight: 1.15 }}>
+          <h1 style={{ fontSize: "clamp(26px,4vw,40px)", fontWeight: 700, color: "#fff", lineHeight: 1.15, marginBottom: "12px" }}>
             Peptide Research &amp; Literature
           </h1>
-          <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.75)", maxWidth: "600px", lineHeight: 1.7 }}>
+          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.78)", maxWidth: "600px", lineHeight: 1.75, marginBottom: "24px" }}>
             Peer-reviewed studies and mechanisms of action for all {peptideResearchData.length} peptide compounds available through OmniQure. For laboratory research purposes only.
           </p>
-          <div className="flex flex-wrap gap-4 mt-5">
-            <div className="rounded-xl px-4 py-2.5 text-center" style={{ backgroundColor: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)" }}>
-              <p className="font-bold text-white" style={{ fontSize: "22px" }}>{peptideResearchData.length}</p>
-              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.7)" }}>Peptide Compounds</p>
-            </div>
-            <div className="rounded-xl px-4 py-2.5 text-center" style={{ backgroundColor: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)" }}>
-              <p className="font-bold text-white" style={{ fontSize: "22px" }}>{totalStudies}</p>
-              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.7)" }}>Research Citations</p>
-            </div>
-            <div className="rounded-xl px-4 py-2.5 text-center" style={{ backgroundColor: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)" }}>
-              <p className="font-bold text-white" style={{ fontSize: "22px" }}>{CATEGORIES.length - 1}</p>
-              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.7)" }}>Research Categories</p>
-            </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+            {[
+              { n: peptideResearchData.length, label: "Peptide Compounds" },
+              { n: totalStudies, label: "Research Citations" },
+              { n: CATEGORIES.length - 1, label: "Research Categories" },
+            ].map(({ n, label }) => (
+              <div key={label} style={{ borderRadius: "12px", padding: "10px 20px", textAlign: "center", backgroundColor: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)" }}>
+                <p style={{ fontSize: "24px", fontWeight: 700, color: "#fff", lineHeight: 1 }}>{n}</p>
+                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.7)", marginTop: "3px" }}>{label}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
       {/* Disclaimer */}
-      <div
-        className="px-4 py-3 text-center"
-        style={{ backgroundColor: "#FFFBEB", borderBottom: "1px solid #FDE68A" }}
-      >
-        <p style={{ fontSize: "12px", color: "#92400E" }}>
+      <div style={{ backgroundColor: "#FFFBEB", borderBottom: "1px solid #FDE68A", padding: "10px 24px", textAlign: "center" }}>
+        <p style={{ fontSize: "12.5px", color: "#92400E", lineHeight: 1.6 }}>
           <strong>Research Use Only:</strong> All studies cited are for in-vitro and preclinical/clinical research contexts. These peptides are not approved for human therapeutic use. For qualified researchers only.
         </p>
       </div>
 
-      {/* Search + Filter bar */}
-      <div className="bg-white sticky top-0 z-10" style={{ borderBottom: "1px solid #E8EDF5", boxShadow: "0 2px 8px rgba(15,23,42,0.04)" }}>
-        <div className="max-w-[1280px] mx-auto px-4 py-3">
-          {/* Search */}
-          <div className="relative mb-3">
-            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: "#94A3B8" }} />
+      {/* Sticky search + filter bar */}
+      <div style={{ backgroundColor: "#fff", borderBottom: "1px solid #E8EDF5", boxShadow: "0 2px 8px rgba(15,23,42,0.04)", position: "sticky", top: 0, zIndex: 10 }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "12px 20px" }}>
+          <div style={{ position: "relative", marginBottom: "10px" }}>
+            <Search size={15} style={{ position: "absolute", left: "13px", top: "50%", transform: "translateY(-50%)", color: "#94A3B8" }} />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search peptides, journals, authors, or findings..."
-              className="w-full outline-none"
               style={{
-                paddingLeft: "36px",
-                paddingRight: query ? "36px" : "12px",
-                paddingTop: "9px",
-                paddingBottom: "9px",
-                fontSize: "13.5px",
+                width: "100%",
+                paddingLeft: "38px",
+                paddingRight: query ? "38px" : "14px",
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                fontSize: "14px",
                 border: "1.5px solid #E2E8F0",
                 borderRadius: "10px",
                 backgroundColor: "#F8FAFC",
                 color: "#0F172A",
+                outline: "none",
+                fontFamily: "'Arimo', Arial, sans-serif",
+                boxSizing: "border-box",
               }}
             />
             {query && (
               <button
                 onClick={() => setQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2"
-                style={{ color: "#94A3B8" }}
+                style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", color: "#94A3B8", background: "none", border: "none", cursor: "pointer", padding: 0 }}
               >
                 <X size={14} />
               </button>
             )}
           </div>
-
-          {/* Category pills */}
-          <div className="flex gap-1.5 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
+          <div style={{ display: "flex", gap: "6px", overflowX: "auto", paddingBottom: "2px", scrollbarWidth: "none" }}>
             {CATEGORIES.map((cat) => {
               const active = cat === activeCategory;
               return (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className="flex-shrink-0 px-3 py-1 rounded-full font-medium transition-all"
                   style={{
-                    fontSize: "12px",
+                    flexShrink: 0,
+                    padding: "5px 13px",
+                    borderRadius: "999px",
+                    fontSize: "12.5px",
+                    fontWeight: active ? 700 : 500,
                     backgroundColor: active ? "#1B5CB5" : "#F1F5F9",
                     color: active ? "#fff" : "#475569",
                     border: "1px solid " + (active ? "#1B5CB5" : "#E2E8F0"),
                     whiteSpace: "nowrap",
+                    cursor: "pointer",
+                    fontFamily: "'Arimo', Arial, sans-serif",
                   }}
                 >
                   {cat}
@@ -314,11 +391,12 @@ export default function PeptideResearch() {
         </div>
       </div>
 
-      {/* Results */}
-      <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-6">
-        {/* Result count */}
-        <div className="flex items-center justify-between mb-5">
-          <p style={{ fontSize: "13px", color: "#64748B" }}>
+      {/* Content */}
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "28px 20px 60px" }}>
+
+        {/* Result count + clear */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
+          <p style={{ fontSize: "13.5px", color: "#64748B" }}>
             {filtered.length === peptideResearchData.length
               ? `Showing all ${filtered.length} peptide compounds`
               : `${filtered.length} compound${filtered.length !== 1 ? "s" : ""} found`}
@@ -326,23 +404,33 @@ export default function PeptideResearch() {
           {(query || activeCategory !== "All") && (
             <button
               onClick={() => { setQuery(""); setActiveCategory("All"); }}
-              className="flex items-center gap-1 px-3 py-1 rounded-full"
-              style={{ fontSize: "12px", color: "#64748B", border: "1px solid #E2E8F0", backgroundColor: "#fff" }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                padding: "5px 12px",
+                borderRadius: "999px",
+                fontSize: "12.5px",
+                color: "#64748B",
+                border: "1px solid #E2E8F0",
+                backgroundColor: "#fff",
+                cursor: "pointer",
+                fontFamily: "'Arimo', Arial, sans-serif",
+              }}
             >
               <X size={11} /> Clear filters
             </button>
           )}
         </div>
 
-        {/* Cards */}
         {filtered.length === 0 ? (
-          <div className="text-center py-20" style={{ color: "#94A3B8" }}>
-            <FlaskConical size={40} className="mx-auto mb-4 opacity-30" />
-            <p className="font-medium mb-1" style={{ fontSize: "16px", color: "#64748B" }}>No results found</p>
-            <p style={{ fontSize: "13px" }}>Try a different search term or category filter.</p>
+          <div style={{ textAlign: "center", padding: "80px 0", color: "#94A3B8" }}>
+            <FlaskConical size={40} style={{ margin: "0 auto 16px", opacity: 0.3 }} />
+            <p style={{ fontSize: "16px", fontWeight: 600, color: "#64748B", marginBottom: "6px" }}>No results found</p>
+            <p style={{ fontSize: "13.5px" }}>Try a different search term or category filter.</p>
           </div>
         ) : (
-          <div className="space-y-5">
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {filtered.map((entry) => (
               <PeptideCard key={entry.compound} entry={entry} />
             ))}
@@ -351,20 +439,27 @@ export default function PeptideResearch() {
       </div>
 
       {/* Bottom CTA */}
-      <div
-        className="px-4 py-10 text-center"
-        style={{ backgroundColor: "#0F172A" }}
-      >
-        <p className="font-bold text-white mb-2" style={{ fontSize: "20px" }}>
+      <div style={{ backgroundColor: "#0F172A", padding: "48px 24px", textAlign: "center" }}>
+        <p style={{ fontSize: "22px", fontWeight: 700, color: "#fff", marginBottom: "10px" }}>
           Ready to start your research?
         </p>
-        <p className="mb-6" style={{ fontSize: "13.5px", color: "#64748B", maxWidth: "500px", margin: "0 auto 24px" }}>
+        <p style={{ fontSize: "14px", color: "#64748B", maxWidth: "500px", margin: "0 auto 24px", lineHeight: 1.7 }}>
           All 81 peptides are HPLC verified at ≥99% purity with full COA, HPLC chromatograms, and ESI-MS data.
         </p>
         <Link
           href="/all-peptides"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-opacity hover:opacity-90"
-          style={{ backgroundColor: "#1B5CB5", color: "#fff", fontSize: "14px", textDecoration: "none" }}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "12px 24px",
+            borderRadius: "12px",
+            backgroundColor: "#1B5CB5",
+            color: "#fff",
+            fontSize: "14px",
+            fontWeight: 700,
+            textDecoration: "none",
+          }}
         >
           Browse All Peptides <ChevronRight size={16} />
         </Link>
