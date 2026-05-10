@@ -28,7 +28,7 @@ const grouped = CATEGORY_ORDER.map((cat) => ({
   category: cat,
   items: products
     .filter((p) => p.category === cat)
-    .sort((a, b) => a.name.localeCompare(b.name)),
+    .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true })),
 })).filter((g) => g.items.length > 0);
 
 export default function Sidebar({ selectedCategory, onCategoryChange }: SidebarProps) {

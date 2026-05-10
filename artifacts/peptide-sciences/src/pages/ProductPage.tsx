@@ -27,6 +27,7 @@ export default function ProductPage() {
   const detail = productDetails[product.id] ?? { id: product.id, description: "" };
   const relatedProducts = products
     .filter((p) => p.category === product.category && p.id !== product.id)
+    .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
     .slice(0, 4);
 
 

@@ -66,7 +66,7 @@ export default function AllPeptides() {
         break;
       case "name":
       default:
-        result.sort((a, b) => a.name.localeCompare(b.name));
+        result.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
         break;
     }
 
