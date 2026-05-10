@@ -2,12 +2,12 @@ import { useState } from "react";
 import { X } from "lucide-react";
 
 const messages = [
-  "🔬  99% HPLC Purity — Guaranteed on Every Product",
-  "🚚  Free Shipping on Orders Over £200 — UK & Worldwide",
-  "🧪  Research Grade · Lab Certified · COA Included",
-  "🔒  Secure Checkout — SSL Encrypted & Discreet Packaging",
-  "⚗️  Full ESI-TOF Mass Spectrometry Data Available",
-  "📦  Cold-Chain Packaging — Lyophilized for Stability",
+  "⬡  OMNIQURE RESEARCH INSTITUTE  ·  ≥99% HPLC PURITY VERIFIED",
+  "⬡  FREE SHIPPING ON ORDERS OVER £200  ·  UK & WORLDWIDE",
+  "⬡  FULL COA + ESI-TOF MASS SPECTROMETRY DATA INCLUDED",
+  "⬡  SSL ENCRYPTED CHECKOUT  ·  DISCREET COLD-CHAIN PACKAGING",
+  "⬡  LYOPHILIZED PEPTIDES  ·  STABLE FROM DISPATCH TO DELIVERY",
+  "⬡  RUO CERTIFIED  ·  IN-VITRO RESEARCH USE ONLY  ·  18+ REQUIRED",
 ];
 
 export default function AnnouncementBar() {
@@ -18,68 +18,56 @@ export default function AnnouncementBar() {
 
   return (
     <div
-      className="relative overflow-hidden"
+      className="relative overflow-hidden scan-overlay"
       style={{
-        background: "linear-gradient(90deg, #050E2A 0%, #0D2159 30%, #1240A0 60%, #0D2159 80%, #050E2A 100%)",
-        height: "36px",
+        height: "34px",
+        background: "linear-gradient(90deg, #020810 0%, #020D1E 40%, #03122A 60%, #020810 100%)",
+        borderBottom: "1px solid rgba(0,212,255,0.2)",
       }}
     >
-      {/* Shimmer overlay */}
+      {/* Neon accent line at very top */}
       <div
         style={{
           position: "absolute",
-          inset: 0,
-          background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%)",
-          backgroundSize: "200% 100%",
-          animation: "shimmer 3s linear infinite",
-          pointerEvents: "none",
-          zIndex: 1,
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "1px",
+          background: "linear-gradient(90deg, transparent 0%, #00D4FF 30%, #8B5CF6 70%, transparent 100%)",
+          opacity: 0.7,
+          zIndex: 2,
         }}
       />
 
-      {/* Scrolling ticker */}
-      <div className="flex items-center h-full overflow-hidden" style={{ zIndex: 2, position: "relative" }}>
-        <div
-          className="animate-ticker flex-shrink-0 flex items-center"
-          style={{ whiteSpace: "nowrap" }}
-        >
+      <div className="flex items-center h-full overflow-hidden" style={{ zIndex: 3, position: "relative" }}>
+        <div className="animate-ticker flex-shrink-0 flex items-center" style={{ whiteSpace: "nowrap" }}>
           {doubled.map((msg, i) => (
             <span
               key={i}
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                fontSize: "11.5px",
+                fontSize: "10.5px",
                 fontWeight: 600,
-                color: "#E2E8F0",
-                letterSpacing: "0.025em",
-                paddingRight: "0",
+                fontFamily: "'Share Tech Mono', monospace",
+                color: "#7BBFD4",
+                letterSpacing: "0.08em",
               }}
             >
               {msg}
-              <span
-                style={{
-                  display: "inline-block",
-                  width: "1px",
-                  height: "12px",
-                  backgroundColor: "rgba(255,255,255,0.2)",
-                  margin: "0 32px",
-                  verticalAlign: "middle",
-                }}
-              />
+              <span style={{ display: "inline-block", width: "1px", height: "10px", backgroundColor: "rgba(0,212,255,0.25)", margin: "0 36px", verticalAlign: "middle" }} />
             </span>
           ))}
         </div>
       </div>
 
-      {/* Close */}
       <button
         onClick={() => setVisible(false)}
-        className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all hover:bg-white/10"
-        style={{ width: "22px", height: "22px", opacity: 0.6, zIndex: 3, border: "none", background: "none", cursor: "pointer", color: "#fff" }}
+        className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all"
+        style={{ width: "20px", height: "20px", opacity: 0.5, zIndex: 4, border: "none", background: "none", cursor: "pointer", color: "#00D4FF" }}
         aria-label="Close"
       >
-        <X size={13} />
+        <X size={12} />
       </button>
     </div>
   );
