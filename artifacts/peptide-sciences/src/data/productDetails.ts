@@ -170,7 +170,7 @@ BPC-157 40mg provides a high-quantity format of Body Protection Compound 157 for
 
   "7": {
     id: "7",
-    refNumber: "157-20-BT",
+    refNumber: "157-10-BT",
     casNumber: "137525-51-0 / 77591-33-4",
     molecularWeight: "1419.56 g/mol / 4963.44 g/mol",
     purity: "99% HPLC",
@@ -179,10 +179,10 @@ BPC-157 40mg provides a high-quantity format of Body Protection Compound 157 for
     appearance: "White lyophilized powder",
     solubility: "Soluble in sterile water or bacteriostatic water",
     researchAreas: ["Tissue Repair", "Wound Healing", "Musculoskeletal Recovery", "Anti-Inflammatory Research"],
-    description: `The BPC-157 + TB-500 Blend 20mg combines Body Protection Compound 157 (BPC-157) and Thymosin Beta-4 (TB-500) in a single vial for research into synergistic tissue repair mechanisms. Each component contributes complementary regenerative pathways.`,
+    description: `The BPC-157 + TB-500 Blend 10mg combines BPC-157 (5mg) and TB-500 (5mg) in a single vial for research into synergistic tissue repair mechanisms. Each component contributes complementary regenerative pathways.`,
     longDescription: `What is the BPC-157 + TB-500 Blend?
 
-This blend combines BPC-157 (Body Protection Compound 157) and TB-500 (a synthetic analogue of Thymosin Beta-4) in a single lyophilized preparation. Both peptides have been independently studied for their tissue-repair properties, and preclinical research suggests the combination may produce additive or synergistic effects.
+This blend combines BPC-157 (Body Protection Compound 157, 5mg) and TB-500 (a synthetic analogue of Thymosin Beta-4, 5mg) in a single lyophilized preparation. Both peptides have been independently studied for their tissue-repair properties, and preclinical research suggests the combination may produce additive or synergistic effects.
 
 Research Background
 
@@ -193,6 +193,29 @@ Preclinical studies in models of tendon injury, muscle damage, and wound healing
 
   "8": {
     id: "8",
+    refNumber: "157-20-BT",
+    casNumber: "137525-51-0 / 77591-33-4",
+    molecularWeight: "1419.56 g/mol / 4963.44 g/mol",
+    purity: "99% HPLC",
+    alsoKnownAs: "BPC-157 TB-500 Stack, BPC/TB Blend",
+    storage: "Store lyophilized blend at -20°C. After reconstitution, store at 4°C for up to 2 weeks.",
+    appearance: "White lyophilized powder",
+    solubility: "Soluble in sterile water or bacteriostatic water",
+    researchAreas: ["Tissue Repair", "Wound Healing", "Musculoskeletal Recovery", "Anti-Inflammatory Research"],
+    description: `The BPC-157 + TB-500 Blend 20mg combines BPC-157 (10mg) and TB-500 (10mg) in a single vial for research into synergistic tissue repair mechanisms. The larger format supports extended research protocols.`,
+    longDescription: `What is the BPC-157 + TB-500 Blend?
+
+This 20mg blend combines BPC-157 (Body Protection Compound 157, 10mg) and TB-500 (a synthetic analogue of Thymosin Beta-4, 10mg) in a single lyophilized preparation. Both peptides have been independently studied for their tissue-repair properties, and preclinical research suggests the combination may produce additive or synergistic effects.
+
+Research Background
+
+BPC-157 promotes angiogenesis, upregulates growth hormone receptors in fibroblasts, and exhibits cytoprotective properties in gastrointestinal, musculoskeletal, and neural tissues. TB-500 (Thymosin Beta-4 fragment) binds G-actin, regulating cellular migration, differentiation, and wound healing. Together, they represent complementary pathways: BPC-157 primarily promotes new blood vessel formation and tissue cytoprotection, while TB-500 facilitates cell migration and reorganization of the extracellular matrix.
+
+Preclinical studies in models of tendon injury, muscle damage, and wound healing have investigated the combined administration of these peptides, with researchers observing potentially enhanced recovery rates compared to either peptide alone. The 20mg format supports multi-cohort or longer-duration studies.`
+  },
+
+  "9": {
+    id: "9",
     refNumber: "465-05-CA",
     casNumber: "2215032-39-0",
     formula: "C₂₉H₄₀N₄O₇",
@@ -216,8 +239,8 @@ Research in preclinical and clinical models has demonstrated significant weight 
 Metabolic research has also investigated cagrilintide's effects on blood glucose regulation, lipid profiles, and cardiovascular risk markers. The compound is notable for not causing the hypoglycemia associated with some other anti-obesity research compounds.`
   },
 
-  "9": {
-    id: "9",
+  "10": {
+    id: "10",
     refNumber: "465-10-CA",
     casNumber: "2215032-39-0",
     formula: "C₂₉H₄₀N₄O₇",
@@ -234,8 +257,8 @@ Metabolic research has also investigated cagrilintide's effects on blood glucose
 Cagrilintide is a long-acting amylin analogue with a half-life of approximately 7 days. Research has demonstrated significant weight reduction through amylin receptor activity in the hypothalamus, reducing food intake and slowing gastric emptying. When combined with GLP-1 agonists such as semaglutide, research models show enhanced weight loss outcomes, suggesting complementary appetite regulation mechanisms. Metabolic studies also show favorable effects on blood glucose, lipids, and cardiovascular markers.`
   },
 
-  "10": {
-    id: "10",
+  "11": {
+    id: "11",
     refNumber: "295-05-CJ",
     casNumber: "863288-34-0",
     formula: "C₁₅₂H₂₅₂N₄₄O₄₂",
@@ -259,8 +282,8 @@ Research demonstrates that CJC-1295 No DAC stimulates the pituitary somatotrophs
 Preclinical studies have documented effects on lean body mass preservation, fat oxidation, and IGF-1 levels. Research also explores potential anti-aging applications, as age-related GH decline is associated with changes in body composition, bone density, and metabolic function.`
   },
 
-  "11": {
-    id: "11",
+  "12": {
+    id: "12",
     refNumber: "295-10-CJ",
     casNumber: "863288-34-0",
     formula: "C₁₅₂H₂₅₂N₄₄O₄₂",
@@ -277,8 +300,8 @@ Preclinical studies have documented effects on lean body mass preservation, fat 
 CJC-1295 without DAC (Modified GRF 1-29) is a tetra-substituted analogue of GHRH(1-29) that produces physiologically natural pulsatile GH release. The 10mg format supports longer research protocols. Studies show synergistic GH secretion when combined with GHRPs, along with documented effects on lean mass, fat oxidation, and IGF-1 levels. Its short half-life of ~30 minutes enables natural pulsatile GH patterns, considered important for receptor sensitivity maintenance.`
   },
 
-  "12": {
-    id: "12",
+  "13": {
+    id: "13",
     refNumber: "701-05-DS",
     casNumber: "62568-57-4",
     formula: "C₃₅H₄₈N₁₀O₁₅",
@@ -305,8 +328,8 @@ Stress response research has demonstrated DSIP's ability to attenuate stress-ind
 Antioxidant research has shown DSIP may protect cells from oxidative stress, with investigators reporting reduced lipid peroxidation and increased activity of antioxidant enzymes in treated tissues. Pain research has also explored analgesic properties in animal models of chronic pain states.`
   },
 
-  "13": {
-    id: "13",
+  "14": {
+    id: "14",
     refNumber: "701-10-DS",
     casNumber: "62568-57-4",
     formula: "C₃₅H₄₈N₁₀O₁₅",
@@ -323,8 +346,8 @@ Antioxidant research has shown DSIP may protect cells from oxidative stress, wit
 DSIP (Delta Sleep-Inducing Peptide) is a 9-amino acid neuropeptide with established roles in sleep regulation, stress modulation, and neuroendocrine function. The 10mg format supports extended research protocols. Research has documented modulation of slow-wave sleep, HPA axis normalization under stress conditions, antioxidant enzyme activation, and analgesic properties in animal models. Its broad distribution across central and peripheral tissues reflects diverse physiological roles beyond sleep induction.`
   },
 
-  "14": {
-    id: "14",
+  "15": {
+    id: "15",
     refNumber: "741-10-EP",
     casNumber: "307297-39-8",
     formula: "C₁₄H₂₂N₄O₉",
@@ -351,8 +374,8 @@ Research on the pineal gland has investigated Epithalon's role in melatonin regu
 Long-term survival studies in rodents and fruit flies administered Epithalon have documented increased mean and maximum lifespan. Investigators also reported reduced incidence of age-related spontaneous tumors in some animal models. These findings have generated interest in Epithalon as a candidate for aging and longevity research, though extensive research remains ongoing.`
   },
 
-  "15": {
-    id: "15",
+  "16": {
+    id: "16",
     refNumber: "741-40-EP",
     casNumber: "307297-39-8",
     formula: "C₁₄H₂₂N₄O₉",
@@ -369,8 +392,8 @@ Long-term survival studies in rodents and fruit flies administered Epithalon hav
 Epithalon is a synthetic tetrapeptide (Ala-Glu-Asp-Gly) derived from Epithalamin, a pineal gland peptide. The 40mg vial format is designed for extended research protocols or multi-cohort studies. Research documents activation of telomerase (hTERT), telomere elongation in aged cells, restoration of age-related melatonin decline, increased lifespan in animal models, and reduced tumor incidence in some studies. It remains one of the most researched bioregulator peptides in gerontological science.`
   },
 
-  "16": {
-    id: "16",
+  "17": {
+    id: "17",
     refNumber: "895-50-GH",
     casNumber: "89030-95-5",
     formula: "C₁₄H₂₃CuN₆O₄",
@@ -403,8 +426,8 @@ Hair follicle research has shown GHK-Cu may increase follicle size, prolong the 
 Antioxidant and anti-inflammatory research has demonstrated GHK-Cu's ability to reduce oxidative stress markers, inhibit ferritin-mediated iron release, and suppress the expression of inflammatory cytokines including TNF-α and IL-6.`
   },
 
-  "17": {
-    id: "17",
+  "18": {
+    id: "18",
     refNumber: "895-100-GH",
     casNumber: "89030-95-5",
     formula: "C₁₄H₂₃CuN₆O₄",
@@ -422,8 +445,8 @@ Antioxidant and anti-inflammatory research has demonstrated GHK-Cu's ability to 
 GHK-Cu is a naturally occurring copper peptide complex (Gly-His-Lys-Cu²⁺) found in human plasma, saliva, and urine. Its plasma concentrations decline significantly with age. The 100mg format provides a substantial research supply for extended experiments or multi-cohort studies. Research consistently documents GHK-Cu's ability to modulate over 4,000 genes, promote wound healing, stimulate collagen and elastin production, support hair follicle health, and reduce inflammatory and oxidative stress markers.`
   },
 
-  "18": {
-    id: "18",
+  "19": {
+    id: "19",
     refNumber: "502-05-G2",
     casNumber: "158861-67-7",
     formula: "C₄₅H₆₇N₁₃O₆",
@@ -450,8 +473,8 @@ Unlike GHRP-6, GHRP-2 produces relatively modest increases in appetite (ghrelin-
 Research also explores anti-inflammatory properties, with investigators documenting that GHRP-2 can reduce levels of TNF-α and other inflammatory markers in cell culture and animal studies, potentially through a direct cytoprotective mechanism independent of its GH-releasing activity.`
   },
 
-  "19": {
-    id: "19",
+  "20": {
+    id: "20",
     refNumber: "502-10-G2",
     casNumber: "158861-67-7",
     formula: "C₄₅H₆₇N₁₃O₆",
@@ -469,8 +492,8 @@ Research also explores anti-inflammatory properties, with investigators document
 GHRP-2 is a synthetic hexapeptide GHS-R1a agonist and one of the most potent GHRPs studied. The 10mg format provides sufficient material for extended research protocols. Research consistently shows large GH pulses, synergistic secretion with GHRH analogues, anti-inflammatory properties independent of GH effects, and favorable body composition effects in animal models. GHRP-2 produces modest appetite stimulation compared to GHRP-6, making it preferred when minimizing ghrelin-like appetite effects is desired.`
   },
 
-  "20": {
-    id: "20",
+  "21": {
+    id: "21",
     refNumber: "506-05-G6",
     casNumber: "87616-84-0",
     formula: "C₄₆H₅₆N₁₂O₆",
@@ -497,8 +520,8 @@ Appetite and ghrelin research uses GHRP-6 as a tool to study orexigenic signalin
 Cardioprotective research has explored GHRP-6's protective effects in models of myocardial ischemia-reperfusion injury, with investigators reporting reduced infarct size and improved cardiac function parameters, potentially through anti-apoptotic and anti-inflammatory mechanisms independent of GH release.`
   },
 
-  "21": {
-    id: "21",
+  "22": {
+    id: "22",
     refNumber: "268-70-GL",
     molecularWeight: "Multiple components",
     purity: "99% HPLC (each component)",
@@ -524,8 +547,8 @@ Research Rationale
 The combination of these three peptides targets distinct but complementary pathways: BPC-157 promotes vascularization and receptor upregulation; TB-500 facilitates cellular migration and matrix reorganization; and GHK-Cu supports the genetic programs underlying tissue remodeling, anti-inflammation, and extracellular matrix maintenance. Researchers use multi-peptide blends to investigate whether combination approaches produce additive or synergistic tissue repair outcomes.`
   },
 
-  "22": {
-    id: "22",
+  "23": {
+    id: "23",
     refNumber: "173-02-GO",
     casNumber: "33515-09-2",
     formula: "C₅₅H₇₅N₁₇O₁₃",
@@ -550,8 +573,8 @@ Reproductive research uses gonadorelin to study hypothalamic-pituitary-gonadal (
 Research in male models investigates the role of pulsatile LH stimulation in testosterone production, testicular function, and spermatogenesis. In female models, gonadorelin is used to study follicular development, ovulation induction, and luteal phase support. The peptide serves as an important research tool for understanding reproductive endocrinology and developing fertility-related interventions.`
   },
 
-  "23": {
-    id: "23",
+  "24": {
+    id: "24",
     refNumber: "173-02-GO",
     casNumber: "33515-09-2",
     formula: "C₅₅H₇₅N₁₇O₁₃",
@@ -568,8 +591,8 @@ Research in male models investigates the role of pulsatile LH stimulation in tes
 Gonadorelin is a synthetic form of endogenous gonadotropin-releasing hormone (GnRH), a decapeptide secreted in pulses from the hypothalamus to regulate LH and FSH secretion from the anterior pituitary. Research applications span reproductive biology, fertility research, and HPG axis studies. Pulsatile administration stimulates gonadotropin release; continuous administration induces receptor downregulation and gonadal suppression.`
   },
 
-  "24": {
-    id: "24",
+  "25": {
+    id: "25",
     refNumber: "560-05-HX",
     casNumber: "140703-51-1",
     formula: "C₄₇H₅₈N₁₂O₆",
@@ -595,8 +618,8 @@ Cardiac research has generated particular interest in Hexarelin. Studies in anim
 Anti-inflammatory research has investigated Hexarelin's ability to reduce pro-inflammatory cytokine expression, with investigators reporting reductions in TNF-α, IL-1β, and NF-κB signaling in treated tissues.`
   },
 
-  "25": {
-    id: "25",
+  "26": {
+    id: "26",
     refNumber: "HGH-10-SO",
     casNumber: "12629-01-5",
     formula: "C₉₉₀H₁₅₂₈N₂₆₂O₃₀₀S₇",
@@ -624,8 +647,8 @@ Metabolic research explores somatropin's complex effects on glucose homeostasis,
 Anti-aging research investigates the age-related decline in GH and IGF-1 ("somatopause") and the effects of GH restoration on aging biomarkers, body composition, bone density, and quality-of-life parameters in aged animal models.`
   },
 
-  "26": {
-    id: "26",
+  "27": {
+    id: "27",
     refNumber: "HGH-15-SO",
     casNumber: "12629-01-5",
     formula: "C₉₉₀H₁₅₂₈N₂₆₂O₃₀₀S₇",
@@ -642,8 +665,8 @@ Anti-aging research investigates the age-related decline in GH and IGF-1 ("somat
 Somatropin HGH 15 IU is recombinant human growth hormone (191 amino acids) for research use. The 15 IU format provides a mid-range quantity for research protocols. Studies use somatropin to investigate GH receptor signaling, IGF-1 production, body composition effects (lipolysis, nitrogen retention), metabolic modulation of glucose homeostasis, and the effects of GH restoration in aged or GH-deficient animal models.`
   },
 
-  "27": {
-    id: "27",
+  "28": {
+    id: "28",
     refNumber: "HGH-24-SO",
     casNumber: "12629-01-5",
     formula: "C₉₉₀H₁₅₂₈N₂₆₂O₃₀₀S₇",
@@ -660,8 +683,8 @@ Somatropin HGH 15 IU is recombinant human growth hormone (191 amino acids) for r
 Somatropin HGH 24 IU provides a larger quantity of recombinant human growth hormone for extended research. Applications include GH receptor biology, downstream JAK-STAT and PI3K/Akt pathway investigation, IGF-1 liver production studies, body composition in GH-deficient models, anti-aging biomarker research, and metabolic studies on glucose and lipid homeostasis.`
   },
 
-  "28": {
-    id: "28",
+  "29": {
+    id: "29",
     refNumber: "HGH-36-SO",
     casNumber: "12629-01-5",
     formula: "C₉₉₀H₁₅₂₈N₂₆₂O₃₀₀S₇",
@@ -678,8 +701,8 @@ Somatropin HGH 24 IU provides a larger quantity of recombinant human growth horm
 Somatropin HGH 36 IU is recombinant human growth hormone identical to pituitary-derived hGH. The 36 IU vial is designed for high-demand research applications requiring large quantities of material. Research applications span the full spectrum of GH biology: receptor signaling, IGF-1 axis, body composition in deficiency and aging models, metabolic effects on glucose and lipid homeostasis, and investigations into the somatopause and its relationship to aging-associated changes.`
   },
 
-  "29": {
-    id: "29",
+  "30": {
+    id: "30",
     refNumber: "LR3-01-IG",
     casNumber: "946870-92-4",
     formula: "C₄₀₀H₆₂₅N₁₁₁O₁₁₅S₉",
@@ -705,8 +728,8 @@ Metabolic research explores IGF-1 LR3's insulin-like effects on glucose uptake, 
 Cellular proliferation research investigates IGF-1 LR3 in vitro as a potent mitogen for numerous cell types including fibroblasts, osteoblasts, and chondrocytes, with applications in tissue engineering and regenerative biology research.`
   },
 
-  "30": {
-    id: "30",
+  "31": {
+    id: "31",
     refNumber: "170-05-IP",
     casNumber: "170851-70-4",
     formula: "C₃₈H₄₉N₉O₅",
@@ -733,8 +756,8 @@ Body composition research in rodent models has documented that Ipamorelin admini
 Anti-aging research uses Ipamorelin to study restoration of age-related GH decline (somatopause), with investigators documenting improvements in body composition, sleep quality parameters, and metabolic markers in aged animals.`
   },
 
-  "31": {
-    id: "31",
+  "32": {
+    id: "32",
     refNumber: "170-10-IP",
     casNumber: "170851-70-4",
     formula: "C₃₈H₄₉N₉O₅",
@@ -750,33 +773,6 @@ Anti-aging research uses Ipamorelin to study restoration of age-related GH decli
     longDescription: `What is Ipamorelin?
 
 Ipamorelin is a selective pentapeptide GH secretagogue with a unique selectivity profile among GHRPs. The 10mg format provides material for extended research protocols. Studies consistently document selective GH release with minimal HPA axis interference, synergistic effects with GHRH analogues, body composition improvements in animal models, bone mineral density effects, and potential anti-aging applications in aged animal models.`
-  },
-
-  "32": {
-    id: "32",
-    refNumber: "394-10-KP",
-    casNumber: "388138-21-4",
-    formula: "C₆₃H₈₃N₁₇O₁₄",
-    molecularWeight: "1302.4 g/mol",
-    purity: "99% HPLC",
-    alsoKnownAs: "KP-10, Kisspeptin 10, Metastin 45-54",
-    sequence: "Tyr-Asn-Trp-Asn-Ser-Phe-Gly-Leu-Arg-Phe-NH₂",
-    storage: "Store lyophilized peptide at -20°C. After reconstitution, store at 4°C for up to 2 weeks.",
-    appearance: "White lyophilized powder",
-    solubility: "Soluble in sterile water",
-    researchAreas: ["Reproductive Research", "HPG Axis Research", "Cancer Research (anti-metastatic)", "Hormonal Research"],
-    description: `Kisspeptin-10 (KP-10) is the C-terminal 10-amino acid fragment of kisspeptin-54, the endogenous ligand of the KISS1R (GPR54) receptor. It is a potent activator of GnRH neuron firing and plays a critical role in regulating the hypothalamic-pituitary-gonadal axis and reproduction.`,
-    longDescription: `What is Kisspeptin-10?
-
-Kisspeptin-10 (KP-10) is the C-terminal decapeptide fragment of the full-length kisspeptin-54 peptide encoded by the KISS1 gene. It binds with high affinity to the KISS1 receptor (KISS1R, also known as GPR54), a G protein-coupled receptor expressed on GnRH neurons in the hypothalamus. The discovery that KISS1R mutations cause idiopathic hypogonadotropic hypogonadism established kisspeptin signaling as essential for normal reproductive function.
-
-Kisspeptin-10 Research
-
-Reproductive research has established Kisspeptin-10 as a powerful stimulator of GnRH neuron firing and pulsatile LH secretion. In male and female animal models, Kisspeptin-10 administration reliably triggers LH pulses and, in females, can induce ovulation. Research explores its role in the preovulatory LH surge, puberty onset, seasonal reproduction in photoperiodic species, and hypothalamic feedback mechanisms from sex steroids.
-
-Cancer research originally identified KISS1 as a metastasis suppressor gene in melanoma and breast cancer, and the KISS1/Kisspeptin system has since been investigated for anti-metastatic properties in multiple tumor types. Research suggests that loss of KISS1 expression correlates with increased metastatic potential in several cancers.
-
-Hormonal research investigates Kisspeptin-10 as a diagnostic and research tool for assessing HPG axis function, investigating causes of hypogonadotropic hypogonadism, and studying feedback regulation of GnRH neurons by sex steroids.`
   },
 
   "33": {
@@ -808,7 +804,7 @@ Kisspeptin-10 (KP-10) is the active C-terminal decapeptide fragment of kisspepti
     storage: "Store lyophilized peptide at -20°C. After reconstitution, store at 4°C for up to 2 weeks.",
     appearance: "White lyophilized powder",
     researchAreas: ["Reproductive Research", "HPG Axis Research", "Hormonal Research"],
-    description: `Kisspeptin-10 10mg (Vial B) is the C-terminal decapeptide of kisspeptin-54, a potent KISS1R agonist used in reproductive biology, GnRH regulation, and HPG axis research.`,
+    description: `Kisspeptin-10 10mg is the C-terminal decapeptide of kisspeptin-54, a potent KISS1R agonist used in reproductive biology, GnRH regulation, and HPG axis research.`,
     longDescription: `What is Kisspeptin-10?
 
 Kisspeptin-10 is the essential regulator of GnRH neuron activity and the HPG axis. This 10mg format supports extended in vivo research protocols requiring sustained peptide supply. The research applications are identical to other Kisspeptin-10 vials: GnRH stimulation, LH pulse induction, reproductive axis investigation, puberty research, and anti-metastatic cancer biology.`
@@ -854,10 +850,10 @@ The combination targets multiple complementary pathways: structural repair (BPC-
     storage: "Store lyophilized peptide at -20°C. After reconstitution, store at 4°C for up to 2 weeks.",
     appearance: "White lyophilized powder",
     researchAreas: ["Reproductive Research", "HPG Axis Research", "Hormonal Research"],
-    description: `Kisspeptin-10 10mg (Vial C) is the potent KISS1R-activating decapeptide essential for GnRH regulation and HPG axis function, provided in a third-format vial for extended research supply.`,
+    description: `Kisspeptin-10 10mg (Vial B) is the potent KISS1R-activating decapeptide essential for GnRH regulation and HPG axis function, provided as an additional vial for extended research supply.`,
     longDescription: `What is Kisspeptin-10?
 
-Kisspeptin-10 is the C-terminal decapeptide of kisspeptin-54, acting as the primary endogenous activator of GnRH neurons. This vial provides a third supply unit for research programs requiring high quantities for multi-cohort or long-duration studies. Research applications include GnRH pulse stimulation, LH secretion investigation, reproductive axis characterization, and cancer metastasis suppression biology.`
+Kisspeptin-10 is the C-terminal decapeptide of kisspeptin-54, acting as the primary endogenous activator of GnRH neurons. This vial provides an additional supply unit for research programs requiring high quantities for multi-cohort or long-duration studies. Research applications include GnRH pulse stimulation, LH secretion investigation, reproductive axis characterization, and cancer metastasis suppression biology.`
   },
 
   "37": {
