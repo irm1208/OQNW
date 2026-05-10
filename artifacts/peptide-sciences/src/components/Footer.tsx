@@ -88,7 +88,7 @@ export default function Footer() {
                 />
               </div>
               <p style={{ fontSize: "12px", color: "#aaa", lineHeight: "1.6" }}>
-                USA-made research peptides manufactured to the highest standards of quality and purity. 99% HPLC purity guaranteed.
+                Research peptides manufactured to the highest standards of quality and purity. 99% HPLC purity guaranteed.
               </p>
               <div className="mt-4 flex gap-3">
                 {["Facebook", "Twitter", "Instagram"].map((s) => (
@@ -169,7 +169,7 @@ export default function Footer() {
 
             {/* Badges */}
             <div className="flex flex-wrap gap-3 mb-6">
-              {["99% HPLC Purity", "USA Made", "Lab Tested", "Secure Checkout"].map((badge) => (
+              {["99% HPLC Purity", "Lab Tested", "Secure Checkout"].map((badge) => (
                 <span
                   key={badge}
                   className="px-3 py-1 text-xs rounded-sm"
@@ -199,7 +199,7 @@ export default function Footer() {
               className="border-t border-gray-700 pt-4 text-center"
               style={{ fontSize: "11px", color: "#666" }}
             >
-              © {new Date().getFullYear()} OmniQure.com — All Rights Reserved. | USA Manufactured Research Peptides | For Laboratory Research Use Only
+              © {new Date().getFullYear()} OmniQure.com — All Rights Reserved. | For Laboratory Research Use Only
             </div>
           </div>
         </div>

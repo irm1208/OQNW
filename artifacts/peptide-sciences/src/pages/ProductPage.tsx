@@ -193,7 +193,7 @@ export default function ProductPage() {
               >
                 {[
                   { icon: <Shield size={12} />, text: "99% HPLC Purity" },
-                  { icon: <Package size={12} />, text: "USA Manufactured" },
+                  { icon: <Package size={12} />, text: "Lab Certified" },
                   { icon: <FlaskConical size={12} />, text: "Lab Tested" },
                   { icon: <Thermometer size={12} />, text: "Cold Chain" },
                 ].map((b) => (
@@ -520,7 +520,7 @@ export default function ProductPage() {
                           )}
                           <tr>
                             <td className="py-1.5 font-semibold" style={{ color: "#555" }}>Manufacturer</td>
-                            <td className="py-1.5" style={{ color: "#222" }}>OmniQure (USA)</td>
+                            <td className="py-1.5" style={{ color: "#222" }}>OmniQure</td>
                           </tr>
                         </tbody>
                       </table>

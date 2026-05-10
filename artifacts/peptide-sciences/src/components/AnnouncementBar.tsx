@@ -11,7 +11,7 @@ export default function AnnouncementBar() {
       style={{ backgroundColor: "#1B5CB5" }}
     >
       <span style={{ fontSize: "13px" }}>
-        🔬 <strong>US-Made Research Peptides</strong> — 99% HPLC Purity Guaranteed | Free Shipping on Orders $200+
+        🔬 <strong>Research Peptides</strong> — 99% HPLC Purity Guaranteed | Free Shipping on Orders $200+
       </span>
       <button
         onClick={() => setVisible(false)}

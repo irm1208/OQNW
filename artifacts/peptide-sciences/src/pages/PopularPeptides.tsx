@@ -131,7 +131,7 @@ export default function PopularPeptides() {
               Popular Peptides
             </h1>
             <p className="text-gray-600 mb-4" style={{ fontSize: "14px" }}>
-              Purchase US Made Peptides Online Direct From Our Online Catalogue.
+              Purchase Research Peptides Online Direct From Our Online Catalogue.
             </p>
 
             {/* Count + Sort */}

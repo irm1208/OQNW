@@ -3550,7 +3550,7 @@ The 80mg total blend provides sufficient compound for extended research protocol
 export function getProductDetail(id: string): ProductDetail {
   return productDetails[id] || {
     id,
-    description: "This research compound is produced to the highest standards of purity and quality. Our products are synthesized in the USA using pharmaceutical-grade raw materials and undergo strict quality control including HPLC analysis. For research purposes only.",
+    description: "This research compound is produced to the highest standards of purity and quality. Our products are synthesized using pharmaceutical-grade raw materials and undergo strict quality control including HPLC analysis. For research purposes only.",
     purity: "99% HPLC",
     storage: "Store lyophilized at -20°C. After reconstitution, store at 4°C and use within 2–4 weeks.",
     appearance: "White lyophilized powder",
