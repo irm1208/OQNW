@@ -9,9 +9,57 @@ import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 
 const COUNTRIES = [
-  "United Kingdom", "United States", "Canada", "Australia", "Germany",
-  "France", "Netherlands", "Sweden", "Norway", "Denmark", "Switzerland",
-  "Spain", "Italy", "Ireland", "New Zealand", "Singapore", "Japan",
+  // UK & Ireland
+  "United Kingdom",
+  "Ireland",
+  // North America
+  "United States",
+  "Canada",
+  // Oceania
+  "Australia",
+  "New Zealand",
+  // Western Europe
+  "Austria",
+  "Belgium",
+  "Denmark",
+  "Finland",
+  "France",
+  "Germany",
+  "Iceland",
+  "Luxembourg",
+  "Netherlands",
+  "Norway",
+  "Portugal",
+  "Spain",
+  "Sweden",
+  "Switzerland",
+  // Southern / Eastern Europe
+  "Bulgaria",
+  "Croatia",
+  "Cyprus",
+  "Czech Republic",
+  "Estonia",
+  "Greece",
+  "Hungary",
+  "Italy",
+  "Latvia",
+  "Lithuania",
+  "Malta",
+  "Poland",
+  "Romania",
+  "Slovakia",
+  "Slovenia",
+  // Asia Pacific
+  "Hong Kong",
+  "Japan",
+  "Malaysia",
+  "Singapore",
+  "South Korea",
+  "Taiwan",
+  "Thailand",
+  // Middle East
+  "Israel",
+  "United Arab Emirates",
 ];
 
 const SHIPPING_OPTIONS = [
