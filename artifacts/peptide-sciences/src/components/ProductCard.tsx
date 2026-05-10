@@ -67,12 +67,14 @@ export default function ProductCard({ product }: ProductCardProps) {
         <Link href={productUrl}>
           <div
             className="w-full flex items-center justify-center cursor-pointer overflow-hidden"
-            style={{ height: "180px", backgroundColor: "#fff" }}
+            style={{ height: "240px", backgroundColor: "#fff" }}
           >
             <img
               src={product.image}
               alt={product.name}
-              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+              style={{ width: "100%", height: "100%", objectFit: "contain", transform: "scale(1.08)", transition: "transform 0.2s ease" }}
+              onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.15)")}
+              onMouseLeave={e => (e.currentTarget.style.transform = "scale(1.08)")}
             />
           </div>
         </Link>
