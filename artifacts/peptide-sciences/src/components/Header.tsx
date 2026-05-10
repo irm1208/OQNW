@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Search, User, ShoppingCart, Menu, X } from "lucide-react";
-import { Link } from "wouter";
-import Logo from "@/components/Logo";
 
 const navItems = [
   { label: "All Peptides", href: "/" },
@@ -28,9 +26,13 @@ export default function Header() {
       <div className="bg-white" style={{ boxShadow: "0 1px 0 #E8EDF5" }}>
         <div className="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-4">
           {/* Logo */}
-          <div className="flex-shrink-0 mr-2">
-            <Logo />
-          </div>
+          <Link href="/" className="flex-shrink-0 mr-2" style={{ textDecoration: "none" }}>
+            <img
+              src="/omniqure-logo.jpeg"
+              alt="OmniQure Peptide Research Institute"
+              style={{ height: "52px", width: "auto", display: "block", borderRadius: "8px" }}
+            />
+          </Link>
 
           {/* Search */}
           <div className="flex-1 max-w-[520px]">
