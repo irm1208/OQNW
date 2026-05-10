@@ -4,6 +4,7 @@ import { products } from "@/data/products";
 import { productDetails } from "@/data/productDetails";
 import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight } from "lucide-react";
 import HplcChart from "@/components/HplcChart";
+import MsChart from "@/components/MsChart";
 
 export default function ProductPage() {
   const params = useParams<{ id: string }>();
@@ -441,16 +442,11 @@ export default function ProductPage() {
                 {/* MS */}
                 <div>
                   <h3 className="font-bold mb-3" style={{ fontSize: "15px", color: "#0F172A" }}>Mass Spectrometry (MS)</h3>
-                  <div className="p-6 rounded-xl text-center" style={{ backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
-                    <Package size={28} className="mx-auto mb-2" style={{ color: "#1B5CB5" }} />
-                    <p className="text-sm font-semibold mb-1" style={{ color: "#0F172A" }}>Mass Spectrometry Analysis</p>
-                    {detail.molecularWeight && (
-                      <p className="text-xs" style={{ color: "#64748B" }}>
-                        Confirmed molecular weight: <strong style={{ color: "#0F172A" }}>{detail.molecularWeight}</strong>
-                      </p>
-                    )}
-                    <p className="text-xs mt-3" style={{ color: "#94A3B8" }}>MS data available upon request.</p>
-                  </div>
+                  <MsChart
+                    productId={product.id}
+                    productName={product.name}
+                    molecularWeight={detail.molecularWeight}
+                  />
                 </div>
               </div>
             )}
