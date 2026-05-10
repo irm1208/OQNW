@@ -9,7 +9,7 @@ const navItems = [
   { label: "Popular Peptides", href: "/popular-peptides" },
   { label: "Bundle & Save", href: "/bundles" },
   { label: "Peptide Research", href: "/research" },
-  { label: "Peptide Information", href: "/info" },
+  { label: "Reconstitution Calc", href: "/calculator" },
 ];
 
 const rightNavItems = [

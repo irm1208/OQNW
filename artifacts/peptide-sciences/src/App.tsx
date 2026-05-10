@@ -10,6 +10,7 @@ import AllPeptides from "@/pages/AllPeptides";
 import PopularPeptides from "@/pages/PopularPeptides";
 import ProductPage from "@/pages/ProductPage";
 import PeptideResearch from "@/pages/PeptideResearch";
+import ReconstitutionCalculator from "@/pages/ReconstitutionCalculator";
 import CartPage from "@/pages/CartPage";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
@@ -41,9 +42,7 @@ function Router() {
         <PlaceholderPage title="Bundle & Save" description="Save on multi-peptide research bundles." />
       </Route>
       <Route path="/research" component={PeptideResearch} />
-      <Route path="/info">
-        <PlaceholderPage title="Peptide Information" description="Educational information about research peptides." />
-      </Route>
+      <Route path="/calculator" component={ReconstitutionCalculator} />
       <Route path="/company">
         <PlaceholderPage title="Our Company" description="Learn about OmniQure." />
       </Route>
