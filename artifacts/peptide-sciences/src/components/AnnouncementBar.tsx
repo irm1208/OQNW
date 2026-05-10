@@ -1,28 +1,85 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 
+const messages = [
+  "🔬  99% HPLC Purity — Guaranteed on Every Product",
+  "🚚  Free Shipping on Orders Over £200 — UK & Worldwide",
+  "🧪  Research Grade · Lab Certified · COA Included",
+  "🔒  Secure Checkout — SSL Encrypted & Discreet Packaging",
+  "⚗️  Full ESI-TOF Mass Spectrometry Data Available",
+  "📦  Cold-Chain Packaging — Lyophilized for Stability",
+];
+
 export default function AnnouncementBar() {
   const [visible, setVisible] = useState(true);
   if (!visible) return null;
 
+  const doubled = [...messages, ...messages];
+
   return (
     <div
-      className="relative flex items-center justify-center px-8 py-2 text-center"
-      style={{ background: "linear-gradient(90deg, #1240A0 0%, #1B5CB5 50%, #1240A0 100%)", color: "#fff" }}
+      className="relative overflow-hidden"
+      style={{
+        background: "linear-gradient(90deg, #050E2A 0%, #0D2159 30%, #1240A0 60%, #0D2159 80%, #050E2A 100%)",
+        height: "36px",
+      }}
     >
-      <div className="flex items-center gap-4 flex-wrap justify-center" style={{ fontSize: "12px", fontWeight: 500, letterSpacing: "0.02em" }}>
-        <span>🔬 <strong>99% HPLC Purity</strong> Guaranteed</span>
-        <span className="hidden sm:inline" style={{ opacity: 0.35 }}>|</span>
-        <span className="hidden sm:inline">🚚 Free Shipping on Orders $200+</span>
-        <span className="hidden md:inline" style={{ opacity: 0.35 }}>|</span>
-        <span className="hidden md:inline">🧪 Research Grade · Lab Certified</span>
+      {/* Shimmer overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%)",
+          backgroundSize: "200% 100%",
+          animation: "shimmer 3s linear infinite",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      />
+
+      {/* Scrolling ticker */}
+      <div className="flex items-center h-full overflow-hidden" style={{ zIndex: 2, position: "relative" }}>
+        <div
+          className="animate-ticker flex-shrink-0 flex items-center"
+          style={{ whiteSpace: "nowrap" }}
+        >
+          {doubled.map((msg, i) => (
+            <span
+              key={i}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                fontSize: "11.5px",
+                fontWeight: 600,
+                color: "#E2E8F0",
+                letterSpacing: "0.025em",
+                paddingRight: "0",
+              }}
+            >
+              {msg}
+              <span
+                style={{
+                  display: "inline-block",
+                  width: "1px",
+                  height: "12px",
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  margin: "0 32px",
+                  verticalAlign: "middle",
+                }}
+              />
+            </span>
+          ))}
+        </div>
       </div>
+
+      {/* Close */}
       <button
         onClick={() => setVisible(false)}
-        className="absolute right-3 top-1/2 -translate-y-1/2 hover:opacity-100 transition-opacity"
-        style={{ opacity: 0.6 }}
+        className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all hover:bg-white/10"
+        style={{ width: "22px", height: "22px", opacity: 0.6, zIndex: 3, border: "none", background: "none", cursor: "pointer", color: "#fff" }}
+        aria-label="Close"
       >
-        <X size={14} />
+        <X size={13} />
       </button>
     </div>
   );
