@@ -112,11 +112,13 @@ export default function Header() {
     <header style={{ fontFamily: "'Arimo', Arial, sans-serif", transition: "filter 0.3s ease" }} className="sticky top-0 z-50">
       {/* Top bar */}
       <div style={{
-        backgroundColor: scrolled ? "rgba(255,255,255,0.94)" : "#fff",
+        background: scrolled
+          ? "rgba(18,64,160,0.97)"
+          : "linear-gradient(90deg, #0D2565 0%, #1240A0 45%, #1B5CB5 100%)",
         backdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
         WebkitBackdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
-        boxShadow: scrolled ? "0 4px 32px rgba(15,23,42,0.13), 0 1px 0 #E8EDF5" : "0 1px 0 #E8EDF5",
-        transition: "background-color 0.3s ease, box-shadow 0.3s ease",
+        boxShadow: scrolled ? "0 4px 32px rgba(8,28,80,0.35)" : "0 2px 16px rgba(8,28,80,0.25)",
+        transition: "background 0.3s ease, box-shadow 0.3s ease",
       }}>
         <div className="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-4">
           {/* Logo */}
@@ -141,27 +143,27 @@ export default function Header() {
                   setOpen(true);
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = "#1B5CB5";
-                  e.currentTarget.style.backgroundColor = "#fff";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.6)";
+                  e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.18)";
                   if (searchQuery.trim().length >= 1) setOpen(true);
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = "#F1F5F9";
-                  e.currentTarget.style.backgroundColor = "#F1F5F9";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
+                  e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.12)";
                 }}
                 onKeyDown={handleKeyDown}
                 className="w-full h-10 pl-4 pr-11 text-sm outline-none transition-all"
                 style={{
-                  backgroundColor: "#F1F5F9",
-                  color: "#0F172A",
-                  border: "1.5px solid #F1F5F9",
+                  backgroundColor: "rgba(255,255,255,0.12)",
+                  color: "#fff",
+                  border: "1.5px solid rgba(255,255,255,0.2)",
                   borderRadius: open && results.length > 0 ? "10px 10px 0 0" : "10px",
                 }}
                 autoComplete="off"
               />
               <button
                 className="absolute right-0 h-10 w-11 flex items-center justify-center"
-                style={{ color: "#94A3B8" }}
+                style={{ color: "rgba(255,255,255,0.6)" }}
                 onClick={() => {
                   if (q) {
                     navigate(`/all-peptides?search=${encodeURIComponent(searchQuery.trim())}`);
@@ -284,17 +286,17 @@ export default function Header() {
                 gap: "5px",
                 padding: "5px 10px",
                 borderRadius: "8px",
-                border: "1.5px solid #E2E8F0",
-                backgroundColor: "#F8FAFC",
+                border: "1.5px solid rgba(255,255,255,0.25)",
+                backgroundColor: "rgba(255,255,255,0.1)",
                 cursor: "pointer",
                 fontSize: "13px",
                 fontWeight: 600,
-                color: "#475569",
+                color: "#fff",
               }}
             >
               <span style={{ fontSize: "15px" }}>{currency.flag}</span>
               {currency.code}
-              <ChevronDown size={13} style={{ color: "#94A3B8" }} />
+              <ChevronDown size={13} style={{ color: "rgba(255,255,255,0.6)" }} />
             </button>
 
             {currencyOpen && (
@@ -350,9 +352,9 @@ export default function Header() {
             <Link
               href="/sign-in"
               className="flex items-center gap-1.5 text-sm font-medium transition-colors"
-              style={{ color: "#475569", textDecoration: "none" }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#1B5CB5"}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#475569"}
+              style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.85)"}
             >
               <User size={18} />
               <span className="hidden sm:inline">Sign in</span>
@@ -360,9 +362,9 @@ export default function Header() {
             <Link
               href="/cart"
               className="flex items-center gap-1.5 text-sm font-medium transition-colors relative"
-              style={{ color: "#475569", textDecoration: "none" }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#1B5CB5"}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#475569"}
+              style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.85)"}
             >
               <span className="relative">
                 <ShoppingCart size={18} />
@@ -390,7 +392,7 @@ export default function Header() {
           <button
             className="lg:hidden ml-2 p-1"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{ color: "#475569" }}
+            style={{ color: "rgba(255,255,255,0.85)" }}
           >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
