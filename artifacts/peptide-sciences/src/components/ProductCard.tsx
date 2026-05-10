@@ -46,7 +46,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Image area */}
         <div
           className="relative w-full overflow-hidden"
-          style={{ height: "220px", background: "linear-gradient(160deg, #F8FAFE 0%, #EEF4FF 100%)" }}
+          style={{ height: "260px", background: "linear-gradient(160deg, #F8FAFE 0%, #EEF4FF 100%)" }}
         >
           {/* Badges */}
           <div className="absolute top-2.5 left-2.5 z-10">
@@ -108,19 +108,19 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Info */}
-        <div className="flex flex-col flex-1 p-4" style={{ borderTop: "1px solid #EEF4FF" }}>
-          <p style={{ fontSize: "14.5px", fontWeight: 700, color: "#0F172A", lineHeight: "1.3", marginBottom: "2px" }}>
+        <div className="flex flex-col flex-1 p-5" style={{ borderTop: "1px solid #EEF4FF" }}>
+          <p style={{ fontSize: "17px", fontWeight: 700, color: "#0F172A", lineHeight: "1.3", marginBottom: "3px" }}>
             {baseName}
           </p>
           {strength && (
-            <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#1B5CB5", marginBottom: "6px" }}>
+            <p style={{ fontSize: "14px", fontWeight: 700, color: "#1B5CB5", marginBottom: "8px" }}>
               {strength}
             </p>
           )}
 
           {product.price != null && (
-            <div className="flex items-baseline gap-1.5" style={{ marginBottom: "2px" }}>
-              <p style={{ fontSize: "18px", fontWeight: 800, color: "#1240A0", lineHeight: 1 }}>
+            <div className="flex items-baseline gap-1.5" style={{ marginBottom: "4px" }}>
+              <p style={{ fontSize: "22px", fontWeight: 800, color: "#1240A0", lineHeight: 1 }}>
                 {formatPrice(product.price)}
               </p>
             </div>
@@ -135,12 +135,12 @@ export default function ProductCard({ product }: ProductCardProps) {
                 justifyContent: "center",
                 gap: "6px",
                 width: "100%",
-                padding: "8px",
+                padding: "10px",
                 borderRadius: "10px",
                 border: "1.5px solid #DBEAFE",
                 color: "#1B5CB5",
                 backgroundColor: "#F0F7FF",
-                fontSize: "12.5px",
+                fontSize: "13.5px",
                 fontWeight: 600,
                 cursor: "pointer",
                 transition: "background-color 0.15s, border-color 0.15s",
@@ -163,7 +163,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             <div className="flex items-center gap-2">
               <div
                 className="flex items-center rounded-xl overflow-hidden flex-shrink-0"
-                style={{ border: "1.5px solid #E2E8F0", height: "36px", backgroundColor: "#F8FAFC" }}
+                style={{ border: "1.5px solid #E2E8F0", height: "42px", backgroundColor: "#F8FAFC" }}
               >
                 <button
                   onClick={dec}
@@ -199,8 +199,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                   color: "#fff",
                   border: "none",
                   cursor: "pointer",
-                  fontSize: "12.5px",
-                  height: "36px",
+                  fontSize: "13.5px",
+                  height: "42px",
                   transition: "background-color 0.25s, transform 0.15s",
                 }}
                 onMouseEnter={e => {
