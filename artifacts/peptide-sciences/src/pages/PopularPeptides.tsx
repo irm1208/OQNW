@@ -24,14 +24,9 @@ export default function PopularPeptides() {
   }, []);
 
   const positionList = useMemo<Product[]>(() => {
-    return popularProductIds.map((entry) => {
-      const base = productMap.get(entry.id);
-      if (!base) return null;
-      return {
-        ...base,
-        badge: entry.badge ? entry.badge : base.badge,
-      };
-    }).filter((p): p is Product => p !== null);
+    return popularProductIds
+      .map((entry) => productMap.get(entry.id))
+      .filter((p): p is Product => p !== null && p !== undefined);
   }, [productMap]);
 
   const displayProducts = useMemo(() => {

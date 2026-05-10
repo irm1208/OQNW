@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useParams } from "wouter";
 import { products } from "@/data/products";
-import { getProductDetail } from "@/data/productDetails";
+import { productDetails } from "@/data/productDetails";
 import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Info, Truck, Minus, Plus } from "lucide-react";
 
 export default function ProductPage() {
@@ -24,7 +24,7 @@ export default function ProductPage() {
     );
   }
 
-  const detail = getProductDetail(product.id);
+  const detail = productDetails[product.id] ?? { id: product.id, description: "" };
   const relatedProducts = products
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
@@ -96,14 +96,6 @@ export default function ProductPage() {
                       REF {detail.refNumber}
                     </span>
                   )}
-                  {detail.capsuleCount && (
-                    <span
-                      className="text-xs font-bold px-2 py-0.5 rounded"
-                      style={{ backgroundColor: "#1B5CB5", color: "#fff" }}
-                    >
-                      {detail.capsuleCount}
-                    </span>
-                  )}
                 </div>
               </div>
 
@@ -115,11 +107,6 @@ export default function ProductPage() {
                 <p className="font-bold leading-tight" style={{ fontSize: "17px", color: "#111" }}>
                   {product.name}
                 </p>
-                {detail.capsuleDose && (
-                  <p className="text-xs mt-0.5" style={{ color: "#666" }}>
-                    {detail.capsuleDose}
-                  </p>
-                )}
               </div>
 
               {/* Scientific specs on label */}

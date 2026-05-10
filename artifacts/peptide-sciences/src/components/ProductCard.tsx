@@ -25,12 +25,18 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         </div>
 
-        {/* Image placeholder */}
+        {/* Product image */}
         <Link href={productUrl}>
           <div
-            className="w-full flex items-center justify-center cursor-pointer"
-            style={{ height: "160px", backgroundColor: "#f9f9f9", border: "1px dashed #ddd" }}
-          />
+            className="w-full flex items-center justify-center cursor-pointer overflow-hidden"
+            style={{ height: "160px", backgroundColor: "#f9f9f9" }}
+          >
+            <img
+              src={product.image}
+              alt={product.name}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </div>
         </Link>
       </div>
 
