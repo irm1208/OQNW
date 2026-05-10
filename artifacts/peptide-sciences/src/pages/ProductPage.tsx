@@ -5,15 +5,25 @@ import { productDetails } from "@/data/productDetails";
 import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight } from "lucide-react";
 import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
+import { useCart } from "@/context/CartContext";
 
 export default function ProductPage() {
   const params = useParams<{ id: string }>();
   const product = products.find((p) => p.id === params.id);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<"description" | "coa">("description");
+  const [added, setAdded] = useState(false);
+  const { addToCart } = useCart();
 
   const decreaseQty = () => setQuantity((q) => Math.max(1, q - 1));
   const increaseQty = () => setQuantity((q) => q + 1);
+
+  const handleAddToCart = () => {
+    if (!product) return;
+    addToCart(product, quantity);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
 
   if (!product) {
     return (
@@ -217,11 +227,21 @@ export default function ProductPage() {
                 </div>
 
                 <button
-                  className="flex-1 flex items-center justify-center gap-2 rounded-xl font-bold text-white transition-opacity hover:opacity-90"
-                  style={{ background: "linear-gradient(135deg, #1B5CB5 0%, #1240A0 100%)", height: "44px", fontSize: "14px" }}
+                  onClick={handleAddToCart}
+                  className="flex-1 flex items-center justify-center gap-2 rounded-xl font-bold text-white transition-all hover:opacity-90"
+                  style={{
+                    background: added
+                      ? "linear-gradient(135deg, #059669 0%, #047857 100%)"
+                      : "linear-gradient(135deg, #1B5CB5 0%, #1240A0 100%)",
+                    height: "44px",
+                    fontSize: "14px",
+                    border: "none",
+                    cursor: "pointer",
+                    transition: "background 0.25s",
+                  }}
                 >
                   <ShoppingCart size={16} />
-                  Add to Cart
+                  {added ? "✓ Added to Cart!" : "Add to Cart"}
                 </button>
               </div>
             </div>

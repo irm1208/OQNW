@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Search, User, ShoppingCart, Menu, X } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -20,6 +21,7 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [location] = useLocation();
+  const { totalItems } = useCart();
 
   return (
     <header style={{ fontFamily: "'Arimo', Arial, sans-serif" }} className="sticky top-0 z-50">
@@ -82,12 +84,29 @@ export default function Header() {
             </Link>
             <Link
               href="/cart"
-              className="flex items-center gap-1.5 text-sm font-medium transition-colors"
+              className="flex items-center gap-1.5 text-sm font-medium transition-colors relative"
               style={{ color: "#475569", textDecoration: "none" }}
               onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#1B5CB5"}
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#475569"}
             >
-              <ShoppingCart size={18} />
+              <span className="relative">
+                <ShoppingCart size={18} />
+                {totalItems > 0 && (
+                  <span
+                    className="absolute flex items-center justify-center font-bold text-white rounded-full"
+                    style={{
+                      top: "-7px", right: "-8px",
+                      minWidth: "16px", height: "16px",
+                      backgroundColor: "#EF4444",
+                      fontSize: "9px",
+                      padding: "0 3px",
+                      lineHeight: 1,
+                    }}
+                  >
+                    {totalItems > 99 ? "99+" : totalItems}
+                  </span>
+                )}
+              </span>
               <span className="hidden sm:inline">My Cart</span>
             </Link>
           </div>

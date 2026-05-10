@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import type { Product } from "@/data/products";
+import { useCart } from "@/context/CartContext";
 
 function parseName(name: string): { baseName: string; strength: string } {
   const match = name.match(/^(.*?)\s+(\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g))(\s+.*)?$/i);
@@ -19,10 +20,19 @@ export default function ProductCard({ product }: ProductCardProps) {
   const productUrl = `/product/${product.id}`;
   const { baseName, strength } = parseName(product.name);
   const [qty, setQty] = useState(1);
+  const [added, setAdded] = useState(false);
+  const { addToCart } = useCart();
 
   const stop = (e: React.MouseEvent) => e.preventDefault();
   const dec = (e: React.MouseEvent) => { stop(e); setQty(q => Math.max(1, q - 1)); };
   const inc = (e: React.MouseEvent) => { stop(e); setQty(q => q + 1); };
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    stop(e);
+    addToCart(product, qty);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1800);
+  };
 
   return (
     <Link href={productUrl} style={{ textDecoration: "none", display: "block", height: "100%" }}>
@@ -113,11 +123,19 @@ export default function ProductCard({ product }: ProductCardProps) {
 
               {/* Add to Cart */}
               <button
-                onClick={stop}
-                className="flex-1 font-semibold rounded-xl transition-opacity hover:opacity-90"
-                style={{ backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px", height: "36px" }}
+                onClick={handleAddToCart}
+                className="flex-1 font-semibold rounded-xl transition-all"
+                style={{
+                  backgroundColor: added ? "#059669" : "#1B5CB5",
+                  color: "#fff",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                  height: "36px",
+                  transition: "background-color 0.25s",
+                }}
               >
-                Add to Cart
+                {added ? "✓ Added!" : "Add to Cart"}
               </button>
             </div>
           </div>

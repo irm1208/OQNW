@@ -10,7 +10,9 @@ import AllPeptides from "@/pages/AllPeptides";
 import PopularPeptides from "@/pages/PopularPeptides";
 import ProductPage from "@/pages/ProductPage";
 import PeptideResearch from "@/pages/PeptideResearch";
+import CartPage from "@/pages/CartPage";
 import NotFound from "@/pages/not-found";
+import { CartProvider } from "@/context/CartContext";
 
 const queryClient = new QueryClient();
 
@@ -51,9 +53,7 @@ function Router() {
       <Route path="/sign-in">
         <PlaceholderPage title="Sign In" description="Sign in to your research account." />
       </Route>
-      <Route path="/cart">
-        <PlaceholderPage title="My Cart" description="Your research cart." />
-      </Route>
+      <Route path="/cart" component={CartPage} />
       <Route path="/terms">
         <PlaceholderPage title="Terms & Conditions" description="Our terms and conditions of use." />
       </Route>
@@ -75,17 +75,19 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <div className="min-h-screen bg-white flex flex-col">
-            <AnnouncementBar />
-            <Header />
-            <main className="flex-1">
-              <Router />
-            </main>
-            <Footer />
-          </div>
-        </WouterRouter>
-        <Toaster />
+        <CartProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <div className="min-h-screen bg-white flex flex-col">
+              <AnnouncementBar />
+              <Header />
+              <main className="flex-1">
+                <Router />
+              </main>
+              <Footer />
+            </div>
+          </WouterRouter>
+          <Toaster />
+        </CartProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
