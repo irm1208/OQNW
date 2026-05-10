@@ -38,27 +38,50 @@ function sectionHeader(doc: jsPDF, label: string, x: number, y: number, w: numbe
 
 // ─── logo loader ──────────────────────────────────────────────────────────────
 
-async function loadLogoDataUrl(): Promise<string | null> {
+interface LogoAsset {
+  dataUrl: string;
+  naturalW: number;
+  naturalH: number;
+}
+
+async function loadLogo(): Promise<LogoAsset | null> {
   try {
     const res  = await fetch("/omniqure-logo.jpeg");
     const blob = await res.blob();
-    return await new Promise<string>((resolve, reject) => {
+    const dataUrl = await new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload  = () => resolve(reader.result as string);
       reader.onerror = reject;
       reader.readAsDataURL(blob);
     });
+    // Load into a browser Image to read natural dimensions
+    const { w, h } = await new Promise<{ w: number; h: number }>((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
+      img.onerror = () => resolve({ w: 1, h: 1 });
+      img.src = dataUrl;
+    });
+    return { dataUrl, naturalW: w, naturalH: h };
   } catch {
     return null;
   }
 }
 
+/** Return display mm width/height that fit inside maxW×maxH while preserving ratio. */
+function fitLogo(logo: LogoAsset, maxW: number, maxH: number): { w: number; h: number } {
+  const ratio = logo.naturalW / logo.naturalH;
+  let w = maxW;
+  let h = w / ratio;
+  if (h > maxH) { h = maxH; w = h * ratio; }
+  return { w, h };
+}
+
 // ─── main export (async) ──────────────────────────────────────────────────────
 
 export async function generateCOA(product: Product, detail: ProductDetail) {
-  const [doc, logoDataUrl] = await Promise.all([
+  const [doc, logo] = await Promise.all([
     Promise.resolve(new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" })),
-    loadLogoDataUrl(),
+    loadLogo(),
   ]);
 
   const W        = 210;
@@ -70,38 +93,36 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   const docRef   = detail.refNumber ? `COA-${detail.refNumber}` : `COA-OQ-${product.id.padStart(3, "0")}`;
   const purity   = getPurityStr(product.id);
 
-  // ── 1. HEADER (0 → 42) ─────────────────────────────────────────────────────
-  // Background: deep navy
-  fill(doc, 0, 0, W, 42, 10, 20, 60);
+  // ── 1. HEADER (0 → 44) ─────────────────────────────────────────────────────
+  const HDR = 44;
+  fill(doc, 0, 0, W, HDR, 10, 20, 60);          // deep navy full-width
 
-  // Diagonal accent bar (lighter blue strip in bottom-right corner)
-  fill(doc, W / 2, 0, W / 2, 42, 15, 38, 100);
-
-  // Logo (left side, vertically centred in header)
-  if (logoDataUrl) {
-    doc.addImage(logoDataUrl, "JPEG", M, 7, 52, 28);
+  // Logo — fit inside 80×28 mm box, preserving true aspect ratio
+  if (logo) {
+    const { w: lw, h: lh } = fitLogo(logo, 80, 28);
+    const logoX = M;
+    const logoY = (HDR - lh) / 2;                // vertically centred
+    doc.addImage(logo.dataUrl, "JPEG", logoX, logoY, lw, lh);
   }
 
-  // Vertical divider
-  vline(doc, W / 2 - 6, 8, 26, 255, 255, 255, 0.3);
-  doc.setGState(new (doc as any).GState({ opacity: 0.15 }));
-  doc.setGState(new (doc as any).GState({ opacity: 1 }));
+  // Thin hairline divider between logo area and title
+  vline(doc, W / 2 - 4, 8, 28, 255, 255, 255, 0.25);
 
-  // "CERTIFICATE OF ANALYSIS" title
+  // "CERTIFICATE OF ANALYSIS" — stacked, right-aligned
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(15.5);
+  doc.setFontSize(16);
   doc.setTextColor(255, 255, 255);
-  doc.text("CERTIFICATE", W - M, 17, { align: "right" });
-  doc.text("OF ANALYSIS", W - M, 25, { align: "right" });
+  doc.text("CERTIFICATE", W - M, 18, { align: "right" });
+  doc.text("OF ANALYSIS", W - M, 27, { align: "right" });
 
-  // Doc ref / lot below title
+  // Doc ref · Lot beneath title
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(6.8);
-  doc.setTextColor(163, 195, 240);
-  doc.text(`${docRef}  ·  Lot ${lot}`, W - M, 33, { align: "right" });
+  doc.setFontSize(6.5);
+  doc.setTextColor(150, 185, 235);
+  doc.text(`${docRef}  ·  Lot ${lot}`, W - M, 35, { align: "right" });
 
   // Bottom accent stripe
-  fill(doc, 0, 42, W, 2, 41, 98, 200);
+  fill(doc, 0, HDR, W, 2.5, 41, 98, 200);
 
   // ── 2. META STRIP (44 → 58) ────────────────────────────────────────────────
   fill(doc, 0, 44, W, 14, 245, 248, 255);
@@ -353,9 +374,10 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   hline(doc, 0, FOOTER_Y, W, 200, 215, 240, 0.5);
   fill(doc, 0, FOOTER_Y, W, 24, 10, 20, 60);
 
-  // Logo small repeat in footer
-  if (logoDataUrl) {
-    doc.addImage(logoDataUrl, "JPEG", M, FOOTER_Y + 4, 28, 15);
+  // Logo small repeat in footer — preserved aspect ratio
+  if (logo) {
+    const { w: lw, h: lh } = fitLogo(logo, 32, 14);
+    doc.addImage(logo.dataUrl, "JPEG", M, FOOTER_Y + (24 - lh) / 2, lw, lh);
   }
 
   doc.setFont("helvetica", "normal");
