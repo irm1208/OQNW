@@ -4,8 +4,7 @@ export type Product = {
   slug: string;
   price: number | null;
   image: string;
-  badge?: 'NEW' | 'SOLD OUT' | 'SAVE 15%' | 'CAPSULES' | 'TOPICAL';
-  soldOut?: boolean;
+  badge?: 'NEW' | 'SAVE 15%' | 'TOPICAL';
   category: string;
 };
 
@@ -17,7 +16,6 @@ export const products: Product[] = [
   { id: "3", name: "Adipotide (FTPP) 10mg", slug: "/adipotide-ftpp-10mg", price: 89.00, image: `${BASE_IMG}/a/d/adipotide_peptide_1.png`, category: "Purchase Peptides" },
   { id: "4", name: "AHK (Tripeptide-3) 200mg (Topical)", slug: "/ahk-tripeptide-3-200mg", price: 200.00, image: `${BASE_IMG}/a/h/ahk_peptide.png`, badge: "TOPICAL", category: "Cosmetic Peptides" },
   { id: "5", name: "AHK-Cu 200mg (Topical)", slug: "/ahk-cu-200mg", price: 200.00, image: `${BASE_IMG}/a/h/ahk-cu_peptide.png`, badge: "TOPICAL", category: "Cosmetic Peptides" },
-  { id: "6", name: "AICAR 50mg", slug: "/aicar-50mg", price: null, image: `${BASE_IMG}/a/i/aicar_peptide.png`, soldOut: true, category: "Purchase Peptides" },
   { id: "7", name: "AOD9604 6mg", slug: "/aod9604-6mg", price: 65.00, image: `${BASE_IMG}/a/o/aod-9604_peptide_1.png`, category: "Purchase Peptides" },
   { id: "8", name: "ARA-290 16mg", slug: "/ara-290-16mg", price: 95.00, image: `${BASE_IMG}/a/r/ara-290_peptide.png`, category: "Purchase Peptides" },
   { id: "9", name: "B7-33 6mg", slug: "/b7-33-6mg", price: 70.00, image: `${BASE_IMG}/b/7/b7-33_peptide.png`, category: "Purchase Peptides" },
@@ -44,9 +42,8 @@ export const products: Product[] = [
   { id: "32", name: "DSIP 5mg", slug: "/dsip-5mg", price: 40.00, image: `${BASE_IMG}/d/s/dsip_5mg_peptide.png`, category: "Purchase Peptides" },
   { id: "33", name: "Epithalon (Epitalon) 20mg", slug: "/epithalon-epitalon-20mg", price: 65.00, image: `${BASE_IMG}/e/p/epithalon_20mg_peptide.png`, category: "Bioregulators" },
   { id: "34", name: "Epithalon (Epitalon) 50mg", slug: "/epithalon-epitalon-50mg", price: 135.00, image: `${BASE_IMG}/e/p/epithalon_50mg_peptide.png`, category: "Bioregulators" },
-  { id: "36", name: "FGL-S 10mg", slug: "/fgl-s-10mg", price: null, image: `${BASE_IMG}/f/g/fgl_s_10mg_peptide_87364.png`, soldOut: true, category: "Purchase Peptides" },
-  { id: "37", name: "Follistatin 315 1mg", slug: "/follistatin-315-1mg", price: null, image: `${BASE_IMG}/f/o/follistatin-315_peptide.png`, soldOut: true, category: "IGF-1 Proteins" },
-  { id: "38", name: "Follistatin 344 1mg", slug: "/follistatin-344-1mg", price: null, image: `${BASE_IMG}/f/o/follistatin-344_peptide.png`, soldOut: true, category: "IGF-1 Proteins" },
+  { id: "37", name: "Follistatin 315 1mg", slug: "/follistatin-315-1mg", price: 295.00, image: `${BASE_IMG}/f/o/follistatin-315_peptide.png`, category: "IGF-1 Proteins" },
+  { id: "38", name: "Follistatin 344 1mg", slug: "/follistatin-344-1mg", price: 295.00, image: `${BASE_IMG}/f/o/follistatin-344_peptide.png`, category: "IGF-1 Proteins" },
   { id: "39", name: "FOX04-DRI 10mg (Proxofim)", slug: "/foxo4-dri-10mg-proxofim", price: 300.00, image: `${BASE_IMG}/f/o/fox04-dri_peptide.png`, category: "Purchase Peptides" },
   { id: "40", name: "Fragment, CJC-1295 (No DAC), Ipamorelin 12mg (Blend)", slug: "/fragment-cjc1295-ipamorelin-12mg-blend", price: 100.00, image: `${BASE_IMG}/h/g/hgh_fragment_6mg_cjc1295_3mg_ipamorelin_3mg_peptide_blend.png`, category: "Peptide Blends" },
   { id: "41", name: "Fragment, Modified GRF, Ipamorelin 12mg (Blend)", slug: "/fragment-modified-grf-ipamorelin-12mg-blend", price: 100.00, image: `${BASE_IMG}/f/r/fragment_modified-grf_ipamorelin_peptide_blend.png`, category: "Peptide Blends" },
@@ -185,7 +182,6 @@ export const categories = [
 
 export const purchaseProducts = [
   { name: "Adipotide (FTPP) 10mg", slug: "/adipotide-ftpp-10mg" },
-  { name: "AICAR 50mg", slug: "/aicar-50mg" },
   { name: "AOD9604 6mg", slug: "/aod9604-6mg" },
   { name: "ARA-290 16mg", slug: "/ara-290-16mg" },
   { name: "Bronchogen 20mg", slug: "/bronchogen-20mg-bioregulator" },

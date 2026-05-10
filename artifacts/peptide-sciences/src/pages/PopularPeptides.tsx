@@ -7,7 +7,6 @@ import { popularProductIds } from "@/data/popularPeptides";
 
 const categoryTabs = [
   { label: "Popular Peptides", key: "Popular Peptides" },
-  { label: "Peptide Capsules", key: "Peptide Capsules" },
   { label: "Peptide Blends", key: "Peptide Blends" },
   { label: "IGF-1 Proteins", key: "IGF-1 Proteins" },
   { label: "Melanotan Peptides", key: "Melanotan Peptides" },
@@ -29,16 +28,9 @@ export default function PopularPeptides() {
     return popularProductIds.map((entry) => {
       const base = productMap.get(entry.id);
       if (!base) return null;
-      const isSoldOut = entry.soldOut === true;
       return {
         ...base,
-        soldOut: isSoldOut || base.soldOut,
-        price: isSoldOut ? null : base.price,
-        badge: isSoldOut
-          ? ("SOLD OUT" as const)
-          : entry.badge
-            ? entry.badge
-            : base.badge,
+        badge: entry.badge ? entry.badge : base.badge,
       };
     }).filter((p): p is Product => p !== null);
   }, [productMap]);

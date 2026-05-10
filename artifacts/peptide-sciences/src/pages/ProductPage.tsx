@@ -177,15 +177,7 @@ export default function ProductPage() {
                 className="relative flex items-center justify-center bg-white"
                 style={{ minHeight: "260px", padding: "20px" }}
               >
-                {product.soldOut && (
-                  <div
-                    className="absolute top-3 left-3 px-3 py-1 text-xs font-bold uppercase rounded-sm z-10"
-                    style={{ backgroundColor: "#999", color: "#fff" }}
-                  >
-                    Sold Out
-                  </div>
-                )}
-                {product.badge && !product.soldOut && (
+                {product.badge && (
                   <div
                     className="absolute top-3 right-3 px-3 py-1 text-xs font-bold uppercase rounded-sm z-10"
                     style={{
@@ -247,8 +239,7 @@ export default function ProductPage() {
               {product.name}
             </h1>
 
-            {!product.soldOut && (
-              <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-3">
                 <span
                   className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded"
                   style={{ backgroundColor: "#e8f5e9", color: "#2e7d32", border: "1px solid #c8e6c9" }}
@@ -257,28 +248,18 @@ export default function ProductPage() {
                   FREE Shipping
                 </span>
               </div>
-            )}
 
             {/* Price */}
-            {product.price != null ? (
+            {product.price != null && (
               <div className="mb-4 flex items-baseline gap-2">
                 <span className="font-bold" style={{ fontSize: "32px", color: "#E7461E" }}>
                   ${product.price.toFixed(2)}
                 </span>
               </div>
-            ) : (
-              <div className="mb-4">
-                <span
-                  className="inline-block px-3 py-1.5 rounded text-sm font-semibold"
-                  style={{ backgroundColor: "#f0f0f0", color: "#666" }}
-                >
-                  Currently Out of Stock
-                </span>
-              </div>
             )}
 
             {/* Quantity selector + Add to Cart */}
-            {!product.soldOut && product.price != null ? (
+            {product.price != null && (
               <div className="mb-4">
                 <p className="text-xs font-semibold mb-2 uppercase tracking-wide" style={{ color: "#666" }}>
                   Quantity
@@ -345,16 +326,7 @@ export default function ProductPage() {
                   </div>
                 )}
               </div>
-            ) : product.soldOut ? (
-              <div className="mb-4">
-                <button
-                  className="w-full py-3 rounded font-semibold text-white text-sm"
-                  style={{ backgroundColor: "#999", cursor: "default" }}
-                >
-                  Notify Me When Available
-                </button>
-              </div>
-            ) : null}
+            )}
 
             {/* Quick specs table */}
             <div className="rounded border border-gray-200 overflow-hidden mb-4">
@@ -410,8 +382,8 @@ export default function ProductPage() {
                   )}
                   <tr>
                     <td className="py-2 px-3 font-semibold text-xs" style={{ color: "#555", backgroundColor: "#fafafa" }}>Availability</td>
-                    <td className="py-2 px-3 text-xs font-semibold" style={{ color: product.soldOut ? "#999" : "#2e7d32" }}>
-                      {product.soldOut ? "Out of Stock" : "In Stock"}
+                    <td className="py-2 px-3 text-xs font-semibold" style={{ color: "#2e7d32" }}>
+                      In Stock
                     </td>
                   </tr>
                 </tbody>

@@ -1,22 +1,14 @@
 export type PopularEntry = {
   id: string;
-  soldOut?: boolean;
-  badge?: "NEW" | "SOLD OUT";
+  badge?: "NEW";
 };
 
 export const popularProductIds: PopularEntry[] = [
   { id: "19" },
-  { id: "105", soldOut: true },
-  { id: "87", soldOut: true },
   { id: "127" },
   { id: "12" },
   { id: "126" },
-  { id: "137" },
   { id: "14" },
-  { id: "31", soldOut: true },
-  { id: "103" },
-  { id: "104", soldOut: true },
-  { id: "36", soldOut: true },
   { id: "162" },
   { id: "161" },
   { id: "160" },
@@ -25,7 +17,6 @@ export const popularProductIds: PopularEntry[] = [
   { id: "16", badge: "NEW" },
   { id: "123" },
   { id: "128" },
-  { id: "138" },
   { id: "121" },
   { id: "15", badge: "NEW" },
   { id: "10" },
@@ -39,13 +30,6 @@ export const popularProductIds: PopularEntry[] = [
   { id: "144" },
   { id: "146" },
   { id: "7" },
-  { id: "151" },
-  { id: "35", soldOut: true },
   { id: "44" },
-  { id: "42" },
-  { id: "174" },
-  { id: "63" },
   { id: "99" },
-  { id: "89" },
-  { id: "86" },
 ];

@@ -7,9 +7,7 @@ interface ProductCardProps {
 
 const BADGE_COLORS: Record<string, { bg: string; text: string }> = {
   NEW: { bg: "#E7461E", text: "#fff" },
-  "SOLD OUT": { bg: "#999", text: "#fff" },
   "SAVE 15%": { bg: "#006BB4", text: "#fff" },
-  CAPSULES: { bg: "#E7461E", text: "#fff" },
   TOPICAL: { bg: "#E7461E", text: "#fff" },
 };
 
@@ -24,17 +22,8 @@ export default function ProductCard({ product }: ProductCardProps) {
     >
       {/* Product image area */}
       <div className="relative bg-white" style={{ padding: "8px 8px 0" }}>
-        {/* Sold Out badge */}
-        {product.soldOut && (
-          <div
-            className="absolute top-2 left-2 z-10 px-2 py-0.5 text-xs font-semibold rounded-sm"
-            style={{ backgroundColor: "#999", color: "#fff", fontSize: "10px" }}
-          >
-            Sold Out
-          </div>
-        )}
         {/* Other badges */}
-        {product.badge && !product.soldOut && (
+        {product.badge && (
           <div
             className="absolute top-2 right-2 z-10 px-2 py-0.5 text-xs font-semibold rounded-sm uppercase"
             style={{
@@ -108,35 +97,20 @@ export default function ProductCard({ product }: ProductCardProps) {
             Learn More
           </Link>
 
-          {/* Add to Cart / Sold Out */}
-          {product.soldOut ? (
-            <button
-              className="w-full py-2 text-white text-center font-medium"
-              style={{
-                backgroundColor: "#999",
-                fontSize: "13px",
-                borderRadius: "4px",
-                border: "none",
-                cursor: "default",
-              }}
-            >
-              SOLD OUT: Notify Me
-            </button>
-          ) : (
-            <button
-              className="w-full py-2 text-white text-center font-medium hover:opacity-90 transition-opacity"
-              style={{
-                backgroundColor: "#E7461E",
-                fontSize: "13px",
-                borderRadius: "4px",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              Add to Cart
-              {product.price != null ? ` — $${product.price.toFixed(2)}` : ""}
-            </button>
-          )}
+          {/* Add to Cart */}
+          <button
+            className="w-full py-2 text-white text-center font-medium hover:opacity-90 transition-opacity"
+            style={{
+              backgroundColor: "#E7461E",
+              fontSize: "13px",
+              borderRadius: "4px",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            Add to Cart
+            {product.price != null ? ` — $${product.price.toFixed(2)}` : ""}
+          </button>
         </div>
       </div>
     </div>
