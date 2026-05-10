@@ -83,29 +83,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           onMouseEnter={() => setImgHovered(true)}
           onMouseLeave={() => setImgHovered(false)}
         >
-          {/* HPLC badge */}
-          <div className="absolute top-2.5 left-2.5 z-10">
-            <span style={{
-              display: "inline-flex", alignItems: "center", gap: "3px",
-              backgroundColor: "#EEF4FF", color: "#1B5CB5",
-              fontSize: "10px", fontWeight: 700, padding: "3px 8px",
-              borderRadius: "20px", border: "1px solid #BFDBFE", letterSpacing: "0.03em",
-            }}>
-              98%+ HPLC
-            </span>
-          </div>
-          {/* COA badge */}
-          <div className="absolute top-2.5 right-2.5 z-10">
-            <span style={{
-              display: "inline-flex", alignItems: "center",
-              backgroundColor: "#F0FDF4", color: "#059669",
-              fontSize: "10px", fontWeight: 700, padding: "3px 8px",
-              borderRadius: "20px", border: "1px solid #6EE7B7", letterSpacing: "0.03em",
-            }}>
-              COA ✓
-            </span>
-          </div>
-
           <img
             src={product.image}
             alt={product.name}
