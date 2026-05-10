@@ -3,7 +3,21 @@ import type { Product } from "@/data/products";
 import type { ProductDetail } from "@/data/productDetails";
 import { getPurityStr, getLotDates } from "@/utils/productPurity";
 
-// ─── drawing helpers ───────────────────────────────────────────────────────────
+// ─── Brand palette (sourced from logo gradient + site theme) ──────────────────
+//   #0D2565  →  #1240A0  →  #1B5CB5
+const B = {
+  darkest:  [13,  37,  101] as [number,number,number],  // #0D2565
+  dark:     [18,  64,  160] as [number,number,number],  // #1240A0
+  mid:      [27,  92,  181] as [number,number,number],  // #1B5CB5
+  paleBg:   [240, 245, 255] as [number,number,number],  // very light tint
+  paleBg2:  [248, 251, 255] as [number,number,number],  // alternating row
+  border:   [191, 214, 248] as [number,number,number],  // #BFD6F8
+  subtext:  [120, 140, 175] as [number,number,number],  // label grey-blue
+  muted:    [150, 175, 215] as [number,number,number],  // footer / doc-ref text
+  ink:      [8,   16,  45 ] as [number,number,number],  // near-black text
+};
+
+// ─── drawing helpers ──────────────────────────────────────────────────────────
 
 function fill(doc: jsPDF, x: number, y: number, w: number, h: number, r: number, g: number, b: number) {
   doc.setFillColor(r, g, b);
@@ -29,7 +43,7 @@ function vline(doc: jsPDF, x: number, y: number, h: number, r: number, g: number
 }
 
 function sectionHeader(doc: jsPDF, label: string, x: number, y: number, w: number) {
-  fill(doc, x, y, w, 7, 18, 38, 95);
+  fill(doc, x, y, w, 7, ...B.dark);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(7);
   doc.setTextColor(255, 255, 255);
@@ -54,7 +68,6 @@ async function loadLogo(): Promise<LogoAsset | null> {
       reader.onerror = reject;
       reader.readAsDataURL(blob);
     });
-    // Load into a browser Image to read natural dimensions
     const { w, h } = await new Promise<{ w: number; h: number }>((resolve) => {
       const img = new Image();
       img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
@@ -67,7 +80,7 @@ async function loadLogo(): Promise<LogoAsset | null> {
   }
 }
 
-/** Return display mm width/height that fit inside maxW×maxH while preserving ratio. */
+/** Fit logo inside maxW×maxH preserving aspect ratio. */
 function fitLogo(logo: LogoAsset, maxW: number, maxH: number): { w: number; h: number } {
   const ratio = logo.naturalW / logo.naturalH;
   let w = maxW;
@@ -95,38 +108,39 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
 
   // ── 1. HEADER (0 → 44) ─────────────────────────────────────────────────────
   const HDR = 44;
-  fill(doc, 0, 0, W, HDR, 10, 20, 60);          // deep navy full-width
+  // Header: darkest brand colour as the deep background
+  fill(doc, 0, 0, W, HDR, ...B.darkest);
 
   // Logo — fit inside 80×28 mm box, preserving true aspect ratio
   if (logo) {
     const { w: lw, h: lh } = fitLogo(logo, 80, 28);
     const logoX = M;
-    const logoY = (HDR - lh) / 2;                // vertically centred
+    const logoY = (HDR - lh) / 2;
     doc.addImage(logo.dataUrl, "JPEG", logoX, logoY, lw, lh);
   }
 
-  // Thin hairline divider between logo area and title
+  // Hairline divider
   vline(doc, W / 2 - 4, 8, 28, 255, 255, 255, 0.25);
 
-  // "CERTIFICATE OF ANALYSIS" — stacked, right-aligned
+  // "CERTIFICATE OF ANALYSIS" title
   doc.setFont("helvetica", "bold");
   doc.setFontSize(16);
   doc.setTextColor(255, 255, 255);
   doc.text("CERTIFICATE", W - M, 18, { align: "right" });
   doc.text("OF ANALYSIS", W - M, 27, { align: "right" });
 
-  // Doc ref · Lot beneath title
+  // Doc ref · Lot in muted brand blue
   doc.setFont("helvetica", "normal");
   doc.setFontSize(6.5);
-  doc.setTextColor(150, 185, 235);
+  doc.setTextColor(...B.muted);
   doc.text(`${docRef}  ·  Lot ${lot}`, W - M, 35, { align: "right" });
 
-  // Bottom accent stripe
-  fill(doc, 0, HDR, W, 2.5, 41, 98, 200);
+  // Bottom accent stripe: brand mid (#1B5CB5)
+  fill(doc, 0, HDR, W, 2.5, ...B.mid);
 
-  // ── 2. META STRIP (44 → 58) ────────────────────────────────────────────────
-  fill(doc, 0, 44, W, 14, 245, 248, 255);
-  hline(doc, 0, 58, W, 210, 220, 238, 0.4);
+  // ── 2. META STRIP (46.5 → 60) ──────────────────────────────────────────────
+  fill(doc, 0, 46.5, W, 13.5, ...B.paleBg);
+  hline(doc, 0, 60, W, ...B.border, 0.4);
 
   const meta = [
     { label: "DATE OF ANALYSIS", value: analysis,  accent: false },
@@ -137,46 +151,45 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
 
   meta.forEach((m, i) => {
     const x = M + i * 47;
-    // Subtle card
-    fill(doc, x, 45.5, 43, 11, 255, 255, 255);
-    box(doc, x, 45.5, 43, 11, 220, 230, 248);
+    fill(doc, x, 47.5, 43, 11, 255, 255, 255);
+    box(doc, x, 47.5, 43, 11, ...B.border);
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(5.8);
-    doc.setTextColor(130, 145, 175);
-    doc.text(m.label, x + 2, 49.5);
+    doc.setTextColor(...B.subtext);
+    doc.text(m.label, x + 2, 51.5);
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8);
     doc.setTextColor(m.accent ? 5 : 20, m.accent ? 145 : 30, m.accent ? 100 : 75);
-    doc.text(m.value, x + 2, 55);
+    doc.text(m.value, x + 2, 57);
   });
 
-  // ── 3. PRODUCT IDENTITY (60 → 82) ──────────────────────────────────────────
-  let y = 60;
+  // ── 3. PRODUCT IDENTITY (62 → 84) ──────────────────────────────────────────
+  let y = 62;
 
-  // Product card
-  fill(doc, M, y, CW, 22, 250, 252, 255);
-  box(doc, M, y, CW, 22, 210, 222, 242, 0.4);
-  // Left blue accent bar
-  fill(doc, M, y, 3, 22, 41, 98, 200);
+  // Product card — pale brand blue background
+  fill(doc, M, y, CW, 22, ...B.paleBg);
+  box(doc, M, y, CW, 22, ...B.border, 0.4);
+  // Left accent bar: brand mid
+  fill(doc, M, y, 3, 22, ...B.mid);
 
   // Product name
   doc.setFont("helvetica", "bold");
   doc.setFontSize(13.5);
-  doc.setTextColor(8, 18, 48);
+  doc.setTextColor(...B.ink);
   const nameLines = doc.splitTextToSize(product.name, CW - 72);
   doc.text(nameLines, M + 7, y + 9);
 
-  // Category tag
-  fill(doc, M + 7, y + 13.5, 48, 5.5, 235, 243, 255);
-  box(doc, M + 7, y + 13.5, 48, 5.5, 190, 215, 252);
+  // Category tag: border = brand border, text = brand dark
+  fill(doc, M + 7, y + 13.5, 48, 5.5, ...B.paleBg2);
+  box(doc, M + 7, y + 13.5, 48, 5.5, ...B.border);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(6.2);
-  doc.setTextColor(30, 80, 180);
+  doc.setTextColor(...B.dark);
   doc.text(product.category.toUpperCase(), M + 9, y + 17.5);
 
-  // Purity badge — right side, prominent
+  // Purity badge — right side, green (intentionally distinct)
   const bx = M + CW - 58;
   fill(doc, bx, y + 2, 55, 18, 232, 253, 242);
   box(doc, bx, y + 2, 55, 18, 160, 240, 200);
@@ -216,18 +229,18 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   function drawSpecCol(rows: [string, string][], cx: number, startY: number) {
     rows.forEach(([label, value], ri) => {
       const ry  = startY + ri * rh;
-      const bg: [number,number,number] = ri % 2 === 0 ? [255,255,255] : [248,250,255];
-      fill(doc, cx, ry, cw, rh, ...bg);
-      box(doc, cx, ry, cw, rh, 218, 228, 245);
+      const bg  = ri % 2 === 0 ? [255, 255, 255] : B.paleBg2;
+      fill(doc, cx, ry, cw, rh, ...bg as [number,number,number]);
+      box(doc, cx, ry, cw, rh, ...B.border);
 
       doc.setFont("helvetica", "bold");
       doc.setFontSize(5.8);
-      doc.setTextColor(120, 135, 165);
+      doc.setTextColor(...B.subtext);
       doc.text(label.toUpperCase(), cx + 2.5, ry + 3.8);
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.5);
-      doc.setTextColor(12, 22, 50);
+      doc.setTextColor(...B.ink);
       const wrapped = doc.splitTextToSize(value, cw - 5);
       doc.text(wrapped[0], cx + 2.5, ry + 7.8);
     });
@@ -241,11 +254,10 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   sectionHeader(doc, "ANALYTICAL TEST RESULTS", M, y, CW);
   y += 7;
 
-  // Table header row
+  // Table header row: brand dark (#1240A0)
   const TH  = 8.5;
-  fill(doc, M, y, CW, TH, 30, 55, 130);
+  fill(doc, M, y, CW, TH, ...B.dark);
 
-  // Column x positions & widths
   const cols = [
     { x: M + 2,    w: 44, label: "TEST PARAMETER"  },
     { x: M + 48,   w: 55, label: "METHOD"          },
@@ -297,16 +309,16 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
 
   const RH = 9.5;
   testRows.forEach(([param, method, spec, result], ri) => {
-    const bg: [number,number,number] = ri % 2 === 0 ? [255,255,255] : [248,250,255];
-    fill(doc, M, y, CW, RH, ...bg);
-    box(doc, M, y, CW, RH, 218, 228, 245);
+    const bg = ri % 2 === 0 ? [255, 255, 255] : B.paleBg2;
+    fill(doc, M, y, CW, RH, ...bg as [number,number,number]);
+    box(doc, M, y, CW, RH, ...B.border);
 
-    // Column dividers
-    [M + 47, M + 104, M + 139, M + 169].forEach(cx => vline(doc, cx, y, RH, 218, 228, 245));
+    // Column dividers: brand border colour
+    [M + 47, M + 104, M + 139, M + 169].forEach(cx => vline(doc, cx, y, RH, ...B.border));
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(7);
-    doc.setTextColor(12, 22, 50);
+    doc.setTextColor(...B.ink);
     doc.text(param, cols[0].x, y + 6.5);
 
     doc.setFont("helvetica", "normal");
@@ -315,14 +327,14 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
     doc.text(doc.splitTextToSize(method, cols[1].w - 2)[0], cols[1].x, y + 6.5);
     doc.text(spec, cols[2].x, y + 6.5);
 
-    // Result — highlight purity row
+    // Result — highlight purity row in green, others in brand ink
     const isPurity = param.startsWith("Purity");
     doc.setFont("helvetica", isPurity ? "bold" : "normal");
     doc.setFontSize(isPurity ? 7.5 : 6.5);
     doc.setTextColor(isPurity ? 5 : 12, isPurity ? 140 : 22, isPurity ? 80 : 50);
     doc.text(result, cols[3].x, y + 6.5);
 
-    // PASS badge
+    // PASS badge (green — intentionally different from brand blue)
     fill(doc, cols[4].x - 1, y + 1.8, 17, 6, 220, 252, 230);
     box(doc, cols[4].x - 1, y + 1.8, 17, 6, 160, 240, 195);
     doc.setFont("helvetica", "bold");
@@ -333,15 +345,15 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
     y += RH;
   });
 
-  // Outer border for full table
-  box(doc, M, y - testRows.length * RH - TH, CW, testRows.length * RH + TH, 190, 210, 240, 0.5);
+  // Outer table border: brand border colour
+  box(doc, M, y - testRows.length * RH - TH, CW, testRows.length * RH + TH, ...B.border, 0.5);
   y += 5;
 
   // ── 6. NOTICE BOX ──────────────────────────────────────────────────────────
   if (y < FOOTER_Y - 22) {
     fill(doc, M, y, CW, 16, 255, 251, 232);
     box(doc, M, y, CW, 16, 248, 210, 80, 0.4);
-    fill(doc, M, y, 3, 16, 245, 180, 10);   // amber left bar
+    fill(doc, M, y, 3, 16, 245, 180, 10);   // amber left bar (intentional)
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(6.5);
@@ -370,11 +382,13 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
     );
   }
 
-  // ── 8. FOOTER (fixed) ──────────────────────────────────────────────────────
-  hline(doc, 0, FOOTER_Y, W, 200, 215, 240, 0.5);
-  fill(doc, 0, FOOTER_Y, W, 24, 10, 20, 60);
+  // ── 8. FOOTER ──────────────────────────────────────────────────────────────
+  // Separator line: brand mid
+  hline(doc, 0, FOOTER_Y, W, ...B.mid, 0.6);
+  // Footer background: darkest brand colour
+  fill(doc, 0, FOOTER_Y, W, 24, ...B.darkest);
 
-  // Logo small repeat in footer — preserved aspect ratio
+  // Logo in footer — preserved aspect ratio
   if (logo) {
     const { w: lw, h: lh } = fitLogo(logo, 32, 14);
     doc.addImage(logo.dataUrl, "JPEG", M, FOOTER_Y + (24 - lh) / 2, lw, lh);
@@ -382,7 +396,7 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(6.5);
-  doc.setTextColor(163, 195, 240);
+  doc.setTextColor(...B.muted);
   doc.text(
     `${docRef}  ·  Lot: ${lot}  ·  Issued: ${issued}  ·  Expiry: ${expires}`,
     W / 2 + 10, FOOTER_Y + 9,
