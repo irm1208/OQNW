@@ -42,7 +42,7 @@ function Router() {
         <PlaceholderPage title="Peptide Information" description="Educational information about research peptides." />
       </Route>
       <Route path="/company">
-        <PlaceholderPage title="Our Company" description="Learn about Peptide Sciences." />
+        <PlaceholderPage title="Our Company" description="Learn about OmniQure." />
       </Route>
       <Route path="/contact">
         <PlaceholderPage title="Contact Us" description="Get in touch with our research team." />

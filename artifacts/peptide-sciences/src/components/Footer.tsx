@@ -2,20 +2,6 @@ import { Link } from "wouter";
 
 const footerCategories = [
   {
-    title: "Peptide Capsules",
-    href: "/?category=Peptide+Capsules",
-    links: [
-      { label: "5-Amino-1MQ", href: "/product/1" },
-      { label: "BPC-157 Capsules", href: "/product/17" },
-      { label: "Dihexa 5mg", href: "/product/31" },
-      { label: "Epitalon Capsules", href: "/product/35" },
-      { label: "GHK-Cu Capsules", href: "/product/42" },
-      { label: "MK-677 (Ibutamoren)", href: "/product/89" },
-      { label: "NMN 500mg", href: "/product/101" },
-      { label: "Thymosin Beta-4 Fragment", href: "/product/157" },
-    ],
-  },
-  {
     title: "Purchase Peptides",
     href: "/?category=Purchase+Peptides",
     links: [
@@ -43,14 +29,25 @@ const footerCategories = [
     ],
   },
   {
+    title: "Bioregulators",
+    href: "/?category=Bioregulators",
+    links: [
+      { label: "Bronchogen 20mg", href: "/product/18" },
+      { label: "Epithalon 20mg", href: "/product/33" },
+      { label: "Cardiogen 20mg", href: "/product/20" },
+      { label: "Pinealon 20mg", href: "/product/115" },
+      { label: "Cortagen 20mg", href: "/product/29" },
+      { label: "Vilon 20mg", href: "/product/167" },
+    ],
+  },
+  {
     title: "Other Categories",
     href: "/",
     links: [
       { label: "IGF-1 Proteins", href: "/?category=IGF-1+Proteins" },
       { label: "Melanotan Peptides", href: "/?category=Melanotan+Peptides" },
-      { label: "Bioregulators", href: "/?category=Bioregulators" },
       { label: "Cosmetic Peptides", href: "/?category=Cosmetic+Peptides" },
-      { label: "Popular Peptides", href: "/?category=Popular+Peptides" },
+      { label: "Popular Peptides", href: "/popular-peptides" },
       { label: "All Peptides", href: "/" },
     ],
   },
@@ -87,19 +84,18 @@ export default function Footer() {
               <div className="flex items-center gap-2 mb-3">
                 <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
                   <circle cx="18" cy="18" r="18" fill="#E7461E" />
-                  <text x="18" y="23" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">
-                    PS
+                  <text x="18" y="23" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white" fontFamily="Arimo,Arial,sans-serif">
+                    OQ
                   </text>
                 </svg>
                 <span style={{ fontSize: "18px", fontWeight: 400, color: "#fff", letterSpacing: "0.02em" }}>
-                  PEPTIDE<span style={{ fontWeight: 700 }}>SCIENCES</span>
+                  Omni<span style={{ fontWeight: 700 }}>Qure</span>
                 </span>
               </div>
               <p style={{ fontSize: "12px", color: "#aaa", lineHeight: "1.6" }}>
                 USA-made research peptides manufactured to the highest standards of quality and purity. 99% HPLC purity guaranteed.
               </p>
               <div className="mt-4 flex gap-3">
-                {/* Social icons */}
                 {["Facebook", "Twitter", "Instagram"].map((s) => (
                   <a
                     key={s}
@@ -166,13 +162,13 @@ export default function Footer() {
               style={{ color: "#888" }}
             >
               <p className="mb-2">
-                <strong style={{ color: "#aaa" }}>IMPORTANT LEGAL NOTICE:</strong> All products sold by PeptideSciences.com are intended for in-vitro laboratory research use only. These products are not for human or veterinary use. By purchasing products from this website, you confirm that you are at least 21 years of age and that you are a qualified researcher or are purchasing for use in qualified research.
+                <strong style={{ color: "#aaa" }}>IMPORTANT LEGAL NOTICE:</strong> All products sold by OmniQure.com are intended for in-vitro laboratory research use only. These products are not for human or veterinary use. By purchasing products from this website, you confirm that you are at least 21 years of age and that you are a qualified researcher or are purchasing for use in qualified research.
               </p>
               <p className="mb-2">
-                The products are not drugs, and have not been approved by the FDA or any other regulatory body. The products are not intended to diagnose, treat, cure, or prevent any disease. PeptideSciences.com makes no claims as to the safety or efficacy of its products for human use.
+                The products are not drugs, and have not been approved by the FDA or any other regulatory body. The products are not intended to diagnose, treat, cure, or prevent any disease. OmniQure.com makes no claims as to the safety or efficacy of its products for human use.
               </p>
               <p>
-                Use of any peptide purchased from PeptideSciences.com for any purpose other than laboratory research is strictly prohibited. PeptideSciences.com is not responsible for the misuse of any of its products.
+                Use of any peptide purchased from OmniQure.com for any purpose other than laboratory research is strictly prohibited. OmniQure.com is not responsible for the misuse of any of its products.
               </p>
             </div>
 
@@ -208,7 +204,7 @@ export default function Footer() {
               className="border-t border-gray-700 pt-4 text-center"
               style={{ fontSize: "11px", color: "#666" }}
             >
-              © {new Date().getFullYear()} PeptideSciences.com — All Rights Reserved. | USA Manufactured Research Peptides | For Laboratory Research Use Only
+              © {new Date().getFullYear()} OmniQure.com — All Rights Reserved. | USA Manufactured Research Peptides | For Laboratory Research Use Only
             </div>
           </div>
         </div>

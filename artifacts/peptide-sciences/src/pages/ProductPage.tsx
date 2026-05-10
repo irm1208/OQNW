@@ -90,7 +90,7 @@ export default function ProductPage() {
                   className="text-xs font-bold tracking-widest uppercase"
                   style={{ color: "#E7461E", letterSpacing: "0.12em" }}
                 >
-                  Peptide Sciences
+                  OmniQure
                 </span>
                 <div className="flex items-center gap-2">
                   {detail.refNumber && (
@@ -595,7 +595,7 @@ export default function ProductPage() {
                           )}
                           <tr>
                             <td className="py-1.5 font-semibold" style={{ color: "#555" }}>Manufacturer</td>
-                            <td className="py-1.5" style={{ color: "#222" }}>Peptide Sciences (USA)</td>
+                            <td className="py-1.5" style={{ color: "#222" }}>OmniQure (USA)</td>
                           </tr>
                         </tbody>
                       </table>

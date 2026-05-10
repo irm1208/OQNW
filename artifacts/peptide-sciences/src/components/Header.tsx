@@ -2,8 +2,6 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Search, User, ShoppingCart, Menu, X } from "lucide-react";
 
-const LOGO_URL = "https://web.archive.org/web/20251012125939im_/https://www.peptidesciences.com/media/logo/stores/1/peptide_sciences_logo-web-white-background.png";
-
 const navItems = [
   { label: "All Peptides", href: "/" },
   { label: "Popular Peptides", href: "/popular-peptides" },
@@ -28,29 +26,14 @@ export default function Header() {
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-4">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 mr-4">
-            <img
-              src={LOGO_URL}
-              alt="Peptide Sciences"
-              style={{ height: "50px", maxWidth: "220px", objectFit: "contain" }}
-              onError={(e) => {
-                const img = e.currentTarget;
-                img.style.display = "none";
-                const parent = img.parentElement;
-                if (parent) {
-                  parent.innerHTML = `
-                    <div style="display:flex;align-items:center;gap:8px;text-decoration:none;">
-                      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-                        <circle cx="18" cy="18" r="18" fill="#E7461E"/>
-                        <text x="18" y="23" text-anchor="middle" font-size="14" font-weight="bold" fill="white">PS</text>
-                      </svg>
-                      <span style="font-size:20px;font-weight:400;color:#000;letter-spacing:0.02em;">
-                        PEPTIDE<strong>SCIENCES</strong>
-                      </span>
-                    </div>`;
-                }
-              }}
-            />
+          <Link href="/" className="flex-shrink-0 mr-4 flex items-center gap-2" style={{ textDecoration: "none" }}>
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+              <circle cx="19" cy="19" r="19" fill="#E7461E"/>
+              <text x="19" y="25" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white" fontFamily="Arimo,Arial,sans-serif">OQ</text>
+            </svg>
+            <span style={{ fontSize: "21px", fontWeight: 400, color: "#111", letterSpacing: "0.01em", lineHeight: 1 }}>
+              Omni<strong>Qure</strong>
+            </span>
           </Link>
 
           {/* Search */}

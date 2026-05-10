@@ -53,7 +53,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           style={{ backgroundColor: "#f5f5f5", border: "1px solid #e0e0e0" }}
         >
           <div style={{ fontSize: "8px", color: "#888", fontFamily: "Arimo, Arial" }}>
-            PEPTIDE SCIENCES
+            OMNIQURE
           </div>
           <div style={{ fontSize: "7px" }}>
             {product.badge === "CAPSULES" && (
