@@ -1,5 +1,6 @@
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { Shield, FlaskConical, Truck, Award, Microscope, Brain, Heart, Dumbbell, Scale, Clock, Zap, Leaf, Flame, Sparkles, Activity, TrendingUp, ChevronRight, Star } from "lucide-react";
+import { Shield, FlaskConical, Truck, Award, Microscope, Brain, Heart, Dumbbell, Scale, Clock, Zap, Leaf, Flame, Sparkles, Activity, TrendingUp, ChevronRight, ChevronLeft, Star } from "lucide-react";
 import { products } from "@/data/products";
 import { popularProductIds } from "@/data/popularPeptides";
 import ProductCard from "@/components/ProductCard";
@@ -20,6 +21,17 @@ const categories = [
   { name: "Anti-Inflammatory", icon: <Leaf size={22} />, color: "#7C3AED" },
   { name: "Cognitive Peptides", icon: <Flame size={22} />, color: "#B45309" },
 ];
+
+const SLIDES = [
+  { id: "3",  tagline: "Gold standard for tissue & gut repair research",        category: "Healing Peptides",     color: "#16A34A" },
+  { id: "71", tagline: "Systemic healing peptide for injury recovery research",  category: "Healing Peptides",     color: "#16A34A" },
+  { id: "76", tagline: "Dual GIP/GLP-1 receptor agonist for metabolic research", category: "Weight Management",    color: "#C2410C" },
+  { id: "15", tagline: "Telomerase-activating tetrapeptide for longevity research", category: "Longevity Peptides", color: "#7C3AED" },
+  { id: "43", tagline: "Mitochondrial peptide for metabolic & endurance research", category: "Cellular Health",    color: "#0E7490" },
+  { id: "31", tagline: "Selective GH secretagogue with minimal side-effect profile", category: "Growth Peptides",  color: "#1B5CB5" },
+  { id: "48", tagline: "Enhanced ACTH analog for cognitive & neuroprotection research", category: "Nootropics",    color: "#9333EA" },
+  { id: "17", tagline: "Copper tripeptide for skin regeneration & wound healing", category: "Skin & Repair",       color: "#BE185D" },
+].map(s => ({ ...s, product: products.find(p => p.id === s.id)! })).filter(s => s.product);
 
 const featuredIds = ["3", "7", "11", "43", "15", "31", "64", "71"];
 const featuredProducts = featuredIds
@@ -55,6 +67,159 @@ const pillars = [
     body: "Lyophilized peptides shipped with cold-chain packaging to preserve integrity from our lab to yours.",
   },
 ];
+
+function HeroSlideshow() {
+  const [idx, setIdx] = useState(0);
+  const [animating, setAnimating] = useState(false);
+
+  const go = (next: number) => {
+    if (animating) return;
+    setAnimating(true);
+    setTimeout(() => {
+      setIdx((next + SLIDES.length) % SLIDES.length);
+      setAnimating(false);
+    }, 200);
+  };
+
+  useEffect(() => {
+    const t = setInterval(() => go(idx + 1), 4500);
+    return () => clearInterval(t);
+  }, [idx]);
+
+  const slide = SLIDES[idx];
+
+  return (
+    <div
+      style={{
+        width: "340px",
+        flexShrink: 0,
+        borderRadius: "24px",
+        overflow: "hidden",
+        backgroundColor: "rgba(255,255,255,0.08)",
+        border: "1px solid rgba(255,255,255,0.18)",
+        backdropFilter: "blur(12px)",
+        position: "relative",
+      }}
+    >
+      {/* Image */}
+      <div style={{ position: "relative", height: "240px", overflow: "hidden", backgroundColor: "rgba(0,0,0,0.15)" }}>
+        <img
+          key={slide.id}
+          src={slide.product.image}
+          alt={slide.product.name}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            opacity: animating ? 0 : 1,
+            transition: "opacity 0.2s ease",
+          }}
+        />
+        {/* Gradient overlay */}
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "80px", background: "linear-gradient(transparent, rgba(0,0,0,0.45))" }} />
+        {/* Category badge */}
+        <span
+          style={{
+            position: "absolute",
+            top: "12px",
+            left: "12px",
+            padding: "3px 10px",
+            borderRadius: "999px",
+            fontSize: "10.5px",
+            fontWeight: 700,
+            backgroundColor: slide.color,
+            color: "#fff",
+            letterSpacing: "0.03em",
+          }}
+        >
+          {slide.category}
+        </span>
+        {/* Arrows */}
+        <button
+          onClick={() => go(idx - 1)}
+          style={{ position: "absolute", left: "8px", top: "50%", transform: "translateY(-50%)", width: "28px", height: "28px", borderRadius: "50%", backgroundColor: "rgba(0,0,0,0.35)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff" }}
+        >
+          <ChevronLeft size={16} />
+        </button>
+        <button
+          onClick={() => go(idx + 1)}
+          style={{ position: "absolute", right: "8px", top: "50%", transform: "translateY(-50%)", width: "28px", height: "28px", borderRadius: "50%", backgroundColor: "rgba(0,0,0,0.35)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff" }}
+        >
+          <ChevronRight size={16} />
+        </button>
+      </div>
+
+      {/* Info */}
+      <div style={{ padding: "16px 18px 18px" }}>
+        <p
+          style={{
+            fontSize: "16px",
+            fontWeight: 700,
+            color: "#fff",
+            marginBottom: "4px",
+            lineHeight: 1.3,
+            opacity: animating ? 0 : 1,
+            transition: "opacity 0.2s ease",
+          }}
+        >
+          {slide.product.name}
+        </p>
+        <p
+          style={{
+            fontSize: "12.5px",
+            color: "rgba(255,255,255,0.7)",
+            lineHeight: 1.5,
+            marginBottom: "14px",
+            opacity: animating ? 0 : 1,
+            transition: "opacity 0.2s ease",
+          }}
+        >
+          {slide.tagline}
+        </p>
+
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Link
+            href={`/product/${slide.id}`}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "5px",
+              padding: "8px 16px",
+              borderRadius: "10px",
+              backgroundColor: "#fff",
+              color: "#1240A0",
+              fontSize: "12.5px",
+              fontWeight: 700,
+              textDecoration: "none",
+            }}
+          >
+            View Product <ChevronRight size={13} />
+          </Link>
+
+          {/* Dots */}
+          <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
+            {SLIDES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => go(i)}
+                style={{
+                  width: i === idx ? "18px" : "6px",
+                  height: "6px",
+                  borderRadius: "3px",
+                  backgroundColor: i === idx ? "#fff" : "rgba(255,255,255,0.35)",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 0,
+                  transition: "all 0.25s ease",
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function HomePage() {
   return (
@@ -123,24 +288,9 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Stats — 3-col row */}
-            <div className="grid grid-cols-3 gap-3 flex-shrink-0 w-full lg:w-auto">
-              {stats.map(s => (
-                <div
-                  key={s.label}
-                  className="text-center rounded-2xl"
-                  style={{
-                    backgroundColor: "rgba(255,255,255,0.1)",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    backdropFilter: "blur(8px)",
-                    padding: "20px 16px",
-                    minWidth: "100px",
-                  }}
-                >
-                  <p className="font-bold text-white" style={{ fontSize: "clamp(24px,5vw,36px)", lineHeight: 1 }}>{s.value}</p>
-                  <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "11px", marginTop: "6px", fontWeight: 500 }}>{s.label}</p>
-                </div>
-              ))}
+            {/* Hero slideshow */}
+            <div className="hidden lg:block flex-shrink-0">
+              <HeroSlideshow />
             </div>
 
           </div>
