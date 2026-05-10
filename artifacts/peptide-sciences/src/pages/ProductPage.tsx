@@ -122,9 +122,9 @@ export default function ProductPage() {
               {/* Purity bar */}
               <div className="px-4 py-3 flex items-center gap-2.5" style={{ borderBottom: "1px solid #F1F5F9" }}>
                 <span className="text-xs font-bold" style={{ color: "#1B5CB5" }}>PURITY</span>
-                <span className="text-xs font-semibold" style={{ color: "#0F172A" }}>{detail.purity || "99% HPLC"}</span>
+                <span className="text-xs font-semibold" style={{ color: "#0F172A" }}>{detail.purity || "98%+ HPLC"}</span>
                 <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "#E2E8F0" }}>
-                  <div className="h-full rounded-full" style={{ width: "99%", background: "linear-gradient(90deg, #1B5CB5, #2563EB)" }} />
+                  <div className="h-full rounded-full" style={{ width: "98%", background: "linear-gradient(90deg, #1B5CB5, #2563EB)" }} />
                 </div>
               </div>
 
@@ -152,7 +152,7 @@ export default function ProductPage() {
               {/* Quality badges */}
               <div className="grid grid-cols-2 gap-px" style={{ backgroundColor: "#E8EDF5" }}>
                 {[
-                  { icon: <Shield size={11} />, text: "99% HPLC Purity" },
+                  { icon: <Shield size={11} />, text: "98%+ HPLC Purity" },
                   { icon: <Package size={11} />, text: "Lab Certified" },
                   { icon: <FlaskConical size={11} />, text: "Lab Tested" },
                   { icon: <Thermometer size={11} />, text: "Cold Chain" },
@@ -439,7 +439,7 @@ export default function ProductPage() {
                   <div className="p-6 rounded-xl text-center" style={{ backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
                     <Shield size={32} className="mx-auto mb-2" style={{ color: "#1B5CB5" }} />
                     <p className="font-semibold text-sm mb-1" style={{ color: "#0F172A" }}>Certificate of Analysis</p>
-                    <p className="text-xs mb-4" style={{ color: "#64748B" }}>{product.name} — Purity: {detail.purity || "99% HPLC"}</p>
+                    <p className="text-xs mb-4" style={{ color: "#64748B" }}>{product.name} — Purity: {detail.purity || "98%+ HPLC"}</p>
                     <div className="text-left mx-auto rounded-xl p-4 text-xs" style={{ backgroundColor: "#fff", border: "1px solid #E2E8F0", maxWidth: "480px" }}>
                       <table className="w-full">
                         <tbody>
@@ -448,7 +448,7 @@ export default function ProductPage() {
                             detail.casNumber ? ["CAS Number", detail.casNumber] : null,
                             detail.formula ? ["Molecular Formula", detail.formula] : null,
                             detail.molecularWeight ? ["Molecular Weight", detail.molecularWeight] : null,
-                            ["Purity (HPLC)", detail.purity || "≥99%"],
+                            ["Purity (HPLC)", detail.purity || "98%+"],
                             detail.appearance ? ["Appearance", detail.appearance] : null,
                             ["Manufacturer", "OmniQure"],
                           ].filter(Boolean).map((row) => (

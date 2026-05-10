@@ -35,7 +35,7 @@ const pillars = [
     num: "01",
     icon: <FlaskConical size={24} />,
     title: "HPLC Verified Purity",
-    body: "Every product tested via High-Performance Liquid Chromatography to confirm ≥99% purity before release.",
+    body: "Every product tested via High-Performance Liquid Chromatography to confirm 98%+ purity before release.",
     color: "#1B5CB5",
     bg: "#EEF4FF",
   },
@@ -195,7 +195,7 @@ export default function HomePage() {
 
               {/* Trust chips */}
               <div className="flex flex-wrap gap-2 mb-8">
-                {["≥99% HPLC Purity", "Full COA Included", "ESI-TOF MS", "Cold-Chain Delivery"].map(t => (
+                {["98%+ HPLC Purity", "Full COA Included", "ESI-TOF MS", "Cold-Chain Delivery"].map(t => (
                   <span
                     key={t}
                     className="inline-flex items-center gap-1.5"
@@ -267,7 +267,7 @@ export default function HomePage() {
               <div className="grid grid-cols-3 gap-3 w-full">
                 {[
                   { value: "81+",   label: "Peptides" },
-                  { value: "≥99%",  label: "HPLC Purity" },
+                  { value: "98%+",  label: "HPLC Purity" },
                   { value: "COA",   label: "Every Product" },
                 ].map(s => (
                   <div
@@ -316,7 +316,7 @@ export default function HomePage() {
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-[#EEF2F7]">
             {[
-              { icon: <FlaskConical size={20} />, title: "99%+ HPLC Purity",    sub: "Guaranteed on every product",     color: "#1B5CB5", bg: "#EEF4FF" },
+              { icon: <FlaskConical size={20} />, title: "98%+ HPLC Purity",    sub: "Guaranteed on every product",     color: "#1B5CB5", bg: "#EEF4FF" },
               { icon: <Award size={20} />,        title: "Full COA & MS Data",   sub: "Chromatogram + mass spectrum",    color: "#059669", bg: "#ECFDF5" },
               { icon: <Shield size={20} />,       title: "Research Grade",       sub: "For qualified researchers only",  color: "#7C3AED", bg: "#F5F3FF" },
               { icon: <Truck size={20} />,        title: "Free Shipping £200+",  sub: "Cold-chain packaging included",   color: "#0E7490", bg: "#ECFEFF" },

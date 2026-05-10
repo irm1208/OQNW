@@ -65,7 +65,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 letterSpacing: "0.03em",
               }}
             >
-              ≥99% HPLC
+              98%+ HPLC
             </span>
           </div>
           <div className="absolute top-2.5 right-2.5 z-10">
