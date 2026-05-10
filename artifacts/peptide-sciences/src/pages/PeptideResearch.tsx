@@ -125,136 +125,164 @@ function StudyCard({ study, index }: { study: PeptideResearchEntry["studies"][0]
 }
 
 function PeptideCard({ entry }: { entry: PeptideResearchEntry }) {
-  const [studiesOpen, setStudiesOpen] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const color = CATEGORY_COLORS[entry.category] ?? CATEGORY_COLORS["Research Peptides"];
+
+  // One-sentence preview: up to first period or 120 chars
+  const preview = (() => {
+    const dot = entry.description.indexOf(".");
+    const cut = dot > 0 && dot < 140 ? dot + 1 : 120;
+    return entry.description.slice(0, cut) + (entry.description.length > cut ? "…" : "");
+  })();
 
   return (
     <div
       id={entry.compound.toLowerCase().replace(/\s+/g, "-")}
       style={{
         backgroundColor: "#fff",
-        borderRadius: "20px",
-        border: "1px solid #E8EDF5",
-        boxShadow: "0 4px 20px rgba(15,23,42,0.06)",
+        borderRadius: "16px",
+        border: `1px solid ${expanded ? "#BFDBFE" : "#E8EDF5"}`,
+        boxShadow: expanded ? "0 4px 24px rgba(27,92,181,0.10)" : "0 2px 8px rgba(15,23,42,0.04)",
         overflow: "hidden",
+        transition: "box-shadow 0.2s, border-color 0.2s",
       }}
     >
-      {/* Card header */}
-      <div
+      {/* Always-visible header row */}
+      <button
+        onClick={() => setExpanded((o) => !o)}
         style={{
-          padding: "20px 24px",
-          borderBottom: "1px solid #F1F5F9",
+          width: "100%",
           display: "flex",
-          alignItems: "flex-start",
+          alignItems: "center",
           justifyContent: "space-between",
           gap: "16px",
-          flexWrap: "wrap",
+          padding: "16px 20px",
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          textAlign: "left",
+          fontFamily: "'Arimo', Arial, sans-serif",
+          borderBottom: expanded ? "1px solid #F1F5F9" : "none",
         }}
       >
-        <div>
-          <h2 style={{ fontSize: "20px", fontWeight: 700, color: "#0F172A", marginBottom: "6px", lineHeight: 1.2 }}>
-            {entry.compound}
-          </h2>
-          <span
-            style={{
-              display: "inline-block",
-              padding: "3px 10px",
-              borderRadius: "999px",
-              fontSize: "11.5px",
-              fontWeight: 600,
-              backgroundColor: color.bg,
-              color: color.text,
-              border: `1px solid ${color.border}`,
-            }}
-          >
-            {entry.category}
-          </span>
-        </div>
-        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
-          {entry.productIds.map((pid) => (
-            <Link
-              key={pid}
-              href={`/product/${pid}`}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap", marginBottom: "5px" }}>
+            <h2 style={{ fontSize: "17px", fontWeight: 700, color: "#0F172A", margin: 0, lineHeight: 1.2 }}>
+              {entry.compound}
+            </h2>
+            <span
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "4px",
-                padding: "8px 14px",
-                borderRadius: "10px",
-                backgroundColor: "#1B5CB5",
-                color: "#fff",
-                fontSize: "12.5px",
+                display: "inline-block",
+                padding: "2px 9px",
+                borderRadius: "999px",
+                fontSize: "11px",
                 fontWeight: 600,
-                textDecoration: "none",
+                backgroundColor: color.bg,
+                color: color.text,
+                border: `1px solid ${color.border}`,
+                flexShrink: 0,
               }}
             >
-              View Product <ChevronRight size={13} />
-            </Link>
-          ))}
+              {entry.category}
+            </span>
+          </div>
+          {!expanded && (
+            <p style={{ fontSize: "13px", color: "#64748B", lineHeight: 1.5, margin: 0 }}>
+              {preview}
+            </p>
+          )}
         </div>
-      </div>
-
-      {/* Body */}
-      <div style={{ padding: "22px 24px" }}>
-
-        {/* Description */}
-        <p style={{ fontSize: "15px", color: "#475569", lineHeight: 1.8, marginBottom: "20px" }}>
-          {entry.description}
-        </p>
-
-        {/* Mechanism */}
-        <div
-          style={{
-            backgroundColor: "#EEF4FF",
-            border: "1px solid #BFDBFE",
-            borderRadius: "14px",
-            padding: "16px 18px",
-            marginBottom: "22px",
-          }}
-        >
-          <p style={{ fontSize: "10.5px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "#1B5CB5", marginBottom: "8px" }}>
-            Mechanism of Action
-          </p>
-          <p style={{ fontSize: "14px", color: "#1E3A6A", lineHeight: 1.8 }}>
-            {entry.mechanism}
-          </p>
-        </div>
-
-        {/* Studies toggle */}
-        <button
-          onClick={() => setStudiesOpen((o) => !o)}
-          style={{
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "12px 16px",
-            borderRadius: "12px",
-            backgroundColor: "#F8FAFC",
-            border: "1px solid #E8EDF5",
-            cursor: "pointer",
-            marginBottom: studiesOpen ? "16px" : "0",
-            fontFamily: "'Arimo', Arial, sans-serif",
-          }}
-        >
-          <span style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", fontWeight: 700, color: "#334155" }}>
-            <BookOpen size={14} style={{ color: "#64748B" }} />
-            Research Literature — {entry.studies.length} {entry.studies.length === 1 ? "study" : "studies"}
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+          <span style={{ fontSize: "11.5px", color: "#94A3B8", fontWeight: 500 }}>
+            {entry.studies.length} {entry.studies.length === 1 ? "study" : "studies"}
           </span>
-          {studiesOpen
-            ? <ChevronUp size={15} style={{ color: "#64748B" }} />
-            : <ChevronDown size={15} style={{ color: "#64748B" }} />
-          }
-        </button>
+          <div
+            style={{
+              width: "28px",
+              height: "28px",
+              borderRadius: "8px",
+              backgroundColor: expanded ? "#EEF4FF" : "#F1F5F9",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            {expanded
+              ? <ChevronUp size={15} style={{ color: "#1B5CB5" }} />
+              : <ChevronDown size={15} style={{ color: "#64748B" }} />
+            }
+          </div>
+        </div>
+      </button>
 
-        {studiesOpen && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+      {/* Expanded content */}
+      {expanded && (
+        <div style={{ padding: "20px 20px 22px" }}>
+
+          {/* Product links */}
+          {entry.productIds.length > 0 && (
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "18px" }}>
+              {entry.productIds.map((pid) => (
+                <Link
+                  key={pid}
+                  href={`/product/${pid}`}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    padding: "7px 14px",
+                    borderRadius: "9px",
+                    backgroundColor: "#1B5CB5",
+                    color: "#fff",
+                    fontSize: "12.5px",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                  }}
+                >
+                  View Product <ChevronRight size={13} />
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* Description */}
+          <p style={{ fontSize: "14.5px", color: "#475569", lineHeight: 1.8, marginBottom: "18px" }}>
+            {entry.description}
+          </p>
+
+          {/* Mechanism */}
+          <div
+            style={{
+              backgroundColor: "#EEF4FF",
+              border: "1px solid #BFDBFE",
+              borderRadius: "12px",
+              padding: "14px 18px",
+              marginBottom: "20px",
+            }}
+          >
+            <p style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "#1B5CB5", marginBottom: "7px" }}>
+              Mechanism of Action
+            </p>
+            <p style={{ fontSize: "14px", color: "#1E3A6A", lineHeight: 1.8, margin: 0 }}>
+              {entry.mechanism}
+            </p>
+          </div>
+
+          {/* Studies */}
+          <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "12px" }}>
+            <BookOpen size={13} style={{ color: "#64748B" }} />
+            <span style={{ fontSize: "12px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              Research Literature — {entry.studies.length} {entry.studies.length === 1 ? "study" : "studies"}
+            </span>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {entry.studies.map((study, i) => (
               <StudyCard key={i} study={study} index={i} />
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
