@@ -309,7 +309,7 @@ export default function ReconstitutionCalculator() {
               <FlaskConical size={20} />
             </div>
             <h1 style={{ fontSize: "22px", fontWeight: 700, margin: 0 }}>
-              Reconstitution Calculator
+              Peptide Calculator
             </h1>
           </div>
           <p style={{ fontSize: "14px", opacity: 0.8, margin: 0, lineHeight: 1.5 }}>
