@@ -80,16 +80,12 @@ export default function Footer() {
           {/* Logo + tagline */}
           <div className="flex flex-col md:flex-row gap-10 mb-8">
             <div className="md:w-[220px] flex-shrink-0">
-              <div className="flex items-center gap-2 mb-3">
-                <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-                  <circle cx="18" cy="18" r="18" fill="#E7461E" />
-                  <text x="18" y="23" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white" fontFamily="Arimo,Arial,sans-serif">
-                    OQ
-                  </text>
-                </svg>
-                <span style={{ fontSize: "18px", fontWeight: 400, color: "#fff", letterSpacing: "0.02em" }}>
-                  Omni<span style={{ fontWeight: 700 }}>Qure</span>
-                </span>
+              <div className="mb-3">
+                <img
+                  src="/omniqure-logo.jpeg"
+                  alt="OmniQure Peptide Research Institute"
+                  style={{ height: "46px", width: "auto", display: "block", borderRadius: "5px" }}
+                />
               </div>
               <p style={{ fontSize: "12px", color: "#aaa", lineHeight: "1.6" }}>
                 USA-made research peptides manufactured to the highest standards of quality and purity. 99% HPLC purity guaranteed.

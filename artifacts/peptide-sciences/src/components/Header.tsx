@@ -26,14 +26,12 @@ export default function Header() {
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-4">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 mr-4 flex items-center gap-2" style={{ textDecoration: "none" }}>
-            <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
-              <circle cx="19" cy="19" r="19" fill="#E7461E"/>
-              <text x="19" y="25" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white" fontFamily="Arimo,Arial,sans-serif">OQ</text>
-            </svg>
-            <span style={{ fontSize: "21px", fontWeight: 400, color: "#111", letterSpacing: "0.01em", lineHeight: 1 }}>
-              Omni<strong>Qure</strong>
-            </span>
+          <Link href="/" className="flex-shrink-0 mr-4" style={{ textDecoration: "none" }}>
+            <img
+              src="/omniqure-logo.jpeg"
+              alt="OmniQure Peptide Research Institute"
+              style={{ height: "52px", width: "auto", display: "block", borderRadius: "6px" }}
+            />
           </Link>
 
           {/* Search */}
