@@ -8,6 +8,12 @@ import MsChart from "@/components/MsChart";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 
+function parseBaseName(name: string): { base: string; strength: string } {
+  const match = name.match(/^(.*?)\s+(\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g)(?:\s+\(.*?\))?)$/i);
+  if (match) return { base: match[1].trim(), strength: match[2].trim() };
+  return { base: name, strength: "" };
+}
+
 export default function ProductPage() {
   const params = useParams<{ id: string }>();
   const product = products.find((p) => p.id === params.id);
@@ -39,8 +45,23 @@ export default function ProductPage() {
   }
 
   const detail = productDetails[product.id] ?? { id: product.id, description: "" };
+
+  const { base: currentBase, strength: currentStrength } = parseBaseName(product.name);
+  const strengthVariants = currentStrength
+    ? products
+        .filter((p) => {
+          const { base } = parseBaseName(p.name);
+          return base === currentBase;
+        })
+        .sort((a, b) => {
+          const aNum = parseFloat(parseBaseName(a.name).strength) || 0;
+          const bNum = parseFloat(parseBaseName(b.name).strength) || 0;
+          return aNum - bNum;
+        })
+    : [];
+
   const relatedProducts = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
+    .filter((p) => p.category === product.category && p.id !== product.id && parseBaseName(p.name).base !== currentBase)
     .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
     .slice(0, 4);
 
@@ -194,6 +215,79 @@ export default function ProductPage() {
                 ✓ In Stock
               </span>
             </div>
+
+            {/* Strength switcher */}
+            {strengthVariants.length > 1 && (
+              <div
+                className="rounded-2xl p-4 mb-5"
+                style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}
+              >
+                <p className="text-xs font-bold mb-3 uppercase tracking-wider" style={{ color: "#94A3B8" }}>
+                  Select Strength
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {strengthVariants.map((v) => {
+                    const { strength } = parseBaseName(v.name);
+                    const isCurrent = v.id === product.id;
+                    return (
+                      <Link
+                        key={v.id}
+                        href={`/product/${v.id}`}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            gap: "2px",
+                            padding: "8px 14px",
+                            borderRadius: "10px",
+                            border: isCurrent ? "2px solid #1B5CB5" : "1.5px solid #E2E8F0",
+                            backgroundColor: isCurrent ? "#EEF4FF" : "#F8FAFC",
+                            cursor: isCurrent ? "default" : "pointer",
+                            transition: "border-color 0.15s, background-color 0.15s",
+                            minWidth: "62px",
+                            textAlign: "center",
+                          }}
+                          onMouseEnter={e => {
+                            if (!isCurrent) {
+                              (e.currentTarget as HTMLElement).style.borderColor = "#1B5CB5";
+                              (e.currentTarget as HTMLElement).style.backgroundColor = "#F0F5FF";
+                            }
+                          }}
+                          onMouseLeave={e => {
+                            if (!isCurrent) {
+                              (e.currentTarget as HTMLElement).style.borderColor = "#E2E8F0";
+                              (e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC";
+                            }
+                          }}
+                        >
+                          <span style={{
+                            fontSize: "13px",
+                            fontWeight: 700,
+                            color: isCurrent ? "#1240A0" : "#374151",
+                            lineHeight: 1.2,
+                          }}>
+                            {strength}
+                          </span>
+                          {v.price != null && (
+                            <span style={{
+                              fontSize: "11px",
+                              fontWeight: 500,
+                              color: isCurrent ? "#1B5CB5" : "#94A3B8",
+                              lineHeight: 1,
+                            }}>
+                              {formatPrice(v.price)}
+                            </span>
+                          )}
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Price */}
             {product.price != null && (
