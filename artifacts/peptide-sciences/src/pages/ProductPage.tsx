@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, useParams } from "wouter";
 import { products } from "@/data/products";
 import { productDetails } from "@/data/productDetails";
-import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight } from "lucide-react";
+import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download } from "lucide-react";
+import { generateCOA } from "@/utils/generateCOA";
 import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
 import { useCart } from "@/context/CartContext";
@@ -352,6 +353,33 @@ export default function ProductPage() {
                   {added ? "✓ Added to Cart!" : "Add to Cart"}
                 </button>
               </div>
+            </div>
+
+            {/* COA Download */}
+            <div
+              className="rounded-2xl flex items-center justify-between gap-3 mb-5 px-4 py-3"
+              style={{ backgroundColor: "#F0F5FF", border: "1.5px solid #BFDBFE" }}
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className="rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ width: "36px", height: "36px", backgroundColor: "#1B5CB5" }}
+                >
+                  <Download size={16} color="#fff" />
+                </div>
+                <div>
+                  <p className="font-bold text-sm" style={{ color: "#1240A0" }}>Certificate of Analysis</p>
+                  <p className="text-xs" style={{ color: "#3B82F6" }}>Full HPLC · ESI-MS · QC report — Lot {`OQ-${new Date().getFullYear()}-${product.id.padStart(2,"0")}`}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => generateCOA(product, detail)}
+                className="flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90 flex-shrink-0"
+                style={{ height: "36px", padding: "0 16px", backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px" }}
+              >
+                <Download size={13} />
+                Download PDF
+              </button>
             </div>
 
             {/* Specs table */}
