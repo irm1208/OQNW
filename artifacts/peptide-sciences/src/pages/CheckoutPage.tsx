@@ -58,7 +58,6 @@ const COUNTRIES = [
   "Taiwan",
   "Thailand",
   // Middle East
-  "Israel",
   "United Arab Emirates",
 ];
 
