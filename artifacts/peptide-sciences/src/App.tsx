@@ -59,9 +59,6 @@ function Router() {
       <Route path="/privacy">
         <PlaceholderPage title="Privacy Policy" description="How we handle your data." />
       </Route>
-      <Route path="/refunds">
-        <PlaceholderPage title="Refund Policy" description="Our refund and return policy." />
-      </Route>
       <Route component={NotFound} />
     </Switch>
   );
