@@ -288,20 +288,27 @@ function Banner({ rule, onDismiss }: { rule: JurisdictionRule; onDismiss: () => 
 // ─── Main export ──────────────────────────────────────────────────────────────
 
 export default function JurisdictionWarning() {
-  const { countryCode } = useCurrency();
+  const { countryCode: geoCode } = useCurrency();
   const [dismissed, setDismissedState] = useState(false);
   const [rule, setRule] = useState<JurisdictionRule | null>(null);
+
+  // ?preview_country=AU  →  forces that country's banner for testing
+  const previewCode = typeof window !== "undefined"
+    ? new URLSearchParams(window.location.search).get("preview_country")
+    : null;
+
+  const countryCode = previewCode ?? geoCode;
 
   useEffect(() => {
     if (!countryCode) return;
 
     const matched = RULES.find(r => r.countries.includes(countryCode));
     if (!matched) return;
-    if (isDismissed(countryCode)) return;
+    if (!previewCode && isDismissed(countryCode)) return;
 
     setRule(matched);
     setDismissedState(false);
-  }, [countryCode]);
+  }, [countryCode, previewCode]);
 
   if (!rule || dismissed) return null;
 
