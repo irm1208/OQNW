@@ -26,6 +26,7 @@ import { CurrencyProvider } from "@/context/CurrencyContext";
 import { RecentlyViewedProvider } from "@/context/RecentlyViewedContext";
 import LiveChat from "@/components/LiveChat";
 import JurisdictionWarning from "@/components/JurisdictionWarning";
+import AgeGate from "@/components/AgeGate";
 
 const queryClient = new QueryClient();
 
@@ -90,6 +91,7 @@ function App() {
                 <Footer />
               </div>
               <LiveChat />
+              <AgeGate />
             </WouterRouter>
             <Toaster />
           </CartProvider>
