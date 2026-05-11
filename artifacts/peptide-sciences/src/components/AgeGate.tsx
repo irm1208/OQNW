@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ShieldCheck, AlertTriangle } from "lucide-react";
+import { LogoMark } from "@/components/LogoMark";
 
 const STORAGE_KEY = "omniqure_age_verified";
 const CURRENT_VERSION = "2";
@@ -86,15 +87,7 @@ export default function AgeGate() {
         >
           {/* OmniQure logo */}
           <div className="flex justify-center mb-5">
-            <img
-              src="/omniqure-logo.png"
-              alt="OmniQure"
-              style={{
-                height: "80px",
-                width: "auto",
-                objectFit: "contain",
-              }}
-            />
+            <LogoMark height={80} />
           </div>
 
           {/* 18+ badge */}

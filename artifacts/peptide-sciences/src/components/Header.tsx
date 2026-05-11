@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Search, User, ShoppingCart, Menu, X, ChevronDown } from "lucide-react";
+import { LogoMark } from "@/components/LogoMark";
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { products } from "@/data/products";
@@ -124,11 +125,7 @@ export default function Header() {
         <div className="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-4">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 mr-2" style={{ textDecoration: "none" }}>
-            <img
-              src="/omniqure-logo.png"
-              alt="OmniQure Peptide Research Institute"
-              style={{ height: "52px", width: "auto", display: "block" }}
-            />
+            <LogoMark height={52} />
           </Link>
 
           {/* Search */}

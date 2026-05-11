@@ -4,6 +4,7 @@ import {
   Dumbbell, Scale, Clock, Zap, Leaf, Flame, Sparkles, Activity,
   TrendingUp, ChevronRight, ArrowRight, CheckCircle
 } from "lucide-react";
+import { LogoMark } from "@/components/LogoMark";
 import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 
@@ -158,16 +159,7 @@ export default function HomePage() {
             <div className="flex-1 text-white" style={{ zIndex: 1 }}>
               {/* Brand logo badge */}
               <div className="mb-6">
-                <img
-                  src="/omniqure-logo.png"
-                  alt="OmniQure Peptide Research Institute"
-                  style={{
-                    height: "56px",
-                    width: "auto",
-                    display: "block",
-                    boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-                  }}
-                />
+                <LogoMark height={56} />
               </div>
 
               <h1
