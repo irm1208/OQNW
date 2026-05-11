@@ -116,6 +116,7 @@ const FALLBACK_RATES: Record<CurrencyCode, number> = {
 const NO_DECIMAL_CURRENCIES: Set<CurrencyCode> = new Set(["JPY", "KRW", "HUF"]);
 
 const STORAGE_KEY = "omniqure_currency";
+const COUNTRY_KEY  = "omniqure_country";
 
 type CurrencyContextType = {
   currency: CurrencyInfo;
@@ -123,6 +124,7 @@ type CurrencyContextType = {
   formatPrice: (gbp: number) => string;
   rates: Record<CurrencyCode, number>;
   loading: boolean;
+  countryCode: string | null;
 };
 
 const CurrencyContext = createContext<CurrencyContextType | null>(null);
@@ -135,10 +137,15 @@ function getInitialCurrency(): CurrencyCode {
   return "GBP";
 }
 
+function getInitialCountry(): string | null {
+  try { return localStorage.getItem(COUNTRY_KEY); } catch { return null; }
+}
+
 export function CurrencyProvider({ children }: { children: ReactNode }) {
   const [currencyCode, setCurrencyCode] = useState<CurrencyCode>(getInitialCurrency);
   const [rates, setRates] = useState<Record<CurrencyCode, number>>(FALLBACK_RATES);
   const [loading, setLoading] = useState(true);
+  const [countryCode, setCountryCode] = useState<string | null>(getInitialCountry);
 
   useEffect(() => {
     let cancelled = false;
@@ -151,10 +158,13 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
           const geoRes = await fetch("https://ipapi.co/json/", { signal: AbortSignal.timeout(4000) });
           if (!cancelled && geoRes.ok) {
             const geo = await geoRes.json();
-            const detected = COUNTRY_TO_CURRENCY[geo.country_code as string] ?? "GBP";
+            const code = geo.country_code as string;
+            const detected = COUNTRY_TO_CURRENCY[code] ?? "GBP";
             if (!cancelled) {
               setCurrencyCode(detected);
+              setCountryCode(code);
               localStorage.setItem(STORAGE_KEY, detected);
+              localStorage.setItem(COUNTRY_KEY, code);
             }
           }
         }
@@ -196,7 +206,7 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
   }, [currencyCode, rates]);
 
   return (
-    <CurrencyContext.Provider value={{ currency, setCurrency, formatPrice, rates, loading }}>
+    <CurrencyContext.Provider value={{ currency, setCurrency, formatPrice, rates, loading, countryCode }}>
       {children}
     </CurrencyContext.Provider>
   );

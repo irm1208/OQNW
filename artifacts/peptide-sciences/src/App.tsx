@@ -25,6 +25,7 @@ import { CartProvider } from "@/context/CartContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
 import { RecentlyViewedProvider } from "@/context/RecentlyViewedContext";
 import LiveChat from "@/components/LiveChat";
+import JurisdictionWarning from "@/components/JurisdictionWarning";
 
 const queryClient = new QueryClient();
 
@@ -82,6 +83,7 @@ function App() {
               <div className="min-h-screen bg-white flex flex-col">
                 <AnnouncementBar />
                 <Header />
+                <JurisdictionWarning />
                 <main className="flex-1">
                   <Router />
                 </main>
