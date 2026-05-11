@@ -159,13 +159,12 @@ export default function HomePage() {
               {/* Brand logo badge */}
               <div className="mb-6">
                 <img
-                  src="/omniqure-logo.jpeg"
+                  src="/omniqure-logo.png"
                   alt="OmniQure Peptide Research Institute"
                   style={{
                     height: "56px",
                     width: "auto",
                     display: "block",
-                    borderRadius: "10px",
                     boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
                   }}
                 />

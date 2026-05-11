@@ -125,9 +125,9 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 mr-2" style={{ textDecoration: "none" }}>
             <img
-              src="/omniqure-logo.jpeg"
+              src="/omniqure-logo.png"
               alt="OmniQure Peptide Research Institute"
-              style={{ height: "52px", width: "auto", display: "block", mixBlendMode: "screen" }}
+              style={{ height: "52px", width: "auto", display: "block" }}
             />
           </Link>
 
