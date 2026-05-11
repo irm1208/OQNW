@@ -1,0 +1,128 @@
+import { Router, type IRouter } from "express";
+import { db } from "@workspace/db";
+import { conversations, messages } from "@workspace/db/schema";
+import { eq, asc } from "drizzle-orm";
+import { openai } from "@workspace/integrations-openai-ai-server";
+import { CreateOpenaiConversationBody, SendOpenaiMessageBody } from "@workspace/api-zod";
+
+const router: IRouter = Router();
+
+const SYSTEM_PROMPT = `You are a knowledgeable research support specialist at OmniQure Peptide Research Institute, a UK-based supplier of research-grade peptides.
+
+Your role is to help qualified researchers with pre-purchase and technical questions about peptides. You are professional, precise, and concise.
+
+Key facts about OmniQure:
+- All 81 peptides are HPLC-verified with purity between 98.1% and 99.7%
+- Every product ships with a Certificate of Analysis (COA), HPLC chromatogram, and ESI-MS data
+- Storage: most lyophilised peptides store at −20 °C, protected from light and moisture
+- Reconstitution: always use sterile water or appropriate buffer; bacteriostatic water extends stability
+- Products are for in-vitro research use only — never for human or veterinary diagnostic use
+- Shipping: UK standard, worldwide DHL Express; free shipping on orders over £200
+- All prices are in GBP; multi-currency display available at checkout
+
+When asked about a specific peptide, draw on your knowledge of:
+- Purity and analytical methods (RP-HPLC, ESI-MS, AAA)
+- Storage conditions and shelf life
+- Reconstitution protocols and solubility characteristics
+- Research applications and peptide class (e.g., healing, GLP-1, growth hormone, nootropic)
+- Compatibility with common buffers and solvents
+
+Keep answers focused and research-appropriate. If you don't know something specific, say so clearly and suggest contacting the team at support@omniqure.co.uk.
+
+Never provide medical advice, dosing recommendations for human use, or suggest these peptides are safe for human administration.`;
+
+router.post("/conversations", async (req, res) => {
+  const body = CreateOpenaiConversationBody.safeParse(req.body);
+  if (!body.success) {
+    res.status(400).json({ error: "Invalid request body" });
+    return;
+  }
+
+  const [conv] = await db
+    .insert(conversations)
+    .values({ title: body.data.title })
+    .returning();
+
+  res.status(201).json(conv);
+});
+
+router.get("/conversations/:id", async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
+
+  const conv = await db.query.conversations.findFirst({
+    where: eq(conversations.id, id),
+    with: { messages: { orderBy: [asc(messages.createdAt)] } },
+  });
+
+  if (!conv) { res.status(404).json({ error: "Not found" }); return; }
+  res.json(conv);
+});
+
+router.post("/conversations/:id/messages", async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
+
+  const body = SendOpenaiMessageBody.safeParse(req.body);
+  if (!body.success) {
+    res.status(400).json({ error: "Invalid request body" });
+    return;
+  }
+
+  const history = await db
+    .select()
+    .from(messages)
+    .where(eq(messages.conversationId, id))
+    .orderBy(asc(messages.createdAt))
+    .limit(40);
+
+  await db.insert(messages).values({
+    conversationId: id,
+    role: "user",
+    content: body.data.content,
+  });
+
+  const chatMessages = [
+    { role: "system" as const, content: SYSTEM_PROMPT },
+    ...history.map((m) => ({ role: m.role as "user" | "assistant", content: m.content })),
+    { role: "user" as const, content: body.data.content },
+  ];
+
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+
+  let fullResponse = "";
+
+  try {
+    const stream = await openai.chat.completions.create({
+      model: "gpt-5-mini",
+      max_completion_tokens: 512,
+      messages: chatMessages,
+      stream: true,
+    });
+
+    for await (const chunk of stream) {
+      const content = chunk.choices[0]?.delta?.content;
+      if (content) {
+        fullResponse += content;
+        res.write(`data: ${JSON.stringify({ content })}\n\n`);
+      }
+    }
+
+    await db.insert(messages).values({
+      conversationId: id,
+      role: "assistant",
+      content: fullResponse,
+    });
+
+    res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+    res.end();
+  } catch (err) {
+    req.log.error(err, "OpenAI stream error");
+    res.write(`data: ${JSON.stringify({ error: "Failed to get response" })}\n\n`);
+    res.end();
+  }
+});
+
+export default router;

@@ -19,6 +19,7 @@ import Register from "@/pages/Register";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
+import LiveChat from "@/components/LiveChat";
 
 const queryClient = new QueryClient();
 
@@ -85,6 +86,7 @@ function App() {
                 </main>
                 <Footer />
               </div>
+              <LiveChat />
             </WouterRouter>
             <Toaster />
           </CartProvider>
