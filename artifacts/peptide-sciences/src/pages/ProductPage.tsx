@@ -9,6 +9,9 @@ import MsChart from "@/components/MsChart";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getPurity, getPurityStr, getLotNumber } from "@/utils/productPurity";
+import { useRecentlyViewed } from "@/context/RecentlyViewedContext";
+import RecentlyViewed from "@/components/RecentlyViewed";
+import CustomersAlsoBought from "@/components/CustomersAlsoBought";
 
 function parseBaseName(name: string): { base: string; strength: string } {
   const match = name.match(/^(.*?)\s+(\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g)(?:\s+\(.*?\))?)$/i);
@@ -23,10 +26,15 @@ export default function ProductPage() {
   const [activeTab, setActiveTab] = useState<"description" | "coa">("description");
   const [added, setAdded] = useState(false);
   const { addToCart } = useCart();
+  const { trackView } = useRecentlyViewed();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [params.id]);
+
+  useEffect(() => {
+    if (product) trackView(product.id);
+  }, [product?.id]);
   const { formatPrice } = useCurrency();
 
   const decreaseQty = () => setQuantity((q) => Math.max(1, q - 1));
@@ -625,60 +633,11 @@ export default function ProductPage() {
           </p>
         </div>
 
-        {/* Related Products */}
-        {relatedProducts.length > 0 && (
-          <div className="mt-6">
-            <div className="flex items-center gap-3 mb-5">
-              <h2 className="font-bold" style={{ fontSize: "18px", color: "#0F172A" }}>
-                Related Products
-              </h2>
-              <span className="text-xs px-2.5 py-0.5 rounded-full font-medium" style={{ backgroundColor: "#EEF4FF", color: "#1B5CB5", border: "1px solid #BFDBFE" }}>
-                {product.category}
-              </span>
-            </div>
-            <div
-              className="grid gap-4"
-              style={{ gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))" }}
-            >
-              {relatedProducts.map((related) => (
-                <Link href={`/product/${related.id}`} key={related.id} style={{ textDecoration: "none" }}>
-                  <div
-                    className="rounded-2xl overflow-hidden bg-white transition-all duration-200 flex flex-col h-full cursor-pointer"
-                    style={{ border: "1px solid #E8EDF5", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
-                    onMouseEnter={e => {
-                      const el = e.currentTarget as HTMLDivElement;
-                      el.style.boxShadow = "0 8px 24px rgba(27,92,181,0.12)";
-                      el.style.transform = "translateY(-2px)";
-                      el.style.borderColor = "#93B8F0";
-                    }}
-                    onMouseLeave={e => {
-                      const el = e.currentTarget as HTMLDivElement;
-                      el.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
-                      el.style.transform = "translateY(0)";
-                      el.style.borderColor = "#E8EDF5";
-                    }}
-                  >
-                    <div
-                      className="flex items-center justify-center"
-                      style={{ height: "110px", background: "linear-gradient(145deg, #F4F8FF 0%, #EBF2FF 100%)" }}
-                    >
-                      <img
-                        src={related.image}
-                        alt={related.name}
-                        className="w-full h-full object-contain"
-                        style={{ padding: "10px" }}
-                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
-                      />
-                    </div>
-                    <div className="px-3 py-2.5">
-                      <p className="text-xs font-semibold leading-snug" style={{ color: "#1B5CB5" }}>{related.name}</p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Customers Also Bought */}
+        <CustomersAlsoBought product={product} />
+
+        {/* Recently Viewed */}
+        <RecentlyViewed excludeId={product.id} />
       </div>
     </div>
   );

@@ -19,6 +19,7 @@ import Register from "@/pages/Register";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
+import { RecentlyViewedProvider } from "@/context/RecentlyViewedContext";
 import LiveChat from "@/components/LiveChat";
 
 const queryClient = new QueryClient();
@@ -76,6 +77,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <CurrencyProvider>
+          <RecentlyViewedProvider>
           <CartProvider>
             <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
               <div className="min-h-screen bg-white flex flex-col">
@@ -90,6 +92,7 @@ function App() {
             </WouterRouter>
             <Toaster />
           </CartProvider>
+          </RecentlyViewedProvider>
         </CurrencyProvider>
       </TooltipProvider>
     </QueryClientProvider>
