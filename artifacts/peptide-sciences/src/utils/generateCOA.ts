@@ -108,11 +108,14 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
 
   // ── 1. HEADER (0 → 44) ─────────────────────────────────────────────────────
   const HDR = 44;
-  // Header: logo image stretched full-width as letterhead banner
+  fill(doc, 0, 0, W, HDR, ...B.darkest);
+
+  // Logo — fit inside 80×28 mm box, preserving true aspect ratio
   if (logo) {
-    doc.addImage(logo.dataUrl, "JPEG", 0, 0, W, HDR);
-  } else {
-    fill(doc, 0, 0, W, HDR, ...B.darkest);
+    const { w: lw, h: lh } = fitLogo(logo, 80, 28);
+    const logoX = M;
+    const logoY = (HDR - lh) / 2;
+    doc.addImage(logo.dataUrl, "JPEG", logoX, logoY, lw, lh);
   }
 
   // Hairline divider
@@ -379,12 +382,13 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   }
 
   // ── 8. FOOTER ──────────────────────────────────────────────────────────────
-  const FOOTER_H = 24;
-  // Footer: logo image stretched full-width as letterhead banner
+  hline(doc, 0, FOOTER_Y, W, ...B.mid, 0.6);
+  fill(doc, 0, FOOTER_Y, W, 24, ...B.darkest);
+
+  // Logo in footer — preserved aspect ratio
   if (logo) {
-    doc.addImage(logo.dataUrl, "JPEG", 0, FOOTER_Y, W, FOOTER_H);
-  } else {
-    fill(doc, 0, FOOTER_Y, W, FOOTER_H, ...B.darkest);
+    const { w: lw, h: lh } = fitLogo(logo, 32, 14);
+    doc.addImage(logo.dataUrl, "JPEG", M, FOOTER_Y + (24 - lh) / 2, lw, lh);
   }
 
   doc.setFont("helvetica", "normal");
