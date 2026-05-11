@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Truck, ChevronRight, Thermometer, Package, Clock, Globe, AlertTriangle } from "lucide-react";
+import { Truck, ChevronRight, Shield, Package, Clock, Globe, AlertTriangle } from "lucide-react";
 
 const LAST_UPDATED = "1 May 2025";
 const COMPANY_SHORT = "OmniQure";
@@ -81,7 +81,7 @@ export default function ShippingPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { icon: <Truck size={16} />, label: "Free UK Shipping", value: "Orders over £100" },
-              { icon: <Thermometer size={16} />, label: "Cold-Chain Dispatch", value: "All orders" },
+              { icon: <Shield size={16} />, label: "Discreet Dispatch", value: "All orders" },
               { icon: <Package size={16} />, label: "Discreet Packaging", value: "Plain outer box" },
               { icon: <Globe size={16} />, label: "Ships Worldwide", value: "50+ countries" },
             ].map((item) => (
@@ -112,17 +112,16 @@ export default function ShippingPage() {
             <p>During peak periods (including promotional events and bank holidays) processing may take an additional 1–2 business days. We will notify you by email if there is a significant delay to your order.</p>
           </Section>
 
-          <Section id="cold-chain" number="2" title="Cold-Chain Handling & Packaging" icon={<Thermometer size={15} />}>
+          <Section id="packaging" number="2" title="Packaging & Dispatch" icon={<Package size={15} />}>
             <div className="rounded-xl p-4 mb-3" style={{ backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}>
-              <p className="font-semibold mb-1" style={{ color: "#1240A0" }}>All {COMPANY_SHORT} orders are dispatched with cold-chain packaging as standard.</p>
-              <p className="text-xs" style={{ color: "#475569" }}>Lyophilised peptides are stable at room temperature for short transit periods, but cold-chain dispatch is maintained as a quality standard on all shipments.</p>
+              <p className="font-semibold mb-1" style={{ color: "#1240A0" }}>All {COMPANY_SHORT} orders are dispatched in secure, discreet packaging as standard.</p>
+              <p className="text-xs" style={{ color: "#475569" }}>Lyophilised peptides are stable at room temperature for short transit periods. All shipments are packaged to protect product integrity in transit.</p>
             </div>
             <p>Each order is packaged as follows:</p>
             <ul className="space-y-2 pl-4">
               {[
                 "Products are sealed in individual protective vials with tamper-evident caps.",
                 "Vials are cushioned in high-density foam inserts to prevent breakage during transit.",
-                "A refrigerant gel pack is included for temperature-sensitive orders and longer international routes.",
                 "All items are contained in a plain, unbranded outer box to ensure discreet delivery.",
                 "A packing slip (without product names) is included inside. Full invoice is sent by email only.",
               ].map((item) => (

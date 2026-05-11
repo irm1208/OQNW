@@ -190,7 +190,7 @@ export default function ProductPage() {
                   { icon: <Shield size={11} />, text: `${getPurityStr(product.id)} HPLC Purity` },
                   { icon: <Package size={11} />, text: "Lab Certified" },
                   { icon: <FlaskConical size={11} />, text: "Lab Tested" },
-                  { icon: <Thermometer size={11} />, text: "Cold Chain" },
+                  { icon: <Thermometer size={11} />, text: "Lyophilized" },
                 ].map((b) => (
                   <div
                     key={b.text}

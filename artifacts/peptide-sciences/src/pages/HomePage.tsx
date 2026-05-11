@@ -58,8 +58,8 @@ const pillars = [
   {
     num: "04",
     icon: <Truck size={24} />,
-    title: "Cold Chain Delivery",
-    body: "Lyophilized peptides shipped with professional cold-chain packaging to preserve integrity every step.",
+    title: "Fast UK Dispatch",
+    body: "Orders placed before noon are dispatched same day in discreet, secure packaging to preserve integrity every step.",
     color: "#0E7490",
     bg: "#ECFEFF",
   },
@@ -190,12 +190,12 @@ export default function HomePage() {
                 className="mb-8 leading-relaxed"
                 style={{ color: "rgba(255,255,255,0.72)", fontSize: "16.5px", maxWidth: "500px" }}
               >
-                81 HPLC-verified peptides — each backed by full COA, ESI-TOF mass spectrometry data, and professional cold-chain delivery. The standard for serious researchers.
+                81 HPLC-verified peptides — each backed by full COA and ESI-TOF mass spectrometry data. The standard for serious researchers.
               </p>
 
               {/* Trust chips */}
               <div className="flex flex-wrap gap-2 mb-8">
-                {["98%+ HPLC Purity", "Full COA Included", "ESI-TOF MS", "Cold-Chain Delivery"].map(t => (
+                {["98%+ HPLC Purity", "Full COA Included", "ESI-TOF MS", "Lyophilized"].map(t => (
                   <span
                     key={t}
                     className="inline-flex items-center gap-1.5"
@@ -274,7 +274,7 @@ export default function HomePage() {
                   style={{ padding: "6px 13px", borderRadius: "30px", display: "inline-flex", alignItems: "center", gap: "6px" }}
                 >
                   <div style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#60A5FA", flexShrink: 0 }} />
-                  <span style={{ fontSize: "10px", fontWeight: 700, color: "#fff", letterSpacing: "0.04em" }}>Cold Chain −20°C</span>
+                  <span style={{ fontSize: "10px", fontWeight: 700, color: "#fff", letterSpacing: "0.04em" }}>Store at −20°C</span>
                 </div>
               </div>
 
@@ -365,7 +365,7 @@ export default function HomePage() {
               { icon: <FlaskConical size={20} />, title: "98%+ HPLC Purity",    sub: "Guaranteed on every product",     color: "#1B5CB5", bg: "#EEF4FF" },
               { icon: <Award size={20} />,        title: "Full COA & MS Data",   sub: "Chromatogram + mass spectrum",    color: "#059669", bg: "#ECFDF5" },
               { icon: <Shield size={20} />,       title: "Research Grade",       sub: "For qualified researchers only",  color: "#7C3AED", bg: "#F5F3FF" },
-              { icon: <Truck size={20} />,        title: "Free Shipping £200+",  sub: "Cold-chain packaging included",   color: "#0E7490", bg: "#ECFEFF" },
+              { icon: <Truck size={20} />,        title: "Free Shipping £200+",  sub: "Discreet packaging included",     color: "#0E7490", bg: "#ECFEFF" },
             ].map((item, i) => (
               <div
                 key={i}
@@ -509,7 +509,7 @@ export default function HomePage() {
               Why Choose OmniQure?
             </h2>
             <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "520px", margin: "8px auto 0", lineHeight: 1.7 }}>
-              Every peptide we supply meets the highest standards in research-grade manufacturing, analytical verification, and cold-chain logistics.
+              Every peptide we supply meets the highest standards in research-grade manufacturing, analytical verification, and quality-assured dispatch.
             </p>
           </div>
 

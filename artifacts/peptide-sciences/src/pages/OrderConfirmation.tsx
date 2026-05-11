@@ -132,7 +132,7 @@ export default function OrderConfirmation() {
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {[
                 "You will receive an order confirmation email within the next few minutes.",
-                "Our lab team will verify your order and prepare your cold-chain packaging.",
+                "Our lab team will verify your order and prepare your secure, discreet packaging.",
                 "You'll receive a dispatch notification with tracking information.",
                 "Your peptides arrive in insulated packaging maintaining −20°C.",
               ].map((text, i) => (

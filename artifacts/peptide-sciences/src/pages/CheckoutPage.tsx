@@ -69,7 +69,7 @@ const SHIPPING_OPTIONS = [
     price: 9.95,
     freeOver: 200,
     icon: <Package size={18} />,
-    description: "Cold-chain packaging included",
+    description: "Discreet packaging included",
   },
   {
     id: "express",
@@ -78,7 +78,7 @@ const SHIPPING_OPTIONS = [
     price: 24.95,
     freeOver: null,
     icon: <Truck size={18} />,
-    description: "Priority cold-chain delivery",
+    description: "Priority tracked delivery",
   },
   {
     id: "nextday",
@@ -406,7 +406,7 @@ export default function CheckoutPage() {
               <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)", padding: "28px" }}>
                 <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A", marginBottom: "6px" }}>Shipping Method</h2>
                 <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "24px" }}>
-                  All orders include cold-chain packaging at no extra cost.
+                  All orders include discreet, secure packaging at no extra cost.
                 </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                   {SHIPPING_OPTIONS.map(opt => {
@@ -456,7 +456,7 @@ export default function CheckoutPage() {
                 <div style={{ marginTop: "20px", padding: "14px", borderRadius: "12px", backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0", display: "flex", gap: "10px", alignItems: "flex-start" }}>
                   <FlaskConical size={14} style={{ color: "#16A34A", flexShrink: 0, marginTop: "1px" }} />
                   <p style={{ fontSize: "12px", color: "#166534", lineHeight: 1.6, margin: 0 }}>
-                    All peptides are shipped in <strong>insulated cold-chain packaging</strong> with gel packs to maintain −20°C temperatures during transit. UK orders dispatched within 24 hours.
+                    All peptides are shipped in <strong>insulated, discreet packaging</strong> to maintain stability during transit. UK orders dispatched within 24 hours.
                   </p>
                 </div>
               </div>
@@ -680,7 +680,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "8px" }}>
-                  {["256-bit SSL Encrypted", "Cold-Chain Guaranteed", "98%+ HPLC Verified"].map(b => (
+                  {["256-bit SSL Encrypted", "Discreet Packaging", "98%+ HPLC Verified"].map(b => (
                     <div key={b} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                       <CheckCircle2 size={12} style={{ color: "#059669", flexShrink: 0 }} />
                       <span style={{ fontSize: "11.5px", color: "#64748B" }}>{b}</span>

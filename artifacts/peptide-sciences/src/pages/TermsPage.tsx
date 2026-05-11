@@ -189,7 +189,7 @@ export default function TermsPage() {
             </Section>
 
             <Section id="shipping" number="7" title="Shipping & Delivery">
-              <p>Please refer to our full <Link href="/shipping" style={{ color: "#1B5CB5", textDecoration: "none", fontWeight: 600 }}>Shipping Policy</Link> for complete information on delivery timescales, carriers, cold-chain procedures, and international shipping.</p>
+              <p>Please refer to our full <Link href="/shipping" style={{ color: "#1B5CB5", textDecoration: "none", fontWeight: 600 }}>Shipping Policy</Link> for complete information on delivery timescales, carriers, packaging, and international shipping.</p>
               <p>Risk of loss and title for products passes to you upon dispatch. {COMPANY_SHORT} is not responsible for delays, losses, or damages arising from carrier handling once products have left our facility.</p>
               <p>It is your responsibility to ensure that importation of research chemicals is permitted in your jurisdiction. We accept no liability for products seized, delayed, or destroyed by customs authorities.</p>
             </Section>

@@ -7,7 +7,7 @@ const messages = [
   "🧪  Research Grade · Lab Certified · COA Included",
   "🔒  Secure Checkout — SSL Encrypted & Discreet Packaging",
   "⚗️  Full ESI-TOF Mass Spectrometry Data Available",
-  "📦  Cold-Chain Packaging — Lyophilized for Stability",
+  "📦  Lyophilized for Maximum Stability — Long Shelf Life",
 ];
 
 export default function AnnouncementBar() {
