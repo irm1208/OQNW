@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { FlaskConical, ChevronDown, ChevronUp } from "lucide-react";
+import { FlaskConical, ChevronDown, ChevronUp, Plus, Trash2, Beaker } from "lucide-react";
 
 function round(n: number, d: number) {
   return Math.round(n * 10 ** d) / 10 ** d;
@@ -692,6 +692,9 @@ export default function ReconstitutionCalculator() {
           )}
         </div>
 
+        {/* Pre-Mix Calculator */}
+        <PreMixCalculator />
+
         <p
           style={{
             marginTop: "24px",
@@ -703,6 +706,302 @@ export default function ReconstitutionCalculator() {
         >
           For in-vitro laboratory research use only. Not for human or veterinary use.
         </p>
+      </div>
+    </div>
+  );
+}
+
+type PremixRow = {
+  id: number;
+  name: string;
+  concMcgMl: string;
+  doseMcg: string;
+};
+
+let rowCounter = 3;
+
+function PreMixCalculator() {
+  const [rows, setRows] = useState<PremixRow[]>([
+    { id: 1, name: "", concMcgMl: "", doseMcg: "" },
+    { id: 2, name: "", concMcgMl: "", doseMcg: "" },
+  ]);
+
+  const addRow = () => {
+    setRows((r) => [...r, { id: ++rowCounter, name: "", concMcgMl: "", doseMcg: "" }]);
+  };
+
+  const removeRow = (id: number) => {
+    setRows((r) => r.filter((row) => row.id !== id));
+  };
+
+  const updateRow = (id: number, field: keyof PremixRow, value: string) => {
+    setRows((r) => r.map((row) => (row.id === id ? { ...row, [field]: value } : row)));
+  };
+
+  const computed = rows.map((row) => {
+    const conc = parseFloat(row.concMcgMl) || 0;
+    const dose = parseFloat(row.doseMcg) || 0;
+    const volMl = conc > 0 && dose > 0 ? dose / conc : null;
+    return { ...row, volMl };
+  });
+
+  const totalMl = computed.reduce((sum, r) => sum + (r.volMl ?? 0), 0);
+  const totalUl = totalMl * 1000;
+  const totalUnits = totalMl * 100;
+  const anyReady = computed.some((r) => r.volMl !== null);
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    padding: "8px 10px",
+    fontSize: "13px",
+    fontWeight: 600,
+    color: "#0F172A",
+    border: "1.5px solid #E2E8F0",
+    borderRadius: "8px",
+    outline: "none",
+    backgroundColor: "#fff",
+    fontFamily: "'Arimo', Arial, sans-serif",
+    boxSizing: "border-box",
+  };
+
+  return (
+    <div
+      style={{
+        marginTop: "16px",
+        backgroundColor: "#fff",
+        borderRadius: "16px",
+        border: "1px solid #E8EDF5",
+        overflow: "hidden",
+        boxShadow: "0 2px 12px rgba(15,23,42,0.05)",
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          background: "linear-gradient(135deg, #0D2565 0%, #1240A0 100%)",
+          padding: "18px 20px 16px",
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+        }}
+      >
+        <div
+          style={{
+            width: "32px",
+            height: "32px",
+            borderRadius: "9px",
+            backgroundColor: "rgba(255,255,255,0.15)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
+        >
+          <Beaker size={16} color="#fff" />
+        </div>
+        <div>
+          <p style={{ margin: 0, fontSize: "14px", fontWeight: 700, color: "#fff" }}>Pre-Mix Calculator</p>
+          <p style={{ margin: 0, fontSize: "11px", color: "rgba(255,255,255,0.65)", marginTop: "2px" }}>
+            Combine multiple peptides into a single syringe
+          </p>
+        </div>
+      </div>
+
+      <div style={{ padding: "20px" }}>
+        {/* Column labels */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr 80px",
+            gap: "8px",
+            marginBottom: "8px",
+            alignItems: "center",
+          }}
+        >
+          {["Peptide (optional)", "Conc. (mcg/mL)", "Dose (mcg)", ""].map((label, i) => (
+            <span
+              key={i}
+              style={{
+                fontSize: "10px",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.07em",
+                color: "#94A3B8",
+              }}
+            >
+              {label}
+            </span>
+          ))}
+        </div>
+
+        {/* Rows */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          {computed.map((row, idx) => (
+            <div
+              key={row.id}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr 80px",
+                gap: "8px",
+                alignItems: "center",
+                backgroundColor: row.volMl !== null ? "#F8FAFF" : "#fff",
+                borderRadius: "10px",
+                padding: "8px",
+                border: `1.5px solid ${row.volMl !== null ? "#BFDBFE" : "#F1F5F9"}`,
+                transition: "all 0.15s",
+              }}
+            >
+              <input
+                style={inputStyle}
+                placeholder={`Peptide ${idx + 1}`}
+                value={row.name}
+                onChange={(e) => updateRow(row.id, "name", e.target.value)}
+              />
+              <input
+                style={inputStyle}
+                type="number"
+                min="0"
+                step="any"
+                placeholder="e.g. 500"
+                value={row.concMcgMl}
+                onChange={(e) => updateRow(row.id, "concMcgMl", e.target.value)}
+              />
+              <input
+                style={inputStyle}
+                type="number"
+                min="0"
+                step="any"
+                placeholder="e.g. 250"
+                value={row.doseMcg}
+                onChange={(e) => updateRow(row.id, "doseMcg", e.target.value)}
+              />
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                {row.volMl !== null && (
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: 700,
+                      color: "#1B5CB5",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {round(row.volMl * 1000, 1)} μL
+                  </span>
+                )}
+                {rows.length > 1 && (
+                  <button
+                    onClick={() => removeRow(row.id)}
+                    style={{
+                      marginLeft: "auto",
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      padding: "4px",
+                      color: "#CBD5E1",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Add row */}
+        <button
+          onClick={addRow}
+          style={{
+            marginTop: "10px",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            background: "none",
+            border: "1.5px dashed #CBD5E1",
+            borderRadius: "8px",
+            padding: "8px 14px",
+            fontSize: "12px",
+            fontWeight: 600,
+            color: "#94A3B8",
+            cursor: "pointer",
+            width: "100%",
+            justifyContent: "center",
+            fontFamily: "'Arimo', Arial, sans-serif",
+          }}
+        >
+          <Plus size={13} /> Add peptide
+        </button>
+
+        {/* Result summary */}
+        {anyReady && (
+          <div
+            style={{
+              marginTop: "16px",
+              borderRadius: "12px",
+              background: "linear-gradient(135deg, #1240A0 0%, #1B5CB5 100%)",
+              padding: "18px 20px",
+            }}
+          >
+            <p
+              style={{
+                margin: "0 0 12px",
+                fontSize: "10px",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+                color: "rgba(255,255,255,0.65)",
+              }}
+            >
+              Total pre-mix volume
+            </p>
+            <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+              <div>
+                <p style={{ margin: 0, fontSize: "28px", fontWeight: 700, color: "#fff", lineHeight: 1 }}>
+                  {round(totalUl, 1)} <span style={{ fontSize: "16px" }}>μL</span>
+                </p>
+                <p style={{ margin: "4px 0 0", fontSize: "11px", color: "rgba(255,255,255,0.6)" }}>microlitres</p>
+              </div>
+              <div style={{ width: "1px", backgroundColor: "rgba(255,255,255,0.2)", flexShrink: 0 }} />
+              <div>
+                <p style={{ margin: 0, fontSize: "28px", fontWeight: 700, color: "#fff", lineHeight: 1 }}>
+                  {round(totalMl, 4)} <span style={{ fontSize: "16px" }}>mL</span>
+                </p>
+                <p style={{ margin: "4px 0 0", fontSize: "11px", color: "rgba(255,255,255,0.6)" }}>millilitres</p>
+              </div>
+              <div style={{ width: "1px", backgroundColor: "rgba(255,255,255,0.2)", flexShrink: 0 }} />
+              <div>
+                <p style={{ margin: 0, fontSize: "28px", fontWeight: 700, color: "#fff", lineHeight: 1 }}>
+                  {round(totalUnits, 1)} <span style={{ fontSize: "16px" }}>units</span>
+                </p>
+                <p style={{ margin: "4px 0 0", fontSize: "11px", color: "rgba(255,255,255,0.6)" }}>insulin syringe</p>
+              </div>
+            </div>
+
+            {/* Per-peptide breakdown */}
+            <div style={{ marginTop: "14px", paddingTop: "14px", borderTop: "1px solid rgba(255,255,255,0.2)" }}>
+              {computed.filter((r) => r.volMl !== null).map((row, i) => (
+                <div
+                  key={row.id}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: i > 0 ? "6px" : "0",
+                  }}
+                >
+                  <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.75)", fontWeight: 500 }}>
+                    {row.name || `Peptide ${computed.indexOf(row) + 1}`}
+                  </span>
+                  <span style={{ fontSize: "12px", color: "#fff", fontWeight: 700 }}>
+                    {round((row.volMl ?? 0) * 1000, 1)} μL &nbsp;·&nbsp; {round((row.volMl ?? 0) * 100, 1)} units
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
