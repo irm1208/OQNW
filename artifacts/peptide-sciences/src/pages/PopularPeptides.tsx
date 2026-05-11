@@ -1,63 +1,116 @@
 import { useState, useMemo } from "react";
 import { useLocation } from "wouter";
-import Sidebar from "@/components/Sidebar";
 import ProductCard from "@/components/ProductCard";
 import { products, Product } from "@/data/products";
 import { popularProductIds } from "@/data/popularPeptides";
+import {
+  Heart, Zap, Scale, Brain, Microscope, Shield, Clock, Sparkles,
+  FlaskConical, Dna, ChevronRight,
+} from "lucide-react";
 
-const categoryTabs = [
-  { label: "Popular Peptides", key: "Popular Peptides" },
-  { label: "Peptide Blends",   key: "Peptide Blends" },
-  { label: "IGF-1 Proteins",   key: "IGF-1 Proteins" },
-  { label: "Melanotan Peptides", key: "Melanotan Peptides" },
-  { label: "Bioregulators",    key: "Bioregulators" },
+const CATEGORY_META: Record<string, { icon: React.ReactNode; description: string; accent: string }> = {
+  "Healing Peptides": {
+    icon: <Heart size={15} />,
+    description: "The most widely researched peptides for tissue repair, wound healing, and musculoskeletal recovery.",
+    accent: "#059669",
+  },
+  "Growth Peptides": {
+    icon: <Zap size={15} />,
+    description: "Growth hormone secretagogues and IGF-1 modulators at the forefront of GH-axis research.",
+    accent: "#1B5CB5",
+  },
+  "Weight Management": {
+    icon: <Scale size={15} />,
+    description: "Next-generation GLP-1/GIP receptor agonists and lipolytic peptides leading metabolic research.",
+    accent: "#DC2626",
+  },
+  "Nootropics": {
+    icon: <Brain size={15} />,
+    description: "CNS-active peptides studied for BDNF upregulation, neuroprotection, and cognitive modulation.",
+    accent: "#7C3AED",
+  },
+  "Cellular Health": {
+    icon: <Microscope size={15} />,
+    description: "Mitochondria-derived peptides and NAD+ compounds at the cutting edge of cellular longevity research.",
+    accent: "#0891B2",
+  },
+  "Immune Support": {
+    icon: <Shield size={15} />,
+    description: "Clinically studied immunomodulatory peptides covering both innate and adaptive immune pathways.",
+    accent: "#B45309",
+  },
+  "Longevity Peptides": {
+    icon: <Clock size={15} />,
+    description: "Telomerase-activating and anti-senescence peptides at the frontier of ageing biology research.",
+    accent: "#C2410C",
+  },
+  "Skin & Repair": {
+    icon: <Sparkles size={15} />,
+    description: "Copper tripeptides and dermal repair compounds studied for collagen synthesis and wound healing.",
+    accent: "#BE185D",
+  },
+  "Peptide Blends": {
+    icon: <FlaskConical size={15} />,
+    description: "Pre-combined research formulations pairing synergistic compounds in a single vial.",
+    accent: "#0D9488",
+  },
+  "Research Peptides": {
+    icon: <Dna size={15} />,
+    description: "Specialised compounds under active research investigation across multiple biological pathways.",
+    accent: "#475569",
+  },
+};
+
+const CATEGORY_ORDER = [
+  "Healing Peptides",
+  "Growth Peptides",
+  "Weight Management",
+  "Nootropics",
+  "Cellular Health",
+  "Immune Support",
+  "Longevity Peptides",
+  "Skin & Repair",
+  "Peptide Blends",
+  "Research Peptides",
 ];
-
-type SortOption = "position" | "name" | "price-low" | "price-high";
 
 export default function PopularPeptides() {
   const [, navigate] = useLocation();
-  const [sortBy, setSortBy] = useState<SortOption>("position");
+  const [activeCategory, setActiveCategory] = useState<string>("All");
 
-  const productMap = useMemo(() => new Map(products.map((p) => [p.id, p])), []);
-
-  const positionList = useMemo<Product[]>(() => {
+  const popularProducts = useMemo<Product[]>(() => {
+    const map = new Map(products.map((p) => [p.id, p]));
     return popularProductIds
-      .map((entry) => productMap.get(entry.id))
-      .filter((p): p is Product => p !== null && p !== undefined);
-  }, [productMap]);
+      .map((e) => map.get(e.id))
+      .filter((p): p is Product => p != null);
+  }, []);
 
-  const displayProducts = useMemo(() => {
-    const list = [...positionList];
-    switch (sortBy) {
-      case "name":
-        return list.sort((a, b) => a.name.localeCompare(b.name));
-      case "price-low":
-        return list.sort((a, b) => {
-          if (a.price === null) return 1;
-          if (b.price === null) return -1;
-          return a.price - b.price;
-        });
-      case "price-high":
-        return list.sort((a, b) => {
-          if (a.price === null) return 1;
-          if (b.price === null) return -1;
-          return b.price - a.price;
-        });
-      default:
-        return list;
+  const categorisedGroups = useMemo(() => {
+    const grouped: Record<string, Product[]> = {};
+    for (const p of popularProducts) {
+      if (!grouped[p.category]) grouped[p.category] = [];
+      grouped[p.category].push(p);
     }
-  }, [positionList, sortBy]);
+    return CATEGORY_ORDER
+      .filter((cat) => grouped[cat]?.length)
+      .map((cat) => ({ category: cat, items: grouped[cat] }));
+  }, [popularProducts]);
 
-  const handleCategoryChange = (cat: string) => navigate(`/?category=${encodeURIComponent(cat)}`);
-  const handleTabClick = (key: string) => {
-    if (key === "Popular Peptides") return;
-    navigate(`/?category=${encodeURIComponent(key)}`);
-  };
+  const availableCategories = useMemo(
+    () => categorisedGroups.map((g) => g.category),
+    [categorisedGroups]
+  );
+
+  const filtered = useMemo(() => {
+    if (activeCategory === "All") return categorisedGroups;
+    return categorisedGroups.filter((g) => g.category === activeCategory);
+  }, [categorisedGroups, activeCategory]);
+
+  const totalShown = filtered.reduce((n, g) => n + g.items.length, 0);
 
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
-      {/* Premium page header */}
+    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
+      {/* Hero */}
       <div style={{
         background: "linear-gradient(135deg, #020B1E 0%, #071A4A 35%, #0D2565 65%, #1240A0 100%)",
         padding: "36px 0 30px",
@@ -83,7 +136,7 @@ export default function PopularPeptides() {
             Popular Peptides
           </h1>
           <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", maxWidth: "540px", lineHeight: 1.65, marginBottom: "16px" }}>
-            Our most researched compounds — hand-picked by the OmniQure team. Each 98%+ HPLC verified with full COA documentation.
+            Our most researched compounds across {availableCategories.length} categories — hand-picked by the OmniQure team. Each 98%+ HPLC verified with full COA documentation.
           </p>
           <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
             {["98%+ HPLC Purity", "Full COA", "ESI-TOF MS", "Cold Chain"].map(t => (
@@ -99,74 +152,164 @@ export default function PopularPeptides() {
         </div>
       </div>
 
-      {/* Main content */}
-      <div className="max-w-[1280px] mx-auto px-4 py-6">
-        <div className="flex gap-7">
-          {/* Sidebar */}
-          <div className="hidden lg:block">
-            <div
-              className="flex items-center gap-2 px-3 py-2.5 rounded-t-xl mb-3"
-              style={{ backgroundColor: "#1B5CB5", color: "#fff" }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
-              </svg>
-              <span className="font-semibold" style={{ fontSize: "13px" }}>Product List</span>
-            </div>
-            <Sidebar selectedCategory="Popular Peptides" onCategoryChange={handleCategoryChange} />
-          </div>
-
-          {/* Products */}
-          <div className="flex-1 min-w-0">
-            <div className="mb-5">
-              <h1 className="font-bold" style={{ fontSize: "22px", color: "#0F172A" }}>
-                Popular Peptides
-              </h1>
-              <p style={{ fontSize: "13.5px", color: "#64748B", marginTop: "4px" }}>
-                Research peptides available direct from our online catalogue.
-              </p>
-            </div>
-
-            <div className="flex items-center justify-between mb-5">
-              <span
-                className="px-3 py-1 rounded-full font-medium"
-                style={{ fontSize: "12.5px", color: "#475569", backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}
+      {/* Category stats strip */}
+      <div style={{ backgroundColor: "#fff", borderBottom: "1px solid #E8EDF5" }}>
+        <div className="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-6 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
+          {categorisedGroups.map((g) => {
+            const meta = CATEGORY_META[g.category];
+            return (
+              <button
+                key={g.category}
+                onClick={() => setActiveCategory(g.category === activeCategory ? "All" : g.category)}
+                className="flex items-center gap-2 flex-shrink-0 transition-all"
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "4px 8px",
+                  borderRadius: "8px",
+                  backgroundColor: activeCategory === g.category ? `${meta?.accent}15` : "transparent",
+                }}
               >
-                {displayProducts.length} Products
-              </span>
-              <div className="flex items-center gap-2">
-                <span style={{ fontSize: "12.5px", color: "#94A3B8" }}>Sort by</span>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as SortOption)}
-                  className="outline-none text-sm"
-                  style={{
-                    fontSize: "12.5px",
-                    color: "#374151",
-                    border: "1px solid #E2E8F0",
-                    borderRadius: "8px",
-                    padding: "5px 10px",
-                    backgroundColor: "#fff",
-                    cursor: "pointer",
-                  }}
+                <span style={{ color: meta?.accent ?? "#1B5CB5", fontSize: "13px" }}>{meta?.icon}</span>
+                <span style={{ fontSize: "12px", fontWeight: 600, color: activeCategory === g.category ? (meta?.accent ?? "#1B5CB5") : "#475569", whiteSpace: "nowrap" }}>
+                  {g.category}
+                </span>
+                <span
+                  className="text-xs font-bold px-1.5 py-0.5 rounded-full"
+                  style={{ backgroundColor: activeCategory === g.category ? (meta?.accent ?? "#1B5CB5") : "#EEF4FF", color: activeCategory === g.category ? "#fff" : "#1B5CB5", fontSize: "10px" }}
                 >
-                  <option value="position">Position</option>
-                  <option value="name">Product Name</option>
-                  <option value="price-low">Price (Low–High)</option>
-                  <option value="price-high">Price (High–Low)</option>
-                </select>
-              </div>
-            </div>
+                  {g.items.length}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
-            <div
-              className="grid gap-4"
-              style={{ gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}
+      <div className="max-w-[1280px] mx-auto px-4 py-8">
+        {/* Filter tabs */}
+        <div className="flex items-center gap-2 mb-8 flex-wrap">
+          <button
+            onClick={() => setActiveCategory("All")}
+            className="text-sm font-semibold px-4 py-1.5 rounded-full transition-all"
+            style={{
+              backgroundColor: activeCategory === "All" ? "#1240A0" : "#fff",
+              color: activeCategory === "All" ? "#fff" : "#475569",
+              border: activeCategory === "All" ? "1.5px solid #1240A0" : "1.5px solid #E2E8F0",
+              cursor: "pointer",
+            }}
+          >
+            All Categories
+            <span className="ml-1.5 text-xs opacity-70">({popularProducts.length})</span>
+          </button>
+          {availableCategories.map((cat) => {
+            const active = activeCategory === cat;
+            const meta = CATEGORY_META[cat];
+            return (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(active ? "All" : cat)}
+                className="flex items-center gap-1.5 text-sm font-semibold px-3.5 py-1.5 rounded-full transition-all"
+                style={{
+                  backgroundColor: active ? (meta?.accent ?? "#1B5CB5") : "#fff",
+                  color: active ? "#fff" : "#475569",
+                  border: active ? `1.5px solid ${meta?.accent ?? "#1B5CB5"}` : "1.5px solid #E2E8F0",
+                  cursor: "pointer",
+                }}
+              >
+                <span style={{ display: "flex", opacity: active ? 1 : 0.6 }}>{meta?.icon}</span>
+                {cat}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Results count */}
+        <div className="flex items-center justify-between mb-6">
+          <p style={{ fontSize: "13px", color: "#94A3B8" }}>
+            Showing <strong style={{ color: "#475569" }}>{totalShown}</strong> compound{totalShown !== 1 ? "s" : ""}
+            {activeCategory !== "All" ? ` in ${activeCategory}` : " across all categories"}
+          </p>
+          {activeCategory !== "All" && (
+            <button
+              onClick={() => setActiveCategory("All")}
+              className="flex items-center gap-1 text-xs font-semibold hover:underline"
+              style={{ background: "none", border: "none", cursor: "pointer", color: "#1B5CB5" }}
             >
-              {displayProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </div>
+              View all categories <ChevronRight size={12} />
+            </button>
+          )}
+        </div>
+
+        {/* Category sections */}
+        <div className="space-y-12">
+          {filtered.map((group) => {
+            const meta = CATEGORY_META[group.category];
+            return (
+              <section key={group.category}>
+                {/* Section header */}
+                <div
+                  className="flex items-center justify-between mb-5 pb-3"
+                  style={{ borderBottom: `2px solid ${meta?.accent ?? "#1B5CB5"}22` }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="flex items-center justify-center rounded-xl"
+                      style={{
+                        width: "36px",
+                        height: "36px",
+                        backgroundColor: `${meta?.accent ?? "#1B5CB5"}15`,
+                        color: meta?.accent ?? "#1B5CB5",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {meta?.icon}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2.5">
+                        <h2 className="font-bold" style={{ fontSize: "18px", color: "#0F172A" }}>
+                          {group.category}
+                        </h2>
+                        <span
+                          className="text-xs font-bold px-2 py-0.5 rounded-full"
+                          style={{
+                            backgroundColor: `${meta?.accent ?? "#1B5CB5"}15`,
+                            color: meta?.accent ?? "#1B5CB5",
+                            border: `1px solid ${meta?.accent ?? "#1B5CB5"}30`,
+                          }}
+                        >
+                          {group.items.length} compound{group.items.length !== 1 ? "s" : ""}
+                        </span>
+                      </div>
+                      {meta?.description && (
+                        <p className="text-xs mt-0.5" style={{ color: "#94A3B8", maxWidth: "520px" }}>
+                          {meta.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => navigate(`/all-peptides?category=${encodeURIComponent(group.category)}`)}
+                    className="hidden sm:flex items-center gap-1 text-xs font-semibold hover:underline flex-shrink-0"
+                    style={{ background: "none", border: "none", cursor: "pointer", color: meta?.accent ?? "#1B5CB5" }}
+                  >
+                    Browse all {group.category} <ChevronRight size={12} />
+                  </button>
+                </div>
+
+                {/* Product grid */}
+                <div
+                  className="grid gap-4"
+                  style={{ gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}
+                >
+                  {group.items.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+              </section>
+            );
+          })}
         </div>
       </div>
     </div>
