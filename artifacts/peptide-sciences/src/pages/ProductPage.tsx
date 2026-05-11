@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useParams } from "wouter";
 import { products } from "@/data/products";
 import { productDetails } from "@/data/productDetails";
@@ -23,6 +23,10 @@ export default function ProductPage() {
   const [activeTab, setActiveTab] = useState<"description" | "coa">("description");
   const [added, setAdded] = useState(false);
   const { addToCart } = useCart();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [params.id]);
   const { formatPrice } = useCurrency();
 
   const decreaseQty = () => setQuantity((q) => Math.max(1, q - 1));
