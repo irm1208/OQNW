@@ -122,7 +122,7 @@ export default function ShippingPage() {
               {[
                 "Products are sealed in individual protective vials with tamper-evident caps.",
                 "All items are contained in a plain, unbranded outer packaging to ensure discreet delivery.",
-                "A packing slip (without product names) is included inside. Full invoice is sent by email only.",
+                "Full invoice is sent by email only.",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2">
                   <span style={{ color: "#1B5CB5", flexShrink: 0 }}>✓</span>
