@@ -130,14 +130,14 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
             fontWeight="700"
             fontFamily="Arimo, Arial, sans-serif"
           >
-            ← draw to {round(iuValue, 1)} IU
+            ← draw to {round(iuValue, 1)} units
           </text>
         </>
       )}
 
       {overflowing && (
         <text x={bx + bw / 2} y={H - 2} textAnchor="middle" fontSize="9" fill="#DC2626" fontWeight="700" fontFamily="Arimo, Arial, sans-serif">
-          &gt;100 IU — split across multiple injections
+          &gt;100 units — split across multiple injections
         </text>
       )}
     </svg>
@@ -500,7 +500,7 @@ export default function ReconstitutionCalculator() {
                     margin: "0 0 4px",
                   }}
                 >
-                  {round(insulinIU, 1)} <span style={{ fontSize: "24px" }}>IU</span>
+                  {round(insulinIU, 1)} <span style={{ fontSize: "24px" }}>units</span>
                 </p>
                 <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.75)", margin: "8px 0 0" }}>
                   {round(volumeMl, 4)} mL &nbsp;·&nbsp; {round(volumeUl, 2)} μL
@@ -579,7 +579,7 @@ export default function ReconstitutionCalculator() {
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
                 <tr style={{ backgroundColor: "#F8FAFC" }}>
-                  {["Dose", "mL", "μL", "IU (insulin syringe)"].map((h) => (
+                  {["Dose", "mL", "μL", "Units (insulin syringe)"].map((h) => (
                     <th
                       key={h}
                       style={{
