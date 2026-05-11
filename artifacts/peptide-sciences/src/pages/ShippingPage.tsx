@@ -121,8 +121,7 @@ export default function ShippingPage() {
             <ul className="space-y-2 pl-4">
               {[
                 "Products are sealed in individual protective vials with tamper-evident caps.",
-                "Vials are cushioned in high-density foam inserts to prevent breakage during transit.",
-                "All items are contained in a plain, unbranded outer box to ensure discreet delivery.",
+                "All items are contained in a plain, unbranded outer packaging to ensure discreet delivery.",
                 "A packing slip (without product names) is included inside. Full invoice is sent by email only.",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2">
