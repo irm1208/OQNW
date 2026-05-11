@@ -159,7 +159,11 @@ export default function HomePage() {
             <div className="flex-1 text-white" style={{ zIndex: 1 }}>
               {/* Brand logo badge */}
               <div className="mb-6">
-                <LogoMark height={56} />
+                <img
+                  src="/omniqure-logo.jpeg"
+                  alt="OmniQure Peptide Research Institute"
+                  style={{ height: "56px", width: "auto", display: "block", mixBlendMode: "screen" }}
+                />
               </div>
 
               <h1

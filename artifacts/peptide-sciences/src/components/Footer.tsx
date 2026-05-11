@@ -105,7 +105,11 @@ export default function Footer() {
             {/* Brand column */}
             <div className="md:w-[240px] flex-shrink-0">
               <div className="flex items-center gap-2.5 mb-4">
-                <LogoMark height={42} />
+                <img
+                  src="/omniqure-logo.jpeg"
+                  alt="OmniQure Peptide Research Institute"
+                  style={{ height: "42px", width: "auto", display: "block", mixBlendMode: "screen" }}
+                />
               </div>
               <p style={{ fontSize: "13px", color: "#475569", lineHeight: "1.75", marginBottom: "16px" }}>
                 Research peptides manufactured to the highest standards of quality and purity. 98%+ HPLC purity guaranteed on every product.

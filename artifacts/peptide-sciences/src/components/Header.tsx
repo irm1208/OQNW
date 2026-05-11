@@ -125,7 +125,11 @@ export default function Header() {
         <div className="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-4">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 mr-2" style={{ textDecoration: "none" }}>
-            <LogoMark height={52} />
+            <img
+              src="/omniqure-logo.jpeg"
+              alt="OmniQure Peptide Research Institute"
+              style={{ height: "52px", width: "auto", display: "block", mixBlendMode: "screen" }}
+            />
           </Link>
 
           {/* Search */}
