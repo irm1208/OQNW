@@ -127,7 +127,7 @@ export default function Header() {
             <img
               src="/omniqure-logo.jpeg"
               alt="OmniQure Peptide Research Institute"
-              style={{ height: "52px", width: "auto", display: "block", borderRadius: "8px" }}
+              style={{ height: "52px", width: "auto", display: "block", mixBlendMode: "screen" }}
             />
           </Link>
 
