@@ -62,17 +62,50 @@ async function loadLogo(): Promise<LogoAsset | null> {
   try {
     const res  = await fetch("/omniqure-logo.jpeg");
     const blob = await res.blob();
-    const dataUrl = await new Promise<string>((resolve, reject) => {
+    const rawUrl = await new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload  = () => resolve(reader.result as string);
       reader.onerror = reject;
       reader.readAsDataURL(blob);
     });
-    const { w, h } = await new Promise<{ w: number; h: number }>((resolve) => {
+
+    // Draw onto a canvas with rounded corners so the logo edges
+    // blend smoothly into the PDF header/footer (matching the website header).
+    const dataUrl = await new Promise<string>((resolve) => {
       const img = new Image();
-      img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
-      img.onerror = () => resolve({ w: 1, h: 1 });
-      img.src = dataUrl;
+      img.onload = () => {
+        const W = img.naturalWidth;
+        const H = img.naturalHeight;
+        // Corner radius proportional to height — matches website's 8px on 52px display
+        const r = Math.round(H * 0.10);
+        const canvas = document.createElement("canvas");
+        canvas.width  = W;
+        canvas.height = H;
+        const ctx = canvas.getContext("2d")!;
+        ctx.beginPath();
+        ctx.moveTo(r, 0);
+        ctx.lineTo(W - r, 0);
+        ctx.quadraticCurveTo(W, 0, W, r);
+        ctx.lineTo(W, H - r);
+        ctx.quadraticCurveTo(W, H, W - r, H);
+        ctx.lineTo(r, H);
+        ctx.quadraticCurveTo(0, H, 0, H - r);
+        ctx.lineTo(0, r);
+        ctx.quadraticCurveTo(0, 0, r, 0);
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL("image/png"));
+      };
+      img.onerror = () => resolve(rawUrl);
+      img.src = rawUrl;
+    });
+
+    const img2 = new Image();
+    const { w, h } = await new Promise<{ w: number; h: number }>((resolve) => {
+      img2.onload = () => resolve({ w: img2.naturalWidth, h: img2.naturalHeight });
+      img2.onerror = () => resolve({ w: 1, h: 1 });
+      img2.src = dataUrl;
     });
     return { dataUrl, naturalW: w, naturalH: h };
   } catch {
