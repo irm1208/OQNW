@@ -1863,5 +1863,66 @@ Pulmonary research investigates VIP as a potent bronchodilator and pulmonary vas
 Immune modulation research has established VIP as a neuropeptide with significant immunosuppressive and anti-inflammatory properties. VIP inhibits the production of pro-inflammatory cytokines (TNF-α, IL-6, IL-12) from macrophages and dendritic cells, promotes regulatory T cell (Treg) generation, and may dampen autoimmune responses.
 
 Circadian rhythm research investigates VIP's role in the suprachiasmatic nucleus (SCN) as a key coupling factor that synchronizes individual circadian oscillators across the SCN neuronal population, coordinating biological time-keeping.`
+  },
+
+  "82": {
+    id: "82",
+    refNumber: "BLEND-05-CI",
+    casNumber: "863288-34-0 / 170851-70-4",
+    formula: "C₁₅₂H₂₅₂N₄₄O₄₂ / C₃₈H₄₉N₉O₅",
+    molecularWeight: "3367.93 g/mol (CJC-1295 No DAC) / 711.87 g/mol (Ipamorelin)",
+    purity: "98%+ HPLC",
+    alsoKnownAs: "Mod GRF 1-29 / Ipamorelin Blend, CJC/Ipa Stack",
+    sequence: "CJC-1295 No DAC: Tyr-DAla-Asp-Ala-Ile-Phe-Thr-Gln-Ser-Tyr-Arg-Lys-Val-Leu-Ala-Gln-Leu-Ser-Ala-Arg-Lys-Leu-Leu-Gln-Asp-Ile-Leu-Ser-Arg-NH₂ | Ipamorelin: Aib-His-D-2-Nal-D-Phe-Lys-NH₂",
+    storage: "Store lyophilised peptide at -20°C. After reconstitution, store at 4°C for up to 2 weeks. Protect from light.",
+    appearance: "White lyophilised powder",
+    solubility: "Soluble in sterile water or bacteriostatic water",
+    halfLife: "CJC-1295 No DAC: ~30 minutes | Ipamorelin: ~2 hours",
+    researchAreas: ["Growth Hormone Research", "Body Composition", "Anti-Aging Research", "Metabolic Research", "Muscle Mass Research"],
+    description: `CJC-1295 No DAC + Ipamorelin 5mg is a co-lyophilised research blend combining two complementary growth hormone secretagogues. CJC-1295 No DAC (Modified GRF 1-29) stimulates pulsatile GH release via GHRH receptor agonism, while Ipamorelin selectively activates GHS-R1a with minimal cortisol or prolactin stimulation. Together they produce synergistic GH pulses that substantially exceed either peptide administered alone.`,
+    longDescription: `What is CJC-1295 No DAC + Ipamorelin?
+
+CJC-1295 No DAC + Ipamorelin is a research-grade peptide blend combining two of the most widely studied growth hormone secretagogues. CJC-1295 No DAC (also known as Modified GRF 1-29) is a tetra-substituted analogue of the first 29 amino acids of growth hormone-releasing hormone (GHRH). Ipamorelin is a selective pentapeptide ghrelin receptor agonist (GHS-R1a). When combined, these two peptides act via distinct and complementary receptor pathways to produce synergistic growth hormone release from the anterior pituitary gland.
+
+Mechanism of Action
+
+CJC-1295 No DAC binds to and activates the GHRH receptor (GHRHR) on pituitary somatotrophs, stimulating the synthesis and pulsatile secretion of growth hormone. Its four amino acid substitutions improve metabolic stability and receptor affinity compared to native GHRH(1-29), while its short half-life of approximately 30 minutes preserves the physiological pulsatile pattern of GH release considered important for avoiding receptor desensitisation.
+
+Ipamorelin acts through an entirely separate mechanism — selective agonism of the ghrelin receptor (GHS-R1a). Crucially, Ipamorelin produces GH release with minimal co-stimulation of cortisol, prolactin, or ACTH, distinguishing it from earlier GHRPs such as GHRP-2 and GHRP-6 which carry significant off-target endocrine activity.
+
+The combination of a GHRH analogue (CJC-1295 No DAC) with a GHRP (Ipamorelin) exploits the natural synergy between the two receptor pathways. Research consistently demonstrates that concurrent administration produces GH pulses substantially greater than additive effects of either peptide alone.
+
+CJC-1295 No DAC + Ipamorelin Research
+
+Synergistic GH secretion is the most extensively documented effect of this combination. Multiple preclinical studies report that co-administration of a GHRH analogue with a GHRP results in GH release that can exceed the sum of individual responses by two- to three-fold or more, attributed to convergent signalling at the somatotroph and inhibition of somatostatin tone.
+
+Body composition research using this combination has documented increases in lean body mass and reductions in adipose tissue in animal models. These effects are mediated through elevated GH and downstream IGF-1. The selective profile of Ipamorelin means these changes occur without significant glucocorticoid elevations that might otherwise counteract anabolic signalling.
+
+Bone density research has explored the combination in models of age-related bone loss. Both GH and IGF-1 are known regulators of osteoblast activity and bone mineralisation, and investigators have documented increases in bone mineral density in preclinical models receiving GH secretagogue combinations.
+
+Anti-ageing and somatopause research uses CJC-1295 No DAC / Ipamorelin to investigate restoration of the blunted GH pulse amplitude associated with ageing (somatopause). In aged rodent models, GH secretagogue treatment has been associated with improvements in body composition, sleep architecture, and metabolic parameters.
+
+Metabolic research has investigated the combination's effects on insulin sensitivity, lipid oxidation, and glucose metabolism. While GH has complex effects on insulin signalling, the pulsatile and physiological nature of GH release produced by this combination appears to have a more favourable metabolic profile compared to continuous supraphysiological GH exposure.
+
+CJC-1295 No DAC + Ipamorelin Components
+
+CJC-1295 No DAC (Modified GRF 1-29):
+Molecular Formula: C₁₅₂H₂₅₂N₄₄O₄₂
+Molecular Weight: 3367.93 g/mol
+CAS Number: 863288-34-0
+Half-Life: ~30 minutes
+Mechanism: GHRH receptor (GHRHR) agonist
+
+Ipamorelin:
+Molecular Formula: C₃₈H₄₉N₉O₅
+Molecular Weight: 711.87 g/mol
+CAS Number: 170851-70-4
+Sequence: Aib-His-D-2-Nal-D-Phe-Lys-NH₂
+Half-Life: ~2 hours
+Mechanism: Ghrelin receptor (GHS-R1a) agonist
+
+Storage & Handling
+
+Both peptides are supplied co-lyophilised as a white powder. Store unreconstituted vials at -20°C away from moisture and light. Following reconstitution with sterile or bacteriostatic water, store at 4°C and use within 2 weeks. As with all research peptides, this product is strictly for in-vitro and laboratory research purposes only and is not approved for human or veterinary use.`
   }
 };
