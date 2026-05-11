@@ -12,6 +12,9 @@ import ProductPage from "@/pages/ProductPage";
 import PeptideResearch from "@/pages/PeptideResearch";
 import StacksPage from "@/pages/StacksPage";
 import ReconstitutionCalculator from "@/pages/ReconstitutionCalculator";
+import TermsPage from "@/pages/TermsPage";
+import ShippingPage from "@/pages/ShippingPage";
+import PrivacyPage from "@/pages/PrivacyPage";
 import CartPage from "@/pages/CartPage";
 import CheckoutPage from "@/pages/CheckoutPage";
 import OrderConfirmation from "@/pages/OrderConfirmation";
@@ -60,15 +63,9 @@ function Router() {
       <Route path="/cart" component={CartPage} />
       <Route path="/checkout" component={CheckoutPage} />
       <Route path="/order-confirmation" component={OrderConfirmation} />
-      <Route path="/terms">
-        <PlaceholderPage title="Terms & Conditions" description="Our terms and conditions of use." />
-      </Route>
-      <Route path="/shipping">
-        <PlaceholderPage title="Shipping Policy" description="Our shipping and handling policy." />
-      </Route>
-      <Route path="/privacy">
-        <PlaceholderPage title="Privacy Policy" description="How we handle your data." />
-      </Route>
+      <Route path="/terms" component={TermsPage} />
+      <Route path="/shipping" component={ShippingPage} />
+      <Route path="/privacy" component={PrivacyPage} />
       <Route component={NotFound} />
     </Switch>
   );
