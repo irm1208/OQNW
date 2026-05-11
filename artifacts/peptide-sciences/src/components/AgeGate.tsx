@@ -90,7 +90,7 @@ export default function AgeGate() {
               src="/omniqure-logo.jpeg"
               alt="OmniQure"
               style={{
-                height: "52px",
+                height: "80px",
                 width: "auto",
                 objectFit: "contain",
                 borderRadius: "10px",
