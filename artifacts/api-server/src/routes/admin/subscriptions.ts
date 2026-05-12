@@ -7,8 +7,8 @@ import { eq, desc, count, and, ne } from "drizzle-orm";
 const router = Router();
 
 function requireAdmin(req: Request, res: Response): boolean {
-  if (!req.session?.adminAuthenticated) {
-    res.status(401).json({ error: "Unauthorized" });
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
