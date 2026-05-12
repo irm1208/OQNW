@@ -99,11 +99,11 @@ router.get("/admin/dashboard/top-products", async (req: Request, res: Response):
     const rows = await db.execute(sql`
       SELECT
         product_id AS "productId",
-        product_name AS "productName",
+        MAX(product_name) AS "productName",
         SUM(quantity)::int AS "totalSold",
         SUM(quantity * price_gbp::numeric)::float AS "totalRevenue"
       FROM order_items
-      GROUP BY product_id, product_name
+      GROUP BY product_id
       ORDER BY "totalSold" DESC
       LIMIT 10
     `);
