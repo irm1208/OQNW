@@ -625,7 +625,14 @@ export default function ProductPage() {
           className="rounded-2xl p-5 mb-8"
           style={{ backgroundColor: "#FFF8F0", border: "1px solid #FED7AA" }}
         >
-          <p className="text-xs font-bold mb-1.5 uppercase tracking-wide" style={{ color: "#C2410C" }}>
+          <div className="flex justify-center mb-3">
+            <img
+              src="/omniqure-logo.jpeg"
+              alt="OmniQure"
+              style={{ height: "40px", width: "auto", objectFit: "contain", borderRadius: "7px" }}
+            />
+          </div>
+          <p className="text-xs font-bold mb-1.5 uppercase tracking-wide text-center" style={{ color: "#C2410C" }}>
             ⚠ Research Use Only Disclaimer
           </p>
           <p className="text-xs leading-relaxed" style={{ color: "#7C2D12" }}>
