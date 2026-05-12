@@ -157,7 +157,7 @@ export default function HomePage() {
             {/* Left — copy */}
             <div className="flex-1 text-white" style={{ zIndex: 1 }}>
               {/* Brand logo badge */}
-              <div className="mb-6">
+              <div className="mb-6 flex justify-center">
                 <img
                   src="/omniqure-logo.jpeg"
                   alt="OmniQure Peptide Research Institute"
