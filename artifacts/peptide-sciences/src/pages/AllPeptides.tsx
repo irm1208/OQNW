@@ -121,6 +121,40 @@ export default function AllPeptides() {
 
       {/* Main content */}
       <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-4 md:py-6">
+
+        {/* Mobile / tablet category strip (hidden on lg where sidebar shows) */}
+        <div className="lg:hidden mb-4 overflow-x-auto scrollbar-none">
+          <div className="mobile-cat-strip">
+            <button
+              onClick={() => handleCategoryChange("All Peptides")}
+              style={{
+                fontSize: "12px", fontWeight: 700, padding: "6px 14px", borderRadius: "20px",
+                border: `1.5px solid ${selectedCategory === "All Peptides" ? "#1B5CB5" : "#E2E8F0"}`,
+                backgroundColor: selectedCategory === "All Peptides" ? "#1B5CB5" : "#fff",
+                color: selectedCategory === "All Peptides" ? "#fff" : "#475569",
+                cursor: "pointer", whiteSpace: "nowrap", transition: "all 0.15s",
+              }}
+            >
+              All Peptides
+            </button>
+            {categoryTabs.map(cat => (
+              <button
+                key={cat.key}
+                onClick={() => handleCategoryChange(cat.key)}
+                style={{
+                  fontSize: "12px", fontWeight: 700, padding: "6px 14px", borderRadius: "20px",
+                  border: `1.5px solid ${selectedCategory === cat.key ? "#1B5CB5" : "#E2E8F0"}`,
+                  backgroundColor: selectedCategory === cat.key ? "#1B5CB5" : "#fff",
+                  color: selectedCategory === cat.key ? "#fff" : "#475569",
+                  cursor: "pointer", whiteSpace: "nowrap", transition: "all 0.15s",
+                }}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="flex gap-6">
           {/* Sidebar — desktop only */}
           <div className="hidden lg:block flex-shrink-0">

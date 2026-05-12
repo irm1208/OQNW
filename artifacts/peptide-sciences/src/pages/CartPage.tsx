@@ -62,49 +62,48 @@ export default function CartPage() {
             {items.map(({ product, quantity }) => (
               <div
                 key={product.id}
-                className="rounded-2xl overflow-hidden flex gap-4 items-center"
+                className="rounded-2xl overflow-hidden"
                 style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 8px rgba(15,23,42,0.04)", padding: "14px 16px" }}
               >
-                {/* Image */}
-                <Link href={`/product/${product.id}`} style={{ textDecoration: "none", flexShrink: 0 }}>
-                  <div
-                    className="rounded-xl overflow-hidden flex items-center justify-center"
-                    style={{ width: "80px", height: "80px", backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5" }}
-                  >
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      style={{ width: "100%", height: "100%", objectFit: "contain", padding: "6px" }}
-                    />
-                  </div>
-                </Link>
-
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <Link href={`/product/${product.id}`} style={{ textDecoration: "none" }}>
-                    <p className="font-bold leading-tight hover:underline" style={{ fontSize: "14px", color: "#0F172A" }}>
-                      {product.name}
-                    </p>
+                {/* Top row: image + info */}
+                <div className="flex gap-3 items-start">
+                  {/* Image */}
+                  <Link href={`/product/${product.id}`} style={{ textDecoration: "none", flexShrink: 0 }}>
+                    <div
+                      className="rounded-xl overflow-hidden flex items-center justify-center"
+                      style={{ width: "72px", height: "72px", backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5" }}
+                    >
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        style={{ width: "100%", height: "100%", objectFit: "contain", padding: "6px" }}
+                      />
+                    </div>
                   </Link>
-                  <p style={{ fontSize: "12px", color: "#64748B", marginTop: "2px" }}>{product.category}</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span
-                      className="text-xs px-2 py-0.5 rounded-full font-medium"
-                      style={{ backgroundColor: "#EEF4FF", color: "#1B5CB5", border: "1px solid #BFDBFE" }}
-                    >
-                      99%+ HPLC
-                    </span>
-                    <span
-                      className="text-xs px-2 py-0.5 rounded-full font-medium"
-                      style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}
-                    >
-                      ✓ In Stock
-                    </span>
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <Link href={`/product/${product.id}`} style={{ textDecoration: "none" }}>
+                      <p className="font-bold leading-tight hover:underline" style={{ fontSize: "13px", color: "#0F172A" }}>
+                        {product.name}
+                      </p>
+                    </Link>
+                    <p style={{ fontSize: "11px", color: "#64748B", marginTop: "2px" }}>{product.category}</p>
+                    <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                      <span className="text-xs px-2 py-0.5 rounded-full font-medium"
+                        style={{ backgroundColor: "#EEF4FF", color: "#1B5CB5", border: "1px solid #BFDBFE" }}>
+                        99%+ HPLC
+                      </span>
+                      <span className="text-xs px-2 py-0.5 rounded-full font-medium"
+                        style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}>
+                        ✓ In Stock
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Quantity stepper */}
-                <div className="flex items-center gap-3 flex-shrink-0">
+                {/* Bottom row: qty stepper + delete */}
+                <div className="flex items-center gap-3 mt-3 flex-shrink-0">
                   <div
                     className="flex items-center rounded-xl overflow-hidden"
                     style={{ border: "1.5px solid #E2E8F0" }}

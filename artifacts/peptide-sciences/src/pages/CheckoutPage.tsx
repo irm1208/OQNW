@@ -279,7 +279,7 @@ export default function CheckoutPage() {
       </div>
 
       <div className="max-w-[1200px] mx-auto px-4 py-8">
-        <div style={{ display: "flex", gap: "28px", alignItems: "flex-start" }}>
+        <div className="flex flex-col lg:flex-row gap-7" style={{ alignItems: "flex-start" }}>
 
           {/* ── FORM AREA ── */}
           <div style={{ flex: 1, minWidth: 0 }}>
@@ -641,7 +641,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* ── ORDER SUMMARY ── */}
-          <div style={{ width: "320px", flexShrink: 0, position: "sticky", top: "24px" }}>
+          <div className="w-full lg:w-[320px] lg:flex-shrink-0 lg:sticky" style={{ top: "24px" }}>
             <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)", overflow: "hidden" }}>
               <div style={{ background: "linear-gradient(90deg, #1240A0, #1B5CB5)", padding: "14px 18px", color: "#fff" }}>
                 <p style={{ fontSize: "14px", fontWeight: 700 }}>Order Summary</p>

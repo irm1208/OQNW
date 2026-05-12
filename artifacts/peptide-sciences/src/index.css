@@ -277,3 +277,54 @@
 .btn-ghost {
   transition: background-color 0.15s ease, color 0.15s ease;
 }
+
+/* ── RESPONSIVE PRODUCT CARD IMAGE HEIGHT ────────────── */
+
+.card-product-img {
+  height: 180px;
+}
+
+@media (min-width: 480px) {
+  .card-product-img { height: 220px; }
+}
+
+@media (min-width: 768px) {
+  .card-product-img { height: 250px; }
+}
+
+@media (min-width: 1024px) {
+  .card-product-img { height: 280px; }
+}
+
+/* ── SCROLLBAR HIDE UTILITY ──────────────────────────── */
+
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── MOBILE CATEGORY STRIP ───────────────────────────── */
+
+.mobile-cat-strip {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 4px;
+  width: max-content;
+}
+
+/* ── TOUCH-FRIENDLY MINIMUM HIT TARGETS ─────────────── */
+
+@media (max-width: 640px) {
+  .product-card:hover {
+    transform: none;
+  }
+}
+
+/* ── RESPONSIVE TYPOGRAPHY ───────────────────────────── */
+
+@media (max-width: 640px) {
+  .hero-h1 { font-size: 32px !important; }
+}

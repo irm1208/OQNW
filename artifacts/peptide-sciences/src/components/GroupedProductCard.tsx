@@ -72,8 +72,8 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
 
       {/* Image — clickable to product page */}
       <div
-        className="relative w-full overflow-hidden"
-        style={{ height: "280px", background: `linear-gradient(160deg, #F8FAFE 0%, ${cat.bg} 100%)`, cursor: "pointer", flexShrink: 0 }}
+        className="card-product-img relative w-full overflow-hidden"
+        style={{ background: `linear-gradient(160deg, #F8FAFE 0%, ${cat.bg} 100%)`, cursor: "pointer", flexShrink: 0 }}
         onClick={goToProduct}
         onMouseEnter={() => setImgHovered(true)}
         onMouseLeave={() => setImgHovered(false)}
