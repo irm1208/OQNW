@@ -6,12 +6,26 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Search, Eye } from "lucide-react";
+import { Loader2, Search, Eye, Download } from "lucide-react";
+import { toast } from "sonner";
+
+async function downloadCsv(url: string, filename: string) {
+  const res = await fetch(url, { credentials: "include" });
+  if (!res.ok) throw new Error("Export failed");
+  const blob = await res.blob();
+  const href = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = href;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(href);
+}
 
 export default function Orders() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<string>("all");
   const [page, setPage] = useState(1);
+  const [exporting, setExporting] = useState(false);
   const limit = 20;
   
   const offset = (page - 1) * limit;
@@ -38,10 +52,31 @@ export default function Orders() {
     }
   };
 
+  async function handleExport() {
+    setExporting(true);
+    try {
+      const params = new URLSearchParams();
+      if (search) params.set("search", search);
+      if (status !== "all") params.set("status", status);
+      const qs = params.toString();
+      const today = new Date().toISOString().slice(0, 10);
+      await downloadCsv(`/api/admin/orders/export${qs ? `?${qs}` : ""}`, `orders-${today}.csv`);
+      toast.success("Orders exported");
+    } catch {
+      toast.error("Export failed");
+    } finally {
+      setExporting(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <h2 className="text-2xl font-bold tracking-tight">Orders</h2>
+        <Button variant="outline" size="sm" onClick={handleExport} disabled={exporting}>
+          {exporting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
+          Export CSV
+        </Button>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 mb-6">

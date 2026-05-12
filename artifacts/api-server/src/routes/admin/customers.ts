@@ -33,6 +33,75 @@ function customerToResponse(c: typeof customersTable.$inferSelect) {
   };
 }
 
+function escapeCsv(val: unknown): string {
+  if (val === null || val === undefined) return "";
+  const str = String(val);
+  if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
+}
+
+function toCsvRow(fields: unknown[]): string {
+  return fields.map(escapeCsv).join(",");
+}
+
+// GET /api/admin/customers/export — full CSV download (honours search filter)
+router.get("/admin/customers/export", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const search = typeof req.query.search === "string" ? req.query.search : undefined;
+
+    const conditions = [];
+    if (search) {
+      conditions.push(
+        or(
+          ilike(customersTable.email, `%${search}%`),
+          ilike(customersTable.firstName, `%${search}%`),
+          ilike(customersTable.lastName, `%${search}%`)
+        )
+      );
+    }
+    const where = conditions.length > 0 ? and(...conditions) : undefined;
+
+    const customers = await db
+      .select()
+      .from(customersTable)
+      .where(where)
+      .orderBy(desc(customersTable.createdAt));
+
+    const header = toCsvRow([
+      "First Name", "Last Name", "Email", "Phone",
+      "City", "Country", "Postcode", "Address",
+      "Total Orders", "Total Spend (£)", "Joined Date",
+    ]);
+
+    const rows = customers.map((c) =>
+      toCsvRow([
+        c.firstName,
+        c.lastName,
+        c.email,
+        c.phone ?? "",
+        c.city ?? "",
+        c.country ?? "",
+        c.postcode ?? "",
+        [c.address1, c.address2].filter(Boolean).join(", "),
+        c.totalOrders,
+        parseFloat(String(c.totalSpendGbp)).toFixed(2),
+        new Date(c.createdAt).toLocaleDateString("en-GB"),
+      ])
+    );
+
+    const filename = `customers-${new Date().toISOString().slice(0, 10)}.csv`;
+    res.setHeader("Content-Type", "text/csv; charset=utf-8");
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+    res.status(200).send([header, ...rows].join("\r\n"));
+  } catch (err) {
+    req.log.error({ err }, "Failed to export customers CSV");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 router.get("/admin/customers", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
   const parsed = ListAdminCustomersQueryParams.safeParse(req.query);

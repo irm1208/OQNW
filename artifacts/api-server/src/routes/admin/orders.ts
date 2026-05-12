@@ -42,6 +42,80 @@ function orderToResponse(o: typeof ordersTable.$inferSelect) {
   };
 }
 
+function escapeCsv(val: unknown): string {
+  if (val === null || val === undefined) return "";
+  const str = String(val);
+  if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
+}
+
+function toCsvRow(fields: unknown[]): string {
+  return fields.map(escapeCsv).join(",");
+}
+
+// GET /api/admin/orders/export  — full CSV download (honours search/status filters)
+router.get("/admin/orders/export", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const status = typeof req.query.status === "string" ? req.query.status : undefined;
+    const search = typeof req.query.search === "string" ? req.query.search : undefined;
+
+    const conditions = [];
+    if (status) conditions.push(eq(ordersTable.status, status));
+    if (search) {
+      conditions.push(
+        or(
+          ilike(ordersTable.customerEmail, `%${search}%`),
+          ilike(ordersTable.customerName, `%${search}%`),
+          ilike(ordersTable.orderNumber, `%${search}%`)
+        )
+      );
+    }
+    const where = conditions.length > 0 ? and(...conditions) : undefined;
+
+    const orders = await db
+      .select()
+      .from(ordersTable)
+      .where(where)
+      .orderBy(desc(ordersTable.createdAt));
+
+    const header = toCsvRow([
+      "Order Number", "Date", "Customer Name", "Customer Email",
+      "Status", "Subtotal (£)", "Shipping (£)", "Total (£)",
+      "Country", "City", "Postcode", "Address", "Tracking Number", "Notes",
+    ]);
+
+    const rows = orders.map((o) =>
+      toCsvRow([
+        o.orderNumber,
+        new Date(o.createdAt).toLocaleDateString("en-GB"),
+        o.customerName,
+        o.customerEmail,
+        o.status,
+        parseFloat(String(o.subtotalGbp)).toFixed(2),
+        parseFloat(String(o.shippingCostGbp)).toFixed(2),
+        parseFloat(String(o.totalGbp)).toFixed(2),
+        o.country ?? "",
+        o.city ?? "",
+        o.postcode ?? "",
+        [o.address1, o.address2].filter(Boolean).join(", "),
+        o.trackingNumber ?? "",
+        o.notes ?? "",
+      ])
+    );
+
+    const filename = `orders-${new Date().toISOString().slice(0, 10)}.csv`;
+    res.setHeader("Content-Type", "text/csv; charset=utf-8");
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+    res.status(200).send([header, ...rows].join("\r\n"));
+  } catch (err) {
+    req.log.error({ err }, "Failed to export orders CSV");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 router.get("/admin/orders", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
   const parsed = ListAdminOrdersQueryParams.safeParse(req.query);

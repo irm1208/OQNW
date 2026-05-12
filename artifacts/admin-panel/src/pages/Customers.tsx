@@ -4,11 +4,25 @@ import { useListAdminCustomers, getListAdminCustomersQueryKey } from "@workspace
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2, Search, Eye } from "lucide-react";
+import { Loader2, Search, Eye, Download } from "lucide-react";
+import { toast } from "sonner";
+
+async function downloadCsv(url: string, filename: string) {
+  const res = await fetch(url, { credentials: "include" });
+  if (!res.ok) throw new Error("Export failed");
+  const blob = await res.blob();
+  const href = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = href;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(href);
+}
 
 export default function Customers() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [exporting, setExporting] = useState(false);
   const limit = 20;
   
   const offset = (page - 1) * limit;
@@ -20,10 +34,30 @@ export default function Customers() {
 
   const formatCurrency = (val: number) => new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(val);
 
+  async function handleExport() {
+    setExporting(true);
+    try {
+      const params = new URLSearchParams();
+      if (search) params.set("search", search);
+      const qs = params.toString();
+      const today = new Date().toISOString().slice(0, 10);
+      await downloadCsv(`/api/admin/customers/export${qs ? `?${qs}` : ""}`, `customers-${today}.csv`);
+      toast.success("Customers exported");
+    } catch {
+      toast.error("Export failed");
+    } finally {
+      setExporting(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <h2 className="text-2xl font-bold tracking-tight">Customers</h2>
+        <Button variant="outline" size="sm" onClick={handleExport} disabled={exporting}>
+          {exporting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
+          Export CSV
+        </Button>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
