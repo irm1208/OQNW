@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Clock } from "lucide-react";
-import { products } from "@/data/products";
+import { useProducts } from "@/context/ProductsContext";
 import { useRecentlyViewed } from "@/context/RecentlyViewedContext";
 import { useCurrency } from "@/context/CurrencyContext";
 
@@ -9,6 +9,7 @@ interface RecentlyViewedProps {
 }
 
 export default function RecentlyViewed({ excludeId }: RecentlyViewedProps) {
+  const { products } = useProducts();
   const { recentIds } = useRecentlyViewed();
   const { formatPrice } = useCurrency();
 

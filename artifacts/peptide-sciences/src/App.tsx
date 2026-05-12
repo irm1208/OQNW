@@ -25,6 +25,7 @@ import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
 import { RecentlyViewedProvider } from "@/context/RecentlyViewedContext";
+import { ProductsProvider } from "@/context/ProductsContext";
 import LiveChat from "@/components/LiveChat";
 import JurisdictionWarning from "@/components/JurisdictionWarning";
 import AgeGate from "@/components/AgeGate";
@@ -86,6 +87,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <ProductsProvider>
         <CurrencyProvider>
           <RecentlyViewedProvider>
           <CartProvider>
@@ -107,6 +109,7 @@ function App() {
           </CartProvider>
           </RecentlyViewedProvider>
         </CurrencyProvider>
+        </ProductsProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

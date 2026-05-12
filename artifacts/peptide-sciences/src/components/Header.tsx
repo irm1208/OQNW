@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Search, User, ShoppingCart, Menu, X, ChevronDown } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
-import { products } from "@/data/products";
+import { useProducts } from "@/context/ProductsContext";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -20,6 +20,7 @@ const rightNavItems = [
 ];
 
 export default function Header() {
+  const { products } = useProducts();
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [open, setOpen] = useState(false);

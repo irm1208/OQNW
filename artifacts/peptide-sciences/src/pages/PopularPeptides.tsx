@@ -1,8 +1,9 @@
 import { useState, useMemo } from "react";
 import { useLocation } from "wouter";
 import GroupedProductCard from "@/components/GroupedProductCard";
-import { products, type Product } from "@/data/products";
+import { type Product } from "@/data/products";
 import { popularProductIds } from "@/data/popularPeptides";
+import { useProducts } from "@/context/ProductsContext";
 import { groupProducts, type GroupedProduct } from "@/data/groupedProducts";
 import {
   Heart, Zap, Scale, Brain, Microscope, Shield, Clock, Sparkles,
@@ -76,6 +77,7 @@ const CATEGORY_ORDER = [
 ];
 
 export default function PopularPeptides() {
+  const { products } = useProducts();
   const [, navigate] = useLocation();
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
@@ -84,7 +86,7 @@ export default function PopularPeptides() {
     return popularProductIds
       .map((e) => map.get(e.id))
       .filter((p): p is Product => p != null);
-  }, []);
+  }, [products]);
 
   const categorisedGroups = useMemo(() => {
     const grouped: Record<string, Product[]> = {};

@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { ShoppingCart, CheckCircle2, ChevronDown, ChevronUp, FlaskConical, Clock, Zap, AlertTriangle, Users, BookOpen } from "lucide-react";
 import { researchStacks, type ResearchStack } from "@/data/stacks";
-import { products, type Product } from "@/data/products";
+import { type Product } from "@/data/products";
+import { useProducts } from "@/context/ProductsContext";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getPurityStr } from "@/utils/productPurity";
@@ -24,6 +25,7 @@ type StackProductItem = {
 };
 
 function StackProductRow({ sp, index }: { sp: StackProductItem; index: number }) {
+  const { products } = useProducts();
   const { addToCart } = useCart();
   const { formatPrice } = useCurrency();
   const [added, setAdded] = useState(false);
@@ -159,6 +161,7 @@ function StackProductRow({ sp, index }: { sp: StackProductItem; index: number })
 }
 
 function StackCard({ stack }: { stack: ResearchStack }) {
+  const { products } = useProducts();
   const [expanded, setExpanded] = useState(false);
   const [addedAll, setAddedAll] = useState(false);
   const { addToCart } = useCart();

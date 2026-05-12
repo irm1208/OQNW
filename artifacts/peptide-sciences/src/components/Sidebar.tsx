@@ -1,5 +1,6 @@
+import { useMemo } from "react";
 import { Link } from "wouter";
-import { products } from "@/data/products";
+import { useProducts } from "@/context/ProductsContext";
 
 interface SidebarProps {
   selectedCategory: string;
@@ -23,14 +24,20 @@ const CATEGORY_ORDER = [
   "Cognitive Peptides",
 ];
 
-const grouped = CATEGORY_ORDER.map((cat) => ({
-  category: cat,
-  items: products
-    .filter((p) => p.category === cat)
-    .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true })),
-})).filter((g) => g.items.length > 0);
-
 export default function Sidebar({ selectedCategory, onCategoryChange }: SidebarProps) {
+  const { products } = useProducts();
+
+  const grouped = useMemo(
+    () =>
+      CATEGORY_ORDER.map((cat) => ({
+        category: cat,
+        items: products
+          .filter((p) => p.category === cat)
+          .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true })),
+      })).filter((g) => g.items.length > 0),
+    [products],
+  );
+
   return (
     <aside className="w-[185px] flex-shrink-0">
       {grouped.map(({ category, items }) => {

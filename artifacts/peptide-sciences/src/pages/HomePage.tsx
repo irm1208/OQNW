@@ -4,9 +4,9 @@ import {
   Dumbbell, Scale, Clock, Zap, Leaf, Flame, Sparkles, Activity,
   TrendingUp, ChevronRight, ArrowRight, CheckCircle
 } from "lucide-react";
-import { products } from "@/data/products";
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
+import { useProducts } from "@/context/ProductsContext";
 
 const categories = [
   { name: "Growth Peptides",      icon: <Dumbbell size={20} />,    color: "#1B5CB5", bg: "#EEF4FF" },
@@ -26,14 +26,6 @@ const categories = [
 ];
 
 const featuredIds = ["3", "7", "11", "43", "15", "31", "64", "71"];
-const _featuredProducts = featuredIds
-  .map(id => products.find(p => p.id === id))
-  .filter(Boolean) as typeof products;
-const _allGroups = groupProducts(products);
-const featuredGroups = _featuredProducts
-  .map(p => _allGroups.find(g => g.baseName === parseName(p.name).baseName))
-  .filter((g): g is NonNullable<typeof g> => g != null)
-  .filter((g, i, arr) => arr.findIndex(x => x.baseName === g.baseName) === i);
 
 const pillars = [
   {
@@ -105,6 +97,19 @@ function MoleculeSVG() {
 }
 
 export default function HomePage() {
+  const { products } = useProducts();
+
+  const featuredGroups = (() => {
+    const featuredProducts = featuredIds
+      .map(id => products.find(p => p.id === id))
+      .filter(Boolean) as typeof products;
+    const allGroups = groupProducts(products);
+    return featuredProducts
+      .map(p => allGroups.find(g => g.baseName === parseName(p.name).baseName))
+      .filter((g): g is NonNullable<typeof g> => g != null)
+      .filter((g, i, arr) => arr.findIndex(x => x.baseName === g.baseName) === i);
+  })();
+
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif" }}>
 

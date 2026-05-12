@@ -1,7 +1,8 @@
 import { Link } from "wouter";
 import { ShoppingCart, CheckCircle2, Users } from "lucide-react";
 import { useState } from "react";
-import { products, type Product } from "@/data/products";
+import { type Product } from "@/data/products";
+import { useProducts } from "@/context/ProductsContext";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getPurityStr } from "@/utils/productPurity";
@@ -28,7 +29,7 @@ function parseBase(name: string): string {
   return match ? match[1].trim() : name;
 }
 
-function getAlsoBought(product: Product): Product[] {
+function getAlsoBought(product: Product, products: Product[]): Product[] {
   const currentBase = parseBase(product.name);
   const complementaryCategories = COMPLEMENTARY[product.category] ?? [];
 
@@ -186,7 +187,8 @@ interface CustomersAlsoBoughtProps {
 }
 
 export default function CustomersAlsoBought({ product }: CustomersAlsoBoughtProps) {
-  const alsoBought = getAlsoBought(product);
+  const { products } = useProducts();
+  const alsoBought = getAlsoBought(product, products);
 
   if (alsoBought.length === 0) return null;
 

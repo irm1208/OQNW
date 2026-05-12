@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "wouter";
-import { products } from "@/data/products";
-import { productDetails } from "@/data/productDetails";
+import { useProducts } from "@/context/ProductsContext";
 import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download } from "lucide-react";
 import { generateCOA } from "@/utils/generateCOA";
 import HplcChart from "@/components/HplcChart";
@@ -20,6 +19,7 @@ function parseBaseName(name: string): { base: string; strength: string } {
 }
 
 export default function ProductPage() {
+  const { products, productDetails } = useProducts();
   const params = useParams<{ id: string }>();
   const product = products.find((p) => p.id === params.id);
   const [quantity, setQuantity] = useState(1);

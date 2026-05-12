@@ -2,8 +2,8 @@ import { useState, useMemo, useEffect } from "react";
 import { useLocation } from "wouter";
 import Sidebar from "@/components/Sidebar";
 import GroupedProductCard from "@/components/GroupedProductCard";
-import { products } from "@/data/products";
 import { groupProducts } from "@/data/groupedProducts";
+import { useProducts } from "@/context/ProductsContext";
 
 const categoryTabs = [
   { label: "Growth Peptides",     key: "Growth Peptides" },
@@ -25,6 +25,7 @@ const categoryTabs = [
 type SortOption = "name" | "price-low" | "price-high" | "bestsellers";
 
 export default function AllPeptides() {
+  const { products } = useProducts();
   const [location, navigate] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("All Peptides");
   const [sortBy, setSortBy] = useState<SortOption>("name");
