@@ -1,24 +1,33 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: OmniQure API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
-  - name: openai
-    description: OpenAI AI chat operations
+  - name: admin-auth
+    description: Admin authentication
+  - name: admin-dashboard
+    description: Admin dashboard stats
+  - name: admin-orders
+    description: Admin order management
+  - name: admin-customers
+    description: Admin customer management
+  - name: admin-products
+    description: Admin product/inventory management
+  - name: admin-discounts
+    description: Admin discount code management
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -26,42 +35,145 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
-  /openai/conversations:
-    get:
-      operationId: listOpenaiConversations
-      tags: [openai]
-      summary: List all conversations
-      responses:
-        "200":
-          description: List of conversations
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/OpenaiConversation"
+
+  # ── AUTH ──────────────────────────────────────────────────────────────────
+  /admin/auth/login:
     post:
-      operationId: createOpenaiConversation
-      tags: [openai]
-      summary: Create a new conversation
+      operationId: adminLogin
+      tags: [admin-auth]
+      summary: Admin login
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateOpenaiConversationBody"
+              $ref: "#/components/schemas/AdminLoginInput"
       responses:
-        "201":
-          description: Created conversation
+        "200":
+          description: Logged in
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OpenaiConversation"
-  /openai/conversations/{id}:
+                $ref: "#/components/schemas/AdminSession"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /admin/auth/logout:
+    post:
+      operationId: adminLogout
+      tags: [admin-auth]
+      summary: Admin logout
+      responses:
+        "204":
+          description: Logged out
+
+  /admin/auth/me:
     get:
-      operationId: getOpenaiConversation
-      tags: [openai]
-      summary: Get conversation with messages
+      operationId: adminMe
+      tags: [admin-auth]
+      summary: Check admin session
+      responses:
+        "200":
+          description: Authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminSession"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  # ── DASHBOARD ──────────────────────────────────────────────────────────────
+  /admin/dashboard:
+    get:
+      operationId: getAdminDashboard
+      tags: [admin-dashboard]
+      summary: Get dashboard summary stats
+      responses:
+        "200":
+          description: Dashboard stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+  /admin/dashboard/revenue:
+    get:
+      operationId: getRevenueChart
+      tags: [admin-dashboard]
+      summary: Get daily revenue for the last 30 days
+      responses:
+        "200":
+          description: Revenue chart data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RevenueDataPoint"
+
+  /admin/dashboard/top-products:
+    get:
+      operationId: getTopProducts
+      tags: [admin-dashboard]
+      summary: Get top selling products
+      responses:
+        "200":
+          description: Top products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TopProduct"
+
+  # ── ORDERS ────────────────────────────────────────────────────────────────
+  /admin/orders:
+    get:
+      operationId: listAdminOrders
+      tags: [admin-orders]
+      summary: List all orders with optional filters
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Paginated list of orders
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderList"
+
+  /admin/orders/{id}:
+    get:
+      operationId: getAdminOrder
+      tags: [admin-orders]
+      summary: Get order detail with items
       parameters:
         - name: id
           in: path
@@ -70,21 +182,258 @@ paths:
             type: integer
       responses:
         "200":
-          description: Conversation with messages
+          description: Order detail
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OpenaiConversationWithMessages"
+                $ref: "#/components/schemas/OrderDetail"
         "404":
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OpenaiError"
+                $ref: "#/components/schemas/ApiError"
+    patch:
+      operationId: updateAdminOrder
+      tags: [admin-orders]
+      summary: Update order status, tracking, or notes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderUpdate"
+      responses:
+        "200":
+          description: Updated order
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  # ── CUSTOMERS ─────────────────────────────────────────────────────────────
+  /admin/customers:
+    get:
+      operationId: listAdminCustomers
+      tags: [admin-customers]
+      summary: List all customers
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Paginated list of customers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerList"
+
+  /admin/customers/{id}:
+    get:
+      operationId: getAdminCustomer
+      tags: [admin-customers]
+      summary: Get customer detail with order history
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Customer detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerDetail"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  # ── PRODUCTS / INVENTORY ──────────────────────────────────────────────────
+  /admin/products:
+    get:
+      operationId: listAdminProducts
+      tags: [admin-products]
+      summary: List all products with stock levels
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: lowStock
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of products with inventory
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminProduct"
+
+  /admin/products/{id}/inventory:
+    patch:
+      operationId: updateProductInventory
+      tags: [admin-products]
+      summary: Update product stock level and threshold
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InventoryUpdate"
+      responses:
+        "200":
+          description: Updated product inventory
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminProduct"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /admin/products/{id}/visibility:
+    patch:
+      operationId: updateProductVisibility
+      tags: [admin-products]
+      summary: Toggle product published/draft status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VisibilityUpdate"
+      responses:
+        "200":
+          description: Updated product visibility
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminProduct"
+
+  # ── DISCOUNT CODES ────────────────────────────────────────────────────────
+  /admin/discounts:
+    get:
+      operationId: listAdminDiscounts
+      tags: [admin-discounts]
+      summary: List all discount codes
+      responses:
+        "200":
+          description: List of discount codes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DiscountCode"
+    post:
+      operationId: createAdminDiscount
+      tags: [admin-discounts]
+      summary: Create a new discount code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DiscountCodeInput"
+      responses:
+        "201":
+          description: Created discount code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiscountCode"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /admin/discounts/{id}:
+    patch:
+      operationId: updateAdminDiscount
+      tags: [admin-discounts]
+      summary: Update a discount code
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DiscountCodePatch"
+      responses:
+        "200":
+          description: Updated discount code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiscountCode"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
     delete:
-      operationId: deleteOpenaiConversation
-      tags: [openai]
-      summary: Delete a conversation
+      operationId: deleteAdminDiscount
+      tags: [admin-discounts]
+      summary: Delete a discount code
       parameters:
         - name: id
           in: path
@@ -99,128 +448,443 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OpenaiError"
-  /openai/conversations/{id}/messages:
-    get:
-      operationId: listOpenaiMessages
-      tags: [openai]
-      summary: List messages in a conversation
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: List of messages
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/OpenaiMessage"
-    post:
-      operationId: sendOpenaiMessage
-      tags: [openai]
-      summary: Send a text message and receive a streaming text response
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SendOpenaiMessageBody"
-      responses:
-        "200":
-          description: SSE stream of assistant text chunks
-          content:
-            text/event-stream: {}
+                $ref: "#/components/schemas/ApiError"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
-    OpenaiConversation:
+
+    ApiError:
       type: object
-      properties:
-        id:
-          type: integer
-        title:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-      required:
-        - id
-        - title
-        - createdAt
-    OpenaiMessage:
-      type: object
-      properties:
-        id:
-          type: integer
-        conversationId:
-          type: integer
-        role:
-          type: string
-        content:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-      required:
-        - id
-        - conversationId
-        - role
-        - content
-        - createdAt
-    CreateOpenaiConversationBody:
-      type: object
-      properties:
-        title:
-          type: string
-      required:
-        - title
-    SendOpenaiMessageBody:
-      type: object
-      properties:
-        content:
-          type: string
-      required:
-        - content
-    OpenaiConversationWithMessages:
-      type: object
-      properties:
-        id:
-          type: integer
-        title:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        messages:
-          type: array
-          items:
-            $ref: "#/components/schemas/OpenaiMessage"
-      required:
-        - id
-        - title
-        - createdAt
-        - messages
-    OpenaiError:
-      type: object
+      required: [error]
       properties:
         error:
           type: string
+
+    # ── AUTH ────────────────────────────────────────────────────────────────
+    AdminLoginInput:
+      type: object
+      required: [password]
+      properties:
+        password:
+          type: string
+
+    AdminSession:
+      type: object
+      required: [authenticated]
+      properties:
+        authenticated:
+          type: boolean
+
+    # ── DASHBOARD ────────────────────────────────────────────────────────────
+    DashboardStats:
+      type: object
       required:
-        - error
+        - totalRevenue
+        - totalOrders
+        - totalCustomers
+        - pendingOrders
+        - processingOrders
+        - shippedOrders
+        - lowStockCount
+        - revenueToday
+        - ordersToday
+      properties:
+        totalRevenue:
+          type: number
+        totalOrders:
+          type: integer
+        totalCustomers:
+          type: integer
+        pendingOrders:
+          type: integer
+        processingOrders:
+          type: integer
+        shippedOrders:
+          type: integer
+        lowStockCount:
+          type: integer
+        revenueToday:
+          type: number
+        ordersToday:
+          type: integer
+
+    RevenueDataPoint:
+      type: object
+      required: [date, revenue, orders]
+      properties:
+        date:
+          type: string
+        revenue:
+          type: number
+        orders:
+          type: integer
+
+    TopProduct:
+      type: object
+      required: [productId, productName, totalSold, totalRevenue]
+      properties:
+        productId:
+          type: integer
+        productName:
+          type: string
+        totalSold:
+          type: integer
+        totalRevenue:
+          type: number
+
+    # ── ORDERS ───────────────────────────────────────────────────────────────
+    Order:
+      type: object
+      required:
+        - id
+        - orderNumber
+        - status
+        - customerEmail
+        - customerName
+        - totalGbp
+        - createdAt
+      properties:
+        id:
+          type: integer
+        orderNumber:
+          type: string
+        status:
+          type: string
+        customerEmail:
+          type: string
+        customerName:
+          type: string
+        customerId:
+          type: ["integer", "null"]
+        subtotalGbp:
+          type: number
+        shippingCostGbp:
+          type: number
+        totalGbp:
+          type: number
+        shippingMethod:
+          type: ["string", "null"]
+        trackingNumber:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        country:
+          type: ["string", "null"]
+        city:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    OrderItem:
+      type: object
+      required: [id, orderId, productId, productName, productCategory, quantity, priceGbp]
+      properties:
+        id:
+          type: integer
+        orderId:
+          type: integer
+        productId:
+          type: integer
+        productName:
+          type: string
+        productCategory:
+          type: string
+        quantity:
+          type: integer
+        priceGbp:
+          type: number
+
+    OrderDetail:
+      type: object
+      required:
+        - id
+        - orderNumber
+        - status
+        - customerEmail
+        - customerName
+        - totalGbp
+        - createdAt
+        - items
+      properties:
+        id:
+          type: integer
+        orderNumber:
+          type: string
+        status:
+          type: string
+        customerEmail:
+          type: string
+        customerName:
+          type: string
+        customerId:
+          type: ["integer", "null"]
+        subtotalGbp:
+          type: number
+        shippingCostGbp:
+          type: number
+        totalGbp:
+          type: number
+        shippingMethod:
+          type: ["string", "null"]
+        trackingNumber:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        address1:
+          type: ["string", "null"]
+        address2:
+          type: ["string", "null"]
+        city:
+          type: ["string", "null"]
+        county:
+          type: ["string", "null"]
+        postcode:
+          type: ["string", "null"]
+        country:
+          type: ["string", "null"]
+        phone:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+
+    OrderList:
+      type: object
+      required: [orders, total]
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: "#/components/schemas/Order"
+        total:
+          type: integer
+
+    OrderUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+        trackingNumber:
+          type: string
+        notes:
+          type: string
+
+    # ── CUSTOMERS ────────────────────────────────────────────────────────────
+    Customer:
+      type: object
+      required:
+        - id
+        - email
+        - firstName
+        - lastName
+        - totalOrders
+        - totalSpendGbp
+        - createdAt
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: ["string", "null"]
+        country:
+          type: ["string", "null"]
+        city:
+          type: ["string", "null"]
+        totalOrders:
+          type: integer
+        totalSpendGbp:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+
+    CustomerDetail:
+      type: object
+      required:
+        - id
+        - email
+        - firstName
+        - lastName
+        - totalOrders
+        - totalSpendGbp
+        - createdAt
+        - orders
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: ["string", "null"]
+        address1:
+          type: ["string", "null"]
+        address2:
+          type: ["string", "null"]
+        city:
+          type: ["string", "null"]
+        county:
+          type: ["string", "null"]
+        postcode:
+          type: ["string", "null"]
+        country:
+          type: ["string", "null"]
+        totalOrders:
+          type: integer
+        totalSpendGbp:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+        orders:
+          type: array
+          items:
+            $ref: "#/components/schemas/Order"
+
+    CustomerList:
+      type: object
+      required: [customers, total]
+      properties:
+        customers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Customer"
+        total:
+          type: integer
+
+    # ── PRODUCTS ─────────────────────────────────────────────────────────────
+    AdminProduct:
+      type: object
+      required:
+        - id
+        - productId
+        - productName
+        - productCategory
+        - stockLevel
+        - lowStockThreshold
+        - isPublished
+        - updatedAt
+      properties:
+        id:
+          type: integer
+        productId:
+          type: integer
+        productName:
+          type: string
+        productCategory:
+          type: string
+        productImage:
+          type: ["string", "null"]
+        stockLevel:
+          type: integer
+        lowStockThreshold:
+          type: integer
+        isPublished:
+          type: boolean
+        updatedAt:
+          type: string
+          format: date-time
+
+    InventoryUpdate:
+      type: object
+      properties:
+        stockLevel:
+          type: integer
+        lowStockThreshold:
+          type: integer
+
+    VisibilityUpdate:
+      type: object
+      required: [isPublished]
+      properties:
+        isPublished:
+          type: boolean
+
+    # ── DISCOUNTS ─────────────────────────────────────────────────────────────
+    DiscountCode:
+      type: object
+      required:
+        - id
+        - code
+        - type
+        - value
+        - usageCount
+        - isActive
+        - createdAt
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        type:
+          type: string
+        value:
+          type: number
+        minSpend:
+          type: ["number", "null"]
+        usageLimit:
+          type: ["integer", "null"]
+        usageCount:
+          type: integer
+        expiresAt:
+          type: ["string", "null"]
+          format: date-time
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+
+    DiscountCodeInput:
+      type: object
+      required: [code, type, value]
+      properties:
+        code:
+          type: string
+        type:
+          type: string
+        value:
+          type: number
+        minSpend:
+          type: number
+        usageLimit:
+          type: integer
+        expiresAt:
+          type: string
+
+    DiscountCodePatch:
+      type: object
+      properties:
+        isActive:
+          type: boolean
+        usageLimit:
+          type: integer
+        expiresAt:
+          type: string
+        minSpend:
+          type: number

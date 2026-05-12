@@ -2,8 +2,37 @@ import { Router, type IRouter } from "express";
 import { db } from "@workspace/db";
 import { conversations, messages } from "@workspace/db/schema";
 import { eq, asc } from "drizzle-orm";
-import { openai } from "@workspace/integrations-openai-ai-server";
-import { CreateOpenaiConversationBody, SendOpenaiMessageBody } from "@workspace/api-zod";
+import type OpenAI from "openai";
+
+type OpenAIClient = { chat: { completions: { create: (...args: unknown[]) => unknown } } };
+
+let cachedOpenai: OpenAIClient | null = null;
+async function getOpenai(): Promise<OpenAIClient | null> {
+  if (cachedOpenai) return cachedOpenai;
+  try {
+    const mod = await import("@workspace/integrations-openai-ai-server");
+    cachedOpenai = mod.openai as unknown as OpenAIClient;
+    return cachedOpenai;
+  } catch {
+    return null;
+  }
+}
+
+const CreateOpenaiConversationBody = {
+  safeParse: (data: unknown) => {
+    if (typeof data !== "object" || data === null) return { success: false as const };
+    const d = data as Record<string, unknown>;
+    return { success: true as const, data: { title: typeof d.title === "string" ? d.title : "New Conversation" } };
+  },
+};
+const SendOpenaiMessageBody = {
+  safeParse: (data: unknown) => {
+    if (typeof data !== "object" || data === null) return { success: false as const };
+    const d = data as Record<string, unknown>;
+    if (typeof d.content !== "string" || d.content.length === 0) return { success: false as const };
+    return { success: true as const, data: { content: d.content } };
+  },
+};
 
 const router: IRouter = Router();
 
@@ -68,6 +97,12 @@ router.post("/conversations/:id/messages", async (req, res) => {
     return;
   }
 
+  const client = await getOpenai();
+  if (!client) {
+    res.status(503).json({ error: "OpenAI integration not configured" });
+    return;
+  }
+
   const history = await db
     .select()
     .from(messages)
@@ -94,8 +129,8 @@ router.post("/conversations/:id/messages", async (req, res) => {
   let fullResponse = "";
 
   try {
-    const stream = await openai.chat.completions.create({
-      model: "gpt-5-mini",
+    const stream = await (client.chat.completions.create as (opts: unknown) => Promise<AsyncIterable<{ choices: Array<{ delta: { content?: string } }> }>>)({
+      model: "gpt-4o-mini",
       max_completion_tokens: 512,
       messages: chatMessages,
       stream: true,
