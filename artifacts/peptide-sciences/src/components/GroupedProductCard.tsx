@@ -73,7 +73,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
       {/* Image — clickable to product page */}
       <div
         className="relative w-full overflow-hidden"
-        style={{ height: "220px", background: `linear-gradient(160deg, #F8FAFE 0%, ${cat.bg} 100%)`, cursor: "pointer", flexShrink: 0 }}
+        style={{ height: "260px", background: `linear-gradient(160deg, #F8FAFE 0%, ${cat.bg} 100%)`, cursor: "pointer", flexShrink: 0 }}
         onClick={goToProduct}
         onMouseEnter={() => setImgHovered(true)}
         onMouseLeave={() => setImgHovered(false)}
@@ -110,14 +110,14 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
       </div>
 
       {/* Info */}
-      <div className="flex flex-col flex-1 p-4" style={{ borderTop: `1px solid ${cat.color}15` }}>
+      <div className="flex flex-col flex-1 p-5" style={{ borderTop: `1px solid ${cat.color}15` }}>
         {/* Category tag */}
         <span style={{
           display: "inline-block", alignSelf: "flex-start",
-          fontSize: "9.5px", fontWeight: 700,
+          fontSize: "10px", fontWeight: 700,
           color: cat.color, backgroundColor: cat.bg,
-          padding: "2px 8px", borderRadius: "6px",
-          letterSpacing: "0.05em", marginBottom: "6px", textTransform: "uppercase",
+          padding: "3px 10px", borderRadius: "6px",
+          letterSpacing: "0.05em", marginBottom: "8px", textTransform: "uppercase",
         }}>
           {group.category}
         </span>
@@ -125,7 +125,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {/* Product name — clickable */}
         <p
           onClick={goToProduct}
-          style={{ fontSize: "15px", fontWeight: 700, color: "#0F172A", lineHeight: 1.3, marginBottom: "10px", cursor: "pointer", transition: "color 0.15s" }}
+          style={{ fontSize: "17px", fontWeight: 700, color: "#0F172A", lineHeight: 1.3, marginBottom: "12px", cursor: "pointer", transition: "color 0.15s" }}
           onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = cat.color}
           onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#0F172A"}
         >
@@ -134,7 +134,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
 
         {/* Strength pills */}
         {group.variants.length > 1 ? (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "10px" }} onClick={stopProp}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "12px" }} onClick={stopProp}>
             {group.variants.map((v, i) => {
               const { strength } = parseName(v.name);
               const active = i === selectedIdx;
@@ -143,8 +143,8 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
                   key={v.id}
                   onClick={e => { stopProp(e); setSelectedIdx(i); setAdded(false); setQty(1); }}
                   style={{
-                    fontSize: "11px", fontWeight: 700,
-                    padding: "3px 9px", borderRadius: "6px",
+                    fontSize: "12px", fontWeight: 700,
+                    padding: "5px 11px", borderRadius: "7px",
                     border: `1.5px solid ${active ? cat.color : "#E2E8F0"}`,
                     backgroundColor: active ? cat.color : "#F8FAFC",
                     color: active ? "#fff" : "#64748B",
@@ -157,19 +157,19 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
             })}
           </div>
         ) : (
-          <p style={{ fontSize: "13px", fontWeight: 700, color: cat.color, marginBottom: "8px" }}>
+          <p style={{ fontSize: "14px", fontWeight: 700, color: cat.color, marginBottom: "10px" }}>
             {parseName(group.variants[0].name).strength}
           </p>
         )}
 
         {/* Price */}
         {selectedVariant.price != null && (
-          <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "4px" }}>
-            <span style={{ fontSize: "21px", fontWeight: 800, color: "#0F172A", lineHeight: 1 }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "6px" }}>
+            <span style={{ fontSize: "24px", fontWeight: 800, color: "#0F172A", lineHeight: 1 }}>
               {formatPrice(selectedVariant.price)}
             </span>
             {group.variants.length > 1 && selectedIdx !== 0 && group.variants[0].price != null && (
-              <span style={{ fontSize: "11px", color: "#94A3B8" }}>
+              <span style={{ fontSize: "12px", color: "#94A3B8" }}>
                 from {formatPrice(group.variants[0].price)}
               </span>
             )}
