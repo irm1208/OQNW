@@ -9,8 +9,8 @@ import {
   discountCodesTable,
   productsInventoryTable,
 } from "@workspace/db";
-import { eq, sql } from "drizzle-orm";
-import { sendOrderConfirmation } from "../lib/email";
+import { eq, sql, inArray } from "drizzle-orm";
+import { sendOrderConfirmation, sendLowStockAlert } from "../lib/email";
 
 const router = Router();
 
