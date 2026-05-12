@@ -8,7 +8,7 @@ import {
   UpdateAdminOrderParams,
   UpdateAdminOrderBody,
 } from "@workspace/api-zod";
-import { eq, ilike, and, desc, count, or } from "drizzle-orm";
+import { eq, ilike, and, desc, count, or, inArray } from "drizzle-orm";
 import { sendOrderConfirmation, sendShippingNotification } from "../../lib/email";
 
 const router = Router();
@@ -112,6 +112,34 @@ router.get("/admin/orders/export", async (req: Request, res: Response): Promise<
     res.status(200).send([header, ...rows].join("\r\n"));
   } catch (err) {
     req.log.error({ err }, "Failed to export orders CSV");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+const VALID_STATUSES = ["pending", "processing", "shipped", "delivered", "cancelled"];
+
+// POST /api/admin/orders/bulk-update — update status on multiple orders at once
+router.post("/admin/orders/bulk-update", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const { ids, status } = req.body as { ids: unknown; status: unknown };
+  if (
+    !Array.isArray(ids) ||
+    ids.length === 0 ||
+    ids.some((id) => typeof id !== "number") ||
+    typeof status !== "string" ||
+    !VALID_STATUSES.includes(status)
+  ) {
+    res.status(400).json({ error: "Invalid payload: ids must be a non-empty number array and status must be valid" });
+    return;
+  }
+  try {
+    await db
+      .update(ordersTable)
+      .set({ status: status as typeof ordersTable.$inferSelect["status"], updatedAt: new Date() })
+      .where(inArray(ordersTable.id, ids as number[]));
+    res.status(200).json({ updated: ids.length });
+  } catch (err) {
+    req.log.error({ err }, "Failed to bulk-update orders");
     res.status(500).json({ error: "Internal server error" });
   }
 });
