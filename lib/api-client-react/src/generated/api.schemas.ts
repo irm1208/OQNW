@@ -228,6 +228,158 @@ export interface DiscountCodePatch {
   minSpend?: number;
 }
 
+export interface CatalogProduct {
+  id: number;
+  slug: string;
+  name: string;
+  category: string;
+  /** @nullable */
+  priceGbp?: number | null;
+  /** @nullable */
+  shortDescription?: string | null;
+  /** @nullable */
+  description?: string | null;
+  /** @nullable */
+  imageUrl?: string | null;
+  /** @nullable */
+  purity?: string | null;
+  /** @nullable */
+  alsoKnownAs?: string | null;
+  /** @nullable */
+  molecularWeight?: string | null;
+  /** @nullable */
+  casNumber?: string | null;
+  /** @nullable */
+  formula?: string | null;
+  /** @nullable */
+  sequence?: string | null;
+  /** @nullable */
+  storage?: string | null;
+  /** @nullable */
+  appearance?: string | null;
+  /** @nullable */
+  solubility?: string | null;
+  /** @nullable */
+  halfLife?: string | null;
+  isPublished: boolean;
+  isFeatured: boolean;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CatalogProductInput {
+  slug: string;
+  name: string;
+  category: string;
+  priceGbp?: number;
+  shortDescription?: string;
+  description?: string;
+  imageUrl?: string;
+  purity?: string;
+  alsoKnownAs?: string;
+  molecularWeight?: string;
+  casNumber?: string;
+  formula?: string;
+  sequence?: string;
+  storage?: string;
+  appearance?: string;
+  solubility?: string;
+  halfLife?: string;
+  isPublished?: boolean;
+  isFeatured?: boolean;
+  sortOrder?: number;
+}
+
+export interface CatalogProductPatch {
+  slug?: string;
+  name?: string;
+  category?: string;
+  /** @nullable */
+  priceGbp?: number | null;
+  /** @nullable */
+  shortDescription?: string | null;
+  /** @nullable */
+  description?: string | null;
+  /** @nullable */
+  imageUrl?: string | null;
+  /** @nullable */
+  purity?: string | null;
+  /** @nullable */
+  alsoKnownAs?: string | null;
+  /** @nullable */
+  molecularWeight?: string | null;
+  /** @nullable */
+  casNumber?: string | null;
+  /** @nullable */
+  formula?: string | null;
+  /** @nullable */
+  sequence?: string | null;
+  /** @nullable */
+  storage?: string | null;
+  /** @nullable */
+  appearance?: string | null;
+  /** @nullable */
+  solubility?: string | null;
+  /** @nullable */
+  halfLife?: string | null;
+  isPublished?: boolean;
+  isFeatured?: boolean;
+  sortOrder?: number;
+}
+
+export interface PublicProduct {
+  id: number;
+  slug: string;
+  name: string;
+  category: string;
+  /** @nullable */
+  priceGbp?: number | null;
+  /** @nullable */
+  shortDescription?: string | null;
+  /** @nullable */
+  imageUrl?: string | null;
+  /** @nullable */
+  purity?: string | null;
+  isFeatured?: boolean;
+}
+
+export interface PublicProductDetail {
+  id: number;
+  slug: string;
+  name: string;
+  category: string;
+  /** @nullable */
+  priceGbp?: number | null;
+  /** @nullable */
+  shortDescription?: string | null;
+  /** @nullable */
+  description?: string | null;
+  /** @nullable */
+  imageUrl?: string | null;
+  /** @nullable */
+  purity?: string | null;
+  /** @nullable */
+  alsoKnownAs?: string | null;
+  /** @nullable */
+  molecularWeight?: string | null;
+  /** @nullable */
+  casNumber?: string | null;
+  /** @nullable */
+  formula?: string | null;
+  /** @nullable */
+  sequence?: string | null;
+  /** @nullable */
+  storage?: string | null;
+  /** @nullable */
+  appearance?: string | null;
+  /** @nullable */
+  solubility?: string | null;
+  /** @nullable */
+  halfLife?: string | null;
+  isFeatured?: boolean;
+}
+
 export type ListAdminOrdersParams = {
   status?: string;
   search?: string;
@@ -244,4 +396,16 @@ export type ListAdminCustomersParams = {
 export type ListAdminProductsParams = {
   search?: string;
   lowStock?: boolean;
+};
+
+export type ListCatalogProductsParams = {
+  search?: string;
+  category?: string;
+  published?: boolean;
+};
+
+export type ListPublicProductsParams = {
+  category?: string;
+  search?: string;
+  featured?: boolean;
 };

@@ -21,6 +21,10 @@ tags:
     description: Admin product/inventory management
   - name: admin-discounts
     description: Admin discount code management
+  - name: admin-catalog
+    description: Admin full product catalog CRUD
+  - name: public-products
+    description: Public storefront product endpoints
 
 paths:
   /healthz:
@@ -443,6 +447,191 @@ paths:
       responses:
         "204":
           description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  # ── CATALOG (admin full CRUD) ────────────────────────────────────────────
+  /admin/catalog:
+    get:
+      operationId: listCatalogProducts
+      tags: [admin-catalog]
+      summary: List all products in the catalog
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: published
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of catalog products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CatalogProduct"
+    post:
+      operationId: createCatalogProduct
+      tags: [admin-catalog]
+      summary: Create a new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CatalogProductInput"
+      responses:
+        "201":
+          description: Created product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogProduct"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "409":
+          description: Slug already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /admin/catalog/{id}:
+    get:
+      operationId: getCatalogProduct
+      tags: [admin-catalog]
+      summary: Get a single catalog product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Catalog product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogProduct"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+    patch:
+      operationId: updateCatalogProduct
+      tags: [admin-catalog]
+      summary: Update a catalog product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CatalogProductPatch"
+      responses:
+        "200":
+          description: Updated product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogProduct"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+    delete:
+      operationId: deleteCatalogProduct
+      tags: [admin-catalog]
+      summary: Delete a catalog product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  # ── PUBLIC PRODUCTS ───────────────────────────────────────────────────────
+  /products:
+    get:
+      operationId: listPublicProducts
+      tags: [public-products]
+      summary: List published products for the storefront
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: featured
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of published products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PublicProduct"
+
+  /products/{slug}:
+    get:
+      operationId: getPublicProduct
+      tags: [public-products]
+      summary: Get a single published product by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicProductDetail"
         "404":
           description: Not found
           content:
@@ -888,3 +1077,213 @@ components:
           type: string
         minSpend:
           type: number
+
+    # ── CATALOG ───────────────────────────────────────────────────────────────
+    CatalogProduct:
+      type: object
+      required: [id, slug, name, category, isPublished, isFeatured, sortOrder, createdAt, updatedAt]
+      properties:
+        id:
+          type: integer
+        slug:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        priceGbp:
+          type: ["number", "null"]
+        shortDescription:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        imageUrl:
+          type: ["string", "null"]
+        purity:
+          type: ["string", "null"]
+        alsoKnownAs:
+          type: ["string", "null"]
+        molecularWeight:
+          type: ["string", "null"]
+        casNumber:
+          type: ["string", "null"]
+        formula:
+          type: ["string", "null"]
+        sequence:
+          type: ["string", "null"]
+        storage:
+          type: ["string", "null"]
+        appearance:
+          type: ["string", "null"]
+        solubility:
+          type: ["string", "null"]
+        halfLife:
+          type: ["string", "null"]
+        isPublished:
+          type: boolean
+        isFeatured:
+          type: boolean
+        sortOrder:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CatalogProductInput:
+      type: object
+      required: [slug, name, category]
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        priceGbp:
+          type: number
+        shortDescription:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        purity:
+          type: string
+        alsoKnownAs:
+          type: string
+        molecularWeight:
+          type: string
+        casNumber:
+          type: string
+        formula:
+          type: string
+        sequence:
+          type: string
+        storage:
+          type: string
+        appearance:
+          type: string
+        solubility:
+          type: string
+        halfLife:
+          type: string
+        isPublished:
+          type: boolean
+        isFeatured:
+          type: boolean
+        sortOrder:
+          type: integer
+
+    CatalogProductPatch:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        priceGbp:
+          type: ["number", "null"]
+        shortDescription:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        imageUrl:
+          type: ["string", "null"]
+        purity:
+          type: ["string", "null"]
+        alsoKnownAs:
+          type: ["string", "null"]
+        molecularWeight:
+          type: ["string", "null"]
+        casNumber:
+          type: ["string", "null"]
+        formula:
+          type: ["string", "null"]
+        sequence:
+          type: ["string", "null"]
+        storage:
+          type: ["string", "null"]
+        appearance:
+          type: ["string", "null"]
+        solubility:
+          type: ["string", "null"]
+        halfLife:
+          type: ["string", "null"]
+        isPublished:
+          type: boolean
+        isFeatured:
+          type: boolean
+        sortOrder:
+          type: integer
+
+    # ── PUBLIC PRODUCTS ───────────────────────────────────────────────────────
+    PublicProduct:
+      type: object
+      required: [id, slug, name, category]
+      properties:
+        id:
+          type: integer
+        slug:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        priceGbp:
+          type: ["number", "null"]
+        shortDescription:
+          type: ["string", "null"]
+        imageUrl:
+          type: ["string", "null"]
+        purity:
+          type: ["string", "null"]
+        isFeatured:
+          type: boolean
+
+    PublicProductDetail:
+      type: object
+      required: [id, slug, name, category]
+      properties:
+        id:
+          type: integer
+        slug:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        priceGbp:
+          type: ["number", "null"]
+        shortDescription:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        imageUrl:
+          type: ["string", "null"]
+        purity:
+          type: ["string", "null"]
+        alsoKnownAs:
+          type: ["string", "null"]
+        molecularWeight:
+          type: ["string", "null"]
+        casNumber:
+          type: ["string", "null"]
+        formula:
+          type: ["string", "null"]
+        sequence:
+          type: ["string", "null"]
+        storage:
+          type: ["string", "null"]
+        appearance:
+          type: ["string", "null"]
+        solubility:
+          type: ["string", "null"]
+        halfLife:
+          type: ["string", "null"]
+        isFeatured:
+          type: boolean

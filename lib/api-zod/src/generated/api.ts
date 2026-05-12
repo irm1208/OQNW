@@ -381,3 +381,216 @@ export const UpdateAdminDiscountResponse = zod.object({
 export const DeleteAdminDiscountParams = zod.object({
   id: zod.coerce.number(),
 });
+
+/**
+ * @summary List all products in the catalog
+ */
+export const ListCatalogProductsQueryParams = zod.object({
+  search: zod.coerce.string().optional(),
+  category: zod.coerce.string().optional(),
+  published: zod.coerce.boolean().optional(),
+});
+
+export const ListCatalogProductsResponseItem = zod.object({
+  id: zod.number(),
+  slug: zod.string(),
+  name: zod.string(),
+  category: zod.string(),
+  priceGbp: zod.number().nullish(),
+  shortDescription: zod.string().nullish(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  purity: zod.string().nullish(),
+  alsoKnownAs: zod.string().nullish(),
+  molecularWeight: zod.string().nullish(),
+  casNumber: zod.string().nullish(),
+  formula: zod.string().nullish(),
+  sequence: zod.string().nullish(),
+  storage: zod.string().nullish(),
+  appearance: zod.string().nullish(),
+  solubility: zod.string().nullish(),
+  halfLife: zod.string().nullish(),
+  isPublished: zod.boolean(),
+  isFeatured: zod.boolean(),
+  sortOrder: zod.number(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+export const ListCatalogProductsResponse = zod.array(
+  ListCatalogProductsResponseItem,
+);
+
+/**
+ * @summary Create a new product
+ */
+export const CreateCatalogProductBody = zod.object({
+  slug: zod.string(),
+  name: zod.string(),
+  category: zod.string(),
+  priceGbp: zod.number().optional(),
+  shortDescription: zod.string().optional(),
+  description: zod.string().optional(),
+  imageUrl: zod.string().optional(),
+  purity: zod.string().optional(),
+  alsoKnownAs: zod.string().optional(),
+  molecularWeight: zod.string().optional(),
+  casNumber: zod.string().optional(),
+  formula: zod.string().optional(),
+  sequence: zod.string().optional(),
+  storage: zod.string().optional(),
+  appearance: zod.string().optional(),
+  solubility: zod.string().optional(),
+  halfLife: zod.string().optional(),
+  isPublished: zod.boolean().optional(),
+  isFeatured: zod.boolean().optional(),
+  sortOrder: zod.number().optional(),
+});
+
+/**
+ * @summary Get a single catalog product
+ */
+export const GetCatalogProductParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetCatalogProductResponse = zod.object({
+  id: zod.number(),
+  slug: zod.string(),
+  name: zod.string(),
+  category: zod.string(),
+  priceGbp: zod.number().nullish(),
+  shortDescription: zod.string().nullish(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  purity: zod.string().nullish(),
+  alsoKnownAs: zod.string().nullish(),
+  molecularWeight: zod.string().nullish(),
+  casNumber: zod.string().nullish(),
+  formula: zod.string().nullish(),
+  sequence: zod.string().nullish(),
+  storage: zod.string().nullish(),
+  appearance: zod.string().nullish(),
+  solubility: zod.string().nullish(),
+  halfLife: zod.string().nullish(),
+  isPublished: zod.boolean(),
+  isFeatured: zod.boolean(),
+  sortOrder: zod.number(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Update a catalog product
+ */
+export const UpdateCatalogProductParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateCatalogProductBody = zod.object({
+  slug: zod.string().optional(),
+  name: zod.string().optional(),
+  category: zod.string().optional(),
+  priceGbp: zod.number().nullish(),
+  shortDescription: zod.string().nullish(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  purity: zod.string().nullish(),
+  alsoKnownAs: zod.string().nullish(),
+  molecularWeight: zod.string().nullish(),
+  casNumber: zod.string().nullish(),
+  formula: zod.string().nullish(),
+  sequence: zod.string().nullish(),
+  storage: zod.string().nullish(),
+  appearance: zod.string().nullish(),
+  solubility: zod.string().nullish(),
+  halfLife: zod.string().nullish(),
+  isPublished: zod.boolean().optional(),
+  isFeatured: zod.boolean().optional(),
+  sortOrder: zod.number().optional(),
+});
+
+export const UpdateCatalogProductResponse = zod.object({
+  id: zod.number(),
+  slug: zod.string(),
+  name: zod.string(),
+  category: zod.string(),
+  priceGbp: zod.number().nullish(),
+  shortDescription: zod.string().nullish(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  purity: zod.string().nullish(),
+  alsoKnownAs: zod.string().nullish(),
+  molecularWeight: zod.string().nullish(),
+  casNumber: zod.string().nullish(),
+  formula: zod.string().nullish(),
+  sequence: zod.string().nullish(),
+  storage: zod.string().nullish(),
+  appearance: zod.string().nullish(),
+  solubility: zod.string().nullish(),
+  halfLife: zod.string().nullish(),
+  isPublished: zod.boolean(),
+  isFeatured: zod.boolean(),
+  sortOrder: zod.number(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Delete a catalog product
+ */
+export const DeleteCatalogProductParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List published products for the storefront
+ */
+export const ListPublicProductsQueryParams = zod.object({
+  category: zod.coerce.string().optional(),
+  search: zod.coerce.string().optional(),
+  featured: zod.coerce.boolean().optional(),
+});
+
+export const ListPublicProductsResponseItem = zod.object({
+  id: zod.number(),
+  slug: zod.string(),
+  name: zod.string(),
+  category: zod.string(),
+  priceGbp: zod.number().nullish(),
+  shortDescription: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  purity: zod.string().nullish(),
+  isFeatured: zod.boolean().optional(),
+});
+export const ListPublicProductsResponse = zod.array(
+  ListPublicProductsResponseItem,
+);
+
+/**
+ * @summary Get a single published product by slug
+ */
+export const GetPublicProductParams = zod.object({
+  slug: zod.coerce.string(),
+});
+
+export const GetPublicProductResponse = zod.object({
+  id: zod.number(),
+  slug: zod.string(),
+  name: zod.string(),
+  category: zod.string(),
+  priceGbp: zod.number().nullish(),
+  shortDescription: zod.string().nullish(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  purity: zod.string().nullish(),
+  alsoKnownAs: zod.string().nullish(),
+  molecularWeight: zod.string().nullish(),
+  casNumber: zod.string().nullish(),
+  formula: zod.string().nullish(),
+  sequence: zod.string().nullish(),
+  storage: zod.string().nullish(),
+  appearance: zod.string().nullish(),
+  solubility: zod.string().nullish(),
+  halfLife: zod.string().nullish(),
+  isFeatured: zod.boolean().optional(),
+});
