@@ -323,13 +323,35 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     }
 
     // Decrement stock for each item (clamp to 0)
+    const decrementedProductIds: number[] = [];
     for (const item of cartItems) {
       if (item.productId) {
         await db
           .update(productsInventoryTable)
           .set({ stockLevel: sql`GREATEST(${productsInventoryTable.stockLevel} - ${item.quantity}, 0)` })
           .where(eq(productsInventoryTable.productId, item.productId));
+        decrementedProductIds.push(item.productId);
       }
+    }
+
+    // Fire low-stock alert for any products now at or below their threshold
+    if (decrementedProductIds.length > 0) {
+      db.select()
+        .from(productsInventoryTable)
+        .where(inArray(productsInventoryTable.productId, decrementedProductIds))
+        .then((rows) => {
+          const lowStock = rows.filter((r) => r.stockLevel <= r.lowStockThreshold);
+          if (lowStock.length > 0) {
+            sendLowStockAlert(
+              lowStock.map((r) => ({
+                productName: r.productName,
+                stockLevel: r.stockLevel,
+                lowStockThreshold: r.lowStockThreshold,
+              }))
+            ).catch(() => {});
+          }
+        })
+        .catch(() => {});
     }
 
     // Send confirmation email (non-blocking — errors are logged but won't fail the response)
