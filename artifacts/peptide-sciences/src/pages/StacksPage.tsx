@@ -2,16 +2,161 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { ShoppingCart, CheckCircle2, ChevronDown, ChevronUp, FlaskConical, Clock, Zap, AlertTriangle, Users, BookOpen } from "lucide-react";
 import { researchStacks, type ResearchStack } from "@/data/stacks";
-import { products } from "@/data/products";
+import { products, type Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getPurityStr } from "@/utils/productPurity";
+import { parseName } from "@/data/groupedProducts";
 
 const DIFFICULTY_COLORS = {
   Beginner:     { bg: "#ECFDF5", color: "#059669", border: "#A7F3D0" },
   Intermediate: { bg: "#EEF4FF", color: "#1B5CB5", border: "#BFDBFE" },
   Advanced:     { bg: "#FFF7ED", color: "#C2410C", border: "#FED7AA" },
 };
+
+type StackProductItem = {
+  productId: string;
+  role: string;
+  suggestedDose: string;
+  frequency: string;
+  notes?: string;
+  product: Product;
+};
+
+function StackProductRow({ sp, index }: { sp: StackProductItem; index: number }) {
+  const { addToCart } = useCart();
+  const { formatPrice } = useCurrency();
+  const [added, setAdded] = useState(false);
+
+  const { baseName } = parseName(sp.product.name);
+  const allVariants = products
+    .filter(p => parseName(p.name).baseName === baseName && !/\(Vial [B-Z]\)/i.test(p.name))
+    .sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+
+  const defaultIdx = Math.max(0, allVariants.findIndex(v => v.id === sp.product.id));
+  const [selectedIdx, setSelectedIdx] = useState(defaultIdx);
+  const selected = allVariants[selectedIdx] ?? sp.product;
+
+  const handleAdd = () => {
+    addToCart(selected, 1);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1800);
+  };
+
+  return (
+    <div
+      className="rounded-xl"
+      style={{ backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5", padding: "12px" }}
+    >
+      <div className="flex gap-3 items-start">
+        {/* Thumbnail */}
+        <div
+          className="rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center"
+          style={{ width: "60px", height: "60px", background: "linear-gradient(145deg, #EBF2FF, #F4F8FF)" }}
+        >
+          <img
+            src={selected.image}
+            alt={selected.name}
+            style={{ width: "100%", height: "100%", objectFit: "contain", padding: "6px" }}
+            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+          />
+        </div>
+
+        {/* Info */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2 mb-0.5">
+            <div>
+              <span className="text-xs font-bold mr-2" style={{ color: "#94A3B8" }}>#{index + 1}</span>
+              <Link
+                href={`/product/${selected.id}`}
+                className="font-bold hover:underline"
+                style={{ fontSize: "13px", color: "#0F172A", textDecoration: "none" }}
+              >
+                {baseName}
+              </Link>
+            </div>
+            {selected.price != null && (
+              <span className="font-bold flex-shrink-0" style={{ fontSize: "14px", color: "#1240A0" }}>
+                {formatPrice(selected.price)}
+              </span>
+            )}
+          </div>
+
+          <p className="text-xs font-semibold mb-1" style={{ color: "#1B5CB5" }}>{sp.role}</p>
+
+          <div className="flex flex-wrap gap-3 mb-1">
+            <span className="text-xs" style={{ color: "#64748B" }}>
+              <strong style={{ color: "#475569" }}>Dose:</strong> {sp.suggestedDose}
+            </span>
+            <span className="text-xs" style={{ color: "#64748B" }}>
+              <strong style={{ color: "#475569" }}>Freq:</strong> {sp.frequency}
+            </span>
+          </div>
+
+          {sp.notes && (
+            <p className="text-xs mb-1" style={{ color: "#94A3B8", lineHeight: 1.5 }}>{sp.notes}</p>
+          )}
+
+          <div className="flex items-center gap-1.5">
+            <span
+              className="text-xs px-2 py-0.5 rounded-full font-bold"
+              style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}
+            >
+              {getPurityStr(selected.id)} HPLC
+            </span>
+            <span
+              className="text-xs px-2 py-0.5 rounded-full font-medium"
+              style={{ backgroundColor: "#EEF4FF", color: "#1B5CB5", border: "1px solid #BFDBFE" }}
+            >
+              {selected.category}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Strength pills + Add to Cart */}
+      <div className="flex items-center gap-2 mt-3 flex-wrap">
+        {allVariants.length > 1 && (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", flex: 1 }}>
+            {allVariants.map((v, i) => {
+              const { strength } = parseName(v.name);
+              const active = i === selectedIdx;
+              return (
+                <button
+                  key={v.id}
+                  onClick={() => setSelectedIdx(i)}
+                  style={{
+                    fontSize: "11px", fontWeight: 700,
+                    padding: "3px 9px", borderRadius: "6px",
+                    border: `1.5px solid ${active ? "#1240A0" : "#E2E8F0"}`,
+                    backgroundColor: active ? "#1240A0" : "#F8FAFC",
+                    color: active ? "#fff" : "#64748B",
+                    cursor: "pointer", transition: "all 0.15s",
+                  }}
+                >
+                  {strength}
+                </button>
+              );
+            })}
+          </div>
+        )}
+        <button
+          onClick={handleAdd}
+          style={{
+            display: "flex", alignItems: "center", gap: "5px",
+            fontSize: "12px", fontWeight: 700,
+            padding: "5px 12px", borderRadius: "8px",
+            backgroundColor: added ? "#059669" : "#1240A0",
+            color: "#fff", border: "none", cursor: "pointer",
+            transition: "background-color 0.2s", flexShrink: 0,
+          }}
+        >
+          {added ? <><CheckCircle2 size={12} /> Added</> : <><ShoppingCart size={12} /> Add</>}
+        </button>
+      </div>
+    </div>
+  );
+}
 
 function StackCard({ stack }: { stack: ResearchStack }) {
   const [expanded, setExpanded] = useState(false);
@@ -108,76 +253,10 @@ function StackCard({ stack }: { stack: ResearchStack }) {
           ))}
         </div>
 
-        {/* Product cards */}
+        {/* Product rows */}
         <div className="flex flex-col gap-3 mb-4">
           {stackProducts.map((sp, i) => (
-            <div
-              key={sp.productId}
-              className="rounded-xl flex gap-3 items-start"
-              style={{ backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5", padding: "12px" }}
-            >
-              <div
-                className="rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center"
-                style={{ width: "60px", height: "60px", background: "linear-gradient(145deg, #EBF2FF, #F4F8FF)" }}
-              >
-                <img
-                  src={sp.product.image}
-                  alt={sp.product.name}
-                  style={{ width: "100%", height: "100%", objectFit: "contain", padding: "6px" }}
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-2 mb-1">
-                  <div>
-                    <span
-                      className="text-xs font-bold mr-2"
-                      style={{ color: "#94A3B8" }}
-                    >
-                      #{i + 1}
-                    </span>
-                    <Link
-                      href={`/product/${sp.product.id}`}
-                      className="font-bold hover:underline"
-                      style={{ fontSize: "13px", color: "#0F172A", textDecoration: "none" }}
-                    >
-                      {sp.product.name}
-                    </Link>
-                  </div>
-                  {sp.product.price != null && (
-                    <span className="font-bold flex-shrink-0" style={{ fontSize: "14px", color: "#1240A0" }}>
-                      {formatPrice(sp.product.price)}
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs font-semibold mb-1" style={{ color: "#1B5CB5" }}>{sp.role}</p>
-                <div className="flex flex-wrap gap-3 mb-1">
-                  <span className="text-xs" style={{ color: "#64748B" }}>
-                    <strong style={{ color: "#475569" }}>Dose:</strong> {sp.suggestedDose}
-                  </span>
-                  <span className="text-xs" style={{ color: "#64748B" }}>
-                    <strong style={{ color: "#475569" }}>Freq:</strong> {sp.frequency}
-                  </span>
-                </div>
-                {sp.notes && (
-                  <p className="text-xs" style={{ color: "#94A3B8", lineHeight: 1.5 }}>{sp.notes}</p>
-                )}
-                <div className="flex items-center gap-1.5 mt-1">
-                  <span
-                    className="text-xs px-2 py-0.5 rounded-full font-bold"
-                    style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}
-                  >
-                    {getPurityStr(sp.product.id)} HPLC
-                  </span>
-                  <span
-                    className="text-xs px-2 py-0.5 rounded-full font-medium"
-                    style={{ backgroundColor: "#EEF4FF", color: "#1B5CB5", border: "1px solid #BFDBFE" }}
-                  >
-                    {sp.product.category}
-                  </span>
-                </div>
-              </div>
-            </div>
+            <StackProductRow key={sp.productId} sp={sp} index={i} />
           ))}
         </div>
 
