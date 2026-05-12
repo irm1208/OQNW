@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Loader2, ArrowLeft, Package, User, MapPin, Truck, RotateCcw, Plus } from "lucide-react";
+import { Loader2, ArrowLeft, Package, User, MapPin, Truck, RotateCcw, Plus, Send } from "lucide-react";
 import { toast } from "sonner";
 
 type ReturnRecord = {
@@ -61,6 +61,7 @@ export default function OrderDetail() {
   const [notes, setNotes] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
+  const [sendingTracking, setSendingTracking] = useState(false);
   const [logReturnOpen, setLogReturnOpen] = useState(false);
   const [returnReason, setReturnReason] = useState("");
   const [submittingReturn, setSubmittingReturn] = useState(false);
@@ -131,6 +132,22 @@ export default function OrderDetail() {
       },
       onError: () => toast.error("Failed to save details")
     });
+  };
+
+  const handleSendTracking = async () => {
+    setSendingTracking(true);
+    try {
+      const res = await fetch(`/api/admin/orders/${orderId}/send-tracking`, {
+        method: "POST",
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Failed");
+      toast.success("Tracking notification sent to customer");
+    } catch {
+      toast.error("Failed to send tracking notification");
+    } finally {
+      setSendingTracking(false);
+    }
   };
 
   if (isLoading) {
@@ -237,10 +254,21 @@ export default function OrderDetail() {
                 />
               </div>
 
-              <Button onClick={handleSaveDetails} disabled={updateOrder.isPending}>
-                {updateOrder.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-                Save Fulfillment Details
-              </Button>
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={handleSaveDetails} disabled={updateOrder.isPending}>
+                  {updateOrder.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                  Save Fulfillment Details
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={handleSendTracking}
+                  disabled={sendingTracking || !trackingNumber}
+                  title={!trackingNumber ? "Add a tracking number first" : "Send shipping notification email to customer"}
+                >
+                  {sendingTracking ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Send className="w-4 h-4 mr-2" />}
+                  Send Tracking Email
+                </Button>
+              </div>
             </CardContent>
           </Card>
           <Card>

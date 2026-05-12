@@ -23,6 +23,7 @@ import stockAlertsRouter from "./stock-alerts";
 import adminAbandonedCartsRouter from "./admin/abandonedCarts";
 import subscriptionsRouter from "./subscriptions";
 import adminSubscriptionsRouter from "./admin/subscriptions";
+import adminEmailLogsRouter from "./admin/emailLogs";
 
 const router: IRouter = Router();
 
@@ -50,5 +51,6 @@ router.use(stockAlertsRouter);
 router.use(adminAbandonedCartsRouter);
 router.use(subscriptionsRouter);
 router.use(adminSubscriptionsRouter);
+router.use(adminEmailLogsRouter);
 
 export default router;

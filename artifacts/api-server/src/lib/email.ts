@@ -1,11 +1,35 @@
 import { Resend } from "resend";
 import { logger } from "./logger";
+import { db } from "@workspace/db";
+import { emailLogsTable } from "@workspace/db";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM_ADDRESS = process.env.EMAIL_FROM ?? "OmniQure <orders@omniqure.com>";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? null;
 const SITE_URL = process.env.SITE_URL ?? "https://omniqure.com";
+
+async function logEmail(opts: {
+  toEmail: string;
+  subject: string;
+  type: string;
+  status: "sent" | "failed";
+  resendId?: string | null;
+  orderNumber?: string | null;
+}): Promise<void> {
+  try {
+    await db.insert(emailLogsTable).values({
+      toEmail: opts.toEmail,
+      subject: opts.subject,
+      type: opts.type,
+      status: opts.status,
+      resendId: opts.resendId ?? null,
+      orderNumber: opts.orderNumber ?? null,
+    });
+  } catch (err) {
+    logger.warn({ err }, "Failed to write email log entry");
+  }
+}
 
 export interface OrderItem {
   productName: string;
@@ -119,6 +143,7 @@ function totalsBlock(order: OrderEmailData): string {
 }
 
 export async function sendOrderConfirmation(order: OrderEmailData): Promise<void> {
+  const subject = `Order Confirmed — ${order.orderNumber}`;
   const body = `
     <h2 style="margin:0 0 4px;font-size:22px;color:#0f172a;">Order Confirmed</h2>
     <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Thank you, ${order.customerName}. We've received your order and will process it shortly.</p>
@@ -148,19 +173,22 @@ export async function sendOrderConfirmation(order: OrderEmailData): Promise<void
   `;
 
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: FROM_ADDRESS,
       to: order.customerEmail,
-      subject: `Order Confirmed — ${order.orderNumber}`,
+      subject,
       html: baseTemplate("Order Confirmation", body),
     });
     logger.info({ orderNumber: order.orderNumber, to: order.customerEmail }, "Order confirmation email sent");
+    await logEmail({ toEmail: order.customerEmail, subject, type: "order_confirmation", status: "sent", resendId: result.data?.id, orderNumber: order.orderNumber });
   } catch (err) {
     logger.error({ err, orderNumber: order.orderNumber }, "Failed to send order confirmation email");
+    await logEmail({ toEmail: order.customerEmail, subject, type: "order_confirmation", status: "failed", orderNumber: order.orderNumber });
   }
 }
 
 export async function sendShippingNotification(order: OrderEmailData): Promise<void> {
+  const subject = `Your Order Has Shipped — ${order.orderNumber}`;
   const trackingSection = order.trackingNumber ? `
     <div style="background:#f0fdf4;border-radius:6px;padding:16px 20px;margin:20px 0;border-left:4px solid #22c55e;">
       <p style="margin:0 0 4px;font-size:12px;color:#166534;font-weight:600;">TRACKING NUMBER</p>
@@ -186,15 +214,17 @@ export async function sendShippingNotification(order: OrderEmailData): Promise<v
   `;
 
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: FROM_ADDRESS,
       to: order.customerEmail,
-      subject: `Your Order Has Shipped — ${order.orderNumber}`,
+      subject,
       html: baseTemplate("Order Shipped", body),
     });
     logger.info({ orderNumber: order.orderNumber, to: order.customerEmail }, "Shipping notification email sent");
+    await logEmail({ toEmail: order.customerEmail, subject, type: "shipping", status: "sent", resendId: result.data?.id, orderNumber: order.orderNumber });
   } catch (err) {
     logger.error({ err, orderNumber: order.orderNumber }, "Failed to send shipping notification email");
+    await logEmail({ toEmail: order.customerEmail, subject, type: "shipping", status: "failed", orderNumber: order.orderNumber });
   }
 }
 
@@ -203,6 +233,7 @@ export async function sendPasswordReset(opts: {
   customerName: string;
   resetUrl: string;
 }): Promise<void> {
+  const subject = "Reset your OmniQure password";
   const body = `
     <h2 style="margin:0 0 4px;font-size:22px;color:#0f172a;">Reset your password</h2>
     <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Hi ${opts.customerName}, we received a request to reset the password for your OmniQure account.</p>
@@ -225,15 +256,17 @@ export async function sendPasswordReset(opts: {
   `;
 
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: FROM_ADDRESS,
       to: opts.customerEmail,
-      subject: "Reset your OmniQure password",
+      subject,
       html: baseTemplate("Password Reset", body),
     });
     logger.info({ to: opts.customerEmail }, "Password reset email sent");
+    await logEmail({ toEmail: opts.customerEmail, subject, type: "password_reset", status: "sent", resendId: result.data?.id });
   } catch (err) {
     logger.error({ err }, "Failed to send password reset email");
+    await logEmail({ toEmail: opts.customerEmail, subject, type: "password_reset", status: "failed" });
   }
 }
 
@@ -273,6 +306,7 @@ export async function sendReturnStatusUpdate(opts: {
   };
 
   const cfg = statusConfig[opts.status];
+  const subject = `${cfg.title} — ${opts.orderNumber}`;
 
   const refundBlock = opts.status === "refunded" && opts.refundAmountGbp != null
     ? `<div style="background:${cfg.bg};border-radius:6px;padding:16px 20px;margin:20px 0;border-left:4px solid ${cfg.border};">
@@ -308,15 +342,17 @@ export async function sendReturnStatusUpdate(opts: {
   `;
 
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: FROM_ADDRESS,
       to: opts.customerEmail,
-      subject: `${cfg.title} — ${opts.orderNumber}`,
+      subject,
       html: baseTemplate(cfg.title, body),
     });
     logger.info({ orderNumber: opts.orderNumber, status: opts.status, to: opts.customerEmail }, "Return status email sent");
+    await logEmail({ toEmail: opts.customerEmail, subject, type: "return_update", status: "sent", resendId: result.data?.id, orderNumber: opts.orderNumber });
   } catch (err) {
     logger.error({ err, orderNumber: opts.orderNumber }, "Failed to send return status email");
+    await logEmail({ toEmail: opts.customerEmail, subject, type: "return_update", status: "failed", orderNumber: opts.orderNumber });
   }
 }
 
@@ -326,6 +362,7 @@ export async function sendLowStockAlert(products: Array<{ productName: string; s
     return;
   }
 
+  const subject = `Low Stock Alert — ${products.length} product${products.length > 1 ? "s" : ""} need attention`;
   const rows = products.map(p => `
     <tr>
       <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#1e293b;">${p.productName}</td>
@@ -352,15 +389,17 @@ export async function sendLowStockAlert(products: Array<{ productName: string; s
   `;
 
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: FROM_ADDRESS,
       to: ADMIN_EMAIL,
-      subject: `Low Stock Alert — ${products.length} product${products.length > 1 ? "s" : ""} need attention`,
+      subject,
       html: baseTemplate("Low Stock Alert", body),
     });
     logger.info({ count: products.length }, "Low stock alert email sent");
+    await logEmail({ toEmail: ADMIN_EMAIL, subject, type: "low_stock", status: "sent", resendId: result.data?.id });
   } catch (err) {
     logger.error({ err }, "Failed to send low stock alert email");
+    await logEmail({ toEmail: ADMIN_EMAIL, subject, type: "low_stock", status: "failed" });
   }
 }
 
@@ -379,6 +418,7 @@ export interface AbandonedCartEmailData {
 }
 
 export async function sendAbandonedCartEmail(data: AbandonedCartEmailData): Promise<void> {
+  const subject = `${data.customerName.split(" ")[0]}, you left items in your cart`;
   const rows = data.items.map(item => `
     <tr>
       <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#1e293b;">
@@ -415,15 +455,17 @@ export async function sendAbandonedCartEmail(data: AbandonedCartEmailData): Prom
   `;
 
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: FROM_ADDRESS,
       to: data.customerEmail,
-      subject: `${data.customerName.split(" ")[0]}, you left items in your cart`,
+      subject,
       html: baseTemplate("Your cart is waiting", body),
     });
     logger.info({ email: data.customerEmail }, "Abandoned cart email sent");
+    await logEmail({ toEmail: data.customerEmail, subject, type: "abandoned_cart", status: "sent", resendId: result.data?.id });
   } catch (err) {
     logger.error({ err }, "Failed to send abandoned cart email");
+    await logEmail({ toEmail: data.customerEmail, subject, type: "abandoned_cart", status: "failed" });
   }
 }
 
@@ -434,6 +476,7 @@ export interface BackInStockEmailData {
 }
 
 export async function sendBackInStockEmail(data: BackInStockEmailData): Promise<void> {
+  const subject = `Back in stock: ${data.productName}`;
   const body = `
     <h2 style="margin:0 0 8px;font-size:22px;color:#0f172a;">Back in Stock</h2>
     <p style="margin:0 0 20px;font-size:14px;color:#64748b;">Hi ${data.customerName}, you asked us to let you know — <strong style="color:#0f172a;">${data.productName}</strong> is back in stock.</p>
@@ -451,15 +494,17 @@ export async function sendBackInStockEmail(data: BackInStockEmailData): Promise<
   `;
 
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: FROM_ADDRESS,
       to: data.customerEmail,
-      subject: `Back in stock: ${data.productName}`,
+      subject,
       html: baseTemplate("Back in Stock", body),
     });
     logger.info({ email: data.customerEmail, product: data.productName }, "Back in stock email sent");
+    await logEmail({ toEmail: data.customerEmail, subject, type: "back_in_stock", status: "sent", resendId: result.data?.id });
   } catch (err) {
     logger.error({ err }, "Failed to send back-in-stock email");
+    await logEmail({ toEmail: data.customerEmail, subject, type: "back_in_stock", status: "failed" });
   }
 }
 
@@ -477,6 +522,7 @@ export interface ReviewRequestEmailData {
 
 export async function sendReviewRequestEmail(data: ReviewRequestEmailData): Promise<void> {
   const siteUrl = SITE_URL;
+  const subject = `${data.customerName.split(" ")[0]}, how was your order ${data.orderNumber}?`;
   const rows = data.items.map(item => `
     <tr>
       <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#1e293b;">${item.productName}</td>
@@ -501,15 +547,17 @@ export async function sendReviewRequestEmail(data: ReviewRequestEmailData): Prom
   `;
 
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: FROM_ADDRESS,
       to: data.customerEmail,
-      subject: `${data.customerName.split(" ")[0]}, how was your order ${data.orderNumber}?`,
+      subject,
       html: baseTemplate("Share Your Research Experience", body),
     });
     logger.info({ email: data.customerEmail, orderNumber: data.orderNumber }, "Review request email sent");
+    await logEmail({ toEmail: data.customerEmail, subject, type: "review_request", status: "sent", resendId: result.data?.id, orderNumber: data.orderNumber });
   } catch (err) {
     logger.error({ err }, "Failed to send review request email");
+    await logEmail({ toEmail: data.customerEmail, subject, type: "review_request", status: "failed", orderNumber: data.orderNumber });
   }
 }
 
@@ -520,28 +568,37 @@ export async function sendReferralReward(data: {
   discountCode: string;
   creditGbp: number;
 }): Promise<void> {
+  const subject = `You've earned a referral reward — ${data.discountCode}`;
   const body = `
     <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#0f172a;">You've earned a referral reward!</h2>
-    <p style="margin:0 0 20px;font-size:15px;color:#475569;line-height:1.6;">Hi ${data.referrerName.split(" ")[0]}, great news — your friend <strong>${data.refereeName}</strong> just placed their first order at OmniQure. As a thank-you for the referral, we're giving you <strong>${formatGbp(data.creditGbp)} store credit</strong>.</p>
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:20px 24px;margin-bottom:20px;text-align:center;">
-      <p style="margin:0 0 6px;font-size:12px;font-weight:600;color:#15803d;letter-spacing:0.08em;text-transform:uppercase;">Your discount code</p>
-      <p style="margin:0;font-size:28px;font-weight:800;color:#0f172a;letter-spacing:0.08em;font-family:monospace;">${data.discountCode}</p>
-      <p style="margin:6px 0 0;font-size:13px;color:#475569;">Enter this at checkout to save ${formatGbp(data.creditGbp)}</p>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">
+      Hi ${data.referrerName}, <strong>${data.refereeName}</strong> just placed their first order using your referral link. As a thank you, here's your reward:
+    </p>
+
+    <div style="background:#f0fdf4;border-radius:8px;padding:20px 24px;margin-bottom:24px;border-left:4px solid #22c55e;">
+      <p style="margin:0 0 4px;font-size:12px;color:#166534;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Your Discount Code</p>
+      <p style="margin:0;font-size:28px;font-weight:800;color:#15803d;letter-spacing:2px;">${data.discountCode}</p>
+      <p style="margin:8px 0 0;font-size:13px;color:#166534;">Worth £${data.creditGbp.toFixed(2)} off your next order</p>
     </div>
-    <div style="text-align:center;margin:0 0 24px;">
-      <a href="${SITE_URL}/all-peptides" style="display:inline-block;background:#0f172a;color:#ffffff;text-decoration:none;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;">Shop Now</a>
+
+    <div style="margin-top:4px;">
+      <a href="${SITE_URL}/all-peptides" style="display:inline-block;background:#0f172a;color:#ffffff;padding:13px 30px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600;">Shop Now</a>
     </div>
-    <p style="margin:0;font-size:12px;color:#94a3b8;">This code is valid for 90 days and can be used on any order. Keep sharing your referral link to earn more rewards.</p>
+
+    <p style="margin:24px 0 0;font-size:12px;color:#94a3b8;">Discount codes are single-use and valid for 90 days. Keep sharing your referral link to earn more rewards!</p>
   `;
+
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: FROM_ADDRESS,
       to: data.referrerEmail,
-      subject: `You earned ${formatGbp(data.creditGbp)} — ${data.refereeName} just ordered!`,
+      subject,
       html: baseTemplate("Referral Reward", body),
     });
-    logger.info({ email: data.referrerEmail }, "Referral reward email sent");
+    logger.info({ to: data.referrerEmail, code: data.discountCode }, "Referral reward email sent");
+    await logEmail({ toEmail: data.referrerEmail, subject, type: "referral_reward", status: "sent", resendId: result.data?.id });
   } catch (err) {
     logger.error({ err }, "Failed to send referral reward email");
+    await logEmail({ toEmail: data.referrerEmail, subject, type: "referral_reward", status: "failed" });
   }
 }
