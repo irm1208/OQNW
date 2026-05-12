@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, User, ShoppingCart, Menu, X, ChevronDown } from "lucide-react";
+import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
+import { useCustomerAuth } from "@/context/CustomerAuthContext";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -26,13 +27,16 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(-1);
   const [currencyOpen, setCurrencyOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [location, navigate] = useLocation();
   const { totalItems } = useCart();
   const { currency, setCurrency } = useCurrency();
+  const { customer, loadingAuth, signOut } = useCustomerAuth();
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const currencyRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -48,6 +52,16 @@ export default function Header() {
     }
     document.addEventListener("mousedown", handleClickOutsideCurrency);
     return () => document.removeEventListener("mousedown", handleClickOutsideCurrency);
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutsideUser(e: MouseEvent) {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutsideUser);
+    return () => document.removeEventListener("mousedown", handleClickOutsideUser);
   }, []);
 
   const q = searchQuery.trim().toLowerCase();
@@ -68,6 +82,9 @@ export default function Header() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Close user menu on route change
+  useEffect(() => { setUserMenuOpen(false); }, [location]);
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (!open || results.length === 0) {
@@ -106,6 +123,12 @@ export default function Header() {
     navigate(`/product/${id}`);
     setSearchQuery("");
     setOpen(false);
+  }
+
+  async function handleSignOut() {
+    setUserMenuOpen(false);
+    await signOut();
+    navigate("/");
   }
 
   const SearchBar = (
@@ -163,14 +186,9 @@ export default function Header() {
         boxShadow: scrolled ? "0 4px 32px rgba(8,28,80,0.35)" : "0 2px 16px rgba(8,28,80,0.25)",
         transition: "background 0.3s ease, box-shadow 0.3s ease",
       }}>
-        {/*
-          Flex-wrap layout:
-          Mobile  → Row 1: logo | [currency+user+cart+hamburger]   Row 2: search (full width)
-          sm+     → Single row: logo | search(flex-1) | currency+user+cart | hamburger(lg:hidden)
-        */}
         <div className="max-w-[1280px] mx-auto px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-2">
 
-          {/* Logo — always far left, order-1 */}
+          {/* Logo */}
           <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none" }}>
             <img
               src="/omniqure-logo.jpeg"
@@ -179,7 +197,7 @@ export default function Header() {
             />
           </Link>
 
-          {/* Search — full-width second row on mobile, inline flex-1 on sm+ */}
+          {/* Search */}
           <div
             className="order-3 sm:order-2 w-full sm:w-auto sm:flex-1 sm:max-w-[520px]"
             ref={containerRef}
@@ -187,7 +205,6 @@ export default function Header() {
           >
             {SearchBar}
 
-            {/* Dropdown results */}
             {open && results.length > 0 && (
               <div style={{
                 position: "absolute", top: "100%", left: 0, right: 0,
@@ -236,7 +253,6 @@ export default function Header() {
               </div>
             )}
 
-            {/* No results */}
             {open && q.length >= 1 && results.length === 0 && (
               <div style={{
                 position: "absolute", top: "100%", left: 0, right: 0,
@@ -249,7 +265,7 @@ export default function Header() {
             )}
           </div>
 
-          {/* Right group: currency + user + cart + hamburger — order-2 on mobile (stays row 1) */}
+          {/* Right group */}
           <div className="order-2 sm:order-3 ml-auto flex items-center gap-2 sm:gap-4 flex-shrink-0">
 
             {/* Currency selector */}
@@ -319,17 +335,110 @@ export default function Header() {
               )}
             </div>
 
-            {/* Sign in */}
-            <Link
-              href="/sign-in"
-              className="flex items-center gap-1.5 text-sm font-medium transition-colors"
-              style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.85)"}
-            >
-              <User size={18} />
-              <span className="hidden sm:inline">Sign in</span>
-            </Link>
+            {/* User: sign-in or logged-in menu */}
+            {!loadingAuth && customer ? (
+              <div ref={userMenuRef} style={{ position: "relative", flexShrink: 0 }}>
+                <button
+                  onClick={() => setUserMenuOpen(o => !o)}
+                  className="flex items-center gap-1.5 text-sm font-medium transition-colors"
+                  style={{
+                    background: "none", border: "none", cursor: "pointer",
+                    color: "rgba(255,255,255,0.9)", padding: 0,
+                  }}
+                >
+                  <div style={{
+                    width: "28px", height: "28px", borderRadius: "50%",
+                    background: "rgba(255,255,255,0.2)", border: "1.5px solid rgba(255,255,255,0.35)",
+                    display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                  }}>
+                    <User size={14} color="#fff" />
+                  </div>
+                  <span className="hidden sm:inline" style={{ fontSize: "13px", fontWeight: 600, maxWidth: "100px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {customer.firstName}
+                  </span>
+                  <ChevronDown size={12} style={{ color: "rgba(255,255,255,0.6)" }} className="hidden sm:block" />
+                </button>
+
+                {userMenuOpen && (
+                  <div style={{
+                    position: "absolute", top: "calc(100% + 8px)", right: 0,
+                    backgroundColor: "#fff", border: "1.5px solid #E2E8F0", borderRadius: "14px",
+                    boxShadow: "0 12px 32px rgba(0,0,0,0.14)", zIndex: 300,
+                    minWidth: "200px", overflow: "hidden",
+                  }}>
+                    {/* User info */}
+                    <div style={{ padding: "14px 16px", borderBottom: "1px solid #F1F5F9" }}>
+                      <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A", marginBottom: "2px" }}>
+                        {customer.firstName} {customer.lastName}
+                      </p>
+                      <p style={{ fontSize: "12px", color: "#94A3B8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {customer.email}
+                      </p>
+                    </div>
+                    {/* Menu items */}
+                    <div style={{ padding: "6px" }}>
+                      <Link
+                        href="/account"
+                        onClick={() => setUserMenuOpen(false)}
+                        style={{
+                          display: "flex", alignItems: "center", gap: "10px",
+                          padding: "9px 10px", borderRadius: "8px",
+                          color: "#374151", textDecoration: "none",
+                          fontSize: "13px", fontWeight: 500,
+                        }}
+                        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC")}
+                        onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
+                      >
+                        <Package size={15} style={{ color: "#64748B" }} />
+                        My Account
+                      </Link>
+                      <Link
+                        href="/track-order"
+                        onClick={() => setUserMenuOpen(false)}
+                        style={{
+                          display: "flex", alignItems: "center", gap: "10px",
+                          padding: "9px 10px", borderRadius: "8px",
+                          color: "#374151", textDecoration: "none",
+                          fontSize: "13px", fontWeight: 500,
+                        }}
+                        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC")}
+                        onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
+                      >
+                        <ShoppingCart size={15} style={{ color: "#64748B" }} />
+                        Track Order
+                      </Link>
+                    </div>
+                    <div style={{ borderTop: "1px solid #F1F5F9", padding: "6px" }}>
+                      <button
+                        onClick={handleSignOut}
+                        style={{
+                          display: "flex", alignItems: "center", gap: "10px",
+                          width: "100%", padding: "9px 10px", borderRadius: "8px",
+                          border: "none", backgroundColor: "transparent", cursor: "pointer",
+                          color: "#DC2626", fontSize: "13px", fontWeight: 500, textAlign: "left",
+                        }}
+                        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#FEF2F2")}
+                        onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
+                      >
+                        <LogOut size={15} />
+                        Sign out
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                href="/sign-in"
+                className="flex items-center gap-1.5 text-sm font-medium transition-colors"
+                style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.85)"}
+              >
+                <User size={18} />
+                <span className="hidden sm:inline">{loadingAuth ? "" : "Sign in"}</span>
+              </Link>
+            )}
 
             {/* Cart */}
             <Link
@@ -425,6 +534,25 @@ export default function Header() {
               {item.label}
             </Link>
           ))}
+          {customer && (
+            <>
+              <Link
+                href="/account"
+                className="block px-4 py-3.5 text-sm font-medium border-b border-gray-50"
+                style={{ color: "#1B5CB5", textDecoration: "none" }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                My Account
+              </Link>
+              <button
+                onClick={() => { setMobileMenuOpen(false); void handleSignOut(); }}
+                className="block w-full text-left px-4 py-3.5 text-sm font-medium border-b border-gray-50"
+                style={{ color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}
+              >
+                Sign out
+              </button>
+            </>
+          )}
         </div>
       )}
     </header>

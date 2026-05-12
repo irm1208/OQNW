@@ -22,6 +22,7 @@ import OrderConfirmation from "@/pages/OrderConfirmation";
 import TrackOrderPage from "@/pages/TrackOrderPage";
 import SignIn from "@/pages/SignIn";
 import Register from "@/pages/Register";
+import AccountPage from "@/pages/AccountPage";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
@@ -74,6 +75,7 @@ function Router() {
       </Route>
       <Route path="/sign-in" component={SignIn} />
       <Route path="/register" component={Register} />
+      <Route path="/account" component={AccountPage} />
       <Route path="/cart" component={CartPage} />
       <Route path="/checkout" component={CheckoutPage} />
       <Route path="/order-confirmation" component={OrderConfirmation} />
