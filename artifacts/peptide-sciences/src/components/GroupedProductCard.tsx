@@ -125,9 +125,9 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {/* Product name — clickable */}
         <p
           onClick={goToProduct}
-          style={{ fontSize: "18px", fontWeight: 700, color: "#0F172A", lineHeight: 1.3, marginBottom: "10px", cursor: "pointer", transition: "color 0.15s" }}
-          onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = cat.color}
-          onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#0F172A"}
+          style={{ fontSize: "18px", fontWeight: 700, color: "#1240A0", lineHeight: 1.3, marginBottom: "10px", cursor: "pointer", transition: "color 0.15s" }}
+          onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#1B5CB5"}
+          onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#1240A0"}
         >
           {group.baseName}
         </p>
@@ -165,7 +165,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {/* Price */}
         {selectedVariant.price != null && (
           <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "6px" }}>
-            <span style={{ fontSize: "25px", fontWeight: 800, color: "#0F172A", lineHeight: 1 }}>
+            <span style={{ fontSize: "25px", fontWeight: 800, color: "#059669", lineHeight: 1 }}>
               {formatPrice(selectedVariant.price)}
             </span>
             {group.variants.length > 1 && selectedIdx !== 0 && group.variants[0].price != null && (
