@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { ShoppingCart, Eye, CheckCircle2 } from "lucide-react";
+import { ShoppingCart, Eye, CheckCircle2, Heart } from "lucide-react";
 import type { GroupedProduct } from "@/data/groupedProducts";
 import { parseName } from "@/data/groupedProducts";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
+import { useWishlist } from "@/context/WishlistContext";
 
 const BLUE = { color: "#1B5CB5", bg: "#EEF4FF", gradient: "linear-gradient(90deg, #1240A0, #2563EB)" };
 
@@ -38,8 +39,10 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [imgHovered, setImgHovered] = useState(false);
+  const { toggle: toggleWishlist, has: inWishlist } = useWishlist();
 
   const selectedVariant = group.variants[selectedIdx];
+  const productIdInt = parseInt(String(selectedVariant?.id ?? group.variants[0]?.id), 10);
   const cat = CATEGORY_COLORS[group.category] ?? BLUE;
   const productUrl = `/product/${selectedVariant.id}`;
 
@@ -78,6 +81,28 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         onMouseEnter={() => setImgHovered(true)}
         onMouseLeave={() => setImgHovered(false)}
       >
+        {/* Wishlist heart */}
+        <button
+          onClick={(e) => { e.stopPropagation(); void toggleWishlist(productIdInt); }}
+          title={inWishlist(productIdInt) ? "Remove from wishlist" : "Save to wishlist"}
+          style={{
+            position: "absolute", top: "8px", right: "8px", zIndex: 10,
+            width: "30px", height: "30px", borderRadius: "50%",
+            backgroundColor: inWishlist(productIdInt) ? "#FEF2F2" : "rgba(255,255,255,0.85)",
+            border: inWishlist(productIdInt) ? "1.5px solid #FECACA" : "1.5px solid #E2E8F0",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            cursor: "pointer", transition: "all 0.15s", boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+          }}
+        >
+          <Heart
+            size={14}
+            style={{
+              color: inWishlist(productIdInt) ? "#DC2626" : "#94A3B8",
+              fill: inWishlist(productIdInt) ? "#DC2626" : "none",
+              transition: "all 0.15s",
+            }}
+          />
+        </button>
         <img
           src={group.image}
           alt={group.baseName}

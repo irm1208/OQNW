@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useParams } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
-import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, User } from "lucide-react";
+import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, User, Heart } from "lucide-react";
 import { generateCOA } from "@/utils/generateCOA";
 import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
@@ -12,6 +12,7 @@ import { useRecentlyViewed } from "@/context/RecentlyViewedContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import CustomersAlsoBought from "@/components/CustomersAlsoBought";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
+import { useWishlist } from "@/context/WishlistContext";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -70,6 +71,7 @@ export default function ProductPage() {
   const { trackView } = useRecentlyViewed();
   const { customer } = useCustomerAuth();
   const { formatPrice } = useCurrency();
+  const { toggle: toggleWishlist, has: inWishlist } = useWishlist();
 
   // Reviews state
   const [reviewsData, setReviewsData] = useState<ReviewsData | null>(null);
@@ -484,6 +486,27 @@ export default function ProductPage() {
                 </button>
               </div>
             </div>
+
+            {/* Wishlist */}
+            {(() => {
+              const productIdInt = parseInt(String(product.id), 10);
+              const saved = inWishlist(productIdInt);
+              return (
+                <button
+                  onClick={() => void toggleWishlist(productIdInt)}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl font-semibold mb-3"
+                  style={{
+                    height: "44px", fontSize: "14px", cursor: "pointer", transition: "all 0.15s",
+                    backgroundColor: saved ? "#FEF2F2" : "#F8FAFC",
+                    border: saved ? "1.5px solid #FECACA" : "1.5px solid #E2E8F0",
+                    color: saved ? "#DC2626" : "#64748B",
+                  }}
+                >
+                  <Heart size={15} style={{ fill: saved ? "#DC2626" : "none", transition: "fill 0.15s" }} />
+                  {saved ? "Saved to Wishlist" : "Save to Wishlist"}
+                </button>
+              );
+            })()}
 
             {/* COA Download */}
             <div

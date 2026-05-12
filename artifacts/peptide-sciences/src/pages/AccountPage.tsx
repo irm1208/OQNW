@@ -3,10 +3,12 @@ import { Link, useLocation } from "wouter";
 import {
   User, Package, Settings, LogOut, ChevronRight,
   ShoppingBag, Clock, Shield, Eye, EyeOff, CheckCircle2,
-  AlertCircle, Truck, Zap, FlaskConical,
+  AlertCircle, Truck, Zap, FlaskConical, Heart,
 } from "lucide-react";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useCurrency } from "@/context/CurrencyContext";
+import { useWishlist } from "@/context/WishlistContext";
+import { useProducts } from "@/context/ProductsContext";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -73,8 +75,10 @@ export default function AccountPage() {
   const [, navigate] = useLocation();
   const { customer, loadingAuth, signOut } = useCustomerAuth();
   const { formatPrice } = useCurrency();
+  const { wishlistIds, toggle: toggleWishlist, has: inWishlist } = useWishlist();
+  const { products } = useProducts();
 
-  const [activeTab, setActiveTab] = useState<"orders" | "profile">("orders");
+  const [activeTab, setActiveTab] = useState<"orders" | "profile" | "wishlist">("orders");
 
   // Orders
   const [orders, setOrders] = useState<AccountOrder[]>([]);
@@ -249,11 +253,12 @@ export default function AccountPage() {
             <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", overflow: "hidden" }}>
               {[
                 { key: "orders", label: "My Orders", icon: <Package size={16} /> },
+                { key: "wishlist", label: "Wishlist", icon: <Heart size={16} /> },
                 { key: "profile", label: "Profile Settings", icon: <Settings size={16} /> },
               ].map((item) => (
                 <button
                   key={item.key}
-                  onClick={() => setActiveTab(item.key as "orders" | "profile")}
+                  onClick={() => setActiveTab(item.key as "orders" | "profile" | "wishlist")}
                   style={{
                     display: "flex", alignItems: "center", gap: "10px",
                     width: "100%", padding: "13px 16px", border: "none",
@@ -451,6 +456,89 @@ export default function AccountPage() {
                 )}
               </div>
             )}
+
+            {/* ── WISHLIST TAB ── */}
+            {activeTab === "wishlist" && (() => {
+              const wishlistProducts = products.filter((p) => inWishlist(parseInt(String(p.id), 10)));
+              return (
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
+                    <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A" }}>Wishlist</h2>
+                    <span style={{ fontSize: "13px", color: "#64748B" }}>{wishlistIds.size} saved item{wishlistIds.size !== 1 ? "s" : ""}</span>
+                  </div>
+                  {wishlistProducts.length === 0 ? (
+                    <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", padding: "60px 24px", textAlign: "center" }}>
+                      <Heart size={36} style={{ margin: "0 auto 16px", color: "#CBD5E1" }} />
+                      <p style={{ fontSize: "16px", fontWeight: 700, color: "#0F172A", marginBottom: "8px" }}>No saved items yet</p>
+                      <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>
+                        Hit the heart icon on any product to save it here.
+                      </p>
+                      <Link
+                        href="/all-peptides"
+                        style={{
+                          display: "inline-block", padding: "10px 24px", borderRadius: "10px",
+                          background: "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                          color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none",
+                        }}
+                      >
+                        Browse peptides
+                      </Link>
+                    </div>
+                  ) : (
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "12px" }}>
+                      {wishlistProducts.map((product) => {
+                        const productIdInt = parseInt(String(product.id), 10);
+                        return (
+                          <div
+                            key={product.id}
+                            style={{
+                              backgroundColor: "#fff", borderRadius: "16px",
+                              border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
+                              overflow: "hidden", position: "relative",
+                            }}
+                          >
+                            <button
+                              onClick={() => void toggleWishlist(productIdInt)}
+                              title="Remove from wishlist"
+                              style={{
+                                position: "absolute", top: "8px", right: "8px", zIndex: 10,
+                                width: "28px", height: "28px", borderRadius: "50%",
+                                backgroundColor: "#FEF2F2", border: "1.5px solid #FECACA",
+                                display: "flex", alignItems: "center", justifyContent: "center",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <Heart size={13} style={{ color: "#DC2626", fill: "#DC2626" }} />
+                            </button>
+                            <Link href={`/product/${product.id}`} style={{ textDecoration: "none", display: "block" }}>
+                              <div style={{ height: "100px", backgroundColor: "#F0F5FF", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <img
+                                  src={`/images/products/${product.image ?? "default.png"}`}
+                                  alt={product.name}
+                                  style={{ maxHeight: "80px", maxWidth: "80px", objectFit: "contain" }}
+                                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = "0.15"; }}
+                                />
+                              </div>
+                              <div style={{ padding: "12px" }}>
+                                <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A", marginBottom: "4px", lineHeight: 1.3 }}>
+                                  {product.name}
+                                </p>
+                                <p style={{ fontSize: "12px", color: "#64748B", marginBottom: "6px" }}>{product.category}</p>
+                                {product.price != null && (
+                                  <p style={{ fontSize: "13px", fontWeight: 800, color: "#1240A0" }}>
+                                    {formatPrice(product.price)}
+                                  </p>
+                                )}
+                              </div>
+                            </Link>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* ── PROFILE TAB ── */}
             {activeTab === "profile" && (

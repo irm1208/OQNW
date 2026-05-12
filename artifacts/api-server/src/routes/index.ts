@@ -15,6 +15,7 @@ import customerAuthRouter from "./auth";
 import customerAccountRouter from "./account";
 import publicReviewsRouter from "./reviews";
 import adminReviewsRouter from "./admin/reviews";
+import wishlistRouter from "./wishlist";
 
 const router: IRouter = Router();
 
@@ -34,5 +35,6 @@ router.use(customerAuthRouter);
 router.use(customerAccountRouter);
 router.use(publicReviewsRouter);
 router.use(adminReviewsRouter);
+router.use(wishlistRouter);
 
 export default router;

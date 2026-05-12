@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Package, Truck, CheckCircle2, Clock, XCircle, FlaskConical, ChevronRight } from "lucide-react";
 import { Link } from "wouter";
 
@@ -34,6 +34,26 @@ export default function TrackOrderPage() {
   const [result, setResult] = useState<TrackResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [searched, setSearched] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get("q") ?? params.get("number");
+    if (q) {
+      const val = q.trim().toUpperCase();
+      setInput(val);
+      setLoading(true);
+      setSearched(true);
+      fetch(apiUrl(`orders/track?number=${encodeURIComponent(val)}`))
+        .then((res) => {
+          if (res.status === 404) { setError("No order found with that reference number."); return null; }
+          if (!res.ok) throw new Error("Server error");
+          return res.json() as Promise<TrackResult>;
+        })
+        .then((data) => { if (data) setResult(data); })
+        .catch(() => setError("Something went wrong. Please try again."))
+        .finally(() => setLoading(false));
+    }
+  }, []);
 
   async function handleTrack(e?: React.FormEvent) {
     if (e) e.preventDefault();

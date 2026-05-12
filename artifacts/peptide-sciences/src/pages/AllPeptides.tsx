@@ -29,20 +29,35 @@ export default function AllPeptides() {
   const [location, navigate] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("All Peptides");
   const [sortBy, setSortBy] = useState<SortOption>("name");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const cat = params.get("category");
-    if (cat) {
-      setSelectedCategory(decodeURIComponent(cat));
-    } else {
+    const q = params.get("search");
+    if (q) {
+      setSearchQuery(decodeURIComponent(q));
       setSelectedCategory("All Peptides");
+    } else {
+      setSearchQuery("");
+      if (cat) {
+        setSelectedCategory(decodeURIComponent(cat));
+      } else {
+        setSelectedCategory("All Peptides");
+      }
     }
   }, [location]);
 
   const groupedProducts = useMemo(() => {
     let result = [...products];
-    if (selectedCategory !== "All Peptides") {
+    if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      result = result.filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          (p.category ?? "").toLowerCase().includes(q)
+      );
+    } else if (selectedCategory !== "All Peptides") {
       result = result.filter((p) => p.category === selectedCategory);
     }
     const groups = groupProducts(result);
@@ -99,10 +114,14 @@ export default function AllPeptides() {
             OmniQure · Research Catalogue
           </p>
           <h1 style={{ fontSize: "clamp(22px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: "9px" }}>
-            {selectedCategory === "All Peptides" ? "All Research Peptides" : selectedCategory}
+            {searchQuery.trim()
+              ? `Search: "${searchQuery.trim()}"`
+              : selectedCategory === "All Peptides" ? "All Research Peptides" : selectedCategory}
           </h1>
           <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", maxWidth: "540px", lineHeight: 1.65, marginBottom: "16px" }}>
-            {selectedCategory === "All Peptides"
+            {searchQuery.trim()
+              ? `Showing results for "${searchQuery.trim()}" — HPLC-verified at 99%+ purity.`
+              : selectedCategory === "All Peptides"
               ? "81 HPLC-verified compounds — each backed by full COA and ESI-TOF mass spectrometry data."
               : `Precision peptides for ${selectedCategory.toLowerCase()} research, each HPLC-verified at 99%+ purity with full COA documentation.`}
           </p>
@@ -175,10 +194,23 @@ export default function AllPeptides() {
           <div className="flex-1 min-w-0">
             <div className="mb-4">
               <h1 className="font-bold" style={{ fontSize: "20px", color: "#0F172A" }}>
-                {selectedCategory === "All Peptides" ? "All Peptides" : selectedCategory}
+                {searchQuery.trim()
+                  ? `Search results for "${searchQuery.trim()}"`
+                  : selectedCategory === "All Peptides" ? "All Peptides" : selectedCategory}
               </h1>
               <p className="hidden sm:block" style={{ fontSize: "13px", color: "#64748B", marginTop: "3px" }}>
-                Research peptides available direct from our online catalogue.
+                {searchQuery.trim()
+                  ? <span>
+                      Showing {groupedProducts.length} result{groupedProducts.length !== 1 ? "s" : ""}
+                      {" · "}
+                      <button
+                        onClick={() => { setSearchQuery(""); window.history.pushState(null, "", window.location.pathname); }}
+                        style={{ background: "none", border: "none", color: "#1B5CB5", cursor: "pointer", fontSize: "13px", fontWeight: 600, padding: 0 }}
+                      >
+                        Clear search
+                      </button>
+                    </span>
+                  : "Research peptides available direct from our online catalogue."}
               </p>
             </div>
 
@@ -223,7 +255,17 @@ export default function AllPeptides() {
 
             {groupedProducts.length === 0 && (
               <div className="text-center py-20" style={{ color: "#94A3B8" }}>
-                No products found in this category.
+                {searchQuery.trim()
+                  ? <>
+                      <p className="mb-2">No products found for "{searchQuery.trim()}".</p>
+                      <button
+                        onClick={() => { setSearchQuery(""); window.history.pushState(null, "", window.location.pathname); }}
+                        style={{ background: "none", border: "none", color: "#1B5CB5", cursor: "pointer", fontSize: "14px", fontWeight: 600 }}
+                      >
+                        Clear search
+                      </button>
+                    </>
+                  : "No products found in this category."}
               </div>
             )}
           </div>

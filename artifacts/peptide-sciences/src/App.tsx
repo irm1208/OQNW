@@ -29,6 +29,7 @@ import { CurrencyProvider } from "@/context/CurrencyContext";
 import { RecentlyViewedProvider } from "@/context/RecentlyViewedContext";
 import { ProductsProvider } from "@/context/ProductsContext";
 import { CustomerAuthProvider } from "@/context/CustomerAuthContext";
+import { WishlistProvider } from "@/context/WishlistContext";
 import LiveChat from "@/components/LiveChat";
 import JurisdictionWarning from "@/components/JurisdictionWarning";
 import AgeGate from "@/components/AgeGate";
@@ -96,6 +97,7 @@ function App() {
         <CustomerAuthProvider>
         <CurrencyProvider>
           <RecentlyViewedProvider>
+          <WishlistProvider>
           <CartProvider>
             <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
               <ScrollToTop />
@@ -113,6 +115,7 @@ function App() {
             </WouterRouter>
             <Toaster />
           </CartProvider>
+          </WishlistProvider>
           </RecentlyViewedProvider>
         </CurrencyProvider>
         </CustomerAuthProvider>
