@@ -5,6 +5,7 @@ export type Product = {
   price: number | null;
   image: string;
   category: string;
+  stockLevel?: number;
 };
 
 export const products: Product[] = [

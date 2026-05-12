@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { ShoppingCart, Eye, CheckCircle2 } from "lucide-react";
+import { ShoppingCart, Eye, CheckCircle2, AlertTriangle } from "lucide-react";
 import type { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -33,6 +33,8 @@ const CATEGORY_COLORS: Record<string, { color: string; bg: string; gradient: str
   "Cognitive Peptides": BLUE,
 };
 
+const LOW_STOCK_THRESHOLD = 5;
+
 interface ProductCardProps {
   product: Product;
 }
@@ -48,12 +50,17 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const cat = CATEGORY_COLORS[product.category] ?? { color: "#1B5CB5", bg: "#EEF4FF", gradient: "linear-gradient(90deg, #1B5CB5, #2563EB)" };
 
+  const stockLevel = product.stockLevel;
+  const isOutOfStock = stockLevel !== undefined && stockLevel === 0;
+  const isLowStock = stockLevel !== undefined && stockLevel > 0 && stockLevel <= LOW_STOCK_THRESHOLD;
+
   const stop = (e: React.MouseEvent) => e.preventDefault();
   const dec = (e: React.MouseEvent) => { stop(e); setQty(q => Math.max(1, q - 1)); };
-  const inc = (e: React.MouseEvent) => { stop(e); setQty(q => q + 1); };
+  const inc = (e: React.MouseEvent) => { stop(e); if (!isOutOfStock) setQty(q => q + 1); };
 
   const handleAddToCart = (e: React.MouseEvent) => {
     stop(e);
+    if (isOutOfStock) return;
     addToCart(product, qty);
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
@@ -63,7 +70,11 @@ export default function ProductCard({ product }: ProductCardProps) {
     <Link href={productUrl} style={{ textDecoration: "none", display: "block", height: "100%" }}>
       <div
         className="product-card flex flex-col bg-white rounded-2xl overflow-hidden cursor-pointer h-full"
-        style={{ border: "1.5px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.06)" }}
+        style={{
+          border: "1.5px solid #E8EDF5",
+          boxShadow: "0 2px 12px rgba(15,23,42,0.06)",
+          opacity: isOutOfStock ? 0.75 : 1,
+        }}
         onMouseEnter={e => {
           (e.currentTarget as HTMLElement).style.borderColor = cat.color + "55";
           (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 48px ${cat.color}1A, 0 4px 16px rgba(15,23,42,0.06)`;
@@ -74,12 +85,12 @@ export default function ProductCard({ product }: ProductCardProps) {
         }}
       >
         {/* Category accent bar */}
-        <div style={{ height: "3px", background: cat.gradient, flexShrink: 0 }} />
+        <div style={{ height: "3px", background: isOutOfStock ? "#CBD5E1" : cat.gradient, flexShrink: 0 }} />
 
         {/* Image area */}
         <div
           className="relative w-full overflow-hidden"
-          style={{ height: "300px", background: `linear-gradient(160deg, #F8FAFE 0%, ${cat.bg} 100%)` }}
+          style={{ height: "300px", background: `linear-gradient(160deg, #F8FAFE 0%, ${cat.bg} 100%)`, position: "relative" }}
           onMouseEnter={() => setImgHovered(true)}
           onMouseLeave={() => setImgHovered(false)}
         >
@@ -89,30 +100,57 @@ export default function ProductCard({ product }: ProductCardProps) {
             style={{
               width: "100%", height: "100%", objectFit: "contain", padding: "16px",
               transition: "transform 0.4s cubic-bezier(.22,.68,0,1.2)",
-              transform: imgHovered ? "scale(1.07)" : "scale(1)",
+              transform: imgHovered && !isOutOfStock ? "scale(1.07)" : "scale(1)",
+              filter: isOutOfStock ? "grayscale(0.4)" : "none",
             }}
           />
 
-          {/* Quick View hover overlay */}
-          <div style={{
-            position: "absolute", bottom: 0, left: 0, right: 0,
-            height: imgHovered ? "58px" : "0px",
-            background: `linear-gradient(to top, ${cat.color}F0, ${cat.color}99, transparent)`,
-            display: "flex", alignItems: "flex-end", justifyContent: "center",
-            paddingBottom: "12px",
-            transition: "height 0.3s cubic-bezier(.22,.68,0,1.2)",
-            overflow: "hidden", pointerEvents: "none",
-          }}>
-            <span style={{
-              color: "#fff", fontSize: "12px", fontWeight: 700,
-              display: "flex", alignItems: "center", gap: "5px",
-              opacity: imgHovered ? 1 : 0,
-              transition: "opacity 0.2s ease 0.1s",
-              letterSpacing: "0.04em",
+          {/* Stock badges */}
+          {isOutOfStock && (
+            <div style={{
+              position: "absolute", top: "10px", right: "10px",
+              backgroundColor: "#EF4444", color: "#fff",
+              fontSize: "10.5px", fontWeight: 800, letterSpacing: "0.06em",
+              padding: "4px 10px", borderRadius: "8px",
+              textTransform: "uppercase",
             }}>
-              <Eye size={12} /> Quick View
-            </span>
-          </div>
+              Out of Stock
+            </div>
+          )}
+          {isLowStock && (
+            <div style={{
+              position: "absolute", top: "10px", right: "10px",
+              backgroundColor: "#F97316", color: "#fff",
+              fontSize: "10.5px", fontWeight: 800, letterSpacing: "0.06em",
+              padding: "4px 10px", borderRadius: "8px",
+              display: "flex", alignItems: "center", gap: "4px",
+            }}>
+              <AlertTriangle size={10} /> {stockLevel} left
+            </div>
+          )}
+
+          {/* Quick View hover overlay */}
+          {!isOutOfStock && (
+            <div style={{
+              position: "absolute", bottom: 0, left: 0, right: 0,
+              height: imgHovered ? "58px" : "0px",
+              background: `linear-gradient(to top, ${cat.color}F0, ${cat.color}99, transparent)`,
+              display: "flex", alignItems: "flex-end", justifyContent: "center",
+              paddingBottom: "12px",
+              transition: "height 0.3s cubic-bezier(.22,.68,0,1.2)",
+              overflow: "hidden", pointerEvents: "none",
+            }}>
+              <span style={{
+                color: "#fff", fontSize: "12px", fontWeight: 700,
+                display: "flex", alignItems: "center", gap: "5px",
+                opacity: imgHovered ? 1 : 0,
+                transition: "opacity 0.2s ease 0.1s",
+                letterSpacing: "0.04em",
+              }}>
+                <Eye size={12} /> Quick View
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Info */}
@@ -174,13 +212,18 @@ export default function ProductCard({ product }: ProductCardProps) {
             <div className="flex items-center gap-2">
               <div
                 className="flex items-center rounded-xl overflow-hidden flex-shrink-0"
-                style={{ border: "1.5px solid #E2E8F0", height: "40px", backgroundColor: "#F8FAFC" }}
+                style={{
+                  border: "1.5px solid #E2E8F0", height: "40px",
+                  backgroundColor: isOutOfStock ? "#F1F5F9" : "#F8FAFC",
+                  opacity: isOutOfStock ? 0.5 : 1,
+                }}
               >
                 <button
                   onClick={dec}
+                  disabled={isOutOfStock}
                   className="flex items-center justify-center font-bold"
-                  style={{ width: "28px", height: "100%", background: "none", border: "none", color: "#64748B", fontSize: "16px", cursor: "pointer", transition: "color 0.1s" }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = cat.color}
+                  style={{ width: "28px", height: "100%", background: "none", border: "none", color: "#64748B", fontSize: "16px", cursor: isOutOfStock ? "not-allowed" : "pointer", transition: "color 0.1s" }}
+                  onMouseEnter={e => { if (!isOutOfStock) (e.currentTarget as HTMLElement).style.color = cat.color; }}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
                 >−</button>
                 <span
@@ -191,26 +234,31 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </span>
                 <button
                   onClick={inc}
+                  disabled={isOutOfStock}
                   className="flex items-center justify-center font-bold"
-                  style={{ width: "28px", height: "100%", background: "none", border: "none", color: "#64748B", fontSize: "16px", cursor: "pointer", transition: "color 0.1s" }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = cat.color}
+                  style={{ width: "28px", height: "100%", background: "none", border: "none", color: "#64748B", fontSize: "16px", cursor: isOutOfStock ? "not-allowed" : "pointer", transition: "color 0.1s" }}
+                  onMouseEnter={e => { if (!isOutOfStock) (e.currentTarget as HTMLElement).style.color = cat.color; }}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
                 >+</button>
               </div>
 
               <button
                 onClick={handleAddToCart}
+                disabled={isOutOfStock}
                 className="flex-1 flex items-center justify-center gap-1.5 font-semibold rounded-xl"
                 style={{
-                  backgroundColor: added ? "#059669" : "#1240A0",
-                  color: "#fff", border: "none", cursor: "pointer",
+                  backgroundColor: isOutOfStock ? "#94A3B8" : added ? "#059669" : "#1240A0",
+                  color: "#fff", border: "none",
+                  cursor: isOutOfStock ? "not-allowed" : "pointer",
                   fontSize: "13px", height: "40px",
                   transition: "background-color 0.25s, transform 0.15s",
                 }}
-                onMouseEnter={e => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1B5CB5"; }}
-                onMouseLeave={e => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0"; }}
+                onMouseEnter={e => { if (!added && !isOutOfStock) (e.currentTarget as HTMLElement).style.backgroundColor = "#1B5CB5"; }}
+                onMouseLeave={e => { if (!added && !isOutOfStock) (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0"; }}
               >
-                {added
+                {isOutOfStock
+                  ? "Out of Stock"
+                  : added
                   ? <><CheckCircle2 size={13} /> Added!</>
                   : <><ShoppingCart size={13} /> Add to Cart</>
                 }

@@ -41,6 +41,7 @@ const footerCategories = [
     href: "/company",
     links: [
       { label: "Contact Us",          href: "/contact"          },
+      { label: "Track Your Order",    href: "/track-order"      },
       { label: "Research Stacks",     href: "/stacks"           },
       { label: "Peptide Research",    href: "/research"         },
       { label: "Popular Peptides",    href: "/popular-peptides" },

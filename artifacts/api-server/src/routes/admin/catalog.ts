@@ -1,7 +1,7 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
-import { productsCatalogTable } from "@workspace/db";
+import { productsCatalogTable, productsInventoryTable } from "@workspace/db";
 import { eq, ilike, and } from "drizzle-orm";
 import { seedProductsCatalog } from "../../lib/seed-catalog";
 
@@ -265,15 +265,30 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
         imageUrl: productsCatalogTable.imageUrl,
         purity: productsCatalogTable.purity,
         isFeatured: productsCatalogTable.isFeatured,
+        stockLevel: productsInventoryTable.stockLevel,
+        inventoryPublished: productsInventoryTable.isPublished,
       })
       .from(productsCatalogTable)
+      .leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id))
       .where(and(...conditions))
       .orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
 
-    res.status(200).json(products.map(p => ({
-      ...p,
-      priceGbp: p.priceGbp !== null ? Number(p.priceGbp) : null,
-    })));
+    res.status(200).json(
+      products
+        .filter(p => p.inventoryPublished !== false)
+        .map(p => ({
+          id: p.id,
+          slug: p.slug,
+          name: p.name,
+          category: p.category,
+          priceGbp: p.priceGbp !== null ? Number(p.priceGbp) : null,
+          shortDescription: p.shortDescription,
+          imageUrl: p.imageUrl,
+          purity: p.purity,
+          isFeatured: p.isFeatured,
+          stockLevel: p.stockLevel ?? null,
+        }))
+    );
   } catch (err) {
     req.log.error({ err }, "Failed to list public products");
     res.status(500).json({ error: "Internal server error" });

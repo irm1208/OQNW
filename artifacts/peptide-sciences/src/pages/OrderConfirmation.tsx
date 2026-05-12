@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import { CheckCircle2, Package, Truck, FlaskConical, ArrowRight, Download } from "lucide-react";
+import { CheckCircle2, Package, Truck, FlaskConical, ArrowRight, Download, Search } from "lucide-react";
 
 export default function OrderConfirmation() {
   const params = new URLSearchParams(window.location.search);
@@ -165,6 +165,18 @@ export default function OrderConfirmation() {
             }}
           >
             Continue Shopping <ArrowRight size={15} />
+          </Link>
+          <Link
+            href={`/track-order?q=${encodeURIComponent(order)}`}
+            style={{
+              height: "46px", paddingLeft: "18px", paddingRight: "18px", borderRadius: "12px",
+              border: "1.5px solid #E2E8F0", backgroundColor: "#fff",
+              color: "#475569", fontSize: "14px", fontWeight: 600,
+              cursor: "pointer", display: "flex", alignItems: "center", gap: "8px",
+              textDecoration: "none",
+            }}
+          >
+            <Search size={14} /> Track Order
           </Link>
           <button
             onClick={() => window.print()}

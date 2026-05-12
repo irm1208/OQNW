@@ -6,6 +6,7 @@ import {
   orderItemsTable,
   customersTable,
   discountCodesTable,
+  productsInventoryTable,
 } from "@workspace/db";
 import { eq, sql } from "drizzle-orm";
 import { sendOrderConfirmation } from "../lib/email";
@@ -235,6 +236,16 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         .where(eq(discountCodesTable.code, validatedDiscountCode));
     }
 
+    // Decrement stock for each item (clamp to 0)
+    for (const item of cartItems) {
+      if (item.productId) {
+        await db
+          .update(productsInventoryTable)
+          .set({ stockLevel: sql`GREATEST(${productsInventoryTable.stockLevel} - ${item.quantity}, 0)` })
+          .where(eq(productsInventoryTable.productId, item.productId));
+      }
+    }
+
     // Send confirmation email (non-blocking — errors are logged but won't fail the response)
     sendOrderConfirmation({
       orderNumber,
@@ -266,6 +277,53 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     });
   } catch (err) {
     req.log.error({ err }, "Failed to create order");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// GET /api/orders/track?number=OQ-XXXXXX — public order tracking (limited data)
+router.get("/orders/track", async (req: Request, res: Response): Promise<void> => {
+  const orderNumber = typeof req.query.number === "string" ? req.query.number.trim().toUpperCase() : null;
+  if (!orderNumber) {
+    res.status(400).json({ error: "Order number is required" });
+    return;
+  }
+  try {
+    const [order] = await db
+      .select({
+        id: ordersTable.id,
+        orderNumber: ordersTable.orderNumber,
+        status: ordersTable.status,
+        shippingMethod: ordersTable.shippingMethod,
+        createdAt: ordersTable.createdAt,
+      })
+      .from(ordersTable)
+      .where(eq(ordersTable.orderNumber, orderNumber))
+      .limit(1);
+
+    if (!order) {
+      res.status(404).json({ error: "Order not found" });
+      return;
+    }
+
+    const items = await db
+      .select({
+        productName: orderItemsTable.productName,
+        quantity: orderItemsTable.quantity,
+      })
+      .from(orderItemsTable)
+      .where(eq(orderItemsTable.orderId, order.id));
+
+    res.status(200).json({
+      orderNumber: order.orderNumber,
+      status: order.status,
+      shippingMethod: order.shippingMethod,
+      createdAt: order.createdAt.toISOString(),
+      itemCount: items.reduce((s, i) => s + i.quantity, 0),
+      items,
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to track order");
     res.status(500).json({ error: "Internal server error" });
   }
 });

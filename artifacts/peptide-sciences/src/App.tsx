@@ -19,6 +19,7 @@ import PrivacyPage from "@/pages/PrivacyPage";
 import CartPage from "@/pages/CartPage";
 import CheckoutPage from "@/pages/CheckoutPage";
 import OrderConfirmation from "@/pages/OrderConfirmation";
+import TrackOrderPage from "@/pages/TrackOrderPage";
 import SignIn from "@/pages/SignIn";
 import Register from "@/pages/Register";
 import NotFound from "@/pages/not-found";
@@ -75,6 +76,7 @@ function Router() {
       <Route path="/cart" component={CartPage} />
       <Route path="/checkout" component={CheckoutPage} />
       <Route path="/order-confirmation" component={OrderConfirmation} />
+      <Route path="/track-order" component={TrackOrderPage} />
       <Route path="/terms" component={TermsPage} />
       <Route path="/shipping" component={ShippingPage} />
       <Route path="/privacy" component={PrivacyPage} />
