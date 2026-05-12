@@ -125,9 +125,16 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {/* Product name — clickable */}
         <p
           onClick={goToProduct}
-          style={{ fontSize: "18px", fontWeight: 700, color: "#1240A0", lineHeight: 1.3, marginBottom: "10px", cursor: "pointer", transition: "color 0.15s" }}
-          onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#1B5CB5"}
-          onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#1240A0"}
+          style={{
+            fontSize: "18px", fontWeight: 800, lineHeight: 1.3, marginBottom: "10px",
+            cursor: "pointer", transition: "opacity 0.15s",
+            background: "linear-gradient(120deg, #0D2565 0%, #1B5CB5 60%, #2563EB 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+          onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = "0.75"}
+          onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = "1"}
         >
           {group.baseName}
         </p>
