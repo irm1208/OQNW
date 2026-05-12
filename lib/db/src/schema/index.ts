@@ -14,3 +14,4 @@ export * from "./abandoned_carts";
 export * from "./stock_alerts";
 export * from "./subscriptions";
 export * from "./email_logs";
+export * from "./newsletter_subscribers";

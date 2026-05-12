@@ -24,6 +24,7 @@ import adminAbandonedCartsRouter from "./admin/abandonedCarts";
 import subscriptionsRouter from "./subscriptions";
 import adminSubscriptionsRouter from "./admin/subscriptions";
 import adminEmailLogsRouter from "./admin/emailLogs";
+import newsletterRouter from "./newsletter";
 
 const router: IRouter = Router();
 
@@ -52,5 +53,6 @@ router.use(adminAbandonedCartsRouter);
 router.use(subscriptionsRouter);
 router.use(adminSubscriptionsRouter);
 router.use(adminEmailLogsRouter);
+router.use(newsletterRouter);
 
 export default router;

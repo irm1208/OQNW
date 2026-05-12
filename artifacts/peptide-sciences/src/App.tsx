@@ -26,6 +26,9 @@ import ResetPassword from "@/pages/ResetPassword";
 import Register from "@/pages/Register";
 import AccountPage from "@/pages/AccountPage";
 import WishlistPage from "@/pages/WishlistPage";
+import BundlesPage from "@/pages/BundlesPage";
+import LabResultsPage from "@/pages/LabResultsPage";
+import { CookieConsent } from "@/components/CookieConsent";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
@@ -76,9 +79,7 @@ function Router() {
       <Route path="/all-peptides" component={AllPeptides} />
       <Route path="/popular-peptides" component={PopularPeptides} />
       <Route path="/product/:id" component={ProductPage} />
-      <Route path="/bundles">
-        <PlaceholderPage title="Bundle & Save" description="Save on multi-peptide research bundles." />
-      </Route>
+      <Route path="/bundles" component={BundlesPage} />
       <Route path="/stacks" component={StacksPage} />
       <Route path="/research" component={PeptideResearch} />
       <Route path="/calculator" component={ReconstitutionCalculator} />
@@ -95,6 +96,7 @@ function Router() {
       <Route path="/order-confirmation" component={OrderConfirmation} />
       <Route path="/track-order" component={TrackOrderPage} />
       <Route path="/wishlist" component={WishlistPage} />
+      <Route path="/lab-results" component={LabResultsPage} />
       <Route path="/terms" component={TermsPage} />
       <Route path="/shipping" component={ShippingPage} />
       <Route path="/privacy" component={PrivacyPage} />
@@ -116,6 +118,7 @@ function App() {
             <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
               <ScrollToTop />
               <PixelTracker />
+              <CookieConsent />
               <div className="min-h-screen bg-white flex flex-col">
                 <AnnouncementBar />
                 <Header />

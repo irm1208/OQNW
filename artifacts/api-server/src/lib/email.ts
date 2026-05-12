@@ -602,3 +602,105 @@ export async function sendReferralReward(data: {
     await logEmail({ toEmail: data.referrerEmail, subject, type: "referral_reward", status: "failed" });
   }
 }
+
+export interface WelcomeEmailData {
+  customerName: string;
+  customerEmail: string;
+}
+
+export async function sendWelcomeEmail(data: WelcomeEmailData): Promise<void> {
+  const subject = `Welcome to OmniQure, ${data.customerName.split(" ")[0]}!`;
+  const body = `
+    <h2 style="margin:0 0 4px;font-size:22px;color:#0f172a;">Welcome to OmniQure</h2>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Thank you for your first order, ${data.customerName.split(" ")[0]}. Your research peptides are being prepared with the care and precision you expect from a premium supplier.</p>
+
+    <div style="background:#f8fafc;border-radius:8px;padding:18px 22px;margin-bottom:24px;border-left:4px solid #1b5cb5;">
+      <p style="margin:0 0 8px;font-size:12px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Our Quality Promise</p>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        ${["99%+ HPLC purity on every batch — backed by certificate", "Mass spectrometry verified for compound identity", "Stored and shipped in cold-chain insulated packaging", "Lot-specific COA available for every product"].map(s => `<p style="margin:0;font-size:13px;color:#475569;"><span style="color:#22c55e;font-weight:700;">✓</span> ${s}</p>`).join("")}
+      </div>
+    </div>
+
+    <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="${SITE_URL}/all-peptides" style="display:inline-block;background:linear-gradient(90deg,#0d2565,#1b5cb5);color:#ffffff;padding:12px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;">Browse All Peptides</a>
+      <a href="${SITE_URL}/lab-results" style="display:inline-block;background:#f8fafc;color:#0f172a;padding:12px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;border:1.5px solid #e2e8f0;">View Lab Results</a>
+    </div>
+
+    <div style="margin-top:24px;padding:16px;background:#fefce8;border-radius:6px;border-left:4px solid #eab308;">
+      <p style="margin:0;font-size:13px;color:#713f12;">All products are sold strictly for research purposes only. Not for human consumption.</p>
+    </div>
+  `;
+
+  try {
+    const result = await resend.emails.send({ from: FROM_ADDRESS, to: data.customerEmail, subject, html: baseTemplate("Welcome to OmniQure", body) });
+    logger.info({ to: data.customerEmail }, "Welcome email sent");
+    await logEmail({ toEmail: data.customerEmail, subject, type: "welcome", status: "sent", resendId: result.data?.id });
+  } catch (err) {
+    logger.error({ err }, "Failed to send welcome email");
+    await logEmail({ toEmail: data.customerEmail, subject, type: "welcome", status: "failed" });
+  }
+}
+
+export interface NewsletterBroadcastData {
+  subject: string;
+  htmlBody: string;
+  subscribers: Array<{ email: string; firstName?: string; unsubscribeUrl: string }>;
+}
+
+export async function sendNewsletterBroadcast(data: NewsletterBroadcastData): Promise<{ sent: number; failed: number }> {
+  let sent = 0;
+  let failed = 0;
+  for (const sub of data.subscribers) {
+    const personalised = data.htmlBody
+      .replace(/\{\{firstName\}\}/g, sub.firstName ?? "Researcher")
+      .replace(/\{\{unsubscribeUrl\}\}/g, sub.unsubscribeUrl);
+    const withFooter = personalised + `<div style="margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;text-align:center;"><p style="font-size:11px;color:#94a3b8;">You're receiving this because you subscribed to the OmniQure newsletter. <a href="${sub.unsubscribeUrl}" style="color:#94a3b8;">Unsubscribe</a></p></div>`;
+    try {
+      await resend.emails.send({ from: FROM_ADDRESS, to: sub.email, subject: data.subject, html: baseTemplate(data.subject, withFooter) });
+      await logEmail({ toEmail: sub.email, subject: data.subject, type: "newsletter", status: "sent" });
+      sent++;
+    } catch {
+      await logEmail({ toEmail: sub.email, subject: data.subject, type: "newsletter", status: "failed" });
+      failed++;
+    }
+  }
+  return { sent, failed };
+}
+
+export interface ReorderReminderData {
+  customerName: string;
+  customerEmail: string;
+  orderNumber: string;
+  items: Array<{ productName: string; productId?: number }>;
+}
+
+export async function sendReorderReminder(data: ReorderReminderData): Promise<void> {
+  const subject = `${data.customerName.split(" ")[0]}, is your research supply running low?`;
+  const itemList = data.items.map(i => `<li style="padding:4px 0;font-size:14px;color:#1e293b;">${i.productName}</li>`).join("");
+  const body = `
+    <h2 style="margin:0 0 4px;font-size:22px;color:#0f172a;">Running Low on Research Supplies?</h2>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Hi ${data.customerName.split(" ")[0]}, it's been about a month since your last order. Here's what you ordered — ready to restock?</p>
+
+    <div style="background:#f8fafc;border-radius:8px;padding:16px 20px;margin-bottom:24px;border:1px solid #e2e8f0;">
+      <p style="margin:0 0 10px;font-size:12px;color:#94a3b8;font-weight:600;text-transform:uppercase;">From Order ${data.orderNumber}</p>
+      <ul style="margin:0;padding:0 0 0 18px;">${itemList}</ul>
+    </div>
+
+    <div style="margin-top:4px;">
+      <a href="${SITE_URL}/all-peptides" style="display:inline-block;background:linear-gradient(90deg,#0d2565,#1b5cb5);color:#ffffff;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;">Reorder Now</a>
+    </div>
+
+    <div style="margin-top:24px;padding:16px;background:#fefce8;border-radius:6px;border-left:4px solid #eab308;">
+      <p style="margin:0;font-size:13px;color:#713f12;">All products are sold strictly for research purposes only. Not for human consumption.</p>
+    </div>
+  `;
+
+  try {
+    const result = await resend.emails.send({ from: FROM_ADDRESS, to: data.customerEmail, subject, html: baseTemplate("Reorder Reminder", body) });
+    logger.info({ to: data.customerEmail, order: data.orderNumber }, "Reorder reminder sent");
+    await logEmail({ toEmail: data.customerEmail, subject, type: "reorder_reminder", status: "sent", resendId: result.data?.id, orderNumber: data.orderNumber });
+  } catch (err) {
+    logger.error({ err }, "Failed to send reorder reminder");
+    await logEmail({ toEmail: data.customerEmail, subject, type: "reorder_reminder", status: "failed", orderNumber: data.orderNumber });
+  }
+}

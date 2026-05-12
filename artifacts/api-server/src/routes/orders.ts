@@ -11,7 +11,7 @@ import {
   abandonedCartsTable,
 } from "@workspace/db";
 import { eq, sql, inArray, and } from "drizzle-orm";
-import { sendOrderConfirmation, sendLowStockAlert, sendReferralReward } from "../lib/email";
+import { sendOrderConfirmation, sendLowStockAlert, sendReferralReward, sendWelcomeEmail } from "../lib/email";
 
 const router = Router();
 
@@ -372,6 +372,9 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
             .from(customersTable)
             .where(eq(customersTable.id, customerId!))
             .limit(1);
+          if (cust?.totalOrders === 1) {
+            sendWelcomeEmail({ customerName, customerEmail: d.email.toLowerCase() }).catch(() => {});
+          }
           if (cust?.totalOrders === 1 && cust.referredBy) {
             const [referrer] = await db
               .select({ id: customersTable.id, email: customersTable.email, firstName: customersTable.firstName, lastName: customersTable.lastName })
