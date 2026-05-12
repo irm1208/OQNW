@@ -84,6 +84,12 @@ export default function ProductPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
+  // Back-in-stock alert state
+  const [notifyEmail, setNotifyEmail] = useState("");
+  const [notifySubmitting, setNotifySubmitting] = useState(false);
+  const [notifySuccess, setNotifySuccess] = useState(false);
+  const [notifyError, setNotifyError] = useState<string | null>(null);
+
   const fetchReviews = useCallback(async (productId: string) => {
     setReviewsLoading(true);
     try {
@@ -134,6 +140,35 @@ export default function ProductPage() {
       setSubmitError("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleNotifyMe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!product || !notifyEmail.includes("@")) return;
+    setNotifySubmitting(true);
+    setNotifyError(null);
+    try {
+      const res = await fetch(apiUrl(`products/${product.id}/stock-alert`), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          email: notifyEmail,
+          name: customer ? `${customer.firstName} ${customer.lastName}` : undefined,
+          productName: product.name,
+        }),
+      });
+      if (!res.ok) {
+        const d = await res.json() as { error?: string };
+        setNotifyError(d.error ?? "Could not save your alert.");
+      } else {
+        setNotifySuccess(true);
+      }
+    } catch {
+      setNotifyError("Something went wrong. Please try again.");
+    } finally {
+      setNotifySubmitting(false);
     }
   };
 
@@ -486,6 +521,48 @@ export default function ProductPage() {
                 </button>
               </div>
             </div>
+
+            {/* Back-in-stock notify form */}
+            {product.stockLevel === 0 && (
+              <div
+                className="rounded-2xl p-4 mb-3"
+                style={{ backgroundColor: "#FFF8F8", border: "1px solid #FECACA" }}
+              >
+                {notifySuccess ? (
+                  <div className="flex items-center gap-2">
+                    <span style={{ color: "#059669", fontSize: "18px" }}>✓</span>
+                    <div>
+                      <p className="text-sm font-semibold" style={{ color: "#0F172A" }}>We'll let you know</p>
+                      <p className="text-xs" style={{ color: "#64748B" }}>We'll email you as soon as {product.name} is back in stock.</p>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-xs font-bold mb-2 uppercase tracking-wider" style={{ color: "#94A3B8" }}>Notify Me When Back in Stock</p>
+                    <form onSubmit={(e) => { void handleNotifyMe(e); }} className="flex gap-2">
+                      <input
+                        type="email"
+                        required
+                        placeholder={customer ? customer.email : "your@email.com"}
+                        value={notifyEmail || (customer ? customer.email : "")}
+                        onChange={(e) => setNotifyEmail(e.target.value)}
+                        className="flex-1 rounded-lg px-3 text-sm"
+                        style={{ height: "38px", border: "1.5px solid #E2E8F0", outline: "none", color: "#0F172A" }}
+                      />
+                      <button
+                        type="submit"
+                        disabled={notifySubmitting}
+                        className="rounded-lg px-4 text-sm font-semibold text-white"
+                        style={{ height: "38px", background: "#0F172A", border: "none", cursor: notifySubmitting ? "wait" : "pointer", flexShrink: 0 }}
+                      >
+                        {notifySubmitting ? "..." : "Notify Me"}
+                      </button>
+                    </form>
+                    {notifyError && <p className="text-xs mt-1.5" style={{ color: "#DC2626" }}>{notifyError}</p>}
+                  </>
+                )}
+              </div>
+            )}
 
             {/* Wishlist */}
             {(() => {

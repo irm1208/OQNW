@@ -426,3 +426,89 @@ export async function sendAbandonedCartEmail(data: AbandonedCartEmailData): Prom
     logger.error({ err }, "Failed to send abandoned cart email");
   }
 }
+
+export interface BackInStockEmailData {
+  customerEmail: string;
+  customerName: string;
+  productName: string;
+}
+
+export async function sendBackInStockEmail(data: BackInStockEmailData): Promise<void> {
+  const body = `
+    <h2 style="margin:0 0 8px;font-size:22px;color:#0f172a;">Back in Stock</h2>
+    <p style="margin:0 0 20px;font-size:14px;color:#64748b;">Hi ${data.customerName}, you asked us to let you know — <strong style="color:#0f172a;">${data.productName}</strong> is back in stock.</p>
+
+    <div style="background:#f0fdf4;border-radius:8px;padding:20px 24px;margin-bottom:24px;border-left:4px solid #22c55e;">
+      <p style="margin:0;font-size:14px;color:#15803d;font-weight:600;">${data.productName}</p>
+      <p style="margin:6px 0 0;font-size:13px;color:#16a34a;">Now available — limited stock, order soon.</p>
+    </div>
+
+    <div style="margin-top:4px;">
+      <a href="${SITE_URL}/all-peptides" style="display:inline-block;background:#0f172a;color:#ffffff;padding:13px 30px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600;">Shop Now</a>
+    </div>
+
+    <p style="margin:24px 0 0;font-size:12px;color:#94a3b8;">You received this email because you requested a back-in-stock notification. We won't send you another one for this item.</p>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: data.customerEmail,
+      subject: `Back in stock: ${data.productName}`,
+      html: baseTemplate("Back in Stock", body),
+    });
+    logger.info({ email: data.customerEmail, product: data.productName }, "Back in stock email sent");
+  } catch (err) {
+    logger.error({ err }, "Failed to send back-in-stock email");
+  }
+}
+
+export interface ReviewRequestItem {
+  productId: number;
+  productName: string;
+}
+
+export interface ReviewRequestEmailData {
+  customerEmail: string;
+  customerName: string;
+  orderNumber: string;
+  items: ReviewRequestItem[];
+}
+
+export async function sendReviewRequestEmail(data: ReviewRequestEmailData): Promise<void> {
+  const siteUrl = SITE_URL;
+  const rows = data.items.map(item => `
+    <tr>
+      <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#1e293b;">${item.productName}</td>
+      <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;text-align:right;">
+        <a href="${siteUrl}/product/${item.productId}#reviews" style="display:inline-block;background:#f1f5f9;color:#1e293b;padding:5px 14px;border-radius:20px;text-decoration:none;font-size:12px;font-weight:600;border:1px solid #e2e8f0;">Leave a Review</a>
+      </td>
+    </tr>`).join("");
+
+  const body = `
+    <h2 style="margin:0 0 8px;font-size:22px;color:#0f172a;">How did it go?</h2>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Hi ${data.customerName.split(" ")[0]}, it's been a week since your order <strong>${data.orderNumber}</strong> was delivered. We'd love to hear how your research went.</p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+      <tr>
+        <th style="text-align:left;font-size:12px;color:#94a3b8;font-weight:600;padding-bottom:8px;border-bottom:2px solid #e2e8f0;">PRODUCT</th>
+        <th style="text-align:right;font-size:12px;color:#94a3b8;font-weight:600;padding-bottom:8px;border-bottom:2px solid #e2e8f0;"></th>
+      </tr>
+      ${rows}
+    </table>
+
+    <p style="margin:0;font-size:12px;color:#94a3b8;">Your reviews help other researchers make informed decisions. Thank you for your support.</p>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: data.customerEmail,
+      subject: `${data.customerName.split(" ")[0]}, how was your order ${data.orderNumber}?`,
+      html: baseTemplate("Share Your Research Experience", body),
+    });
+    logger.info({ email: data.customerEmail, orderNumber: data.orderNumber }, "Review request email sent");
+  } catch (err) {
+    logger.error({ err }, "Failed to send review request email");
+  }
+}

@@ -11,6 +11,7 @@ import {
 } from "@workspace/api-zod";
 import { eq, ilike, and, sql } from "drizzle-orm";
 import { sendLowStockAlert } from "../../lib/email";
+import { notifyStockAlerts } from "../stock-alerts";
 
 const router = Router();
 
@@ -79,6 +80,12 @@ router.patch("/admin/products/:id/inventory", async (req: Request, res: Response
     if (stockLevel !== undefined) updates.stockLevel = stockLevel;
     if (lowStockThreshold !== undefined) updates.lowStockThreshold = lowStockThreshold;
 
+    const [before] = await db
+      .select({ stockLevel: productsInventoryTable.stockLevel })
+      .from(productsInventoryTable)
+      .where(eq(productsInventoryTable.id, paramsParsed.data.id))
+      .limit(1);
+
     const [updated] = await db
       .update(productsInventoryTable)
       .set(updates)
@@ -99,6 +106,10 @@ router.patch("/admin/products/:id/inventory", async (req: Request, res: Response
         stockLevel: updated.stockLevel,
         lowStockThreshold: effectiveThreshold,
       }]).catch(() => {});
+    }
+
+    if (before && before.stockLevel === 0 && updated.stockLevel > 0) {
+      notifyStockAlerts(updated.productId, updated.productName).catch(() => {});
     }
   } catch (err) {
     req.log.error({ err }, "Failed to update inventory");

@@ -12,6 +12,7 @@ import Products from "@/pages/Products";
 import Discounts from "@/pages/Discounts";
 import Returns from "@/pages/Returns";
 import Reviews from "@/pages/Reviews";
+import AbandonedCarts from "@/pages/AbandonedCarts";
 
 const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
@@ -75,6 +76,11 @@ function AppRoutes() {
       <Route path="/reviews">
         <AdminLayout>
           <Reviews />
+        </AdminLayout>
+      </Route>
+      <Route path="/abandoned-carts">
+        <AdminLayout>
+          <AbandonedCarts />
         </AdminLayout>
       </Route>
       <Route path="/">
