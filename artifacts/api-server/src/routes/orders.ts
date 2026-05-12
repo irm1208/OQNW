@@ -1,5 +1,6 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
+import crypto from "crypto";
 import { db } from "@workspace/db";
 import {
   ordersTable,
@@ -12,6 +13,25 @@ import { eq, sql } from "drizzle-orm";
 import { sendOrderConfirmation } from "../lib/email";
 
 const router = Router();
+
+const SESSION_SECRET =
+  process.env.SESSION_SECRET ??
+  process.env.ADMIN_PASSWORD ??
+  "omniqure-cust-session-fallback-secret";
+
+function verifyCustomerSession(token: string): number | null {
+  const dot = token.lastIndexOf(".");
+  if (dot === -1) return null;
+  const payload = token.slice(0, dot);
+  const sig = token.slice(dot + 1);
+  const expected = crypto
+    .createHmac("sha256", SESSION_SECRET)
+    .update(payload)
+    .digest("hex");
+  if (sig !== expected) return null;
+  const id = parseInt(payload, 10);
+  return isNaN(id) ? null : id;
+}
 
 function generateOrderNumber(): string {
   return `OQ-${Math.floor(100000 + Math.random() * 900000)}`;
@@ -173,50 +193,89 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
 
     const customerName = `${d.firstName.trim()} ${d.lastName.trim()}`;
 
-    // Upsert customer
-    const [existingCustomer] = await db
-      .select()
-      .from(customersTable)
-      .where(eq(customersTable.email, d.email.toLowerCase()))
-      .limit(1);
+    // If a valid customer session cookie is present, use that customer ID directly.
+    // This ensures orders are always linked to the authenticated account regardless
+    // of what email the customer typed in the delivery form.
+    const sessionToken = req.cookies?.customer_session as string | undefined;
+    const sessionCustomerId = sessionToken ? verifyCustomerSession(sessionToken) : null;
 
     let customerId: number | null = null;
 
-    if (existingCustomer) {
-      customerId = existingCustomer.id;
-      await db
-        .update(customersTable)
-        .set({
-          totalOrders: existingCustomer.totalOrders + 1,
-          totalSpendGbp: String((parseFloat(String(existingCustomer.totalSpendGbp)) + totalGbp).toFixed(2)),
-          phone: d.phone ?? existingCustomer.phone,
-          address1: d.address1,
-          address2: d.address2 ?? existingCustomer.address2,
-          city: d.city,
-          county: d.county ?? existingCustomer.county,
-          postcode: d.postcode,
-          country: d.country,
-        })
-        .where(eq(customersTable.id, existingCustomer.id));
-    } else {
-      const [newCustomer] = await db
-        .insert(customersTable)
-        .values({
-          email: d.email.toLowerCase(),
-          firstName: d.firstName.trim(),
-          lastName: d.lastName.trim(),
-          phone: d.phone ?? null,
-          address1: d.address1,
-          address2: d.address2 ?? null,
-          city: d.city,
-          county: d.county ?? null,
-          postcode: d.postcode,
-          country: d.country,
-          totalOrders: 1,
-          totalSpendGbp: String(totalGbp.toFixed(2)),
-        })
-        .returning();
-      customerId = newCustomer.id;
+    if (sessionCustomerId) {
+      // Authenticated checkout: update the authenticated customer's record
+      const [sessionCustomer] = await db
+        .select()
+        .from(customersTable)
+        .where(eq(customersTable.id, sessionCustomerId))
+        .limit(1);
+
+      if (sessionCustomer) {
+        customerId = sessionCustomer.id;
+        await db
+          .update(customersTable)
+          .set({
+            totalOrders: sessionCustomer.totalOrders + 1,
+            totalSpendGbp: String(
+              (parseFloat(String(sessionCustomer.totalSpendGbp)) + totalGbp).toFixed(2)
+            ),
+            phone: d.phone ?? sessionCustomer.phone,
+            address1: d.address1,
+            address2: d.address2 ?? sessionCustomer.address2,
+            city: d.city,
+            county: d.county ?? sessionCustomer.county,
+            postcode: d.postcode,
+            country: d.country,
+          })
+          .where(eq(customersTable.id, sessionCustomer.id));
+      }
+    }
+
+    if (!customerId) {
+      // Guest checkout (or session didn't resolve): upsert by email
+      const [existingCustomer] = await db
+        .select()
+        .from(customersTable)
+        .where(eq(customersTable.email, d.email.toLowerCase()))
+        .limit(1);
+
+      if (existingCustomer) {
+        customerId = existingCustomer.id;
+        await db
+          .update(customersTable)
+          .set({
+            totalOrders: existingCustomer.totalOrders + 1,
+            totalSpendGbp: String(
+              (parseFloat(String(existingCustomer.totalSpendGbp)) + totalGbp).toFixed(2)
+            ),
+            phone: d.phone ?? existingCustomer.phone,
+            address1: d.address1,
+            address2: d.address2 ?? existingCustomer.address2,
+            city: d.city,
+            county: d.county ?? existingCustomer.county,
+            postcode: d.postcode,
+            country: d.country,
+          })
+          .where(eq(customersTable.id, existingCustomer.id));
+      } else {
+        const [newCustomer] = await db
+          .insert(customersTable)
+          .values({
+            email: d.email.toLowerCase(),
+            firstName: d.firstName.trim(),
+            lastName: d.lastName.trim(),
+            phone: d.phone ?? null,
+            address1: d.address1,
+            address2: d.address2 ?? null,
+            city: d.city,
+            county: d.county ?? null,
+            postcode: d.postcode,
+            country: d.country,
+            totalOrders: 1,
+            totalSpendGbp: String(totalGbp.toFixed(2)),
+          })
+          .returning();
+        customerId = newCustomer.id;
+      }
     }
 
     // Insert order

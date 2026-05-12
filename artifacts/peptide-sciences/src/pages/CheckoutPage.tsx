@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
+import { useCustomerAuth } from "@/context/CustomerAuthContext";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -124,6 +125,7 @@ export default function CheckoutPage() {
   const [, navigate] = useLocation();
   const { items, clearCart } = useCart();
   const { formatPrice, currency } = useCurrency();
+  const { customer } = useCustomerAuth();
   const [step, setStep] = useState<Step>(1);
   const [delivery, setDelivery] = useState<DeliveryForm>(emptyDelivery);
   const [shipping, setShipping] = useState("standard");
@@ -138,6 +140,18 @@ export default function CheckoutPage() {
   const [appliedDiscount, setAppliedDiscount] = useState<AppliedDiscount | null>(null);
   const [discountError, setDiscountError] = useState<string | null>(null);
   const [applyingDiscount, setApplyingDiscount] = useState(false);
+
+  // Pre-fill delivery form for logged-in customers
+  useEffect(() => {
+    if (customer) {
+      setDelivery(prev => ({
+        ...prev,
+        email: prev.email || customer.email,
+        firstName: prev.firstName || customer.firstName,
+        lastName: prev.lastName || customer.lastName,
+      }));
+    }
+  }, [customer]);
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: "smooth" }); }, [step]);
 
@@ -241,6 +255,7 @@ export default function CheckoutPage() {
       try {
         const res = await fetch(apiUrl("orders"), {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             delivery: {
