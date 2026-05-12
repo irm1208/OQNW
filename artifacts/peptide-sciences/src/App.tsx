@@ -36,6 +36,8 @@ import { WishlistProvider } from "@/context/WishlistContext";
 import LiveChat from "@/components/LiveChat";
 import JurisdictionWarning from "@/components/JurisdictionWarning";
 import AgeGate from "@/components/AgeGate";
+import { initPixels } from "@/lib/pixels";
+import { usePageTracking } from "@/hooks/usePageTracking";
 
 const queryClient = new QueryClient();
 
@@ -58,6 +60,12 @@ function ScrollToTop() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
+  return null;
+}
+
+function PixelTracker() {
+  useEffect(() => { initPixels(); }, []);
+  usePageTracking();
   return null;
 }
 
@@ -107,6 +115,7 @@ function App() {
           <CartProvider>
             <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
               <ScrollToTop />
+              <PixelTracker />
               <div className="min-h-screen bg-white flex flex-col">
                 <AnnouncementBar />
                 <Header />

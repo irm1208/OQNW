@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { trackViewContent } from "@/lib/pixels";
 import { Link, useParams } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
 import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, User, Heart } from "lucide-react";
@@ -109,6 +110,12 @@ export default function ProductPage() {
       { name: product.name, path: `/product/${product.id}` },
     ] : null,
   });
+
+  useEffect(() => {
+    if (product) {
+      trackViewContent({ id: product.id, name: product.name, price: product.price ?? null, category: product.category });
+    }
+  }, [product?.id]);
 
   // Reviews state
   const [reviewsData, setReviewsData] = useState<ReviewsData | null>(null);

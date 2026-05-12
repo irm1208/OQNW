@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { trackPurchase } from "@/lib/pixels";
 import { Link } from "wouter";
 import { CheckCircle2, Package, Truck, FlaskConical, ArrowRight, Download, Search } from "lucide-react";
 
@@ -16,13 +17,20 @@ export default function OrderConfirmation() {
   const deliveryStr = delivery.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
 
   const [copied, setCopied] = useState(false);
+  const purchaseFired = useRef(false);
   function copy() {
     navigator.clipboard.writeText(order).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
 
-  useEffect(() => { window.scrollTo({ top: 0 }); }, []);
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+    if (!purchaseFired.current && order !== "OQ-000000") {
+      purchaseFired.current = true;
+      trackPurchase(order, parseFloat(total), 1);
+    }
+  }, []);
 
   return (
     <div style={{

@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { trackInitiateCheckout } from "@/lib/pixels";
 import { Link, useLocation } from "wouter";
 import {
   ChevronRight, Lock, Truck, Zap, Package,
@@ -127,6 +128,7 @@ export default function CheckoutPage() {
   const { formatPrice, currency } = useCurrency();
   const { customer } = useCustomerAuth();
   const [step, setStep] = useState<Step>(1);
+  const checkoutFired = useRef(false);
   const [delivery, setDelivery] = useState<DeliveryForm>(emptyDelivery);
   const [shipping, setShipping] = useState("standard");
   const [payment, setPayment] = useState<PaymentForm>(emptyPayment);
@@ -154,6 +156,15 @@ export default function CheckoutPage() {
   }, [customer]);
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: "smooth" }); }, [step]);
+
+  useEffect(() => {
+    if (!checkoutFired.current && items.length > 0) {
+      checkoutFired.current = true;
+      const value = items.reduce((sum, i) => sum + (i.product.price ?? 0) * i.quantity, 0);
+      const numItems = items.reduce((sum, i) => sum + i.quantity, 0);
+      trackInitiateCheckout(value, numItems);
+    }
+  }, []);
 
   if (items.length === 0) {
     return (

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef, type ReactNode } from "react";
 import type { Product } from "@/data/products";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
+import { trackAddToCart } from "@/lib/pixels";
 
 export type CartItem = {
   product: Product;
@@ -70,6 +71,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addToCart = useCallback(
     (product: Product, qty = 1) => {
+      trackAddToCart({ id: product.id, name: product.name, price: product.price ?? null, category: product.category }, qty);
       setItems((prev) => {
         const existing = prev.find((i) => i.product.id === product.id);
         const next = existing
