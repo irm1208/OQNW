@@ -7,3 +7,4 @@ export * from "./customers";
 export * from "./products_inventory";
 export * from "./discount_codes";
 export * from "./products_catalog";
+export * from "./returns";

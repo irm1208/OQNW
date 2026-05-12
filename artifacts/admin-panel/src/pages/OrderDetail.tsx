@@ -5,16 +5,43 @@ import {
   getGetAdminOrderQueryKey, 
   useUpdateAdminOrder 
 } from "@workspace/api-client-react";
-import { useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, ArrowLeft, Package, User, MapPin, Truck } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Loader2, ArrowLeft, Package, User, MapPin, Truck, RotateCcw, Plus } from "lucide-react";
 import { toast } from "sonner";
+
+type ReturnRecord = {
+  id: number;
+  orderNumber: string;
+  reason: string;
+  status: string;
+  refundAmountGbp: number | null;
+  adminNotes: string | null;
+  createdAt: string;
+};
+
+function getReturnStatusColor(status: string) {
+  switch (status) {
+    case "refunded": return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400";
+    case "approved": return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400";
+    case "requested": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400";
+    case "rejected": return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400";
+    default: return "bg-gray-100 text-gray-800";
+  }
+}
+
+async function apiFetch(url: string, options?: RequestInit) {
+  const res = await fetch(url, { credentials: "include", ...options });
+  if (!res.ok) throw new Error("Request failed");
+  return res.json();
+}
 
 export default function OrderDetail() {
   const { id } = useParams<{ id: string }>();
@@ -33,6 +60,38 @@ export default function OrderDetail() {
   const [trackingNumber, setTrackingNumber] = useState("");
   const [notes, setNotes] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+
+  const [logReturnOpen, setLogReturnOpen] = useState(false);
+  const [returnReason, setReturnReason] = useState("");
+  const [submittingReturn, setSubmittingReturn] = useState(false);
+
+  const returnsQueryKey = ["order-returns", orderId];
+  const { data: returnsData } = useQuery<{ returns: ReturnRecord[] }>({
+    queryKey: returnsQueryKey,
+    queryFn: () => apiFetch(`/api/admin/orders/${orderId}/returns`),
+    enabled: !!orderId,
+  });
+  const orderReturns = returnsData?.returns ?? [];
+
+  async function handleLogReturn() {
+    if (!returnReason.trim()) return;
+    setSubmittingReturn(true);
+    try {
+      await apiFetch(`/api/admin/orders/${orderId}/returns`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reason: returnReason.trim() }),
+      });
+      toast.success("Return request logged");
+      setLogReturnOpen(false);
+      setReturnReason("");
+      queryClient.invalidateQueries({ queryKey: returnsQueryKey });
+    } catch {
+      toast.error("Failed to log return");
+    } finally {
+      setSubmittingReturn(false);
+    }
+  }
 
   // Initialize form state when order loads
   if (order && !isEditing && (trackingNumber !== (order.trackingNumber || "") || notes !== (order.notes || ""))) {
@@ -184,6 +243,45 @@ export default function OrderDetail() {
               </Button>
             </CardContent>
           </Card>
+          <Card>
+            <CardHeader className="pb-4 border-b">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <RotateCcw className="w-5 h-5 text-muted-foreground" /> Returns
+                </CardTitle>
+                <Button size="sm" variant="outline" onClick={() => setLogReturnOpen(true)}>
+                  <Plus className="w-4 h-4 mr-1" /> Log Return
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-6">
+              {orderReturns.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No returns logged for this order.</p>
+              ) : (
+                <div className="space-y-3">
+                  {orderReturns.map((r) => (
+                    <div key={r.id} className="flex items-start justify-between gap-4 py-3 border-b last:border-0">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{r.reason}</p>
+                        {r.adminNotes && <p className="text-xs text-muted-foreground mt-1">{r.adminNotes}</p>}
+                        <p className="text-xs text-muted-foreground mt-1">{new Date(r.createdAt).toLocaleDateString("en-GB")}</p>
+                      </div>
+                      <div className="flex flex-col items-end gap-1 shrink-0">
+                        <Badge variant="outline" className={getReturnStatusColor(r.status)}>
+                          {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
+                        </Badge>
+                        {r.refundAmountGbp !== null && (
+                          <span className="text-xs font-medium text-green-700 dark:text-green-400">
+                            £{r.refundAmountGbp.toFixed(2)} refunded
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
 
         <div className="space-y-6">
@@ -233,6 +331,30 @@ export default function OrderDetail() {
           </div>
         </div>
       </div>
+
+      <Dialog open={logReturnOpen} onOpenChange={(open) => { setLogReturnOpen(open); if (!open) setReturnReason(""); }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Log Return — {order.orderNumber}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 py-2">
+            <p className="text-sm text-muted-foreground">Describe the reason for the return. You can update the status and refund amount from the Returns page.</p>
+            <Textarea
+              placeholder="e.g. Customer received wrong item, requested exchange..."
+              value={returnReason}
+              onChange={(e) => setReturnReason(e.target.value)}
+              rows={4}
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setLogReturnOpen(false); setReturnReason(""); }}>Cancel</Button>
+            <Button onClick={handleLogReturn} disabled={submittingReturn || !returnReason.trim()}>
+              {submittingReturn && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              Log Return
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
