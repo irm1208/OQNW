@@ -9,6 +9,8 @@ import adminProductsRouter from "./admin/products";
 import adminDiscountsRouter from "./admin/discounts";
 import catalogRouter from "./admin/catalog";
 import adminReturnsRouter from "./admin/returns";
+import publicOrdersRouter from "./orders";
+import publicDiscountsRouter from "./discounts";
 
 const router: IRouter = Router();
 
@@ -22,5 +24,7 @@ router.use(adminProductsRouter);
 router.use(adminDiscountsRouter);
 router.use(catalogRouter);
 router.use(adminReturnsRouter);
+router.use(publicOrdersRouter);
+router.use(publicDiscountsRouter);
 
 export default router;

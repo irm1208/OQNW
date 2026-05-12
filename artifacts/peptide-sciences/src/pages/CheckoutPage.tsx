@@ -3,61 +3,27 @@ import { Link, useLocation } from "wouter";
 import {
   ChevronRight, Lock, Truck, Zap, Package,
   CreditCard, User, MapPin, Phone, Mail,
-  CheckCircle2, ShieldCheck, FlaskConical
+  CheckCircle2, ShieldCheck, FlaskConical, Tag, X,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 
+const BASE_URL = import.meta.env.BASE_URL ?? "/";
+function apiUrl(path: string) {
+  return `${BASE_URL}api/${path}`.replace(/\/+/g, "/").replace(/^\/\//, "/");
+}
+
 const COUNTRIES = [
-  // UK & Ireland
-  "United Kingdom",
-  "Ireland",
-  // North America
-  "United States",
-  "Canada",
-  // Oceania
-  "Australia",
-  "New Zealand",
-  // Western Europe
-  "Austria",
-  "Belgium",
-  "Denmark",
-  "Finland",
-  "France",
-  "Germany",
-  "Iceland",
-  "Luxembourg",
-  "Netherlands",
-  "Norway",
-  "Portugal",
-  "Spain",
-  "Sweden",
-  "Switzerland",
-  // Southern / Eastern Europe
-  "Bulgaria",
-  "Croatia",
-  "Cyprus",
-  "Czech Republic",
-  "Estonia",
-  "Greece",
-  "Hungary",
-  "Italy",
-  "Latvia",
-  "Lithuania",
-  "Malta",
-  "Poland",
-  "Romania",
-  "Slovakia",
-  "Slovenia",
-  // Asia Pacific
-  "Hong Kong",
-  "Japan",
-  "Malaysia",
-  "Singapore",
-  "South Korea",
-  "Taiwan",
-  "Thailand",
-  // Middle East
+  "United Kingdom", "Ireland",
+  "United States", "Canada",
+  "Australia", "New Zealand",
+  "Austria", "Belgium", "Denmark", "Finland", "France", "Germany",
+  "Iceland", "Luxembourg", "Netherlands", "Norway", "Portugal", "Spain",
+  "Sweden", "Switzerland",
+  "Bulgaria", "Croatia", "Cyprus", "Czech Republic", "Estonia", "Greece",
+  "Hungary", "Italy", "Latvia", "Lithuania", "Malta", "Poland", "Romania",
+  "Slovakia", "Slovenia",
+  "Hong Kong", "Japan", "Malaysia", "Singapore", "South Korea", "Taiwan", "Thailand",
   "United Arab Emirates",
 ];
 
@@ -102,6 +68,13 @@ type DeliveryForm = {
 type PaymentForm = {
   cardNumber: string; nameOnCard: string; expiry: string; cvv: string;
   sameAsDelivery: boolean;
+};
+
+type AppliedDiscount = {
+  code: string;
+  type: string;
+  value: number;
+  discountAmount: number;
 };
 
 const emptyDelivery: DeliveryForm = {
@@ -157,6 +130,13 @@ export default function CheckoutPage() {
   const [payment, setPayment] = useState<PaymentForm>(emptyPayment);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [placing, setPlacing] = useState(false);
+  const [placeError, setPlaceError] = useState<string | null>(null);
+
+  // Discount code state
+  const [discountInput, setDiscountInput] = useState("");
+  const [appliedDiscount, setAppliedDiscount] = useState<AppliedDiscount | null>(null);
+  const [discountError, setDiscountError] = useState<string | null>(null);
+  const [applyingDiscount, setApplyingDiscount] = useState(false);
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: "smooth" }); }, [step]);
 
@@ -174,7 +154,8 @@ export default function CheckoutPage() {
   const cartGBP = items.reduce((s, { product, quantity }) => s + (product.price ?? 0) * quantity, 0);
   const selectedShipping = SHIPPING_OPTIONS.find(o => o.id === shipping)!;
   const shippingCost = selectedShipping.freeOver && cartGBP >= selectedShipping.freeOver ? 0 : selectedShipping.price;
-  const totalGBP = cartGBP + shippingCost;
+  const discountAmount = appliedDiscount?.discountAmount ?? 0;
+  const totalGBP = Math.max(0, cartGBP + shippingCost - discountAmount);
 
   const setD = (f: keyof DeliveryForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setDelivery(d => ({ ...d, [f]: e.target.value }));
@@ -203,7 +184,44 @@ export default function CheckoutPage() {
     return e;
   }
 
-  function handleNext() {
+  async function applyDiscount() {
+    if (!discountInput.trim()) return;
+    setApplyingDiscount(true);
+    setDiscountError(null);
+    try {
+      const res = await fetch(apiUrl("discounts/validate"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: discountInput.trim(), cartTotal: cartGBP }),
+      });
+      const data = await res.json() as { valid: boolean; error?: string; code?: string; type?: string; value?: number; discountAmount?: number };
+      if (data.valid && data.code && data.discountAmount !== undefined) {
+        setAppliedDiscount({
+          code: data.code,
+          type: data.type!,
+          value: data.value!,
+          discountAmount: data.discountAmount,
+        });
+        setDiscountInput("");
+        setDiscountError(null);
+      } else {
+        setDiscountError(data.error ?? "Invalid discount code");
+        setAppliedDiscount(null);
+      }
+    } catch {
+      setDiscountError("Could not verify discount code. Please try again.");
+    } finally {
+      setApplyingDiscount(false);
+    }
+  }
+
+  function removeDiscount() {
+    setAppliedDiscount(null);
+    setDiscountError(null);
+    setDiscountInput("");
+  }
+
+  async function handleNext() {
     if (step === 1) {
       const e = validateDelivery();
       if (Object.keys(e).length) { setErrors(e); return; }
@@ -217,10 +235,49 @@ export default function CheckoutPage() {
       if (Object.keys(e).length) { setErrors(e); return; }
       setErrors({});
       setPlacing(true);
-      setTimeout(() => {
+      setPlaceError(null);
+      try {
+        const res = await fetch(apiUrl("orders"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            delivery: {
+              email: delivery.email,
+              firstName: delivery.firstName,
+              lastName: delivery.lastName,
+              phone: delivery.phone || undefined,
+              address1: delivery.address1,
+              address2: delivery.address2 || undefined,
+              city: delivery.city,
+              county: delivery.county || undefined,
+              postcode: delivery.postcode,
+              country: delivery.country,
+            },
+            shippingMethod: selectedShipping.label,
+            shippingCostGbp: shippingCost,
+            items: items.map(({ product, quantity }) => ({
+              productId: parseInt(String(product.id)) || 0,
+              productName: product.name,
+              productCategory: product.category ?? "",
+              quantity,
+              priceGbp: product.price ?? 0,
+            })),
+            discountCode: appliedDiscount?.code ?? null,
+          }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ error: "Order failed" })) as { error?: string };
+          throw new Error(err.error ?? "Order failed");
+        }
+
+        const data = await res.json() as { orderNumber: string; customerName: string; totalGbp: number; shippingMethod: string };
         clearCart();
-        navigate(`/order-confirmation?order=OQ-${Math.floor(100000 + Math.random() * 900000)}&name=${encodeURIComponent(delivery.firstName)}&total=${totalGBP.toFixed(2)}&ship=${selectedShipping.label}`);
-      }, 1800);
+        navigate(`/order-confirmation?order=${encodeURIComponent(data.orderNumber)}&name=${encodeURIComponent(delivery.firstName)}&total=${data.totalGbp.toFixed(2)}&ship=${encodeURIComponent(data.shippingMethod)}`);
+      } catch (err) {
+        setPlaceError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+        setPlacing(false);
+      }
     }
   }
 
@@ -601,6 +658,14 @@ export default function CheckoutPage() {
               </div>
             )}
 
+            {/* Place order error */}
+            {placeError && (
+              <div style={{ marginTop: "12px", padding: "12px 16px", borderRadius: "12px", backgroundColor: "#FFF5F5", border: "1.5px solid #FCA5A5", display: "flex", gap: "10px", alignItems: "center" }}>
+                <X size={16} style={{ color: "#DC2626", flexShrink: 0 }} />
+                <p style={{ fontSize: "13px", color: "#DC2626", margin: 0 }}>{placeError}</p>
+              </div>
+            )}
+
             {/* Nav buttons */}
             <div style={{ display: "flex", gap: "12px", marginTop: "20px" }}>
               {step > 1 && (
@@ -664,6 +729,77 @@ export default function CheckoutPage() {
               </div>
 
               <div style={{ padding: "0 18px 18px" }}>
+
+                {/* Discount code input */}
+                {!appliedDiscount ? (
+                  <div style={{ marginBottom: "12px", paddingTop: "12px", borderTop: "1px solid #F1F5F9" }}>
+                    <label style={{ fontSize: "12px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "6px" }}>
+                      <Tag size={11} style={{ display: "inline", marginRight: "4px", verticalAlign: "middle" }} />
+                      Discount code
+                    </label>
+                    <div style={{ display: "flex", gap: "8px" }}>
+                      <input
+                        value={discountInput}
+                        onChange={e => { setDiscountInput(e.target.value.toUpperCase()); setDiscountError(null); }}
+                        onKeyDown={e => e.key === "Enter" && applyDiscount()}
+                        placeholder="PROMO CODE"
+                        style={{
+                          flex: 1, height: "36px", padding: "0 10px",
+                          borderRadius: "8px", border: `1.5px solid ${discountError ? "#FCA5A5" : "#E2E8F0"}`,
+                          fontSize: "12.5px", color: "#0F172A", outline: "none",
+                          backgroundColor: discountError ? "#FFF5F5" : "#F8FAFC",
+                          fontFamily: "'Arimo', Arial, sans-serif",
+                          letterSpacing: "0.05em",
+                        }}
+                      />
+                      <button
+                        onClick={applyDiscount}
+                        disabled={applyingDiscount || !discountInput.trim()}
+                        style={{
+                          height: "36px", paddingLeft: "12px", paddingRight: "12px",
+                          borderRadius: "8px", border: "none",
+                          backgroundColor: applyingDiscount || !discountInput.trim() ? "#E2E8F0" : "#1B5CB5",
+                          color: applyingDiscount || !discountInput.trim() ? "#94A3B8" : "#fff",
+                          fontSize: "12.5px", fontWeight: 700, cursor: applyingDiscount || !discountInput.trim() ? "not-allowed" : "pointer",
+                          flexShrink: 0, transition: "background 0.15s",
+                        }}
+                      >
+                        {applyingDiscount ? "…" : "Apply"}
+                      </button>
+                    </div>
+                    {discountError && (
+                      <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "4px" }}>{discountError}</p>
+                    )}
+                  </div>
+                ) : (
+                  <div style={{
+                    marginBottom: "12px", padding: "10px 12px",
+                    borderRadius: "10px", backgroundColor: "#F0FDF4",
+                    border: "1.5px solid #BBF7D0",
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                    borderTop: "1px solid #F1F5F9",
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <Tag size={13} style={{ color: "#059669" }} />
+                      <div>
+                        <p style={{ fontSize: "12px", fontWeight: 700, color: "#059669", margin: 0 }}>{appliedDiscount.code}</p>
+                        <p style={{ fontSize: "11px", color: "#166534", margin: 0 }}>
+                          {appliedDiscount.type === "percentage"
+                            ? `${appliedDiscount.value}% off`
+                            : `£${appliedDiscount.value.toFixed(2)} off`}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={removeDiscount}
+                      style={{ background: "none", border: "none", cursor: "pointer", color: "#059669", padding: "2px", display: "flex", alignItems: "center" }}
+                      title="Remove discount"
+                    >
+                      <X size={15} />
+                    </button>
+                  </div>
+                )}
+
                 <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 0", borderTop: "1px solid #F1F5F9" }}>
                   <span style={{ fontSize: "13px", color: "#64748B" }}>Subtotal</span>
                   <span style={{ fontSize: "13px", fontWeight: 600, color: "#0F172A" }}>{formatPrice(cartGBP)}</span>
@@ -674,6 +810,12 @@ export default function CheckoutPage() {
                     {shippingCost === 0 ? "FREE" : formatPrice(shippingCost)}
                   </span>
                 </div>
+                {appliedDiscount && (
+                  <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
+                    <span style={{ fontSize: "13px", color: "#059669" }}>Discount ({appliedDiscount.code})</span>
+                    <span style={{ fontSize: "13px", fontWeight: 600, color: "#059669" }}>−{formatPrice(discountAmount)}</span>
+                  </div>
+                )}
                 <div style={{ display: "flex", justifyContent: "space-between", padding: "12px 0", borderTop: "2px solid #E8EDF5", marginTop: "8px" }}>
                   <span style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A" }}>Total</span>
                   <span style={{ fontSize: "15px", fontWeight: 800, color: "#1240A0" }}>{formatPrice(totalGBP)}</span>
