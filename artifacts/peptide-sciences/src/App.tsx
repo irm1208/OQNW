@@ -21,6 +21,8 @@ import CheckoutPage from "@/pages/CheckoutPage";
 import OrderConfirmation from "@/pages/OrderConfirmation";
 import TrackOrderPage from "@/pages/TrackOrderPage";
 import SignIn from "@/pages/SignIn";
+import ForgotPassword from "@/pages/ForgotPassword";
+import ResetPassword from "@/pages/ResetPassword";
 import Register from "@/pages/Register";
 import AccountPage from "@/pages/AccountPage";
 import NotFound from "@/pages/not-found";
@@ -75,6 +77,8 @@ function Router() {
         <PlaceholderPage title="Contact Us" description="Get in touch with our research team." />
       </Route>
       <Route path="/sign-in" component={SignIn} />
+      <Route path="/forgot-password" component={ForgotPassword} />
+      <Route path="/reset-password" component={ResetPassword} />
       <Route path="/register" component={Register} />
       <Route path="/account" component={AccountPage} />
       <Route path="/cart" component={CartPage} />

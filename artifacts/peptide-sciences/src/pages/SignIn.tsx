@@ -107,12 +107,12 @@ export default function SignIn() {
                 <label style={{ fontSize: "13px", fontWeight: 600, color: "#374151" }}>
                   Password
                 </label>
-                <a href="#" style={{ fontSize: "12px", color: "#1B5CB5", textDecoration: "none", fontWeight: 500 }}
-                  onMouseEnter={e => (e.currentTarget.style.textDecoration = "underline")}
-                  onMouseLeave={e => (e.currentTarget.style.textDecoration = "none")}
+                <Link href="/forgot-password" style={{ fontSize: "12px", color: "#1B5CB5", textDecoration: "none", fontWeight: 500 }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.textDecoration = "underline")}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.textDecoration = "none")}
                 >
                   Forgot password?
-                </a>
+                </Link>
               </div>
               <div style={{ position: "relative" }}>
                 <Lock size={15} style={{

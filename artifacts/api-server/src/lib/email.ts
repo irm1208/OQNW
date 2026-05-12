@@ -198,6 +198,45 @@ export async function sendShippingNotification(order: OrderEmailData): Promise<v
   }
 }
 
+export async function sendPasswordReset(opts: {
+  customerEmail: string;
+  customerName: string;
+  resetUrl: string;
+}): Promise<void> {
+  const body = `
+    <h2 style="margin:0 0 4px;font-size:22px;color:#0f172a;">Reset your password</h2>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Hi ${opts.customerName}, we received a request to reset the password for your OmniQure account.</p>
+
+    <div style="text-align:center;margin:28px 0;">
+      <a href="${opts.resetUrl}"
+         style="display:inline-block;background:linear-gradient(90deg,#0d2565,#1b5cb5);color:#ffffff;padding:14px 32px;border-radius:8px;text-decoration:none;font-size:15px;font-weight:700;">
+        Reset password
+      </a>
+    </div>
+
+    <p style="font-size:13px;color:#64748b;margin:0 0 8px;">Or copy and paste this link into your browser:</p>
+    <p style="font-size:12px;color:#1b5cb5;word-break:break-all;margin:0 0 24px;">${opts.resetUrl}</p>
+
+    <div style="background:#fef2f2;border-radius:6px;padding:14px 16px;border-left:4px solid #fca5a5;">
+      <p style="margin:0;font-size:13px;color:#991b1b;">
+        This link expires in <strong>1 hour</strong>. If you didn't request a password reset, you can safely ignore this email — your password won't change.
+      </p>
+    </div>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: opts.customerEmail,
+      subject: "Reset your OmniQure password",
+      html: baseTemplate("Password Reset", body),
+    });
+    logger.info({ to: opts.customerEmail }, "Password reset email sent");
+  } catch (err) {
+    logger.error({ err }, "Failed to send password reset email");
+  }
+}
+
 export async function sendLowStockAlert(products: Array<{ productName: string; stockLevel: number; lowStockThreshold: number }>): Promise<void> {
   if (!ADMIN_EMAIL) {
     logger.warn("ADMIN_EMAIL not set — skipping low stock alert");

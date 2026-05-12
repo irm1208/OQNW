@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import { db } from "@workspace/db";
 import { customersTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
+import { sendPasswordReset } from "../lib/email";
 
 const router = Router();
 
@@ -181,6 +182,84 @@ router.post("/auth/login", async (req: Request, res: Response): Promise<void> =>
     });
   } catch (err) {
     req.log.error({ err }, "Failed to sign in customer");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/auth/forgot-password", async (req: Request, res: Response): Promise<void> => {
+  const { email } = req.body as { email: unknown };
+  if (typeof email !== "string" || !email.includes("@")) {
+    res.status(400).json({ error: "Valid email address is required" });
+    return;
+  }
+  try {
+    const [customer] = await db
+      .select()
+      .from(customersTable)
+      .where(eq(customersTable.email, email.toLowerCase()))
+      .limit(1);
+
+    if (customer && customer.passwordHash) {
+      const token = crypto.randomBytes(32).toString("hex");
+      const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+      await db
+        .update(customersTable)
+        .set({ resetToken: token, resetTokenExpiresAt: expiresAt })
+        .where(eq(customersTable.id, customer.id));
+
+      const siteUrl = (
+        process.env.SITE_URL ||
+        (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "https://omniqure.com")
+      ).replace(/\/$/, "");
+      const resetUrl = `${siteUrl}/reset-password?token=${token}`;
+      sendPasswordReset({
+        customerEmail: customer.email,
+        customerName: `${customer.firstName} ${customer.lastName}`,
+        resetUrl,
+      }).catch(() => {});
+
+      req.log.info({ customerId: customer.id }, "Password reset token issued");
+    }
+
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to process forgot-password");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/auth/reset-password", async (req: Request, res: Response): Promise<void> => {
+  const { token, password } = req.body as { token: unknown; password: unknown };
+  if (typeof token !== "string" || !token.trim()) {
+    res.status(400).json({ error: "Reset token is required" });
+    return;
+  }
+  if (typeof password !== "string" || password.length < 8) {
+    res.status(400).json({ error: "Password must be at least 8 characters" });
+    return;
+  }
+  try {
+    const [customer] = await db
+      .select()
+      .from(customersTable)
+      .where(eq(customersTable.resetToken, token.trim()))
+      .limit(1);
+
+    if (!customer || !customer.resetTokenExpiresAt || customer.resetTokenExpiresAt < new Date()) {
+      res.status(400).json({ error: "This reset link is invalid or has expired. Please request a new one." });
+      return;
+    }
+
+    const passwordHash = await bcrypt.hash(password, 12);
+    await db
+      .update(customersTable)
+      .set({ passwordHash, resetToken: null, resetTokenExpiresAt: null })
+      .where(eq(customersTable.id, customer.id));
+
+    req.log.info({ customerId: customer.id }, "Password reset successfully");
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to reset password");
     res.status(500).json({ error: "Internal server error" });
   }
 });
