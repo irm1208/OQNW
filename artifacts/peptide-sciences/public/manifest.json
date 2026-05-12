@@ -1,0 +1,24 @@
+{
+  "name": "OmniQure Peptide Research Institute",
+  "short_name": "OmniQure",
+  "description": "High-purity research peptides verified by HPLC to 99%+. For research use only.",
+  "start_url": "/",
+  "display": "browser",
+  "theme_color": "#1240A0",
+  "background_color": "#F5F8FC",
+  "lang": "en-GB",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/omniqure-logo.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

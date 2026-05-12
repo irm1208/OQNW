@@ -81,11 +81,33 @@ export default function ProductPage() {
     : product
     ? `${product.name} — ${product.category} research peptide. ${getPurityStr(product.id)} HPLC purity. For research use only.`
     : undefined;
+  const seoAvailability = product?.stockLevel === 0
+    ? "OutOfStock"
+    : product?.stockLevel !== undefined && product.stockLevel <= 10
+    ? "LimitedAvailability"
+    : "InStock";
   useSEO({
     title: product?.name ?? null,
     description: seoDesc ?? null,
     ogType: "product",
     canonicalPath: product ? `/product/${product.id}` : null,
+    ogImage: product ? `https://omniqure.co.uk${product.image}` : null,
+    product: product ? {
+      name: product.name,
+      description: seoDesc ?? product.name,
+      image: product.image,
+      price: product.price,
+      productId: product.id,
+      category: product.category,
+      purity: getPurityStr(product.id),
+      availability: seoAvailability as "InStock" | "OutOfStock" | "LimitedAvailability",
+    } : null,
+    breadcrumbs: product ? [
+      { name: "Home", path: "/" },
+      { name: "All Peptides", path: "/all-peptides" },
+      { name: product.category, path: `/all-peptides?category=${encodeURIComponent(product.category)}` },
+      { name: product.name, path: `/product/${product.id}` },
+    ] : null,
   });
 
   // Reviews state
