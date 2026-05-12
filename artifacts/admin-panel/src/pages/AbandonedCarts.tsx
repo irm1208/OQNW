@@ -4,8 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, ShoppingCart, Mail, MailCheck, ChevronDown, ChevronRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
-const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
-function api(path: string) { return `${BASE}/api${path}`; }
+function api(path: string) { return `/api${path}`; }
 function apiFetch(url: string) {
   return fetch(url, { credentials: "include" }).then(r => {
     if (!r.ok) throw new Error("Request failed");
