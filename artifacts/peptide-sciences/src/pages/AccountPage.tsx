@@ -1,14 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "wouter";
 import {
   User, Package, Settings, LogOut, ChevronRight,
   ShoppingBag, Clock, Shield, Eye, EyeOff, CheckCircle2,
   AlertCircle, Truck, Zap, FlaskConical, Heart, RotateCcw, X,
+  RefreshCw, Users, Copy, CheckCheck, Calendar, PauseCircle, PlayCircle,
+  Repeat, Trash2,
 } from "lucide-react";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useProducts } from "@/context/ProductsContext";
+import { useCart } from "@/context/CartContext";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -16,10 +19,35 @@ function apiUrl(path: string) {
 }
 
 type OrderItem = {
+  productId: number;
   productName: string;
   productCategory: string;
   quantity: number;
   priceGbp: number;
+};
+
+type SubItem = {
+  productId: number;
+  productName: string;
+  quantity: number;
+  priceGbp: number;
+};
+
+type Subscription = {
+  id: number;
+  items: SubItem[];
+  intervalDays: number;
+  nextRenewalAt: string;
+  discountPct: number;
+  status: string;
+  subtotal: number;
+  discountedTotal: number;
+  createdAt: string;
+};
+
+type ReferralInfo = {
+  referralCode: string;
+  referralCount: number;
 };
 
 type AccountOrder = {
@@ -95,8 +123,9 @@ export default function AccountPage() {
   const { formatPrice } = useCurrency();
   const { wishlistIds, toggle: toggleWishlist, has: inWishlist } = useWishlist();
   const { products } = useProducts();
+  const { addToCart } = useCart();
 
-  const [activeTab, setActiveTab] = useState<"orders" | "profile" | "wishlist">("orders");
+  const [activeTab, setActiveTab] = useState<"orders" | "profile" | "wishlist" | "subscriptions" | "referral">("orders");
 
   // Orders
   const [orders, setOrders] = useState<AccountOrder[]>([]);
@@ -126,6 +155,18 @@ export default function AccountPage() {
   const [returnReason, setReturnReason] = useState("");
   const [submittingReturn, setSubmittingReturn] = useState(false);
   const [returnError, setReturnError] = useState<string | null>(null);
+
+  // Subscriptions
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [loadingSubs, setLoadingSubs] = useState(true);
+  const [updatingSub, setUpdatingSub] = useState<number | null>(null);
+
+  // Referral
+  const [referral, setReferral] = useState<ReferralInfo | null>(null);
+  const [referralCopied, setReferralCopied] = useState(false);
+
+  // Reorder feedback
+  const [reorderedKey, setReorderedKey] = useState<string | null>(null);
 
   // Redirect if not logged in
   useEffect(() => {
@@ -160,6 +201,17 @@ export default function AccountPage() {
         for (const r of data) map.set(r.orderNumber, r);
         setReturns(map);
       })
+      .catch(() => {});
+
+    fetch(apiUrl("subscriptions"), { credentials: "include" })
+      .then((r) => (r.ok ? (r.json() as Promise<Subscription[]>) : []))
+      .then((data) => setSubscriptions(data))
+      .catch(() => setSubscriptions([]))
+      .finally(() => setLoadingSubs(false));
+
+    fetch(apiUrl("account/referral"), { credentials: "include" })
+      .then((r) => (r.ok ? (r.json() as Promise<ReferralInfo>) : null))
+      .then((data) => setReferral(data))
       .catch(() => {});
   }, [customer]);
 
@@ -244,6 +296,51 @@ export default function AccountPage() {
   async function handleSignOut() {
     await signOut();
     navigate("/");
+  }
+
+  const handleReorder = useCallback((order: AccountOrder) => {
+    for (const item of order.items) {
+      const product = products.find((p) => p.id === String(item.productId));
+      if (product) {
+        addToCart(product, item.quantity);
+      }
+    }
+    setReorderedKey(order.orderNumber);
+    setTimeout(() => setReorderedKey(null), 2500);
+  }, [products, addToCart]);
+
+  async function handleSubAction(subId: number, action: string) {
+    setUpdatingSub(subId);
+    try {
+      const res = await fetch(apiUrl(`subscriptions/${subId}`), {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ action }),
+      });
+      if (res.ok) {
+        const updated = await res.json() as Subscription;
+        setSubscriptions((prev) => prev.map((s) => (s.id === subId ? updated : s)));
+      }
+    } catch {}
+    setUpdatingSub(null);
+  }
+
+  function copyReferralLink() {
+    if (!referral) return;
+    const url = `${window.location.origin}/sign-up?ref=${referral.referralCode}`;
+    void navigator.clipboard.writeText(url);
+    setReferralCopied(true);
+    setTimeout(() => setReferralCopied(false), 2500);
+  }
+
+  function intervalLabel(days: number): string {
+    if (days === 7) return "Weekly";
+    if (days === 14) return "Fortnightly";
+    if (days === 30) return "Monthly";
+    if (days === 60) return "Every 2 months";
+    if (days === 90) return "Every 3 months";
+    return `Every ${days} days`;
   }
 
   if (loadingAuth || !customer) {
@@ -380,12 +477,14 @@ export default function AccountPage() {
             <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", overflow: "hidden" }}>
               {[
                 { key: "orders", label: "My Orders", icon: <Package size={16} /> },
+                { key: "subscriptions", label: "Subscriptions", icon: <RefreshCw size={16} /> },
+                { key: "referral", label: "Refer a Friend", icon: <Users size={16} /> },
                 { key: "wishlist", label: "Wishlist", icon: <Heart size={16} /> },
                 { key: "profile", label: "Profile Settings", icon: <Settings size={16} /> },
               ].map((item) => (
                 <button
                   key={item.key}
-                  onClick={() => setActiveTab(item.key as "orders" | "profile" | "wishlist")}
+                  onClick={() => setActiveTab(item.key as "orders" | "profile" | "wishlist" | "subscriptions" | "referral")}
                   style={{
                     display: "flex", alignItems: "center", gap: "10px",
                     width: "100%", padding: "13px 16px", border: "none",
@@ -582,6 +681,22 @@ export default function AccountPage() {
                                   <Zap size={13} />
                                   Track Order
                                 </Link>
+                                <button
+                                  onClick={() => handleReorder(order)}
+                                  style={{
+                                    display: "inline-flex", alignItems: "center", gap: "6px",
+                                    padding: "8px 14px", borderRadius: "8px",
+                                    backgroundColor: reorderedKey === order.orderNumber ? "#F0FDF4" : "#F0F5FF",
+                                    border: reorderedKey === order.orderNumber ? "1px solid #BBF7D0" : "1px solid #C7D7F7",
+                                    color: reorderedKey === order.orderNumber ? "#15803D" : "#1240A0",
+                                    fontWeight: 600, fontSize: "13px", cursor: "pointer",
+                                  }}
+                                >
+                                  {reorderedKey === order.orderNumber
+                                    ? <><CheckCheck size={13} /> Added to cart!</>
+                                    : <><Repeat size={13} /> Reorder</>
+                                  }
+                                </button>
                                 {order.shippingMethod && (
                                   <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "8px 14px", borderRadius: "8px", backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
                                     <Truck size={13} style={{ color: "#64748B" }} />
@@ -622,6 +737,173 @@ export default function AccountPage() {
                         </div>
                       );
                     })}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ── SUBSCRIPTIONS TAB ── */}
+            {activeTab === "subscriptions" && (
+              <div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
+                  <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A" }}>My Subscriptions</h2>
+                  <span style={{ fontSize: "12px", color: "#64748B", backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0", padding: "4px 10px", borderRadius: "20px", fontWeight: 600 }}>5% off every renewal</span>
+                </div>
+
+                {loadingSubs ? (
+                  <div style={{ textAlign: "center", padding: "60px 0", color: "#94A3B8" }}>
+                    <RefreshCw size={32} style={{ margin: "0 auto 12px", opacity: 0.4 }} />
+                    <p style={{ fontSize: "14px" }}>Loading subscriptions…</p>
+                  </div>
+                ) : subscriptions.filter((s) => s.status !== "cancelled").length === 0 ? (
+                  <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", padding: "60px 24px", textAlign: "center" }}>
+                    <RefreshCw size={36} style={{ margin: "0 auto 16px", color: "#CBD5E1" }} />
+                    <p style={{ fontSize: "16px", fontWeight: 700, color: "#0F172A", marginBottom: "8px" }}>No active subscriptions</p>
+                    <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>
+                      Subscribe to your favourite peptides at checkout and save 5% on every recurring order.
+                    </p>
+                    <Link href="/all-peptides" style={{ display: "inline-block", padding: "10px 24px", borderRadius: "10px", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none" }}>
+                      Browse peptides
+                    </Link>
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                    {subscriptions.filter((s) => s.status !== "cancelled").map((sub) => (
+                      <div key={sub.id} style={{ backgroundColor: "#fff", borderRadius: "16px", border: `1px solid ${sub.status === "paused" ? "#FDE68A" : "#E8EDF5"}`, boxShadow: "0 2px 12px rgba(15,23,42,0.04)", overflow: "hidden" }}>
+                        <div style={{ padding: "16px 20px" }}>
+                          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", marginBottom: "12px" }}>
+                            <div>
+                              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+                                <span style={{ fontSize: "14px", fontWeight: 800, color: "#0F172A" }}>{intervalLabel(sub.intervalDays)} Subscription</span>
+                                <span style={{
+                                  fontSize: "11px", fontWeight: 700, padding: "2px 8px", borderRadius: "20px",
+                                  backgroundColor: sub.status === "paused" ? "#FFFBEB" : "#F0FDF4",
+                                  color: sub.status === "paused" ? "#B45309" : "#15803D",
+                                  border: `1px solid ${sub.status === "paused" ? "#FDE68A" : "#BBF7D0"}`,
+                                }}>
+                                  {sub.status === "paused" ? "Paused" : "Active"}
+                                </span>
+                              </div>
+                              <p style={{ fontSize: "12px", color: "#94A3B8", margin: 0 }}>
+                                <Calendar size={11} style={{ display: "inline", marginRight: "4px" }} />
+                                Next renewal: {formatDate(sub.nextRenewalAt)}
+                              </p>
+                            </div>
+                            <div style={{ textAlign: "right", flexShrink: 0 }}>
+                              <p style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A", margin: "0 0 2px" }}>£{sub.discountedTotal.toFixed(2)}</p>
+                              <p style={{ fontSize: "11px", color: "#16A34A", margin: 0 }}>{sub.discountPct}% off applied</p>
+                            </div>
+                          </div>
+                          <div style={{ marginBottom: "14px", borderTop: "1px solid #F8FAFC", paddingTop: "10px" }}>
+                            {sub.items.map((item, i) => (
+                              <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0" }}>
+                                <span style={{ fontSize: "13px", color: "#0F172A" }}>{item.productName} × {item.quantity}</span>
+                                <span style={{ fontSize: "13px", color: "#64748B" }}>£{(item.priceGbp * item.quantity * (1 - sub.discountPct / 100)).toFixed(2)}</span>
+                              </div>
+                            ))}
+                          </div>
+                          <div style={{ display: "flex", gap: "8px" }}>
+                            {sub.status === "active" ? (
+                              <button
+                                onClick={() => void handleSubAction(sub.id, "pause")}
+                                disabled={updatingSub === sub.id}
+                                style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "7px 14px", borderRadius: "8px", backgroundColor: "#FFFBEB", border: "1px solid #FDE68A", color: "#B45309", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}
+                              >
+                                <PauseCircle size={13} />
+                                {updatingSub === sub.id ? "…" : "Pause"}
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => void handleSubAction(sub.id, "resume")}
+                                disabled={updatingSub === sub.id}
+                                style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "7px 14px", borderRadius: "8px", backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0", color: "#15803D", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}
+                              >
+                                <PlayCircle size={13} />
+                                {updatingSub === sub.id ? "…" : "Resume"}
+                              </button>
+                            )}
+                            <button
+                              onClick={() => void handleSubAction(sub.id, "cancel")}
+                              disabled={updatingSub === sub.id}
+                              style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "7px 14px", borderRadius: "8px", backgroundColor: "#FEF2F2", border: "1px solid #FECACA", color: "#B91C1C", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}
+                            >
+                              <Trash2 size={13} />
+                              {updatingSub === sub.id ? "…" : "Cancel"}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ── REFERRAL TAB ── */}
+            {activeTab === "referral" && (
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A", margin: 0 }}>Refer a Friend</h2>
+
+                {/* How it works */}
+                <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
+                  <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A", marginBottom: "16px" }}>How it works</h3>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
+                    {[
+                      { step: "1", title: "Share your link", desc: "Send your unique referral link to colleagues and fellow researchers." },
+                      { step: "2", title: "They sign up & order", desc: "When a friend registers using your link and places their first order." },
+                      { step: "3", title: "You earn £10 credit", desc: "A £10 discount code is sent to you automatically — no cap on referrals." },
+                    ].map((s) => (
+                      <div key={s.step} style={{ textAlign: "center", padding: "16px 12px", borderRadius: "12px", backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5" }}>
+                        <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px", fontSize: "14px", fontWeight: 800, color: "#fff" }}>
+                          {s.step}
+                        </div>
+                        <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A", marginBottom: "4px" }}>{s.title}</p>
+                        <p style={{ fontSize: "12px", color: "#64748B", lineHeight: 1.5, margin: 0 }}>{s.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Referral link */}
+                {referral && (
+                  <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
+                    <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A", marginBottom: "4px" }}>Your referral link</h3>
+                    <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "16px" }}>Share this link — when a friend signs up through it and orders, you'll receive £10 credit.</p>
+
+                    <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+                      <div style={{ flex: 1, height: "44px", padding: "0 14px", borderRadius: "10px", border: "1.5px solid #E2E8F0", backgroundColor: "#F8FAFC", display: "flex", alignItems: "center", overflow: "hidden" }}>
+                        <span style={{ fontSize: "13px", color: "#64748B", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                          {`${window.location.origin}/sign-up?ref=${referral.referralCode}`}
+                        </span>
+                      </div>
+                      <button
+                        onClick={copyReferralLink}
+                        style={{
+                          display: "inline-flex", alignItems: "center", gap: "6px",
+                          padding: "0 18px", height: "44px", borderRadius: "10px", border: "none",
+                          background: referralCopied ? "linear-gradient(90deg, #16A34A, #15803D)" : "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                          color: "#fff", fontWeight: 700, fontSize: "13px", cursor: "pointer", whiteSpace: "nowrap",
+                          transition: "background 0.2s",
+                        }}
+                      >
+                        {referralCopied ? <><CheckCheck size={14} /> Copied!</> : <><Copy size={14} /> Copy link</>}
+                      </button>
+                    </div>
+
+                    <div style={{ display: "flex", gap: "12px" }}>
+                      <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5", textAlign: "center" }}>
+                        <p style={{ fontSize: "22px", fontWeight: 800, color: "#0F172A", margin: "0 0 2px" }}>{referral.referralCount}</p>
+                        <p style={{ fontSize: "12px", color: "#64748B", margin: 0 }}>Friends referred</p>
+                      </div>
+                      <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0", textAlign: "center" }}>
+                        <p style={{ fontSize: "22px", fontWeight: 800, color: "#15803D", margin: "0 0 2px" }}>£{(referral.referralCount * 10).toFixed(2)}</p>
+                        <p style={{ fontSize: "12px", color: "#16A34A", margin: 0 }}>Total credits earned</p>
+                      </div>
+                      <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#F0F5FF", border: "1px solid #C7D7F7", textAlign: "center" }}>
+                        <p style={{ fontSize: "13px", fontWeight: 800, color: "#1240A0", margin: "0 0 2px", fontFamily: "monospace", letterSpacing: "0.05em" }}>{referral.referralCode}</p>
+                        <p style={{ fontSize: "12px", color: "#64748B", margin: 0 }}>Your code</p>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

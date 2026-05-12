@@ -28,6 +28,8 @@ export const customersTable = pgTable("customers", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
   resetToken: text("reset_token"),
   resetTokenExpiresAt: timestamp("reset_token_expires_at", { withTimezone: true }),
+  referralCode: text("referral_code").unique(),
+  referredBy: text("referred_by"),
 });
 
 export const insertCustomerSchema = createInsertSchema(customersTable).omit({

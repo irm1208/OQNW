@@ -24,6 +24,7 @@ type CustomerAuthContextType = {
     firstName: string;
     lastName: string;
     institution?: string;
+    referredBy?: string;
   }) => Promise<void>;
   signOut: () => Promise<void>;
 };
@@ -66,6 +67,7 @@ export function CustomerAuthProvider({ children }: { children: ReactNode }) {
       firstName: string;
       lastName: string;
       institution?: string;
+      referredBy?: string;
     }) => {
       const res = await fetch(apiUrl("auth/register"), {
         method: "POST",

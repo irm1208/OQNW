@@ -4,7 +4,7 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { db } from "@workspace/db";
 import { customersTable, ordersTable, orderItemsTable } from "@workspace/db";
-import { eq, desc, inArray } from "drizzle-orm";
+import { eq, desc, inArray, count } from "drizzle-orm";
 
 const router = Router();
 
@@ -114,6 +114,7 @@ router.get("/account/orders", async (req: Request, res: Response): Promise<void>
     const allItems = await db
       .select({
         orderId: orderItemsTable.orderId,
+        productId: orderItemsTable.productId,
         productName: orderItemsTable.productName,
         productCategory: orderItemsTable.productCategory,
         quantity: orderItemsTable.quantity,
@@ -137,6 +138,7 @@ router.get("/account/orders", async (req: Request, res: Response): Promise<void>
         trackingNumber: o.trackingNumber ?? null,
         createdAt: o.createdAt.toISOString(),
         items: (itemsByOrderId[o.id] ?? []).map((i) => ({
+          productId: i.productId ?? 0,
           productName: i.productName,
           productCategory: i.productCategory,
           quantity: i.quantity,
@@ -146,6 +148,43 @@ router.get("/account/orders", async (req: Request, res: Response): Promise<void>
     );
   } catch (err) {
     req.log.error({ err }, "Failed to get account orders");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// GET /account/referral — referral code + stats
+router.get("/account/referral", async (req: Request, res: Response): Promise<void> => {
+  const customerId = requireCustomer(req, res);
+  if (!customerId) return;
+  try {
+    const [customer] = await db
+      .select({
+        referralCode: customersTable.referralCode,
+        firstName: customersTable.firstName,
+      })
+      .from(customersTable)
+      .where(eq(customersTable.id, customerId))
+      .limit(1);
+
+    if (!customer) { res.status(401).json({ error: "Customer not found" }); return; }
+
+    let referralCode = customer.referralCode;
+    if (!referralCode) {
+      referralCode = `${customer.firstName.slice(0, 3).toUpperCase()}${String(customerId).padStart(4, "0")}`;
+      await db.update(customersTable).set({ referralCode }).where(eq(customersTable.id, customerId));
+    }
+
+    const referredCount = await db
+      .select({ n: count() })
+      .from(customersTable)
+      .where(eq(customersTable.referredBy, referralCode));
+
+    res.json({
+      referralCode,
+      referralCount: referredCount[0]?.n ?? 0,
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to get referral info");
     res.status(500).json({ error: "Internal server error" });
   }
 });

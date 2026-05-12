@@ -10,8 +10,8 @@ import {
   productsInventoryTable,
   abandonedCartsTable,
 } from "@workspace/db";
-import { eq, sql, inArray } from "drizzle-orm";
-import { sendOrderConfirmation, sendLowStockAlert } from "../lib/email";
+import { eq, sql, inArray, and } from "drizzle-orm";
+import { sendOrderConfirmation, sendLowStockAlert, sendReferralReward } from "../lib/email";
 
 const router = Router();
 
@@ -361,6 +361,45 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         .set({ convertedAt: new Date() })
         .where(eq(abandonedCartsTable.customerId, customerId))
         .catch(() => {});
+    }
+
+    // Referral reward: if this is the referred customer's first order, reward the referrer
+    if (customerId) {
+      (async () => {
+        try {
+          const [cust] = await db
+            .select({ totalOrders: customersTable.totalOrders, referredBy: customersTable.referredBy })
+            .from(customersTable)
+            .where(eq(customersTable.id, customerId!))
+            .limit(1);
+          if (cust?.totalOrders === 1 && cust.referredBy) {
+            const [referrer] = await db
+              .select({ id: customersTable.id, email: customersTable.email, firstName: customersTable.firstName, lastName: customersTable.lastName })
+              .from(customersTable)
+              .where(eq(customersTable.referralCode, cust.referredBy))
+              .limit(1);
+            if (referrer) {
+              const creditCode = `REWARD-${Math.random().toString(36).toUpperCase().slice(2, 10)}`;
+              await db.insert(discountCodesTable).values({
+                code: creditCode,
+                type: "fixed",
+                value: "10.00",
+                isActive: true,
+                usageLimit: 1,
+                usageCount: 0,
+                expiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+              });
+              await sendReferralReward({
+                referrerName: `${referrer.firstName} ${referrer.lastName}`,
+                referrerEmail: referrer.email,
+                refereeName: customerName,
+                discountCode: creditCode,
+                creditGbp: 10,
+              });
+            }
+          }
+        } catch {}
+      })();
     }
 
     // Send confirmation email (non-blocking — errors are logged but won't fail the response)

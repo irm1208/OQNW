@@ -40,12 +40,13 @@ function verifyToken(token: string): number | null {
 }
 
 router.post("/auth/register", async (req: Request, res: Response): Promise<void> => {
-  const { email, password, firstName, lastName, institution } = req.body as {
+  const { email, password, firstName, lastName, institution, referredBy } = req.body as {
     email: unknown;
     password: unknown;
     firstName: unknown;
     lastName: unknown;
     institution?: unknown;
+    referredBy?: unknown;
   };
 
   if (
@@ -108,6 +109,8 @@ router.post("/auth/register", async (req: Request, res: Response): Promise<void>
 
     const passwordHash = await bcrypt.hash(password, 12);
 
+    const refBy = typeof referredBy === "string" && referredBy.trim() ? referredBy.trim().toUpperCase() : null;
+
     const [customer] = await db
       .insert(customersTable)
       .values({
@@ -117,8 +120,12 @@ router.post("/auth/register", async (req: Request, res: Response): Promise<void>
         passwordHash,
         totalOrders: 0,
         totalSpendGbp: "0",
+        referredBy: refBy,
       })
       .returning();
+
+    const generatedCode = `${firstName.trim().slice(0, 3).toUpperCase()}${String(customer.id).padStart(4, "0")}`;
+    await db.update(customersTable).set({ referralCode: generatedCode }).where(eq(customersTable.id, customer.id));
 
     const token = signToken(customer.id);
     res.cookie(COOKIE_NAME, token, {

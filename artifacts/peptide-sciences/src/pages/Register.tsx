@@ -6,6 +6,9 @@ import { useCustomerAuth } from "@/context/CustomerAuthContext";
 export default function Register() {
   const [, navigate] = useLocation();
   const { register } = useCustomerAuth();
+  const refCode = typeof window !== "undefined"
+    ? new URLSearchParams(window.location.search).get("ref") ?? undefined
+    : undefined;
   const [form, setForm] = useState({
     firstName: "", lastName: "", email: "", institution: "", password: "", confirm: "",
   });
@@ -42,6 +45,7 @@ export default function Register() {
         firstName: form.firstName,
         lastName: form.lastName,
         institution: form.institution || undefined,
+        referredBy: refCode,
       });
       navigate("/");
     } catch (err) {

@@ -1,9 +1,10 @@
 import { Link, useLocation } from "wouter";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
-import { Trash2, Plus, Minus, ShoppingCart, ChevronRight, FlaskConical, Sparkles, CheckCircle2 } from "lucide-react";
+import { Trash2, Plus, Minus, ShoppingCart, ChevronRight, FlaskConical, Sparkles, CheckCircle2, RefreshCw, CheckCheck } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useProducts } from "@/context/ProductsContext";
+import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { type Product } from "@/data/products";
 import { getPurityStr } from "@/utils/productPurity";
 
@@ -154,6 +155,36 @@ export default function CartPage() {
   const [, navigate] = useLocation();
   const { items, totalItems, removeFromCart, updateQuantity, clearCart } = useCart();
   const { formatPrice, currency } = useCurrency();
+  const { customer } = useCustomerAuth();
+  const [subscribing, setSubscribing] = useState(false);
+  const [subscribeSuccess, setSubscribeSuccess] = useState(false);
+  const [subscribeInterval, setSubscribeInterval] = useState(30);
+
+  async function handleSubscribe() {
+    if (!customer) { navigate("/sign-in"); return; }
+    setSubscribing(true);
+    try {
+      const subItems = items
+        .filter((i) => i.product.price != null)
+        .map((i) => ({
+          productId: parseInt(i.product.id, 10),
+          productName: i.product.name,
+          quantity: i.quantity,
+          priceGbp: i.product.price ?? 0,
+        }));
+      const res = await fetch(apiUrl("subscriptions"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ items: subItems, intervalDays: subscribeInterval }),
+      });
+      if (res.ok) {
+        setSubscribeSuccess(true);
+        setTimeout(() => setSubscribeSuccess(false), 4000);
+      }
+    } catch {}
+    setSubscribing(false);
+  }
 
   if (items.length === 0) {
     return (
@@ -354,6 +385,48 @@ export default function CartPage() {
                   <ShoppingCart size={16} />
                   Proceed to Checkout
                 </button>
+
+                {/* Subscribe & Save */}
+                <div style={{ borderRadius: "12px", border: "1.5px solid #C7D7F7", backgroundColor: "#F0F5FF", padding: "12px 14px", marginBottom: "10px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
+                    <RefreshCw size={13} style={{ color: "#1240A0" }} />
+                    <span style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A" }}>Subscribe & Save 5%</span>
+                  </div>
+                  <p style={{ fontSize: "11.5px", color: "#475569", marginBottom: "10px", lineHeight: 1.5 }}>
+                    Get this order delivered automatically at a 5% discount every:
+                  </p>
+                  <select
+                    value={subscribeInterval}
+                    onChange={(e) => setSubscribeInterval(parseInt(e.target.value, 10))}
+                    style={{ width: "100%", height: "34px", borderRadius: "8px", border: "1.5px solid #C7D7F7", fontSize: "13px", color: "#0F172A", backgroundColor: "#fff", padding: "0 10px", marginBottom: "8px", cursor: "pointer" }}
+                  >
+                    <option value={7}>Weekly (every 7 days)</option>
+                    <option value={14}>Fortnightly (every 14 days)</option>
+                    <option value={30}>Monthly (every 30 days)</option>
+                    <option value={60}>Every 2 months</option>
+                    <option value={90}>Every 3 months</option>
+                  </select>
+                  <button
+                    onClick={() => void handleSubscribe()}
+                    disabled={subscribing || subscribeSuccess}
+                    style={{
+                      width: "100%", height: "34px", borderRadius: "8px", border: "none",
+                      background: subscribeSuccess ? "linear-gradient(90deg, #16A34A, #15803D)" : "linear-gradient(90deg, #1240A0, #1B5CB5)",
+                      color: "#fff", fontSize: "12.5px", fontWeight: 700, cursor: subscribing || subscribeSuccess ? "not-allowed" : "pointer",
+                      display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                    }}
+                  >
+                    {subscribeSuccess
+                      ? <><CheckCheck size={13} /> Subscription created!</>
+                      : subscribing
+                        ? "Creating…"
+                        : <><RefreshCw size={13} /> Subscribe & Save</>
+                    }
+                  </button>
+                  {!customer && (
+                    <p style={{ fontSize: "11px", color: "#64748B", marginTop: "6px", textAlign: "center" }}>Sign in to subscribe</p>
+                  )}
+                </div>
 
                 <Link
                   href="/all-peptides"

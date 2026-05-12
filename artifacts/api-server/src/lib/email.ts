@@ -512,3 +512,36 @@ export async function sendReviewRequestEmail(data: ReviewRequestEmailData): Prom
     logger.error({ err }, "Failed to send review request email");
   }
 }
+
+export async function sendReferralReward(data: {
+  referrerName: string;
+  referrerEmail: string;
+  refereeName: string;
+  discountCode: string;
+  creditGbp: number;
+}): Promise<void> {
+  const body = `
+    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#0f172a;">You've earned a referral reward!</h2>
+    <p style="margin:0 0 20px;font-size:15px;color:#475569;line-height:1.6;">Hi ${data.referrerName.split(" ")[0]}, great news — your friend <strong>${data.refereeName}</strong> just placed their first order at OmniQure. As a thank-you for the referral, we're giving you <strong>${formatGbp(data.creditGbp)} store credit</strong>.</p>
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:20px 24px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0 0 6px;font-size:12px;font-weight:600;color:#15803d;letter-spacing:0.08em;text-transform:uppercase;">Your discount code</p>
+      <p style="margin:0;font-size:28px;font-weight:800;color:#0f172a;letter-spacing:0.08em;font-family:monospace;">${data.discountCode}</p>
+      <p style="margin:6px 0 0;font-size:13px;color:#475569;">Enter this at checkout to save ${formatGbp(data.creditGbp)}</p>
+    </div>
+    <div style="text-align:center;margin:0 0 24px;">
+      <a href="${SITE_URL}/all-peptides" style="display:inline-block;background:#0f172a;color:#ffffff;text-decoration:none;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;">Shop Now</a>
+    </div>
+    <p style="margin:0;font-size:12px;color:#94a3b8;">This code is valid for 90 days and can be used on any order. Keep sharing your referral link to earn more rewards.</p>
+  `;
+  try {
+    await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: data.referrerEmail,
+      subject: `You earned ${formatGbp(data.creditGbp)} — ${data.refereeName} just ordered!`,
+      html: baseTemplate("Referral Reward", body),
+    });
+    logger.info({ email: data.referrerEmail }, "Referral reward email sent");
+  } catch (err) {
+    logger.error({ err }, "Failed to send referral reward email");
+  }
+}
