@@ -1,8 +1,9 @@
 import { useState, useMemo } from "react";
 import { useLocation } from "wouter";
-import ProductCard from "@/components/ProductCard";
-import { products, Product } from "@/data/products";
+import GroupedProductCard from "@/components/GroupedProductCard";
+import { products, type Product } from "@/data/products";
 import { popularProductIds } from "@/data/popularPeptides";
+import { groupProducts, type GroupedProduct } from "@/data/groupedProducts";
 import {
   Heart, Zap, Scale, Brain, Microscope, Shield, Clock, Sparkles,
   FlaskConical, Dna, ChevronRight,
@@ -93,7 +94,7 @@ export default function PopularPeptides() {
     }
     return CATEGORY_ORDER
       .filter((cat) => grouped[cat]?.length)
-      .map((cat) => ({ category: cat, items: grouped[cat] }));
+      .map((cat) => ({ category: cat, items: groupProducts(grouped[cat]) }));
   }, [popularProducts]);
 
   const availableCategories = useMemo(
@@ -301,10 +302,10 @@ export default function PopularPeptides() {
                 {/* Product grid */}
                 <div
                   className="grid gap-4"
-                  style={{ gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}
+                  style={{ gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))" }}
                 >
-                  {group.items.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                  {group.items.map((g: GroupedProduct) => (
+                    <GroupedProductCard key={g.baseName} group={g} />
                   ))}
                 </div>
               </section>

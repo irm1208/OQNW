@@ -1,8 +1,9 @@
 import { useState, useMemo, useEffect } from "react";
 import { useLocation } from "wouter";
 import Sidebar from "@/components/Sidebar";
-import ProductCard from "@/components/ProductCard";
+import GroupedProductCard from "@/components/GroupedProductCard";
 import { products } from "@/data/products";
+import { groupProducts } from "@/data/groupedProducts";
 
 const categoryTabs = [
   { label: "Growth Peptides",     key: "Growth Peptides" },
@@ -38,34 +39,25 @@ export default function AllPeptides() {
     }
   }, [location]);
 
-  const filteredProducts = useMemo(() => {
+  const groupedProducts = useMemo(() => {
     let result = [...products];
     if (selectedCategory !== "All Peptides") {
       result = result.filter((p) => p.category === selectedCategory);
     }
+    const groups = groupProducts(result);
     switch (sortBy) {
       case "price-low":
-        result.sort((a, b) => {
-          if (a.price === null) return 1;
-          if (b.price === null) return -1;
-          return a.price - b.price;
-        });
+        groups.sort((a, b) => (a.variants[0]?.price ?? 0) - (b.variants[0]?.price ?? 0));
         break;
       case "price-high":
-        result.sort((a, b) => {
-          if (a.price === null) return 1;
-          if (b.price === null) return -1;
-          return b.price - a.price;
-        });
-        break;
-      case "bestsellers":
+        groups.sort((a, b) => (b.variants[0]?.price ?? 0) - (a.variants[0]?.price ?? 0));
         break;
       case "name":
       default:
-        result.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+        groups.sort((a, b) => a.baseName.localeCompare(b.baseName, undefined, { numeric: true }));
         break;
     }
-    return result;
+    return groups;
   }, [selectedCategory, sortBy]);
 
   const handleCategoryChange = (cat: string) => {
@@ -161,7 +153,7 @@ export default function AllPeptides() {
                 className="px-3 py-1 rounded-full font-medium"
                 style={{ fontSize: "12px", color: "#475569", backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}
               >
-                {filteredProducts.length} Products
+                {groupedProducts.length} Products
               </span>
               <div className="flex items-center gap-1.5">
                 <span className="hidden sm:inline" style={{ fontSize: "12px", color: "#94A3B8" }}>Sort by</span>
@@ -189,12 +181,12 @@ export default function AllPeptides() {
 
             {/* Responsive grid: 2 cols mobile, 3 tablet, 4 desktop */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-              {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+              {groupedProducts.map((group) => (
+                <GroupedProductCard key={group.baseName} group={group} />
               ))}
             </div>
 
-            {filteredProducts.length === 0 && (
+            {groupedProducts.length === 0 && (
               <div className="text-center py-20" style={{ color: "#94A3B8" }}>
                 No products found in this category.
               </div>
