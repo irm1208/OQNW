@@ -5,7 +5,8 @@ import {
   TrendingUp, ChevronRight, ArrowRight, CheckCircle
 } from "lucide-react";
 import { products } from "@/data/products";
-import ProductCard from "@/components/ProductCard";
+import GroupedProductCard from "@/components/GroupedProductCard";
+import { groupProducts, parseName } from "@/data/groupedProducts";
 
 const categories = [
   { name: "Growth Peptides",      icon: <Dumbbell size={20} />,    color: "#1B5CB5", bg: "#EEF4FF" },
@@ -25,10 +26,14 @@ const categories = [
 ];
 
 const featuredIds = ["3", "7", "11", "43", "15", "31", "64", "71"];
-const featuredProducts = featuredIds
+const _featuredProducts = featuredIds
   .map(id => products.find(p => p.id === id))
-  .filter(Boolean)
-  .slice(0, 8) as typeof products;
+  .filter(Boolean) as typeof products;
+const _allGroups = groupProducts(products);
+const featuredGroups = _featuredProducts
+  .map(p => _allGroups.find(g => g.baseName === parseName(p.name).baseName))
+  .filter((g): g is NonNullable<typeof g> => g != null)
+  .filter((g, i, arr) => arr.findIndex(x => x.baseName === g.baseName) === i);
 
 const pillars = [
   {
@@ -486,9 +491,9 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-            {featuredProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {featuredGroups.map(group => (
+              <GroupedProductCard key={group.baseName} group={group} />
             ))}
           </div>
         </div>
