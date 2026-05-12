@@ -301,8 +301,8 @@ export default function PopularPeptides() {
 
                 {/* Product grid */}
                 <div
-                  className="grid gap-4"
-                  style={{ gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))" }}
+                  className="grid"
+                  style={{ gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "32px" }}
                 >
                   {group.items.map((g: GroupedProduct) => (
                     <GroupedProductCard key={g.baseName} group={g} />
