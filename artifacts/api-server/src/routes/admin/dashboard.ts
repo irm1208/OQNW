@@ -2,7 +2,7 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { ordersTable, orderItemsTable, customersTable } from "@workspace/db";
-import { sql, count, sum, eq, gte } from "drizzle-orm";
+import { sql, count, sum, avg, eq, gte } from "drizzle-orm";
 
 const router = Router();
 
@@ -12,6 +12,11 @@ function requireAdmin(req: Request, res: Response): boolean {
     return false;
   }
   return true;
+}
+
+function parsePeriod(raw: unknown): number {
+  const n = Number(raw);
+  return [7, 30, 90, 365].includes(n) ? n : 30;
 }
 
 router.get("/admin/dashboard", async (req: Request, res: Response): Promise<void> => {
@@ -31,6 +36,10 @@ router.get("/admin/dashboard", async (req: Request, res: Response): Promise<void
     const [totalCustomersRow] = await db
       .select({ total: count() })
       .from(customersTable);
+
+    const [avgOrderRow] = await db
+      .select({ avg: avg(ordersTable.totalGbp) })
+      .from(ordersTable);
 
     const statusCounts = await db
       .select({ status: ordersTable.status, cnt: count() })
@@ -60,6 +69,7 @@ router.get("/admin/dashboard", async (req: Request, res: Response): Promise<void
       totalRevenue: parseFloat(String(totalRevenueRow?.total ?? "0")),
       totalOrders: Number(totalOrdersRow?.total ?? 0),
       totalCustomers: Number(totalCustomersRow?.total ?? 0),
+      avgOrderValue: parseFloat(String(avgOrderRow?.avg ?? "0")),
       pendingOrders: Number(getCount("pending")),
       processingOrders: Number(getCount("processing")),
       shippedOrders: Number(getCount("shipped")),
@@ -75,6 +85,7 @@ router.get("/admin/dashboard", async (req: Request, res: Response): Promise<void
 
 router.get("/admin/dashboard/revenue", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
+  const period = parsePeriod(req.query.period);
   try {
     const rows = await db.execute(sql`
       SELECT
@@ -82,7 +93,7 @@ router.get("/admin/dashboard/revenue", async (req: Request, res: Response): Prom
         COALESCE(SUM(total_gbp), 0)::float AS revenue,
         COUNT(*)::int AS orders
       FROM orders
-      WHERE created_at >= NOW() - INTERVAL '30 days'
+      WHERE created_at >= NOW() - INTERVAL '1 day' * ${period}
       GROUP BY DATE_TRUNC('day', created_at)
       ORDER BY date ASC
     `);
@@ -110,6 +121,60 @@ router.get("/admin/dashboard/top-products", async (req: Request, res: Response):
     res.status(200).json(rows.rows ?? rows);
   } catch (err) {
     req.log.error({ err }, "Failed to fetch top products");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/admin/dashboard/new-customers", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const period = parsePeriod(req.query.period);
+  try {
+    const rows = await db.execute(sql`
+      SELECT
+        TO_CHAR(DATE_TRUNC('day', created_at), 'YYYY-MM-DD') AS date,
+        COUNT(*)::int AS "newCustomers"
+      FROM customers
+      WHERE created_at >= NOW() - INTERVAL '1 day' * ${period}
+      GROUP BY DATE_TRUNC('day', created_at)
+      ORDER BY date ASC
+    `);
+    res.status(200).json(rows.rows ?? rows);
+  } catch (err) {
+    req.log.error({ err }, "Failed to fetch new customers chart");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/admin/dashboard/order-status", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const rows = await db
+      .select({ status: ordersTable.status, count: count() })
+      .from(ordersTable)
+      .groupBy(ordersTable.status)
+      .orderBy(ordersTable.status);
+    res.status(200).json(rows.map((r) => ({ status: r.status, count: Number(r.count) })));
+  } catch (err) {
+    req.log.error({ err }, "Failed to fetch order status breakdown");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/admin/dashboard/revenue-by-category", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const rows = await db.execute(sql`
+      SELECT
+        product_category AS category,
+        SUM(quantity * price_gbp::numeric)::float AS revenue,
+        COUNT(DISTINCT order_id)::int AS orders
+      FROM order_items
+      GROUP BY product_category
+      ORDER BY revenue DESC
+    `);
+    res.status(200).json(rows.rows ?? rows);
+  } catch (err) {
+    req.log.error({ err }, "Failed to fetch revenue by category");
     res.status(500).json({ error: "Internal server error" });
   }
 });

@@ -45,11 +45,20 @@ export const GetAdminDashboardResponse = zod.object({
   lowStockCount: zod.number(),
   revenueToday: zod.number(),
   ordersToday: zod.number(),
+  avgOrderValue: zod.number(),
 });
 
 /**
- * @summary Get daily revenue for the last 30 days
+ * @summary Get daily revenue for the specified period
  */
+export const getRevenueChartQueryPeriodDefault = 30;
+
+export const GetRevenueChartQueryParams = zod.object({
+  period: zod
+    .union([zod.literal(7), zod.literal(30), zod.literal(90), zod.literal(365)])
+    .default(getRevenueChartQueryPeriodDefault),
+});
+
 export const GetRevenueChartResponseItem = zod.object({
   date: zod.string(),
   revenue: zod.number(),
@@ -67,6 +76,48 @@ export const GetTopProductsResponseItem = zod.object({
   totalRevenue: zod.number(),
 });
 export const GetTopProductsResponse = zod.array(GetTopProductsResponseItem);
+
+/**
+ * @summary Get daily new customer registrations for the specified period
+ */
+export const getNewCustomersChartQueryPeriodDefault = 30;
+
+export const GetNewCustomersChartQueryParams = zod.object({
+  period: zod
+    .union([zod.literal(7), zod.literal(30), zod.literal(90), zod.literal(365)])
+    .default(getNewCustomersChartQueryPeriodDefault),
+});
+
+export const GetNewCustomersChartResponseItem = zod.object({
+  date: zod.string(),
+  newCustomers: zod.number(),
+});
+export const GetNewCustomersChartResponse = zod.array(
+  GetNewCustomersChartResponseItem,
+);
+
+/**
+ * @summary Get order counts grouped by status
+ */
+export const GetOrderStatusBreakdownResponseItem = zod.object({
+  status: zod.string(),
+  count: zod.number(),
+});
+export const GetOrderStatusBreakdownResponse = zod.array(
+  GetOrderStatusBreakdownResponseItem,
+);
+
+/**
+ * @summary Get total revenue grouped by product category
+ */
+export const GetRevenueByCategoryChartResponseItem = zod.object({
+  category: zod.string(),
+  revenue: zod.number(),
+  orders: zod.number(),
+});
+export const GetRevenueByCategoryChartResponse = zod.array(
+  GetRevenueByCategoryChartResponseItem,
+);
 
 /**
  * @summary List all orders with optional filters

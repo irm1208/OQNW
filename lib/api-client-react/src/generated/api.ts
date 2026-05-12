@@ -24,12 +24,15 @@ import type {
   CatalogProduct,
   CatalogProductInput,
   CatalogProductPatch,
+  CategoryRevenue,
   CustomerDetail,
   CustomerList,
   DashboardStats,
   DiscountCode,
   DiscountCodeInput,
   DiscountCodePatch,
+  GetNewCustomersChartParams,
+  GetRevenueChartParams,
   HealthStatus,
   InventoryUpdate,
   ListAdminCustomersParams,
@@ -37,9 +40,11 @@ import type {
   ListAdminProductsParams,
   ListCatalogProductsParams,
   ListPublicProductsParams,
+  NewCustomerDataPoint,
   Order,
   OrderDetail,
   OrderList,
+  OrderStatusCount,
   OrderUpdate,
   PublicProduct,
   PublicProductDetail,
@@ -438,43 +443,59 @@ export function useGetAdminDashboard<
 }
 
 /**
- * @summary Get daily revenue for the last 30 days
+ * @summary Get daily revenue for the specified period
  */
-export const getGetRevenueChartUrl = () => {
-  return `/api/admin/dashboard/revenue`;
+export const getGetRevenueChartUrl = (params?: GetRevenueChartParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/admin/dashboard/revenue?${stringifiedParams}`
+    : `/api/admin/dashboard/revenue`;
 };
 
 export const getRevenueChart = async (
+  params?: GetRevenueChartParams,
   options?: RequestInit,
 ): Promise<RevenueDataPoint[]> => {
-  return customFetch<RevenueDataPoint[]>(getGetRevenueChartUrl(), {
+  return customFetch<RevenueDataPoint[]>(getGetRevenueChartUrl(params), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetRevenueChartQueryKey = () => {
-  return [`/api/admin/dashboard/revenue`] as const;
+export const getGetRevenueChartQueryKey = (params?: GetRevenueChartParams) => {
+  return [`/api/admin/dashboard/revenue`, ...(params ? [params] : [])] as const;
 };
 
 export const getGetRevenueChartQueryOptions = <
   TData = Awaited<ReturnType<typeof getRevenueChart>>,
   TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getRevenueChart>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
+>(
+  params?: GetRevenueChartParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getRevenueChart>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetRevenueChartQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetRevenueChartQueryKey(params);
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getRevenueChart>>> = ({
     signal,
-  }) => getRevenueChart({ signal, ...requestOptions });
+  }) => getRevenueChart(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof getRevenueChart>>,
@@ -489,21 +510,24 @@ export type GetRevenueChartQueryResult = NonNullable<
 export type GetRevenueChartQueryError = ErrorType<unknown>;
 
 /**
- * @summary Get daily revenue for the last 30 days
+ * @summary Get daily revenue for the specified period
  */
 
 export function useGetRevenueChart<
   TData = Awaited<ReturnType<typeof getRevenueChart>>,
   TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getRevenueChart>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetRevenueChartQueryOptions(options);
+>(
+  params?: GetRevenueChartParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getRevenueChart>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetRevenueChartQueryOptions(params, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -579,6 +603,264 @@ export function useGetTopProducts<
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getGetTopProductsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Get daily new customer registrations for the specified period
+ */
+export const getGetNewCustomersChartUrl = (
+  params?: GetNewCustomersChartParams,
+) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/admin/dashboard/new-customers?${stringifiedParams}`
+    : `/api/admin/dashboard/new-customers`;
+};
+
+export const getNewCustomersChart = async (
+  params?: GetNewCustomersChartParams,
+  options?: RequestInit,
+): Promise<NewCustomerDataPoint[]> => {
+  return customFetch<NewCustomerDataPoint[]>(
+    getGetNewCustomersChartUrl(params),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getGetNewCustomersChartQueryKey = (
+  params?: GetNewCustomersChartParams,
+) => {
+  return [
+    `/api/admin/dashboard/new-customers`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getGetNewCustomersChartQueryOptions = <
+  TData = Awaited<ReturnType<typeof getNewCustomersChart>>,
+  TError = ErrorType<unknown>,
+>(
+  params?: GetNewCustomersChartParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getNewCustomersChart>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetNewCustomersChartQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getNewCustomersChart>>
+  > = ({ signal }) =>
+    getNewCustomersChart(params, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getNewCustomersChart>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetNewCustomersChartQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getNewCustomersChart>>
+>;
+export type GetNewCustomersChartQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get daily new customer registrations for the specified period
+ */
+
+export function useGetNewCustomersChart<
+  TData = Awaited<ReturnType<typeof getNewCustomersChart>>,
+  TError = ErrorType<unknown>,
+>(
+  params?: GetNewCustomersChartParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getNewCustomersChart>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetNewCustomersChartQueryOptions(params, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Get order counts grouped by status
+ */
+export const getGetOrderStatusBreakdownUrl = () => {
+  return `/api/admin/dashboard/order-status`;
+};
+
+export const getOrderStatusBreakdown = async (
+  options?: RequestInit,
+): Promise<OrderStatusCount[]> => {
+  return customFetch<OrderStatusCount[]>(getGetOrderStatusBreakdownUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetOrderStatusBreakdownQueryKey = () => {
+  return [`/api/admin/dashboard/order-status`] as const;
+};
+
+export const getGetOrderStatusBreakdownQueryOptions = <
+  TData = Awaited<ReturnType<typeof getOrderStatusBreakdown>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getOrderStatusBreakdown>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetOrderStatusBreakdownQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getOrderStatusBreakdown>>
+  > = ({ signal }) => getOrderStatusBreakdown({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getOrderStatusBreakdown>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetOrderStatusBreakdownQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getOrderStatusBreakdown>>
+>;
+export type GetOrderStatusBreakdownQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get order counts grouped by status
+ */
+
+export function useGetOrderStatusBreakdown<
+  TData = Awaited<ReturnType<typeof getOrderStatusBreakdown>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getOrderStatusBreakdown>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetOrderStatusBreakdownQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Get total revenue grouped by product category
+ */
+export const getGetRevenueByCategoryChartUrl = () => {
+  return `/api/admin/dashboard/revenue-by-category`;
+};
+
+export const getRevenueByCategoryChart = async (
+  options?: RequestInit,
+): Promise<CategoryRevenue[]> => {
+  return customFetch<CategoryRevenue[]>(getGetRevenueByCategoryChartUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetRevenueByCategoryChartQueryKey = () => {
+  return [`/api/admin/dashboard/revenue-by-category`] as const;
+};
+
+export const getGetRevenueByCategoryChartQueryOptions = <
+  TData = Awaited<ReturnType<typeof getRevenueByCategoryChart>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getRevenueByCategoryChart>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetRevenueByCategoryChartQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getRevenueByCategoryChart>>
+  > = ({ signal }) => getRevenueByCategoryChart({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getRevenueByCategoryChart>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetRevenueByCategoryChartQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getRevenueByCategoryChart>>
+>;
+export type GetRevenueByCategoryChartQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get total revenue grouped by product category
+ */
+
+export function useGetRevenueByCategoryChart<
+  TData = Awaited<ReturnType<typeof getRevenueByCategoryChart>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getRevenueByCategoryChart>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetRevenueByCategoryChartQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

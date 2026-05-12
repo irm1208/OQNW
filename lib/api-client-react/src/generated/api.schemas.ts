@@ -31,6 +31,7 @@ export interface DashboardStats {
   lowStockCount: number;
   revenueToday: number;
   ordersToday: number;
+  avgOrderValue: number;
 }
 
 export interface RevenueDataPoint {
@@ -44,6 +45,22 @@ export interface TopProduct {
   productName: string;
   totalSold: number;
   totalRevenue: number;
+}
+
+export interface NewCustomerDataPoint {
+  date: string;
+  newCustomers: number;
+}
+
+export interface OrderStatusCount {
+  status: string;
+  count: number;
+}
+
+export interface CategoryRevenue {
+  category: string;
+  revenue: number;
+  orders: number;
 }
 
 export interface Order {
@@ -379,6 +396,34 @@ export interface PublicProductDetail {
   halfLife?: string | null;
   isFeatured?: boolean;
 }
+
+export type GetRevenueChartParams = {
+  period?: GetRevenueChartPeriod;
+};
+
+export type GetRevenueChartPeriod =
+  (typeof GetRevenueChartPeriod)[keyof typeof GetRevenueChartPeriod];
+
+export const GetRevenueChartPeriod = {
+  NUMBER_7: 7,
+  NUMBER_30: 30,
+  NUMBER_90: 90,
+  NUMBER_365: 365,
+} as const;
+
+export type GetNewCustomersChartParams = {
+  period?: GetNewCustomersChartPeriod;
+};
+
+export type GetNewCustomersChartPeriod =
+  (typeof GetNewCustomersChartPeriod)[keyof typeof GetNewCustomersChartPeriod];
+
+export const GetNewCustomersChartPeriod = {
+  NUMBER_7: 7,
+  NUMBER_30: 30,
+  NUMBER_90: 90,
+  NUMBER_365: 365,
+} as const;
 
 export type ListAdminOrdersParams = {
   status?: string;

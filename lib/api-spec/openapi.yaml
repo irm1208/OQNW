@@ -112,7 +112,15 @@ paths:
     get:
       operationId: getRevenueChart
       tags: [admin-dashboard]
-      summary: Get daily revenue for the last 30 days
+      summary: Get daily revenue for the specified period
+      parameters:
+        - name: period
+          in: query
+          required: false
+          schema:
+            type: integer
+            enum: [7, 30, 90, 365]
+            default: 30
       responses:
         "200":
           description: Revenue chart data
@@ -137,6 +145,59 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/TopProduct"
+
+  /admin/dashboard/new-customers:
+    get:
+      operationId: getNewCustomersChart
+      tags: [admin-dashboard]
+      summary: Get daily new customer registrations for the specified period
+      parameters:
+        - name: period
+          in: query
+          required: false
+          schema:
+            type: integer
+            enum: [7, 30, 90, 365]
+            default: 30
+      responses:
+        "200":
+          description: New customers chart data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NewCustomerDataPoint"
+
+  /admin/dashboard/order-status:
+    get:
+      operationId: getOrderStatusBreakdown
+      tags: [admin-dashboard]
+      summary: Get order counts grouped by status
+      responses:
+        "200":
+          description: Order status breakdown
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderStatusCount"
+
+  /admin/dashboard/revenue-by-category:
+    get:
+      operationId: getRevenueByCategoryChart
+      tags: [admin-dashboard]
+      summary: Get total revenue grouped by product category
+      responses:
+        "200":
+          description: Revenue by category
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CategoryRevenue"
 
   # ── ORDERS ────────────────────────────────────────────────────────────────
   /admin/orders:
@@ -683,6 +744,7 @@ components:
         - lowStockCount
         - revenueToday
         - ordersToday
+        - avgOrderValue
       properties:
         totalRevenue:
           type: number
@@ -702,6 +764,8 @@ components:
           type: number
         ordersToday:
           type: integer
+        avgOrderValue:
+          type: number
 
     RevenueDataPoint:
       type: object
@@ -726,6 +790,35 @@ components:
           type: integer
         totalRevenue:
           type: number
+
+    NewCustomerDataPoint:
+      type: object
+      required: [date, newCustomers]
+      properties:
+        date:
+          type: string
+        newCustomers:
+          type: integer
+
+    OrderStatusCount:
+      type: object
+      required: [status, count]
+      properties:
+        status:
+          type: string
+        count:
+          type: integer
+
+    CategoryRevenue:
+      type: object
+      required: [category, revenue, orders]
+      properties:
+        category:
+          type: string
+        revenue:
+          type: number
+        orders:
+          type: integer
 
     # ── ORDERS ───────────────────────────────────────────────────────────────
     Order:
