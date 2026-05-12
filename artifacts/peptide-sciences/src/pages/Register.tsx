@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Eye, EyeOff, Mail, Lock, User, Building2, FlaskConical, CheckCircle2 } from "lucide-react";
+import { useCustomerAuth } from "@/context/CustomerAuthContext";
 
 export default function Register() {
   const [, navigate] = useLocation();
+  const { register } = useCustomerAuth();
   const [form, setForm] = useState({
     firstName: "", lastName: "", email: "", institution: "", password: "", confirm: "",
   });
@@ -27,16 +29,29 @@ export default function Register() {
     return e;
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const errs = validate();
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
     setLoading(true);
-    setTimeout(() => {
+    try {
+      await register({
+        email: form.email,
+        password: form.password,
+        firstName: form.firstName,
+        lastName: form.lastName,
+        institution: form.institution || undefined,
+      });
+      navigate("/");
+    } catch (err) {
+      setErrors((prev) => ({
+        ...prev,
+        submit: err instanceof Error ? err.message : "Registration failed. Please try again.",
+      }));
+    } finally {
       setLoading(false);
-      navigate("/sign-in");
-    }, 1400);
+    }
   }
 
   const field = (
@@ -232,6 +247,12 @@ export default function Register() {
               </p>
             </div>
             {errors.agreed && <p style={{ fontSize: "11.5px", color: "#DC2626", marginTop: "-8px" }}>{errors.agreed}</p>}
+
+            {errors.submit && (
+              <p style={{ fontSize: "13px", color: "#DC2626", backgroundColor: "#FEF2F2", border: "1px solid #FECACA", borderRadius: "8px", padding: "10px 12px", margin: 0 }}>
+                {errors.submit}
+              </p>
+            )}
 
             {/* Submit */}
             <button

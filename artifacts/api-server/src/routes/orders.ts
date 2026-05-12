@@ -99,6 +99,33 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
+    // Stock validation: ensure all items with a productId have sufficient stock
+    const itemsWithProductId = cartItems.filter((item) => item.productId > 0);
+    if (itemsWithProductId.length > 0) {
+      const stockErrors: { productName: string; available: number; requested: number }[] = [];
+      for (const item of itemsWithProductId) {
+        const [inv] = await db
+          .select({ stockLevel: productsInventoryTable.stockLevel })
+          .from(productsInventoryTable)
+          .where(eq(productsInventoryTable.productId, item.productId))
+          .limit(1);
+        if (inv !== undefined && inv.stockLevel < item.quantity) {
+          stockErrors.push({
+            productName: item.productName,
+            available: inv.stockLevel,
+            requested: item.quantity,
+          });
+        }
+      }
+      if (stockErrors.length > 0) {
+        res.status(422).json({
+          error: "Some items in your cart have insufficient stock",
+          stockErrors,
+        });
+        return;
+      }
+    }
+
     // Validate discount code if provided
     let discountAmount = 0;
     let validatedDiscountCode: string | null = null;

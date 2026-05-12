@@ -11,6 +11,7 @@ import catalogRouter from "./admin/catalog";
 import adminReturnsRouter from "./admin/returns";
 import publicOrdersRouter from "./orders";
 import publicDiscountsRouter from "./discounts";
+import customerAuthRouter from "./auth";
 
 const router: IRouter = Router();
 
@@ -26,5 +27,6 @@ router.use(catalogRouter);
 router.use(adminReturnsRouter);
 router.use(publicOrdersRouter);
 router.use(publicDiscountsRouter);
+router.use(customerAuthRouter);
 
 export default router;

@@ -27,6 +27,7 @@ import { CartProvider } from "@/context/CartContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
 import { RecentlyViewedProvider } from "@/context/RecentlyViewedContext";
 import { ProductsProvider } from "@/context/ProductsContext";
+import { CustomerAuthProvider } from "@/context/CustomerAuthContext";
 import LiveChat from "@/components/LiveChat";
 import JurisdictionWarning from "@/components/JurisdictionWarning";
 import AgeGate from "@/components/AgeGate";
@@ -90,6 +91,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <ProductsProvider>
+        <CustomerAuthProvider>
         <CurrencyProvider>
           <RecentlyViewedProvider>
           <CartProvider>
@@ -111,6 +113,7 @@ function App() {
           </CartProvider>
           </RecentlyViewedProvider>
         </CurrencyProvider>
+        </CustomerAuthProvider>
         </ProductsProvider>
       </TooltipProvider>
     </QueryClientProvider>

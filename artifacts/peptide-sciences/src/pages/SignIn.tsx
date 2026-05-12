@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Eye, EyeOff, Mail, Lock, FlaskConical } from "lucide-react";
+import { useCustomerAuth } from "@/context/CustomerAuthContext";
 
 export default function SignIn() {
   const [, navigate] = useLocation();
+  const { signIn } = useCustomerAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     if (!email || !password) {
@@ -18,10 +20,14 @@ export default function SignIn() {
       return;
     }
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await signIn(email, password);
       navigate("/");
-    }, 1200);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Sign in failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

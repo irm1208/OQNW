@@ -131,6 +131,7 @@ export default function CheckoutPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [placing, setPlacing] = useState(false);
   const [placeError, setPlaceError] = useState<string | null>(null);
+  const [stockErrors, setStockErrors] = useState<{ productName: string; available: number; requested: number }[]>([]);
 
   // Discount code state
   const [discountInput, setDiscountInput] = useState("");
@@ -236,6 +237,7 @@ export default function CheckoutPage() {
       setErrors({});
       setPlacing(true);
       setPlaceError(null);
+      setStockErrors([]);
       try {
         const res = await fetch(apiUrl("orders"), {
           method: "POST",
@@ -265,6 +267,14 @@ export default function CheckoutPage() {
             discountCode: appliedDiscount?.code ?? null,
           }),
         });
+
+        if (res.status === 422) {
+          const body = await res.json().catch(() => ({})) as { error?: string; stockErrors?: { productName: string; available: number; requested: number }[] };
+          setStockErrors(body.stockErrors ?? []);
+          setPlaceError(body.error ?? "Some items in your cart are unavailable.");
+          setPlacing(false);
+          return;
+        }
 
         if (!res.ok) {
           const err = await res.json().catch(() => ({ error: "Order failed" })) as { error?: string };
@@ -660,9 +670,23 @@ export default function CheckoutPage() {
 
             {/* Place order error */}
             {placeError && (
-              <div style={{ marginTop: "12px", padding: "12px 16px", borderRadius: "12px", backgroundColor: "#FFF5F5", border: "1.5px solid #FCA5A5", display: "flex", gap: "10px", alignItems: "center" }}>
-                <X size={16} style={{ color: "#DC2626", flexShrink: 0 }} />
-                <p style={{ fontSize: "13px", color: "#DC2626", margin: 0 }}>{placeError}</p>
+              <div style={{ marginTop: "12px", padding: "12px 16px", borderRadius: "12px", backgroundColor: "#FFF5F5", border: "1.5px solid #FCA5A5" }}>
+                <div style={{ display: "flex", gap: "10px", alignItems: "center", marginBottom: stockErrors.length > 0 ? "10px" : 0 }}>
+                  <X size={16} style={{ color: "#DC2626", flexShrink: 0 }} />
+                  <p style={{ fontSize: "13px", color: "#DC2626", margin: 0 }}>{placeError}</p>
+                </div>
+                {stockErrors.length > 0 && (
+                  <ul style={{ margin: 0, paddingLeft: "28px", display: "flex", flexDirection: "column", gap: "4px" }}>
+                    {stockErrors.map((se) => (
+                      <li key={se.productName} style={{ fontSize: "12px", color: "#B91C1C" }}>
+                        <strong>{se.productName}</strong>
+                        {se.available === 0
+                          ? " — Out of stock"
+                          : ` — Only ${se.available} available (you requested ${se.requested})`}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             )}
 

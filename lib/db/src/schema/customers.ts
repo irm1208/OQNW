@@ -14,6 +14,7 @@ export const customersTable = pgTable("customers", {
   email: text("email").notNull().unique(),
   firstName: text("first_name").notNull(),
   lastName: text("last_name").notNull(),
+  passwordHash: text("password_hash"),
   phone: text("phone"),
   address1: text("address1"),
   address2: text("address2"),

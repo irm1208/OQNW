@@ -222,12 +222,28 @@ export default function ProductPage() {
 
             {/* Badges row */}
             <div className="flex items-center gap-2 mb-5 flex-wrap">
-              <span
-                className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
-                style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}
-              >
-                ✓ In Stock
-              </span>
+              {product.stockLevel === 0 ? (
+                <span
+                  className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
+                  style={{ backgroundColor: "#FEF2F2", color: "#DC2626", border: "1px solid #FECACA" }}
+                >
+                  ✗ Out of Stock
+                </span>
+              ) : product.stockLevel !== undefined && product.stockLevel <= 10 ? (
+                <span
+                  className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
+                  style={{ backgroundColor: "#FFFBEB", color: "#D97706", border: "1px solid #FDE68A" }}
+                >
+                  ⚡ Low Stock — {product.stockLevel} left
+                </span>
+              ) : (
+                <span
+                  className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
+                  style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}
+                >
+                  ✓ In Stock
+                </span>
+              )}
             </div>
 
             {/* Strength switcher */}
@@ -350,20 +366,23 @@ export default function ProductPage() {
 
                 <button
                   onClick={handleAddToCart}
+                  disabled={product.stockLevel === 0}
                   className="flex-1 flex items-center justify-center gap-2 rounded-xl font-bold text-white transition-all hover:opacity-90"
                   style={{
-                    background: added
+                    background: product.stockLevel === 0
+                      ? "#CBD5E1"
+                      : added
                       ? "linear-gradient(135deg, #059669 0%, #047857 100%)"
                       : "linear-gradient(135deg, #1B5CB5 0%, #1240A0 100%)",
                     height: "44px",
                     fontSize: "14px",
                     border: "none",
-                    cursor: "pointer",
+                    cursor: product.stockLevel === 0 ? "not-allowed" : "pointer",
                     transition: "background 0.25s",
                   }}
                 >
                   <ShoppingCart size={16} />
-                  {added ? "✓ Added to Cart!" : "Add to Cart"}
+                  {product.stockLevel === 0 ? "Out of Stock" : added ? "✓ Added to Cart!" : "Add to Cart"}
                 </button>
               </div>
             </div>
@@ -450,7 +469,22 @@ export default function ProductPage() {
                   )}
                   <tr>
                     <td className="py-2.5 px-4 text-xs font-semibold" style={{ color: "#64748B", backgroundColor: "#FAFBFF" }}>Availability</td>
-                    <td className="py-2.5 px-4 text-xs font-bold" style={{ color: "#059669" }}>In Stock</td>
+                    <td
+                      className="py-2.5 px-4 text-xs font-bold"
+                      style={{
+                        color: product.stockLevel === 0
+                          ? "#DC2626"
+                          : product.stockLevel !== undefined && product.stockLevel <= 10
+                          ? "#D97706"
+                          : "#059669",
+                      }}
+                    >
+                      {product.stockLevel === 0
+                        ? "Out of Stock"
+                        : product.stockLevel !== undefined && product.stockLevel <= 10
+                        ? `Low Stock (${product.stockLevel} left)`
+                        : "In Stock"}
+                    </td>
                   </tr>
                 </tbody>
               </table>
