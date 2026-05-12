@@ -8,6 +8,7 @@ import {
   customersTable,
   discountCodesTable,
   productsInventoryTable,
+  abandonedCartsTable,
 } from "@workspace/db";
 import { eq, sql, inArray } from "drizzle-orm";
 import { sendOrderConfirmation, sendLowStockAlert } from "../lib/email";
@@ -351,6 +352,14 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
             ).catch(() => {});
           }
         })
+        .catch(() => {});
+    }
+
+    // Mark abandoned cart as converted (non-blocking)
+    if (customerId) {
+      db.update(abandonedCartsTable)
+        .set({ convertedAt: new Date() })
+        .where(eq(abandonedCartsTable.customerId, customerId))
         .catch(() => {});
     }
 

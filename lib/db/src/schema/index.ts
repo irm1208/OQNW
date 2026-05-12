@@ -10,3 +10,4 @@ export * from "./products_catalog";
 export * from "./returns";
 export * from "./product_reviews";
 export * from "./wishlists";
+export * from "./abandoned_carts";

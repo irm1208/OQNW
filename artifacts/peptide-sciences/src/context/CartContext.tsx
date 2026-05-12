@@ -1,5 +1,6 @@
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useRef, type ReactNode } from "react";
 import type { Product } from "@/data/products";
+import { useCustomerAuth } from "@/context/CustomerAuthContext";
 
 export type CartItem = {
   product: Product;
@@ -18,6 +19,10 @@ type CartContextType = {
 const CartContext = createContext<CartContextType | null>(null);
 
 const STORAGE_KEY = "omniqure_cart";
+const BASE_URL = import.meta.env.BASE_URL ?? "/";
+function apiUrl(path: string) {
+  return `${BASE_URL}${path}`.replace(/\/+/g, "/").replace(/^\/\//, "/");
+}
 
 function loadFromStorage(): CartItem[] {
   try {
@@ -30,37 +35,91 @@ function loadFromStorage(): CartItem[] {
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(loadFromStorage);
+  const { customer } = useCustomerAuth();
+  const syncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }, [items]);
 
-  const addToCart = useCallback((product: Product, qty = 1) => {
-    setItems((prev) => {
-      const existing = prev.find((i) => i.product.id === product.id);
-      if (existing) {
-        return prev.map((i) =>
-          i.product.id === product.id
-            ? { ...i, quantity: i.quantity + qty }
-            : i
+  const syncToServer = useCallback(
+    (cartItems: CartItem[], cust: typeof customer) => {
+      if (!cust) return;
+      if (syncTimerRef.current) clearTimeout(syncTimerRef.current);
+      syncTimerRef.current = setTimeout(() => {
+        const payload = cartItems.map((i) => ({
+          productId: parseInt(i.product.id, 10) || 0,
+          productName: i.product.name,
+          quantity: i.quantity,
+          priceGbp: i.product.price ?? 0,
+        }));
+        fetch(apiUrl("api/cart/save"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            customerEmail: cust.email,
+            customerName: `${cust.firstName} ${cust.lastName}`,
+            items: payload,
+          }),
+        }).catch(() => {});
+      }, 2000);
+    },
+    []
+  );
+
+  const addToCart = useCallback(
+    (product: Product, qty = 1) => {
+      setItems((prev) => {
+        const existing = prev.find((i) => i.product.id === product.id);
+        const next = existing
+          ? prev.map((i) =>
+              i.product.id === product.id
+                ? { ...i, quantity: i.quantity + qty }
+                : i
+            )
+          : [...prev, { product, quantity: qty }];
+        syncToServer(next, customer);
+        return next;
+      });
+    },
+    [customer, syncToServer]
+  );
+
+  const removeFromCart = useCallback(
+    (productId: string) => {
+      setItems((prev) => {
+        const next = prev.filter((i) => i.product.id !== productId);
+        syncToServer(next, customer);
+        return next;
+      });
+    },
+    [customer, syncToServer]
+  );
+
+  const updateQuantity = useCallback(
+    (productId: string, qty: number) => {
+      if (qty < 1) return;
+      setItems((prev) => {
+        const next = prev.map((i) =>
+          i.product.id === productId ? { ...i, quantity: qty } : i
         );
-      }
-      return [...prev, { product, quantity: qty }];
-    });
-  }, []);
+        syncToServer(next, customer);
+        return next;
+      });
+    },
+    [customer, syncToServer]
+  );
 
-  const removeFromCart = useCallback((productId: string) => {
-    setItems((prev) => prev.filter((i) => i.product.id !== productId));
-  }, []);
-
-  const updateQuantity = useCallback((productId: string, qty: number) => {
-    if (qty < 1) return;
-    setItems((prev) =>
-      prev.map((i) => (i.product.id === productId ? { ...i, quantity: qty } : i))
-    );
-  }, []);
-
-  const clearCart = useCallback(() => setItems([]), []);
+  const clearCart = useCallback(() => {
+    setItems([]);
+    if (customer) {
+      fetch(apiUrl("api/cart/save"), {
+        method: "DELETE",
+        credentials: "include",
+      }).catch(() => {});
+    }
+  }, [customer]);
 
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
 

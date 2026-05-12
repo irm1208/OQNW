@@ -18,6 +18,7 @@ import adminReviewsRouter from "./admin/reviews";
 import wishlistRouter from "./wishlist";
 import publicReturnsRouter from "./returns";
 import productsRouter from "./products";
+import cartRouter from "./cart";
 
 const router: IRouter = Router();
 
@@ -40,5 +41,6 @@ router.use(adminReviewsRouter);
 router.use(wishlistRouter);
 router.use(publicReturnsRouter);
 router.use(productsRouter);
+router.use(cartRouter);
 
 export default router;

@@ -363,3 +363,66 @@ export async function sendLowStockAlert(products: Array<{ productName: string; s
     logger.error({ err }, "Failed to send low stock alert email");
   }
 }
+
+export interface AbandonedCartItem {
+  productName: string;
+  quantity: number;
+  priceGbp: number;
+  imageUrl?: string;
+}
+
+export interface AbandonedCartEmailData {
+  customerName: string;
+  customerEmail: string;
+  items: AbandonedCartItem[];
+  cartUrl: string;
+}
+
+export async function sendAbandonedCartEmail(data: AbandonedCartEmailData): Promise<void> {
+  const rows = data.items.map(item => `
+    <tr>
+      <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#1e293b;">
+        ${item.productName}
+      </td>
+      <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#64748b;text-align:center;">×${item.quantity}</td>
+      <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#1e293b;text-align:right;">${formatGbp(item.priceGbp * item.quantity)}</td>
+    </tr>`).join("");
+
+  const subtotal = data.items.reduce((sum, i) => sum + i.priceGbp * i.quantity, 0);
+
+  const body = `
+    <h2 style="margin:0 0 8px;font-size:22px;color:#0f172a;">You left something behind</h2>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Hi ${data.customerName}, your cart is waiting. Complete your order before items sell out.</p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 20px;">
+      <tr>
+        <th style="text-align:left;font-size:12px;color:#94a3b8;font-weight:600;padding-bottom:8px;border-bottom:2px solid #e2e8f0;">ITEM</th>
+        <th style="text-align:center;font-size:12px;color:#94a3b8;font-weight:600;padding-bottom:8px;border-bottom:2px solid #e2e8f0;">QTY</th>
+        <th style="text-align:right;font-size:12px;color:#94a3b8;font-weight:600;padding-bottom:8px;border-bottom:2px solid #e2e8f0;">PRICE</th>
+      </tr>
+      ${rows}
+      <tr>
+        <td colspan="2" style="padding:12px 0 4px;font-size:14px;font-weight:700;color:#0f172a;border-top:2px solid #e2e8f0;">Subtotal</td>
+        <td style="padding:12px 0 4px;font-size:14px;font-weight:700;color:#0f172a;text-align:right;border-top:2px solid #e2e8f0;">${formatGbp(subtotal)}</td>
+      </tr>
+    </table>
+
+    <div style="margin-top:24px;">
+      <a href="${data.cartUrl}" style="display:inline-block;background:#0f172a;color:#ffffff;padding:14px 32px;border-radius:6px;text-decoration:none;font-size:15px;font-weight:600;">Complete My Order</a>
+    </div>
+
+    <p style="margin:24px 0 0;font-size:12px;color:#94a3b8;">If you no longer wish to receive these reminders, simply ignore this email — we won't send another one for this cart.</p>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: data.customerEmail,
+      subject: `${data.customerName.split(" ")[0]}, you left items in your cart`,
+      html: baseTemplate("Your cart is waiting", body),
+    });
+    logger.info({ email: data.customerEmail }, "Abandoned cart email sent");
+  } catch (err) {
+    logger.error({ err }, "Failed to send abandoned cart email");
+  }
+}
