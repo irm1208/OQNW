@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut } from "lucide-react";
+import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut, Heart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
+import { useWishlist } from "@/context/WishlistContext";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -33,6 +34,7 @@ export default function Header() {
   const { totalItems } = useCart();
   const { currency, setCurrency } = useCurrency();
   const { customer, loadingAuth, signOut } = useCustomerAuth();
+  const { count: wishlistCount } = useWishlist();
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const currencyRef = useRef<HTMLDivElement>(null);
@@ -439,6 +441,32 @@ export default function Header() {
                 <span className="hidden sm:inline">{loadingAuth ? "" : "Sign in"}</span>
               </Link>
             )}
+
+            {/* Wishlist */}
+            <Link
+              href="/wishlist"
+              className="flex items-center gap-1.5 text-sm font-medium transition-colors relative"
+              style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.85)"}
+            >
+              <span className="relative">
+                <Heart size={18} />
+                {wishlistCount > 0 && (
+                  <span
+                    className="absolute flex items-center justify-center font-bold text-white rounded-full"
+                    style={{
+                      top: "-7px", right: "-8px",
+                      minWidth: "16px", height: "16px",
+                      backgroundColor: "#DC2626", fontSize: "9px", padding: "0 3px", lineHeight: 1,
+                    }}
+                  >
+                    {wishlistCount > 99 ? "99+" : wishlistCount}
+                  </span>
+                )}
+              </span>
+              <span className="hidden sm:inline">Wishlist</span>
+            </Link>
 
             {/* Cart */}
             <Link

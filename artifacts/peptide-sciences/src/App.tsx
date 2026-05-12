@@ -25,6 +25,7 @@ import ForgotPassword from "@/pages/ForgotPassword";
 import ResetPassword from "@/pages/ResetPassword";
 import Register from "@/pages/Register";
 import AccountPage from "@/pages/AccountPage";
+import WishlistPage from "@/pages/WishlistPage";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
@@ -85,6 +86,7 @@ function Router() {
       <Route path="/checkout" component={CheckoutPage} />
       <Route path="/order-confirmation" component={OrderConfirmation} />
       <Route path="/track-order" component={TrackOrderPage} />
+      <Route path="/wishlist" component={WishlistPage} />
       <Route path="/terms" component={TermsPage} />
       <Route path="/shipping" component={ShippingPage} />
       <Route path="/privacy" component={PrivacyPage} />
