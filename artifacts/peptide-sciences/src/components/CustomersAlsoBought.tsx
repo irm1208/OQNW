@@ -1,11 +1,16 @@
 import { Link } from "wouter";
 import { ShoppingCart, CheckCircle2, Users } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { type Product } from "@/data/products";
 import { useProducts } from "@/context/ProductsContext";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getPurityStr } from "@/utils/productPurity";
+
+const BASE_URL = import.meta.env.BASE_URL ?? "/";
+function apiUrl(path: string) {
+  return `${BASE_URL}api/${path}`.replace(/\/+/g, "/").replace(/^\/\//, "/");
+}
 
 const COMPLEMENTARY: Record<string, string[]> = {
   "Healing Peptides":   ["Immune Support", "Anti-Inflammatory", "Peptide Blends"],
@@ -29,35 +34,21 @@ function parseBase(name: string): string {
   return match ? match[1].trim() : name;
 }
 
-function getAlsoBought(product: Product, products: Product[]): Product[] {
+function getStaticAlsoBought(product: Product, products: Product[]): Product[] {
   const currentBase = parseBase(product.name);
   const complementaryCategories = COMPLEMENTARY[product.category] ?? [];
-
   const sameCat = products.filter(
-    (p) =>
-      p.id !== product.id &&
-      p.category === product.category &&
-      parseBase(p.name) !== currentBase
+    (p) => p.id !== product.id && p.category === product.category && parseBase(p.name) !== currentBase
   );
-
   const crossCat = products.filter(
-    (p) =>
-      p.id !== product.id &&
-      complementaryCategories.includes(p.category) &&
-      parseBase(p.name) !== currentBase
+    (p) => p.id !== product.id && complementaryCategories.includes(p.category) && parseBase(p.name) !== currentBase
   );
-
   const seenBases = new Set<string>();
   const picked: Product[] = [];
-
   const addUnique = (p: Product) => {
     const base = parseBase(p.name);
-    if (!seenBases.has(base) && picked.length < 5) {
-      seenBases.add(base);
-      picked.push(p);
-    }
+    if (!seenBases.has(base) && picked.length < 5) { seenBases.add(base); picked.push(p); }
   };
-
   const seed = parseInt(product.id, 10) || 1;
   const shuffle = <T,>(arr: T[]): T[] => {
     const copy = [...arr];
@@ -67,11 +58,9 @@ function getAlsoBought(product: Product, products: Product[]): Product[] {
     }
     return copy;
   };
-
   shuffle(sameCat).slice(0, 2).forEach(addUnique);
   shuffle(crossCat).slice(0, 3).forEach(addUnique);
   if (picked.length < 5) shuffle(sameCat).forEach(addUnique);
-
   return picked;
 }
 
@@ -107,18 +96,13 @@ function AlsoBoughtCard({ product }: { product: Product }) {
       >
         <div
           className="flex items-center justify-center relative"
-          style={{
-            height: "130px",
-            background: "linear-gradient(145deg, #F4F8FF 0%, #EBF2FF 100%)",
-          }}
+          style={{ height: "130px", background: "linear-gradient(145deg, #F4F8FF 0%, #EBF2FF 100%)" }}
         >
           <img
             src={product.image}
             alt={product.name}
             style={{ width: "100%", height: "100%", objectFit: "contain", padding: "12px" }}
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).style.display = "none";
-            }}
+            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
           />
           <span
             className="absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full"
@@ -127,7 +111,6 @@ function AlsoBoughtCard({ product }: { product: Product }) {
             {getPurityStr(product.id)}
           </span>
         </div>
-
         <div className="flex flex-col flex-1 px-3 pt-2.5 pb-3">
           <span
             className="text-xs font-bold mb-1 uppercase tracking-wide"
@@ -141,7 +124,6 @@ function AlsoBoughtCard({ product }: { product: Product }) {
           >
             {product.name}
           </p>
-
           <div className="flex items-center justify-between gap-2">
             {product.price != null && (
               <p className="font-bold" style={{ fontSize: "15px", color: "#1240A0" }}>
@@ -162,18 +144,10 @@ function AlsoBoughtCard({ product }: { product: Product }) {
                 flexShrink: 0,
                 transition: "background-color 0.2s",
               }}
-              onMouseEnter={(e) => {
-                if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1B5CB5";
-              }}
-              onMouseLeave={(e) => {
-                if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0";
-              }}
+              onMouseEnter={(e) => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1B5CB5"; }}
+              onMouseLeave={(e) => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0"; }}
             >
-              {added ? (
-                <><CheckCircle2 size={11} /> Added!</>
-              ) : (
-                <><ShoppingCart size={11} /> Add</>
-              )}
+              {added ? <><CheckCircle2 size={11} /> Added!</> : <><ShoppingCart size={11} /> Add</>}
             </button>
           </div>
         </div>
@@ -182,13 +156,46 @@ function AlsoBoughtCard({ product }: { product: Product }) {
   );
 }
 
+interface RelatedApiItem {
+  productId: number;
+  productName: string;
+  productCategory: string;
+  coOccurrences: number;
+}
+
 interface CustomersAlsoBoughtProps {
   product: Product;
 }
 
 export default function CustomersAlsoBought({ product }: CustomersAlsoBoughtProps) {
   const { products } = useProducts();
-  const alsoBought = getAlsoBought(product, products);
+  const [apiRelated, setApiRelated] = useState<Product[] | null>(null);
+  const [dataSource, setDataSource] = useState<"real" | "static">("static");
+
+  useEffect(() => {
+    const productIdInt = parseInt(product.id, 10);
+    if (!productIdInt) return;
+
+    fetch(apiUrl(`products/${productIdInt}/related`), { credentials: "include" })
+      .then((r) => r.ok ? r.json() as Promise<RelatedApiItem[]> : Promise.resolve([]))
+      .then((items) => {
+        if (items.length >= 3) {
+          const resolved = items
+            .map((item) => products.find((p) => parseInt(p.id, 10) === item.productId))
+            .filter(Boolean) as Product[];
+          if (resolved.length >= 3) {
+            setApiRelated(resolved.slice(0, 5));
+            setDataSource("real");
+            return;
+          }
+        }
+        setApiRelated(null);
+        setDataSource("static");
+      })
+      .catch(() => { setApiRelated(null); setDataSource("static"); });
+  }, [product.id]);
+
+  const alsoBought = apiRelated ?? getStaticAlsoBought(product, products);
 
   if (alsoBought.length === 0) return null;
 
@@ -206,12 +213,11 @@ export default function CustomersAlsoBought({ product }: CustomersAlsoBoughtProp
         </h2>
         <span
           className="text-xs px-2.5 py-0.5 rounded-full font-medium"
-          style={{ backgroundColor: "#FFF7ED", color: "#C2410C", border: "1px solid #FED7AA" }}
+          style={{ backgroundColor: dataSource === "real" ? "#F0FDF4" : "#FFF7ED", color: dataSource === "real" ? "#15803D" : "#C2410C", border: `1px solid ${dataSource === "real" ? "#BBF7D0" : "#FED7AA"}` }}
         >
-          Frequently paired
+          {dataSource === "real" ? "Based on orders" : "Frequently paired"}
         </span>
       </div>
-
       <div
         className="grid gap-3"
         style={{ gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))" }}

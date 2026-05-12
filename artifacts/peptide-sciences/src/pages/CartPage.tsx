@@ -1,7 +1,154 @@
 import { Link, useLocation } from "wouter";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
-import { Trash2, Plus, Minus, ShoppingCart, ChevronRight, FlaskConical } from "lucide-react";
+import { Trash2, Plus, Minus, ShoppingCart, ChevronRight, FlaskConical, Sparkles, CheckCircle2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useProducts } from "@/context/ProductsContext";
+import { type Product } from "@/data/products";
+import { getPurityStr } from "@/utils/productPurity";
+
+const BASE_URL = import.meta.env.BASE_URL ?? "/";
+function apiUrl(path: string) {
+  return `${BASE_URL}api/${path}`.replace(/\/+/g, "/").replace(/^\/\//, "/");
+}
+
+interface RelatedApiItem {
+  productId: number;
+  productName: string;
+  productCategory: string;
+  coOccurrences: number;
+}
+
+function CartUpsellCard({ product }: { product: Product }) {
+  const [added, setAdded] = useState(false);
+  const { addToCart, items } = useCart();
+  const { formatPrice } = useCurrency();
+  const alreadyInCart = items.some((i) => i.product.id === product.id);
+
+  const handleAdd = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addToCart(product, 1);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1800);
+  };
+
+  return (
+    <Link href={`/product/${product.id}`} style={{ textDecoration: "none" }}>
+      <div
+        className="rounded-xl bg-white flex items-center gap-3 px-3 py-2.5 cursor-pointer transition-all duration-200"
+        style={{ border: "1.5px solid #E8EDF5", boxShadow: "0 1px 4px rgba(15,23,42,0.04)" }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLDivElement).style.borderColor = "#93B8F0";
+          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 14px rgba(27,92,181,0.09)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLDivElement).style.borderColor = "#E8EDF5";
+          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 1px 4px rgba(15,23,42,0.04)";
+        }}
+      >
+        <div
+          className="rounded-lg flex items-center justify-center flex-shrink-0"
+          style={{ width: "48px", height: "48px", background: "linear-gradient(145deg, #F4F8FF 0%, #EBF2FF 100%)", border: "1px solid #E2E8F0" }}
+        >
+          <img
+            src={product.image}
+            alt={product.name}
+            style={{ width: "100%", height: "100%", objectFit: "contain", padding: "6px" }}
+            onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = "0"; }}
+          />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold truncate" style={{ fontSize: "12px", color: "#0F172A", lineHeight: 1.3 }}>{product.name}</p>
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <span style={{ fontSize: "10px", color: "#059669", fontWeight: 600 }}>{getPurityStr(product.id)}</span>
+            {product.price != null && (
+              <span style={{ fontSize: "12px", fontWeight: 700, color: "#1240A0" }}>{formatPrice(product.price)}</span>
+            )}
+          </div>
+        </div>
+        {alreadyInCart ? (
+          <span className="flex items-center gap-1 text-xs font-semibold flex-shrink-0" style={{ color: "#059669" }}>
+            <CheckCircle2 size={13} /> In cart
+          </span>
+        ) : (
+          <button
+            onClick={handleAdd}
+            className="flex items-center gap-1 font-semibold rounded-lg flex-shrink-0 transition-all"
+            style={{
+              backgroundColor: added ? "#059669" : "#1240A0",
+              color: "#fff", border: "none", cursor: "pointer",
+              fontSize: "11px", padding: "5px 10px", height: "28px",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1B5CB5"; }}
+            onMouseLeave={(e) => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0"; }}
+          >
+            {added ? <><CheckCircle2 size={11} /> Added</> : <><ShoppingCart size={11} /> Add</>}
+          </button>
+        )}
+      </div>
+    </Link>
+  );
+}
+
+function CartUpsells() {
+  const { items } = useCart();
+  const { products } = useProducts();
+  const [suggestions, setSuggestions] = useState<Product[]>([]);
+
+  useEffect(() => {
+    if (items.length === 0) { setSuggestions([]); return; }
+
+    const cartProductIds = new Set(items.map((i) => i.product.id));
+
+    const fetchRelated = async () => {
+      const allRelated: RelatedApiItem[] = [];
+      const seen = new Set<number>();
+      for (const { product } of items.slice(0, 3)) {
+        const productIdInt = parseInt(product.id, 10);
+        if (!productIdInt) continue;
+        try {
+          const res = await fetch(apiUrl(`products/${productIdInt}/related`), { credentials: "include" });
+          if (res.ok) {
+            const data = await res.json() as RelatedApiItem[];
+            for (const item of data) {
+              if (!seen.has(item.productId)) {
+                seen.add(item.productId);
+                allRelated.push(item);
+              }
+            }
+          }
+        } catch { /* skip */ }
+      }
+
+      const resolved = allRelated
+        .sort((a, b) => b.coOccurrences - a.coOccurrences)
+        .map((r) => products.find((p) => parseInt(p.id, 10) === r.productId))
+        .filter((p): p is Product => !!p && !cartProductIds.has(p.id))
+        .slice(0, 4);
+
+      setSuggestions(resolved);
+    };
+
+    void fetchRelated();
+  }, [items.map((i) => i.product.id).join(",")]);
+
+  if (suggestions.length === 0) return null;
+
+  return (
+    <div className="mt-6">
+      <div className="flex items-center gap-2 mb-3">
+        <Sparkles size={14} style={{ color: "#1B5CB5" }} />
+        <p className="font-bold" style={{ fontSize: "13px", color: "#0F172A" }}>Frequently bought with your cart</p>
+      </div>
+      <div className="space-y-2">
+        {suggestions.map((p) => (
+          <CartUpsellCard key={p.id} product={p} />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function CartPage() {
   const [, navigate] = useLocation();
@@ -152,6 +299,8 @@ export default function CartPage() {
                 Clear entire cart
               </button>
             </div>
+
+            <CartUpsells />
           </div>
 
           {/* Order summary */}
