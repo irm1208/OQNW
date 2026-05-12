@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link, useParams } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
-import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download } from "lucide-react";
+import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, User } from "lucide-react";
 import { generateCOA } from "@/utils/generateCOA";
 import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
@@ -11,6 +11,47 @@ import { getPurity, getPurityStr, getLotNumber } from "@/utils/productPurity";
 import { useRecentlyViewed } from "@/context/RecentlyViewedContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import CustomersAlsoBought from "@/components/CustomersAlsoBought";
+import { useCustomerAuth } from "@/context/CustomerAuthContext";
+
+const BASE_URL = import.meta.env.BASE_URL ?? "/";
+function apiUrl(path: string) {
+  return `${BASE_URL}api/${path}`.replace(/\/+/g, "/").replace(/^\/\//, "/");
+}
+
+type ReviewItem = {
+  id: number;
+  customerId: number;
+  customerName: string;
+  rating: number;
+  title: string;
+  body: string;
+  createdAt: string;
+};
+
+type ReviewsData = {
+  reviews: ReviewItem[];
+  summary: { avgRating: number | null; totalCount: number; breakdown: Record<number, number> };
+  myReview: { id: number; rating: number; title: string; body: string; isApproved: boolean } | null;
+  hasPurchased: boolean;
+};
+
+function StarRow({ rating, size = 14 }: { rating: number; size?: number }) {
+  return (
+    <span style={{ display: "inline-flex", gap: "2px" }}>
+      {[1, 2, 3, 4, 5].map((s) => (
+        <Star
+          key={s}
+          size={size}
+          style={{
+            color: s <= rating ? "#F59E0B" : "#E2E8F0",
+            fill: s <= rating ? "#F59E0B" : "#E2E8F0",
+            flexShrink: 0,
+          }}
+        />
+      ))}
+    </span>
+  );
+}
 
 function parseBaseName(name: string): { base: string; strength: string } {
   const match = name.match(/^(.*?)\s+(\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g)(?:\s+\(.*?\))?)$/i);
@@ -23,19 +64,76 @@ export default function ProductPage() {
   const params = useParams<{ id: string }>();
   const product = products.find((p) => p.id === params.id);
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState<"description" | "coa">("description");
+  const [activeTab, setActiveTab] = useState<"description" | "coa" | "reviews">("description");
   const [added, setAdded] = useState(false);
   const { addToCart } = useCart();
   const { trackView } = useRecentlyViewed();
+  const { customer } = useCustomerAuth();
+  const { formatPrice } = useCurrency();
+
+  // Reviews state
+  const [reviewsData, setReviewsData] = useState<ReviewsData | null>(null);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
+  const [writeRating, setWriteRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [writeTitle, setWriteTitle] = useState("");
+  const [writeBody, setWriteBody] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const fetchReviews = useCallback(async (productId: string) => {
+    setReviewsLoading(true);
+    try {
+      const res = await fetch(apiUrl(`products/${productId}/reviews`), { credentials: "include" });
+      if (res.ok) setReviewsData(await res.json() as ReviewsData);
+    } finally {
+      setReviewsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
+    setActiveTab("description");
+    setReviewsData(null);
+    setSubmitSuccess(false);
   }, [params.id]);
 
   useEffect(() => {
     if (product) trackView(product.id);
   }, [product?.id]);
-  const { formatPrice } = useCurrency();
+
+  useEffect(() => {
+    if (activeTab === "reviews" && product && !reviewsData) {
+      void fetchReviews(product.id);
+    }
+  }, [activeTab, product?.id]);
+
+  const handleSubmitReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!product || writeRating === 0) return;
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch(apiUrl(`products/${product.id}/reviews`), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ rating: writeRating, title: writeTitle.trim(), body: writeBody.trim() }),
+      });
+      const data = await res.json() as { error?: string };
+      if (!res.ok) { setSubmitError(data.error ?? "Failed to submit review"); return; }
+      setSubmitSuccess(true);
+      setWriteRating(0);
+      setWriteTitle("");
+      setWriteBody("");
+      if (product) void fetchReviews(product.id);
+    } catch {
+      setSubmitError("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const decreaseQty = () => setQuantity((q) => Math.max(1, q - 1));
   const increaseQty = () => setQuantity((q) => q + 1);
@@ -521,7 +619,7 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* Description / COA Tabs */}
+        {/* Description / COA / Reviews Tabs */}
         <div
           className="rounded-2xl overflow-hidden mb-8"
           style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}
@@ -531,12 +629,13 @@ export default function ProductPage() {
             {[
               { key: "description", label: "Description" },
               { key: "coa", label: "COA / HPLC / MS" },
+              { key: "reviews", label: "Reviews" },
             ].map((tab) => {
               const active = activeTab === tab.key;
               return (
                 <button
                   key={tab.key}
-                  onClick={() => setActiveTab(tab.key as "description" | "coa")}
+                  onClick={() => setActiveTab(tab.key as "description" | "coa" | "reviews")}
                   className="px-6 py-3.5 text-sm font-semibold transition-colors"
                   style={{
                     color: active ? "#1B5CB5" : "#64748B",
@@ -553,7 +652,186 @@ export default function ProductPage() {
 
           {/* Tab content */}
           <div className="p-6">
-            {activeTab === "description" ? (
+            {activeTab === "reviews" ? (
+              <div style={{ maxWidth: "860px" }}>
+                {reviewsLoading ? (
+                  <div className="flex justify-center py-12">
+                    <Loader2 className="w-6 h-6 animate-spin" style={{ color: "#1B5CB5" }} />
+                  </div>
+                ) : reviewsData ? (
+                  <>
+                    {/* Summary bar */}
+                    {reviewsData.summary.totalCount > 0 && (
+                      <div className="flex flex-col sm:flex-row gap-6 mb-8 p-5 rounded-xl" style={{ backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+                        <div className="text-center flex flex-col items-center justify-center min-w-[100px]">
+                          <span className="text-4xl font-bold" style={{ color: "#0F172A" }}>
+                            {reviewsData.summary.avgRating?.toFixed(1)}
+                          </span>
+                          <StarRow rating={Math.round(reviewsData.summary.avgRating ?? 0)} size={16} />
+                          <span className="text-xs mt-1" style={{ color: "#64748B" }}>
+                            {reviewsData.summary.totalCount} review{reviewsData.summary.totalCount !== 1 ? "s" : ""}
+                          </span>
+                        </div>
+                        <div className="flex-1 space-y-1.5">
+                          {[5, 4, 3, 2, 1].map((star) => {
+                            const count = reviewsData.summary.breakdown[star] ?? 0;
+                            const pct = reviewsData.summary.totalCount > 0 ? (count / reviewsData.summary.totalCount) * 100 : 0;
+                            return (
+                              <div key={star} className="flex items-center gap-2 text-xs" style={{ color: "#64748B" }}>
+                                <span className="w-4 text-right">{star}</span>
+                                <Star size={11} style={{ color: "#F59E0B", fill: "#F59E0B", flexShrink: 0 }} />
+                                <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ backgroundColor: "#E2E8F0" }}>
+                                  <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: "#F59E0B" }} />
+                                </div>
+                                <span className="w-6">{count}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Write review form */}
+                    {customer ? (
+                      reviewsData.myReview ? (
+                        <div className="mb-6 p-4 rounded-xl" style={{ backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0" }}>
+                          <p className="text-sm font-semibold mb-1" style={{ color: "#15803D" }}>Your review is submitted</p>
+                          <p className="text-xs" style={{ color: "#166534" }}>
+                            {reviewsData.myReview.isApproved === false
+                              ? "Thank you! Your review is pending approval."
+                              : "Your review is published."}
+                          </p>
+                        </div>
+                      ) : reviewsData.hasPurchased ? (
+                        <div className="mb-8 p-5 rounded-xl" style={{ backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+                          <h3 className="font-semibold mb-3" style={{ fontSize: "14px", color: "#0F172A" }}>Write a Review</h3>
+                          {submitSuccess ? (
+                            <div className="p-3 rounded-lg text-sm font-medium" style={{ backgroundColor: "#F0FDF4", color: "#15803D" }}>
+                              Thank you! Your review has been submitted and is pending approval.
+                            </div>
+                          ) : (
+                            <form onSubmit={(e) => void handleSubmitReview(e)} className="space-y-3">
+                              {/* Star picker */}
+                              <div>
+                                <label className="text-xs font-semibold block mb-1" style={{ color: "#374151" }}>Your Rating *</label>
+                                <div className="flex gap-1">
+                                  {[1, 2, 3, 4, 5].map((s) => (
+                                    <button
+                                      key={s}
+                                      type="button"
+                                      onMouseEnter={() => setHoverRating(s)}
+                                      onMouseLeave={() => setHoverRating(0)}
+                                      onClick={() => setWriteRating(s)}
+                                      style={{ background: "none", border: "none", padding: "2px", cursor: "pointer" }}
+                                    >
+                                      <Star
+                                        size={24}
+                                        style={{
+                                          color: s <= (hoverRating || writeRating) ? "#F59E0B" : "#CBD5E1",
+                                          fill: s <= (hoverRating || writeRating) ? "#F59E0B" : "#CBD5E1",
+                                          transition: "color 0.1s, fill 0.1s",
+                                        }}
+                                      />
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                              <div>
+                                <label className="text-xs font-semibold block mb-1" style={{ color: "#374151" }}>Title *</label>
+                                <input
+                                  type="text"
+                                  required
+                                  maxLength={120}
+                                  value={writeTitle}
+                                  onChange={(e) => setWriteTitle(e.target.value)}
+                                  placeholder="Summarise your experience"
+                                  className="w-full px-3 py-2 rounded-lg text-sm outline-none"
+                                  style={{ border: "1px solid #CBD5E1", backgroundColor: "#fff", color: "#0F172A" }}
+                                />
+                              </div>
+                              <div>
+                                <label className="text-xs font-semibold block mb-1" style={{ color: "#374151" }}>Review *</label>
+                                <textarea
+                                  required
+                                  rows={4}
+                                  maxLength={2000}
+                                  value={writeBody}
+                                  onChange={(e) => setWriteBody(e.target.value)}
+                                  placeholder="Share your experience with this product"
+                                  className="w-full px-3 py-2 rounded-lg text-sm outline-none resize-none"
+                                  style={{ border: "1px solid #CBD5E1", backgroundColor: "#fff", color: "#0F172A" }}
+                                />
+                              </div>
+                              {submitError && (
+                                <p className="text-xs" style={{ color: "#DC2626" }}>{submitError}</p>
+                              )}
+                              <button
+                                type="submit"
+                                disabled={submitting || writeRating === 0}
+                                className="flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold transition-opacity"
+                                style={{
+                                  backgroundColor: "#1B5CB5",
+                                  color: "#fff",
+                                  opacity: submitting || writeRating === 0 ? 0.6 : 1,
+                                  cursor: submitting || writeRating === 0 ? "not-allowed" : "pointer",
+                                  border: "none",
+                                }}
+                              >
+                                {submitting && <Loader2 size={14} className="animate-spin" />}
+                                {submitting ? "Submitting..." : "Submit Review"}
+                              </button>
+                            </form>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="mb-6 p-4 rounded-xl" style={{ backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+                          <p className="text-sm" style={{ color: "#64748B" }}>Only verified purchasers can leave a review.</p>
+                        </div>
+                      )
+                    ) : (
+                      <div className="mb-6 p-4 rounded-xl" style={{ backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+                        <p className="text-sm" style={{ color: "#64748B" }}>
+                          <a href="/account" style={{ color: "#1B5CB5", fontWeight: 600 }}>Sign in</a> to write a review. Only verified purchasers may review products.
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Reviews list */}
+                    {reviewsData.reviews.length === 0 ? (
+                      <div className="text-center py-10" style={{ color: "#94A3B8" }}>
+                        <Star size={32} className="mx-auto mb-3" style={{ color: "#E2E8F0", fill: "#E2E8F0" }} />
+                        <p className="text-sm">No reviews yet. Be the first to review this product.</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-5">
+                        {reviewsData.reviews.map((r) => (
+                          <div key={r.id} className="pb-5" style={{ borderBottom: "1px solid #F1F5F9" }}>
+                            <div className="flex items-start justify-between gap-4 mb-1.5">
+                              <div className="flex items-center gap-2">
+                                <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: "#EEF4FF" }}>
+                                  <User size={14} style={{ color: "#1B5CB5" }} />
+                                </div>
+                                <span className="text-sm font-semibold" style={{ color: "#0F172A" }}>{r.customerName}</span>
+                              </div>
+                              <span className="text-xs" style={{ color: "#94A3B8", flexShrink: 0 }}>
+                                {new Date(r.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                              </span>
+                            </div>
+                            <StarRow rating={r.rating} />
+                            <p className="text-sm font-semibold mt-1.5 mb-0.5" style={{ color: "#0F172A" }}>{r.title}</p>
+                            <p className="text-sm leading-relaxed" style={{ color: "#374151" }}>{r.body}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="text-center py-10" style={{ color: "#94A3B8" }}>
+                    <p className="text-sm">Unable to load reviews.</p>
+                  </div>
+                )}
+              </div>
+            ) : activeTab === "description" ? (
               <div style={{ maxWidth: "860px" }}>
                 <p className="leading-relaxed mb-5" style={{ fontSize: "14px", color: "#374151", lineHeight: "1.8" }}>
                   {detail.description}

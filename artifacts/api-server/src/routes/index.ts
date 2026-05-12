@@ -13,6 +13,8 @@ import publicOrdersRouter from "./orders";
 import publicDiscountsRouter from "./discounts";
 import customerAuthRouter from "./auth";
 import customerAccountRouter from "./account";
+import publicReviewsRouter from "./reviews";
+import adminReviewsRouter from "./admin/reviews";
 
 const router: IRouter = Router();
 
@@ -30,5 +32,7 @@ router.use(publicOrdersRouter);
 router.use(publicDiscountsRouter);
 router.use(customerAuthRouter);
 router.use(customerAccountRouter);
+router.use(publicReviewsRouter);
+router.use(adminReviewsRouter);
 
 export default router;

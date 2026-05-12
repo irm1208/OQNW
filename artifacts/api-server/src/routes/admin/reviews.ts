@@ -1,0 +1,111 @@
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { db } from "@workspace/db";
+import { productReviewsTable } from "@workspace/db";
+import { eq, desc, and, like, sql } from "drizzle-orm";
+
+function requireAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Unauthorized" });
+    return false;
+  }
+  return true;
+}
+
+const router = Router();
+
+router.get("/admin/reviews", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const { status, search, page = "1", limit = "25" } = req.query as Record<string, string>;
+    const pageNum = Math.max(1, parseInt(page, 10) || 1);
+    const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10) || 25));
+    const offset = (pageNum - 1) * limitNum;
+
+    const conditions = [];
+    if (status === "pending") conditions.push(eq(productReviewsTable.isApproved, false));
+    if (status === "approved") conditions.push(eq(productReviewsTable.isApproved, true));
+    if (search) conditions.push(like(productReviewsTable.customerName, `%${search}%`));
+
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
+    const reviews = await db
+      .select()
+      .from(productReviewsTable)
+      .where(whereClause)
+      .orderBy(desc(productReviewsTable.createdAt))
+      .limit(limitNum)
+      .offset(offset);
+
+    const [{ total }] = await db
+      .select({ total: sql<number>`COUNT(*)::int` })
+      .from(productReviewsTable)
+      .where(whereClause);
+
+    res.status(200).json({ reviews, total, page: pageNum, limit: limitNum });
+  } catch (err) {
+    req.log.error({ err }, "Failed to fetch reviews");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.patch("/admin/reviews/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid review ID" });
+    return;
+  }
+
+  const { isApproved } = req.body as { isApproved: unknown };
+  if (typeof isApproved !== "boolean") {
+    res.status(400).json({ error: "isApproved must be a boolean" });
+    return;
+  }
+
+  try {
+    const [updated] = await db
+      .update(productReviewsTable)
+      .set({ isApproved })
+      .where(eq(productReviewsTable.id, id))
+      .returning();
+
+    if (!updated) {
+      res.status(404).json({ error: "Review not found" });
+      return;
+    }
+
+    res.status(200).json(updated);
+  } catch (err) {
+    req.log.error({ err }, "Failed to update review");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/admin/reviews/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid review ID" });
+    return;
+  }
+
+  try {
+    const [deleted] = await db
+      .delete(productReviewsTable)
+      .where(eq(productReviewsTable.id, id))
+      .returning({ id: productReviewsTable.id });
+
+    if (!deleted) {
+      res.status(404).json({ error: "Review not found" });
+      return;
+    }
+
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to delete review");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;
