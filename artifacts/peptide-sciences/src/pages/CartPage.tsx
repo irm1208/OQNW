@@ -1,4 +1,5 @@
 import { Link, useLocation } from "wouter";
+import { useSEO } from "@/hooks/useSEO";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { Trash2, Plus, Minus, ShoppingCart, ChevronRight, FlaskConical, Sparkles, CheckCircle2, RefreshCw, CheckCheck } from "lucide-react";
@@ -152,6 +153,7 @@ function CartUpsells() {
 }
 
 export default function CartPage() {
+  useSEO({ title: "My Cart", description: "Review your research peptide cart and proceed to checkout. OmniQure Peptide Research Institute.", canonicalPath: "/cart" });
   const [, navigate] = useLocation();
   const { items, totalItems, removeFromCart, updateQuantity, clearCart } = useCart();
   const { formatPrice, currency } = useCurrency();

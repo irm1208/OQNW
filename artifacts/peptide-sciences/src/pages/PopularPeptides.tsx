@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useLocation } from "wouter";
+import { useSEO } from "@/hooks/useSEO";
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { type Product } from "@/data/products";
 import { popularProductIds } from "@/data/popularPeptides";
@@ -77,6 +78,11 @@ const CATEGORY_ORDER = [
 ];
 
 export default function PopularPeptides() {
+  useSEO({
+    title: "Popular Peptides",
+    description: "Shop the most popular research peptides at OmniQure — BPC-157, TB-500, Semaglutide, Tirzepatide and more. HPLC-verified to 99%+ purity. For research use only.",
+    canonicalPath: "/popular-peptides",
+  });
   const { products } = useProducts();
   const [, navigate] = useLocation();
   const [activeCategory, setActiveCategory] = useState<string>("All");

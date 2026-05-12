@@ -13,6 +13,7 @@ import RecentlyViewed from "@/components/RecentlyViewed";
 import CustomersAlsoBought from "@/components/CustomersAlsoBought";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useSEO } from "@/hooks/useSEO";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -72,6 +73,20 @@ export default function ProductPage() {
   const { customer } = useCustomerAuth();
   const { formatPrice } = useCurrency();
   const { toggle: toggleWishlist, has: inWishlist } = useWishlist();
+
+  // SEO — computed unconditionally (before any early return)
+  const seoDetail = productDetails[product?.id ?? ""];
+  const seoDesc = seoDetail?.description
+    ? `${seoDetail.description.slice(0, 140).split(". ")[0]}. ${product ? getPurityStr(product.id) : ""} HPLC purity. For research use only — OmniQure Peptide Research Institute.`
+    : product
+    ? `${product.name} — ${product.category} research peptide. ${getPurityStr(product.id)} HPLC purity. For research use only.`
+    : undefined;
+  useSEO({
+    title: product?.name ?? null,
+    description: seoDesc ?? null,
+    ogType: "product",
+    canonicalPath: product ? `/product/${product.id}` : null,
+  });
 
   // Reviews state
   const [reviewsData, setReviewsData] = useState<ReviewsData | null>(null);

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "wouter";
+import { useSEO } from "@/hooks/useSEO";
 import {
   User, Package, Settings, LogOut, ChevronRight,
   ShoppingBag, Clock, Shield, Eye, EyeOff, CheckCircle2,
@@ -118,6 +119,7 @@ function formatMemberSince(iso: string): string {
 }
 
 export default function AccountPage() {
+  useSEO({ title: "My Account", description: "Manage your OmniQure account, view orders, and track your research peptide purchases.", canonicalPath: "/account" });
   const [, navigate] = useLocation();
   const { customer, loadingAuth, signOut } = useCustomerAuth();
   const { formatPrice } = useCurrency();

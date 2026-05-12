@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { useSEO } from "@/hooks/useSEO";
 import {
   Shield, FlaskConical, Truck, Award, Microscope, Brain, Heart,
   Dumbbell, Scale, Clock, Zap, Leaf, Flame, Sparkles, Activity,
@@ -98,6 +99,11 @@ function MoleculeSVG() {
 
 export default function HomePage() {
   const { products } = useProducts();
+  useSEO({
+    title: "HPLC-Verified Research Peptides",
+    description: "Buy high-purity research peptides verified by HPLC to 99%+. BPC-157, TB-500, Semaglutide, Tirzepatide, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
+    canonicalPath: "/",
+  });
 
   const featuredGroups = (() => {
     const featuredProducts = featuredIds

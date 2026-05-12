@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
+import { useSEO } from "@/hooks/useSEO";
 import { ShoppingCart, CheckCircle2, ChevronDown, ChevronUp, FlaskConical, Clock, Zap, AlertTriangle, Users, BookOpen } from "lucide-react";
 import { researchStacks, type ResearchStack } from "@/data/stacks";
 import { type Product } from "@/data/products";
@@ -357,6 +358,11 @@ function StackCard({ stack }: { stack: ResearchStack }) {
 }
 
 export default function StacksPage() {
+  useSEO({
+    title: "Research Stacks",
+    description: "Curated research peptide stacks combining complementary compounds for specific research protocols. HPLC-verified peptides from OmniQure Peptide Research Institute.",
+    canonicalPath: "/stacks",
+  });
   const [activeFilter, setActiveFilter] = useState<string>("All");
 
   const filters = ["All", "Beginner", "Intermediate", "Advanced"];

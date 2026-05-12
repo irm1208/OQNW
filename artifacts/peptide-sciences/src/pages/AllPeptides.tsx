@@ -4,6 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
+import { useSEO } from "@/hooks/useSEO";
 
 const categoryTabs = [
   { label: "Growth Peptides",     key: "Growth Peptides" },
@@ -24,12 +25,39 @@ const categoryTabs = [
 
 type SortOption = "name" | "price-low" | "price-high" | "bestsellers";
 
+const CATEGORY_DESCRIPTIONS: Record<string, string> = {
+  "Growth Peptides": "Research growth peptides including CJC-1295, GHRP-2, Ipamorelin and more. HPLC-verified to 99%+ purity.",
+  "Healing Peptides": "Research healing peptides including BPC-157, TB-500 and more. HPLC-verified to 99%+ purity.",
+  "Weight Management": "Research weight management peptides including Semaglutide, Tirzepatide, Cagrilintide and more.",
+  "Longevity Peptides": "Research longevity peptides including Epithalon, Selank, Semax and more. HPLC-verified to 99%+ purity.",
+  "Cellular Health": "Research cellular health peptides. HPLC-verified to 99%+ purity from OmniQure Peptide Research Institute.",
+  "Nootropics": "Research nootropic peptides for cognitive research. HPLC-verified to 99%+ purity from OmniQure.",
+  "Immune Support": "Research immune support peptides. HPLC-verified to 99%+ purity from OmniQure Peptide Research Institute.",
+  "Research Peptides": "Specialist research peptides for laboratory use. HPLC-verified to 99%+ purity from OmniQure.",
+  "Peptide Blends": "Research peptide blends and stacks. HPLC-verified to 99%+ purity from OmniQure Peptide Research Institute.",
+  "Skin & Repair": "Research skin and repair peptides including GHK-Cu and more. HPLC-verified to 99%+ purity from OmniQure.",
+  "Hormonal Peptides": "Research hormonal peptides including Gonadorelin and more. HPLC-verified to 99%+ purity.",
+  "Growth Hormone": "Research growth hormone peptides including Somatropin HGH. HPLC-verified to 99%+ purity from OmniQure.",
+  "Anti-Inflammatory": "Research anti-inflammatory peptides. HPLC-verified to 99%+ purity from OmniQure Peptide Research Institute.",
+  "Cognitive Peptides": "Research cognitive peptides for neuroscience research. HPLC-verified to 99%+ purity from OmniQure.",
+};
+
 export default function AllPeptides() {
   const { products } = useProducts();
   const [location, navigate] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("All Peptides");
   const [sortBy, setSortBy] = useState<SortOption>("name");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const seoTitle = searchQuery.trim()
+    ? `Search: "${searchQuery.trim()}"`
+    : selectedCategory !== "All Peptides"
+    ? selectedCategory
+    : "All Research Peptides";
+  const seoDesc = searchQuery.trim()
+    ? `Showing research peptides matching "${searchQuery.trim()}" — HPLC-verified to 99%+ purity from OmniQure Peptide Research Institute.`
+    : CATEGORY_DESCRIPTIONS[selectedCategory] ?? "Browse 100+ HPLC-verified research peptides from OmniQure Peptide Research Institute. BPC-157, TB-500, Semaglutide and more.";
+  useSEO({ title: seoTitle, description: seoDesc, canonicalPath: "/all-peptides" });
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
