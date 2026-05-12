@@ -63,13 +63,45 @@ router.post("/auth/register", async (req: Request, res: Response): Promise<void>
 
   try {
     const [existing] = await db
-      .select({ id: customersTable.id })
+      .select()
       .from(customersTable)
       .where(eq(customersTable.email, email.toLowerCase()))
       .limit(1);
 
     if (existing) {
-      res.status(409).json({ error: "An account with this email already exists" });
+      if (existing.passwordHash) {
+        // Real account already exists — cannot register again
+        res.status(409).json({ error: "An account with this email already exists" });
+        return;
+      }
+
+      // Guest account (no password) — upgrade it with the new credentials
+      const passwordHash = await bcrypt.hash(password, 12);
+      const [upgraded] = await db
+        .update(customersTable)
+        .set({
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          passwordHash,
+        })
+        .where(eq(customersTable.id, existing.id))
+        .returning();
+
+      const token = signToken(upgraded.id);
+      res.cookie(COOKIE_NAME, token, {
+        httpOnly: true,
+        sameSite: "lax",
+        maxAge: COOKIE_MAX_AGE,
+        path: "/",
+      });
+
+      req.log.info({ customerId: upgraded.id }, "Guest account upgraded to full account");
+      res.status(200).json({
+        id: upgraded.id,
+        email: upgraded.email,
+        firstName: upgraded.firstName,
+        lastName: upgraded.lastName,
+      });
       return;
     }
 
