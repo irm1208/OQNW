@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import {
   User, Package, Settings, LogOut, ChevronRight,
   ShoppingBag, Clock, Shield, Eye, EyeOff, CheckCircle2,
-  AlertCircle, Truck, Zap, FlaskConical, Heart,
+  AlertCircle, Truck, Zap, FlaskConical, Heart, RotateCcw, X,
 } from "lucide-react";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -30,6 +30,24 @@ type AccountOrder = {
   trackingNumber: string | null;
   createdAt: string;
   items: OrderItem[];
+};
+
+type ReturnInfo = {
+  id: number;
+  orderId: number;
+  orderNumber: string;
+  reason: string;
+  status: string;
+  refundAmountGbp: number | null;
+  adminNotes: string | null;
+  createdAt: string;
+};
+
+const RETURN_STATUS_CONFIG: Record<string, { label: string; bg: string; color: string; border: string }> = {
+  requested: { label: "Return Requested", bg: "#FFF7ED", color: "#C2410C", border: "#FED7AA" },
+  approved:  { label: "Return Approved",  bg: "#F0FDF4", color: "#15803D", border: "#BBF7D0" },
+  rejected:  { label: "Return Rejected",  bg: "#FEF2F2", color: "#B91C1C", border: "#FECACA" },
+  refunded:  { label: "Refunded",         bg: "#F5F3FF", color: "#6D28D9", border: "#DDD6FE" },
 };
 
 type AccountProfile = {
@@ -102,6 +120,13 @@ export default function AccountPage() {
   const [pwSuccess, setPwSuccess] = useState(false);
   const [pwError, setPwError] = useState<string | null>(null);
 
+  // Returns
+  const [returns, setReturns] = useState<Map<string, ReturnInfo>>(new Map());
+  const [returnModal, setReturnModal] = useState<string | null>(null);
+  const [returnReason, setReturnReason] = useState("");
+  const [submittingReturn, setSubmittingReturn] = useState(false);
+  const [returnError, setReturnError] = useState<string | null>(null);
+
   // Redirect if not logged in
   useEffect(() => {
     if (!loadingAuth && !customer) {
@@ -127,7 +152,40 @@ export default function AccountPage() {
       .then((data) => setOrders(data))
       .catch(() => setOrders([]))
       .finally(() => setLoadingOrders(false));
+
+    fetch(apiUrl("returns"), { credentials: "include" })
+      .then((r) => (r.ok ? (r.json() as Promise<{ returns: ReturnInfo[] }>) : { returns: [] }))
+      .then(({ returns: data }) => {
+        const map = new Map<string, ReturnInfo>();
+        for (const r of data) map.set(r.orderNumber, r);
+        setReturns(map);
+      })
+      .catch(() => {});
   }, [customer]);
+
+  async function handleRequestReturn(e: React.FormEvent) {
+    e.preventDefault();
+    if (!returnModal) return;
+    setReturnError(null);
+    setSubmittingReturn(true);
+    try {
+      const res = await fetch(apiUrl("returns"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ orderNumber: returnModal, reason: returnReason }),
+      });
+      const data = await res.json() as ReturnInfo & { error?: string };
+      if (!res.ok) throw new Error(data.error ?? "Failed to submit return");
+      setReturns((prev) => new Map(prev).set(data.orderNumber, data));
+      setReturnModal(null);
+      setReturnReason("");
+    } catch (err) {
+      setReturnError(err instanceof Error ? err.message : "Submission failed");
+    } finally {
+      setSubmittingReturn(false);
+    }
+  }
 
   async function handleSaveProfile(e: React.FormEvent) {
     e.preventDefault();
@@ -198,6 +256,75 @@ export default function AccountPage() {
       </div>
     );
   }
+
+  // Return request modal
+  const ReturnModal = returnModal ? (
+    <div
+      style={{ position: "fixed", inset: 0, zIndex: 1000, backgroundColor: "rgba(0,0,0,0.45)", display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}
+      onClick={(e) => { if (e.target === e.currentTarget) { setReturnModal(null); setReturnReason(""); setReturnError(null); } }}
+    >
+      <div style={{ backgroundColor: "#fff", borderRadius: "20px", boxShadow: "0 20px 60px rgba(0,0,0,0.2)", width: "100%", maxWidth: "480px", overflow: "hidden" }}>
+        <div style={{ padding: "20px 24px 16px", borderBottom: "1px solid #F1F5F9", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <RotateCcw size={18} style={{ color: "#1B5CB5" }} />
+            <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#0F172A", margin: 0 }}>Request a Return</h3>
+          </div>
+          <button
+            onClick={() => { setReturnModal(null); setReturnReason(""); setReturnError(null); }}
+            style={{ background: "none", border: "none", cursor: "pointer", color: "#94A3B8", padding: "4px" }}
+          >
+            <X size={18} />
+          </button>
+        </div>
+        <form onSubmit={(e) => void handleRequestReturn(e)} style={{ padding: "20px 24px 24px", display: "flex", flexDirection: "column", gap: "14px" }}>
+          <div style={{ padding: "10px 14px", borderRadius: "8px", backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+            <p style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 600, marginBottom: "2px" }}>ORDER</p>
+            <p style={{ fontSize: "14px", fontWeight: 700, color: "#0F172A", margin: 0 }}>{returnModal}</p>
+          </div>
+          <div>
+            <label style={{ fontSize: "13px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "6px" }}>
+              Reason for return <span style={{ color: "#94A3B8", fontWeight: 400 }}>(required)</span>
+            </label>
+            <textarea
+              value={returnReason}
+              onChange={(e) => setReturnReason(e.target.value)}
+              placeholder="Please describe why you'd like to return this order…"
+              rows={4}
+              style={{
+                width: "100%", padding: "10px 12px", borderRadius: "10px",
+                border: "1.5px solid #E2E8F0", fontSize: "14px", color: "#0F172A",
+                resize: "vertical", outline: "none", boxSizing: "border-box",
+                fontFamily: "'Arimo', Arial, sans-serif",
+              }}
+            />
+            <p style={{ fontSize: "11.5px", color: "#94A3B8", margin: "4px 0 0" }}>Minimum 10 characters</p>
+          </div>
+          {returnError && (
+            <div style={{ padding: "10px 12px", borderRadius: "8px", backgroundColor: "#FEF2F2", border: "1px solid #FECACA", display: "flex", alignItems: "center", gap: "8px" }}>
+              <AlertCircle size={14} style={{ color: "#DC2626", flexShrink: 0 }} />
+              <p style={{ fontSize: "13px", color: "#B91C1C", margin: 0 }}>{returnError}</p>
+            </div>
+          )}
+          <div style={{ padding: "12px 14px", borderRadius: "8px", backgroundColor: "#FFFBEB", border: "1px solid #FDE68A" }}>
+            <p style={{ fontSize: "12px", color: "#92400E", margin: 0, lineHeight: 1.5 }}>
+              Our team will review your request within 2–3 business days. You'll receive an email once a decision has been made.
+            </p>
+          </div>
+          <button
+            type="submit"
+            disabled={submittingReturn || returnReason.trim().length < 10}
+            style={{
+              height: "44px", borderRadius: "10px", border: "none", cursor: submittingReturn || returnReason.trim().length < 10 ? "not-allowed" : "pointer",
+              background: submittingReturn || returnReason.trim().length < 10 ? "#CBD5E1" : "linear-gradient(90deg, #0D2565, #1B5CB5)",
+              color: "#fff", fontSize: "14px", fontWeight: 700, transition: "opacity 0.15s",
+            }}
+          >
+            {submittingReturn ? "Submitting…" : "Submit Return Request"}
+          </button>
+        </form>
+      </div>
+    </div>
+  ) : null;
 
   const displayProfile = profile ?? { ...customer, totalOrders: 0, totalSpendGbp: 0, memberSince: new Date().toISOString() };
 
@@ -420,6 +547,27 @@ export default function AccountPage() {
                                 ))}
                               </div>
 
+                              {/* Return status badge */}
+                              {(() => {
+                                const ret = returns.get(order.orderNumber);
+                                if (!ret) return null;
+                                const rcfg = RETURN_STATUS_CONFIG[ret.status] ?? { label: ret.status, bg: "#F1F5F9", color: "#475569", border: "#E2E8F0" };
+                                return (
+                                  <div style={{ marginBottom: "12px", padding: "10px 14px", borderRadius: "8px", backgroundColor: rcfg.bg, border: `1px solid ${rcfg.border}`, display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                                    <RotateCcw size={14} style={{ color: rcfg.color, marginTop: "2px", flexShrink: 0 }} />
+                                    <div>
+                                      <p style={{ fontSize: "12px", fontWeight: 700, color: rcfg.color, margin: "0 0 2px" }}>{rcfg.label}</p>
+                                      {ret.adminNotes && (
+                                        <p style={{ fontSize: "12px", color: rcfg.color, margin: 0, opacity: 0.85 }}>{ret.adminNotes}</p>
+                                      )}
+                                      {ret.refundAmountGbp != null && ret.status === "refunded" && (
+                                        <p style={{ fontSize: "12px", color: rcfg.color, margin: "2px 0 0", fontWeight: 600 }}>Refund: £{ret.refundAmountGbp.toFixed(2)}</p>
+                                      )}
+                                    </div>
+                                  </div>
+                                );
+                              })()}
+
                               {/* Actions */}
                               <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                                 <Link
@@ -446,6 +594,28 @@ export default function AccountPage() {
                                     <span style={{ fontSize: "13px", color: "#15803D", fontWeight: 600 }}>Tracking: {order.trackingNumber}</span>
                                   </div>
                                 )}
+                                {/* Request Return button — only for shipped/delivered with no active return */}
+                                {["shipped", "delivered"].includes(order.status) && (() => {
+                                  const ret = returns.get(order.orderNumber);
+                                  const hasActiveReturn = ret && ["requested", "approved"].includes(ret.status);
+                                  if (hasActiveReturn) return null;
+                                  const isRefunded = order.status === "refunded" || ret?.status === "refunded";
+                                  if (isRefunded) return null;
+                                  return (
+                                    <button
+                                      onClick={() => { setReturnModal(order.orderNumber); setReturnReason(""); setReturnError(null); }}
+                                      style={{
+                                        display: "inline-flex", alignItems: "center", gap: "6px",
+                                        padding: "8px 14px", borderRadius: "8px",
+                                        backgroundColor: "#FFF7ED", border: "1px solid #FED7AA",
+                                        color: "#C2410C", fontWeight: 600, fontSize: "13px", cursor: "pointer",
+                                      }}
+                                    >
+                                      <RotateCcw size={13} />
+                                      Request Return
+                                    </button>
+                                  );
+                                })()}
                               </div>
                             </div>
                           )}
@@ -689,6 +859,7 @@ export default function AccountPage() {
           </div>
         </div>
       </div>
+      {ReturnModal}
     </div>
   );
 }

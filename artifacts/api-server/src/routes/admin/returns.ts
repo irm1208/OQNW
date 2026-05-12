@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { returnsTable, ordersTable } from "@workspace/db";
 import { eq, desc, ilike, and, or, count } from "drizzle-orm";
+import { sendReturnStatusUpdate } from "../../lib/email";
 
 const router = Router();
 
@@ -139,6 +140,19 @@ router.patch("/admin/returns/:id", async (req: Request, res: Response): Promise<
     if (adminNotes !== undefined) updates.adminNotes = adminNotes ?? null;
 
     const [updated] = await db.update(returnsTable).set(updates).where(eq(returnsTable.id, returnId)).returning();
+
+    // Fire status-change email if status changed to a terminal state
+    if (status !== undefined && status !== existing.status && ["approved", "rejected", "refunded"].includes(status)) {
+      sendReturnStatusUpdate({
+        customerEmail: updated.customerEmail,
+        customerName: updated.customerName,
+        orderNumber: updated.orderNumber,
+        status: status as "approved" | "rejected" | "refunded",
+        refundAmountGbp: updated.refundAmountGbp !== null ? parseFloat(String(updated.refundAmountGbp)) : null,
+        adminNotes: updated.adminNotes ?? null,
+      }).catch(() => {});
+    }
+
     res.status(200).json(returnToResponse(updated));
   } catch (err) {
     req.log.error({ err }, "Failed to update return");

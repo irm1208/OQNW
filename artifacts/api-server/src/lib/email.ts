@@ -237,6 +237,89 @@ export async function sendPasswordReset(opts: {
   }
 }
 
+export async function sendReturnStatusUpdate(opts: {
+  customerEmail: string;
+  customerName: string;
+  orderNumber: string;
+  status: "approved" | "rejected" | "refunded";
+  refundAmountGbp?: number | null;
+  adminNotes?: string | null;
+}): Promise<void> {
+  const statusConfig = {
+    approved: {
+      title: "Return Approved",
+      heading: "Your Return Has Been Approved",
+      colour: "#15803d",
+      bg: "#f0fdf4",
+      border: "#22c55e",
+      message: `Good news, ${opts.customerName} — we've approved your return request for order <strong>${opts.orderNumber}</strong>. Please follow the returns instructions to send your items back, and a refund will be issued once we receive them.`,
+    },
+    rejected: {
+      title: "Return Request Update",
+      heading: "Return Request Not Approved",
+      colour: "#b91c1c",
+      bg: "#fef2f2",
+      border: "#fca5a5",
+      message: `Hi ${opts.customerName}, unfortunately we were unable to approve your return request for order <strong>${opts.orderNumber}</strong>. If you have any questions, please contact our support team.`,
+    },
+    refunded: {
+      title: "Refund Processed",
+      heading: "Your Refund Has Been Processed",
+      colour: "#6d28d9",
+      bg: "#f5f3ff",
+      border: "#a78bfa",
+      message: `Hi ${opts.customerName}, your refund for order <strong>${opts.orderNumber}</strong> has been processed and is on its way back to your original payment method. Please allow 3–5 business days for it to appear.`,
+    },
+  };
+
+  const cfg = statusConfig[opts.status];
+
+  const refundBlock = opts.status === "refunded" && opts.refundAmountGbp != null
+    ? `<div style="background:${cfg.bg};border-radius:6px;padding:16px 20px;margin:20px 0;border-left:4px solid ${cfg.border};">
+         <p style="margin:0 0 4px;font-size:12px;color:${cfg.colour};font-weight:600;">REFUND AMOUNT</p>
+         <p style="margin:0;font-size:22px;font-weight:700;color:${cfg.colour};">${formatGbp(opts.refundAmountGbp)}</p>
+       </div>`
+    : "";
+
+  const notesBlock = opts.adminNotes
+    ? `<div style="margin-top:16px;padding:14px 16px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0;">
+         <p style="margin:0 0 4px;font-size:12px;color:#94a3b8;font-weight:600;">NOTE FROM OUR TEAM</p>
+         <p style="margin:0;font-size:14px;color:#374151;">${opts.adminNotes}</p>
+       </div>`
+    : "";
+
+  const body = `
+    <h2 style="margin:0 0 4px;font-size:22px;color:#0f172a;">${cfg.heading}</h2>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">${cfg.message}</p>
+
+    <div style="background:#f8fafc;border-radius:6px;padding:16px 20px;margin-bottom:20px;">
+      <p style="margin:0;font-size:12px;color:#94a3b8;font-weight:600;">ORDER NUMBER</p>
+      <p style="margin:4px 0 0;font-size:20px;font-weight:700;color:#0f172a;">${opts.orderNumber}</p>
+    </div>
+
+    ${refundBlock}
+    ${notesBlock}
+
+    <div style="margin-top:24px;">
+      <a href="${SITE_URL}/account" style="display:inline-block;background:linear-gradient(90deg,#0d2565,#1b5cb5);color:#ffffff;padding:12px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;">
+        View My Account
+      </a>
+    </div>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: opts.customerEmail,
+      subject: `${cfg.title} — ${opts.orderNumber}`,
+      html: baseTemplate(cfg.title, body),
+    });
+    logger.info({ orderNumber: opts.orderNumber, status: opts.status, to: opts.customerEmail }, "Return status email sent");
+  } catch (err) {
+    logger.error({ err, orderNumber: opts.orderNumber }, "Failed to send return status email");
+  }
+}
+
 export async function sendLowStockAlert(products: Array<{ productName: string; stockLevel: number; lowStockThreshold: number }>): Promise<void> {
   if (!ADMIN_EMAIL) {
     logger.warn("ADMIN_EMAIL not set — skipping low stock alert");
