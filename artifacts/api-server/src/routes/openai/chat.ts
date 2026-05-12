@@ -2,8 +2,6 @@ import { Router, type IRouter } from "express";
 import { db } from "@workspace/db";
 import { conversations, messages } from "@workspace/db/schema";
 import { eq, asc } from "drizzle-orm";
-import type OpenAI from "openai";
-
 type OpenAIClient = { chat: { completions: { create: (...args: unknown[]) => unknown } } };
 
 let cachedOpenai: OpenAIClient | null = null;

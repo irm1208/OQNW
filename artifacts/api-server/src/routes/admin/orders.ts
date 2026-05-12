@@ -8,7 +8,8 @@ import {
   UpdateAdminOrderParams,
   UpdateAdminOrderBody,
 } from "@workspace/api-zod";
-import { eq, ilike, and, desc, count, or, sql } from "drizzle-orm";
+import { eq, ilike, and, desc, count, or } from "drizzle-orm";
+import { sendOrderConfirmation, sendShippingNotification } from "../../lib/email";
 
 const router = Router();
 
@@ -135,6 +136,12 @@ router.patch("/admin/orders/:id", async (req: Request, res: Response): Promise<v
     return;
   }
   try {
+    const previousOrder = await db
+      .select()
+      .from(ordersTable)
+      .where(eq(ordersTable.id, paramsParsed.data.id))
+      .then(rows => rows[0]);
+
     const updates: Partial<typeof ordersTable.$inferInsert> = {};
     const { status, trackingNumber, notes } = bodyParsed.data;
     if (status !== undefined) updates.status = status;
@@ -151,7 +158,44 @@ router.patch("/admin/orders/:id", async (req: Request, res: Response): Promise<v
       res.status(404).json({ error: "Order not found" });
       return;
     }
+
     res.status(200).json(orderToResponse(updated));
+
+    const statusChanged = previousOrder && status !== undefined && previousOrder.status !== status;
+    if (statusChanged) {
+      const items = await db
+        .select()
+        .from(orderItemsTable)
+        .where(eq(orderItemsTable.orderId, updated.id));
+
+      const emailData = {
+        orderNumber: updated.orderNumber,
+        customerName: updated.customerName,
+        customerEmail: updated.customerEmail,
+        items: items.map(i => ({
+          productName: i.productName,
+          productCategory: i.productCategory ?? "",
+          quantity: i.quantity,
+          priceGbp: parseFloat(String(i.priceGbp)),
+        })),
+        subtotalGbp: parseFloat(String(updated.subtotalGbp)),
+        shippingCostGbp: parseFloat(String(updated.shippingCostGbp)),
+        totalGbp: parseFloat(String(updated.totalGbp)),
+        shippingMethod: updated.shippingMethod ?? null,
+        trackingNumber: updated.trackingNumber ?? null,
+        address1: updated.address1 ?? null,
+        address2: updated.address2 ?? null,
+        city: updated.city ?? null,
+        postcode: updated.postcode ?? null,
+        country: updated.country ?? null,
+      };
+
+      if (status === "processing") {
+        sendOrderConfirmation(emailData).catch(() => {});
+      } else if (status === "shipped") {
+        sendShippingNotification(emailData).catch(() => {});
+      }
+    }
   } catch (err) {
     req.log.error({ err }, "Failed to update order");
     res.status(500).json({ error: "Internal server error" });

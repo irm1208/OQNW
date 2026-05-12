@@ -1,4 +1,4 @@
-import { Link, useLocation } from "wouter";
+import { Link, useLocation, Redirect } from "wouter";
 import { useAdminLogout, useAdminMe } from "@workspace/api-client-react";
 import { LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ const navItems = [
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
-  const [location, setLocation] = useLocation();
+  const [location, navigate] = useLocation();
   const { data: session, isLoading } = useAdminMe();
   const logout = useAdminLogout();
 
@@ -25,13 +25,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   }
 
   if (!session?.authenticated) {
-    setLocation("/login");
-    return null;
+    return <Redirect to="/login" />;
   }
 
   const handleLogout = () => {
     logout.mutate(undefined, {
-      onSuccess: () => setLocation("/login"),
+      onSuccess: () => navigate("/login"),
     });
   };
 
@@ -59,7 +58,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           </Button>
         </div>
       </aside>
-      
+
       <main className="flex-1 flex flex-col min-w-0">
         <header className="h-14 flex items-center justify-between px-6 bg-card border-b md:hidden">
           <h1 className="font-bold text-lg text-primary">OmniQure Admin</h1>

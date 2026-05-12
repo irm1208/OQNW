@@ -9,7 +9,8 @@ import {
   UpdateProductVisibilityParams,
   UpdateProductVisibilityBody,
 } from "@workspace/api-zod";
-import { eq, ilike, lte, and, sql } from "drizzle-orm";
+import { eq, ilike, and, sql } from "drizzle-orm";
+import { sendLowStockAlert } from "../../lib/email";
 
 const router = Router();
 
@@ -88,7 +89,17 @@ router.patch("/admin/products/:id/inventory", async (req: Request, res: Response
       res.status(404).json({ error: "Product not found" });
       return;
     }
+
     res.status(200).json(productToResponse(updated));
+
+    const effectiveThreshold = updated.lowStockThreshold;
+    if (updated.stockLevel <= effectiveThreshold) {
+      sendLowStockAlert([{
+        productName: updated.productName,
+        stockLevel: updated.stockLevel,
+        lowStockThreshold: effectiveThreshold,
+      }]).catch(() => {});
+    }
   } catch (err) {
     req.log.error({ err }, "Failed to update inventory");
     res.status(500).json({ error: "Internal server error" });
