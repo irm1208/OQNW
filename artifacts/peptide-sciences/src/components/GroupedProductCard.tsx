@@ -114,7 +114,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {/* Category tag */}
         <span style={{
           display: "inline-block", alignSelf: "flex-start",
-          fontSize: "10px", fontWeight: 700,
+          fontSize: "10.5px", fontWeight: 700,
           color: cat.color, backgroundColor: cat.bg,
           padding: "3px 10px", borderRadius: "6px",
           letterSpacing: "0.05em", marginBottom: "8px", textTransform: "uppercase",
@@ -125,7 +125,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {/* Product name — clickable */}
         <p
           onClick={goToProduct}
-          style={{ fontSize: "17px", fontWeight: 700, color: "#0F172A", lineHeight: 1.3, marginBottom: "12px", cursor: "pointer", transition: "color 0.15s" }}
+          style={{ fontSize: "18px", fontWeight: 700, color: "#0F172A", lineHeight: 1.3, marginBottom: "10px", cursor: "pointer", transition: "color 0.15s" }}
           onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = cat.color}
           onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#0F172A"}
         >
@@ -134,7 +134,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
 
         {/* Strength pills */}
         {group.variants.length > 1 ? (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "12px" }} onClick={stopProp}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "10px" }} onClick={stopProp}>
             {group.variants.map((v, i) => {
               const { strength } = parseName(v.name);
               const active = i === selectedIdx;
@@ -143,8 +143,8 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
                   key={v.id}
                   onClick={e => { stopProp(e); setSelectedIdx(i); setAdded(false); setQty(1); }}
                   style={{
-                    fontSize: "12px", fontWeight: 700,
-                    padding: "5px 11px", borderRadius: "7px",
+                    fontSize: "12.5px", fontWeight: 700,
+                    padding: "4px 10px", borderRadius: "7px",
                     border: `1.5px solid ${active ? cat.color : "#E2E8F0"}`,
                     backgroundColor: active ? cat.color : "#F8FAFC",
                     color: active ? "#fff" : "#64748B",
@@ -157,7 +157,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
             })}
           </div>
         ) : (
-          <p style={{ fontSize: "14px", fontWeight: 700, color: cat.color, marginBottom: "10px" }}>
+          <p style={{ fontSize: "14.5px", fontWeight: 700, color: cat.color, marginBottom: "10px" }}>
             {parseName(group.variants[0].name).strength}
           </p>
         )}
@@ -165,7 +165,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {/* Price */}
         {selectedVariant.price != null && (
           <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "6px" }}>
-            <span style={{ fontSize: "24px", fontWeight: 800, color: "#0F172A", lineHeight: 1 }}>
+            <span style={{ fontSize: "25px", fontWeight: 800, color: "#0F172A", lineHeight: 1 }}>
               {formatPrice(selectedVariant.price)}
             </span>
             {group.variants.length > 1 && selectedIdx !== 0 && group.variants[0].price != null && (
@@ -177,16 +177,16 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         )}
 
         {/* Actions */}
-        <div className="mt-auto pt-3 flex flex-col gap-2" onClick={stopProp}>
+        <div className="mt-auto pt-2 flex flex-col gap-2" onClick={stopProp}>
           {/* View Details */}
           <button
             onClick={goToProduct}
             style={{
               display: "flex", alignItems: "center", justifyContent: "center",
-              gap: "6px", width: "100%", padding: "9px",
+              gap: "6px", width: "100%", padding: "8px",
               borderRadius: "10px", border: `1.5px solid ${cat.color}30`,
               color: cat.color, backgroundColor: cat.bg,
-              fontSize: "13px", fontWeight: 600, cursor: "pointer",
+              fontSize: "14px", fontWeight: 600, cursor: "pointer",
               transition: "background-color 0.15s, border-color 0.15s",
             }}
             onMouseEnter={e => {

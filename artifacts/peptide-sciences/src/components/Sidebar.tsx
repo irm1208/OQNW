@@ -32,7 +32,7 @@ const grouped = CATEGORY_ORDER.map((cat) => ({
 
 export default function Sidebar({ selectedCategory, onCategoryChange }: SidebarProps) {
   return (
-    <aside className="w-[210px] flex-shrink-0">
+    <aside className="w-[185px] flex-shrink-0">
       {grouped.map(({ category, items }) => {
         const isActive = selectedCategory === category;
         return (
