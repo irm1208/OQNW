@@ -472,7 +472,7 @@ export default function PeptideResearch() {
           Ready to start your research?
         </p>
         <p style={{ fontSize: "14px", color: "#64748B", maxWidth: "500px", margin: "0 auto 24px", lineHeight: 1.7 }}>
-          All 81 peptides are HPLC verified at 98%+ purity with full COA, HPLC chromatograms, and ESI-MS data.
+          All 81 peptides are HPLC verified at 99%+ purity with full COA, HPLC chromatograms, and ESI-MS data.
         </p>
         <Link
           href="/all-peptides"

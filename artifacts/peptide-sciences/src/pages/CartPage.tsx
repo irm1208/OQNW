@@ -92,7 +92,7 @@ export default function CartPage() {
                       className="text-xs px-2 py-0.5 rounded-full font-medium"
                       style={{ backgroundColor: "#EEF4FF", color: "#1B5CB5", border: "1px solid #BFDBFE" }}
                     >
-                      98%+ HPLC
+                      99%+ HPLC
                     </span>
                     <span
                       className="text-xs px-2 py-0.5 rounded-full font-medium"
@@ -218,7 +218,7 @@ export default function CartPage() {
 
               <div className="px-5 pb-5 mt-2">
                 <div className="flex flex-wrap gap-2">
-                  {["Secure Checkout", "Lab Certified", "98%+ Purity"].map((b) => (
+                  {["Secure Checkout", "Lab Certified", "99%+ Purity"].map((b) => (
                     <span
                       key={b}
                       className="text-xs px-2.5 py-1 rounded-full"
