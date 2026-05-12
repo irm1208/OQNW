@@ -22,6 +22,7 @@ import cartRouter from "./cart";
 import stockAlertsRouter from "./stock-alerts";
 import adminAbandonedCartsRouter from "./admin/abandonedCarts";
 import subscriptionsRouter from "./subscriptions";
+import adminSubscriptionsRouter from "./admin/subscriptions";
 
 const router: IRouter = Router();
 
@@ -48,5 +49,6 @@ router.use(cartRouter);
 router.use(stockAlertsRouter);
 router.use(adminAbandonedCartsRouter);
 router.use(subscriptionsRouter);
+router.use(adminSubscriptionsRouter);
 
 export default router;

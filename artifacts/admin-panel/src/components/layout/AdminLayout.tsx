@@ -1,6 +1,6 @@
 import { Link, useLocation, Redirect } from "wouter";
 import { useAdminLogout, useAdminMe } from "@workspace/api-client-react";
-import { LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2, RotateCcw, Star, ShoppingBag } from "lucide-react";
+import { LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2, RotateCcw, Star, ShoppingBag, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
@@ -12,6 +12,7 @@ const navItems = [
   { href: "/discounts", label: "Discounts", icon: Tags },
   { href: "/reviews", label: "Reviews", icon: Star },
   { href: "/abandoned-carts", label: "Abandoned Carts", icon: ShoppingBag },
+  { href: "/subscriptions", label: "Subscriptions", icon: RefreshCw },
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
