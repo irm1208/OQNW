@@ -10,6 +10,7 @@ import {
   productsInventoryTable,
   abandonedCartsTable,
   loyaltyTransactionsTable,
+  giftCardsTable,
 } from "@workspace/db";
 import { eq, sql, inArray, and } from "drizzle-orm";
 import { sendOrderConfirmation, sendLowStockAlert, sendReferralReward, sendWelcomeEmail } from "../lib/email";
@@ -68,6 +69,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     items,
     discountCode,
     loyaltyPointsRedeemed,
+    giftCardCode,
   } = req.body as {
     delivery: unknown;
     shippingMethod: unknown;
@@ -75,6 +77,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     items: unknown;
     discountCode?: unknown;
     loyaltyPointsRedeemed?: unknown;
+    giftCardCode?: unknown;
   };
 
   // Basic validation
@@ -206,8 +209,31 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       }
     }
 
+    // Validate gift card if provided
+    let giftCardDeductGbp = 0;
+    let validatedGiftCardCode: string | null = null;
+    let giftCardId: number | null = null;
+    if (giftCardCode && typeof giftCardCode === "string" && giftCardCode.trim()) {
+      const normalizedCode = giftCardCode.trim().toUpperCase();
+      const [card] = await db
+        .select()
+        .from(giftCardsTable)
+        .where(eq(giftCardsTable.code, normalizedCode))
+        .limit(1);
+      if (card && card.isActive) {
+        const remaining = parseFloat(String(card.remainingGbp));
+        if (remaining > 0) {
+          validatedGiftCardCode = card.code;
+          giftCardId = card.id;
+          giftCardDeductGbp = remaining;
+        }
+      }
+    }
+
     const subtotalGbp = cartItems.reduce((s, i) => s + i.priceGbp * i.quantity, 0);
-    const totalGbp = Math.max(0, subtotalGbp + shippingCostGbp - discountAmount - loyaltyDiscountGbp);
+    const preGiftTotal = Math.max(0, subtotalGbp + shippingCostGbp - discountAmount - loyaltyDiscountGbp);
+    if (giftCardDeductGbp > preGiftTotal) giftCardDeductGbp = preGiftTotal;
+    const totalGbp = Math.max(0, preGiftTotal - giftCardDeductGbp);
 
     // Generate unique order number (retry once on collision)
     let orderNumber = generateOrderNumber();
@@ -330,6 +356,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         notes: [
           validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-£${discountAmount.toFixed(2)})` : null,
           loyaltyPointsToDeduct > 0 ? `Loyalty: ${loyaltyPointsToDeduct} pts redeemed (-£${loyaltyDiscountGbp.toFixed(2)})` : null,
+          validatedGiftCardCode ? `Gift card: ${validatedGiftCardCode} (-£${giftCardDeductGbp.toFixed(2)})` : null,
         ].filter(Boolean).join("; ") || null,
       })
       .returning();
@@ -367,6 +394,18 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
           points: -loyaltyPointsToDeduct,
           description: `${loyaltyPointsToDeduct} pts redeemed on order ${orderNumber} (−£${loyaltyDiscountGbp.toFixed(2)})`,
         }).catch(() => {});
+      }
+    }
+
+    // Deduct gift card balance
+    if (giftCardId && giftCardDeductGbp > 0) {
+      const [existingCard] = await db.select({ remainingGbp: giftCardsTable.remainingGbp }).from(giftCardsTable).where(eq(giftCardsTable.id, giftCardId)).limit(1);
+      if (existingCard) {
+        const newRemaining = Math.max(0, parseFloat(String(existingCard.remainingGbp)) - giftCardDeductGbp);
+        await db.update(giftCardsTable).set({
+          remainingGbp: String(newRemaining.toFixed(2)),
+          ...(newRemaining === 0 ? { redeemedAt: new Date() } : {}),
+        }).where(eq(giftCardsTable.id, giftCardId));
       }
     }
 

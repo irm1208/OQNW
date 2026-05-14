@@ -4,7 +4,7 @@ import { Link, useLocation } from "wouter";
 import {
   ChevronRight, Lock, Truck, Zap, Package,
   CreditCard, User, MapPin, Phone, Mail,
-  CheckCircle2, ShieldCheck, FlaskConical, Tag, X, Award,
+  CheckCircle2, ShieldCheck, FlaskConical, Tag, X, Award, Gift,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -143,6 +143,12 @@ export default function CheckoutPage() {
   const [discountError, setDiscountError] = useState<string | null>(null);
   const [applyingDiscount, setApplyingDiscount] = useState(false);
 
+  // Gift card
+  const [giftCardInput, setGiftCardInput] = useState("");
+  const [appliedGiftCard, setAppliedGiftCard] = useState<{ code: string; remainingGbp: number } | null>(null);
+  const [giftCardError, setGiftCardError] = useState<string | null>(null);
+  const [applyingGiftCard, setApplyingGiftCard] = useState(false);
+
   // Loyalty points
   const [loyaltyBalance, setLoyaltyBalance] = useState<{ balance: number; gbpValue: number } | null>(null);
   const [loyaltyPointsToRedeem, setLoyaltyPointsToRedeem] = useState(0);
@@ -195,7 +201,9 @@ export default function CheckoutPage() {
   const shippingCost = selectedShipping.freeOver && cartGBP >= selectedShipping.freeOver ? 0 : selectedShipping.price;
   const discountAmount = appliedDiscount?.discountAmount ?? 0;
   const loyaltyDiscountGbp = loyaltyPointsToRedeem / 100;
-  const totalGBP = Math.max(0, cartGBP + shippingCost - discountAmount - loyaltyDiscountGbp);
+  const preGiftTotal = Math.max(0, cartGBP + shippingCost - discountAmount - loyaltyDiscountGbp);
+  const giftCardDeductGbp = appliedGiftCard ? Math.min(appliedGiftCard.remainingGbp, preGiftTotal) : 0;
+  const totalGBP = Math.max(0, preGiftTotal - giftCardDeductGbp);
 
   const setD = (f: keyof DeliveryForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setDelivery(d => ({ ...d, [f]: e.target.value }));
@@ -261,6 +269,36 @@ export default function CheckoutPage() {
     setDiscountInput("");
   }
 
+  async function applyGiftCard() {
+    if (!giftCardInput.trim()) return;
+    setApplyingGiftCard(true);
+    setGiftCardError(null);
+    try {
+      const res = await fetch(apiUrl(`gift-cards/validate/${encodeURIComponent(giftCardInput.trim().toUpperCase())}`), {
+        credentials: "include",
+      });
+      const data = await res.json() as { valid: boolean; error?: string; remainingGbp?: number };
+      if (data.valid && data.remainingGbp !== undefined) {
+        setAppliedGiftCard({ code: giftCardInput.trim().toUpperCase(), remainingGbp: data.remainingGbp });
+        setGiftCardInput("");
+        setGiftCardError(null);
+      } else {
+        setGiftCardError(data.error ?? "Invalid gift card code");
+        setAppliedGiftCard(null);
+      }
+    } catch {
+      setGiftCardError("Could not verify gift card. Please try again.");
+    } finally {
+      setApplyingGiftCard(false);
+    }
+  }
+
+  function removeGiftCard() {
+    setAppliedGiftCard(null);
+    setGiftCardError(null);
+    setGiftCardInput("");
+  }
+
   async function handleNext() {
     if (step === 1) {
       const e = validateDelivery();
@@ -305,6 +343,7 @@ export default function CheckoutPage() {
               priceGbp: product.price ?? 0,
             })),
             discountCode: appliedDiscount?.code ?? null,
+            giftCardCode: appliedGiftCard?.code ?? null,
             loyaltyPointsRedeemed: loyaltyPointsToRedeem > 0 ? loyaltyPointsToRedeem : undefined,
           }),
         });
@@ -865,6 +904,74 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
+                {/* Gift card redemption */}
+                {!appliedGiftCard ? (
+                  <div style={{ marginBottom: "12px", paddingTop: "12px", borderTop: "1px solid #F1F5F9" }}>
+                    <label style={{ fontSize: "12px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "6px" }}>
+                      <Gift size={11} style={{ display: "inline", marginRight: "4px", verticalAlign: "middle" }} />
+                      Gift card
+                    </label>
+                    <div style={{ display: "flex", gap: "8px" }}>
+                      <input
+                        value={giftCardInput}
+                        onChange={e => { setGiftCardInput(e.target.value.toUpperCase()); setGiftCardError(null); }}
+                        onKeyDown={e => e.key === "Enter" && applyGiftCard()}
+                        placeholder="XXXX-XXXX-XXXX-XXXX"
+                        style={{
+                          flex: 1, height: "36px", padding: "0 10px",
+                          borderRadius: "8px", border: `1.5px solid ${giftCardError ? "#FCA5A5" : "#E2E8F0"}`,
+                          fontSize: "12px", color: "#0F172A", outline: "none",
+                          backgroundColor: giftCardError ? "#FFF5F5" : "#F8FAFC",
+                          fontFamily: "'Arimo', Arial, sans-serif",
+                          letterSpacing: "0.08em",
+                        }}
+                      />
+                      <button
+                        onClick={applyGiftCard}
+                        disabled={applyingGiftCard || !giftCardInput.trim()}
+                        style={{
+                          height: "36px", paddingLeft: "12px", paddingRight: "12px",
+                          borderRadius: "8px", border: "none",
+                          backgroundColor: applyingGiftCard || !giftCardInput.trim() ? "#E2E8F0" : "#7C3AED",
+                          color: applyingGiftCard || !giftCardInput.trim() ? "#94A3B8" : "#fff",
+                          fontSize: "12.5px", fontWeight: 700, cursor: applyingGiftCard || !giftCardInput.trim() ? "not-allowed" : "pointer",
+                          flexShrink: 0, transition: "background 0.15s",
+                        }}
+                      >
+                        {applyingGiftCard ? "…" : "Apply"}
+                      </button>
+                    </div>
+                    {giftCardError && (
+                      <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "4px" }}>{giftCardError}</p>
+                    )}
+                  </div>
+                ) : (
+                  <div style={{
+                    marginBottom: "12px", padding: "10px 12px",
+                    borderRadius: "10px", backgroundColor: "#FAF5FF",
+                    border: "1.5px solid #DDD6FE",
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                    borderTop: "1px solid #F1F5F9",
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <Gift size={13} style={{ color: "#7C3AED" }} />
+                      <div>
+                        <p style={{ fontSize: "12px", fontWeight: 700, color: "#7C3AED", margin: 0 }}>{appliedGiftCard.code}</p>
+                        <p style={{ fontSize: "11px", color: "#6D28D9", margin: 0 }}>
+                          £{appliedGiftCard.remainingGbp.toFixed(2)} balance · −{formatPrice(giftCardDeductGbp)}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={removeGiftCard}
+                      style={{ background: "none", border: "none", cursor: "pointer", color: "#7C3AED", padding: "2px", display: "flex", alignItems: "center" }}
+                      title="Remove gift card"
+                    >
+                      <X size={15} />
+                    </button>
+                  </div>
+                )}
+
                 {/* Loyalty points redemption */}
                 {customer && loyaltyBalance && loyaltyBalance.balance >= 100 && (
                   <div style={{ marginBottom: "12px", paddingTop: "12px", borderTop: "1px solid #F1F5F9" }}>
@@ -939,6 +1046,12 @@ export default function CheckoutPage() {
                   <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
                     <span style={{ fontSize: "13px", color: "#D97706" }}>Loyalty reward ({loyaltyPointsToRedeem} pts)</span>
                     <span style={{ fontSize: "13px", fontWeight: 600, color: "#D97706" }}>−£{loyaltyDiscountGbp.toFixed(2)}</span>
+                  </div>
+                )}
+                {appliedGiftCard && giftCardDeductGbp > 0 && (
+                  <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
+                    <span style={{ fontSize: "13px", color: "#7C3AED" }}>Gift card ({appliedGiftCard.code.slice(0, 9)}…)</span>
+                    <span style={{ fontSize: "13px", fontWeight: 600, color: "#7C3AED" }}>−{formatPrice(giftCardDeductGbp)}</span>
                   </div>
                 )}
                 <div style={{ display: "flex", justifyContent: "space-between", padding: "12px 0", borderTop: "2px solid #E8EDF5", marginTop: "8px" }}>

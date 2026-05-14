@@ -17,6 +17,7 @@ import Subscriptions from "@/pages/Subscriptions";
 import EmailLog from "@/pages/EmailLog";
 import Loyalty from "@/pages/Loyalty";
 import StockAlerts from "@/pages/StockAlerts";
+import GiftCards from "@/pages/GiftCards";
 
 const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
@@ -105,6 +106,11 @@ function AppRoutes() {
       <Route path="/stock-alerts">
         <AdminLayout>
           <StockAlerts />
+        </AdminLayout>
+      </Route>
+      <Route path="/gift-cards">
+        <AdminLayout>
+          <GiftCards />
         </AdminLayout>
       </Route>
       <Route path="/">
