@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Loader2, ArrowLeft, Package, User, MapPin, Truck, RotateCcw, Plus, Send } from "lucide-react";
+import { Loader2, ArrowLeft, Package, User, MapPin, Truck, RotateCcw, Plus, Send, DollarSign } from "lucide-react";
 import { toast } from "sonner";
 
 type ReturnRecord = {
@@ -65,6 +65,51 @@ export default function OrderDetail() {
   const [logReturnOpen, setLogReturnOpen] = useState(false);
   const [returnReason, setReturnReason] = useState("");
   const [submittingReturn, setSubmittingReturn] = useState(false);
+
+  const [refundOpen, setRefundOpen] = useState(false);
+  const [refundAmount, setRefundAmount] = useState("");
+  const [refundReason, setRefundReason] = useState("");
+  const [refundNotes, setRefundNotes] = useState("");
+  const [restoreInventory, setRestoreInventory] = useState(false);
+  const [submittingRefund, setSubmittingRefund] = useState(false);
+
+  const refundsQueryKey = ["order-refunds", orderId];
+  const { data: refundsData } = useQuery<{ id: number; amountGbp: number; type: string; reason: string; notes: string | null; restoreInventory: boolean; createdAt: string }[]>({
+    queryKey: refundsQueryKey,
+    queryFn: () => apiFetch(`/api/admin/orders/${orderId}/refunds`),
+    enabled: !!orderId,
+  });
+  const orderRefunds = refundsData ?? [];
+
+  async function handleIssueRefund() {
+    const amt = parseFloat(refundAmount);
+    if (!amt || amt <= 0 || !refundReason.trim()) return;
+    setSubmittingRefund(true);
+    try {
+      await apiFetch(`/api/admin/orders/${orderId}/refund`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amountGbp: amt,
+          reason: refundReason.trim(),
+          notes: refundNotes.trim() || undefined,
+          restoreInventory,
+        }),
+      });
+      toast.success(`Refund of £${amt.toFixed(2)} issued`);
+      setRefundOpen(false);
+      setRefundAmount("");
+      setRefundReason("");
+      setRefundNotes("");
+      setRestoreInventory(false);
+      queryClient.invalidateQueries({ queryKey: refundsQueryKey });
+      queryClient.invalidateQueries({ queryKey: getGetAdminOrderQueryKey(orderId) });
+    } catch {
+      toast.error("Failed to issue refund");
+    } finally {
+      setSubmittingRefund(false);
+    }
+  }
 
   const returnsQueryKey = ["order-returns", orderId];
   const { data: returnsData } = useQuery<{ returns: ReturnRecord[] }>({
@@ -310,6 +355,42 @@ export default function OrderDetail() {
               )}
             </CardContent>
           </Card>
+          <Card>
+            <CardHeader className="pb-4 border-b">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <DollarSign className="w-5 h-5 text-muted-foreground" /> Refunds
+                </CardTitle>
+                <Button size="sm" variant="outline" className="text-destructive border-destructive/30 hover:bg-destructive/10" onClick={() => setRefundOpen(true)}>
+                  <Plus className="w-4 h-4 mr-1" /> Issue Refund
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-6">
+              {orderRefunds.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No refunds issued for this order.</p>
+              ) : (
+                <div className="space-y-3">
+                  {orderRefunds.map((r) => (
+                    <div key={r.id} className="flex items-start justify-between gap-4 py-3 border-b last:border-0">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{r.reason}</p>
+                        {r.notes && <p className="text-xs text-muted-foreground mt-0.5">{r.notes}</p>}
+                        <p className="text-xs text-muted-foreground mt-1">{new Date(r.createdAt).toLocaleDateString("en-GB")}</p>
+                      </div>
+                      <div className="flex flex-col items-end gap-1 shrink-0">
+                        <span className="font-bold text-red-600">–£{r.amountGbp.toFixed(2)}</span>
+                        <Badge variant="outline" className={r.type === "full" ? "text-red-600 border-red-200 bg-red-50 text-xs" : "text-orange-600 border-orange-200 bg-orange-50 text-xs"}>
+                          {r.type.charAt(0).toUpperCase() + r.type.slice(1)}
+                        </Badge>
+                        {r.restoreInventory && <span className="text-xs text-green-600">Stock restored</span>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
 
         <div className="space-y-6">
@@ -359,6 +440,66 @@ export default function OrderDetail() {
           </div>
         </div>
       </div>
+
+      <Dialog open={refundOpen} onOpenChange={(open) => { setRefundOpen(open); if (!open) { setRefundAmount(""); setRefundReason(""); setRefundNotes(""); setRestoreInventory(false); } }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Issue Refund — {order.orderNumber}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="rounded-lg bg-muted/50 p-3 text-sm space-y-1">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Order total</span>
+                <span className="font-medium">{formatCurrency(order.totalGbp)}</span>
+              </div>
+              {(order.refundedAmountGbp ?? 0) > 0 && (
+                <div className="flex justify-between text-red-600">
+                  <span>Already refunded</span>
+                  <span>–{formatCurrency(order.refundedAmountGbp ?? 0)}</span>
+                </div>
+              )}
+              <div className="flex justify-between font-semibold border-t pt-1 mt-1">
+                <span>Max refundable</span>
+                <span>{formatCurrency(order.totalGbp - (order.refundedAmountGbp ?? 0))}</span>
+              </div>
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium">Refund Amount (£)</label>
+              <Input
+                type="number"
+                min={0.01}
+                step={0.01}
+                placeholder="0.00"
+                value={refundAmount}
+                onChange={e => setRefundAmount(e.target.value)}
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium">Reason</label>
+              <Input placeholder="e.g. Item damaged in transit" value={refundReason} onChange={e => setRefundReason(e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium">Internal Notes (optional)</label>
+              <Textarea placeholder="Any additional notes for your records…" value={refundNotes} onChange={e => setRefundNotes(e.target.value)} rows={2} />
+            </div>
+            <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <input type="checkbox" checked={restoreInventory} onChange={e => setRestoreInventory(e.target.checked)} className="rounded" />
+              Restore stock levels for refunded items
+            </label>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setRefundOpen(false)}>Cancel</Button>
+            <Button
+              variant="destructive"
+              onClick={handleIssueRefund}
+              disabled={submittingRefund || !refundAmount || !refundReason.trim() || parseFloat(refundAmount) <= 0}
+            >
+              {submittingRefund && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              Issue Refund
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={logReturnOpen} onOpenChange={(open) => { setLogReturnOpen(open); if (!open) setReturnReason(""); }}>
         <DialogContent className="sm:max-w-md">

@@ -18,6 +18,9 @@ import EmailLog from "@/pages/EmailLog";
 import Loyalty from "@/pages/Loyalty";
 import StockAlerts from "@/pages/StockAlerts";
 import GiftCards from "@/pages/GiftCards";
+import Tax from "@/pages/Tax";
+import Shipping from "@/pages/Shipping";
+import Refunds from "@/pages/Refunds";
 
 const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
@@ -111,6 +114,21 @@ function AppRoutes() {
       <Route path="/gift-cards">
         <AdminLayout>
           <GiftCards />
+        </AdminLayout>
+      </Route>
+      <Route path="/tax">
+        <AdminLayout>
+          <Tax />
+        </AdminLayout>
+      </Route>
+      <Route path="/shipping">
+        <AdminLayout>
+          <Shipping />
+        </AdminLayout>
+      </Route>
+      <Route path="/refunds">
+        <AdminLayout>
+          <Refunds />
         </AdminLayout>
       </Route>
       <Route path="/">

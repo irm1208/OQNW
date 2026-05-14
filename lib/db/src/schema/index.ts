@@ -17,3 +17,7 @@ export * from "./email_logs";
 export * from "./newsletter_subscribers";
 export * from "./loyalty_transactions";
 export * from "./gift_cards";
+export * from "./tax_rates";
+export * from "./shipping_zones";
+export * from "./shipping_rates";
+export * from "./refunds_log";
