@@ -2,7 +2,7 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import crypto from "crypto";
 import { db } from "@workspace/db";
-import { newsletterSubscribersTable, ordersTable, orderItemsTable, customersTable, emailLogsTable } from "@workspace/db";
+import { newsletterSubscribersTable, ordersTable, orderItemsTable, emailLogsTable } from "@workspace/db";
 import { eq, and, gte, lte } from "drizzle-orm";
 import { sendNewsletterBroadcast, sendReorderReminder } from "../lib/email";
 import { logger } from "../lib/logger";
