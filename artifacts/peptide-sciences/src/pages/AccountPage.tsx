@@ -6,7 +6,7 @@ import {
   ShoppingBag, Clock, Shield, Eye, EyeOff, CheckCircle2,
   AlertCircle, Truck, Zap, FlaskConical, Heart, RotateCcw, X,
   RefreshCw, Users, Copy, CheckCheck, Calendar, PauseCircle, PlayCircle,
-  Repeat, Trash2,
+  Repeat, Trash2, Award, Gift, TrendingUp,
 } from "lucide-react";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -79,6 +79,27 @@ const RETURN_STATUS_CONFIG: Record<string, { label: string; bg: string; color: s
   refunded:  { label: "Refunded",         bg: "#F5F3FF", color: "#6D28D9", border: "#DDD6FE" },
 };
 
+type LoyaltyTx = {
+  id: number;
+  type: "earned" | "redeemed" | "expired" | "adjusted";
+  points: number;
+  description: string;
+  createdAt: string;
+};
+
+type LoyaltyData = {
+  balance: number;
+  lifetimeEarned: number;
+  tier: string;
+  tierColor: string;
+  tierEmoji: string;
+  nextTier: string | null;
+  pointsToNextTier: number | null;
+  progressPct: number;
+  gbpValue: number;
+  transactions: LoyaltyTx[];
+};
+
 type AccountProfile = {
   id: number;
   email: string;
@@ -127,7 +148,7 @@ export default function AccountPage() {
   const { products } = useProducts();
   const { addToCart } = useCart();
 
-  const [activeTab, setActiveTab] = useState<"orders" | "profile" | "wishlist" | "subscriptions" | "referral">("orders");
+  const [activeTab, setActiveTab] = useState<"orders" | "profile" | "wishlist" | "subscriptions" | "referral" | "loyalty">("orders");
 
   // Orders
   const [orders, setOrders] = useState<AccountOrder[]>([]);
@@ -166,6 +187,10 @@ export default function AccountPage() {
   // Referral
   const [referral, setReferral] = useState<ReferralInfo | null>(null);
   const [referralCopied, setReferralCopied] = useState(false);
+
+  // Loyalty
+  const [loyalty, setLoyalty] = useState<LoyaltyData | null>(null);
+  const [loadingLoyalty, setLoadingLoyalty] = useState(true);
 
   // Reorder feedback
   const [reorderedKey, setReorderedKey] = useState<string | null>(null);
@@ -215,6 +240,12 @@ export default function AccountPage() {
       .then((r) => (r.ok ? (r.json() as Promise<ReferralInfo>) : null))
       .then((data) => setReferral(data))
       .catch(() => {});
+
+    fetch(apiUrl("loyalty/balance"), { credentials: "include" })
+      .then((r) => (r.ok ? (r.json() as Promise<LoyaltyData>) : null))
+      .then((data) => { if (data) setLoyalty(data); })
+      .catch(() => {})
+      .finally(() => setLoadingLoyalty(false));
   }, [customer]);
 
   async function handleRequestReturn(e: React.FormEvent) {
@@ -478,15 +509,16 @@ export default function AccountPage() {
           <div style={{ width: "220px", flexShrink: 0 }}>
             <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", overflow: "hidden" }}>
               {[
-                { key: "orders", label: "My Orders", icon: <Package size={16} /> },
-                { key: "subscriptions", label: "Subscriptions", icon: <RefreshCw size={16} /> },
-                { key: "referral", label: "Refer a Friend", icon: <Users size={16} /> },
-                { key: "wishlist", label: "Wishlist", icon: <Heart size={16} /> },
-                { key: "profile", label: "Profile Settings", icon: <Settings size={16} /> },
+                { key: "orders",        label: "My Orders",       icon: <Package size={16} /> },
+                { key: "subscriptions", label: "Subscriptions",   icon: <RefreshCw size={16} /> },
+                { key: "referral",      label: "Refer a Friend",  icon: <Users size={16} /> },
+                { key: "loyalty",       label: "Loyalty Rewards", icon: <Award size={16} /> },
+                { key: "wishlist",      label: "Wishlist",        icon: <Heart size={16} /> },
+                { key: "profile",       label: "Profile Settings",icon: <Settings size={16} /> },
               ].map((item) => (
                 <button
                   key={item.key}
-                  onClick={() => setActiveTab(item.key as "orders" | "profile" | "wishlist" | "subscriptions" | "referral")}
+                  onClick={() => setActiveTab(item.key as "orders" | "profile" | "wishlist" | "subscriptions" | "referral" | "loyalty")}
                   style={{
                     display: "flex", alignItems: "center", gap: "10px",
                     width: "100%", padding: "13px 16px", border: "none",
@@ -995,6 +1027,181 @@ export default function AccountPage() {
             })()}
 
             {/* ── PROFILE TAB ── */}
+            {/* ── LOYALTY TAB ── */}
+            {activeTab === "loyalty" && (
+              <div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
+                  <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A" }}>Loyalty Rewards</h2>
+                </div>
+
+                {loadingLoyalty ? (
+                  <div style={{ textAlign: "center", padding: "60px 0", color: "#94A3B8" }}>
+                    <Award size={32} style={{ margin: "0 auto 12px", opacity: 0.4 }} />
+                    <p style={{ fontSize: "14px" }}>Loading your points…</p>
+                  </div>
+                ) : !loyalty ? (
+                  <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", padding: "60px 24px", textAlign: "center" }}>
+                    <Gift size={36} style={{ margin: "0 auto 16px", color: "#CBD5E1" }} />
+                    <p style={{ fontSize: "16px", fontWeight: 700, color: "#0F172A", marginBottom: "8px" }}>No points yet</p>
+                    <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>
+                      Place your first order to start earning loyalty points.
+                    </p>
+                    <Link href="/all-peptides" style={{ display: "inline-block", padding: "10px 24px", borderRadius: "10px", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none" }}>
+                      Browse peptides
+                    </Link>
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+
+                    {/* Balance card */}
+                    <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", overflow: "hidden" }}>
+                      <div style={{ background: "linear-gradient(135deg, #0D2565 0%, #1B5CB5 100%)", padding: "28px 24px" }}>
+                        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
+                          <div>
+                            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px" }}>
+                              Available Balance
+                            </p>
+                            <p style={{ fontSize: "48px", fontWeight: 900, color: "#fff", lineHeight: 1, marginBottom: "4px" }}>
+                              {loyalty.balance.toLocaleString()}
+                            </p>
+                            <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.65)" }}>
+                              points · worth <strong style={{ color: "#fff" }}>£{loyalty.gbpValue.toFixed(2)}</strong>
+                            </p>
+                          </div>
+                          <div style={{ textAlign: "right" }}>
+                            <span style={{
+                              display: "inline-flex", alignItems: "center", gap: "6px",
+                              padding: "6px 14px", borderRadius: "20px",
+                              backgroundColor: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)",
+                              fontSize: "14px", fontWeight: 800, color: "#fff",
+                            }}>
+                              <Award size={14} />
+                              {loyalty.tier}
+                            </span>
+                            <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", marginTop: "6px" }}>
+                              {loyalty.lifetimeEarned.toLocaleString()} pts earned lifetime
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Tier progress bar */}
+                        {loyalty.nextTier && (
+                          <div style={{ marginTop: "20px" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+                              <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)" }}>
+                                {loyalty.pointsToNextTier?.toLocaleString()} pts to {loyalty.nextTier}
+                              </span>
+                              <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)" }}>{loyalty.progressPct}%</span>
+                            </div>
+                            <div style={{ height: "6px", borderRadius: "3px", backgroundColor: "rgba(255,255,255,0.2)", overflow: "hidden" }}>
+                              <div style={{ height: "100%", borderRadius: "3px", width: `${loyalty.progressPct}%`, backgroundColor: "#F59E0B", transition: "width 0.5s ease" }} />
+                            </div>
+                          </div>
+                        )}
+                        {!loyalty.nextTier && (
+                          <p style={{ marginTop: "16px", fontSize: "12px", color: "rgba(255,255,255,0.7)" }}>
+                            🥇 You've reached the highest tier — Gold status!
+                          </p>
+                        )}
+                      </div>
+
+                      {/* How it works */}
+                      <div style={{ padding: "18px 24px", borderBottom: "1px solid #F1F5F9", display: "flex", gap: "20px", flexWrap: "wrap" }}>
+                        {[
+                          { icon: <TrendingUp size={15} style={{ color: "#1B5CB5" }} />, label: "Earn", value: "1 pt per £1 spent" },
+                          { icon: <Award size={15} style={{ color: "#F59E0B" }} />, label: "Redeem", value: "100 pts = £1 off" },
+                          { icon: <Gift size={15} style={{ color: "#059669" }} />, label: "Use at checkout", value: "Applied automatically" },
+                        ].map(item => (
+                          <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                            <div style={{ width: "32px", height: "32px", borderRadius: "8px", backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                              {item.icon}
+                            </div>
+                            <div>
+                              <p style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "1px" }}>{item.label}</p>
+                              <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A" }}>{item.value}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Tier guide */}
+                      <div style={{ padding: "14px 24px", display: "flex", gap: "12px" }}>
+                        {[
+                          { name: "Bronze", pts: "0–499", color: "#CD7F32", bg: "#FEF3C7" },
+                          { name: "Silver", pts: "500–1999", color: "#9CA3AF", bg: "#F3F4F6" },
+                          { name: "Gold",   pts: "2000+",   color: "#F59E0B", bg: "#FFFBEB" },
+                        ].map(t => (
+                          <div key={t.name} style={{
+                            flex: 1, padding: "10px 12px", borderRadius: "10px",
+                            backgroundColor: loyalty.tier === t.name ? t.bg : "#F8FAFC",
+                            border: `1.5px solid ${loyalty.tier === t.name ? t.color : "#E8EDF5"}`,
+                          }}>
+                            <p style={{ fontSize: "13px", fontWeight: 800, color: t.color, marginBottom: "2px" }}>{t.name}</p>
+                            <p style={{ fontSize: "11px", color: "#94A3B8" }}>{t.pts} pts</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* CTA */}
+                    {loyalty.balance >= 100 && (
+                      <div style={{ backgroundColor: "#FFFBEB", borderRadius: "14px", border: "1.5px solid #FDE68A", padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                          <Award size={20} style={{ color: "#F59E0B", flexShrink: 0 }} />
+                          <div>
+                            <p style={{ fontSize: "14px", fontWeight: 700, color: "#92400E", margin: 0 }}>
+                              You can redeem {loyalty.balance} pts for £{loyalty.gbpValue.toFixed(2)} off
+                            </p>
+                            <p style={{ fontSize: "12px", color: "#B45309", margin: 0 }}>Points are applied automatically at checkout</p>
+                          </div>
+                        </div>
+                        <Link href="/all-peptides" style={{ display: "inline-block", padding: "10px 20px", borderRadius: "10px", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", color: "#fff", fontWeight: 700, fontSize: "13px", textDecoration: "none", whiteSpace: "nowrap" }}>
+                          Shop now →
+                        </Link>
+                      </div>
+                    )}
+
+                    {/* Transaction history */}
+                    {loyalty.transactions.length > 0 && (
+                      <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #E8EDF5", overflow: "hidden" }}>
+                        <div style={{ padding: "16px 20px", borderBottom: "1px solid #F1F5F9" }}>
+                          <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A", margin: 0 }}>Points History</h3>
+                        </div>
+                        <div>
+                          {loyalty.transactions.map(tx => {
+                            const isPositive = tx.points > 0;
+                            const typeConfig: Record<string, { label: string; bg: string; color: string }> = {
+                              earned:   { label: "Earned",   bg: "#F0FDF4", color: "#16A34A" },
+                              redeemed: { label: "Redeemed", bg: "#FFF7ED", color: "#C2410C" },
+                              adjusted: { label: "Adjusted", bg: "#EFF6FF", color: "#1D4ED8" },
+                              expired:  { label: "Expired",  bg: "#F1F5F9", color: "#64748B" },
+                            };
+                            const cfg = typeConfig[tx.type] ?? typeConfig.adjusted;
+                            return (
+                              <div key={tx.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px", borderBottom: "1px solid #F8FAFC", gap: "12px" }}>
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <p style={{ fontSize: "13px", fontWeight: 600, color: "#0F172A", margin: "0 0 2px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                                    {tx.description}
+                                  </p>
+                                  <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>{formatDate(tx.createdAt)}</p>
+                                </div>
+                                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+                                  <span style={{ fontSize: "11px", fontWeight: 600, padding: "2px 8px", borderRadius: "20px", backgroundColor: cfg.bg, color: cfg.color }}>{cfg.label}</span>
+                                  <span style={{ fontSize: "14px", fontWeight: 800, color: isPositive ? "#16A34A" : "#DC2626", minWidth: "60px", textAlign: "right" }}>
+                                    {isPositive ? "+" : ""}{tx.points}
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
             {activeTab === "profile" && (
               <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
 

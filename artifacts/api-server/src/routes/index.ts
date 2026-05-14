@@ -25,6 +25,7 @@ import subscriptionsRouter from "./subscriptions";
 import adminSubscriptionsRouter from "./admin/subscriptions";
 import adminEmailLogsRouter from "./admin/emailLogs";
 import newsletterRouter from "./newsletter";
+import loyaltyRouter from "./loyalty";
 
 const router: IRouter = Router();
 
@@ -54,5 +55,6 @@ router.use(subscriptionsRouter);
 router.use(adminSubscriptionsRouter);
 router.use(adminEmailLogsRouter);
 router.use(newsletterRouter);
+router.use(loyaltyRouter);
 
 export default router;

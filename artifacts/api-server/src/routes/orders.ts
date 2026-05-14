@@ -9,6 +9,7 @@ import {
   discountCodesTable,
   productsInventoryTable,
   abandonedCartsTable,
+  loyaltyTransactionsTable,
 } from "@workspace/db";
 import { eq, sql, inArray, and } from "drizzle-orm";
 import { sendOrderConfirmation, sendLowStockAlert, sendReferralReward, sendWelcomeEmail } from "../lib/email";
@@ -66,12 +67,14 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     shippingCostGbp,
     items,
     discountCode,
+    loyaltyPointsRedeemed,
   } = req.body as {
     delivery: unknown;
     shippingMethod: unknown;
     shippingCostGbp: unknown;
     items: unknown;
     discountCode?: unknown;
+    loyaltyPointsRedeemed?: unknown;
   };
 
   // Basic validation
@@ -178,8 +181,33 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       }
     }
 
+    // Validate loyalty points redemption
+    const loyaltySessionCustomerId = (() => {
+      const t = req.cookies?.customer_session as string | undefined;
+      return t ? verifyCustomerSession(t) : null;
+    })();
+    let loyaltyDiscountGbp = 0;
+    let loyaltyPointsToDeduct = 0;
+    if (
+      loyaltyPointsRedeemed &&
+      typeof loyaltyPointsRedeemed === "number" &&
+      loyaltyPointsRedeemed >= 100 &&
+      loyaltySessionCustomerId
+    ) {
+      const validPoints = Math.floor(loyaltyPointsRedeemed / 100) * 100;
+      const txRows = await db
+        .select({ pts: loyaltyTransactionsTable.points })
+        .from(loyaltyTransactionsTable)
+        .where(eq(loyaltyTransactionsTable.customerId, sessionCustomerId));
+      const currentBalance = txRows.reduce((s, r) => s + r.pts, 0);
+      if (currentBalance >= validPoints) {
+        loyaltyPointsToDeduct = validPoints;
+        loyaltyDiscountGbp = validPoints / 100;
+      }
+    }
+
     const subtotalGbp = cartItems.reduce((s, i) => s + i.priceGbp * i.quantity, 0);
-    const totalGbp = Math.max(0, subtotalGbp + shippingCostGbp - discountAmount);
+    const totalGbp = Math.max(0, subtotalGbp + shippingCostGbp - discountAmount - loyaltyDiscountGbp);
 
     // Generate unique order number (retry once on collision)
     let orderNumber = generateOrderNumber();
@@ -299,7 +327,10 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingCostGbp: String(shippingCostGbp.toFixed(2)),
         totalGbp: String(totalGbp.toFixed(2)),
         shippingMethod,
-        notes: validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-£${discountAmount.toFixed(2)})` : null,
+        notes: [
+          validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-£${discountAmount.toFixed(2)})` : null,
+          loyaltyPointsToDeduct > 0 ? `Loyalty: ${loyaltyPointsToDeduct} pts redeemed (-£${loyaltyDiscountGbp.toFixed(2)})` : null,
+        ].filter(Boolean).join("; ") || null,
       })
       .returning();
 
@@ -314,6 +345,30 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         priceGbp: String(item.priceGbp.toFixed(2)),
       }))
     );
+
+    // Award and redeem loyalty points (non-blocking)
+    const loyaltyCustomerId = customerId ?? sessionCustomerId;
+    if (loyaltyCustomerId) {
+      const earnedPoints = Math.floor(totalGbp);
+      if (earnedPoints > 0) {
+        db.insert(loyaltyTransactionsTable).values({
+          customerId: loyaltyCustomerId,
+          orderId: order.id,
+          type: "earned",
+          points: earnedPoints,
+          description: `Points earned on order ${orderNumber}`,
+        }).catch(() => {});
+      }
+      if (loyaltyPointsToDeduct > 0) {
+        db.insert(loyaltyTransactionsTable).values({
+          customerId: loyaltyCustomerId,
+          orderId: order.id,
+          type: "redeemed",
+          points: -loyaltyPointsToDeduct,
+          description: `${loyaltyPointsToDeduct} pts redeemed on order ${orderNumber} (−£${loyaltyDiscountGbp.toFixed(2)})`,
+        }).catch(() => {});
+      }
+    }
 
     // Increment discount code usage
     if (validatedDiscountCode) {

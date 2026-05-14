@@ -4,7 +4,7 @@ import { Link, useLocation } from "wouter";
 import {
   ChevronRight, Lock, Truck, Zap, Package,
   CreditCard, User, MapPin, Phone, Mail,
-  CheckCircle2, ShieldCheck, FlaskConical, Tag, X,
+  CheckCircle2, ShieldCheck, FlaskConical, Tag, X, Award,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -143,6 +143,10 @@ export default function CheckoutPage() {
   const [discountError, setDiscountError] = useState<string | null>(null);
   const [applyingDiscount, setApplyingDiscount] = useState(false);
 
+  // Loyalty points
+  const [loyaltyBalance, setLoyaltyBalance] = useState<{ balance: number; gbpValue: number } | null>(null);
+  const [loyaltyPointsToRedeem, setLoyaltyPointsToRedeem] = useState(0);
+
   // Pre-fill delivery form for logged-in customers
   useEffect(() => {
     if (customer) {
@@ -153,6 +157,15 @@ export default function CheckoutPage() {
         lastName: prev.lastName || customer.lastName,
       }));
     }
+  }, [customer]);
+
+  // Fetch loyalty balance for logged-in customers
+  useEffect(() => {
+    if (!customer) { setLoyaltyBalance(null); setLoyaltyPointsToRedeem(0); return; }
+    fetch(apiUrl("loyalty/balance"), { credentials: "include" })
+      .then(r => r.ok ? r.json() as Promise<{ balance: number; gbpValue: number }> : null)
+      .then(data => { if (data) setLoyaltyBalance(data); })
+      .catch(() => {});
   }, [customer]);
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: "smooth" }); }, [step]);
@@ -181,7 +194,8 @@ export default function CheckoutPage() {
   const selectedShipping = SHIPPING_OPTIONS.find(o => o.id === shipping)!;
   const shippingCost = selectedShipping.freeOver && cartGBP >= selectedShipping.freeOver ? 0 : selectedShipping.price;
   const discountAmount = appliedDiscount?.discountAmount ?? 0;
-  const totalGBP = Math.max(0, cartGBP + shippingCost - discountAmount);
+  const loyaltyDiscountGbp = loyaltyPointsToRedeem / 100;
+  const totalGBP = Math.max(0, cartGBP + shippingCost - discountAmount - loyaltyDiscountGbp);
 
   const setD = (f: keyof DeliveryForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setDelivery(d => ({ ...d, [f]: e.target.value }));
@@ -291,6 +305,7 @@ export default function CheckoutPage() {
               priceGbp: product.price ?? 0,
             })),
             discountCode: appliedDiscount?.code ?? null,
+            loyaltyPointsRedeemed: loyaltyPointsToRedeem > 0 ? loyaltyPointsToRedeem : undefined,
           }),
         });
 
@@ -850,6 +865,60 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
+                {/* Loyalty points redemption */}
+                {customer && loyaltyBalance && loyaltyBalance.balance >= 100 && (
+                  <div style={{ marginBottom: "12px", paddingTop: "12px", borderTop: "1px solid #F1F5F9" }}>
+                    {loyaltyPointsToRedeem === 0 ? (
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
+                          <label style={{ fontSize: "12px", fontWeight: 600, color: "#374151", display: "flex", alignItems: "center", gap: "4px" }}>
+                            <Award size={11} style={{ color: "#F59E0B" }} />
+                            Loyalty Points
+                          </label>
+                          <span style={{ fontSize: "11px", color: "#64748B" }}>{loyaltyBalance.balance} pts available</span>
+                        </div>
+                        <button
+                          onClick={() => setLoyaltyPointsToRedeem(loyaltyBalance.balance)}
+                          style={{
+                            width: "100%", height: "36px", borderRadius: "8px",
+                            border: "1.5px dashed #F59E0B", backgroundColor: "#FFFBEB",
+                            color: "#92400E", fontSize: "12.5px", fontWeight: 700, cursor: "pointer",
+                            display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                          }}
+                        >
+                          <Award size={12} />
+                          Apply {loyaltyBalance.balance} pts (−£{loyaltyBalance.gbpValue.toFixed(2)})
+                        </button>
+                      </div>
+                    ) : (
+                      <div style={{
+                        padding: "10px 12px", borderRadius: "10px",
+                        backgroundColor: "#FFFBEB", border: "1.5px solid #F59E0B",
+                        display: "flex", alignItems: "center", justifyContent: "space-between",
+                      }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <Award size={13} style={{ color: "#F59E0B" }} />
+                          <div>
+                            <p style={{ fontSize: "12px", fontWeight: 700, color: "#92400E", margin: 0 }}>
+                              {loyaltyPointsToRedeem} pts applied
+                            </p>
+                            <p style={{ fontSize: "11px", color: "#78350F", margin: 0 }}>
+                              −£{loyaltyDiscountGbp.toFixed(2)} off your order
+                            </p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => setLoyaltyPointsToRedeem(0)}
+                          style={{ background: "none", border: "none", cursor: "pointer", color: "#D97706", padding: "2px", display: "flex", alignItems: "center" }}
+                          title="Remove loyalty reward"
+                        >
+                          <X size={15} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 0", borderTop: "1px solid #F1F5F9" }}>
                   <span style={{ fontSize: "13px", color: "#64748B" }}>Subtotal</span>
                   <span style={{ fontSize: "13px", fontWeight: 600, color: "#0F172A" }}>{formatPrice(cartGBP)}</span>
@@ -864,6 +933,12 @@ export default function CheckoutPage() {
                   <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
                     <span style={{ fontSize: "13px", color: "#059669" }}>Discount ({appliedDiscount.code})</span>
                     <span style={{ fontSize: "13px", fontWeight: 600, color: "#059669" }}>−{formatPrice(discountAmount)}</span>
+                  </div>
+                )}
+                {loyaltyPointsToRedeem > 0 && (
+                  <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
+                    <span style={{ fontSize: "13px", color: "#D97706" }}>Loyalty reward ({loyaltyPointsToRedeem} pts)</span>
+                    <span style={{ fontSize: "13px", fontWeight: 600, color: "#D97706" }}>−£{loyaltyDiscountGbp.toFixed(2)}</span>
                   </div>
                 )}
                 <div style={{ display: "flex", justifyContent: "space-between", padding: "12px 0", borderTop: "2px solid #E8EDF5", marginTop: "8px" }}>
