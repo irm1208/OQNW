@@ -4,6 +4,7 @@ import { getPurityStr, getPurity } from "@/utils/productPurity";
 import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
 import { generateCOA } from "@/utils/generateCOA";
+import { productDetails } from "@/data/productDetails";
 import { useSEO } from "@/hooks/useSEO";
 import { FlaskConical, Download, Shield, Search, ChevronRight, Award, Microscope, TestTube2, CheckCircle2 } from "lucide-react";
 import type { Product } from "@/data/products";
@@ -207,7 +208,7 @@ export default function LabResultsPage() {
                     </div>
                   </div>
                   <button
-                    onClick={() => generateCOA(selected)}
+                    onClick={() => void generateCOA(selected, productDetails[String(selected.id)] ?? { id: String(selected.id), description: "" })}
                     style={{
                       height: "40px", padding: "0 18px", borderRadius: "10px",
                       background: "linear-gradient(90deg, #0D2565, #1B5CB5)",

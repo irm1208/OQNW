@@ -201,7 +201,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       const txRows = await db
         .select({ pts: loyaltyTransactionsTable.points })
         .from(loyaltyTransactionsTable)
-        .where(eq(loyaltyTransactionsTable.customerId, sessionCustomerId));
+        .where(eq(loyaltyTransactionsTable.customerId, loyaltySessionCustomerId));
       const currentBalance = txRows.reduce((s, r) => s + r.pts, 0);
       if (currentBalance >= validPoints) {
         loyaltyPointsToDeduct = validPoints;

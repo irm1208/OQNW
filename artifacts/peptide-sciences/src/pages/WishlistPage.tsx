@@ -118,7 +118,7 @@ export default function WishlistPage() {
                     </Link>
 
                     <p className="text-base font-bold" style={{ color: "#1240A0" }}>
-                      {formatPrice(product.price)}
+                      {product.price != null ? formatPrice(product.price) : "—"}
                     </p>
 
                     {/* Stock */}
