@@ -658,6 +658,78 @@ export default function AccountPage() {
                           {/* Expanded details */}
                           {isExpanded && (
                             <div style={{ borderTop: "1px solid #F1F5F9", padding: "16px 20px" }}>
+
+                              {/* Status timeline */}
+                              {(() => {
+                                const isCancelled = order.status === "cancelled" || order.status === "refunded";
+                                const steps = [
+                                  { key: "pending",    label: "Order Placed",  icon: <ShoppingBag size={12} /> },
+                                  { key: "processing", label: "Processing",    icon: <Clock size={12} /> },
+                                  { key: "shipped",    label: "Shipped",       icon: <Truck size={12} /> },
+                                  { key: "delivered",  label: "Delivered",     icon: <CheckCircle2 size={12} /> },
+                                ];
+                                const order_idx = ["pending","processing","shipped","delivered"].indexOf(order.status);
+                                return (
+                                  <div style={{ marginBottom: "20px", padding: "14px 16px", borderRadius: "12px", backgroundColor: isCancelled ? "#FEF2F2" : "#F8FAFC", border: `1px solid ${isCancelled ? "#FECACA" : "#E8EDF5"}` }}>
+                                    {isCancelled ? (
+                                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                        <div style={{ width: "28px", height: "28px", borderRadius: "50%", backgroundColor: "#FEF2F2", border: "2px solid #FECACA", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                                          <X size={13} style={{ color: "#DC2626" }} />
+                                        </div>
+                                        <div>
+                                          <p style={{ fontSize: "13px", fontWeight: 700, color: "#B91C1C", margin: 0 }}>
+                                            {order.status === "refunded" ? "Order Refunded" : "Order Cancelled"}
+                                          </p>
+                                          <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>This order is no longer active</p>
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <div style={{ position: "relative" }}>
+                                        {/* connector line */}
+                                        <div style={{ position: "absolute", top: "14px", left: "14px", right: "14px", height: "2px", backgroundColor: "#E2E8F0", zIndex: 0 }} />
+                                        <div style={{
+                                          position: "absolute", top: "14px", left: "14px", height: "2px", zIndex: 1,
+                                          backgroundColor: "#1B5CB5",
+                                          width: order_idx <= 0 ? "0%" : order_idx === 1 ? "33%" : order_idx === 2 ? "66%" : "100%",
+                                          transition: "width 0.4s ease",
+                                        }} />
+                                        <div style={{ display: "flex", justifyContent: "space-between", position: "relative", zIndex: 2 }}>
+                                          {steps.map((step, i) => {
+                                            const done    = i < order_idx;
+                                            const current = i === order_idx;
+                                            const future  = i > order_idx;
+                                            return (
+                                              <div key={step.key} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", flex: 1 }}>
+                                                <div style={{
+                                                  width: "28px", height: "28px", borderRadius: "50%",
+                                                  border: `2px solid ${done ? "#1B5CB5" : current ? "#1B5CB5" : "#CBD5E1"}`,
+                                                  backgroundColor: done ? "#1B5CB5" : current ? "#EEF4FF" : "#fff",
+                                                  display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                                                  boxShadow: current ? "0 0 0 3px rgba(27,92,181,0.15)" : "none",
+                                                  transition: "all 0.2s",
+                                                }}>
+                                                  {done
+                                                    ? <CheckCircle2 size={13} style={{ color: "#fff" }} />
+                                                    : <span style={{ color: current ? "#1B5CB5" : "#CBD5E1" }}>{step.icon}</span>
+                                                  }
+                                                </div>
+                                                <p style={{
+                                                  fontSize: "10px", fontWeight: current ? 800 : done ? 600 : 500, margin: 0,
+                                                  color: done ? "#1B5CB5" : current ? "#0D2565" : "#94A3B8",
+                                                  textAlign: "center", whiteSpace: "nowrap",
+                                                }}>
+                                                  {step.label}
+                                                </p>
+                                              </div>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })()}
+
                               {/* Items list */}
                               <div style={{ marginBottom: "14px" }}>
                                 {order.items.map((item, i) => (
