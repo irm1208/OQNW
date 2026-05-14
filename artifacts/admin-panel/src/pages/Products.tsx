@@ -24,7 +24,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-  Search, Loader2, AlertCircle, Plus, Pencil, Trash2, Star, Eye, EyeOff,
+  Search, Loader2, AlertCircle, Plus, Pencil, Trash2, Star, Eye, EyeOff, Download,
 } from "lucide-react";
 import { toast } from "sonner";
 import type { CatalogProduct, AdminProduct } from "@workspace/api-client-react";
@@ -693,7 +693,28 @@ function InventoryTab() {
 
 // ── Main Page ────────────────────────────────────────────────────────────────
 
+async function downloadCsv(url: string, filename: string) {
+  const res = await fetch(url, { credentials: "include" });
+  if (!res.ok) throw new Error("Export failed");
+  const blob = await res.blob();
+  const href = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = href; a.download = filename; a.click();
+  URL.revokeObjectURL(href);
+}
+
 export default function Products() {
+  const [exporting, setExporting] = useState(false);
+
+  async function handleExport() {
+    setExporting(true);
+    try {
+      await downloadCsv(`/api/admin/export/products.csv`, `products-${new Date().toISOString().slice(0, 10)}.csv`);
+      toast.success("Products exported");
+    } catch { toast.error("Export failed"); }
+    finally { setExporting(false); }
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -701,6 +722,10 @@ export default function Products() {
           <h2 className="text-2xl font-bold tracking-tight">Products</h2>
           <p className="text-sm text-muted-foreground mt-1">Manage your product catalog and stock levels</p>
         </div>
+        <Button variant="outline" size="sm" onClick={handleExport} disabled={exporting}>
+          {exporting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
+          Export CSV
+        </Button>
       </div>
 
       <Tabs defaultValue="catalog">

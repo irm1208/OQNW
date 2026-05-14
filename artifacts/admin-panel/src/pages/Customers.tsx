@@ -41,7 +41,7 @@ export default function Customers() {
       if (search) params.set("search", search);
       const qs = params.toString();
       const today = new Date().toISOString().slice(0, 10);
-      await downloadCsv(`/api/admin/customers/export${qs ? `?${qs}` : ""}`, `customers-${today}.csv`);
+      await downloadCsv(`/api/admin/export/customers.csv`, `customers-${today}.csv`);
       toast.success("Customers exported");
     } catch {
       toast.error("Export failed");

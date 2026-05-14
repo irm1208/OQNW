@@ -11,9 +11,12 @@ import {
   abandonedCartsTable,
   loyaltyTransactionsTable,
   giftCardsTable,
+  inventoryAuditLogTable,
 } from "@workspace/db";
-import { eq, sql, inArray, and } from "drizzle-orm";
+import { eq, sql, inArray, and, gte, count } from "drizzle-orm";
 import { sendOrderConfirmation, sendLowStockAlert, sendReferralReward, sendWelcomeEmail } from "../lib/email";
+import { assessFraud } from "../lib/fraudScorer";
+import { dispatchWebhook } from "../lib/webhookDispatcher";
 
 const router = Router();
 
@@ -333,6 +336,29 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       }
     }
 
+    // Fraud scoring
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+    const [recentOrderResult] = await db
+      .select({ cnt: count() })
+      .from(ordersTable)
+      .where(and(eq(ordersTable.customerEmail, d.email.toLowerCase()), gte(ordersTable.createdAt, oneHourAgo)));
+    const recentOrdersLastHour = recentOrderResult?.cnt ?? 0;
+
+    const [customerOrderResult] = customerId
+      ? await db.select({ totalOrders: customersTable.totalOrders }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1)
+      : [{ totalOrders: 0 }];
+    const isFirstOrder = (customerOrderResult?.totalOrders ?? 0) <= 1;
+
+    const { score: fraudScore, flags: fraudFlags } = assessFraud({
+      email: d.email,
+      totalGbp,
+      country: d.country,
+      address1: d.address1,
+      isFirstOrder,
+      orderCount: customerOrderResult?.totalOrders ?? 0,
+      recentOrdersLastHour: Number(recentOrdersLastHour),
+    });
+
     // Insert order
     const [order] = await db
       .insert(ordersTable)
@@ -358,6 +384,8 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
           loyaltyPointsToDeduct > 0 ? `Loyalty: ${loyaltyPointsToDeduct} pts redeemed (-£${loyaltyDiscountGbp.toFixed(2)})` : null,
           validatedGiftCardCode ? `Gift card: ${validatedGiftCardCode} (-£${giftCardDeductGbp.toFixed(2)})` : null,
         ].filter(Boolean).join("; ") || null,
+        fraudScore,
+        fraudFlags,
       })
       .returning();
 
@@ -417,14 +445,32 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         .where(eq(discountCodesTable.code, validatedDiscountCode));
     }
 
-    // Decrement stock for each item (clamp to 0)
+    // Decrement stock for each item (clamp to 0) + write inventory audit log
     const decrementedProductIds: number[] = [];
     for (const item of cartItems) {
       if (item.productId) {
+        const [before] = await db
+          .select({ stockLevel: productsInventoryTable.stockLevel })
+          .from(productsInventoryTable)
+          .where(eq(productsInventoryTable.productId, item.productId))
+          .limit(1);
+        const qBefore = before?.stockLevel ?? 0;
         await db
           .update(productsInventoryTable)
           .set({ stockLevel: sql`GREATEST(${productsInventoryTable.stockLevel} - ${item.quantity}, 0)` })
           .where(eq(productsInventoryTable.productId, item.productId));
+        const qAfter = Math.max(0, qBefore - item.quantity);
+        db.insert(inventoryAuditLogTable).values({
+          productId: item.productId,
+          productName: item.productName,
+          changeType: "sale",
+          quantityBefore: qBefore,
+          quantityAfter: qAfter,
+          quantityChange: -(item.quantity),
+          reason: `Sold via order ${orderNumber}`,
+          referenceId: orderNumber,
+          referenceType: "order",
+        }).catch(() => {});
         decrementedProductIds.push(item.productId);
       }
     }
@@ -519,6 +565,18 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       address2: d.address2 ?? null,
       city: d.city,
       postcode: d.postcode,
+      country: d.country,
+    }).catch(() => {});
+
+    // Fire webhooks (non-blocking)
+    dispatchWebhook("order.created", {
+      orderId: order.id,
+      orderNumber,
+      customerName,
+      customerEmail: d.email.toLowerCase(),
+      totalGbp,
+      status: "pending",
+      fraudScore,
       country: d.country,
     }).catch(() => {});
 

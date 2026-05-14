@@ -33,6 +33,8 @@ export const ordersTable = pgTable("orders", {
   shippingRateId: integer("shipping_rate_id"),
   trackingNumber: text("tracking_number"),
   notes: text("notes"),
+  fraudScore: integer("fraud_score").notNull().default(0),
+  fraudFlags: text("fraud_flags").array().notNull().default([]),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
   reviewRequestSentAt: timestamp("review_request_sent_at", { withTimezone: true }),

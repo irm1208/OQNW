@@ -29,6 +29,8 @@ import WishlistPage from "@/pages/WishlistPage";
 import BundlesPage from "@/pages/BundlesPage";
 import LabResultsPage from "@/pages/LabResultsPage";
 import GiftCardsPage from "@/pages/GiftCardsPage";
+import BlogPage from "@/pages/BlogPage";
+import BlogPostPage from "@/pages/BlogPostPage";
 import { CookieConsent } from "@/components/CookieConsent";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
@@ -99,6 +101,8 @@ function Router() {
       <Route path="/wishlist" component={WishlistPage} />
       <Route path="/lab-results" component={LabResultsPage} />
       <Route path="/gift-cards" component={GiftCardsPage} />
+      <Route path="/blog" component={BlogPage} />
+      <Route path="/blog/:slug" component={BlogPostPage} />
       <Route path="/terms" component={TermsPage} />
       <Route path="/shipping" component={ShippingPage} />
       <Route path="/privacy" component={PrivacyPage} />

@@ -1,14 +1,24 @@
+import { useState } from "react";
 import { useParams, Link } from "wouter";
 import { useGetAdminCustomer, getGetAdminCustomerQueryKey } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Loader2, ArrowLeft, Mail, Phone, MapPin, Calendar, ShoppingBag, Eye } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Loader2, ArrowLeft, Mail, Phone, MapPin, Calendar, ShoppingBag, Eye, Download, Trash2, AlertTriangle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+
+const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
+function api(path: string) { return `${BASE}/api/${path}`.replace(/\/+/g, "/"); }
 
 export default function CustomerDetail() {
   const { id } = useParams<{ id: string }>();
   const customerId = parseInt(id || "0", 10);
+  const { toast } = useToast();
+  const [eraseOpen, setEraseOpen] = useState(false);
+  const [erasing, setErasing] = useState(false);
+  const [exporting, setExporting] = useState(false);
   
   const { data: customer, isLoading } = useGetAdminCustomer(customerId, {
     query: { 
@@ -16,6 +26,41 @@ export default function CustomerDetail() {
       queryKey: getGetAdminCustomerQueryKey(customerId) 
     }
   });
+
+  async function handleGdprExport() {
+    setExporting(true);
+    try {
+      const res = await fetch(api(`admin/customers/${customerId}/gdpr-export`), { credentials: "include" });
+      if (!res.ok) throw new Error("Export failed");
+      const blob = await res.blob();
+      const href = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = href;
+      a.download = `gdpr-export-customer-${customerId}.json`;
+      a.click();
+      URL.revokeObjectURL(href);
+      toast({ title: "GDPR data exported" });
+    } catch {
+      toast({ title: "Export failed", variant: "destructive" });
+    } finally {
+      setExporting(false);
+    }
+  }
+
+  async function handleGdprErase() {
+    setErasing(true);
+    try {
+      const res = await fetch(api(`admin/customers/${customerId}/gdpr-erase`), { method: "DELETE", credentials: "include" });
+      if (!res.ok) throw new Error("Erase failed");
+      toast({ title: "Customer data erased" });
+      setEraseOpen(false);
+      history.back();
+    } catch {
+      toast({ title: "Erase failed", variant: "destructive" });
+    } finally {
+      setErasing(false);
+    }
+  }
 
   const formatCurrency = (val: number) => new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(val);
 
@@ -39,12 +84,22 @@ export default function CustomerDetail() {
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 flex-wrap">
         <Button variant="outline" size="icon" asChild>
           <Link href="/customers"><ArrowLeft className="w-4 h-4" /></Link>
         </Button>
         <h2 className="text-2xl font-bold tracking-tight">{customer.firstName} {customer.lastName}</h2>
         <Badge variant="secondary" className="ml-2">Customer ID: {customer.id}</Badge>
+        <div className="ml-auto flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={handleGdprExport} disabled={exporting}>
+            {exporting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
+            GDPR Export
+          </Button>
+          <Button variant="destructive" size="sm" onClick={() => setEraseOpen(true)}>
+            <Trash2 className="w-4 h-4 mr-2" />
+            Erase Data
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -165,6 +220,27 @@ export default function CustomerDetail() {
           </Card>
         </div>
       </div>
+
+      <Dialog open={eraseOpen} onOpenChange={setEraseOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-destructive">
+              <AlertTriangle className="w-5 h-5" /> Erase Customer Data
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 py-2 text-sm">
+            <p>This will permanently delete <strong>{customer.firstName} {customer.lastName}</strong>'s account and anonymise all associated orders. This action cannot be undone.</p>
+            <p className="text-muted-foreground">Orders will be retained for accounting purposes with personal details replaced by anonymised placeholders.</p>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEraseOpen(false)}>Cancel</Button>
+            <Button variant="destructive" onClick={handleGdprErase} disabled={erasing}>
+              {erasing ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Trash2 className="w-4 h-4 mr-2" />}
+              Permanently Erase
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

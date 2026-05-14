@@ -1,7 +1,7 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
-import { refundsLogTable, ordersTable, orderItemsTable, productsInventoryTable } from "@workspace/db";
+import { refundsLogTable, ordersTable, orderItemsTable, productsInventoryTable, inventoryAuditLogTable } from "@workspace/db";
 import { eq, desc, sql } from "drizzle-orm";
 
 const router = Router();
@@ -120,12 +120,27 @@ router.post("/admin/orders/:id/refund", async (req: Request, res: Response): Pro
 
     if (restoreInventory && lineItems && lineItems.length > 0) {
       for (const item of lineItems) {
+        const [before] = await db
+          .select({ stockLevel: productsInventoryTable.stockLevel })
+          .from(productsInventoryTable)
+          .where(eq(productsInventoryTable.productId, item.productId))
+          .limit(1);
+        const qBefore = before?.stockLevel ?? 0;
         await db
           .update(productsInventoryTable)
-          .set({
-            stockLevel: sql`${productsInventoryTable.stockLevel} + ${item.quantity}`,
-          })
+          .set({ stockLevel: sql`${productsInventoryTable.stockLevel} + ${item.quantity}` })
           .where(eq(productsInventoryTable.productId, item.productId));
+        db.insert(inventoryAuditLogTable).values({
+          productId: item.productId,
+          productName: item.productName,
+          changeType: "refund_restore",
+          quantityBefore: qBefore,
+          quantityAfter: qBefore + item.quantity,
+          quantityChange: item.quantity,
+          reason: `Stock restored via refund on order ${order.orderNumber}`,
+          referenceId: order.orderNumber,
+          referenceType: "refund",
+        }).catch(() => {});
       }
     }
 

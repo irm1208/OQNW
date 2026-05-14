@@ -12,6 +12,11 @@ import adminReturnsRouter from "./admin/returns";
 import adminTaxRouter from "./admin/tax";
 import adminShippingRouter from "./admin/shipping";
 import adminRefundsRouter from "./admin/refunds";
+import adminInventoryAuditRouter from "./admin/inventory-audit";
+import adminExportRouter from "./admin/export";
+import adminWebhooksRouter from "./admin/webhooks";
+import adminGdprRouter from "./admin/gdpr";
+import adminBlogRouter from "./admin/blog";
 import publicOrdersRouter from "./orders";
 import publicDiscountsRouter from "./discounts";
 import customerAuthRouter from "./auth";
@@ -32,6 +37,7 @@ import loyaltyRouter from "./loyalty";
 import giftCardsRouter from "./gift-cards";
 import taxRouter from "./tax";
 import shippingRouter from "./shipping";
+import blogRouter from "./blog";
 
 const router: IRouter = Router();
 
@@ -48,6 +54,11 @@ router.use(adminReturnsRouter);
 router.use(adminTaxRouter);
 router.use(adminShippingRouter);
 router.use(adminRefundsRouter);
+router.use(adminInventoryAuditRouter);
+router.use(adminExportRouter);
+router.use(adminWebhooksRouter);
+router.use(adminGdprRouter);
+router.use(adminBlogRouter);
 router.use(publicOrdersRouter);
 router.use(publicDiscountsRouter);
 router.use(customerAuthRouter);
@@ -68,5 +79,6 @@ router.use(loyaltyRouter);
 router.use(giftCardsRouter);
 router.use(taxRouter);
 router.use(shippingRouter);
+router.use(blogRouter);
 
 export default router;

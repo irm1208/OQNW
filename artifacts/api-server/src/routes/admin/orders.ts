@@ -37,6 +37,13 @@ function orderToResponse(o: typeof ordersTable.$inferSelect) {
     notes: o.notes ?? null,
     country: o.country ?? null,
     city: o.city ?? null,
+    phone: o.phone ?? null,
+    address1: o.address1 ?? null,
+    postcode: o.postcode ?? null,
+    refundedAmountGbp: parseFloat(String(o.refundedAmountGbp ?? 0)),
+    refundStatus: o.refundStatus ?? "none",
+    fraudScore: o.fraudScore ?? 0,
+    fraudFlags: o.fraudFlags ?? [],
     createdAt: o.createdAt.toISOString(),
     updatedAt: o.updatedAt.toISOString(),
   };

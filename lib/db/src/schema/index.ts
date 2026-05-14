@@ -21,3 +21,6 @@ export * from "./tax_rates";
 export * from "./shipping_zones";
 export * from "./shipping_rates";
 export * from "./refunds_log";
+export * from "./inventory_audit_log";
+export * from "./webhooks";
+export * from "./blog_posts";

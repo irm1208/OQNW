@@ -1,14 +1,16 @@
 import { Link, useLocation, Redirect } from "wouter";
 import { useAdminLogout, useAdminMe } from "@workspace/api-client-react";
-import { LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2, RotateCcw, Star, ShoppingBag, RefreshCw, Mail, Gift, BellRing, CreditCard, Receipt, Truck, RefreshCcw } from "lucide-react";
+import { LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2, RotateCcw, Star, ShoppingBag, RefreshCw, Mail, Gift, BellRing, CreditCard, Receipt, Truck, RefreshCcw, ClipboardList, Zap, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/orders", label: "Orders", icon: ShoppingCart },
   { href: "/returns", label: "Returns", icon: RotateCcw },
+  { href: "/refunds",      label: "Refunds",      icon: RefreshCcw },
   { href: "/customers", label: "Customers", icon: Users },
   { href: "/products", label: "Products", icon: Package },
+  { href: "/inventory-audit", label: "Inventory Audit", icon: ClipboardList },
   { href: "/discounts", label: "Discounts", icon: Tags },
   { href: "/loyalty",   label: "Loyalty",   icon: Gift },
   { href: "/reviews",   label: "Reviews",   icon: Star },
@@ -19,7 +21,8 @@ const navItems = [
   { href: "/gift-cards",   label: "Gift Cards",   icon: CreditCard },
   { href: "/tax",          label: "Tax Rates",    icon: Receipt },
   { href: "/shipping",     label: "Shipping",     icon: Truck },
-  { href: "/refunds",      label: "Refunds",      icon: RefreshCcw },
+  { href: "/webhooks",     label: "Webhooks",     icon: Zap },
+  { href: "/blog",         label: "Blog",         icon: FileText },
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {

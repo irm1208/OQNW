@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Loader2, ArrowLeft, Package, User, MapPin, Truck, RotateCcw, Plus, Send, DollarSign } from "lucide-react";
+import { Loader2, ArrowLeft, Package, User, MapPin, Truck, RotateCcw, Plus, Send, DollarSign, ShieldAlert, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 
 type ReturnRecord = {
@@ -210,9 +210,26 @@ export default function OrderDetail() {
           <Link href="/orders"><ArrowLeft className="w-4 h-4" /></Link>
         </Button>
         <h2 className="text-2xl font-bold tracking-tight">Order {order.orderNumber}</h2>
-        <Badge variant="outline" className={`ml-auto ${getStatusColor(order.status)} text-sm px-3 py-1`}>
+        <Badge variant="outline" className={`${getStatusColor(order.status)} text-sm px-3 py-1`}>
           {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
         </Badge>
+        {(order.fraudScore ?? 0) > 0 && (
+          <Badge
+            variant="outline"
+            className={`text-sm px-3 py-1 ml-1 ${
+              (order.fraudScore ?? 0) >= 50
+                ? "bg-red-50 text-red-700 border-red-200"
+                : (order.fraudScore ?? 0) >= 25
+                ? "bg-orange-50 text-orange-700 border-orange-200"
+                : "bg-yellow-50 text-yellow-700 border-yellow-200"
+            }`}
+            title={(order.fraudFlags ?? []).join(", ")}
+          >
+            {(order.fraudScore ?? 0) >= 50 ? <ShieldAlert className="w-3.5 h-3.5 mr-1.5 inline" /> : <ShieldCheck className="w-3.5 h-3.5 mr-1.5 inline" />}
+            Fraud Score: {order.fraudScore}
+          </Badge>
+        )}
+        <div className="ml-auto" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
