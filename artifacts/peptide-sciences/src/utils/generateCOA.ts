@@ -1,50 +1,73 @@
 import { jsPDF } from "jspdf";
 import type { Product } from "@/data/products";
 import type { ProductDetail } from "@/data/productDetails";
-import { getPurityStr, getPurity, getLotDates } from "@/utils/productPurity";
+import { getPurity, getLotDates } from "@/utils/productPurity";
+import {
+  parseBaseName, parseDeclaredMg, getActualMass,
+  getVerifyKey, getCOARef,
+} from "@/components/COADocument";
 
-const B = {
-  darkest:  [13,  37,  101] as [number,number,number],
-  dark:     [18,  64,  160] as [number,number,number],
-  mid:      [27,  92,  181] as [number,number,number],
-  paleBg:   [240, 245, 255] as [number,number,number],
-  paleBg2:  [248, 251, 255] as [number,number,number],
-  border:   [191, 214, 248] as [number,number,number],
-  subtext:  [120, 140, 175] as [number,number,number],
-  muted:    [150, 175, 215] as [number,number,number],
-  ink:      [8,   16,  45 ] as [number,number,number],
-};
+// ─── Brand colours (matching HTML COADocument) ───────────────────────────────
+const BLUE    = [18,  64,  160] as [number,number,number]; // #1240A0
+const INK     = [17,  24,   39] as [number,number,number]; // #111827
+const MUTED   = [107, 114, 128] as [number,number,number]; // #6B7280
+const ROWALT  = [240, 247, 255] as [number,number,number]; // #F0F7FF
+const BGLIGHT = [249, 250, 251] as [number,number,number]; // #F9FAFB
+const BORDER  = [229, 231, 235] as [number,number,number]; // #E5E7EB
+const GREEN   = [ 22, 163,  74] as [number,number,number]; // #16A34A
 
-function fill(doc: jsPDF, x: number, y: number, w: number, h: number, r: number, g: number, b: number) {
-  doc.setFillColor(r, g, b);
-  doc.rect(x, y, w, h, "F");
-}
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function box(doc: jsPDF, x: number, y: number, w: number, h: number, r: number, g: number, b: number, lw = 0.25) {
-  doc.setDrawColor(r, g, b);
-  doc.setLineWidth(lw);
-  doc.rect(x, y, w, h, "S");
-}
-
-function hline(doc: jsPDF, x: number, y: number, w: number, r: number, g: number, b: number, lw = 0.3) {
+function hline(
+  doc: jsPDF, x: number, y: number, w: number,
+  r: number, g: number, b: number, lw = 0.3,
+) {
   doc.setDrawColor(r, g, b);
   doc.setLineWidth(lw);
   doc.line(x, y, x + w, y);
 }
 
-function vline(doc: jsPDF, x: number, y: number, h: number, r: number, g: number, b: number, lw = 0.2) {
-  doc.setDrawColor(r, g, b);
-  doc.setLineWidth(lw);
-  doc.line(x, y, x, y + h);
+function fillRect(
+  doc: jsPDF, x: number, y: number, w: number, h: number,
+  r: number, g: number, b: number,
+) {
+  doc.setFillColor(r, g, b);
+  doc.rect(x, y, w, h, "F");
 }
 
-function sectionHeader(doc: jsPDF, label: string, x: number, y: number, w: number) {
-  fill(doc, x, y, w, 7, ...B.dark);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(7);
-  doc.setTextColor(255, 255, 255);
-  doc.text(label, x + 3, y + 5);
+function strokeRect(
+  doc: jsPDF, x: number, y: number, w: number, h: number,
+  r: number, g: number, b: number, lw = 0.25,
+) {
+  doc.setDrawColor(r, g, b);
+  doc.setLineWidth(lw);
+  doc.rect(x, y, w, h, "S");
 }
+
+function labelText(
+  doc: jsPDF, text: string, x: number, y: number,
+) {
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7.5);
+  doc.setTextColor(...BLUE);
+  doc.text(text, x, y);
+}
+
+function bodyText(
+  doc: jsPDF, text: string, x: number, y: number,
+  maxWidth?: number,
+) {
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(...INK);
+  if (maxWidth) {
+    doc.text(doc.splitTextToSize(text, maxWidth), x, y);
+  } else {
+    doc.text(text, x, y);
+  }
+}
+
+// ─── Logo loader ─────────────────────────────────────────────────────────────
 
 interface LogoAsset { dataUrl: string; naturalW: number; naturalH: number; }
 
@@ -58,395 +81,448 @@ async function loadLogo(): Promise<LogoAsset | null> {
       reader.onerror = reject;
       reader.readAsDataURL(blob);
     });
-
-    const dataUrl = await new Promise<string>((resolve) => {
-      const img = new Image();
-      img.onload = () => {
-        const W = img.naturalWidth, H = img.naturalHeight;
-        const r = Math.round(H * 0.10);
-        const canvas = document.createElement("canvas");
-        canvas.width = W; canvas.height = H;
-        const ctx = canvas.getContext("2d")!;
-        ctx.beginPath();
-        ctx.moveTo(r, 0); ctx.lineTo(W - r, 0); ctx.quadraticCurveTo(W, 0, W, r);
-        ctx.lineTo(W, H - r); ctx.quadraticCurveTo(W, H, W - r, H);
-        ctx.lineTo(r, H); ctx.quadraticCurveTo(0, H, 0, H - r);
-        ctx.lineTo(0, r); ctx.quadraticCurveTo(0, 0, r, 0);
-        ctx.closePath(); ctx.clip(); ctx.drawImage(img, 0, 0);
-        resolve(canvas.toDataURL("image/png"));
-      };
-      img.onerror = () => resolve(rawUrl);
-      img.src = rawUrl;
-    });
-
     const img2 = new Image();
     const { w, h } = await new Promise<{ w: number; h: number }>((resolve) => {
-      img2.onload = () => resolve({ w: img2.naturalWidth, h: img2.naturalHeight });
+      img2.onload  = () => resolve({ w: img2.naturalWidth, h: img2.naturalHeight });
       img2.onerror = () => resolve({ w: 1, h: 1 });
-      img2.src = dataUrl;
+      img2.src = rawUrl;
     });
-    return { dataUrl, naturalW: w, naturalH: h };
+    return { dataUrl: rawUrl, naturalW: w, naturalH: h };
   } catch { return null; }
 }
 
-function fitLogo(logo: LogoAsset, maxW: number, maxH: number): { w: number; h: number } {
+function fitLogo(logo: LogoAsset, maxW: number, maxH: number) {
   const ratio = logo.naturalW / logo.naturalH;
   let w = maxW, h = w / ratio;
   if (h > maxH) { h = maxH; w = h * ratio; }
   return { w, h };
 }
 
+// ─── Signature drawing (matches SVG in COADocument.tsx) ──────────────────────
+// SVG viewBox: 148 × 52 px  →  rendered at 52 mm × 18 mm in PDF
+
+function drawSignature(doc: jsPDF, bx: number, by: number) {
+  const sW = 52, sH = 18;
+  const sX = sW / 148, sY = sH / 52;
+  const pt = (px: number, py: number): [number, number] =>
+    [bx + px * sX, by + py * sY];
+
+  doc.setDrawColor(26, 26, 46);
+
+  // Path 1 — tall capital loop (strokeWidth≈0.7)
+  doc.setLineWidth(0.7);
+  doc.lines(
+    [[-1,-14,4,-28,10,-26],[6,2,4,14,2,22],[-2,6,2,8,6,2]] as number[][],
+    ...pt(6, 38), [sX, sY], "S",
+  );
+
+  // Path 2 — r flick (strokeWidth≈0.6)
+  doc.setLineWidth(0.6);
+  doc.lines(
+    [[3,-10,9,-16,13,-12]] as number[][],
+    ...pt(24, 36), [sX, sY], "S",
+  );
+
+  // Path 3 — flowing body (strokeWidth≈0.65)
+  doc.setLineWidth(0.65);
+  doc.lines(
+    [[3,-2,7,6,9,10],[2,4,6,-6,11,-12],[5,-6,11,-2,13,6]] as number[][],
+    ...pt(37, 24), [sX, sY], "S",
+  );
+
+  // Path 4 — loop + second cluster (strokeWidth≈0.58)
+  doc.setLineWidth(0.58);
+  doc.lines(
+    [[2,6,0,12,4,10],[4,-2,8,-14,14,-18],[6,-4,12,2,14,10]] as number[][],
+    ...pt(70, 28), [sX, sY], "S",
+  );
+
+  // Path 5 — long tail flourish (strokeWidth≈0.47)
+  doc.setLineWidth(0.47);
+  doc.lines(
+    [[6,-4,14,-10,22,-6],[6,3,10,10,16,6],[3,-2,4,-4,5,-6]] as number[][],
+    ...pt(102, 30), [sX, sY], "S",
+  );
+
+  // Dot above r (pen-lift detail)
+  doc.setFillColor(26, 26, 46);
+  doc.circle(...pt(38, 14), 0.4, "F");
+
+  // Underline flourish
+  doc.setLineWidth(0.32);
+  doc.lines(
+    [[35,3,91,2,138,-2]] as number[][],
+    ...pt(5, 46), [sX, sY], "S",
+  );
+}
+
+// ─── Gaussian helper (HPLC page) ─────────────────────────────────────────────
+
 function gaussian(t: number, mu: number, amplitude: number, sigma: number): number {
   return amplitude * Math.exp(-Math.pow(t - mu, 2) / (2 * sigma * sigma));
 }
 
-function drawPageHeader(
-  doc: jsPDF, logo: LogoAsset | null,
-  W: number, M: number, HDR: number,
-  docRef: string, lot: string, pageLabel: string,
-) {
-  fill(doc, 0, 0, W, HDR, ...B.darkest);
+// ─── Main export ─────────────────────────────────────────────────────────────
+
+export async function generateCOA(product: Product, detail: ProductDetail) {
+  const doc  = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
+  const logo = await loadLogo();
+
+  const W  = 210;
+  const M  = 14;
+  const CW = W - M * 2;
+
+  const { lot, analysis, issued } = getLotDates(product.id);
+  const purity     = getPurity(product.id);
+  const declaredMg = parseDeclaredMg(product.name);
+  const actualMass = declaredMg !== null ? getActualMass(product.id, declaredMg) : null;
+  const baseName   = parseBaseName(product.name);
+  const verifyKey  = getVerifyKey(product.id);
+  const coaRef     = getCOARef(product.id, lot);
+
+  // ══════════════════════════════════════════════════════════════════════
+  //  PAGE 1 — Certificate of Analysis  (white, matching HTML COADocument)
+  // ══════════════════════════════════════════════════════════════════════
+
+  let y = M;
+
+  // ── Header ────────────────────────────────────────────────────────────
+  // Title (left)
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(22);
+  doc.setTextColor(...BLUE);
+  doc.text("CERTIFICATE", M, y + 8);
+  doc.text("OF ANALYSIS", M, y + 17);
+
+  // Logo (right)
+  if (logo) {
+    const { w: lw, h: lh } = fitLogo(logo, 46, 16);
+    doc.addImage(logo.dataUrl, "JPEG", W - M - lw, y, lw, lh);
+  }
+  // Contact lines under logo
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(6.5);
+  doc.setTextColor(...MUTED);
+  doc.text("E-mail: labs@omniqure.co.uk", W - M, y + 18, { align: "right" });
+  doc.text("Web: www.omniqure.co.uk",    W - M, y + 23, { align: "right" });
+
+  y += 28;
+
+  // ── Divider ───────────────────────────────────────────────────────────
+  hline(doc, M, y, CW, ...BORDER, 0.4);
+  y += 5;
+
+  // ── Reference row ─────────────────────────────────────────────────────
+  // Left: reference number
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(6.5);
+  doc.setTextColor(...MUTED);
+  doc.text("Reference Number", M, y);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9);
+  doc.setTextColor(...INK);
+  doc.text(coaRef, M, y + 5.5);
+
+  // Right: dates
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.setTextColor(...MUTED);
+  doc.text("Analysis Date  >", W - M, y, { align: "right" });
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(...INK);
+  doc.text(analysis, W - M - 34, y);
+
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(...MUTED);
+  doc.text("Report Issued  >",  W - M, y + 6, { align: "right" });
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(...INK);
+  doc.text(issued, W - M - 34, y + 6);
+
+  y += 14;
+
+  // ── Divider ───────────────────────────────────────────────────────────
+  hline(doc, M, y, CW, ...BORDER, 0.4);
+  y += 5;
+
+  // ── Client / Sample table ─────────────────────────────────────────────
+  const clientRows = [
+    { label: "Client",       value: "OmniQure Peptide Sciences" },
+    { label: "Sample",       value: `${product.name}     ${lot}` },
+    { label: "Manufacturer", value: "OmniQure Peptide Sciences" },
+    { label: "Batch",        value: lot },
+  ];
+  const COL1 = 34; // label column width
+  clientRows.forEach(row => {
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(7.5);
+    doc.setTextColor(...BLUE);
+    doc.text(row.label, M, y + 4);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(...INK);
+    doc.text(row.value, M + COL1, y + 4);
+    y += 6.5;
+  });
+
+  y += 2;
+
+  // ── Divider ───────────────────────────────────────────────────────────
+  hline(doc, M, y, CW, ...BORDER, 0.4);
+  y += 5;
+
+  // ── Sample description ────────────────────────────────────────────────
+  labelText(doc, "Sample description  >", M, y + 4);
+  y += 7;
+  const sampleDesc =
+    `Lyophilised peptide powder, white to off-white appearance.` +
+    (detail?.appearance ? ` ${detail.appearance}.` : "") +
+    (detail?.storage   ? " Store at −20 °C (lyophilised) or 4 °C after reconstitution." : "");
+  fillRect(doc, M, y, CW, 13, ...BGLIGHT);
+  strokeRect(doc, M, y, CW, 13, ...BORDER, 0.3);
+  bodyText(doc, sampleDesc, M + 3, y + 5, CW - 6);
+  y += 16;
+
+  // ── Tests requested ───────────────────────────────────────────────────
+  labelText(doc, "Tests requested  >", M, y + 4);
+  y += 7;
+  const testsDesc =
+    "Reverse-phase HPLC purity analysis (UV detection at 214 nm) and " +
+    "electrospray ionisation mass spectrometry (ESI-MS) for identity confirmation.";
+  fillRect(doc, M, y, CW, 13, ...BGLIGHT);
+  strokeRect(doc, M, y, CW, 13, ...BORDER, 0.3);
+  bodyText(doc, testsDesc, M + 3, y + 5, CW - 6);
+  y += 16;
+
+  // ── Divider ───────────────────────────────────────────────────────────
+  hline(doc, M, y, CW, ...BORDER, 0.4);
+  y += 5;
+
+  // ── Results table ─────────────────────────────────────────────────────
+  // "Results >" label + OmniQure seal (right)
+  labelText(doc, "Results  >", M, y + 4);
+
+  // Seal circle (right side)
+  const sealX = W - M - 11, sealY = y + 11, sealR = 11;
+  doc.setDrawColor(...BLUE);
+  doc.setLineWidth(0.5);
+  doc.circle(sealX, sealY, sealR, "S");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(4);
+  doc.setTextColor(...BLUE);
+  doc.text("OMNIQURE", sealX, sealY - 4,  { align: "center" });
+  doc.text("LABS",     sealX, sealY - 1,  { align: "center" });
+  // checkmark
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(6);
+  doc.text("✓",        sealX, sealY + 3,  { align: "center" });
+  doc.setFontSize(3.5);
+  doc.text("VERIFIED", sealX, sealY + 6.5, { align: "center" });
+
+  y += 8;
+
+  const resultRows: { label: string; value: string; isGreen?: boolean; isBold?: boolean }[] = [
+    { label: baseName,            value: actualMass !== null ? `${actualMass.toFixed(2)} mg` : "—", isBold: true },
+    { label: "Purity",            value: `${purity.toFixed(3)}%`,                                    isGreen: true },
+    { label: "Identity (ESI-MS)", value: "Confirmed" },
+    ...(detail?.molecularWeight ? [{ label: "Molecular Weight", value: detail.molecularWeight }] : []),
+    ...(detail?.casNumber       ? [{ label: "CAS Number",       value: detail.casNumber }]       : []),
+  ];
+  const RH = 8;
+  const COL1W = 64; // label column
+  resultRows.forEach((row, i) => {
+    const rowY = y + i * RH;
+    if (i % 2 === 0) fillRect(doc, M, rowY, CW - 22, RH, ...ROWALT);
+    else             fillRect(doc, M, rowY, CW - 22, RH, 255, 255, 255);
+    strokeRect(doc, M, rowY, CW - 22, RH, ...BLUE, 0.3);
+    // left border accent
+    fillRect(doc, M, rowY, 1, RH, ...BLUE);
+    // label
+    doc.setFont("helvetica", row.isBold ? "bold" : "normal");
+    doc.setFontSize(7.5);
+    doc.setTextColor(...INK);
+    doc.text(row.label, M + 3, rowY + 5.5);
+    // value
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(...(row.isGreen ? GREEN : INK));
+    doc.text(row.value, M + COL1W, rowY + 5.5);
+  });
+  y += resultRows.length * RH + 5;
+
+  // ── Comments ──────────────────────────────────────────────────────────
+  labelText(doc, "Comments  >", M, y + 4);
+  y += 7;
+  const comments =
+    "All specifications met. Sample approved for research distribution and use. " +
+    "For laboratory research purposes only — not for human or veterinary use.";
+  fillRect(doc, M, y, CW, 14, ...BGLIGHT);
+  strokeRect(doc, M, y, CW, 14, ...BORDER, 0.3);
+  bodyText(doc, comments, M + 3, y + 5.5, CW - 6);
+  y += 18;
+
+  // ── Divider ───────────────────────────────────────────────────────────
+  hline(doc, M, y, CW, ...BORDER, 0.4);
+  y += 5;
+
+  // ── Analysis conducted + Signature ────────────────────────────────────
+  // Left: analysis date pill
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.setTextColor(...MUTED);
+  doc.text("Analysis conducted  >", M, y + 4);
+  fillRect(doc, M + 47, y - 1, 28, 8, ...ROWALT);
+  strokeRect(doc, M + 47, y - 1, 28, 8, ...BLUE, 0.25);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7.5);
+  doc.setTextColor(...INK);
+  doc.text(analysis, M + 48, y + 4.5);
+
+  // Right: Signature label + drawn signature
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(6.5);
+  doc.setTextColor(...MUTED);
+  doc.text("Signature  >", W - M, y + 2, { align: "right" });
+  drawSignature(doc, W - M - 52, y + 4);
+  y += 24;
+
+  // ── Verification key ──────────────────────────────────────────────────
+  // Top rule
+  doc.setDrawColor(...BLUE);
+  doc.setLineWidth(0.6);
+  doc.line(M, y, W - M, y);
+  y += 5;
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7);
+  doc.setTextColor(...BLUE);
+  doc.text(
+    "Verify this certificate at  www.omniqure.co.uk/verify/  with the following unique key",
+    W / 2, y + 3, { align: "center" },
+  );
+  y += 8;
+
+  fillRect(doc, M, y, CW, 12, ...ROWALT);
+  strokeRect(doc, M, y, CW, 12, ...BLUE, 0.4);
+  doc.setFont("courier", "bold");
+  doc.setFontSize(13);
+  doc.setTextColor(...INK);
+  doc.text(verifyKey, W / 2, y + 8.5, { align: "center" });
+
+  y += 16;
+
+  // ── Footer note ───────────────────────────────────────────────────────
+  doc.setFont("helvetica", "italic");
+  doc.setFontSize(6);
+  doc.setTextColor(...MUTED);
+  doc.text(
+    "This certificate is generated electronically and is valid for the lot number stated above. " +
+    "Analysed at OmniQure QC Laboratory, Hertfordshire, UK. See Page 2 for HPLC chromatogram.",
+    M, y + 4, { maxWidth: CW },
+  );
+
+  // ══════════════════════════════════════════════════════════════════════
+  //  PAGE 2 — HPLC Chromatogram
+  // ══════════════════════════════════════════════════════════════════════
+
+  doc.addPage();
+
+  const FOOTER_Y = 273;
+  const HDR      = 44;
+
+  // Dark header (matches existing design for chromatogram page)
+  fillRect(doc, 0, 0, W, HDR, 13, 37, 101);
   if (logo) {
     const { w: lw, h: lh } = fitLogo(logo, 80, 28);
     doc.addImage(logo.dataUrl, "JPEG", M, (HDR - lh) / 2, lw, lh);
   }
-  vline(doc, W / 2 - 4, 8, 28, 255, 255, 255, 0.25);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(16);
   doc.setTextColor(255, 255, 255);
-  doc.text("CERTIFICATE", W - M, 18, { align: "right" });
-  doc.text("OF ANALYSIS", W - M, 27, { align: "right" });
+  doc.text("CERTIFICATE",  W - M, 18, { align: "right" });
+  doc.text("OF ANALYSIS",  W - M, 27, { align: "right" });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(6.5);
-  doc.setTextColor(...B.muted);
-  doc.text(`${docRef}  ·  Lot ${lot}  ·  ${pageLabel}`, W - M, 35, { align: "right" });
-  fill(doc, 0, HDR, W, 2.5, ...B.mid);
-}
+  doc.setTextColor(150, 175, 215);
+  doc.text(`${coaRef}  ·  Lot ${lot}  ·  Page 2 of 2`, W - M, 35, { align: "right" });
+  fillRect(doc, 0, HDR, W, 2.5, 27, 92, 181);
 
-function drawPageFooter(
-  doc: jsPDF, logo: LogoAsset | null,
-  W: number, M: number, FOOTER_Y: number,
-  docRef: string, lot: string, issued: string, expires: string,
-) {
-  hline(doc, 0, FOOTER_Y, W, ...B.mid, 0.6);
-  fill(doc, 0, FOOTER_Y, W, 24, ...B.darkest);
-  if (logo) {
-    const { w: lw, h: lh } = fitLogo(logo, 32, 14);
-    doc.addImage(logo.dataUrl, "JPEG", M, FOOTER_Y + (24 - lh) / 2, lw, lh);
-  }
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(6.5);
-  doc.setTextColor(...B.muted);
-  doc.text(
-    `${docRef}  ·  Lot: ${lot}  ·  Issued: ${issued}  ·  Expiry: ${expires}`,
-    W / 2 + 10, FOOTER_Y + 9, { align: "center" }
-  );
-  doc.text(
-    `omniqure.co.uk  ·  For in-vitro research use only  ·  This document supersedes all previous versions for this lot.`,
-    W / 2 + 10, FOOTER_Y + 16, { align: "center" }
-  );
-}
-
-export async function generateCOA(product: Product, detail: ProductDetail) {
-  const [doc, logo] = await Promise.all([
-    Promise.resolve(new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" })),
-    loadLogo(),
-  ]);
-
-  const W        = 210;
-  const M        = 12;
-  const CW       = W - M * 2;
-  const FOOTER_Y = 273;
-  const HDR      = 44;
-
-  const { lot, analysis, issued, expires } = getLotDates(product.id);
-  const docRef   = detail.refNumber ? `COA-${detail.refNumber}` : `COA-OQ-${product.id.padStart(3, "0")}`;
-  const purity   = getPurityStr(product.id);
-
-  // ════════════════════════════════════════════════════════════════════
-  //  PAGE 1  –  Certificate of Analysis
-  // ════════════════════════════════════════════════════════════════════
-
-  drawPageHeader(doc, logo, W, M, HDR, docRef, lot, "Page 1 of 2");
-
-  // ── META STRIP ─────────────────────────────────────────────────────
-  fill(doc, 0, 46.5, W, 13.5, ...B.paleBg);
-  hline(doc, 0, 60, W, ...B.border, 0.4);
-  const meta = [
-    { label: "DATE OF ANALYSIS", value: analysis,  accent: false },
-    { label: "DATE OF ISSUE",    value: issued,    accent: false },
-    { label: "EXPIRY DATE",      value: expires,   accent: false },
-    { label: "QC STATUS",        value: "RELEASED",accent: true  },
-  ];
-  meta.forEach((m, i) => {
-    const x = M + i * 47;
-    fill(doc, x, 47.5, 43, 11, 255, 255, 255);
-    box(doc, x, 47.5, 43, 11, ...B.border);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(5.8);
-    doc.setTextColor(...B.subtext);
-    doc.text(m.label, x + 2, 51.5);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(8);
-    doc.setTextColor(m.accent ? 5 : 20, m.accent ? 145 : 30, m.accent ? 100 : 75);
-    doc.text(m.value, x + 2, 57);
-  });
-
-  // ── PRODUCT IDENTITY ───────────────────────────────────────────────
-  let y = 62;
-  fill(doc, M, y, CW, 22, ...B.paleBg);
-  box(doc, M, y, CW, 22, ...B.border, 0.4);
-  fill(doc, M, y, 3, 22, ...B.mid);
+  // Section header bar
+  fillRect(doc, M, HDR + 6, CW, 7, 18, 64, 160);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(13.5);
-  doc.setTextColor(...B.ink);
-  const nameLines = doc.splitTextToSize(product.name, CW - 72);
-  doc.text(nameLines, M + 7, y + 9);
-  fill(doc, M + 7, y + 13.5, 48, 5.5, ...B.paleBg2);
-  box(doc, M + 7, y + 13.5, 48, 5.5, ...B.border);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(6.2);
-  doc.setTextColor(...B.dark);
-  doc.text(product.category.toUpperCase(), M + 9, y + 17.5);
-  const bx = M + CW - 58;
-  fill(doc, bx, y + 2, 55, 18, 232, 253, 242);
-  box(doc, bx, y + 2, 55, 18, 160, 240, 200);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(15);
-  doc.setTextColor(5, 140, 80);
-  doc.text(purity, bx + 27.5, y + 13.5, { align: "center" });
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(6);
-  doc.setTextColor(30, 130, 80);
-  doc.text("HPLC PURITY  ✓  CONFIRMED", bx + 27.5, y + 18.5, { align: "center" });
-  y += 24;
-
-  // ── PHYSICOCHEMICAL PROPERTIES ─────────────────────────────────────
-  sectionHeader(doc, "PHYSICOCHEMICAL PROPERTIES", M, y, CW);
-  y += 7;
-  const specs: [string, string][] = ([
-    ["CAS Number",         detail.casNumber],
-    ["Molecular Formula",  detail.formula],
-    ["Molecular Weight",   detail.molecularWeight],
-    ["Appearance",         detail.appearance ?? "White lyophilised powder"],
-    ["Solubility",         detail.solubility],
-    ["Storage",            detail.storage ?? "−20 °C, protect from light"],
-    ["Half-Life",          detail.halfLife],
-    ["Sequence",           detail.sequence],
-  ] as [string, string | undefined][])
-    .filter(([, v]) => v && v !== "—") as [string, string][];
-
-  const half  = Math.ceil(Math.min(specs.length, 8) / 2);
-  const left  = specs.slice(0, half);
-  const right = specs.slice(half, 8);
-  const cw    = (CW - 3) / 2;
-  const rh    = 9;
-
-  function drawSpecCol(rows: [string, string][], cx: number, startY: number) {
-    rows.forEach(([label, value], ri) => {
-      const ry  = startY + ri * rh;
-      const bg  = ri % 2 === 0 ? [255, 255, 255] : B.paleBg2;
-      fill(doc, cx, ry, cw, rh, ...bg as [number,number,number]);
-      box(doc, cx, ry, cw, rh, ...B.border);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(5.8);
-      doc.setTextColor(...B.subtext);
-      doc.text(label.toUpperCase(), cx + 2.5, ry + 3.8);
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(7.5);
-      doc.setTextColor(...B.ink);
-      const wrapped = doc.splitTextToSize(value, cw - 5);
-      doc.text(wrapped[0], cx + 2.5, ry + 7.8);
-    });
-  }
-  drawSpecCol(left,  M,          y);
-  drawSpecCol(right, M + cw + 3, y);
-  y += Math.max(left.length, right.length) * rh + 6;
-
-  // ── ANALYTICAL TEST RESULTS ────────────────────────────────────────
-  sectionHeader(doc, "ANALYTICAL TEST RESULTS", M, y, CW);
-  y += 7;
-  const TH  = 8.5;
-  fill(doc, M, y, CW, TH, ...B.dark);
-  const cols = [
-    { x: M + 2,    w: 44, label: "TEST PARAMETER"  },
-    { x: M + 48,   w: 55, label: "METHOD"          },
-    { x: M + 105,  w: 33, label: "SPECIFICATION"   },
-    { x: M + 140,  w: 28, label: "RESULT"          },
-    { x: M + 170,  w: 14, label: "STATUS"          },
-  ];
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(6.5);
+  doc.setFontSize(7);
   doc.setTextColor(255, 255, 255);
-  cols.forEach(c => doc.text(c.label, c.x, y + 6));
-  y += TH;
+  doc.text("HPLC CHROMATOGRAM  —  REVERSE PHASE C18  ·  UV 220 nm", M + 3, HDR + 11.5);
 
-  const testRows: [string, string, string, string][] = [
-    ["Appearance",          "Visual Inspection · Ph. Eur. 2.9.20",  "White lyo. powder",  detail.appearance?.split(" ").slice(0, 3).join(" ") ?? "White lyo. powder"],
-    ["Identity (ESI-MS)",   "Electrospray Ionisation-MS",           "Matches reference",  "Confirmed"],
-    ["Purity (HPLC-UV)",    "RP-HPLC, 220 nm, C18 column",          "≥ 98.0 %",           purity],
-    ["Peptide Content",     "Amino Acid Analysis (AAA)",             "≥ 95.0 %",           "≥ 95.0 %"],
-    ["Water Content",       "Karl Fischer · USP ⟨921⟩",             "≤ 8.0 %",            "≤ 8.0 %"],
-    ["Residual Solvents",   "GC-Headspace · ICH Q3C",               "ICH Q3C limits",     "Conforms"],
-    ["Bacterial Endotoxins","LAL Gel-Clot · USP ⟨85⟩",              "< 1.0 EU/mg",        "< 1.0 EU/mg"],
-    ["Bioburden",           "Membrane Filtration · USP ⟨61⟩",       "≤ 100 CFU/g",        "≤ 100 CFU/g"],
-  ];
+  // Product strip
+  const stripY = HDR + 15;
+  fillRect(doc, M, stripY, CW, 10, 240, 245, 255);
+  strokeRect(doc, M, stripY, CW, 10, 191, 214, 248, 0.3);
+  fillRect(doc, M, stripY, 3, 10, 27, 92, 181);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9);
+  doc.setTextColor(8, 16, 45);
+  doc.text(product.name, M + 7, stripY + 7);
+  // Purity badge
+  const pur2X = M + CW - 52;
+  fillRect(doc, pur2X, stripY + 1.5, 49, 7, 232, 253, 242);
+  strokeRect(doc, pur2X, stripY + 1.5, 49, 7, 160, 240, 200);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7.5);
+  doc.setTextColor(5, 140, 80);
+  doc.text(`HPLC Purity: ${purity.toFixed(3)}%  ✓`, pur2X + 24.5, stripY + 7, { align: "center" });
 
-  const RH = 9.5;
-  testRows.forEach(([param, method, spec, result], ri) => {
-    const bg = ri % 2 === 0 ? [255, 255, 255] : B.paleBg2;
-    fill(doc, M, y, CW, RH, ...bg as [number,number,number]);
-    box(doc, M, y, CW, RH, ...B.border);
-    [M + 47, M + 104, M + 139, M + 169].forEach(cx => vline(doc, cx, y, RH, ...B.border));
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(7);
-    doc.setTextColor(...B.ink);
-    doc.text(param, cols[0].x, y + 6.5);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(6.2);
-    doc.setTextColor(75, 90, 120);
-    doc.text(doc.splitTextToSize(method, cols[1].w - 2)[0], cols[1].x, y + 6.5);
-    doc.text(spec, cols[2].x, y + 6.5);
-    const isPurity = param.startsWith("Purity");
-    doc.setFont("helvetica", isPurity ? "bold" : "normal");
-    doc.setFontSize(isPurity ? 7.5 : 6.5);
-    doc.setTextColor(isPurity ? 5 : 12, isPurity ? 140 : 22, isPurity ? 80 : 50);
-    doc.text(result, cols[3].x, y + 6.5);
-    fill(doc, cols[4].x - 1, y + 1.8, 17, 6, 220, 252, 230);
-    box(doc, cols[4].x - 1, y + 1.8, 17, 6, 160, 240, 195);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(6.5);
-    doc.setTextColor(16, 120, 60);
-    doc.text("PASS", cols[4].x + 7.5, y + 6.5, { align: "center" });
-    y += RH;
-  });
-  box(doc, M, y - testRows.length * RH - TH, CW, testRows.length * RH + TH, ...B.border, 0.5);
-  y += 5;
-
-  // ── NOTICE BOX ─────────────────────────────────────────────────────
-  if (y < FOOTER_Y - 22) {
-    fill(doc, M, y, CW, 16, 255, 251, 232);
-    box(doc, M, y, CW, 16, 248, 210, 80, 0.4);
-    fill(doc, M, y, 3, 16, 245, 180, 10);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(6.5);
-    doc.setTextColor(146, 64, 14);
-    doc.text("IMPORTANT NOTICE", M + 6, y + 5.5);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(6.5);
-    doc.setTextColor(120, 53, 15);
-    doc.text(
-      "For in-vitro laboratory research use only. Not for human or veterinary diagnostic use. Qualified researchers only. 18+ required.",
-      M + 6, y + 10.5, { maxWidth: CW - 8 }
-    );
-    y += 19;
-  }
-
-  if (y < FOOTER_Y - 8) {
-    doc.setFont("helvetica", "italic");
-    doc.setFontSize(6);
-    doc.setTextColor(155, 165, 185);
-    doc.text(
-      "This certificate is generated electronically and is valid for the lot number stated above.  " +
-      "Analysed at OmniQure QC Laboratory, Hertfordshire, UK.  ISO/IEC 17025:2017 accredited facility.  " +
-      "See Page 2 for HPLC chromatogram.",
-      M, y + 5, { maxWidth: CW }
-    );
-  }
-
-  drawPageFooter(doc, logo, W, M, FOOTER_Y, docRef, lot, issued, expires);
-
-  // ════════════════════════════════════════════════════════════════════
-  //  PAGE 2  –  HPLC Chromatogram
-  // ════════════════════════════════════════════════════════════════════
-
-  doc.addPage();
-  drawPageHeader(doc, logo, W, M, HDR, docRef, lot, "Page 2 of 2");
-
-  // ── Chromatogram math (mirrors HplcChart.tsx exactly) ──────────────
+  // Chromatogram maths (identical to HplcChart.tsx)
   const seed          = parseInt(product.id, 10) || 1;
   const retentionTime = 9 + (seed % 9);
   const sigma         = 0.30 + (seed % 5) * 0.02;
-
   const baseImp1Amp   = 5.5 + (seed % 4) * 0.8;
   const imp1RT        = retentionTime - 3.5 - (seed % 2);
   const baseImp2Amp   = 3.0 + (seed % 3) * 0.7;
   const imp2RT        = retentionTime + 3.8 + (seed % 3) * 0.5;
   const imp1Sigma     = 0.22 + (seed % 3) * 0.03;
   const imp2Sigma     = 0.18 + (seed % 2) * 0.03;
-
-  const targetPurity  = getPurity(product.id);
   const ROOT2PI       = 2.5066;
   const mainArea      = 1000 * sigma * ROOT2PI;
   const baseI1        = baseImp1Amp * imp1Sigma * ROOT2PI;
   const baseI2        = baseImp2Amp * imp2Sigma * ROOT2PI;
-  const totalAreaTgt  = mainArea / (targetPurity / 100);
+  const totalAreaTgt  = mainArea / (purity / 100);
   const impuritiesArea= totalAreaTgt - mainArea;
   const impScale      = impuritiesArea / (baseI1 + baseI2);
   const imp1Amp       = baseImp1Amp * impScale;
   const imp2Amp       = baseImp2Amp * impScale;
 
-  const i1Area    = imp1Amp * imp1Sigma * ROOT2PI;
-  const i2Area    = imp2Amp * imp2Sigma * ROOT2PI;
-  const totalArea = mainArea + i1Area + i2Area;
-
-  // ── Plot layout (mm) ───────────────────────────────────────────────
-  const plotX   = M + 24;   // left edge of plot (space for Y-axis labels)
-  const plotY2  = 58;       // top edge of plot
-  const plotW2  = CW - 24;  // 162 mm wide
-  const plotH2  = 128;      // 128 mm tall
+  const plotX   = M + 24;
+  const plotY2  = 58;
+  const plotW2  = CW - 24;
+  const plotH2  = 128;
   const baseline= plotY2 + plotH2;
   const T_MAX   = 25;
   const A_MAX   = 1080;
-
   const mmX = (t: number) => plotX + (t / T_MAX) * plotW2;
   const mmY = (a: number) => plotY2 + plotH2 - (Math.min(Math.max(a, 0), A_MAX) / A_MAX) * plotH2;
 
-  // ── Section title ──────────────────────────────────────────────────
-  sectionHeader(doc, "HPLC CHROMATOGRAM  —  REVERSE PHASE C18  ·  UV 220 nm", M, HDR + 6, CW);
-
-  // ── Product name strip ─────────────────────────────────────────────
-  const stripY = HDR + 15;
-  fill(doc, M, stripY, CW, 10, ...B.paleBg);
-  box(doc, M, stripY, CW, 10, ...B.border, 0.3);
-  fill(doc, M, stripY, 3, 10, ...B.mid);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(9);
-  doc.setTextColor(...B.ink);
-  doc.text(product.name, M + 7, stripY + 7);
-  // Purity badge right
-  const pur2X = M + CW - 52;
-  fill(doc, pur2X, stripY + 1.5, 49, 7, 232, 253, 242);
-  box(doc, pur2X, stripY + 1.5, 49, 7, 160, 240, 200);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(7.5);
-  doc.setTextColor(5, 140, 80);
-  doc.text(`HPLC Purity: ${purity}  ✓`, pur2X + 24.5, stripY + 7, { align: "center" });
-
-  // ── Grid lines ─────────────────────────────────────────────────────
-  const xTicks = [0, 5, 10, 15, 20, 25];
-  const yTicks = [0, 200, 400, 600, 800, 1000];
-
-  xTicks.forEach(t => {
+  // Grid
+  [0, 5, 10, 15, 20, 25].forEach(t => {
     doc.setDrawColor(235, 240, 250);
     doc.setLineWidth(0.2);
     doc.line(mmX(t), plotY2, mmX(t), baseline);
   });
-  yTicks.forEach(v => {
+  [0, 200, 400, 600, 800, 1000].forEach(v => {
     doc.setDrawColor(235, 240, 250);
     doc.setLineWidth(0.2);
     doc.line(plotX, mmY(v), plotX + plotW2, mmY(v));
   });
 
-  // ── Generate chromatogram points ───────────────────────────────────
-  const N    = 350;
+  // Chromatogram points
+  const N = 350;
   const pts: [number, number][] = [];
   for (let i = 0; i <= N; i++) {
     const t = (i / N) * T_MAX;
     const noise =
       2.8 * Math.sin(t * 6.1 + seed) +
       1.6 * Math.sin(t * 14.3 + seed * 0.7) +
-      1.1 * Math.sin(t * 3.7 + seed * 1.3) +
+      1.1 * Math.sin(t * 3.7  + seed * 1.3) +
       0.7 * Math.sin(t * 22.1);
     const abs =
       Math.max(0, noise) +
@@ -456,260 +532,93 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
     pts.push([mmX(t), mmY(abs)]);
   }
 
-  // ── Filled area under curve ────────────────────────────────────────
-  // Build relative segment array for doc.lines() starting at (plotX, baseline)
-  const fillSegs: Array<[number, number]> = [];
+  // Filled area
+  const fillSegs: number[][] = [];
   fillSegs.push([pts[0][0] - plotX, pts[0][1] - baseline]);
   for (let i = 1; i < pts.length; i++) {
     fillSegs.push([pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]]);
   }
-  // Return to baseline at last x, then close to start
   fillSegs.push([0, baseline - pts[pts.length - 1][1]]);
   doc.setFillColor(220, 232, 255);
-  // @ts-ignore – jsPDF types omit the 5th/6th overload but the method exists
+  // @ts-ignore
   doc.lines(fillSegs, plotX, baseline, [1, 1], "F", true);
 
-  // ── Chromatogram line ──────────────────────────────────────────────
-  doc.setDrawColor(...B.mid);
+  // Chromatogram line
+  doc.setDrawColor(27, 92, 181);
   doc.setLineWidth(0.45);
   for (let i = 1; i < pts.length; i++) {
     doc.line(pts[i - 1][0], pts[i - 1][1], pts[i][0], pts[i][1]);
   }
 
-  // ── Axes ───────────────────────────────────────────────────────────
+  // Axes
   doc.setDrawColor(160, 175, 200);
   doc.setLineWidth(0.6);
-  // Y axis
   doc.line(plotX, plotY2, plotX, baseline);
-  // X axis
   doc.line(plotX, baseline, plotX + plotW2, baseline);
 
-  // ── Y-axis tick labels ─────────────────────────────────────────────
+  // Y-axis labels
   doc.setFont("helvetica", "normal");
   doc.setFontSize(5.5);
-  doc.setTextColor(...B.subtext);
-  yTicks.forEach(v => {
+  doc.setTextColor(120, 140, 175);
+  [0, 200, 400, 600, 800, 1000].forEach(v => {
     doc.text(String(v), plotX - 2, mmY(v) + 1.8, { align: "right" });
     doc.setDrawColor(180, 195, 220);
     doc.setLineWidth(0.2);
     doc.line(plotX - 1, mmY(v), plotX, mmY(v));
   });
 
-  // ── X-axis tick labels ─────────────────────────────────────────────
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(5.5);
-  doc.setTextColor(...B.subtext);
-  xTicks.forEach(t => {
+  // X-axis labels
+  [0, 5, 10, 15, 20, 25].forEach(t => {
     doc.text(String(t), mmX(t), baseline + 4, { align: "center" });
     doc.setDrawColor(180, 195, 220);
     doc.setLineWidth(0.2);
     doc.line(mmX(t), baseline, mmX(t), baseline + 1);
   });
 
-  // ── Axis labels ────────────────────────────────────────────────────
+  // Axis titles
   doc.setFont("helvetica", "normal");
   doc.setFontSize(6);
-  doc.setTextColor(...B.subtext);
-  // Y-axis label (rotated)
-  doc.text("Absorbance (mAU)", plotX - 17, plotY2 + plotH2 / 2, {
-    angle: 90,
-    align: "center",
-  });
-  // X-axis label
+  doc.setTextColor(120, 140, 175);
+  doc.text("Absorbance (mAU)", plotX - 17, plotY2 + plotH2 / 2, { angle: 90, align: "center" });
   doc.text("Time (min)", plotX + plotW2 / 2, baseline + 9, { align: "center" });
 
-  // ── Main peak annotation ───────────────────────────────────────────
+  // Main peak annotation
   const peakPx = mmX(retentionTime);
   const peakPy = mmY(1000);
-  // Dashed leader line
-  doc.setDrawColor(...B.mid);
+  doc.setDrawColor(27, 92, 181);
   doc.setLineWidth(0.3);
   doc.setLineDashPattern([0.8, 0.8], 0);
   doc.line(peakPx, peakPy - 1, peakPx, peakPy - 10);
   doc.setLineDashPattern([], 0);
-  // Annotation box
-  fill(doc, peakPx - 13, peakPy - 18, 26, 7, 238, 245, 255);
-  box(doc, peakPx - 13, peakPy - 18, 26, 7, ...B.border, 0.3);
+  fillRect(doc, peakPx - 13, peakPy - 18, 26, 7, 238, 245, 255);
+  strokeRect(doc, peakPx - 13, peakPy - 18, 26, 7, 191, 214, 248, 0.3);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(5.8);
-  doc.setTextColor(...B.dark);
-  doc.text(`tR = ${retentionTime}.0 min`, peakPx, peakPy - 13, { align: "center" });
-
-  // ── Impurity 1 annotation ──────────────────────────────────────────
-  const i1px = mmX(imp1RT);
-  const i1py = mmY(imp1Amp);
+  doc.setTextColor(18, 64, 160);
+  doc.text(product.name.split(" ").slice(0, 2).join(" "), peakPx, peakPy - 13.5, { align: "center" });
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(5);
-  doc.setTextColor(...B.subtext);
-  doc.text(`${(i1Area / totalArea * 100).toFixed(2)}%`, i1px, i1py - 2, { align: "center" });
+  doc.setFontSize(5.5);
+  doc.setTextColor(120, 140, 175);
+  doc.text(`RT: ${retentionTime.toFixed(1)} min`, peakPx, peakPy - 10, { align: "center" });
 
-  // ── Impurity 2 annotation ──────────────────────────────────────────
-  const i2px = mmX(imp2RT);
-  const i2py = mmY(imp2Amp);
-  doc.text(`${(i2Area / totalArea * 100).toFixed(2)}%`, i2px, i2py - 2, { align: "center" });
-
-  // ── Main peak purity label (right side of peak) ────────────────────
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(7);
-  doc.setTextColor(5, 140, 80);
+  // Footer
+  hline(doc, 0, FOOTER_Y, W, 27, 92, 181, 0.6);
+  fillRect(doc, 0, FOOTER_Y, W, 24, 13, 37, 101);
+  if (logo) {
+    const { w: lw, h: lh } = fitLogo(logo, 32, 14);
+    doc.addImage(logo.dataUrl, "JPEG", M, FOOTER_Y + (24 - lh) / 2, lw, lh);
+  }
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(6.5);
+  doc.setTextColor(150, 175, 215);
   doc.text(
-    `${(mainArea / totalArea * 100).toFixed(2)}%`,
-    peakPx + 15,
-    mmY(500),
-    { align: "left" }
+    `${coaRef}  ·  Lot: ${lot}  ·  Issued: ${issued}`,
+    W / 2 + 10, FOOTER_Y + 9, { align: "center" },
+  );
+  doc.text(
+    "omniqure.co.uk  ·  For in-vitro research use only  ·  This document supersedes all previous versions for this lot.",
+    W / 2 + 10, FOOTER_Y + 16, { align: "center" },
   );
 
-  // ── Plot border ────────────────────────────────────────────────────
-  box(doc, plotX, plotY2, plotW2, plotH2, ...B.border, 0.4);
-
-  // ── PEAK IDENTIFICATION TABLE ──────────────────────────────────────
-  const tableY = baseline + 14;
-  sectionHeader(doc, "PEAK IDENTIFICATION & INTEGRATION SUMMARY", M, tableY, CW);
-  const tblY = tableY + 7;
-  const pkCols = [
-    { x: M + 2,   w: 16,  label: "PEAK" },
-    { x: M + 20,  w: 40,  label: "ASSIGNMENT" },
-    { x: M + 62,  w: 28,  label: "RETENTION TIME" },
-    { x: M + 92,  w: 28,  label: "AREA (mAU·min)" },
-    { x: M + 122, w: 22,  label: "AREA %" },
-    { x: M + 146, w: 28,  label: "CLASSIFICATION" },
-    { x: M + 176, w: 10,  label: "STATUS" },
-  ];
-
-  // Table header
-  fill(doc, M, tblY, CW, 8, ...B.dark);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(5.8);
-  doc.setTextColor(255, 255, 255);
-  pkCols.forEach(c => doc.text(c.label, c.x, tblY + 5.8));
-
-  const areaUnit = 1000; // normalise displayed areas
-  const peakRows = [
-    {
-      peak: "1",
-      name: "Related substance A",
-      rt: `${imp1RT.toFixed(2)} min`,
-      area: (i1Area / areaUnit).toFixed(3),
-      pct: (i1Area / totalArea * 100).toFixed(2) + "%",
-      cls: "Impurity",
-      pass: true,
-    },
-    {
-      peak: "2",
-      name: product.name,
-      rt: `${retentionTime}.00 min`,
-      area: (mainArea / areaUnit).toFixed(3),
-      pct: (mainArea / totalArea * 100).toFixed(2) + "%",
-      cls: "Main compound",
-      pass: true,
-    },
-    {
-      peak: "3",
-      name: "Related substance B",
-      rt: `${imp2RT.toFixed(2)} min`,
-      area: (i2Area / areaUnit).toFixed(3),
-      pct: (i2Area / totalArea * 100).toFixed(2) + "%",
-      cls: "Impurity",
-      pass: true,
-    },
-  ];
-
-  const pkRH = 9.5;
-  let pkY = tblY + 8;
-  peakRows.forEach((row, ri) => {
-    const bg = ri % 2 === 0 ? [255, 255, 255] : B.paleBg2;
-    fill(doc, M, pkY, CW, pkRH, ...bg as [number,number,number]);
-    box(doc, M, pkY, CW, pkRH, ...B.border, 0.2);
-
-    const isMain = ri === 1;
-    doc.setFont("helvetica", isMain ? "bold" : "normal");
-    doc.setFontSize(isMain ? 7 : 6.5);
-    doc.setTextColor(...(isMain ? B.dark : B.ink));
-
-    doc.text(row.peak, pkCols[0].x, pkY + 6.5);
-    doc.text(row.name, pkCols[1].x, pkY + 6.5);
-    doc.text(row.rt,   pkCols[2].x, pkY + 6.5);
-    doc.text(row.area, pkCols[3].x, pkY + 6.5);
-
-    // Area % — green for main, grey for impurities
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(isMain ? 7.5 : 6.5);
-    doc.setTextColor(isMain ? 5 : 100, isMain ? 140 : 120, isMain ? 80 : 140);
-    doc.text(row.pct, pkCols[4].x, pkY + 6.5);
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(6.5);
-    doc.setTextColor(75, 90, 120);
-    doc.text(row.cls, pkCols[5].x, pkY + 6.5);
-
-    // PASS / CONFORM badge
-    fill(doc, pkCols[6].x - 1, pkY + 2, 15, 5.5, 220, 252, 230);
-    box(doc, pkCols[6].x - 1, pkY + 2, 15, 5.5, 160, 240, 195);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(5.8);
-    doc.setTextColor(16, 120, 60);
-    doc.text("PASS", pkCols[6].x + 6.5, pkY + 6.5, { align: "center" });
-
-    pkY += pkRH;
-  });
-  box(doc, M, tblY + 8, CW, peakRows.length * pkRH, ...B.border, 0.4);
-
-  // ── RUN PARAMETERS ─────────────────────────────────────────────────
-  const rpY = pkY + 5;
-  sectionHeader(doc, "CHROMATOGRAPHIC CONDITIONS", M, rpY, CW);
-  const rpParams = [
-    { label: "COLUMN",       value: "Phenomenex Gemini C18  250×4.6 mm  5 μm" },
-    { label: "MOBILE PHASE", value: "A: 0.1% TFA in H₂O  /  B: 0.08% TFA in ACN  (gradient 5→95% B over 20 min)" },
-    { label: "FLOW RATE",    value: "1.0 mL/min" },
-    { label: "DETECTION",    value: "UV 220 nm (peptide bond)  +  UV 254 nm (aromatic)" },
-    { label: "TEMPERATURE",  value: "25 °C" },
-    { label: "INJECTION VOL","value": "10 μL" },
-    { label: "RUN TIME",     value: "25 min" },
-    { label: "INSTRUMENT",   value: "Shimadzu HPLC system with PDA detector  ·  LC-2030C" },
-  ];
-  const rpRowH = 7.5;
-  const rpHalf  = Math.ceil(rpParams.length / 2);
-  const rpLeft  = rpParams.slice(0, rpHalf);
-  const rpRight = rpParams.slice(rpHalf);
-  const rpCW    = (CW - 3) / 2;
-
-  function drawRpCol(rows: typeof rpParams, cx: number, startY: number) {
-    rows.forEach((p, ri) => {
-      const ry = startY + ri * rpRowH;
-      const bg = ri % 2 === 0 ? [255, 255, 255] : B.paleBg2;
-      fill(doc, cx, ry, rpCW, rpRowH, ...bg as [number,number,number]);
-      box(doc, cx, ry, rpCW, rpRowH, ...B.border, 0.2);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(5.5);
-      doc.setTextColor(...B.subtext);
-      doc.text(p.label, cx + 2, ry + 3.3);
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(6.2);
-      doc.setTextColor(...B.ink);
-      const wrapped = doc.splitTextToSize(p.value, rpCW - 4);
-      doc.text(wrapped[0], cx + 2, ry + 6.8);
-    });
-  }
-  drawRpCol(rpLeft,  M,           rpY + 7);
-  drawRpCol(rpRight, M + rpCW + 3, rpY + 7);
-
-  // ── Accreditation note ─────────────────────────────────────────────
-  const noteY = rpY + 7 + rpHalf * rpRowH + 4;
-  if (noteY < FOOTER_Y - 8) {
-    doc.setFont("helvetica", "italic");
-    doc.setFontSize(5.8);
-    doc.setTextColor(155, 165, 185);
-    doc.text(
-      "Chromatogram generated from validated analytical data.  " +
-      "OmniQure QC Laboratory, Hertfordshire, UK.  ISO/IEC 17025:2017 accredited.  " +
-      "Lot " + lot + ".",
-      M, noteY + 4, { maxWidth: CW }
-    );
-  }
-
-  drawPageFooter(doc, logo, W, M, FOOTER_Y, docRef, lot, issued, expires);
-
-  // ── Save ────────────────────────────────────────────────────────────
-  const filename = `OmniQure_COA_${product.slug ?? product.name.replace(/\s+/g, "_")}_${lot}.pdf`;
-  doc.save(filename);
+  doc.save(`${product.name.replace(/[^a-z0-9]/gi, "_")}_COA_${lot}.pdf`);
 }
