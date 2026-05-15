@@ -14,15 +14,13 @@ const CATEGORIES = [
 ];
 
 const TIERS = [
-  { count: 2, pct: 5  },
-  { count: 3, pct: 10 },
-  { count: 4, pct: 15 },
+  { count: 5,  pct: 5  },
+  { count: 10, pct: 10 },
 ];
 
 function getDiscount(n: number) {
-  if (n >= 4) return 15;
-  if (n === 3) return 10;
-  if (n === 2) return 5;
+  if (n >= 10) return 10;
+  if (n >= 5) return 5;
   return 0;
 }
 
@@ -118,7 +116,7 @@ export default function BundlesPage() {
                     {tier.pct}% OFF
                   </p>
                   <p style={{ margin: 0, fontSize: "11px", color: discountPct >= tier.pct ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)", fontWeight: 600 }}>
-                    {tier.count === 4 ? "4+ items" : `${tier.count} items`}
+                    {tier.count === 10 ? "10+ items" : `${tier.count}+ items`}
                   </p>
                 </div>
                 {discountPct >= tier.pct && <Check size={14} color="#fff" />}
