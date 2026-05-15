@@ -3,7 +3,8 @@ import { useProducts } from "@/context/ProductsContext";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useSEO } from "@/hooks/useSEO";
-import { Check, Plus, Minus, ShoppingCart, Package, Percent, Zap, Tag } from "lucide-react";
+import { groupProducts, parseName } from "@/data/groupedProducts";
+import { Check, Plus, Minus, ShoppingCart, Package, Percent, Zap, Tag, ChevronDown } from "lucide-react";
 import type { Product } from "@/data/products";
 
 const CATEGORIES = [
@@ -40,11 +41,7 @@ export default function BundlesPage() {
   const [bundle, setBundle] = useState<BundleItem[]>([]);
   const [catFilter, setCatFilter] = useState("All");
   const [added, setAdded] = useState(false);
-
-  const filtered = useMemo(() =>
-    products.filter(p => catFilter === "All" || p.category === catFilter),
-    [products, catFilter]
-  );
+  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
 
   const bundleIds = useMemo(() => new Set(bundle.map(b => b.product.id)), [bundle]);
   const discountPct = getDiscount(bundle.length);
@@ -52,13 +49,26 @@ export default function BundlesPage() {
   const savings = subtotal * (discountPct / 100);
   const total = subtotal - savings;
 
-  function toggleProduct(product: Product) {
+  const groups = useMemo(() => {
+    const filtered = products.filter(p => catFilter === "All" || p.category === catFilter);
+    return groupProducts(filtered);
+  }, [products, catFilter]);
+
+  function toggleVariant(product: Product) {
     setBundle(prev => {
       if (prev.find(b => b.product.id === product.id)) {
         return prev.filter(b => b.product.id !== product.id);
       }
       return [...prev, { product, qty: 1 }];
     });
+  }
+
+  function handleGroupClick(baseName: string, variants: Product[]) {
+    if (variants.length === 1) {
+      toggleVariant(variants[0]);
+    } else {
+      setExpandedGroup(prev => (prev === baseName ? null : baseName));
+    }
   }
 
   function changeQty(productId: string, delta: number) {
@@ -147,25 +157,30 @@ export default function BundlesPage() {
           gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
           gap: "12px",
         }}>
-          {filtered.map(product => {
-            const inBundle = bundleIds.has(product.id);
+          {groups.map(group => {
+            const anyInBundle = group.variants.some(v => bundleIds.has(v.id));
+            const selectedVariants = group.variants.filter(v => bundleIds.has(v.id));
+            const isExpanded = expandedGroup === group.baseName;
+            const multiVariant = group.variants.length > 1;
+
             return (
               <div
-                key={product.id}
-                onClick={() => toggleProduct(product)}
+                key={group.baseName}
                 style={{
                   background: "#fff",
                   borderRadius: "14px",
-                  border: inBundle ? "2px solid #1240A0" : "1.5px solid #E8EDF5",
+                  border: anyInBundle ? "2px solid #1240A0" : "1.5px solid #E8EDF5",
                   padding: "14px",
                   cursor: "pointer",
                   transition: "all 0.15s",
-                  boxShadow: inBundle ? "0 4px 20px rgba(18,64,160,0.18)" : "0 2px 8px rgba(15,23,42,0.05)",
+                  boxShadow: anyInBundle ? "0 4px 20px rgba(18,64,160,0.18)" : "0 2px 8px rgba(15,23,42,0.05)",
                   position: "relative",
-                  transform: inBundle ? "translateY(-2px)" : "none",
+                  transform: anyInBundle ? "translateY(-2px)" : "none",
                 }}
+                onClick={() => handleGroupClick(group.baseName, group.variants)}
               >
-                {inBundle && (
+                {/* Check badge */}
+                {anyInBundle && !isExpanded && (
                   <div style={{
                     position: "absolute", top: "10px", right: "10px",
                     width: "22px", height: "22px", borderRadius: "50%",
@@ -174,24 +189,90 @@ export default function BundlesPage() {
                     <Check size={12} color="#fff" strokeWidth={3} />
                   </div>
                 )}
+
+                {/* Expand chevron for multi-variant */}
+                {multiVariant && !anyInBundle && (
+                  <div style={{
+                    position: "absolute", top: "10px", right: "10px",
+                    color: isExpanded ? "#1240A0" : "#94A3B8",
+                    transform: isExpanded ? "rotate(180deg)" : "none",
+                    transition: "transform 0.2s",
+                  }}>
+                    <ChevronDown size={16} />
+                  </div>
+                )}
+
                 <img
-                  src={product.image}
-                  alt={product.name}
-                  style={{ width: "100%", height: "100px", objectFit: "cover", borderRadius: "8px", marginBottom: "10px" }}
-                  onError={e => {
-                    const el = e.currentTarget as HTMLImageElement;
-                    el.style.display = "none";
-                  }}
+                  src={group.image}
+                  alt={group.baseName}
+                  style={{ width: "100%", height: "100px", objectFit: "contain", borderRadius: "8px", marginBottom: "10px", padding: "4px" }}
+                  onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
                 />
                 <p style={{ margin: "0 0 2px", fontSize: "10.5px", color: "#1B5CB5", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                  {product.category}
+                  {group.category}
                 </p>
-                <p style={{ margin: "0 0 6px", fontSize: "13px", fontWeight: 800, color: inBundle ? "#1240A0" : "#0F172A", lineHeight: 1.3 }}>
-                  {product.name}
+                <p style={{ margin: "0 0 6px", fontSize: "13px", fontWeight: 800, color: anyInBundle ? "#1240A0" : "#0F172A", lineHeight: 1.3, paddingRight: "20px" }}>
+                  {group.baseName}
                 </p>
-                <p style={{ margin: 0, fontSize: "14px", fontWeight: 900, color: inBundle ? "#1240A0" : "#0F172A" }}>
-                  {product.price != null ? formatPrice(product.price) : "—"}
-                </p>
+
+                {/* Single variant: show price */}
+                {!multiVariant && (
+                  <p style={{ margin: 0, fontSize: "14px", fontWeight: 900, color: anyInBundle ? "#1240A0" : "#0F172A" }}>
+                    {group.variants[0].price != null ? formatPrice(group.variants[0].price) : "—"}
+                  </p>
+                )}
+
+                {/* Multi variant: show count hint or expanded pills */}
+                {multiVariant && !isExpanded && (
+                  <p style={{ margin: 0, fontSize: "11.5px", color: "#64748B", fontWeight: 600 }}>
+                    {selectedVariants.length > 0
+                      ? `${selectedVariants.length} strength${selectedVariants.length > 1 ? "s" : ""} selected`
+                      : `${group.variants.length} strengths available`
+                    }
+                  </p>
+                )}
+
+                {/* Expanded strength picker */}
+                {multiVariant && isExpanded && (
+                  <div
+                    style={{ marginTop: "10px" }}
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <p style={{ margin: "0 0 8px", fontSize: "11px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                      Select strength
+                    </p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                      {group.variants.map(v => {
+                        const { strength } = parseName(v.name);
+                        const inBundle = bundleIds.has(v.id);
+                        return (
+                          <button
+                            key={v.id}
+                            onClick={() => toggleVariant(v)}
+                            style={{
+                              display: "flex", alignItems: "center", justifyContent: "space-between",
+                              padding: "8px 10px", borderRadius: "8px",
+                              border: `1.5px solid ${inBundle ? "#1240A0" : "#E2E8F0"}`,
+                              background: inBundle ? "#EEF4FF" : "#F8FAFC",
+                              cursor: "pointer", transition: "all 0.15s",
+                              fontFamily: "'Arimo', Arial, sans-serif",
+                            }}
+                          >
+                            <span style={{ fontSize: "12.5px", fontWeight: 700, color: inBundle ? "#1240A0" : "#334155" }}>
+                              {strength}
+                            </span>
+                            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                              <span style={{ fontSize: "12px", fontWeight: 800, color: inBundle ? "#1240A0" : "#0F172A" }}>
+                                {v.price != null ? formatPrice(v.price) : "—"}
+                              </span>
+                              {inBundle && <Check size={13} color="#1240A0" strokeWidth={3} />}
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}
@@ -236,7 +317,7 @@ export default function BundlesPage() {
                       </button>
                     </div>
                     <button
-                      onClick={e => { e.stopPropagation(); toggleProduct(b.product); }}
+                      onClick={e => { e.stopPropagation(); toggleVariant(b.product); }}
                       style={{ width: "14px", height: "14px", borderRadius: "50%", border: "none", background: "#CBD5E1", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0, fontSize: "9px", color: "#fff", fontWeight: 900 }}
                     >×</button>
                   </div>
