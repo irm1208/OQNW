@@ -26,14 +26,14 @@ export const janoshikData: Record<string, JanoshikResult> = {
 
   // ── BPC-157 ───────────────────────────────────────────────────────────────
   "3":  { purity: 99.804, actualMass:  6.01, lot: "BP05-0326",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
-  "4":  { purity: 99.804, actualMass: 12.02, lot: "BP10-0328",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
-  "5":  { purity: 99.835, actualMass: 20.76, lot: "BP20-0326",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
+  "4":  { purity: 99.359, actualMass: 11.87, lot: "BP10-0415",         received: "03 May 2026", analysis: "04 May 2026" },
+  "5":  { purity: 99.203, actualMass: 23.01, lot: "BP20-0418",         received: "03 May 2026", analysis: "04 May 2026" },
   "6":  { purity: 99.541, actualMass: 45.19, lot: "BP40-0408",         received: "22 Apr 2026", analysis: "23 Apr 2026" },
 
   // ── BPC-157 + TB-500 Blend ────────────────────────────────────────────────
   // Blend products: purity undefined (individual component masses tested, not composite purity)
-  "7":  { actualMass: 12.26, lot: "T/B55-0331",          received: "13 Apr 2026", analysis: "14 Apr 2026" },
-  "8":  { actualMass: 24.31, lot: "BP/TBF1010-0410",     received: "03 May 2026", analysis: "04 May 2026" },
+  "7":  { actualMass: 12.26, lot: "T/B55-0331",           received: "13 Apr 2026", analysis: "14 Apr 2026" },
+  "8":  { actualMass: 24.89, lot: "T/B1010-0416",         received: "03 May 2026", analysis: "04 May 2026" },
 
   // ── Cagrilintide ──────────────────────────────────────────────────────────
   "9":  { purity: 99.907, actualMass:  5.59, lot: "CAG5-0328",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
@@ -52,8 +52,8 @@ export const janoshikData: Record<string, JanoshikResult> = {
   "16": { purity: 99.533, actualMass: 49.75, lot: "EP50-0412",         received: "03 May 2026", analysis: "04 May 2026" },
 
   // ── GHK-Cu ────────────────────────────────────────────────────────────────
-  "17": { purity: 99.766, actualMass: 60.72, lot: "HK50-0324",         received: "09 Apr 2026", analysis: "10 Apr 2026" },
-  "18": { purity: 99.634, actualMass: 87.86, lot: "HK100-0409",        received: "21 Apr 2026", analysis: "22 Apr 2026" },
+  "17": { purity: 99.766, actualMass:  60.72, lot: "HK50-0324",        received: "09 Apr 2026", analysis: "10 Apr 2026" },
+  "18": { purity: 99.037, actualMass: 102.29, lot: "HKNC100-0412",     received: "03 May 2026", analysis: "04 May 2026" },
 
   // ── GHRP-2 ────────────────────────────────────────────────────────────────
   "19": { purity: 99.216, actualMass:  5.59, lot: "G205-0406",         received: "22 Apr 2026", analysis: "23 Apr 2026" },
@@ -63,7 +63,7 @@ export const janoshikData: Record<string, JanoshikResult> = {
   "21": { purity: 99.521, actualMass:  5.25, lot: "G605-0406",         received: "23 Apr 2026", analysis: "24 Apr 2026" },
 
   // ── GLOW BLEND ────────────────────────────────────────────────────────────
-  "22": { actualMass: 72.31, lot: "GLO70-0412",           received: "03 May 2026", analysis: "04 May 2026" },
+  "22": { actualMass: 71.81, lot: "GLO70-0418",            received: "03 May 2026", analysis: "04 May 2026" },
 
   // ── Somatropin HGH ───────────────────────────────────────────────────────-
   "26": { purity: 98.026, actualMass:  3.80, lot: "H10-0328",          received: "21 Apr 2026", analysis: "22 Apr 2026" },
@@ -76,10 +76,10 @@ export const janoshikData: Record<string, JanoshikResult> = {
 
   // ── Ipamorelin ────────────────────────────────────────────────────────────
   "31": { purity: 99.852, actualMass:  5.74, lot: "IP05-0416",         received: "03 May 2026", analysis: "04 May 2026" },
-  "32": { purity: 99.917, actualMass: 11.68, lot: "IP10-0325",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
+  "32": { purity: 99.852, actualMass: 11.52, lot: "IP10-0416",         received: "03 May 2026", analysis: "04 May 2026" },
 
   // ── KLOW BLEND ────────────────────────────────────────────────────────────
-  "35": { actualMass: 82.18, lot: "KL080-0412",           received: "03 May 2026", analysis: "04 May 2026" },
+  "35": { actualMass: 83.73, lot: "KL080-0418",            received: "03 May 2026", analysis: "04 May 2026" },
 
   // ── KPV ───────────────────────────────────────────────────────────────────
   "37": { purity: 99.451, actualMass: 13.44, lot: "KP10-0327",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
@@ -101,14 +101,14 @@ export const janoshikData: Record<string, JanoshikResult> = {
   "47": { purity: 99.563, actualMass: 13.08, lot: "NASK10-0403",       received: "22 Apr 2026", analysis: "23 Apr 2026" },
 
   // ── N-Acetyl Semax Amidate ────────────────────────────────────────────────
-  "48": { purity: 98.462, actualMass: 11.83, lot: "NASM10-0410",       received: "03 May 2026", analysis: "04 May 2026" },
+  "48": { purity: 98.462, actualMass: 11.83, lot: "SX10-0410",         received: "03 May 2026", analysis: "04 May 2026" },
 
   // ── NAD+ ──────────────────────────────────────────────────────────────────
-  "49": { actualMass: 529.47, lot: "NA500-0330",          received: "13 Apr 2026", analysis: "14 Apr 2026" },
+  "49": { actualMass: 551.92, lot: "NA500-0415",           received: "03 May 2026", analysis: "04 May 2026" },
 
   // ── Retatrutide ───────────────────────────────────────────────────────────
-  "56": { purity: 99.662, actualMass: 11.90, lot: "RE10-0401",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
-  "57": { purity: 99.895, actualMass: 24.54, lot: "RE20-0330",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
+  "56": { purity: 99.836, actualMass: 12.28, lot: "RE10-0410",         received: "03 May 2026", analysis: "04 May 2026" },
+  "57": { purity: 99.585, actualMass: 24.67, lot: "RE20-0414",         received: "03 May 2026", analysis: "04 May 2026" },
   "58": { purity: 99.912, actualMass: 34.18, lot: "RE30-0421",         received: "04 May 2026", analysis: "05 May 2026" },
   "59": { purity: 99.907, actualMass: 43.07, lot: "RE40-0403",         received: "21 Apr 2026", analysis: "22 Apr 2026" },
   "60": { purity: 99.822, actualMass: 54.93, lot: "RE50-0323",         received: "09 Apr 2026", analysis: "10 Apr 2026" },
@@ -134,7 +134,7 @@ export const janoshikData: Record<string, JanoshikResult> = {
   "73": { purity: 99.562, actualMass: 22.72, lot: "TB420-0408",        received: "22 Apr 2026", analysis: "23 Apr 2026" },
 
   // ── Tesamorelin + Ipamorelin Blend ────────────────────────────────────────
-  "74": { actualMass:  8.62, lot: "TI83-0415",            received: "03 May 2026", analysis: "04 May 2026" },
+  "74": { actualMass:  8.62, lot: "TI83-0415",             received: "03 May 2026", analysis: "04 May 2026" },
 
   // ── Thymosin Alpha-1 ──────────────────────────────────────────────────────
   "75": { purity: 99.822, actualMass: 12.01, lot: "TA110-0404",        received: "22 Apr 2026", analysis: "23 Apr 2026" },
@@ -142,7 +142,7 @@ export const janoshikData: Record<string, JanoshikResult> = {
   // ── Tirzepatide ───────────────────────────────────────────────────────────
   "76": { purity: 99.764, actualMass: 12.13, lot: "ZE10-0402",         received: "26 Apr 2026", analysis: "27 Apr 2026" },
   "77": { purity: 99.913, actualMass: 17.78, lot: "ZE15-0408",         received: "21 Apr 2026", analysis: "22 Apr 2026" },
-  "78": { purity: 99.655, actualMass: 33.94, lot: "ZE30-0412",         received: "03 May 2026", analysis: "04 May 2026" },
+  "78": { purity: 99.839, actualMass: 31.98, lot: "ZE30-0418",         received: "03 May 2026", analysis: "04 May 2026" },
   "79": { purity: 99.839, actualMass: 47.21, lot: "ZE45-0418",         received: "03 May 2026", analysis: "04 May 2026" },
   "80": { purity: 99.916, actualMass: 67.16, lot: "ZE60-0409",         received: "21 Apr 2026", analysis: "22 Apr 2026" },
 };
