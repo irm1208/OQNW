@@ -6,6 +6,7 @@ import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus,
 import { generateCOA } from "@/utils/generateCOA";
 import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
+import COADocument from "@/components/COADocument";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getPurity, getPurityStr, getLotNumber } from "@/utils/productPurity";
@@ -1024,32 +1025,8 @@ export default function ProductPage() {
               <div style={{ maxWidth: "860px" }}>
                 {/* COA */}
                 <div className="mb-6">
-                  <h3 className="font-bold mb-3" style={{ fontSize: "15px", color: "#0F172A" }}>Certificate of Analysis (COA)</h3>
-                  <div className="p-6 rounded-xl text-center" style={{ backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
-                    <Shield size={32} className="mx-auto mb-2" style={{ color: "#1B5CB5" }} />
-                    <p className="font-semibold text-sm mb-1" style={{ color: "#0F172A" }}>Certificate of Analysis</p>
-                    <p className="text-xs mb-4" style={{ color: "#64748B" }}>{product.name} — Purity: {getPurityStr(product.id)} HPLC</p>
-                    <div className="text-left mx-auto rounded-xl p-4 text-xs" style={{ backgroundColor: "#fff", border: "1px solid #E2E8F0", maxWidth: "480px" }}>
-                      <table className="w-full">
-                        <tbody>
-                          {[
-                            ["Product Name", product.name],
-                            detail.casNumber ? ["CAS Number", detail.casNumber] : null,
-                            detail.formula ? ["Molecular Formula", detail.formula] : null,
-                            detail.molecularWeight ? ["Molecular Weight", detail.molecularWeight] : null,
-                            ["Purity (HPLC)", getPurityStr(product.id)],
-                            detail.appearance ? ["Appearance", detail.appearance] : null,
-                            ["Manufacturer", "OmniQure"],
-                          ].filter(Boolean).map((row) => (
-                            <tr key={row![0]} style={{ borderBottom: "1px solid #F1F5F9" }}>
-                              <td className="py-1.5 font-semibold pr-4" style={{ color: "#64748B" }}>{row![0]}</td>
-                              <td className="py-1.5" style={{ color: row![0] === "Purity (HPLC)" ? "#059669" : "#0F172A", fontWeight: row![0] === "Purity (HPLC)" ? 700 : 400 }}>{row![1]}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                    <p className="text-xs mt-4" style={{ color: "#94A3B8" }}>Full COA available upon request for qualified researchers.</p>
+                  <div className="p-6 rounded-xl" style={{ backgroundColor: "#fff", border: "1px solid #E2E8F0" }}>
+                    <COADocument product={product} />
                   </div>
                 </div>
 
