@@ -65,7 +65,6 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Current Pharmaceutical Design",
         year: 2011,
         finding: "BPC-157 demonstrated potent cytoprotective effects on gastric and intestinal mucosa, accelerating healing in ulceration and colitis models.",
-        doi: "10.2174/138161211797440162",
         pmid: "21859437",
       },
       {
@@ -82,7 +81,6 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Current Pharmaceutical Design",
         year: 2010,
         finding: "Comprehensive review confirming BPC-157's systemic activity in bone, muscle, and nerve injury models with an excellent safety profile in rodents and early human trials.",
-        doi: "10.2174/138161210790883513",
         pmid: "20199488",
       },
       {
@@ -176,7 +174,6 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Neuroscience & Biobehavioral Reviews",
         year: 1985,
         finding: "DSIP i.v. infusion in human volunteers significantly increased slow-wave (delta) sleep EEG amplitude without altering REM architecture.",
-        doi: "10.1016/0149-7634(85)90039-6",
         pmid: "2994815",
       },
       {
@@ -211,7 +208,6 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Bulletin of Experimental Biology and Medicine",
         year: 2000,
         finding: "Epithalon increased mean and maximum lifespan of Drosophila by 11–16% and reduced age-related locomotor deterioration.",
-        doi: "10.1007/BF02447888",
         pmid: "11103405",
       },
       {
@@ -272,7 +268,6 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Journal of Pediatric Endocrinology",
         year: 1993,
         finding: "GHRP-2 elicited a 2–10-fold greater GH pulse than GHRH alone in healthy adult volunteers, with synergistic effects when co-administered with GHRH.",
-        doi: "10.1515/jpem.1993.6.1.21",
         pmid: "8286148",
       },
       {
@@ -298,7 +293,6 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Endocrinology",
         year: 1984,
         finding: "Original characterisation study demonstrating GHRP-6 releases GH via pituitary and hypothalamic mechanisms independent of GHRH.",
-        doi: "10.1210/endo-114-5-1537",
         pmid: "6429680",
       },
       {
@@ -374,7 +368,6 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Journal of Molecular Endocrinology",
         year: 1992,
         finding: "IGF-1 LR3 was 2–3× more potent than native IGF-1 in stimulating muscle protein synthesis due to substantially reduced IGFBP-3 binding.",
-        doi: "10.1677/jme.0.0090069",
         pmid: "1457479",
       },
       {
@@ -383,7 +376,6 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Annals of Surgery",
         year: 1993,
         finding: "IGF-1 LR3 maintained lean mass and nitrogen balance in catabolic burn models more effectively than equimolar native IGF-1 doses.",
-        doi: "10.1097/00000658-199306000-00010",
         pmid: "8387949",
       },
     ],
@@ -627,7 +619,6 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "CNS Drug Reviews",
         year: 1999,
         finding: "Intranasal Semax in acute stroke patients improved neurological deficit scores by 40% at day 10 vs placebo, correlating with reduced infarct volume on MRI.",
-        doi: "10.1111/j.1527-3458.1999.tb00070.x",
         pmid: "10587083",
       },
       {
@@ -844,7 +835,6 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Journal of Pediatrics",
         year: 1989,
         finding: "Sermorelin produced equivalent height velocity increases to rhGH in GH-deficient children with the advantage of preserving pituitary feedback regulation.",
-        doi: "10.1016/S0022-3476(89)80373-5",
         pmid: "2659831",
       },
       {
@@ -932,7 +922,6 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "FASEB Journal",
         year: 1999,
         finding: "Fragment 17–23 of Tβ4 retained 70–80% of full-length Tβ4's wound-healing potency in corneal and dermal wound models, confirming it as the minimal bioactive domain.",
-        doi: "10.1096/fasebj.13.9.1063",
         pmid: "10375339",
       },
     ],

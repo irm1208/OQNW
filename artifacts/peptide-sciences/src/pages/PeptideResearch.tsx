@@ -49,6 +49,16 @@ function buildPubMedSearchUrl(study: PeptideResearchEntry["studies"][0]): string
   return `https://pubmed.ncbi.nlm.nih.gov/?term=${titleWords}+${firstAuthor}+${study.year}`;
 }
 
+function openLink(url: string) {
+  const a = document.createElement("a");
+  a.href = url;
+  a.target = "_blank";
+  a.rel = "noopener noreferrer";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
 function StudyCard({ study, index }: { study: PeptideResearchEntry["studies"][0]; index: number }) {
   const pubmedSearchUrl = buildPubMedSearchUrl(study);
 
@@ -104,48 +114,61 @@ function StudyCard({ study, index }: { study: PeptideResearchEntry["studies"][0]
           </div>
           <div style={{ marginTop: "10px", display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
             <ExternalLink size={11} style={{ color: "#94A3B8", flexShrink: 0 }} />
-            {study.doi && (
-              <a
-                href={`https://doi.org/${study.doi}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ fontSize: "11.5px", color: "#1B5CB5", textDecoration: "none" }}
-                onMouseOver={(e) => (e.currentTarget.style.textDecoration = "underline")}
-                onMouseOut={(e) => (e.currentTarget.style.textDecoration = "none")}
-              >
-                doi:{study.doi}
-              </a>
-            )}
             {study.pmid && (
-              <a
-                href={`https://pubmed.ncbi.nlm.nih.gov/${study.pmid}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ fontSize: "11.5px", color: "#1B5CB5", textDecoration: "none" }}
+              <button
+                onClick={() => openLink(`https://pubmed.ncbi.nlm.nih.gov/${study.pmid}/`)}
+                style={{
+                  fontSize: "11.5px",
+                  color: "#1B5CB5",
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  fontFamily: "inherit",
+                }}
                 onMouseOver={(e) => (e.currentTarget.style.textDecoration = "underline")}
                 onMouseOut={(e) => (e.currentTarget.style.textDecoration = "none")}
               >
                 PubMed {study.pmid}
-              </a>
+              </button>
             )}
-            <a
-              href={pubmedSearchUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            {study.doi && (
+              <button
+                onClick={() => openLink(`https://doi.org/${study.doi}`)}
+                style={{
+                  fontSize: "11px",
+                  color: "#64748B",
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  fontFamily: "inherit",
+                }}
+                onMouseOver={(e) => (e.currentTarget.style.textDecoration = "underline")}
+                onMouseOut={(e) => (e.currentTarget.style.textDecoration = "none")}
+              >
+                doi:{study.doi}
+              </button>
+            )}
+            <button
+              onClick={() => openLink(pubmedSearchUrl)}
               style={{
                 fontSize: "11px",
                 color: "#64748B",
-                textDecoration: "none",
+                cursor: "pointer",
                 backgroundColor: "#F1F5F9",
                 padding: "2px 8px",
                 borderRadius: "6px",
                 border: "1px solid #E2E8F0",
+                fontFamily: "inherit",
               }}
               onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#E2E8F0")}
               onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#F1F5F9")}
             >
               Search PubMed ↗
-            </a>
+            </button>
           </div>
         </div>
       </div>
