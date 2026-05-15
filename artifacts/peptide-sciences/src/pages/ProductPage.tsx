@@ -69,7 +69,7 @@ export default function ProductPage() {
   const params = useParams<{ id: string }>();
   const product = products.find((p) => p.id === params.id);
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState<"description" | "coa" | "reviews">("description");
+  const [activeTab, setActiveTab] = useState<"description" | "reviews">("description");
   const [added, setAdded] = useState(false);
   const [showCOAModal, setShowCOAModal] = useState(false);
   const { addToCart } = useCart();
@@ -783,14 +783,13 @@ export default function ProductPage() {
           <div className="flex" style={{ borderBottom: "1px solid #F1F5F9" }}>
             {[
               { key: "description", label: "Description" },
-              { key: "coa", label: "COA / HPLC / MS" },
               { key: "reviews", label: "Reviews" },
             ].map((tab) => {
               const active = activeTab === tab.key;
               return (
                 <button
                   key={tab.key}
-                  onClick={() => setActiveTab(tab.key as "description" | "coa" | "reviews")}
+                  onClick={() => setActiveTab(tab.key as "description" | "reviews")}
                   className="px-6 py-3.5 text-sm font-semibold transition-colors"
                   style={{
                     color: active ? "#1B5CB5" : "#64748B",
@@ -986,7 +985,7 @@ export default function ProductPage() {
                   </div>
                 )}
               </div>
-            ) : activeTab === "description" ? (
+            ) : (
               <div style={{ maxWidth: "860px" }}>
                 <p className="leading-relaxed mb-5" style={{ fontSize: "14px", color: "#374151", lineHeight: "1.8" }}>
                   {detail.description}
@@ -1029,34 +1028,6 @@ export default function ProductPage() {
                   <p className="text-xs leading-relaxed" style={{ color: "#92400E" }}>
                     All articles and product information are for informational and educational purposes only. Products are furnished for in-vitro studies only. These products are not medicines or drugs and have not been approved by the FDA. Bodily introduction into humans or animals is strictly forbidden by law.
                   </p>
-                </div>
-              </div>
-            ) : (
-              <div style={{ maxWidth: "860px" }}>
-                {/* COA */}
-                <div className="mb-6">
-                  <div className="p-6 rounded-xl" style={{ backgroundColor: "#fff", border: "1px solid #E2E8F0" }}>
-                    <COADocument product={product} />
-                  </div>
-                </div>
-
-                {/* HPLC */}
-                <div className="mb-6">
-                  <h3 className="font-bold mb-3" style={{ fontSize: "15px", color: "#0F172A" }}>HPLC Chromatogram</h3>
-                  <HplcChart
-                    productId={product.id}
-                    productName={product.name}
-                  />
-                </div>
-
-                {/* MS */}
-                <div>
-                  <h3 className="font-bold mb-3" style={{ fontSize: "15px", color: "#0F172A" }}>Mass Spectrometry (MS)</h3>
-                  <MsChart
-                    productId={product.id}
-                    productName={product.name}
-                    molecularWeight={detail.molecularWeight}
-                  />
                 </div>
               </div>
             )}
