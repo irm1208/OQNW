@@ -7,6 +7,7 @@ import { generateCOA } from "@/utils/generateCOA";
 import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
 import COADocument from "@/components/COADocument";
+import COAModal from "@/components/COAModal";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getPurity, getPurityStr, getLotNumber } from "@/utils/productPurity";
@@ -70,6 +71,7 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<"description" | "coa" | "reviews">("description");
   const [added, setAdded] = useState(false);
+  const [showCOAModal, setShowCOAModal] = useState(false);
   const { addToCart } = useCart();
   const { trackView } = useRecentlyViewed();
   const { customer } = useCustomerAuth();
@@ -261,6 +263,15 @@ export default function ProductPage() {
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
+      {/* COA Report Modal */}
+      {showCOAModal && (
+        <COAModal
+          product={product}
+          filteredProducts={[product]}
+          onClose={() => setShowCOAModal(false)}
+        />
+      )}
+
       {/* Research warning */}
       <div style={{ backgroundColor: "#FFFBEB", borderBottom: "1px solid #FDE68A" }}>
         <div className="max-w-[1280px] mx-auto px-4 py-2.5 flex items-start gap-2">
@@ -630,7 +641,7 @@ export default function ProductPage() {
               );
             })()}
 
-            {/* COA Download */}
+            {/* COA — View Report */}
             <div
               className="rounded-2xl flex items-center justify-between gap-3 mb-5 px-4 py-3"
               style={{ backgroundColor: "#F0F5FF", border: "1.5px solid #BFDBFE" }}
@@ -648,12 +659,11 @@ export default function ProductPage() {
                 </div>
               </div>
               <button
-                onClick={() => void generateCOA(product, detail)}
+                onClick={() => setShowCOAModal(true)}
                 className="flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90 flex-shrink-0"
                 style={{ height: "36px", padding: "0 16px", backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px" }}
               >
-                <Download size={13} />
-                Download PDF
+                View Report →
               </button>
             </div>
 

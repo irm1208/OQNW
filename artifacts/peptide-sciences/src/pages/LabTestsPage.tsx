@@ -9,6 +9,7 @@ import type { Product } from "@/data/products";
 import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
 import COADocument, { parseBaseName, parseDeclaredMg, getActualMass } from "@/components/COADocument";
+import COAModal from "@/components/COAModal";
 
 const CATEGORIES = [
   "All", "Growth Peptides", "Healing Peptides", "Weight Management",
@@ -428,7 +429,7 @@ export default function LabTestsPage() {
 
       {/* Modal */}
       {selectedProduct && (
-        <ReportModal
+        <COAModal
           product={selectedProduct}
           filteredProducts={filtered}
           onClose={() => setSelectedProduct(null)}
