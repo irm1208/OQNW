@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
+import { useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
 import { getPurity, getPurityStr, getLotDates } from "@/utils/productPurity";
 import { generateCOA } from "@/utils/generateCOA";
@@ -399,6 +400,7 @@ export default function LabTestsPage() {
     canonicalPath: "/lab-tests",
   });
 
+  const [, navigate] = useLocation();
   const { products } = useProducts();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
@@ -691,19 +693,19 @@ export default function LabTestsPage() {
                         Tested by OmniQure Labs
                       </p>
 
-                      {/* View Report button */}
-                      <div style={{ padding: "0 12px 12px", marginTop: "auto" }}>
+                      {/* View Report + Buy buttons */}
+                      <div style={{ padding: "0 12px 12px", marginTop: "auto", display: "flex", gap: "8px" }}>
                         <button
                           onClick={() => setSelectedProduct(product)}
                           style={{
-                            width: "100%", height: "40px",
+                            flex: 1, height: "40px",
                             borderRadius: "8px",
                             border: "1px solid rgba(255,255,255,0.1)",
                             background: "rgba(255,255,255,0.07)",
                             color: "rgba(255,255,255,0.8)",
-                            fontSize: "12.5px", fontWeight: 700,
+                            fontSize: "12px", fontWeight: 700,
                             cursor: "pointer",
-                            display: "flex", alignItems: "center", justifyContent: "center", gap: "7px",
+                            display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
                             fontFamily: "'Arimo', Arial, sans-serif",
                             transition: "background 0.15s, color 0.15s",
                           }}
@@ -717,7 +719,30 @@ export default function LabTestsPage() {
                           }}
                         >
                           <FileText size={13} />
-                          View Report →
+                          View Report
+                        </button>
+                        <button
+                          onClick={() => navigate(`/product/${product.id}`)}
+                          style={{
+                            flex: 1, height: "40px",
+                            borderRadius: "8px",
+                            border: "none",
+                            background: "#1240A0",
+                            color: "#fff",
+                            fontSize: "12px", fontWeight: 700,
+                            cursor: "pointer",
+                            display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                            fontFamily: "'Arimo', Arial, sans-serif",
+                            transition: "background 0.15s",
+                          }}
+                          onMouseOver={e => {
+                            (e.currentTarget as HTMLButtonElement).style.background = "#1a52c4";
+                          }}
+                          onMouseOut={e => {
+                            (e.currentTarget as HTMLButtonElement).style.background = "#1240A0";
+                          }}
+                        >
+                          Buy Now →
                         </button>
                       </div>
                     </div>
