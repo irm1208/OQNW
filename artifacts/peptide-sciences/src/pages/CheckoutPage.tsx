@@ -1060,7 +1060,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "8px" }}>
-                  {["256-bit SSL Encrypted", "Discreet Packaging", "99%+ HPLC Verified"].map(b => (
+                  {["256-bit SSL Encrypted", "Discreet Packaging", "98%+ HPLC Verified"].map(b => (
                     <div key={b} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                       <CheckCircle2 size={12} style={{ color: "#059669", flexShrink: 0 }} />
                       <span style={{ fontSize: "11.5px", color: "#64748B" }}>{b}</span>

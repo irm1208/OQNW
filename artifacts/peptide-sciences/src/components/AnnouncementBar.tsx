@@ -2,7 +2,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 
 const messages = [
-  "🔬  99%+ HPLC Purity — Guaranteed on Every Product",
+  "🔬  98%+ HPLC Purity — Guaranteed on Every Product",
   "🚚  Free Shipping on Orders Over £200 — UK & Worldwide",
   "🧪  Research Grade · Lab Certified · COA Included",
   "🔒  Secure Checkout — SSL Encrypted & Discreet Packaging",

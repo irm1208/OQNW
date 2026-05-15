@@ -33,7 +33,7 @@ const pillars = [
     num: "01",
     icon: <FlaskConical size={24} />,
     title: "HPLC Verified Purity",
-    body: "Every product tested via High-Performance Liquid Chromatography to confirm 99%+ purity before release.",
+    body: "Every product tested via High-Performance Liquid Chromatography to confirm 98%+ purity before release.",
     color: "#1B5CB5",
     bg: "#EEF4FF",
   },
@@ -101,7 +101,7 @@ export default function HomePage() {
   const { products } = useProducts();
   useSEO({
     title: "HPLC-Verified Research Peptides",
-    description: "Buy high-purity research peptides verified by HPLC to 99%+. BPC-157, TB-500, Semaglutide, Tirzepatide, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
+    description: "Buy high-purity research peptides verified by HPLC to 98%+. BPC-157, TB-500, Semaglutide, Tirzepatide, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
     canonicalPath: "/",
   });
 
@@ -211,7 +211,7 @@ export default function HomePage() {
 
               {/* Trust chips */}
               <div className="flex flex-wrap gap-2 mb-8">
-                {["99%+ HPLC Purity", "Full COA Included", "ESI-TOF MS", "Lyophilized"].map(t => (
+                {["98%+ HPLC Purity", "Full COA Included", "ESI-TOF MS", "Lyophilized"].map(t => (
                   <span
                     key={t}
                     className="inline-flex items-center gap-1.5"
@@ -337,7 +337,7 @@ export default function HomePage() {
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <span style={{ fontSize: "20px", fontWeight: 900, color: "#fff" }}>£65.00</span>
                   <div style={{ display: "flex", gap: "5px" }}>
-                    <span style={{ fontSize: "9px", fontWeight: 700, color: "#93C5FD", backgroundColor: "rgba(147,197,253,0.12)", padding: "3px 8px", borderRadius: "7px", border: "1px solid rgba(147,197,253,0.2)" }}>99%+</span>
+                    <span style={{ fontSize: "9px", fontWeight: 700, color: "#93C5FD", backgroundColor: "rgba(147,197,253,0.12)", padding: "3px 8px", borderRadius: "7px", border: "1px solid rgba(147,197,253,0.2)" }}>98%+</span>
                     <span style={{ fontSize: "9px", fontWeight: 700, color: "#6EE7B7", backgroundColor: "rgba(110,231,183,0.12)", padding: "3px 8px", borderRadius: "7px", border: "1px solid rgba(110,231,183,0.2)" }}>COA ✓</span>
                   </div>
                 </div>
@@ -347,7 +347,7 @@ export default function HomePage() {
               <div className="grid grid-cols-3 gap-2.5 w-full">
                 {[
                   { value: "81+",  label: "Peptides" },
-                  { value: "99%+", label: "HPLC" },
+                  { value: "98%+", label: "HPLC" },
                   { value: "COA",  label: "Certified" },
                 ].map(s => (
                   <div key={s.label} className="glass-card text-center rounded-2xl" style={{ padding: "14px 8px" }}>
@@ -378,7 +378,7 @@ export default function HomePage() {
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-[#EEF2F7]">
             {[
-              { icon: <FlaskConical size={20} />, title: "99%+ HPLC Purity",    sub: "Guaranteed on every product",     color: "#1B5CB5", bg: "#EEF4FF" },
+              { icon: <FlaskConical size={20} />, title: "98%+ HPLC Purity",    sub: "Guaranteed on every product",     color: "#1B5CB5", bg: "#EEF4FF" },
               { icon: <Award size={20} />,        title: "Full COA & MS Data",   sub: "Chromatogram + mass spectrum",    color: "#059669", bg: "#ECFDF5" },
               { icon: <Shield size={20} />,       title: "Research Grade",       sub: "For qualified researchers only",  color: "#7C3AED", bg: "#F5F3FF" },
               { icon: <Truck size={20} />,        title: "Free Shipping £200+",  sub: "Discreet packaging included",     color: "#0E7490", bg: "#ECFEFF" },
