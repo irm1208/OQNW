@@ -426,7 +426,7 @@ export default function LabTestsPage() {
   ];
 
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#0C1120", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
 
       {/* Modal */}
       {selectedProduct && (
@@ -500,7 +500,7 @@ export default function LabTestsPage() {
       <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "28px 24px" }}>
 
         {activeTab !== "reports" ? (
-          <div style={{ textAlign: "center", padding: "80px 20px", color: "rgba(255,255,255,0.2)" }}>
+          <div style={{ textAlign: "center", padding: "80px 20px", color: "#94A3B8" }}>
             <p style={{ fontSize: "16px", fontWeight: 700 }}>
               {activeTab === "metrics" ? "Metrics" : "Compare"} coming soon
             </p>
@@ -508,7 +508,7 @@ export default function LabTestsPage() {
               Switch to{" "}
               <button
                 onClick={() => setActiveTab("reports")}
-                style={{ background: "none", border: "none", color: "#4A9AFF", cursor: "pointer", fontSize: "13px", fontFamily: "inherit" }}
+                style={{ background: "none", border: "none", color: "#1240A0", cursor: "pointer", fontSize: "13px", fontFamily: "inherit" }}
               >
                 Reports
               </button>{" "}
@@ -521,7 +521,7 @@ export default function LabTestsPage() {
             <div style={{ position: "relative", marginBottom: "16px", maxWidth: "640px" }}>
               <Search size={15} style={{
                 position: "absolute", left: "14px", top: "50%",
-                transform: "translateY(-50%)", color: "rgba(255,255,255,0.25)", pointerEvents: "none",
+                transform: "translateY(-50%)", color: "#94A3B8", pointerEvents: "none",
               }} />
               <input
                 type="text"
@@ -530,9 +530,9 @@ export default function LabTestsPage() {
                 onChange={(e) => setSearch(e.target.value)}
                 style={{
                   width: "100%", height: "44px", paddingLeft: "42px", paddingRight: "16px",
-                  borderRadius: "10px", border: "1px solid rgba(255,255,255,0.1)",
+                  borderRadius: "10px", border: "1.5px solid #E2E8F0",
                   outline: "none", fontSize: "14px", fontFamily: "'Arimo', Arial, sans-serif",
-                  background: "rgba(255,255,255,0.05)", color: "#fff", boxSizing: "border-box",
+                  background: "#fff", color: "#0F172A", boxSizing: "border-box",
                 }}
               />
             </div>
@@ -546,9 +546,9 @@ export default function LabTestsPage() {
                   style={{
                     padding: "5px 14px", borderRadius: "20px",
                     border: "1px solid",
-                    borderColor: category === cat ? "#1B5CB5" : "rgba(255,255,255,0.1)",
-                    background: category === cat ? "#1B5CB5" : "transparent",
-                    color: category === cat ? "#fff" : "rgba(255,255,255,0.45)",
+                    borderColor: category === cat ? "#1240A0" : "#E2E8F0",
+                    background: category === cat ? "linear-gradient(90deg, #0D2565, #1B5CB5)" : "#fff",
+                    color: category === cat ? "#fff" : "#475569",
                     fontSize: "11.5px", fontWeight: category === cat ? 700 : 500,
                     cursor: "pointer", fontFamily: "'Arimo', Arial, sans-serif",
                     transition: "all 0.15s", whiteSpace: "nowrap",
@@ -562,7 +562,7 @@ export default function LabTestsPage() {
             {/* Count label */}
             <p style={{
               margin: "0 0 18px", fontSize: "11.5px",
-              color: "rgba(255,255,255,0.25)", letterSpacing: "0.04em",
+              color: "#94A3B8", letterSpacing: "0.04em",
               textTransform: "uppercase", fontWeight: 700,
             }}>
               {filtered.length} report{filtered.length !== 1 ? "s" : ""}
@@ -571,7 +571,7 @@ export default function LabTestsPage() {
 
             {/* Card grid */}
             {filtered.length === 0 ? (
-              <div style={{ textAlign: "center", padding: "80px 20px", color: "rgba(255,255,255,0.2)" }}>
+              <div style={{ textAlign: "center", padding: "80px 20px", color: "#94A3B8" }}>
                 <p style={{ fontSize: "16px", fontWeight: 700 }}>No results found</p>
                 <p style={{ fontSize: "13px", marginTop: "8px" }}>Try adjusting your search or category filter.</p>
               </div>
@@ -589,24 +589,31 @@ export default function LabTestsPage() {
                     <div
                       key={product.id}
                       style={{
-                        background: "#131D35",
+                        background: "#fff",
                         borderRadius: "14px",
-                        border: "1px solid rgba(255,255,255,0.07)",
+                        border: "1.5px solid #E8EDF5",
                         overflow: "hidden",
                         display: "flex",
                         flexDirection: "column",
-                        transition: "border-color 0.2s",
+                        transition: "border-color 0.2s, box-shadow 0.2s",
+                        boxShadow: "0 2px 12px rgba(15,23,42,0.06)",
                       }}
-                      onMouseOver={e => ((e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,255,255,0.14)")}
-                      onMouseOut={e => ((e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,255,255,0.07)")}
+                      onMouseOver={e => {
+                        (e.currentTarget as HTMLDivElement).style.borderColor = "#C7D7F5";
+                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 8px 32px rgba(18,64,160,0.12)";
+                      }}
+                      onMouseOut={e => {
+                        (e.currentTarget as HTMLDivElement).style.borderColor = "#E8EDF5";
+                        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(15,23,42,0.06)";
+                      }}
                     >
                       {/* Card header */}
                       <div style={{
                         padding: "9px 14px",
                         display: "flex", alignItems: "center", justifyContent: "space-between",
-                        borderBottom: "1px solid rgba(255,255,255,0.05)",
+                        borderBottom: "1px solid #F1F5F9",
                       }}>
-                        <span style={{ fontSize: "8.5px", fontWeight: 700, letterSpacing: "0.12em", color: "rgba(255,255,255,0.28)", textTransform: "uppercase" }}>
+                        <span style={{ fontSize: "8.5px", fontWeight: 700, letterSpacing: "0.12em", color: "#94A3B8", textTransform: "uppercase" }}>
                           Certificate of Analysis
                         </span>
                         <CheckCircle2 size={13} color="#22C55E" />
@@ -616,11 +623,11 @@ export default function LabTestsPage() {
                       <div style={{ padding: "10px 14px 0", display: "flex", justifyContent: "flex-end", gap: "6px" }}>
                         <span style={{
                           fontSize: "9.5px", fontWeight: 600, padding: "2px 9px",
-                          borderRadius: "4px", background: "rgba(255,255,255,0.07)",
-                          color: "rgba(255,255,255,0.4)",
+                          borderRadius: "4px", background: "#F1F5F9",
+                          color: "#64748B",
                           display: "flex", alignItems: "center", gap: "5px",
                         }}>
-                          <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "rgba(255,255,255,0.35)", display: "inline-block", flexShrink: 0 }} />
+                          <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#CBD5E1", display: "inline-block", flexShrink: 0 }} />
                           VENDOR
                         </span>
                         <span style={{ fontSize: "9.5px", fontWeight: 800, padding: "2px 10px", borderRadius: "4px", background: "#1240A0", color: "#fff", letterSpacing: "0.04em" }}>
@@ -630,11 +637,11 @@ export default function LabTestsPage() {
 
                       {/* Compound name */}
                       <div style={{ padding: "10px 14px 0" }}>
-                        <h3 style={{ margin: 0, fontSize: "21px", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.15 }}>
+                        <h3 style={{ margin: 0, fontSize: "21px", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.02em", lineHeight: 1.15 }}>
                           {baseName}
                         </h3>
                         {declaredMg && (
-                          <span style={{ fontSize: "10.5px", color: "rgba(255,255,255,0.3)", marginTop: "3px", display: "block" }}>
+                          <span style={{ fontSize: "10.5px", color: "#94A3B8", marginTop: "3px", display: "block" }}>
                             {declaredMg} mg declared
                           </span>
                         )}
@@ -643,26 +650,26 @@ export default function LabTestsPage() {
                       {/* Purity + Mass */}
                       <div style={{ padding: "14px 14px 0", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
                         <div>
-                          <p style={{ margin: "0 0 3px", fontSize: "8.5px", fontWeight: 700, letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)", textTransform: "uppercase" }}>
+                          <p style={{ margin: "0 0 3px", fontSize: "8.5px", fontWeight: 700, letterSpacing: "0.1em", color: "#64748B", textTransform: "uppercase" }}>
                             Purity
                           </p>
                           <p style={{ margin: 0, lineHeight: 1 }}>
-                            <span style={{ fontSize: "30px", fontWeight: 900, color: "#4ADE80", letterSpacing: "-0.03em" }}>
+                            <span style={{ fontSize: "30px", fontWeight: 900, color: "#16A34A", letterSpacing: "-0.03em" }}>
                               {purityStr.replace("%", "")}
                             </span>
-                            <span style={{ fontSize: "16px", fontWeight: 800, color: "#4ADE80", marginLeft: "1px" }}>%</span>
+                            <span style={{ fontSize: "16px", fontWeight: 800, color: "#16A34A", marginLeft: "1px" }}>%</span>
                           </p>
                         </div>
                         {actualMass !== null && (
                           <div style={{ textAlign: "right" }}>
-                            <p style={{ margin: "0 0 3px", fontSize: "8.5px", fontWeight: 700, letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)", textTransform: "uppercase" }}>
+                            <p style={{ margin: "0 0 3px", fontSize: "8.5px", fontWeight: 700, letterSpacing: "0.1em", color: "#64748B", textTransform: "uppercase" }}>
                               Actual Mass
                             </p>
                             <p style={{ margin: 0, lineHeight: 1 }}>
-                              <span style={{ fontSize: "30px", fontWeight: 900, color: "#fff", letterSpacing: "-0.03em" }}>
+                              <span style={{ fontSize: "30px", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.03em" }}>
                                 {actualMass.toFixed(2)}
                               </span>
-                              <span style={{ fontSize: "16px", fontWeight: 700, color: "rgba(255,255,255,0.5)", marginLeft: "2px" }}>mg</span>
+                              <span style={{ fontSize: "16px", fontWeight: 700, color: "#94A3B8", marginLeft: "2px" }}>mg</span>
                             </p>
                           </div>
                         )}
@@ -671,25 +678,25 @@ export default function LabTestsPage() {
                       {/* Batch + Analysis */}
                       <div style={{ padding: "14px 14px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                         <div>
-                          <p style={{ margin: "0 0 3px", fontSize: "8.5px", fontWeight: 700, color: "rgba(255,255,255,0.28)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Batch</p>
-                          <p style={{ margin: 0, fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.65)", fontFamily: "monospace", letterSpacing: "0.02em" }}>{lot}</p>
+                          <p style={{ margin: "0 0 3px", fontSize: "8.5px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.08em" }}>Batch</p>
+                          <p style={{ margin: 0, fontSize: "11px", fontWeight: 600, color: "#334155", fontFamily: "monospace", letterSpacing: "0.02em" }}>{lot}</p>
                         </div>
                         <div>
-                          <p style={{ margin: "0 0 3px", fontSize: "8.5px", fontWeight: 700, color: "rgba(255,255,255,0.28)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Analysis</p>
-                          <p style={{ margin: 0, fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.65)" }}>Mass &amp; Purity</p>
+                          <p style={{ margin: "0 0 3px", fontSize: "8.5px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.08em" }}>Analysis</p>
+                          <p style={{ margin: 0, fontSize: "11px", fontWeight: 600, color: "#334155" }}>Mass &amp; Purity</p>
                         </div>
                       </div>
 
                       {/* Pass + date */}
                       <div style={{ padding: "12px 14px 4px", display: "flex", alignItems: "center", gap: "10px" }}>
-                        <span style={{ padding: "2px 10px", borderRadius: "4px", background: "#166534", color: "#4ADE80", fontSize: "9.5px", fontWeight: 800, letterSpacing: "0.08em" }}>
+                        <span style={{ padding: "2px 10px", borderRadius: "4px", background: "#DCFCE7", color: "#16A34A", fontSize: "9.5px", fontWeight: 800, letterSpacing: "0.08em" }}>
                           PASS
                         </span>
-                        <span style={{ fontSize: "10.5px", color: "rgba(255,255,255,0.35)", display: "flex", alignItems: "center", gap: "4px" }}>
+                        <span style={{ fontSize: "10.5px", color: "#64748B", display: "flex", alignItems: "center", gap: "4px" }}>
                           📅 {analysis}
                         </span>
                       </div>
-                      <p style={{ margin: "0 14px 14px", fontSize: "10px", color: "rgba(255,255,255,0.22)" }}>
+                      <p style={{ margin: "0 14px 14px", fontSize: "10px", color: "#94A3B8" }}>
                         Tested by OmniQure Labs
                       </p>
 
@@ -700,22 +707,24 @@ export default function LabTestsPage() {
                           style={{
                             flex: 1, height: "40px",
                             borderRadius: "8px",
-                            border: "1px solid rgba(255,255,255,0.1)",
-                            background: "rgba(255,255,255,0.07)",
-                            color: "rgba(255,255,255,0.8)",
+                            border: "1.5px solid #E2E8F0",
+                            background: "#F8FAFC",
+                            color: "#334155",
                             fontSize: "12px", fontWeight: 700,
                             cursor: "pointer",
                             display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
                             fontFamily: "'Arimo', Arial, sans-serif",
-                            transition: "background 0.15s, color 0.15s",
+                            transition: "background 0.15s, color 0.15s, border-color 0.15s",
                           }}
                           onMouseOver={e => {
-                            (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.13)";
-                            (e.currentTarget as HTMLButtonElement).style.color = "#fff";
+                            (e.currentTarget as HTMLButtonElement).style.background = "#EEF4FF";
+                            (e.currentTarget as HTMLButtonElement).style.color = "#1240A0";
+                            (e.currentTarget as HTMLButtonElement).style.borderColor = "#C7D7F5";
                           }}
                           onMouseOut={e => {
-                            (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.07)";
-                            (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.8)";
+                            (e.currentTarget as HTMLButtonElement).style.background = "#F8FAFC";
+                            (e.currentTarget as HTMLButtonElement).style.color = "#334155";
+                            (e.currentTarget as HTMLButtonElement).style.borderColor = "#E2E8F0";
                           }}
                         >
                           <FileText size={13} />
