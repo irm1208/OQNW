@@ -248,24 +248,6 @@ export default function HomePage() {
                 >
                   Browse All 81 Peptides <ArrowRight size={15} />
                 </Link>
-                <Link
-                  href="/research"
-                  className="btn-ghost inline-flex items-center gap-2"
-                  style={{
-                    backgroundColor: "rgba(255,255,255,0.1)",
-                    color: "#fff",
-                    border: "1.5px solid rgba(255,255,255,0.25)",
-                    padding: "13px 26px",
-                    borderRadius: "12px",
-                    fontWeight: 600,
-                    fontSize: "14px",
-                    textDecoration: "none",
-                  }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.16)"}
-                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.1)"}
-                >
-                  Research Library
-                </Link>
               </div>
             </div>
 

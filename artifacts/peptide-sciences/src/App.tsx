@@ -10,7 +10,6 @@ import HomePage from "@/pages/HomePage";
 import AllPeptides from "@/pages/AllPeptides";
 import PopularPeptides from "@/pages/PopularPeptides";
 import ProductPage from "@/pages/ProductPage";
-import PeptideResearch from "@/pages/PeptideResearch";
 import StacksPage from "@/pages/StacksPage";
 import ReconstitutionCalculator from "@/pages/ReconstitutionCalculator";
 import TermsPage from "@/pages/TermsPage";
@@ -85,7 +84,6 @@ function Router() {
       <Route path="/product/:id" component={ProductPage} />
       <Route path="/bundles" component={BundlesPage} />
       <Route path="/stacks" component={StacksPage} />
-      <Route path="/research" component={PeptideResearch} />
       <Route path="/calculator" component={ReconstitutionCalculator} />
       <Route path="/contact">
         <PlaceholderPage title="Contact Us" description="Get in touch with our research team." />
