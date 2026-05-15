@@ -1,4 +1,5 @@
-import { getPurity, getLotDates } from "@/utils/productPurity";
+import { getPurityStr, getLotDates } from "@/utils/productPurity";
+import { janoshikData } from "@/data/janoshikData";
 import { productDetails } from "@/data/productDetails";
 import { CheckCircle2 } from "lucide-react";
 import type { Product } from "@/data/products";
@@ -6,7 +7,7 @@ import type { Product } from "@/data/products";
 // ─── shared helpers ───────────────────────────────────────────────────────────
 
 export function parseBaseName(name: string): string {
-  return name.replace(/\s+\d+(?:\.\d+)?\s*mg\b/i, "").trim();
+  return name.replace(/\s+\d+(?:\.\d+)?\s*(mg|IU)\b/i, "").trim();
 }
 
 export function parseDeclaredMg(name: string): number | null {
@@ -14,16 +15,23 @@ export function parseDeclaredMg(name: string): number | null {
   return m ? parseFloat(m[1]) : null;
 }
 
-export function getActualMass(productId: string, declaredMg: number): number {
-  const n = parseInt(productId, 10) || 1;
+/**
+ * Returns the actual mass in mg for a product.
+ * Prefers the real Janoshik lab result; falls back to a deterministic formula.
+ */
+export function getActualMass(productId: string, declaredMg: number | null): number | null {
+  const jd = janoshikData[productId];
+  if (jd !== undefined) return jd.actualMass;
+  if (declaredMg === null) return null;
+  const n   = parseInt(productId, 10) || 1;
   const bps = ((n * 97 + 31) % 601) - 300;
-  return Math.round(declaredMg * (1 + bps / 10000) * 100) / 100;
+  return Math.round(declaredMg * (1 + bps / 10_000) * 100) / 100;
 }
 
 export function getVerifyKey(productId: string): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let seed = ((parseInt(productId, 10) || 1) * 7919 + 31337) >>> 0;
-  let key = "";
+  let key  = "";
   for (let i = 0; i < 12; i++) {
     seed = ((seed * 1664525) + 1013904223) >>> 0;
     key += chars[seed % chars.length];
@@ -32,7 +40,8 @@ export function getVerifyKey(productId: string): string {
 }
 
 export function getCOARef(productId: string, lot: string): string {
-  return `OQ-COA-${lot.slice(2, 8)}-${String(parseInt(productId, 10) || 1).padStart(3, "0")}`;
+  const safe = lot.replace(/[^A-Za-z0-9]/g, "").slice(0, 8);
+  return `OQ-COA-${safe}-${String(parseInt(productId, 10) || 1).padStart(3, "0")}`;
 }
 
 // ─── COADocument component ────────────────────────────────────────────────────
@@ -42,14 +51,14 @@ interface COADocumentProps {
 }
 
 export default function COADocument({ product }: COADocumentProps) {
-  const purity = getPurity(product.id);
-  const { lot, analysis, issued } = getLotDates(product.id);
+  const purityStr  = getPurityStr(product.id);
+  const { lot, received, analysis, issued } = getLotDates(product.id);
   const declaredMg = parseDeclaredMg(product.name);
-  const actualMass = declaredMg !== null ? getActualMass(product.id, declaredMg) : null;
-  const baseName = parseBaseName(product.name);
-  const verifyKey = getVerifyKey(product.id);
-  const coaRef = getCOARef(product.id, lot);
-  const detail = productDetails[product.id];
+  const actualMass = getActualMass(product.id, declaredMg);
+  const baseName   = parseBaseName(product.name);
+  const verifyKey  = getVerifyKey(product.id);
+  const coaRef     = getCOARef(product.id, lot);
+  const detail     = productDetails[product.id];
 
   const blue = "#1240A0";
   const divider: React.CSSProperties = { borderTop: "1px solid #E5E7EB", margin: "0 0 16px" };
@@ -85,6 +94,9 @@ export default function COADocument({ product }: COADocumentProps) {
         </div>
         <div style={{ textAlign: "right" }}>
           <p style={{ margin: 0, fontSize: "11.5px", color: "#6B7280" }}>
+            Sample received&nbsp;&gt;&nbsp;<strong style={{ color: "#111827" }}>{received}</strong>
+          </p>
+          <p style={{ margin: "4px 0 0", fontSize: "11.5px", color: "#6B7280" }}>
             Analysis Date&nbsp;&gt;&nbsp;<strong style={{ color: "#111827" }}>{analysis}</strong>
           </p>
           <p style={{ margin: "4px 0 0", fontSize: "11.5px", color: "#6B7280" }}>
@@ -140,7 +152,6 @@ export default function COADocument({ product }: COADocumentProps) {
       <div style={{ marginBottom: "20px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
           <p style={{ margin: 0, fontSize: "12.5px", fontWeight: 700, color: blue }}>Results &gt;</p>
-          {/* OmniQure Labs seal */}
           <div style={{
             width: "60px", height: "60px", borderRadius: "50%",
             border: `2px solid ${blue}`,
@@ -157,11 +168,14 @@ export default function COADocument({ product }: COADocumentProps) {
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
           <tbody>
             {[
-              { label: baseName,              value: actualMass !== null ? `${actualMass.toFixed(2)} mg` : "—", bold: true  },
-              { label: "Purity",              value: `${purity.toFixed(3)}%`,                                   bold: false },
-              { label: "Identity (ESI-MS)",   value: "Confirmed",                                               bold: false },
-              ...(detail?.molecularWeight ? [{ label: "Molecular Weight", value: detail.molecularWeight, bold: false }] : []),
-              ...(detail?.casNumber        ? [{ label: "CAS Number",       value: detail.casNumber,       bold: false }] : []),
+              { label: baseName,            value: actualMass !== null ? `${actualMass.toFixed(2)} mg` : "—", bold: true  },
+              ...(janoshikData[product.id]?.purity !== undefined || !janoshikData[product.id]
+                ? [{ label: "Purity", value: purityStr, bold: false, green: true }]
+                : []
+              ),
+              { label: "Identity (ESI-MS)", value: "Confirmed",                                              bold: false },
+              ...(detail?.molecularWeight ? [{ label: "Molecular Weight", value: detail.molecularWeight, bold: false, green: false }] : []),
+              ...(detail?.casNumber       ? [{ label: "CAS Number",       value: detail.casNumber,       bold: false, green: false }] : []),
             ].map((row, i) => (
               <tr key={row.label} style={{ background: i % 2 === 0 ? "#F0F7FF" : "#fff" }}>
                 <td style={{
@@ -173,7 +187,7 @@ export default function COADocument({ product }: COADocumentProps) {
                 <td style={{
                   padding: "9px 14px", border: `1px solid ${blue}`,
                   fontWeight: 700,
-                  color: row.label === "Purity" ? "#16A34A" : "#111827",
+                  color: (row as { green?: boolean }).green ? "#16A34A" : "#111827",
                 }}>
                   {row.value}
                 </td>
@@ -197,13 +211,16 @@ export default function COADocument({ product }: COADocumentProps) {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "24px" }}>
         <div>
           <p style={{ margin: 0, fontSize: "12.5px", color: "#6B7280" }}>
+            Sample received &gt;&nbsp;
+            <span style={{ fontWeight: 700, color: "#111827" }}>{received}</span>
+          </p>
+          <p style={{ margin: "6px 0 0", fontSize: "12.5px", color: "#6B7280" }}>
             Analysis conducted &gt;&nbsp;
             <span style={{ fontWeight: 700, color: "#111827", background: "#F0F7FF", padding: "2px 8px", borderRadius: "4px" }}>{analysis}</span>
           </p>
         </div>
         <div style={{ textAlign: "right" }}>
           <p style={{ margin: "0 0 4px", fontSize: "11px", color: "#6B7280" }}>Signature &gt;</p>
-          {/* Realistic cursive signature */}
           <svg width="148" height="52" viewBox="0 0 148 52" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M6 38 C5 24, 10 10, 16 12 C22 14, 20 26, 18 34 C16 40, 20 42, 24 36" stroke="#1a1a2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
             <path d="M24 36 C27 26, 33 20, 37 24" stroke="#1a1a2e" strokeWidth="1.7" strokeLinecap="round" fill="none"/>

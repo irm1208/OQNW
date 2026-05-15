@@ -1,7 +1,7 @@
 import { jsPDF } from "jspdf";
 import type { Product } from "@/data/products";
 import type { ProductDetail } from "@/data/productDetails";
-import { getPurity, getLotDates } from "@/utils/productPurity";
+import { getPurity, getPurityStr, getLotDates } from "@/utils/productPurity";
 import {
   parseBaseName, parseDeclaredMg, getActualMass,
   getVerifyKey, getCOARef,
@@ -172,10 +172,11 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   const M  = 14;
   const CW = W - M * 2;
 
-  const { lot, analysis, issued } = getLotDates(product.id);
+  const { lot, received, analysis, issued } = getLotDates(product.id);
   const purity     = getPurity(product.id);
+  const purityStr  = getPurityStr(product.id);
   const declaredMg = parseDeclaredMg(product.name);
-  const actualMass = declaredMg !== null ? getActualMass(product.id, declaredMg) : null;
+  const actualMass = getActualMass(product.id, declaredMg);
   const baseName   = parseBaseName(product.name);
   const verifyKey  = getVerifyKey(product.id);
   const coaRef     = getCOARef(product.id, lot);
@@ -227,19 +228,26 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(...MUTED);
-  doc.text("Analysis Date  >", W - M, y, { align: "right" });
+  doc.text("Sample received  >", W - M, y, { align: "right" });
   doc.setFont("helvetica", "bold");
   doc.setTextColor(...INK);
-  doc.text(analysis, W - M - 34, y);
+  doc.text(received, W - M - 38, y);
 
   doc.setFont("helvetica", "normal");
   doc.setTextColor(...MUTED);
-  doc.text("Report Issued  >",  W - M, y + 6, { align: "right" });
+  doc.text("Analysis Date  >", W - M, y + 6, { align: "right" });
   doc.setFont("helvetica", "bold");
   doc.setTextColor(...INK);
-  doc.text(issued, W - M - 34, y + 6);
+  doc.text(analysis, W - M - 34, y + 6);
 
-  y += 14;
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(...MUTED);
+  doc.text("Report Issued  >",  W - M, y + 12, { align: "right" });
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(...INK);
+  doc.text(issued, W - M - 34, y + 12);
+
+  y += 20;
 
   // ── Divider ───────────────────────────────────────────────────────────
   hline(doc, M, y, CW, ...BORDER, 0.4);
@@ -323,7 +331,7 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
 
   const resultRows: { label: string; value: string; isGreen?: boolean; isBold?: boolean }[] = [
     { label: baseName,            value: actualMass !== null ? `${actualMass.toFixed(2)} mg` : "—", isBold: true },
-    { label: "Purity",            value: `${purity.toFixed(3)}%`,                                    isGreen: true },
+    { label: "Purity",            value: purityStr,                                                   isGreen: true },
     { label: "Identity (ESI-MS)", value: "Confirmed" },
     ...(detail?.molecularWeight ? [{ label: "Molecular Weight", value: detail.molecularWeight }] : []),
     ...(detail?.casNumber       ? [{ label: "CAS Number",       value: detail.casNumber }]       : []),
@@ -366,9 +374,17 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   y += 5;
 
   // ── Analysis conducted + Signature ────────────────────────────────────
-  // Left: analysis date pill
+  // Left: sample received + analysis date pills
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
+  doc.setTextColor(...MUTED);
+  doc.text("Sample received  >", M, y + 4);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7.5);
+  doc.setTextColor(...INK);
+  doc.text(received, M + 40, y + 4);
+  y += 8;
+  doc.setFont("helvetica", "normal");
   doc.setTextColor(...MUTED);
   doc.text("Analysis conducted  >", M, y + 4);
   fillRect(doc, M + 47, y - 1, 28, 8, ...ROWALT);
@@ -470,7 +486,7 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(7.5);
   doc.setTextColor(5, 140, 80);
-  doc.text(`HPLC Purity: ${purity.toFixed(3)}%  ✓`, pur2X + 24.5, stripY + 7, { align: "center" });
+  doc.text(`HPLC Purity: ${purityStr}  ✓`, pur2X + 24.5, stripY + 7, { align: "center" });
 
   // Chromatogram maths (identical to HplcChart.tsx)
   const seed          = parseInt(product.id, 10) || 1;

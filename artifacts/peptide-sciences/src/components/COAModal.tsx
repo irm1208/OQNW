@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { Download, X, ChevronUp, TestTube2, Microscope } from "lucide-react";
-import { getPurity, getLotDates } from "@/utils/productPurity";
+import { getPurity, getPurityStr, getLotDates } from "@/utils/productPurity";
 import { generateCOA } from "@/utils/generateCOA";
 import { productDetails } from "@/data/productDetails";
 import { parseBaseName, parseDeclaredMg, getActualMass } from "@/components/COADocument";
@@ -20,9 +20,10 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
   const [currentProduct, setCurrentProduct] = useState(product);
 
   const purity     = getPurity(currentProduct.id);
-  const { lot, analysis } = getLotDates(currentProduct.id);
+  const purityStr  = getPurityStr(currentProduct.id);
+  const { lot, received, analysis } = getLotDates(currentProduct.id);
   const declaredMg = parseDeclaredMg(currentProduct.name);
-  const actualMass = declaredMg !== null ? getActualMass(currentProduct.id, declaredMg) : null;
+  const actualMass = getActualMass(currentProduct.id, declaredMg);
   const baseName   = parseBaseName(currentProduct.name);
 
   const currentIndex = filteredProducts.findIndex(p => p.id === currentProduct.id);
@@ -154,7 +155,7 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
           <div style={{ margin: "10px 16px 0", padding: "10px 12px", background: "rgba(74,222,128,0.1)", borderRadius: "8px", border: "1px solid rgba(74,222,128,0.2)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <ChevronUp size={14} color="#4ADE80" />
-              <span style={{ fontSize: "15px", fontWeight: 900, color: "#4ADE80" }}>{purity.toFixed(3)}%</span>
+              <span style={{ fontSize: "15px", fontWeight: 900, color: "#4ADE80" }}>{purityStr}</span>
               <span style={{ fontSize: "11px", fontWeight: 700, color: "#4ADE80" }}>— Good</span>
             </div>
           </div>
@@ -307,8 +308,8 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
             <h3 style={{ margin: "0 0 16px", fontSize: "14px", fontWeight: 800, color: "#0F172A" }}>Purity Analysis Summary</h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "12px" }}>
               {[
-                { label: "Target Compound", value: `${getPurity(currentProduct.id).toFixed(1)}%`, color: "#059669", bg: "#F0FDF4", border: "#BBF7D0" },
-                { label: "Known Impurities", value: `${(100 - getPurity(currentProduct.id) - 0.3).toFixed(1)}%`, color: "#D97706", bg: "#FFFBEB", border: "#FDE68A" },
+                { label: "Target Compound", value: purityStr, color: "#059669", bg: "#F0FDF4", border: "#BBF7D0" },
+                { label: "Known Impurities", value: `${(100 - purity - 0.3).toFixed(3)}%`, color: "#D97706", bg: "#FFFBEB", border: "#FDE68A" },
                 { label: "Solvent / Other", value: "0.3%", color: "#64748B", bg: "#F8FAFC", border: "#E2E8F0" },
                 { label: "Water Content", value: "≤1.0%", color: "#1240A0", bg: "#EEF4FF", border: "#BFDBFE" },
               ].map(row => (

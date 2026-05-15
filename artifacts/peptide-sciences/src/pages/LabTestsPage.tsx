@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { useProducts } from "@/context/ProductsContext";
-import { getPurity, getLotDates } from "@/utils/productPurity";
+import { getPurity, getPurityStr, getLotDates } from "@/utils/productPurity";
 import { generateCOA } from "@/utils/generateCOA";
 import { productDetails } from "@/data/productDetails";
 import { useSEO } from "@/hooks/useSEO";
@@ -18,7 +18,7 @@ const CATEGORIES = [
   "Anti-Inflammatory", "Cognitive Peptides", "Growth Hormone",
 ];
 
-// ─── Modal ────────────────────────────────────────────────────────────────────
+
 
 function ReportModal({
   product,
@@ -578,9 +578,10 @@ export default function LabTestsPage() {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: "14px" }}>
                 {filtered.map((product) => {
                   const purity = getPurity(product.id);
+                  const purityStr = getPurityStr(product.id);
                   const { lot, analysis } = getLotDates(product.id);
                   const declaredMg = parseDeclaredMg(product.name);
-                  const actualMass = declaredMg !== null ? getActualMass(product.id, declaredMg) : null;
+                  const actualMass = getActualMass(product.id, declaredMg);
                   const baseName = parseBaseName(product.name);
 
                   return (
@@ -646,7 +647,7 @@ export default function LabTestsPage() {
                           </p>
                           <p style={{ margin: 0, lineHeight: 1 }}>
                             <span style={{ fontSize: "30px", fontWeight: 900, color: "#4ADE80", letterSpacing: "-0.03em" }}>
-                              {purity.toFixed(3)}
+                              {purityStr.replace("%", "")}
                             </span>
                             <span style={{ fontSize: "16px", fontWeight: 800, color: "#4ADE80", marginLeft: "1px" }}>%</span>
                           </p>
