@@ -4,8 +4,10 @@ import { getPurity, getLotDates } from "@/utils/productPurity";
 import { generateCOA } from "@/utils/generateCOA";
 import { productDetails } from "@/data/productDetails";
 import { useSEO } from "@/hooks/useSEO";
-import { Search, Download, CheckCircle2, BarChart2, GitCompare, FileText, X, ChevronUp } from "lucide-react";
+import { Search, Download, CheckCircle2, BarChart2, GitCompare, FileText, X, ChevronUp, TestTube2, Microscope } from "lucide-react";
 import type { Product } from "@/data/products";
+import HplcChart from "@/components/HplcChart";
+import MsChart from "@/components/MsChart";
 
 const CATEGORIES = [
   "All", "Growth Peptides", "Healing Peptides", "Weight Management",
@@ -538,27 +540,83 @@ function ReportModal({
           </p>
         </div>
 
-        {/* ── Right COA panel ── */}
+        {/* ── Right panel ── */}
         <div style={{
           flex: 1,
           background: "#EEF1F6",
           overflowY: "auto",
-          padding: "28px",
+          padding: "24px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "16px",
         }}>
-          <div style={{
-            background: "#fff",
-            borderRadius: "12px",
-            padding: "36px 40px",
-            maxWidth: "680px",
-            margin: "0 auto",
-            boxShadow: "0 4px 24px rgba(0,0,0,0.09)",
-          }}>
+
+          {/* COA Certificate */}
+          <div style={{ background: "#fff", borderRadius: "12px", padding: "32px 36px", boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}>
             <COADocument product={currentProduct} />
           </div>
 
-          {/* Page note */}
-          <p style={{ textAlign: "center", marginTop: "14px", fontSize: "11px", color: "rgba(0,0,0,0.3)" }}>
-            1 / 1 &nbsp;·&nbsp; Use Download COA PDF to save as a portable file
+          {/* HPLC Chart */}
+          <div style={{ background: "#fff", borderRadius: "12px", padding: "24px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
+              <div style={{ width: "34px", height: "34px", borderRadius: "8px", background: "#EEF4FF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <TestTube2 size={16} color="#1240A0" />
+              </div>
+              <div>
+                <p style={{ margin: 0, fontSize: "14px", fontWeight: 800, color: "#0F172A" }}>HPLC Chromatogram</p>
+                <p style={{ margin: 0, fontSize: "11.5px", color: "#64748B" }}>Reverse-phase HPLC · UV detection at 214 nm</p>
+              </div>
+            </div>
+            <div style={{ overflowX: "auto" }}>
+              <HplcChart productId={currentProduct.id} productName={currentProduct.name} />
+            </div>
+          </div>
+
+          {/* MS Chart */}
+          <div style={{ background: "#fff", borderRadius: "12px", padding: "24px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
+              <div style={{ width: "34px", height: "34px", borderRadius: "8px", background: "#F0FDF4", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <Microscope size={16} color="#059669" />
+              </div>
+              <div>
+                <p style={{ margin: 0, fontSize: "14px", fontWeight: 800, color: "#0F172A" }}>Mass Spectrometry</p>
+                <p style={{ margin: 0, fontSize: "11.5px", color: "#64748B" }}>ESI-MS · confirms molecular weight and identity</p>
+              </div>
+            </div>
+            <div style={{ overflowX: "auto" }}>
+              <MsChart
+                productId={currentProduct.id}
+                productName={currentProduct.name}
+                molecularWeight={productDetails[currentProduct.id]?.molecularWeight}
+              />
+            </div>
+          </div>
+
+          {/* Purity breakdown */}
+          <div style={{ background: "#fff", borderRadius: "12px", padding: "24px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
+            <h3 style={{ margin: "0 0 16px", fontSize: "14px", fontWeight: 800, color: "#0F172A" }}>Purity Analysis Summary</h3>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "12px" }}>
+              {[
+                { label: "Target Compound", value: `${getPurity(currentProduct.id).toFixed(1)}%`, color: "#059669", bg: "#F0FDF4", border: "#BBF7D0" },
+                { label: "Known Impurities", value: `${(100 - getPurity(currentProduct.id) - 0.3).toFixed(1)}%`, color: "#D97706", bg: "#FFFBEB", border: "#FDE68A" },
+                { label: "Solvent / Other", value: "0.3%", color: "#64748B", bg: "#F8FAFC", border: "#E2E8F0" },
+                { label: "Water Content", value: "≤1.0%", color: "#1240A0", bg: "#EEF4FF", border: "#BFDBFE" },
+              ].map(row => (
+                <div key={row.label} style={{ padding: "14px", borderRadius: "10px", background: row.bg, border: `1.5px solid ${row.border}` }}>
+                  <p style={{ margin: "0 0 4px", fontSize: "10.5px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em" }}>{row.label}</p>
+                  <p style={{ margin: 0, fontSize: "22px", fontWeight: 900, color: row.color }}>{row.value}</p>
+                </div>
+              ))}
+            </div>
+            <div style={{ marginTop: "14px", padding: "12px 16px", borderRadius: "10px", background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+              <p style={{ margin: 0, fontSize: "12px", color: "#475569", lineHeight: 1.6 }}>
+                <strong style={{ color: "#0F172A" }}>Testing Methodology:</strong> All peptides are tested using reverse-phase HPLC with UV detection at 214 nm and electrospray ionisation mass spectrometry (ESI-MS). Results are lot-specific and provided with each shipment. For laboratory research use only — not for human or veterinary use.
+              </p>
+            </div>
+          </div>
+
+          <p style={{ textAlign: "center", fontSize: "11px", color: "rgba(0,0,0,0.28)", margin: 0 }}>
+            Use "Download COA PDF" in the sidebar to save as a portable file
           </p>
         </div>
       </div>
