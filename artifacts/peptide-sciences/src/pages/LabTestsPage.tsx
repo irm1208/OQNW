@@ -364,7 +364,6 @@ function ReportModal({
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "12px" }}>
               {[
                 { label: "Target Compound", value: `${getPurity(currentProduct.id).toFixed(1)}%`, color: "#059669", bg: "#F0FDF4", border: "#BBF7D0" },
-                { label: "Known Impurities", value: `${(100 - getPurity(currentProduct.id) - 0.3).toFixed(1)}%`, color: "#D97706", bg: "#FFFBEB", border: "#FDE68A" },
                 { label: "Solvent / Other", value: "0.3%", color: "#64748B", bg: "#F8FAFC", border: "#E2E8F0" },
                 { label: "Water Content", value: "≤1.0%", color: "#1240A0", bg: "#EEF4FF", border: "#BFDBFE" },
               ].map(row => (

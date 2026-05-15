@@ -175,7 +175,7 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
           {/* Purity row */}
           <div style={{ padding: "0 16px", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
             <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>Purity</span>
-            <span style={{ fontSize: "14px", fontWeight: 900, color: "#4ADE80" }}>{purity.toFixed(3)}%</span>
+            <span style={{ fontSize: "14px", fontWeight: 900, color: "#4ADE80" }}>{purityStr}</span>
           </div>
 
           {/* Actual mass */}
@@ -309,7 +309,6 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "12px" }}>
               {[
                 { label: "Target Compound", value: purityStr, color: "#059669", bg: "#F0FDF4", border: "#BBF7D0" },
-                { label: "Known Impurities", value: `${(100 - purity - 0.3).toFixed(3)}%`, color: "#D97706", bg: "#FFFBEB", border: "#FDE68A" },
                 { label: "Solvent / Other", value: "0.3%", color: "#64748B", bg: "#F8FAFC", border: "#E2E8F0" },
                 { label: "Water Content", value: "≤1.0%", color: "#1240A0", bg: "#EEF4FF", border: "#BFDBFE" },
               ].map(row => (

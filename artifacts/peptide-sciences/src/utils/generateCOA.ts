@@ -4,7 +4,7 @@ import type { ProductDetail } from "@/data/productDetails";
 import { getPurity, getPurityStr, getLotDates } from "@/utils/productPurity";
 import {
   parseBaseName, parseDeclaredMg, getActualMass,
-  getVerifyKey, getCOARef,
+  getCOARef,
 } from "@/components/COADocument";
 
 // ─── Brand colours (matching HTML COADocument) ───────────────────────────────
@@ -178,7 +178,6 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   const declaredMg = parseDeclaredMg(product.name);
   const actualMass = getActualMass(product.id, declaredMg);
   const baseName   = parseBaseName(product.name);
-  const verifyKey  = getVerifyKey(product.id);
   const coaRef     = getCOARef(product.id, lot);
 
   // ══════════════════════════════════════════════════════════════════════
@@ -204,10 +203,9 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(6.5);
   doc.setTextColor(...MUTED);
-  doc.text("E-mail: labs@omniqure.co.uk", W - M, y + 18, { align: "right" });
-  doc.text("Web: www.omniqure.co.uk",    W - M, y + 23, { align: "right" });
+  doc.text("Web: www.omniqure.co.uk", W - M, y + 18, { align: "right" });
 
-  y += 28;
+  y += 24;
 
   // ── Divider ───────────────────────────────────────────────────────────
   hline(doc, M, y, CW, ...BORDER, 0.4);
@@ -393,37 +391,6 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   doc.setFontSize(7.5);
   doc.setTextColor(...INK);
   doc.text(analysis, M + 48, y + 4.5);
-
-  // Right: Signature label + drawn signature
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(6.5);
-  doc.setTextColor(...MUTED);
-  doc.text("Signature  >", W - M, y + 2, { align: "right" });
-  drawSignature(doc, W - M - 52, y + 4);
-  y += 24;
-
-  // ── Verification key ──────────────────────────────────────────────────
-  // Top rule
-  doc.setDrawColor(...BLUE);
-  doc.setLineWidth(0.6);
-  doc.line(M, y, W - M, y);
-  y += 5;
-
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(7);
-  doc.setTextColor(...BLUE);
-  doc.text(
-    "Verify this certificate at  www.omniqure.co.uk/verify/  with the following unique key",
-    W / 2, y + 3, { align: "center" },
-  );
-  y += 8;
-
-  fillRect(doc, M, y, CW, 12, ...ROWALT);
-  strokeRect(doc, M, y, CW, 12, ...BLUE, 0.4);
-  doc.setFont("courier", "bold");
-  doc.setFontSize(13);
-  doc.setTextColor(...INK);
-  doc.text(verifyKey, W / 2, y + 8.5, { align: "center" });
 
   y += 16;
 

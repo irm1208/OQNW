@@ -56,7 +56,6 @@ export default function COADocument({ product }: COADocumentProps) {
   const declaredMg = parseDeclaredMg(product.name);
   const actualMass = getActualMass(product.id, declaredMg);
   const baseName   = parseBaseName(product.name);
-  const verifyKey  = getVerifyKey(product.id);
   const coaRef     = getCOARef(product.id, lot);
   const detail     = productDetails[product.id];
 
@@ -79,7 +78,6 @@ export default function COADocument({ product }: COADocumentProps) {
             alt="OmniQure"
             style={{ height: "44px", objectFit: "contain", display: "block", marginLeft: "auto", marginBottom: "8px" }}
           />
-          <p style={{ margin: 0, fontSize: "11px", color: "#6B7280" }}>E-mail: labs@omniqure.co.uk</p>
           <p style={{ margin: 0, fontSize: "11px", color: "#6B7280" }}>Web: www.omniqure.co.uk</p>
         </div>
       </div>
@@ -207,46 +205,16 @@ export default function COADocument({ product }: COADocumentProps) {
 
       <hr style={divider} />
 
-      {/* Analysis conducted + Signature */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "24px" }}>
-        <div>
-          <p style={{ margin: 0, fontSize: "12.5px", color: "#6B7280" }}>
-            Sample received &gt;&nbsp;
-            <span style={{ fontWeight: 700, color: "#111827" }}>{received}</span>
-          </p>
-          <p style={{ margin: "6px 0 0", fontSize: "12.5px", color: "#6B7280" }}>
-            Analysis conducted &gt;&nbsp;
-            <span style={{ fontWeight: 700, color: "#111827", background: "#F0F7FF", padding: "2px 8px", borderRadius: "4px" }}>{analysis}</span>
-          </p>
-        </div>
-        <div style={{ textAlign: "right" }}>
-          <p style={{ margin: "0 0 4px", fontSize: "11px", color: "#6B7280" }}>Signature &gt;</p>
-          <svg width="148" height="52" viewBox="0 0 148 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 38 C5 24, 10 10, 16 12 C22 14, 20 26, 18 34 C16 40, 20 42, 24 36" stroke="#1a1a2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-            <path d="M24 36 C27 26, 33 20, 37 24" stroke="#1a1a2e" strokeWidth="1.7" strokeLinecap="round" fill="none"/>
-            <path d="M37 24 C40 22, 44 30, 46 34 C48 38, 52 28, 57 22 C62 16, 68 20, 70 28" stroke="#1a1a2e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-            <path d="M70 28 C72 34, 70 40, 74 38 C78 36, 82 24, 88 20 C94 16, 100 22, 102 30" stroke="#1a1a2e" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-            <path d="M102 30 C108 26, 116 20, 124 24 C130 27, 134 34, 140 30 C143 28, 144 26, 145 24" stroke="#1a1a2e" strokeWidth="1.3" strokeLinecap="round" fill="none"/>
-            <circle cx="38" cy="14" r="1.2" fill="#1a1a2e"/>
-            <path d="M5 46 C40 49, 96 48, 143 44" stroke="#1a1a2e" strokeWidth="0.9" strokeLinecap="round" fill="none"/>
-          </svg>
-        </div>
-      </div>
-
-      {/* Verify key */}
-      <div style={{ borderTop: `2px solid ${blue}`, paddingTop: "16px" }}>
-        <p style={{ margin: "0 0 8px", fontSize: "11.5px", color: blue, textAlign: "center" }}>
-          Verify this certificate at <strong>www.omniqure.co.uk/verify/</strong> with the following unique key
+      {/* Analysis conducted */}
+      <div style={{ marginBottom: "8px" }}>
+        <p style={{ margin: 0, fontSize: "12.5px", color: "#6B7280" }}>
+          Sample received &gt;&nbsp;
+          <span style={{ fontWeight: 700, color: "#111827" }}>{received}</span>
         </p>
-        <div style={{
-          background: "#F0F7FF", border: `1px solid ${blue}`,
-          borderRadius: "6px", padding: "10px",
-          textAlign: "center", fontFamily: "monospace",
-          fontWeight: 800, fontSize: "16px",
-          letterSpacing: "0.2em", color: "#111827",
-        }}>
-          {verifyKey}
-        </div>
+        <p style={{ margin: "6px 0 0", fontSize: "12.5px", color: "#6B7280" }}>
+          Analysis conducted &gt;&nbsp;
+          <span style={{ fontWeight: 700, color: "#111827", background: "#F0F7FF", padding: "2px 8px", borderRadius: "4px" }}>{analysis}</span>
+        </p>
       </div>
     </div>
   );
