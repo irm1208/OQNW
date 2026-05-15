@@ -161,11 +161,11 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = "0.75"}
           onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = "1"}
         >
-          {group.baseName}
+          {selectedVariant.name}
         </p>
 
         {/* Strength pills */}
-        {group.variants.length > 1 ? (
+        {group.variants.length > 1 && (
           <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "10px" }} onClick={stopProp}>
             {group.variants.map((v, i) => {
               const { strength } = parseName(v.name);
@@ -188,10 +188,6 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
               );
             })}
           </div>
-        ) : (
-          <p style={{ fontSize: "14.5px", fontWeight: 700, color: cat.color, marginBottom: "10px" }}>
-            {parseName(group.variants[0].name).strength}
-          </p>
         )}
 
         {/* Price */}
