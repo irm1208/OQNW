@@ -28,6 +28,7 @@ import AccountPage from "@/pages/AccountPage";
 import WishlistPage from "@/pages/WishlistPage";
 import BundlesPage from "@/pages/BundlesPage";
 import LabResultsPage from "@/pages/LabResultsPage";
+import LabTestsPage from "@/pages/LabTestsPage";
 import GiftCardsPage from "@/pages/GiftCardsPage";
 import BlogPage from "@/pages/BlogPage";
 import BlogPostPage from "@/pages/BlogPostPage";
@@ -100,6 +101,7 @@ function Router() {
       <Route path="/track-order" component={TrackOrderPage} />
       <Route path="/wishlist" component={WishlistPage} />
       <Route path="/lab-results" component={LabResultsPage} />
+      <Route path="/lab-tests" component={LabTestsPage} />
       <Route path="/gift-cards" component={GiftCardsPage} />
       <Route path="/blog" component={BlogPage} />
       <Route path="/blog/:slug" component={BlogPostPage} />

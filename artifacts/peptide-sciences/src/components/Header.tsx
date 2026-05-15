@@ -14,6 +14,7 @@ const navItems = [
   { label: "Research Stacks", href: "/stacks" },
   { label: "Bundle & Save", href: "/bundles" },
   { label: "Peptide Research", href: "/research" },
+  { label: "Lab Tests", href: "/lab-tests" },
   { label: "Peptide Calculator", href: "/calculator" },
 ];
 
