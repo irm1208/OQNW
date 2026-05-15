@@ -124,7 +124,7 @@ function formatExpiry(val: string) {
 
 export default function CheckoutPage() {
   const [, navigate] = useLocation();
-  const { items, clearCart } = useCart();
+  const { items, clearCart, bundleDiscountAmount } = useCart();
   const { formatPrice, currency } = useCurrency();
   const { customer } = useCustomerAuth();
   const [step, setStep] = useState<Step>(1);
@@ -201,7 +201,7 @@ export default function CheckoutPage() {
   const shippingCost = selectedShipping.freeOver && cartGBP >= selectedShipping.freeOver ? 0 : selectedShipping.price;
   const discountAmount = appliedDiscount?.discountAmount ?? 0;
   const loyaltyDiscountGbp = loyaltyPointsToRedeem / 100;
-  const preGiftTotal = Math.max(0, cartGBP + shippingCost - discountAmount - loyaltyDiscountGbp);
+  const preGiftTotal = Math.max(0, cartGBP + shippingCost - bundleDiscountAmount - discountAmount - loyaltyDiscountGbp);
   const giftCardDeductGbp = appliedGiftCard ? Math.min(appliedGiftCard.remainingGbp, preGiftTotal) : 0;
   const totalGBP = Math.max(0, preGiftTotal - giftCardDeductGbp);
 
@@ -1030,6 +1030,14 @@ export default function CheckoutPage() {
                   <span style={{ fontSize: "13px", color: "#64748B" }}>Subtotal</span>
                   <span style={{ fontSize: "13px", fontWeight: 600, color: "#0F172A" }}>{formatPrice(cartGBP)}</span>
                 </div>
+                {bundleDiscountAmount > 0 && (
+                  <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
+                    <span style={{ fontSize: "13px", color: "#059669", fontWeight: 600 }}>
+                      Bundle & Save ({items.reduce((s, i) => s + i.quantity, 0) >= 10 ? "10%" : "5%"} off)
+                    </span>
+                    <span style={{ fontSize: "13px", fontWeight: 600, color: "#059669" }}>−{formatPrice(bundleDiscountAmount)}</span>
+                  </div>
+                )}
                 <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
                   <span style={{ fontSize: "13px", color: "#64748B" }}>Shipping</span>
                   <span style={{ fontSize: "13px", fontWeight: 600, color: shippingCost === 0 ? "#059669" : "#0F172A" }}>

@@ -155,7 +155,7 @@ function CartUpsells() {
 export default function CartPage() {
   useSEO({ title: "My Cart", description: "Review your research peptide cart and proceed to checkout. OmniQure Peptide Research Institute.", canonicalPath: "/cart" });
   const [, navigate] = useLocation();
-  const { items, totalItems, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { items, totalItems, subtotal, bundleDiscountPct, bundleDiscountAmount, removeFromCart, updateQuantity, clearCart } = useCart();
   const { formatPrice, currency } = useCurrency();
   const { customer } = useCustomerAuth();
   const [subscribing, setSubscribing] = useState(false);
@@ -363,10 +363,74 @@ export default function CartPage() {
               </div>
 
               <div className="px-5 pb-2" style={{ borderTop: "1px solid #F1F5F9" }}>
-                <div className="flex items-center justify-between py-3">
-                  <p className="font-bold" style={{ fontSize: "14px", color: "#0F172A" }}>Total Items</p>
-                  <p className="font-bold" style={{ fontSize: "14px", color: "#0F172A" }}>{totalItems}</p>
+
+                {/* Bundle & Save progress nudge */}
+                {totalItems < 10 && (
+                  <div
+                    className="rounded-xl p-3 mt-3"
+                    style={{
+                      backgroundColor: bundleDiscountPct > 0 ? "#F0FDF4" : "#EEF4FF",
+                      border: `1px solid ${bundleDiscountPct > 0 ? "#BBF7D0" : "#BFDBFE"}`,
+                      marginBottom: "4px",
+                    }}
+                  >
+                    {bundleDiscountPct === 0 ? (
+                      <>
+                        <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#1240A0", marginBottom: "6px" }}>
+                          Bundle & Save — add {5 - totalItems} more {5 - totalItems === 1 ? "peptide" : "peptides"} for 5% off
+                        </p>
+                        <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+                          <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#DBEAFE", overflow: "hidden" }}>
+                            <div style={{ height: "100%", width: `${(totalItems / 5) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #1B5CB5, #2563EB)", transition: "width 0.3s" }} />
+                          </div>
+                          <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{totalItems}/5</span>
+                        </div>
+                        <p style={{ fontSize: "10.5px", color: "#475569", marginTop: "5px" }}>5–9 items = 5% off · 10+ items = 10% off</p>
+                      </>
+                    ) : (
+                      <>
+                        <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669", marginBottom: "6px" }}>
+                          ✓ Bundle & Save 5% applied — add {10 - totalItems} more for 10% off
+                        </p>
+                        <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+                          <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#BBF7D0", overflow: "hidden" }}>
+                            <div style={{ height: "100%", width: `${((totalItems - 5) / 5) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #059669, #16A34A)", transition: "width 0.3s" }} />
+                          </div>
+                          <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{totalItems}/10</span>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+                {bundleDiscountPct >= 10 && (
+                  <div
+                    className="rounded-xl p-3 mt-3"
+                    style={{ backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0" }}
+                  >
+                    <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669" }}>
+                      ✓ Bundle & Save 10% applied — maximum discount active!
+                    </p>
+                  </div>
+                )}
+
+                {/* Pricing breakdown */}
+                <div style={{ paddingTop: "10px" }}>
+                  <div className="flex items-center justify-between py-1.5">
+                    <p style={{ fontSize: "13px", color: "#64748B" }}>Subtotal ({totalItems} {totalItems === 1 ? "item" : "items"})</p>
+                    <p style={{ fontSize: "13px", color: "#0F172A" }}>{formatPrice(subtotal)}</p>
+                  </div>
+                  {bundleDiscountPct > 0 && (
+                    <div className="flex items-center justify-between py-1.5">
+                      <p style={{ fontSize: "13px", color: "#059669", fontWeight: 600 }}>Bundle & Save ({bundleDiscountPct}% off)</p>
+                      <p style={{ fontSize: "13px", fontWeight: 600, color: "#059669" }}>−{formatPrice(bundleDiscountAmount)}</p>
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between" style={{ paddingTop: "8px", paddingBottom: "12px", borderTop: "1.5px solid #E8EDF5", marginTop: "6px" }}>
+                    <p className="font-bold" style={{ fontSize: "15px", color: "#0F172A" }}>Total</p>
+                    <p className="font-bold" style={{ fontSize: "15px", color: "#1240A0" }}>{formatPrice(subtotal - bundleDiscountAmount)}</p>
+                  </div>
                 </div>
+
                 <div
                   className="rounded-xl p-3 mb-4"
                   style={{ backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0" }}

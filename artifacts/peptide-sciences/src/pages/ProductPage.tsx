@@ -72,7 +72,7 @@ export default function ProductPage() {
   const [activeTab, setActiveTab] = useState<"description" | "reviews">("description");
   const [added, setAdded] = useState(false);
   const [showCOAModal, setShowCOAModal] = useState(false);
-  const { addToCart } = useCart();
+  const { addToCart, totalItems, bundleDiscountPct } = useCart();
   const { trackView } = useRecentlyViewed();
   const { customer } = useCustomerAuth();
   const { formatPrice } = useCurrency();
@@ -577,6 +577,31 @@ export default function ProductPage() {
                 </button>
               </div>
             </div>
+
+            {/* Bundle & Save nudge */}
+            {product.stockLevel !== 0 && (
+              <div
+                className="rounded-xl px-4 py-3 mb-3 flex items-center gap-3"
+                style={{
+                  backgroundColor: bundleDiscountPct >= 10 ? "#F0FDF4" : bundleDiscountPct === 5 ? "#F0FDF4" : "#EEF4FF",
+                  border: `1px solid ${bundleDiscountPct > 0 ? "#BBF7D0" : "#BFDBFE"}`,
+                }}
+              >
+                {bundleDiscountPct >= 10 ? (
+                  <p style={{ fontSize: "12px", color: "#059669", fontWeight: 600, margin: 0 }}>
+                    ✓ Bundle & Save 10% active on your order
+                  </p>
+                ) : bundleDiscountPct === 5 ? (
+                  <p style={{ fontSize: "12px", color: "#059669", fontWeight: 600, margin: 0 }}>
+                    ✓ Bundle & Save 5% active · add {10 - totalItems} more for 10% off
+                  </p>
+                ) : (
+                  <p style={{ fontSize: "12px", color: "#1240A0", fontWeight: 600, margin: 0 }}>
+                    Buy 5+ peptides and save 5% · 10+ peptides for 10% off
+                  </p>
+                )}
+              </div>
+            )}
 
             {/* Back-in-stock notify form */}
             {product.stockLevel === 0 && (
