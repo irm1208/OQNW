@@ -210,29 +210,6 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
 
         {/* Actions */}
         <div className="mt-auto pt-2 flex flex-col gap-2" onClick={stopProp}>
-          {/* View Details */}
-          <button
-            onClick={goToProduct}
-            style={{
-              display: "flex", alignItems: "center", justifyContent: "center",
-              gap: "6px", width: "100%", padding: "8px",
-              borderRadius: "10px", border: `1.5px solid ${cat.color}30`,
-              color: cat.color, backgroundColor: cat.bg,
-              fontSize: "14px", fontWeight: 600, cursor: "pointer",
-              transition: "background-color 0.15s, border-color 0.15s",
-            }}
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.backgroundColor = cat.color + "20";
-              (e.currentTarget as HTMLElement).style.borderColor = cat.color + "60";
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLElement).style.backgroundColor = cat.bg;
-              (e.currentTarget as HTMLElement).style.borderColor = cat.color + "30";
-            }}
-          >
-            <Eye size={13} /> View Details
-          </button>
-
           {/* Qty + Add to Cart */}
           <div className="flex items-center gap-2">
             <div
