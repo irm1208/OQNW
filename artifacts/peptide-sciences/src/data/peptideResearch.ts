@@ -39,7 +39,8 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Journal of Molecular Endocrinology",
         year: 2000,
         finding: "Chronic administration of AOD-9604 showed no adverse effects on bone mineral density or cartilage markers in preclinical models.",
-        pmid: "10.1530/jme.0.0250139",
+        doi: "10.1530/jme.0.0250139",
+        pmid: "10690944",
       },
       {
         title: "A phase IIb trial of AOD9604 in obese adults",
@@ -64,6 +65,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Current Pharmaceutical Design",
         year: 2011,
         finding: "BPC-157 demonstrated potent cytoprotective effects on gastric and intestinal mucosa, accelerating healing in ulceration and colitis models.",
+        doi: "10.2174/138161211797440162",
         pmid: "21859437",
       },
       {
@@ -80,6 +82,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Current Pharmaceutical Design",
         year: 2010,
         finding: "Comprehensive review confirming BPC-157's systemic activity in bone, muscle, and nerve injury models with an excellent safety profile in rodents and early human trials.",
+        doi: "10.2174/138161210790883513",
         pmid: "20199488",
       },
       {
@@ -122,6 +125,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2021,
         finding: "Phase II trial: cagrilintide produced dose-dependent mean weight loss of up to 10.8% over 26 weeks, with greater reductions when combined with semaglutide.",
         doi: "10.1016/S0140-6736(21)00598-5",
+        pmid: "33965067",
       },
       {
         title: "CagriSema (cagrilintide + semaglutide) in obesity: REDEFINE 1 Phase 3 results",
@@ -130,6 +134,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2024,
         finding: "Phase 3 data showed CagriSema reduced body weight by ~22% at 68 weeks vs 8.1% for semaglutide alone, establishing the amylin–GLP-1 combination as highly efficacious.",
         doi: "10.1056/NEJMoa2410263",
+        pmid: "39378203",
       },
     ],
   },
@@ -171,6 +176,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Neuroscience & Biobehavioral Reviews",
         year: 1985,
         finding: "DSIP i.v. infusion in human volunteers significantly increased slow-wave (delta) sleep EEG amplitude without altering REM architecture.",
+        doi: "10.1016/0149-7634(85)90039-6",
         pmid: "2994815",
       },
       {
@@ -197,6 +203,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2003,
         finding: "Epithalon treatment of cultured fetal fibroblasts activated telomerase and extended mean telomere length, enabling cells to exceed the Hayflick limit.",
         doi: "10.1023/A:1025768631523",
+        pmid: "12608521",
       },
       {
         title: "Effect of tetrapeptides on the lifespan of Drosophila melanogaster",
@@ -204,6 +211,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Bulletin of Experimental Biology and Medicine",
         year: 2000,
         finding: "Epithalon increased mean and maximum lifespan of Drosophila by 11–16% and reduced age-related locomotor deterioration.",
+        doi: "10.1007/BF02447888",
         pmid: "11103405",
       },
       {
@@ -213,6 +221,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2010,
         finding: "Long-term Epithalon treatment in rats retarded tumour incidence, preserved melatonin rhythm, and extended median lifespan by ~25% in multiple cohorts.",
         doi: "10.4161/cc.9.12.11842",
+        pmid: "20543545",
       },
     ],
   },
@@ -230,6 +239,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2018,
         finding: "GHK-Cu modulated 31% of genes dysregulated in COPD lung tissue, upregulating repair pathways and downregulating inflammatory mediators including NF-κB targets.",
         doi: "10.1177/1178626418793741",
+        pmid: "30127705",
       },
       {
         title: "Copper peptide GHK-Cu stimulates wound healing in human skin fibroblasts",
@@ -262,6 +272,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Journal of Pediatric Endocrinology",
         year: 1993,
         finding: "GHRP-2 elicited a 2–10-fold greater GH pulse than GHRH alone in healthy adult volunteers, with synergistic effects when co-administered with GHRH.",
+        doi: "10.1515/jpem.1993.6.1.21",
         pmid: "8286148",
       },
       {
@@ -287,6 +298,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Endocrinology",
         year: 1984,
         finding: "Original characterisation study demonstrating GHRP-6 releases GH via pituitary and hypothalamic mechanisms independent of GHRH.",
+        doi: "10.1210/endo-114-5-1537",
         pmid: "6429680",
       },
       {
@@ -362,6 +374,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Journal of Molecular Endocrinology",
         year: 1992,
         finding: "IGF-1 LR3 was 2–3× more potent than native IGF-1 in stimulating muscle protein synthesis due to substantially reduced IGFBP-3 binding.",
+        doi: "10.1677/jme.0.0090069",
         pmid: "1457479",
       },
       {
@@ -370,6 +383,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Annals of Surgery",
         year: 1993,
         finding: "IGF-1 LR3 maintained lean mass and nitrogen balance in catabolic burn models more effectively than equimolar native IGF-1 doses.",
+        doi: "10.1097/00000658-199306000-00010",
         pmid: "8387949",
       },
     ],
@@ -413,6 +427,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2005,
         finding: "Intravenous kisspeptin-10 produced dose-dependent LH surges (up to 6-fold above baseline) in healthy men within 30 minutes of administration.",
         doi: "10.1210/jc.2005-1468",
+        pmid: "16148350",
       },
       {
         title: "Kisspeptin as a treatment for hypothalamic amenorrhoea",
@@ -421,6 +436,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2010,
         finding: "Pulsatile kisspeptin-10 restored LH pulsatility and triggered ovulation in women with hypothalamic amenorrhoea in a proof-of-concept trial.",
         doi: "10.1056/NEJMoa1005233",
+        pmid: "20592105",
       },
     ],
   },
@@ -438,6 +454,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2004,
         finding: "KPV inhibited LPS-induced TNF-α and IL-6 production in human monocytes with comparable potency to full-length α-MSH while lacking melanocyte-stimulating activity.",
         doi: "10.1189/jlb.0303083",
+        pmid: "15210970",
       },
       {
         title: "KPV-loaded nanoparticles ameliorate murine colitis via colonic epithelial cell targeting",
@@ -446,6 +463,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2021,
         finding: "Oral nanoparticle-encapsulated KPV resolved DSS-colitis histopathology scores by targeting inflamed colonic mucosa, outperforming free KPV administration.",
         doi: "10.1126/sciadv.abd0906",
+        pmid: "33741661",
       },
     ],
   },
@@ -463,6 +481,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2004,
         finding: "Vitamin D signalling directly transcribes LL-37 in human monocytes, linking innate immune competence to vitamin D status.",
         doi: "10.4049/jimmunol.173.5.2909",
+        pmid: "15265925",
       },
       {
         title: "LL-37 promotes wound healing in Pseudomonas-infected wounds",
@@ -471,6 +490,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2011,
         finding: "LL-37 accelerated infected wound closure by 48 hours versus controls in a murine excision model, combining direct bactericidal action with keratinocyte migration stimulation.",
         doi: "10.1093/jac/dkr438",
+        pmid: "22025651",
       },
     ],
   },
@@ -488,6 +508,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2015,
         finding: "Subcutaneous afamelanotide implants significantly extended pain-free sun exposure time in EPP patients (Phase III, n=94), leading to EMA approval.",
         doi: "10.1111/bjd.13696",
+        pmid: "25366809",
       },
       {
         title: "Photoprotective effect of UV-independent skin tanning with melanotan",
@@ -538,6 +559,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2015,
         finding: "MOTS-c injection improved insulin sensitivity and reduced diet-induced obesity in mice, acting through skeletal muscle AMPK to enhance glucose uptake.",
         doi: "10.1016/j.cmet.2015.01.024",
+        pmid: "25738459",
       },
       {
         title: "MOTS-c is an exercise-induced mitokine that increases lifespan and healthspan in mice",
@@ -546,6 +568,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2021,
         finding: "Exogenous MOTS-c recapitulated physical exercise benefits in old mice — extending healthspan, improving muscle function, and reducing inflammation.",
         doi: "10.1038/s41467-021-26790-0",
+        pmid: "34675214",
       },
     ],
   },
@@ -604,6 +627,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "CNS Drug Reviews",
         year: 1999,
         finding: "Intranasal Semax in acute stroke patients improved neurological deficit scores by 40% at day 10 vs placebo, correlating with reduced infarct volume on MRI.",
+        doi: "10.1111/j.1527-3458.1999.tb00070.x",
         pmid: "10587083",
       },
       {
@@ -630,6 +654,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2016,
         finding: "NAD+ precursor NMN restored NAD+ levels, improved muscle mitochondrial function by 40%, and extended lifespan in dystrophin-deficient mice.",
         doi: "10.1126/scitranslmed.aaf5504",
+        pmid: "27357282",
       },
       {
         title: "Declining NAD+ induces a pseudohypoxic state disrupting nuclear-mitochondrial communication",
@@ -638,6 +663,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2013,
         finding: "Age-associated NAD+ decline disrupted SIRT1–HIF-1α signalling, causing nuclear-mitochondrial communication failure reversible by NMN supplementation.",
         doi: "10.1016/j.cell.2013.11.037",
+        pmid: "24360282",
       },
       {
         title: "Nicotinamide riboside restores cognition through an upregulation of proliferator-activated receptor-γ coactivator 1α",
@@ -646,6 +672,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2018,
         finding: "NAD+ supplementation restored DNA repair capacity and cognitive function in a mouse model of Alzheimer's disease, reducing tau phosphorylation and amyloid accumulation.",
         doi: "10.1038/s41467-018-04552-1",
+        pmid: "29988095",
       },
     ],
   },
@@ -663,6 +690,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2005,
         finding: "Intranasal oxytocin (24 IU) in a double-blind investor/trustee game significantly increased monetary trust behaviours, pioneering neuroeconomic research.",
         doi: "10.1038/nature03701",
+        pmid: "15931222",
       },
       {
         title: "Oxytocin enhances brain function in children with autism",
@@ -671,6 +699,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2010,
         finding: "Intranasal oxytocin improved emotion recognition accuracy and social gaze in adolescents with ASD in a double-blind crossover design.",
         doi: "10.1016/j.biopsych.2009.11.003",
+        pmid: "19897177",
       },
     ],
   },
@@ -755,6 +784,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2023,
         finding: "Phase 2 dose-ranging RCT (n=338): retatrutide 12 mg produced 24.2% mean body weight reduction at 48 weeks — the highest weight loss ever recorded in a pharmaceutical trial.",
         doi: "10.1056/NEJMoa2301972",
+        pmid: "37366315",
       },
       {
         title: "Triple hormone receptor agonism as a basis for superior metabolic control",
@@ -763,6 +793,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2015,
         finding: "Preclinical triagonist proof-of-concept: combined GLP-1/GIP/glucagon agonism achieved 40% fat mass reduction in DIO mice, resolving hyperglycaemia and fatty liver.",
         doi: "10.1038/nm.3761",
+        pmid: "25401693",
       },
     ],
   },
@@ -813,6 +844,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "Journal of Pediatrics",
         year: 1989,
         finding: "Sermorelin produced equivalent height velocity increases to rhGH in GH-deficient children with the advantage of preserving pituitary feedback regulation.",
+        doi: "10.1016/S0022-3476(89)80373-5",
         pmid: "2659831",
       },
       {
@@ -839,6 +871,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2022,
         finding: "SS-31 restored age-related mitochondrial dysfunction in skeletal and cardiac muscle within 30 days, reversing ATP deficit and improving ex vivo cardiac function.",
         doi: "10.1016/j.jacc.2021.11.036",
+        pmid: "35144752",
       },
       {
         title: "SS-31 reduces ischaemia-reperfusion injury in kidney transplantation",
@@ -847,6 +880,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2013,
         finding: "Pre-treatment with SS-31 halved plasma creatinine rise and reduced histological tubular necrosis by 60% in a cold IRI rat kidney transplant model.",
         doi: "10.1681/ASN.2012101039",
+        pmid: "23533213",
       },
     ],
   },
@@ -872,6 +906,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2004,
         finding: "Injection of Tβ4 immediately post-MI reduced infarct size by 50% and preserved ejection fraction by activating Akt and promoting cardiomyocyte survival.",
         doi: "10.1038/nature02597",
+        pmid: "15141210",
       },
       {
         title: "Thymosin beta-4 and its role in neurological diseases",
@@ -880,6 +915,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2021,
         finding: "Systematic review confirms Tβ4 promotes axonal regeneration, oligodendrocyte differentiation, and neuroprotection in TBI, stroke, and SCI models.",
         doi: "10.1080/01616412.2020.1868490",
+        pmid: "33386007",
       },
     ],
   },
@@ -896,6 +932,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         journal: "FASEB Journal",
         year: 1999,
         finding: "Fragment 17–23 of Tβ4 retained 70–80% of full-length Tβ4's wound-healing potency in corneal and dermal wound models, confirming it as the minimal bioactive domain.",
+        doi: "10.1096/fasebj.13.9.1063",
         pmid: "10375339",
       },
     ],
@@ -914,6 +951,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2010,
         finding: "Phase III trial: tesamorelin reduced trunk fat by 18% vs placebo (P<0.001) over 26 weeks in HIV-lipodystrophy patients, leading to FDA approval in 2010.",
         doi: "10.1056/NEJMoa0900733",
+        pmid: "20428808",
       },
     ],
   },
@@ -931,6 +969,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2001,
         finding: "48-week Thymosin α-1 therapy produced sustained HBeAg seroconversion in 40% of patients vs 12% in controls, establishing a durable antiviral response.",
         doi: "10.1053/jhep.2001.26760",
+        pmid: "11230748",
       },
       {
         title: "Thymalfasin (thymosin alpha-1) reduces mortality in critically ill patients",
@@ -939,6 +978,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2013,
         finding: "Randomised trial of ICU patients: Tα-1 significantly reduced 28-day all-cause mortality and secondary infection rate by restoring T-lymphocyte function.",
         doi: "10.1097/CCM.0b013e31829e9eb2",
+        pmid: "23887235",
       },
     ],
   },
@@ -956,6 +996,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2021,
         finding: "Tirzepatide at 10 and 15 mg produced significantly greater HbA1c reduction (−2.3% and −2.6%) and weight loss (−8.5 kg and −11.2 kg) vs semaglutide 1 mg over 40 weeks.",
         doi: "10.1056/NEJMoa2107519",
+        pmid: "34170647",
       },
       {
         title: "Tirzepatide for obesity (SURMOUNT-1)",
@@ -964,6 +1005,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2022,
         finding: "Phase III obesity trial (n=2,539): tirzepatide 15 mg produced mean weight reduction of 22.5% (20.9 kg) at 72 weeks in adults without diabetes — a landmark result.",
         doi: "10.1056/NEJMoa2206038",
+        pmid: "35658024",
       },
       {
         title: "Tirzepatide reduces cardiometabolic risk factors in adults with obesity (SURMOUNT-4)",
@@ -972,6 +1014,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2023,
         finding: "Participants who lost weight on tirzepatide then randomised to placebo regained 14.8% body weight vs only 1.5% for those continuing tirzepatide, confirming the drug's role in long-term weight maintenance.",
         doi: "10.1001/jama.2023.19403",
+        pmid: "37909596",
       },
     ],
   },
@@ -989,6 +1032,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2004,
         finding: "Comprehensive review establishing VIP as a major immunomodulatory neuropeptide — suppressing TNF-α, IL-6, and IL-12 production while promoting IL-10 and TGF-β.",
         doi: "10.1038/nri1272",
+        pmid: "15124008",
       },
       {
         title: "VIP prevents experimental autoimmune encephalomyelitis",
@@ -997,6 +1041,7 @@ export const peptideResearchData: PeptideResearchEntry[] = [
         year: 2006,
         finding: "Systemic VIP treatment prevented EAE onset in mice by inducing regulatory T cells, suppressing Th17 differentiation, and reducing CNS inflammatory infiltrates by 70%.",
         doi: "10.1002/ana.20907",
+        pmid: "17109370",
       },
     ],
   },

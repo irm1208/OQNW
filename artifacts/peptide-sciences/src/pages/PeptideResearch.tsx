@@ -38,7 +38,20 @@ const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string
   "Cognitive Peptides":{ bg: "#F5F3FF", text: "#6D28D9", border: "#C4B5FD" },
 };
 
+function buildPubMedSearchUrl(study: PeptideResearchEntry["studies"][0]): string {
+  const titleWords = study.title
+    .replace(/[^\w\s]/g, " ")
+    .trim()
+    .split(/\s+/)
+    .slice(0, 5)
+    .join("+");
+  const firstAuthor = study.authors.split(/[,\s]/)[0].trim();
+  return `https://pubmed.ncbi.nlm.nih.gov/?term=${titleWords}+${firstAuthor}+${study.year}`;
+}
+
 function StudyCard({ study, index }: { study: PeptideResearchEntry["studies"][0]; index: number }) {
+  const pubmedSearchUrl = buildPubMedSearchUrl(study);
+
   return (
     <div
       style={{
@@ -89,35 +102,51 @@ function StudyCard({ study, index }: { study: PeptideResearchEntry["studies"][0]
               {study.finding}
             </p>
           </div>
-          {(study.doi || study.pmid) && (
-            <div style={{ marginTop: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
-              <ExternalLink size={11} style={{ color: "#94A3B8", flexShrink: 0 }} />
-              {study.doi && (
-                <a
-                  href={`https://doi.org/${study.doi}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: "11.5px", color: "#1B5CB5", textDecoration: "none" }}
-                  onMouseOver={(e) => (e.currentTarget.style.textDecoration = "underline")}
-                  onMouseOut={(e) => (e.currentTarget.style.textDecoration = "none")}
-                >
-                  doi:{study.doi}
-                </a>
-              )}
-              {study.pmid && !study.doi && (
-                <a
-                  href={`https://pubmed.ncbi.nlm.nih.gov/${study.pmid}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: "11.5px", color: "#1B5CB5", textDecoration: "none" }}
-                  onMouseOver={(e) => (e.currentTarget.style.textDecoration = "underline")}
-                  onMouseOut={(e) => (e.currentTarget.style.textDecoration = "none")}
-                >
-                  PubMed PMID: {study.pmid}
-                </a>
-              )}
-            </div>
-          )}
+          <div style={{ marginTop: "10px", display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+            <ExternalLink size={11} style={{ color: "#94A3B8", flexShrink: 0 }} />
+            {study.doi && (
+              <a
+                href={`https://doi.org/${study.doi}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: "11.5px", color: "#1B5CB5", textDecoration: "none" }}
+                onMouseOver={(e) => (e.currentTarget.style.textDecoration = "underline")}
+                onMouseOut={(e) => (e.currentTarget.style.textDecoration = "none")}
+              >
+                doi:{study.doi}
+              </a>
+            )}
+            {study.pmid && (
+              <a
+                href={`https://pubmed.ncbi.nlm.nih.gov/${study.pmid}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: "11.5px", color: "#1B5CB5", textDecoration: "none" }}
+                onMouseOver={(e) => (e.currentTarget.style.textDecoration = "underline")}
+                onMouseOut={(e) => (e.currentTarget.style.textDecoration = "none")}
+              >
+                PubMed {study.pmid}
+              </a>
+            )}
+            <a
+              href={pubmedSearchUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontSize: "11px",
+                color: "#64748B",
+                textDecoration: "none",
+                backgroundColor: "#F1F5F9",
+                padding: "2px 8px",
+                borderRadius: "6px",
+                border: "1px solid #E2E8F0",
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#E2E8F0")}
+              onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#F1F5F9")}
+            >
+              Search PubMed ↗
+            </a>
+          </div>
         </div>
       </div>
     </div>
