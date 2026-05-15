@@ -214,16 +214,22 @@ function COADocument({ product }: { product: Product }) {
         </div>
         <div style={{ textAlign: "right" }}>
           <p style={{ margin: "0 0 4px", fontSize: "11px", color: "#6B7280" }}>Signature &gt;</p>
-          {/* Hand-drawn style SVG signature */}
-          <svg width="100" height="40" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M8 28 C14 10, 22 8, 26 20 C30 32, 28 34, 32 24 C36 14, 40 12, 44 22 C48 32, 50 30, 54 20 C58 10, 62 14, 66 24 C70 34, 72 30, 76 20 C80 10, 86 16, 92 22"
-              stroke="#111827"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              fill="none"
-            />
-            <path d="M10 34 L88 34" stroke="#111827" strokeWidth="0.6" strokeDasharray="2 3" />
+          {/* Realistic cursive signature */}
+          <svg width="148" height="52" viewBox="0 0 148 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Capital first letter — tall loop */}
+            <path d="M6 38 C5 24, 10 10, 16 12 C22 14, 20 26, 18 34 C16 40, 20 42, 24 36" stroke="#1a1a2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            {/* r — quick flick */}
+            <path d="M24 36 C27 26, 33 20, 37 24" stroke="#1a1a2e" strokeWidth="1.7" strokeLinecap="round" fill="none"/>
+            {/* flowing connective body */}
+            <path d="M37 24 C40 22, 44 30, 46 34 C48 38, 52 28, 57 22 C62 16, 68 20, 70 28" stroke="#1a1a2e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            {/* loop + second cluster */}
+            <path d="M70 28 C72 34, 70 40, 74 38 C78 36, 82 24, 88 20 C94 16, 100 22, 102 30" stroke="#1a1a2e" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            {/* long tail flourish */}
+            <path d="M102 30 C108 26, 116 20, 124 24 C130 27, 134 34, 140 30 C143 28, 144 26, 145 24" stroke="#1a1a2e" strokeWidth="1.3" strokeLinecap="round" fill="none"/>
+            {/* small dot — pen lift detail */}
+            <circle cx="38" cy="14" r="1.2" fill="#1a1a2e"/>
+            {/* underline flourish */}
+            <path d="M5 46 C40 49, 96 48, 143 44" stroke="#1a1a2e" strokeWidth="0.9" strokeLinecap="round" fill="none"/>
           </svg>
         </div>
       </div>
