@@ -147,6 +147,17 @@ export default function HomePage() {
           background: "linear-gradient(to right, rgba(2,11,30,0.6) 0%, rgba(2,11,30,0.4) 38%, rgba(2,11,30,0.0) 65%)",
           pointerEvents: "none",
         }} />
+        {/* Blue glow amplifier behind the logo (top-left) */}
+        <div style={{
+          position: "absolute",
+          top: "-60px",
+          left: "-60px",
+          width: "620px",
+          height: "420px",
+          background: "radial-gradient(ellipse at 35% 40%, rgba(30,100,255,0.28) 0%, rgba(10,60,200,0.12) 40%, rgba(0,0,0,0.0) 75%)",
+          pointerEvents: "none",
+          mixBlendMode: "screen",
+        }} />
 
         {/* Content — below the logo in the image */}
         <div className="max-w-[1280px] mx-auto px-8 w-full" style={{ position: "relative", zIndex: 1, paddingTop: "320px", paddingBottom: "80px" }}>
