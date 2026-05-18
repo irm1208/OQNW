@@ -383,7 +383,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingCostGbp: String(shippingCostGbp.toFixed(2)),
         totalGbp: String(totalGbp.toFixed(2)),
         shippingMethod,
-        status: paymentMethodStr === "bank_transfer" ? "awaiting_payment" : paymentMethodStr === "bitcoin" ? "awaiting_payment" : "pending",
+        status: ["bank_transfer", "bitcoin", "card"].includes(paymentMethodStr) ? "awaiting_payment" : "pending",
         notes: [
           `Payment method: ${paymentMethodStr}`,
           validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-£${discountAmount.toFixed(2)})` : null,

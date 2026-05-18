@@ -63,10 +63,12 @@ export default function OrderConfirmation() {
             <CheckCircle2 size={40} color="#fff" strokeWidth={2.5} />
           </div>
           <h1 style={{ fontSize: "28px", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: "8px" }}>
-            {payment === "bank_transfer" ? "Order placed — payment awaited" : payment === "bitcoin" ? "Order placed — awaiting BTC" : "Order confirmed!"}
+            {payment === "card" ? "Order placed — check your email" : payment === "bank_transfer" ? "Order placed — payment awaited" : payment === "bitcoin" ? "Order placed — awaiting BTC" : "Order confirmed!"}
           </h1>
           <p style={{ fontSize: "15px", color: "#64748B", lineHeight: 1.6 }}>
-            {payment === "bank_transfer"
+            {payment === "card"
+              ? <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order is reserved — a secure card payment link is on its way to your inbox.</>
+              : payment === "bank_transfer"
               ? <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order is reserved — please send your bank transfer to secure it.</>
               : payment === "bitcoin"
               ? <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order is reserved — please send the BTC equivalent to the address below.</>
@@ -74,6 +76,35 @@ export default function OrderConfirmation() {
             }
           </p>
         </div>
+
+        {/* Card email link action panel */}
+        {payment === "card" && (
+          <div style={{ borderRadius: "16px", border: "1.5px solid #DBEAFE", backgroundColor: "#F0F7FF", padding: "22px", marginBottom: "20px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "14px" }}>
+              <Clock size={18} color="#1240A0" />
+              <p style={{ fontSize: "14px", fontWeight: 800, color: "#1240A0", margin: 0 }}>
+                Check your inbox for the payment link
+              </p>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "12px" }}>
+              {[
+                { step: "1", text: "A secure payment link has been sent to your email address" },
+                { step: "2", text: "Click the link and pay via Visa or Mastercard on the hosted page" },
+                { step: "3", text: "Your order will be dispatched once payment clears" },
+              ].map(item => (
+                <div key={item.step} style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                  <div style={{ width: "22px", height: "22px", borderRadius: "50%", flexShrink: 0, backgroundColor: "#1240A0", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: 800 }}>
+                    {item.step}
+                  </div>
+                  <p style={{ margin: 0, fontSize: "13px", color: "#374151" }}>{item.text}</p>
+                </div>
+              ))}
+            </div>
+            <p style={{ fontSize: "11.5px", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+              Can't find it? Check your spam folder. The link expires in 24 hours — contact us if you need it resent.
+            </p>
+          </div>
+        )}
 
         {/* Bank Transfer action panel */}
         {payment === "bank_transfer" && (
