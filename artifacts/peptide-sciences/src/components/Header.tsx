@@ -485,7 +485,7 @@ export default function Header() {
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.85)"}
               >
                 <User size={18} />
-                <span className="hidden sm:inline">{loadingAuth ? "" : "Sign in"}</span>
+                <span className="hidden sm:inline">{loadingAuth ? "" : "Register / Sign in"}</span>
               </Link>
             )}
 
