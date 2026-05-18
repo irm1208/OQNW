@@ -290,20 +290,20 @@ export default function CartPage() {
                   >
                     <button
                       onClick={() => updateQuantity(product.id, quantity - 1)}
-                      className="flex items-center justify-center hover:bg-slate-50 transition-colors"
+                      className="cart-qty-btn flex items-center justify-center hover:bg-slate-50 transition-colors"
                       style={{ width: "34px", height: "36px", color: "#475569", background: "none", border: "none", cursor: "pointer" }}
                     >
                       <Minus size={13} />
                     </button>
                     <div
-                      className="flex items-center justify-center font-bold"
+                      className="cart-qty-display flex items-center justify-center font-bold"
                       style={{ width: "40px", height: "36px", borderLeft: "1.5px solid #E2E8F0", borderRight: "1.5px solid #E2E8F0", color: "#0F172A", fontSize: "14px" }}
                     >
                       {quantity}
                     </div>
                     <button
                       onClick={() => updateQuantity(product.id, quantity + 1)}
-                      className="flex items-center justify-center hover:bg-slate-50 transition-colors"
+                      className="cart-qty-btn flex items-center justify-center hover:bg-slate-50 transition-colors"
                       style={{ width: "34px", height: "36px", color: "#475569", background: "none", border: "none", cursor: "pointer" }}
                     >
                       <Plus size={13} />
@@ -312,7 +312,7 @@ export default function CartPage() {
 
                   <button
                     onClick={() => removeFromCart(product.id)}
-                    className="flex items-center justify-center rounded-xl hover:bg-red-50 transition-colors"
+                    className="cart-remove-btn flex items-center justify-center rounded-xl hover:bg-red-50 transition-colors"
                     style={{ width: "36px", height: "36px", color: "#EF4444", border: "1.5px solid #FEE2E2", background: "none", cursor: "pointer" }}
                     title="Remove"
                   >

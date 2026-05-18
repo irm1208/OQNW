@@ -483,7 +483,7 @@ export default function AccountPage() {
             </div>
 
             {/* Stats */}
-            <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+            <div className="account-hero-stats">
               {[
                 { label: "Orders", value: String(displayProfile.totalOrders), icon: <Package size={16} /> },
                 { label: "Total spent", value: `£${displayProfile.totalSpendGbp.toFixed(2)}`, icon: <ShoppingBag size={16} /> },
@@ -506,7 +506,7 @@ export default function AccountPage() {
         <div className="flex flex-col lg:flex-row gap-6" style={{ alignItems: "flex-start" }}>
 
           {/* Sidebar */}
-          <div style={{ width: "220px", flexShrink: 0 }}>
+          <div className="account-sidebar">
             <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", overflow: "hidden" }}>
               {[
                 { key: "orders",        label: "My Orders",       icon: <Package size={16} /> },

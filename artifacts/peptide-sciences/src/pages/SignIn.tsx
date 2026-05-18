@@ -54,7 +54,7 @@ export default function SignIn() {
           }}>
             <FlaskConical size={24} color="#fff" />
           </div>
-          <h1 style={{ fontSize: "26px", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: "6px" }}>
+          <h1 className="signin-h1-mobile" style={{ fontSize: "26px", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: "6px" }}>
             Sign in to OmniQure
           </h1>
           <p style={{ fontSize: "14px", color: "#64748B" }}>
@@ -63,7 +63,7 @@ export default function SignIn() {
         </div>
 
         {/* Card */}
-        <div style={{
+        <div className="signin-card-mobile" style={{
           backgroundColor: "#fff",
           borderRadius: "20px",
           border: "1.5px solid #E8EDF5",

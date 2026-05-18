@@ -441,7 +441,7 @@ export default function CheckoutPage() {
                     }}>
                       {done ? <CheckCircle2 size={16} /> : num}
                     </div>
-                    <span style={{
+                    <span className="checkout-step-label" style={{
                       fontSize: "13px", fontWeight: active ? 700 : 500,
                       color: active ? "#fff" : done ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.45)",
                     }}>
@@ -449,7 +449,7 @@ export default function CheckoutPage() {
                     </span>
                   </div>
                   {i < STEPS.length - 1 && (
-                    <div style={{ flex: 1, height: "2px", backgroundColor: done ? "#34D399" : "rgba(255,255,255,0.15)", margin: "0 12px", borderRadius: "1px" }} />
+                    <div style={{ flex: 1, height: "2px", backgroundColor: done ? "#34D399" : "rgba(255,255,255,0.15)", margin: "0 8px", borderRadius: "1px" }} />
                   )}
                 </div>
               );
@@ -466,7 +466,7 @@ export default function CheckoutPage() {
 
             {/* STEP 1 — Delivery */}
             {step === 1 && (
-              <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)", padding: "28px" }}>
+              <div className="form-card-mobile" style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)", padding: "28px" }}>
                 <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A", marginBottom: "6px" }}>Delivery Details</h2>
                 <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "24px" }}>Where should we ship your order?</p>
 
@@ -583,7 +583,7 @@ export default function CheckoutPage() {
 
             {/* STEP 2 — Shipping */}
             {step === 2 && (
-              <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)", padding: "28px" }}>
+              <div className="form-card-mobile" style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)", padding: "28px" }}>
                 <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A", marginBottom: "6px" }}>Shipping Method</h2>
                 <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "24px" }}>
                   All orders include discreet, secure packaging at no extra cost.
@@ -644,7 +644,7 @@ export default function CheckoutPage() {
 
             {/* STEP 3 — Payment */}
             {step === 3 && (
-              <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)", padding: "28px" }}>
+              <div className="form-card-mobile" style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)", padding: "28px" }}>
                 <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A", marginBottom: "6px" }}>Payment</h2>
                 <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>Choose how you'd like to pay.</p>
 

@@ -528,9 +528,9 @@ export default function ProductPage() {
               style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}
             >
               <p className="text-xs font-bold mb-3 uppercase tracking-wider" style={{ color: "#94A3B8" }}>Quantity</p>
-              <div className="flex items-center gap-3">
+              <div className="product-cta-row flex items-center gap-3">
                 <div
-                  className="flex items-center rounded-xl overflow-hidden"
+                  className="product-cta-qty flex items-center rounded-xl overflow-hidden"
                   style={{ border: "1.5px solid #E2E8F0" }}
                 >
                   <button
@@ -558,7 +558,7 @@ export default function ProductPage() {
                 <button
                   onClick={handleAddToCart}
                   disabled={product.stockLevel === 0}
-                  className="flex-1 flex items-center justify-center gap-2 rounded-xl font-bold text-white transition-all hover:opacity-90"
+                  className="product-cta-btn flex-1 flex items-center justify-center gap-2 rounded-xl font-bold text-white transition-all hover:opacity-90"
                   style={{
                     background: product.stockLevel === 0
                       ? "#CBD5E1"
@@ -635,13 +635,13 @@ export default function ProductPage() {
                         placeholder={customer ? customer.email : "your@email.com"}
                         value={notifyEmail || (customer ? customer.email : "")}
                         onChange={(e) => setNotifyEmail(e.target.value)}
-                        className="flex-1 rounded-lg px-3 text-sm"
+                        className="notify-input-touch flex-1 rounded-lg px-3 text-sm"
                         style={{ height: "38px", border: "1.5px solid #E2E8F0", outline: "none", color: "#0F172A" }}
                       />
                       <button
                         type="submit"
                         disabled={notifySubmitting}
-                        className="rounded-lg px-4 text-sm font-semibold text-white"
+                        className="notify-btn-touch rounded-lg px-4 text-sm font-semibold text-white"
                         style={{ height: "38px", background: "#0F172A", border: "none", cursor: notifySubmitting ? "wait" : "pointer", flexShrink: 0 }}
                       >
                         {notifySubmitting ? "..." : "Notify Me"}
@@ -693,7 +693,7 @@ export default function ProductPage() {
               </div>
               <button
                 onClick={() => setShowCOAModal(true)}
-                className="flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90 flex-shrink-0"
+                className="coa-btn-touch flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90 flex-shrink-0"
                 style={{ height: "36px", padding: "0 16px", backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px" }}
               >
                 View Report →

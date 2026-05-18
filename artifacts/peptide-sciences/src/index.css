@@ -551,6 +551,104 @@
   }
 }
 
+/* ── ACCOUNT PAGE SIDEBAR MOBILE ────────────────────────── */
+
+.account-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1023px) {
+  .account-sidebar {
+    width: 100% !important;
+  }
+}
+
+/* ── ACCOUNT HERO STATS MOBILE ───────────────────────────── */
+
+.account-hero-stats {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .account-hero-stats {
+    gap: 12px;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .account-hero-stats > div {
+    text-align: center;
+    flex: 1 1 auto;
+  }
+}
+
+/* ── CHECKOUT PROGRESS HEADER MOBILE ────────────────────── */
+
+@media (max-width: 480px) {
+  .checkout-step-label {
+    display: none;
+  }
+}
+
+/* ── CHECKOUT FORM CARD MOBILE PADDING ───────────────────── */
+
+@media (max-width: 640px) {
+  .form-card-mobile { padding: 18px 16px !important; }
+}
+
+/* ── CART QTY STEPPER TOUCH TARGETS ─────────────────────── */
+
+@media (max-width: 768px) {
+  .cart-qty-btn {
+    width: 44px !important;
+    height: 48px !important;
+    min-height: 44px;
+  }
+  .cart-qty-display {
+    width: 44px !important;
+    height: 48px !important;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .cart-remove-btn {
+    width: 44px !important;
+    height: 48px !important;
+    min-height: 44px;
+  }
+}
+
+/* ── PRODUCT PAGE NOTIFY-ME + COA TOUCH TARGETS ─────────── */
+
+@media (max-width: 768px) {
+  .notify-input-touch { height: 44px !important; }
+  .notify-btn-touch   { height: 44px !important; }
+  .coa-btn-touch      { height: 44px !important; }
+}
+
+/* ── PRODUCT PAGE QTY + ADD-TO-CART — STACK ON TINY ─────── */
+
+@media (max-width: 420px) {
+  .product-cta-row {
+    flex-direction: column !important;
+  }
+  .product-cta-row .product-cta-qty {
+    width: 100%;
+    justify-content: center;
+  }
+  .product-cta-row .product-cta-btn {
+    width: 100%;
+  }
+}
+
+/* ── SIGN-IN CARD MOBILE PADDING ────────────────────────── */
+
+@media (max-width: 480px) {
+  .signin-card-mobile  { padding: 24px 20px !important; }
+  .signin-h1-mobile    { font-size: 22px !important; }
+}
+
 /* ── BUNDLE HERO ANIMATIONS ──────────────────────────────── */
 
 @keyframes vial-float {
