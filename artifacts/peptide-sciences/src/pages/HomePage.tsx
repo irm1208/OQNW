@@ -124,13 +124,24 @@ export default function HomePage() {
         style={{
           position: "relative",
           overflow: "hidden",
-          backgroundColor: "#0C1120",
+          backgroundImage: "url('/hero-vials.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center center",
+          backgroundRepeat: "no-repeat",
           minHeight: "86vh",
           display: "flex",
           alignItems: "flex-start",
         }}
       >
-        {/* Content */}
+        {/* Left-to-right gradient — dark on left for text, fades right so vials show */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(to right, rgba(2,11,30,0.88) 0%, rgba(2,11,30,0.75) 35%, rgba(2,11,30,0.35) 60%, rgba(2,11,30,0.0) 80%)",
+          pointerEvents: "none",
+        }} />
+
+        {/* Content — below the logo in the image */}
         <div className="max-w-[1280px] mx-auto px-8 w-full" style={{ position: "relative", zIndex: 1, paddingTop: "200px", paddingBottom: "80px" }}>
 
           <div className="text-white" style={{ maxWidth: "520px" }}>
