@@ -35,7 +35,7 @@ const SHIPPING_OPTIONS = [
     label: "Standard",
     days: "3–5 working days",
     price: 9.95,
-    freeOver: 200,
+    freeOver: 100,
     icon: <Package size={18} />,
     description: "Discreet packaging included",
   },

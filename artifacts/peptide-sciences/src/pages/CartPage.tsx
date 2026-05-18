@@ -462,7 +462,7 @@ export default function CartPage() {
                   <div className="flex items-center gap-2">
                     <FlaskConical size={13} style={{ color: "#16A34A", flexShrink: 0 }} />
                     <p style={{ fontSize: "11.5px", color: "#166534", lineHeight: 1.5 }}>
-                      Free shipping on orders over {currency.symbol}200. Discreet, secure packaging included.
+                      Free shipping on orders over {currency.symbol}100. Discreet, secure packaging included.
                     </p>
                   </div>
                 </div>

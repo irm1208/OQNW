@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 
 const messages = [
   "🔬  98%+ HPLC Purity — Guaranteed on Every Product",
-  "🚚  Free Shipping on Orders Over £200 — UK & Worldwide",
+  "🚚  Free Shipping on Orders Over £100 — UK & Worldwide",
   "🧪  Research Grade · Lab Certified · COA Included",
   "🔒  Secure Checkout — SSL Encrypted & Discreet Packaging",
   "⚗️  Full ESI-TOF Mass Spectrometry Data Available",

@@ -43,7 +43,7 @@ Key facts about OmniQure:
 - Storage: most lyophilised peptides store at −20 °C, protected from light and moisture
 - Reconstitution: always use sterile water or appropriate buffer; bacteriostatic water extends stability
 - Products are for in-vitro research use only — never for human or veterinary diagnostic use
-- Shipping: UK standard, worldwide DHL Express; free shipping on orders over £200
+- Shipping: UK standard, worldwide DHL Express; free shipping on orders over £100
 - All prices are in GBP; multi-currency display available at checkout
 
 When asked about a specific peptide, draw on your knowledge of:
