@@ -15,15 +15,15 @@ const CATEGORIES = [
 
 const TIERS = [
   { count: 3,  pct: 5  },
-  { count: 6,  pct: 10 },
-  { count: 9,  pct: 15 },
-  { count: 12, pct: 20 },
+  { count: 7,  pct: 10 },
+  { count: 11, pct: 15 },
+  { count: 15, pct: 20 },
 ];
 
 function getDiscount(n: number) {
-  if (n >= 12) return 20;
-  if (n >= 9)  return 15;
-  if (n >= 6)  return 10;
+  if (n >= 15) return 20;
+  if (n >= 11) return 15;
+  if (n >= 7)  return 10;
   if (n >= 3)  return 5;
   return 0;
 }
@@ -379,7 +379,7 @@ export default function BundlesPage() {
               }}>
                 <Zap size={13} color="#D97706" />
                 <p style={{ margin: 0, fontSize: "12px", color: "#92400E", fontWeight: 600 }}>
-                  Add {3 - bundle.length} more item{3 - bundle.length !== 1 ? "s" : ""} to unlock 5% off
+                  Add {3 - bundle.length} more item{3 - bundle.length !== 1 ? "s" : ""} to unlock 5% off — up to 20% at 15+ vials
                 </p>
               </div>
             )}

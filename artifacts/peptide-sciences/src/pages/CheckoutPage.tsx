@@ -1033,7 +1033,7 @@ export default function CheckoutPage() {
                 {bundleDiscountAmount > 0 && (
                   <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
                     <span style={{ fontSize: "13px", color: "#059669", fontWeight: 600 }}>
-                      Bundle & Save ({items.reduce((s, i) => s + i.quantity, 0) >= 12 ? "20%" : items.reduce((s, i) => s + i.quantity, 0) >= 9 ? "15%" : items.reduce((s, i) => s + i.quantity, 0) >= 6 ? "10%" : "5%"} off)
+                      Bundle & Save ({items.reduce((s, i) => s + i.quantity, 0) >= 15 ? "20%" : items.reduce((s, i) => s + i.quantity, 0) >= 11 ? "15%" : items.reduce((s, i) => s + i.quantity, 0) >= 7 ? "10%" : "5%"} off)
                     </span>
                     <span style={{ fontSize: "13px", fontWeight: 600, color: "#059669" }}>−{formatPrice(bundleDiscountAmount)}</span>
                   </div>

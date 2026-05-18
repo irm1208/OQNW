@@ -593,19 +593,19 @@ export default function ProductPage() {
                   </p>
                 ) : bundleDiscountPct === 15 ? (
                   <p style={{ fontSize: "12px", color: "#059669", fontWeight: 600, margin: 0 }}>
-                    ✓ Bundle & Save 15% active · add {12 - totalItems} more for 20% off
+                    ✓ Bundle & Save 15% active · add {15 - totalItems} more for 20% off
                   </p>
                 ) : bundleDiscountPct === 10 ? (
                   <p style={{ fontSize: "12px", color: "#059669", fontWeight: 600, margin: 0 }}>
-                    ✓ Bundle & Save 10% active · add {9 - totalItems} more for 15% off
+                    ✓ Bundle & Save 10% active · add {11 - totalItems} more for 15% off
                   </p>
                 ) : bundleDiscountPct === 5 ? (
                   <p style={{ fontSize: "12px", color: "#059669", fontWeight: 600, margin: 0 }}>
-                    ✓ Bundle & Save 5% active · add {6 - totalItems} more for 10% off
+                    ✓ Bundle & Save 5% active · add {7 - totalItems} more for 10% off
                   </p>
                 ) : (
                   <p style={{ fontSize: "12px", color: "#1240A0", fontWeight: 600, margin: 0 }}>
-                    Buy 3+ peptides and save 5% · 6+ = 10% · 9+ = 15% · 12+ = 20% off
+                    Buy 3+ peptides and save 5% · 7+ = 10% · 11+ = 15% · 15+ = 20% off
                   </p>
                 )}
               </div>
