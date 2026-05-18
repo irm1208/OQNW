@@ -376,7 +376,7 @@ function ReportModal({
             </div>
             <div style={{ marginTop: "14px", padding: "12px 16px", borderRadius: "10px", background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
               <p style={{ margin: 0, fontSize: "12px", color: "#475569", lineHeight: 1.6 }}>
-                <strong style={{ color: "#0F172A" }}>Testing Methodology:</strong> All peptides are tested using reverse-phase HPLC with UV detection at 214 nm and electrospray ionisation mass spectrometry (ESI-MS). Results are lot-specific and provided with each shipment. For laboratory research use only — not for human or veterinary use.
+                <strong style={{ color: "#0F172A" }}>Testing Methodology:</strong> All peptides are tested using reverse-phase HPLC with UV detection at 214 nm and electrospray ionisation mass spectrometry (ESI-MS). Results are lot-specific. For laboratory research use only — not for human or veterinary use.
               </p>
             </div>
           </div>
