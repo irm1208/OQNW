@@ -609,19 +609,13 @@ export default function Header() {
                         </div>
 
                         {/* Footer */}
-                        <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #F1F5F9" }}>
+                        <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #F1F5F9", textAlign: "center" }}>
                           <Link
                             href="/all-peptides"
                             onClick={() => setAllPeptidesOpen(false)}
-                            style={{
-                              display: "flex", alignItems: "center", justifyContent: "center",
-                              padding: "9px", borderRadius: "10px",
-                              background: "linear-gradient(90deg, #0D2565, #1B5CB5)",
-                              color: "#fff", textDecoration: "none",
-                              fontSize: "13px", fontWeight: 700,
-                            }}
+                            style={{ fontSize: "13px", fontWeight: 600, color: "#1B5CB5", textDecoration: "none" }}
                           >
-                            Browse All {peptideGroups.length}+ Peptides →
+                            Browse All Peptides →
                           </Link>
                         </div>
                       </div>
