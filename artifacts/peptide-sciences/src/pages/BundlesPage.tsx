@@ -4,7 +4,7 @@ import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useSEO } from "@/hooks/useSEO";
 import { groupProducts, parseName } from "@/data/groupedProducts";
-import { Check, Plus, Minus, ShoppingCart, Package, Percent, Zap, Tag, ChevronDown } from "lucide-react";
+import { Check, Plus, Minus, ShoppingCart, Package, Percent, Zap, Tag, ChevronDown, Search, X } from "lucide-react";
 import type { Product } from "@/data/products";
 
 const CATEGORIES = [
@@ -20,12 +20,28 @@ const TIERS = [
   { count: 15, pct: 20 },
 ];
 
-function getDiscount(n: number) {
-  if (n >= 15) return 20;
-  if (n >= 11) return 15;
-  if (n >= 7)  return 10;
-  if (n >= 3)  return 5;
+function getDiscount(totalVials: number) {
+  if (totalVials >= 15) return 20;
+  if (totalVials >= 11) return 15;
+  if (totalVials >= 7)  return 10;
+  if (totalVials >= 3)  return 5;
   return 0;
+}
+
+function nextTierInfo(totalVials: number): { need: number; nextPct: number } | null {
+  if (totalVials < 3)  return { need: 3  - totalVials, nextPct: 5  };
+  if (totalVials < 7)  return { need: 7  - totalVials, nextPct: 10 };
+  if (totalVials < 11) return { need: 11 - totalVials, nextPct: 15 };
+  if (totalVials < 15) return { need: 15 - totalVials, nextPct: 20 };
+  return null;
+}
+
+function tierProgressPct(totalVials: number): number {
+  if (totalVials >= 15) return 100;
+  if (totalVials >= 11) return ((totalVials - 11) / 4) * 100;
+  if (totalVials >= 7)  return ((totalVials - 7)  / 4) * 100;
+  if (totalVials >= 3)  return ((totalVials - 3)  / 4) * 100;
+  return (totalVials / 3) * 100;
 }
 
 type BundleItem = { product: Product; qty: number };
@@ -42,19 +58,30 @@ export default function BundlesPage() {
   const { formatPrice } = useCurrency();
   const [bundle, setBundle] = useState<BundleItem[]>([]);
   const [catFilter, setCatFilter] = useState("All");
+  const [search, setSearch] = useState("");
   const [added, setAdded] = useState(false);
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
 
   const bundleIds = useMemo(() => new Set(bundle.map(b => b.product.id)), [bundle]);
-  const discountPct = getDiscount(bundle.length);
+
+  // Use total quantity (vials) for discount — matches CartContext logic
+  const totalVials = bundle.reduce((sum, b) => sum + b.qty, 0);
+  const discountPct = getDiscount(totalVials);
   const subtotal = bundle.reduce((sum, b) => sum + (b.product.price ?? 0) * b.qty, 0);
   const savings = subtotal * (discountPct / 100);
   const total = subtotal - savings;
+  const next = nextTierInfo(totalVials);
+  const progressPct = tierProgressPct(totalVials);
 
   const groups = useMemo(() => {
-    const filtered = products.filter(p => catFilter === "All" || p.category === catFilter);
+    let filtered = products;
+    if (catFilter !== "All") filtered = filtered.filter(p => p.category === catFilter);
+    if (search.trim()) {
+      const q = search.trim().toLowerCase();
+      filtered = filtered.filter(p => p.name.toLowerCase().includes(q));
+    }
     return groupProducts(filtered);
-  }, [products, catFilter]);
+  }, [products, catFilter, search]);
 
   function toggleVariant(product: Product) {
     setBundle(prev => {
@@ -120,7 +147,7 @@ export default function BundlesPage() {
                     {tier.pct}% OFF
                   </p>
                   <p style={{ margin: 0, fontSize: "11px", color: discountPct >= tier.pct ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)", fontWeight: 600 }}>
-                    {`${tier.count}+ items`}
+                    {`${tier.count}+ vials`}
                   </p>
                 </div>
                 {discountPct >= tier.pct && <Check size={14} color="#fff" />}
@@ -130,28 +157,68 @@ export default function BundlesPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "28px 16px 120px" }}>
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "28px 16px 140px" }}>
 
-        {/* Category tabs */}
-        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "20px" }}>
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setCatFilter(cat)}
+        {/* Search + Category filters row */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "20px" }}>
+
+          {/* Search bar */}
+          <div style={{ position: "relative", maxWidth: "360px" }}>
+            <Search size={15} color="#94A3B8" style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }} />
+            <input
+              type="text"
+              placeholder="Search peptides…"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
               style={{
-                padding: "7px 14px", borderRadius: "20px", fontSize: "12.5px", fontWeight: 600,
-                border: catFilter === cat ? "none" : "1.5px solid #E2E8F0",
-                background: catFilter === cat ? "linear-gradient(90deg, #0D2565, #1B5CB5)" : "#fff",
-                color: catFilter === cat ? "#fff" : "#475569",
-                cursor: "pointer", transition: "all 0.15s",
-                boxShadow: catFilter === cat ? "0 4px 12px rgba(18,64,160,0.25)" : "none",
-                fontFamily: "'Arimo', Arial, sans-serif",
+                width: "100%", paddingLeft: "36px", paddingRight: search ? "32px" : "12px",
+                paddingTop: "9px", paddingBottom: "9px",
+                borderRadius: "10px", border: "1.5px solid #E2E8F0",
+                backgroundColor: "#fff", fontSize: "13px", color: "#0F172A",
+                outline: "none", fontFamily: "'Arimo', Arial, sans-serif",
+                boxSizing: "border-box",
               }}
-            >
-              {cat}
-            </button>
-          ))}
+            />
+            {search && (
+              <button
+                onClick={() => setSearch("")}
+                style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex" }}
+              >
+                <X size={13} color="#94A3B8" />
+              </button>
+            )}
+          </div>
+
+          {/* Category tabs */}
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+            {CATEGORIES.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setCatFilter(cat)}
+                style={{
+                  padding: "7px 14px", borderRadius: "20px", fontSize: "12.5px", fontWeight: 600,
+                  border: catFilter === cat ? "none" : "1.5px solid #E2E8F0",
+                  background: catFilter === cat ? "linear-gradient(90deg, #0D2565, #1B5CB5)" : "#fff",
+                  color: catFilter === cat ? "#fff" : "#475569",
+                  cursor: "pointer", transition: "all 0.15s",
+                  boxShadow: catFilter === cat ? "0 4px 12px rgba(18,64,160,0.25)" : "none",
+                  fontFamily: "'Arimo', Arial, sans-serif",
+                }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
+
+        {/* No results state */}
+        {groups.length === 0 && (
+          <div style={{ textAlign: "center", padding: "60px 0", color: "#94A3B8" }}>
+            <Search size={32} color="#CBD5E1" style={{ marginBottom: "12px" }} />
+            <p style={{ fontSize: "15px", fontWeight: 700, color: "#475569", margin: "0 0 6px" }}>No peptides found</p>
+            <p style={{ fontSize: "13px", margin: 0 }}>Try a different search or category</p>
+          </div>
+        )}
 
         {/* Products grid */}
         <div style={{
@@ -181,7 +248,6 @@ export default function BundlesPage() {
                 }}
                 onClick={() => handleGroupClick(group.baseName, group.variants)}
               >
-                {/* Check badge */}
                 {anyInBundle && !isExpanded && (
                   <div style={{
                     position: "absolute", top: "10px", right: "10px",
@@ -192,7 +258,6 @@ export default function BundlesPage() {
                   </div>
                 )}
 
-                {/* Expand chevron for multi-variant */}
                 {multiVariant && !anyInBundle && (
                   <div style={{
                     position: "absolute", top: "10px", right: "10px",
@@ -217,14 +282,12 @@ export default function BundlesPage() {
                   {group.baseName}
                 </p>
 
-                {/* Single variant: show price */}
                 {!multiVariant && (
                   <p style={{ margin: 0, fontSize: "14px", fontWeight: 900, color: anyInBundle ? "#1240A0" : "#0F172A" }}>
                     {group.variants[0].price != null ? formatPrice(group.variants[0].price) : "—"}
                   </p>
                 )}
 
-                {/* Multi variant: show count hint or expanded pills */}
                 {multiVariant && !isExpanded && (
                   <p style={{ margin: 0, fontSize: "11.5px", color: "#64748B", fontWeight: 600 }}>
                     {selectedVariants.length > 0
@@ -234,7 +297,6 @@ export default function BundlesPage() {
                   </p>
                 )}
 
-                {/* Expanded strength picker */}
                 {multiVariant && isExpanded && (
                   <div
                     style={{ marginTop: "10px" }}
@@ -287,102 +349,133 @@ export default function BundlesPage() {
           position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1000,
           background: "#fff", borderTop: "2px solid #E8EDF5",
           boxShadow: "0 -8px 40px rgba(15,23,42,0.15)",
-          padding: "12px 20px",
         }}>
-          <div style={{ maxWidth: "1280px", margin: "0 auto", display: "flex", gap: "16px", alignItems: "center", flexWrap: "wrap" }}>
 
-            {/* Selected items */}
-            <div style={{ flex: 1, minWidth: "240px" }}>
-              <p style={{ margin: "0 0 6px", fontSize: "11px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-                Your Bundle ({bundle.length} item{bundle.length !== 1 ? "s" : ""})
-              </p>
-              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                {bundle.slice(0, 4).map(b => (
-                  <div key={b.product.id} style={{
-                    display: "flex", alignItems: "center", gap: "5px",
-                    background: "#EEF4FF", borderRadius: "20px", padding: "3px 10px",
-                  }}>
-                    <span style={{ fontSize: "11.5px", fontWeight: 700, color: "#1240A0" }}>{b.product.name}</span>
-                    <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
-                      <button
-                        onClick={e => { e.stopPropagation(); changeQty(b.product.id, -1); }}
-                        style={{ width: "16px", height: "16px", borderRadius: "50%", border: "none", background: "rgba(18,64,160,0.15)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}
-                      >
-                        <Minus size={8} color="#1240A0" />
-                      </button>
-                      <span style={{ fontSize: "11px", fontWeight: 700, color: "#1240A0", minWidth: "12px", textAlign: "center" }}>{b.qty}</span>
-                      <button
-                        onClick={e => { e.stopPropagation(); changeQty(b.product.id, 1); }}
-                        style={{ width: "16px", height: "16px", borderRadius: "50%", border: "none", background: "rgba(18,64,160,0.15)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}
-                      >
-                        <Plus size={8} color="#1240A0" />
-                      </button>
-                    </div>
-                    <button
-                      onClick={e => { e.stopPropagation(); toggleVariant(b.product); }}
-                      style={{ width: "14px", height: "14px", borderRadius: "50%", border: "none", background: "#CBD5E1", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0, fontSize: "9px", color: "#fff", fontWeight: 900 }}
-                    >×</button>
-                  </div>
-                ))}
-                {bundle.length > 4 && (
-                  <span style={{ fontSize: "11.5px", color: "#64748B", alignSelf: "center" }}>
-                    +{bundle.length - 4} more
+          {/* Next-tier progress strip */}
+          {next && (
+            <div style={{
+              background: discountPct > 0
+                ? "linear-gradient(90deg, #064E3B, #059669)"
+                : "linear-gradient(90deg, #0a1e4a, #1240A0)",
+              padding: "6px 20px",
+              display: "flex", alignItems: "center", gap: "10px",
+            }}>
+              <div style={{ flex: 1, maxWidth: "1280px", margin: "0 auto", display: "flex", alignItems: "center", gap: "12px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0 }}>
+                  <Zap size={12} color={discountPct > 0 ? "#6EE7B7" : "#93C5FD"} />
+                  <span style={{ fontSize: "11.5px", fontWeight: 700, color: "#fff" }}>
+                    {discountPct > 0
+                      ? `✓ ${discountPct}% off active — add ${next.need} more vial${next.need !== 1 ? "s" : ""} to unlock ${next.nextPct}%`
+                      : `Add ${next.need} more vial${next.need !== 1 ? "s" : ""} to unlock ${next.nextPct}% off`
+                    }
                   </span>
-                )}
-              </div>
-            </div>
-
-            {/* Pricing */}
-            <div style={{ display: "flex", gap: "16px", alignItems: "center", flexShrink: 0 }}>
-              {discountPct > 0 && (
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    <Tag size={13} color="#059669" />
-                    <span style={{ fontSize: "13px", fontWeight: 800, color: "#059669" }}>
-                      {discountPct}% off — Save {formatPrice(savings)}
-                    </span>
-                  </div>
-                  <p style={{ margin: "1px 0 0", fontSize: "11px", color: "#94A3B8", textDecoration: "line-through" }}>
-                    {formatPrice(subtotal)}
-                  </p>
                 </div>
-              )}
-              <div style={{ textAlign: "right" }}>
-                <p style={{ margin: 0, fontSize: "10px", color: "#64748B", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em" }}>Bundle Total</p>
-                <p style={{ margin: 0, fontSize: "22px", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.02em" }}>{formatPrice(total)}</p>
+                <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "rgba(255,255,255,0.2)", overflow: "hidden" }}>
+                  <div style={{
+                    height: "100%", borderRadius: "4px",
+                    width: `${progressPct}%`,
+                    background: discountPct > 0 ? "#34D399" : "rgba(255,255,255,0.7)",
+                    transition: "width 0.3s ease",
+                  }} />
+                </div>
+                <span style={{ fontSize: "10.5px", color: "rgba(255,255,255,0.6)", fontWeight: 600, flexShrink: 0 }}>
+                  {totalVials} / {next.need + totalVials} vials
+                </span>
               </div>
-              <button
-                onClick={addBundleToCart}
-                style={{
-                  height: "50px", padding: "0 28px", borderRadius: "14px",
-                  background: added ? "#059669" : "linear-gradient(90deg, #0D2565, #1B5CB5)",
-                  border: "none", color: "#fff", fontSize: "14px", fontWeight: 800,
-                  cursor: "pointer", display: "flex", alignItems: "center", gap: "8px",
-                  boxShadow: added ? "0 4px 16px rgba(5,150,105,0.4)" : "0 4px 20px rgba(18,64,160,0.35)",
-                  transition: "all 0.2s",
-                  fontFamily: "'Arimo', Arial, sans-serif",
-                }}
-              >
-                {added ? (
-                  <><Check size={16} /> Added to Cart!</>
-                ) : (
-                  <><ShoppingCart size={16} /> Add Bundle to Cart{discountPct > 0 ? ` (${discountPct}% off)` : ""}</>
-                )}
-              </button>
             </div>
+          )}
+          {!next && (
+            <div style={{ background: "linear-gradient(90deg, #064E3B, #059669)", padding: "6px 20px", display: "flex", justifyContent: "center" }}>
+              <span style={{ fontSize: "11.5px", fontWeight: 700, color: "#fff" }}>
+                ✓ Maximum 20% bundle discount active!
+              </span>
+            </div>
+          )}
 
-            {bundle.length < 2 && (
-              <div style={{
-                display: "flex", alignItems: "center", gap: "7px",
-                background: "#FFFBEB", borderRadius: "10px", padding: "8px 14px",
-                border: "1px solid #FDE68A", flexShrink: 0,
-              }}>
-                <Zap size={13} color="#D97706" />
-                <p style={{ margin: 0, fontSize: "12px", color: "#92400E", fontWeight: 600 }}>
-                  Add {3 - bundle.length} more item{3 - bundle.length !== 1 ? "s" : ""} to unlock 5% off — up to 20% at 15+ vials
+          {/* Main bar */}
+          <div style={{ padding: "12px 20px" }}>
+            <div style={{ maxWidth: "1280px", margin: "0 auto", display: "flex", gap: "16px", alignItems: "center", flexWrap: "wrap" }}>
+
+              {/* Selected items */}
+              <div style={{ flex: 1, minWidth: "240px" }}>
+                <p style={{ margin: "0 0 6px", fontSize: "11px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                  Your Bundle ({totalVials} vial{totalVials !== 1 ? "s" : ""}, {bundle.length} product{bundle.length !== 1 ? "s" : ""})
                 </p>
+                <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                  {bundle.slice(0, 4).map(b => (
+                    <div key={b.product.id} style={{
+                      display: "flex", alignItems: "center", gap: "5px",
+                      background: "#EEF4FF", borderRadius: "20px", padding: "3px 10px",
+                    }}>
+                      <span style={{ fontSize: "11.5px", fontWeight: 700, color: "#1240A0" }}>{b.product.name}</span>
+                      <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
+                        <button
+                          onClick={e => { e.stopPropagation(); changeQty(b.product.id, -1); }}
+                          style={{ width: "16px", height: "16px", borderRadius: "50%", border: "none", background: "rgba(18,64,160,0.15)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}
+                        >
+                          <Minus size={8} color="#1240A0" />
+                        </button>
+                        <span style={{ fontSize: "11px", fontWeight: 700, color: "#1240A0", minWidth: "12px", textAlign: "center" }}>{b.qty}</span>
+                        <button
+                          onClick={e => { e.stopPropagation(); changeQty(b.product.id, 1); }}
+                          style={{ width: "16px", height: "16px", borderRadius: "50%", border: "none", background: "rgba(18,64,160,0.15)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}
+                        >
+                          <Plus size={8} color="#1240A0" />
+                        </button>
+                      </div>
+                      <button
+                        onClick={e => { e.stopPropagation(); toggleVariant(b.product); }}
+                        style={{ width: "14px", height: "14px", borderRadius: "50%", border: "none", background: "#CBD5E1", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0, fontSize: "9px", color: "#fff", fontWeight: 900 }}
+                      >×</button>
+                    </div>
+                  ))}
+                  {bundle.length > 4 && (
+                    <span style={{ fontSize: "11.5px", color: "#64748B", alignSelf: "center" }}>
+                      +{bundle.length - 4} more
+                    </span>
+                  )}
+                </div>
               </div>
-            )}
+
+              {/* Pricing */}
+              <div style={{ display: "flex", gap: "16px", alignItems: "center", flexShrink: 0 }}>
+                {discountPct > 0 && (
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                      <Tag size={13} color="#059669" />
+                      <span style={{ fontSize: "13px", fontWeight: 800, color: "#059669" }}>
+                        {discountPct}% off — Save {formatPrice(savings)}
+                      </span>
+                    </div>
+                    <p style={{ margin: "1px 0 0", fontSize: "11px", color: "#94A3B8", textDecoration: "line-through" }}>
+                      {formatPrice(subtotal)}
+                    </p>
+                  </div>
+                )}
+                <div style={{ textAlign: "right" }}>
+                  <p style={{ margin: 0, fontSize: "10px", color: "#64748B", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em" }}>Bundle Total</p>
+                  <p style={{ margin: 0, fontSize: "22px", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.02em" }}>{formatPrice(total)}</p>
+                </div>
+                <button
+                  onClick={addBundleToCart}
+                  style={{
+                    height: "50px", padding: "0 28px", borderRadius: "14px",
+                    background: added ? "#059669" : "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                    border: "none", color: "#fff", fontSize: "14px", fontWeight: 800,
+                    cursor: "pointer", display: "flex", alignItems: "center", gap: "8px",
+                    boxShadow: added ? "0 4px 16px rgba(5,150,105,0.4)" : "0 4px 20px rgba(18,64,160,0.35)",
+                    transition: "all 0.2s",
+                    fontFamily: "'Arimo', Arial, sans-serif",
+                  }}
+                >
+                  {added ? (
+                    <><Check size={16} /> Added to Cart!</>
+                  ) : (
+                    <><ShoppingCart size={16} /> Add Bundle to Cart{discountPct > 0 ? ` (${discountPct}% off)` : ""}</>
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
