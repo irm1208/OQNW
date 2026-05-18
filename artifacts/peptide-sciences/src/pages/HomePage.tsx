@@ -133,11 +133,11 @@ export default function HomePage() {
           alignItems: "flex-start",
         }}
       >
-        {/* Left gradient — opaque left half hides the baked-in logo, fades right so vials show */}
+        {/* Left-to-right gradient — dark on left for text, fades right so vials show */}
         <div style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(to right, rgb(3,8,20) 0%, rgb(3,8,20) 44%, rgba(3,8,20,0.45) 60%, rgba(3,8,20,0.0) 75%)",
+          background: "linear-gradient(to right, rgba(2,11,30,0.88) 0%, rgba(2,11,30,0.75) 35%, rgba(2,11,30,0.35) 60%, rgba(2,11,30,0.0) 80%)",
           pointerEvents: "none",
         }} />
 
