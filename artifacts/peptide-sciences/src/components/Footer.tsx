@@ -190,7 +190,7 @@ export default function Footer() {
             <div className="md:w-[240px] flex-shrink-0">
               <div className="flex items-center gap-2.5 mb-4">
                 <img
-                  src="/omniqure-logo.jpeg"
+                  src="/omniqure-logo.png"
                   alt="OmniQure Peptide Research Institute"
                   style={{ height: "42px", width: "auto", display: "block", borderRadius: "8px" }}
                 />
