@@ -128,7 +128,7 @@ export default function HomePage() {
           backgroundSize: "100% auto",
           backgroundPosition: "top left",
           backgroundRepeat: "no-repeat",
-          minHeight: "86vh",
+          minHeight: "unset",
           display: "flex",
           alignItems: "flex-start",
         }}
