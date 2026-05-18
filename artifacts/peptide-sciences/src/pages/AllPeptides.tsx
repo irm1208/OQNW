@@ -6,22 +6,6 @@ import { groupProducts } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
 import { useSEO } from "@/hooks/useSEO";
 
-const categoryTabs = [
-  { label: "Growth Peptides",     key: "Growth Peptides" },
-  { label: "Healing Peptides",    key: "Healing Peptides" },
-  { label: "Weight Management",   key: "Weight Management" },
-  { label: "Longevity Peptides",  key: "Longevity Peptides" },
-  { label: "Cellular Health",     key: "Cellular Health" },
-  { label: "Nootropics",          key: "Nootropics" },
-  { label: "Immune Support",      key: "Immune Support" },
-  { label: "Research Peptides",   key: "Research Peptides" },
-  { label: "Peptide Blends",      key: "Peptide Blends" },
-  { label: "Skin & Repair",       key: "Skin & Repair" },
-  { label: "Hormonal Peptides",   key: "Hormonal Peptides" },
-  { label: "Growth Hormone",      key: "Growth Hormone" },
-  { label: "Anti-Inflammatory",   key: "Anti-Inflammatory" },
-  { label: "Cognitive Peptides",  key: "Cognitive Peptides" },
-];
 
 type SortOption = "name" | "price-low" | "price-high" | "bestsellers";
 
@@ -203,38 +187,6 @@ export default function AllPeptides() {
       {/* Main content */}
       <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-4 md:py-6">
 
-        {/* Mobile / tablet category strip (hidden on lg where sidebar shows) */}
-        <div className="lg:hidden mb-4 overflow-x-auto scrollbar-none">
-          <div className="mobile-cat-strip">
-            <button
-              onClick={() => handleCategoryChange("All Peptides")}
-              style={{
-                fontSize: "12px", fontWeight: 700, padding: "6px 14px", borderRadius: "20px",
-                border: `1.5px solid ${selectedCategory === "All Peptides" ? "#1B5CB5" : "#E2E8F0"}`,
-                backgroundColor: selectedCategory === "All Peptides" ? "#1B5CB5" : "#fff",
-                color: selectedCategory === "All Peptides" ? "#fff" : "#475569",
-                cursor: "pointer", whiteSpace: "nowrap", transition: "all 0.15s",
-              }}
-            >
-              All Peptides
-            </button>
-            {categoryTabs.map(cat => (
-              <button
-                key={cat.key}
-                onClick={() => handleCategoryChange(cat.key)}
-                style={{
-                  fontSize: "12px", fontWeight: 700, padding: "6px 14px", borderRadius: "20px",
-                  border: `1.5px solid ${selectedCategory === cat.key ? "#1B5CB5" : "#E2E8F0"}`,
-                  backgroundColor: selectedCategory === cat.key ? "#1B5CB5" : "#fff",
-                  color: selectedCategory === cat.key ? "#fff" : "#475569",
-                  cursor: "pointer", whiteSpace: "nowrap", transition: "all 0.15s",
-                }}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-        </div>
 
         <div className="flex gap-6">
           {/* Sidebar — desktop only */}
