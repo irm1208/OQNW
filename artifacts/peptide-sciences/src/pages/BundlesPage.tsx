@@ -141,9 +141,9 @@ export default function BundlesPage() {
 
               {/* Logo */}
               <img
-                src="/omniqure-logo.png"
+                src="/omniqure-logo.jpeg"
                 alt="OmniQure Peptide Research Institute"
-                style={{ height: "54px", width: "auto", marginBottom: "22px", display: "block" }}
+                style={{ height: "54px", width: "auto", borderRadius: "10px", boxShadow: "0 6px 28px rgba(0,0,0,0.55)", marginBottom: "22px", display: "block" }}
               />
 
               {/* Badge */}
