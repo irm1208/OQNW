@@ -187,37 +187,6 @@ export default function BundlesPage() {
               </div>
             </div>
 
-            {/* ── RIGHT — Cinematic floating vial showcase ── */}
-            <div className="hidden lg:block" style={{ flex: "0 0 auto", width: "460px", height: "420px", position: "relative" }}>
-
-              {/* Spotlight glow behind vials */}
-              <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "420px", height: "420px", borderRadius: "50%", background: "radial-gradient(circle, rgba(37,99,235,0.24) 0%, rgba(99,102,241,0.12) 45%, transparent 70%)", pointerEvents: "none", animation: "bundle-spotlight-pulse 5s ease-in-out infinite" }} />
-
-              {/* Floating vials */}
-              {([
-                { src: "/products/3.jpg",  top: "1%",  left: "22%", w: 212, z: 4, anim: "vial-float",   delay: "0s",   opacity: 1,    rot: "-5deg"  },
-                { src: "/products/1.jpg",  top: "30%", left: "1%",  w: 168, z: 3, anim: "vial-float-b", delay: "0.7s", opacity: 0.92, rot:  "7deg"  },
-                { src: "/products/7.jpg",  top: "28%", left: "56%", w: 160, z: 3, anim: "vial-float",   delay: "1.3s", opacity: 0.92, rot: "-4deg"  },
-                { src: "/products/11.jpg", top: "62%", left: "9%",  w: 140, z: 2, anim: "vial-float-b", delay: "0.3s", opacity: 0.72, rot:  "5deg"  },
-                { src: "/products/43.jpg", top: "60%", left: "57%", w: 134, z: 2, anim: "vial-float",   delay: "1.1s", opacity: 0.72, rot: "-7deg"  },
-              ] as Array<{ src: string; top: string; left: string; w: number; z: number; anim: string; delay: string; opacity: number; rot: string }>).map((v, i) => (
-                <div
-                  key={i}
-                  style={{ position: "absolute", top: v.top, left: v.left, width: v.w, height: v.w, zIndex: v.z, animation: `${v.anim} 3.8s ease-in-out infinite`, animationDelay: v.delay, opacity: v.opacity }}
-                >
-                  <div style={{ width: "100%", height: "100%", background: "linear-gradient(160deg, #ffffff 0%, #EEF4FF 100%)", borderRadius: "18px", boxShadow: `0 ${v.z * 10 + 10}px ${v.z * 28 + 12}px rgba(0,0,0,0.58), 0 0 0 1px rgba(255,255,255,0.18), inset 0 1px 0 rgba(255,255,255,0.85)`, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "8px", transform: `rotate(${v.rot})` }}>
-                    <img src={v.src} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-                  </div>
-                </div>
-              ))}
-
-              {/* Subtle brand watermark */}
-              <div style={{ position: "absolute", bottom: "2px", left: 0, right: 0, textAlign: "center", pointerEvents: "none" }}>
-                <span style={{ fontSize: "9.5px", fontWeight: 800, color: "rgba(255,255,255,0.13)", letterSpacing: "0.32em", textTransform: "uppercase" }}>
-                  OMNIQURE PEPTIDE RESEARCH INSTITUTE
-                </span>
-              </div>
-            </div>
 
           </div>
         </div>
