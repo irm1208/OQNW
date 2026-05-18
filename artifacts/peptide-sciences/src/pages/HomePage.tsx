@@ -467,24 +467,6 @@ export default function HomePage() {
                   >
                     Shop All Peptides <ChevronRight size={14} />
                   </Link>
-                  <Link
-                    href="/info"
-                    className="btn-ghost inline-flex items-center gap-2"
-                    style={{
-                      backgroundColor: "rgba(255,255,255,0.1)",
-                      color: "#fff",
-                      border: "1.5px solid rgba(255,255,255,0.25)",
-                      padding: "11px 22px",
-                      borderRadius: "10px",
-                      fontWeight: 600,
-                      fontSize: "13.5px",
-                      textDecoration: "none",
-                    }}
-                    onMouseEnter={e => (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.16)"}
-                    onMouseLeave={e => (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.1)"}
-                  >
-                    Peptide Information
-                  </Link>
                 </div>
               </div>
 
