@@ -189,8 +189,8 @@ export default function AllPeptides() {
 
 
         <div className="flex gap-6">
-          {/* Sidebar — desktop only */}
-          <div className="hidden lg:block flex-shrink-0">
+          {/* Sidebar — tablet and above */}
+          <div className="hidden md:block flex-shrink-0">
             <div
               className="flex items-center gap-2 px-3 py-2.5 rounded-t-xl mb-3"
               style={{ backgroundColor: "#1B5CB5", color: "#fff" }}
@@ -260,7 +260,7 @@ export default function AllPeptides() {
             </div>
 
             {/* Responsive grid: 2 cols mobile, 3 tablet, 4 desktop */}
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-4 lg:gap-8">
               {groupedProducts.map((group) => (
                 <GroupedProductCard key={group.baseName} group={group} />
               ))}

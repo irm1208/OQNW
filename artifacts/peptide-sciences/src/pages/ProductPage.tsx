@@ -299,9 +299,9 @@ export default function ProductPage() {
 
       <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-4 md:py-8">
         {/* Main product section */}
-        <div className="flex flex-col lg:flex-row gap-5 lg:gap-8 mb-8 md:mb-10">
+        <div className="flex flex-col md:flex-row gap-5 md:gap-6 lg:gap-8 mb-8 md:mb-10">
           {/* Left: Product card panel */}
-          <div className="lg:w-[460px] flex-shrink-0">
+          <div className="md:w-[400px] lg:w-[460px] flex-shrink-0">
             <div
               className="rounded-2xl overflow-hidden"
               style={{ backgroundColor: "#fff", boxShadow: "0 4px 24px rgba(15,23,42,0.08)", border: "1px solid #E8EDF5" }}

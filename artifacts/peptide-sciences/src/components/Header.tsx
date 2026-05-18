@@ -543,7 +543,7 @@ export default function Header() {
 
             {/* Hamburger */}
             <button
-              className="lg:hidden p-1"
+              className="md:hidden p-1"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               style={{ color: "rgba(255,255,255,0.85)", background: "none", border: "none", cursor: "pointer" }}
             >
@@ -554,9 +554,9 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Main nav — desktop only */}
+      {/* Main nav — tablet and above */}
       <nav
-        className="bg-white hidden lg:block"
+        className="bg-white hidden md:block"
         style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.06)", borderTop: "1px solid #F8FAFC" }}
       >
         <div className="max-w-[1280px] mx-auto px-4 flex items-center justify-between">
