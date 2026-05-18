@@ -503,17 +503,7 @@
 /* ── HOME HERO RESPONSIVE ────────────────────────────────── */
 
 .hero-section {
-  background-position: 80% 10% !important;
-}
-@media (min-width: 640px) {
-  .hero-section {
-    background-position: 60% top !important;
-  }
-}
-@media (min-width: 1024px) {
-  .hero-section {
-    background-position: left top !important;
-  }
+  background-position: left top !important;
 }
 
 /* On mobile the vertical gradient already darkens the image; hide the LR overlay to avoid double-darkening */
