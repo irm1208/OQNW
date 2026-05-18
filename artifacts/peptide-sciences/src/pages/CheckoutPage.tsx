@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { trackInitiateCheckout } from "@/lib/pixels";
 import { Link, useLocation } from "wouter";
 import {
-  ChevronRight, Lock, Truck, Zap, Package,
+  ChevronRight, ChevronDown, Lock, Truck, Zap, Package,
   CreditCard, User, MapPin, Phone, Mail,
   CheckCircle2, ShieldCheck, FlaskConical, Tag, X, Award, Gift, Check,
 } from "lucide-react";
@@ -165,6 +165,9 @@ export default function CheckoutPage() {
   // Loyalty points
   const [loyaltyBalance, setLoyaltyBalance] = useState<{ balance: number; gbpValue: number } | null>(null);
   const [loyaltyPointsToRedeem, setLoyaltyPointsToRedeem] = useState(0);
+
+  // Mobile order summary toggle (collapsed by default)
+  const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
 
   // Pre-fill delivery form for logged-in customers
   useEffect(() => {
@@ -860,12 +863,46 @@ export default function CheckoutPage() {
           </div>
 
           {/* ── ORDER SUMMARY ── */}
-          <div className="w-full lg:w-[320px] lg:flex-shrink-0 lg:sticky" style={{ top: "24px" }}>
+          <div className="checkout-summary-mobile-first w-full lg:w-[320px] lg:flex-shrink-0 lg:sticky" style={{ top: "24px" }}>
             <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)", overflow: "hidden" }}>
-              <div style={{ background: "linear-gradient(90deg, #1240A0, #1B5CB5)", padding: "14px 18px", color: "#fff" }}>
+
+              {/* Mobile toggle header */}
+              <button
+                className="lg:hidden w-full"
+                onClick={() => setMobileSummaryOpen(o => !o)}
+                aria-expanded={mobileSummaryOpen}
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  background: "linear-gradient(90deg, #1240A0, #1B5CB5)",
+                  padding: "14px 18px", border: "none", cursor: "pointer", width: "100%",
+                  borderRadius: 0,
+                }}
+              >
+                <div style={{ textAlign: "left" }}>
+                  <p style={{ fontSize: "14px", fontWeight: 700, color: "#fff", margin: 0 }}>
+                    {mobileSummaryOpen ? "Hide order summary" : "Show order summary"}
+                  </p>
+                  <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.6)", marginTop: "1px", margin: 0 }}>
+                    {items.reduce((s, i) => s + i.quantity, 0)} items
+                  </p>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span style={{ fontSize: "15px", fontWeight: 800, color: "#fff" }}>{formatPrice(totalGBP)}</span>
+                  <ChevronDown
+                    size={16}
+                    style={{ color: "rgba(255,255,255,0.8)", transition: "transform 0.2s", transform: mobileSummaryOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+                  />
+                </div>
+              </button>
+
+              {/* Desktop header (always visible) */}
+              <div className="hidden lg:block" style={{ background: "linear-gradient(90deg, #1240A0, #1B5CB5)", padding: "14px 18px", color: "#fff" }}>
                 <p style={{ fontSize: "14px", fontWeight: 700 }}>Order Summary</p>
                 <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.6)", marginTop: "1px" }}>{items.reduce((s, i) => s + i.quantity, 0)} items</p>
               </div>
+
+              {/* Body — hidden on mobile when collapsed */}
+              <div className={mobileSummaryOpen ? undefined : "max-lg:hidden"}>
 
               <div style={{ padding: "14px 18px", maxHeight: "260px", overflowY: "auto" }}>
                 {items.map(({ product, quantity }) => (
@@ -1126,12 +1163,13 @@ export default function CheckoutPage() {
                   ))}
                 </div>
               </div>
-            </div>
+            </div>{/* end body wrapper */}
+          </div>{/* end card */}
 
-            <Link href="/cart" style={{ display: "block", textAlign: "center", marginTop: "12px", fontSize: "12.5px", color: "#94A3B8", textDecoration: "none" }}>
-              ← Return to cart
-            </Link>
-          </div>
+          <Link href="/cart" style={{ display: "block", textAlign: "center", marginTop: "12px", fontSize: "12.5px", color: "#94A3B8", textDecoration: "none" }}>
+            ← Return to cart
+          </Link>
+          </div>{/* end order summary outer */}
         </div>
       </div>
     </div>

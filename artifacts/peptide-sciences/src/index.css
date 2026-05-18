@@ -656,6 +656,14 @@
   .signin-h1-mobile    { font-size: 22px !important; }
 }
 
+/* ── CHECKOUT ORDER SUMMARY — MOBILE FIRST ───────────────── */
+
+@media (max-width: 768px) {
+  .checkout-summary-mobile-first {
+    order: -1;
+  }
+}
+
 /* ── BUNDLE HERO ANIMATIONS ──────────────────────────────── */
 
 @keyframes vial-float {
