@@ -152,21 +152,6 @@ export default function HomePage() {
           {/* Copy — left-aligned, max half width so vials show on right */}
           <div className="text-white" style={{ maxWidth: "560px" }}>
 
-            {/* Logo */}
-            <div className="mb-6">
-              <img
-                src="/omniqure-logo.jpeg"
-                alt="OmniQure Peptide Research Institute"
-                style={{
-                  height: "56px",
-                  width: "auto",
-                  display: "block",
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
-                }}
-              />
-            </div>
-
             <h1
               className="font-bold mb-6"
               style={{
