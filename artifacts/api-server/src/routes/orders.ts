@@ -73,6 +73,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     discountCode,
     loyaltyPointsRedeemed,
     giftCardCode,
+    paymentMethod,
   } = req.body as {
     delivery: unknown;
     shippingMethod: unknown;
@@ -81,7 +82,10 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     discountCode?: unknown;
     loyaltyPointsRedeemed?: unknown;
     giftCardCode?: unknown;
+    paymentMethod?: unknown;
   };
+
+  const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "card";
 
   // Basic validation
   const d = delivery as DeliveryDetails;
@@ -379,7 +383,9 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingCostGbp: String(shippingCostGbp.toFixed(2)),
         totalGbp: String(totalGbp.toFixed(2)),
         shippingMethod,
+        status: paymentMethodStr === "bank_transfer" ? "awaiting_payment" : paymentMethodStr === "bitcoin" ? "awaiting_payment" : "pending",
         notes: [
+          `Payment method: ${paymentMethodStr}`,
           validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-£${discountAmount.toFixed(2)})` : null,
           loyaltyPointsToDeduct > 0 ? `Loyalty: ${loyaltyPointsToDeduct} pts redeemed (-£${loyaltyDiscountGbp.toFixed(2)})` : null,
           validatedGiftCardCode ? `Gift card: ${validatedGiftCardCode} (-£${giftCardDeductGbp.toFixed(2)})` : null,

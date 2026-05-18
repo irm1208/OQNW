@@ -4,7 +4,7 @@ import { Link, useLocation } from "wouter";
 import {
   ChevronRight, Lock, Truck, Zap, Package,
   CreditCard, User, MapPin, Phone, Mail,
-  CheckCircle2, ShieldCheck, FlaskConical, Tag, X, Award, Gift,
+  CheckCircle2, ShieldCheck, FlaskConical, Tag, X, Award, Gift, Check,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -58,6 +58,17 @@ const SHIPPING_OPTIONS = [
     description: "Order before 2pm for same-day dispatch",
   },
 ];
+
+// ── Payment method configuration ──────────────────────────────────────────────
+// Update these with your real bank details before going live
+const BANK_DETAILS = {
+  accountName: "OmniQure Research Ltd",
+  sortCode: "20-00-00",
+  accountNumber: "12345678",
+  bank: "Barclays Bank",
+};
+const BITCOIN_ADDRESS = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
+// ──────────────────────────────────────────────────────────────────────────────
 
 type Step = 1 | 2 | 3;
 
@@ -149,6 +160,8 @@ export default function CheckoutPage() {
   const [giftCardError, setGiftCardError] = useState<string | null>(null);
   const [applyingGiftCard, setApplyingGiftCard] = useState(false);
 
+  const [paymentMethod, setPaymentMethod] = useState<"card" | "bank_transfer" | "bitcoin">("bank_transfer");
+
   // Loyalty points
   const [loyaltyBalance, setLoyaltyBalance] = useState<{ balance: number; gbpValue: number } | null>(null);
   const [loyaltyPointsToRedeem, setLoyaltyPointsToRedeem] = useState(0);
@@ -222,6 +235,7 @@ export default function CheckoutPage() {
   }
 
   function validatePayment() {
+    if (paymentMethod !== "card") return {};
     const e: Record<string, string> = {};
     const digits = payment.cardNumber.replace(/\s/g, "");
     if (digits.length < 16) e.cardNumber = "Enter a valid 16-digit card number";
@@ -345,6 +359,7 @@ export default function CheckoutPage() {
             discountCode: appliedDiscount?.code ?? null,
             giftCardCode: appliedGiftCard?.code ?? null,
             loyaltyPointsRedeemed: loyaltyPointsToRedeem > 0 ? loyaltyPointsToRedeem : undefined,
+            paymentMethod,
           }),
         });
 
@@ -363,7 +378,7 @@ export default function CheckoutPage() {
 
         const data = await res.json() as { orderNumber: string; customerName: string; totalGbp: number; shippingMethod: string };
         clearCart();
-        navigate(`/order-confirmation?order=${encodeURIComponent(data.orderNumber)}&name=${encodeURIComponent(delivery.firstName)}&total=${data.totalGbp.toFixed(2)}&ship=${encodeURIComponent(data.shippingMethod)}`);
+        navigate(`/order-confirmation?order=${encodeURIComponent(data.orderNumber)}&name=${encodeURIComponent(delivery.firstName)}&total=${data.totalGbp.toFixed(2)}&ship=${encodeURIComponent(data.shippingMethod)}&payment=${encodeURIComponent(paymentMethod)}`);
       } catch (err) {
         setPlaceError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
         setPlacing(false);
@@ -612,113 +627,152 @@ export default function CheckoutPage() {
             {/* STEP 3 — Payment */}
             {step === 3 && (
               <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)", padding: "28px" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
-                  <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A" }}>Payment</h2>
-                  <div style={{ display: "flex", gap: "6px" }}>
-                    {["VISA", "MC", "AMEX"].map(b => (
-                      <span key={b} style={{ fontSize: "10px", fontWeight: 700, padding: "3px 8px", borderRadius: "6px", backgroundColor: "#F1F5F9", color: "#64748B", border: "1px solid #E2E8F0" }}>{b}</span>
-                    ))}
-                  </div>
+                <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A", marginBottom: "6px" }}>Payment</h2>
+                <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>Choose how you'd like to pay.</p>
+
+                {/* Payment method selector */}
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "24px" }}>
+                  {([
+                    { id: "bank_transfer" as const, label: "Bank Transfer", sub: "BACS / Faster Payments — no fees, dispatched on clearance", icon: "🏦" },
+                    { id: "card" as const,          label: "Card Payment",   sub: "Visa, Mastercard — processed securely",                   icon: "💳" },
+                    { id: "bitcoin" as const,       label: "Bitcoin",        sub: "Pay with BTC — confirmed within ~1 hour",                 icon: "₿"  },
+                  ]).map(opt => (
+                    <div
+                      key={opt.id}
+                      onClick={() => setPaymentMethod(opt.id)}
+                      style={{
+                        display: "flex", alignItems: "center", gap: "14px",
+                        padding: "14px 16px", borderRadius: "12px", cursor: "pointer",
+                        border: `2px solid ${paymentMethod === opt.id ? "#1240A0" : "#E2E8F0"}`,
+                        backgroundColor: paymentMethod === opt.id ? "#EEF4FF" : "#F8FAFC",
+                        transition: "all 0.15s",
+                      }}
+                    >
+                      <div style={{
+                        width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
+                        border: `2px solid ${paymentMethod === opt.id ? "#1240A0" : "#CBD5E1"}`,
+                        backgroundColor: paymentMethod === opt.id ? "#1240A0" : "#fff",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                      }}>
+                        {paymentMethod === opt.id && <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#fff" }} />}
+                      </div>
+                      <span style={{ fontSize: "22px", flexShrink: 0, lineHeight: 1 }}>{opt.icon}</span>
+                      <div style={{ flex: 1 }}>
+                        <p style={{ margin: 0, fontSize: "14px", fontWeight: 700, color: paymentMethod === opt.id ? "#1240A0" : "#0F172A" }}>{opt.label}</p>
+                        <p style={{ margin: 0, fontSize: "12px", color: "#64748B" }}>{opt.sub}</p>
+                      </div>
+                      {paymentMethod === opt.id && <Check size={16} color="#1240A0" />}
+                    </div>
+                  ))}
                 </div>
-                <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "24px" }}>Your payment information is encrypted and secure.</p>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  {/* Card number */}
-                  <div>
-                    <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Card number *</label>
-                    <div style={{ position: "relative" }}>
-                      <Icon><CreditCard size={14} /></Icon>
-                      <input
-                        value={payment.cardNumber}
-                        onChange={e => setP("cardNumber")(formatCard(e.target.value))}
-                        placeholder="1234 5678 9012 3456"
-                        inputMode="numeric"
-                        style={fieldStyle(!!errors.cardNumber)}
-                        onFocus={inputFocus} onBlur={e => inputBlur(e, "cardNumber")}
-                      />
+                {/* Bank Transfer details */}
+                {paymentMethod === "bank_transfer" && (
+                  <div style={{ borderRadius: "14px", border: "1.5px solid #BFDBFE", backgroundColor: "#EFF6FF", padding: "20px" }}>
+                    <p style={{ fontSize: "13px", fontWeight: 700, color: "#1E40AF", marginBottom: "14px" }}>
+                      Place your order, then send payment to the account below. We'll dispatch once it clears — usually same day for Faster Payments.
+                    </p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                      {[
+                        { label: "Account Name",   value: BANK_DETAILS.accountName },
+                        { label: "Sort Code",       value: BANK_DETAILS.sortCode },
+                        { label: "Account Number",  value: BANK_DETAILS.accountNumber },
+                        { label: "Bank",            value: BANK_DETAILS.bank },
+                        { label: "Reference",       value: "Use your order number (shown after placing)" },
+                      ].map(row => (
+                        <div key={row.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 12px", borderRadius: "8px", backgroundColor: "#fff", border: "1px solid #DBEAFE" }}>
+                          <span style={{ fontSize: "12px", color: "#64748B", fontWeight: 600 }}>{row.label}</span>
+                          <span style={{ fontSize: "13px", fontWeight: 700, color: "#1240A0" }}>{row.value}</span>
+                        </div>
+                      ))}
                     </div>
-                    {errors.cardNumber && <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "3px" }}>{errors.cardNumber}</p>}
+                    <p style={{ fontSize: "11.5px", color: "#475569", marginTop: "12px", lineHeight: 1.6, marginBottom: 0 }}>
+                      Faster Payments clears same day. CHAPS next working day. Orders paid after 3pm are dispatched the following morning.
+                    </p>
                   </div>
+                )}
 
-                  {/* Name on card */}
-                  <div>
-                    <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Name on card *</label>
-                    <div style={{ position: "relative" }}>
-                      <Icon><User size={14} /></Icon>
-                      <input
-                        value={payment.nameOnCard}
-                        onChange={e => setP("nameOnCard")(e.target.value)}
-                        placeholder="JANE SMITH"
-                        style={fieldStyle(!!errors.nameOnCard)}
-                        onFocus={inputFocus} onBlur={e => inputBlur(e, "nameOnCard")}
-                      />
-                    </div>
-                    {errors.nameOnCard && <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "3px" }}>{errors.nameOnCard}</p>}
-                  </div>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                    {/* Expiry */}
+                {/* Card form */}
+                {paymentMethod === "card" && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                     <div>
-                      <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Expiry date *</label>
+                      <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Card number *</label>
                       <div style={{ position: "relative" }}>
                         <Icon><CreditCard size={14} /></Icon>
-                        <input
-                          value={payment.expiry}
-                          onChange={e => setP("expiry")(formatExpiry(e.target.value))}
-                          placeholder="MM/YY"
-                          inputMode="numeric"
-                          style={fieldStyle(!!errors.expiry)}
-                          onFocus={inputFocus} onBlur={e => inputBlur(e, "expiry")}
-                        />
+                        <input value={payment.cardNumber} onChange={e => setP("cardNumber")(formatCard(e.target.value))}
+                          placeholder="1234 5678 9012 3456" inputMode="numeric"
+                          style={fieldStyle(!!errors.cardNumber)} onFocus={inputFocus} onBlur={e => inputBlur(e, "cardNumber")} />
                       </div>
-                      {errors.expiry && <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "3px" }}>{errors.expiry}</p>}
+                      {errors.cardNumber && <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "3px" }}>{errors.cardNumber}</p>}
                     </div>
-
-                    {/* CVV */}
                     <div>
-                      <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Security code (CVV) *</label>
+                      <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Name on card *</label>
                       <div style={{ position: "relative" }}>
-                        <Icon><Lock size={14} /></Icon>
-                        <input
-                          value={payment.cvv}
-                          onChange={e => setP("cvv")(e.target.value.replace(/\D/g, "").slice(0, 4))}
-                          placeholder="•••"
-                          inputMode="numeric"
-                          type="password"
-                          style={fieldStyle(!!errors.cvv)}
-                          onFocus={inputFocus} onBlur={e => inputBlur(e, "cvv")}
-                        />
+                        <Icon><User size={14} /></Icon>
+                        <input value={payment.nameOnCard} onChange={e => setP("nameOnCard")(e.target.value)}
+                          placeholder="JANE SMITH" style={fieldStyle(!!errors.nameOnCard)}
+                          onFocus={inputFocus} onBlur={e => inputBlur(e, "nameOnCard")} />
                       </div>
-                      {errors.cvv && <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "3px" }}>{errors.cvv}</p>}
+                      {errors.nameOnCard && <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "3px" }}>{errors.nameOnCard}</p>}
+                    </div>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                      <div>
+                        <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Expiry date *</label>
+                        <div style={{ position: "relative" }}>
+                          <Icon><CreditCard size={14} /></Icon>
+                          <input value={payment.expiry} onChange={e => setP("expiry")(formatExpiry(e.target.value))}
+                            placeholder="MM/YY" inputMode="numeric" style={fieldStyle(!!errors.expiry)}
+                            onFocus={inputFocus} onBlur={e => inputBlur(e, "expiry")} />
+                        </div>
+                        {errors.expiry && <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "3px" }}>{errors.expiry}</p>}
+                      </div>
+                      <div>
+                        <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Security code (CVV) *</label>
+                        <div style={{ position: "relative" }}>
+                          <Icon><Lock size={14} /></Icon>
+                          <input value={payment.cvv} onChange={e => setP("cvv")(e.target.value.replace(/\D/g, "").slice(0, 4))}
+                            placeholder="•••" inputMode="numeric" type="password" style={fieldStyle(!!errors.cvv)}
+                            onFocus={inputFocus} onBlur={e => inputBlur(e, "cvv")} />
+                        </div>
+                        {errors.cvv && <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "3px" }}>{errors.cvv}</p>}
+                      </div>
+                    </div>
+                    <div onClick={() => setP("sameAsDelivery")(!payment.sameAsDelivery)}
+                      style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", padding: "12px", borderRadius: "10px", backgroundColor: "#F8FAFC", border: "1.5px solid #E2E8F0" }}>
+                      <div style={{ width: "18px", height: "18px", borderRadius: "5px", flexShrink: 0,
+                        border: `2px solid ${payment.sameAsDelivery ? "#1B5CB5" : "#CBD5E1"}`,
+                        backgroundColor: payment.sameAsDelivery ? "#1B5CB5" : "#fff",
+                        display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        {payment.sameAsDelivery && <CheckCircle2 size={12} color="#fff" strokeWidth={3} />}
+                      </div>
+                      <span style={{ fontSize: "13px", color: "#374151", fontWeight: 500 }}>Billing address same as delivery address</span>
+                    </div>
+                    <div style={{ padding: "14px", borderRadius: "12px", backgroundColor: "#F8FAFF", border: "1px solid #DBEAFE", display: "flex", gap: "10px", alignItems: "center" }}>
+                      <ShieldCheck size={16} style={{ color: "#1B5CB5", flexShrink: 0 }} />
+                      <p style={{ fontSize: "12px", color: "#1E40AF", lineHeight: 1.5, margin: 0 }}>
+                        Your card details are protected by 256-bit SSL encryption. OmniQure never stores card data.
+                      </p>
                     </div>
                   </div>
+                )}
 
-                  {/* Billing same as delivery */}
-                  <div
-                    onClick={() => setP("sameAsDelivery")(!payment.sameAsDelivery)}
-                    style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", padding: "12px", borderRadius: "10px", backgroundColor: "#F8FAFC", border: "1.5px solid #E2E8F0" }}
-                  >
-                    <div style={{
-                      width: "18px", height: "18px", borderRadius: "5px", flexShrink: 0,
-                      border: `2px solid ${payment.sameAsDelivery ? "#1B5CB5" : "#CBD5E1"}`,
-                      backgroundColor: payment.sameAsDelivery ? "#1B5CB5" : "#fff",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                    }}>
-                      {payment.sameAsDelivery && <CheckCircle2 size={12} color="#fff" strokeWidth={3} />}
+                {/* Bitcoin */}
+                {paymentMethod === "bitcoin" && (
+                  <div style={{ borderRadius: "14px", border: "1.5px solid #FDE68A", backgroundColor: "#FFFBEB", padding: "20px" }}>
+                    <p style={{ fontSize: "13px", fontWeight: 700, color: "#92400E", marginBottom: "14px" }}>
+                      Place your order then send the BTC equivalent of your order total to the address below. We'll process once the transaction has 1 confirmation.
+                    </p>
+                    <div style={{ padding: "14px 16px", borderRadius: "10px", backgroundColor: "#fff", border: "1.5px solid #FDE68A", marginBottom: "12px" }}>
+                      <p style={{ fontSize: "10.5px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "6px" }}>Bitcoin Address</p>
+                      <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#0F172A", wordBreak: "break-all", fontFamily: "monospace", letterSpacing: "0.02em", margin: 0 }}>{BITCOIN_ADDRESS}</p>
                     </div>
-                    <span style={{ fontSize: "13px", color: "#374151", fontWeight: 500 }}>
-                      Billing address same as delivery address
-                    </span>
+                    <div style={{ fontSize: "12px", color: "#92400E", lineHeight: 1.8 }}>
+                      ₿ Convert your GBP total to BTC at the current rate before sending.<br />
+                      ₿ Transactions typically confirm within 1 hour on the Bitcoin network.<br />
+                      ₿ Include your order number in the memo/note field where your wallet allows.
+                    </div>
                   </div>
-                </div>
-
-                {/* Security notice */}
-                <div style={{ marginTop: "20px", padding: "14px", borderRadius: "12px", backgroundColor: "#F8FAFF", border: "1px solid #DBEAFE", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <ShieldCheck size={16} style={{ color: "#1B5CB5", flexShrink: 0 }} />
-                  <p style={{ fontSize: "12px", color: "#1E40AF", lineHeight: 1.5, margin: 0 }}>
-                    Your card details are protected by 256-bit SSL encryption. OmniQure never stores card data.
-                  </p>
-                </div>
+                )}
               </div>
             )}
 
@@ -797,7 +851,11 @@ export default function CheckoutPage() {
                 {placing ? (
                   "Processing order…"
                 ) : step === 3 ? (
-                  <><Lock size={15} /> Place Order — {formatPrice(totalGBP)}</>
+                  paymentMethod === "bank_transfer"
+                    ? <><Lock size={15} /> Place Order — Pay by Bank Transfer</>
+                    : paymentMethod === "bitcoin"
+                    ? <><Lock size={15} /> Place Order — Pay with Bitcoin</>
+                    : <><Lock size={15} /> Place Order — {formatPrice(totalGBP)}</>
                 ) : (
                   <>Continue <ChevronRight size={16} /></>
                 )}

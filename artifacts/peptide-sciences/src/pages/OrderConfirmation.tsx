@@ -1,7 +1,16 @@
 import { useEffect, useState, useRef } from "react";
 import { trackPurchase } from "@/lib/pixels";
 import { Link } from "wouter";
-import { CheckCircle2, Package, Truck, FlaskConical, ArrowRight, Download, Search } from "lucide-react";
+import { CheckCircle2, Package, Truck, FlaskConical, ArrowRight, Download, Search, Clock } from "lucide-react";
+
+// Keep in sync with CheckoutPage.tsx
+const BANK_DETAILS = {
+  accountName: "OmniQure Research Ltd",
+  sortCode: "20-00-00",
+  accountNumber: "12345678",
+  bank: "Barclays Bank",
+};
+const BITCOIN_ADDRESS = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
 
 export default function OrderConfirmation() {
   const params = new URLSearchParams(window.location.search);
@@ -9,6 +18,7 @@ export default function OrderConfirmation() {
   const name = params.get("name") ?? "Researcher";
   const total = params.get("total") ?? "0.00";
   const ship = params.get("ship") ?? "Standard";
+  const payment = params.get("payment") ?? "card";
 
   const today = new Date();
   const deliveryDays = ship === "Next Day" ? 1 : ship === "Express" ? 2 : 5;
@@ -53,12 +63,67 @@ export default function OrderConfirmation() {
             <CheckCircle2 size={40} color="#fff" strokeWidth={2.5} />
           </div>
           <h1 style={{ fontSize: "28px", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: "8px" }}>
-            Order confirmed!
+            {payment === "bank_transfer" ? "Order placed — payment awaited" : payment === "bitcoin" ? "Order placed — awaiting BTC" : "Order confirmed!"}
           </h1>
           <p style={{ fontSize: "15px", color: "#64748B", lineHeight: 1.6 }}>
-            Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order has been received and is being prepared for dispatch.
+            {payment === "bank_transfer"
+              ? <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order is reserved — please send your bank transfer to secure it.</>
+              : payment === "bitcoin"
+              ? <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order is reserved — please send the BTC equivalent to the address below.</>
+              : <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order has been received and is being prepared for dispatch.</>
+            }
           </p>
         </div>
+
+        {/* Bank Transfer action panel */}
+        {payment === "bank_transfer" && (
+          <div style={{ borderRadius: "16px", border: "1.5px solid #BFDBFE", backgroundColor: "#EFF6FF", padding: "22px", marginBottom: "20px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "14px" }}>
+              <Clock size={18} color="#1E40AF" />
+              <p style={{ fontSize: "14px", fontWeight: 800, color: "#1E40AF", margin: 0 }}>
+                Send your bank transfer now
+              </p>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "7px", marginBottom: "12px" }}>
+              {[
+                { label: "Account Name",   value: BANK_DETAILS.accountName },
+                { label: "Sort Code",       value: BANK_DETAILS.sortCode },
+                { label: "Account Number",  value: BANK_DETAILS.accountNumber },
+                { label: "Bank",            value: BANK_DETAILS.bank },
+                { label: "Reference",       value: order },
+              ].map(row => (
+                <div key={row.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", borderRadius: "8px", backgroundColor: "#fff", border: "1px solid #DBEAFE" }}>
+                  <span style={{ fontSize: "12px", color: "#64748B", fontWeight: 600 }}>{row.label}</span>
+                  <span style={{ fontSize: "13px", fontWeight: 700, color: row.label === "Reference" ? "#059669" : "#1240A0" }}>{row.value}</span>
+                </div>
+              ))}
+            </div>
+            <p style={{ fontSize: "11.5px", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+              Use your order number as the payment reference. Faster Payments usually clears same day. We'll email you once payment is confirmed and your order is dispatched.
+            </p>
+          </div>
+        )}
+
+        {/* Bitcoin action panel */}
+        {payment === "bitcoin" && (
+          <div style={{ borderRadius: "16px", border: "1.5px solid #FDE68A", backgroundColor: "#FFFBEB", padding: "22px", marginBottom: "20px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "14px" }}>
+              <Clock size={18} color="#92400E" />
+              <p style={{ fontSize: "14px", fontWeight: 800, color: "#92400E", margin: 0 }}>
+                Send your Bitcoin payment now
+              </p>
+            </div>
+            <div style={{ padding: "12px 16px", borderRadius: "10px", backgroundColor: "#fff", border: "1.5px solid #FDE68A", marginBottom: "12px" }}>
+              <p style={{ fontSize: "10.5px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "6px" }}>Bitcoin Address</p>
+              <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#0F172A", wordBreak: "break-all", fontFamily: "monospace", letterSpacing: "0.02em", margin: 0 }}>{BITCOIN_ADDRESS}</p>
+            </div>
+            <div style={{ fontSize: "12px", color: "#92400E", lineHeight: 1.8 }}>
+              ₿ Send the BTC equivalent of <strong>£{parseFloat(total).toFixed(2)}</strong> at the current rate.<br />
+              ₿ Use your order number <strong>{order}</strong> in the memo/note field.<br />
+              ₿ We'll email confirmation once the transaction receives 1 network confirmation.
+            </div>
+          </div>
+        )}
 
         {/* Order card */}
         <div style={{
@@ -138,12 +203,22 @@ export default function OrderConfirmation() {
           <div style={{ padding: "18px 24px", backgroundColor: "#F8FAFF", borderTop: "1px solid #EEF4FF" }}>
             <p style={{ fontSize: "12px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "12px" }}>What happens next</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {[
+              {(payment === "bank_transfer" ? [
+                "Send your bank transfer using the reference and account details above.",
+                "We'll email confirmation as soon as your payment clears (usually same day).",
+                "Our lab team will then prepare your secure, discreet packaging for dispatch.",
+                "You'll receive a dispatch notification with tracking information.",
+              ] : payment === "bitcoin" ? [
+                "Send the BTC equivalent to the address above — use your order number as the memo.",
+                "Your transaction will be confirmed on the Bitcoin network, typically within 1 hour.",
+                "We'll email you once confirmed and your order is being prepared for dispatch.",
+                "Your peptides arrive in insulated packaging maintaining −20°C.",
+              ] : [
                 "You will receive an order confirmation email within the next few minutes.",
                 "Our lab team will verify your order and prepare your secure, discreet packaging.",
                 "You'll receive a dispatch notification with tracking information.",
                 "Your peptides arrive in insulated packaging maintaining −20°C.",
-              ].map((text, i) => (
+              ]).map((text, i) => (
                 <div key={i} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
                   <div style={{
                     width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
