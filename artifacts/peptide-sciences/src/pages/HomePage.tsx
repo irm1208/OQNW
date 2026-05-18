@@ -128,7 +128,7 @@ export default function HomePage() {
           backgroundSize: "cover",
           backgroundPosition: "top center",
           backgroundRepeat: "no-repeat",
-          minHeight: "88vh",
+          minHeight: "100vh",
           display: "flex",
           alignItems: "flex-end",
         }}
@@ -137,7 +137,7 @@ export default function HomePage() {
         <div style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(to bottom, rgba(2,11,30,0.08) 0%, rgba(2,11,30,0.15) 35%, rgba(2,11,30,0.72) 65%, rgba(2,11,30,0.92) 100%)",
+          background: "linear-gradient(to bottom, rgba(2,11,30,0.05) 0%, rgba(2,11,30,0.08) 50%, rgba(2,11,30,0.7) 72%, rgba(2,11,30,0.92) 100%)",
           pointerEvents: "none",
         }} />
 
