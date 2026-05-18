@@ -251,103 +251,53 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right — Premium Product Showcase */}
-            <div className="hidden lg:flex flex-shrink-0 flex-col items-center gap-4" style={{ zIndex: 1, position: "relative", width: "280px" }}>
+            {/* Right — Cinematic floating vial showcase */}
+            <div className="hidden lg:block flex-shrink-0" style={{ zIndex: 1, position: "relative", width: "480px", height: "460px" }}>
 
-              {/* Floating badge — top right */}
-              <div style={{ position: "absolute", top: "-14px", right: "-22px", zIndex: 20 }}>
+              {/* Pulsing spotlight glow behind vials */}
+              <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "440px", height: "440px", borderRadius: "50%", background: "radial-gradient(circle, rgba(37,99,235,0.26) 0%, rgba(99,102,241,0.14) 45%, transparent 70%)", pointerEvents: "none", animation: "bundle-spotlight-pulse 5s ease-in-out infinite" }} />
+
+              {/* Secondary inner glow */}
+              <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "240px", height: "240px", borderRadius: "50%", background: "radial-gradient(circle, rgba(147,197,253,0.12) 0%, transparent 70%)", pointerEvents: "none", animation: "bundle-spotlight-pulse 3.5s ease-in-out infinite", animationDelay: "1s" }} />
+
+              {/* Floating vial cards */}
+              {([
+                { src: "/products/3.jpg",  top: "0%",  left: "24%", w: 220, z: 5, anim: "vial-float",   delay: "0s",   opacity: 1,    rot: "-5deg",  label: "BPC-157"     },
+                { src: "/products/1.jpg",  top: "28%", left: "1%",  w: 175, z: 4, anim: "vial-float-b", delay: "0.7s", opacity: 0.93, rot:  "7deg",  label: "AOD-9604"    },
+                { src: "/products/7.jpg",  top: "25%", left: "57%", w: 168, z: 4, anim: "vial-float",   delay: "1.4s", opacity: 0.93, rot: "-4deg",  label: "TB-500"      },
+                { src: "/products/11.jpg", top: "62%", left: "8%",  w: 148, z: 3, anim: "vial-float-b", delay: "0.3s", opacity: 0.75, rot:  "5deg",  label: "Epithalon"   },
+                { src: "/products/43.jpg", top: "60%", left: "57%", w: 142, z: 3, anim: "vial-float",   delay: "1.1s", opacity: 0.75, rot: "-7deg",  label: "Semaglutide" },
+                { src: "/products/15.jpg", top: "44%", left: "33%", w: 134, z: 2, anim: "vial-float-b", delay: "1.9s", opacity: 0.55, rot:  "2deg",  label: "GHK-Cu"      },
+              ] as Array<{ src: string; top: string; left: string; w: number; z: number; anim: string; delay: string; opacity: number; rot: string; label: string }>).map((v, i) => (
                 <div
-                  className="animate-float-medium glass-card"
-                  style={{ padding: "6px 13px", borderRadius: "30px", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                  key={i}
+                  style={{ position: "absolute", top: v.top, left: v.left, width: v.w, height: v.w, zIndex: v.z, animation: `${v.anim} 3.8s ease-in-out infinite`, animationDelay: v.delay, opacity: v.opacity }}
                 >
-                  <div style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#A78BFA", flexShrink: 0 }} />
-                  <span style={{ fontSize: "10px", fontWeight: 700, color: "#fff", letterSpacing: "0.04em" }}>ESI-TOF MS ✓</span>
-                </div>
-              </div>
-
-              {/* Floating badge — bottom left */}
-              <div style={{ position: "absolute", bottom: "72px", left: "-24px", zIndex: 20 }}>
-                <div
-                  className="animate-float-slow glass-card"
-                  style={{ padding: "6px 13px", borderRadius: "30px", display: "inline-flex", alignItems: "center", gap: "6px" }}
-                >
-                  <div style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#60A5FA", flexShrink: 0 }} />
-                  <span style={{ fontSize: "10px", fontWeight: 700, color: "#fff", letterSpacing: "0.04em" }}>Store at −20°C</span>
-                </div>
-              </div>
-
-              {/* Main product card */}
-              <div
-                className="glass-card animate-float-slow"
-                style={{ borderRadius: "22px", padding: "18px", width: "100%", position: "relative", overflow: "hidden" }}
-              >
-                {/* Shimmer glow */}
-                <div style={{ position: "absolute", top: "-40px", right: "-40px", width: "120px", height: "120px", borderRadius: "50%", background: "radial-gradient(circle, rgba(147,197,253,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
-
-                {/* Header: label + popular pill */}
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "13px" }}>
-                  <span style={{ fontSize: "9px", fontWeight: 800, letterSpacing: "0.12em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" }}>
-                    Featured Compound
-                  </span>
-                  <span style={{
-                    fontSize: "9px", fontWeight: 700, color: "#FDE68A",
-                    backgroundColor: "rgba(251,191,36,0.12)", padding: "3px 9px",
-                    borderRadius: "8px", border: "1px solid rgba(251,191,36,0.22)", letterSpacing: "0.06em"
-                  }}>
-                    ★ MOST POPULAR
-                  </span>
-                </div>
-
-                {/* Image box */}
-                <div style={{
-                  borderRadius: "14px",
-                  backgroundColor: "rgba(255,255,255,0.06)",
-                  border: "1px solid rgba(255,255,255,0.09)",
-                  padding: "10px",
-                  marginBottom: "14px",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  height: "138px",
-                }}>
-                  <img src="/products/3.jpg" alt="BPC-157 5mg" style={{ maxHeight: "118px", objectFit: "contain" }} />
-                </div>
-
-                {/* Name + category */}
-                <p style={{ fontSize: "15px", fontWeight: 800, color: "#fff", marginBottom: "2px", lineHeight: 1.2 }}>BPC-157</p>
-                <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.48)", marginBottom: "13px" }}>5mg · Healing Peptide</p>
-
-                {/* Price + badges */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: "20px", fontWeight: 900, color: "#fff" }}>£65.00</span>
-                  <div style={{ display: "flex", gap: "5px" }}>
-                    <span style={{ fontSize: "9px", fontWeight: 700, color: "#93C5FD", backgroundColor: "rgba(147,197,253,0.12)", padding: "3px 8px", borderRadius: "7px", border: "1px solid rgba(147,197,253,0.2)" }}>98%+</span>
-                    <span style={{ fontSize: "9px", fontWeight: 700, color: "#6EE7B7", backgroundColor: "rgba(110,231,183,0.12)", padding: "3px 8px", borderRadius: "7px", border: "1px solid rgba(110,231,183,0.2)" }}>COA ✓</span>
+                  <div style={{ width: "100%", height: "100%", background: "linear-gradient(160deg, #ffffff 0%, #EEF4FF 100%)", borderRadius: "18px", boxShadow: `0 ${v.z * 10 + 8}px ${v.z * 26 + 14}px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.2), inset 0 1px 0 rgba(255,255,255,0.9)`, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "8px", transform: `rotate(${v.rot})` }}>
+                    <img src={v.src} alt={v.label} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                   </div>
                 </div>
+              ))}
+
+              {/* Floating trust badges */}
+              <div style={{ position: "absolute", top: "6px", right: "-8px", zIndex: 10, animation: "vial-float-b 4s ease-in-out infinite", animationDelay: "0.5s" }}>
+                <div className="glass-card" style={{ padding: "5px 12px", borderRadius: "30px", display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                  <div style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#A78BFA" }} />
+                  <span style={{ fontSize: "9.5px", fontWeight: 700, color: "#fff", letterSpacing: "0.04em" }}>ESI-TOF MS ✓</span>
+                </div>
+              </div>
+              <div style={{ position: "absolute", bottom: "60px", left: "-12px", zIndex: 10, animation: "vial-float 4.5s ease-in-out infinite", animationDelay: "2s" }}>
+                <div className="glass-card" style={{ padding: "5px 12px", borderRadius: "30px", display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                  <div style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#34D399" }} />
+                  <span style={{ fontSize: "9.5px", fontWeight: 700, color: "#fff", letterSpacing: "0.04em" }}>98%+ HPLC Purity</span>
+                </div>
               </div>
 
-              {/* Stats row */}
-              <div className="grid grid-cols-3 gap-2.5 w-full">
-                {[
-                  { value: "81+",  label: "Peptides" },
-                  { value: "98%+", label: "HPLC" },
-                  { value: "COA",  label: "Certified" },
-                ].map(s => (
-                  <div key={s.label} className="glass-card text-center rounded-2xl" style={{ padding: "14px 8px" }}>
-                    <p className="font-bold text-white" style={{ fontSize: "clamp(16px,3vw,24px)", lineHeight: 1 }}>{s.value}</p>
-                    <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "10px", marginTop: "4px", fontWeight: 500 }}>{s.label}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* RUO */}
-              <div className="glass-card rounded-2xl w-full flex items-center gap-3" style={{ padding: "12px 16px" }}>
-                <div style={{ width: "34px", height: "34px", borderRadius: "9px", background: "rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <FlaskConical size={16} style={{ color: "#93C5FD" }} />
-                </div>
-                <div>
-                  <p style={{ fontSize: "12px", fontWeight: 700, color: "#fff" }}>RUO Certified</p>
-                  <p style={{ fontSize: "10.5px", color: "rgba(255,255,255,0.5)" }}>Research Use Only · 18+ Required</p>
-                </div>
+              {/* Brand watermark */}
+              <div style={{ position: "absolute", bottom: "0px", left: 0, right: 0, textAlign: "center", pointerEvents: "none" }}>
+                <span style={{ fontSize: "9px", fontWeight: 800, color: "rgba(255,255,255,0.12)", letterSpacing: "0.3em", textTransform: "uppercase" }}>
+                  OMNIQURE PEPTIDE RESEARCH INSTITUTE
+                </span>
               </div>
             </div>
 
