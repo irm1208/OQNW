@@ -52,7 +52,10 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
       .then((r) => (r.ok ? r.json() : null))
       .then((data: ApiProduct[] | null) => {
         if (cancelled || !data || !Array.isArray(data)) return;
-        setProducts(data.map(toProduct));
+        const apiProducts = data.map(toProduct);
+        const apiIds = new Set(apiProducts.map((p) => p.id));
+        const fallback = staticProducts.filter((p) => !apiIds.has(p.id));
+        setProducts([...apiProducts, ...fallback]);
       })
       .catch(() => {})
       .finally(() => {
