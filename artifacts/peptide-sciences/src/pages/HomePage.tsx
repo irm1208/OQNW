@@ -252,6 +252,19 @@ export default function HomePage() {
             </div>
 
 
+            {/* Right — Hero vials image */}
+            <div className="hidden lg:block flex-shrink-0" style={{ zIndex: 1, position: "relative", width: "520px" }}>
+              <img
+                src="/hero-vials.png"
+                alt="OmniQure peptide vials"
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  display: "block",
+                }}
+              />
+            </div>
+
           </div>
         </div>
       </section>
