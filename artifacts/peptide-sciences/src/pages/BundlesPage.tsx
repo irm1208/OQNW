@@ -117,45 +117,60 @@ export default function BundlesPage() {
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
 
-      {/* ── Page header — matches site style ── */}
+      {/* ── Bundle & Save banner bar ── */}
       <div style={{
-        background: "linear-gradient(135deg, #020B1E 0%, #071A4A 35%, #0D2565 65%, #1240A0 100%)",
-        padding: "36px 0 30px",
+        background: "linear-gradient(105deg, #050E28 0%, #091840 40%, #0E2260 70%, #163080 100%)",
+        borderBottom: "1px solid rgba(255,255,255,0.07)",
         position: "relative",
         overflow: "hidden",
       }}>
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", top: "-60px", right: "10%", width: "280px", height: "280px", borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)", pointerEvents: "none" }} />
-        <div className="max-w-[1280px] mx-auto px-3 md:px-8" style={{ position: "relative", zIndex: 1 }}>
-          <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.14em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", marginBottom: "8px" }}>
-            OmniQure · Bundle & Save
-          </p>
-          <h1 style={{ fontSize: "clamp(22px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: "9px" }}>
-            Build Your Research Bundle
-          </h1>
-          <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", maxWidth: "540px", lineHeight: 1.65, marginBottom: "16px" }}>
-            Mix and match any peptides. The more you bundle, the more you save — up to 20% off your entire order.
-          </p>
-          {/* Discount tiers — horizontal strip */}
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-            {TIERS.map(tier => {
-              const active = discountPct >= tier.pct;
-              return (
-                <div key={tier.count} style={{
-                  display: "inline-flex", alignItems: "center", gap: "6px",
-                  background: active ? "rgba(59,130,246,0.25)" : "rgba(255,255,255,0.07)",
-                  border: `1px solid ${active ? "rgba(99,149,246,0.6)" : "rgba(255,255,255,0.12)"}`,
-                  borderRadius: "20px", padding: "5px 12px",
-                  transition: "all 0.2s",
-                }}>
-                  <Percent size={11} color={active ? "#93C5FD" : "rgba(255,255,255,0.3)"} />
-                  <span style={{ fontSize: "11px", fontWeight: 700, color: active ? "#93C5FD" : "rgba(255,255,255,0.35)" }}>
-                    {tier.pct}% off {tier.count}+ vials
-                  </span>
-                  {active && <Check size={11} color="#34D399" />}
-                </div>
-              );
-            })}
+        {/* Subtle dot grid */}
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.045) 1px, transparent 0)", backgroundSize: "26px 26px", pointerEvents: "none" }} />
+        <div className="max-w-[1280px] mx-auto px-4 md:px-8" style={{ position: "relative", zIndex: 1 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px", padding: "16px 0" }}>
+
+            {/* Left — badge + tagline */}
+            <div style={{ display: "flex", alignItems: "center", gap: "14px", flexShrink: 0 }}>
+              <span style={{
+                display: "inline-flex", alignItems: "center",
+                background: "#059669", color: "#fff",
+                fontSize: "11px", fontWeight: 800, letterSpacing: "0.09em",
+                borderRadius: "6px", padding: "6px 12px", whiteSpace: "nowrap",
+              }}>
+                BUNDLE &amp; SAVE
+              </span>
+              <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.72)", fontWeight: 500, whiteSpace: "nowrap" }}>
+                Buy more, save more — starts at just 3 vials
+              </span>
+            </div>
+
+            {/* Right — tier pills */}
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+              {TIERS.map(tier => {
+                const active = discountPct >= tier.pct;
+                return (
+                  <div key={tier.count} style={{
+                    display: "inline-flex", alignItems: "center", gap: "4px",
+                    background: active ? "rgba(59,130,246,0.22)" : "rgba(255,255,255,0.06)",
+                    border: `1px solid ${active ? "rgba(99,149,246,0.55)" : "rgba(255,255,255,0.11)"}`,
+                    borderRadius: "20px", padding: "5px 13px",
+                    transition: "all 0.2s",
+                  }}>
+                    <span style={{ fontSize: "12px", color: active ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.3)", fontWeight: 500 }}>
+                      {tier.count}+ vials
+                    </span>
+                    <span style={{ fontSize: "13px", fontWeight: 900, color: active ? "#93C5FD" : "rgba(255,255,255,0.25)", marginLeft: "2px" }}>
+                      {tier.pct}%
+                    </span>
+                    <span style={{ fontSize: "11px", fontWeight: 700, color: active ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.2)", letterSpacing: "0.04em" }}>
+                      OFF
+                    </span>
+                    {active && <Check size={11} color="#34D399" style={{ marginLeft: "2px" }} />}
+                  </div>
+                );
+              })}
+            </div>
+
           </div>
         </div>
       </div>
