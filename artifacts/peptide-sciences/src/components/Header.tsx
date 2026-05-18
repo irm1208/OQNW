@@ -5,6 +5,7 @@ import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
 import { groupProducts } from "@/data/groupedProducts";
+import { popularProductIds } from "@/data/popularPeptides";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 
@@ -29,6 +30,24 @@ export default function Header() {
     () => groupProducts(products).sort((a, b) => a.baseName.localeCompare(b.baseName)),
     [products]
   );
+  const popularGroups = useMemo(() => {
+    const popularIds = new Set(popularProductIds.map(e => e.id));
+    const seen = new Set<string>();
+    const result = [];
+    for (const p of products) {
+      if (popularIds.has(p.id)) {
+        const { baseName } = (() => {
+          const m = p.name.match(/^(.*?)\s+(\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g))(\s+.*)?$/i);
+          return m ? { baseName: m[1].trim() } : { baseName: p.name };
+        })();
+        if (!seen.has(baseName)) {
+          seen.add(baseName);
+          result.push({ baseName, id: p.id });
+        }
+      }
+    }
+    return result.sort((a, b) => a.baseName.localeCompare(b.baseName));
+  }, [products]);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -38,6 +57,8 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [allPeptidesOpen, setAllPeptidesOpen] = useState(false);
   const allPeptidesTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [popularOpen, setPopularOpen] = useState(false);
+  const popularTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [location, navigate] = useLocation();
 
   const openAllPeptides = useCallback(() => {
@@ -47,6 +68,15 @@ export default function Header() {
 
   const closeAllPeptides = useCallback(() => {
     allPeptidesTimer.current = setTimeout(() => setAllPeptidesOpen(false), 120);
+  }, []);
+
+  const openPopular = useCallback(() => {
+    if (popularTimer.current) clearTimeout(popularTimer.current);
+    setPopularOpen(true);
+  }, []);
+
+  const closePopular = useCallback(() => {
+    popularTimer.current = setTimeout(() => setPopularOpen(false), 120);
   }, []);
   const { totalItems } = useCart();
   const { currency, setCurrency } = useCurrency();
@@ -623,6 +653,93 @@ export default function Header() {
                   </div>
                 );
               }
+              if (item.label === "Popular Peptides") {
+                return (
+                  <div
+                    key={item.label}
+                    style={{ position: "relative" }}
+                    onMouseEnter={openPopular}
+                    onMouseLeave={closePopular}
+                  >
+                    <Link
+                      href={item.href}
+                      className="px-4 py-3 text-sm whitespace-nowrap inline-flex items-center gap-1 transition-colors"
+                      style={{
+                        borderBottom: active ? "2px solid #1B5CB5" : "2px solid transparent",
+                        color: active ? "#1B5CB5" : "#475569",
+                        fontWeight: active ? 600 : 500,
+                        textDecoration: "none", marginBottom: "-1px",
+                      }}
+                    >
+                      {item.label}
+                      <ChevronDown size={13} style={{ opacity: 0.5, transition: "transform 0.2s", transform: popularOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
+                    </Link>
+
+                    {popularOpen && (
+                      <div
+                        onMouseEnter={openPopular}
+                        onMouseLeave={closePopular}
+                        style={{
+                          position: "absolute", top: "100%", left: 0,
+                          backgroundColor: "#fff",
+                          border: "1.5px solid #E8EDF5",
+                          borderRadius: "16px",
+                          boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
+                          zIndex: 400,
+                          minWidth: "380px",
+                          padding: "16px",
+                          marginTop: "2px",
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px", paddingBottom: "8px", borderBottom: "1px solid #F1F5F9" }}>
+                          <p style={{ fontSize: "11px", fontWeight: 800, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>
+                            Popular Peptides
+                          </p>
+                          <Link
+                            href="/popular-peptides"
+                            onClick={() => setPopularOpen(false)}
+                            style={{ fontSize: "12px", fontWeight: 600, color: "#1B5CB5", textDecoration: "none" }}
+                          >
+                            View all →
+                          </Link>
+                        </div>
+
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1px" }}>
+                          {popularGroups.map((g) => (
+                            <Link
+                              key={g.baseName}
+                              href={`/product/${g.id}`}
+                              onClick={() => setPopularOpen(false)}
+                              style={{
+                                display: "block",
+                                padding: "6px 8px", borderRadius: "8px",
+                                textDecoration: "none", color: "#374151",
+                                fontSize: "12.5px", fontWeight: 500,
+                                whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                              }}
+                              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F0F5FF")}
+                              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
+                            >
+                              {g.baseName}
+                            </Link>
+                          ))}
+                        </div>
+
+                        <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #F1F5F9", textAlign: "center" }}>
+                          <Link
+                            href="/popular-peptides"
+                            onClick={() => setPopularOpen(false)}
+                            style={{ fontSize: "13px", fontWeight: 600, color: "#1B5CB5", textDecoration: "none" }}
+                          >
+                            Browse All Popular Peptides →
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={item.label}
