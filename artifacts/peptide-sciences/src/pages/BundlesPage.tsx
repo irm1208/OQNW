@@ -14,15 +14,17 @@ const CATEGORIES = [
 ];
 
 const TIERS = [
-  { count: 5,  pct: 10 },
-  { count: 10, pct: 15 },
-  { count: 15, pct: 20 },
+  { count: 3,  pct: 5  },
+  { count: 6,  pct: 10 },
+  { count: 9,  pct: 15 },
+  { count: 12, pct: 20 },
 ];
 
 function getDiscount(n: number) {
-  if (n >= 15) return 20;
-  if (n >= 10) return 15;
-  if (n >= 5) return 10;
+  if (n >= 12) return 20;
+  if (n >= 9)  return 15;
+  if (n >= 6)  return 10;
+  if (n >= 3)  return 5;
   return 0;
 }
 
@@ -31,7 +33,7 @@ type BundleItem = { product: Product; qty: number };
 export default function BundlesPage() {
   useSEO({
     title: "Bundle & Save — Research Peptide Bundles",
-    description: "Build your own research peptide bundle and save up to 20%. Mix and match from 81 HPLC-verified peptides. Free UK shipping available.",
+    description: "Build your own research peptide bundle and save up to 20%. Mix and match from 81 HPLC-verified peptides — 3+ vials saves 5%, up to 20% off. Free UK shipping available.",
     canonicalPath: "/bundles",
   });
 
@@ -377,7 +379,7 @@ export default function BundlesPage() {
               }}>
                 <Zap size={13} color="#D97706" />
                 <p style={{ margin: 0, fontSize: "12px", color: "#92400E", fontWeight: 600 }}>
-                  Add {5 - bundle.length} more item{5 - bundle.length !== 1 ? "s" : ""} to unlock 10% off
+                  Add {3 - bundle.length} more item{3 - bundle.length !== 1 ? "s" : ""} to unlock 5% off
                 </p>
               </div>
             )}
