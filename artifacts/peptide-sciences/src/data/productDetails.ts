@@ -1796,6 +1796,45 @@ Energy expenditure research has investigated whether NNMT inhibition increases t
 One-carbon metabolism research has examined 5-Amino-1MQ's effect on the SAM/SAH ratio and global methylation status. NNMT consumes SAM as a methyl donor; inhibition therefore preserves SAM availability for other methyltransferases, potentially affecting epigenetic regulation, polyamine synthesis, and creatine biosynthesis pathways investigated in metabolic disease models.`
   },
 
+  "85": {
+    id: "85",
+    refNumber: "245-87-CI",
+    casNumber: "863288-34-0 / 170851-70-4",
+    molecularWeight: "3367.94 g/mol / 711.868 g/mol",
+    purity: "99%+ HPLC (each component)",
+    alsoKnownAs: "Modified GRF 1-29 + Ipamorelin Blend, mGRF(1-29) + IPA Blend",
+    storage: "Store lyophilized blend at -20°C. After reconstitution store at 4°C for up to 2 weeks.",
+    appearance: "White lyophilized powder",
+    solubility: "Soluble in sterile water or bacteriostatic water",
+    researchAreas: ["Growth Hormone Research", "Body Composition", "Anti-Ageing Research", "Metabolic Research", "Bone and Connective Tissue Research"],
+    description: `CJC-1295 No DAC + Ipamorelin 5mg is a dual-peptide research blend combining CJC-1295 No DAC (Modified GRF 1-29, 5mg) — a GHRH receptor agonist — with Ipamorelin (5mg) — a selective GHS-R1a agonist — to elicit synergistic pulsatile GH secretion via complementary and independent receptor pathways.`,
+    longDescription: `What is CJC-1295 No DAC + Ipamorelin Blend?
+
+CJC-1295 No DAC + Ipamorelin is a research blend of two peptides that act synergistically on the growth hormone (GH) axis via distinct receptor mechanisms. CJC-1295 No DAC (Modified GRF 1-29) is a stabilised 29-amino acid analogue of endogenous growth hormone-releasing hormone (GHRH) that activates pituitary GHRH receptors. Ipamorelin is a selective pentapeptide ghrelin receptor (GHS-R1a) agonist that amplifies GH pulse amplitude through a complementary pathway. Together, they produce greater pulsatile GH release than either peptide in isolation.
+
+Component Overview
+
+CJC-1295 No DAC 5mg (Modified GRF 1-29): CAS 863288-34-0, molecular formula C₁₅₂H₂₅₂N₄₄O₄₂, MW 3367.94 g/mol. CJC-1295 No DAC is the 29-amino acid N-terminal fragment of GHRH with four amino acid substitutions (at positions 2, 8, 15, and 27) that confer resistance to dipeptidyl peptidase IV (DPP-IV) cleavage and oxidation, substantially extending stability compared to native GHRH(1-29). Unlike CJC-1295 with DAC, this analogue lacks the drug affinity complex (maleimidoproprionic acid) that enables albumin binding and extended half-life, resulting in a shorter, more physiological GH pulse profile suited to pulsatile dosing research protocols.
+
+Ipamorelin 5mg: CAS 170851-70-4, molecular formula C₃₈H₄₉N₉O₅, MW 711.868 g/mol. Ipamorelin (Aib-His-D-2-Nal-D-Phe-Lys-NH₂) is a synthetic pentapeptide GHS-R1a agonist that mimics the GH-releasing action of ghrelin at the pituitary and hypothalamic level. A key feature distinguishing Ipamorelin from earlier GHRPs (GHRP-2, GHRP-6) is its high selectivity: research demonstrates that Ipamorelin stimulates GH release with minimal elevation of cortisol, prolactin, or ACTH, making it a precision research tool for studying the ghrelin receptor axis without confounding HPA axis activation.
+
+Research Rationale
+
+The combination of a GHRH analogue with a GHSR agonist exploits two independent receptor pathways that converge on pituitary somatotrophs to amplify GH output. CJC-1295 No DAC stimulates adenylate cyclase via Gs-coupled GHRH receptors, increasing intracellular cAMP and priming somatotroph cells for GH secretion. Ipamorelin acts via the Gq/11-coupled GHS-R1a receptor, activating phospholipase C and mobilising intracellular calcium, while also suppressing hypothalamic somatostatin release. The combination of increased cAMP, elevated intracellular calcium, and reduced somatostatin tone produces synergistic GH pulse amplitudes documented to exceed the sum of either peptide alone.
+
+Growth Hormone Research
+
+Studies in rodent and primate models have established the supra-additive GH-releasing effect of combined GHRH + GHRP administration. Research has examined the magnitude, duration, and frequency of GH pulses induced by this combination, the sensitivity of aged versus young pituitaries to combined GH secretagogue stimulation, and the role of somatostatin modulation in determining GH output. Investigations have characterised how the shorter-acting profile of CJC-1295 No DAC (compared to the DAC version) preserves pulsatility, preventing the sustained flat GH elevation associated with chronic receptor stimulation.
+
+Body Composition Research
+
+GH axis research using GHRH + GHSR agonist blends has studied downstream IGF-1 production, lipolysis, lean mass preservation, and bone turnover markers. Studies in models of GH deficiency, ageing-associated somatopause, and obesity-related metabolic dysregulation have investigated whether pulsatile GH restoration alters fat-to-lean mass ratios, adipocyte lipid mobilisation, and nitrogen retention.
+
+Anti-Ageing and Metabolic Research
+
+Research into the somatopause — the age-related decline in GH pulse amplitude — has utilised GHRH + GHRP combinations to investigate restoration of youthful GH secretory patterns. Studies have examined effects on skin collagen density, sleep quality biomarkers, bone mineral density, and cognitive function in aged animal models, establishing a framework for investigating GH axis restoration in longevity research.`
+  },
+
   "84": {
     id: "84",
     refNumber: "026-43-AR",

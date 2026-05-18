@@ -139,6 +139,9 @@ export const janoshikData: Record<string, JanoshikResult> = {
   // ── ARA-290 ───────────────────────────────────────────────────────────────
   "84": { purity: 99.341, actualMass: 16.08, lot: "AR16-0510",          received: "10 May 2026", analysis: "11 May 2026" },
 
+  // ── CJC-1295 No DAC + Ipamorelin Blend ───────────────────────────────────
+  "85": { actualMass: 10.14, lot: "CI10-0512",                           received: "12 May 2026", analysis: "13 May 2026" },
+
   // ── Tesamorelin ───────────────────────────────────────────────────────────
   "82": { purity: 99.152, actualMass: 21.47, lot: "TS20-0507",          received: "04 May 2026", analysis: "05 May 2026" },
 
