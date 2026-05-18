@@ -44,7 +44,8 @@ export default function LabResultsPage() {
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
 
       {/* Hero */}
-      <div style={{ background: "linear-gradient(135deg, #0D1F4E 0%, #1240A0 100%)", padding: "56px 20px 48px" }}>
+      <div style={{ background: "linear-gradient(135deg, #020B1E 0%, #071A4A 35%, #0D2565 65%, #1240A0 100%)", padding: "56px 20px 48px", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
         <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: "8px",

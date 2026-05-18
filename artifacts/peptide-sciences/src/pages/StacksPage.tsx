@@ -376,7 +376,7 @@ export default function StacksPage() {
       {/* Hero */}
       <div
         style={{
-          background: "linear-gradient(135deg, #071A4A 0%, #0D2565 35%, #1240A0 70%, #1B5CB5 100%)",
+          background: "linear-gradient(135deg, #020B1E 0%, #071A4A 35%, #0D2565 65%, #1240A0 100%)",
           position: "relative",
           overflow: "hidden",
         }}

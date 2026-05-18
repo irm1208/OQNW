@@ -17,19 +17,33 @@ export default function WishlistPage() {
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "60vh" }}>
-      <div className="max-w-[1280px] mx-auto px-4 py-8 md:py-12">
-        {/* Heading */}
-        <div className="flex items-center gap-3 mb-7">
-          <Heart size={22} style={{ color: "#DC2626", fill: "#DC2626" }} />
-          <h1 className="text-2xl font-bold" style={{ color: "#0F172A" }}>
-            My Wishlist
-            {saved.length > 0 && (
-              <span className="ml-2 text-base font-normal" style={{ color: "#94A3B8" }}>
-                ({saved.length} item{saved.length !== 1 ? "s" : ""})
-              </span>
-            )}
-          </h1>
+
+      {/* Page header */}
+      <div style={{ background: "linear-gradient(135deg, #020B1E 0%, #071A4A 35%, #0D2565 65%, #1240A0 100%)", padding: "36px 0 30px", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "-60px", right: "10%", width: "280px", height: "280px", borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div className="max-w-[1280px] mx-auto px-3 md:px-4" style={{ position: "relative", zIndex: 1 }}>
+          <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.14em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", marginBottom: "8px" }}>
+            OmniQure · My Account
+          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "9px" }}>
+            <Heart size={20} style={{ color: "#F87171", fill: "#F87171", flexShrink: 0 }} />
+            <h1 style={{ fontSize: "clamp(22px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.1, margin: 0 }}>
+              My Wishlist
+              {saved.length > 0 && (
+                <span style={{ marginLeft: "10px", fontSize: "16px", fontWeight: 500, color: "rgba(255,255,255,0.45)" }}>
+                  ({saved.length} item{saved.length !== 1 ? "s" : ""})
+                </span>
+              )}
+            </h1>
+          </div>
+          <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", lineHeight: 1.65 }}>
+            Your saved research peptides from OmniQure.
+          </p>
         </div>
+      </div>
+
+      <div className="max-w-[1280px] mx-auto px-4 py-8 md:py-10">
 
         {saved.length === 0 ? (
           /* Empty state */

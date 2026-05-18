@@ -31,15 +31,26 @@ export default function BlogPage() {
   const totalPages = Math.ceil((data?.total ?? 0) / limit);
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 py-12">
-      <div className="mb-10">
-        <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: "'Arimo', Arial, sans-serif", color: "#0a1628" }}>
-          Research &amp; Education
-        </h1>
-        <p className="text-gray-500 text-sm max-w-xl">
-          Evidence-based articles, peptide research summaries, and educational content from the OmniQure team.
-        </p>
+    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
+
+      {/* Page header */}
+      <div style={{ background: "linear-gradient(135deg, #020B1E 0%, #071A4A 35%, #0D2565 65%, #1240A0 100%)", padding: "36px 0 30px", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "-60px", right: "10%", width: "280px", height: "280px", borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div className="max-w-[1280px] mx-auto px-3 md:px-4" style={{ position: "relative", zIndex: 1 }}>
+          <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.14em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", marginBottom: "8px" }}>
+            OmniQure · Research & Education
+          </p>
+          <h1 style={{ fontSize: "clamp(22px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: "9px" }}>
+            Research &amp; Education
+          </h1>
+          <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", maxWidth: "540px", lineHeight: 1.65 }}>
+            Evidence-based articles, peptide research summaries, and educational content from the OmniQure team.
+          </p>
+        </div>
       </div>
+
+      <div className="max-w-[1280px] mx-auto px-4 py-10">
 
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -116,6 +127,7 @@ export default function BlogPage() {
           </button>
         </div>
       )}
+      </div>
     </div>
   );
 }

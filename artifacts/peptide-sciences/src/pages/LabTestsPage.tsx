@@ -438,7 +438,8 @@ export default function LabTestsPage() {
       )}
 
       {/* Top bar */}
-      <div style={{ backgroundColor: "#0C1120", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "24px 24px 0" }}>
+      <div style={{ background: "linear-gradient(135deg, #020B1E 0%, #071A4A 35%, #0D2565 65%, #1240A0 100%)", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "24px 24px 0", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
         <div style={{ maxWidth: "1440px", margin: "0 auto" }}>
 
           {/* Title row */}
