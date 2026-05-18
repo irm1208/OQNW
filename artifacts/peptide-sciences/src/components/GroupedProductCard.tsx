@@ -135,9 +135,9 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
       </div>
 
       {/* Info */}
-      <div className="flex flex-col flex-1 p-5" style={{ borderTop: `1px solid ${cat.color}15` }}>
+      <div className="card-info flex flex-col flex-1 p-5" style={{ borderTop: `1px solid ${cat.color}15` }}>
         {/* Category tag */}
-        <span style={{
+        <span className="card-cat" style={{
           display: "inline-block", alignSelf: "flex-start",
           fontSize: "10.5px", fontWeight: 700,
           color: cat.color, backgroundColor: cat.bg,
@@ -149,6 +149,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
 
         {/* Product name — clickable */}
         <p
+          className="card-name"
           onClick={goToProduct}
           style={{
             fontSize: "18px", fontWeight: 800, lineHeight: 1.3, marginBottom: "10px",
@@ -166,7 +167,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
 
         {/* Strength pills */}
         {group.variants.length > 1 && (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "10px" }} onClick={stopProp}>
+          <div className="card-variants" style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "10px" }} onClick={stopProp}>
             {group.variants.map((v, i) => {
               const { strength } = parseName(v.name);
               const active = i === selectedIdx;
@@ -181,6 +182,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
                     backgroundColor: active ? cat.color : "#F8FAFC",
                     color: active ? "#fff" : "#64748B",
                     cursor: "pointer", transition: "all 0.15s",
+                    fontFamily: "inherit",
                   }}
                 >
                   {strength}
@@ -193,7 +195,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {/* Price */}
         {selectedVariant.price != null && (
           <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "6px" }}>
-            <span style={{ fontSize: "25px", fontWeight: 800, color: "#059669", lineHeight: 1 }}>
+            <span className="card-price" style={{ fontSize: "25px", fontWeight: 800, color: "#059669", lineHeight: 1 }}>
               {formatPrice(selectedVariant.price)}
             </span>
             {group.variants.length > 1 && selectedIdx !== 0 && group.variants[0].price != null && (

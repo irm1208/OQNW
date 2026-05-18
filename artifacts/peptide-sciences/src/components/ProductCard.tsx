@@ -154,9 +154,9 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Info */}
-        <div className="flex flex-col flex-1 p-4" style={{ borderTop: `1px solid ${cat.color}15` }}>
+        <div className="card-info flex flex-col flex-1 p-4" style={{ borderTop: `1px solid ${cat.color}15` }}>
           {/* Category tag */}
-          <span style={{
+          <span className="card-cat" style={{
             display: "inline-block", alignSelf: "flex-start",
             fontSize: "9.5px", fontWeight: 700,
             color: cat.color, backgroundColor: cat.bg,
@@ -166,18 +166,18 @@ export default function ProductCard({ product }: ProductCardProps) {
             {product.category}
           </span>
 
-          <p style={{ fontSize: "16px", fontWeight: 700, color: "#0F172A", lineHeight: 1.3, marginBottom: "2px" }}>
+          <p className="card-name" style={{ fontSize: "16px", fontWeight: 700, color: "#0F172A", lineHeight: 1.3, marginBottom: "2px" }}>
             {baseName}
           </p>
           {strength && (
-            <p style={{ fontSize: "13.5px", fontWeight: 700, color: cat.color, marginBottom: "8px" }}>
+            <p className="card-strength" style={{ fontSize: "13.5px", fontWeight: 700, color: cat.color, marginBottom: "8px" }}>
               {strength}
             </p>
           )}
 
           {product.price != null && (
             <div className="flex items-baseline gap-1.5" style={{ marginBottom: "4px" }}>
-              <p style={{ fontSize: "21px", fontWeight: 800, color: "#0F172A", lineHeight: 1 }}>
+              <p className="card-price" style={{ fontSize: "21px", fontWeight: 800, color: "#0F172A", lineHeight: 1 }}>
                 {formatPrice(product.price)}
               </p>
             </div>
