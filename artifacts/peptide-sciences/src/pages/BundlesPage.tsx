@@ -31,7 +31,7 @@ type BundleItem = { product: Product; qty: number };
 export default function BundlesPage() {
   useSEO({
     title: "Bundle & Save — Research Peptide Bundles",
-    description: "Build your own research peptide bundle and save up to 15%. Mix and match from 81 HPLC-verified peptides. Free UK shipping available.",
+    description: "Build your own research peptide bundle and save up to 20%. Mix and match from 81 HPLC-verified peptides. Free UK shipping available.",
     canonicalPath: "/bundles",
   });
 
@@ -99,7 +99,7 @@ export default function BundlesPage() {
             Build Your Research Bundle
           </h1>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.72)", lineHeight: 1.6, maxWidth: "560px", margin: "0 auto 28px" }}>
-            Mix and match any peptides. The more you bundle, the more you save — up to 15% off your entire order.
+            Mix and match any peptides. The more you bundle, the more you save — up to 20% off your entire order.
           </p>
 
           {/* Discount tiers */}
@@ -377,7 +377,7 @@ export default function BundlesPage() {
               }}>
                 <Zap size={13} color="#D97706" />
                 <p style={{ margin: 0, fontSize: "12px", color: "#92400E", fontWeight: 600 }}>
-                  Add {2 - bundle.length} more item{2 - bundle.length !== 1 ? "s" : ""} to unlock 5% off
+                  Add {5 - bundle.length} more item{5 - bundle.length !== 1 ? "s" : ""} to unlock 10% off
                 </p>
               </div>
             )}
