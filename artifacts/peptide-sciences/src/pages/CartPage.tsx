@@ -377,7 +377,7 @@ export default function CartPage() {
                     {bundleDiscountPct === 0 ? (
                       <>
                         <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#1240A0", marginBottom: "6px" }}>
-                          Bundle & Save — add {5 - totalItems} more {5 - totalItems === 1 ? "peptide" : "peptides"} for 5% off
+                          Bundle & Save — add {5 - totalItems} more {5 - totalItems === 1 ? "peptide" : "peptides"} for 10% off
                         </p>
                         <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
                           <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#DBEAFE", overflow: "hidden" }}>
@@ -385,12 +385,12 @@ export default function CartPage() {
                           </div>
                           <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{totalItems}/5</span>
                         </div>
-                        <p style={{ fontSize: "10.5px", color: "#475569", marginTop: "5px" }}>5–9 items = 5% off · 10+ items = 10% off</p>
+                        <p style={{ fontSize: "10.5px", color: "#475569", marginTop: "5px" }}>5–9 items = 10% off · 10+ items = 15% off</p>
                       </>
                     ) : (
                       <>
                         <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669", marginBottom: "6px" }}>
-                          ✓ Bundle & Save 5% applied — add {10 - totalItems} more for 10% off
+                          ✓ Bundle & Save 10% applied — add {10 - totalItems} more for 15% off
                         </p>
                         <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
                           <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#BBF7D0", overflow: "hidden" }}>
@@ -408,7 +408,7 @@ export default function CartPage() {
                     style={{ backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0" }}
                   >
                     <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669" }}>
-                      ✓ Bundle & Save 10% applied — maximum discount active!
+                      ✓ Bundle & Save 15% applied — maximum discount active!
                     </p>
                   </div>
                 )}

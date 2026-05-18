@@ -14,13 +14,13 @@ const CATEGORIES = [
 ];
 
 const TIERS = [
-  { count: 5,  pct: 5  },
-  { count: 10, pct: 10 },
+  { count: 5,  pct: 10 },
+  { count: 10, pct: 15 },
 ];
 
 function getDiscount(n: number) {
-  if (n >= 10) return 10;
-  if (n >= 5) return 5;
+  if (n >= 10) return 15;
+  if (n >= 5) return 10;
   return 0;
 }
 
