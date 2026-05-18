@@ -126,30 +126,30 @@ export default function HomePage() {
           overflow: "hidden",
           backgroundImage: "url('/hero-vials.png')",
           backgroundSize: "cover",
-          backgroundPosition: "top center",
+          backgroundPosition: "center center",
           backgroundRepeat: "no-repeat",
-          minHeight: "100vh",
+          minHeight: "86vh",
           display: "flex",
-          alignItems: "flex-end",
+          alignItems: "center",
         }}
       >
-        {/* Gradient — transparent at top (logo shows), dark at bottom (text readable) */}
+        {/* Left-to-right gradient — dark on left for text, fades out so vials show on right */}
         <div style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(to bottom, rgba(2,11,30,0.05) 0%, rgba(2,11,30,0.08) 50%, rgba(2,11,30,0.7) 72%, rgba(2,11,30,0.92) 100%)",
+          background: "linear-gradient(to right, rgba(2,11,30,0.88) 0%, rgba(2,11,30,0.75) 35%, rgba(2,11,30,0.35) 60%, rgba(2,11,30,0.0) 80%)",
           pointerEvents: "none",
         }} />
 
-        {/* Content pinned to the bottom */}
-        <div className="max-w-[1280px] mx-auto px-4 w-full" style={{ position: "relative", zIndex: 1, paddingBottom: "56px" }}>
+        {/* Content — vertically centred, left half only */}
+        <div className="max-w-[1280px] mx-auto px-8 w-full" style={{ position: "relative", zIndex: 1 }}>
 
-          <div className="text-white" style={{ maxWidth: "700px" }}>
+          <div className="text-white" style={{ maxWidth: "520px" }}>
 
             <h1
               className="font-bold mb-5"
               style={{
-                fontSize: "clamp(36px, 5vw, 64px)",
+                fontSize: "clamp(36px, 4.5vw, 62px)",
                 lineHeight: 1.08,
                 letterSpacing: "-0.02em",
               }}
@@ -163,7 +163,7 @@ export default function HomePage() {
 
             <p
               className="mb-7 leading-relaxed"
-              style={{ color: "rgba(255,255,255,0.78)", fontSize: "16.5px", maxWidth: "540px" }}
+              style={{ color: "rgba(255,255,255,0.78)", fontSize: "16px" }}
             >
               81 HPLC-verified peptides — each backed by full COA and ESI-TOF mass spectrometry data. The standard for serious researchers.
             </p>
@@ -182,7 +182,7 @@ export default function HomePage() {
                     fontWeight: 600,
                     padding: "5px 12px",
                     borderRadius: "20px",
-                    backdropFilter: "blur(4px)",
+                    backdropFilter: "blur(6px)",
                   }}
                 >
                   <CheckCircle size={12} style={{ color: "#34D399" }} />
