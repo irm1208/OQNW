@@ -1796,6 +1796,41 @@ Energy expenditure research has investigated whether NNMT inhibition increases t
 One-carbon metabolism research has examined 5-Amino-1MQ's effect on the SAM/SAH ratio and global methylation status. NNMT consumes SAM as a methyl donor; inhibition therefore preserves SAM availability for other methyltransferases, potentially affecting epigenetic regulation, polyamine synthesis, and creatine biosynthesis pathways investigated in metabolic disease models.`
   },
 
+  "84": {
+    id: "84",
+    refNumber: "026-43-AR",
+    casNumber: "506-32-1",
+    formula: "C₂₀H₃₂O₂",
+    molecularWeight: "304.47 g/mol",
+    purity: "99%+ HPLC",
+    alsoKnownAs: "Cibinetide, ARA290",
+    storage: "Store lyophilized at -20°C. After reconstitution store at 4°C for up to 2 weeks.",
+    appearance: "White lyophilized powder",
+    solubility: "Soluble in sterile water or bacteriostatic water",
+    halfLife: "Short; studied in subcutaneous dosing models",
+    researchAreas: ["Neuroprotection", "Anti-Inflammatory Research", "Small Fiber Neuropathy", "Sarcoidosis Research", "Pain Research"],
+    description: `ARA-290 16mg (Cibinetide) is a synthetic peptide ligand of the innate repair receptor (IRR/EPOR-βcR heterodimer) studied for neuroprotection, anti-inflammatory activity, small fiber neuropathy regeneration, and tissue repair without the hematopoietic side effects associated with erythropoietin.`,
+    longDescription: `What is ARA-290 (Cibinetide)?
+
+ARA-290 (Cibinetide) is a synthetic peptide designed to selectively activate the innate repair receptor (IRR) — a heterodimeric complex formed by the erythropoietin receptor (EPOR) and the common beta chain (βcR, CD131). Unlike erythropoietin (EPO), ARA-290 does not bind the classical homodimeric EPO receptor responsible for red blood cell production, thereby isolating tissue-protective and anti-inflammatory receptor signalling without triggering erythropoiesis or associated thrombotic risk.
+
+ARA-290 Structure
+
+ARA-290 has the molecular formula C₂₀H₃₂O₂ and a molecular weight of 304.47 g/mol. The compound mimics the helix-B surface peptide region of erythropoietin responsible for tissue-protective receptor binding. This selective structural motif enables engagement of the EPOR/βcR heterodimer while avoiding the EPOR homodimer, conferring tissue-protective and immunomodulatory activity in the absence of haematopoietic effects.
+
+ARA-290 Research
+
+Small fiber neuropathy (SFN) research represents a major focus area for ARA-290. SFN is characterised by selective degeneration of thinly myelinated Aδ and unmyelinated C fibres, producing neuropathic pain, dysautonomia, and impaired thermoregulation. Preclinical studies demonstrated that ARA-290 promotes axonal regeneration and restores intraepidermal nerve fibre density (IENFD) in SFN models. Clinical investigations in patients with sarcoidosis-associated SFN documented improvements in IENFD, neuropathic pain scores, and corneal confocal microscopy-measured nerve parameters following ARA-290 administration.
+
+Sarcoidosis research has investigated ARA-290 specifically in the context of granulomatous inflammation-driven peripheral nerve damage. Sarcoidosis frequently causes SFN as a consequence of systemic immune activation. ARA-290 has been studied for its ability to protect and regenerate small nerve fibres in this inflammatory context, with published clinical data suggesting measurable improvement in nerve fibre density and patient-reported neuropathic symptom scores.
+
+Anti-inflammatory research has characterised ARA-290 as an activator of IRR-mediated signalling pathways that suppress pro-inflammatory cytokine production. In macrophage and dendritic cell models, ARA-290 reduces secretion of TNF-α, IL-1β, and IL-6 following inflammatory stimuli. Studies suggest that IRR activation polarises immune cells toward tissue-protective phenotypes, attenuating neuroinflammation and peripheral immune overactivation without broad immunosuppression.
+
+Neuroprotection research has examined ARA-290's capacity to protect neurons from ischaemic, metabolic, and inflammatory injury. Rodent models of peripheral nerve injury, cerebral ischaemia, and diabetes-associated neuropathy have demonstrated that ARA-290 reduces neuronal apoptosis, preserves axonal integrity, and supports functional recovery. These findings indicate potential utility across neuroprotective research applications beyond the primary sarcoidosis indication.
+
+Metabolic neuropathy research has explored ARA-290 in models of diabetic peripheral neuropathy, where small fibre loss and neuropathic pain are prevalent complications. Preclinical studies report attenuation of nerve fibre degeneration, improvements in autonomic function biomarkers, and reduced mechanical hyperalgesia following ARA-290 treatment, supporting its investigation as a research tool for EPO-pathway neuroprotection in metabolic disease contexts.`
+  },
+
   "82": {
     id: "82",
     refNumber: "795-20-TS",

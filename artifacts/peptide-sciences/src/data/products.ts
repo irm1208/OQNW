@@ -86,4 +86,5 @@ export const products: Product[] = [
   { id: "81", name: "VIP 10mg",                              slug: "vip-10mg",                             price: 110, image: "/products/81.jpg", category: "Research Peptides" },
   { id: "82", name: "Tesamorelin 20mg",                      slug: "tesamorelin-20mg",                     price: 240, image: "/products/82.jpg", category: "Growth Hormone" },
   { id: "83", name: "5-Amino-1Q 50mg",                       slug: "5-amino-1q-50mg",                      price: 95,  image: "/products/83.jpg", category: "Cellular Health" },
+  { id: "84", name: "ARA-290 16mg",                          slug: "ara-290-16mg",                         price: 120, image: "/products/84.jpg", category: "Research Peptides" },
 ];
