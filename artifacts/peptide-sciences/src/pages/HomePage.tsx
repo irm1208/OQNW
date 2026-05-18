@@ -165,7 +165,7 @@ export default function HomePage() {
               className="mb-7 leading-relaxed"
               style={{ color: "rgba(255,255,255,0.78)", fontSize: "16px" }}
             >
-              81 HPLC-verified peptides — each backed by full COA and ESI-TOF mass spectrometry data. The standard for serious researchers.
+              Every vial independently verified to 98%+ HPLC purity — backed by full COA documentation and ESI-TOF mass spectrometry data. Trusted by researchers who demand certainty.
             </p>
 
             {/* Trust chips */}
