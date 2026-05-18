@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Link, useLocation } from "wouter";
 import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut, Heart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
@@ -17,6 +17,23 @@ const navItems = [
   { label: "Peptide Calculator", href: "/calculator" },
 ];
 
+const PEPTIDE_CATEGORIES = [
+  { label: "Growth Peptides",     icon: "🧬" },
+  { label: "Healing Peptides",    icon: "🩹" },
+  { label: "Weight Management",   icon: "⚖️" },
+  { label: "Longevity Peptides",  icon: "⏳" },
+  { label: "Cellular Health",     icon: "🔬" },
+  { label: "Nootropics",          icon: "🧠" },
+  { label: "Immune Support",      icon: "🛡️" },
+  { label: "Research Peptides",   icon: "🧪" },
+  { label: "Peptide Blends",      icon: "⚗️" },
+  { label: "Skin & Repair",       icon: "✨" },
+  { label: "Hormonal Peptides",   icon: "⚡" },
+  { label: "Growth Hormone",      icon: "📈" },
+  { label: "Anti-Inflammatory",   icon: "❄️" },
+  { label: "Cognitive Peptides",  icon: "💡" },
+];
+
 const rightNavItems = [
   { label: "Contact Us", href: "/contact" },
 ];
@@ -30,7 +47,18 @@ export default function Header() {
   const [currencyOpen, setCurrencyOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [allPeptidesOpen, setAllPeptidesOpen] = useState(false);
+  const allPeptidesTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [location, navigate] = useLocation();
+
+  const openAllPeptides = useCallback(() => {
+    if (allPeptidesTimer.current) clearTimeout(allPeptidesTimer.current);
+    setAllPeptidesOpen(true);
+  }, []);
+
+  const closeAllPeptides = useCallback(() => {
+    allPeptidesTimer.current = setTimeout(() => setAllPeptidesOpen(false), 120);
+  }, []);
   const { totalItems } = useCart();
   const { currency, setCurrency } = useCurrency();
   const { customer, loadingAuth, signOut } = useCustomerAuth();
@@ -515,7 +543,104 @@ export default function Header() {
         <div className="max-w-[1280px] mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center">
             {navItems.map((item) => {
-              const active = location === item.href;
+              const active = location === item.href || (item.href === "/all-peptides" && location.startsWith("/all-peptides"));
+              if (item.label === "All Peptides") {
+                return (
+                  <div
+                    key={item.label}
+                    style={{ position: "relative" }}
+                    onMouseEnter={openAllPeptides}
+                    onMouseLeave={closeAllPeptides}
+                  >
+                    <Link
+                      href={item.href}
+                      className="px-4 py-3 text-sm whitespace-nowrap inline-flex items-center gap-1 transition-colors"
+                      style={{
+                        borderBottom: active ? "2px solid #1B5CB5" : "2px solid transparent",
+                        color: active ? "#1B5CB5" : "#475569",
+                        fontWeight: active ? 600 : 500,
+                        textDecoration: "none", marginBottom: "-1px",
+                      }}
+                    >
+                      {item.label}
+                      <ChevronDown size={13} style={{ opacity: 0.5, transition: "transform 0.2s", transform: allPeptidesOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
+                    </Link>
+
+                    {/* Dropdown mega-menu */}
+                    {allPeptidesOpen && (
+                      <div
+                        onMouseEnter={openAllPeptides}
+                        onMouseLeave={closeAllPeptides}
+                        style={{
+                          position: "absolute", top: "100%", left: 0,
+                          backgroundColor: "#fff",
+                          border: "1.5px solid #E8EDF5",
+                          borderRadius: "16px",
+                          boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
+                          zIndex: 400,
+                          minWidth: "520px",
+                          padding: "16px",
+                          marginTop: "2px",
+                        }}
+                      >
+                        {/* Header row */}
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px", paddingBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
+                          <p style={{ fontSize: "11px", fontWeight: 800, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>
+                            Browse by Category
+                          </p>
+                          <Link
+                            href="/all-peptides"
+                            onClick={() => setAllPeptidesOpen(false)}
+                            style={{ fontSize: "12px", fontWeight: 600, color: "#1B5CB5", textDecoration: "none" }}
+                          >
+                            View all →
+                          </Link>
+                        </div>
+
+                        {/* Category grid */}
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2px" }}>
+                          {PEPTIDE_CATEGORIES.map((cat) => (
+                            <Link
+                              key={cat.label}
+                              href={`/all-peptides?category=${encodeURIComponent(cat.label)}`}
+                              onClick={() => setAllPeptidesOpen(false)}
+                              style={{
+                                display: "flex", alignItems: "center", gap: "10px",
+                                padding: "8px 10px", borderRadius: "10px",
+                                textDecoration: "none", color: "#374151",
+                                fontSize: "13px", fontWeight: 500,
+                                transition: "background 0.12s",
+                              }}
+                              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F0F5FF")}
+                              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
+                            >
+                              <span style={{ fontSize: "16px", flexShrink: 0, width: "22px", textAlign: "center" }}>{cat.icon}</span>
+                              <span>{cat.label}</span>
+                            </Link>
+                          ))}
+                        </div>
+
+                        {/* Footer */}
+                        <div style={{ marginTop: "12px", paddingTop: "10px", borderTop: "1px solid #F1F5F9" }}>
+                          <Link
+                            href="/all-peptides"
+                            onClick={() => setAllPeptidesOpen(false)}
+                            style={{
+                              display: "flex", alignItems: "center", justifyContent: "center",
+                              padding: "9px", borderRadius: "10px",
+                              background: "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                              color: "#fff", textDecoration: "none",
+                              fontSize: "13px", fontWeight: 700,
+                            }}
+                          >
+                            Browse All 80+ Peptides →
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
               return (
                 <Link
                   key={item.label}
