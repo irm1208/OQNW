@@ -147,14 +147,14 @@ export default function HomePage() {
           background: "linear-gradient(to right, rgba(2,11,30,0.6) 0%, rgba(2,11,30,0.4) 38%, rgba(2,11,30,0.0) 65%)",
           pointerEvents: "none",
         }} />
-        {/* Blue glow amplifier behind the logo (top-left) */}
+        {/* Bold blue glow amplifier behind the logo (top-left) */}
         <div style={{
           position: "absolute",
-          top: "-60px",
-          left: "-60px",
-          width: "620px",
-          height: "420px",
-          background: "radial-gradient(ellipse at 35% 40%, rgba(30,100,255,0.28) 0%, rgba(10,60,200,0.12) 40%, rgba(0,0,0,0.0) 75%)",
+          top: "-80px",
+          left: "-80px",
+          width: "800px",
+          height: "560px",
+          background: "radial-gradient(ellipse at 35% 38%, rgba(40,120,255,0.65) 0%, rgba(20,80,230,0.38) 30%, rgba(10,50,180,0.15) 55%, rgba(0,0,0,0.0) 75%)",
           pointerEvents: "none",
           mixBlendMode: "screen",
         }} />
