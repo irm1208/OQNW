@@ -104,12 +104,12 @@ export default function HomePage() {
 
       {/* ── HERO ──────────────────────────────────────────────── */}
       <section
+        className="hero-section"
         style={{
           position: "relative",
           overflow: "hidden",
           backgroundImage: "url('/hero-vials.png')",
           backgroundSize: "cover",
-          backgroundPosition: "left top",
           backgroundRepeat: "no-repeat",
           minHeight: "unset",
           display: "flex",
@@ -123,11 +123,10 @@ export default function HomePage() {
           background: "linear-gradient(to bottom, rgba(2,11,30,0.05) 0%, rgba(2,11,30,0.05) 28%, rgba(2,11,30,0.72) 48%, rgba(2,11,30,0.85) 65%, rgba(2,11,30,0.72) 100%)",
           pointerEvents: "none",
         }} />
-        {/* Left-to-right: keep right side (vials) visible */}
-        <div style={{
+        {/* Left-to-right overlay — full dark on mobile, fades right on desktop */}
+        <div className="hero-overlay-lr" style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(to right, rgba(2,11,30,0.6) 0%, rgba(2,11,30,0.4) 38%, rgba(2,11,30,0.0) 65%)",
           pointerEvents: "none",
         }} />
         {/* Bold blue glow amplifier behind the logo (top-left) */}
@@ -143,14 +142,14 @@ export default function HomePage() {
         }} />
 
         {/* Content — below the logo in the image */}
-        <div className="max-w-[1280px] mx-auto px-8 w-full" style={{ position: "relative", zIndex: 1, paddingTop: "240px", paddingBottom: "80px" }}>
+        <div className="hero-content max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ position: "relative", zIndex: 1 }}>
 
-          <div className="text-white" style={{ maxWidth: "520px" }}>
+          <div className="hero-text text-white">
 
             <h1
               className="font-bold mb-5"
               style={{
-                fontSize: "clamp(36px, 4.5vw, 62px)",
+                fontSize: "clamp(28px, 7vw, 62px)",
                 lineHeight: 1.08,
                 letterSpacing: "-0.02em",
               }}
@@ -195,7 +194,7 @@ export default function HomePage() {
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/all-peptides"
-                className="btn-primary inline-flex items-center gap-2"
+                className="btn-primary inline-flex items-center justify-center gap-2 w-full sm:w-auto"
                 style={{
                   backgroundColor: "#fff",
                   color: "#1240A0",
