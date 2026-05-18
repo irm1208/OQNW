@@ -133,11 +133,18 @@ export default function HomePage() {
           alignItems: "flex-start",
         }}
       >
-        {/* Left-to-right gradient — dark on left for text, fades right so vials show */}
+        {/* Top-left is transparent so logo shines; text zone darkened for readability */}
         <div style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(to right, rgba(2,11,30,0.88) 0%, rgba(2,11,30,0.75) 35%, rgba(2,11,30,0.35) 60%, rgba(2,11,30,0.0) 80%)",
+          background: "linear-gradient(to bottom, rgba(2,11,30,0.05) 0%, rgba(2,11,30,0.05) 28%, rgba(2,11,30,0.72) 48%, rgba(2,11,30,0.85) 65%, rgba(2,11,30,0.72) 100%)",
+          pointerEvents: "none",
+        }} />
+        {/* Left-to-right: keep right side (vials) visible */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(to right, rgba(2,11,30,0.6) 0%, rgba(2,11,30,0.4) 38%, rgba(2,11,30,0.0) 65%)",
           pointerEvents: "none",
         }} />
 
