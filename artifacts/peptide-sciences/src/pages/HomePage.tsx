@@ -130,7 +130,7 @@ export default function HomePage() {
           backgroundRepeat: "no-repeat",
           minHeight: "86vh",
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-start",
         }}
       >
         {/* Left-to-right gradient — dark on left for text, fades out so vials show on right */}
@@ -141,8 +141,8 @@ export default function HomePage() {
           pointerEvents: "none",
         }} />
 
-        {/* Content — vertically centred, left half only */}
-        <div className="max-w-[1280px] mx-auto px-8 w-full" style={{ position: "relative", zIndex: 1 }}>
+        {/* Content — below logo, left half only */}
+        <div className="max-w-[1280px] mx-auto px-8 w-full" style={{ position: "relative", zIndex: 1, paddingTop: "27vh" }}>
 
           <div className="text-white" style={{ maxWidth: "520px" }}>
 
