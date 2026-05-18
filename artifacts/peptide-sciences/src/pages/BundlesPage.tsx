@@ -150,22 +150,22 @@ export default function BundlesPage() {
                 const active = discountPct >= tier.pct;
                 return (
                   <div key={tier.count} style={{
-                    display: "inline-flex", alignItems: "center", gap: "4px",
+                    display: "inline-flex", alignItems: "center", gap: "5px",
                     background: active ? "rgba(59,130,246,0.22)" : "rgba(255,255,255,0.06)",
                     border: `1px solid ${active ? "rgba(99,149,246,0.55)" : "rgba(255,255,255,0.11)"}`,
-                    borderRadius: "20px", padding: "5px 13px",
+                    borderRadius: "20px", padding: "6px 14px",
                     transition: "all 0.2s",
                   }}>
-                    <span style={{ fontSize: "12px", color: active ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.3)", fontWeight: 500 }}>
+                    <span style={{ fontSize: "11px", color: active ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.28)", fontWeight: 500 }}>
                       {tier.count}+ vials
                     </span>
-                    <span style={{ fontSize: "13px", fontWeight: 900, color: active ? "#93C5FD" : "rgba(255,255,255,0.25)", marginLeft: "2px" }}>
+                    <span style={{ fontSize: "17px", fontWeight: 900, color: active ? "#93C5FD" : "rgba(255,255,255,0.22)", lineHeight: 1 }}>
                       {tier.pct}%
                     </span>
-                    <span style={{ fontSize: "11px", fontWeight: 700, color: active ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.2)", letterSpacing: "0.04em" }}>
+                    <span style={{ fontSize: "10px", fontWeight: 800, color: active ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.18)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
                       OFF
                     </span>
-                    {active && <Check size={11} color="#34D399" style={{ marginLeft: "2px" }} />}
+                    {active && <Check size={11} color="#34D399" />}
                   </div>
                 );
               })}
