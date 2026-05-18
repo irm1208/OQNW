@@ -839,23 +839,6 @@ Research Rationale
 The combination targets multiple complementary pathways: structural repair (BPC-157, TB-500), inflammation suppression (KPV, GHK-Cu), and matrix remodeling (GHK-Cu, BPC-157). Researchers investigating multi-modal tissue repair strategies may find this combination useful for studying whether synergistic outcomes can be achieved compared to single-peptide approaches.`
   },
 
-  "36": {
-    id: "36",
-    refNumber: "394-10-KP",
-    casNumber: "388138-21-4",
-    formula: "C₆₃H₈₃N₁₇O₁₄",
-    molecularWeight: "1302.4 g/mol",
-    purity: "98%+ HPLC",
-    alsoKnownAs: "KP-10, Kisspeptin 10, Metastin 45-54",
-    storage: "Store lyophilized peptide at -20°C. After reconstitution, store at 4°C for up to 2 weeks.",
-    appearance: "White lyophilized powder",
-    researchAreas: ["Reproductive Research", "HPG Axis Research", "Hormonal Research"],
-    description: `Kisspeptin-10 10mg (Vial B) is the potent KISS1R-activating decapeptide essential for GnRH regulation and HPG axis function, provided as an additional vial for extended research supply.`,
-    longDescription: `What is Kisspeptin-10?
-
-Kisspeptin-10 is the C-terminal decapeptide of kisspeptin-54, acting as the primary endogenous activator of GnRH neurons. This vial provides an additional supply unit for research programs requiring high quantities for multi-cohort or long-duration studies. Research applications include GnRH pulse stimulation, LH secretion investigation, reproductive axis characterization, and cancer metastasis suppression biology.`
-  },
-
   "37": {
     id: "37",
     refNumber: "654-10-KP",

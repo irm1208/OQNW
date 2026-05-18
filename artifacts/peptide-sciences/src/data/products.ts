@@ -44,7 +44,6 @@ export const products: Product[] = [
   { id: "33", name: "Kisspeptin-10 5mg",                     slug: "kisspeptin-10-5mg",                    price: 85,  image: "/products/33.jpg", category: "Hormonal Peptides" },
   { id: "34", name: "Kisspeptin-10 10mg",                    slug: "kisspeptin-10-10mg",                   price: 140, image: "/products/34.jpg", category: "Hormonal Peptides" },
   { id: "35", name: "KLOW BLEND 80mg",                       slug: "klow-blend-80mg",                      price: 195, image: "/products/35.jpg", category: "Peptide Blends" },
-  { id: "36", name: "Kisspeptin-10 10mg (Vial B)",           slug: "kisspeptin-10-10mg-b",                 price: 140, image: "/products/36.jpg", category: "Hormonal Peptides" },
   { id: "37", name: "KPV 10mg",                              slug: "kpv-10mg",                             price: 80,  image: "/products/37.jpg", category: "Anti-Inflammatory" },
   { id: "38", name: "LL-37 5mg",                             slug: "ll-37-5mg",                            price: 115, image: "/products/38.jpg", category: "Immune Support" },
   { id: "39", name: "Melanotan 1 10mg",                      slug: "melanotan-1-10mg",                     price: 85,  image: "/products/39.jpg", category: "Research Peptides" },
