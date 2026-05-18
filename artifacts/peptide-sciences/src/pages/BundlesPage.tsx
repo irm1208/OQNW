@@ -117,60 +117,65 @@ export default function BundlesPage() {
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
 
-      {/* ── Bundle & Save banner bar ── */}
+      {/* ── Page hero ── */}
       <div style={{
-        background: "linear-gradient(105deg, #050E28 0%, #091840 40%, #0E2260 70%, #163080 100%)",
-        borderBottom: "1px solid rgba(255,255,255,0.07)",
+        background: "linear-gradient(135deg, #020B1E 0%, #071A4A 35%, #0D2565 65%, #1240A0 100%)",
+        padding: "36px 0 30px",
         position: "relative",
         overflow: "hidden",
       }}>
-        {/* Subtle dot grid */}
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.045) 1px, transparent 0)", backgroundSize: "26px 26px", pointerEvents: "none" }} />
-        <div className="max-w-[1280px] mx-auto px-4 md:px-8" style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px", padding: "16px 0" }}>
-
-            {/* Left — badge + tagline */}
-            <div style={{ display: "flex", alignItems: "center", gap: "14px", flexShrink: 0 }}>
-              <span style={{
-                display: "inline-flex", alignItems: "center",
-                background: "#059669", color: "#fff",
-                fontSize: "11px", fontWeight: 800, letterSpacing: "0.09em",
-                borderRadius: "6px", padding: "6px 12px", whiteSpace: "nowrap",
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "-60px", right: "10%", width: "280px", height: "280px", borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div className="max-w-[1280px] mx-auto px-3 md:px-4" style={{ position: "relative", zIndex: 1 }}>
+          <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.14em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", marginBottom: "8px" }}>
+            OmniQure · Bundle &amp; Save
+          </p>
+          <h1 style={{ fontSize: "clamp(22px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: "9px" }}>
+            Build Your Own Bundle
+          </h1>
+          <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", maxWidth: "540px", lineHeight: 1.65, marginBottom: "16px" }}>
+            Mix and match from 81 HPLC-verified peptides and save up to 20%. The more vials you order, the more you save.
+          </p>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+            {["98%+ HPLC Purity", "Full COA", "ESI-TOF MS", "Lyophilized"].map(t => (
+              <span key={t} style={{
+                fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.6)",
+                backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)",
+                padding: "4px 12px", borderRadius: "20px",
               }}>
-                BUNDLE &amp; SAVE
+                ✓ {t}
               </span>
-              <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.72)", fontWeight: 500, whiteSpace: "nowrap" }}>
-                Buy more, save more — starts at just 3 vials
-              </span>
-            </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
-            {/* Right — tier pills */}
-            <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
-              {TIERS.map(tier => {
-                const active = discountPct >= tier.pct;
-                return (
-                  <div key={tier.count} style={{
-                    display: "inline-flex", alignItems: "center", gap: "5px",
-                    background: active ? "rgba(59,130,246,0.22)" : "rgba(255,255,255,0.06)",
-                    border: `1px solid ${active ? "rgba(99,149,246,0.55)" : "rgba(255,255,255,0.11)"}`,
-                    borderRadius: "20px", padding: "6px 14px",
-                    transition: "all 0.2s",
-                  }}>
-                    <span style={{ fontSize: "11px", color: active ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.28)", fontWeight: 500 }}>
-                      {tier.count}+ vials
-                    </span>
-                    <span style={{ fontSize: "17px", fontWeight: 900, color: active ? "#93C5FD" : "rgba(255,255,255,0.22)", lineHeight: 1 }}>
-                      {tier.pct}%
-                    </span>
-                    <span style={{ fontSize: "10px", fontWeight: 800, color: active ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.18)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-                      OFF
-                    </span>
-                    {active && <Check size={11} color="#34D399" />}
-                  </div>
-                );
-              })}
+      {/* ── Bundle & Save strip ── */}
+      <div style={{ background: "linear-gradient(100deg, #030d1f 0%, #0a1e4a 35%, #1240A0 75%, #1B5CB5 100%)", borderBottom: "1px solid rgba(255,255,255,0.08)", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: "-30px", right: "18%", width: "180px", height: "80px", borderRadius: "50%", background: "radial-gradient(circle, rgba(52,211,153,0.16) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)", backgroundSize: "22px 22px", pointerEvents: "none" }} />
+        <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-3" style={{ position: "relative", zIndex: 1 }}>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "10px", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
+              <div style={{ backgroundColor: "#34D399", borderRadius: "5px", padding: "2px 8px" }}>
+                <span style={{ fontSize: "9.5px", fontWeight: 900, letterSpacing: "0.1em", color: "#022c22", textTransform: "uppercase" }}>Bundle & Save</span>
+              </div>
+              <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>Buy more, save more — starts at just 3 vials</span>
             </div>
-
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", alignItems: "center" }}>
+              {[
+                { label: "3+ vials",  pct: "5%",  bg: "rgba(96,165,250,0.15)",  border: "rgba(96,165,250,0.4)",  pctColor: "#93C5FD" },
+                { label: "7+ vials",  pct: "10%", bg: "rgba(52,211,153,0.15)",  border: "rgba(52,211,153,0.4)",  pctColor: "#6EE7B7" },
+                { label: "11+ vials", pct: "15%", bg: "rgba(251,191,36,0.15)",  border: "rgba(251,191,36,0.4)",  pctColor: "#FDE68A" },
+                { label: "15+ vials", pct: "20%", bg: "rgba(248,113,113,0.18)", border: "rgba(248,113,113,0.45)", pctColor: "#FCA5A5" },
+              ].map(t => (
+                <div key={t.label} style={{ display: "flex", alignItems: "center", gap: "5px", backgroundColor: t.bg, border: `1px solid ${t.border}`, borderRadius: "7px", padding: "4px 10px" }}>
+                  <span style={{ fontSize: "10.5px", color: "rgba(255,255,255,0.5)", fontWeight: 600 }}>{t.label}</span>
+                  <span style={{ fontSize: "13px", fontWeight: 900, color: t.pctColor, lineHeight: 1 }}>{t.pct}</span>
+                  <span style={{ fontSize: "9px", color: "rgba(255,255,255,0.38)", fontWeight: 700 }}>OFF</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
