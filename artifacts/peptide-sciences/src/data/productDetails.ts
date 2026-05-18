@@ -1762,6 +1762,40 @@ Immune modulation research has established VIP as a neuropeptide with significan
 Circadian rhythm research investigates VIP's role in the suprachiasmatic nucleus (SCN) as a key coupling factor that synchronizes individual circadian oscillators across the SCN neuronal population, coordinating biological time-keeping.`
   },
 
+  "83": {
+    id: "83",
+    refNumber: "050-51-AQ",
+    casNumber: "42464-96-0",
+    formula: "C₇H₉N₃O",
+    molecularWeight: "151.17 g/mol",
+    purity: "99%+ HPLC",
+    alsoKnownAs: "5-Amino-1MQ, 5-Amino-1-methylquinolinium",
+    storage: "Store at room temperature (15–25°C) away from light and moisture. No refrigeration required.",
+    appearance: "White to off-white crystalline powder",
+    solubility: "Soluble in water and DMSO",
+    researchAreas: ["Metabolic Research", "Adipogenesis Research", "NAD⁺ Metabolism", "Cellular Health", "Obesity Research"],
+    description: `5-Amino-1Q 50mg (5-Amino-1MQ) is a selective, cell-permeable inhibitor of nicotinamide N-methyltransferase (NNMT), a methyltransferase enzyme implicated in adipogenesis, metabolic dysregulation, and NAD⁺ depletion. Investigated for its role in reducing fat mass, improving metabolic markers, and restoring cellular energy homeostasis.`,
+    longDescription: `What is 5-Amino-1Q (5-Amino-1MQ)?
+
+5-Amino-1MQ (5-Amino-1-methylquinolinium) is a small-molecule, cell-permeable inhibitor of nicotinamide N-methyltransferase (NNMT), an enzyme that catalyses the methylation of nicotinamide (vitamin B3) using S-adenosylmethionine (SAM) as a methyl donor. NNMT is highly expressed in white adipose tissue and has emerged as a key regulator of adipogenesis, metabolic homeostasis, and one-carbon metabolism. By selectively inhibiting NNMT, 5-Amino-1MQ elevates intracellular NAD⁺ precursor availability and shifts the methyl donor balance, with downstream effects on fat cell differentiation and energy expenditure.
+
+5-Amino-1Q Structure
+
+5-Amino-1MQ has the molecular formula C₇H₉N₃O and a molecular weight of 151.17 g/mol. The compound features a quinolinium core with an amino group at the 5-position and a methyl group at the N-1 nitrogen, providing selective binding to the NNMT active site. Its compact structure enables efficient cell membrane penetration without requiring a carrier.
+
+5-Amino-1Q Research
+
+Adipogenesis research has established NNMT as a key mediator of white adipocyte differentiation. Studies in adipose tissue models have shown that NNMT inhibition with 5-Amino-1MQ reduces the differentiation of pre-adipocytes into mature fat cells, suppresses lipid accumulation, and alters the expression of pro-adipogenic transcription factors including PPARγ and C/EBPα. These findings position NNMT inhibition as a research avenue for studying adipose tissue biology and obesity mechanisms.
+
+Metabolic research in rodent models has documented that 5-Amino-1MQ administration is associated with reduced body weight, decreased fat mass, and improvements in metabolic parameters including insulin sensitivity and lipid profiles. Mechanistic studies suggest these effects arise from increased NAD⁺ availability, enhanced SIRT1 activity, and upregulation of mitochondrial function in metabolically active tissues.
+
+NAD⁺ metabolism research has explored how NNMT inhibition redistributes nicotinamide flux. By blocking the methylation of nicotinamide, 5-Amino-1MQ increases the availability of nicotinamide as a NAD⁺ precursor through the salvage pathway. This raises intracellular NAD⁺ levels and activates sirtuin deacylases (particularly SIRT1, SIRT3), which regulate mitochondrial biogenesis, fatty acid oxidation, and cellular stress responses.
+
+Energy expenditure research has investigated whether NNMT inhibition increases thermogenesis in brown and beige adipose tissue. Preclinical studies report elevated oxygen consumption and upregulation of UCP-1 expression in adipose tissue from 5-Amino-1MQ-treated animals, suggesting a potential mechanism for increased resting energy expenditure.
+
+One-carbon metabolism research has examined 5-Amino-1MQ's effect on the SAM/SAH ratio and global methylation status. NNMT consumes SAM as a methyl donor; inhibition therefore preserves SAM availability for other methyltransferases, potentially affecting epigenetic regulation, polyamine synthesis, and creatine biosynthesis pathways investigated in metabolic disease models.`
+  },
+
   "82": {
     id: "82",
     refNumber: "795-20-TS",
