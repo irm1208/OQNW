@@ -126,7 +126,7 @@ export default function HomePage() {
           overflow: "hidden",
           backgroundImage: "url('/hero-vials.png')",
           backgroundSize: "cover",
-          backgroundPosition: "20px top",
+          backgroundPosition: "left top",
           backgroundRepeat: "no-repeat",
           minHeight: "unset",
           display: "flex",
