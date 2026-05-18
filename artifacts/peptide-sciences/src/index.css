@@ -503,7 +503,12 @@
 /* ── HOME HERO RESPONSIVE ────────────────────────────────── */
 
 .hero-section {
-  background-position: center top !important;
+  background-position: 80% 10% !important;
+}
+@media (min-width: 640px) {
+  .hero-section {
+    background-position: 60% top !important;
+  }
 }
 @media (min-width: 1024px) {
   .hero-section {
