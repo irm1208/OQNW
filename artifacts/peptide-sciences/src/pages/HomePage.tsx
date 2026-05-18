@@ -251,55 +251,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right — Cinematic floating vial showcase */}
-            <div className="hidden lg:block flex-shrink-0" style={{ zIndex: 1, position: "relative", width: "480px", height: "460px" }}>
-
-              {/* Pulsing spotlight glow behind vials */}
-              <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "440px", height: "440px", borderRadius: "50%", background: "radial-gradient(circle, rgba(37,99,235,0.26) 0%, rgba(99,102,241,0.14) 45%, transparent 70%)", pointerEvents: "none", animation: "bundle-spotlight-pulse 5s ease-in-out infinite" }} />
-
-              {/* Secondary inner glow */}
-              <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "240px", height: "240px", borderRadius: "50%", background: "radial-gradient(circle, rgba(147,197,253,0.12) 0%, transparent 70%)", pointerEvents: "none", animation: "bundle-spotlight-pulse 3.5s ease-in-out infinite", animationDelay: "1s" }} />
-
-              {/* Floating vial cards */}
-              {([
-                { src: "/products/3.jpg",  top: "0%",  left: "24%", w: 220, z: 5, anim: "vial-float",   delay: "0s",   opacity: 1,    rot: "-5deg",  label: "BPC-157"     },
-                { src: "/products/1.jpg",  top: "28%", left: "1%",  w: 175, z: 4, anim: "vial-float-b", delay: "0.7s", opacity: 0.93, rot:  "7deg",  label: "AOD-9604"    },
-                { src: "/products/7.jpg",  top: "25%", left: "57%", w: 168, z: 4, anim: "vial-float",   delay: "1.4s", opacity: 0.93, rot: "-4deg",  label: "TB-500"      },
-                { src: "/products/11.jpg", top: "62%", left: "8%",  w: 148, z: 3, anim: "vial-float-b", delay: "0.3s", opacity: 0.75, rot:  "5deg",  label: "Epithalon"   },
-                { src: "/products/43.jpg", top: "60%", left: "57%", w: 142, z: 3, anim: "vial-float",   delay: "1.1s", opacity: 0.75, rot: "-7deg",  label: "Semaglutide" },
-                { src: "/products/15.jpg", top: "44%", left: "33%", w: 134, z: 2, anim: "vial-float-b", delay: "1.9s", opacity: 0.55, rot:  "2deg",  label: "GHK-Cu"      },
-              ] as Array<{ src: string; top: string; left: string; w: number; z: number; anim: string; delay: string; opacity: number; rot: string; label: string }>).map((v, i) => (
-                <div
-                  key={i}
-                  style={{ position: "absolute", top: v.top, left: v.left, width: v.w, height: v.w, zIndex: v.z, animation: `${v.anim} 3.8s ease-in-out infinite`, animationDelay: v.delay, opacity: v.opacity }}
-                >
-                  <div style={{ width: "100%", height: "100%", background: "linear-gradient(160deg, #ffffff 0%, #EEF4FF 100%)", borderRadius: "18px", boxShadow: `0 ${v.z * 10 + 8}px ${v.z * 26 + 14}px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.2), inset 0 1px 0 rgba(255,255,255,0.9)`, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "8px", transform: `rotate(${v.rot})` }}>
-                    <img src={v.src} alt={v.label} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-                  </div>
-                </div>
-              ))}
-
-              {/* Floating trust badges */}
-              <div style={{ position: "absolute", top: "6px", right: "-8px", zIndex: 10, animation: "vial-float-b 4s ease-in-out infinite", animationDelay: "0.5s" }}>
-                <div className="glass-card" style={{ padding: "5px 12px", borderRadius: "30px", display: "inline-flex", alignItems: "center", gap: "5px" }}>
-                  <div style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#A78BFA" }} />
-                  <span style={{ fontSize: "9.5px", fontWeight: 700, color: "#fff", letterSpacing: "0.04em" }}>ESI-TOF MS ✓</span>
-                </div>
-              </div>
-              <div style={{ position: "absolute", bottom: "60px", left: "-12px", zIndex: 10, animation: "vial-float 4.5s ease-in-out infinite", animationDelay: "2s" }}>
-                <div className="glass-card" style={{ padding: "5px 12px", borderRadius: "30px", display: "inline-flex", alignItems: "center", gap: "5px" }}>
-                  <div style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#34D399" }} />
-                  <span style={{ fontSize: "9.5px", fontWeight: 700, color: "#fff", letterSpacing: "0.04em" }}>98%+ HPLC Purity</span>
-                </div>
-              </div>
-
-              {/* Brand watermark */}
-              <div style={{ position: "absolute", bottom: "0px", left: 0, right: 0, textAlign: "center", pointerEvents: "none" }}>
-                <span style={{ fontSize: "9px", fontWeight: 800, color: "rgba(255,255,255,0.12)", letterSpacing: "0.3em", textTransform: "uppercase" }}>
-                  OMNIQURE PEPTIDE RESEARCH INSTITUTE
-                </span>
-              </div>
-            </div>
 
           </div>
         </div>
