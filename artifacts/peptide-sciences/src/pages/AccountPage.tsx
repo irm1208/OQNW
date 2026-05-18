@@ -503,6 +503,46 @@ export default function AccountPage() {
       </div>
 
       <div className="max-w-[1200px] mx-auto px-4 py-8">
+
+        {/* Mobile tab bar — visible only on ≤768px */}
+        <div className="account-tab-bar">
+          {[
+            { key: "orders",        label: "My Orders",       icon: <Package size={16} /> },
+            { key: "subscriptions", label: "Subscriptions",   icon: <RefreshCw size={16} /> },
+            { key: "referral",      label: "Refer a Friend",  icon: <Users size={16} /> },
+            { key: "loyalty",       label: "Loyalty Rewards", icon: <Award size={16} /> },
+            { key: "wishlist",      label: "Wishlist",        icon: <Heart size={16} /> },
+            { key: "profile",       label: "Settings",        icon: <Settings size={16} /> },
+          ].map((item) => (
+            <button
+              key={item.key}
+              onClick={() => setActiveTab(item.key as "orders" | "profile" | "wishlist" | "subscriptions" | "referral" | "loyalty")}
+              className={`account-tab-btn${activeTab === item.key ? " active" : ""}`}
+            >
+              {item.icon}
+              <span>{item.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Mobile-only secondary action row */}
+        <div className="account-tab-actions">
+          <Link
+            href="/track-order"
+            className="account-tab-action-btn"
+          >
+            <Truck size={14} />
+            <span>Track Order</span>
+          </Link>
+          <button
+            onClick={handleSignOut}
+            className="account-tab-action-btn account-tab-action-signout"
+          >
+            <LogOut size={14} />
+            <span>Sign out</span>
+          </button>
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-6" style={{ alignItems: "flex-start" }}>
 
           {/* Sidebar */}
@@ -1418,6 +1458,13 @@ export default function AccountPage() {
 
               </div>
             )}
+
+            {/* RUO notice — shown in content area on mobile only */}
+            <div className="account-ruo-mobile" style={{ marginTop: "24px", padding: "12px 14px", borderRadius: "12px", backgroundColor: "#FFFBEB", border: "1px solid #FDE68A" }}>
+              <p style={{ fontSize: "11px", color: "#92400E", lineHeight: 1.6, margin: 0 }}>
+                <strong>Research Use Only.</strong> OmniQure products are for qualified researchers only. Not for human or veterinary use.
+              </p>
+            </div>
 
           </div>
         </div>

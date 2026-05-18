@@ -558,7 +558,7 @@
   }
 }
 
-/* ── ACCOUNT PAGE SIDEBAR MOBILE ────────────────────────── */
+/* ── ACCOUNT PAGE SIDEBAR ────────────────────────────────── */
 
 .account-sidebar {
   width: 220px;
@@ -568,6 +568,121 @@
 @media (max-width: 1023px) {
   .account-sidebar {
     width: 100% !important;
+  }
+}
+
+/* Hide sidebar on mobile, show tab bar instead */
+@media (max-width: 768px) {
+  .account-sidebar {
+    display: none !important;
+  }
+}
+
+/* ── ACCOUNT PAGE MOBILE TAB BAR ─────────────────────────── */
+
+.account-tab-bar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .account-tab-bar {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 6px;
+    padding: 0 0 12px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #E8EDF5;
+  }
+
+  .account-tab-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .account-tab-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border: 1px solid #E8EDF5;
+    border-radius: 12px;
+    background: #fff;
+    color: #475569;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+
+  .account-tab-btn.active {
+    background: #EEF4FF;
+    color: #1240A0;
+    border-color: #93AEED;
+    font-weight: 700;
+  }
+
+  .account-tab-btn svg {
+    flex-shrink: 0;
+  }
+}
+
+/* ── ACCOUNT PAGE MOBILE ACTION ROW ─────────────────────── */
+
+.account-tab-actions {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .account-tab-actions {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .account-tab-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border: 1px solid #E8EDF5;
+    border-radius: 8px;
+    background: #fff;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+
+  .account-tab-action-btn:hover {
+    background: #F8FAFC;
+  }
+
+  .account-tab-action-signout {
+    color: #DC2626;
+    border-color: #FEE2E2;
+  }
+
+  .account-tab-action-signout:hover {
+    background: #FEF2F2;
+  }
+}
+
+/* ── ACCOUNT RUO NOTICE MOBILE ───────────────────────────── */
+
+/* Hidden on desktop — sidebar shows it there */
+.account-ruo-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .account-ruo-mobile {
+    display: block;
   }
 }
 
