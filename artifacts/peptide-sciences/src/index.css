@@ -544,6 +544,8 @@
 @media (min-width: 1280px) {
   .hero-content {
     padding-top: 340px !important;
+    margin-left: 80px !important;
+    margin-right: auto !important;
   }
 }
 
