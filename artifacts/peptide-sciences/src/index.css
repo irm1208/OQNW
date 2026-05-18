@@ -511,12 +511,13 @@
   }
 }
 
-/* Full dark cover on mobile so portrait text is always readable */
+/* On mobile the vertical gradient already darkens the image; hide the LR overlay to avoid double-darkening */
 .hero-overlay-lr {
-  background: rgba(2,11,30,0.72) !important;
+  display: none !important;
 }
 @media (min-width: 768px) {
   .hero-overlay-lr {
+    display: block !important;
     background: linear-gradient(to right, rgba(2,11,30,0.6) 0%, rgba(2,11,30,0.4) 38%, rgba(2,11,30,0.0) 65%) !important;
   }
 }
