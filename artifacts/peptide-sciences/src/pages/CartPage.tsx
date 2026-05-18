@@ -365,7 +365,7 @@ export default function CartPage() {
               <div className="px-5 pb-2" style={{ borderTop: "1px solid #F1F5F9" }}>
 
                 {/* Bundle & Save progress nudge */}
-                {totalItems < 10 && (
+                {totalItems < 15 && (
                   <div
                     className="rounded-xl p-3 mt-3"
                     style={{
@@ -385,9 +385,9 @@ export default function CartPage() {
                           </div>
                           <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{totalItems}/5</span>
                         </div>
-                        <p style={{ fontSize: "10.5px", color: "#475569", marginTop: "5px" }}>5–9 items = 10% off · 10+ items = 15% off</p>
+                        <p style={{ fontSize: "10.5px", color: "#475569", marginTop: "5px" }}>5–9 = 10% · 10–14 = 15% · 15+ = 20% off</p>
                       </>
-                    ) : (
+                    ) : bundleDiscountPct === 10 ? (
                       <>
                         <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669", marginBottom: "6px" }}>
                           ✓ Bundle & Save 10% applied — add {10 - totalItems} more for 15% off
@@ -399,16 +399,28 @@ export default function CartPage() {
                           <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{totalItems}/10</span>
                         </div>
                       </>
+                    ) : (
+                      <>
+                        <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669", marginBottom: "6px" }}>
+                          ✓ Bundle & Save 15% applied — add {15 - totalItems} more for 20% off
+                        </p>
+                        <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+                          <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#BBF7D0", overflow: "hidden" }}>
+                            <div style={{ height: "100%", width: `${((totalItems - 10) / 5) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #059669, #16A34A)", transition: "width 0.3s" }} />
+                          </div>
+                          <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{totalItems}/15</span>
+                        </div>
+                      </>
                     )}
                   </div>
                 )}
-                {bundleDiscountPct >= 10 && (
+                {bundleDiscountPct >= 20 && (
                   <div
                     className="rounded-xl p-3 mt-3"
                     style={{ backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0" }}
                   >
                     <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669" }}>
-                      ✓ Bundle & Save 15% applied — maximum discount active!
+                      ✓ Bundle & Save 20% applied — maximum discount active!
                     </p>
                   </div>
                 )}

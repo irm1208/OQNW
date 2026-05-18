@@ -128,7 +128,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
   const subtotal = items.reduce((sum, i) => sum + (i.product.price ?? 0) * i.quantity, 0);
-  const bundleDiscountPct = totalItems >= 10 ? 15 : totalItems >= 5 ? 10 : 0;
+  const bundleDiscountPct = totalItems >= 15 ? 20 : totalItems >= 10 ? 15 : totalItems >= 5 ? 10 : 0;
   const bundleDiscountAmount = subtotal * bundleDiscountPct / 100;
 
   return (

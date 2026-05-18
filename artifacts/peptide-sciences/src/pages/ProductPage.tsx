@@ -587,9 +587,13 @@ export default function ProductPage() {
                   border: `1px solid ${bundleDiscountPct > 0 ? "#BBF7D0" : "#BFDBFE"}`,
                 }}
               >
-                {bundleDiscountPct >= 15 ? (
+                {bundleDiscountPct >= 20 ? (
                   <p style={{ fontSize: "12px", color: "#059669", fontWeight: 600, margin: 0 }}>
-                    ✓ Bundle & Save 15% active on your order
+                    ✓ Bundle & Save 20% active — maximum discount!
+                  </p>
+                ) : bundleDiscountPct === 15 ? (
+                  <p style={{ fontSize: "12px", color: "#059669", fontWeight: 600, margin: 0 }}>
+                    ✓ Bundle & Save 15% active · add {15 - totalItems} more for 20% off
                   </p>
                 ) : bundleDiscountPct === 10 ? (
                   <p style={{ fontSize: "12px", color: "#059669", fontWeight: 600, margin: 0 }}>
@@ -597,7 +601,7 @@ export default function ProductPage() {
                   </p>
                 ) : (
                   <p style={{ fontSize: "12px", color: "#1240A0", fontWeight: 600, margin: 0 }}>
-                    Buy 5+ peptides and save 10% · 10+ peptides for 15% off
+                    Buy 5+ peptides and save 10% · 10–14 for 15% · 15+ for 20% off
                   </p>
                 )}
               </div>
