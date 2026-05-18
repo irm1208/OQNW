@@ -122,150 +122,115 @@ export default function HomePage() {
       {/* ── HERO ──────────────────────────────────────────────── */}
       <section
         style={{
-          background: "linear-gradient(135deg, #020B1E 0%, #071A4A 25%, #0D2565 50%, #1240A0 80%, #1B5CB5 100%)",
           position: "relative",
           overflow: "hidden",
+          backgroundImage: "url('/hero-vials.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       >
-        {/* Dot grid pattern */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.07) 1px, transparent 0)",
-            backgroundSize: "32px 32px",
-            pointerEvents: "none",
-          }}
-        />
+        {/* Dark gradient overlay — left heavier so text stays readable */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(90deg, rgba(2,11,30,0.92) 0%, rgba(7,26,74,0.82) 40%, rgba(13,37,101,0.55) 70%, rgba(13,37,101,0.15) 100%)",
+          pointerEvents: "none",
+        }} />
 
-        {/* Animated glow orbs */}
-        <div
-          className="animate-pulse-glow"
-          style={{
-            position: "absolute",
-            top: "-120px",
-            right: "15%",
-            width: "500px",
-            height: "500px",
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          className="animate-pulse-glow"
-          style={{
-            position: "absolute",
-            bottom: "-80px",
-            left: "5%",
-            width: "360px",
-            height: "360px",
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%)",
-            pointerEvents: "none",
-            animationDelay: "1.5s",
-          }}
-        />
+        {/* Subtle dot grid over the overlay */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)",
+          backgroundSize: "32px 32px",
+          pointerEvents: "none",
+        }} />
 
-        <div className="max-w-[1280px] mx-auto px-4 py-16 lg:py-24">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+        <div className="max-w-[1280px] mx-auto px-4 py-20 lg:py-28" style={{ position: "relative", zIndex: 1 }}>
 
-            {/* Left — copy */}
-            <div className="flex-1 text-white" style={{ zIndex: 1 }}>
-              {/* Brand logo badge */}
-              <div className="mb-6">
-                <img
-                  src="/omniqure-logo.jpeg"
-                  alt="OmniQure Peptide Research Institute"
-                  style={{
-                    height: "56px",
-                    width: "auto",
-                    display: "block",
-                    borderRadius: "10px",
-                    boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-                  }}
-                />
-              </div>
+          {/* Copy — left-aligned, max half width so vials show on right */}
+          <div className="text-white" style={{ maxWidth: "560px" }}>
 
-              <h1
-                className="font-bold mb-6"
-                style={{
-                  fontSize: "clamp(36px, 5vw, 64px)",
-                  lineHeight: 1.08,
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                Research-Grade<br />
-                Peptides.{" "}
-                <span className="gradient-text">Verified.</span>
-                <br />
-                <span className="gradient-text">Delivered.</span>
-              </h1>
-
-              <p
-                className="mb-8 leading-relaxed"
-                style={{ color: "rgba(255,255,255,0.72)", fontSize: "16.5px", maxWidth: "500px" }}
-              >
-                81 HPLC-verified peptides — each backed by full COA and ESI-TOF mass spectrometry data. The standard for serious researchers.
-              </p>
-
-              {/* Trust chips */}
-              <div className="flex flex-wrap gap-2 mb-8">
-                {["98%+ HPLC Purity", "Full COA Included", "ESI-TOF MS", "Lyophilized"].map(t => (
-                  <span
-                    key={t}
-                    className="inline-flex items-center gap-1.5"
-                    style={{
-                      backgroundColor: "rgba(255,255,255,0.08)",
-                      border: "1px solid rgba(255,255,255,0.16)",
-                      color: "#E2E8F0",
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      padding: "5px 12px",
-                      borderRadius: "20px",
-                    }}
-                  >
-                    <CheckCircle size={12} style={{ color: "#34D399" }} />
-                    {t}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                <Link
-                  href="/all-peptides"
-                  className="btn-primary inline-flex items-center gap-2"
-                  style={{
-                    backgroundColor: "#fff",
-                    color: "#1240A0",
-                    padding: "13px 26px",
-                    borderRadius: "12px",
-                    fontWeight: 800,
-                    fontSize: "14px",
-                    textDecoration: "none",
-                    boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
-                  }}
-                >
-                  Browse All 81 Peptides <ArrowRight size={15} />
-                </Link>
-              </div>
-            </div>
-
-
-            {/* Right — Hero vials image */}
-            <div className="hidden lg:block flex-shrink-0" style={{ zIndex: 1, position: "relative", width: "520px" }}>
+            {/* Logo */}
+            <div className="mb-6">
               <img
-                src="/hero-vials.png"
-                alt="OmniQure peptide vials"
+                src="/omniqure-logo.jpeg"
+                alt="OmniQure Peptide Research Institute"
                 style={{
-                  width: "100%",
-                  height: "auto",
+                  height: "56px",
+                  width: "auto",
                   display: "block",
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
                 }}
               />
             </div>
 
+            <h1
+              className="font-bold mb-6"
+              style={{
+                fontSize: "clamp(36px, 5vw, 64px)",
+                lineHeight: 1.08,
+                letterSpacing: "-0.02em",
+              }}
+            >
+              Research-Grade<br />
+              Peptides.{" "}
+              <span className="gradient-text">Verified.</span>
+              <br />
+              <span className="gradient-text">Delivered.</span>
+            </h1>
+
+            <p
+              className="mb-8 leading-relaxed"
+              style={{ color: "rgba(255,255,255,0.75)", fontSize: "16.5px" }}
+            >
+              81 HPLC-verified peptides — each backed by full COA and ESI-TOF mass spectrometry data. The standard for serious researchers.
+            </p>
+
+            {/* Trust chips */}
+            <div className="flex flex-wrap gap-2 mb-8">
+              {["98%+ HPLC Purity", "Full COA Included", "ESI-TOF MS", "Lyophilized"].map(t => (
+                <span
+                  key={t}
+                  className="inline-flex items-center gap-1.5"
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                    border: "1px solid rgba(255,255,255,0.18)",
+                    color: "#E2E8F0",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    padding: "5px 12px",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <CheckCircle size={12} style={{ color: "#34D399" }} />
+                  {t}
+                </span>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/all-peptides"
+                className="btn-primary inline-flex items-center gap-2"
+                style={{
+                  backgroundColor: "#fff",
+                  color: "#1240A0",
+                  padding: "13px 26px",
+                  borderRadius: "12px",
+                  fontWeight: 800,
+                  fontSize: "14px",
+                  textDecoration: "none",
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+                }}
+              >
+                Browse All 81 Peptides <ArrowRight size={15} />
+              </Link>
+            </div>
           </div>
+
         </div>
       </section>
 
