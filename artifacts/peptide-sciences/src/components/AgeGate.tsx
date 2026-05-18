@@ -93,7 +93,6 @@ export default function AgeGate() {
                 height: "80px",
                 width: "auto",
                 objectFit: "contain",
-                mixBlendMode: "screen",
               }}
             />
           </div>
