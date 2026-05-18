@@ -38,6 +38,7 @@ import giftCardsRouter from "./gift-cards";
 import taxRouter from "./tax";
 import shippingRouter from "./shipping";
 import blogRouter from "./blog";
+import btcpayWebhookRouter from "./btcpay-webhook";
 
 const router: IRouter = Router();
 
@@ -80,5 +81,6 @@ router.use(giftCardsRouter);
 router.use(taxRouter);
 router.use(shippingRouter);
 router.use(blogRouter);
+router.use(btcpayWebhookRouter);
 
 export default router;

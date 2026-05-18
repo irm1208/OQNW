@@ -376,9 +376,27 @@ export default function CheckoutPage() {
           throw new Error(err.error ?? "Order failed");
         }
 
-        const data = await res.json() as { orderNumber: string; customerName: string; totalGbp: number; shippingMethod: string };
+        const data = await res.json() as {
+          orderNumber: string;
+          customerName: string;
+          totalGbp: number;
+          shippingMethod: string;
+          btcAddress?: string;
+          btcAmount?: string;
+          btcPaymentUrl?: string;
+        };
         clearCart();
-        navigate(`/order-confirmation?order=${encodeURIComponent(data.orderNumber)}&name=${encodeURIComponent(delivery.firstName)}&total=${data.totalGbp.toFixed(2)}&ship=${encodeURIComponent(data.shippingMethod)}&payment=${encodeURIComponent(paymentMethod)}`);
+        const params = new URLSearchParams({
+          order: data.orderNumber,
+          name: delivery.firstName,
+          total: data.totalGbp.toFixed(2),
+          ship: data.shippingMethod,
+          payment: paymentMethod,
+        });
+        if (data.btcAddress)    params.set("btcAddress", data.btcAddress);
+        if (data.btcAmount)     params.set("btcAmount", data.btcAmount);
+        if (data.btcPaymentUrl) params.set("btcUrl", data.btcPaymentUrl);
+        navigate(`/order-confirmation?${params.toString()}`);
       } catch (err) {
         setPlaceError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
         setPlacing(false);

@@ -142,6 +142,161 @@ function totalsBlock(order: OrderEmailData): string {
     </table>`;
 }
 
+// ── Bank Details (keep in sync with CheckoutPage.tsx) ────────────────────────
+const BANK_DETAILS = {
+  accountName: process.env.BANK_ACCOUNT_NAME ?? "OmniQure Research Ltd",
+  sortCode:    process.env.BANK_SORT_CODE     ?? "20-00-00",
+  accountNumber: process.env.BANK_ACCOUNT_NUMBER ?? "12345678",
+  bank:        process.env.BANK_NAME          ?? "Barclays Bank",
+};
+// ─────────────────────────────────────────────────────────────────────────────
+
+export async function sendBankTransferInstructions(opts: {
+  orderNumber: string;
+  customerName: string;
+  customerEmail: string;
+  totalGbp: number;
+  items: OrderItem[];
+  subtotalGbp: number;
+  shippingCostGbp: number;
+  shippingMethod: string | null;
+}): Promise<void> {
+  const subject = `Bank Transfer Details — ${opts.orderNumber}`;
+  const detailRows = [
+    { label: "Account Name",   value: BANK_DETAILS.accountName },
+    { label: "Sort Code",       value: BANK_DETAILS.sortCode },
+    { label: "Account Number",  value: BANK_DETAILS.accountNumber },
+    { label: "Bank",            value: BANK_DETAILS.bank },
+    { label: "Reference",       value: `<strong style="color:#15803d;">${opts.orderNumber}</strong>` },
+    { label: "Amount to Pay",   value: `<strong>${formatGbp(opts.totalGbp)}</strong>` },
+  ];
+
+  const rows = detailRows.map(r => `
+    <tr>
+      <td style="padding:9px 14px;font-size:13px;color:#64748b;font-weight:600;background:#f8fafc;border-bottom:1px solid #e2e8f0;white-space:nowrap;">${r.label}</td>
+      <td style="padding:9px 14px;font-size:13px;color:#0f172a;border-bottom:1px solid #e2e8f0;">${r.value}</td>
+    </tr>`).join("");
+
+  const body = `
+    <h2 style="margin:0 0 6px;font-size:22px;color:#0f172a;">Bank Transfer Details</h2>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">
+      Hi ${opts.customerName}, your order <strong style="color:#0f172a;">${opts.orderNumber}</strong> is reserved.
+      Please send your payment using the details below to confirm it.
+    </p>
+
+    <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:8px;overflow:hidden;margin-bottom:24px;">
+      <div style="background:#1240a0;padding:12px 16px;">
+        <p style="margin:0;font-size:13px;font-weight:700;color:#fff;letter-spacing:0.04em;">PAYMENT DETAILS</p>
+      </div>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        ${rows}
+      </table>
+    </div>
+
+    <div style="background:#fefce8;border-radius:6px;padding:14px 16px;border-left:4px solid #eab308;margin-bottom:24px;">
+      <p style="margin:0;font-size:13px;color:#713f12;">
+        <strong>Important:</strong> Use your order number <strong>${opts.orderNumber}</strong> as the payment reference.
+        Faster Payments clears the same day. Orders paid after 3pm are dispatched the following morning.
+      </p>
+    </div>
+
+    ${itemsTable(opts.items)}
+    ${totalsBlock({ ...opts, trackingNumber: null, address1: null, address2: null, city: null, postcode: null, country: null, customerEmail: opts.customerEmail })}
+
+    <p style="margin:24px 0 0;font-size:12px;color:#94a3b8;">
+      Once we confirm receipt of your payment we will email you a dispatch notification with tracking details.
+      If you have any questions please reply to this email.
+    </p>
+  `;
+
+  try {
+    const result = await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: opts.customerEmail,
+      subject,
+      html: baseTemplate("Bank Transfer Instructions", body),
+    });
+    logger.info({ orderNumber: opts.orderNumber, to: opts.customerEmail }, "Bank transfer instructions email sent");
+    await logEmail({ toEmail: opts.customerEmail, subject, type: "bank_transfer_instructions", status: "sent", resendId: result.data?.id, orderNumber: opts.orderNumber });
+  } catch (err) {
+    logger.error({ err, orderNumber: opts.orderNumber }, "Failed to send bank transfer instructions email");
+    await logEmail({ toEmail: opts.customerEmail, subject, type: "bank_transfer_instructions", status: "failed", orderNumber: opts.orderNumber });
+  }
+}
+
+export async function sendBitcoinInstructions(opts: {
+  orderNumber: string;
+  customerName: string;
+  customerEmail: string;
+  totalGbp: number;
+  btcAddress: string;
+  btcAmount?: string;
+  items: OrderItem[];
+  subtotalGbp: number;
+  shippingCostGbp: number;
+  shippingMethod: string | null;
+}): Promise<void> {
+  const subject = `Bitcoin Payment Details — ${opts.orderNumber}`;
+  const amountLine = opts.btcAmount
+    ? `<tr>
+         <td style="padding:9px 14px;font-size:13px;color:#64748b;font-weight:600;background:#fefce8;border-bottom:1px solid #fde68a;white-space:nowrap;">BTC Amount</td>
+         <td style="padding:9px 14px;font-size:13px;color:#0f172a;font-weight:700;border-bottom:1px solid #fde68a;">${opts.btcAmount} BTC</td>
+       </tr>`
+    : `<tr>
+         <td style="padding:9px 14px;font-size:13px;color:#64748b;font-weight:600;background:#fefce8;border-bottom:1px solid #fde68a;white-space:nowrap;">GBP Amount</td>
+         <td style="padding:9px 14px;font-size:13px;color:#0f172a;font-weight:700;border-bottom:1px solid #fde68a;">${formatGbp(opts.totalGbp)} — convert to BTC at the current rate</td>
+       </tr>`;
+
+  const body = `
+    <h2 style="margin:0 0 6px;font-size:22px;color:#0f172a;">Bitcoin Payment Details</h2>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">
+      Hi ${opts.customerName}, your order <strong style="color:#0f172a;">${opts.orderNumber}</strong> is reserved.
+      Please send your Bitcoin payment to the address below to confirm it.
+    </p>
+
+    <div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:8px;overflow:hidden;margin-bottom:24px;">
+      <div style="background:#92400e;padding:12px 16px;">
+        <p style="margin:0;font-size:13px;font-weight:700;color:#fff;letter-spacing:0.04em;">BITCOIN PAYMENT DETAILS</p>
+      </div>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="padding:9px 14px;font-size:13px;color:#64748b;font-weight:600;background:#fefce8;border-bottom:1px solid #fde68a;white-space:nowrap;">Bitcoin Address</td>
+          <td style="padding:9px 14px;font-size:12px;color:#0f172a;font-weight:700;font-family:monospace;word-break:break-all;border-bottom:1px solid #fde68a;">${opts.btcAddress}</td>
+        </tr>
+        ${amountLine}
+        <tr>
+          <td style="padding:9px 14px;font-size:13px;color:#64748b;font-weight:600;background:#fefce8;white-space:nowrap;">Reference</td>
+          <td style="padding:9px 14px;font-size:13px;color:#15803d;font-weight:700;">${opts.orderNumber}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="background:#fefce8;border-radius:6px;padding:14px 16px;border-left:4px solid #eab308;margin-bottom:24px;">
+      <p style="margin:0;font-size:13px;color:#713f12;">
+        Include your order number <strong>${opts.orderNumber}</strong> in the memo/note field where your wallet allows.
+        Transactions typically confirm within 1 hour on the Bitcoin network.
+      </p>
+    </div>
+
+    ${itemsTable(opts.items)}
+    ${totalsBlock({ ...opts, trackingNumber: null, address1: null, address2: null, city: null, postcode: null, country: null, customerEmail: opts.customerEmail })}
+  `;
+
+  try {
+    const result = await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: opts.customerEmail,
+      subject,
+      html: baseTemplate("Bitcoin Payment Instructions", body),
+    });
+    logger.info({ orderNumber: opts.orderNumber, to: opts.customerEmail }, "Bitcoin instructions email sent");
+    await logEmail({ toEmail: opts.customerEmail, subject, type: "bitcoin_instructions", status: "sent", resendId: result.data?.id, orderNumber: opts.orderNumber });
+  } catch (err) {
+    logger.error({ err, orderNumber: opts.orderNumber }, "Failed to send bitcoin instructions email");
+    await logEmail({ toEmail: opts.customerEmail, subject, type: "bitcoin_instructions", status: "failed", orderNumber: opts.orderNumber });
+  }
+}
+
 export async function sendOrderConfirmation(order: OrderEmailData): Promise<void> {
   const subject = `Order Confirmed — ${order.orderNumber}`;
   const body = `

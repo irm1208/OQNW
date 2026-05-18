@@ -14,7 +14,15 @@ import {
   inventoryAuditLogTable,
 } from "@workspace/db";
 import { eq, sql, inArray, and, gte, count } from "drizzle-orm";
-import { sendOrderConfirmation, sendLowStockAlert, sendReferralReward, sendWelcomeEmail } from "../lib/email";
+import {
+  sendOrderConfirmation,
+  sendBankTransferInstructions,
+  sendBitcoinInstructions,
+  sendLowStockAlert,
+  sendReferralReward,
+  sendWelcomeEmail,
+} from "../lib/email";
+import { createBtcPayInvoice, isBtcPayConfigured } from "../lib/btcpay";
 import { assessFraud } from "../lib/fraudScorer";
 import { dispatchWebhook } from "../lib/webhookDispatcher";
 
@@ -551,28 +559,92 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       })();
     }
 
-    // Send confirmation email (non-blocking — errors are logged but won't fail the response)
-    sendOrderConfirmation({
-      orderNumber,
-      customerName,
-      customerEmail: d.email.toLowerCase(),
-      items: cartItems.map(i => ({
-        productName: i.productName,
-        productCategory: i.productCategory,
-        quantity: i.quantity,
-        priceGbp: i.priceGbp,
-      })),
-      subtotalGbp,
-      shippingCostGbp,
-      totalGbp,
-      shippingMethod,
-      trackingNumber: null,
-      address1: d.address1,
-      address2: d.address2 ?? null,
-      city: d.city,
-      postcode: d.postcode,
-      country: d.country,
-    }).catch(() => {});
+    const emailItems = cartItems.map(i => ({
+      productName: i.productName,
+      productCategory: i.productCategory,
+      quantity: i.quantity,
+      priceGbp: i.priceGbp,
+    }));
+
+    // ── BTCPay invoice (blocking — we need BTC details before responding) ──
+    let btcAddress: string | null = null;
+    let btcAmount: string | null = null;
+    let btcPaymentUrl: string | null = null;
+    let btcInvoiceId: string | null = null;
+
+    if (paymentMethodStr === "bitcoin") {
+      try {
+        const invoice = await createBtcPayInvoice({
+          orderNumber,
+          totalGbp,
+          customerEmail: d.email.toLowerCase(),
+          customerName,
+        });
+        if (invoice) {
+          btcAddress = invoice.btcAddress || null;
+          btcAmount = invoice.btcAmount || null;
+          btcPaymentUrl = invoice.paymentUrl || null;
+          btcInvoiceId = invoice.invoiceId;
+          // Append invoice ID to order notes
+          await db
+            .update(ordersTable)
+            .set({
+              notes: [order.notes, `BTCPay invoice: ${invoice.invoiceId}`]
+                .filter(Boolean)
+                .join("; "),
+            })
+            .where(eq(ordersTable.id, order.id))
+            .catch(() => {});
+        }
+      } catch (err) {
+        req.log.warn({ err }, "BTCPay invoice creation failed — order still placed");
+      }
+    }
+
+    // ── Payment-specific emails (non-blocking) ─────────────────────────────
+    if (paymentMethodStr === "bank_transfer") {
+      sendBankTransferInstructions({
+        orderNumber,
+        customerName,
+        customerEmail: d.email.toLowerCase(),
+        totalGbp,
+        items: emailItems,
+        subtotalGbp,
+        shippingCostGbp,
+        shippingMethod,
+      }).catch(() => {});
+    } else if (paymentMethodStr === "bitcoin") {
+      const FALLBACK_BTC_ADDRESS = process.env.BITCOIN_ADDRESS ?? "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
+      sendBitcoinInstructions({
+        orderNumber,
+        customerName,
+        customerEmail: d.email.toLowerCase(),
+        totalGbp,
+        btcAddress: btcAddress ?? FALLBACK_BTC_ADDRESS,
+        btcAmount: btcAmount ?? undefined,
+        items: emailItems,
+        subtotalGbp,
+        shippingCostGbp,
+        shippingMethod,
+      }).catch(() => {});
+    } else {
+      sendOrderConfirmation({
+        orderNumber,
+        customerName,
+        customerEmail: d.email.toLowerCase(),
+        items: emailItems,
+        subtotalGbp,
+        shippingCostGbp,
+        totalGbp,
+        shippingMethod,
+        trackingNumber: null,
+        address1: d.address1,
+        address2: d.address2 ?? null,
+        city: d.city,
+        postcode: d.postcode,
+        country: d.country,
+      }).catch(() => {});
+    }
 
     // Fire webhooks (non-blocking)
     dispatchWebhook("order.created", {
@@ -581,7 +653,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       customerName,
       customerEmail: d.email.toLowerCase(),
       totalGbp,
-      status: "pending",
+      status: "awaiting_payment",
       fraudScore,
       country: d.country,
     }).catch(() => {});
@@ -591,6 +663,11 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       customerName,
       totalGbp,
       shippingMethod,
+      paymentMethod: paymentMethodStr,
+      ...(btcAddress   && { btcAddress }),
+      ...(btcAmount    && { btcAmount }),
+      ...(btcPaymentUrl && { btcPaymentUrl }),
+      ...(btcInvoiceId  && { btcInvoiceId }),
     });
   } catch (err) {
     req.log.error({ err }, "Failed to create order");

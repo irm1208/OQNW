@@ -14,11 +14,14 @@ const BITCOIN_ADDRESS = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
 
 export default function OrderConfirmation() {
   const params = new URLSearchParams(window.location.search);
-  const order = params.get("order") ?? "OQ-000000";
-  const name = params.get("name") ?? "Researcher";
-  const total = params.get("total") ?? "0.00";
-  const ship = params.get("ship") ?? "Standard";
-  const payment = params.get("payment") ?? "card";
+  const order      = params.get("order")      ?? "OQ-000000";
+  const name       = params.get("name")       ?? "Researcher";
+  const total      = params.get("total")      ?? "0.00";
+  const ship       = params.get("ship")       ?? "Standard";
+  const payment    = params.get("payment")    ?? "card";
+  const btcAddress = params.get("btcAddress") ?? null;
+  const btcAmount  = params.get("btcAmount")  ?? null;
+  const btcUrl     = params.get("btcUrl")     ?? null;
 
   const today = new Date();
   const deliveryDays = ship === "Next Day" ? 1 : ship === "Express" ? 2 : 5;
@@ -144,15 +147,53 @@ export default function OrderConfirmation() {
                 Send your Bitcoin payment now
               </p>
             </div>
+
+            {/* BTC amount (from BTCPay invoice) */}
+            {btcAmount && (
+              <div style={{ padding: "12px 16px", borderRadius: "10px", backgroundColor: "#fff", border: "1.5px solid #FDE68A", marginBottom: "10px" }}>
+                <p style={{ fontSize: "10.5px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px" }}>Exact Amount to Send</p>
+                <p style={{ fontSize: "20px", fontWeight: 900, color: "#92400E", margin: 0 }}>{btcAmount} <span style={{ fontSize: "14px" }}>BTC</span></p>
+                <p style={{ fontSize: "11px", color: "#94A3B8", margin: "2px 0 0" }}>≈ £{parseFloat(total).toFixed(2)} at current rate — locked for 60 min</p>
+              </div>
+            )}
+
+            {/* BTC address */}
             <div style={{ padding: "12px 16px", borderRadius: "10px", backgroundColor: "#fff", border: "1.5px solid #FDE68A", marginBottom: "12px" }}>
               <p style={{ fontSize: "10.5px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "6px" }}>Bitcoin Address</p>
-              <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#0F172A", wordBreak: "break-all", fontFamily: "monospace", letterSpacing: "0.02em", margin: 0 }}>{BITCOIN_ADDRESS}</p>
+              <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#0F172A", wordBreak: "break-all", fontFamily: "monospace", letterSpacing: "0.02em", margin: 0 }}>
+                {btcAddress ?? BITCOIN_ADDRESS}
+              </p>
             </div>
-            <div style={{ fontSize: "12px", color: "#92400E", lineHeight: 1.8 }}>
-              ₿ Send the BTC equivalent of <strong>£{parseFloat(total).toFixed(2)}</strong> at the current rate.<br />
-              ₿ Use your order number <strong>{order}</strong> in the memo/note field.<br />
-              ₿ We'll email confirmation once the transaction receives 1 network confirmation.
-            </div>
+
+            {/* Open in wallet button (BTCPay hosted page) */}
+            {btcUrl && (
+              <a
+                href={btcUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "block", textAlign: "center", padding: "12px", borderRadius: "10px",
+                  backgroundColor: "#92400E", color: "#fff", fontWeight: 700, fontSize: "14px",
+                  textDecoration: "none", marginBottom: "12px",
+                }}
+              >
+                Open in Wallet / BTCPay Page ↗
+              </a>
+            )}
+
+            {!btcAmount ? (
+              <div style={{ fontSize: "12px", color: "#92400E", lineHeight: 1.8 }}>
+                ₿ Convert £{parseFloat(total).toFixed(2)} to BTC at the current rate before sending.<br />
+                ₿ Use your order number <strong>{order}</strong> in the memo/note field.<br />
+                ₿ We'll email confirmation once the transaction receives 1 network confirmation.
+              </div>
+            ) : (
+              <div style={{ fontSize: "12px", color: "#92400E", lineHeight: 1.8 }}>
+                ₿ Send <strong>{btcAmount} BTC</strong> — do not round the amount.<br />
+                ₿ Use your order number <strong>{order}</strong> in the memo/note field.<br />
+                ₿ We'll email you once the transaction is confirmed on the network.
+              </div>
+            )}
           </div>
         )}
 
