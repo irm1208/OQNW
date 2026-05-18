@@ -142,7 +142,7 @@ export default function HomePage() {
         }} />
 
         {/* Content — below the logo in the image */}
-        <div className="max-w-[1280px] mx-auto px-8 w-full" style={{ position: "relative", zIndex: 1, paddingTop: "200px", paddingBottom: "80px" }}>
+        <div className="max-w-[1280px] mx-auto px-8 w-full" style={{ position: "relative", zIndex: 1, paddingTop: "320px", paddingBottom: "80px" }}>
 
           <div className="text-white" style={{ maxWidth: "520px" }}>
 
