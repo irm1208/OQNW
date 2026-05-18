@@ -541,6 +541,11 @@
     padding-bottom: 80px !important;
   }
 }
+@media (min-width: 1280px) {
+  .hero-content {
+    padding-top: 340px !important;
+  }
+}
 
 .hero-text {
   max-width: 100% !important;
