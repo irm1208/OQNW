@@ -86,7 +86,7 @@ export default function AllPeptides() {
         break;
     }
     return groups;
-  }, [selectedCategory, sortBy]);
+  }, [products, selectedCategory, sortBy, searchQuery]);
 
   const handleCategoryChange = (cat: string) => {
     if (cat === "Popular Peptides") {
