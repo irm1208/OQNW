@@ -84,4 +84,5 @@ export const products: Product[] = [
   { id: "79", name: "Tirzepatide 45mg",                      slug: "tirzepatide-45mg",                     price: 530, image: "/products/79.jpg", category: "Weight Management" },
   { id: "80", name: "Tirzepatide 60mg",                      slug: "tirzepatide-60mg",                     price: 665, image: "/products/80.jpg", category: "Weight Management" },
   { id: "81", name: "VIP 10mg",                              slug: "vip-10mg",                             price: 110, image: "/products/81.jpg", category: "Research Peptides" },
+  { id: "82", name: "Tesamorelin 20mg",                      slug: "tesamorelin-20mg",                     price: 240, image: "/products/82.jpg", category: "Growth Hormone" },
 ];

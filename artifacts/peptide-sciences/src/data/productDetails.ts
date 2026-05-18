@@ -1760,5 +1760,38 @@ Pulmonary research investigates VIP as a potent bronchodilator and pulmonary vas
 Immune modulation research has established VIP as a neuropeptide with significant immunosuppressive and anti-inflammatory properties. VIP inhibits the production of pro-inflammatory cytokines (TNF-α, IL-6, IL-12) from macrophages and dendritic cells, promotes regulatory T cell (Treg) generation, and may dampen autoimmune responses.
 
 Circadian rhythm research investigates VIP's role in the suprachiasmatic nucleus (SCN) as a key coupling factor that synchronizes individual circadian oscillators across the SCN neuronal population, coordinating biological time-keeping.`
+  },
+
+  "82": {
+    id: "82",
+    refNumber: "795-20-TS",
+    casNumber: "218949-48-5",
+    formula: "C₂₂₁H₃₆₆N₇₂O₆₇S",
+    molecularWeight: "5135.9 g/mol",
+    purity: "99%+ HPLC",
+    alsoKnownAs: "TH9507, Egrifta, GHRH(1-44) Analogue",
+    storage: "Store lyophilized peptide at -20°C. After reconstitution, store at 4°C for up to 2 weeks.",
+    appearance: "White lyophilized powder",
+    solubility: "Soluble in sterile water or bacteriostatic water",
+    halfLife: "Approximately 26 minutes",
+    researchAreas: ["Growth Hormone Research", "Body Composition", "Lipodystrophy Research", "Metabolic Research", "Cognitive Research"],
+    description: `Tesamorelin 20mg (TH9507) is a large-format vial of the stabilised synthetic GHRH(1-44) analogue featuring a trans-3-hexenoic acid N-terminal modification for enhanced plasma stability. Investigated for pulsatile GH secretion, visceral adiposity reduction, lipodystrophy research, and cognitive function studies.`,
+    longDescription: `What is Tesamorelin?
+
+Tesamorelin (TH9507) is a synthetic analogue of endogenous human growth hormone-releasing hormone (GHRH), comprising the full 44-amino acid sequence of GHRH with a trans-3-hexenoic acid moiety conjugated to the N-terminus. This modification increases resistance to dipeptidyl peptidase IV (DPP-IV) cleavage, substantially extending the plasma half-life compared to native GHRH while preserving full biological activity at the GHRH receptor (GHRH-R) on pituitary somatotrophs.
+
+Tesamorelin Structure
+
+Tesamorelin has the molecular formula C₂₂₁H₃₆₆N₇₂O₆₇S and a molecular weight of 5135.9 g/mol. The trans-3-hexenoic acid modification at the N-terminus is the key structural feature distinguishing it from native GHRH(1-44), providing resistance to proteolytic degradation and enhancing pharmacokinetic properties relevant to research application.
+
+Tesamorelin Research
+
+Growth hormone research has established Tesamorelin as a potent and selective GHRH-R agonist. Studies document that Tesamorelin stimulates pulsatile GH secretion from anterior pituitary somatotrophs in a physiological pattern, preserving the normal feedback mechanisms of the GH axis. Unlike exogenous GH, Tesamorelin acts upstream at the hypothalamic-pituitary level, maintaining the somatostatin-mediated regulatory loop.
+
+Lipodystrophy and body composition research has extensively investigated Tesamorelin for its ability to reduce visceral adipose tissue (VAT) accumulation. Clinical research conducted in HIV-associated lipodystrophy models demonstrated significant reductions in trunk fat and improved waist-to-hip ratio in treated subjects. These findings established the mechanism by which GHRH-R activation modulates adipose tissue distribution through GH-mediated lipolytic pathways.
+
+Metabolic research has explored Tesamorelin's effects on lipid metabolism, insulin-like growth factor 1 (IGF-1) levels, and glucose homeostasis. Studies report increases in IGF-1 and IGF-binding protein 3 (IGFBP-3) following Tesamorelin administration, reflecting upstream GH axis activation. Research has investigated the balance between beneficial lipolytic effects and potential impacts on insulin sensitivity in metabolic disease models.
+
+Cognitive function research has investigated associations between GHRH-R activation and hippocampal function. Studies in rodent and primate models suggest that Tesamorelin-stimulated GH/IGF-1 signalling may support hippocampal neurogenesis, memory consolidation, and executive function, providing a research avenue for GH axis involvement in cognitive ageing and neurodegenerative disease.`
   }
 };

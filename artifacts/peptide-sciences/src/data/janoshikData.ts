@@ -133,6 +133,9 @@ export const janoshikData: Record<string, JanoshikResult> = {
   "72": { purity: 99.766, actualMass: 11.99, lot: "TB410-0404",        received: "22 Apr 2026", analysis: "23 Apr 2026" },
   "73": { purity: 99.562, actualMass: 22.72, lot: "TB420-0408",        received: "22 Apr 2026", analysis: "23 Apr 2026" },
 
+  // ── Tesamorelin ───────────────────────────────────────────────────────────
+  "82": { purity: 99.152, actualMass: 21.47, lot: "TS20-0507",          received: "04 May 2026", analysis: "05 May 2026" },
+
   // ── Tesamorelin + Ipamorelin Blend ────────────────────────────────────────
   "74": { actualMass:  8.62, lot: "TI83-0415",             received: "03 May 2026", analysis: "04 May 2026" },
 
