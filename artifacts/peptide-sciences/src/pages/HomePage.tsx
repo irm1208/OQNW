@@ -1,30 +1,13 @@
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import {
-  Shield, FlaskConical, Truck, Award, Microscope, Brain, Heart,
-  Dumbbell, Scale, Clock, Zap, Leaf, Flame, Sparkles, Activity,
-  TrendingUp, ChevronRight, ArrowRight, CheckCircle
+  Shield, FlaskConical, Truck, Award,
+  ChevronRight, ArrowRight, CheckCircle
 } from "lucide-react";
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
 
-const categories = [
-  { name: "Growth Peptides",      icon: <Dumbbell size={20} />,    color: "#1B5CB5", bg: "#EEF4FF" },
-  { name: "Healing Peptides",     icon: <Heart size={20} />,       color: "#DC2626", bg: "#FEF2F2" },
-  { name: "Weight Management",    icon: <Scale size={20} />,       color: "#7C3AED", bg: "#F5F3FF" },
-  { name: "Longevity Peptides",   icon: <Clock size={20} />,       color: "#0E7490", bg: "#ECFEFF" },
-  { name: "Cellular Health",      icon: <Microscope size={20} />,  color: "#065F46", bg: "#ECFDF5" },
-  { name: "Nootropics",           icon: <Brain size={20} />,       color: "#9333EA", bg: "#FAF5FF" },
-  { name: "Immune Support",       icon: <Shield size={20} />,      color: "#1B5CB5", bg: "#EEF4FF" },
-  { name: "Research Peptides",    icon: <FlaskConical size={20} />,color: "#B45309", bg: "#FFFBEB" },
-  { name: "Peptide Blends",       icon: <Zap size={20} />,         color: "#DC2626", bg: "#FEF2F2" },
-  { name: "Skin & Repair",        icon: <Sparkles size={20} />,    color: "#BE185D", bg: "#FDF2F8" },
-  { name: "Hormonal Peptides",    icon: <Activity size={20} />,    color: "#0E7490", bg: "#ECFEFF" },
-  { name: "Growth Hormone",       icon: <TrendingUp size={20} />,  color: "#065F46", bg: "#ECFDF5" },
-  { name: "Anti-Inflammatory",    icon: <Leaf size={20} />,        color: "#7C3AED", bg: "#F5F3FF" },
-  { name: "Cognitive Peptides",   icon: <Flame size={20} />,       color: "#B45309", bg: "#FFFBEB" },
-];
 
 const featuredIds = ["3", "7", "11", "43", "15", "31", "64", "71"];
 
@@ -301,76 +284,6 @@ export default function HomePage() {
                   <p style={{ fontSize: "11.5px", color: "#64748B", marginTop: "1px" }}>{item.sub}</p>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── CATEGORIES ────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#F7FAFF", padding: "68px 0" }}>
-        <div className="max-w-[1280px] mx-auto px-4">
-          <div className="flex items-end justify-between mb-10">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <div style={{ width: "3px", height: "16px", background: "linear-gradient(180deg, #1B5CB5, #2563EB)", borderRadius: "2px" }} />
-                <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#1B5CB5", letterSpacing: "0.1em" }}>
-                  EXPLORE
-                </p>
-              </div>
-              <h2 className="font-bold" style={{ fontSize: "30px", color: "#0F172A", letterSpacing: "-0.02em" }}>
-                Shop by Category
-              </h2>
-              <p style={{ fontSize: "14px", color: "#64748B", marginTop: "4px" }}>
-                Precision peptides organised by research application
-              </p>
-            </div>
-            <Link
-              href="/all-peptides"
-              className="hidden sm:flex items-center gap-1.5 font-semibold"
-              style={{ fontSize: "13px", color: "#1B5CB5", textDecoration: "none", transition: "opacity 0.15s" }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = "0.7"}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = "1"}
-            >
-              View all 81 peptides <ChevronRight size={15} />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-3">
-            {categories.map(cat => (
-              <Link
-                key={cat.name}
-                href={`/all-peptides?category=${encodeURIComponent(cat.name)}`}
-                style={{ textDecoration: "none" }}
-              >
-                <div
-                  className="category-card rounded-2xl text-center cursor-pointer"
-                  style={{
-                    backgroundColor: "#fff",
-                    border: "1.5px solid #E8EDF5",
-                    padding: "20px 10px 16px",
-                  }}
-                  onMouseEnter={e => {
-                    const el = e.currentTarget as HTMLDivElement;
-                    el.style.borderColor = cat.color + "55";
-                    el.style.boxShadow = `0 8px 28px ${cat.color}18`;
-                  }}
-                  onMouseLeave={e => {
-                    const el = e.currentTarget as HTMLDivElement;
-                    el.style.borderColor = "#E8EDF5";
-                    el.style.boxShadow = "none";
-                  }}
-                >
-                  <div
-                    className="mx-auto flex items-center justify-center rounded-xl mb-3"
-                    style={{ width: "46px", height: "46px", backgroundColor: cat.bg, color: cat.color }}
-                  >
-                    {cat.icon}
-                  </div>
-                  <p className="font-semibold leading-tight" style={{ fontSize: "10.5px", color: "#1E293B" }}>
-                    {cat.name}
-                  </p>
-                </div>
-              </Link>
             ))}
           </div>
         </div>
