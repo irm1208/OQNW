@@ -573,24 +573,6 @@ Reproductive research uses gonadorelin to study hypothalamic-pituitary-gonadal (
 Research in male models investigates the role of pulsatile LH stimulation in testosterone production, testicular function, and spermatogenesis. In female models, gonadorelin is used to study follicular development, ovulation induction, and luteal phase support. The peptide serves as an important research tool for understanding reproductive endocrinology and developing fertility-related interventions.`
   },
 
-  "24": {
-    id: "24",
-    refNumber: "173-02-GO",
-    casNumber: "33515-09-2",
-    formula: "C₅₅H₇₅N₁₇O₁₃",
-    molecularWeight: "1182.30 g/mol",
-    purity: "98%+ HPLC",
-    alsoKnownAs: "GnRH, LHRH, Gonadorelin Acetate",
-    sequence: "pGlu-His-Trp-Ser-Tyr-Gly-Leu-Arg-Pro-Gly-NH₂",
-    storage: "Store lyophilized peptide at -20°C. After reconstitution, store at 4°C for up to 2 weeks.",
-    appearance: "White lyophilized powder",
-    researchAreas: ["Reproductive Research", "Hormonal Research", "Fertility Research"],
-    description: `Gonadorelin 2mg (Vial B) is a synthetic GnRH decapeptide investigated for hypothalamic-pituitary-gonadal axis research, fertility studies, and reproductive biology experiments.`,
-    longDescription: `What is Gonadorelin?
-
-Gonadorelin is a synthetic form of endogenous gonadotropin-releasing hormone (GnRH), a decapeptide secreted in pulses from the hypothalamus to regulate LH and FSH secretion from the anterior pituitary. Research applications span reproductive biology, fertility research, and HPG axis studies. Pulsatile administration stimulates gonadotropin release; continuous administration induces receptor downregulation and gonadal suppression.`
-  },
-
   "25": {
     id: "25",
     refNumber: "560-05-HX",
@@ -954,40 +936,6 @@ Appetite research explores MC4R-mediated anorexigenic signaling in the hypothala
 MC receptor biology research uses MT-2 as a tool to understand the differential roles of MC3R, MC4R, and MC5R in energy homeostasis, immune modulation, and inflammatory signaling.`
   },
 
-  "41": {
-    id: "41",
-    refNumber: "01-59-MT",
-    casNumber: "121062-08-6",
-    formula: "C₅₀H₆₉N₁₅O₉",
-    molecularWeight: "1024.20 g/mol",
-    purity: "98%+ HPLC",
-    alsoKnownAs: "MT-II, Melanotan II, MTII",
-    storage: "Store lyophilized peptide at -20°C. After reconstitution, store at 4°C for up to 2 weeks.",
-    appearance: "White lyophilized powder",
-    researchAreas: ["Melanogenesis Research", "Sexual Function Research", "Appetite Research", "MC Receptor Biology"],
-    description: `Melanotan 2 10mg (Vial B) is a cyclic α-MSH analogue with broad MC receptor activity (MC1R, MC3R, MC4R, MC5R), investigated for melanogenesis, sexual arousal, appetite regulation, and melanocortin receptor biology.`,
-    longDescription: `What is Melanotan 2?
-
-Melanotan 2 is a cyclic synthetic α-MSH analogue with broad melanocortin receptor activity. This vial provides an additional supply unit for research programs requiring multiple vials. Research applications span melanogenesis via MC1R, sexual function via central MC4R, appetite suppression via hypothalamic MC4R, and melanocortin receptor characterization using MC3R, MC4R, and MC5R-mediated pathways.`
-  },
-
-  "42": {
-    id: "42",
-    refNumber: "01-59-MT",
-    casNumber: "121062-08-6",
-    formula: "C₅₀H₆₉N₁₅O₉",
-    molecularWeight: "1024.20 g/mol",
-    purity: "98%+ HPLC",
-    alsoKnownAs: "MT-II, Melanotan II, MTII",
-    storage: "Store lyophilized peptide at -20°C. After reconstitution, store at 4°C for up to 2 weeks.",
-    appearance: "White lyophilized powder",
-    researchAreas: ["Melanogenesis Research", "Sexual Function Research", "MC Receptor Biology"],
-    description: `Melanotan 2 10mg (Vial C) is a third supply vial of the cyclic α-MSH analogue for extended research programs investigating melanocortin receptor biology, melanogenesis, and related physiological research areas.`,
-    longDescription: `What is Melanotan 2?
-
-Melanotan 2 is a cyclic heptapeptide α-MSH analogue that activates MC1R, MC3R, MC4R, and MC5R. This third vial supports high-volume research protocols. Scientific applications include all aspects of melanocortin receptor biology, melanogenesis research, appetite suppression studies, and sexual arousal mechanism investigation.`
-  },
-
   "43": {
     id: "43",
     refNumber: "85-345-MT",
@@ -1269,23 +1217,6 @@ Muscle satellite cell research has documented that MGF signals to quiescent musc
 Muscle repair research has shown that PEG MGF promotes myoblast proliferation and fusion, accelerating recovery from muscle injury in animal models. Investigators have compared PEG MGF with IGF-1 and noted distinct downstream signaling profiles and cell population specificity.
 
 Cardiac research has investigated MGF's role in cardiomyocyte protection and repair, with studies suggesting that MGF signaling in the heart may promote myocardial repair following ischemic injury, providing a potential research avenue in cardiac regenerative biology.`
-  },
-
-  "55": {
-    id: "55",
-    refNumber: "23-59-MG",
-    casNumber: "108174-48-7",
-    formula: "C₁₂₁H₂₀₀N₄₂O₃₉",
-    molecularWeight: "8637.7 g/mol",
-    purity: "98%+ HPLC",
-    alsoKnownAs: "Pegylated Mechano Growth Factor, PEGylated MGF",
-    storage: "Store lyophilized peptide at -20°C. After reconstitution, store at 4°C for up to 2 weeks.",
-    appearance: "White lyophilized powder",
-    researchAreas: ["Muscle Research", "Satellite Cell Research", "Tissue Repair", "Cardiac Research"],
-    description: `PEG MGF 2mg (Vial B) is an additional supply vial of pegylated Mechano Growth Factor for extended muscle satellite cell, myofiber repair, and cardiac research protocols.`,
-    longDescription: `What is PEG MGF?
-
-PEG MGF is a pegylated, long-acting analogue of the IGF-1 splice variant Mechano Growth Factor. This second vial supports multi-cohort or extended research protocols. Research applications include muscle satellite cell activation and proliferation, myofiber repair following mechanical injury, comparison with full-length IGF-1, and cardiac muscle protection research.`
   },
 
   "56": {
@@ -1590,23 +1521,6 @@ Wound healing research has investigated this fragment for promoting cell migrati
 Hair growth research has shown that Thymosin Beta-4 and its active fragment can stimulate hair follicle progenitor cell migration and promote anagen (growth) phase initiation in hair follicle models, suggesting potential applications in alopecia research.
 
 Anti-inflammatory research has documented reduced expression of pro-inflammatory cytokines in tissue models treated with Thymosin Beta-4 fragments, potentially through NF-κB modulation.`
-  },
-
-  "70": {
-    id: "70",
-    refNumber: "07-29-TB",
-    casNumber: "476014-70-7",
-    formula: "C₃₆H₆₆N₁₀O₁₃",
-    molecularWeight: "846.97 g/mol",
-    purity: "98%+ HPLC",
-    alsoKnownAs: "TB-500 Fragment (17-23), Ac-LKKTETQ",
-    storage: "Store lyophilized peptide at -20°C. After reconstitution, store at 4°C for up to 2 weeks.",
-    appearance: "White lyophilized powder",
-    researchAreas: ["Wound Healing", "Hair Growth Research", "Anti-Inflammatory Research"],
-    description: `TB-500 Fragment (17-23) 10mg (Vial B) is an additional supply of the actin-binding Thymosin Beta-4 fragment for extended wound healing, hair follicle, and anti-inflammatory research protocols.`,
-    longDescription: `What is TB-500 Fragment (17-23)?
-
-This vial provides an additional supply of the TB-500 Fragment (17-23) heptapeptide (Ac-LKKTETQ) for extended or multi-cohort research programs. Research applications include actin dynamics modulation, wound healing acceleration, hair follicle progenitor activation, and anti-inflammatory signaling studies.`
   },
 
   "71": {
