@@ -499,3 +499,20 @@
     border-radius: 6px !important;
   }
 }
+
+/* ── BUNDLE HERO ANIMATIONS ──────────────────────────────── */
+
+@keyframes vial-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-15px); }
+}
+
+@keyframes vial-float-b {
+  0%, 100% { transform: translateY(-8px); }
+  50%       { transform: translateY(7px); }
+}
+
+@keyframes bundle-spotlight-pulse {
+  0%, 100% { opacity: 0.65; transform: translate(-50%, -50%) scale(1); }
+  50%       { opacity: 1;    transform: translate(-50%, -50%) scale(1.12); }
+}

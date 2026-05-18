@@ -117,45 +117,111 @@ export default function BundlesPage() {
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
 
-      {/* Hero */}
-      <div style={{ background: "linear-gradient(135deg, #0D1F4E 0%, #1240A0 100%)", padding: "52px 20px 44px" }}>
-        <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", background: "rgba(255,255,255,0.12)", borderRadius: "20px", padding: "6px 14px", marginBottom: "18px" }}>
-            <Package size={13} color="rgba(255,255,255,0.85)" />
-            <span style={{ fontSize: "11.5px", fontWeight: 700, color: "rgba(255,255,255,0.85)", letterSpacing: "0.08em" }}>BUNDLE & SAVE</span>
-          </div>
-          <h1 style={{ fontSize: "clamp(26px, 5vw, 40px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.03em", margin: "0 0 12px" }}>
-            Build Your Research Bundle
-          </h1>
-          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.72)", lineHeight: 1.6, maxWidth: "560px", margin: "0 auto 28px" }}>
-            Mix and match any peptides. The more you bundle, the more you save — up to 20% off your entire order.
-          </p>
+      {/* ═══ CINEMATIC HERO ═══════════════════════════════════════ */}
+      <section style={{ position: "relative", background: "linear-gradient(135deg, #020814 0%, #050D26 30%, #091840 55%, #0E2260 75%, #122890 100%)", overflow: "hidden" }}>
 
-          {/* Discount tiers */}
-          <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
-            {TIERS.map(tier => (
-              <div key={tier.count} style={{
-                display: "flex", alignItems: "center", gap: "7px",
-                background: discountPct >= tier.pct ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.08)",
-                border: discountPct >= tier.pct ? "1.5px solid rgba(255,255,255,0.4)" : "1.5px solid rgba(255,255,255,0.15)",
-                borderRadius: "12px", padding: "10px 18px",
-                transition: "all 0.2s",
-              }}>
-                <Percent size={14} color={discountPct >= tier.pct ? "#fff" : "rgba(255,255,255,0.5)"} />
-                <div>
-                  <p style={{ margin: 0, fontSize: "16px", fontWeight: 900, color: discountPct >= tier.pct ? "#fff" : "rgba(255,255,255,0.5)" }}>
-                    {tier.pct}% OFF
-                  </p>
-                  <p style={{ margin: 0, fontSize: "11px", color: discountPct >= tier.pct ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)", fontWeight: 600 }}>
-                    {`${tier.count}+ vials`}
-                  </p>
-                </div>
-                {discountPct >= tier.pct && <Check size={14} color="#fff" />}
+        {/* Dot-grid background texture */}
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.055) 1px, transparent 0)", backgroundSize: "30px 30px", pointerEvents: "none" }} />
+
+        {/* Glow orb — top-left */}
+        <div style={{ position: "absolute", top: "-100px", left: "-60px", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(37,99,235,0.22) 0%, transparent 70%)", pointerEvents: "none", animation: "animate-pulse-glow 6s ease-in-out infinite" }} />
+
+        {/* Glow orb — bottom-right */}
+        <div style={{ position: "absolute", bottom: "-80px", right: "22%", width: "440px", height: "440px", borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 70%)", pointerEvents: "none", animation: "animate-pulse-glow 6s ease-in-out infinite", animationDelay: "3s" }} />
+
+        {/* Diagonal light ray */}
+        <div style={{ position: "absolute", top: 0, right: "42%", width: "1px", height: "100%", background: "linear-gradient(to bottom, transparent 0%, rgba(147,197,253,0.07) 40%, rgba(147,197,253,0.07) 60%, transparent 100%)", transform: "skewX(-18deg) scaleX(80)", pointerEvents: "none" }} />
+
+        {/* Content */}
+        <div className="max-w-[1280px] mx-auto px-4 lg:px-8" style={{ position: "relative", zIndex: 2 }}>
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-6" style={{ paddingTop: "52px", paddingBottom: "48px" }}>
+
+            {/* ── LEFT — Copy + discount tiers ── */}
+            <div style={{ flex: 1, color: "#fff", zIndex: 2 }}>
+
+              {/* Logo */}
+              <img
+                src="/omniqure-logo.jpeg"
+                alt="OmniQure Peptide Research Institute"
+                style={{ height: "54px", width: "auto", borderRadius: "10px", boxShadow: "0 6px 28px rgba(0,0,0,0.55)", marginBottom: "22px", display: "block" }}
+              />
+
+              {/* Badge */}
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", background: "rgba(59,130,246,0.16)", border: "1px solid rgba(99,149,246,0.42)", borderRadius: "20px", padding: "5px 14px", marginBottom: "16px" }}>
+                <Package size={12} color="#93C5FD" />
+                <span style={{ fontSize: "11px", fontWeight: 700, color: "#93C5FD", letterSpacing: "0.1em" }}>BUNDLE & SAVE — UP TO 20% OFF</span>
               </div>
-            ))}
+
+              {/* Headline */}
+              <h1 style={{ fontSize: "clamp(30px, 4vw, 52px)", fontWeight: 900, lineHeight: 1.08, letterSpacing: "-0.03em", margin: "0 0 14px", color: "#fff" }}>
+                Build Your<br />
+                <span style={{ background: "linear-gradient(90deg, #60A5FA 0%, #A78BFA 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                  Research Bundle
+                </span>
+              </h1>
+
+              {/* Subtitle */}
+              <p style={{ color: "rgba(255,255,255,0.62)", fontSize: "15px", lineHeight: 1.65, margin: "0 0 30px", maxWidth: "400px" }}>
+                Mix and match any peptides. The more you bundle, the more you save — up to 20% off your entire order.
+              </p>
+
+              {/* Discount tiers — 2×2 grid */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", maxWidth: "360px" }}>
+                {TIERS.map(tier => {
+                  const active = discountPct >= tier.pct;
+                  return (
+                    <div key={tier.count} style={{ display: "flex", alignItems: "center", gap: "8px", background: active ? "rgba(59,130,246,0.22)" : "rgba(255,255,255,0.06)", border: `1.5px solid ${active ? "rgba(99,149,246,0.55)" : "rgba(255,255,255,0.1)"}`, borderRadius: "12px", padding: "10px 14px", transition: "all 0.25s", boxShadow: active ? "0 0 16px rgba(59,130,246,0.25)" : "none" }}>
+                      <Percent size={13} color={active ? "#93C5FD" : "rgba(255,255,255,0.28)"} />
+                      <div style={{ flex: 1 }}>
+                        <p style={{ margin: 0, fontSize: "17px", fontWeight: 900, color: active ? "#fff" : "rgba(255,255,255,0.3)", lineHeight: 1 }}>
+                          {tier.pct}<span style={{ fontSize: "12px" }}> OFF</span>
+                        </p>
+                        <p style={{ margin: 0, fontSize: "10.5px", color: active ? "rgba(255,255,255,0.65)" : "rgba(255,255,255,0.25)", fontWeight: 600, marginTop: "2px" }}>
+                          {tier.count}+ vials
+                        </p>
+                      </div>
+                      {active && <Check size={13} color="#34D399" />}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* ── RIGHT — Cinematic floating vial showcase ── */}
+            <div className="hidden lg:block" style={{ flex: "0 0 auto", width: "460px", height: "420px", position: "relative" }}>
+
+              {/* Spotlight glow behind vials */}
+              <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "420px", height: "420px", borderRadius: "50%", background: "radial-gradient(circle, rgba(37,99,235,0.24) 0%, rgba(99,102,241,0.12) 45%, transparent 70%)", pointerEvents: "none", animation: "bundle-spotlight-pulse 5s ease-in-out infinite" }} />
+
+              {/* Floating vials */}
+              {([
+                { src: "/products/3.jpg",  top: "1%",  left: "22%", w: 212, z: 4, anim: "vial-float",   delay: "0s",   opacity: 1,    rot: "-5deg"  },
+                { src: "/products/1.jpg",  top: "30%", left: "1%",  w: 168, z: 3, anim: "vial-float-b", delay: "0.7s", opacity: 0.92, rot:  "7deg"  },
+                { src: "/products/7.jpg",  top: "28%", left: "56%", w: 160, z: 3, anim: "vial-float",   delay: "1.3s", opacity: 0.92, rot: "-4deg"  },
+                { src: "/products/11.jpg", top: "62%", left: "9%",  w: 140, z: 2, anim: "vial-float-b", delay: "0.3s", opacity: 0.72, rot:  "5deg"  },
+                { src: "/products/43.jpg", top: "60%", left: "57%", w: 134, z: 2, anim: "vial-float",   delay: "1.1s", opacity: 0.72, rot: "-7deg"  },
+              ] as Array<{ src: string; top: string; left: string; w: number; z: number; anim: string; delay: string; opacity: number; rot: string }>).map((v, i) => (
+                <div
+                  key={i}
+                  style={{ position: "absolute", top: v.top, left: v.left, width: v.w, height: v.w, zIndex: v.z, animation: `${v.anim} 3.8s ease-in-out infinite`, animationDelay: v.delay, opacity: v.opacity }}
+                >
+                  <div style={{ width: "100%", height: "100%", background: "linear-gradient(160deg, #ffffff 0%, #EEF4FF 100%)", borderRadius: "18px", boxShadow: `0 ${v.z * 10 + 10}px ${v.z * 28 + 12}px rgba(0,0,0,0.58), 0 0 0 1px rgba(255,255,255,0.18), inset 0 1px 0 rgba(255,255,255,0.85)`, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "8px", transform: `rotate(${v.rot})` }}>
+                    <img src={v.src} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                  </div>
+                </div>
+              ))}
+
+              {/* Subtle brand watermark */}
+              <div style={{ position: "absolute", bottom: "2px", left: 0, right: 0, textAlign: "center", pointerEvents: "none" }}>
+                <span style={{ fontSize: "9.5px", fontWeight: 800, color: "rgba(255,255,255,0.13)", letterSpacing: "0.32em", textTransform: "uppercase" }}>
+                  OMNIQURE PEPTIDE RESEARCH INSTITUTE
+                </span>
+              </div>
+            </div>
+
           </div>
         </div>
-      </div>
+      </section>
 
       <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "28px 16px 140px" }}>
 
