@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { useLocation } from "wouter";
+import { useLocation, Link } from "wouter";
 import Sidebar from "@/components/Sidebar";
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts } from "@/data/groupedProducts";
@@ -163,6 +163,35 @@ export default function AllPeptides() {
                 ✓ {t}
               </span>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Bundle & Save banner */}
+      <div style={{ backgroundColor: "#0C1120", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+        <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-3">
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "10px", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.12em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" }}>Bundle & Save</span>
+              <span style={{ width: "1px", height: "12px", backgroundColor: "rgba(255,255,255,0.15)" }} />
+              <span style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>Buy more, save more — starts at just 3 vials</span>
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", alignItems: "center" }}>
+              {[
+                { label: "3+", pct: "5%",  color: "#60A5FA" },
+                { label: "7+", pct: "10%", color: "#34D399" },
+                { label: "11+",pct: "15%", color: "#FBBF24" },
+                { label: "15+",pct: "20%", color: "#F87171" },
+              ].map(t => (
+                <div key={t.label} style={{ display: "flex", alignItems: "center", gap: "4px", backgroundColor: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: "6px", padding: "3px 9px" }}>
+                  <span style={{ fontSize: "10.5px", color: "rgba(255,255,255,0.4)", fontWeight: 600 }}>{t.label}</span>
+                  <span style={{ fontSize: "11px", fontWeight: 800, color: t.color }}>{t.pct}</span>
+                </div>
+              ))}
+              <Link href="/bundles" style={{ fontSize: "11px", fontWeight: 700, color: "#fff", backgroundColor: "#1240A0", padding: "4px 13px", borderRadius: "6px", textDecoration: "none", whiteSpace: "nowrap" }}>
+                Build Bundle →
+              </Link>
+            </div>
           </div>
         </div>
       </div>

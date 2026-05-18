@@ -355,6 +355,38 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── BUNDLE & SAVE STRIP ────────────────────────────────── */}
+      <section style={{ backgroundColor: "#0C1120", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+        <div className="max-w-[1280px] mx-auto px-4 py-5">
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "12px", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+              <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "0.12em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" }}>Bundle & Save</span>
+              <span style={{ width: "1px", height: "14px", backgroundColor: "rgba(255,255,255,0.15)" }} />
+              <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)", fontWeight: 500 }}>The more you order, the more you save — UK market leading discounts</span>
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center" }}>
+              {[
+                { label: "3+ vials", pct: "5% off",  color: "#60A5FA" },
+                { label: "7+ vials", pct: "10% off", color: "#34D399" },
+                { label: "11+ vials",pct: "15% off", color: "#FBBF24" },
+                { label: "15+ vials",pct: "20% off", color: "#F87171" },
+              ].map(t => (
+                <div key={t.label} style={{ display: "flex", alignItems: "center", gap: "6px", backgroundColor: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", padding: "5px 12px" }}>
+                  <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", fontWeight: 600 }}>{t.label}</span>
+                  <span style={{ fontSize: "12px", fontWeight: 800, color: t.color }}>{t.pct}</span>
+                </div>
+              ))}
+              <Link
+                href="/bundles"
+                style={{ fontSize: "12px", fontWeight: 700, color: "#fff", backgroundColor: "#1240A0", padding: "6px 16px", borderRadius: "8px", textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}
+              >
+                Build a Bundle →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── TRUST STRIP ───────────────────────────────────────── */}
       <section style={{ backgroundColor: "#fff", borderBottom: "1px solid #EEF2F7" }}>
         <div className="max-w-[1280px] mx-auto px-4">
