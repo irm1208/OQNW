@@ -126,34 +126,28 @@ export default function HomePage() {
           overflow: "hidden",
           backgroundImage: "url('/hero-vials.png')",
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: "top center",
           backgroundRepeat: "no-repeat",
+          minHeight: "88vh",
+          display: "flex",
+          alignItems: "flex-end",
         }}
       >
-        {/* Dark gradient overlay — left heavier so text stays readable */}
+        {/* Gradient — transparent at top (logo shows), dark at bottom (text readable) */}
         <div style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(90deg, rgba(2,11,30,0.92) 0%, rgba(7,26,74,0.82) 40%, rgba(13,37,101,0.55) 70%, rgba(13,37,101,0.15) 100%)",
+          background: "linear-gradient(to bottom, rgba(2,11,30,0.08) 0%, rgba(2,11,30,0.15) 35%, rgba(2,11,30,0.72) 65%, rgba(2,11,30,0.92) 100%)",
           pointerEvents: "none",
         }} />
 
-        {/* Subtle dot grid over the overlay */}
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)",
-          backgroundSize: "32px 32px",
-          pointerEvents: "none",
-        }} />
+        {/* Content pinned to the bottom */}
+        <div className="max-w-[1280px] mx-auto px-4 w-full" style={{ position: "relative", zIndex: 1, paddingBottom: "56px" }}>
 
-        <div className="max-w-[1280px] mx-auto px-4 py-20 lg:py-28" style={{ position: "relative", zIndex: 1 }}>
-
-          {/* Copy — left-aligned, max half width so vials show on right */}
-          <div className="text-white" style={{ maxWidth: "560px" }}>
+          <div className="text-white" style={{ maxWidth: "700px" }}>
 
             <h1
-              className="font-bold mb-6"
+              className="font-bold mb-5"
               style={{
                 fontSize: "clamp(36px, 5vw, 64px)",
                 lineHeight: 1.08,
@@ -168,8 +162,8 @@ export default function HomePage() {
             </h1>
 
             <p
-              className="mb-8 leading-relaxed"
-              style={{ color: "rgba(255,255,255,0.75)", fontSize: "16.5px" }}
+              className="mb-7 leading-relaxed"
+              style={{ color: "rgba(255,255,255,0.78)", fontSize: "16.5px", maxWidth: "540px" }}
             >
               81 HPLC-verified peptides — each backed by full COA and ESI-TOF mass spectrometry data. The standard for serious researchers.
             </p>
@@ -182,12 +176,13 @@ export default function HomePage() {
                   className="inline-flex items-center gap-1.5"
                   style={{
                     backgroundColor: "rgba(255,255,255,0.1)",
-                    border: "1px solid rgba(255,255,255,0.18)",
+                    border: "1px solid rgba(255,255,255,0.2)",
                     color: "#E2E8F0",
                     fontSize: "12px",
                     fontWeight: 600,
                     padding: "5px 12px",
                     borderRadius: "20px",
+                    backdropFilter: "blur(4px)",
                   }}
                 >
                   <CheckCircle size={12} style={{ color: "#34D399" }} />
