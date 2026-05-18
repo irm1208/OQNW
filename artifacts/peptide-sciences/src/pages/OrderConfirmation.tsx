@@ -253,7 +253,7 @@ export default function OrderConfirmation() {
 
           {/* Details */}
           <div style={{ padding: "20px 24px" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div className="form-grid-2" style={{ gap: "16px" }}>
               {[
                 { icon: <Package size={16} />, label: "Order Total", value: `£${parseFloat(total).toFixed(2)}`, color: "#1240A0" },
                 { icon: <Truck size={16} />, label: "Shipping", value: ship, color: "#0F172A" },

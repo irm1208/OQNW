@@ -1283,7 +1283,7 @@ export default function AccountPage() {
                   <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>Update your name as it appears on orders.</p>
 
                   <form onSubmit={handleSaveProfile} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                    <div className="form-grid-2">
                       {(["firstName", "lastName"] as const).map((field) => (
                         <div key={field}>
                           <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>

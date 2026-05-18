@@ -146,7 +146,7 @@ export default function Register() {
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
             {/* Name row */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+            <div className="form-grid-2">
               {field("First name", "firstName", "Jane", <User size={15} />)}
               {field("Last name", "lastName", "Smith", <User size={15} />)}
             </div>

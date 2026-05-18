@@ -407,7 +407,7 @@ export default function ProductPage() {
               {product.category}
             </Link>
 
-            <h1 className="font-bold leading-tight mb-3" style={{ fontSize: "28px", color: "#0F172A" }}>
+            <h1 className="product-h1 font-bold leading-tight mb-3" style={{ fontSize: "28px", color: "#0F172A" }}>
               {product.name}
             </h1>
 

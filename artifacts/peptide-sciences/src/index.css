@@ -328,3 +328,139 @@
 @media (max-width: 640px) {
   .hero-h1 { font-size: 32px !important; }
 }
+
+/* ── CARD ACTION ROW — RESPONSIVE */
+
+.card-add-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-cart-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  font-size: 13px;
+  height: 44px;
+  min-height: 44px;
+  cursor: pointer;
+  transition: background-color 0.25s;
+  white-space: nowrap;
+  padding: 0 10px;
+  font-family: inherit;
+}
+
+.card-qty {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  height: 44px;
+  border: 1.5px solid #E2E8F0;
+  background-color: #F8FAFC;
+}
+
+.card-qty button {
+  width: 32px;
+  height: 100%;
+  background: none;
+  border: none;
+  color: #64748B;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  font-family: inherit;
+  padding: 0;
+}
+
+.card-qty span {
+  min-width: 28px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0F172A;
+  border-left: 1px solid #E2E8F0;
+  border-right: 1px solid #E2E8F0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+/* On mobile: stack qty above Add to Cart button */
+@media (max-width: 640px) {
+  .card-add-row {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .card-qty {
+    width: 100%;
+    height: 42px;
+  }
+  .card-qty button {
+    flex: 1;
+    width: auto;
+  }
+  .card-qty span {
+    flex: 0 0 auto;
+    min-width: 36px;
+  }
+  .card-cart-btn {
+    flex: none;
+    width: 100%;
+    font-size: 14px;
+    height: 46px;
+    min-height: 46px;
+  }
+}
+
+/* Card image height on very small screens */
+@media (max-width: 479px) {
+  .card-product-img { height: 155px !important; }
+}
+
+/* Touch targets */
+@media (max-width: 768px) {
+  button, a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Section padding on mobile */
+@media (max-width: 640px) {
+  .section-py-lg {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+}
+
+/* ── FORM GRID — 2-COL COLLAPSE ON MOBILE ─────────────────── */
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 480px) {
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── PRODUCT PAGE MOBILE ───────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .product-h1 { font-size: 22px !important; }
+}

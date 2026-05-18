@@ -231,7 +231,7 @@ export default function TrackOrderPage() {
 
             {/* Details */}
             <div style={{ padding: "20px 24px", borderBottom: "1px solid #F1F5F9" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+              <div className="form-grid-2" style={{ gap: "16px" }}>
                 {[
                   { label: "Order Date", value: new Date(result.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) },
                   { label: "Shipping Method", value: result.shippingMethod ?? "Standard" },

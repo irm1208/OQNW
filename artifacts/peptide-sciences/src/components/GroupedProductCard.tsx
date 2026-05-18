@@ -207,39 +207,35 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {/* Actions */}
         <div className="mt-auto pt-2 flex flex-col gap-2" onClick={stopProp}>
           {/* Qty + Add to Cart */}
-          <div className="flex items-center gap-2">
-            <div
-              className="flex items-center rounded-xl overflow-hidden flex-shrink-0"
-              style={{ border: "1.5px solid #E2E8F0", height: "40px", backgroundColor: "#F8FAFC" }}
-            >
+          <div className="card-add-row">
+            <div className="card-qty">
               <button
                 onClick={e => { stopProp(e); setQty(q => Math.max(1, q - 1)); }}
-                style={{ width: "28px", height: "100%", background: "none", border: "none", color: "#64748B", fontSize: "16px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = cat.color}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
               >−</button>
-              <span style={{ minWidth: "24px", fontSize: "13px", fontWeight: 700, color: "#0F172A", borderLeft: "1px solid #E2E8F0", borderRight: "1px solid #E2E8F0", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                {qty}
-              </span>
+              <span>{qty}</span>
               <button
                 onClick={e => { stopProp(e); setQty(q => q + 1); }}
-                style={{ width: "28px", height: "100%", background: "none", border: "none", color: "#64748B", fontSize: "16px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = cat.color}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
               >+</button>
             </div>
 
             <button
               onClick={handleAddToCart}
-              className="flex-1 flex items-center justify-center gap-1.5 font-semibold rounded-xl"
+              className="card-cart-btn"
               style={{
                 backgroundColor: added ? "#059669" : "#1240A0",
-                color: "#fff", border: "none", cursor: "pointer",
-                fontSize: "13px", height: "40px",
-                transition: "background-color 0.25s",
+                color: "#fff",
+                cursor: "pointer",
               }}
               onMouseEnter={e => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1B5CB5"; }}
               onMouseLeave={e => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0"; }}
             >
               {added
-                ? <><CheckCircle2 size={13} /> Added!</>
-                : <><ShoppingCart size={13} /> Add to Cart</>
+                ? <><CheckCircle2 size={14} /> Added!</>
+                : <><ShoppingCart size={14} /> Add to Cart</>
               }
             </button>
           </div>

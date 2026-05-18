@@ -89,8 +89,8 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Image area */}
         <div
-          className="relative w-full overflow-hidden"
-          style={{ height: "300px", background: `linear-gradient(160deg, #F8FAFE 0%, ${cat.bg} 100%)`, position: "relative" }}
+          className="card-product-img relative w-full overflow-hidden"
+          style={{ background: `linear-gradient(160deg, #F8FAFE 0%, ${cat.bg} 100%)`, position: "relative" }}
           onMouseEnter={() => setImgHovered(true)}
           onMouseLeave={() => setImgHovered(false)}
         >
@@ -209,11 +209,10 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
 
             {/* Quantity + Add to Cart */}
-            <div className="flex items-center gap-2">
+            <div className="card-add-row">
               <div
-                className="flex items-center rounded-xl overflow-hidden flex-shrink-0"
+                className="card-qty"
                 style={{
-                  border: "1.5px solid #E2E8F0", height: "40px",
                   backgroundColor: isOutOfStock ? "#F1F5F9" : "#F8FAFC",
                   opacity: isOutOfStock ? 0.5 : 1,
                 }}
@@ -221,22 +220,15 @@ export default function ProductCard({ product }: ProductCardProps) {
                 <button
                   onClick={dec}
                   disabled={isOutOfStock}
-                  className="flex items-center justify-center font-bold"
-                  style={{ width: "28px", height: "100%", background: "none", border: "none", color: "#64748B", fontSize: "16px", cursor: isOutOfStock ? "not-allowed" : "pointer", transition: "color 0.1s" }}
+                  style={{ cursor: isOutOfStock ? "not-allowed" : "pointer" }}
                   onMouseEnter={e => { if (!isOutOfStock) (e.currentTarget as HTMLElement).style.color = cat.color; }}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
                 >−</button>
-                <span
-                  className="font-bold text-center"
-                  style={{ minWidth: "24px", fontSize: "13px", color: "#0F172A", borderLeft: "1px solid #E2E8F0", borderRight: "1px solid #E2E8F0", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}
-                >
-                  {qty}
-                </span>
+                <span>{qty}</span>
                 <button
                   onClick={inc}
                   disabled={isOutOfStock}
-                  className="flex items-center justify-center font-bold"
-                  style={{ width: "28px", height: "100%", background: "none", border: "none", color: "#64748B", fontSize: "16px", cursor: isOutOfStock ? "not-allowed" : "pointer", transition: "color 0.1s" }}
+                  style={{ cursor: isOutOfStock ? "not-allowed" : "pointer" }}
                   onMouseEnter={e => { if (!isOutOfStock) (e.currentTarget as HTMLElement).style.color = cat.color; }}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
                 >+</button>
@@ -245,13 +237,11 @@ export default function ProductCard({ product }: ProductCardProps) {
               <button
                 onClick={handleAddToCart}
                 disabled={isOutOfStock}
-                className="flex-1 flex items-center justify-center gap-1.5 font-semibold rounded-xl"
+                className="card-cart-btn"
                 style={{
                   backgroundColor: isOutOfStock ? "#94A3B8" : added ? "#059669" : "#1240A0",
-                  color: "#fff", border: "none",
+                  color: "#fff",
                   cursor: isOutOfStock ? "not-allowed" : "pointer",
-                  fontSize: "13px", height: "40px",
-                  transition: "background-color 0.25s, transform 0.15s",
                 }}
                 onMouseEnter={e => { if (!added && !isOutOfStock) (e.currentTarget as HTMLElement).style.backgroundColor = "#1B5CB5"; }}
                 onMouseLeave={e => { if (!added && !isOutOfStock) (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0"; }}
@@ -259,8 +249,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                 {isOutOfStock
                   ? "Out of Stock"
                   : added
-                  ? <><CheckCircle2 size={13} /> Added!</>
-                  : <><ShoppingCart size={13} /> Add to Cart</>
+                  ? <><CheckCircle2 size={14} /> Added!</>
+                  : <><ShoppingCart size={14} /> Add to Cart</>
                 }
               </button>
             </div>

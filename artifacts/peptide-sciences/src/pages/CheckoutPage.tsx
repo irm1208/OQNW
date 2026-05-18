@@ -483,7 +483,7 @@ export default function CheckoutPage() {
                   </div>
 
                   {/* Name row */}
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                  <div className="form-grid-2">
                     <div>
                       <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>First name *</label>
                       <div style={{ position: "relative" }}>
@@ -534,7 +534,7 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                  <div className="form-grid-2">
                     <div>
                       <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Town / City *</label>
                       <div style={{ position: "relative" }}>
@@ -554,7 +554,7 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                  <div className="form-grid-2">
                     <div>
                       <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Postcode / ZIP *</label>
                       <div style={{ position: "relative" }}>
