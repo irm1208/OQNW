@@ -795,3 +795,105 @@
   0%, 100% { opacity: 0.65; transform: translate(-50%, -50%) scale(1); }
   50%       { opacity: 1;    transform: translate(-50%, -50%) scale(1.12); }
 }
+
+/* ── MOBILE BOTTOM BAR ───────────────────────────────────── */
+
+.mobile-bottom-bar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-bar {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: #1B5CB5;
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.18);
+  }
+
+  .mobile-bottom-bar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-family: 'Arimo', Arial, sans-serif;
+    gap: 8px;
+  }
+
+  .mobile-bottom-bar__left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .mobile-bottom-bar__icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .mobile-bottom-bar__badge {
+    position: absolute;
+    top: -7px;
+    right: -9px;
+    background: #fff;
+    color: #1B5CB5;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+  }
+
+  .mobile-bottom-bar__label {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .mobile-bottom-bar__right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .mobile-bottom-bar__original {
+    font-size: 12px;
+    text-decoration: line-through;
+    opacity: 0.65;
+  }
+
+  .mobile-bottom-bar__total {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .mobile-bottom-bar__cta {
+    font-size: 14px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 6px;
+    padding: 4px 10px;
+    white-space: nowrap;
+  }
+
+  /* Push page content up so the bar doesn't cover it */
+  body.has-mobile-bottom-bar {
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+  }
+}

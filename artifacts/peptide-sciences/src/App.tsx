@@ -42,6 +42,7 @@ import { WishlistProvider } from "@/context/WishlistContext";
 import LiveChat from "@/components/LiveChat";
 import JurisdictionWarning from "@/components/JurisdictionWarning";
 import AgeGate from "@/components/AgeGate";
+import MobileBottomBar from "@/components/MobileBottomBar";
 import { initPixels } from "@/lib/pixels";
 import { usePageTracking } from "@/hooks/usePageTracking";
 
@@ -134,6 +135,7 @@ function App() {
                 </main>
                 <Footer />
               </div>
+              <MobileBottomBar />
               <LiveChat />
               <AgeGate />
             </WouterRouter>
