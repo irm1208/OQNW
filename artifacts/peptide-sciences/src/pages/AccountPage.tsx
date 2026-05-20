@@ -1111,7 +1111,7 @@ export default function AccountPage() {
                             <Link href={`/product/${product.id}`} style={{ textDecoration: "none", display: "block" }}>
                               <div style={{ height: "100px", backgroundColor: "#F0F5FF", display: "flex", alignItems: "center", justifyContent: "center" }}>
                                 <img
-                                  src={`/images/products/${product.image ?? "default.png"}`}
+                                  src={product.image ?? "/products/default.jpg"}
                                   alt={product.name}
                                   style={{ maxHeight: "80px", maxWidth: "80px", objectFit: "contain" }}
                                   onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = "0.15"; }}

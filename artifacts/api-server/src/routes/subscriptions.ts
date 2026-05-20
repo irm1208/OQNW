@@ -56,8 +56,8 @@ function subToResponse(s: typeof subscriptionsTable.$inferSelect) {
   };
 }
 
-// GET /api/subscriptions
-router.get("/api/subscriptions", async (req: Request, res: Response): Promise<void> => {
+// GET /subscriptions
+router.get("/subscriptions", async (req: Request, res: Response): Promise<void> => {
   const customerId = requireCustomer(req, res);
   if (!customerId) return;
   try {
@@ -72,8 +72,8 @@ router.get("/api/subscriptions", async (req: Request, res: Response): Promise<vo
   }
 });
 
-// POST /api/subscriptions
-router.post("/api/subscriptions", async (req: Request, res: Response): Promise<void> => {
+// POST /subscriptions
+router.post("/subscriptions", async (req: Request, res: Response): Promise<void> => {
   const customerId = requireCustomer(req, res);
   if (!customerId) return;
 
@@ -110,8 +110,8 @@ router.post("/api/subscriptions", async (req: Request, res: Response): Promise<v
   }
 });
 
-// PATCH /api/subscriptions/:id
-router.patch("/api/subscriptions/:id", async (req: Request, res: Response): Promise<void> => {
+// PATCH /subscriptions/:id
+router.patch("/subscriptions/:id", async (req: Request, res: Response): Promise<void> => {
   const customerId = requireCustomer(req, res);
   if (!customerId) return;
   const subId = parseInt(req.params.id as string, 10);

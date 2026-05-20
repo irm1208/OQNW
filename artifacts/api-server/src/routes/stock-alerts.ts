@@ -15,7 +15,7 @@ function requireAdmin(req: Request, res: Response): boolean {
 
 const router = Router();
 
-router.post("/api/products/:productId/stock-alert", async (req: Request, res: Response): Promise<void> => {
+router.post("/products/:productId/stock-alert", async (req: Request, res: Response): Promise<void> => {
   const productId = parseInt(req.params.productId as string, 10);
   if (isNaN(productId)) {
     res.status(400).json({ error: "Invalid product ID" });
@@ -52,7 +52,7 @@ router.post("/api/products/:productId/stock-alert", async (req: Request, res: Re
   }
 });
 
-router.delete("/api/products/:productId/stock-alert", async (req: Request, res: Response): Promise<void> => {
+router.delete("/products/:productId/stock-alert", async (req: Request, res: Response): Promise<void> => {
   const productId = parseInt(req.params.productId as string, 10);
   const email = typeof req.query.email === "string" ? req.query.email.toLowerCase().trim() : null;
   if (isNaN(productId) || !email) {
@@ -70,8 +70,8 @@ router.delete("/api/products/:productId/stock-alert", async (req: Request, res: 
   }
 });
 
-// GET /api/admin/stock-alerts — list all requests grouped by product
-router.get("/api/admin/stock-alerts", async (req: Request, res: Response): Promise<void> => {
+// GET /admin/stock-alerts — list all requests grouped by product
+router.get("/admin/stock-alerts", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
   try {
     const all = await db.select().from(stockAlertsTable);
@@ -115,8 +115,8 @@ router.get("/api/admin/stock-alerts", async (req: Request, res: Response): Promi
   }
 });
 
-// POST /api/admin/stock-alerts/notify/:productId — manually fire emails for a product
-router.post("/api/admin/stock-alerts/notify/:productId", async (req: Request, res: Response): Promise<void> => {
+// POST /admin/stock-alerts/notify/:productId — manually fire emails for a product
+router.post("/admin/stock-alerts/notify/:productId", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
   const productId = parseInt(req.params.productId as string, 10);
   if (isNaN(productId)) { res.status(400).json({ error: "Invalid product ID" }); return; }
