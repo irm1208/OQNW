@@ -260,7 +260,7 @@ export default function Header() {
                 backgroundColor: "#fff",
                 border: "1.5px solid #1B5CB5", borderTop: "none",
                 borderRadius: "0 0 12px 12px",
-                boxShadow: "0 8px 24px rgba(0,0,0,0.12)", zIndex: 200, overflow: "hidden",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.12)", zIndex: 600, overflow: "hidden",
               }}>
                 {results.map((p, i) => (
                   <button
@@ -307,7 +307,7 @@ export default function Header() {
                 position: "absolute", top: "100%", left: 0, right: 0,
                 backgroundColor: "#fff", border: "1.5px solid #1B5CB5", borderTop: "none",
                 borderRadius: "0 0 12px 12px", boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
-                zIndex: 200, padding: "14px", textAlign: "center", fontSize: "13px", color: "#64748B",
+                zIndex: 600, padding: "14px", textAlign: "center", fontSize: "13px", color: "#64748B",
               }}>
                 No peptides found for "{searchQuery.trim()}"
               </div>
