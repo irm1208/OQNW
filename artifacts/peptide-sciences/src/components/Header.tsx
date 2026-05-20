@@ -234,6 +234,7 @@ export default function Header() {
         WebkitBackdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
         boxShadow: scrolled ? "0 4px 32px rgba(8,28,80,0.35)" : "0 2px 16px rgba(8,28,80,0.25)",
         transition: "background 0.3s ease, box-shadow 0.3s ease",
+        position: "relative", zIndex: 2,
       }}>
         <div className="max-w-[1280px] mx-auto px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-2">
 
@@ -557,7 +558,7 @@ export default function Header() {
       {/* Main nav — tablet and above */}
       <nav
         className="bg-white hidden md:block"
-        style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.06)", borderTop: "1px solid #F8FAFC" }}
+        style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.06)", borderTop: "1px solid #F8FAFC", position: "relative", zIndex: 1 }}
       >
         <div className="max-w-[1280px] mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center">
