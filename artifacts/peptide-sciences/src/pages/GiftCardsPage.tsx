@@ -18,7 +18,7 @@ const DENOMINATIONS = [
 export default function GiftCardsPage() {
   useSEO({
     title: "Gift Cards",
-    description: "Send an OmniQure Peptide Sciences gift card — the perfect gift for researchers. Available in £25, £50, £100 and custom amounts.",
+    description: "Send an OmniQure Peptide Research Institute gift card — the perfect gift for researchers. Available in £25, £50, £100 and custom amounts.",
     canonicalPath: "/gift-cards",
   });
 

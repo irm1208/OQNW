@@ -109,9 +109,9 @@ export default function COADocument({ product }: COADocumentProps) {
       <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px", fontSize: "13px" }}>
         <tbody>
           {[
-            { label: "Client",       value: "OmniQure Peptide Sciences" },
+            { label: "Client",       value: "OmniQure Peptide Research Institute" },
             { label: "Sample",       value: `${product.name}\u00A0\u00A0\u00A0${lot}` },
-            { label: "Manufacturer", value: "OmniQure Peptide Sciences" },
+            { label: "Manufacturer", value: "OmniQure Peptide Research Institute" },
             { label: "Batch",        value: lot },
           ].map(row => (
             <tr key={row.label}>

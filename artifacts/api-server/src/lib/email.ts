@@ -76,7 +76,7 @@ function baseTemplate(title: string, body: string): string {
           <tr>
             <td style="background:#0f172a;padding:24px 32px;">
               <p style="margin:0;color:#ffffff;font-size:20px;font-weight:700;letter-spacing:-0.5px;">OmniQure</p>
-              <p style="margin:4px 0 0;color:#94a3b8;font-size:12px;">Peptide Sciences</p>
+              <p style="margin:4px 0 0;color:#94a3b8;font-size:12px;">Peptide Research Institute</p>
             </td>
           </tr>
           <!-- Body -->
@@ -89,7 +89,7 @@ function baseTemplate(title: string, body: string): string {
           <tr>
             <td style="background:#f8fafc;padding:20px 32px;border-top:1px solid #e2e8f0;">
               <p style="margin:0;color:#94a3b8;font-size:12px;text-align:center;">
-                OmniQure Peptide Sciences &bull; For research purposes only<br/>
+                OmniQure Peptide Research Institute &bull; For research purposes only<br/>
                 <a href="${SITE_URL}" style="color:#94a3b8;">omniqure.com</a>
               </p>
             </td>
@@ -878,7 +878,7 @@ export async function sendGiftCardToRecipient(data: GiftCardRecipientData): Prom
     : "";
   const body = `
     <h2 style="margin:0 0 6px;font-size:22px;color:#0f172a;">You've got a gift card!</h2>
-    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Hi ${data.recipientName}, someone sent you a gift card worth <strong style="color:#0f172a;">£${data.amountGbp.toFixed(2)}</strong> to spend at OmniQure Peptide Sciences.</p>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Hi ${data.recipientName}, someone sent you a gift card worth <strong style="color:#0f172a;">£${data.amountGbp.toFixed(2)}</strong> to spend at OmniQure Peptide Research Institute.</p>
 
     ${messageHtml}
 

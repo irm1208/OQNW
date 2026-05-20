@@ -253,9 +253,9 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
 
   // ── Client / Sample table ─────────────────────────────────────────────
   const clientRows = [
-    { label: "Client",       value: "OmniQure Peptide Sciences" },
+    { label: "Client",       value: "OmniQure Peptide Research Institute" },
     { label: "Sample",       value: `${product.name}     ${lot}` },
-    { label: "Manufacturer", value: "OmniQure Peptide Sciences" },
+    { label: "Manufacturer", value: "OmniQure Peptide Research Institute" },
     { label: "Batch",        value: lot },
   ];
   const COL1 = 34; // label column width
