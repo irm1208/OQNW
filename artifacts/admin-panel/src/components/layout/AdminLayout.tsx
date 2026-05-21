@@ -5,7 +5,7 @@ import {
   LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2,
   RotateCcw, Star, ShoppingBag, RefreshCw, Mail, Gift, BellRing, Receipt,
   Truck, RefreshCcw, ClipboardList, FileText, Bell, CreditCard, ShieldAlert,
-  ChevronDown, ChevronRight, Settings2,
+  ChevronDown, ChevronRight, Settings2, ShieldBan,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAlerts, type AdminAlert } from "@/hooks/useAlerts";
@@ -48,8 +48,9 @@ const coreNavGroups: NavGroup[] = [
   {
     label: "Settings",
     items: [
-      { href: "/tax",      label: "Tax Rates", icon: Receipt },
-      { href: "/shipping", label: "Shipping",  icon: Truck },
+      { href: "/tax",         label: "Tax Rates",   icon: Receipt },
+      { href: "/shipping",    label: "Shipping",    icon: Truck },
+      { href: "/blocked-ips", label: "Blocked IPs", icon: ShieldBan },
     ],
   },
 ];

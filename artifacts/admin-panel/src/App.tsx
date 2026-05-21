@@ -25,6 +25,7 @@ import Blog from "@/pages/Blog";
 import Alerts from "@/pages/Alerts";
 import Credits from "@/pages/Credits";
 import Fraud from "@/pages/Fraud";
+import BlockedIps from "@/pages/BlockedIps";
 
 const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
@@ -153,6 +154,11 @@ function AppRoutes() {
       <Route path="/blog">
         <AdminLayout>
           <Blog />
+        </AdminLayout>
+      </Route>
+      <Route path="/blocked-ips">
+        <AdminLayout>
+          <BlockedIps />
         </AdminLayout>
       </Route>
       <Route path="/">

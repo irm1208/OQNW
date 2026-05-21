@@ -1,6 +1,9 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { AdminLoginBody } from "@workspace/api-zod";
+import { db } from "@workspace/db";
+import { blockedIpsTable } from "@workspace/db/schema";
+import { eq } from "drizzle-orm";
 
 const router = Router();
 
@@ -48,6 +51,18 @@ function getRecord(ip: string): AttemptRecord {
 
 router.post("/admin/auth/login", async (req: Request, res: Response): Promise<void> => {
   const ip = getClientIp(req);
+
+  const [blocked] = await db
+    .select({ ip: blockedIpsTable.ip })
+    .from(blockedIpsTable)
+    .where(eq(blockedIpsTable.ip, ip))
+    .limit(1);
+
+  if (blocked) {
+    res.status(403).json({ error: "Access denied." });
+    return;
+  }
+
   const record = getRecord(ip);
 
   if (record.lockedUntil && Date.now() < record.lockedUntil) {

@@ -25,3 +25,4 @@ export * from "./inventory_audit_log";
 export * from "./webhooks";
 export * from "./blog_posts";
 export * from "./customer_credits";
+export * from "./blocked_ips";
