@@ -1,57 +1,51 @@
-import { useState } from "react";
 import { Link, useLocation, Redirect } from "wouter";
 import { useAdminLogout, useAdminMe } from "@workspace/api-client-react";
 import {
   LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2,
   RotateCcw, Star, ShoppingBag, RefreshCw, Mail, Gift, BellRing, Receipt,
-  Truck, RefreshCcw, ClipboardList, FileText, ChevronDown, ChevronRight,
+  Truck, RefreshCcw, ClipboardList, FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type NavItem = { href: string; label: string; icon: React.ElementType };
-type NavGroup = { label: string; icon: React.ElementType; items: NavItem[] };
+type NavGroup = { label: string; items: NavItem[] };
 
 const navGroups: NavGroup[] = [
   {
     label: "Overview",
-    icon: LayoutDashboard,
     items: [
       { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     ],
   },
   {
     label: "Orders",
-    icon: ShoppingCart,
     items: [
-      { href: "/orders",         label: "Orders",         icon: ShoppingCart },
-      { href: "/returns",        label: "Returns",        icon: RotateCcw },
-      { href: "/refunds",        label: "Refunds",        icon: RefreshCcw },
-      { href: "/abandoned-carts",label: "Abandoned Carts",icon: ShoppingBag },
+      { href: "/orders",          label: "Orders",          icon: ShoppingCart },
+      { href: "/returns",         label: "Returns",         icon: RotateCcw },
+      { href: "/refunds",         label: "Refunds",         icon: RefreshCcw },
+      { href: "/abandoned-carts", label: "Abandoned Carts", icon: ShoppingBag },
     ],
   },
   {
     label: "Customers",
-    icon: Users,
     items: [
-      { href: "/customers",     label: "Customers",    icon: Users },
-      { href: "/reviews",       label: "Reviews",      icon: Star },
-      { href: "/loyalty",       label: "Loyalty",      icon: Gift },
-      { href: "/subscriptions", label: "Subscriptions",icon: RefreshCw },
+      { href: "/customers",     label: "Customers",     icon: Users },
+      { href: "/reviews",       label: "Reviews",       icon: Star },
+      { href: "/loyalty",       label: "Loyalty",       icon: Gift },
+      { href: "/subscriptions", label: "Subscriptions", icon: RefreshCw },
     ],
   },
   {
     label: "Products",
-    icon: Package,
     items: [
-      { href: "/products",        label: "Products",       icon: Package },
-      { href: "/inventory-audit", label: "Inventory Audit",icon: ClipboardList },
-      { href: "/discounts",       label: "Discounts",      icon: Tags },
-      { href: "/stock-alerts",    label: "Stock Alerts",   icon: BellRing },
+      { href: "/products",        label: "Products",        icon: Package },
+      { href: "/inventory-audit", label: "Inventory Audit", icon: ClipboardList },
+      { href: "/discounts",       label: "Discounts",       icon: Tags },
+      { href: "/stock-alerts",    label: "Stock Alerts",    icon: BellRing },
     ],
   },
   {
     label: "Settings",
-    icon: Receipt,
     items: [
       { href: "/tax",      label: "Tax Rates", icon: Receipt },
       { href: "/shipping", label: "Shipping",  icon: Truck },
@@ -59,64 +53,12 @@ const navGroups: NavGroup[] = [
   },
   {
     label: "Content",
-    icon: FileText,
     items: [
       { href: "/blog",      label: "Blog",      icon: FileText },
       { href: "/email-log", label: "Email Log", icon: Mail },
     ],
   },
 ];
-
-function NavGroup({ group, location }: { group: NavGroup; location: string }) {
-  const isGroupActive = group.items.some((item) => location.startsWith(item.href));
-  const [open, setOpen] = useState(isGroupActive);
-  const GroupIcon = group.icon;
-
-  return (
-    <div>
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-semibold transition-colors ${
-          isGroupActive
-            ? "text-foreground"
-            : "text-muted-foreground hover:text-foreground hover:bg-muted"
-        }`}
-      >
-        <span className="flex items-center gap-3">
-          <GroupIcon className="w-4 h-4" />
-          {group.label}
-        </span>
-        {open ? (
-          <ChevronDown className="w-3.5 h-3.5 opacity-60" />
-        ) : (
-          <ChevronRight className="w-3.5 h-3.5 opacity-60" />
-        )}
-      </button>
-
-      {open && (
-        <div className="ml-4 mt-0.5 space-y-0.5 border-l border-border pl-3">
-          {group.items.map((item) => {
-            const isActive = location.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                  isActive
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                }`}
-              >
-                <item.icon className="w-3.5 h-3.5" />
-                {item.label}
-              </Link>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-}
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [location, navigate] = useLocation();
@@ -147,9 +89,32 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         <div className="h-14 flex items-center px-6 border-b">
           <h1 className="font-bold text-lg text-primary tracking-tight">OmniQure Admin</h1>
         </div>
-        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 space-y-4 overflow-y-auto">
           {navGroups.map((group) => (
-            <NavGroup key={group.label} group={group} location={location} />
+            <div key={group.label}>
+              <p className="px-3 mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground/60">
+                {group.label}
+              </p>
+              <div className="space-y-0.5">
+                {group.items.map((item) => {
+                  const isActive = location.startsWith(item.href);
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                        isActive
+                          ? "bg-primary text-primary-foreground"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                      }`}
+                    >
+                      <item.icon className="w-4 h-4 shrink-0" />
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
           ))}
         </nav>
         <div className="p-4 border-t">
