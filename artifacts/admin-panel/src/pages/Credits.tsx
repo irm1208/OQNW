@@ -30,7 +30,7 @@ export default function Credits() {
   const fmt = (pence: number) =>
     new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(pence / 100);
 
-  const filtered = (rows ?? []).filter((r) => {
+  const filtered = (Array.isArray(rows) ? rows : []).filter((r) => {
     const q = search.toLowerCase();
     return (
       !q ||
@@ -40,7 +40,7 @@ export default function Credits() {
     );
   });
 
-  const totalPence = (rows ?? []).reduce((s, r) => s + r.balancePence, 0);
+  const totalPence = (Array.isArray(rows) ? rows : []).reduce((s, r) => s + r.balancePence, 0);
 
   return (
     <div className="space-y-6">

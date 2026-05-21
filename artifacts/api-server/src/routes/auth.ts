@@ -6,6 +6,7 @@ import { db } from "@workspace/db";
 import { customersTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { sendPasswordReset } from "../lib/email";
+import { getClientIp, lookupCountry } from "../lib/geoip";
 
 const router = Router();
 
@@ -98,6 +99,12 @@ router.post("/auth/register", async (req: Request, res: Response): Promise<void>
       });
 
       req.log.info({ customerId: upgraded.id }, "Guest account upgraded to full account");
+      const ipUpgrade = getClientIp(req);
+      if (ipUpgrade) {
+        lookupCountry(ipUpgrade).then((cc) => {
+          if (cc) db.update(customersTable).set({ lastSeenIp: ipUpgrade, lastSeenCountry: cc }).where(eq(customersTable.id, upgraded.id)).catch(() => {});
+        }).catch(() => {});
+      }
       res.status(200).json({
         id: upgraded.id,
         email: upgraded.email,
@@ -125,7 +132,15 @@ router.post("/auth/register", async (req: Request, res: Response): Promise<void>
       .returning();
 
     const generatedCode = `${firstName.trim().slice(0, 3).toUpperCase()}${String(customer.id).padStart(4, "0")}`;
-    await db.update(customersTable).set({ referralCode: generatedCode }).where(eq(customersTable.id, customer.id));
+    const ipReg = getClientIp(req);
+    lookupCountry(ipReg ?? "").then((cc) => {
+      const updates: Record<string, string> = { referralCode: generatedCode };
+      if (ipReg) updates.lastSeenIp = ipReg;
+      if (cc) updates.lastSeenCountry = cc;
+      db.update(customersTable).set(updates).where(eq(customersTable.id, customer.id)).catch(() => {});
+    }).catch(() => {
+      db.update(customersTable).set({ referralCode: generatedCode }).where(eq(customersTable.id, customer.id)).catch(() => {});
+    });
 
     const token = signToken(customer.id);
     res.cookie(COOKIE_NAME, token, {
@@ -180,6 +195,13 @@ router.post("/auth/login", async (req: Request, res: Response): Promise<void> =>
       maxAge: COOKIE_MAX_AGE,
       path: "/",
     });
+
+    const ipLogin = getClientIp(req);
+    if (ipLogin) {
+      lookupCountry(ipLogin).then((cc) => {
+        if (cc) db.update(customersTable).set({ lastSeenIp: ipLogin, lastSeenCountry: cc }).where(eq(customersTable.id, customer.id)).catch(() => {});
+      }).catch(() => {});
+    }
 
     res.status(200).json({
       id: customer.id,

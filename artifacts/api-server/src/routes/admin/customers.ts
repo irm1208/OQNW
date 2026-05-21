@@ -30,6 +30,8 @@ function customerToResponse(c: typeof customersTable.$inferSelect) {
     totalOrders: c.totalOrders,
     totalSpendGbp: parseFloat(String(c.totalSpendGbp)),
     createdAt: c.createdAt.toISOString(),
+    lastSeenCountry: c.lastSeenCountry ?? null,
+    lastSeenIp: c.lastSeenIp ?? null,
   };
 }
 

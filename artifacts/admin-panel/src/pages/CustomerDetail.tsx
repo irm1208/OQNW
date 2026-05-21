@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Loader2, ArrowLeft, Mail, Phone, MapPin, Calendar, ShoppingBag, Eye, Download, Trash2, AlertTriangle, CreditCard, Plus, Minus } from "lucide-react";
+import { Loader2, ArrowLeft, Mail, Phone, MapPin, Calendar, ShoppingBag, Eye, Download, Trash2, AlertTriangle, CreditCard, Plus, Minus, Globe } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
@@ -298,6 +298,20 @@ export default function CustomerDetail() {
                 <div className="flex items-center gap-3 text-sm">
                   <Phone className="w-4 h-4 text-muted-foreground" />
                   <span>{customer.phone}</span>
+                </div>
+              )}
+              {(customer as { lastSeenCountry?: string | null }).lastSeenCountry && (
+                <div className="flex items-center gap-3 text-sm">
+                  <Globe className="w-4 h-4 text-muted-foreground" />
+                  <span className="flex items-center gap-1.5">
+                    <span className="text-base leading-none">
+                      {(customer as { lastSeenCountry: string }).lastSeenCountry.toUpperCase().replace(/\p{L}/gu, (c) => String.fromCodePoint(c.charCodeAt(0) + 127397))}
+                    </span>
+                    <span className="text-muted-foreground">{(customer as { lastSeenCountry: string }).lastSeenCountry} — IP country</span>
+                    {(customer as { lastSeenIp?: string | null }).lastSeenIp && (
+                      <span className="text-xs text-muted-foreground/60">({(customer as { lastSeenIp: string }).lastSeenIp})</span>
+                    )}
+                  </span>
                 </div>
               )}
               <div className="flex items-center gap-3 text-sm">

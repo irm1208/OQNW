@@ -7,7 +7,16 @@ import {
   customersTable,
 } from "@workspace/db/schema";
 import { eq, desc } from "drizzle-orm";
+
 const router = Router();
+
+function requireAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
 
 async function getOrCreateBalance(customerId: number): Promise<number> {
   const [existing] = await db
@@ -22,6 +31,7 @@ async function getOrCreateBalance(customerId: number): Promise<number> {
 }
 
 router.get("/admin/customers/:id/credits", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
   const customerId = parseInt(req.params.id, 10);
   if (isNaN(customerId)) { res.status(400).json({ error: "Invalid customer ID" }); return; }
 
@@ -42,6 +52,7 @@ router.get("/admin/customers/:id/credits", async (req: Request, res: Response): 
 });
 
 router.post("/admin/customers/:id/credits", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
   const customerId = parseInt(req.params.id, 10);
   if (isNaN(customerId)) { res.status(400).json({ error: "Invalid customer ID" }); return; }
 
@@ -92,6 +103,7 @@ router.post("/admin/customers/:id/credits", async (req: Request, res: Response):
 });
 
 router.get("/admin/credits", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
   try {
     const rows = await db
       .select({

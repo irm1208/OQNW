@@ -34,6 +34,26 @@ export default function Customers() {
 
   const formatCurrency = (val: number) => new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(val);
 
+  function countryFlag(cc: string) {
+    return cc.toUpperCase().replace(/\p{L}/gu, (c) => String.fromCodePoint(c.charCodeAt(0) + 127397));
+  }
+
+  function locationCell(customer: { city?: string | null; country?: string | null; lastSeenCountry?: string | null }) {
+    const billing = customer.city ? `${customer.city}${customer.country ? `, ${customer.country}` : ""}` : (customer.country ?? null);
+    const ipCC = (customer as { lastSeenCountry?: string | null }).lastSeenCountry;
+    return (
+      <span className="flex items-center gap-1.5">
+        {billing && <span className="text-muted-foreground">{billing}</span>}
+        {ipCC && (
+          <span title={`IP country: ${ipCC}`} className="text-base leading-none">
+            {countryFlag(ipCC)}
+          </span>
+        )}
+        {!billing && !ipCC && <span className="text-muted-foreground">—</span>}
+      </span>
+    );
+  }
+
   async function handleExport() {
     setExporting(true);
     try {
@@ -103,7 +123,7 @@ export default function Customers() {
                 <TableRow key={customer.id}>
                   <TableCell className="font-medium">{customer.firstName} {customer.lastName}</TableCell>
                   <TableCell className="text-muted-foreground">{customer.email}</TableCell>
-                  <TableCell>{customer.city ? `${customer.city}, ${customer.country}` : customer.country || '-'}</TableCell>
+                  <TableCell>{locationCell(customer as { city?: string | null; country?: string | null; lastSeenCountry?: string | null })}</TableCell>
                   <TableCell className="text-right">{customer.totalOrders}</TableCell>
                   <TableCell className="text-right font-medium">{formatCurrency(customer.totalSpendGbp)}</TableCell>
                   <TableCell>
