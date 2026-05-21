@@ -5,6 +5,7 @@ import {
   LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2,
   RotateCcw, Star, ShoppingBag, RefreshCw, Mail, Gift, BellRing, Receipt,
   Truck, RefreshCcw, ClipboardList, FileText, Bell, CreditCard, ShieldAlert,
+  ChevronDown, ChevronRight, Settings2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAlerts, type AdminAlert } from "@/hooks/useAlerts";
@@ -13,7 +14,7 @@ import { Link as WLink } from "wouter";
 type NavItem = { href: string; label: string; icon: React.ElementType };
 type NavGroup = { label: string; items: NavItem[] };
 
-const navGroups: NavGroup[] = [
+const coreNavGroups: NavGroup[] = [
   {
     label: "Overview",
     items: [
@@ -24,30 +25,24 @@ const navGroups: NavGroup[] = [
   {
     label: "Orders",
     items: [
-      { href: "/orders",          label: "Orders",          icon: ShoppingCart },
-      { href: "/fraud",           label: "Fraud Queue",     icon: ShieldAlert },
-      { href: "/returns",         label: "Returns",         icon: RotateCcw },
-      { href: "/refunds",         label: "Refunds",         icon: RefreshCcw },
-      { href: "/abandoned-carts", label: "Abandoned Carts", icon: ShoppingBag },
+      { href: "/orders",  label: "Orders",      icon: ShoppingCart },
+      { href: "/fraud",   label: "Fraud Queue", icon: ShieldAlert },
+      { href: "/returns", label: "Returns",     icon: RotateCcw },
+      { href: "/refunds", label: "Refunds",     icon: RefreshCcw },
     ],
   },
   {
     label: "Customers",
     items: [
-      { href: "/customers",     label: "Customers",     icon: Users },
-      { href: "/credits",       label: "Credits",       icon: CreditCard },
-      { href: "/reviews",       label: "Reviews",       icon: Star },
-      { href: "/loyalty",       label: "Loyalty",       icon: Gift },
-      { href: "/subscriptions", label: "Subscriptions", icon: RefreshCw },
+      { href: "/customers", label: "Customers", icon: Users },
     ],
   },
   {
     label: "Products",
     items: [
-      { href: "/products",        label: "Products",        icon: Package },
-      { href: "/inventory-audit", label: "Inventory Audit", icon: ClipboardList },
-      { href: "/discounts",       label: "Discounts",       icon: Tags },
-      { href: "/stock-alerts",    label: "Stock Alerts",    icon: BellRing },
+      { href: "/products",     label: "Products",     icon: Package },
+      { href: "/discounts",    label: "Discounts",    icon: Tags },
+      { href: "/stock-alerts", label: "Stock Alerts", icon: BellRing },
     ],
   },
   {
@@ -55,6 +50,30 @@ const navGroups: NavGroup[] = [
     items: [
       { href: "/tax",      label: "Tax Rates", icon: Receipt },
       { href: "/shipping", label: "Shipping",  icon: Truck },
+    ],
+  },
+];
+
+const advancedNavGroups: NavGroup[] = [
+  {
+    label: "Orders",
+    items: [
+      { href: "/abandoned-carts", label: "Abandoned Carts", icon: ShoppingBag },
+    ],
+  },
+  {
+    label: "Customers",
+    items: [
+      { href: "/reviews",       label: "Reviews",       icon: Star },
+      { href: "/loyalty",       label: "Loyalty",       icon: Gift },
+      { href: "/subscriptions", label: "Subscriptions", icon: RefreshCw },
+      { href: "/credits",       label: "Credits",       icon: CreditCard },
+    ],
+  },
+  {
+    label: "Products",
+    items: [
+      { href: "/inventory-audit", label: "Inventory Audit", icon: ClipboardList },
     ],
   },
   {
@@ -144,10 +163,44 @@ function BellButton() {
   );
 }
 
+function NavGroups({ groups, location }: { groups: NavGroup[]; location: string }) {
+  return (
+    <>
+      {groups.map((group) => (
+        <div key={group.label}>
+          <p className="px-3 mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground/60">
+            {group.label}
+          </p>
+          <div className="space-y-0.5">
+            {group.items.map((item) => {
+              const isActive = location.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  <item.icon className="w-4 h-4 shrink-0" />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
+
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [location, navigate] = useLocation();
   const { data: session, isLoading } = useAdminMe();
   const logout = useAdminLogout();
+  const [advancedOpen, setAdvancedOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -175,32 +228,25 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           <BellButton />
         </div>
         <nav className="flex-1 px-3 py-4 space-y-4 overflow-y-auto">
-          {navGroups.map((group) => (
-            <div key={group.label}>
-              <p className="px-3 mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground/60">
-                {group.label}
-              </p>
-              <div className="space-y-0.5">
-                {group.items.map((item) => {
-                  const isActive = location.startsWith(item.href);
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                        isActive
-                          ? "bg-primary text-primary-foreground"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                      }`}
-                    >
-                      <item.icon className="w-4 h-4 shrink-0" />
-                      {item.label}
-                    </Link>
-                  );
-                })}
+          <NavGroups groups={coreNavGroups} location={location} />
+
+          <div className="border-t pt-3">
+            <button
+              onClick={() => setAdvancedOpen(o => !o)}
+              className="w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold uppercase tracking-widest text-muted-foreground/60 hover:text-muted-foreground hover:bg-muted/50 transition-colors"
+            >
+              <Settings2 className="w-3 h-3 shrink-0" />
+              <span className="flex-1 text-left">Advanced</span>
+              {advancedOpen
+                ? <ChevronDown className="w-3 h-3 shrink-0" />
+                : <ChevronRight className="w-3 h-3 shrink-0" />}
+            </button>
+            {advancedOpen && (
+              <div className="mt-3 space-y-4">
+                <NavGroups groups={advancedNavGroups} location={location} />
               </div>
-            </div>
-          ))}
+            )}
+          </div>
         </nav>
         <div className="p-4 border-t">
           <Button variant="ghost" className="w-full justify-start text-muted-foreground" onClick={handleLogout}>
