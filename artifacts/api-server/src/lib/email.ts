@@ -3,7 +3,17 @@ import { logger } from "./logger";
 import { db } from "@workspace/db";
 import { emailLogsTable } from "@workspace/db";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend: Resend | null = null;
+function getResend(): Resend {
+  if (!_resend) {
+    const key = process.env.RESEND_API_KEY;
+    if (!key) {
+      throw new Error("RESEND_API_KEY is not set — email sending is disabled");
+    }
+    _resend = new Resend(key);
+  }
+  return _resend;
+}
 
 const FROM_ADDRESS = process.env.EMAIL_FROM ?? "OmniQure <orders@omniqure.com>";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? null;
@@ -210,7 +220,7 @@ export async function sendBankTransferInstructions(opts: {
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: opts.customerEmail,
       subject,
@@ -283,7 +293,7 @@ export async function sendBitcoinInstructions(opts: {
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: opts.customerEmail,
       subject,
@@ -328,7 +338,7 @@ export async function sendOrderConfirmation(order: OrderEmailData): Promise<void
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: order.customerEmail,
       subject,
@@ -369,7 +379,7 @@ export async function sendShippingNotification(order: OrderEmailData): Promise<v
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: order.customerEmail,
       subject,
@@ -411,7 +421,7 @@ export async function sendPasswordReset(opts: {
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: opts.customerEmail,
       subject,
@@ -497,7 +507,7 @@ export async function sendReturnStatusUpdate(opts: {
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: opts.customerEmail,
       subject,
@@ -544,7 +554,7 @@ export async function sendLowStockAlert(products: Array<{ productName: string; s
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: ADMIN_EMAIL,
       subject,
@@ -610,7 +620,7 @@ export async function sendAbandonedCartEmail(data: AbandonedCartEmailData): Prom
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: data.customerEmail,
       subject,
@@ -649,7 +659,7 @@ export async function sendBackInStockEmail(data: BackInStockEmailData): Promise<
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: data.customerEmail,
       subject,
@@ -702,7 +712,7 @@ export async function sendReviewRequestEmail(data: ReviewRequestEmailData): Prom
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: data.customerEmail,
       subject,
@@ -744,7 +754,7 @@ export async function sendReferralReward(data: {
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: data.referrerEmail,
       subject,
@@ -787,7 +797,7 @@ export async function sendWelcomeEmail(data: WelcomeEmailData): Promise<void> {
   `;
 
   try {
-    const result = await resend.emails.send({ from: FROM_ADDRESS, to: data.customerEmail, subject, html: baseTemplate("Welcome to OmniQure", body) });
+    const result = await getResend().emails.send({ from: FROM_ADDRESS, to: data.customerEmail, subject, html: baseTemplate("Welcome to OmniQure", body) });
     logger.info({ to: data.customerEmail }, "Welcome email sent");
     await logEmail({ toEmail: data.customerEmail, subject, type: "welcome", status: "sent", resendId: result.data?.id });
   } catch (err) {
@@ -851,7 +861,7 @@ export async function sendReorderReminder(data: ReorderReminderData): Promise<vo
   `;
 
   try {
-    const result = await resend.emails.send({ from: FROM_ADDRESS, to: data.customerEmail, subject, html: baseTemplate("Reorder Reminder", body) });
+    const result = await getResend().emails.send({ from: FROM_ADDRESS, to: data.customerEmail, subject, html: baseTemplate("Reorder Reminder", body) });
     logger.info({ to: data.customerEmail, order: data.orderNumber }, "Reorder reminder sent");
     await logEmail({ toEmail: data.customerEmail, subject, type: "reorder_reminder", status: "sent", resendId: result.data?.id, orderNumber: data.orderNumber });
   } catch (err) {
@@ -899,7 +909,7 @@ export async function sendGiftCardToRecipient(data: GiftCardRecipientData): Prom
     </div>
   `;
   try {
-    const result = await resend.emails.send({ from: FROM_ADDRESS, to: data.recipientEmail, subject, html: baseTemplate("Gift Card", body) });
+    const result = await getResend().emails.send({ from: FROM_ADDRESS, to: data.recipientEmail, subject, html: baseTemplate("Gift Card", body) });
     logger.info({ to: data.recipientEmail, code: data.code }, "Gift card email sent to recipient");
     await logEmail({ toEmail: data.recipientEmail, subject, type: "gift_card_recipient", status: "sent", resendId: result.data?.id });
   } catch (err) {
@@ -932,7 +942,7 @@ export async function sendGiftCardPurchaserConfirmation(data: GiftCardPurchaserD
     <p style="font-size:13px;color:#64748b;">If you have any questions about your gift card, please contact our support team.</p>
   `;
   try {
-    const result = await resend.emails.send({ from: FROM_ADDRESS, to: data.purchaserEmail, subject, html: baseTemplate("Gift Card Confirmation", body) });
+    const result = await getResend().emails.send({ from: FROM_ADDRESS, to: data.purchaserEmail, subject, html: baseTemplate("Gift Card Confirmation", body) });
     logger.info({ to: data.purchaserEmail, code: data.code }, "Gift card confirmation sent to purchaser");
     await logEmail({ toEmail: data.purchaserEmail, subject, type: "gift_card_purchaser", status: "sent", resendId: result.data?.id });
   } catch (err) {
