@@ -128,16 +128,22 @@ export default function Dashboard() {
 
   const statCards = [
     {
+      title: "Today's Revenue",
+      value: formatCurrency(stats.revenueToday),
+      icon: TrendingUp,
+      sub: `${stats.ordersToday} order${stats.ordersToday !== 1 ? "s" : ""} today`,
+    },
+    {
       title: "Total Revenue",
       value: formatCurrency(stats.totalRevenue),
-      icon: TrendingUp,
-      sub: `Today: ${formatCurrency(stats.revenueToday)}`,
+      icon: CreditCard,
+      sub: null,
     },
     {
       title: "Total Orders",
       value: stats.totalOrders.toLocaleString(),
       icon: ShoppingCart,
-      sub: `Today: ${stats.ordersToday} orders`,
+      sub: null,
     },
     {
       title: "Customers",
@@ -148,7 +154,7 @@ export default function Dashboard() {
     {
       title: "Avg Order Value",
       value: formatCurrency(stats.avgOrderValue),
-      icon: CreditCard,
+      icon: Package,
       sub: null,
     },
     {
@@ -168,7 +174,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stat Cards */}
-      <div className="grid gap-4 grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         {statCards.map((card) => (
           <Card key={card.title}>
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
