@@ -19,17 +19,34 @@ export interface FraudInput {
   isFirstOrder: boolean;
   orderCount: number;
   recentOrdersLastHour: number;
+  paymentMethod?: string;
+  isNewAccount?: boolean;
+  ipCountry?: string | null;
+  shippingCountryCode?: string | null;
+  isProxy?: boolean;
 }
 
 export function assessFraud(input: FraudInput): FraudAssessment {
   const flags: string[] = [];
   let score = 0;
 
-  const domain = input.email.split("@")[1]?.toLowerCase() ?? "";
+  if (input.isProxy) {
+    score += 30;
+    flags.push("vpn_proxy_detected");
+  }
 
-  if (FREE_EMAIL_DOMAINS.has(domain)) {
-    score += 5;
-    flags.push("free_email_provider");
+  if (
+    input.ipCountry &&
+    input.shippingCountryCode &&
+    input.ipCountry.toUpperCase() !== input.shippingCountryCode.toUpperCase()
+  ) {
+    score += 20;
+    flags.push("ip_country_mismatch");
+  }
+
+  if (input.isNewAccount) {
+    score += 20;
+    flags.push("new_account");
   }
 
   if (input.isFirstOrder && input.totalGbp > 200) {
@@ -54,16 +71,31 @@ export function assessFraud(input: FraudInput): FraudAssessment {
   }
 
   const highValueInternational =
-    !["GB", "US", "CA", "AU", "NZ", "IE"].includes(input.country.toUpperCase()) &&
-    input.totalGbp > 150;
+    !["GB", "US", "CA", "AU", "NZ", "IE"].includes(
+      (input.shippingCountryCode ?? input.country.slice(0, 2)).toUpperCase(),
+    ) && input.totalGbp > 150;
   if (highValueInternational) {
     score += 15;
     flags.push("high_value_international");
   }
 
-  if (input.email.includes("+") && !domain.includes("proton")) {
+  if (input.paymentMethod === "bitcoin") {
+    score += 15;
+    flags.push("cryptocurrency_payment");
+  } else if (input.paymentMethod === "bank_transfer") {
+    score += 10;
+    flags.push("bank_transfer_payment");
+  }
+
+  if (input.email.includes("+") && !input.email.split("@")[1]?.includes("proton")) {
     score += 5;
     flags.push("email_alias_pattern");
+  }
+
+  const domain = input.email.split("@")[1]?.toLowerCase() ?? "";
+  if (FREE_EMAIL_DOMAINS.has(domain)) {
+    score += 5;
+    flags.push("free_email_provider");
   }
 
   return { score: Math.min(score, 100), flags };

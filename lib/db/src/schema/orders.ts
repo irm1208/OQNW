@@ -5,6 +5,7 @@ import {
   integer,
   numeric,
   timestamp,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
@@ -35,6 +36,8 @@ export const ordersTable = pgTable("orders", {
   notes: text("notes"),
   fraudScore: integer("fraud_score").notNull().default(0),
   fraudFlags: text("fraud_flags").array().notNull().default([]),
+  fraudReviewed: boolean("fraud_reviewed").notNull().default(false),
+  fraudReviewNote: text("fraud_review_note"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
   reviewRequestSentAt: timestamp("review_request_sent_at", { withTimezone: true }),

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Search, Eye, Download, X } from "lucide-react";
+import { Loader2, Search, Eye, Download, X, ShieldAlert } from "lucide-react";
 import { toast } from "sonner";
 
 async function downloadCsv(url: string, filename: string) {
@@ -263,9 +263,25 @@ export default function Orders() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className={getStatusColor(order.status)}>
-                      {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                    </Badge>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <Badge variant="outline" className={getStatusColor(order.status)}>
+                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                      </Badge>
+                      {(order.fraudScore ?? 0) >= 25 && !(order as any).fraudReviewed && (
+                        <Badge
+                          variant="outline"
+                          className={`text-xs px-1.5 py-0.5 gap-1 ${
+                            (order.fraudScore ?? 0) >= 50
+                              ? "bg-red-50 text-red-700 border-red-200"
+                              : "bg-orange-50 text-orange-700 border-orange-200"
+                          }`}
+                          title={`Fraud score: ${order.fraudScore}`}
+                        >
+                          <ShieldAlert className="w-3 h-3" />
+                          {order.fraudScore}
+                        </Badge>
+                      )}
+                    </div>
                   </TableCell>
                   <TableCell className="text-right font-medium">{formatCurrency(order.totalGbp)}</TableCell>
                   <TableCell onClick={(e) => e.stopPropagation()}>

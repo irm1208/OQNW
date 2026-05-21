@@ -24,7 +24,22 @@ import {
 } from "../lib/email";
 import { createBtcPayInvoice, isBtcPayConfigured } from "../lib/btcpay";
 import { assessFraud } from "../lib/fraudScorer";
+import { getClientIp, lookupIpData } from "../lib/geoip";
 import { dispatchWebhook } from "../lib/webhookDispatcher";
+
+const COUNTRY_NAME_TO_CODE: Record<string, string> = {
+  "United States": "US", "United Kingdom": "GB", "Canada": "CA",
+  "Australia": "AU", "Germany": "DE", "France": "FR", "Netherlands": "NL",
+  "Spain": "ES", "Italy": "IT", "Sweden": "SE", "Norway": "NO",
+  "Denmark": "DK", "Finland": "FI", "Belgium": "BE", "Switzerland": "CH",
+  "Austria": "AT", "Portugal": "PT", "Ireland": "IE", "New Zealand": "NZ",
+  "Japan": "JP", "Singapore": "SG", "Hong Kong": "HK", "South Korea": "KR",
+  "Taiwan": "TW", "Malaysia": "MY", "Thailand": "TH", "United Arab Emirates": "AE",
+  "Luxembourg": "LU", "Iceland": "IS", "Bulgaria": "BG", "Croatia": "HR",
+  "Cyprus": "CY", "Czech Republic": "CZ", "Estonia": "EE", "Greece": "GR",
+  "Hungary": "HU", "Latvia": "LV", "Lithuania": "LT", "Malta": "MT",
+  "Poland": "PL", "Romania": "RO", "Slovakia": "SK", "Slovenia": "SI",
+};
 
 const router = Router();
 
@@ -357,9 +372,22 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     const recentOrdersLastHour = recentOrderResult?.cnt ?? 0;
 
     const [customerOrderResult] = customerId
-      ? await db.select({ totalOrders: customersTable.totalOrders }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1)
-      : [{ totalOrders: 0 }];
+      ? await db
+          .select({ totalOrders: customersTable.totalOrders, createdAt: customersTable.createdAt })
+          .from(customersTable)
+          .where(eq(customersTable.id, customerId))
+          .limit(1)
+      : [{ totalOrders: 0, createdAt: null as Date | null }];
     const isFirstOrder = (customerOrderResult?.totalOrders ?? 0) <= 1;
+    const isNewAccount = customerOrderResult?.createdAt
+      ? Date.now() - new Date(customerOrderResult.createdAt).getTime() < 10 * 60 * 1000
+      : false;
+
+    const clientIp = getClientIp(req);
+    const ipData = clientIp
+      ? await lookupIpData(clientIp).catch(() => ({ countryCode: null, isProxy: false }))
+      : { countryCode: null, isProxy: false };
+    const shippingCountryCode = COUNTRY_NAME_TO_CODE[d.country] ?? null;
 
     const { score: fraudScore, flags: fraudFlags } = assessFraud({
       email: d.email,
@@ -369,6 +397,11 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       isFirstOrder,
       orderCount: customerOrderResult?.totalOrders ?? 0,
       recentOrdersLastHour: Number(recentOrdersLastHour),
+      paymentMethod: paymentMethodStr,
+      isNewAccount,
+      ipCountry: ipData.countryCode,
+      shippingCountryCode,
+      isProxy: ipData.isProxy,
     });
 
     // Insert order

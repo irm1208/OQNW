@@ -44,6 +44,8 @@ function orderToResponse(o: typeof ordersTable.$inferSelect) {
     refundStatus: o.refundStatus ?? "none",
     fraudScore: o.fraudScore ?? 0,
     fraudFlags: o.fraudFlags ?? [],
+    fraudReviewed: o.fraudReviewed ?? false,
+    fraudReviewNote: o.fraudReviewNote ?? null,
     createdAt: o.createdAt.toISOString(),
     updatedAt: o.updatedAt.toISOString(),
   };

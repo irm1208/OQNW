@@ -1,7 +1,7 @@
 import { useAlerts, type AdminAlert } from "@/hooks/useAlerts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, ShoppingCart, RotateCcw, Package, ShoppingBag, CheckCircle2 } from "lucide-react";
+import { Loader2, ShoppingCart, RotateCcw, Package, ShoppingBag, CheckCircle2, ShieldAlert } from "lucide-react";
 import { Link } from "wouter";
 
 const TYPE_CONFIG: Record<
@@ -12,6 +12,7 @@ const TYPE_CONFIG: Record<
   return: { label: "Return",  icon: RotateCcw,    color: "text-blue-500" },
   stock:  { label: "Stock",   icon: Package,      color: "text-red-500" },
   cart:   { label: "Cart",    icon: ShoppingBag,  color: "text-slate-500" },
+  fraud:  { label: "Fraud",   icon: ShieldAlert,  color: "text-red-600" },
 };
 
 const SEVERITY_BADGE: Record<AdminAlert["severity"], string> = {

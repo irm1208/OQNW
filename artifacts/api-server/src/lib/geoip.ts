@@ -35,3 +35,33 @@ export async function lookupCountry(ip: string): Promise<string | null> {
     return null;
   }
 }
+
+export interface IpData {
+  countryCode: string | null;
+  isProxy: boolean;
+}
+
+export async function lookupIpData(ip: string): Promise<IpData> {
+  if (!ip || isPrivateIp(ip)) return { countryCode: null, isProxy: false };
+  try {
+    const res = await fetch(
+      `http://ip-api.com/json/${ip}?fields=countryCode,proxy,hosting`,
+      { signal: AbortSignal.timeout(3000) },
+    );
+    if (!res.ok) return { countryCode: null, isProxy: false };
+    const data = (await res.json()) as {
+      countryCode?: string;
+      proxy?: boolean;
+      hosting?: boolean;
+    };
+    return {
+      countryCode:
+        typeof data.countryCode === "string" && data.countryCode.length === 2
+          ? data.countryCode
+          : null,
+      isProxy: data.proxy === true || data.hosting === true,
+    };
+  } catch {
+    return { countryCode: null, isProxy: false };
+  }
+}

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { customFetch } from "@workspace/api-client-react";
 
 export type AlertSeverity = "info" | "warning" | "danger";
-export type AlertType = "order" | "return" | "stock" | "cart";
+export type AlertType = "order" | "return" | "stock" | "cart" | "fraud";
 
 export interface AdminAlert {
   id: string;

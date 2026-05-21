@@ -7,12 +7,12 @@ import {
   productsInventoryTable,
   abandonedCartsTable,
 } from "@workspace/db/schema";
-import { eq, lte, isNull, gt } from "drizzle-orm";
+import { eq, lte, isNull, gt, gte, and, desc } from "drizzle-orm";
 
 const router = Router();
 
 export type AlertSeverity = "info" | "warning" | "danger";
-export type AlertType = "order" | "return" | "stock" | "cart";
+export type AlertType = "order" | "return" | "stock" | "cart" | "fraud";
 
 export interface AdminAlert {
   id: string;
@@ -28,7 +28,7 @@ router.get("/admin/alerts", async (req: Request, res: Response): Promise<void> =
   try {
     const alerts: AdminAlert[] = [];
 
-    const [pendingOrders, pendingReturns, lowStockItems, abandonedCarts] =
+    const [pendingOrders, pendingReturns, lowStockItems, abandonedCarts, fraudOrders] =
       await Promise.all([
         db
           .select({
@@ -75,6 +75,24 @@ router.get("/admin/alerts", async (req: Request, res: Response): Promise<void> =
           .from(abandonedCartsTable)
           .where(isNull(abandonedCartsTable.convertedAt))
           .orderBy(abandonedCartsTable.updatedAt),
+
+        db
+          .select({
+            id: ordersTable.id,
+            orderNumber: ordersTable.orderNumber,
+            customerName: ordersTable.customerName,
+            fraudScore: ordersTable.fraudScore,
+            createdAt: ordersTable.createdAt,
+          })
+          .from(ordersTable)
+          .where(
+            and(
+              gte(ordersTable.fraudScore, 40),
+              eq(ordersTable.fraudReviewed, false),
+            ),
+          )
+          .orderBy(desc(ordersTable.fraudScore), desc(ordersTable.createdAt))
+          .limit(5),
       ]);
 
     for (const order of pendingOrders) {
@@ -123,6 +141,19 @@ router.get("/admin/alerts", async (req: Request, res: Response): Promise<void> =
         message: `${cart.customerName} (${cart.customerEmail})`,
         link: `/abandoned-carts`,
         createdAt: cart.updatedAt?.toISOString() ?? new Date().toISOString(),
+      });
+    }
+
+    for (const fo of fraudOrders) {
+      const score = fo.fraudScore ?? 0;
+      alerts.push({
+        id: `fraud-${fo.id}`,
+        type: "fraud",
+        severity: score >= 60 ? "danger" : "warning",
+        title: score >= 60 ? "High Risk Order" : "Suspicious Order",
+        message: `${fo.customerName} — Score ${score} (${fo.orderNumber})`,
+        link: `/fraud`,
+        createdAt: fo.createdAt?.toISOString() ?? new Date().toISOString(),
       });
     }
 

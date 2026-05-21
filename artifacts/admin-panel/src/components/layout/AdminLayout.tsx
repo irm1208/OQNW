@@ -4,7 +4,7 @@ import { useAdminLogout, useAdminMe } from "@workspace/api-client-react";
 import {
   LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2,
   RotateCcw, Star, ShoppingBag, RefreshCw, Mail, Gift, BellRing, Receipt,
-  Truck, RefreshCcw, ClipboardList, FileText, Bell, CreditCard,
+  Truck, RefreshCcw, ClipboardList, FileText, Bell, CreditCard, ShieldAlert,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAlerts, type AdminAlert } from "@/hooks/useAlerts";
@@ -25,6 +25,7 @@ const navGroups: NavGroup[] = [
     label: "Orders",
     items: [
       { href: "/orders",          label: "Orders",          icon: ShoppingCart },
+      { href: "/fraud",           label: "Fraud Queue",     icon: ShieldAlert },
       { href: "/returns",         label: "Returns",         icon: RotateCcw },
       { href: "/refunds",         label: "Refunds",         icon: RefreshCcw },
       { href: "/abandoned-carts", label: "Abandoned Carts", icon: ShoppingBag },
