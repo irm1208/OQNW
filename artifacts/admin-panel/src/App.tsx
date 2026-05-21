@@ -22,6 +22,7 @@ import Shipping from "@/pages/Shipping";
 import Refunds from "@/pages/Refunds";
 import InventoryAudit from "@/pages/InventoryAudit";
 import Blog from "@/pages/Blog";
+import Alerts from "@/pages/Alerts";
 
 const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
@@ -45,6 +46,11 @@ function AppRoutes() {
       <Route path="/dashboard">
         <AdminLayout>
           <Dashboard />
+        </AdminLayout>
+      </Route>
+      <Route path="/alerts">
+        <AdminLayout>
+          <Alerts />
         </AdminLayout>
       </Route>
       <Route path="/orders">
