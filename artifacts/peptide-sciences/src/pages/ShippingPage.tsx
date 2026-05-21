@@ -3,7 +3,7 @@ import { Truck, ChevronRight, Shield, Package, Clock, Globe, AlertTriangle } fro
 
 const LAST_UPDATED = "1 May 2025";
 const COMPANY_SHORT = "OmniQure";
-const EMAIL = "orders@omniqure.co.uk";
+const EMAIL = "orders@omniqure.com";
 
 interface SectionProps {
   id: string;

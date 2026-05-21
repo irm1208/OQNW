@@ -4,8 +4,8 @@ import { Lock, ChevronRight } from "lucide-react";
 const LAST_UPDATED = "1 May 2025";
 const COMPANY = "OmniQure Peptide Research Institute";
 const COMPANY_SHORT = "OmniQure";
-const EMAIL_PRIVACY = "privacy@omniqure.co.uk";
-const EMAIL_GENERAL = "research@omniqure.co.uk";
+const EMAIL_PRIVACY = "privacy@omniqure.com";
+const EMAIL_GENERAL = "research@omniqure.com";
 
 interface SectionProps {
   id: string;
@@ -123,16 +123,15 @@ export default function PrivacyPage() {
                 This Privacy Policy explains how {COMPANY} ("we", "us", "our") collects, uses, stores, and protects your personal data when you visit our website or purchase from us.
               </p>
               <p className="text-sm leading-relaxed" style={{ color: "#475569" }}>
-                We are committed to protecting your privacy and handling your data in a transparent and lawful manner in accordance with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018. Please read this policy carefully.
+                We are committed to protecting your privacy and handling your data in a transparent and lawful manner in accordance with applicable data protection regulations. Please read this policy carefully.
               </p>
             </div>
 
             <Section id="who-we-are" number="1" title="Who We Are">
-              <p>{COMPANY} (trading as "{COMPANY_SHORT}") is the data controller responsible for your personal data. We are based in the United Kingdom.</p>
+              <p>{COMPANY} (trading as "{COMPANY_SHORT}") is the data controller responsible for your personal data.</p>
               <div className="rounded-xl p-4" style={{ backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}>
                 <p><strong>Data Controller:</strong> {COMPANY}</p>
                 <p><strong>Privacy contact:</strong> <a href={`mailto:${EMAIL_PRIVACY}`} style={{ color: "#1B5CB5" }}>{EMAIL_PRIVACY}</a></p>
-                <p><strong>Jurisdiction:</strong> England and Wales, United Kingdom</p>
               </div>
             </Section>
 

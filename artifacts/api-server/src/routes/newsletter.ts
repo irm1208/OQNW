@@ -9,7 +9,7 @@ import { logger } from "../lib/logger";
 
 const router = Router();
 
-const SITE_URL = process.env.SITE_URL ?? "https://omniqure.co.uk";
+const SITE_URL = process.env.SITE_URL ?? "https://omniqure.com";
 const UNSUB_SECRET = process.env.ADMIN_PASSWORD ?? "omniqure-unsub-secret";
 
 function isAdmin(req: Request, res: Response): boolean {

@@ -4,8 +4,7 @@ import { Shield, ChevronRight } from "lucide-react";
 const LAST_UPDATED = "1 May 2025";
 const COMPANY = "OmniQure Peptide Research Institute";
 const COMPANY_SHORT = "OmniQure";
-const EMAIL = "legal@omniqure.co.uk";
-const COUNTRY = "England and Wales";
+const EMAIL = "legal@omniqure.com";
 
 interface SectionProps {
   id: string;
@@ -120,7 +119,7 @@ export default function TermsPage() {
                 These Terms and Conditions ("Terms") govern your use of the {COMPANY} website and your purchase of products from us. Please read them carefully before placing an order. By accessing our website or placing an order, you agree to be bound by these Terms.
               </p>
               <p className="text-sm leading-relaxed" style={{ color: "#475569" }}>
-                These Terms constitute a legally binding agreement between you and {COMPANY} (trading as "{COMPANY_SHORT}"), a company registered in the United Kingdom.
+                These Terms constitute a legally binding agreement between you and {COMPANY} (trading as "{COMPANY_SHORT}").
               </p>
             </div>
 
@@ -179,12 +178,12 @@ export default function TermsPage() {
             <Section id="orders" number="5" title="Orders & Payment">
               <p>All orders placed through our website constitute an offer to purchase. We reserve the right to accept or reject any order. An order is accepted only when we dispatch the goods and send a dispatch confirmation email.</p>
               <p>Payment is required in full at the time of ordering. We accept major credit and debit cards, as well as cryptocurrency payments. All card transactions are processed through PCI-DSS compliant payment processors. We do not store card details.</p>
-              <p>Prices displayed are in GBP (British Pounds Sterling). Where currency conversion tools are provided, these are indicative only. The final charge will be in GBP at the prevailing rate applied by your card issuer or payment provider.</p>
+              <p>Prices are displayed in your selected currency. Where currency conversion tools are provided, these are indicative only. The final charge will be at the prevailing rate applied by your card issuer or payment provider.</p>
               <p>We reserve the right to cancel an order and issue a full refund at any time, for any reason, including suspected fraud, export restriction issues, or stock availability.</p>
             </Section>
 
             <Section id="pricing" number="6" title="Pricing & Availability">
-              <p>All prices are displayed inclusive of any applicable VAT where stated. Prices are subject to change without notice. The price applicable to your order is the price displayed at the time you place the order.</p>
+              <p>All prices are displayed inclusive of any applicable taxes where stated. Prices are subject to change without notice. The price applicable to your order is the price displayed at the time you place the order.</p>
               <p>Stock availability is updated regularly but cannot be guaranteed in real time. In the event that a product you have ordered is out of stock, we will contact you to offer a refund, substitute product, or backorder arrangement.</p>
               <p>Promotional pricing, discount codes, and bundle offers may be subject to additional terms and may be withdrawn at any time.</p>
             </Section>
@@ -259,8 +258,7 @@ export default function TermsPage() {
               <div className="rounded-xl p-4" style={{ backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}>
                 <p className="font-semibold mb-2" style={{ color: "#1240A0" }}>{COMPANY}</p>
                 <p><strong>Legal enquiries:</strong> <a href={`mailto:${EMAIL}`} style={{ color: "#1B5CB5" }}>{EMAIL}</a></p>
-                <p><strong>General enquiries:</strong> <a href="mailto:research@omniqure.co.uk" style={{ color: "#1B5CB5" }}>research@omniqure.co.uk</a></p>
-                <p><strong>Jurisdiction:</strong> England and Wales, United Kingdom</p>
+                <p><strong>General enquiries:</strong> <a href="mailto:research@omniqure.com" style={{ color: "#1B5CB5" }}>research@omniqure.com</a></p>
               </div>
             </Section>
           </div>

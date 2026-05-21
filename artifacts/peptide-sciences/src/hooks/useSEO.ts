@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 export const SITE_NAME = "OmniQure Peptide Research Institute";
-export const SITE_URL = "https://omniqure.co.uk";
+export const SITE_URL = "https://omniqure.com";
 const DEFAULT_TITLE = "OmniQure Peptide Research Institute — HPLC-Verified Research Peptides";
 const DEFAULT_DESCRIPTION =
   "Buy high-purity research peptides verified by HPLC to 98%+. BPC-157, TB-500, Semaglutide, Tirzepatide, Epithalon and 100+ peptides. Worldwide shipping. For research use only.";
@@ -104,7 +104,7 @@ export function useSEO({
     upsertMeta("property", "og:image:width", "1200");
     upsertMeta("property", "og:image:height", "630");
     upsertMeta("property", "og:image:alt", fullTitle);
-    upsertMeta("property", "og:locale", "en_GB");
+    upsertMeta("property", "og:locale", "en");
     if (canonicalHref) upsertMeta("property", "og:url", canonicalHref);
 
     // Twitter / X Cards — summary_large_image shows a rich preview

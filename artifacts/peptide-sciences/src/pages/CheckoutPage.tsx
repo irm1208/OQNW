@@ -93,7 +93,7 @@ type AppliedDiscount = {
 const emptyDelivery: DeliveryForm = {
   email: "", firstName: "", lastName: "", phone: "",
   address1: "", address2: "", city: "", county: "",
-  postcode: "", country: "United Kingdom",
+  postcode: "", country: "",
 };
 
 const emptyPayment: PaymentForm = {
@@ -762,7 +762,7 @@ export default function CheckoutPage() {
                       <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#0F172A", wordBreak: "break-all", fontFamily: "monospace", letterSpacing: "0.02em", margin: 0 }}>{BITCOIN_ADDRESS}</p>
                     </div>
                     <div style={{ fontSize: "12px", color: "#92400E", lineHeight: 1.8 }}>
-                      ₿ Convert your GBP total to BTC at the current rate before sending.<br />
+                      ₿ Convert your order total to BTC at the current rate before sending.<br />
                       ₿ Transactions typically confirm within 1 hour on the Bitcoin network.<br />
                       ₿ Include your order number in the memo/note field where your wallet allows.
                     </div>

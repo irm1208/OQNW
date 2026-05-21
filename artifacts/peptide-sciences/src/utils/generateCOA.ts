@@ -203,7 +203,7 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(6.5);
   doc.setTextColor(...MUTED);
-  doc.text("Web: www.omniqure.co.uk", W - M, y + 18, { align: "right" });
+  doc.text("Web: www.omniqure.com", W - M, y + 18, { align: "right" });
 
   y += 24;
 
@@ -599,7 +599,7 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
     W / 2 + 10, FOOTER_Y + 9, { align: "center" },
   );
   doc.text(
-    "omniqure.co.uk  ·  For in-vitro research use only  ·  This document supersedes all previous versions for this lot.",
+    "omniqure.com  ·  For in-vitro research use only  ·  This document supersedes all previous versions for this lot.",
     W / 2 + 10, FOOTER_Y + 16, { align: "center" },
   );
 

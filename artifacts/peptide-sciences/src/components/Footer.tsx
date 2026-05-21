@@ -215,12 +215,8 @@ export default function Footer() {
               {/* Contact micro-info */}
               <div className="flex flex-col gap-2">
                 <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "#475569" }}>
-                  <MapPin size={13} style={{ color: "#334155", flexShrink: 0 }} />
-                  United Kingdom
-                </span>
-                <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "#475569" }}>
                   <Mail size={13} style={{ color: "#334155", flexShrink: 0 }} />
-                  research@omniqure.co.uk
+                  research@omniqure.com
                 </span>
                 <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "#475569" }}>
                   <FlaskConical size={13} style={{ color: "#334155", flexShrink: 0 }} />
@@ -322,7 +318,7 @@ export default function Footer() {
           </div>
 
           <div className="text-center mt-5" style={{ fontSize: "11px", color: "#1E2D45" }}>
-            © {new Date().getFullYear()} OmniQure Peptide Research Institute — All Rights Reserved · For Laboratory Research Use Only · United Kingdom
+            © {new Date().getFullYear()} OmniQure Peptide Research Institute — All Rights Reserved · For Laboratory Research Use Only
           </div>
         </div>
       </div>

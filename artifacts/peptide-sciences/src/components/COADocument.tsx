@@ -78,7 +78,7 @@ export default function COADocument({ product }: COADocumentProps) {
             alt="OmniQure"
             style={{ height: "44px", objectFit: "contain", display: "block", marginLeft: "auto", marginBottom: "8px" }}
           />
-          <p style={{ margin: 0, fontSize: "11px", color: "#6B7280" }}>Web: www.omniqure.co.uk</p>
+          <p style={{ margin: 0, fontSize: "11px", color: "#6B7280" }}>Web: www.omniqure.com</p>
         </div>
       </div>
 

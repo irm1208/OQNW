@@ -95,7 +95,7 @@ export default function ProductPage() {
     description: seoDesc ?? null,
     ogType: "product",
     canonicalPath: product ? `/product/${product.id}` : null,
-    ogImage: product ? `https://omniqure.co.uk${product.image}` : null,
+    ogImage: product ? `${SITE_URL}${product.image}` : null,
     product: product ? {
       name: product.name,
       description: seoDesc ?? product.name,
@@ -517,7 +517,7 @@ export default function ProductPage() {
                   {formatPrice(product.price)}
                 </p>
                 <p style={{ fontSize: "11.5px", color: "#94A3B8", marginTop: "4px" }}>
-                  Prices shown are indicative. Final invoice in GBP.
+                  Prices shown are indicative. Checkout in your selected currency.
                 </p>
               </div>
             )}
