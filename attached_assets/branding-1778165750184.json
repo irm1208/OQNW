@@ -98,7 +98,7 @@
   },
   "__llm_logo_reasoning": {
     "selectedIndex": 0,
-    "reasoning": "Selected #0 because it is visible, located in the header, links to the homepage, and matches the brand name 'Peptide Sciences'.",
+    "reasoning": "Selected #0 because it is visible, located in the header, links to the homepage, and matches the brand name 'OmniQure'.",
     "confidence": 0.9,
     "source": "llm"
   },
@@ -136,7 +136,7 @@
       "finalSource": "llm",
       "rawLogoSelection": {
         "selectedLogoIndex": 0,
-        "selectedLogoReasoning": "Selected #0 because it is visible, located in the header, links to the homepage, and matches the brand name 'Peptide Sciences'.",
+        "selectedLogoReasoning": "Selected #0 because it is visible, located in the header, links to the homepage, and matches the brand name 'OmniQure'.",
         "confidence": 0.9
       }
     },

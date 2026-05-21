@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "Peptide Sciences"
+title = "OmniQure"
 version = "1.0.0"
 id = "artifacts/peptide-sciences"
 router = "path"
