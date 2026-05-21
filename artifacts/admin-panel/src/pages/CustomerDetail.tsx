@@ -1,16 +1,197 @@
 import { useState } from "react";
 import { useParams, Link } from "wouter";
-import { useGetAdminCustomer, getGetAdminCustomerQueryKey } from "@workspace/api-client-react";
+import { useGetAdminCustomer, getGetAdminCustomerQueryKey, customFetch } from "@workspace/api-client-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Loader2, ArrowLeft, Mail, Phone, MapPin, Calendar, ShoppingBag, Eye, Download, Trash2, AlertTriangle } from "lucide-react";
+import { Loader2, ArrowLeft, Mail, Phone, MapPin, Calendar, ShoppingBag, Eye, Download, Trash2, AlertTriangle, CreditCard, Plus, Minus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 function api(path: string) { return `${BASE}/api/${path}`.replace(/\/+/g, "/"); }
+
+interface CreditData {
+  balancePence: number;
+  transactions: {
+    id: number;
+    amountPence: number;
+    type: string;
+    reason: string;
+    adminNote: string | null;
+    createdAt: string;
+  }[];
+}
+
+function CreditsPanel({ customerId }: { customerId: number }) {
+  const { toast } = useToast();
+  const qc = useQueryClient();
+  const [adjustOpen, setAdjustOpen] = useState(false);
+  const [mode, setMode] = useState<"credit" | "debit">("credit");
+  const [amount, setAmount] = useState("");
+  const [reason, setReason] = useState("");
+  const [note, setNote] = useState("");
+
+  const { data, isLoading } = useQuery<CreditData>({
+    queryKey: ["customer-credits", customerId],
+    queryFn: () => customFetch<CreditData>(api(`admin/customers/${customerId}/credits`)),
+    enabled: !!customerId,
+    staleTime: 30_000,
+  });
+
+  const adjust = useMutation({
+    mutationFn: (body: { amountPence: number; reason: string; adminNote?: string }) =>
+      customFetch(api(`admin/customers/${customerId}/credits`), {
+        method: "POST",
+        body: JSON.stringify(body),
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["customer-credits", customerId] });
+      qc.invalidateQueries({ queryKey: ["admin-credits"] });
+      toast({ title: mode === "credit" ? "Credits added" : "Credits deducted" });
+      setAdjustOpen(false);
+      setAmount("");
+      setReason("");
+      setNote("");
+    },
+    onError: (err: { message?: string }) => {
+      toast({ title: err?.message ?? "Failed to adjust credits", variant: "destructive" });
+    },
+  });
+
+  const fmt = (pence: number) =>
+    new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(Math.abs(pence) / 100);
+
+  const handleSubmit = () => {
+    const pence = Math.round(parseFloat(amount) * 100);
+    if (isNaN(pence) || pence <= 0) {
+      toast({ title: "Enter a valid amount", variant: "destructive" });
+      return;
+    }
+    if (!reason.trim()) {
+      toast({ title: "Reason is required", variant: "destructive" });
+      return;
+    }
+    adjust.mutate({
+      amountPence: mode === "credit" ? pence : -pence,
+      reason: reason.trim(),
+      adminNote: note.trim() || undefined,
+    });
+  };
+
+  const balance = data?.balancePence ?? 0;
+
+  return (
+    <Card>
+      <CardHeader className="pb-4 border-b flex flex-row items-center justify-between space-y-0">
+        <CardTitle className="text-lg flex items-center gap-2">
+          <CreditCard className="w-5 h-5 text-primary" /> Store Credits
+        </CardTitle>
+        <div className="flex gap-2">
+          <Button size="sm" variant="outline" onClick={() => { setMode("debit"); setAdjustOpen(true); }}>
+            <Minus className="w-3.5 h-3.5 mr-1" /> Deduct
+          </Button>
+          <Button size="sm" onClick={() => { setMode("credit"); setAdjustOpen(true); }}>
+            <Plus className="w-3.5 h-3.5 mr-1" /> Add
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent className="pt-6 space-y-4">
+        <div className="flex items-center gap-4">
+          <div className={`text-3xl font-bold ${balance > 0 ? "text-green-600" : "text-muted-foreground"}`}>
+            {isLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : fmt(balance)}
+          </div>
+          <span className="text-sm text-muted-foreground">current balance</span>
+        </div>
+
+        {(data?.transactions ?? []).length > 0 && (
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Transaction History</p>
+            <div className="rounded-md border divide-y max-h-64 overflow-y-auto">
+              {data!.transactions.map((tx) => (
+                <div key={tx.id} className="flex items-center justify-between px-4 py-2.5 text-sm">
+                  <div>
+                    <p className="font-medium">{tx.reason}</p>
+                    {tx.adminNote && <p className="text-xs text-muted-foreground">{tx.adminNote}</p>}
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(tx.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                    </p>
+                  </div>
+                  <span className={`font-semibold tabular-nums ${tx.amountPence > 0 ? "text-green-600" : "text-red-500"}`}>
+                    {tx.amountPence > 0 ? "+" : "−"}{fmt(tx.amountPence)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {!isLoading && (data?.transactions ?? []).length === 0 && (
+          <p className="text-sm text-muted-foreground">No credit transactions yet.</p>
+        )}
+      </CardContent>
+
+      <Dialog open={adjustOpen} onOpenChange={setAdjustOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{mode === "credit" ? "Add Credits" : "Deduct Credits"}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="space-y-1.5">
+              <Label>Amount (£)</Label>
+              <Input
+                type="number"
+                min="0.01"
+                step="0.01"
+                placeholder="0.00"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Reason <span className="text-destructive">*</span></Label>
+              <Input
+                placeholder={mode === "credit" ? "e.g. Goodwill credit, Referral bonus" : "e.g. Order applied, Correction"}
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Internal note <span className="text-muted-foreground text-xs">(optional)</span></Label>
+              <Textarea
+                placeholder="Optional admin note…"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                rows={2}
+              />
+            </div>
+            {mode === "debit" && (
+              <p className="text-xs text-muted-foreground bg-muted rounded p-2">
+                Current balance: <strong>{fmt(balance)}</strong>
+              </p>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAdjustOpen(false)}>Cancel</Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={adjust.isPending}
+              variant={mode === "debit" ? "destructive" : "default"}
+            >
+              {adjust.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              {mode === "credit" ? "Add Credits" : "Deduct Credits"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </Card>
+  );
+}
 
 export default function CustomerDetail() {
   const { id } = useParams<{ id: string }>();
@@ -170,6 +351,8 @@ export default function CustomerDetail() {
               </CardContent>
             </Card>
           </div>
+
+          <CreditsPanel customerId={customerId} />
 
           <Card>
             <CardHeader className="pb-4 border-b">

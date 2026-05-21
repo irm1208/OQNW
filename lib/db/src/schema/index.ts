@@ -24,3 +24,4 @@ export * from "./refunds_log";
 export * from "./inventory_audit_log";
 export * from "./webhooks";
 export * from "./blog_posts";
+export * from "./customer_credits";
