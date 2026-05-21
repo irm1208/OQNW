@@ -17,12 +17,10 @@ import Subscriptions from "@/pages/Subscriptions";
 import EmailLog from "@/pages/EmailLog";
 import Loyalty from "@/pages/Loyalty";
 import StockAlerts from "@/pages/StockAlerts";
-import GiftCards from "@/pages/GiftCards";
 import Tax from "@/pages/Tax";
 import Shipping from "@/pages/Shipping";
 import Refunds from "@/pages/Refunds";
 import InventoryAudit from "@/pages/InventoryAudit";
-import Webhooks from "@/pages/Webhooks";
 import Blog from "@/pages/Blog";
 
 const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
@@ -114,11 +112,6 @@ function AppRoutes() {
           <StockAlerts />
         </AdminLayout>
       </Route>
-      <Route path="/gift-cards">
-        <AdminLayout>
-          <GiftCards />
-        </AdminLayout>
-      </Route>
       <Route path="/tax">
         <AdminLayout>
           <Tax />
@@ -137,11 +130,6 @@ function AppRoutes() {
       <Route path="/inventory-audit">
         <AdminLayout>
           <InventoryAudit />
-        </AdminLayout>
-      </Route>
-      <Route path="/webhooks">
-        <AdminLayout>
-          <Webhooks />
         </AdminLayout>
       </Route>
       <Route path="/blog">

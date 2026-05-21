@@ -1,6 +1,6 @@
 import { Link, useLocation, Redirect } from "wouter";
 import { useAdminLogout, useAdminMe } from "@workspace/api-client-react";
-import { LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2, RotateCcw, Star, ShoppingBag, RefreshCw, Mail, Gift, BellRing, CreditCard, Receipt, Truck, RefreshCcw, ClipboardList, Zap, FileText } from "lucide-react";
+import { LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2, RotateCcw, Star, ShoppingBag, RefreshCw, Mail, Gift, BellRing, Receipt, Truck, RefreshCcw, ClipboardList, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
@@ -18,10 +18,8 @@ const navItems = [
   { href: "/subscriptions", label: "Subscriptions", icon: RefreshCw },
   { href: "/email-log", label: "Email Log", icon: Mail },
   { href: "/stock-alerts", label: "Stock Alerts", icon: BellRing },
-  { href: "/gift-cards",   label: "Gift Cards",   icon: CreditCard },
   { href: "/tax",          label: "Tax Rates",    icon: Receipt },
   { href: "/shipping",     label: "Shipping",     icon: Truck },
-  { href: "/webhooks",     label: "Webhooks",     icon: Zap },
   { href: "/blog",         label: "Blog",         icon: FileText },
 ];
 
