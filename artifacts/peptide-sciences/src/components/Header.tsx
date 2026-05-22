@@ -239,31 +239,17 @@ export default function Header() {
         <div className="max-w-[1280px] mx-auto px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-2">
 
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none", display: "inline-flex", flexDirection: "column", alignItems: "center", position: "relative", padding: "4px 8px" }}>
-            {/* Radial bloom behind logo */}
-            <div style={{ position: "absolute", inset: "-8px -24px", background: "radial-gradient(ellipse 80% 85% at 50% 48%, rgba(120,170,255,0.25) 0%, rgba(80,130,255,0.12) 45%, transparent 75%)", pointerEvents: "none" }} />
-            {/* Logo image — full designed logo: wordmark + molecule icon + PEPTIDE RESEARCH INSTITUTE */}
+          <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none", display: "inline-block", lineHeight: 0 }}>
             <img
-              src="/omniqure-logo-transparent.png"
+              src="/omniqure-header-logo.png"
               alt="OmniQure Peptide Research Institute"
               style={{
-                height: "86px",
+                height: "110px",
                 width: "auto",
                 display: "block",
-                position: "relative",
-                filter: "drop-shadow(0 0 8px rgba(147,197,253,0.9)) drop-shadow(0 0 22px rgba(96,165,250,0.55)) drop-shadow(0 0 48px rgba(59,130,246,0.3))",
+                mixBlendMode: "screen",
               }}
             />
-            {/* Horizontal lens-flare underline glow */}
-            <div style={{
-              position: "relative",
-              width: "170px",
-              height: "2px",
-              marginTop: "3px",
-              background: "linear-gradient(90deg, transparent 0%, rgba(140,195,255,0.3) 15%, rgba(215,235,255,0.95) 50%, rgba(140,195,255,0.3) 85%, transparent 100%)",
-              boxShadow: "0 0 8px 3px rgba(140,195,255,0.55), 0 0 22px 6px rgba(90,150,255,0.28)",
-              borderRadius: "2px",
-            }} />
           </Link>
 
           {/* Search */}
