@@ -192,7 +192,7 @@ export default function Footer() {
                 <img
                   src="/omniqure-logo.jpeg"
                   alt="OmniQure Peptide Research Institute"
-                  style={{ height: "42px", width: "auto", display: "block", borderRadius: "8px" }}
+                  style={{ height: "56px", width: "auto", display: "block", borderRadius: "8px" }}
                 />
               </div>
               <p style={{ fontSize: "13px", color: "#475569", lineHeight: "1.75", marginBottom: "16px" }}>
