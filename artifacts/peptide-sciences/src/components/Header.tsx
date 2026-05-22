@@ -252,6 +252,10 @@ export default function Header() {
             zIndex: 0,
             filter: "contrast(1.6) brightness(1.3) saturate(1.3) drop-shadow(45px 0 18px rgba(120,175,255,0.5)) drop-shadow(75px 0 30px rgba(80,135,255,0.3))",
             imageRendering: "high-quality" as React.CSSProperties["imageRendering"],
+            maskImage: "linear-gradient(to right, transparent 0%, black 6%, black 72%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)",
+            maskComposite: "intersect",
+            WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 6%, black 72%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)",
+            WebkitMaskComposite: "source-in",
           }}
         />
 
