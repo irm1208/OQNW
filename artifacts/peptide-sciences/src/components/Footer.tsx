@@ -189,11 +189,18 @@ export default function Footer() {
             {/* Brand column */}
             <div className="md:w-[240px] flex-shrink-0">
               <div className="flex items-center gap-2.5 mb-4">
-                <img
-                  src="/omniqure-logo-transparent.png"
-                  alt="OmniQure Peptide Research Institute"
-                  style={{ height: "56px", width: "auto", display: "block" }}
-                />
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
+                  <div style={{ overflow: "hidden", height: "42px" }}>
+                    <img
+                      src="/omniqure-logo-transparent.png"
+                      alt="OmniQure"
+                      style={{ height: "56px", width: "auto", display: "block" }}
+                    />
+                  </div>
+                  <span style={{ color: "rgba(255,255,255,0.85)", fontSize: "7.5px", fontWeight: 700, letterSpacing: "0.22em", whiteSpace: "nowrap" }}>
+                    PEPTIDE RESEARCH INSTITUTE
+                  </span>
+                </div>
               </div>
               <p style={{ fontSize: "13px", color: "#475569", lineHeight: "1.75", marginBottom: "16px" }}>
                 Research peptides manufactured to the highest standards of quality and purity. 98%+ HPLC purity guaranteed on every product.
