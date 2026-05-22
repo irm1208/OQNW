@@ -190,7 +190,7 @@ export default function Footer() {
             <div className="md:w-[240px] flex-shrink-0">
               <div className="flex items-center gap-2.5 mb-4">
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
-                  <div style={{ overflow: "hidden", height: "42px" }}>
+                  <div style={{ overflow: "hidden", height: "50px" }}>
                     <img
                       src="/omniqure-logo-v2-transparent.png"
                       alt="OmniQure"
