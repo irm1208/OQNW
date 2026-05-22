@@ -241,13 +241,13 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none" }}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+              <div style={{ display: "inline-block" }}>
                 <img
                   src="/omniqure-wordmark.png"
                   alt="OmniQure"
                   style={{ height: "38px", width: "auto", display: "block" }}
                 />
-                <span style={{ color: "rgba(255,255,255,0.82)", fontSize: "6.5px", fontWeight: 700, letterSpacing: "0.24em", whiteSpace: "nowrap", paddingLeft: "26%", display: "block" }}>
+                <span style={{ display: "block", marginLeft: "33%", width: "61%", textAlign: "center", color: "rgba(255,255,255,0.82)", fontSize: "5px", fontWeight: 700, letterSpacing: "0.18em", overflow: "hidden" }}>
                   PEPTIDE RESEARCH INSTITUTE
                 </span>
               </div>

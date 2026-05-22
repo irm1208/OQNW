@@ -196,7 +196,7 @@ export default function Footer() {
                       alt="OmniQure"
                       style={{ height: "38px", width: "auto", display: "block" }}
                     />
-                    <span style={{ color: "rgba(255,255,255,0.82)", fontSize: "6.5px", fontWeight: 700, letterSpacing: "0.24em", whiteSpace: "nowrap", paddingLeft: "26%", display: "block" }}>
+                    <span style={{ display: "block", marginLeft: "33%", width: "61%", textAlign: "center", color: "rgba(255,255,255,0.82)", fontSize: "5px", fontWeight: 700, letterSpacing: "0.18em", overflow: "hidden" }}>
                       PEPTIDE RESEARCH INSTITUTE
                     </span>
                   </div>
