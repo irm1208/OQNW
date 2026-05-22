@@ -228,41 +228,24 @@ export default function Header() {
       {/* Top bar */}
       <div style={{
         background: scrolled
-          ? "rgba(10,24,80,0.97)"
-          : "linear-gradient(90deg, #080F3A 0%, #0D1E6E 35%, #1240A0 65%, #1B5CB5 100%)",
+          ? "rgba(18,64,160,0.97)"
+          : "linear-gradient(90deg, #0D2565 0%, #1240A0 45%, #1B5CB5 100%)",
         backdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
         WebkitBackdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
         boxShadow: scrolled ? "0 4px 32px rgba(8,28,80,0.35)" : "0 2px 16px rgba(8,28,80,0.25)",
         transition: "background 0.3s ease, box-shadow 0.3s ease",
-        position: "relative", zIndex: 2, overflow: "hidden",
+        position: "relative", zIndex: 2,
       }}>
-        {/* Full-width logo background image — screen blend makes dark pixels transparent */}
-        <img
-          src="/omniqure-header-bg.png"
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            top: 0, left: 0,
-            width: "65%",
-            height: "100%",
-            objectFit: "contain",
-            objectPosition: "left center",
-            mixBlendMode: "screen",
-            pointerEvents: "none",
-            zIndex: 0,
-            filter: "contrast(1.6) brightness(1.3) saturate(1.3) drop-shadow(45px 0 18px rgba(120,175,255,0.5)) drop-shadow(75px 0 30px rgba(80,135,255,0.3))",
-            imageRendering: "high-quality" as React.CSSProperties["imageRendering"],
-            maskImage: "linear-gradient(to right, transparent 0%, black 6%, black 72%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)",
-            maskComposite: "intersect",
-            WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 6%, black 72%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)",
-            WebkitMaskComposite: "source-in",
-          }}
-        />
+        <div className="max-w-[1280px] mx-auto px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-2">
 
-        <div className="max-w-[1280px] mx-auto px-3 sm:px-4 flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-2" style={{ position: "relative", zIndex: 1, minHeight: "68px" }}>
-
-          {/* Logo — transparent click area over the logo region */}
-          <Link href="/" aria-label="OmniQure Peptide Research Institute" className="flex-shrink-0 order-1" style={{ textDecoration: "none", display: "inline-block", width: "200px", height: "60px" }} />
+          {/* Logo */}
+          <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none" }}>
+            <img
+              src="/omniqure-logo.jpeg"
+              alt="OmniQure Peptide Research Institute"
+              style={{ height: "44px", width: "auto", display: "block", borderRadius: "8px" }}
+            />
+          </Link>
 
           {/* Search */}
           <div
