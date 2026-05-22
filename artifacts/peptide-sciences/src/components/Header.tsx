@@ -248,9 +248,6 @@ export default function Header() {
                   style={{ height: "56px", width: "auto", display: "block" }}
                 />
               </div>
-              <span style={{ color: "rgba(255,255,255,0.85)", fontSize: "7.5px", fontWeight: 700, letterSpacing: "0.22em", whiteSpace: "nowrap" }}>
-                PEPTIDE RESEARCH INSTITUTE
-              </span>
             </div>
           </Link>
 

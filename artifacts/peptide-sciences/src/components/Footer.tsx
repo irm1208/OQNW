@@ -197,9 +197,6 @@ export default function Footer() {
                       style={{ height: "56px", width: "auto", display: "block" }}
                     />
                   </div>
-                  <span style={{ color: "rgba(255,255,255,0.85)", fontSize: "7.5px", fontWeight: 700, letterSpacing: "0.22em", whiteSpace: "nowrap" }}>
-                    PEPTIDE RESEARCH INSTITUTE
-                  </span>
                 </div>
               </div>
               <p style={{ fontSize: "13px", color: "#475569", lineHeight: "1.75", marginBottom: "16px" }}>
