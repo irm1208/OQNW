@@ -78,9 +78,9 @@ export function DeepTech() {
           </h1>
           
           <p className="text-lg text-[#8b949e] max-w-2xl mb-10 font-mono text-sm leading-relaxed">
-            > Initializing research protocols.<br/>
-            > High-purity reference materials for advanced in-vitro studies.<br/>
-            > strictly_not_for_human_consumption.exe
+            {'>'} Initializing research protocols.<br/>
+            {'>'} High-purity reference materials for advanced in-vitro studies.<br/>
+            {'>'} strictly_not_for_human_consumption.exe
           </p>
           
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
@@ -99,7 +99,7 @@ export function DeepTech() {
         <div className="flex whitespace-nowrap animate-[marquee_20s_linear_infinite]">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="flex items-center space-x-8 mx-8">
-              <span className="font-mono text-xs text-[#8b949e]">HPLC PURITY >99%</span>
+              <span className="font-mono text-xs text-[#8b949e]">HPLC PURITY {'>'}99%</span>
               <span className="text-[#30363d]">|</span>
               <span className="font-mono text-xs text-[#39ff14]">MS VERIFIED</span>
               <span className="text-[#30363d]">|</span>

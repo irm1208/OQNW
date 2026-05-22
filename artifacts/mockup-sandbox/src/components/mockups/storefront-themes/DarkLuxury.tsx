@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "wouter";
+
 import { ShoppingCart, Menu, ChevronRight, Shield, Beaker, Zap, ArrowRight, Star } from "lucide-react";
 
 export function DarkLuxury() {
@@ -50,13 +50,13 @@ export function DarkLuxury() {
       <nav className="sticky top-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-12">
-            <Link href="/" className="font-serif text-2xl tracking-wide text-white">
+            <a href="/" className="font-serif text-2xl tracking-wide text-white">
               OMNI<span className="text-[#c9a84c]">QURE</span>
-            </Link>
+            </a>
             <div className="hidden md:flex items-center gap-8 text-sm tracking-widest uppercase text-white/70">
-              <Link href="/peptides" className="nav-link hover:text-white transition-colors">Peptides</Link>
-              <Link href="/stacks" className="nav-link hover:text-white transition-colors">Stacks</Link>
-              <Link href="/about" className="nav-link hover:text-white transition-colors">Lab Results</Link>
+              <a href="/peptides" className="nav-link hover:text-white transition-colors">Peptides</a>
+              <a href="/stacks" className="nav-link hover:text-white transition-colors">Stacks</a>
+              <a href="/about" className="nav-link hover:text-white transition-colors">Lab Results</a>
             </div>
           </div>
           <div className="flex items-center gap-6">
@@ -139,9 +139,9 @@ export function DarkLuxury() {
               <span className="text-[#c9a84c] tracking-[0.2em] text-xs uppercase mb-4 block">Curated Selection</span>
               <h2 className="font-serif text-4xl text-white">Signature Compounds</h2>
             </div>
-            <Link href="/peptides" className="hidden md:flex items-center gap-2 text-sm uppercase tracking-widest text-white/60 hover:text-[#c9a84c] transition-colors pb-2">
+            <a href="/peptides" className="hidden md:flex items-center gap-2 text-sm uppercase tracking-widest text-white/60 hover:text-[#c9a84c] transition-colors pb-2">
               View All <ArrowRight className="w-4 h-4" />
-            </Link>
+            </a>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -200,9 +200,9 @@ export function DarkLuxury() {
               ))}
             </ul>
             <div>
-              <Link href="/about" className="inline-block border-b border-[#c9a84c] text-[#c9a84c] pb-1 uppercase tracking-widest text-sm hover:text-white hover:border-white transition-colors">
+              <a href="/about" className="inline-block border-b border-[#c9a84c] text-[#c9a84c] pb-1 uppercase tracking-widest text-sm hover:text-white hover:border-white transition-colors">
                 View Testing Protocol
-              </Link>
+              </a>
             </div>
           </div>
           <div className="relative min-h-[500px] lg:min-h-full lg:border-l border-white/5 bg-[#0a0a0a]">
@@ -232,9 +232,9 @@ export function DarkLuxury() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
             <div className="md:col-span-1">
-              <Link href="/" className="font-serif text-2xl tracking-wide text-white block mb-6">
+              <a href="/" className="font-serif text-2xl tracking-wide text-white block mb-6">
                 OMNI<span className="text-[#c9a84c]">QURE</span>
-              </Link>
+              </a>
               <p className="text-sm text-white/40 font-light leading-relaxed mb-6">
                 Premium synthesized compounds for advanced research applications. 
               </p>
@@ -246,20 +246,20 @@ export function DarkLuxury() {
             <div>
               <h4 className="text-white uppercase tracking-widest text-xs font-semibold mb-6">Products</h4>
               <ul className="space-y-4 text-sm text-white/50">
-                <li><Link href="/peptides" className="hover:text-[#c9a84c] transition-colors">All Peptides</Link></li>
-                <li><Link href="/stacks" className="hover:text-[#c9a84c] transition-colors">Research Stacks</Link></li>
-                <li><Link href="/lab-equipment" className="hover:text-[#c9a84c] transition-colors">Lab Equipment</Link></li>
-                <li><Link href="/new" className="hover:text-[#c9a84c] transition-colors">New Arrivals</Link></li>
+                <li><a href="/peptides" className="hover:text-[#c9a84c] transition-colors">All Peptides</a></li>
+                <li><a href="/stacks" className="hover:text-[#c9a84c] transition-colors">Research Stacks</a></li>
+                <li><a href="/lab-equipment" className="hover:text-[#c9a84c] transition-colors">Lab Equipment</a></li>
+                <li><a href="/new" className="hover:text-[#c9a84c] transition-colors">New Arrivals</a></li>
               </ul>
             </div>
 
             <div>
               <h4 className="text-white uppercase tracking-widest text-xs font-semibold mb-6">Information</h4>
               <ul className="space-y-4 text-sm text-white/50">
-                <li><Link href="/about" className="hover:text-[#c9a84c] transition-colors">About Us</Link></li>
-                <li><Link href="/quality" className="hover:text-[#c9a84c] transition-colors">Quality Control</Link></li>
-                <li><Link href="/shipping" className="hover:text-[#c9a84c] transition-colors">Shipping & Returns</Link></li>
-                <li><Link href="/contact" className="hover:text-[#c9a84c] transition-colors">Contact Support</Link></li>
+                <li><a href="/about" className="hover:text-[#c9a84c] transition-colors">About Us</a></li>
+                <li><a href="/quality" className="hover:text-[#c9a84c] transition-colors">Quality Control</a></li>
+                <li><a href="/shipping" className="hover:text-[#c9a84c] transition-colors">Shipping & Returns</a></li>
+                <li><a href="/contact" className="hover:text-[#c9a84c] transition-colors">Contact Support</a></li>
               </ul>
             </div>
 
@@ -284,9 +284,9 @@ export function DarkLuxury() {
               &copy; {new Date().getFullYear()} OmniQure Sciences. All rights reserved.
             </p>
             <div className="flex items-center gap-6 text-xs text-white/30 font-light">
-              <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-              <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <Link href="/disclaimer" className="hover:text-white transition-colors">Legal Disclaimer</Link>
+              <a href="/terms" className="hover:text-white transition-colors">Terms of Service</a>
+              <a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a>
+              <a href="/disclaimer" className="hover:text-white transition-colors">Legal Disclaimer</a>
             </div>
           </div>
         </div>

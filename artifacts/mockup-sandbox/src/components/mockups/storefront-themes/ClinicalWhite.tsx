@@ -112,7 +112,7 @@ export function ClinicalWhite() {
               <span className="text-slate-400">Advanced Research.</span>
             </h1>
             <p className="text-lg text-slate-500 mb-10 max-w-lg leading-relaxed">
-              Synthesized in USA-based facilities using solid-phase peptide synthesis. Guaranteed >99% purity by HPLC and MS analysis.
+              Synthesized in USA-based facilities using solid-phase peptide synthesis. Guaranteed {'>'}99% purity by HPLC and MS analysis.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <button className={`${THEME.accentBg} text-white px-8 py-4 text-sm font-medium hover:bg-[#122a4d] transition-colors flex items-center justify-center gap-2`}>
