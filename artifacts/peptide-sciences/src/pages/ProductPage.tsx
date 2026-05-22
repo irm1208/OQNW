@@ -16,7 +16,7 @@ import RecentlyViewed from "@/components/RecentlyViewed";
 import CustomersAlsoBought from "@/components/CustomersAlsoBought";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
-import { useSEO } from "@/hooks/useSEO";
+import { useSEO, SITE_URL } from "@/hooks/useSEO";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
