@@ -79,7 +79,7 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
       <div style={{
         width: "100%",
         maxWidth: "1060px",
-        maxHeight: "92vh",
+        height: "92vh",
         borderRadius: "16px",
         overflow: "hidden",
         display: "flex",
@@ -90,6 +90,7 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
         <div style={{
           width: "248px",
           flexShrink: 0,
+          minHeight: 0,
           background: "#0B1630",
           display: "flex",
           flexDirection: "column",
@@ -258,7 +259,7 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
 
         {/* ── Right panel ── */}
         <div style={{
-          flex: 1, background: "#EEF1F6", overflowY: "auto",
+          flex: 1, minHeight: 0, background: "#EEF1F6", overflowY: "auto",
           padding: "24px", display: "flex", flexDirection: "column", gap: "16px",
         }}>
 
