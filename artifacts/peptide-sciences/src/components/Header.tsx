@@ -239,13 +239,32 @@ export default function Header() {
         <div className="max-w-[1280px] mx-auto px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-2">
 
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none", display: "inline-flex", flexDirection: "column", alignItems: "center" }}>
+          <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none", display: "inline-flex", flexDirection: "column", alignItems: "center", position: "relative" }}>
+            {/* Radial glow bloom behind logo */}
+            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 90% 80% at 50% 45%, rgba(147,197,253,0.28) 0%, rgba(96,165,250,0.14) 40%, transparent 70%)", pointerEvents: "none", borderRadius: "50%" }} />
             <img
               src="/omniqure-logo-transparent.png"
               alt="OmniQure"
-              style={{ height: "40px", width: "auto", display: "block" }}
+              style={{
+                height: "40px",
+                width: "auto",
+                display: "block",
+                position: "relative",
+                filter: "drop-shadow(0 0 8px rgba(147,197,253,0.9)) drop-shadow(0 0 20px rgba(96,165,250,0.6)) drop-shadow(0 0 40px rgba(59,130,246,0.35))",
+              }}
             />
-            <div style={{ fontFamily: "'Arimo', Arial, sans-serif", fontSize: "7px", fontWeight: 600, color: "rgba(255,255,255,0.78)", letterSpacing: "0.22em", textTransform: "uppercase", marginTop: "2px", whiteSpace: "nowrap" }}>
+            <div style={{
+              fontFamily: "'Arimo', Arial, sans-serif",
+              fontSize: "7px",
+              fontWeight: 600,
+              color: "rgba(200,220,255,0.85)",
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              marginTop: "3px",
+              whiteSpace: "nowrap",
+              position: "relative",
+              textShadow: "0 0 12px rgba(147,197,253,0.8)",
+            }}>
               Peptide Research Institute
             </div>
           </Link>
