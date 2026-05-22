@@ -243,9 +243,9 @@ export default function Header() {
           style={{
             position: "absolute",
             top: 0, left: 0,
-            width: "55%",
+            width: "48%",
             height: "100%",
-            objectFit: "cover",
+            objectFit: "contain",
             objectPosition: "left center",
             mixBlendMode: "screen",
             pointerEvents: "none",
@@ -253,10 +253,10 @@ export default function Header() {
           }}
         />
 
-        <div className="max-w-[1280px] mx-auto px-3 sm:px-4 flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-2" style={{ position: "relative", zIndex: 1, minHeight: "130px" }}>
+        <div className="max-w-[1280px] mx-auto px-3 sm:px-4 flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-2" style={{ position: "relative", zIndex: 1, minHeight: "68px" }}>
 
           {/* Logo — transparent click area over the logo region */}
-          <Link href="/" aria-label="OmniQure Peptide Research Institute" className="flex-shrink-0 order-1" style={{ textDecoration: "none", display: "inline-block", width: "260px", height: "120px" }} />
+          <Link href="/" aria-label="OmniQure Peptide Research Institute" className="flex-shrink-0 order-1" style={{ textDecoration: "none", display: "inline-block", width: "200px", height: "60px" }} />
 
           {/* Search */}
           <div
