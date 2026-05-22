@@ -228,8 +228,8 @@ export default function Header() {
       {/* Top bar */}
       <div style={{
         background: scrolled
-          ? "rgba(18,64,160,0.97)"
-          : "linear-gradient(90deg, #0D2565 0%, #1240A0 45%, #1B5CB5 100%)",
+          ? "rgba(32,88,230,0.97)"
+          : "linear-gradient(90deg, #1847C2 0%, #2460F0 45%, #2B70FA 70%, #1F56DC 100%)",
         backdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
         WebkitBackdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
         boxShadow: scrolled ? "0 4px 32px rgba(8,28,80,0.35)" : "0 2px 16px rgba(8,28,80,0.25)",
@@ -241,9 +241,9 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none" }}>
             <img
-              src="/omniqure-logo.jpeg"
+              src="/omniqure-logo-transparent.png"
               alt="OmniQure Peptide Research Institute"
-              style={{ height: "56px", width: "auto", display: "block", borderRadius: "8px" }}
+              style={{ height: "56px", width: "auto", display: "block" }}
             />
           </Link>
 
