@@ -239,12 +239,15 @@ export default function Header() {
         <div className="max-w-[1280px] mx-auto px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-2">
 
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none" }}>
+          <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none", display: "inline-flex", flexDirection: "column", alignItems: "center" }}>
             <img
               src="/omniqure-logo-transparent.png"
-              alt="OmniQure Peptide Research Institute"
-              style={{ height: "58px", width: "auto", display: "block" }}
+              alt="OmniQure"
+              style={{ height: "40px", width: "auto", display: "block" }}
             />
+            <div style={{ fontFamily: "'Arimo', Arial, sans-serif", fontSize: "7px", fontWeight: 600, color: "rgba(255,255,255,0.78)", letterSpacing: "0.22em", textTransform: "uppercase", marginTop: "2px", whiteSpace: "nowrap" }}>
+              Peptide Research Institute
+            </div>
           </Link>
 
           {/* Search */}
