@@ -248,6 +248,10 @@ export default function Header() {
                 width: "auto",
                 display: "block",
                 mixBlendMode: "screen",
+                maskImage: "linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 100%)",
+                maskComposite: "intersect",
+                WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 100%)",
+                WebkitMaskComposite: "source-in",
               }}
             />
           </Link>
