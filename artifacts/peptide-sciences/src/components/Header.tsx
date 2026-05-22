@@ -243,7 +243,7 @@ export default function Header() {
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
               <div style={{ overflow: "hidden", height: "42px" }}>
                 <img
-                  src="/omniqure-logo-transparent.png"
+                  src="/omniqure-logo.jpeg"
                   alt="OmniQure"
                   style={{ height: "56px", width: "auto", display: "block" }}
                 />
