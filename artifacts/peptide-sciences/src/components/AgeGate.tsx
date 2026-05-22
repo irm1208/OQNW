@@ -86,12 +86,12 @@ export default function AgeGate() {
         >
           {/* OmniQure logo */}
           <div className="flex justify-center mb-5">
-            <div style={{ overflow: "hidden", height: "50px" }}>
+            <div>
               <img
-                src="/omniqure-logo-v2-transparent.png"
+                src="/omniqure-wordmark.png"
                 alt="OmniQure"
                 style={{
-                  height: "80px",
+                  height: "60px",
                   width: "auto",
                   display: "block",
                 }}
