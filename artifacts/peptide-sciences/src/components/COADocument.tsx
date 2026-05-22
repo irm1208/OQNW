@@ -72,27 +72,28 @@ export default function COADocument({ product }: COADocumentProps) {
             CERTIFICATE<br />OF ANALYSIS
           </h2>
         </div>
-        <div style={{ textAlign: "right" }}>
+        <div style={{ textAlign: "right", flexShrink: 0, maxWidth: "45%" }}>
           <div style={{
             background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
-            borderRadius: "12px",
-            padding: "10px 16px 9px",
+            borderRadius: "10px",
+            padding: "8px 12px 7px",
             display: "inline-block",
             marginLeft: "auto",
-            marginBottom: "8px",
+            marginBottom: "6px",
+            maxWidth: "100%",
           }}>
-            <div style={{ display: "inline-block" }}>
+            <div style={{ display: "inline-block", maxWidth: "100%" }}>
               <img
                 src="/omniqure-wordmark.png"
                 alt="OmniQure"
-                style={{ height: "52px", width: "auto", display: "block", imageRendering: "auto" }}
+                style={{ height: "34px", width: "auto", maxWidth: "100%", display: "block", imageRendering: "auto" }}
               />
-              <span style={{ display: "block", marginLeft: "33%", width: "61%", textAlign: "center", color: "rgba(255,255,255,0.82)", fontSize: "6.5px", fontWeight: 700, letterSpacing: "0.18em", overflow: "hidden", marginTop: "2px" }}>
+              <span style={{ display: "block", marginLeft: "33%", width: "61%", textAlign: "center", color: "rgba(255,255,255,0.82)", fontSize: "5px", fontWeight: 700, letterSpacing: "0.15em", overflow: "hidden", marginTop: "2px" }}>
                 PEPTIDE RESEARCH INSTITUTE
               </span>
             </div>
           </div>
-          <p style={{ margin: 0, fontSize: "11px", color: "#6B7280" }}>Web: www.omniqure.com</p>
+          <p style={{ margin: 0, fontSize: "10px", color: "#6B7280" }}>Web: www.omniqure.com</p>
         </div>
       </div>
 
