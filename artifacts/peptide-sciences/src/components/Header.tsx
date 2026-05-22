@@ -250,7 +250,7 @@ export default function Header() {
             mixBlendMode: "screen",
             pointerEvents: "none",
             zIndex: 0,
-            filter: "contrast(1.6) brightness(1.3) saturate(1.3)",
+            filter: "contrast(1.6) brightness(1.3) saturate(1.3) drop-shadow(45px 0 18px rgba(120,175,255,0.5)) drop-shadow(75px 0 30px rgba(80,135,255,0.3))",
             imageRendering: "high-quality" as React.CSSProperties["imageRendering"],
           }}
         />
