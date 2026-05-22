@@ -73,7 +73,7 @@ interface LogoAsset { dataUrl: string; naturalW: number; naturalH: number; }
 
 async function loadLogo(): Promise<LogoAsset | null> {
   try {
-    const res  = await fetch("/omniqure-wordmark.png");
+    const res  = await fetch("/omniqure-coa-logo.png");
     const blob = await res.blob();
     const rawUrl = await new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
