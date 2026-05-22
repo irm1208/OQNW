@@ -239,12 +239,22 @@ export default function Header() {
         <div className="max-w-[1280px] mx-auto px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-2">
 
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none" }}>
-            <img
-              src="/omniqure-logo-transparent.png"
-              alt="OmniQure Peptide Research Institute"
-              style={{ height: "44px", width: "auto", display: "block" }}
-            />
+          <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none", display: "inline-flex", flexDirection: "column", alignItems: "center", userSelect: "none" }}>
+            {/* Wordmark */}
+            <div style={{ display: "flex", alignItems: "flex-end", lineHeight: 1 }}>
+              <span style={{ fontFamily: "'Arimo', Arial, sans-serif", fontSize: "26px", fontWeight: 300, color: "#fff", letterSpacing: "-0.01em" }}>omn</span>
+              <span style={{ position: "relative", display: "inline-block" }}>
+                <span style={{ position: "absolute", top: "-9px", left: "50%", transform: "translateX(-50%)", width: "12px", height: "12px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="white" strokeWidth="1.2" fill="none"/><circle cx="6" cy="6" r="2.2" fill="white"/></svg>
+                </span>
+                <span style={{ fontFamily: "'Arimo', Arial, sans-serif", fontSize: "26px", fontWeight: 300, color: "#fff", letterSpacing: "-0.01em" }}>i</span>
+              </span>
+              <span style={{ fontFamily: "'Arimo', Arial, sans-serif", fontSize: "26px", fontWeight: 800, color: "#fff", letterSpacing: "-0.01em" }}>Qure</span>
+            </div>
+            {/* Tagline */}
+            <div style={{ fontFamily: "'Arimo', Arial, sans-serif", fontSize: "7.5px", fontWeight: 600, color: "rgba(255,255,255,0.8)", letterSpacing: "0.2em", textTransform: "uppercase", marginTop: "4px", whiteSpace: "nowrap" }}>
+              Peptide Research Institute
+            </div>
           </Link>
 
           {/* Search */}
