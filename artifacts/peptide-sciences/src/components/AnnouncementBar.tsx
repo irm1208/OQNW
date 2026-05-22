@@ -20,7 +20,7 @@ export default function AnnouncementBar() {
     <div
       className="relative overflow-hidden"
       style={{
-        background: "linear-gradient(90deg, #050E2A 0%, #0D2159 30%, #1240A0 60%, #0D2159 80%, #050E2A 100%)",
+        background: "linear-gradient(90deg, #1847C2 0%, #2058D8 30%, #2B6FF5 55%, #2058D8 80%, #1847C2 100%)",
         height: "36px",
       }}
     >
