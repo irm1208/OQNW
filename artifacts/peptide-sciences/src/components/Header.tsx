@@ -245,7 +245,7 @@ export default function Header() {
                 <img
                   src="/omniqure-logo-v2-transparent.png"
                   alt="OmniQure"
-                  style={{ height: "56px", width: "auto", display: "block" }}
+                  style={{ height: "80px", width: "auto", display: "block" }}
                 />
               </div>
               <span style={{ color: "rgba(255,255,255,0.85)", fontSize: "7.5px", fontWeight: 700, letterSpacing: "0.22em", whiteSpace: "nowrap" }}>
