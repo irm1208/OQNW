@@ -73,11 +73,25 @@ export default function COADocument({ product }: COADocumentProps) {
           </h2>
         </div>
         <div style={{ textAlign: "right" }}>
-          <img
-            src="/omniqure-coa-logo.png"
-            alt="OmniQure"
-            style={{ height: "76px", width: "246px", objectFit: "contain", display: "block", marginLeft: "auto", marginBottom: "8px", imageRendering: "auto" }}
-          />
+          <div style={{
+            background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
+            borderRadius: "12px",
+            padding: "10px 16px 9px",
+            display: "inline-block",
+            marginLeft: "auto",
+            marginBottom: "8px",
+          }}>
+            <div style={{ display: "inline-block" }}>
+              <img
+                src="/omniqure-wordmark.png"
+                alt="OmniQure"
+                style={{ height: "52px", width: "auto", display: "block", imageRendering: "auto" }}
+              />
+              <span style={{ display: "block", marginLeft: "33%", width: "61%", textAlign: "center", color: "rgba(255,255,255,0.82)", fontSize: "6.5px", fontWeight: 700, letterSpacing: "0.18em", overflow: "hidden", marginTop: "2px" }}>
+                PEPTIDE RESEARCH INSTITUTE
+              </span>
+            </div>
+          </div>
           <p style={{ margin: 0, fontSize: "11px", color: "#6B7280" }}>Web: www.omniqure.com</p>
         </div>
       </div>

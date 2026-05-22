@@ -73,7 +73,7 @@ interface LogoAsset { dataUrl: string; naturalW: number; naturalH: number; }
 
 async function loadLogo(): Promise<LogoAsset | null> {
   try {
-    const res  = await fetch("/omniqure-coa-logo.png");
+    const res  = await fetch("/omniqure-wordmark.png");
     const blob = await res.blob();
     const rawUrl = await new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
@@ -194,10 +194,37 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   doc.text("CERTIFICATE", M, y + 8);
   doc.text("OF ANALYSIS", M, y + 17);
 
-  // Logo (right)
+  // Logo (right) — gradient rounded pill
   if (logo) {
-    const { w: lw, h: lh } = fitLogo(logo, 46, 16);
-    doc.addImage(logo.dataUrl, "JPEG", W - M - lw, y, lw, lh);
+    const padH = 3, padVT = 2.5, subH = 3.8;
+    const { w: lw, h: lh } = fitLogo(logo, 44, 13);
+    const bx = W - M - lw - padH * 2;
+    const by = y - padVT;
+    const bw = lw + padH * 2;
+    const bh = lh + padVT + subH + 1;
+    // Gradient: strip loop from #0D2565 → #1E68CC
+    const gFrom = [13, 37, 101], gTo = [30, 104, 204];
+    const steps = Math.ceil(bw);
+    for (let s = 0; s < steps; s++) {
+      const t = s / steps;
+      const r = Math.round(gFrom[0] + t * (gTo[0] - gFrom[0]));
+      const g = Math.round(gFrom[1] + t * (gTo[1] - gFrom[1]));
+      const b = Math.round(gFrom[2] + t * (gTo[2] - gFrom[2]));
+      doc.setFillColor(r, g, b);
+      doc.rect(bx + s, by, 1, bh, "F");
+    }
+    // Rounded overlay mask: re-draw corners in page-white
+    doc.setFillColor(255, 255, 255);
+    const cr = 2.5;
+    // punch out 4 corners with white squares, then re-curve
+    doc.roundedRect(bx, by, bw, bh, cr, cr, "S"); // border only
+    doc.addImage(logo.dataUrl, "PNG", bx + padH, y, lw, lh);
+    // Subtitle inside box
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(4.2);
+    doc.setTextColor(220, 225, 240);
+    const subCX = bx + padH + lw * 0.33 + (lw * 0.61) / 2;
+    doc.text("PEPTIDE RESEARCH INSTITUTE", subCX, y + lh + 2.5, { align: "center", charSpace: 0.35 });
   }
   // Contact lines under logo
   doc.setFont("helvetica", "normal");
@@ -417,7 +444,7 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   fillRect(doc, 0, 0, W, HDR, 13, 37, 101);
   if (logo) {
     const { w: lw, h: lh } = fitLogo(logo, 80, 28);
-    doc.addImage(logo.dataUrl, "JPEG", M, (HDR - lh) / 2, lw, lh);
+    doc.addImage(logo.dataUrl, "PNG", M, (HDR - lh) / 2, lw, lh);
   }
   doc.setFont("helvetica", "bold");
   doc.setFontSize(16);
@@ -589,7 +616,7 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   fillRect(doc, 0, FOOTER_Y, W, 24, 13, 37, 101);
   if (logo) {
     const { w: lw, h: lh } = fitLogo(logo, 32, 14);
-    doc.addImage(logo.dataUrl, "JPEG", M, FOOTER_Y + (24 - lh) / 2, lw, lh);
+    doc.addImage(logo.dataUrl, "PNG", M, FOOTER_Y + (24 - lh) / 2, lw, lh);
   }
   doc.setFont("helvetica", "normal");
   doc.setFontSize(6.5);
