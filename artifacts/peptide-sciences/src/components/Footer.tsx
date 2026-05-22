@@ -192,7 +192,7 @@ export default function Footer() {
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
                   <div style={{ overflow: "hidden", height: "42px" }}>
                     <img
-                      src="/omniqure-logo-transparent.png"
+                      src="/omniqure-logo-v2-transparent.png"
                       alt="OmniQure"
                       style={{ height: "56px", width: "auto", display: "block" }}
                     />
