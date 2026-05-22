@@ -243,7 +243,7 @@ export default function Header() {
           style={{
             position: "absolute",
             top: 0, left: 0,
-            width: "48%",
+            width: "65%",
             height: "100%",
             objectFit: "contain",
             objectPosition: "left center",
