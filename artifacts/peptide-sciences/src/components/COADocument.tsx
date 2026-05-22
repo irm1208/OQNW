@@ -74,7 +74,7 @@ export default function COADocument({ product }: COADocumentProps) {
         </div>
         <div style={{ textAlign: "right" }}>
           <img
-            src="/omniqure-logo.jpeg"
+            src="/omniqure-wordmark.png"
             alt="OmniQure"
             style={{ height: "44px", objectFit: "contain", display: "block", marginLeft: "auto", marginBottom: "8px" }}
           />
