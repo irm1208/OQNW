@@ -228,8 +228,8 @@ export default function Header() {
       {/* Top bar */}
       <div style={{
         background: scrolled
-          ? "rgba(32,88,230,0.97)"
-          : "linear-gradient(90deg, #1847C2 0%, #2460F0 45%, #2B70FA 70%, #1F56DC 100%)",
+          ? "rgba(7,26,74,0.97)"
+          : "linear-gradient(90deg, #020B1E 0%, #071A4A 35%, #0D2565 65%, #1240A0 100%)",
         backdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
         WebkitBackdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
         boxShadow: scrolled ? "0 4px 32px rgba(8,28,80,0.35)" : "0 2px 16px rgba(8,28,80,0.25)",
