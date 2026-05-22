@@ -1,0 +1,104 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "NUAsBvEQgGBdMzRH3Hz4o"
+uri = "file://artifacts/mockup-sandbox/public/images/deeptech-hero.png"
+type = "image"
+title = "Dark molecular network background"
+
+[[generated]]
+id = "kx8GsVe9tjx04CFD-_pq1"
+uri = "file://artifacts/mockup-sandbox/public/images/deeptech-product1.png"
+type = "image"
+title = "Biotech peptide vial cyan"
+
+[[generated]]
+id = "V64dOBA-xEWDR7b_YzQuV"
+uri = "file://artifacts/mockup-sandbox/public/images/deeptech-product2.png"
+type = "image"
+title = "Biotech peptide vial green"
+
+[[generated]]
+id = "JZKLBahA1i5ViCxRvCyXW"
+uri = "file://artifacts/mockup-sandbox/public/images/deeptech-product3.png"
+type = "image"
+title = "Biotech peptide vial blue"
+
+[[generated]]
+id = "7leY0vPyGeEzwN5ZsWKSh"
+uri = "file://artifacts/mockup-sandbox/public/images/deeptech-trust.png"
+type = "image"
+title = "Scientific data visualization background"
+
+[[generated]]
+id = "9n7hbdWtkaw9MB0CCoOLe"
+uri = "file://artifacts/mockup-sandbox/public/images/clinical-hero.png"
+type = "image"
+title = "Clean clinical lab environment"
+
+[[generated]]
+id = "G8mAONWC69tfinUMpnD1n"
+uri = "file://artifacts/mockup-sandbox/public/images/clinical-vial-1.png"
+type = "image"
+title = "Sterile peptide glass vial"
+
+[[generated]]
+id = "VAm-klbsH3_R52jG0etry"
+uri = "file://artifacts/mockup-sandbox/public/images/clinical-vial-2.png"
+type = "image"
+title = "Sterile peptide glass vial"
+
+[[generated]]
+id = "14v1_815PJ_jDazSPuo7p"
+uri = "file://artifacts/mockup-sandbox/public/images/clinical-vial-3.png"
+type = "image"
+title = "Sterile peptide glass vial"
+
+[[generated]]
+id = "gD2KyeKovQzB3GCkDnz0r"
+uri = "file://artifacts/mockup-sandbox/public/images/dark-luxury-hero.png"
+type = "image"
+title = "Dark luxury abstract waves"
+
+[[generated]]
+id = "CnAJ7AGaBBktLQkXcIK69"
+uri = "file://artifacts/mockup-sandbox/public/images/dark-luxury-vial-1.png"
+type = "image"
+title = "Luxury amber glass vial"
+
+[[generated]]
+id = "74PF-G8D3AkGs_IxJnEkB"
+uri = "file://artifacts/mockup-sandbox/public/images/dark-luxury-vial-2.png"
+type = "image"
+title = "Luxury amber glass vial"
+
+[[generated]]
+id = "swZPhENHZmKzwE2ywWzjt"
+uri = "file://artifacts/mockup-sandbox/public/images/dark-luxury-vial-3.png"
+type = "image"
+title = "Luxury amber glass vial"
+
+[[generated]]
+id = "WayaiqerU8V3XULhK4AFB"
+uri = "file://artifacts/mockup-sandbox/public/images/warm-earth-hero.png"
+type = "image"
+title = "Wellness laboratory research vials"
+
+[[generated]]
+id = "_0T4T4MuJ3mSnJAPmbC1C"
+uri = "file://artifacts/mockup-sandbox/public/images/warm-earth-product-1.png"
+type = "image"
+title = "Peptide vial product shot"
+
+[[generated]]
+id = "WlKLE7uwfVGU0-k2pU3ty"
+uri = "file://artifacts/mockup-sandbox/public/images/warm-earth-product-2.png"
+type = "image"
+title = "Amber glass product shot"
+
+[[generated]]
+id = "91AleJFXXvWj_cXBqW1N5"
+uri = "file://artifacts/mockup-sandbox/public/images/warm-earth-trust.png"
+type = "image"
+title = "Microscope botanical aesthetic"
