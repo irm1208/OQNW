@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { FlaskConical, Mail, MapPin, Send, CheckCircle } from "lucide-react";
-import Logo from "@/components/Logo";
 
 const footerCategories = [
   {
@@ -190,7 +189,11 @@ export default function Footer() {
             {/* Brand column */}
             <div className="md:w-[240px] flex-shrink-0">
               <div className="flex items-center gap-2.5 mb-4">
-                <Logo bare />
+                <img
+                  src="/omniqure-logo-transparent.png"
+                  alt="OmniQure Peptide Research Institute"
+                  style={{ height: "56px", width: "auto", display: "block" }}
+                />
               </div>
               <p style={{ fontSize: "13px", color: "#475569", lineHeight: "1.75", marginBottom: "16px" }}>
                 Research peptides manufactured to the highest standards of quality and purity. 98%+ HPLC purity guaranteed on every product.
