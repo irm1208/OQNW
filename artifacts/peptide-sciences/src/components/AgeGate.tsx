@@ -86,13 +86,13 @@ export default function AgeGate() {
         >
           {/* OmniQure logo */}
           <div className="flex justify-center mb-5">
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "3px" }}>
+            <div>
               <img
                 src="/omniqure-wordmark.png"
                 alt="OmniQure"
                 style={{ height: "60px", width: "auto", display: "block" }}
               />
-              <span style={{ color: "rgba(255,255,255,0.8)", fontSize: "9px", fontWeight: 700, letterSpacing: "0.28em", whiteSpace: "nowrap", textAlign: "center" }}>
+              <span style={{ color: "rgba(255,255,255,0.82)", fontSize: "9px", fontWeight: 700, letterSpacing: "0.24em", whiteSpace: "nowrap", paddingLeft: "26%", display: "block", marginTop: "3px" }}>
                 PEPTIDE RESEARCH INSTITUTE
               </span>
             </div>
