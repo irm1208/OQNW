@@ -242,42 +242,18 @@ export default function Header() {
           <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none", display: "inline-flex", flexDirection: "column", alignItems: "center", position: "relative", padding: "4px 8px" }}>
             {/* Radial bloom behind logo */}
             <div style={{ position: "absolute", inset: "-8px -20px", background: "radial-gradient(ellipse 85% 90% at 50% 50%, rgba(120,170,255,0.22) 0%, rgba(80,130,255,0.1) 45%, transparent 75%)", pointerEvents: "none" }} />
-            {/* Wordmark */}
-            <div style={{ display: "flex", alignItems: "flex-end", lineHeight: 1, position: "relative" }}>
-              <span style={{
-                fontFamily: "'Arimo', Arial, sans-serif", fontSize: "26px", fontWeight: 300,
-                color: "rgba(185,210,250,0.95)", letterSpacing: "-0.01em",
-                textShadow: "0 0 12px rgba(147,197,253,0.95), 0 0 28px rgba(96,165,250,0.6), 0 0 56px rgba(59,130,246,0.3)",
-              }}>omn</span>
-              <span style={{ position: "relative", display: "inline-block" }}>
-                <span style={{ position: "absolute", top: "-9px", left: "50%", transform: "translateX(-50%)", display: "flex", alignItems: "center", justifyContent: "center",
-                  filter: "drop-shadow(0 0 6px rgba(147,197,253,0.9))" }}>
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <circle cx="6" cy="6" r="5.5" stroke="rgba(185,210,250,0.9)" strokeWidth="1.2" fill="none"/>
-                    <circle cx="6" cy="6" r="2.2" fill="rgba(200,220,255,0.95)"/>
-                  </svg>
-                </span>
-                <span style={{
-                  fontFamily: "'Arimo', Arial, sans-serif", fontSize: "26px", fontWeight: 300,
-                  color: "rgba(185,210,250,0.95)", letterSpacing: "-0.01em",
-                  textShadow: "0 0 12px rgba(147,197,253,0.95), 0 0 28px rgba(96,165,250,0.6), 0 0 56px rgba(59,130,246,0.3)",
-                }}>i</span>
-              </span>
-              <span style={{
-                fontFamily: "'Arimo', Arial, sans-serif", fontSize: "26px", fontWeight: 400,
-                color: "rgba(185,210,250,0.95)", letterSpacing: "-0.01em",
-                textShadow: "0 0 12px rgba(147,197,253,0.95), 0 0 28px rgba(96,165,250,0.6), 0 0 56px rgba(59,130,246,0.3)",
-              }}>Qure</span>
-            </div>
-            {/* Tagline */}
-            <div style={{
-              fontFamily: "'Arimo', Arial, sans-serif", fontSize: "6.5px", fontWeight: 500,
-              color: "rgba(160,190,235,0.8)", letterSpacing: "0.24em",
-              textTransform: "uppercase", marginTop: "4px", whiteSpace: "nowrap", position: "relative",
-              textShadow: "0 0 10px rgba(147,197,253,0.7)",
-            }}>
-              Peptide Research Institute
-            </div>
+            {/* Logo image — the actual designed wordmark + molecule icon */}
+            <img
+              src="/omniqure-logo-transparent.png"
+              alt="OmniQure Peptide Research Institute"
+              style={{
+                height: "72px",
+                width: "auto",
+                display: "block",
+                position: "relative",
+                filter: "drop-shadow(0 0 8px rgba(147,197,253,0.9)) drop-shadow(0 0 22px rgba(96,165,250,0.55)) drop-shadow(0 0 48px rgba(59,130,246,0.3))",
+              }}
+            />
           </Link>
 
           {/* Search */}
