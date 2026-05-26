@@ -341,7 +341,7 @@ export default function PopularPeptides() {
                 </div>
 
                 {/* Product grid */}
-                <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-5 md:gap-7">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-7">
                   {group.items.map((g: GroupedProduct) => (
                     <GroupedProductCard key={g.baseName} group={g} />
                   ))}
