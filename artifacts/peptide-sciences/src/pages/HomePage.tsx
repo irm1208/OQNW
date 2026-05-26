@@ -478,7 +478,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8">
-            {featuredGroups.map(group => (
+            {featuredGroups.slice(0, 4).map(group => (
               <GroupedProductCard key={group.baseName} group={group} />
             ))}
           </div>
