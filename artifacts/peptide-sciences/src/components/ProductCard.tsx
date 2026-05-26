@@ -14,23 +14,23 @@ function parseName(name: string): { baseName: string; strength: string } {
   return { baseName: name, strength: "" };
 }
 
-const BLUE = { color: "#1B5CB5", bg: "#EEF4FF", gradient: "linear-gradient(90deg, #1240A0, #2563EB)" };
+const TEAL = { color: "#2A5F5F", bg: "#EEF7F7", gradient: "linear-gradient(90deg, #2A3F3F, #2A5F5F)" };
 
 const CATEGORY_COLORS: Record<string, { color: string; bg: string; gradient: string }> = {
-  "Growth Peptides":    BLUE,
-  "Healing Peptides":   BLUE,
-  "Weight Management":  BLUE,
-  "Longevity Peptides": BLUE,
-  "Cellular Health":    BLUE,
-  "Nootropics":         BLUE,
-  "Immune Support":     BLUE,
-  "Research Peptides":  BLUE,
-  "Peptide Blends":     BLUE,
-  "Skin & Repair":      BLUE,
-  "Hormonal Peptides":  BLUE,
-  "Growth Hormone":     BLUE,
-  "Anti-Inflammatory":  BLUE,
-  "Cognitive Peptides": BLUE,
+  "Growth Peptides":    TEAL,
+  "Healing Peptides":   TEAL,
+  "Weight Management":  TEAL,
+  "Longevity Peptides": TEAL,
+  "Cellular Health":    TEAL,
+  "Nootropics":         TEAL,
+  "Immune Support":     TEAL,
+  "Research Peptides":  TEAL,
+  "Peptide Blends":     TEAL,
+  "Skin & Repair":      TEAL,
+  "Hormonal Peptides":  TEAL,
+  "Growth Hormone":     TEAL,
+  "Anti-Inflammatory":  TEAL,
+  "Cognitive Peptides": TEAL,
 };
 
 const LOW_STOCK_THRESHOLD = 5;
@@ -48,7 +48,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
   const { formatPrice } = useCurrency();
 
-  const cat = CATEGORY_COLORS[product.category] ?? { color: "#1B5CB5", bg: "#EEF4FF", gradient: "linear-gradient(90deg, #1B5CB5, #2563EB)" };
+  const cat = CATEGORY_COLORS[product.category] ?? TEAL;
 
   const stockLevel = product.stockLevel;
   const isOutOfStock = stockLevel !== undefined && stockLevel === 0;

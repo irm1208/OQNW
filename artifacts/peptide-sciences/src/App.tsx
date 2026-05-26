@@ -51,11 +51,11 @@ const queryClient = new QueryClient();
 function PlaceholderPage({ title, description }: { title: string; description?: string }) {
   return (
     <div className="max-w-[1280px] mx-auto px-4 py-16">
-      <h1 className="text-2xl font-bold mb-3" style={{ fontFamily: "'Arimo', Arial, sans-serif" }}>
+      <h1 className="text-2xl font-bold mb-3" style={{ fontFamily: "'Roboto', Arial, sans-serif" }}>
         {title}
       </h1>
       <p className="text-gray-500 mb-6 text-sm">{description || "This page is coming soon."}</p>
-      <a href="/all-peptides" className="text-sm hover:underline" style={{ color: "#1B5CB5" }}>
+      <a href="/all-peptides" className="text-sm hover:underline" style={{ color: "#2A5F5F" }}>
         ← Back to All Peptides
       </a>
     </div>

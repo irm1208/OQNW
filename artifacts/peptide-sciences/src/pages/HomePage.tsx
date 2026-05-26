@@ -17,32 +17,32 @@ const pillars = [
     icon: <FlaskConical size={24} />,
     title: "HPLC Verified Purity",
     body: "Every product tested via High-Performance Liquid Chromatography to confirm 98%+ purity before release.",
-    color: "#1B5CB5",
-    bg: "#EEF4FF",
+    color: "#2A5F5F",
+    bg: "#EEF7F7",
   },
   {
     num: "02",
     icon: <Award size={24} />,
     title: "Full COA & MS Data",
     body: "Certificates of Analysis, HPLC chromatograms, and ESI-TOF mass spectra available for every product.",
-    color: "#059669",
-    bg: "#ECFDF5",
+    color: "#2A5F5F",
+    bg: "#EEF7F7",
   },
   {
     num: "03",
     icon: <Shield size={24} />,
     title: "Research Grade Only",
     body: "All peptides manufactured under strict research-grade conditions for in-vitro research applications only.",
-    color: "#7C3AED",
-    bg: "#F5F3FF",
+    color: "#2A5F5F",
+    bg: "#EEF7F7",
   },
   {
     num: "04",
     icon: <Truck size={24} />,
     title: "Fast UK Dispatch",
     body: "Orders placed before noon are dispatched same day in discreet, secure packaging to preserve integrity every step.",
-    color: "#0E7490",
-    bg: "#ECFEFF",
+    color: "#2A5F5F",
+    bg: "#EEF7F7",
   },
 ];
 
@@ -100,7 +100,7 @@ export default function HomePage() {
   })();
 
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif" }}>
+    <div style={{ fontFamily: "'Roboto', Arial, sans-serif" }}>
 
       {/* ── HERO ──────────────────────────────────────────────── */}
       <section
@@ -120,7 +120,7 @@ export default function HomePage() {
         <div style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(to bottom, rgba(2,11,30,0.05) 0%, rgba(2,11,30,0.05) 28%, rgba(2,11,30,0.72) 48%, rgba(2,11,30,0.85) 65%, rgba(2,11,30,0.72) 100%)",
+          background: "linear-gradient(to bottom, rgba(10,30,30,0.05) 0%, rgba(10,30,30,0.05) 28%, rgba(10,30,30,0.72) 48%, rgba(10,30,30,0.85) 65%, rgba(10,30,30,0.72) 100%)",
           pointerEvents: "none",
         }} />
         {/* Left-to-right overlay — full dark on mobile, fades right on desktop */}
@@ -129,14 +129,14 @@ export default function HomePage() {
           inset: 0,
           pointerEvents: "none",
         }} />
-        {/* Bold blue glow amplifier behind the logo (top-left) */}
+        {/* Teal glow amplifier behind the logo (top-left) */}
         <div style={{
           position: "absolute",
           top: "-80px",
           left: "-80px",
           width: "800px",
           height: "560px",
-          background: "radial-gradient(ellipse at 35% 38%, rgba(40,120,255,0.65) 0%, rgba(20,80,230,0.38) 30%, rgba(10,50,180,0.15) 55%, rgba(0,0,0,0.0) 75%)",
+          background: "radial-gradient(ellipse at 35% 38%, rgba(42,95,95,0.55) 0%, rgba(42,63,63,0.30) 35%, rgba(10,30,30,0.12) 60%, rgba(0,0,0,0.0) 75%)",
           pointerEvents: "none",
           mixBlendMode: "screen",
         }} />
@@ -197,11 +197,13 @@ export default function HomePage() {
                 className="btn-primary inline-flex items-center justify-center gap-2 w-full sm:w-auto"
                 style={{
                   backgroundColor: "#fff",
-                  color: "#1240A0",
+                  color: "#2A5F5F",
                   padding: "13px 26px",
-                  borderRadius: "12px",
-                  fontWeight: 800,
-                  fontSize: "14px",
+                  borderRadius: 0,
+                  fontWeight: 700,
+                  fontSize: "13px",
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
                   textDecoration: "none",
                   boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
                 }}
@@ -216,7 +218,7 @@ export default function HomePage() {
 
       {/* ── BUNDLE & SAVE STRIP ────────────────────────────────── */}
       <section style={{
-        background: "linear-gradient(100deg, #030d1f 0%, #0a1e4a 35%, #1240A0 75%, #1B5CB5 100%)",
+        background: "linear-gradient(100deg, #0C1F1F 0%, #1A3535 35%, #2A4545 75%, #2A5F5F 100%)",
         borderBottom: "1px solid rgba(255,255,255,0.08)",
         position: "relative",
         overflow: "hidden",
@@ -263,10 +265,10 @@ export default function HomePage() {
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-[#EEF2F7]">
             {[
-              { icon: <FlaskConical size={20} />, title: "98%+ HPLC Purity",    sub: "Guaranteed on every product",     color: "#1B5CB5", bg: "#EEF4FF" },
-              { icon: <Award size={20} />,        title: "Full COA & MS Data",   sub: "Chromatogram + mass spectrum",    color: "#059669", bg: "#ECFDF5" },
-              { icon: <Shield size={20} />,       title: "Research Grade",       sub: "For qualified researchers only",  color: "#7C3AED", bg: "#F5F3FF" },
-              { icon: <Truck size={20} />,        title: "Free Shipping £100+",  sub: "Discreet packaging included",     color: "#0E7490", bg: "#ECFEFF" },
+              { icon: <FlaskConical size={20} />, title: "98%+ HPLC Purity",    sub: "Guaranteed on every product",     color: "#2A5F5F", bg: "#EEF7F7" },
+              { icon: <Award size={20} />,        title: "Full COA & MS Data",   sub: "Chromatogram + mass spectrum",    color: "#2A5F5F", bg: "#EEF7F7" },
+              { icon: <Shield size={20} />,       title: "Research Grade",       sub: "For qualified researchers only",  color: "#2A5F5F", bg: "#EEF7F7" },
+              { icon: <Truck size={20} />,        title: "Free Shipping £100+",  sub: "Discreet packaging included",     color: "#2A5F5F", bg: "#EEF7F7" },
             ].map((item, i) => (
               <div
                 key={i}
@@ -293,13 +295,10 @@ export default function HomePage() {
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <div style={{ width: "3px", height: "16px", background: "linear-gradient(180deg, #059669, #34D399)", borderRadius: "2px" }} />
-                <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#059669", letterSpacing: "0.1em" }}>
-                  MOST RESEARCHED
-                </p>
-              </div>
-              <h2 className="font-bold" style={{ fontSize: "30px", color: "#0F172A", letterSpacing: "-0.02em" }}>
+              <p style={{ fontSize: "9px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.3em", color: "#2A5F5F", marginBottom: 8 }}>
+                MOST RESEARCHED
+              </p>
+              <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "30px", fontWeight: 500, color: "#2C3E3E", margin: "0 0 4px" }}>
                 Featured Peptides
               </h2>
               <p style={{ fontSize: "14px", color: "#64748B", marginTop: "4px" }}>
@@ -309,7 +308,7 @@ export default function HomePage() {
             <Link
               href="/popular-peptides"
               className="hidden sm:flex items-center gap-1.5 font-semibold"
-              style={{ fontSize: "13px", color: "#1B5CB5", textDecoration: "none", transition: "opacity 0.15s" }}
+              style={{ fontSize: "13px", color: "#2A5F5F", textDecoration: "none", transition: "opacity 0.15s" }}
               onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = "0.7"}
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = "1"}
             >
@@ -326,20 +325,16 @@ export default function HomePage() {
       </section>
 
       {/* ── WHY OMNIQURE ──────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#F7FAFF", padding: "68px 0" }}>
+      <section style={{ backgroundColor: "#F5F5F5", padding: "68px 0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 mb-2">
-              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #7C3AED, #A78BFA)", borderRadius: "2px" }} />
-              <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#7C3AED", letterSpacing: "0.1em" }}>
-                OUR COMMITMENT
-              </p>
-              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #A78BFA, #7C3AED)", borderRadius: "2px" }} />
-            </div>
-            <h2 className="font-bold" style={{ fontSize: "30px", color: "#0F172A", letterSpacing: "-0.02em" }}>
+            <p style={{ fontSize: "9px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.3em", color: "#2A5F5F", marginBottom: 10 }}>
+              OUR COMMITMENT
+            </p>
+            <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "30px", fontWeight: 500, color: "#2C3E3E", margin: "0 0 10px" }}>
               Why Choose OmniQure?
             </h2>
-            <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "520px", margin: "8px auto 0", lineHeight: 1.7 }}>
+            <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "520px", margin: "0 auto", lineHeight: 1.7 }}>
               Every peptide we supply meets the highest standards in research-grade manufacturing, analytical verification, and quality-assured dispatch.
             </p>
           </div>
@@ -410,7 +405,7 @@ export default function HomePage() {
           <div
             className="rounded-3xl overflow-hidden relative"
             style={{
-              background: "linear-gradient(135deg, #020B1E 0%, #071A4A 30%, #0D2565 60%, #1240A0 100%)",
+              background: "linear-gradient(135deg, #0C1F1F 0%, #1A3535 30%, #2A4545 60%, #2A5F5F 100%)",
               minHeight: "260px",
             }}
           >
@@ -433,7 +428,7 @@ export default function HomePage() {
                 width: "320px",
                 height: "320px",
                 borderRadius: "50%",
-                background: "radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%)",
+                background: "radial-gradient(circle, rgba(42,95,95,0.25) 0%, transparent 70%)",
                 pointerEvents: "none",
               }}
             />
@@ -441,10 +436,10 @@ export default function HomePage() {
             <div className="flex flex-col lg:flex-row items-center relative" style={{ zIndex: 1 }}>
               {/* Left text */}
               <div className="flex-1 p-10 lg:p-14 text-white">
-                <p className="font-bold uppercase tracking-widest mb-2" style={{ fontSize: "11px", color: "#93C5FD", letterSpacing: "0.1em" }}>
+                <p style={{ fontSize: "9px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.3em", color: "#A8D4D4", marginBottom: 10 }}>
                   OMNIQURE PEPTIDE RESEARCH INSTITUTE
                 </p>
-                <h2 className="font-bold mb-3" style={{ fontSize: "clamp(22px,3vw,32px)", lineHeight: 1.2, letterSpacing: "-0.02em" }}>
+                <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(22px,3vw,32px)", fontWeight: 500, lineHeight: 1.2, color: "#FFFFFF", margin: "0 0 12px" }}>
                   Supporting the Scientific<br />Community
                 </h2>
                 <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "14.5px", lineHeight: 1.75, maxWidth: "440px" }}>
@@ -456,11 +451,13 @@ export default function HomePage() {
                     className="btn-primary inline-flex items-center gap-2"
                     style={{
                       backgroundColor: "#fff",
-                      color: "#1240A0",
+                      color: "#2A5F5F",
                       padding: "11px 22px",
-                      borderRadius: "10px",
+                      borderRadius: 0,
                       fontWeight: 700,
-                      fontSize: "13.5px",
+                      fontSize: "13px",
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
                       textDecoration: "none",
                       boxShadow: "0 4px 16px rgba(0,0,0,0.22)",
                     }}
@@ -497,7 +494,7 @@ export default function HomePage() {
       </section>
 
       {/* ── DISCLAIMER ────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#F7FAFF", borderTop: "1px solid #E8EDF5", padding: "20px 0" }}>
+      <section style={{ backgroundColor: "#F5F5F5", borderTop: "1px solid #D4E8E8", padding: "20px 0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
           <p className="text-center" style={{ fontSize: "11.5px", color: "#94A3B8", lineHeight: 1.7 }}>
             <strong style={{ color: "#64748B" }}>Research Use Only.</strong>{" "}

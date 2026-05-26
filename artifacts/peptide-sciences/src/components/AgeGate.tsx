@@ -54,7 +54,7 @@ export default function AgeGate() {
     <div
       className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
       style={{
-        background: "rgba(5, 15, 45, 0.97)",
+        background: "rgba(12, 31, 31, 0.97)",
         backdropFilter: "blur(8px)",
         WebkitBackdropFilter: "blur(8px)",
       }}
@@ -64,7 +64,7 @@ export default function AgeGate() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(18,64,160,0.22) 0%, transparent 70%)",
+            "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(42,95,95,0.22) 0%, transparent 70%)",
         }}
       />
 
@@ -81,7 +81,7 @@ export default function AgeGate() {
         <div
           className="px-8 pt-8 pb-7 text-center"
           style={{
-            background: "linear-gradient(160deg, #071A4A 0%, #1240A0 100%)",
+            background: "linear-gradient(160deg, #0C1F1F 0%, #2A5F5F 100%)",
           }}
         >
           {/* OmniQure logo */}
@@ -140,8 +140,8 @@ export default function AgeGate() {
           <label
             className="flex items-start gap-3 cursor-pointer rounded-xl p-3.5"
             style={{
-              background: checked18 ? "#EEF4FF" : "#F8FAFC",
-              border: `1.5px solid ${checked18 ? "#BFDBFE" : "#E2E8F0"}`,
+              background: checked18 ? "#EEF7F7" : "#F8FAFC",
+              border: `1.5px solid ${checked18 ? "#A8D4D4" : "#E2E8F0"}`,
               transition: "background 0.15s, border-color 0.15s",
             }}
           >
@@ -155,8 +155,8 @@ export default function AgeGate() {
               <div
                 className="w-5 h-5 rounded-md flex items-center justify-center"
                 style={{
-                  background: checked18 ? "#1240A0" : "#fff",
-                  border: `2px solid ${checked18 ? "#1240A0" : "#CBD5E1"}`,
+                  background: checked18 ? "#2A5F5F" : "#fff",
+                  border: `2px solid ${checked18 ? "#2A5F5F" : "#CBD5E1"}`,
                   transition: "all 0.15s",
                 }}
               >
@@ -199,13 +199,13 @@ export default function AgeGate() {
             className={`w-full font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 ${shake ? "animate-bounce" : ""}`}
             style={{
               background: checked18
-                ? "linear-gradient(135deg, #0D2565, #1B5CB5)"
+                ? "linear-gradient(135deg, #2A3F3F, #2A5F5F)"
                 : "#CBD5E1",
               color: checked18 ? "#fff" : "#94A3B8",
               cursor: checked18 ? "pointer" : "not-allowed",
               fontSize: "15px",
               boxShadow: checked18
-                ? "0 4px 20px rgba(18,64,160,0.35)"
+                ? "0 4px 20px rgba(42,95,95,0.35)"
                 : "none",
               transition: "all 0.2s ease",
             }}
@@ -238,7 +238,7 @@ export default function AgeGate() {
           <a
             href="/terms"
             onClick={e => e.stopPropagation()}
-            style={{ color: "#1B5CB5", textDecoration: "underline" }}
+            style={{ color: "#2A5F5F", textDecoration: "underline" }}
           >
             Terms & Conditions
           </a>{" "}
@@ -246,7 +246,7 @@ export default function AgeGate() {
           <a
             href="/privacy"
             onClick={e => e.stopPropagation()}
-            style={{ color: "#1B5CB5", textDecoration: "underline" }}
+            style={{ color: "#2A5F5F", textDecoration: "underline" }}
           >
             Privacy Policy
           </a>
