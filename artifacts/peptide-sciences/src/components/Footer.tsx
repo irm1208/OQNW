@@ -1,51 +1,63 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { CheckCircle } from "lucide-react";
+import { FlaskConical, Mail, MapPin, Send, CheckCircle } from "lucide-react";
 
 const footerCategories = [
   {
-    title: "Shop",
+    title: "Purchase Peptides",
     href: "/all-peptides",
     links: [
-      { label: "All Peptides",      href: "/all-peptides" },
-      { label: "Research Stacks",   href: "/stacks" },
-      { label: "Bundle & Save",     href: "/bundles" },
-      { label: "Popular Peptides",  href: "/popular-peptides" },
+      { label: "BPC-157 5mg",      href: "/product/10" },
+      { label: "Ipamorelin 5mg",   href: "/product/75" },
+      { label: "GHK-Cu 50mg",      href: "/product/44" },
+      { label: "Sermorelin 5mg",   href: "/product/63" },
+      { label: "AOD-9604 5mg",     href: "/product/1"  },
+      { label: "TB-500 5mg",       href: "/product/71" },
     ],
   },
   {
-    title: "Research",
-    href: "/lab-results",
+    title: "Peptide Blends",
+    href: "/all-peptides?category=Peptide+Blends",
     links: [
-      { label: "Lab Results & COA", href: "/lab-results" },
-      { label: "Lab Tests",         href: "/lab-tests" },
-      { label: "Peptide Calculator",href: "/calculator" },
+      { label: "BPC-157 + TB-500 10mg",   href: "/product/7"  },
+      { label: "BPC-157 + TB-500 20mg",   href: "/product/8"  },
+      { label: "CJC1295 + GHRP-2",        href: "/product/24" },
+      { label: "CJC1295 + Ipamorelin",    href: "/product/27" },
+      { label: "Sermorelin + GHRP-2",     href: "/product/67" },
+    ],
+  },
+  {
+    title: "Categories",
+    href: "/all-peptides",
+    links: [
+      { label: "Growth Peptides",     href: "/all-peptides?category=Growth+Peptides"     },
+      { label: "Healing Peptides",    href: "/all-peptides?category=Healing+Peptides"    },
+      { label: "Weight Management",   href: "/all-peptides?category=Weight+Management"   },
+      { label: "Longevity Peptides",  href: "/all-peptides?category=Longevity+Peptides"  },
+      { label: "Nootropics",          href: "/all-peptides?category=Nootropics"          },
     ],
   },
   {
     title: "Company",
-    href: "/contact",
+    href: "/company",
     links: [
-      { label: "Contact Us",        href: "/contact" },
-      { label: "Track Your Order",  href: "/track-order" },
-    ],
-  },
-  {
-    title: "Support",
-    href: "/shipping",
-    links: [
-      { label: "Shipping Policy",   href: "/shipping" },
-      { label: "Privacy Policy",    href: "/privacy" },
-      { label: "Terms & Conditions",href: "/terms" },
+      { label: "Contact Us",          href: "/contact"          },
+      { label: "Track Your Order",    href: "/track-order"      },
+      { label: "Research Stacks",     href: "/stacks"           },
+      { label: "Bundle & Save",       href: "/bundles"          },
+      { label: "Lab Results & COA",   href: "/lab-results"      },
+      { label: "All Peptides",        href: "/all-peptides"     },
     ],
   },
 ];
 
 const legalLinks = [
-  { label: "Privacy Policy",     href: "/privacy"   },
-  { label: "Terms & Conditions", href: "/terms"     },
-  { label: "Shipping Policy",    href: "/shipping"  },
+  { label: "Terms & Conditions", href: "/terms"    },
+  { label: "Shipping Policy",    href: "/shipping" },
+  { label: "Privacy Policy",     href: "/privacy"  },
 ];
+
+const paymentMethods = ["Visa", "Mastercard", "Amex", "Bitcoin", "Ethereum"];
 
 function NewsletterForm() {
   const [email, setEmail] = useState("");
@@ -69,7 +81,7 @@ function NewsletterForm() {
         setEmail("");
       } else {
         setStatus("error");
-        setMsg(data.error ?? "Something went wrong.");
+        setMsg(data.error ?? "Something went wrong. Please try again.");
       }
     } catch {
       setStatus("error");
@@ -79,22 +91,22 @@ function NewsletterForm() {
 
   if (status === "success") {
     return (
-      <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 14px", background: "#EEF7F7", borderRadius: 0, border: "1px solid #D4E8E8" }}>
-        <CheckCircle size={16} color="#2A5F5F" style={{ flexShrink: 0 }} />
-        <p style={{ margin: 0, fontSize: 13, color: "#2A5F5F", fontWeight: 600 }}>{msg}</p>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 14px", background: "#022C22", borderRadius: "10px", border: "1px solid #064E3B" }}>
+        <CheckCircle size={16} color="#34D399" style={{ flexShrink: 0 }} />
+        <p style={{ margin: 0, fontSize: "12.5px", color: "#34D399", fontWeight: 600 }}>{msg}</p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <p style={{ margin: "0 0 8px", fontSize: 11, fontWeight: 600, color: "#999999", textTransform: "uppercase", letterSpacing: "0.25em" }}>
+    <form onSubmit={handleSubmit} style={{ marginTop: "16px" }}>
+      <p style={{ margin: "0 0 8px", fontSize: "11.5px", fontWeight: 700, color: "#475569", textTransform: "uppercase", letterSpacing: "0.06em" }}>
         Research Newsletter
       </p>
-      <p style={{ margin: "0 0 12px", fontSize: 13, color: "#666666", lineHeight: 1.6 }}>
+      <p style={{ margin: "0 0 10px", fontSize: "12px", color: "#334155", lineHeight: 1.5 }}>
         New compounds, lab updates &amp; exclusive offers.
       </p>
-      <div style={{ display: "flex", gap: 0 }}>
+      <div style={{ display: "flex", gap: "6px" }}>
         <input
           type="email"
           placeholder="your@email.com"
@@ -102,28 +114,29 @@ function NewsletterForm() {
           onChange={e => setEmail(e.target.value)}
           required
           style={{
-            flex: 1, height: 40, padding: "0 12px",
-            border: "1px solid #D4E8E8", borderRight: "none",
-            background: "#FFFFFF", color: "#2C3E3E", fontSize: 13, outline: "none",
-            fontFamily: "Roboto, Arial, sans-serif", borderRadius: 0,
+            flex: 1, height: "36px", padding: "0 10px", borderRadius: "8px",
+            border: "1px solid #1E2D45", background: "#0D1A30",
+            color: "#94A3B8", fontSize: "12.5px", outline: "none",
+            fontFamily: "'Arimo', Arial, sans-serif",
           }}
         />
         <button
           type="submit"
           disabled={status === "loading"}
           style={{
-            height: 40, padding: "0 18px",
-            background: status === "loading" ? "#A8D4D4" : "#2A5F5F",
+            height: "36px", padding: "0 14px", borderRadius: "8px",
+            background: status === "loading" ? "#334155" : "linear-gradient(90deg, #0D2565, #1B5CB5)",
             border: "none", color: "#fff", cursor: "pointer",
-            fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase",
-            fontFamily: "Roboto, Arial, sans-serif", borderRadius: 0,
+            display: "flex", alignItems: "center", gap: "5px",
+            fontSize: "12px", fontWeight: 700, fontFamily: "'Arimo', Arial, sans-serif",
           }}
         >
+          <Send size={12} />
           {status === "loading" ? "..." : "Subscribe"}
         </button>
       </div>
       {status === "error" && (
-        <p style={{ margin: "6px 0 0", fontSize: 12, color: "#DC2626" }}>{msg}</p>
+        <p style={{ margin: "6px 0 0", fontSize: "11.5px", color: "#F87171" }}>{msg}</p>
       )}
     </form>
   );
@@ -131,104 +144,191 @@ function NewsletterForm() {
 
 export default function Footer() {
   return (
-    <footer style={{ fontFamily: "Roboto, Arial, sans-serif" }}>
+    <footer style={{ fontFamily: "'Arimo', Arial, sans-serif" }}>
 
-      {/* Email + legal strip — bg-[#2A3F3F] dark teal */}
-      <div style={{ background: "#2A3F3F", padding: "56px 48px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
-          <p style={{ fontSize: 9, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.3em", color: "#A8D4D4", marginBottom: 10 }}>
-            Exclusive Access
-          </p>
-          <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 32, fontWeight: 500, color: "#FFFFFF", margin: "0 0 12px", lineHeight: 1.2 }}>
-            Research Insights.<br />Priority Launches.
-          </h2>
-          <p style={{ fontSize: 14, color: "#A8D4D4", margin: "0 auto 32px", maxWidth: 440, lineHeight: 1.7 }}>
-            Subscribe for early access to new compounds, lab updates and an exclusive 15% off your first order.
-          </p>
-          <div style={{ maxWidth: 440, margin: "0 auto 14px" }}>
-            <NewsletterForm />
-          </div>
-          <p style={{ fontSize: 10, color: "#6A9A9A", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-            No spam. Unsubscribe at any time.
-          </p>
-
-          {/* Legal disclaimer */}
-          <div style={{ maxWidth: 800, margin: "36px auto 0", paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", alignItems: "flex-start", gap: 14, textAlign: "left" }}>
-            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#FFFFFF", whiteSpace: "nowrap", marginTop: 2 }}>Research Use Only</span>
-            <div style={{ width: 1, height: 16, background: "rgba(42,95,95,0.6)", marginTop: 2, flexShrink: 0 }} />
-            <p style={{ fontSize: 11, color: "#7A9F9F", lineHeight: 1.65, margin: 0 }}>
-              All products are intended solely for in vitro laboratory research purposes. Not approved for human or veterinary use. Not for human consumption. By purchasing, you confirm you are{" "}
-              <strong style={{ color: "#A0C4C4" }}>18+</strong> and products will be handled only by qualified researchers.
-            </p>
-          </div>
-        </div>
+      {/* RUO Disclaimer strip */}
+      <div
+        style={{
+          background: "linear-gradient(90deg, #020B1E 0%, #071A4A 40%, #1240A0 70%, #071A4A 100%)",
+          padding: "11px 16px",
+          textAlign: "center",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)",
+            backgroundSize: "24px 24px",
+            pointerEvents: "none",
+          }}
+        />
+        <p
+          style={{
+            fontSize: "11px",
+            fontWeight: 700,
+            color: "#93C5FD",
+            letterSpacing: "0.1em",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
+          ⚗️ FOR IN-VITRO LABORATORY RESEARCH USE ONLY · NOT FOR HUMAN USE · 18+ TO PURCHASE
+        </p>
       </div>
 
-      {/* Main footer — white bg */}
-      <div style={{ background: "#FFFFFF", borderTop: "1px solid #D4E8E8" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "56px 48px 32px" }}>
+      {/* Main footer body */}
+      <div style={{ backgroundColor: "#070F1F", color: "#94A3B8" }}>
+        <div className="max-w-[1280px] mx-auto px-4 pt-12 pb-8">
 
-          {/* Grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr", gap: 32, paddingBottom: 40, borderBottom: "1px solid #D4E8E8" }}>
-            {/* Brand col */}
-            <div>
-              <img
-                src="/omniqure-wordmark.png"
-                alt="OmniQure"
-                style={{ height: 50, width: "auto", marginBottom: 16, display: "block" }}
-              />
-              <p style={{ fontSize: 12, color: "#666666", lineHeight: 1.75, marginBottom: 20 }}>
-                Premium research peptides. Third-party verified. HPLC purity guaranteed on every product.
+          {/* Top row */}
+          <div className="flex flex-col md:flex-row gap-10 mb-10">
+
+            {/* Brand column */}
+            <div className="md:w-[240px] flex-shrink-0">
+              <div className="flex items-center gap-2.5 mb-4">
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
+                  <div>
+                    <img
+                      src="/omniqure-wordmark.png"
+                      alt="OmniQure"
+                      style={{ height: "52px", width: "auto", display: "block" }}
+                    />
+                    <span style={{ display: "block", marginLeft: "33%", width: "61%", textAlign: "center", color: "rgba(255,255,255,0.82)", fontSize: "6.5px", fontWeight: 700, letterSpacing: "0.18em", overflow: "hidden", marginTop: "2px" }}>
+                      PEPTIDE RESEARCH INSTITUTE
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <p style={{ fontSize: "13px", color: "#475569", lineHeight: "1.75", marginBottom: "16px" }}>
+                Research peptides manufactured to the highest standards of quality and purity. 98%+ HPLC purity guaranteed on every product.
               </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {["HPLC Verified", "COA Included", "Secure Checkout"].map(b => (
-                  <span key={b} style={{ fontSize: 11, color: "#2A5F5F", border: "1px solid rgba(42,95,95,0.25)", padding: "3px 10px", display: "inline-flex", alignItems: "center", gap: 4 }}>
-                    <span style={{ color: "#2A5F5F" }}>✓</span> {b}
+
+              {/* Trust badges */}
+              <div className="flex flex-wrap gap-2 mb-5">
+                {["98%+ HPLC", "COA Tested", "Secure Checkout"].map(b => (
+                  <span
+                    key={b}
+                    className="text-xs px-2.5 py-1 rounded-full inline-flex items-center gap-1"
+                    style={{ backgroundColor: "#0D1A30", color: "#475569", border: "1px solid #1E2D45", fontSize: "11px" }}
+                  >
+                    <span style={{ color: "#34D399" }}>✓</span> {b}
                   </span>
                 ))}
               </div>
+
+              {/* Contact micro-info */}
+              <div className="flex flex-col gap-2">
+                <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "#475569" }}>
+                  <Mail size={13} style={{ color: "#334155", flexShrink: 0 }} />
+                  research@omniqure.com
+                </span>
+                <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "#475569" }}>
+                  <FlaskConical size={13} style={{ color: "#334155", flexShrink: 0 }} />
+                  RUO · Lab Certified · HPLC Verified
+                </span>
+              </div>
+
+              {/* Newsletter form */}
+              <NewsletterForm />
             </div>
 
             {/* Link columns */}
-            {footerCategories.map(col => (
-              <div key={col.title}>
-                <h4 style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.25em", textTransform: "uppercase", color: "#999999", marginBottom: 18 }}>
-                  {col.title}
-                </h4>
-                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
-                  {col.links.map(link => (
-                    <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        style={{ fontSize: 13, color: "#666666", textDecoration: "none" }}
-                        onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#2A5F5F"}
-                        onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#666666"}
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          {/* Bottom bar */}
-          <div style={{ paddingTop: 20, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
-            <p style={{ fontSize: 12, color: "#999999", margin: 0 }}>
-              © {new Date().getFullYear()} OmniQure Peptide Research Institute · For Laboratory Research Use Only
-            </p>
-            <div style={{ display: "flex", gap: 20 }}>
-              {legalLinks.map(l => (
-                <Link key={l.label} href={l.href} style={{ fontSize: 12, color: "#999999", textDecoration: "none" }}>
-                  {l.label}
-                </Link>
+            <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-6">
+              {footerCategories.map(col => (
+                <div key={col.title}>
+                  <Link
+                    href={col.href}
+                    className="block font-bold mb-4"
+                    style={{ color: "#CBD5E1", fontSize: "12.5px", textDecoration: "none", letterSpacing: "0.04em", textTransform: "uppercase" }}
+                    onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
+                    onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#CBD5E1"}
+                  >
+                    {col.title}
+                  </Link>
+                  <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
+                    {col.links.map(link => (
+                      <li key={link.label}>
+                        <Link
+                          href={link.href}
+                          style={{ fontSize: "12.5px", color: "#475569", textDecoration: "none", transition: "color 0.15s" }}
+                          onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#94A3B8"}
+                          onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#475569"}
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
             </div>
           </div>
+
+          {/* Legal disclaimer block */}
+          <div
+            className="rounded-xl p-4 mb-7"
+            style={{
+              backgroundColor: "#0D1A30",
+              border: "1px solid #1E2D45",
+              backgroundImage: "linear-gradient(135deg, #0D1A30 0%, #0A1525 100%)",
+            }}
+          >
+            <p className="text-xs leading-relaxed mb-1.5" style={{ color: "#334155" }}>
+              <strong style={{ color: "#475569" }}>IMPORTANT LEGAL NOTICE:</strong>{" "}
+              All products sold by OmniQure are intended for in-vitro laboratory research use only. These products are not for human or veterinary use. By purchasing, you confirm you are at least 18 years of age and a qualified researcher.
+            </p>
+            <p className="text-xs leading-relaxed" style={{ color: "#334155" }}>
+              Products have not been approved by the FDA or any other regulatory body. OmniQure is not responsible for the misuse of any of its products.
+            </p>
+          </div>
+
+          {/* Bottom bar */}
+          <div
+            className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6"
+            style={{ borderTop: "1px solid #0D1A30" }}
+          >
+            <div className="flex flex-wrap justify-center sm:justify-start gap-x-5 gap-y-1.5">
+              {legalLinks.map(link => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  style={{ fontSize: "11.5px", color: "#334155", textDecoration: "none", transition: "color 0.15s" }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#334155"}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap justify-center">
+              <span style={{ fontSize: "11px", color: "#1E2D45", marginRight: "2px" }}>We Accept:</span>
+              {paymentMethods.map(p => (
+                <span
+                  key={p}
+                  className="px-2.5 py-1 rounded-md"
+                  style={{
+                    backgroundColor: "#0D1A30",
+                    color: "#334155",
+                    border: "1px solid #1E2D45",
+                    fontSize: "11px",
+                    fontWeight: 600,
+                  }}
+                >
+                  {p}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-center mt-5" style={{ fontSize: "11px", color: "#1E2D45" }}>
+            © {new Date().getFullYear()} OmniQure Peptide Research Institute — All Rights Reserved · For Laboratory Research Use Only
+          </div>
         </div>
       </div>
-
     </footer>
   );
 }

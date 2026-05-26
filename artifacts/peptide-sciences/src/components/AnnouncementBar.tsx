@@ -1,27 +1,86 @@
-import { Link } from "wouter";
+import { useState } from "react";
+import { X } from "lucide-react";
+
+const messages = [
+  "🔬  98%+ HPLC Purity — Guaranteed on Every Product",
+  "🚚  Free Shipping on Orders Over £100 — UK & Worldwide",
+  "🧪  Research Grade · Lab Certified · COA Included",
+  "🔒  Secure Checkout — SSL Encrypted & Discreet Packaging",
+  "⚗️  Full ESI-TOF Mass Spectrometry Data Available",
+  "📦  Lyophilized for Maximum Stability — Long Shelf Life",
+];
 
 export default function AnnouncementBar() {
+  const [visible, setVisible] = useState(true);
+  if (!visible) return null;
+
+  const doubled = [...messages, ...messages];
+
   return (
     <div
+      className="relative overflow-hidden"
       style={{
-        background: "#2A5F5F",
-        color: "#FFFFFF",
-        textAlign: "center",
-        padding: "10px 20px",
-        fontSize: 12,
-        fontWeight: 500,
-        letterSpacing: "0.02em",
-        fontFamily: "Roboto, Arial, sans-serif",
+        background: "linear-gradient(90deg, #1847C2 0%, #2058D8 30%, #2B6FF5 55%, #2058D8 80%, #1847C2 100%)",
+        height: "36px",
       }}
     >
-      15% OFF your first order on single peptides — Use code{" "}
-      <strong>FIRST15</strong> at checkout{" "}
-      <Link
-        href="/all-peptides"
-        style={{ color: "#D4E8E8", textDecoration: "underline", textUnderlineOffset: 2, marginLeft: 8 }}
+      {/* Shimmer overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%)",
+          backgroundSize: "200% 100%",
+          animation: "shimmer 3s linear infinite",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      />
+
+      {/* Scrolling ticker */}
+      <div className="flex items-center h-full overflow-hidden" style={{ zIndex: 2, position: "relative" }}>
+        <div
+          className="animate-ticker flex-shrink-0 flex items-center"
+          style={{ whiteSpace: "nowrap" }}
+        >
+          {doubled.map((msg, i) => (
+            <span
+              key={i}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                fontSize: "11.5px",
+                fontWeight: 600,
+                color: "#E2E8F0",
+                letterSpacing: "0.025em",
+                paddingRight: "0",
+              }}
+            >
+              {msg}
+              <span
+                style={{
+                  display: "inline-block",
+                  width: "1px",
+                  height: "12px",
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  margin: "0 32px",
+                  verticalAlign: "middle",
+                }}
+              />
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Close */}
+      <button
+        onClick={() => setVisible(false)}
+        className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all hover:bg-white/10"
+        style={{ width: "22px", height: "22px", opacity: 0.6, zIndex: 3, border: "none", background: "none", cursor: "pointer", color: "#fff" }}
+        aria-label="Close"
       >
-        Shop Now
-      </Link>
+        <X size={13} />
+      </button>
     </div>
   );
 }
