@@ -21,7 +21,7 @@ const RESEARCH_AREAS = [
   {
     n: "02", tag: "Cognitive",
     title: "Brain & Cognitive Health",
-    peptides: "Semax · Selank · Dihexa",
+    peptides: "Semax · Selank · P21",
     desc: "Investigated for neuroprotective mechanisms, BDNF upregulation, and synaptic plasticity in neurological research settings.",
     img: "https://media.istockphoto.com/id/97506007/photo/mri-scan-of-brain.jpg?s=612x612&w=0&k=20&c=C5ttWq3Fu7I93zx5jOkHlAZ1ILuHslWWRzNMTToOKHA=",
     accent: "#93C5FD",
@@ -29,7 +29,7 @@ const RESEARCH_AREAS = [
   {
     n: "03", tag: "Metabolic",
     title: "Weight & Metabolic Research",
-    peptides: "Semaglutide · Tirzepatide · AOD-9604",
+    peptides: "Tirzepatide · Retatrutide · AOD-9604",
     desc: "GLP-1 receptor agonist research — investigated for appetite signalling, adipogenesis pathways, and lipid metabolism models.",
     img: "https://cehs.usu.edu/khs/images/labs/banners/body-composition-lab.jpg",
     accent: "#34D399",
@@ -37,7 +37,7 @@ const RESEARCH_AREAS = [
   {
     n: "04", tag: "Skin",
     title: "Skin & Collagen Biology",
-    peptides: "GHK-Cu · Epithalon",
+    peptides: "GHK-Cu",
     desc: "Researched for collagen synthesis stimulation, oxidative stress modulation, and dermal fibroblast activity in skin biology studies.",
     img: "https://media.gettyimages.com/id/1024433198/photo/close-up-marco-shots-of-body-parts.jpg?s=612x612&w=0&k=20&c=zy5-5uHIAp7-9ZxrG998qhxv0CLC-cjAISGFb_BfrFQ=",
     accent: "#38BDF8",
@@ -69,7 +69,7 @@ const RESEARCH_AREAS = [
   {
     n: "08", tag: "Cardiovascular",
     title: "Cardiovascular Research",
-    peptides: "BPC-157 · TB-4 · DSIP",
+    peptides: "BPC-157 · TB-500 · VIP",
     desc: "Studied for angiogenesis pathway interactions, cardiac cell protection mechanisms, and vascular tone regulation in laboratory models.",
     img: "https://media.istockphoto.com/id/1266227507/photo/human-heart-with-blood-vessels.jpg?s=612x612&w=0&k=20&c=sj63aWFsM6Z6Qovl5jUcQoOR4qG6otKN5hFCi0n9JGY=",
     accent: "#1B5CB5",
