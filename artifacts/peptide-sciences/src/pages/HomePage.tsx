@@ -16,7 +16,7 @@ const RESEARCH_AREAS = [
     peptides: "BPC-157 · TB-500",
     desc: "Studied for roles in accelerating tissue remodelling, tendon healing, and cellular repair cascades in controlled laboratory models.",
     img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=75",
-    accent: "#3B82F6",
+    accent: "#60A5FA",
   },
   {
     n: "02", tag: "Cognitive",
@@ -24,7 +24,7 @@ const RESEARCH_AREAS = [
     peptides: "Semax · Selank · Dihexa",
     desc: "Investigated for neuroprotective mechanisms, BDNF upregulation, and synaptic plasticity in neurological research settings.",
     img: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=75",
-    accent: "#8B5CF6",
+    accent: "#93C5FD",
   },
   {
     n: "03", tag: "Metabolic",
@@ -32,7 +32,7 @@ const RESEARCH_AREAS = [
     peptides: "Semaglutide · Tirzepatide · AOD-9604",
     desc: "GLP-1 receptor agonist research — investigated for appetite signalling, adipogenesis pathways, and lipid metabolism models.",
     img: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?w=800&q=75",
-    accent: "#10B981",
+    accent: "#34D399",
   },
   {
     n: "04", tag: "Skin",
@@ -40,7 +40,7 @@ const RESEARCH_AREAS = [
     peptides: "GHK-Cu · Epithalon",
     desc: "Researched for collagen synthesis stimulation, oxidative stress modulation, and dermal fibroblast activity in skin biology studies.",
     img: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=75",
-    accent: "#F59E0B",
+    accent: "#38BDF8",
   },
   {
     n: "05", tag: "Hormonal",
@@ -48,23 +48,23 @@ const RESEARCH_AREAS = [
     peptides: "CJC-1295 · Ipamorelin · GHRP-6",
     desc: "Investigated for GHRH receptor binding, pulsatile GH secretion mimicry, and downstream IGF-1 pathway research.",
     img: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=75",
-    accent: "#06B6D4",
+    accent: "#3B82F6",
   },
   {
     n: "06", tag: "Immune",
     title: "Immune Regulation",
     peptides: "Thymosin α-1 · KPV · LL-37",
     desc: "Studied for T-cell maturation pathways, cytokine modulation, and innate immune response interactions in controlled models.",
-    img: "https://images.unsplash.com/photo-1576671413716-dcd24efab5cb?w=800&q=75",
-    accent: "#EF4444",
+    img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&q=75",
+    accent: "#93C5FD",
   },
   {
     n: "07", tag: "Longevity",
     title: "Longevity & Anti-Ageing",
     peptides: "Epithalon · SS-31 · MOTS-C",
     desc: "Investigated for telomerase activation, mitochondrial protection, and cellular senescence pathways in longevity research.",
-    img: "https://images.unsplash.com/photo-1614544048536-0d28bb96df0b?w=800&q=75",
-    accent: "#F97316",
+    img: "https://images.unsplash.com/photo-1530026186672-2cd00ffc50fe?w=800&q=75",
+    accent: "#6EE7B7",
   },
   {
     n: "08", tag: "Cardiovascular",
@@ -72,7 +72,7 @@ const RESEARCH_AREAS = [
     peptides: "BPC-157 · TB-4 · DSIP",
     desc: "Studied for angiogenesis pathway interactions, cardiac cell protection mechanisms, and vascular tone regulation in laboratory models.",
     img: "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800&q=75",
-    accent: "#EC4899",
+    accent: "#1B5CB5",
   },
 ];
 
@@ -88,7 +88,7 @@ function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured
         position: "relative", overflow: "hidden",
         height: featured ? "100%" : cardHeight,
         minHeight: featured ? 400 : undefined,
-        background: "#07111A", cursor: "default",
+        background: "#071A4A", cursor: "default",
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -569,26 +569,26 @@ export default function HomePage() {
       </section>
 
       {/* ── RESEARCH AREAS ────────────────────────────────────── */}
-      <section style={{ background: "#07111A" }}>
-        {/* ── Dark header strip ── */}
-        <div style={{ padding: "64px 0 48px", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+      <section style={{ background: "linear-gradient(160deg, #020B1E 0%, #071A4A 40%, #0D2565 70%, #1240A0 100%)" }}>
+        {/* ── Header strip ── */}
+        <div style={{ padding: "64px 0 48px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
           <div className="max-w-[1280px] mx-auto" style={{ padding: "0 32px", display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
             {/* Left */}
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
-                <div style={{ width: 32, height: 1, background: "linear-gradient(90deg, #3B82F6, #8B5CF6)" }} />
-                <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.28em", color: "#64748B", margin: 0 }}>Research Applications</p>
+                <div style={{ width: 32, height: 1, background: "linear-gradient(90deg, #60A5FA, #93C5FD)" }} />
+                <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.28em", color: "#93C5FD", margin: 0, opacity: 0.7 }}>Research Applications</p>
               </div>
               <h2 style={{ fontSize: "clamp(32px, 4.5vw, 56px)", fontWeight: 900, lineHeight: 1.04, letterSpacing: "-0.03em", color: "#FFFFFF", margin: 0 }}>
                 What peptides<br />
-                <span style={{ background: "linear-gradient(90deg, #3B82F6, #8B5CF6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                <span style={{ background: "linear-gradient(90deg, #60A5FA, #93C5FD)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                   are used for.
                 </span>
               </h2>
             </div>
             {/* Right */}
             <div style={{ maxWidth: 380 }}>
-              <p style={{ fontSize: 14.5, color: "rgba(255,255,255,0.55)", lineHeight: 1.78, marginBottom: 24 }}>
+              <p style={{ fontSize: 14.5, color: "rgba(255,255,255,0.60)", lineHeight: 1.78, marginBottom: 24 }}>
                 Each category below represents an active area of peptide investigation — from cellular repair mechanisms to longevity pathways. Hover any card to see which specific compounds are under study.
               </p>
               <Link
@@ -596,7 +596,7 @@ export default function HomePage() {
                 style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
                   fontSize: 12, fontWeight: 700, textTransform: "uppercase",
-                  letterSpacing: "0.16em", color: "#3B82F6", textDecoration: "none",
+                  letterSpacing: "0.16em", color: "#93C5FD", textDecoration: "none",
                 }}
               >
                 Browse All Compounds <ArrowRight size={14} />
