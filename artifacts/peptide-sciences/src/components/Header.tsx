@@ -780,25 +780,6 @@ export default function Header() {
         </div>
       </nav>
 
-      {/* Trust badge bar — desktop only */}
-      <div className="hidden md:block bg-white border-b border-gray-100" style={{ borderTop: "1px solid #F0F4FF" }}>
-        <div className="max-w-[1280px] mx-auto px-4">
-          <div className="flex items-center justify-center gap-8 py-2">
-            {[
-              { icon: <ShieldCheck size={14} />, text: "SSL Secure Checkout" },
-              { icon: <FlaskConical size={14} />, text: "99%+ HPLC-Verified Purity" },
-              { icon: <FileCheck size={14} />, text: "COA on Every Order" },
-              { icon: <Truck size={14} />, text: "Free Shipping Over £100" },
-              { icon: <Globe size={14} />, text: "Worldwide Shipping" },
-            ].map(({ icon, text }) => (
-              <div key={text} className="flex items-center gap-1.5" style={{ color: "#475569", fontSize: "12px", fontWeight: 500, whiteSpace: "nowrap" }}>
-                <span style={{ color: "#1B5CB5", display: "flex", alignItems: "center" }}>{icon}</span>
-                {text}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
