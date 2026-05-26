@@ -15,7 +15,7 @@ const RESEARCH_AREAS = [
     title: "Tissue Repair & Recovery",
     peptides: "BPC-157 · TB-500",
     desc: "Studied for roles in accelerating tissue remodelling, tendon healing, and cellular repair cascades in controlled laboratory models.",
-    img: "https://images.unsplash.com/photo-1593810451137-5dc55105dafa?w=800&q=75",
+    img: "https://infomeddnews.com/wp-content/uploads/2022/05/Physiotherapy-696x464.jpg",
     accent: "#60A5FA",
   },
   {
@@ -23,7 +23,7 @@ const RESEARCH_AREAS = [
     title: "Brain & Cognitive Health",
     peptides: "Semax · Selank · Dihexa",
     desc: "Investigated for neuroprotective mechanisms, BDNF upregulation, and synaptic plasticity in neurological research settings.",
-    img: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=75",
+    img: "https://media.istockphoto.com/id/97506007/photo/mri-scan-of-brain.jpg?s=612x612&w=0&k=20&c=C5ttWq3Fu7I93zx5jOkHlAZ1ILuHslWWRzNMTToOKHA=",
     accent: "#93C5FD",
   },
   {
@@ -31,7 +31,7 @@ const RESEARCH_AREAS = [
     title: "Weight & Metabolic Research",
     peptides: "Semaglutide · Tirzepatide · AOD-9604",
     desc: "GLP-1 receptor agonist research — investigated for appetite signalling, adipogenesis pathways, and lipid metabolism models.",
-    img: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=75",
+    img: "https://cehs.usu.edu/khs/images/labs/banners/body-composition-lab.jpg",
     accent: "#34D399",
   },
   {
@@ -39,7 +39,7 @@ const RESEARCH_AREAS = [
     title: "Skin & Collagen Biology",
     peptides: "GHK-Cu · Epithalon",
     desc: "Researched for collagen synthesis stimulation, oxidative stress modulation, and dermal fibroblast activity in skin biology studies.",
-    img: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=800&q=75",
+    img: "https://media.gettyimages.com/id/1024433198/photo/close-up-marco-shots-of-body-parts.jpg?s=612x612&w=0&k=20&c=zy5-5uHIAp7-9ZxrG998qhxv0CLC-cjAISGFb_BfrFQ=",
     accent: "#38BDF8",
   },
   {
@@ -47,7 +47,7 @@ const RESEARCH_AREAS = [
     title: "Growth Hormone Axis",
     peptides: "CJC-1295 · Ipamorelin · GHRP-6",
     desc: "Investigated for GHRH receptor binding, pulsatile GH secretion mimicry, and downstream IGF-1 pathway research.",
-    img: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=75",
+    img: "https://kin.uncg.edu/wp-content/uploads/2023/10/Exercise-and-Endocrinology-Lab-1024x576.jpg",
     accent: "#3B82F6",
   },
   {
@@ -55,7 +55,7 @@ const RESEARCH_AREAS = [
     title: "Immune Regulation",
     peptides: "Thymosin α-1 · KPV · LL-37",
     desc: "Studied for T-cell maturation pathways, cytokine modulation, and innate immune response interactions in controlled models.",
-    img: "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=800&q=75",
+    img: "https://media.istockphoto.com/id/641212596/photo/white-blood-cells.jpg?s=612x612&w=0&k=20&c=H4jXuqjqaQdYKc1HjvNNbtVFRj9SdBYQWNe_pPmQtoY=",
     accent: "#93C5FD",
   },
   {
@@ -63,7 +63,7 @@ const RESEARCH_AREAS = [
     title: "Longevity & Anti-Ageing",
     peptides: "Epithalon · SS-31 · MOTS-C",
     desc: "Investigated for telomerase activation, mitochondrial protection, and cellular senescence pathways in longevity research.",
-    img: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&q=75",
+    img: "https://images.presentationgo.com/2025/04/dna-strand-break-3d.jpg",
     accent: "#6EE7B7",
   },
   {
@@ -71,7 +71,7 @@ const RESEARCH_AREAS = [
     title: "Cardiovascular Research",
     peptides: "BPC-157 · TB-4 · DSIP",
     desc: "Studied for angiogenesis pathway interactions, cardiac cell protection mechanisms, and vascular tone regulation in laboratory models.",
-    img: "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800&q=75",
+    img: "https://media.istockphoto.com/id/1266227507/photo/human-heart-with-blood-vessels.jpg?s=612x612&w=0&k=20&c=sj63aWFsM6Z6Qovl5jUcQoOR4qG6otKN5hFCi0n9JGY=",
     accent: "#1B5CB5",
   },
 ];
@@ -605,22 +605,9 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* ── Featured + grid layout ── */}
-        {/* Row 1: Featured card (2 col × 2 rows) + 2 single cards stacked */}
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gridTemplateRows: "220px 220px", gap: 1, background: "rgba(255,255,255,0.06)" }}>
-          {/* Featured — spans 2 rows */}
-          <div style={{ gridRow: "1 / 3" }}>
-            <ResearchAreaCard {...RESEARCH_AREAS[0]} featured />
-          </div>
-          <ResearchAreaCard {...RESEARCH_AREAS[1]} />
-          <ResearchAreaCard {...RESEARCH_AREAS[2]} />
-          <ResearchAreaCard {...RESEARCH_AREAS[3]} />
-          <ResearchAreaCard {...RESEARCH_AREAS[4]} />
-        </div>
-
-        {/* Row 2: 4 equal cards */}
+        {/* ── Uniform 4×2 grid ── */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1, background: "rgba(255,255,255,0.06)" }}>
-          {RESEARCH_AREAS.slice(4).map(area => (
+          {RESEARCH_AREAS.map(area => (
             <ResearchAreaCard key={area.n} {...area} />
           ))}
         </div>
