@@ -380,40 +380,36 @@ export default function HomePage() {
 
       {/* ── BUNDLE & SAVE STRIP ────────────────────────────────── */}
       <section style={{
-        background: "linear-gradient(100deg, #030d1f 0%, #0a1e4a 35%, #1240A0 75%, #1B5CB5 100%)",
-        borderBottom: "1px solid rgba(255,255,255,0.08)",
-        position: "relative",
-        overflow: "hidden",
+        background: "#FFFFFF",
+        borderTop: "1px solid #EEF2F7",
+        borderBottom: "1px solid #EEF2F7",
       }}>
-        {/* Glow accent */}
-        <div style={{ position: "absolute", top: "-40px", right: "20%", width: "220px", height: "100px", borderRadius: "50%", background: "radial-gradient(circle, rgba(52,211,153,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)", backgroundSize: "24px 24px", pointerEvents: "none" }} />
-        <div className="max-w-[1280px] mx-auto px-4 py-4" style={{ position: "relative", zIndex: 1 }}>
+        <div className="max-w-[1280px] mx-auto px-4 py-4">
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "14px", justifyContent: "space-between" }}>
             {/* Left label */}
             <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
               <div style={{ backgroundColor: "#34D399", borderRadius: "6px", padding: "3px 9px" }}>
                 <span style={{ fontSize: "10px", fontWeight: 900, letterSpacing: "0.1em", color: "#022c22", textTransform: "uppercase" }}>Bundle & Save</span>
               </div>
-              <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.75)", fontWeight: 600 }}>The more you order, the more you save</span>
+              <span style={{ fontSize: "13px", color: "#475569", fontWeight: 600 }}>The more you order, the more you save</span>
             </div>
             {/* Tiers + CTA */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "7px", alignItems: "center" }}>
               {[
-                { label: "3+ vials",  pct: "5%",  bg: "rgba(96,165,250,0.15)",  border: "rgba(96,165,250,0.4)",  pctColor: "#93C5FD" },
-                { label: "7+ vials",  pct: "10%", bg: "rgba(52,211,153,0.15)",  border: "rgba(52,211,153,0.4)",  pctColor: "#6EE7B7" },
-                { label: "11+ vials", pct: "15%", bg: "rgba(251,191,36,0.15)",  border: "rgba(251,191,36,0.4)",  pctColor: "#FDE68A" },
-                { label: "15+ vials", pct: "20%", bg: "rgba(248,113,113,0.18)", border: "rgba(248,113,113,0.45)", pctColor: "#FCA5A5" },
+                { label: "3+ vials",  pct: "5%",  bg: "#EEF4FF", border: "#BFDBFE", pctColor: "#1240A0", labelColor: "#64748B" },
+                { label: "7+ vials",  pct: "10%", bg: "#ECFDF5", border: "#BBF7D0", pctColor: "#059669", labelColor: "#64748B" },
+                { label: "11+ vials", pct: "15%", bg: "#FFFBEB", border: "#FDE68A", pctColor: "#D97706", labelColor: "#64748B" },
+                { label: "15+ vials", pct: "20%", bg: "#EDE9FE", border: "#C4B5FD", pctColor: "#7C3AED", labelColor: "#64748B" },
               ].map(t => (
                 <div key={t.label} style={{ display: "flex", alignItems: "center", gap: "6px", backgroundColor: t.bg, border: `1px solid ${t.border}`, borderRadius: "8px", padding: "6px 13px" }}>
-                  <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.55)", fontWeight: 600 }}>{t.label}</span>
+                  <span style={{ fontSize: "11px", color: t.labelColor, fontWeight: 600 }}>{t.label}</span>
                   <span style={{ fontSize: "15px", fontWeight: 900, color: t.pctColor, lineHeight: 1 }}>{t.pct}</span>
-                  <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.4)", fontWeight: 700 }}>OFF</span>
+                  <span style={{ fontSize: "10px", color: "#94A3B8", fontWeight: 700 }}>OFF</span>
                 </div>
               ))}
               <Link
                 href="/bundles"
-                style={{ fontSize: "12.5px", fontWeight: 800, color: "#022c22", backgroundColor: "#34D399", padding: "7px 18px", borderRadius: "8px", textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0, boxShadow: "0 0 16px rgba(52,211,153,0.35)" }}
+                style={{ fontSize: "12.5px", fontWeight: 800, color: "#022c22", backgroundColor: "#34D399", padding: "7px 18px", borderRadius: "8px", textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0, boxShadow: "0 2px 8px rgba(52,211,153,0.25)" }}
               >
                 Build a Bundle →
               </Link>
