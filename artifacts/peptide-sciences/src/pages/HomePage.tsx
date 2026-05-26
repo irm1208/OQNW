@@ -15,7 +15,7 @@ const RESEARCH_AREAS = [
     title: "Tissue Repair & Recovery",
     peptides: "BPC-157 · TB-500",
     desc: "Studied for roles in accelerating tissue remodelling, tendon healing, and cellular repair cascades in controlled laboratory models.",
-    img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=75",
+    img: "https://images.unsplash.com/photo-1593810451137-5dc55105dafa?w=800&q=75",
     accent: "#60A5FA",
   },
   {
@@ -31,7 +31,7 @@ const RESEARCH_AREAS = [
     title: "Weight & Metabolic Research",
     peptides: "Semaglutide · Tirzepatide · AOD-9604",
     desc: "GLP-1 receptor agonist research — investigated for appetite signalling, adipogenesis pathways, and lipid metabolism models.",
-    img: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?w=800&q=75",
+    img: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=75",
     accent: "#34D399",
   },
   {
@@ -39,7 +39,7 @@ const RESEARCH_AREAS = [
     title: "Skin & Collagen Biology",
     peptides: "GHK-Cu · Epithalon",
     desc: "Researched for collagen synthesis stimulation, oxidative stress modulation, and dermal fibroblast activity in skin biology studies.",
-    img: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=75",
+    img: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=800&q=75",
     accent: "#38BDF8",
   },
   {
@@ -55,7 +55,7 @@ const RESEARCH_AREAS = [
     title: "Immune Regulation",
     peptides: "Thymosin α-1 · KPV · LL-37",
     desc: "Studied for T-cell maturation pathways, cytokine modulation, and innate immune response interactions in controlled models.",
-    img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&q=75",
+    img: "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=800&q=75",
     accent: "#93C5FD",
   },
   {
@@ -63,7 +63,7 @@ const RESEARCH_AREAS = [
     title: "Longevity & Anti-Ageing",
     peptides: "Epithalon · SS-31 · MOTS-C",
     desc: "Investigated for telomerase activation, mitochondrial protection, and cellular senescence pathways in longevity research.",
-    img: "https://images.unsplash.com/photo-1530026186672-2cd00ffc50fe?w=800&q=75",
+    img: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&q=75",
     accent: "#6EE7B7",
   },
   {
@@ -81,7 +81,7 @@ function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured
   img: string; accent: string; featured?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
-  const cardHeight = featured ? "100%" : 300;
+  const cardHeight = featured ? "100%" : 220;
   return (
     <div
       style={{
@@ -607,7 +607,7 @@ export default function HomePage() {
 
         {/* ── Featured + grid layout ── */}
         {/* Row 1: Featured card (2 col × 2 rows) + 2 single cards stacked */}
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gridTemplateRows: "300px 300px", gap: 1, background: "rgba(255,255,255,0.06)" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gridTemplateRows: "220px 220px", gap: 1, background: "rgba(255,255,255,0.06)" }}>
           {/* Featured — spans 2 rows */}
           <div style={{ gridRow: "1 / 3" }}>
             <ResearchAreaCard {...RESEARCH_AREAS[0]} featured />
