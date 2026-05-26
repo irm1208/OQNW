@@ -486,7 +486,7 @@ export default function HomePage() {
       </section>
 
       {/* ── WHY OMNIQURE ──────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#F7FAFF", padding: "68px 0" }}>
+      <section style={{ backgroundColor: "#F7FAFF", padding: "68px 0", borderTop: "1px solid #E2E8F0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 mb-2">
@@ -565,7 +565,7 @@ export default function HomePage() {
       </section>
 
       {/* ── RESEARCH AREAS ────────────────────────────────────── */}
-      <section style={{ background: "linear-gradient(160deg, #020B1E 0%, #071A4A 40%, #0D2565 70%, #1240A0 100%)" }}>
+      <section style={{ background: "linear-gradient(160deg, #020B1E 0%, #071A4A 40%, #0D2565 70%, #1240A0 100%)", borderTop: "3px solid #34D399" }}>
         {/* ── Header strip ── */}
         <div style={{ padding: "64px 0 48px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
           <div className="max-w-[1280px] mx-auto" style={{ padding: "0 32px", display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
@@ -631,7 +631,7 @@ export default function HomePage() {
       </section>
 
       {/* ── RESEARCH BANNER ───────────────────────────────────── */}
-      <section style={{ backgroundColor: "#fff", padding: "68px 0" }}>
+      <section style={{ backgroundColor: "#fff", padding: "68px 0", borderTop: "1px solid #E2E8F0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
           <div
             className="rounded-3xl overflow-hidden relative"
