@@ -10,62 +10,163 @@ import { groupProducts, parseName } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
 
 const RESEARCH_AREAS = [
-  { n: "01", title: "Tissue Repair",             img: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=70" },
-  { n: "02", title: "Neurological Pathways",     img: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&q=70" },
-  { n: "03", title: "Collagen & Skin Biology",   img: "https://images.unsplash.com/photo-1596178060671-7a80dc8059ea?w=600&q=70" },
-  { n: "04", title: "Mitochondrial Biology",     img: "https://images.unsplash.com/photo-1549576490-b0b4831ef60a?w=600&q=70" },
-  { n: "05", title: "Musculoskeletal Research",  img: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=70" },
-  { n: "06", title: "Neuroendocrine Signalling", img: "https://images.unsplash.com/photo-1511295742362-92c96b1cf484?w=600&q=70" },
-  { n: "07", title: "Vascular Biology",          img: "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=600&q=70" },
-  { n: "08", title: "Immune Modulation",         img: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&q=70" },
+  {
+    n: "01", tag: "Recovery",
+    title: "Tissue Repair & Recovery",
+    peptides: "BPC-157 · TB-500",
+    desc: "Studied for roles in accelerating tissue remodelling, tendon healing, and cellular repair cascades in controlled laboratory models.",
+    img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=75",
+    accent: "#3B82F6",
+  },
+  {
+    n: "02", tag: "Cognitive",
+    title: "Brain & Cognitive Health",
+    peptides: "Semax · Selank · Dihexa",
+    desc: "Investigated for neuroprotective mechanisms, BDNF upregulation, and synaptic plasticity in neurological research settings.",
+    img: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=75",
+    accent: "#8B5CF6",
+  },
+  {
+    n: "03", tag: "Metabolic",
+    title: "Weight & Metabolic Research",
+    peptides: "Semaglutide · Tirzepatide · AOD-9604",
+    desc: "GLP-1 receptor agonist research — investigated for appetite signalling, adipogenesis pathways, and lipid metabolism models.",
+    img: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?w=800&q=75",
+    accent: "#10B981",
+  },
+  {
+    n: "04", tag: "Skin",
+    title: "Skin & Collagen Biology",
+    peptides: "GHK-Cu · Epithalon",
+    desc: "Researched for collagen synthesis stimulation, oxidative stress modulation, and dermal fibroblast activity in skin biology studies.",
+    img: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=75",
+    accent: "#F59E0B",
+  },
+  {
+    n: "05", tag: "Hormonal",
+    title: "Growth Hormone Axis",
+    peptides: "CJC-1295 · Ipamorelin · GHRP-6",
+    desc: "Investigated for GHRH receptor binding, pulsatile GH secretion mimicry, and downstream IGF-1 pathway research.",
+    img: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=75",
+    accent: "#06B6D4",
+  },
+  {
+    n: "06", tag: "Immune",
+    title: "Immune Regulation",
+    peptides: "Thymosin α-1 · KPV · LL-37",
+    desc: "Studied for T-cell maturation pathways, cytokine modulation, and innate immune response interactions in controlled models.",
+    img: "https://images.unsplash.com/photo-1576671413716-dcd24efab5cb?w=800&q=75",
+    accent: "#EF4444",
+  },
+  {
+    n: "07", tag: "Longevity",
+    title: "Longevity & Anti-Ageing",
+    peptides: "Epithalon · SS-31 · MOTS-C",
+    desc: "Investigated for telomerase activation, mitochondrial protection, and cellular senescence pathways in longevity research.",
+    img: "https://images.unsplash.com/photo-1614544048536-0d28bb96df0b?w=800&q=75",
+    accent: "#F97316",
+  },
+  {
+    n: "08", tag: "Cardiovascular",
+    title: "Cardiovascular Research",
+    peptides: "BPC-157 · TB-4 · DSIP",
+    desc: "Studied for angiogenesis pathway interactions, cardiac cell protection mechanisms, and vascular tone regulation in laboratory models.",
+    img: "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800&q=75",
+    accent: "#EC4899",
+  },
 ];
 
-function ResearchAreaCard({ n, title, img }: { n: string; title: string; img: string }) {
+function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured = false }: {
+  n: string; tag: string; title: string; peptides: string; desc: string;
+  img: string; accent: string; featured?: boolean;
+}) {
   const [hovered, setHovered] = useState(false);
+  const cardHeight = featured ? "100%" : 300;
   return (
     <div
-      style={{ position: "relative", overflow: "hidden", height: 280, background: "#0C1F1F", cursor: "default" }}
+      style={{
+        position: "relative", overflow: "hidden",
+        height: featured ? "100%" : cardHeight,
+        minHeight: featured ? 400 : undefined,
+        background: "#07111A", cursor: "default",
+      }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
+      {/* Photo */}
       <img
-        src={img}
-        alt={title}
+        src={img} alt={title}
         style={{
           position: "absolute", inset: 0, width: "100%", height: "100%",
           objectFit: "cover",
-          filter: "saturate(0.45) brightness(0.65)",
-          transform: hovered ? "scale(1.04)" : "scale(1)",
-          transition: "transform 0.6s ease, filter 0.5s ease",
+          filter: `saturate(${hovered ? 0.55 : 0.35}) brightness(${hovered ? 0.7 : 0.55})`,
+          transform: hovered ? "scale(1.05)" : "scale(1)",
+          transition: "transform 0.7s ease, filter 0.5s ease",
         }}
       />
+      {/* Gradient overlay — stronger at bottom */}
       <div style={{
         position: "absolute", inset: 0,
-        background: hovered
-          ? "linear-gradient(0deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.12) 100%)"
-          : "linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.28) 55%, rgba(0,0,0,0.10) 100%)",
-        transition: "background 0.5s",
+        background: "linear-gradient(0deg, rgba(4,10,20,0.96) 0%, rgba(4,10,20,0.55) 45%, rgba(4,10,20,0.15) 100%)",
       }} />
-      {/* Slide-in teal bottom border on hover */}
+      {/* Left accent bar — slides in on hover */}
       <div style={{
-        position: "absolute", bottom: 0, left: 0, height: 3,
-        width: hovered ? "100%" : 0,
-        background: "#1240A0",
-        transition: "width 0.5s cubic-bezier(0.16,1,0.3,1)",
+        position: "absolute", left: 0, top: 0,
+        width: 3, height: hovered ? "100%" : 0,
+        background: `linear-gradient(180deg, ${accent}, ${accent}66)`,
+        transition: "height 0.45s cubic-bezier(0.16,1,0.3,1)",
       }} />
-      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "24px 28px" }}>
+
+      {/* Top: tag chip */}
+      <div style={{ position: "absolute", top: 18, left: 18, zIndex: 2 }}>
+        <span style={{
+          display: "inline-block", fontSize: 9, fontWeight: 700,
+          letterSpacing: "0.2em", textTransform: "uppercase",
+          color: "#FFFFFF",
+          background: `${accent}33`,
+          border: `1px solid ${accent}55`,
+          padding: "3px 10px",
+          backdropFilter: "blur(4px)",
+          opacity: hovered ? 1 : 0,
+          transform: hovered ? "translateY(0)" : "translateY(-6px)",
+          transition: "opacity 0.3s, transform 0.35s",
+        }}>{tag}</span>
+      </div>
+
+      {/* Bottom content */}
+      <div style={{
+        position: "absolute", bottom: 0, left: 0, right: 0,
+        padding: featured ? "28px 32px" : "22px 24px",
+      }}>
         <span style={{
           display: "block", fontSize: 9, fontWeight: 700,
-          color: "#A8D4D4", letterSpacing: "0.35em", textTransform: "uppercase",
-          marginBottom: 10,
-          opacity: hovered ? 1 : 0.65,
+          color: accent, letterSpacing: "0.3em", textTransform: "uppercase",
+          marginBottom: 8,
+          opacity: hovered ? 0.9 : 0.55,
           transition: "opacity 0.3s",
         }}>{n}</span>
+
         <h3 style={{
-          fontFamily: "'Arimo', Arial, sans-serif",
-          fontSize: 18, fontWeight: 700, color: "#FFFFFF",
-          lineHeight: 1.2, margin: 0,
+          fontSize: featured ? 22 : 17, fontWeight: 800,
+          color: "#FFFFFF", lineHeight: 1.2, margin: "0 0 0 0",
+          letterSpacing: "-0.02em",
         }}>{title}</h3>
+
+        {/* Peptides + desc — slide up on hover */}
+        <div style={{
+          maxHeight: hovered ? 120 : 0,
+          overflow: "hidden",
+          transition: "max-height 0.45s cubic-bezier(0.16,1,0.3,1)",
+        }}>
+          <p style={{
+            fontSize: 11.5, color: "rgba(255,255,255,0.60)", lineHeight: 1.65,
+            margin: "10px 0 8px",
+          }}>{desc}</p>
+          <p style={{
+            fontSize: 10, fontWeight: 600, letterSpacing: "0.08em",
+            color: accent, margin: 0,
+          }}>{peptides}</p>
+        </div>
       </div>
     </div>
   );
@@ -468,45 +569,81 @@ export default function HomePage() {
       </section>
 
       {/* ── RESEARCH AREAS ────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#fff", borderTop: "1px solid #EEF2F7" }}>
-        {/* Header row */}
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8" style={{ padding: "56px 32px 40px" }}>
-          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
-            {/* Left: label + heading */}
-            <div style={{ flex: "0 0 auto", maxWidth: 480 }}>
-              <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.25em", color: "#64748B", marginBottom: 16 }}>
-                Research Areas
-              </p>
-              <h2 style={{ fontSize: "clamp(36px, 5vw, 62px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: "-0.025em", color: "#0F172A", margin: 0 }}>
+      <section style={{ background: "#07111A" }}>
+        {/* ── Dark header strip ── */}
+        <div style={{ padding: "64px 0 48px", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+          <div className="max-w-[1280px] mx-auto" style={{ padding: "0 32px", display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
+            {/* Left */}
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
+                <div style={{ width: 32, height: 1, background: "linear-gradient(90deg, #3B82F6, #8B5CF6)" }} />
+                <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.28em", color: "#64748B", margin: 0 }}>Research Applications</p>
+              </div>
+              <h2 style={{ fontSize: "clamp(32px, 4.5vw, 56px)", fontWeight: 900, lineHeight: 1.04, letterSpacing: "-0.03em", color: "#FFFFFF", margin: 0 }}>
                 What peptides<br />
-                <span style={{ color: "#1240A0" }}>are studied for.</span>
+                <span style={{ background: "linear-gradient(90deg, #3B82F6, #8B5CF6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  are used for.
+                </span>
               </h2>
             </div>
-            {/* Right: description + link */}
-            <div style={{ flex: "0 0 auto", maxWidth: 340, paddingTop: 8 }}>
-              <p style={{ fontSize: 14, color: "#64748B", lineHeight: 1.75, marginBottom: 20 }}>
-                From cellular repair to neuroendocrine signalling — peptide research spans a broad spectrum of biological pathways under active investigation.
+            {/* Right */}
+            <div style={{ maxWidth: 380 }}>
+              <p style={{ fontSize: 14.5, color: "rgba(255,255,255,0.55)", lineHeight: 1.78, marginBottom: 24 }}>
+                Each category below represents an active area of peptide investigation — from cellular repair mechanisms to longevity pathways. Hover any card to see which specific compounds are under study.
               </p>
               <Link
                 href="/all-peptides"
                 style={{
-                  display: "inline-flex", alignItems: "center", gap: 6,
-                  fontSize: 11, fontWeight: 700, textTransform: "uppercase",
-                  letterSpacing: "0.15em", color: "#1240A0", textDecoration: "none",
-                  borderBottom: "1px solid rgba(18,64,160,0.4)", paddingBottom: 2,
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  fontSize: 12, fontWeight: 700, textTransform: "uppercase",
+                  letterSpacing: "0.16em", color: "#3B82F6", textDecoration: "none",
                 }}
               >
-                Shop All Peptides <ArrowRight size={13} />
+                Browse All Compounds <ArrowRight size={14} />
               </Link>
             </div>
           </div>
         </div>
 
-        {/* 4×2 photo grid — 1px gaps on dark bg */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1, background: "#D4E8E8" }}>
-          {RESEARCH_AREAS.map(area => (
+        {/* ── Featured + grid layout ── */}
+        {/* Row 1: Featured card (2 col × 2 rows) + 2 single cards stacked */}
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gridTemplateRows: "300px 300px", gap: 1, background: "rgba(255,255,255,0.06)" }}>
+          {/* Featured — spans 2 rows */}
+          <div style={{ gridRow: "1 / 3" }}>
+            <ResearchAreaCard {...RESEARCH_AREAS[0]} featured />
+          </div>
+          <ResearchAreaCard {...RESEARCH_AREAS[1]} />
+          <ResearchAreaCard {...RESEARCH_AREAS[2]} />
+          <ResearchAreaCard {...RESEARCH_AREAS[3]} />
+          <ResearchAreaCard {...RESEARCH_AREAS[4]} />
+        </div>
+
+        {/* Row 2: 4 equal cards */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1, background: "rgba(255,255,255,0.06)" }}>
+          {RESEARCH_AREAS.slice(4).map(area => (
             <ResearchAreaCard key={area.n} {...area} />
           ))}
+        </div>
+
+        {/* ── Bottom CTA strip ── */}
+        <div style={{ padding: "28px 32px", borderTop: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+          <div className="max-w-[1280px] mx-auto w-full" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", margin: 0, letterSpacing: "0.02em" }}>
+              All research applications listed for <strong style={{ color: "rgba(255,255,255,0.6)" }}>in-vitro laboratory use only</strong> — not for human consumption.
+            </p>
+            <Link
+              href="/all-peptides"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                background: "rgba(59,130,246,0.12)", border: "1px solid rgba(59,130,246,0.3)",
+                color: "#93C5FD", padding: "10px 22px", borderRadius: 8,
+                fontSize: 12, fontWeight: 700, textTransform: "uppercase",
+                letterSpacing: "0.14em", textDecoration: "none",
+              }}
+            >
+              Shop All 81 Peptides <ArrowRight size={13} />
+            </Link>
+          </div>
         </div>
       </section>
 
