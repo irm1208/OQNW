@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import {
@@ -7,6 +8,68 @@ import {
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
+
+const RESEARCH_AREAS = [
+  { n: "01", title: "Tissue Repair",             img: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=70" },
+  { n: "02", title: "Neurological Pathways",     img: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&q=70" },
+  { n: "03", title: "Collagen & Skin Biology",   img: "https://images.unsplash.com/photo-1596178060671-7a80dc8059ea?w=600&q=70" },
+  { n: "04", title: "Mitochondrial Biology",     img: "https://images.unsplash.com/photo-1549576490-b0b4831ef60a?w=600&q=70" },
+  { n: "05", title: "Musculoskeletal Research",  img: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=70" },
+  { n: "06", title: "Neuroendocrine Signalling", img: "https://images.unsplash.com/photo-1511295742362-92c96b1cf484?w=600&q=70" },
+  { n: "07", title: "Vascular Biology",          img: "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=600&q=70" },
+  { n: "08", title: "Immune Modulation",         img: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&q=70" },
+];
+
+function ResearchAreaCard({ n, title, img }: { n: string; title: string; img: string }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      style={{ position: "relative", overflow: "hidden", height: 280, background: "#0C1F1F", cursor: "default" }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <img
+        src={img}
+        alt={title}
+        style={{
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover",
+          filter: "saturate(0.45) brightness(0.65)",
+          transform: hovered ? "scale(1.04)" : "scale(1)",
+          transition: "transform 0.6s ease, filter 0.5s ease",
+        }}
+      />
+      <div style={{
+        position: "absolute", inset: 0,
+        background: hovered
+          ? "linear-gradient(0deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.12) 100%)"
+          : "linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.28) 55%, rgba(0,0,0,0.10) 100%)",
+        transition: "background 0.5s",
+      }} />
+      {/* Slide-in teal bottom border on hover */}
+      <div style={{
+        position: "absolute", bottom: 0, left: 0, height: 3,
+        width: hovered ? "100%" : 0,
+        background: "#1240A0",
+        transition: "width 0.5s cubic-bezier(0.16,1,0.3,1)",
+      }} />
+      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "24px 28px" }}>
+        <span style={{
+          display: "block", fontSize: 9, fontWeight: 700,
+          color: "#A8D4D4", letterSpacing: "0.35em", textTransform: "uppercase",
+          marginBottom: 10,
+          opacity: hovered ? 1 : 0.65,
+          transition: "opacity 0.3s",
+        }}>{n}</span>
+        <h3 style={{
+          fontFamily: "'Arimo', Arial, sans-serif",
+          fontSize: 18, fontWeight: 700, color: "#FFFFFF",
+          lineHeight: 1.2, margin: 0,
+        }}>{title}</h3>
+      </div>
+    </div>
+  );
+}
 
 
 const featuredIds = ["3", "7", "11", "43", "15", "31", "64", "71"];
@@ -401,6 +464,49 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── RESEARCH AREAS ────────────────────────────────────── */}
+      <section style={{ backgroundColor: "#fff", borderTop: "1px solid #EEF2F7" }}>
+        {/* Header row */}
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8" style={{ padding: "56px 32px 40px" }}>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
+            {/* Left: label + heading */}
+            <div style={{ flex: "0 0 auto", maxWidth: 480 }}>
+              <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.25em", color: "#64748B", marginBottom: 16 }}>
+                Research Areas
+              </p>
+              <h2 style={{ fontSize: "clamp(36px, 5vw, 62px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: "-0.025em", color: "#0F172A", margin: 0 }}>
+                What peptides<br />
+                <span style={{ color: "#1240A0" }}>are studied for.</span>
+              </h2>
+            </div>
+            {/* Right: description + link */}
+            <div style={{ flex: "0 0 auto", maxWidth: 340, paddingTop: 8 }}>
+              <p style={{ fontSize: 14, color: "#64748B", lineHeight: 1.75, marginBottom: 20 }}>
+                From cellular repair to neuroendocrine signalling — peptide research spans a broad spectrum of biological pathways under active investigation.
+              </p>
+              <Link
+                href="/all-peptides"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  fontSize: 11, fontWeight: 700, textTransform: "uppercase",
+                  letterSpacing: "0.15em", color: "#1240A0", textDecoration: "none",
+                  borderBottom: "1px solid rgba(18,64,160,0.4)", paddingBottom: 2,
+                }}
+              >
+                Shop All Peptides <ArrowRight size={13} />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* 4×2 photo grid — 1px gaps on dark bg */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1, background: "#D4E8E8" }}>
+          {RESEARCH_AREAS.map(area => (
+            <ResearchAreaCard key={area.n} {...area} />
+          ))}
         </div>
       </section>
 
