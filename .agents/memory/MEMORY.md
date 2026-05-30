@@ -1,0 +1,1 @@
+- [OmniQure port setup](omniqure-ports.md) — storefront must run on port 8081 (externalPort 80) to be accessible externally; admin on 8082, API on 8080
