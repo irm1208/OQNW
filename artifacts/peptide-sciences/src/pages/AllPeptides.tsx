@@ -260,7 +260,7 @@ export default function AllPeptides() {
             </div>
 
             {/* Responsive grid: 2 cols mobile, 3 tablet, 4 desktop */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-4 lg:gap-6">
               {groupedProducts.map((group) => (
                 <GroupedProductCard key={group.baseName} group={group} />
               ))}

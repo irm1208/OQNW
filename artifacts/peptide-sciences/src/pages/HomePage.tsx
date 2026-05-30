@@ -272,28 +272,19 @@ export default function HomePage() {
         style={{
           position: "relative",
           overflow: "hidden",
+          backgroundImage: "url('/hero-vials.png')",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
           minHeight: "unset",
           display: "flex",
           alignItems: "flex-start",
         }}
       >
-        {/* Ken Burns zoom layer */}
+        {/* Bottom fade so text remains readable against the light product image */}
         <div style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: "url('/hero-vials.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center 30%",
-          backgroundRepeat: "no-repeat",
-          animation: "kenBurns 16s ease-in-out infinite",
-          transformOrigin: "top left",
-          willChange: "transform",
-        }} />
-        {/* Overlay — stronger on mobile (no LR overlay), lighter on desktop */}
-        <div className="hero-bottom-fade" style={{
-          position: "absolute",
-          inset: 0,
-          background: "linear-gradient(to bottom, rgba(2,11,30,0.25) 0%, rgba(2,11,30,0.20) 30%, rgba(2,11,30,0.55) 60%, rgba(2,11,30,0.75) 100%)",
+          background: "linear-gradient(to bottom, rgba(2,11,30,0.0) 0%, rgba(2,11,30,0.0) 35%, rgba(2,11,30,0.45) 60%, rgba(2,11,30,0.60) 100%)",
           pointerEvents: "none",
         }} />
         {/* Left-to-right overlay — full dark on mobile, fades right on desktop */}
@@ -336,11 +327,13 @@ export default function HomePage() {
               className="mb-7 leading-relaxed"
               style={{ color: "rgba(255,255,255,0.78)", fontSize: "16px" }}
             >
-              Built for researchers who don't cut corners. Every compound is independently tested to 99%+ purity, fully documented, and ready for the lab.
+              Built for researchers who don't cut corners.<br />
+              Every compound is independently tested to 99%+ purity,<br />
+              fully documented, and ready for the lab.
             </p>
 
             {/* Trust chips */}
-            <div className="hero-chips flex flex-wrap gap-2 mb-8">
+            <div className="flex flex-wrap gap-2 mb-8">
               {["99%+ HPLC Purity", "Full COA Included", "Third Party Tested"].map(t => (
                 <span
                   key={t}
@@ -401,7 +394,7 @@ export default function HomePage() {
               <span style={{ fontSize: "13px", color: "#475569", fontWeight: 600 }}>The more you order, the more you save</span>
             </div>
             {/* Tiers + CTA */}
-            <div className="bundle-tiers-row" style={{ display: "flex", flexWrap: "wrap", gap: "7px", alignItems: "center" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "7px", alignItems: "center" }}>
               {[
                 { label: "3+ vials",  pct: "5%",  bg: "#EEF4FF", border: "#BFDBFE", pctColor: "#1240A0", labelColor: "#64748B" },
                 { label: "7+ vials",  pct: "10%", bg: "#ECFDF5", border: "#BBF7D0", pctColor: "#059669", labelColor: "#64748B" },
@@ -437,7 +430,7 @@ export default function HomePage() {
             ].map((item, i) => (
               <div
                 key={i}
-                className="trust-strip-item flex items-center gap-3.5 py-5 px-5"
+                className="flex items-center gap-3.5 py-5 px-5"
               >
                 <div
                   className="flex-shrink-0 rounded-xl flex items-center justify-center"
@@ -456,7 +449,7 @@ export default function HomePage() {
       </section>
 
       {/* ── FEATURED PEPTIDES ─────────────────────────────────── */}
-      <section className="section-pad" style={{ backgroundColor: "#fff", padding: "68px 0" }}>
+      <section style={{ backgroundColor: "#fff", padding: "68px 0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="flex items-end justify-between mb-10">
             <div>
@@ -484,7 +477,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8">
             {featuredGroups.slice(0, 4).map(group => (
               <GroupedProductCard key={group.baseName} group={group} />
             ))}
@@ -493,7 +486,7 @@ export default function HomePage() {
       </section>
 
       {/* ── WHY OMNIQURE ──────────────────────────────────────── */}
-      <section className="section-pad" style={{ backgroundColor: "#F7FAFF", padding: "68px 0", borderTop: "1px solid #E2E8F0" }}>
+      <section style={{ backgroundColor: "#F7FAFF", padding: "68px 0", borderTop: "1px solid #E2E8F0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 mb-2">
@@ -574,8 +567,8 @@ export default function HomePage() {
       {/* ── RESEARCH AREAS ────────────────────────────────────── */}
       <section style={{ background: "linear-gradient(160deg, #020B1E 0%, #071A4A 40%, #0D2565 70%, #1240A0 100%)", borderTop: "3px solid #34D399" }}>
         {/* ── Header strip ── */}
-        <div style={{ padding: "clamp(36px,6vw,64px) 0 clamp(28px,4vw,48px)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-8" style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
+        <div style={{ padding: "64px 0 48px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+          <div className="max-w-[1280px] mx-auto" style={{ padding: "0 32px", display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
             {/* Left */}
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
@@ -609,14 +602,14 @@ export default function HomePage() {
         </div>
 
         {/* ── Uniform 4×2 grid ── */}
-        <div className="research-areas-grid" style={{ gap: 1, background: "rgba(255,255,255,0.06)" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1, background: "rgba(255,255,255,0.06)" }}>
           {RESEARCH_AREAS.map(area => (
             <ResearchAreaCard key={area.n} {...area} />
           ))}
         </div>
 
         {/* ── Bottom CTA strip ── */}
-        <div style={{ padding: "20px 16px", borderTop: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+        <div style={{ padding: "28px 32px", borderTop: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
           <div className="max-w-[1280px] mx-auto w-full" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
             <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", margin: 0, letterSpacing: "0.02em" }}>
               All research applications listed for <strong style={{ color: "rgba(255,255,255,0.6)" }}>in-vitro laboratory use only</strong> — not for human consumption.
@@ -638,7 +631,7 @@ export default function HomePage() {
       </section>
 
       {/* ── RESEARCH BANNER ───────────────────────────────────── */}
-      <section className="section-pad" style={{ backgroundColor: "#fff", padding: "68px 0", borderTop: "1px solid #E2E8F0" }}>
+      <section style={{ backgroundColor: "#fff", padding: "68px 0", borderTop: "1px solid #E2E8F0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
           <div
             className="rounded-3xl overflow-hidden relative"
@@ -704,7 +697,7 @@ export default function HomePage() {
               </div>
 
               {/* Right data blocks */}
-              <div className="lg:pr-12 pb-8 lg:pb-0 px-4 sm:px-8 lg:px-0 flex flex-col gap-3 w-full lg:w-auto">
+              <div className="lg:pr-12 pb-10 lg:pb-0 px-10 lg:px-0 flex flex-col gap-3">
                 {[
                   { label: "HPLC Tested",    detail: "All 81 products",      icon: "🔬" },
                   { label: "ESI-TOF MS",      detail: "Identity confirmed",   icon: "⚗️" },
@@ -714,7 +707,7 @@ export default function HomePage() {
                   <div
                     key={i}
                     className="glass-card flex items-center gap-4 rounded-xl"
-                    style={{ padding: "14px 20px" }}
+                    style={{ padding: "14px 20px", minWidth: "220px" }}
                   >
                     <span style={{ fontSize: "20px" }}>{item.icon}</span>
                     <div>
