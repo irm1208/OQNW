@@ -509,6 +509,55 @@
   100% { transform: scale(1.00) translate(0%, 0%); }
 }
 
+/* ── RESEARCH AREAS RESPONSIVE GRID ─────────────────────── */
+.research-areas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 640px) {
+  .research-areas-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .research-areas-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ── BUNDLE STRIP MOBILE ─────────────────────────────────── */
+@media (max-width: 639px) {
+  .bundle-tiers-row {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    width: 100%;
+  }
+}
+
+/* ── TRUST STRIP MOBILE ──────────────────────────────────── */
+@media (max-width: 639px) {
+  .trust-strip-item {
+    border-right: none !important;
+    border-bottom: 1px solid #EEF2F7;
+  }
+  .trust-strip-item:nth-child(odd) {
+    border-right: 1px solid #EEF2F7 !important;
+  }
+  .trust-strip-item:last-child,
+  .trust-strip-item:nth-last-child(2):nth-child(odd) {
+    border-bottom: none;
+  }
+}
+
+/* ── SECTION PADDING MOBILE ──────────────────────────────── */
+@media (max-width: 639px) {
+  .section-pad {
+    padding-top: 44px !important;
+    padding-bottom: 44px !important;
+  }
+}
+
 /* ── HOME HERO RESPONSIVE ────────────────────────────────── */
 
 .hero-section {
