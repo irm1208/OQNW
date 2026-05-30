@@ -327,7 +327,7 @@ export default function HomePage() {
               className="mb-7 leading-relaxed"
               style={{ color: "rgba(255,255,255,0.78)", fontSize: "16px" }}
             >
-              Every vial independently verified to 99%+ HPLC purity — backed by full COA documentation and ESI-TOF mass spectrometry data. Trusted by researchers who demand certainty.
+              Built for researchers who don't cut corners. Every compound is independently tested to 99%+ purity, fully documented, and ready for the lab — so you can focus on the science.
             </p>
 
             {/* Trust chips */}
