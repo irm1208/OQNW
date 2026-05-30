@@ -18,27 +18,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "OmniQure Storefront"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
 args = "OmniQure Admin"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "API Server"
-
-[[workflows.workflow]]
-name = "OmniQure Storefront"
-author = "agent"
-
-[workflows.workflow.metadata]
-outputType = "webview"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "PORT=25553 BASE_PATH=/ pnpm --filter @workspace/peptide-sciences run dev"
-waitForPort = 25553
 
 [[workflows.workflow]]
 name = "OmniQure Admin"
@@ -51,18 +31,6 @@ outputType = "webview"
 task = "shell.exec"
 args = "PORT=8082 BASE_PATH=/admin/ pnpm --filter @workspace/admin-panel run dev"
 waitForPort = 8082
-
-[[workflows.workflow]]
-name = "API Server"
-author = "agent"
-
-[workflows.workflow.metadata]
-outputType = "console"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "PORT=8080 pnpm --filter @workspace/api-server run dev"
-waitForPort = 8080
 
 [agent]
 stack = "PNPM_WORKSPACE"
