@@ -566,7 +566,7 @@ export default function HomePage() {
       </section>
 
       {/* ── RESEARCH AREAS ────────────────────────────────────── */}
-      <section style={{ background: "linear-gradient(160deg, #020B1E 0%, #071A4A 40%, #0D2565 70%, #1240A0 100%)", borderTop: "3px solid #34D399" }}>
+      <section style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", borderTop: "3px solid #34D399" }}>
         {/* ── Header strip ── */}
         <div style={{ padding: "64px 0 48px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
           <div className="max-w-[1280px] mx-auto" style={{ padding: "0 32px", display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
