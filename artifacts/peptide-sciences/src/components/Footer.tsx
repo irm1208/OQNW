@@ -202,7 +202,7 @@ export default function Footer() {
                   </div>
                 </div>
               </div>
-              <p style={{ fontSize: "13px", color: "#475569", lineHeight: "1.75", marginBottom: "16px" }}>
+              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.70)", lineHeight: "1.75", marginBottom: "16px" }}>
                 Research peptides manufactured to the highest standards of quality and purity. 99%+ HPLC purity guaranteed on every product.
               </p>
 
@@ -212,7 +212,7 @@ export default function Footer() {
                   <span
                     key={b}
                     className="text-xs px-2.5 py-1 rounded-full inline-flex items-center gap-1"
-                    style={{ backgroundColor: "#0D1A30", color: "#475569", border: "1px solid #1E2D45", fontSize: "11px" }}
+                    style={{ backgroundColor: "rgba(0,0,0,0.20)", color: "rgba(255,255,255,0.80)", border: "1px solid rgba(255,255,255,0.20)", fontSize: "11px" }}
                   >
                     <span style={{ color: "#34D399" }}>✓</span> {b}
                   </span>
@@ -221,12 +221,12 @@ export default function Footer() {
 
               {/* Contact micro-info */}
               <div className="flex flex-col gap-2">
-                <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "#475569" }}>
-                  <Mail size={13} style={{ color: "#334155", flexShrink: 0 }} />
+                <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "rgba(255,255,255,0.70)" }}>
+                  <Mail size={13} style={{ color: "rgba(255,255,255,0.50)", flexShrink: 0 }} />
                   research@omniqure.com
                 </span>
-                <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "#475569" }}>
-                  <FlaskConical size={13} style={{ color: "#334155", flexShrink: 0 }} />
+                <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "rgba(255,255,255,0.70)" }}>
+                  <FlaskConical size={13} style={{ color: "rgba(255,255,255,0.50)", flexShrink: 0 }} />
                   RUO · Lab Certified · HPLC Verified
                 </span>
               </div>
@@ -242,9 +242,9 @@ export default function Footer() {
                   <Link
                     href={col.href}
                     className="block font-bold mb-4"
-                    style={{ color: "#CBD5E1", fontSize: "12.5px", textDecoration: "none", letterSpacing: "0.04em", textTransform: "uppercase" }}
-                    onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
-                    onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#CBD5E1"}
+                    style={{ color: "#fff", fontSize: "12.5px", textDecoration: "none", letterSpacing: "0.04em", textTransform: "uppercase" }}
+                    onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#34D399"}
+                    onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
                   >
                     {col.title}
                   </Link>
@@ -253,9 +253,9 @@ export default function Footer() {
                       <li key={link.label}>
                         <Link
                           href={link.href}
-                          style={{ fontSize: "12.5px", color: "#475569", textDecoration: "none", transition: "color 0.15s" }}
-                          onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#94A3B8"}
-                          onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#475569"}
+                          style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.60)", textDecoration: "none", transition: "color 0.15s" }}
+                          onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
+                          onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.60)"}
                         >
                           {link.label}
                         </Link>
@@ -271,16 +271,15 @@ export default function Footer() {
           <div
             className="rounded-xl p-4 mb-7"
             style={{
-              backgroundColor: "#0D1A30",
-              border: "1px solid #1E2D45",
-              backgroundImage: "linear-gradient(135deg, #0D1A30 0%, #0A1525 100%)",
+              backgroundColor: "rgba(0,0,0,0.20)",
+              border: "1px solid rgba(255,255,255,0.15)",
             }}
           >
-            <p className="text-xs leading-relaxed mb-1.5" style={{ color: "#334155" }}>
-              <strong style={{ color: "#475569" }}>IMPORTANT LEGAL NOTICE:</strong>{" "}
+            <p className="text-xs leading-relaxed mb-1.5" style={{ color: "rgba(255,255,255,0.65)" }}>
+              <strong style={{ color: "rgba(255,255,255,0.85)" }}>IMPORTANT LEGAL NOTICE:</strong>{" "}
               All products sold by OmniQure are intended for in-vitro laboratory research use only. These products are not for human or veterinary use. By purchasing, you confirm you are at least 18 years of age and a qualified researcher.
             </p>
-            <p className="text-xs leading-relaxed" style={{ color: "#334155" }}>
+            <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.65)" }}>
               Products have not been approved by the FDA or any other regulatory body. OmniQure is not responsible for the misuse of any of its products.
             </p>
           </div>
@@ -288,16 +287,16 @@ export default function Footer() {
           {/* Bottom bar */}
           <div
             className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6"
-            style={{ borderTop: "1px solid #0D1A30" }}
+            style={{ borderTop: "1px solid rgba(255,255,255,0.15)" }}
           >
             <div className="flex flex-wrap justify-center sm:justify-start gap-x-5 gap-y-1.5">
               {legalLinks.map(link => (
                 <Link
                   key={link.label}
                   href={link.href}
-                  style={{ fontSize: "11.5px", color: "#334155", textDecoration: "none", transition: "color 0.15s" }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
-                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#334155"}
+                  style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.55)", textDecoration: "none", transition: "color 0.15s" }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.55)"}
                 >
                   {link.label}
                 </Link>
@@ -305,15 +304,15 @@ export default function Footer() {
             </div>
 
             <div className="flex items-center gap-2 flex-wrap justify-center">
-              <span style={{ fontSize: "11px", color: "#1E2D45", marginRight: "2px" }}>We Accept:</span>
+              <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.50)", marginRight: "2px" }}>We Accept:</span>
               {paymentMethods.map(p => (
                 <span
                   key={p}
                   className="px-2.5 py-1 rounded-md"
                   style={{
-                    backgroundColor: "#0D1A30",
-                    color: "#334155",
-                    border: "1px solid #1E2D45",
+                    backgroundColor: "rgba(0,0,0,0.20)",
+                    color: "rgba(255,255,255,0.75)",
+                    border: "1px solid rgba(255,255,255,0.20)",
                     fontSize: "11px",
                     fontWeight: 600,
                   }}
@@ -324,7 +323,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="text-center mt-5" style={{ fontSize: "11px", color: "#1E2D45" }}>
+          <div className="text-center mt-5" style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>
             © {new Date().getFullYear()} OmniQure Peptide Research Institute — All Rights Reserved · For Laboratory Research Use Only
           </div>
         </div>
