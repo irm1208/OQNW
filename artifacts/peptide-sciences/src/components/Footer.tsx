@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Link } from "wouter";
-import { FlaskConical, Mail, MapPin, Send, CheckCircle } from "lucide-react";
+import { FlaskConical, Mail, MapPin } from "lucide-react";
 
 const footerCategories = [
   {
@@ -59,88 +58,7 @@ const legalLinks = [
 
 const paymentMethods = ["Visa", "Mastercard", "Amex", "Bitcoin", "Ethereum"];
 
-function NewsletterForm() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [msg, setMsg] = useState("");
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email || !email.includes("@")) return;
-    setStatus("loading");
-    try {
-      const res = await fetch("/api/newsletter/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, source: "footer" }),
-      });
-      const data = await res.json() as { message?: string; error?: string };
-      if (res.ok) {
-        setStatus("success");
-        setMsg(data.message ?? "You're subscribed!");
-        setEmail("");
-      } else {
-        setStatus("error");
-        setMsg(data.error ?? "Something went wrong. Please try again.");
-      }
-    } catch {
-      setStatus("error");
-      setMsg("Could not connect. Please try again.");
-    }
-  }
-
-  if (status === "success") {
-    return (
-      <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 14px", background: "#022C22", borderRadius: "10px", border: "1px solid #064E3B" }}>
-        <CheckCircle size={16} color="#34D399" style={{ flexShrink: 0 }} />
-        <p style={{ margin: 0, fontSize: "12.5px", color: "#34D399", fontWeight: 600 }}>{msg}</p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} style={{ marginTop: "16px" }}>
-      <p style={{ margin: "0 0 8px", fontSize: "11.5px", fontWeight: 700, color: "#475569", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-        Research Newsletter
-      </p>
-      <p style={{ margin: "0 0 10px", fontSize: "12px", color: "#334155", lineHeight: 1.5 }}>
-        New compounds, lab updates &amp; exclusive offers.
-      </p>
-      <div style={{ display: "flex", gap: "6px" }}>
-        <input
-          type="email"
-          placeholder="your@email.com"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required
-          style={{
-            flex: 1, height: "36px", padding: "0 10px", borderRadius: "8px",
-            border: "1px solid #1E2D45", background: "#0D1A30",
-            color: "#94A3B8", fontSize: "12.5px", outline: "none",
-            fontFamily: "'Arimo', Arial, sans-serif",
-          }}
-        />
-        <button
-          type="submit"
-          disabled={status === "loading"}
-          style={{
-            height: "36px", padding: "0 14px", borderRadius: "8px",
-            background: status === "loading" ? "#334155" : "linear-gradient(90deg, #0D2565, #1B5CB5)",
-            border: "none", color: "#fff", cursor: "pointer",
-            display: "flex", alignItems: "center", gap: "5px",
-            fontSize: "12px", fontWeight: 700, fontFamily: "'Arimo', Arial, sans-serif",
-          }}
-        >
-          <Send size={12} />
-          {status === "loading" ? "..." : "Subscribe"}
-        </button>
-      </div>
-      {status === "error" && (
-        <p style={{ margin: "6px 0 0", fontSize: "11.5px", color: "#F87171" }}>{msg}</p>
-      )}
-    </form>
-  );
-}
 
 export default function Footer() {
   return (
@@ -231,8 +149,6 @@ export default function Footer() {
                 </span>
               </div>
 
-              {/* Newsletter form */}
-              <NewsletterForm />
             </div>
 
             {/* Link columns */}
