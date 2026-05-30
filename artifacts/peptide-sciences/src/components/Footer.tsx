@@ -149,7 +149,7 @@ export default function Footer() {
       {/* RUO Disclaimer strip */}
       <div
         style={{
-          background: "linear-gradient(90deg, #020B1E 0%, #071A4A 40%, #1240A0 70%, #071A4A 100%)",
+          background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
           padding: "11px 16px",
           textAlign: "center",
           position: "relative",
@@ -180,7 +180,7 @@ export default function Footer() {
       </div>
 
       {/* Main footer body */}
-      <div style={{ backgroundColor: "#070F1F", color: "#94A3B8" }}>
+      <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", color: "#94A3B8" }}>
         <div className="max-w-[1280px] mx-auto px-4 pt-12 pb-8">
 
           {/* Top row */}
