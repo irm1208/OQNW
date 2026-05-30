@@ -565,6 +565,21 @@
   }
 }
 
+/* ── RESEARCH AREA CARDS RESPONSIVE ─────────────────────── */
+.research-card {
+  height: 200px !important;
+}
+@media (min-width: 640px) {
+  .research-card {
+    height: 240px !important;
+  }
+}
+@media (min-width: 1024px) {
+  .research-card {
+    height: 220px !important;
+  }
+}
+
 /* ── ACCOUNT PAGE SIDEBAR ────────────────────────────────── */
 
 .account-sidebar {

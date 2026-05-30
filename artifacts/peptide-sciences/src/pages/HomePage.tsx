@@ -84,6 +84,7 @@ function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured
   const cardHeight = featured ? "100%" : 220;
   return (
     <div
+      className={featured ? "" : "research-card"}
       style={{
         position: "relative", overflow: "hidden",
         height: featured ? "100%" : cardHeight,
@@ -602,7 +603,7 @@ export default function HomePage() {
         </div>
 
         {/* ── Uniform 4×2 grid ── */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1, background: "rgba(255,255,255,0.06)" }}>
+        <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: 1, background: "rgba(255,255,255,0.06)" }}>
           {RESEARCH_AREAS.map(area => (
             <ResearchAreaCard key={area.n} {...area} />
           ))}
