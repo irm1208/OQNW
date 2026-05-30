@@ -286,6 +286,7 @@ export default function HomePage() {
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           animation: "kenBurns 16s ease-in-out infinite",
+          transformOrigin: "top left",
           willChange: "transform",
         }} />
         {/* Bottom fade so text remains readable against the light product image */}
