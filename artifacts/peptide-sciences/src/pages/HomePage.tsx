@@ -283,17 +283,17 @@ export default function HomePage() {
           inset: 0,
           backgroundImage: "url('/hero-vials.png')",
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: "center 30%",
           backgroundRepeat: "no-repeat",
           animation: "kenBurns 16s ease-in-out infinite",
           transformOrigin: "top left",
           willChange: "transform",
         }} />
-        {/* Bottom fade so text remains readable against the light product image */}
-        <div style={{
+        {/* Overlay — stronger on mobile (no LR overlay), lighter on desktop */}
+        <div className="hero-bottom-fade" style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(to bottom, rgba(2,11,30,0.0) 0%, rgba(2,11,30,0.0) 35%, rgba(2,11,30,0.45) 60%, rgba(2,11,30,0.60) 100%)",
+          background: "linear-gradient(to bottom, rgba(2,11,30,0.25) 0%, rgba(2,11,30,0.20) 30%, rgba(2,11,30,0.55) 60%, rgba(2,11,30,0.75) 100%)",
           pointerEvents: "none",
         }} />
         {/* Left-to-right overlay — full dark on mobile, fades right on desktop */}
@@ -336,13 +336,11 @@ export default function HomePage() {
               className="mb-7 leading-relaxed"
               style={{ color: "rgba(255,255,255,0.78)", fontSize: "16px" }}
             >
-              Built for researchers who don't cut corners.<br />
-              Every compound is independently tested to 99%+ purity,<br />
-              fully documented, and ready for the lab.
+              Built for researchers who don't cut corners. Every compound is independently tested to 99%+ purity, fully documented, and ready for the lab.
             </p>
 
             {/* Trust chips */}
-            <div className="flex flex-wrap gap-2 mb-8">
+            <div className="hero-chips flex flex-wrap gap-2 mb-8">
               {["99%+ HPLC Purity", "Full COA Included", "Third Party Tested"].map(t => (
                 <span
                   key={t}

@@ -582,13 +582,13 @@
 }
 
 .hero-content {
-  padding-top: 100px !important;
-  padding-bottom: 56px !important;
+  padding-top: 52px !important;
+  padding-bottom: 40px !important;
 }
 @media (min-width: 640px) {
   .hero-content {
-    padding-top: 160px !important;
-    padding-bottom: 72px !important;
+    padding-top: 120px !important;
+    padding-bottom: 60px !important;
   }
 }
 @media (min-width: 1024px) {
@@ -611,6 +611,31 @@
 @media (min-width: 1024px) {
   .hero-text {
     max-width: 520px !important;
+  }
+}
+
+/* ── HERO OVERLAY — lighter on desktop (LR overlay handles readability) ── */
+@media (min-width: 768px) {
+  .hero-bottom-fade {
+    background: linear-gradient(to bottom, rgba(2,11,30,0.0) 0%, rgba(2,11,30,0.0) 35%, rgba(2,11,30,0.45) 62%, rgba(2,11,30,0.60) 100%) !important;
+  }
+}
+
+/* ── HERO MOBILE SPECIFICS ───────────────────────────────── */
+@media (max-width: 639px) {
+  .hero-section {
+    min-height: 520px !important;
+  }
+  .hero-text h1 {
+    font-size: clamp(26px, 8vw, 38px) !important;
+    margin-bottom: 14px !important;
+  }
+  .hero-text p {
+    font-size: 14px !important;
+    margin-bottom: 18px !important;
+  }
+  .hero-chips {
+    margin-bottom: 20px !important;
   }
 }
 
