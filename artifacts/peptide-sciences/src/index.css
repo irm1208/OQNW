@@ -503,14 +503,21 @@
 /* ── HOME HERO RESPONSIVE ────────────────────────────────── */
 
 .hero-section {
-  background-size: 100% auto !important;
+  background-size: cover !important;
   background-color: #010917 !important;
-  background-position: left top !important;
+  background-position: center center !important;
+  min-height: 580px !important;
 }
 @media (min-width: 640px) {
   .hero-section {
-    background-size: cover !important;
-    background-color: transparent !important;
+    min-height: 640px !important;
+    background-position: center center !important;
+  }
+}
+@media (min-width: 1024px) {
+  .hero-section {
+    min-height: unset !important;
+    background-position: center top !important;
   }
 }
 
@@ -526,13 +533,13 @@
 }
 
 .hero-content {
-  padding-top: 100px !important;
-  padding-bottom: 56px !important;
+  padding-top: 52px !important;
+  padding-bottom: 48px !important;
 }
 @media (min-width: 640px) {
   .hero-content {
-    padding-top: 160px !important;
-    padding-bottom: 72px !important;
+    padding-top: 120px !important;
+    padding-bottom: 64px !important;
   }
 }
 @media (min-width: 1024px) {
