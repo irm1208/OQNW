@@ -99,7 +99,7 @@ export default function Footer() {
 
       {/* Main footer body */}
       <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", color: "#94A3B8" }}>
-        <div className="max-w-[1280px] mx-auto px-4 pt-5 md:pt-12 pb-8">
+        <div className="max-w-[1280px] mx-auto px-4 pt-2 md:pt-12 pb-8">
 
           {/* Top row */}
           <div className="flex flex-col md:flex-row gap-10 mb-10">
