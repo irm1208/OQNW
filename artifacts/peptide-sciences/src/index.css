@@ -533,12 +533,12 @@
 }
 
 .hero-content {
-  padding-top: 52px !important;
+  padding-top: 56.25vw !important;
   padding-bottom: 48px !important;
 }
 @media (min-width: 640px) {
   .hero-content {
-    padding-top: 120px !important;
+    padding-top: 56.25vw !important;
     padding-bottom: 64px !important;
   }
 }
