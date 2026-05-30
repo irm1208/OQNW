@@ -637,7 +637,7 @@ export default function HomePage() {
           <div
             className="rounded-3xl overflow-hidden relative"
             style={{
-              background: "linear-gradient(135deg, #020B1E 0%, #071A4A 30%, #0D2565 60%, #1240A0 100%)",
+              background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
               minHeight: "260px",
             }}
           >
