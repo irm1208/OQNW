@@ -320,9 +320,9 @@ export default function HomePage() {
             >
               Research-Grade<br />
               Peptides.{" "}
-              <span className="gradient-text">Verified.</span>
+              <span className="gradient-text">Third Party</span>
               <br />
-              <span className="gradient-text">Delivered.</span>
+              <span className="gradient-text">Verified.</span>
             </h1>
 
             <p
