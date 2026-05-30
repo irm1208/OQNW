@@ -19,7 +19,7 @@ const CATEGORIES = [
 export default function LabResultsPage() {
   useSEO({
     title: "Lab Results & Certificates of Analysis",
-    description: "HPLC chromatograms, mass spectrometry data, and certificates of analysis for all OmniQure research peptides. 98%+ purity verified by independent third-party testing.",
+    description: "HPLC chromatograms, mass spectrometry data, and certificates of analysis for all OmniQure research peptides. 99%+ purity verified by independent third-party testing.",
     canonicalPath: "/lab-results",
   });
 
@@ -67,7 +67,7 @@ export default function LabResultsPage() {
           {/* Quality badges */}
           <div style={{ display: "flex", justifyContent: "center", gap: "12px", flexWrap: "wrap", marginTop: "28px" }}>
             {[
-              { icon: <Award size={14} />, label: "98%+ HPLC Purity" },
+              { icon: <Award size={14} />, label: "99%+ HPLC Purity" },
               { icon: <Microscope size={14} />, label: "Mass Spec Verified" },
               { icon: <Shield size={14} />, label: "Third-Party Tested" },
               { icon: <CheckCircle2 size={14} />, label: "Lot-by-Lot Testing" },
