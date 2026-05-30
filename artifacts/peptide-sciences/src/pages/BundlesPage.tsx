@@ -246,7 +246,7 @@ export default function BundlesPage() {
         {/* Products grid */}
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+          gridTemplateColumns: "repeat(2, 1fr)",
           gap: "12px",
         }}>
           {groups.map(group => {
