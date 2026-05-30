@@ -244,8 +244,8 @@ export default function TermsPage() {
             </Section>
 
             <Section id="governing" number="12" title="Governing Law & Disputes">
-              <p>These Terms and any dispute or claim arising out of or in connection with them shall be governed by and construed in accordance with the laws of {COUNTRY}.</p>
-              <p>Any disputes shall be subject to the exclusive jurisdiction of the courts of {COUNTRY}. If you are a consumer based in another jurisdiction, this does not affect any mandatory consumer rights you may have under local law.</p>
+              <p>These Terms and any dispute or claim arising out of or in connection with them shall be governed by and construed in accordance with the laws of England and Wales.</p>
+              <p>Any disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales. If you are a consumer based in another jurisdiction, this does not affect any mandatory consumer rights you may have under local law.</p>
               <p>We aim to resolve any complaints or disputes informally and in good faith. If you have a complaint, please contact us first at <a href={`mailto:${EMAIL}`} style={{ color: "#1B5CB5" }}>{EMAIL}</a>.</p>
             </Section>
 
