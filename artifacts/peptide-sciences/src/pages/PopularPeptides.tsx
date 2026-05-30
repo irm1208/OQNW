@@ -194,40 +194,6 @@ export default function PopularPeptides() {
         </div>
       </div>
 
-      {/* Category stats strip */}
-      <div style={{ backgroundColor: "#fff", borderBottom: "1px solid #E8EDF5" }}>
-        <div className="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-6 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
-          {categorisedGroups.map((g) => {
-            const meta = CATEGORY_META[g.category];
-            return (
-              <button
-                key={g.category}
-                onClick={() => setActiveCategory(g.category === activeCategory ? "All" : g.category)}
-                className="flex items-center gap-2 flex-shrink-0 transition-all"
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: "4px 8px",
-                  borderRadius: "8px",
-                  backgroundColor: activeCategory === g.category ? `${meta?.accent}15` : "transparent",
-                }}
-              >
-                <span style={{ color: meta?.accent ?? "#1B5CB5", fontSize: "13px" }}>{meta?.icon}</span>
-                <span style={{ fontSize: "12px", fontWeight: 600, color: activeCategory === g.category ? (meta?.accent ?? "#1B5CB5") : "#475569", whiteSpace: "nowrap" }}>
-                  {g.category}
-                </span>
-                <span
-                  className="text-xs font-bold px-1.5 py-0.5 rounded-full"
-                  style={{ backgroundColor: activeCategory === g.category ? (meta?.accent ?? "#1B5CB5") : "#EEF4FF", color: activeCategory === g.category ? "#fff" : "#1B5CB5", fontSize: "10px" }}
-                >
-                  {g.items.length}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
 
       <div className="max-w-[1280px] mx-auto px-4 py-8">
         {/* Filter tabs */}
