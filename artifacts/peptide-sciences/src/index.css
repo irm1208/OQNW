@@ -503,20 +503,20 @@
 /* ── HOME HERO RESPONSIVE ────────────────────────────────── */
 
 .hero-section {
-  background-size: cover !important;
+  background-size: 100% auto !important;
   background-color: #010917 !important;
-  background-position: center center !important;
-  min-height: 580px !important;
+  background-position: center top !important;
+  min-height: unset !important;
 }
 @media (min-width: 640px) {
   .hero-section {
-    min-height: 640px !important;
-    background-position: center center !important;
+    background-size: 100% auto !important;
+    background-position: center top !important;
   }
 }
 @media (min-width: 1024px) {
   .hero-section {
-    min-height: unset !important;
+    background-size: cover !important;
     background-position: center top !important;
   }
 }
