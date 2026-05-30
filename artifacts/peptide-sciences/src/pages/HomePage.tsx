@@ -280,11 +280,11 @@ export default function HomePage() {
           alignItems: "flex-start",
         }}
       >
-        {/* Top-left is transparent so logo shines; text zone darkened for readability */}
+        {/* Bottom fade so text remains readable against the light product image */}
         <div style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(to bottom, rgba(2,11,30,0.05) 0%, rgba(2,11,30,0.05) 28%, rgba(2,11,30,0.72) 48%, rgba(2,11,30,0.85) 65%, rgba(2,11,30,0.72) 100%)",
+          background: "linear-gradient(to bottom, rgba(2,11,30,0.0) 0%, rgba(2,11,30,0.0) 35%, rgba(2,11,30,0.45) 60%, rgba(2,11,30,0.60) 100%)",
           pointerEvents: "none",
         }} />
         {/* Left-to-right overlay — full dark on mobile, fades right on desktop */}
@@ -293,14 +293,14 @@ export default function HomePage() {
           inset: 0,
           pointerEvents: "none",
         }} />
-        {/* Bold blue glow amplifier behind the logo (top-left) */}
+        {/* Subtle blue glow behind the logo (top-left) */}
         <div style={{
           position: "absolute",
           top: "-80px",
           left: "-80px",
           width: "800px",
           height: "560px",
-          background: "radial-gradient(ellipse at 35% 38%, rgba(40,120,255,0.65) 0%, rgba(20,80,230,0.38) 30%, rgba(10,50,180,0.15) 55%, rgba(0,0,0,0.0) 75%)",
+          background: "radial-gradient(ellipse at 35% 38%, rgba(40,120,255,0.18) 0%, rgba(20,80,230,0.10) 30%, rgba(10,50,180,0.04) 55%, rgba(0,0,0,0.0) 75%)",
           pointerEvents: "none",
           mixBlendMode: "screen",
         }} />
