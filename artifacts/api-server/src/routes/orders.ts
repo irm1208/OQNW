@@ -409,7 +409,6 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       .insert(ordersTable)
       .values({
         orderNumber,
-        status: "pending",
         customerEmail: d.email.toLowerCase(),
         customerName,
         customerId,
@@ -424,7 +423,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingCostGbp: String(shippingCostGbp.toFixed(2)),
         totalGbp: String(totalGbp.toFixed(2)),
         shippingMethod,
-        status: ["bank_transfer", "bitcoin", "card"].includes(paymentMethodStr) ? "awaiting_payment" : "pending",
+        status: ["bank_transfer", "bitcoin", "card"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
         notes: [
           `Payment method: ${paymentMethodStr}`,
           validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-£${discountAmount.toFixed(2)})` : null,
