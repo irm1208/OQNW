@@ -500,12 +500,17 @@
   }
 }
 
+/* ── KEN BURNS ZOOM ANIMATION ────────────────────────────── */
+@keyframes kenBurns {
+  0%   { transform: scale(1.0); }
+  50%  { transform: scale(1.08); }
+  100% { transform: scale(1.0); }
+}
+
 /* ── HOME HERO RESPONSIVE ────────────────────────────────── */
 
 .hero-section {
-  background-size: 100% auto !important;
   background-color: #010917 !important;
-  background-position: left top !important;
 }
 @media (min-width: 640px) {
   .hero-section {

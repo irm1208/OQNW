@@ -272,14 +272,22 @@ export default function HomePage() {
         style={{
           position: "relative",
           overflow: "hidden",
-          backgroundImage: "url('/hero-vials.png')",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
           minHeight: "unset",
           display: "flex",
           alignItems: "flex-start",
         }}
       >
+        {/* Ken Burns zoom layer */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "url('/hero-vials.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          animation: "kenBurns 16s ease-in-out infinite",
+          willChange: "transform",
+        }} />
         {/* Bottom fade so text remains readable against the light product image */}
         <div style={{
           position: "absolute",
