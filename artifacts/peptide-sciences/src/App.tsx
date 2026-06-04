@@ -28,6 +28,7 @@ import WishlistPage from "@/pages/WishlistPage";
 import BundlesPage from "@/pages/BundlesPage";
 import LabResultsPage from "@/pages/LabResultsPage";
 import ProtocolsPage from "@/pages/ProtocolsPage";
+import FAQPage from "@/pages/FAQPage";
 import LabTestsPage from "@/pages/LabTestsPage";
 import GiftCardsPage from "@/pages/GiftCardsPage";
 import BlogPage from "@/pages/BlogPage";
@@ -101,6 +102,7 @@ function Router() {
       <Route path="/track-order" component={TrackOrderPage} />
       <Route path="/wishlist" component={WishlistPage} />
       <Route path="/protocols" component={ProtocolsPage} />
+      <Route path="/faq" component={FAQPage} />
       <Route path="/lab-results" component={LabResultsPage} />
       <Route path="/lab-tests" component={LabTestsPage} />
       <Route path="/gift-cards" component={GiftCardsPage} />
