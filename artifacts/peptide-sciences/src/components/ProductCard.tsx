@@ -195,7 +195,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             {product.category}
           </span>
 
-          <p className="card-name" style={{ fontSize: "16px", fontWeight: 700, color: "#0F172A", lineHeight: 1.3, marginBottom: "2px" }}>
+          <p className="card-name" style={{ fontSize: "20px", fontWeight: 800, color: "#0F172A", lineHeight: 1.25, marginBottom: "4px" }}>
             {baseName}
           </p>
           {strength && (

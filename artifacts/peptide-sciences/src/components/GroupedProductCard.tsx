@@ -183,7 +183,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           className="card-name"
           onClick={goToProduct}
           style={{
-            fontSize: "18px", fontWeight: 800, lineHeight: 1.3, marginBottom: "10px",
+            fontSize: "22px", fontWeight: 800, lineHeight: 1.25, marginBottom: "10px",
             cursor: "pointer", transition: "opacity 0.15s",
             background: "linear-gradient(120deg, #0D2565 0%, #1B5CB5 60%, #2563EB 100%)",
             WebkitBackgroundClip: "text",
