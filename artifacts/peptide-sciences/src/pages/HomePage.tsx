@@ -174,7 +174,7 @@ function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured
 }
 
 
-const featuredIds = ["3", "7", "11", "43", "15", "31", "64", "71"];
+const featuredIds = ["3", "76", "31", "15", "71", "64", "56", "26"];
 
 const pillars = [
   {
