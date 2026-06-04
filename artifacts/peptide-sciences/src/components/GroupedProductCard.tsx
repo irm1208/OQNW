@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { ShoppingCart, Eye, CheckCircle2, Heart } from "lucide-react";
+import { ShoppingCart, Eye, CheckCircle2, Heart, Flame } from "lucide-react";
 import type { GroupedProduct } from "@/data/groupedProducts";
 import { parseName } from "@/data/groupedProducts";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { popularProductIds } from "@/data/popularPeptides";
+
+const POPULAR_IDS = new Set(popularProductIds.map(p => String(p.id)));
 
 const BLUE = { color: "#1B5CB5", bg: "#EEF4FF", gradient: "linear-gradient(90deg, #1240A0, #2563EB)" };
 
@@ -44,6 +47,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
   const selectedVariant = group.variants[selectedIdx];
   const productIdInt = parseInt(String(selectedVariant?.id ?? group.variants[0]?.id), 10);
   const cat = CATEGORY_COLORS[group.category] ?? BLUE;
+  const isSellingFast = group.variants.some(v => POPULAR_IDS.has(String(v.id)));
   const productUrl = `/product/${selectedVariant.id}`;
 
   const goToProduct = () => navigate(productUrl);
@@ -81,6 +85,21 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         onMouseEnter={() => setImgHovered(true)}
         onMouseLeave={() => setImgHovered(false)}
       >
+        {/* Selling Fast badge — top left */}
+        {isSellingFast && (
+          <div style={{
+            position: "absolute", top: "10px", left: "10px", zIndex: 10,
+            background: "linear-gradient(90deg, #DC2626, #F97316)",
+            color: "#fff", fontSize: "10px", fontWeight: 800, letterSpacing: "0.05em",
+            padding: "4px 9px", borderRadius: "8px",
+            display: "flex", alignItems: "center", gap: "4px",
+            boxShadow: "0 2px 8px rgba(220,38,38,0.35)",
+            pointerEvents: "none",
+          }}>
+            <Flame size={10} /> SELLING FAST
+          </div>
+        )}
+
         {/* Wishlist heart */}
         <button
           onClick={(e) => { e.stopPropagation(); void toggleWishlist(productIdInt); }}
