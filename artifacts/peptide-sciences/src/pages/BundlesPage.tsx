@@ -244,7 +244,7 @@ export default function BundlesPage() {
         )}
 
         {/* Products grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: "28px" }}>
+        <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: "44px" }}>
           {groups.map(group => {
             const anyInBundle = group.variants.some(v => bundleIds.has(v.id));
             const selectedVariants = group.variants.filter(v => bundleIds.has(v.id));
