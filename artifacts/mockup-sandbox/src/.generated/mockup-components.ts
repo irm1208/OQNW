@@ -3,13 +3,13 @@ type ModuleMap = Record<string, () => Promise<Record<string, unknown>>>;
 export const modules: ModuleMap = {
   "./components/mockups/biohack-style/FullPage.tsx": () => import("../components/mockups/biohack-style/FullPage.tsx"),
   "./components/mockups/biohack-style/HeroPage.tsx": () => import("../components/mockups/biohack-style/HeroPage.tsx"),
+  "./components/mockups/color-themes/AlternatingLight.tsx": () => import("../components/mockups/color-themes/AlternatingLight.tsx"),
+  "./components/mockups/color-themes/Desaturated.tsx": () => import("../components/mockups/color-themes/Desaturated.tsx"),
+  "./components/mockups/color-themes/WarmItUp.tsx": () => import("../components/mockups/color-themes/WarmItUp.tsx"),
   "./components/mockups/storefront-themes/ClinicalWhite.tsx": () => import("../components/mockups/storefront-themes/ClinicalWhite.tsx"),
   "./components/mockups/storefront-themes/DarkLuxury.tsx": () => import("../components/mockups/storefront-themes/DarkLuxury.tsx"),
   "./components/mockups/storefront-themes/DeepTech.tsx": () => import("../components/mockups/storefront-themes/DeepTech.tsx"),
   "./components/mockups/storefront-themes/StorefrontRefinedA.tsx": () => import("../components/mockups/storefront-themes/StorefrontRefinedA.tsx"),
   "./components/mockups/storefront-themes/StorefrontRefinedB.tsx": () => import("../components/mockups/storefront-themes/StorefrontRefinedB.tsx"),
-  "./components/mockups/storefront-themes/WarmEarth.tsx": () => import("../components/mockups/storefront-themes/WarmEarth.tsx"),
-  "./components/mockups/color-themes/AlternatingLight.tsx": () => import("../components/mockups/color-themes/AlternatingLight.tsx"),
-  "./components/mockups/color-themes/Desaturated.tsx": () => import("../components/mockups/color-themes/Desaturated.tsx"),
-  "./components/mockups/color-themes/WarmItUp.tsx": () => import("../components/mockups/color-themes/WarmItUp.tsx")
+  "./components/mockups/storefront-themes/WarmEarth.tsx": () => import("../components/mockups/storefront-themes/WarmEarth.tsx")
 };
