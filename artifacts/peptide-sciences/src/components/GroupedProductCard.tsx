@@ -193,7 +193,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = "0.75"}
           onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = "1"}
         >
-          {selectedVariant.name}
+          {group.variants.length > 1 ? group.baseName : selectedVariant.name}
         </p>
 
         {/* Strength pills */}
