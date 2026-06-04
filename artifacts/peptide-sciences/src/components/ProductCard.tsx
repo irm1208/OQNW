@@ -118,7 +118,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               display: "flex", alignItems: "center", gap: "4px",
               boxShadow: "0 2px 8px rgba(220,38,38,0.35)",
             }}>
-              <Flame size={10} /> SELLING FAST
+              <Flame size={10} /> BESTSELLER
             </div>
           )}
           {isHotBuy && (
@@ -130,7 +130,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               display: "flex", alignItems: "center", gap: "4px",
               boxShadow: "0 2px 8px rgba(180,83,9,0.35)",
             }}>
-              <Zap size={10} /> HOT BUY
+              <Zap size={10} /> TRENDING
             </div>
           )}
 

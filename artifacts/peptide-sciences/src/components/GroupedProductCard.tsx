@@ -95,7 +95,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
             boxShadow: "0 2px 8px rgba(220,38,38,0.35)",
             pointerEvents: "none",
           }}>
-            <Flame size={10} /> SELLING FAST
+            <Flame size={10} /> BESTSELLER
           </div>
         )}
         {isHotBuy && (
@@ -108,7 +108,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
             boxShadow: "0 2px 8px rgba(180,83,9,0.35)",
             pointerEvents: "none",
           }}>
-            <Zap size={10} /> HOT BUY
+            <Zap size={10} /> TRENDING
           </div>
         )}
 
