@@ -71,7 +71,7 @@ export default function WishlistPage() {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16 sm:gap-y-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-20 sm:gap-y-24">
             {saved.map((product) => {
               const productIdInt = parseInt(String(product.id), 10);
               const outOfStock = product.stockLevel === 0;
