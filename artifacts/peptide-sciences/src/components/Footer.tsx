@@ -43,6 +43,7 @@ const footerCategories = [
       { label: "Contact Us",          href: "/contact"          },
       { label: "Track Your Order",    href: "/track-order"      },
       { label: "Research Stacks",     href: "/stacks"           },
+      { label: "Protocols",           href: "/protocols"        },
       { label: "Bundle & Save",       href: "/bundles"          },
       { label: "Lab Results & COA",   href: "/lab-results"      },
       { label: "All Peptides",        href: "/all-peptides"     },

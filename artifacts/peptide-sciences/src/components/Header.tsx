@@ -15,6 +15,7 @@ const navItems = [
   { label: "Popular Peptides", href: "/popular-peptides" },
   { label: "Research Stacks", href: "/stacks" },
   { label: "Bundle & Save", href: "/bundles" },
+  { label: "Protocols", href: "/protocols" },
   { label: "Test Results", href: "/lab-tests" },
   { label: "Peptide Calculator", href: "/calculator" },
 ];
