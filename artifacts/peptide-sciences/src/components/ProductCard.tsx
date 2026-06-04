@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { ShoppingCart, Eye, CheckCircle2, AlertTriangle } from "lucide-react";
+import { ShoppingCart, Eye, CheckCircle2, AlertTriangle, Flame } from "lucide-react";
 import type { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
+import { popularProductIds } from "@/data/popularPeptides";
+
+const POPULAR_IDS = new Set(popularProductIds.map(p => String(p.id)));
 
 function parseName(name: string): { baseName: string; strength: string } {
   const match = name.match(/^(.*?)\s+(\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g))(\s+.*)?$/i);
@@ -53,6 +56,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const stockLevel = product.stockLevel;
   const isOutOfStock = stockLevel !== undefined && stockLevel === 0;
   const isLowStock = stockLevel !== undefined && stockLevel > 0 && stockLevel <= LOW_STOCK_THRESHOLD;
+  const isSellingFast = POPULAR_IDS.has(String(product.id)) && !isOutOfStock;
 
   const stop = (e: React.MouseEvent) => e.preventDefault();
   const dec = (e: React.MouseEvent) => { stop(e); setQty(q => Math.max(1, q - 1)); };
@@ -104,6 +108,22 @@ export default function ProductCard({ product }: ProductCardProps) {
               filter: isOutOfStock ? "grayscale(0.4)" : "none",
             }}
           />
+
+          {/* Selling Fast badge — top left */}
+          {isSellingFast && (
+            <div style={{
+              position: "absolute", top: "10px", left: "10px",
+              background: "linear-gradient(90deg, #DC2626, #F97316)",
+              color: "#fff",
+              fontSize: "10px", fontWeight: 800, letterSpacing: "0.05em",
+              padding: "4px 9px", borderRadius: "8px",
+              display: "flex", alignItems: "center", gap: "4px",
+              boxShadow: "0 2px 8px rgba(220,38,38,0.35)",
+              zIndex: 2,
+            }}>
+              <Flame size={10} /> SELLING FAST
+            </div>
+          )}
 
           {/* Stock badges */}
           {isOutOfStock && (
