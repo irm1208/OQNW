@@ -678,7 +678,7 @@ export default function HomePage() {
                 </div>
               ))}
               <Link
-                href="/bundles"
+                href="/all-peptides"
                 style={{ fontSize: "12.5px", fontWeight: 800, color: "#022c22", backgroundColor: "#34D399", padding: "7px 18px", borderRadius: "8px", textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0, boxShadow: "0 2px 8px rgba(52,211,153,0.25)" }}
               >
                 Build a Bundle →

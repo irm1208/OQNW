@@ -186,7 +186,7 @@ export default function PopularPeptides() {
                   <span style={{ fontSize: "9px", color: "rgba(255,255,255,0.38)", fontWeight: 700 }}>OFF</span>
                 </div>
               ))}
-              <Link href="/bundles" style={{ fontSize: "11.5px", fontWeight: 800, color: "#022c22", backgroundColor: "#34D399", padding: "5px 15px", borderRadius: "7px", textDecoration: "none", whiteSpace: "nowrap", boxShadow: "0 0 12px rgba(52,211,153,0.3)" }}>
+              <Link href="/all-peptides" style={{ fontSize: "11.5px", fontWeight: 800, color: "#022c22", backgroundColor: "#34D399", padding: "5px 15px", borderRadius: "7px", textDecoration: "none", whiteSpace: "nowrap", boxShadow: "0 0 12px rgba(52,211,153,0.3)" }}>
                 Build Bundle →
               </Link>
             </div>
