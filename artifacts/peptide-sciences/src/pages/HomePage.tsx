@@ -546,7 +546,7 @@ export default function HomePage() {
 
       {/* ── TESTIMONIALS ──────────────────────────────────────── */}
       <section style={{
-        background: "linear-gradient(135deg, #020B1E 0%, #0D2565 45%, #0F3080 100%)",
+        background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
         padding: "80px 0",
         position: "relative",
         overflow: "hidden",
