@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import {
@@ -179,58 +179,99 @@ const featuredIds = ["3", "17", "56", "82", "71", "31", "15", "64"];
 const TESTIMONIALS = [
   {
     name: "Tom R.",
-    role: "Verified Customer",
-    org: "London, UK",
     avatar: "TR",
     color: "#1B5CB5",
-    bg: "#EEF4FF",
     rating: 5,
-    text: "Been using BPC-157 from OmniQure for about 4 months now. Noticed a real difference with an old shoulder injury that just wouldn't go away. Shipping was quick, packaging was discreet, and the COA was included without even asking. Will definitely reorder.",
+    text: "Been using BPC-157 for about 4 months now. Noticed a real difference with an old shoulder injury that just wouldn't go away. Packaging was discreet, COA included without asking. Will definitely reorder.",
     peptide: "BPC-157",
   },
   {
     name: "Jamie K.",
-    role: "Verified Customer",
-    org: "Manchester, UK",
     avatar: "JK",
     color: "#059669",
-    bg: "#ECFDF5",
     rating: 5,
-    text: "Tried a few different suppliers before finding OmniQure. The difference in quality is night and day. The Epithalon I got was exactly as described — came with full lab docs and arrived in perfect condition. Already on my second order.",
+    text: "Tried a few different suppliers before finding OmniQure. The difference in quality is night and day. Epithalon came with full lab docs and arrived in perfect condition. Already on my second order.",
     peptide: "Epithalon",
   },
   {
     name: "Chris M.",
-    role: "Verified Customer",
-    org: "Bristol, UK",
     avatar: "CM",
     color: "#7C3AED",
-    bg: "#F5F3FF",
     rating: 5,
-    text: "Fast delivery, great communication when I had a question, and the Ipamorelin quality has been consistently solid across three orders. Nice to finally find a supplier you can actually trust. The test results on the website are a great touch too.",
+    text: "Fast delivery, great communication, and the Ipamorelin quality has been consistently solid across three orders. Nice to finally find a supplier you can actually trust.",
     peptide: "Ipamorelin",
   },
   {
     name: "Dan W.",
-    role: "Verified Customer",
-    org: "Edinburgh, UK",
     avatar: "DW",
     color: "#0E7490",
-    bg: "#ECFEFF",
     rating: 5,
-    text: "Ordered the TB-500 and GHK-Cu together. Both came packaged really well and the COAs matched up perfectly. I've had issues with underdosed products elsewhere — not here. Genuinely one of the most reliable suppliers I've come across.",
+    text: "Ordered TB-500 and GHK-Cu together. Both packaged really well and COAs matched up perfectly. I've had issues with underdosed products elsewhere — not here. One of the most reliable suppliers I've come across.",
     peptide: "TB-500 + GHK-Cu",
   },
   {
     name: "Sarah L.",
-    role: "Verified Customer",
-    org: "Birmingham, UK",
     avatar: "SL",
     color: "#B45309",
-    bg: "#FFFBEB",
     rating: 5,
-    text: "Really impressed with how transparent everything is — the lab results are right there on the site, no chasing needed. Retatrutide arrived quickly and the packaging was completely discreet. Customer service replied within the hour when I had a query. 10/10.",
+    text: "Really impressed with how transparent everything is — lab results right there on the site. Retatrutide arrived quickly and packaging was completely discreet. Customer service replied within the hour. 10/10.",
     peptide: "Retatrutide",
+  },
+  {
+    name: "Mohammed A.",
+    avatar: "MA",
+    color: "#1B5CB5",
+    rating: 5,
+    text: "Ordered Tesamorelin twice now and both times the purity has been spot on. Love that the HPLC data is published for every batch. Delivery was fast and the vials arrived perfectly sealed.",
+    peptide: "Tesamorelin",
+  },
+  {
+    name: "Zara B.",
+    avatar: "ZB",
+    color: "#059669",
+    rating: 5,
+    text: "Was skeptical at first but the lab reports really sold it for me. GHK-Cu quality is excellent and I've already recommended OmniQure to a couple of friends. Subscription option would be amazing!",
+    peptide: "GHK-Cu",
+  },
+  {
+    name: "Harpreet S.",
+    avatar: "HS",
+    color: "#7C3AED",
+    rating: 5,
+    text: "Third order in and still blown away by the consistency. BPC-157 purity is always exactly what the COA states. Quick dispatch and the discreet packaging is a nice touch. Wouldn't go anywhere else.",
+    peptide: "BPC-157",
+  },
+  {
+    name: "Tariq N.",
+    avatar: "TN",
+    color: "#0E7490",
+    rating: 5,
+    text: "Placed my first order a bit nervous about quality but the documentation put me at ease straight away. Selank arrived well packed, COA was clear, and I noticed results within the first few weeks. Brilliant service.",
+    peptide: "Selank",
+  },
+  {
+    name: "Gurpreet D.",
+    avatar: "GD",
+    color: "#B45309",
+    rating: 5,
+    text: "Retatrutide from OmniQure is next level. The purity data is publicly available which gives real confidence. Fast shipping, discreet packaging, and the team answered my questions quickly. Top supplier.",
+    peptide: "Retatrutide",
+  },
+  {
+    name: "Priya M.",
+    avatar: "PM",
+    color: "#1B5CB5",
+    rating: 5,
+    text: "Have been ordering for 6 months. The quality never drops and they always include the full COA. CJC-1295 has been great — consistent every single time. Easy checkout and fast delivery every order.",
+    peptide: "CJC-1295",
+  },
+  {
+    name: "Amir H.",
+    avatar: "AH",
+    color: "#059669",
+    rating: 5,
+    text: "Genuinely one of the best UK peptide suppliers I've found. Lab documents available for every single product, no chasing needed. DSIP quality has been consistent across four orders. Highly recommend.",
+    peptide: "DSIP",
   },
 ];
 
@@ -300,6 +341,144 @@ function MoleculeSVG() {
       <circle cx="170" cy="170" r="16" fill="rgba(147,197,253,0.3)"  stroke="rgba(147,197,253,0.7)"  strokeWidth="2" />
       <circle cx="170" cy="170" r="6"  fill="rgba(255,255,255,0.9)" />
     </svg>
+  );
+}
+
+const CARD_W = 360;
+const CARD_GAP = 20;
+
+function TestimonialsCarousel() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  function scrollTo(idx: number) {
+    const el = scrollRef.current;
+    if (!el) return;
+    const clamped = Math.max(0, Math.min(idx, TESTIMONIALS.length - 1));
+    setActiveIdx(clamped);
+    el.scrollTo({ left: clamped * (CARD_W + CARD_GAP), behavior: "smooth" });
+  }
+
+  function onScroll() {
+    const el = scrollRef.current;
+    if (!el) return;
+    const idx = Math.round(el.scrollLeft / (CARD_W + CARD_GAP));
+    setActiveIdx(Math.max(0, Math.min(idx, TESTIMONIALS.length - 1)));
+  }
+
+  return (
+    <div style={{ position: "relative" }}>
+      <button
+        onClick={() => scrollTo(activeIdx - 1)}
+        disabled={activeIdx === 0}
+        style={{
+          position: "absolute", left: "-20px", top: "45%", transform: "translateY(-50%)",
+          zIndex: 10, width: "44px", height: "44px", borderRadius: "50%",
+          background: activeIdx === 0 ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.18)",
+          border: "1px solid rgba(255,255,255,0.18)", cursor: activeIdx === 0 ? "default" : "pointer",
+          color: activeIdx === 0 ? "rgba(255,255,255,0.25)" : "#fff",
+          fontSize: "22px", display: "flex", alignItems: "center", justifyContent: "center",
+          backdropFilter: "blur(8px)", transition: "all 0.2s",
+        }}
+      >‹</button>
+
+      <button
+        onClick={() => scrollTo(activeIdx + 1)}
+        disabled={activeIdx === TESTIMONIALS.length - 1}
+        style={{
+          position: "absolute", right: "-20px", top: "45%", transform: "translateY(-50%)",
+          zIndex: 10, width: "44px", height: "44px", borderRadius: "50%",
+          background: activeIdx === TESTIMONIALS.length - 1 ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.18)",
+          border: "1px solid rgba(255,255,255,0.18)", cursor: activeIdx === TESTIMONIALS.length - 1 ? "default" : "pointer",
+          color: activeIdx === TESTIMONIALS.length - 1 ? "rgba(255,255,255,0.25)" : "#fff",
+          fontSize: "22px", display: "flex", alignItems: "center", justifyContent: "center",
+          backdropFilter: "blur(8px)", transition: "all 0.2s",
+        }}
+      >›</button>
+
+      <div
+        ref={scrollRef}
+        onScroll={onScroll}
+        style={{
+          display: "flex", gap: `${CARD_GAP}px`,
+          overflowX: "auto", scrollSnapType: "x mandatory",
+          paddingBottom: "8px", scrollbarWidth: "none",
+        }}
+      >
+        {TESTIMONIALS.map((t, i) => (
+          <div
+            key={i}
+            style={{
+              minWidth: `${CARD_W}px`, maxWidth: `${CARD_W}px`,
+              scrollSnapAlign: "start",
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: "20px", padding: "32px",
+              backdropFilter: "blur(12px)",
+              position: "relative", overflow: "hidden",
+              display: "flex", flexDirection: "column",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
+              flexShrink: 0,
+            }}
+          >
+            <span style={{
+              position: "absolute", top: "10px", right: "18px",
+              fontSize: "88px", lineHeight: 1, fontFamily: "Georgia, serif",
+              color: "#F59E0B", opacity: 0.12, fontWeight: 900, userSelect: "none",
+            }}>"</span>
+
+            <div style={{ display: "flex", gap: "2px", marginBottom: "18px" }}>
+              {Array.from({ length: t.rating }).map((_, s) => (
+                <Star key={s} size={14} style={{ color: "#F59E0B", fill: "#F59E0B" }} />
+              ))}
+            </div>
+
+            <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.82)", lineHeight: 1.8, flex: 1, marginBottom: "22px" }}>
+              "{t.text}"
+            </p>
+
+            <div style={{ marginBottom: "16px" }}>
+              <span style={{
+                fontSize: "10px", fontWeight: 800, letterSpacing: "0.08em",
+                color: "#F59E0B", backgroundColor: "rgba(245,158,11,0.12)",
+                border: "1px solid rgba(245,158,11,0.3)",
+                padding: "3px 10px", borderRadius: "20px", textTransform: "uppercase",
+              }}>{t.peptide}</span>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "16px" }}>
+              <div style={{
+                width: "40px", height: "40px", borderRadius: "50%",
+                background: `linear-gradient(135deg, ${t.color}, ${t.color}99)`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: "12px", fontWeight: 800, color: "#fff", flexShrink: 0,
+                boxShadow: `0 4px 12px ${t.color}55`,
+              }}>{t.avatar}</div>
+              <div>
+                <p style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}>{t.name}</p>
+                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", marginTop: "2px" }}>Verified Customer</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "center", gap: "7px", marginTop: "24px" }}>
+        {TESTIMONIALS.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => scrollTo(i)}
+            style={{
+              width: activeIdx === i ? "24px" : "8px",
+              height: "8px", borderRadius: "4px",
+              background: activeIdx === i ? "#F59E0B" : "rgba(255,255,255,0.25)",
+              border: "none", cursor: "pointer", padding: 0,
+              transition: "all 0.25s",
+            }}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -577,121 +756,12 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* 5-card grid: 3 top + 2 bottom */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
-            {TESTIMONIALS.slice(0, 3).map((t, i) => (
-              <div key={i} style={{
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.10)",
-                borderRadius: "20px",
-                padding: "32px",
-                backdropFilter: "blur(12px)",
-                position: "relative",
-                overflow: "hidden",
-                display: "flex", flexDirection: "column",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
-              }}>
-                {/* Large decorative quote */}
-                <span style={{
-                  position: "absolute", top: "12px", right: "20px",
-                  fontSize: "96px", lineHeight: 1, fontFamily: "Georgia, serif",
-                  color: "#F59E0B", opacity: 0.12, fontWeight: 900, userSelect: "none",
-                }}>"</span>
-
-                {/* Stars */}
-                <div className="flex gap-0.5 mb-5">
-                  {Array.from({ length: t.rating }).map((_, s) => (
-                    <Star key={s} size={15} style={{ color: "#F59E0B", fill: "#F59E0B" }} />
-                  ))}
-                </div>
-
-                {/* Quote */}
-                <p style={{ fontSize: "14.5px", color: "rgba(255,255,255,0.82)", lineHeight: 1.8, flex: 1, marginBottom: "24px" }}>
-                  "{t.text}"
-                </p>
-
-                {/* Peptide pill */}
-                <div style={{ marginBottom: "18px" }}>
-                  <span style={{
-                    fontSize: "10px", fontWeight: 800, letterSpacing: "0.08em",
-                    color: "#F59E0B", backgroundColor: "rgba(245,158,11,0.12)",
-                    border: "1px solid rgba(245,158,11,0.3)",
-                    padding: "3px 10px", borderRadius: "20px", textTransform: "uppercase",
-                  }}>{t.peptide}</span>
-                </div>
-
-                {/* Reviewer */}
-                <div style={{ display: "flex", alignItems: "center", gap: "12px", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "18px" }}>
-                  <div style={{
-                    width: "42px", height: "42px", borderRadius: "50%",
-                    background: `linear-gradient(135deg, ${t.color}, ${t.color}99)`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: "13px", fontWeight: 800, color: "#fff", flexShrink: 0,
-                    boxShadow: `0 4px 12px ${t.color}55`,
-                  }}>{t.avatar}</div>
-                  <div>
-                    <p style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}>{t.name}</p>
-                    <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.45)", marginTop: "2px" }}>{t.org}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {TESTIMONIALS.slice(3).map((t, i) => (
-              <div key={i} style={{
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.10)",
-                borderRadius: "20px",
-                padding: "32px",
-                backdropFilter: "blur(12px)",
-                position: "relative",
-                overflow: "hidden",
-                display: "flex", flexDirection: "column",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
-              }}>
-                <span style={{
-                  position: "absolute", top: "12px", right: "20px",
-                  fontSize: "96px", lineHeight: 1, fontFamily: "Georgia, serif",
-                  color: "#F59E0B", opacity: 0.12, fontWeight: 900, userSelect: "none",
-                }}>"</span>
-                <div className="flex gap-0.5 mb-5">
-                  {Array.from({ length: t.rating }).map((_, s) => (
-                    <Star key={s} size={15} style={{ color: "#F59E0B", fill: "#F59E0B" }} />
-                  ))}
-                </div>
-                <p style={{ fontSize: "14.5px", color: "rgba(255,255,255,0.82)", lineHeight: 1.8, flex: 1, marginBottom: "24px" }}>
-                  "{t.text}"
-                </p>
-                <div style={{ marginBottom: "18px" }}>
-                  <span style={{
-                    fontSize: "10px", fontWeight: 800, letterSpacing: "0.08em",
-                    color: "#F59E0B", backgroundColor: "rgba(245,158,11,0.12)",
-                    border: "1px solid rgba(245,158,11,0.3)",
-                    padding: "3px 10px", borderRadius: "20px", textTransform: "uppercase",
-                  }}>{t.peptide}</span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "18px" }}>
-                  <div style={{
-                    width: "42px", height: "42px", borderRadius: "50%",
-                    background: `linear-gradient(135deg, ${t.color}, ${t.color}99)`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: "13px", fontWeight: 800, color: "#fff", flexShrink: 0,
-                    boxShadow: `0 4px 12px ${t.color}55`,
-                  }}>{t.avatar}</div>
-                  <div>
-                    <p style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}>{t.name}</p>
-                    <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.45)", marginTop: "2px" }}>{t.org}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* ── Carousel ── */}
+          <TestimonialsCarousel />
 
           {/* Rating bar */}
           <div style={{
-            marginTop: "52px",
+            marginTop: "48px",
             background: "rgba(255,255,255,0.05)",
             border: "1px solid rgba(255,255,255,0.10)",
             borderRadius: "16px",
