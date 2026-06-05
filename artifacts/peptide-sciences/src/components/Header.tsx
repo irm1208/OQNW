@@ -238,6 +238,15 @@ export default function Header() {
       }}>
         <div className="max-w-[1280px] mx-auto px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-2">
 
+          {/* Hamburger — mobile only, left side */}
+          <button
+            className="md:hidden p-1 order-0 flex-shrink-0"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{ color: "rgba(255,255,255,0.85)", background: "none", border: "none", cursor: "pointer" }}
+          >
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none" }}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
@@ -549,14 +558,6 @@ export default function Header() {
               <span className="hidden sm:inline">My Cart</span>
             </Link>
 
-            {/* Hamburger */}
-            <button
-              className="md:hidden p-1"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              style={{ color: "rgba(255,255,255,0.85)", background: "none", border: "none", cursor: "pointer" }}
-            >
-              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
           </div>
 
         </div>
