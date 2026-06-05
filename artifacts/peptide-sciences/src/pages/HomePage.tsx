@@ -182,7 +182,7 @@ const TESTIMONIALS = [
     avatar: "TR",
     color: "#1B5CB5",
     rating: 5,
-    text: "Been using BPC-157 for about 4 months now. Noticed a real difference with an old shoulder injury that just wouldn't go away. Packaging was discreet, COA included without asking. Will definitely reorder.",
+    text: "Been using BPC-157 for about 4 months now and noticed a real difference with an old shoulder injury that just wouldn't shift. Packaging was completely discreet and delivery was faster than expected. Will definitely be reordering.",
     peptide: "BPC-157",
   },
   {
@@ -190,7 +190,7 @@ const TESTIMONIALS = [
     avatar: "JK",
     color: "#059669",
     rating: 5,
-    text: "Tried a few different suppliers before finding OmniQure. The difference in quality is night and day. Epithalon came with full lab docs and arrived in perfect condition. Already on my second order.",
+    text: "Tried a few different places before this and the experience here is on a different level. The Epithalon arrived in perfect condition and I genuinely felt the effects within the first couple of weeks. Customer service were spot on too.",
     peptide: "Epithalon",
   },
   {
@@ -198,7 +198,7 @@ const TESTIMONIALS = [
     avatar: "CM",
     color: "#7C3AED",
     rating: 5,
-    text: "Fast delivery, great communication, and the Ipamorelin quality has been consistently solid across three orders. Nice to finally find a supplier you can actually trust.",
+    text: "Fast delivery and the Ipamorelin has been solid across three separate orders. When I had a question the team replied quickly and were really helpful. Nice to find somewhere consistent you can rely on.",
     peptide: "Ipamorelin",
   },
   {
@@ -206,7 +206,7 @@ const TESTIMONIALS = [
     avatar: "DW",
     color: "#0E7490",
     rating: 5,
-    text: "Ordered TB-500 and GHK-Cu together. Both packaged really well and COAs matched up perfectly. I've had issues with underdosed products elsewhere — not here. One of the most reliable suppliers I've come across.",
+    text: "Ordered TB-500 and GHK-Cu together. Both arrived well packaged and I've been happy with the results from both. Had a slight delay once and support sorted it out immediately. Really solid experience overall.",
     peptide: "TB-500 + GHK-Cu",
   },
   {
@@ -214,7 +214,7 @@ const TESTIMONIALS = [
     avatar: "SL",
     color: "#B45309",
     rating: 5,
-    text: "Really impressed with how transparent everything is — lab results right there on the site. Retatrutide arrived quickly and packaging was completely discreet. Customer service replied within the hour. 10/10.",
+    text: "Retatrutide arrived quickly and the packaging was completely discreet which I really appreciate. Support replied within the hour when I had a query. The whole experience from ordering to delivery was seamless. 10/10.",
     peptide: "Retatrutide",
   },
   {
@@ -222,7 +222,7 @@ const TESTIMONIALS = [
     avatar: "MA",
     color: "#1B5CB5",
     rating: 5,
-    text: "Ordered Tesamorelin twice now and both times the purity has been spot on. Love that the HPLC data is published for every batch. Delivery was fast and the vials arrived perfectly sealed.",
+    text: "Ordered Tesamorelin twice now. Delivery has been fast both times and the vials arrived perfectly sealed. Really pleased with the results I've been getting and the ordering process is simple and straightforward.",
     peptide: "Tesamorelin",
   },
   {
@@ -230,7 +230,7 @@ const TESTIMONIALS = [
     avatar: "ZB",
     color: "#059669",
     rating: 5,
-    text: "Was skeptical at first but the lab reports really sold it for me. GHK-Cu quality is excellent and I've already recommended OmniQure to a couple of friends. Subscription option would be amazing!",
+    text: "GHK-Cu has been brilliant for my skin and recovery. I was a bit hesitant at first but the whole process was easy and the product worked exactly as I hoped. Already recommended it to a few people.",
     peptide: "GHK-Cu",
   },
   {
@@ -238,7 +238,7 @@ const TESTIMONIALS = [
     avatar: "HS",
     color: "#7C3AED",
     rating: 5,
-    text: "Third order in and still blown away by the consistency. BPC-157 purity is always exactly what the COA states. Quick dispatch and the discreet packaging is a nice touch. Wouldn't go anywhere else.",
+    text: "Third order of BPC-157 now and still very happy. Quick dispatch every time and the discreet packaging is something I've always valued. Results have been consistent and I genuinely wouldn't go anywhere else.",
     peptide: "BPC-157",
   },
   {
@@ -246,7 +246,7 @@ const TESTIMONIALS = [
     avatar: "TN",
     color: "#0E7490",
     rating: 5,
-    text: "Placed my first order a bit nervous about quality but the documentation put me at ease straight away. Selank arrived well packed, COA was clear, and I noticed results within the first few weeks. Brilliant service.",
+    text: "Placed my first order a bit nervous but everything went smoothly. Selank arrived well packaged and I started noticing the effects within the first few weeks. The customer service team were great when I reached out with questions.",
     peptide: "Selank",
   },
   {
@@ -254,7 +254,7 @@ const TESTIMONIALS = [
     avatar: "GD",
     color: "#B45309",
     rating: 5,
-    text: "Retatrutide from OmniQure is next level. The purity data is publicly available which gives real confidence. Fast shipping, discreet packaging, and the team answered my questions quickly. Top supplier.",
+    text: "Fast shipping, discreet packaging, and the Retatrutide has been performing really well for me. Had a query and the team replied the same day. Exactly the kind of service that keeps me coming back.",
     peptide: "Retatrutide",
   },
   {
@@ -262,7 +262,7 @@ const TESTIMONIALS = [
     avatar: "PM",
     color: "#1B5CB5",
     rating: 5,
-    text: "Have been ordering for 6 months. The quality never drops and they always include the full COA. CJC-1295 has been great — consistent every single time. Easy checkout and fast delivery every order.",
+    text: "Been ordering CJC-1295 regularly for about six months now. Every order arrives on time, well packaged, and I've been really happy with the results. Easy checkout and delivery is always fast.",
     peptide: "CJC-1295",
   },
   {
@@ -270,8 +270,40 @@ const TESTIMONIALS = [
     avatar: "AH",
     color: "#059669",
     rating: 5,
-    text: "Genuinely one of the best UK peptide suppliers I've found. Lab documents available for every single product, no chasing needed. DSIP quality has been consistent across four orders. Highly recommend.",
+    text: "DSIP has been a game changer for my sleep quality. Four orders in and never had a single issue. The service is reliable, delivery is quick, and any time I've had a question I've had a response within hours.",
     peptide: "DSIP",
+  },
+  {
+    name: "Emma T.",
+    avatar: "ET",
+    color: "#7C3AED",
+    rating: 5,
+    text: "I was hesitant to try peptides but the whole experience made it easy. The Epithalon order arrived discreetly and quickly. I've noticed a real improvement in how I feel day to day. Will absolutely be ordering again.",
+    peptide: "Epithalon",
+  },
+  {
+    name: "Charlotte B.",
+    avatar: "CB",
+    color: "#0E7490",
+    rating: 5,
+    text: "Really impressed with the speed of delivery and how well everything was packed. TB-500 has made a noticeable difference after a ligament issue I'd been struggling with. The support team were helpful when I had questions before ordering.",
+    peptide: "TB-500",
+  },
+  {
+    name: "James O.",
+    avatar: "JO",
+    color: "#B45309",
+    rating: 5,
+    text: "Ordered Semaglutide and the whole process was dead easy. Arrived in a couple of days, packaged well, and I've been seeing good results. Customer service answered my pre-order question within an hour. Top service.",
+    peptide: "Semaglutide",
+  },
+  {
+    name: "Rebecca H.",
+    avatar: "RH",
+    color: "#1B5CB5",
+    rating: 5,
+    text: "GHK-Cu is something I now order every month without fail. The results speak for themselves and the service has been consistently great. Delivery is always fast and I've never had an issue with packaging.",
+    peptide: "GHK-Cu",
   },
 ];
 
