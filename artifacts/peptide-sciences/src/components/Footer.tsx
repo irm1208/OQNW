@@ -48,7 +48,7 @@ const footerCategories = [
       { label: "FAQ",                 href: "/faq"              },
       { label: "Glossary",            href: "/glossary"         },
       { label: "Bundle & Save",       href: "/all-peptides"     },
-      { label: "Lab Results & COA",   href: "/lab-results"      },
+      { label: "Lab Results",          href: "/lab-tests"        },
       { label: "All Peptides",        href: "/all-peptides"     },
     ],
   },
