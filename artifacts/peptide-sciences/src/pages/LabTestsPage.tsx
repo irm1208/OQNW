@@ -5,7 +5,7 @@ import { getPurity, getPurityStr, getLotDates } from "@/utils/productPurity";
 import { generateCOA } from "@/utils/generateCOA";
 import { productDetails } from "@/data/productDetails";
 import { useSEO } from "@/hooks/useSEO";
-import { Search, Download, CheckCircle2, BarChart2, GitCompare, FileText, X, ChevronUp, TestTube2, Microscope } from "lucide-react";
+import { Search, Download, CheckCircle2, FileText, X, ChevronUp, TestTube2, Microscope } from "lucide-react";
 import type { Product } from "@/data/products";
 import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
@@ -405,8 +405,6 @@ export default function LabTestsPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [activeTab, setActiveTab] = useState<"reports" | "compare">("reports");
-
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
     return products.filter((p) => {
@@ -418,11 +416,6 @@ export default function LabTestsPage() {
       return matchCat && matchQ;
     });
   }, [products, search, category]);
-
-  const tabs: { key: "reports" | "compare"; label: string; icon: React.ReactNode }[] = [
-    { key: "reports", label: "Reports", icon: <FileText size={13} /> },
-    { key: "compare", label: "Compare", icon: <GitCompare size={13} /> },
-  ];
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
@@ -467,53 +460,14 @@ export default function LabTestsPage() {
             </div>
           </div>
 
-          {/* Tabs */}
-          <div style={{ display: "flex", gap: "2px" }}>
-            {tabs.map((t) => (
-              <button
-                key={t.key}
-                onClick={() => setActiveTab(t.key)}
-                style={{
-                  padding: "9px 20px",
-                  borderRadius: "8px 8px 0 0",
-                  border: activeTab === t.key ? "1px solid rgba(255,255,255,0.1)" : "1px solid transparent",
-                  borderBottom: activeTab === t.key ? "1px solid #0C1120" : "1px solid transparent",
-                  background: activeTab === t.key ? "#0C1120" : "transparent",
-                  color: activeTab === t.key ? "#fff" : "rgba(255,255,255,0.38)",
-                  fontSize: "13px",
-                  fontWeight: activeTab === t.key ? 700 : 500,
-                  cursor: "pointer",
-                  fontFamily: "'Arimo', Arial, sans-serif",
-                  display: "flex", alignItems: "center", gap: "7px",
-                  transition: "color 0.15s",
-                }}
-              >
-                {t.icon}
-                {t.label}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
 
       {/* Content */}
       <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "28px 24px" }}>
 
-        {activeTab === "metrics" ? (
-          <MetricsView products={filtered} />
-        ) : activeTab === "compare" ? (
-          <div style={{ textAlign: "center", padding: "80px 20px", color: "#94A3B8" }}>
-            <p style={{ fontSize: "16px", fontWeight: 700 }}>Compare coming soon</p>
-            <p style={{ fontSize: "13px", marginTop: "8px" }}>
-              Switch to{" "}
-              <button onClick={() => setActiveTab("reports")} style={{ background: "none", border: "none", color: "#1240A0", cursor: "pointer", fontSize: "13px", fontFamily: "inherit" }}>
-                Reports
-              </button>{" "}
-              to view all COAs.
-            </p>
-          </div>
-        ) : (
-          <>
+        <>
+
             {/* Search */}
             <div style={{ position: "relative", marginBottom: "16px", maxWidth: "640px" }}>
               <Search size={15} style={{
@@ -756,8 +710,7 @@ export default function LabTestsPage() {
                 })}
               </div>
             )}
-          </>
-        )}
+        </>
       </div>
     </div>
   );
