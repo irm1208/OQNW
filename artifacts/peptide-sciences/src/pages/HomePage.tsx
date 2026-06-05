@@ -545,168 +545,179 @@ export default function HomePage() {
       </section>
 
       {/* ── TESTIMONIALS ──────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#F7FAFF", padding: "72px 0", borderTop: "1px solid #E2E8F0" }}>
-        <div className="max-w-[1280px] mx-auto px-4">
+      <section style={{
+        background: "linear-gradient(135deg, #020B1E 0%, #0D2565 45%, #0F3080 100%)",
+        padding: "80px 0",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+        {/* Dot grid overlay */}
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)",
+          backgroundSize: "32px 32px", pointerEvents: "none",
+        }} />
+        {/* Glow blobs */}
+        <div style={{ position: "absolute", top: "-100px", left: "10%", width: "400px", height: "400px", borderRadius: "50%", background: "radial-gradient(circle, rgba(37,99,235,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "-80px", right: "8%", width: "360px", height: "360px", borderRadius: "50%", background: "radial-gradient(circle, rgba(245,158,11,0.10) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+        <div className="max-w-[1280px] mx-auto px-4" style={{ position: "relative", zIndex: 1 }}>
+
           {/* Header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 mb-2">
-              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #F59E0B, #FBBF24)", borderRadius: "2px" }} />
-              <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#B45309", letterSpacing: "0.1em" }}>
-                CUSTOMER REVIEWS
-              </p>
-              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #FBBF24, #F59E0B)", borderRadius: "2px" }} />
+          <div className="text-center mb-14">
+            {/* Stars row */}
+            <div className="flex justify-center gap-1 mb-4">
+              {[1,2,3,4,5].map(s => <Star key={s} size={22} style={{ color: "#F59E0B", fill: "#F59E0B" }} />)}
             </div>
-            <h2 className="font-bold" style={{ fontSize: "30px", color: "#0F172A", letterSpacing: "-0.02em" }}>
+            <h2 className="font-bold" style={{ fontSize: "clamp(28px,4vw,42px)", color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: "10px" }}>
               What Our Customers Say
             </h2>
-            <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "480px", margin: "8px auto 0", lineHeight: 1.7 }}>
+            <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.55)", maxWidth: "420px", margin: "0 auto", lineHeight: 1.7 }}>
               Real reviews from verified OmniQure customers.
             </p>
           </div>
 
-          {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* 5-card grid: 3 top + 2 bottom */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
             {TESTIMONIALS.slice(0, 3).map((t, i) => (
-              <div
-                key={i}
-                className="rounded-2xl flex flex-col"
-                style={{
-                  backgroundColor: "#fff",
-                  border: "1.5px solid #E8EDF5",
-                  boxShadow: "0 2px 12px rgba(15,23,42,0.05)",
-                  padding: "28px",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-                {/* Accent bar */}
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, ${t.color}, ${t.color}88)` }} />
-
-                {/* Quote icon */}
-                <div style={{ color: t.color, opacity: 0.15, position: "absolute", top: "18px", right: "18px" }}>
-                  <Quote size={40} />
-                </div>
+              <div key={i} style={{
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.10)",
+                borderRadius: "20px",
+                padding: "32px",
+                backdropFilter: "blur(12px)",
+                position: "relative",
+                overflow: "hidden",
+                display: "flex", flexDirection: "column",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
+              }}>
+                {/* Large decorative quote */}
+                <span style={{
+                  position: "absolute", top: "12px", right: "20px",
+                  fontSize: "96px", lineHeight: 1, fontFamily: "Georgia, serif",
+                  color: "#F59E0B", opacity: 0.12, fontWeight: 900, userSelect: "none",
+                }}>"</span>
 
                 {/* Stars */}
-                <div className="flex gap-0.5 mb-4">
+                <div className="flex gap-0.5 mb-5">
                   {Array.from({ length: t.rating }).map((_, s) => (
-                    <Star key={s} size={14} style={{ color: "#F59E0B", fill: "#F59E0B" }} />
+                    <Star key={s} size={15} style={{ color: "#F59E0B", fill: "#F59E0B" }} />
                   ))}
                 </div>
 
-                {/* Quote text */}
-                <p style={{ fontSize: "14px", color: "#374151", lineHeight: 1.75, flex: 1, marginBottom: "20px", fontStyle: "italic" }}>
+                {/* Quote */}
+                <p style={{ fontSize: "14.5px", color: "rgba(255,255,255,0.82)", lineHeight: 1.8, flex: 1, marginBottom: "24px" }}>
                   "{t.text}"
                 </p>
 
-                {/* Peptide tag */}
-                <div className="mb-4">
+                {/* Peptide pill */}
+                <div style={{ marginBottom: "18px" }}>
                   <span style={{
-                    fontSize: "10.5px", fontWeight: 700,
-                    color: t.color, backgroundColor: t.bg,
-                    padding: "3px 10px", borderRadius: "6px",
-                    letterSpacing: "0.05em", textTransform: "uppercase",
-                  }}>
-                    {t.peptide}
-                  </span>
+                    fontSize: "10px", fontWeight: 800, letterSpacing: "0.08em",
+                    color: "#F59E0B", backgroundColor: "rgba(245,158,11,0.12)",
+                    border: "1px solid rgba(245,158,11,0.3)",
+                    padding: "3px 10px", borderRadius: "20px", textTransform: "uppercase",
+                  }}>{t.peptide}</span>
                 </div>
 
                 {/* Reviewer */}
-                <div className="flex items-center gap-3" style={{ borderTop: "1px solid #F1F5F9", paddingTop: "16px" }}>
-                  <div
-                    className="flex items-center justify-center rounded-full flex-shrink-0"
-                    style={{ width: "40px", height: "40px", backgroundColor: t.bg, color: t.color, fontSize: "13px", fontWeight: 800 }}
-                  >
-                    {t.avatar}
-                  </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "18px" }}>
+                  <div style={{
+                    width: "42px", height: "42px", borderRadius: "50%",
+                    background: `linear-gradient(135deg, ${t.color}, ${t.color}99)`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: "13px", fontWeight: 800, color: "#fff", flexShrink: 0,
+                    boxShadow: `0 4px 12px ${t.color}55`,
+                  }}>{t.avatar}</div>
                   <div>
-                    <p style={{ fontSize: "13.5px", fontWeight: 700, color: "#0F172A" }}>{t.name}</p>
-                    <p style={{ fontSize: "11.5px", color: "#64748B", marginTop: "1px" }}>{t.role}</p>
-                    <p style={{ fontSize: "11px", color: t.color, marginTop: "1px", fontWeight: 600 }}>{t.org}</p>
+                    <p style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}>{t.name}</p>
+                    <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.45)", marginTop: "2px" }}>{t.org}</p>
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Bottom row — 2 wider cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {TESTIMONIALS.slice(3).map((t, i) => (
-              <div
-                key={i}
-                className="rounded-2xl flex flex-col"
-                style={{
-                  backgroundColor: "#fff",
-                  border: "1.5px solid #E8EDF5",
-                  boxShadow: "0 2px 12px rgba(15,23,42,0.05)",
-                  padding: "28px",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, ${t.color}, ${t.color}88)` }} />
-                <div style={{ color: t.color, opacity: 0.15, position: "absolute", top: "18px", right: "18px" }}>
-                  <Quote size={40} />
-                </div>
-                <div className="flex gap-0.5 mb-4">
+              <div key={i} style={{
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.10)",
+                borderRadius: "20px",
+                padding: "32px",
+                backdropFilter: "blur(12px)",
+                position: "relative",
+                overflow: "hidden",
+                display: "flex", flexDirection: "column",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
+              }}>
+                <span style={{
+                  position: "absolute", top: "12px", right: "20px",
+                  fontSize: "96px", lineHeight: 1, fontFamily: "Georgia, serif",
+                  color: "#F59E0B", opacity: 0.12, fontWeight: 900, userSelect: "none",
+                }}>"</span>
+                <div className="flex gap-0.5 mb-5">
                   {Array.from({ length: t.rating }).map((_, s) => (
-                    <Star key={s} size={14} style={{ color: "#F59E0B", fill: "#F59E0B" }} />
+                    <Star key={s} size={15} style={{ color: "#F59E0B", fill: "#F59E0B" }} />
                   ))}
                 </div>
-                <p style={{ fontSize: "14px", color: "#374151", lineHeight: 1.75, flex: 1, marginBottom: "20px", fontStyle: "italic" }}>
+                <p style={{ fontSize: "14.5px", color: "rgba(255,255,255,0.82)", lineHeight: 1.8, flex: 1, marginBottom: "24px" }}>
                   "{t.text}"
                 </p>
-                <div className="mb-4">
+                <div style={{ marginBottom: "18px" }}>
                   <span style={{
-                    fontSize: "10.5px", fontWeight: 700,
-                    color: t.color, backgroundColor: t.bg,
-                    padding: "3px 10px", borderRadius: "6px",
-                    letterSpacing: "0.05em", textTransform: "uppercase",
-                  }}>
-                    {t.peptide}
-                  </span>
+                    fontSize: "10px", fontWeight: 800, letterSpacing: "0.08em",
+                    color: "#F59E0B", backgroundColor: "rgba(245,158,11,0.12)",
+                    border: "1px solid rgba(245,158,11,0.3)",
+                    padding: "3px 10px", borderRadius: "20px", textTransform: "uppercase",
+                  }}>{t.peptide}</span>
                 </div>
-                <div className="flex items-center gap-3" style={{ borderTop: "1px solid #F1F5F9", paddingTop: "16px" }}>
-                  <div
-                    className="flex items-center justify-center rounded-full flex-shrink-0"
-                    style={{ width: "40px", height: "40px", backgroundColor: t.bg, color: t.color, fontSize: "13px", fontWeight: 800 }}
-                  >
-                    {t.avatar}
-                  </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "18px" }}>
+                  <div style={{
+                    width: "42px", height: "42px", borderRadius: "50%",
+                    background: `linear-gradient(135deg, ${t.color}, ${t.color}99)`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: "13px", fontWeight: 800, color: "#fff", flexShrink: 0,
+                    boxShadow: `0 4px 12px ${t.color}55`,
+                  }}>{t.avatar}</div>
                   <div>
-                    <p style={{ fontSize: "13.5px", fontWeight: 700, color: "#0F172A" }}>{t.name}</p>
-                    <p style={{ fontSize: "11.5px", color: "#64748B", marginTop: "1px" }}>{t.role}</p>
-                    <p style={{ fontSize: "11px", color: t.color, marginTop: "1px", fontWeight: 600 }}>{t.org}</p>
+                    <p style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}>{t.name}</p>
+                    <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.45)", marginTop: "2px" }}>{t.org}</p>
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Overall rating summary */}
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6">
-            <div className="flex items-center gap-3">
-              <span style={{ fontSize: "48px", fontWeight: 900, color: "#0F172A", lineHeight: 1 }}>4.9</span>
+          {/* Rating bar */}
+          <div style={{
+            marginTop: "52px",
+            background: "rgba(255,255,255,0.05)",
+            border: "1px solid rgba(255,255,255,0.10)",
+            borderRadius: "16px",
+            padding: "28px 40px",
+            display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "40px",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+              <span style={{ fontSize: "56px", fontWeight: 900, color: "#fff", lineHeight: 1 }}>4.9</span>
               <div>
                 <div className="flex gap-0.5 mb-1">
-                  {[1,2,3,4,5].map(s => <Star key={s} size={16} style={{ color: "#F59E0B", fill: "#F59E0B" }} />)}
+                  {[1,2,3,4,5].map(s => <Star key={s} size={18} style={{ color: "#F59E0B", fill: "#F59E0B" }} />)}
                 </div>
-                <p style={{ fontSize: "12px", color: "#64748B", fontWeight: 600 }}>Average researcher rating</p>
+                <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>Average customer rating</p>
               </div>
             </div>
-            <div style={{ width: "1px", height: "48px", backgroundColor: "#E2E8F0" }} className="hidden sm:block" />
-            <div className="flex gap-6 text-center">
-              {[
-                { num: "500+", label: "Orders Fulfilled" },
-                { num: "47",   label: "Unique Compounds" },
-                { num: "99%+", label: "Avg. HPLC Purity" },
-              ].map((stat, i) => (
-                <div key={i}>
-                  <p style={{ fontSize: "22px", fontWeight: 900, color: "#0D2565" }}>{stat.num}</p>
-                  <p style={{ fontSize: "11.5px", color: "#64748B", fontWeight: 600 }}>{stat.label}</p>
-                </div>
-              ))}
-            </div>
+            <div style={{ width: "1px", height: "52px", backgroundColor: "rgba(255,255,255,0.1)" }} className="hidden sm:block" />
+            {[
+              { num: "500+", label: "Orders Fulfilled" },
+              { num: "47",   label: "Unique Compounds" },
+              { num: "99%+", label: "Avg. HPLC Purity" },
+            ].map((stat, i) => (
+              <div key={i} style={{ textAlign: "center" }}>
+                <p style={{ fontSize: "26px", fontWeight: 900, color: "#F59E0B", lineHeight: 1 }}>{stat.num}</p>
+                <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.45)", fontWeight: 600, marginTop: "4px" }}>{stat.label}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
