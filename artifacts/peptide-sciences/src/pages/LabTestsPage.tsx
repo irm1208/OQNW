@@ -390,6 +390,126 @@ function ReportModal({
   );
 }
 
+// ─── Metrics tab ──────────────────────────────────────────────────────────────
+
+function MetricsView({ products }: { products: Product[] }) {
+  const purities = products.map(p => getPurity(p.id));
+  const avg = purities.reduce((a, b) => a + b, 0) / (purities.length || 1);
+  const highest = Math.max(...purities);
+  const lowest = Math.min(...purities);
+  const above999 = purities.filter(p => p >= 99.9).length;
+
+  const buckets = [
+    { label: "< 99.0%",       min: 0,     max: 99.0,  color: "#F59E0B" },
+    { label: "99.0 – 99.4%",  min: 99.0,  max: 99.5,  color: "#60A5FA" },
+    { label: "99.5 – 99.7%",  min: 99.5,  max: 99.8,  color: "#34D399" },
+    { label: "99.8 – 99.89%", min: 99.8,  max: 99.9,  color: "#818CF8" },
+    { label: "≥ 99.9%",       min: 99.9,  max: Infinity, color: "#4ADE80" },
+  ].map(b => ({
+    ...b,
+    count: purities.filter(p => p >= b.min && p < b.max).length,
+  }));
+  const maxBucket = Math.max(...buckets.map(b => b.count), 1);
+
+  const byCategory = Object.entries(
+    products.reduce<Record<string, number[]>>((acc, p) => {
+      const cat = p.category || "Other";
+      if (!acc[cat]) acc[cat] = [];
+      acc[cat].push(getPurity(p.id));
+      return acc;
+    }, {})
+  )
+    .map(([cat, vals]) => ({ cat, avg: vals.reduce((a, b) => a + b, 0) / vals.length, count: vals.length }))
+    .sort((a, b) => b.avg - a.avg);
+
+  const top10 = [...products]
+    .map(p => ({ p, purity: getPurity(p.id) }))
+    .sort((a, b) => b.purity - a.purity)
+    .slice(0, 10);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+
+      {/* Summary cards */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 14 }}>
+        {[
+          { label: "Average Purity",    value: `${avg.toFixed(3)}%`,         sub: `across ${products.length} products`,   emoji: "📊" },
+          { label: "Highest Purity",    value: `${highest.toFixed(3)}%`,      sub: "top performing batch",                emoji: "🏆" },
+          { label: "Lowest Purity",     value: `${lowest.toFixed(3)}%`,       sub: "still above 98% threshold",           emoji: "🔬" },
+          { label: "≥ 99.9% Purity",   value: `${above999}`,                 sub: `${((above999 / (products.length || 1)) * 100).toFixed(0)}% of catalogue`, emoji: "⭐" },
+        ].map((s, i) => (
+          <div key={i} style={{ background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)", borderRadius: 16, padding: "20px 22px", border: "1.5px solid rgba(255,255,255,0.10)" }}>
+            <div style={{ fontSize: 24, marginBottom: 10 }}>{s.emoji}</div>
+            <p style={{ margin: "0 0 4px", fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: "0.1em" }}>{s.label}</p>
+            <p style={{ margin: "0 0 4px", fontSize: 28, fontWeight: 900, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1 }}>{s.value}</p>
+            <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.40)" }}>{s.sub}</p>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+
+        {/* Purity distribution */}
+        <div style={{ background: "#fff", borderRadius: 16, border: "1.5px solid #E8EDF5", padding: "22px 24px", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}>
+          <h3 style={{ margin: "0 0 18px", fontSize: 14, fontWeight: 800, color: "#0F172A" }}>Purity Distribution</h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {buckets.map((b, i) => (
+              <div key={i}>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: "#475569" }}>{b.label}</span>
+                  <span style={{ fontSize: 12, fontWeight: 800, color: "#0F172A" }}>{b.count} <span style={{ fontWeight: 500, color: "#94A3B8" }}>products</span></span>
+                </div>
+                <div style={{ height: 8, backgroundColor: "#F1F5F9", borderRadius: 4, overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: `${(b.count / maxBucket) * 100}%`, background: `linear-gradient(90deg, ${b.color}, ${b.color}bb)`, borderRadius: 4, transition: "width 0.6s ease" }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Top 10 compounds */}
+        <div style={{ background: "#fff", borderRadius: 16, border: "1.5px solid #E8EDF5", padding: "22px 24px", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}>
+          <h3 style={{ margin: "0 0 16px", fontSize: 14, fontWeight: 800, color: "#0F172A" }}>Top 10 by Purity</h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {top10.map(({ p, purity }, i) => (
+              <div key={p.id} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ fontSize: 10, fontWeight: 800, color: i < 3 ? "#F59E0B" : "#94A3B8", width: 20, textAlign: "right", flexShrink: 0 }}>#{i + 1}</span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: "#0F172A", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{p.name}</p>
+                  <p style={{ margin: 0, fontSize: 10.5, color: "#94A3B8" }}>{p.category}</p>
+                </div>
+                <span style={{ fontSize: 13, fontWeight: 900, color: "#059669", flexShrink: 0 }}>{purity.toFixed(3)}%</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Category breakdown */}
+      <div style={{ background: "#fff", borderRadius: 16, border: "1.5px solid #E8EDF5", padding: "22px 24px", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}>
+        <h3 style={{ margin: "0 0 16px", fontSize: 14, fontWeight: 800, color: "#0F172A" }}>Average Purity by Category</h3>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 10 }}>
+          {byCategory.map(({ cat, avg: catAvg, count }) => (
+            <div key={cat} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", borderRadius: 10, background: "#F8FAFF", border: "1.5px solid #E8EDF5" }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ margin: "0 0 2px", fontSize: 12, fontWeight: 700, color: "#0F172A", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{cat}</p>
+                <div style={{ height: 4, backgroundColor: "#E2E8F0", borderRadius: 2, overflow: "hidden", marginTop: 5 }}>
+                  <div style={{ height: "100%", width: `${((catAvg - 98) / 2) * 100}%`, background: "linear-gradient(90deg, #1240A0, #60A5FA)", borderRadius: 2 }} />
+                </div>
+              </div>
+              <div style={{ textAlign: "right", flexShrink: 0 }}>
+                <p style={{ margin: 0, fontSize: 14, fontWeight: 900, color: "#1240A0" }}>{catAvg.toFixed(2)}%</p>
+                <p style={{ margin: 0, fontSize: 10, color: "#94A3B8" }}>{count} products</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
 // ─── Main page ────────────────────────────────────────────────────────────────
 
 export default function LabTestsPage() {
@@ -500,17 +620,14 @@ export default function LabTestsPage() {
       {/* Content */}
       <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "28px 24px" }}>
 
-        {activeTab !== "reports" ? (
+        {activeTab === "metrics" ? (
+          <MetricsView products={filtered} />
+        ) : activeTab === "compare" ? (
           <div style={{ textAlign: "center", padding: "80px 20px", color: "#94A3B8" }}>
-            <p style={{ fontSize: "16px", fontWeight: 700 }}>
-              {activeTab === "metrics" ? "Metrics" : "Compare"} coming soon
-            </p>
+            <p style={{ fontSize: "16px", fontWeight: 700 }}>Compare coming soon</p>
             <p style={{ fontSize: "13px", marginTop: "8px" }}>
               Switch to{" "}
-              <button
-                onClick={() => setActiveTab("reports")}
-                style={{ background: "none", border: "none", color: "#1240A0", cursor: "pointer", fontSize: "13px", fontFamily: "inherit" }}
-              >
+              <button onClick={() => setActiveTab("reports")} style={{ background: "none", border: "none", color: "#1240A0", cursor: "pointer", fontSize: "13px", fontFamily: "inherit" }}>
                 Reports
               </button>{" "}
               to view all COAs.
