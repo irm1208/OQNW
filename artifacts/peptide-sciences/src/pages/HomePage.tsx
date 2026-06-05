@@ -10,7 +10,6 @@ import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
-import { researchStacks } from "@/data/stacks";
 
 const RESEARCH_AREAS = [
   {
@@ -820,56 +819,6 @@ export default function HomePage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-20 sm:gap-x-12 sm:gap-y-24 md:gap-x-14 md:gap-y-28">
             {featuredGroups.slice(0, 4).map(group => (
               <GroupedProductCard key={group.baseName} group={group} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── POPULAR STACKS ────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#F7FAFF", borderTop: "1px solid #EEF2F7", borderBottom: "1px solid #EEF2F7", padding: "68px 0" }}>
-        <div className="max-w-[1280px] mx-auto px-4">
-          <div className="flex items-end justify-between mb-10">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <div style={{ width: "3px", height: "16px", background: "linear-gradient(180deg, #1B5CB5, #60A5FA)", borderRadius: "2px" }} />
-                <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#1B5CB5", letterSpacing: "0.1em" }}>MULTI-COMPOUND PROTOCOLS</p>
-              </div>
-              <h2 className="font-bold" style={{ fontSize: "30px", color: "#0F172A", letterSpacing: "-0.02em" }}>Popular Research Stacks</h2>
-              <p style={{ fontSize: "14px", color: "#64748B", marginTop: "4px" }}>Pre-built compound combinations for specific research protocols</p>
-            </div>
-            <Link href="/stacks" className="hidden sm:flex items-center gap-1.5 font-semibold" style={{ fontSize: "13px", color: "#1B5CB5", textDecoration: "none" }}>
-              View all stacks <ChevronRight size={15} />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {researchStacks.slice(0, 3).map((stack) => (
-              <Link key={stack.id} href="/stacks" style={{ textDecoration: "none" }}>
-                <div
-                  style={{ backgroundColor: "#fff", border: "1.5px solid #E8EDF5", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 12px rgba(15,23,42,0.04)", transition: "transform 0.2s, box-shadow 0.2s", cursor: "pointer", height: "100%", display: "flex", flexDirection: "column" }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 16px 40px rgba(15,23,42,0.10)"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(15,23,42,0.04)"; }}
-                >
-                  <div style={{ height: 4, background: `linear-gradient(90deg, ${stack.badgeColor}, ${stack.badgeColor}77)` }} />
-                  <div style={{ padding: "22px 22px 20px", flex: 1, display: "flex", flexDirection: "column" }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-                      <span style={{ fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: stack.badgeColor, backgroundColor: stack.badgeColor + "18", border: `1px solid ${stack.badgeColor}40`, borderRadius: 20, padding: "3px 10px" }}>{stack.badge}</span>
-                      <span style={{ fontSize: 26 }}>{stack.icon}</span>
-                    </div>
-                    <h3 style={{ fontSize: 15, fontWeight: 800, color: "#0F172A", marginBottom: 6, lineHeight: 1.2 }}>{stack.name}</h3>
-                    <p style={{ fontSize: 12.5, color: "#64748B", lineHeight: 1.65, marginBottom: 14, flex: 1 }}>{stack.tagline}</p>
-                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}>
-                      {stack.researchAreas.slice(0, 2).map((area) => (
-                        <span key={area} style={{ fontSize: 10.5, fontWeight: 600, color: "#64748B", backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0", borderRadius: 20, padding: "3px 10px" }}>{area}</span>
-                      ))}
-                      <span style={{ fontSize: 10.5, fontWeight: 600, color: "#94A3B8", backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0", borderRadius: 20, padding: "3px 10px" }}>{stack.cycleLength}</span>
-                    </div>
-                    <div style={{ borderTop: "1px solid #F1F5F9", paddingTop: 12, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <span style={{ fontSize: 11, color: "#94A3B8", fontWeight: 600 }}>{stack.products.length} compounds</span>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: stack.badgeColor, display: "flex", alignItems: "center", gap: 3 }}>View Stack <ChevronRight size={12} /></span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
             ))}
           </div>
         </div>
