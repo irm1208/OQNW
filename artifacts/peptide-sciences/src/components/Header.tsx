@@ -18,6 +18,7 @@ const navItems = [
   { label: "Test Results", href: "/lab-tests" },
   { label: "Peptide Calculator", href: "/calculator" },
   { label: "Protocols", href: "/protocols" },
+  { label: "Bac Water", href: "/bac-water" },
 ];
 
 

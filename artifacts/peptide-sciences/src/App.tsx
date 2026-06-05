@@ -34,6 +34,7 @@ import LabTestsPage from "@/pages/LabTestsPage";
 import GiftCardsPage from "@/pages/GiftCardsPage";
 import BlogPage from "@/pages/BlogPage";
 import BlogPostPage from "@/pages/BlogPostPage";
+import BacWaterPage from "@/pages/BacWaterPage";
 import { CookieConsent } from "@/components/CookieConsent";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
@@ -110,6 +111,7 @@ function Router() {
       <Route path="/gift-cards" component={GiftCardsPage} />
       <Route path="/blog" component={BlogPage} />
       <Route path="/blog/:slug" component={BlogPostPage} />
+      <Route path="/bac-water" component={BacWaterPage} />
       <Route path="/terms" component={TermsPage} />
       <Route path="/shipping" component={ShippingPage} />
       <Route path="/privacy" component={PrivacyPage} />
