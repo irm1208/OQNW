@@ -379,9 +379,9 @@ function MoleculeSVG() {
 const CARD_GAP = 16;
 
 function useCardWidth() {
-  const [w, setW] = useState(() => typeof window !== "undefined" ? Math.min(360, window.innerWidth - 48) : 360);
+  const [w, setW] = useState(() => typeof window !== "undefined" ? Math.min(280, window.innerWidth - 48) : 280);
   useEffect(() => {
-    const update = () => setW(Math.min(360, window.innerWidth - 48));
+    const update = () => setW(Math.min(280, window.innerWidth - 48));
     window.addEventListener("resize", update, { passive: true });
     return () => window.removeEventListener("resize", update);
   }, []);
@@ -458,50 +458,50 @@ function TestimonialsCarousel() {
               scrollSnapAlign: "start",
               background: "rgba(255,255,255,0.06)",
               border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: "20px", padding: "32px",
+              borderRadius: "16px", padding: "22px",
               backdropFilter: "blur(12px)",
               position: "relative", overflow: "hidden",
               display: "flex", flexDirection: "column",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
+              boxShadow: "0 6px 24px rgba(0,0,0,0.22)",
               flexShrink: 0,
             }}
           >
             <span style={{
-              position: "absolute", top: "10px", right: "18px",
-              fontSize: "88px", lineHeight: 1, fontFamily: "Georgia, serif",
+              position: "absolute", top: "6px", right: "14px",
+              fontSize: "60px", lineHeight: 1, fontFamily: "Georgia, serif",
               color: "#F59E0B", opacity: 0.12, fontWeight: 900, userSelect: "none",
             }}>"</span>
 
-            <div style={{ display: "flex", gap: "2px", marginBottom: "18px" }}>
+            <div style={{ display: "flex", gap: "2px", marginBottom: "12px" }}>
               {Array.from({ length: t.rating }).map((_, s) => (
-                <Star key={s} size={14} style={{ color: "#F59E0B", fill: "#F59E0B" }} />
+                <Star key={s} size={12} style={{ color: "#F59E0B", fill: "#F59E0B" }} />
               ))}
             </div>
 
-            <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.82)", lineHeight: 1.8, flex: 1, marginBottom: "22px" }}>
+            <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.82)", lineHeight: 1.7, flex: 1, marginBottom: "14px" }}>
               "{t.text}"
             </p>
 
-            <div style={{ marginBottom: "16px" }}>
+            <div style={{ marginBottom: "12px" }}>
               <span style={{
-                fontSize: "10px", fontWeight: 800, letterSpacing: "0.08em",
+                fontSize: "9px", fontWeight: 800, letterSpacing: "0.08em",
                 color: "#F59E0B", backgroundColor: "rgba(245,158,11,0.12)",
                 border: "1px solid rgba(245,158,11,0.3)",
-                padding: "3px 10px", borderRadius: "20px", textTransform: "uppercase",
+                padding: "2px 8px", borderRadius: "20px", textTransform: "uppercase",
               }}>{t.peptide}</span>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "16px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "12px" }}>
               <div style={{
-                width: "40px", height: "40px", borderRadius: "50%",
+                width: "34px", height: "34px", borderRadius: "50%",
                 background: `linear-gradient(135deg, ${t.color}, ${t.color}99)`,
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: "12px", fontWeight: 800, color: "#fff", flexShrink: 0,
-                boxShadow: `0 4px 12px ${t.color}55`,
+                fontSize: "11px", fontWeight: 800, color: "#fff", flexShrink: 0,
+                boxShadow: `0 3px 10px ${t.color}55`,
               }}>{t.avatar}</div>
               <div>
-                <p style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}>{t.name}</p>
-                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", marginTop: "2px" }}>Verified Customer</p>
+                <p style={{ fontSize: "13px", fontWeight: 700, color: "#fff" }}>{t.name}</p>
+                <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.4)", marginTop: "1px" }}>Verified Customer</p>
               </div>
             </div>
           </div>
@@ -771,7 +771,7 @@ export default function HomePage() {
       {/* ── TESTIMONIALS ──────────────────────────────────────── */}
       <section className="home-section-testimonials" style={{
         background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
-        padding: "80px 0",
+        padding: "56px 0",
         position: "relative",
         overflow: "hidden",
       }}>
