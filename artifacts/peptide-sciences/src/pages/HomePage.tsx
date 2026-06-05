@@ -764,22 +764,22 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {[
-              { emoji: "🩹", label: "Recovery & Healing",  sub: "BPC-157 · TB-500",            href: "/all-peptides?category=Healing+Peptides",  color: "#059669", bg: "#ECFDF5", border: "#BBF7D0" },
-              { emoji: "🧠", label: "Cognitive & Brain",   sub: "Semax · Selank · P21",         href: "/all-peptides?category=Nootropics",         color: "#7C3AED", bg: "#F5F3FF", border: "#C4B5FD" },
-              { emoji: "⚖️", label: "Weight Management",   sub: "Tirzepatide · Retatrutide",    href: "/all-peptides?category=Weight+Management",  color: "#F59E0B", bg: "#FFFBEB", border: "#FDE68A" },
-              { emoji: "💪", label: "Growth Hormone",      sub: "CJC-1295 · Ipamorelin",        href: "/all-peptides?category=Growth+Peptides",    color: "#1B5CB5", bg: "#EEF4FF", border: "#BFDBFE" },
-              { emoji: "🌿", label: "Longevity",           sub: "Epithalon · SS-31 · MOTS-C",   href: "/all-peptides?category=Longevity+Peptides", color: "#0E7490", bg: "#ECFEFF", border: "#A5F3FC" },
-              { emoji: "✨", label: "Skin & Collagen",     sub: "GHK-Cu",                       href: "/all-peptides?category=Skin+%26+Hair",      color: "#DB2777", bg: "#FDF2F8", border: "#FBCFE8" },
+              { emoji: "🩹", label: "Recovery & Healing",  sub: "BPC-157 · TB-500",           href: "/all-peptides?category=Healing+Peptides"  },
+              { emoji: "🧠", label: "Cognitive & Brain",   sub: "Semax · Selank · P21",        href: "/all-peptides?category=Nootropics"         },
+              { emoji: "⚖️", label: "Weight Management",   sub: "Tirzepatide · Retatrutide",   href: "/all-peptides?category=Weight+Management"  },
+              { emoji: "💪", label: "Growth Hormone",      sub: "CJC-1295 · Ipamorelin",       href: "/all-peptides?category=Growth+Peptides"    },
+              { emoji: "🌿", label: "Longevity",           sub: "Epithalon · SS-31 · MOTS-C",  href: "/all-peptides?category=Longevity+Peptides" },
+              { emoji: "✨", label: "Skin & Collagen",     sub: "GHK-Cu",                      href: "/all-peptides?category=Skin+%26+Hair"      },
             ].map((g, i) => (
               <Link key={i} href={g.href} style={{ textDecoration: "none" }}>
                 <div
-                  style={{ backgroundColor: g.bg, border: `1.5px solid ${g.border}`, borderRadius: 16, padding: "20px 14px", textAlign: "center", cursor: "pointer", transition: "transform 0.18s, box-shadow 0.18s" }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)"; (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 24px ${g.color}22`; }}
+                  style={{ background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)", border: "1.5px solid rgba(255,255,255,0.10)", borderRadius: 16, padding: "20px 14px", textAlign: "center", cursor: "pointer", transition: "transform 0.18s, box-shadow 0.18s" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 28px rgba(13,37,101,0.40)"; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
                 >
                   <div style={{ fontSize: 30, marginBottom: 10, lineHeight: 1 }}>{g.emoji}</div>
-                  <p style={{ fontSize: 12, fontWeight: 800, color: g.color, marginBottom: 4, lineHeight: 1.2 }}>{g.label}</p>
-                  <p style={{ fontSize: 10.5, color: "#94A3B8", lineHeight: 1.4 }}>{g.sub}</p>
+                  <p style={{ fontSize: 12, fontWeight: 800, color: "#fff", marginBottom: 4, lineHeight: 1.2 }}>{g.label}</p>
+                  <p style={{ fontSize: 10.5, color: "rgba(255,255,255,0.55)", lineHeight: 1.4 }}>{g.sub}</p>
                 </div>
               </Link>
             ))}
