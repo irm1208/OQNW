@@ -552,15 +552,15 @@ export default function HomePage() {
             <div className="inline-flex items-center gap-2 mb-2">
               <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #F59E0B, #FBBF24)", borderRadius: "2px" }} />
               <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#B45309", letterSpacing: "0.1em" }}>
-                RESEARCHER REVIEWS
+                CUSTOMER REVIEWS
               </p>
               <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #FBBF24, #F59E0B)", borderRadius: "2px" }} />
             </div>
             <h2 className="font-bold" style={{ fontSize: "30px", color: "#0F172A", letterSpacing: "-0.02em" }}>
-              Trusted by Research Scientists
+              What Our Customers Say
             </h2>
             <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "480px", margin: "8px auto 0", lineHeight: 1.7 }}>
-              Hear from the labs and researchers who rely on OmniQure for their in-vitro studies.
+              Real reviews from verified OmniQure customers.
             </p>
           </div>
 
