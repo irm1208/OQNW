@@ -27,12 +27,13 @@ export default function CartPreviewPanel() {
     <div
       style={{
         position: "fixed",
-        left: 0,
+        right: 0,
         top: "50%",
         transform: "translateY(-50%)",
         zIndex: 9000,
         display: "flex",
         alignItems: "flex-start",
+        flexDirection: "row-reverse",
         pointerEvents: "none",
       }}
     >
@@ -42,9 +43,9 @@ export default function CartPreviewPanel() {
           pointerEvents: "all",
           background: "#fff",
           border: "1.5px solid #E2E8F0",
-          borderLeft: "none",
-          borderRadius: "0 16px 16px 0",
-          boxShadow: "4px 0 32px rgba(15,23,42,0.12)",
+          borderRight: "none",
+          borderRadius: "16px 0 0 16px",
+          boxShadow: "-4px 0 32px rgba(15,23,42,0.12)",
           width: collapsed ? "0px" : "260px",
           overflow: "hidden",
           transition: "width 0.25s ease",
@@ -174,14 +175,14 @@ export default function CartPreviewPanel() {
             pointerEvents: "all",
             background: "linear-gradient(180deg, #0D2565 0%, #1240A0 100%)",
             border: "none",
-            borderRadius: "0 10px 10px 0",
+            borderRadius: "10px 0 0 10px",
             padding: "14px 8px",
             cursor: "pointer",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             gap: "6px",
-            boxShadow: "4px 0 16px rgba(13,37,101,0.2)",
+            boxShadow: "-4px 0 16px rgba(13,37,101,0.2)",
           }}
         >
           <ShoppingCart size={16} style={{ color: "#fff" }} />
