@@ -382,14 +382,14 @@ function useCardWidth() {
   const [w, setW] = useState(() => {
     if (typeof window === "undefined") return 380;
     const vw = window.innerWidth;
-    // Mobile: fill most of the screen; desktop: ~3 cards visible in 1280px container
+    // Mobile: one full card; desktop: exactly 2 full cards with 3rd peeking
     if (vw < 640) return Math.min(300, vw - 48);
-    return 380;
+    return 580;
   });
   useEffect(() => {
     const update = () => {
       const vw = window.innerWidth;
-      setW(vw < 640 ? Math.min(300, vw - 48) : 380);
+      setW(vw < 640 ? Math.min(300, vw - 48) : 580);
     };
     window.addEventListener("resize", update, { passive: true });
     return () => window.removeEventListener("resize", update);
