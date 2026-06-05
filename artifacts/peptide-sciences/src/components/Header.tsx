@@ -12,11 +12,11 @@ import { useWishlist } from "@/context/WishlistContext";
 const navItems = [
   { label: "Home", href: "/" },
   { label: "All Peptides", href: "/all-peptides" },
+  { label: "Bac Water", href: "/bac-water" },
   { label: "Research Stacks", href: "/stacks" },
   { label: "Lab Results", href: "/lab-tests" },
   { label: "Peptide Calculator", href: "/calculator" },
   { label: "Protocols", href: "/protocols" },
-  { label: "Bac Water", href: "/bac-water" },
 ];
 
 
