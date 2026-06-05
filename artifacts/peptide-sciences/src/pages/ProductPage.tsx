@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { trackViewContent } from "@/lib/pixels";
 import { Link, useParams } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
-import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, User, Heart } from "lucide-react";
+import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, User, Heart, Droplets } from "lucide-react";
 import { generateCOA } from "@/utils/generateCOA";
 import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
@@ -222,9 +222,21 @@ export default function ProductPage() {
   const decreaseQty = () => setQuantity((q) => Math.max(1, q - 1));
   const increaseQty = () => setQuantity((q) => q + 1);
 
+  // Bac Water add-on state
+  const [bacWaterEnabled, setBacWaterEnabled] = useState(false);
+  const [bacWaterSizeIdx, setBacWaterSizeIdx] = useState(0);
+  const BAC_WATER_OPTIONS = [
+    { id: "bw-3ml",  name: "Bacteriostatic Water 3ml",  slug: "bacteriostatic-water-3ml",  price: 4.99,  label: "3ml",  image: "/bac-water-3ml.png",  category: "Accessories" },
+    { id: "bw-10ml", name: "Bacteriostatic Water 10ml", slug: "bacteriostatic-water-10ml", price: 8.99,  label: "10ml", image: "/bac-water-10ml.png", category: "Accessories" },
+  ] as const;
+
   const handleAddToCart = () => {
     if (!product) return;
     addToCart(product, quantity);
+    if (bacWaterEnabled) {
+      const bw = BAC_WATER_OPTIONS[bacWaterSizeIdx];
+      addToCart({ id: bw.id, name: bw.name, slug: bw.slug, price: bw.price, image: bw.image, category: bw.category }, 1);
+    }
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
@@ -577,6 +589,96 @@ export default function ProductPage() {
                 </button>
               </div>
             </div>
+
+            {/* ── Bac Water Add-on ──────────────────────────────── */}
+            {product.stockLevel !== 0 && (
+              <div
+                className="rounded-xl mb-3"
+                style={{
+                  border: bacWaterEnabled ? "1.5px solid #38BDF8" : "1.5px solid #E0F2FE",
+                  backgroundColor: bacWaterEnabled ? "#F0F9FF" : "#fff",
+                  overflow: "hidden",
+                  transition: "border-color 0.2s, background-color 0.2s",
+                }}
+              >
+                {/* Header row */}
+                <button
+                  onClick={() => setBacWaterEnabled((v) => !v)}
+                  style={{
+                    width: "100%", display: "flex", alignItems: "center",
+                    gap: 10, padding: "12px 14px",
+                    background: "none", border: "none", cursor: "pointer", textAlign: "left",
+                  }}
+                >
+                  {/* Checkbox */}
+                  <span
+                    style={{
+                      width: 20, height: 20, borderRadius: 6, flexShrink: 0,
+                      border: bacWaterEnabled ? "2px solid #0EA5E9" : "2px solid #CBD5E1",
+                      backgroundColor: bacWaterEnabled ? "#0EA5E9" : "#fff",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      transition: "border-color 0.15s, background-color 0.15s",
+                    }}
+                  >
+                    {bacWaterEnabled && (
+                      <svg width="11" height="8" viewBox="0 0 11 8" fill="none">
+                        <path d="M1 4L4 7L10 1" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </span>
+
+                  <Droplets size={16} style={{ color: "#0EA5E9", flexShrink: 0 }} />
+
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontSize: 13, fontWeight: 700, color: "#0F172A", margin: 0, lineHeight: 1.2 }}>
+                      Add Bacteriostatic Water
+                    </p>
+                    <p style={{ fontSize: 11, color: "#64748B", margin: 0, marginTop: 1 }}>
+                      Required for peptide reconstitution
+                    </p>
+                  </div>
+
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "#0EA5E9", flexShrink: 0 }}>
+                    + {formatPrice(BAC_WATER_OPTIONS[bacWaterSizeIdx].price)}
+                  </span>
+                </button>
+
+                {/* Size picker — shown when enabled */}
+                {bacWaterEnabled && (
+                  <div
+                    style={{
+                      borderTop: "1px solid #E0F2FE",
+                      padding: "10px 14px 12px",
+                      display: "flex", gap: 8,
+                    }}
+                  >
+                    {BAC_WATER_OPTIONS.map((opt, idx) => (
+                      <button
+                        key={opt.id}
+                        onClick={() => setBacWaterSizeIdx(idx)}
+                        style={{
+                          flex: 1,
+                          padding: "8px 0",
+                          borderRadius: 9,
+                          border: bacWaterSizeIdx === idx ? "2px solid #0EA5E9" : "1.5px solid #BAE6FD",
+                          backgroundColor: bacWaterSizeIdx === idx ? "#E0F2FE" : "#F0F9FF",
+                          cursor: "pointer",
+                          display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
+                          transition: "border-color 0.15s, background-color 0.15s",
+                        }}
+                      >
+                        <span style={{ fontSize: 14, fontWeight: 800, color: bacWaterSizeIdx === idx ? "#0369A1" : "#475569" }}>
+                          {opt.label}
+                        </span>
+                        <span style={{ fontSize: 11, fontWeight: 600, color: bacWaterSizeIdx === idx ? "#0EA5E9" : "#94A3B8" }}>
+                          {formatPrice(opt.price)}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Bundle & Save nudge */}
             {product.stockLevel !== 0 && (
