@@ -453,6 +453,7 @@ function TestimonialsCarousel() {
         {TESTIMONIALS.map((t, i) => (
           <div
             key={i}
+            className="testimonial-card"
             style={{
               minWidth: `${cardW}px`, maxWidth: `${cardW}px`,
               scrollSnapAlign: "start",
@@ -788,12 +789,12 @@ export default function HomePage() {
         <div className="max-w-[1280px] mx-auto px-4" style={{ position: "relative", zIndex: 1 }}>
 
           {/* Header */}
-          <div className="text-center mb-14">
+          <div className="testimonial-section-header text-center mb-14">
             {/* Stars row */}
             <div className="flex justify-center gap-1 mb-4">
               {[1,2,3,4,5].map(s => <Star key={s} size={22} style={{ color: "#F59E0B", fill: "#F59E0B" }} />)}
             </div>
-            <h2 className="font-bold" style={{ fontSize: "clamp(28px,4vw,42px)", color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: "10px" }}>
+            <h2 className="font-bold" style={{ fontSize: "clamp(22px,4vw,42px)", color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: "10px" }}>
               What Our Customers Say
             </h2>
             <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.55)", maxWidth: "420px", margin: "0 auto", lineHeight: 1.7 }}>
@@ -805,7 +806,7 @@ export default function HomePage() {
           <TestimonialsCarousel />
 
           {/* Rating bar */}
-          <div style={{
+          <div className="testimonial-rating-bar" style={{
             marginTop: "48px",
             background: "rgba(255,255,255,0.05)",
             border: "1px solid rgba(255,255,255,0.10)",
