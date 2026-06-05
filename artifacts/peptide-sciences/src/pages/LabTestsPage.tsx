@@ -364,13 +364,13 @@ function ReportModal({
             <h3 style={{ margin: "0 0 16px", fontSize: "14px", fontWeight: 800, color: "#0F172A" }}>Purity Analysis Summary</h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "12px" }}>
               {[
-                { label: "Target Compound", value: `${getPurity(currentProduct.id).toFixed(1)}%`, color: "#059669", bg: "#F0FDF4", border: "#BBF7D0" },
-                { label: "Solvent / Other", value: "0.3%", color: "#64748B", bg: "#F8FAFC", border: "#E2E8F0" },
-                { label: "Water Content", value: "≤1.0%", color: "#1240A0", bg: "#EEF4FF", border: "#BFDBFE" },
+                { label: "Target Compound", value: `${getPurity(currentProduct.id).toFixed(1)}%` },
+                { label: "Solvent / Other", value: "0.3%" },
+                { label: "Water Content", value: "≤1.0%" },
               ].map(row => (
-                <div key={row.label} style={{ padding: "14px", borderRadius: "10px", background: row.bg, border: `1.5px solid ${row.border}` }}>
-                  <p style={{ margin: "0 0 4px", fontSize: "10.5px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em" }}>{row.label}</p>
-                  <p style={{ margin: 0, fontSize: "22px", fontWeight: 900, color: row.color }}>{row.value}</p>
+                <div key={row.label} style={{ padding: "14px", borderRadius: "10px", background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)", border: "1.5px solid rgba(255,255,255,0.10)" }}>
+                  <p style={{ margin: "0 0 4px", fontSize: "10.5px", fontWeight: 700, color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{row.label}</p>
+                  <p style={{ margin: 0, fontSize: "22px", fontWeight: 900, color: "#fff" }}>{row.value}</p>
                 </div>
               ))}
             </div>
