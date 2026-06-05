@@ -13,7 +13,7 @@ const navItems = [
   { label: "Home", href: "/" },
   { label: "All Peptides", href: "/all-peptides" },
   { label: "Research Stacks", href: "/stacks" },
-  { label: "Test Results", href: "/lab-tests" },
+  { label: "Lab Results", href: "/lab-tests" },
   { label: "Peptide Calculator", href: "/calculator" },
   { label: "Protocols", href: "/protocols" },
   { label: "Bac Water", href: "/bac-water" },
