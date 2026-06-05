@@ -1,7 +1,7 @@
 import { useCart } from "@/context/CartContext";
 import { Link } from "wouter";
 import { ShoppingCart, ChevronUp, ChevronDown, Tag, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const TIERS = [
   { min: 15, pct: 20 },
@@ -14,6 +14,15 @@ export default function CartPreviewPanel() {
   const { items, totalItems, subtotal, bundleDiscountPct, bundleDiscountAmount } = useCart();
   const [expanded, setExpanded] = useState(false);
 
+  useEffect(() => {
+    if (totalItems > 0) {
+      document.body.classList.add("has-cart-preview-bar");
+    } else {
+      document.body.classList.remove("has-cart-preview-bar");
+    }
+    return () => document.body.classList.remove("has-cart-preview-bar");
+  }, [totalItems]);
+
   if (totalItems === 0) return null;
 
   const discountedTotal = subtotal - bundleDiscountAmount;
@@ -21,6 +30,7 @@ export default function CartPreviewPanel() {
 
   return (
     <div
+      className="cart-preview-bar"
       style={{
         position: "fixed",
         bottom: 0,

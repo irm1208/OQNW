@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import {
@@ -376,31 +376,42 @@ function MoleculeSVG() {
   );
 }
 
-const CARD_W = 360;
-const CARD_GAP = 20;
+const CARD_GAP = 16;
+
+function useCardWidth() {
+  const [w, setW] = useState(() => typeof window !== "undefined" ? Math.min(360, window.innerWidth - 48) : 360);
+  useEffect(() => {
+    const update = () => setW(Math.min(360, window.innerWidth - 48));
+    window.addEventListener("resize", update, { passive: true });
+    return () => window.removeEventListener("resize", update);
+  }, []);
+  return w;
+}
 
 function TestimonialsCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
+  const cardW = useCardWidth();
 
   function scrollTo(idx: number) {
     const el = scrollRef.current;
     if (!el) return;
     const clamped = Math.max(0, Math.min(idx, TESTIMONIALS.length - 1));
     setActiveIdx(clamped);
-    el.scrollTo({ left: clamped * (CARD_W + CARD_GAP), behavior: "smooth" });
+    el.scrollTo({ left: clamped * (cardW + CARD_GAP), behavior: "smooth" });
   }
 
   function onScroll() {
     const el = scrollRef.current;
     if (!el) return;
-    const idx = Math.round(el.scrollLeft / (CARD_W + CARD_GAP));
+    const idx = Math.round(el.scrollLeft / (cardW + CARD_GAP));
     setActiveIdx(Math.max(0, Math.min(idx, TESTIMONIALS.length - 1)));
   }
 
   return (
     <div style={{ position: "relative" }}>
       <button
+        className="testimonial-nav-btn"
         onClick={() => scrollTo(activeIdx - 1)}
         disabled={activeIdx === 0}
         style={{
@@ -415,6 +426,7 @@ function TestimonialsCarousel() {
       >‹</button>
 
       <button
+        className="testimonial-nav-btn"
         onClick={() => scrollTo(activeIdx + 1)}
         disabled={activeIdx === TESTIMONIALS.length - 1}
         style={{
@@ -435,13 +447,14 @@ function TestimonialsCarousel() {
           display: "flex", gap: `${CARD_GAP}px`,
           overflowX: "auto", scrollSnapType: "x mandatory",
           paddingBottom: "8px", scrollbarWidth: "none",
+          paddingLeft: "4px", paddingRight: "4px",
         }}
       >
         {TESTIMONIALS.map((t, i) => (
           <div
             key={i}
             style={{
-              minWidth: `${CARD_W}px`, maxWidth: `${CARD_W}px`,
+              minWidth: `${cardW}px`, maxWidth: `${cardW}px`,
               scrollSnapAlign: "start",
               background: "rgba(255,255,255,0.06)",
               border: "1px solid rgba(255,255,255,0.12)",
@@ -719,7 +732,7 @@ export default function HomePage() {
       </section>
 
       {/* ── FEATURED PEPTIDES ─────────────────────────────────── */}
-      <section style={{ backgroundColor: "#fff", padding: "68px 0" }}>
+      <section className="home-section-featured" style={{ backgroundColor: "#fff", padding: "68px 0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="flex items-end justify-between mb-10">
             <div>
@@ -756,7 +769,7 @@ export default function HomePage() {
       </section>
 
       {/* ── TESTIMONIALS ──────────────────────────────────────── */}
-      <section style={{
+      <section className="home-section-testimonials" style={{
         background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
         padding: "80px 0",
         position: "relative",
@@ -825,7 +838,7 @@ export default function HomePage() {
       </section>
 
       {/* ── WHY OMNIQURE ──────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#F7FAFF", padding: "68px 0", borderTop: "1px solid #E2E8F0" }}>
+      <section className="home-section-why" style={{ backgroundColor: "#F7FAFF", padding: "68px 0", borderTop: "1px solid #E2E8F0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 mb-2">
@@ -906,8 +919,8 @@ export default function HomePage() {
       {/* ── RESEARCH AREAS ────────────────────────────────────── */}
       <section style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", borderTop: "3px solid #34D399" }}>
         {/* ── Header strip ── */}
-        <div style={{ padding: "64px 0 48px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-          <div className="max-w-[1280px] mx-auto" style={{ padding: "0 32px", display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
+        <div className="research-header" style={{ padding: "64px 0 48px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+          <div className="max-w-[1280px] mx-auto px-4 lg:px-8" style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
             {/* Left */}
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>

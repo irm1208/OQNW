@@ -184,9 +184,39 @@ export default function AllPeptides() {
         </div>
       </div>
 
+      {/* Mobile category scroll strip — hidden on md+ where sidebar shows */}
+      <div className="md:hidden overflow-x-auto scrollbar-none border-b border-slate-200 bg-white sticky top-0 z-10">
+        <div className="flex gap-2 px-3 py-2.5 w-max">
+          {["All Peptides", "Growth Peptides", "Healing Peptides", "Weight Management",
+            "Longevity Peptides", "Cellular Health", "Nootropics", "Immune Support",
+            "Research Peptides", "Peptide Blends", "Skin & Repair",
+            "Hormonal Peptides", "Growth Hormone", "Anti-Inflammatory", "Cognitive Peptides",
+          ].map(cat => (
+            <button
+              key={cat}
+              onClick={() => handleCategoryChange(cat)}
+              style={{
+                fontSize: "12px",
+                fontWeight: 700,
+                whiteSpace: "nowrap",
+                padding: "6px 14px",
+                borderRadius: "20px",
+                border: selectedCategory === cat ? "2px solid #1B5CB5" : "1.5px solid #E2E8F0",
+                backgroundColor: selectedCategory === cat ? "#EEF4FF" : "#F8FAFC",
+                color: selectedCategory === cat ? "#1240A0" : "#64748B",
+                cursor: "pointer",
+                transition: "all 0.15s",
+                flexShrink: 0,
+              }}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Main content */}
       <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-4 md:py-6">
-
 
         <div className="flex gap-6">
           {/* Sidebar — tablet and above */}
