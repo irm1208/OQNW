@@ -3,11 +3,14 @@ import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import {
   Shield, FlaskConical, Truck, Award,
-  ChevronRight, ArrowRight, CheckCircle, Star, Quote
+  ChevronRight, ArrowRight, CheckCircle, Star, Quote,
+  Mail, Package, CreditCard,
 } from "lucide-react";
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
+import RecentlyViewed from "@/components/RecentlyViewed";
+import { researchStacks } from "@/data/stacks";
 
 const RESEARCH_AREAS = [
   {
@@ -545,6 +548,13 @@ export default function HomePage() {
     canonicalPath: "/",
   });
 
+  const [emailInput, setEmailInput] = useState("");
+  const [emailSubscribed, setEmailSubscribed] = useState(false);
+  function handleEmailSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (emailInput.includes("@")) setEmailSubscribed(true);
+  }
+
   const featuredGroups = (() => {
     const featuredProducts = featuredIds
       .map(id => products.find(p => p.id === id))
@@ -741,6 +751,74 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── HOW IT WORKS ──────────────────────────────────────── */}
+      <section style={{ backgroundColor: "#F7FAFF", borderBottom: "1px solid #EEF2F7", padding: "56px 0" }}>
+        <div className="max-w-[1280px] mx-auto px-4">
+          <div className="text-center mb-10">
+            <p style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", color: "#1B5CB5", marginBottom: 8 }}>Getting Started</p>
+            <h2 style={{ fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.02em" }}>Order in 3 simple steps.</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              { step: "01", icon: <FlaskConical size={22} />, title: "Browse & Select", body: "Filter by research goal, compound name, or category. Every product includes full COA, HPLC chromatogram, and reconstitution guidance.", color: "#1B5CB5", bg: "#EEF4FF" },
+              { step: "02", icon: <CreditCard size={22} />, title: "Checkout Securely", body: "Multi-currency checkout with card, crypto, and bank transfer options. Discreet billing descriptor and fully encrypted payment processing.", color: "#7C3AED", bg: "#F5F3FF" },
+              { step: "03", icon: <Package size={22} />, title: "Same-Day Dispatch", body: "Orders placed before noon ship the same day in discreet, tamper-evident packaging with full carrier tracking provided at checkout.", color: "#059669", bg: "#ECFDF5" },
+            ].map((s, i) => (
+              <div key={i} style={{ position: "relative", display: "flex", gap: 16, backgroundColor: "#fff", borderRadius: 18, border: "1.5px solid #E8EDF5", padding: "24px 22px", boxShadow: "0 2px 10px rgba(15,23,42,0.04)" }}>
+                <div style={{ flexShrink: 0 }}>
+                  <div style={{ width: 50, height: 50, borderRadius: 14, backgroundColor: s.bg, color: s.color, display: "flex", alignItems: "center", justifyContent: "center" }}>{s.icon}</div>
+                </div>
+                <div>
+                  <span style={{ fontSize: 10, fontWeight: 800, color: s.color, letterSpacing: "0.12em", textTransform: "uppercase" }}>Step {s.step}</span>
+                  <h3 style={{ fontSize: 15, fontWeight: 800, color: "#0F172A", marginTop: 4, marginBottom: 8, lineHeight: 1.2 }}>{s.title}</h3>
+                  <p style={{ fontSize: 13, color: "#64748B", lineHeight: 1.7 }}>{s.body}</p>
+                </div>
+                {i < 2 && (
+                  <div className="hidden md:block" style={{ position: "absolute", top: "50%", right: "-14px", transform: "translateY(-50%)", color: "#CBD5E1", fontSize: 24, zIndex: 10, lineHeight: 1 }}>›</div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SHOP BY GOAL ──────────────────────────────────────── */}
+      <section style={{ backgroundColor: "#fff", borderBottom: "1px solid #EEF2F7", padding: "56px 0" }}>
+        <div className="max-w-[1280px] mx-auto px-4">
+          <div className="text-center mb-10">
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 10 }}>
+              <div style={{ width: 16, height: 3, background: "linear-gradient(90deg, #1B5CB5, #60A5FA)", borderRadius: 2 }} />
+              <p style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", color: "#1B5CB5", margin: 0 }}>Find Your Compounds</p>
+              <div style={{ width: 16, height: 3, background: "linear-gradient(90deg, #60A5FA, #1B5CB5)", borderRadius: 2 }} />
+            </div>
+            <h2 style={{ fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.02em", marginBottom: 6 }}>Shop by research goal.</h2>
+            <p style={{ fontSize: 14, color: "#64748B", maxWidth: 440, margin: "0 auto" }}>Not sure where to start? Pick your area of interest and browse the relevant compounds directly.</p>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {[
+              { emoji: "🩹", label: "Recovery & Healing",  sub: "BPC-157 · TB-500",            href: "/all-peptides?category=Healing+Peptides",  color: "#059669", bg: "#ECFDF5", border: "#BBF7D0" },
+              { emoji: "🧠", label: "Cognitive & Brain",   sub: "Semax · Selank · P21",         href: "/all-peptides?category=Nootropics",         color: "#7C3AED", bg: "#F5F3FF", border: "#C4B5FD" },
+              { emoji: "⚖️", label: "Weight Management",   sub: "Tirzepatide · Retatrutide",    href: "/all-peptides?category=Weight+Management",  color: "#F59E0B", bg: "#FFFBEB", border: "#FDE68A" },
+              { emoji: "💪", label: "Growth Hormone",      sub: "CJC-1295 · Ipamorelin",        href: "/all-peptides?category=Growth+Peptides",    color: "#1B5CB5", bg: "#EEF4FF", border: "#BFDBFE" },
+              { emoji: "🌿", label: "Longevity",           sub: "Epithalon · SS-31 · MOTS-C",   href: "/all-peptides?category=Longevity+Peptides", color: "#0E7490", bg: "#ECFEFF", border: "#A5F3FC" },
+              { emoji: "✨", label: "Skin & Collagen",     sub: "GHK-Cu",                       href: "/all-peptides?category=Skin+%26+Hair",      color: "#DB2777", bg: "#FDF2F8", border: "#FBCFE8" },
+            ].map((g, i) => (
+              <Link key={i} href={g.href} style={{ textDecoration: "none" }}>
+                <div
+                  style={{ backgroundColor: g.bg, border: `1.5px solid ${g.border}`, borderRadius: 16, padding: "20px 14px", textAlign: "center", cursor: "pointer", transition: "transform 0.18s, box-shadow 0.18s" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)"; (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 24px ${g.color}22`; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
+                >
+                  <div style={{ fontSize: 30, marginBottom: 10, lineHeight: 1 }}>{g.emoji}</div>
+                  <p style={{ fontSize: 12, fontWeight: 800, color: g.color, marginBottom: 4, lineHeight: 1.2 }}>{g.label}</p>
+                  <p style={{ fontSize: 10.5, color: "#94A3B8", lineHeight: 1.4 }}>{g.sub}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── FEATURED PEPTIDES ─────────────────────────────────── */}
       <section className="home-section-featured" style={{ backgroundColor: "#fff", padding: "68px 0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
@@ -773,6 +851,56 @@ export default function HomePage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-20 sm:gap-x-12 sm:gap-y-24 md:gap-x-14 md:gap-y-28">
             {featuredGroups.slice(0, 4).map(group => (
               <GroupedProductCard key={group.baseName} group={group} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── POPULAR STACKS ────────────────────────────────────── */}
+      <section style={{ backgroundColor: "#F7FAFF", borderTop: "1px solid #EEF2F7", borderBottom: "1px solid #EEF2F7", padding: "68px 0" }}>
+        <div className="max-w-[1280px] mx-auto px-4">
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <div style={{ width: "3px", height: "16px", background: "linear-gradient(180deg, #1B5CB5, #60A5FA)", borderRadius: "2px" }} />
+                <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#1B5CB5", letterSpacing: "0.1em" }}>MULTI-COMPOUND PROTOCOLS</p>
+              </div>
+              <h2 className="font-bold" style={{ fontSize: "30px", color: "#0F172A", letterSpacing: "-0.02em" }}>Popular Research Stacks</h2>
+              <p style={{ fontSize: "14px", color: "#64748B", marginTop: "4px" }}>Pre-built compound combinations for specific research protocols</p>
+            </div>
+            <Link href="/stacks" className="hidden sm:flex items-center gap-1.5 font-semibold" style={{ fontSize: "13px", color: "#1B5CB5", textDecoration: "none" }}>
+              View all stacks <ChevronRight size={15} />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {researchStacks.slice(0, 3).map((stack) => (
+              <Link key={stack.id} href="/stacks" style={{ textDecoration: "none" }}>
+                <div
+                  style={{ backgroundColor: "#fff", border: "1.5px solid #E8EDF5", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 12px rgba(15,23,42,0.04)", transition: "transform 0.2s, box-shadow 0.2s", cursor: "pointer", height: "100%", display: "flex", flexDirection: "column" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 16px 40px rgba(15,23,42,0.10)"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(15,23,42,0.04)"; }}
+                >
+                  <div style={{ height: 4, background: `linear-gradient(90deg, ${stack.badgeColor}, ${stack.badgeColor}77)` }} />
+                  <div style={{ padding: "22px 22px 20px", flex: 1, display: "flex", flexDirection: "column" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+                      <span style={{ fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: stack.badgeColor, backgroundColor: stack.badgeColor + "18", border: `1px solid ${stack.badgeColor}40`, borderRadius: 20, padding: "3px 10px" }}>{stack.badge}</span>
+                      <span style={{ fontSize: 26 }}>{stack.icon}</span>
+                    </div>
+                    <h3 style={{ fontSize: 15, fontWeight: 800, color: "#0F172A", marginBottom: 6, lineHeight: 1.2 }}>{stack.name}</h3>
+                    <p style={{ fontSize: 12.5, color: "#64748B", lineHeight: 1.65, marginBottom: 14, flex: 1 }}>{stack.tagline}</p>
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}>
+                      {stack.researchAreas.slice(0, 2).map((area) => (
+                        <span key={area} style={{ fontSize: 10.5, fontWeight: 600, color: "#64748B", backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0", borderRadius: 20, padding: "3px 10px" }}>{area}</span>
+                      ))}
+                      <span style={{ fontSize: 10.5, fontWeight: 600, color: "#94A3B8", backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0", borderRadius: 20, padding: "3px 10px" }}>{stack.cycleLength}</span>
+                    </div>
+                    <div style={{ borderTop: "1px solid #F1F5F9", paddingTop: 12, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <span style={{ fontSize: 11, color: "#94A3B8", fontWeight: 600 }}>{stack.products.length} compounds</span>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: stack.badgeColor, display: "flex", alignItems: "center", gap: 3 }}>View Stack <ChevronRight size={12} /></span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -926,6 +1054,63 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── LAB PROOF ─────────────────────────────────────────── */}
+      <section style={{ backgroundColor: "#fff", padding: "68px 0", borderTop: "1px solid #E8EDF5" }}>
+        <div className="max-w-[1280px] mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+                <div style={{ width: 16, height: 3, background: "linear-gradient(90deg, #059669, #34D399)", borderRadius: 2 }} />
+                <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.22em", color: "#059669" }}>Third-Party Verified</span>
+              </div>
+              <h2 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 900, letterSpacing: "-0.025em", color: "#0F172A", lineHeight: 1.1, marginBottom: 16 }}>
+                We publish the data.<br />You verify the purity.
+              </h2>
+              <p style={{ fontSize: 15, color: "#475569", lineHeight: 1.8, marginBottom: 28 }}>
+                Every batch is tested by an independent accredited laboratory using HPLC and ESI-TOF mass spectrometry. We publish the raw chromatogram so you can evaluate it yourself — not just take our word for it.
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
+                {[
+                  { label: "HPLC Purity",            value: "99.2%", pct: 99.2, color: "#059669" },
+                  { label: "Mass Spec Confirmation",  value: "✓ Pass", pct: 100,  color: "#1B5CB5" },
+                  { label: "Endotoxin Testing",       value: "✓ Pass", pct: 100,  color: "#7C3AED" },
+                ].map((bar, i) => (
+                  <div key={i}>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                      <span style={{ fontSize: 12.5, fontWeight: 700, color: "#374151" }}>{bar.label}</span>
+                      <span style={{ fontSize: 12.5, fontWeight: 800, color: bar.color }}>{bar.value}</span>
+                    </div>
+                    <div style={{ height: 7, backgroundColor: "#F1F5F9", borderRadius: 4, overflow: "hidden" }}>
+                      <div style={{ height: "100%", width: `${bar.pct}%`, background: `linear-gradient(90deg, ${bar.color}, ${bar.color}99)`, borderRadius: 4 }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <Link
+                href="/lab-results"
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(135deg, #059669, #047857)", color: "#fff", textDecoration: "none", borderRadius: 10, padding: "12px 22px", fontSize: 13, fontWeight: 800, boxShadow: "0 4px 16px rgba(5,150,105,0.25)" }}
+              >
+                <FlaskConical size={15} /> View All Lab Results <ArrowRight size={14} />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { icon: "🔬", title: "HPLC Analysis",       body: "High-Performance Liquid Chromatography on every batch confirms compound identity and exact purity percentage.", color: "#1B5CB5", bg: "#EEF4FF" },
+                { icon: "⚗️", title: "Mass Spectrometry",    body: "ESI-TOF MS confirms exact molecular weight — definitively ruling out substitution or degradation products.", color: "#7C3AED", bg: "#F5F3FF" },
+                { icon: "🛡️", title: "Endotoxin Tested",    body: "LAL assay confirms endotoxin levels below 1 EU/mg threshold for research-grade compounds on every batch.", color: "#059669", bg: "#ECFDF5" },
+                { icon: "📋", title: "Published COA",        body: "Every product page links directly to its certificate of analysis — downloadable, no account required.", color: "#0E7490", bg: "#ECFEFF" },
+              ].map((c, i) => (
+                <div key={i} style={{ backgroundColor: c.bg, borderRadius: 16, padding: "20px 18px", border: `1.5px solid ${c.color}22` }}>
+                  <div style={{ fontSize: 26, marginBottom: 10 }}>{c.icon}</div>
+                  <p style={{ fontSize: 13, fontWeight: 800, color: "#0F172A", marginBottom: 6, lineHeight: 1.2 }}>{c.title}</p>
+                  <p style={{ fontSize: 12, color: "#64748B", lineHeight: 1.65 }}>{c.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── RESEARCH AREAS ────────────────────────────────────── */}
       <section style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", borderTop: "3px solid #34D399" }}>
         {/* ── Header strip ── */}
@@ -992,6 +1177,56 @@ export default function HomePage() {
         </div>
       </section>
 
+
+      {/* ── EMAIL CAPTURE ─────────────────────────────────────── */}
+      <section style={{ background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)", padding: "64px 0", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)", backgroundSize: "32px 32px", pointerEvents: "none" }} />
+        <div className="max-w-[560px] mx-auto px-4 text-center" style={{ position: "relative", zIndex: 1 }}>
+          <div style={{ width: 52, height: 52, borderRadius: 14, background: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.20)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
+            <Mail size={24} style={{ color: "#93C5FD" }} />
+          </div>
+          <h2 style={{ fontSize: "clamp(22px, 3vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: 12 }}>
+            Stay at the forefront of peptide research.
+          </h2>
+          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.60)", lineHeight: 1.75, maxWidth: 400, margin: "0 auto 28px" }}>
+            Join 8,000+ researchers — protocol guides, new compound alerts, and exclusive member pricing sent directly to you.
+          </p>
+          {emailSubscribed ? (
+            <div style={{ background: "rgba(52,211,153,0.15)", border: "1px solid rgba(52,211,153,0.40)", borderRadius: 14, padding: "20px 28px", display: "inline-flex", alignItems: "center", gap: 12 }}>
+              <CheckCircle size={22} style={{ color: "#34D399", flexShrink: 0 }} />
+              <div style={{ textAlign: "left" }}>
+                <p style={{ fontSize: 14, fontWeight: 800, color: "#34D399", margin: 0 }}>You're in!</p>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.60)", margin: "2px 0 0" }}>Welcome to the OmniQure research community.</p>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleEmailSubmit} className="flex gap-2" style={{ maxWidth: 420, margin: "0 auto" }}>
+              <input
+                type="email"
+                required
+                placeholder="your@institution.edu"
+                value={emailInput}
+                onChange={e => setEmailInput(e.target.value)}
+                style={{ flex: 1, height: 48, borderRadius: 10, border: "1.5px solid rgba(255,255,255,0.20)", background: "rgba(255,255,255,0.08)", color: "#fff", padding: "0 16px", fontSize: 14, outline: "none" }}
+              />
+              <button
+                type="submit"
+                style={{ height: 48, borderRadius: 10, background: "linear-gradient(90deg, #34D399, #059669)", color: "#022c22", fontWeight: 800, fontSize: 13, border: "none", cursor: "pointer", padding: "0 20px", flexShrink: 0, whiteSpace: "nowrap" }}
+              >
+                Subscribe
+              </button>
+            </form>
+          )}
+          <p style={{ fontSize: 11, color: "rgba(255,255,255,0.30)", marginTop: 12 }}>No spam. Unsubscribe anytime.</p>
+        </div>
+      </section>
+
+      {/* ── RECENTLY VIEWED ───────────────────────────────────── */}
+      <section style={{ backgroundColor: "#fff", borderTop: "1px solid #E8EDF5", padding: "48px 0" }}>
+        <div className="max-w-[1280px] mx-auto px-4">
+          <RecentlyViewed />
+        </div>
+      </section>
 
       {/* ── DISCLAIMER ────────────────────────────────────────── */}
       <section style={{ backgroundColor: "#F7FAFF", borderTop: "1px solid #E8EDF5", padding: "20px 0" }}>
