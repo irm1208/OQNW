@@ -379,9 +379,18 @@ function MoleculeSVG() {
 const CARD_GAP = 16;
 
 function useCardWidth() {
-  const [w, setW] = useState(() => typeof window !== "undefined" ? Math.min(280, window.innerWidth - 48) : 280);
+  const [w, setW] = useState(() => {
+    if (typeof window === "undefined") return 380;
+    const vw = window.innerWidth;
+    // Mobile: fill most of the screen; desktop: ~3 cards visible in 1280px container
+    if (vw < 640) return Math.min(300, vw - 48);
+    return 380;
+  });
   useEffect(() => {
-    const update = () => setW(Math.min(280, window.innerWidth - 48));
+    const update = () => {
+      const vw = window.innerWidth;
+      setW(vw < 640 ? Math.min(300, vw - 48) : 380);
+    };
     window.addEventListener("resize", update, { passive: true });
     return () => window.removeEventListener("resize", update);
   }, []);
