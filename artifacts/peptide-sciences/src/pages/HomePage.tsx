@@ -1013,15 +1013,15 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               {[
-                { icon: "🔬", title: "HPLC Analysis",       body: "High-Performance Liquid Chromatography on every batch confirms compound identity and exact purity percentage.", color: "#1B5CB5", bg: "#EEF4FF" },
-                { icon: "⚗️", title: "Mass Spectrometry",    body: "ESI-TOF MS confirms exact molecular weight — definitively ruling out substitution or degradation products.", color: "#7C3AED", bg: "#F5F3FF" },
-                { icon: "🛡️", title: "Endotoxin Tested",    body: "LAL assay confirms endotoxin levels below 1 EU/mg threshold for research-grade compounds on every batch.", color: "#059669", bg: "#ECFDF5" },
-                { icon: "📋", title: "Published COA",        body: "Every product page links directly to its certificate of analysis — downloadable, no account required.", color: "#0E7490", bg: "#ECFEFF" },
+                { icon: "🔬", title: "HPLC Analysis",    body: "High-Performance Liquid Chromatography on every batch confirms compound identity and exact purity percentage." },
+                { icon: "⚗️", title: "Mass Spectrometry", body: "ESI-TOF MS confirms exact molecular weight — definitively ruling out substitution or degradation products." },
+                { icon: "🛡️", title: "Endotoxin Tested", body: "LAL assay confirms endotoxin levels below 1 EU/mg threshold for research-grade compounds on every batch." },
+                { icon: "📋", title: "Published COA",     body: "Every product page links directly to its certificate of analysis — downloadable, no account required." },
               ].map((c, i) => (
-                <div key={i} style={{ backgroundColor: c.bg, borderRadius: 16, padding: "20px 18px", border: `1.5px solid ${c.color}22` }}>
+                <div key={i} style={{ background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)", borderRadius: 16, padding: "20px 18px", border: "1.5px solid rgba(255,255,255,0.10)" }}>
                   <div style={{ fontSize: 26, marginBottom: 10 }}>{c.icon}</div>
-                  <p style={{ fontSize: 13, fontWeight: 800, color: "#0F172A", marginBottom: 6, lineHeight: 1.2 }}>{c.title}</p>
-                  <p style={{ fontSize: 12, color: "#64748B", lineHeight: 1.65 }}>{c.body}</p>
+                  <p style={{ fontSize: 13, fontWeight: 800, color: "#fff", marginBottom: 6, lineHeight: 1.2 }}>{c.title}</p>
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.60)", lineHeight: 1.65 }}>{c.body}</p>
                 </div>
               ))}
             </div>
