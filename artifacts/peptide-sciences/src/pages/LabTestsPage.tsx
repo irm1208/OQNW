@@ -394,7 +394,7 @@ function ReportModal({
 
 export default function LabTestsPage() {
   useSEO({
-    title: "Test Results | OmniQure",
+    title: "Lab Results | OmniQure",
     description:
       "Independent COA tests for all OmniQure peptides. HPLC purity, mass spectrometry, and downloadable certificates of analysis.",
     canonicalPath: "/lab-tests",
@@ -452,7 +452,7 @@ export default function LabTestsPage() {
             </div>
             <div>
               <h1 style={{ margin: 0, fontSize: "20px", fontWeight: 800, color: "#fff", letterSpacing: "-0.02em" }}>
-                Test Results
+                Lab Results
               </h1>
               <p style={{ margin: 0, fontSize: "12px", color: "rgba(255,255,255,0.38)" }}>
                 Independent &amp; vendor CoA tests &nbsp;·&nbsp; {products.length} reports
