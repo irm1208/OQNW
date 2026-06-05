@@ -40,6 +40,7 @@ const footerCategories = [
     title: "Company",
     href: "/company",
     links: [
+      { label: "About Us",             href: "/about"            },
       { label: "Contact Us",          href: "/contact"          },
       { label: "Track Your Order",    href: "/track-order"      },
       { label: "Research Stacks",     href: "/stacks"           },
