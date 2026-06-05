@@ -12,9 +12,7 @@ import { useWishlist } from "@/context/WishlistContext";
 const navItems = [
   { label: "Home", href: "/" },
   { label: "All Peptides", href: "/all-peptides" },
-  { label: "Popular Peptides", href: "/popular-peptides" },
   { label: "Research Stacks", href: "/stacks" },
-  { label: "Bundle & Save", href: "/bundles" },
   { label: "Test Results", href: "/lab-tests" },
   { label: "Peptide Calculator", href: "/calculator" },
   { label: "Protocols", href: "/protocols" },

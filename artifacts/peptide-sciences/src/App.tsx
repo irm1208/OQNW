@@ -8,7 +8,6 @@ import Footer from "@/components/Footer";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import HomePage from "@/pages/HomePage";
 import AllPeptides from "@/pages/AllPeptides";
-import PopularPeptides from "@/pages/PopularPeptides";
 import ProductPage from "@/pages/ProductPage";
 import StacksPage from "@/pages/StacksPage";
 import ReconstitutionCalculator from "@/pages/ReconstitutionCalculator";
@@ -25,7 +24,6 @@ import ResetPassword from "@/pages/ResetPassword";
 import Register from "@/pages/Register";
 import AccountPage from "@/pages/AccountPage";
 import WishlistPage from "@/pages/WishlistPage";
-import BundlesPage from "@/pages/BundlesPage";
 import LabResultsPage from "@/pages/LabResultsPage";
 import ProtocolsPage from "@/pages/ProtocolsPage";
 import FAQPage from "@/pages/FAQPage";
@@ -85,9 +83,7 @@ function Router() {
     <Switch>
       <Route path="/" component={HomePage} />
       <Route path="/all-peptides" component={AllPeptides} />
-      <Route path="/popular-peptides" component={PopularPeptides} />
       <Route path="/product/:id" component={ProductPage} />
-      <Route path="/bundles" component={BundlesPage} />
       <Route path="/stacks" component={StacksPage} />
       <Route path="/calculator" component={ReconstitutionCalculator} />
       <Route path="/contact">
