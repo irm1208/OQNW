@@ -4,7 +4,7 @@ import { useSEO } from "@/hooks/useSEO";
 import {
   Shield, FlaskConical, Truck, Award,
   ChevronRight, ArrowRight, CheckCircle, Star, Quote,
-  Mail, Package, CreditCard,
+  Mail,
 } from "lucide-react";
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
@@ -745,37 +745,6 @@ export default function HomePage() {
                   <p className="font-bold" style={{ fontSize: "13px", color: "#0F172A" }}>{item.title}</p>
                   <p style={{ fontSize: "11.5px", color: "#64748B", marginTop: "1px" }}>{item.sub}</p>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── HOW IT WORKS ──────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#F7FAFF", borderBottom: "1px solid #EEF2F7", padding: "56px 0" }}>
-        <div className="max-w-[1280px] mx-auto px-4">
-          <div className="text-center mb-10">
-            <p style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", color: "#1B5CB5", marginBottom: 8 }}>Getting Started</p>
-            <h2 style={{ fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.02em" }}>Order in 3 simple steps.</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[
-              { step: "01", icon: <FlaskConical size={22} />, title: "Browse & Select", body: "Filter by research goal, compound name, or category. Every product includes full COA, HPLC chromatogram, and reconstitution guidance.", color: "#1B5CB5", bg: "#EEF4FF" },
-              { step: "02", icon: <CreditCard size={22} />, title: "Checkout Securely", body: "Multi-currency checkout with card, crypto, and bank transfer options. Discreet billing descriptor and fully encrypted payment processing.", color: "#7C3AED", bg: "#F5F3FF" },
-              { step: "03", icon: <Package size={22} />, title: "Same-Day Dispatch", body: "Orders placed before noon ship the same day in discreet, tamper-evident packaging with full carrier tracking provided at checkout.", color: "#059669", bg: "#ECFDF5" },
-            ].map((s, i) => (
-              <div key={i} style={{ position: "relative", display: "flex", gap: 16, backgroundColor: "#fff", borderRadius: 18, border: "1.5px solid #E8EDF5", padding: "24px 22px", boxShadow: "0 2px 10px rgba(15,23,42,0.04)" }}>
-                <div style={{ flexShrink: 0 }}>
-                  <div style={{ width: 50, height: 50, borderRadius: 14, backgroundColor: s.bg, color: s.color, display: "flex", alignItems: "center", justifyContent: "center" }}>{s.icon}</div>
-                </div>
-                <div>
-                  <span style={{ fontSize: 10, fontWeight: 800, color: s.color, letterSpacing: "0.12em", textTransform: "uppercase" }}>Step {s.step}</span>
-                  <h3 style={{ fontSize: 15, fontWeight: 800, color: "#0F172A", marginTop: 4, marginBottom: 8, lineHeight: 1.2 }}>{s.title}</h3>
-                  <p style={{ fontSize: 13, color: "#64748B", lineHeight: 1.7 }}>{s.body}</p>
-                </div>
-                {i < 2 && (
-                  <div className="hidden md:block" style={{ position: "absolute", top: "50%", right: "-14px", transform: "translateY(-50%)", color: "#CBD5E1", fontSize: 24, zIndex: 10, lineHeight: 1 }}>›</div>
-                )}
               </div>
             ))}
           </div>
