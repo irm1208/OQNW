@@ -182,7 +182,7 @@ const TESTIMONIALS = [
     avatar: "TR",
     color: "#1B5CB5",
     rating: 5,
-    text: "Been using BPC-157 for about 4 months now and noticed a real difference with an old shoulder injury that just wouldn't shift. Packaging was completely discreet and delivery was faster than expected. Will definitely be reordering.",
+    text: "Been using BPC-157 for about 4 months now and noticed a real difference with an old shoulder injury that just wouldn't shift. Delivery was faster than expected and everything arrived in great condition. Will definitely be reordering.",
     peptide: "BPC-157",
   },
   {
@@ -214,7 +214,7 @@ const TESTIMONIALS = [
     avatar: "SL",
     color: "#B45309",
     rating: 5,
-    text: "Retatrutide arrived quickly and the packaging was completely discreet which I really appreciate. Support replied within the hour when I had a query. The whole experience from ordering to delivery was seamless. 10/10.",
+    text: "Retatrutide arrived quickly and everything was well packaged. Support replied within the hour when I had a query. The whole experience from ordering to delivery was seamless. 10/10.",
     peptide: "Retatrutide",
   },
   {
@@ -238,7 +238,7 @@ const TESTIMONIALS = [
     avatar: "HS",
     color: "#7C3AED",
     rating: 5,
-    text: "Third order of BPC-157 now and still very happy. Quick dispatch every time and the discreet packaging is something I've always valued. Results have been consistent and I genuinely wouldn't go anywhere else.",
+    text: "Third order of BPC-157 now and still very happy. Quick dispatch every time and everything always arrives in perfect condition. Results have been consistent and I genuinely wouldn't go anywhere else.",
     peptide: "BPC-157",
   },
   {
@@ -254,7 +254,7 @@ const TESTIMONIALS = [
     avatar: "GD",
     color: "#B45309",
     rating: 5,
-    text: "Fast shipping, discreet packaging, and the Retatrutide has been performing really well for me. Had a query and the team replied the same day. Exactly the kind of service that keeps me coming back.",
+    text: "Fast shipping and the Retatrutide has been performing really well for me. Had a query and the team replied the same day. Exactly the kind of service that keeps me coming back.",
     peptide: "Retatrutide",
   },
   {
@@ -278,7 +278,7 @@ const TESTIMONIALS = [
     avatar: "ET",
     color: "#7C3AED",
     rating: 5,
-    text: "I was hesitant to try peptides but the whole experience made it easy. The Epithalon order arrived discreetly and quickly. I've noticed a real improvement in how I feel day to day. Will absolutely be ordering again.",
+    text: "I was hesitant to try peptides but the whole experience made it easy. The Epithalon arrived quickly and in great condition. I've noticed a real improvement in how I feel day to day. Will absolutely be ordering again.",
     peptide: "Epithalon",
   },
   {
