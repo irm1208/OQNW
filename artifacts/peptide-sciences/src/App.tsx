@@ -45,6 +45,7 @@ import LiveChat from "@/components/LiveChat";
 import JurisdictionWarning from "@/components/JurisdictionWarning";
 import AgeGate from "@/components/AgeGate";
 import MobileBottomBar from "@/components/MobileBottomBar";
+import CartPreviewPanel from "@/components/CartPreviewPanel";
 import { initPixels } from "@/lib/pixels";
 import { usePageTracking } from "@/hooks/usePageTracking";
 
@@ -139,6 +140,7 @@ function App() {
                 </main>
                 <Footer />
               </div>
+              <CartPreviewPanel />
               <MobileBottomBar />
               <LiveChat />
               <AgeGate />
