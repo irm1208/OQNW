@@ -85,7 +85,7 @@ export default function Logo() {
             fontFamily: "'Arimo', Arial, sans-serif",
             fontSize: "7.5px",
             fontWeight: 600,
-            color: "rgba(255,255,255,0.72)",
+            color: "#E8A93E",
             letterSpacing: "0.2em",
             textTransform: "uppercase",
             marginTop: "4px",
