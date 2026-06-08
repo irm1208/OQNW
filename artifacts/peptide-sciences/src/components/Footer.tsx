@@ -163,9 +163,9 @@ export default function Footer() {
                   <Link
                     href={col.href}
                     className="block font-bold mb-4"
-                    style={{ color: "#fff", fontSize: "12.5px", textDecoration: "none", letterSpacing: "0.04em", textTransform: "uppercase" }}
-                    onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#34D399"}
-                    onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
+                    style={{ color: "#E8A93E", fontSize: "12.5px", textDecoration: "none", letterSpacing: "0.04em", textTransform: "uppercase" }}
+                    onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#F5C76B"}
+                    onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#E8A93E"}
                   >
                     {col.title}
                   </Link>
