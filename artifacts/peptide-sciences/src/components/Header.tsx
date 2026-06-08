@@ -497,9 +497,9 @@ export default function Header() {
               <Link
                 href="/sign-in"
                 className="header-icon-btn flex items-center gap-1.5 text-sm font-medium transition-colors"
-                style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.85)"}
+                style={{ color: "#E8A93E", textDecoration: "none" }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#F5C76B"}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#E8A93E"}
               >
                 <User size={18} />
                 <span className="hidden sm:inline">{loadingAuth ? "" : "Register / Sign in"}</span>
@@ -510,9 +510,9 @@ export default function Header() {
             <Link
               href="/wishlist"
               className="header-icon-btn flex items-center gap-1.5 text-sm font-medium transition-colors relative"
-              style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.85)"}
+              style={{ color: "#E8A93E", textDecoration: "none" }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#F5C76B"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#E8A93E"}
             >
               <span className="relative">
                 <Heart size={18} />
@@ -536,9 +536,9 @@ export default function Header() {
             <Link
               href="/cart"
               className="header-icon-btn flex items-center gap-1.5 text-sm font-medium transition-colors relative"
-              style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.85)"}
+              style={{ color: "#E8A93E", textDecoration: "none" }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#F5C76B"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#E8A93E"}
             >
               <span className="relative">
                 <ShoppingCart size={18} />
