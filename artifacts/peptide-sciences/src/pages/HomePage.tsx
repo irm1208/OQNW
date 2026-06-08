@@ -910,7 +910,7 @@ export default function HomePage() {
               Refer a Friend, Earn a Free Peptide
             </h2>
             <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "480px", margin: "0 auto", lineHeight: 1.7 }}>
-              Share your unique referral link. When a friend places their first order, you both benefit — and you earn a free peptide credit, no strings attached.
+              Share your unique referral link. When a friend places their first order, a free peptide credit is added to your account — redeemable the next time you order.
             </p>
           </div>
 
@@ -936,8 +936,8 @@ export default function HomePage() {
               {
                 icon: <Gift size={26} />,
                 step: "03",
-                title: "You Earn a Free Peptide",
-                body: "A free peptide credit is added to your account automatically — redeemable on any product at checkout, no minimum order.",
+                title: "Redeem on Your Next Order",
+                body: "A free peptide credit is added to your account. Place your next order and redeem it at checkout — applied automatically to any product, any size.",
                 color: "#B45309",
                 bg: "#FEF3C7",
               },
@@ -1002,7 +1002,7 @@ export default function HomePage() {
                 Every referral earns you one free peptide.
               </h3>
               <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", margin: 0, lineHeight: 1.6 }}>
-                No limit on how many friends you can refer. Credits never expire.
+                Place an order, refer a friend, earn a free peptide on your next order. No limit on referrals. Credits never expire.
               </p>
             </div>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", position: "relative", zIndex: 1 }}>
