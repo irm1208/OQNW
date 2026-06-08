@@ -3,8 +3,8 @@ import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import {
   Shield, FlaskConical, Truck, Award,
-  ChevronRight, ArrowRight, CheckCircle, Star, Quote,
-  Mail, Gift, UserPlus, ShoppingCart,
+  ChevronRight, ChevronLeft, ArrowRight, CheckCircle, Star, Quote,
+  Mail, Gift, UserPlus, ShoppingCart, Users, Package, Sparkles,
 } from "lucide-react";
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
@@ -539,6 +539,239 @@ function TestimonialsCarousel() {
   );
 }
 
+function HeroCarousel() {
+  const [slide, setSlide] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const TOTAL = 3;
+
+  const goTo = (n: number) => setSlide((n + TOTAL) % TOTAL);
+
+  useEffect(() => {
+    if (paused) return;
+    timerRef.current = setInterval(() => setSlide(s => (s + 1) % TOTAL), 6000);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [paused]);
+
+  return (
+    <div
+      style={{ position: "relative", overflow: "hidden" }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      {/* Track */}
+      <div style={{
+        display: "flex",
+        transition: "transform 0.65s cubic-bezier(0.77,0,0.18,1)",
+        transform: `translateX(-${slide * 100}%)`,
+        willChange: "transform",
+      }}>
+
+        {/* ── SLIDE 1: Peptides ─────────────────────── */}
+        <div className="hero-section" style={{
+          flexShrink: 0, width: "100%", position: "relative", overflow: "hidden",
+          backgroundImage: "url('/hero-vials.png')", backgroundSize: "cover",
+          backgroundRepeat: "no-repeat", display: "flex", alignItems: "flex-start",
+        }}>
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(2,11,30,0.0) 0%, rgba(2,11,30,0.0) 35%, rgba(2,11,30,0.45) 60%, rgba(2,11,30,0.60) 100%)", pointerEvents: "none" }} />
+          <div className="hero-overlay-lr" style={{ position: "absolute", inset: 0, pointerEvents: "none" }} />
+          <div style={{ position: "absolute", top: "-80px", left: "-80px", width: "800px", height: "560px", background: "radial-gradient(ellipse at 35% 38%, rgba(40,120,255,0.18) 0%, rgba(20,80,230,0.10) 30%, rgba(10,50,180,0.04) 55%, rgba(0,0,0,0.0) 75%)", pointerEvents: "none", mixBlendMode: "screen" }} />
+          <div className="hero-content max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ position: "relative", zIndex: 1 }}>
+            <div className="hero-text text-white">
+              <h1 className="font-bold mb-5" style={{ fontSize: "clamp(28px, 7vw, 62px)", lineHeight: 1.08, letterSpacing: "-0.02em" }}>
+                Research-Grade<br />Peptides.<br />
+                <span className="gradient-text">Third Party Verified.</span>
+              </h1>
+              <p className="mb-7 leading-relaxed" style={{ color: "rgba(255,255,255,0.78)", fontSize: "16px" }}>
+                Built for researchers who don't cut corners.<br />
+                Every compound is independently tested to 99%+ purity,<br />
+                fully documented, and ready for the lab.
+              </p>
+              <div className="flex flex-wrap gap-2 mb-8">
+                {["99%+ HPLC Purity", "Full COA Included", "Third Party Tested"].map(t => (
+                  <span key={t} className="inline-flex items-center gap-1.5" style={{ backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", color: "#E2E8F0", fontSize: "12px", fontWeight: 600, padding: "5px 12px", borderRadius: "20px", backdropFilter: "blur(6px)" }}>
+                    <CheckCircle size={12} style={{ color: "#34D399" }} />{t}
+                  </span>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Link href="/all-peptides" className="btn-primary inline-flex items-center justify-center gap-2 w-full sm:w-auto" style={{ backgroundColor: "#fff", color: "#1240A0", padding: "13px 26px", borderRadius: "12px", fontWeight: 800, fontSize: "14px", textDecoration: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.3)" }}>
+                  Browse All 81 Peptides <ArrowRight size={15} />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── SLIDE 2: Refer a Friend ───────────────── */}
+        <div className="hero-section" style={{
+          flexShrink: 0, width: "100%", position: "relative", overflow: "hidden",
+          display: "flex", alignItems: "center",
+          background: "linear-gradient(135deg, #0D1F4E 0%, #0F2D6B 30%, #1240A0 60%, #1B5CB5 85%, #1E68CC 100%)",
+        }}>
+          <div style={{ position: "absolute", top: "-120px", right: "-120px", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(232,169,62,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", bottom: "-80px", left: "10%", width: "320px", height: "320px", borderRadius: "50%", background: "radial-gradient(circle, rgba(232,169,62,0.10) 0%, transparent 70%)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "32px 32px", pointerEvents: "none" }} />
+          <div className="hero-content max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ position: "relative", zIndex: 1 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "60px", flexWrap: "wrap" }}>
+              <div style={{ flex: "1 1 340px", color: "#fff" }}>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "rgba(232,169,62,0.18)", border: "1px solid rgba(232,169,62,0.4)", borderRadius: "20px", padding: "5px 14px", marginBottom: "20px" }}>
+                  <Gift size={13} style={{ color: "#E8A93E" }} />
+                  <span style={{ fontSize: "11px", fontWeight: 700, color: "#E8A93E", letterSpacing: "0.1em", textTransform: "uppercase" }}>Referral Programme</span>
+                </div>
+                <h2 style={{ fontSize: "clamp(30px, 5vw, 58px)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.02em", marginBottom: "18px" }}>
+                  Give <span style={{ color: "#E8A93E" }}>£20.</span><br />
+                  Get <span style={{ color: "#E8A93E" }}>£20.</span>
+                </h2>
+                <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.78)", lineHeight: 1.7, marginBottom: "28px", maxWidth: "420px" }}>
+                  Refer a fellow researcher and you both receive <strong style={{ color: "#fff" }}>£20 store credit</strong> the moment they place their first order. No limits — refer as many as you like.
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginBottom: "32px" }}>
+                  {[
+                    { icon: <UserPlus size={13} />, label: "Share your link" },
+                    { icon: <ShoppingCart size={13} />, label: "They place an order" },
+                    { icon: <Gift size={13} />, label: "You both get £20" },
+                  ].map((step, i) => (
+                    <div key={i} style={{ display: "flex", alignItems: "center", gap: "7px", backgroundColor: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "10px", padding: "8px 14px" }}>
+                      <span style={{ color: "#E8A93E" }}>{step.icon}</span>
+                      <span style={{ fontSize: "12px", fontWeight: 600, color: "rgba(255,255,255,0.90)" }}>{step.label}</span>
+                    </div>
+                  ))}
+                </div>
+                <Link href="/account?tab=referral" style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "#E8A93E", color: "#0D1F4E", padding: "14px 28px", borderRadius: "12px", fontWeight: 800, fontSize: "15px", textDecoration: "none", boxShadow: "0 8px 32px rgba(232,169,62,0.4)" }}>
+                  Get Your Referral Link <ArrowRight size={16} />
+                </Link>
+              </div>
+              <div style={{ flex: "0 0 auto", display: "flex", flexDirection: "column", gap: "14px", alignItems: "center" }} className="hidden lg:flex">
+                <div style={{ width: "160px", height: "160px", borderRadius: "50%", background: "linear-gradient(135deg, #F5C76B 0%, #E8A93E 40%, #C97C10 100%)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 16px 64px rgba(232,169,62,0.50), 0 4px 16px rgba(0,0,0,0.3)", position: "relative" }}>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: "38px", fontWeight: 900, color: "#0D1F4E", lineHeight: 1 }}>£20</div>
+                    <div style={{ fontSize: "11px", fontWeight: 700, color: "rgba(13,31,78,0.7)", letterSpacing: "0.08em", textTransform: "uppercase" }}>credit</div>
+                  </div>
+                  <div style={{ position: "absolute", top: "18px", left: "28px", width: "40px", height: "18px", borderRadius: "50%", background: "rgba(255,255,255,0.35)", transform: "rotate(-30deg)" }} />
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ width: "54px", height: "54px", borderRadius: "50%", background: "rgba(255,255,255,0.12)", border: "2px solid rgba(232,169,62,0.5)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 6px" }}>
+                      <Users size={22} style={{ color: "#E8A93E" }} />
+                    </div>
+                    <div style={{ fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.08em" }}>You</div>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+                    <div style={{ width: "36px", height: "2px", background: "linear-gradient(90deg, rgba(232,169,62,0.8), rgba(232,169,62,0.2))" }} />
+                    <span style={{ fontSize: "18px" }}>🤝</span>
+                    <div style={{ width: "36px", height: "2px", background: "linear-gradient(270deg, rgba(232,169,62,0.8), rgba(232,169,62,0.2))" }} />
+                  </div>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ width: "54px", height: "54px", borderRadius: "50%", background: "rgba(255,255,255,0.12)", border: "2px solid rgba(232,169,62,0.5)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 6px" }}>
+                      <UserPlus size={22} style={{ color: "#E8A93E" }} />
+                    </div>
+                    <div style={{ fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Friend</div>
+                  </div>
+                </div>
+                <div style={{ fontSize: "12px", fontWeight: 600, color: "rgba(255,255,255,0.5)", textAlign: "center" }}>Both get £20 store credit</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── SLIDE 3: Bundle & Save ────────────────── */}
+        <div className="hero-section" style={{
+          flexShrink: 0, width: "100%", position: "relative", overflow: "hidden",
+          display: "flex", alignItems: "center",
+          background: "linear-gradient(135deg, #0A0F1E 0%, #0D1A3D 25%, #0F2560 55%, #112880 80%, #152E9A 100%)",
+        }}>
+          <div style={{ position: "absolute", top: "-60px", right: "5%", width: "420px", height: "420px", borderRadius: "50%", background: "radial-gradient(circle, rgba(52,211,153,0.12) 0%, transparent 65%)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", bottom: "-100px", left: "-60px", width: "380px", height: "380px", borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 65%)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+          <div className="hero-content max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ position: "relative", zIndex: 1 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "60px", flexWrap: "wrap" }}>
+              <div style={{ flex: "1 1 340px", color: "#fff" }}>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "rgba(52,211,153,0.15)", border: "1px solid rgba(52,211,153,0.35)", borderRadius: "20px", padding: "5px 14px", marginBottom: "20px" }}>
+                  <Package size={13} style={{ color: "#34D399" }} />
+                  <span style={{ fontSize: "11px", fontWeight: 700, color: "#34D399", letterSpacing: "0.1em", textTransform: "uppercase" }}>Bundle & Save</span>
+                </div>
+                <h2 style={{ fontSize: "clamp(28px, 5vw, 54px)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.02em", marginBottom: "18px" }}>
+                  Mix, Match &<br />
+                  Save up to <span style={{ color: "#34D399" }}>20% off.</span>
+                </h2>
+                <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.75)", lineHeight: 1.7, marginBottom: "28px", maxWidth: "400px" }}>
+                  Building a research protocol? The more peptides you add to your order, the more you save — automatically applied at checkout.
+                </p>
+                <Link href="/all-peptides" style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "#34D399", color: "#0A0F1E", padding: "14px 28px", borderRadius: "12px", fontWeight: 800, fontSize: "15px", textDecoration: "none", boxShadow: "0 8px 32px rgba(52,211,153,0.35)" }}>
+                  Build Your Bundle <ArrowRight size={16} />
+                </Link>
+              </div>
+              <div style={{ flex: "0 0 auto" }} className="hidden lg:block">
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px", minWidth: "300px" }}>
+                  {[
+                    { qty: "3–6 peptides",   disc: "5% off",  color: "#60A5FA", glow: "rgba(96,165,250,0.25)",  highlight: false },
+                    { qty: "7–10 peptides",  disc: "10% off", color: "#818CF8", glow: "rgba(129,140,248,0.25)", highlight: false },
+                    { qty: "11–14 peptides", disc: "15% off", color: "#A78BFA", glow: "rgba(167,139,250,0.25)", highlight: false },
+                    { qty: "15+ peptides",   disc: "20% off", color: "#34D399", glow: "rgba(52,211,153,0.30)",  highlight: true  },
+                  ].map((tier, i) => (
+                    <div key={i} style={{
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      padding: "14px 20px", borderRadius: "14px",
+                      background: tier.highlight ? "rgba(52,211,153,0.12)" : "rgba(255,255,255,0.06)",
+                      border: `1.5px solid ${tier.highlight ? "rgba(52,211,153,0.45)" : "rgba(255,255,255,0.10)"}`,
+                      boxShadow: tier.highlight ? `0 0 24px ${tier.glow}` : "none",
+                    }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: tier.color, boxShadow: `0 0 8px ${tier.glow}` }} />
+                        <span style={{ fontSize: "14px", fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>{tier.qty}</span>
+                      </div>
+                      <span style={{ fontSize: "20px", fontWeight: 900, color: tier.color }}>{tier.disc}</span>
+                    </div>
+                  ))}
+                  <div style={{ textAlign: "center", marginTop: "6px" }}>
+                    <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.40)", fontWeight: 500 }}>Discount applied automatically at checkout</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Arrow buttons */}
+      {(["left", "right"] as const).map(side => (
+        <button
+          key={side}
+          onClick={() => { goTo(slide + (side === "left" ? -1 : 1)); setPaused(true); setTimeout(() => setPaused(false), 8000); }}
+          style={{
+            position: "absolute", top: "50%", [side]: "16px", transform: "translateY(-50%)",
+            width: "42px", height: "42px", borderRadius: "50%", border: "none", cursor: "pointer",
+            backgroundColor: "rgba(255,255,255,0.15)", backdropFilter: "blur(8px)",
+            color: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
+            zIndex: 10, transition: "background-color 0.2s",
+          }}
+          onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.28)"}
+          onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.15)"}
+        >
+          {side === "left" ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+        </button>
+      ))}
+
+      {/* Dot indicators */}
+      <div style={{ position: "absolute", bottom: "18px", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "8px", zIndex: 10 }}>
+        {Array.from({ length: TOTAL }).map((_, i) => (
+          <button
+            key={i}
+            onClick={() => { goTo(i); setPaused(true); setTimeout(() => setPaused(false), 8000); }}
+            style={{
+              width: i === slide ? "24px" : "8px", height: "8px",
+              borderRadius: "4px", border: "none", cursor: "pointer",
+              backgroundColor: i === slide ? "#fff" : "rgba(255,255,255,0.40)",
+              transition: "all 0.3s ease", padding: 0,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function HomePage() {
   const { products } = useProducts();
   useSEO({
@@ -568,117 +801,8 @@ export default function HomePage() {
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif" }}>
 
-      {/* ── HERO ──────────────────────────────────────────────── */}
-      <section
-        className="hero-section"
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          backgroundImage: "url('/hero-vials.png')",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          minHeight: "unset",
-          display: "flex",
-          alignItems: "flex-start",
-        }}
-      >
-        {/* Bottom fade so text remains readable against the light product image */}
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          background: "linear-gradient(to bottom, rgba(2,11,30,0.0) 0%, rgba(2,11,30,0.0) 35%, rgba(2,11,30,0.45) 60%, rgba(2,11,30,0.60) 100%)",
-          pointerEvents: "none",
-        }} />
-        {/* Left-to-right overlay — full dark on mobile, fades right on desktop */}
-        <div className="hero-overlay-lr" style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-        }} />
-        {/* Subtle blue glow behind the logo (top-left) */}
-        <div style={{
-          position: "absolute",
-          top: "-80px",
-          left: "-80px",
-          width: "800px",
-          height: "560px",
-          background: "radial-gradient(ellipse at 35% 38%, rgba(40,120,255,0.18) 0%, rgba(20,80,230,0.10) 30%, rgba(10,50,180,0.04) 55%, rgba(0,0,0,0.0) 75%)",
-          pointerEvents: "none",
-          mixBlendMode: "screen",
-        }} />
-
-        {/* Content — below the logo in the image */}
-        <div className="hero-content max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ position: "relative", zIndex: 1 }}>
-
-          <div className="hero-text text-white">
-
-            <h1
-              className="font-bold mb-5"
-              style={{
-                fontSize: "clamp(28px, 7vw, 62px)",
-                lineHeight: 1.08,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Research-Grade<br />
-              Peptides.<br />
-              <span className="gradient-text">Third Party Verified.</span>
-            </h1>
-
-            <p
-              className="mb-7 leading-relaxed"
-              style={{ color: "rgba(255,255,255,0.78)", fontSize: "16px" }}
-            >
-              Built for researchers who don't cut corners.<br />
-              Every compound is independently tested to 99%+ purity,<br />
-              fully documented, and ready for the lab.
-            </p>
-
-            {/* Trust chips */}
-            <div className="flex flex-wrap gap-2 mb-8">
-              {["99%+ HPLC Purity", "Full COA Included", "Third Party Tested"].map(t => (
-                <span
-                  key={t}
-                  className="inline-flex items-center gap-1.5"
-                  style={{
-                    backgroundColor: "rgba(255,255,255,0.1)",
-                    border: "1px solid rgba(255,255,255,0.2)",
-                    color: "#E2E8F0",
-                    fontSize: "12px",
-                    fontWeight: 600,
-                    padding: "5px 12px",
-                    borderRadius: "20px",
-                    backdropFilter: "blur(6px)",
-                  }}
-                >
-                  <CheckCircle size={12} style={{ color: "#34D399" }} />
-                  {t}
-                </span>
-              ))}
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/all-peptides"
-                className="btn-primary inline-flex items-center justify-center gap-2 w-full sm:w-auto"
-                style={{
-                  backgroundColor: "#fff",
-                  color: "#1240A0",
-                  padding: "13px 26px",
-                  borderRadius: "12px",
-                  fontWeight: 800,
-                  fontSize: "14px",
-                  textDecoration: "none",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-                }}
-              >
-                Browse All 81 Peptides <ArrowRight size={15} />
-              </Link>
-            </div>
-          </div>
-
-        </div>
-      </section>
+      {/* ── HERO CAROUSEL ─────────────────────────────────────── */}
+      <HeroCarousel />
 
       {/* ── TRUST STRIP ───────────────────────────────────────── */}
       <section style={{ backgroundColor: "#fff", borderBottom: "1px solid #EEF2F7" }}>
