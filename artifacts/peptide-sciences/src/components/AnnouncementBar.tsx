@@ -49,7 +49,7 @@ export default function AnnouncementBar() {
                 alignItems: "center",
                 fontSize: "11.5px",
                 fontWeight: 600,
-                color: "#E2E8F0",
+                color: "#E8A93E",
                 letterSpacing: "0.025em",
                 paddingRight: "0",
               }}
