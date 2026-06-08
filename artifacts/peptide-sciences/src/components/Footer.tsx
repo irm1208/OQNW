@@ -113,13 +113,13 @@ export default function Footer() {
             <div className="md:w-[240px] flex-shrink-0 flex flex-col items-center md:items-start">
               <div className="flex items-center gap-2.5 mb-4">
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
-                  <div style={{ display: "inline-block", width: "235px", overflow: "hidden" }}>
+                  <div style={{ display: "inline-block" }}>
                     <img
                       src="/omniqure-wordmark.png"
                       alt="OmniQure"
-                      style={{ height: "52px", width: "auto", display: "block" }}
+                      style={{ height: "52px", width: "235px", display: "block" }}
                     />
-                    <span style={{ display: "block", textAlign: "right", color: "#E8A93E", fontSize: "8px", fontWeight: 900, letterSpacing: "0.18em", whiteSpace: "nowrap", overflow: "hidden", marginTop: "2px" }}>
+                    <span style={{ display: "block", width: "235px", textAlign: "right", color: "#E8A93E", fontSize: "8px", fontWeight: 900, letterSpacing: "0.18em", whiteSpace: "nowrap", overflow: "hidden", marginTop: "2px" }}>
                       PEPTIDE RESEARCH INSTITUTE
                     </span>
                   </div>
