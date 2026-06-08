@@ -1215,11 +1215,7 @@ export default function HomePage() {
       </section>
 
       {/* ── RECENTLY VIEWED ───────────────────────────────────── */}
-      <section style={{ backgroundColor: "#fff", borderTop: "1px solid #E8EDF5", padding: "48px 0" }}>
-        <div className="max-w-[1280px] mx-auto px-4">
-          <RecentlyViewed />
-        </div>
-      </section>
+      <RecentlyViewed />
 
       {/* ── DISCLAIMER ────────────────────────────────────────── */}
       <section style={{ backgroundColor: "#F7FAFF", borderTop: "1px solid #E8EDF5", padding: "20px 0" }}>
