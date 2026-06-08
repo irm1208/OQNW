@@ -20,8 +20,40 @@ author = "agent"
 task = "workflow.run"
 args = "OmniQure Admin"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "OmniQure Storefront"
+
 [[workflows.workflow]]
 name = "OmniQure Admin"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=3002 BASE_PATH=/admin/ pnpm --filter @workspace/admin-panel run dev"
+waitForPort = 3002
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=8000 pnpm --filter @workspace/api-server run dev"
+waitForPort = 8000
+
+[[workflows.workflow]]
+name = "OmniQure Storefront"
 author = "agent"
 
 [workflows.workflow.metadata]
@@ -29,11 +61,11 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "PORT=8082 BASE_PATH=/admin/ pnpm --filter @workspace/admin-panel run dev"
-waitForPort = 8082
+args = "PORT=5000 BASE_PATH=/ pnpm --filter @workspace/peptide-sciences run dev"
+waitForPort = 5000
 
 [agent]
-stack = "PNPM_WORKSPACE"
+stack = "BEST_EFFORT_FALLBACK"
 expertMode = true
 
 [postMerge]
@@ -41,8 +73,12 @@ path = "scripts/post-merge.sh"
 timeoutMs = 20000
 
 [[ports]]
-localPort = 8080
-externalPort = 8080
+localPort = 3000
+externalPort = 3000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
 
 [[ports]]
 localPort = 8081
@@ -60,6 +96,10 @@ externalPort = 3001
 localPort = 25553
 externalPort = 3000
 
+[[ports]]
+localPort = 8000
+externalPort = 8000
+
 [nix]
 channel = "stable-25_05"
 
@@ -67,3 +107,6 @@ channel = "stable-25_05"
 
 [userenv.shared]
 ADMIN_PASSWORD = "Borders.786"
+LOG_LEVEL = "info"
+SITE_URL = "https://omniqure.com"
+EMAIL_FROM = "OmniQure <noreply@omniqure.com>"
