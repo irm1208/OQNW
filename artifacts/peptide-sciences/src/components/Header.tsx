@@ -250,7 +250,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none" }}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
-              <div style={{ display: "inline-block", maxWidth: "249px", overflow: "hidden" }}>
+              <div style={{ display: "inline-block", maxWidth: "235px", overflow: "hidden" }}>
                 <img
                   src="/omniqure-wordmark.png"
                   alt="OmniQure"

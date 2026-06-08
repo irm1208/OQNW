@@ -113,7 +113,7 @@ export default function Footer() {
             <div className="md:w-[240px] flex-shrink-0 flex flex-col items-center md:items-start">
               <div className="flex items-center gap-2.5 mb-4">
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
-                  <div style={{ display: "inline-block", maxWidth: "249px", overflow: "hidden" }}>
+                  <div style={{ display: "inline-block", maxWidth: "235px", overflow: "hidden" }}>
                     <img
                       src="/omniqure-wordmark.png"
                       alt="OmniQure"
