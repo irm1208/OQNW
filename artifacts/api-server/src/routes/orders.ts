@@ -97,6 +97,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     loyaltyPointsRedeemed,
     giftCardCode,
     paymentMethod,
+    redeemFreePeptide,
   } = req.body as {
     delivery: unknown;
     shippingMethod: unknown;
@@ -106,6 +107,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     loyaltyPointsRedeemed?: unknown;
     giftCardCode?: unknown;
     paymentMethod?: unknown;
+    redeemFreePeptide?: unknown;
   };
 
   const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "card";
@@ -239,6 +241,22 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       }
     }
 
+    // Validate free peptide credit redemption
+    let freePeptideDeductGbp = 0;
+    let freePeptideCreditUsed = false;
+    if (redeemFreePeptide === true && loyaltySessionCustomerId) {
+      const [custCredit] = await db
+        .select({ freePeptideCredits: customersTable.freePeptideCredits })
+        .from(customersTable)
+        .where(eq(customersTable.id, loyaltySessionCustomerId))
+        .limit(1);
+      if (custCredit && custCredit.freePeptideCredits > 0) {
+        const cheapestPrice = Math.min(...(cartItems as CartItem[]).map(i => i.priceGbp));
+        freePeptideDeductGbp = cheapestPrice;
+        freePeptideCreditUsed = true;
+      }
+    }
+
     // Validate gift card if provided
     let giftCardDeductGbp = 0;
     let validatedGiftCardCode: string | null = null;
@@ -261,7 +279,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     }
 
     const subtotalGbp = cartItems.reduce((s, i) => s + i.priceGbp * i.quantity, 0);
-    const preGiftTotal = Math.max(0, subtotalGbp + shippingCostGbp - discountAmount - loyaltyDiscountGbp);
+    const preGiftTotal = Math.max(0, subtotalGbp + shippingCostGbp - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp);
     if (giftCardDeductGbp > preGiftTotal) giftCardDeductGbp = preGiftTotal;
     const totalGbp = Math.max(0, preGiftTotal - giftCardDeductGbp);
 
@@ -469,6 +487,12 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
           description: `${loyaltyPointsToDeduct} pts redeemed on order ${orderNumber} (−£${loyaltyDiscountGbp.toFixed(2)})`,
         }).catch(() => {});
       }
+      if (freePeptideCreditUsed) {
+        db.update(customersTable)
+          .set({ freePeptideCredits: sql`GREATEST(free_peptide_credits - 1, 0)` })
+          .where(eq(customersTable.id, loyaltyCustomerId))
+          .catch(() => {});
+      }
     }
 
     // Deduct gift card balance
@@ -568,22 +592,14 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
               .where(eq(customersTable.referralCode, cust.referredBy))
               .limit(1);
             if (referrer) {
-              const creditCode = `REWARD-${Math.random().toString(36).toUpperCase().slice(2, 10)}`;
-              await db.insert(discountCodesTable).values({
-                code: creditCode,
-                type: "fixed",
-                value: "10.00",
-                isActive: true,
-                usageLimit: 1,
-                usageCount: 0,
-                expiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-              });
+              await db
+                .update(customersTable)
+                .set({ freePeptideCredits: sql`free_peptide_credits + 1` })
+                .where(eq(customersTable.id, referrer.id));
               await sendReferralReward({
                 referrerName: `${referrer.firstName} ${referrer.lastName}`,
                 referrerEmail: referrer.email,
                 refereeName: customerName,
-                discountCode: creditCode,
-                creditGbp: 10,
               });
             }
           }

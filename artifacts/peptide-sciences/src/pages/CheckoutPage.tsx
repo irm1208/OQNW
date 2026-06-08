@@ -166,6 +166,10 @@ export default function CheckoutPage() {
   const [loyaltyBalance, setLoyaltyBalance] = useState<{ balance: number; gbpValue: number } | null>(null);
   const [loyaltyPointsToRedeem, setLoyaltyPointsToRedeem] = useState(0);
 
+  // Free peptide credits
+  const [freePeptideCredits, setFreePeptideCredits] = useState(0);
+  const [redeemFreePeptide, setRedeemFreePeptide] = useState(false);
+
   // Mobile order summary toggle (collapsed by default)
   const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
 
@@ -183,10 +187,14 @@ export default function CheckoutPage() {
 
   // Fetch loyalty balance for logged-in customers
   useEffect(() => {
-    if (!customer) { setLoyaltyBalance(null); setLoyaltyPointsToRedeem(0); return; }
+    if (!customer) { setLoyaltyBalance(null); setLoyaltyPointsToRedeem(0); setFreePeptideCredits(0); setRedeemFreePeptide(false); return; }
     fetch(apiUrl("loyalty/balance"), { credentials: "include" })
       .then(r => r.ok ? r.json() as Promise<{ balance: number; gbpValue: number }> : null)
       .then(data => { if (data) setLoyaltyBalance(data); })
+      .catch(() => {});
+    fetch(apiUrl("account/referral"), { credentials: "include" })
+      .then(r => r.ok ? r.json() as Promise<{ freePeptideCredits: number }> : null)
+      .then(data => { if (data) setFreePeptideCredits(data.freePeptideCredits); })
       .catch(() => {});
   }, [customer]);
 
@@ -217,7 +225,9 @@ export default function CheckoutPage() {
   const shippingCost = selectedShipping.freeOver && cartGBP >= selectedShipping.freeOver ? 0 : selectedShipping.price;
   const discountAmount = appliedDiscount?.discountAmount ?? 0;
   const loyaltyDiscountGbp = loyaltyPointsToRedeem / 100;
-  const preGiftTotal = Math.max(0, cartGBP + shippingCost - bundleDiscountAmount - discountAmount - loyaltyDiscountGbp);
+  const cheapestItemPrice = items.length > 0 ? Math.min(...items.map(i => i.product.price ?? 0)) : 0;
+  const freePeptideDeductGbp = redeemFreePeptide && freePeptideCredits > 0 ? cheapestItemPrice : 0;
+  const preGiftTotal = Math.max(0, cartGBP + shippingCost - bundleDiscountAmount - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp);
   const giftCardDeductGbp = appliedGiftCard ? Math.min(appliedGiftCard.remainingGbp, preGiftTotal) : 0;
   const totalGBP = Math.max(0, preGiftTotal - giftCardDeductGbp);
 
@@ -362,6 +372,7 @@ export default function CheckoutPage() {
             discountCode: appliedDiscount?.code ?? null,
             giftCardCode: appliedGiftCard?.code ?? null,
             loyaltyPointsRedeemed: loyaltyPointsToRedeem > 0 ? loyaltyPointsToRedeem : undefined,
+            redeemFreePeptide: redeemFreePeptide && freePeptideCredits > 0 ? true : undefined,
             paymentMethod,
           }),
         });
@@ -1059,6 +1070,55 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
+                {/* Free peptide credit redemption */}
+                {customer && freePeptideCredits > 0 && (
+                  <div style={{ marginBottom: "12px", paddingTop: "12px", borderTop: "1px solid #F1F5F9" }}>
+                    {!redeemFreePeptide ? (
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
+                          <label style={{ fontSize: "12px", fontWeight: 600, color: "#374151", display: "flex", alignItems: "center", gap: "4px" }}>
+                            <span style={{ fontSize: "13px" }}>🎁</span>
+                            Free Peptide Credit
+                          </label>
+                          <span style={{ fontSize: "11px", color: "#64748B" }}>{freePeptideCredits} available</span>
+                        </div>
+                        <button
+                          onClick={() => setRedeemFreePeptide(true)}
+                          style={{
+                            width: "100%", height: "36px", borderRadius: "8px",
+                            border: "1.5px dashed #15803D", backgroundColor: "#F0FDF4",
+                            color: "#166534", fontSize: "12.5px", fontWeight: 700, cursor: "pointer",
+                            display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                          }}
+                        >
+                          🎁 Redeem 1 free peptide (−{formatPrice(cheapestItemPrice)})
+                        </button>
+                      </div>
+                    ) : (
+                      <div style={{
+                        padding: "10px 12px", borderRadius: "10px",
+                        backgroundColor: "#F0FDF4", border: "1.5px solid #86EFAC",
+                        display: "flex", alignItems: "center", justifyContent: "space-between",
+                      }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <span style={{ fontSize: "15px" }}>🎁</span>
+                          <div>
+                            <p style={{ fontSize: "12px", fontWeight: 700, color: "#15803D", margin: 0 }}>Free peptide applied</p>
+                            <p style={{ fontSize: "11px", color: "#166534", margin: 0 }}>−{formatPrice(cheapestItemPrice)} off (cheapest item)</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => setRedeemFreePeptide(false)}
+                          style={{ background: "none", border: "none", cursor: "pointer", color: "#15803D", padding: "2px", display: "flex", alignItems: "center" }}
+                          title="Remove free peptide credit"
+                        >
+                          <X size={15} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Loyalty points redemption */}
                 {customer && loyaltyBalance && loyaltyBalance.balance >= 100 && (
                   <div style={{ marginBottom: "12px", paddingTop: "12px", borderTop: "1px solid #F1F5F9" }}>
@@ -1135,6 +1195,12 @@ export default function CheckoutPage() {
                   <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
                     <span style={{ fontSize: "13px", color: "#059669" }}>Discount ({appliedDiscount.code})</span>
                     <span style={{ fontSize: "13px", fontWeight: 600, color: "#059669" }}>−{formatPrice(discountAmount)}</span>
+                  </div>
+                )}
+                {redeemFreePeptide && freePeptideDeductGbp > 0 && (
+                  <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
+                    <span style={{ fontSize: "13px", color: "#15803D" }}>🎁 Free peptide credit</span>
+                    <span style={{ fontSize: "13px", fontWeight: 600, color: "#15803D" }}>−{formatPrice(freePeptideDeductGbp)}</span>
                   </div>
                 )}
                 {loyaltyPointsToRedeem > 0 && (

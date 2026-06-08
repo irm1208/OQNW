@@ -730,27 +730,25 @@ export async function sendReferralReward(data: {
   referrerName: string;
   referrerEmail: string;
   refereeName: string;
-  discountCode: string;
-  creditGbp: number;
 }): Promise<void> {
-  const subject = `You've earned a referral reward — ${data.discountCode}`;
+  const subject = `You've earned a free peptide — ${data.refereeName} just ordered!`;
   const body = `
-    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#0f172a;">You've earned a referral reward!</h2>
+    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#0f172a;">You've earned a free peptide!</h2>
     <p style="margin:0 0 24px;font-size:14px;color:#64748b;">
-      Hi ${data.referrerName}, <strong>${data.refereeName}</strong> just placed their first order using your referral link. As a thank you, here's your reward:
+      Hi ${data.referrerName}, <strong>${data.refereeName}</strong> just placed their first order using your referral link. We've added 1 free peptide credit to your account as a thank you.
     </p>
 
     <div style="background:#f0fdf4;border-radius:8px;padding:20px 24px;margin-bottom:24px;border-left:4px solid #22c55e;">
-      <p style="margin:0 0 4px;font-size:12px;color:#166534;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Your Discount Code</p>
-      <p style="margin:0;font-size:28px;font-weight:800;color:#15803d;letter-spacing:2px;">${data.discountCode}</p>
-      <p style="margin:8px 0 0;font-size:13px;color:#166534;">Worth £${data.creditGbp.toFixed(2)} off your next order</p>
+      <p style="margin:0 0 4px;font-size:12px;color:#166534;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Your Reward</p>
+      <p style="margin:0;font-size:28px;font-weight:800;color:#15803d;">+1 Free Peptide</p>
+      <p style="margin:8px 0 0;font-size:13px;color:#166534;">Redeem it at checkout — the lowest-priced item in your cart will be free.</p>
     </div>
 
     <div style="margin-top:4px;">
-      <a href="${SITE_URL}/all-peptides" style="display:inline-block;background:#0f172a;color:#ffffff;padding:13px 30px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600;">Shop Now</a>
+      <a href="${SITE_URL}/all-peptides" style="display:inline-block;background:#0f172a;color:#ffffff;padding:13px 30px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600;">Shop Now & Redeem</a>
     </div>
 
-    <p style="margin:24px 0 0;font-size:12px;color:#94a3b8;">Discount codes are single-use and valid for 90 days. Keep sharing your referral link to earn more rewards!</p>
+    <p style="margin:24px 0 0;font-size:12px;color:#94a3b8;">Free peptide credits never expire. Keep sharing your referral link — you earn one free peptide for every friend who orders!</p>
   `;
 
   try {
@@ -760,7 +758,7 @@ export async function sendReferralReward(data: {
       subject,
       html: baseTemplate("Referral Reward", body),
     });
-    logger.info({ to: data.referrerEmail, code: data.discountCode }, "Referral reward email sent");
+    logger.info({ to: data.referrerEmail }, "Referral reward email sent");
     await logEmail({ toEmail: data.referrerEmail, subject, type: "referral_reward", status: "sent", resendId: result.data?.id });
   } catch (err) {
     logger.error({ err }, "Failed to send referral reward email");
