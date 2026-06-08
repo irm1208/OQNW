@@ -587,20 +587,44 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
           }
           if (cust?.totalOrders === 1 && cust.referredBy) {
             const [referrer] = await db
-              .select({ id: customersTable.id, email: customersTable.email, firstName: customersTable.firstName, lastName: customersTable.lastName })
+              .select({ id: customersTable.id, email: customersTable.email, firstName: customersTable.firstName, lastName: customersTable.lastName, lastSeenIp: customersTable.lastSeenIp })
               .from(customersTable)
               .where(eq(customersTable.referralCode, cust.referredBy))
               .limit(1);
             if (referrer) {
-              await db
-                .update(customersTable)
-                .set({ freePeptideCredits: sql`free_peptide_credits + 1` })
-                .where(eq(customersTable.id, referrer.id));
-              await sendReferralReward({
-                referrerName: `${referrer.firstName} ${referrer.lastName}`,
-                referrerEmail: referrer.email,
-                refereeName: customerName,
-              });
+              // IP abuse check: block if new customer shares IP with the referrer (self-referral)
+              // or if another account already referred by the same code shares the same IP (duplicate accounts)
+              let abuseDetected = false;
+              if (clientIp) {
+                if (referrer.lastSeenIp && referrer.lastSeenIp === clientIp) {
+                  abuseDetected = true;
+                } else {
+                  // Check for any other previously-referred customer from the same referral code with a matching IP
+                  const [duplicateIpRef] = await db
+                    .select({ id: customersTable.id })
+                    .from(customersTable)
+                    .where(
+                      and(
+                        eq(customersTable.referredBy, cust.referredBy),
+                        eq(customersTable.lastSeenIp, clientIp),
+                        sql`${customersTable.id} != ${customerId}`
+                      )
+                    )
+                    .limit(1);
+                  if (duplicateIpRef) abuseDetected = true;
+                }
+              }
+              if (!abuseDetected) {
+                await db
+                  .update(customersTable)
+                  .set({ freePeptideCredits: sql`free_peptide_credits + 1` })
+                  .where(eq(customersTable.id, referrer.id));
+                await sendReferralReward({
+                  referrerName: `${referrer.firstName} ${referrer.lastName}`,
+                  referrerEmail: referrer.email,
+                  refereeName: customerName,
+                });
+              }
             }
           }
         } catch {}
