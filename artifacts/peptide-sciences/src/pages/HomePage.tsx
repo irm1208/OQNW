@@ -970,6 +970,7 @@ export default function HomePage() {
       </section>
 
       {/* ── TESTIMONIALS ──────────────────────────────────────── */}
+      <div style={{ height: 32, background: "#fff" }} />
       <section className="home-section-testimonials" style={{
         background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
         padding: "56px 0",
