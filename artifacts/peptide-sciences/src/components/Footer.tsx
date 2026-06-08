@@ -196,11 +196,11 @@ export default function Footer() {
               border: "1px solid rgba(255,255,255,0.15)",
             }}
           >
-            <p className="text-xs leading-relaxed mb-1.5" style={{ color: "rgba(255,255,255,0.65)" }}>
-              <strong style={{ color: "rgba(255,255,255,0.85)" }}>IMPORTANT LEGAL NOTICE:</strong>{" "}
+            <p className="text-xs leading-relaxed mb-1.5" style={{ color: "#E8A93E" }}>
+              <strong style={{ color: "#E8A93E" }}>IMPORTANT LEGAL NOTICE:</strong>{" "}
               All products sold by OmniQure are intended for in-vitro laboratory research use only. These products are not for human or veterinary use. By purchasing, you confirm you are at least 18 years of age and a qualified researcher.
             </p>
-            <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.65)" }}>
+            <p className="text-xs leading-relaxed" style={{ color: "#E8A93E" }}>
               Products have not been approved by the FDA or any other regulatory body. OmniQure is not responsible for the misuse of any of its products.
             </p>
           </div>
