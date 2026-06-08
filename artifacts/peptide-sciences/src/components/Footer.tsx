@@ -50,6 +50,7 @@ const footerCategories = [
       { label: "Bundle & Save",       href: "/all-peptides"     },
       { label: "Lab Results",          href: "/lab-tests"        },
       { label: "All Peptides",        href: "/all-peptides"     },
+      { label: "Refer a Friend",      href: "/account?tab=referral" },
     ],
   },
 ];

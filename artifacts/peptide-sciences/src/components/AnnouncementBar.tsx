@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 
 const messages = [
   "🔬  99%+ HPLC Purity — Guaranteed on Every Product",
+  "🎁  Refer a Friend — Earn a Free Peptide When They Order",
   "🚚  Free Shipping on Orders Over £100 — UK & Worldwide",
   "🧪  Research Grade · Lab Certified · COA Included",
   "🔒  Secure Checkout — SSL Encrypted & Discreet Packaging",

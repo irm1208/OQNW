@@ -4,7 +4,7 @@ import { useSEO } from "@/hooks/useSEO";
 import {
   Shield, FlaskConical, Truck, Award,
   ChevronRight, ArrowRight, CheckCircle, Star, Quote,
-  Mail,
+  Mail, Gift, UserPlus, ShoppingCart,
 } from "lucide-react";
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
@@ -890,6 +890,137 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── REFER A FRIEND ────────────────────────────────────── */}
+      <section style={{ backgroundColor: "#fff", padding: "68px 0", borderTop: "1px solid #E8EDF5" }}>
+        <div className="max-w-[1280px] mx-auto px-4">
+
+          {/* Section header */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 mb-2">
+              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #F59E0B, #FCD34D)", borderRadius: "2px" }} />
+              <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#B45309", letterSpacing: "0.1em" }}>
+                REFERRAL PROGRAMME
+              </p>
+              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #FCD34D, #F59E0B)", borderRadius: "2px" }} />
+            </div>
+            <h2 className="font-bold" style={{ fontSize: "clamp(22px,3vw,32px)", color: "#0F172A", letterSpacing: "-0.02em", marginBottom: "8px" }}>
+              Refer a Friend, Earn a Free Peptide
+            </h2>
+            <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "480px", margin: "0 auto", lineHeight: 1.7 }}>
+              Share your unique referral link. When a friend places their first order, you both benefit — and you earn a free peptide credit, no strings attached.
+            </p>
+          </div>
+
+          {/* Steps */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            {[
+              {
+                icon: <UserPlus size={26} />,
+                step: "01",
+                title: "Share Your Link",
+                body: "Log in to your account and copy your personal referral link. Share it with fellow researchers via email, message, or social.",
+                color: "#1B5CB5",
+                bg: "#EEF4FF",
+              },
+              {
+                icon: <ShoppingCart size={26} />,
+                step: "02",
+                title: "Friend Places an Order",
+                body: "Your friend signs up using your link and places their first order with OmniQure. That's all they need to do.",
+                color: "#059669",
+                bg: "#ECFDF5",
+              },
+              {
+                icon: <Gift size={26} />,
+                step: "03",
+                title: "You Earn a Free Peptide",
+                body: "A free peptide credit is added to your account automatically — redeemable on any product at checkout, no minimum order.",
+                color: "#B45309",
+                bg: "#FEF3C7",
+              },
+            ].map((s, i) => (
+              <div
+                key={i}
+                style={{
+                  background: "#fff",
+                  border: "1.5px solid #E8EDF5",
+                  borderRadius: "20px",
+                  padding: "32px 28px",
+                  position: "relative",
+                  overflow: "hidden",
+                  boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
+                  transition: "transform 0.2s, box-shadow 0.2s, border-color 0.2s",
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = `0 16px 40px ${s.color}18`;
+                  (e.currentTarget as HTMLElement).style.borderColor = s.color + "44";
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(15,23,42,0.04)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "#E8EDF5";
+                }}
+              >
+                <div style={{ height: "3px", background: `linear-gradient(90deg, ${s.color}, ${s.color}66)`, borderRadius: "12px 12px 0 0", position: "absolute", top: 0, left: 0, right: 0 }} />
+                <span style={{ position: "absolute", top: "16px", right: "20px", fontSize: "48px", fontWeight: 900, color: "#F1F5F9", lineHeight: 1, userSelect: "none", letterSpacing: "-0.04em" }}>{s.step}</span>
+                <div style={{ width: "56px", height: "56px", borderRadius: "14px", backgroundColor: s.bg, color: s.color, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
+                  {s.icon}
+                </div>
+                <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#0F172A", marginBottom: "10px" }}>{s.title}</h3>
+                <p style={{ fontSize: "13.5px", color: "#64748B", lineHeight: 1.7, margin: 0 }}>{s.body}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA banner */}
+          <div style={{
+            background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)",
+            borderRadius: "20px",
+            padding: "36px 40px",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "24px",
+            position: "relative",
+            overflow: "hidden",
+          }}>
+            <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", top: "-60px", right: "10%", width: "300px", height: "300px", borderRadius: "50%", background: "radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+                <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "rgba(245,158,11,0.15)", border: "1px solid rgba(245,158,11,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <Gift size={18} style={{ color: "#F59E0B" }} />
+                </div>
+                <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#F59E0B" }}>Start Earning Today</span>
+              </div>
+              <h3 style={{ fontSize: "clamp(18px,2.5vw,26px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.15, margin: "0 0 8px" }}>
+                Every referral earns you one free peptide.
+              </h3>
+              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", margin: 0, lineHeight: 1.6 }}>
+                No limit on how many friends you can refer. Credits never expire.
+              </p>
+            </div>
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", position: "relative", zIndex: 1 }}>
+              <Link
+                href="/account?tab=referral"
+                style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "#F59E0B", color: "#000", padding: "13px 26px", borderRadius: "12px", fontWeight: 800, fontSize: "14px", textDecoration: "none", boxShadow: "0 4px 16px rgba(245,158,11,0.35)", whiteSpace: "nowrap" }}
+              >
+                Get My Referral Link <ArrowRight size={15} />
+              </Link>
+              <Link
+                href="/sign-up"
+                style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "rgba(255,255,255,0.10)", color: "#fff", border: "1px solid rgba(255,255,255,0.25)", padding: "13px 26px", borderRadius: "12px", fontWeight: 700, fontSize: "14px", textDecoration: "none", whiteSpace: "nowrap", backdropFilter: "blur(6px)" }}
+              >
+                New? Create an Account
+              </Link>
+            </div>
+          </div>
+
         </div>
       </section>
 
