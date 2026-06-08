@@ -117,9 +117,9 @@ export default function Footer() {
                     <img
                       src="/omniqure-wordmark.png"
                       alt="OmniQure"
-                      style={{ height: "52px", width: "222px", display: "block" }}
+                      style={{ height: "52px", width: "auto", display: "block" }}
                     />
-                    <span style={{ display: "block", width: "222px", textAlign: "right", color: "#E8A93E", fontSize: "8px", fontWeight: 900, letterSpacing: "0.18em", whiteSpace: "nowrap", overflow: "hidden", marginTop: "2px" }}>
+                    <span style={{ display: "block", width: "230px", textAlign: "right", color: "#E8A93E", fontSize: "8px", fontWeight: 900, letterSpacing: "0.18em", whiteSpace: "nowrap", overflow: "hidden", marginTop: "2px" }}>
                       PEPTIDE RESEARCH INSTITUTE
                     </span>
                   </div>
