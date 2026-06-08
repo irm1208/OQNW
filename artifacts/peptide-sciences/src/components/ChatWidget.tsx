@@ -194,7 +194,7 @@ export default function ChatWidget() {
     {
       id: ++msgId,
       role: "assistant",
-      text: "Hi! I'm the OmniQure Research Assistant 🔬 Ask me anything about our peptides, shipping, storage, ordering, or research applications.",
+      text: "Hi! I'm the OmniQure Peptide Assistant 🔬 Ask me anything about our peptides, shipping, storage, ordering, or research applications.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -264,7 +264,7 @@ export default function ChatWidget() {
               <Bot size={20} color="#E8A93E" />
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 700, fontSize: "13.5px", color: "#fff" }}>OmniQure Research Assistant</div>
+              <div style={{ fontWeight: 700, fontSize: "13.5px", color: "#fff" }}>OmniQure Peptide Assistant</div>
               <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.65)", marginTop: "1px" }}>
                 Peptide research support
               </div>
