@@ -465,6 +465,14 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       }))
     );
 
+    // Track customer IP on every order (non-blocking)
+    if (customerId && clientIp) {
+      db.update(customersTable).set({
+        lastSeenIp: clientIp,
+        knownIps: sql`(SELECT array_agg(DISTINCT x) FROM unnest(array_append(COALESCE(known_ips, ARRAY[]::text[]), ${clientIp}::text)) AS x)`,
+      }).where(eq(customersTable.id, customerId)).catch(() => {});
+    }
+
     // Award and redeem loyalty points (non-blocking)
     const loyaltyCustomerId = customerId ?? sessionCustomerId;
     if (loyaltyCustomerId) {
@@ -587,33 +595,45 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
           }
           if (cust?.totalOrders === 1 && cust.referredBy) {
             const [referrer] = await db
-              .select({ id: customersTable.id, email: customersTable.email, firstName: customersTable.firstName, lastName: customersTable.lastName, lastSeenIp: customersTable.lastSeenIp })
+              .select({ id: customersTable.id, email: customersTable.email, firstName: customersTable.firstName, lastName: customersTable.lastName, lastSeenIp: customersTable.lastSeenIp, knownIps: customersTable.knownIps })
               .from(customersTable)
               .where(eq(customersTable.referralCode, cust.referredBy))
               .limit(1);
             if (referrer) {
-              // IP abuse check: block if new customer shares IP with the referrer (self-referral)
-              // or if another account already referred by the same code shares the same IP (duplicate accounts)
+              // IP abuse checks — block reward if any of the following are true:
+              // 1. New customer is using a VPN / proxy / hosting IP (can mask identity)
+              // 2. New customer's IP matches any IP ever seen on the referrer's account
+              // 3. New customer's IP matches any IP ever seen on any other existing customer
               let abuseDetected = false;
-              if (clientIp) {
-                if (referrer.lastSeenIp && referrer.lastSeenIp === clientIp) {
+
+              if (ipData.isProxy) {
+                // VPN, proxy, or datacenter IP — could be masking a self-referral
+                abuseDetected = true;
+              }
+
+              if (!abuseDetected && clientIp) {
+                // Check referrer's full IP history (not just last seen)
+                const referrerKnownIps: string[] = referrer.knownIps ?? (referrer.lastSeenIp ? [referrer.lastSeenIp] : []);
+                if (referrerKnownIps.includes(clientIp)) {
                   abuseDetected = true;
-                } else {
-                  // Check for any other previously-referred customer from the same referral code with a matching IP
-                  const [duplicateIpRef] = await db
-                    .select({ id: customersTable.id })
-                    .from(customersTable)
-                    .where(
-                      and(
-                        eq(customersTable.referredBy, cust.referredBy),
-                        eq(customersTable.lastSeenIp, clientIp),
-                        sql`${customersTable.id} != ${customerId}`
-                      )
-                    )
-                    .limit(1);
-                  if (duplicateIpRef) abuseDetected = true;
                 }
               }
+
+              if (!abuseDetected && clientIp) {
+                // Check if this IP appears on ANY other customer account (multi-account abuse)
+                const [anyIpConflict] = await db
+                  .select({ id: customersTable.id })
+                  .from(customersTable)
+                  .where(
+                    and(
+                      sql`${clientIp} = ANY(COALESCE(${customersTable.knownIps}, ARRAY[]::text[]))`,
+                      sql`${customersTable.id} != ${customerId}`
+                    )
+                  )
+                  .limit(1);
+                if (anyIpConflict) abuseDetected = true;
+              }
+
               if (!abuseDetected) {
                 await db
                   .update(customersTable)

@@ -4,7 +4,7 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { db } from "@workspace/db";
 import { customersTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { sendPasswordReset } from "../lib/email";
 import { getClientIp, lookupCountry } from "../lib/geoip";
 
@@ -102,7 +102,11 @@ router.post("/auth/register", async (req: Request, res: Response): Promise<void>
       const ipUpgrade = getClientIp(req);
       if (ipUpgrade) {
         lookupCountry(ipUpgrade).then((cc) => {
-          if (cc) db.update(customersTable).set({ lastSeenIp: ipUpgrade, lastSeenCountry: cc }).where(eq(customersTable.id, upgraded.id)).catch(() => {});
+          db.update(customersTable).set({
+            lastSeenIp: ipUpgrade,
+            ...(cc ? { lastSeenCountry: cc } : {}),
+            knownIps: sql`(SELECT array_agg(DISTINCT x) FROM unnest(array_append(COALESCE(known_ips, ARRAY[]::text[]), ${ipUpgrade}::text)) AS x)`,
+          }).where(eq(customersTable.id, upgraded.id)).catch(() => {});
         }).catch(() => {});
       }
       res.status(200).json({
@@ -134,10 +138,12 @@ router.post("/auth/register", async (req: Request, res: Response): Promise<void>
     const generatedCode = `${firstName.trim().slice(0, 3).toUpperCase()}${String(customer.id).padStart(4, "0")}`;
     const ipReg = getClientIp(req);
     lookupCountry(ipReg ?? "").then((cc) => {
-      const updates: Record<string, string> = { referralCode: generatedCode };
-      if (ipReg) updates.lastSeenIp = ipReg;
-      if (cc) updates.lastSeenCountry = cc;
-      db.update(customersTable).set(updates).where(eq(customersTable.id, customer.id)).catch(() => {});
+      db.update(customersTable).set({
+        referralCode: generatedCode,
+        ...(ipReg ? { lastSeenIp: ipReg } : {}),
+        ...(cc ? { lastSeenCountry: cc } : {}),
+        ...(ipReg ? { knownIps: sql`(SELECT array_agg(DISTINCT x) FROM unnest(array_append(COALESCE(known_ips, ARRAY[]::text[]), ${ipReg}::text)) AS x)` } : {}),
+      }).where(eq(customersTable.id, customer.id)).catch(() => {});
     }).catch(() => {
       db.update(customersTable).set({ referralCode: generatedCode }).where(eq(customersTable.id, customer.id)).catch(() => {});
     });
@@ -199,7 +205,11 @@ router.post("/auth/login", async (req: Request, res: Response): Promise<void> =>
     const ipLogin = getClientIp(req);
     if (ipLogin) {
       lookupCountry(ipLogin).then((cc) => {
-        if (cc) db.update(customersTable).set({ lastSeenIp: ipLogin, lastSeenCountry: cc }).where(eq(customersTable.id, customer.id)).catch(() => {});
+        db.update(customersTable).set({
+          lastSeenIp: ipLogin,
+          ...(cc ? { lastSeenCountry: cc } : {}),
+          knownIps: sql`(SELECT array_agg(DISTINCT x) FROM unnest(array_append(COALESCE(known_ips, ARRAY[]::text[]), ${ipLogin}::text)) AS x)`,
+        }).where(eq(customersTable.id, customer.id)).catch(() => {});
       }).catch(() => {});
     }
 

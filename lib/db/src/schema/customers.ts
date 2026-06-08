@@ -33,6 +33,7 @@ export const customersTable = pgTable("customers", {
   freePeptideCredits: integer("free_peptide_credits").notNull().default(0),
   lastSeenIp: text("last_seen_ip"),
   lastSeenCountry: text("last_seen_country"),
+  knownIps: text("known_ips").array(),
 });
 
 export const insertCustomerSchema = createInsertSchema(customersTable).omit({
