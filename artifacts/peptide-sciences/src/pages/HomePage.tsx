@@ -680,46 +680,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── BUNDLE & SAVE STRIP ────────────────────────────────── */}
-      <section style={{
-        background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
-        borderTop: "1px solid rgba(255,255,255,0.08)",
-        borderBottom: "1px solid rgba(255,255,255,0.08)",
-      }}>
-        <div className="max-w-[1280px] mx-auto px-4 py-4">
-          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "14px", justifyContent: "space-between" }}>
-            {/* Left label */}
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
-              <div style={{ backgroundColor: "#34D399", borderRadius: "6px", padding: "3px 9px" }}>
-                <span style={{ fontSize: "10px", fontWeight: 900, letterSpacing: "0.1em", color: "#022c22", textTransform: "uppercase" }}>Bundle & Save</span>
-              </div>
-              <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.80)", fontWeight: 600 }}>The more you order, the more you save</span>
-            </div>
-            {/* Tiers + CTA */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "7px", alignItems: "center" }}>
-              {[
-                { label: "3+ vials",  pct: "5%",  bg: "rgba(96,165,250,0.18)",  border: "rgba(96,165,250,0.40)",  pctColor: "#93C5FD" },
-                { label: "7+ vials",  pct: "10%", bg: "rgba(52,211,153,0.18)",  border: "rgba(52,211,153,0.40)",  pctColor: "#6EE7B7" },
-                { label: "11+ vials", pct: "15%", bg: "rgba(251,191,36,0.18)",  border: "rgba(251,191,36,0.40)",  pctColor: "#FDE68A" },
-                { label: "15+ vials", pct: "20%", bg: "rgba(167,139,250,0.18)", border: "rgba(167,139,250,0.40)", pctColor: "#C4B5FD" },
-              ].map(t => (
-                <div key={t.label} style={{ display: "flex", alignItems: "center", gap: "6px", backgroundColor: t.bg, border: `1px solid ${t.border}`, borderRadius: "8px", padding: "6px 13px" }}>
-                  <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.65)", fontWeight: 600 }}>{t.label}</span>
-                  <span style={{ fontSize: "15px", fontWeight: 900, color: t.pctColor, lineHeight: 1 }}>{t.pct}</span>
-                  <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.45)", fontWeight: 700 }}>OFF</span>
-                </div>
-              ))}
-              <Link
-                href="/all-peptides"
-                style={{ fontSize: "12.5px", fontWeight: 800, color: "#022c22", backgroundColor: "#34D399", padding: "7px 18px", borderRadius: "8px", textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0, boxShadow: "0 2px 8px rgba(52,211,153,0.25)" }}
-              >
-                Build a Bundle →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ── TRUST STRIP ───────────────────────────────────────── */}
       <section style={{ backgroundColor: "#fff", borderBottom: "1px solid #EEF2F7" }}>
         <div className="max-w-[1280px] mx-auto px-4">
@@ -824,203 +784,43 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ──────────────────────────────────────── */}
-      <section className="home-section-testimonials" style={{
+      {/* ── BUNDLE & SAVE STRIP ────────────────────────────────── */}
+      <section style={{
         background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
-        padding: "56px 0",
-        position: "relative",
-        overflow: "hidden",
+        borderTop: "1px solid rgba(255,255,255,0.08)",
+        borderBottom: "1px solid rgba(255,255,255,0.08)",
       }}>
-        {/* Dot grid overlay */}
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)",
-          backgroundSize: "32px 32px", pointerEvents: "none",
-        }} />
-        {/* Glow blobs */}
-        <div style={{ position: "absolute", top: "-100px", left: "10%", width: "400px", height: "400px", borderRadius: "50%", background: "radial-gradient(circle, rgba(37,99,235,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: "-80px", right: "8%", width: "360px", height: "360px", borderRadius: "50%", background: "radial-gradient(circle, rgba(245,158,11,0.10) 0%, transparent 70%)", pointerEvents: "none" }} />
-
-        <div className="max-w-[1280px] mx-auto px-4" style={{ position: "relative", zIndex: 1 }}>
-
-          {/* Header */}
-          <div className="testimonial-section-header text-center mb-14">
-            {/* Stars row */}
-            <div className="flex justify-center gap-1 mb-4">
-              {[1,2,3,4,5].map(s => <Star key={s} size={22} style={{ color: "#F59E0B", fill: "#F59E0B" }} />)}
+        <div className="max-w-[1280px] mx-auto px-4 py-4">
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "14px", justifyContent: "space-between" }}>
+            {/* Left label */}
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+              <div style={{ backgroundColor: "#34D399", borderRadius: "6px", padding: "3px 9px" }}>
+                <span style={{ fontSize: "10px", fontWeight: 900, letterSpacing: "0.1em", color: "#022c22", textTransform: "uppercase" }}>Bundle & Save</span>
+              </div>
+              <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.80)", fontWeight: 600 }}>The more you order, the more you save</span>
             </div>
-            <h2 className="font-bold" style={{ fontSize: "clamp(22px,4vw,42px)", color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: "10px" }}>
-              What Our Customers Say
-            </h2>
-            <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.55)", maxWidth: "420px", margin: "0 auto", lineHeight: 1.7 }}>
-              Real reviews from verified OmniQure customers.
-            </p>
-          </div>
-
-          {/* ── Carousel ── */}
-          <TestimonialsCarousel />
-
-          {/* Rating bar */}
-          <div className="testimonial-rating-bar" style={{
-            marginTop: "48px",
-            background: "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(255,255,255,0.10)",
-            borderRadius: "16px",
-            padding: "28px 40px",
-            display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "40px",
-          }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-              <span style={{ fontSize: "56px", fontWeight: 900, color: "#fff", lineHeight: 1 }}>4.9</span>
-              <div>
-                <div className="flex gap-0.5 mb-1">
-                  {[1,2,3,4,5].map(s => <Star key={s} size={18} style={{ color: "#F59E0B", fill: "#F59E0B" }} />)}
+            {/* Tiers + CTA */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "7px", alignItems: "center" }}>
+              {[
+                { label: "3+ vials",  pct: "5%",  bg: "rgba(96,165,250,0.18)",  border: "rgba(96,165,250,0.40)",  pctColor: "#93C5FD" },
+                { label: "7+ vials",  pct: "10%", bg: "rgba(52,211,153,0.18)",  border: "rgba(52,211,153,0.40)",  pctColor: "#6EE7B7" },
+                { label: "11+ vials", pct: "15%", bg: "rgba(251,191,36,0.18)",  border: "rgba(251,191,36,0.40)",  pctColor: "#FDE68A" },
+                { label: "15+ vials", pct: "20%", bg: "rgba(167,139,250,0.18)", border: "rgba(167,139,250,0.40)", pctColor: "#C4B5FD" },
+              ].map(t => (
+                <div key={t.label} style={{ display: "flex", alignItems: "center", gap: "6px", backgroundColor: t.bg, border: `1px solid ${t.border}`, borderRadius: "8px", padding: "6px 13px" }}>
+                  <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.65)", fontWeight: 600 }}>{t.label}</span>
+                  <span style={{ fontSize: "15px", fontWeight: 900, color: t.pctColor, lineHeight: 1 }}>{t.pct}</span>
+                  <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.45)", fontWeight: 700 }}>OFF</span>
                 </div>
-                <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>Average customer rating</p>
-              </div>
-            </div>
-            <div style={{ width: "1px", height: "52px", backgroundColor: "rgba(255,255,255,0.1)" }} className="hidden sm:block" />
-            {[
-              { num: "500+", label: "Orders Fulfilled" },
-              { num: "47",   label: "Unique Compounds" },
-              { num: "99%+", label: "Avg. HPLC Purity" },
-            ].map((stat, i) => (
-              <div key={i} style={{ textAlign: "center" }}>
-                <p style={{ fontSize: "26px", fontWeight: 900, color: "#F59E0B", lineHeight: 1 }}>{stat.num}</p>
-                <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.45)", fontWeight: 600, marginTop: "4px" }}>{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── REFER A FRIEND ────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#fff", padding: "68px 0", borderTop: "1px solid #E8EDF5" }}>
-        <div className="max-w-[1280px] mx-auto px-4">
-
-          {/* Section header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 mb-2">
-              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #F59E0B, #FCD34D)", borderRadius: "2px" }} />
-              <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#B45309", letterSpacing: "0.1em" }}>
-                REFERRAL PROGRAMME
-              </p>
-              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #FCD34D, #F59E0B)", borderRadius: "2px" }} />
-            </div>
-            <h2 className="font-bold" style={{ fontSize: "clamp(22px,3vw,32px)", color: "#0F172A", letterSpacing: "-0.02em", marginBottom: "8px" }}>
-              Refer a Friend, Earn a Free Peptide
-            </h2>
-            <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "480px", margin: "0 auto", lineHeight: 1.7 }}>
-              Share your unique referral link. When a friend places their first order, a free peptide credit is added to your account — redeemable the next time you order.
-            </p>
-          </div>
-
-          {/* Steps */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            {[
-              {
-                icon: <UserPlus size={26} />,
-                step: "01",
-                title: "Share Your Link",
-                body: "Log in to your account and copy your personal referral link. Share it with fellow researchers via email, message, or social.",
-                color: "#1B5CB5",
-                bg: "#EEF4FF",
-              },
-              {
-                icon: <ShoppingCart size={26} />,
-                step: "02",
-                title: "Friend Places an Order",
-                body: "Your friend signs up using your link and places their first order with OmniQure. That's all they need to do.",
-                color: "#059669",
-                bg: "#ECFDF5",
-              },
-              {
-                icon: <Gift size={26} />,
-                step: "03",
-                title: "Redeem on Your Next Order",
-                body: "A free peptide credit is added to your account. Place your next order and redeem it at checkout — applied automatically to any product, any size.",
-                color: "#B45309",
-                bg: "#FEF3C7",
-              },
-            ].map((s, i) => (
-              <div
-                key={i}
-                style={{
-                  background: "#fff",
-                  border: "1.5px solid #E8EDF5",
-                  borderRadius: "20px",
-                  padding: "32px 28px",
-                  position: "relative",
-                  overflow: "hidden",
-                  boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
-                  transition: "transform 0.2s, box-shadow 0.2s, border-color 0.2s",
-                }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-                  (e.currentTarget as HTMLElement).style.boxShadow = `0 16px 40px ${s.color}18`;
-                  (e.currentTarget as HTMLElement).style.borderColor = s.color + "44";
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                  (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(15,23,42,0.04)";
-                  (e.currentTarget as HTMLElement).style.borderColor = "#E8EDF5";
-                }}
-              >
-                <div style={{ height: "3px", background: `linear-gradient(90deg, ${s.color}, ${s.color}66)`, borderRadius: "12px 12px 0 0", position: "absolute", top: 0, left: 0, right: 0 }} />
-                <span style={{ position: "absolute", top: "16px", right: "20px", fontSize: "48px", fontWeight: 900, color: "#F1F5F9", lineHeight: 1, userSelect: "none", letterSpacing: "-0.04em" }}>{s.step}</span>
-                <div style={{ width: "56px", height: "56px", borderRadius: "14px", backgroundColor: s.bg, color: s.color, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
-                  {s.icon}
-                </div>
-                <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#0F172A", marginBottom: "10px" }}>{s.title}</h3>
-                <p style={{ fontSize: "13.5px", color: "#64748B", lineHeight: 1.7, margin: 0 }}>{s.body}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA banner */}
-          <div style={{
-            background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)",
-            borderRadius: "20px",
-            padding: "36px 40px",
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: "24px",
-            position: "relative",
-            overflow: "hidden",
-          }}>
-            <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", top: "-60px", right: "10%", width: "300px", height: "300px", borderRadius: "50%", background: "radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
-                <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "rgba(245,158,11,0.15)", border: "1px solid rgba(245,158,11,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Gift size={18} style={{ color: "#F59E0B" }} />
-                </div>
-                <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#F59E0B" }}>Start Earning Today</span>
-              </div>
-              <h3 style={{ fontSize: "clamp(18px,2.5vw,26px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.15, margin: "0 0 8px" }}>
-                Every referral earns you one free peptide.
-              </h3>
-              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", margin: 0, lineHeight: 1.6 }}>
-                Place an order, refer a friend, earn a free peptide on your next order. No limit on referrals. Credits never expire.
-              </p>
-            </div>
-            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", position: "relative", zIndex: 1 }}>
+              ))}
               <Link
-                href="/account?tab=referral"
-                style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "#F59E0B", color: "#000", padding: "13px 26px", borderRadius: "12px", fontWeight: 800, fontSize: "14px", textDecoration: "none", boxShadow: "0 4px 16px rgba(245,158,11,0.35)", whiteSpace: "nowrap" }}
+                href="/all-peptides"
+                style={{ fontSize: "12.5px", fontWeight: 800, color: "#022c22", backgroundColor: "#34D399", padding: "7px 18px", borderRadius: "8px", textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0, boxShadow: "0 2px 8px rgba(52,211,153,0.25)" }}
               >
-                Get My Referral Link <ArrowRight size={15} />
-              </Link>
-              <Link
-                href="/sign-up"
-                style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "rgba(255,255,255,0.10)", color: "#fff", border: "1px solid rgba(255,255,255,0.25)", padding: "13px 26px", borderRadius: "12px", fontWeight: 700, fontSize: "14px", textDecoration: "none", whiteSpace: "nowrap", backdropFilter: "blur(6px)" }}
-              >
-                New? Create an Account
+                Build a Bundle →
               </Link>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -1223,6 +1023,206 @@ export default function HomePage() {
               Shop All 81 Peptides <ArrowRight size={13} />
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ──────────────────────────────────────── */}
+      <section className="home-section-testimonials" style={{
+        background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
+        padding: "56px 0",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+        {/* Dot grid overlay */}
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)",
+          backgroundSize: "32px 32px", pointerEvents: "none",
+        }} />
+        {/* Glow blobs */}
+        <div style={{ position: "absolute", top: "-100px", left: "10%", width: "400px", height: "400px", borderRadius: "50%", background: "radial-gradient(circle, rgba(37,99,235,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "-80px", right: "8%", width: "360px", height: "360px", borderRadius: "50%", background: "radial-gradient(circle, rgba(245,158,11,0.10) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+        <div className="max-w-[1280px] mx-auto px-4" style={{ position: "relative", zIndex: 1 }}>
+
+          {/* Header */}
+          <div className="testimonial-section-header text-center mb-14">
+            {/* Stars row */}
+            <div className="flex justify-center gap-1 mb-4">
+              {[1,2,3,4,5].map(s => <Star key={s} size={22} style={{ color: "#F59E0B", fill: "#F59E0B" }} />)}
+            </div>
+            <h2 className="font-bold" style={{ fontSize: "clamp(22px,4vw,42px)", color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: "10px" }}>
+              What Our Customers Say
+            </h2>
+            <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.55)", maxWidth: "420px", margin: "0 auto", lineHeight: 1.7 }}>
+              Real reviews from verified OmniQure customers.
+            </p>
+          </div>
+
+          {/* ── Carousel ── */}
+          <TestimonialsCarousel />
+
+          {/* Rating bar */}
+          <div className="testimonial-rating-bar" style={{
+            marginTop: "48px",
+            background: "rgba(255,255,255,0.05)",
+            border: "1px solid rgba(255,255,255,0.10)",
+            borderRadius: "16px",
+            padding: "28px 40px",
+            display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "40px",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+              <span style={{ fontSize: "56px", fontWeight: 900, color: "#fff", lineHeight: 1 }}>4.9</span>
+              <div>
+                <div className="flex gap-0.5 mb-1">
+                  {[1,2,3,4,5].map(s => <Star key={s} size={18} style={{ color: "#F59E0B", fill: "#F59E0B" }} />)}
+                </div>
+                <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>Average customer rating</p>
+              </div>
+            </div>
+            <div style={{ width: "1px", height: "52px", backgroundColor: "rgba(255,255,255,0.1)" }} className="hidden sm:block" />
+            {[
+              { num: "500+", label: "Orders Fulfilled" },
+              { num: "47",   label: "Unique Compounds" },
+              { num: "99%+", label: "Avg. HPLC Purity" },
+            ].map((stat, i) => (
+              <div key={i} style={{ textAlign: "center" }}>
+                <p style={{ fontSize: "26px", fontWeight: 900, color: "#F59E0B", lineHeight: 1 }}>{stat.num}</p>
+                <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.45)", fontWeight: 600, marginTop: "4px" }}>{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── REFER A FRIEND ────────────────────────────────────── */}
+      <section style={{ backgroundColor: "#fff", padding: "68px 0", borderTop: "1px solid #E8EDF5" }}>
+        <div className="max-w-[1280px] mx-auto px-4">
+
+          {/* Section header */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 mb-2">
+              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #F59E0B, #FCD34D)", borderRadius: "2px" }} />
+              <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#B45309", letterSpacing: "0.1em" }}>
+                REFERRAL PROGRAMME
+              </p>
+              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #FCD34D, #F59E0B)", borderRadius: "2px" }} />
+            </div>
+            <h2 className="font-bold" style={{ fontSize: "clamp(22px,3vw,32px)", color: "#0F172A", letterSpacing: "-0.02em", marginBottom: "8px" }}>
+              Refer a Friend, Earn a Free Peptide
+            </h2>
+            <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "480px", margin: "0 auto", lineHeight: 1.7 }}>
+              Share your unique referral link. When a friend places their first order, a free peptide credit is added to your account — redeemable the next time you order.
+            </p>
+          </div>
+
+          {/* Steps */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            {[
+              {
+                icon: <UserPlus size={26} />,
+                step: "01",
+                title: "Share Your Link",
+                body: "Log in to your account and copy your personal referral link. Share it with fellow researchers via email, message, or social.",
+                color: "#1B5CB5",
+                bg: "#EEF4FF",
+              },
+              {
+                icon: <ShoppingCart size={26} />,
+                step: "02",
+                title: "Friend Places an Order",
+                body: "Your friend signs up using your link and places their first order with OmniQure. That's all they need to do.",
+                color: "#059669",
+                bg: "#ECFDF5",
+              },
+              {
+                icon: <Gift size={26} />,
+                step: "03",
+                title: "Redeem on Your Next Order",
+                body: "A free peptide credit is added to your account. Place your next order and redeem it at checkout — applied automatically to any product, any size.",
+                color: "#B45309",
+                bg: "#FEF3C7",
+              },
+            ].map((s, i) => (
+              <div
+                key={i}
+                style={{
+                  background: "#fff",
+                  border: "1.5px solid #E8EDF5",
+                  borderRadius: "20px",
+                  padding: "32px 28px",
+                  position: "relative",
+                  overflow: "hidden",
+                  boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
+                  transition: "transform 0.2s, box-shadow 0.2s, border-color 0.2s",
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = `0 16px 40px ${s.color}18`;
+                  (e.currentTarget as HTMLElement).style.borderColor = s.color + "44";
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(15,23,42,0.04)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "#E8EDF5";
+                }}
+              >
+                <div style={{ height: "3px", background: `linear-gradient(90deg, ${s.color}, ${s.color}66)`, borderRadius: "12px 12px 0 0", position: "absolute", top: 0, left: 0, right: 0 }} />
+                <span style={{ position: "absolute", top: "16px", right: "20px", fontSize: "48px", fontWeight: 900, color: "#F1F5F9", lineHeight: 1, userSelect: "none", letterSpacing: "-0.04em" }}>{s.step}</span>
+                <div style={{ width: "56px", height: "56px", borderRadius: "14px", backgroundColor: s.bg, color: s.color, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
+                  {s.icon}
+                </div>
+                <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#0F172A", marginBottom: "10px" }}>{s.title}</h3>
+                <p style={{ fontSize: "13.5px", color: "#64748B", lineHeight: 1.7, margin: 0 }}>{s.body}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA banner */}
+          <div style={{
+            background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)",
+            borderRadius: "20px",
+            padding: "36px 40px",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "24px",
+            position: "relative",
+            overflow: "hidden",
+          }}>
+            <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", top: "-60px", right: "10%", width: "300px", height: "300px", borderRadius: "50%", background: "radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+                <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "rgba(245,158,11,0.15)", border: "1px solid rgba(245,158,11,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <Gift size={18} style={{ color: "#F59E0B" }} />
+                </div>
+                <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#F59E0B" }}>Start Earning Today</span>
+              </div>
+              <h3 style={{ fontSize: "clamp(18px,2.5vw,26px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.15, margin: "0 0 8px" }}>
+                Every referral earns you one free peptide.
+              </h3>
+              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", margin: 0, lineHeight: 1.6 }}>
+                Place an order, refer a friend, earn a free peptide on your next order. No limit on referrals. Credits never expire.
+              </p>
+            </div>
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", position: "relative", zIndex: 1 }}>
+              <Link
+                href="/account?tab=referral"
+                style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "#F59E0B", color: "#000", padding: "13px 26px", borderRadius: "12px", fontWeight: 800, fontSize: "14px", textDecoration: "none", boxShadow: "0 4px 16px rgba(245,158,11,0.35)", whiteSpace: "nowrap" }}
+              >
+                Get My Referral Link <ArrowRight size={15} />
+              </Link>
+              <Link
+                href="/sign-up"
+                style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "rgba(255,255,255,0.10)", color: "#fff", border: "1px solid rgba(255,255,255,0.25)", padding: "13px 26px", borderRadius: "12px", fontWeight: 700, fontSize: "14px", textDecoration: "none", whiteSpace: "nowrap", backdropFilter: "blur(6px)" }}
+              >
+                New? Create an Account
+              </Link>
+            </div>
+          </div>
+
         </div>
       </section>
 
