@@ -903,63 +903,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── LAB PROOF ─────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#fff", padding: "68px 0", borderTop: "1px solid #E8EDF5" }}>
-        <div className="max-w-[1280px] mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
-                <div style={{ width: 16, height: 3, background: "linear-gradient(90deg, #059669, #34D399)", borderRadius: 2 }} />
-                <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.22em", color: "#059669" }}>Third-Party Verified</span>
-              </div>
-              <h2 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 900, letterSpacing: "-0.025em", color: "#0F172A", lineHeight: 1.1, marginBottom: 16 }}>
-                We publish the data.<br />You verify the purity.
-              </h2>
-              <p style={{ fontSize: 15, color: "#475569", lineHeight: 1.8, marginBottom: 28 }}>
-                Every batch is tested by an independent accredited laboratory using HPLC and ESI-TOF mass spectrometry. We publish the raw chromatogram so you can evaluate it yourself — not just take our word for it.
-              </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
-                {[
-                  { label: "HPLC Purity",            value: "99.2%", pct: 99.2, color: "#059669" },
-                  { label: "Mass Spec Confirmation",  value: "✓ Pass", pct: 100,  color: "#1B5CB5" },
-                  { label: "Endotoxin Testing",       value: "✓ Pass", pct: 100,  color: "#7C3AED" },
-                ].map((bar, i) => (
-                  <div key={i}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                      <span style={{ fontSize: 12.5, fontWeight: 700, color: "#374151" }}>{bar.label}</span>
-                      <span style={{ fontSize: 12.5, fontWeight: 800, color: bar.color }}>{bar.value}</span>
-                    </div>
-                    <div style={{ height: 7, backgroundColor: "#F1F5F9", borderRadius: 4, overflow: "hidden" }}>
-                      <div style={{ height: "100%", width: `${bar.pct}%`, background: `linear-gradient(90deg, ${bar.color}, ${bar.color}99)`, borderRadius: 4 }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <Link
-                href="/lab-results"
-                style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(135deg, #059669, #047857)", color: "#fff", textDecoration: "none", borderRadius: 10, padding: "12px 22px", fontSize: 13, fontWeight: 800, boxShadow: "0 4px 16px rgba(5,150,105,0.25)" }}
-              >
-                <FlaskConical size={15} /> View All Lab Results <ArrowRight size={14} />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { icon: "🔬", title: "HPLC Analysis",    body: "High-Performance Liquid Chromatography on every batch confirms compound identity and exact purity percentage." },
-                { icon: "⚗️", title: "Mass Spectrometry", body: "ESI-TOF MS confirms exact molecular weight — definitively ruling out substitution or degradation products." },
-                { icon: "🛡️", title: "Endotoxin Tested", body: "LAL assay confirms endotoxin levels below 1 EU/mg threshold for research-grade compounds on every batch." },
-                { icon: "📋", title: "Published COA",     body: "Every product page links directly to its certificate of analysis — downloadable, no account required." },
-              ].map((c, i) => (
-                <div key={i} style={{ background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)", borderRadius: 16, padding: "20px 18px", border: "1.5px solid rgba(255,255,255,0.10)" }}>
-                  <div style={{ fontSize: 26, marginBottom: 10 }}>{c.icon}</div>
-                  <p style={{ fontSize: 13, fontWeight: 800, color: "#fff", marginBottom: 6, lineHeight: 1.2 }}>{c.title}</p>
-                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.60)", lineHeight: 1.65 }}>{c.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ── RESEARCH AREAS ────────────────────────────────────── */}
       <section style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", borderTop: "3px solid #34D399" }}>
         {/* ── Header strip ── */}
