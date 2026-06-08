@@ -120,6 +120,20 @@ export default function ProductPage() {
     }
   }, [product?.id]);
 
+  // Viewing counter — seeded by product id, fluctuates every ~6s
+  const viewerSeed = product
+    ? 8 + product.id.split("").reduce((s, c) => s + c.charCodeAt(0), 0) % 23
+    : 12;
+  const [viewers, setViewers] = useState(viewerSeed);
+  useEffect(() => {
+    if (!product) return;
+    setViewers(8 + product.id.split("").reduce((s, c) => s + c.charCodeAt(0), 0) % 23);
+    const id = setInterval(() => {
+      setViewers((v) => Math.max(6, Math.min(48, v + (Math.random() < 0.55 ? 1 : -1))));
+    }, 5500 + Math.random() * 2500);
+    return () => clearInterval(id);
+  }, [product?.id]);
+
   // Reviews state
   const [reviewsData, setReviewsData] = useState<ReviewsData | null>(null);
   const [reviewsLoading, setReviewsLoading] = useState(false);
@@ -437,7 +451,7 @@ export default function ProductPage() {
                   className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
                   style={{ backgroundColor: "#FFFBEB", color: "#D97706", border: "1px solid #FDE68A" }}
                 >
-                  ⚡ Low Stock — {product.stockLevel} left
+                  ⚡ Only {product.stockLevel} left
                 </span>
               ) : (
                 <span
@@ -447,6 +461,19 @@ export default function ProductPage() {
                   ✓ In Stock
                 </span>
               )}
+              {/* Live viewers nudge */}
+              <span
+                className="inline-flex items-center gap-1.5 text-xs font-semibold"
+                style={{ color: "#059669" }}
+              >
+                <span style={{
+                  width: "7px", height: "7px", borderRadius: "50%",
+                  backgroundColor: "#059669", display: "inline-block",
+                  boxShadow: "0 0 0 0 rgba(5,150,105,0.4)",
+                  animation: "viewing-pulse 2s infinite",
+                }} />
+                {viewers} people viewing
+              </span>
             </div>
 
             {/* Strength switcher */}

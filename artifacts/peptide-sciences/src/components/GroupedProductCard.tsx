@@ -223,6 +223,32 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           </div>
         )}
 
+        {/* Low stock badge */}
+        {selectedVariant.stockLevel !== undefined && selectedVariant.stockLevel > 0 && selectedVariant.stockLevel <= 10 && (
+          <div style={{ marginBottom: "7px" }}>
+            <span style={{
+              fontSize: "11px", fontWeight: 700, color: "#D97706",
+              backgroundColor: "#FFFBEB", border: "1px solid #FDE68A",
+              padding: "3px 9px", borderRadius: "7px",
+              display: "inline-flex", alignItems: "center", gap: "4px",
+            }}>
+              ⚡ Only {selectedVariant.stockLevel} left
+            </span>
+          </div>
+        )}
+        {selectedVariant.stockLevel === 0 && (
+          <div style={{ marginBottom: "7px" }}>
+            <span style={{
+              fontSize: "11px", fontWeight: 700, color: "#DC2626",
+              backgroundColor: "#FEF2F2", border: "1px solid #FECACA",
+              padding: "3px 9px", borderRadius: "7px",
+              display: "inline-flex", alignItems: "center", gap: "4px",
+            }}>
+              ✗ Out of Stock
+            </span>
+          </div>
+        )}
+
         {/* Price */}
         {selectedVariant.price != null && (
           <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "6px" }}>
