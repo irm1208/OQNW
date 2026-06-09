@@ -496,7 +496,7 @@ export default function Header() {
             ) : (
               <Link
                 href="/sign-in"
-                className="header-icon-btn flex items-center gap-1.5 text-sm font-medium transition-colors"
+                className="header-icon-btn flex items-center gap-1.5 text-sm font-bold transition-colors"
                 style={{ color: "#E8A93E", textDecoration: "none" }}
                 onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#F5C76B"}
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#E8A93E"}
@@ -509,7 +509,7 @@ export default function Header() {
             {/* Wishlist */}
             <Link
               href="/wishlist"
-              className="header-icon-btn flex items-center gap-1.5 text-sm font-medium transition-colors relative"
+              className="header-icon-btn flex items-center gap-1.5 text-sm font-bold transition-colors relative"
               style={{ color: "#E8A93E", textDecoration: "none" }}
               onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#F5C76B"}
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#E8A93E"}
@@ -535,7 +535,7 @@ export default function Header() {
             {/* Cart */}
             <Link
               href="/cart"
-              className="header-icon-btn flex items-center gap-1.5 text-sm font-medium transition-colors relative"
+              className="header-icon-btn flex items-center gap-1.5 text-sm font-bold transition-colors relative"
               style={{ color: "#E8A93E", textDecoration: "none" }}
               onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#F5C76B"}
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#E8A93E"}
