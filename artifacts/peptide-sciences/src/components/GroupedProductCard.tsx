@@ -62,16 +62,23 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
 
   return (
     <div
-      className="flex flex-col bg-white rounded-2xl overflow-hidden h-full"
-      style={{ border: "1.5px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.06)", transition: "border-color 0.2s, box-shadow 0.2s" }}
+      className="rounded-2xl h-full"
+      style={{
+        padding: "3px",
+        background: "linear-gradient(135deg, rgba(99,149,255,0.45) 0%, rgba(147,187,255,0.25) 50%, rgba(99,149,255,0.45) 100%)",
+        boxShadow: "0 0 18px rgba(99,149,255,0.25), 0 2px 12px rgba(15,23,42,0.06)",
+        transition: "box-shadow 0.2s",
+      }}
       onMouseEnter={e => {
-        (e.currentTarget as HTMLElement).style.borderColor = cat.color + "55";
-        (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 48px ${cat.color}1A, 0 4px 16px rgba(15,23,42,0.06)`;
+        (e.currentTarget as HTMLElement).style.boxShadow = `0 0 28px rgba(99,149,255,0.45), 0 8px 32px rgba(15,23,42,0.10)`;
       }}
       onMouseLeave={e => {
-        (e.currentTarget as HTMLElement).style.borderColor = "#E8EDF5";
-        (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(15,23,42,0.06)";
+        (e.currentTarget as HTMLElement).style.boxShadow = "0 0 18px rgba(99,149,255,0.25), 0 2px 12px rgba(15,23,42,0.06)";
       }}
+    >
+    <div
+      className="flex flex-col bg-white rounded-[14px] overflow-hidden h-full"
+      style={{ border: "none", transition: "border-color 0.2s, box-shadow 0.2s" }}
     >
       {/* Accent bar */}
       <div style={{ height: "3px", background: cat.gradient, flexShrink: 0 }} />
@@ -300,6 +307,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
