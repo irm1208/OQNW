@@ -2,12 +2,14 @@ import { Link, useLocation } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
-import { Trash2, Plus, Minus, ShoppingCart, ChevronRight, FlaskConical, Sparkles, CheckCircle2, RefreshCw, CheckCheck } from "lucide-react";
+import { Trash2, Plus, Minus, ShoppingCart, ChevronRight, FlaskConical, Sparkles, CheckCircle2, RefreshCw, CheckCheck, Truck } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useProducts } from "@/context/ProductsContext";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { type Product } from "@/data/products";
 import { getPurityStr } from "@/utils/productPurity";
+
+const FREE_SHIPPING_THRESHOLD_GBP = 100;
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -19,6 +21,85 @@ interface RelatedApiItem {
   productName: string;
   productCategory: string;
   coOccurrences: number;
+}
+
+function FreeShippingBar({ effectiveTotal, compact = false }: { effectiveTotal: number; compact?: boolean }) {
+  const { formatPrice, rates, currency } = useCurrency();
+  const rate = rates[currency.code] ?? 1;
+  const thresholdLocal = FREE_SHIPPING_THRESHOLD_GBP * rate;
+  const remaining = Math.max(0, thresholdLocal - effectiveTotal * rate);
+  const pct = Math.min(100, (effectiveTotal / FREE_SHIPPING_THRESHOLD_GBP) * 100);
+  const unlocked = pct >= 100;
+
+  if (compact) {
+    return (
+      <div style={{
+        borderRadius: "12px", padding: "10px 14px",
+        background: unlocked ? "linear-gradient(90deg,#F0FDF4,#DCFCE7)" : "linear-gradient(90deg,#EEF4FF,#E0EAFF)",
+        border: `1px solid ${unlocked ? "#BBF7D0" : "#BFDBFE"}`,
+        marginBottom: "12px",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "7px" }}>
+          <Truck size={13} style={{ color: unlocked ? "#16A34A" : "#1240A0", flexShrink: 0 }} />
+          <span style={{ fontSize: "12px", fontWeight: 700, color: unlocked ? "#166534" : "#1240A0" }}>
+            {unlocked
+              ? "🎉 You've unlocked free shipping!"
+              : `Add ${formatPrice(remaining / rate)} more for free shipping`}
+          </span>
+        </div>
+        <div style={{ height: "6px", borderRadius: "99px", backgroundColor: unlocked ? "#BBF7D0" : "#BFDBFE", overflow: "hidden" }}>
+          <div style={{
+            height: "100%", width: `${pct}%`, borderRadius: "99px",
+            background: unlocked
+              ? "linear-gradient(90deg,#16A34A,#22C55E)"
+              : "linear-gradient(90deg,#1240A0,#3B82F6)",
+            transition: "width 0.5s cubic-bezier(.22,.68,0,1.2)",
+          }} />
+        </div>
+        {!unlocked && (
+          <p style={{ fontSize: "10.5px", color: "#64748B", marginTop: "5px" }}>
+            {formatPrice(effectiveTotal * rate / (rate || 1))} of {formatPrice(FREE_SHIPPING_THRESHOLD_GBP)} — {Math.round(pct)}% there
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      borderRadius: "14px", padding: "14px 16px",
+      background: unlocked ? "linear-gradient(90deg,#F0FDF4,#DCFCE7)" : "linear-gradient(135deg,#EEF4FF 0%,#E8F0FF 100%)",
+      border: `1.5px solid ${unlocked ? "#86EFAC" : "#BFDBFE"}`,
+      marginBottom: "4px",
+    }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "9px" }}>
+        <Truck size={15} style={{ color: unlocked ? "#16A34A" : "#1240A0", flexShrink: 0 }} />
+        <span style={{ fontSize: "13px", fontWeight: 700, color: unlocked ? "#166534" : "#1240A0" }}>
+          {unlocked
+            ? "🎉 Free shipping unlocked on this order!"
+            : <>Add <strong>{formatPrice(remaining / rate)}</strong> more to unlock free shipping</>}
+        </span>
+      </div>
+      <div style={{ height: "8px", borderRadius: "99px", backgroundColor: unlocked ? "#BBF7D0" : "#DBEAFE", overflow: "hidden" }}>
+        <div style={{
+          height: "100%", width: `${pct}%`, borderRadius: "99px",
+          background: unlocked
+            ? "linear-gradient(90deg,#16A34A,#22C55E)"
+            : "linear-gradient(90deg,#1240A0,#2563EB,#3B82F6)",
+          transition: "width 0.6s cubic-bezier(.22,.68,0,1.2)",
+          boxShadow: unlocked ? "0 0 8px rgba(34,197,94,0.4)" : "0 0 8px rgba(37,99,235,0.3)",
+        }} />
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: "6px" }}>
+        <span style={{ fontSize: "11px", color: "#64748B" }}>
+          {formatPrice(effectiveTotal * rate / (rate || 1))} spent
+        </span>
+        <span style={{ fontSize: "11px", color: "#64748B" }}>
+          Free shipping at {formatPrice(FREE_SHIPPING_THRESHOLD_GBP)}
+        </span>
+      </div>
+    </div>
+  );
 }
 
 function CartUpsellCard({ product }: { product: Product }) {
@@ -239,6 +320,7 @@ export default function CartPage() {
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Items list */}
           <div className="flex-1 min-w-0 space-y-3">
+            <FreeShippingBar effectiveTotal={subtotal - bundleDiscountAmount} compact />
             {items.map(({ product, quantity }) => (
               <div
                 key={product.id}
@@ -455,17 +537,7 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <div
-                  className="rounded-xl p-3 mb-4"
-                  style={{ backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0" }}
-                >
-                  <div className="flex items-center gap-2">
-                    <FlaskConical size={13} style={{ color: "#16A34A", flexShrink: 0 }} />
-                    <p style={{ fontSize: "11.5px", color: "#166534", lineHeight: 1.5 }}>
-                      Free shipping on orders over {currency.symbol}100. Discreet, secure packaging included.
-                    </p>
-                  </div>
-                </div>
+                <FreeShippingBar effectiveTotal={subtotal - bundleDiscountAmount} />
 
                 <button
                   onClick={() => navigate("/checkout")}
