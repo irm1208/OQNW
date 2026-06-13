@@ -1067,8 +1067,8 @@ export default function HomePage() {
             <h2 className="font-bold" style={{ fontSize: "clamp(22px,3vw,32px)", color: "#0F172A", letterSpacing: "-0.02em", marginBottom: "8px" }}>
               Refer a Friend, Earn a Free Peptide
             </h2>
-            <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "500px", margin: "0 auto", lineHeight: 1.7 }}>
-              Share your unique referral link. They get <strong style={{ color: "#0F172A" }}>10% off their first order</strong>. You earn a <strong style={{ color: "#0F172A" }}>free peptide worth up to {localValue}</strong> when it ships.
+            <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "520px", margin: "0 auto", lineHeight: 1.7 }}>
+              Share your unique referral link. They get <strong style={{ color: "#0F172A" }}>10% off their first order</strong>. On your next peptide order, add <strong style={{ color: "#0F172A" }}>1 free peptide worth up to {localValue}</strong>.
             </p>
           </div>
 
@@ -1094,8 +1094,8 @@ export default function HomePage() {
               {
                 icon: <Gift size={26} />,
                 step: "03",
-                title: "You Both Benefit",
-                body: `Once their order ships, you receive a free peptide voucher worth up to ${localValue}. Your friend keeps their 10% discount — everyone wins.`,
+                title: "Claim on Your Next Order",
+                body: `When you next place a peptide order, add 1 free peptide worth up to ${localValue} to that order. Your friend keeps their 10% discount — everyone wins.`,
                 color: "#B45309",
                 bg: "#FEF3C7",
               },
@@ -1157,10 +1157,10 @@ export default function HomePage() {
                 <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#F59E0B" }}>Start Earning Today</span>
               </div>
               <h3 style={{ fontSize: "clamp(18px,2.5vw,26px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.15, margin: "0 0 8px" }}>
-                Every referral earns you a free peptide worth up to {localValue}.
+                Every referral adds 1 free peptide (up to {localValue}) to your next order.
               </h3>
               <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", margin: 0, lineHeight: 1.6 }}>
-                Refer a friend, they get 10% off their first order, you get a free peptide voucher. No limit on referrals. Vouchers never expire.
+                Refer a friend, they get 10% off their first order. Place your next peptide order and claim your free peptide — no limit on referrals, rewards valid for 12 months.
               </p>
             </div>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", position: "relative", zIndex: 1 }}>

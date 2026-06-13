@@ -30,10 +30,10 @@ const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
 };
 
 const PERKS = [
-  { icon: <Zap size={16} />,        label: "No limit",      detail: "Refer as many friends as you like — free peptides stack." },
-  { icon: <Shield size={16} />,     label: "Instant reward",detail: "Your free peptide voucher is issued the moment their order ships." },
-  { icon: <Star size={16} />,       label: "Never expires", detail: "Referral rewards are valid for 12 months from issue." },
-  { icon: <CheckCircle2 size={16} />, label: "Stackable",   detail: "Use your free peptide reward alongside bundle discounts and sale prices." },
+  { icon: <Zap size={16} />,          label: "No limit",        detail: "Refer as many friends as you like — each successful referral unlocks one free peptide on your next order." },
+  { icon: <Shield size={16} />,       label: "Order-linked",    detail: "Claim your free peptide when you next place a peptide order — one per order, up to the reward value." },
+  { icon: <Star size={16} />,         label: "Never expires",   detail: "Unlocked rewards are valid for 12 months — claim them whenever you next order." },
+  { icon: <CheckCircle2 size={16} />, label: "Stackable",       detail: "Combine your free peptide reward with bundle discounts and sale prices on the rest of your order." },
 ];
 
 export default function ReferAFriendPage() {
@@ -76,8 +76,8 @@ export default function ReferAFriendPage() {
       icon: <Gift size={22} color="#fff" />,
       bg: "linear-gradient(135deg, #059669, #10B981)",
       step: "03",
-      title: "You Both Benefit",
-      desc: `Once their order ships, you receive a free peptide voucher worth up to ${localValue}. Your friend keeps their 10% discount — everyone wins.`,
+      title: "Claim on Your Next Order",
+      desc: `When you next place a peptide order, you can add 1 free peptide worth up to ${localValue} to that order. Your friend keeps their 10% discount — everyone wins.`,
     },
   ];
 
@@ -87,20 +87,24 @@ export default function ReferAFriendPage() {
       a: "Anyone who hasn't previously placed an order with OmniQure — friends, colleagues, fellow researchers.",
     },
     {
-      q: "How does my free peptide reward work?",
-      a: `Once your referred friend's first order has been dispatched, you'll receive a voucher for a free peptide worth up to ${localValue}. You can choose any qualifying peptide from our catalogue.`,
+      q: "How do I claim my free peptide?",
+      a: `Once your referred friend has placed their first order, your reward is unlocked. The next time you place a peptide order, you can add 1 free peptide worth up to ${localValue} to that order at checkout.`,
+    },
+    {
+      q: "Do I need to be placing an order to use the reward?",
+      a: `Yes — the free peptide must be claimed as part of a new peptide order. You cannot redeem it as a standalone transaction. Simply add any qualifying peptide (up to ${localValue}) to your cart and the reward will be applied at checkout.`,
     },
     {
       q: "Is there a limit to how many people I can refer?",
-      a: "No — you can refer as many people as you like. Each successful referral earns you an additional free peptide reward.",
+      a: "No — you can refer as many people as you like. Each successful referral unlocks one free peptide reward to use on your next order.",
     },
     {
       q: "Do I need an account to refer someone?",
-      a: "Yes. You need a registered OmniQure account to generate a referral link and receive your free peptide reward.",
+      a: "Yes. You need a registered OmniQure account to generate a referral link and claim your free peptide reward.",
     },
     {
-      q: "Can I choose any peptide with my reward voucher?",
-      a: `Yes — you can select any peptide from our catalogue up to the value of ${localValue}. If the peptide is priced above that, you pay only the difference.`,
+      q: "Which peptides qualify for the free reward?",
+      a: `Any peptide in our catalogue priced up to ${localValue} qualifies. If you choose a peptide priced above that, you pay only the difference.`,
     },
   ];
 
@@ -137,8 +141,8 @@ export default function ReferAFriendPage() {
             Refer a Friend,<br />
             <span style={{ color: "#E8A93E" }}>Earn a Free Peptide</span>
           </h1>
-          <p style={{ fontSize: 17, color: "rgba(255,255,255,0.75)", lineHeight: 1.65, maxWidth: 560, margin: "0 auto 32px" }}>
-            Share OmniQure with a fellow researcher. They get <strong style={{ color: "#fff" }}>10% off their first order</strong>. You earn a <strong style={{ color: "#fff" }}>free peptide worth up to {localValue}</strong> when it ships.
+          <p style={{ fontSize: 17, color: "rgba(255,255,255,0.75)", lineHeight: 1.65, maxWidth: 580, margin: "0 auto 32px" }}>
+            Share OmniQure with a fellow researcher. They get <strong style={{ color: "#fff" }}>10% off their first order</strong>. You can add <strong style={{ color: "#fff" }}>1 free peptide worth up to {localValue}</strong> to your next order.
           </p>
 
           {/* CTA */}
@@ -175,8 +179,8 @@ export default function ReferAFriendPage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
             {[
               { emoji: "🎁", label: "Your friend gets",  value: "10% Off",         sub: "their first order, automatically" },
-              { emoji: "🧪", label: "You earn",          value: `Up to ${localValue}`, sub: "free peptide of your choice" },
-              { emoji: "⚡", label: "Activates",         value: "On Dispatch",     sub: "voucher issued the moment it ships" },
+              { emoji: "🧪", label: "You get",            value: `Up to ${localValue}`, sub: "1 free peptide on your next order" },
+              { emoji: "🛒", label: "How to claim",      value: "Next Order",      sub: "add your free peptide at checkout" },
             ].map(card => (
               <div key={card.label} style={{
                 background: "#fff", borderRadius: 16, padding: "24px 20px",
