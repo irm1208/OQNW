@@ -203,50 +203,6 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           {group.variants.length > 1 ? group.baseName : selectedVariant.name}
         </p>
 
-        {/* Strength dropdown */}
-        {group.variants.length > 1 && (
-          <div style={{ marginBottom: "5px" }} onClick={stopProp}>
-            <div style={{ position: "relative" }}>
-              <select
-                value={selectedIdx}
-                onChange={e => { setSelectedIdx(Number(e.target.value)); setAdded(false); setQty(1); }}
-                onClick={stopProp}
-                style={{
-                  width: "100%",
-                  padding: "4px 22px 4px 7px",
-                  borderRadius: "6px",
-                  border: `1.5px solid ${cat.color}`,
-                  backgroundColor: cat.bg,
-                  color: cat.color,
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  fontFamily: "inherit",
-                  appearance: "none",
-                  WebkitAppearance: "none",
-                  cursor: "pointer",
-                  outline: "none",
-                }}
-              >
-                {group.variants.map((v, i) => {
-                  const { strength } = parseName(v.name);
-                  return (
-                    <option key={v.id} value={i}>
-                      {strength}{v.price != null ? ` — £${v.price.toFixed(2)}` : ""}
-                    </option>
-                  );
-                })}
-              </select>
-              <svg
-                width="11" height="11" viewBox="0 0 24 24"
-                fill="none" stroke={cat.color} strokeWidth="2.5"
-                style={{ position: "absolute", right: "7px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </div>
-          </div>
-        )}
-
         {/* Low stock badge */}
         {selectedVariant.stockLevel !== undefined && selectedVariant.stockLevel > 0 && selectedVariant.stockLevel <= 10 && (
           <div style={{ marginBottom: "4px" }}>
@@ -284,6 +240,50 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
                 from {formatPrice(group.variants[0].price)}
               </span>
             )}
+          </div>
+        )}
+
+        {/* Strength dropdown — under price */}
+        {group.variants.length > 1 && (
+          <div style={{ marginBottom: "6px" }} onClick={stopProp}>
+            <div style={{ position: "relative" }}>
+              <select
+                value={selectedIdx}
+                onChange={e => { setSelectedIdx(Number(e.target.value)); setAdded(false); setQty(1); }}
+                onClick={stopProp}
+                style={{
+                  width: "100%",
+                  padding: "7px 30px 7px 11px",
+                  borderRadius: "9px",
+                  border: `2px solid ${cat.color}`,
+                  backgroundColor: cat.bg,
+                  color: cat.color,
+                  fontSize: "13px",
+                  fontWeight: 800,
+                  fontFamily: "inherit",
+                  appearance: "none",
+                  WebkitAppearance: "none",
+                  cursor: "pointer",
+                  outline: "none",
+                }}
+              >
+                {group.variants.map((v, i) => {
+                  const { strength } = parseName(v.name);
+                  return (
+                    <option key={v.id} value={i}>
+                      {strength}{v.price != null ? ` — £${v.price.toFixed(2)}` : ""}
+                    </option>
+                  );
+                })}
+              </select>
+              <svg
+                width="13" height="13" viewBox="0 0 24 24"
+                fill="none" stroke={cat.color} strokeWidth="2.5"
+                style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
           </div>
         )}
 
