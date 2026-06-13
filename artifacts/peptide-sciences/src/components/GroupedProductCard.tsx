@@ -203,30 +203,54 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           {group.variants.length > 1 ? group.baseName : selectedVariant.name}
         </p>
 
-        {/* Strength pills */}
+        {/* Strength dropdown */}
         {group.variants.length > 1 && (
-          <div className="card-variants" style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "10px" }} onClick={stopProp}>
-            {group.variants.map((v, i) => {
-              const { strength } = parseName(v.name);
-              const active = i === selectedIdx;
-              return (
-                <button
-                  key={v.id}
-                  onClick={e => { stopProp(e); setSelectedIdx(i); setAdded(false); setQty(1); }}
-                  style={{
-                    fontSize: "12.5px", fontWeight: 700,
-                    padding: "4px 10px", borderRadius: "7px",
-                    border: `1.5px solid ${active ? cat.color : "#E2E8F0"}`,
-                    backgroundColor: active ? cat.color : "#F8FAFC",
-                    color: active ? "#fff" : "#64748B",
-                    cursor: "pointer", transition: "all 0.15s",
-                    fontFamily: "inherit",
-                  }}
-                >
-                  {strength}
-                </button>
-              );
-            })}
+          <div style={{ marginBottom: "10px" }} onClick={stopProp}>
+            <label style={{
+              fontSize: "10.5px", fontWeight: 700, color: "#64748B",
+              textTransform: "uppercase", letterSpacing: "0.06em",
+              display: "block", marginBottom: "5px",
+            }}>
+              Strength
+            </label>
+            <div style={{ position: "relative" }}>
+              <select
+                value={selectedIdx}
+                onChange={e => { setSelectedIdx(Number(e.target.value)); setAdded(false); setQty(1); }}
+                onClick={stopProp}
+                style={{
+                  width: "100%",
+                  padding: "8px 32px 8px 11px",
+                  borderRadius: "8px",
+                  border: `1.5px solid ${cat.color}`,
+                  backgroundColor: cat.bg,
+                  color: cat.color,
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  fontFamily: "inherit",
+                  appearance: "none",
+                  WebkitAppearance: "none",
+                  cursor: "pointer",
+                  outline: "none",
+                }}
+              >
+                {group.variants.map((v, i) => {
+                  const { strength } = parseName(v.name);
+                  return (
+                    <option key={v.id} value={i}>
+                      {strength}{v.price != null ? ` — £${v.price.toFixed(2)}` : ""}
+                    </option>
+                  );
+                })}
+              </select>
+              <svg
+                width="13" height="13" viewBox="0 0 24 24"
+                fill="none" stroke={cat.color} strokeWidth="2.5"
+                style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
           </div>
         )}
 
