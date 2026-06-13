@@ -10,6 +10,16 @@ import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
+import { useCurrency } from "@/context/CurrencyContext";
+import type { CurrencyCode } from "@/context/CurrencyContext";
+
+const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
+  GBP: "£50", USD: "$65", EUR: "€60", AUD: "A$100", CAD: "C$90",
+  CHF: "Fr57", NZD: "NZ$110", JPY: "¥10,000", SGD: "S$85", HKD: "HK$510",
+  KRW: "₩88,000", TWD: "NT$2,050", MYR: "RM295", THB: "฿2,200",
+  DKK: "kr450", NOK: "kr690", SEK: "kr680", PLN: "zł250",
+  CZK: "Kč1,450", HUF: "Ft22,000", AED: "د.إ240",
+};
 
 const RESEARCH_AREAS = [
   {
@@ -541,6 +551,8 @@ function TestimonialsCarousel() {
 
 export default function HomePage() {
   const { products } = useProducts();
+  const { currency } = useCurrency();
+  const localValue = FREE_PEPTIDE_VALUE[currency.code] ?? FREE_PEPTIDE_VALUE.GBP;
   useSEO({
     title: "HPLC-Verified Research Peptides",
     description: "Buy high-purity research peptides verified by HPLC to 99%+. BPC-157, TB-500, Semaglutide, Tirzepatide, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
@@ -1055,8 +1067,8 @@ export default function HomePage() {
             <h2 className="font-bold" style={{ fontSize: "clamp(22px,3vw,32px)", color: "#0F172A", letterSpacing: "-0.02em", marginBottom: "8px" }}>
               Refer a Friend, Earn a Free Peptide
             </h2>
-            <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "480px", margin: "0 auto", lineHeight: 1.7 }}>
-              Share your unique referral link. When a friend places their first order, a free peptide credit is added to your account — redeemable the next time you order.
+            <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "500px", margin: "0 auto", lineHeight: 1.7 }}>
+              Share your unique referral link. They get <strong style={{ color: "#0F172A" }}>10% off their first order</strong>. You earn a <strong style={{ color: "#0F172A" }}>free peptide worth up to {localValue}</strong> when it ships.
             </p>
           </div>
 
@@ -1082,8 +1094,8 @@ export default function HomePage() {
               {
                 icon: <Gift size={26} />,
                 step: "03",
-                title: "Redeem on Your Next Order",
-                body: "A free peptide credit is added to your account. Place your next order and redeem it at checkout — applied automatically to any product, any size.",
+                title: "You Both Benefit",
+                body: `Once their order ships, you receive a free peptide voucher worth up to ${localValue}. Your friend keeps their 10% discount — everyone wins.`,
                 color: "#B45309",
                 bg: "#FEF3C7",
               },
@@ -1145,21 +1157,21 @@ export default function HomePage() {
                 <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#F59E0B" }}>Start Earning Today</span>
               </div>
               <h3 style={{ fontSize: "clamp(18px,2.5vw,26px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.15, margin: "0 0 8px" }}>
-                Every referral earns you one free peptide.
+                Every referral earns you a free peptide worth up to {localValue}.
               </h3>
               <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", margin: 0, lineHeight: 1.6 }}>
-                Place an order, refer a friend, earn a free peptide on your next order. No limit on referrals. Credits never expire.
+                Refer a friend, they get 10% off their first order, you get a free peptide voucher. No limit on referrals. Vouchers never expire.
               </p>
             </div>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", position: "relative", zIndex: 1 }}>
               <Link
-                href="/account?tab=referral"
+                href="/refer-a-friend"
                 style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "#F59E0B", color: "#000", padding: "13px 26px", borderRadius: "12px", fontWeight: 800, fontSize: "14px", textDecoration: "none", boxShadow: "0 4px 16px rgba(245,158,11,0.35)", whiteSpace: "nowrap" }}
               >
                 Get My Referral Link <ArrowRight size={15} />
               </Link>
               <Link
-                href="/sign-up"
+                href="/register"
                 style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "rgba(255,255,255,0.10)", color: "#fff", border: "1px solid rgba(255,255,255,0.25)", padding: "13px 26px", borderRadius: "12px", fontWeight: 700, fontSize: "14px", textDecoration: "none", whiteSpace: "nowrap", backdropFilter: "blur(6px)" }}
               >
                 New? Create an Account
