@@ -641,27 +641,54 @@ export default function ProductPage() {
             {/* ── Bac Water Add-on ──────────────────────────────── */}
             {product.stockLevel !== 0 && (
               <div
-                className="rounded-xl mb-3"
+                className="rounded-2xl mb-3"
                 style={{
-                  border: bacWaterEnabled ? "1.5px solid #38BDF8" : "1.5px solid #E0F2FE",
-                  backgroundColor: bacWaterEnabled ? "#F0F9FF" : "#fff",
+                  position: "relative",
                   overflow: "hidden",
-                  transition: "border-color 0.2s, background-color 0.2s",
+                  border: bacWaterEnabled ? "1.5px solid #38BDF8" : "1.5px solid #BAE6FD",
+                  background: bacWaterEnabled
+                    ? "linear-gradient(135deg, #E0F2FE 0%, #F0F9FF 60%)"
+                    : "linear-gradient(135deg, #F5FBFF 0%, #FFFFFF 70%)",
+                  boxShadow: bacWaterEnabled
+                    ? "0 8px 24px rgba(14,165,233,0.18)"
+                    : "0 2px 10px rgba(14,165,233,0.07)",
+                  transition: "border-color 0.2s, box-shadow 0.2s, background 0.2s",
                 }}
               >
+                {/* decorative droplet glow */}
+                <span style={{
+                  position: "absolute", top: "-36px", right: "-24px",
+                  width: "120px", height: "120px", borderRadius: "50%",
+                  background: "radial-gradient(circle, rgba(56,189,248,0.22), transparent 70%)",
+                  pointerEvents: "none",
+                }} />
+
+                {/* Recommended ribbon */}
+                <span style={{
+                  position: "absolute", top: 12, right: 12,
+                  fontSize: 9.5, fontWeight: 800, letterSpacing: "0.06em",
+                  textTransform: "uppercase", color: "#0369A1",
+                  background: "#fff", border: "1px solid #BAE6FD",
+                  borderRadius: 9999, padding: "3px 9px",
+                  boxShadow: "0 1px 4px rgba(14,165,233,0.15)",
+                }}>
+                  Recommended
+                </span>
+
                 {/* Header row */}
                 <button
                   onClick={() => setBacWaterEnabled((v) => !v)}
                   style={{
                     width: "100%", display: "flex", alignItems: "center",
-                    gap: 10, padding: "12px 14px",
+                    gap: 12, padding: "14px 16px",
                     background: "none", border: "none", cursor: "pointer", textAlign: "left",
+                    position: "relative",
                   }}
                 >
                   {/* Checkbox */}
                   <span
                     style={{
-                      width: 20, height: 20, borderRadius: 6, flexShrink: 0,
+                      width: 22, height: 22, borderRadius: 7, flexShrink: 0,
                       border: bacWaterEnabled ? "2px solid #0EA5E9" : "2px solid #CBD5E1",
                       backgroundColor: bacWaterEnabled ? "#0EA5E9" : "#fff",
                       display: "flex", alignItems: "center", justifyContent: "center",
@@ -669,25 +696,38 @@ export default function ProductPage() {
                     }}
                   >
                     {bacWaterEnabled && (
-                      <svg width="11" height="8" viewBox="0 0 11 8" fill="none">
+                      <svg width="12" height="9" viewBox="0 0 11 8" fill="none">
                         <path d="M1 4L4 7L10 1" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     )}
                   </span>
 
-                  <Droplets size={16} style={{ color: "#0EA5E9", flexShrink: 0 }} />
+                  {/* Droplet icon badge */}
+                  <span style={{
+                    width: 38, height: 38, borderRadius: 11, flexShrink: 0,
+                    background: "linear-gradient(135deg, #0EA5E9, #38BDF8)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    boxShadow: "0 4px 12px rgba(14,165,233,0.35)",
+                  }}>
+                    <Droplets size={19} color="#fff" strokeWidth={2.2} />
+                  </span>
 
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontSize: 13, fontWeight: 700, color: "#0F172A", margin: 0, lineHeight: 1.2 }}>
+                  <div style={{ flex: 1, minWidth: 0, paddingRight: 70 }}>
+                    <p style={{ fontSize: 14, fontWeight: 800, color: "#0F172A", margin: 0, lineHeight: 1.2 }}>
                       Add Bacteriostatic Water
                     </p>
-                    <p style={{ fontSize: 11, color: "#64748B", margin: 0, marginTop: 1 }}>
-                      Required for peptide reconstitution
+                    <p style={{ fontSize: 11.5, color: "#0369A1", margin: 0, marginTop: 2, fontWeight: 500 }}>
+                      Essential for reconstituting your peptide
                     </p>
                   </div>
 
-                  <span style={{ fontSize: 13, fontWeight: 700, color: "#0EA5E9", flexShrink: 0 }}>
-                    + {formatPrice(BAC_WATER_OPTIONS[bacWaterSizeIdx].price)}
+                  <span style={{
+                    fontSize: 14, fontWeight: 800, color: "#fff", flexShrink: 0,
+                    background: "linear-gradient(135deg, #0EA5E9, #0284C7)",
+                    borderRadius: 9999, padding: "5px 12px",
+                    boxShadow: "0 2px 8px rgba(14,165,233,0.3)",
+                  }}>
+                    +{formatPrice(BAC_WATER_OPTIONS[bacWaterSizeIdx].price)}
                   </span>
                 </button>
 
@@ -695,34 +735,52 @@ export default function ProductPage() {
                 {bacWaterEnabled && (
                   <div
                     style={{
-                      borderTop: "1px solid #E0F2FE",
-                      padding: "10px 14px 12px",
-                      display: "flex", gap: 8,
+                      borderTop: "1px solid #BAE6FD",
+                      padding: "12px 16px 14px",
+                      display: "flex", gap: 10,
+                      position: "relative",
                     }}
                   >
-                    {BAC_WATER_OPTIONS.map((opt, idx) => (
-                      <button
-                        key={opt.id}
-                        onClick={() => setBacWaterSizeIdx(idx)}
-                        style={{
-                          flex: 1,
-                          padding: "8px 0",
-                          borderRadius: 9,
-                          border: bacWaterSizeIdx === idx ? "2px solid #0EA5E9" : "1.5px solid #BAE6FD",
-                          backgroundColor: bacWaterSizeIdx === idx ? "#E0F2FE" : "#F0F9FF",
-                          cursor: "pointer",
-                          display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
-                          transition: "border-color 0.15s, background-color 0.15s",
-                        }}
-                      >
-                        <span style={{ fontSize: 14, fontWeight: 800, color: bacWaterSizeIdx === idx ? "#0369A1" : "#475569" }}>
-                          {opt.label}
-                        </span>
-                        <span style={{ fontSize: 11, fontWeight: 600, color: bacWaterSizeIdx === idx ? "#0EA5E9" : "#94A3B8" }}>
-                          {formatPrice(opt.price)}
-                        </span>
-                      </button>
-                    ))}
+                    {BAC_WATER_OPTIONS.map((opt, idx) => {
+                      const isBest = idx === BAC_WATER_OPTIONS.length - 1;
+                      const active = bacWaterSizeIdx === idx;
+                      return (
+                        <button
+                          key={opt.id}
+                          onClick={() => setBacWaterSizeIdx(idx)}
+                          style={{
+                            position: "relative",
+                            flex: 1,
+                            padding: "10px 0",
+                            borderRadius: 11,
+                            border: active ? "2px solid #0EA5E9" : "1.5px solid #BAE6FD",
+                            background: active ? "#fff" : "#F0F9FF",
+                            cursor: "pointer",
+                            display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
+                            boxShadow: active ? "0 4px 12px rgba(14,165,233,0.18)" : "none",
+                            transition: "border-color 0.15s, box-shadow 0.15s, background 0.15s",
+                          }}
+                        >
+                          {isBest && (
+                            <span style={{
+                              position: "absolute", top: -8, right: 8,
+                              fontSize: 8.5, fontWeight: 800, letterSpacing: "0.04em",
+                              textTransform: "uppercase", color: "#fff",
+                              background: "linear-gradient(135deg, #10B981, #059669)",
+                              borderRadius: 9999, padding: "2px 7px",
+                            }}>
+                              Best value
+                            </span>
+                          )}
+                          <span style={{ fontSize: 15, fontWeight: 800, color: active ? "#0369A1" : "#475569" }}>
+                            {opt.label}
+                          </span>
+                          <span style={{ fontSize: 11.5, fontWeight: 600, color: active ? "#0EA5E9" : "#94A3B8" }}>
+                            {formatPrice(opt.price)}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
               </div>
