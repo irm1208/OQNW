@@ -175,6 +175,26 @@ export default function BundleAndSavePage() {
               </div>
             ))}
           </div>
+
+          {/* Referred customer note */}
+          <div style={{
+            marginTop: 24,
+            borderRadius: 14,
+            padding: "18px 22px",
+            background: "linear-gradient(135deg, #FFFBEB, #FEF3C7)",
+            border: "1.5px solid #FDE68A",
+            display: "flex", gap: 14, alignItems: "flex-start",
+          }}>
+            <span style={{ fontSize: 22, flexShrink: 0, lineHeight: 1 }}>💡</span>
+            <div>
+              <p style={{ fontSize: 13.5, fontWeight: 800, color: "#92400E", margin: "0 0 4px" }}>
+                Note for referred customers (first order only)
+              </p>
+              <p style={{ fontSize: 13, color: "#78350F", lineHeight: 1.65, margin: 0 }}>
+                If you arrived via a referral link, your first order automatically receives a <strong>10% referral discount</strong>. The 3+ (5%) and 7+ (10%) bundle tiers do not apply on this order as the referral discount already covers them. You can still unlock higher tiers — <strong>11+ vials gets you 15% off</strong> and <strong>15+ vials gets you 20% off</strong>. From your second order onwards, all standard bundle tiers apply as normal.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 

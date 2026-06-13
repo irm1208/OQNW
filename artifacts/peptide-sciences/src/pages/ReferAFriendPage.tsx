@@ -70,7 +70,7 @@ export default function ReferAFriendPage() {
       bg: "linear-gradient(135deg, #7C3AED, #A855F7)",
       step: "02",
       title: "Friend Places an Order",
-      desc: "Your friend uses your link and gets 10% off their first order automatically applied at checkout. No code needed.",
+      desc: "Your friend uses your link and gets 10% off their first order automatically at checkout — no code needed. If they order 11+ vials they get 15% off, or 15+ vials for 20% off. Standard bundle tiers apply from their second order.",
     },
     {
       icon: <Gift size={22} color="#fff" />,
@@ -93,6 +93,10 @@ export default function ReferAFriendPage() {
     {
       q: "Do I need to be placing an order to use the reward?",
       a: `Yes — the free peptide must be claimed as part of a new peptide order. You cannot redeem it as a standalone transaction. Simply add any qualifying peptide (up to ${localValue}) to your cart and the reward will be applied at checkout.`,
+    },
+    {
+      q: "Can my referred friend also use bundle discounts on their first order?",
+      a: "Partially. The 10% referral discount is automatically applied to your friend's first order. The 3+ (5%) and 7+ (10%) bundle tiers do not stack on top of that — since 10% is already applied. However, if your friend orders 11 or more vials they receive 15% off, and 15 or more vials gives them 20% off. From their second order onwards, all standard bundle tiers apply as normal.",
     },
     {
       q: "Is there a limit to how many people I can refer?",
