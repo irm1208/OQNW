@@ -47,7 +47,6 @@ import JurisdictionWarning from "@/components/JurisdictionWarning";
 import AgeGate from "@/components/AgeGate";
 import MobileBottomBar from "@/components/MobileBottomBar";
 import CartPreviewPanel from "@/components/CartPreviewPanel";
-import RecentlyViewedBar from "@/components/RecentlyViewedBar";
 import { initPixels } from "@/lib/pixels";
 import { usePageTracking } from "@/hooks/usePageTracking";
 
@@ -144,7 +143,6 @@ function App() {
                 <Footer />
               </div>
               <CartPreviewPanel />
-              <RecentlyViewedBar />
               <MobileBottomBar />
               <ChatWidget />
               <AgeGate />
