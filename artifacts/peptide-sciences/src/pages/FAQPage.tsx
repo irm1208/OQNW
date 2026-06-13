@@ -194,6 +194,18 @@ const FAQS: FAQItem[] = [
   },
   {
     category: "ordering",
+    q: "How does the Refer a Friend programme work?",
+    a: "Share your unique referral link (found in your account under 'Refer a Friend') with colleagues or fellow researchers. When someone registers and places their first order using your link, they automatically receive 10% off that order. Your reward then unlocks — the next time you place a peptide order, you can add 1 free peptide worth up to £50 (or local equivalent) to that order at checkout. Rewards are valid for 12 months and do not expire provided you have an active account.",
+    tags: ["refer", "referral", "free peptide", "reward", "friend"],
+  },
+  {
+    category: "ordering",
+    q: "Can a referred customer also use bundle discounts on their first order?",
+    a: "Partially. The 10% referral discount is automatically applied to the referred customer's first order. The standard 3+ (5%) and 7+ (10%) bundle tiers do not stack on top of this. However, higher-volume tiers still apply — ordering 11 or more vials gives 15% off, and 15 or more vials gives 20% off. From the second order onwards, all standard bundle tiers apply as normal.",
+    tags: ["refer", "referral", "bundle", "discount", "first order", "stack"],
+  },
+  {
+    category: "ordering",
     q: "Do you offer gift cards?",
     a: "Yes. OmniQure gift cards are available in various denominations and can be used towards any purchase on the site. They make a convenient option for research groups sharing resources. Gift cards are available on the Gift Cards page and are delivered electronically.",
     tags: ["gift card", "voucher"],

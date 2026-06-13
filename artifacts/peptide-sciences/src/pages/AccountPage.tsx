@@ -997,8 +997,8 @@ export default function AccountPage() {
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
                     {[
                       { step: "1", title: "Share your link", desc: "Send your unique referral link to colleagues and fellow researchers." },
-                      { step: "2", title: "They sign up & order", desc: "When a friend registers using your link and places their first order." },
-                      { step: "3", title: "You earn 1 free peptide", desc: "A free peptide credit is added to your account — redeem it at checkout, no expiry." },
+                      { step: "2", title: "Friend places first order", desc: "They get 10% off their first order automatically — no code needed. 11+ vials: 15% off. 15+ vials: 20% off." },
+                      { step: "3", title: "Claim on your next order", desc: "Your reward unlocks. When you next place a peptide order, add 1 free peptide (up to £50 / local equivalent) to that order at checkout." },
                     ].map((s) => (
                       <div key={s.step} style={{ textAlign: "center", padding: "16px 12px", borderRadius: "12px", backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5" }}>
                         <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px", fontSize: "14px", fontWeight: 800, color: "#fff" }}>
@@ -1015,7 +1015,7 @@ export default function AccountPage() {
                 {referral && (
                   <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
                     <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A", marginBottom: "4px" }}>Your referral link</h3>
-                    <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "16px" }}>Share this link — when a friend signs up and places their first order, you'll earn 1 free peptide credit redeemable at checkout.</p>
+                    <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "16px" }}>Share this link — when a friend places their first order using it, your reward unlocks. Add 1 free peptide (up to £50 / local equivalent) to your next peptide order at checkout. Rewards are valid for 12 months.</p>
 
                     <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
                       <div style={{ flex: 1, height: "44px", padding: "0 14px", borderRadius: "10px", border: "1.5px solid #E2E8F0", backgroundColor: "#F8FAFC", display: "flex", alignItems: "center", overflow: "hidden" }}>
