@@ -8,6 +8,7 @@ import {
   customersTable,
   discountCodesTable,
   productsInventoryTable,
+  productsCatalogTable,
   abandonedCartsTable,
   loyaltyTransactionsTable,
   giftCardsTable,
@@ -185,6 +186,30 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       }
     }
 
+    // Price validation: verify submitted priceGbp against the product catalog.
+    // This prevents clients from submitting manipulated (inflated or deflated) prices.
+    // Items without a productId (e.g. Bac Water add-ons) are skipped.
+    if (itemsWithProductId.length > 0) {
+      const catalogRows = await db
+        .select({ id: productsCatalogTable.id, priceGbp: productsCatalogTable.priceGbp })
+        .from(productsCatalogTable)
+        .where(inArray(productsCatalogTable.id, itemsWithProductId.map(i => i.productId)));
+
+      const catalogPriceMap = new Map<number, number>(
+        catalogRows
+          .filter((c: { id: number; priceGbp: string | null }) => c.priceGbp !== null)
+          .map((c: { id: number; priceGbp: string | null }) => [c.id, parseFloat(String(c.priceGbp))] as [number, number])
+      );
+
+      for (const item of itemsWithProductId) {
+        const catalogPrice = catalogPriceMap.get(item.productId);
+        if (catalogPrice != null && Math.abs(item.priceGbp - catalogPrice) > 0.01) {
+          res.status(400).json({ error: "Item price mismatch — please refresh your cart and try again" });
+          return;
+        }
+      }
+    }
+
     // Validate discount code if provided
     let discountAmount = 0;
     let validatedDiscountCode: string | null = null;
@@ -280,8 +305,48 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       }
     }
 
+    // ── Bundle & Save — server-side tier calculation ──────────────────────────
+    // Tiers: 3+ items = 5%, 7+ = 10%, 11+ = 15%, 15+ = 20%.
+    // For referred customers on their FIRST order, the 10% referral discount is
+    // their baseline — the 3+ (5%) and 7+ (10%) tiers do not apply; only the
+    // higher tiers (11+ → 15%, 15+ → 20%) can upgrade that baseline.
+    const BUNDLE_TIERS = [
+      { qty: 15, pct: 20 },
+      { qty: 11, pct: 15 },
+      { qty: 7,  pct: 10 },
+      { qty: 3,  pct: 5  },
+    ];
+    const BUNDLE_TIERS_REFERRED_FIRST = [
+      { qty: 15, pct: 20 },
+      { qty: 11, pct: 15 },
+    ];
+
+    // Check if this is a referred customer's first order (use the already-resolved session id)
+    let isReferredFirstOrder = false;
+    if (loyaltySessionCustomerId) {
+      try {
+        const [bundleCheck] = await db
+          .select({ totalOrders: customersTable.totalOrders, referredBy: customersTable.referredBy })
+          .from(customersTable)
+          .where(eq(customersTable.id, loyaltySessionCustomerId))
+          .limit(1);
+        // totalOrders is the count BEFORE this order (not yet incremented)
+        if (bundleCheck?.totalOrders === 0 && bundleCheck.referredBy) {
+          isReferredFirstOrder = true;
+        }
+      } catch {}
+    }
+
+    const totalItemCount = cartItems.reduce((s, i) => s + i.quantity, 0);
+    const activeTiers = isReferredFirstOrder ? BUNDLE_TIERS_REFERRED_FIRST : BUNDLE_TIERS;
+    const matchedTier = activeTiers.find(t => totalItemCount >= t.qty);
+    const bundleDiscountPct = matchedTier?.pct ?? 0;
+
     const subtotalGbp = cartItems.reduce((s, i) => s + i.priceGbp * i.quantity, 0);
-    const preGiftTotal = Math.max(0, subtotalGbp + shippingCostGbp - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp);
+    const bundleDiscountGbp = bundleDiscountPct > 0
+      ? Math.round(subtotalGbp * bundleDiscountPct / 100 * 100) / 100
+      : 0;
+    const preGiftTotal = Math.max(0, subtotalGbp + shippingCostGbp - bundleDiscountGbp - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp);
     if (giftCardDeductGbp > preGiftTotal) giftCardDeductGbp = preGiftTotal;
     const totalGbp = Math.max(0, preGiftTotal - giftCardDeductGbp);
 
@@ -440,12 +505,14 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         postcode: d.postcode,
         country: d.country,
         subtotalGbp: String(subtotalGbp.toFixed(2)),
+        bundleDiscountGbp: String(bundleDiscountGbp.toFixed(2)),
         shippingCostGbp: String(shippingCostGbp.toFixed(2)),
         totalGbp: String(totalGbp.toFixed(2)),
         shippingMethod,
         status: ["bank_transfer", "bitcoin", "card"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
         notes: [
           `Payment method: ${paymentMethodStr}`,
+          bundleDiscountGbp > 0 ? `Bundle & Save: ${bundleDiscountPct}% off (-£${bundleDiscountGbp.toFixed(2)})${isReferredFirstOrder ? " [referred first order tiers]" : ""}` : null,
           validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-£${discountAmount.toFixed(2)})` : null,
           loyaltyPointsToDeduct > 0 ? `Loyalty: ${loyaltyPointsToDeduct} pts redeemed (-£${loyaltyDiscountGbp.toFixed(2)})` : null,
           validatedGiftCardCode ? `Gift card: ${validatedGiftCardCode} (-£${giftCardDeductGbp.toFixed(2)})` : null,

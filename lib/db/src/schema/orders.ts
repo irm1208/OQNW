@@ -25,6 +25,7 @@ export const ordersTable = pgTable("orders", {
   postcode: text("postcode"),
   country: text("country"),
   subtotalGbp: numeric("subtotal_gbp", { precision: 10, scale: 2 }).notNull().default("0"),
+  bundleDiscountGbp: numeric("bundle_discount_gbp", { precision: 10, scale: 2 }).notNull().default("0"),
   shippingCostGbp: numeric("shipping_cost_gbp", { precision: 10, scale: 2 }).notNull().default("0"),
   taxAmountGbp: numeric("tax_amount_gbp", { precision: 10, scale: 2 }).notNull().default("0"),
   totalGbp: numeric("total_gbp", { precision: 10, scale: 2 }).notNull().default("0"),
