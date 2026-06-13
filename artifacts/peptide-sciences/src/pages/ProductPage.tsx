@@ -463,16 +463,43 @@ export default function ProductPage() {
               )}
               {/* Live viewers nudge */}
               <span
-                className="inline-flex items-center gap-1.5 text-xs font-semibold"
-                style={{ color: "#059669" }}
+                className="inline-flex items-center gap-2 text-xs font-semibold"
+                style={{
+                  color: "#047857",
+                  background: "linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)",
+                  border: "1px solid #A7F3D0",
+                  borderRadius: "9999px",
+                  padding: "5px 11px 5px 8px",
+                  boxShadow: "0 1px 4px rgba(5,150,105,0.12)",
+                }}
               >
-                <span style={{
-                  width: "7px", height: "7px", borderRadius: "50%",
-                  backgroundColor: "#059669", display: "inline-block",
-                  boxShadow: "0 0 0 0 rgba(5,150,105,0.4)",
-                  animation: "viewing-pulse 2s infinite",
-                }} />
-                {viewers} people viewing
+                {/* Stacked avatars */}
+                <span style={{ display: "inline-flex", alignItems: "center" }}>
+                  {[0, 1, 2].map((i) => (
+                    <span
+                      key={i}
+                      style={{
+                        width: "18px", height: "18px", borderRadius: "50%",
+                        display: "inline-flex", alignItems: "center", justifyContent: "center",
+                        background: ["#34D399", "#10B981", "#059669"][i],
+                        border: "1.5px solid #ECFDF5",
+                        marginLeft: i === 0 ? 0 : "-7px",
+                        color: "#fff",
+                      }}
+                    >
+                      <User size={10} strokeWidth={2.5} />
+                    </span>
+                  ))}
+                </span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                  <span style={{
+                    width: "7px", height: "7px", borderRadius: "50%",
+                    backgroundColor: "#10B981", display: "inline-block",
+                    boxShadow: "0 0 0 0 rgba(16,185,129,0.5)",
+                    animation: "viewing-pulse 2s infinite",
+                  }} />
+                  <span><strong style={{ fontWeight: 800 }}>{viewers}</strong> viewing now</span>
+                </span>
               </span>
             </div>
 
