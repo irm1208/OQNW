@@ -622,7 +622,7 @@ export default function HomePage() {
             >
               Research-Grade<br />
               Peptides.<br />
-              <span className="gradient-text">Third Party Verified.</span>
+              <span className="gradient-text">Independently Verified.</span>
             </h1>
 
             <p
@@ -636,7 +636,7 @@ export default function HomePage() {
 
             {/* Trust chips */}
             <div className="flex flex-wrap gap-2 mb-8">
-              {["99%+ HPLC Purity", "Full COA Included", "Third Party Tested"].map(t => (
+              {["99%+ HPLC Purity", "Full COA Included", "Independently Tested"].map(t => (
                 <span
                   key={t}
                   className="inline-flex items-center gap-1.5"

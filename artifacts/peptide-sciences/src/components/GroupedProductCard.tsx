@@ -271,7 +271,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
                   const { strength } = parseName(v.name);
                   return (
                     <option key={v.id} value={i}>
-                      {strength}{v.price != null ? ` — £${v.price.toFixed(2)}` : ""}
+                      {strength}{v.price != null ? ` — ${formatPrice(v.price)}` : ""}
                     </option>
                   );
                 })}

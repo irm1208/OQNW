@@ -19,7 +19,7 @@ const CATEGORIES = [
 export default function LabResultsPage() {
   useSEO({
     title: "Lab Results & Certificates of Analysis",
-    description: "HPLC chromatograms, mass spectrometry data, and certificates of analysis for all OmniQure research peptides. 99%+ purity verified by independent third-party testing.",
+    description: "HPLC chromatograms, mass spectrometry data, and certificates of analysis for all OmniQure research peptides. 99%+ purity verified by independent laboratory testing.",
     canonicalPath: "/lab-results",
   });
 
@@ -54,7 +54,7 @@ export default function LabResultsPage() {
           }}>
             <FlaskConical size={14} color="rgba(255,255,255,0.8)" />
             <span style={{ fontSize: "12px", fontWeight: 700, color: "rgba(255,255,255,0.8)", letterSpacing: "0.06em" }}>
-              THIRD-PARTY VERIFIED
+              INDEPENDENTLY VERIFIED
             </span>
           </div>
           <h1 style={{ fontSize: "clamp(26px, 5vw, 40px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.03em", margin: "0 0 14px" }}>
@@ -69,7 +69,7 @@ export default function LabResultsPage() {
             {[
               { icon: <Award size={14} />, label: "99%+ HPLC Purity" },
               { icon: <Microscope size={14} />, label: "Mass Spec Verified" },
-              { icon: <Shield size={14} />, label: "Third-Party Tested" },
+              { icon: <Shield size={14} />, label: "Independently Tested" },
               { icon: <CheckCircle2 size={14} />, label: "Lot-by-Lot Testing" },
             ].map(b => (
               <div key={b.label} style={{

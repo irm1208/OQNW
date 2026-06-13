@@ -18,7 +18,7 @@ const PILLARS = [
     color: "#3B82F6",
     bg: "#EFF6FF",
     title: "HPLC-Verified Purity",
-    body: "Every compound is independently tested by third-party accredited laboratories using High-Performance Liquid Chromatography. We publish certificates of analysis for all products — no hidden results.",
+    body: "Every compound is independently tested by accredited laboratories using High-Performance Liquid Chromatography. We publish certificates of analysis for all products — no hidden results.",
   },
   {
     icon: <Beaker size={22} />,
@@ -70,7 +70,7 @@ const TIMELINE = [
   },
   {
     year: "Quality",
-    title: "Every Batch, Third-Party Tested",
+    title: "Every Batch, Independently Tested",
     body: "We established our independent testing programme before we shipped a single order. Every compound in our catalogue has been HPLC-verified, mass-confirmed, and documented. COAs are publicly available on each product page.",
   },
   {
@@ -211,7 +211,7 @@ export default function AboutPage() {
                 In peptide research, the difference between 95% purity and 99%+ purity isn't just a number — it can materially affect experimental outcomes. Too many suppliers cite purity figures without providing the data to back them up.
               </p>
               <p style={{ fontSize: 15, color: "#475569", lineHeight: 1.85, marginBottom: 28 }}>
-                OmniQure publishes third-party HPLC and mass spectrometry data for every compound in our catalogue. We invite our customers to scrutinise our results because transparency isn't a marketing strategy — it's the standard we hold ourselves to.
+                OmniQure publishes independent HPLC and mass spectrometry data for every compound in our catalogue. We invite our customers to scrutinise our results because transparency isn't a marketing strategy — it's the standard we hold ourselves to.
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {VALUES.map((v, i) => (

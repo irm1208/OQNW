@@ -56,9 +56,9 @@ const FAQS: FAQItem[] = [
   },
   {
     category: "products",
-    q: "Are your peptides tested by a third party?",
-    a: "Yes. All purity and identity testing is conducted by independent, accredited analytical laboratories. We do not rely solely on in-house testing. Third-party verification ensures objectivity and consistency across every batch we stock.",
-    tags: ["third party", "independent", "testing"],
+    q: "Are your peptides independently tested?",
+    a: "Yes. All purity and identity testing is conducted by independent, accredited analytical laboratories. We do not rely solely on in-house testing. Independent verification ensures objectivity and consistency across every batch we stock.",
+    tags: ["independent", "testing"],
   },
   {
     category: "products",
