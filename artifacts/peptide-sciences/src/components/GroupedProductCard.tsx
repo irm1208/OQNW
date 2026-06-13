@@ -246,6 +246,17 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {/* Strength dropdown — under price */}
         {group.variants.length > 1 && (
           <div style={{ marginBottom: "6px" }} onClick={stopProp}>
+            <label style={{
+              display: "block",
+              fontSize: "10px",
+              fontWeight: 700,
+              color: "#64748B",
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              marginBottom: "3px",
+            }}>
+              Select Strength
+            </label>
             <div style={{ position: "relative" }}>
               <select
                 value={selectedIdx}
