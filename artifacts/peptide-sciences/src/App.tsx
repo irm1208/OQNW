@@ -34,6 +34,8 @@ import BlogPage from "@/pages/BlogPage";
 import BlogPostPage from "@/pages/BlogPostPage";
 import BacWaterPage from "@/pages/BacWaterPage";
 import AboutPage from "@/pages/AboutPage";
+import ReferAFriendPage from "@/pages/ReferAFriendPage";
+import BundleAndSavePage from "@/pages/BundleAndSavePage";
 import { CookieConsent } from "@/components/CookieConsent";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
@@ -114,6 +116,8 @@ function Router() {
       <Route path="/shipping" component={ShippingPage} />
       <Route path="/privacy" component={PrivacyPage} />
       <Route path="/about" component={AboutPage} />
+      <Route path="/refer-a-friend" component={ReferAFriendPage} />
+      <Route path="/bundle-and-save" component={BundleAndSavePage} />
       <Route component={NotFound} />
     </Switch>
   );

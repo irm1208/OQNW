@@ -47,10 +47,10 @@ const footerCategories = [
       { label: "Protocols",           href: "/protocols"        },
       { label: "FAQ",                 href: "/faq"              },
       { label: "Glossary",            href: "/glossary"         },
-      { label: "Bundle & Save",       href: "/all-peptides"     },
+      { label: "Bundle & Save",       href: "/bundle-and-save"  },
       { label: "Lab Results",          href: "/lab-tests"        },
       { label: "All Peptides",        href: "/all-peptides"     },
-      { label: "Refer a Friend",      href: "/account?tab=referral" },
+      { label: "Refer a Friend",      href: "/refer-a-friend"   },
     ],
   },
 ];
