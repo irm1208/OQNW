@@ -173,14 +173,14 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
       </div>
 
       {/* Info */}
-      <div className="card-info flex flex-col flex-1 p-3" style={{ borderTop: `1px solid ${cat.color}15` }}>
+      <div className="card-info flex flex-col flex-1 p-2" style={{ borderTop: `1px solid ${cat.color}15` }}>
         {/* Category tag */}
         <span className="card-cat" style={{
           display: "inline-block", alignSelf: "flex-start",
-          fontSize: "10px", fontWeight: 700,
+          fontSize: "9px", fontWeight: 700,
           color: cat.color, backgroundColor: cat.bg,
-          padding: "2px 8px", borderRadius: "5px",
-          letterSpacing: "0.05em", marginBottom: "5px", textTransform: "uppercase",
+          padding: "2px 6px", borderRadius: "4px",
+          letterSpacing: "0.04em", marginBottom: "3px", textTransform: "uppercase",
         }}>
           {group.category}
         </span>
@@ -190,7 +190,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           className="card-name"
           onClick={goToProduct}
           style={{
-            fontSize: "17px", fontWeight: 800, lineHeight: 1.2, marginBottom: "7px",
+            fontSize: "14px", fontWeight: 800, lineHeight: 1.2, marginBottom: "5px",
             cursor: "pointer", transition: "opacity 0.15s",
             background: "linear-gradient(120deg, #0D2565 0%, #1B5CB5 60%, #2563EB 100%)",
             WebkitBackgroundClip: "text",
@@ -205,14 +205,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
 
         {/* Strength dropdown */}
         {group.variants.length > 1 && (
-          <div style={{ marginBottom: "7px" }} onClick={stopProp}>
-            <label style={{
-              fontSize: "9.5px", fontWeight: 700, color: "#94A3B8",
-              textTransform: "uppercase", letterSpacing: "0.06em",
-              display: "block", marginBottom: "3px",
-            }}>
-              Strength
-            </label>
+          <div style={{ marginBottom: "5px" }} onClick={stopProp}>
             <div style={{ position: "relative" }}>
               <select
                 value={selectedIdx}
@@ -220,12 +213,12 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
                 onClick={stopProp}
                 style={{
                   width: "100%",
-                  padding: "6px 28px 6px 9px",
-                  borderRadius: "7px",
+                  padding: "4px 22px 4px 7px",
+                  borderRadius: "6px",
                   border: `1.5px solid ${cat.color}`,
                   backgroundColor: cat.bg,
                   color: cat.color,
-                  fontSize: "12px",
+                  fontSize: "11px",
                   fontWeight: 700,
                   fontFamily: "inherit",
                   appearance: "none",
@@ -244,9 +237,9 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
                 })}
               </select>
               <svg
-                width="13" height="13" viewBox="0 0 24 24"
+                width="11" height="11" viewBox="0 0 24 24"
                 fill="none" stroke={cat.color} strokeWidth="2.5"
-                style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}
+                style={{ position: "absolute", right: "7px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}
               >
                 <polyline points="6 9 12 15 18 9" />
               </svg>
@@ -256,24 +249,24 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
 
         {/* Low stock badge */}
         {selectedVariant.stockLevel !== undefined && selectedVariant.stockLevel > 0 && selectedVariant.stockLevel <= 10 && (
-          <div style={{ marginBottom: "7px" }}>
+          <div style={{ marginBottom: "4px" }}>
             <span style={{
-              fontSize: "11px", fontWeight: 700, color: "#D97706",
+              fontSize: "10px", fontWeight: 700, color: "#D97706",
               backgroundColor: "#FFFBEB", border: "1px solid #FDE68A",
-              padding: "3px 9px", borderRadius: "7px",
-              display: "inline-flex", alignItems: "center", gap: "4px",
+              padding: "2px 7px", borderRadius: "5px",
+              display: "inline-flex", alignItems: "center", gap: "3px",
             }}>
               ⚡ Only {selectedVariant.stockLevel} left
             </span>
           </div>
         )}
         {selectedVariant.stockLevel === 0 && (
-          <div style={{ marginBottom: "7px" }}>
+          <div style={{ marginBottom: "4px" }}>
             <span style={{
-              fontSize: "11px", fontWeight: 700, color: "#DC2626",
+              fontSize: "10px", fontWeight: 700, color: "#DC2626",
               backgroundColor: "#FEF2F2", border: "1px solid #FECACA",
-              padding: "3px 9px", borderRadius: "7px",
-              display: "inline-flex", alignItems: "center", gap: "4px",
+              padding: "2px 7px", borderRadius: "5px",
+              display: "inline-flex", alignItems: "center", gap: "3px",
             }}>
               ✗ Out of Stock
             </span>
@@ -282,12 +275,12 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
 
         {/* Price */}
         {selectedVariant.price != null && (
-          <div style={{ display: "flex", alignItems: "baseline", gap: "5px", marginBottom: "5px" }}>
-            <span className="card-price" style={{ fontSize: "20px", fontWeight: 800, color: "#059669", lineHeight: 1 }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "4px" }}>
+            <span className="card-price" style={{ fontSize: "17px", fontWeight: 800, color: "#059669", lineHeight: 1 }}>
               {formatPrice(selectedVariant.price)}
             </span>
             {group.variants.length > 1 && selectedIdx !== 0 && group.variants[0].price != null && (
-              <span style={{ fontSize: "11px", color: "#94A3B8" }}>
+              <span style={{ fontSize: "10px", color: "#94A3B8" }}>
                 from {formatPrice(group.variants[0].price)}
               </span>
             )}
@@ -295,7 +288,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         )}
 
         {/* Actions */}
-        <div className="mt-auto pt-1 flex flex-col gap-1.5" onClick={stopProp}>
+        <div className="mt-auto pt-1 flex flex-col gap-1" onClick={stopProp}>
           {/* Qty + Add to Cart */}
           <div className="card-add-row">
             <div className="card-qty">
