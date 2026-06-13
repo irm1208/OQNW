@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { trackViewContent } from "@/lib/pixels";
-import { Link, useParams } from "wouter";
+import { Link, useParams, useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
 import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, User, Heart, Droplets } from "lucide-react";
 import { generateCOA } from "@/utils/generateCOA";
@@ -67,6 +67,7 @@ function parseBaseName(name: string): { base: string; strength: string } {
 export default function ProductPage() {
   const { products, productDetails } = useProducts();
   const params = useParams<{ id: string }>();
+  const [, navigate] = useLocation();
   const product = products.find((p) => p.id === params.id);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<"description" | "reviews">("description");
@@ -512,66 +513,59 @@ export default function ProductPage() {
                 <p className="text-xs font-bold mb-3 uppercase tracking-wider" style={{ color: "#94A3B8" }}>
                   Select Strength
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {strengthVariants.map((v) => {
-                    const { strength } = parseBaseName(v.name);
-                    const isCurrent = v.id === product.id;
-                    return (
-                      <Link
-                        key={v.id}
-                        href={`/product/${v.id}`}
-                        style={{ textDecoration: "none" }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            gap: "2px",
-                            padding: "8px 14px",
-                            borderRadius: "10px",
-                            border: isCurrent ? "2px solid #1B5CB5" : "1.5px solid #E2E8F0",
-                            backgroundColor: isCurrent ? "#EEF4FF" : "#F8FAFC",
-                            cursor: isCurrent ? "default" : "pointer",
-                            transition: "border-color 0.15s, background-color 0.15s",
-                            minWidth: "62px",
-                            textAlign: "center",
-                          }}
-                          onMouseEnter={e => {
-                            if (!isCurrent) {
-                              (e.currentTarget as HTMLElement).style.borderColor = "#1B5CB5";
-                              (e.currentTarget as HTMLElement).style.backgroundColor = "#F0F5FF";
-                            }
-                          }}
-                          onMouseLeave={e => {
-                            if (!isCurrent) {
-                              (e.currentTarget as HTMLElement).style.borderColor = "#E2E8F0";
-                              (e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC";
-                            }
-                          }}
-                        >
-                          <span style={{
-                            fontSize: "13px",
-                            fontWeight: 700,
-                            color: isCurrent ? "#1240A0" : "#374151",
-                            lineHeight: 1.2,
-                          }}>
-                            {strength}
-                          </span>
-                          {v.price != null && (
-                            <span style={{
-                              fontSize: "11px",
-                              fontWeight: 500,
-                              color: isCurrent ? "#1B5CB5" : "#94A3B8",
-                              lineHeight: 1,
-                            }}>
-                              {formatPrice(v.price)}
-                            </span>
-                          )}
-                        </div>
-                      </Link>
-                    );
-                  })}
+                <div style={{ position: "relative" }}>
+                  <select
+                    value={product.id}
+                    onChange={(e) => {
+                      if (e.target.value !== product.id) navigate(`/product/${e.target.value}`);
+                    }}
+                    aria-label="Select strength"
+                    style={{
+                      width: "100%",
+                      appearance: "none",
+                      WebkitAppearance: "none",
+                      MozAppearance: "none",
+                      padding: "13px 44px 13px 16px",
+                      borderRadius: "12px",
+                      border: "1.5px solid #D6E0F0",
+                      backgroundColor: "#F8FAFC",
+                      color: "#0F172A",
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      fontFamily: "inherit",
+                      cursor: "pointer",
+                      outline: "none",
+                      transition: "border-color 0.15s, box-shadow 0.15s",
+                    }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.borderColor = "#1B5CB5";
+                      e.currentTarget.style.boxShadow = "0 0 0 3px rgba(27,92,181,0.12)";
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.borderColor = "#D6E0F0";
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
+                  >
+                    {strengthVariants.map((v) => {
+                      const { strength } = parseBaseName(v.name);
+                      return (
+                        <option key={v.id} value={v.id}>
+                          {strength}{v.price != null ? ` — ${formatPrice(v.price)}` : ""}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <ChevronRight
+                    size={18}
+                    style={{
+                      position: "absolute",
+                      right: "14px",
+                      top: "50%",
+                      transform: "translateY(-50%) rotate(90deg)",
+                      color: "#64748B",
+                      pointerEvents: "none",
+                    }}
+                  />
                 </div>
               </div>
             )}
