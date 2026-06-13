@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strength Selector — Dropdown</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:#F1F5F9;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+  .card-wrap{width:300px;border-radius:18px;padding:3px;background:linear-gradient(135deg,rgba(99,149,255,.45) 0%,rgba(147,187,255,.25) 50%,rgba(99,149,255,.45) 100%);box-shadow:0 0 18px rgba(99,149,255,.25),0 2px 12px rgba(15,23,42,.06)}
+  .card{border-radius:15px;background:#fff;overflow:hidden;display:flex;flex-direction:column}
+  .accent{height:3px;background:linear-gradient(90deg,#1240A0,#2563EB);flex-shrink:0}
+  .img-area{background:linear-gradient(160deg,#F8FAFE 0%,#EEF4FF 100%);height:180px;display:flex;align-items:center;justify-content:center;position:relative}
+  .wishlist{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.85);border:1.5px solid #E2E8F0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+  .wishlist.active{background:#FEF2F2;border-color:#FECACA}
+  .wishlist svg{width:14px;height:14px;stroke:#94A3B8;fill:none;transition:all .15s}
+  .wishlist.active svg{stroke:#DC2626;fill:#DC2626}
+  .img-area img{width:130px;height:150px;object-fit:contain;padding:8px}
+  .info{padding:16px;border-top:1px solid rgba(18,64,160,.08)}
+  .cat{display:inline-block;font-size:10px;font-weight:700;color:#1240A0;background:#EEF4FF;padding:3px 10px;border-radius:6px;letter-spacing:.05em;margin-bottom:8px;text-transform:uppercase}
+  .name{font-size:18px;font-weight:800;line-height:1.25;margin-bottom:12px;background:linear-gradient(120deg,#0D2565 0%,#1B5CB5 60%,#2563EB 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .strength-label{font-size:10.5px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px}
+  .select-wrap{position:relative;margin-bottom:12px}
+  .select-wrap select{width:100%;padding:9px 36px 9px 12px;border-radius:8px;border:1.5px solid #1240A0;background:#EEF4FF;color:#1240A0;font-size:13px;font-weight:700;font-family:inherit;appearance:none;-webkit-appearance:none;cursor:pointer;outline:none}
+  .select-wrap select:focus{border-color:#2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+  .chevron{position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:#1240A0}
+  .price{font-size:24px;font-weight:800;color:#059669;margin-bottom:14px}
+  .actions{display:flex;gap:8px;align-items:center}
+  .qty{display:flex;align-items:center;border:1.5px solid #E2E8F0;border-radius:8px;overflow:hidden}
+  .qty button{padding:7px 10px;background:none;border:none;cursor:pointer;font-size:16px;color:#64748B;font-family:inherit}
+  .qty span{padding:7px 6px;font-size:13px;font-weight:700;min-width:24px;text-align:center}
+  .add-btn{flex:1;padding:9px 12px;border-radius:8px;background:#1240A0;color:#fff;font-weight:700;font-size:13px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;transition:background .15s}
+  .add-btn:hover{background:#1B5CB5}
+  .add-btn.added{background:#059669}
+</style>
+</head>
+<body>
+<div class="card-wrap">
+  <div class="card">
+    <div class="accent"></div>
+    <div class="img-area">
+      <button class="wishlist" id="wl" onclick="toggleWishlist()">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </button>
+      <img src="/products/1.jpg" alt="BPC-157" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22130%22 height=%22130%22 viewBox=%220 0 130 130%22><rect fill=%22%23EEF4FF%22 width=%22130%22 height=%22130%22 rx=%2212%22/><text x=%2250%25%22 y=%2252%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2228%22>🧪</text></svg>'"/>
+    </div>
+    <div class="info">
+      <span class="cat">Healing Peptides</span>
+      <p class="name">BPC-157</p>
+      <label class="strength-label">Strength</label>
+      <div class="select-wrap">
+        <select id="strengthSel" onchange="selectStrength(this.value)">
+          <option value="0">5mg — £34.99</option>
+          <option value="1">10mg — £49.99</option>
+          <option value="2">20mg — £69.99</option>
+          <option value="3">40mg — £94.99</option>
+        </select>
+        <svg class="chevron" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="price" id="price">£34.99</div>
+      <div class="actions">
+        <div class="qty">
+          <button onclick="changeQty(-1)">−</button>
+          <span id="qty">1</span>
+          <button onclick="changeQty(1)">+</button>
+        </div>
+        <button class="add-btn" id="addBtn" onclick="addToCart()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const prices=[34.99,49.99,69.99,94.99];
+let qty=1,wishlisted=false;
+function selectStrength(i){document.getElementById('price').textContent='£'+prices[i].toFixed(2);qty=1;document.getElementById('qty').textContent=qty;}
+function changeQty(d){qty=Math.max(1,qty+d);document.getElementById('qty').textContent=qty;}
+function addToCart(){const b=document.getElementById('addBtn');b.className='add-btn added';b.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Added!';setTimeout(()=>{b.className='add-btn';b.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Add to Cart';},1800);}
+function toggleWishlist(){wishlisted=!wishlisted;document.getElementById('wl').className='wishlist'+(wishlisted?' active':'');}
+</script>
+</body>
+</html>
