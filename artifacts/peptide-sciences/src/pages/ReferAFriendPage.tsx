@@ -2,67 +2,49 @@ import { useState } from "react";
 import { Users, Gift, Copy, CheckCircle2, ChevronRight, Star, Share2, Zap, Shield } from "lucide-react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
+import { useCurrency } from "@/context/CurrencyContext";
+import type { CurrencyCode } from "@/context/CurrencyContext";
 
-const STEPS = [
-  {
-    icon: <Share2 size={22} color="#fff" />,
-    bg: "linear-gradient(135deg, #1240A0, #1B5CB5)",
-    step: "01",
-    title: "Share Your Link",
-    desc: "Copy your unique referral link and share it with fellow researchers via email, social media, or any channel you prefer.",
-  },
-  {
-    icon: <Users size={22} color="#fff" />,
-    bg: "linear-gradient(135deg, #7C3AED, #A855F7)",
-    step: "02",
-    title: "Friend Places an Order",
-    desc: "Your friend uses your link and gets 10% off their first order automatically applied at checkout. No code needed.",
-  },
-  {
-    icon: <Gift size={22} color="#fff" />,
-    bg: "linear-gradient(135deg, #059669, #10B981)",
-    step: "03",
-    title: "You Both Earn",
-    desc: "Once their order ships, £10 credit is added to your account. Your friend keeps their 10% discount too — everyone wins.",
-  },
-];
+const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
+  GBP: "£50",
+  USD: "$65",
+  EUR: "€60",
+  AUD: "A$100",
+  CAD: "C$90",
+  CHF: "Fr57",
+  NZD: "NZ$110",
+  JPY: "¥10,000",
+  SGD: "S$85",
+  HKD: "HK$510",
+  KRW: "₩88,000",
+  TWD: "NT$2,050",
+  MYR: "RM295",
+  THB: "฿2,200",
+  DKK: "kr450",
+  NOK: "kr690",
+  SEK: "kr680",
+  PLN: "zł250",
+  CZK: "Kč1,450",
+  HUF: "Ft22,000",
+  AED: "د.إ240",
+};
 
 const PERKS = [
-  { icon: <Zap size={16} />, label: "No limit", detail: "Refer as many friends as you like — credits stack." },
-  { icon: <Shield size={16} />, label: "Instant credit", detail: "Credit lands in your account the moment their order ships." },
-  { icon: <Star size={16} />, label: "Never expires", detail: "Referral credits are valid for 12 months from issue." },
-  { icon: <CheckCircle2 size={16} />, label: "Stackable", detail: "Use referral credit alongside bundle discounts and sale prices." },
-];
-
-const FAQS = [
-  {
-    q: "Who can I refer?",
-    a: "Anyone who hasn't previously placed an order with OmniQure — friends, colleagues, fellow researchers.",
-  },
-  {
-    q: "When do I receive my credit?",
-    a: "Your £10 credit is issued automatically once your referred friend's first order has been dispatched.",
-  },
-  {
-    q: "Is there a limit to how many people I can refer?",
-    a: "No — you can refer as many people as you like and credits accumulate with no cap.",
-  },
-  {
-    q: "Do I need an account to refer someone?",
-    a: "Yes. You need a registered OmniQure account to generate a referral link and receive credits.",
-  },
-  {
-    q: "Can my referral credit be used on any product?",
-    a: "Yes — referral credit can be applied to any order and stacks with other promotions including bundle discounts.",
-  },
+  { icon: <Zap size={16} />,        label: "No limit",      detail: "Refer as many friends as you like — free peptides stack." },
+  { icon: <Shield size={16} />,     label: "Instant reward",detail: "Your free peptide voucher is issued the moment their order ships." },
+  { icon: <Star size={16} />,       label: "Never expires", detail: "Referral rewards are valid for 12 months from issue." },
+  { icon: <CheckCircle2 size={16} />, label: "Stackable",   detail: "Use your free peptide reward alongside bundle discounts and sale prices." },
 ];
 
 export default function ReferAFriendPage() {
   useSEO({
     title: "Refer a Friend",
-    description: "Share OmniQure with a fellow researcher and you both benefit. Your friend gets 10% off their first order; you earn £10 account credit when they ship.",
+    description: "Share OmniQure with a fellow researcher. Your friend gets 10% off their first order; you earn a free peptide worth up to £50 when they ship.",
     canonicalPath: "/refer-a-friend",
   });
+
+  const { currency } = useCurrency();
+  const localValue = FREE_PEPTIDE_VALUE[currency.code] ?? FREE_PEPTIDE_VALUE.GBP;
 
   const [copied, setCopied] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -74,6 +56,53 @@ export default function ReferAFriendPage() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
+
+  const STEPS = [
+    {
+      icon: <Share2 size={22} color="#fff" />,
+      bg: "linear-gradient(135deg, #1240A0, #1B5CB5)",
+      step: "01",
+      title: "Share Your Link",
+      desc: "Copy your unique referral link and share it with fellow researchers via email, social media, or any channel you prefer.",
+    },
+    {
+      icon: <Users size={22} color="#fff" />,
+      bg: "linear-gradient(135deg, #7C3AED, #A855F7)",
+      step: "02",
+      title: "Friend Places an Order",
+      desc: "Your friend uses your link and gets 10% off their first order automatically applied at checkout. No code needed.",
+    },
+    {
+      icon: <Gift size={22} color="#fff" />,
+      bg: "linear-gradient(135deg, #059669, #10B981)",
+      step: "03",
+      title: "You Both Benefit",
+      desc: `Once their order ships, you receive a free peptide voucher worth up to ${localValue}. Your friend keeps their 10% discount — everyone wins.`,
+    },
+  ];
+
+  const FAQS = [
+    {
+      q: "Who can I refer?",
+      a: "Anyone who hasn't previously placed an order with OmniQure — friends, colleagues, fellow researchers.",
+    },
+    {
+      q: "How does my free peptide reward work?",
+      a: `Once your referred friend's first order has been dispatched, you'll receive a voucher for a free peptide worth up to ${localValue}. You can choose any qualifying peptide from our catalogue.`,
+    },
+    {
+      q: "Is there a limit to how many people I can refer?",
+      a: "No — you can refer as many people as you like. Each successful referral earns you an additional free peptide reward.",
+    },
+    {
+      q: "Do I need an account to refer someone?",
+      a: "Yes. You need a registered OmniQure account to generate a referral link and receive your free peptide reward.",
+    },
+    {
+      q: "Can I choose any peptide with my reward voucher?",
+      a: `Yes — you can select any peptide from our catalogue up to the value of ${localValue}. If the peptide is priced above that, you pay only the difference.`,
+    },
+  ];
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
@@ -106,10 +135,10 @@ export default function ReferAFriendPage() {
             letterSpacing: "-0.03em", lineHeight: 1.08, margin: "0 0 16px",
           }}>
             Refer a Friend,<br />
-            <span style={{ color: "#E8A93E" }}>Earn Together</span>
+            <span style={{ color: "#E8A93E" }}>Earn a Free Peptide</span>
           </h1>
-          <p style={{ fontSize: 17, color: "rgba(255,255,255,0.75)", lineHeight: 1.65, maxWidth: 540, margin: "0 auto 32px" }}>
-            Share OmniQure with a fellow researcher. They get <strong style={{ color: "#fff" }}>10% off their first order</strong>. You earn <strong style={{ color: "#fff" }}>£10 credit</strong> when it ships.
+          <p style={{ fontSize: 17, color: "rgba(255,255,255,0.75)", lineHeight: 1.65, maxWidth: 560, margin: "0 auto 32px" }}>
+            Share OmniQure with a fellow researcher. They get <strong style={{ color: "#fff" }}>10% off their first order</strong>. You earn a <strong style={{ color: "#fff" }}>free peptide worth up to {localValue}</strong> when it ships.
           </p>
 
           {/* CTA */}
@@ -145,9 +174,9 @@ export default function ReferAFriendPage() {
         <div style={{ maxWidth: 860, margin: "0 auto", transform: "translateY(-32px)" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
             {[
-              { emoji: "🎁", label: "Your friend gets", value: "10% Off", sub: "their first order, automatically" },
-              { emoji: "💰", label: "You earn", value: "£10 Credit", sub: "per successful referral, no cap" },
-              { emoji: "⚡", label: "Activates", value: "On Dispatch", sub: "credit lands the moment it ships" },
+              { emoji: "🎁", label: "Your friend gets",  value: "10% Off",         sub: "their first order, automatically" },
+              { emoji: "🧪", label: "You earn",          value: `Up to ${localValue}`, sub: "free peptide of your choice" },
+              { emoji: "⚡", label: "Activates",         value: "On Dispatch",     sub: "voucher issued the moment it ships" },
             ].map(card => (
               <div key={card.label} style={{
                 background: "#fff", borderRadius: 16, padding: "24px 20px",
@@ -158,7 +187,7 @@ export default function ReferAFriendPage() {
                 <p style={{ fontSize: 11, fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em", margin: "0 0 4px" }}>
                   {card.label}
                 </p>
-                <p style={{ fontSize: 28, fontWeight: 900, color: "#0D2565", margin: "0 0 4px", lineHeight: 1.1 }}>
+                <p style={{ fontSize: card.value.length > 8 ? 22 : 28, fontWeight: 900, color: "#0D2565", margin: "0 0 4px", lineHeight: 1.1 }}>
                   {card.value}
                 </p>
                 <p style={{ fontSize: 12, color: "#64748B", margin: 0 }}>{card.sub}</p>
