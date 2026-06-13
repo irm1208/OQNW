@@ -86,7 +86,7 @@ function ProtocolCard({ group }: { group: GroupedProduct }) {
   const [activeTab, setActiveTab] = useState<TabKey>("overview");
 
   const representative = group.variants[0];
-  const detail = productDetails[representative.id];
+  const detail = productDetails[representative.slug];
   const protocols = protocolMap.get(representative.id) ?? [];
   const extras = peptideExtras[group.baseName];
 
@@ -486,7 +486,7 @@ export default function ProtocolsPage() {
       filtered = filtered.filter(g =>
         g.baseName.toLowerCase().includes(q) ||
         g.category.toLowerCase().includes(q) ||
-        (productDetails[g.variants[0]?.id]?.researchAreas ?? []).some(r => r.toLowerCase().includes(q)) ||
+        (productDetails[g.variants[0]?.slug ?? ""]?.researchAreas ?? []).some(r => r.toLowerCase().includes(q)) ||
         (peptideExtras[g.baseName]?.uses ?? []).some(u => u.toLowerCase().includes(q))
       );
     }

@@ -53,7 +53,7 @@ function ReportModal({
   const handleDownload = useCallback(async () => {
     setIsDownloading(true);
     try {
-      const detail = productDetails[currentProduct.id] ?? { id: currentProduct.id, description: "" };
+      const detail = productDetails[currentProduct.slug] ?? { id: currentProduct.id, description: "" };
       await generateCOA(currentProduct, detail);
     } finally {
       setIsDownloading(false);

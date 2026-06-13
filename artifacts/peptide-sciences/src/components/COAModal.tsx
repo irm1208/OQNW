@@ -51,7 +51,7 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
   const handleDownload = useCallback(async () => {
     setIsDownloading(true);
     try {
-      const detail = productDetails[currentProduct.id] ?? { id: currentProduct.id, description: "" };
+      const detail = productDetails[currentProduct.slug] ?? { id: currentProduct.id, description: "" };
       await generateCOA(currentProduct, detail);
     } finally {
       setIsDownloading(false);
@@ -193,7 +193,7 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
               <MsChart
                 productId={currentProduct.id}
                 productName={currentProduct.name}
-                molecularWeight={productDetails[currentProduct.id]?.molecularWeight}
+                molecularWeight={productDetails[currentProduct.slug]?.molecularWeight}
               />
             </div>
           </div>
@@ -460,7 +460,7 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
               <MsChart
                 productId={currentProduct.id}
                 productName={currentProduct.name}
-                molecularWeight={productDetails[currentProduct.id]?.molecularWeight}
+                molecularWeight={productDetails[currentProduct.slug]?.molecularWeight}
               />
             </div>
           </div>

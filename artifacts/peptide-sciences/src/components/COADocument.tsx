@@ -57,7 +57,7 @@ export default function COADocument({ product }: COADocumentProps) {
   const actualMass = getActualMass(product.id, declaredMg);
   const baseName   = parseBaseName(product.name);
   const coaRef     = getCOARef(product.id, lot);
-  const detail     = productDetails[product.id];
+  const detail     = productDetails[product.slug];
 
   const blue = "#1240A0";
   const divider: React.CSSProperties = { borderTop: "1px solid #E5E7EB", margin: "0 0 16px" };

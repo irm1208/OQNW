@@ -79,7 +79,7 @@ export default function ProductPage() {
   const { toggle: toggleWishlist, has: inWishlist } = useWishlist();
 
   // SEO — computed unconditionally (before any early return)
-  const seoDetail = productDetails[product?.id ?? ""];
+  const seoDetail = productDetails[product?.slug ?? ""];
   const seoDesc = seoDetail?.description
     ? `${seoDetail.description.slice(0, 140).split(". ")[0]}. ${product ? getPurityStr(product.id) : ""} HPLC purity. For research use only — OmniQure Peptide Research Institute.`
     : product
@@ -266,7 +266,7 @@ export default function ProductPage() {
     );
   }
 
-  const detail = productDetails[product.id] ?? { id: product.id, description: "" };
+  const detail = productDetails[product.slug] ?? { id: product.id, description: "" };
 
   const { base: currentBase, strength: currentStrength } = parseBaseName(product.name);
   const strengthVariants = currentStrength

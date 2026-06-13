@@ -209,7 +209,7 @@ export default function LabResultsPage() {
                     </div>
                   </div>
                   <button
-                    onClick={() => void generateCOA(selected, productDetails[String(selected.id)] ?? { id: String(selected.id), description: "" })}
+                    onClick={() => void generateCOA(selected, productDetails[selected.slug] ?? { id: selected.id, description: "" })}
                     style={{
                       height: "40px", padding: "0 18px", borderRadius: "10px",
                       background: "linear-gradient(90deg, #0D2565, #1B5CB5)",

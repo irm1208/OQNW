@@ -41,6 +41,13 @@ function toProduct(p: ApiProduct): Product {
   };
 }
 
+// Build a slug-keyed productDetails map so lookups work regardless of DB id shifts
+const slugProductDetails: Record<string, ProductDetail> = {};
+for (const p of staticProducts) {
+  const detail = staticProductDetails[p.id];
+  if (detail) slugProductDetails[p.slug] = detail;
+}
+
 export function ProductsProvider({ children }: { children: ReactNode }) {
   const [products, setProducts] = useState<Product[]>(staticProducts);
   const [loading, setLoading] = useState(false);
@@ -53,8 +60,9 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
       .then((data: ApiProduct[] | null) => {
         if (cancelled || !data || !Array.isArray(data)) return;
         const apiProducts = data.map(toProduct);
-        const apiIds = new Set(apiProducts.map((p) => p.id));
-        const fallback = staticProducts.filter((p) => !apiIds.has(p.id));
+        // Deduplicate by slug so DB sequential IDs don't cause duplicates
+        const apiSlugs = new Set(apiProducts.map((p) => p.slug));
+        const fallback = staticProducts.filter((p) => !apiSlugs.has(p.slug));
         setProducts([...apiProducts, ...fallback]);
       })
       .catch(() => {})
@@ -67,7 +75,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <ProductsContext.Provider value={{ products, productDetails: staticProductDetails, loading }}>
+    <ProductsContext.Provider value={{ products, productDetails: slugProductDetails, loading }}>
       {children}
     </ProductsContext.Provider>
   );
