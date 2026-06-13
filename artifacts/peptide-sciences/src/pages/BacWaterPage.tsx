@@ -118,30 +118,44 @@ export default function BacWaterPage() {
 
             {/* Size selector */}
             <div style={{ marginBottom: "24px" }}>
-              <p style={{ fontSize: "12px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "10px" }}>
+              <p style={{ fontSize: "12px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
                 Select Size
               </p>
-              <div className="flex gap-3">
-                {SIZES.map((s, i) => (
-                  <button
-                    key={s.label}
-                    onClick={() => setSelectedIdx(i)}
-                    style={{
-                      padding: "10px 28px",
-                      borderRadius: "10px",
-                      fontWeight: 700,
-                      fontSize: "15px",
-                      cursor: "pointer",
-                      border: selectedIdx === i ? "2px solid #1240A0" : "2px solid #E2E8F0",
-                      backgroundColor: selectedIdx === i ? "#EFF6FF" : "#fff",
-                      color: selectedIdx === i ? "#1240A0" : "#475569",
-                      boxShadow: selectedIdx === i ? "0 0 0 3px rgba(18,64,160,0.12)" : "none",
-                      transition: "all 0.15s",
-                    }}
-                  >
-                    {s.label}
-                  </button>
-                ))}
+              <div style={{ position: "relative" }}>
+                <select
+                  value={selectedIdx}
+                  onChange={e => setSelectedIdx(Number(e.target.value))}
+                  style={{
+                    width: "100%",
+                    padding: "11px 38px 11px 14px",
+                    borderRadius: "10px",
+                    border: "2px solid #1240A0",
+                    backgroundColor: "#EFF6FF",
+                    color: "#1240A0",
+                    fontSize: "15px",
+                    fontWeight: 800,
+                    fontFamily: "inherit",
+                    appearance: "none",
+                    WebkitAppearance: "none",
+                    MozAppearance: "none",
+                    cursor: "pointer",
+                    outline: "none",
+                    boxShadow: "0 2px 8px rgba(18,64,160,0.12)",
+                  }}
+                >
+                  {SIZES.map((s, i) => (
+                    <option key={s.label} value={i}>
+                      {s.label} — £{s.price.toFixed(2)}
+                    </option>
+                  ))}
+                </select>
+                <svg
+                  width="14" height="14" viewBox="0 0 24 24"
+                  fill="none" stroke="#1240A0" strokeWidth="2.5"
+                  style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
               </div>
             </div>
 
