@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { trackViewContent } from "@/lib/pixels";
 import { Link, useParams, useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
-import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, User, Heart, Droplets } from "lucide-react";
+import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, User, Heart, Droplets, Gift, Sparkles } from "lucide-react";
 import { generateCOA } from "@/utils/generateCOA";
 import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
@@ -729,37 +729,93 @@ export default function ProductPage() {
             )}
 
             {/* Bundle & Save nudge */}
-            {product.stockLevel !== 0 && (
-              <div
-                className="rounded-xl px-4 py-3 mb-3 flex items-center gap-3"
-                style={{
-                  backgroundColor: bundleDiscountPct > 0 ? "#F0FDF4" : "#EEF4FF",
-                  border: `1px solid ${bundleDiscountPct > 0 ? "#BBF7D0" : "#BFDBFE"}`,
-                }}
-              >
-                {bundleDiscountPct >= 20 ? (
-                  <p style={{ fontSize: "12px", color: "#059669", fontWeight: 600, margin: 0 }}>
-                    ✓ Bundle & Save 20% active — maximum discount!
-                  </p>
-                ) : bundleDiscountPct === 15 ? (
-                  <p style={{ fontSize: "12px", color: "#059669", fontWeight: 600, margin: 0 }}>
-                    ✓ Bundle & Save 15% active · add {15 - totalItems} more for 20% off
-                  </p>
-                ) : bundleDiscountPct === 10 ? (
-                  <p style={{ fontSize: "12px", color: "#059669", fontWeight: 600, margin: 0 }}>
-                    ✓ Bundle & Save 10% active · add {11 - totalItems} more for 15% off
-                  </p>
-                ) : bundleDiscountPct === 5 ? (
-                  <p style={{ fontSize: "12px", color: "#059669", fontWeight: 600, margin: 0 }}>
-                    ✓ Bundle & Save 5% active · add {7 - totalItems} more for 10% off
-                  </p>
-                ) : (
-                  <p style={{ fontSize: "12px", color: "#1240A0", fontWeight: 600, margin: 0 }}>
-                    Buy 3+ peptides and save 5% · 7+ = 10% · 11+ = 15% · 15+ = 20% off
-                  </p>
-                )}
-              </div>
-            )}
+            {product.stockLevel !== 0 && (() => {
+              const tiers = [
+                { qty: 3, pct: 5 },
+                { qty: 7, pct: 10 },
+                { qty: 11, pct: 15 },
+                { qty: 15, pct: 20 },
+              ];
+              const nextTier = tiers.find((t) => totalItems < t.qty);
+              const isMax = bundleDiscountPct >= 20;
+              const progress = isMax ? 100 : Math.min(100, (totalItems / 15) * 100);
+              const headline = isMax
+                ? "Maximum 20% bundle discount unlocked!"
+                : bundleDiscountPct > 0
+                ? `${bundleDiscountPct}% bundle discount active`
+                : "Bundle & Save up to 20%";
+              const subline = nextTier
+                ? `Add ${nextTier.qty - totalItems} more peptide${nextTier.qty - totalItems === 1 ? "" : "s"} to unlock ${nextTier.pct}% off`
+                : "You're getting our best price — enjoy!";
+              return (
+                <div
+                  className="mb-3"
+                  style={{
+                    position: "relative",
+                    overflow: "hidden",
+                    borderRadius: "16px",
+                    padding: "16px 18px",
+                    background: "linear-gradient(120deg, #0D2565 0%, #1B5CB5 55%, #2E8B57 140%)",
+                    boxShadow: "0 8px 24px rgba(13,37,101,0.28)",
+                  }}
+                >
+                  {/* decorative glow */}
+                  <span style={{
+                    position: "absolute", top: "-40px", right: "-30px",
+                    width: "130px", height: "130px", borderRadius: "50%",
+                    background: "radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%)",
+                    pointerEvents: "none",
+                  }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px", position: "relative" }}>
+                    <span style={{
+                      flexShrink: 0,
+                      width: "42px", height: "42px", borderRadius: "12px",
+                      background: "rgba(255,255,255,0.16)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      border: "1px solid rgba(255,255,255,0.25)",
+                    }}>
+                      <Gift size={21} color="#fff" strokeWidth={2.2} />
+                    </span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{
+                        margin: 0, display: "flex", alignItems: "center", gap: "6px",
+                        fontSize: "14px", fontWeight: 800, color: "#fff", letterSpacing: "-0.01em",
+                      }}>
+                        <Sparkles size={14} color="#FCD34D" style={{ flexShrink: 0 }} />
+                        {headline}
+                      </p>
+                      <p style={{ margin: "2px 0 0", fontSize: "12px", fontWeight: 500, color: "rgba(255,255,255,0.85)" }}>
+                        {subline}
+                      </p>
+                    </div>
+                  </div>
+                  {/* progress bar */}
+                  <div style={{
+                    position: "relative", marginTop: "12px",
+                    height: "7px", borderRadius: "9999px",
+                    background: "rgba(255,255,255,0.2)", overflow: "hidden",
+                  }}>
+                    <div style={{
+                      height: "100%", width: `${progress}%`,
+                      borderRadius: "9999px",
+                      background: "linear-gradient(90deg, #FCD34D, #34D399)",
+                      transition: "width 0.4s ease",
+                    }} />
+                  </div>
+                  <div style={{
+                    display: "flex", justifyContent: "space-between",
+                    marginTop: "6px", fontSize: "10px", fontWeight: 700,
+                    color: "rgba(255,255,255,0.7)",
+                  }}>
+                    {tiers.map((t) => (
+                      <span key={t.qty} style={{ color: totalItems >= t.qty ? "#FCD34D" : "rgba(255,255,255,0.6)" }}>
+                        {t.qty}+ · {t.pct}%
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Back-in-stock notify form */}
             {product.stockLevel === 0 && (
