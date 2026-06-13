@@ -5,6 +5,7 @@ import {
   integer,
   numeric,
   timestamp,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
@@ -34,6 +35,7 @@ export const customersTable = pgTable("customers", {
   lastSeenIp: text("last_seen_ip"),
   lastSeenCountry: text("last_seen_country"),
   knownIps: text("known_ips").array(),
+  referralAbuseFlag: boolean("referral_abuse_flag").notNull().default(false),
 });
 
 export const insertCustomerSchema = createInsertSchema(customersTable).omit({

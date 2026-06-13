@@ -120,7 +120,46 @@ router.post("/auth/register", async (req: Request, res: Response): Promise<void>
 
     const passwordHash = await bcrypt.hash(password, 12);
 
-    const refBy = typeof referredBy === "string" && referredBy.trim() ? referredBy.trim().toUpperCase() : null;
+    const refByRaw = typeof referredBy === "string" && referredBy.trim() ? referredBy.trim().toUpperCase() : null;
+
+    // Validate referral code at registration time and run IP-based abuse checks
+    let refBy = refByRaw;
+    if (refBy) {
+      try {
+        const ipAtReg = getClientIp(req);
+
+        // 1. Confirm the referral code actually exists
+        const [codeOwner] = await db
+          .select({ id: customersTable.id, knownIps: customersTable.knownIps, lastSeenIp: customersTable.lastSeenIp })
+          .from(customersTable)
+          .where(eq(customersTable.referralCode, refBy))
+          .limit(1);
+
+        if (!codeOwner) {
+          // Referral code doesn't exist — reject silently
+          refBy = null;
+        } else if (ipAtReg) {
+          // 2. Block if registering IP matches any IP on the referrer's account (self-referral)
+          const referrerIps: string[] = codeOwner.knownIps ?? (codeOwner.lastSeenIp ? [codeOwner.lastSeenIp] : []);
+          if (referrerIps.includes(ipAtReg)) {
+            refBy = null; // Same device/IP as the referrer — self-referral
+          } else {
+            // 3. Block if registering IP is already associated with any other account (multi-account)
+            const [ipConflict] = await db
+              .select({ id: customersTable.id })
+              .from(customersTable)
+              .where(sql`${ipAtReg} = ANY(COALESCE(${customersTable.knownIps}, ARRAY[]::text[]))`)
+              .limit(1);
+            if (ipConflict) {
+              refBy = null; // IP already seen on an existing account
+            }
+          }
+        }
+      } catch {
+        // Validation failed — proceed without referral rather than blocking registration
+        refBy = null;
+      }
+    }
 
     const [customer] = await db
       .insert(customersTable)

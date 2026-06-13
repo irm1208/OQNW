@@ -242,6 +242,8 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     }
 
     // Validate free peptide credit redemption
+    // The free peptide reward covers the cheapest qualifying peptide item up to a £50 cap.
+    const FREE_PEPTIDE_CAP_GBP = 50;
     let freePeptideDeductGbp = 0;
     let freePeptideCreditUsed = false;
     if (redeemFreePeptide === true && loyaltySessionCustomerId) {
@@ -252,7 +254,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         .limit(1);
       if (custCredit && custCredit.freePeptideCredits > 0) {
         const cheapestPrice = Math.min(...(cartItems as CartItem[]).map(i => i.priceGbp));
-        freePeptideDeductGbp = cheapestPrice;
+        freePeptideDeductGbp = Math.min(cheapestPrice, FREE_PEPTIDE_CAP_GBP);
         freePeptideCreditUsed = true;
       }
     }
@@ -595,32 +597,45 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
           }
           if (cust?.totalOrders === 1 && cust.referredBy) {
             const [referrer] = await db
-              .select({ id: customersTable.id, email: customersTable.email, firstName: customersTable.firstName, lastName: customersTable.lastName, lastSeenIp: customersTable.lastSeenIp, knownIps: customersTable.knownIps })
+              .select({
+                id: customersTable.id,
+                email: customersTable.email,
+                firstName: customersTable.firstName,
+                lastName: customersTable.lastName,
+                postcode: customersTable.postcode,
+                address1: customersTable.address1,
+                lastSeenIp: customersTable.lastSeenIp,
+                knownIps: customersTable.knownIps,
+                freePeptideCredits: customersTable.freePeptideCredits,
+              })
               .from(customersTable)
               .where(eq(customersTable.referralCode, cust.referredBy))
               .limit(1);
             if (referrer) {
-              // IP abuse checks — block reward if any of the following are true:
+              // Abuse checks — block reward if any of the following are true:
               // 1. New customer is using a VPN / proxy / hosting IP (can mask identity)
               // 2. New customer's IP matches any IP ever seen on the referrer's account
               // 3. New customer's IP matches any IP ever seen on any other existing customer
+              // 4. Referred customer's billing postcode matches the referrer's postcode
+              // 5. Referred customer's last name matches the referrer's last name AND first 3 chars of first name match
+              // 6. Referrer already has 10+ pending free peptide credits (abuse farming cap)
               let abuseDetected = false;
+              let abuseReason = "";
 
               if (ipData.isProxy) {
-                // VPN, proxy, or datacenter IP — could be masking a self-referral
                 abuseDetected = true;
+                abuseReason = "VPN/proxy IP detected on referred customer";
               }
 
               if (!abuseDetected && clientIp) {
-                // Check referrer's full IP history (not just last seen)
                 const referrerKnownIps: string[] = referrer.knownIps ?? (referrer.lastSeenIp ? [referrer.lastSeenIp] : []);
                 if (referrerKnownIps.includes(clientIp)) {
                   abuseDetected = true;
+                  abuseReason = "Referred customer IP matches referrer's known IPs";
                 }
               }
 
               if (!abuseDetected && clientIp) {
-                // Check if this IP appears on ANY other customer account (multi-account abuse)
                 const [anyIpConflict] = await db
                   .select({ id: customersTable.id })
                   .from(customersTable)
@@ -631,10 +646,51 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
                     )
                   )
                   .limit(1);
-                if (anyIpConflict) abuseDetected = true;
+                if (anyIpConflict) {
+                  abuseDetected = true;
+                  abuseReason = "Referred customer IP already seen on another account";
+                }
+              }
+
+              if (!abuseDetected && referrer.postcode && d.postcode) {
+                // Same billing postcode — strong signal of same person / household self-referral
+                const normalize = (s: string) => s.trim().toUpperCase().replace(/\s+/g, "");
+                if (normalize(referrer.postcode) === normalize(d.postcode)) {
+                  abuseDetected = true;
+                  abuseReason = "Referred customer billing postcode matches referrer's postcode";
+                }
               }
 
               if (!abuseDetected) {
+                // Name similarity: same last name + first 3 chars of first name match
+                const refFirstName = d.firstName.trim().slice(0, 3).toUpperCase();
+                const refLastName = d.lastName.trim().toUpperCase();
+                const rFirstName = referrer.firstName.trim().slice(0, 3).toUpperCase();
+                const rLastName = referrer.lastName.trim().toUpperCase();
+                if (rLastName === refLastName && rFirstName === refFirstName) {
+                  abuseDetected = true;
+                  abuseReason = "Referred customer name too similar to referrer's name";
+                }
+              }
+
+              if (!abuseDetected && referrer.freePeptideCredits >= 10) {
+                // Hard cap: referrer already has 10+ unredeemed credits — farming detected
+                abuseDetected = true;
+                abuseReason = "Referrer has reached the maximum pending reward limit (10 credits)";
+              }
+
+              if (abuseDetected) {
+                // Flag the referred customer's account for admin review
+                db.update(customersTable)
+                  .set({ referralAbuseFlag: true })
+                  .where(eq(customersTable.id, customerId!))
+                  .catch(() => {});
+                // Append abuse reason to this order's notes
+                db.update(ordersTable)
+                  .set({ notes: sql`COALESCE(notes || '; ', '') || ${'REFERRAL_ABUSE: ' + abuseReason}` })
+                  .where(eq(ordersTable.id, order.id))
+                  .catch(() => {});
+              } else {
                 await db
                   .update(customersTable)
                   .set({ freePeptideCredits: sql`free_peptide_credits + 1` })
