@@ -110,6 +110,14 @@ export default function ReferAFriendPage() {
       q: "Which peptides qualify for the free reward?",
       a: `Any peptide in our catalogue priced up to ${localValue} qualifies. If you choose a peptide priced above that, you pay only the difference.`,
     },
+    {
+      q: "Can I refer myself or create extra accounts to claim rewards?",
+      a: "No. Self-referral is strictly prohibited. This includes referring yourself using a different email address, name, or any other account. Referred accounts are verified against existing accounts using email, billing address, delivery address, payment method, IP address, and device signals. Any referral found to involve fake, duplicate, or self-created accounts will be voided and all associated accounts permanently terminated. OmniQure's fraud checks run automatically and our decisions are final.",
+    },
+    {
+      q: "What happens if OmniQure detects misuse of the referral programme?",
+      a: "If we identify fraudulent referral activity — including but not limited to self-referral, coordinated fake-account creation, or abuse of the 10% first-order discount — we will immediately void all associated rewards, permanently close all accounts involved, cancel any pending orders, and may pursue recovery of any value already redeemed. Repeat or large-scale abuse may be referred to relevant authorities.",
+    },
   ];
 
   return (
@@ -363,6 +371,44 @@ export default function ReferAFriendPage() {
                 )}
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Programme T&Cs */}
+      <div style={{ padding: "40px 20px 64px", background: "#fff" }}>
+        <div style={{ maxWidth: 860, margin: "0 auto" }}>
+          <div style={{
+            borderRadius: 14,
+            border: "1.5px solid #E2E8F0",
+            padding: "24px 28px",
+            background: "#F8FAFC",
+          }}>
+            <h3 style={{ fontSize: 14, fontWeight: 800, color: "#0F172A", marginBottom: 14, display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 16 }}>📋</span> Programme Terms &amp; Conditions
+            </h3>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+              {[
+                "Referrals are valid only for genuinely new customers who have never previously placed an order with OmniQure.",
+                "Self-referral is strictly prohibited. You may not refer yourself using a different email address, name, or any other account.",
+                "Referred accounts sharing the same name, billing address, delivery address, payment method, IP address, or device fingerprint as an existing account will be treated as fraudulent and voided.",
+                "Creating fake, duplicate, or third-party accounts solely to generate referral rewards is prohibited and will result in permanent termination of all associated accounts.",
+                "A referral reward is only issued once the referred friend's first order has been fully paid and not subsequently refunded, cancelled, or charged back.",
+                "One free peptide reward is issued per qualifying referral. Rewards must be claimed as part of a new peptide order — they have no standalone cash value and are non-transferable.",
+                "OmniQure reviews all referral rewards before release. We reserve the right to withhold, void, or claw back rewards pending or following a fraud investigation.",
+                "Misuse of the programme will result in immediate account termination, cancellation of all pending and accrued rewards, and potential legal action.",
+                "OmniQure's decisions regarding programme eligibility and fraud are final.",
+              ].map((rule, i) => (
+                <li key={i} style={{ display: "flex", gap: 10, fontSize: 12.5, color: "#475569", lineHeight: 1.6 }}>
+                  <span style={{ flexShrink: 0, color: "#94A3B8", fontWeight: 700, minWidth: 20 }}>{i + 1}.</span>
+                  {rule}
+                </li>
+              ))}
+            </ul>
+            <p style={{ fontSize: 12, color: "#94A3B8", marginTop: 14, marginBottom: 0 }}>
+              Full programme terms form part of our{" "}
+              <Link href="/terms" style={{ color: "#1B5CB5", fontWeight: 600, textDecoration: "none" }}>Terms &amp; Conditions</Link>.
+            </p>
           </div>
         </div>
       </div>

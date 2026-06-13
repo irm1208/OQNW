@@ -206,6 +206,12 @@ const FAQS: FAQItem[] = [
   },
   {
     category: "ordering",
+    q: "Can I refer myself or create extra accounts to earn referral rewards?",
+    a: "No. Self-referral and fake-account creation are strictly prohibited. Referred accounts are automatically verified against existing accounts using email address, billing address, delivery address, payment method, IP address, and device signals. Any referral found to involve a duplicate or self-created account will be voided, all associated accounts permanently terminated, and any rewards already redeemed may be clawed back. OmniQure's fraud decisions are final.",
+    tags: ["refer", "referral", "self-referral", "fake account", "fraud", "abuse", "multiple accounts"],
+  },
+  {
+    category: "ordering",
     q: "Do you offer gift cards?",
     a: "Yes. OmniQure gift cards are available in various denominations and can be used towards any purchase on the site. They make a convenient option for research groups sharing resources. Gift cards are available on the Gift Cards page and are delivered electronically.",
     tags: ["gift card", "voucher"],

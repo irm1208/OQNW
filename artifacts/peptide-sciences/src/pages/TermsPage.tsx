@@ -243,18 +243,34 @@ export default function TermsPage() {
               <p>We comply with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018. By using this website, you consent to the processing of your personal data as described in our Privacy Policy.</p>
             </Section>
 
-            <Section id="governing" number="12" title="Governing Law & Disputes">
+            <Section id="referral" number="12" title="Refer a Friend Programme">
+              <p>OmniQure operates a Refer a Friend programme under which existing registered customers ("Referrers") may earn a free peptide reward when a new customer ("Referred Customer") places their first order using the Referrer's unique referral link.</p>
+              <p><strong>Eligibility.</strong> The Referred Customer must be a genuinely new customer who has never previously held an account or placed an order with OmniQure. The Referred Customer must register and place their first order using the Referrer's link. The Referrer must hold an active, verified account in good standing.</p>
+              <p><strong>Reward mechanics.</strong> Upon the Referred Customer's first order being fully paid and not subsequently refunded, cancelled, or charged back, the Referrer's reward unlocks. The Referrer may then add one (1) free peptide worth up to £50 (or local currency equivalent) to their next peptide order at checkout. Rewards must be redeemed as part of a qualifying peptide order and have no standalone cash value. Rewards are non-transferable and valid for 12 months from the date of unlocking.</p>
+              <p><strong>Referred Customer discount.</strong> The Referred Customer automatically receives 10% off their first order. The standard bundle tiers of 3+ items (5% off) and 7+ items (10% off) do not stack with the referral discount. Higher-volume tiers remain available: 11+ items receive 15% off and 15+ items receive 20% off. From the second order onwards, all standard bundle tiers apply as normal.</p>
+              <p><strong>Prohibited conduct.</strong> The following are strictly prohibited and constitute fraud:</p>
+              <ul style={{ paddingLeft: "20px", lineHeight: 2 }}>
+                <li>Self-referral — referring yourself using a different email address, name, or any other account.</li>
+                <li>Creating fake, duplicate, or third-party accounts solely to generate referral rewards.</li>
+                <li>Any coordinated scheme to abuse the referral programme, including instructing others to create accounts with the intention of immediate refund or cancellation.</li>
+              </ul>
+              <p><strong>Fraud detection.</strong> Referred accounts are automatically verified against existing accounts using email address, billing address, delivery address, payment method, IP address, and device fingerprint. OmniQure reserves the right to apply additional manual review at any time.</p>
+              <p><strong>Consequences of misuse.</strong> Where OmniQure determines, in its sole discretion, that the referral programme has been abused, we reserve the right to: immediately void all associated rewards; permanently terminate all accounts involved; cancel any pending orders without refund; claw back the value of any rewards already redeemed; and refer the matter to relevant authorities where fraud is suspected. OmniQure's decisions regarding programme eligibility, fraud, and enforcement are final.</p>
+              <p>OmniQure reserves the right to amend, suspend, or terminate the Refer a Friend programme at any time without prior notice.</p>
+            </Section>
+
+            <Section id="governing" number="13" title="Governing Law & Disputes">
               <p>These Terms and any dispute or claim arising out of or in connection with them shall be governed by and construed in accordance with the laws of England and Wales.</p>
               <p>Any disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales. If you are a consumer based in another jurisdiction, this does not affect any mandatory consumer rights you may have under local law.</p>
               <p>We aim to resolve any complaints or disputes informally and in good faith. If you have a complaint, please contact us first at <a href={`mailto:${EMAIL}`} style={{ color: "#1B5CB5" }}>{EMAIL}</a>.</p>
             </Section>
 
-            <Section id="changes" number="13" title="Changes to These Terms">
+            <Section id="changes" number="14" title="Changes to These Terms">
               <p>We reserve the right to modify these Terms at any time. Any changes will be posted on this page with an updated revision date. Where changes are material, we will endeavour to notify registered customers by email.</p>
               <p>Your continued use of the website or placement of an order following any changes constitutes acceptance of the revised Terms.</p>
             </Section>
 
-            <Section id="contact" number="14" title="Contact Us">
+            <Section id="contact" number="15" title="Contact Us">
               <div className="rounded-xl p-4" style={{ backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}>
                 <p className="font-semibold mb-2" style={{ color: "#1240A0" }}>{COMPANY}</p>
                 <p><strong>Legal enquiries:</strong> <a href={`mailto:${EMAIL}`} style={{ color: "#1B5CB5" }}>{EMAIL}</a></p>

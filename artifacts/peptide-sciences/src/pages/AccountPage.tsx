@@ -1011,6 +1011,19 @@ export default function AccountPage() {
                   </div>
                 </div>
 
+                {/* Anti-abuse notice */}
+                <div style={{
+                  borderRadius: "12px", padding: "14px 18px",
+                  background: "linear-gradient(135deg, #FFFBEB, #FEF3C7)",
+                  border: "1.5px solid #FDE68A",
+                  display: "flex", gap: "12px", alignItems: "flex-start",
+                }}>
+                  <span style={{ fontSize: "18px", flexShrink: 0, lineHeight: 1 }}>⚠️</span>
+                  <p style={{ fontSize: "12.5px", color: "#78350F", lineHeight: 1.65, margin: 0 }}>
+                    <strong>Misuse policy:</strong> Self-referral and fake-account creation are strictly prohibited. Referred accounts are verified against existing accounts using email, billing address, payment method, IP address, and device signals. Any abuse will result in permanent account termination and reward forfeiture.
+                  </p>
+                </div>
+
                 {/* Referral link */}
                 {referral && (
                   <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
