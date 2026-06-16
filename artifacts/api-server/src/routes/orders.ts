@@ -111,7 +111,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     redeemFreePeptide?: unknown;
   };
 
-  const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "card";
+  const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "bank_transfer";
 
   // Basic validation
   const d = delivery as DeliveryDetails;
@@ -509,7 +509,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingCostGbp: String(shippingCostGbp.toFixed(2)),
         totalGbp: String(totalGbp.toFixed(2)),
         shippingMethod,
-        status: ["bank_transfer", "bitcoin", "card"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
+        status: ["bank_transfer", "bitcoin"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
         notes: [
           `Payment method: ${paymentMethodStr}`,
           bundleDiscountGbp > 0 ? `Bundle & Save: ${bundleDiscountPct}% off (-£${bundleDiscountGbp.toFixed(2)})${isReferredFirstOrder ? " [referred first order tiers]" : ""}` : null,

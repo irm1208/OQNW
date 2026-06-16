@@ -3,8 +3,8 @@ import { trackInitiateCheckout } from "@/lib/pixels";
 import { Link, useLocation } from "wouter";
 import {
   ChevronRight, ChevronDown, Lock, Truck, Zap, Package,
-  CreditCard, User, MapPin, Phone, Mail,
-  CheckCircle2, ShieldCheck, FlaskConical, Tag, X, Award, Gift, Check,
+  User, MapPin, Phone, Mail,
+  CheckCircle2, FlaskConical, Tag, X, Award, Gift, Check,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -78,11 +78,6 @@ type DeliveryForm = {
   postcode: string; country: string;
 };
 
-type PaymentForm = {
-  cardNumber: string; nameOnCard: string; expiry: string; cvv: string;
-  sameAsDelivery: boolean;
-};
-
 type AppliedDiscount = {
   code: string;
   type: string;
@@ -94,10 +89,6 @@ const emptyDelivery: DeliveryForm = {
   email: "", firstName: "", lastName: "", phone: "",
   address1: "", address2: "", city: "", county: "",
   postcode: "", country: "",
-};
-
-const emptyPayment: PaymentForm = {
-  cardNumber: "", nameOnCard: "", expiry: "", cvv: "", sameAsDelivery: true,
 };
 
 function fieldStyle(hasError: boolean): React.CSSProperties {
@@ -142,7 +133,6 @@ export default function CheckoutPage() {
   const checkoutFired = useRef(false);
   const [delivery, setDelivery] = useState<DeliveryForm>(emptyDelivery);
   const [shipping, setShipping] = useState("standard");
-  const [payment, setPayment] = useState<PaymentForm>(emptyPayment);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [placing, setPlacing] = useState(false);
   const [placeError, setPlaceError] = useState<string | null>(null);
@@ -160,7 +150,7 @@ export default function CheckoutPage() {
   const [giftCardError, setGiftCardError] = useState<string | null>(null);
   const [applyingGiftCard, setApplyingGiftCard] = useState(false);
 
-  const [paymentMethod, setPaymentMethod] = useState<"card" | "bank_transfer" | "bitcoin">("bank_transfer");
+  const [paymentMethod, setPaymentMethod] = useState<"bank_transfer" | "bitcoin">("bank_transfer");
 
   // Loyalty points
   const [loyaltyBalance, setLoyaltyBalance] = useState<{ balance: number; gbpValue: number } | null>(null);
@@ -233,8 +223,6 @@ export default function CheckoutPage() {
 
   const setD = (f: keyof DeliveryForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setDelivery(d => ({ ...d, [f]: e.target.value }));
-  const setP = (f: keyof PaymentForm) => (v: string | boolean) =>
-    setPayment(p => ({ ...p, [f]: v }));
 
   function validateDelivery() {
     const e: Record<string, string> = {};
@@ -248,15 +236,7 @@ export default function CheckoutPage() {
   }
 
   function validatePayment() {
-    if (paymentMethod !== "card") return {};
-    const e: Record<string, string> = {};
-    const digits = payment.cardNumber.replace(/\s/g, "");
-    if (digits.length < 16) e.cardNumber = "Enter a valid 16-digit card number";
-    if (!payment.nameOnCard.trim()) e.nameOnCard = "Required";
-    const parts = payment.expiry.split("/");
-    if (payment.expiry.length < 5 || !parts[0] || !parts[1] || parseInt(parts[0]) > 12) e.expiry = "Use MM/YY format";
-    if (payment.cvv.length < 3) e.cvv = "3 or 4 digits required";
-    return e;
+    return {};
   }
 
   async function applyDiscount() {
@@ -665,9 +645,8 @@ export default function CheckoutPage() {
                 {/* Payment method selector */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "24px" }}>
                   {([
-                    { id: "card" as const,          label: "Card Payment By Email Link", sub: "We'll email you a secure payment link after placing your order", icon: "💳" },
-                    { id: "bank_transfer" as const, label: "Pay By Bank",                sub: "BACS / Faster Payments — no fees, dispatched on clearance",        icon: "🏦" },
-                    { id: "bitcoin" as const,       label: "Cryptocurrency Payment",     sub: "Pay with Bitcoin — confirmed within ~1 hour",                      icon: "₿"  },
+                    { id: "bank_transfer" as const, label: "Pay By Bank",           sub: "BACS / Faster Payments — no fees, dispatched on clearance", icon: "🏦" },
+                    { id: "bitcoin" as const,       label: "Cryptocurrency Payment", sub: "Pay with Bitcoin — confirmed within ~1 hour",             icon: "₿"  },
                   ]).map(opt => (
                     <div
                       key={opt.id}
@@ -721,44 +700,6 @@ export default function CheckoutPage() {
                     <p style={{ fontSize: "11.5px", color: "#475569", marginTop: "12px", lineHeight: 1.6, marginBottom: 0 }}>
                       Faster Payments clears same day. CHAPS next working day. Orders paid after 3pm are dispatched the following morning.
                     </p>
-                  </div>
-                )}
-
-                {/* Card Payment By Email Link */}
-                {paymentMethod === "card" && (
-                  <div style={{ borderRadius: "14px", border: "1.5px solid #DBEAFE", backgroundColor: "#F0F7FF", padding: "20px" }}>
-                    <div style={{ display: "flex", gap: "12px", alignItems: "flex-start", marginBottom: "16px" }}>
-                      <div style={{ width: "40px", height: "40px", borderRadius: "10px", backgroundColor: "#1240A0", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                        <Mail size={20} color="#fff" />
-                      </div>
-                      <div>
-                        <p style={{ margin: 0, fontSize: "14px", fontWeight: 800, color: "#1240A0" }}>Secure payment link by email</p>
-                        <p style={{ margin: "3px 0 0", fontSize: "12.5px", color: "#475569", lineHeight: 1.5 }}>
-                          Place your order and we'll send a secure hosted payment page to your email address. No card details are entered on this site.
-                        </p>
-                      </div>
-                    </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                      {[
-                        { step: "1", text: "Place your order below" },
-                        { step: "2", text: "Check your inbox — a payment link arrives within minutes" },
-                        { step: "3", text: "Click the link to pay securely via Visa or Mastercard" },
-                        { step: "4", text: "Your order is confirmed and dispatched once payment clears" },
-                      ].map(item => (
-                        <div key={item.step} style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                          <div style={{ width: "22px", height: "22px", borderRadius: "50%", flexShrink: 0, backgroundColor: "#1240A0", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: 800 }}>
-                            {item.step}
-                          </div>
-                          <p style={{ margin: 0, fontSize: "13px", color: "#374151" }}>{item.text}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div style={{ marginTop: "14px", padding: "10px 14px", borderRadius: "8px", backgroundColor: "#fff", border: "1px solid #DBEAFE", display: "flex", gap: "8px", alignItems: "center" }}>
-                      <ShieldCheck size={14} color="#1B5CB5" style={{ flexShrink: 0 }} />
-                      <p style={{ margin: 0, fontSize: "11.5px", color: "#1E40AF" }}>
-                        The payment link expires in 24 hours. OmniQure never stores card data.
-                      </p>
-                    </div>
                   </div>
                 )}
 
@@ -857,9 +798,7 @@ export default function CheckoutPage() {
                 {placing ? (
                   "Processing order…"
                 ) : step === 3 ? (
-                  paymentMethod === "card"
-                    ? <><Mail size={15} /> Place Order — Send My Payment Link</>
-                    : paymentMethod === "bank_transfer"
+                  paymentMethod === "bank_transfer"
                     ? <><Lock size={15} /> Place Order — Pay by Bank Transfer</>
                     : <><Lock size={15} /> Place Order — Pay with Bitcoin</>
                 ) : (
