@@ -67,7 +67,18 @@ const BANK_DETAILS = {
   accountNumber: "12345678",
   bank: "Barclays Bank",
 };
-const BITCOIN_ADDRESS = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
+// ── Cryptocurrency wallet addresses ─────────────────────────────────────────
+// Update these with your actual wallet addresses before going live.
+// ETH, USDT, and USDC share the same Ethereum address.
+const CRYPTO_OPTIONS = [
+  { id: "BTC",  name: "Bitcoin",          symbol: "₿", network: "Bitcoin",       address: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh", color: "#F59E0B", bg: "#FFFBEB", border: "#FDE68A", text: "#92400E" },
+  { id: "ETH",  name: "Ethereum",         symbol: "Ξ", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere",                  color: "#6366F1", bg: "#EEF2FF", border: "#C7D2FE", text: "#3730A3" },
+  { id: "USDT", name: "USDT",             symbol: "₮", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere",                  color: "#059669", bg: "#ECFDF5", border: "#6EE7B7", text: "#065F46" },
+  { id: "USDC", name: "USDC",             symbol: "◎", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere",                  color: "#2563EB", bg: "#EFF6FF", border: "#BFDBFE", text: "#1E40AF" },
+  { id: "LTC",  name: "Litecoin",         symbol: "Ł", network: "Litecoin",     address: "LYourLitecoinAddressHere",                   color: "#64748B", bg: "#F8FAFC", border: "#CBD5E1", text: "#334155" },
+  { id: "XMR",  name: "Monero",           symbol: "ɱ", network: "Monero",       address: "YourMoneroAddressHere",                      color: "#EA580C", bg: "#FFF7ED", border: "#FED7AA", text: "#9A3412" },
+] as const;
+type CryptoCurrency = typeof CRYPTO_OPTIONS[number]["id"];
 // ──────────────────────────────────────────────────────────────────────────────
 
 type Step = 1 | 2 | 3;
@@ -151,6 +162,7 @@ export default function CheckoutPage() {
   const [applyingGiftCard, setApplyingGiftCard] = useState(false);
 
   const [paymentMethod, setPaymentMethod] = useState<"bank_transfer" | "bitcoin">("bank_transfer");
+  const [cryptoCurrency, setCryptoCurrency] = useState<CryptoCurrency>("BTC");
 
   // Loyalty points
   const [loyaltyBalance, setLoyaltyBalance] = useState<{ balance: number; gbpValue: number } | null>(null);
@@ -354,6 +366,7 @@ export default function CheckoutPage() {
             loyaltyPointsRedeemed: loyaltyPointsToRedeem > 0 ? loyaltyPointsToRedeem : undefined,
             redeemFreePeptide: redeemFreePeptide && freePeptideCredits > 0 ? true : undefined,
             paymentMethod,
+            cryptoCurrency: paymentMethod === "bitcoin" ? cryptoCurrency : undefined,
           }),
         });
 
@@ -378,8 +391,10 @@ export default function CheckoutPage() {
           btcAddress?: string;
           btcAmount?: string;
           btcPaymentUrl?: string;
+          cryptoCurrency?: string;
         };
         clearCart();
+        const selectedCoin = CRYPTO_OPTIONS.find(c => c.id === cryptoCurrency) ?? CRYPTO_OPTIONS[0];
         const params = new URLSearchParams({
           order: data.orderNumber,
           name: delivery.firstName,
@@ -387,9 +402,14 @@ export default function CheckoutPage() {
           ship: data.shippingMethod,
           payment: paymentMethod,
         });
-        if (data.btcAddress)    params.set("btcAddress", data.btcAddress);
-        if (data.btcAmount)     params.set("btcAmount", data.btcAmount);
-        if (data.btcPaymentUrl) params.set("btcUrl", data.btcPaymentUrl);
+        if (paymentMethod === "bitcoin") {
+          params.set("cryptoCurrency", cryptoCurrency);
+          // For BTC use BTCPay-provided address, otherwise use static address
+          const addr = data.btcAddress ?? selectedCoin.address;
+          params.set("cryptoAddress", addr);
+          if (data.btcAmount)     params.set("btcAmount", data.btcAmount);
+          if (data.btcPaymentUrl) params.set("btcUrl", data.btcPaymentUrl);
+        }
         navigate(`/order-confirmation?${params.toString()}`);
       } catch (err) {
         setPlaceError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -703,23 +723,49 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
-                {/* Bitcoin */}
-                {paymentMethod === "bitcoin" && (
-                  <div style={{ borderRadius: "14px", border: "1.5px solid #FDE68A", backgroundColor: "#FFFBEB", padding: "20px" }}>
-                    <p style={{ fontSize: "13px", fontWeight: 700, color: "#92400E", marginBottom: "14px" }}>
-                      Place your order then send the BTC equivalent of your order total to the address below. We'll process once the transaction has 1 confirmation.
-                    </p>
-                    <div style={{ padding: "14px 16px", borderRadius: "10px", backgroundColor: "#fff", border: "1.5px solid #FDE68A", marginBottom: "12px" }}>
-                      <p style={{ fontSize: "10.5px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "6px" }}>Bitcoin Address</p>
-                      <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#0F172A", wordBreak: "break-all", fontFamily: "monospace", letterSpacing: "0.02em", margin: 0 }}>{BITCOIN_ADDRESS}</p>
+                {/* Cryptocurrency — coin selector + address */}
+                {paymentMethod === "bitcoin" && (() => {
+                  const coin = CRYPTO_OPTIONS.find(c => c.id === cryptoCurrency) ?? CRYPTO_OPTIONS[0];
+                  return (
+                    <div>
+                      {/* Coin picker */}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px", marginBottom: "16px" }}>
+                        {CRYPTO_OPTIONS.map(c => (
+                          <button
+                            key={c.id}
+                            type="button"
+                            onClick={() => setCryptoCurrency(c.id)}
+                            style={{
+                              padding: "10px 6px", borderRadius: "10px", cursor: "pointer",
+                              border: `2px solid ${cryptoCurrency === c.id ? c.color : "#E2E8F0"}`,
+                              backgroundColor: cryptoCurrency === c.id ? c.bg : "#F8FAFC",
+                              display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
+                              transition: "all 0.15s",
+                            }}
+                          >
+                            <span style={{ fontSize: "18px", lineHeight: 1 }}>{c.symbol}</span>
+                            <span style={{ fontSize: "11px", fontWeight: 700, color: cryptoCurrency === c.id ? c.text : "#64748B" }}>{c.id}</span>
+                            <span style={{ fontSize: "9.5px", color: "#94A3B8", lineHeight: 1.2 }}>{c.network}</span>
+                          </button>
+                        ))}
+                      </div>
+                      {/* Address panel */}
+                      <div style={{ borderRadius: "12px", border: `1.5px solid ${coin.border}`, backgroundColor: coin.bg, padding: "16px" }}>
+                        <p style={{ fontSize: "12.5px", fontWeight: 700, color: coin.text, marginBottom: "10px" }}>
+                          Place your order then send the {coin.name} equivalent of your order total to the address below.
+                          {(coin.id === "USDT" || coin.id === "USDC") && " Note: USD ≈ GBP × 1.27 — check the live rate."}
+                        </p>
+                        <div style={{ padding: "12px 14px", borderRadius: "9px", backgroundColor: "#fff", border: `1.5px solid ${coin.border}`, marginBottom: "10px" }}>
+                          <p style={{ fontSize: "10px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "5px" }}>{coin.name} Address ({coin.network})</p>
+                          <p style={{ fontSize: "12px", fontWeight: 700, color: "#0F172A", wordBreak: "break-all", fontFamily: "monospace", margin: 0 }}>{coin.address}</p>
+                        </div>
+                        <p style={{ fontSize: "11.5px", color: coin.text, lineHeight: 1.7, margin: 0 }}>
+                          Include your order number in the memo / payment ID field where your wallet allows.
+                        </p>
+                      </div>
                     </div>
-                    <div style={{ fontSize: "12px", color: "#92400E", lineHeight: 1.8 }}>
-                      ₿ Convert your order total to BTC at the current rate before sending.<br />
-                      ₿ Transactions typically confirm within 1 hour on the Bitcoin network.<br />
-                      ₿ Include your order number in the memo/note field where your wallet allows.
-                    </div>
-                  </div>
-                )}
+                  );
+                })()}
               </div>
             )}
 

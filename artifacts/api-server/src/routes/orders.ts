@@ -98,6 +98,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     loyaltyPointsRedeemed,
     giftCardCode,
     paymentMethod,
+    cryptoCurrency,
     redeemFreePeptide,
   } = req.body as {
     delivery: unknown;
@@ -108,8 +109,10 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     loyaltyPointsRedeemed?: unknown;
     giftCardCode?: unknown;
     paymentMethod?: unknown;
+    cryptoCurrency?: unknown;
     redeemFreePeptide?: unknown;
   };
+  const cryptoCurrencyStr = typeof cryptoCurrency === "string" ? cryptoCurrency.toUpperCase() : "BTC";
 
   const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "bank_transfer";
 
@@ -787,7 +790,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     let btcPaymentUrl: string | null = null;
     let btcInvoiceId: string | null = null;
 
-    if (paymentMethodStr === "bitcoin") {
+    if (paymentMethodStr === "bitcoin" && cryptoCurrencyStr === "BTC") {
       try {
         const invoice = await createBtcPayInvoice({
           orderNumber,
@@ -879,6 +882,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       totalGbp,
       shippingMethod,
       paymentMethod: paymentMethodStr,
+      ...(paymentMethodStr === "bitcoin" && { cryptoCurrency: cryptoCurrencyStr }),
       ...(btcAddress   && { btcAddress }),
       ...(btcAmount    && { btcAmount }),
       ...(btcPaymentUrl && { btcPaymentUrl }),

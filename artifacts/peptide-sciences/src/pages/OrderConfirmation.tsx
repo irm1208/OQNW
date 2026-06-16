@@ -10,18 +10,27 @@ const BANK_DETAILS = {
   accountNumber: "12345678",
   bank: "Barclays Bank",
 };
-const BITCOIN_ADDRESS = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
+const CRYPTO_OPTIONS = [
+  { id: "BTC",  name: "Bitcoin",  symbol: "₿", network: "Bitcoin",       color: "#F59E0B", bg: "#FFFBEB", border: "#FDE68A", text: "#92400E" },
+  { id: "ETH",  name: "Ethereum", symbol: "Ξ", network: "ERC-20 / ETH", color: "#6366F1", bg: "#EEF2FF", border: "#C7D2FE", text: "#3730A3" },
+  { id: "USDT", name: "USDT",     symbol: "₮", network: "ERC-20 / ETH", color: "#059669", bg: "#ECFDF5", border: "#6EE7B7", text: "#065F46" },
+  { id: "USDC", name: "USDC",     symbol: "◎", network: "ERC-20 / ETH", color: "#2563EB", bg: "#EFF6FF", border: "#BFDBFE", text: "#1E40AF" },
+  { id: "LTC",  name: "Litecoin", symbol: "Ł", network: "Litecoin",     color: "#64748B", bg: "#F8FAFC", border: "#CBD5E1", text: "#334155" },
+  { id: "XMR",  name: "Monero",   symbol: "ɱ", network: "Monero",       color: "#EA580C", bg: "#FFF7ED", border: "#FED7AA", text: "#9A3412" },
+];
 
 export default function OrderConfirmation() {
   const params = new URLSearchParams(window.location.search);
-  const order      = params.get("order")      ?? "OQ-000000";
-  const name       = params.get("name")       ?? "Researcher";
-  const total      = params.get("total")      ?? "0.00";
-  const ship       = params.get("ship")       ?? "Standard";
-  const payment    = params.get("payment")    ?? "card";
-  const btcAddress = params.get("btcAddress") ?? null;
-  const btcAmount  = params.get("btcAmount")  ?? null;
-  const btcUrl     = params.get("btcUrl")     ?? null;
+  const order          = params.get("order")          ?? "OQ-000000";
+  const name           = params.get("name")           ?? "Researcher";
+  const total          = params.get("total")          ?? "0.00";
+  const ship           = params.get("ship")           ?? "Standard";
+  const payment        = params.get("payment")        ?? "bank_transfer";
+  const cryptoCurrId   = params.get("cryptoCurrency") ?? "BTC";
+  const cryptoAddress  = params.get("cryptoAddress")  ?? null;
+  const btcAmount      = params.get("btcAmount")      ?? null;
+  const btcUrl         = params.get("btcUrl")         ?? null;
+  const coin = CRYPTO_OPTIONS.find(c => c.id === cryptoCurrId) ?? CRYPTO_OPTIONS[0];
 
   const today = new Date();
   const deliveryDays = ship === "Next Day" ? 1 : ship === "Express" ? 2 : 5;
@@ -66,48 +75,15 @@ export default function OrderConfirmation() {
             <CheckCircle2 size={40} color="#fff" strokeWidth={2.5} />
           </div>
           <h1 style={{ fontSize: "28px", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: "8px" }}>
-            {payment === "card" ? "Order placed — check your email" : payment === "bank_transfer" ? "Order placed — payment awaited" : payment === "bitcoin" ? "Order placed — awaiting BTC" : "Order confirmed!"}
+            {payment === "bank_transfer" ? "Order placed — payment awaited" : `Order placed — awaiting ${coin.name}`}
           </h1>
           <p style={{ fontSize: "15px", color: "#64748B", lineHeight: 1.6 }}>
-            {payment === "card"
-              ? <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order is reserved — a secure card payment link is on its way to your inbox.</>
-              : payment === "bank_transfer"
+            {payment === "bank_transfer"
               ? <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order is reserved — please send your bank transfer to secure it.</>
-              : payment === "bitcoin"
-              ? <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order is reserved — please send the BTC equivalent to the address below.</>
-              : <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order has been received and is being prepared for dispatch.</>
+              : <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order is reserved — please send the {coin.name} equivalent to the address below.</>
             }
           </p>
         </div>
-
-        {/* Card email link action panel */}
-        {payment === "card" && (
-          <div style={{ borderRadius: "16px", border: "1.5px solid #DBEAFE", backgroundColor: "#F0F7FF", padding: "22px", marginBottom: "20px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "14px" }}>
-              <Clock size={18} color="#1240A0" />
-              <p style={{ fontSize: "14px", fontWeight: 800, color: "#1240A0", margin: 0 }}>
-                Check your inbox for the payment link
-              </p>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "12px" }}>
-              {[
-                { step: "1", text: "A secure payment link has been sent to your email address" },
-                { step: "2", text: "Click the link and pay via Visa or Mastercard on the hosted page" },
-                { step: "3", text: "Your order will be dispatched once payment clears" },
-              ].map(item => (
-                <div key={item.step} style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                  <div style={{ width: "22px", height: "22px", borderRadius: "50%", flexShrink: 0, backgroundColor: "#1240A0", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: 800 }}>
-                    {item.step}
-                  </div>
-                  <p style={{ margin: 0, fontSize: "13px", color: "#374151" }}>{item.text}</p>
-                </div>
-              ))}
-            </div>
-            <p style={{ fontSize: "11.5px", color: "#475569", lineHeight: 1.6, margin: 0 }}>
-              Can't find it? Check your spam folder. The link expires in 24 hours — contact us if you need it resent.
-            </p>
-          </div>
-        )}
 
         {/* Bank Transfer action panel */}
         {payment === "bank_transfer" && (
@@ -138,42 +114,45 @@ export default function OrderConfirmation() {
           </div>
         )}
 
-        {/* Bitcoin action panel */}
+        {/* Cryptocurrency action panel */}
         {payment === "bitcoin" && (
-          <div style={{ borderRadius: "16px", border: "1.5px solid #FDE68A", backgroundColor: "#FFFBEB", padding: "22px", marginBottom: "20px" }}>
+          <div style={{ borderRadius: "16px", border: `1.5px solid ${coin.border}`, backgroundColor: coin.bg, padding: "22px", marginBottom: "20px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "14px" }}>
-              <Clock size={18} color="#92400E" />
-              <p style={{ fontSize: "14px", fontWeight: 800, color: "#92400E", margin: 0 }}>
-                Send your Bitcoin payment now
+              <Clock size={18} color={coin.color} />
+              <p style={{ fontSize: "14px", fontWeight: 800, color: coin.text, margin: 0 }}>
+                Send your {coin.name} payment now
               </p>
+              <span style={{ marginLeft: "auto", fontSize: "22px", lineHeight: 1 }}>{coin.symbol}</span>
             </div>
 
-            {/* BTC amount (from BTCPay invoice) */}
-            {btcAmount && (
-              <div style={{ padding: "12px 16px", borderRadius: "10px", backgroundColor: "#fff", border: "1.5px solid #FDE68A", marginBottom: "10px" }}>
+            {/* BTC amount from BTCPay (BTC only) */}
+            {btcAmount && coin.id === "BTC" && (
+              <div style={{ padding: "12px 16px", borderRadius: "10px", backgroundColor: "#fff", border: `1.5px solid ${coin.border}`, marginBottom: "10px" }}>
                 <p style={{ fontSize: "10.5px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px" }}>Exact Amount to Send</p>
-                <p style={{ fontSize: "20px", fontWeight: 900, color: "#92400E", margin: 0 }}>{btcAmount} <span style={{ fontSize: "14px" }}>BTC</span></p>
+                <p style={{ fontSize: "20px", fontWeight: 900, color: coin.text, margin: 0 }}>{btcAmount} <span style={{ fontSize: "14px" }}>BTC</span></p>
                 <p style={{ fontSize: "11px", color: "#94A3B8", margin: "2px 0 0" }}>≈ £{parseFloat(total).toFixed(2)} at current rate — locked for 60 min</p>
               </div>
             )}
 
-            {/* BTC address */}
-            <div style={{ padding: "12px 16px", borderRadius: "10px", backgroundColor: "#fff", border: "1.5px solid #FDE68A", marginBottom: "12px" }}>
-              <p style={{ fontSize: "10.5px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "6px" }}>Bitcoin Address</p>
-              <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#0F172A", wordBreak: "break-all", fontFamily: "monospace", letterSpacing: "0.02em", margin: 0 }}>
-                {btcAddress ?? BITCOIN_ADDRESS}
-              </p>
-            </div>
+            {/* Wallet address */}
+            {cryptoAddress && (
+              <div style={{ padding: "12px 16px", borderRadius: "10px", backgroundColor: "#fff", border: `1.5px solid ${coin.border}`, marginBottom: "12px" }}>
+                <p style={{ fontSize: "10.5px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "6px" }}>{coin.name} Address — {coin.network}</p>
+                <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#0F172A", wordBreak: "break-all", fontFamily: "monospace", letterSpacing: "0.02em", margin: 0 }}>
+                  {cryptoAddress}
+                </p>
+              </div>
+            )}
 
-            {/* Open in wallet button (BTCPay hosted page) */}
-            {btcUrl && (
+            {/* Open in BTCPay (BTC only) */}
+            {btcUrl && coin.id === "BTC" && (
               <a
                 href={btcUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
                   display: "block", textAlign: "center", padding: "12px", borderRadius: "10px",
-                  backgroundColor: "#92400E", color: "#fff", fontWeight: 700, fontSize: "14px",
+                  backgroundColor: coin.color, color: "#fff", fontWeight: 700, fontSize: "14px",
                   textDecoration: "none", marginBottom: "12px",
                 }}
               >
@@ -181,19 +160,14 @@ export default function OrderConfirmation() {
               </a>
             )}
 
-            {!btcAmount ? (
-              <div style={{ fontSize: "12px", color: "#92400E", lineHeight: 1.8 }}>
-                ₿ Convert £{parseFloat(total).toFixed(2)} to BTC at the current rate before sending.<br />
-                ₿ Use your order number <strong>{order}</strong> in the memo/note field.<br />
-                ₿ We'll email confirmation once the transaction receives 1 network confirmation.
-              </div>
-            ) : (
-              <div style={{ fontSize: "12px", color: "#92400E", lineHeight: 1.8 }}>
-                ₿ Send <strong>{btcAmount} BTC</strong> — do not round the amount.<br />
-                ₿ Use your order number <strong>{order}</strong> in the memo/note field.<br />
-                ₿ We'll email you once the transaction is confirmed on the network.
-              </div>
-            )}
+            <div style={{ fontSize: "12px", color: coin.text, lineHeight: 1.8 }}>
+              {btcAmount && coin.id === "BTC"
+                ? <>{coin.symbol} Send <strong>{btcAmount} BTC</strong> — do not round the amount.</>
+                : <>{coin.symbol} Convert £{parseFloat(total).toFixed(2)} to {coin.id} at the current rate before sending.</>
+              }<br />
+              {coin.symbol} Use your order number <strong>{order}</strong> in the memo / payment ID field.<br />
+              {coin.symbol} We'll email you once your payment is confirmed and your order is dispatched.
+            </div>
           </div>
         )}
 
@@ -281,8 +255,8 @@ export default function OrderConfirmation() {
                 "Our lab team will then prepare your secure, discreet packaging for dispatch.",
                 "You'll receive a dispatch notification with tracking information.",
               ] : payment === "bitcoin" ? [
-                "Send the BTC equivalent to the address above — use your order number as the memo.",
-                "Your transaction will be confirmed on the Bitcoin network, typically within 1 hour.",
+                `Send the ${coin.name} equivalent to the address above — include your order number in the memo/payment ID.`,
+                `Your ${coin.network} transaction will be confirmed on the network.`,
                 "We'll email you once confirmed and your order is being prepared for dispatch.",
                 "Your peptides arrive in insulated packaging maintaining −20°C.",
               ] : [
