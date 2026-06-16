@@ -6,12 +6,12 @@ export const modules: ModuleMap = {
   "./components/mockups/color-themes/AlternatingLight.tsx": () => import("../components/mockups/color-themes/AlternatingLight.tsx"),
   "./components/mockups/color-themes/Desaturated.tsx": () => import("../components/mockups/color-themes/Desaturated.tsx"),
   "./components/mockups/color-themes/WarmItUp.tsx": () => import("../components/mockups/color-themes/WarmItUp.tsx"),
+  "./components/mockups/strength-selector/Dropdown.tsx": () => import("../components/mockups/strength-selector/Dropdown.tsx"),
+  "./components/mockups/strength-selector/Pills.tsx": () => import("../components/mockups/strength-selector/Pills.tsx"),
   "./components/mockups/storefront-themes/ClinicalWhite.tsx": () => import("../components/mockups/storefront-themes/ClinicalWhite.tsx"),
   "./components/mockups/storefront-themes/DarkLuxury.tsx": () => import("../components/mockups/storefront-themes/DarkLuxury.tsx"),
   "./components/mockups/storefront-themes/DeepTech.tsx": () => import("../components/mockups/storefront-themes/DeepTech.tsx"),
   "./components/mockups/storefront-themes/StorefrontRefinedA.tsx": () => import("../components/mockups/storefront-themes/StorefrontRefinedA.tsx"),
   "./components/mockups/storefront-themes/StorefrontRefinedB.tsx": () => import("../components/mockups/storefront-themes/StorefrontRefinedB.tsx"),
-  "./components/mockups/storefront-themes/WarmEarth.tsx": () => import("../components/mockups/storefront-themes/WarmEarth.tsx"),
-  "./components/mockups/strength-selector/Dropdown.tsx": () => import("../components/mockups/strength-selector/Dropdown.tsx"),
-  "./components/mockups/strength-selector/Pills.tsx": () => import("../components/mockups/strength-selector/Pills.tsx")
+  "./components/mockups/storefront-themes/WarmEarth.tsx": () => import("../components/mockups/storefront-themes/WarmEarth.tsx")
 };
