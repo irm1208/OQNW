@@ -6,6 +6,9 @@ export type Product = {
   image: string;
   category: string;
   stockLevel?: number;
+  coaUrl?: string | null;
+  hplcImageUrl?: string | null;
+  msImageUrl?: string | null;
 };
 
 export const products: Product[] = [

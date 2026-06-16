@@ -1212,6 +1212,12 @@ components:
           type: ["string", "null"]
         halfLife:
           type: ["string", "null"]
+        coaUrl:
+          type: ["string", "null"]
+        hplcImageUrl:
+          type: ["string", "null"]
+        msImageUrl:
+          type: ["string", "null"]
         isPublished:
           type: boolean
         isFeatured:
@@ -1263,6 +1269,12 @@ components:
           type: string
         halfLife:
           type: string
+        coaUrl:
+          type: string
+        hplcImageUrl:
+          type: string
+        msImageUrl:
+          type: string
         isPublished:
           type: boolean
         isFeatured:
@@ -1307,6 +1319,12 @@ components:
           type: ["string", "null"]
         halfLife:
           type: ["string", "null"]
+        coaUrl:
+          type: ["string", "null"]
+        hplcImageUrl:
+          type: ["string", "null"]
+        msImageUrl:
+          type: ["string", "null"]
         isPublished:
           type: boolean
         isFeatured:
@@ -1334,6 +1352,12 @@ components:
         imageUrl:
           type: ["string", "null"]
         purity:
+          type: ["string", "null"]
+        coaUrl:
+          type: ["string", "null"]
+        hplcImageUrl:
+          type: ["string", "null"]
+        msImageUrl:
           type: ["string", "null"]
         isFeatured:
           type: boolean
@@ -1377,6 +1401,12 @@ components:
         solubility:
           type: ["string", "null"]
         halfLife:
+          type: ["string", "null"]
+        coaUrl:
+          type: ["string", "null"]
+        hplcImageUrl:
+          type: ["string", "null"]
+        msImageUrl:
           type: ["string", "null"]
         isFeatured:
           type: boolean

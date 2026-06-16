@@ -4,6 +4,21 @@ import { db } from "@workspace/db";
 import { productsCatalogTable, productsInventoryTable } from "@workspace/db";
 import { eq, ilike, and } from "drizzle-orm";
 import { seedProductsCatalog } from "../../lib/seed-catalog";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
+
+const uploadsDir = path.join(process.cwd(), "public/uploads");
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+
+const storage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, uploadsDir),
+  filename: (_req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
+  },
+});
+const upload = multer({ storage, limits: { fileSize: 20 * 1024 * 1024 } });
 
 const router = Router();
 
@@ -35,6 +50,9 @@ function catalogToResponse(p: typeof productsCatalogTable.$inferSelect) {
     appearance: p.appearance ?? null,
     solubility: p.solubility ?? null,
     halfLife: p.halfLife ?? null,
+    coaUrl: p.coaUrl ?? null,
+    hplcImageUrl: p.hplcImageUrl ?? null,
+    msImageUrl: p.msImageUrl ?? null,
     isPublished: p.isPublished,
     isFeatured: p.isFeatured,
     sortOrder: p.sortOrder,
@@ -61,6 +79,9 @@ type ProductBody = {
   appearance?: unknown;
   solubility?: unknown;
   halfLife?: unknown;
+  coaUrl?: unknown;
+  hplcImageUrl?: unknown;
+  msImageUrl?: unknown;
   isPublished?: unknown;
   isFeatured?: unknown;
   sortOrder?: unknown;
@@ -155,6 +176,9 @@ router.post("/admin/catalog", async (req: Request, res: Response): Promise<void>
         appearance: strOrNull(body.appearance),
         solubility: strOrNull(body.solubility),
         halfLife: strOrNull(body.halfLife),
+        coaUrl: strOrNull(body.coaUrl),
+        hplcImageUrl: strOrNull(body.hplcImageUrl),
+        msImageUrl: strOrNull(body.msImageUrl),
         isPublished: isBool(body.isPublished) ? body.isPublished : true,
         isFeatured: isBool(body.isFeatured) ? body.isFeatured : false,
         sortOrder: isNum(body.sortOrder) ? body.sortOrder : 0,
@@ -198,6 +222,9 @@ router.patch("/admin/catalog/:id", async (req: Request, res: Response): Promise<
   if (body.appearance !== undefined) updates.appearance = strOrNull(body.appearance);
   if (body.solubility !== undefined) updates.solubility = strOrNull(body.solubility);
   if (body.halfLife !== undefined) updates.halfLife = strOrNull(body.halfLife);
+  if (body.coaUrl !== undefined) updates.coaUrl = strOrNull(body.coaUrl);
+  if (body.hplcImageUrl !== undefined) updates.hplcImageUrl = strOrNull(body.hplcImageUrl);
+  if (body.msImageUrl !== undefined) updates.msImageUrl = strOrNull(body.msImageUrl);
   if (body.isPublished !== undefined && isBool(body.isPublished)) updates.isPublished = body.isPublished;
   if (body.isFeatured !== undefined && isBool(body.isFeatured)) updates.isFeatured = body.isFeatured;
   if (body.sortOrder !== undefined && isNum(body.sortOrder)) updates.sortOrder = body.sortOrder;
@@ -220,6 +247,41 @@ router.patch("/admin/catalog/:id", async (req: Request, res: Response): Promise<
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// POST /api/admin/catalog/:id/upload-doc — upload a lab document (COA / HPLC / MS)
+router.post(
+  "/admin/catalog/:id/upload-doc",
+  (req: Request, res: Response, next) => {
+    if (!requireAdmin(req, res)) return;
+    next();
+  },
+  upload.single("file"),
+  async (req: Request, res: Response): Promise<void> => {
+    const id = Number(req.params.id);
+    if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
+    if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+
+    const docType = isStr(req.query.type) ? req.query.type : "coa";
+    const url = `/uploads/${req.file.filename}`;
+
+    const field =
+      docType === "hplc" ? "hplcImageUrl" :
+      docType === "ms"   ? "msImageUrl"   : "coaUrl";
+
+    try {
+      const [updated] = await db
+        .update(productsCatalogTable)
+        .set({ [field]: url } as Partial<typeof productsCatalogTable.$inferInsert>)
+        .where(eq(productsCatalogTable.id, id))
+        .returning();
+      if (!updated) { res.status(404).json({ error: "Product not found" }); return; }
+      res.status(200).json({ url });
+    } catch (err) {
+      req.log.error({ err }, "Failed to save uploaded document URL");
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
 
 // DELETE /api/admin/catalog/:id
 router.delete("/admin/catalog/:id", async (req: Request, res: Response): Promise<void> => {
@@ -264,6 +326,9 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
         shortDescription: productsCatalogTable.shortDescription,
         imageUrl: productsCatalogTable.imageUrl,
         purity: productsCatalogTable.purity,
+        coaUrl: productsCatalogTable.coaUrl,
+        hplcImageUrl: productsCatalogTable.hplcImageUrl,
+        msImageUrl: productsCatalogTable.msImageUrl,
         isFeatured: productsCatalogTable.isFeatured,
         stockLevel: productsInventoryTable.stockLevel,
         inventoryPublished: productsInventoryTable.isPublished,
@@ -285,6 +350,9 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
           shortDescription: p.shortDescription,
           imageUrl: p.imageUrl,
           purity: p.purity,
+          coaUrl: p.coaUrl ?? null,
+          hplcImageUrl: p.hplcImageUrl ?? null,
+          msImageUrl: p.msImageUrl ?? null,
           isFeatured: p.isFeatured,
           stockLevel: p.stockLevel ?? null,
         }))

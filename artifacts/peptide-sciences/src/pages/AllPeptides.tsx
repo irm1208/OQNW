@@ -137,7 +137,7 @@ export default function AllPeptides() {
               ? "81 HPLC-verified compounds — each backed by full COA and ESI-TOF mass spectrometry data."
               : `Precision peptides for ${selectedCategory.toLowerCase()} research, each HPLC-verified at 99%+ purity with full COA documentation.`}
           </p>
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "16px" }}>
             {["99%+ HPLC Purity", "Full COA", "ESI-TOF MS", "Lyophilized"].map(t => (
               <span key={t} style={{
                 fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.6)",
@@ -147,6 +147,41 @@ export default function AllPeptides() {
                 ✓ {t}
               </span>
             ))}
+          </div>
+          {/* Search bar */}
+          <div style={{ position: "relative", maxWidth: "480px" }}>
+            <svg style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "rgba(255,255,255,0.4)" }} width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={e => {
+                setSearchQuery(e.target.value);
+                const params = e.target.value.trim() ? `?search=${encodeURIComponent(e.target.value.trim())}` : "";
+                window.history.replaceState(null, "", window.location.pathname + params);
+              }}
+              placeholder="Search peptides, e.g. BPC-157, Semaglutide…"
+              style={{
+                width: "100%", padding: "10px 40px 10px 40px",
+                borderRadius: "10px", border: "1px solid rgba(255,255,255,0.18)",
+                backgroundColor: "rgba(255,255,255,0.08)", color: "#fff",
+                fontSize: "13.5px", outline: "none",
+                fontFamily: "'Arimo', Arial, sans-serif",
+              }}
+            />
+            {searchQuery && (
+              <button
+                onClick={() => { setSearchQuery(""); window.history.replaceState(null, "", window.location.pathname); }}
+                style={{
+                  position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)",
+                  background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.5)",
+                  padding: "4px", display: "flex", alignItems: "center",
+                }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            )}
           </div>
         </div>
       </div>

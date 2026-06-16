@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import {
   HelpCircle, Search, X, ChevronDown, ChevronUp,
-  FlaskConical, Package, Truck, CreditCard, Shield,
+  FlaskConical, Package, Truck, Banknote, Shield,
   Thermometer, Droplets, BookOpen, MessageCircle
 } from "lucide-react";
 
@@ -26,7 +26,7 @@ const CATEGORIES: FAQCategory[] = [
   { id: "products", label: "Products & Purity", icon: <FlaskConical size={14} />, color: "#1B5CB5" },
   { id: "research", label: "Research & Usage", icon: <BookOpen size={14} />,   color: "#059669" },
   { id: "storage",  label: "Storage & Handling", icon: <Thermometer size={14} />, color: "#7C3AED" },
-  { id: "ordering", label: "Ordering & Payment", icon: <CreditCard size={14} />, color: "#D97706" },
+  { id: "ordering", label: "Ordering & Payment", icon: <Banknote size={14} />, color: "#D97706" },
   { id: "shipping", label: "Shipping & Delivery", icon: <Truck size={14} />,   color: "#0891B2" },
   { id: "returns",  label: "Returns & Support",  icon: <Shield size={14} />,   color: "#DC2626" },
 ];
@@ -165,8 +165,8 @@ const FAQS: FAQItem[] = [
   {
     category: "ordering",
     q: "What payment methods do you accept?",
-    a: "We accept Visa, Mastercard, American Express, Bitcoin, and Ethereum. Cryptocurrency payments are processed securely and provide an additional privacy option for researchers. All card payments are processed through our secure payment gateway with SSL encryption.",
-    tags: ["payment", "visa", "bitcoin", "crypto", "card"],
+    a: "We accept bank transfer and cryptocurrency. Supported cryptocurrencies are Bitcoin (BTC), Ethereum (ETH), USDT, USDC, Litecoin (LTC), and Monero (XMR). Bank transfer details and wallet addresses are provided at checkout once your order is confirmed. We do not accept card payments.",
+    tags: ["payment", "bank transfer", "bitcoin", "crypto", "ethereum", "usdt", "usdc", "litecoin", "monero"],
   },
   {
     category: "ordering",
@@ -177,7 +177,7 @@ const FAQS: FAQItem[] = [
   {
     category: "ordering",
     q: "Is my payment information secure?",
-    a: "Yes. All payment processing is handled by PCI-compliant payment processors. We do not store your full card details on our servers. All data transmission is encrypted via SSL/TLS. Cryptocurrency payments are entirely non-custodial and processed on-chain.",
+    a: "Yes. We do not process or store card details of any kind. Bank transfer payments are handled through standard banking infrastructure — no sensitive financial data passes through our systems. Cryptocurrency payments are entirely non-custodial and verified on-chain. All data transmission between your browser and our servers is encrypted via SSL/TLS.",
     tags: ["security", "payment", "ssl", "pci"],
   },
   {

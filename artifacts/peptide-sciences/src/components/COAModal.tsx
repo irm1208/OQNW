@@ -111,11 +111,29 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
                 <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>mg</span>
               </div>
             )}
+            {currentProduct.coaUrl && (
+              <a
+                href={currentProduct.coaUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  marginLeft: "auto", height: "36px", paddingInline: "14px", borderRadius: "8px",
+                  background: "rgba(52,211,153,0.15)", border: "1px solid rgba(52,211,153,0.35)",
+                  color: "#34D399", fontSize: "12px", fontWeight: 700,
+                  display: "flex", alignItems: "center", gap: "6px",
+                  textDecoration: "none", fontFamily: "'Arimo', Arial, sans-serif",
+                }}
+              >
+                <Download size={13} />
+                Lab PDF
+              </a>
+            )}
             <button
               onClick={() => void handleDownload()}
               disabled={isDownloading}
               style={{
-                marginLeft: "auto", height: "36px", paddingInline: "14px", borderRadius: "8px",
+                marginLeft: currentProduct.coaUrl ? "0" : "auto",
+                height: "36px", paddingInline: "14px", borderRadius: "8px",
                 background: isDownloading ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.12)",
                 border: "1px solid rgba(255,255,255,0.15)",
                 color: isDownloading ? "rgba(255,255,255,0.3)" : "#fff",
@@ -359,7 +377,24 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
           <div style={{ flex: 1 }} />
 
           {/* Download button */}
-          <div style={{ padding: "16px" }}>
+          <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "8px" }}>
+            {currentProduct.coaUrl && (
+              <a
+                href={currentProduct.coaUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  width: "100%", height: "42px", borderRadius: "8px",
+                  background: "rgba(52,211,153,0.12)", border: "1px solid rgba(52,211,153,0.3)",
+                  color: "#34D399", fontSize: "12.5px", fontWeight: 700,
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+                  textDecoration: "none", fontFamily: "'Arimo', Arial, sans-serif",
+                }}
+              >
+                <Download size={14} />
+                Download Lab PDF
+              </a>
+            )}
             <button
               onClick={() => void handleDownload()}
               disabled={isDownloading}
@@ -377,7 +412,7 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
               onMouseOut={e => { if (!isDownloading) (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.1)"; }}
             >
               <Download size={14} />
-              {isDownloading ? "Generating PDF…" : "Download COA PDF"}
+              {isDownloading ? "Generating PDF…" : "Generate COA PDF"}
             </button>
           </div>
 
