@@ -9,7 +9,7 @@ import {
   UpdateAdminOrderBody,
 } from "@workspace/api-zod";
 import { eq, ilike, and, desc, count, or, inArray } from "drizzle-orm";
-import { sendOrderConfirmation, sendShippingNotification } from "../../lib/email";
+import { sendOrderConfirmation, sendShippingNotification, sendDeliveryConfirmation } from "../../lib/email";
 
 const router = Router();
 
@@ -342,6 +342,8 @@ router.patch("/admin/orders/:id", async (req: Request, res: Response): Promise<v
         sendOrderConfirmation(emailData).catch(() => {});
       } else if (status === "shipped") {
         sendShippingNotification(emailData).catch(() => {});
+      } else if (status === "delivered") {
+        sendDeliveryConfirmation(emailData).catch(() => {});
       }
     }
   } catch (err) {

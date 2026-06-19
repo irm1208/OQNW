@@ -393,6 +393,59 @@ export async function sendShippingNotification(order: OrderEmailData): Promise<v
   }
 }
 
+export async function sendDeliveryConfirmation(order: OrderEmailData): Promise<void> {
+  const subject = `Order Delivered — ${order.orderNumber}`;
+
+  const body = `
+    <h2 style="margin:0 0 4px;font-size:22px;color:#0f172a;">Your Order Has Been Delivered</h2>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">
+      Hi ${order.customerName} — your order <strong style="color:#0f172a;">${order.orderNumber}</strong> has been marked as delivered.
+      We hope everything arrived in perfect condition.
+    </p>
+
+    <div style="background:#f0fdf4;border-radius:8px;padding:20px 24px;margin-bottom:24px;border-left:4px solid #22c55e;">
+      <p style="margin:0 0 4px;font-size:12px;color:#166534;font-weight:600;letter-spacing:0.05em;">DELIVERY STATUS</p>
+      <p style="margin:0;font-size:18px;font-weight:700;color:#15803d;">✓ Delivered</p>
+      ${order.trackingNumber ? `<p style="margin:6px 0 0;font-size:13px;color:#166534;">Tracking: <strong>${order.trackingNumber}</strong>${order.shippingMethod ? ` via ${order.shippingMethod}` : ""}</p>` : ""}
+    </div>
+
+    ${itemsTable(order.items)}
+    ${totalsBlock(order)}
+
+    <div style="margin-top:28px;text-align:center;">
+      <a href="${SITE_URL}/account"
+         style="display:inline-block;background:linear-gradient(90deg,#0d2565,#1b5cb5);color:#ffffff;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;margin-right:12px;">
+        View My Orders
+      </a>
+      <a href="${SITE_URL}/all-peptides"
+         style="display:inline-block;background:#f8fafc;color:#0f172a;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;border:1.5px solid #e2e8f0;">
+        Shop Again
+      </a>
+    </div>
+
+    <div style="margin-top:24px;padding:16px;background:#fefce8;border-radius:6px;border-left:4px solid #eab308;">
+      <p style="margin:0;font-size:13px;color:#713f12;">
+        All products are sold strictly for research purposes only. Not for human consumption.
+        If you have any issues with your order please reply to this email.
+      </p>
+    </div>
+  `;
+
+  try {
+    const result = await getResend().emails.send({
+      from: FROM_ADDRESS,
+      to: order.customerEmail,
+      subject,
+      html: baseTemplate("Order Delivered", body),
+    });
+    logger.info({ orderNumber: order.orderNumber, to: order.customerEmail }, "Delivery confirmation email sent");
+    await logEmail({ toEmail: order.customerEmail, subject, type: "delivery_confirmation", status: "sent", resendId: result.data?.id, orderNumber: order.orderNumber });
+  } catch (err) {
+    logger.error({ err, orderNumber: order.orderNumber }, "Failed to send delivery confirmation email");
+    await logEmail({ toEmail: order.customerEmail, subject, type: "delivery_confirmation", status: "failed", orderNumber: order.orderNumber });
+  }
+}
+
 export async function sendPasswordReset(opts: {
   customerEmail: string;
   customerName: string;
