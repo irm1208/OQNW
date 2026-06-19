@@ -93,15 +93,11 @@ export default function BlogPostPage() {
         <p className="text-lg text-gray-500 mb-6 leading-relaxed">{post.excerpt}</p>
       )}
 
-      <div className="flex items-center gap-4 text-sm text-gray-400 mb-8 pb-8 border-b border-gray-100">
-        <span className="font-medium text-gray-600">{post.author}</span>
-        {post.publishedAt && (
-          <>
-            <span>·</span>
-            <span>{new Date(post.publishedAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</span>
-          </>
-        )}
-      </div>
+      {post.author && (
+        <div className="flex items-center gap-4 text-sm text-gray-400 mb-8 pb-8 border-b border-gray-100">
+          <span className="font-medium text-gray-600">{post.author}</span>
+        </div>
+      )}
 
       {post.featuredImageUrl && (
         <div className="rounded-xl overflow-hidden mb-8 bg-gray-100">

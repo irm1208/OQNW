@@ -97,10 +97,11 @@ export default function BlogPage() {
                   {post.excerpt && (
                     <p className="text-sm text-gray-500 line-clamp-3 flex-1">{post.excerpt}</p>
                   )}
-                  <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-50 text-xs text-gray-400">
-                    <span>{post.author}</span>
-                    <span>{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : ""}</span>
-                  </div>
+                  {post.author && (
+                    <div className="flex items-center mt-4 pt-4 border-t border-gray-50 text-xs text-gray-400">
+                      <span>{post.author}</span>
+                    </div>
+                  )}
                 </div>
               </article>
             </Link>
