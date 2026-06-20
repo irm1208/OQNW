@@ -27,10 +27,26 @@ function renderMarkdown(md: string): string {
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
     .replace(/`(.+?)`/g, '<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono text-gray-800">$1</code>')
+    .replace(/^\| (.+)$/gm, (_, row) => {
+      if (row.replace(/[-|\s]/g, '') === '') return '';
+      const cells = row.split('|').map((c: string) => c.trim());
+      return '<tr>' + cells.map((c: string) => `<td class="border border-gray-200 px-3 py-2 text-sm text-gray-700">${c}</td>`).join('') + '</tr>';
+    })
+    .replace(/(<tr>.*<\/tr>\n?)+/gs, m => `<div class="overflow-x-auto my-6"><table class="w-full border-collapse border border-gray-200 rounded-lg">${m}</table></div>`)
     .replace(/^\- (.+)$/gm, '<li class="ml-4 list-disc">$1</li>')
     .replace(/^\d+\. (.+)$/gm, '<li class="ml-4 list-decimal">$1</li>')
     .replace(/\n\n/g, '</p><p class="mb-4 text-gray-600 leading-relaxed">')
-    .replace(/^(?!<[h|l])(.+)$/gm, '<p class="mb-4 text-gray-600 leading-relaxed">$1</p>');
+    .replace(/^(?!<[h|l|t|d])(.+)$/gm, '<p class="mb-4 text-gray-600 leading-relaxed">$1</p>');
+}
+
+function getRelated(all: Post[], current: Post, count = 3): Post[] {
+  const currentTags = new Set(current.tags);
+  return all
+    .filter(p => p.id !== current.id)
+    .map(p => ({ post: p, shared: p.tags.filter(t => currentTags.has(t)).length }))
+    .sort((a, b) => b.shared - a.shared || b.post.id - a.post.id)
+    .slice(0, count)
+    .map(x => x.post);
 }
 
 export default function BlogPostPage() {
@@ -44,6 +60,14 @@ export default function BlogPostPage() {
     }),
     enabled: !!slug,
   });
+
+  const { data: allPosts } = useQuery<{ posts: Post[]; total: number }>({
+    queryKey: ["blog-posts-all"],
+    queryFn: () => fetch(api("blog/posts?limit=50")).then(r => r.json()),
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const related = post && allPosts ? getRelated(allPosts.posts, post) : [];
 
   if (isLoading) {
     return (
@@ -111,9 +135,45 @@ export default function BlogPostPage() {
         dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }}
       />
 
-      <div className="mt-16 pt-8 border-t border-gray-100">
+      {related.length > 0 && (
+        <div className="mt-16 pt-10 border-t border-gray-100">
+          <h2 className="text-xl font-bold text-gray-900 mb-6" style={{ fontFamily: "'Arimo', Arial, sans-serif" }}>
+            Related Articles
+          </h2>
+          <div className="grid gap-5 sm:grid-cols-3">
+            {related.map(r => (
+              <Link key={r.id} href={`/blog/${r.slug}`}>
+                <article className="group rounded-xl border border-gray-100 overflow-hidden hover:border-blue-200 hover:shadow-md transition-all duration-200 bg-white h-full flex flex-col">
+                  {r.featuredImageUrl && (
+                    <div className="aspect-[16/9] overflow-hidden bg-gray-100">
+                      <img
+                        src={r.featuredImageUrl}
+                        alt={r.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  )}
+                  <div className="p-4 flex flex-col flex-1">
+                    {r.tags.length > 0 && (
+                      <span className="text-xs text-blue-600 font-medium mb-2">{r.tags[0]}</span>
+                    )}
+                    <h3 className="text-sm font-semibold text-gray-900 leading-snug group-hover:text-blue-700 transition-colors line-clamp-3">
+                      {r.title}
+                    </h3>
+                    {r.excerpt && (
+                      <p className="text-xs text-gray-500 mt-2 line-clamp-2 flex-1">{r.excerpt}</p>
+                    )}
+                  </div>
+                </article>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="mt-10 pt-6 border-t border-gray-100">
         <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-blue-600 hover:underline font-medium">
-          ← More Articles
+          ← All Articles
         </Link>
       </div>
     </div>
