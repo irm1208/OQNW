@@ -843,16 +843,6 @@ export default function ProductPage() {
               </div>
             )}
 
-            {/* Volume Discount Table */}
-            {product.price != null && (
-              <VolumePricingTable
-                price={product.price}
-                totalCartItems={totalItems}
-                currentPct={bundleDiscountPct}
-                formatPrice={formatPrice}
-              />
-            )}
-
             {/* Quantity + CTA */}
             <div
               className="rounded-2xl p-5 mb-5"
