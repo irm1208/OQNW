@@ -195,7 +195,7 @@ const TESTIMONIALS = [
     color: "#1B5CB5",
     rating: 5,
     text: "Been running BPC for about 4 months now and noticed a real difference with an old shoulder injury that just wouldn't shift. Delivery was faster than expected and everything arrived in great condition. Will definitely be reordering.",
-    peptide: "BPC",
+    peptide: "BPC-157",
   },
   {
     name: "Jamie K.",
@@ -203,7 +203,7 @@ const TESTIMONIALS = [
     color: "#059669",
     rating: 5,
     text: "Tried a few different places before this and the experience here is on a different level. The epi arrived in perfect condition and I genuinely felt the effects within the first couple of weeks. Customer service were spot on too.",
-    peptide: "epi",
+    peptide: "Epithalon",
   },
   {
     name: "Chris M.",
@@ -211,7 +211,7 @@ const TESTIMONIALS = [
     color: "#7C3AED",
     rating: 5,
     text: "Fast delivery and the ipa has been solid across three separate orders. When I had a question the team replied quickly and were really helpful. Nice to find somewhere consistent you can rely on.",
-    peptide: "ipa",
+    peptide: "Ipamorelin",
   },
   {
     name: "Dan W.",
@@ -219,7 +219,7 @@ const TESTIMONIALS = [
     color: "#0E7490",
     rating: 5,
     text: "Ordered TB and GHK together. Both arrived well packaged and I've been happy with the results from both. Had a slight delay once and support sorted it out immediately. Really solid experience overall.",
-    peptide: "TB + GHK",
+    peptide: "TB-500 + GHK-Cu",
   },
   {
     name: "Sarah L.",
@@ -227,7 +227,7 @@ const TESTIMONIALS = [
     color: "#B45309",
     rating: 5,
     text: "Reta arrived quickly and everything was well packaged. Support replied within the hour when I had a query. The whole experience from ordering to delivery was seamless. 10/10.",
-    peptide: "reta",
+    peptide: "Retatrutide",
   },
   {
     name: "Mohammed A.",
@@ -235,7 +235,7 @@ const TESTIMONIALS = [
     color: "#1B5CB5",
     rating: 5,
     text: "Ordered tesa twice now. Delivery has been fast both times and the vials arrived perfectly sealed. Really pleased with the results I've been getting and the ordering process is simple and straightforward.",
-    peptide: "tesa",
+    peptide: "Tesamorelin",
   },
   {
     name: "Zara B.",
@@ -243,7 +243,7 @@ const TESTIMONIALS = [
     color: "#059669",
     rating: 5,
     text: "GHK has been brilliant for my skin and recovery. I was a bit hesitant at first but the whole process was easy and the product worked exactly as I hoped. Already recommended it to a few people.",
-    peptide: "GHK",
+    peptide: "GHK-Cu",
   },
   {
     name: "Harpreet S.",
@@ -251,7 +251,7 @@ const TESTIMONIALS = [
     color: "#7C3AED",
     rating: 5,
     text: "Third order of BPC now and still very happy. Quick dispatch every time and everything always arrives in perfect condition. Results have been consistent and I genuinely wouldn't go anywhere else.",
-    peptide: "BPC",
+    peptide: "BPC-157",
   },
   {
     name: "Tariq N.",
@@ -259,7 +259,7 @@ const TESTIMONIALS = [
     color: "#0E7490",
     rating: 5,
     text: "Placed my first order a bit nervous but everything went smoothly. Selank arrived well packaged and I started noticing the effects within the first few weeks. The customer service team were great when I reached out with questions.",
-    peptide: "selank",
+    peptide: "Selank",
   },
   {
     name: "Gurpreet D.",
@@ -267,7 +267,7 @@ const TESTIMONIALS = [
     color: "#B45309",
     rating: 5,
     text: "Fast shipping and the reta has been performing really well for me. Had a query and the team replied the same day. Exactly the kind of service that keeps me coming back.",
-    peptide: "reta",
+    peptide: "Retatrutide",
   },
   {
     name: "Priya M.",
@@ -275,7 +275,7 @@ const TESTIMONIALS = [
     color: "#1B5CB5",
     rating: 5,
     text: "Been ordering CJC regularly for about six months now. Every order arrives on time, well packaged, and I've been really happy with the results. Easy checkout and delivery is always fast.",
-    peptide: "CJC",
+    peptide: "CJC-1295 No DAC",
   },
   {
     name: "Amir H.",
@@ -291,7 +291,7 @@ const TESTIMONIALS = [
     color: "#7C3AED",
     rating: 5,
     text: "I was hesitant to try peptides but the whole experience made it easy. The epi arrived quickly and in great condition. I've noticed a real improvement in how I feel day to day. Will absolutely be ordering again.",
-    peptide: "epi",
+    peptide: "Epithalon",
   },
   {
     name: "Charlotte B.",
@@ -299,7 +299,7 @@ const TESTIMONIALS = [
     color: "#0E7490",
     rating: 5,
     text: "Really impressed with the speed of delivery and how well everything was packed. TB has made a noticeable difference after a ligament issue I'd been struggling with. The support team were helpful when I had questions before ordering.",
-    peptide: "TB",
+    peptide: "TB-500",
   },
   {
     name: "James O.",
@@ -307,7 +307,7 @@ const TESTIMONIALS = [
     color: "#B45309",
     rating: 5,
     text: "Ordered tirz and the whole process was dead easy. Arrived in a couple of days, packaged well, and I've been seeing good results. Customer service answered my pre-order question within an hour. Top service.",
-    peptide: "tirz",
+    peptide: "Tirzepatide",
   },
   {
     name: "Rebecca H.",
@@ -315,7 +315,7 @@ const TESTIMONIALS = [
     color: "#1B5CB5",
     rating: 5,
     text: "GHK is something I now order every month without fail. The results speak for themselves and the service has been consistently great. Delivery is always fast and I've never had an issue with packaging.",
-    peptide: "GHK",
+    peptide: "GHK-Cu",
   },
 ];
 
