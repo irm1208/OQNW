@@ -64,6 +64,119 @@ function parseBaseName(name: string): { base: string; strength: string } {
   return { base: name, strength: "" };
 }
 
+const VOLUME_TIERS = [
+  { min: 3,  pct: 5  },
+  { min: 7,  pct: 10 },
+  { min: 11, pct: 15 },
+  { min: 15, pct: 20 },
+];
+
+function VolumePricingTable({
+  price,
+  totalCartItems,
+  currentPct,
+  formatPrice,
+}: {
+  price: number;
+  totalCartItems: number;
+  currentPct: number;
+  formatPrice: (n: number) => string;
+}) {
+  const nextTier = VOLUME_TIERS.find(t => totalCartItems < t.min);
+  const toNext = nextTier ? nextTier.min - totalCartItems : 0;
+
+  return (
+    <div
+      className="rounded-2xl mb-4 overflow-hidden"
+      style={{ border: "1px solid #DBEAFE", backgroundColor: "#F0F7FF" }}
+    >
+      {/* Header */}
+      <div
+        className="flex items-center justify-between px-4 py-2.5"
+        style={{ backgroundColor: "#EBF4FF", borderBottom: "1px solid #DBEAFE" }}
+      >
+        <span className="text-xs font-bold uppercase tracking-wider" style={{ color: "#1240A0" }}>
+          Volume Discounts
+        </span>
+        {currentPct > 0 ? (
+          <span
+            className="text-xs font-bold px-2.5 py-0.5 rounded-full"
+            style={{ backgroundColor: "#1240A0", color: "#fff" }}
+          >
+            {currentPct}% active
+          </span>
+        ) : (
+          <span className="text-xs" style={{ color: "#64748B" }}>
+            Applies to your whole cart
+          </span>
+        )}
+      </div>
+
+      {/* Tier grid */}
+      <div className="grid grid-cols-4" style={{ borderTop: "1px solid #DBEAFE" }}>
+        {VOLUME_TIERS.map((tier) => {
+          const isActive = currentPct === tier.pct;
+          const isPast   = currentPct > tier.pct;
+          const discountedPrice = price * (1 - tier.pct / 100);
+          return (
+            <div
+              key={tier.min}
+              className="flex flex-col items-center py-3 px-1 text-center"
+              style={{
+                backgroundColor: isActive ? "#1240A0" : isPast ? "#E0EDFF" : "transparent",
+                borderRight: "1px solid #DBEAFE",
+                transition: "background-color 0.2s",
+              }}
+            >
+              <span
+                className="text-xs font-bold mb-0.5"
+                style={{ color: isActive ? "#fff" : isPast ? "#1B5CB5" : "#64748B" }}
+              >
+                {tier.min}+ items
+              </span>
+              <span
+                className="font-extrabold"
+                style={{ fontSize: "15px", color: isActive ? "#fff" : isPast ? "#1B5CB5" : "#1240A0" }}
+              >
+                {tier.pct}% off
+              </span>
+              <span
+                className="text-xs mt-0.5"
+                style={{ color: isActive ? "rgba(255,255,255,0.8)" : "#94A3B8" }}
+              >
+                {formatPrice(discountedPrice)}/ea
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Progress nudge */}
+      {toNext > 0 && (
+        <div
+          className="px-4 py-2 text-xs flex items-center gap-1.5"
+          style={{ borderTop: "1px solid #DBEAFE", color: "#1B5CB5" }}
+        >
+          <Gift size={12} />
+          <span>
+            Add <strong>{toNext} more item{toNext > 1 ? "s" : ""}</strong> to your cart for{" "}
+            <strong>{nextTier!.pct}% off</strong> your entire order
+          </span>
+        </div>
+      )}
+      {toNext === 0 && currentPct === 20 && (
+        <div
+          className="px-4 py-2 text-xs flex items-center gap-1.5"
+          style={{ borderTop: "1px solid #DBEAFE", color: "#059669" }}
+        >
+          <Sparkles size={12} />
+          <span><strong>Maximum discount applied</strong> — 20% off your entire order</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ProductPage() {
   const { products, productDetails } = useProducts();
   const params = useParams<{ id: string }>();
@@ -580,6 +693,16 @@ export default function ProductPage() {
                   Prices shown are indicative. Checkout in your selected currency.
                 </p>
               </div>
+            )}
+
+            {/* Volume Discount Table */}
+            {product.price != null && (
+              <VolumePricingTable
+                price={product.price}
+                totalCartItems={totalItems}
+                currentPct={bundleDiscountPct}
+                formatPrice={formatPrice}
+              />
             )}
 
             {/* Quantity + CTA */}
