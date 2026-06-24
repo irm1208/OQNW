@@ -34,7 +34,7 @@ const CATEGORY_COLORS: Record<string, { color: string; bg: string; gradient: str
   "Cognitive Peptides": BLUE,
 };
 
-const LOW_STOCK_THRESHOLD = 5;
+const LOW_STOCK_THRESHOLD = 10;
 
 interface ProductCardProps {
   product: Product;
@@ -205,12 +205,44 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
 
           {product.price != null && (
-            <div className="flex items-baseline gap-1.5" style={{ marginBottom: "4px" }}>
+            <div className="flex items-baseline gap-1.5" style={{ marginBottom: "6px" }}>
               <p className="card-price" style={{ fontSize: "21px", fontWeight: 800, color: "#0F172A", lineHeight: 1 }}>
                 {formatPrice(product.price)}
               </p>
             </div>
           )}
+
+          {/* Stock badge */}
+          <div style={{ marginBottom: "4px" }}>
+            {isOutOfStock ? (
+              <span style={{
+                fontSize: "10px", fontWeight: 700, color: "#DC2626",
+                backgroundColor: "#FEF2F2", border: "1px solid #FECACA",
+                padding: "2px 7px", borderRadius: "5px",
+                display: "inline-flex", alignItems: "center", gap: "3px",
+              }}>
+                ✗ Out of Stock
+              </span>
+            ) : isLowStock ? (
+              <span style={{
+                fontSize: "10px", fontWeight: 700, color: "#B45309",
+                backgroundColor: "#FFFBEB", border: "1px solid #FDE68A",
+                padding: "2px 7px", borderRadius: "5px",
+                display: "inline-flex", alignItems: "center", gap: "3px",
+              }}>
+                ⚡ Only {stockLevel} left
+              </span>
+            ) : (
+              <span style={{
+                fontSize: "10px", fontWeight: 700, color: "#059669",
+                backgroundColor: "#ECFDF5", border: "1px solid #A7F3D0",
+                padding: "2px 7px", borderRadius: "5px",
+                display: "inline-flex", alignItems: "center", gap: "3px",
+              }}>
+                ✓ In Stock
+              </span>
+            )}
+          </div>
 
           <div className="mt-auto pt-3 flex flex-col gap-2">
             {/* View Details */}

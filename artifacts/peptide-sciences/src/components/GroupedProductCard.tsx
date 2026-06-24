@@ -203,21 +203,9 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           {selectedVariant.name}
         </p>
 
-        {/* Low stock badge */}
-        {selectedVariant.stockLevel !== undefined && selectedVariant.stockLevel > 0 && selectedVariant.stockLevel <= 10 && (
-          <div style={{ marginBottom: "4px" }}>
-            <span style={{
-              fontSize: "10px", fontWeight: 700, color: "#D97706",
-              backgroundColor: "#FFFBEB", border: "1px solid #FDE68A",
-              padding: "2px 7px", borderRadius: "5px",
-              display: "inline-flex", alignItems: "center", gap: "3px",
-            }}>
-              ⚡ Only {selectedVariant.stockLevel} left
-            </span>
-          </div>
-        )}
-        {selectedVariant.stockLevel === 0 && (
-          <div style={{ marginBottom: "4px" }}>
+        {/* Stock badge */}
+        <div style={{ marginBottom: "4px" }}>
+          {selectedVariant.stockLevel === 0 ? (
             <span style={{
               fontSize: "10px", fontWeight: 700, color: "#DC2626",
               backgroundColor: "#FEF2F2", border: "1px solid #FECACA",
@@ -226,8 +214,26 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
             }}>
               ✗ Out of Stock
             </span>
-          </div>
-        )}
+          ) : selectedVariant.stockLevel !== undefined && selectedVariant.stockLevel <= 10 ? (
+            <span style={{
+              fontSize: "10px", fontWeight: 700, color: "#B45309",
+              backgroundColor: "#FFFBEB", border: "1px solid #FDE68A",
+              padding: "2px 7px", borderRadius: "5px",
+              display: "inline-flex", alignItems: "center", gap: "3px",
+            }}>
+              ⚡ Only {selectedVariant.stockLevel} left
+            </span>
+          ) : (
+            <span style={{
+              fontSize: "10px", fontWeight: 700, color: "#059669",
+              backgroundColor: "#ECFDF5", border: "1px solid #A7F3D0",
+              padding: "2px 7px", borderRadius: "5px",
+              display: "inline-flex", alignItems: "center", gap: "3px",
+            }}>
+              ✓ In Stock
+            </span>
+          )}
+        </div>
 
         {/* Price */}
         {selectedVariant.price != null && (
