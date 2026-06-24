@@ -899,6 +899,95 @@ export default function ProductPage() {
               </div>
             </div>
 
+            {/* Bundle & Save nudge */}
+            {product.stockLevel !== 0 && (() => {
+              const tiers = [
+                { qty: 3, pct: 5 },
+                { qty: 7, pct: 10 },
+                { qty: 11, pct: 15 },
+                { qty: 15, pct: 20 },
+              ];
+              const nextTier = tiers.find((t) => totalItems < t.qty);
+              const isMax = bundleDiscountPct >= 20;
+              const progress = isMax ? 100 : Math.min(100, (totalItems / 15) * 100);
+              const headline = isMax
+                ? "Maximum 20% bundle discount unlocked!"
+                : bundleDiscountPct > 0
+                ? `${bundleDiscountPct}% bundle discount active`
+                : "Bundle & Save up to 20%";
+              const subline = nextTier
+                ? `Add ${nextTier.qty - totalItems} more peptide${nextTier.qty - totalItems === 1 ? "" : "s"} to unlock ${nextTier.pct}% off`
+                : "You're getting our best price — enjoy!";
+              return (
+                <div
+                  className="mb-3"
+                  style={{
+                    position: "relative",
+                    overflow: "hidden",
+                    borderRadius: "16px",
+                    padding: "16px 18px",
+                    background: "linear-gradient(120deg, #0D2565 0%, #1B5CB5 55%, #2E8B57 140%)",
+                    boxShadow: "0 8px 24px rgba(13,37,101,0.28)",
+                  }}
+                >
+                  {/* decorative glow */}
+                  <span style={{
+                    position: "absolute", top: "-40px", right: "-30px",
+                    width: "130px", height: "130px", borderRadius: "50%",
+                    background: "radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%)",
+                    pointerEvents: "none",
+                  }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px", position: "relative" }}>
+                    <span style={{
+                      flexShrink: 0,
+                      width: "42px", height: "42px", borderRadius: "12px",
+                      background: "rgba(255,255,255,0.16)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      border: "1px solid rgba(255,255,255,0.25)",
+                    }}>
+                      <Gift size={21} color="#fff" strokeWidth={2.2} />
+                    </span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{
+                        margin: 0, display: "flex", alignItems: "center", gap: "6px",
+                        fontSize: "14px", fontWeight: 800, color: "#fff", letterSpacing: "-0.01em",
+                      }}>
+                        <Sparkles size={14} color="#FCD34D" style={{ flexShrink: 0 }} />
+                        {headline}
+                      </p>
+                      <p style={{ margin: "2px 0 0", fontSize: "12px", fontWeight: 500, color: "rgba(255,255,255,0.85)" }}>
+                        {subline}
+                      </p>
+                    </div>
+                  </div>
+                  {/* progress bar */}
+                  <div style={{
+                    position: "relative", marginTop: "12px",
+                    height: "7px", borderRadius: "9999px",
+                    background: "rgba(255,255,255,0.2)", overflow: "hidden",
+                  }}>
+                    <div style={{
+                      height: "100%", width: `${progress}%`,
+                      borderRadius: "9999px",
+                      background: "linear-gradient(90deg, #FCD34D, #34D399)",
+                      transition: "width 0.4s ease",
+                    }} />
+                  </div>
+                  <div style={{
+                    display: "flex", justifyContent: "space-between",
+                    marginTop: "6px", fontSize: "10px", fontWeight: 700,
+                    color: "rgba(255,255,255,0.7)",
+                  }}>
+                    {tiers.map((t) => (
+                      <span key={t.qty} style={{ color: totalItems >= t.qty ? "#FCD34D" : "rgba(255,255,255,0.6)" }}>
+                        {t.qty}+ · {t.pct}%
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
+
             {/* ── Bac Water Add-on ──────────────────────────────── */}
             {product.stockLevel !== 0 && (
               <div
@@ -1056,95 +1145,6 @@ export default function ProductPage() {
                 )}
               </div>
             )}
-
-            {/* Bundle & Save nudge */}
-            {product.stockLevel !== 0 && (() => {
-              const tiers = [
-                { qty: 3, pct: 5 },
-                { qty: 7, pct: 10 },
-                { qty: 11, pct: 15 },
-                { qty: 15, pct: 20 },
-              ];
-              const nextTier = tiers.find((t) => totalItems < t.qty);
-              const isMax = bundleDiscountPct >= 20;
-              const progress = isMax ? 100 : Math.min(100, (totalItems / 15) * 100);
-              const headline = isMax
-                ? "Maximum 20% bundle discount unlocked!"
-                : bundleDiscountPct > 0
-                ? `${bundleDiscountPct}% bundle discount active`
-                : "Bundle & Save up to 20%";
-              const subline = nextTier
-                ? `Add ${nextTier.qty - totalItems} more peptide${nextTier.qty - totalItems === 1 ? "" : "s"} to unlock ${nextTier.pct}% off`
-                : "You're getting our best price — enjoy!";
-              return (
-                <div
-                  className="mb-3"
-                  style={{
-                    position: "relative",
-                    overflow: "hidden",
-                    borderRadius: "16px",
-                    padding: "16px 18px",
-                    background: "linear-gradient(120deg, #0D2565 0%, #1B5CB5 55%, #2E8B57 140%)",
-                    boxShadow: "0 8px 24px rgba(13,37,101,0.28)",
-                  }}
-                >
-                  {/* decorative glow */}
-                  <span style={{
-                    position: "absolute", top: "-40px", right: "-30px",
-                    width: "130px", height: "130px", borderRadius: "50%",
-                    background: "radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%)",
-                    pointerEvents: "none",
-                  }} />
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", position: "relative" }}>
-                    <span style={{
-                      flexShrink: 0,
-                      width: "42px", height: "42px", borderRadius: "12px",
-                      background: "rgba(255,255,255,0.16)",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      border: "1px solid rgba(255,255,255,0.25)",
-                    }}>
-                      <Gift size={21} color="#fff" strokeWidth={2.2} />
-                    </span>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{
-                        margin: 0, display: "flex", alignItems: "center", gap: "6px",
-                        fontSize: "14px", fontWeight: 800, color: "#fff", letterSpacing: "-0.01em",
-                      }}>
-                        <Sparkles size={14} color="#FCD34D" style={{ flexShrink: 0 }} />
-                        {headline}
-                      </p>
-                      <p style={{ margin: "2px 0 0", fontSize: "12px", fontWeight: 500, color: "rgba(255,255,255,0.85)" }}>
-                        {subline}
-                      </p>
-                    </div>
-                  </div>
-                  {/* progress bar */}
-                  <div style={{
-                    position: "relative", marginTop: "12px",
-                    height: "7px", borderRadius: "9999px",
-                    background: "rgba(255,255,255,0.2)", overflow: "hidden",
-                  }}>
-                    <div style={{
-                      height: "100%", width: `${progress}%`,
-                      borderRadius: "9999px",
-                      background: "linear-gradient(90deg, #FCD34D, #34D399)",
-                      transition: "width 0.4s ease",
-                    }} />
-                  </div>
-                  <div style={{
-                    display: "flex", justifyContent: "space-between",
-                    marginTop: "6px", fontSize: "10px", fontWeight: 700,
-                    color: "rgba(255,255,255,0.7)",
-                  }}>
-                    {tiers.map((t) => (
-                      <span key={t.qty} style={{ color: totalItems >= t.qty ? "#FCD34D" : "rgba(255,255,255,0.6)" }}>
-                        {t.qty}+ · {t.pct}%
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              );
-            })()}
 
             {/* Back-in-stock notify form */}
             {product.stockLevel === 0 && (
