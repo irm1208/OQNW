@@ -905,7 +905,8 @@ export default function ProductPage() {
                 className="rounded-2xl mb-3"
                 style={{
                   position: "relative",
-                  overflow: "hidden",
+                  overflow: "visible",
+                  marginTop: "14px",
                   border: bacWaterEnabled ? "1.5px solid #38BDF8" : "1.5px solid #BAE6FD",
                   background: bacWaterEnabled
                     ? "linear-gradient(135deg, #E0F2FE 0%, #F0F9FF 60%)"
