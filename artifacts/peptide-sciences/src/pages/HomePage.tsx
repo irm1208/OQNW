@@ -190,7 +190,7 @@ const featuredIds = ["3", "17", "56", "82", "71", "31", "15", "64"];
 
 const TESTIMONIALS = [
   {
-    name: "Tom R.",
+    name: "Tom Reynolds",
     avatar: "TR",
     color: "#1B5CB5",
     rating: 5,
@@ -198,7 +198,7 @@ const TESTIMONIALS = [
     peptide: "BPC-157",
   },
   {
-    name: "Jamie K.",
+    name: "Jamie Kirkwood",
     avatar: "JK",
     color: "#059669",
     rating: 5,
@@ -206,7 +206,7 @@ const TESTIMONIALS = [
     peptide: "Epithalon",
   },
   {
-    name: "Chris M.",
+    name: "Chris Mitchell",
     avatar: "CM",
     color: "#7C3AED",
     rating: 5,
@@ -214,7 +214,7 @@ const TESTIMONIALS = [
     peptide: "Ipamorelin",
   },
   {
-    name: "Dan W.",
+    name: "Dan Whitmore",
     avatar: "DW",
     color: "#0E7490",
     rating: 5,
@@ -222,7 +222,7 @@ const TESTIMONIALS = [
     peptide: "TB-500 + GHK-Cu",
   },
   {
-    name: "Sarah L.",
+    name: "Sarah Lawson",
     avatar: "SL",
     color: "#B45309",
     rating: 5,
@@ -230,7 +230,7 @@ const TESTIMONIALS = [
     peptide: "Retatrutide",
   },
   {
-    name: "Mohammed A.",
+    name: "Mohammed Aziz",
     avatar: "MA",
     color: "#1B5CB5",
     rating: 5,
@@ -238,7 +238,7 @@ const TESTIMONIALS = [
     peptide: "Tesamorelin",
   },
   {
-    name: "Zara B.",
+    name: "Zara Bennett",
     avatar: "ZB",
     color: "#059669",
     rating: 5,
@@ -246,7 +246,7 @@ const TESTIMONIALS = [
     peptide: "GHK-Cu",
   },
   {
-    name: "Harpreet S.",
+    name: "Harpreet Singh",
     avatar: "HS",
     color: "#7C3AED",
     rating: 5,
@@ -254,7 +254,7 @@ const TESTIMONIALS = [
     peptide: "BPC-157",
   },
   {
-    name: "Tariq N.",
+    name: "Tariq Nasser",
     avatar: "TN",
     color: "#0E7490",
     rating: 5,
@@ -262,7 +262,7 @@ const TESTIMONIALS = [
     peptide: "Selank",
   },
   {
-    name: "Gurpreet D.",
+    name: "Gurpreet Dhaliwal",
     avatar: "GD",
     color: "#B45309",
     rating: 5,
@@ -270,7 +270,7 @@ const TESTIMONIALS = [
     peptide: "Retatrutide",
   },
   {
-    name: "Priya M.",
+    name: "Priya Mehta",
     avatar: "PM",
     color: "#1B5CB5",
     rating: 5,
@@ -278,7 +278,7 @@ const TESTIMONIALS = [
     peptide: "CJC-1295 No DAC",
   },
   {
-    name: "Amir H.",
+    name: "Amir Hassan",
     avatar: "AH",
     color: "#059669",
     rating: 5,
@@ -286,7 +286,7 @@ const TESTIMONIALS = [
     peptide: "DSIP",
   },
   {
-    name: "Emma T.",
+    name: "Emma Taylor",
     avatar: "ET",
     color: "#7C3AED",
     rating: 5,
@@ -294,7 +294,7 @@ const TESTIMONIALS = [
     peptide: "Epithalon",
   },
   {
-    name: "Charlotte B.",
+    name: "Charlotte Barnes",
     avatar: "CB",
     color: "#0E7490",
     rating: 5,
@@ -302,7 +302,7 @@ const TESTIMONIALS = [
     peptide: "TB-500",
   },
   {
-    name: "James O.",
+    name: "James O'Brien",
     avatar: "JO",
     color: "#B45309",
     rating: 5,
@@ -310,7 +310,7 @@ const TESTIMONIALS = [
     peptide: "Tirzepatide",
   },
   {
-    name: "Rebecca H.",
+    name: "Rebecca Hughes",
     avatar: "RH",
     color: "#1B5CB5",
     rating: 5,
