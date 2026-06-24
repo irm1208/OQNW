@@ -836,6 +836,72 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── RESEARCH AREAS ────────────────────────────────────── */}
+      <section style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", borderTop: "3px solid #34D399" }}>
+        {/* ── Header strip ── */}
+        <div className="research-header" style={{ padding: "64px 0 48px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+          <div className="max-w-[1280px] mx-auto px-4 lg:px-8" style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
+            {/* Left */}
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
+                <div style={{ width: 32, height: 1, background: "linear-gradient(90deg, #60A5FA, #93C5FD)" }} />
+                <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.28em", color: "#93C5FD", margin: 0, opacity: 0.7 }}>Research Applications</p>
+              </div>
+              <h2 style={{ fontSize: "clamp(32px, 4.5vw, 56px)", fontWeight: 900, lineHeight: 1.04, letterSpacing: "-0.03em", color: "#FFFFFF", margin: 0 }}>
+                What peptides<br />
+                <span style={{ background: "linear-gradient(90deg, #60A5FA, #93C5FD)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  are used for.
+                </span>
+              </h2>
+            </div>
+            {/* Right */}
+            <div style={{ maxWidth: 380 }}>
+              <p style={{ fontSize: 14.5, color: "rgba(255,255,255,0.60)", lineHeight: 1.78, marginBottom: 24 }}>
+                Each category below represents an active area of peptide investigation — from cellular repair mechanisms to longevity pathways. Hover any card to see which specific compounds are under study.
+              </p>
+              <Link
+                href="/all-peptides"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  fontSize: 12, fontWeight: 700, textTransform: "uppercase",
+                  letterSpacing: "0.16em", color: "#93C5FD", textDecoration: "none",
+                }}
+              >
+                Browse All Compounds <ArrowRight size={14} />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Uniform 4×2 grid ── */}
+        <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: 1, background: "rgba(255,255,255,0.06)" }}>
+          {RESEARCH_AREAS.map(area => (
+            <ResearchAreaCard key={area.n} {...area} />
+          ))}
+        </div>
+
+        {/* ── Bottom CTA strip ── */}
+        <div style={{ padding: "28px 32px", borderTop: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+          <div className="max-w-[1280px] mx-auto w-full" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", margin: 0, letterSpacing: "0.02em" }}>
+              All research applications listed for <strong style={{ color: "rgba(255,255,255,0.6)" }}>in-vitro laboratory use only</strong> — not for human consumption.
+            </p>
+            <Link
+              href="/all-peptides"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                background: "rgba(59,130,246,0.12)", border: "1px solid rgba(59,130,246,0.3)",
+                color: "#93C5FD", padding: "10px 22px", borderRadius: 8,
+                fontSize: 12, fontWeight: 700, textTransform: "uppercase",
+                letterSpacing: "0.14em", textDecoration: "none",
+              }}
+            >
+              Shop All 81 Peptides <ArrowRight size={13} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ── WHY OMNIQURE ──────────────────────────────────────── */}
       <section className="home-section-why" style={{ backgroundColor: "#F7FAFF", padding: "68px 0", borderTop: "1px solid #E2E8F0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
@@ -911,72 +977,6 @@ export default function HomePage() {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── RESEARCH AREAS ────────────────────────────────────── */}
-      <section style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", borderTop: "3px solid #34D399" }}>
-        {/* ── Header strip ── */}
-        <div className="research-header" style={{ padding: "64px 0 48px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-          <div className="max-w-[1280px] mx-auto px-4 lg:px-8" style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
-            {/* Left */}
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
-                <div style={{ width: 32, height: 1, background: "linear-gradient(90deg, #60A5FA, #93C5FD)" }} />
-                <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.28em", color: "#93C5FD", margin: 0, opacity: 0.7 }}>Research Applications</p>
-              </div>
-              <h2 style={{ fontSize: "clamp(32px, 4.5vw, 56px)", fontWeight: 900, lineHeight: 1.04, letterSpacing: "-0.03em", color: "#FFFFFF", margin: 0 }}>
-                What peptides<br />
-                <span style={{ background: "linear-gradient(90deg, #60A5FA, #93C5FD)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                  are used for.
-                </span>
-              </h2>
-            </div>
-            {/* Right */}
-            <div style={{ maxWidth: 380 }}>
-              <p style={{ fontSize: 14.5, color: "rgba(255,255,255,0.60)", lineHeight: 1.78, marginBottom: 24 }}>
-                Each category below represents an active area of peptide investigation — from cellular repair mechanisms to longevity pathways. Hover any card to see which specific compounds are under study.
-              </p>
-              <Link
-                href="/all-peptides"
-                style={{
-                  display: "inline-flex", alignItems: "center", gap: 8,
-                  fontSize: 12, fontWeight: 700, textTransform: "uppercase",
-                  letterSpacing: "0.16em", color: "#93C5FD", textDecoration: "none",
-                }}
-              >
-                Browse All Compounds <ArrowRight size={14} />
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* ── Uniform 4×2 grid ── */}
-        <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: 1, background: "rgba(255,255,255,0.06)" }}>
-          {RESEARCH_AREAS.map(area => (
-            <ResearchAreaCard key={area.n} {...area} />
-          ))}
-        </div>
-
-        {/* ── Bottom CTA strip ── */}
-        <div style={{ padding: "28px 32px", borderTop: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
-          <div className="max-w-[1280px] mx-auto w-full" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", margin: 0, letterSpacing: "0.02em" }}>
-              All research applications listed for <strong style={{ color: "rgba(255,255,255,0.6)" }}>in-vitro laboratory use only</strong> — not for human consumption.
-            </p>
-            <Link
-              href="/all-peptides"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                background: "rgba(59,130,246,0.12)", border: "1px solid rgba(59,130,246,0.3)",
-                color: "#93C5FD", padding: "10px 22px", borderRadius: 8,
-                fontSize: 12, fontWeight: 700, textTransform: "uppercase",
-                letterSpacing: "0.14em", textDecoration: "none",
-              }}
-            >
-              Shop All 81 Peptides <ArrowRight size={13} />
-            </Link>
           </div>
         </div>
       </section>
