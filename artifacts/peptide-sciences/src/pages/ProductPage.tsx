@@ -926,9 +926,9 @@ export default function ProductPage() {
 
                 {/* Recommended ribbon */}
                 <span style={{
-                  position: "absolute", top: 12, right: 12,
+                  position: "absolute", top: -11, left: "50%", transform: "translateX(-50%)",
                   fontSize: 9.5, fontWeight: 800, letterSpacing: "0.06em",
-                  textTransform: "uppercase", color: "#0369A1",
+                  textTransform: "uppercase", color: "#0369A1", whiteSpace: "nowrap",
                   background: "#fff", border: "1px solid #BAE6FD",
                   borderRadius: 9999, padding: "3px 9px",
                   boxShadow: "0 1px 4px rgba(14,165,233,0.15)",
