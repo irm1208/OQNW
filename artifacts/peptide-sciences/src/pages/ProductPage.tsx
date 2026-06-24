@@ -183,9 +183,6 @@ function ReviewsCarousel({ reviews }: { reviews: ReviewItem[] }) {
                 <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A" }}>{r.customerName}</p>
                 <p style={{ fontSize: "10px", color: "#94A3B8", marginTop: "1px" }}>Verified Customer</p>
               </div>
-              <span style={{ fontSize: "11px", color: "#CBD5E1", flexShrink: 0 }}>
-                {new Date(r.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
-              </span>
             </div>
           </div>
         ))}
