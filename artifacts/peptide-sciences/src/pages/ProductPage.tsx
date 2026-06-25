@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { trackViewContent } from "@/lib/pixels";
 import { Link, useParams, useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
-import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, User, Heart, Droplets, Gift, Sparkles } from "lucide-react";
+import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, Heart, Droplets, Gift, Sparkles } from "lucide-react";
 import { generateCOA } from "@/utils/generateCOA";
 import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
@@ -199,20 +199,6 @@ export default function ProductPage() {
     if (product) {
       trackViewContent({ id: product.id, name: product.name, price: product.price ?? null, category: product.category });
     }
-  }, [product?.id]);
-
-  // Viewing counter — seeded by product id, fluctuates every ~6s
-  const viewerSeed = product
-    ? 8 + product.id.split("").reduce((s, c) => s + c.charCodeAt(0), 0) % 23
-    : 12;
-  const [viewers, setViewers] = useState(viewerSeed);
-  useEffect(() => {
-    if (!product) return;
-    setViewers(8 + product.id.split("").reduce((s, c) => s + c.charCodeAt(0), 0) % 23);
-    const id = setInterval(() => {
-      setViewers((v) => Math.max(6, Math.min(48, v + (Math.random() < 0.55 ? 1 : -1))));
-    }, 5500 + Math.random() * 2500);
-    return () => clearInterval(id);
   }, [product?.id]);
 
   // Reviews state
@@ -616,45 +602,6 @@ export default function ProductPage() {
                     ✓ In Stock
                   </span>
                 )}
-                {/* Live viewers nudge */}
-                <span
-                  className="inline-flex items-center gap-2 text-xs font-semibold"
-                  style={{
-                    color: "#047857",
-                    background: "linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)",
-                    border: "1px solid #A7F3D0",
-                    borderRadius: "9999px",
-                    padding: "5px 11px 5px 8px",
-                    boxShadow: "0 1px 4px rgba(5,150,105,0.12)",
-                  }}
-                >
-                  <span style={{ display: "inline-flex", alignItems: "center" }}>
-                    {[0, 1, 2].map((i) => (
-                      <span
-                        key={i}
-                        style={{
-                          width: "18px", height: "18px", borderRadius: "50%",
-                          display: "inline-flex", alignItems: "center", justifyContent: "center",
-                          background: ["#34D399", "#10B981", "#059669"][i],
-                          border: "1.5px solid #ECFDF5",
-                          marginLeft: i === 0 ? 0 : "-7px",
-                          color: "#fff",
-                        }}
-                      >
-                        <User size={10} strokeWidth={2.5} />
-                      </span>
-                    ))}
-                  </span>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
-                    <span style={{
-                      width: "7px", height: "7px", borderRadius: "50%",
-                      backgroundColor: "#10B981", display: "inline-block",
-                      boxShadow: "0 0 0 0 rgba(16,185,129,0.5)",
-                      animation: "viewing-pulse 2s infinite",
-                    }} />
-                    <span><strong style={{ fontWeight: 800 }}>{viewers}</strong> viewing now</span>
-                  </span>
-                </span>
               </div>
             </div>
 
