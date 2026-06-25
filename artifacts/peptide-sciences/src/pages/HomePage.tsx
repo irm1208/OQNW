@@ -1183,6 +1183,9 @@ export default function HomePage() {
       </section>
 
 
+      {/* ── RECENTLY VIEWED ───────────────────────────────────── */}
+      <RecentlyViewed />
+
       {/* ── EMAIL CAPTURE ─────────────────────────────────────── */}
       <section style={{ background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)", padding: "64px 0", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)", backgroundSize: "32px 32px", pointerEvents: "none" }} />
@@ -1225,9 +1228,6 @@ export default function HomePage() {
           <p style={{ fontSize: 11, color: "rgba(255,255,255,0.30)", marginTop: 12 }}>No spam. Unsubscribe anytime.</p>
         </div>
       </section>
-
-      {/* ── RECENTLY VIEWED ───────────────────────────────────── */}
-      <RecentlyViewed />
 
 
     </div>
