@@ -2,7 +2,7 @@ export default function SiteDisclaimer() {
   return (
     <div
       style={{
-        background: "linear-gradient(135deg, #0D2565 0%, #0F2E6B 50%, #0D2565 100%)",
+        background: "#ffffff",
         padding: "48px 16px",
         fontFamily: "'Arimo', Arial, sans-serif",
       }}
@@ -10,9 +10,8 @@ export default function SiteDisclaimer() {
       <div
         className="max-w-[860px] mx-auto rounded-2xl p-8 md:p-10"
         style={{
-          border: "1.5px solid rgba(232,169,62,0.25)",
-          background: "rgba(255,255,255,0.04)",
-          backdropFilter: "blur(4px)",
+          background: "linear-gradient(135deg, #0D2565 0%, #0F2E6B 50%, #0D2565 100%)",
+          border: "1.5px solid rgba(232,169,62,0.20)",
         }}
       >
         {/* Header */}
