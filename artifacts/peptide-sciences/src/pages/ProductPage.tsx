@@ -683,8 +683,8 @@ export default function ProductPage() {
               </div>
             </div>
 
-            {/* Composition / Research Focus / Storage / Shipping / Returns */}
-            <ProductInfoAccordion detail={detail} />
+            {/* Purity / Form / Composition / Storage */}
+            <ProductInfoAccordion detail={detail} productId={String(product.id)} />
           </div>
 
           {/* Right: Info panel */}
