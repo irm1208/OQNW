@@ -10,7 +10,7 @@ export default function SiteDisclaimer() {
       <div
         className="max-w-[860px] mx-auto rounded-2xl p-8 md:p-10"
         style={{
-          border: "1.5px solid rgba(255,255,255,0.18)",
+          border: "1.5px solid rgba(232,169,62,0.25)",
           background: "rgba(255,255,255,0.04)",
           backdropFilter: "blur(4px)",
         }}
@@ -31,7 +31,7 @@ export default function SiteDisclaimer() {
         </p>
 
         {/* Intro */}
-        <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.80)", lineHeight: 1.75, marginBottom: "18px" }}>
+        <p style={{ fontSize: "13.5px", color: "#E8A93E", lineHeight: 1.75, marginBottom: "18px" }}>
           OmniQure Peptide Research Institute supplies research-grade peptides and reference materials for laboratory use only. By placing an order, you confirm that you have read, understood and agreed to the terms below.
         </p>
 
@@ -58,8 +58,8 @@ export default function SiteDisclaimer() {
             body: "Given the sensitive nature of research materials, returns are limited — please see our Terms & Conditions for how we handle damaged, faulty or quality-related issues.",
           },
         ].map(({ label, body }) => (
-          <p key={label} style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.75)", lineHeight: 1.75, marginBottom: "14px" }}>
-            <strong style={{ color: "rgba(255,255,255,0.95)", fontWeight: 700 }}>{label}</strong>{" "}
+          <p key={label} style={{ fontSize: "13.5px", color: "#E8A93E", lineHeight: 1.75, marginBottom: "14px" }}>
+            <strong style={{ color: "#E8A93E", fontWeight: 700 }}>{label}</strong>{" "}
             {body}
           </p>
         ))}
@@ -68,7 +68,7 @@ export default function SiteDisclaimer() {
         <p
           style={{
             fontSize: "12.5px",
-            color: "rgba(255,255,255,0.50)",
+            color: "rgba(232,169,62,0.65)",
             fontStyle: "italic",
             marginTop: "6px",
             lineHeight: 1.6,
