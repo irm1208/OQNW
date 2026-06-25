@@ -50,7 +50,7 @@ export default function ProductInfoAccordion({ detail }: { detail: ProductDetail
     <div>
       {/* COMPOSITION */}
       {detail.alsoKnownAs && (
-        <Section title="Composition" defaultOpen>
+        <Section title="Composition">
           <p style={{ fontSize: "14px", color: "#374151", lineHeight: 1.7 }}>
             {detail.alsoKnownAs}
           </p>
@@ -59,7 +59,7 @@ export default function ProductInfoAccordion({ detail }: { detail: ProductDetail
 
       {/* RESEARCH FOCUS */}
       {detail.researchAreas && detail.researchAreas.length > 0 && (
-        <Section title="Research Focus" defaultOpen>
+        <Section title="Research Focus">
           <div className="flex flex-wrap gap-2">
             {detail.researchAreas.map((area) => (
               <span
@@ -83,7 +83,7 @@ export default function ProductInfoAccordion({ detail }: { detail: ProductDetail
       )}
 
       {/* STORAGE INSTRUCTIONS */}
-      <Section title="Storage Instructions" defaultOpen>
+      <Section title="Storage Instructions">
         <div className="flex items-start gap-3">
           <span style={{ fontSize: "20px", flexShrink: 0, lineHeight: 1.4 }}>❄</span>
           <p style={{ fontSize: "14px", color: "#374151", lineHeight: 1.75, margin: 0 }}>

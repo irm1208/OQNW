@@ -682,6 +682,9 @@ export default function ProductPage() {
                 ))}
               </div>
             </div>
+
+            {/* Composition / Research Focus / Storage / Shipping / Returns */}
+            <ProductInfoAccordion detail={detail} />
           </div>
 
           {/* Right: Info panel */}
@@ -1227,8 +1230,6 @@ export default function ProductPage() {
               </table>
             </div>
 
-            {/* Composition / Research Focus / Storage / Shipping / Returns */}
-            <ProductInfoAccordion detail={detail} />
           </div>
         </div>
 
