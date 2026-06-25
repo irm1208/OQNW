@@ -218,10 +218,61 @@ function randomDate(productId: number, reviewIdx: number): Date {
   return d;
 }
 
+function getPopularityRange(name: string): { min: number; max: number } {
+  const n = name.toLowerCase();
+
+  // Tier 1 — very popular compounds (14–20 reviews)
+  if (
+    n.includes("bpc-157") ||
+    n.includes("tb-500") ||
+    n.includes("tirzepatide") ||
+    n.includes("retatrutide") ||
+    n.includes("ipamorelin") ||
+    n.includes("cjc-1295") ||
+    n.includes("somatropin") ||
+    n.includes("melanotan 2") ||
+    n.includes("sermorelin") ||
+    n.includes("tesamorelin") ||
+    n.includes("ghrp-2") ||
+    n.includes("ghrp-6") ||
+    n.includes("selank") ||
+    n.includes("semax") ||
+    n.includes("thymosin alpha") ||
+    n.includes("ghk-cu") ||
+    n.includes("epithalon")
+  ) {
+    return { min: 14, max: 20 };
+  }
+
+  // Tier 2 — moderately popular (7–13 reviews)
+  if (
+    n.includes("aod-9604") ||
+    n.includes("hexarelin") ||
+    n.includes("kisspeptin") ||
+    n.includes("oxytocin") ||
+    n.includes("gonadorelin") ||
+    n.includes("igf-1") ||
+    n.includes("mots-c") ||
+    n.includes("kpv") ||
+    n.includes("ll-37") ||
+    n.includes("nad+") ||
+    n.includes("cagrilintide") ||
+    n.includes("melanotan 1") ||
+    n.includes("5-amino") ||
+    n.includes("blend") ||
+    n.includes("n-acetyl")
+  ) {
+    return { min: 7, max: 13 };
+  }
+
+  // Tier 3 — niche / less-known compounds (3–6 reviews)
+  return { min: 3, max: 6 };
+}
+
 export async function seedReviews(): Promise<{ seeded: boolean; reason?: string; count?: number }> {
   try {
     const products = await db
-      .select({ id: productsCatalogTable.id, category: productsCatalogTable.category })
+      .select({ id: productsCatalogTable.id, name: productsCatalogTable.name, category: productsCatalogTable.category })
       .from(productsCatalogTable)
       .where(eq(productsCatalogTable.isPublished, true));
 
@@ -241,7 +292,8 @@ export async function seedReviews(): Promise<{ seeded: boolean; reason?: string;
     products.forEach((product, productIdx) => {
       if (coveredProductIds.has(product.id)) return;
 
-      const numReviews = seededInt(product.id * 41 + productIdx * 7, 3, 20);
+      const { min, max } = getPopularityRange(product.name ?? "");
+      const numReviews = seededInt(product.id * 41 + productIdx * 7, min, max);
       const category = product.category ?? "Research Peptides";
 
       for (let r = 0; r < numReviews; r++) {
