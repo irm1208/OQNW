@@ -683,8 +683,6 @@ export default function ProductPage() {
               </div>
             </div>
 
-            {/* Purity / Form / Composition / Storage */}
-            <ProductInfoAccordion detail={detail} productId={String(product.id)} />
           </div>
 
           {/* Right: Info panel */}
@@ -701,6 +699,9 @@ export default function ProductPage() {
             <h1 className="product-h1 font-bold leading-tight mb-3" style={{ fontSize: "28px", color: "#0F172A" }}>
               {product.name}
             </h1>
+
+            {/* Purity / Form / Composition / Storage */}
+            <ProductInfoAccordion detail={detail} productId={String(product.id)} />
 
             {/* Badges row */}
             <div className="flex items-center gap-2 mb-5 flex-wrap">
