@@ -720,10 +720,38 @@ export default function ProductPage() {
             </Link>
 
             {/* Title + live badges row */}
-            <div className="flex items-start justify-between gap-3 mb-3">
-              <h1 className="product-h1 font-bold leading-tight" style={{ fontSize: "28px", color: "#0F172A" }}>
-                {product.name}
-              </h1>
+            <div className="flex items-start justify-between gap-3 mb-2">
+              <div>
+                <h1 className="product-h1 font-bold leading-tight mb-1.5" style={{ fontSize: "28px", color: "#0F172A" }}>
+                  {product.name}
+                </h1>
+                {/* Star rating anchor */}
+                {reviewsData && reviewsData.summary.totalCount > 0 && (
+                  <button
+                    onClick={() => {
+                      document.getElementById("reviews-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }}
+                    className="inline-flex items-center gap-1.5 group"
+                    style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
+                  >
+                    <span className="inline-flex items-center gap-0.5">
+                      {[1,2,3,4,5].map((s) => {
+                        const avg = reviewsData.summary.avgRating ?? 0;
+                        const filled = s <= Math.round(avg);
+                        return (
+                          <Star key={s} size={14} style={{ color: "#F59E0B", fill: filled ? "#F59E0B" : "none", flexShrink: 0 }} />
+                        );
+                      })}
+                    </span>
+                    <span className="text-sm font-semibold" style={{ color: "#F59E0B" }}>
+                      {(reviewsData.summary.avgRating ?? 0).toFixed(1)}
+                    </span>
+                    <span className="text-xs group-hover:underline" style={{ color: "#64748B" }}>
+                      ({reviewsData.summary.totalCount} review{reviewsData.summary.totalCount !== 1 ? "s" : ""})
+                    </span>
+                  </button>
+                )}
+              </div>
               <div className="flex flex-col items-end gap-1.5 flex-shrink-0 pt-1">
                 {product.stockLevel === 0 ? (
                   <span
@@ -1215,6 +1243,7 @@ export default function ProductPage() {
 
         {/* Reviews */}
         <div
+          id="reviews-section"
           className="rounded-2xl overflow-hidden mb-8"
           style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}
         >
