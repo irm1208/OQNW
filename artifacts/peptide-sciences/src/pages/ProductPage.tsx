@@ -681,34 +681,34 @@ export default function ProductPage() {
                   </div>
                 ))}
               </div>
-            </div>
 
-          </div>
-
-          {/* COA — View Report */}
-          <div
-            className="rounded-2xl flex items-center justify-between gap-3 mt-4 px-4 py-3"
-            style={{ backgroundColor: "#F0F5FF", border: "1.5px solid #BFDBFE" }}
-          >
-            <div className="flex items-center gap-3">
+              {/* COA — View Report */}
               <div
-                className="rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ width: "44px", height: "44px", backgroundColor: "#1B5CB5" }}
+                className="flex items-center justify-between gap-3 px-4 py-3"
+                style={{ backgroundColor: "#F0F5FF", borderTop: "1px solid #BFDBFE" }}
               >
-                <Download size={18} color="#fff" />
-              </div>
-              <div>
-                <p className="font-bold text-sm" style={{ color: "#1240A0" }}>Certificate of Analysis</p>
-                <p className="text-xs" style={{ color: "#3B82F6" }}>Full HPLC · ESI-MS · QC report — Lot {getLotNumber(product.id)}</p>
+                <div className="flex items-center gap-3">
+                  <div
+                    className="rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ width: "40px", height: "40px", backgroundColor: "#1B5CB5" }}
+                  >
+                    <Download size={16} color="#fff" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm" style={{ color: "#1240A0" }}>Certificate of Analysis</p>
+                    <p className="text-xs" style={{ color: "#3B82F6" }}>Full HPLC · ESI-MS · QC report — Lot {getLotNumber(product.id)}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowCOAModal(true)}
+                  className="coa-btn-touch flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90 flex-shrink-0"
+                  style={{ height: "38px", padding: "0 16px", backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px" }}
+                >
+                  View Report →
+                </button>
               </div>
             </div>
-            <button
-              onClick={() => setShowCOAModal(true)}
-              className="coa-btn-touch flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90 flex-shrink-0"
-              style={{ height: "40px", padding: "0 18px", backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px" }}
-            >
-              View Report →
-            </button>
+
           </div>
 
           {/* Right: Info panel */}
