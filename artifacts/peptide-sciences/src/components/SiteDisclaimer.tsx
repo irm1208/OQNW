@@ -3,7 +3,7 @@ export default function SiteDisclaimer() {
     <div
       style={{
         background: "#ffffff",
-        padding: "48px 16px",
+        padding: "16px 16px",
         fontFamily: "'Arimo', Arial, sans-serif",
       }}
     >
