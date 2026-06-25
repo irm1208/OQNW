@@ -895,6 +895,30 @@ export default function ProductPage() {
                   <ShoppingCart size={16} />
                   {product.stockLevel === 0 ? "Out of Stock" : added ? "✓ Added to Cart!" : "Add to Cart"}
                 </button>
+
+                {/* Wishlist icon button */}
+                {(() => {
+                  const productIdInt = parseInt(String(product.id), 10);
+                  const saved = inWishlist(productIdInt);
+                  return (
+                    <button
+                      onClick={() => void toggleWishlist(productIdInt)}
+                      title={saved ? "Saved to Wishlist" : "Save to Wishlist"}
+                      className="flex items-center justify-center rounded-xl flex-shrink-0 transition-all"
+                      style={{
+                        width: "44px",
+                        height: "44px",
+                        cursor: "pointer",
+                        backgroundColor: saved ? "#FEF2F2" : "#F8FAFC",
+                        border: saved ? "1.5px solid #FECACA" : "1.5px solid #E2E8F0",
+                        color: saved ? "#DC2626" : "#94A3B8",
+                        transition: "all 0.15s",
+                      }}
+                    >
+                      <Heart size={18} style={{ fill: saved ? "#DC2626" : "none", transition: "fill 0.15s" }} />
+                    </button>
+                  );
+                })()}
               </div>
             </div>
 
@@ -1187,26 +1211,6 @@ export default function ProductPage() {
               </div>
             )}
 
-            {/* Wishlist */}
-            {(() => {
-              const productIdInt = parseInt(String(product.id), 10);
-              const saved = inWishlist(productIdInt);
-              return (
-                <button
-                  onClick={() => void toggleWishlist(productIdInt)}
-                  className="w-full flex items-center justify-center gap-2 rounded-xl font-semibold mb-3"
-                  style={{
-                    height: "44px", fontSize: "14px", cursor: "pointer", transition: "all 0.15s",
-                    backgroundColor: saved ? "#FEF2F2" : "#F8FAFC",
-                    border: saved ? "1.5px solid #FECACA" : "1.5px solid #E2E8F0",
-                    color: saved ? "#DC2626" : "#64748B",
-                  }}
-                >
-                  <Heart size={15} style={{ fill: saved ? "#DC2626" : "none", transition: "fill 0.15s" }} />
-                  {saved ? "Saved to Wishlist" : "Save to Wishlist"}
-                </button>
-              );
-            })()}
 
             {/* COA — View Report */}
             <div
