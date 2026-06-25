@@ -4,6 +4,7 @@ import { db } from "@workspace/db";
 import { productsCatalogTable, productsInventoryTable } from "@workspace/db";
 import { eq, ilike, and } from "drizzle-orm";
 import { seedProductsCatalog } from "../../lib/seed-catalog";
+import { seedReviews } from "../../lib/seed-reviews";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -100,6 +101,7 @@ let seeded = false;
 async function ensureSeeded() {
   if (!seeded) {
     await seedProductsCatalog();
+    await seedReviews();
     seeded = true;
   }
 }
