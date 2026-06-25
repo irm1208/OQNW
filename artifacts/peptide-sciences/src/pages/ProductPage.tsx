@@ -1258,6 +1258,9 @@ export default function ProductPage() {
           </div>
         </div>
 
+        {/* Composition / Research Focus / Storage / Shipping / Returns */}
+        <ProductInfoAccordion detail={detail} />
+
         {/* Description / COA / Reviews Tabs */}
         <div
           className="rounded-2xl overflow-hidden mb-8"
@@ -1501,9 +1504,6 @@ export default function ProductPage() {
           </div>
         </div>
 
-
-        {/* Composition / Research Focus / Storage / Shipping / Returns */}
-        <ProductInfoAccordion detail={detail} />
 
         {/* Customers Also Bought */}
         <CustomersAlsoBought product={product} />
