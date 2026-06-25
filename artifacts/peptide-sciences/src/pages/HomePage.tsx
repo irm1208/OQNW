@@ -9,7 +9,6 @@ import {
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
-import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
 
@@ -1225,9 +1224,6 @@ export default function HomePage() {
           <p style={{ fontSize: 11, color: "rgba(255,255,255,0.30)", marginTop: 12 }}>No spam. Unsubscribe anytime.</p>
         </div>
       </section>
-
-      {/* ── RECENTLY VIEWED ───────────────────────────────────── */}
-      <RecentlyViewed />
 
 
     </div>

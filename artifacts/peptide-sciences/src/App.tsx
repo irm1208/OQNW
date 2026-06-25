@@ -40,7 +40,6 @@ import { CookieConsent } from "@/components/CookieConsent";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
-import { RecentlyViewedProvider } from "@/context/RecentlyViewedContext";
 import { ProductsProvider } from "@/context/ProductsContext";
 import { CustomerAuthProvider } from "@/context/CustomerAuthContext";
 import { WishlistProvider } from "@/context/WishlistContext";
@@ -131,7 +130,6 @@ function App() {
         <ProductsProvider>
         <CustomerAuthProvider>
         <CurrencyProvider>
-          <RecentlyViewedProvider>
           <WishlistProvider>
           <CartProvider>
             <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
