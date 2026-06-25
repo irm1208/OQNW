@@ -14,6 +14,7 @@ import { getPurity, getPurityStr, getLotNumber } from "@/utils/productPurity";
 import { useRecentlyViewed } from "@/context/RecentlyViewedContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import CustomersAlsoBought from "@/components/CustomersAlsoBought";
+import ProductInfoAccordion from "@/components/ProductInfoAccordion";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useSEO, SITE_URL } from "@/hooks/useSEO";
@@ -1500,6 +1501,9 @@ export default function ProductPage() {
           </div>
         </div>
 
+
+        {/* Composition / Research Focus / Storage / Shipping / Returns */}
+        <ProductInfoAccordion detail={detail} />
 
         {/* Customers Also Bought */}
         <CustomersAlsoBought product={product} />
