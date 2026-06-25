@@ -722,78 +722,78 @@ export default function ProductPage() {
               {product.category}
             </Link>
 
-            <h1 className="product-h1 font-bold leading-tight mb-3" style={{ fontSize: "28px", color: "#0F172A" }}>
-              {product.name}
-            </h1>
+            {/* Title + live badges row */}
+            <div className="flex items-start justify-between gap-3 mb-3">
+              <h1 className="product-h1 font-bold leading-tight" style={{ fontSize: "28px", color: "#0F172A" }}>
+                {product.name}
+              </h1>
+              <div className="flex flex-col items-end gap-1.5 flex-shrink-0 pt-1">
+                {product.stockLevel === 0 ? (
+                  <span
+                    className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
+                    style={{ backgroundColor: "#FEF2F2", color: "#DC2626", border: "1px solid #FECACA" }}
+                  >
+                    ✗ Out of Stock
+                  </span>
+                ) : product.stockLevel !== undefined && product.stockLevel <= 10 ? (
+                  <span
+                    className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
+                    style={{ backgroundColor: "#FFFBEB", color: "#D97706", border: "1px solid #FDE68A" }}
+                  >
+                    ⚡ Only {product.stockLevel} left
+                  </span>
+                ) : (
+                  <span
+                    className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
+                    style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}
+                  >
+                    ✓ In Stock
+                  </span>
+                )}
+                {/* Live viewers nudge */}
+                <span
+                  className="inline-flex items-center gap-2 text-xs font-semibold"
+                  style={{
+                    color: "#047857",
+                    background: "linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)",
+                    border: "1px solid #A7F3D0",
+                    borderRadius: "9999px",
+                    padding: "5px 11px 5px 8px",
+                    boxShadow: "0 1px 4px rgba(5,150,105,0.12)",
+                  }}
+                >
+                  <span style={{ display: "inline-flex", alignItems: "center" }}>
+                    {[0, 1, 2].map((i) => (
+                      <span
+                        key={i}
+                        style={{
+                          width: "18px", height: "18px", borderRadius: "50%",
+                          display: "inline-flex", alignItems: "center", justifyContent: "center",
+                          background: ["#34D399", "#10B981", "#059669"][i],
+                          border: "1.5px solid #ECFDF5",
+                          marginLeft: i === 0 ? 0 : "-7px",
+                          color: "#fff",
+                        }}
+                      >
+                        <User size={10} strokeWidth={2.5} />
+                      </span>
+                    ))}
+                  </span>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                    <span style={{
+                      width: "7px", height: "7px", borderRadius: "50%",
+                      backgroundColor: "#10B981", display: "inline-block",
+                      boxShadow: "0 0 0 0 rgba(16,185,129,0.5)",
+                      animation: "viewing-pulse 2s infinite",
+                    }} />
+                    <span><strong style={{ fontWeight: 800 }}>{viewers}</strong> viewing now</span>
+                  </span>
+                </span>
+              </div>
+            </div>
 
             {/* Purity / Form / Composition / Storage */}
             <ProductInfoAccordion detail={detail} productId={String(product.id)} />
-
-            {/* Badges row */}
-            <div className="flex items-center gap-2 mb-5 flex-wrap">
-              {product.stockLevel === 0 ? (
-                <span
-                  className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
-                  style={{ backgroundColor: "#FEF2F2", color: "#DC2626", border: "1px solid #FECACA" }}
-                >
-                  ✗ Out of Stock
-                </span>
-              ) : product.stockLevel !== undefined && product.stockLevel <= 10 ? (
-                <span
-                  className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
-                  style={{ backgroundColor: "#FFFBEB", color: "#D97706", border: "1px solid #FDE68A" }}
-                >
-                  ⚡ Only {product.stockLevel} left
-                </span>
-              ) : (
-                <span
-                  className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
-                  style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}
-                >
-                  ✓ In Stock
-                </span>
-              )}
-              {/* Live viewers nudge */}
-              <span
-                className="inline-flex items-center gap-2 text-xs font-semibold"
-                style={{
-                  color: "#047857",
-                  background: "linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)",
-                  border: "1px solid #A7F3D0",
-                  borderRadius: "9999px",
-                  padding: "5px 11px 5px 8px",
-                  boxShadow: "0 1px 4px rgba(5,150,105,0.12)",
-                }}
-              >
-                {/* Stacked avatars */}
-                <span style={{ display: "inline-flex", alignItems: "center" }}>
-                  {[0, 1, 2].map((i) => (
-                    <span
-                      key={i}
-                      style={{
-                        width: "18px", height: "18px", borderRadius: "50%",
-                        display: "inline-flex", alignItems: "center", justifyContent: "center",
-                        background: ["#34D399", "#10B981", "#059669"][i],
-                        border: "1.5px solid #ECFDF5",
-                        marginLeft: i === 0 ? 0 : "-7px",
-                        color: "#fff",
-                      }}
-                    >
-                      <User size={10} strokeWidth={2.5} />
-                    </span>
-                  ))}
-                </span>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
-                  <span style={{
-                    width: "7px", height: "7px", borderRadius: "50%",
-                    backgroundColor: "#10B981", display: "inline-block",
-                    boxShadow: "0 0 0 0 rgba(16,185,129,0.5)",
-                    animation: "viewing-pulse 2s infinite",
-                  }} />
-                  <span><strong style={{ fontWeight: 800 }}>{viewers}</strong> viewing now</span>
-                </span>
-              </span>
-            </div>
 
             {/* Strength switcher */}
             {strengthVariants.length > 1 && (
