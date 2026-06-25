@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { trackViewContent } from "@/lib/pixels";
 import { Link, useParams, useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
@@ -8,6 +8,8 @@ import HplcChart from "@/components/HplcChart";
 import MsChart from "@/components/MsChart";
 import COADocument from "@/components/COADocument";
 import COAModal from "@/components/COAModal";
+import ReviewsCarousel, { type ReviewItem } from "@/components/ReviewsCarousel";
+import ReviewsModal, { type ReviewsData } from "@/components/ReviewsModal";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getPurity, getPurityStr, getLotNumber } from "@/utils/productPurity";
@@ -21,189 +23,6 @@ import { useSEO, SITE_URL } from "@/hooks/useSEO";
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
   return `${BASE_URL}api/${path}`.replace(/\/+/g, "/").replace(/^\/\//, "/");
-}
-
-type ReviewItem = {
-  id: number;
-  customerId: number;
-  customerName: string;
-  rating: number;
-  title: string;
-  body: string;
-  createdAt: string;
-};
-
-type ReviewsData = {
-  reviews: ReviewItem[];
-  summary: { avgRating: number | null; totalCount: number; breakdown: Record<number, number> };
-  myReview: { id: number; rating: number; title: string; body: string; isApproved: boolean } | null;
-  hasPurchased: boolean;
-};
-
-function StarRow({ rating, size = 14 }: { rating: number; size?: number }) {
-  return (
-    <span style={{ display: "inline-flex", gap: "2px" }}>
-      {[1, 2, 3, 4, 5].map((s) => (
-        <Star
-          key={s}
-          size={size}
-          style={{
-            color: s <= rating ? "#F59E0B" : "#E2E8F0",
-            fill: s <= rating ? "#F59E0B" : "#E2E8F0",
-            flexShrink: 0,
-          }}
-        />
-      ))}
-    </span>
-  );
-}
-
-const AVATAR_COLORS = ["#1B5CB5","#059669","#7C3AED","#0E7490","#B45309","#DC2626","#0891B2","#65A30D"];
-function avatarColor(name: string) {
-  let h = 0;
-  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffffffff;
-  return AVATAR_COLORS[Math.abs(h) % AVATAR_COLORS.length];
-}
-function initials(name: string) {
-  const parts = name.trim().split(/\s+/);
-  return parts.length >= 2 ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase() : name.slice(0, 2).toUpperCase();
-}
-
-const REV_CARD_GAP = 16;
-
-function ReviewsCarousel({ reviews }: { reviews: ReviewItem[] }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [cardW, setCardW] = useState(() => {
-    if (typeof window === "undefined") return 380;
-    return window.innerWidth < 640 ? Math.min(300, window.innerWidth - 48) : 520;
-  });
-
-  useEffect(() => {
-    const update = () => setCardW(window.innerWidth < 640 ? Math.min(300, window.innerWidth - 48) : 520);
-    window.addEventListener("resize", update, { passive: true });
-    return () => window.removeEventListener("resize", update);
-  }, []);
-
-  function scrollTo(idx: number) {
-    const el = scrollRef.current;
-    if (!el) return;
-    const clamped = Math.max(0, Math.min(idx, reviews.length - 1));
-    setActiveIdx(clamped);
-    el.scrollTo({ left: clamped * (cardW + REV_CARD_GAP), behavior: "smooth" });
-  }
-
-  function onScroll() {
-    const el = scrollRef.current;
-    if (!el) return;
-    setActiveIdx(Math.round(el.scrollLeft / (cardW + REV_CARD_GAP)));
-  }
-
-  const color = (r: ReviewItem) => avatarColor(r.customerName);
-
-  return (
-    <div style={{ position: "relative" }}>
-      <button
-        onClick={() => scrollTo(activeIdx - 1)}
-        disabled={activeIdx === 0}
-        style={{
-          position: "absolute", left: "-18px", top: "45%", transform: "translateY(-50%)", zIndex: 10,
-          width: "38px", height: "38px", borderRadius: "50%", border: "1px solid #E2E8F0",
-          background: activeIdx === 0 ? "#F8FAFC" : "#fff", cursor: activeIdx === 0 ? "default" : "pointer",
-          color: activeIdx === 0 ? "#CBD5E1" : "#374151", fontSize: "20px",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.08)", transition: "all 0.2s",
-        }}
-      >‹</button>
-
-      <button
-        onClick={() => scrollTo(activeIdx + 1)}
-        disabled={activeIdx === reviews.length - 1}
-        style={{
-          position: "absolute", right: "-18px", top: "45%", transform: "translateY(-50%)", zIndex: 10,
-          width: "38px", height: "38px", borderRadius: "50%", border: "1px solid #E2E8F0",
-          background: activeIdx === reviews.length - 1 ? "#F8FAFC" : "#fff",
-          cursor: activeIdx === reviews.length - 1 ? "default" : "pointer",
-          color: activeIdx === reviews.length - 1 ? "#CBD5E1" : "#374151", fontSize: "20px",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.08)", transition: "all 0.2s",
-        }}
-      >›</button>
-
-      <div
-        ref={scrollRef}
-        onScroll={onScroll}
-        style={{
-          display: "flex", gap: `${REV_CARD_GAP}px`,
-          overflowX: "auto", scrollSnapType: "x mandatory",
-          paddingBottom: "8px", scrollbarWidth: "none",
-          paddingLeft: "4px", paddingRight: "4px",
-        }}
-      >
-        {reviews.map((r) => (
-          <div
-            key={r.id}
-            style={{
-              minWidth: `${cardW}px`, maxWidth: `${cardW}px`,
-              scrollSnapAlign: "start", flexShrink: 0,
-              background: "#fff", border: "1px solid #E2E8F0",
-              borderRadius: "16px", padding: "22px",
-              boxShadow: "0 4px 16px rgba(0,0,0,0.07)",
-              position: "relative", overflow: "hidden",
-              display: "flex", flexDirection: "column",
-            }}
-          >
-            <span style={{
-              position: "absolute", top: "4px", right: "14px",
-              fontSize: "60px", lineHeight: 1, fontFamily: "Georgia, serif",
-              color: color(r), opacity: 0.08, fontWeight: 900, userSelect: "none",
-            }}>"</span>
-
-            <div style={{ display: "flex", gap: "2px", marginBottom: "12px" }}>
-              {Array.from({ length: 5 }).map((_, s) => (
-                <Star key={s} size={12} style={{ color: s < r.rating ? "#F59E0B" : "#E2E8F0", fill: s < r.rating ? "#F59E0B" : "#E2E8F0" }} />
-              ))}
-            </div>
-
-            <p style={{ fontSize: "13px", fontWeight: 600, color: "#0F172A", marginBottom: "6px" }}>{r.title}</p>
-
-            <p style={{ fontSize: "13px", color: "#374151", lineHeight: 1.7, flex: 1, marginBottom: "16px" }}>
-              "{r.body}"
-            </p>
-
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", borderTop: "1px solid #F1F5F9", paddingTop: "12px" }}>
-              <div style={{
-                width: "34px", height: "34px", borderRadius: "50%",
-                background: `linear-gradient(135deg, ${color(r)}, ${color(r)}99)`,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: "11px", fontWeight: 800, color: "#fff", flexShrink: 0,
-                boxShadow: `0 3px 10px ${color(r)}44`,
-              }}>{initials(r.customerName)}</div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A" }}>{r.customerName}</p>
-                <p style={{ fontSize: "10px", color: "#94A3B8", marginTop: "1px" }}>Verified Customer</p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div style={{ display: "flex", justifyContent: "center", gap: "7px", marginTop: "20px" }}>
-        {reviews.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => scrollTo(i)}
-            style={{
-              width: activeIdx === i ? "20px" : "7px",
-              height: "7px", borderRadius: "4px", border: "none",
-              background: activeIdx === i ? "#1B5CB5" : "#CBD5E1",
-              cursor: "pointer", transition: "all 0.25s", padding: 0,
-            }}
-          />
-        ))}
-      </div>
-    </div>
-  );
 }
 
 function parseBaseName(name: string): { base: string; strength: string } {
@@ -333,6 +152,7 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [showCOAModal, setShowCOAModal] = useState(false);
+  const [showReviewsModal, setShowReviewsModal] = useState(false);
   const { addToCart, totalItems, bundleDiscountPct } = useCart();
   const { trackView } = useRecentlyViewed();
   const { customer } = useCustomerAuth();
@@ -558,6 +378,29 @@ export default function ProductPage() {
         />
       )}
 
+      {/* Reviews Modal */}
+      {showReviewsModal && (
+        <ReviewsModal
+          productName={product.name}
+          reviewsData={reviewsData}
+          reviewsLoading={reviewsLoading}
+          customer={customer}
+          writeRating={writeRating}
+          setWriteRating={setWriteRating}
+          hoverRating={hoverRating}
+          setHoverRating={setHoverRating}
+          writeTitle={writeTitle}
+          setWriteTitle={setWriteTitle}
+          writeBody={writeBody}
+          setWriteBody={setWriteBody}
+          submitting={submitting}
+          submitSuccess={submitSuccess}
+          submitError={submitError}
+          onSubmit={(e) => void handleSubmitReview(e)}
+          onClose={() => setShowReviewsModal(false)}
+        />
+      )}
+
       {/* Breadcrumb */}
       <div className="bg-white" style={{ borderBottom: "1px solid #E8EDF5" }}>
         <div className="max-w-[1280px] mx-auto px-4 py-2.5 flex items-center gap-1.5 text-xs" style={{ color: "#94A3B8" }}>
@@ -728,9 +571,7 @@ export default function ProductPage() {
                 {/* Star rating anchor */}
                 {reviewsData && reviewsData.summary.totalCount > 0 && (
                   <button
-                    onClick={() => {
-                      document.getElementById("reviews-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
-                    }}
+                    onClick={() => setShowReviewsModal(true)}
                     className="inline-flex items-center gap-1.5 group"
                     style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
                   >
@@ -1241,178 +1082,6 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* Reviews */}
-        <div
-          id="reviews-section"
-          className="rounded-2xl overflow-hidden mb-8"
-          style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}
-        >
-          <div style={{ borderBottom: "1px solid #F1F5F9", padding: "14px 24px" }}>
-            <span className="text-sm font-semibold" style={{ color: "#1B5CB5" }}>Reviews</span>
-          </div>
-          <div className="p-6">
-            <div style={{ maxWidth: "860px" }}>
-              {reviewsLoading ? (
-                <div className="flex justify-center py-12">
-                  <Loader2 className="w-6 h-6 animate-spin" style={{ color: "#1B5CB5" }} />
-                </div>
-              ) : reviewsData ? (
-                <>
-                  {/* Summary bar */}
-                  {reviewsData.summary.totalCount > 0 && (
-                    <div className="flex flex-col sm:flex-row gap-6 mb-8 p-5 rounded-xl" style={{ backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
-                      <div className="text-center flex flex-col items-center justify-center min-w-[100px]">
-                        <span className="text-4xl font-bold" style={{ color: "#0F172A" }}>
-                          {reviewsData.summary.avgRating?.toFixed(1)}
-                        </span>
-                        <StarRow rating={Math.round(reviewsData.summary.avgRating ?? 0)} size={16} />
-                        <span className="text-xs mt-1" style={{ color: "#64748B" }}>
-                          {reviewsData.summary.totalCount} review{reviewsData.summary.totalCount !== 1 ? "s" : ""}
-                        </span>
-                      </div>
-                      <div className="flex-1 space-y-1.5">
-                        {[5, 4, 3, 2, 1].map((star) => {
-                          const count = reviewsData.summary.breakdown[star] ?? 0;
-                          const pct = reviewsData.summary.totalCount > 0 ? (count / reviewsData.summary.totalCount) * 100 : 0;
-                          return (
-                            <div key={star} className="flex items-center gap-2 text-xs" style={{ color: "#64748B" }}>
-                              <span className="w-4 text-right">{star}</span>
-                              <Star size={11} style={{ color: "#F59E0B", fill: "#F59E0B", flexShrink: 0 }} />
-                              <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ backgroundColor: "#E2E8F0" }}>
-                                <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: "#F59E0B" }} />
-                              </div>
-                              <span className="w-6">{count}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Write review form */}
-                  {customer ? (
-                    reviewsData.myReview ? (
-                      <div className="mb-6 p-4 rounded-xl" style={{ backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0" }}>
-                        <p className="text-sm font-semibold mb-1" style={{ color: "#15803D" }}>Your review is submitted</p>
-                        <p className="text-xs" style={{ color: "#166534" }}>
-                          {reviewsData.myReview.isApproved === false
-                            ? "Thank you! Your review is pending approval."
-                            : "Your review is published."}
-                        </p>
-                      </div>
-                    ) : reviewsData.hasPurchased ? (
-                      <div className="mb-8 p-5 rounded-xl" style={{ backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
-                        <h3 className="font-semibold mb-3" style={{ fontSize: "14px", color: "#0F172A" }}>Write a Review</h3>
-                        {submitSuccess ? (
-                          <div className="p-3 rounded-lg text-sm font-medium" style={{ backgroundColor: "#F0FDF4", color: "#15803D" }}>
-                            Thank you! Your review has been submitted and is pending approval.
-                          </div>
-                        ) : (
-                          <form onSubmit={(e) => void handleSubmitReview(e)} className="space-y-3">
-                            <div>
-                              <label className="text-xs font-semibold block mb-1" style={{ color: "#374151" }}>Your Rating *</label>
-                              <div className="flex gap-1">
-                                {[1, 2, 3, 4, 5].map((s) => (
-                                  <button
-                                    key={s}
-                                    type="button"
-                                    onMouseEnter={() => setHoverRating(s)}
-                                    onMouseLeave={() => setHoverRating(0)}
-                                    onClick={() => setWriteRating(s)}
-                                    style={{ background: "none", border: "none", padding: "2px", cursor: "pointer" }}
-                                  >
-                                    <Star
-                                      size={24}
-                                      style={{
-                                        color: s <= (hoverRating || writeRating) ? "#F59E0B" : "#CBD5E1",
-                                        fill: s <= (hoverRating || writeRating) ? "#F59E0B" : "#CBD5E1",
-                                        transition: "color 0.1s, fill 0.1s",
-                                      }}
-                                    />
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                            <div>
-                              <label className="text-xs font-semibold block mb-1" style={{ color: "#374151" }}>Title *</label>
-                              <input
-                                type="text"
-                                required
-                                maxLength={120}
-                                value={writeTitle}
-                                onChange={(e) => setWriteTitle(e.target.value)}
-                                placeholder="Summarise your experience"
-                                className="w-full px-3 py-2 rounded-lg text-sm outline-none"
-                                style={{ border: "1px solid #CBD5E1", backgroundColor: "#fff", color: "#0F172A" }}
-                              />
-                            </div>
-                            <div>
-                              <label className="text-xs font-semibold block mb-1" style={{ color: "#374151" }}>Review *</label>
-                              <textarea
-                                required
-                                rows={4}
-                                maxLength={2000}
-                                value={writeBody}
-                                onChange={(e) => setWriteBody(e.target.value)}
-                                placeholder="Share your experience with this product"
-                                className="w-full px-3 py-2 rounded-lg text-sm outline-none resize-none"
-                                style={{ border: "1px solid #CBD5E1", backgroundColor: "#fff", color: "#0F172A" }}
-                              />
-                            </div>
-                            {submitError && (
-                              <p className="text-xs" style={{ color: "#DC2626" }}>{submitError}</p>
-                            )}
-                            <button
-                              type="submit"
-                              disabled={submitting || writeRating === 0}
-                              className="flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold transition-opacity"
-                              style={{
-                                backgroundColor: "#1B5CB5",
-                                color: "#fff",
-                                opacity: submitting || writeRating === 0 ? 0.6 : 1,
-                                cursor: submitting || writeRating === 0 ? "not-allowed" : "pointer",
-                                border: "none",
-                              }}
-                            >
-                              {submitting && <Loader2 size={14} className="animate-spin" />}
-                              {submitting ? "Submitting..." : "Submit Review"}
-                            </button>
-                          </form>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="mb-6 p-4 rounded-xl" style={{ backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
-                        <p className="text-sm" style={{ color: "#64748B" }}>Only verified purchasers can leave a review.</p>
-                      </div>
-                    )
-                  ) : (
-                    <div className="mb-6 p-4 rounded-xl" style={{ backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
-                      <p className="text-sm" style={{ color: "#64748B" }}>
-                        <a href="/account" style={{ color: "#1B5CB5", fontWeight: 600 }}>Sign in</a> to write a review. Only verified purchasers may review products.
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Reviews carousel */}
-                  {reviewsData.reviews.length === 0 ? (
-                    <div className="text-center py-10" style={{ color: "#94A3B8" }}>
-                      <Star size={32} className="mx-auto mb-3" style={{ color: "#E2E8F0", fill: "#E2E8F0" }} />
-                      <p className="text-sm">No reviews yet. Be the first to review this product.</p>
-                    </div>
-                  ) : (
-                    <div style={{ paddingLeft: "4px", paddingRight: "4px" }}>
-                      <ReviewsCarousel reviews={reviewsData.reviews} />
-                    </div>
-                  )}
-                </>
-              ) : (
-                <div className="text-center py-10" style={{ color: "#94A3B8" }}>
-                  <p className="text-sm">Unable to load reviews.</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
 
 
         {/* Recently Viewed */}
