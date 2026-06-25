@@ -560,16 +560,6 @@ export default function ProductPage() {
         />
       )}
 
-      {/* Research warning */}
-      <div style={{ backgroundColor: "#FFFBEB", borderBottom: "1px solid #FDE68A" }}>
-        <div className="max-w-[1280px] mx-auto px-4 py-2.5 flex items-start gap-2">
-          <span style={{ fontSize: "14px", flexShrink: 0, marginTop: "1px" }}>⚠️</span>
-          <p className="text-xs leading-relaxed" style={{ color: "#92400E" }}>
-            <strong>Research Chemical Only:</strong> Intended strictly for in-vitro laboratory testing. Not approved by the FDA. Bodily introduction into humans or animals is strictly forbidden. Must be 18+ and a qualified researcher to purchase.
-          </p>
-        </div>
-      </div>
-
       {/* Breadcrumb */}
       <div className="bg-white" style={{ borderBottom: "1px solid #E8EDF5" }}>
         <div className="max-w-[1280px] mx-auto px-4 py-2.5 flex items-center gap-1.5 text-xs" style={{ color: "#94A3B8" }}>
@@ -582,6 +572,21 @@ export default function ProductPage() {
           </Link>
           <ChevronRight size={12} />
           <span style={{ color: "#475569" }}>{product.name}</span>
+        </div>
+      </div>
+
+      {/* Research Use Only Disclaimer */}
+      <div className="max-w-[1280px] mx-auto px-3 md:px-4 pt-4 md:pt-6">
+        <div
+          className="rounded-xl p-4"
+          style={{ backgroundColor: "#FFF8F0", border: "1px solid #FED7AA" }}
+        >
+          <p className="text-xs font-bold mb-1.5 uppercase tracking-wide" style={{ color: "#C2410C" }}>
+            ⚠ Research Use Only Disclaimer
+          </p>
+          <p className="text-xs leading-relaxed" style={{ color: "#7C2D12" }}>
+            The product described on this page is intended for in-vitro laboratory research use only. It is not a drug and has not been approved by the FDA or any other regulatory body. It is not intended to diagnose, treat, cure, or prevent any disease or condition. Only qualified researchers should purchase this product. You must be at least 18 years of age to purchase.
+          </p>
         </div>
       </div>
 
@@ -642,12 +647,6 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              {/* RUO */}
-              <div className="px-4 py-2" style={{ borderBottom: "1px solid #F1F5F9", backgroundColor: "#FFF8F8" }}>
-                <p className="text-xs font-medium" style={{ color: "#DC2626" }}>
-                  RUO — Research Use Only. Not for human or veterinary diagnostic use.
-                </p>
-              </div>
 
               {/* Product image — scales with screen */}
               <div
@@ -1585,18 +1584,6 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* Disclaimer */}
-        <div
-          className="rounded-2xl p-5 mb-8"
-          style={{ backgroundColor: "#FFF8F0", border: "1px solid #FED7AA" }}
-        >
-          <p className="text-xs font-bold mb-1.5 uppercase tracking-wide" style={{ color: "#C2410C" }}>
-            ⚠ Research Use Only Disclaimer
-          </p>
-          <p className="text-xs leading-relaxed" style={{ color: "#7C2D12" }}>
-            The product described on this page is intended for in-vitro laboratory research use only. It is not a drug and has not been approved by the FDA or any other regulatory body. It is not intended to diagnose, treat, cure, or prevent any disease or condition. Only qualified researchers should purchase this product. You must be at least 18 years of age to purchase.
-          </p>
-        </div>
 
         {/* Customers Also Bought */}
         <CustomersAlsoBought product={product} />
