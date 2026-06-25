@@ -176,38 +176,6 @@ export default function Footer() {
   return (
     <footer style={{ fontFamily: "'Arimo', Arial, sans-serif" }}>
 
-      {/* RUO Disclaimer strip */}
-      <div
-        style={{
-          background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
-          padding: "11px 16px",
-          textAlign: "center",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)",
-            backgroundSize: "24px 24px",
-            pointerEvents: "none",
-          }}
-        />
-        <p
-          style={{
-            fontSize: "11px",
-            fontWeight: 700,
-            color: "#E8A93E",
-            letterSpacing: "0.1em",
-            position: "relative",
-            zIndex: 1,
-          }}
-        >
-          ⚗️ FOR IN-VITRO LABORATORY RESEARCH USE ONLY · NOT FOR HUMAN USE · 18+ TO PURCHASE
-        </p>
-      </div>
 
       {/* Main footer body */}
       <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", color: "#94A3B8" }}>
