@@ -11,6 +11,8 @@ import COAModal from "@/components/COAModal";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getPurity, getPurityStr, getLotNumber } from "@/utils/productPurity";
+import { useRecentlyViewed } from "@/context/RecentlyViewedContext";
+import RecentlyViewed from "@/components/RecentlyViewed";
 import CustomersAlsoBought from "@/components/CustomersAlsoBought";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -333,6 +335,7 @@ export default function ProductPage() {
   const [added, setAdded] = useState(false);
   const [showCOAModal, setShowCOAModal] = useState(false);
   const { addToCart, totalItems, bundleDiscountPct } = useCart();
+  const { trackView } = useRecentlyViewed();
   const { customer } = useCustomerAuth();
   const { formatPrice } = useCurrency();
   const { toggle: toggleWishlist, has: inWishlist } = useWishlist();
@@ -426,6 +429,10 @@ export default function ProductPage() {
     setReviewsData(null);
     setSubmitSuccess(false);
   }, [params.id]);
+
+  useEffect(() => {
+    if (product) trackView(product.id);
+  }, [product?.id]);
 
   useEffect(() => {
     if (activeTab === "reviews" && product && !reviewsData) {
@@ -1594,6 +1601,8 @@ export default function ProductPage() {
         {/* Customers Also Bought */}
         <CustomersAlsoBought product={product} />
 
+        {/* Recently Viewed */}
+        <RecentlyViewed excludeId={product.id} />
       </div>
     </div>
   );
