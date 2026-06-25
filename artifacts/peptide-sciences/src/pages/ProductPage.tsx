@@ -1227,39 +1227,10 @@ export default function ProductPage() {
               </table>
             </div>
 
-            {/* Also known as */}
-            {detail.alsoKnownAs && (
-              <p className="text-xs mb-3" style={{ color: "#64748B" }}>
-                <strong style={{ color: "#475569" }}>Also known as:</strong> {detail.alsoKnownAs}
-              </p>
-            )}
-
-            {/* Research areas */}
-            {detail.researchAreas && detail.researchAreas.length > 0 && (
-              <div className="mb-4">
-                <p className="text-xs font-bold mb-2 uppercase tracking-wider" style={{ color: "#94A3B8" }}>Research Areas</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {detail.researchAreas.map((area) => (
-                    <span
-                      key={area}
-                      className="px-2.5 py-0.5 rounded-full text-xs font-medium"
-                      style={{ backgroundColor: "#EEF4FF", color: "#1B5CB5", border: "1px solid #BFDBFE" }}
-                    >
-                      {area}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <p className="text-xs" style={{ color: "#94A3B8" }}>
-              For research purposes only. Not for human or veterinary use. Must be 18+ to purchase.
-            </p>
+            {/* Composition / Research Focus / Storage / Shipping / Returns */}
+            <ProductInfoAccordion detail={detail} />
           </div>
         </div>
-
-        {/* Composition / Research Focus / Storage / Shipping / Returns */}
-        <ProductInfoAccordion detail={detail} />
 
         {/* Description / COA / Reviews Tabs */}
         <div

@@ -47,14 +47,7 @@ function Section({
 
 export default function ProductInfoAccordion({ detail }: { detail: ProductDetail }) {
   return (
-    <div
-      className="rounded-2xl mb-8 px-6"
-      style={{
-        backgroundColor: "#fff",
-        border: "1px solid #E8EDF5",
-        boxShadow: "0 2px 12px rgba(15,23,42,0.05)",
-      }}
-    >
+    <div>
       {/* COMPOSITION */}
       {detail.alsoKnownAs && (
         <Section title="Composition" defaultOpen>
