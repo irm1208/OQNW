@@ -13,7 +13,6 @@ import { useCurrency } from "@/context/CurrencyContext";
 import { getPurity, getPurityStr, getLotNumber } from "@/utils/productPurity";
 import { useRecentlyViewed } from "@/context/RecentlyViewedContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
-import CustomersAlsoBought from "@/components/CustomersAlsoBought";
 import ProductInfoAccordion from "@/components/ProductInfoAccordion";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -1386,9 +1385,6 @@ export default function ProductPage() {
           </div>
         </div>
 
-
-        {/* Customers Also Bought */}
-        <CustomersAlsoBought product={product} />
 
         {/* Recently Viewed */}
         <RecentlyViewed excludeId={product.id} />
