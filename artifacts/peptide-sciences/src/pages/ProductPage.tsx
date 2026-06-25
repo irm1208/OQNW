@@ -2,15 +2,10 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { trackViewContent } from "@/lib/pixels";
 import { Link, useParams, useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
-import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, User, Heart, Droplets, Gift, Sparkles } from "lucide-react";
-import { generateCOA } from "@/utils/generateCOA";
-import HplcChart from "@/components/HplcChart";
-import MsChart from "@/components/MsChart";
-import COADocument from "@/components/COADocument";
-import COAModal from "@/components/COAModal";
+import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Star, Loader2, User, Heart, Droplets, Gift, Sparkles } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
-import { getPurity, getPurityStr, getLotNumber } from "@/utils/productPurity";
+import { getPurity, getPurityStr } from "@/utils/productPurity";
 import { useRecentlyViewed } from "@/context/RecentlyViewedContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import CustomersAlsoBought from "@/components/CustomersAlsoBought";
@@ -333,7 +328,6 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<"description" | "reviews">("description");
   const [added, setAdded] = useState(false);
-  const [showCOAModal, setShowCOAModal] = useState(false);
   const { addToCart, totalItems, bundleDiscountPct } = useCart();
   const { trackView } = useRecentlyViewed();
   const { customer } = useCustomerAuth();
@@ -551,14 +545,6 @@ export default function ProductPage() {
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
-      {/* COA Report Modal */}
-      {showCOAModal && (
-        <COAModal
-          product={product}
-          filteredProducts={[product]}
-          onClose={() => setShowCOAModal(false)}
-        />
-      )}
 
       {/* Research warning */}
       <div style={{ backgroundColor: "#FFFBEB", borderBottom: "1px solid #FDE68A" }}>
@@ -1209,31 +1195,6 @@ export default function ProductPage() {
               );
             })()}
 
-            {/* COA — View Report */}
-            <div
-              className="rounded-2xl flex items-center justify-between gap-3 mb-5 px-4 py-3"
-              style={{ backgroundColor: "#F0F5FF", border: "1.5px solid #BFDBFE" }}
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className="rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ width: "36px", height: "36px", backgroundColor: "#1B5CB5" }}
-                >
-                  <Download size={16} color="#fff" />
-                </div>
-                <div>
-                  <p className="font-bold text-sm" style={{ color: "#1240A0" }}>Certificate of Analysis</p>
-                  <p className="text-xs" style={{ color: "#3B82F6" }}>Full HPLC · ESI-MS · QC report — Lot {getLotNumber(product.id)}</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowCOAModal(true)}
-                className="coa-btn-touch flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90 flex-shrink-0"
-                style={{ height: "36px", padding: "0 16px", backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px" }}
-              >
-                View Report →
-              </button>
-            </div>
 
             {/* Specs table */}
             <div
