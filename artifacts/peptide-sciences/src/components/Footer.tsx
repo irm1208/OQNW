@@ -67,7 +67,7 @@ const legalLinks = [
   { label: "Privacy Policy",     href: "/privacy"  },
 ];
 
-const paymentMethods = ["Visa", "Mastercard", "Amex", "Bitcoin", "Ethereum"];
+const paymentMethods = ["Bitcoin", "Ethereum"];
 
 
 
