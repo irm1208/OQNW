@@ -322,9 +322,33 @@ export default function OrderDetail() {
       case "delivered": return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-200";
       case "shipped": return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-200";
       case "processing": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 hover:bg-yellow-200";
+      case "payment_received": return "bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-400 hover:bg-teal-200";
+      case "awaiting_payment": return "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400 hover:bg-orange-200";
       case "cancelled": return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 hover:bg-red-200";
       default: return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200";
     }
+  };
+
+  const STATUS_LABELS: Record<string, string> = {
+    pending: "Pending",
+    awaiting_payment: "Awaiting Payment",
+    payment_received: "Payment Received",
+    processing: "Processing",
+    shipped: "Shipped",
+    delivered: "Delivered",
+    cancelled: "Cancelled",
+  };
+
+  const isBankTransfer = (order?.fraudFlags ?? []).includes("bank_transfer_payment");
+
+  const handleConfirmBankTransfer = () => {
+    updateOrder.mutate({ id: orderId, data: { status: "payment_received" } }, {
+      onSuccess: () => {
+        toast.success("Bank transfer marked as received — customer will see updated status");
+        queryClient.setQueryData(getGetAdminOrderQueryKey(orderId), { ...order, status: "payment_received" });
+      },
+      onError: () => toast.error("Failed to confirm payment"),
+    });
   };
 
   const handleStatusChange = (newStatus: string) => {
@@ -380,7 +404,7 @@ export default function OrderDetail() {
         </Button>
         <h2 className="text-2xl font-bold tracking-tight">Order {order.orderNumber}</h2>
         <Badge variant="outline" className={`${getStatusColor(order.status)} text-sm px-3 py-1`}>
-          {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+          {STATUS_LABELS[order.status] ?? (order.status.charAt(0).toUpperCase() + order.status.slice(1))}
         </Badge>
         {(order.fraudScore ?? 0) > 0 && (
           <Badge
@@ -441,13 +465,31 @@ export default function OrderDetail() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className={isBankTransfer && order.status === "awaiting_payment" ? "border-2 border-orange-200" : undefined}>
             <CardHeader className="pb-4 border-b">
               <CardTitle className="text-lg flex items-center gap-2">
                 <Truck className="w-5 h-5 text-muted-foreground" /> Fulfillment
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-6 space-y-4">
+              {isBankTransfer && order.status === "awaiting_payment" && (
+                <div className="flex items-center justify-between gap-4 rounded-md border border-orange-200 bg-orange-50 dark:bg-orange-950/20 px-4 py-3">
+                  <div>
+                    <p className="text-sm font-medium text-orange-800 dark:text-orange-300">Awaiting bank transfer</p>
+                    <p className="text-xs text-orange-700/80 dark:text-orange-400/80">
+                      The customer was given bank details at checkout. Once you confirm the funds have arrived, mark it as received below — the customer's status page updates immediately.
+                    </p>
+                  </div>
+                  <Button
+                    className="bg-teal-600 hover:bg-teal-700 text-white shrink-0"
+                    onClick={handleConfirmBankTransfer}
+                    disabled={updateOrder.isPending}
+                  >
+                    {updateOrder.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <CheckCircle2 className="w-4 h-4 mr-2" />}
+                    Confirm Payment Received
+                  </Button>
+                </div>
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-muted-foreground">Status</label>
@@ -457,6 +499,8 @@ export default function OrderDetail() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="pending">Pending</SelectItem>
+                      <SelectItem value="awaiting_payment">Awaiting Payment</SelectItem>
+                      <SelectItem value="payment_received">Payment Received</SelectItem>
                       <SelectItem value="processing">Processing</SelectItem>
                       <SelectItem value="shipped">Shipped</SelectItem>
                       <SelectItem value="delivered">Delivered</SelectItem>

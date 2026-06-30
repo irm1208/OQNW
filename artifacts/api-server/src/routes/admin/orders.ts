@@ -125,7 +125,7 @@ router.get("/admin/orders/export", async (req: Request, res: Response): Promise<
   }
 });
 
-const VALID_STATUSES = ["pending", "processing", "shipped", "delivered", "cancelled"];
+const VALID_STATUSES = ["pending", "awaiting_payment", "payment_received", "processing", "shipped", "delivered", "cancelled"];
 
 // POST /api/admin/orders/bulk-update — update status on multiple orders at once
 router.post("/admin/orders/bulk-update", async (req: Request, res: Response): Promise<void> => {
@@ -338,7 +338,9 @@ router.patch("/admin/orders/:id", async (req: Request, res: Response): Promise<v
         country: updated.country ?? null,
       };
 
-      if (status === "processing") {
+      if (status === "payment_received") {
+        sendOrderConfirmation(emailData).catch(() => {});
+      } else if (status === "processing" && previousOrder.status === "awaiting_payment") {
         sendOrderConfirmation(emailData).catch(() => {});
       } else if (status === "shipped") {
         sendShippingNotification(emailData).catch(() => {});

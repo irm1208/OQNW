@@ -25,11 +25,15 @@ async function downloadCsv(url: string, filename: string) {
 
 const STATUS_OPTIONS = [
   { value: "pending", label: "Pending" },
+  { value: "awaiting_payment", label: "Awaiting Payment" },
+  { value: "payment_received", label: "Payment Received" },
   { value: "processing", label: "Processing" },
   { value: "shipped", label: "Shipped" },
   { value: "delivered", label: "Delivered" },
   { value: "cancelled", label: "Cancelled" },
 ];
+
+const STATUS_LABELS: Record<string, string> = Object.fromEntries(STATUS_OPTIONS.map((o) => [o.value, o.label]));
 
 export default function Orders() {
   const [search, setSearch] = useState("");
@@ -119,6 +123,8 @@ export default function Orders() {
       case "delivered": return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-200";
       case "shipped": return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-200";
       case "processing": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 hover:bg-yellow-200";
+      case "payment_received": return "bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-400 hover:bg-teal-200";
+      case "awaiting_payment": return "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400 hover:bg-orange-200";
       case "cancelled": return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 hover:bg-red-200";
       default: return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200";
     }
@@ -265,7 +271,7 @@ export default function Orders() {
                   <TableCell>
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <Badge variant="outline" className={getStatusColor(order.status)}>
-                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                        {STATUS_LABELS[order.status] ?? (order.status.charAt(0).toUpperCase() + order.status.slice(1))}
                       </Badge>
                       {(order.fraudScore ?? 0) >= 25 && !(order as any).fraudReviewed && (
                         <Badge

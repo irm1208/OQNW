@@ -7,7 +7,7 @@ function apiUrl(path: string) {
   return `${BASE_URL}api/${path}`.replace(/\/+/g, "/").replace(/^\/\//, "/");
 }
 
-type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+type OrderStatus = "pending" | "awaiting_payment" | "payment_received" | "processing" | "shipped" | "delivered" | "cancelled";
 
 type TrackResult = {
   orderNumber: string;
@@ -19,11 +19,13 @@ type TrackResult = {
 };
 
 const STATUS_CONFIG: Record<OrderStatus, { label: string; color: string; bg: string; icon: React.ReactNode; step: number }> = {
-  pending:    { label: "Order Placed",  color: "#D97706", bg: "#FFFBEB", icon: <Clock size={18} />,        step: 0 },
-  processing: { label: "Processing",   color: "#2563EB", bg: "#EFF6FF", icon: <Package size={18} />,      step: 1 },
-  shipped:    { label: "Dispatched",   color: "#7C3AED", bg: "#F5F3FF", icon: <Truck size={18} />,        step: 2 },
-  delivered:  { label: "Delivered",    color: "#059669", bg: "#F0FDF4", icon: <CheckCircle2 size={18} />, step: 3 },
-  cancelled:  { label: "Cancelled",    color: "#DC2626", bg: "#FEF2F2", icon: <XCircle size={18} />,      step: -1 },
+  pending:           { label: "Order Placed",      color: "#D97706", bg: "#FFFBEB", icon: <Clock size={18} />,        step: 0 },
+  awaiting_payment:  { label: "Awaiting Payment",   color: "#B45309", bg: "#FFFBEB", icon: <Clock size={18} />,        step: -1 },
+  payment_received:  { label: "Payment Received",   color: "#0D9488", bg: "#F0FDFA", icon: <CheckCircle2 size={18} />, step: 0 },
+  processing:        { label: "Processing",         color: "#2563EB", bg: "#EFF6FF", icon: <Package size={18} />,      step: 1 },
+  shipped:           { label: "Dispatched",         color: "#7C3AED", bg: "#F5F3FF", icon: <Truck size={18} />,        step: 2 },
+  delivered:         { label: "Delivered",          color: "#059669", bg: "#F0FDF4", icon: <CheckCircle2 size={18} />, step: 3 },
+  cancelled:         { label: "Cancelled",          color: "#DC2626", bg: "#FEF2F2", icon: <XCircle size={18} />,      step: -1 },
 };
 
 const STEPS = ["Order Placed", "Processing", "Dispatched", "Delivered"];
@@ -194,8 +196,21 @@ export default function TrackOrderPage() {
               </div>
             </div>
 
-            {/* Progress tracker (not shown for cancelled) */}
-            {result.status !== "cancelled" && (
+            {/* Awaiting-payment banner (no progress tracker — payment hasn't been confirmed yet) */}
+            {result.status === "awaiting_payment" && (
+              <div style={{ padding: "18px 24px", borderBottom: "1px solid #F1F5F9", display: "flex", gap: "12px", alignItems: "flex-start" }}>
+                <Clock size={18} style={{ color: "#B45309", flexShrink: 0, marginTop: "1px" }} />
+                <div>
+                  <p style={{ fontSize: "13.5px", fontWeight: 700, color: "#92400E", marginBottom: "4px" }}>We're waiting for your bank transfer</p>
+                  <p style={{ fontSize: "12.5px", color: "#78350F", lineHeight: 1.6 }}>
+                    Bank transfers are confirmed manually by our team and can take 1–2 business days to arrive. We'll update this page as soon as we've confirmed receipt — there's no need to contact us unless it's been longer than that.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Progress tracker (only shown once the order is confirmed and moving through fulfillment) */}
+            {result.status !== "cancelled" && result.status !== "awaiting_payment" && (
               <div style={{ padding: "20px 24px", borderBottom: "1px solid #F1F5F9" }}>
                 <div style={{ display: "flex", gap: "0", position: "relative" }}>
                   {STEPS.map((label, i) => {
