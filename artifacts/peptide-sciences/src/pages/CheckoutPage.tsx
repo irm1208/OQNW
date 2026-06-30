@@ -4,7 +4,7 @@ import { Link, useLocation } from "wouter";
 import {
   ChevronRight, ChevronDown, Lock, Truck, Zap, Package,
   User, MapPin, Phone, Mail,
-  CheckCircle2, FlaskConical, Tag, X, Award, Gift, Check,
+  CheckCircle2, FlaskConical, Tag, X, Award, Gift, Check, Landmark,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -664,37 +664,100 @@ export default function CheckoutPage() {
 
                 {/* Payment method selector */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "24px" }}>
-                  {([
-                    { id: "bank_transfer" as const, label: "Pay By Bank",           sub: "BACS / Faster Payments — no fees, dispatched on clearance", icon: "🏦" },
-                    { id: "bitcoin" as const,       label: "Cryptocurrency Payment", sub: "Pay with Bitcoin — confirmed within ~1 hour",             icon: "₿"  },
-                  ]).map(opt => (
-                    <div
-                      key={opt.id}
-                      onClick={() => setPaymentMethod(opt.id)}
-                      style={{
-                        display: "flex", alignItems: "center", gap: "14px",
-                        padding: "14px 16px", borderRadius: "12px", cursor: "pointer",
-                        border: `2px solid ${paymentMethod === opt.id ? "#1240A0" : "#E2E8F0"}`,
-                        backgroundColor: paymentMethod === opt.id ? "#EEF4FF" : "#F8FAFC",
-                        transition: "all 0.15s",
-                      }}
-                    >
+                  {/* Pay By Bank — featured option */}
+                  <div
+                    onClick={() => setPaymentMethod("bank_transfer")}
+                    style={{
+                      borderRadius: "14px", cursor: "pointer", padding: "16px",
+                      border: `2px solid ${paymentMethod === "bank_transfer" ? "#1240A0" : "#E2E8F0"}`,
+                      backgroundColor: paymentMethod === "bank_transfer" ? "#EEF4FF" : "#F8FAFC",
+                      transition: "all 0.15s",
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "12px" }}>
                       <div style={{
                         width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
-                        border: `2px solid ${paymentMethod === opt.id ? "#1240A0" : "#CBD5E1"}`,
-                        backgroundColor: paymentMethod === opt.id ? "#1240A0" : "#fff",
+                        border: `2px solid ${paymentMethod === "bank_transfer" ? "#1240A0" : "#CBD5E1"}`,
+                        backgroundColor: paymentMethod === "bank_transfer" ? "#1240A0" : "#fff",
                         display: "flex", alignItems: "center", justifyContent: "center",
                       }}>
-                        {paymentMethod === opt.id && <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#fff" }} />}
+                        {paymentMethod === "bank_transfer" && <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#fff" }} />}
                       </div>
-                      <span style={{ fontSize: "22px", flexShrink: 0, lineHeight: 1 }}>{opt.icon}</span>
-                      <div style={{ flex: 1 }}>
-                        <p style={{ margin: 0, fontSize: "14px", fontWeight: 700, color: paymentMethod === opt.id ? "#1240A0" : "#0F172A" }}>{opt.label}</p>
-                        <p style={{ margin: 0, fontSize: "12px", color: "#64748B" }}>{opt.sub}</p>
+                      <Landmark size={20} color={paymentMethod === "bank_transfer" ? "#1240A0" : "#475569"} style={{ flexShrink: 0 }} />
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                          <p style={{ margin: 0, fontSize: "14px", fontWeight: 800, color: paymentMethod === "bank_transfer" ? "#1240A0" : "#0F172A" }}>Pay By Bank</p>
+                          <span style={{
+                            fontSize: "9.5px", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase",
+                            color: "#065F46", backgroundColor: "#D1FAE5", padding: "3px 8px", borderRadius: "999px",
+                          }}>
+                            Recommended · Fastest
+                          </span>
+                        </div>
+                        <p style={{ margin: "3px 0 0", fontSize: "12px", color: "#64748B" }}>
+                          Tap your bank, send the transfer — confirmed once it clears.
+                        </p>
                       </div>
-                      {paymentMethod === opt.id && <Check size={16} color="#1240A0" />}
+                      {paymentMethod === "bank_transfer" && <Check size={16} color="#1240A0" style={{ flexShrink: 0 }} />}
                     </div>
-                  ))}
+
+                    {/* Generic bank icon row — illustrative only, not affiliated with any bank */}
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "12px", paddingLeft: "34px" }}>
+                      {["#1240A0", "#0EA5E9", "#7C3AED", "#059669", "#EA580C"].map((c, i) => (
+                        <div key={i} style={{
+                          width: "26px", height: "26px", borderRadius: "8px", backgroundColor: c + "1A",
+                          border: `1px solid ${c}33`, display: "flex", alignItems: "center", justifyContent: "center",
+                        }}>
+                          <Landmark size={13} color={c} />
+                        </div>
+                      ))}
+                      <span style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 600, marginLeft: "2px" }}>+ your bank</span>
+                    </div>
+
+                    {/* How it works */}
+                    <div style={{ paddingLeft: "34px", display: "flex", flexDirection: "column", gap: "6px" }}>
+                      {["Place your order", "Send the transfer from your phone or bank app", "We confirm once it clears"].map((step, i) => (
+                        <div key={i} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <div style={{
+                            width: "16px", height: "16px", borderRadius: "50%", flexShrink: 0,
+                            backgroundColor: "#1240A0", color: "#fff",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            fontSize: "9px", fontWeight: 800,
+                          }}>
+                            {i + 1}
+                          </div>
+                          <p style={{ margin: 0, fontSize: "11.5px", color: "#475569" }}>{step}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Cryptocurrency option */}
+                  <div
+                    onClick={() => setPaymentMethod("bitcoin")}
+                    style={{
+                      display: "flex", alignItems: "center", gap: "14px",
+                      padding: "14px 16px", borderRadius: "12px", cursor: "pointer",
+                      border: `2px solid ${paymentMethod === "bitcoin" ? "#1240A0" : "#E2E8F0"}`,
+                      backgroundColor: paymentMethod === "bitcoin" ? "#EEF4FF" : "#F8FAFC",
+                      transition: "all 0.15s",
+                    }}
+                  >
+                    <div style={{
+                      width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
+                      border: `2px solid ${paymentMethod === "bitcoin" ? "#1240A0" : "#CBD5E1"}`,
+                      backgroundColor: paymentMethod === "bitcoin" ? "#1240A0" : "#fff",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}>
+                      {paymentMethod === "bitcoin" && <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#fff" }} />}
+                    </div>
+                    <span style={{ fontSize: "22px", flexShrink: 0, lineHeight: 1 }}>₿</span>
+                    <div style={{ flex: 1 }}>
+                      <p style={{ margin: 0, fontSize: "14px", fontWeight: 700, color: paymentMethod === "bitcoin" ? "#1240A0" : "#0F172A" }}>Cryptocurrency Payment</p>
+                      <p style={{ margin: 0, fontSize: "12px", color: "#64748B" }}>Pay with Bitcoin — confirmed within ~1 hour</p>
+                    </div>
+                    {paymentMethod === "bitcoin" && <Check size={16} color="#1240A0" />}
+                  </div>
                 </div>
 
                 {/* Bank Transfer details */}
@@ -718,7 +781,7 @@ export default function CheckoutPage() {
                       ))}
                     </div>
                     <p style={{ fontSize: "11.5px", color: "#475569", marginTop: "12px", lineHeight: 1.6, marginBottom: 0 }}>
-                      Faster Payments clears same day. CHAPS next working day. Orders paid after 3pm are dispatched the following morning.
+                      Faster Payments clears same day. CHAPS next working day. Orders paid after 3pm are dispatched the following morning. After placing your order you'll also get a QR code so you can finish sending the transfer from your phone.
                     </p>
                   </div>
                 )}

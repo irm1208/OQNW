@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { trackPurchase } from "@/lib/pixels";
 import { Link } from "wouter";
-import { CheckCircle2, Package, Truck, FlaskConical, ArrowRight, Download, Search, Clock } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
+import { CheckCircle2, Package, Truck, FlaskConical, ArrowRight, Download, Search, Clock, Smartphone, Monitor } from "lucide-react";
 
 // Keep in sync with CheckoutPage.tsx
 const BANK_DETAILS = {
@@ -31,6 +32,10 @@ export default function OrderConfirmation() {
   const btcAmount      = params.get("btcAmount")      ?? null;
   const btcUrl         = params.get("btcUrl")         ?? null;
   const coin = CRYPTO_OPTIONS.find(c => c.id === cryptoCurrId) ?? CRYPTO_OPTIONS[0];
+
+  const continuePaymentParams = new URLSearchParams({ order, name, total });
+  const continuePaymentUrl = `${window.location.origin}${import.meta.env.BASE_URL ?? "/"}continue-payment?${continuePaymentParams.toString()}`.replace(/([^:])\/\//, "$1/");
+  const [showOnDevice, setShowOnDevice] = useState(false);
 
   const today = new Date();
   const deliveryDays = ship === "Next Day" ? 1 : ship === "Express" ? 2 : 5;
@@ -111,6 +116,43 @@ export default function OrderConfirmation() {
             <p style={{ fontSize: "11.5px", color: "#475569", lineHeight: 1.6, margin: 0 }}>
               Use your order number as the payment reference. Faster Payments usually clears same day. We'll email you once payment is confirmed and your order is dispatched.
             </p>
+          </div>
+        )}
+
+        {/* Pay By Bank — scan to continue on phone */}
+        {payment === "bank_transfer" && (
+          <div style={{ borderRadius: "16px", border: "1.5px solid #E8EDF5", backgroundColor: "#fff", padding: "22px", marginBottom: "20px", boxShadow: "0 4px 20px rgba(15,23,42,0.05)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
+              <Smartphone size={18} color="#1240A0" />
+              <p style={{ fontSize: "13px", fontWeight: 800, color: "#0F172A", margin: 0, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                Scan to continue on your phone
+              </p>
+            </div>
+            {!showOnDevice ? (
+              <>
+                <div style={{ display: "flex", justifyContent: "center", padding: "16px", backgroundColor: "#F8FAFC", borderRadius: "12px", border: "1px solid #E2E8F0", marginBottom: "12px" }}>
+                  <QRCodeSVG value={continuePaymentUrl} size={180} bgColor="#F8FAFC" fgColor="#0F172A" />
+                </div>
+                <p style={{ fontSize: "12px", color: "#64748B", textAlign: "center", marginBottom: "14px" }}>
+                  Scan the QR code to open your payment details on your phone — handy if your banking app lives there.
+                </p>
+                <button
+                  onClick={() => setShowOnDevice(true)}
+                  style={{
+                    width: "100%", height: "42px", borderRadius: "10px",
+                    border: "1.5px solid #1240A0", backgroundColor: "#fff", color: "#1240A0",
+                    fontSize: "13px", fontWeight: 700, cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+                  }}
+                >
+                  <Monitor size={15} /> Continue on this device
+                </button>
+              </>
+            ) : (
+              <p style={{ fontSize: "12.5px", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+                No problem — the bank details above are all you need. Send the transfer from this device whenever you're ready.
+              </p>
+            )}
           </div>
         )}
 

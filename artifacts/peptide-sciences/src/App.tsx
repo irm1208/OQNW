@@ -17,6 +17,7 @@ import PrivacyPage from "@/pages/PrivacyPage";
 import CartPage from "@/pages/CartPage";
 import CheckoutPage from "@/pages/CheckoutPage";
 import OrderConfirmation from "@/pages/OrderConfirmation";
+import ContinuePayment from "@/pages/ContinuePayment";
 import TrackOrderPage from "@/pages/TrackOrderPage";
 import SignIn from "@/pages/SignIn";
 import ForgotPassword from "@/pages/ForgotPassword";
@@ -103,6 +104,7 @@ function Router() {
       <Route path="/cart" component={CartPage} />
       <Route path="/checkout" component={CheckoutPage} />
       <Route path="/order-confirmation" component={OrderConfirmation} />
+      <Route path="/continue-payment" component={ContinuePayment} />
       <Route path="/track-order" component={TrackOrderPage} />
       <Route path="/wishlist" component={WishlistPage} />
       <Route path="/protocols" component={ProtocolsPage} />
