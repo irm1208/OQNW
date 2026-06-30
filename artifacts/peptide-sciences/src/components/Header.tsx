@@ -32,6 +32,7 @@ function highlightMatch(text: string, query: string) {
 const navItems = [
   { label: "Home", href: "/" },
   { label: "All Peptides", href: "/all-peptides" },
+  { label: "NAD+", href: "/product/49" },
   { label: "Bac Water", href: "/bac-water" },
   { label: "Research Stacks", href: "/stacks" },
   { label: "Research & Education", href: "/blog" },
@@ -734,7 +735,7 @@ export default function Header() {
 
                         {/* Peptide name list */}
                         <div style={{ maxHeight: "320px", overflowY: "auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1px" }}>
-                          {peptideGroups.map((group) => (
+                          {peptideGroups.filter(g => g.baseName !== "NAD+").map((group) => (
                             <Link
                               key={group.baseName}
                               href={`/product/${group.variants[0].id}`}
