@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Link, useLocation } from "wouter";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/context/ThemeContext";
 import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, FileCheck, BookOpen, Calculator, BookMarked, GraduationCap, Sun, Moon } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
