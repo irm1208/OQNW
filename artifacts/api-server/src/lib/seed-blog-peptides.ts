@@ -1,0 +1,2078 @@
+import { db } from "@workspace/db";
+import { blogPostsTable } from "@workspace/db";
+
+const posts = [
+  // ── Anti-Inflammatory ──────────────────────────────────────────────────────
+  {
+    title: "KPV: The Anti-Inflammatory Tripeptide in Preclinical Research",
+    slug: "kpv-peptide-research",
+    excerpt: "KPV (Lys-Pro-Val) is a C-terminal fragment of α-MSH that retains anti-inflammatory, antimicrobial, and gut-protective properties without melanocortin receptor-mediated side effects.",
+    content: `## What is KPV?
+
+KPV is a tripeptide consisting of lysine, proline, and valine — the C-terminal three amino acids of α-melanocyte-stimulating hormone (α-MSH). It was identified as the minimal sequence required for many of α-MSH's anti-inflammatory properties, while lacking the melanocortin receptor activity responsible for pigmentation and other central effects.
+
+## Anti-Inflammatory Mechanisms
+
+KPV's anti-inflammatory activity operates through several converging pathways:
+
+- **NF-κB inhibition**: KPV directly inhibits NF-κB nuclear translocation in macrophages and epithelial cells, reducing transcription of pro-inflammatory cytokines including IL-1β, IL-6, and TNF-α.
+- **Direct cell entry**: Unlike most peptides, KPV has been shown to enter cells and interact with intracellular inflammatory signalling machinery.
+- **MC receptor-independent**: Activity persists even when melanocortin receptors are blocked, confirming a distinct mechanism.
+
+## Gastrointestinal Research
+
+KPV has attracted significant interest in inflammatory bowel disease (IBD) models:
+
+- Reduced colonic inflammation and mucosal damage in murine colitis models
+- Oral and rectal administration both demonstrate local intestinal anti-inflammatory effects
+- Nanoparticle-encapsulated KPV has been studied for targeted colon delivery, improving stability and bioavailability
+
+## Antimicrobial Properties
+
+KPV demonstrates direct antimicrobial activity against several pathogens including *Staphylococcus aureus* and *Candida albicans*, suggesting a dual role in infection-associated inflammation.
+
+## Research Considerations
+
+KPV is a research compound with no approved therapeutic applications. Its short sequence and good aqueous solubility make it straightforward to reconstitute and work with in cell culture and animal models.
+
+## Conclusion
+
+KPV represents a well-characterised anti-inflammatory tripeptide with a mechanistically distinct profile from glucocorticoids and NSAIDs. Its intestinal research applications and intracellular signalling access make it a compelling tool for inflammatory disease research.`,
+    author: "OmniQure Research Team",
+    tags: ["KPV", "Anti-Inflammatory", "NF-κB", "IBD", "α-MSH"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2020/03/22/13/01/virus-4957673_640.jpg",
+    publishedAt: new Date("2026-05-01T09:00:00Z"),
+    seoTitle: "KPV Anti-Inflammatory Tripeptide Research | OmniQure",
+    seoDescription: "Overview of KPV peptide research covering NF-κB inhibition, gastrointestinal models, antimicrobial activity, and its mechanistic distinction from α-MSH.",
+  },
+
+  // ── Cellular Health ────────────────────────────────────────────────────────
+  {
+    title: "5-Amino-1MQ: NNMT Inhibition, NAD⁺ Metabolism and Fat Mass Research",
+    slug: "5-amino-1mq-nnmt-inhibitor",
+    excerpt: "5-Amino-1MQ is a selective inhibitor of nicotinamide N-methyltransferase (NNMT), an enzyme increasingly linked to obesity, metabolic dysfunction, and cellular energy regulation.",
+    content: `## Background
+
+5-Amino-1-methylquinolinium (5-Amino-1MQ) is a small molecule that selectively inhibits nicotinamide N-methyltransferase (NNMT) — an enzyme that methylates nicotinamide, diverting it from NAD⁺ biosynthesis. NNMT is overexpressed in adipose tissue and several cancer types, making it an emerging target in metabolic research.
+
+## NNMT Biology
+
+NNMT consumes S-adenosylmethionine (SAM) to methylate nicotinamide, producing 1-methylnicotinamide (MNA). This has two consequences:
+1. Reduced availability of nicotinamide for NAD⁺ synthesis
+2. Depletion of SAM, affecting the methyl donor pool used in epigenetic regulation
+
+NNMT activity is elevated in obesity and type 2 diabetes, and correlates with adipogenesis and insulin resistance in preclinical models.
+
+## Metabolic Research Findings
+
+Studies in rodent models with 5-Amino-1MQ have reported:
+
+- **Reduced fat mass**: Decreased white adipose tissue without changes in food intake
+- **Increased energy expenditure**: Upregulation of thermogenic gene expression in brown and beige fat
+- **Improved insulin sensitivity**: Reduction in fasting glucose and insulin in diet-induced obesity models
+- **NAD⁺ restoration**: Increased intracellular NAD⁺ levels secondary to NNMT inhibition
+
+## Mechanism of Fat Loss
+
+The proposed mechanism involves NNMT inhibition → increased nicotinamide → increased NAD⁺ → SIRT1 and SIRT3 activation → enhanced mitochondrial biogenesis and fatty acid oxidation. This makes 5-Amino-1MQ mechanistically distinct from direct lipolytic agents.
+
+## Research Considerations
+
+5-Amino-1MQ is a selective tool compound for NNMT research. Its stability and cell permeability make it suitable for in vitro NNMT inhibition assays. Researchers should note that NNMT has also been studied in cancer biology, making this compound potentially relevant across therapeutic areas.
+
+## Conclusion
+
+5-Amino-1MQ provides a selective pharmacological probe for investigating NNMT's role in metabolic disease, offering mechanistic insights into the NAD⁺/SAM axis and adipose tissue biology.`,
+    author: "OmniQure Research Team",
+    tags: ["5-Amino-1MQ", "NNMT", "NAD+", "Metabolism", "Fat Loss"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2018/07/11/21/51/formula-3530682_640.jpg",
+    publishedAt: new Date("2026-05-02T09:00:00Z"),
+    seoTitle: "5-Amino-1MQ NNMT Inhibitor Metabolic Research | OmniQure",
+    seoDescription: "Research overview of 5-Amino-1MQ, covering NNMT inhibition, NAD+ restoration, fat mass reduction, and metabolic findings in preclinical models.",
+  },
+  {
+    title: "MOTS-C: The Mitochondrial-Derived Peptide in Metabolic Research",
+    slug: "mots-c-mitochondrial-peptide",
+    excerpt: "MOTS-C is a 16-amino acid peptide encoded by the mitochondrial genome, studied for its roles in insulin sensitivity, exercise mimicry, anti-ageing, and metabolic homeostasis.",
+    content: `## Discovery and Origin
+
+MOTS-C (Mitochondrial Open Reading Frame of the 12S rRNA-c) is unique among peptides in being encoded within the mitochondrial genome rather than the nuclear genome. It was identified in 2015 by Lee et al. and found to be secreted from mitochondria and cells, acting as a mitokine — a mitochondria-derived signalling molecule.
+
+## Metabolic Actions
+
+MOTS-C has been studied extensively in the context of metabolic disease:
+
+### Insulin Sensitivity
+MOTS-C activates AMPK and increases GLUT4 translocation in skeletal muscle, improving glucose uptake independent of insulin signalling. In rodent models, exogenous MOTS-C administration reversed diet-induced insulin resistance.
+
+### Exercise Mimicry
+Endogenous MOTS-C levels rise in response to exercise in both rodents and humans. The peptide appears to mediate some of the metabolic benefits of physical activity, including improved mitochondrial function and reduced adiposity.
+
+### AICAR Pathway
+MOTS-C promotes the accumulation of AICAR (5-aminoimidazole-4-carboxamide ribonucleotide), an AMPK activator, via inhibition of the folate cycle. This is a distinctive mechanistic feature not shared by other metabolic peptides.
+
+## Anti-Ageing Research
+
+MOTS-C levels decline with age. Supplementation in aged mice has shown:
+- Improved physical performance
+- Reduced metabolic dysfunction
+- Extended healthspan in some models
+
+## Stress Response
+
+MOTS-C translocates to the nucleus under stress conditions, where it regulates gene expression related to antioxidant defence and mitochondrial stress response pathways.
+
+## Conclusion
+
+MOTS-C represents a fascinating bridge between mitochondrial biology and systemic metabolic regulation. Its role as an exercise mimetic and insulin sensitiser makes it a valuable research tool in metabolic disease and ageing research.`,
+    author: "OmniQure Research Team",
+    tags: ["MOTS-C", "Mitochondria", "Insulin Sensitivity", "AMPK", "Anti-Ageing"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2021/09/13/11/13/mitochondria-6621844_640.jpg",
+    publishedAt: new Date("2026-05-03T09:00:00Z"),
+    seoTitle: "MOTS-C Mitochondrial Peptide Metabolic Research | OmniQure",
+    seoDescription: "Research overview of MOTS-C, the mitochondria-derived peptide, covering AMPK activation, insulin sensitivity, exercise mimicry, and anti-ageing findings.",
+  },
+  {
+    title: "NAD+: Cellular Energy, DNA Repair and Longevity Research",
+    slug: "nad-plus-cellular-energy",
+    excerpt: "Nicotinamide adenine dinucleotide (NAD+) is a central coenzyme in cellular metabolism and a substrate for longevity-linked enzymes including sirtuins and PARPs. Its decline with age has made it a major target in geroscience research.",
+    content: `## The Centrality of NAD+
+
+Nicotinamide adenine dinucleotide (NAD+) is one of the most abundant molecules in living cells, serving as a cofactor in over 500 enzymatic reactions. It exists in both oxidised (NAD+) and reduced (NADH) forms, cycling between them as electrons are transferred in metabolic reactions.
+
+## Key Biological Roles
+
+### Energy Metabolism
+NAD+ is essential to glycolysis, the tricarboxylic acid (TCA) cycle, and the electron transport chain. It accepts electrons from fuel oxidation and passes them to mitochondrial complex I, driving ATP synthesis.
+
+### Sirtuin Activation
+Sirtuins (SIRT1–SIRT7) are NAD+-dependent deacylases that regulate gene expression, mitochondrial biogenesis, inflammation, and stress responses. SIRT1 and SIRT3 in particular are central to metabolic health and lifespan extension in model organisms.
+
+### PARP Activity
+Poly(ADP-ribose) polymerases (PARPs) consume NAD+ during DNA repair. Under conditions of high DNA damage, PARP hyperactivation can deplete NAD+ pools, impairing energy metabolism.
+
+### CD38 and NAD+ Decline
+CD38, an NAD+ hydrolase, increases with age and inflammation. CD38-mediated NAD+ consumption is a major driver of the age-related NAD+ decline observed across tissues.
+
+## Age-Related Decline
+
+NAD+ levels decline substantially with age — by as much as 50% between young and middle-aged adults in some tissues. This decline correlates with reduced mitochondrial function, impaired DNA repair, and increased inflammation.
+
+## Preclinical Research Findings
+
+NAD+ repletion in aged animal models has shown:
+- Improved mitochondrial function and exercise capacity
+- Enhanced cognitive performance
+- Reduced markers of inflammation and cellular senescence
+- Life extension in yeast, worms, and some mouse studies
+
+## Research Considerations
+
+NAD+ can be administered directly or via precursors (NMN, NR). Direct NAD+ has lower oral bioavailability than precursors, but injectable and IV administration bypasses this limitation for research purposes.
+
+## Conclusion
+
+NAD+ sits at the intersection of energy metabolism, genomic stability, and longevity signalling. Its decline with age and its role as a sirtuin substrate make it one of the most studied molecules in the geroscience field.`,
+    author: "OmniQure Research Team",
+    tags: ["NAD+", "Sirtuins", "DNA Repair", "Longevity", "Mitochondria"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2017/02/14/04/13/dna-2064062_640.jpg",
+    publishedAt: new Date("2026-05-04T09:00:00Z"),
+    seoTitle: "NAD+ Cellular Energy and Longevity Research | OmniQure",
+    seoDescription: "Comprehensive overview of NAD+ biology covering sirtuins, PARP, DNA repair, age-related decline, and longevity research findings.",
+  },
+  {
+    title: "SS-31: Mitochondria-Targeted Peptide and Cardioprotection Research",
+    slug: "ss-31-mitochondria-targeted-peptide",
+    excerpt: "SS-31 (Elamipretide) is a synthetic tetrapeptide that targets the inner mitochondrial membrane, reducing oxidative stress and improving mitochondrial function in preclinical models of cardiac and renal disease.",
+    content: `## Background
+
+SS-31 (also known as Elamipretide or MTP-131) is a synthetic tetrapeptide with the sequence D-Arg-Dmt-Lys-Phe-NH2. It was developed by Hazel Szeto and Peter Schiller and belongs to the SS (Szeto-Schiller) peptide series. The inclusion of 2',6'-dimethyltyrosine (Dmt) gives it antioxidant properties and a distinctive pharmacological profile.
+
+## Mechanism: Cardiolipin Targeting
+
+SS-31's primary mechanism is selective binding to cardiolipin — a phospholipid found almost exclusively in the inner mitochondrial membrane. Cardiolipin interacts with and stabilises the mitochondrial electron transport chain complexes. In disease states, cardiolipin undergoes peroxidation, impairing electron transport and increasing reactive oxygen species (ROS) production.
+
+By binding cardiolipin, SS-31:
+- Stabilises cristae structure
+- Prevents cytochrome c from becoming a peroxidase
+- Reduces electron leak and ROS generation
+- Restores electron transport efficiency
+
+## Cardiovascular Research
+
+SS-31 has been extensively studied in cardiac ischaemia-reperfusion (I/R) injury models:
+- Reduced infarct size when administered before or during reperfusion
+- Preserved ejection fraction in heart failure models
+- Improved mitochondrial morphology and reduced cardiomyocyte apoptosis
+- Clinical phase II trials (EMBRACE STEMI) have examined its use in ST-elevation MI
+
+## Renal Research
+
+In models of acute kidney injury (AKI) and chronic kidney disease (CKD):
+- Reduced cisplatin- and ischaemia-induced tubular injury
+- Preserved mitochondrial function in proximal tubular cells
+- Reduced fibrosis in CKD models
+
+## Ageing and Skeletal Muscle
+
+SS-31 has shown efficacy in reversing age-related mitochondrial dysfunction in skeletal muscle, improving exercise capacity and reducing oxidative stress markers in aged rodents.
+
+## Conclusion
+
+SS-31 represents one of the most mechanistically well-defined mitochondria-targeted research peptides, with a substantial evidence base across cardiac, renal, and ageing biology. Its cardiolipin-targeting mechanism makes it a unique tool for studying mitochondrial dysfunction.`,
+    author: "OmniQure Research Team",
+    tags: ["SS-31", "Mitochondria", "Cardiolipin", "Cardioprotection", "Oxidative Stress"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2017/08/03/19/14/brain-2578410_640.jpg",
+    publishedAt: new Date("2026-05-05T09:00:00Z"),
+    seoTitle: "SS-31 Elamipretide Mitochondrial Research | OmniQure",
+    seoDescription: "Research overview of SS-31 (Elamipretide) covering cardiolipin targeting, cardioprotection, renal research, and mitochondrial dysfunction models.",
+  },
+
+  // ── Cognitive Peptides ─────────────────────────────────────────────────────
+  {
+    title: "P21: CNTF-Derived Peptide and Neurotrophic Research",
+    slug: "p21-cntf-derived-nootropic",
+    excerpt: "P21 is a synthetic peptide derived from ciliary neurotrophic factor (CNTF) that has been studied for neurogenesis promotion, cognitive enhancement, and weight regulation in preclinical models.",
+    content: `## Origin and Structure
+
+P21 is a 21-amino acid synthetic peptide derived from the CNTF (ciliary neurotrophic factor) sequence. CNTF is a potent neurotrophic cytokine that promotes neuronal survival, differentiation, and proliferation, but its full-length form has poor CNS penetration and peripheral side effects. P21 was designed to capture the neurotrophic properties of CNTF in a smaller, more accessible molecule.
+
+## Neurogenesis Research
+
+The most extensively studied property of P21 is its ability to promote adult neurogenesis — the generation of new neurons from neural progenitor cells — particularly in the hippocampus:
+
+- Increased BrdU-positive newly born cells in the dentate gyrus
+- Enhanced hippocampal neurogenesis in both young and aged rodent models
+- Upregulation of BDNF and VEGF expression in hippocampal tissue
+
+## Cognitive Effects
+
+Associated with neurogenesis promotion, P21 has demonstrated cognitive improvements in rodent models:
+- Improved performance in spatial memory tasks (Morris water maze)
+- Enhanced novel object recognition
+- Reversal of cognitive deficits in aged animals
+
+## STAT3 Signalling
+
+P21 activates STAT3 signalling pathways, which are downstream of CNTF receptor activation. STAT3 is involved in neural stem cell proliferation and has been implicated in the regulation of mood and cognitive function.
+
+## Weight and Appetite Research
+
+In a notable finding, P21 reduced food intake and body weight in rodent models, possibly via central CNTF-mediated appetite suppression pathways. This dual neurotrophic/metabolic profile is unusual among nootropic peptides.
+
+## Research Considerations
+
+P21 is a research-stage compound with no clinical applications. Its activity at CNTF-related pathways distinguishes it from conventional neurotrophic peptides like BDNF and NGF.
+
+## Conclusion
+
+P21 offers a unique angle on neurotrophic research — combining hippocampal neurogenesis promotion, cognitive enhancement, and appetite modulation in a single small peptide derived from a well-characterised neurotrophic factor.`,
+    author: "OmniQure Research Team",
+    tags: ["P21", "CNTF", "Neurogenesis", "Cognitive Enhancement", "BDNF"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2018/06/08/00/48/neuron-3461704_640.jpg",
+    publishedAt: new Date("2026-05-06T09:00:00Z"),
+    seoTitle: "P21 CNTF-Derived Peptide Neurogenesis Research | OmniQure",
+    seoDescription: "Research overview of P21 peptide covering CNTF-derived neurotrophic activity, hippocampal neurogenesis, cognitive enhancement, and appetite modulation.",
+  },
+  {
+    title: "PE-22-28: TREK-1 Channel Modulation and Antidepressant Research",
+    slug: "pe-22-28-trek1-antidepressant",
+    excerpt: "PE-22-28 is a synthetic analogue of spadin that targets TREK-1 potassium channels. It has demonstrated rapid antidepressant-like effects and neurogenic activity in preclinical models.",
+    content: `## Background
+
+PE-22-28 is a synthetic heptapeptide analogue of spadin — itself a natural peptide derived from the propeptide of the neurotensin receptor NTSR3/sortilin. The key research interest in PE-22-28 centres on its interaction with TREK-1, a two-pore domain potassium channel (K2P) that has emerged as a novel target in depression research.
+
+## TREK-1 and Depression
+
+TREK-1 is a mechanosensitive, background K+ channel expressed throughout the brain, particularly in regions implicated in mood regulation (prefrontal cortex, hippocampus, amygdala, raphe nuclei). Key findings connecting TREK-1 to depression:
+
+- TREK-1 knockout mice display antidepressant-like behaviour in the forced swim test and tail suspension test
+- TREK-1 modulates serotonergic neurotransmission by influencing the excitability of dorsal raphe neurons
+- Spadin was identified as an endogenous TREK-1 blocker with antidepressant properties
+
+## PE-22-28 vs Spadin
+
+PE-22-28 was developed as an optimised version of spadin with enhanced stability and potency. Key improvements:
+- Resistant to proteolytic degradation
+- More potent TREK-1 blockade at lower concentrations
+- Retained antidepressant-like effects in validated rodent models
+
+## Antidepressant Research Findings
+
+In preclinical models, PE-22-28 has shown:
+- Rapid onset of antidepressant-like effects (within days, compared to weeks for SSRIs)
+- Efficacy in forced swim test, novelty-suppressed feeding, and chronic mild stress models
+- Synergistic effects with fluoxetine in some protocols
+- Hippocampal neurogenesis promotion comparable to conventional antidepressants
+
+## Mechanism
+
+PE-22-28 blocks TREK-1 → increases neuronal excitability in serotonergic raphe neurons → enhanced serotonin release → downstream antidepressant effects. This mechanism is distinct from all currently approved antidepressants.
+
+## Conclusion
+
+PE-22-28 represents a novel mechanistic approach to antidepressant research through TREK-1 channel modulation. Its rapid onset profile and unique mechanism make it an interesting tool compound for mood disorder research.`,
+    author: "OmniQure Research Team",
+    tags: ["PE-22-28", "TREK-1", "Antidepressant", "Serotonin", "Potassium Channels"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2018/06/08/00/48/neuron-3461704_640.jpg",
+    publishedAt: new Date("2026-05-07T09:00:00Z"),
+    seoTitle: "PE-22-28 TREK-1 Antidepressant Peptide Research | OmniQure",
+    seoDescription: "Research overview of PE-22-28, covering TREK-1 potassium channel modulation, rapid antidepressant-like effects, and neurogenesis promotion.",
+  },
+
+  // ── Growth Hormone ─────────────────────────────────────────────────────────
+  {
+    title: "Somatropin (Recombinant HGH): Anabolic, Lipolytic and IGF-1 Research",
+    slug: "somatropin-hgh-research",
+    excerpt: "Somatropin is recombinant human growth hormone, structurally identical to pituitary-derived HGH. It has been studied extensively for its anabolic, lipolytic, and IGF-1-mediated effects across numerous research domains.",
+    content: `## What is Somatropin?
+
+Somatropin is a recombinant form of human growth hormone (hGH), a 191-amino acid single-chain polypeptide produced by the anterior pituitary. It is biosynthetically identical to naturally secreted HGH and has been used clinically for decades in GH deficiency, paediatric growth disorders, and HIV-associated wasting.
+
+## Physiological Actions
+
+### Direct GH Receptor Effects
+Growth hormone binds GH receptors on multiple tissues, directly stimulating:
+- Lipolysis in adipocytes (triglyceride hydrolysis and fatty acid release)
+- Glucose counter-regulation (anti-insulin effects on glucose uptake)
+- Protein synthesis in skeletal muscle
+
+### IGF-1-Mediated Effects
+The majority of HGH's anabolic effects are mediated indirectly through hepatic IGF-1 secretion:
+- IGF-1 stimulates skeletal muscle protein synthesis via PI3K/Akt/mTOR
+- Promotes chondrocyte proliferation and linear bone growth
+- Stimulates satellite cell activation in muscle
+
+## Research Applications
+
+### Body Composition
+HGH and somatropin have been extensively studied for their effects on lean mass accretion and fat mass reduction, both independently and in combination with other anabolic agents.
+
+### Wound and Tissue Healing
+GH receptors are present on fibroblasts and keratinocytes. Somatropin has been studied for accelerating wound healing and soft tissue repair in animal models.
+
+### Bone Metabolism
+HGH stimulates osteoblast activity and IGF-1-dependent bone mineral density increases, relevant to osteoporosis research.
+
+### Cognitive and Neurological Research
+GH receptors are expressed in the brain. Some studies suggest GH replacement in GH-deficient subjects improves cognitive function, though the mechanism remains an area of active investigation.
+
+## Pharmacology
+
+Somatropin has a short half-life (approximately 20–30 minutes IV, 3–5 hours SC) and is typically administered subcutaneously in research protocols. It is measured in IU (International Units): 1 mg ≈ 3 IU.
+
+## Conclusion
+
+Somatropin provides a well-characterised research tool for studying the GH/IGF-1 axis across anabolic, metabolic, and regenerative biology. Its clinical history provides a wealth of pharmacological reference data unavailable for most research peptides.`,
+    author: "OmniQure Research Team",
+    tags: ["HGH", "Somatropin", "IGF-1", "Anabolic", "Lipolysis"],
+    status: "published" as const,
+    featuredImageUrl: "https://media.istockphoto.com/id/1044228822/photo/nmr-science-lab-research-into-cancer-diabetes-dementia-or-autism.jpg?s=612x612&w=0&k=20&c=rxA58ckwj9z14n18UXB4xb82m1EP7LNsrdWzExqKNWo=",
+    publishedAt: new Date("2026-05-08T09:00:00Z"),
+    seoTitle: "Somatropin Recombinant HGH Research Overview | OmniQure",
+    seoDescription: "Research overview of somatropin (recombinant HGH) covering anabolic effects, lipolysis, IGF-1 axis, body composition, and tissue healing research.",
+  },
+  {
+    title: "Tesamorelin: Stabilised GHRH Analogue and Body Composition Research",
+    slug: "tesamorelin-ghrh-analogue",
+    excerpt: "Tesamorelin is a modified GHRH(1-44) analogue with a trans-3-hexenoic acid modification that stabilises it against DPP-IV cleavage. It is clinically approved for HIV-associated lipodystrophy and studied for body composition and GH axis research.",
+    content: `## Structure and Stability
+
+Tesamorelin is a synthetic analogue of GHRH(1-44) with a trans-3-hexenoic acid group conjugated to the N-terminus. This modification protects the peptide from cleavage by dipeptidyl peptidase-IV (DPP-IV) at the Ala²-position, extending its half-life from approximately 7 minutes (native GHRH) to approximately 26 minutes.
+
+## Mechanism of Action
+
+Like native GHRH, tesamorelin binds the GHRH receptor on pituitary somatotrophs and stimulates pulsatile GH secretion via cAMP/PKA signalling. The resulting GH pulses then drive hepatic IGF-1 production. Critically, tesamorelin preserves the physiological feedback regulation of GH secretion — somatostatin inhibition remains intact, preventing the tonic GH elevation seen with GH administration.
+
+## Clinical Background
+
+Tesamorelin is approved by the FDA (as Egrifta) for the treatment of HIV-associated lipodystrophy — excess visceral fat accumulation caused by antiretroviral therapy. Clinical trials demonstrated:
+- 15–20% reduction in visceral adipose tissue (VAT) on CT scan
+- Reduced triglycerides and improved lipid profiles
+- No significant insulin resistance
+
+This clinical dataset provides a uniquely well-characterised pharmacological reference for body composition research.
+
+## Research Beyond Lipodystrophy
+
+### Alzheimer's Disease
+A series of studies from the University of Washington demonstrated that tesamorelin improved cognition and reduced amyloid burden in mild cognitive impairment and early Alzheimer's research models, potentially via IGF-1-mediated amyloid clearance.
+
+### Non-Alcoholic Fatty Liver Disease
+Tesamorelin has been studied for reducing hepatic fat and liver stiffness in NAFLD/NASH models secondary to its visceral fat reduction effects.
+
+### Body Composition in Non-HIV Populations
+Research is ongoing in non-HIV populations with metabolic syndrome and age-related GH decline.
+
+## Conclusion
+
+Tesamorelin is one of the most clinically validated GH secretagogues available, providing researchers with a pharmacologically well-defined GHRH analogue for body composition, metabolic, and neurological research.`,
+    author: "OmniQure Research Team",
+    tags: ["Tesamorelin", "GHRH", "Growth Hormone", "Visceral Fat", "Lipodystrophy"],
+    status: "published" as const,
+    featuredImageUrl: "https://media.istockphoto.com/id/182807377/photo/molecule.jpg?s=612x612&w=0&k=20&c=882ccFgZWW-568bFc8eMIpLgnyKpMH33M_YxqYUQLWY=",
+    publishedAt: new Date("2026-05-09T09:00:00Z"),
+    seoTitle: "Tesamorelin GHRH Analogue Body Composition Research | OmniQure",
+    seoDescription: "Research overview of tesamorelin covering GHRH receptor activation, visceral fat reduction, clinical lipodystrophy data, and Alzheimer's research applications.",
+  },
+
+  // ── Growth Peptides ────────────────────────────────────────────────────────
+  {
+    title: "AOD-9604: The Lipolytic hGH Fragment in Metabolic Research",
+    slug: "aod-9604-lipolytic-fragment",
+    excerpt: "AOD-9604 is a synthetic analogue of the C-terminal fragment of human growth hormone (residues 176–191), studied for lipolytic activity and fat metabolism without the insulin-desensitising effects of full-length HGH.",
+    content: `## Background
+
+AOD-9604 (Anti-Obesity Drug 9604) is a modified form of the hGH fragment 176-191, with a disulphide bridge added at the N-terminus for stability. It was developed by researchers at Monash University and subsequently studied as a potential treatment for obesity, with a phase III clinical trial conducted (though ultimately unsuccessful for regulatory approval as a drug).
+
+## Mechanism: Separating Lipolysis from Growth
+
+Full-length HGH exerts lipolytic effects via the C-terminal domain of the molecule. AOD-9604 retains this lipolytic activity while lacking the N-terminal domain responsible for IGF-1 stimulation and insulin resistance. This separation of metabolic functions makes it a useful research tool for studying fat metabolism independent of anabolic effects.
+
+The proposed mechanism involves:
+- β3-adrenergic receptor stimulation in adipocytes
+- Upregulation of lipase activity → triglyceride hydrolysis
+- Inhibition of lipogenesis (fat synthesis from carbohydrates)
+
+## Preclinical Research
+
+In rodent models:
+- Reduced body fat percentage without changes in lean mass
+- No increase in blood glucose or insulin resistance
+- No effect on IGF-1 levels
+- Preserved bone density (unlike some lipolytic agents)
+
+## Human Research
+
+A phase IIb clinical trial in obese adults showed modest but significant weight loss. The compound passed phase II safety endpoints, providing reassurance about its metabolic safety profile in human subjects.
+
+## Research Considerations
+
+AOD-9604 is freely available for research purposes as no therapeutic approval was obtained. Its clean metabolic safety profile and selective lipolytic mechanism make it a useful comparator in fat metabolism research designs.
+
+## Conclusion
+
+AOD-9604 provides a selective lipolytic research tool derived from the hGH sequence, with a well-characterised mechanism and human pharmacological data from clinical trials. It is particularly useful for research isolating fat metabolism from GH axis effects.`,
+    author: "OmniQure Research Team",
+    tags: ["AOD-9604", "Lipolysis", "hGH Fragment", "Fat Metabolism", "Obesity Research"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2020/05/18/16/17/cat-5184743_640.jpg",
+    publishedAt: new Date("2026-05-10T09:00:00Z"),
+    seoTitle: "AOD-9604 hGH Fragment Lipolytic Research | OmniQure",
+    seoDescription: "Research overview of AOD-9604 covering its lipolytic mechanism, separation from anabolic HGH effects, preclinical findings, and human clinical trial data.",
+  },
+  {
+    title: "GHRP-2: Potent GH Secretagogue via the Ghrelin Receptor",
+    slug: "ghrp-2-growth-hormone-secretagogue",
+    excerpt: "GHRP-2 is a synthetic hexapeptide that potently stimulates GH release through the ghrelin receptor (GHS-R1a), making it a widely used research tool for the GH secretagogue axis.",
+    content: `## Background
+
+GHRP-2 (Growth Hormone Releasing Peptide-2) is a synthetic hexapeptide (D-Ala-D-β-Nal-Ala-Trp-D-Phe-Lys-NH2) developed from the enkephalin series. It was one of the first peptides found to directly stimulate GH release independent of GHRH, leading to the discovery of the ghrelin receptor (GHS-R1a).
+
+## Ghrelin Receptor Pharmacology
+
+GHRP-2 is a full agonist at GHS-R1a (Growth Hormone Secretagogue Receptor 1a). This receptor mediates:
+- Pulsatile GH secretion from pituitary somatotrophs
+- Appetite stimulation (though less pronounced with GHRP-2 than GHRP-6)
+- Partial inhibition of somatostatin release
+
+## GH Release Profile
+
+GHRP-2 produces a robust GH pulse with characteristics relevant to research design:
+- Onset: 15–30 minutes post-administration
+- Peak: approximately 30–60 minutes
+- Duration: 2–3 hours
+- Synergistic with GHRH or GHRH analogues (e.g., CJC-1295)
+
+## Comparison with GHRP-6
+
+GHRP-2 and GHRP-6 are frequently compared in research:
+- GHRP-2 produces greater GH release per unit dose
+- GHRP-2 causes less appetite stimulation than GHRP-6
+- Both elevate cortisol and prolactin, though GHRP-2 tends to do so more
+- GHRP-6 has a stronger orexigenic effect via ghrelin pathway activation
+
+## Research Applications
+
+Beyond GH axis research, GHRP-2 has been investigated for:
+- Cardioprotective effects (GHS-R1a is expressed in cardiac tissue)
+- Neuroprotective properties in CNS injury models
+- Hepatoprotection in models of liver damage
+
+## Conclusion
+
+GHRP-2 is a well-characterised GH secretagogue with a wealth of published research data. Its potent and predictable GH-releasing activity makes it a reliable tool for GH axis research and a useful comparator when studying newer secretagogues.`,
+    author: "OmniQure Research Team",
+    tags: ["GHRP-2", "Growth Hormone", "Ghrelin Receptor", "GH Secretagogue", "GHS-R1a"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2018/07/11/21/51/formula-3530682_640.jpg",
+    publishedAt: new Date("2026-05-11T09:00:00Z"),
+    seoTitle: "GHRP-2 Growth Hormone Secretagogue Research | OmniQure",
+    seoDescription: "Research overview of GHRP-2 covering ghrelin receptor pharmacology, GH release profile, comparison with GHRP-6, and cardioprotective applications.",
+  },
+  {
+    title: "GHRP-6: Growth Hormone Secretagogue with Orexigenic Effects",
+    slug: "ghrp-6-orexigenic-secretagogue",
+    excerpt: "GHRP-6 is one of the first synthetic GH secretagogues, notable for its potent GH release and pronounced appetite-stimulating effects via ghrelin receptor activation. It remains a key research reference compound.",
+    content: `## Historical Significance
+
+GHRP-6 (His-D-Trp-Ala-Trp-D-Phe-Lys-NH2) holds an important place in peptide pharmacology history. It was among the first synthetic GH secretagogues to demonstrate that GH release could be pharmacologically stimulated independent of GHRH. This discovery eventually led to the identification of ghrelin itself.
+
+## Mechanism of Action
+
+GHRP-6 is an agonist at GHS-R1a (the ghrelin receptor), stimulating GH release through the same receptor as endogenous ghrelin. Key aspects of its pharmacology:
+- Amplifies GH pulsatility without creating a tonic, non-physiological GH signal
+- Partially inhibits somatostatin release, removing the braking signal on GH secretion
+- Acts synergistically with GHRH — combination produces 2–4x greater GH release than either alone
+
+## Orexigenic Effects
+
+GHRP-6's most distinctive feature is its potent appetite-stimulating activity. This occurs because:
+1. GHS-R1a is expressed in the hypothalamic arcuate nucleus, mediating appetite signalling
+2. GHRP-6's ghrelin-mimetic activity activates the NPY/AgRP orexigenic pathway
+3. In rodent models, GHRP-6 produces significant food intake increases within 30 minutes of administration
+
+This orexigenic property has made GHRP-6 an interesting research tool in appetite regulation and cachexia models, while also being a consideration in research designs focused primarily on GH effects.
+
+## Cytoprotective Research
+
+Beyond the GH axis, GHRP-6 has been studied for direct tissue protection:
+- Hepatoprotection in models of carbon tetrachloride-induced liver injury
+- Cardioprotection via GHS-R1a signalling in cardiomyocytes
+- Wound healing acceleration in dermal models
+
+## Conclusion
+
+GHRP-6 remains a foundational GH secretagogue research tool, with decades of published data and a distinctive orexigenic profile that distinguishes it from the broader secretagogue class. It is particularly valuable in appetite and cachexia research alongside GH axis studies.`,
+    author: "OmniQure Research Team",
+    tags: ["GHRP-6", "Growth Hormone", "Ghrelin", "Appetite", "Orexigenic"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2018/06/08/00/48/neuron-3461704_640.jpg",
+    publishedAt: new Date("2026-05-12T09:00:00Z"),
+    seoTitle: "GHRP-6 Orexigenic GH Secretagogue Research | OmniQure",
+    seoDescription: "Research overview of GHRP-6 covering ghrelin receptor pharmacology, GH release, appetite stimulation, and cytoprotective applications.",
+  },
+  {
+    title: "Hexarelin: High-Affinity GH Secretagogue and Cardioprotection Research",
+    slug: "hexarelin-cardioprotective-secretagogue",
+    excerpt: "Hexarelin is a synthetic hexapeptide with the highest GHS-R1a binding affinity in its class, studied for potent GH secretion and direct cardioprotective effects via CD36 receptor activation.",
+    content: `## Background and Potency
+
+Hexarelin (His-D-2-MeAla-Trp-D-Phe-Lys-NH2) is a synthetic hexapeptide GH secretagogue and the most potent in its class at GHS-R1a. The 2-methylalanine substitution at position 2 (compared to GHRP-6's D-Trp) increases receptor binding affinity and metabolic stability.
+
+## GH Secretagogue Activity
+
+Hexarelin produces robust, dose-dependent GH release:
+- More potent GH release per molar dose than GHRP-2 or GHRP-6
+- Minimal appetite stimulation compared to GHRP-6
+- Cortisol and prolactin elevations are observed (less selective than Ipamorelin)
+- Desensitisation occurs with chronic administration — a property studied in its own right
+
+## Cardioprotective Mechanisms: CD36
+
+A highly distinctive feature of hexarelin is its activity at the CD36 scavenger receptor, independent of GHS-R1a. CD36 is expressed on:
+- Cardiomyocytes
+- Endothelial cells
+- Macrophages
+
+Hexarelin's CD36 binding mediates:
+- Direct cardioprotection independent of GH/IGF-1 elevation
+- Reduced cardiomyocyte apoptosis in ischaemia-reperfusion models
+- Improved cardiac function in GH-deficient and normal animals
+- Anti-atherosclerotic effects via macrophage cholesterol efflux
+
+## Cardiac Research Applications
+
+The dual GHS-R1a/CD36 mechanism makes hexarelin particularly valuable in cardiovascular research where the GH-independent cardiac effects can be isolated using GH-deficient animal models or GHS-R1a-null mice.
+
+## Desensitisation Studies
+
+Hexarelin's tendency to desensitise GHS-R1a with repeated dosing has made it a useful research tool for studying GH secretagogue receptor regulation and recovery.
+
+## Conclusion
+
+Hexarelin's combination of maximal GHS-R1a potency and GH-independent cardioprotection via CD36 gives it a unique dual-mechanism profile unmatched in the secretagogue class. It is an essential reference compound in GH and cardiac research.`,
+    author: "OmniQure Research Team",
+    tags: ["Hexarelin", "GH Secretagogue", "Cardioprotection", "CD36", "GHS-R1a"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2017/08/03/19/14/brain-2578410_640.jpg",
+    publishedAt: new Date("2026-05-13T09:00:00Z"),
+    seoTitle: "Hexarelin GH Secretagogue and Cardioprotection Research | OmniQure",
+    seoDescription: "Research overview of hexarelin covering GHS-R1a binding, GH release potency, CD36-mediated cardioprotection, and desensitisation studies.",
+  },
+  {
+    title: "IGF-1 LR3: Long-Acting Insulin-Like Growth Factor-1 Analogue Research",
+    slug: "igf-1-lr3-anabolic-research",
+    excerpt: "IGF-1 LR3 is a recombinant analogue of IGF-1 with a 13-amino acid N-terminal extension and an Arg³→Arg3 substitution, greatly extending its half-life by reducing IGF-binding protein affinity.",
+    content: `## What is IGF-1 LR3?
+
+IGF-1 LR3 (Long R3 IGF-1) is a synthetic analogue of insulin-like growth factor-1 (IGF-1) with two key modifications:
+1. An N-terminal 13-amino acid extension
+2. Substitution of arginine at position 3 for glutamic acid (R→E at position 3)
+
+These changes reduce binding to IGF-binding proteins (IGFBPs) by approximately 1000-fold, extending the biological half-life from 12–15 hours (native IGF-1) to 20–30 hours while maintaining receptor binding affinity.
+
+## IGF-1 Receptor Biology
+
+IGF-1 acts through the IGF-1 receptor (IGF-1R), a receptor tyrosine kinase that activates:
+- **PI3K/Akt/mTOR**: Protein synthesis, cell growth, survival
+- **RAS/ERK/MAPK**: Cell proliferation, differentiation
+- **Metabolic regulation**: Glucose uptake, glycogen synthesis
+
+## Anabolic and Cellular Research
+
+IGF-1 LR3's extended bioavailability makes it particularly useful for studying:
+
+### Skeletal Muscle
+- Satellite cell activation and differentiation
+- mTOR-dependent protein synthesis
+- Anti-catabolic effects (IGF-1 inhibits FoxO transcription factors that drive muscle atrophy gene expression)
+
+### Bone Biology
+- Osteoblast proliferation and differentiation
+- Bone mineral density in osteoporosis models
+- Chondrocyte growth plate research
+
+### Cellular Proliferation
+- IGF-1R signalling in cancer cell lines (both a research tool and a safety consideration)
+- Tissue engineering scaffold studies
+
+## Half-Life Advantage
+
+Because native IGF-1 is rapidly sequestered by IGFBPs (particularly IGFBP-3), its free fraction in circulation is typically <1%. IGF-1 LR3 bypasses this sequestration, providing sustained receptor activation useful for studying downstream signalling cascades.
+
+## Conclusion
+
+IGF-1 LR3 is a powerful research tool for studying the IGF-1 signalling axis with minimal IGFBP interference. Its extended half-life and preserved receptor affinity make it the preferred choice for in vitro and in vivo IGF-1 research across anabolic, bone, and metabolic biology.`,
+    author: "OmniQure Research Team",
+    tags: ["IGF-1 LR3", "IGF-1", "Anabolic", "mTOR", "Cell Proliferation"],
+    status: "published" as const,
+    featuredImageUrl: "https://media.istockphoto.com/id/182807377/photo/molecule.jpg?s=612x612&w=0&k=20&c=882ccFgZWW-568bFc8eMIpLgnyKpMH33M_YxqYUQLWY=",
+    publishedAt: new Date("2026-05-14T09:00:00Z"),
+    seoTitle: "IGF-1 LR3 Long-Acting Analogue Research | OmniQure",
+    seoDescription: "Research overview of IGF-1 LR3 covering IGFBP resistance, extended half-life, IGF-1R signalling, anabolic effects, and bone biology applications.",
+  },
+  {
+    title: "PEG MGF: PEGylated Mechano Growth Factor and Muscle Satellite Cell Research",
+    slug: "peg-mgf-muscle-repair",
+    excerpt: "PEG MGF (PEGylated Mechano Growth Factor) is a stabilised splice variant of IGF-1 studied for satellite cell activation, muscle repair, and recovery from mechanical stress.",
+    content: `## What is MGF?
+
+Mechano Growth Factor (MGF) is a splice variant of the IGF-1 gene, specifically IGF-1Ec in humans. Unlike liver-derived IGF-1, MGF is produced locally in skeletal muscle in response to mechanical load and microtrauma. Its C-terminal E-domain peptide (the last 24 amino acids) has biological activities distinct from the common IGF-1 sequence.
+
+## PEGylation and Stability
+
+Native MGF has an extremely short half-life (minutes) due to rapid proteolytic cleavage and poor aqueous stability. PEGylation — the attachment of polyethylene glycol chains — dramatically improves:
+- Half-life: from minutes to 96+ hours
+- Aqueous solubility
+- Resistance to enzymatic degradation
+- Bioavailability for in vivo research
+
+## Satellite Cell Activation
+
+The most studied action of MGF/PEG MGF is activation of muscle satellite cells — the resident stem cells of skeletal muscle responsible for repair and hypertrophy:
+- MGF E-domain peptide directly activates satellite cell proliferation
+- This occurs through a receptor distinct from the IGF-1R
+- Satellite cell activation by MGF precedes the differentiation signal from IGF-1
+
+## Muscle Repair Research
+
+In animal models of muscle injury, PEG MGF has shown:
+- Accelerated satellite cell proliferation at injury sites
+- Faster restoration of muscle function after crush injury
+- Reduced fibrosis and scarring in healing muscle tissue
+- Improved regeneration in dystrophic muscle models
+
+## Cardiac Research
+
+MGF has also been studied in cardiac muscle, where it may activate cardiomyocyte progenitors and provide protection against ischaemic injury.
+
+## Conclusion
+
+PEG MGF provides a stable, bioavailable form of Mechano Growth Factor for research into the satellite cell response to mechanical stress and injury. Its distinct mechanism from conventional IGF-1 makes it a complementary tool in muscle biology research.`,
+    author: "OmniQure Research Team",
+    tags: ["PEG MGF", "Mechano Growth Factor", "Satellite Cells", "Muscle Repair", "IGF-1"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2022/01/28/12/05/microbiology-6974451_640.jpg",
+    publishedAt: new Date("2026-05-15T09:00:00Z"),
+    seoTitle: "PEG MGF Mechano Growth Factor Muscle Research | OmniQure",
+    seoDescription: "Research overview of PEG MGF covering MGF biology, PEGylation benefits, satellite cell activation, and muscle repair findings.",
+  },
+  {
+    title: "Sermorelin: GHRH Analogue and Pituitary GH Stimulation Research",
+    slug: "sermorelin-ghrh-pituitary",
+    excerpt: "Sermorelin is a synthetic analogue of GHRH comprising the first 29 amino acids of native GHRH(1-44). It stimulates endogenous GH secretion through pituitary GHRH receptors, preserving physiological feedback regulation.",
+    content: `## Background
+
+Sermorelin (GHRH 1-29) is a synthetic version of the first 29 amino acids of endogenous growth hormone-releasing hormone (GHRH). This truncated form retains full biological activity at the GHRH receptor, as the first 29 amino acids contain the complete receptor-binding domain.
+
+## Mechanism of Action
+
+Sermorelin binds GHRH receptors on anterior pituitary somatotrophs, activating Gs/cAMP/PKA signalling that leads to:
+- GH gene transcription upregulation
+- GH vesicle release from somatotrophs
+- Indirect downstream IGF-1 elevation
+
+Critically, sermorelin works within the normal hypothalamic-pituitary-somatotropic axis. Somatostatin inhibition and negative feedback from IGF-1 remain active, so GH output is amplified without bypassing physiological regulation.
+
+## Comparison with CJC-1295
+
+| Feature | Sermorelin | CJC-1295 (no DAC) |
+|---|---|---|
+| Length | 29 amino acids | 30 amino acids + modifications |
+| Half-life | ~10 minutes | ~30 minutes |
+| DPP-IV resistance | Low | Moderate |
+| GH pulse character | Physiological | Physiological |
+
+Sermorelin's shorter half-life means more frequent dosing is required for sustained GH stimulation, which can be advantageous in research designs that require precise temporal control of GH pulsatility.
+
+## Clinical Data
+
+Sermorelin has been FDA-approved (as Geref) and used clinically for paediatric GH deficiency diagnosis and treatment, providing extensive human pharmacological data. This clinical history is a significant research resource unavailable for newer analogues.
+
+## Age-Related GH Decline Research
+
+As GH secretion declines with age, sermorelin has been studied as a means of restoring more youthful GH pulsatility via pituitary stimulation rather than exogenous GH administration. Studies report improvements in sleep architecture (GH is predominantly secreted during slow-wave sleep) alongside metabolic benefits.
+
+## Conclusion
+
+Sermorelin offers a well-characterised, clinically validated GHRH analogue for pituitary GH stimulation research. Its physiological feedback preservation and extensive clinical dataset make it a reliable reference compound for GH axis studies.`,
+    author: "OmniQure Research Team",
+    tags: ["Sermorelin", "GHRH", "Growth Hormone", "Pituitary", "GH Deficiency"],
+    status: "published" as const,
+    featuredImageUrl: "https://thumbs.dreamstime.com/b/exploration-advanced-neuroscience-technology-modern-laboratory-environment-sleek-lab-showcases-glowing-brain-models-329002686.jpg",
+    publishedAt: new Date("2026-05-16T09:00:00Z"),
+    seoTitle: "Sermorelin GHRH Analogue GH Stimulation Research | OmniQure",
+    seoDescription: "Research overview of sermorelin covering GHRH receptor activation, comparison with CJC-1295, clinical data, and age-related GH decline research.",
+  },
+
+  // ── Healing Peptides ───────────────────────────────────────────────────────
+  {
+    title: "TB-500 Fragment (17-23): The Active Actin-Binding Core of Thymosin Beta-4",
+    slug: "tb-500-fragment-17-23",
+    excerpt: "The TB-500 Fragment (17-23) is a synthetic heptapeptide corresponding to the actin-binding domain of Thymosin Beta-4, studied for its core role in cell migration, wound healing, and tissue repair.",
+    content: `## What is the Fragment (17-23)?
+
+Thymosin Beta-4 (Tβ4) is a 43-amino acid protein whose biological activity is primarily attributed to a short internal sequence. The Fragment 17-23 (Ac-LKKTETQ) — also referred to as the TB4 actin-binding peptide — represents the minimal sequence responsible for G-actin sequestration, the defining biochemical function of the full-length protein.
+
+## Actin Sequestration
+
+The core function of Tβ4 Fragment 17-23 is G-actin (monomeric actin) sequestration. By binding G-actin:
+- The fragment reduces the pool of actin available for filament polymerisation
+- This modulates the dynamic balance between F-actin (filamentous) and G-actin
+- Cell migration speed and directionality are directly regulated by this balance
+
+In wound healing, this translates to accelerated lamellipodium formation at the wound edge, driving epithelial and endothelial cell migration.
+
+## Comparison with Full-Length TB-500
+
+Researchers frequently ask whether the fragment is equivalent to full-length Tβ4/TB-500:
+
+- **Actin binding**: The fragment retains full G-actin sequestration activity
+- **VEGF upregulation**: Present in full-length Tβ4 but less consistently documented for the fragment alone
+- **Anti-inflammatory effects**: Full-length Tβ4 has documented NF-κB and IL signalling effects; fragment data are more limited
+- **Research use**: The fragment is useful for isolating actin-dependent effects from the broader Tβ4 pharmacology
+
+## Wound Healing Research
+
+In in vitro scratch assays and rodent wound models, the 17-23 fragment has demonstrated:
+- Accelerated wound closure rates comparable to full-length Tβ4
+- Increased keratinocyte and fibroblast migration rates
+- Enhanced corneal epithelial wound healing (topical application)
+
+## Corneal Research
+
+The fragment has been particularly well studied in corneal wound healing, where Tβ4 and its active fragment are being evaluated as a potential treatment for corneal surface damage.
+
+## Conclusion
+
+The TB-500 Fragment (17-23) provides a precisely defined tool for studying the actin-sequestration-dependent component of Thymosin Beta-4 activity, allowing isolation of this mechanism from the broader pleiotropic effects of the full-length protein.`,
+    author: "OmniQure Research Team",
+    tags: ["TB-500 Fragment", "Thymosin Beta-4", "Actin", "Wound Healing", "Cell Migration"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2022/01/28/12/05/microbiology-6974451_640.jpg",
+    publishedAt: new Date("2026-05-17T09:00:00Z"),
+    seoTitle: "TB-500 Fragment 17-23 Actin-Binding Peptide Research | OmniQure",
+    seoDescription: "Research overview of TB-500 Fragment (17-23), covering G-actin sequestration, wound healing, comparison with full-length Thymosin Beta-4, and corneal research.",
+  },
+
+  // ── Hormonal Peptides ──────────────────────────────────────────────────────
+  {
+    title: "Gonadorelin: Synthetic GnRH and Reproductive Endocrinology Research",
+    slug: "gonadorelin-gnrh-research",
+    excerpt: "Gonadorelin is a synthetic decapeptide identical to endogenous GnRH (gonadotropin-releasing hormone), used to study the hypothalamic-pituitary-gonadal axis and LH/FSH secretion dynamics.",
+    content: `## What is Gonadorelin?
+
+Gonadorelin is a synthetic form of gonadotropin-releasing hormone (GnRH), a decapeptide (pGlu-His-Trp-Ser-Tyr-Gly-Leu-Arg-Pro-Gly-NH2) secreted by the hypothalamus in pulses every 60–120 minutes. It is biosynthetically identical to endogenous GnRH-I.
+
+## The Hypothalamic-Pituitary-Gonadal (HPG) Axis
+
+GnRH acts on pituitary gonadotrophs to stimulate the release of:
+- **LH (Luteinising Hormone)**: Triggers ovulation in females; stimulates testosterone production in males (Leydig cells)
+- **FSH (Follicle-Stimulating Hormone)**: Drives follicular development in females; supports spermatogenesis in males
+
+Critically, pulsatile GnRH stimulation promotes LH/FSH release, while continuous GnRH exposure paradoxically downregulates the receptors and suppresses gonadotropin secretion — the basis for GnRH agonist therapy in prostate cancer and endometriosis.
+
+## Research Applications
+
+### Fertility Research
+Gonadorelin is used to study and model pulsatile HPG axis signalling. In animal models, it can restore fertility in GnRH-deficient animals and study the effects of pulse frequency on LH/FSH ratios.
+
+### Testosterone Production
+In males, pulsatile gonadorelin administration maintains endogenous testosterone production — research relevant to hypogonadism models and testosterone suppression recovery studies.
+
+### Diagnostic Applications
+The gonadorelin stimulation test (measuring LH/FSH response after IV gonadorelin administration) is used to assess pituitary gonadotroph reserve and differentiate hypothalamic from pituitary hypogonadism.
+
+### Sports Science Research
+Gonadorelin has been studied as a means of maintaining HPG axis function during exogenous androgen administration in animal models, preventing the testicular atrophy associated with negative feedback.
+
+## Conclusion
+
+Gonadorelin is the canonical tool compound for HPG axis research, providing a structurally defined, physiologically authentic GnRH signal with extensive published pharmacological data. Its dual pulsatile/continuous mode effects make it uniquely versatile for reproductive endocrinology research.`,
+    author: "OmniQure Research Team",
+    tags: ["Gonadorelin", "GnRH", "LH", "FSH", "Reproductive Endocrinology"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2018/06/08/00/48/neuron-3461704_640.jpg",
+    publishedAt: new Date("2026-05-18T09:00:00Z"),
+    seoTitle: "Gonadorelin GnRH HPG Axis Research | OmniQure",
+    seoDescription: "Research overview of gonadorelin covering GnRH receptor pharmacology, pulsatile LH/FSH stimulation, HPG axis research, and diagnostic applications.",
+  },
+  {
+    title: "Kisspeptin-10: The GnRH Gatekeeper Neuropeptide in Reproductive Research",
+    slug: "kisspeptin-10-gnrh-axis",
+    excerpt: "Kisspeptin-10 is the shortest bioactive fragment of the kisspeptin family, acting as a master regulator of GnRH secretion and the HPG axis. It is studied for fertility, puberty onset, and reproductive neuroendocrinology.",
+    content: `## Discovery and Significance
+
+Kisspeptin was discovered in 1996 as a metastasis suppressor (originally named metastin) before its critical role in reproductive endocrinology was recognised in 2003 when loss-of-function mutations in the kisspeptin receptor (GPR54/KISS1R) were found to cause hypogonadotropic hypogonadism in humans and mice.
+
+The gene KISS1 encodes a 145-amino acid protein that is proteolytically processed to several bioactive fragments: kisspeptin-54, -14, -13, and -10. All share the C-terminal decapeptide sequence and full biological activity at KISS1R.
+
+## Mechanism: GnRH Control
+
+Kisspeptin neurons in the hypothalamus (primarily in the arcuate nucleus and anteroventral periventricular nucleus) are the primary drivers of GnRH neuron firing:
+
+- Kisspeptin → KISS1R on GnRH neurons → GnRH pulse initiation
+- Kisspeptin neurons integrate signals from sex steroids (oestrogen and testosterone feedback), circadian rhythm, metabolic status, and stress
+- The arcuate nucleus kisspeptin/neurokinin B/dynorphin (KNDy) neurons form the GnRH pulse generator
+
+## Research Applications
+
+### Puberty Onset
+Kisspeptin signalling is essential for puberty. Kisspeptin levels rise dramatically at puberty in multiple species, making it a key research target in delayed puberty and precocious puberty models.
+
+### Fertility and Ovulation
+Kisspeptin-10 reliably triggers LH surges and ovulation when administered acutely in animal models and women with hypothalamic amenorrhoea, making it a research tool for fertility restoration studies.
+
+### Metabolic Regulation
+KNDy neurons respond to leptin and ghrelin, linking energy status to reproductive function. Research into how nutrition affects fertility frequently uses kisspeptin as a readout.
+
+### Stress and Reproduction
+Kisspeptin neurons are inhibited by CRH and glucocorticoids, explaining stress-induced reproductive suppression. This axis is an active research area.
+
+## Conclusion
+
+Kisspeptin-10 provides precise pharmacological access to the GnRH pulse generator, making it an essential research tool for reproductive neuroendocrinology, puberty biology, and the interaction between metabolism and fertility.`,
+    author: "OmniQure Research Team",
+    tags: ["Kisspeptin-10", "GnRH", "HPG Axis", "Fertility", "Puberty"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2017/02/14/04/13/dna-2064062_640.jpg",
+    publishedAt: new Date("2026-05-19T09:00:00Z"),
+    seoTitle: "Kisspeptin-10 GnRH Reproductive Research | OmniQure",
+    seoDescription: "Research overview of kisspeptin-10 covering KISS1R signalling, GnRH pulse generation, puberty, fertility research, and metabolic-reproductive crosstalk.",
+  },
+
+  // ── Immune Support ─────────────────────────────────────────────────────────
+  {
+    title: "LL-37: Human Cathelicidin, Antimicrobial Defence and Immune Modulation",
+    slug: "ll-37-cathelicidin-antimicrobial",
+    excerpt: "LL-37 is the sole human cathelicidin peptide, derived from the C-terminal domain of hCAP18. It is studied for broad-spectrum antimicrobial activity, wound healing, immune modulation, and emerging cancer research.",
+    content: `## What is LL-37?
+
+LL-37 is a 37-amino acid cationic helical peptide, the only known human cathelicidin. It is derived by proteolytic cleavage of the precursor protein hCAP18 (human cationic antimicrobial protein of 18 kDa). The name "LL-37" refers to its two N-terminal leucines and 37-amino acid length.
+
+LL-37 is produced by:
+- Neutrophils (stored in specific granules)
+- Epithelial cells of the skin, lung, gut, and urogenital tract
+- Monocytes, macrophages, and mast cells
+- Keratinocytes (upregulated by vitamin D)
+
+## Antimicrobial Mechanisms
+
+LL-37 is active against a remarkably broad spectrum of pathogens:
+
+### Bacteria
+- Disrupts bacterial membranes by forming pores via a "carpet" or "toroidal pore" mechanism
+- Active against both Gram-positive (*S. aureus*, *MRSA*) and Gram-negative (*E. coli*, *P. aeruginosa*) bacteria
+- Also active against antibiotic-resistant strains
+
+### Viruses
+- Disrupts viral envelope membranes
+- Studied against influenza, HIV, RSV, and herpes viruses in vitro
+
+### Fungi
+- Activity against *Candida albicans* and other fungal pathogens
+
+## Immune Modulation
+
+Beyond direct killing, LL-37 acts as an immune signal:
+- Recruits neutrophils, monocytes, and mast cells to infection sites (chemoattractant)
+- Modulates TLR (Toll-like receptor) signalling — can both amplify and dampen inflammatory responses depending on context
+- Promotes wound healing through keratinocyte migration and proliferation
+- Upregulates angiogenesis via VEGF and HIF-1α
+
+## Cancer Research
+
+LL-37 has dual roles in cancer:
+- Tumour suppressor in colon, gastric, and lung cancer models
+- Pro-tumorigenic in ovarian and breast cancer models
+This context-dependent activity makes it an interesting research subject in tumour microenvironment biology.
+
+## Vitamin D Connection
+
+Vitamin D3 strongly induces LL-37 expression in macrophages and epithelial cells via a vitamin D response element in the hCAP18 promoter — mechanistically linking vitamin D insufficiency to impaired innate immune defence.
+
+## Conclusion
+
+LL-37 is a pleiotropic innate immune effector with antimicrobial, immunomodulatory, wound healing, and cancer biology applications. Its status as the sole human cathelicidin makes it an irreplaceable research tool in host defence and inflammation research.`,
+    author: "OmniQure Research Team",
+    tags: ["LL-37", "Cathelicidin", "Antimicrobial", "Innate Immunity", "Wound Healing"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2020/03/22/13/01/virus-4957673_640.jpg",
+    publishedAt: new Date("2026-05-20T09:00:00Z"),
+    seoTitle: "LL-37 Human Cathelicidin Antimicrobial Research | OmniQure",
+    seoDescription: "Research overview of LL-37 covering membrane disruption mechanisms, antimicrobial spectrum, immune modulation, wound healing, and cancer biology.",
+  },
+  {
+    title: "Thymosin Alpha-1: Thymic Immune Modulation and T-Cell Research",
+    slug: "thymosin-alpha-1-immune-modulation",
+    excerpt: "Thymosin Alpha-1 (Tα1) is a 28-amino acid peptide originally isolated from thymic tissue, studied for T-cell maturation, antiviral immunity, and immunomodulation in infection and cancer models.",
+    content: `## Background
+
+Thymosin Alpha-1 (Tα1) was first isolated from thymosin fraction 5 of bovine thymic tissue by Allan Goldstein and colleagues in 1972. A 28-amino acid peptide with an N-terminal acetylation, it is now produced synthetically (marketed as Thymalfasin/Zadaxin). It has regulatory approval in approximately 40 countries for hepatitis B, hepatitis C, and as an immune adjuvant in cancer patients, providing an unusually rich clinical dataset for a research peptide.
+
+## Mechanisms of Immune Modulation
+
+Tα1 exerts broad immunomodulatory effects through multiple mechanisms:
+
+### T-Cell Maturation
+- Promotes maturation of T-cell precursors in the thymus
+- Upregulates T-cell markers (CD3, CD4, CD8)
+- Enhances T-helper cell (Th1) differentiation and function
+
+### Dendritic Cell Activation
+- Stimulates dendritic cell maturation and antigen presentation capacity
+- Upregulates co-stimulatory molecules (CD80, CD86)
+- Increases IL-12 production, driving Th1 polarisation
+
+### TLR Signalling
+- Activates TLR2 and TLR9 signalling in dendritic cells and macrophages
+- Promotes type I interferon production
+- Enhances NK cell activity
+
+## Clinical and Preclinical Research
+
+### Viral Infections
+Tα1 has been studied in chronic hepatitis B and C, with clinical trials showing enhanced seroconversion rates when combined with standard antiviral therapy. More recently, it has been examined in COVID-19 as an immune normalising agent.
+
+### Cancer Immunology
+Tα1 enhances tumour antigen-specific T-cell responses and has been studied as an adjuvant to chemotherapy and immunotherapy, improving immune reconstitution after cytotoxic treatment.
+
+### Sepsis
+A randomised controlled trial in China (ETASS trial) demonstrated reduced 28-day mortality in sepsis patients receiving Tα1, suggesting its immunomodulatory effects may counteract the immune suppression of sepsis.
+
+## Conclusion
+
+Thymosin Alpha-1 is among the most clinically validated immunomodulatory peptides, with over 40 years of research and regulatory approval across multiple countries. Its Th1-promoting, antiviral, and dendritic cell-activating properties make it a key tool in immune research.`,
+    author: "OmniQure Research Team",
+    tags: ["Thymosin Alpha-1", "T-Cell", "Immune Modulation", "Antiviral", "Thymus"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2020/03/22/13/01/virus-4957673_640.jpg",
+    publishedAt: new Date("2026-05-21T09:00:00Z"),
+    seoTitle: "Thymosin Alpha-1 Immune Modulation Research | OmniQure",
+    seoDescription: "Research overview of Thymosin Alpha-1 covering T-cell maturation, dendritic cell activation, antiviral immunity, and clinical findings in infection and cancer.",
+  },
+
+  // ── Longevity ──────────────────────────────────────────────────────────────
+  {
+    title: "N-Acetyl Epithalon Amidate: Enhanced Stability Longevity Peptide Research",
+    slug: "n-acetyl-epithalon-amidate",
+    excerpt: "N-Acetyl Epithalon Amidate is a chemically modified form of Epithalon with N-terminal acetylation and C-terminal amidation, providing enhanced metabolic stability and bioavailability for longevity research.",
+    content: `## What is N-Acetyl Epithalon Amidate?
+
+N-Acetyl Epithalon Amidate is a chemically modified version of Epithalon (Ala-Glu-Asp-Gly), the synthetic tetrapeptide analogue of Epithalamin derived from pineal gland tissue. The two modifications:
+
+1. **N-terminal acetylation**: Protects the N-terminus from aminopeptidase cleavage
+2. **C-terminal amidation**: Replaces the free C-terminal carboxyl with an amide group, protecting against carboxypeptidase cleavage and improving membrane permeability
+
+These modifications are common strategies for improving peptide drug-like properties and are used throughout pharmaceutical development.
+
+## Why Modify Epithalon?
+
+Native Epithalon (Ala-Glu-Asp-Gly) has the limitations of small peptides:
+- Rapid proteolytic degradation in vivo (half-life minutes)
+- Limited membrane permeability
+- Potential poor bioavailability via non-injectable routes
+
+The acetylated-amidated form is hypothesised to show:
+- Longer circulating half-life due to resistance to terminal aminopeptidases and carboxypeptidases
+- Enhanced cell penetration
+- Potentially improved sublingual or intranasal bioavailability
+
+## Research Context
+
+The underlying research base on this analogue is limited compared to native Epithalon. Researchers should be aware that:
+
+- Most Epithalon efficacy data (telomerase activation, pineal modulation, life extension) derives from studies using the unmodified tetrapeptide
+- The modified form is presumed to retain similar activity based on its structural similarity
+- Independent validation of the modified form's activity is an area requiring further research
+
+## Telomerase and Longevity Mechanisms
+
+The proposed mechanisms are inherited from the Epithalon research literature:
+- Telomerase activation in cell culture models
+- Pineal gland peptide bioregulation
+- Antioxidant activity (SOD and catalase upregulation)
+
+## Practical Considerations
+
+For researchers choosing between Epithalon and N-Acetyl Epithalon Amidate, the key trade-off is:
+- **Epithalon**: Better-evidenced activity, more published data
+- **N-Acetyl Epithalon Amidate**: Hypothetically improved stability and bioavailability
+
+## Conclusion
+
+N-Acetyl Epithalon Amidate represents a stability-optimised version of Epithalon, developed to improve pharmacokinetic properties while retaining the biological activity of the parent peptide. It is best understood in the context of the broader Epithalon research literature.`,
+    author: "OmniQure Research Team",
+    tags: ["N-Acetyl Epithalon Amidate", "Epithalon", "Longevity", "Telomerase", "Peptide Stability"],
+    status: "published" as const,
+    featuredImageUrl: "https://neurosciencenews.com/files/2024/12/aging-longevity-genetics-neuroscience.jpg",
+    publishedAt: new Date("2026-05-22T09:00:00Z"),
+    seoTitle: "N-Acetyl Epithalon Amidate Longevity Peptide Research | OmniQure",
+    seoDescription: "Research overview of N-Acetyl Epithalon Amidate covering chemical modification rationale, stability improvements, and comparison with native Epithalon.",
+  },
+
+  // ── Nootropics ─────────────────────────────────────────────────────────────
+  {
+    title: "N-Acetyl Selank Amidate: Stability-Enhanced Anxiolytic Peptide Research",
+    slug: "n-acetyl-selank-amidate",
+    excerpt: "N-Acetyl Selank Amidate is a chemically modified form of Selank with enhanced metabolic stability, studied for anxiolytic, nootropic, and immunomodulatory effects via the GABAergic and neurotrophic systems.",
+    content: `## Background
+
+N-Acetyl Selank Amidate is a modified version of Selank — itself a heptapeptide based on the tuftsin sequence (Thr-Lys-Pro-Arg) with an additional Pro-Gly-Pro extension. The acetyl and amide modifications to the N and C termini respectively provide resistance to aminopeptidases and carboxypeptidases, extending the peptide's half-life.
+
+## Selank's Mechanism
+
+The underlying mechanisms of Selank (and by extension its modified form) have been studied primarily by Russian research institutes:
+
+### GABAergic Modulation
+Selank is proposed to modulate GABA-A receptors, producing anxiolytic effects similar to benzodiazepines but without dependence or sedation. The mechanism may involve allosteric modulation rather than direct receptor agonism.
+
+### BDNF Upregulation
+Selank increases BDNF (Brain-Derived Neurotrophic Factor) expression in the hippocampus and prefrontal cortex, which may underlie its cognitive-enhancing effects.
+
+### Enkephalin Stabilisation
+Selank inhibits enkephalin-degrading enzymes, prolonging the effects of endogenous enkephalin peptides and contributing to anxiolytic and mood effects.
+
+### Immunomodulation
+Tuftsin (the parent sequence) is an endogenous phagocytosis-stimulating tetrapeptide. Selank retains some immunomodulatory activity, particularly on macrophage function and T-cell signalling.
+
+## Modified Form Advantages
+
+N-Acetyl Selank Amidate is hypothesised to offer:
+- Improved blood-brain barrier penetration
+- Longer duration of action due to resistance to peptidases
+- Potentially reduced dosing frequency
+
+## Research Limitations
+
+Like many Russian-origin peptides, the research base for Selank and its analogues is primarily from Soviet-era and Russian Federation publications, with limited independent replication in Western peer-reviewed literature. Researchers should evaluate primary sources critically.
+
+## Conclusion
+
+N-Acetyl Selank Amidate extends the anxiolytic and nootropic research profile of Selank with improved pharmacokinetic properties. It is best evaluated in the context of the broader Selank literature, with the acknowledgement that independent replication of core findings is limited.`,
+    author: "OmniQure Research Team",
+    tags: ["N-Acetyl Selank Amidate", "Selank", "Anxiolytic", "GABA", "BDNF"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2018/06/08/00/48/neuron-3461704_640.jpg",
+    publishedAt: new Date("2026-05-23T09:00:00Z"),
+    seoTitle: "N-Acetyl Selank Amidate Anxiolytic Peptide Research | OmniQure",
+    seoDescription: "Research overview of N-Acetyl Selank Amidate covering GABAergic modulation, BDNF upregulation, enkephalin stabilisation, and stability improvements.",
+  },
+  {
+    title: "N-Acetyl Semax Amidate: Enhanced Neuroprotective Peptide Research",
+    slug: "n-acetyl-semax-amidate",
+    excerpt: "N-Acetyl Semax Amidate is a stability-optimised form of Semax, an ACTH-derived heptapeptide studied for neuroprotection, BDNF upregulation, and cognitive enhancement with improved bioavailability.",
+    content: `## Background
+
+N-Acetyl Semax Amidate is a chemically modified form of Semax (Met-Glu-His-Phe-Pro-Gly-Pro), an ACTH(4-7)-PGP heptapeptide developed at the Institute of Molecular Genetics of the Russian Academy of Sciences. N-terminal acetylation and C-terminal amidation are applied to enhance metabolic stability and CNS bioavailability.
+
+## Semax's Mechanism
+
+### BDNF and Neurotrophin Upregulation
+Semax's most consistently reported effect is upregulation of BDNF (Brain-Derived Neurotrophic Factor) and related neurotrophins in the brain. BDNF promotes:
+- Neuronal survival under ischaemic and excitotoxic stress
+- Synaptic plasticity and long-term potentiation (learning and memory formation)
+- Adult neurogenesis in the hippocampus
+
+### ACTH-Derived Activity
+Semax is derived from ACTH(4-7) but lacks the steroidogenic or adrenal-stimulating properties of full-length ACTH. It interacts with MC4R (melanocortin 4 receptor) in the brain, a receptor involved in memory, mood, and energy regulation.
+
+### Dopaminergic and Serotonergic Effects
+Semax modulates dopamine and serotonin turnover in the prefrontal cortex and hippocampus, potentially contributing to its nootropic and mood effects.
+
+## Neuroprotection Research
+
+Semax and N-Acetyl Semax Amidate have been studied in:
+- Stroke/ischaemia models: Reduced infarct size, improved neurological outcome
+- TBI models: Attenuated secondary injury and improved recovery
+- Neurodegenerative models: Reduced neuroinflammation and improved cognition in Alzheimer's-adjacent paradigms
+
+## Clinical Use in Russia
+
+Semax is approved in Russia as a prescription nasal spray for stroke, transient ischaemic attacks, and cognitive disorders, providing human pharmacological data. The acetylated-amidated form is designed for improved intranasal bioavailability and duration.
+
+## Conclusion
+
+N-Acetyl Semax Amidate represents the pharmacokinetically optimised form of one of the most studied neuroprotective peptides from Russian neuroscience. Its BDNF-upregulating, neuroprotective, and cognitive effects are well-documented in the primary literature.`,
+    author: "OmniQure Research Team",
+    tags: ["N-Acetyl Semax Amidate", "Semax", "BDNF", "Neuroprotection", "ACTH"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2018/06/08/00/48/neuron-3461704_640.jpg",
+    publishedAt: new Date("2026-05-24T09:00:00Z"),
+    seoTitle: "N-Acetyl Semax Amidate Neuroprotective Peptide Research | OmniQure",
+    seoDescription: "Research overview of N-Acetyl Semax Amidate covering BDNF upregulation, ACTH-derived neuroprotection, stroke research, and enhanced bioavailability.",
+  },
+  {
+    title: "Selank: Tuftsin-Derived Anxiolytic and Nootropic Research",
+    slug: "selank-anxiolytic-nootropic",
+    excerpt: "Selank is a synthetic heptapeptide analogue of tuftsin (Thr-Lys-Pro-Arg) combined with Pro-Gly-Pro, studied for anxiolytic, nootropic, and immunomodulatory effects with a favourable side effect profile.",
+    content: `## What is Selank?
+
+Selank (Thr-Lys-Pro-Arg-Pro-Gly-Pro) is a synthetic heptapeptide developed at the Institute of Molecular Genetics, Russian Academy of Sciences. It combines the tuftsin sequence (Thr-Lys-Pro-Arg) with a C-terminal Pro-Gly-Pro extension that stabilises the peptide and modifies its receptor interactions.
+
+Tuftsin itself is an endogenous tetrapeptide derived from the Fc region of IgG, with roles in innate immunity and phagocytosis stimulation. Selank extends this profile into the CNS.
+
+## Anxiolytic Properties
+
+The most consistently reported effect of Selank in research models is anxiolytic activity:
+
+- Reduces anxiety-like behaviour in elevated plus maze and open field tests
+- Comparable to benzodiazepines in some paradigms but without motor impairment or sedation
+- No observed dependence or tolerance in rodent models with repeated administration
+- Proposed GABAergic mechanism — may modulate GABA-A receptor sensitivity
+
+## Nootropic Effects
+
+Selank enhances cognitive performance in rodent models:
+- Improved learning in maze tasks
+- Enhanced short-term memory consolidation
+- Increased attentional performance
+- BDNF upregulation in hippocampus and prefrontal cortex
+
+## Immunomodulatory Activity
+
+As a tuftsin analogue, Selank retains immunomodulatory properties:
+- Stimulates macrophage phagocytic activity
+- Modulates T-cell activity and cytokine balance
+- Upregulates IL-2 and interferon levels in some models
+
+## Enkephalinase Inhibition
+
+A proposed mechanism for Selank's sustained CNS effects is inhibition of enkephalin-degrading enzymes, prolonging the action of endogenous opioid peptides. This mechanism is shared with a class of opioid-potentiating research compounds.
+
+## Safety Profile
+
+Selank has a well-characterised safety profile from Russian clinical use (approved as an anxiolytic nasal spray in Russia and Ukraine), with no documented sedation, dependence, or withdrawal at therapeutic doses.
+
+## Conclusion
+
+Selank offers a distinctive combination of anxiolytic, nootropic, and immunomodulatory effects in a single peptide, with a safety profile superior to conventional anxiolytics. It is one of the most interesting compounds in the Russian neuropsychopharmacology literature.`,
+    author: "OmniQure Research Team",
+    tags: ["Selank", "Anxiolytic", "Nootropic", "Tuftsin", "GABA"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2018/06/08/00/48/neuron-3461704_640.jpg",
+    publishedAt: new Date("2026-05-25T09:00:00Z"),
+    seoTitle: "Selank Anxiolytic Nootropic Peptide Research | OmniQure",
+    seoDescription: "Research overview of Selank covering tuftsin-derived pharmacology, GABAergic anxiolytic effects, cognitive enhancement, and immunomodulatory activity.",
+  },
+  {
+    title: "Semax: ACTH-Derived Heptapeptide and Neuroprotection Research",
+    slug: "semax-acth-neuroprotection",
+    excerpt: "Semax is a synthetic ACTH(4-7)-PGP heptapeptide developed in Russia, studied for neuroprotection, BDNF upregulation, cognitive enhancement, and stroke treatment research.",
+    content: `## Origins and Structure
+
+Semax (Met-Glu-His-Phe-Pro-Gly-Pro) is derived from the ACTH(4-7) sequence (Met-Glu-His-Phe) — the portion of ACTH responsible for CNS effects — with a C-terminal Pro-Gly-Pro extension added for stability and modified CNS activity. Crucially, Semax lacks ACTH's Phe-7 position and the steroidogenic C-terminal sequences, so it does not stimulate cortisol production.
+
+## Primary Mechanism: BDNF and Neurotrophin Signalling
+
+The most replicated finding for Semax is its ability to upregulate neurotrophins, particularly:
+
+- **BDNF**: Increased expression in the hippocampus, prefrontal cortex, and striatum following acute administration
+- **VEGF**: Upregulated in some ischaemia models, contributing to neuroprotection via angiogenesis
+- **NGF**: Elevated in some model systems
+
+BDNF upregulation is pharmacologically significant because it mirrors the mechanism of some antidepressants and exercise-induced neuroplasticity.
+
+## Neuroprotection in Ischaemia
+
+The most extensively studied application of Semax is cerebral ischaemia/stroke:
+- Reduced infarct volume in MCA occlusion rodent models
+- Improved neurological scoring in ischaemia models
+- Reduced oxidative stress markers and neuroinflammatory cytokines in affected tissue
+- Approved in Russia for ischaemic stroke treatment (as a nasal spray)
+
+## Cognitive Effects
+
+In rodent learning and memory paradigms:
+- Improved performance in active and passive avoidance tasks
+- Enhanced Morris water maze performance
+- Reversed memory impairment in scopolamine (muscarinic antagonist) models
+- Effects appear mediated through MC4R activation and downstream BDNF
+
+## Neuroinflammation Research
+
+Semax reduces microglial activation and pro-inflammatory cytokine production (IL-1β, TNF-α) in CNS injury and neurodegenerative models, suggesting potential applications in neuroinflammatory conditions.
+
+## Conclusion
+
+Semax is one of the best-characterised neuroprotective peptides in the literature, with regulatory approval in Russia and a well-replicated BDNF-upregulating mechanism. It provides a valuable research tool for studying neurotrophin biology, stroke recovery, and cognitive enhancement.`,
+    author: "OmniQure Research Team",
+    tags: ["Semax", "ACTH", "BDNF", "Neuroprotection", "Stroke"],
+    status: "published" as const,
+    featuredImageUrl: "https://thumbs.dreamstime.com/b/exploration-advanced-neuroscience-technology-modern-laboratory-environment-sleek-lab-showcases-glowing-brain-models-329002686.jpg",
+    publishedAt: new Date("2026-05-26T09:00:00Z"),
+    seoTitle: "Semax ACTH-Derived Neuroprotective Peptide Research | OmniQure",
+    seoDescription: "Research overview of Semax covering ACTH-derived neuroprotection, BDNF upregulation, stroke ischaemia findings, and cognitive enhancement research.",
+  },
+
+  // ── Peptide Blends ─────────────────────────────────────────────────────────
+  {
+    title: "BPC-157 + TB-500 Blend: Combined Healing and Regenerative Research",
+    slug: "bpc-157-tb-500-blend",
+    excerpt: "The BPC-157 + TB-500 blend combines two of the most studied healing peptides with complementary mechanisms: BPC-157's angiogenic and cytoprotective activity alongside TB-500's actin-mediated cell migration.",
+    content: `## Rationale for the Combination
+
+BPC-157 and TB-500 are frequently studied in combination because they address different aspects of tissue repair through mechanistically distinct pathways:
+
+**BPC-157** (Body Protection Compound-157):
+- Promotes angiogenesis via VEGF upregulation
+- Modulates nitric oxide signalling
+- Cytoprotects gastric mucosa and multiple tissue types
+- Stimulates fibroblast and tendon cell proliferation
+
+**TB-500** (Thymosin Beta-4):
+- Sequesters G-actin, facilitating lamellipodia formation and directed cell migration
+- Promotes keratinocyte and endothelial cell migration to wound sites
+- Anti-inflammatory via NF-κB modulation
+- Upregulates VEGF independently
+
+The two peptides are proposed to be synergistic because BPC-157 creates the vascular architecture (new blood vessels) while TB-500 drives the cellular migration needed for complete tissue reconstitution.
+
+## Research Evidence
+
+**BPC-157 + TB-500 combination studies** in the primary literature are limited — most published work examines each peptide independently. The combination rationale is mechanistically sound but should be considered partly inferential pending dedicated combination studies.
+
+### Individual Evidence Bases
+- **BPC-157**: Extensive rodent data (tendon, ligament, muscle, GI, bone healing)
+- **TB-500**: Strong actin/cell migration data; cardiac and wound healing animal studies
+
+## Tissue Applications in Research
+
+The combination has been applied in preclinical models of:
+- Tendon and ligament injury
+- Muscle tear and strain
+- Dermal wound healing
+- Surgical tissue repair
+
+## Research Design Considerations
+
+For researchers using this blend:
+- The 1:1 ratio is the most common studied configuration, though optimal ratios are not established
+- Separate dosing allows individual peptide effects to be disambiguated
+- Blends are convenient for combined endpoint research but limit mechanistic attribution
+
+## Conclusion
+
+The BPC-157 + TB-500 combination represents a mechanistically logical dual-peptide approach to tissue repair research, combining angiogenic and cell migration-promoting activities. It is best understood in the context of the robust individual literature for each component peptide.`,
+    author: "OmniQure Research Team",
+    tags: ["BPC-157", "TB-500", "Peptide Blend", "Tissue Repair", "Angiogenesis"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2022/01/28/12/05/microbiology-6974451_640.jpg",
+    publishedAt: new Date("2026-05-27T09:00:00Z"),
+    seoTitle: "BPC-157 + TB-500 Combination Healing Research | OmniQure",
+    seoDescription: "Research overview of the BPC-157 + TB-500 peptide blend, covering complementary mechanisms, combination rationale, and tissue repair research applications.",
+  },
+  {
+    title: "DSIP: Delta Sleep-Inducing Peptide and Neuroendocrine Research",
+    slug: "dsip-sleep-inducing-peptide",
+    excerpt: "Delta Sleep-Inducing Peptide (DSIP) is a nonapeptide first isolated in 1977 for its ability to induce delta-wave EEG activity. It has been studied for sleep modulation, stress regulation, and neuroendocrine effects.",
+    content: `## Discovery
+
+DSIP (Trp-Ala-Gly-Gly-Asp-Ala-Ser-Gly-Glu) was first isolated from rabbit cerebral venous blood during slow-wave sleep by Schoenenberger and Monnier at the University of Basel in 1977. Their initial finding that perfusate from sleeping rabbits could induce sleep in awake recipients launched decades of investigation.
+
+## Sleep Research
+
+### Delta-Wave Induction
+DSIP was named for its ability to increase delta-wave (0.5–4 Hz) EEG activity in recipient animals following lateral ventricle infusion. Delta waves are the hallmark of slow-wave sleep (SWS), the restorative deep sleep stage.
+
+### Sleep Architecture
+Subsequent studies showed DSIP effects on sleep architecture including:
+- Reduction in sleep onset latency
+- Increased total sleep time
+- Altered NREM/REM distribution
+
+### Interpretation Challenges
+Replication of DSIP's sleep effects has been inconsistent across research groups. Variables including peptide purity, route of administration, species, and time-of-day effects appear to significantly influence outcomes.
+
+## Neuroendocrine Research
+
+Beyond sleep, DSIP has been found to modulate multiple neuroendocrine axes:
+- Inhibits somatostatin release, potentially influencing GH secretion
+- Modulates cortisol secretion (circadian rhythm effects)
+- Influences LH release in some models
+- Naloxone-sensitive effects suggest possible opioidergic interactions
+
+## Stress Response
+
+DSIP levels change during physical and psychological stress in animal models, and exogenous DSIP has been studied for:
+- Reducing stress-induced ulcer formation
+- Attenuating physiological stress responses
+- Anti-oxidant-like effects in some paradigms
+
+## Research Considerations
+
+DSIP research suffers from the same issues as many early neuropeptides:
+- Small study sizes
+- Inconsistent methodological standards
+- Limited modern replication with current techniques
+
+Researchers should approach this compound with appropriate scientific caution while acknowledging the intriguing breadth of its proposed activities.
+
+## Conclusion
+
+DSIP remains a scientifically interesting peptide with a unique historical origin in sleep research. Its neuroendocrine modulation, stress response, and sleep architecture effects make it a distinctive research tool for circadian and sleep biology.`,
+    author: "OmniQure Research Team",
+    tags: ["DSIP", "Sleep", "Delta Waves", "Neuroendocrine", "Stress"],
+    status: "published" as const,
+    featuredImageUrl: "https://thumbs.dreamstime.com/b/exploration-advanced-neuroscience-technology-modern-laboratory-environment-sleek-lab-showcases-glowing-brain-models-329002686.jpg",
+    publishedAt: new Date("2026-05-28T09:00:00Z"),
+    seoTitle: "DSIP Delta Sleep-Inducing Peptide Research | OmniQure",
+    seoDescription: "Research overview of DSIP covering delta-wave EEG induction, sleep architecture effects, neuroendocrine modulation, and stress research applications.",
+  },
+  {
+    title: "Melanotan 1: α-MSH Analogue and Melanogenesis Research",
+    slug: "melanotan-1-melanogenesis",
+    excerpt: "Melanotan 1 (afamelanotide) is a linear synthetic analogue of α-MSH that activates MC1R, the primary regulator of skin pigmentation, and has been studied for photoprotection and melanogenesis research.",
+    content: `## Background
+
+Melanotan 1 (also known as afamelanotide, [Nle4,D-Phe7]-α-MSH) is a synthetic 13-amino acid analogue of α-melanocyte-stimulating hormone (α-MSH) with two substitutions:
+1. Nle4: Norleucine at position 4 (replacing methionine, improving oxidative stability)
+2. D-Phe7: D-phenylalanine at position 7 (replacing L-Phe, conferring protease resistance and increasing MC1R potency)
+
+These modifications extend the biological half-life from approximately 1 minute (native α-MSH) to 12+ hours.
+
+## MC1R Pharmacology
+
+Melanotan 1 is a potent MC1R (melanocortin 1 receptor) agonist. MC1R is expressed on:
+- Melanocytes (skin, hair follicles)
+- Keratinocytes
+- Dermal fibroblasts
+- Immunocytes
+
+MC1R activation leads to:
+- Increased eumelanin (brown/black pigment) synthesis vs phaeomelanin (red/yellow)
+- Melanocyte proliferation
+- Anti-inflammatory effects on keratinocytes and immunocytes
+- DNA repair enhancement (via MSH-R signalling in some models)
+
+## Photoprotection Research
+
+The most extensively clinically studied application is photoprotection in photosensitive diseases:
+- **Erythropoietic protoporphyria (EPP)**: FDA and EMA approved (as Scenesse/afamelanotide) — reduces sunlight-induced pain episodes
+- Clinical trials in vitiligo, polymorphous light eruption, and actinic keratosis
+
+## Distinction from Melanotan 2
+
+| Feature | Melanotan 1 | Melanotan 2 |
+|---|---|---|
+| Structure | Linear 13-mer | Cyclic 7-mer |
+| Primary receptor | MC1R | MC1R, MC3R, MC4R |
+| Libido effects | Minimal | Pronounced (MC4R) |
+| Regulatory status | FDA/EMA approved (EPP) | Not approved |
+| Nausea profile | Moderate | More pronounced |
+
+## Conclusion
+
+Melanotan 1 is the clinically validated member of the melanocortin analogue family, with regulatory approval for EPP and an extensive clinical dataset. Its selective MC1R profile and photoprotective mechanism make it a well-characterised tool for melanogenesis and photoprotection research.`,
+    author: "OmniQure Research Team",
+    tags: ["Melanotan 1", "α-MSH", "MC1R", "Melanogenesis", "Photoprotection"],
+    status: "published" as const,
+    featuredImageUrl: "https://fvderm.com/wp-content/uploads/2024/04/The-Science-of-Beautiful-Skin-Insights-into-Dermatological-Research.png",
+    publishedAt: new Date("2026-05-29T09:00:00Z"),
+    seoTitle: "Melanotan 1 α-MSH Analogue Melanogenesis Research | OmniQure",
+    seoDescription: "Research overview of Melanotan 1 (afamelanotide) covering MC1R pharmacology, melanogenesis, EPP clinical approval, and distinction from Melanotan 2.",
+  },
+  {
+    title: "Melanotan 2: Cyclic α-MSH Analogue and Melanocortin Receptor Research",
+    slug: "melanotan-2-cyclic-msh",
+    excerpt: "Melanotan 2 is a cyclic synthetic α-MSH analogue that activates MC1R, MC3R, and MC4R, studied for melanogenesis, sexual function, and appetite regulation through broad melanocortin receptor pharmacology.",
+    content: `## Structure and Receptor Profile
+
+Melanotan 2 (cyclo[Nle4,D-Phe7]-α-MSH(4-10)) is a cyclic 7-amino acid peptide synthesised from the core active sequence of α-MSH. The cyclisation (via amide bond between the N-terminus and the side chain of lysine at position 10) confers conformational constraint that:
+- Increases metabolic stability
+- Enhances receptor binding affinity
+- Broadens receptor selectivity vs. the linear Melanotan 1
+
+Melanotan 2 activates MC1R, MC3R, and MC4R with significant affinity.
+
+## Melanogenesis (MC1R)
+
+Like Melanotan 1, MT-2 activates MC1R on melanocytes, increasing melanin synthesis and producing skin darkening. Due to the cyclic structure and shorter sequence, MT-2 has somewhat different receptor kinetics than MT-1.
+
+## Sexual Function Research (MC4R)
+
+The most distinctive feature of MT-2 is its MC4R activity. MC4R is expressed in the hypothalamus and spinal cord, where it mediates:
+- Pro-erectile signalling in male rodent models (through autonomic nervous system activation)
+- Female sexual receptivity in some paradigms
+- PT-141 (bremelanotide) — a metabolite of MT-2 — was developed as a selective MC4R drug and is FDA-approved for hypoactive sexual desire disorder in premenopausal women
+
+## Appetite Regulation (MC3R/MC4R)
+
+Both MC3R and MC4R are involved in energy homeostasis. MC4R activation suppresses appetite and increases energy expenditure. MT-2's activity at these receptors produces appetite-reducing effects in rodent models.
+
+## Side Effect Profile
+
+MT-2's broader receptor activity produces more off-target effects than MT-1:
+- Nausea (MC3R/MC4R in area postrema)
+- Facial flushing
+- Spontaneous erections in males at higher doses
+- Appetite suppression
+
+These effects are relevant to research design and safety monitoring.
+
+## Conclusion
+
+Melanotan 2 is a pharmacologically rich melanocortin agonist whose broad receptor activity makes it a valuable tool for studying MC1R/MC3R/MC4R cross-talk, while its clinical derivative (bremelanotide) demonstrates the therapeutic translational potential of this peptide class.`,
+    author: "OmniQure Research Team",
+    tags: ["Melanotan 2", "α-MSH", "MC4R", "Melanogenesis", "Sexual Function"],
+    status: "published" as const,
+    featuredImageUrl: "https://fvderm.com/wp-content/uploads/2024/04/The-Science-of-Beautiful-Skin-Insights-into-Dermatological-Research.png",
+    publishedAt: new Date("2026-05-30T09:00:00Z"),
+    seoTitle: "Melanotan 2 Cyclic α-MSH Melanocortin Research | OmniQure",
+    seoDescription: "Research overview of Melanotan 2 covering MC1R/MC3R/MC4R pharmacology, melanogenesis, sexual function research, and comparison with Melanotan 1.",
+  },
+  {
+    title: "Oxytocin: Social Bonding, Anxiety Modulation and Reproductive Research",
+    slug: "oxytocin-social-bonding-research",
+    excerpt: "Oxytocin is a nine-amino acid neuropeptide produced in the hypothalamus with established roles in parturition, lactation, social bonding, anxiety modulation, and emerging research in autism and psychiatric disorders.",
+    content: `## Background
+
+Oxytocin (Cys-Tyr-Ile-Gln-Asn-Cys-Pro-Leu-Gly-NH2) is a cyclic nonapeptide produced by magnocellular neurons in the supraoptic and paraventricular nuclei of the hypothalamus. It is stored in and released from the posterior pituitary into the systemic circulation, and also released locally in the brain as a neuromodulator.
+
+## Classical Reproductive Physiology
+
+### Parturition
+Oxytocin stimulates uterine smooth muscle contractions during childbirth via Gq-protein-coupled oxytocin receptors, explaining its clinical use (as Pitocin/Syntocinon) for labour induction.
+
+### Lactation
+Oxytocin triggers the milk ejection (let-down) reflex by contracting myoepithelial cells of the mammary gland.
+
+## Social Neuroscience Research
+
+Oxytocin's role as the "bonding hormone" is supported by substantial research:
+- Elevated during pair bonding, parent-infant contact, and sexual activity
+- Nasal administration in humans increases trust, eye contact, and social affiliation
+- Prairie vole studies (naturally monogamous rodents) demonstrated oxytocin is essential for pair bond formation via nucleus accumbens reward circuits
+- OXT receptor expression in limbic regions correlates with social behaviour phenotypes
+
+## Anxiety and Stress
+
+Oxytocin has complex, context-dependent effects on anxiety:
+- Generally anxiolytic via HPA axis dampening (reduces CRH and cortisol responses)
+- Enhances social approach and reduces social anxiety
+- In-group/out-group effects: may amplify hostility toward strangers while increasing in-group trust — the "tend and defend" hypothesis
+
+## Autism Spectrum Research
+
+Oxytocin has been extensively investigated in autism spectrum disorder (ASD):
+- Oxytocin system dysfunction has been proposed as a contributor to social deficits
+- Multiple clinical trials of intranasal oxytocin in ASD — results have been mixed, with some trials showing improved social cognition and others showing no effect
+- Age, baseline oxytocin levels, and dosing protocol appear to significantly affect outcomes
+
+## Conclusion
+
+Oxytocin is one of the most studied neuropeptides in social neuroscience, with well-established reproductive physiology and a rich emerging literature in social behaviour, anxiety, and psychiatric research. Its translational relevance makes it a uniquely positioned research compound.`,
+    author: "OmniQure Research Team",
+    tags: ["Oxytocin", "Social Bonding", "Anxiety", "Autism", "Reproductive Research"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2018/06/08/00/48/neuron-3461704_640.jpg",
+    publishedAt: new Date("2026-05-31T09:00:00Z"),
+    seoTitle: "Oxytocin Social Bonding and Anxiety Research | OmniQure",
+    seoDescription: "Research overview of oxytocin covering social bonding, anxiety modulation, autism spectrum research, and reproductive physiology.",
+  },
+  {
+    title: "VIP: Vasoactive Intestinal Peptide, Vasodilation and Immune Research",
+    slug: "vip-vasoactive-intestinal-peptide",
+    excerpt: "Vasoactive Intestinal Peptide (VIP) is a 28-amino acid neuropeptide with potent vasodilatory, bronchodilatory, anti-inflammatory, and immunomodulatory actions, studied across pulmonary, cardiovascular, and autoimmune research.",
+    content: `## Background
+
+Vasoactive Intestinal Peptide (VIP) is a 28-amino acid peptide member of the glucagon/secretin superfamily, first isolated from porcine small intestine by Said and Mutt in 1970. It is widely distributed throughout the nervous system, gastrointestinal tract, lung, and immune system, acting on VPAC1 and VPAC2 receptors via Gs/cAMP signalling.
+
+## Vasodilatory Properties
+
+VIP was named for its initial identification as a potent vasodilator:
+- Relaxes vascular smooth muscle via endothelium-dependent and -independent mechanisms
+- Reduces pulmonary vascular resistance (relevant to pulmonary hypertension research)
+- Dilates coronary arteries and reduces cardiac afterload
+
+## Pulmonary Research
+
+VIP is one of the most potent endogenous bronchodilators:
+- Relaxes airway smooth muscle via VPAC receptors
+- Reduces airway mucus secretion
+- Anti-inflammatory effects in asthma and COPD models
+- VIP-deficient mice develop spontaneous pulmonary hypertension — demonstrating its essential role in lung homeostasis
+
+## Immune Modulation
+
+VIP's immunomodulatory actions are extensive:
+- Shifts macrophage polarisation from M1 (pro-inflammatory) to M2 (anti-inflammatory/reparative)
+- Inhibits TNF-α, IL-6, and IL-12 production
+- Upregulates IL-10 (anti-inflammatory)
+- Suppresses Th1 responses and promotes Th2 and T-regulatory cell differentiation
+- Reduces neuroinflammation in CNS disease models
+
+## Neuroprotective Effects
+
+As a neuropeptide, VIP exerts neuroprotective actions:
+- Promotes neuronal survival under excitotoxic and oxidative stress
+- BDNF upregulation
+- Studied in models of Alzheimer's disease, Parkinson's disease, and traumatic brain injury
+
+## Autoimmune Disease Research
+
+VIP's anti-inflammatory profile has made it a subject of interest in:
+- Rheumatoid arthritis models (reduced joint inflammation and cytokine expression)
+- Inflammatory bowel disease models
+- Sepsis (VIP reduces systemic inflammatory response)
+- Multiple sclerosis models (neuroprotection and T-regulatory cell promotion)
+
+## Conclusion
+
+VIP is a remarkably pleiotropic neuropeptide with vasodilatory, bronchodilatory, anti-inflammatory, immunomodulatory, and neuroprotective properties. Its breadth of action across organ systems makes it a valuable research tool in pulmonary, cardiovascular, autoimmune, and neurological research.`,
+    author: "OmniQure Research Team",
+    tags: ["VIP", "Vasoactive Intestinal Peptide", "Vasodilation", "Immune Modulation", "Pulmonary"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2020/03/22/13/01/virus-4957673_640.jpg",
+    publishedAt: new Date("2026-06-02T09:00:00Z"),
+    seoTitle: "VIP Vasoactive Intestinal Peptide Research | OmniQure",
+    seoDescription: "Research overview of VIP covering vasodilation, bronchodilation, immune modulation, neuroprotection, and autoimmune disease research.",
+  },
+
+  // ── Weight Management ──────────────────────────────────────────────────────
+  {
+    title: "Cagrilintide: Long-Acting Amylin Analogue and Appetite Research",
+    slug: "cagrilintide-amylin-analogue",
+    excerpt: "Cagrilintide is a long-acting amylin analogue studied for appetite suppression, weight management, and metabolic regulation as a complement to GLP-1-based therapies.",
+    content: `## What is Cagrilintide?
+
+Cagrilintide is a fatty acid-modified amylin analogue developed by Novo Nordisk. Amylin (islet amyloid polypeptide, IAPP) is a 37-amino acid peptide co-secreted with insulin from pancreatic beta cells. Native amylin has poor stability and forms amyloid fibrils — a property associated with type 2 diabetes pathology. Cagrilintide introduces structural modifications that:
+- Eliminate amyloid fibril formation
+- Extend half-life to approximately one week (enabling weekly dosing)
+- Maintain amylin receptor agonism
+
+## Amylin Receptor Biology
+
+Amylin acts on the amylin receptor — a complex of the calcitonin receptor (CTR) with receptor activity-modifying proteins (RAMPs). Key areas of expression:
+- Area postrema and nucleus of the solitary tract (NTS) — satiety signalling
+- Hypothalamus — appetite and energy regulation
+- Kidney — fluid and electrolyte balance
+
+## Appetite and Satiety Mechanisms
+
+Cagrilintide suppresses appetite through:
+- Slowing gastric emptying (reducing meal size and post-meal glucose excursion)
+- Reducing food intake via central amylin receptor satiety signalling in area postrema/NTS
+- Decreasing meal frequency
+- Complementing GLP-1 signalling (different receptor, additive appetite suppression)
+
+## Combination Research: CagriSema
+
+The most exciting clinical development is the combination of cagrilintide and semaglutide (CagriSema):
+- Phase III trials (REDEFINE programme) show >20% body weight reduction
+- Greater weight loss than either agent alone
+- Improved glycaemic control endpoints
+- Dual mechanism addresses both GLP-1 receptor (semaglutide) and amylin receptor (cagrilintide) pathways
+
+## Metabolic Effects
+
+Amylin analogues also have metabolic effects beyond appetite:
+- Suppress post-meal glucagon (reducing hepatic glucose output)
+- Reduce triglyceride-rich lipoprotein secretion
+- May improve insulin sensitivity at the CNS level
+
+## Conclusion
+
+Cagrilintide represents the most advanced amylin-based research compound, with phase III clinical data from combination studies showing industry-leading weight loss efficacy. Its distinct mechanism from GLP-1 analogues makes it valuable for understanding complementary satiety pathways.`,
+    author: "OmniQure Research Team",
+    tags: ["Cagrilintide", "Amylin", "Appetite", "Weight Management", "GLP-1"],
+    status: "published" as const,
+    featuredImageUrl: "https://media.istockphoto.com/id/1044228822/photo/nmr-science-lab-research-into-cancer-diabetes-dementia-or-autism.jpg?s=612x612&w=0&k=20&c=rxA58ckwj9z14n18UXB4xb82m1EP7LNsrdWzExqKNWo=",
+    publishedAt: new Date("2026-06-03T09:00:00Z"),
+    seoTitle: "Cagrilintide Amylin Analogue Weight Management Research | OmniQure",
+    seoDescription: "Research overview of cagrilintide covering amylin receptor pharmacology, appetite suppression, combination with semaglutide (CagriSema), and weight loss findings.",
+  },
+  {
+    title: "Retatrutide: Triple GIP/GLP-1/Glucagon Receptor Agonist Research",
+    slug: "retatrutide-triple-receptor-agonist",
+    excerpt: "Retatrutide is a novel triple agonist of GIP, GLP-1, and glucagon receptors, studied for weight management, metabolic syndrome, and non-alcoholic fatty liver disease with clinical data showing >20% weight reduction.",
+    content: `## The Triple Agonist Concept
+
+Retatrutide (LY3437943) represents the third generation of incretin-based metabolic pharmacology:
+- **Generation 1**: GLP-1 receptor agonists (semaglutide, liraglutide)
+- **Generation 2**: Dual GIP/GLP-1 receptor agonists (tirzepatide)
+- **Generation 3**: Triple GIP/GLP-1/glucagon receptor agonists (retatrutide)
+
+Adding glucagon receptor agonism to the GIP/GLP-1 combination is intended to increase energy expenditure via thermogenesis — a mechanism absent from GLP-1 and dual GIP/GLP-1 agents.
+
+## Receptor Pharmacology
+
+### GLP-1 Receptor (GLP-1R)
+- Insulin secretion (glucose-dependent)
+- Appetite suppression via hypothalamic and brainstem pathways
+- Gastric emptying delay
+- Cardiovascular protective effects
+
+### GIP Receptor (GIPR)
+- Amplifies insulin secretion in a glucose-dependent manner
+- Adipocyte effects — may enhance GLP-1-driven fat loss
+- Synergy with GLP-1 receptor signalling at multiple levels
+
+### Glucagon Receptor (GCGR)
+- Increases hepatic glucose output (the classical action, balanced by co-activated GLP-1R)
+- **Increases energy expenditure**: GCGR activation in brown adipose tissue drives thermogenesis
+- **Reduces hepatic fat**: Direct liver GCGR effects reduce hepatic lipogenesis
+- Increases lipolysis in adipose tissue
+
+## Clinical Research
+
+Phase 2 data from Eli Lilly's MOMENTUM trial demonstrated:
+- ~17–24% weight reduction at 48 weeks (dose-dependent) in adults with obesity
+- Greater weight loss than tirzepatide at comparable timepoints
+- Significant improvements in cardiometabolic markers (TG, HDL, blood pressure)
+- Reduction in liver fat by MRI
+
+## NASH/MASH Applications
+
+Retatrutide's glucagon receptor component makes it particularly interesting for non-alcoholic/metabolic-associated steatohepatitis (NASH/MASH):
+- Reduces hepatic lipogenesis directly via GCGR
+- Improves liver steatosis independent of body weight changes
+- Phase 3 trials are ongoing
+
+## Conclusion
+
+Retatrutide represents the current frontier of metabolic peptide pharmacology, combining three complementary receptor mechanisms to produce weight loss and metabolic improvement exceeding current dual agonists. Its unique thermogenic component via glucagon receptor activation sets it apart mechanistically.`,
+    author: "OmniQure Research Team",
+    tags: ["Retatrutide", "GLP-1", "GIP", "Glucagon", "Weight Management", "NASH"],
+    status: "published" as const,
+    featuredImageUrl: "https://media.istockphoto.com/id/1044228822/photo/nmr-science-lab-research-into-cancer-diabetes-dementia-or-autism.jpg?s=612x612&w=0&k=20&c=rxA58ckwj9z14n18UXB4xb82m1EP7LNsrdWzExqKNWo=",
+    publishedAt: new Date("2026-06-04T09:00:00Z"),
+    seoTitle: "Retatrutide Triple Receptor Agonist Research | OmniQure",
+    seoDescription: "Research overview of retatrutide covering GIP/GLP-1/glucagon triple receptor pharmacology, thermogenesis, weight loss clinical data, and NASH applications.",
+  },
+  {
+    title: "Tirzepatide: Dual GIP/GLP-1 Receptor Agonist Research",
+    slug: "tirzepatide-dual-incretin-research",
+    excerpt: "Tirzepatide is a synthetic dual agonist of GIP and GLP-1 receptors, FDA-approved for type 2 diabetes and obesity, studied for body weight reduction, glycaemic control, cardiovascular protection, and NASH.",
+    content: `## Background
+
+Tirzepatide (LY3298176) is a 39-amino acid synthetic peptide that acts as a dual agonist at both glucose-dependent insulinotropic polypeptide (GIP) receptors and glucagon-like peptide-1 (GLP-1) receptors. It is FDA-approved as Mounjaro (type 2 diabetes) and Zepbound (obesity/weight management).
+
+## The Dual Agonist Pharmacology
+
+### GLP-1 Receptor Agonism
+- Stimulates glucose-dependent insulin secretion
+- Suppresses glucagon during hyperglycaemia
+- Reduces appetite via central mechanisms (hypothalamus, area postrema)
+- Slows gastric emptying
+- Cardiovascular protective effects (SURPASS-CVOT: 16% MACE reduction)
+
+### GIP Receptor Agonism
+The addition of GIPR agonism to GLP-1R activity is what distinguishes tirzepatide from earlier GLP-1 agents:
+- **Potentiates GLP-1-mediated insulin secretion** at the pancreatic level
+- **Adipocyte effects**: GIPR on fat cells — tirzepatide may enhance fat mobilisation from adipose tissue via adipocyte GIPR signalling
+- **Brain GIPR**: Expression in hypothalamic nuclei, contributing to appetite suppression
+- **Synergy**: The combination produces greater weight loss than maximally dosed GLP-1 agonists
+
+## Weight Loss Research
+
+Clinical trial data (SURMOUNT programme):
+- 15–21% body weight reduction at 72 weeks (dose-dependent)
+- Greater weight loss than semaglutide 2.4 mg in head-to-head SURMOUNT-5 trial
+- Reduced waist circumference, improved cardiometabolic markers
+
+## Non-Alcoholic Fatty Liver Disease
+
+The SYNERGY-NASH trial demonstrated tirzepatide resolution of NASH (histological) in 44–62% of subjects, with no worsening of fibrosis — a landmark result in metabolic liver disease research.
+
+## Sleep Apnoea
+
+The SURMOUNT-OSA trial found significant reductions in apnoea-hypopnoea index with tirzepatide, the first FDA-approved drug for obesity-related sleep apnoea.
+
+## Conclusion
+
+Tirzepatide represents the best-evidenced dual incretin agonist, with extensive phase 3 clinical data across metabolic, cardiovascular, hepatic, and pulmonary research endpoints. It provides an important pharmacological reference point for research into next-generation metabolic peptides.`,
+    author: "OmniQure Research Team",
+    tags: ["Tirzepatide", "GLP-1", "GIP", "Dual Agonist", "Obesity", "NASH"],
+    status: "published" as const,
+    featuredImageUrl: "https://media.istockphoto.com/id/1044228822/photo/nmr-science-lab-research-into-cancer-diabetes-dementia-or-autism.jpg?s=612x612&w=0&k=20&c=rxA58ckwj9z14n18UXB4xb82m1EP7LNsrdWzExqKNWo=",
+    publishedAt: new Date("2026-06-06T09:00:00Z"),
+    seoTitle: "Tirzepatide Dual GIP/GLP-1 Research | OmniQure",
+    seoDescription: "Research overview of tirzepatide covering dual GIP/GLP-1 receptor pharmacology, weight loss trial data, NASH findings, and sleep apnoea research.",
+  },
+  {
+    title: "ARA-290: Innate Repair Receptor Agonist and Neuroprotection Research",
+    slug: "ara-290-innate-repair-receptor",
+    excerpt: "ARA-290 (Cibinetide) is a selective agonist of the innate repair receptor (IRR), a non-erythropoietic pathway of the EPO receptor, studied for neuroprotection, small fibre neuropathy, and tissue repair without haematopoietic effects.",
+    content: `## Background
+
+ARA-290 (also known as cibinetide) is a synthetic 11-amino acid peptide derived from the three-dimensional structure of erythropoietin (EPO). It was designed to activate the tissue-protective arm of EPO signalling — the innate repair receptor (IRR) — while avoiding the haematopoietic EPO receptor complex that drives red blood cell production.
+
+## The IRR vs EPO Receptor Distinction
+
+EPO acts through two receptor complexes:
+1. **Homodimeric EPO receptor (EpoR/EpoR)**: Mediates erythropoiesis (red blood cell production). Clinically relevant but associated with thrombosis and tumour growth risks if over-activated.
+2. **Heteromeric innate repair receptor (EpoR/βcR)**: Mediates tissue protection, anti-inflammation, and repair. Does not drive erythropoiesis.
+
+ARA-290 selectively binds βcR and activates the IRR complex, providing tissue-protective effects without erythropoietic risk — a pharmacologically important separation.
+
+## Neuroprotection Research
+
+ARA-290 has been studied in multiple neuroprotection models:
+- Reduced neuroinflammation and cell death in rodent ischaemia models
+- Protection against chemotherapy-induced peripheral neuropathy
+- Improved nerve conduction velocity and intraepidermal nerve fibre density in diabetic neuropathy models
+
+## Small Fibre Neuropathy (SFN)
+
+The most advanced clinical application is small fibre neuropathy:
+- A phase 2 randomised controlled trial demonstrated that ARA-290 significantly increased corneal nerve fibre density (a biomarker of small fibre regeneration) in sarcoidosis-associated SFN patients
+- Reduced pain scores and improved quality of life measures
+- This remains one of the most credible clinical signals for a research peptide in recent years
+
+## Anti-Inflammatory Effects
+
+ARA-290 modulates innate immunity:
+- Reduces macrophage pro-inflammatory cytokine production
+- Promotes M2 macrophage polarisation
+- Inhibits neutrophil migration at sites of injury
+
+## Conclusion
+
+ARA-290 is a mechanistically innovative peptide that separates EPO's tissue-protective properties from its haematopoietic effects, providing a tool for studying innate repair receptor biology in neuroprotection, neuroregeneration, and tissue repair research.`,
+    author: "OmniQure Research Team",
+    tags: ["ARA-290", "Cibinetide", "Innate Repair Receptor", "Neuroprotection", "Small Fibre Neuropathy"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2018/06/08/00/48/neuron-3461704_640.jpg",
+    publishedAt: new Date("2026-06-07T09:00:00Z"),
+    seoTitle: "ARA-290 Cibinetide Innate Repair Receptor Research | OmniQure",
+    seoDescription: "Research overview of ARA-290 covering innate repair receptor pharmacology, neuroprotection, small fibre neuropathy clinical data, and anti-inflammatory effects.",
+  },
+
+  // ── Peptide Blends (remaining) ─────────────────────────────────────────────
+  {
+    title: "GLOW BLEND: Skin-Focused Peptide Combination Research",
+    slug: "glow-blend-skin-peptides",
+    excerpt: "The GLOW BLEND is a proprietary peptide combination studied for skin repair, collagen synthesis stimulation, radiance improvement, and anti-ageing effects through synergistic multi-peptide mechanisms.",
+    content: `## Overview
+
+The GLOW BLEND is a proprietary multi-peptide formulation designed to address multiple aspects of skin biology simultaneously. Rather than relying on a single mechanism, it combines peptides with complementary roles in the extracellular matrix, melanin regulation, and epidermal repair.
+
+## Multi-Target Skin Peptide Research
+
+Modern cosmeceutical and dermatological research supports the use of peptide combinations for synergistic outcomes. Key target pathways in skin peptide research:
+
+### Collagen Synthesis
+Signal peptides (e.g., palmitoyl pentapeptide-4/Matrixyl) stimulate fibroblast collagen production by mimicking collagen breakdown products that signal for repair. Collagen-stimulating peptides are among the best-evidenced cosmeceutical ingredients.
+
+### Melanin Regulation
+Peptides can modulate melanocyte activity via MC1R and related pathways, influencing the balance between eumelanin (brown/black) and phaeomelanin (yellow/red) production, affecting skin tone uniformity.
+
+### Epidermal Growth Factor Pathway
+EGF-mimetic peptides stimulate keratinocyte proliferation and accelerate epidermal turnover, contributing to improved skin texture and wound healing.
+
+### Antioxidant Defence
+Tripeptides like GHK-Cu stimulate antioxidant enzyme expression (SOD, catalase), protecting against UV and environmental oxidative damage.
+
+## Research Applications
+
+The GLOW BLEND is suited to research in:
+- Skin ageing and photoageing models
+- Wound healing and post-procedure skin recovery
+- Collagen density assessment (histological and instrumental)
+- Melanin quantification in pigmentation models
+
+## Formulation Considerations
+
+Peptide blend research requires attention to:
+- Peptide-peptide interactions (stability in combination)
+- pH stability of individual components
+- Reconstitution solvent compatibility
+- Vehicle effects on skin penetration
+
+## Conclusion
+
+The GLOW BLEND provides a multi-mechanism approach to skin research, targeting collagen synthesis, melanin regulation, epidermal renewal, and antioxidant defence. Its multi-peptide composition reflects the current direction of cosmeceutical research toward synergistic combination strategies.`,
+    author: "OmniQure Research Team",
+    tags: ["GLOW BLEND", "Skin Peptides", "Collagen", "Anti-Ageing", "Cosmeceutical"],
+    status: "published" as const,
+    featuredImageUrl: "https://fvderm.com/wp-content/uploads/2024/04/The-Science-of-Beautiful-Skin-Insights-into-Dermatological-Research.png",
+    publishedAt: new Date("2026-06-08T09:00:00Z"),
+    seoTitle: "GLOW BLEND Skin Peptide Combination Research | OmniQure",
+    seoDescription: "Research overview of the GLOW BLEND covering collagen synthesis, melanin modulation, epidermal renewal, and multi-peptide skin biology research.",
+  },
+  {
+    title: "KLOW BLEND: Inflammatory Modulation Peptide Blend Research",
+    slug: "klow-blend-inflammatory-modulation",
+    excerpt: "The KLOW BLEND is a proprietary anti-inflammatory peptide combination studied for NF-κB pathway suppression, inflammatory cytokine reduction, and tissue recovery in inflammatory models.",
+    content: `## Overview
+
+The KLOW BLEND is a proprietary multi-peptide formulation focused on modulating the inflammatory cascade. Named for its KPV-anchored anti-inflammatory mechanism, it combines peptides targeting multiple points in the inflammatory signalling network to achieve broader and more complete suppression.
+
+## Anti-Inflammatory Peptide Research Rationale
+
+The inflammatory response involves multiple converging pathways. Single-agent anti-inflammatory peptides act at discrete points in these networks. A multi-peptide approach can:
+- Target redundant pathways simultaneously
+- Prevent signalling bypass around single-target inhibition
+- Allow lower individual peptide concentrations (reducing off-target effects)
+- Provide complementary mechanisms (receptor-level, intracellular, cytokine-level)
+
+## Key Anti-Inflammatory Mechanisms Targeted
+
+### NF-κB Pathway Inhibition
+KPV (Lys-Pro-Val) directly inhibits NF-κB nuclear translocation, reducing transcription of TNF-α, IL-1β, and IL-6. This is a central mechanism shared by several research peptides.
+
+### Melanocortin Pathway
+α-MSH-derived peptides activate MC3R and MC4R on immunocytes, producing cAMP elevation and PKA activation that downregulates macrophage inflammatory output.
+
+### Th1/Th2 Balancing
+Some peptide combinations can shift T-cell polarisation from pro-inflammatory Th1 toward anti-inflammatory Th2 and T-regulatory phenotypes.
+
+## Research Applications
+
+The KLOW BLEND is studied in:
+- Inflammatory bowel disease and gut inflammation models
+- Arthritis and joint inflammation models
+- Post-surgical inflammatory response research
+- Chronic low-grade inflammation in metabolic disease models
+
+## Research Design Considerations
+
+When using peptide blends in anti-inflammatory research:
+- Establish that individual components are active in your model system first
+- Use appropriate cytokine panels (IL-1β, IL-6, TNF-α, IL-10, TGF-β) to characterise the inflammatory phenotype
+- Include positive controls (dexamethasone, indomethacin) for comparison
+
+## Conclusion
+
+The KLOW BLEND provides a multi-target anti-inflammatory peptide tool for research into inflammatory pathology. Its combined mechanisms address the redundancy of the inflammatory cascade in a way that single-peptide approaches cannot.`,
+    author: "OmniQure Research Team",
+    tags: ["KLOW BLEND", "Anti-Inflammatory", "NF-κB", "KPV", "Cytokines"],
+    status: "published" as const,
+    featuredImageUrl: "https://cdn.pixabay.com/photo/2020/03/22/13/01/virus-4957673_640.jpg",
+    publishedAt: new Date("2026-06-10T09:00:00Z"),
+    seoTitle: "KLOW BLEND Anti-Inflammatory Peptide Research | OmniQure",
+    seoDescription: "Research overview of the KLOW BLEND covering NF-κB inhibition, melanocortin pathway anti-inflammatory activity, and inflammatory modulation research.",
+  },
+  {
+    title: "Semax + Selank Blend: Combined Neuroprotective and Anxiolytic Research",
+    slug: "semax-selank-blend-neuro",
+    excerpt: "The Semax + Selank blend combines two established Russian neuropeptides with complementary mechanisms: Semax's BDNF-upregulating neuroprotection with Selank's GABAergic anxiolytic and immunomodulatory activity.",
+    content: `## Rationale for the Combination
+
+Semax and Selank are two of the most studied neuropeptides from Russian neuropharmacology, with distinct but complementary mechanisms:
+
+**Semax** (ACTH-derived):
+- Upregulates BDNF and neurotrophins
+- Neuroprotection in ischaemia and TBI models
+- Dopaminergic and serotonergic modulation
+- Cognitive enhancement
+
+**Selank** (Tuftsin-derived):
+- GABAergic anxiolytic effects (without sedation or dependence)
+- BDNF upregulation (shared with Semax)
+- Enkephalinase inhibition
+- Immunomodulatory via tuftsin mechanism
+
+The combination is proposed to address both the neuroprotective/cognitive and anxiolytic/stress-modulating dimensions simultaneously.
+
+## Overlapping and Synergistic Mechanisms
+
+Both peptides independently upregulate BDNF in the hippocampus, suggesting a potentially additive neurotrophin effect. Meanwhile, Semax's monoaminergic modulation and Selank's GABAergic activity target different neurotransmitter systems — reducing the risk of pathway competition.
+
+## Research Applications
+
+The Semax + Selank combination is studied in:
+- Anxiety-depression comorbidity models (where both anxiolytic and neurotrophin effects are relevant)
+- Stress resilience research
+- Cognitive performance under stress conditions (where anxiety impairs cognitive output)
+- Neuroinflammation models (where both compounds have anti-inflammatory CNS effects)
+
+## Published Evidence
+
+Most evidence for each compound exists independently. Combination studies are limited in the published literature, making this an area where researchers can contribute meaningfully to the primary data. The mechanistic rationale for combination is strong, but controlled comparison studies between individual and combined peptide administration are sparse.
+
+## Practical Research Considerations
+
+- Both peptides are typically administered intranasally in clinical use
+- Injectable routes are available for research
+- Timing of administration relative to stressors or cognitive tasks is important for experimental design
+
+## Conclusion
+
+The Semax + Selank blend addresses the neurological landscape of anxiety, stress resilience, neuroprotection, and cognition through complementary mechanisms. It represents a rational combination for research into brain health conditions where multiple pathways require simultaneous addressing.`,
+    author: "OmniQure Research Team",
+    tags: ["Semax", "Selank", "Peptide Blend", "Neuroprotection", "Anxiolytic"],
+    status: "published" as const,
+    featuredImageUrl: "https://thumbs.dreamstime.com/b/exploration-advanced-neuroscience-technology-modern-laboratory-environment-sleek-lab-showcases-glowing-brain-models-329002686.jpg",
+    publishedAt: new Date("2026-06-11T09:00:00Z"),
+    seoTitle: "Semax + Selank Neuroprotective Anxiolytic Blend Research | OmniQure",
+    seoDescription: "Research overview of the Semax + Selank blend covering complementary neuroprotective and anxiolytic mechanisms, BDNF upregulation, and research applications.",
+  },
+  {
+    title: "Tesamorelin + Ipamorelin Blend: Synergistic GH Stimulation Research",
+    slug: "tesamorelin-ipamorelin-blend",
+    excerpt: "The Tesamorelin + Ipamorelin blend combines a GHRH analogue with a selective GH secretagogue, exploiting two complementary receptor pathways for synergistic GH release with a physiological pulse profile.",
+    content: `## Mechanistic Rationale
+
+The Tesamorelin + Ipamorelin combination follows the same dual-pathway principle as CJC-1295 + Ipamorelin but uses tesamorelin — the clinically approved GHRH analogue — as the GHRH component:
+
+**Tesamorelin** (GHRH analogue):
+- Binds GHRH receptor (GHRHR) on pituitary somatotrophs
+- Activates Gs/cAMP/PKA signalling
+- Half-life: ~26 minutes (improved vs native GHRH by trans-3-hexenoic acid modification)
+- FDA-approved clinical reference dataset available
+
+**Ipamorelin** (selective GHSR-1a agonist):
+- Binds ghrelin receptor (GHSR-1a)
+- Activates Gq/PLC/IP3 calcium signalling (different from GHRHR)
+- Minimal off-target effects (no significant cortisol, prolactin, or appetite stimulation)
+- Produces clean GH pulse
+
+## Synergy Mechanisms
+
+When GHRH receptor and GHSR-1a are co-activated:
+1. cAMP/PKA (tesamorelin) and Ca²⁺ (ipamorelin) pathways converge on somatotroph secretory machinery
+2. Somatostatin inhibition by ipamorelin removes the brake on tesamorelin's stimulatory effect
+3. Combined GH pulse is 2–4x greater than either compound alone
+
+## Tesamorelin Advantage Over CJC-1295
+
+For researchers comparing GHRH components:
+- **Tesamorelin**: Clinically approved, well-characterised in humans, shorter half-life (~26 min) produces more physiological pulsatility
+- **CJC-1295 No DAC**: Research compound only, ~30 min half-life, similar pulsatility profile
+- **CJC-1295 with DAC**: Very long half-life (days), non-pulsatile — less physiological for many research designs
+
+## Research Applications
+
+The combination is studied in:
+- GH axis restoration in age-related GH decline
+- Body composition improvement (visceral fat and lean mass)
+- IGF-1 normalisation studies
+- Sleep architecture (GH predominantly secreted during SWS)
+
+## Conclusion
+
+The Tesamorelin + Ipamorelin blend provides a clinically grounded, dual-mechanism GH secretagogue combination with strong individual pharmacological characterisation and robust synergy rationale. Tesamorelin's clinical approval provides human pharmacological reference data that pure research compounds cannot offer.`,
+    author: "OmniQure Research Team",
+    tags: ["Tesamorelin", "Ipamorelin", "Growth Hormone", "GHRH", "Peptide Blend"],
+    status: "published" as const,
+    featuredImageUrl: "https://thumbs.dreamstime.com/b/exploration-advanced-neuroscience-technology-modern-laboratory-environment-sleek-lab-showcases-glowing-brain-models-329002686.jpg",
+    publishedAt: new Date("2026-06-13T09:00:00Z"),
+    seoTitle: "Tesamorelin + Ipamorelin GH Blend Research | OmniQure",
+    seoDescription: "Research overview of the Tesamorelin + Ipamorelin blend covering dual GHRH/GHSR-1a receptor synergy, GH pulse amplification, and body composition research.",
+  },
+  {
+    title: "CJC-1295 + Ipamorelin Blend: Dual Pathway Synergistic GH Research",
+    slug: "cjc-1295-ipamorelin-blend-research",
+    excerpt: "The CJC-1295 No DAC + Ipamorelin blend provides a 1:1 combination of a GHRH analogue and a selective GH secretagogue for maximum synergistic pulsatile GH release research.",
+    content: `## Overview
+
+This blend pairs CJC-1295 No DAC (Modified GRF 1-29) with Ipamorelin in a 1:1 ratio, combining complementary growth hormone secretagogue mechanisms into a single research compound. It is one of the most commonly studied GH secretagogue combinations in the preclinical literature.
+
+## Component Mechanisms
+
+### CJC-1295 No DAC (Modified GRF 1-29)
+A 30-amino acid GHRH analogue with modifications at positions 2, 8, 15, and 27:
+- Position 2 (Ala→D-Ala): DPP-IV resistance
+- Position 8 (Asn→Gln): Improved stability
+- Position 15 (Gly→Ala): Reduced oxidation susceptibility
+- Position 27 (Met→Norleucine): Improved oxidative stability
+
+Half-life: ~30 minutes. Produces physiological GHRH receptor activation and pulsatile GH release.
+
+### Ipamorelin (Selective GHSR-1a Agonist)
+His-D-2-MeAla-Trp-D-Phe-Lys-NH2. The most selective GH secretagogue, with:
+- Minimal cortisol or prolactin elevation
+- No appetite stimulation
+- Clean GH pulse profile
+
+## Physiological Pulsatility
+
+The combination maintains physiological GH pulsatility because:
+- Both components have relatively short half-lives (~30 min)
+- Somatostatin feedback remains active between pulses
+- GH secretion pattern mimics the natural 3–5 hour pulsatile rhythm rather than creating tonic GH elevation
+
+This pulsatility is important because many of GH's effects (IGF-1 production, lipolysis, anabolic signalling) are pulse-dependent rather than concentration-dependent.
+
+## Synergy Evidence
+
+Studies combining GHRH analogues with GHRP-class peptides consistently show 2–4× greater GH release than either compound alone. The mechanisms are complementary:
+- GHRH receptor: Gs/cAMP/PKA → enhanced GH gene expression and vesicle priming
+- GHSR-1a: Gq/Ca²⁺ → triggers GH vesicle fusion and release
+- Ipamorelin also partially inhibits somatostatin release, removing the brake on GHRH action
+
+## Research Applications
+
+- GH axis pharmacology
+- Age-related GH decline models
+- Body composition studies (lean mass, fat mass)
+- IGF-1 dose-response characterisation
+- Sleep and circadian GH secretion studies
+
+## Conclusion
+
+The CJC-1295 No DAC + Ipamorelin combination is the most widely studied GHRH/GHRP pairing in the research literature, offering well-documented synergistic GH release with a physiological pulsatility profile and Ipamorelin's clean selectivity. It is the reference combination for GH secretagogue research.`,
+    author: "OmniQure Research Team",
+    tags: ["CJC-1295", "Ipamorelin", "Peptide Blend", "Growth Hormone", "GHRH", "GHRP"],
+    status: "published" as const,
+    featuredImageUrl: "https://thumbs.dreamstime.com/b/exploration-advanced-neuroscience-technology-modern-laboratory-environment-sleek-lab-showcases-glowing-brain-models-329002686.jpg",
+    publishedAt: new Date("2026-06-14T09:00:00Z"),
+    seoTitle: "CJC-1295 + Ipamorelin GH Blend Research | OmniQure",
+    seoDescription: "Research overview of the CJC-1295 No DAC + Ipamorelin blend covering dual GH secretagogue mechanisms, synergy evidence, pulsatility, and research applications.",
+  },
+];
+
+export async function seedBlogPeptides() {
+  const existing = await db.select({ slug: blogPostsTable.slug }).from(blogPostsTable);
+  const existingSlugs = new Set(existing.map((r: { slug: string }) => r.slug));
+
+  const toInsert = posts.filter(p => !existingSlugs.has(p.slug));
+
+  if (toInsert.length === 0) {
+    console.log("[seed-blog-peptides] skipped: all posts already exist");
+    return;
+  }
+
+  await db.insert(blogPostsTable).values(toInsert);
+  console.log(`[seed-blog-peptides] inserted ${toInsert.length} peptide blog posts`);
+}

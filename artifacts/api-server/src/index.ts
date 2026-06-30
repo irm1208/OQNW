@@ -5,6 +5,7 @@ import { startReviewRequestJob } from "./lib/reviewRequestJob";
 import { startSubscriptionJob } from "./lib/subscriptionJob";
 import { seedReviews } from "./lib/seed-reviews";
 import { seedBlog } from "./lib/seed-blog";
+import { seedBlogPeptides } from "./lib/seed-blog-peptides";
 
 const rawPort = process.env["PORT"];
 
@@ -35,4 +36,5 @@ app.listen(port, (err) => {
     else logger.info({ reason: r.reason }, "Reviews seed skipped");
   }).catch((err) => logger.error({ err }, "Reviews seed failed"));
   seedBlog().catch((err) => logger.error({ err }, "Blog seed failed"));
+  seedBlogPeptides().catch((err) => logger.error({ err }, "Blog peptides seed failed"));
 });
