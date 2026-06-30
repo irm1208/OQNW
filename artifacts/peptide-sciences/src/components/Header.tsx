@@ -38,6 +38,7 @@ const navItems = [
   { label: "Peptide Calculator", href: "/calculator" },
   { label: "Protocols", href: "/protocols" },
   { label: "Research", href: "/blog" },
+  { label: "Reference Library", href: "/research-library" },
 ];
 
 
