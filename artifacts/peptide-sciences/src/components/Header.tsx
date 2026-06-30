@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, FileCheck } from "lucide-react";
+import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, FileCheck, BookOpen, Calculator, BookMarked, GraduationCap } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
@@ -34,10 +34,15 @@ const navItems = [
   { label: "All Peptides", href: "/all-peptides" },
   { label: "Bac Water", href: "/bac-water" },
   { label: "Research Stacks", href: "/stacks" },
-  { label: "Lab Results", href: "/lab-tests" },
-  { label: "Peptide Calculator", href: "/calculator" },
-  { label: "Protocols", href: "/protocols" },
-  { label: "Research", href: "/blog" },
+  { label: "Research & Education", href: "/blog" },
+];
+
+const researchLinks = [
+  { label: "Protocols", href: "/protocols", icon: FlaskConical, desc: "Research protocols & dosing guides" },
+  { label: "Peptide Calculator", href: "/calculator", icon: Calculator, desc: "Reconstitution & dosing calculator" },
+  { label: "Lab Results", href: "/lab-tests", icon: FileCheck, desc: "COAs, HPLC chromatograms & ESI-MS data" },
+  { label: "Research Blog", href: "/blog", icon: BookOpen, desc: "Latest peptide research articles" },
+  { label: "Glossary", href: "/glossary", icon: BookMarked, desc: "Scientific terminology & definitions" },
 ];
 
 
@@ -80,6 +85,8 @@ export default function Header() {
   const allPeptidesTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [popularOpen, setPopularOpen] = useState(false);
   const popularTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [researchOpen, setResearchOpen] = useState(false);
+  const researchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [location, navigate] = useLocation();
 
   const openAllPeptides = useCallback(() => {
@@ -98,6 +105,15 @@ export default function Header() {
 
   const closePopular = useCallback(() => {
     popularTimer.current = setTimeout(() => setPopularOpen(false), 120);
+  }, []);
+
+  const openResearch = useCallback(() => {
+    if (researchTimer.current) clearTimeout(researchTimer.current);
+    setResearchOpen(true);
+  }, []);
+
+  const closeResearch = useCallback(() => {
+    researchTimer.current = setTimeout(() => setResearchOpen(false), 120);
   }, []);
   const { totalItems } = useCart();
   const { currency, setCurrency, formatPrice } = useCurrency();
@@ -839,6 +855,98 @@ export default function Header() {
                 );
               }
 
+              if (item.label === "Research & Education") {
+                const researchActive = researchLinks.some(l => location === l.href || location.startsWith(l.href + "/"));
+                return (
+                  <div
+                    key={item.label}
+                    style={{ position: "relative" }}
+                    onMouseEnter={openResearch}
+                    onMouseLeave={closeResearch}
+                  >
+                    <button
+                      className="px-4 py-3 text-sm whitespace-nowrap inline-flex items-center gap-1 transition-colors"
+                      style={{
+                        color: researchActive ? "#1B5CB5" : "#475569",
+                        fontWeight: researchActive ? 600 : 500,
+                        marginBottom: "-1px", background: "none", outline: "none",
+                        borderLeft: "none", borderRight: "none", borderTop: "none",
+                        borderBottom: researchActive ? "2px solid #1B5CB5" : "2px solid transparent",
+                        cursor: "pointer", padding: "12px 16px",
+                      }}
+                      onClick={() => setResearchOpen(o => !o)}
+                    >
+                      <GraduationCap size={14} style={{ opacity: 0.7, marginRight: "2px" }} />
+                      {item.label}
+                      <ChevronDown size={13} style={{ opacity: 0.5, transition: "transform 0.2s", transform: researchOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
+                    </button>
+
+                    {researchOpen && (
+                      <div
+                        onMouseEnter={openResearch}
+                        onMouseLeave={closeResearch}
+                        style={{
+                          position: "absolute", top: "100%", left: 0,
+                          backgroundColor: "#fff",
+                          border: "1.5px solid #E8EDF5",
+                          borderRadius: "16px",
+                          boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
+                          zIndex: 400,
+                          minWidth: "380px",
+                          padding: "16px",
+                          marginTop: "2px",
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", paddingBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
+                          <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "#EEF4FF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                            <GraduationCap size={15} style={{ color: "#1240A0" }} />
+                          </div>
+                          <div>
+                            <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A", margin: 0 }}>Research & Education</p>
+                            <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>Tools, data & learning resources</p>
+                          </div>
+                        </div>
+
+                        <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                          {researchLinks.map(link => {
+                            const Icon = link.icon;
+                            const isActive = location === link.href;
+                            return (
+                              <Link
+                                key={link.href}
+                                href={link.href}
+                                onClick={() => setResearchOpen(false)}
+                                style={{
+                                  display: "flex", alignItems: "center", gap: "12px",
+                                  padding: "10px 10px", borderRadius: "10px",
+                                  textDecoration: "none",
+                                  backgroundColor: isActive ? "#EEF4FF" : "transparent",
+                                  transition: "background-color 0.12s",
+                                }}
+                                onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC"; }}
+                                onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
+                              >
+                                <div style={{
+                                  width: "34px", height: "34px", borderRadius: "8px", flexShrink: 0,
+                                  backgroundColor: isActive ? "#DBEAFE" : "#F1F5F9",
+                                  display: "flex", alignItems: "center", justifyContent: "center",
+                                }}>
+                                  <Icon size={16} style={{ color: isActive ? "#1240A0" : "#64748B" }} />
+                                </div>
+                                <div style={{ minWidth: 0 }}>
+                                  <p style={{ fontSize: "13px", fontWeight: 600, color: isActive ? "#1240A0" : "#1E293B", margin: "0 0 1px" }}>{link.label}</p>
+                                  <p style={{ fontSize: "11.5px", color: "#94A3B8", margin: 0 }}>{link.desc}</p>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={item.label}
@@ -875,17 +983,45 @@ export default function Header() {
       {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden bg-white border-b border-gray-100 shadow-xl">
-          {[...navItems, ...rightNavItems].map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="block px-4 py-3.5 text-sm font-medium border-b border-gray-50 transition-colors"
-              style={{ color: "#374151", textDecoration: "none" }}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {[...navItems, ...rightNavItems].map((item) => {
+            if (item.label === "Research & Education") {
+              return (
+                <div key={item.label}>
+                  <div className="px-4 py-2.5 text-xs font-700 border-b border-gray-50 flex items-center gap-2"
+                    style={{ color: "#94A3B8", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", backgroundColor: "#F8FAFC" }}>
+                    <GraduationCap size={12} />
+                    Research & Education
+                  </div>
+                  {researchLinks.map(link => {
+                    const Icon = link.icon;
+                    return (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className="flex items-center gap-3 px-5 py-3 text-sm border-b border-gray-50 transition-colors"
+                        style={{ color: "#374151", textDecoration: "none" }}
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <Icon size={15} style={{ color: "#64748B", flexShrink: 0 }} />
+                        {link.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              );
+            }
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="block px-4 py-3.5 text-sm font-medium border-b border-gray-50 transition-colors"
+                style={{ color: "#374151", textDecoration: "none" }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
           {customer && (
             <>
               <Link
