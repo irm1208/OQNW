@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, FileCheck, BookOpen, Calculator, BookMarked, GraduationCap } from "lucide-react";
+import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, FileCheck, BookOpen, Calculator, BookMarked, GraduationCap, Thermometer } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
@@ -43,6 +43,7 @@ const researchLinks = [
   { label: "Lab Results", href: "/lab-tests", icon: FileCheck, desc: "COAs, HPLC chromatograms & ESI-MS data" },
   { label: "Research Blog", href: "/blog", icon: BookOpen, desc: "Latest peptide research articles" },
   { label: "Glossary", href: "/glossary", icon: BookMarked, desc: "Scientific terminology & definitions" },
+  { label: "Storage & Handling", href: "/storage-guide", icon: Thermometer, desc: "Lyophilised storage, reconstitution & stability" },
 ];
 
 
