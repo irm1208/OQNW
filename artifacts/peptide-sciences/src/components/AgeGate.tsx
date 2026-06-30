@@ -54,17 +54,17 @@ export default function AgeGate() {
     <div
       className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
       style={{
-        background: "rgba(5, 15, 45, 0.97)",
-        backdropFilter: "blur(8px)",
-        WebkitBackdropFilter: "blur(8px)",
+        background: "rgba(8, 8, 12, 0.96)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
       }}
     >
-      {/* Radial glow */}
+      {/* Subtle top-center glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(18,64,160,0.22) 0%, transparent 70%)",
+            "radial-gradient(ellipse 55% 40% at 50% 0%, rgba(18,64,160,0.14) 0%, transparent 70%)",
         }}
       />
 
