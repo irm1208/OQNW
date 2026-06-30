@@ -4,6 +4,7 @@ import { startAbandonedCartJob } from "./lib/abandonedCartJob";
 import { startReviewRequestJob } from "./lib/reviewRequestJob";
 import { startSubscriptionJob } from "./lib/subscriptionJob";
 import { seedReviews } from "./lib/seed-reviews";
+import { seedBlog } from "./lib/seed-blog";
 
 const rawPort = process.env["PORT"];
 
@@ -33,4 +34,5 @@ app.listen(port, (err) => {
     if (r.seeded) logger.info({ count: r.count }, "Reviews seeded");
     else logger.info({ reason: r.reason }, "Reviews seed skipped");
   }).catch((err) => logger.error({ err }, "Reviews seed failed"));
+  seedBlog().catch((err) => logger.error({ err }, "Blog seed failed"));
 });
