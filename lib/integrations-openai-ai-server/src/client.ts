@@ -1,18 +1,21 @@
 import OpenAI from "openai";
 
-if (!process.env.AI_INTEGRATIONS_OPENAI_BASE_URL) {
+function createOpenAIClient(): OpenAI {
+  const baseURL = process.env.AI_INTEGRATIONS_OPENAI_BASE_URL;
+  const integrationKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY;
+  const directKey = process.env.OPENAI_API_KEY;
+
+  if (baseURL && integrationKey) {
+    return new OpenAI({ apiKey: integrationKey, baseURL });
+  }
+
+  if (directKey) {
+    return new OpenAI({ apiKey: directKey });
+  }
+
   throw new Error(
-    "AI_INTEGRATIONS_OPENAI_BASE_URL must be set. Did you forget to provision the OpenAI AI integration?",
+    "OpenAI is not configured. Set OPENAI_API_KEY or provision the Replit OpenAI AI integration.",
   );
 }
 
-if (!process.env.AI_INTEGRATIONS_OPENAI_API_KEY) {
-  throw new Error(
-    "AI_INTEGRATIONS_OPENAI_API_KEY must be set. Did you forget to provision the OpenAI AI integration?",
-  );
-}
-
-export const openai = new OpenAI({
-  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
-  baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
-});
+export const openai = createOpenAIClient();
