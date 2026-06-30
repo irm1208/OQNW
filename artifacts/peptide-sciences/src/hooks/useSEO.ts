@@ -61,6 +61,7 @@ export interface BreadcrumbItem {
 interface SEOProps {
   title?: string | null;
   description?: string | null;
+  keywords?: string | null;
   ogType?: string;
   canonicalPath?: string | null;
   ogImage?: string | null;
@@ -72,6 +73,7 @@ interface SEOProps {
 export function useSEO({
   title,
   description,
+  keywords,
   ogType = "website",
   canonicalPath,
   ogImage,
@@ -94,6 +96,7 @@ export function useSEO({
     // Standard
     upsertMeta("name", "description", desc);
     upsertMeta("name", "robots", "index, follow");
+    if (keywords) upsertMeta("name", "keywords", keywords);
 
     // Open Graph — Facebook, LinkedIn, WhatsApp, Discord, Slack, iMessage
     upsertMeta("property", "og:type", ogType);
@@ -184,5 +187,5 @@ export function useSEO({
       removeJsonLd("product");
       removeJsonLd("breadcrumb");
     };
-  }, [title, description, ogType, canonicalPath, ogImage, noSiteSuffix, product, breadcrumbs]);
+  }, [title, description, keywords, ogType, canonicalPath, ogImage, noSiteSuffix, product, breadcrumbs]);
 }

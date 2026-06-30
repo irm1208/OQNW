@@ -94,12 +94,13 @@ function ProtocolCard({ group }: { group: GroupedProduct }) {
 
   const hasTabs = !!(extras || detail?.storage || protocols.length > 0);
 
-  const tabs: { key: TabKey; label: string; icon: React.ReactNode; show: boolean }[] = [
+  const allTabs: { key: TabKey; label: string; icon: React.ReactNode; show: boolean }[] = [
     { key: "overview", label: "Overview", icon: <BookOpen size={11} />, show: true },
     { key: "benefits", label: "Benefits", icon: <Zap size={11} />, show: !!extras?.benefits?.length },
     { key: "sideEffects", label: "Precautions", icon: <ShieldAlert size={11} />, show: !!extras?.sideEffects?.length },
     { key: "protocol", label: "Protocol", icon: <Activity size={11} />, show: protocols.length > 0 || !!detail?.storage },
-  ].filter(t => t.show);
+  ];
+  const tabs = allTabs.filter(t => t.show);
 
   return (
     <div style={{
