@@ -107,6 +107,44 @@
   --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
 }
 
+.dark {
+  --button-outline: rgba(255,255,255, .12);
+  --badge-outline: rgba(255,255,255, .08);
+  --opaque-button-border-intensity: 8;
+  --elevate-1: rgba(255,255,255, .03);
+  --elevate-2: rgba(255,255,255, .06);
+
+  --background: 222 28% 8%;
+  --foreground: 210 20% 94%;
+  --border: 220 18% 18%;
+  --card: 222 26% 11%;
+  --card-foreground: 210 20% 94%;
+  --card-border: 220 18% 20%;
+  --sidebar: 222 26% 10%;
+  --sidebar-foreground: 210 20% 94%;
+  --sidebar-border: 220 18% 18%;
+  --sidebar-primary: 14 84% 51%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 220 20% 16%;
+  --sidebar-accent-foreground: 210 20% 94%;
+  --sidebar-ring: 14 84% 51%;
+  --popover: 222 26% 10%;
+  --popover-foreground: 210 20% 94%;
+  --popover-border: 220 18% 20%;
+  --primary: 14 84% 55%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 207 80% 50%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 220 20% 14%;
+  --muted-foreground: 215 15% 55%;
+  --accent: 220 20% 16%;
+  --accent-foreground: 210 20% 94%;
+  --destructive: 0 72% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --input: 220 18% 20%;
+  --ring: 14 84% 55%;
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -1134,4 +1172,33 @@ body.has-cart-preview-bar main {
   .header-icon-btn span.hidden {
     display: none !important;
   }
+}
+
+/* ── DARK MODE OVERRIDES ──────────────────────────────────── */
+
+.dark body {
+  color: hsl(var(--foreground));
+}
+
+.dark .account-tab-btn {
+  background: hsl(var(--card));
+  border-color: hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+}
+
+.dark .account-tab-btn.active {
+  background: hsl(var(--accent));
+  color: hsl(var(--secondary));
+  border-color: hsl(var(--secondary) / 0.4);
+}
+
+.dark .account-tab-action-btn {
+  background: hsl(var(--card));
+  border-color: hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+}
+
+.dark .mobile-bottom-bar__badge {
+  background: hsl(var(--card));
+  color: hsl(var(--secondary));
 }
