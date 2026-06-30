@@ -33,7 +33,6 @@ const navItems = [
   { label: "Home", href: "/" },
   { label: "All Peptides", href: "/all-peptides" },
   { label: "Bac Water", href: "/bac-water" },
-  { label: "NAD+", href: "/nad-plus" },
   { label: "Research Stacks", href: "/stacks" },
   { label: "Research & Education", href: "/blog" },
 ];

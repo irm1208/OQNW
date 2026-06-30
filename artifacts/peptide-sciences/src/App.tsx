@@ -37,7 +37,6 @@ import AboutPage from "@/pages/AboutPage";
 import ReferAFriendPage from "@/pages/ReferAFriendPage";
 import BundleAndSavePage from "@/pages/BundleAndSavePage";
 import StorageGuidePage from "@/pages/StorageGuidePage";
-import NadPlusPage from "@/pages/NadPlusPage";
 import { CookieConsent } from "@/components/CookieConsent";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
@@ -122,7 +121,6 @@ function Router() {
       <Route path="/refer-a-friend" component={ReferAFriendPage} />
       <Route path="/bundle-and-save" component={BundleAndSavePage} />
       <Route path="/storage-guide" component={StorageGuidePage} />
-      <Route path="/nad-plus" component={NadPlusPage} />
       <Route component={NotFound} />
     </Switch>
   );
