@@ -6,7 +6,7 @@ import {
   ShoppingBag, Clock, Shield, Eye, EyeOff, CheckCircle2,
   AlertCircle, Truck, Zap, FlaskConical, Heart, RotateCcw, X,
   RefreshCw, Users, Copy, CheckCheck, Calendar, PauseCircle, PlayCircle,
-  Repeat, Trash2, Award, Gift, TrendingUp,
+  Repeat, Trash2, Award, Gift, TrendingUp, Star,
 } from "lucide-react";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -1264,6 +1264,29 @@ export default function AccountPage() {
                           }}>
                             <p style={{ fontSize: "13px", fontWeight: 800, color: t.color, marginBottom: "2px" }}>{t.name}</p>
                             <p style={{ fontSize: "11px", color: "#94A3B8" }}>{t.pts} pts</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Ways to earn */}
+                    <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #E8EDF5", padding: "20px 24px" }}>
+                      <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A", marginBottom: "14px" }}>Ways to earn points</h3>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px" }}>
+                        {[
+                          { icon: <ShoppingBag size={16} style={{ color: "#1B5CB5" }} />, title: "Make a purchase", desc: "1 pt for every £1 you spend", bg: "#EFF6FF" },
+                          { icon: <Star size={16} style={{ color: "#F59E0B" }} />, title: "Leave a review", desc: "+50 pts once it's approved", bg: "#FFFBEB" },
+                          { icon: <Gift size={16} style={{ color: "#059669" }} />, title: "Create an account", desc: "+50 pts welcome bonus", bg: "#F0FDF4" },
+                          { icon: <Users size={16} style={{ color: "#7C3AED" }} />, title: "Refer a friend", desc: "Earn a free peptide credit per referral", bg: "#F5F3FF" },
+                        ].map((w) => (
+                          <div key={w.title} style={{ display: "flex", gap: "10px", padding: "12px", borderRadius: "12px", backgroundColor: w.bg }}>
+                            <div style={{ width: "30px", height: "30px", borderRadius: "8px", backgroundColor: "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 1px 4px rgba(15,23,42,0.08)" }}>
+                              {w.icon}
+                            </div>
+                            <div>
+                              <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A", margin: "0 0 2px" }}>{w.title}</p>
+                              <p style={{ fontSize: "11.5px", color: "#64748B", margin: 0, lineHeight: 1.3 }}>{w.desc}</p>
+                            </div>
                           </div>
                         ))}
                       </div>

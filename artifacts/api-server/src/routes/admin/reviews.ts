@@ -1,7 +1,7 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
-import { productReviewsTable } from "@workspace/db";
+import { productReviewsTable, loyaltyTransactionsTable } from "@workspace/db";
 import { eq, desc, and, like, sql } from "drizzle-orm";
 
 function requireAdmin(req: Request, res: Response): boolean {
@@ -64,15 +64,38 @@ router.patch("/admin/reviews/:id", async (req: Request, res: Response): Promise<
   }
 
   try {
+    const [existing] = await db
+      .select({ isApproved: productReviewsTable.isApproved, customerId: productReviewsTable.customerId, id: productReviewsTable.id })
+      .from(productReviewsTable)
+      .where(eq(productReviewsTable.id, id))
+      .limit(1);
+
+    if (!existing) {
+      res.status(404).json({ error: "Review not found" });
+      return;
+    }
+
     const [updated] = await db
       .update(productReviewsTable)
       .set({ isApproved })
       .where(eq(productReviewsTable.id, id))
       .returning();
 
-    if (!updated) {
-      res.status(404).json({ error: "Review not found" });
-      return;
+    // Award one-time bonus points the first time a review is approved
+    if (isApproved && !existing.isApproved && existing.customerId) {
+      const [alreadyAwarded] = await db
+        .select({ id: loyaltyTransactionsTable.id })
+        .from(loyaltyTransactionsTable)
+        .where(eq(loyaltyTransactionsTable.description, `Bonus: review #${existing.id} approved`))
+        .limit(1);
+      if (!alreadyAwarded) {
+        await db.insert(loyaltyTransactionsTable).values({
+          customerId: existing.customerId,
+          type: "earned",
+          points: 50,
+          description: `Bonus: review #${existing.id} approved`,
+        }).catch((err) => req.log.error({ err }, "Failed to award review bonus points"));
+      }
     }
 
     res.status(200).json(updated);

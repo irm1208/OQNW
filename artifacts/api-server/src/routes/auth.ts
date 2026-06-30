@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { db } from "@workspace/db";
-import { customersTable } from "@workspace/db";
+import { customersTable, loyaltyTransactionsTable } from "@workspace/db";
 import { eq, sql } from "drizzle-orm";
 import { sendPasswordReset } from "../lib/email";
 import { getClientIp, lookupCountry } from "../lib/geoip";
@@ -173,6 +173,13 @@ router.post("/auth/register", async (req: Request, res: Response): Promise<void>
         referredBy: refBy,
       })
       .returning();
+
+    db.insert(loyaltyTransactionsTable).values({
+      customerId: customer.id,
+      type: "earned",
+      points: 50,
+      description: "Welcome bonus: account created",
+    }).catch((err) => req.log.error({ err }, "Failed to award welcome bonus points"));
 
     const generatedCode = `${firstName.trim().slice(0, 3).toUpperCase()}${String(customer.id).padStart(4, "0")}`;
     const ipReg = getClientIp(req);
