@@ -1,1 +1,1 @@
-- [OmniQure port setup](omniqure-ports.md) — storefront must run on port 8081 (externalPort 80) to be accessible externally; admin on 8082, API on 8080
+- [OmniQure port setup](omniqure-ports.md) — external 80 routes to local 8081 (orphan .replit dup); storefront runs webview/5000 + bundled TCP proxy on 8081 so bare domain & canvas iframe work

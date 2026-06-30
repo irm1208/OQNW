@@ -56,13 +56,14 @@ waitForPort = 8000
 name = "OmniQure Storefront"
 author = "agent"
 
-[workflows.workflow.metadata]
-outputType = "webview"
-
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "PORT=5000 BASE_PATH=/ pnpm --filter @workspace/peptide-sciences run dev"
+args = "PORT=5000 BASE_PATH=/ PROXY_PORT=8081 TARGET_PORT=5000 node scripts/start-storefront.cjs"
 waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
+isCanvasWorkflow = true
 
 [agent]
 stack = "BEST_EFFORT_FALLBACK"
@@ -84,14 +85,6 @@ externalPort = 4200
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 8000
-externalPort = 8000
-
-[[ports]]
-localPort = 8080
-externalPort = 8080
 
 [[ports]]
 localPort = 8081
