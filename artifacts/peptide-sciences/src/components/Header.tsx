@@ -32,7 +32,7 @@ function highlightMatch(text: string, query: string) {
 const navItems = [
   { label: "Home", href: "/" },
   { label: "All Peptides", href: "/all-peptides" },
-  { label: "NAD+", href: "/product/49" },
+  { label: "NAD+", href: "/product/45" },
   { label: "Bac Water", href: "/bac-water" },
   { label: "Research Stacks", href: "/stacks" },
   { label: "Research & Education", href: "/blog" },
