@@ -36,7 +36,6 @@ import BacWaterPage from "@/pages/BacWaterPage";
 import AboutPage from "@/pages/AboutPage";
 import ReferAFriendPage from "@/pages/ReferAFriendPage";
 import BundleAndSavePage from "@/pages/BundleAndSavePage";
-import ResearchLibraryPage from "@/pages/ResearchLibraryPage";
 import { CookieConsent } from "@/components/CookieConsent";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
@@ -120,7 +119,6 @@ function Router() {
       <Route path="/about" component={AboutPage} />
       <Route path="/refer-a-friend" component={ReferAFriendPage} />
       <Route path="/bundle-and-save" component={BundleAndSavePage} />
-      <Route path="/research-library" component={ResearchLibraryPage} />
       <Route component={NotFound} />
     </Switch>
   );

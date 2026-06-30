@@ -608,19 +608,6 @@ export default function ProductPage() {
             {/* Purity / Form / Composition / Storage */}
             <ProductInfoAccordion detail={detail} productId={String(product.id)} />
 
-            {/* Research library link */}
-            <Link
-              href={`/research-library?peptide=${encodeURIComponent(currentBase)}`}
-              className="flex items-center justify-between rounded-xl px-4 py-3 mb-2 transition-colors hover:opacity-90"
-              style={{ backgroundColor: "#EFF6FF", border: "1px solid #BFDBFE", textDecoration: "none" }}
-            >
-              <span className="flex items-center gap-2 text-sm font-semibold" style={{ color: "#1D4ED8" }}>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                View peer-reviewed studies for {currentBase}
-              </span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-            </Link>
-
             {/* Strength switcher */}
             {strengthVariants.length > 1 && (
               <div
