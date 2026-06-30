@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Link, useLocation } from "wouter";
-import { useTheme } from "@/context/ThemeContext";
-import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, FileCheck, BookOpen, Calculator, BookMarked, GraduationCap, Sun, Moon } from "lucide-react";
+import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, FileCheck, BookOpen, Calculator, BookMarked, GraduationCap } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
@@ -75,7 +74,6 @@ export default function Header() {
     }
     return result.sort((a, b) => a.baseName.localeCompare(b.baseName));
   }, [products]);
-  const { theme, setTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -441,24 +439,6 @@ export default function Header() {
 
           {/* Right group */}
           <div className="order-2 sm:order-3 ml-auto flex items-center gap-2 sm:gap-4 flex-shrink-0">
-
-            {/* Dark mode toggle */}
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              style={{
-                display: "flex", alignItems: "center", justifyContent: "center",
-                width: "32px", height: "32px", borderRadius: "8px",
-                border: "1.5px solid rgba(255,255,255,0.25)",
-                backgroundColor: "rgba(255,255,255,0.1)",
-                cursor: "pointer", color: "rgba(255,255,255,0.9)",
-                flexShrink: 0, transition: "background-color 0.2s",
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.2)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.1)"; }}
-            >
-              {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
-            </button>
 
             {/* Currency selector */}
             <div ref={currencyRef} style={{ position: "relative", flexShrink: 0 }}>

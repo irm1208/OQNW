@@ -107,7 +107,6 @@
   --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
 }
 
-
 @layer base {
   * {
     @apply border-border;
@@ -1135,31 +1134,4 @@ body.has-cart-preview-bar main {
   .header-icon-btn span.hidden {
     display: none !important;
   }
-}
-
-/* ── DARK MODE ──────────────────────────────────────────────
-   Filter-based approach: works on inline styles too.
-   Invert the whole page, then re-invert media so they look normal.
-   hue-rotate(180deg) corrects colour shifts from inversion.
-──────────────────────────────────────────────────────────── */
-
-html.dark {
-  filter: invert(1) hue-rotate(180deg);
-  background: #000;
-}
-
-/* Re-invert elements that must stay colour-correct */
-html.dark img,
-html.dark video,
-html.dark iframe,
-html.dark canvas,
-html.dark [style*="background-image"],
-html.dark .recharts-wrapper,
-html.dark .recharts-surface {
-  filter: invert(1) hue-rotate(180deg);
-}
-
-/* Prevent double-inversion on nested iframes (e.g. chat widget) */
-html.dark iframe {
-  filter: invert(1) hue-rotate(180deg);
 }

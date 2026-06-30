@@ -1,7 +1,6 @@
 import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "@/context/ThemeContext";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Header from "@/components/Header";
@@ -127,7 +126,6 @@ function Router() {
 
 function App() {
   return (
-    <ThemeProvider>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <ProductsProvider>
@@ -140,7 +138,7 @@ function App() {
               <ScrollToTop />
               <PixelTracker />
               <CookieConsent />
-              <div className="min-h-screen bg-background flex flex-col">
+              <div className="min-h-screen bg-white flex flex-col">
                 <AnnouncementBar />
                 <Header />
                 <JurisdictionWarning />
@@ -164,7 +162,6 @@ function App() {
         </ProductsProvider>
       </TooltipProvider>
     </QueryClientProvider>
-    </ThemeProvider>
   );
 }
 
