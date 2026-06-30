@@ -1,1 +1,1 @@
-- [OmniQure port setup](omniqure-ports.md) — external 80 routes to local 8081 (orphan .replit dup); storefront runs webview/5000 + bundled TCP proxy on 8081 so bare domain & canvas iframe work
+- [OmniQure artifact runtime](omniqure-ports.md) — platform artifact system runs each artifacts/* dir (storefront 8081→ext80, admin 8082, api 8080, mockup 8083); never add manual duplicate workflows; dev /api proxy → 8080
