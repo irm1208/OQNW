@@ -300,16 +300,16 @@ export default function CustomerDetail() {
                   <span>{customer.phone}</span>
                 </div>
               )}
-              {(customer as { lastSeenCountry?: string | null }).lastSeenCountry && (
+              {customer.lastSeenCountry && (
                 <div className="flex items-center gap-3 text-sm">
                   <Globe className="w-4 h-4 text-muted-foreground" />
                   <span className="flex items-center gap-1.5">
                     <span className="text-base leading-none">
-                      {(customer as { lastSeenCountry: string }).lastSeenCountry.toUpperCase().replace(/\p{L}/gu, (c) => String.fromCodePoint(c.charCodeAt(0) + 127397))}
+                      {customer.lastSeenCountry.toUpperCase().replace(/\p{L}/gu, (c) => String.fromCodePoint(c.charCodeAt(0) + 127397))}
                     </span>
-                    <span className="text-muted-foreground">{(customer as { lastSeenCountry: string }).lastSeenCountry} — IP country</span>
-                    {(customer as { lastSeenIp?: string | null }).lastSeenIp && (
-                      <span className="text-xs text-muted-foreground/60">({(customer as { lastSeenIp: string }).lastSeenIp})</span>
+                    <span className="text-muted-foreground">{customer.lastSeenCountry} — IP country</span>
+                    {customer.lastSeenIp && (
+                      <span className="text-xs text-muted-foreground/60">({customer.lastSeenIp})</span>
                     )}
                   </span>
                 </div>

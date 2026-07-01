@@ -1,1 +1,2 @@
 - [OmniQure artifact runtime](omniqure-ports.md) — platform artifact system runs each artifacts/* dir (storefront 8081→ext80, admin 8082, api 8080, mockup 8083); never add manual duplicate workflows; dev /api proxy → 8080
+- [OmniQure API spec drift check](omniqure-api-drift-check.md) — `pnpm run check:api-drift` verifies admin route response fields are declared in openapi.yaml; run it after touching any `xToResponse` mapper.

@@ -84,6 +84,12 @@ export interface Order {
   country?: string | null;
   /** @nullable */
   city?: string | null;
+  /** @nullable */
+  address1?: string | null;
+  /** @nullable */
+  postcode?: string | null;
+  /** @nullable */
+  phone?: string | null;
   refundedAmountGbp?: number;
   refundStatus?: string;
   fraudScore?: number;
@@ -173,6 +179,10 @@ export interface Customer {
   totalOrders: number;
   totalSpendGbp: number;
   createdAt: string;
+  /** @nullable */
+  lastSeenCountry?: string | null;
+  /** @nullable */
+  lastSeenIp?: string | null;
 }
 
 export interface CustomerDetail {
@@ -197,6 +207,10 @@ export interface CustomerDetail {
   totalOrders: number;
   totalSpendGbp: number;
   createdAt: string;
+  /** @nullable */
+  lastSeenCountry?: string | null;
+  /** @nullable */
+  lastSeenIp?: string | null;
   orders: Order[];
 }
 
@@ -394,6 +408,57 @@ export interface PublicProduct {
   /** @nullable */
   msImageUrl?: string | null;
   isFeatured?: boolean;
+}
+
+export type RefundLineItemsItem = { [key: string]: unknown };
+
+export interface Refund {
+  id: number;
+  orderId: number;
+  orderNumber: string;
+  amountGbp: number;
+  type: string;
+  reason: string;
+  /** @nullable */
+  notes?: string | null;
+  restoreInventory: boolean;
+  /** @nullable */
+  lineItems?: RefundLineItemsItem[] | null;
+  createdAt: string;
+}
+
+export interface FraudQueueOrder {
+  id: number;
+  orderNumber: string;
+  status: string;
+  customerName: string;
+  customerEmail: string;
+  /** @nullable */
+  country?: string | null;
+  totalGbp: number;
+  /** @nullable */
+  fraudScore: number | null;
+  /** @nullable */
+  fraudFlags?: string[] | null;
+  /** @nullable */
+  fraudReviewed: boolean | null;
+  /** @nullable */
+  fraudReviewNote?: string | null;
+  /** @nullable */
+  notes?: string | null;
+  createdAt: string;
+}
+
+export interface FraudStats {
+  total: number;
+  highRisk: number;
+  mediumRisk: number;
+  reviewed: number;
+}
+
+export interface FraudQueueResponse {
+  orders: FraudQueueOrder[];
+  stats: FraudStats;
 }
 
 export interface PublicProductDetail {

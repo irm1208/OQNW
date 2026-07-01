@@ -9,6 +9,7 @@ Research-grade peptide e-commerce site for OmniQure Peptide Research Institute, 
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
+- `pnpm run check:api-drift` — verify admin order/customer/refund/fraud response fields match `lib/api-spec/openapi.yaml` (also runs as part of `pnpm run build`)
 - Required env: `DATABASE_URL` — Postgres connection string
 
 ## Stack
@@ -38,7 +39,8 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Admin routes in `artifacts/api-server/src/routes/admin/*.ts` build responses with `xToResponse`-style mapper functions (e.g. `orderToResponse`, `customerToResponse`, `refundToResponse`) or inline `res.json({...})` literals. Any field added to one of these MUST also be added to the matching schema in `lib/api-spec/openapi.yaml` (e.g. `Order`, `OrderDetail`, `Customer`, `CustomerDetail`, `Refund`, `FraudQueueOrder`) — otherwise the field silently vanishes from generated frontend types instead of causing a build error. Run `pnpm run check:api-drift` (or `pnpm run build`, which includes it) after touching any of these mappers; it fails loudly if a returned field isn't declared in the spec. If the schema feeds generated hooks, also re-run `pnpm --filter @workspace/api-spec run codegen`.
+- `/admin/refunds` and `/admin/fraud` routes are not wired into orval codegen — the admin panel calls them with plain `fetch`. Their `Refund`/`FraudQueueOrder`/`FraudStats` OpenAPI schemas exist solely as the source of truth for `check:api-drift`, not for codegen.
 
 ## Pointers
 

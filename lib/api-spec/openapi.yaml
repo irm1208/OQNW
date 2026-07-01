@@ -860,6 +860,12 @@ components:
           type: ["string", "null"]
         city:
           type: ["string", "null"]
+        address1:
+          type: ["string", "null"]
+        postcode:
+          type: ["string", "null"]
+        phone:
+          type: ["string", "null"]
         refundedAmountGbp:
           type: number
         refundStatus:
@@ -1029,6 +1035,10 @@ components:
         createdAt:
           type: string
           format: date-time
+        lastSeenCountry:
+          type: ["string", "null"]
+        lastSeenIp:
+          type: ["string", "null"]
 
     CustomerDetail:
       type: object
@@ -1071,6 +1081,10 @@ components:
         createdAt:
           type: string
           format: date-time
+        lastSeenCountry:
+          type: ["string", "null"]
+        lastSeenIp:
+          type: ["string", "null"]
         orders:
           type: array
           items:
@@ -1389,6 +1403,123 @@ components:
           type: ["string", "null"]
         isFeatured:
           type: boolean
+
+    # ── REFUNDS ──────────────────────────────────────────────────────────────
+    # NOTE: /admin/refunds and /admin/orders/{id}/refund(s) are not yet wired
+    # into orval codegen (the admin panel calls them with plain fetch), but
+    # this schema is still the source of truth for `refundToResponse` in
+    # artifacts/api-server/src/routes/admin/refunds.ts. Run
+    # `pnpm --filter @workspace/scripts run check:api-drift` after touching
+    # that mapper — it fails loudly if a returned field isn't declared here.
+    Refund:
+      type: object
+      required:
+        - id
+        - orderId
+        - orderNumber
+        - amountGbp
+        - type
+        - reason
+        - restoreInventory
+        - createdAt
+      properties:
+        id:
+          type: integer
+        orderId:
+          type: integer
+        orderNumber:
+          type: string
+        amountGbp:
+          type: number
+        type:
+          type: string
+        reason:
+          type: string
+        notes:
+          type: ["string", "null"]
+        restoreInventory:
+          type: boolean
+        lineItems:
+          type: ["array", "null"]
+          items:
+            type: object
+        createdAt:
+          type: string
+          format: date-time
+
+    # ── FRAUD ────────────────────────────────────────────────────────────────
+    # NOTE: /admin/fraud is not yet wired into orval codegen (the admin panel
+    # calls it with plain fetch), but this schema is still the source of
+    # truth for the response shape built in
+    # artifacts/api-server/src/routes/admin/fraud.ts. Run
+    # `pnpm --filter @workspace/scripts run check:api-drift` after touching
+    # that route — it fails loudly if a returned field isn't declared here.
+    FraudQueueOrder:
+      type: object
+      required:
+        - id
+        - orderNumber
+        - status
+        - customerName
+        - customerEmail
+        - totalGbp
+        - fraudScore
+        - fraudReviewed
+        - createdAt
+      properties:
+        id:
+          type: integer
+        orderNumber:
+          type: string
+        status:
+          type: string
+        customerName:
+          type: string
+        customerEmail:
+          type: string
+        country:
+          type: ["string", "null"]
+        totalGbp:
+          type: number
+        fraudScore:
+          type: ["integer", "null"]
+        fraudFlags:
+          type: ["array", "null"]
+          items:
+            type: string
+        fraudReviewed:
+          type: ["boolean", "null"]
+        fraudReviewNote:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    FraudStats:
+      type: object
+      required: [total, highRisk, mediumRisk, reviewed]
+      properties:
+        total:
+          type: integer
+        highRisk:
+          type: integer
+        mediumRisk:
+          type: integer
+        reviewed:
+          type: integer
+
+    FraudQueueResponse:
+      type: object
+      required: [orders, stats]
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: "#/components/schemas/FraudQueueOrder"
+        stats:
+          $ref: "#/components/schemas/FraudStats"
 
     PublicProductDetail:
       type: object
