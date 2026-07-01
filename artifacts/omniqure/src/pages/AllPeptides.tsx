@@ -21,7 +21,7 @@ const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   "Peptide Blends": "Research peptide blends and stacks. HPLC-verified to 99%+ purity from OmniQure Peptide Research Institute.",
   "Skin & Repair": "Research skin and repair peptides including GHK-Cu and more. HPLC-verified to 99%+ purity from OmniQure.",
   "Hormonal Peptides": "Research hormonal peptides including Gonadorelin and more. HPLC-verified to 99%+ purity.",
-  "Growth Hormone": "Research growth hormone peptides including Somatropin HGH. HPLC-verified to 99%+ purity from OmniQure.",
+  "Growth Hormone": "Research growth hormone peptides. HPLC-verified to 99%+ purity from OmniQure.",
   "Anti-Inflammatory": "Research anti-inflammatory peptides. HPLC-verified to 99%+ purity from OmniQure Peptide Research Institute.",
   "Cognitive Peptides": "Research cognitive peptides for neuroscience research. HPLC-verified to 99%+ purity from OmniQure.",
 };

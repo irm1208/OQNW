@@ -65,12 +65,6 @@ export const janoshikData: Record<string, JanoshikResult> = {
   // ── GLOW BLEND ────────────────────────────────────────────────────────────
   "22": { actualMass: 71.81, lot: "GLO70-0418",            received: "03 May 2026", analysis: "04 May 2026" },
 
-  // ── Somatropin HGH ───────────────────────────────────────────────────────-
-  "26": { purity: 98.026, actualMass:  3.80, lot: "H10-0328",          received: "21 Apr 2026", analysis: "22 Apr 2026" },
-  "27": { purity: 98.026, actualMass:  5.70, lot: "H15-0328",          received: "21 Apr 2026", analysis: "22 Apr 2026" },
-  "28": { purity: 98.026, actualMass:  9.12, lot: "H24-0328",          received: "21 Apr 2026", analysis: "22 Apr 2026" },
-  "29": { purity: 98.026, actualMass: 13.68, lot: "H36-0328",          received: "21 Apr 2026", analysis: "22 Apr 2026" },
-
   // ── IGF-1 LR3 ─────────────────────────────────────────────────────────────
   "30": { purity: 98.021, actualMass:  1.20, lot: "IG1-0408",          received: "22 Apr 2026", analysis: "23 Apr 2026" },
 

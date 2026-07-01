@@ -161,7 +161,7 @@ const TEMPLATES_BY_CATEGORY: Record<string, ReviewTemplate[]> = {
     { rating: 5, title: "Excellent for GH axis research", body: "Purity documentation includes HPLC and ESI-MS — everything needed for research provenance. Compound reconstitutes cleanly and performs well in our bioassay." },
     { rating: 4, title: "Good quality recombinant peptide", body: "Purity is within spec based on our verification. Documentation comprehensive. Performs as expected in our STAT5 phosphorylation assay." },
     { rating: 5, title: "Best HGH source for research use", body: "Analytical data accompanying this compound is the most comprehensive I've seen from any supplier. ESI-MS and HPLC both included. Compound activity is excellent." },
-    { rating: 5, title: "Consistent and well documented", body: "Second order of Somatropin. Batch quality is very consistent — same purity range, same documentation detail. Consistency is essential for our studies." },
+    { rating: 5, title: "Consistent and well documented", body: "Second order of this compound. Batch quality is very consistent — same purity range, same documentation detail. Consistency is essential for our studies." },
     { rating: 4, title: "Comprehensive documentation for GHRH research", body: "All analytical data required is included. JAK2/STAT5 assay is performing as expected. Good supplier for GH-related research compounds." },
     { rating: 5, title: "Reliable lot-to-lot quality", body: "Using Tesamorelin for pituitary axis studies. Three orders in — all above 99% purity, all with the same comprehensive documentation." },
     { rating: 5, title: "Very high purity, clean reconstitution", body: "Lyophilised cake was pristine on arrival. Reconstituted quickly and completely. Our receptor binding assay confirms expected pharmacological activity." },
@@ -229,7 +229,6 @@ function getPopularityRange(name: string): { min: number; max: number } {
     n.includes("retatrutide") ||
     n.includes("ipamorelin") ||
     n.includes("cjc-1295") ||
-    n.includes("somatropin") ||
     n.includes("melanotan 2") ||
     n.includes("sermorelin") ||
     n.includes("tesamorelin") ||

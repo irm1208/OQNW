@@ -332,29 +332,6 @@ export const peptideExtras: Record<string, PeptideExtras> = {
     ],
   },
 
-  "Somatropin HGH": {
-    uses: [
-      "Growth hormone deficiency models",
-      "Anabolic and body composition research",
-      "Bone density and linear growth studies",
-      "IGF-1 axis investigation",
-    ],
-    benefits: [
-      "Recombinant human growth hormone identical to endogenous 191-amino acid GH",
-      "Stimulates protein synthesis, lipolysis, and IGF-1 production in research models",
-      "Promotes linear bone growth via growth plate stimulation in juvenile animal models",
-      "Investigated for GH-deficiency restoration, muscle mass, and fat reduction",
-      "Reference compound for all GH secretagogue comparison studies",
-    ],
-    sideEffects: [
-      "Fluid retention and oedema at pharmacological doses in animal models",
-      "Potential insulin resistance and glucose intolerance with chronic supraphysiological dosing",
-      "Joint and musculoskeletal pain (myalgia, arthralgia) observed in some animal protocols",
-      "May promote growth of pre-existing neoplasms — requires cancer model exclusion protocols",
-      "Carpal tunnel-like symptoms from fluid retention in prolonged high-dose studies",
-    ],
-  },
-
   "IGF-1 LR3": {
     uses: [
       "Muscle hypertrophy and protein synthesis research",
