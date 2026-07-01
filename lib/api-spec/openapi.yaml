@@ -860,6 +860,20 @@ components:
           type: ["string", "null"]
         city:
           type: ["string", "null"]
+        refundedAmountGbp:
+          type: number
+        refundStatus:
+          type: string
+        fraudScore:
+          type: integer
+        fraudFlags:
+          type: array
+          items:
+            type: string
+        fraudReviewed:
+          type: boolean
+        fraudReviewNote:
+          type: ["string", "null"]
         createdAt:
           type: string
           format: date-time
@@ -935,6 +949,20 @@ components:
         country:
           type: ["string", "null"]
         phone:
+          type: ["string", "null"]
+        refundedAmountGbp:
+          type: number
+        refundStatus:
+          type: string
+        fraudScore:
+          type: integer
+        fraudFlags:
+          type: array
+          items:
+            type: string
+        fraudReviewed:
+          type: boolean
+        fraudReviewNote:
           type: ["string", "null"]
         createdAt:
           type: string

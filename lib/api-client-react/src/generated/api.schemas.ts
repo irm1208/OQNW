@@ -84,6 +84,13 @@ export interface Order {
   country?: string | null;
   /** @nullable */
   city?: string | null;
+  refundedAmountGbp?: number;
+  refundStatus?: string;
+  fraudScore?: number;
+  fraudFlags?: string[];
+  fraudReviewed?: boolean;
+  /** @nullable */
+  fraudReviewNote?: string | null;
   createdAt: string;
   updatedAt?: string;
 }
@@ -129,6 +136,13 @@ export interface OrderDetail {
   country?: string | null;
   /** @nullable */
   phone?: string | null;
+  refundedAmountGbp?: number;
+  refundStatus?: string;
+  fraudScore?: number;
+  fraudFlags?: string[];
+  fraudReviewed?: boolean;
+  /** @nullable */
+  fraudReviewNote?: string | null;
   createdAt: string;
   updatedAt?: string;
   items: OrderItem[];
