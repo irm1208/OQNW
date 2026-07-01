@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, ShieldBan, Trash2, Plus, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 
-const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
 interface BlockedIp {
   id: number;
@@ -16,13 +15,13 @@ interface BlockedIp {
 }
 
 async function fetchBlockedIps(): Promise<BlockedIp[]> {
-  const res = await fetch(`${BASE}/api/admin/blocked-ips`, { credentials: "include" });
+  const res = await fetch(`/api/admin/blocked-ips`, { credentials: "include" });
   if (!res.ok) throw new Error("Failed to fetch");
   return res.json();
 }
 
 async function blockIp(body: { ip: string; reason: string }): Promise<BlockedIp> {
-  const res = await fetch(`${BASE}/api/admin/blocked-ips`, {
+  const res = await fetch(`/api/admin/blocked-ips`, {
     method: "POST",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -34,7 +33,7 @@ async function blockIp(body: { ip: string; reason: string }): Promise<BlockedIp>
 }
 
 async function unblockIp(ip: string): Promise<void> {
-  const res = await fetch(`${BASE}/api/admin/blocked-ips/${encodeURIComponent(ip)}`, {
+  const res = await fetch(`/api/admin/blocked-ips/${encodeURIComponent(ip)}`, {
     method: "DELETE",
     credentials: "include",
   });

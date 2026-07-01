@@ -13,8 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Loader2, ArrowLeft, Mail, Phone, MapPin, Calendar, ShoppingBag, Eye, Download, Trash2, AlertTriangle, CreditCard, Plus, Minus, Globe } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
-function api(path: string) { return `${BASE}/api/${path}`.replace(/\/+/g, "/"); }
+function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
 
 interface CreditData {
   balancePence: number;

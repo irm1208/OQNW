@@ -5,8 +5,7 @@ import { RefreshCcw, Search, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 
-const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
-function api(path: string) { return `${BASE}/api/${path}`.replace(/\/+/g, "/"); }
+function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
 
 type RefundRow = {
   id: number;

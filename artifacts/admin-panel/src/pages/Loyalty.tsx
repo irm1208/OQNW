@@ -6,8 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 
-const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
-function api(path: string) { return `${BASE}/api/${path}`.replace(/\/+/g, "/"); }
+function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
 
 const TIERS = [
   { name: "Bronze", min: 0,    color: "#CD7F32", bg: "#FEF3C7" },

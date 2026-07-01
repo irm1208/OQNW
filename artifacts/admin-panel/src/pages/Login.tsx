@@ -6,8 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Lock, ShieldAlert, AlertTriangle } from "lucide-react";
 
-const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
-
 function formatCountdown(seconds: number): string {
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
@@ -51,7 +49,7 @@ export default function Login() {
       setErrorMsg(null);
 
       try {
-        const res = await fetch(`${BASE}/api/admin/auth/login`, {
+        const res = await fetch(`/api/admin/auth/login`, {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

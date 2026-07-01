@@ -8,8 +8,7 @@ import { Loader2, Search, Star, Trash2, CheckCircle, XCircle } from "lucide-reac
 import { toast } from "sonner";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
-function api(path: string) { return `${BASE}/api${path}`; }
+function api(path: string) { return `/api${path}`; }
 function apiFetch(url: string, options?: RequestInit) {
   return fetch(url, { credentials: "include", ...options }).then(r => {
     if (!r.ok) throw new Error("Request failed");

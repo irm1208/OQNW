@@ -15,8 +15,7 @@ interface CreditRow {
   email: string;
 }
 
-const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
-function api(path: string) { return `${BASE}/api/${path}`.replace(/\/+/g, "/"); }
+function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
 
 export default function Credits() {
   const [search, setSearch] = useState("");

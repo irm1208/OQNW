@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
-const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
-function api(path: string) { return `${BASE}/api/${path}`.replace(/\/+/g, "/"); }
+function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
 
 type ProductRow = {
   productId: number;
