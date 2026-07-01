@@ -26,3 +26,5 @@ export * from "./webhooks";
 export * from "./blog_posts";
 export * from "./customer_credits";
 export * from "./blocked_ips";
+export * from "./store_settings";
+export * from "./admin_users";

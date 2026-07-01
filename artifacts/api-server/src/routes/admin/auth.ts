@@ -2,13 +2,15 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import { AdminLoginBody } from "@workspace/api-zod";
 import { db } from "@workspace/db";
-import { blockedIpsTable } from "@workspace/db/schema";
+import { blockedIpsTable, adminUsersTable } from "@workspace/db/schema";
 import { eq } from "drizzle-orm";
+import { verifyPassword } from "./users";
 
 const router = Router();
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "omniqure-admin-2024";
 const SESSION_COOKIE = "admin_session";
+const EMAIL_COOKIE = "admin_email";
 const SESSION_VALUE = "authenticated";
 const COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days
 
@@ -82,8 +84,29 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
   }
 
   const { password } = parsed.data;
+  const email = typeof (req.body as { email?: unknown })?.email === "string"
+    ? (req.body as { email: string }).email.toLowerCase().trim()
+    : "";
 
-  if (password !== ADMIN_PASSWORD) {
+  let authed = false;
+  let sessionEmail: string | null = null;
+
+  if (email) {
+    const [user] = await db
+      .select()
+      .from(adminUsersTable)
+      .where(eq(adminUsersTable.email, email))
+      .limit(1);
+    if (user && user.isActive && verifyPassword(password, user.passwordHash)) {
+      authed = true;
+      sessionEmail = user.email;
+      await db.update(adminUsersTable).set({ lastLoginAt: new Date() }).where(eq(adminUsersTable.id, user.id));
+    }
+  } else if (password === ADMIN_PASSWORD) {
+    authed = true;
+  }
+
+  if (!authed) {
     const newCount = record.count + 1;
     const remaining = MAX_ATTEMPTS - newCount;
     const lockedUntil = remaining <= 0 ? Date.now() + LOCKOUT_MS : null;
@@ -116,21 +139,43 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
     maxAge: COOKIE_MAX_AGE,
     sameSite: "lax",
   });
+  if (sessionEmail) {
+    res.cookie(EMAIL_COOKIE, sessionEmail, {
+      httpOnly: true,
+      maxAge: COOKIE_MAX_AGE,
+      sameSite: "lax",
+    });
+  } else {
+    res.clearCookie(EMAIL_COOKIE);
+  }
   res.status(200).json({ authenticated: true });
 });
 
 router.post("/admin/auth/logout", (_req: Request, res: Response): void => {
   res.clearCookie(SESSION_COOKIE);
+  res.clearCookie(EMAIL_COOKIE);
   res.status(204).send();
 });
 
-router.get("/admin/auth/me", (req: Request, res: Response): void => {
+router.get("/admin/auth/me", async (req: Request, res: Response): Promise<void> => {
   const session = req.cookies?.[SESSION_COOKIE];
-  if (session === SESSION_VALUE) {
-    res.status(200).json({ authenticated: true });
+  if (session !== SESSION_VALUE) {
+    res.status(401).json({ error: "Not authenticated" });
     return;
   }
-  res.status(401).json({ error: "Not authenticated" });
+  const email = req.cookies?.[EMAIL_COOKIE];
+  if (typeof email === "string" && email) {
+    const [user] = await db
+      .select()
+      .from(adminUsersTable)
+      .where(eq(adminUsersTable.email, email))
+      .limit(1);
+    if (user && user.isActive) {
+      res.status(200).json({ authenticated: true, email: user.email, name: user.name, role: user.role });
+      return;
+    }
+  }
+  res.status(200).json({ authenticated: true, role: "owner", name: "Owner" });
 });
 
 export default router;

@@ -26,6 +26,12 @@ import Alerts from "@/pages/Alerts";
 import Credits from "@/pages/Credits";
 import Fraud from "@/pages/Fraud";
 import BlockedIps from "@/pages/BlockedIps";
+import Webhooks from "@/pages/Webhooks";
+import GiftCards from "@/pages/GiftCards";
+import Newsletter from "@/pages/Newsletter";
+import Settings from "@/pages/Settings";
+import Users from "@/pages/Users";
+import Reports from "@/pages/Reports";
 
 const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
@@ -159,6 +165,36 @@ function AppRoutes() {
       <Route path="/blocked-ips">
         <AdminLayout>
           <BlockedIps />
+        </AdminLayout>
+      </Route>
+      <Route path="/reports">
+        <AdminLayout>
+          <Reports />
+        </AdminLayout>
+      </Route>
+      <Route path="/webhooks">
+        <AdminLayout>
+          <Webhooks />
+        </AdminLayout>
+      </Route>
+      <Route path="/gift-cards">
+        <AdminLayout>
+          <GiftCards />
+        </AdminLayout>
+      </Route>
+      <Route path="/newsletter">
+        <AdminLayout>
+          <Newsletter />
+        </AdminLayout>
+      </Route>
+      <Route path="/settings">
+        <AdminLayout>
+          <Settings />
+        </AdminLayout>
+      </Route>
+      <Route path="/users">
+        <AdminLayout>
+          <Users />
         </AdminLayout>
       </Route>
       <Route path="/">

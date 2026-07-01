@@ -5,7 +5,8 @@ import {
   LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2,
   RotateCcw, Star, ShoppingBag, RefreshCw, Mail, Gift, BellRing, Receipt,
   Truck, RefreshCcw, ClipboardList, FileText, Bell, CreditCard, ShieldAlert,
-  ChevronDown, ChevronRight, Settings2, ShieldBan,
+  ChevronDown, ChevronRight, Settings2, ShieldBan, Webhook, Send, BarChart3,
+  Settings, UserCog,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAlerts, type AdminAlert } from "@/hooks/useAlerts";
@@ -19,6 +20,7 @@ const coreNavGroups: NavGroup[] = [
     label: "Overview",
     items: [
       { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { href: "/reports",   label: "Reports",   icon: BarChart3 },
       { href: "/alerts",    label: "Alerts",    icon: Bell },
     ],
   },
@@ -48,9 +50,11 @@ const coreNavGroups: NavGroup[] = [
   {
     label: "Settings",
     items: [
-      { href: "/tax",         label: "Tax Rates",   icon: Receipt },
-      { href: "/shipping",    label: "Shipping",    icon: Truck },
-      { href: "/blocked-ips", label: "Blocked IPs", icon: ShieldBan },
+      { href: "/settings",    label: "Store Settings", icon: Settings },
+      { href: "/users",       label: "Admin Users",    icon: UserCog },
+      { href: "/tax",         label: "Tax Rates",      icon: Receipt },
+      { href: "/shipping",    label: "Shipping",       icon: Truck },
+      { href: "/blocked-ips", label: "Blocked IPs",    icon: ShieldBan },
     ],
   },
 ];
@@ -80,8 +84,16 @@ const advancedNavGroups: NavGroup[] = [
   {
     label: "Content",
     items: [
-      { href: "/blog",      label: "Blog",      icon: FileText },
-      { href: "/email-log", label: "Email Log", icon: Mail },
+      { href: "/blog",       label: "Blog",       icon: FileText },
+      { href: "/email-log",  label: "Email Log",  icon: Mail },
+      { href: "/newsletter", label: "Newsletter", icon: Send },
+    ],
+  },
+  {
+    label: "System",
+    items: [
+      { href: "/gift-cards", label: "Gift Cards", icon: Gift },
+      { href: "/webhooks",   label: "Webhooks",   icon: Webhook },
     ],
   },
 ];
