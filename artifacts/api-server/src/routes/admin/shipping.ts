@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { shippingZonesTable, shippingRatesTable } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
+import { firstString } from "../../lib/query";
 
 const router = Router();
 
@@ -74,7 +75,7 @@ router.post("/admin/shipping/zones", async (req: Request, res: Response): Promis
 
 router.patch("/admin/shipping/zones/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   const { name, description, countryCodes, isActive } = req.body as Partial<{
     name: string; description: string; countryCodes: string[]; isActive: boolean;
@@ -96,7 +97,7 @@ router.patch("/admin/shipping/zones/:id", async (req: Request, res: Response): P
 
 router.delete("/admin/shipping/zones/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   try {
     const [deleted] = await db.delete(shippingZonesTable).where(eq(shippingZonesTable.id, id)).returning();
@@ -151,7 +152,7 @@ router.post("/admin/shipping/rates", async (req: Request, res: Response): Promis
 
 router.patch("/admin/shipping/rates/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   const { name, carrier, priceGbp, freeAboveGbp, estimatedDaysMin, estimatedDaysMax, isActive } = req.body as Partial<{
     name: string; carrier: string; priceGbp: number; freeAboveGbp: number | null;
@@ -177,7 +178,7 @@ router.patch("/admin/shipping/rates/:id", async (req: Request, res: Response): P
 
 router.delete("/admin/shipping/rates/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   try {
     const [deleted] = await db.delete(shippingRatesTable).where(eq(shippingRatesTable.id, id)).returning();

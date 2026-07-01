@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { blockedIpsTable } from "@workspace/db/schema";
 import { eq } from "drizzle-orm";
+import { firstString } from "../../lib/query";
 
 const router = Router();
 
@@ -53,7 +54,7 @@ router.post("/admin/blocked-ips", async (req: Request, res: Response): Promise<v
 
 router.delete("/admin/blocked-ips/:ip", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const ip = decodeURIComponent(req.params.ip);
+  const ip = decodeURIComponent(firstString(req.params.ip) ?? "");
   try {
     const deleted = await db
       .delete(blockedIpsTable)

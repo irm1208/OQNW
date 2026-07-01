@@ -872,7 +872,7 @@ export async function sendNewsletterBroadcast(data: NewsletterBroadcastData): Pr
       .replace(/\{\{unsubscribeUrl\}\}/g, sub.unsubscribeUrl);
     const withFooter = personalised + `<div style="margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;text-align:center;"><p style="font-size:11px;color:#94a3b8;">You're receiving this because you subscribed to the OmniQure newsletter. <a href="${sub.unsubscribeUrl}" style="color:#94a3b8;">Unsubscribe</a></p></div>`;
     try {
-      await resend.emails.send({ from: FROM_ADDRESS, to: sub.email, subject: data.subject, html: baseTemplate(data.subject, withFooter) });
+      await getResend().emails.send({ from: FROM_ADDRESS, to: sub.email, subject: data.subject, html: baseTemplate(data.subject, withFooter) });
       await logEmail({ toEmail: sub.email, subject: data.subject, type: "newsletter", status: "sent" });
       sent++;
     } catch {

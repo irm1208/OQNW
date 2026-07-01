@@ -10,6 +10,7 @@ import {
 } from "@workspace/api-zod";
 import { eq, ilike, and, desc, count, or, inArray } from "drizzle-orm";
 import { sendOrderConfirmation, sendShippingNotification, sendDeliveryConfirmation } from "../../lib/email";
+import { firstString } from "../../lib/query";
 
 const router = Router();
 
@@ -240,7 +241,7 @@ router.get("/admin/orders/:id", async (req: Request, res: Response): Promise<voi
 
 router.post("/admin/orders/:id/send-tracking", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid order ID" }); return; }
   try {
     const [order] = await db.select().from(ordersTable).where(eq(ordersTable.id, id));

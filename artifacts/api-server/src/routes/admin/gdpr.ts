@@ -11,7 +11,8 @@ import {
   stockAlertsTable,
   subscriptionsTable,
 } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, inArray } from "drizzle-orm";
+import { firstString } from "../../lib/query";
 
 const router = Router();
 
@@ -25,7 +26,7 @@ function requireAdmin(req: Request, res: Response): boolean {
 
 router.get("/admin/customers/:id/gdpr-export", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const customerId = parseInt(req.params.id, 10);
+  const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) { res.status(400).json({ error: "Invalid ID" }); return; }
 
   try {
@@ -36,14 +37,20 @@ router.get("/admin/customers/:id/gdpr-export", async (req: Request, res: Respons
       db.select().from(ordersTable).where(eq(ordersTable.customerId, customerId)).orderBy(desc(ordersTable.createdAt)),
       db.select().from(productReviewsTable).where(eq(productReviewsTable.customerId, customerId)),
       db.select().from(loyaltyTransactionsTable).where(eq(loyaltyTransactionsTable.customerId, customerId)),
-      db.select().from(stockAlertsTable).where(eq(stockAlertsTable.customerId, customerId)),
+      db.select().from(stockAlertsTable).where(eq(stockAlertsTable.customerEmail, customer.email)),
       db.select().from(subscriptionsTable).where(eq(subscriptionsTable.customerId, customerId)),
     ]);
 
     const orderIds = orders.map(o => o.id);
     const items = orderIds.length > 0
-      ? await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, orders[0]?.id ?? 0))
+      ? await db.select().from(orderItemsTable).where(inArray(orderItemsTable.orderId, orderIds))
       : [];
+    const itemsByOrderId = new Map<number, typeof items>();
+    for (const item of items) {
+      const existing = itemsByOrderId.get(item.orderId);
+      if (existing) existing.push(item);
+      else itemsByOrderId.set(item.orderId, [item]);
+    }
 
     const exportData = {
       exportedAt: new Date().toISOString(),
@@ -60,7 +67,7 @@ router.get("/admin/customers/:id/gdpr-export", async (req: Request, res: Respons
         postcode: customer.postcode,
         country: customer.country,
         totalOrders: customer.totalOrders,
-        totalSpentGbp: parseFloat(String(customer.totalSpentGbp ?? 0)),
+        totalSpentGbp: parseFloat(String(customer.totalSpendGbp ?? 0)),
         createdAt: customer.createdAt,
       },
       orders: orders.map(o => ({
@@ -69,11 +76,17 @@ router.get("/admin/customers/:id/gdpr-export", async (req: Request, res: Respons
         totalGbp: parseFloat(String(o.totalGbp)),
         country: o.country,
         createdAt: o.createdAt,
+        items: (itemsByOrderId.get(o.id) ?? []).map(i => ({
+          productId: i.productId,
+          productName: i.productName,
+          quantity: i.quantity,
+          priceGbp: parseFloat(String(i.priceGbp)),
+        })),
       })),
       reviews: reviews.map(r => ({ productId: r.productId, rating: r.rating, title: r.title, body: r.body, createdAt: r.createdAt })),
-      loyaltyTransactions: loyalty.map(t => ({ points: t.points, reason: t.reason, createdAt: t.createdAt })),
+      loyaltyTransactions: loyalty.map(t => ({ points: t.points, reason: t.description, createdAt: t.createdAt })),
       stockAlerts: alerts.map(a => ({ productId: a.productId, productName: a.productName, createdAt: a.createdAt })),
-      subscriptions: subs.map(s => ({ productName: s.productName, status: s.status, createdAt: s.createdAt })),
+      subscriptions: subs.map(s => ({ items: s.itemsJson, status: s.status, createdAt: s.createdAt })),
     };
 
     const filename = `gdpr-export-customer-${customerId}-${new Date().toISOString().slice(0, 10)}.json`;
@@ -88,7 +101,7 @@ router.get("/admin/customers/:id/gdpr-export", async (req: Request, res: Respons
 
 router.delete("/admin/customers/:id/gdpr-erase", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const customerId = parseInt(req.params.id, 10);
+  const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) { res.status(400).json({ error: "Invalid ID" }); return; }
 
   try {
@@ -113,7 +126,7 @@ router.delete("/admin/customers/:id/gdpr-erase", async (req: Request, res: Respo
     await Promise.all([
       db.delete(wishlistsTable).where(eq(wishlistsTable.customerId, customerId)),
       db.delete(loyaltyTransactionsTable).where(eq(loyaltyTransactionsTable.customerId, customerId)),
-      db.delete(stockAlertsTable).where(eq(stockAlertsTable.customerId, customerId)),
+      db.delete(stockAlertsTable).where(eq(stockAlertsTable.customerEmail, customer.email)),
       db.delete(subscriptionsTable).where(eq(subscriptionsTable.customerId, customerId)),
     ]);
 

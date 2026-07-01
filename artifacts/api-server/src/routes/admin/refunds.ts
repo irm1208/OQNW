@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { refundsLogTable, ordersTable, orderItemsTable, productsInventoryTable, inventoryAuditLogTable } from "@workspace/db";
 import { eq, desc, sql } from "drizzle-orm";
+import { firstString } from "../../lib/query";
 
 const router = Router();
 
@@ -45,7 +46,7 @@ router.get("/admin/refunds", async (req: Request, res: Response): Promise<void> 
 
 router.get("/admin/orders/:id/refunds", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const orderId = parseInt(req.params.id, 10);
+  const orderId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(orderId)) { res.status(400).json({ error: "Invalid order ID" }); return; }
   try {
     const refunds = await db
@@ -62,7 +63,7 @@ router.get("/admin/orders/:id/refunds", async (req: Request, res: Response): Pro
 
 router.post("/admin/orders/:id/refund", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const orderId = parseInt(req.params.id, 10);
+  const orderId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(orderId)) { res.status(400).json({ error: "Invalid order ID" }); return; }
 
   const { amountGbp, reason, notes, restoreInventory, lineItems } = req.body as {

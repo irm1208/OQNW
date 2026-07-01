@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { blogPostsTable } from "@workspace/db";
 import { eq, desc, and, sql } from "drizzle-orm";
+import { firstString } from "../lib/query";
 
 const router = Router();
 
@@ -46,7 +47,8 @@ router.get("/blog/posts", async (req: Request, res: Response): Promise<void> => 
 });
 
 router.get("/blog/posts/:slug", async (req: Request, res: Response): Promise<void> => {
-  const { slug } = req.params;
+  const slug = firstString(req.params.slug);
+  if (!slug) { res.status(400).json({ error: "Invalid slug" }); return; }
   try {
     const [post] = await db.select().from(blogPostsTable)
       .where(and(eq(blogPostsTable.slug, slug), eq(blogPostsTable.status, "published")))

@@ -38,7 +38,7 @@ router.get("/admin/export/customers.csv", async (req: Request, res: Response): P
     const headers = ["ID", "First Name", "Last Name", "Email", "Phone", "Total Orders", "Total Spent (GBP)", "Created At"];
     const rows = customers.map(c => toCsvRow([
       c.id, c.firstName, c.lastName, c.email, c.phone ?? "",
-      c.totalOrders, parseFloat(String(c.totalSpentGbp ?? 0)).toFixed(2),
+      c.totalOrders, parseFloat(String(c.totalSpendGbp ?? 0)).toFixed(2),
       c.createdAt.toISOString(),
     ]));
 

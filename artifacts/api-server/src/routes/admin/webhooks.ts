@@ -4,6 +4,7 @@ import crypto from "crypto";
 import { db } from "@workspace/db";
 import { webhooksTable, webhookDeliveriesTable } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
+import { firstString } from "../../lib/query";
 
 const router = Router();
 
@@ -66,7 +67,7 @@ router.post("/admin/webhooks", async (req: Request, res: Response): Promise<void
 
 router.patch("/admin/webhooks/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   const { url, events, description, isActive } = req.body as Partial<{ url: string; events: string[]; description: string; isActive: boolean }>;
   const updates: Partial<typeof webhooksTable.$inferInsert> = {};
@@ -86,7 +87,7 @@ router.patch("/admin/webhooks/:id", async (req: Request, res: Response): Promise
 
 router.delete("/admin/webhooks/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   try {
     const [deleted] = await db.delete(webhooksTable).where(eq(webhooksTable.id, id)).returning();
@@ -100,7 +101,7 @@ router.delete("/admin/webhooks/:id", async (req: Request, res: Response): Promis
 
 router.get("/admin/webhooks/:id/deliveries", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   try {
     const deliveries = await db

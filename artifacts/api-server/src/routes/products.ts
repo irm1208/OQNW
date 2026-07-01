@@ -3,11 +3,12 @@ import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { orderItemsTable, productsInventoryTable } from "@workspace/db";
 import { sql, ne, eq } from "drizzle-orm";
+import { firstString } from "../lib/query";
 
 const router = Router();
 
 router.get("/products/:productId/related", async (req: Request, res: Response): Promise<void> => {
-  const productId = parseInt(req.params.productId, 10);
+  const productId = parseInt(firstString(req.params.productId) ?? "", 10);
   if (isNaN(productId) || productId <= 0) {
     res.status(400).json({ error: "Invalid product ID" });
     return;

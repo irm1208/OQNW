@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { taxRatesTable } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
+import { firstString } from "../../lib/query";
 
 const router = Router();
 
@@ -75,7 +76,7 @@ router.post("/admin/tax-rates", async (req: Request, res: Response): Promise<voi
 
 router.patch("/admin/tax-rates/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   const { name, countryCode, countryName, region, rate, isInclusive, isActive } = req.body as Partial<{
     name: string; countryCode: string; countryName: string; region: string;
@@ -101,7 +102,7 @@ router.patch("/admin/tax-rates/:id", async (req: Request, res: Response): Promis
 
 router.delete("/admin/tax-rates/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   try {
     const [deleted] = await db.delete(taxRatesTable).where(eq(taxRatesTable.id, id)).returning();

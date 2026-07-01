@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { ordersTable } from "@workspace/db/schema";
 import { eq, gte, and, desc } from "drizzle-orm";
+import { firstString } from "../../lib/query";
 
 const router = Router();
 
@@ -93,7 +94,7 @@ router.patch(
   async (req: Request, res: Response): Promise<void> => {
     if (!requireAdmin(req, res)) return;
     try {
-      const id = parseInt(req.params.id, 10);
+      const id = parseInt(firstString(req.params.id) ?? "", 10);
       if (!id) {
         res.status(400).json({ error: "Invalid order ID" });
         return;

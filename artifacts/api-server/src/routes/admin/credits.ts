@@ -7,6 +7,7 @@ import {
   customersTable,
 } from "@workspace/db/schema";
 import { eq, desc } from "drizzle-orm";
+import { firstString } from "../../lib/query";
 
 const router = Router();
 
@@ -32,7 +33,7 @@ async function getOrCreateBalance(customerId: number): Promise<number> {
 
 router.get("/admin/customers/:id/credits", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const customerId = parseInt(req.params.id, 10);
+  const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) { res.status(400).json({ error: "Invalid customer ID" }); return; }
 
   try {
@@ -53,7 +54,7 @@ router.get("/admin/customers/:id/credits", async (req: Request, res: Response): 
 
 router.post("/admin/customers/:id/credits", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const customerId = parseInt(req.params.id, 10);
+  const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) { res.status(400).json({ error: "Invalid customer ID" }); return; }
 
   const { amountPence, reason, adminNote, orderId } = req.body ?? {};

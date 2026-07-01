@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { blogPostsTable } from "@workspace/db";
 import { eq, desc, ilike, and, sql } from "drizzle-orm";
+import { firstString } from "../../lib/query";
 
 const router = Router();
 
@@ -97,7 +98,7 @@ router.post("/admin/blog/posts", async (req: Request, res: Response): Promise<vo
 
 router.patch("/admin/blog/posts/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   const { title, excerpt, content, author, tags, status, featuredImageUrl, seoTitle, seoDescription } = req.body as Partial<{
     title: string; excerpt: string; content: string; author: string; tags: string[];
@@ -128,7 +129,7 @@ router.patch("/admin/blog/posts/:id", async (req: Request, res: Response): Promi
 
 router.delete("/admin/blog/posts/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   try {
     const [deleted] = await db.delete(blogPostsTable).where(eq(blogPostsTable.id, id)).returning();

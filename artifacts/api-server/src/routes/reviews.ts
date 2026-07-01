@@ -4,6 +4,7 @@ import crypto from "crypto";
 import { db } from "@workspace/db";
 import { productReviewsTable, customersTable, ordersTable, orderItemsTable } from "@workspace/db";
 import { eq, and, desc, avg, count, sql } from "drizzle-orm";
+import { firstString } from "../lib/query";
 
 const router = Router();
 
@@ -28,7 +29,7 @@ function verifyCustomerSession(token: string): number | null {
 }
 
 router.get("/products/:productId/reviews", async (req: Request, res: Response): Promise<void> => {
-  const productId = parseInt(req.params.productId, 10);
+  const productId = parseInt(firstString(req.params.productId) ?? "", 10);
   if (isNaN(productId)) {
     res.status(400).json({ error: "Invalid product ID" });
     return;
@@ -149,7 +150,7 @@ router.get("/products/:productId/reviews", async (req: Request, res: Response): 
 });
 
 router.post("/products/:productId/reviews", async (req: Request, res: Response): Promise<void> => {
-  const productId = parseInt(req.params.productId, 10);
+  const productId = parseInt(firstString(req.params.productId) ?? "", 10);
   if (isNaN(productId)) {
     res.status(400).json({ error: "Invalid product ID" });
     return;

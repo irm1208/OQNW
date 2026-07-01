@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { productReviewsTable, loyaltyTransactionsTable } from "@workspace/db";
 import { eq, desc, and, like, sql } from "drizzle-orm";
+import { firstString } from "../../lib/query";
 
 function requireAdmin(req: Request, res: Response): boolean {
   if (req.cookies?.admin_session !== "authenticated") {
@@ -17,7 +18,10 @@ const router = Router();
 router.get("/admin/reviews", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
   try {
-    const { status, search, page = "1", limit = "25" } = req.query as Record<string, string>;
+    const status = firstString(req.query.status);
+    const search = firstString(req.query.search);
+    const page = firstString(req.query.page) ?? "1";
+    const limit = firstString(req.query.limit) ?? "25";
     const pageNum = Math.max(1, parseInt(page, 10) || 1);
     const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10) || 25));
     const offset = (pageNum - 1) * limitNum;
@@ -51,7 +55,7 @@ router.get("/admin/reviews", async (req: Request, res: Response): Promise<void> 
 
 router.patch("/admin/reviews/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid review ID" });
     return;
@@ -107,7 +111,7 @@ router.patch("/admin/reviews/:id", async (req: Request, res: Response): Promise<
 
 router.delete("/admin/reviews/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid review ID" });
     return;
