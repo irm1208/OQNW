@@ -23,7 +23,10 @@ Research-grade peptide e-commerce site for OmniQure Peptide Research Institute, 
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/omniqure` — the storefront (`@workspace/omniqure`, port 8081). Formerly named `peptide-sciences`; renamed to drop the internal codename in favor of the public OmniQure brand.
+- `artifacts/admin-panel` — the admin/ops console (port 8082)
+- `artifacts/api-server` — the Express API (port 8080)
+- `artifacts/mockup-sandbox` — component preview sandbox (port 8083)
 
 ## Architecture decisions
 

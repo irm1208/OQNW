@@ -5,11 +5,12 @@ description: How this monorepo is run by the platform artifact system, and the p
 
 # The platform artifact system owns the runtime — do NOT add manual workflows
 
-The `artifacts/*` directories (peptide-sciences, admin-panel, api-server,
-mockup-sandbox) are auto-registered as platform **artifacts**. The platform
-generates and runs one workflow per artifact, each on its own port:
+The `artifacts/*` directories (omniqure [storefront, renamed from
+`peptide-sciences`], admin-panel, api-server, mockup-sandbox) are
+auto-registered as platform **artifacts**. The platform generates and runs one
+workflow per artifact, each on its own port:
 
-- `peptide-sciences: web` (storefront) → Vite on **8081**, mapped to external port 80 (main dev domain / canvas iframe)
+- `omniqure: web` (storefront) → Vite on **8081**, mapped to external port 80 (main dev domain / canvas iframe)
 - `admin-panel: web` → Vite on **8082**
 - `api-server: API Server` → Express on **8080** (internal only, no external map)
 - `mockup-sandbox: Component Preview Server` → **8083**
@@ -31,6 +32,14 @@ intended design, not an orphan.
 The storefront and admin Vite dev servers proxy `/api` to the api-server. Because
 the artifact api-server listens on **8080**, the proxy target is
 `http://localhost:${process.env.API_PORT || 8080}` in both
-`artifacts/peptide-sciences/vite.config.ts` and
+`artifacts/omniqure/vite.config.ts` and
 `artifacts/admin-panel/vite.config.ts`. (The proxy is dev-only; production uses
 the `router = "application"` deployment that routes through the api-server.)
+
+## Artifact `id` in `.replit-artifact/artifact.toml` is immutable
+`verifyAndReplaceArtifactToml` rejects any change to the `id` field
+(`INVALID_ARTIFACT_ID`), even when you rename the artifact's directory and
+package. When renaming an artifact (e.g. `peptide-sciences` → `omniqure`),
+update every other field (service commands, `publicDir`, package filter) but
+leave `id` at its original value — it's an internal identifier, not tied to
+the directory path, and isn't exposed anywhere user-facing.

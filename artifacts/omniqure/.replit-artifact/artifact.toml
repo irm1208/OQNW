@@ -15,11 +15,11 @@ paths = [ "/" ]
 localPort = 8081
 
 [services.development]
-run = "pnpm --filter @workspace/peptide-sciences run dev"
+run = "pnpm --filter @workspace/omniqure run dev"
 
 [services.production]
-build = [ "pnpm", "--filter", "@workspace/peptide-sciences", "run", "build" ]
-publicDir = "artifacts/peptide-sciences/dist/public"
+build = [ "pnpm", "--filter", "@workspace/omniqure", "run", "build" ]
+publicDir = "artifacts/omniqure/dist/public"
 serve = "static"
 
 [[services.production.rewrites]]
