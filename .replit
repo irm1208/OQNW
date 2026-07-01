@@ -53,7 +53,6 @@ channel = "stable-25_05"
 [userenv]
 
 [userenv.shared]
-ADMIN_PASSWORD = "Borders.786"
 LOG_LEVEL = "info"
 SITE_URL = "https://omniqure.com"
 EMAIL_FROM = "OmniQure <noreply@omniqure.com>"
