@@ -84,7 +84,7 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "Certificate of Analysis (COA)",
     category: "research",
-    definition: "A quality assurance document issued for each batch of a research compound, confirming that it meets specified standards. A typical peptide COA includes: compound name and CAS number, lot number, manufacturing date, expiry date, HPLC purity percentage, mass spectrometry (MS) confirmation of molecular weight and identity, appearance, and storage conditions. OmniQure COAs are generated from independent laboratory testing.",
+    definition: "A quality assurance document issued for each batch of a research compound, confirming that it meets specified standards. A typical peptide COA includes: compound name and CAS number, lot number, manufacturing date, expiry date, HPLC purity percentage, mass spectrometry (MS) confirmation of molecular weight and identity, appearance, and storage conditions. OmniQure COAs are generated from laboratory testing.",
     related: ["HPLC", "Mass Spectrometry", "Purity"],
     seeAlso: { label: "Lab Results & COA", href: "/lab-results" },
   },

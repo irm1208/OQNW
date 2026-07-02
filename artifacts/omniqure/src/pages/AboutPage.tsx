@@ -70,8 +70,8 @@ const TIMELINE = [
   },
   {
     year: "Quality",
-    title: "Every Batch, Independently Tested",
-    body: "We established our independent testing programme before we shipped a single order. Every compound in our catalogue has been HPLC-verified, mass-confirmed, and documented. COAs are publicly available on each product page.",
+    title: "Every Batch Tested",
+    body: "We established our testing programme before we shipped a single order. Every compound in our catalogue has been HPLC-verified, mass-confirmed, and documented. COAs are publicly available on each product page.",
   },
   {
     year: "Today",
