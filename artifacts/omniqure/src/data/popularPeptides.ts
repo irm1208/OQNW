@@ -1,56 +1,56 @@
 export type PopularEntry = {
-  id: string;
+  slug: string;
 };
 
-export const popularProductIds: PopularEntry[] = [
-  { id: "3" },
-  { id: "4" },
-  { id: "71" },
-  { id: "72" },
-  { id: "7" },
-  { id: "15" },
-  { id: "17" },
-  { id: "43" },
-  { id: "44" },
-  { id: "31" },
-  { id: "32" },
-  { id: "11" },
-  { id: "19" },
-  { id: "20" },
-  { id: "64" },
-  { id: "62" },
-  { id: "56" },
-  { id: "76" },
-  { id: "66" },
-  { id: "65" },
-  { id: "49" },
-  { id: "75" },
-  { id: "30" },
-  { id: "54" },
-  { id: "38" },
-  { id: "81" },
-  { id: "1" },
-  { id: "48" },
+export const popularProductSlugs: PopularEntry[] = [
+  { slug: "bpc-157-5mg" },
+  { slug: "bpc-157-10mg" },
+  { slug: "tb-500-5mg" },
+  { slug: "tb-500-10mg" },
+  { slug: "bpc-157-tb-500-blend-10mg" },
+  { slug: "epithalon-10mg" },
+  { slug: "ghk-cu-50mg" },
+  { slug: "mots-c-10mg" },
+  { slug: "mots-c-20mg" },
+  { slug: "ipamorelin-5mg" },
+  { slug: "ipamorelin-10mg" },
+  { slug: "cjc-1295-no-dac-5mg" },
+  { slug: "ghrp-2-5mg" },
+  { slug: "ghrp-2-10mg" },
+  { slug: "semax-10mg" },
+  { slug: "selank-10mg" },
+  { slug: "retatrutide-10mg" },
+  { slug: "tirzepatide-10mg" },
+  { slug: "ss-31-10mg" },
+  { slug: "sermorelin-5mg" },
+  { slug: "nad-plus-500mg" },
+  { slug: "thymosin-alpha-1-10mg" },
+  { slug: "igf-1-lr3-1mg" },
+  { slug: "peg-mgf-2mg" },
+  { slug: "ll-37-5mg" },
+  { slug: "vip-10mg" },
+  { slug: "aod-9604-5mg" },
+  { slug: "n-acetyl-semax-amidate-10mg" },
 ];
 
 // "SELLING FAST" — consistently highest-volume compounds
-export const sellingFastIds = new Set([
-  "3",  // BPC-157 5mg
-  "7",  // BPC-157 + TB-500 Blend 10mg
-  "71", // TB-500 5mg
-  "31", // Ipamorelin 5mg
-  "76", // Tirzepatide 10mg
-  "85", // CJC-1295 No DAC + Ipamorelin 5mg
+export const sellingFastSlugs = new Set([
+  "bpc-157-5mg",                     // BPC-157 5mg
+  "bpc-157-tb-500-blend-10mg",       // BPC-157 + TB-500 Blend 10mg
+  "tb-500-5mg",                      // TB-500 5mg
+  "ipamorelin-5mg",                  // Ipamorelin 5mg
+  "tirzepatide-10mg",                // Tirzepatide 10mg
+  "cjc-1295-no-dac-ipamorelin-5mg",  // CJC-1295 No DAC + Ipamorelin 5mg
 ]);
 
 // "HOT BUY" — trending / high research interest / strong value
-export const hotBuyIds = new Set([
-  "56", // Retatrutide 10mg — newest triple agonist
-  "15", // Epithalon 10mg — longevity research
-  "43", // MOTS-C 10mg — mitochondrial health
-  "83", // 5-Amino-1Q 50mg — NAD+ research
-  "66", // SS-31 10mg — mitochondria-targeted
-  "48", // N-Acetyl Semax Amidate 10mg — nootropic
-  "17", // GHK-Cu 50mg — skin & repair research
-  "9",  // Cagrilintide 5mg — emerging metabolic compound
+export const hotBuySlugs = new Set([
+  "retatrutide-10mg",             // Retatrutide 10mg — newest triple agonist
+  "epithalon-10mg",               // Epithalon 10mg — longevity research
+  "mots-c-10mg",                  // MOTS-C 10mg — mitochondrial health
+  "5-amino-1q-50mg",              // 5-Amino-1Q 50mg — NAD+ research
+  "ss-31-10mg",                   // SS-31 10mg — mitochondria-targeted
+  "n-acetyl-semax-amidate-10mg",  // N-Acetyl Semax Amidate 10mg — nootropic
+  "ghk-cu-50mg",                  // GHK-Cu 50mg — skin & repair research
+  "cagrilintide-5mg",             // Cagrilintide 5mg — emerging metabolic compound
 ]);

@@ -5,7 +5,7 @@ import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
 import { groupProducts } from "@/data/groupedProducts";
-import { popularProductIds } from "@/data/popularPeptides";
+import { popularProductSlugs } from "@/data/popularPeptides";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { getPurityStr } from "@/utils/productPurity";
@@ -60,11 +60,11 @@ export default function Header() {
     [products]
   );
   const popularGroups = useMemo(() => {
-    const popularIds = new Set(popularProductIds.map(e => e.id));
+    const popularSlugs = new Set(popularProductSlugs.map(e => e.slug));
     const seen = new Set<string>();
     const result = [];
     for (const p of products) {
-      if (popularIds.has(p.id)) {
+      if (popularSlugs.has(p.slug)) {
         const { baseName } = (() => {
           const m = p.name.match(/^(.*?)\s+(\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g))(\s+.*)?$/i);
           return m ? { baseName: m[1].trim() } : { baseName: p.name };

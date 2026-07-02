@@ -3,7 +3,7 @@ import { useLocation, Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { type Product } from "@/data/products";
-import { popularProductIds } from "@/data/popularPeptides";
+import { popularProductSlugs } from "@/data/popularPeptides";
 import { useProducts } from "@/context/ProductsContext";
 import { groupProducts, type GroupedProduct } from "@/data/groupedProducts";
 import {
@@ -88,9 +88,9 @@ export default function PopularPeptides() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
   const popularProducts = useMemo<Product[]>(() => {
-    const map = new Map(products.map((p) => [p.id, p]));
-    return popularProductIds
-      .map((e) => map.get(e.id))
+    const map = new Map(products.map((p) => [p.slug, p]));
+    return popularProductSlugs
+      .map((e) => map.get(e.slug))
       .filter((p): p is Product => p != null);
   }, [products]);
 

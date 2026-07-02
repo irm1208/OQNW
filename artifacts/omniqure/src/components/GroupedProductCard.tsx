@@ -6,7 +6,7 @@ import { parseName } from "@/data/groupedProducts";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useWishlist } from "@/context/WishlistContext";
-import { sellingFastIds, hotBuyIds } from "@/data/popularPeptides";
+import { sellingFastSlugs, hotBuySlugs } from "@/data/popularPeptides";
 
 const BLUE = { color: "#1B5CB5", bg: "#EEF4FF", gradient: "linear-gradient(90deg, #1240A0, #2563EB)" };
 
@@ -45,8 +45,8 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
   const selectedVariant = group.variants[selectedIdx];
   const productIdInt = parseInt(String(selectedVariant?.id ?? group.variants[0]?.id), 10);
   const cat = CATEGORY_COLORS[group.category] ?? BLUE;
-  const isSellingFast = group.variants.some(v => sellingFastIds.has(String(v.id)));
-  const isHotBuy = !isSellingFast && group.variants.some(v => hotBuyIds.has(String(v.id)));
+  const isSellingFast = group.variants.some(v => sellingFastSlugs.has(v.slug));
+  const isHotBuy = !isSellingFast && group.variants.some(v => hotBuySlugs.has(v.slug));
   const productUrl = `/product/${selectedVariant.id}`;
 
   const goToProduct = () => navigate(productUrl);

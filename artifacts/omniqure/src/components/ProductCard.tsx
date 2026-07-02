@@ -4,7 +4,7 @@ import { ShoppingCart, Eye, CheckCircle2, AlertTriangle, Flame, Zap } from "luci
 import type { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
-import { sellingFastIds, hotBuyIds } from "@/data/popularPeptides";
+import { sellingFastSlugs, hotBuySlugs } from "@/data/popularPeptides";
 
 function parseName(name: string): { baseName: string; strength: string } {
   const match = name.match(/^(.*?)\s+(\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g))(\s+.*)?$/i);
@@ -54,8 +54,8 @@ export default function ProductCard({ product }: ProductCardProps) {
   const stockLevel = product.stockLevel;
   const isOutOfStock = stockLevel !== undefined && stockLevel === 0;
   const isLowStock = stockLevel !== undefined && stockLevel > 0 && stockLevel <= LOW_STOCK_THRESHOLD;
-  const isSellingFast = sellingFastIds.has(String(product.id)) && !isOutOfStock;
-  const isHotBuy = !isSellingFast && hotBuyIds.has(String(product.id)) && !isOutOfStock;
+  const isSellingFast = sellingFastSlugs.has(product.slug) && !isOutOfStock;
+  const isHotBuy = !isSellingFast && hotBuySlugs.has(product.slug) && !isOutOfStock;
 
   const stop = (e: React.MouseEvent) => e.preventDefault();
   const dec = (e: React.MouseEvent) => { stop(e); setQty(q => Math.max(1, q - 1)); };
