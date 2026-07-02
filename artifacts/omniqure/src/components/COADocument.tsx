@@ -16,16 +16,14 @@ export function parseDeclaredMg(name: string): number | null {
 }
 
 /**
- * Returns the actual mass in mg for a product.
- * Prefers the real Janoshik lab result; falls back to a deterministic formula.
+ * Returns the actual mass in mg for a product, from the real Janoshik lab
+ * result. Returns null when no verified lab measurement exists — callers
+ * should hide the "Actual Mass" field rather than showing an estimate.
  */
-export function getActualMass(productId: string, declaredMg: number | null): number | null {
+export function getActualMass(productId: string, _declaredMg: number | null): number | null {
   const jd = janoshikData[productId];
   if (jd !== undefined) return jd.actualMass;
-  if (declaredMg === null) return null;
-  const n   = parseInt(productId, 10) || 1;
-  const bps = ((n * 97 + 31) % 601) - 300;
-  return Math.round(declaredMg * (1 + bps / 10_000) * 100) / 100;
+  return null;
 }
 
 export function getVerifyKey(productId: string): string {

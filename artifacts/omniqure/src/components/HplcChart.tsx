@@ -255,6 +255,9 @@ export default function HplcChart({ productId, productName }: HplcChartProps) {
           </div>
         ))}
       </div>
+      <p style={{ fontSize: "9px", color: "#94A3B8", padding: "6px 14px 10px", borderTop: "1px solid #F1F5F9", margin: 0 }}>
+        Illustrative chromatogram rendering based on the verified purity result — not the raw instrument trace.
+      </p>
     </div>
   );
 }

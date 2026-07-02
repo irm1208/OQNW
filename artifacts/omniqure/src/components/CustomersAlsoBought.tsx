@@ -170,7 +170,6 @@ interface CustomersAlsoBoughtProps {
 export default function CustomersAlsoBought({ product }: CustomersAlsoBoughtProps) {
   const { products } = useProducts();
   const [apiRelated, setApiRelated] = useState<Product[] | null>(null);
-  const [dataSource, setDataSource] = useState<"real" | "static">("static");
 
   useEffect(() => {
     const productIdInt = parseInt(product.id, 10);
@@ -185,14 +184,12 @@ export default function CustomersAlsoBought({ product }: CustomersAlsoBoughtProp
             .filter(Boolean) as Product[];
           if (resolved.length >= 3) {
             setApiRelated(resolved.slice(0, 5));
-            setDataSource("real");
             return;
           }
         }
         setApiRelated(null);
-        setDataSource("static");
       })
-      .catch(() => { setApiRelated(null); setDataSource("static"); });
+      .catch(() => { setApiRelated(null); });
   }, [product.id]);
 
   const alsoBought = apiRelated ?? getStaticAlsoBought(product, products);
@@ -211,12 +208,6 @@ export default function CustomersAlsoBought({ product }: CustomersAlsoBoughtProp
         <h2 className="font-bold" style={{ fontSize: "18px", color: "#0F172A" }}>
           Customers Also Bought
         </h2>
-        <span
-          className="text-xs px-2.5 py-0.5 rounded-full font-medium"
-          style={{ backgroundColor: dataSource === "real" ? "#F0FDF4" : "#FFF7ED", color: dataSource === "real" ? "#15803D" : "#C2410C", border: `1px solid ${dataSource === "real" ? "#BBF7D0" : "#FED7AA"}` }}
-        >
-          {dataSource === "real" ? "Based on orders" : "Frequently paired"}
-        </span>
       </div>
       <div
         className="grid gap-3"

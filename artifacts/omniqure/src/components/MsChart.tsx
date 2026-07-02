@@ -253,6 +253,9 @@ export default function MsChart({ productId, productName, molecularWeight }: MsC
           <span style={{ color: "#16A34A", fontWeight: 700 }}>✓ Pass (≤5 ppm error)</span>
         </div>
       </div>
+      <p style={{ fontSize: "9px", color: "#94A3B8", padding: "6px 14px 10px", borderTop: "1px solid #F1F5F9", margin: 0 }}>
+        Illustrative spectrum rendering based on the calculated molecular weight — not the raw instrument trace.
+      </p>
     </div>
   );
 }
