@@ -44,7 +44,7 @@ const footerCategories = [
   },
   {
     title: "Company",
-    href: "/company",
+    href: "/about",
     links: [
       { label: "About Us",             href: "/about"            },
       { label: "Contact Us",          href: "/contact"          },
