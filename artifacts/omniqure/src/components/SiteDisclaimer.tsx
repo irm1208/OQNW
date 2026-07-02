@@ -31,30 +31,30 @@ export default function SiteDisclaimer() {
 
         {/* Intro */}
         <p style={{ fontSize: "13.5px", color: "#E8A93E", lineHeight: 1.75, marginBottom: "18px" }}>
-          OmniQure Peptide Research Institute supplies research-grade peptides and reference materials for laboratory use only. By placing an order, you confirm that you have read, understood and agreed to the terms below.
+          OmniQure sells research-grade peptides for lab use only. Ordering means you've read and agree to the terms below.
         </p>
 
         {/* Sections */}
         {[
           {
-            label: "For laboratory research use only.",
-            body: "All products are sold exclusively for in-vitro laboratory research and analytical purposes. They are not intended — and must not be used — for human or animal consumption, or for any medicinal, therapeutic, diagnostic, clinical, cosmetic or household purpose.",
+            label: "Research use only.",
+            body: "Products are sold strictly for in-vitro lab and analytical use — never for human or animal consumption, or any medicinal, therapeutic, diagnostic, cosmetic or household purpose.",
           },
           {
-            label: "Not medicines or consumer products.",
-            body: "None of the items we sell are medicines, medical products, supplements, foods or cosmetics. They are not approved for use in or on humans or animals, and they must not be described, marketed or used as such.",
+            label: "Not medicines or consumer goods.",
+            body: "Nothing we sell is a medicine, supplement, food or cosmetic, and none of it is approved for use in or on people or animals.",
           },
           {
             label: "Eligibility.",
-            body: "Our products are intended for qualified researchers and appropriately equipped facilities. By ordering, you confirm that you are at least 18 years old and are purchasing in a professional or research capacity.",
+            body: "You must be at least 18 and ordering as a qualified researcher for a professional or research purpose.",
           },
           {
             label: "Your responsibility.",
-            body: "You are responsible for ensuring that your purchase, possession and intended use comply with all laws and regulations that apply to you. We give no advice on use and make no representation that any product is fit for any purpose other than laboratory research. OmniQure accepts no liability for any misuse of our products, or for any loss, injury or other outcome arising from their use.",
+            body: "You're responsible for complying with all laws that apply to your purchase and use. We offer no usage advice and no guarantee of fitness for any purpose beyond lab research, and accept no liability for misuse or resulting loss or harm.",
           },
           {
             label: "Handling & returns.",
-            body: "Given the sensitive nature of research materials, returns are limited — please see our Terms & Conditions for how we handle damaged, faulty or quality-related issues.",
+            body: "Returns are limited given the nature of these materials — see our Terms & Conditions for details on damaged, faulty or quality issues.",
           },
         ].map(({ label, body }) => (
           <p key={label} style={{ fontSize: "13.5px", color: "#E8A93E", lineHeight: 1.75, marginBottom: "14px" }}>
