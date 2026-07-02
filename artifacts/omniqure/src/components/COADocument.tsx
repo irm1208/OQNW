@@ -1,7 +1,6 @@
 import { getPurityStr, getLotDates } from "@/utils/productPurity";
 import { janoshikData } from "@/data/janoshikData";
 import { productDetails } from "@/data/productDetails";
-import { CheckCircle2 } from "lucide-react";
 import type { Product } from "@/data/products";
 
 // ─── shared helpers ───────────────────────────────────────────────────────────
@@ -161,19 +160,8 @@ export default function COADocument({ product }: COADocumentProps) {
 
       {/* Results */}
       <div style={{ marginBottom: "20px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
+        <div style={{ marginBottom: "10px" }}>
           <p style={{ margin: 0, fontSize: "12.5px", fontWeight: 700, color: blue }}>Results &gt;</p>
-          <div style={{
-            width: "60px", height: "60px", borderRadius: "50%",
-            border: `2px solid ${blue}`,
-            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-            gap: "1px", flexShrink: 0,
-          }}>
-            <span style={{ fontSize: "6px", fontWeight: 800, color: blue, letterSpacing: "0.08em", textAlign: "center", lineHeight: 1.2 }}>OMNIQURE</span>
-            <span style={{ fontSize: "5px", fontWeight: 600, color: blue, letterSpacing: "0.06em", textAlign: "center", lineHeight: 1.2 }}>LABS</span>
-            <CheckCircle2 size={14} color={blue} />
-            <span style={{ fontSize: "5px", fontWeight: 600, color: blue, letterSpacing: "0.04em" }}>VERIFIED</span>
-          </div>
         </div>
 
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
