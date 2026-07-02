@@ -41,7 +41,7 @@ const navItems = [
 const researchLinks = [
   { label: "Protocols", href: "/protocols", icon: FlaskConical, desc: "Research protocols & dosing guides" },
   { label: "Peptide Calculator", href: "/calculator", icon: Calculator, desc: "Reconstitution & dosing calculator" },
-  { label: "Lab Results", href: "/lab-tests", icon: FileCheck, desc: "COAs, HPLC chromatograms & ESI-MS data" },
+  { label: "Lab Tests", href: "/lab-tests", icon: FileCheck, desc: "COAs, HPLC chromatograms & ESI-MS data" },
   { label: "Research Blog", href: "/blog", icon: BookOpen, desc: "Latest peptide research articles" },
   { label: "Glossary", href: "/glossary", icon: BookMarked, desc: "Scientific terminology & definitions" },
   { label: "Storage & Handling", href: "/storage-guide", icon: Thermometer, desc: "Lyophilised storage, reconstitution & stability" },

@@ -25,7 +25,6 @@ import ResetPassword from "@/pages/ResetPassword";
 import Register from "@/pages/Register";
 import AccountPage from "@/pages/AccountPage";
 import WishlistPage from "@/pages/WishlistPage";
-import LabResultsPage from "@/pages/LabResultsPage";
 import ProtocolsPage from "@/pages/ProtocolsPage";
 import FAQPage from "@/pages/FAQPage";
 import GlossaryPage from "@/pages/GlossaryPage";
@@ -111,7 +110,6 @@ function Router() {
       <Route path="/protocols" component={ProtocolsPage} />
       <Route path="/faq" component={FAQPage} />
       <Route path="/glossary" component={GlossaryPage} />
-      <Route path="/lab-results" component={LabResultsPage} />
       <Route path="/lab-tests" component={LabTestsPage} />
       <Route path="/gift-cards" component={GiftCardsPage} />
       <Route path="/blog" component={BlogPage} />

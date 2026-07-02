@@ -153,7 +153,7 @@ export default function AboutPage() {
               Browse All Peptides <ArrowRight size={15} />
             </Link>
             <Link
-              href="/lab-results"
+              href="/lab-tests"
               style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
                 background: "rgba(255,255,255,0.1)",

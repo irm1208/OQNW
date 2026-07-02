@@ -86,7 +86,7 @@ const GLOSSARY: GlossaryEntry[] = [
     category: "research",
     definition: "A quality assurance document issued for each batch of a research compound, confirming that it meets specified standards. A typical peptide COA includes: compound name and CAS number, lot number, manufacturing date, expiry date, HPLC purity percentage, mass spectrometry (MS) confirmation of molecular weight and identity, appearance, and storage conditions. OmniQure COAs are generated from laboratory testing.",
     related: ["HPLC", "Mass Spectrometry", "Purity"],
-    seeAlso: { label: "Lab Results & COA", href: "/lab-results" },
+    seeAlso: { label: "Lab Tests & COA", href: "/lab-tests" },
   },
   {
     term: "Cyclic Peptide",
@@ -193,7 +193,7 @@ const GLOSSARY: GlossaryEntry[] = [
     category: "research",
     definition: "The gold standard analytical technique used to determine peptide purity. In HPLC, a sample is dissolved in a mobile phase (solvent) and pumped under high pressure through a column packed with a stationary phase. Different components travel at different speeds and are detected by UV absorbance. The chromatogram shows the relative abundance of each component; purity is expressed as the percentage of the target peptide peak relative to all detected peaks. All OmniQure peptides are tested to ≥99% purity by HPLC.",
     related: ["Purity", "Mass Spectrometry", "Certificate of Analysis"],
-    seeAlso: { label: "Lab Results & COA", href: "/lab-results" },
+    seeAlso: { label: "Lab Tests & COA", href: "/lab-tests" },
   },
   {
     term: "HPG Axis (Hypothalamic-Pituitary-Gonadal)",
@@ -254,7 +254,7 @@ const GLOSSARY: GlossaryEntry[] = [
     category: "research",
     definition: "An analytical technique that measures the mass-to-charge ratio (m/z) of ionised molecules. In peptide identity confirmation, MS verifies that the detected molecular mass matches the theoretical molecular weight of the target compound. MS is typically used alongside HPLC in COAs to provide both purity (HPLC) and identity (MS) confirmation. The combination is considered the highest standard for research peptide quality verification.",
     related: ["HPLC", "Molecular Weight", "Certificate of Analysis"],
-    seeAlso: { label: "Lab Results & COA", href: "/lab-results" },
+    seeAlso: { label: "Lab Tests & COA", href: "/lab-tests" },
   },
   {
     term: "Mechanism of Action (MoA)",
@@ -337,7 +337,7 @@ const GLOSSARY: GlossaryEntry[] = [
     category: "chemistry",
     definition: "A measure of the proportion of a sample that consists of the target compound, expressed as a percentage. OmniQure peptides are verified to ≥99% purity by HPLC, meaning at least 99% of the material in each vial is the intended peptide, with ≤1% consisting of impurities (truncated sequences, oxidation products, residual solvents, or other related substances).",
     related: ["HPLC", "Certificate of Analysis", "Impurity"],
-    seeAlso: { label: "Lab Results & COA", href: "/lab-results" },
+    seeAlso: { label: "Lab Tests & COA", href: "/lab-tests" },
   },
 
   // R
