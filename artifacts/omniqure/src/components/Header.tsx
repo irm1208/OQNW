@@ -40,11 +40,11 @@ const navItems = [
 ];
 
 const researchLinks = [
+  { label: "Research Blog", href: "/blog", icon: BookOpen, desc: "Latest peptide research articles" },
+  { label: "Research Results", href: "/research-results", icon: Activity, desc: "Before & after biomarker data from peer-reviewed studies" },
   { label: "Protocols", href: "/protocols", icon: FlaskConical, desc: "Research protocols & dosing guides" },
   { label: "Research Stacks", href: "/stacks", icon: Layers, desc: "Curated multi-peptide research stacks" },
   { label: "Storage & Handling", href: "/storage-guide", icon: Thermometer, desc: "Lyophilised storage, reconstitution & stability" },
-  { label: "Research Blog", href: "/blog", icon: BookOpen, desc: "Latest peptide research articles" },
-  { label: "Research Results", href: "/research-results", icon: Activity, desc: "Before & after biomarker data from peer-reviewed studies" },
   { label: "Glossary", href: "/glossary", icon: BookMarked, desc: "Scientific terminology & definitions" },
 ];
 
