@@ -69,9 +69,9 @@ function buildProtocolMap(): Map<string, ProtocolEntry[]> {
         stackName: stack.name,
         stackId: stack.id,
       };
-      const existing = map.get(sp.productId) ?? [];
+      const existing = map.get(sp.slug) ?? [];
       existing.push(entry);
-      map.set(sp.productId, existing);
+      map.set(sp.slug, existing);
     }
   }
   return map;
@@ -87,7 +87,7 @@ function ProtocolCard({ group }: { group: GroupedProduct }) {
 
   const representative = group.variants[0];
   const detail = productDetails[representative.slug];
-  const protocols = protocolMap.get(representative.id) ?? [];
+  const protocols = protocolMap.get(representative.slug) ?? [];
   const extras = peptideExtras[group.baseName];
 
   const catColor = CATEGORY_COLORS[group.category] ?? "#475569";
@@ -495,8 +495,8 @@ export default function ProtocolsPage() {
     return filtered.sort((a, b) => a.baseName.localeCompare(b.baseName));
   }, [products, category, search]);
 
-  const withProtocols = groups.filter(g => protocolMap.has(g.variants[0]?.id));
-  const withoutProtocols = groups.filter(g => !protocolMap.has(g.variants[0]?.id));
+  const withProtocols = groups.filter(g => protocolMap.has(g.variants[0]?.slug));
+  const withoutProtocols = groups.filter(g => !protocolMap.has(g.variants[0]?.slug));
 
   const fullDataCount = groups.filter(g => !!peptideExtras[g.baseName]).length;
 

@@ -17,7 +17,7 @@ const DIFFICULTY_COLORS = {
 };
 
 type StackProductItem = {
-  productId: string;
+  slug: string;
   role: string;
   suggestedDose: string;
   frequency: string;
@@ -169,7 +169,7 @@ function StackCard({ stack }: { stack: ResearchStack }) {
   const { formatPrice } = useCurrency();
 
   const stackProducts = stack.products
-    .map((sp) => ({ ...sp, product: products.find((p) => p.id === sp.productId) }))
+    .map((sp) => ({ ...sp, product: products.find((p) => p.slug === sp.slug) }))
     .filter((sp) => sp.product != null) as Array<typeof stack.products[0] & { product: NonNullable<ReturnType<typeof products.find>> }>;
 
   const totalPrice = stackProducts.reduce((sum, sp) => sum + (sp.product.price ?? 0), 0);
@@ -260,7 +260,7 @@ function StackCard({ stack }: { stack: ResearchStack }) {
         {/* Product rows */}
         <div className="flex flex-col gap-3 mb-4">
           {stackProducts.map((sp, i) => (
-            <StackProductRow key={sp.productId} sp={sp} index={i} />
+            <StackProductRow key={sp.slug} sp={sp} index={i} />
           ))}
         </div>
 

@@ -1,5 +1,5 @@
 export interface StackProduct {
-  productId: string;
+  slug: string;
   role: string;
   suggestedDose: string;
   frequency: string;
@@ -40,14 +40,14 @@ export const researchStacks: ResearchStack[] = [
       "BPC-157 acts locally at the injury site, upregulating growth hormone receptors in fibroblasts and stimulating VEGF. TB-500 (Thymosin Beta-4) acts systemically, promoting cell migration and differentiation. Their mechanisms are non-overlapping, making this one of the most studied synergistic pairings in peptide research.",
     products: [
       {
-        productId: "3",
+        slug: "bpc-157-5mg",
         role: "Primary Healing Agent",
         suggestedDose: "250–500 mcg",
         frequency: "Daily",
         notes: "Local or systemic administration in research models. Stable in gastric juice.",
       },
       {
-        productId: "71",
+        slug: "tb-500-5mg",
         role: "Systemic Recovery Support",
         suggestedDose: "2.0–2.5 mg",
         frequency: "Twice weekly (loading), weekly (maintenance)",
@@ -78,14 +78,14 @@ export const researchStacks: ResearchStack[] = [
       "CJC-1295 No DAC mimics endogenous GHRH with a short half-life (~30 min), preserving pulsatile GH release patterns. Ipamorelin selectively stimulates GH release via ghrelin receptors. Combining them produces a synergistic GH pulse significantly greater than either alone — the dual mechanism is well-documented in rodent and primate models.",
     products: [
       {
-        productId: "11",
+        slug: "cjc-1295-no-dac-5mg",
         role: "GHRH Analogue (Pulse Initiator)",
         suggestedDose: "100–200 mcg",
         frequency: "Daily, 30 min before primary fast",
         notes: "Short half-life preserves natural pulsatile GH secretion patterns. Often co-administered with Ipamorelin.",
       },
       {
-        productId: "31",
+        slug: "ipamorelin-5mg",
         role: "Selective GHS (Pulse Amplifier)",
         suggestedDose: "200–300 mcg",
         frequency: "Daily, co-administered with CJC-1295",
@@ -116,14 +116,14 @@ export const researchStacks: ResearchStack[] = [
       "Semax acts on ACTH/MSH receptors and upregulates BDNF up to 800% in rodent models, making it the primary cognitive enhancer in this stack. Selank modulates the GABAergic system for anxiolysis and complements Semax by reducing stress-induced cognitive impairment — a key confounding factor in memory research.",
     products: [
       {
-        productId: "64",
+        slug: "semax-10mg",
         role: "Primary Nootropic / BDNF Upregulator",
         suggestedDose: "200–300 mcg",
         frequency: "Daily",
         notes: "Intranasal delivery in rodent models shows rapid CNS uptake. N-Acetyl variant offers enhanced stability.",
       },
       {
-        productId: "62",
+        slug: "selank-10mg",
         role: "Anxiolytic / Stress Modulator",
         suggestedDose: "200–300 mcg",
         frequency: "Daily, co-administered with Semax",
@@ -154,21 +154,21 @@ export const researchStacks: ResearchStack[] = [
       "Epithalon acts at the telomerase level — a key mechanism in replicative senescence. MOTS-C targets mitochondrial biogenesis and metabolic efficiency, addressing the energy production decline seen in aged cells. NAD+ precursor support underpins both pathways, as telomere maintenance and mitochondrial function are both NAD+-dependent.",
     products: [
       {
-        productId: "15",
+        slug: "epithalon-10mg",
         role: "Telomerase Activator",
         suggestedDose: "5–10 mg",
         frequency: "Daily for 10–20 day cycles",
         notes: "Short intensive cycles are the predominant model in published research. Pineal gland regulator in animal models.",
       },
       {
-        productId: "43",
+        slug: "mots-c-10mg",
         role: "Mitochondria-Derived Peptide",
         suggestedDose: "5–10 mg",
         frequency: "Weekly",
         notes: "Encoded in mitochondrial 12S rRNA. Exercise-mimetic properties documented in metabolic models.",
       },
       {
-        productId: "49",
+        slug: "nad-plus-500mg",
         role: "NAD+ Precursor",
         suggestedDose: "250–500 mg",
         frequency: "Daily",
@@ -199,14 +199,14 @@ export const researchStacks: ResearchStack[] = [
       "Thymosin Alpha-1 enhances T-lymphocyte maturation and function, boosting adaptive immune responses. LL-37 (hCAP18) provides antimicrobial defence and activates dendritic cells, bridging innate and adaptive immunity. Their complementary pathways make this the most comprehensive immune research stack available.",
     products: [
       {
-        productId: "75",
+        slug: "thymosin-alpha-1-10mg",
         role: "Adaptive Immune Modulator",
         suggestedDose: "1.6 mg",
         frequency: "Twice weekly",
         notes: "Most clinically researched immunomodulatory peptide. Approved in 37 countries for HBV/HCV and cancer contexts.",
       },
       {
-        productId: "38",
+        slug: "ll-37-5mg",
         role: "Innate Immune Activator / Antimicrobial",
         suggestedDose: "100–500 mcg",
         frequency: "Daily to every other day",
@@ -237,14 +237,14 @@ export const researchStacks: ResearchStack[] = [
       "Tirzepatide acts centrally on GLP-1 and GIP receptors, reducing appetite signalling and improving insulin sensitivity. AOD-9604 (hGH 176-191) stimulates fat breakdown via beta-3 adrenergic receptors without affecting IGF-1 or glucose. Their mechanisms operate on different axes, making them a logical research pairing for metabolic studies.",
     products: [
       {
-        productId: "76",
+        slug: "tirzepatide-10mg",
         role: "GLP-1 / GIP Dual Receptor Agonist",
         suggestedDose: "2.5–5 mg",
         frequency: "Weekly",
         notes: "Dose-escalation model (2.5 mg → 5 mg → 7.5 mg) used in published human trials. Most potent metabolic peptide in research.",
       },
       {
-        productId: "1",
+        slug: "aod-9604-5mg",
         role: "Lipolytic hGH Fragment",
         suggestedDose: "300–500 mcg",
         frequency: "Daily",
@@ -275,14 +275,14 @@ export const researchStacks: ResearchStack[] = [
       "GHK-Cu stimulates collagen and elastin synthesis, inhibits matrix metalloproteinases that break down skin structure, and activates antioxidant systems. BPC-157 drives angiogenesis (new blood vessel formation) to the wound site, ensuring the collagen matrix being built has adequate vascular support. These are the two most evidence-backed peptides in dermal repair research.",
     products: [
       {
-        productId: "17",
+        slug: "ghk-cu-50mg",
         role: "Copper Tripeptide / Collagen Stimulator",
         suggestedDose: "1–2 mg",
         frequency: "Daily",
         notes: "Water-soluble, high stability. Strong evidence base for dermal matrix remodelling in vitro and in vivo.",
       },
       {
-        productId: "3",
+        slug: "bpc-157-5mg",
         role: "Angiogenesis & Tissue Repair",
         suggestedDose: "200–300 mcg",
         frequency: "Daily",
