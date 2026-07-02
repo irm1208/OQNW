@@ -634,7 +634,7 @@ export default function HomePage() {
             >
               Research-Grade<br />
               Peptides.<br />
-              <span className="gradient-text">Independently Verified.</span>
+              <span className="gradient-text">Purity Verified.</span>
             </h1>
 
             <p
@@ -642,13 +642,13 @@ export default function HomePage() {
               style={{ color: "rgba(255,255,255,0.78)", fontSize: "16px" }}
             >
               Built for researchers who don't cut corners.<br />
-              Every compound is independently tested to 99%+ purity,<br />
+              Every compound is tested to 99%+ purity,<br />
               fully documented, and ready for the lab.
             </p>
 
             {/* Trust chips */}
             <div className="flex flex-wrap gap-2 mb-8">
-              {["99%+ HPLC Purity", "Full COA Included", "Independently Tested"].map(t => (
+              {["99%+ HPLC Purity", "Full COA Included", "Batch Tested"].map(t => (
                 <span
                   key={t}
                   className="inline-flex items-center gap-1.5"

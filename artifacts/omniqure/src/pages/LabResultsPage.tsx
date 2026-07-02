@@ -54,14 +54,14 @@ export default function LabResultsPage() {
           }}>
             <FlaskConical size={14} color="rgba(255,255,255,0.8)" />
             <span style={{ fontSize: "12px", fontWeight: 700, color: "rgba(255,255,255,0.8)", letterSpacing: "0.06em" }}>
-              INDEPENDENTLY VERIFIED
+              VERIFIED TESTING
             </span>
           </div>
           <h1 style={{ fontSize: "clamp(26px, 5vw, 40px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.03em", margin: "0 0 14px" }}>
             Lab Results & Certificates of Analysis
           </h1>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.75)", lineHeight: 1.6, margin: "0 auto", maxWidth: "600px" }}>
-            Every OmniQure peptide is independently tested using HPLC and mass spectrometry. Select any product below to view its chromatogram, spectral data, and purity certificate.
+            Every OmniQure peptide is tested using HPLC and mass spectrometry. Select any product below to view its chromatogram, spectral data, and purity certificate.
           </p>
 
           {/* Quality badges */}
@@ -69,7 +69,7 @@ export default function LabResultsPage() {
             {[
               { icon: <Award size={14} />, label: "99%+ HPLC Purity" },
               { icon: <Microscope size={14} />, label: "Mass Spec Verified" },
-              { icon: <Shield size={14} />, label: "Independently Tested" },
+              { icon: <Shield size={14} />, label: "Batch Tested" },
               { icon: <CheckCircle2 size={14} />, label: "Lot-by-Lot Testing" },
             ].map(b => (
               <div key={b.label} style={{

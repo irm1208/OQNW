@@ -16,7 +16,7 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/purity|hplc|99%|quality|certificate|coa/i],
     answer:
-      "Every OmniQure peptide is independently tested using **RP-HPLC** and verified to **≥99% purity**. ESI-TOF mass spectrometry confirms molecular identity. You can download the Certificate of Analysis (COA) directly from each product page — no account required.",
+      "Every OmniQure peptide is tested using **RP-HPLC** and verified to **≥99% purity**. ESI-TOF mass spectrometry confirms molecular identity. You can download the Certificate of Analysis (COA) directly from each product page — no account required.",
   },
   {
     patterns: [/ship|deliver|dispatch|postage|worldwide|uk|europe|international/i],

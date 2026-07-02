@@ -56,9 +56,9 @@ const FAQS: FAQItem[] = [
   },
   {
     category: "products",
-    q: "Are your peptides independently tested?",
-    a: "Yes. All purity and identity testing is conducted by independent, accredited analytical laboratories. We do not rely solely on in-house testing. Independent verification ensures objectivity and consistency across every batch we stock.",
-    tags: ["independent", "testing"],
+    q: "Are your peptides tested for purity?",
+    a: "Yes. All purity and identity testing is conducted by accredited analytical laboratories using HPLC and mass spectrometry. We publish the full results — COAs, chromatograms, and spectral data — on every product page.",
+    tags: ["testing", "purity"],
   },
   {
     category: "products",
@@ -81,7 +81,7 @@ const FAQS: FAQItem[] = [
   {
     category: "products",
     q: "Do you sell pharmaceutical-grade or GMP peptides?",
-    a: "Our peptides are research-grade, manufactured in cGMP-compliant facilities, and independently verified for purity and identity. They are not licensed as pharmaceutical drugs and are not produced under the same regulatory framework as licensed medicines — they are supplied exclusively for scientific research.",
+    a: "Our peptides are research-grade, manufactured in cGMP-compliant facilities, and verified for purity and identity. They are not licensed as pharmaceutical drugs and are not produced under the same regulatory framework as licensed medicines — they are supplied exclusively for scientific research.",
     tags: ["gmp", "pharmaceutical", "grade"],
   },
 
