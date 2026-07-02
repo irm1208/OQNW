@@ -305,20 +305,6 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
           {/* Tags */}
           <div style={{ padding: "12px 16px 0", display: "flex", gap: "6px", flexWrap: "wrap" }}>
             <span style={{
-              fontSize: "9.5px", fontWeight: 600, padding: "2px 9px", borderRadius: "4px",
-              background: "rgba(255,255,255,0.07)", color: "rgba(255,255,255,0.4)",
-              display: "flex", alignItems: "center", gap: "4px",
-            }}>
-              <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "rgba(255,255,255,0.3)", display: "inline-block" }} />
-              VENDOR
-            </span>
-            <span style={{
-              fontSize: "9.5px", fontWeight: 800, padding: "2px 10px",
-              borderRadius: "4px", background: "#1240A0", color: "#fff",
-            }}>
-              OmniQure
-            </span>
-            <span style={{
               fontSize: "9.5px", fontWeight: 700, padding: "2px 10px", borderRadius: "4px",
               background: "rgba(99,102,241,0.18)", color: "rgba(165,170,255,0.9)",
             }}>

@@ -154,21 +154,6 @@ function ReportModal({
           {/* Tags */}
           <div style={{ padding: "12px 16px 0", display: "flex", gap: "6px", flexWrap: "wrap" }}>
             <span style={{
-              fontSize: "9.5px", fontWeight: 600, padding: "2px 9px",
-              borderRadius: "4px", background: "rgba(255,255,255,0.07)",
-              color: "rgba(255,255,255,0.4)",
-              display: "flex", alignItems: "center", gap: "4px",
-            }}>
-              <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "rgba(255,255,255,0.3)", display: "inline-block" }} />
-              VENDOR
-            </span>
-            <span style={{
-              fontSize: "9.5px", fontWeight: 800, padding: "2px 10px",
-              borderRadius: "4px", background: "#1240A0", color: "#fff",
-            }}>
-              OmniQure
-            </span>
-            <span style={{
               fontSize: "9.5px", fontWeight: 700, padding: "2px 10px",
               borderRadius: "4px",
               background: "rgba(99,102,241,0.18)",
@@ -568,22 +553,6 @@ export default function LabTestsPage() {
                           Certificate of Analysis
                         </span>
                         <CheckCircle2 size={13} color="#22C55E" />
-                      </div>
-
-                      {/* Vendor tags */}
-                      <div style={{ padding: "10px 14px 0", display: "flex", justifyContent: "flex-end", gap: "6px" }}>
-                        <span style={{
-                          fontSize: "9.5px", fontWeight: 600, padding: "2px 9px",
-                          borderRadius: "4px", background: "#F1F5F9",
-                          color: "#64748B",
-                          display: "flex", alignItems: "center", gap: "5px",
-                        }}>
-                          <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#CBD5E1", display: "inline-block", flexShrink: 0 }} />
-                          VENDOR
-                        </span>
-                        <span style={{ fontSize: "9.5px", fontWeight: 800, padding: "2px 10px", borderRadius: "4px", background: "#1240A0", color: "#fff", letterSpacing: "0.04em" }}>
-                          OmniQure
-                        </span>
                       </div>
 
                       {/* Compound name */}
