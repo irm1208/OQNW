@@ -354,7 +354,7 @@ export default function CartPage() {
                     <div className="flex items-center gap-1.5 mt-1 flex-wrap">
                       <span className="text-xs px-2 py-0.5 rounded-full font-medium"
                         style={{ backgroundColor: "#EEF4FF", color: "#1B5CB5", border: "1px solid #BFDBFE" }}>
-                        99%+ HPLC
+                        99%+
                       </span>
                       <span className="text-xs px-2 py-0.5 rounded-full font-medium"
                         style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}>

@@ -84,8 +84,8 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "Certificate of Analysis (COA)",
     category: "research",
-    definition: "A quality assurance document issued for each batch of a research compound, confirming that it meets specified standards. A typical peptide COA includes: compound name and CAS number, lot number, manufacturing date, expiry date, HPLC purity percentage, appearance, and storage conditions. OmniQure COAs are generated from laboratory testing.",
-    related: ["HPLC", "Purity"],
+    definition: "A quality assurance document issued for each batch of a research compound, confirming that it meets specified standards. A typical peptide COA includes: compound name and CAS number, lot number, manufacturing date, expiry date, verified purity percentage, appearance, and storage conditions. OmniQure COAs are generated from laboratory testing.",
+    related: ["Independent Purity Testing", "Purity"],
     seeAlso: { label: "Lab Tests & COA", href: "/lab-tests" },
   },
   {
@@ -189,9 +189,9 @@ const GLOSSARY: GlossaryEntry[] = [
     related: ["Pharmacokinetics", "Bioavailability", "Elimination"],
   },
   {
-    term: "HPLC (High-Performance Liquid Chromatography)",
+    term: "Independent Purity Testing",
     category: "research",
-    definition: "The gold standard analytical technique used to determine peptide purity. In HPLC, a sample is dissolved in a mobile phase (solvent) and pumped under high pressure through a column packed with a stationary phase. Different components travel at different speeds and are detected by UV absorbance. The chromatogram shows the relative abundance of each component; purity is expressed as the percentage of the target peptide peak relative to all detected peaks. All OmniQure peptides are tested to ≥99% purity by HPLC.",
+    definition: "Third-party laboratory analysis used to determine peptide purity. A sample is analysed and the relative abundance of each component in the mixture is measured; purity is expressed as the percentage of the target peptide relative to all detected components. All OmniQure peptides are tested to ≥99% purity by independent laboratories.",
     related: ["Purity", "Certificate of Analysis"],
     seeAlso: { label: "Lab Tests & COA", href: "/lab-tests" },
   },
@@ -328,8 +328,8 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "Purity",
     category: "chemistry",
-    definition: "A measure of the proportion of a sample that consists of the target compound, expressed as a percentage. OmniQure peptides are verified to ≥99% purity by HPLC, meaning at least 99% of the material in each vial is the intended peptide, with ≤1% consisting of impurities (truncated sequences, oxidation products, residual solvents, or other related substances).",
-    related: ["HPLC", "Certificate of Analysis", "Impurity"],
+    definition: "A measure of the proportion of a sample that consists of the target compound, expressed as a percentage. OmniQure peptides are verified to ≥99% purity by independent laboratory testing, meaning at least 99% of the material in each vial is the intended peptide, with ≤1% consisting of impurities (truncated sequences, oxidation products, residual solvents, or other related substances).",
+    related: ["Independent Purity Testing", "Certificate of Analysis", "Impurity"],
     seeAlso: { label: "Lab Tests & COA", href: "/lab-tests" },
   },
 
@@ -415,7 +415,7 @@ const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 export default function GlossaryPage() {
   useSEO({
     title: "Peptide Research Glossary",
-    description: "Comprehensive A–Z glossary of peptide research terminology — amino acids, pharmacokinetics, HPLC, half-life, GHRH, GLP-1, receptors, reconstitution, and more. OmniQure Peptide Research Institute.",
+    description: "Comprehensive A–Z glossary of peptide research terminology — amino acids, pharmacokinetics, purity testing, half-life, GHRH, GLP-1, receptors, reconstitution, and more. OmniQure Peptide Research Institute.",
     canonicalPath: "/glossary",
   });
 

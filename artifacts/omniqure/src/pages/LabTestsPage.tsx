@@ -5,9 +5,8 @@ import { getPurity, getPurityStr, getLotDates } from "@/utils/productPurity";
 import { generateCOA } from "@/utils/generateCOA";
 import { productDetails } from "@/data/productDetails";
 import { useSEO } from "@/hooks/useSEO";
-import { Search, Download, CheckCircle2, FileText, X, ChevronUp, TestTube2 } from "lucide-react";
+import { Search, Download, CheckCircle2, FileText, X, ChevronUp } from "lucide-react";
 import type { Product } from "@/data/products";
-import HplcChart from "@/components/HplcChart";
 import COADocument, { parseBaseName, parseDeclaredMg, getActualMass } from "@/components/COADocument";
 import COAModal from "@/components/COAModal";
 
@@ -307,22 +306,6 @@ function ReportModal({
             <COADocument product={currentProduct} />
           </div>
 
-          {/* HPLC Chart */}
-          <div style={{ background: "#fff", borderRadius: "12px", padding: "24px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
-              <div style={{ width: "34px", height: "34px", borderRadius: "8px", background: "#EEF4FF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <TestTube2 size={16} color="#1240A0" />
-              </div>
-              <div>
-                <p style={{ margin: 0, fontSize: "14px", fontWeight: 800, color: "#0F172A" }}>HPLC Chromatogram</p>
-                <p style={{ margin: 0, fontSize: "11.5px", color: "#64748B" }}>Reverse-phase HPLC · UV detection at 214 nm</p>
-              </div>
-            </div>
-            <div style={{ overflowX: "auto" }}>
-              <HplcChart productId={currentProduct.id} productName={currentProduct.name} />
-            </div>
-          </div>
-
           {/* Purity breakdown */}
           <div style={{ background: "#fff", borderRadius: "12px", padding: "24px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
             <h3 style={{ margin: "0 0 16px", fontSize: "14px", fontWeight: 800, color: "#0F172A" }}>Purity Analysis Summary</h3>
@@ -340,7 +323,7 @@ function ReportModal({
             </div>
             <div style={{ marginTop: "14px", padding: "12px 16px", borderRadius: "10px", background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
               <p style={{ margin: 0, fontSize: "12px", color: "#475569", lineHeight: 1.6 }}>
-                <strong style={{ color: "#0F172A" }}>Testing Methodology:</strong> All peptides are tested using reverse-phase HPLC with UV detection at 214 nm. Results are lot-specific. For laboratory research use only — not for human or veterinary use.
+                <strong style={{ color: "#0F172A" }}>Testing Methodology:</strong> All peptides are tested using validated reverse-phase liquid chromatography methods with UV detection at 214 nm. Results are lot-specific. For laboratory research use only — not for human or veterinary use.
               </p>
             </div>
           </div>
@@ -360,7 +343,7 @@ export default function LabTestsPage() {
   useSEO({
     title: "Lab Results | OmniQure",
     description:
-      "Independent COA tests for all OmniQure peptides. HPLC purity and downloadable certificates of analysis.",
+      "Independent COA tests for all OmniQure peptides. verified purity and downloadable certificates of analysis.",
     canonicalPath: "/lab-tests",
   });
 

@@ -44,20 +44,20 @@ const FAQS: FAQItem[] = [
   // PRODUCTS & PURITY
   {
     category: "products",
-    q: "What does '99%+ HPLC verified' mean?",
-    a: "HPLC stands for High-Performance Liquid Chromatography — the gold standard analytical method for measuring peptide purity. Each batch of our research peptides is tested using HPLC to confirm that at least 99% of the sample is the target compound, with less than 1% consisting of related impurities, residual solvents, or degradation products. We publish the chromatogram data on our Lab Results page so you can inspect the results directly.",
-    tags: ["purity", "hplc", "testing", "quality"],
+    q: "What does '99%+ independently verified' mean?",
+    a: "Each batch of our research peptides is independently tested to confirm that at least 99% of the sample is the target compound, with less than 1% consisting of related impurities, residual solvents, or degradation products. We publish the results on our Lab Results page so you can inspect the data directly.",
+    tags: ["purity", "testing", "quality"],
   },
   {
     category: "products",
     q: "Do you provide Certificates of Analysis (COA)?",
-    a: "Yes. Every product comes with a downloadable Certificate of Analysis showing the HPLC purity result, molecular weight, lot number, and manufacturing date. You can access COAs directly from the Lab Results page or from any individual product page.",
+    a: "Yes. Every product comes with a downloadable Certificate of Analysis showing the verified purity result, molecular weight, lot number, and manufacturing date. You can access COAs directly from the Lab Results page or from any individual product page.",
     tags: ["coa", "certificate", "analysis", "lab"],
   },
   {
     category: "products",
     q: "Are your peptides tested for purity?",
-    a: "Yes. All purity testing is conducted by accredited analytical laboratories using HPLC. We publish the full results — COAs and chromatograms — on every product page.",
+    a: "Yes. All purity testing is conducted by accredited analytical laboratories. We publish the full results — including COAs — on every product page.",
     tags: ["testing", "purity"],
   },
   {
@@ -69,7 +69,7 @@ const FAQS: FAQItem[] = [
   {
     category: "products",
     q: "What are peptide blends? Are they less pure?",
-    a: "Peptide blends are pre-mixed vials containing two or more individual peptides lyophilised together — for example, the BPC-157 + TB-500 Blend or CJC-1295 + Ipamorelin. They are not less pure; each component is manufactured and tested to the same 99%+ HPLC standard before blending. Blends offer research convenience by eliminating the need to reconstitute and dose two separate vials in protocols where both compounds are used together.",
+    a: "Peptide blends are pre-mixed vials containing two or more individual peptides lyophilised together — for example, the BPC-157 + TB-500 Blend or CJC-1295 + Ipamorelin. They are not less pure; each component is manufactured and tested to the same 99%+ standard before blending. Blends offer research convenience by eliminating the need to reconstitute and dose two separate vials in protocols where both compounds are used together.",
     tags: ["blend", "stack", "combination", "purity"],
   },
   {
@@ -343,7 +343,7 @@ function AccordionItem({ item, isOpen, onToggle }: {
 export default function FAQPage() {
   useSEO({
     title: "Frequently Asked Questions",
-    description: "Common questions about OmniQure research peptides — purity, HPLC testing, storage, reconstitution, ordering, shipping, and returns. Research use only.",
+    description: "Common questions about OmniQure research peptides — purity, independent testing, storage, reconstitution, ordering, shipping, and returns. Research use only.",
     canonicalPath: "/faq",
   });
 

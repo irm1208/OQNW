@@ -111,7 +111,7 @@ GHK-Cu has demonstrated consistent activity in reducing the expression of matrix
 
 Emerging research suggests GHK-Cu may have neuroprotective properties, including upregulation of BDNF expression and modulation of oxidative stress pathways in neuronal models. This remains an early-stage area.
 
-## HPLC Stability Considerations
+## Stability Considerations
 
 Researchers working with GHK-Cu should be aware that the peptide-copper complex can be sensitive to pH and temperature. Reconstitution in slightly acidic aqueous solution (pH 5–6) and storage at -20°C is generally recommended for short-term stability.
 
@@ -395,41 +395,22 @@ CJC-1295 and Ipamorelin represent well-characterised growth hormone secretagogue
     seoDescription: "Pharmacology and research findings for CJC-1295 and Ipamorelin, covering GHRH and GHRP mechanisms, combination rationale, and key published studies.",
   },
   {
-    title: "HPLC Purity Testing: What the Data Actually Tells You",
-    slug: "hplc-purity-testing-explained",
-    excerpt: "High-performance liquid chromatography is the gold standard for peptide purity verification. This article explains what HPLC data means, how to read a chromatogram, and what limitations researchers should understand.",
+    title: "Purity Testing: What the Data Actually Tells You",
+    slug: "purity-testing-explained",
+    excerpt: "Independent purity verification is the backbone of trustworthy research peptides. This article explains what purity data means, how it is generated, and what limitations researchers should understand.",
     content: `## Why Purity Testing Matters
 
 Research reproducibility depends critically on compound identity and purity. A peptide preparation that is 85% pure introduces up to 15% unknown material into every experiment — material that may itself be biologically active, toxic, or simply confounding. Understanding what purity data means — and what it cannot tell you — is an essential research skill.
 
-## What is HPLC?
+## How Purity Is Measured
 
-High-Performance Liquid Chromatography (HPLC) separates compounds based on their differential affinity for a stationary phase (column) and mobile phase (solvent system). For peptide analysis, reverse-phase HPLC (RP-HPLC) is standard:
+Analytical laboratories separate the components of a peptide sample and measure the relative abundance of each. The dominant component is the target peptide; everything else is classed as an impurity — truncated synthesis fragments, deletion sequences, oxidised or reduced variants, residual protecting groups, or reagent contaminants. The **purity figure** reported on a Certificate of Analysis is the proportion of the sample made up by the target compound.
 
-- **Stationary phase**: C18 or C8 modified silica (hydrophobic)
-- **Mobile phase**: Gradient of water/acetonitrile with 0.1% TFA or formic acid
-- **Detection**: UV absorbance, typically at 214 nm (amide bond absorption)
+### Consistency Between Batches
+A well-controlled manufacturing process produces consistent purity results across lots. Reputable suppliers publish lot-specific data rather than a single generic figure for a product line.
 
-Compounds elute from the column based on their hydrophobicity. The detector records a **chromatogram**: a plot of UV absorbance (y-axis) versus time (x-axis). Each peak represents a component of the mixture.
-
-## Reading a Chromatogram
-
-### The Main Peak
-For a high-purity peptide, you should see one dominant, symmetrical peak. The **area percentage** of this peak (relative to total peak area in the chromatogram) gives you the purity figure.
-
-### Retention Time
-The time at which your peptide elutes is its retention time. This should be consistent between batches and can help confirm identity when compared to a known reference.
-
-### Peak Symmetry
-A symmetrical peak suggests a single, pure compound. Asymmetric peaks, shoulders, or split peaks indicate impurities co-eluting or structural heterogeneity.
-
-### Baseline Impurities
-Small peaks in the baseline between the main peak and solvent front represent impurities. These may include:
-- Truncated synthesis fragments
-- Deletion sequences
-- Oxidised or reduced variants
-- Residual protecting groups
-- Reagent contaminants
+### What a High Purity Number Means
+For a research-grade peptide, a single dominant, well-resolved result indicates a clean preparation with minimal side-products.
 
 ## What Purity Percentages Mean
 
@@ -440,11 +421,11 @@ Small peaks in the baseline between the main peak and solvent front represent im
 | 90–94% | Lower grade; impurity effects must be considered |
 | <90% | Not recommended for mechanistic research |
 
-OmniQure provides only ≥98% HPLC-verified peptides. Our COA data is available for every product.
+OmniQure provides only ≥98% independently verified peptides. Our COA data is available for every product.
 
-## What HPLC Cannot Tell You
+## What a Purity Result Cannot Tell You
 
-This is critical: **HPLC purity does not confirm identity**. A chromatogram showing 99% purity tells you that 99% of UV-absorbing material in your sample co-elutes at a single retention time. It does not confirm:
+This is critical: **purity does not confirm identity**. A result showing 99% purity tells you that 99% of the material in your sample is a single, consistent component. It does not confirm:
 
 - That the compound is the correct peptide sequence
 - That the compound has the correct molecular weight
@@ -453,21 +434,21 @@ This is critical: **HPLC purity does not confirm identity**. A chromatogram show
 
 ## Practical Tips for Evaluating Supplier Data
 
-1. **Request the actual chromatogram** — not just a purity number. The shape and baseline of the chromatogram reveals what a single percentage cannot.
-2. **Check the mobile phase and column** — different conditions can produce different apparent purities for the same material.
-3. **Look at the scale** — a Y-axis that starts at 0.01 AU reveals impurities that a scaled-up view hides.
-4. **Compare retention times** — if a supplier consistently reports the same retention time for the same peptide across batches, this supports authentic manufacturing.
+1. **Request the full Certificate of Analysis** — not just a purity number. Lot number, manufacturing date, and testing method all matter.
+2. **Check for lot-specific data** — generic, product-wide claims are far weaker evidence than per-batch results.
+3. **Ask which laboratory performed the analysis** — independent, accredited labs are more credible than in-house-only claims.
+4. **Compare purity alongside identity confirmation** — purity and identity are separate questions, and both matter.
 
 ## Conclusion
 
-HPLC purity data is a necessary quality indicator for research peptides, but researchers should understand both the power and limitations of the technique when evaluating the material they work with.`,
+Purity data is a necessary quality indicator for research peptides, but researchers should understand both the power and limitations of the measurement when evaluating the material they work with.`,
     author: "OmniQure Research Team",
-    tags: ["HPLC", "Purity Testing", "Quality Control", "Research Methods"],
+    tags: ["Purity Testing", "Quality Control", "Research Methods"],
     status: "published" as const,
-    featuredImageUrl: "https://founderssg.com/wp-content/uploads/2025/01/hplc-jars.jpg",
+    featuredImageUrl: "https://founderssg.com/wp-content/uploads/2025/01/lab-jars.jpg",
     publishedAt: new Date("2026-06-25T09:00:00Z"),
-    seoTitle: "HPLC Purity Testing for Research Peptides Explained | OmniQure",
-    seoDescription: "A researcher's guide to understanding HPLC chromatograms and purity percentages in peptide research.",
+    seoTitle: "Purity Testing for Research Peptides Explained | OmniQure",
+    seoDescription: "A researcher's guide to understanding purity data and purity percentages in peptide research.",
   },
 ];
 

@@ -1256,8 +1256,6 @@ components:
           type: ["string", "null"]
         coaUrl:
           type: ["string", "null"]
-        hplcImageUrl:
-          type: ["string", "null"]
         msImageUrl:
           type: ["string", "null"]
         isPublished:
@@ -1313,8 +1311,6 @@ components:
           type: string
         coaUrl:
           type: string
-        hplcImageUrl:
-          type: string
         msImageUrl:
           type: string
         isPublished:
@@ -1363,8 +1359,6 @@ components:
           type: ["string", "null"]
         coaUrl:
           type: ["string", "null"]
-        hplcImageUrl:
-          type: ["string", "null"]
         msImageUrl:
           type: ["string", "null"]
         isPublished:
@@ -1396,8 +1390,6 @@ components:
         purity:
           type: ["string", "null"]
         coaUrl:
-          type: ["string", "null"]
-        hplcImageUrl:
           type: ["string", "null"]
         msImageUrl:
           type: ["string", "null"]
@@ -1562,8 +1554,6 @@ components:
         halfLife:
           type: ["string", "null"]
         coaUrl:
-          type: ["string", "null"]
-        hplcImageUrl:
           type: ["string", "null"]
         msImageUrl:
           type: ["string", "null"]

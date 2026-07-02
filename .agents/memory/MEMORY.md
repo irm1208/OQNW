@@ -3,3 +3,4 @@
 - [Admin panel API routing](admin-panel-api-routing.md) — admin fetch() must use absolute /api/...; prefixing BASE_URL (/admin) hits vite not the API server → login "Connection error"
 - [OmniQure API spec drift check](omniqure-api-drift-check.md) — `pnpm run check:api-drift` verifies admin route response fields are declared in openapi.yaml; run it after touching any `xToResponse` mapper.
 - [Seed scripts vs live DB content](omniqure-seed-vs-db.md) — editing seed-*.ts source doesn't touch already-seeded rows; check the DB directly for stale content after content-removal requests.
+- [Bulk text replace JSX risk](bulk-text-replace-jsx-risk.md) — bulk-removing a term across .tsx files can eat adjacent JSX punctuation; always run typecheck after, grep alone isn't proof.

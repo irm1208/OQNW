@@ -170,7 +170,7 @@ export default function TermsPage() {
 
             <Section id="products" number="4" title="Products & Descriptions">
               <p>We make every effort to ensure that product descriptions, specifications, images, and technical data are accurate. However, we do not warrant that descriptions are error-free, complete, or current. Technical data including purity percentages, molecular weights, and sequence information is provided for research reference purposes only.</p>
-              <p>Certificate of Analysis (COA) documents are generated based on batch testing data. Actual lot-specific COAs are available upon request for qualified researchers. Purity figures stated represent HPLC analysis results from representative batch testing.</p>
+              <p>Certificate of Analysis (COA) documents are generated based on batch testing data. Actual lot-specific COAs are available upon request for qualified researchers. Purity figures stated represent independent analysis results from representative batch testing.</p>
               <p>Product images are representative and may differ from the actual product received. All peptides are supplied as lyophilised (freeze-dried) powder in sealed vials unless otherwise stated.</p>
               <p>We reserve the right to withdraw any product from sale at any time without notice.</p>
             </Section>

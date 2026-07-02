@@ -50,7 +50,7 @@ const HOW_IT_WORKS = [
     icon: <ShoppingCart size={20} color="#fff" />,
     bg: "linear-gradient(135deg, #1240A0, #1B5CB5)",
     title: "Add peptides to your cart",
-    desc: "Browse our catalogue of 81 HPLC-verified compounds and add any combination to your cart.",
+    desc: "Browse our catalogue of 81 independently verified compounds and add any combination to your cart.",
   },
   {
     icon: <Tag size={20} color="#fff" />,
@@ -312,7 +312,7 @@ export default function BundleAndSavePage() {
             Ready to start bundling?
           </h2>
           <p style={{ fontSize: 16, color: "rgba(255,255,255,0.75)", marginBottom: 28, lineHeight: 1.6 }}>
-            Browse all 81 HPLC-verified peptides and build your research stack. Discounts kick in automatically.
+            Browse all 81 independently verified peptides and build your research stack. Discounts kick in automatically.
           </p>
           <Link
             href="/all-peptides"

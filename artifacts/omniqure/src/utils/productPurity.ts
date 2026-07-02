@@ -21,7 +21,7 @@ function parseJanoshikDate(str: string): Date {
 // ─── purity ───────────────────────────────────────────────────────────────────
 
 /**
- * Returns the HPLC purity value for a product.
+ * Returns the verified purity value for a product.
  * Uses real Janoshik test data where available, otherwise falls back to a
  * deterministic seed-based value (98.1 – 99.7 %).
  */

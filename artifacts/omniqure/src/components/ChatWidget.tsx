@@ -14,9 +14,9 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
       "Hello! I'm the OmniQure Research Assistant. I can help with questions about our peptides, ordering, shipping, storage, and more. What can I help you with today?",
   },
   {
-    patterns: [/purity|hplc|99%|quality|certificate|coa/i],
+    patterns: [/purity|99%|quality|certificate|coa/i],
     answer:
-      "Every OmniQure peptide is tested using **RP-HPLC** and verified to **≥99% purity**. You can download the Certificate of Analysis (COA) directly from each product page — no account required.",
+      "Every OmniQure peptide is tested using **independent laboratory testing** and verified to **≥99% purity**. You can download the Certificate of Analysis (COA) directly from each product page — no account required.",
   },
   {
     patterns: [/ship|deliver|dispatch|postage|worldwide|uk|europe|international/i],
@@ -41,42 +41,42 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/bpc.?157|bpc157/i],
     answer:
-      "**BPC-157** (Body Protection Compound) is a synthetic pentadecapeptide with 15 amino acids. It is widely studied for its role in cellular repair and tissue research. Our BPC-157 is verified to ≥99% HPLC purity. Typical research vials are 5 mg. Store at −20 °C; reconstitute in sterile water or 0.9% saline.",
+      "**BPC-157** (Body Protection Compound) is a synthetic pentadecapeptide with 15 amino acids. It is widely studied for its role in cellular repair and tissue research. Our BPC-157 is verified to ≥99% verified purity. Typical research vials are 5 mg. Store at −20 °C; reconstitute in sterile water or 0.9% saline.",
   },
   {
     patterns: [/tb.?500|thymosin beta/i],
     answer:
-      "**TB-500** is the synthetic form of Thymosin Beta-4, a naturally occurring protein involved in actin regulation and cellular migration research. Our TB-500 is HPLC-verified to ≥99% purity. Available in 5 mg vials. Reconstitute in bacteriostatic water.",
+      "**TB-500** is the synthetic form of Thymosin Beta-4, a naturally occurring protein involved in actin regulation and cellular migration research. Our TB-500 is independently verified to ≥99% purity. Available in 5 mg vials. Reconstitute in bacteriostatic water.",
   },
   {
     patterns: [/semaglutid/i],
     answer:
-      "**Semaglutide** is a GLP-1 receptor agonist peptide researched for its role in metabolic and appetite regulation studies. We supply research-grade semaglutide verified to ≥99% HPLC purity with full COA documentation.",
+      "**Semaglutide** is a GLP-1 receptor agonist peptide researched for its role in metabolic and appetite regulation studies. We supply research-grade semaglutide verified to ≥99% verified purity with full COA documentation.",
   },
   {
     patterns: [/tirzepatid/i],
     answer:
-      "**Tirzepatide** is a dual GIP/GLP-1 receptor agonist studied in metabolic research. Our tirzepatide is HPLC-verified to ≥99% purity with full COA available on the product page.",
+      "**Tirzepatide** is a dual GIP/GLP-1 receptor agonist studied in metabolic research. Our tirzepatide is independently verified to ≥99% purity with full COA available on the product page.",
   },
   {
     patterns: [/epithalon|epitalon/i],
     answer:
-      "**Epithalon** (Epitalon) is a tetrapeptide (Ala-Glu-Asp-Gly) researched for its role in telomerase activation studies and cellular aging models. Supplied lyophilised at ≥99% HPLC purity.",
+      "**Epithalon** (Epitalon) is a tetrapeptide (Ala-Glu-Asp-Gly) researched for its role in telomerase activation studies and cellular aging models. Supplied lyophilised at ≥99% verified purity.",
   },
   {
     patterns: [/cjc.?1295|dac/i],
     answer:
-      "**CJC-1295** is a GHRH analogue studied for growth hormone secretagogue activity. Available with or without DAC (Drug Affinity Complex). Both variants are HPLC-verified to ≥99% purity with full COA.",
+      "**CJC-1295** is a GHRH analogue studied for growth hormone secretagogue activity. Available with or without DAC (Drug Affinity Complex). Both variants are independently verified to ≥99% purity with full COA.",
   },
   {
     patterns: [/ipamorelin/i],
     answer:
-      "**Ipamorelin** is a selective GHRP (growth hormone-releasing peptide) frequently combined with CJC-1295 in research protocols. Our Ipamorelin is verified to ≥99% HPLC purity.",
+      "**Ipamorelin** is a selective GHRP (growth hormone-releasing peptide) frequently combined with CJC-1295 in research protocols. Our Ipamorelin is verified to ≥99% verified purity.",
   },
   {
     patterns: [/melanotan|pt.?141/i],
     answer:
-      "We stock both **Melanotan II** and **PT-141 (Bremelanotide)**, both melanocortin receptor agonists studied in pigmentation and CNS research respectively. Both are HPLC-verified to ≥99% purity.",
+      "We stock both **Melanotan II** and **PT-141 (Bremelanotide)**, both melanocortin receptor agonists studied in pigmentation and CNS research respectively. Both are independently verified to ≥99% purity.",
   },
   {
     patterns: [/how many peptide|how many product|catalogue|catalog|81|full range|all peptide/i],

@@ -52,7 +52,6 @@ function catalogToResponse(p: typeof productsCatalogTable.$inferSelect) {
     solubility: p.solubility ?? null,
     halfLife: p.halfLife ?? null,
     coaUrl: p.coaUrl ?? null,
-    hplcImageUrl: p.hplcImageUrl ?? null,
     msImageUrl: p.msImageUrl ?? null,
     isPublished: p.isPublished,
     isFeatured: p.isFeatured,
@@ -81,7 +80,6 @@ type ProductBody = {
   solubility?: unknown;
   halfLife?: unknown;
   coaUrl?: unknown;
-  hplcImageUrl?: unknown;
   msImageUrl?: unknown;
   isPublished?: unknown;
   isFeatured?: unknown;
@@ -179,7 +177,6 @@ router.post("/admin/catalog", async (req: Request, res: Response): Promise<void>
         solubility: strOrNull(body.solubility),
         halfLife: strOrNull(body.halfLife),
         coaUrl: strOrNull(body.coaUrl),
-        hplcImageUrl: strOrNull(body.hplcImageUrl),
         msImageUrl: strOrNull(body.msImageUrl),
         isPublished: isBool(body.isPublished) ? body.isPublished : true,
         isFeatured: isBool(body.isFeatured) ? body.isFeatured : false,
@@ -225,7 +222,6 @@ router.patch("/admin/catalog/:id", async (req: Request, res: Response): Promise<
   if (body.solubility !== undefined) updates.solubility = strOrNull(body.solubility);
   if (body.halfLife !== undefined) updates.halfLife = strOrNull(body.halfLife);
   if (body.coaUrl !== undefined) updates.coaUrl = strOrNull(body.coaUrl);
-  if (body.hplcImageUrl !== undefined) updates.hplcImageUrl = strOrNull(body.hplcImageUrl);
   if (body.msImageUrl !== undefined) updates.msImageUrl = strOrNull(body.msImageUrl);
   if (body.isPublished !== undefined && isBool(body.isPublished)) updates.isPublished = body.isPublished;
   if (body.isFeatured !== undefined && isBool(body.isFeatured)) updates.isFeatured = body.isFeatured;
@@ -250,7 +246,7 @@ router.patch("/admin/catalog/:id", async (req: Request, res: Response): Promise<
   }
 });
 
-// POST /api/admin/catalog/:id/upload-doc — upload a lab document (COA / HPLC / MS)
+// POST /api/admin/catalog/:id/upload-doc — upload a lab document (COA / MS)
 router.post(
   "/admin/catalog/:id/upload-doc",
   (req: Request, res: Response, next) => {
@@ -267,8 +263,7 @@ router.post(
     const url = `/uploads/${req.file.filename}`;
 
     const field =
-      docType === "hplc" ? "hplcImageUrl" :
-      docType === "ms"   ? "msImageUrl"   : "coaUrl";
+      docType === "ms" ? "msImageUrl" : "coaUrl";
 
     try {
       const [updated] = await db
@@ -329,7 +324,6 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
         imageUrl: productsCatalogTable.imageUrl,
         purity: productsCatalogTable.purity,
         coaUrl: productsCatalogTable.coaUrl,
-        hplcImageUrl: productsCatalogTable.hplcImageUrl,
         msImageUrl: productsCatalogTable.msImageUrl,
         isFeatured: productsCatalogTable.isFeatured,
         stockLevel: productsInventoryTable.stockLevel,
@@ -353,7 +347,6 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
           imageUrl: p.imageUrl,
           purity: p.purity,
           coaUrl: p.coaUrl ?? null,
-          hplcImageUrl: p.hplcImageUrl ?? null,
           msImageUrl: p.msImageUrl ?? null,
           isFeatured: p.isFeatured,
           stockLevel: p.stockLevel ?? null,

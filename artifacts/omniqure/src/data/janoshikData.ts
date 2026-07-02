@@ -4,7 +4,7 @@
  * peptide / mg strength as listed on that independent third-party aggregator.
  *
  * Fields
- *  purity     – HPLC purity %, e.g. 99.912 (undefined for blend products)
+ *  purity     – verified purity %, e.g. 99.912 (undefined for blend products)
  *  actualMass – mass found by the lab in mg
  *  lot        – Janoshik batch identifier used as the COA lot number
  *  received   – "DD Mon YYYY" sample-received date shown on the Janoshik report

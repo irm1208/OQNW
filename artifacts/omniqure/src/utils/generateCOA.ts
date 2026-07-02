@@ -1,7 +1,7 @@
 import { jsPDF } from "jspdf";
 import type { Product } from "@/data/products";
 import type { ProductDetail } from "@/data/productDetails";
-import { getPurity, getPurityStr, getLotDates } from "@/utils/productPurity";
+import { getPurityStr, getLotDates } from "@/utils/productPurity";
 import {
   parseBaseName, parseDeclaredMg, getActualMass,
   getCOARef,
@@ -156,12 +156,6 @@ function drawSignature(doc: jsPDF, bx: number, by: number) {
   );
 }
 
-// ─── Gaussian helper (HPLC page) ─────────────────────────────────────────────
-
-function gaussian(t: number, mu: number, amplitude: number, sigma: number): number {
-  return amplitude * Math.exp(-Math.pow(t - mu, 2) / (2 * sigma * sigma));
-}
-
 // ─── Main export ─────────────────────────────────────────────────────────────
 
 export async function generateCOA(product: Product, detail: ProductDetail) {
@@ -173,7 +167,6 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   const CW = W - M * 2;
 
   const { lot, received, analysis, issued } = getLotDates(product.id);
-  const purity     = getPurity(product.id);
   const purityStr  = getPurityStr(product.id);
   const declaredMg = parseDeclaredMg(product.name);
   const actualMass = getActualMass(product.id, declaredMg);
@@ -320,7 +313,7 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   labelText(doc, "Tests requested  >", M, y + 4);
   y += 7;
   const testsDesc =
-    "Reverse-phase HPLC purity analysis (UV detection at 214 nm).";
+    "Independent purity analysis (UV detection at 214 nm).";
   fillRect(doc, M, y, CW, 13, ...BGLIGHT);
   strokeRect(doc, M, y, CW, 13, ...BORDER, 0.3);
   bodyText(doc, testsDesc, M + 3, y + 5, CW - 6);
@@ -425,189 +418,11 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   doc.setTextColor(...MUTED);
   doc.text(
     "This certificate is generated electronically and is valid for the lot number stated above. " +
-    "Analysed at OmniQure QC Laboratory, Hertfordshire, UK. See Page 2 for HPLC chromatogram.",
+    "Analysed at OmniQure QC Laboratory, Hertfordshire, UK.",
     M, y + 4, { maxWidth: CW },
   );
 
-  // ══════════════════════════════════════════════════════════════════════
-  //  PAGE 2 — HPLC Chromatogram
-  // ══════════════════════════════════════════════════════════════════════
-
-  doc.addPage();
-
   const FOOTER_Y = 273;
-  const HDR      = 44;
-
-  // Dark header (matches existing design for chromatogram page)
-  fillRect(doc, 0, 0, W, HDR, 13, 37, 101);
-  if (logo) {
-    const { w: lw, h: lh } = fitLogo(logo, 80, 28);
-    doc.addImage(logo.dataUrl, "PNG", M, (HDR - lh) / 2, lw, lh);
-  }
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(16);
-  doc.setTextColor(255, 255, 255);
-  doc.text("CERTIFICATE",  W - M, 18, { align: "right" });
-  doc.text("OF ANALYSIS",  W - M, 27, { align: "right" });
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(6.5);
-  doc.setTextColor(150, 175, 215);
-  doc.text(`${coaRef}  ·  Lot ${lot}  ·  Page 2 of 2`, W - M, 35, { align: "right" });
-  fillRect(doc, 0, HDR, W, 2.5, 27, 92, 181);
-
-  // Section header bar
-  fillRect(doc, M, HDR + 6, CW, 7, 18, 64, 160);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(7);
-  doc.setTextColor(255, 255, 255);
-  doc.text("HPLC CHROMATOGRAM  —  REVERSE PHASE C18  ·  UV 220 nm", M + 3, HDR + 11.5);
-
-  // Product strip
-  const stripY = HDR + 15;
-  fillRect(doc, M, stripY, CW, 10, 240, 245, 255);
-  strokeRect(doc, M, stripY, CW, 10, 191, 214, 248, 0.3);
-  fillRect(doc, M, stripY, 3, 10, 27, 92, 181);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(9);
-  doc.setTextColor(8, 16, 45);
-  doc.text(product.name, M + 7, stripY + 7);
-  // Purity badge
-  const pur2X = M + CW - 52;
-  fillRect(doc, pur2X, stripY + 1.5, 49, 7, 232, 253, 242);
-  strokeRect(doc, pur2X, stripY + 1.5, 49, 7, 160, 240, 200);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(7.5);
-  doc.setTextColor(5, 140, 80);
-  doc.text(`HPLC Purity: ${purityStr}  ✓`, pur2X + 24.5, stripY + 7, { align: "center" });
-
-  // Chromatogram maths (identical to HplcChart.tsx)
-  const seed          = parseInt(product.id, 10) || 1;
-  const retentionTime = 9 + (seed % 9);
-  const sigma         = 0.30 + (seed % 5) * 0.02;
-  const baseImp1Amp   = 5.5 + (seed % 4) * 0.8;
-  const imp1RT        = retentionTime - 3.5 - (seed % 2);
-  const baseImp2Amp   = 3.0 + (seed % 3) * 0.7;
-  const imp2RT        = retentionTime + 3.8 + (seed % 3) * 0.5;
-  const imp1Sigma     = 0.22 + (seed % 3) * 0.03;
-  const imp2Sigma     = 0.18 + (seed % 2) * 0.03;
-  const ROOT2PI       = 2.5066;
-  const mainArea      = 1000 * sigma * ROOT2PI;
-  const baseI1        = baseImp1Amp * imp1Sigma * ROOT2PI;
-  const baseI2        = baseImp2Amp * imp2Sigma * ROOT2PI;
-  const totalAreaTgt  = mainArea / (purity / 100);
-  const impuritiesArea= totalAreaTgt - mainArea;
-  const impScale      = impuritiesArea / (baseI1 + baseI2);
-  const imp1Amp       = baseImp1Amp * impScale;
-  const imp2Amp       = baseImp2Amp * impScale;
-
-  const plotX   = M + 24;
-  const plotY2  = 58;
-  const plotW2  = CW - 24;
-  const plotH2  = 128;
-  const baseline= plotY2 + plotH2;
-  const T_MAX   = 25;
-  const A_MAX   = 1080;
-  const mmX = (t: number) => plotX + (t / T_MAX) * plotW2;
-  const mmY = (a: number) => plotY2 + plotH2 - (Math.min(Math.max(a, 0), A_MAX) / A_MAX) * plotH2;
-
-  // Grid
-  [0, 5, 10, 15, 20, 25].forEach(t => {
-    doc.setDrawColor(235, 240, 250);
-    doc.setLineWidth(0.2);
-    doc.line(mmX(t), plotY2, mmX(t), baseline);
-  });
-  [0, 200, 400, 600, 800, 1000].forEach(v => {
-    doc.setDrawColor(235, 240, 250);
-    doc.setLineWidth(0.2);
-    doc.line(plotX, mmY(v), plotX + plotW2, mmY(v));
-  });
-
-  // Chromatogram points
-  const N = 350;
-  const pts: [number, number][] = [];
-  for (let i = 0; i <= N; i++) {
-    const t = (i / N) * T_MAX;
-    const noise =
-      2.8 * Math.sin(t * 6.1 + seed) +
-      1.6 * Math.sin(t * 14.3 + seed * 0.7) +
-      1.1 * Math.sin(t * 3.7  + seed * 1.3) +
-      0.7 * Math.sin(t * 22.1);
-    const abs =
-      Math.max(0, noise) +
-      gaussian(t, imp1RT,        imp1Amp, imp1Sigma) +
-      gaussian(t, imp2RT,        imp2Amp, imp2Sigma) +
-      gaussian(t, retentionTime, 1000,    sigma);
-    pts.push([mmX(t), mmY(abs)]);
-  }
-
-  // Filled area
-  const fillSegs: number[][] = [];
-  fillSegs.push([pts[0][0] - plotX, pts[0][1] - baseline]);
-  for (let i = 1; i < pts.length; i++) {
-    fillSegs.push([pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]]);
-  }
-  fillSegs.push([0, baseline - pts[pts.length - 1][1]]);
-  doc.setFillColor(220, 232, 255);
-  // @ts-ignore
-  doc.lines(fillSegs, plotX, baseline, [1, 1], "F", true);
-
-  // Chromatogram line
-  doc.setDrawColor(27, 92, 181);
-  doc.setLineWidth(0.45);
-  for (let i = 1; i < pts.length; i++) {
-    doc.line(pts[i - 1][0], pts[i - 1][1], pts[i][0], pts[i][1]);
-  }
-
-  // Axes
-  doc.setDrawColor(160, 175, 200);
-  doc.setLineWidth(0.6);
-  doc.line(plotX, plotY2, plotX, baseline);
-  doc.line(plotX, baseline, plotX + plotW2, baseline);
-
-  // Y-axis labels
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(5.5);
-  doc.setTextColor(120, 140, 175);
-  [0, 200, 400, 600, 800, 1000].forEach(v => {
-    doc.text(String(v), plotX - 2, mmY(v) + 1.8, { align: "right" });
-    doc.setDrawColor(180, 195, 220);
-    doc.setLineWidth(0.2);
-    doc.line(plotX - 1, mmY(v), plotX, mmY(v));
-  });
-
-  // X-axis labels
-  [0, 5, 10, 15, 20, 25].forEach(t => {
-    doc.text(String(t), mmX(t), baseline + 4, { align: "center" });
-    doc.setDrawColor(180, 195, 220);
-    doc.setLineWidth(0.2);
-    doc.line(mmX(t), baseline, mmX(t), baseline + 1);
-  });
-
-  // Axis titles
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(6);
-  doc.setTextColor(120, 140, 175);
-  doc.text("Absorbance (mAU)", plotX - 17, plotY2 + plotH2 / 2, { angle: 90, align: "center" });
-  doc.text("Time (min)", plotX + plotW2 / 2, baseline + 9, { align: "center" });
-
-  // Main peak annotation
-  const peakPx = mmX(retentionTime);
-  const peakPy = mmY(1000);
-  doc.setDrawColor(27, 92, 181);
-  doc.setLineWidth(0.3);
-  doc.setLineDashPattern([0.8, 0.8], 0);
-  doc.line(peakPx, peakPy - 1, peakPx, peakPy - 10);
-  doc.setLineDashPattern([], 0);
-  fillRect(doc, peakPx - 13, peakPy - 18, 26, 7, 238, 245, 255);
-  strokeRect(doc, peakPx - 13, peakPy - 18, 26, 7, 191, 214, 248, 0.3);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(5.8);
-  doc.setTextColor(18, 64, 160);
-  doc.text(product.name.split(" ").slice(0, 2).join(" "), peakPx, peakPy - 13.5, { align: "center" });
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(5.5);
-  doc.setTextColor(120, 140, 175);
-  doc.text(`RT: ${retentionTime.toFixed(1)} min`, peakPx, peakPy - 10, { align: "center" });
 
   // Footer
   hline(doc, 0, FOOTER_Y, W, 27, 92, 181, 0.6);

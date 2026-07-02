@@ -200,12 +200,12 @@ export default function Footer() {
                 </div>
               </div>
               <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.70)", lineHeight: "1.75", marginBottom: "16px" }}>
-                Research peptides manufactured to the highest standards of quality and purity. 99%+ HPLC purity guaranteed on every product.
+                Research peptides manufactured to the highest standards of quality and purity. 99%+ verified purity guaranteed on every product.
               </p>
 
               {/* Trust badges */}
               <div className="flex flex-wrap gap-2 mb-5">
-                {["99%+ HPLC", "COA Tested", "Secure Checkout"].map(b => (
+                {["99%+", "COA Tested", "Secure Checkout"].map(b => (
                   <span
                     key={b}
                     className="text-xs px-2.5 py-1 rounded-full inline-flex items-center gap-1"
@@ -224,7 +224,7 @@ export default function Footer() {
                 </span>
                 <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "rgba(255,255,255,0.70)" }}>
                   <FlaskConical size={13} style={{ color: "rgba(255,255,255,0.50)", flexShrink: 0 }} />
-                  RUO · Lab Certified · HPLC Verified
+                  RUO · Lab Certified · independently verified
                 </span>
               </div>
 

@@ -309,8 +309,6 @@ export interface CatalogProduct {
   /** @nullable */
   coaUrl?: string | null;
   /** @nullable */
-  hplcImageUrl?: string | null;
-  /** @nullable */
   msImageUrl?: string | null;
   isPublished: boolean;
   isFeatured: boolean;
@@ -338,7 +336,6 @@ export interface CatalogProductInput {
   solubility?: string;
   halfLife?: string;
   coaUrl?: string;
-  hplcImageUrl?: string;
   msImageUrl?: string;
   isPublished?: boolean;
   isFeatured?: boolean;
@@ -380,8 +377,6 @@ export interface CatalogProductPatch {
   /** @nullable */
   coaUrl?: string | null;
   /** @nullable */
-  hplcImageUrl?: string | null;
-  /** @nullable */
   msImageUrl?: string | null;
   isPublished?: boolean;
   isFeatured?: boolean;
@@ -403,8 +398,6 @@ export interface PublicProduct {
   purity?: string | null;
   /** @nullable */
   coaUrl?: string | null;
-  /** @nullable */
-  hplcImageUrl?: string | null;
   /** @nullable */
   msImageUrl?: string | null;
   isFeatured?: boolean;
@@ -496,8 +489,6 @@ export interface PublicProductDetail {
   halfLife?: string | null;
   /** @nullable */
   coaUrl?: string | null;
-  /** @nullable */
-  hplcImageUrl?: string | null;
   /** @nullable */
   msImageUrl?: string | null;
   isFeatured?: boolean;

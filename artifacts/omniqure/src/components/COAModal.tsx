@@ -1,11 +1,10 @@
 import { useState, useCallback, useEffect } from "react";
-import { Download, X, ChevronUp, TestTube2, ChevronLeft, ChevronRight } from "lucide-react";
+import { Download, X, ChevronUp, ChevronLeft, ChevronRight } from "lucide-react";
 import { getPurity, getPurityStr, getLotDates } from "@/utils/productPurity";
 import { generateCOA } from "@/utils/generateCOA";
 import { productDetails } from "@/data/productDetails";
 import { parseBaseName, parseDeclaredMg, getActualMass } from "@/components/COADocument";
 import COADocument from "@/components/COADocument";
-import HplcChart from "@/components/HplcChart";
 import type { Product } from "@/data/products";
 
 interface COAModalProps {
@@ -179,21 +178,6 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
 
           <div style={{ background: "#fff", borderRadius: "12px", padding: "20px 18px", boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}>
             <COADocument product={currentProduct} />
-          </div>
-
-          <div style={{ background: "#fff", borderRadius: "12px", padding: "18px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
-              <div style={{ width: "30px", height: "30px", borderRadius: "7px", background: "#EEF4FF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <TestTube2 size={14} color="#1240A0" />
-              </div>
-              <div>
-                <p style={{ margin: 0, fontSize: "13px", fontWeight: 800, color: "#0F172A" }}>HPLC Chromatogram</p>
-                <p style={{ margin: 0, fontSize: "10.5px", color: "#64748B" }}>Reverse-phase HPLC · UV at 214 nm</p>
-              </div>
-            </div>
-            <div style={{ overflowX: "auto" }}>
-              <HplcChart productId={currentProduct.id} productName={currentProduct.name} />
-            </div>
           </div>
 
           <div style={{ background: "#fff", borderRadius: "12px", padding: "18px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
@@ -430,22 +414,6 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
             <COADocument product={currentProduct} />
           </div>
 
-          {/* HPLC Chart */}
-          <div style={{ background: "#fff", borderRadius: "12px", padding: "24px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
-              <div style={{ width: "34px", height: "34px", borderRadius: "8px", background: "#EEF4FF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <TestTube2 size={16} color="#1240A0" />
-              </div>
-              <div>
-                <p style={{ margin: 0, fontSize: "14px", fontWeight: 800, color: "#0F172A" }}>HPLC Chromatogram</p>
-                <p style={{ margin: 0, fontSize: "11.5px", color: "#64748B" }}>Reverse-phase HPLC · UV detection at 214 nm</p>
-              </div>
-            </div>
-            <div style={{ overflowX: "auto" }}>
-              <HplcChart productId={currentProduct.id} productName={currentProduct.name} />
-            </div>
-          </div>
-
           {/* Purity breakdown */}
           <div style={{ background: "#fff", borderRadius: "12px", padding: "24px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
             <h3 style={{ margin: "0 0 16px", fontSize: "14px", fontWeight: 800, color: "#0F172A" }}>Purity Analysis Summary</h3>
@@ -463,7 +431,7 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
             </div>
             <div style={{ marginTop: "14px", padding: "12px 16px", borderRadius: "10px", background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
               <p style={{ margin: 0, fontSize: "12px", color: "#475569", lineHeight: 1.6 }}>
-                <strong style={{ color: "#0F172A" }}>Testing Methodology:</strong> All peptides are tested using reverse-phase HPLC with UV detection at 214 nm. Results are lot-specific. For laboratory research use only — not for human or veterinary use.
+                <strong style={{ color: "#0F172A" }}>Testing Methodology:</strong> All peptides are tested using validated reverse-phase liquid chromatography methods with UV detection at 214 nm. Results are lot-specific. For laboratory research use only — not for human or veterinary use.
               </p>
             </div>
           </div>

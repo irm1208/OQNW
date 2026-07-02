@@ -30,7 +30,6 @@ export const productsCatalogTable = pgTable("products_catalog", {
   solubility: text("solubility"),
   halfLife: text("half_life"),
   coaUrl: text("coa_url"),
-  hplcImageUrl: text("hplc_image_url"),
   msImageUrl: text("ms_image_url"),
   isPublished: boolean("is_published").notNull().default(true),
   isFeatured: boolean("is_featured").notNull().default(false),

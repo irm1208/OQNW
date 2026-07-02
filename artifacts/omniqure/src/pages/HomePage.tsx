@@ -323,8 +323,8 @@ const pillars = [
   {
     num: "01",
     icon: <FlaskConical size={24} />,
-    title: "HPLC Verified Purity",
-    body: "Every product tested via High-Performance Liquid Chromatography to confirm 99%+ purity before release.",
+    title: "Independently Verified Purity",
+    body: "Every product independently tested to confirm 99%+ purity before release.",
     color: "#1B5CB5",
     bg: "#EEF4FF",
   },
@@ -332,7 +332,7 @@ const pillars = [
     num: "02",
     icon: <Award size={24} />,
     title: "Full COA Data",
-    body: "Certificates of Analysis and HPLC chromatograms available for every product.",
+    body: "Certificates of Analysis available for every product.",
     color: "#059669",
     bg: "#ECFDF5",
   },
@@ -554,8 +554,8 @@ export default function HomePage() {
   const { currency } = useCurrency();
   const localValue = FREE_PEPTIDE_VALUE[currency.code] ?? FREE_PEPTIDE_VALUE.GBP;
   useSEO({
-    title: "HPLC-Verified Research Peptides",
-    description: "Buy high-purity research peptides verified by HPLC to 99%+. BPC-157, TB-500, Semaglutide, Tirzepatide, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
+    title: "Independently Verified Research Peptides",
+    description: "Buy high-purity research peptides independently verified to 99%+. BPC-157, TB-500, Semaglutide, Tirzepatide, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
     canonicalPath: "/",
   });
 
@@ -648,7 +648,7 @@ export default function HomePage() {
 
             {/* Trust chips */}
             <div className="flex flex-wrap gap-2 mb-8">
-              {["99%+ HPLC Purity", "Full COA Included", "Batch Tested"].map(t => (
+              {["99%+ Verified Purity", "Full COA Included", "Batch Tested"].map(t => (
                 <span
                   key={t}
                   className="inline-flex items-center gap-1.5"
@@ -697,8 +697,8 @@ export default function HomePage() {
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-[#EEF2F7]">
             {[
-              { icon: <FlaskConical size={20} />, title: "99%+ HPLC Purity",    sub: "Guaranteed on every product",     color: "#1B5CB5", bg: "#EEF4FF" },
-              { icon: <Award size={20} />,        title: "Full COA Data",        sub: "Chromatogram + purity report",    color: "#059669", bg: "#ECFDF5" },
+              { icon: <FlaskConical size={20} />, title: "99%+ Verified Purity", sub: "Guaranteed on every product",     color: "#1B5CB5", bg: "#EEF4FF" },
+              { icon: <Award size={20} />,        title: "Full COA Data",        sub: "Independent purity report",       color: "#059669", bg: "#ECFDF5" },
               { icon: <Shield size={20} />,       title: "Research Grade",       sub: "For qualified researchers only",  color: "#7C3AED", bg: "#F5F3FF" },
               { icon: <Truck size={20} />,        title: "Free Shipping £100+",  sub: "Discreet packaging included",     color: "#0E7490", bg: "#ECFEFF" },
             ].map((item, i) => (
@@ -814,7 +814,7 @@ export default function HomePage() {
                 Featured Peptides
               </h2>
               <p style={{ fontSize: "14px", color: "#64748B", marginTop: "4px" }}>
-                Our most popular research compounds, all HPLC verified
+                Our most popular research compounds, all independently verified
               </p>
             </div>
             <Link
@@ -1040,7 +1040,7 @@ export default function HomePage() {
             {[
               { num: "500+", label: "Orders Fulfilled" },
               { num: "47",   label: "Unique Compounds" },
-              { num: "99%+", label: "Avg. HPLC Purity" },
+              { num: "99%+", label: "Avg. Verified Purity" },
             ].map((stat, i) => (
               <div key={i} style={{ textAlign: "center" }}>
                 <p style={{ fontSize: "26px", fontWeight: 900, color: "#F59E0B", lineHeight: 1 }}>{stat.num}</p>

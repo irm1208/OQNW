@@ -4,7 +4,6 @@ import { Link, useParams, useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
 import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, Heart, Droplets, Gift, Sparkles } from "lucide-react";
 import { generateCOA } from "@/utils/generateCOA";
-import HplcChart from "@/components/HplcChart";
 import COADocument from "@/components/COADocument";
 import COAModal from "@/components/COAModal";
 import ReviewsCarousel, { type ReviewItem } from "@/components/ReviewsCarousel";
@@ -161,9 +160,9 @@ export default function ProductPage() {
   // SEO — computed unconditionally (before any early return)
   const seoDetail = productDetails[product?.slug ?? ""];
   const seoDesc = seoDetail?.description
-    ? `${seoDetail.description.slice(0, 140).split(". ")[0]}. ${product ? getPurityStr(product.id) : ""} HPLC purity. For research use only — OmniQure Peptide Research Institute.`
+    ? `${seoDetail.description.slice(0, 140).split(". ")[0]}. ${product ? getPurityStr(product.id) : ""} verified purity. For research use only — OmniQure Peptide Research Institute.`
     : product
-    ? `${product.name} — ${product.category} research peptide. ${getPurityStr(product.id)} HPLC purity. For research use only.`
+    ? `${product.name} — ${product.category} research peptide. ${getPurityStr(product.id)} verified purity. For research use only.`
     : undefined;
   const seoAvailability = product?.stockLevel === 0
     ? "OutOfStock"
@@ -467,7 +466,7 @@ export default function ProductPage() {
               {/* Purity bar */}
               <div className="px-4 py-3 flex items-center gap-2.5" style={{ borderBottom: "1px solid #F1F5F9" }}>
                 <span className="text-xs font-bold" style={{ color: "#1B5CB5" }}>PURITY</span>
-                <span className="text-xs font-semibold" style={{ color: "#0F172A" }}>{getPurityStr(product.id)} HPLC</span>
+                <span className="text-xs font-semibold" style={{ color: "#0F172A" }}>{getPurityStr(product.id)}</span>
                 <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "#E2E8F0" }}>
                   <div className="h-full rounded-full" style={{ width: `${getPurity(product.id)}%`, background: "linear-gradient(90deg, #1B5CB5, #2563EB)" }} />
                 </div>
@@ -491,7 +490,7 @@ export default function ProductPage() {
               {/* Quality badges */}
               <div className="grid grid-cols-2 gap-px" style={{ backgroundColor: "#E8EDF5" }}>
                 {[
-                  { icon: <Shield size={11} />, text: `${getPurityStr(product.id)} HPLC Purity` },
+                  { icon: <Shield size={11} />, text: `${getPurityStr(product.id)} verified purity` },
                   { icon: <Package size={11} />, text: "Lab Certified" },
                   { icon: <FlaskConical size={11} />, text: "Lab Tested" },
                   { icon: <Thermometer size={11} />, text: "Lyophilized" },
@@ -521,7 +520,7 @@ export default function ProductPage() {
                   </div>
                   <div>
                     <p className="font-bold text-sm" style={{ color: "#1240A0" }}>Certificate of Analysis</p>
-                    <p className="text-xs" style={{ color: "#3B82F6" }}>Full HPLC · QC report — Lot {getLotNumber(product.id)}</p>
+                    <p className="text-xs" style={{ color: "#3B82F6" }}>Full QC report — Lot {getLotNumber(product.id)}</p>
                   </div>
                 </div>
                 <button

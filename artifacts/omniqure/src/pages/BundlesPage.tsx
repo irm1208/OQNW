@@ -49,7 +49,7 @@ type BundleItem = { product: Product; qty: number };
 export default function BundlesPage() {
   useSEO({
     title: "Bundle & Save — Research Peptide Bundles",
-    description: "Build your own research peptide bundle and save up to 20%. Mix and match from 81 HPLC-verified peptides — 3+ vials saves 5%, up to 20% off. Free UK shipping available.",
+    description: "Build your own research peptide bundle and save up to 20%. Mix and match from 81 independently verified peptides — 3+ vials saves 5%, up to 20% off. Free UK shipping available.",
     canonicalPath: "/bundles",
   });
 
@@ -134,10 +134,10 @@ export default function BundlesPage() {
             Build Your Own Bundle
           </h1>
           <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", maxWidth: "540px", lineHeight: 1.65, marginBottom: "16px" }}>
-            Mix and match from 81 HPLC-verified peptides and save up to 20%. The more vials you order, the more you save.
+            Mix and match from 81 independently verified peptides and save up to 20%. The more vials you order, the more you save.
           </p>
           <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-            {["99%+ HPLC Purity", "Full COA", "Lyophilized"].map(t => (
+            {["99%+ Verified Purity", "Full COA", "Lyophilized"].map(t => (
               <span key={t} style={{
                 fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.6)",
                 backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)",

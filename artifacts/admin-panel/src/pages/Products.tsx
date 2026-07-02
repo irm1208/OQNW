@@ -65,7 +65,6 @@ type ProductFormData = {
   solubility: string;
   halfLife: string;
   coaUrl: string;
-  hplcImageUrl: string;
   msImageUrl: string;
   isPublished: boolean;
   isFeatured: boolean;
@@ -90,7 +89,6 @@ const emptyForm = (): ProductFormData => ({
   solubility: "",
   halfLife: "",
   coaUrl: "",
-  hplcImageUrl: "",
   msImageUrl: "",
   isPublished: true,
   isFeatured: false,
@@ -116,7 +114,6 @@ function productToForm(p: CatalogProduct): ProductFormData {
     solubility: p.solubility ?? "",
     halfLife: p.halfLife ?? "",
     coaUrl: p.coaUrl ?? "",
-    hplcImageUrl: p.hplcImageUrl ?? "",
     msImageUrl: p.msImageUrl ?? "",
     isPublished: p.isPublished,
     isFeatured: p.isFeatured,
@@ -209,7 +206,6 @@ function CatalogTab() {
       solubility: form.solubility || undefined,
       halfLife: form.halfLife || undefined,
       coaUrl: form.coaUrl || undefined,
-      hplcImageUrl: form.hplcImageUrl || undefined,
       msImageUrl: form.msImageUrl || undefined,
       isPublished: form.isPublished,
       isFeatured: form.isFeatured,
@@ -469,7 +465,7 @@ function CatalogTab() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <Label>Purity</Label>
-                    <Input value={form.purity} onChange={e => setForm(f => ({ ...f, purity: e.target.value }))} placeholder="99%+ HPLC" />
+                    <Input value={form.purity} onChange={e => setForm(f => ({ ...f, purity: e.target.value }))} placeholder="99%+" />
                   </div>
                   <div className="space-y-1.5">
                     <Label>Also Known As</Label>
@@ -520,7 +516,6 @@ function CatalogTab() {
                 {(
                   [
                     { key: "coaUrl" as const, label: "COA PDF", type: "coa", placeholder: "https://…/coa.pdf" },
-                    { key: "hplcImageUrl" as const, label: "HPLC Chromatogram", type: "hplc", placeholder: "https://…/hplc.pdf" },
                     { key: "msImageUrl" as const, label: "MS Spectrum", type: "ms", placeholder: "https://…/ms.pdf" },
                   ] as const
                 ).map(doc => (

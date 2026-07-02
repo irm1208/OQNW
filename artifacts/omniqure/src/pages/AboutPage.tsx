@@ -7,7 +7,7 @@ import {
 
 const STATS = [
   { value: "81+",   label: "Unique Peptide Compounds" },
-  { value: "99%+",  label: "Average HPLC Purity" },
+  { value: "99%+",  label: "Average verified purity" },
   { value: "500+",  label: "Orders Fulfilled" },
   { value: "4.9★",  label: "Customer Rating" },
 ];
@@ -17,7 +17,7 @@ const PILLARS = [
     icon: <Microscope size={22} />,
     color: "#3B82F6",
     bg: "#EFF6FF",
-    title: "HPLC-Verified Purity",
+    title: "Independently Verified Purity",
     body: "Every compound is tested by accredited laboratories using High-Performance Liquid Chromatography. We publish certificates of analysis for all products — no hidden results.",
   },
   {
@@ -32,7 +32,7 @@ const PILLARS = [
     color: "#10B981",
     bg: "#ECFDF5",
     title: "Transparent Testing",
-    body: "We don't just claim quality — we prove it. Every batch ships with a downloadable COA showing HPLC purity and sterility testing where applicable.",
+    body: "We don't just claim quality — we prove it. Every batch ships with a downloadable COA showing verified purity and sterility testing where applicable.",
   },
   {
     icon: <Truck size={22} />,
@@ -71,7 +71,7 @@ const TIMELINE = [
   {
     year: "Quality",
     title: "Every Batch Tested",
-    body: "We established our testing programme before we shipped a single order. Every compound in our catalogue has been HPLC-verified, mass-confirmed, and documented. COAs are publicly available on each product page.",
+    body: "We established our testing programme before we shipped a single order. Every compound in our catalogue has been independently verified, mass-confirmed, and documented. COAs are publicly available on each product page.",
   },
   {
     year: "Today",
@@ -92,7 +92,7 @@ const VALUES = [
 export default function AboutPage() {
   useSEO({
     title: "About OmniQure — Peptide Research Institute",
-    description: "Learn about OmniQure's mission to supply HPLC-verified research peptides with full transparency. Founded by researchers. Trusted by institutions worldwide.",
+    description: "Learn about OmniQure's mission to supply independently verified research peptides with full transparency. Founded by researchers. Trusted by institutions worldwide.",
     canonicalPath: "/about",
   });
 
@@ -135,7 +135,7 @@ export default function AboutPage() {
           </h1>
 
           <p style={{ fontSize: 17, color: "rgba(255,255,255,0.68)", lineHeight: 1.8, maxWidth: 580, marginBottom: 40 }}>
-            OmniQure was founded on a single belief: researchers deserve peptide suppliers that are as rigorous about quality documentation as they are about their own work. Every vial we ship is HPLC-verified, mass-confirmed, and backed by a published certificate of analysis.
+            OmniQure was founded on a single belief: researchers deserve peptide suppliers that are as rigorous about quality documentation as they are about their own work. Every vial we ship is independently verified, mass-confirmed, and backed by a published certificate of analysis.
           </p>
 
           <div className="flex flex-wrap gap-3">
@@ -211,7 +211,7 @@ export default function AboutPage() {
                 In peptide research, the difference between 95% purity and 99%+ purity isn't just a number — it can materially affect experimental outcomes. Too many suppliers cite purity figures without providing the data to back them up.
               </p>
               <p style={{ fontSize: 15, color: "#475569", lineHeight: 1.85, marginBottom: 28 }}>
-                OmniQure publishes HPLC data for every compound in our catalogue. We invite our customers to scrutinise our results because transparency isn't a marketing strategy — it's the standard we hold ourselves to.
+                OmniQure publishes independent data for every compound in our catalogue. We invite our customers to scrutinise our results because transparency isn't a marketing strategy — it's the standard we hold ourselves to.
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {VALUES.map((v, i) => (
@@ -396,7 +396,7 @@ export default function AboutPage() {
             Ready to order?
           </h2>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.60)", lineHeight: 1.75, maxWidth: 480, margin: "0 auto 36px" }}>
-            Browse our full catalogue of 81+ HPLC-verified peptides, download the COA for any compound before you buy, and check out with your preferred currency.
+            Browse our full catalogue of 81+ independently verified peptides, download the COA for any compound before you buy, and check out with your preferred currency.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link

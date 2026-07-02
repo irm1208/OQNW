@@ -105,7 +105,7 @@ function StackProductRow({ sp, index }: { sp: StackProductItem; index: number })
               className="text-xs px-2 py-0.5 rounded-full font-bold"
               style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}
             >
-              {getPurityStr(selected.id)} HPLC
+              {getPurityStr(selected.id)}
             </span>
             <span
               className="text-xs px-2 py-0.5 rounded-full font-medium"
@@ -360,7 +360,7 @@ function StackCard({ stack }: { stack: ResearchStack }) {
 export default function StacksPage() {
   useSEO({
     title: "Research Stacks",
-    description: "Curated research peptide stacks combining complementary compounds for specific research protocols. HPLC-verified peptides from OmniQure Peptide Research Institute.",
+    description: "Curated research peptide stacks combining complementary compounds for specific research protocols. independently verified peptides from OmniQure Peptide Research Institute.",
     canonicalPath: "/stacks",
   });
   const [activeFilter, setActiveFilter] = useState<string>("All");

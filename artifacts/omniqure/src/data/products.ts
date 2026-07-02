@@ -7,7 +7,6 @@ export type Product = {
   category: string;
   stockLevel?: number;
   coaUrl?: string | null;
-  hplcImageUrl?: string | null;
   msImageUrl?: string | null;
 };
 
