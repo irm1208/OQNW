@@ -148,7 +148,7 @@ export default function PopularPeptides() {
             Our most researched compounds across {availableCategories.length} categories — hand-picked by the OmniQure team. Each 99%+ HPLC verified with full COA documentation.
           </p>
           <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-            {["99%+ HPLC Purity", "Full COA", "ESI-TOF MS", "Lyophilized"].map(t => (
+            {["99%+ HPLC Purity", "Full COA", "Lyophilized"].map(t => (
               <span key={t} style={{
                 fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.6)",
                 backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)",

@@ -451,15 +451,6 @@ This is critical: **HPLC purity does not confirm identity**. A chromatogram show
 - That chiral centres have the correct stereochemistry
 - That the compound is the correct salt form
 
-## The Role of Mass Spectrometry
-
-Electrospray ionisation mass spectrometry (ESI-MS) complements HPLC by confirming molecular weight. Together, HPLC and ESI-MS provide:
-
-- **HPLC**: Purity (what percentage is my compound?)
-- **ESI-MS**: Identity (is my compound the right molecular weight?)
-
-OmniQure provides both HPLC chromatograms and ESI-MS data for all products. Researchers who require the highest confidence in compound identity should use both datasets.
-
 ## Practical Tips for Evaluating Supplier Data
 
 1. **Request the actual chromatogram** — not just a purity number. The shape and baseline of the chromatogram reveals what a single percentage cannot.
@@ -469,14 +460,14 @@ OmniQure provides both HPLC chromatograms and ESI-MS data for all products. Rese
 
 ## Conclusion
 
-HPLC purity data is a necessary but not sufficient quality indicator for research peptides. Combined with ESI-MS identity confirmation, it provides a robust quality verification package. Researchers should understand both the power and limitations of these analytical techniques when evaluating the material they work with.`,
+HPLC purity data is a necessary quality indicator for research peptides, but researchers should understand both the power and limitations of the technique when evaluating the material they work with.`,
     author: "OmniQure Research Team",
-    tags: ["HPLC", "Purity Testing", "Quality Control", "Mass Spectrometry", "Research Methods"],
+    tags: ["HPLC", "Purity Testing", "Quality Control", "Research Methods"],
     status: "published" as const,
     featuredImageUrl: "https://founderssg.com/wp-content/uploads/2025/01/hplc-jars.jpg",
     publishedAt: new Date("2026-06-25T09:00:00Z"),
     seoTitle: "HPLC Purity Testing for Research Peptides Explained | OmniQure",
-    seoDescription: "A researcher's guide to understanding HPLC chromatograms, purity percentages, and the complementary role of ESI-MS in peptide identity verification.",
+    seoDescription: "A researcher's guide to understanding HPLC chromatograms and purity percentages in peptide research.",
   },
 ];
 

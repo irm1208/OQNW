@@ -320,8 +320,7 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   labelText(doc, "Tests requested  >", M, y + 4);
   y += 7;
   const testsDesc =
-    "Reverse-phase HPLC purity analysis (UV detection at 214 nm) and " +
-    "electrospray ionisation mass spectrometry (ESI-MS) for identity confirmation.";
+    "Reverse-phase HPLC purity analysis (UV detection at 214 nm).";
   fillRect(doc, M, y, CW, 13, ...BGLIGHT);
   strokeRect(doc, M, y, CW, 13, ...BORDER, 0.3);
   bodyText(doc, testsDesc, M + 3, y + 5, CW - 6);
@@ -357,7 +356,6 @@ export async function generateCOA(product: Product, detail: ProductDetail) {
   const resultRows: { label: string; value: string; isGreen?: boolean; isBold?: boolean }[] = [
     { label: baseName,            value: actualMass !== null ? `${actualMass.toFixed(2)} mg` : "—", isBold: true },
     { label: "Purity",            value: purityStr,                                                   isGreen: true },
-    { label: "Identity (ESI-MS)", value: "Confirmed" },
     ...(detail?.molecularWeight ? [{ label: "Molecular Weight", value: detail.molecularWeight }] : []),
     ...(detail?.casNumber       ? [{ label: "CAS Number",       value: detail.casNumber }]       : []),
   ];

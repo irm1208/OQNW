@@ -153,7 +153,7 @@ export default function COADocument({ product }: COADocumentProps) {
       <div style={{ marginBottom: "20px" }}>
         <p style={{ margin: "0 0 8px", fontSize: "12.5px", fontWeight: 700, color: blue }}>Tests requested &gt;</p>
         <div style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: "6px", padding: "10px 14px", fontSize: "12.5px", color: "#374151" }}>
-          Reverse-phase HPLC purity analysis (UV detection at 214&nbsp;nm) and electrospray ionisation mass spectrometry (ESI-MS) for identity confirmation.
+          Reverse-phase HPLC purity analysis (UV detection at 214&nbsp;nm).
         </div>
       </div>
 
@@ -184,7 +184,6 @@ export default function COADocument({ product }: COADocumentProps) {
                 ? [{ label: "Purity", value: purityStr, bold: false, green: true }]
                 : []
               ),
-              { label: "Identity (ESI-MS)", value: "Confirmed",                                              bold: false },
               ...(detail?.molecularWeight ? [{ label: "Molecular Weight", value: detail.molecularWeight, bold: false, green: false }] : []),
               ...(detail?.casNumber       ? [{ label: "CAS Number",       value: detail.casNumber,       bold: false, green: false }] : []),
             ].map((row, i) => (

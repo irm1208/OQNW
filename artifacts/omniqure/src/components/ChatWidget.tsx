@@ -16,7 +16,7 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/purity|hplc|99%|quality|certificate|coa/i],
     answer:
-      "Every OmniQure peptide is tested using **RP-HPLC** and verified to **≥99% purity**. ESI-TOF mass spectrometry confirms molecular identity. You can download the Certificate of Analysis (COA) directly from each product page — no account required.",
+      "Every OmniQure peptide is tested using **RP-HPLC** and verified to **≥99% purity**. You can download the Certificate of Analysis (COA) directly from each product page — no account required.",
   },
   {
     patterns: [/ship|deliver|dispatch|postage|worldwide|uk|europe|international/i],
@@ -51,12 +51,12 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/semaglutid/i],
     answer:
-      "**Semaglutide** is a GLP-1 receptor agonist peptide researched for its role in metabolic and appetite regulation studies. We supply research-grade semaglutide verified to ≥99% HPLC purity with full COA and mass spectrometry data.",
+      "**Semaglutide** is a GLP-1 receptor agonist peptide researched for its role in metabolic and appetite regulation studies. We supply research-grade semaglutide verified to ≥99% HPLC purity with full COA documentation.",
   },
   {
     patterns: [/tirzepatid/i],
     answer:
-      "**Tirzepatide** is a dual GIP/GLP-1 receptor agonist studied in metabolic research. Our tirzepatide is HPLC-verified to ≥99% purity with COA and ESI-MS confirmation available on the product page.",
+      "**Tirzepatide** is a dual GIP/GLP-1 receptor agonist studied in metabolic research. Our tirzepatide is HPLC-verified to ≥99% purity with full COA available on the product page.",
   },
   {
     patterns: [/epithalon|epitalon/i],
@@ -147,11 +147,6 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
     patterns: [/lyophili|freeze.?dry|powder|vial/i],
     answer:
       "Our peptides are supplied as **lyophilised (freeze-dried) powder** in sealed glass vials. This format maximises shelf life and stability during shipping. You'll need to reconstitute the peptide in an appropriate solvent before use in research.",
-  },
-  {
-    patterns: [/mass spec|esi|ms|spectrometry|molecular weight/i],
-    answer:
-      "All OmniQure peptides are verified by **ESI-TOF mass spectrometry** to confirm molecular identity and rule out substitution or degradation. The spectral data is published on each product page alongside the HPLC chromatogram.",
   },
   {
     patterns: [/endotoxin|lal|bacterial|sterile/i],

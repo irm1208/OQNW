@@ -32,7 +32,7 @@ const PILLARS = [
     color: "#10B981",
     bg: "#ECFDF5",
     title: "Transparent Testing",
-    body: "We don't just claim quality — we prove it. Every batch ships with a downloadable COA showing HPLC purity, mass spectrometry confirmation, and sterility testing where applicable.",
+    body: "We don't just claim quality — we prove it. Every batch ships with a downloadable COA showing HPLC purity and sterility testing where applicable.",
   },
   {
     icon: <Truck size={22} />,
@@ -211,7 +211,7 @@ export default function AboutPage() {
                 In peptide research, the difference between 95% purity and 99%+ purity isn't just a number — it can materially affect experimental outcomes. Too many suppliers cite purity figures without providing the data to back them up.
               </p>
               <p style={{ fontSize: 15, color: "#475569", lineHeight: 1.85, marginBottom: 28 }}>
-                OmniQure publishes HPLC and mass spectrometry data for every compound in our catalogue. We invite our customers to scrutinise our results because transparency isn't a marketing strategy — it's the standard we hold ourselves to.
+                OmniQure publishes HPLC data for every compound in our catalogue. We invite our customers to scrutinise our results because transparency isn't a marketing strategy — it's the standard we hold ourselves to.
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {VALUES.map((v, i) => (

@@ -51,13 +51,13 @@ const FAQS: FAQItem[] = [
   {
     category: "products",
     q: "Do you provide Certificates of Analysis (COA)?",
-    a: "Yes. Every product comes with a downloadable Certificate of Analysis showing the HPLC purity result, mass spectrometry (MS) identity confirmation, molecular weight, lot number, and manufacturing date. You can access COAs directly from the Lab Results page or from any individual product page.",
+    a: "Yes. Every product comes with a downloadable Certificate of Analysis showing the HPLC purity result, molecular weight, lot number, and manufacturing date. You can access COAs directly from the Lab Results page or from any individual product page.",
     tags: ["coa", "certificate", "analysis", "lab"],
   },
   {
     category: "products",
     q: "Are your peptides tested for purity?",
-    a: "Yes. All purity and identity testing is conducted by accredited analytical laboratories using HPLC and mass spectrometry. We publish the full results — COAs, chromatograms, and spectral data — on every product page.",
+    a: "Yes. All purity testing is conducted by accredited analytical laboratories using HPLC. We publish the full results — COAs and chromatograms — on every product page.",
     tags: ["testing", "purity"],
   },
   {

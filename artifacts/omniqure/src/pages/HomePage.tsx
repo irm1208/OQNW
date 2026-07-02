@@ -331,8 +331,8 @@ const pillars = [
   {
     num: "02",
     icon: <Award size={24} />,
-    title: "Full COA & MS Data",
-    body: "Certificates of Analysis, HPLC chromatograms, and ESI-TOF mass spectra available for every product.",
+    title: "Full COA Data",
+    body: "Certificates of Analysis and HPLC chromatograms available for every product.",
     color: "#059669",
     bg: "#ECFDF5",
   },
@@ -698,7 +698,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-[#EEF2F7]">
             {[
               { icon: <FlaskConical size={20} />, title: "99%+ HPLC Purity",    sub: "Guaranteed on every product",     color: "#1B5CB5", bg: "#EEF4FF" },
-              { icon: <Award size={20} />,        title: "Full COA & MS Data",   sub: "Chromatogram + mass spectrum",    color: "#059669", bg: "#ECFDF5" },
+              { icon: <Award size={20} />,        title: "Full COA Data",        sub: "Chromatogram + purity report",    color: "#059669", bg: "#ECFDF5" },
               { icon: <Shield size={20} />,       title: "Research Grade",       sub: "For qualified researchers only",  color: "#7C3AED", bg: "#F5F3FF" },
               { icon: <Truck size={20} />,        title: "Free Shipping £100+",  sub: "Discreet packaging included",     color: "#0E7490", bg: "#ECFEFF" },
             ].map((item, i) => (

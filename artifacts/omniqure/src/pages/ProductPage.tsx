@@ -5,7 +5,6 @@ import { useProducts } from "@/context/ProductsContext";
 import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, Heart, Droplets, Gift, Sparkles } from "lucide-react";
 import { generateCOA } from "@/utils/generateCOA";
 import HplcChart from "@/components/HplcChart";
-import MsChart from "@/components/MsChart";
 import COADocument from "@/components/COADocument";
 import COAModal from "@/components/COAModal";
 import ReviewsCarousel, { type ReviewItem } from "@/components/ReviewsCarousel";
@@ -522,7 +521,7 @@ export default function ProductPage() {
                   </div>
                   <div>
                     <p className="font-bold text-sm" style={{ color: "#1240A0" }}>Certificate of Analysis</p>
-                    <p className="text-xs" style={{ color: "#3B82F6" }}>Full HPLC · ESI-MS · QC report — Lot {getLotNumber(product.id)}</p>
+                    <p className="text-xs" style={{ color: "#3B82F6" }}>Full HPLC · QC report — Lot {getLotNumber(product.id)}</p>
                   </div>
                 </div>
                 <button

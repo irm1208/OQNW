@@ -137,7 +137,7 @@ export default function BundlesPage() {
             Mix and match from 81 HPLC-verified peptides and save up to 20%. The more vials you order, the more you save.
           </p>
           <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-            {["99%+ HPLC Purity", "Full COA", "ESI-TOF MS", "Lyophilized"].map(t => (
+            {["99%+ HPLC Purity", "Full COA", "Lyophilized"].map(t => (
               <span key={t} style={{
                 fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.6)",
                 backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)",

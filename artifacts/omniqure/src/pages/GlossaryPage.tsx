@@ -84,8 +84,8 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "Certificate of Analysis (COA)",
     category: "research",
-    definition: "A quality assurance document issued for each batch of a research compound, confirming that it meets specified standards. A typical peptide COA includes: compound name and CAS number, lot number, manufacturing date, expiry date, HPLC purity percentage, mass spectrometry (MS) confirmation of molecular weight and identity, appearance, and storage conditions. OmniQure COAs are generated from laboratory testing.",
-    related: ["HPLC", "Mass Spectrometry", "Purity"],
+    definition: "A quality assurance document issued for each batch of a research compound, confirming that it meets specified standards. A typical peptide COA includes: compound name and CAS number, lot number, manufacturing date, expiry date, HPLC purity percentage, appearance, and storage conditions. OmniQure COAs are generated from laboratory testing.",
+    related: ["HPLC", "Purity"],
     seeAlso: { label: "Lab Tests & COA", href: "/lab-tests" },
   },
   {
@@ -133,8 +133,8 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "Formula (Molecular)",
     category: "chemistry",
-    definition: "A notation that indicates the number and types of atoms in a molecule. For example, BPC-157 has the molecular formula C₆₂H₉₈N₁₆O₂₂ — 62 carbon atoms, 98 hydrogen atoms, 16 nitrogen atoms, and 22 oxygen atoms. Molecular formulas appear on all product pages and COAs and can be used to verify compound identity alongside mass spectrometry data.",
-    related: ["Molecular Weight", "CAS Number", "Mass Spectrometry"],
+    definition: "A notation that indicates the number and types of atoms in a molecule. For example, BPC-157 has the molecular formula C₆₂H₉₈N₁₆O₂₂ — 62 carbon atoms, 98 hydrogen atoms, 16 nitrogen atoms, and 22 oxygen atoms. Molecular formulas appear on all product pages and COAs.",
+    related: ["Molecular Weight", "CAS Number"],
   },
   {
     term: "Freeze-Drying",
@@ -192,7 +192,7 @@ const GLOSSARY: GlossaryEntry[] = [
     term: "HPLC (High-Performance Liquid Chromatography)",
     category: "research",
     definition: "The gold standard analytical technique used to determine peptide purity. In HPLC, a sample is dissolved in a mobile phase (solvent) and pumped under high pressure through a column packed with a stationary phase. Different components travel at different speeds and are detected by UV absorbance. The chromatogram shows the relative abundance of each component; purity is expressed as the percentage of the target peptide peak relative to all detected peaks. All OmniQure peptides are tested to ≥99% purity by HPLC.",
-    related: ["Purity", "Mass Spectrometry", "Certificate of Analysis"],
+    related: ["Purity", "Certificate of Analysis"],
     seeAlso: { label: "Lab Tests & COA", href: "/lab-tests" },
   },
   {
@@ -250,13 +250,6 @@ const GLOSSARY: GlossaryEntry[] = [
 
   // M
   {
-    term: "Mass Spectrometry (MS)",
-    category: "research",
-    definition: "An analytical technique that measures the mass-to-charge ratio (m/z) of ionised molecules. In peptide identity confirmation, MS verifies that the detected molecular mass matches the theoretical molecular weight of the target compound. MS is typically used alongside HPLC in COAs to provide both purity (HPLC) and identity (MS) confirmation. The combination is considered the highest standard for research peptide quality verification.",
-    related: ["HPLC", "Molecular Weight", "Certificate of Analysis"],
-    seeAlso: { label: "Lab Tests & COA", href: "/lab-tests" },
-  },
-  {
     term: "Mechanism of Action (MoA)",
     category: "pharmacology",
     definition: "The specific biochemical or molecular interaction through which a compound produces its biological effect. For example, Ipamorelin's mechanism of action is agonism at the GHSR-1a (ghrelin) receptor in the pituitary, leading to GH secretion. Understanding MoA allows researchers to predict compound behaviour, identify potential interactions, and design more targeted protocols.",
@@ -271,8 +264,8 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "Molecular Weight (MW)",
     category: "chemistry",
-    definition: "The sum of the atomic masses of all atoms in a molecule, expressed in daltons (Da) or grams per mole (g/mol). Molecular weight is a fundamental physical property used to verify compound identity via mass spectrometry. It also determines the mass of peptide needed to achieve a given molar concentration when preparing research solutions. Larger peptides have higher molecular weights — for example, TB-500 (Thymosin Beta-4 fragment) has an MW of approximately 4,963 g/mol.",
-    related: ["Formula", "Mass Spectrometry", "Dalton"],
+    definition: "The sum of the atomic masses of all atoms in a molecule, expressed in daltons (Da) or grams per mole (g/mol). Molecular weight is a fundamental physical property that determines the mass of peptide needed to achieve a given molar concentration when preparing research solutions. Larger peptides have higher molecular weights — for example, TB-500 (Thymosin Beta-4 fragment) has an MW of approximately 4,963 g/mol.",
+    related: ["Formula", "Dalton"],
   },
 
   // N
@@ -365,8 +358,8 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "Sequence",
     category: "chemistry",
-    definition: "The specific order of amino acids in a peptide chain, written in single-letter or three-letter amino acid code from N-terminus to C-terminus. The sequence determines the peptide's three-dimensional structure, receptor binding specificity, and biological activity. For example, BPC-157's sequence is Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val (15 amino acids). Sequence verification by mass spectrometry confirms compound identity.",
-    related: ["Amino Acid", "Peptide Bond", "Mass Spectrometry"],
+    definition: "The specific order of amino acids in a peptide chain, written in single-letter or three-letter amino acid code from N-terminus to C-terminus. The sequence determines the peptide's three-dimensional structure, receptor binding specificity, and biological activity. For example, BPC-157's sequence is Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val (15 amino acids).",
+    related: ["Amino Acid", "Peptide Bond"],
   },
   {
     term: "Signal Transduction",

@@ -884,7 +884,7 @@ export async function sendWelcomeEmail(data: WelcomeEmailData): Promise<void> {
     <div style="background:#f8fafc;border-radius:8px;padding:18px 22px;margin-bottom:24px;border-left:4px solid #1b5cb5;">
       <p style="margin:0 0 8px;font-size:12px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Our Quality Promise</p>
       <div style="display:flex;flex-direction:column;gap:6px;">
-        ${["99%+ HPLC purity on every batch — backed by certificate", "Mass spectrometry verified for compound identity", "Stored and shipped in cold-chain insulated packaging", "Lot-specific COA available for every product"].map(s => `<p style="margin:0;font-size:13px;color:#475569;"><span style="color:#22c55e;font-weight:700;">✓</span> ${s}</p>`).join("")}
+        ${["99%+ HPLC purity on every batch — backed by certificate", "Stored and shipped in cold-chain insulated packaging", "Lot-specific COA available for every product"].map(s => `<p style="margin:0;font-size:13px;color:#475569;"><span style="color:#22c55e;font-weight:700;">✓</span> ${s}</p>`).join("")}
       </div>
     </div>
 
