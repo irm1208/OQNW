@@ -46,6 +46,7 @@ import taxRouter from "./tax";
 import shippingRouter from "./shipping";
 import blogRouter from "./blog";
 import btcpayWebhookRouter from "./btcpay-webhook";
+import contactRouter from "./contact";
 
 const router: IRouter = Router();
 
@@ -96,5 +97,6 @@ router.use(taxRouter);
 router.use(shippingRouter);
 router.use(blogRouter);
 router.use(btcpayWebhookRouter);
+router.use(contactRouter);
 
 export default router;

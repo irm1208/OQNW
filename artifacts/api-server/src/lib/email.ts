@@ -574,6 +574,57 @@ export async function sendReturnStatusUpdate(opts: {
   }
 }
 
+export async function sendContactFormSubmission(opts: {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}): Promise<void> {
+  const notifyAddress = ADMIN_EMAIL ?? "research@omniqure.com";
+  const subject = `Contact Form: ${opts.subject}`;
+  const body = `
+    <h2 style="margin:0 0 4px;font-size:22px;color:#0f172a;">New Contact Form Submission</h2>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Someone submitted the contact form on omniqure.com.</p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+      <tr>
+        <td style="padding:9px 14px;font-size:13px;color:#64748b;font-weight:600;background:#f8fafc;border-bottom:1px solid #e2e8f0;white-space:nowrap;width:100px;">Name</td>
+        <td style="padding:9px 14px;font-size:13px;color:#0f172a;border-bottom:1px solid #e2e8f0;">${opts.name}</td>
+      </tr>
+      <tr>
+        <td style="padding:9px 14px;font-size:13px;color:#64748b;font-weight:600;background:#f8fafc;border-bottom:1px solid #e2e8f0;white-space:nowrap;">Email</td>
+        <td style="padding:9px 14px;font-size:13px;color:#0f172a;border-bottom:1px solid #e2e8f0;">${opts.email}</td>
+      </tr>
+      <tr>
+        <td style="padding:9px 14px;font-size:13px;color:#64748b;font-weight:600;background:#f8fafc;border-bottom:1px solid #e2e8f0;white-space:nowrap;">Subject</td>
+        <td style="padding:9px 14px;font-size:13px;color:#0f172a;border-bottom:1px solid #e2e8f0;">${opts.subject}</td>
+      </tr>
+    </table>
+
+    <div style="background:#f8fafc;border-radius:6px;padding:16px 20px;">
+      <p style="margin:0 0 8px;font-size:12px;color:#94a3b8;font-weight:600;">MESSAGE</p>
+      <p style="margin:0;font-size:14px;color:#1e293b;line-height:1.7;white-space:pre-wrap;">${opts.message}</p>
+    </div>
+
+    <p style="margin:24px 0 0;font-size:12px;color:#94a3b8;">Reply directly to this email to respond to ${opts.name}.</p>
+  `;
+
+  try {
+    const result = await getResend().emails.send({
+      from: FROM_ADDRESS,
+      to: notifyAddress,
+      replyTo: opts.email,
+      subject,
+      html: baseTemplate("Contact Form Submission", body),
+    });
+    logger.info({ from: opts.email }, "Contact form submission email sent");
+    await logEmail({ toEmail: notifyAddress, subject, type: "contact_form", status: "sent", resendId: result.data?.id });
+  } catch (err) {
+    logger.error({ err }, "Failed to send contact form submission email");
+    await logEmail({ toEmail: notifyAddress, subject, type: "contact_form", status: "failed" });
+  }
+}
+
 export async function sendLowStockAlert(products: Array<{ productName: string; stockLevel: number; lowStockThreshold: number }>): Promise<void> {
   if (!ADMIN_EMAIL) {
     logger.warn("ADMIN_EMAIL not set — skipping low stock alert");

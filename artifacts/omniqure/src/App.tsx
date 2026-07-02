@@ -37,6 +37,7 @@ import ReferAFriendPage from "@/pages/ReferAFriendPage";
 import BundleAndSavePage from "@/pages/BundleAndSavePage";
 import StorageGuidePage from "@/pages/StorageGuidePage";
 import ResearchResultsPage from "@/pages/ResearchResultsPage";
+import ContactPage from "@/pages/ContactPage";
 import { CookieConsent } from "@/components/CookieConsent";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
@@ -55,20 +56,6 @@ import { initPixels } from "@/lib/pixels";
 import { usePageTracking } from "@/hooks/usePageTracking";
 
 const queryClient = new QueryClient();
-
-function PlaceholderPage({ title, description }: { title: string; description?: string }) {
-  return (
-    <div className="max-w-[1280px] mx-auto px-4 py-16">
-      <h1 className="text-2xl font-bold mb-3" style={{ fontFamily: "'Arimo', Arial, sans-serif" }}>
-        {title}
-      </h1>
-      <p className="text-gray-500 mb-6 text-sm">{description || "This page is coming soon."}</p>
-      <a href="/all-peptides" className="text-sm hover:underline" style={{ color: "#1B5CB5" }}>
-        ← Back to All Peptides
-      </a>
-    </div>
-  );
-}
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -92,9 +79,7 @@ function Router() {
       <Route path="/product/:id" component={ProductPage} />
       <Route path="/stacks" component={StacksPage} />
       <Route path="/calculator" component={ReconstitutionCalculator} />
-      <Route path="/contact">
-        <PlaceholderPage title="Contact Us" description="Get in touch with our research team." />
-      </Route>
+      <Route path="/contact" component={ContactPage} />
       <Route path="/sign-in" component={SignIn} />
       <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/reset-password" component={ResetPassword} />
