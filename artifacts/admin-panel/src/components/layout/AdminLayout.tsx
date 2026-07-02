@@ -3,9 +3,9 @@ import { Link, useLocation, Redirect } from "wouter";
 import { useAdminLogout, useAdminMe } from "@workspace/api-client-react";
 import {
   LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2,
-  RotateCcw, Star, ShoppingBag, RefreshCw, Mail, Gift, BellRing, Receipt,
-  Truck, RefreshCcw, ClipboardList, FileText, Bell, CreditCard, ShieldAlert,
-  ChevronDown, ChevronRight, Settings2, ShieldBan, Webhook, Send, BarChart3,
+  RotateCcw, Star, ShoppingBag, RefreshCw, Mail, Gift, BellRing,
+  Truck, RefreshCcw, FileText, Bell, ShieldAlert,
+  ChevronDown, ChevronRight, Settings2, ShieldBan, Send, BarChart3,
   Settings, UserCog,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -52,7 +52,6 @@ const coreNavGroups: NavGroup[] = [
     items: [
       { href: "/settings",    label: "Store Settings", icon: Settings },
       { href: "/users",       label: "Admin Users",    icon: UserCog },
-      { href: "/tax",         label: "Tax Rates",      icon: Receipt },
       { href: "/shipping",    label: "Shipping",       icon: Truck },
       { href: "/blocked-ips", label: "Blocked IPs",    icon: ShieldBan },
     ],
@@ -72,13 +71,6 @@ const advancedNavGroups: NavGroup[] = [
       { href: "/reviews",       label: "Reviews",       icon: Star },
       { href: "/loyalty",       label: "Loyalty",       icon: Gift },
       { href: "/subscriptions", label: "Subscriptions", icon: RefreshCw },
-      { href: "/credits",       label: "Credits",       icon: CreditCard },
-    ],
-  },
-  {
-    label: "Products",
-    items: [
-      { href: "/inventory-audit", label: "Inventory Audit", icon: ClipboardList },
     ],
   },
   {
@@ -93,7 +85,6 @@ const advancedNavGroups: NavGroup[] = [
     label: "System",
     items: [
       { href: "/gift-cards", label: "Gift Cards", icon: Gift },
-      { href: "/webhooks",   label: "Webhooks",   icon: Webhook },
     ],
   },
 ];

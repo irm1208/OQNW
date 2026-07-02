@@ -17,16 +17,12 @@ import Subscriptions from "@/pages/Subscriptions";
 import EmailLog from "@/pages/EmailLog";
 import Loyalty from "@/pages/Loyalty";
 import StockAlerts from "@/pages/StockAlerts";
-import Tax from "@/pages/Tax";
 import Shipping from "@/pages/Shipping";
 import Refunds from "@/pages/Refunds";
-import InventoryAudit from "@/pages/InventoryAudit";
 import Blog from "@/pages/Blog";
 import Alerts from "@/pages/Alerts";
-import Credits from "@/pages/Credits";
 import Fraud from "@/pages/Fraud";
 import BlockedIps from "@/pages/BlockedIps";
-import Webhooks from "@/pages/Webhooks";
 import GiftCards from "@/pages/GiftCards";
 import Newsletter from "@/pages/Newsletter";
 import Settings from "@/pages/Settings";
@@ -60,11 +56,6 @@ function AppRoutes() {
       <Route path="/alerts">
         <AdminLayout>
           <Alerts />
-        </AdminLayout>
-      </Route>
-      <Route path="/credits">
-        <AdminLayout>
-          <Credits />
         </AdminLayout>
       </Route>
       <Route path="/fraud">
@@ -137,11 +128,6 @@ function AppRoutes() {
           <StockAlerts />
         </AdminLayout>
       </Route>
-      <Route path="/tax">
-        <AdminLayout>
-          <Tax />
-        </AdminLayout>
-      </Route>
       <Route path="/shipping">
         <AdminLayout>
           <Shipping />
@@ -150,11 +136,6 @@ function AppRoutes() {
       <Route path="/refunds">
         <AdminLayout>
           <Refunds />
-        </AdminLayout>
-      </Route>
-      <Route path="/inventory-audit">
-        <AdminLayout>
-          <InventoryAudit />
         </AdminLayout>
       </Route>
       <Route path="/blog">
@@ -170,11 +151,6 @@ function AppRoutes() {
       <Route path="/reports">
         <AdminLayout>
           <Reports />
-        </AdminLayout>
-      </Route>
-      <Route path="/webhooks">
-        <AdminLayout>
-          <Webhooks />
         </AdminLayout>
       </Route>
       <Route path="/gift-cards">
