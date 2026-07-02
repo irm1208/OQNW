@@ -44,8 +44,8 @@ const researchLinks = [
   { label: "Peptide Calculator", href: "/calculator", icon: Calculator, desc: "Reconstitution & dosing calculator" },
   { label: "Storage & Handling", href: "/storage-guide", icon: Thermometer, desc: "Lyophilised storage, reconstitution & stability" },
   { label: "Research Blog", href: "/blog", icon: BookOpen, desc: "Latest peptide research articles" },
-  { label: "Glossary", href: "/glossary", icon: BookMarked, desc: "Scientific terminology & definitions" },
   { label: "Research Results", href: "/research-results", icon: Activity, desc: "Before & after biomarker data from peer-reviewed studies" },
+  { label: "Glossary", href: "/glossary", icon: BookMarked, desc: "Scientific terminology & definitions" },
 ];
 
 
