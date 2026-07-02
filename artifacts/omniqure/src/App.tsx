@@ -38,6 +38,7 @@ import AboutPage from "@/pages/AboutPage";
 import ReferAFriendPage from "@/pages/ReferAFriendPage";
 import BundleAndSavePage from "@/pages/BundleAndSavePage";
 import StorageGuidePage from "@/pages/StorageGuidePage";
+import ResearchResultsPage from "@/pages/ResearchResultsPage";
 import { CookieConsent } from "@/components/CookieConsent";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
@@ -123,6 +124,7 @@ function Router() {
       <Route path="/refer-a-friend" component={ReferAFriendPage} />
       <Route path="/bundle-and-save" component={BundleAndSavePage} />
       <Route path="/storage-guide" component={StorageGuidePage} />
+      <Route path="/research-results" component={ResearchResultsPage} />
       <Route component={NotFound} />
     </Switch>
   );
