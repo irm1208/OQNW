@@ -34,9 +34,9 @@ const navItems = [
   { label: "All Peptides", href: "/all-peptides" },
   { label: "NAD+", href: "/product/nad-plus-500mg" },
   { label: "Bac Water", href: "/bac-water" },
-  { label: "Peptide Calculator", href: "/calculator" },
   { label: "Research & Education", href: "/blog" },
   { label: "Lab Tests", href: "/lab-tests" },
+  { label: "Peptide Calculator", href: "/calculator" },
 ];
 
 const researchLinks = [
