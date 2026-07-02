@@ -81,12 +81,6 @@ const advancedNavGroups: NavGroup[] = [
       { href: "/newsletter", label: "Newsletter", icon: Send },
     ],
   },
-  {
-    label: "System",
-    items: [
-      { href: "/gift-cards", label: "Gift Cards", icon: Gift },
-    ],
-  },
 ];
 
 const SEVERITY_DOT: Record<AdminAlert["severity"], string> = {

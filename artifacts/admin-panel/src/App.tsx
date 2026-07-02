@@ -23,7 +23,6 @@ import Blog from "@/pages/Blog";
 import Alerts from "@/pages/Alerts";
 import Fraud from "@/pages/Fraud";
 import BlockedIps from "@/pages/BlockedIps";
-import GiftCards from "@/pages/GiftCards";
 import Newsletter from "@/pages/Newsletter";
 import Settings from "@/pages/Settings";
 import Users from "@/pages/Users";
@@ -151,11 +150,6 @@ function AppRoutes() {
       <Route path="/reports">
         <AdminLayout>
           <Reports />
-        </AdminLayout>
-      </Route>
-      <Route path="/gift-cards">
-        <AdminLayout>
-          <GiftCards />
         </AdminLayout>
       </Route>
       <Route path="/newsletter">

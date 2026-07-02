@@ -29,7 +29,6 @@ import ProtocolsPage from "@/pages/ProtocolsPage";
 import FAQPage from "@/pages/FAQPage";
 import GlossaryPage from "@/pages/GlossaryPage";
 import LabTestsPage from "@/pages/LabTestsPage";
-import GiftCardsPage from "@/pages/GiftCardsPage";
 import BlogPage from "@/pages/BlogPage";
 import BlogPostPage from "@/pages/BlogPostPage";
 import BacWaterPage from "@/pages/BacWaterPage";
@@ -111,7 +110,6 @@ function Router() {
       <Route path="/faq" component={FAQPage} />
       <Route path="/glossary" component={GlossaryPage} />
       <Route path="/lab-tests" component={LabTestsPage} />
-      <Route path="/gift-cards" component={GiftCardsPage} />
       <Route path="/blog" component={BlogPage} />
       <Route path="/blog/:slug" component={BlogPostPage} />
       <Route path="/bac-water" component={BacWaterPage} />
