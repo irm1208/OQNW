@@ -148,7 +148,7 @@ export default function ProductPage() {
   const { products, productDetails } = useProducts();
   const params = useParams<{ id: string }>();
   const [, navigate] = useLocation();
-  const product = products.find((p) => p.id === params.id);
+  const product = products.find((p) => p.id === params.id || p.slug === params.id);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [showCOAModal, setShowCOAModal] = useState(false);
