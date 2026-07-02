@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, FileCheck, BookOpen, Calculator, BookMarked, GraduationCap, Thermometer, Activity, Layers } from "lucide-react";
+import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, BookOpen, Calculator, BookMarked, GraduationCap, Thermometer, Activity, Layers } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
@@ -34,6 +34,7 @@ const navItems = [
   { label: "All Peptides", href: "/all-peptides" },
   { label: "NAD+", href: "/product/nad-plus-500mg" },
   { label: "Bac Water", href: "/bac-water" },
+  { label: "Lab Tests", href: "/lab-tests" },
   { label: "Research & Education", href: "/blog" },
 ];
 
@@ -41,7 +42,6 @@ const researchLinks = [
   { label: "Protocols", href: "/protocols", icon: FlaskConical, desc: "Research protocols & dosing guides" },
   { label: "Research Stacks", href: "/stacks", icon: Layers, desc: "Curated multi-peptide research stacks" },
   { label: "Peptide Calculator", href: "/calculator", icon: Calculator, desc: "Reconstitution & dosing calculator" },
-  { label: "Lab Tests", href: "/lab-tests", icon: FileCheck, desc: "COAs, HPLC chromatograms & ESI-MS data" },
   { label: "Storage & Handling", href: "/storage-guide", icon: Thermometer, desc: "Lyophilised storage, reconstitution & stability" },
   { label: "Research Blog", href: "/blog", icon: BookOpen, desc: "Latest peptide research articles" },
   { label: "Glossary", href: "/glossary", icon: BookMarked, desc: "Scientific terminology & definitions" },
