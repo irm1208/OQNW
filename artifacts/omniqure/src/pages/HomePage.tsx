@@ -12,7 +12,7 @@ import { useProducts } from "@/context/ProductsContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
-import referralPromoImg from "@/assets/referral-promo-full.jpg";
+import referAFriendHeroImg from "@assets/download_(2)_1783109149307.jpeg";
 
 const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
   GBP: "£50", USD: "$65", EUR: "€60", AUD: "A$100", CAD: "C$90",
@@ -362,40 +362,50 @@ function HeroContentSlide() {
       className="hero-section"
       style={{
         position: "relative",
-        display: "flex",
-        alignItems: "center",
         overflow: "hidden",
-      }}
-    >
-      {/* The image fills the whole hero edge-to-edge (cover). The vials sit
-          centred, so the minor top/bottom trim on wide viewports is unnoticeable
-          and there are never side gaps or blurred filler. */}
-      <div style={{
-        position: "absolute",
-        inset: 0,
         backgroundImage: "url('/hero-vials.png')",
         backgroundSize: "cover",
-        backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        pointerEvents: "none",
-      }} />
-      {/* Left scrim so the white headline stays legible over the image. */}
+        minHeight: "unset",
+        display: "flex",
+        alignItems: "flex-start",
+        height: "100%",
+      }}
+    >
+      {/* Bottom fade so text remains readable against the light product image */}
       <div style={{
         position: "absolute",
         inset: 0,
-        background: "linear-gradient(to right, rgba(6,17,45,0.86) 0%, rgba(6,17,45,0.60) 32%, rgba(6,17,45,0.18) 52%, rgba(6,17,45,0) 68%)",
+        background: "linear-gradient(to bottom, rgba(2,11,30,0.0) 0%, rgba(2,11,30,0.0) 35%, rgba(2,11,30,0.45) 60%, rgba(2,11,30,0.60) 100%)",
         pointerEvents: "none",
       }} />
+      {/* Left-to-right overlay — full dark on mobile, fades right on desktop */}
+      <div className="hero-overlay-lr" style={{
+        position: "absolute",
+        inset: 0,
+        pointerEvents: "none",
+      }} />
+      {/* Subtle blue glow behind the logo (top-left) */}
+      <div style={{
+        position: "absolute",
+        top: "-80px",
+        left: "-80px",
+        width: "800px",
+        height: "560px",
+        background: "radial-gradient(ellipse at 35% 38%, rgba(40,120,255,0.18) 0%, rgba(20,80,230,0.10) 30%, rgba(10,50,180,0.04) 55%, rgba(0,0,0,0.0) 75%)",
+        pointerEvents: "none",
+        mixBlendMode: "screen",
+      }} />
 
-      {/* Content */}
+      {/* Content — below the logo in the image */}
       <div className="hero-content max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ position: "relative", zIndex: 1 }}>
 
         <div className="hero-text text-white">
 
           <h1
-            className="font-bold mb-3"
+            className="font-bold mb-5"
             style={{
-              fontSize: "clamp(24px, 5.5vw, 44px)",
+              fontSize: "clamp(28px, 7vw, 62px)",
               lineHeight: 1.08,
               letterSpacing: "-0.02em",
             }}
@@ -406,8 +416,8 @@ function HeroContentSlide() {
           </h1>
 
           <p
-            className="mb-4 leading-relaxed"
-            style={{ color: "rgba(255,255,255,0.78)", fontSize: "14px" }}
+            className="mb-7 leading-relaxed"
+            style={{ color: "rgba(255,255,255,0.78)", fontSize: "16px" }}
           >
             Built for researchers who don't cut corners.<br />
             Every compound is tested to 99%+ purity,<br />
@@ -415,7 +425,7 @@ function HeroContentSlide() {
           </p>
 
           {/* Trust chips */}
-          <div className="flex flex-wrap gap-2 mb-5">
+          <div className="flex flex-wrap gap-2 mb-8">
             {["99%+ Verified Purity", "Full COA Included", "Batch Tested"].map(t => (
               <span
                 key={t}
@@ -466,26 +476,17 @@ function HeroReferralSlide() {
   return (
     <Link
       href="/refer-a-friend"
-      className="hero-section hero-referral"
       style={{
-        position: "relative",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        overflow: "hidden",
-        textDecoration: "none",
-        background: "#EEF2F9",
+        display: "block",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "#0D2565",
       }}
-      aria-label="Refer a friend and earn a free peptide worth up to £50"
     >
       <img
-        src={referralPromoImg}
-        alt="Refer a friend and earn a free peptide worth up to £50. How it works: 1) Share your link, 2) Friend places an order and saves 10%, 3) Claim your free peptide on your next order."
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "contain",
-        }}
+        src={referAFriendHeroImg}
+        alt="Refer a friend and earn a free peptide worth up to £50"
+        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
       />
     </Link>
   );

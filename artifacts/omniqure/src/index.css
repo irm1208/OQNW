@@ -477,13 +477,27 @@
 
 /* ── HOME HERO RESPONSIVE ────────────────────────────────── */
 
-/* Compact, capped hero height so the whole hero is visible above the fold on
-   every device. Slides fill this box edge-to-edge (see HomePage.tsx): the vials
-   slide uses background-size:cover; the referral slide is live HTML/CSS over a
-   branded gradient — so there are never side gaps or filler on any viewport. */
 .hero-section {
-  height: clamp(340px, 40vw, 460px) !important;
-  background-color: #0B1E4D !important;
+  background-image: url('/hero-vials.png'), linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%) !important;
+  background-size: 100% auto, cover !important;
+  background-position: center top, center center !important;
+  background-color: #0D2565 !important;
+  min-height: unset !important;
+}
+@media (min-width: 640px) {
+  .hero-section {
+    background-image: url('/hero-vials.png'), linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%) !important;
+    background-size: 100% auto, cover !important;
+    background-position: center top, center center !important;
+  }
+}
+@media (min-width: 1024px) {
+  .hero-section {
+    background-image: url('/hero-vials.png') !important;
+    background-size: cover !important;
+    background-position: center top !important;
+    background-color: #010917 !important;
+  }
 }
 
 /* On mobile the vertical gradient already darkens the image; hide the LR overlay to avoid double-darkening */
@@ -498,12 +512,25 @@
 }
 
 .hero-content {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+  padding-top: calc(56.25vw + 28px) !important;
+  padding-bottom: 48px !important;
+}
+@media (min-width: 640px) {
+  .hero-content {
+    padding-top: calc(56.25vw + 28px) !important;
+    padding-bottom: 64px !important;
+  }
+}
+@media (min-width: 1024px) {
+  .hero-content {
+    padding-top: 290px !important;
+    padding-bottom: 80px !important;
+  }
 }
 @media (min-width: 1280px) {
   .hero-content {
-    margin-left: 40px !important;
+    padding-top: 340px !important;
+    margin-left: 80px !important;
     margin-right: auto !important;
   }
 }
