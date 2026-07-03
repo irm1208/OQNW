@@ -512,24 +512,24 @@
 }
 
 .hero-content {
-  padding-top: calc(56.25vw + 28px) !important;
-  padding-bottom: 48px !important;
+  padding-top: calc(40vw + 20px) !important;
+  padding-bottom: 28px !important;
 }
 @media (min-width: 640px) {
   .hero-content {
-    padding-top: calc(56.25vw + 28px) !important;
-    padding-bottom: 64px !important;
+    padding-top: calc(40vw + 20px) !important;
+    padding-bottom: 36px !important;
   }
 }
 @media (min-width: 1024px) {
   .hero-content {
-    padding-top: 290px !important;
-    padding-bottom: 80px !important;
+    padding-top: 190px !important;
+    padding-bottom: 48px !important;
   }
 }
 @media (min-width: 1280px) {
   .hero-content {
-    padding-top: 340px !important;
+    padding-top: 220px !important;
     margin-left: 80px !important;
     margin-right: auto !important;
   }

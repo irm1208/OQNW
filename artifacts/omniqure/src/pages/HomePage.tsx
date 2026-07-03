@@ -403,9 +403,9 @@ function HeroContentSlide() {
         <div className="hero-text text-white">
 
           <h1
-            className="font-bold mb-5"
+            className="font-bold mb-3"
             style={{
-              fontSize: "clamp(28px, 7vw, 62px)",
+              fontSize: "clamp(24px, 5.5vw, 44px)",
               lineHeight: 1.08,
               letterSpacing: "-0.02em",
             }}
@@ -416,8 +416,8 @@ function HeroContentSlide() {
           </h1>
 
           <p
-            className="mb-7 leading-relaxed"
-            style={{ color: "rgba(255,255,255,0.78)", fontSize: "16px" }}
+            className="mb-4 leading-relaxed"
+            style={{ color: "rgba(255,255,255,0.78)", fontSize: "14px" }}
           >
             Built for researchers who don't cut corners.<br />
             Every compound is tested to 99%+ purity,<br />
@@ -425,7 +425,7 @@ function HeroContentSlide() {
           </p>
 
           {/* Trust chips */}
-          <div className="flex flex-wrap gap-2 mb-8">
+          <div className="flex flex-wrap gap-2 mb-5">
             {["99%+ Verified Purity", "Full COA Included", "Batch Tested"].map(t => (
               <span
                 key={t}
