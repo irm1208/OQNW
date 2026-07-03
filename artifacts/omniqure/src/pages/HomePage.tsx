@@ -488,7 +488,7 @@ function HeroReferralSlide() {
       <img
         src={referAFriendHeroImg}
         alt="Refer a friend and earn a free peptide worth up to £50"
-        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+        style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center", display: "block" }}
       />
     </Link>
   );
