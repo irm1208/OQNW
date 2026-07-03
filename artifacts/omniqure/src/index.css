@@ -479,7 +479,7 @@
 
 .hero-section {
   background-image: url('/hero-vials.png'), linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%) !important;
-  background-size: 100% auto, cover !important;
+  background-size: contain, cover !important;
   background-position: center top, center center !important;
   background-color: #0D2565 !important;
   min-height: unset !important;
@@ -487,14 +487,14 @@
 @media (min-width: 640px) {
   .hero-section {
     background-image: url('/hero-vials.png'), linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%) !important;
-    background-size: 100% auto, cover !important;
+    background-size: contain, cover !important;
     background-position: center top, center center !important;
   }
 }
 @media (min-width: 1024px) {
   .hero-section {
     background-image: url('/hero-vials.png') !important;
-    background-size: cover !important;
+    background-size: contain !important;
     background-position: center top !important;
     background-color: #010917 !important;
   }
