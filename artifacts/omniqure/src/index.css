@@ -478,9 +478,9 @@
 /* ── HOME HERO RESPONSIVE ────────────────────────────────── */
 
 /* Compact, capped hero height so the whole hero is visible above the fold on
-   every device. The full image is shown "contained" (never cropped) over a
-   blurred, scaled copy of itself (in HomePage.tsx) that fills the box — so there
-   are never any hard side gaps, on mobile or desktop, regardless of aspect. */
+   every device. Slides fill this box edge-to-edge (see HomePage.tsx): the vials
+   slide uses background-size:cover; the referral slide is live HTML/CSS over a
+   branded gradient — so there are never side gaps or filler on any viewport. */
 .hero-section {
   height: clamp(340px, 40vw, 460px) !important;
   background-color: #0B1E4D !important;
@@ -514,6 +514,32 @@
 @media (min-width: 1024px) {
   .hero-text {
     max-width: 520px !important;
+  }
+}
+
+/* ── REFERRAL HERO SLIDE ─────────────────────────────── */
+.hero-referral-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+.hero-referral-steps {
+  display: none;
+}
+@media (min-width: 900px) {
+  .hero-referral-grid {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .hero-referral-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 380px;
+    flex-shrink: 0;
   }
 }
 
