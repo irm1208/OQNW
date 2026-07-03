@@ -362,21 +362,32 @@ function HeroContentSlide() {
       className="hero-section"
       style={{
         position: "relative",
-        overflow: "hidden",
-        backgroundImage: "url('/hero-vials.png')",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        minHeight: "unset",
         display: "flex",
-        alignItems: "flex-start",
+        alignItems: "center",
         height: "100%",
       }}
     >
-      {/* Bottom fade so text remains readable against the light product image */}
+      {/* Precise fade positioned exactly at the image's bottom edge (56.27vw from
+          the top, matching the image's own aspect ratio) so the transition into
+          the solid fallback color underneath is seamless at any viewport width. */}
       <div style={{
         position: "absolute",
-        inset: 0,
-        background: "linear-gradient(to bottom, rgba(2,11,30,0.0) 0%, rgba(2,11,30,0.0) 35%, rgba(2,11,30,0.45) 60%, rgba(2,11,30,0.60) 100%)",
+        left: 0,
+        right: 0,
+        top: "calc(941 / 1672 * 100vw - 110px)",
+        height: "170px",
+        background: "linear-gradient(to bottom, rgba(11,30,77,0.0) 0%, rgba(11,30,77,0.55) 55%, rgba(11,30,77,0.92) 100%)",
+        pointerEvents: "none",
+      }} />
+      {/* Solid fallback for any space below the image (short viewports where the
+          text needs more room than the image's own height) */}
+      <div style={{
+        position: "absolute",
+        left: 0,
+        right: 0,
+        top: "calc(941 / 1672 * 100vw)",
+        bottom: 0,
+        background: "#0B1E4D",
         pointerEvents: "none",
       }} />
       {/* Left-to-right overlay — full dark on mobile, fades right on desktop */}
@@ -482,13 +493,19 @@ function HeroReferralSlide() {
         justifyContent: "center",
         width: "100%",
         height: "100%",
-        backgroundColor: "#0D2565",
+        backgroundColor: "#0B1E4D",
+        overflow: "hidden",
       }}
     >
+      {/* width:100% + height:auto renders the image at its native aspect ratio —
+          it always spans the full width with no side gaps and is never cropped.
+          Any leftover vertical space (when the shared carousel height is taller
+          than this image's own height) is centered and filled by the matching
+          navy background above, so it blends seamlessly either way. */}
       <img
         src={referAFriendHeroImg}
         alt="Refer a friend and earn a free peptide worth up to £50"
-        style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center", display: "block" }}
+        style={{ width: "100%", height: "auto", display: "block" }}
       />
     </Link>
   );

@@ -477,27 +477,18 @@
 
 /* ── HOME HERO RESPONSIVE ────────────────────────────────── */
 
+/* background-size: 100% auto (never cover/contain) guarantees the image is always
+   rendered edge-to-edge at its native aspect ratio — no side gaps, ever, on any
+   device width. min-height locks the box to that same aspect ratio so the full
+   image height is always available and never clipped; the box only grows taller
+   than that when the text content itself needs more room (e.g. small mobile). */
 .hero-section {
-  background-image: url('/hero-vials.png'), linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%) !important;
-  background-size: cover, cover !important;
-  background-position: center center, center center !important;
-  background-color: #0D2565 !important;
-  min-height: unset !important;
-}
-@media (min-width: 640px) {
-  .hero-section {
-    background-image: url('/hero-vials.png'), linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%) !important;
-    background-size: cover, cover !important;
-    background-position: center center, center center !important;
-  }
-}
-@media (min-width: 1024px) {
-  .hero-section {
-    background-image: url('/hero-vials.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-color: #010917 !important;
-  }
+  background-image: url('/hero-vials.png') !important;
+  background-size: 100% auto !important;
+  background-position: center top !important;
+  background-repeat: no-repeat !important;
+  background-color: #0B1E4D !important;
+  min-height: calc(941 / 1672 * 100vw) !important;
 }
 
 /* On mobile the vertical gradient already darkens the image; hide the LR overlay to avoid double-darkening */
