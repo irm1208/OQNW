@@ -368,7 +368,7 @@ function HeroContentSlide() {
         backgroundRepeat: "no-repeat",
         minHeight: "unset",
         display: "flex",
-        alignItems: "flex-start",
+        alignItems: "flex-end",
         height: "100%",
       }}
     >
@@ -500,27 +500,6 @@ function HeroCarousel() {
     { key: "referral", render: () => <HeroReferralSlide /> },
   ];
   const [idx, setIdx] = useState(0);
-  const [height, setHeight] = useState<number | "auto">("auto");
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const measureRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function measure() {
-      if (measureRef.current) {
-        const h = measureRef.current.getBoundingClientRect().height;
-        if (h > 0) setHeight(h);
-      }
-    }
-    measure();
-    const t1 = setTimeout(measure, 200);
-    const t2 = setTimeout(measure, 800);
-    window.addEventListener("resize", measure);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      window.removeEventListener("resize", measure);
-    };
-  }, []);
 
   useEffect(() => {
     const t = setInterval(() => setIdx(i => (i + 1) % slides.length), HERO_AUTOPLAY_MS);
@@ -532,11 +511,7 @@ function HeroCarousel() {
   }
 
   return (
-    <div ref={wrapperRef} style={{ position: "relative", overflow: "hidden", height }}>
-      {/* Hidden measurement copy of the primary slide to lock in carousel height */}
-      <div ref={measureRef} style={{ position: "absolute", visibility: "hidden", pointerEvents: "none", width: "100%", zIndex: -1 }} aria-hidden="true">
-        <HeroContentSlide />
-      </div>
+    <div className="hero-carousel" style={{ position: "relative", overflow: "hidden", width: "100%", aspectRatio: "16 / 9" }}>
 
       {slides.map((s, i) => (
         <div
