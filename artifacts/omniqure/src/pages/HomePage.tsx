@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import {
   Shield, FlaskConical, Truck, Award,
-  ChevronRight, ArrowRight, CheckCircle, Star, Quote,
+  ChevronRight, ChevronLeft, ArrowRight, CheckCircle, Star, Quote,
   Mail, Gift, UserPlus, ShoppingCart,
 } from "lucide-react";
 import GroupedProductCard from "@/components/GroupedProductCard";
@@ -12,6 +12,7 @@ import { useProducts } from "@/context/ProductsContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
+import referAFriendHeroImg from "@assets/download_(2)_1783109149307.jpeg";
 
 const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
   GBP: "£50", USD: "$65", EUR: "€60", AUD: "A$100", CAD: "C$90",
@@ -354,6 +355,257 @@ const pillars = [
   },
 ];
 
+/* ── Hero Carousel ─────────────────────────────────────── */
+function HeroContentSlide() {
+  return (
+    <section
+      className="hero-section"
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        backgroundImage: "url('/hero-vials.png')",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        minHeight: "unset",
+        display: "flex",
+        alignItems: "flex-start",
+        height: "100%",
+      }}
+    >
+      {/* Bottom fade so text remains readable against the light product image */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        background: "linear-gradient(to bottom, rgba(2,11,30,0.0) 0%, rgba(2,11,30,0.0) 35%, rgba(2,11,30,0.45) 60%, rgba(2,11,30,0.60) 100%)",
+        pointerEvents: "none",
+      }} />
+      {/* Left-to-right overlay — full dark on mobile, fades right on desktop */}
+      <div className="hero-overlay-lr" style={{
+        position: "absolute",
+        inset: 0,
+        pointerEvents: "none",
+      }} />
+      {/* Subtle blue glow behind the logo (top-left) */}
+      <div style={{
+        position: "absolute",
+        top: "-80px",
+        left: "-80px",
+        width: "800px",
+        height: "560px",
+        background: "radial-gradient(ellipse at 35% 38%, rgba(40,120,255,0.18) 0%, rgba(20,80,230,0.10) 30%, rgba(10,50,180,0.04) 55%, rgba(0,0,0,0.0) 75%)",
+        pointerEvents: "none",
+        mixBlendMode: "screen",
+      }} />
+
+      {/* Content — below the logo in the image */}
+      <div className="hero-content max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ position: "relative", zIndex: 1 }}>
+
+        <div className="hero-text text-white">
+
+          <h1
+            className="font-bold mb-5"
+            style={{
+              fontSize: "clamp(28px, 7vw, 62px)",
+              lineHeight: 1.08,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            Research-Grade<br />
+            Peptides.<br />
+            <span className="gradient-text">Purity Verified.</span>
+          </h1>
+
+          <p
+            className="mb-7 leading-relaxed"
+            style={{ color: "rgba(255,255,255,0.78)", fontSize: "16px" }}
+          >
+            Built for researchers who don't cut corners.<br />
+            Every compound is tested to 99%+ purity,<br />
+            fully documented, and ready for the lab.
+          </p>
+
+          {/* Trust chips */}
+          <div className="flex flex-wrap gap-2 mb-8">
+            {["99%+ Verified Purity", "Full COA Included", "Batch Tested"].map(t => (
+              <span
+                key={t}
+                className="inline-flex items-center gap-1.5"
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.1)",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  color: "#E2E8F0",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  padding: "5px 12px",
+                  borderRadius: "20px",
+                  backdropFilter: "blur(6px)",
+                }}
+              >
+                <CheckCircle size={12} style={{ color: "#34D399" }} />
+                {t}
+              </span>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/all-peptides"
+              className="btn-primary inline-flex items-center justify-center gap-2 w-full sm:w-auto"
+              style={{
+                backgroundColor: "#fff",
+                color: "#1240A0",
+                padding: "13px 26px",
+                borderRadius: "12px",
+                fontWeight: 800,
+                fontSize: "14px",
+                textDecoration: "none",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+              }}
+            >
+              Browse All 81 Peptides <ArrowRight size={15} />
+            </Link>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+function HeroReferralSlide() {
+  return (
+    <Link
+      href="/refer-a-friend"
+      style={{
+        display: "block",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "#0D2565",
+      }}
+    >
+      <img
+        src={referAFriendHeroImg}
+        alt="Refer a friend and earn a free peptide worth up to £50"
+        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+      />
+    </Link>
+  );
+}
+
+const HERO_AUTOPLAY_MS = 6500;
+
+function HeroCarousel() {
+  const slides = [
+    { key: "content", render: () => <HeroContentSlide /> },
+    { key: "referral", render: () => <HeroReferralSlide /> },
+  ];
+  const [idx, setIdx] = useState(0);
+  const [height, setHeight] = useState<number | "auto">("auto");
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const measureRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function measure() {
+      if (measureRef.current) {
+        const h = measureRef.current.getBoundingClientRect().height;
+        if (h > 0) setHeight(h);
+      }
+    }
+    measure();
+    const t1 = setTimeout(measure, 200);
+    const t2 = setTimeout(measure, 800);
+    window.addEventListener("resize", measure);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
+  useEffect(() => {
+    const t = setInterval(() => setIdx(i => (i + 1) % slides.length), HERO_AUTOPLAY_MS);
+    return () => clearInterval(t);
+  }, [slides.length]);
+
+  function goTo(i: number) {
+    setIdx(((i % slides.length) + slides.length) % slides.length);
+  }
+
+  return (
+    <div ref={wrapperRef} style={{ position: "relative", overflow: "hidden", height }}>
+      {/* Hidden measurement copy of the primary slide to lock in carousel height */}
+      <div ref={measureRef} style={{ position: "absolute", visibility: "hidden", pointerEvents: "none", width: "100%", zIndex: -1 }} aria-hidden="true">
+        <HeroContentSlide />
+      </div>
+
+      {slides.map((s, i) => (
+        <div
+          key={s.key}
+          style={{
+            position: "absolute",
+            inset: 0,
+            opacity: idx === i ? 1 : 0,
+            transition: "opacity 0.8s ease",
+            pointerEvents: idx === i ? "auto" : "none",
+            zIndex: idx === i ? 1 : 0,
+          }}
+        >
+          {s.render()}
+        </div>
+      ))}
+
+      {/* Prev / next arrows */}
+      <button
+        onClick={() => goTo(idx - 1)}
+        aria-label="Previous slide"
+        style={{
+          position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)",
+          zIndex: 5, width: "38px", height: "38px", borderRadius: "50%",
+          background: "rgba(255,255,255,0.14)", border: "1px solid rgba(255,255,255,0.25)",
+          color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+          backdropFilter: "blur(6px)",
+        }}
+      >
+        <ChevronLeft size={20} />
+      </button>
+      <button
+        onClick={() => goTo(idx + 1)}
+        aria-label="Next slide"
+        style={{
+          position: "absolute", right: "14px", top: "50%", transform: "translateY(-50%)",
+          zIndex: 5, width: "38px", height: "38px", borderRadius: "50%",
+          background: "rgba(255,255,255,0.14)", border: "1px solid rgba(255,255,255,0.25)",
+          color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+          backdropFilter: "blur(6px)",
+        }}
+      >
+        <ChevronRight size={20} />
+      </button>
+
+      {/* Dots */}
+      <div style={{ position: "absolute", bottom: "16px", left: 0, right: 0, display: "flex", justifyContent: "center", gap: "8px", zIndex: 5 }}>
+        {slides.map((s, i) => (
+          <button
+            key={s.key}
+            onClick={() => goTo(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            style={{
+              width: idx === i ? "22px" : "8px",
+              height: "8px",
+              borderRadius: "4px",
+              background: idx === i ? "#fff" : "rgba(255,255,255,0.4)",
+              border: "none",
+              cursor: "pointer",
+              transition: "all 0.25s",
+              padding: 0,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ── Molecule decoration SVG ─────────────────────────── */
 function MoleculeSVG() {
   return (
@@ -580,117 +832,8 @@ export default function HomePage() {
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif" }}>
 
-      {/* ── HERO ──────────────────────────────────────────────── */}
-      <section
-        className="hero-section"
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          backgroundImage: "url('/hero-vials.png')",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          minHeight: "unset",
-          display: "flex",
-          alignItems: "flex-start",
-        }}
-      >
-        {/* Bottom fade so text remains readable against the light product image */}
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          background: "linear-gradient(to bottom, rgba(2,11,30,0.0) 0%, rgba(2,11,30,0.0) 35%, rgba(2,11,30,0.45) 60%, rgba(2,11,30,0.60) 100%)",
-          pointerEvents: "none",
-        }} />
-        {/* Left-to-right overlay — full dark on mobile, fades right on desktop */}
-        <div className="hero-overlay-lr" style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-        }} />
-        {/* Subtle blue glow behind the logo (top-left) */}
-        <div style={{
-          position: "absolute",
-          top: "-80px",
-          left: "-80px",
-          width: "800px",
-          height: "560px",
-          background: "radial-gradient(ellipse at 35% 38%, rgba(40,120,255,0.18) 0%, rgba(20,80,230,0.10) 30%, rgba(10,50,180,0.04) 55%, rgba(0,0,0,0.0) 75%)",
-          pointerEvents: "none",
-          mixBlendMode: "screen",
-        }} />
-
-        {/* Content — below the logo in the image */}
-        <div className="hero-content max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ position: "relative", zIndex: 1 }}>
-
-          <div className="hero-text text-white">
-
-            <h1
-              className="font-bold mb-5"
-              style={{
-                fontSize: "clamp(28px, 7vw, 62px)",
-                lineHeight: 1.08,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Research-Grade<br />
-              Peptides.<br />
-              <span className="gradient-text">Purity Verified.</span>
-            </h1>
-
-            <p
-              className="mb-7 leading-relaxed"
-              style={{ color: "rgba(255,255,255,0.78)", fontSize: "16px" }}
-            >
-              Built for researchers who don't cut corners.<br />
-              Every compound is tested to 99%+ purity,<br />
-              fully documented, and ready for the lab.
-            </p>
-
-            {/* Trust chips */}
-            <div className="flex flex-wrap gap-2 mb-8">
-              {["99%+ Verified Purity", "Full COA Included", "Batch Tested"].map(t => (
-                <span
-                  key={t}
-                  className="inline-flex items-center gap-1.5"
-                  style={{
-                    backgroundColor: "rgba(255,255,255,0.1)",
-                    border: "1px solid rgba(255,255,255,0.2)",
-                    color: "#E2E8F0",
-                    fontSize: "12px",
-                    fontWeight: 600,
-                    padding: "5px 12px",
-                    borderRadius: "20px",
-                    backdropFilter: "blur(6px)",
-                  }}
-                >
-                  <CheckCircle size={12} style={{ color: "#34D399" }} />
-                  {t}
-                </span>
-              ))}
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/all-peptides"
-                className="btn-primary inline-flex items-center justify-center gap-2 w-full sm:w-auto"
-                style={{
-                  backgroundColor: "#fff",
-                  color: "#1240A0",
-                  padding: "13px 26px",
-                  borderRadius: "12px",
-                  fontWeight: 800,
-                  fontSize: "14px",
-                  textDecoration: "none",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-                }}
-              >
-                Browse All 81 Peptides <ArrowRight size={15} />
-              </Link>
-            </div>
-          </div>
-
-        </div>
-      </section>
+      {/* ── HERO CAROUSEL ─────────────────────────────────────── */}
+      <HeroCarousel />
 
       {/* ── TRUST STRIP ───────────────────────────────────────── */}
       <section style={{ backgroundColor: "#fff", borderBottom: "1px solid #EEF2F7" }}>
