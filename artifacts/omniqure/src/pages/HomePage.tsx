@@ -12,6 +12,7 @@ import { useProducts } from "@/context/ProductsContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
+import referralVialImg from "@/assets/referral-vial.png";
 
 const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
   GBP: "£50", USD: "$65", EUR: "€60", AUD: "A$100", CAD: "C$90",
@@ -550,6 +551,14 @@ function HeroReferralSlide() {
               Refer a friend <ArrowRight size={15} />
             </span>
           </div>
+
+          {/* Middle: vial accent (desktop only) */}
+          <img
+            src={referralVialImg}
+            alt=""
+            aria-hidden="true"
+            className="hero-referral-vial"
+          />
 
           {/* Right: how it works */}
           <div className="hero-referral-steps">
