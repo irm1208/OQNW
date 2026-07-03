@@ -12,7 +12,7 @@ import { useProducts } from "@/context/ProductsContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
-import referAFriendHeroImg from "@assets/download_(2)_1783109149307.jpeg";
+import referAFriendHeroImg from "@assets/download_(4)_1783121023956.jpeg";
 
 const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
   GBP: "£50", USD: "$65", EUR: "€60", AUD: "A$100", CAD: "C$90",
