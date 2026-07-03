@@ -481,10 +481,11 @@
 
 .hero-carousel {
   aspect-ratio: 16 / 9 !important;
-  min-height: 460px !important;
+  min-height: 380px !important;
 }
 @media (min-width: 1280px) {
   .hero-carousel {
+    aspect-ratio: 21 / 9 !important;
     min-height: 0 !important;
   }
 }
@@ -524,7 +525,7 @@
 }
 @media (min-width: 1280px) {
   .hero-content {
-    padding-bottom: 64px !important;
+    padding-bottom: 40px !important;
     margin-left: 80px !important;
     margin-right: auto !important;
   }
