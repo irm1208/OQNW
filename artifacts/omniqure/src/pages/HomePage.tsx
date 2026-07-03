@@ -12,7 +12,7 @@ import { useProducts } from "@/context/ProductsContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
-import referralVialImg from "@/assets/referral-vial.png";
+import referralPromoImg from "@/assets/referral-promo-full.jpg";
 
 const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
   GBP: "£50", USD: "$65", EUR: "€60", AUD: "A$100", CAD: "C$90",
@@ -463,11 +463,6 @@ function HeroContentSlide() {
 }
 
 function HeroReferralSlide() {
-  const steps = [
-    { icon: UserPlus, title: "Share your link", desc: "Send your unique referral link to fellow researchers." },
-    { icon: ShoppingCart, title: "Friend saves 10%", desc: "They get 10% off their first order — no code needed." },
-    { icon: Gift, title: "Claim a free peptide", desc: "Add one free peptide worth up to £50 to your next order." },
-  ];
   return (
     <Link
       href="/refer-a-friend"
@@ -476,149 +471,22 @@ function HeroReferralSlide() {
         position: "relative",
         display: "flex",
         alignItems: "center",
+        justifyContent: "center",
         overflow: "hidden",
         textDecoration: "none",
-        background:
-          "radial-gradient(120% 140% at 18% 0%, #1B4FC4 0%, #123A8F 42%, #0B1E4D 100%)",
+        background: "#EEF2F9",
       }}
       aria-label="Refer a friend and earn a free peptide worth up to £50"
     >
-      {/* Soft molecule-style glow accents (decorative, never create gaps). */}
-      <div style={{
-        position: "absolute",
-        top: "-30%",
-        right: "-6%",
-        width: "42%",
-        height: "160%",
-        background: "radial-gradient(closest-side, rgba(96,165,250,0.22), transparent)",
-        pointerEvents: "none",
-      }} />
-
-      <div
-        className="hero-content max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 w-full"
-        style={{ position: "relative", zIndex: 1 }}
-      >
-        <div className="hero-referral-grid">
-          {/* Left: headline + value + CTA */}
-          <div className="text-white" style={{ maxWidth: 560 }}>
-            <span
-              className="inline-flex items-center gap-1.5"
-              style={{
-                textTransform: "uppercase",
-                letterSpacing: "0.14em",
-                fontSize: "11px",
-                fontWeight: 700,
-                color: "#A5F3FC",
-                marginBottom: "10px",
-              }}
-            >
-              <Gift size={13} /> Referral Program
-            </span>
-            <h2
-              className="font-bold"
-              style={{
-                fontSize: "clamp(24px, 4.4vw, 40px)",
-                lineHeight: 1.08,
-                letterSpacing: "-0.02em",
-                marginBottom: "10px",
-              }}
-            >
-              Refer a friend &amp; earn a{" "}
-              <span className="gradient-text">FREE</span> peptide
-            </h2>
-            <p
-              className="leading-relaxed"
-              style={{
-                color: "rgba(255,255,255,0.82)",
-                fontSize: "15px",
-                marginBottom: "18px",
-              }}
-            >
-              Get one free peptide worth up to £50 with your next order.
-            </p>
-            <span
-              className="btn-primary inline-flex items-center justify-center gap-2"
-              style={{
-                backgroundColor: "#fff",
-                color: "#1240A0",
-                padding: "12px 24px",
-                borderRadius: "12px",
-                fontWeight: 800,
-                fontSize: "14px",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-              }}
-            >
-              Refer a friend <ArrowRight size={15} />
-            </span>
-          </div>
-
-          {/* Middle: vial accent (desktop only) */}
-          <img
-            src={referralVialImg}
-            alt=""
-            aria-hidden="true"
-            className="hero-referral-vial"
-          />
-
-          {/* Right: how it works */}
-          <div className="hero-referral-steps">
-            {steps.map((s, i) => {
-              const Icon = s.icon;
-              return (
-                <div
-                  key={s.title}
-                  className="glass-card"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "12px",
-                    padding: "12px 14px",
-                    borderRadius: "14px",
-                  }}
-                >
-                  <span
-                    className="inline-flex items-center justify-center"
-                    style={{
-                      flexShrink: 0,
-                      width: 38,
-                      height: 38,
-                      borderRadius: "10px",
-                      background: "rgba(255,255,255,0.14)",
-                      color: "#A5F3FC",
-                    }}
-                  >
-                    <Icon size={18} />
-                  </span>
-                  <div className="text-white">
-                    <div style={{ fontSize: "13px", fontWeight: 700, lineHeight: 1.2 }}>
-                      <span style={{ color: "#93C5FD", marginRight: 6 }}>{i + 1}.</span>
-                      {s.title}
-                    </div>
-                    <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.72)", lineHeight: 1.35, marginTop: 2 }}>
-                      {s.desc}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      {/* Fine print (right-aligned to avoid the carousel dots at bottom-centre) */}
-      <span
+      <img
+        src={referralPromoImg}
+        alt="Refer a friend and earn a free peptide worth up to £50. How it works: 1) Share your link, 2) Friend places an order and saves 10%, 3) Claim your free peptide on your next order."
         style={{
-          position: "absolute",
-          bottom: 8,
-          right: 16,
-          textAlign: "right",
-          fontSize: "10px",
-          color: "rgba(255,255,255,0.5)",
-          pointerEvents: "none",
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
         }}
-      >
-        Free peptide worth up to £50. Full terms &amp; conditions apply.
-      </span>
+      />
     </Link>
   );
 }
