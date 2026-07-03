@@ -364,51 +364,40 @@ function HeroContentSlide() {
         position: "relative",
         display: "flex",
         alignItems: "center",
-        height: "100%",
+        overflow: "hidden",
       }}
     >
-      {/* Precise fade positioned exactly at the image's bottom edge (56.27vw from
-          the top, matching the image's own aspect ratio) so the transition into
-          the solid fallback color underneath is seamless at any viewport width. */}
+      {/* Blurred, scaled copy of the image fills the whole box so wide/short
+          viewports never show hard side gaps — the sides blend into the image. */}
       <div style={{
-        position: "absolute",
-        left: 0,
-        right: 0,
-        top: "calc(941 / 1672 * 100vw - 110px)",
-        height: "170px",
-        background: "linear-gradient(to bottom, rgba(11,30,77,0.0) 0%, rgba(11,30,77,0.55) 55%, rgba(11,30,77,0.92) 100%)",
-        pointerEvents: "none",
-      }} />
-      {/* Solid fallback for any space below the image (short viewports where the
-          text needs more room than the image's own height) */}
-      <div style={{
-        position: "absolute",
-        left: 0,
-        right: 0,
-        top: "calc(941 / 1672 * 100vw)",
-        bottom: 0,
-        background: "#0B1E4D",
-        pointerEvents: "none",
-      }} />
-      {/* Left-to-right overlay — full dark on mobile, fades right on desktop */}
-      <div className="hero-overlay-lr" style={{
         position: "absolute",
         inset: 0,
+        backgroundImage: "url('/hero-vials.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        filter: "blur(34px) brightness(0.82)",
+        transform: "scale(1.18)",
         pointerEvents: "none",
       }} />
-      {/* Subtle blue glow behind the logo (top-left) */}
+      {/* The full image, contained so it is NEVER cropped, on any device. */}
       <div style={{
         position: "absolute",
-        top: "-80px",
-        left: "-80px",
-        width: "800px",
-        height: "560px",
-        background: "radial-gradient(ellipse at 35% 38%, rgba(40,120,255,0.18) 0%, rgba(20,80,230,0.10) 30%, rgba(10,50,180,0.04) 55%, rgba(0,0,0,0.0) 75%)",
+        inset: 0,
+        backgroundImage: "url('/hero-vials.png')",
+        backgroundSize: "contain",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         pointerEvents: "none",
-        mixBlendMode: "screen",
+      }} />
+      {/* Left scrim so the white headline stays legible over the image. */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        background: "linear-gradient(to right, rgba(6,17,45,0.86) 0%, rgba(6,17,45,0.60) 32%, rgba(6,17,45,0.18) 52%, rgba(6,17,45,0) 68%)",
+        pointerEvents: "none",
       }} />
 
-      {/* Content — below the logo in the image */}
+      {/* Content */}
       <div className="hero-content max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ position: "relative", zIndex: 1 }}>
 
         <div className="hero-text text-white">
@@ -487,26 +476,33 @@ function HeroReferralSlide() {
   return (
     <Link
       href="/refer-a-friend"
+      className="hero-section"
       style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        height: "100%",
-        backgroundColor: "#0B1E4D",
+        position: "relative",
+        display: "block",
         overflow: "hidden",
       }}
+      aria-label="Refer a friend and earn a free peptide worth up to £50"
     >
-      {/* width:100% + height:auto renders the image at its native aspect ratio —
-          it always spans the full width with no side gaps and is never cropped.
-          Any leftover vertical space (when the shared carousel height is taller
-          than this image's own height) is centered and filled by the matching
-          navy background above, so it blends seamlessly either way. */}
-      <img
-        src={referAFriendHeroImg}
-        alt="Refer a friend and earn a free peptide worth up to £50"
-        style={{ width: "100%", height: "auto", display: "block" }}
-      />
+      {/* Blurred fill so the sides never show hard gaps on wide viewports. */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        backgroundImage: `url("${referAFriendHeroImg}")`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        filter: "blur(34px)",
+        transform: "scale(1.18)",
+      }} />
+      {/* The full promo graphic, contained so its text is never cropped. */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        backgroundImage: `url("${referAFriendHeroImg}")`,
+        backgroundSize: "contain",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }} />
     </Link>
   );
 }
