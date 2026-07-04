@@ -365,15 +365,30 @@ function HeroContentSlide() {
       style={{
         position: "relative",
         overflow: "hidden",
-        backgroundImage: "url('/hero-vials-2.jpeg')",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
+        backgroundColor: "#0B1E4D",
         minHeight: "unset",
         display: "flex",
         alignItems: "flex-end",
         height: "100%",
       }}
     >
+      {/* Background photo — object-fit: contain so the full ultra-wide (21:9)
+          image is always visible and never gets cropped/zoomed on narrower,
+          taller carousel boxes (e.g. mobile), matching the other slides. */}
+      <img
+        src="/hero-vials-2.jpeg"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
+          objectPosition: "center",
+        }}
+      />
+
       {/* Bottom fade so text remains readable against the light product image */}
       <div style={{
         position: "absolute",
