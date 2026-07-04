@@ -488,7 +488,7 @@ function HeroReferralSlide() {
       <img
         src={referAFriendHeroImg}
         alt="Refer a friend and earn a free peptide worth up to £50"
-        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />
     </Link>
   );
@@ -508,7 +508,7 @@ function HeroBundleSlide() {
       <img
         src={bundleAndSaveHeroImg}
         alt="The more you research, the more you save — add 3 or more peptides to your cart and get up to 20% off automatically"
-        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />
     </Link>
   );
@@ -523,7 +523,7 @@ function HeroVideoSlide() {
         loop
         muted
         playsInline
-        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />
     </div>
   );
