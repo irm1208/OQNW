@@ -420,20 +420,20 @@ function HeroContentSlide() {
         <div className="hero-text text-white">
 
           <h1
-            className="font-bold mb-5"
+            className="font-bold mb-1 sm:mb-5"
             style={{
-              fontSize: "clamp(28px, 7vw, 62px)",
+              fontSize: "clamp(16px, 5.5vw, 62px)",
               lineHeight: 1.08,
               letterSpacing: "-0.02em",
             }}
           >
-            Research-Grade<br />
-            Peptides.<br />
+            <span className="hidden sm:inline">Research-Grade<br />
+            Peptides.<br /></span>
             <span className="gradient-text">Purity Verified.</span>
           </h1>
 
           <p
-            className="mb-7 leading-relaxed"
+            className="hidden sm:block mb-7 leading-relaxed"
             style={{ color: "rgba(255,255,255,0.78)", fontSize: "16px" }}
           >
             Built for researchers who don't cut corners.<br />
@@ -442,7 +442,7 @@ function HeroContentSlide() {
           </p>
 
           {/* Trust chips */}
-          <div className="flex flex-wrap gap-2 mb-8">
+          <div className="hidden sm:flex flex-wrap gap-2 mb-8">
             {["99%+ Verified Purity", "Full COA Included", "Batch Tested"].map(t => (
               <span
                 key={t}
@@ -471,15 +471,17 @@ function HeroContentSlide() {
               style={{
                 backgroundColor: "#fff",
                 color: "#1240A0",
-                padding: "13px 26px",
-                borderRadius: "12px",
+                padding: "8px 18px",
+                borderRadius: "10px",
                 fontWeight: 800,
-                fontSize: "14px",
+                fontSize: "13px",
                 textDecoration: "none",
                 boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
               }}
             >
-              Browse All 81 Peptides <ArrowRight size={15} />
+              <span className="sm:hidden">Shop Peptides</span>
+              <span className="hidden sm:inline">Browse All 81 Peptides</span>
+              <ArrowRight size={14} />
             </Link>
           </div>
         </div>

@@ -476,18 +476,14 @@
 }
 
 /* ── HOME HERO RESPONSIVE ────────────────────────────────── */
-/* Hero image (1672×941) is ~16:9 natively, so a single `cover` rule
-   fills the aspect-ratio-locked carousel box with no visible crop. */
+/* All hero/marketing slide assets are ultra-wide (~21:9). Keep the carousel
+   box locked to that same ratio at every breakpoint (no min-height floor)
+   so slides render at their native aspect with no empty letterbox gap on
+   mobile — the box is only ever as tall as the image needs it to be. */
 
 .hero-carousel {
-  aspect-ratio: 16 / 9 !important;
-  min-height: 380px !important;
-}
-@media (min-width: 1280px) {
-  .hero-carousel {
-    aspect-ratio: 21 / 9 !important;
-    min-height: 0 !important;
-  }
+  aspect-ratio: 21 / 9 !important;
+  min-height: 0 !important;
 }
 
 /* Prev/next arrows: sit in the top corners (clear of the bottom-anchored
@@ -531,8 +527,8 @@
 }
 
 .hero-content {
-  padding-top: 24px !important;
-  padding-bottom: 24px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
 }
 @media (min-width: 640px) {
   .hero-content {
