@@ -365,7 +365,7 @@ function HeroContentSlide() {
       style={{
         position: "relative",
         overflow: "hidden",
-        backgroundColor: "#0B1E4D",
+        background: "linear-gradient(to bottom, #A7C6E7, #91AED1)",
         minHeight: "unset",
         display: "flex",
         alignItems: "flex-end",
@@ -499,7 +499,7 @@ function HeroReferralSlide() {
         display: "block",
         width: "100%",
         height: "100%",
-        backgroundColor: "#0D2565",
+        background: "linear-gradient(to bottom, #D3DCE7, #E4EAF3)",
       }}
     >
       <img
@@ -519,7 +519,7 @@ function HeroBundleSlide() {
         display: "block",
         width: "100%",
         height: "100%",
-        backgroundColor: "#f2f4f7",
+        background: "linear-gradient(to bottom, #E6E9F0, #DFE9F3)",
       }}
     >
       <img
@@ -533,7 +533,13 @@ function HeroBundleSlide() {
 
 function HeroVideoSlide() {
   return (
-    <div style={{ width: "100%", height: "100%", backgroundColor: "#0D2565" }}>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        background: "linear-gradient(to bottom, #A6C6EA, #91AED4)",
+      }}
+    >
       <video
         src={heroVideoSrc}
         autoPlay
