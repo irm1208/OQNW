@@ -13,6 +13,7 @@ import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
 import referAFriendHeroImg from "@assets/download_1783122871347.jpeg";
+import bundleAndSaveHeroImg from "@assets/download_(5)_1783126707048.jpeg";
 
 const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
   GBP: "£50", USD: "$65", EUR: "€60", AUD: "A$100", CAD: "C$90",
@@ -492,12 +493,33 @@ function HeroReferralSlide() {
   );
 }
 
+function HeroBundleSlide() {
+  return (
+    <Link
+      href="/bundle-and-save"
+      style={{
+        display: "block",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "#f2f4f7",
+      }}
+    >
+      <img
+        src={bundleAndSaveHeroImg}
+        alt="The more you research, the more you save — add 3 or more peptides to your cart and get up to 20% off automatically"
+        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+      />
+    </Link>
+  );
+}
+
 const HERO_AUTOPLAY_MS = 6500;
 
 function HeroCarousel() {
   const slides = [
     { key: "content", render: () => <HeroContentSlide /> },
     { key: "referral", render: () => <HeroReferralSlide /> },
+    { key: "bundle", render: () => <HeroBundleSlide /> },
   ];
   const [idx, setIdx] = useState(0);
 
