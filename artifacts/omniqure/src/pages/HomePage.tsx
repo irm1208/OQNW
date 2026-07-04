@@ -568,36 +568,39 @@ function HeroCarousel() {
         </div>
       ))}
 
-      {/* Prev / next arrows */}
+      {/* Prev / next arrows — pinned to the top corners so they never sit on
+          top of the bottom-anchored hero text on narrow / short viewports */}
       <button
         onClick={() => goTo(idx - 1)}
         aria-label="Previous slide"
+        className="hero-carousel-arrow"
         style={{
-          position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)",
-          zIndex: 5, width: "38px", height: "38px", borderRadius: "50%",
+          position: "absolute", left: "10px", top: "10px",
+          zIndex: 5, borderRadius: "50%",
           background: "rgba(255,255,255,0.14)", border: "1px solid rgba(255,255,255,0.25)",
           color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
           backdropFilter: "blur(6px)",
         }}
       >
-        <ChevronLeft size={20} />
+        <ChevronLeft size={18} />
       </button>
       <button
         onClick={() => goTo(idx + 1)}
         aria-label="Next slide"
+        className="hero-carousel-arrow"
         style={{
-          position: "absolute", right: "14px", top: "50%", transform: "translateY(-50%)",
-          zIndex: 5, width: "38px", height: "38px", borderRadius: "50%",
+          position: "absolute", right: "10px", top: "10px",
+          zIndex: 5, borderRadius: "50%",
           background: "rgba(255,255,255,0.14)", border: "1px solid rgba(255,255,255,0.25)",
           color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
           backdropFilter: "blur(6px)",
         }}
       >
-        <ChevronRight size={20} />
+        <ChevronRight size={18} />
       </button>
 
-      {/* Dots */}
-      <div style={{ position: "absolute", bottom: "16px", left: 0, right: 0, display: "flex", justifyContent: "center", gap: "8px", zIndex: 5 }}>
+      {/* Dots — kept clear of the bottom-anchored CTA button with extra offset */}
+      <div className="hero-carousel-dots" style={{ position: "absolute", bottom: "14px", left: 0, right: 0, display: "flex", justifyContent: "center", gap: "8px", zIndex: 5, pointerEvents: "none" }}>
         {slides.map((s, i) => (
           <button
             key={s.key}
@@ -612,6 +615,8 @@ function HeroCarousel() {
               cursor: "pointer",
               transition: "all 0.25s",
               padding: 0,
+              pointerEvents: "auto",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.35)",
             }}
           />
         ))}

@@ -490,6 +490,30 @@
   }
 }
 
+/* Prev/next arrows: sit in the top corners (clear of the bottom-anchored
+   hero text) on every breakpoint; comfortably sized touch targets on mobile. */
+.hero-carousel-arrow {
+  width: 34px !important;
+  height: 34px !important;
+}
+@media (min-width: 640px) {
+  .hero-carousel-arrow {
+    width: 38px !important;
+    height: 38px !important;
+  }
+}
+
+/* Dots row: keep tight to the bottom edge but never collide with the CTA
+   button in the content slide, which is bottom-anchored above it. */
+.hero-carousel-dots {
+  bottom: 12px !important;
+}
+@media (min-width: 640px) {
+  .hero-carousel-dots {
+    bottom: 16px !important;
+  }
+}
+
 .hero-section {
   background-image: url('/hero-vials-2.jpeg') !important;
   background-size: cover !important;
