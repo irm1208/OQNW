@@ -221,7 +221,7 @@ function randomDate(productId: number, reviewIdx: number): Date {
 function getPopularityRange(name: string): { min: number; max: number } {
   const n = name.toLowerCase();
 
-  // Tier 1 — very popular compounds (14–20 reviews)
+  // Tier 1 — very popular compounds (1 review each)
   if (
     n.includes("bpc-157") ||
     n.includes("tb-500") ||
@@ -240,10 +240,10 @@ function getPopularityRange(name: string): { min: number; max: number } {
     n.includes("ghk-cu") ||
     n.includes("epithalon")
   ) {
-    return { min: 14, max: 20 };
+    return { min: 1, max: 1 };
   }
 
-  // Tier 2 — moderately popular (7–13 reviews)
+  // Tier 2 — moderately popular (1 review each)
   if (
     n.includes("aod-9604") ||
     n.includes("hexarelin") ||
@@ -261,11 +261,11 @@ function getPopularityRange(name: string): { min: number; max: number } {
     n.includes("blend") ||
     n.includes("n-acetyl")
   ) {
-    return { min: 7, max: 13 };
+    return { min: 1, max: 1 };
   }
 
-  // Tier 3 — niche / less-known compounds (3–6 reviews)
-  return { min: 3, max: 6 };
+  // Tier 3 — niche / less-known compounds (no reviews yet)
+  return { min: 0, max: 0 };
 }
 
 export async function seedReviews(): Promise<{ seeded: boolean; reason?: string; count?: number }> {
