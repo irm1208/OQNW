@@ -363,7 +363,7 @@ function HeroContentSlide() {
       style={{
         position: "relative",
         overflow: "hidden",
-        backgroundImage: "url('/hero-vials.png')",
+        backgroundImage: "url('/hero-vials-2.jpeg')",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         minHeight: "unset",
