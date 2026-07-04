@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import {
   Shield, FlaskConical, Truck, Award,
-  ChevronRight, ChevronLeft, ArrowRight, CheckCircle, Star, Quote,
+  ChevronRight, ArrowRight, CheckCircle, Star, Quote,
   Mail, Gift, UserPlus, ShoppingCart,
 } from "lucide-react";
 import GroupedProductCard from "@/components/GroupedProductCard";
@@ -584,37 +584,6 @@ function HeroCarousel() {
           {s.render()}
         </div>
       ))}
-
-      {/* Prev / next arrows — pinned to the top corners so they never sit on
-          top of the bottom-anchored hero text on narrow / short viewports */}
-      <button
-        onClick={() => goTo(idx - 1)}
-        aria-label="Previous slide"
-        className="hero-carousel-arrow"
-        style={{
-          position: "absolute", left: "10px", top: "10px",
-          zIndex: 5, borderRadius: "50%",
-          background: "rgba(255,255,255,0.14)", border: "1px solid rgba(255,255,255,0.25)",
-          color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-          backdropFilter: "blur(6px)",
-        }}
-      >
-        <ChevronLeft size={18} />
-      </button>
-      <button
-        onClick={() => goTo(idx + 1)}
-        aria-label="Next slide"
-        className="hero-carousel-arrow"
-        style={{
-          position: "absolute", right: "10px", top: "10px",
-          zIndex: 5, borderRadius: "50%",
-          background: "rgba(255,255,255,0.14)", border: "1px solid rgba(255,255,255,0.25)",
-          color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-          backdropFilter: "blur(6px)",
-        }}
-      >
-        <ChevronRight size={18} />
-      </button>
 
       {/* Dots — kept clear of the bottom-anchored CTA button with extra offset */}
       <div className="hero-carousel-dots" style={{ position: "absolute", bottom: "14px", left: 0, right: 0, display: "flex", justifyContent: "center", gap: "8px", zIndex: 5, pointerEvents: "none" }}>
