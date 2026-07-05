@@ -416,51 +416,6 @@ function HeroContentSlide() {
 
         <div className="hero-text text-white">
 
-          <h1
-            className="font-bold mb-1 sm:mb-5"
-            style={{
-              fontSize: "clamp(16px, 5.5vw, 62px)",
-              lineHeight: 1.08,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            <span className="hidden sm:inline">Research-Grade<br />
-            Peptides.<br /></span>
-            <span className="gradient-text">Purity Verified.</span>
-          </h1>
-
-          <p
-            className="hidden sm:block mb-7 leading-relaxed"
-            style={{ color: "rgba(255,255,255,0.78)", fontSize: "16px" }}
-          >
-            Built for researchers who don't cut corners.<br />
-            Every compound is tested to 99%+ purity,<br />
-            fully documented, and ready for the lab.
-          </p>
-
-          {/* Trust chips */}
-          <div className="hidden sm:flex flex-wrap gap-2 mb-8">
-            {["99%+ Verified Purity", "Full COA Included", "Batch Tested"].map(t => (
-              <span
-                key={t}
-                className="inline-flex items-center gap-1.5"
-                style={{
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  color: "#E2E8F0",
-                  fontSize: "12px",
-                  fontWeight: 600,
-                  padding: "5px 12px",
-                  borderRadius: "20px",
-                  backdropFilter: "blur(6px)",
-                }}
-              >
-                <CheckCircle size={12} style={{ color: "#34D399" }} />
-                {t}
-              </span>
-            ))}
-          </div>
-
           <div className="flex flex-wrap gap-3">
             <Link
               href="/all-peptides"
