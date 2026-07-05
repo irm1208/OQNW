@@ -411,34 +411,6 @@ function HeroContentSlide() {
         mixBlendMode: "screen",
       }} />
 
-      {/* Content — below the logo in the image */}
-      <div className="hero-content max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ position: "relative", zIndex: 1 }}>
-
-        <div className="hero-text text-white">
-
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/all-peptides"
-              className="btn-primary inline-flex items-center justify-center gap-2 w-full sm:w-auto"
-              style={{
-                backgroundColor: "#fff",
-                color: "#1240A0",
-                padding: "8px 18px",
-                borderRadius: "10px",
-                fontWeight: 800,
-                fontSize: "13px",
-                textDecoration: "none",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-              }}
-            >
-              <span className="sm:hidden">Shop Peptides</span>
-              <span className="hidden sm:inline">Browse All 81 Peptides</span>
-              <ArrowRight size={14} />
-            </Link>
-          </div>
-        </div>
-
-      </div>
     </section>
   );
 }
