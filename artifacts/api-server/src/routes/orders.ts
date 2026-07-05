@@ -192,9 +192,13 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     // Price validation: verify submitted priceGbp against the product catalog.
     // This prevents clients from submitting manipulated (inflated or deflated) prices.
     // Items without a productId (e.g. Bac Water add-ons) are skipped.
+    // Category is also fetched here and used as the authoritative source for Bundle & Save
+    // peptide-eligibility below — the client-submitted productCategory is never trusted for
+    // promo calculations, since a tampered category could otherwise manipulate free-item tiers.
+    const catalogCategoryMap = new Map<number, string>();
     if (itemsWithProductId.length > 0) {
       const catalogRows = await db
-        .select({ id: productsCatalogTable.id, priceGbp: productsCatalogTable.priceGbp })
+        .select({ id: productsCatalogTable.id, priceGbp: productsCatalogTable.priceGbp, category: productsCatalogTable.category })
         .from(productsCatalogTable)
         .where(inArray(productsCatalogTable.id, itemsWithProductId.map(i => i.productId)));
 
@@ -203,6 +207,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
           .filter((c: { id: number; priceGbp: string | null }) => c.priceGbp !== null)
           .map((c: { id: number; priceGbp: string | null }) => [c.id, parseFloat(String(c.priceGbp))] as [number, number])
       );
+      for (const c of catalogRows) catalogCategoryMap.set(c.id, c.category);
 
       for (const item of itemsWithProductId) {
         const catalogPrice = catalogPriceMap.get(item.productId);
@@ -211,6 +216,14 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
           return;
         }
       }
+    }
+    // For a Bundle & Save promo decision, an item qualifies as a "peptide" only if it has a
+    // real productId whose catalog category isn't Accessories. Items with no productId (e.g.
+    // client-side Bac Water add-ons) never qualify, regardless of client-submitted category.
+    function isCatalogPeptide(item: CartItem): boolean {
+      if (!item.productId || item.productId <= 0) return false;
+      const category = catalogCategoryMap.get(item.productId);
+      return category !== undefined && category !== "Accessories";
     }
 
     // Validate discount code if provided
@@ -319,7 +332,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     const peptideUnits: { productId: number; price: number }[] = [];
     let peptideQty = 0;
     for (const item of cartItems as CartItem[]) {
-      if (item.productCategory === "Accessories") continue;
+      if (!isCatalogPeptide(item)) continue;
       peptideQty += item.quantity;
       for (let i = 0; i < item.quantity; i++) peptideUnits.push({ productId: item.productId || 0, price: item.priceGbp });
     }
@@ -539,7 +552,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     }[] = [];
     for (const item of cartItems as CartItem[]) {
       const productId = item.productId || 0;
-      const freeQty = item.productCategory === "Accessories" ? 0 : Math.min(freeUnitsByProductId.get(productId) ?? 0, item.quantity);
+      const freeQty = isCatalogPeptide(item) ? Math.min(freeUnitsByProductId.get(productId) ?? 0, item.quantity) : 0;
       const paidQty = item.quantity - freeQty;
       if (paidQty > 0) {
         orderItemRows.push({
