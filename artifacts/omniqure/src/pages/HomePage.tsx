@@ -13,6 +13,7 @@ import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
 import referAFriendHeroImg from "@assets/new_carousal_1783256662735.jpeg";
+import bundleAndSaveHeroImg from "@assets/download_(6)_1783259905904.jpeg";
 
 const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
   GBP: "£50", USD: "$65", EUR: "€60", AUD: "A$100", CAD: "C$90",
@@ -441,56 +442,17 @@ function HeroBundleSlide() {
     <Link
       href="/bundle-and-save"
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        display: "block",
         width: "100%",
         height: "100%",
-        textDecoration: "none",
-        background: "linear-gradient(135deg, #0D2565 0%, #1240A0 45%, #1B5CB5 80%, #1E68CC 100%)",
-        position: "relative",
-        overflow: "hidden",
-        padding: "24px",
-        textAlign: "center",
+        background: "linear-gradient(to bottom, #DBDFEB, #EAECF6)",
       }}
     >
-      <div style={{
-        position: "absolute", inset: 0,
-        backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)",
-        backgroundSize: "28px 28px", pointerEvents: "none",
-      }} />
-      <div style={{
-        display: "inline-flex", alignItems: "center", gap: 8,
-        background: "rgba(255,255,255,0.12)", borderRadius: 9999,
-        padding: "5px 16px", marginBottom: 14, position: "relative", zIndex: 1,
-      }}>
-        <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.85)", letterSpacing: "0.06em" }}>
-          BUNDLE & SAVE
-        </span>
-      </div>
-      <h2 style={{
-        fontSize: "clamp(20px, 4vw, 34px)", fontWeight: 900, color: "#fff",
-        letterSpacing: "-0.02em", lineHeight: 1.15, margin: "0 0 12px", position: "relative", zIndex: 1,
-      }}>
-        Buy More, Get Peptides Free
-      </h2>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", position: "relative", zIndex: 1 }}>
-        {[
-          { qty: "3+", freebie: "Free BAC Water" },
-          { qty: "5+", freebie: "1 Peptide Free" },
-          { qty: "10+", freebie: "2 Peptides Free" },
-        ].map(t => (
-          <div key={t.qty} style={{
-            display: "flex", alignItems: "center", gap: 6,
-            backgroundColor: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)",
-            borderRadius: 8, padding: "6px 12px",
-          }}>
-            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>{t.qty}</span>
-            <span style={{ fontSize: 12.5, fontWeight: 800, color: "#E8A93E" }}>{t.freebie}</span>
-          </div>
-        ))}
-      </div>
+      <img
+        src={bundleAndSaveHeroImg}
+        alt="Bundle and Save exclusive offers — free BAC water on 3+ peptides, 1 peptide free on 5+ peptides, 2 peptides free on 10+ peptides"
+        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+      />
     </Link>
   );
 }
