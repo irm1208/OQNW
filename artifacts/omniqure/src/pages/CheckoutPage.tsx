@@ -137,7 +137,13 @@ function formatExpiry(val: string) {
 
 export default function CheckoutPage() {
   const [, navigate] = useLocation();
-  const { items, clearCart, bundleDiscountAmount } = useCart();
+  const { items, clearCart, bundleDiscountAmount, bundleFreeBacWater, bundleFreeItemsCount } = useCart();
+  const bundleFreeLabel =
+    bundleFreeItemsCount > 0
+      ? `${bundleFreeItemsCount} peptide${bundleFreeItemsCount > 1 ? "s" : ""} free`
+      : bundleFreeBacWater
+        ? "free BAC water"
+        : "";
   const { formatPrice, currency } = useCurrency();
   const { customer } = useCustomerAuth();
   const [step, setStep] = useState<Step>(1);
@@ -1124,7 +1130,7 @@ export default function CheckoutPage() {
                 {bundleDiscountAmount > 0 && (
                   <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
                     <span style={{ fontSize: "13px", color: "#059669", fontWeight: 600 }}>
-                      Bundle & Save ({items.reduce((s, i) => s + i.quantity, 0) >= 15 ? "20%" : items.reduce((s, i) => s + i.quantity, 0) >= 11 ? "15%" : items.reduce((s, i) => s + i.quantity, 0) >= 7 ? "10%" : "5%"} off)
+                      Bundle & Save{bundleFreeLabel ? ` (${bundleFreeLabel})` : ""}
                     </span>
                     <span style={{ fontSize: "13px", fontWeight: 600, color: "#059669" }}>−{formatPrice(bundleDiscountAmount)}</span>
                   </div>

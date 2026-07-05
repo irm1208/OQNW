@@ -5,7 +5,7 @@ const messages = [
   "🔬  99%+ Verified Purity — Guaranteed on Every Product",
   "🎁  Refer a Friend — Earn a Free Peptide on Your Next Order",
   "🚚  Free Shipping on Orders Over £100 — UK & Worldwide",
-  "💊  Bundle & Save — Up to 20% Off When You Order 3+ Vials",
+  "💊  Bundle & Save — Free Items When You Order 3+ Vials",
 ];
 
 export default function AnnouncementBar() {

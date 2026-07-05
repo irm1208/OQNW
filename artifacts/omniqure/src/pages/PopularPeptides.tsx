@@ -171,19 +171,17 @@ export default function PopularPeptides() {
               <div style={{ backgroundColor: "#34D399", borderRadius: "5px", padding: "2px 8px" }}>
                 <span style={{ fontSize: "9.5px", fontWeight: 900, letterSpacing: "0.1em", color: "#022c22", textTransform: "uppercase" }}>Bundle & Save</span>
               </div>
-              <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>Buy more, save more — starts at just 3 vials</span>
+              <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>Buy more, get peptides free — starts at just 3 vials</span>
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", alignItems: "center" }}>
               {[
-                { label: "3+ vials",  pct: "5%",  bg: "rgba(96,165,250,0.15)",  border: "rgba(96,165,250,0.4)",  pctColor: "#93C5FD" },
-                { label: "7+ vials",  pct: "10%", bg: "rgba(52,211,153,0.15)",  border: "rgba(52,211,153,0.4)",  pctColor: "#6EE7B7" },
-                { label: "11+ vials", pct: "15%", bg: "rgba(251,191,36,0.15)",  border: "rgba(251,191,36,0.4)",  pctColor: "#FDE68A" },
-                { label: "15+ vials", pct: "20%", bg: "rgba(248,113,113,0.18)", border: "rgba(248,113,113,0.45)", pctColor: "#FCA5A5" },
+                { label: "3+ vials",  freebie: "Free BAC Water",  bg: "rgba(96,165,250,0.15)",  border: "rgba(96,165,250,0.4)",  color: "#93C5FD" },
+                { label: "5+ vials",  freebie: "1 Peptide Free",  bg: "rgba(52,211,153,0.15)",  border: "rgba(52,211,153,0.4)",  color: "#6EE7B7" },
+                { label: "10+ vials", freebie: "2 Peptides Free", bg: "rgba(248,113,113,0.18)", border: "rgba(248,113,113,0.45)", color: "#FCA5A5" },
               ].map(t => (
                 <div key={t.label} style={{ display: "flex", alignItems: "center", gap: "5px", backgroundColor: t.bg, border: `1px solid ${t.border}`, borderRadius: "7px", padding: "4px 10px" }}>
                   <span style={{ fontSize: "10.5px", color: "rgba(255,255,255,0.5)", fontWeight: 600 }}>{t.label}</span>
-                  <span style={{ fontSize: "13px", fontWeight: 900, color: t.pctColor, lineHeight: 1 }}>{t.pct}</span>
-                  <span style={{ fontSize: "9px", color: "rgba(255,255,255,0.38)", fontWeight: 700 }}>OFF</span>
+                  <span style={{ fontSize: "11.5px", fontWeight: 900, color: t.color, lineHeight: 1 }}>{t.freebie}</span>
                 </div>
               ))}
               <Link href="/all-peptides" style={{ fontSize: "11.5px", fontWeight: 800, color: "#022c22", backgroundColor: "#34D399", padding: "5px 15px", borderRadius: "7px", textDecoration: "none", whiteSpace: "nowrap", boxShadow: "0 0 12px rgba(52,211,153,0.3)" }}>

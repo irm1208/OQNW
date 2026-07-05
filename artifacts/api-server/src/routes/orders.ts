@@ -308,47 +308,40 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       }
     }
 
-    // ── Bundle & Save — server-side tier calculation ──────────────────────────
-    // Tiers: 3+ items = 5%, 7+ = 10%, 11+ = 15%, 15+ = 20%.
-    // For referred customers on their FIRST order, the 10% referral discount is
-    // their baseline — the 3+ (5%) and 7+ (10%) tiers do not apply; only the
-    // higher tiers (11+ → 15%, 15+ → 20%) can upgrade that baseline.
-    const BUNDLE_TIERS = [
-      { qty: 15, pct: 20 },
-      { qty: 11, pct: 15 },
-      { qty: 7,  pct: 10 },
-      { qty: 3,  pct: 5  },
-    ];
-    const BUNDLE_TIERS_REFERRED_FIRST = [
-      { qty: 15, pct: 20 },
-      { qty: 11, pct: 15 },
-    ];
-
-    // Check if this is a referred customer's first order (use the already-resolved session id)
-    let isReferredFirstOrder = false;
-    if (loyaltySessionCustomerId) {
-      try {
-        const [bundleCheck] = await db
-          .select({ totalOrders: customersTable.totalOrders, referredBy: customersTable.referredBy })
-          .from(customersTable)
-          .where(eq(customersTable.id, loyaltySessionCustomerId))
-          .limit(1);
-        // totalOrders is the count BEFORE this order (not yet incremented)
-        if (bundleCheck?.totalOrders === 0 && bundleCheck.referredBy) {
-          isReferredFirstOrder = true;
-        }
-      } catch {}
+    // ── Bundle & Save — server-side free-item tier calculation ────────────────
+    // Tiers (peptide-item quantity, accessories like Bac Water excluded):
+    //   3+  -> a free 3ml bacteriostatic water (FREE_BAC_WATER_VALUE_GBP)
+    //   5+  -> the cheapest peptide unit in the cart is free
+    //   10+ -> the 2 cheapest peptide units in the cart are free (supersedes the 5+ tier, not additive)
+    // This applies unconditionally, including to a referred customer's first order —
+    // there is no longer a percentage-discount stacking conflict with the referral reward.
+    const FREE_BAC_WATER_VALUE_GBP = 4.99;
+    const peptideUnitPrices: number[] = [];
+    let peptideQty = 0;
+    for (const item of cartItems as CartItem[]) {
+      if (item.productCategory === "Accessories") continue;
+      peptideQty += item.quantity;
+      for (let i = 0; i < item.quantity; i++) peptideUnitPrices.push(item.priceGbp);
     }
-
-    const totalItemCount = cartItems.reduce((s, i) => s + i.quantity, 0);
-    const activeTiers = isReferredFirstOrder ? BUNDLE_TIERS_REFERRED_FIRST : BUNDLE_TIERS;
-    const matchedTier = activeTiers.find(t => totalItemCount >= t.qty);
-    const bundleDiscountPct = matchedTier?.pct ?? 0;
+    const bundleFreeBacWater = peptideQty >= 3;
+    const bundleFreeItemsCount = peptideQty >= 10 ? 2 : peptideQty >= 5 ? 1 : 0;
+    const freeItemsValue = peptideUnitPrices
+      .slice()
+      .sort((a, b) => a - b)
+      .slice(0, bundleFreeItemsCount)
+      .reduce((s, p) => s + p, 0);
+    const bundleDiscountGbp = Math.round(
+      (freeItemsValue + (bundleFreeBacWater ? FREE_BAC_WATER_VALUE_GBP : 0)) * 100
+    ) / 100;
+    const bundleFreeLabel = bundleFreeItemsCount === 2
+      ? "2 cheapest peptides free"
+      : bundleFreeItemsCount === 1
+      ? "cheapest peptide free"
+      : bundleFreeBacWater
+      ? "free BAC water"
+      : "";
 
     const subtotalGbp = cartItems.reduce((s, i) => s + i.priceGbp * i.quantity, 0);
-    const bundleDiscountGbp = bundleDiscountPct > 0
-      ? Math.round(subtotalGbp * bundleDiscountPct / 100 * 100) / 100
-      : 0;
     const preGiftTotal = Math.max(0, subtotalGbp + shippingCostGbp - bundleDiscountGbp - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp);
     if (giftCardDeductGbp > preGiftTotal) giftCardDeductGbp = preGiftTotal;
     const totalGbp = Math.max(0, preGiftTotal - giftCardDeductGbp);
@@ -515,7 +508,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         status: ["bank_transfer", "bitcoin"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
         notes: [
           `Payment method: ${paymentMethodStr}`,
-          bundleDiscountGbp > 0 ? `Bundle & Save: ${bundleDiscountPct}% off (-£${bundleDiscountGbp.toFixed(2)})${isReferredFirstOrder ? " [referred first order tiers]" : ""}` : null,
+          bundleDiscountGbp > 0 ? `Bundle & Save: ${bundleFreeLabel} (-£${bundleDiscountGbp.toFixed(2)})` : null,
           validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-£${discountAmount.toFixed(2)})` : null,
           loyaltyPointsToDeduct > 0 ? `Loyalty: ${loyaltyPointsToDeduct} pts redeemed (-£${loyaltyDiscountGbp.toFixed(2)})` : null,
           validatedGiftCardCode ? `Gift card: ${validatedGiftCardCode} (-£${giftCardDeductGbp.toFixed(2)})` : null,
@@ -526,16 +519,27 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       .returning();
 
     // Insert order items
-    await db.insert(orderItemsTable).values(
-      cartItems.map(item => ({
+    const orderItemRows = cartItems.map(item => ({
+      orderId: order.id,
+      productId: item.productId || 0,
+      productName: item.productName,
+      productCategory: item.productCategory,
+      quantity: item.quantity,
+      priceGbp: String(item.priceGbp.toFixed(2)),
+    }));
+    // The free 3ml BAC water (3+ peptide tier) is a server-computed freebie, not something
+    // the client adds to its own cart — insert it as its own zero-priced order item.
+    if (bundleFreeBacWater) {
+      orderItemRows.push({
         orderId: order.id,
-        productId: item.productId || 0,
-        productName: item.productName,
-        productCategory: item.productCategory,
-        quantity: item.quantity,
-        priceGbp: String(item.priceGbp.toFixed(2)),
-      }))
-    );
+        productId: 0,
+        productName: "Bacteriostatic Water 3ml (Bundle & Save — free)",
+        productCategory: "Accessories",
+        quantity: 1,
+        priceGbp: "0.00",
+      });
+    }
+    await db.insert(orderItemsTable).values(orderItemRows);
 
     // Track customer IP on every order (non-blocking)
     if (customerId && clientIp) {

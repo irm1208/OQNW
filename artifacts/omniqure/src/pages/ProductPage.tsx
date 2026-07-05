@@ -30,25 +30,21 @@ function parseBaseName(name: string): { base: string; strength: string } {
 }
 
 const VOLUME_TIERS = [
-  { min: 3,  pct: 5  },
-  { min: 7,  pct: 10 },
-  { min: 11, pct: 15 },
-  { min: 15, pct: 20 },
+  { min: 3,  label: "Free BAC water" },
+  { min: 5,  label: "1 peptide free" },
+  { min: 10, label: "2 peptides free" },
 ];
 
 function VolumePricingTable({
-  price,
   totalCartItems,
-  currentPct,
   formatPrice,
 }: {
-  price: number;
   totalCartItems: number;
-  currentPct: number;
   formatPrice: (n: number) => string;
 }) {
   const nextTier = VOLUME_TIERS.find(t => totalCartItems < t.min);
   const toNext = nextTier ? nextTier.min - totalCartItems : 0;
+  const activeTier = [...VOLUME_TIERS].reverse().find(t => totalCartItems >= t.min);
 
   return (
     <div
@@ -61,14 +57,14 @@ function VolumePricingTable({
         style={{ backgroundColor: "#EBF4FF", borderBottom: "1px solid #DBEAFE" }}
       >
         <span className="text-xs font-bold uppercase tracking-wider" style={{ color: "#1240A0" }}>
-          Volume Discounts
+          Bundle & Save
         </span>
-        {currentPct > 0 ? (
+        {activeTier ? (
           <span
             className="text-xs font-bold px-2.5 py-0.5 rounded-full"
             style={{ backgroundColor: "#1240A0", color: "#fff" }}
           >
-            {currentPct}% active
+            {activeTier.label} active
           </span>
         ) : (
           <span className="text-xs" style={{ color: "#64748B" }}>
@@ -78,11 +74,10 @@ function VolumePricingTable({
       </div>
 
       {/* Tier grid */}
-      <div className="grid grid-cols-4" style={{ borderTop: "1px solid #DBEAFE" }}>
+      <div className="grid grid-cols-3" style={{ borderTop: "1px solid #DBEAFE" }}>
         {VOLUME_TIERS.map((tier) => {
-          const isActive = currentPct === tier.pct;
-          const isPast   = currentPct > tier.pct;
-          const discountedPrice = price * (1 - tier.pct / 100);
+          const isActive = activeTier?.min === tier.min;
+          const isPast   = !!activeTier && activeTier.min > tier.min;
           return (
             <div
               key={tier.min}
@@ -101,15 +96,9 @@ function VolumePricingTable({
               </span>
               <span
                 className="font-extrabold"
-                style={{ fontSize: "15px", color: isActive ? "#fff" : isPast ? "#1B5CB5" : "#1240A0" }}
+                style={{ fontSize: "14px", color: isActive ? "#fff" : isPast ? "#1B5CB5" : "#1240A0" }}
               >
-                {tier.pct}% off
-              </span>
-              <span
-                className="text-xs mt-0.5"
-                style={{ color: isActive ? "rgba(255,255,255,0.8)" : "#94A3B8" }}
-              >
-                {formatPrice(discountedPrice)}/ea
+                {tier.label}
               </span>
             </div>
           );
@@ -125,17 +114,17 @@ function VolumePricingTable({
           <Gift size={12} />
           <span>
             Add <strong>{toNext} more item{toNext > 1 ? "s" : ""}</strong> to your cart for{" "}
-            <strong>{nextTier!.pct}% off</strong> your entire order
+            <strong>{nextTier!.label}</strong>
           </span>
         </div>
       )}
-      {toNext === 0 && currentPct === 20 && (
+      {toNext === 0 && activeTier?.min === 10 && (
         <div
           className="px-4 py-2 text-xs flex items-center gap-1.5"
           style={{ borderTop: "1px solid #DBEAFE", color: "#059669" }}
         >
           <Sparkles size={12} />
-          <span><strong>Maximum discount applied</strong> — 20% off your entire order</span>
+          <span><strong>Maximum tier unlocked</strong> — 2 peptides free with your order</span>
         </div>
       )}
     </div>
@@ -151,7 +140,7 @@ export default function ProductPage() {
   const [added, setAdded] = useState(false);
   const [showCOAModal, setShowCOAModal] = useState(false);
   const [showReviewsModal, setShowReviewsModal] = useState(false);
-  const { addToCart, totalItems, bundleDiscountPct } = useCart();
+  const { addToCart, totalItems } = useCart();
   const { trackView } = useRecentlyViewed();
   const { customer } = useCustomerAuth();
   const { formatPrice } = useCurrency();

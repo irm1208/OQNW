@@ -8,8 +8,15 @@ const HIDDEN_PATHS = ["/checkout", "/account", "/sign-in", "/register", "/forgot
 
 export default function MobileBottomBar() {
   const [location, navigate] = useLocation();
-  const { totalItems, subtotal, bundleDiscountAmount, bundleDiscountPct } = useCart();
+  const { totalItems, subtotal, bundleDiscountAmount, bundleFreeBacWater, bundleFreeItemsCount } = useCart();
   const { formatPrice } = useCurrency();
+
+  const hasFreebie = bundleFreeBacWater || bundleFreeItemsCount > 0;
+  const freebieLabel = bundleFreeItemsCount === 2
+    ? "2 peps free"
+    : bundleFreeItemsCount === 1
+    ? "1 pep free"
+    : "a free BAC water";
 
   const hiddenByPath = HIDDEN_PATHS.some((p) => location === p || location.startsWith(p + "/"));
   const visible = !hiddenByPath && totalItems > 0;
@@ -35,8 +42,8 @@ export default function MobileBottomBar() {
       role="complementary"
       aria-label="Cart summary"
     >
-      {/* Bundle savings strip — shown above the bar when a discount is active */}
-      {bundleDiscountPct > 0 && (
+      {/* Bundle savings strip — shown above the bar when a freebie is active */}
+      {hasFreebie && (
         <div
           style={{
             background: "linear-gradient(90deg, #065f46, #047857)",
@@ -50,7 +57,7 @@ export default function MobileBottomBar() {
         >
           <Tag size={11} style={{ color: "#6EE7B7", flexShrink: 0 }} />
           <span style={{ fontSize: "11.5px", fontWeight: 800, color: "#6EE7B7", letterSpacing: "0.02em" }}>
-            Bundle {bundleDiscountPct}% off — you&apos;re saving {formatPrice(bundleDiscountAmount)}
+            You&apos;ve unlocked {freebieLabel} — saving {formatPrice(bundleDiscountAmount)}
           </span>
         </div>
       )}
@@ -73,7 +80,7 @@ export default function MobileBottomBar() {
           )}
           <span
             className="mobile-bottom-bar__total"
-            style={{ color: bundleDiscountPct > 0 ? "#6EE7B7" : "#fff" }}
+            style={{ color: hasFreebie ? "#6EE7B7" : "#fff" }}
           >
             {formatPrice(discountedTotal)}
           </span>

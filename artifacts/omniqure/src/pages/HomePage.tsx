@@ -13,7 +13,6 @@ import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
 import referAFriendHeroImg from "@assets/new_carousal_1783256662735.jpeg";
-import bundleAndSaveHeroImg from "@assets/new_2_1783256662735.jpeg";
 
 const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
   GBP: "£50", USD: "$65", EUR: "€60", AUD: "A$100", CAD: "C$90",
@@ -442,17 +441,56 @@ function HeroBundleSlide() {
     <Link
       href="/bundle-and-save"
       style={{
-        display: "block",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
         width: "100%",
         height: "100%",
-        background: "linear-gradient(to bottom, #F2F2FB, #F5F6FD)",
+        textDecoration: "none",
+        background: "linear-gradient(135deg, #0D2565 0%, #1240A0 45%, #1B5CB5 80%, #1E68CC 100%)",
+        position: "relative",
+        overflow: "hidden",
+        padding: "24px",
+        textAlign: "center",
       }}
     >
-      <img
-        src={bundleAndSaveHeroImg}
-        alt="Bundle and save — discount up to 20% when you add 3 or more items"
-        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
-      />
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)",
+        backgroundSize: "28px 28px", pointerEvents: "none",
+      }} />
+      <div style={{
+        display: "inline-flex", alignItems: "center", gap: 8,
+        background: "rgba(255,255,255,0.12)", borderRadius: 9999,
+        padding: "5px 16px", marginBottom: 14, position: "relative", zIndex: 1,
+      }}>
+        <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.85)", letterSpacing: "0.06em" }}>
+          BUNDLE & SAVE
+        </span>
+      </div>
+      <h2 style={{
+        fontSize: "clamp(20px, 4vw, 34px)", fontWeight: 900, color: "#fff",
+        letterSpacing: "-0.02em", lineHeight: 1.15, margin: "0 0 12px", position: "relative", zIndex: 1,
+      }}>
+        Buy More, Get Peptides Free
+      </h2>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", position: "relative", zIndex: 1 }}>
+        {[
+          { qty: "3+", freebie: "Free BAC Water" },
+          { qty: "5+", freebie: "1 Peptide Free" },
+          { qty: "10+", freebie: "2 Peptides Free" },
+        ].map(t => (
+          <div key={t.qty} style={{
+            display: "flex", alignItems: "center", gap: 6,
+            backgroundColor: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)",
+            borderRadius: 8, padding: "6px 12px",
+          }}>
+            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>{t.qty}</span>
+            <span style={{ fontSize: 12.5, fontWeight: 800, color: "#E8A93E" }}>{t.freebie}</span>
+          </div>
+        ))}
+      </div>
     </Link>
   );
 }
@@ -798,15 +836,13 @@ export default function HomePage() {
             {/* Tiers + CTA */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "7px", alignItems: "center" }}>
               {[
-                { label: "3+ vials",  pct: "5%",  bg: "rgba(96,165,250,0.18)",  border: "rgba(96,165,250,0.40)",  pctColor: "#93C5FD" },
-                { label: "7+ vials",  pct: "10%", bg: "rgba(52,211,153,0.18)",  border: "rgba(52,211,153,0.40)",  pctColor: "#6EE7B7" },
-                { label: "11+ vials", pct: "15%", bg: "rgba(251,191,36,0.18)",  border: "rgba(251,191,36,0.40)",  pctColor: "#FDE68A" },
-                { label: "15+ vials", pct: "20%", bg: "rgba(167,139,250,0.18)", border: "rgba(167,139,250,0.40)", pctColor: "#C4B5FD" },
+                { label: "3+ vials",  freebie: "Free BAC Water",   bg: "rgba(96,165,250,0.18)",  border: "rgba(96,165,250,0.40)",  color: "#93C5FD" },
+                { label: "5+ vials",  freebie: "1 Peptide Free",   bg: "rgba(52,211,153,0.18)",  border: "rgba(52,211,153,0.40)",  color: "#6EE7B7" },
+                { label: "10+ vials", freebie: "2 Peptides Free",  bg: "rgba(167,139,250,0.18)", border: "rgba(167,139,250,0.40)", color: "#C4B5FD" },
               ].map(t => (
                 <div key={t.label} style={{ display: "flex", alignItems: "center", gap: "6px", backgroundColor: t.bg, border: `1px solid ${t.border}`, borderRadius: "8px", padding: "6px 13px" }}>
                   <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.65)", fontWeight: 600 }}>{t.label}</span>
-                  <span style={{ fontSize: "15px", fontWeight: 900, color: t.pctColor, lineHeight: 1 }}>{t.pct}</span>
-                  <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.45)", fontWeight: 700 }}>OFF</span>
+                  <span style={{ fontSize: "13px", fontWeight: 900, color: t.color, lineHeight: 1 }}>{t.freebie}</span>
                 </div>
               ))}
               <Link

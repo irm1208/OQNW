@@ -1,17 +1,16 @@
-import { useCart } from "@/context/CartContext";
+import { useCart, BUNDLE_FREE_BAC_THRESHOLD, BUNDLE_FREE_ONE_THRESHOLD, BUNDLE_FREE_TWO_THRESHOLD } from "@/context/CartContext";
 import { Link } from "wouter";
 import { ShoppingCart, ChevronUp, ChevronDown, Tag, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const TIERS = [
-  { min: 15, pct: 20 },
-  { min: 11, pct: 15 },
-  { min: 7,  pct: 10 },
-  { min: 3,  pct: 5  },
+  { min: BUNDLE_FREE_TWO_THRESHOLD, label: "2 peps free" },
+  { min: BUNDLE_FREE_ONE_THRESHOLD, label: "1 pep free" },
+  { min: BUNDLE_FREE_BAC_THRESHOLD, label: "a free BAC" },
 ];
 
 export default function CartPreviewPanel() {
-  const { items, totalItems, subtotal, bundleDiscountPct, bundleDiscountAmount } = useCart();
+  const { items, totalItems, peptideQty, bundleFreeBacWater, bundleFreeItemsCount, subtotal, bundleDiscountAmount } = useCart();
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
@@ -26,7 +25,9 @@ export default function CartPreviewPanel() {
   if (totalItems === 0) return null;
 
   const discountedTotal = subtotal - bundleDiscountAmount;
-  const next = TIERS.find(t => totalItems < t.min) ?? null;
+  const hasFreebie = bundleFreeBacWater || bundleFreeItemsCount > 0;
+  const next = TIERS.find(t => peptideQty < t.min) ?? null;
+  const freebieLabel = bundleFreeItemsCount === 2 ? "2 peps free" : bundleFreeItemsCount === 1 ? "1 pep free" : "a free BAC";
 
   return (
     <div
@@ -104,30 +105,30 @@ export default function CartPreviewPanel() {
 
         {/* Discount or nudge */}
         <div style={{ flex: 1, minWidth: 0 }}>
-          {bundleDiscountPct > 0 ? (
+          {hasFreebie ? (
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <Tag size={13} style={{ color: "#34D399", flexShrink: 0 }} />
               <span style={{ fontSize: "12.5px", fontWeight: 800, color: "#34D399" }}>
-                Bundle {bundleDiscountPct}% off — saving £{bundleDiscountAmount.toFixed(2)}
+                {freebieLabel} — saving £{bundleDiscountAmount.toFixed(2)}
               </span>
               {next && (
                 <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)", marginLeft: 4 }}>
-                  · Add {next.min - totalItems} more for {next.pct}%
+                  · Add {next.min - peptideQty} more for {next.label}
                 </span>
               )}
             </div>
           ) : next ? (
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <span style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>
-                Add {next.min - totalItems} more peptide{next.min - totalItems !== 1 ? "s" : ""} for{" "}
-                <span style={{ color: "#34D399", fontWeight: 800 }}>{next.pct}% off</span>
+                Add {next.min - peptideQty} more peptide{next.min - peptideQty !== 1 ? "s" : ""} for{" "}
+                <span style={{ color: "#34D399", fontWeight: 800 }}>{next.label}</span>
               </span>
               {/* mini progress */}
               <div style={{ width: "80px", height: "4px", background: "rgba(255,255,255,0.12)", borderRadius: "4px", flexShrink: 0 }}>
                 <div style={{
                   height: "4px", borderRadius: "4px",
                   background: "linear-gradient(90deg, #34D399, #059669)",
-                  width: `${Math.min(100, (totalItems / next.min) * 100)}%`,
+                  width: `${Math.min(100, (peptideQty / next.min) * 100)}%`,
                   transition: "width 0.3s",
                 }} />
               </div>
@@ -140,12 +141,12 @@ export default function CartPreviewPanel() {
 
         {/* Total */}
         <div style={{ flexShrink: 0, textAlign: "right" }}>
-          {bundleDiscountPct > 0 && (
+          {hasFreebie && (
             <div style={{ fontSize: "10.5px", color: "rgba(255,255,255,0.35)", textDecoration: "line-through", lineHeight: 1.2 }}>
               £{subtotal.toFixed(2)}
             </div>
           )}
-          <div style={{ fontSize: "16px", fontWeight: 900, color: bundleDiscountPct > 0 ? "#34D399" : "#fff", lineHeight: 1.2 }}>
+          <div style={{ fontSize: "16px", fontWeight: 900, color: hasFreebie ? "#34D399" : "#fff", lineHeight: 1.2 }}>
             £{discountedTotal.toFixed(2)}
           </div>
         </div>

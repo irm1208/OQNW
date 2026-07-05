@@ -236,7 +236,9 @@ function CartUpsells() {
 export default function CartPage() {
   useSEO({ title: "My Cart", description: "Review your research peptide cart and proceed to checkout. OmniQure Peptide Research Institute.", canonicalPath: "/cart" });
   const [, navigate] = useLocation();
-  const { items, totalItems, subtotal, bundleDiscountPct, bundleDiscountAmount, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { items, totalItems, subtotal, peptideQty, bundleFreeBacWater, bundleFreeItemsCount, bundleDiscountAmount, removeFromCart, updateQuantity, clearCart } = useCart();
+  const hasFreebie = bundleFreeBacWater || bundleFreeItemsCount > 0;
+  const freebieLabel = bundleFreeItemsCount === 2 ? "2 peptides free" : bundleFreeItemsCount === 1 ? "1 peptide free" : "free BAC water";
   const { formatPrice, currency } = useCurrency();
   const { customer } = useCustomerAuth();
   const [subscribing, setSubscribing] = useState(false);
@@ -447,74 +449,62 @@ export default function CartPage() {
               <div className="px-5 pb-2" style={{ borderTop: "1px solid #F1F5F9" }}>
 
                 {/* Bundle & Save progress nudge */}
-                {totalItems < 15 && (
+                {peptideQty < 10 && (
                   <div
                     className="rounded-xl p-3 mt-3"
                     style={{
-                      backgroundColor: bundleDiscountPct > 0 ? "#F0FDF4" : "#EEF4FF",
-                      border: `1px solid ${bundleDiscountPct > 0 ? "#BBF7D0" : "#BFDBFE"}`,
+                      backgroundColor: hasFreebie ? "#F0FDF4" : "#EEF4FF",
+                      border: `1px solid ${hasFreebie ? "#BBF7D0" : "#BFDBFE"}`,
                       marginBottom: "4px",
                     }}
                   >
-                    {bundleDiscountPct === 0 ? (
+                    {peptideQty < 3 ? (
                       <>
                         <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#1240A0", marginBottom: "6px" }}>
-                          Bundle & Save — add {3 - totalItems} more {3 - totalItems === 1 ? "peptide" : "peptides"} for 5% off
+                          Bundle & Save — add {3 - peptideQty} more {3 - peptideQty === 1 ? "peptide" : "peptides"} for a free BAC water
                         </p>
                         <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
                           <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#DBEAFE", overflow: "hidden" }}>
-                            <div style={{ height: "100%", width: `${(totalItems / 3) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #1B5CB5, #2563EB)", transition: "width 0.3s" }} />
+                            <div style={{ height: "100%", width: `${(peptideQty / 3) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #1B5CB5, #2563EB)", transition: "width 0.3s" }} />
                           </div>
-                          <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{totalItems}/3</span>
+                          <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{peptideQty}/3</span>
                         </div>
-                        <p style={{ fontSize: "10.5px", color: "#475569", marginTop: "5px" }}>3+ = 5% · 7+ = 10% · 11+ = 15% · 15+ = 20% off</p>
+                        <p style={{ fontSize: "10.5px", color: "#475569", marginTop: "5px" }}>3+ = free BAC water · 5+ = 1 peptide free · 10+ = 2 peptides free</p>
                       </>
-                    ) : bundleDiscountPct === 5 ? (
+                    ) : bundleFreeItemsCount === 0 ? (
                       <>
                         <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669", marginBottom: "6px" }}>
-                          ✓ Bundle & Save 5% applied — add {7 - totalItems} more for 10% off
+                          ✓ Free BAC water unlocked — add {5 - peptideQty} more for 1 peptide free
                         </p>
                         <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
                           <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#BBF7D0", overflow: "hidden" }}>
-                            <div style={{ height: "100%", width: `${((totalItems - 3) / 4) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #059669, #16A34A)", transition: "width 0.3s" }} />
+                            <div style={{ height: "100%", width: `${((peptideQty - 3) / 2) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #059669, #16A34A)", transition: "width 0.3s" }} />
                           </div>
-                          <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{totalItems}/7</span>
-                        </div>
-                      </>
-                    ) : bundleDiscountPct === 10 ? (
-                      <>
-                        <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669", marginBottom: "6px" }}>
-                          ✓ Bundle & Save 10% applied — add {11 - totalItems} more for 15% off
-                        </p>
-                        <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
-                          <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#BBF7D0", overflow: "hidden" }}>
-                            <div style={{ height: "100%", width: `${((totalItems - 7) / 4) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #059669, #16A34A)", transition: "width 0.3s" }} />
-                          </div>
-                          <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{totalItems}/11</span>
+                          <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{peptideQty}/5</span>
                         </div>
                       </>
                     ) : (
                       <>
                         <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669", marginBottom: "6px" }}>
-                          ✓ Bundle & Save 15% applied — add {15 - totalItems} more for 20% off
+                          ✓ 1 peptide free applied — add {10 - peptideQty} more for 2 peptides free
                         </p>
                         <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
                           <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#BBF7D0", overflow: "hidden" }}>
-                            <div style={{ height: "100%", width: `${((totalItems - 11) / 4) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #059669, #16A34A)", transition: "width 0.3s" }} />
+                            <div style={{ height: "100%", width: `${((peptideQty - 5) / 5) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #059669, #16A34A)", transition: "width 0.3s" }} />
                           </div>
-                          <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{totalItems}/15</span>
+                          <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{peptideQty}/10</span>
                         </div>
                       </>
                     )}
                   </div>
                 )}
-                {bundleDiscountPct >= 20 && (
+                {bundleFreeItemsCount >= 2 && (
                   <div
                     className="rounded-xl p-3 mt-3"
                     style={{ backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0" }}
                   >
                     <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669" }}>
-                      ✓ Bundle & Save 20% applied — maximum discount active!
+                      ✓ 2 peptides free applied — maximum bundle tier active!
                     </p>
                   </div>
                 )}
@@ -525,9 +515,9 @@ export default function CartPage() {
                     <p style={{ fontSize: "13px", color: "#64748B" }}>Subtotal ({totalItems} {totalItems === 1 ? "item" : "items"})</p>
                     <p style={{ fontSize: "13px", color: "#0F172A" }}>{formatPrice(subtotal)}</p>
                   </div>
-                  {bundleDiscountPct > 0 && (
+                  {hasFreebie && (
                     <div className="flex items-center justify-between py-1.5">
-                      <p style={{ fontSize: "13px", color: "#059669", fontWeight: 600 }}>Bundle & Save ({bundleDiscountPct}% off)</p>
+                      <p style={{ fontSize: "13px", color: "#059669", fontWeight: 600 }}>Bundle & Save ({freebieLabel})</p>
                       <p style={{ fontSize: "13px", fontWeight: 600, color: "#059669" }}>−{formatPrice(bundleDiscountAmount)}</p>
                     </div>
                   )}

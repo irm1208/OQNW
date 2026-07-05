@@ -5,3 +5,4 @@
 - [Seed scripts vs live DB content](omniqure-seed-vs-db.md) — editing seed-*.ts source doesn't touch already-seeded rows; check the DB directly for stale content after content-removal requests.
 - [Bulk text replace JSX risk](bulk-text-replace-jsx-risk.md) — bulk-removing a term across .tsx files can eat adjacent JSX punctuation; always run typecheck after, grep alone isn't proof.
 - [Hero carousel letterbox color matching](hero-carousel-overlay-positioning.md) — each slide's mobile letterbox bars use a gradient sampled from that image's own top/bottom edge colors, not one shared background.
+- [Marketing copy is scattered widely](marketing-copy-scattered-widely.md) — a promo mechanic's tier numbers/text repeat across 10+ files (hero, strips, FAQ, T&Cs, chat bot, announcement bar); grep the whole app for the old value, not just the obvious pages.

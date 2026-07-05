@@ -12,13 +12,58 @@ type CartContextType = {
   items: CartItem[];
   totalItems: number;
   subtotal: number;
-  bundleDiscountPct: number;
+  /** Number of qualifying (non-accessory) peptide units in the cart — the quantity that unlocks free-item tiers. */
+  peptideQty: number;
+  /** True once 3+ peptides are in the cart — customer gets a free 3ml bacteriostatic water. */
+  bundleFreeBacWater: boolean;
+  /** How many peptide units are free at the current tier (0, 1 at 5+, or 2 at 10+). Not cumulative across tiers. */
+  bundleFreeItemsCount: number;
+  /** Combined monetary value of all free items (free BAC water + free peptide units) — subtract from subtotal for the discounted total. */
   bundleDiscountAmount: number;
   addToCart: (product: Product, qty?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, qty: number) => void;
   clearCart: () => void;
 };
+
+// Bundle & Save — free-item tiers (replaces the old percentage-off tiers):
+//   3+ peptides  -> a free 3ml bacteriostatic water
+//   5+ peptides  -> the cheapest peptide in the cart is free
+//   10+ peptides -> the 2 cheapest peptides in the cart are free (supersedes the 5+ tier, not additive)
+export const BUNDLE_FREE_BAC_THRESHOLD = 3;
+export const BUNDLE_FREE_ONE_THRESHOLD = 5;
+export const BUNDLE_FREE_TWO_THRESHOLD = 10;
+export const FREE_BAC_WATER_VALUE_GBP = 4.99;
+
+function isAccessory(product: Product): boolean {
+  return product.category === "Accessories";
+}
+
+function computeBundleFreebies(items: CartItem[]) {
+  const qualifyingUnitPrices: number[] = [];
+  let peptideQty = 0;
+  for (const { product, quantity } of items) {
+    if (isAccessory(product)) continue;
+    peptideQty += quantity;
+    for (let i = 0; i < quantity; i++) {
+      qualifyingUnitPrices.push(product.price ?? 0);
+    }
+  }
+
+  const bundleFreeBacWater = peptideQty >= BUNDLE_FREE_BAC_THRESHOLD;
+  const bundleFreeItemsCount =
+    peptideQty >= BUNDLE_FREE_TWO_THRESHOLD ? 2 : peptideQty >= BUNDLE_FREE_ONE_THRESHOLD ? 1 : 0;
+
+  const freeItemsValue = qualifyingUnitPrices
+    .slice()
+    .sort((a, b) => a - b)
+    .slice(0, bundleFreeItemsCount)
+    .reduce((s, p) => s + p, 0);
+
+  const bundleDiscountAmount = freeItemsValue + (bundleFreeBacWater ? FREE_BAC_WATER_VALUE_GBP : 0);
+
+  return { peptideQty, bundleFreeBacWater, bundleFreeItemsCount, bundleDiscountAmount };
+}
 
 const CartContext = createContext<CartContextType | null>(null);
 
@@ -128,11 +173,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
   const subtotal = items.reduce((sum, i) => sum + (i.product.price ?? 0) * i.quantity, 0);
-  const bundleDiscountPct = totalItems >= 15 ? 20 : totalItems >= 11 ? 15 : totalItems >= 7 ? 10 : totalItems >= 3 ? 5 : 0;
-  const bundleDiscountAmount = subtotal * bundleDiscountPct / 100;
+  const { peptideQty, bundleFreeBacWater, bundleFreeItemsCount, bundleDiscountAmount } = computeBundleFreebies(items);
 
   return (
-    <CartContext.Provider value={{ items, totalItems, subtotal, bundleDiscountPct, bundleDiscountAmount, addToCart, removeFromCart, updateQuantity, clearCart }}>
+    <CartContext.Provider value={{ items, totalItems, subtotal, peptideQty, bundleFreeBacWater, bundleFreeItemsCount, bundleDiscountAmount, addToCart, removeFromCart, updateQuantity, clearCart }}>
       {children}
     </CartContext.Provider>
   );
