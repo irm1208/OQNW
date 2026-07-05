@@ -12,6 +12,8 @@ import { useProducts } from "@/context/ProductsContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
+import referAFriendHeroImg from "@assets/new_carousal_1783256662735.jpeg";
+import bundleAndSaveHeroImg from "@assets/new_2_1783256662735.jpeg";
 
 const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
   GBP: "£50", USD: "$65", EUR: "€60", AUD: "A$100", CAD: "C$90",
@@ -415,10 +417,106 @@ function HeroContentSlide() {
   );
 }
 
+function HeroReferralSlide() {
+  return (
+    <Link
+      href="/refer-a-friend"
+      style={{
+        display: "block",
+        width: "100%",
+        height: "100%",
+        background: "linear-gradient(to bottom, #DBDFEB, #EAECF6)",
+      }}
+    >
+      <img
+        src={referAFriendHeroImg}
+        alt="Refer a friend and earn a free peptide worth up to £50"
+        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+      />
+    </Link>
+  );
+}
+
+function HeroBundleSlide() {
+  return (
+    <Link
+      href="/bundle-and-save"
+      style={{
+        display: "block",
+        width: "100%",
+        height: "100%",
+        background: "linear-gradient(to bottom, #F2F2FB, #F5F6FD)",
+      }}
+    >
+      <img
+        src={bundleAndSaveHeroImg}
+        alt="Bundle and save — discount up to 20% when you add 3 or more items"
+        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+      />
+    </Link>
+  );
+}
+
+const HERO_AUTOPLAY_MS = 6500;
+
 function HeroCarousel() {
+  const slides = [
+    { key: "content", render: () => <HeroContentSlide /> },
+    { key: "referral", render: () => <HeroReferralSlide /> },
+    { key: "bundle", render: () => <HeroBundleSlide /> },
+  ];
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setIdx(i => (i + 1) % slides.length), HERO_AUTOPLAY_MS);
+    return () => clearInterval(t);
+  }, [slides.length]);
+
+  function goTo(i: number) {
+    setIdx(((i % slides.length) + slides.length) % slides.length);
+  }
+
   return (
     <div className="hero-carousel" style={{ position: "relative", overflow: "hidden", width: "100%", aspectRatio: "16 / 9" }}>
-      <HeroContentSlide />
+
+      {slides.map((s, i) => (
+        <div
+          key={s.key}
+          style={{
+            position: "absolute",
+            inset: 0,
+            opacity: idx === i ? 1 : 0,
+            transition: "opacity 0.8s ease",
+            pointerEvents: idx === i ? "auto" : "none",
+            zIndex: idx === i ? 1 : 0,
+          }}
+        >
+          {s.render()}
+        </div>
+      ))}
+
+      {/* Dots — kept clear of the bottom-anchored CTA button with extra offset */}
+      <div className="hero-carousel-dots" style={{ position: "absolute", bottom: "14px", left: 0, right: 0, display: "flex", justifyContent: "center", gap: "8px", zIndex: 5, pointerEvents: "none" }}>
+        {slides.map((s, i) => (
+          <button
+            key={s.key}
+            onClick={() => goTo(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            style={{
+              width: idx === i ? "22px" : "8px",
+              height: "8px",
+              borderRadius: "4px",
+              background: idx === i ? "#fff" : "rgba(255,255,255,0.4)",
+              border: "none",
+              cursor: "pointer",
+              transition: "all 0.25s",
+              padding: 0,
+              pointerEvents: "auto",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.35)",
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }
