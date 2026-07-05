@@ -14,7 +14,6 @@ import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
 import referAFriendHeroImg from "@assets/download_1783122871347.jpeg";
 import bundleAndSaveHeroImg from "@assets/download_(5)_1783126707048.jpeg";
-import heroVideoSrc from "@assets/inference_output_video_2026-07-04_4a2a8572-5ac6-46a4-b5da-0f90_1783156338710.mp4";
 
 const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
   GBP: "£50", USD: "$65", EUR: "€60", AUD: "A$100", CAD: "C$90",
@@ -531,33 +530,11 @@ function HeroBundleSlide() {
   );
 }
 
-function HeroVideoSlide() {
-  return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        background: "linear-gradient(to bottom, #A6C6EA, #91AED4)",
-      }}
-    >
-      <video
-        src={heroVideoSrc}
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
-      />
-    </div>
-  );
-}
-
 const HERO_AUTOPLAY_MS = 6500;
 
 function HeroCarousel() {
   const slides = [
     { key: "content", render: () => <HeroContentSlide /> },
-    { key: "video", render: () => <HeroVideoSlide /> },
     { key: "referral", render: () => <HeroReferralSlide /> },
     { key: "bundle", render: () => <HeroBundleSlide /> },
   ];
