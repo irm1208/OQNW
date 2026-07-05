@@ -236,7 +236,7 @@ function CartUpsells() {
 export default function CartPage() {
   useSEO({ title: "My Cart", description: "Review your research peptide cart and proceed to checkout. OmniQure Peptide Research Institute.", canonicalPath: "/cart" });
   const [, navigate] = useLocation();
-  const { items, totalItems, subtotal, peptideQty, bundleFreeBacWater, bundleFreeItemsCount, bundleDiscountAmount, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { items, totalItems, subtotal, peptideQty, bundleFreeBacWater, bundleFreeItemsCount, bundleDiscountAmount, freeUnitsByProductId, removeFromCart, updateQuantity, clearCart } = useCart();
   const hasFreebie = bundleFreeBacWater || bundleFreeItemsCount > 0;
   const freebieLabel = bundleFreeItemsCount === 2 ? "2 peptides free" : bundleFreeItemsCount === 1 ? "1 peptide free" : "free BAC water";
   const { formatPrice, currency } = useCurrency();
@@ -323,11 +323,14 @@ export default function CartPage() {
           {/* Items list */}
           <div className="flex-1 min-w-0 space-y-3">
             <FreeShippingBar effectiveTotal={subtotal - bundleDiscountAmount} compact />
-            {items.map(({ product, quantity }) => (
+            {items.map(({ product, quantity }) => {
+              const freeUnits = Math.min(freeUnitsByProductId[product.id] ?? 0, quantity);
+              const lineHasFree = freeUnits > 0;
+              return (
               <div
                 key={product.id}
                 className="rounded-2xl overflow-hidden"
-                style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 8px rgba(15,23,42,0.04)", padding: "14px 16px" }}
+                style={{ backgroundColor: "#fff", border: lineHasFree ? "1.5px solid #86EFAC" : "1px solid #E8EDF5", boxShadow: "0 2px 8px rgba(15,23,42,0.04)", padding: "14px 16px" }}
               >
                 {/* Top row: image + info */}
                 <div className="flex gap-3 items-start">
@@ -362,7 +365,29 @@ export default function CartPage() {
                         style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}>
                         ✓ In Stock
                       </span>
+                      {lineHasFree && (
+                        <span className="text-xs px-2 py-0.5 rounded-full font-bold"
+                          style={{ backgroundColor: "#DCFCE7", color: "#15803D", border: "1px solid #86EFAC" }}>
+                          🎁 {freeUnits} free — Bundle & Save
+                        </span>
+                      )}
                     </div>
+                    {product.price != null && (
+                      <p style={{ fontSize: "12px", marginTop: "4px" }}>
+                        {lineHasFree ? (
+                          <>
+                            <span style={{ color: "#94A3B8", textDecoration: "line-through", marginRight: "6px" }}>
+                              {formatPrice(product.price * quantity)}
+                            </span>
+                            <span style={{ color: "#059669", fontWeight: 700 }}>
+                              {formatPrice(product.price * (quantity - freeUnits))}
+                            </span>
+                          </>
+                        ) : (
+                          <span style={{ color: "#0F172A", fontWeight: 600 }}>{formatPrice(product.price * quantity)}</span>
+                        )}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -404,7 +429,35 @@ export default function CartPage() {
                   </button>
                 </div>
               </div>
-            ))}
+              );
+            })}
+
+            {bundleFreeBacWater && (
+              <div
+                className="rounded-2xl overflow-hidden flex items-center gap-3"
+                style={{ backgroundColor: "#F0FDF4", border: "1.5px solid #86EFAC", boxShadow: "0 2px 8px rgba(15,23,42,0.04)", padding: "14px 16px" }}
+              >
+                <div
+                  className="rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ width: "72px", height: "72px", backgroundColor: "#DCFCE7", border: "1px solid #86EFAC", fontSize: "26px" }}
+                >
+                  💧
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-bold leading-tight" style={{ fontSize: "13px", color: "#0F172A" }}>
+                    Bacteriostatic Water 3ml
+                  </p>
+                  <p style={{ fontSize: "11px", color: "#64748B", marginTop: "2px" }}>Accessories</p>
+                  <span className="inline-block text-xs px-2 py-0.5 rounded-full font-bold mt-1"
+                    style={{ backgroundColor: "#DCFCE7", color: "#15803D", border: "1px solid #86EFAC" }}>
+                    🎁 Free — Bundle & Save (3+ peptides)
+                  </span>
+                </div>
+                <p className="font-bold flex-shrink-0" style={{ fontSize: "13px", color: "#059669" }}>
+                  {formatPrice(0)}
+                </p>
+              </div>
+            )}
 
             {/* Clear cart */}
             <div className="text-right pt-1">
@@ -434,16 +487,34 @@ export default function CartPage() {
               </div>
 
               <div className="px-5 py-4 space-y-3">
-                {items.map(({ product, quantity }) => (
-                  <div key={product.id} className="flex items-center justify-between gap-3">
+                {items.map(({ product, quantity }) => {
+                  const freeUnits = Math.min(freeUnitsByProductId[product.id] ?? 0, quantity);
+                  return (
+                    <div key={product.id} className="flex items-center justify-between gap-3">
+                      <p className="leading-snug" style={{ fontSize: "12.5px", color: "#475569", flex: 1 }}>
+                        {product.name} <span style={{ color: "#94A3B8" }}>× {quantity}</span>
+                        {freeUnits > 0 && (
+                          <span style={{ color: "#059669", fontWeight: 700, marginLeft: "4px" }}>
+                            ({freeUnits} free)
+                          </span>
+                        )}
+                      </p>
+                      <p className="font-medium" style={{ fontSize: "12.5px", color: freeUnits > 0 ? "#059669" : "#0F172A", flexShrink: 0 }}>
+                        {product.price != null ? formatPrice(product.price * (quantity - freeUnits)) : "—"}
+                      </p>
+                    </div>
+                  );
+                })}
+                {bundleFreeBacWater && (
+                  <div className="flex items-center justify-between gap-3">
                     <p className="leading-snug" style={{ fontSize: "12.5px", color: "#475569", flex: 1 }}>
-                      {product.name} <span style={{ color: "#94A3B8" }}>× {quantity}</span>
+                      Bacteriostatic Water 3ml <span style={{ color: "#059669", fontWeight: 700 }}>(free)</span>
                     </p>
-                    <p className="font-medium" style={{ fontSize: "12.5px", color: "#0F172A", flexShrink: 0 }}>
-                      {product.price != null ? formatPrice(product.price * quantity) : "—"}
+                    <p className="font-medium" style={{ fontSize: "12.5px", color: "#059669", flexShrink: 0 }}>
+                      {formatPrice(0)}
                     </p>
                   </div>
-                ))}
+                )}
               </div>
 
               <div className="px-5 pb-2" style={{ borderTop: "1px solid #F1F5F9" }}>

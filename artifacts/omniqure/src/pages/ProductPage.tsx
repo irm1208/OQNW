@@ -140,7 +140,7 @@ export default function ProductPage() {
   const [added, setAdded] = useState(false);
   const [showCOAModal, setShowCOAModal] = useState(false);
   const [showReviewsModal, setShowReviewsModal] = useState(false);
-  const { addToCart, totalItems } = useCart();
+  const { addToCart, totalItems, peptideQty } = useCart();
   const { trackView } = useRecentlyViewed();
   const { customer } = useCustomerAuth();
   const { formatPrice } = useCurrency();
@@ -672,6 +672,9 @@ export default function ProductPage() {
                 </p>
               </div>
             )}
+
+            {/* Bundle & Save — buy more, save more (free-item tiers) */}
+            <VolumePricingTable totalCartItems={peptideQty} formatPrice={formatPrice} />
 
             {/* Quantity + CTA */}
             <div

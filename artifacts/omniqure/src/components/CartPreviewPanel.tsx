@@ -10,7 +10,7 @@ const TIERS = [
 ];
 
 export default function CartPreviewPanel() {
-  const { items, totalItems, peptideQty, bundleFreeBacWater, bundleFreeItemsCount, subtotal, bundleDiscountAmount } = useCart();
+  const { items, totalItems, peptideQty, bundleFreeBacWater, bundleFreeItemsCount, subtotal, bundleDiscountAmount, freeUnitsByProductId } = useCart();
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
@@ -57,7 +57,9 @@ export default function CartPreviewPanel() {
             gap: "6px",
           }}
         >
-          {items.map(({ product, quantity }) => (
+          {items.map(({ product, quantity }) => {
+            const freeUnits = Math.min(freeUnitsByProductId[product.id] ?? 0, quantity);
+            return (
             <div
               key={product.id}
               style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
@@ -65,12 +67,22 @@ export default function CartPreviewPanel() {
               <span style={{ fontSize: "12.5px", color: "#374151", flex: 1 }}>
                 {product.name}
                 {quantity > 1 && <span style={{ color: "#94A3B8", marginLeft: 4 }}>×{quantity}</span>}
+                {freeUnits > 0 && <span style={{ color: "#059669", fontWeight: 700, marginLeft: 4 }}>({freeUnits} free)</span>}
               </span>
-              <span style={{ fontSize: "12.5px", fontWeight: 700, color: "#0F172A" }}>
-                £{((product.price ?? 0) * quantity).toFixed(2)}
+              <span style={{ fontSize: "12.5px", fontWeight: 700, color: freeUnits > 0 ? "#059669" : "#0F172A" }}>
+                £{((product.price ?? 0) * (quantity - freeUnits)).toFixed(2)}
               </span>
             </div>
-          ))}
+            );
+          })}
+          {bundleFreeBacWater && (
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: "12.5px", color: "#374151", flex: 1 }}>
+                Bacteriostatic Water 3ml <span style={{ color: "#059669", fontWeight: 700 }}>(free)</span>
+              </span>
+              <span style={{ fontSize: "12.5px", fontWeight: 700, color: "#059669" }}>£0.00</span>
+            </div>
+          )}
         </div>
       )}
 

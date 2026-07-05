@@ -316,20 +316,28 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     // This applies unconditionally, including to a referred customer's first order —
     // there is no longer a percentage-discount stacking conflict with the referral reward.
     const FREE_BAC_WATER_VALUE_GBP = 4.99;
-    const peptideUnitPrices: number[] = [];
+    const peptideUnits: { productId: number; price: number }[] = [];
     let peptideQty = 0;
     for (const item of cartItems as CartItem[]) {
       if (item.productCategory === "Accessories") continue;
       peptideQty += item.quantity;
-      for (let i = 0; i < item.quantity; i++) peptideUnitPrices.push(item.priceGbp);
+      for (let i = 0; i < item.quantity; i++) peptideUnits.push({ productId: item.productId || 0, price: item.priceGbp });
     }
     const bundleFreeBacWater = peptideQty >= 3;
     const bundleFreeItemsCount = peptideQty >= 10 ? 2 : peptideQty >= 5 ? 1 : 0;
-    const freeItemsValue = peptideUnitPrices
-      .slice()
-      .sort((a, b) => a - b)
-      .slice(0, bundleFreeItemsCount)
-      .reduce((s, p) => s + p, 0);
+    // The cheapest N peptide units become free; track which specific product(s) they
+    // came from so the persisted order items can split into paid/free line items —
+    // mirrors the frontend's freeUnitsByProductId so cart, checkout, and order records agree.
+    const cheapestFreeUnits = peptideUnits
+      .map((u, idx) => ({ ...u, idx }))
+      .sort((a, b) => a.price - b.price || a.idx - b.idx)
+      .slice(0, bundleFreeItemsCount);
+    const freeUnitsByProductId = new Map<number, number>();
+    let freeItemsValue = 0;
+    for (const u of cheapestFreeUnits) {
+      freeUnitsByProductId.set(u.productId, (freeUnitsByProductId.get(u.productId) ?? 0) + 1);
+      freeItemsValue += u.price;
+    }
     const bundleDiscountGbp = Math.round(
       (freeItemsValue + (bundleFreeBacWater ? FREE_BAC_WATER_VALUE_GBP : 0)) * 100
     ) / 100;
@@ -518,15 +526,42 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       })
       .returning();
 
-    // Insert order items
-    const orderItemRows = cartItems.map(item => ({
-      orderId: order.id,
-      productId: item.productId || 0,
-      productName: item.productName,
-      productCategory: item.productCategory,
-      quantity: item.quantity,
-      priceGbp: String(item.priceGbp.toFixed(2)),
-    }));
+    // Insert order items — split a cart line into paid/free rows when some (but not all)
+    // of its units were selected as the tier's cheapest-free units, so order records clearly
+    // show which units were free, matching the cart/checkout "X free — Bundle & Save" display.
+    const orderItemRows: {
+      orderId: number;
+      productId: number;
+      productName: string;
+      productCategory: string;
+      quantity: number;
+      priceGbp: string;
+    }[] = [];
+    for (const item of cartItems as CartItem[]) {
+      const productId = item.productId || 0;
+      const freeQty = item.productCategory === "Accessories" ? 0 : Math.min(freeUnitsByProductId.get(productId) ?? 0, item.quantity);
+      const paidQty = item.quantity - freeQty;
+      if (paidQty > 0) {
+        orderItemRows.push({
+          orderId: order.id,
+          productId,
+          productName: item.productName,
+          productCategory: item.productCategory,
+          quantity: paidQty,
+          priceGbp: String(item.priceGbp.toFixed(2)),
+        });
+      }
+      if (freeQty > 0) {
+        orderItemRows.push({
+          orderId: order.id,
+          productId,
+          productName: `${item.productName} (Bundle & Save — free)`,
+          productCategory: item.productCategory,
+          quantity: freeQty,
+          priceGbp: "0.00",
+        });
+      }
+    }
     // The free 3ml BAC water (3+ peptide tier) is a server-computed freebie, not something
     // the client adds to its own cart — insert it as its own zero-priced order item.
     if (bundleFreeBacWater) {

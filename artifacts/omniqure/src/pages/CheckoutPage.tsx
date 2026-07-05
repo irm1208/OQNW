@@ -137,7 +137,7 @@ function formatExpiry(val: string) {
 
 export default function CheckoutPage() {
   const [, navigate] = useLocation();
-  const { items, clearCart, bundleDiscountAmount, bundleFreeBacWater, bundleFreeItemsCount } = useCart();
+  const { items, clearCart, bundleDiscountAmount, bundleFreeBacWater, bundleFreeItemsCount, freeUnitsByProductId } = useCart();
   const bundleFreeLabel =
     bundleFreeItemsCount > 0
       ? `${bundleFreeItemsCount} peptide${bundleFreeItemsCount > 1 ? "s" : ""} free`
@@ -933,18 +933,34 @@ export default function CheckoutPage() {
               <div className={mobileSummaryOpen ? undefined : "max-lg:hidden"}>
 
               <div style={{ padding: "14px 18px", maxHeight: "260px", overflowY: "auto" }}>
-                {items.map(({ product, quantity }) => (
+                {items.map(({ product, quantity }) => {
+                  const freeUnits = Math.min(freeUnitsByProductId[product.id] ?? 0, quantity);
+                  return (
                   <div key={product.id} style={{ display: "flex", gap: "10px", alignItems: "center", paddingBottom: "10px", marginBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
                     <img src={product.image} alt={product.name} style={{ width: "40px", height: "40px", objectFit: "contain", borderRadius: "8px", border: "1px solid #E8EDF5", flexShrink: 0 }} />
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p style={{ fontSize: "12.5px", fontWeight: 600, color: "#0F172A", lineHeight: 1.3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{product.name}</p>
-                      <p style={{ fontSize: "11px", color: "#94A3B8" }}>Qty: {quantity}</p>
+                      <p style={{ fontSize: "11px", color: "#94A3B8" }}>
+                        Qty: {quantity}
+                        {freeUnits > 0 && <span style={{ color: "#059669", fontWeight: 700, marginLeft: "4px" }}>({freeUnits} free — Bundle & Save)</span>}
+                      </p>
                     </div>
-                    <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#0F172A", flexShrink: 0 }}>
-                      {product.price != null ? formatPrice(product.price * quantity) : "—"}
+                    <p style={{ fontSize: "12.5px", fontWeight: 700, color: freeUnits > 0 ? "#059669" : "#0F172A", flexShrink: 0 }}>
+                      {product.price != null ? formatPrice(product.price * (quantity - freeUnits)) : "—"}
                     </p>
                   </div>
-                ))}
+                  );
+                })}
+                {bundleFreeBacWater && (
+                  <div style={{ display: "flex", gap: "10px", alignItems: "center", paddingBottom: "10px", marginBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
+                    <div style={{ width: "40px", height: "40px", borderRadius: "8px", border: "1px solid #86EFAC", backgroundColor: "#F0FDF4", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>💧</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ fontSize: "12.5px", fontWeight: 600, color: "#0F172A", lineHeight: 1.3 }}>Bacteriostatic Water 3ml</p>
+                      <p style={{ fontSize: "11px", color: "#059669", fontWeight: 700 }}>Free — Bundle & Save (3+ peptides)</p>
+                    </div>
+                    <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#059669", flexShrink: 0 }}>{formatPrice(0)}</p>
+                  </div>
+                )}
               </div>
 
               <div style={{ padding: "0 18px 18px" }}>
