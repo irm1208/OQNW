@@ -4,24 +4,24 @@ import { useSEO } from "@/hooks/useSEO";
 
 const TIERS = [
   {
-    qty: "3+",
+    qty: "3-4",
     freebie: "Free BAC Water",
     label: "Starter Bundle",
     color: "#1B5CB5",
     bg: "linear-gradient(135deg, #EEF4FF, #DBEAFE)",
     border: "#BFDBFE",
     badge: "",
-    desc: "A great starting point — try three different peptides and we'll include a free 10ml bacteriostatic water.",
+    desc: "A great starting point — try three or four different peptides and we'll include a free 10ml bacteriostatic water.",
   },
   {
-    qty: "5+",
+    qty: "5-9",
     freebie: "1 Peptide Free",
     label: "Research Bundle",
     color: "#7C3AED",
     bg: "linear-gradient(135deg, #F5F3FF, #EDE9FE)",
     border: "#DDD6FE",
     badge: "Popular",
-    desc: "Build out your protocol stack with five or more compounds and the cheapest one in your cart is on us.",
+    desc: "Build out your protocol stack with five to nine compounds and the cheapest one in your cart is on us.",
   },
   {
     qty: "10+",
@@ -65,7 +65,7 @@ const EXAMPLES = [
 export default function BundleAndSavePage() {
   useSEO({
     title: "Bundle & Save",
-    description: "Get free items when you order multiple peptides — free BAC water at 3+, a free peptide at 5+, and 2 free peptides at 10+. Applied automatically — no codes required.",
+    description: "Get free items when you order multiple peptides — free BAC water at 3-4, a free peptide at 5-9, and 2 free peptides at 10+. Applied automatically — no codes required, and tiers don't stack.",
     canonicalPath: "/bundle-and-save",
   });
 
@@ -181,7 +181,7 @@ export default function BundleAndSavePage() {
                 Note for referred customers
               </p>
               <p style={{ fontSize: 13, color: "#78350F", lineHeight: 1.65, margin: 0 }}>
-                If you arrived via a referral link, your first order still receives the <strong>10% referral discount</strong> — and Bundle & Save free items apply on top, at every order, with no exceptions. Hit 3+ items for a free BAC water, 5+ for a free peptide, or 10+ for 2 free peptides.
+                If you arrived via a referral link, your first order still receives the <strong>10% referral discount</strong> — and Bundle & Save free items apply on top, at every order, with no exceptions. Hit 3-4 items for a free BAC water, 5-9 for a free peptide, or 10+ for 2 free peptides — one reward per order, based on that order's own tier.
               </p>
             </div>
           </div>

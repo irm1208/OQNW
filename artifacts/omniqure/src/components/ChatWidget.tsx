@@ -91,7 +91,7 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/bundle|bulk|discount|save|3 vial|multiple/i],
     answer:
-      "Our **Bundle & Save** programme gives you free items automatically — order 3+ peptides for a free 10ml BAC water, 5+ for a free peptide (cheapest item in your cart), or 10+ for 2 free peptides. Applied automatically at checkout. You can mix and match different peptides.",
+      "Our **Bundle & Save** programme gives you free items automatically — order 3-4 peptides for a free 10ml BAC water, 5-9 for a free peptide (cheapest item in your cart), or 10+ for 2 free peptides. Each order gets one reward based on its own tier — they don't stack. Applied automatically at checkout. You can mix and match different peptides.",
   },
   {
     patterns: [/refer|referral|friend|earn|credit|free peptide/i],

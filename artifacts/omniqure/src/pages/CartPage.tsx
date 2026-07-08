@@ -540,7 +540,7 @@ export default function CartPage() {
                           </div>
                           <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{peptideQty}/3</span>
                         </div>
-                        <p style={{ fontSize: "10.5px", color: "#475569", marginTop: "5px" }}>3+ = free BAC water · 5+ = 1 peptide free · 10+ = 2 peptides free</p>
+                        <p style={{ fontSize: "10.5px", color: "#475569", marginTop: "5px" }}>3-4 = free BAC water · 5-9 = 1 peptide free · 10+ = 2 peptides free</p>
                       </>
                     ) : bundleFreeItemsCount === 0 ? (
                       <>

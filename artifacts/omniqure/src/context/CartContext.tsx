@@ -153,7 +153,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         } else if (!before.bundleFreeBacWater && after.bundleFreeBacWater) {
           toast({
             title: "🎁 Free 10ml BAC water unlocked!",
-            description: "You've reached 3+ peptides — a free bacteriostatic water has been added to your order automatically.",
+            description: "You've reached 3-4 peptides — a free bacteriostatic water has been added to your order automatically.",
           });
         } else if (!isAccessory(product) && !after.bundleFreeBacWater) {
           const remaining = BUNDLE_FREE_BAC_THRESHOLD - after.peptideQty;

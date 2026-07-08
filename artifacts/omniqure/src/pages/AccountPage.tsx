@@ -997,7 +997,7 @@ export default function AccountPage() {
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
                     {[
                       { step: "1", title: "Share your link", desc: "Send your unique referral link to colleagues and fellow researchers." },
-                      { step: "2", title: "Friend places first order", desc: "They get 10% off their first order automatically — no code needed. Bundle & Save free items apply too: 3+ vials for free BAC water, 5+ for a free peptide, 10+ for 2 free peptides." },
+                      { step: "2", title: "Friend places first order", desc: "They get 10% off their first order automatically — no code needed. Bundle & Save free items apply too: 3-4 vials for free BAC water, 5-9 for a free peptide, 10+ for 2 free peptides (one reward per order, no stacking)." },
                       { step: "3", title: "Claim on your next order", desc: "Your reward unlocks. When you next place a peptide order, add 1 free peptide (up to £50 / local equivalent) to that order at checkout." },
                     ].map((s) => (
                       <div key={s.step} style={{ textAlign: "center", padding: "16px 12px", borderRadius: "12px", backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5" }}>
