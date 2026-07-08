@@ -12,7 +12,7 @@ import { useProducts } from "@/context/ProductsContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
-import referAFriendHeroImg from "@assets/new_carousal_1783256662735.jpeg";
+import referAFriendHeroImg from "@assets/download_(7)_1783533485035.jpeg";
 import bundleAndSaveHeroImg from "@assets/new_hero_1783533143502.jpeg";
 
 const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
@@ -425,7 +425,7 @@ function HeroReferralSlide() {
         display: "block",
         width: "100%",
         height: "100%",
-        background: "linear-gradient(to bottom, #DBDFEB, #EAECF6)",
+        background: "linear-gradient(to bottom, #E8EFF7, #F3F7FC)",
       }}
     >
       <img
