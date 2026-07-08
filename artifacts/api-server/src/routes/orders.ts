@@ -11,7 +11,6 @@ import {
   productsCatalogTable,
   abandonedCartsTable,
   loyaltyTransactionsTable,
-  giftCardsTable,
   inventoryAuditLogTable,
 } from "@workspace/db";
 import { eq, sql, inArray, and, gte, count } from "drizzle-orm";
@@ -96,7 +95,6 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     items,
     discountCode,
     loyaltyPointsRedeemed,
-    giftCardCode,
     paymentMethod,
     cryptoCurrency,
     redeemFreePeptide,
@@ -107,7 +105,6 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     items: unknown;
     discountCode?: unknown;
     loyaltyPointsRedeemed?: unknown;
-    giftCardCode?: unknown;
     paymentMethod?: unknown;
     cryptoCurrency?: unknown;
     redeemFreePeptide?: unknown;
@@ -300,27 +297,6 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       }
     }
 
-    // Validate gift card if provided
-    let giftCardDeductGbp = 0;
-    let validatedGiftCardCode: string | null = null;
-    let giftCardId: number | null = null;
-    if (giftCardCode && typeof giftCardCode === "string" && giftCardCode.trim()) {
-      const normalizedCode = giftCardCode.trim().toUpperCase();
-      const [card] = await db
-        .select()
-        .from(giftCardsTable)
-        .where(eq(giftCardsTable.code, normalizedCode))
-        .limit(1);
-      if (card && card.isActive) {
-        const remaining = parseFloat(String(card.remainingGbp));
-        if (remaining > 0) {
-          validatedGiftCardCode = card.code;
-          giftCardId = card.id;
-          giftCardDeductGbp = remaining;
-        }
-      }
-    }
-
     // ── Bundle & Save — server-side free-item tier calculation ────────────────
     // Tiers (peptide-item quantity, accessories like Bac Water excluded) — mutually
     // exclusive, not cumulative:
@@ -364,9 +340,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       : "";
 
     const subtotalGbp = cartItems.reduce((s, i) => s + i.priceGbp * i.quantity, 0);
-    const preGiftTotal = Math.max(0, subtotalGbp + shippingCostGbp - bundleDiscountGbp - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp);
-    if (giftCardDeductGbp > preGiftTotal) giftCardDeductGbp = preGiftTotal;
-    const totalGbp = Math.max(0, preGiftTotal - giftCardDeductGbp);
+    const totalGbp = Math.max(0, subtotalGbp + shippingCostGbp - bundleDiscountGbp - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp);
 
     // Generate unique order number (retry once on collision)
     let orderNumber = generateOrderNumber();
@@ -533,7 +507,6 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
           bundleDiscountGbp > 0 ? `Bundle & Save: ${bundleFreeLabel} (-£${bundleDiscountGbp.toFixed(2)})` : null,
           validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-£${discountAmount.toFixed(2)})` : null,
           loyaltyPointsToDeduct > 0 ? `Loyalty: ${loyaltyPointsToDeduct} pts redeemed (-£${loyaltyDiscountGbp.toFixed(2)})` : null,
-          validatedGiftCardCode ? `Gift card: ${validatedGiftCardCode} (-£${giftCardDeductGbp.toFixed(2)})` : null,
         ].filter(Boolean).join("; ") || null,
         fraudScore,
         fraudFlags,
@@ -625,18 +598,6 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
           .set({ freePeptideCredits: sql`GREATEST(free_peptide_credits - 1, 0)` })
           .where(eq(customersTable.id, loyaltyCustomerId))
           .catch(() => {});
-      }
-    }
-
-    // Deduct gift card balance
-    if (giftCardId && giftCardDeductGbp > 0) {
-      const [existingCard] = await db.select({ remainingGbp: giftCardsTable.remainingGbp }).from(giftCardsTable).where(eq(giftCardsTable.id, giftCardId)).limit(1);
-      if (existingCard) {
-        const newRemaining = Math.max(0, parseFloat(String(existingCard.remainingGbp)) - giftCardDeductGbp);
-        await db.update(giftCardsTable).set({
-          remainingGbp: String(newRemaining.toFixed(2)),
-          ...(newRemaining === 0 ? { redeemedAt: new Date() } : {}),
-        }).where(eq(giftCardsTable.id, giftCardId));
       }
     }
 

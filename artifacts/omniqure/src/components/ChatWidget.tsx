@@ -129,11 +129,6 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
       "You can create a free account on our website to track orders, manage your wishlist, access your referral link, and view order history. Click **My Account** in the top navigation to get started.",
   },
   {
-    patterns: [/gift card|gift voucher/i],
-    answer:
-      "OmniQure gift cards are available in denominations of £25, £50, and £100, as well as custom amounts. They're delivered electronically and can be used towards any order. Find them in the **Gift Cards** section.",
-  },
-  {
     patterns: [/track|tracking|where is my order|dispatch/i],
     answer:
       "Once your order has been dispatched, you'll receive a DHL tracking number by email. You can track your parcel at **dhl.com** using that number. If you haven't received a tracking email within 1 business day of ordering, check your spam folder or contact support@omniqure.com.",
