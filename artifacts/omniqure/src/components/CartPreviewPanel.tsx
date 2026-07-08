@@ -78,7 +78,7 @@ export default function CartPreviewPanel() {
           {bundleFreeBacWater && (
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ fontSize: "12.5px", color: "#374151", flex: 1 }}>
-                Bacteriostatic Water 3ml <span style={{ color: "#059669", fontWeight: 700 }}>(free)</span>
+                Bacteriostatic Water 10ml <span style={{ color: "#059669", fontWeight: 700 }}>(free)</span>
               </span>
               <span style={{ fontSize: "12.5px", fontWeight: 700, color: "#059669" }}>£0.00</span>
             </div>

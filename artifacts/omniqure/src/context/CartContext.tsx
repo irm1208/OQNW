@@ -14,7 +14,7 @@ type CartContextType = {
   subtotal: number;
   /** Number of qualifying (non-accessory) peptide units in the cart — the quantity that unlocks free-item tiers. */
   peptideQty: number;
-  /** True once 3+ peptides are in the cart — customer gets a free 3ml bacteriostatic water. */
+  /** True once 3+ peptides are in the cart — customer gets a free 10ml bacteriostatic water. */
   bundleFreeBacWater: boolean;
   /** How many peptide units are free at the current tier (0, 1 at 5+, or 2 at 10+). Not cumulative across tiers. */
   bundleFreeItemsCount: number;
@@ -29,13 +29,13 @@ type CartContextType = {
 };
 
 // Bundle & Save — free-item tiers (replaces the old percentage-off tiers):
-//   3+ peptides  -> a free 3ml bacteriostatic water
+//   3+ peptides  -> a free 10ml bacteriostatic water
 //   5+ peptides  -> the cheapest peptide in the cart is free
 //   10+ peptides -> the 2 cheapest peptides in the cart are free (supersedes the 5+ tier, not additive)
 export const BUNDLE_FREE_BAC_THRESHOLD = 3;
 export const BUNDLE_FREE_ONE_THRESHOLD = 5;
 export const BUNDLE_FREE_TWO_THRESHOLD = 10;
-export const FREE_BAC_WATER_VALUE_GBP = 4.99;
+export const FREE_BAC_WATER_VALUE_GBP = 8.99;
 
 function isAccessory(product: Product): boolean {
   return product.category === "Accessories";

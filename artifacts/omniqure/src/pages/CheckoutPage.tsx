@@ -955,7 +955,7 @@ export default function CheckoutPage() {
                   <div style={{ display: "flex", gap: "10px", alignItems: "center", paddingBottom: "10px", marginBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
                     <div style={{ width: "40px", height: "40px", borderRadius: "8px", border: "1px solid #86EFAC", backgroundColor: "#F0FDF4", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>💧</div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ fontSize: "12.5px", fontWeight: 600, color: "#0F172A", lineHeight: 1.3 }}>Bacteriostatic Water 3ml</p>
+                      <p style={{ fontSize: "12.5px", fontWeight: 600, color: "#0F172A", lineHeight: 1.3 }}>Bacteriostatic Water 10ml</p>
                       <p style={{ fontSize: "11px", color: "#059669", fontWeight: 700 }}>Free — Bundle & Save (3+ peptides)</p>
                     </div>
                     <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#059669", flexShrink: 0 }}>{formatPrice(0)}</p>

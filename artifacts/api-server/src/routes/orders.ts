@@ -323,12 +323,12 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
 
     // ── Bundle & Save — server-side free-item tier calculation ────────────────
     // Tiers (peptide-item quantity, accessories like Bac Water excluded):
-    //   3+  -> a free 3ml bacteriostatic water (FREE_BAC_WATER_VALUE_GBP)
+    //   3+  -> a free 10ml bacteriostatic water (FREE_BAC_WATER_VALUE_GBP)
     //   5+  -> the cheapest peptide unit in the cart is free
     //   10+ -> the 2 cheapest peptide units in the cart are free (supersedes the 5+ tier, not additive)
     // This applies unconditionally, including to a referred customer's first order —
     // there is no longer a percentage-discount stacking conflict with the referral reward.
-    const FREE_BAC_WATER_VALUE_GBP = 4.99;
+    const FREE_BAC_WATER_VALUE_GBP = 8.99;
     const peptideUnits: { productId: number; price: number }[] = [];
     let peptideQty = 0;
     for (const item of cartItems as CartItem[]) {
@@ -575,13 +575,13 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         });
       }
     }
-    // The free 3ml BAC water (3+ peptide tier) is a server-computed freebie, not something
+    // The free 10ml BAC water (3+ peptide tier) is a server-computed freebie, not something
     // the client adds to its own cart — insert it as its own zero-priced order item.
     if (bundleFreeBacWater) {
       orderItemRows.push({
         orderId: order.id,
         productId: 0,
-        productName: "Bacteriostatic Water 3ml (Bundle & Save — free)",
+        productName: "Bacteriostatic Water 10ml (Bundle & Save — free)",
         productCategory: "Accessories",
         quantity: 1,
         priceGbp: "0.00",

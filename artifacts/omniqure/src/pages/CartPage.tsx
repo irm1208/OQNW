@@ -445,7 +445,7 @@ export default function CartPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-bold leading-tight" style={{ fontSize: "13px", color: "#0F172A" }}>
-                    Bacteriostatic Water 3ml
+                    Bacteriostatic Water 10ml
                   </p>
                   <p style={{ fontSize: "11px", color: "#64748B", marginTop: "2px" }}>Accessories</p>
                   <span className="inline-block text-xs px-2 py-0.5 rounded-full font-bold mt-1"
@@ -508,7 +508,7 @@ export default function CartPage() {
                 {bundleFreeBacWater && (
                   <div className="flex items-center justify-between gap-3">
                     <p className="leading-snug" style={{ fontSize: "12.5px", color: "#475569", flex: 1 }}>
-                      Bacteriostatic Water 3ml <span style={{ color: "#059669", fontWeight: 700 }}>(free)</span>
+                      Bacteriostatic Water 10ml <span style={{ color: "#059669", fontWeight: 700 }}>(free)</span>
                     </p>
                     <p className="font-medium" style={{ fontSize: "12.5px", color: "#059669", flexShrink: 0 }}>
                       {formatPrice(0)}

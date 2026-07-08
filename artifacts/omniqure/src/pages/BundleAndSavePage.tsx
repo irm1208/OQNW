@@ -11,7 +11,7 @@ const TIERS = [
     bg: "linear-gradient(135deg, #EEF4FF, #DBEAFE)",
     border: "#BFDBFE",
     badge: "",
-    desc: "A great starting point — try three different peptides and we'll include a free 3ml bacteriostatic water.",
+    desc: "A great starting point — try three different peptides and we'll include a free 10ml bacteriostatic water.",
   },
   {
     qty: "5+",
@@ -57,7 +57,7 @@ const HOW_IT_WORKS = [
 ];
 
 const EXAMPLES = [
-  { label: "3 × BPC-157 5mg", freebie: "Free 3ml BAC water", saving: 4.99 },
+  { label: "3 × BPC-157 5mg", freebie: "Free 10ml BAC water", saving: 8.99 },
   { label: "5 × Mixed growth stack", freebie: "Cheapest peptide free", saving: 60 },
   { label: "10 × Full research panel", freebie: "2 cheapest peptides free", saving: 120 },
 ];
