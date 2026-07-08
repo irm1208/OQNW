@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, useCallback, useRef, ty
 import type { Product } from "@/data/products";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { trackAddToCart } from "@/lib/pixels";
+import { toast } from "@/hooks/use-toast";
 
 export type CartItem = {
   product: Product;
@@ -131,6 +132,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     (product: Product, qty = 1) => {
       trackAddToCart({ id: product.id, name: product.name, price: product.price ?? null, category: product.category }, qty);
       setItems((prev) => {
+        const before = computeBundleFreebies(prev);
         const existing = prev.find((i) => i.product.id === product.id);
         const next = existing
           ? prev.map((i) =>
@@ -140,6 +142,28 @@ export function CartProvider({ children }: { children: ReactNode }) {
             )
           : [...prev, { product, quantity: qty }];
         syncToServer(next, customer);
+
+        const after = computeBundleFreebies(next);
+        if (after.bundleFreeItemsCount > before.bundleFreeItemsCount) {
+          toast({
+            title: after.bundleFreeItemsCount === 2 ? "🎁 2 free peptides unlocked!" : "🎁 1 free peptide unlocked!",
+            description: "Your cheapest qualifying peptide(s) are now free — Bundle & Save applies automatically at checkout.",
+          });
+        } else if (!before.bundleFreeBacWater && after.bundleFreeBacWater) {
+          toast({
+            title: "🎁 Free 10ml BAC water unlocked!",
+            description: "You've reached 3+ peptides — a free bacteriostatic water has been added to your order automatically.",
+          });
+        } else if (!isAccessory(product) && !after.bundleFreeBacWater) {
+          const remaining = BUNDLE_FREE_BAC_THRESHOLD - after.peptideQty;
+          if (remaining > 0) {
+            toast({
+              title: "Added to cart",
+              description: `Add ${remaining} more peptide${remaining !== 1 ? "s" : ""} to unlock a free BAC water.`,
+            });
+          }
+        }
+
         return next;
       });
     },
