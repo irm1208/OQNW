@@ -4,9 +4,9 @@ import { ShoppingCart, ChevronUp, ChevronDown, Tag, ArrowRight } from "lucide-re
 import { useState, useEffect } from "react";
 
 const TIERS = [
-  { min: BUNDLE_FREE_TWO_THRESHOLD, label: "2 peps free" },
-  { min: BUNDLE_FREE_ONE_THRESHOLD, label: "1 pep free" },
   { min: BUNDLE_FREE_BAC_THRESHOLD, label: "a free BAC" },
+  { min: BUNDLE_FREE_ONE_THRESHOLD, label: "1 pep free" },
+  { min: BUNDLE_FREE_TWO_THRESHOLD, label: "2 peps free" },
 ];
 
 export default function CartPreviewPanel() {

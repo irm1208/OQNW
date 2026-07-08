@@ -322,10 +322,11 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     }
 
     // ── Bundle & Save — server-side free-item tier calculation ────────────────
-    // Tiers (peptide-item quantity, accessories like Bac Water excluded):
-    //   3+  -> a free 10ml bacteriostatic water (FREE_BAC_WATER_VALUE_GBP)
-    //   5+  -> the cheapest peptide unit in the cart is free
-    //   10+ -> the 2 cheapest peptide units in the cart are free (supersedes the 5+ tier, not additive)
+    // Tiers (peptide-item quantity, accessories like Bac Water excluded) — mutually
+    // exclusive, not cumulative:
+    //   3-4  -> a free 10ml bacteriostatic water (FREE_BAC_WATER_VALUE_GBP)
+    //   5-9  -> the cheapest peptide unit in the cart is free (no free BAC water)
+    //   10+  -> the 2 cheapest peptide units in the cart are free (no free BAC water)
     // This applies unconditionally, including to a referred customer's first order —
     // there is no longer a percentage-discount stacking conflict with the referral reward.
     const FREE_BAC_WATER_VALUE_GBP = 8.99;
@@ -336,8 +337,8 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       peptideQty += item.quantity;
       for (let i = 0; i < item.quantity; i++) peptideUnits.push({ productId: item.productId || 0, price: item.priceGbp });
     }
-    const bundleFreeBacWater = peptideQty >= 3;
     const bundleFreeItemsCount = peptideQty >= 10 ? 2 : peptideQty >= 5 ? 1 : 0;
+    const bundleFreeBacWater = peptideQty >= 3 && peptideQty < 5;
     // The cheapest N peptide units become free; track which specific product(s) they
     // came from so the persisted order items can split into paid/free line items —
     // mirrors the frontend's freeUnitsByProductId so cart, checkout, and order records agree.

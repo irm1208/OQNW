@@ -29,10 +29,10 @@ type CartContextType = {
   clearCart: () => void;
 };
 
-// Bundle & Save — free-item tiers (replaces the old percentage-off tiers):
-//   3+ peptides  -> a free 10ml bacteriostatic water
-//   5+ peptides  -> the cheapest peptide in the cart is free
-//   10+ peptides -> the 2 cheapest peptides in the cart are free (supersedes the 5+ tier, not additive)
+// Bundle & Save — free-item tiers (mutually exclusive, not cumulative):
+//   3-4 peptides  -> a free 10ml bacteriostatic water
+//   5-9 peptides  -> the cheapest peptide in the cart is free (no free BAC water)
+//   10+ peptides  -> the 2 cheapest peptides in the cart are free (no free BAC water)
 export const BUNDLE_FREE_BAC_THRESHOLD = 3;
 export const BUNDLE_FREE_ONE_THRESHOLD = 5;
 export const BUNDLE_FREE_TWO_THRESHOLD = 10;
@@ -53,9 +53,10 @@ function computeBundleFreebies(items: CartItem[]) {
     }
   }
 
-  const bundleFreeBacWater = peptideQty >= BUNDLE_FREE_BAC_THRESHOLD;
   const bundleFreeItemsCount =
     peptideQty >= BUNDLE_FREE_TWO_THRESHOLD ? 2 : peptideQty >= BUNDLE_FREE_ONE_THRESHOLD ? 1 : 0;
+  const bundleFreeBacWater =
+    peptideQty >= BUNDLE_FREE_BAC_THRESHOLD && peptideQty < BUNDLE_FREE_ONE_THRESHOLD;
 
   // The cheapest N qualifying units become free — stable-sort by price so ties resolve
   // to the order items were pushed in (cart order), keeping the "which items are free" answer deterministic.
