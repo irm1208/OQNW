@@ -487,23 +487,64 @@ export default function CheckoutPage() {
 
       {/* ── Timer banner ── */}
       <div style={{
-        background: timerUrgent ? "#FEF2F2" : "#FFFBEB",
-        borderBottom: `1px solid ${timerUrgent ? "#FECACA" : "#FDE68A"}`,
-        transition: "background 0.6s",
-        padding: "10px 24px",
+        background: timerUrgent
+          ? "linear-gradient(90deg, #7F1D1D 0%, #DC2626 50%, #7F1D1D 100%)"
+          : timerWarning
+          ? "linear-gradient(90deg, #78350F 0%, #D97706 50%, #78350F 100%)"
+          : "linear-gradient(90deg, #1240A0 0%, #1B5CB5 50%, #1240A0 100%)",
+        borderBottom: `2px solid ${timerUrgent ? "#EF4444" : timerWarning ? "#F59E0B" : "#3B82F6"}`,
+        transition: "background 0.8s, border-color 0.8s",
+        padding: "12px 24px",
         textAlign: "center",
+        position: "relative",
+        overflow: "hidden",
       }}>
-        <span style={{ color: timerUrgent ? "#991B1B" : "#92400E", fontSize: "13px", fontWeight: 500, letterSpacing: "0.02em" }}>
-          🛒 Your order is reserved — complete checkout within{" "}
-          <span style={{
-            fontWeight: 800,
-            fontVariantNumeric: "tabular-nums",
-            color: timerUrgent ? "#DC2626" : "#D97706",
-            fontSize: "14px",
-          }}>
-            {timerMins}:{timerSecs}
-          </span>
-        </span>
+        {/* Shimmer sweep */}
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%)",
+          animation: "shimmer 2.4s linear infinite",
+          pointerEvents: "none",
+        }} />
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 16, position: "relative" }}>
+          {/* Clock icon circle */}
+          <div style={{
+            width: 34, height: 34, borderRadius: "50%",
+            background: "rgba(255,255,255,0.15)",
+            border: "1.5px solid rgba(255,255,255,0.3)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: "16px", flexShrink: 0,
+            animation: timerUrgent ? "pulse 0.9s ease-in-out infinite" : "none",
+          }}>⏱</div>
+          {/* Message */}
+          <div style={{ textAlign: "left" }}>
+            <p style={{ margin: 0, fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.75)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+              {timerUrgent ? "⚠️ Hurry — time is almost up!" : "Your items are reserved"}
+            </p>
+            <p style={{ margin: 0, fontSize: "12px", color: "rgba(255,255,255,0.85)", fontWeight: 400, marginTop: "1px" }}>
+              Complete checkout to secure your order
+            </p>
+          </div>
+          {/* Divider */}
+          <div style={{ width: 1, height: 36, background: "rgba(255,255,255,0.25)", flexShrink: 0 }} />
+          {/* Big countdown */}
+          <div style={{ textAlign: "center" }}>
+            <div style={{
+              fontVariantNumeric: "tabular-nums",
+              fontSize: "32px", fontWeight: 900,
+              color: "#fff",
+              lineHeight: 1,
+              letterSpacing: "0.04em",
+              textShadow: timerUrgent ? "0 0 20px rgba(255,100,100,0.6)" : "0 0 16px rgba(255,255,255,0.25)",
+              animation: timerUrgent && parseInt(timerSecs) % 2 === 0 ? "none" : "none",
+            }}>
+              {timerMins}<span style={{ opacity: 0.6, margin: "0 1px" }}>:</span>{timerSecs}
+            </div>
+            <p style={{ margin: 0, fontSize: "10px", fontWeight: 700, color: "rgba(255,255,255,0.6)", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: "2px" }}>
+              remaining
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* ── Main layout ── */}
