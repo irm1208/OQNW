@@ -23,6 +23,7 @@ import {
   sendWelcomeEmail,
 } from "../lib/email";
 import { createBtcPayInvoice, isBtcPayConfigured } from "../lib/btcpay";
+import { createFenaPayment, isFenaConfigured } from "../lib/fena";
 import { assessFraud } from "../lib/fraudScorer";
 import { getClientIp, lookupIpData } from "../lib/geoip";
 import { dispatchWebhook } from "../lib/webhookDispatcher";
@@ -501,7 +502,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingCostGbp: String(shippingCostGbp.toFixed(2)),
         totalGbp: String(totalGbp.toFixed(2)),
         shippingMethod,
-        status: ["bank_transfer", "bitcoin"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
+        status: ["bank_transfer", "bitcoin", "fena"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
         notes: [
           `Payment method: ${paymentMethodStr}`,
           bundleDiscountGbp > 0 ? `Bundle & Save: ${bundleFreeLabel} (-£${bundleDiscountGbp.toFixed(2)})` : null,
@@ -804,6 +805,9 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     let btcPaymentUrl: string | null = null;
     let btcInvoiceId: string | null = null;
 
+    // ── Fena open-banking payment (blocking — need redirect URL before responding) ──
+    let fenaPaymentUrl: string | null = null;
+
     if (paymentMethodStr === "bitcoin" && cryptoCurrencyStr === "BTC") {
       try {
         const invoice = await createBtcPayInvoice({
@@ -833,6 +837,43 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       }
     }
 
+    if (paymentMethodStr === "fena") {
+      try {
+        const origin =
+          (req.headers.origin as string | undefined) ||
+          process.env.SITE_URL ||
+          "https://omniqure.com";
+        const redirectUrl =
+          `${origin}/fena-return` +
+          `?order=${encodeURIComponent(orderNumber)}` +
+          `&name=${encodeURIComponent(d.firstName)}` +
+          `&total=${totalGbp.toFixed(2)}` +
+          `&ship=${encodeURIComponent(shippingMethod)}`;
+
+        const fena = await createFenaPayment({
+          orderNumber,
+          totalGbp,
+          customerEmail: d.email.toLowerCase(),
+          customerName,
+          redirectUrl,
+        });
+        if (fena) {
+          fenaPaymentUrl = fena.paymentUrl;
+          await db
+            .update(ordersTable)
+            .set({
+              notes: [order.notes, `Fena payment id: ${fena.hashedId}`]
+                .filter(Boolean)
+                .join("; "),
+            })
+            .where(eq(ordersTable.id, order.id))
+            .catch(() => {});
+        }
+      } catch (err) {
+        req.log.warn({ err }, "Fena payment creation failed — order still placed");
+      }
+    }
+
     // ── Payment-specific emails (non-blocking) ─────────────────────────────
     if (paymentMethodStr === "bank_transfer") {
       sendBankTransferInstructions({
@@ -858,6 +899,25 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         subtotalGbp,
         shippingCostGbp,
         shippingMethod,
+      }).catch(() => {});
+    } else if (paymentMethodStr === "fena") {
+      // Fena handles the redirect; send a confirmation email so the customer
+      // has a paper trail while the open-banking payment settles.
+      sendOrderConfirmation({
+        orderNumber,
+        customerName,
+        customerEmail: d.email.toLowerCase(),
+        items: emailItems,
+        subtotalGbp,
+        shippingCostGbp,
+        totalGbp,
+        shippingMethod,
+        trackingNumber: null,
+        address1: d.address1,
+        address2: d.address2 ?? null,
+        city: d.city,
+        postcode: d.postcode,
+        country: d.country,
       }).catch(() => {});
     } else {
       sendOrderConfirmation({
@@ -897,10 +957,11 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       shippingMethod,
       paymentMethod: paymentMethodStr,
       ...(paymentMethodStr === "bitcoin" && { cryptoCurrency: cryptoCurrencyStr }),
-      ...(btcAddress   && { btcAddress }),
-      ...(btcAmount    && { btcAmount }),
+      ...(btcAddress    && { btcAddress }),
+      ...(btcAmount     && { btcAmount }),
       ...(btcPaymentUrl && { btcPaymentUrl }),
       ...(btcInvoiceId  && { btcInvoiceId }),
+      ...(fenaPaymentUrl && { fenaPaymentUrl }),
     });
   } catch (err) {
     req.log.error({ err }, "Failed to create order");

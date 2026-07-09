@@ -162,7 +162,7 @@ export default function CheckoutPage() {
   const [applyingDiscount, setApplyingDiscount] = useState(false);
 
 
-  const [paymentMethod, setPaymentMethod] = useState<"bank_transfer" | "bitcoin">("bank_transfer");
+  const [paymentMethod, setPaymentMethod] = useState<"bank_transfer" | "bitcoin" | "fena">("bank_transfer");
   const [cryptoCurrency, setCryptoCurrency] = useState<CryptoCurrency>("BTC");
 
   // Loyalty points
@@ -361,8 +361,16 @@ export default function CheckoutPage() {
           btcAmount?: string;
           btcPaymentUrl?: string;
           cryptoCurrency?: string;
+          fenaPaymentUrl?: string;
         };
         clearCart();
+
+        // Fena: redirect straight to the open-banking hosted payment page
+        if (paymentMethod === "fena" && data.fenaPaymentUrl) {
+          window.location.href = data.fenaPaymentUrl;
+          return;
+        }
+
         const selectedCoin = CRYPTO_OPTIONS.find(c => c.id === cryptoCurrency) ?? CRYPTO_OPTIONS[0];
         const params = new URLSearchParams({
           order: data.orderNumber,
@@ -633,7 +641,88 @@ export default function CheckoutPage() {
 
                 {/* Payment method selector */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "24px" }}>
-                  {/* Pay By Bank — featured option */}
+
+                  {/* ── Fena — Instant Open Banking ── */}
+                  <div
+                    onClick={() => setPaymentMethod("fena")}
+                    style={{
+                      borderRadius: "14px", cursor: "pointer", padding: "16px",
+                      border: `2px solid ${paymentMethod === "fena" ? "#1240A0" : "#E2E8F0"}`,
+                      backgroundColor: paymentMethod === "fena" ? "#EEF4FF" : "#F8FAFC",
+                      transition: "all 0.15s",
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "10px" }}>
+                      <div style={{
+                        width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
+                        border: `2px solid ${paymentMethod === "fena" ? "#1240A0" : "#CBD5E1"}`,
+                        backgroundColor: paymentMethod === "fena" ? "#1240A0" : "#fff",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                      }}>
+                        {paymentMethod === "fena" && <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#fff" }} />}
+                      </div>
+                      {/* Fena logo placeholder — lightning bolt in a circle */}
+                      <div style={{
+                        width: "32px", height: "32px", borderRadius: "8px", flexShrink: 0,
+                        background: "linear-gradient(135deg, #0D2565, #1B5CB5)",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                      }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                          <p style={{ margin: 0, fontSize: "14px", fontWeight: 800, color: paymentMethod === "fena" ? "#1240A0" : "#0F172A" }}>
+                            Instant Open Banking
+                          </p>
+                          <span style={{
+                            fontSize: "9.5px", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase",
+                            color: "#1240A0", backgroundColor: "#DBEAFE", padding: "3px 8px", borderRadius: "999px",
+                          }}>
+                            Powered by Fena
+                          </span>
+                          <span style={{
+                            fontSize: "9.5px", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase",
+                            color: "#065F46", backgroundColor: "#D1FAE5", padding: "3px 8px", borderRadius: "999px",
+                          }}>
+                            Instant
+                          </span>
+                        </div>
+                        <p style={{ margin: "3px 0 0", fontSize: "12px", color: "#64748B" }}>
+                          Pay directly from your bank — no card details, no waiting.
+                        </p>
+                      </div>
+                      {paymentMethod === "fena" && <Check size={16} color="#1240A0" style={{ flexShrink: 0 }} />}
+                    </div>
+
+                    {paymentMethod === "fena" && (
+                      <div style={{ paddingLeft: "48px" }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                          {[
+                            "Select your bank from Fena's secure checkout",
+                            "Authorise the payment in your banking app",
+                            "Return here automatically — we dispatch same day",
+                          ].map((text, i) => (
+                            <div key={i} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                              <div style={{
+                                width: "16px", height: "16px", borderRadius: "50%", flexShrink: 0,
+                                backgroundColor: "#1240A0", color: "#fff",
+                                display: "flex", alignItems: "center", justifyContent: "center",
+                                fontSize: "9px", fontWeight: 800,
+                              }}>{i + 1}</div>
+                              <p style={{ margin: 0, fontSize: "11.5px", color: "#475569" }}>{text}</p>
+                            </div>
+                          ))}
+                        </div>
+                        <p style={{ fontSize: "11px", color: "#94A3B8", marginTop: "10px", marginBottom: 0 }}>
+                          Clicking the button below will take you to Fena's secure open-banking page. You'll be redirected back here after authorising.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Pay By Bank — manual bank transfer */}
                   <div
                     onClick={() => setPaymentMethod("bank_transfer")}
                     style={{
@@ -876,7 +965,9 @@ export default function CheckoutPage() {
                 {placing ? (
                   "Processing order…"
                 ) : step === 3 ? (
-                  paymentMethod === "bank_transfer"
+                  paymentMethod === "fena"
+                    ? <><Lock size={15} /> Proceed to Open Banking</>
+                    : paymentMethod === "bank_transfer"
                     ? <><Lock size={15} /> Place Order — Pay by Bank Transfer</>
                     : <><Lock size={15} /> Place Order — Pay with Bitcoin</>
                 ) : (
