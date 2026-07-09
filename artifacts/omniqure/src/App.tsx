@@ -72,20 +72,6 @@ function PixelTracker() {
   return null;
 }
 
-function AppShell({ children }: { children: React.ReactNode }) {
-  const [location] = useLocation();
-  const isCheckout = location === "/checkout";
-  return (
-    <div className="min-h-screen bg-white flex flex-col">
-      {!isCheckout && <AnnouncementBar />}
-      {!isCheckout && <Header />}
-      <JurisdictionWarning />
-      <main className="flex-1">{children}</main>
-      {!isCheckout && <SiteDisclaimer />}
-      {!isCheckout && <Footer />}
-    </div>
-  );
-}
 
 function Router() {
   return (
@@ -142,9 +128,16 @@ function App() {
               <ScrollToTop />
               <PixelTracker />
               <CookieConsent />
-              <AppShell>
-                <Router />
-              </AppShell>
+              <div className="min-h-screen bg-white flex flex-col">
+                <AnnouncementBar />
+                <Header />
+                <JurisdictionWarning />
+                <main className="flex-1">
+                  <Router />
+                </main>
+                <SiteDisclaimer />
+                <Footer />
+              </div>
               <CartPreviewPanel />
               <MobileBottomBar />
               <ChatWidget />
