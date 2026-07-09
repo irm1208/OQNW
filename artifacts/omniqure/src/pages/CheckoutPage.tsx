@@ -190,12 +190,8 @@ export default function CheckoutPage() {
   const [freePeptideCredits, setFreePeptideCredits] = useState(0);
   const [redeemFreePeptide, setRedeemFreePeptide] = useState(false);
 
-  // Postcode lookup
-  const [postcodeLookup, setPostcodeLookup] = useState("");
-  const [addressOptions, setAddressOptions] = useState<AddressOption[]>([]);
-  const [addressDropOpen, setAddressDropOpen] = useState(false);
+  // Postcode — auto-fill city/county on blur via postcodes.io
   const [postcodeLoading, setPostcodeLoading] = useState(false);
-  const [postcodeError, setPostcodeError] = useState("");
 
   // Pre-fill for logged-in customers
   useEffect(() => {
@@ -233,66 +229,26 @@ export default function CheckoutPage() {
     }
   }, []);
 
-  // Postcode → full address lookup via /api/address-lookup (proxied to getaddress.io)
-  const findAddresses = useCallback(async (pc: string) => {
-    const q = pc.trim().toUpperCase();
-    if (!q) return;
+  // Auto-fill city/county when a valid postcode is entered
+  const onPostcodeBlur = useCallback(async (pc: string) => {
+    const q = pc.trim().toUpperCase().replace(/\s/g, "");
+    if (q.length < 5) return;
     setPostcodeLoading(true);
-    setPostcodeError("");
-    setAddressOptions([]);
-    setAddressDropOpen(false);
     try {
-      const res = await fetch(apiUrl(`address-lookup?postcode=${encodeURIComponent(q)}`));
-      if (res.status === 503) {
-        // API key not configured — fall back: validate via postcodes.io and fill city/county only
-        const pc2 = await fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(q)}`).then(r => r.ok ? r.json() : null);
-        if (pc2?.result) {
-          setDelivery(d => ({
-            ...d,
-            postcode: q,
-            city: d.city || pc2.result.admin_district || "",
-            county: d.county || pc2.result.admin_county || pc2.result.parish || "",
-          }));
-          setPostcodeError("Address lookup unavailable — please fill in your address manually.");
-        } else {
-          setPostcodeError("Postcode not found. Please check and try again.");
-        }
-        return;
+      const res = await fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(q)}`);
+      if (!res.ok) return;
+      const data = await res.json() as { result?: { admin_district?: string; admin_county?: string; parish?: string } };
+      if (data?.result) {
+        setDelivery(d => ({
+          ...d,
+          city: d.city || data.result!.admin_district || "",
+          county: d.county || data.result!.admin_county || data.result!.parish || "",
+        }));
       }
-      if (res.status === 404) {
-        setPostcodeError("No addresses found for this postcode. Please check and try again.");
-        return;
-      }
-      if (!res.ok) {
-        setPostcodeError("Lookup failed. Please enter your address manually.");
-        return;
-      }
-      const data = await res.json() as { postcode: string; addresses: AddressOption[] };
-      if (!data.addresses?.length) {
-        setPostcodeError("No addresses found. Please enter your address manually.");
-        return;
-      }
-      setAddressOptions(data.addresses);
-      setAddressDropOpen(true);
-      setDelivery(d => ({ ...d, postcode: data.postcode }));
-      setPostcodeLookup(data.postcode);
-    } catch {
-      setPostcodeError("Lookup failed. Please enter your address manually.");
-    } finally {
+    } catch { /* ignore */ } finally {
       setPostcodeLoading(false);
     }
   }, []);
-
-  const selectAddress = (opt: AddressOption) => {
-    setAddressDropOpen(false);
-    setDelivery(d => ({
-      ...d,
-      address1: opt.line1,
-      address2: opt.line2,
-      city: opt.city,
-      county: opt.county,
-    }));
-  };
 
   if (items.length === 0) {
     return (
@@ -516,57 +472,6 @@ export default function CheckoutPage() {
           {/* SHIPPING ADDRESS */}
           <p style={sectionTitle}>Shipping Address</p>
 
-          {/* Postcode lookup */}
-          <div style={{ marginBottom: 12 }}>
-            <label style={label}>Postcode Lookup</label>
-            <div style={{ display: "flex", gap: 8 }}>
-              <input
-                value={postcodeLookup}
-                onChange={e => { setPostcodeLookup(e.target.value); setPostcodeError(""); setAddressDropOpen(false); }}
-                onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); findAddresses(postcodeLookup); } }}
-                placeholder="e.g. SW1A 1AA"
-                style={{ ...input, flex: 1, marginBottom: 0 }}
-              />
-              <button
-                type="button"
-                onClick={() => findAddresses(postcodeLookup)}
-                disabled={postcodeLoading || !postcodeLookup.trim()}
-                style={{
-                  padding: "0 16px", borderRadius: 4, border: "none",
-                  background: postcodeLoading || !postcodeLookup.trim() ? "#9ca3af" : "#111827",
-                  color: "#fff", fontSize: "14px", fontWeight: 600,
-                  cursor: postcodeLoading || !postcodeLookup.trim() ? "not-allowed" : "pointer",
-                  whiteSpace: "nowrap", flexShrink: 0,
-                }}
-              >
-                {postcodeLoading ? "Searching…" : "Find Address"}
-              </button>
-            </div>
-
-            {postcodeError && (
-              <p style={{ fontSize: "12px", color: "#ef4444", marginTop: 6 }}>{postcodeError}</p>
-            )}
-
-            {addressDropOpen && addressOptions.length > 0 && (
-              <div style={{ marginTop: 8 }}>
-                <label style={label}>Select your address</label>
-                <select
-                  defaultValue=""
-                  onChange={e => {
-                    const idx = Number(e.target.value);
-                    if (!isNaN(idx) && addressOptions[idx]) selectAddress(addressOptions[idx]);
-                  }}
-                  style={{ ...input, marginBottom: 0, cursor: "pointer" }}
-                >
-                  <option value="" disabled>— {addressOptions.length} address{addressOptions.length !== 1 ? "es" : ""} found, select yours —</option>
-                  {addressOptions.map((a, i) => (
-                    <option key={i} value={i}>{a.label}</option>
-                  ))}
-                </select>
-              </div>
-            )}
-          </div>
-
           {/* Name row */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
             <div>
@@ -624,7 +529,11 @@ export default function CheckoutPage() {
               <label style={label}>Postal Code *</label>
               <input value={delivery.postcode} onChange={setD("postcode")} placeholder="Postal Code" style={inp("postcode")}
                 onFocus={e => { if (!errors.postcode) e.currentTarget.style.borderColor = "#374151"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = errors.postcode ? "#ef4444" : "#d1d5db"; }} />
+                onBlur={e => {
+                  e.currentTarget.style.borderColor = errors.postcode ? "#ef4444" : "#d1d5db";
+                  onPostcodeBlur(e.currentTarget.value);
+                }} />
+              {postcodeLoading && <p style={{ fontSize: "12px", color: "#6b7280", marginTop: 4 }}>Looking up postcode…</p>}
               {errors.postcode && <p style={errText}>{errors.postcode}</p>}
             </div>
           </div>
