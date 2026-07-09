@@ -468,32 +468,31 @@ export default function CheckoutPage() {
               </span>
             ))}
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: "12px" }}>
-            {/* Countdown timer */}
-            <div style={{
-              display: "flex", alignItems: "center", gap: 5,
-              background: timerUrgent ? "#fef2f2" : timerWarning ? "#fffbeb" : "#f0fdf4",
-              border: `1px solid ${timerUrgent ? "#fca5a5" : timerWarning ? "#fcd34d" : "#86efac"}`,
-              borderRadius: 6, padding: "4px 10px",
-            }}>
-              <span style={{ fontSize: 13 }}>⏱</span>
-              <span style={{
-                fontWeight: 800, letterSpacing: "0.06em", fontVariantNumeric: "tabular-nums",
-                color: timerUrgent ? "#dc2626" : timerWarning ? "#d97706" : "#16a34a",
-                fontSize: "13px",
-              }}>
-                {timerMins}:{timerSecs}
-              </span>
-              <span style={{ color: timerUrgent ? "#dc2626" : timerWarning ? "#d97706" : "#16a34a", fontWeight: 600 }}>
-                left
-              </span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#6b7280" }}>
-              <Lock size={13} />
-              <span style={{ fontWeight: 600, letterSpacing: "0.04em" }}>SECURE</span>
-            </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#6b7280", fontSize: "12px" }}>
+            <Lock size={13} />
+            <span style={{ fontWeight: 600, letterSpacing: "0.04em" }}>SECURE CHECKOUT</span>
           </div>
         </div>
+      </div>
+
+      {/* ── Timer banner ── */}
+      <div style={{
+        background: timerUrgent ? "#7f1d1d" : "#111827",
+        transition: "background 0.6s",
+        padding: "10px 24px",
+        textAlign: "center",
+      }}>
+        <span style={{ color: "#fff", fontSize: "13px", fontWeight: 500, letterSpacing: "0.02em" }}>
+          🛒 Your order is reserved — complete checkout within{" "}
+          <span style={{
+            fontWeight: 800,
+            fontVariantNumeric: "tabular-nums",
+            color: timerUrgent ? "#fca5a5" : timerWarning ? "#fcd34d" : "#fff",
+            fontSize: "14px",
+          }}>
+            {timerMins}:{timerSecs}
+          </span>
+        </span>
       </div>
 
       {/* ── Main layout ── */}
