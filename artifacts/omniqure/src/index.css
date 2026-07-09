@@ -481,22 +481,16 @@
 }
 
 /* ── HOME HERO RESPONSIVE ────────────────────────────────── */
-/* All hero/marketing slide assets are ultra-wide (~21:9), rendered with
-   object-fit: contain so they're never cropped. On mobile we use a
-   slightly taller (16:9) box for more visual presence — this adds a small,
-   intentional branded-color letterbox strip above/below the image, not the
-   large empty gap the previous min-height override used to create. From
-   tablet width up, the box matches the images' native 21:9 ratio exactly
-   so there's no letterbox at all. */
+/* All hero/marketing slide assets share the exact same native pixel
+   dimensions (6336x2688), rendered with object-fit: contain so they're
+   never cropped. The carousel box uses that exact ratio at every
+   breakpoint so the image fills the box edge-to-edge with zero letterbox
+   gap, on mobile included. Keep this in sync with the inline aspectRatio
+   on .hero-carousel in HomePage.tsx if it ever changes. */
 
 .hero-carousel {
-  aspect-ratio: 16 / 9 !important;
+  aspect-ratio: 6336 / 2688 !important;
   min-height: 0 !important;
-}
-@media (min-width: 768px) {
-  .hero-carousel {
-    aspect-ratio: 21 / 9 !important;
-  }
 }
 
 /* Dots row: keep tight to the bottom edge but never collide with the CTA

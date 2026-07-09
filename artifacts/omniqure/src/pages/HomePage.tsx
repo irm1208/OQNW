@@ -477,7 +477,7 @@ function HeroCarousel() {
   }
 
   return (
-    <div className="hero-carousel" style={{ position: "relative", overflow: "hidden", width: "100%", aspectRatio: "16 / 9" }}>
+    <div className="hero-carousel" style={{ position: "relative", overflow: "hidden", width: "100%", aspectRatio: "6336 / 2688" }}>
 
       {slides.map((s, i) => (
         <div
