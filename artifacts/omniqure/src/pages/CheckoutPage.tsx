@@ -1,11 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { trackInitiateCheckout } from "@/lib/pixels";
 import { Link, useLocation } from "wouter";
-import {
-  ChevronRight, ChevronDown, Lock, Truck, Zap, Package,
-  User, MapPin, Phone, Mail,
-  CheckCircle2, FlaskConical, Tag, X, Award, Gift, Check, Landmark,
-} from "lucide-react";
+import { Lock, Shield, Truck } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
@@ -33,55 +29,45 @@ const SHIPPING_OPTIONS = [
   {
     id: "standard",
     label: "Standard",
-    days: "3–5 working days",
-    price: 9.95,
+    displayLabel: "Standard (3–5 business days)",
+    price: 5.00,
     freeOver: 100,
-    icon: <Package size={18} />,
-    description: "Discreet packaging included",
+    note: "",
   },
   {
-    id: "express",
-    label: "Express",
-    days: "1–2 working days",
-    price: 24.95,
+    id: "nextday_weekday",
+    label: "Next Day Weekday",
+    displayLabel: "Next Day Weekday (order before 1pm Mon–Thu)",
+    price: 9.50,
     freeOver: null,
-    icon: <Truck size={18} />,
-    description: "Priority tracked delivery",
+    note: "Excluding Channel Islands, Jersey, Isle of Wight, Highlands and Belfast",
   },
   {
-    id: "nextday",
-    label: "Next Day",
-    days: "Next working day",
-    price: 39.95,
+    id: "nextday_weekend",
+    label: "Next-Day Weekend",
+    displayLabel: "Next-Day Weekend (order before 1pm Fri)",
+    price: 13.99,
     freeOver: null,
-    icon: <Zap size={18} />,
-    description: "Order before 2pm for same-day dispatch",
+    note: "Excluding Channel Islands, Jersey, Isle of Wight, Highlands and Belfast",
   },
 ];
 
-// ── Payment method configuration ──────────────────────────────────────────────
-// Update these with your real bank details before going live
 const BANK_DETAILS = {
   accountName: "OmniQure Research Ltd",
   sortCode: "20-00-00",
   accountNumber: "12345678",
   bank: "Barclays Bank",
 };
-// ── Cryptocurrency wallet addresses ─────────────────────────────────────────
-// Update these with your actual wallet addresses before going live.
-// ETH, USDT, and USDC share the same Ethereum address.
+
 const CRYPTO_OPTIONS = [
-  { id: "BTC",  name: "Bitcoin",          symbol: "₿", network: "Bitcoin",       address: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh", color: "#F59E0B", bg: "#FFFBEB", border: "#FDE68A", text: "#92400E" },
-  { id: "ETH",  name: "Ethereum",         symbol: "Ξ", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere",                  color: "#6366F1", bg: "#EEF2FF", border: "#C7D2FE", text: "#3730A3" },
-  { id: "USDT", name: "USDT",             symbol: "₮", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere",                  color: "#059669", bg: "#ECFDF5", border: "#6EE7B7", text: "#065F46" },
-  { id: "USDC", name: "USDC",             symbol: "◎", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere",                  color: "#2563EB", bg: "#EFF6FF", border: "#BFDBFE", text: "#1E40AF" },
-  { id: "LTC",  name: "Litecoin",         symbol: "Ł", network: "Litecoin",     address: "LYourLitecoinAddressHere",                   color: "#64748B", bg: "#F8FAFC", border: "#CBD5E1", text: "#334155" },
-  { id: "XMR",  name: "Monero",           symbol: "ɱ", network: "Monero",       address: "YourMoneroAddressHere",                      color: "#EA580C", bg: "#FFF7ED", border: "#FED7AA", text: "#9A3412" },
+  { id: "BTC",  name: "Bitcoin",    symbol: "₿", network: "Bitcoin",      address: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh" },
+  { id: "ETH",  name: "Ethereum",   symbol: "Ξ", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
+  { id: "USDT", name: "USDT",       symbol: "₮", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
+  { id: "USDC", name: "USDC",       symbol: "◎", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
+  { id: "LTC",  name: "Litecoin",   symbol: "Ł", network: "Litecoin",     address: "LYourLitecoinAddressHere" },
+  { id: "XMR",  name: "Monero",     symbol: "ɱ", network: "Monero",       address: "YourMoneroAddressHere" },
 ] as const;
 type CryptoCurrency = typeof CRYPTO_OPTIONS[number]["id"];
-// ──────────────────────────────────────────────────────────────────────────────
-
-type Step = 1 | 2 | 3;
 
 type DeliveryForm = {
   email: string; firstName: string; lastName: string; phone: string;
@@ -90,10 +76,7 @@ type DeliveryForm = {
 };
 
 type AppliedDiscount = {
-  code: string;
-  type: string;
-  value: number;
-  discountAmount: number;
+  code: string; type: string; value: number; discountAmount: number;
 };
 
 const emptyDelivery: DeliveryForm = {
@@ -102,81 +85,78 @@ const emptyDelivery: DeliveryForm = {
   postcode: "", country: "United Kingdom",
 };
 
-function fieldStyle(hasError: boolean): React.CSSProperties {
-  return {
-    width: "100%", height: "44px", paddingLeft: "38px", paddingRight: "14px",
-    borderRadius: "10px",
-    border: `1.5px solid ${hasError ? "#FCA5A5" : "#E2E8F0"}`,
-    fontSize: "14px", color: "#0F172A", outline: "none",
-    backgroundColor: hasError ? "#FFF5F5" : "#F8FAFC",
-    boxSizing: "border-box",
-    transition: "border-color 0.15s",
-    fontFamily: "'Arimo', Arial, sans-serif",
-  };
-}
+// ── Styles ──────────────────────────────────────────────────────────────────
 
-function Icon({ children }: { children: React.ReactNode }) {
-  return (
-    <span style={{
-      position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)",
-      color: "#94A3B8", pointerEvents: "none", display: "flex", alignItems: "center",
-    }}>
-      {children}
-    </span>
-  );
-}
+const input: React.CSSProperties = {
+  width: "100%", height: "44px", padding: "0 12px",
+  border: "1px solid #d1d5db", borderRadius: "4px",
+  fontSize: "14px", color: "#111827", outline: "none",
+  fontFamily: "inherit", background: "#fff",
+  boxSizing: "border-box",
+};
 
-function formatCard(val: string) {
-  return val.replace(/\D/g, "").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
-}
-function formatExpiry(val: string) {
-  const digits = val.replace(/\D/g, "").slice(0, 4);
-  if (digits.length > 2) return digits.slice(0, 2) + "/" + digits.slice(2);
-  return digits;
-}
+const inputError: React.CSSProperties = { ...input, borderColor: "#ef4444" };
+
+const label: React.CSSProperties = {
+  display: "block", fontSize: "11px", fontWeight: 700,
+  color: "#374151", letterSpacing: "0.07em", textTransform: "uppercase",
+  marginBottom: "5px",
+};
+
+const sectionTitle: React.CSSProperties = {
+  fontSize: "13px", fontWeight: 800, color: "#111827",
+  letterSpacing: "0.08em", textTransform: "uppercase",
+  margin: "0 0 16px",
+};
+
+const errText: React.CSSProperties = {
+  fontSize: "11px", color: "#ef4444", marginTop: "3px",
+};
+
+const divider: React.CSSProperties = {
+  border: "none", borderTop: "1px solid #e5e7eb", margin: "24px 0",
+};
 
 export default function CheckoutPage() {
   const [, navigate] = useLocation();
   const { items, clearCart, bundleDiscountAmount, bundleFreeBacWater, bundleFreeItemsCount, freeUnitsByProductId } = useCart();
-  const bundleFreeLabel =
-    bundleFreeItemsCount > 0
-      ? `${bundleFreeItemsCount} peptide${bundleFreeItemsCount > 1 ? "s" : ""} free`
-      : bundleFreeBacWater
-        ? "free BAC water"
-        : "";
-  const { formatPrice, currency } = useCurrency();
+  const { formatPrice } = useCurrency();
   const { customer } = useCustomerAuth();
-  const [step, setStep] = useState<Step>(1);
+
   const checkoutFired = useRef(false);
+
   const [delivery, setDelivery] = useState<DeliveryForm>(emptyDelivery);
   const [shipping, setShipping] = useState("standard");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [placing, setPlacing] = useState(false);
   const [placeError, setPlaceError] = useState<string | null>(null);
   const [stockErrors, setStockErrors] = useState<{ productName: string; available: number; requested: number }[]>([]);
+  const [confirmed, setConfirmed] = useState(false);
 
-  // Discount code state
+  // Discount
   const [discountInput, setDiscountInput] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState<AppliedDiscount | null>(null);
   const [discountError, setDiscountError] = useState<string | null>(null);
   const [applyingDiscount, setApplyingDiscount] = useState(false);
 
-
-  const [paymentMethod, setPaymentMethod] = useState<"bank_transfer" | "bitcoin" | "fena">("bank_transfer");
+  // Payment
+  const [paymentMethod, setPaymentMethod] = useState<"bank_transfer" | "bitcoin" | "fena">("fena");
   const [cryptoCurrency, setCryptoCurrency] = useState<CryptoCurrency>("BTC");
 
-  // Loyalty points
+  // Loyalty
   const [loyaltyBalance, setLoyaltyBalance] = useState<{ balance: number; gbpValue: number } | null>(null);
   const [loyaltyPointsToRedeem, setLoyaltyPointsToRedeem] = useState(0);
-
-  // Free peptide credits
   const [freePeptideCredits, setFreePeptideCredits] = useState(0);
   const [redeemFreePeptide, setRedeemFreePeptide] = useState(false);
 
-  // Mobile order summary toggle (collapsed by default)
-  const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
+  // Postcode lookup
+  const [postcodeLookup, setPostcodeLookup] = useState("");
+  const [postcodeResults, setPostcodeResults] = useState<string[]>([]);
+  const [postcodeDropOpen, setPostcodeDropOpen] = useState(false);
+  const [postcodeLoading, setPostcodeLoading] = useState(false);
+  const postcodeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Pre-fill delivery form for logged-in customers
+  // Pre-fill for logged-in customers
   useEffect(() => {
     if (customer) {
       setDelivery(prev => ({
@@ -188,9 +168,12 @@ export default function CheckoutPage() {
     }
   }, [customer]);
 
-  // Fetch loyalty balance for logged-in customers
   useEffect(() => {
-    if (!customer) { setLoyaltyBalance(null); setLoyaltyPointsToRedeem(0); setFreePeptideCredits(0); setRedeemFreePeptide(false); return; }
+    if (!customer) {
+      setLoyaltyBalance(null); setLoyaltyPointsToRedeem(0);
+      setFreePeptideCredits(0); setRedeemFreePeptide(false);
+      return;
+    }
     fetch(apiUrl("loyalty/balance"), { credentials: "include" })
       .then(r => r.ok ? r.json() as Promise<{ balance: number; gbpValue: number }> : null)
       .then(data => { if (data) setLoyaltyBalance(data); })
@@ -201,22 +184,62 @@ export default function CheckoutPage() {
       .catch(() => {});
   }, [customer]);
 
-  useEffect(() => { window.scrollTo({ top: 0, behavior: "smooth" }); }, [step]);
-
   useEffect(() => {
     if (!checkoutFired.current && items.length > 0) {
       checkoutFired.current = true;
       const value = items.reduce((sum, i) => sum + (i.product.price ?? 0) * i.quantity, 0);
-      const numItems = items.reduce((sum, i) => sum + i.quantity, 0);
-      trackInitiateCheckout(value, numItems);
+      trackInitiateCheckout(value, items.reduce((s, i) => s + i.quantity, 0));
     }
   }, []);
 
+  // Postcode autocomplete via postcodes.io
+  const lookupPostcode = useCallback((val: string) => {
+    const q = val.trim().toUpperCase().replace(/\s/g, "");
+    if (q.length < 2) { setPostcodeResults([]); setPostcodeDropOpen(false); return; }
+    setPostcodeLoading(true);
+    fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(q)}/autocomplete`)
+      .then(r => r.ok ? r.json() as Promise<{ result: string[] | null }> : null)
+      .then(data => {
+        const results = data?.result ?? [];
+        setPostcodeResults(results.slice(0, 6));
+        setPostcodeDropOpen(results.length > 0);
+      })
+      .catch(() => {})
+      .finally(() => setPostcodeLoading(false));
+  }, []);
+
+  const onPostcodeLookupChange = (val: string) => {
+    setPostcodeLookup(val);
+    if (postcodeTimer.current) clearTimeout(postcodeTimer.current);
+    postcodeTimer.current = setTimeout(() => lookupPostcode(val), 350);
+  };
+
+  const selectPostcode = (pc: string) => {
+    setPostcodeDropOpen(false);
+    setPostcodeLookup(pc);
+    setDelivery(d => ({ ...d, postcode: pc }));
+    // Fetch details to auto-fill city/county
+    fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(pc)}`)
+      .then(r => r.ok ? r.json() : null)
+      .then((data: { result?: { admin_district?: string; admin_county?: string; parish?: string } } | null) => {
+        if (data?.result) {
+          const city = data.result.admin_district ?? "";
+          const county = data.result.admin_county ?? data.result.parish ?? "";
+          setDelivery(d => ({
+            ...d,
+            city: d.city || city,
+            county: d.county || county,
+          }));
+        }
+      })
+      .catch(() => {});
+  };
+
   if (items.length === 0) {
     return (
-      <div style={{ fontFamily: "'Arimo', Arial, sans-serif", minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#F5F8FC" }}>
-        <div style={{ textAlign: "center", padding: "40px 20px" }}>
-          <p style={{ fontSize: "18px", fontWeight: 700, color: "#0F172A", marginBottom: "8px" }}>Your cart is empty</p>
+      <div style={{ fontFamily: "inherit", minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ textAlign: "center" }}>
+          <p style={{ fontSize: "18px", fontWeight: 700, color: "#111827", marginBottom: "8px" }}>Your cart is empty</p>
           <Link href="/all-peptides" style={{ color: "#1B5CB5", fontSize: "14px" }}>← Browse peptides</Link>
         </div>
       </div>
@@ -235,7 +258,7 @@ export default function CheckoutPage() {
   const setD = (f: keyof DeliveryForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setDelivery(d => ({ ...d, [f]: e.target.value }));
 
-  function validateDelivery() {
+  function validateAll(): Record<string, string> {
     const e: Record<string, string> = {};
     if (!delivery.email.includes("@")) e.email = "Valid email required";
     if (!delivery.firstName.trim()) e.firstName = "Required";
@@ -245,10 +268,6 @@ export default function CheckoutPage() {
     if (!delivery.postcode.trim()) e.postcode = "Required";
     if (!delivery.country.trim()) e.country = "Required";
     return e;
-  }
-
-  function validatePayment() {
-    return {};
   }
 
   async function applyDiscount() {
@@ -263,12 +282,7 @@ export default function CheckoutPage() {
       });
       const data = await res.json() as { valid: boolean; error?: string; code?: string; type?: string; value?: number; discountAmount?: number };
       if (data.valid && data.code && data.discountAmount !== undefined) {
-        setAppliedDiscount({
-          code: data.code,
-          type: data.type!,
-          value: data.value!,
-          discountAmount: data.discountAmount,
-        });
+        setAppliedDiscount({ code: data.code, type: data.type!, value: data.value!, discountAmount: data.discountAmount });
         setDiscountInput("");
         setDiscountError(null);
       } else {
@@ -282,1037 +296,722 @@ export default function CheckoutPage() {
     }
   }
 
-  function removeDiscount() {
-    setAppliedDiscount(null);
-    setDiscountError(null);
-    setDiscountInput("");
-  }
+  async function placeOrder() {
+    const e = validateAll();
+    if (Object.keys(e).length) { setErrors(e); window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+    if (!confirmed) {
+      setErrors({ confirmed: "Please confirm before placing your order" });
+      return;
+    }
+    setErrors({});
+    setPlacing(true);
+    setPlaceError(null);
+    setStockErrors([]);
+    try {
+      const res = await fetch(apiUrl("orders"), {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          delivery: {
+            email: delivery.email,
+            firstName: delivery.firstName,
+            lastName: delivery.lastName,
+            phone: delivery.phone || undefined,
+            address1: delivery.address1,
+            address2: delivery.address2 || undefined,
+            city: delivery.city,
+            county: delivery.county || undefined,
+            postcode: delivery.postcode,
+            country: delivery.country,
+          },
+          shippingMethod: selectedShipping.label,
+          shippingCostGbp: shippingCost,
+          items: items.map(({ product, quantity }) => ({
+            productId: parseInt(String(product.id)) || 0,
+            productSlug: (product as { slug?: string }).slug ?? "",
+            productName: product.name,
+            productCategory: product.category ?? "",
+            quantity,
+            priceGbp: product.price ?? 0,
+          })),
+          discountCode: appliedDiscount?.code ?? null,
+          loyaltyPointsRedeemed: loyaltyPointsToRedeem > 0 ? loyaltyPointsToRedeem : undefined,
+          redeemFreePeptide: redeemFreePeptide && freePeptideCredits > 0 ? true : undefined,
+          paymentMethod,
+          cryptoCurrency: paymentMethod === "bitcoin" ? cryptoCurrency : undefined,
+        }),
+      });
 
-
-  async function handleNext() {
-    if (step === 1) {
-      const e = validateDelivery();
-      if (Object.keys(e).length) { setErrors(e); return; }
-      setErrors({});
-      setStep(2);
-    } else if (step === 2) {
-      setErrors({});
-      setStep(3);
-    } else {
-      const e = validatePayment();
-      if (Object.keys(e).length) { setErrors(e); return; }
-      setErrors({});
-      setPlacing(true);
-      setPlaceError(null);
-      setStockErrors([]);
-      try {
-        const res = await fetch(apiUrl("orders"), {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            delivery: {
-              email: delivery.email,
-              firstName: delivery.firstName,
-              lastName: delivery.lastName,
-              phone: delivery.phone || undefined,
-              address1: delivery.address1,
-              address2: delivery.address2 || undefined,
-              city: delivery.city,
-              county: delivery.county || undefined,
-              postcode: delivery.postcode,
-              country: delivery.country,
-            },
-            shippingMethod: selectedShipping.label,
-            shippingCostGbp: shippingCost,
-            items: items.map(({ product, quantity }) => ({
-              productId: parseInt(String(product.id)) || 0,
-              productSlug: (product as { slug?: string }).slug ?? "",
-              productName: product.name,
-              productCategory: product.category ?? "",
-              quantity,
-              priceGbp: product.price ?? 0,
-            })),
-            discountCode: appliedDiscount?.code ?? null,
-            loyaltyPointsRedeemed: loyaltyPointsToRedeem > 0 ? loyaltyPointsToRedeem : undefined,
-            redeemFreePeptide: redeemFreePeptide && freePeptideCredits > 0 ? true : undefined,
-            paymentMethod,
-            cryptoCurrency: paymentMethod === "bitcoin" ? cryptoCurrency : undefined,
-          }),
-        });
-
-        if (res.status === 422) {
-          const body = await res.json().catch(() => ({})) as { error?: string; stockErrors?: { productName: string; available: number; requested: number }[] };
-          setStockErrors(body.stockErrors ?? []);
-          setPlaceError(body.error ?? "Some items in your cart are unavailable.");
-          setPlacing(false);
-          return;
-        }
-
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({ error: "Order failed" })) as { error?: string };
-          throw new Error(err.error ?? "Order failed");
-        }
-
-        const data = await res.json() as {
-          orderNumber: string;
-          customerName: string;
-          totalGbp: number;
-          shippingMethod: string;
-          btcAddress?: string;
-          btcAmount?: string;
-          btcPaymentUrl?: string;
-          cryptoCurrency?: string;
-          fenaPaymentUrl?: string;
-        };
-        clearCart();
-
-        // Fena: redirect straight to the open-banking hosted payment page
-        if (paymentMethod === "fena" && data.fenaPaymentUrl) {
-          window.location.href = data.fenaPaymentUrl;
-          return;
-        }
-
-        const selectedCoin = CRYPTO_OPTIONS.find(c => c.id === cryptoCurrency) ?? CRYPTO_OPTIONS[0];
-        const params = new URLSearchParams({
-          order: data.orderNumber,
-          name: delivery.firstName,
-          total: data.totalGbp.toFixed(2),
-          ship: data.shippingMethod,
-          payment: paymentMethod,
-        });
-        if (paymentMethod === "bitcoin") {
-          params.set("cryptoCurrency", cryptoCurrency);
-          // For BTC use BTCPay-provided address, otherwise use static address
-          const addr = data.btcAddress ?? selectedCoin.address;
-          params.set("cryptoAddress", addr);
-          if (data.btcAmount)     params.set("btcAmount", data.btcAmount);
-          if (data.btcPaymentUrl) params.set("btcUrl", data.btcPaymentUrl);
-        }
-        navigate(`/order-confirmation?${params.toString()}`);
-      } catch (err) {
-        setPlaceError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      if (res.status === 422) {
+        const body = await res.json().catch(() => ({})) as { error?: string; stockErrors?: { productName: string; available: number; requested: number }[] };
+        setStockErrors(body.stockErrors ?? []);
+        setPlaceError(body.error ?? "Some items in your cart are unavailable.");
         setPlacing(false);
+        return;
       }
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: "Order failed" })) as { error?: string };
+        throw new Error(err.error ?? "Order failed");
+      }
+
+      const data = await res.json() as {
+        orderNumber: string; customerName: string; totalGbp: number; shippingMethod: string;
+        btcAddress?: string; btcAmount?: string; btcPaymentUrl?: string;
+        cryptoCurrency?: string; fenaPaymentUrl?: string;
+      };
+      clearCart();
+
+      if (paymentMethod === "fena" && data.fenaPaymentUrl) {
+        window.location.href = data.fenaPaymentUrl;
+        return;
+      }
+
+      const selectedCoin = CRYPTO_OPTIONS.find(c => c.id === cryptoCurrency) ?? CRYPTO_OPTIONS[0];
+      const params = new URLSearchParams({
+        order: data.orderNumber,
+        name: delivery.firstName,
+        total: data.totalGbp.toFixed(2),
+        ship: data.shippingMethod,
+        payment: paymentMethod,
+      });
+      if (paymentMethod === "bitcoin") {
+        params.set("cryptoCurrency", cryptoCurrency);
+        const addr = data.btcAddress ?? selectedCoin.address;
+        params.set("cryptoAddress", addr);
+        if (data.btcAmount) params.set("btcAmount", data.btcAmount);
+        if (data.btcPaymentUrl) params.set("btcUrl", data.btcPaymentUrl);
+      }
+      navigate(`/order-confirmation?${params.toString()}`);
+    } catch (err) {
+      setPlaceError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      setPlacing(false);
     }
   }
 
-  const STEPS = ["Delivery", "Shipping", "Payment"];
-
-  const inputFocus = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) =>
-    (e.currentTarget.style.borderColor = "#1B5CB5");
-  const inputBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>, key: string) =>
-    (e.currentTarget.style.borderColor = errors[key] ? "#FCA5A5" : "#E2E8F0");
+  // Shared input style with error state
+  const inp = (key: string): React.CSSProperties =>
+    errors[key] ? inputError : input;
 
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "70vh" }}>
+    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#f9fafb", minHeight: "100vh" }}>
 
-      {/* Progress header */}
-      <div style={{ background: "linear-gradient(90deg, #0D2565, #1B5CB5)", padding: "20px 0" }}>
-        <div className="max-w-[1200px] mx-auto px-4">
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
-            <Lock size={14} style={{ color: "rgba(255,255,255,0.6)" }} />
-            <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", fontWeight: 600 }}>
-              Secure Checkout — SSL Encrypted
-            </span>
+      {/* ── Breadcrumb bar ── */}
+      <div style={{ borderBottom: "1px solid #e5e7eb", backgroundColor: "#fff" }}>
+        <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 }}>
+          <Link href="/" style={{ fontSize: "18px", fontWeight: 800, color: "#111827", textDecoration: "none", letterSpacing: "-0.02em" }}>
+            OmniQure
+          </Link>
+          <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 600, letterSpacing: "0.07em", textTransform: "uppercase" }}>
+            {["Cart", "Information", "Shipping", "Payment"].map((s, i) => (
+              <span key={s} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                {i > 0 && <span style={{ color: "#9ca3af" }}>›</span>}
+                <span style={{ color: i === 1 ? "#111827" : "#9ca3af" }}>{s}</span>
+              </span>
+            ))}
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0" }}>
-            {STEPS.map((label, i) => {
-              const num = i + 1;
-              const done = step > num;
-              const active = step === num;
+          <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#6b7280", fontSize: "12px" }}>
+            <Lock size={13} />
+            <span style={{ fontWeight: 600, letterSpacing: "0.04em" }}>SECURE CHECKOUT</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Main layout ── */}
+      <div className="checkout-layout" style={{ maxWidth: 1160, margin: "0 auto", padding: "32px 24px", display: "flex", gap: 40, alignItems: "flex-start" }}>
+
+        {/* ── LEFT COLUMN ── */}
+        <div style={{ flex: "1 1 0", minWidth: 0 }}>
+
+          {/* CONTACT INFORMATION */}
+          <p style={sectionTitle}>Contact Information</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+            <div>
+              <label style={label}>Email *</label>
+              <input
+                value={delivery.email} onChange={setD("email")} type="email"
+                placeholder="your@email.com" style={inp("email")}
+                onFocus={e => { if (!errors.email) e.currentTarget.style.borderColor = "#374151"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = errors.email ? "#ef4444" : "#d1d5db"; }}
+              />
+              {errors.email && <p style={errText}>{errors.email}</p>}
+            </div>
+            <div>
+              <label style={label}>Phone</label>
+              <input
+                value={delivery.phone} onChange={setD("phone")} type="tel"
+                placeholder="+44 7700 900000" style={input}
+                onFocus={e => { e.currentTarget.style.borderColor = "#374151"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = "#d1d5db"; }}
+              />
+            </div>
+          </div>
+          <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "13px", color: "#374151", cursor: "pointer", marginBottom: 4 }}>
+            <input type="checkbox" style={{ width: 15, height: 15, accentColor: "#111827" }} />
+            Email me with news and exclusive offers
+          </label>
+
+          <hr style={divider} />
+
+          {/* SHIPPING ADDRESS */}
+          <p style={sectionTitle}>Shipping Address</p>
+
+          {/* Postcode lookup */}
+          <div style={{ marginBottom: 12, position: "relative" }}>
+            <label style={label}>Postcode Lookup</label>
+            <input
+              value={postcodeLookup}
+              onChange={e => onPostcodeLookupChange(e.target.value)}
+              onBlur={() => setTimeout(() => setPostcodeDropOpen(false), 200)}
+              placeholder="Start typing your postcode e.g. SW1A…"
+              style={input}
+            />
+            <p style={{ fontSize: "12px", color: "#6b7280", marginTop: 4 }}>
+              {postcodeLoading ? "Searching…" : "Type your postcode then select it to see your address options"}
+            </p>
+            {postcodeDropOpen && postcodeResults.length > 0 && (
+              <div style={{
+                position: "absolute", top: "100%", left: 0, right: 0, zIndex: 50,
+                background: "#fff", border: "1px solid #d1d5db", borderRadius: 4,
+                boxShadow: "0 4px 12px rgba(0,0,0,0.08)", marginTop: 2,
+              }}>
+                {postcodeResults.map(pc => (
+                  <button
+                    key={pc} type="button"
+                    onMouseDown={() => selectPostcode(pc)}
+                    style={{
+                      display: "block", width: "100%", textAlign: "left",
+                      padding: "10px 12px", fontSize: "14px", color: "#111827",
+                      background: "none", border: "none", cursor: "pointer",
+                      borderBottom: "1px solid #f3f4f6",
+                    }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#f9fafb"; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "none"; }}
+                  >
+                    {pc}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Name row */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+            <div>
+              <label style={label}>First Name *</label>
+              <input value={delivery.firstName} onChange={setD("firstName")} placeholder="First Name" style={inp("firstName")}
+                onFocus={e => { if (!errors.firstName) e.currentTarget.style.borderColor = "#374151"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = errors.firstName ? "#ef4444" : "#d1d5db"; }} />
+              {errors.firstName && <p style={errText}>{errors.firstName}</p>}
+            </div>
+            <div>
+              <label style={label}>Last Name *</label>
+              <input value={delivery.lastName} onChange={setD("lastName")} placeholder="Last Name" style={inp("lastName")}
+                onFocus={e => { if (!errors.lastName) e.currentTarget.style.borderColor = "#374151"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = errors.lastName ? "#ef4444" : "#d1d5db"; }} />
+              {errors.lastName && <p style={errText}>{errors.lastName}</p>}
+            </div>
+          </div>
+
+          {/* Address */}
+          <div style={{ marginBottom: 12 }}>
+            <label style={label}>Address *</label>
+            <input value={delivery.address1} onChange={setD("address1")} placeholder="Street address" style={inp("address1")}
+              onFocus={e => { if (!errors.address1) e.currentTarget.style.borderColor = "#374151"; }}
+              onBlur={e => { e.currentTarget.style.borderColor = errors.address1 ? "#ef4444" : "#d1d5db"; }} />
+            {errors.address1 && <p style={errText}>{errors.address1}</p>}
+          </div>
+
+          {/* Address 2 */}
+          <div style={{ marginBottom: 12 }}>
+            <label style={label}>Apt, Suite, Etc. (Optional)</label>
+            <input value={delivery.address2} onChange={setD("address2")} placeholder="Apartment, suite, etc." style={input}
+              onFocus={e => { e.currentTarget.style.borderColor = "#374151"; }}
+              onBlur={e => { e.currentTarget.style.borderColor = "#d1d5db"; }} />
+          </div>
+
+          {/* City / Country / Postcode */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 4 }}>
+            <div>
+              <label style={label}>City *</label>
+              <input value={delivery.city} onChange={setD("city")} placeholder="City" style={inp("city")}
+                onFocus={e => { if (!errors.city) e.currentTarget.style.borderColor = "#374151"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = errors.city ? "#ef4444" : "#d1d5db"; }} />
+              {errors.city && <p style={errText}>{errors.city}</p>}
+            </div>
+            <div>
+              <label style={label}>Country *</label>
+              <select value={delivery.country} onChange={setD("country")}
+                style={{ ...inp("country"), height: 44, appearance: "none", cursor: "pointer" }}
+                onFocus={e => { e.currentTarget.style.borderColor = "#374151"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = errors.country ? "#ef4444" : "#d1d5db"; }}>
+                {COUNTRIES.map(c => <option key={c}>{c}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={label}>Postal Code *</label>
+              <input value={delivery.postcode} onChange={setD("postcode")} placeholder="Postal Code" style={inp("postcode")}
+                onFocus={e => { if (!errors.postcode) e.currentTarget.style.borderColor = "#374151"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = errors.postcode ? "#ef4444" : "#d1d5db"; }} />
+              {errors.postcode && <p style={errText}>{errors.postcode}</p>}
+            </div>
+          </div>
+
+          <hr style={divider} />
+
+          {/* SHIPPING OPTIONS */}
+          <p style={sectionTitle}>Shipping Options</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 4 }}>
+            {SHIPPING_OPTIONS.map(opt => {
+              const cost = opt.freeOver && cartGBP >= opt.freeOver ? 0 : opt.price;
+              const isFree = opt.freeOver && cartGBP >= opt.freeOver;
+              const active = shipping === opt.id;
               return (
-                <div key={label} style={{ display: "flex", alignItems: "center", flex: i < STEPS.length - 1 ? 1 : undefined }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{
-                      width: "28px", height: "28px", borderRadius: "50%",
-                      backgroundColor: done ? "#34D399" : active ? "#fff" : "rgba(255,255,255,0.2)",
-                      color: done ? "#fff" : active ? "#1240A0" : "rgba(255,255,255,0.5)",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: "13px", fontWeight: 800, flexShrink: 0,
-                      transition: "all 0.2s",
-                    }}>
-                      {done ? <CheckCircle2 size={16} /> : num}
+                <label
+                  key={opt.id}
+                  style={{
+                    display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 16px",
+                    border: `1px solid ${active ? "#374151" : "#d1d5db"}`,
+                    borderRadius: 6, cursor: "pointer", background: "#fff",
+                    transition: "border-color 0.15s",
+                  }}
+                >
+                  <input type="radio" name="shipping" value={opt.id} checked={active}
+                    onChange={() => setShipping(opt.id)}
+                    style={{ marginTop: 2, accentColor: "#111827", flexShrink: 0 }} />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ fontSize: "14px", fontWeight: 600, color: "#111827" }}>{opt.displayLabel}</span>
+                      <span style={{ fontSize: "14px", fontWeight: 700, color: "#111827", flexShrink: 0, marginLeft: 12 }}>
+                        {isFree ? <span style={{ color: "#059669" }}>FREE</span> : `£${cost.toFixed(2)}`}
+                      </span>
                     </div>
-                    <span className="checkout-step-label" style={{
-                      fontSize: "13px", fontWeight: active ? 700 : 500,
-                      color: active ? "#fff" : done ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.45)",
-                    }}>
-                      {label}
-                    </span>
+                    {opt.note && (
+                      <p style={{ fontSize: "12px", color: "#6b7280", marginTop: 2 }}>{opt.note}</p>
+                    )}
                   </div>
-                  {i < STEPS.length - 1 && (
-                    <div style={{ flex: 1, height: "2px", backgroundColor: done ? "#34D399" : "rgba(255,255,255,0.15)", margin: "0 8px", borderRadius: "1px" }} />
-                  )}
-                </div>
+                </label>
               );
             })}
           </div>
-        </div>
-      </div>
 
-      <div className="max-w-[1200px] mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-7" style={{ alignItems: "flex-start" }}>
+          <hr style={divider} />
 
-          {/* ── FORM AREA ── */}
-          <div style={{ flex: 1, minWidth: 0 }}>
+          {/* PAYMENT METHOD */}
+          <p style={sectionTitle}>Payment Method</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
 
-            {/* STEP 1 — Delivery */}
-            {step === 1 && (
-              <div className="form-card-mobile" style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)", padding: "28px" }}>
-                <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A", marginBottom: "6px" }}>Delivery Details</h2>
-                <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "24px" }}>Where should we ship your order?</p>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  {/* Email */}
-                  <div>
-                    <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Email address *</label>
-                    <div style={{ position: "relative" }}>
-                      <Icon><Mail size={14} /></Icon>
-                      <input value={delivery.email} onChange={setD("email")} type="email" placeholder="researcher@institution.ac.uk"
-                        style={fieldStyle(!!errors.email)} onFocus={inputFocus} onBlur={e => inputBlur(e, "email")} />
-                    </div>
-                    {errors.email && <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "3px" }}>{errors.email}</p>}
-                  </div>
-
-                  {/* Name row */}
-                  <div className="form-grid-2">
-                    <div>
-                      <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>First name *</label>
-                      <div style={{ position: "relative" }}>
-                        <Icon><User size={14} /></Icon>
-                        <input value={delivery.firstName} onChange={setD("firstName")} placeholder="Jane"
-                          style={fieldStyle(!!errors.firstName)} onFocus={inputFocus} onBlur={e => inputBlur(e, "firstName")} />
-                      </div>
-                      {errors.firstName && <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "3px" }}>{errors.firstName}</p>}
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Last name *</label>
-                      <div style={{ position: "relative" }}>
-                        <Icon><User size={14} /></Icon>
-                        <input value={delivery.lastName} onChange={setD("lastName")} placeholder="Smith"
-                          style={fieldStyle(!!errors.lastName)} onFocus={inputFocus} onBlur={e => inputBlur(e, "lastName")} />
-                      </div>
-                      {errors.lastName && <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "3px" }}>{errors.lastName}</p>}
-                    </div>
-                  </div>
-
-                  {/* Phone */}
-                  <div>
-                    <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Phone number</label>
-                    <div style={{ position: "relative" }}>
-                      <Icon><Phone size={14} /></Icon>
-                      <input value={delivery.phone} onChange={setD("phone")} type="tel" placeholder="+44 7911 123456"
-                        style={fieldStyle(false)} onFocus={inputFocus} onBlur={e => inputBlur(e, "phone")} />
-                    </div>
-                  </div>
-
-                  {/* Address */}
-                  <div>
-                    <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Address line 1 *</label>
-                    <div style={{ position: "relative" }}>
-                      <Icon><MapPin size={14} /></Icon>
-                      <input value={delivery.address1} onChange={setD("address1")} placeholder="123 Research Park Lane"
-                        style={fieldStyle(!!errors.address1)} onFocus={inputFocus} onBlur={e => inputBlur(e, "address1")} />
-                    </div>
-                    {errors.address1 && <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "3px" }}>{errors.address1}</p>}
-                  </div>
-
-                  <div>
-                    <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Address line 2 <span style={{ color: "#94A3B8", fontWeight: 400 }}>(optional)</span></label>
-                    <div style={{ position: "relative" }}>
-                      <Icon><MapPin size={14} /></Icon>
-                      <input value={delivery.address2} onChange={setD("address2")} placeholder="Lab Building, Suite 4"
-                        style={fieldStyle(false)} onFocus={inputFocus} onBlur={e => inputBlur(e, "address2")} />
-                    </div>
-                  </div>
-
-                  <div className="form-grid-2">
-                    <div>
-                      <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Town / City *</label>
-                      <div style={{ position: "relative" }}>
-                        <Icon><MapPin size={14} /></Icon>
-                        <input value={delivery.city} onChange={setD("city")} placeholder="London"
-                          style={fieldStyle(!!errors.city)} onFocus={inputFocus} onBlur={e => inputBlur(e, "city")} />
-                      </div>
-                      {errors.city && <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "3px" }}>{errors.city}</p>}
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>County / State</label>
-                      <div style={{ position: "relative" }}>
-                        <Icon><MapPin size={14} /></Icon>
-                        <input value={delivery.county} onChange={setD("county")} placeholder="Greater London"
-                          style={fieldStyle(false)} onFocus={inputFocus} onBlur={e => inputBlur(e, "county")} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="form-grid-2">
-                    <div>
-                      <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Postcode / ZIP *</label>
-                      <div style={{ position: "relative" }}>
-                        <Icon><MapPin size={14} /></Icon>
-                        <input value={delivery.postcode} onChange={setD("postcode")} placeholder="EC1A 1BB"
-                          style={fieldStyle(!!errors.postcode)} onFocus={inputFocus} onBlur={e => inputBlur(e, "postcode")} />
-                      </div>
-                      {errors.postcode && <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "3px" }}>{errors.postcode}</p>}
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Country *</label>
-                      <div style={{ position: "relative" }}>
-                        <Icon><MapPin size={14} /></Icon>
-                        <select value={delivery.country} onChange={setD("country")}
-                          style={{ ...fieldStyle(false), paddingLeft: "38px", appearance: "none", cursor: "pointer" }}
-                          onFocus={inputFocus} onBlur={e => inputBlur(e, "country")}
-                        >
-                          {COUNTRIES.map(c => <option key={c}>{c}</option>)}
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* STEP 2 — Shipping */}
-            {step === 2 && (
-              <div className="form-card-mobile" style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)", padding: "28px" }}>
-                <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A", marginBottom: "6px" }}>Shipping Method</h2>
-                <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "24px" }}>
-                  All orders include discreet, secure packaging at no extra cost.
-                </p>
-                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                  {SHIPPING_OPTIONS.map(opt => {
-                    const active = shipping === opt.id;
-                    const cost = opt.freeOver && cartGBP >= opt.freeOver ? 0 : opt.price;
-                    const isFree = opt.freeOver && cartGBP >= opt.freeOver;
-                    return (
-                      <div
-                        key={opt.id}
-                        onClick={() => setShipping(opt.id)}
-                        style={{
-                          display: "flex", alignItems: "center", gap: "16px",
-                          padding: "16px 18px", borderRadius: "14px",
-                          border: `2px solid ${active ? "#1B5CB5" : "#E2E8F0"}`,
-                          backgroundColor: active ? "#EEF4FF" : "#F8FAFC",
-                          cursor: "pointer", transition: "all 0.15s",
-                        }}
-                      >
-                        <div style={{
-                          width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
-                          border: `2px solid ${active ? "#1B5CB5" : "#CBD5E1"}`,
-                          backgroundColor: active ? "#1B5CB5" : "#fff",
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                        }}>
-                          {active && <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#fff" }} />}
-                        </div>
-                        <div style={{ color: active ? "#1B5CB5" : "#64748B", flexShrink: 0 }}>{opt.icon}</div>
-                        <div style={{ flex: 1 }}>
-                          <p style={{ fontSize: "14px", fontWeight: 700, color: active ? "#1240A0" : "#0F172A" }}>{opt.label}</p>
-                          <p style={{ fontSize: "12px", color: "#64748B" }}>{opt.days} · {opt.description}</p>
-                        </div>
-                        <div style={{ textAlign: "right", flexShrink: 0 }}>
-                          {isFree
-                            ? <span style={{ fontSize: "14px", fontWeight: 700, color: "#059669" }}>FREE</span>
-                            : <span style={{ fontSize: "14px", fontWeight: 700, color: active ? "#1240A0" : "#0F172A" }}>{currency.symbol}{cost.toFixed(2)}</span>
-                          }
-                          {opt.freeOver && !isFree && (
-                            <p style={{ fontSize: "10.5px", color: "#94A3B8" }}>Free over {currency.symbol}{opt.freeOver}</p>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* Delivery notice */}
-                <div style={{ marginTop: "20px", padding: "14px", borderRadius: "12px", backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0", display: "flex", gap: "10px", alignItems: "flex-start" }}>
-                  <FlaskConical size={14} style={{ color: "#16A34A", flexShrink: 0, marginTop: "1px" }} />
-                  <p style={{ fontSize: "12px", color: "#166534", lineHeight: 1.6, margin: 0 }}>
-                    All peptides are shipped in <strong>insulated, discreet packaging</strong> to maintain stability during transit. UK orders dispatched within 24 hours.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* STEP 3 — Payment */}
-            {step === 3 && (
-              <div className="form-card-mobile" style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)", padding: "28px" }}>
-                <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A", marginBottom: "6px" }}>Payment</h2>
-                <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>Choose how you'd like to pay.</p>
-
-                {/* Payment method selector */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "24px" }}>
-
-                  {/* ── Fena — Pay by Bank (open banking) ── */}
-                  {(() => {
-                    const TEAL = "#1A6B52";
-                    const selected = paymentMethod === "fena";
-                    // Stylised UK bank icon tiles (colours & marks approximate real brands)
-                    const BANK_ICONS = [
-                      // HSBC — red, hexagonal X
-                      <svg key="hsbc" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#DB0011"/><line x1="10" y1="10" x2="22" y2="22" stroke="#fff" strokeWidth="3" strokeLinecap="round"/><line x1="22" y1="10" x2="10" y2="22" stroke="#fff" strokeWidth="3" strokeLinecap="round"/></svg>,
-                      // Barclays — blue, eagle silhouette (simplified spread wings)
-                      <svg key="barc" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#00AEEF"/><path d="M16 8 C11 11 7 14 7 17 C7 19 9 20 11 19 L16 17 L21 19 C23 20 25 19 25 17 C25 14 21 11 16 8Z" fill="#fff"/><ellipse cx="16" cy="21" rx="3" ry="4" fill="#fff"/></svg>,
-                      // Lloyds — black, horse rearing
-                      <svg key="lloy" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#024638"/><path d="M18 8 C18 8 22 10 21 14 C20 17 17 17 17 20 L15 20 C15 17 12 16 12 13 C12 10 14 8 18 8Z" fill="#006A4E"/><path d="M16 7 C14 7 12 8.5 12 11 C12 13 13.5 14.5 15 16 C15.5 16.5 16 17 16 17 C16 17 16.5 16.5 17 16 C18.5 14.5 20 13 20 11 C20 8.5 18 7 16 7Z" fill="#fff"/><line x1="16" y1="17" x2="16" y2="24" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>,
-                      // Co-op — purple, leaf/clover
-                      <svg key="coop" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#6D2D8E"/><circle cx="16" cy="13" r="4" fill="#fff" opacity="0.9"/><circle cx="11" cy="19" r="4" fill="#fff" opacity="0.9"/><circle cx="21" cy="19" r="4" fill="#fff" opacity="0.9"/></svg>,
-                      // Santander — red, stylised flame
-                      <svg key="sant" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#EC0000"/><path d="M16 7 C13 10 11 13 13 16 C14 18 13 20 12 22 C14 21 16 19 16 17 C16 19 18 21 20 22 C19 20 18 18 19 16 C21 13 19 10 16 7Z" fill="#fff"/></svg>,
-                    ];
-                    return (
-                      <div
-                        onClick={() => setPaymentMethod("fena")}
-                        style={{
-                          borderRadius: "14px", cursor: "pointer", padding: "18px 18px 16px",
-                          border: `2px solid ${selected ? TEAL : "#D1D5DB"}`,
-                          backgroundColor: "#F9FAFB",
-                          transition: "border-color 0.15s",
-                        }}
-                      >
-                        {/* ── Title row ── */}
-                        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
-                          <p style={{ margin: 0, fontSize: "15px", fontWeight: 800, color: "#0F172A" }}>Pay by Bank</p>
-                          <span style={{
-                            fontSize: "10px", fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase",
-                            color: "#fff", backgroundColor: "#16A34A",
-                            padding: "3px 10px", borderRadius: "999px", lineHeight: 1.6,
-                          }}>
-                            Recommended · Fastest
-                          </span>
-                        </div>
-
-                        {/* ── Subtitle ── */}
-                        <p style={{ margin: "0 0 4px", fontSize: "13px", fontWeight: 700, color: "#0F172A" }}>
-                          Tap your bank, approve in your banking app — done in seconds.
-                        </p>
-
-                        {/* ── Trust line ── */}
-                        <p style={{ margin: "0 0 12px", fontSize: "12px", color: "#64748B" }}>
-                          🔒 FCA-authorised open banking · Read-only · No card details stored
-                        </p>
-
-                        {/* ── Bank icon row ── */}
-                        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "14px" }}>
-                          {BANK_ICONS.map((icon, i) => (
-                            <div key={i} style={{
-                              width: "40px", height: "32px", borderRadius: "6px",
-                              border: "1.5px solid #E5E7EB", backgroundColor: "#fff",
-                              display: "flex", alignItems: "center", justifyContent: "center",
-                              overflow: "hidden", flexShrink: 0,
-                            }}>
-                              {icon}
-                            </div>
-                          ))}
-                          <span style={{ fontSize: "12px", fontWeight: 600, color: "#64748B", marginLeft: "2px" }}>+more</span>
-                        </div>
-
-                        {/* ── Radio + divider row ── */}
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
-                          <div style={{
-                            width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
-                            border: `2px solid ${selected ? TEAL : "#CBD5E1"}`,
-                            backgroundColor: "#fff",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                          }}>
-                            {selected && <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: TEAL }} />}
-                          </div>
-                          <div style={{ flex: 1, height: "1px", backgroundColor: "#E5E7EB" }} />
-                        </div>
-
-                        {/* ── How it works ── */}
-                        <p style={{ margin: "0 0 10px", fontSize: "11px", fontWeight: 800, color: TEAL, textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                          How it works
-                        </p>
-                        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                          {[
-                            "Choose your bank",
-                            "Approve in your banking app",
-                            "Order confirmed instantly",
-                          ].map((text, i) => (
-                            <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                              <div style={{
-                                width: "22px", height: "22px", borderRadius: "50%", flexShrink: 0,
-                                backgroundColor: TEAL, color: "#fff",
-                                display: "flex", alignItems: "center", justifyContent: "center",
-                                fontSize: "11px", fontWeight: 800,
-                              }}>{i + 1}</div>
-                              <p style={{ margin: 0, fontSize: "13px", color: "#0F172A" }}>{text}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    );
-                  })()}
-
-                  {/* Pay By Bank — manual bank transfer */}
-                  <div
-                    onClick={() => setPaymentMethod("bank_transfer")}
-                    style={{
-                      borderRadius: "14px", cursor: "pointer", padding: "16px",
-                      border: `2px solid ${paymentMethod === "bank_transfer" ? "#1240A0" : "#E2E8F0"}`,
-                      backgroundColor: paymentMethod === "bank_transfer" ? "#EEF4FF" : "#F8FAFC",
-                      transition: "all 0.15s",
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "12px" }}>
-                      <div style={{
-                        width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
-                        border: `2px solid ${paymentMethod === "bank_transfer" ? "#1240A0" : "#CBD5E1"}`,
-                        backgroundColor: paymentMethod === "bank_transfer" ? "#1240A0" : "#fff",
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                      }}>
-                        {paymentMethod === "bank_transfer" && <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#fff" }} />}
-                      </div>
-                      <Landmark size={20} color={paymentMethod === "bank_transfer" ? "#1240A0" : "#475569"} style={{ flexShrink: 0 }} />
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-                          <p style={{ margin: 0, fontSize: "14px", fontWeight: 800, color: paymentMethod === "bank_transfer" ? "#1240A0" : "#0F172A" }}>Pay By Bank</p>
-                          <span style={{
-                            fontSize: "9.5px", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase",
-                            color: "#065F46", backgroundColor: "#D1FAE5", padding: "3px 8px", borderRadius: "999px",
-                          }}>
-                            Recommended · Fastest
-                          </span>
-                        </div>
-                        <p style={{ margin: "3px 0 0", fontSize: "12px", color: "#64748B" }}>
-                          Tap your bank, send the transfer — confirmed once it clears.
-                        </p>
-                      </div>
-                      {paymentMethod === "bank_transfer" && <Check size={16} color="#1240A0" style={{ flexShrink: 0 }} />}
-                    </div>
-
-                    {/* Generic bank icon row — illustrative only, not affiliated with any bank */}
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "12px", paddingLeft: "34px" }}>
-                      {["#1240A0", "#0EA5E9", "#7C3AED", "#059669", "#EA580C"].map((c, i) => (
-                        <div key={i} style={{
-                          width: "26px", height: "26px", borderRadius: "8px", backgroundColor: c + "1A",
-                          border: `1px solid ${c}33`, display: "flex", alignItems: "center", justifyContent: "center",
-                        }}>
-                          <Landmark size={13} color={c} />
-                        </div>
-                      ))}
-                      <span style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 600, marginLeft: "2px" }}>+ your bank</span>
-                    </div>
-
-                    {/* How it works */}
-                    <div style={{ paddingLeft: "34px", display: "flex", flexDirection: "column", gap: "6px" }}>
-                      {["Place your order", "Send the transfer from your phone or bank app", "We confirm once it clears"].map((step, i) => (
-                        <div key={i} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <div style={{
-                            width: "16px", height: "16px", borderRadius: "50%", flexShrink: 0,
-                            backgroundColor: "#1240A0", color: "#fff",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                            fontSize: "9px", fontWeight: 800,
-                          }}>
-                            {i + 1}
-                          </div>
-                          <p style={{ margin: 0, fontSize: "11.5px", color: "#475569" }}>{step}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Cryptocurrency option */}
-                  <div
-                    onClick={() => setPaymentMethod("bitcoin")}
-                    style={{
-                      display: "flex", alignItems: "center", gap: "14px",
-                      padding: "14px 16px", borderRadius: "12px", cursor: "pointer",
-                      border: `2px solid ${paymentMethod === "bitcoin" ? "#1240A0" : "#E2E8F0"}`,
-                      backgroundColor: paymentMethod === "bitcoin" ? "#EEF4FF" : "#F8FAFC",
-                      transition: "all 0.15s",
-                    }}
-                  >
-                    <div style={{
-                      width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
-                      border: `2px solid ${paymentMethod === "bitcoin" ? "#1240A0" : "#CBD5E1"}`,
-                      backgroundColor: paymentMethod === "bitcoin" ? "#1240A0" : "#fff",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                    }}>
-                      {paymentMethod === "bitcoin" && <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#fff" }} />}
-                    </div>
-                    <span style={{ fontSize: "22px", flexShrink: 0, lineHeight: 1 }}>₿</span>
-                    <div style={{ flex: 1 }}>
-                      <p style={{ margin: 0, fontSize: "14px", fontWeight: 700, color: paymentMethod === "bitcoin" ? "#1240A0" : "#0F172A" }}>Cryptocurrency Payment</p>
-                      <p style={{ margin: 0, fontSize: "12px", color: "#64748B" }}>Pay with Bitcoin — confirmed within ~1 hour</p>
-                    </div>
-                    {paymentMethod === "bitcoin" && <Check size={16} color="#1240A0" />}
-                  </div>
-                </div>
-
-                {/* Bank Transfer details */}
-                {paymentMethod === "bank_transfer" && (
-                  <div style={{ borderRadius: "14px", border: "1.5px solid #BFDBFE", backgroundColor: "#EFF6FF", padding: "20px" }}>
-                    <p style={{ fontSize: "13px", fontWeight: 700, color: "#1E40AF", marginBottom: "14px" }}>
-                      Place your order, then send payment to the account below. We'll dispatch once it clears — usually same day for Faster Payments.
-                    </p>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                      {[
-                        { label: "Account Name",   value: BANK_DETAILS.accountName },
-                        { label: "Sort Code",       value: BANK_DETAILS.sortCode },
-                        { label: "Account Number",  value: BANK_DETAILS.accountNumber },
-                        { label: "Bank",            value: BANK_DETAILS.bank },
-                        { label: "Reference",       value: "Use your order number (shown after placing)" },
-                      ].map(row => (
-                        <div key={row.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 12px", borderRadius: "8px", backgroundColor: "#fff", border: "1px solid #DBEAFE" }}>
-                          <span style={{ fontSize: "12px", color: "#64748B", fontWeight: 600 }}>{row.label}</span>
-                          <span style={{ fontSize: "13px", fontWeight: 700, color: "#1240A0" }}>{row.value}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <p style={{ fontSize: "11.5px", color: "#475569", marginTop: "12px", lineHeight: 1.6, marginBottom: 0 }}>
-                      Faster Payments clears same day. CHAPS next working day. Orders paid after 3pm are dispatched the following morning. After placing your order you'll also get a QR code so you can finish sending the transfer from your phone.
-                    </p>
-                  </div>
-                )}
-
-                {/* Cryptocurrency — coin selector + address */}
-                {paymentMethod === "bitcoin" && (() => {
-                  const coin = CRYPTO_OPTIONS.find(c => c.id === cryptoCurrency) ?? CRYPTO_OPTIONS[0];
-                  return (
-                    <div>
-                      {/* Coin picker */}
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px", marginBottom: "16px" }}>
-                        {CRYPTO_OPTIONS.map(c => (
-                          <button
-                            key={c.id}
-                            type="button"
-                            onClick={() => setCryptoCurrency(c.id)}
-                            style={{
-                              padding: "10px 6px", borderRadius: "10px", cursor: "pointer",
-                              border: `2px solid ${cryptoCurrency === c.id ? c.color : "#E2E8F0"}`,
-                              backgroundColor: cryptoCurrency === c.id ? c.bg : "#F8FAFC",
-                              display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
-                              transition: "all 0.15s",
-                            }}
-                          >
-                            <span style={{ fontSize: "18px", lineHeight: 1 }}>{c.symbol}</span>
-                            <span style={{ fontSize: "11px", fontWeight: 700, color: cryptoCurrency === c.id ? c.text : "#64748B" }}>{c.id}</span>
-                            <span style={{ fontSize: "9.5px", color: "#94A3B8", lineHeight: 1.2 }}>{c.network}</span>
-                          </button>
-                        ))}
-                      </div>
-                      {/* Address panel */}
-                      <div style={{ borderRadius: "12px", border: `1.5px solid ${coin.border}`, backgroundColor: coin.bg, padding: "16px" }}>
-                        <p style={{ fontSize: "12.5px", fontWeight: 700, color: coin.text, marginBottom: "10px" }}>
-                          Place your order then send the {coin.name} equivalent of your order total to the address below.
-                          {(coin.id === "USDT" || coin.id === "USDC") && " Note: USD ≈ GBP × 1.27 — check the live rate."}
-                        </p>
-                        <div style={{ padding: "12px 14px", borderRadius: "9px", backgroundColor: "#fff", border: `1.5px solid ${coin.border}`, marginBottom: "10px" }}>
-                          <p style={{ fontSize: "10px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "5px" }}>{coin.name} Address ({coin.network})</p>
-                          <p style={{ fontSize: "12px", fontWeight: 700, color: "#0F172A", wordBreak: "break-all", fontFamily: "monospace", margin: 0 }}>{coin.address}</p>
-                        </div>
-                        <p style={{ fontSize: "11.5px", color: coin.text, lineHeight: 1.7, margin: 0 }}>
-                          Include your order number in the memo / payment ID field where your wallet allows.
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })()}
-              </div>
-            )}
-
-            {/* Review summary (step 2 & 3) */}
-            {step >= 2 && (
-              <div style={{ marginTop: "16px", backgroundColor: "#fff", borderRadius: "16px", border: "1.5px solid #E8EDF5", padding: "18px 20px" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
-                  <p style={{ fontSize: "12px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.08em" }}>Delivering to</p>
-                  <button onClick={() => setStep(1)} style={{ fontSize: "12px", color: "#1B5CB5", fontWeight: 600, background: "none", border: "none", cursor: "pointer" }}>Edit</button>
-                </div>
-                <p style={{ fontSize: "13.5px", color: "#0F172A", fontWeight: 600 }}>{delivery.firstName} {delivery.lastName}</p>
-                <p style={{ fontSize: "13px", color: "#64748B" }}>{delivery.address1}{delivery.address2 ? `, ${delivery.address2}` : ""}</p>
-                <p style={{ fontSize: "13px", color: "#64748B" }}>{delivery.city}{delivery.postcode ? ` ${delivery.postcode}` : ""}, {delivery.country}</p>
-              </div>
-            )}
-
-            {step === 3 && (
-              <div style={{ marginTop: "12px", backgroundColor: "#fff", borderRadius: "16px", border: "1.5px solid #E8EDF5", padding: "18px 20px" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
-                  <p style={{ fontSize: "12px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.08em" }}>Shipping method</p>
-                  <button onClick={() => setStep(2)} style={{ fontSize: "12px", color: "#1B5CB5", fontWeight: 600, background: "none", border: "none", cursor: "pointer" }}>Edit</button>
-                </div>
-                <p style={{ fontSize: "13.5px", color: "#0F172A", fontWeight: 600 }}>{selectedShipping.label} — {selectedShipping.days}</p>
-                <p style={{ fontSize: "13px", color: "#64748B" }}>
-                  {shippingCost === 0 ? "Free" : `${currency.symbol}${shippingCost.toFixed(2)}`}
-                </p>
-              </div>
-            )}
-
-            {/* Place order error */}
-            {placeError && (
-              <div style={{ marginTop: "12px", padding: "12px 16px", borderRadius: "12px", backgroundColor: "#FFF5F5", border: "1.5px solid #FCA5A5" }}>
-                <div style={{ display: "flex", gap: "10px", alignItems: "center", marginBottom: stockErrors.length > 0 ? "10px" : 0 }}>
-                  <X size={16} style={{ color: "#DC2626", flexShrink: 0 }} />
-                  <p style={{ fontSize: "13px", color: "#DC2626", margin: 0 }}>{placeError}</p>
-                </div>
-                {stockErrors.length > 0 && (
-                  <ul style={{ margin: 0, paddingLeft: "28px", display: "flex", flexDirection: "column", gap: "4px" }}>
-                    {stockErrors.map((se) => (
-                      <li key={se.productName} style={{ fontSize: "12px", color: "#B91C1C" }}>
-                        <strong>{se.productName}</strong>
-                        {se.available === 0
-                          ? " — Out of stock"
-                          : ` — Only ${se.available} available (you requested ${se.requested})`}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            )}
-
-            {/* Nav buttons */}
-            <div style={{ display: "flex", gap: "12px", marginTop: "20px" }}>
-              {step > 1 && (
-                <button
-                  onClick={() => setStep((s) => (s - 1) as Step)}
-                  style={{ height: "48px", paddingLeft: "20px", paddingRight: "20px", borderRadius: "12px", border: "1.5px solid #E2E8F0", backgroundColor: "#fff", color: "#475569", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}
+            {/* ── Pay by Bank (Fena) ── */}
+            {(() => {
+              const TEAL = "#1A6B52";
+              const active = paymentMethod === "fena";
+              return (
+                <div
+                  onClick={() => setPaymentMethod("fena")}
+                  style={{
+                    border: `${active ? "2px" : "1px"} solid ${active ? TEAL : "#d1d5db"}`,
+                    borderRadius: 6, overflow: "hidden", cursor: "pointer",
+                    background: "#fff",
+                  }}
                 >
-                  ← Back
-                </button>
-              )}
-              <button
-                onClick={handleNext}
-                disabled={placing}
-                style={{
-                  flex: 1, height: "48px", borderRadius: "12px", border: "none",
-                  background: placing ? "#93C5FD" : "linear-gradient(90deg, #0D2565, #1B5CB5)",
-                  color: "#fff", fontSize: "15px", fontWeight: 700,
-                  cursor: placing ? "not-allowed" : "pointer",
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-                  transition: "opacity 0.2s",
-                }}
-                onMouseEnter={e => { if (!placing) (e.currentTarget as HTMLElement).style.opacity = "0.9"; }}
-                onMouseLeave={e => { if (!placing) (e.currentTarget as HTMLElement).style.opacity = "1"; }}
-              >
-                {placing ? (
-                  "Processing order…"
-                ) : step === 3 ? (
-                  paymentMethod === "fena"
-                    ? <><Lock size={15} /> Proceed to Open Banking</>
-                    : paymentMethod === "bank_transfer"
-                    ? <><Lock size={15} /> Place Order — Pay by Bank Transfer</>
-                    : <><Lock size={15} /> Place Order — Pay with Bitcoin</>
-                ) : (
-                  <>Continue <ChevronRight size={16} /></>
-                )}
-              </button>
-            </div>
-
-            <p style={{ fontSize: "11px", color: "#94A3B8", textAlign: "center", marginTop: "12px" }}>
-              By placing your order you confirm you are 18+ and a qualified researcher. Products are for Research Use Only.
-            </p>
-          </div>
-
-          {/* ── ORDER SUMMARY ── */}
-          <div className="checkout-summary-mobile-first w-full lg:w-[320px] lg:flex-shrink-0 lg:sticky" style={{ top: "24px" }}>
-            <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)", overflow: "hidden" }}>
-
-              {/* Mobile toggle header */}
-              <button
-                className="lg:hidden w-full"
-                onClick={() => setMobileSummaryOpen(o => !o)}
-                aria-expanded={mobileSummaryOpen}
-                style={{
-                  display: "flex", alignItems: "center", justifyContent: "space-between",
-                  background: "linear-gradient(90deg, #1240A0, #1B5CB5)",
-                  padding: "14px 18px", border: "none", cursor: "pointer", width: "100%",
-                  borderRadius: 0,
-                }}
-              >
-                <div style={{ textAlign: "left" }}>
-                  <p style={{ fontSize: "14px", fontWeight: 700, color: "#fff", margin: 0 }}>
-                    {mobileSummaryOpen ? "Hide order summary" : "Show order summary"}
-                  </p>
-                  <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.6)", marginTop: "1px", margin: 0 }}>
-                    {items.reduce((s, i) => s + i.quantity, 0)} items
-                  </p>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <span style={{ fontSize: "15px", fontWeight: 800, color: "#fff" }}>{formatPrice(totalGBP)}</span>
-                  <ChevronDown
-                    size={16}
-                    style={{ color: "rgba(255,255,255,0.8)", transition: "transform 0.2s", transform: mobileSummaryOpen ? "rotate(180deg)" : "rotate(0deg)" }}
-                  />
-                </div>
-              </button>
-
-              {/* Desktop header (always visible) */}
-              <div className="hidden lg:block" style={{ background: "linear-gradient(90deg, #1240A0, #1B5CB5)", padding: "14px 18px", color: "#fff" }}>
-                <p style={{ fontSize: "14px", fontWeight: 700 }}>Order Summary</p>
-                <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.6)", marginTop: "1px" }}>{items.reduce((s, i) => s + i.quantity, 0)} items</p>
-              </div>
-
-              {/* Body — hidden on mobile when collapsed */}
-              <div className={mobileSummaryOpen ? undefined : "max-lg:hidden"}>
-
-              <div style={{ padding: "14px 18px", maxHeight: "260px", overflowY: "auto" }}>
-                {items.map(({ product, quantity }) => {
-                  const freeUnits = Math.min(freeUnitsByProductId[product.id] ?? 0, quantity);
-                  return (
-                  <div key={product.id} style={{ display: "flex", gap: "10px", alignItems: "center", paddingBottom: "10px", marginBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
-                    <img src={product.image} alt={product.name} style={{ width: "40px", height: "40px", objectFit: "contain", borderRadius: "8px", border: "1px solid #E8EDF5", flexShrink: 0 }} />
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ fontSize: "12.5px", fontWeight: 600, color: "#0F172A", lineHeight: 1.3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{product.name}</p>
-                      <p style={{ fontSize: "11px", color: "#94A3B8" }}>
-                        Qty: {quantity}
-                        {freeUnits > 0 && <span style={{ color: "#059669", fontWeight: 700, marginLeft: "4px" }}>({freeUnits} free — Bundle & Save)</span>}
+                  {/* Header row */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
+                    <input type="radio" checked={active} onChange={() => setPaymentMethod("fena")}
+                      style={{ accentColor: TEAL, width: 16, height: 16, flexShrink: 0 }} />
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                        <span style={{ fontSize: "15px", fontWeight: 700, color: "#111827" }}>Pay by Bank</span>
+                        <span style={{
+                          fontSize: "11px", fontWeight: 700, letterSpacing: "0.06em",
+                          background: "#059669", color: "#fff",
+                          padding: "2px 8px", borderRadius: 100,
+                        }}>RECOMMENDED · FASTEST</span>
+                      </div>
+                      <p style={{ fontSize: "13px", fontWeight: 600, color: "#111827", margin: "4px 0 0" }}>
+                        Tap your bank, approve in your banking app — done in seconds.
                       </p>
                     </div>
-                    <p style={{ fontSize: "12.5px", fontWeight: 700, color: freeUnits > 0 ? "#059669" : "#0F172A", flexShrink: 0 }}>
-                      {product.price != null ? formatPrice(product.price * (quantity - freeUnits)) : "—"}
-                    </p>
                   </div>
-                  );
-                })}
-                {bundleFreeBacWater && (
-                  <div style={{ display: "flex", gap: "10px", alignItems: "center", paddingBottom: "10px", marginBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
-                    <div style={{ width: "40px", height: "40px", borderRadius: "8px", border: "1px solid #86EFAC", backgroundColor: "#F0FDF4", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>💧</div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ fontSize: "12.5px", fontWeight: 600, color: "#0F172A", lineHeight: 1.3 }}>Bacteriostatic Water 10ml</p>
-                      <p style={{ fontSize: "11px", color: "#059669", fontWeight: 700 }}>Free — Bundle & Save (3+ peptides)</p>
-                    </div>
-                    <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#059669", flexShrink: 0 }}>{formatPrice(0)}</p>
-                  </div>
-                )}
-              </div>
 
-              <div style={{ padding: "0 18px 18px" }}>
-
-                {/* Discount code input */}
-                {!appliedDiscount ? (
-                  <div style={{ marginBottom: "12px", paddingTop: "12px", borderTop: "1px solid #F1F5F9" }}>
-                    <label style={{ fontSize: "12px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "6px" }}>
-                      <Tag size={11} style={{ display: "inline", marginRight: "4px", verticalAlign: "middle" }} />
-                      Discount code
-                    </label>
-                    <div style={{ display: "flex", gap: "8px" }}>
-                      <input
-                        value={discountInput}
-                        onChange={e => { setDiscountInput(e.target.value.toUpperCase()); setDiscountError(null); }}
-                        onKeyDown={e => e.key === "Enter" && applyDiscount()}
-                        placeholder="PROMO CODE"
-                        style={{
-                          flex: 1, height: "36px", padding: "0 10px",
-                          borderRadius: "8px", border: `1.5px solid ${discountError ? "#FCA5A5" : "#E2E8F0"}`,
-                          fontSize: "12.5px", color: "#0F172A", outline: "none",
-                          backgroundColor: discountError ? "#FFF5F5" : "#F8FAFC",
-                          fontFamily: "'Arimo', Arial, sans-serif",
-                          letterSpacing: "0.05em",
-                        }}
-                      />
-                      <button
-                        onClick={applyDiscount}
-                        disabled={applyingDiscount || !discountInput.trim()}
-                        style={{
-                          height: "36px", paddingLeft: "12px", paddingRight: "12px",
-                          borderRadius: "8px", border: "none",
-                          backgroundColor: applyingDiscount || !discountInput.trim() ? "#E2E8F0" : "#1B5CB5",
-                          color: applyingDiscount || !discountInput.trim() ? "#94A3B8" : "#fff",
-                          fontSize: "12.5px", fontWeight: 700, cursor: applyingDiscount || !discountInput.trim() ? "not-allowed" : "pointer",
-                          flexShrink: 0, transition: "background 0.15s",
-                        }}
-                      >
-                        {applyingDiscount ? "…" : "Apply"}
-                      </button>
-                    </div>
-                    {discountError && (
-                      <p style={{ fontSize: "11px", color: "#DC2626", marginTop: "4px" }}>{discountError}</p>
-                    )}
-                  </div>
-                ) : (
-                  <div style={{
-                    marginBottom: "12px", padding: "10px 12px",
-                    borderRadius: "10px", backgroundColor: "#F0FDF4",
-                    border: "1.5px solid #BBF7D0",
-                    display: "flex", alignItems: "center", justifyContent: "space-between",
-                    borderTop: "1px solid #F1F5F9",
-                  }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <Tag size={13} style={{ color: "#059669" }} />
-                      <div>
-                        <p style={{ fontSize: "12px", fontWeight: 700, color: "#059669", margin: 0 }}>{appliedDiscount.code}</p>
-                        <p style={{ fontSize: "11px", color: "#166534", margin: 0 }}>
-                          {appliedDiscount.type === "percentage"
-                            ? `${appliedDiscount.value}% off`
-                            : `£${appliedDiscount.value.toFixed(2)} off`}
+                  {active && (
+                    <div style={{ borderTop: "1px solid #e5e7eb", padding: "14px 16px" }}>
+                      {/* Trust line */}
+                      <p style={{ fontSize: "12px", color: "#4b5563", marginBottom: 12 }}>
+                        🏦 FCA-authorised open banking · Read-only · No card details stored
+                      </p>
+                      {/* Bank tiles */}
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+                        {[
+                          { name: "HSBC", bg: "#E8192C", color: "#fff" },
+                          { name: "Barclays", bg: "#00AEEF", color: "#fff" },
+                          { name: "Lloyds", bg: "#006A4D", color: "#fff" },
+                          { name: "Monzo", bg: "#FF4D42", color: "#fff" },
+                          { name: "NatWest", bg: "#5A1E82", color: "#fff" },
+                        ].map(b => (
+                          <div key={b.name} style={{
+                            width: 44, height: 30, borderRadius: 5,
+                            background: b.bg, color: b.color,
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            fontSize: "8px", fontWeight: 800, letterSpacing: "0.03em",
+                            flexShrink: 0, textAlign: "center", padding: "0 3px",
+                          }}>{b.name}</div>
+                        ))}
+                        <span style={{ fontSize: "12px", color: "#6b7280", fontWeight: 600 }}>+more</span>
+                      </div>
+                      {/* How it works */}
+                      <div style={{ borderTop: "1px solid #e5e7eb", paddingTop: 12 }}>
+                        <p style={{ fontSize: "11px", fontWeight: 800, color: "#374151", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
+                          How it works
                         </p>
+                        {["Choose your bank", "Approve in your banking app", "Order confirmed instantly"].map((step, i) => (
+                          <div key={step} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                            <div style={{
+                              width: 22, height: 22, borderRadius: "50%",
+                              background: TEAL, color: "#fff",
+                              display: "flex", alignItems: "center", justifyContent: "center",
+                              fontSize: "11px", fontWeight: 800, flexShrink: 0,
+                            }}>{i + 1}</div>
+                            <span style={{ fontSize: "13px", color: "#374151" }}>{step}</span>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                    <button
-                      onClick={removeDiscount}
-                      style={{ background: "none", border: "none", cursor: "pointer", color: "#059669", padding: "2px", display: "flex", alignItems: "center" }}
-                      title="Remove discount"
-                    >
-                      <X size={15} />
-                    </button>
-                  </div>
-                )}
-
-
-                {/* Free peptide credit redemption */}
-                {customer && freePeptideCredits > 0 && (
-                  <div style={{ marginBottom: "12px", paddingTop: "12px", borderTop: "1px solid #F1F5F9" }}>
-                    {!redeemFreePeptide ? (
-                      <div>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
-                          <label style={{ fontSize: "12px", fontWeight: 600, color: "#374151", display: "flex", alignItems: "center", gap: "4px" }}>
-                            <span style={{ fontSize: "13px" }}>🎁</span>
-                            Free Peptide Credit
-                          </label>
-                          <span style={{ fontSize: "11px", color: "#64748B" }}>{freePeptideCredits} available</span>
-                        </div>
-                        <button
-                          onClick={() => setRedeemFreePeptide(true)}
-                          style={{
-                            width: "100%", height: "36px", borderRadius: "8px",
-                            border: "1.5px dashed #15803D", backgroundColor: "#F0FDF4",
-                            color: "#166534", fontSize: "12.5px", fontWeight: 700, cursor: "pointer",
-                            display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
-                          }}
-                        >
-                          🎁 Redeem 1 free peptide (−{formatPrice(cheapestItemPrice)})
-                        </button>
-                      </div>
-                    ) : (
-                      <div style={{
-                        padding: "10px 12px", borderRadius: "10px",
-                        backgroundColor: "#F0FDF4", border: "1.5px solid #86EFAC",
-                        display: "flex", alignItems: "center", justifyContent: "space-between",
-                      }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <span style={{ fontSize: "15px" }}>🎁</span>
-                          <div>
-                            <p style={{ fontSize: "12px", fontWeight: 700, color: "#15803D", margin: 0 }}>Free peptide applied</p>
-                            <p style={{ fontSize: "11px", color: "#166534", margin: 0 }}>−{formatPrice(cheapestItemPrice)} off (cheapest item)</p>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => setRedeemFreePeptide(false)}
-                          style={{ background: "none", border: "none", cursor: "pointer", color: "#15803D", padding: "2px", display: "flex", alignItems: "center" }}
-                          title="Remove free peptide credit"
-                        >
-                          <X size={15} />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Loyalty points redemption */}
-                {customer && loyaltyBalance && loyaltyBalance.balance >= 100 && (
-                  <div style={{ marginBottom: "12px", paddingTop: "12px", borderTop: "1px solid #F1F5F9" }}>
-                    {loyaltyPointsToRedeem === 0 ? (
-                      <div>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
-                          <label style={{ fontSize: "12px", fontWeight: 600, color: "#374151", display: "flex", alignItems: "center", gap: "4px" }}>
-                            <Award size={11} style={{ color: "#F59E0B" }} />
-                            Loyalty Points
-                          </label>
-                          <span style={{ fontSize: "11px", color: "#64748B" }}>{loyaltyBalance.balance} pts available</span>
-                        </div>
-                        <button
-                          onClick={() => setLoyaltyPointsToRedeem(loyaltyBalance.balance)}
-                          style={{
-                            width: "100%", height: "36px", borderRadius: "8px",
-                            border: "1.5px dashed #F59E0B", backgroundColor: "#FFFBEB",
-                            color: "#92400E", fontSize: "12.5px", fontWeight: 700, cursor: "pointer",
-                            display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
-                          }}
-                        >
-                          <Award size={12} />
-                          Apply {loyaltyBalance.balance} pts (−£{loyaltyBalance.gbpValue.toFixed(2)})
-                        </button>
-                      </div>
-                    ) : (
-                      <div style={{
-                        padding: "10px 12px", borderRadius: "10px",
-                        backgroundColor: "#FFFBEB", border: "1.5px solid #F59E0B",
-                        display: "flex", alignItems: "center", justifyContent: "space-between",
-                      }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <Award size={13} style={{ color: "#F59E0B" }} />
-                          <div>
-                            <p style={{ fontSize: "12px", fontWeight: 700, color: "#92400E", margin: 0 }}>
-                              {loyaltyPointsToRedeem} pts applied
-                            </p>
-                            <p style={{ fontSize: "11px", color: "#78350F", margin: 0 }}>
-                              −£{loyaltyDiscountGbp.toFixed(2)} off your order
-                            </p>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => setLoyaltyPointsToRedeem(0)}
-                          style={{ background: "none", border: "none", cursor: "pointer", color: "#D97706", padding: "2px", display: "flex", alignItems: "center" }}
-                          title="Remove loyalty reward"
-                        >
-                          <X size={15} />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 0", borderTop: "1px solid #F1F5F9" }}>
-                  <span style={{ fontSize: "13px", color: "#64748B" }}>Subtotal</span>
-                  <span style={{ fontSize: "13px", fontWeight: 600, color: "#0F172A" }}>{formatPrice(cartGBP)}</span>
+                  )}
                 </div>
-                {bundleDiscountAmount > 0 && (
-                  <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
-                    <span style={{ fontSize: "13px", color: "#059669", fontWeight: 600 }}>
-                      Bundle & Save{bundleFreeLabel ? ` (${bundleFreeLabel})` : ""}
-                    </span>
-                    <span style={{ fontSize: "13px", fontWeight: 600, color: "#059669" }}>−{formatPrice(bundleDiscountAmount)}</span>
+              );
+            })()}
+
+            {/* ── Bank Transfer ── */}
+            {(() => {
+              const active = paymentMethod === "bank_transfer";
+              return (
+                <div
+                  onClick={() => setPaymentMethod("bank_transfer")}
+                  style={{ border: `${active ? "2px" : "1px"} solid ${active ? "#374151" : "#d1d5db"}`, borderRadius: 6, cursor: "pointer", background: "#fff" }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
+                    <input type="radio" checked={active} onChange={() => setPaymentMethod("bank_transfer")}
+                      style={{ accentColor: "#111827", width: 16, height: 16, flexShrink: 0 }} />
+                    <div>
+                      <span style={{ fontSize: "15px", fontWeight: 700, color: "#111827" }}>Bank Transfer</span>
+                      <p style={{ fontSize: "12px", color: "#6b7280", margin: "2px 0 0" }}>Pay via direct bank transfer — we'll send details with your order</p>
+                    </div>
                   </div>
-                )}
-                <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
-                  <span style={{ fontSize: "13px", color: "#64748B" }}>Shipping</span>
-                  <span style={{ fontSize: "13px", fontWeight: 600, color: shippingCost === 0 ? "#059669" : "#0F172A" }}>
-                    {shippingCost === 0 ? "FREE" : formatPrice(shippingCost)}
+                  {active && (
+                    <div style={{ borderTop: "1px solid #e5e7eb", padding: "14px 16px", background: "#f9fafb" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, fontSize: "13px" }}>
+                        {[
+                          ["Account Name", BANK_DETAILS.accountName],
+                          ["Bank", BANK_DETAILS.bank],
+                          ["Sort Code", BANK_DETAILS.sortCode],
+                          ["Account No.", BANK_DETAILS.accountNumber],
+                        ].map(([k, v]) => (
+                          <div key={k}>
+                            <p style={{ color: "#6b7280", fontSize: "11px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 2 }}>{k}</p>
+                            <p style={{ color: "#111827", fontWeight: 700 }}>{v}</p>
+                          </div>
+                        ))}
+                      </div>
+                      <p style={{ fontSize: "12px", color: "#6b7280", marginTop: 10 }}>
+                        Use your order number as the payment reference. Orders are dispatched once payment clears.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+
+            {/* ── Cryptocurrency ── */}
+            {(() => {
+              const active = paymentMethod === "bitcoin";
+              return (
+                <div
+                  onClick={() => setPaymentMethod("bitcoin")}
+                  style={{ border: `${active ? "2px" : "1px"} solid ${active ? "#374151" : "#d1d5db"}`, borderRadius: 6, cursor: "pointer", background: "#fff" }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
+                    <input type="radio" checked={active} onChange={() => setPaymentMethod("bitcoin")}
+                      style={{ accentColor: "#111827", width: 16, height: 16, flexShrink: 0 }} />
+                    <div>
+                      <span style={{ fontSize: "15px", fontWeight: 700, color: "#111827" }}>Cryptocurrency</span>
+                      <p style={{ fontSize: "12px", color: "#6b7280", margin: "2px 0 0" }}>Bitcoin, Ethereum, USDT, USDC, Litecoin, Monero</p>
+                    </div>
+                  </div>
+                  {active && (
+                    <div style={{ borderTop: "1px solid #e5e7eb", padding: "14px 16px" }}>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                        {/* BTC is processed via BTCPay; other coins use static wallet addresses */}
+                      {CRYPTO_OPTIONS.map(c => (
+                          <button key={c.id} type="button" onClick={e => { e.stopPropagation(); setCryptoCurrency(c.id); }}
+                            style={{
+                              padding: "6px 14px", borderRadius: 100, border: "1px solid",
+                              borderColor: cryptoCurrency === c.id ? "#111827" : "#d1d5db",
+                              background: cryptoCurrency === c.id ? "#111827" : "#fff",
+                              color: cryptoCurrency === c.id ? "#fff" : "#374151",
+                              fontSize: "13px", fontWeight: 600, cursor: "pointer",
+                            }}>{c.name}</button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+          </div>
+
+          {/* Loyalty points (logged-in only) */}
+          {loyaltyBalance && loyaltyBalance.balance > 0 && (
+            <div style={{ marginTop: 24, border: "1px solid #d1d5db", borderRadius: 6, padding: 16, background: "#fff" }}>
+              <p style={{ ...sectionTitle, marginBottom: 8 }}>Loyalty Points</p>
+              <p style={{ fontSize: "13px", color: "#374151", marginBottom: 10 }}>
+                You have <strong>{loyaltyBalance.balance}</strong> points (worth <strong>£{loyaltyBalance.gbpValue.toFixed(2)}</strong>).
+              </p>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <input
+                  type="range" min={0} max={Math.min(loyaltyBalance.balance, Math.floor(totalGBP * 100))}
+                  step={100} value={loyaltyPointsToRedeem}
+                  onChange={e => setLoyaltyPointsToRedeem(Number(e.target.value))}
+                  style={{ flex: 1, accentColor: "#111827" }}
+                />
+                <span style={{ fontSize: "13px", fontWeight: 700, color: "#111827", minWidth: 60, textAlign: "right" }}>
+                  −£{(loyaltyPointsToRedeem / 100).toFixed(2)}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {freePeptideCredits > 0 && (
+            <div style={{ marginTop: 16, border: "1px solid #d1d5db", borderRadius: 6, padding: 16, background: "#fff" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", fontSize: "14px", color: "#111827" }}>
+                <input type="checkbox" checked={redeemFreePeptide} onChange={e => setRedeemFreePeptide(e.target.checked)}
+                  style={{ width: 16, height: 16, accentColor: "#111827" }} />
+                <span>Redeem free peptide credit — save £{cheapestItemPrice.toFixed(2)} on your cheapest item</span>
+              </label>
+            </div>
+          )}
+
+        </div>
+
+        {/* ── RIGHT COLUMN — ORDER SUMMARY ── */}
+        <div className="checkout-sidebar" style={{ width: 360, flexShrink: 0, position: "sticky", top: 24 }}>
+          <div style={{ border: "1px solid #e5e7eb", borderRadius: 8, background: "#fff", overflow: "hidden" }}>
+            <div style={{ padding: "20px 20px 0" }}>
+              <p style={{ fontSize: "13px", fontWeight: 800, color: "#111827", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>
+                Order Summary
+              </p>
+
+              {/* Cart items */}
+              {items.map(({ product, quantity }) => {
+                const price = product.price ?? 0;
+                const freeQty = freeUnitsByProductId?.[parseInt(String(product.id))] ?? 0;
+                return (
+                  <div key={String(product.id)} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14 }}>
+                    <div style={{ position: "relative", flexShrink: 0 }}>
+                      <div style={{ width: 56, height: 56, borderRadius: 6, border: "1px solid #e5e7eb", overflow: "hidden", background: "#f9fafb" }}>
+                        {(product as { image?: string }).image ? (
+                          <img src={(product as { image?: string }).image} alt={product.name}
+                            style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                        ) : (
+                          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", color: "#9ca3af" }}>IMG</div>
+                        )}
+                      </div>
+                      <div style={{
+                        position: "absolute", top: -6, right: -6,
+                        width: 20, height: 20, borderRadius: "50%",
+                        background: "#374151", color: "#fff",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        fontSize: "11px", fontWeight: 700,
+                      }}>{quantity}</div>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <p style={{ fontSize: "13px", fontWeight: 600, color: "#111827", margin: 0 }}>{product.name}</p>
+                      {freeQty > 0 && (
+                        <p style={{ fontSize: "11px", color: "#059669", margin: "2px 0 0", fontWeight: 600 }}>
+                          {freeQty} free (Bundle & Save)
+                        </p>
+                      )}
+                    </div>
+                    <div style={{ fontSize: "14px", fontWeight: 700, color: "#111827", flexShrink: 0 }}>
+                      £{(price * quantity).toFixed(2)}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <hr style={{ margin: 0, border: "none", borderTop: "1px solid #e5e7eb" }} />
+
+            {/* Discount code */}
+            <div style={{ padding: "16px 20px" }}>
+              {appliedDiscount ? (
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 12px", background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 6 }}>
+                  <span style={{ fontSize: "13px", color: "#065f46", fontWeight: 700 }}>
+                    {appliedDiscount.code} — −£{appliedDiscount.discountAmount.toFixed(2)}
                   </span>
+                  <button type="button" onClick={() => { setAppliedDiscount(null); setDiscountError(null); setDiscountInput(""); }}
+                    style={{ background: "none", border: "none", color: "#065f46", cursor: "pointer", fontSize: "13px", fontWeight: 700 }}>✕</button>
                 </div>
-                {appliedDiscount && (
-                  <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
-                    <span style={{ fontSize: "13px", color: "#059669" }}>Discount ({appliedDiscount.code})</span>
-                    <span style={{ fontSize: "13px", fontWeight: 600, color: "#059669" }}>−{formatPrice(discountAmount)}</span>
+              ) : (
+                <div>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <input
+                      value={discountInput} onChange={e => setDiscountInput(e.target.value)}
+                      onKeyDown={e => e.key === "Enter" && applyDiscount()}
+                      placeholder="Gift card or discount code"
+                      style={{ ...input, flex: 1, height: 40 }}
+                    />
+                    <button type="button" onClick={applyDiscount} disabled={applyingDiscount || !discountInput.trim()}
+                      style={{
+                        padding: "0 16px", height: 40, borderRadius: 4,
+                        background: "#374151", color: "#fff",
+                        border: "none", fontSize: "13px", fontWeight: 700,
+                        cursor: "pointer", letterSpacing: "0.05em", flexShrink: 0,
+                        opacity: (applyingDiscount || !discountInput.trim()) ? 0.5 : 1,
+                      }}>APPLY</button>
                   </div>
-                )}
-                {redeemFreePeptide && freePeptideDeductGbp > 0 && (
-                  <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
-                    <span style={{ fontSize: "13px", color: "#15803D" }}>🎁 Free peptide credit</span>
-                    <span style={{ fontSize: "13px", fontWeight: 600, color: "#15803D" }}>−{formatPrice(freePeptideDeductGbp)}</span>
-                  </div>
-                )}
-                {loyaltyPointsToRedeem > 0 && (
-                  <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
-                    <span style={{ fontSize: "13px", color: "#D97706" }}>Loyalty reward ({loyaltyPointsToRedeem} pts)</span>
-                    <span style={{ fontSize: "13px", fontWeight: 600, color: "#D97706" }}>−£{loyaltyDiscountGbp.toFixed(2)}</span>
-                  </div>
-                )}
-                <div style={{ display: "flex", justifyContent: "space-between", padding: "12px 0", borderTop: "2px solid #E8EDF5", marginTop: "8px" }}>
-                  <span style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A" }}>Total</span>
-                  <span style={{ fontSize: "15px", fontWeight: 800, color: "#1240A0" }}>{formatPrice(totalGBP)}</span>
+                  {discountError && <p style={{ ...errText, marginTop: 4 }}>{discountError}</p>}
                 </div>
+              )}
+            </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "8px" }}>
-                  {["256-bit SSL Encrypted", "Discreet Packaging", "99%+ independently verified"].map(b => (
-                    <div key={b} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                      <CheckCircle2 size={12} style={{ color: "#059669", flexShrink: 0 }} />
-                      <span style={{ fontSize: "11.5px", color: "#64748B" }}>{b}</span>
-                    </div>
+            <hr style={{ margin: 0, border: "none", borderTop: "1px solid #e5e7eb" }} />
+
+            {/* Totals */}
+            <div style={{ padding: "16px 20px" }}>
+              {[
+                ["Subtotal", `£${cartGBP.toFixed(2)}`],
+                ["Shipping", shippingCost === 0 ? "FREE" : `£${shippingCost.toFixed(2)}`],
+                ...(bundleDiscountAmount > 0 ? [["Bundle & Save", `−£${bundleDiscountAmount.toFixed(2)}`]] : []),
+                ...(discountAmount > 0 ? [[`Discount (${appliedDiscount?.code})`, `−£${discountAmount.toFixed(2)}`]] : []),
+                ...(loyaltyPointsToRedeem > 0 ? [["Loyalty Points", `−£${loyaltyDiscountGbp.toFixed(2)}`]] : []),
+                ...(freePeptideDeductGbp > 0 ? [["Free Peptide Credit", `−£${freePeptideDeductGbp.toFixed(2)}`]] : []),
+              ].map(([k, v]) => (
+                <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
+                  <span style={{ fontSize: "13px", color: "#6b7280" }}>{k}</span>
+                  <span style={{ fontSize: "13px", color: v?.startsWith("−") || v === "FREE" ? "#059669" : "#111827", fontWeight: 500 }}>{v}</span>
+                </div>
+              ))}
+              <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12, paddingTop: 12, borderTop: "1px solid #e5e7eb" }}>
+                <span style={{ fontSize: "16px", fontWeight: 800, color: "#111827" }}>Total</span>
+                <span style={{ fontSize: "20px", fontWeight: 800, color: "#111827" }}>£{totalGBP.toFixed(2)}</span>
+              </div>
+            </div>
+
+            <hr style={{ margin: 0, border: "none", borderTop: "1px solid #e5e7eb" }} />
+
+            {/* Confirm + CTA */}
+            <div style={{ padding: "16px 20px 20px" }}>
+              {/* Confirm checkbox */}
+              <label style={{
+                display: "flex", alignItems: "flex-start", gap: 10,
+                fontSize: "13px", color: "#374151", cursor: "pointer", marginBottom: 16,
+                lineHeight: 1.4,
+              }}>
+                <input type="checkbox" checked={confirmed} onChange={e => setConfirmed(e.target.checked)}
+                  style={{ width: 16, height: 16, marginTop: 1, accentColor: "#111827", flexShrink: 0 }} />
+                I confirm that all products are for laboratory research purposes only, not for human consumption, and I am at least 18 years of age.
+              </label>
+              {errors.confirmed && <p style={{ ...errText, marginBottom: 12 }}>{errors.confirmed}</p>}
+
+              {/* Errors */}
+              {placeError && (
+                <div style={{ marginBottom: 12, padding: "10px 12px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 6, fontSize: "13px", color: "#dc2626" }}>
+                  {placeError}
+                </div>
+              )}
+              {stockErrors.length > 0 && (
+                <div style={{ marginBottom: 12, padding: "10px 12px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 6, fontSize: "13px", color: "#dc2626" }}>
+                  {stockErrors.map(e => (
+                    <p key={e.productName} style={{ margin: "0 0 4px" }}>
+                      {e.productName}: only {e.available} in stock (you requested {e.requested})
+                    </p>
                   ))}
                 </div>
-              </div>
-            </div>{/* end body wrapper */}
-          </div>{/* end card */}
+              )}
 
-          <Link href="/cart" style={{ display: "block", textAlign: "center", marginTop: "12px", fontSize: "12.5px", color: "#94A3B8", textDecoration: "none" }}>
-            ← Return to cart
-          </Link>
-          </div>{/* end order summary outer */}
+              {/* COMPLETE ORDER button */}
+              <button
+                type="button"
+                onClick={placeOrder}
+                disabled={placing}
+                style={{
+                  width: "100%", height: 52, borderRadius: 4,
+                  background: placing ? "#374151" : "#111827",
+                  color: "#fff", border: "none",
+                  fontSize: "13px", fontWeight: 800,
+                  letterSpacing: "0.1em", textTransform: "uppercase",
+                  cursor: placing ? "not-allowed" : "pointer",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                  transition: "background 0.15s",
+                }}
+                onMouseEnter={e => { if (!placing) (e.currentTarget as HTMLButtonElement).style.background = "#374151"; }}
+                onMouseLeave={e => { if (!placing) (e.currentTarget as HTMLButtonElement).style.background = "#111827"; }}
+              >
+                {placing ? (
+                  <>
+                    <span style={{ width: 16, height: 16, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "#fff", borderRadius: "50%", animation: "spin 0.8s linear infinite", display: "inline-block" }} />
+                    Processing…
+                  </>
+                ) : (
+                  <>
+                    <Lock size={14} />
+                    Complete Order
+                  </>
+                )}
+              </button>
+
+              {/* Trust badges */}
+              <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 14 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "11px", color: "#6b7280", fontWeight: 600, letterSpacing: "0.05em" }}>
+                  <Shield size={13} /> SECURE CHECKOUT
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "11px", color: "#6b7280", fontWeight: 600, letterSpacing: "0.05em" }}>
+                  <Truck size={13} /> FAST SHIPPING
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* YOU MIGHT ALSO LIKE */}
+          <div style={{ marginTop: 20, border: "1px solid #e5e7eb", borderRadius: 8, background: "#fff", overflow: "hidden" }}>
+            <div style={{ padding: "16px 20px 8px" }}>
+              <p style={{ fontSize: "11px", fontWeight: 800, color: "#111827", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
+                You Might Also Like
+              </p>
+              {[
+                { name: "Bacteriostatic Water 10ml", sub: "From £4.50", href: "/products/bacteriostatic-water", action: "OPTIONS" },
+                { name: "Insulin Syringe Pack (100)", sub: "£12.99", href: "/products/insulin-syringes", action: "ADD" },
+              ].map(item => (
+                <div key={item.name} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 6, background: "#f3f4f6", border: "1px solid #e5e7eb", flexShrink: 0 }} />
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: "13px", fontWeight: 600, color: "#111827", margin: 0 }}>{item.name}</p>
+                    <p style={{ fontSize: "12px", color: "#6b7280", margin: "2px 0 0" }}>{item.sub}</p>
+                  </div>
+                  <Link href={item.href}
+                    style={{
+                      padding: "6px 14px", borderRadius: 4,
+                      border: "1px solid #d1d5db", background: "#fff",
+                      fontSize: "12px", fontWeight: 700, color: "#374151",
+                      textDecoration: "none", letterSpacing: "0.04em",
+                      flexShrink: 0,
+                    }}>{item.action}</Link>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
+
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 900px) {
+          .checkout-layout { flex-direction: column !important; }
+          .checkout-sidebar { width: 100% !important; position: static !important; }
+        }
+      `}</style>
     </div>
   );
 }
