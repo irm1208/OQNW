@@ -52,12 +52,6 @@ const SHIPPING_OPTIONS = [
   },
 ];
 
-const BANK_DETAILS = {
-  accountName: "OmniQure Research Ltd",
-  sortCode: "20-00-00",
-  accountNumber: "12345678",
-  bank: "Barclays Bank",
-};
 
 const CRYPTO_OPTIONS = [
   { id: "BTC",  name: "Bitcoin",    symbol: "₿", network: "Bitcoin",      address: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh" },
@@ -140,7 +134,7 @@ export default function CheckoutPage() {
   const [applyingDiscount, setApplyingDiscount] = useState(false);
 
   // Payment
-  const [paymentMethod, setPaymentMethod] = useState<"bank_transfer" | "bitcoin" | "fena">("fena");
+  const [paymentMethod, setPaymentMethod] = useState<"bitcoin" | "fena">("fena");
   const [cryptoCurrency, setCryptoCurrency] = useState<CryptoCurrency>("BTC");
 
   // Loyalty
@@ -676,46 +670,6 @@ export default function CheckoutPage() {
                           </div>
                         ))}
                       </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })()}
-
-            {/* ── Bank Transfer ── */}
-            {(() => {
-              const active = paymentMethod === "bank_transfer";
-              return (
-                <div
-                  onClick={() => setPaymentMethod("bank_transfer")}
-                  style={{ border: `${active ? "2px" : "1px"} solid ${active ? "#374151" : "#d1d5db"}`, borderRadius: 6, cursor: "pointer", background: "#fff" }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
-                    <input type="radio" checked={active} onChange={() => setPaymentMethod("bank_transfer")}
-                      style={{ accentColor: "#111827", width: 16, height: 16, flexShrink: 0 }} />
-                    <div>
-                      <span style={{ fontSize: "15px", fontWeight: 700, color: "#111827" }}>Bank Transfer</span>
-                      <p style={{ fontSize: "12px", color: "#6b7280", margin: "2px 0 0" }}>Pay via direct bank transfer — we'll send details with your order</p>
-                    </div>
-                  </div>
-                  {active && (
-                    <div style={{ borderTop: "1px solid #e5e7eb", padding: "14px 16px", background: "#f9fafb" }}>
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, fontSize: "13px" }}>
-                        {[
-                          ["Account Name", BANK_DETAILS.accountName],
-                          ["Bank", BANK_DETAILS.bank],
-                          ["Sort Code", BANK_DETAILS.sortCode],
-                          ["Account No.", BANK_DETAILS.accountNumber],
-                        ].map(([k, v]) => (
-                          <div key={k}>
-                            <p style={{ color: "#6b7280", fontSize: "11px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 2 }}>{k}</p>
-                            <p style={{ color: "#111827", fontWeight: 700 }}>{v}</p>
-                          </div>
-                        ))}
-                      </div>
-                      <p style={{ fontSize: "12px", color: "#6b7280", marginTop: 10 }}>
-                        Use your order number as the payment reference. Orders are dispatched once payment clears.
-                      </p>
                     </div>
                   )}
                 </div>
