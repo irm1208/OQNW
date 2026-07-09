@@ -634,22 +634,34 @@ export default function CheckoutPage() {
                       <p style={{ fontSize: "12px", color: "#4b5563", marginBottom: 12 }}>
                         🏦 FCA-authorised open banking · Read-only · No card details stored
                       </p>
-                      {/* Bank tiles */}
+                      {/* Bank logos */}
                       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
                         {[
-                          { name: "HSBC",     bg: "#C8102E", color: "#fff" },
-                          { name: "Barclays", bg: "#6BBDE3", color: "#fff" },
-                          { name: "Lloyds",   bg: "#1B5E3B", color: "#fff" },
-                          { name: "Monzo",    bg: "#E8614F", color: "#fff" },
-                          { name: "NatWest",  bg: "#42145F", color: "#fff" },
+                          { name: "HSBC",     domain: "hsbc.co.uk" },
+                          { name: "Barclays", domain: "barclays.co.uk" },
+                          { name: "Lloyds",   domain: "lloydsbank.com" },
+                          { name: "Monzo",    domain: "monzo.com" },
+                          { name: "NatWest",  domain: "natwest.com" },
                         ].map(b => (
                           <div key={b.name} style={{
-                            minWidth: 72, height: 36, borderRadius: 8,
-                            background: b.bg, color: b.color,
+                            height: 38, borderRadius: 8, padding: "0 10px",
+                            background: "#fff", border: "1px solid #e5e7eb",
                             display: "flex", alignItems: "center", justifyContent: "center",
-                            fontSize: "12px", fontWeight: 800, letterSpacing: "0.02em",
-                            flexShrink: 0, padding: "0 10px",
-                          }}>{b.name}</div>
+                            flexShrink: 0, minWidth: 70,
+                          }}>
+                            <img
+                              src={`https://logo.clearbit.com/${b.domain}?size=80`}
+                              alt={b.name}
+                              style={{ height: 22, maxWidth: 56, objectFit: "contain" }}
+                              onError={e => {
+                                const el = e.currentTarget;
+                                el.style.display = "none";
+                                const txt = el.nextSibling as HTMLElement | null;
+                                if (txt) txt.style.display = "block";
+                              }}
+                            />
+                            <span style={{ display: "none", fontSize: "11px", fontWeight: 800, color: "#374151" }}>{b.name}</span>
+                          </div>
                         ))}
                         <span style={{ fontSize: "12px", color: "#6b7280", fontWeight: 600 }}>+more</span>
                       </div>
