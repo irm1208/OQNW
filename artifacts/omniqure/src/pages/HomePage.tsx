@@ -762,7 +762,7 @@ export default function HomePage() {
             ].map((item, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3.5 py-5 px-5"
+                className="flex items-center gap-3.5 py-5 px-5 trust-strip-cell"
               >
                 <div
                   className="flex-shrink-0 rounded-xl flex items-center justify-center"
@@ -802,7 +802,7 @@ export default function HomePage() {
                 { label: "5-9 vials", freebie: "1 Peptide Free",   bg: "rgba(52,211,153,0.18)",  border: "rgba(52,211,153,0.40)",  color: "#6EE7B7" },
                 { label: "10+ vials", freebie: "2 Peptides Free",  bg: "rgba(167,139,250,0.18)", border: "rgba(167,139,250,0.40)", color: "#C4B5FD" },
               ].map(t => (
-                <div key={t.label} style={{ display: "flex", alignItems: "center", gap: "6px", backgroundColor: t.bg, border: `1px solid ${t.border}`, borderRadius: "8px", padding: "6px 13px" }}>
+                <div key={t.label} className="bundle-tier-badge" style={{ display: "flex", alignItems: "center", gap: "6px", backgroundColor: t.bg, border: `1px solid ${t.border}`, borderRadius: "8px", padding: "6px 13px" }}>
                   <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.65)", fontWeight: 600 }}>{t.label}</span>
                   <span style={{ fontSize: "13px", fontWeight: 900, color: t.color, lineHeight: 1 }}>{t.freebie}</span>
                 </div>
@@ -819,7 +819,7 @@ export default function HomePage() {
       </section>
 
       {/* ── SHOP BY GOAL ──────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#fff", borderBottom: "1px solid #EEF2F7", padding: "56px 0" }}>
+      <section className="home-section-goal" style={{ backgroundColor: "#fff", borderBottom: "1px solid #EEF2F7", padding: "56px 0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="text-center mb-10">
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 10 }}>
@@ -937,7 +937,7 @@ export default function HomePage() {
         </div>
 
         {/* ── Bottom CTA strip ── */}
-        <div style={{ padding: "28px 32px", borderTop: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+        <div className="research-cta-strip" style={{ padding: "28px 32px", borderTop: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
           <div className="max-w-[1280px] mx-auto w-full" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
             <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", margin: 0, letterSpacing: "0.02em" }}>
               All research applications listed for <strong style={{ color: "rgba(255,255,255,0.6)" }}>in-vitro laboratory use only</strong> — not for human consumption.
@@ -959,7 +959,7 @@ export default function HomePage() {
       </section>
 
       {/* ── WHY OMNIQURE ──────────────────────────────────────── */}
-      <section className="home-section-why" style={{ backgroundColor: "#F7FAFF", padding: "68px 0", borderTop: "1px solid #E2E8F0" }}>
+      <section className="home-section-why home-section-pillars" style={{ backgroundColor: "#F7FAFF", padding: "68px 0", borderTop: "1px solid #E2E8F0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 mb-2">
@@ -1098,7 +1098,7 @@ export default function HomePage() {
               { num: "47",   label: "Unique Compounds" },
               { num: "99%+", label: "Avg. Verified Purity" },
             ].map((stat, i) => (
-              <div key={i} style={{ textAlign: "center" }}>
+              <div key={i} className="rating-bar-stat" style={{ textAlign: "center" }}>
                 <p style={{ fontSize: "26px", fontWeight: 900, color: "#F59E0B", lineHeight: 1 }}>{stat.num}</p>
                 <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.45)", fontWeight: 600, marginTop: "4px" }}>{stat.label}</p>
               </div>
@@ -1108,7 +1108,7 @@ export default function HomePage() {
       </section>
 
       {/* ── REFER A FRIEND ────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#fff", padding: "68px 0", borderTop: "1px solid #E8EDF5" }}>
+      <section className="home-section-refer" style={{ backgroundColor: "#fff", padding: "68px 0", borderTop: "1px solid #E8EDF5" }}>
         <div className="max-w-[1280px] mx-auto px-4">
 
           {/* Section header */}
@@ -1158,6 +1158,7 @@ export default function HomePage() {
             ].map((s, i) => (
               <div
                 key={i}
+                className="refer-step-card"
                 style={{
                   background: "#fff",
                   border: "1.5px solid #E8EDF5",
@@ -1191,7 +1192,7 @@ export default function HomePage() {
           </div>
 
           {/* CTA banner */}
-          <div style={{
+          <div className="refer-cta-banner" style={{
             background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)",
             borderRadius: "20px",
             padding: "36px 40px",
@@ -1243,7 +1244,7 @@ export default function HomePage() {
       <RecentlyViewed />
 
       {/* ── EMAIL CAPTURE ─────────────────────────────────────── */}
-      <section style={{ background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)", padding: "64px 0", position: "relative", overflow: "hidden" }}>
+      <section className="home-section-email" style={{ background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)", padding: "64px 0", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)", backgroundSize: "32px 32px", pointerEvents: "none" }} />
         <div className="max-w-[560px] mx-auto px-4 text-center" style={{ position: "relative", zIndex: 1 }}>
           <div style={{ width: 52, height: 52, borderRadius: 14, background: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.20)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
