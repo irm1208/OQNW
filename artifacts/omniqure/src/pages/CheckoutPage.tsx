@@ -63,7 +63,11 @@ const CRYPTO_OPTIONS = [
 ] as const;
 type CryptoCurrency = typeof CRYPTO_OPTIONS[number]["id"];
 
-const BANK_SVGS = [
+type BankEntry =
+  | { name: string; color: string; viewBox: string; filled: boolean; path: string }
+  | { name: string; color: string; viewBox: string; filled: boolean; path: string; imgSrc: string };
+
+const BANK_SVGS: BankEntry[] = [
   {
     name: "HSBC",
     color: "#DB0011",
@@ -102,7 +106,9 @@ const BANK_SVGS = [
     path: "",
     imgSrc: "/banks/santander.png",
   },
-] as const;
+];
+
+type AddressOption = { line1: string; line2: string; city: string; county: string; label: string };
 
 type DeliveryForm = {
   email: string; firstName: string; lastName: string; phone: string;
@@ -186,10 +192,10 @@ export default function CheckoutPage() {
 
   // Postcode lookup
   const [postcodeLookup, setPostcodeLookup] = useState("");
-  const [postcodeResults, setPostcodeResults] = useState<string[]>([]);
-  const [postcodeDropOpen, setPostcodeDropOpen] = useState(false);
+  const [addressOptions, setAddressOptions] = useState<AddressOption[]>([]);
+  const [addressDropOpen, setAddressDropOpen] = useState(false);
   const [postcodeLoading, setPostcodeLoading] = useState(false);
-  const postcodeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [postcodeError, setPostcodeError] = useState("");
 
   // Pre-fill for logged-in customers
   useEffect(() => {
@@ -227,47 +233,65 @@ export default function CheckoutPage() {
     }
   }, []);
 
-  // Postcode autocomplete via postcodes.io
-  const lookupPostcode = useCallback((val: string) => {
-    const q = val.trim().toUpperCase().replace(/\s/g, "");
-    if (q.length < 2) { setPostcodeResults([]); setPostcodeDropOpen(false); return; }
+  // Postcode → full address lookup via /api/address-lookup (proxied to getaddress.io)
+  const findAddresses = useCallback(async (pc: string) => {
+    const q = pc.trim().toUpperCase();
+    if (!q) return;
     setPostcodeLoading(true);
-    fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(q)}/autocomplete`)
-      .then(r => r.ok ? r.json() as Promise<{ result: string[] | null }> : null)
-      .then(data => {
-        const results = data?.result ?? [];
-        setPostcodeResults(results.slice(0, 6));
-        setPostcodeDropOpen(results.length > 0);
-      })
-      .catch(() => {})
-      .finally(() => setPostcodeLoading(false));
-  }, []);
-
-  const onPostcodeLookupChange = (val: string) => {
-    setPostcodeLookup(val);
-    if (postcodeTimer.current) clearTimeout(postcodeTimer.current);
-    postcodeTimer.current = setTimeout(() => lookupPostcode(val), 350);
-  };
-
-  const selectPostcode = (pc: string) => {
-    setPostcodeDropOpen(false);
-    setPostcodeLookup(pc);
-    setDelivery(d => ({ ...d, postcode: pc }));
-    // Fetch details to auto-fill city/county
-    fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(pc)}`)
-      .then(r => r.ok ? r.json() : null)
-      .then((data: { result?: { admin_district?: string; admin_county?: string; parish?: string } } | null) => {
-        if (data?.result) {
-          const city = data.result.admin_district ?? "";
-          const county = data.result.admin_county ?? data.result.parish ?? "";
+    setPostcodeError("");
+    setAddressOptions([]);
+    setAddressDropOpen(false);
+    try {
+      const res = await fetch(apiUrl(`address-lookup?postcode=${encodeURIComponent(q)}`));
+      if (res.status === 503) {
+        // API key not configured — fall back: validate via postcodes.io and fill city/county only
+        const pc2 = await fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(q)}`).then(r => r.ok ? r.json() : null);
+        if (pc2?.result) {
           setDelivery(d => ({
             ...d,
-            city: d.city || city,
-            county: d.county || county,
+            postcode: q,
+            city: d.city || pc2.result.admin_district || "",
+            county: d.county || pc2.result.admin_county || pc2.result.parish || "",
           }));
+          setPostcodeError("Address lookup unavailable — please fill in your address manually.");
+        } else {
+          setPostcodeError("Postcode not found. Please check and try again.");
         }
-      })
-      .catch(() => {});
+        return;
+      }
+      if (res.status === 404) {
+        setPostcodeError("No addresses found for this postcode. Please check and try again.");
+        return;
+      }
+      if (!res.ok) {
+        setPostcodeError("Lookup failed. Please enter your address manually.");
+        return;
+      }
+      const data = await res.json() as { postcode: string; addresses: AddressOption[] };
+      if (!data.addresses?.length) {
+        setPostcodeError("No addresses found. Please enter your address manually.");
+        return;
+      }
+      setAddressOptions(data.addresses);
+      setAddressDropOpen(true);
+      setDelivery(d => ({ ...d, postcode: data.postcode }));
+      setPostcodeLookup(data.postcode);
+    } catch {
+      setPostcodeError("Lookup failed. Please enter your address manually.");
+    } finally {
+      setPostcodeLoading(false);
+    }
+  }, []);
+
+  const selectAddress = (opt: AddressOption) => {
+    setAddressDropOpen(false);
+    setDelivery(d => ({
+      ...d,
+      address1: opt.line1,
+      address2: opt.line2,
+      city: opt.city,
+      county: opt.county,
+    }));
   };
 
   if (items.length === 0) {
@@ -493,40 +517,52 @@ export default function CheckoutPage() {
           <p style={sectionTitle}>Shipping Address</p>
 
           {/* Postcode lookup */}
-          <div style={{ marginBottom: 12, position: "relative" }}>
+          <div style={{ marginBottom: 12 }}>
             <label style={label}>Postcode Lookup</label>
-            <input
-              value={postcodeLookup}
-              onChange={e => onPostcodeLookupChange(e.target.value)}
-              onBlur={() => setTimeout(() => setPostcodeDropOpen(false), 200)}
-              placeholder="Start typing your postcode e.g. SW1A…"
-              style={input}
-            />
-            <p style={{ fontSize: "12px", color: "#6b7280", marginTop: 4 }}>
-              {postcodeLoading ? "Searching…" : "Type your postcode then select it to see your address options"}
-            </p>
-            {postcodeDropOpen && postcodeResults.length > 0 && (
-              <div style={{
-                position: "absolute", top: "100%", left: 0, right: 0, zIndex: 50,
-                background: "#fff", border: "1px solid #d1d5db", borderRadius: 4,
-                boxShadow: "0 4px 12px rgba(0,0,0,0.08)", marginTop: 2,
-              }}>
-                {postcodeResults.map(pc => (
-                  <button
-                    key={pc} type="button"
-                    onMouseDown={() => selectPostcode(pc)}
-                    style={{
-                      display: "block", width: "100%", textAlign: "left",
-                      padding: "10px 12px", fontSize: "14px", color: "#111827",
-                      background: "none", border: "none", cursor: "pointer",
-                      borderBottom: "1px solid #f3f4f6",
-                    }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#f9fafb"; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "none"; }}
-                  >
-                    {pc}
-                  </button>
-                ))}
+            <div style={{ display: "flex", gap: 8 }}>
+              <input
+                value={postcodeLookup}
+                onChange={e => { setPostcodeLookup(e.target.value); setPostcodeError(""); setAddressDropOpen(false); }}
+                onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); findAddresses(postcodeLookup); } }}
+                placeholder="e.g. SW1A 1AA"
+                style={{ ...input, flex: 1, marginBottom: 0 }}
+              />
+              <button
+                type="button"
+                onClick={() => findAddresses(postcodeLookup)}
+                disabled={postcodeLoading || !postcodeLookup.trim()}
+                style={{
+                  padding: "0 16px", borderRadius: 4, border: "none",
+                  background: postcodeLoading || !postcodeLookup.trim() ? "#9ca3af" : "#111827",
+                  color: "#fff", fontSize: "14px", fontWeight: 600,
+                  cursor: postcodeLoading || !postcodeLookup.trim() ? "not-allowed" : "pointer",
+                  whiteSpace: "nowrap", flexShrink: 0,
+                }}
+              >
+                {postcodeLoading ? "Searching…" : "Find Address"}
+              </button>
+            </div>
+
+            {postcodeError && (
+              <p style={{ fontSize: "12px", color: "#ef4444", marginTop: 6 }}>{postcodeError}</p>
+            )}
+
+            {addressDropOpen && addressOptions.length > 0 && (
+              <div style={{ marginTop: 8 }}>
+                <label style={label}>Select your address</label>
+                <select
+                  defaultValue=""
+                  onChange={e => {
+                    const idx = Number(e.target.value);
+                    if (!isNaN(idx) && addressOptions[idx]) selectAddress(addressOptions[idx]);
+                  }}
+                  style={{ ...input, marginBottom: 0, cursor: "pointer" }}
+                >
+                  <option value="" disabled>— {addressOptions.length} address{addressOptions.length !== 1 ? "es" : ""} found, select yours —</option>
+                  {addressOptions.map((a, i) => (
+                    <option key={i} value={i}>{a.label}</option>
+                  ))}
+                </select>
               </div>
             )}
           </div>
