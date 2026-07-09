@@ -457,9 +457,6 @@ export default function CheckoutPage() {
       {/* ── Breadcrumb bar ── */}
       <div style={{ borderBottom: "1px solid #e5e7eb", backgroundColor: "#fff" }}>
         <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 }}>
-          <Link href="/" style={{ fontSize: "18px", fontWeight: 800, color: "#111827", textDecoration: "none", letterSpacing: "-0.02em" }}>
-            OmniQure
-          </Link>
           <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 600, letterSpacing: "0.07em", textTransform: "uppercase" }}>
             {["Cart", "Information", "Shipping", "Payment"].map((s, i) => (
               <span key={s} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
