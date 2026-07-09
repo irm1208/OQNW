@@ -624,7 +624,7 @@ export default function CheckoutPage() {
                       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
                         {BANK_SVGS.map(b => (
                           <div key={b.name} title={b.name} style={{
-                            width: 44, height: 44, borderRadius: 10,
+                            width: 34, height: 34, borderRadius: 8,
                             background: "#fff", border: "1px solid #e5e7eb",
                             display: "flex", alignItems: "center", justifyContent: "center",
                             flexShrink: 0, overflow: "hidden",
@@ -633,13 +633,13 @@ export default function CheckoutPage() {
                               <img
                                 src={b.imgSrc}
                                 alt={b.name}
-                                style={{ width: 32, height: 32, objectFit: "contain" }}
+                                style={{ width: 22, height: 22, objectFit: "contain" }}
                               />
                             ) : (
                               <svg
                                 viewBox={b.viewBox}
-                                width={b.filled ? 32 : 38}
-                                height={b.filled ? 32 : 38}
+                                width={b.filled ? 20 : 26}
+                                height={b.filled ? 20 : 26}
                                 xmlns="http://www.w3.org/2000/svg"
                               >
                                 <path
