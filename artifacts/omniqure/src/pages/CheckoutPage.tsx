@@ -688,7 +688,7 @@ export default function CheckoutPage() {
                               <img
                                 src={b.imgSrc}
                                 alt={b.name}
-                                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                style={{ width: 32, height: 32, objectFit: "contain" }}
                               />
                             ) : (
                               <svg
