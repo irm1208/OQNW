@@ -765,13 +765,13 @@ export default function HomePage() {
                 className="flex items-center gap-3.5 py-5 px-5 trust-strip-cell"
               >
                 <div
-                  className="flex-shrink-0 rounded-xl flex items-center justify-center"
+                  className="flex-shrink-0 rounded-xl flex items-center justify-center trust-strip-icon"
                   style={{ width: "44px", height: "44px", backgroundColor: item.bg, color: item.color }}
                 >
                   {item.icon}
                 </div>
                 <div>
-                  <p className="font-bold" style={{ fontSize: "13px", color: "#0F172A" }}>{item.title}</p>
+                  <p className="font-bold trust-strip-title" style={{ fontSize: "13px", color: "#0F172A" }}>{item.title}</p>
                   <p style={{ fontSize: "11.5px", color: "#64748B", marginTop: "1px" }}>{item.sub}</p>
                 </div>
               </div>
