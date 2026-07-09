@@ -128,11 +128,24 @@ const emptyDelivery: DeliveryForm = {
 
 // ── Styles ──────────────────────────────────────────────────────────────────
 
+const THEME = {
+  cardBg: "rgba(255,255,255,0.06)" as const,
+  cardBorder: "1px solid rgba(255,255,255,0.12)" as const,
+  inputBg: "rgba(255,255,255,0.08)" as const,
+  inputBorder: "rgba(255,255,255,0.2)" as const,
+  text: "#ffffff" as const,
+  textMuted: "rgba(255,255,255,0.55)" as const,
+  textSub: "rgba(255,255,255,0.8)" as const,
+  divider: "1px solid rgba(255,255,255,0.1)" as const,
+  cta: "#EF4414" as const,
+  ctaHover: "#d4380e" as const,
+};
+
 const input: React.CSSProperties = {
   width: "100%", height: "44px", padding: "0 12px",
-  border: "1px solid #d1d5db", borderRadius: "4px",
-  fontSize: "14px", color: "#111827", outline: "none",
-  fontFamily: "inherit", background: "#fff",
+  border: `1px solid ${THEME.inputBorder}`, borderRadius: "4px",
+  fontSize: "14px", color: THEME.text, outline: "none",
+  fontFamily: "inherit", background: THEME.inputBg,
   boxSizing: "border-box",
 };
 
@@ -140,22 +153,22 @@ const inputError: React.CSSProperties = { ...input, borderColor: "#ef4444" };
 
 const label: React.CSSProperties = {
   display: "block", fontSize: "11px", fontWeight: 700,
-  color: "#374151", letterSpacing: "0.07em", textTransform: "uppercase",
+  color: THEME.textMuted, letterSpacing: "0.07em", textTransform: "uppercase",
   marginBottom: "5px",
 };
 
 const sectionTitle: React.CSSProperties = {
-  fontSize: "13px", fontWeight: 800, color: "#111827",
+  fontSize: "13px", fontWeight: 800, color: THEME.text,
   letterSpacing: "0.08em", textTransform: "uppercase",
   margin: "0 0 16px",
 };
 
 const errText: React.CSSProperties = {
-  fontSize: "11px", color: "#ef4444", marginTop: "3px",
+  fontSize: "11px", color: "#f87171", marginTop: "3px",
 };
 
 const divider: React.CSSProperties = {
-  border: "none", borderTop: "1px solid #e5e7eb", margin: "24px 0",
+  border: "none", borderTop: THEME.divider, margin: "24px 0",
 };
 
 export default function CheckoutPage() {
@@ -265,10 +278,10 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div style={{ fontFamily: "inherit", minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ fontFamily: "'Arimo', Arial, sans-serif", background: "linear-gradient(135deg, #0D2565 0%, #1240A0 60%, #1B5CB5 100%)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: "18px", fontWeight: 700, color: "#111827", marginBottom: "8px" }}>Your cart is empty</p>
-          <Link href="/all-peptides" style={{ color: "#1B5CB5", fontSize: "14px" }}>← Browse peptides</Link>
+          <p style={{ fontSize: "18px", fontWeight: 700, color: THEME.text, marginBottom: "8px" }}>Your cart is empty</p>
+          <Link href="/all-peptides" style={{ color: "rgba(255,255,255,0.7)", fontSize: "14px" }}>← Browse peptides</Link>
         </div>
       </div>
     );
@@ -423,7 +436,7 @@ export default function CheckoutPage() {
     errors[key] ? inputError : input;
 
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#f9fafb", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", background: "linear-gradient(135deg, #0D2565 0%, #1240A0 60%, #1B5CB5 100%)", minHeight: "100vh" }}>
 
       {/* ── Session expired overlay ── */}
       {timerExpired && (
@@ -432,12 +445,12 @@ export default function CheckoutPage() {
           background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center",
         }}>
           <div style={{
-            background: "#fff", borderRadius: 12, padding: "40px 48px", textAlign: "center",
-            maxWidth: 400, width: "90%", boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+            background: "#0D2565", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 12, padding: "40px 48px", textAlign: "center",
+            maxWidth: 400, width: "90%", boxShadow: "0 20px 60px rgba(0,0,0,0.6)",
           }}>
             <div style={{ fontSize: 48, marginBottom: 12 }}>⏱</div>
-            <p style={{ fontSize: "20px", fontWeight: 800, color: "#111827", marginBottom: 8 }}>Session Expired</p>
-            <p style={{ fontSize: "14px", color: "#6b7280", marginBottom: 24, lineHeight: 1.5 }}>
+            <p style={{ fontSize: "20px", fontWeight: 800, color: "#fff", marginBottom: 8 }}>Session Expired</p>
+            <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)", marginBottom: 24, lineHeight: 1.5 }}>
               Your checkout session has timed out for security. Your cart is still saved.
             </p>
             <button
@@ -445,7 +458,7 @@ export default function CheckoutPage() {
               onClick={() => setTimeLeft(15 * 60)}
               style={{
                 width: "100%", padding: "14px", borderRadius: 6, border: "none",
-                background: "#111827", color: "#fff", fontSize: "15px", fontWeight: 700, cursor: "pointer",
+                background: THEME.cta, color: "#fff", fontSize: "15px", fontWeight: 700, cursor: "pointer",
               }}
             >
               Restart Checkout
@@ -455,17 +468,17 @@ export default function CheckoutPage() {
       )}
 
       {/* ── Breadcrumb bar ── */}
-      <div style={{ borderBottom: "1px solid #e5e7eb", backgroundColor: "#fff" }}>
+      <div style={{ borderBottom: "1px solid rgba(255,255,255,0.12)", background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)" }}>
         <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 600, letterSpacing: "0.07em", textTransform: "uppercase" }}>
             {["Cart", "Information", "Shipping", "Payment"].map((s, i) => (
               <span key={s} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                {i > 0 && <span style={{ color: "#9ca3af" }}>›</span>}
-                <span style={{ color: i === 1 ? "#111827" : "#9ca3af" }}>{s}</span>
+                {i > 0 && <span style={{ color: "rgba(255,255,255,0.55)" }}>›</span>}
+                <span style={{ color: i === 1 ? "#fff" : "rgba(255,255,255,0.65)" }}>{s}</span>
               </span>
             ))}
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#6b7280", fontSize: "12px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "rgba(255,255,255,0.65)", fontSize: "12px" }}>
             <Lock size={13} />
             <span style={{ fontWeight: 600, letterSpacing: "0.04em" }}>SECURE CHECKOUT</span>
           </div>
@@ -474,7 +487,7 @@ export default function CheckoutPage() {
 
       {/* ── Timer banner ── */}
       <div style={{
-        background: timerUrgent ? "#7f1d1d" : "#111827",
+        background: timerUrgent ? "rgba(127,29,29,0.85)" : "rgba(0,0,0,0.28)",
         transition: "background 0.6s",
         padding: "10px 24px",
         textAlign: "center",
@@ -506,8 +519,8 @@ export default function CheckoutPage() {
               <input
                 value={delivery.email} onChange={setD("email")} type="email"
                 placeholder="your@email.com" style={inp("email")}
-                onFocus={e => { if (!errors.email) e.currentTarget.style.borderColor = "#374151"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = errors.email ? "#ef4444" : "#d1d5db"; }}
+                onFocus={e => { if (!errors.email) e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = errors.email ? "#ef4444" : THEME.inputBorder; }}
               />
               {errors.email && <p style={errText}>{errors.email}</p>}
             </div>
@@ -516,13 +529,13 @@ export default function CheckoutPage() {
               <input
                 value={delivery.phone} onChange={setD("phone")} type="tel"
                 placeholder="+44 7700 900000" style={input}
-                onFocus={e => { e.currentTarget.style.borderColor = "#374151"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = "#d1d5db"; }}
+                onFocus={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }}
               />
             </div>
           </div>
-          <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "13px", color: "#374151", cursor: "pointer", marginBottom: 4 }}>
-            <input type="checkbox" style={{ width: 15, height: 15, accentColor: "#111827" }} />
+          <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "13px", color: THEME.textSub, cursor: "pointer", marginBottom: 4 }}>
+            <input type="checkbox" style={{ width: 15, height: 15, accentColor: THEME.cta }} />
             Email me with news and exclusive offers
           </label>
 
@@ -536,15 +549,15 @@ export default function CheckoutPage() {
             <div>
               <label style={label}>First Name *</label>
               <input value={delivery.firstName} onChange={setD("firstName")} placeholder="First Name" style={inp("firstName")}
-                onFocus={e => { if (!errors.firstName) e.currentTarget.style.borderColor = "#374151"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = errors.firstName ? "#ef4444" : "#d1d5db"; }} />
+                onFocus={e => { if (!errors.firstName) e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = errors.firstName ? "#ef4444" : THEME.inputBorder; }} />
               {errors.firstName && <p style={errText}>{errors.firstName}</p>}
             </div>
             <div>
               <label style={label}>Last Name *</label>
               <input value={delivery.lastName} onChange={setD("lastName")} placeholder="Last Name" style={inp("lastName")}
-                onFocus={e => { if (!errors.lastName) e.currentTarget.style.borderColor = "#374151"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = errors.lastName ? "#ef4444" : "#d1d5db"; }} />
+                onFocus={e => { if (!errors.lastName) e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = errors.lastName ? "#ef4444" : THEME.inputBorder; }} />
               {errors.lastName && <p style={errText}>{errors.lastName}</p>}
             </div>
           </div>
@@ -553,8 +566,8 @@ export default function CheckoutPage() {
           <div style={{ marginBottom: 12 }}>
             <label style={label}>Address *</label>
             <input value={delivery.address1} onChange={setD("address1")} placeholder="Street address" style={inp("address1")}
-              onFocus={e => { if (!errors.address1) e.currentTarget.style.borderColor = "#374151"; }}
-              onBlur={e => { e.currentTarget.style.borderColor = errors.address1 ? "#ef4444" : "#d1d5db"; }} />
+              onFocus={e => { if (!errors.address1) e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"; }}
+              onBlur={e => { e.currentTarget.style.borderColor = errors.address1 ? "#ef4444" : THEME.inputBorder; }} />
             {errors.address1 && <p style={errText}>{errors.address1}</p>}
           </div>
 
@@ -562,8 +575,8 @@ export default function CheckoutPage() {
           <div style={{ marginBottom: 12 }}>
             <label style={label}>Apt, Suite, Etc. (Optional)</label>
             <input value={delivery.address2} onChange={setD("address2")} placeholder="Apartment, suite, etc." style={input}
-              onFocus={e => { e.currentTarget.style.borderColor = "#374151"; }}
-              onBlur={e => { e.currentTarget.style.borderColor = "#d1d5db"; }} />
+              onFocus={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"; }}
+              onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }} />
           </div>
 
           {/* City / Country / Postcode */}
@@ -571,28 +584,28 @@ export default function CheckoutPage() {
             <div>
               <label style={label}>City *</label>
               <input value={delivery.city} onChange={setD("city")} placeholder="City" style={inp("city")}
-                onFocus={e => { if (!errors.city) e.currentTarget.style.borderColor = "#374151"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = errors.city ? "#ef4444" : "#d1d5db"; }} />
+                onFocus={e => { if (!errors.city) e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = errors.city ? "#ef4444" : THEME.inputBorder; }} />
               {errors.city && <p style={errText}>{errors.city}</p>}
             </div>
             <div>
               <label style={label}>Country *</label>
               <select value={delivery.country} onChange={setD("country")}
                 style={{ ...inp("country"), height: 44, appearance: "none", cursor: "pointer" }}
-                onFocus={e => { e.currentTarget.style.borderColor = "#374151"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = errors.country ? "#ef4444" : "#d1d5db"; }}>
-                {COUNTRIES.map(c => <option key={c}>{c}</option>)}
+                onFocus={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = errors.country ? "#ef4444" : THEME.inputBorder; }}>
+                {COUNTRIES.map(c => <option key={c} style={{ background: "#1240A0", color: "#fff" }}>{c}</option>)}
               </select>
             </div>
             <div>
               <label style={label}>Postal Code *</label>
               <input value={delivery.postcode} onChange={setD("postcode")} placeholder="Postal Code" style={inp("postcode")}
-                onFocus={e => { if (!errors.postcode) e.currentTarget.style.borderColor = "#374151"; }}
+                onFocus={e => { if (!errors.postcode) e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"; }}
                 onBlur={e => {
-                  e.currentTarget.style.borderColor = errors.postcode ? "#ef4444" : "#d1d5db";
+                  e.currentTarget.style.borderColor = errors.postcode ? "#ef4444" : THEME.inputBorder;
                   onPostcodeBlur(e.currentTarget.value);
                 }} />
-              {postcodeLoading && <p style={{ fontSize: "12px", color: "#6b7280", marginTop: 4 }}>Looking up postcode…</p>}
+              {postcodeLoading && <p style={{ fontSize: "12px", color: THEME.textMuted, marginTop: 4 }}>Looking up postcode…</p>}
               {errors.postcode && <p style={errText}>{errors.postcode}</p>}
             </div>
           </div>
@@ -611,23 +624,24 @@ export default function CheckoutPage() {
                   key={opt.id}
                   style={{
                     display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 16px",
-                    border: `1px solid ${active ? "#374151" : "#d1d5db"}`,
-                    borderRadius: 6, cursor: "pointer", background: "#fff",
-                    transition: "border-color 0.15s",
+                    border: `1px solid ${active ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.15)"}`,
+                    borderRadius: 6, cursor: "pointer",
+                    background: active ? "rgba(255,255,255,0.1)" : THEME.cardBg,
+                    transition: "border-color 0.15s, background 0.15s",
                   }}
                 >
                   <input type="radio" name="shipping" value={opt.id} checked={active}
                     onChange={() => setShipping(opt.id)}
-                    style={{ marginTop: 2, accentColor: "#111827", flexShrink: 0 }} />
+                    style={{ marginTop: 2, accentColor: THEME.cta, flexShrink: 0 }} />
                   <div style={{ flex: 1 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontSize: "14px", fontWeight: 600, color: "#111827" }}>{opt.displayLabel}</span>
-                      <span style={{ fontSize: "14px", fontWeight: 700, color: "#111827", flexShrink: 0, marginLeft: 12 }}>
-                        {isFree ? <span style={{ color: "#059669" }}>FREE</span> : `£${cost.toFixed(2)}`}
+                      <span style={{ fontSize: "14px", fontWeight: 600, color: THEME.text }}>{opt.displayLabel}</span>
+                      <span style={{ fontSize: "14px", fontWeight: 700, color: THEME.text, flexShrink: 0, marginLeft: 12 }}>
+                        {isFree ? <span style={{ color: "#34D399" }}>FREE</span> : `£${cost.toFixed(2)}`}
                       </span>
                     </div>
                     {opt.note && (
-                      <p style={{ fontSize: "12px", color: "#6b7280", marginTop: 2 }}>{opt.note}</p>
+                      <p style={{ fontSize: "12px", color: THEME.textMuted, marginTop: 2 }}>{opt.note}</p>
                     )}
                   </div>
                 </label>
@@ -649,34 +663,34 @@ export default function CheckoutPage() {
                 <div
                   onClick={() => setPaymentMethod("fena")}
                   style={{
-                    border: `${active ? "2px" : "1px"} solid ${active ? TEAL : "#d1d5db"}`,
+                    border: `1px solid ${active ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.15)"}`,
                     borderRadius: 6, overflow: "hidden", cursor: "pointer",
-                    background: "#fff",
+                    background: active ? "rgba(255,255,255,0.1)" : THEME.cardBg,
                   }}
                 >
                   {/* Header row */}
                   <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
                     <input type="radio" checked={active} onChange={() => setPaymentMethod("fena")}
-                      style={{ accentColor: TEAL, width: 16, height: 16, flexShrink: 0 }} />
+                      style={{ accentColor: THEME.cta, width: 16, height: 16, flexShrink: 0 }} />
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: "15px", fontWeight: 700, color: "#111827" }}>Pay by Bank</span>
+                        <span style={{ fontSize: "15px", fontWeight: 700, color: THEME.text }}>Pay by Bank</span>
                         <span style={{
                           fontSize: "11px", fontWeight: 700, letterSpacing: "0.06em",
                           background: "#059669", color: "#fff",
                           padding: "2px 8px", borderRadius: 100,
                         }}>RECOMMENDED · FASTEST</span>
                       </div>
-                      <p style={{ fontSize: "13px", fontWeight: 600, color: "#111827", margin: "4px 0 0" }}>
+                      <p style={{ fontSize: "13px", fontWeight: 600, color: THEME.textSub, margin: "4px 0 0" }}>
                         Tap your bank, approve in your banking app — done in seconds.
                       </p>
                     </div>
                   </div>
 
                   {active && (
-                    <div style={{ borderTop: "1px solid #e5e7eb", padding: "14px 16px" }}>
+                    <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", padding: "14px 16px" }}>
                       {/* Trust line */}
-                      <p style={{ fontSize: "12px", color: "#4b5563", marginBottom: 12 }}>
+                      <p style={{ fontSize: "12px", color: THEME.textMuted, marginBottom: 12 }}>
                         🏦 FCA-authorised open banking · Read-only · No card details stored
                       </p>
                       {/* Bank logos — inline SVG, no external requests */}
@@ -684,7 +698,7 @@ export default function CheckoutPage() {
                         {BANK_SVGS.map(b => (
                           <div key={b.name} title={b.name} style={{
                             width: 34, height: 34, borderRadius: 8,
-                            background: "#fff", border: "1px solid #e5e7eb",
+                            background: "rgba(255,255,255,0.92)", border: "1px solid rgba(255,255,255,0.2)",
                             display: "flex", alignItems: "center", justifyContent: "center",
                             flexShrink: 0, overflow: "hidden",
                           }}>
@@ -713,22 +727,22 @@ export default function CheckoutPage() {
                             )}
                           </div>
                         ))}
-                        <span style={{ fontSize: "13px", color: "#6b7280", fontWeight: 600 }}>+more</span>
+                        <span style={{ fontSize: "13px", color: THEME.textMuted, fontWeight: 600 }}>+more</span>
                       </div>
                       {/* How it works */}
-                      <div style={{ borderTop: "1px solid #e5e7eb", paddingTop: 12 }}>
-                        <p style={{ fontSize: "11px", fontWeight: 800, color: "#374151", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
+                      <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 12 }}>
+                        <p style={{ fontSize: "11px", fontWeight: 800, color: THEME.textMuted, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
                           How it works
                         </p>
                         {["Choose your bank", "Approve in your banking app", "Order confirmed instantly"].map((step, i) => (
                           <div key={step} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                             <div style={{
                               width: 22, height: 22, borderRadius: "50%",
-                              background: TEAL, color: "#fff",
+                              background: THEME.cta, color: "#fff",
                               display: "flex", alignItems: "center", justifyContent: "center",
                               fontSize: "11px", fontWeight: 800, flexShrink: 0,
                             }}>{i + 1}</div>
-                            <span style={{ fontSize: "13px", color: "#374151" }}>{step}</span>
+                            <span style={{ fontSize: "13px", color: THEME.textSub }}>{step}</span>
                           </div>
                         ))}
                       </div>
@@ -744,27 +758,27 @@ export default function CheckoutPage() {
               return (
                 <div
                   onClick={() => setPaymentMethod("bitcoin")}
-                  style={{ border: `${active ? "2px" : "1px"} solid ${active ? "#374151" : "#d1d5db"}`, borderRadius: 6, cursor: "pointer", background: "#fff" }}
+                  style={{ border: `1px solid ${active ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.15)"}`, borderRadius: 6, cursor: "pointer", background: active ? "rgba(255,255,255,0.1)" : THEME.cardBg }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
                     <input type="radio" checked={active} onChange={() => setPaymentMethod("bitcoin")}
-                      style={{ accentColor: "#111827", width: 16, height: 16, flexShrink: 0 }} />
+                      style={{ accentColor: THEME.cta, width: 16, height: 16, flexShrink: 0 }} />
                     <div>
-                      <span style={{ fontSize: "15px", fontWeight: 700, color: "#111827" }}>Cryptocurrency</span>
-                      <p style={{ fontSize: "12px", color: "#6b7280", margin: "2px 0 0" }}>Bitcoin, Ethereum, USDT, USDC, Litecoin, Monero</p>
+                      <span style={{ fontSize: "15px", fontWeight: 700, color: THEME.text }}>Cryptocurrency</span>
+                      <p style={{ fontSize: "12px", color: THEME.textMuted, margin: "2px 0 0" }}>Bitcoin, Ethereum, USDT, USDC, Litecoin, Monero</p>
                     </div>
                   </div>
                   {active && (
-                    <div style={{ borderTop: "1px solid #e5e7eb", padding: "14px 16px" }}>
+                    <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", padding: "14px 16px" }}>
                       <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                         {/* BTC is processed via BTCPay; other coins use static wallet addresses */}
                       {CRYPTO_OPTIONS.map(c => (
                           <button key={c.id} type="button" onClick={e => { e.stopPropagation(); setCryptoCurrency(c.id); }}
                             style={{
                               padding: "6px 14px", borderRadius: 100, border: "1px solid",
-                              borderColor: cryptoCurrency === c.id ? "#111827" : "#d1d5db",
-                              background: cryptoCurrency === c.id ? "#111827" : "#fff",
-                              color: cryptoCurrency === c.id ? "#fff" : "#374151",
+                              borderColor: cryptoCurrency === c.id ? THEME.cta : "rgba(255,255,255,0.25)",
+                              background: cryptoCurrency === c.id ? THEME.cta : "rgba(255,255,255,0.06)",
+                              color: "#fff",
                               fontSize: "13px", fontWeight: 600, cursor: "pointer",
                             }}>{c.name}</button>
                         ))}
@@ -778,9 +792,9 @@ export default function CheckoutPage() {
 
           {/* Loyalty points (logged-in only) */}
           {loyaltyBalance && loyaltyBalance.balance > 0 && (
-            <div style={{ marginTop: 24, border: "1px solid #d1d5db", borderRadius: 6, padding: 16, background: "#fff" }}>
+            <div style={{ marginTop: 24, border: THEME.cardBorder, borderRadius: 6, padding: 16, background: THEME.cardBg }}>
               <p style={{ ...sectionTitle, marginBottom: 8 }}>Loyalty Points</p>
-              <p style={{ fontSize: "13px", color: "#374151", marginBottom: 10 }}>
+              <p style={{ fontSize: "13px", color: THEME.textSub, marginBottom: 10 }}>
                 You have <strong>{loyaltyBalance.balance}</strong> points (worth <strong>£{loyaltyBalance.gbpValue.toFixed(2)}</strong>).
               </p>
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
@@ -788,9 +802,9 @@ export default function CheckoutPage() {
                   type="range" min={0} max={Math.min(loyaltyBalance.balance, Math.floor(totalGBP * 100))}
                   step={100} value={loyaltyPointsToRedeem}
                   onChange={e => setLoyaltyPointsToRedeem(Number(e.target.value))}
-                  style={{ flex: 1, accentColor: "#111827" }}
+                  style={{ flex: 1, accentColor: THEME.cta }}
                 />
-                <span style={{ fontSize: "13px", fontWeight: 700, color: "#111827", minWidth: 60, textAlign: "right" }}>
+                <span style={{ fontSize: "13px", fontWeight: 700, color: THEME.text, minWidth: 60, textAlign: "right" }}>
                   −£{(loyaltyPointsToRedeem / 100).toFixed(2)}
                 </span>
               </div>
@@ -798,10 +812,10 @@ export default function CheckoutPage() {
           )}
 
           {freePeptideCredits > 0 && (
-            <div style={{ marginTop: 16, border: "1px solid #d1d5db", borderRadius: 6, padding: 16, background: "#fff" }}>
-              <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", fontSize: "14px", color: "#111827" }}>
+            <div style={{ marginTop: 16, border: THEME.cardBorder, borderRadius: 6, padding: 16, background: THEME.cardBg }}>
+              <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", fontSize: "14px", color: THEME.text }}>
                 <input type="checkbox" checked={redeemFreePeptide} onChange={e => setRedeemFreePeptide(e.target.checked)}
-                  style={{ width: 16, height: 16, accentColor: "#111827" }} />
+                  style={{ width: 16, height: 16, accentColor: THEME.cta }} />
                 <span>Redeem free peptide credit — save £{cheapestItemPrice.toFixed(2)} on your cheapest item</span>
               </label>
             </div>
@@ -811,9 +825,9 @@ export default function CheckoutPage() {
 
         {/* ── RIGHT COLUMN — ORDER SUMMARY ── */}
         <div className="checkout-sidebar" style={{ width: 360, flexShrink: 0, position: "sticky", top: 24 }}>
-          <div style={{ border: "1px solid #e5e7eb", borderRadius: 8, background: "#fff", overflow: "hidden" }}>
+          <div style={{ border: THEME.cardBorder, borderRadius: 8, background: "rgba(255,255,255,0.07)", overflow: "hidden", backdropFilter: "blur(12px)" }}>
             <div style={{ padding: "20px 20px 0" }}>
-              <p style={{ fontSize: "13px", fontWeight: 800, color: "#111827", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>
+              <p style={{ fontSize: "13px", fontWeight: 800, color: THEME.text, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>
                 Order Summary
               </p>
 
@@ -824,31 +838,31 @@ export default function CheckoutPage() {
                 return (
                   <div key={String(product.id)} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14 }}>
                     <div style={{ position: "relative", flexShrink: 0 }}>
-                      <div style={{ width: 56, height: 56, borderRadius: 6, border: "1px solid #e5e7eb", overflow: "hidden", background: "#f9fafb" }}>
+                      <div style={{ width: 56, height: 56, borderRadius: 6, border: "1px solid rgba(255,255,255,0.15)", overflow: "hidden", background: "rgba(255,255,255,0.06)" }}>
                         {(product as { image?: string }).image ? (
                           <img src={(product as { image?: string }).image} alt={product.name}
                             style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                         ) : (
-                          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", color: "#9ca3af" }}>IMG</div>
+                          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", color: "rgba(255,255,255,0.4)" }}>IMG</div>
                         )}
                       </div>
                       <div style={{
                         position: "absolute", top: -6, right: -6,
                         width: 20, height: 20, borderRadius: "50%",
-                        background: "#374151", color: "#fff",
+                        background: THEME.cta, color: "#fff",
                         display: "flex", alignItems: "center", justifyContent: "center",
                         fontSize: "11px", fontWeight: 700,
                       }}>{quantity}</div>
                     </div>
                     <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: "13px", fontWeight: 600, color: "#111827", margin: 0 }}>{product.name}</p>
+                      <p style={{ fontSize: "13px", fontWeight: 600, color: THEME.text, margin: 0 }}>{product.name}</p>
                       {freeQty > 0 && (
-                        <p style={{ fontSize: "11px", color: "#059669", margin: "2px 0 0", fontWeight: 600 }}>
+                        <p style={{ fontSize: "11px", color: "#34D399", margin: "2px 0 0", fontWeight: 600 }}>
                           {freeQty} free (Bundle & Save)
                         </p>
                       )}
                     </div>
-                    <div style={{ fontSize: "14px", fontWeight: 700, color: "#111827", flexShrink: 0 }}>
+                    <div style={{ fontSize: "14px", fontWeight: 700, color: THEME.text, flexShrink: 0 }}>
                       £{(price * quantity).toFixed(2)}
                     </div>
                   </div>
@@ -856,17 +870,17 @@ export default function CheckoutPage() {
               })}
             </div>
 
-            <hr style={{ margin: 0, border: "none", borderTop: "1px solid #e5e7eb" }} />
+            <hr style={{ margin: 0, border: "none", borderTop: THEME.divider }} />
 
             {/* Discount code */}
             <div style={{ padding: "16px 20px" }}>
               {appliedDiscount ? (
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 12px", background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 6 }}>
-                  <span style={{ fontSize: "13px", color: "#065f46", fontWeight: 700 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 12px", background: "rgba(52,211,153,0.12)", border: "1px solid rgba(52,211,153,0.3)", borderRadius: 6 }}>
+                  <span style={{ fontSize: "13px", color: "#34D399", fontWeight: 700 }}>
                     {appliedDiscount.code} — −£{appliedDiscount.discountAmount.toFixed(2)}
                   </span>
                   <button type="button" onClick={() => { setAppliedDiscount(null); setDiscountError(null); setDiscountInput(""); }}
-                    style={{ background: "none", border: "none", color: "#065f46", cursor: "pointer", fontSize: "13px", fontWeight: 700 }}>✕</button>
+                    style={{ background: "none", border: "none", color: "#34D399", cursor: "pointer", fontSize: "13px", fontWeight: 700 }}>✕</button>
                 </div>
               ) : (
                 <div>
@@ -880,7 +894,7 @@ export default function CheckoutPage() {
                     <button type="button" onClick={applyDiscount} disabled={applyingDiscount || !discountInput.trim()}
                       style={{
                         padding: "0 16px", height: 40, borderRadius: 4,
-                        background: "#374151", color: "#fff",
+                        background: THEME.cta, color: "#fff",
                         border: "none", fontSize: "13px", fontWeight: 700,
                         cursor: "pointer", letterSpacing: "0.05em", flexShrink: 0,
                         opacity: (applyingDiscount || !discountInput.trim()) ? 0.5 : 1,
@@ -891,7 +905,7 @@ export default function CheckoutPage() {
               )}
             </div>
 
-            <hr style={{ margin: 0, border: "none", borderTop: "1px solid #e5e7eb" }} />
+            <hr style={{ margin: 0, border: "none", borderTop: THEME.divider }} />
 
             {/* Totals */}
             <div style={{ padding: "16px 20px" }}>
@@ -904,40 +918,40 @@ export default function CheckoutPage() {
                 ...(freePeptideDeductGbp > 0 ? [["Free Peptide Credit", `−£${freePeptideDeductGbp.toFixed(2)}`]] : []),
               ].map(([k, v]) => (
                 <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-                  <span style={{ fontSize: "13px", color: "#6b7280" }}>{k}</span>
-                  <span style={{ fontSize: "13px", color: v?.startsWith("−") || v === "FREE" ? "#059669" : "#111827", fontWeight: 500 }}>{v}</span>
+                  <span style={{ fontSize: "13px", color: THEME.textMuted }}>{k}</span>
+                  <span style={{ fontSize: "13px", color: v?.startsWith("−") || v === "FREE" ? "#34D399" : THEME.text, fontWeight: 500 }}>{v}</span>
                 </div>
               ))}
-              <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12, paddingTop: 12, borderTop: "1px solid #e5e7eb" }}>
-                <span style={{ fontSize: "16px", fontWeight: 800, color: "#111827" }}>Total</span>
-                <span style={{ fontSize: "20px", fontWeight: 800, color: "#111827" }}>£{totalGBP.toFixed(2)}</span>
+              <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12, paddingTop: 12, borderTop: THEME.divider }}>
+                <span style={{ fontSize: "16px", fontWeight: 800, color: THEME.text }}>Total</span>
+                <span style={{ fontSize: "20px", fontWeight: 800, color: THEME.text }}>£{totalGBP.toFixed(2)}</span>
               </div>
             </div>
 
-            <hr style={{ margin: 0, border: "none", borderTop: "1px solid #e5e7eb" }} />
+            <hr style={{ margin: 0, border: "none", borderTop: THEME.divider }} />
 
             {/* Confirm + CTA */}
             <div style={{ padding: "16px 20px 20px" }}>
               {/* Confirm checkbox */}
               <label style={{
                 display: "flex", alignItems: "flex-start", gap: 10,
-                fontSize: "13px", color: "#374151", cursor: "pointer", marginBottom: 16,
+                fontSize: "13px", color: THEME.textSub, cursor: "pointer", marginBottom: 16,
                 lineHeight: 1.4,
               }}>
                 <input type="checkbox" checked={confirmed} onChange={e => setConfirmed(e.target.checked)}
-                  style={{ width: 16, height: 16, marginTop: 1, accentColor: "#111827", flexShrink: 0 }} />
+                  style={{ width: 16, height: 16, marginTop: 1, accentColor: THEME.cta, flexShrink: 0 }} />
                 I confirm that all products are for laboratory research purposes only, not for human consumption, and I am at least 18 years of age.
               </label>
               {errors.confirmed && <p style={{ ...errText, marginBottom: 12 }}>{errors.confirmed}</p>}
 
               {/* Errors */}
               {placeError && (
-                <div style={{ marginBottom: 12, padding: "10px 12px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 6, fontSize: "13px", color: "#dc2626" }}>
+                <div style={{ marginBottom: 12, padding: "10px 12px", background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.4)", borderRadius: 6, fontSize: "13px", color: "#fca5a5" }}>
                   {placeError}
                 </div>
               )}
               {stockErrors.length > 0 && (
-                <div style={{ marginBottom: 12, padding: "10px 12px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 6, fontSize: "13px", color: "#dc2626" }}>
+                <div style={{ marginBottom: 12, padding: "10px 12px", background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.4)", borderRadius: 6, fontSize: "13px", color: "#fca5a5" }}>
                   {stockErrors.map(e => (
                     <p key={e.productName} style={{ margin: "0 0 4px" }}>
                       {e.productName}: only {e.available} in stock (you requested {e.requested})
@@ -953,7 +967,7 @@ export default function CheckoutPage() {
                 disabled={placing}
                 style={{
                   width: "100%", height: 52, borderRadius: 4,
-                  background: placing ? "#374151" : "#111827",
+                  background: placing ? THEME.ctaHover : THEME.cta,
                   color: "#fff", border: "none",
                   fontSize: "13px", fontWeight: 800,
                   letterSpacing: "0.1em", textTransform: "uppercase",
@@ -961,8 +975,8 @@ export default function CheckoutPage() {
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                   transition: "background 0.15s",
                 }}
-                onMouseEnter={e => { if (!placing) (e.currentTarget as HTMLButtonElement).style.background = "#374151"; }}
-                onMouseLeave={e => { if (!placing) (e.currentTarget as HTMLButtonElement).style.background = "#111827"; }}
+                onMouseEnter={e => { if (!placing) (e.currentTarget as HTMLButtonElement).style.background = THEME.ctaHover; }}
+                onMouseLeave={e => { if (!placing) (e.currentTarget as HTMLButtonElement).style.background = THEME.cta; }}
               >
                 {placing ? (
                   <>
@@ -979,10 +993,10 @@ export default function CheckoutPage() {
 
               {/* Trust badges */}
               <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 14 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "11px", color: "#6b7280", fontWeight: 600, letterSpacing: "0.05em" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "11px", color: THEME.textMuted, fontWeight: 600, letterSpacing: "0.05em" }}>
                   <Shield size={13} /> SECURE CHECKOUT
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "11px", color: "#6b7280", fontWeight: 600, letterSpacing: "0.05em" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "11px", color: THEME.textMuted, fontWeight: 600, letterSpacing: "0.05em" }}>
                   <Truck size={13} /> FAST SHIPPING
                 </div>
               </div>
