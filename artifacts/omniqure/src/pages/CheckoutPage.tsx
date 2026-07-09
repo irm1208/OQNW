@@ -679,7 +679,7 @@ export default function CheckoutPage() {
                       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
                         {BANK_SVGS.map(b => (
                           <div key={b.name} title={b.name} style={{
-                            width: 56, height: 56, borderRadius: 10,
+                            width: 44, height: 44, borderRadius: 10,
                             background: "#fff", border: "1px solid #e5e7eb",
                             display: "flex", alignItems: "center", justifyContent: "center",
                             flexShrink: 0, overflow: "hidden",
