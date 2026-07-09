@@ -642,85 +642,107 @@ export default function CheckoutPage() {
                 {/* Payment method selector */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "24px" }}>
 
-                  {/* ── Fena — Instant Open Banking ── */}
-                  <div
-                    onClick={() => setPaymentMethod("fena")}
-                    style={{
-                      borderRadius: "14px", cursor: "pointer", padding: "16px",
-                      border: `2px solid ${paymentMethod === "fena" ? "#1240A0" : "#E2E8F0"}`,
-                      backgroundColor: paymentMethod === "fena" ? "#EEF4FF" : "#F8FAFC",
-                      transition: "all 0.15s",
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "10px" }}>
-                      <div style={{
-                        width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
-                        border: `2px solid ${paymentMethod === "fena" ? "#1240A0" : "#CBD5E1"}`,
-                        backgroundColor: paymentMethod === "fena" ? "#1240A0" : "#fff",
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                      }}>
-                        {paymentMethod === "fena" && <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#fff" }} />}
-                      </div>
-                      {/* Fena logo placeholder — lightning bolt in a circle */}
-                      <div style={{
-                        width: "32px", height: "32px", borderRadius: "8px", flexShrink: 0,
-                        background: "linear-gradient(135deg, #0D2565, #1B5CB5)",
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                      }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                        </svg>
-                      </div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-                          <p style={{ margin: 0, fontSize: "14px", fontWeight: 800, color: paymentMethod === "fena" ? "#1240A0" : "#0F172A" }}>
-                            Instant Open Banking
-                          </p>
+                  {/* ── Fena — Pay by Bank (open banking) ── */}
+                  {(() => {
+                    const TEAL = "#1A6B52";
+                    const selected = paymentMethod === "fena";
+                    // Stylised UK bank icon tiles (colours & marks approximate real brands)
+                    const BANK_ICONS = [
+                      // HSBC — red, hexagonal X
+                      <svg key="hsbc" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#DB0011"/><line x1="10" y1="10" x2="22" y2="22" stroke="#fff" strokeWidth="3" strokeLinecap="round"/><line x1="22" y1="10" x2="10" y2="22" stroke="#fff" strokeWidth="3" strokeLinecap="round"/></svg>,
+                      // Barclays — blue, eagle silhouette (simplified spread wings)
+                      <svg key="barc" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#00AEEF"/><path d="M16 8 C11 11 7 14 7 17 C7 19 9 20 11 19 L16 17 L21 19 C23 20 25 19 25 17 C25 14 21 11 16 8Z" fill="#fff"/><ellipse cx="16" cy="21" rx="3" ry="4" fill="#fff"/></svg>,
+                      // Lloyds — black, horse rearing
+                      <svg key="lloy" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#024638"/><path d="M18 8 C18 8 22 10 21 14 C20 17 17 17 17 20 L15 20 C15 17 12 16 12 13 C12 10 14 8 18 8Z" fill="#006A4E"/><path d="M16 7 C14 7 12 8.5 12 11 C12 13 13.5 14.5 15 16 C15.5 16.5 16 17 16 17 C16 17 16.5 16.5 17 16 C18.5 14.5 20 13 20 11 C20 8.5 18 7 16 7Z" fill="#fff"/><line x1="16" y1="17" x2="16" y2="24" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>,
+                      // Co-op — purple, leaf/clover
+                      <svg key="coop" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#6D2D8E"/><circle cx="16" cy="13" r="4" fill="#fff" opacity="0.9"/><circle cx="11" cy="19" r="4" fill="#fff" opacity="0.9"/><circle cx="21" cy="19" r="4" fill="#fff" opacity="0.9"/></svg>,
+                      // Santander — red, stylised flame
+                      <svg key="sant" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#EC0000"/><path d="M16 7 C13 10 11 13 13 16 C14 18 13 20 12 22 C14 21 16 19 16 17 C16 19 18 21 20 22 C19 20 18 18 19 16 C21 13 19 10 16 7Z" fill="#fff"/></svg>,
+                    ];
+                    return (
+                      <div
+                        onClick={() => setPaymentMethod("fena")}
+                        style={{
+                          borderRadius: "14px", cursor: "pointer", padding: "18px 18px 16px",
+                          border: `2px solid ${selected ? TEAL : "#D1D5DB"}`,
+                          backgroundColor: "#F9FAFB",
+                          transition: "border-color 0.15s",
+                        }}
+                      >
+                        {/* ── Title row ── */}
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
+                          <p style={{ margin: 0, fontSize: "15px", fontWeight: 800, color: "#0F172A" }}>Pay by Bank</p>
                           <span style={{
-                            fontSize: "9.5px", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase",
-                            color: "#1240A0", backgroundColor: "#DBEAFE", padding: "3px 8px", borderRadius: "999px",
+                            fontSize: "10px", fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase",
+                            color: "#fff", backgroundColor: "#16A34A",
+                            padding: "3px 10px", borderRadius: "999px", lineHeight: 1.6,
                           }}>
-                            Powered by Fena
-                          </span>
-                          <span style={{
-                            fontSize: "9.5px", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase",
-                            color: "#065F46", backgroundColor: "#D1FAE5", padding: "3px 8px", borderRadius: "999px",
-                          }}>
-                            Instant
+                            Recommended · Fastest
                           </span>
                         </div>
-                        <p style={{ margin: "3px 0 0", fontSize: "12px", color: "#64748B" }}>
-                          Pay directly from your bank — no card details, no waiting.
-                        </p>
-                      </div>
-                      {paymentMethod === "fena" && <Check size={16} color="#1240A0" style={{ flexShrink: 0 }} />}
-                    </div>
 
-                    {paymentMethod === "fena" && (
-                      <div style={{ paddingLeft: "48px" }}>
-                        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                        {/* ── Subtitle ── */}
+                        <p style={{ margin: "0 0 4px", fontSize: "13px", fontWeight: 700, color: "#0F172A" }}>
+                          Tap your bank, approve in your banking app — done in seconds.
+                        </p>
+
+                        {/* ── Trust line ── */}
+                        <p style={{ margin: "0 0 12px", fontSize: "12px", color: "#64748B" }}>
+                          🔒 FCA-authorised open banking · Read-only · No card details stored
+                        </p>
+
+                        {/* ── Bank icon row ── */}
+                        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "14px" }}>
+                          {BANK_ICONS.map((icon, i) => (
+                            <div key={i} style={{
+                              width: "40px", height: "32px", borderRadius: "6px",
+                              border: "1.5px solid #E5E7EB", backgroundColor: "#fff",
+                              display: "flex", alignItems: "center", justifyContent: "center",
+                              overflow: "hidden", flexShrink: 0,
+                            }}>
+                              {icon}
+                            </div>
+                          ))}
+                          <span style={{ fontSize: "12px", fontWeight: 600, color: "#64748B", marginLeft: "2px" }}>+more</span>
+                        </div>
+
+                        {/* ── Radio + divider row ── */}
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
+                          <div style={{
+                            width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
+                            border: `2px solid ${selected ? TEAL : "#CBD5E1"}`,
+                            backgroundColor: "#fff",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                          }}>
+                            {selected && <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: TEAL }} />}
+                          </div>
+                          <div style={{ flex: 1, height: "1px", backgroundColor: "#E5E7EB" }} />
+                        </div>
+
+                        {/* ── How it works ── */}
+                        <p style={{ margin: "0 0 10px", fontSize: "11px", fontWeight: 800, color: TEAL, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                          How it works
+                        </p>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                           {[
-                            "Select your bank from Fena's secure checkout",
-                            "Authorise the payment in your banking app",
-                            "Return here automatically — we dispatch same day",
+                            "Choose your bank",
+                            "Approve in your banking app",
+                            "Order confirmed instantly",
                           ].map((text, i) => (
-                            <div key={i} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                               <div style={{
-                                width: "16px", height: "16px", borderRadius: "50%", flexShrink: 0,
-                                backgroundColor: "#1240A0", color: "#fff",
+                                width: "22px", height: "22px", borderRadius: "50%", flexShrink: 0,
+                                backgroundColor: TEAL, color: "#fff",
                                 display: "flex", alignItems: "center", justifyContent: "center",
-                                fontSize: "9px", fontWeight: 800,
+                                fontSize: "11px", fontWeight: 800,
                               }}>{i + 1}</div>
-                              <p style={{ margin: 0, fontSize: "11.5px", color: "#475569" }}>{text}</p>
+                              <p style={{ margin: 0, fontSize: "13px", color: "#0F172A" }}>{text}</p>
                             </div>
                           ))}
                         </div>
-                        <p style={{ fontSize: "11px", color: "#94A3B8", marginTop: "10px", marginBottom: 0 }}>
-                          Clicking the button below will take you to Fena's secure open-banking page. You'll be redirected back here after authorising.
-                        </p>
                       </div>
-                    )}
-                  </div>
+                    );
+                  })()}
 
                   {/* Pay By Bank — manual bank transfer */}
                   <div
