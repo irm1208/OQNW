@@ -99,7 +99,7 @@ type AppliedDiscount = {
 const emptyDelivery: DeliveryForm = {
   email: "", firstName: "", lastName: "", phone: "",
   address1: "", address2: "", city: "", county: "",
-  postcode: "", country: "",
+  postcode: "", country: "United Kingdom",
 };
 
 function fieldStyle(hasError: boolean): React.CSSProperties {
@@ -243,6 +243,7 @@ export default function CheckoutPage() {
     if (!delivery.address1.trim()) e.address1 = "Required";
     if (!delivery.city.trim()) e.city = "Required";
     if (!delivery.postcode.trim()) e.postcode = "Required";
+    if (!delivery.country.trim()) e.country = "Required";
     return e;
   }
 
