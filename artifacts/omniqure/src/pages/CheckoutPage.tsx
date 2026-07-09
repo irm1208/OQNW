@@ -84,7 +84,7 @@ const BANK_SVGS = [
     viewBox: "",
     filled: false,
     path: "",
-    imgSrc: "/banks/lloyds.png",
+    imgSrc: "/banks/lloyds-v3.png",
   },
   {
     name: "Monzo",
