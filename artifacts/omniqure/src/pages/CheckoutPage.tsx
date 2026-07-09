@@ -637,18 +637,18 @@ export default function CheckoutPage() {
                       {/* Bank tiles */}
                       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
                         {[
-                          { name: "HSBC", bg: "#E8192C", color: "#fff" },
-                          { name: "Barclays", bg: "#00AEEF", color: "#fff" },
-                          { name: "Lloyds", bg: "#006A4D", color: "#fff" },
-                          { name: "Monzo", bg: "#FF4D42", color: "#fff" },
-                          { name: "NatWest", bg: "#5A1E82", color: "#fff" },
+                          { name: "HSBC",     bg: "#C8102E", color: "#fff" },
+                          { name: "Barclays", bg: "#6BBDE3", color: "#fff" },
+                          { name: "Lloyds",   bg: "#1B5E3B", color: "#fff" },
+                          { name: "Monzo",    bg: "#E8614F", color: "#fff" },
+                          { name: "NatWest",  bg: "#42145F", color: "#fff" },
                         ].map(b => (
                           <div key={b.name} style={{
-                            width: 44, height: 30, borderRadius: 5,
+                            minWidth: 72, height: 36, borderRadius: 8,
                             background: b.bg, color: b.color,
                             display: "flex", alignItems: "center", justifyContent: "center",
-                            fontSize: "8px", fontWeight: 800, letterSpacing: "0.03em",
-                            flexShrink: 0, textAlign: "center", padding: "0 3px",
+                            fontSize: "12px", fontWeight: 800, letterSpacing: "0.02em",
+                            flexShrink: 0, padding: "0 10px",
                           }}>{b.name}</div>
                         ))}
                         <span style={{ fontSize: "12px", color: "#6b7280", fontWeight: 600 }}>+more</span>
