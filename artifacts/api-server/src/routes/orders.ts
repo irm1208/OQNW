@@ -69,6 +69,7 @@ function generateOrderNumber(): string {
 
 interface CartItem {
   productId: number;
+  productSlug?: string; // preferred lookup key — more reliable than the frontend's integer id
   productName: string;
   productCategory: string;
   quantity: number;
@@ -160,68 +161,73 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
-    // Stock validation: ensure all items with a productId have sufficient stock
-    const itemsWithProductId = cartItems.filter((item) => item.productId > 0);
-    if (itemsWithProductId.length > 0) {
-      const stockErrors: { productName: string; available: number; requested: number }[] = [];
-      for (const item of itemsWithProductId) {
-        const [inv] = await db
-          .select({ stockLevel: productsInventoryTable.stockLevel })
-          .from(productsInventoryTable)
-          .where(eq(productsInventoryTable.productId, item.productId))
-          .limit(1);
-        if (inv !== undefined && inv.stockLevel < item.quantity) {
-          stockErrors.push({
-            productName: item.productName,
-            available: inv.stockLevel,
-            requested: item.quantity,
-          });
-        }
-      }
-      if (stockErrors.length > 0) {
-        res.status(422).json({
-          error: "Some items in your cart have insufficient stock",
-          stockErrors,
-        });
-        return;
-      }
+    // ── Catalog lookup by slug ──────────────────────────────────────────────────
+    // The frontend assigns its own sequential IDs which do NOT match the DB serial
+    // IDs.  Slug is the reliable cross-reference — look up everything by slug.
+    // Items without a slug (e.g. client-side Bac Water add-ons) are skipped for
+    // price/stock validation but still included in the order.
+    const itemsWithSlug = cartItems.filter(i => i.productSlug?.trim());
+    const catalogBySlug = new Map<string, { id: number; priceGbp: string | null; category: string }>();
+
+    if (itemsWithSlug.length > 0) {
+      const slugRows = await db
+        .select({
+          id: productsCatalogTable.id,
+          slug: productsCatalogTable.slug,
+          priceGbp: productsCatalogTable.priceGbp,
+          category: productsCatalogTable.category,
+        })
+        .from(productsCatalogTable)
+        .where(inArray(productsCatalogTable.slug, itemsWithSlug.map(i => i.productSlug!)));
+      for (const r of slugRows) catalogBySlug.set(r.slug, r);
     }
 
-    // Price validation: verify submitted priceGbp against the product catalog.
-    // This prevents clients from submitting manipulated (inflated or deflated) prices.
-    // Items without a productId (e.g. Bac Water add-ons) are skipped.
-    // Category is also fetched here and used as the authoritative source for Bundle & Save
-    // peptide-eligibility below — the client-submitted productCategory is never trusted for
-    // promo calculations, since a tampered category could otherwise manipulate free-item tiers.
-    const catalogCategoryMap = new Map<number, string>();
-    if (itemsWithProductId.length > 0) {
-      const catalogRows = await db
-        .select({ id: productsCatalogTable.id, priceGbp: productsCatalogTable.priceGbp, category: productsCatalogTable.category })
-        .from(productsCatalogTable)
-        .where(inArray(productsCatalogTable.id, itemsWithProductId.map(i => i.productId)));
+    // Resolved DB product ID for a cart item (0 when slug not found or missing).
+    function dbProductId(item: CartItem): number {
+      return (item.productSlug?.trim() ? catalogBySlug.get(item.productSlug)?.id : undefined) ?? 0;
+    }
 
-      const catalogPriceMap = new Map<number, number>(
-        catalogRows
-          .filter((c: { id: number; priceGbp: string | null }) => c.priceGbp !== null)
-          .map((c: { id: number; priceGbp: string | null }) => [c.id, parseFloat(String(c.priceGbp))] as [number, number])
-      );
-      for (const c of catalogRows) catalogCategoryMap.set(c.id, c.category);
+    // Stock validation using resolved DB IDs
+    const stockErrors: { productName: string; available: number; requested: number }[] = [];
+    for (const item of cartItems) {
+      const dbId = dbProductId(item);
+      if (dbId <= 0) continue;
+      const [inv] = await db
+        .select({ stockLevel: productsInventoryTable.stockLevel })
+        .from(productsInventoryTable)
+        .where(eq(productsInventoryTable.productId, dbId))
+        .limit(1);
+      if (inv !== undefined && inv.stockLevel < item.quantity) {
+        stockErrors.push({ productName: item.productName, available: inv.stockLevel, requested: item.quantity });
+      }
+    }
+    if (stockErrors.length > 0) {
+      res.status(422).json({ error: "Some items in your cart have insufficient stock", stockErrors });
+      return;
+    }
 
-      for (const item of itemsWithProductId) {
-        const catalogPrice = catalogPriceMap.get(item.productId);
-        if (catalogPrice != null && Math.abs(item.priceGbp - catalogPrice) > 0.01) {
+    // Price validation: verify submitted priceGbp against the catalog price for
+    // each item that has a slug-resolved catalog entry.  Items without a slug
+    // (accessories, add-ons) are exempt.
+    // Category is taken from the catalog here for use in Bundle & Save below —
+    // the client-submitted productCategory is never trusted for promo decisions.
+    for (const item of itemsWithSlug) {
+      const catalogEntry = catalogBySlug.get(item.productSlug!);
+      if (catalogEntry?.priceGbp != null) {
+        const catalogPrice = parseFloat(String(catalogEntry.priceGbp));
+        if (Math.abs(item.priceGbp - catalogPrice) > 0.01) {
           res.status(400).json({ error: "Item price mismatch — please refresh your cart and try again" });
           return;
         }
       }
     }
-    // For a Bundle & Save promo decision, an item qualifies as a "peptide" only if it has a
-    // real productId whose catalog category isn't Accessories. Items with no productId (e.g.
-    // client-side Bac Water add-ons) never qualify, regardless of client-submitted category.
+
+    // For Bundle & Save, an item qualifies as a "peptide" only when its slug
+    // resolves to a catalog entry whose category isn't Accessories.
     function isCatalogPeptide(item: CartItem): boolean {
-      if (!item.productId || item.productId <= 0) return false;
-      const category = catalogCategoryMap.get(item.productId);
-      return category !== undefined && category !== "Accessories";
+      if (!item.productSlug?.trim()) return false;
+      const entry = catalogBySlug.get(item.productSlug);
+      return entry !== undefined && entry.category !== "Accessories";
     }
 
     // Validate discount code if provided
@@ -312,7 +318,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     for (const item of cartItems as CartItem[]) {
       if (!isCatalogPeptide(item)) continue;
       peptideQty += item.quantity;
-      for (let i = 0; i < item.quantity; i++) peptideUnits.push({ productId: item.productId || 0, price: item.priceGbp });
+      for (let i = 0; i < item.quantity; i++) peptideUnits.push({ productId: dbProductId(item), price: item.priceGbp });
     }
     const bundleFreeItemsCount = peptideQty >= 10 ? 2 : peptideQty >= 5 ? 1 : 0;
     const bundleFreeBacWater = peptideQty >= 3 && peptideQty < 5;
@@ -526,7 +532,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       priceGbp: string;
     }[] = [];
     for (const item of cartItems as CartItem[]) {
-      const productId = item.productId || 0;
+      const productId = dbProductId(item); // use resolved DB ID, not unreliable frontend ID
       const freeQty = isCatalogPeptide(item) ? Math.min(freeUnitsByProductId.get(productId) ?? 0, item.quantity) : 0;
       const paidQty = item.quantity - freeQty;
       if (paidQty > 0) {
@@ -613,20 +619,21 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     // Decrement stock for each item (clamp to 0) + write inventory audit log
     const decrementedProductIds: number[] = [];
     for (const item of cartItems) {
-      if (item.productId) {
+      const resolvedId = dbProductId(item);
+      if (resolvedId > 0) {
         const [before] = await db
           .select({ stockLevel: productsInventoryTable.stockLevel })
           .from(productsInventoryTable)
-          .where(eq(productsInventoryTable.productId, item.productId))
+          .where(eq(productsInventoryTable.productId, resolvedId))
           .limit(1);
         const qBefore = before?.stockLevel ?? 0;
         await db
           .update(productsInventoryTable)
           .set({ stockLevel: sql`GREATEST(${productsInventoryTable.stockLevel} - ${item.quantity}, 0)` })
-          .where(eq(productsInventoryTable.productId, item.productId));
+          .where(eq(productsInventoryTable.productId, resolvedId));
         const qAfter = Math.max(0, qBefore - item.quantity);
         db.insert(inventoryAuditLogTable).values({
-          productId: item.productId,
+          productId: resolvedId,
           productName: item.productName,
           changeType: "sale",
           quantityBefore: qBefore,
@@ -636,7 +643,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
           referenceId: orderNumber,
           referenceType: "order",
         }).catch(() => {});
-        decrementedProductIds.push(item.productId);
+        decrementedProductIds.push(resolvedId);
       }
     }
 

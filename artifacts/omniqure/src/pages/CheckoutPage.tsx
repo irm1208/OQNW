@@ -326,6 +326,7 @@ export default function CheckoutPage() {
             shippingCostGbp: shippingCost,
             items: items.map(({ product, quantity }) => ({
               productId: parseInt(String(product.id)) || 0,
+              productSlug: (product as { slug?: string }).slug ?? "",
               productName: product.name,
               productCategory: product.category ?? "",
               quantity,
