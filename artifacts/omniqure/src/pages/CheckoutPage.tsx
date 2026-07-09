@@ -190,6 +190,19 @@ export default function CheckoutPage() {
   const [freePeptideCredits, setFreePeptideCredits] = useState(0);
   const [redeemFreePeptide, setRedeemFreePeptide] = useState(false);
 
+  // 15-minute checkout timer
+  const [timeLeft, setTimeLeft] = useState(15 * 60);
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+    const id = setInterval(() => setTimeLeft(t => t - 1), 1000);
+    return () => clearInterval(id);
+  }, [timeLeft]);
+  const timerMins = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+  const timerSecs = String(timeLeft % 60).padStart(2, "0");
+  const timerExpired = timeLeft <= 0;
+  const timerUrgent = timeLeft <= 120;
+  const timerWarning = timeLeft <= 300 && timeLeft > 120;
+
   // Postcode — auto-fill city/county on blur via postcodes.io
   const [postcodeLoading, setPostcodeLoading] = useState(false);
 
@@ -412,6 +425,35 @@ export default function CheckoutPage() {
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#f9fafb", minHeight: "100vh" }}>
 
+      {/* ── Session expired overlay ── */}
+      {timerExpired && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 1000,
+          background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center",
+        }}>
+          <div style={{
+            background: "#fff", borderRadius: 12, padding: "40px 48px", textAlign: "center",
+            maxWidth: 400, width: "90%", boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+          }}>
+            <div style={{ fontSize: 48, marginBottom: 12 }}>⏱</div>
+            <p style={{ fontSize: "20px", fontWeight: 800, color: "#111827", marginBottom: 8 }}>Session Expired</p>
+            <p style={{ fontSize: "14px", color: "#6b7280", marginBottom: 24, lineHeight: 1.5 }}>
+              Your checkout session has timed out for security. Your cart is still saved.
+            </p>
+            <button
+              type="button"
+              onClick={() => setTimeLeft(15 * 60)}
+              style={{
+                width: "100%", padding: "14px", borderRadius: 6, border: "none",
+                background: "#111827", color: "#fff", fontSize: "15px", fontWeight: 700, cursor: "pointer",
+              }}
+            >
+              Restart Checkout
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* ── Breadcrumb bar ── */}
       <div style={{ borderBottom: "1px solid #e5e7eb", backgroundColor: "#fff" }}>
         <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 }}>
@@ -426,9 +468,30 @@ export default function CheckoutPage() {
               </span>
             ))}
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#6b7280", fontSize: "12px" }}>
-            <Lock size={13} />
-            <span style={{ fontWeight: 600, letterSpacing: "0.04em" }}>SECURE CHECKOUT</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: "12px" }}>
+            {/* Countdown timer */}
+            <div style={{
+              display: "flex", alignItems: "center", gap: 5,
+              background: timerUrgent ? "#fef2f2" : timerWarning ? "#fffbeb" : "#f0fdf4",
+              border: `1px solid ${timerUrgent ? "#fca5a5" : timerWarning ? "#fcd34d" : "#86efac"}`,
+              borderRadius: 6, padding: "4px 10px",
+            }}>
+              <span style={{ fontSize: 13 }}>⏱</span>
+              <span style={{
+                fontWeight: 800, letterSpacing: "0.06em", fontVariantNumeric: "tabular-nums",
+                color: timerUrgent ? "#dc2626" : timerWarning ? "#d97706" : "#16a34a",
+                fontSize: "13px",
+              }}>
+                {timerMins}:{timerSecs}
+              </span>
+              <span style={{ color: timerUrgent ? "#dc2626" : timerWarning ? "#d97706" : "#16a34a", fontWeight: 600 }}>
+                left
+              </span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#6b7280" }}>
+              <Lock size={13} />
+              <span style={{ fontWeight: 600, letterSpacing: "0.04em" }}>SECURE</span>
+            </div>
           </div>
         </div>
       </div>
