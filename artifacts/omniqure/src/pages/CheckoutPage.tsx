@@ -637,22 +637,22 @@ export default function CheckoutPage() {
                       {/* Bank logos */}
                       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
                         {[
-                          { name: "HSBC",     domain: "hsbc.co.uk" },
-                          { name: "Barclays", domain: "barclays.co.uk" },
-                          { name: "Lloyds",   domain: "lloydsbank.com" },
-                          { name: "Monzo",    domain: "monzo.com" },
-                          { name: "NatWest",  domain: "natwest.com" },
+                          { name: "HSBC",      domain: "hsbc.co.uk" },
+                          { name: "Barclays",  domain: "barclays.co.uk" },
+                          { name: "Lloyds",    domain: "lloydsbank.com" },
+                          { name: "Monzo",     domain: "monzo.com" },
+                          { name: "Santander", domain: "santander.co.uk" },
                         ].map(b => (
-                          <div key={b.name} style={{
-                            height: 38, borderRadius: 8, padding: "0 10px",
+                          <div key={b.name} title={b.name} style={{
+                            width: 56, height: 56, borderRadius: 10,
                             background: "#fff", border: "1px solid #e5e7eb",
                             display: "flex", alignItems: "center", justifyContent: "center",
-                            flexShrink: 0, minWidth: 70,
+                            flexShrink: 0, overflow: "hidden",
                           }}>
                             <img
-                              src={`https://logo.clearbit.com/${b.domain}?size=80`}
+                              src={`https://logo.clearbit.com/${b.domain}?size=112`}
                               alt={b.name}
-                              style={{ height: 22, maxWidth: 56, objectFit: "contain" }}
+                              style={{ width: 36, height: 36, objectFit: "contain" }}
                               onError={e => {
                                 const el = e.currentTarget;
                                 el.style.display = "none";
@@ -660,10 +660,10 @@ export default function CheckoutPage() {
                                 if (txt) txt.style.display = "block";
                               }}
                             />
-                            <span style={{ display: "none", fontSize: "11px", fontWeight: 800, color: "#374151" }}>{b.name}</span>
+                            <span style={{ display: "none", fontSize: "10px", fontWeight: 800, color: "#374151", textAlign: "center", padding: "0 4px" }}>{b.name}</span>
                           </div>
                         ))}
-                        <span style={{ fontSize: "12px", color: "#6b7280", fontWeight: 600 }}>+more</span>
+                        <span style={{ fontSize: "13px", color: "#6b7280", fontWeight: 600 }}>+more</span>
                       </div>
                       {/* How it works */}
                       <div style={{ borderTop: "1px solid #e5e7eb", paddingTop: 12 }}>
