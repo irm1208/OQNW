@@ -988,7 +988,7 @@ body.has-cart-preview-bar main {
     flex-direction: column;
     align-items: flex-start !important;
     gap: 8px;
-    margin-bottom: 20px !important;
+    margin-bottom: 16px !important;
   }
   .home-section-why {
     padding-top: 44px !important;
@@ -1077,6 +1077,57 @@ body.has-cart-preview-bar main {
 @media (max-width: 420px) {
   .rating-bar-stat p:first-child {
     font-size: 20px !important;
+  }
+}
+
+/* ── ROUND 2: FURTHER MOBILE DENSITY PASS ────────────────────── */
+
+/* Featured Peptides grid — row gaps were 80/96/112px, far too tall on
+   mobile where cards are already narrow/short. Collapse to a normal gap. */
+@media (max-width: 640px) {
+  .featured-grid {
+    row-gap: 28px !important;
+    column-gap: 12px !important;
+  }
+}
+
+/* Plain white spacer before testimonials — was a fixed 32px on every
+   viewport; shrink it on mobile since sections around it already tightened. */
+@media (max-width: 640px) {
+  .home-spacer-32 {
+    height: 16px !important;
+  }
+}
+
+/* Section header blocks (icon+eyebrow+H2+subtext) — margin-bottom was
+   40-56px (mb-10/mb-12/mb-14) regardless of viewport. Tighten on mobile. */
+@media (max-width: 640px) {
+  .home-section-goal-header,
+  .home-section-pillars-header,
+  .home-section-refer-header {
+    margin-bottom: 24px !important;
+  }
+  .home-section-goal-header .mb-2,
+  .home-section-pillars-header .mb-2,
+  .home-section-refer-header .mb-2 {
+    margin-bottom: 6px !important;
+  }
+}
+
+/* Refer-a-friend numbered step cards — 3 stacked full-width cards with
+   32px padding each add a lot of height on mobile; tighten. */
+@media (max-width: 640px) {
+  .refer-steps-grid {
+    gap: 12px !important;
+    margin-bottom: 24px !important;
+  }
+}
+
+/* Research area cards — 200px height x 4 rows (2-col grid) is ~800px of
+   scroll on mobile before the CTA strip; reduce further on very small screens. */
+@media (max-width: 480px) {
+  .research-card {
+    height: 160px !important;
   }
 }
 

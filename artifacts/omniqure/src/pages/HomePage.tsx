@@ -821,7 +821,7 @@ export default function HomePage() {
       {/* ── SHOP BY GOAL ──────────────────────────────────────── */}
       <section className="home-section-goal" style={{ backgroundColor: "#fff", borderBottom: "1px solid #EEF2F7", padding: "56px 0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
-          <div className="text-center mb-10">
+          <div className="home-section-goal-header text-center mb-10">
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 10 }}>
               <div style={{ width: 16, height: 3, background: "linear-gradient(90deg, #1B5CB5, #60A5FA)", borderRadius: 2 }} />
               <p style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", color: "#1B5CB5", margin: 0 }}>Find Your Compounds</p>
@@ -884,7 +884,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-20 sm:gap-x-12 sm:gap-y-24 md:gap-x-14 md:gap-y-28">
+          <div className="featured-grid grid grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-20 sm:gap-x-12 sm:gap-y-24 md:gap-x-14 md:gap-y-28">
             {featuredGroups.slice(0, 4).map(group => (
               <GroupedProductCard key={group.baseName} group={group} />
             ))}
@@ -961,7 +961,7 @@ export default function HomePage() {
       {/* ── WHY OMNIQURE ──────────────────────────────────────── */}
       <section className="home-section-why home-section-pillars" style={{ backgroundColor: "#F7FAFF", padding: "68px 0", borderTop: "1px solid #E2E8F0" }}>
         <div className="max-w-[1280px] mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="home-section-pillars-header text-center mb-12">
             <div className="inline-flex items-center gap-2 mb-2">
               <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #7C3AED, #A78BFA)", borderRadius: "2px" }} />
               <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#7C3AED", letterSpacing: "0.1em" }}>
@@ -1038,7 +1038,7 @@ export default function HomePage() {
       </section>
 
       {/* ── TESTIMONIALS ──────────────────────────────────────── */}
-      <div style={{ height: 32, background: "#fff" }} />
+      <div className="home-spacer-32" style={{ height: 32, background: "#fff" }} />
       <section className="home-section-testimonials" style={{
         background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
         padding: "56px 0",
@@ -1112,7 +1112,7 @@ export default function HomePage() {
         <div className="max-w-[1280px] mx-auto px-4">
 
           {/* Section header */}
-          <div className="text-center mb-12">
+          <div className="home-section-refer-header text-center mb-12">
             <div className="inline-flex items-center gap-2 mb-2">
               <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #F59E0B, #FCD34D)", borderRadius: "2px" }} />
               <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#B45309", letterSpacing: "0.1em" }}>
@@ -1129,7 +1129,7 @@ export default function HomePage() {
           </div>
 
           {/* Steps */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <div className="refer-steps-grid grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             {[
               {
                 icon: <UserPlus size={26} />,
