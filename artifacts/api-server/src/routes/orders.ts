@@ -206,14 +206,19 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Price validation: verify submitted priceGbp against the catalog price for
-    // each item that has a slug-resolved catalog entry.  Items without a slug
-    // (accessories, add-ons) are exempt.
-    // Category is taken from the catalog here for use in Bundle & Save below —
-    // the client-submitted productCategory is never trusted for promo decisions.
+    // Price validation: verify submitted priceGbp against the catalog price.
+    // Items with a slug MUST resolve to a known catalog entry — an unrecognised
+    // slug is rejected outright so callers cannot spoof catalog products by sending
+    // an unknown slug to skip validation.  Items with no slug at all are treated
+    // as unverified add-ons (e.g. Bac Water) and are exempt from price checks.
+    // Category is taken from catalog here for Bundle & Save below.
     for (const item of itemsWithSlug) {
       const catalogEntry = catalogBySlug.get(item.productSlug!);
-      if (catalogEntry?.priceGbp != null) {
+      if (!catalogEntry) {
+        res.status(400).json({ error: "Unrecognised product — please refresh your cart and try again" });
+        return;
+      }
+      if (catalogEntry.priceGbp != null) {
         const catalogPrice = parseFloat(String(catalogEntry.priceGbp));
         if (Math.abs(item.priceGbp - catalogPrice) > 0.01) {
           res.status(400).json({ error: "Item price mismatch — please refresh your cart and try again" });
