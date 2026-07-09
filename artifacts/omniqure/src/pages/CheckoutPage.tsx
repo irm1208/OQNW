@@ -973,35 +973,6 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* YOU MIGHT ALSO LIKE */}
-          <div style={{ marginTop: 20, border: "1px solid #e5e7eb", borderRadius: 8, background: "#fff", overflow: "hidden" }}>
-            <div style={{ padding: "16px 20px 8px" }}>
-              <p style={{ fontSize: "11px", fontWeight: 800, color: "#111827", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-                You Might Also Like
-              </p>
-              {[
-                { name: "Bacteriostatic Water 10ml", sub: "From £4.50", href: "/products/bacteriostatic-water", action: "OPTIONS" },
-                { name: "Insulin Syringe Pack (100)", sub: "£12.99", href: "/products/insulin-syringes", action: "ADD" },
-              ].map(item => (
-                <div key={item.name} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
-                  <div style={{ width: 44, height: 44, borderRadius: 6, background: "#f3f4f6", border: "1px solid #e5e7eb", flexShrink: 0 }} />
-                  <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: "13px", fontWeight: 600, color: "#111827", margin: 0 }}>{item.name}</p>
-                    <p style={{ fontSize: "12px", color: "#6b7280", margin: "2px 0 0" }}>{item.sub}</p>
-                  </div>
-                  <Link href={item.href}
-                    style={{
-                      padding: "6px 14px", borderRadius: 4,
-                      border: "1px solid #d1d5db", background: "#fff",
-                      fontSize: "12px", fontWeight: 700, color: "#374151",
-                      textDecoration: "none", letterSpacing: "0.04em",
-                      flexShrink: 0,
-                    }}>{item.action}</Link>
-                </div>
-              ))}
-            </div>
-          </div>
-
         </div>
       </div>
 
