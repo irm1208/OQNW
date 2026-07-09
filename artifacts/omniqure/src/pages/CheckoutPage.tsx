@@ -469,7 +469,7 @@ export default function CheckoutPage() {
 
       {/* ── Breadcrumb bar ── */}
       <div style={{ borderBottom: "1px solid #E8EDF5", backgroundColor: "#fff" }}>
-        <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 }}>
+        <div className="checkout-breadcrumb-bar" style={{ maxWidth: 1160, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 600, letterSpacing: "0.07em", textTransform: "uppercase" }}>
             {["Cart", "Information", "Shipping", "Payment"].map((s, i) => (
               <span key={s} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
@@ -478,7 +478,8 @@ export default function CheckoutPage() {
               </span>
             ))}
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#64748B", fontSize: "12px" }}>
+          {/* Hidden on very small screens so breadcrumb steps have full row width */}
+          <div className="checkout-step-label" style={{ display: "flex", alignItems: "center", gap: "6px", color: "#64748B", fontSize: "12px" }}>
             <Lock size={13} />
             <span style={{ fontWeight: 600, letterSpacing: "0.04em" }}>SECURE CHECKOUT</span>
           </div>
@@ -506,9 +507,9 @@ export default function CheckoutPage() {
           animation: "shimmer 2.4s linear infinite",
           pointerEvents: "none",
         }} />
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 16, position: "relative" }}>
-          {/* Clock icon circle */}
-          <div style={{
+        <div className="checkout-timer-inner">
+          {/* Clock icon — shrinks on mobile */}
+          <div className="checkout-timer-clock" style={{
             width: 34, height: 34, borderRadius: "50%",
             background: "rgba(255,255,255,0.15)",
             border: "1.5px solid rgba(255,255,255,0.3)",
@@ -516,8 +517,8 @@ export default function CheckoutPage() {
             fontSize: "16px", flexShrink: 0,
             animation: timerUrgent ? "pulse 0.9s ease-in-out infinite" : "none",
           }}>⏱</div>
-          {/* Message */}
-          <div style={{ textAlign: "left" }}>
+          {/* Message — hidden below 600px */}
+          <div className="checkout-timer-message" style={{ textAlign: "left" }}>
             <p style={{ margin: 0, fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.75)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
               {timerUrgent ? "⚠️ Hurry — time is almost up!" : "Your items are reserved"}
             </p>
@@ -525,22 +526,20 @@ export default function CheckoutPage() {
               Complete checkout to secure your order
             </p>
           </div>
-          {/* Divider */}
-          <div style={{ width: 1, height: 36, background: "rgba(255,255,255,0.25)", flexShrink: 0 }} />
+          {/* Divider — hidden below 600px */}
+          <div className="checkout-timer-divider" style={{ width: 1, height: 36, background: "rgba(255,255,255,0.25)", flexShrink: 0 }} />
           {/* Big countdown */}
           <div style={{ textAlign: "center" }}>
-            <div style={{
+            <div className="checkout-timer-countdown" style={{
               fontVariantNumeric: "tabular-nums",
               fontSize: "32px", fontWeight: 900,
-              color: "#fff",
-              lineHeight: 1,
+              color: "#fff", lineHeight: 1,
               letterSpacing: "0.04em",
               textShadow: timerUrgent ? "0 0 20px rgba(255,100,100,0.6)" : "0 0 16px rgba(255,255,255,0.25)",
-              animation: timerUrgent && parseInt(timerSecs) % 2 === 0 ? "none" : "none",
             }}>
               {timerMins}<span style={{ opacity: 0.6, margin: "0 1px" }}>:</span>{timerSecs}
             </div>
-            <p style={{ margin: 0, fontSize: "10px", fontWeight: 700, color: "rgba(255,255,255,0.6)", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: "2px" }}>
+            <p className="checkout-timer-label" style={{ margin: 0, fontSize: "10px", fontWeight: 700, color: "rgba(255,255,255,0.6)", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: "2px" }}>
               remaining
             </p>
           </div>
@@ -555,7 +554,7 @@ export default function CheckoutPage() {
 
           {/* CONTACT INFORMATION */}
           <p style={sectionTitle}>Contact Information</p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+          <div className="form-grid-2" style={{ marginBottom: 12 }}>
             <div>
               <label style={label}>Email *</label>
               <input
@@ -587,7 +586,7 @@ export default function CheckoutPage() {
           <p style={sectionTitle}>Shipping Address</p>
 
           {/* Name row */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+          <div className="form-grid-2" style={{ marginBottom: 12 }}>
             <div>
               <label style={label}>First Name *</label>
               <input value={delivery.firstName} onChange={setD("firstName")} placeholder="First Name" style={inp("firstName")}
@@ -622,7 +621,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* City / Country / Postcode */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 4 }}>
+          <div className="form-grid-3" style={{ marginBottom: 4 }}>
             <div>
               <label style={label}>City *</label>
               <input value={delivery.city} onChange={setD("city")} placeholder="City" style={inp("city")}

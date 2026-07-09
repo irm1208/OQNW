@@ -721,9 +721,17 @@
 
 /* ── CHECKOUT PROGRESS HEADER MOBILE ────────────────────── */
 
+.checkout-breadcrumb-bar {
+  /* prevents overflow on narrow viewports */
+  min-width: 0;
+}
+
 @media (max-width: 480px) {
   .checkout-step-label {
     display: none;
+  }
+  .checkout-breadcrumb-bar {
+    padding: 0 12px !important;
   }
 }
 
@@ -1060,18 +1068,61 @@ body.has-cart-preview-bar main {
   }
 }
 
-/* ── CHECKOUT PAGE LAYOUT — TABLET ──────────────────────────── */
+/* ── CHECKOUT PAGE LAYOUT ────────────────────────────────────── */
 
 @media (max-width: 900px) {
   .checkout-layout {
     flex-direction: column !important;
+    padding: 20px 16px !important;
+    gap: 24px !important;
   }
-  .checkout-main {
+  .checkout-sidebar {
     width: 100% !important;
+    position: static !important;
+    flex-shrink: unset !important;
   }
-  .checkout-summary {
-    width: 100% !important;
+}
+
+@media (max-width: 480px) {
+  .checkout-layout {
+    padding: 16px 12px !important;
   }
+}
+
+/* ── CHECKOUT FORM GRIDS ─────────────────────────────────────── */
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .form-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── CHECKOUT TIMER BANNER ───────────────────────────────────── */
+
+.checkout-timer-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+@media (max-width: 600px) {
+  .checkout-timer-message { display: none; }
+  .checkout-timer-divider { display: none; }
+  .checkout-timer-inner { gap: 10px; }
+  .checkout-timer-clock {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 13px !important;
+  }
+  .checkout-timer-countdown { font-size: 24px !important; }
+  .checkout-timer-label { font-size: 9px !important; }
 }
 
 /* ── GLOBAL SECTION MAX-WIDTH PADDING ───────────────────────── */
