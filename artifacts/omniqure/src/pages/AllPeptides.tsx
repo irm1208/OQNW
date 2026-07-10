@@ -13,7 +13,7 @@ type SortOption = "name" | "price-low" | "price-high" | "bestsellers";
 const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   "Growth Peptides": "Research growth peptides including CJC-1295, GHRP-2, Ipamorelin and more. independently verified to 99%+ purity.",
   "Healing Peptides": "Research healing peptides including BPC-157, TB-500 and more. independently verified to 99%+ purity.",
-  "Weight Management": "Research weight management peptides including Semaglutide and more.",
+  "Weight Management": "Research weight management peptides.",
   "Longevity Peptides": "Research longevity peptides including Epithalon, Selank, Semax and more. independently verified to 99%+ purity.",
   "Cellular Health": "Research cellular health peptides. independently verified to 99%+ purity from OmniQure Peptide Research Institute.",
   "Nootropics": "Research nootropic peptides for cognitive research. independently verified to 99%+ purity from OmniQure.",
@@ -41,7 +41,7 @@ export default function AllPeptides() {
     : "All Research Peptides";
   const seoDesc = searchQuery.trim()
     ? `Showing research peptides matching "${searchQuery.trim()}" — independently verified to 99%+ purity from OmniQure Peptide Research Institute.`
-    : CATEGORY_DESCRIPTIONS[selectedCategory] ?? "Browse 100+ independently verified research peptides from OmniQure Peptide Research Institute. BPC-157, TB-500, Semaglutide and more.";
+    : CATEGORY_DESCRIPTIONS[selectedCategory] ?? "Browse 100+ independently verified research peptides from OmniQure Peptide Research Institute. BPC-157, TB-500, Ipamorelin and more.";
   useSEO({ title: seoTitle, description: seoDesc, canonicalPath: "/all-peptides" });
 
   useEffect(() => {
@@ -162,7 +162,7 @@ export default function AllPeptides() {
                 const params = e.target.value.trim() ? `?search=${encodeURIComponent(e.target.value.trim())}` : "";
                 window.history.replaceState(null, "", window.location.pathname + params);
               }}
-              placeholder="Search peptides, e.g. BPC-157, Semaglutide…"
+              placeholder="Search peptides, e.g. BPC-157, Ipamorelin…"
               style={{
                 width: "100%", padding: "10px 40px 10px 40px",
                 borderRadius: "10px", border: "1px solid rgba(255,255,255,0.18)",

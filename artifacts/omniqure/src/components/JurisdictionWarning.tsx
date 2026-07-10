@@ -25,7 +25,7 @@ const RULES: JurisdictionRule[] = [
     flag: "🇦🇺",
     regionName: "Australia",
     headline: "TGA Schedule 4 Notice — Australia",
-    body: "Under the Therapeutic Goods Act 1989, many peptides sold on this site (including BPC-157, TB-500, Ipamorelin, CJC-1295, Semaglutide, and others) are classified as Schedule 4 prescription-only substances in Australia. These products are supplied strictly for in-vitro laboratory research only. You must comply with all applicable TGA regulations in your jurisdiction. It is your sole responsibility to verify the legal status of any compound before importing or possessing it in Australia.",
+    body: "Under the Therapeutic Goods Act 1989, many peptides sold on this site (including BPC-157, TB-500, Ipamorelin, CJC-1295, Epithalon, and others) are classified as Schedule 4 prescription-only substances in Australia. These products are supplied strictly for in-vitro laboratory research only. You must comply with all applicable TGA regulations in your jurisdiction. It is your sole responsibility to verify the legal status of any compound before importing or possessing it in Australia.",
     requireAck: true,
     learnMoreHref: "/terms",
   },

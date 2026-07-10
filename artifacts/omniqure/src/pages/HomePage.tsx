@@ -722,7 +722,7 @@ export default function HomePage() {
   const localValue = FREE_PEPTIDE_VALUE[currency.code] ?? FREE_PEPTIDE_VALUE.GBP;
   useSEO({
     title: "Independently Verified Research Peptides",
-    description: "Buy high-purity research peptides independently verified to 99%+. BPC-157, TB-500, Semaglutide, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
+    description: "Buy high-purity research peptides independently verified to 99%+. BPC-157, TB-500, Ipamorelin, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
     canonicalPath: "/",
   });
 

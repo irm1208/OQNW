@@ -80,7 +80,7 @@ const CATEGORY_ORDER = [
 export default function PopularPeptides() {
   useSEO({
     title: "Popular Peptides",
-    description: "Shop the most popular research peptides at OmniQure — BPC-157, TB-500, Semaglutide and more. independently verified to 99%+ purity. For research use only.",
+    description: "Shop the most popular research peptides at OmniQure — BPC-157, TB-500, Ipamorelin and more. independently verified to 99%+ purity. For research use only.",
     canonicalPath: "/popular-peptides",
   });
   const { products } = useProducts();

@@ -171,8 +171,8 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "GLP-1 (Glucagon-Like Peptide-1)",
     category: "pathway",
-    definition: "An incretin hormone secreted by intestinal L-cells in response to food intake. GLP-1 stimulates insulin secretion, suppresses glucagon, slows gastric emptying, and promotes satiety — all of which contribute to post-meal glucose control. GLP-1 receptor agonists (e.g. Semaglutide) are among the most studied compounds in metabolic and obesity research.",
-    related: ["GIP", "Incretin", "Semaglutide"],
+    definition: "An incretin hormone secreted by intestinal L-cells in response to food intake. GLP-1 stimulates insulin secretion, suppresses glucagon, slows gastric emptying, and promotes satiety — all of which contribute to post-meal glucose control. GLP-1 receptor agonists are among the most studied compounds in metabolic and obesity research.",
+    related: ["GIP", "Incretin"],
   },
   {
     term: "GIP (Glucose-Dependent Insulinotropic Polypeptide)",
@@ -218,8 +218,8 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "Incretin",
     category: "pathway",
-    definition: "A class of metabolic hormones secreted by the gut in response to food intake that stimulate insulin secretion in a glucose-dependent manner. The main incretins are GLP-1 and GIP. Incretin mimetics (receptor agonists) form the basis of the most advanced metabolic disease research compounds, including Semaglutide (GLP-1).",
-    related: ["GLP-1", "GIP", "Semaglutide"],
+    definition: "A class of metabolic hormones secreted by the gut in response to food intake that stimulate insulin secretion in a glucose-dependent manner. The main incretins are GLP-1 and GIP. Incretin mimetics (receptor agonists) form the basis of the most advanced metabolic disease research compounds studied today.",
+    related: ["GLP-1", "GIP"],
   },
   {
     term: "In-Vitro",
@@ -352,7 +352,7 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "Satiety",
     category: "pathway",
-    definition: "The feeling of fullness and suppression of appetite following food intake. Satiety is regulated by multiple peptide hormones including GLP-1, GIP, amylin, and peptide YY — all of which signal to the hypothalamus to reduce food intake. Research peptides targeting these pathways (Semaglutide) produce significant reductions in food intake and body weight in animal models.",
+    definition: "The feeling of fullness and suppression of appetite following food intake. Satiety is regulated by multiple peptide hormones including GLP-1, GIP, amylin, and peptide YY — all of which signal to the hypothalamus to reduce food intake. Research peptides targeting these pathways produce significant reductions in food intake and body weight in animal models.",
     related: ["GLP-1", "Amylin", "Hypothalamus"],
   },
   {

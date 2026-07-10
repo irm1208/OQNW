@@ -49,16 +49,6 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
       "**TB-500** is the synthetic form of Thymosin Beta-4, a naturally occurring protein involved in actin regulation and cellular migration research. Our TB-500 is independently verified to ≥99% purity. Available in 5 mg vials. Reconstitute in bacteriostatic water.",
   },
   {
-    patterns: [/semaglutid/i],
-    answer:
-      "**Semaglutide** is a GLP-1 receptor agonist peptide researched for its role in metabolic and appetite regulation studies. We supply research-grade semaglutide verified to ≥99% verified purity with full COA documentation.",
-  },
-  {
-    patterns: [/semaglutide/i],
-    answer:
-      "**Semaglutide** is a GLP-1 receptor agonist studied in metabolic research. Our semaglutide is independently verified to ≥99% purity with full COA available on the product page.",
-  },
-  {
     patterns: [/epithalon|epitalon/i],
     answer:
       "**Epithalon** (Epitalon) is a tetrapeptide (Ala-Glu-Asp-Gly) researched for its role in telomerase activation studies and cellular aging models. Supplied lyophilised at ≥99% verified purity.",
