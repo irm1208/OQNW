@@ -12,7 +12,7 @@ import { useProducts } from "@/context/ProductsContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
-import referAFriendHeroImg from "@assets/download_(7)_1783533485035.jpeg";
+import referAFriendHeroImg from "@assets/download_1783727474544.png";
 import bundleAndSaveHeroImg from "@assets/new_hero_1783533143502.jpeg";
 
 const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
