@@ -5,6 +5,7 @@ import { Lock, Shield, Truck } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
+import BacWaterUpsell from "@/components/BacWaterUpsell";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -912,6 +913,10 @@ export default function CheckoutPage() {
                   </div>
                 );
               })}
+
+              <div style={{ marginBottom: 14 }}>
+                <BacWaterUpsell compact />
+              </div>
             </div>
 
             <hr style={{ margin: 0, border: "none", borderTop: THEME.divider }} />

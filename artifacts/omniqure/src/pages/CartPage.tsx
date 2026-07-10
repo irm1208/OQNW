@@ -8,6 +8,7 @@ import { useProducts } from "@/context/ProductsContext";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { type Product } from "@/data/products";
 import { getPurityStr } from "@/utils/productPurity";
+import BacWaterUpsell from "@/components/BacWaterUpsell";
 
 const FREE_SHIPPING_THRESHOLD_GBP = 100;
 
@@ -458,6 +459,8 @@ export default function CartPage() {
                 </p>
               </div>
             )}
+
+            <BacWaterUpsell />
 
             {/* Clear cart */}
             <div className="text-right pt-1">
