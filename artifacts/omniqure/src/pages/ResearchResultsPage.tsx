@@ -2,6 +2,12 @@ import { useState, useMemo } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import { researchCases, OUTCOME_TYPES, type ResearchCase, type Metric } from "@/data/researchResults";
+import { isHiddenCategory } from "@/data/products";
+
+// Cases whose product category is temporarily hidden from the storefront (see
+// HIDDEN_CATEGORIES in data/products.ts) are excluded here too. The underlying
+// data in researchResults.ts is untouched so it can be shown again later.
+const visibleResearchCases = researchCases.filter(c => !isHiddenCategory(c.category));
 import { FlaskConical, Users, Clock, BookOpen, TrendingUp, TrendingDown, Minus, ArrowRight, AlertTriangle, ChevronDown, ChevronUp } from "lucide-react";
 
 const OUTCOME_COLORS: Record<string, { bg: string; text: string; border: string }> = {
@@ -197,7 +203,7 @@ export default function ResearchResultsPage() {
   });
 
   const filtered = useMemo(() => {
-    return researchCases.filter(c => {
+    return visibleResearchCases.filter(c => {
       const matchOutcome = activeOutcome === "All" || c.outcomeType === activeOutcome;
       const matchSearch = !search || c.peptide.toLowerCase().includes(search.toLowerCase()) || c.title.toLowerCase().includes(search.toLowerCase());
       return matchOutcome && matchSearch;
@@ -205,8 +211,8 @@ export default function ResearchResultsPage() {
   }, [activeOutcome, search]);
 
   const counts: Record<string, number> = useMemo(() => {
-    const map: Record<string, number> = { All: researchCases.length };
-    for (const c of researchCases) {
+    const map: Record<string, number> = { All: visibleResearchCases.length };
+    for (const c of visibleResearchCases) {
       map[c.outcomeType] = (map[c.outcomeType] ?? 0) + 1;
     }
     return map;

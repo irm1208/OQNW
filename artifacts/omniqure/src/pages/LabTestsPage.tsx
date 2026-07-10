@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
+import { isHiddenCategory } from "@/data/products";
 import { getPurity, getPurityStr, getLotDates } from "@/utils/productPurity";
 import { generateCOA } from "@/utils/generateCOA";
 import { productDetails } from "@/data/productDetails";
@@ -11,7 +12,7 @@ import COADocument, { parseBaseName, parseDeclaredMg, getActualMass } from "@/co
 import COAModal from "@/components/COAModal";
 
 const CATEGORIES = [
-  "All", "Growth Peptides", "Healing Peptides", "Weight Management",
+  "All", "Growth Peptides", "Healing Peptides",
   "Longevity Peptides", "Nootropics", "Cellular Health", "Hormonal Peptides",
   "Skin & Repair", "Immune Support", "Research Peptides", "Peptide Blends",
   "Anti-Inflammatory", "Cognitive Peptides", "Growth Hormone",
@@ -355,6 +356,7 @@ export default function LabTestsPage() {
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
     return products.filter((p) => {
+      if (isHiddenCategory(p.category)) return false;
       const matchCat = category === "All" || p.category === category;
       const matchQ =
         !q ||
