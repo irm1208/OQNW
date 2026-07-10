@@ -5,6 +5,7 @@ import GroupedProductCard from "@/components/GroupedProductCard";
 import { type Product } from "@/data/products";
 import { popularProductSlugs } from "@/data/popularPeptides";
 import { useProducts } from "@/context/ProductsContext";
+import { isHiddenCategory } from "@/data/products";
 import { groupProducts, type GroupedProduct } from "@/data/groupedProducts";
 import {
   Heart, Zap, Scale, Brain, Microscope, Shield, Clock, Sparkles,
@@ -67,7 +68,6 @@ const CATEGORY_META: Record<string, { icon: React.ReactNode; description: string
 const CATEGORY_ORDER = [
   "Healing Peptides",
   "Growth Peptides",
-  "Weight Management",
   "Nootropics",
   "Cellular Health",
   "Immune Support",
@@ -91,7 +91,7 @@ export default function PopularPeptides() {
     const map = new Map(products.map((p) => [p.slug, p]));
     return popularProductSlugs
       .map((e) => map.get(e.slug))
-      .filter((p): p is Product => p != null);
+      .filter((p): p is Product => p != null && !isHiddenCategory(p.category));
   }, [products]);
 
   const categorisedGroups = useMemo(() => {

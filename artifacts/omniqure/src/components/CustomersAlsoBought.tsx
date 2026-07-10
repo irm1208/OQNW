@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { ShoppingCart, CheckCircle2, Users } from "lucide-react";
 import { useState, useEffect } from "react";
 import { type Product } from "@/data/products";
+import { isHiddenCategory } from "@/data/products";
 import { useProducts } from "@/context/ProductsContext";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -37,10 +38,11 @@ function parseBase(name: string): string {
 function getStaticAlsoBought(product: Product, products: Product[]): Product[] {
   const currentBase = parseBase(product.name);
   const complementaryCategories = COMPLEMENTARY[product.category] ?? [];
-  const sameCat = products.filter(
+  const eligible = products.filter((p) => !isHiddenCategory(p.category));
+  const sameCat = eligible.filter(
     (p) => p.id !== product.id && p.category === product.category && parseBase(p.name) !== currentBase
   );
-  const crossCat = products.filter(
+  const crossCat = eligible.filter(
     (p) => p.id !== product.id && complementaryCategories.includes(p.category) && parseBase(p.name) !== currentBase
   );
   const seenBases = new Set<string>();
@@ -181,7 +183,7 @@ export default function CustomersAlsoBought({ product }: CustomersAlsoBoughtProp
         if (items.length >= 3) {
           const resolved = items
             .map((item) => products.find((p) => parseInt(p.id, 10) === item.productId))
-            .filter(Boolean) as Product[];
+            .filter((p): p is Product => !!p && !isHiddenCategory(p.category));
           if (resolved.length >= 3) {
             setApiRelated(resolved.slice(0, 5));
             return;

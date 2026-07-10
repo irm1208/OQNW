@@ -4,6 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
+import { isHiddenCategory } from "@/data/products";
 import { useSEO } from "@/hooks/useSEO";
 
 
@@ -61,7 +62,7 @@ export default function AllPeptides() {
   }, [location]);
 
   const groupedProducts = useMemo(() => {
-    let result = [...products];
+    let result = products.filter((p) => !isHiddenCategory(p.category));
     if (searchQuery.trim()) {
       const q = searchQuery.trim().toLowerCase();
       result = result.filter(
@@ -220,7 +221,7 @@ export default function AllPeptides() {
       {/* Mobile category scroll strip — hidden on md+ where sidebar shows */}
       <div className="md:hidden overflow-x-auto scrollbar-none border-b border-slate-200 bg-white sticky top-0 z-10">
         <div className="flex gap-2 px-3 py-2.5 w-max">
-          {["All Peptides", "Growth Peptides", "Healing Peptides", "Weight Management",
+          {["All Peptides", "Growth Peptides", "Healing Peptides",
             "Longevity Peptides", "Cellular Health", "Nootropics", "Immune Support",
             "Research Peptides", "Peptide Blends", "Skin & Repair",
             "Hormonal Peptides", "Growth Hormone", "Anti-Inflammatory", "Cognitive Peptides",

@@ -10,6 +10,14 @@ export type Product = {
   msImageUrl?: string | null;
 };
 
+// Categories temporarily hidden from the storefront (catalog, search, nav, homepage,
+// product pages, "customers also bought"). Underlying product/detail/lab-result data
+// is left in place so this can be reversed later by simply clearing this list.
+export const HIDDEN_CATEGORIES: string[] = ["Weight Management"];
+export function isHiddenCategory(category?: string | null): boolean {
+  return !!category && HIDDEN_CATEGORIES.includes(category);
+}
+
 export const products: Product[] = [
   { id: "1",  name: "AOD-9604 5mg",                          slug: "aod-9604-5mg",                         price: 55,  image: "/products/1.jpg",  category: "Growth Peptides" },
   { id: "2",  name: "AOD-9604 10mg",                         slug: "aod-9604-10mg",                        price: 95,  image: "/products/2.jpg",  category: "Growth Peptides" },
@@ -19,6 +27,8 @@ export const products: Product[] = [
   { id: "6",  name: "BPC-157 40mg",                          slug: "bpc-157-40mg",                         price: 290, image: "/products/6.jpg",  category: "Healing Peptides" },
   { id: "7",  name: "BPC-157 + TB-500 Blend 10mg",           slug: "bpc-157-tb-500-blend-10mg",            price: 115, image: "/products/7.jpg",  category: "Peptide Blends" },
   { id: "8",  name: "BPC-157 + TB-500 Blend 20mg",           slug: "bpc-157-tb-500-blend-20mg",            price: 190, image: "/products/8.jpg",  category: "Peptide Blends" },
+  // NOTE: Weight Management products are temporarily hidden from the storefront
+  // (see HIDDEN_CATEGORIES below). Data is kept as-is so they can be re-enabled later.
   { id: "9",  name: "Cagrilintide 5mg",                      slug: "cagrilintide-5mg",                     price: 145, image: "/products/9.jpg",  category: "Weight Management" },
   { id: "10", name: "Cagrilintide 10mg",                     slug: "cagrilintide-10mg",                    price: 245, image: "/products/10.jpg", category: "Weight Management" },
   { id: "11", name: "CJC-1295 No DAC 5mg",                   slug: "cjc-1295-no-dac-5mg",                  price: 65,  image: "/products/11.jpg", category: "Growth Peptides" },

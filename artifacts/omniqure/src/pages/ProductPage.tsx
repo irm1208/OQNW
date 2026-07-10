@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { trackViewContent } from "@/lib/pixels";
 import { Link, useParams, useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
+import { isHiddenCategory } from "@/data/products";
 import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, Heart, Droplets, Gift, Sparkles } from "lucide-react";
 import { generateCOA } from "@/utils/generateCOA";
 import COADocument from "@/components/COADocument";
@@ -135,7 +136,10 @@ export default function ProductPage() {
   const { products, productDetails } = useProducts();
   const params = useParams<{ id: string }>();
   const [, navigate] = useLocation();
-  const product = products.find((p) => p.id === params.id || p.slug === params.id);
+  const rawProduct = products.find((p) => p.id === params.id || p.slug === params.id);
+  // Hidden categories (e.g. temporarily paused product lines) are not sold on the site,
+  // even via a direct link — treat them the same as "not found".
+  const product = rawProduct && !isHiddenCategory(rawProduct.category) ? rawProduct : undefined;
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [showCOAModal, setShowCOAModal] = useState(false);

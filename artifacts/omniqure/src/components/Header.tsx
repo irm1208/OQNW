@@ -4,6 +4,7 @@ import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut, Hear
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
+import { isHiddenCategory } from "@/data/products";
 import { groupProducts } from "@/data/groupedProducts";
 import { popularProductSlugs } from "@/data/popularPeptides";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
@@ -55,7 +56,8 @@ const rightNavItems = [
 ];
 
 export default function Header() {
-  const { products } = useProducts();
+  const { products: allProducts } = useProducts();
+  const products = useMemo(() => allProducts.filter((p) => !isHiddenCategory(p.category)), [allProducts]);
   const peptideGroups = useMemo(
     () => groupProducts(products).sort((a, b) => a.baseName.localeCompare(b.baseName)),
     [products]

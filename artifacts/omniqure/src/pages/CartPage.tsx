@@ -6,7 +6,7 @@ import { Trash2, Plus, Minus, ShoppingCart, ChevronRight, FlaskConical, Sparkles
 import { useState, useEffect } from "react";
 import { useProducts } from "@/context/ProductsContext";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
-import { type Product } from "@/data/products";
+import { type Product, isHiddenCategory } from "@/data/products";
 import { getPurityStr } from "@/utils/productPurity";
 import BacWaterUpsell from "@/components/BacWaterUpsell";
 
@@ -208,7 +208,7 @@ function CartUpsells() {
       const resolved = allRelated
         .sort((a, b) => b.coOccurrences - a.coOccurrences)
         .map((r) => products.find((p) => parseInt(p.id, 10) === r.productId))
-        .filter((p): p is Product => !!p && !cartProductIds.has(p.id))
+        .filter((p): p is Product => !!p && !cartProductIds.has(p.id) && !isHiddenCategory(p.category))
         .slice(0, 4);
 
       setSuggestions(resolved);

@@ -31,7 +31,6 @@ const footerCategories = [
     links: [
       { label: "Growth Peptides",     href: "/all-peptides?category=Growth+Peptides"     },
       { label: "Healing Peptides",    href: "/all-peptides?category=Healing+Peptides"    },
-      { label: "Weight Management",   href: "/all-peptides?category=Weight+Management"   },
       { label: "Longevity Peptides",  href: "/all-peptides?category=Longevity+Peptides"  },
       { label: "Nootropics",          href: "/all-peptides?category=Nootropics"          },
     ],

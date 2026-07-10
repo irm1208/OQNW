@@ -188,7 +188,7 @@ function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured
 }
 
 
-const featuredIds = ["3", "17", "56", "82", "71", "31", "15", "64"];
+const featuredIds = ["3", "17", "82", "71", "31", "15", "64"];
 
 const TESTIMONIALS = [
   {
@@ -834,7 +834,6 @@ export default function HomePage() {
             {[
               { emoji: "🩹", label: "Recovery & Healing",  sub: "BPC-157 · TB-500",           href: "/all-peptides?category=Healing+Peptides"  },
               { emoji: "🧠", label: "Cognitive & Brain",   sub: "Semax · Selank · P21",        href: "/all-peptides?category=Nootropics"         },
-              { emoji: "⚖️", label: "Weight Management",   sub: "Tirzepatide · Retatrutide",   href: "/all-peptides?category=Weight+Management"  },
               { emoji: "💪", label: "Growth Hormone",      sub: "CJC-1295 · Ipamorelin",       href: "/all-peptides?category=Growth+Peptides"    },
               { emoji: "🌿", label: "Longevity",           sub: "Epithalon · SS-31 · MOTS-C",  href: "/all-peptides?category=Longevity+Peptides" },
               { emoji: "✨", label: "Skin & Collagen",     sub: "GHK-Cu",                      href: "/all-peptides?category=Skin+%26+Hair"      },

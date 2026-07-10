@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
+import { isHiddenCategory } from "@/data/products";
 
 interface SidebarProps {
   selectedCategory: string;
@@ -10,7 +11,6 @@ interface SidebarProps {
 const CATEGORY_ORDER = [
   "Growth Peptides",
   "Healing Peptides",
-  "Weight Management",
   "Longevity Peptides",
   "Cellular Health",
   "Nootropics",
@@ -32,7 +32,7 @@ export default function Sidebar({ selectedCategory, onCategoryChange }: SidebarP
       CATEGORY_ORDER.map((cat) => ({
         category: cat,
         items: products
-          .filter((p) => p.category === cat)
+          .filter((p) => p.category === cat && !isHiddenCategory(p.category))
           .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true })),
       })).filter((g) => g.items.length > 0),
     [products],
