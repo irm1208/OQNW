@@ -54,9 +54,9 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
       "**Semaglutide** is a GLP-1 receptor agonist peptide researched for its role in metabolic and appetite regulation studies. We supply research-grade semaglutide verified to ≥99% verified purity with full COA documentation.",
   },
   {
-    patterns: [/tirzepatid/i],
+    patterns: [/semaglutide/i],
     answer:
-      "**Tirzepatide** is a dual GIP/GLP-1 receptor agonist studied in metabolic research. Our tirzepatide is independently verified to ≥99% purity with full COA available on the product page.",
+      "**Semaglutide** is a GLP-1 receptor agonist studied in metabolic research. Our semaglutide is independently verified to ≥99% purity with full COA available on the product page.",
   },
   {
     patterns: [/epithalon|epitalon/i],

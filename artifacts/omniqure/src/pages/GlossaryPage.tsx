@@ -31,8 +31,8 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "Amylin",
     category: "peptide",
-    definition: "A 37-amino acid peptide hormone co-secreted with insulin from pancreatic beta cells. Amylin suppresses glucagon secretion, slows gastric emptying, and promotes satiety — complementing insulin's role in glucose regulation. Research analogues such as Cagrilintide are engineered versions of amylin with extended half-lives for metabolic research.",
-    related: ["Cagrilintide", "GLP-1", "Satiety"],
+    definition: "A 37-amino acid peptide hormone co-secreted with insulin from pancreatic beta cells. Amylin suppresses glucagon secretion, slows gastric emptying, and promotes satiety — complementing insulin's role in glucose regulation. Research analogues have been engineered as versions of amylin with extended half-lives for metabolic research.",
+    related: ["GLP-1", "Satiety"],
   },
   {
     term: "Angiogenesis",
@@ -171,21 +171,21 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "GLP-1 (Glucagon-Like Peptide-1)",
     category: "pathway",
-    definition: "An incretin hormone secreted by intestinal L-cells in response to food intake. GLP-1 stimulates insulin secretion, suppresses glucagon, slows gastric emptying, and promotes satiety — all of which contribute to post-meal glucose control. GLP-1 receptor agonists (e.g. Semaglutide, Tirzepatide, Retatrutide) are among the most studied compounds in metabolic and obesity research.",
-    related: ["GIP", "Incretin", "Semaglutide", "Tirzepatide"],
+    definition: "An incretin hormone secreted by intestinal L-cells in response to food intake. GLP-1 stimulates insulin secretion, suppresses glucagon, slows gastric emptying, and promotes satiety — all of which contribute to post-meal glucose control. GLP-1 receptor agonists (e.g. Semaglutide) are among the most studied compounds in metabolic and obesity research.",
+    related: ["GIP", "Incretin", "Semaglutide"],
   },
   {
     term: "GIP (Glucose-Dependent Insulinotropic Polypeptide)",
     category: "pathway",
-    definition: "An incretin hormone secreted by intestinal K-cells that stimulates insulin secretion after carbohydrate and fat ingestion. GIP also promotes fat storage and has effects on bone metabolism. Tirzepatide and Retatrutide are dual or triple agonists that include GIP receptor activity alongside GLP-1 (and in Retatrutide's case, glucagon receptor) agonism — demonstrating superior metabolic outcomes vs. GLP-1 alone.",
-    related: ["GLP-1", "Incretin", "Tirzepatide", "Retatrutide"],
+    definition: "An incretin hormone secreted by intestinal K-cells that stimulates insulin secretion after carbohydrate and fat ingestion. GIP also promotes fat storage and has effects on bone metabolism. Dual and triple receptor agonists that include GIP receptor activity alongside GLP-1 (and in some cases, glucagon receptor) agonism demonstrate superior metabolic outcomes vs. GLP-1 alone.",
+    related: ["GLP-1", "Incretin"],
   },
 
   // H
   {
     term: "Half-Life",
     category: "pharmacology",
-    definition: "The time required for the plasma concentration (or total amount in the body) of a compound to decrease by 50% after administration. Half-life is a key pharmacokinetic parameter that determines dosing frequency and duration of action. Short half-life peptides (e.g. CJC-1295 No DAC: ~30 min) require more frequent dosing; long half-life compounds (e.g. Cagrilintide: ~7 days) can be administered weekly. Half-life values on product pages are sourced from published preclinical pharmacokinetic studies.",
+    definition: "The time required for the plasma concentration (or total amount in the body) of a compound to decrease by 50% after administration. Half-life is a key pharmacokinetic parameter that determines dosing frequency and duration of action. Short half-life peptides (e.g. CJC-1295 No DAC: ~30 min) require more frequent dosing; long half-life compounds can be administered weekly. Half-life values on product pages are sourced from published preclinical pharmacokinetic studies.",
     related: ["Pharmacokinetics", "Bioavailability", "Elimination"],
   },
   {
@@ -218,8 +218,8 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "Incretin",
     category: "pathway",
-    definition: "A class of metabolic hormones secreted by the gut in response to food intake that stimulate insulin secretion in a glucose-dependent manner. The main incretins are GLP-1 and GIP. Incretin mimetics (receptor agonists) form the basis of the most advanced metabolic disease research compounds, including Semaglutide (GLP-1), Tirzepatide (dual GLP-1/GIP), and Retatrutide (triple GLP-1/GIP/glucagon).",
-    related: ["GLP-1", "GIP", "Semaglutide", "Tirzepatide"],
+    definition: "A class of metabolic hormones secreted by the gut in response to food intake that stimulate insulin secretion in a glucose-dependent manner. The main incretins are GLP-1 and GIP. Incretin mimetics (receptor agonists) form the basis of the most advanced metabolic disease research compounds, including Semaglutide (GLP-1).",
+    related: ["GLP-1", "GIP", "Semaglutide"],
   },
   {
     term: "In-Vitro",
@@ -352,8 +352,8 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "Satiety",
     category: "pathway",
-    definition: "The feeling of fullness and suppression of appetite following food intake. Satiety is regulated by multiple peptide hormones including GLP-1, GIP, amylin, and peptide YY — all of which signal to the hypothalamus to reduce food intake. Research peptides targeting these pathways (Semaglutide, Tirzepatide, Cagrilintide) produce significant reductions in food intake and body weight in animal models.",
-    related: ["GLP-1", "Amylin", "Cagrilintide", "Hypothalamus"],
+    definition: "The feeling of fullness and suppression of appetite following food intake. Satiety is regulated by multiple peptide hormones including GLP-1, GIP, amylin, and peptide YY — all of which signal to the hypothalamus to reduce food intake. Research peptides targeting these pathways (Semaglutide) produce significant reductions in food intake and body weight in animal models.",
+    related: ["GLP-1", "Amylin", "Hypothalamus"],
   },
   {
     term: "Sequence",

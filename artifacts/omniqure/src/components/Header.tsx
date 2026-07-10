@@ -12,7 +12,7 @@ import { useWishlist } from "@/context/WishlistContext";
 import { getPurityStr } from "@/utils/productPurity";
 
 const POPULAR_SEARCHES = [
-  "BPC-157", "TB-500", "Semaglutide", "Tirzepatide",
+  "BPC-157", "TB-500", "Semaglutide", "Ipamorelin",
   "CJC-1295", "Ipamorelin", "GHK-Cu", "Epithalon",
   "AOD-9604", "Selank",
 ];

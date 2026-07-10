@@ -537,7 +537,7 @@ export default function StorageGuidePage() {
                   { cls: "Healing Peptides", ex: "BPC-157, TB-500", lyoph: "12–18 months", recon: "4–6 weeks", sens: "pH, prolonged heat" },
                   { cls: "Growth Hormone Secretagogues", ex: "GHRP-2, GHRP-6, Ipamorelin", lyoph: "12–18 months", recon: "4–5 weeks", sens: "UV light, oxidation (Trp)" },
                   { cls: "GHRH Analogues", ex: "CJC-1295, Sermorelin, Tesamorelin", lyoph: "18–24 months", recon: "4–6 weeks", sens: "Temperature cycling" },
-                  { cls: "GLP-1 / Metabolic", ex: "Semaglutide, Tirzepatide, Retatrutide", lyoph: "18–24 months", recon: "4–6 weeks", sens: "Agitation, freeze/thaw" },
+                  { cls: "GLP-1 / Metabolic", ex: "Semaglutide", lyoph: "18–24 months", recon: "4–6 weeks", sens: "Agitation, freeze/thaw" },
                   { cls: "Melanocortin Peptides", ex: "Melanotan 1, Melanotan 2", lyoph: "12–18 months", recon: "3–4 weeks", sens: "UV (high), oxidation" },
                   { cls: "Longevity Peptides", ex: "Epithalon, Thymosin α-1", lyoph: "18–24 months", recon: "4–5 weeks", sens: "Light, Cys oxidation" },
                   { cls: "Nootropic Peptides", ex: "Semax, Selank, PE-22-28", lyoph: "12–18 months", recon: "3–4 weeks", sens: "pH extremes, light" },

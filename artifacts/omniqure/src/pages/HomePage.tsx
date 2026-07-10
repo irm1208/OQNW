@@ -43,7 +43,7 @@ const RESEARCH_AREAS = [
   {
     n: "03", tag: "Metabolic",
     title: "Weight & Metabolic Research",
-    peptides: "Tirzepatide · Retatrutide · AOD-9604",
+    peptides: "AOD-9604",
     desc: "GLP-1 receptor agonist research — investigated for appetite signalling, adipogenesis pathways, and lipid metabolism models.",
     img: "https://cehs.usu.edu/khs/images/labs/banners/body-composition-lab.jpg",
     accent: "#34D399",
@@ -228,8 +228,8 @@ const TESTIMONIALS = [
     avatar: "SL",
     color: "#B45309",
     rating: 5,
-    text: "Reta arrived quickly and everything was well packaged. Support replied within the hour when I had a query. The whole experience from ordering to delivery was seamless. 10/10.",
-    peptide: "Retatrutide",
+    text: "Tesa arrived quickly and everything was well packaged. Support replied within the hour when I had a query. The whole experience from ordering to delivery was seamless. 10/10.",
+    peptide: "Tesamorelin",
   },
   {
     name: "Mohammed Aziz",
@@ -268,8 +268,8 @@ const TESTIMONIALS = [
     avatar: "GD",
     color: "#B45309",
     rating: 5,
-    text: "Fast shipping and the reta has been performing really well for me. Had a query and the team replied the same day. Exactly the kind of service that keeps me coming back.",
-    peptide: "Retatrutide",
+    text: "Fast shipping and the ipa has been performing really well for me. Had a query and the team replied the same day. Exactly the kind of service that keeps me coming back.",
+    peptide: "Ipamorelin",
   },
   {
     name: "Priya Mehta",
@@ -308,8 +308,8 @@ const TESTIMONIALS = [
     avatar: "JO",
     color: "#B45309",
     rating: 5,
-    text: "Ordered tirz and the whole process was dead easy. Arrived in a couple of days, packaged well, and I've been seeing good results. Customer service answered my pre-order question within an hour. Top service.",
-    peptide: "Tirzepatide",
+    text: "Ordered mots-c and the whole process was dead easy. Arrived in a couple of days, packaged well, and I've been seeing good results. Customer service answered my pre-order question within an hour. Top service.",
+    peptide: "MOTS-c",
   },
   {
     name: "Rebecca Hughes",
@@ -722,7 +722,7 @@ export default function HomePage() {
   const localValue = FREE_PEPTIDE_VALUE[currency.code] ?? FREE_PEPTIDE_VALUE.GBP;
   useSEO({
     title: "Independently Verified Research Peptides",
-    description: "Buy high-purity research peptides independently verified to 99%+. BPC-157, TB-500, Semaglutide, Tirzepatide, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
+    description: "Buy high-purity research peptides independently verified to 99%+. BPC-157, TB-500, Semaglutide, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
     canonicalPath: "/",
   });
 

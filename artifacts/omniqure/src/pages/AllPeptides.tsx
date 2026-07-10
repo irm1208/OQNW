@@ -13,7 +13,7 @@ type SortOption = "name" | "price-low" | "price-high" | "bestsellers";
 const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   "Growth Peptides": "Research growth peptides including CJC-1295, GHRP-2, Ipamorelin and more. independently verified to 99%+ purity.",
   "Healing Peptides": "Research healing peptides including BPC-157, TB-500 and more. independently verified to 99%+ purity.",
-  "Weight Management": "Research weight management peptides including Semaglutide, Tirzepatide, Cagrilintide and more.",
+  "Weight Management": "Research weight management peptides including Semaglutide and more.",
   "Longevity Peptides": "Research longevity peptides including Epithalon, Selank, Semax and more. independently verified to 99%+ purity.",
   "Cellular Health": "Research cellular health peptides. independently verified to 99%+ purity from OmniQure Peptide Research Institute.",
   "Nootropics": "Research nootropic peptides for cognitive research. independently verified to 99%+ purity from OmniQure.",

@@ -113,7 +113,7 @@ const FAQS: FAQItem[] = [
   {
     category: "research",
     q: "What does 'half-life' mean for peptides?",
-    a: "Half-life refers to the time it takes for the concentration of a peptide in the bloodstream or tissue to reduce by 50% after administration. Short half-life peptides (e.g. CJC-1295 No DAC at ~30 min) require more frequent dosing intervals in research protocols. Longer half-life peptides (e.g. Cagrilintide at ~7 days) allow less frequent administration. Half-life data on our Protocols page is sourced from preclinical and published pharmacokinetic studies.",
+    a: "Half-life refers to the time it takes for the concentration of a peptide in the bloodstream or tissue to reduce by 50% after administration. Short half-life peptides (e.g. CJC-1295 No DAC at ~30 min) require more frequent dosing intervals in research protocols. Longer half-life peptides (e.g. Semaglutide at ~7 days) allow less frequent administration. Half-life data on our Protocols page is sourced from preclinical and published pharmacokinetic studies.",
     tags: ["half-life", "pharmacokinetics", "duration"],
   },
   {
