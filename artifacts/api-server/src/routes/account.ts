@@ -161,7 +161,7 @@ router.get("/account/referral", async (req: Request, res: Response): Promise<voi
       .select({
         referralCode: customersTable.referralCode,
         firstName: customersTable.firstName,
-        freePeptideCredits: customersTable.freePeptideCredits,
+        referralCreditGbp: customersTable.referralCreditGbp,
       })
       .from(customersTable)
       .where(eq(customersTable.id, customerId))
@@ -183,7 +183,7 @@ router.get("/account/referral", async (req: Request, res: Response): Promise<voi
     res.json({
       referralCode,
       referralCount: referredCount[0]?.n ?? 0,
-      freePeptideCredits: customer.freePeptideCredits ?? 0,
+      referralCreditGbp: Number(customer.referralCreditGbp ?? 0),
     });
   } catch (err) {
     req.log.error({ err }, "Failed to get referral info");

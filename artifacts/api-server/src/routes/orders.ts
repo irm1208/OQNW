@@ -291,21 +291,26 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       }
     }
 
-    // Validate free peptide credit redemption
-    // The free peptide reward covers the cheapest qualifying peptide item up to a £50 cap.
-    const FREE_PEPTIDE_CAP_GBP = 50;
+    // Validate referral credit redemption
+    // Referral credit is a flat £ balance (earned £25 at a time by both referrer and
+    // referee, capped at £50 unredeemed). Redeeming applies up to the full order
+    // subtotal — it isn't tied to any single item's price.
+    const REFERRAL_CREDIT_CAP_GBP = 50;
     let freePeptideDeductGbp = 0;
     let freePeptideCreditUsed = false;
+    let referralCreditRedeemedGbp = 0;
     if (redeemFreePeptide === true && loyaltySessionCustomerId) {
       const [custCredit] = await db
-        .select({ freePeptideCredits: customersTable.freePeptideCredits })
+        .select({ referralCreditGbp: customersTable.referralCreditGbp })
         .from(customersTable)
         .where(eq(customersTable.id, loyaltySessionCustomerId))
         .limit(1);
-      if (custCredit && custCredit.freePeptideCredits > 0) {
-        const cheapestPrice = Math.min(...(cartItems as CartItem[]).map(i => i.priceGbp));
-        freePeptideDeductGbp = Math.min(cheapestPrice, FREE_PEPTIDE_CAP_GBP);
-        freePeptideCreditUsed = true;
+      const availableCreditGbp = Number(custCredit?.referralCreditGbp ?? 0);
+      if (availableCreditGbp > 0) {
+        const orderSubtotalGbp = (cartItems as CartItem[]).reduce((s, i) => s + i.priceGbp * i.quantity, 0);
+        referralCreditRedeemedGbp = Math.min(availableCreditGbp, orderSubtotalGbp);
+        freePeptideDeductGbp = referralCreditRedeemedGbp;
+        freePeptideCreditUsed = referralCreditRedeemedGbp > 0;
       }
     }
 
@@ -607,7 +612,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       }
       if (freePeptideCreditUsed) {
         db.update(customersTable)
-          .set({ freePeptideCredits: sql`GREATEST(free_peptide_credits - 1, 0)` })
+          .set({ referralCreditGbp: sql`GREATEST(referral_credit_gbp - ${referralCreditRedeemedGbp}, 0)` })
           .where(eq(customersTable.id, loyaltyCustomerId))
           .catch(() => {});
       }
@@ -703,7 +708,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
                 address1: customersTable.address1,
                 lastSeenIp: customersTable.lastSeenIp,
                 knownIps: customersTable.knownIps,
-                freePeptideCredits: customersTable.freePeptideCredits,
+                referralCreditGbp: customersTable.referralCreditGbp,
               })
               .from(customersTable)
               .where(eq(customersTable.referralCode, cust.referredBy))
@@ -715,7 +720,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
               // 3. New customer's IP matches any IP ever seen on any other existing customer
               // 4. Referred customer's billing postcode matches the referrer's postcode
               // 5. Referred customer's last name matches the referrer's last name AND first 3 chars of first name match
-              // 6. Referrer already has 10+ pending free peptide credits (abuse farming cap)
+              // 6. Referrer already has the max £50 unredeemed referral credit balance
               let abuseDetected = false;
               let abuseReason = "";
 
@@ -770,10 +775,10 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
                 }
               }
 
-              if (!abuseDetected && referrer.freePeptideCredits >= 10) {
-                // Hard cap: referrer already has 10+ unredeemed credits — farming detected
+              if (!abuseDetected && Number(referrer.referralCreditGbp) >= REFERRAL_CREDIT_CAP_GBP) {
+                // Hard cap: referrer already has the max £50 unredeemed credit — farming detected
                 abuseDetected = true;
-                abuseReason = "Referrer has reached the maximum pending reward limit (10 credits)";
+                abuseReason = `Referrer has reached the maximum pending reward limit (£${REFERRAL_CREDIT_CAP_GBP} credit)`;
               }
 
               if (abuseDetected) {
@@ -788,10 +793,17 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
                   .where(eq(ordersTable.id, order.id))
                   .catch(() => {});
               } else {
+                const REFERRAL_REWARD_GBP = 25;
+                // Both sides earn £25 credit, redeemable on their next order — capped at
+                // £50 unredeemed balance each.
                 await db
                   .update(customersTable)
-                  .set({ freePeptideCredits: sql`free_peptide_credits + 1` })
+                  .set({ referralCreditGbp: sql`LEAST(referral_credit_gbp + ${REFERRAL_REWARD_GBP}, ${REFERRAL_CREDIT_CAP_GBP})` })
                   .where(eq(customersTable.id, referrer.id));
+                await db
+                  .update(customersTable)
+                  .set({ referralCreditGbp: sql`LEAST(referral_credit_gbp + ${REFERRAL_REWARD_GBP}, ${REFERRAL_CREDIT_CAP_GBP})` })
+                  .where(eq(customersTable.id, customerId!));
                 await sendReferralReward({
                   referrerName: `${referrer.firstName} ${referrer.lastName}`,
                   referrerEmail: referrer.email,

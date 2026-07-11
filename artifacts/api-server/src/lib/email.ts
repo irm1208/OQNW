@@ -835,24 +835,24 @@ export async function sendReferralReward(data: {
   referrerEmail: string;
   refereeName: string;
 }): Promise<void> {
-  const subject = `You've earned a free peptide — ${data.refereeName} just ordered!`;
+  const subject = `You've earned £25 credit — ${data.refereeName} just ordered!`;
   const body = `
-    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#0f172a;">You've earned a free peptide!</h2>
+    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#0f172a;">You've earned £25 credit!</h2>
     <p style="margin:0 0 24px;font-size:14px;color:#64748b;">
-      Hi ${data.referrerName}, <strong>${data.refereeName}</strong> just placed their first order using your referral link. We've added 1 free peptide credit to your account as a thank you.
+      Hi ${data.referrerName}, <strong>${data.refereeName}</strong> just placed their first order using your referral link. We've added £25 credit to your account as a thank you.
     </p>
 
     <div style="background:#f0fdf4;border-radius:8px;padding:20px 24px;margin-bottom:24px;border-left:4px solid #22c55e;">
       <p style="margin:0 0 4px;font-size:12px;color:#166534;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Your Reward</p>
-      <p style="margin:0;font-size:28px;font-weight:800;color:#15803d;">+1 Free Peptide</p>
-      <p style="margin:8px 0 0;font-size:13px;color:#166534;">Redeem it at checkout — the lowest-priced item in your cart will be free.</p>
+      <p style="margin:0;font-size:28px;font-weight:800;color:#15803d;">+£25 Credit</p>
+      <p style="margin:8px 0 0;font-size:13px;color:#166534;">Redeem it at checkout on your next order (credit balance capped at £50).</p>
     </div>
 
     <div style="margin-top:4px;">
       <a href="${SITE_URL}/all-peptides" style="display:inline-block;background:#0f172a;color:#ffffff;padding:13px 30px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600;">Shop Now & Redeem</a>
     </div>
 
-    <p style="margin:24px 0 0;font-size:12px;color:#94a3b8;">Free peptide credits never expire. Keep sharing your referral link — you earn one free peptide for every friend who orders!</p>
+    <p style="margin:24px 0 0;font-size:12px;color:#94a3b8;">Referral credit never expires. Keep sharing your referral link — you and your friend both earn £25 credit for every friend who orders (up to £50 balance)!</p>
   `;
 
   try {

@@ -195,8 +195,8 @@ const FAQS: FAQItem[] = [
   {
     category: "ordering",
     q: "How does the Refer a Friend programme work?",
-    a: "Share your unique referral link (found in your account under 'Refer a Friend') with colleagues or fellow researchers. When someone registers and places their first order using your link, they automatically receive 10% off that order. Your reward then unlocks — the next time you place a peptide order, you can add 1 free peptide worth up to £50 (or local equivalent) to that order at checkout. Rewards are valid for 12 months and do not expire provided you have an active account.",
-    tags: ["refer", "referral", "free peptide", "reward", "friend"],
+    a: "Share your unique referral link (found in your account under 'Refer a Friend') with colleagues or fellow researchers. When someone registers and places their first order using your link, they automatically receive 10% off that order — and as soon as it ships, you and your friend both get £25 credit added to your accounts (up to £50 unredeemed balance each). Credit is applied automatically at checkout on your next order and never expires.",
+    tags: ["refer", "referral", "credit", "reward", "friend"],
   },
   {
     category: "ordering",
@@ -206,8 +206,8 @@ const FAQS: FAQItem[] = [
   },
   {
     category: "ordering",
-    q: "Can I refer myself or create extra accounts to earn referral rewards?",
-    a: "No. Self-referral and fake-account creation are strictly prohibited. Referred accounts are automatically verified against existing accounts using email address, billing address, delivery address, payment method, IP address, and device signals. Any referral found to involve a duplicate or self-created account will be voided, all associated accounts permanently terminated, and any rewards already redeemed may be clawed back. OmniQure's fraud decisions are final.",
+    q: "Can I refer myself or create extra accounts to earn referral credit?",
+    a: "No. Self-referral and fake-account creation are strictly prohibited. Referred accounts are automatically verified against existing accounts using email address, billing address, delivery address, payment method, IP address, and device signals. Any referral found to involve a duplicate or self-created account will be voided, all associated accounts permanently terminated, and any credit already redeemed may be clawed back. OmniQure's fraud decisions are final.",
     tags: ["refer", "referral", "self-referral", "fake account", "fraud", "abuse", "multiple accounts"],
   },
 

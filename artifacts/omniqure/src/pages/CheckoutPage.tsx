@@ -201,7 +201,7 @@ export default function CheckoutPage() {
   // Loyalty
   const [loyaltyBalance, setLoyaltyBalance] = useState<{ balance: number; gbpValue: number } | null>(null);
   const [loyaltyPointsToRedeem, setLoyaltyPointsToRedeem] = useState(0);
-  const [freePeptideCredits, setFreePeptideCredits] = useState(0);
+  const [referralCreditGbp, setReferralCreditGbp] = useState(0);
   const [redeemFreePeptide, setRedeemFreePeptide] = useState(false);
 
   // 15-minute checkout timer
@@ -235,7 +235,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (!customer) {
       setLoyaltyBalance(null); setLoyaltyPointsToRedeem(0);
-      setFreePeptideCredits(0); setRedeemFreePeptide(false);
+      setReferralCreditGbp(0); setRedeemFreePeptide(false);
       return;
     }
     fetch(apiUrl("loyalty/balance"), { credentials: "include" })
@@ -243,8 +243,8 @@ export default function CheckoutPage() {
       .then(data => { if (data) setLoyaltyBalance(data); })
       .catch(() => {});
     fetch(apiUrl("account/referral"), { credentials: "include" })
-      .then(r => r.ok ? r.json() as Promise<{ freePeptideCredits: number }> : null)
-      .then(data => { if (data) setFreePeptideCredits(data.freePeptideCredits); })
+      .then(r => r.ok ? r.json() as Promise<{ referralCreditGbp: number }> : null)
+      .then(data => { if (data) setReferralCreditGbp(data.referralCreditGbp); })
       .catch(() => {});
   }, [customer]);
 
@@ -293,8 +293,7 @@ export default function CheckoutPage() {
   const shippingCost = selectedShipping.freeOver && cartGBP >= selectedShipping.freeOver ? 0 : selectedShipping.price;
   const discountAmount = appliedDiscount?.discountAmount ?? 0;
   const loyaltyDiscountGbp = loyaltyPointsToRedeem / 100;
-  const cheapestItemPrice = items.length > 0 ? Math.min(...items.map(i => i.product.price ?? 0)) : 0;
-  const freePeptideDeductGbp = redeemFreePeptide && freePeptideCredits > 0 ? cheapestItemPrice : 0;
+  const freePeptideDeductGbp = redeemFreePeptide && referralCreditGbp > 0 ? Math.min(referralCreditGbp, cartGBP) : 0;
   const totalGBP = Math.max(0, cartGBP + shippingCost - bundleDiscountAmount - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp);
 
   const setD = (f: keyof DeliveryForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
@@ -379,7 +378,7 @@ export default function CheckoutPage() {
           })),
           discountCode: appliedDiscount?.code ?? null,
           loyaltyPointsRedeemed: loyaltyPointsToRedeem > 0 ? loyaltyPointsToRedeem : undefined,
-          redeemFreePeptide: redeemFreePeptide && freePeptideCredits > 0 ? true : undefined,
+          redeemFreePeptide: redeemFreePeptide && referralCreditGbp > 0 ? true : undefined,
           paymentMethod,
           cryptoCurrency: paymentMethod === "bitcoin" ? cryptoCurrency : undefined,
         }),
@@ -853,12 +852,12 @@ export default function CheckoutPage() {
             </div>
           )}
 
-          {freePeptideCredits > 0 && (
+          {referralCreditGbp > 0 && (
             <div style={{ marginTop: 16, border: THEME.cardBorder, borderRadius: 6, padding: 16, background: THEME.cardBg }}>
               <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", fontSize: "14px", color: THEME.text }}>
                 <input type="checkbox" checked={redeemFreePeptide} onChange={e => setRedeemFreePeptide(e.target.checked)}
                   style={{ width: 16, height: 16, accentColor: THEME.cta }} />
-                <span>Redeem free peptide credit — save £{cheapestItemPrice.toFixed(2)} on your cheapest item</span>
+                <span>Redeem referral credit — save £{Math.min(referralCreditGbp, cartGBP).toFixed(2)} on this order</span>
               </label>
             </div>
           )}
@@ -964,7 +963,7 @@ export default function CheckoutPage() {
                 ...(bundleDiscountAmount > 0 ? [["Bundle & Save", `−£${bundleDiscountAmount.toFixed(2)}`]] : []),
                 ...(discountAmount > 0 ? [[`Discount (${appliedDiscount?.code})`, `−£${discountAmount.toFixed(2)}`]] : []),
                 ...(loyaltyPointsToRedeem > 0 ? [["Loyalty Points", `−£${loyaltyDiscountGbp.toFixed(2)}`]] : []),
-                ...(freePeptideDeductGbp > 0 ? [["Free Peptide Credit", `−£${freePeptideDeductGbp.toFixed(2)}`]] : []),
+                ...(freePeptideDeductGbp > 0 ? [["Referral Credit", `−£${freePeptideDeductGbp.toFixed(2)}`]] : []),
               ].map(([k, v]) => (
                 <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
                   <span style={{ fontSize: "13px", color: THEME.textMuted }}>{k}</span>

@@ -31,7 +31,7 @@ export const customersTable = pgTable("customers", {
   resetTokenExpiresAt: timestamp("reset_token_expires_at", { withTimezone: true }),
   referralCode: text("referral_code").unique(),
   referredBy: text("referred_by"),
-  freePeptideCredits: integer("free_peptide_credits").notNull().default(0),
+  referralCreditGbp: numeric("referral_credit_gbp", { precision: 10, scale: 2 }).notNull().default("0"),
   lastSeenIp: text("last_seen_ip"),
   lastSeenCountry: text("last_seen_country"),
   knownIps: text("known_ips").array(),

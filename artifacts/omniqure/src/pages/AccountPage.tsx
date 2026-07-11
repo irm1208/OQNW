@@ -49,7 +49,7 @@ type Subscription = {
 type ReferralInfo = {
   referralCode: string;
   referralCount: number;
-  freePeptideCredits: number;
+  referralCreditGbp: number;
 };
 
 type AccountOrder = {
@@ -998,7 +998,7 @@ export default function AccountPage() {
                     {[
                       { step: "1", title: "Share your link", desc: "Send your unique referral link to colleagues and fellow researchers." },
                       { step: "2", title: "Friend places first order", desc: "They get 10% off their first order automatically — no code needed. Bundle & Save free items apply too: 3-4 vials for free BAC water, 5-9 for a free peptide, 10+ for 2 free peptides (one reward per order, no stacking)." },
-                      { step: "3", title: "Claim on your next order", desc: "Your reward unlocks. When you next place a peptide order, add 1 free peptide (up to £50 / local equivalent) to that order at checkout." },
+                      { step: "3", title: "Both claim £25 credit", desc: "As soon as their order ships, you both get £25 credit added to your accounts — redeemable on your next order (up to £50 unredeemed balance each)." },
                     ].map((s) => (
                       <div key={s.step} style={{ textAlign: "center", padding: "16px 12px", borderRadius: "12px", backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5" }}>
                         <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px", fontSize: "14px", fontWeight: 800, color: "#fff" }}>
@@ -1028,7 +1028,7 @@ export default function AccountPage() {
                 {referral && (
                   <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
                     <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A", marginBottom: "4px" }}>Your referral link</h3>
-                    <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "16px" }}>Share this link — when a friend places their first order using it, your reward unlocks. Add 1 free peptide (up to £50 / local equivalent) to your next peptide order at checkout. Rewards are valid for 12 months.</p>
+                    <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "16px" }}>Share this link — when a friend places their first order using it, you both get £25 credit added to your accounts (up to £50 unredeemed balance each). Credit is applied automatically at checkout on your next order.</p>
 
                     <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
                       <div style={{ flex: 1, height: "44px", padding: "0 14px", borderRadius: "10px", border: "1.5px solid #E2E8F0", backgroundColor: "#F8FAFC", display: "flex", alignItems: "center", overflow: "hidden" }}>
@@ -1056,8 +1056,8 @@ export default function AccountPage() {
                         <p style={{ fontSize: "12px", color: "#64748B", margin: 0 }}>Friends referred</p>
                       </div>
                       <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0", textAlign: "center" }}>
-                        <p style={{ fontSize: "22px", fontWeight: 800, color: "#15803D", margin: "0 0 2px" }}>{referral.freePeptideCredits}</p>
-                        <p style={{ fontSize: "12px", color: "#16A34A", margin: 0 }}>Free peptides available</p>
+                        <p style={{ fontSize: "22px", fontWeight: 800, color: "#15803D", margin: "0 0 2px" }}>£{referral.referralCreditGbp.toFixed(2)}</p>
+                        <p style={{ fontSize: "12px", color: "#16A34A", margin: 0 }}>Credit available</p>
                       </div>
                       <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#F0F5FF", border: "1px solid #C7D7F7", textAlign: "center" }}>
                         <p style={{ fontSize: "13px", fontWeight: 800, color: "#1240A0", margin: "0 0 2px", fontFamily: "monospace", letterSpacing: "0.05em" }}>{referral.referralCode}</p>
@@ -1277,7 +1277,7 @@ export default function AccountPage() {
                           { icon: <ShoppingBag size={16} style={{ color: "#1B5CB5" }} />, title: "Make a purchase", desc: "1 pt for every £1 you spend", bg: "#EFF6FF" },
                           { icon: <Star size={16} style={{ color: "#F59E0B" }} />, title: "Leave a review", desc: "+50 pts once it's approved", bg: "#FFFBEB" },
                           { icon: <Gift size={16} style={{ color: "#059669" }} />, title: "Create an account", desc: "+50 pts welcome bonus", bg: "#F0FDF4" },
-                          { icon: <Users size={16} style={{ color: "#7C3AED" }} />, title: "Refer a friend", desc: "Earn a free peptide credit per referral", bg: "#F5F3FF" },
+                          { icon: <Users size={16} style={{ color: "#7C3AED" }} />, title: "Refer a friend", desc: "You and your friend both earn £25 credit each", bg: "#F5F3FF" },
                         ].map((w) => (
                           <div key={w.title} style={{ display: "flex", gap: "10px", padding: "12px", borderRadius: "12px", backgroundColor: w.bg }}>
                             <div style={{ width: "30px", height: "30px", borderRadius: "8px", backgroundColor: "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 1px 4px rgba(15,23,42,0.08)" }}>

@@ -15,7 +15,17 @@ import type { CurrencyCode } from "@/context/CurrencyContext";
 import referAFriendHeroImg from "@assets/download_1783727474544.png";
 import bundleAndSaveHeroImg from "@assets/new_hero_1783533143502.jpeg";
 
-const FREE_PEPTIDE_VALUE: Record<CurrencyCode, string> = {
+// Value of a single £25 referral credit reward, in each supported currency.
+const REFERRAL_CREDIT_VALUE: Record<CurrencyCode, string> = {
+  GBP: "£25", USD: "$33", EUR: "€30", AUD: "A$50", CAD: "C$45",
+  CHF: "Fr28", NZD: "NZ$55", JPY: "¥5,000", SGD: "S$43", HKD: "HK$255",
+  KRW: "₩44,000", TWD: "NT$1,025", MYR: "RM148", THB: "฿1,100",
+  DKK: "kr225", NOK: "kr345", SEK: "kr340", PLN: "zł125",
+  CZK: "Kč725", HUF: "Ft11,000", AED: "د.إ120",
+};
+
+// Maximum unredeemed referral credit balance (£50 cap), in each supported currency.
+const REFERRAL_CREDIT_CAP: Record<CurrencyCode, string> = {
   GBP: "£50", USD: "$65", EUR: "€60", AUD: "A$100", CAD: "C$90",
   CHF: "Fr57", NZD: "NZ$110", JPY: "¥10,000", SGD: "S$85", HKD: "HK$510",
   KRW: "₩88,000", TWD: "NT$2,050", MYR: "RM295", THB: "฿2,200",
@@ -430,7 +440,7 @@ function HeroReferralSlide() {
     >
       <img
         src={referAFriendHeroImg}
-        alt="Refer a friend and earn a free peptide worth up to £50"
+        alt="Refer a friend and earn £25 credit each, up to £50"
         style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />
     </Link>
@@ -719,7 +729,8 @@ function TestimonialsCarousel() {
 export default function HomePage() {
   const { products } = useProducts();
   const { currency } = useCurrency();
-  const localValue = FREE_PEPTIDE_VALUE[currency.code] ?? FREE_PEPTIDE_VALUE.GBP;
+  const localValue = REFERRAL_CREDIT_VALUE[currency.code] ?? REFERRAL_CREDIT_VALUE.GBP;
+  const localCap = REFERRAL_CREDIT_CAP[currency.code] ?? REFERRAL_CREDIT_CAP.GBP;
   useSEO({
     title: "Independently Verified Research Peptides",
     description: "Buy high-purity research peptides independently verified to 99%+. BPC-157, TB-500, Ipamorelin, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
@@ -1120,10 +1131,10 @@ export default function HomePage() {
               <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #FCD34D, #F59E0B)", borderRadius: "2px" }} />
             </div>
             <h2 className="font-bold" style={{ fontSize: "clamp(22px,3vw,32px)", color: "#0F172A", letterSpacing: "-0.02em", marginBottom: "8px" }}>
-              Refer a Friend, Earn a Free Peptide
+              Refer a Friend, Earn £25 Credit Each
             </h2>
             <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "520px", margin: "0 auto", lineHeight: 1.7 }}>
-              Share your unique referral link. They get <strong style={{ color: "#0F172A" }}>10% off their first order</strong>. On your next peptide order, add <strong style={{ color: "#0F172A" }}>1 free peptide worth up to {localValue}</strong>.
+              Share your unique referral link. They get <strong style={{ color: "#0F172A" }}>10% off their first order</strong>, and once it ships you <strong style={{ color: "#0F172A" }}>both claim {localValue} credit</strong> — up to {localCap} unredeemed balance each.
             </p>
           </div>
 
@@ -1149,8 +1160,8 @@ export default function HomePage() {
               {
                 icon: <Gift size={26} />,
                 step: "03",
-                title: "Claim on Your Next Order",
-                body: `When you next place a peptide order, add 1 free peptide worth up to ${localValue} to that order. Your friend keeps their 10% discount — everyone wins.`,
+                title: "Both Claim £25 Credit",
+                body: `As soon as their order ships, you both get ${localValue} credit added to your accounts — redeemable on your next order (up to ${localCap} unredeemed balance).`,
                 color: "#B45309",
                 bg: "#FEF3C7",
               },
@@ -1213,10 +1224,10 @@ export default function HomePage() {
                 <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#F59E0B" }}>Start Earning Today</span>
               </div>
               <h3 style={{ fontSize: "clamp(18px,2.5vw,26px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.15, margin: "0 0 8px" }}>
-                Every referral adds 1 free peptide (up to {localValue}) to your next order.
+                Every referral earns you and your friend {localValue} credit each (up to {localCap}).
               </h3>
               <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", margin: 0, lineHeight: 1.6 }}>
-                Refer a friend, they get 10% off their first order. Place your next peptide order and claim your free peptide — no limit on referrals, rewards valid for 12 months.
+                Refer a friend, they get 10% off their first order. As soon as it ships, you both get credit toward your next order — no limit on referrals, credit never expires.
               </p>
             </div>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", position: "relative", zIndex: 1 }}>

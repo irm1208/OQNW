@@ -86,7 +86,7 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/refer|referral|friend|earn|credit|free peptide/i],
     answer:
-      "Our **Refer a Friend** programme lets you earn a **free peptide** (up to £50 value) when a friend signs up using your unique link and places their first order. Your credit is redeemable on your next order. Find your referral link in **My Account → Referrals**.",
+      "Our **Refer a Friend** programme gives you and your friend **£25 credit each** when they sign up using your unique link and place their first order (up to £50 unredeemed balance each). Credit is redeemable on your next order. Find your referral link in **My Account → Referrals**.",
   },
   {
     patterns: [/payment|pay|checkout|card|credit card|paypal|crypto|bitcoin/i],
