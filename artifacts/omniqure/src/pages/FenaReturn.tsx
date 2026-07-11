@@ -59,7 +59,7 @@ export default function FenaReturn() {
             Your order <strong style={{ color: "#0F172A" }}>{order}</strong> has been reserved but we haven't received payment yet. You can try again or choose a different payment method.
           </p>
           <Link
-            href="/checkout"
+            href="/cart"
             style={{
               display: "inline-flex", alignItems: "center", gap: "8px",
               height: "46px", paddingLeft: "24px", paddingRight: "24px",
@@ -67,7 +67,7 @@ export default function FenaReturn() {
               color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none",
             }}
           >
-            Return to Checkout
+            Return to Cart
           </Link>
         </div>
       </div>

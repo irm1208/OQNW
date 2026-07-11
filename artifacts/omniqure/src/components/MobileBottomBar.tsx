@@ -5,7 +5,7 @@ import { useCurrency } from "@/context/CurrencyContext";
 import { useOverlayCoordinator } from "@/context/OverlayCoordinatorContext";
 import { ShoppingCart, Tag } from "lucide-react";
 
-const HIDDEN_PATHS = ["/checkout", "/account", "/sign-in", "/register", "/forgot-password", "/reset-password", "/order-confirmation"];
+const HIDDEN_PATHS = ["/cart", "/checkout", "/account", "/sign-in", "/register", "/forgot-password", "/reset-password", "/order-confirmation"];
 
 export default function MobileBottomBar() {
   const [location, navigate] = useLocation();
