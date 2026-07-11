@@ -8,9 +8,9 @@ const messages = [
   "💊  Bundle & Save — Free Items When You Order 3+ Vials",
 ];
 
-export default function AnnouncementBar() {
+export default function AnnouncementBar({ suppressed = false }: { suppressed?: boolean }) {
   const [visible, setVisible] = useState(true);
-  if (!visible) return null;
+  if (!visible || suppressed) return null;
 
   const doubled = [...messages, ...messages];
 

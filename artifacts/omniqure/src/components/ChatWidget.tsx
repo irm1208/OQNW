@@ -1,5 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { X, MessageCircle, Send, Bot } from "lucide-react";
+import { useOverlayCoordinator } from "@/context/OverlayCoordinatorContext";
+import { AGE_VERIFIED_EVENT, hasVerified as isAgeVerified } from "@/components/AgeGate";
+
+// Brief delay before the floating bubble appears, so it doesn't pop in at the
+// same instant as the cookie bar and top banners right after the age gate
+// closes.
+const ENTRANCE_DELAY_MS = 1600;
 
 interface Message {
   id: number;
@@ -170,6 +177,11 @@ let msgId = 0;
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
+  // `showLauncher` gates whether the bubble is in the DOM at all (so it is
+  // truly absent during the delay, not just faded out). `entered` flips a
+  // moment after mount purely to drive the CSS entrance transition.
+  const [showLauncher, setShowLauncher] = useState(false);
+  const [entered, setEntered] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: ++msgId,
@@ -180,10 +192,42 @@ export default function ChatWidget() {
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const { bottomInset } = useOverlayCoordinator();
 
   useEffect(() => {
     if (open) bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, open, typing]);
+
+  // Delay the bubble's entrance slightly so it doesn't appear at the exact
+  // same instant as the cookie bar and top banners. The delay is measured
+  // from when the visitor actually clears the age gate (not from initial
+  // mount), since the gate can sit open for as long as the visitor needs.
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const startTimer = () => {
+      timer = setTimeout(() => setShowLauncher(true), ENTRANCE_DELAY_MS);
+    };
+
+    if (isAgeVerified()) {
+      startTimer();
+      return () => { if (timer) clearTimeout(timer); };
+    }
+
+    const handleVerified = () => startTimer();
+    window.addEventListener(AGE_VERIFIED_EVENT, handleVerified);
+    return () => {
+      window.removeEventListener(AGE_VERIFIED_EVENT, handleVerified);
+      if (timer) clearTimeout(timer);
+    };
+  }, []);
+
+  // Once the bubble is allowed to mount, flip `entered` a frame later so the
+  // opacity/transform transition actually animates in rather than snapping.
+  useEffect(() => {
+    if (!showLauncher) return;
+    const raf = requestAnimationFrame(() => setEntered(true));
+    return () => cancelAnimationFrame(raf);
+  }, [showLauncher]);
 
   function send() {
     const text = input.trim();
@@ -206,7 +250,7 @@ export default function ChatWidget() {
         <div
           style={{
             position: "fixed",
-            bottom: "88px",
+            bottom: `${88 + bottomInset}px`,
             right: "20px",
             width: "360px",
             maxHeight: "520px",
@@ -383,37 +427,41 @@ export default function ChatWidget() {
         </div>
       )}
 
-      <button
-        onClick={() => setOpen((o) => !o)}
-        style={{
-          position: "fixed",
-          bottom: "20px",
-          right: "20px",
-          width: "58px",
-          height: "58px",
-          borderRadius: "50%",
-          background: "linear-gradient(135deg, #0D2565 0%, #1B5CB5 100%)",
-          border: "none",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxShadow: "0 4px 20px rgba(18,64,160,0.45), 0 2px 6px rgba(0,0,0,0.15)",
-          zIndex: 9999,
-          transition: "transform 0.2s, box-shadow 0.2s",
-        }}
-        onMouseEnter={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.08)";
-          (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 6px 28px rgba(18,64,160,0.55), 0 2px 8px rgba(0,0,0,0.18)";
-        }}
-        onMouseLeave={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
-          (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 20px rgba(18,64,160,0.45), 0 2px 6px rgba(0,0,0,0.15)";
-        }}
-        title="Research Assistant"
-      >
-        {open ? <X size={22} color="#fff" /> : <MessageCircle size={24} color="#fff" />}
-      </button>
+      {showLauncher && (
+        <button
+          onClick={() => setOpen((o) => !o)}
+          style={{
+            position: "fixed",
+            bottom: `${20 + bottomInset}px`,
+            right: "20px",
+            width: "58px",
+            height: "58px",
+            borderRadius: "50%",
+            background: "linear-gradient(135deg, #0D2565 0%, #1B5CB5 100%)",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 4px 20px rgba(18,64,160,0.45), 0 2px 6px rgba(0,0,0,0.15)",
+            zIndex: 9999,
+            opacity: entered ? 1 : 0,
+            transform: entered ? "scale(1) translateY(0)" : "scale(0.6) translateY(12px)",
+            transition: "transform 0.25s ease-out, box-shadow 0.2s, opacity 0.25s ease-out, bottom 0.2s ease-out",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.08)";
+            (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 6px 28px rgba(18,64,160,0.55), 0 2px 8px rgba(0,0,0,0.18)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
+            (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 20px rgba(18,64,160,0.45), 0 2px 6px rgba(0,0,0,0.15)";
+          }}
+          title="Research Assistant"
+        >
+          {open ? <X size={22} color="#fff" /> : <MessageCircle size={24} color="#fff" />}
+        </button>
+      )}
 
       <style>{`
         @keyframes bounce {

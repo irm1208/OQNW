@@ -287,7 +287,14 @@ function Banner({ rule, onDismiss }: { rule: JurisdictionRule; onDismiss: () => 
 
 // ─── Main export ──────────────────────────────────────────────────────────────
 
-export default function JurisdictionWarning() {
+export default function JurisdictionWarning({
+  onActiveChange,
+}: {
+  // Notifies the parent when this banner has a rule to show and isn't
+  // dismissed, so lower-priority chrome (e.g. the marketing announcement bar)
+  // can step aside instead of stacking underneath it.
+  onActiveChange?: (active: boolean) => void;
+}) {
   const { countryCode: geoCode } = useCurrency();
   const [dismissed, setDismissedState] = useState(false);
   const [rule, setRule] = useState<JurisdictionRule | null>(null);
@@ -310,11 +317,19 @@ export default function JurisdictionWarning() {
     setDismissedState(false);
   }, [countryCode, previewCode]);
 
-  if (!rule || dismissed) return null;
+  const active = !!rule && !dismissed;
+
+  useEffect(() => {
+    onActiveChange?.(active);
+    return () => onActiveChange?.(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
+
+  if (!active) return null;
 
   return (
     <Banner
-      rule={rule}
+      rule={rule!}
       onDismiss={() => {
         if (countryCode) setDismissed(countryCode);
         setDismissedState(true);

@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
+import { useOverlayCoordinator } from "@/context/OverlayCoordinatorContext";
 import { ShoppingCart, Tag } from "lucide-react";
 
 const HIDDEN_PATHS = ["/checkout", "/account", "/sign-in", "/register", "/forgot-password", "/reset-password", "/order-confirmation"];
@@ -10,6 +11,8 @@ export default function MobileBottomBar() {
   const [location, navigate] = useLocation();
   const { totalItems, subtotal, bundleDiscountAmount, bundleFreeBacWater, bundleFreeItemsCount } = useCart();
   const { formatPrice } = useCurrency();
+  const barRef = useRef<HTMLDivElement>(null);
+  const { registerBottomInset } = useOverlayCoordinator();
 
   const hasFreebie = bundleFreeBacWater || bundleFreeItemsCount > 0;
   const freebieLabel = bundleFreeItemsCount === 2
@@ -32,12 +35,34 @@ export default function MobileBottomBar() {
     };
   }, [visible]);
 
+  // Report our rendered height (0 on desktop, since CSS hides us there) so the
+  // chat bubble can shift above us on mobile instead of overlapping.
+  useEffect(() => {
+    if (!visible) {
+      registerBottomInset("mobile-cart-bar", 0);
+      return;
+    }
+    const el = barRef.current;
+    if (!el) return;
+    const update = () => registerBottomInset("mobile-cart-bar", el.offsetHeight);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    window.addEventListener("resize", update);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", update);
+      registerBottomInset("mobile-cart-bar", 0);
+    };
+  }, [visible, registerBottomInset]);
+
   if (!visible) return null;
 
   const discountedTotal = subtotal - bundleDiscountAmount;
 
   return (
     <div
+      ref={barRef}
       className="mobile-bottom-bar"
       role="complementary"
       aria-label="Cart summary"

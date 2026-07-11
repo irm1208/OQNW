@@ -4,7 +4,12 @@ import { ShieldCheck, AlertTriangle } from "lucide-react";
 const STORAGE_KEY = "omniqure_age_verified";
 const CURRENT_VERSION = "2";
 
-function hasVerified(): boolean {
+// Dispatched on the window the moment a visitor clears the age gate, so other
+// overlays (e.g. the chat bubble) can wait to appear until the page is
+// actually usable instead of racing the gate on their own timer.
+export const AGE_VERIFIED_EVENT = "omniqure:age-verified";
+
+export function hasVerified(): boolean {
   try {
     return localStorage.getItem(STORAGE_KEY) === CURRENT_VERSION;
   } catch {
@@ -15,6 +20,9 @@ function hasVerified(): boolean {
 function setVerified() {
   try {
     localStorage.setItem(STORAGE_KEY, CURRENT_VERSION);
+  } catch {}
+  try {
+    window.dispatchEvent(new Event(AGE_VERIFIED_EVENT));
   } catch {}
 }
 

@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Shield, X, Cookie } from "lucide-react";
 import { initPixels } from "@/lib/pixels";
+import { useOverlayCoordinator } from "@/context/OverlayCoordinatorContext";
 
 const STORAGE_KEY = "omniqure_consent";
 
@@ -13,11 +14,33 @@ export function getStoredConsent(): ConsentState {
 
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);
+  const barRef = useRef<HTMLDivElement>(null);
+  const { registerBottomInset } = useOverlayCoordinator();
 
   useEffect(() => {
     const stored = getStoredConsent();
     if (!stored) setVisible(true);
   }, []);
+
+  // Report our rendered height to the overlay coordinator so other fixed,
+  // bottom-anchored elements (e.g. the chat bubble) can shift above us
+  // instead of overlapping.
+  useEffect(() => {
+    if (!visible) {
+      registerBottomInset("cookie-consent", 0);
+      return;
+    }
+    const el = barRef.current;
+    if (!el) return;
+    const update = () => registerBottomInset("cookie-consent", el.offsetHeight);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      registerBottomInset("cookie-consent", 0);
+    };
+  }, [visible, registerBottomInset]);
 
   function accept() {
     try { localStorage.setItem(STORAGE_KEY, "accepted"); } catch {}
@@ -33,7 +56,7 @@ export function CookieConsent() {
   if (!visible) return null;
 
   return (
-    <div style={{
+    <div ref={barRef} style={{
       position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 9999,
       background: "linear-gradient(135deg, #0D1F4E, #1240A0)",
       borderTop: "1px solid rgba(255,255,255,0.12)",

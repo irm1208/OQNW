@@ -1,5 +1,5 @@
 import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -40,6 +40,7 @@ import StorageGuidePage from "@/pages/StorageGuidePage";
 import ResearchResultsPage from "@/pages/ResearchResultsPage";
 import ContactPage from "@/pages/ContactPage";
 import { CookieConsent } from "@/components/CookieConsent";
+import { OverlayCoordinatorProvider } from "@/context/OverlayCoordinatorContext";
 import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
@@ -115,6 +116,11 @@ function Router() {
 }
 
 function App() {
+  // When a jurisdiction compliance banner is active for the visitor's country,
+  // it takes priority over the marketing announcement bar — showing both at
+  // once stacks two full-width bars back to back for no added value.
+  const [jurisdictionActive, setJurisdictionActive] = useState(false);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -125,13 +131,14 @@ function App() {
           <WishlistProvider>
           <CartProvider>
             <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+              <OverlayCoordinatorProvider>
               <ScrollToTop />
               <PixelTracker />
               <CookieConsent />
               <div className="min-h-screen bg-white flex flex-col">
-                <AnnouncementBar />
+                <AnnouncementBar suppressed={jurisdictionActive} />
                 <Header />
-                <JurisdictionWarning />
+                <JurisdictionWarning onActiveChange={setJurisdictionActive} />
                 <main className="flex-1">
                   <Router />
                 </main>
@@ -142,6 +149,7 @@ function App() {
               <MobileBottomBar />
               <ChatWidget />
               <AgeGate />
+              </OverlayCoordinatorProvider>
             </WouterRouter>
             <Toaster />
           </CartProvider>
