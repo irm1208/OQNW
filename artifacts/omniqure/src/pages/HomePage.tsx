@@ -841,7 +841,7 @@ export default function HomePage() {
             <h2 style={{ fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.02em", marginBottom: 6 }}>Shop by research goal.</h2>
             <p style={{ fontSize: 14, color: "#64748B", maxWidth: 440, margin: "0 auto" }}>Not sure where to start? Pick your area of interest and browse the relevant compounds directly.</p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {[
               { emoji: "🩹", label: "Recovery & Healing",  sub: "BPC-157 · TB-500",           href: "/all-peptides?category=Healing+Peptides"  },
               { emoji: "🧠", label: "Cognitive & Brain",   sub: "Semax · Selank · P21",        href: "/all-peptides?category=Nootropics"         },
