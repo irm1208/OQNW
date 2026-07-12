@@ -1,14 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { trackViewContent } from "@/lib/pixels";
 import { Link, useParams, useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
 import { isHiddenCategory } from "@/data/products";
-import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Star, Loader2, Heart, Droplets, Gift, Sparkles } from "lucide-react";
+import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Loader2, Heart, Droplets, Gift, Sparkles } from "lucide-react";
 import { generateCOA } from "@/utils/generateCOA";
 import COADocument from "@/components/COADocument";
 import COAModal from "@/components/COAModal";
-import ReviewsCarousel, { type ReviewItem } from "@/components/ReviewsCarousel";
-import ReviewsModal, { type ReviewsData } from "@/components/ReviewsModal";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getPurity, getPurityStr, getLotNumber } from "@/utils/productPurity";
@@ -143,7 +141,6 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [showCOAModal, setShowCOAModal] = useState(false);
-  const [showReviewsModal, setShowReviewsModal] = useState(false);
   const { addToCart, totalItems, peptideQty } = useCart();
   const { trackView } = useRecentlyViewed();
   const { customer } = useCustomerAuth();
@@ -192,74 +189,19 @@ export default function ProductPage() {
     }
   }, [product?.id]);
 
-  // Reviews state
-  const [reviewsData, setReviewsData] = useState<ReviewsData | null>(null);
-  const [reviewsLoading, setReviewsLoading] = useState(false);
-  const [writeRating, setWriteRating] = useState(0);
-  const [hoverRating, setHoverRating] = useState(0);
-  const [writeTitle, setWriteTitle] = useState("");
-  const [writeBody, setWriteBody] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-
   // Back-in-stock alert state
   const [notifyEmail, setNotifyEmail] = useState("");
   const [notifySubmitting, setNotifySubmitting] = useState(false);
   const [notifySuccess, setNotifySuccess] = useState(false);
   const [notifyError, setNotifyError] = useState<string | null>(null);
 
-  const fetchReviews = useCallback(async (productId: string) => {
-    setReviewsLoading(true);
-    try {
-      const res = await fetch(apiUrl(`products/${productId}/reviews`), { credentials: "include" });
-      if (res.ok) setReviewsData(await res.json() as ReviewsData);
-    } finally {
-      setReviewsLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
-    setReviewsData(null);
-    setSubmitSuccess(false);
   }, [params.id]);
 
   useEffect(() => {
     if (product) trackView(product.id);
   }, [product?.id]);
-
-  useEffect(() => {
-    if (product && !reviewsData) {
-      void fetchReviews(product.id);
-    }
-  }, [product?.id]);
-
-  const handleSubmitReview = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!product || writeRating === 0) return;
-    setSubmitting(true);
-    setSubmitError(null);
-    try {
-      const res = await fetch(apiUrl(`products/${product.id}/reviews`), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ rating: writeRating, title: writeTitle.trim(), body: writeBody.trim() }),
-      });
-      const data = await res.json() as { error?: string };
-      if (!res.ok) { setSubmitError(data.error ?? "Failed to submit review"); return; }
-      setSubmitSuccess(true);
-      setWriteRating(0);
-      setWriteTitle("");
-      setWriteBody("");
-      if (product) void fetchReviews(product.id);
-    } catch {
-      setSubmitError("Something went wrong. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   const handleNotifyMe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -355,28 +297,6 @@ export default function ProductPage() {
         />
       )}
 
-      {/* Reviews Modal */}
-      {showReviewsModal && (
-        <ReviewsModal
-          productName={product.name}
-          reviewsData={reviewsData}
-          reviewsLoading={reviewsLoading}
-          customer={customer}
-          writeRating={writeRating}
-          setWriteRating={setWriteRating}
-          hoverRating={hoverRating}
-          setHoverRating={setHoverRating}
-          writeTitle={writeTitle}
-          setWriteTitle={setWriteTitle}
-          writeBody={writeBody}
-          setWriteBody={setWriteBody}
-          submitting={submitting}
-          submitSuccess={submitSuccess}
-          submitError={submitError}
-          onSubmit={(e) => void handleSubmitReview(e)}
-          onClose={() => setShowReviewsModal(false)}
-        />
-      )}
 
       {/* Breadcrumb */}
       <div className="bg-white" style={{ borderBottom: "1px solid #E8EDF5" }}>
@@ -545,30 +465,6 @@ export default function ProductPage() {
                 <h1 className="product-h1 font-bold leading-tight mb-1.5" style={{ fontSize: "28px", color: "#0F172A" }}>
                   {product.name}
                 </h1>
-                {/* Star rating anchor */}
-                {reviewsData && reviewsData.summary.totalCount > 0 && (
-                  <button
-                    onClick={() => setShowReviewsModal(true)}
-                    className="inline-flex items-center gap-1.5 group"
-                    style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
-                  >
-                    <span className="inline-flex items-center gap-0.5">
-                      {[1,2,3,4,5].map((s) => {
-                        const avg = reviewsData.summary.avgRating ?? 0;
-                        const filled = s <= Math.round(avg);
-                        return (
-                          <Star key={s} size={14} style={{ color: "#F59E0B", fill: filled ? "#F59E0B" : "none", flexShrink: 0 }} />
-                        );
-                      })}
-                    </span>
-                    <span className="text-sm font-semibold" style={{ color: "#F59E0B" }}>
-                      {(reviewsData.summary.avgRating ?? 0).toFixed(1)}
-                    </span>
-                    <span className="text-xs group-hover:underline" style={{ color: "#64748B" }}>
-                      ({reviewsData.summary.totalCount} review{reviewsData.summary.totalCount !== 1 ? "s" : ""})
-                    </span>
-                  </button>
-                )}
               </div>
               <div className="flex flex-col items-end gap-1.5 flex-shrink-0 pt-1">
                 {product.stockLevel === 0 ? (

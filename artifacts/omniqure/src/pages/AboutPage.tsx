@@ -9,7 +9,6 @@ const STATS = [
   { value: "81+",   label: "Unique Peptide Compounds" },
   { value: "99%+",  label: "Average verified purity" },
   { value: "500+",  label: "Orders Fulfilled" },
-  { value: "4.9★",  label: "Customer Rating" },
 ];
 
 const PILLARS = [
@@ -76,7 +75,7 @@ const TIMELINE = [
   {
     year: "Today",
     title: "Trusted by Researchers Worldwide",
-    body: "Today OmniQure supplies researchers across 40+ countries. Our 4.9-star average rating reflects consistent quality, reliable shipping, and support that actually understands the science behind the compounds we sell.",
+    body: "Today OmniQure supplies researchers across 40+ countries. Our commitment to quality, reliable shipping, and support that understands the science behind the compounds we sell has made us a trusted source for research peptides worldwide.",
   },
 ];
 
