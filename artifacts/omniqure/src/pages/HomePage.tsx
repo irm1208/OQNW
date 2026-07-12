@@ -1224,7 +1224,7 @@ export default function HomePage() {
               },
               {
                 q: "Do products come with a Certificate of Analysis and HPLC data?",
-                a: "Yes. Every product ships with a batch-specific COA, full HPLC chromatogram, and ESI-MS (mass spectrometry) data confirming identity and purity. These are accessible directly on each product page before and after purchase.",
+                a: "Yes. Every product has a batch-specific COA, full HPLC chromatogram, and ESI-MS (mass spectrometry) data confirming identity and purity. These are published directly on each product page and accessible before and after purchase — no physical paperwork is included with shipments.",
               },
               {
                 q: "Are these products approved for human use?",
