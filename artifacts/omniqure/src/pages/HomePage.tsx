@@ -1236,7 +1236,7 @@ export default function HomePage() {
               },
               {
                 q: "What payment methods do you accept?",
-                a: "We accept major credit and debit cards (Visa, Mastercard), open banking payments via Fena, and account credit (including referral credit). All transactions are processed securely over TLS-encrypted connections.",
+                a: "We accept pay by bank (open banking via Fena) and cryptocurrency. Account credit, including referral credit, can also be applied to any order. Card payments are not currently supported.",
               },
               {
                 q: "How does the referral credit programme work?",
