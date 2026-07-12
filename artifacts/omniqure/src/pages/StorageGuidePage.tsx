@@ -45,8 +45,8 @@ const FAQS: FAQItem[] = [
     a: "Yes — amber glass blocks >99% of UV light below 450 nm, which covers the primary photodegradation wavelengths for most peptides. Additional foil wrapping is only necessary for extremely photosensitive peptides (e.g. Melanotan 1 & 2, GHRP-6). Store all vials away from fluorescent lighting even when inside a fridge.",
   },
   {
-    q: "Is dry ice required when receiving shipments?",
-    a: "OmniQure ships lyophilised peptides with insulated packaging and ice packs designed for 48–72 hour cold-chain integrity. Dry ice is not used for standard lyophilised shipments as the −78 °C temperature is unnecessary and can introduce moisture from sublimation. If you are in a hot climate, store received vials at −20 °C immediately.",
+    q: "Do I need to refrigerate vials immediately upon receipt?",
+    a: "Lyophilised peptides are stable at ambient temperature for short periods, but we recommend transferring vials to your storage conditions (−20 °C for long-term, 4 °C for near-term use) as soon as possible after receipt. If you are in a hot climate, prioritise refrigeration immediately upon arrival.",
   },
   {
     q: "Can I reconstitute with sterile water instead of BAC water?",

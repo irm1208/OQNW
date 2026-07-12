@@ -1232,7 +1232,7 @@ export default function HomePage() {
               },
               {
                 q: "How are peptides packaged and shipped?",
-                a: "Peptides are lyophilised (freeze-dried) and sealed under nitrogen in individually labelled vials to preserve stability. Orders are dispatched in discreet, temperature-appropriate packaging. UK orders typically arrive within 2–3 business days; international shipping times vary by destination.",
+                a: "Peptides are lyophilised (freeze-dried) and sealed in individually labelled vials to preserve stability. Orders are dispatched in discreet packaging. UK orders typically arrive within 2–3 business days; international shipping times vary by destination.",
               },
               {
                 q: "What payment methods do you accept?",
