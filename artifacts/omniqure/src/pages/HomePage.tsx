@@ -4,7 +4,7 @@ import { useSEO } from "@/hooks/useSEO";
 import {
   Shield, FlaskConical, Truck, Award,
   ChevronRight, ArrowRight, CheckCircle, Star, Quote,
-  Mail, Gift, UserPlus, ShoppingCart, Microscope,
+  Mail, Gift, UserPlus, ShoppingCart,
 } from "lucide-react";
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
@@ -739,6 +739,7 @@ export default function HomePage() {
 
   const [emailInput, setEmailInput] = useState("");
   const [emailSubscribed, setEmailSubscribed] = useState(false);
+  const [faqOpenIdx, setFaqOpenIdx] = useState<number | null>(null);
   function handleEmailSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (emailInput.includes("@")) setEmailSubscribed(true);
@@ -1193,150 +1194,132 @@ export default function HomePage() {
       </section>
 
 
-      {/* ── COMPOUND OF THE MONTH ─────────────────────────────── */}
+      {/* ── FAQ ───────────────────────────────────────────────── */}
       <section style={{ background: "#F8FAFF", padding: "72px 0", borderTop: "1px solid #E8EDF5", borderBottom: "1px solid #E8EDF5" }}>
-        <div className="max-w-[1280px] mx-auto px-4">
+        <div className="max-w-[800px] mx-auto px-4">
 
-          {/* Month badge */}
-          <div className="flex items-center justify-center gap-3 mb-10">
-            <div style={{ height: "1px", flex: 1, maxWidth: 80, background: "linear-gradient(90deg, transparent, #CBD5E1)" }} />
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", borderRadius: "20px", padding: "6px 18px" }}>
-              <Microscope size={13} style={{ color: "#93C5FD" }} />
-              <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "#fff" }}>
-                July 2026 · Compound of the Month
-              </span>
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 mb-3">
+              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #1240A0, #1B5CB5)", borderRadius: "2px" }} />
+              <p style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "#1240A0" }}>
+                COMMON QUESTIONS
+              </p>
+              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #1B5CB5, #1240A0)", borderRadius: "2px" }} />
             </div>
-            <div style={{ height: "1px", flex: 1, maxWidth: 80, background: "linear-gradient(90deg, #CBD5E1, transparent)" }} />
+            <h2 style={{ fontSize: "clamp(22px, 3vw, 36px)", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.02em", marginBottom: "10px" }}>
+              Frequently Asked Questions
+            </h2>
+            <p style={{ fontSize: "15px", color: "#64748B", lineHeight: 1.7, maxWidth: "480px", margin: "0 auto" }}>
+              Everything you need to know before placing your first order.
+            </p>
           </div>
 
-          {/* Two-column layout */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "56px", alignItems: "center" }} className="grid-cols-1 lg:grid-cols-[1fr_380px]">
-
-            {/* Left: content */}
-            <div>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "#EEF4FF", border: "1px solid #BFDBFE", borderRadius: "8px", padding: "4px 12px", marginBottom: "16px" }}>
-                <FlaskConical size={13} style={{ color: "#1B5CB5" }} />
-                <span style={{ fontSize: "11.5px", fontWeight: 700, color: "#1B5CB5", letterSpacing: "0.05em" }}>Healing Peptides</span>
-              </div>
-
-              <h2 style={{ fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.03em", lineHeight: 1.05, marginBottom: "6px" }}>
-                BPC-157
-              </h2>
-              <p style={{ fontSize: "13px", fontWeight: 600, color: "#64748B", letterSpacing: "0.04em", marginBottom: "20px" }}>
-                Body Protection Compound · Pentadecapeptide · MW 1419.5 Da
-              </p>
-
-              <p style={{ fontSize: "15px", color: "#475569", lineHeight: 1.8, maxWidth: "580px", marginBottom: "28px" }}>
-                BPC-157 is a synthetic pentadecapeptide derived from human gastric juice. It is one of the most extensively studied peptides in preclinical research, with documented effects on tendon and ligament repair, gastrointestinal cytoprotection, angiogenesis, and neuroprotection across multiple rodent models.
-              </p>
-
-              {/* Research area tags */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "32px" }}>
-                {[
-                  "Tendon & Ligament Repair",
-                  "GI Cytoprotection",
-                  "Angiogenesis",
-                  "Neuroprotection",
-                  "Anti-inflammatory",
-                  "Wound Healing",
-                ].map(tag => (
-                  <span key={tag} style={{ fontSize: "12px", fontWeight: 600, color: "#334155", background: "#fff", border: "1.5px solid #E2E8F0", borderRadius: "8px", padding: "5px 13px" }}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              {/* Key stats row */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0", background: "#fff", border: "1.5px solid #E8EDF5", borderRadius: "16px", overflow: "hidden", marginBottom: "32px", maxWidth: "520px" }}>
-                {[
-                  { label: "Verified Purity", value: "≥99%", accent: "#059669" },
-                  { label: "Sequence Length", value: "15 AA", accent: "#1B5CB5" },
-                  { label: "Preclinical Studies", value: "300+", accent: "#B45309" },
-                  { label: "COA & HPLC", value: "Included", accent: "#7C3AED" },
-                ].map((stat, i, arr) => (
-                  <div key={stat.label} style={{
-                    flex: "1 1 120px",
-                    padding: "18px 20px",
-                    borderRight: i < arr.length - 1 ? "1px solid #E8EDF5" : "none",
-                    textAlign: "center",
-                  }}>
-                    <p style={{ fontSize: "20px", fontWeight: 900, color: stat.accent, lineHeight: 1, marginBottom: "4px" }}>{stat.value}</p>
-                    <p style={{ fontSize: "11px", fontWeight: 600, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em" }}>{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* CTAs */}
-              <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-                <Link
-                  href="/products/bpc-157-5mg"
-                  style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", color: "#fff", padding: "13px 28px", borderRadius: "12px", fontWeight: 800, fontSize: "14px", textDecoration: "none", boxShadow: "0 4px 16px rgba(18,64,160,0.30)" }}
+          {/* Accordion */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {([
+              {
+                q: "What purity standards do your peptides meet?",
+                a: "All OmniQure peptides are independently HPLC-verified to ≥99% purity. Every batch undergoes high-performance liquid chromatography (HPLC) analysis, and results are published in the Certificate of Analysis (COA) available on each product page.",
+              },
+              {
+                q: "Do products come with a Certificate of Analysis and HPLC data?",
+                a: "Yes. Every product ships with a batch-specific COA, full HPLC chromatogram, and ESI-MS (mass spectrometry) data confirming identity and purity. These are accessible directly on each product page before and after purchase.",
+              },
+              {
+                q: "Are these products approved for human use?",
+                a: "No. All OmniQure peptides are strictly for in-vitro research purposes only. They are not approved for human or veterinary use, are not medicines, and must not be administered to humans or animals. By purchasing, you confirm you are a qualified researcher using them solely for laboratory research.",
+              },
+              {
+                q: "How are peptides packaged and shipped?",
+                a: "Peptides are lyophilised (freeze-dried) and sealed under nitrogen in individually labelled vials to preserve stability. Orders are dispatched in discreet, temperature-appropriate packaging. UK orders typically arrive within 2–3 business days; international shipping times vary by destination.",
+              },
+              {
+                q: "What payment methods do you accept?",
+                a: "We accept major credit and debit cards (Visa, Mastercard), open banking payments via Fena, and account credit (including referral credit). All transactions are processed securely over TLS-encrypted connections.",
+              },
+              {
+                q: "How does the referral credit programme work?",
+                a: "When a friend signs up using your unique referral link and places their first order, you both receive £25 account credit once their order ships. There is no limit on the number of referrals you can make, and credit never expires. You can redeem it on any future order (up to your unredeemed balance cap).",
+              },
+              {
+                q: "What is your returns and refund policy?",
+                a: "Due to the nature of research chemicals, we cannot accept returns on opened or used products. If you receive a damaged or incorrect item, please contact our support team within 48 hours of delivery with photos and your order number — we will resolve it promptly.",
+              },
+              {
+                q: "Do you ship internationally?",
+                a: "Yes. We ship to most countries worldwide. International customers are responsible for ensuring compliance with local import regulations regarding research chemicals. Customs duties and taxes, if applicable, are the responsibility of the recipient.",
+              },
+            ] as { q: string; a: string }[]).map((item, i) => {
+              const isOpen = faqOpenIdx === i;
+              return (
+                <div
+                  key={i}
+                  style={{
+                    background: "#fff",
+                    border: `1.5px solid ${isOpen ? "#BFDBFE" : "#E8EDF5"}`,
+                    borderRadius: "14px",
+                    overflow: "hidden",
+                    transition: "border-color 0.2s",
+                    boxShadow: isOpen ? "0 4px 20px rgba(18,64,160,0.07)" : "none",
+                  }}
                 >
-                  View BPC-157 <ArrowRight size={15} />
-                </Link>
-                <Link
-                  href="/products/bpc-157-5mg#coa"
-                  style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#fff", color: "#334155", border: "1.5px solid #E2E8F0", padding: "13px 24px", borderRadius: "12px", fontWeight: 700, fontSize: "14px", textDecoration: "none" }}
-                >
-                  <Award size={15} style={{ color: "#1B5CB5" }} /> View COA & HPLC Data
-                </Link>
-              </div>
-            </div>
-
-            {/* Right: product card */}
-            <div style={{ position: "relative" }}>
-              {/* Glow behind card */}
-              <div style={{ position: "absolute", inset: "-20px", borderRadius: "32px", background: "radial-gradient(ellipse at 50% 50%, rgba(18,64,160,0.10) 0%, transparent 70%)", pointerEvents: "none" }} />
-              <div style={{
-                background: "#fff",
-                borderRadius: "24px",
-                border: "1.5px solid #E8EDF5",
-                overflow: "hidden",
-                boxShadow: "0 8px 40px rgba(15,23,42,0.08)",
-                position: "relative",
-              }}>
-                {/* Product image */}
-                <div style={{ background: "linear-gradient(135deg, #F0F4FF 0%, #E8F0FE 100%)", padding: "32px", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "220px" }}>
-                  <img
-                    src="/products/3.jpg"
-                    alt="BPC-157 5mg"
-                    style={{ maxWidth: "160px", maxHeight: "160px", objectFit: "contain", filter: "drop-shadow(0 8px 24px rgba(18,64,160,0.18))" }}
-                    onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
-                  />
-                </div>
-                {/* Card info */}
-                <div style={{ padding: "24px 28px" }}>
-                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "8px", marginBottom: "12px" }}>
-                    <div>
-                      <p style={{ fontSize: "17px", fontWeight: 900, color: "#0F172A", marginBottom: "2px" }}>BPC-157 5mg</p>
-                      <p style={{ fontSize: "12px", color: "#94A3B8", fontWeight: 600 }}>HPLC-verified · COA included</p>
-                    </div>
-                    <div style={{ textAlign: "right", flexShrink: 0 }}>
-                      <p style={{ fontSize: "22px", fontWeight: 900, color: "#0F172A", lineHeight: 1 }}>£65</p>
-                      <p style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 600 }}>from</p>
-                    </div>
-                  </div>
-                  {/* Purity bar */}
-                  <div style={{ marginBottom: "16px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "5px" }}>
-                      <span style={{ fontSize: "11.5px", fontWeight: 700, color: "#475569" }}>Verified Purity</span>
-                      <span style={{ fontSize: "11.5px", fontWeight: 800, color: "#059669" }}>≥99%</span>
-                    </div>
-                    <div style={{ height: "6px", background: "#F1F5F9", borderRadius: "3px", overflow: "hidden" }}>
-                      <div style={{ height: "100%", width: "99%", background: "linear-gradient(90deg, #059669, #34D399)", borderRadius: "3px" }} />
-                    </div>
-                  </div>
-                  <Link
-                    href="/products/bpc-157-5mg"
-                    style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", width: "100%", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", color: "#fff", padding: "12px", borderRadius: "10px", fontWeight: 800, fontSize: "13.5px", textDecoration: "none" }}
+                  <button
+                    onClick={() => setFaqOpenIdx(isOpen ? null : i)}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: "16px",
+                      padding: "20px 24px",
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      textAlign: "left",
+                    }}
                   >
-                    Shop BPC-157 <ChevronRight size={14} />
-                  </Link>
+                    <span style={{ fontSize: "15px", fontWeight: 700, color: "#0F172A", lineHeight: 1.4 }}>{item.q}</span>
+                    <span style={{
+                      flexShrink: 0,
+                      width: "28px",
+                      height: "28px",
+                      borderRadius: "8px",
+                      background: isOpen ? "linear-gradient(135deg, #0D2565, #1B5CB5)" : "#F1F5F9",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      transition: "background 0.2s",
+                    }}>
+                      <ChevronRight
+                        size={14}
+                        style={{
+                          color: isOpen ? "#fff" : "#64748B",
+                          transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
+                          transition: "transform 0.2s",
+                        }}
+                      />
+                    </span>
+                  </button>
+                  {isOpen && (
+                    <div style={{ padding: "0 24px 20px", borderTop: "1px solid #EEF4FF" }}>
+                      <p style={{ fontSize: "14.5px", color: "#475569", lineHeight: 1.8, margin: "16px 0 0" }}>{item.a}</p>
+                    </div>
+                  )}
                 </div>
-              </div>
-            </div>
-
+              );
+            })}
           </div>
+
+          {/* Footer note */}
+          <p style={{ textAlign: "center", fontSize: "13px", color: "#94A3B8", marginTop: "32px", lineHeight: 1.6 }}>
+            Still have a question?{" "}
+            <Link href="/contact" style={{ color: "#1B5CB5", fontWeight: 700, textDecoration: "none" }}>
+              Contact our team
+            </Link>{" "}
+            and we'll get back to you within one business day.
+          </p>
+
         </div>
       </section>
 
