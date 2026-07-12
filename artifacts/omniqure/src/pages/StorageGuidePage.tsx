@@ -46,7 +46,7 @@ const FAQS: FAQItem[] = [
   },
   {
     q: "Do I need to refrigerate vials immediately upon receipt?",
-    a: "Lyophilised peptides are stable at ambient temperature for short periods, but we recommend transferring vials to your storage conditions (−20 °C for long-term, 4 °C for near-term use) as soon as possible after receipt. If you are in a hot climate, prioritise refrigeration immediately upon arrival.",
+    a: "Once your order arrives, simply place the vials in your freezer. Lyophilised peptides store well at −20 °C for long-term stability.",
   },
   {
     q: "Can I reconstitute with sterile water instead of BAC water?",
