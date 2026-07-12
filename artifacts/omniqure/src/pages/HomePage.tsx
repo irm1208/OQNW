@@ -1047,11 +1047,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ──────────────────────────────────────── */}
+      {/* ── REFER A FRIEND ────────────────────────────────────── */}
       <div className="home-spacer-32" style={{ height: 32, background: "#fff" }} />
-      <section className="home-section-testimonials" style={{
+      <section className="home-section-refer" style={{
         background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
-        padding: "56px 0",
+        padding: "68px 0",
         position: "relative",
         overflow: "hidden",
       }}>
@@ -1067,74 +1067,20 @@ export default function HomePage() {
 
         <div className="max-w-[1280px] mx-auto px-4" style={{ position: "relative", zIndex: 1 }}>
 
-          {/* Header */}
-          <div className="testimonial-section-header text-center mb-14">
-            {/* Stars row */}
-            <div className="flex justify-center gap-1 mb-4">
-              {[1,2,3,4,5].map(s => <Star key={s} size={22} style={{ color: "#F59E0B", fill: "#F59E0B" }} />)}
-            </div>
-            <h2 className="font-bold" style={{ fontSize: "clamp(22px,4vw,42px)", color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: "10px" }}>
-              What Our Customers Say
-            </h2>
-            <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.55)", maxWidth: "420px", margin: "0 auto", lineHeight: 1.7 }}>
-              Real reviews from verified OmniQure customers.
-            </p>
-          </div>
-
-          {/* ── Carousel ── */}
-          <TestimonialsCarousel />
-
-          {/* Rating bar */}
-          <div className="testimonial-rating-bar" style={{
-            marginTop: "48px",
-            background: "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(255,255,255,0.10)",
-            borderRadius: "16px",
-            padding: "28px 40px",
-            display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "40px",
-          }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-              <span style={{ fontSize: "56px", fontWeight: 900, color: "#fff", lineHeight: 1 }}>4.9</span>
-              <div>
-                <div className="flex gap-0.5 mb-1">
-                  {[1,2,3,4,5].map(s => <Star key={s} size={18} style={{ color: "#F59E0B", fill: "#F59E0B" }} />)}
-                </div>
-                <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>Average customer rating</p>
-              </div>
-            </div>
-            <div style={{ width: "1px", height: "52px", backgroundColor: "rgba(255,255,255,0.1)" }} className="hidden sm:block" />
-            {[
-              { num: "500+", label: "Orders Fulfilled" },
-              { num: "47",   label: "Unique Compounds" },
-              { num: "99%+", label: "Avg. Verified Purity" },
-            ].map((stat, i) => (
-              <div key={i} className="rating-bar-stat" style={{ textAlign: "center" }}>
-                <p style={{ fontSize: "26px", fontWeight: 900, color: "#F59E0B", lineHeight: 1 }}>{stat.num}</p>
-                <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.45)", fontWeight: 600, marginTop: "4px" }}>{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── REFER A FRIEND ────────────────────────────────────── */}
-      <section className="home-section-refer" style={{ backgroundColor: "#fff", padding: "68px 0", borderTop: "1px solid #E8EDF5" }}>
-        <div className="max-w-[1280px] mx-auto px-4">
-
           {/* Section header */}
           <div className="home-section-refer-header text-center mb-12">
-            <div className="inline-flex items-center gap-2 mb-2">
+            <div className="inline-flex items-center gap-2 mb-3">
               <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #F59E0B, #FCD34D)", borderRadius: "2px" }} />
-              <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#B45309", letterSpacing: "0.1em" }}>
+              <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#F59E0B", letterSpacing: "0.1em" }}>
                 REFERRAL PROGRAMME
               </p>
               <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #FCD34D, #F59E0B)", borderRadius: "2px" }} />
             </div>
-            <h2 className="font-bold" style={{ fontSize: "clamp(22px,3vw,32px)", color: "#0F172A", letterSpacing: "-0.02em", marginBottom: "8px" }}>
+            <h2 className="font-bold" style={{ fontSize: "clamp(22px,3vw,38px)", color: "#fff", letterSpacing: "-0.02em", marginBottom: "12px" }}>
               Refer a Friend, Earn £25 Credit Each
             </h2>
-            <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "520px", margin: "0 auto", lineHeight: 1.7 }}>
-              Share your unique referral link. They get <strong style={{ color: "#0F172A" }}>10% off their first order</strong>, and once it ships you <strong style={{ color: "#0F172A" }}>both claim {localValue} credit</strong> — up to {localCap} unredeemed balance each.
+            <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.65)", maxWidth: "520px", margin: "0 auto", lineHeight: 1.7 }}>
+              Share your unique referral link. They get <strong style={{ color: "#fff" }}>10% off their first order</strong>, and once it ships you <strong style={{ color: "#fff" }}>both claim {localValue} credit</strong> — up to {localCap} unredeemed balance each.
             </p>
           </div>
 
@@ -1171,23 +1117,21 @@ export default function HomePage() {
                 className="refer-step-card"
                 style={{
                   background: "#fff",
-                  border: "1.5px solid #E8EDF5",
+                  border: "1.5px solid rgba(255,255,255,0.15)",
                   borderRadius: "20px",
                   padding: "32px 28px",
                   position: "relative",
                   overflow: "hidden",
-                  boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
-                  transition: "transform 0.2s, box-shadow 0.2s, border-color 0.2s",
+                  boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
+                  transition: "transform 0.2s, box-shadow 0.2s",
                 }}
                 onMouseEnter={e => {
                   (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-                  (e.currentTarget as HTMLElement).style.boxShadow = `0 16px 40px ${s.color}18`;
-                  (e.currentTarget as HTMLElement).style.borderColor = s.color + "44";
+                  (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 48px rgba(0,0,0,0.25)`;
                 }}
                 onMouseLeave={e => {
                   (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                  (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(15,23,42,0.04)";
-                  (e.currentTarget as HTMLElement).style.borderColor = "#E8EDF5";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 24px rgba(0,0,0,0.15)";
                 }}
               >
                 <div style={{ height: "3px", background: `linear-gradient(90deg, ${s.color}, ${s.color}66)`, borderRadius: "12px 12px 0 0", position: "absolute", top: 0, left: 0, right: 0 }} />
@@ -1201,9 +1145,10 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* CTA banner */}
-          <div className="refer-cta-banner" style={{
-            background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)",
+          {/* CTA row */}
+          <div style={{
+            background: "rgba(255,255,255,0.08)",
+            border: "1px solid rgba(255,255,255,0.15)",
             borderRadius: "20px",
             padding: "36px 40px",
             display: "flex",
@@ -1211,14 +1156,12 @@ export default function HomePage() {
             alignItems: "center",
             justifyContent: "space-between",
             gap: "24px",
-            position: "relative",
-            overflow: "hidden",
+            backdropFilter: "blur(8px)",
           }}>
-            <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
             <div style={{ position: "absolute", top: "-60px", right: "10%", width: "300px", height: "300px", borderRadius: "50%", background: "radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
-            <div style={{ position: "relative", zIndex: 1 }}>
+            <div>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
-                <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "rgba(245,158,11,0.15)", border: "1px solid rgba(245,158,11,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "rgba(245,158,11,0.20)", border: "1px solid rgba(245,158,11,0.35)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <Gift size={18} style={{ color: "#F59E0B" }} />
                 </div>
                 <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#F59E0B" }}>Start Earning Today</span>
@@ -1226,11 +1169,11 @@ export default function HomePage() {
               <h3 style={{ fontSize: "clamp(18px,2.5vw,26px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.15, margin: "0 0 8px" }}>
                 Every referral earns you and your friend {localValue} credit each (up to {localCap}).
               </h3>
-              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", margin: 0, lineHeight: 1.6 }}>
-                Refer a friend, they get 10% off their first order. As soon as it ships, you both get credit toward your next order — no limit on referrals, credit never expires.
+              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.60)", margin: 0, lineHeight: 1.6 }}>
+                No limit on referrals. Credit never expires. Stacks with bundle discounts.
               </p>
             </div>
-            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", position: "relative", zIndex: 1 }}>
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
               <Link
                 href="/refer-a-friend"
                 style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "#F59E0B", color: "#000", padding: "13px 26px", borderRadius: "12px", fontWeight: 800, fontSize: "14px", textDecoration: "none", boxShadow: "0 4px 16px rgba(245,158,11,0.35)", whiteSpace: "nowrap" }}
@@ -1239,7 +1182,7 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/register"
-                style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "rgba(255,255,255,0.10)", color: "#fff", border: "1px solid rgba(255,255,255,0.25)", padding: "13px 26px", borderRadius: "12px", fontWeight: 700, fontSize: "14px", textDecoration: "none", whiteSpace: "nowrap", backdropFilter: "blur(6px)" }}
+                style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "rgba(255,255,255,0.12)", color: "#fff", border: "1px solid rgba(255,255,255,0.25)", padding: "13px 26px", borderRadius: "12px", fontWeight: 700, fontSize: "14px", textDecoration: "none", whiteSpace: "nowrap", backdropFilter: "blur(6px)" }}
               >
                 New? Create an Account
               </Link>
