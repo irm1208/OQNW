@@ -1135,7 +1135,7 @@ export default function HomePage() {
                 }}
               >
                 <div style={{ height: "3px", background: `linear-gradient(90deg, ${s.color}, ${s.color}66)`, borderRadius: "12px 12px 0 0", position: "absolute", top: 0, left: 0, right: 0 }} />
-                <span style={{ position: "absolute", top: "16px", right: "20px", fontSize: "48px", fontWeight: 900, color: "#F1F5F9", lineHeight: 1, userSelect: "none", letterSpacing: "-0.04em" }}>{s.step}</span>
+                <span style={{ position: "absolute", top: "16px", right: "20px", fontSize: "48px", fontWeight: 900, color: "#CBD5E1", lineHeight: 1, userSelect: "none", letterSpacing: "-0.04em" }}>{s.step}</span>
                 <div style={{ width: "56px", height: "56px", borderRadius: "14px", backgroundColor: s.bg, color: s.color, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
                   {s.icon}
                 </div>
