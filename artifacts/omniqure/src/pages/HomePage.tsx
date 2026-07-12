@@ -4,7 +4,7 @@ import { useSEO } from "@/hooks/useSEO";
 import {
   Shield, FlaskConical, Truck, Award,
   ChevronRight, ArrowRight, CheckCircle, Star, Quote,
-  Mail, Gift, UserPlus, ShoppingCart,
+  Mail, Gift, UserPlus, ShoppingCart, Microscope,
 } from "lucide-react";
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
@@ -1192,6 +1192,153 @@ export default function HomePage() {
         </div>
       </section>
 
+
+      {/* ── COMPOUND OF THE MONTH ─────────────────────────────── */}
+      <section style={{ background: "#F8FAFF", padding: "72px 0", borderTop: "1px solid #E8EDF5", borderBottom: "1px solid #E8EDF5" }}>
+        <div className="max-w-[1280px] mx-auto px-4">
+
+          {/* Month badge */}
+          <div className="flex items-center justify-center gap-3 mb-10">
+            <div style={{ height: "1px", flex: 1, maxWidth: 80, background: "linear-gradient(90deg, transparent, #CBD5E1)" }} />
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", borderRadius: "20px", padding: "6px 18px" }}>
+              <Microscope size={13} style={{ color: "#93C5FD" }} />
+              <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "#fff" }}>
+                July 2026 · Compound of the Month
+              </span>
+            </div>
+            <div style={{ height: "1px", flex: 1, maxWidth: 80, background: "linear-gradient(90deg, #CBD5E1, transparent)" }} />
+          </div>
+
+          {/* Two-column layout */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "56px", alignItems: "center" }} className="grid-cols-1 lg:grid-cols-[1fr_380px]">
+
+            {/* Left: content */}
+            <div>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "#EEF4FF", border: "1px solid #BFDBFE", borderRadius: "8px", padding: "4px 12px", marginBottom: "16px" }}>
+                <FlaskConical size={13} style={{ color: "#1B5CB5" }} />
+                <span style={{ fontSize: "11.5px", fontWeight: 700, color: "#1B5CB5", letterSpacing: "0.05em" }}>Healing Peptides</span>
+              </div>
+
+              <h2 style={{ fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.03em", lineHeight: 1.05, marginBottom: "6px" }}>
+                BPC-157
+              </h2>
+              <p style={{ fontSize: "13px", fontWeight: 600, color: "#64748B", letterSpacing: "0.04em", marginBottom: "20px" }}>
+                Body Protection Compound · Pentadecapeptide · MW 1419.5 Da
+              </p>
+
+              <p style={{ fontSize: "15px", color: "#475569", lineHeight: 1.8, maxWidth: "580px", marginBottom: "28px" }}>
+                BPC-157 is a synthetic pentadecapeptide derived from human gastric juice. It is one of the most extensively studied peptides in preclinical research, with documented effects on tendon and ligament repair, gastrointestinal cytoprotection, angiogenesis, and neuroprotection across multiple rodent models.
+              </p>
+
+              {/* Research area tags */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "32px" }}>
+                {[
+                  "Tendon & Ligament Repair",
+                  "GI Cytoprotection",
+                  "Angiogenesis",
+                  "Neuroprotection",
+                  "Anti-inflammatory",
+                  "Wound Healing",
+                ].map(tag => (
+                  <span key={tag} style={{ fontSize: "12px", fontWeight: 600, color: "#334155", background: "#fff", border: "1.5px solid #E2E8F0", borderRadius: "8px", padding: "5px 13px" }}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Key stats row */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0", background: "#fff", border: "1.5px solid #E8EDF5", borderRadius: "16px", overflow: "hidden", marginBottom: "32px", maxWidth: "520px" }}>
+                {[
+                  { label: "Verified Purity", value: "≥99%", accent: "#059669" },
+                  { label: "Sequence Length", value: "15 AA", accent: "#1B5CB5" },
+                  { label: "Preclinical Studies", value: "300+", accent: "#B45309" },
+                  { label: "COA & HPLC", value: "Included", accent: "#7C3AED" },
+                ].map((stat, i, arr) => (
+                  <div key={stat.label} style={{
+                    flex: "1 1 120px",
+                    padding: "18px 20px",
+                    borderRight: i < arr.length - 1 ? "1px solid #E8EDF5" : "none",
+                    textAlign: "center",
+                  }}>
+                    <p style={{ fontSize: "20px", fontWeight: 900, color: stat.accent, lineHeight: 1, marginBottom: "4px" }}>{stat.value}</p>
+                    <p style={{ fontSize: "11px", fontWeight: 600, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em" }}>{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTAs */}
+              <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                <Link
+                  href="/products/bpc-157-5mg"
+                  style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", color: "#fff", padding: "13px 28px", borderRadius: "12px", fontWeight: 800, fontSize: "14px", textDecoration: "none", boxShadow: "0 4px 16px rgba(18,64,160,0.30)" }}
+                >
+                  View BPC-157 <ArrowRight size={15} />
+                </Link>
+                <Link
+                  href="/products/bpc-157-5mg#coa"
+                  style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#fff", color: "#334155", border: "1.5px solid #E2E8F0", padding: "13px 24px", borderRadius: "12px", fontWeight: 700, fontSize: "14px", textDecoration: "none" }}
+                >
+                  <Award size={15} style={{ color: "#1B5CB5" }} /> View COA & HPLC Data
+                </Link>
+              </div>
+            </div>
+
+            {/* Right: product card */}
+            <div style={{ position: "relative" }}>
+              {/* Glow behind card */}
+              <div style={{ position: "absolute", inset: "-20px", borderRadius: "32px", background: "radial-gradient(ellipse at 50% 50%, rgba(18,64,160,0.10) 0%, transparent 70%)", pointerEvents: "none" }} />
+              <div style={{
+                background: "#fff",
+                borderRadius: "24px",
+                border: "1.5px solid #E8EDF5",
+                overflow: "hidden",
+                boxShadow: "0 8px 40px rgba(15,23,42,0.08)",
+                position: "relative",
+              }}>
+                {/* Product image */}
+                <div style={{ background: "linear-gradient(135deg, #F0F4FF 0%, #E8F0FE 100%)", padding: "32px", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "220px" }}>
+                  <img
+                    src="/products/3.jpg"
+                    alt="BPC-157 5mg"
+                    style={{ maxWidth: "160px", maxHeight: "160px", objectFit: "contain", filter: "drop-shadow(0 8px 24px rgba(18,64,160,0.18))" }}
+                    onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                  />
+                </div>
+                {/* Card info */}
+                <div style={{ padding: "24px 28px" }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "8px", marginBottom: "12px" }}>
+                    <div>
+                      <p style={{ fontSize: "17px", fontWeight: 900, color: "#0F172A", marginBottom: "2px" }}>BPC-157 5mg</p>
+                      <p style={{ fontSize: "12px", color: "#94A3B8", fontWeight: 600 }}>HPLC-verified · COA included</p>
+                    </div>
+                    <div style={{ textAlign: "right", flexShrink: 0 }}>
+                      <p style={{ fontSize: "22px", fontWeight: 900, color: "#0F172A", lineHeight: 1 }}>£65</p>
+                      <p style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 600 }}>from</p>
+                    </div>
+                  </div>
+                  {/* Purity bar */}
+                  <div style={{ marginBottom: "16px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "5px" }}>
+                      <span style={{ fontSize: "11.5px", fontWeight: 700, color: "#475569" }}>Verified Purity</span>
+                      <span style={{ fontSize: "11.5px", fontWeight: 800, color: "#059669" }}>≥99%</span>
+                    </div>
+                    <div style={{ height: "6px", background: "#F1F5F9", borderRadius: "3px", overflow: "hidden" }}>
+                      <div style={{ height: "100%", width: "99%", background: "linear-gradient(90deg, #059669, #34D399)", borderRadius: "3px" }} />
+                    </div>
+                  </div>
+                  <Link
+                    href="/products/bpc-157-5mg"
+                    style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", width: "100%", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", color: "#fff", padding: "12px", borderRadius: "10px", fontWeight: 800, fontSize: "13.5px", textDecoration: "none" }}
+                  >
+                    Shop BPC-157 <ChevronRight size={14} />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
 
       {/* ── RECENTLY VIEWED ───────────────────────────────────── */}
       <RecentlyViewed />
