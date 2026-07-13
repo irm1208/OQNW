@@ -44,6 +44,7 @@ const footerCategories = [
       { label: "Track Your Order",    href: "/track-order"      },
       { label: "Research Stacks",     href: "/stacks"           },
       { label: "Protocols",           href: "/protocols"        },
+      { label: "Storage Guide",       href: "/storage-guide"    },
       { label: "FAQ",                 href: "/faq"              },
       { label: "Glossary",            href: "/glossary"         },
       { label: "Bundle & Save",       href: "/bundle-and-save"  },
