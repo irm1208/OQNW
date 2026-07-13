@@ -87,8 +87,8 @@ export const janoshikData: Record<string, JanoshikResult> = {
 
   // ── Melanotan 2 ───────────────────────────────────────────────────────────
   "40": { purity: 99.575, actualMass: 11.08, lot: "MT210-0524",        received: "14 Jun 2026", analysis: "15 Jun 2026" },
-  "41": { purity: 99.888, actualMass: 11.66, lot: "MT210-0321",        received: "08 Apr 2026", analysis: "09 Apr 2026" },
-  "42": { purity: 99.888, actualMass: 11.42, lot: "MT210-0321B",       received: "08 Apr 2026", analysis: "09 Apr 2026" },
+  "41": { purity: 99.575, actualMass: 11.08, lot: "MT210-0524B",       received: "14 Jun 2026", analysis: "15 Jun 2026" },
+  "42": { purity: 99.575, actualMass: 11.08, lot: "MT210-0524C",       received: "14 Jun 2026", analysis: "15 Jun 2026" },
 
   // ── MOTS-C ────────────────────────────────────────────────────────────────
   "43": { purity: 98.969, actualMass: 11.22, lot: "M010-0602",         received: "21 Jun 2026", analysis: "22 Jun 2026" },
@@ -149,7 +149,7 @@ export const janoshikData: Record<string, JanoshikResult> = {
   // ── Tirzepatide ───────────────────────────────────────────────────────────
   "76": { purity: 99.707, actualMass: 12.35, lot: "ZE10-0530",         received: "21 Jun 2026", analysis: "22 Jun 2026" },
   "77": { purity: 99.836, actualMass: 17.82, lot: "ZE15-0612",         received: "01 Jul 2026", analysis: "02 Jul 2026" },
-  "78": { purity: 99.829, actualMass: 36.39, lot: "ZE30-0607",         received: "30 Jun 2026", analysis: "01 Jul 2026" },
+  "78": { purity: 99.924, actualMass: 37.99, lot: "ZE30-0611",         received: "01 Jul 2026", analysis: "02 Jul 2026" },
   "79": { purity: 99.924, actualMass: 37.99, lot: "ZE30-0611",         received: "01 Jul 2026", analysis: "02 Jul 2026" },
   "80": { purity: 99.765, actualMass: 67.59, lot: "ZE60-0528",         received: "16 Jun 2026", analysis: "17 Jun 2026" },
 
@@ -166,5 +166,5 @@ export const janoshikData: Record<string, JanoshikResult> = {
   "84": { purity: 99.342, actualMass: 19.75, lot: "ARA16-0613",        received: "30 Jun 2026", analysis: "01 Jul 2026" },
 
   // ── CJC-1295 No DAC + Ipamorelin Blend ───────────────────────────────────
-  "85": { actualMass: 22.85, lot: "C/I1010-0531",           received: "15 Jun 2026", analysis: "16 Jun 2026" },
+  "85": { actualMass: 22.85, lot: "C/I1010-0613",           received: "30 Jun 2026", analysis: "01 Jul 2026" },
 };
