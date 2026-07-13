@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { useSEO } from "@/hooks/useSEO";
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 function api(path: string) { return `${BASE}/api/${path}`.replace(/\/+/g, "/"); }
@@ -18,6 +19,11 @@ type Post = {
 };
 
 export default function BlogPage() {
+  useSEO({
+    title: "Peptide Research Blog",
+    description: "In-depth research articles on peptides — mechanisms of action, dosing protocols, HPLC data, and the latest peer-reviewed findings. Written for researchers by OmniQure.",
+    canonicalPath: "/blog",
+  });
   const [page, setPage] = useState(1);
   const limit = 9;
   const offset = (page - 1) * limit;

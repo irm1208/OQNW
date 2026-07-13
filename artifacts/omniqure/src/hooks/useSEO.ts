@@ -66,6 +66,7 @@ interface SEOProps {
   canonicalPath?: string | null;
   ogImage?: string | null;
   noSiteSuffix?: boolean;
+  noIndex?: boolean;
   product?: ProductJsonLd | null;
   breadcrumbs?: BreadcrumbItem[] | null;
 }
@@ -78,6 +79,7 @@ export function useSEO({
   canonicalPath,
   ogImage,
   noSiteSuffix = false,
+  noIndex = false,
   product,
   breadcrumbs,
 }: SEOProps) {
@@ -95,7 +97,7 @@ export function useSEO({
 
     // Standard
     upsertMeta("name", "description", desc);
-    upsertMeta("name", "robots", "index, follow");
+    upsertMeta("name", "robots", noIndex ? "noindex, nofollow" : "index, follow");
     if (keywords) upsertMeta("name", "keywords", keywords);
 
     // Open Graph — Facebook, LinkedIn, WhatsApp, Discord, Slack, iMessage
@@ -187,5 +189,5 @@ export function useSEO({
       removeJsonLd("product");
       removeJsonLd("breadcrumb");
     };
-  }, [title, description, keywords, ogType, canonicalPath, ogImage, noSiteSuffix, product, breadcrumbs]);
+  }, [title, description, keywords, ogType, canonicalPath, ogImage, noSiteSuffix, noIndex, product, breadcrumbs]);
 }

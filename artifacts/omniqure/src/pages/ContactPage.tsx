@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { Mail, ChevronRight, Clock, MessageSquare, Send, CheckCircle2 } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -19,6 +20,11 @@ const SUBJECTS = [
 ];
 
 export default function ContactPage() {
+  useSEO({
+    title: "Contact Us",
+    description: "Get in touch with the OmniQure Peptide Research Institute team. Questions about orders, peptide specifications, COA documents, or reconstitution — we're here to help.",
+    canonicalPath: "/contact",
+  });
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState(SUBJECTS[0]);

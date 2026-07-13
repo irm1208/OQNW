@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { Truck, ChevronRight, Shield, Package, Clock, Globe, AlertTriangle } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 const LAST_UPDATED = "1 May 2025";
 const COMPANY_SHORT = "OmniQure";
@@ -51,6 +52,11 @@ const INTL_ZONES: { zone: string; countries: string; time: string; price: string
 ];
 
 export default function ShippingPage() {
+  useSEO({
+    title: "Shipping Policy",
+    description: "OmniQure shipping information — dispatch times, tracked delivery, international shipping, cold-chain packaging for research peptides, and our returns policy.",
+    canonicalPath: "/shipping",
+  });
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
       {/* Hero */}

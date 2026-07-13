@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import {
@@ -340,6 +340,26 @@ export default function FAQPage() {
     description: "Common questions about OmniQure research peptides — purity, independent testing, storage, reconstitution, ordering, shipping, and returns. Research use only.",
     canonicalPath: "/faq",
   });
+
+  useEffect(() => {
+    let el = document.querySelector<HTMLScriptElement>('script[data-seo="faqpage"]');
+    if (!el) {
+      el = document.createElement("script");
+      el.setAttribute("type", "application/ld+json");
+      el.setAttribute("data-seo", "faqpage");
+      document.head.appendChild(el);
+    }
+    el.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: FAQS.map(item => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
+    });
+    return () => { document.querySelector('script[data-seo="faqpage"]')?.remove(); };
+  }, []);
 
   const [activeCategory, setActiveCategory] = useState("all");
   const [search, setSearch] = useState("");

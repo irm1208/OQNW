@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { Link, useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { useSEO, SITE_URL, SITE_NAME } from "@/hooks/useSEO";
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 function api(path: string) { return `${BASE}/api/${path}`.replace(/\/+/g, "/"); }
@@ -68,6 +70,42 @@ export default function BlogPostPage() {
   });
 
   const related = post && allPosts ? getRelated(allPosts.posts, post) : [];
+
+  useSEO({
+    title: post?.seoTitle ?? post?.title ?? null,
+    description: post?.seoDescription ?? post?.excerpt ?? null,
+    ogType: "article",
+    canonicalPath: post ? `/blog/${post.slug}` : null,
+    ogImage: post?.featuredImageUrl ?? null,
+  });
+
+  useEffect(() => {
+    if (!post) return;
+    let el = document.querySelector<HTMLScriptElement>('script[data-seo="article"]');
+    if (!el) {
+      el = document.createElement("script");
+      el.setAttribute("type", "application/ld+json");
+      el.setAttribute("data-seo", "article");
+      document.head.appendChild(el);
+    }
+    el.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": `${SITE_URL}/blog/${post.slug}#article`,
+      headline: post.title,
+      description: post.excerpt ?? post.seoDescription ?? "",
+      author: { "@type": "Person", name: post.author },
+      publisher: {
+        "@type": "Organization",
+        name: SITE_NAME,
+        logo: { "@type": "ImageObject", url: `${SITE_URL}/omniqure-logo.jpeg` },
+      },
+      datePublished: post.publishedAt ?? post.createdAt,
+      ...(post.featuredImageUrl ? { image: post.featuredImageUrl } : {}),
+      mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/blog/${post.slug}` },
+    });
+    return () => { document.querySelector('script[data-seo="article"]')?.remove(); };
+  }, [post]);
 
   if (isLoading) {
     return (

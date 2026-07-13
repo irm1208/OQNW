@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { FlaskConical, ChevronDown, ChevronUp } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 function round(n: number, d: number) {
   return Math.round(n * 10 ** d) / 10 ** d;
@@ -246,6 +247,11 @@ function Field({
 }
 
 export default function ReconstitutionCalculator() {
+  useSEO({
+    title: "Peptide Reconstitution Calculator",
+    description: "Free peptide reconstitution calculator — enter your peptide mass (mg) and desired concentration to calculate exactly how much BAC water to add. Supports µg/ml and IU dosing.",
+    canonicalPath: "/calculator",
+  });
   const [peptideMg, setPeptideMg] = useState("10");
   const [waterMl, setWaterMl] = useState("2");
   const [doseValue, setDoseValue] = useState("250");

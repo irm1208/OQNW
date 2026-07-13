@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { Mail, FlaskConical, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -8,6 +9,7 @@ function apiUrl(path: string) {
 }
 
 export default function ForgotPassword() {
+  useSEO({ title: "Forgot Password", noIndex: true });
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);

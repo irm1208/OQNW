@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Lock, Eye, EyeOff, FlaskConical, CheckCircle2, XCircle } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -8,6 +9,7 @@ function apiUrl(path: string) {
 }
 
 export default function ResetPassword() {
+  useSEO({ title: "Reset Password", noIndex: true });
   const [, navigate] = useLocation();
   const [token, setToken] = useState<string | null>(null);
   const [password, setPassword] = useState("");

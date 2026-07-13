@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Eye, EyeOff, Mail, Lock, FlaskConical } from "lucide-react";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
+import { useSEO } from "@/hooks/useSEO";
 
 export default function SignIn() {
+  useSEO({ title: "Sign In", noIndex: true });
   const [, navigate] = useLocation();
   const { signIn } = useCustomerAuth();
   const [email, setEmail] = useState("");

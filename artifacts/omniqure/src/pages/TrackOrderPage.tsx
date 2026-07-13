@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Search, Package, Truck, CheckCircle2, Clock, XCircle, FlaskConical, ChevronRight } from "lucide-react";
 import { Link } from "wouter";
+import { useSEO } from "@/hooks/useSEO";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -31,6 +32,12 @@ const STATUS_CONFIG: Record<OrderStatus, { label: string; color: string; bg: str
 const STEPS = ["Order Placed", "Processing", "Dispatched", "Delivered"];
 
 export default function TrackOrderPage() {
+  useSEO({
+    title: "Track Your Order",
+    description: "Track the status of your OmniQure research peptide order.",
+    canonicalPath: "/track-order",
+    noIndex: true,
+  });
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<TrackResult | null>(null);

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ShoppingCart, Minus, Plus, ShieldCheck, Droplets, FlaskConical, Package } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import type { Product } from "@/data/products";
@@ -35,6 +36,11 @@ const FEATURES = [
 ];
 
 export default function BacWaterPage() {
+  useSEO({
+    title: "Bacteriostatic Water for Peptide Reconstitution",
+    description: "High-quality bacteriostatic water (BAC water) for peptide reconstitution. Available in 3ml and 10ml vials. Sterile, 0.9% benzyl alcohol preserved. Ships with all OmniQure peptide orders.",
+    canonicalPath: "/bac-water",
+  });
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [qty, setQty] = useState(1);
   const { addToCart } = useCart();

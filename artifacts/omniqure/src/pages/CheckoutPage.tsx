@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
+import { useSEO } from "@/hooks/useSEO";
 
 /**
  * Cart and checkout were merged into a single flow living at /cart. This route
@@ -7,6 +8,7 @@ import { useLocation } from "wouter";
  * redirects to the unified page.
  */
 export default function CheckoutPage() {
+  useSEO({ title: "Checkout", noIndex: true });
   const [, navigate] = useLocation();
   useEffect(() => {
     navigate("/cart", { replace: true });

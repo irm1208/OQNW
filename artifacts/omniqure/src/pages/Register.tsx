@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Eye, EyeOff, Mail, Lock, User, Building2, FlaskConical, CheckCircle2 } from "lucide-react";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
+import { useSEO } from "@/hooks/useSEO";
 
 export default function Register() {
+  useSEO({ title: "Create Account", noIndex: true });
   const [, navigate] = useLocation();
   const { register } = useCustomerAuth();
   const refCode = typeof window !== "undefined"
