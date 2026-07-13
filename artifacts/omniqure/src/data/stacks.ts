@@ -241,7 +241,7 @@ export const researchStacks: ResearchStack[] = [
         role: "GLP-1 / GIP Dual Receptor Agonist",
         suggestedDose: "2.5–5 mg",
         frequency: "Weekly",
-        notes: "Dose-escalation model (2.5 mg → 5 mg → 7.5 mg) used in published human trials. Most potent metabolic peptide in research.",
+        notes: "Dose-escalation model (2.5 mg → 5 mg → 7.5 mg) drawn from published pharmacokinetic research. Most potent metabolic peptide in research.",
       },
       {
         slug: "aod-9604-5mg",

@@ -466,7 +466,7 @@ function ProtocolCard({ group }: { group: GroupedProduct }) {
 export default function ProtocolsPage() {
   useSEO({
     title: "Peptide Research Protocols",
-    description: "Comprehensive dosing protocols, uses, benefits, and precautions for all research peptides. Suggested doses, frequency, cycle lengths, storage, and reconstitution for BPC-157, TB-500, CJC-1295, Ipamorelin and more.",
+    description: "Research compound reference data covering study parameters, preclinical uses, observed effects, storage, and reconstitution guidance for BPC-157, TB-500, CJC-1295, Ipamorelin and more. For in-vitro and preclinical research use only.",
     canonicalPath: "/protocols",
   });
 

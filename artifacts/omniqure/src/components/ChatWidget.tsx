@@ -43,7 +43,7 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/reconstitut|dissolv|mix|water|buffer|bac water/i],
     answer:
-      "Reconstitute with **sterile water or an appropriate buffer** (e.g. 0.9% saline, acetonitrile/water mix) depending on the peptide. Use **bacteriostatic water** if you want to extend the stability of the solution after reconstitution. Always inject the solvent slowly down the side of the vial — avoid vigorous shaking.",
+      "Reconstitute with **sterile water or an appropriate buffer** (e.g. 0.9% saline, acetonitrile/water mix) depending on the peptide. Use **bacteriostatic water** if you want to extend the stability of the solution after reconstitution. Always introduce the solvent slowly down the side of the vial — avoid vigorous shaking.",
   },
   {
     patterns: [/bpc.?157|bpc157/i],
@@ -78,7 +78,7 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/how many peptide|how many product|catalogue|catalog|81|full range|all peptide/i],
     answer:
-      "OmniQure stocks **81 research-grade peptides** covering categories including GLP-1 analogues, growth hormone peptides, healing & repair peptides, nootropics, sexual health peptides, and more. Browse the full catalogue at **Shop All Peptides**.",
+      "OmniQure stocks **81 research-grade peptides** covering categories including GLP-1 analogues, growth hormone peptides, healing & repair peptides, nootropics, melanocortin peptides, and more. Browse the full catalogue at **Shop All Peptides**.",
   },
   {
     patterns: [/price|cost|how much|£|gbp|usd|eur/i],

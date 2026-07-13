@@ -138,7 +138,7 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
 
       {overflowing && (
         <text x={bx + bw / 2} y={H - 2} textAnchor="middle" fontSize="9" fill="#DC2626" fontWeight="700" fontFamily="Arimo, Arial, sans-serif">
-          &gt;100 units — split across multiple injections
+          &gt;100 units — split across multiple aliquots
         </text>
       )}
     </svg>
@@ -320,7 +320,7 @@ export default function ReconstitutionCalculator() {
             </h1>
           </div>
           <p style={{ fontSize: "14px", opacity: 0.8, margin: 0, lineHeight: 1.5 }}>
-            Enter your vial size, water volume, and desired dose to get your exact injection amount.
+            Enter the vial size, reconstitution volume, and target dose to calculate the draw volume for your research preparation.
           </p>
         </div>
       </div>
@@ -398,7 +398,7 @@ export default function ReconstitutionCalculator() {
                     marginBottom: "8px",
                   }}
                 >
-                  Desired dose per injection
+                  Target dose per aliquot
                 </label>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
                   <input
@@ -686,7 +686,7 @@ export default function ReconstitutionCalculator() {
                 {[
                   "Let the vial warm to room temperature for 15–20 minutes.",
                   "Draw the calculated BAC water volume into a sterile syringe.",
-                  "Insert the needle and slowly inject water down the vial wall — don't aim at the powder.",
+                  "Insert the needle and slowly introduce water down the vial wall — don't aim at the powder.",
                   "Gently swirl (don't shake) until the powder fully dissolves.",
                   "Store reconstituted peptide at 2–8°C and use within 28 days.",
                 ].map((step, i) => (

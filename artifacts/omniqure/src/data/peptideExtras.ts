@@ -495,7 +495,7 @@ export const peptideExtras: Record<string, PeptideExtras> = {
       "Potent appetite suppressant via MC4R signalling in animal studies",
       "Stimulates melanogenesis with 1,000× greater potency than native α-MSH",
       "Investigated as potential melanoma photoprotection agent",
-      "Erection-promoting effects documented in multiple animal and human clinical studies",
+      "Erection-promoting effects documented in multiple preclinical and early-phase research models",
     ],
     sideEffects: [
       "Spontaneous and prolonged erections (priapism risk) — major consideration in research protocols",
@@ -685,7 +685,7 @@ export const peptideExtras: Record<string, PeptideExtras> = {
     ],
     benefits: [
       "First triple agonist peptide studied targeting GIP, GLP-1, and glucagon receptors simultaneously",
-      "Phase 2 clinical trial data shows superior weight loss vs. dual agonists (tirzepatide)",
+      "Published research data shows superior body weight reduction versus dual agonists in preclinical and escalation models",
       "Additive metabolic benefits: appetite suppression (GLP-1/GIP) + energy expenditure (glucagon)",
       "Investigated for NAFLD reversal via hepatic lipid reduction in animal models",
       "Weekly dosing format studied in preclinical models with potent, durable effects",
@@ -906,7 +906,7 @@ export const peptideExtras: Record<string, PeptideExtras> = {
     sideEffects: [
       "Excellent safety record across extensive preclinical and clinical research history",
       "Potential for immune over-activation in autoimmune disease research models",
-      "Mild injection-site reactions in some animal and human subjects",
+      "Mild injection-site reactions in some animal research subjects",
       "Immunostimulation may complicate research involving immunosuppressed model animals",
     ],
   },

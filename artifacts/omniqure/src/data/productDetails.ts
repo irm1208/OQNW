@@ -82,12 +82,12 @@ Preclinical studies in obese rodents demonstrated that AOD-9604 administration r
     storage: "Store lyophilized peptide at -20°C. After reconstitution, store at 4°C for up to 2 weeks.",
     appearance: "White lyophilized powder",
     solubility: "Soluble in sterile water or 0.9% saline",
-    halfLife: "Unknown in humans; stable in gastric juice",
+    halfLife: "Not established; stable in gastric juice",
     researchAreas: ["Gastrointestinal Research", "Wound Healing", "Musculoskeletal Research", "Neuroprotection", "Angiogenesis"],
     description: `BPC-157 is a synthetic pentadecapeptide derived from a partial sequence of the human Body Protection Compound found in gastric juice. It has been extensively studied in preclinical models for its regenerative, cytoprotective, and angiogenic properties across multiple organ systems.`,
     longDescription: `What is BPC-157?
 
-BPC-157, or Body Protection Compound 157, is a 15-amino acid peptide derived from a protective protein found in human gastric juice. First isolated and characterized at the University of Zagreb, this peptide has been studied in numerous animal models for its remarkable cytoprotective and regenerative properties. Unlike many research peptides, BPC-157 is stable in human gastric juice and can be administered via multiple routes.
+BPC-157, or Body Protection Compound 157, is a 15-amino acid peptide derived from a protective protein found in human gastric juice. First isolated and characterized at the University of Zagreb, this peptide has been studied in numerous animal models for its remarkable cytoprotective and regenerative properties. Unlike many research peptides, BPC-157 is stable in gastric juice and can be administered via multiple routes in research settings.
 
 BPC-157 Structure
 
@@ -114,7 +114,7 @@ Neurological research has investigated BPC-157's effects in models of traumatic 
     storage: "Store lyophilized peptide at -20°C. After reconstitution, store at 4°C for up to 2 weeks.",
     appearance: "White lyophilized powder",
     solubility: "Soluble in sterile water or 0.9% saline",
-    halfLife: "Unknown in humans; stable in gastric juice",
+    halfLife: "Not established; stable in gastric juice",
     researchAreas: ["Gastrointestinal Research", "Wound Healing", "Musculoskeletal Research", "Neuroprotection", "Angiogenesis"],
     description: `BPC-157 10mg is a synthetic pentadecapeptide extensively studied in preclinical models for its regenerative, cytoprotective, and angiogenic properties across multiple organ systems including gastrointestinal, musculoskeletal, and neural tissues.`,
     longDescription: `What is BPC-157?
@@ -1155,11 +1155,11 @@ Retatrutide (LY3437943) is a synthetic peptide triple agonist that simultaneousl
 
 Retatrutide Research
 
-Obesity research has investigated Retatrutide in phase 2 clinical trials, with results showing substantial percentage body weight reduction in subjects with obesity. The combination of GLP-1R agonism (appetite suppression and glucose control), GIPR agonism (complementary appetite and lipid effects), and GCGR agonism (thermogenesis, increased energy expenditure, and hepatic fat mobilization) is proposed to explain superior weight loss outcomes.
+Obesity research has investigated Retatrutide through dose-escalation preclinical and published academic research models, with data showing substantial percentage body weight reduction. The combination of GLP-1R agonism (appetite suppression and glucose control), GIPR agonism (complementary appetite and lipid effects), and GCGR agonism (thermogenesis, increased energy expenditure, and hepatic fat mobilization) is proposed to explain superior weight loss outcomes in these models.
 
 Metabolic research investigates the differential contributions of each receptor pathway to glucose homeostasis, lipid metabolism, and energy balance. The glucagon component increases hepatic glucose output, which the GLP-1 and GIP components counteract through insulin secretion enhancement, creating a complex interplay that researchers are actively characterizing.
 
-Weight management research positions Retatrutide as potentially the most potent GLP-1 class agent studied, with clinical data suggesting weight reduction exceeding that of semaglutide or tirzepatide (dual agonist) alone.`
+Weight management research positions Retatrutide as potentially the most potent GLP-1 class agent studied, with published data suggesting weight reduction exceeding that of semaglutide or tirzepatide (dual agonist) alone.`
   },
 
   "57": {
@@ -1580,7 +1580,7 @@ Tirzepatide Research
 
 Glycemic research documents that Tirzepatide produces robust reductions in HbA1c through dual incretin receptor activation. GLP-1R agonism enhances glucose-stimulated insulin secretion, suppresses glucagon, and slows gastric emptying. GIPR agonism contributes additional insulinotropic effects and may reduce lipotoxicity in peripheral tissues. The combination produces glucose lowering exceeding GLP-1R agonism alone.
 
-Obesity research has positioned Tirzepatide as among the most effective pharmacological weight loss agents studied. Phase 3 clinical trials have shown mean weight reductions of 15–22% of body weight, substantially exceeding selective GLP-1 agonists. Proposed mechanisms include GIPR-mediated enhancement of GLP-1R appetite suppression, direct GIPR effects on adipose tissue, and possible central appetite circuit modulation.
+Obesity research has positioned Tirzepatide as among the most effective pharmacological weight loss agents studied. Published dose-escalation research has documented mean body weight reductions of 15–22%, substantially exceeding selective GLP-1 agonists in comparative models. Proposed mechanisms include GIPR-mediated enhancement of GLP-1R appetite suppression, direct GIPR effects on adipose tissue, and possible central appetite circuit modulation.
 
 Metabolic research investigates Tirzepatide's effects on liver fat content (NAFLD/NASH models), lipid profiles, cardiovascular risk markers, and insulin resistance, finding improvements across multiple metabolic parameters beyond glycemic control.`
   },
@@ -1776,9 +1776,9 @@ ARA-290 has the molecular formula C₂₀H₃₂O₂ and a molecular weight of 3
 
 ARA-290 Research
 
-Small fiber neuropathy (SFN) research represents a major focus area for ARA-290. SFN is characterised by selective degeneration of thinly myelinated Aδ and unmyelinated C fibres, producing neuropathic pain, dysautonomia, and impaired thermoregulation. Preclinical studies demonstrated that ARA-290 promotes axonal regeneration and restores intraepidermal nerve fibre density (IENFD) in SFN models. Clinical investigations in patients with sarcoidosis-associated SFN documented improvements in IENFD, neuropathic pain scores, and corneal confocal microscopy-measured nerve parameters following ARA-290 administration.
+Small fiber neuropathy (SFN) research represents a major focus area for ARA-290. SFN is characterised by selective degeneration of thinly myelinated Aδ and unmyelinated C fibres, producing neuropathic pain, dysautonomia, and impaired thermoregulation. Preclinical studies demonstrated that ARA-290 promotes axonal regeneration and restores intraepidermal nerve fibre density (IENFD) in SFN models. Published research on sarcoidosis-associated SFN models has documented improvements in IENFD, neuropathic pain scores, and corneal confocal microscopy-measured nerve parameters.
 
-Sarcoidosis research has investigated ARA-290 specifically in the context of granulomatous inflammation-driven peripheral nerve damage. Sarcoidosis frequently causes SFN as a consequence of systemic immune activation. ARA-290 has been studied for its ability to protect and regenerate small nerve fibres in this inflammatory context, with published clinical data suggesting measurable improvement in nerve fibre density and patient-reported neuropathic symptom scores.
+Sarcoidosis research has investigated ARA-290 specifically in the context of granulomatous inflammation-driven peripheral nerve damage. Sarcoidosis frequently causes SFN as a consequence of systemic immune activation. ARA-290 has been studied for its ability to protect and regenerate small nerve fibres in this inflammatory context, with published research data documenting measurable improvement in nerve fibre density and neuropathic symptom scores in inflammatory SFN models.
 
 Anti-inflammatory research has characterised ARA-290 as an activator of IRR-mediated signalling pathways that suppress pro-inflammatory cytokine production. In macrophage and dendritic cell models, ARA-290 reduces secretion of TNF-α, IL-1β, and IL-6 following inflammatory stimuli. Studies suggest that IRR activation polarises immune cells toward tissue-protective phenotypes, attenuating neuroinflammation and peripheral immune overactivation without broad immunosuppression.
 
