@@ -4,7 +4,7 @@ export const SITE_NAME = "OmniQure Peptide Research Institute";
 export const SITE_URL = "https://omniqure.com";
 const DEFAULT_TITLE = "OmniQure Peptide Research Institute — Verified Research Peptides";
 const DEFAULT_DESCRIPTION =
-  "Buy high-purity research peptides verified to 99%+. BPC-157, TB-500, Ipamorelin, CJC-1295, Epithalon and 100+ peptides. Worldwide shipping. For research use only.";
+  "Buy high-purity research peptides verified to 98%+. BPC-157, TB-500, Ipamorelin, CJC-1295, Epithalon and 100+ peptides. Worldwide shipping. For research use only.";
 const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph.jpg`;
 
 function upsertMeta(attr: "name" | "property", key: string, content: string) {

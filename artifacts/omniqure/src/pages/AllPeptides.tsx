@@ -11,20 +11,20 @@ import { useSEO } from "@/hooks/useSEO";
 type SortOption = "name" | "price-low" | "price-high" | "bestsellers";
 
 const CATEGORY_DESCRIPTIONS: Record<string, string> = {
-  "Growth Peptides": "Research growth peptides including CJC-1295, GHRP-2, Ipamorelin and more. verified to 99%+ purity.",
-  "Healing Peptides": "Research healing peptides including BPC-157, TB-500 and more. verified to 99%+ purity.",
+  "Growth Peptides": "Research growth peptides including CJC-1295, GHRP-2, Ipamorelin and more. verified to 98%+ purity.",
+  "Healing Peptides": "Research healing peptides including BPC-157, TB-500 and more. verified to 98%+ purity.",
   "Weight Management": "Research weight management peptides.",
-  "Longevity Peptides": "Research longevity peptides including Epithalon, Selank, Semax and more. verified to 99%+ purity.",
-  "Cellular Health": "Research cellular health peptides. verified to 99%+ purity from OmniQure Peptide Research Institute.",
-  "Nootropics": "Research nootropic peptides for cognitive research. verified to 99%+ purity from OmniQure.",
-  "Immune Support": "Research immune support peptides. verified to 99%+ purity from OmniQure Peptide Research Institute.",
-  "Research Peptides": "Specialist research peptides for laboratory use. verified to 99%+ purity from OmniQure.",
-  "Peptide Blends": "Research peptide blends and stacks. verified to 99%+ purity from OmniQure Peptide Research Institute.",
-  "Skin & Repair": "Research skin and repair peptides including GHK-Cu and more. verified to 99%+ purity from OmniQure.",
-  "Hormonal Peptides": "Research hormonal peptides including Gonadorelin and more. verified to 99%+ purity.",
-  "Growth Hormone": "Research growth hormone peptides. verified to 99%+ purity from OmniQure.",
-  "Anti-Inflammatory": "Research anti-inflammatory peptides. verified to 99%+ purity from OmniQure Peptide Research Institute.",
-  "Cognitive Peptides": "Research cognitive peptides for neuroscience research. verified to 99%+ purity from OmniQure.",
+  "Longevity Peptides": "Research longevity peptides including Epithalon, Selank, Semax and more. verified to 98%+ purity.",
+  "Cellular Health": "Research cellular health peptides. verified to 98%+ purity from OmniQure Peptide Research Institute.",
+  "Nootropics": "Research nootropic peptides for cognitive research. verified to 98%+ purity from OmniQure.",
+  "Immune Support": "Research immune support peptides. verified to 98%+ purity from OmniQure Peptide Research Institute.",
+  "Research Peptides": "Specialist research peptides for laboratory use. verified to 98%+ purity from OmniQure.",
+  "Peptide Blends": "Research peptide blends and stacks. verified to 98%+ purity from OmniQure Peptide Research Institute.",
+  "Skin & Repair": "Research skin and repair peptides including GHK-Cu and more. verified to 98%+ purity from OmniQure.",
+  "Hormonal Peptides": "Research hormonal peptides including Gonadorelin and more. verified to 98%+ purity.",
+  "Growth Hormone": "Research growth hormone peptides. verified to 98%+ purity from OmniQure.",
+  "Anti-Inflammatory": "Research anti-inflammatory peptides. verified to 98%+ purity from OmniQure Peptide Research Institute.",
+  "Cognitive Peptides": "Research cognitive peptides for neuroscience research. verified to 98%+ purity from OmniQure.",
 };
 
 export default function AllPeptides() {
@@ -40,7 +40,7 @@ export default function AllPeptides() {
     ? selectedCategory
     : "All Research Peptides";
   const seoDesc = searchQuery.trim()
-    ? `Showing research peptides matching "${searchQuery.trim()}" — verified to 99%+ purity from OmniQure Peptide Research Institute.`
+    ? `Showing research peptides matching "${searchQuery.trim()}" — verified to 98%+ purity from OmniQure Peptide Research Institute.`
     : CATEGORY_DESCRIPTIONS[selectedCategory] ?? "Browse 100+ verified research peptides from OmniQure Peptide Research Institute. BPC-157, TB-500, Ipamorelin and more.";
   useSEO({ title: seoTitle, description: seoDesc, canonicalPath: "/all-peptides" });
 
@@ -133,13 +133,13 @@ export default function AllPeptides() {
           </h1>
           <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", maxWidth: "540px", lineHeight: 1.65, marginBottom: "16px" }}>
             {searchQuery.trim()
-              ? `Showing results for "${searchQuery.trim()}" — verified at 99%+ purity.`
+              ? `Showing results for "${searchQuery.trim()}" — verified at 98%+ purity.`
               : selectedCategory === "All Peptides"
               ? "81 verified compounds — each backed by full COA documentation."
-              : `Precision peptides for ${selectedCategory.toLowerCase()} research, each verified at 99%+ purity with full COA documentation.`}
+              : `Precision peptides for ${selectedCategory.toLowerCase()} research, each verified at 98%+ purity with full COA documentation.`}
           </p>
           <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "16px" }}>
-            {["99%+ Verified Purity", "Full COA", "Lyophilized"].map(t => (
+            {["98%+ Verified Purity", "Full COA", "Lyophilized"].map(t => (
               <span key={t} style={{
                 fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.6)",
                 backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)",
