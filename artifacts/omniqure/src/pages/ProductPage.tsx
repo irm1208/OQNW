@@ -163,14 +163,14 @@ export default function ProductPage() {
     title: product?.name ?? null,
     description: seoDesc ?? null,
     ogType: "product",
-    canonicalPath: product ? `/product/${product.id}` : null,
+    canonicalPath: product ? `/product/${product.slug}` : null,
     ogImage: product ? `${SITE_URL}${product.image}` : null,
     product: product ? {
       name: product.name,
       description: seoDesc ?? product.name,
       image: product.image,
       price: product.price,
-      productId: product.id,
+      productId: product.slug,
       category: product.category,
       purity: getPurityStr(product.id),
       availability: seoAvailability as "InStock" | "OutOfStock" | "LimitedAvailability",
@@ -179,7 +179,7 @@ export default function ProductPage() {
       { name: "Home", path: "/" },
       { name: "All Peptides", path: "/all-peptides" },
       { name: product.category, path: `/all-peptides?category=${encodeURIComponent(product.category)}` },
-      { name: product.name, path: `/product/${product.id}` },
+      { name: product.name, path: `/product/${product.slug}` },
     ] : null,
   });
 
