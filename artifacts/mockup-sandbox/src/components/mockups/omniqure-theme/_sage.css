@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+.sage-theme {
+  --color-bg: #F8F5F0;
+  --color-slate: #1C2333;
+  --color-sage: #5C7A5C;
+  --color-sage-light: #E8EBE8;
+  --color-amber: #D9A05B;
+  --color-white: #FFFFFF;
+}
+
+.font-playfair {
+  font-family: 'Playfair Display', serif;
+}
+
+.sage-btn {
+  transition: all 0.3s ease;
+}
+
+.sage-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(92, 122, 92, 0.15);
+}
+
+.sage-card {
+  transition: all 0.4s ease;
+}
+
+.sage-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(28, 35, 51, 0.05);
+}
