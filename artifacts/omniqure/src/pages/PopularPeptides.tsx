@@ -80,7 +80,7 @@ const CATEGORY_ORDER = [
 export default function PopularPeptides() {
   useSEO({
     title: "Popular Peptides",
-    description: "Shop the most popular research peptides at OmniQure — BPC-157, TB-500, Ipamorelin and more. independently verified to 99%+ purity. For research use only.",
+    description: "Shop the most popular research peptides at OmniQure — BPC-157, TB-500, Ipamorelin and more. verified to 99%+ purity. For research use only.",
     canonicalPath: "/popular-peptides",
   });
   const { products } = useProducts();
@@ -145,7 +145,7 @@ export default function PopularPeptides() {
             Popular Peptides
           </h1>
           <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", maxWidth: "540px", lineHeight: 1.65, marginBottom: "16px" }}>
-            Our most researched compounds across {availableCategories.length} categories — hand-picked by the OmniQure team. Each 99%+ independently verified with full COA documentation.
+            Our most researched compounds across {availableCategories.length} categories — hand-picked by the OmniQure team. Each 99%+ verified with full COA documentation.
           </p>
           <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
             {["99%+ Verified Purity", "Full COA", "Lyophilized"].map(t => (

@@ -44,8 +44,8 @@ const FAQS: FAQItem[] = [
   // PRODUCTS & PURITY
   {
     category: "products",
-    q: "What does '99%+ independently verified' mean?",
-    a: "Each batch of our research peptides is independently tested to confirm that at least 99% of the sample is the target compound, with less than 1% consisting of related impurities, residual solvents, or degradation products. We publish the results on our Lab Results page so you can inspect the data directly.",
+    q: "What does '99%+ verified' mean?",
+    a: "Each batch of our research peptides is tested to confirm that at least 99% of the sample is the target compound, with less than 1% consisting of related impurities, residual solvents, or degradation products. We publish the results on our Lab Results page so you can inspect the data directly.",
     tags: ["purity", "testing", "quality"],
   },
   {

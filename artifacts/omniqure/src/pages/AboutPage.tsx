@@ -16,7 +16,7 @@ const PILLARS = [
     icon: <Microscope size={22} />,
     color: "#3B82F6",
     bg: "#EFF6FF",
-    title: "Independently Verified Purity",
+    title: "Verified Purity",
     body: "Every compound is tested by accredited laboratories using High-Performance Liquid Chromatography. We publish certificates of analysis for all products — no hidden results.",
   },
   {
@@ -70,7 +70,7 @@ const TIMELINE = [
   {
     year: "Quality",
     title: "Every Batch Tested",
-    body: "We established our testing programme before we shipped a single order. Every compound in our catalogue has been independently verified, mass-confirmed, and documented. COAs are publicly available on each product page.",
+    body: "We established our testing programme before we shipped a single order. Every compound in our catalogue has been verified, mass-confirmed, and documented. COAs are publicly available on each product page.",
   },
   {
     year: "Today",
@@ -91,7 +91,7 @@ const VALUES = [
 export default function AboutPage() {
   useSEO({
     title: "About OmniQure — Peptide Research Institute",
-    description: "Learn about OmniQure's mission to supply independently verified research peptides with full transparency. Founded by researchers. Trusted by institutions worldwide.",
+    description: "Learn about OmniQure's mission to supply verified research peptides with full transparency. Founded by researchers. Trusted by institutions worldwide.",
     canonicalPath: "/about",
   });
 
@@ -134,7 +134,7 @@ export default function AboutPage() {
           </h1>
 
           <p style={{ fontSize: 17, color: "rgba(255,255,255,0.68)", lineHeight: 1.8, maxWidth: 580, marginBottom: 40 }}>
-            OmniQure was founded on a single belief: researchers deserve peptide suppliers that are as rigorous about quality documentation as they are about their own work. Every vial we ship is independently verified, mass-confirmed, and backed by a published certificate of analysis.
+            OmniQure was founded on a single belief: researchers deserve peptide suppliers that are as rigorous about quality documentation as they are about their own work. Every vial we ship is verified, mass-confirmed, and backed by a published certificate of analysis.
           </p>
 
           <div className="flex flex-wrap gap-3">
@@ -395,7 +395,7 @@ export default function AboutPage() {
             Ready to order?
           </h2>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.60)", lineHeight: 1.75, maxWidth: 480, margin: "0 auto 36px" }}>
-            Browse our full catalogue of 81+ independently verified peptides, download the COA for any compound before you buy, and check out with your preferred currency.
+            Browse our full catalogue of 81+ verified peptides, download the COA for any compound before you buy, and check out with your preferred currency.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link

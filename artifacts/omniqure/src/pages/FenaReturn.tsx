@@ -174,7 +174,7 @@ export default function FenaReturn() {
                 { icon: <CheckCircle2 size={16} />, label: "Order Total", value: `£${parseFloat(total).toFixed(2)}`, color: "#1240A0" },
                 { icon: <Truck size={16} />, label: "Shipping", value: ship, color: "#0F172A" },
                 { icon: <FlaskConical size={16} />, label: "Est. Delivery", value: deliveryStr, color: "#0F172A" },
-                { icon: <CheckCircle2 size={16} />, label: "Purity", value: "99%+ independently verified", color: "#059669" },
+                { icon: <CheckCircle2 size={16} />, label: "Purity", value: "99%+ verified", color: "#059669" },
               ].map(item => (
                 <div key={item.label} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
                   <div style={{ color: "#1B5CB5", marginTop: "1px", flexShrink: 0 }}>{item.icon}</div>

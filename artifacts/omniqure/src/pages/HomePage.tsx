@@ -205,8 +205,8 @@ const pillars = [
   {
     num: "01",
     icon: <FlaskConical size={24} />,
-    title: "Independently Verified Purity",
-    body: "Every product independently tested to confirm 99%+ purity before release.",
+    title: "Verified Purity",
+    body: "Every product tested to confirm 99%+ purity before release.",
     color: "#1B5CB5",
     bg: "#EEF4FF",
   },
@@ -441,8 +441,8 @@ export default function HomePage() {
   const localValue = REFERRAL_CREDIT_VALUE[currency.code] ?? REFERRAL_CREDIT_VALUE.GBP;
   const localCap = REFERRAL_CREDIT_CAP[currency.code] ?? REFERRAL_CREDIT_CAP.GBP;
   useSEO({
-    title: "Independently Verified Research Peptides",
-    description: "Buy high-purity research peptides independently verified to 99%+. BPC-157, TB-500, Ipamorelin, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
+    title: "Verified Research Peptides",
+    description: "Buy high-purity research peptides verified to 99%+. BPC-157, TB-500, Ipamorelin, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
     canonicalPath: "/",
   });
 
@@ -590,7 +590,7 @@ export default function HomePage() {
                 Featured Peptides
               </h2>
               <p style={{ fontSize: "14px", color: "#64748B", marginTop: "4px" }}>
-                Our most popular research compounds, all independently verified
+                Our most popular research compounds, all verified
               </p>
             </div>
             <Link
@@ -929,7 +929,7 @@ export default function HomePage() {
             {([
               {
                 q: "What purity standards do your peptides meet?",
-                a: "All OmniQure peptides are independently HPLC-verified to ≥99% purity. Every batch undergoes high-performance liquid chromatography (HPLC) analysis, and results are published in the Certificate of Analysis (COA) available on each product page.",
+                a: "All OmniQure peptides are HPLC-verified to ≥99% purity. Every batch undergoes high-performance liquid chromatography (HPLC) analysis, and results are published in the Certificate of Analysis (COA) available on each product page.",
               },
               {
                 q: "Do products come with a Certificate of Analysis and HPLC data?",

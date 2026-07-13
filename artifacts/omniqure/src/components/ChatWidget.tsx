@@ -53,7 +53,7 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/tb.?500|thymosin beta/i],
     answer:
-      "**TB-500** is the synthetic form of Thymosin Beta-4, a naturally occurring protein involved in actin regulation and cellular migration research. Our TB-500 is independently verified to ≥99% purity. Available in 5 mg vials. Reconstitute in bacteriostatic water.",
+      "**TB-500** is the synthetic form of Thymosin Beta-4, a naturally occurring protein involved in actin regulation and cellular migration research. Our TB-500 is verified to ≥99% purity. Available in 5 mg vials. Reconstitute in bacteriostatic water.",
   },
   {
     patterns: [/epithalon|epitalon/i],
@@ -63,7 +63,7 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/cjc.?1295|dac/i],
     answer:
-      "**CJC-1295** is a GHRH analogue studied for growth hormone secretagogue activity. Available with or without DAC (Drug Affinity Complex). Both variants are independently verified to ≥99% purity with full COA.",
+      "**CJC-1295** is a GHRH analogue studied for growth hormone secretagogue activity. Available with or without DAC (Drug Affinity Complex). Both variants are verified to ≥99% purity with full COA.",
   },
   {
     patterns: [/ipamorelin/i],
@@ -73,7 +73,7 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/melanotan|pt.?141/i],
     answer:
-      "We stock both **Melanotan II** and **PT-141 (Bremelanotide)**, both melanocortin receptor agonists studied in pigmentation and CNS research respectively. Both are independently verified to ≥99% purity.",
+      "We stock both **Melanotan II** and **PT-141 (Bremelanotide)**, both melanocortin receptor agonists studied in pigmentation and CNS research respectively. Both are verified to ≥99% purity.",
   },
   {
     patterns: [/how many peptide|how many product|catalogue|catalog|81|full range|all peptide/i],

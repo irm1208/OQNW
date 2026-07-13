@@ -360,7 +360,7 @@ function StackCard({ stack }: { stack: ResearchStack }) {
 export default function StacksPage() {
   useSEO({
     title: "Research Stacks",
-    description: "Curated research peptide stacks combining complementary compounds for specific research protocols. independently verified peptides from OmniQure Peptide Research Institute.",
+    description: "Curated research peptide stacks combining complementary compounds for specific research protocols. verified peptides from OmniQure Peptide Research Institute.",
     canonicalPath: "/stacks",
   });
   const [activeFilter, setActiveFilter] = useState<string>("All");

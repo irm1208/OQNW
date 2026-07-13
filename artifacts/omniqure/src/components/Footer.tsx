@@ -116,7 +116,7 @@ export default function Footer() {
                 </span>
                 <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "rgba(255,255,255,0.70)" }}>
                   <FlaskConical size={13} style={{ color: "rgba(255,255,255,0.50)", flexShrink: 0 }} />
-                  RUO · Lab Certified · independently verified
+                  RUO · Lab Certified · verified
                 </span>
               </div>
 
