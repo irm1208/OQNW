@@ -1346,8 +1346,11 @@ export default function CartPage() {
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
         .checkout-timer-inner { display: flex; align-items: center; gap: 12px; justify-content: center; }
-        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .form-grid-2 { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 10px; }
+        .form-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
+        .form-grid-2 > *, .form-grid-3 > * { min-width: 0; }
+        .form-grid-2 input, .form-grid-2 select, .form-grid-3 input, .form-grid-3 select { min-width: 0; width: 100%; }
+        .checkout-layout > * { min-width: 0; }
 
         @media (max-width: 900px) {
           .checkout-layout { flex-direction: column !important; padding: 12px !important; gap: 16px !important; }
@@ -1360,7 +1363,7 @@ export default function CartPage() {
           .checkout-timer-label { font-size: 9px !important; }
           .checkout-timer-message p:first-child { font-size: 10px !important; }
           .checkout-timer-message p:last-child { font-size: 11px !important; }
-          .form-grid-3 { grid-template-columns: 1fr 1fr; }
+          .form-grid-3 { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
           input[type="text"], input[type="email"], input[type="tel"], input[type="search"], select {
             height: 40px !important;
           }
