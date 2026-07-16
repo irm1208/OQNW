@@ -60,7 +60,42 @@ const legalLinks = [
   { label: "Privacy Policy",     href: "/privacy"  },
 ];
 
-const paymentMethods = ["Bank Transfer", "Bitcoin", "Ethereum"];
+const paymentBadges = [
+  {
+    label: "Pay by Bank",
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    ),
+  },
+  {
+    label: "Bitcoin",
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.06 11.57c.29-.69.45-1.45.45-2.23C17.51 6.37 15.14 4 12.17 4H8v3H6v2h2v2H6v2h2v7h4.65c2.75 0 5-2.06 5.12-4.76.08-1.65-.69-3.11-1.71-3.67zM11 7h1.17c1.02 0 1.84.82 1.84 1.84S13.19 10.68 12.17 10.68H11V7zm1.65 10H11v-3.33h1.65c.92 0 1.67.75 1.67 1.67s-.75 1.66-1.67 1.66z"/>
+      </svg>
+    ),
+  },
+  {
+    label: "Ethereum",
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L5 12.5l7 4 7-4L12 2zM5 14l7 8 7-8-7 4-7-4z"/>
+      </svg>
+    ),
+  },
+  {
+    label: "USDT",
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M13 8h-5v2.5h2v5.5h2V10.5h2V8h-1zm1 0h1v8h-1V8z" fill="white"/>
+      </svg>
+    ),
+  },
+];
 
 
 export default function Footer() {
@@ -175,11 +210,12 @@ export default function Footer() {
 
             <div className="flex items-center gap-2 flex-wrap justify-center">
               <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.50)", marginRight: "2px" }}>We Accept:</span>
-              {paymentMethods.map(p => (
+              {paymentBadges.map(b => (
                 <span
-                  key={p}
+                  key={b.label}
                   className="px-2.5 py-1 rounded-md"
                   style={{
+                    display: "inline-flex", alignItems: "center", gap: "5px",
                     backgroundColor: "rgba(0,0,0,0.20)",
                     color: "rgba(255,255,255,0.75)",
                     border: "1px solid rgba(255,255,255,0.20)",
@@ -187,7 +223,8 @@ export default function Footer() {
                     fontWeight: 600,
                   }}
                 >
-                  {p}
+                  {b.icon}
+                  {b.label}
                 </span>
               ))}
             </div>

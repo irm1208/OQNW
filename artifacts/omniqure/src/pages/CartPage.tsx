@@ -69,12 +69,12 @@ const SHIPPING_OPTIONS = [
 ];
 
 const CRYPTO_OPTIONS = [
-  { id: "BTC",  name: "Bitcoin",    symbol: "₿", network: "Bitcoin",      address: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh" },
-  { id: "ETH",  name: "Ethereum",   symbol: "Ξ", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
-  { id: "USDT", name: "USDT",       symbol: "₮", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
-  { id: "USDC", name: "USDC",       symbol: "◎", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
-  { id: "LTC",  name: "Litecoin",   symbol: "Ł", network: "Litecoin",     address: "LYourLitecoinAddressHere" },
-  { id: "XMR",  name: "Monero",     symbol: "ɱ", network: "Monero",       address: "YourMoneroAddressHere" },
+  { id: "BTC",  name: "Bitcoin",    symbol: "₿", color: "#F7931A", network: "Bitcoin",      address: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh" },
+  { id: "ETH",  name: "Ethereum",   symbol: "Ξ", color: "#627EEA", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
+  { id: "USDT", name: "USDT",       symbol: "₮", color: "#26A17B", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
+  { id: "USDC", name: "USDC",       symbol: "◎", color: "#2775CA", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
+  { id: "LTC",  name: "Litecoin",   symbol: "Ł", color: "#A6A9AA", network: "Litecoin",     address: "LYourLitecoinAddressHere" },
+  { id: "XMR",  name: "Monero",     symbol: "ɱ", color: "#FF6600", network: "Monero",       address: "YourMoneroAddressHere" },
 ] as const;
 type CryptoCurrency = typeof CRYPTO_OPTIONS[number]["id"];
 
@@ -1159,12 +1159,21 @@ export default function CartPage() {
                         {CRYPTO_OPTIONS.map(c => (
                           <button key={c.id} type="button" onClick={e => { e.stopPropagation(); setCryptoCurrency(c.id); }}
                             style={{
-                              padding: "6px 14px", borderRadius: 100, border: "1px solid",
+                              display: "inline-flex", alignItems: "center", gap: 6,
+                              padding: "6px 12px", borderRadius: 100, border: "1px solid",
                               borderColor: cryptoCurrency === c.id ? THEME.cta : "#E2E8F0",
                               background: cryptoCurrency === c.id ? THEME.cta : "#F8FAFC",
                               color: cryptoCurrency === c.id ? "#fff" : THEME.textSub,
                               fontSize: "13px", fontWeight: 600, cursor: "pointer",
-                            }}>{c.name}</button>
+                            }}>
+                            <span style={{
+                              display: "inline-flex", alignItems: "center", justifyContent: "center",
+                              width: 18, height: 18, borderRadius: "50%",
+                              background: cryptoCurrency === c.id ? "rgba(255,255,255,0.25)" : c.color,
+                              color: "#fff", fontSize: "9px", fontWeight: 800, flexShrink: 0,
+                            }}>{c.symbol}</span>
+                            {c.name}
+                          </button>
                         ))}
                       </div>
                     </div>
