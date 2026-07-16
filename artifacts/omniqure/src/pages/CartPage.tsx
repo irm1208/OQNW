@@ -11,7 +11,7 @@ import { useProducts } from "@/context/ProductsContext";
 import BacWaterUpsell from "@/components/BacWaterUpsell";
 import FreeShippingBar from "@/components/FreeShippingBar";
 import {
-  Trash2, Plus, Minus, ShoppingCart, ChevronRight, Sparkles, CheckCircle2,
+  ShoppingCart, ChevronRight, Sparkles, CheckCircle2,
   RefreshCw, CheckCheck, Lock, Shield, Truck,
 } from "lucide-react";
 
@@ -322,7 +322,7 @@ export default function CartPage() {
   const [, navigate] = useLocation();
   const {
     items, totalItems, subtotal, peptideQty, bundleFreeBacWater, bundleFreeItemsCount,
-    bundleDiscountAmount, freeUnitsByProductId, removeFromCart, updateQuantity, clearCart,
+    bundleDiscountAmount, freeUnitsByProductId,
   } = useCart();
   const hasFreebie = bundleFreeBacWater || bundleFreeItemsCount > 0;
   const freebieLabel = bundleFreeItemsCount === 2 ? "2 peptides free" : bundleFreeItemsCount === 1 ? "1 peptide free" : "free BAC water";
@@ -867,16 +867,6 @@ export default function CartPage() {
             )}
 
             <BacWaterUpsell />
-
-            <div className="text-right pt-1">
-              <button
-                onClick={clearCart}
-                className="text-sm hover:underline"
-                style={{ color: "#94A3B8", background: "none", border: "none", cursor: "pointer" }}
-              >
-                Clear entire cart
-              </button>
-            </div>
 
             <CartUpsells />
           </div>
