@@ -255,7 +255,7 @@ function HeroContentSlide() {
           image is always visible and never gets cropped/zoomed on narrower,
           taller carousel boxes (e.g. mobile), matching the other slides. */}
       <img
-        src="/hero-vials-2.jpeg"
+        src="/hero-vials-2.png"
         alt=""
         aria-hidden="true"
         style={{
