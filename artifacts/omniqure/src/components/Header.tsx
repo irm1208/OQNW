@@ -280,6 +280,16 @@ export default function Header() {
       }}>
         <div className="max-w-[1280px] mx-auto px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-2">
 
+          {/* Hamburger — mobile only, left side */}
+          <button
+            className="md:hidden p-1 order-0 flex-shrink-0 flex flex-col items-center"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{ color: "rgba(255,255,255,0.85)", background: "none", border: "none", cursor: "pointer" }}
+          >
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            <span className="sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Menu</span>
+          </button>
+
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none" }}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
@@ -435,16 +445,6 @@ export default function Header() {
 
           {/* Right group */}
           <div className="order-2 sm:order-3 ml-auto flex items-center gap-2 sm:gap-4 flex-shrink-0">
-
-            {/* Hamburger — mobile only, right side */}
-            <button
-              className="md:hidden p-1 flex-shrink-0 flex flex-col items-center"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              style={{ color: "rgba(255,255,255,0.85)", background: "none", border: "none", cursor: "pointer" }}
-            >
-              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-              <span className="sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Menu</span>
-            </button>
 
             {/* Currency selector */}
             <div ref={currencyRef} style={{ position: "relative", flexShrink: 0 }}>
