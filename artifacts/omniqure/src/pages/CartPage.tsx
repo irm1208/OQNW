@@ -645,7 +645,7 @@ export default function CartPage() {
           background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center",
         }}>
           <div style={{
-            background: "#fff", border: "1px solid #E8EDF5", borderRadius: 12, padding: "40px 48px", textAlign: "center",
+            background: "#fff", border: "1px solid #E8EDF5", borderRadius: 12, padding: "32px 28px", textAlign: "center",
             maxWidth: 400, width: "90%", boxShadow: "0 20px 60px rgba(15,23,42,0.2)",
           }}>
             <div style={{ fontSize: 48, marginBottom: 12 }}>⏱</div>
