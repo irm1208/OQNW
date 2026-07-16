@@ -5,8 +5,8 @@ import {
   User, Package, Settings, LogOut, ChevronRight,
   ShoppingBag, Clock, Shield, Eye, EyeOff, CheckCircle2,
   AlertCircle, Truck, Zap, FlaskConical, Heart, RotateCcw, X,
-  RefreshCw, Users, Copy, CheckCheck, Calendar, PauseCircle, PlayCircle,
-  Repeat, Trash2, Award, Gift, TrendingUp, Star,
+  Users, Copy, CheckCheck,
+  Repeat, Award, Gift, TrendingUp, Star,
 } from "lucide-react";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -25,25 +25,6 @@ type OrderItem = {
   productCategory: string;
   quantity: number;
   priceGbp: number;
-};
-
-type SubItem = {
-  productId: number;
-  productName: string;
-  quantity: number;
-  priceGbp: number;
-};
-
-type Subscription = {
-  id: number;
-  items: SubItem[];
-  intervalDays: number;
-  nextRenewalAt: string;
-  discountPct: number;
-  status: string;
-  subtotal: number;
-  discountedTotal: number;
-  createdAt: string;
 };
 
 type ReferralInfo = {
@@ -149,7 +130,7 @@ export default function AccountPage() {
   const { products } = useProducts();
   const { addToCart } = useCart();
 
-  const [activeTab, setActiveTab] = useState<"orders" | "profile" | "wishlist" | "subscriptions" | "referral" | "loyalty">("orders");
+  const [activeTab, setActiveTab] = useState<"orders" | "profile" | "wishlist" | "referral" | "loyalty">("orders");
 
   // Orders
   const [orders, setOrders] = useState<AccountOrder[]>([]);
@@ -179,11 +160,6 @@ export default function AccountPage() {
   const [returnReason, setReturnReason] = useState("");
   const [submittingReturn, setSubmittingReturn] = useState(false);
   const [returnError, setReturnError] = useState<string | null>(null);
-
-  // Subscriptions
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
-  const [loadingSubs, setLoadingSubs] = useState(true);
-  const [updatingSub, setUpdatingSub] = useState<number | null>(null);
 
   // Referral
   const [referral, setReferral] = useState<ReferralInfo | null>(null);
@@ -230,12 +206,6 @@ export default function AccountPage() {
         setReturns(map);
       })
       .catch(() => {});
-
-    fetch(apiUrl("subscriptions"), { credentials: "include" })
-      .then((r) => (r.ok ? (r.json() as Promise<Subscription[]>) : []))
-      .then((data) => setSubscriptions(data))
-      .catch(() => setSubscriptions([]))
-      .finally(() => setLoadingSubs(false));
 
     fetch(apiUrl("account/referral"), { credentials: "include" })
       .then((r) => (r.ok ? (r.json() as Promise<ReferralInfo>) : null))
@@ -343,38 +313,12 @@ export default function AccountPage() {
     setTimeout(() => setReorderedKey(null), 2500);
   }, [products, addToCart]);
 
-  async function handleSubAction(subId: number, action: string) {
-    setUpdatingSub(subId);
-    try {
-      const res = await fetch(apiUrl(`subscriptions/${subId}`), {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ action }),
-      });
-      if (res.ok) {
-        const updated = await res.json() as Subscription;
-        setSubscriptions((prev) => prev.map((s) => (s.id === subId ? updated : s)));
-      }
-    } catch {}
-    setUpdatingSub(null);
-  }
-
   function copyReferralLink() {
     if (!referral) return;
     const url = `${window.location.origin}/sign-up?ref=${referral.referralCode}`;
     void navigator.clipboard.writeText(url);
     setReferralCopied(true);
     setTimeout(() => setReferralCopied(false), 2500);
-  }
-
-  function intervalLabel(days: number): string {
-    if (days === 7) return "Weekly";
-    if (days === 14) return "Fortnightly";
-    if (days === 30) return "Monthly";
-    if (days === 60) return "Every 2 months";
-    if (days === 90) return "Every 3 months";
-    return `Every ${days} days`;
   }
 
   if (loadingAuth || !customer) {
@@ -509,7 +453,6 @@ export default function AccountPage() {
         <div className="account-tab-bar">
           {[
             { key: "orders",        label: "My Orders",       icon: <Package size={16} /> },
-            { key: "subscriptions", label: "Subscriptions",   icon: <RefreshCw size={16} /> },
             { key: "referral",      label: "Refer a Friend",  icon: <Users size={16} /> },
             { key: "loyalty",       label: "Loyalty Rewards", icon: <Award size={16} /> },
             { key: "wishlist",      label: "Wishlist",        icon: <Heart size={16} /> },
@@ -517,7 +460,7 @@ export default function AccountPage() {
           ].map((item) => (
             <button
               key={item.key}
-              onClick={() => setActiveTab(item.key as "orders" | "profile" | "wishlist" | "subscriptions" | "referral" | "loyalty")}
+              onClick={() => setActiveTab(item.key as "orders" | "profile" | "wishlist" | "referral" | "loyalty")}
               className={`account-tab-btn${activeTab === item.key ? " active" : ""}`}
             >
               {item.icon}
@@ -551,7 +494,6 @@ export default function AccountPage() {
             <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", overflow: "hidden" }}>
               {[
                 { key: "orders",        label: "My Orders",       icon: <Package size={16} /> },
-                { key: "subscriptions", label: "Subscriptions",   icon: <RefreshCw size={16} /> },
                 { key: "referral",      label: "Refer a Friend",  icon: <Users size={16} /> },
                 { key: "loyalty",       label: "Loyalty Rewards", icon: <Award size={16} /> },
                 { key: "wishlist",      label: "Wishlist",        icon: <Heart size={16} /> },
@@ -559,7 +501,7 @@ export default function AccountPage() {
               ].map((item) => (
                 <button
                   key={item.key}
-                  onClick={() => setActiveTab(item.key as "orders" | "profile" | "wishlist" | "subscriptions" | "referral" | "loyalty")}
+                  onClick={() => setActiveTab(item.key as "orders" | "profile" | "wishlist" | "referral" | "loyalty")}
                   style={{
                     display: "flex", alignItems: "center", gap: "10px",
                     width: "100%", padding: "13px 16px", border: "none",
@@ -884,103 +826,6 @@ export default function AccountPage() {
                         </div>
                       );
                     })}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* ── SUBSCRIPTIONS TAB ── */}
-            {activeTab === "subscriptions" && (
-              <div>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
-                  <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A" }}>My Subscriptions</h2>
-                  <span style={{ fontSize: "12px", color: "#64748B", backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0", padding: "4px 10px", borderRadius: "20px", fontWeight: 600 }}>5% off every renewal</span>
-                </div>
-
-                {loadingSubs ? (
-                  <div style={{ textAlign: "center", padding: "60px 0", color: "#94A3B8" }}>
-                    <RefreshCw size={32} style={{ margin: "0 auto 12px", opacity: 0.4 }} />
-                    <p style={{ fontSize: "14px" }}>Loading subscriptions…</p>
-                  </div>
-                ) : subscriptions.filter((s) => s.status !== "cancelled").length === 0 ? (
-                  <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", padding: "60px 24px", textAlign: "center" }}>
-                    <RefreshCw size={36} style={{ margin: "0 auto 16px", color: "#CBD5E1" }} />
-                    <p style={{ fontSize: "16px", fontWeight: 700, color: "#0F172A", marginBottom: "8px" }}>No active subscriptions</p>
-                    <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>
-                      Subscribe to your favourite peptides at checkout and save 5% on every recurring order.
-                    </p>
-                    <Link href="/all-peptides" style={{ display: "inline-block", padding: "10px 24px", borderRadius: "10px", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none" }}>
-                      Browse peptides
-                    </Link>
-                  </div>
-                ) : (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                    {subscriptions.filter((s) => s.status !== "cancelled").map((sub) => (
-                      <div key={sub.id} style={{ backgroundColor: "#fff", borderRadius: "16px", border: `1px solid ${sub.status === "paused" ? "#FDE68A" : "#E8EDF5"}`, boxShadow: "0 2px 12px rgba(15,23,42,0.04)", overflow: "hidden" }}>
-                        <div style={{ padding: "16px 20px" }}>
-                          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", marginBottom: "12px" }}>
-                            <div>
-                              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-                                <span style={{ fontSize: "14px", fontWeight: 800, color: "#0F172A" }}>{intervalLabel(sub.intervalDays)} Subscription</span>
-                                <span style={{
-                                  fontSize: "11px", fontWeight: 700, padding: "2px 8px", borderRadius: "20px",
-                                  backgroundColor: sub.status === "paused" ? "#FFFBEB" : "#F0FDF4",
-                                  color: sub.status === "paused" ? "#B45309" : "#15803D",
-                                  border: `1px solid ${sub.status === "paused" ? "#FDE68A" : "#BBF7D0"}`,
-                                }}>
-                                  {sub.status === "paused" ? "Paused" : "Active"}
-                                </span>
-                              </div>
-                              <p style={{ fontSize: "12px", color: "#94A3B8", margin: 0 }}>
-                                <Calendar size={11} style={{ display: "inline", marginRight: "4px" }} />
-                                Next renewal: {formatDate(sub.nextRenewalAt)}
-                              </p>
-                            </div>
-                            <div style={{ textAlign: "right", flexShrink: 0 }}>
-                              <p style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A", margin: "0 0 2px" }}>£{sub.discountedTotal.toFixed(2)}</p>
-                              <p style={{ fontSize: "11px", color: "#16A34A", margin: 0 }}>{sub.discountPct}% off applied</p>
-                            </div>
-                          </div>
-                          <div style={{ marginBottom: "14px", borderTop: "1px solid #F8FAFC", paddingTop: "10px" }}>
-                            {sub.items.map((item, i) => (
-                              <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0" }}>
-                                <span style={{ fontSize: "13px", color: "#0F172A" }}>{item.productName} × {item.quantity}</span>
-                                <span style={{ fontSize: "13px", color: "#64748B" }}>£{(item.priceGbp * item.quantity * (1 - sub.discountPct / 100)).toFixed(2)}</span>
-                              </div>
-                            ))}
-                          </div>
-                          <div style={{ display: "flex", gap: "8px" }}>
-                            {sub.status === "active" ? (
-                              <button
-                                onClick={() => void handleSubAction(sub.id, "pause")}
-                                disabled={updatingSub === sub.id}
-                                style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "7px 14px", borderRadius: "8px", backgroundColor: "#FFFBEB", border: "1px solid #FDE68A", color: "#B45309", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}
-                              >
-                                <PauseCircle size={13} />
-                                {updatingSub === sub.id ? "…" : "Pause"}
-                              </button>
-                            ) : (
-                              <button
-                                onClick={() => void handleSubAction(sub.id, "resume")}
-                                disabled={updatingSub === sub.id}
-                                style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "7px 14px", borderRadius: "8px", backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0", color: "#15803D", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}
-                              >
-                                <PlayCircle size={13} />
-                                {updatingSub === sub.id ? "…" : "Resume"}
-                              </button>
-                            )}
-                            <button
-                              onClick={() => void handleSubAction(sub.id, "cancel")}
-                              disabled={updatingSub === sub.id}
-                              style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "7px 14px", borderRadius: "8px", backgroundColor: "#FEF2F2", border: "1px solid #FECACA", color: "#B91C1C", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}
-                            >
-                              <Trash2 size={13} />
-                              {updatingSub === sub.id ? "…" : "Cancel"}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
                   </div>
                 )}
               </div>

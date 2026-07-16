@@ -3,7 +3,7 @@ import { Link, useLocation, Redirect } from "wouter";
 import { useAdminLogout, useAdminMe } from "@workspace/api-client-react";
 import {
   LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2,
-  RotateCcw, Star, ShoppingBag, RefreshCw, Mail, Gift, BellRing,
+  RotateCcw, Star, ShoppingBag, Mail, Gift, BellRing,
   Truck, RefreshCcw, FileText, Bell, ShieldAlert,
   ChevronDown, ChevronRight, Settings2, ShieldBan, Send, BarChart3,
   Settings, UserCog,
@@ -70,7 +70,6 @@ const advancedNavGroups: NavGroup[] = [
     items: [
       { href: "/reviews",       label: "Reviews",       icon: Star },
       { href: "/loyalty",       label: "Loyalty",       icon: Gift },
-      { href: "/subscriptions", label: "Subscriptions", icon: RefreshCw },
     ],
   },
   {

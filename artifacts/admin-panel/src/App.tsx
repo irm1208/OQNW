@@ -13,7 +13,6 @@ import Discounts from "@/pages/Discounts";
 import Returns from "@/pages/Returns";
 import Reviews from "@/pages/Reviews";
 import AbandonedCarts from "@/pages/AbandonedCarts";
-import Subscriptions from "@/pages/Subscriptions";
 import EmailLog from "@/pages/EmailLog";
 import Loyalty from "@/pages/Loyalty";
 import StockAlerts from "@/pages/StockAlerts";
@@ -105,11 +104,6 @@ function AppRoutes() {
       <Route path="/abandoned-carts">
         <AdminLayout>
           <AbandonedCarts />
-        </AdminLayout>
-      </Route>
-      <Route path="/subscriptions">
-        <AdminLayout>
-          <Subscriptions />
         </AdminLayout>
       </Route>
       <Route path="/email-log">

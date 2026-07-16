@@ -12,7 +12,7 @@ import BacWaterUpsell from "@/components/BacWaterUpsell";
 import FreeShippingBar from "@/components/FreeShippingBar";
 import {
   Trash2, Plus, Minus, ShoppingCart, ChevronRight, Sparkles, CheckCircle2,
-  RefreshCw, CheckCheck, Lock, Shield, Truck,
+  Lock, Shield, Truck,
 } from "lucide-react";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
@@ -322,17 +322,12 @@ export default function CartPage() {
   const [, navigate] = useLocation();
   const {
     items, totalItems, subtotal, peptideQty, bundleFreeBacWater, bundleFreeItemsCount,
-    bundleDiscountAmount, freeUnitsByProductId, removeFromCart, updateQuantity,
+    bundleDiscountAmount, freeUnitsByProductId, removeFromCart, updateQuantity, clearCart,
   } = useCart();
   const hasFreebie = bundleFreeBacWater || bundleFreeItemsCount > 0;
   const freebieLabel = bundleFreeItemsCount === 2 ? "2 peptides free" : bundleFreeItemsCount === 1 ? "1 peptide free" : "free BAC water";
   const { formatPrice } = useCurrency();
   const { customer } = useCustomerAuth();
-
-  // Subscribe & Save
-  const [subscribing, setSubscribing] = useState(false);
-  const [subscribeSuccess, setSubscribeSuccess] = useState(false);
-  const [subscribeInterval, setSubscribeInterval] = useState(30);
 
   const checkoutFired = useRef(false);
 
@@ -433,32 +428,6 @@ export default function CartPage() {
       setPostcodeLoading(false);
     }
   }, []);
-
-  async function handleSubscribe() {
-    if (!customer) { navigate("/sign-in"); return; }
-    setSubscribing(true);
-    try {
-      const subItems = items
-        .filter((i) => i.product.price != null)
-        .map((i) => ({
-          productId: parseInt(i.product.id, 10),
-          productName: i.product.name,
-          quantity: i.quantity,
-          priceGbp: i.product.price ?? 0,
-        }));
-      const res = await fetch(apiUrl("subscriptions"), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ items: subItems, intervalDays: subscribeInterval }),
-      });
-      if (res.ok) {
-        setSubscribeSuccess(true);
-        setTimeout(() => setSubscribeSuccess(false), 4000);
-      }
-    } catch {}
-    setSubscribing(false);
-  }
 
   if (items.length === 0) {
     return (
@@ -1082,49 +1051,6 @@ export default function CartPage() {
             </div>
           )}
 
-          {/* Subscribe & Save */}
-          <div style={{ borderRadius: "12px", border: "1.5px solid #C7D7F7", backgroundColor: "#F0F5FF", padding: "16px 18px", marginTop: 24 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
-              <RefreshCw size={13} style={{ color: "#1240A0" }} />
-              <span style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A" }}>Subscribe & Save 5%</span>
-            </div>
-            <p style={{ fontSize: "11.5px", color: "#475569", marginBottom: "10px", lineHeight: 1.5 }}>
-              Get this order delivered automatically at a 5% discount every:
-            </p>
-            <select
-              value={subscribeInterval}
-              onChange={(e) => setSubscribeInterval(parseInt(e.target.value, 10))}
-              style={{ width: "100%", maxWidth: 320, height: "34px", borderRadius: "8px", border: "1.5px solid #C7D7F7", fontSize: "13px", color: "#0F172A", backgroundColor: "#fff", padding: "0 10px", marginBottom: "8px", cursor: "pointer" }}
-            >
-              <option value={7}>Weekly (every 7 days)</option>
-              <option value={14}>Fortnightly (every 14 days)</option>
-              <option value={30}>Monthly (every 30 days)</option>
-              <option value={60}>Every 2 months</option>
-              <option value={90}>Every 3 months</option>
-            </select>
-            <div>
-              <button
-                onClick={() => void handleSubscribe()}
-                disabled={subscribing || subscribeSuccess}
-                style={{
-                  maxWidth: 320, width: "100%", height: "34px", borderRadius: "8px", border: "none",
-                  background: subscribeSuccess ? "linear-gradient(90deg, #16A34A, #15803D)" : "linear-gradient(90deg, #1240A0, #1B5CB5)",
-                  color: "#fff", fontSize: "12.5px", fontWeight: 700, cursor: subscribing || subscribeSuccess ? "not-allowed" : "pointer",
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
-                }}
-              >
-                {subscribeSuccess
-                  ? <><CheckCheck size={13} /> Subscription created!</>
-                  : subscribing
-                    ? "Creating…"
-                    : <><RefreshCw size={13} /> Subscribe & Save</>
-                }
-              </button>
-            </div>
-            {!customer && (
-              <p style={{ fontSize: "11px", color: "#64748B", marginTop: "6px" }}>Sign in to subscribe</p>
-            )}
-          </div>
         </div>
 
         {/* ── RIGHT COLUMN — SINGLE ORDER SUMMARY ── */}

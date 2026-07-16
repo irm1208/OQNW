@@ -2,7 +2,6 @@ import app from "./app";
 import { logger } from "./lib/logger";
 import { startAbandonedCartJob } from "./lib/abandonedCartJob";
 import { startReviewRequestJob } from "./lib/reviewRequestJob";
-import { startSubscriptionJob } from "./lib/subscriptionJob";
 import { seedReviews } from "./lib/seed-reviews";
 import { seedBlog } from "./lib/seed-blog";
 import { seedBlogPeptides } from "./lib/seed-blog-peptides";
@@ -30,7 +29,6 @@ app.listen(port, (err) => {
   logger.info({ port }, "Server listening");
   startAbandonedCartJob();
   startReviewRequestJob();
-  startSubscriptionJob();
   seedReviews().then((r) => {
     if (r.seeded) logger.info({ count: r.count }, "Reviews seeded");
     else logger.info({ reason: r.reason }, "Reviews seed skipped");
