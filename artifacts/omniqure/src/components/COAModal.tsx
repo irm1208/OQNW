@@ -296,7 +296,7 @@ export default function COAModal({ product, filteredProducts, onClose }: COAModa
               {lot} · {analysis}
             </p>
             <p style={{ margin: "4px 0 0", fontSize: "10.5px", color: "rgba(255,255,255,0.32)" }}>
-              Lab: OmniQure Labs · Vendor: OmniQure
+              Tested by: Janoshik Analytical · janoshik.com
             </p>
           </div>
 

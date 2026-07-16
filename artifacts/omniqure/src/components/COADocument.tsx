@@ -121,16 +121,19 @@ export default function COADocument({ product }: COADocumentProps) {
       <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px", fontSize: "13px" }}>
         <tbody>
           {[
-            { label: "Client",       value: "OmniQure Peptide Research Institute" },
-            { label: "Sample",       value: `${product.name}\u00A0\u00A0\u00A0${lot}` },
-            { label: "Manufacturer", value: "OmniQure Peptide Research Institute" },
-            { label: "Batch",        value: lot },
+            { label: "Client",       value: "OmniQure Peptide Research Institute", highlight: false },
+            { label: "Sample",       value: `${product.name}\u00A0\u00A0\u00A0${lot}`, highlight: false },
+            { label: "Manufacturer", value: "OmniQure Peptide Research Institute", highlight: false },
+            { label: "Batch",        value: lot, highlight: false },
+            { label: "Tested by",    value: "Janoshik Analytical\u00A0·\u00A0janoshik.com", highlight: true },
           ].map(row => (
             <tr key={row.label}>
               <td style={{ width: "130px", padding: "5px 12px 5px 0", color: blue, fontWeight: 600, verticalAlign: "top", fontSize: "12.5px" }}>
                 {row.label}
               </td>
-              <td style={{ padding: "5px 0", color: "#111827", verticalAlign: "top" }}>{row.value}</td>
+              <td style={{ padding: "5px 0", color: row.highlight ? "#15803D" : "#111827", verticalAlign: "top", fontWeight: row.highlight ? 600 : 400 }}>
+                {row.value}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -152,7 +155,7 @@ export default function COADocument({ product }: COADocumentProps) {
       <div style={{ marginBottom: "20px" }}>
         <p style={{ margin: "0 0 8px", fontSize: "12.5px", fontWeight: 700, color: blue }}>Tests requested &gt;</p>
         <div style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: "6px", padding: "10px 14px", fontSize: "12.5px", color: "#374151" }}>
-          Independent purity analysis (UV detection at 214&nbsp;nm).
+          Third-party purity analysis (HPLC-UV, 214&nbsp;nm) commissioned through Janoshik Analytical.
         </div>
       </div>
 
@@ -160,8 +163,23 @@ export default function COADocument({ product }: COADocumentProps) {
 
       {/* Results */}
       <div style={{ marginBottom: "20px" }}>
-        <div style={{ marginBottom: "10px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
           <p style={{ margin: 0, fontSize: "12.5px", fontWeight: 700, color: blue }}>Results &gt;</p>
+          <div style={{
+            display: "flex", alignItems: "center", gap: "8px",
+            background: "#F0F7FF", border: `1.5px solid ${blue}`,
+            borderRadius: "8px", padding: "5px 11px",
+          }}>
+            <svg width="16" height="18" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 1L2 4.5V10C2 14.75 5.5 19.2 10 21C14.5 19.2 18 14.75 18 10V4.5L10 1Z"
+                fill={blue} fillOpacity="0.12" stroke={blue} strokeWidth="1.4" strokeLinejoin="round"/>
+              <path d="M7 11L9 13L13 9" stroke={blue} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <div>
+              <div style={{ fontSize: "8.5px", fontWeight: 700, color: blue, letterSpacing: "0.12em" }}>THIRD-PARTY VERIFIED</div>
+              <div style={{ fontSize: "8px", color: "#6B7280", marginTop: "1px" }}>Janoshik Analytical</div>
+            </div>
+          </div>
         </div>
 
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
@@ -206,7 +224,7 @@ export default function COADocument({ product }: COADocumentProps) {
       <hr style={divider} />
 
       {/* Analysis conducted */}
-      <div style={{ marginBottom: "8px" }}>
+      <div style={{ marginBottom: "16px" }}>
         <p style={{ margin: 0, fontSize: "12.5px", color: "#6B7280" }}>
           Sample received &gt;&nbsp;
           <span style={{ fontWeight: 700, color: "#111827" }}>{received}</span>
@@ -215,6 +233,27 @@ export default function COADocument({ product }: COADocumentProps) {
           Analysis conducted &gt;&nbsp;
           <span style={{ fontWeight: 700, color: "#111827", background: "#F0F7FF", padding: "2px 8px", borderRadius: "4px" }}>{analysis}</span>
         </p>
+      </div>
+
+      {/* Footer note */}
+      <p style={{ margin: "0 0 20px", fontSize: "10px", color: "#6B7280", fontStyle: "italic", lineHeight: 1.6 }}>
+        This certificate is generated electronically and is valid for the lot number stated above.
+        Testing performed independently by <strong style={{ color: "#374151" }}>Janoshik Analytical</strong> (janoshik.com).
+        OmniQure Peptide Research Institute curates and distributes these results for transparency.
+      </p>
+
+      {/* Dark footer bar */}
+      <div style={{
+        background: "#0D2565", borderRadius: "6px", padding: "11px 18px",
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+      }}>
+        <div style={{ color: "#fff", fontWeight: 900, fontSize: "14px", letterSpacing: "-0.01em" }}>OmniQure</div>
+        <div style={{ textAlign: "center", color: "rgba(150,175,215,0.85)", fontSize: "8.5px" }}>
+          {coaRef}&nbsp;·&nbsp;Lot:&nbsp;{lot}&nbsp;·&nbsp;Issued:&nbsp;{issued}
+        </div>
+        <div style={{ fontSize: "8.5px", color: "rgba(150,175,215,0.7)", textAlign: "right" }}>
+          omniqure.com<br />For in-vitro research use only
+        </div>
       </div>
     </div>
   );
