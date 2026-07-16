@@ -240,7 +240,7 @@ export default function Header() {
           e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.12)";
         }}
         onKeyDown={handleKeyDown}
-        className="w-full h-10 pl-4 pr-11 text-sm outline-none transition-all"
+        className="w-full h-8 sm:h-10 pl-3 pr-9 sm:pl-4 sm:pr-11 text-sm outline-none transition-all"
         style={{
           backgroundColor: "rgba(255,255,255,0.12)",
           color: "#fff",
@@ -250,7 +250,7 @@ export default function Header() {
         autoComplete="off"
       />
       <button
-        className="absolute right-0 h-10 w-11 flex items-center justify-center"
+        className="absolute right-0 h-8 w-9 sm:h-10 sm:w-11 flex items-center justify-center"
         style={{ color: "rgba(255,255,255,0.6)" }}
         onClick={() => {
           if (q) {
@@ -278,7 +278,7 @@ export default function Header() {
         transition: "background 0.3s ease, box-shadow 0.3s ease",
         position: "relative", zIndex: 2,
       }}>
-        <div className="max-w-[1280px] mx-auto px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-2">
+        <div className="max-w-[1280px] mx-auto px-2 sm:px-4 py-1 sm:py-3 flex flex-wrap items-center gap-x-1.5 sm:gap-x-4 gap-y-1 sm:gap-y-2">
 
           {/* Hamburger — mobile only, left side */}
           <button
@@ -297,9 +297,10 @@ export default function Header() {
                 <img
                   src="/omniqure-wordmark.png"
                   alt="OmniQure"
-                  style={{ height: "52px", width: "auto", maxWidth: "none", display: "block" }}
+                  className="h-8 sm:h-[52px]"
+                  style={{ width: "auto", maxWidth: "none", display: "block" }}
                 />
-                <span style={{ display: "block", width: "230px", textAlign: "right", color: "#E8A93E", fontSize: "8px", fontWeight: 900, letterSpacing: "0.18em", whiteSpace: "nowrap", overflow: "hidden", marginTop: "2px" }}>
+                <span className="hidden sm:block" style={{ display: "block", width: "230px", textAlign: "right", color: "#E8A93E", fontSize: "8px", fontWeight: 900, letterSpacing: "0.18em", whiteSpace: "nowrap", overflow: "hidden", marginTop: "2px" }}>
                   PEPTIDE RESEARCH INSTITUTE
                 </span>
               </div>
@@ -444,7 +445,7 @@ export default function Header() {
           </div>
 
           {/* Right group */}
-          <div className="order-2 sm:order-3 ml-auto flex items-center gap-2 sm:gap-4 flex-shrink-0">
+          <div className="order-2 sm:order-3 ml-auto flex items-center gap-1.5 sm:gap-4 flex-shrink-0">
 
             {/* Currency selector */}
             <div ref={currencyRef} style={{ position: "relative", flexShrink: 0 }}>
