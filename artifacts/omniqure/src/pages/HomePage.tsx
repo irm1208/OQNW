@@ -779,9 +779,8 @@ export default function HomePage() {
 
       {/* ── REFER A FRIEND ────────────────────────────────────── */}
       <div className="home-spacer-32" style={{ height: 32, background: "#fff" }} />
-      <section className="home-section-refer" style={{
+      <section className="home-section-refer py-8 md:py-[68px]" style={{
         background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
-        padding: "68px 0",
         position: "relative",
         overflow: "hidden",
       }}>
@@ -798,7 +797,7 @@ export default function HomePage() {
         <div className="max-w-[1280px] mx-auto px-4" style={{ position: "relative", zIndex: 1 }}>
 
           {/* Section header */}
-          <div className="home-section-refer-header text-center mb-12">
+          <div className="home-section-refer-header text-center mb-5 md:mb-12">
             <div className="inline-flex items-center gap-2 mb-3">
               <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #F59E0B, #FCD34D)", borderRadius: "2px" }} />
               <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#F59E0B", letterSpacing: "0.1em" }}>
@@ -815,7 +814,7 @@ export default function HomePage() {
           </div>
 
           {/* Steps */}
-          <div className="refer-steps-grid grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <div className="refer-steps-grid grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 mb-4 md:mb-10">
             {[
               {
                 icon: <UserPlus size={26} />,
@@ -844,12 +843,11 @@ export default function HomePage() {
             ].map((s, i) => (
               <div
                 key={i}
-                className="refer-step-card"
+                className="refer-step-card px-4 py-4 md:px-7 md:py-8"
                 style={{
                   background: "#fff",
                   border: "1.5px solid rgba(255,255,255,0.15)",
                   borderRadius: "20px",
-                  padding: "32px 28px",
                   position: "relative",
                   overflow: "hidden",
                   boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
@@ -865,27 +863,26 @@ export default function HomePage() {
                 }}
               >
                 <div style={{ height: "3px", background: `linear-gradient(90deg, ${s.color}, ${s.color}66)`, borderRadius: "12px 12px 0 0", position: "absolute", top: 0, left: 0, right: 0 }} />
-                <span style={{ position: "absolute", top: "16px", right: "20px", fontSize: "48px", fontWeight: 900, color: "#CBD5E1", lineHeight: 1, userSelect: "none", letterSpacing: "-0.04em" }}>{s.step}</span>
-                <div style={{ width: "56px", height: "56px", borderRadius: "14px", backgroundColor: s.bg, color: s.color, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
+                <span style={{ position: "absolute", top: "12px", right: "16px", fontSize: "32px", fontWeight: 900, color: "#CBD5E1", lineHeight: 1, userSelect: "none", letterSpacing: "-0.04em" }}>{s.step}</span>
+                <div style={{ width: "44px", height: "44px", borderRadius: "12px", backgroundColor: s.bg, color: s.color, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "12px" }}>
                   {s.icon}
                 </div>
-                <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#0F172A", marginBottom: "10px" }}>{s.title}</h3>
-                <p style={{ fontSize: "13.5px", color: "#64748B", lineHeight: 1.7, margin: 0 }}>{s.body}</p>
+                <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A", marginBottom: "6px" }}>{s.title}</h3>
+                <p style={{ fontSize: "13px", color: "#64748B", lineHeight: 1.6, margin: 0 }}>{s.body}</p>
               </div>
             ))}
           </div>
 
           {/* CTA row */}
-          <div style={{
+          <div className="px-4 py-5 md:px-10 md:py-9" style={{
             background: "rgba(255,255,255,0.08)",
             border: "1px solid rgba(255,255,255,0.15)",
             borderRadius: "20px",
-            padding: "36px 40px",
             display: "flex",
             flexWrap: "wrap",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: "24px",
+            gap: "16px",
             backdropFilter: "blur(8px)",
           }}>
             <div style={{ position: "absolute", top: "-60px", right: "10%", width: "300px", height: "300px", borderRadius: "50%", background: "radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
@@ -906,13 +903,13 @@ export default function HomePage() {
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
               <Link
                 href="/refer-a-friend"
-                style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "#F59E0B", color: "#000", padding: "13px 26px", borderRadius: "12px", fontWeight: 800, fontSize: "14px", textDecoration: "none", boxShadow: "0 4px 16px rgba(245,158,11,0.35)", whiteSpace: "nowrap" }}
+                style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "#F59E0B", color: "#000", padding: "10px 20px", borderRadius: "12px", fontWeight: 800, fontSize: "14px", textDecoration: "none", boxShadow: "0 4px 16px rgba(245,158,11,0.35)", whiteSpace: "nowrap" }}
               >
                 Get My Referral Link <ArrowRight size={15} />
               </Link>
               <Link
                 href="/register"
-                style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "rgba(255,255,255,0.12)", color: "#fff", border: "1px solid rgba(255,255,255,0.25)", padding: "13px 26px", borderRadius: "12px", fontWeight: 700, fontSize: "14px", textDecoration: "none", whiteSpace: "nowrap", backdropFilter: "blur(6px)" }}
+                style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "rgba(255,255,255,0.12)", color: "#fff", border: "1px solid rgba(255,255,255,0.25)", padding: "10px 20px", borderRadius: "12px", fontWeight: 700, fontSize: "14px", textDecoration: "none", whiteSpace: "nowrap", backdropFilter: "blur(6px)" }}
               >
                 New? Create an Account
               </Link>
