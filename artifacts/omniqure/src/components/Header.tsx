@@ -37,6 +37,7 @@ const navItems = [
   { label: "Bac Water", href: "/bac-water" },
   { label: "Lab Tests", href: "/lab-tests" },
   { label: "Peptide Calculator", href: "/calculator" },
+  { label: "Research & Education", href: "/protocols" },
 ];
 
 const researchLinks = [
