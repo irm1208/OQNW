@@ -345,7 +345,7 @@ function HeroBundleElectricSlide() {
         display: "block",
         width: "100%",
         height: "100%",
-        background: "#05040f",
+        background: "#e8f0f8",
       }}
     >
       <img
