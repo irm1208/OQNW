@@ -832,44 +832,44 @@ export default function CartPage() {
                         )}
                       </p>
                     )}
-                  </div>
-                </div>
 
-                <div className="flex items-center gap-3 mt-3 flex-shrink-0">
-                  <div
-                    className="flex items-center rounded-xl overflow-hidden"
-                    style={{ border: "1.5px solid #E2E8F0" }}
-                  >
-                    <button
-                      onClick={() => updateQuantity(product.id, quantity - 1)}
-                      className="cart-qty-btn flex items-center justify-center hover:bg-slate-50 transition-colors"
-                      style={{ width: "34px", height: "36px", color: "#475569", background: "none", border: "none", cursor: "pointer" }}
-                    >
-                      <Minus size={13} />
-                    </button>
-                    <div
-                      className="cart-qty-display flex items-center justify-center font-bold"
-                      style={{ width: "40px", height: "36px", borderLeft: "1.5px solid #E2E8F0", borderRight: "1.5px solid #E2E8F0", color: "#0F172A", fontSize: "14px" }}
-                    >
-                      {quantity}
+                    {/* Qty + delete inline */}
+                    <div className="flex items-center gap-2 mt-2">
+                      <div
+                        className="flex items-center rounded-xl overflow-hidden"
+                        style={{ border: "1.5px solid #E2E8F0" }}
+                      >
+                        <button
+                          onClick={() => updateQuantity(product.id, quantity - 1)}
+                          className="cart-qty-btn flex items-center justify-center hover:bg-slate-50 transition-colors"
+                          style={{ width: "30px", height: "30px", color: "#475569", background: "none", border: "none", cursor: "pointer" }}
+                        >
+                          <Minus size={12} />
+                        </button>
+                        <div
+                          className="cart-qty-display flex items-center justify-center font-bold"
+                          style={{ width: "34px", height: "30px", borderLeft: "1.5px solid #E2E8F0", borderRight: "1.5px solid #E2E8F0", color: "#0F172A", fontSize: "13px" }}
+                        >
+                          {quantity}
+                        </div>
+                        <button
+                          onClick={() => updateQuantity(product.id, quantity + 1)}
+                          className="cart-qty-btn flex items-center justify-center hover:bg-slate-50 transition-colors"
+                          style={{ width: "30px", height: "30px", color: "#475569", background: "none", border: "none", cursor: "pointer" }}
+                        >
+                          <Plus size={12} />
+                        </button>
+                      </div>
+                      <button
+                        onClick={() => removeFromCart(product.id)}
+                        className="cart-remove-btn flex items-center justify-center rounded-xl hover:bg-red-50 transition-colors"
+                        style={{ width: "30px", height: "30px", color: "#EF4444", border: "1.5px solid #FEE2E2", background: "none", cursor: "pointer" }}
+                        title="Remove"
+                      >
+                        <Trash2 size={13} />
+                      </button>
                     </div>
-                    <button
-                      onClick={() => updateQuantity(product.id, quantity + 1)}
-                      className="cart-qty-btn flex items-center justify-center hover:bg-slate-50 transition-colors"
-                      style={{ width: "34px", height: "36px", color: "#475569", background: "none", border: "none", cursor: "pointer" }}
-                    >
-                      <Plus size={13} />
-                    </button>
                   </div>
-
-                  <button
-                    onClick={() => removeFromCart(product.id)}
-                    className="cart-remove-btn flex items-center justify-center rounded-xl hover:bg-red-50 transition-colors"
-                    style={{ width: "36px", height: "36px", color: "#EF4444", border: "1.5px solid #FEE2E2", background: "none", cursor: "pointer" }}
-                    title="Remove"
-                  >
-                    <Trash2 size={14} />
-                  </button>
                 </div>
               </div>
               );
