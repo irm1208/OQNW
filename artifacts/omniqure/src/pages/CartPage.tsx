@@ -494,8 +494,7 @@ export default function CartPage() {
   const discountAmount = appliedDiscount?.discountAmount ?? 0;
   const loyaltyDiscountGbp = loyaltyPointsToRedeem / 100;
   const freePeptideDeductGbp = redeemFreePeptide && referralCreditGbp > 0 ? Math.min(referralCreditGbp, cartGBP) : 0;
-  const cryptoDiscountAmount = paymentMethod === "bitcoin" ? Math.round(cartGBP * 0.05 * 100) / 100 : 0;
-  const totalGBP = Math.max(0, cartGBP + shippingCost - bundleDiscountAmount - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp - cryptoDiscountAmount);
+  const totalGBP = Math.max(0, cartGBP + shippingCost - bundleDiscountAmount - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp);
 
   const setD = (f: keyof DeliveryForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setDelivery(d => ({ ...d, [f]: e.target.value }));
@@ -1149,15 +1148,8 @@ export default function CartPage() {
                   <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
                     <input type="radio" checked={active} onChange={() => setPaymentMethod("bitcoin")}
                       style={{ accentColor: THEME.cta, width: 16, height: 16, flexShrink: 0 }} />
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: "15px", fontWeight: 700, color: THEME.text }}>Cryptocurrency</span>
-                        <span style={{
-                          fontSize: "11px", fontWeight: 700, letterSpacing: "0.06em",
-                          background: "#7C3AED", color: "#fff",
-                          padding: "2px 8px", borderRadius: 100,
-                        }}>5% OFF</span>
-                      </div>
+                    <div>
+                      <span style={{ fontSize: "15px", fontWeight: 700, color: THEME.text }}>Cryptocurrency</span>
                       <p style={{ fontSize: "12px", color: THEME.textMuted, margin: "2px 0 0" }}>Bitcoin, Ethereum, USDT, USDC, Litecoin, Monero</p>
                     </div>
                   </div>
