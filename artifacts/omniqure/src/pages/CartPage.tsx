@@ -694,7 +694,7 @@ export default function CartPage() {
       </div>
 
       {/* ── Timer banner ── */}
-      <div style={{
+      <div className="checkout-timer-banner" style={{
         background: timerUrgent
           ? "linear-gradient(90deg, #7F1D1D 0%, #DC2626 50%, #7F1D1D 100%)"
           : timerWarning
@@ -1517,9 +1517,27 @@ export default function CartPage() {
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        .checkout-timer-inner { display: flex; align-items: center; gap: 12px; justify-content: center; }
+        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
         @media (max-width: 900px) {
-          .checkout-layout { flex-direction: column !important; }
-          .checkout-sidebar { width: 100% !important; position: static !important; }
+          .checkout-layout { flex-direction: column !important; padding: 12px !important; gap: 16px !important; }
+          .checkout-sidebar { width: 100% !important; position: static !important; order: -1; }
+          .checkout-breadcrumb-bar { height: 40px !important; }
+          .checkout-timer-banner { padding: 8px 12px !important; }
+          .checkout-timer-clock { width: 26px !important; height: 26px !important; font-size: 12px !important; }
+          .checkout-timer-divider { display: none !important; }
+          .checkout-timer-countdown { font-size: 22px !important; }
+          .checkout-timer-label { font-size: 9px !important; }
+          .checkout-timer-message p:first-child { font-size: 10px !important; }
+          .checkout-timer-message p:last-child { font-size: 11px !important; }
+          .form-grid-3 { grid-template-columns: 1fr 1fr; }
+          input[type="text"], input[type="email"], input[type="tel"], input[type="search"], select {
+            height: 40px !important;
+          }
+          .checkout-layout hr { margin: 14px 0 !important; }
         }
       `}</style>
     </div>
