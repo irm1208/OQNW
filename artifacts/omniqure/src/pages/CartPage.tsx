@@ -539,7 +539,19 @@ export default function CartPage() {
 
   async function placeOrder() {
     const e = validateAll();
-    if (Object.keys(e).length) { setErrors(e); window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+    if (Object.keys(e).length) {
+      setErrors(e);
+      // Scroll to the first invalid field rather than blindly going to the top
+      const firstKey = Object.keys(e)[0];
+      const el = document.querySelector<HTMLElement>(`[data-field="${firstKey}"]`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.focus();
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      return;
+    }
     if (!confirmed) {
       setErrors({ confirmed: "Please confirm before placing your order" });
       return;
@@ -913,6 +925,7 @@ export default function CartPage() {
             <div>
               <label style={label}>Email *</label>
               <input
+                data-field="email"
                 value={delivery.email} onChange={setD("email")} type="email"
                 placeholder="your@email.com" style={inp("email")}
                 onFocus={e => { if (!errors.email) e.currentTarget.style.borderColor = "#1240A0"; }}
@@ -943,14 +956,14 @@ export default function CartPage() {
           <div className="form-grid-2" style={{ marginBottom: 12 }}>
             <div>
               <label style={label}>First Name *</label>
-              <input value={delivery.firstName} onChange={setD("firstName")} placeholder="First Name" style={inp("firstName")}
+              <input data-field="firstName" value={delivery.firstName} onChange={setD("firstName")} placeholder="First Name" style={inp("firstName")}
                 onFocus={e => { if (!errors.firstName) e.currentTarget.style.borderColor = "#1240A0"; }}
                 onBlur={e => { e.currentTarget.style.borderColor = errors.firstName ? "#ef4444" : THEME.inputBorder; }} />
               {errors.firstName && <p style={errText}>{errors.firstName}</p>}
             </div>
             <div>
               <label style={label}>Last Name *</label>
-              <input value={delivery.lastName} onChange={setD("lastName")} placeholder="Last Name" style={inp("lastName")}
+              <input data-field="lastName" value={delivery.lastName} onChange={setD("lastName")} placeholder="Last Name" style={inp("lastName")}
                 onFocus={e => { if (!errors.lastName) e.currentTarget.style.borderColor = "#1240A0"; }}
                 onBlur={e => { e.currentTarget.style.borderColor = errors.lastName ? "#ef4444" : THEME.inputBorder; }} />
               {errors.lastName && <p style={errText}>{errors.lastName}</p>}
@@ -959,7 +972,7 @@ export default function CartPage() {
 
           <div style={{ marginBottom: 12 }}>
             <label style={label}>Address *</label>
-            <input value={delivery.address1} onChange={setD("address1")} placeholder="Street address" style={inp("address1")}
+            <input data-field="address1" value={delivery.address1} onChange={setD("address1")} placeholder="Street address" style={inp("address1")}
               onFocus={e => { if (!errors.address1) e.currentTarget.style.borderColor = "#1240A0"; }}
               onBlur={e => { e.currentTarget.style.borderColor = errors.address1 ? "#ef4444" : THEME.inputBorder; }} />
             {errors.address1 && <p style={errText}>{errors.address1}</p>}
@@ -975,14 +988,14 @@ export default function CartPage() {
           <div className="form-grid-3" style={{ marginBottom: 4 }}>
             <div>
               <label style={label}>City *</label>
-              <input value={delivery.city} onChange={setD("city")} placeholder="City" style={inp("city")}
+              <input data-field="city" value={delivery.city} onChange={setD("city")} placeholder="City" style={inp("city")}
                 onFocus={e => { if (!errors.city) e.currentTarget.style.borderColor = "#1240A0"; }}
                 onBlur={e => { e.currentTarget.style.borderColor = errors.city ? "#ef4444" : THEME.inputBorder; }} />
               {errors.city && <p style={errText}>{errors.city}</p>}
             </div>
             <div>
               <label style={label}>Country *</label>
-              <select value={delivery.country} onChange={setD("country")}
+              <select data-field="country" value={delivery.country} onChange={setD("country")}
                 style={{ ...inp("country"), height: 44, appearance: "none", cursor: "pointer" }}
                 onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
                 onBlur={e => { e.currentTarget.style.borderColor = errors.country ? "#ef4444" : THEME.inputBorder; }}>
@@ -991,7 +1004,7 @@ export default function CartPage() {
             </div>
             <div>
               <label style={label}>Postal Code *</label>
-              <input value={delivery.postcode} onChange={setD("postcode")} placeholder="Postal Code" style={inp("postcode")}
+              <input data-field="postcode" value={delivery.postcode} onChange={setD("postcode")} placeholder="Postal Code" style={inp("postcode")}
                 onFocus={e => { if (!errors.postcode) e.currentTarget.style.borderColor = "#1240A0"; }}
                 onBlur={e => {
                   e.currentTarget.style.borderColor = errors.postcode ? "#ef4444" : THEME.inputBorder;
@@ -1524,7 +1537,7 @@ export default function CartPage() {
 
         @media (max-width: 900px) {
           .checkout-layout { flex-direction: column !important; padding: 12px !important; gap: 16px !important; }
-          .checkout-sidebar { width: 100% !important; position: static !important; order: -1; }
+          .checkout-sidebar { width: 100% !important; position: static !important; }
           .checkout-breadcrumb-bar { height: 40px !important; }
           .checkout-timer-banner { padding: 8px 12px !important; }
           .checkout-timer-clock { width: 26px !important; height: 26px !important; font-size: 12px !important; }
