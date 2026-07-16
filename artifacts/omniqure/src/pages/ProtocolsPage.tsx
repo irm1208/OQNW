@@ -6,6 +6,7 @@ import { groupProducts } from "@/data/groupedProducts";
 import { researchStacks } from "@/data/stacks";
 import { peptideExtras } from "@/data/peptideExtras";
 import { useSEO } from "@/hooks/useSEO";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   FlaskConical, Clock, Search, Beaker, BookOpen,
   Thermometer, Droplets, Activity, AlertTriangle, X,
@@ -81,7 +82,7 @@ const protocolMap = buildProtocolMap();
 
 type TabKey = "overview" | "benefits" | "sideEffects" | "protocol";
 
-function ProtocolCard({ group }: { group: GroupedProduct }) {
+function ProtocolCard({ group, isMobile }: { group: GroupedProduct; isMobile?: boolean }) {
   const [expanded, setExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("overview");
 
@@ -201,18 +202,18 @@ function ProtocolCard({ group }: { group: GroupedProduct }) {
             background: "linear-gradient(135deg, #EFF6FF 0%, #F0FDF4 100%)",
             border: "1px solid #DBEAFE", borderRadius: "8px", padding: "10px 12px",
           }}>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "6px" }}>
               <div>
                 <div style={{ fontSize: "9px", fontWeight: 700, color: "#94A3B8", letterSpacing: "0.08em", marginBottom: "1px" }}>DOSE</div>
-                <div style={{ fontSize: "12px", fontWeight: 700, color: "#0D2565" }}>{protocols[0].suggestedDose}</div>
+                <div style={{ fontSize: "11px", fontWeight: 700, color: "#0D2565", wordBreak: "break-word" }}>{protocols[0].suggestedDose}</div>
               </div>
               <div>
                 <div style={{ fontSize: "9px", fontWeight: 700, color: "#94A3B8", letterSpacing: "0.08em", marginBottom: "1px" }}>FREQUENCY</div>
-                <div style={{ fontSize: "11px", fontWeight: 600, color: "#1E293B" }}>{protocols[0].frequency}</div>
+                <div style={{ fontSize: "10px", fontWeight: 600, color: "#1E293B", wordBreak: "break-word" }}>{protocols[0].frequency}</div>
               </div>
               <div>
                 <div style={{ fontSize: "9px", fontWeight: 700, color: "#94A3B8", letterSpacing: "0.08em", marginBottom: "1px" }}>CYCLE</div>
-                <div style={{ fontSize: "11px", fontWeight: 600, color: "#1E293B" }}>{protocols[0].cycleLength}</div>
+                <div style={{ fontSize: "10px", fontWeight: 600, color: "#1E293B", wordBreak: "break-word" }}>{protocols[0].cycleLength}</div>
               </div>
             </div>
           </div>
@@ -291,7 +292,7 @@ function ProtocolCard({ group }: { group: GroupedProduct }) {
                 )}
 
                 {/* Storage + reconstitution */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "8px" }}>
                   {detail?.storage && (
                     <div style={{ background: "#F8FAFC", border: "1px solid #E2E8F0", borderRadius: "8px", padding: "10px" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "4px" }}>
@@ -403,7 +404,7 @@ function ProtocolCard({ group }: { group: GroupedProduct }) {
                               fontSize: "10px", fontWeight: 700, padding: "2px 8px", borderRadius: "6px",
                             }}>{p.cycleLength}</span>
                           </div>
-                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "8px" }}>
                             <div style={{ background: "rgba(255,255,255,0.7)", borderRadius: "6px", padding: "7px 10px" }}>
                               <div style={{ fontSize: "9px", fontWeight: 700, color: "#94A3B8", marginBottom: "2px" }}>SUGGESTED DOSE</div>
                               <div style={{ fontSize: "13px", fontWeight: 700, color: "#0D2565" }}>{p.suggestedDose}</div>
@@ -432,7 +433,7 @@ function ProtocolCard({ group }: { group: GroupedProduct }) {
 
                 {/* Storage / reconstitution always shown in protocol tab */}
                 {(detail?.storage || detail?.solubility) && (
-                  <div style={{ marginTop: "14px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                  <div style={{ marginTop: "14px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "8px" }}>
                     {detail?.storage && (
                       <div style={{ background: "#F8FAFC", border: "1px solid #E2E8F0", borderRadius: "8px", padding: "10px" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "4px" }}>
@@ -470,6 +471,7 @@ export default function ProtocolsPage() {
     canonicalPath: "/protocols",
   });
 
+  const isMobile = useIsMobile();
   const { products } = useProducts();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
@@ -563,30 +565,53 @@ export default function ProtocolsPage() {
         </div>
       </div>
 
-      {/* Layout */}
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "28px 16px 60px", display: "flex", gap: "22px", alignItems: "flex-start" }}>
-
-        {/* Sidebar */}
-        <div style={{ width: "185px", flexShrink: 0, position: "sticky", top: "16px" }}>
-          <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: "10px", overflow: "hidden" }}>
-            <div style={{ padding: "11px 14px", borderBottom: "1px solid #F1F5F9", fontSize: "10px", fontWeight: 700, color: "#94A3B8", letterSpacing: "0.07em" }}>CATEGORIES</div>
+      {/* Mobile category pill bar */}
+      {isMobile && (
+        <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", padding: "12px 16px 4px", background: "#fff", borderBottom: "1px solid #E2E8F0" }}>
+          <div style={{ display: "flex", gap: "6px", width: "max-content" }}>
             {CATEGORIES.map(cat => (
               <button
                 key={cat}
                 onClick={() => setCategory(cat)}
                 style={{
-                  display: "block", width: "100%", textAlign: "left",
-                  padding: "8px 14px", border: "none", cursor: "pointer",
-                  fontSize: "12px", fontWeight: category === cat ? 700 : 500,
-                  background: category === cat ? "#EFF6FF" : "transparent",
-                  color: category === cat ? "#1B5CB5" : "#374151",
-                  borderLeft: category === cat ? "3px solid #1B5CB5" : "3px solid transparent",
-                  transition: "all 0.1s",
+                  padding: "5px 12px", border: "none", borderRadius: "20px", cursor: "pointer",
+                  fontSize: "11px", fontWeight: category === cat ? 700 : 500, whiteSpace: "nowrap",
+                  background: category === cat ? "#1B5CB5" : "#F1F5F9",
+                  color: category === cat ? "#fff" : "#374151",
+                  transition: "all 0.12s",
                 }}
               >{cat}</button>
             ))}
           </div>
         </div>
+      )}
+
+      {/* Layout */}
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: isMobile ? "16px 12px 60px" : "28px 16px 60px", display: "flex", gap: "22px", alignItems: "flex-start" }}>
+
+        {/* Sidebar — desktop only */}
+        {!isMobile && (
+          <div style={{ width: "185px", flexShrink: 0, position: "sticky", top: "16px" }}>
+            <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: "10px", overflow: "hidden" }}>
+              <div style={{ padding: "11px 14px", borderBottom: "1px solid #F1F5F9", fontSize: "10px", fontWeight: 700, color: "#94A3B8", letterSpacing: "0.07em" }}>CATEGORIES</div>
+              {CATEGORIES.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setCategory(cat)}
+                  style={{
+                    display: "block", width: "100%", textAlign: "left",
+                    padding: "8px 14px", border: "none", cursor: "pointer",
+                    fontSize: "12px", fontWeight: category === cat ? 700 : 500,
+                    background: category === cat ? "#EFF6FF" : "transparent",
+                    color: category === cat ? "#1B5CB5" : "#374151",
+                    borderLeft: category === cat ? "3px solid #1B5CB5" : "3px solid transparent",
+                    transition: "all 0.1s",
+                  }}
+                >{cat}</button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Main content */}
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -621,16 +646,16 @@ export default function ProtocolsPage() {
                     <span style={{ fontSize: "13px", fontWeight: 700, color: "#0D2565" }}>Peptides with Research Protocols</span>
                     <span style={{ background: "#EFF6FF", color: "#1B5CB5", fontSize: "10px", fontWeight: 700, padding: "1px 7px", borderRadius: "20px" }}>{withProtocols.length}</span>
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: "12px" }}>
-                    {withProtocols.map(group => <ProtocolCard key={group.baseName} group={group} />)}
+                  <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fill, minmax(340px, 1fr))", gap: "12px" }}>
+                    {withProtocols.map(group => <ProtocolCard key={group.baseName} group={group} isMobile={isMobile} />)}
                   </div>
                 </div>
               )}
 
               {/* Filtered results */}
               {(category !== "All" || search) && (
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: "12px" }}>
-                  {groups.map(group => <ProtocolCard key={group.baseName} group={group} />)}
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fill, minmax(340px, 1fr))", gap: "12px" }}>
+                  {groups.map(group => <ProtocolCard key={group.baseName} group={group} isMobile={isMobile} />)}
                 </div>
               )}
 
@@ -642,8 +667,8 @@ export default function ProtocolsPage() {
                     <span style={{ fontSize: "13px", fontWeight: 700, color: "#374151" }}>All Peptides — Reference Data</span>
                     <span style={{ background: "#F1F5F9", color: "#64748B", fontSize: "10px", fontWeight: 700, padding: "1px 7px", borderRadius: "20px" }}>{withoutProtocols.length}</span>
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: "12px" }}>
-                    {withoutProtocols.map(group => <ProtocolCard key={group.baseName} group={group} />)}
+                  <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fill, minmax(340px, 1fr))", gap: "12px" }}>
+                    {withoutProtocols.map(group => <ProtocolCard key={group.baseName} group={group} isMobile={isMobile} />)}
                   </div>
                 </div>
               )}
