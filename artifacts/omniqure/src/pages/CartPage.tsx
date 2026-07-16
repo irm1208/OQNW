@@ -429,6 +429,45 @@ export default function CartPage() {
     }
   }, []);
 
+  function renderShippingOptions() {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 4 }}>
+        {SHIPPING_OPTIONS.map(opt => {
+          const cost = opt.freeOver && cartGBP >= opt.freeOver ? 0 : opt.price;
+          const isFree = opt.freeOver && cartGBP >= opt.freeOver;
+          const active = shipping === opt.id;
+          return (
+            <label
+              key={opt.id}
+              style={{
+                display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 16px",
+                border: `1px solid ${active ? "#1240A0" : "#E8EDF5"}`,
+                borderRadius: 6, cursor: "pointer",
+                background: active ? "#EEF4FF" : THEME.cardBg,
+                transition: "border-color 0.15s, background 0.15s",
+              }}
+            >
+              <input type="radio" name="shipping" value={opt.id} checked={active}
+                onChange={() => setShipping(opt.id)}
+                style={{ marginTop: 2, accentColor: THEME.cta, flexShrink: 0 }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontSize: "14px", fontWeight: 600, color: THEME.text }}>{opt.displayLabel}</span>
+                  <span style={{ fontSize: "14px", fontWeight: 700, color: THEME.text, flexShrink: 0, marginLeft: 12 }}>
+                    {isFree ? <span style={{ color: "#059669" }}>FREE</span> : `£${cost.toFixed(2)}`}
+                  </span>
+                </div>
+                {opt.note && (
+                  <p style={{ fontSize: "12px", color: THEME.textMuted, marginTop: 2 }}>{opt.note}</p>
+                )}
+              </div>
+            </label>
+          );
+        })}
+      </div>
+    );
+  }
+
   if (items.length === 0) {
     return (
       <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "60vh" }}>
@@ -842,44 +881,12 @@ export default function CartPage() {
 
           <hr style={divider} />
 
-          {/* SHIPPING OPTIONS */}
-          <p style={sectionTitle}>Shipping Options</p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 4 }}>
-            {SHIPPING_OPTIONS.map(opt => {
-              const cost = opt.freeOver && cartGBP >= opt.freeOver ? 0 : opt.price;
-              const isFree = opt.freeOver && cartGBP >= opt.freeOver;
-              const active = shipping === opt.id;
-              return (
-                <label
-                  key={opt.id}
-                  style={{
-                    display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 16px",
-                    border: `1px solid ${active ? "#1240A0" : "#E8EDF5"}`,
-                    borderRadius: 6, cursor: "pointer",
-                    background: active ? "#EEF4FF" : THEME.cardBg,
-                    transition: "border-color 0.15s, background 0.15s",
-                  }}
-                >
-                  <input type="radio" name="shipping" value={opt.id} checked={active}
-                    onChange={() => setShipping(opt.id)}
-                    style={{ marginTop: 2, accentColor: THEME.cta, flexShrink: 0 }} />
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontSize: "14px", fontWeight: 600, color: THEME.text }}>{opt.displayLabel}</span>
-                      <span style={{ fontSize: "14px", fontWeight: 700, color: THEME.text, flexShrink: 0, marginLeft: 12 }}>
-                        {isFree ? <span style={{ color: "#059669" }}>FREE</span> : `£${cost.toFixed(2)}`}
-                      </span>
-                    </div>
-                    {opt.note && (
-                      <p style={{ fontSize: "12px", color: THEME.textMuted, marginTop: 2 }}>{opt.note}</p>
-                    )}
-                  </div>
-                </label>
-              );
-            })}
+          {/* SHIPPING OPTIONS (desktop position — moves into Order Summary on mobile) */}
+          <div className="shipping-options-form">
+            <p style={sectionTitle}>Shipping Options</p>
+            {renderShippingOptions()}
+            <hr style={divider} />
           </div>
-
-          <hr style={divider} />
 
           {/* PAYMENT METHOD */}
           <p style={sectionTitle}>Payment Method</p>
@@ -1238,6 +1245,12 @@ export default function CartPage() {
 
             <hr style={{ margin: 0, border: "none", borderTop: THEME.divider }} />
 
+            {/* Shipping options (mobile only — shown next to the total) */}
+            <div className="shipping-options-summary" style={{ display: "none", padding: "16px 20px 4px" }}>
+              <p style={{ ...sectionTitle, marginBottom: 10 }}>Shipping Options</p>
+              {renderShippingOptions()}
+            </div>
+
             {/* Totals */}
             <div style={{ padding: "16px 20px" }}>
               {[
@@ -1353,7 +1366,8 @@ export default function CartPage() {
         .checkout-layout > * { min-width: 0; }
 
         @media (max-width: 900px) {
-          .checkout-layout { flex-direction: column !important; padding: 12px !important; gap: 16px !important; }
+          .checkout-layout { flex-direction: column !important; align-items: stretch !important; padding: 12px !important; gap: 16px !important; }
+          .checkout-layout > * { width: 100% !important; max-width: 100% !important; }
           .checkout-sidebar { width: 100% !important; position: static !important; }
           .checkout-breadcrumb-bar { height: 40px !important; }
           .checkout-timer-banner { padding: 8px 12px !important; }
@@ -1368,6 +1382,8 @@ export default function CartPage() {
             height: 40px !important;
           }
           .checkout-layout hr { margin: 14px 0 !important; }
+          .shipping-options-form { display: none !important; }
+          .shipping-options-summary { display: block !important; }
         }
       `}</style>
     </div>
