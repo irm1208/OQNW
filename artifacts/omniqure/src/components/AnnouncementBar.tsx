@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 const messages = [
   "🔬  98%+ Verified Purity — Guaranteed on Every Product",
   "🎁  Refer a Friend — You Both Earn £25 Credit Each",
-  "🚚  Free Shipping on Orders Over £100 — UK & Worldwide",
+  "🚚  Free Shipping on Orders Over £50 — UK & Worldwide",
   "💊  Bundle & Save — Free Items When You Order 3+ Vials",
 ];
 

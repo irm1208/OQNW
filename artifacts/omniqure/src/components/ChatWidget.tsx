@@ -28,12 +28,12 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/ship|deliver|dispatch|postage|worldwide|uk|europe|international/i],
     answer:
-      "We ship **worldwide via DHL Express**. UK orders typically arrive within 1–2 business days; international orders take 3–5 business days. **Free shipping on all orders over £100**. All orders are dispatched in plain, unmarked packaging.",
+      "We ship **worldwide via DHL Express**. UK orders typically arrive within 1–2 business days; international orders take 3–5 business days. **Free shipping on all orders over £50**. All orders are dispatched in plain, unmarked packaging.",
   },
   {
-    patterns: [/free ship|shipping threshold|£100|100 pounds/i],
+    patterns: [/free ship|shipping threshold|£50|£100|50 pounds|100 pounds/i],
     answer:
-      "Free shipping is available on all orders over **£100**, for both UK and international destinations. Orders under £100 carry a standard shipping fee.",
+      "Free shipping is available on all orders over **£50**, for both UK and international destinations. Orders under £50 carry a standard shipping fee.",
   },
   {
     patterns: [/stor|keep|refrigerat|freezer|temper|-20|shelf life/i],

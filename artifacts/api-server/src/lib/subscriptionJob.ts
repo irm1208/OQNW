@@ -40,7 +40,7 @@ async function runCheck(): Promise<void> {
 
       const discountFactor = 1 - sub.discountPct / 100;
       const subtotalGbp = items.reduce((s, i) => s + i.priceGbp * i.quantity * discountFactor, 0);
-      const shippingCostGbp = subtotalGbp >= 100 ? 0 : 5.99;
+      const shippingCostGbp = subtotalGbp >= 50 ? 0 : 5.99;
       const totalGbp = subtotalGbp + shippingCostGbp;
 
       const orderNumber = generateOrderNumber();

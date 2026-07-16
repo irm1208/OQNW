@@ -47,7 +47,7 @@ const SHIPPING_OPTIONS = [
     label: "Standard",
     displayLabel: "Standard (3–5 business days)",
     price: 5.00,
-    freeOver: 100,
+    freeOver: 50,
     note: "",
   },
   {

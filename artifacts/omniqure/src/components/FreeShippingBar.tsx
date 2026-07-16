@@ -1,7 +1,7 @@
 import { useCurrency } from "@/context/CurrencyContext";
 import { Truck } from "lucide-react";
 
-export const FREE_SHIPPING_THRESHOLD_GBP = 100;
+export const FREE_SHIPPING_THRESHOLD_GBP = 50;
 
 /**
  * Free-shipping progress indicator. Shared by the cart/checkout flow so the

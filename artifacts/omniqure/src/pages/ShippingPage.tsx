@@ -36,7 +36,7 @@ function Section({ id, number, title, icon, children }: SectionProps) {
 }
 
 const UK_ZONES: { zone: string; service: string; time: string; price: string }[] = [
-  { zone: "UK Mainland",         service: "Royal Mail Tracked 48 / DPD",  time: "1–3 business days",  price: "£4.95 / Free over £100" },
+  { zone: "UK Mainland",         service: "Royal Mail Tracked 48 / DPD",  time: "1–3 business days",  price: "£4.95 / Free over £50" },
   { zone: "Scotland Highlands",  service: "Royal Mail Tracked 48",         time: "2–4 business days",  price: "£6.95" },
   { zone: "Northern Ireland",    service: "Royal Mail Tracked 48",         time: "2–4 business days",  price: "£6.95" },
   { zone: "Channel Islands",     service: "Royal Mail International",      time: "3–5 business days",  price: "£8.95" },
@@ -87,7 +87,7 @@ export default function ShippingPage() {
         <div className="max-w-[1280px] mx-auto px-4 py-5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { icon: <Truck size={16} />, label: "Free UK Shipping", value: "Orders over £100" },
+              { icon: <Truck size={16} />, label: "Free UK Shipping", value: "Orders over £50" },
               { icon: <Shield size={16} />, label: "Discreet Dispatch", value: "All orders" },
               { icon: <Package size={16} />, label: "Discreet Packaging", value: "Plain outer box" },
               { icon: <Globe size={16} />, label: "Ships Worldwide", value: "50+ countries" },
