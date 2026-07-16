@@ -775,9 +775,8 @@ export default function CartPage() {
         <div style={{ flex: "1 1 0", minWidth: 0 }}>
 
 
-          <div className="space-y-3">
+          <div className="upsells-top space-y-3">
             <BacWaterUpsell />
-
             <CartUpsells />
           </div>
 
@@ -1348,6 +1347,14 @@ export default function CartPage() {
               >
                 Continue Shopping
               </Link>
+
+              {/* Upsells below Place Order — mobile only */}
+              <div className="upsells-bottom" style={{ display: "none", marginTop: 20 }}>
+                <div className="space-y-3">
+                  <BacWaterUpsell />
+                  <CartUpsells />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1384,6 +1391,8 @@ export default function CartPage() {
           .checkout-layout hr { margin: 14px 0 !important; }
           .shipping-options-form { display: none !important; }
           .shipping-options-summary { display: block !important; }
+          .upsells-top { display: none !important; }
+          .upsells-bottom { display: block !important; }
         }
       `}</style>
     </div>
