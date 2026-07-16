@@ -7,6 +7,7 @@ import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { sellingFastSlugs, hotBuySlugs } from "@/data/popularPeptides";
+import QuickViewModal from "@/components/QuickViewModal";
 
 const BLUE = { color: "#1B5CB5", bg: "#EEF4FF", gradient: "linear-gradient(90deg, #1240A0, #2563EB)" };
 
@@ -40,6 +41,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [imgHovered, setImgHovered] = useState(false);
+  const [quickViewOpen, setQuickViewOpen] = useState(false);
   const { toggle: toggleWishlist, has: inWishlist } = useWishlist();
 
   const selectedVariant = group.variants[selectedIdx];
@@ -61,6 +63,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
   const stopProp = (e: React.MouseEvent) => e.stopPropagation();
 
   return (
+    <>
     <div
       className="rounded-2xl h-full"
       style={{
@@ -154,21 +157,26 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {/* Hover overlay */}
         <div style={{
           position: "absolute", bottom: 0, left: 0, right: 0,
-          height: imgHovered ? "52px" : "0px",
-          background: `linear-gradient(to top, ${cat.color}F0, ${cat.color}99, transparent)`,
+          height: imgHovered ? "56px" : "0px",
+          background: `linear-gradient(to top, ${cat.color}F2, ${cat.color}99, transparent)`,
           display: "flex", alignItems: "flex-end", justifyContent: "center",
-          paddingBottom: "12px",
+          paddingBottom: "10px",
           transition: "height 0.3s cubic-bezier(.22,.68,0,1.2)",
-          overflow: "hidden", pointerEvents: "none",
+          overflow: "hidden",
         }}>
-          <span style={{
-            color: "#fff", fontSize: "12px", fontWeight: 700,
-            display: "flex", alignItems: "center", gap: "5px",
-            opacity: imgHovered ? 1 : 0, transition: "opacity 0.2s ease 0.1s",
-            letterSpacing: "0.04em",
-          }}>
-            <Eye size={12} /> View Details
-          </span>
+          <button
+            onClick={e => { e.stopPropagation(); setQuickViewOpen(true); }}
+            style={{
+              color: "#fff", fontSize: "11.5px", fontWeight: 700,
+              display: "flex", alignItems: "center", gap: "5px",
+              opacity: imgHovered ? 1 : 0, transition: "opacity 0.2s ease 0.1s",
+              letterSpacing: "0.04em", background: "rgba(255,255,255,0.18)",
+              border: "1px solid rgba(255,255,255,0.35)", borderRadius: "8px",
+              padding: "5px 12px", cursor: "pointer",
+            }}
+          >
+            <Eye size={12} /> Quick View
+          </button>
         </div>
       </div>
 
@@ -343,5 +351,14 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
       </div>
     </div>
     </div>
+
+    {quickViewOpen && (
+      <QuickViewModal
+        group={group}
+        initialIdx={selectedIdx}
+        onClose={() => setQuickViewOpen(false)}
+      />
+    )}
+    </>
   );
 }
