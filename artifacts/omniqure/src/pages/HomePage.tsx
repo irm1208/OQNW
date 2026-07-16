@@ -255,7 +255,7 @@ function HeroContentSlide() {
           image is always visible and never gets cropped/zoomed on narrower,
           taller carousel boxes (e.g. mobile), matching the other slides. */}
       <img
-        src="/hero-vials-2.png"
+        src="/hero-vials-2.webp"
         alt=""
         aria-hidden="true"
         style={{
@@ -349,7 +349,7 @@ function HeroBundleElectricSlide() {
       }}
     >
       <img
-        src="/hero-bundle-save.png"
+        src="/hero-bundle-save.webp"
         alt="Bundle and Save — buy 3+ peptides get free BAC water, 5+ get 1 free peptide, 10+ get 2 free peptides"
         style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />

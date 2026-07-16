@@ -1,52 +1,19 @@
 import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AnnouncementBar from "@/components/AnnouncementBar";
-import HomePage from "@/pages/HomePage";
-import AllPeptides from "@/pages/AllPeptides";
-import ProductPage from "@/pages/ProductPage";
-import StacksPage from "@/pages/StacksPage";
-import ReconstitutionCalculator from "@/pages/ReconstitutionCalculator";
-import TermsPage from "@/pages/TermsPage";
-import ShippingPage from "@/pages/ShippingPage";
-import PrivacyPage from "@/pages/PrivacyPage";
-import CartPage from "@/pages/CartPage";
-import CheckoutPage from "@/pages/CheckoutPage";
-import OrderConfirmation from "@/pages/OrderConfirmation";
-import FenaReturn from "@/pages/FenaReturn";
-import ContinuePayment from "@/pages/ContinuePayment";
-import TrackOrderPage from "@/pages/TrackOrderPage";
-import SignIn from "@/pages/SignIn";
-import ForgotPassword from "@/pages/ForgotPassword";
-import ResetPassword from "@/pages/ResetPassword";
-import Register from "@/pages/Register";
-import AccountPage from "@/pages/AccountPage";
-import WishlistPage from "@/pages/WishlistPage";
-import ProtocolsPage from "@/pages/ProtocolsPage";
-import FAQPage from "@/pages/FAQPage";
-import GlossaryPage from "@/pages/GlossaryPage";
-import LabTestsPage from "@/pages/LabTestsPage";
-import BacWaterPage from "@/pages/BacWaterPage";
-import AboutPage from "@/pages/AboutPage";
-import ReferAFriendPage from "@/pages/ReferAFriendPage";
-import BundleAndSavePage from "@/pages/BundleAndSavePage";
-import StorageGuidePage from "@/pages/StorageGuidePage";
-import ResearchResultsPage from "@/pages/ResearchResultsPage";
-import ContactPage from "@/pages/ContactPage";
 import { CookieConsent } from "@/components/CookieConsent";
 import { OverlayCoordinatorProvider } from "@/context/OverlayCoordinatorContext";
-import NotFound from "@/pages/not-found";
 import { CartProvider } from "@/context/CartContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
 import { RecentlyViewedProvider } from "@/context/RecentlyViewedContext";
 import { ProductsProvider } from "@/context/ProductsContext";
 import { CustomerAuthProvider } from "@/context/CustomerAuthContext";
 import { WishlistProvider } from "@/context/WishlistContext";
-import ChatWidget from "@/components/ChatWidget";
 import JurisdictionWarning from "@/components/JurisdictionWarning";
 import AgeGate from "@/components/AgeGate";
 import MobileBottomBar from "@/components/MobileBottomBar";
@@ -54,6 +21,41 @@ import CartPreviewPanel from "@/components/CartPreviewPanel";
 import SiteDisclaimer from "@/components/SiteDisclaimer";
 import { initPixels } from "@/lib/pixels";
 import { usePageTracking } from "@/hooks/usePageTracking";
+
+// Lazy-loaded pages — each becomes its own JS chunk, loaded only when visited
+const HomePage             = lazy(() => import("@/pages/HomePage"));
+const AllPeptides          = lazy(() => import("@/pages/AllPeptides"));
+const ProductPage          = lazy(() => import("@/pages/ProductPage"));
+const StacksPage           = lazy(() => import("@/pages/StacksPage"));
+const ReconstitutionCalculator = lazy(() => import("@/pages/ReconstitutionCalculator"));
+const TermsPage            = lazy(() => import("@/pages/TermsPage"));
+const ShippingPage         = lazy(() => import("@/pages/ShippingPage"));
+const PrivacyPage          = lazy(() => import("@/pages/PrivacyPage"));
+const CartPage             = lazy(() => import("@/pages/CartPage"));
+const CheckoutPage         = lazy(() => import("@/pages/CheckoutPage"));
+const OrderConfirmation    = lazy(() => import("@/pages/OrderConfirmation"));
+const FenaReturn           = lazy(() => import("@/pages/FenaReturn"));
+const ContinuePayment      = lazy(() => import("@/pages/ContinuePayment"));
+const TrackOrderPage       = lazy(() => import("@/pages/TrackOrderPage"));
+const SignIn               = lazy(() => import("@/pages/SignIn"));
+const ForgotPassword       = lazy(() => import("@/pages/ForgotPassword"));
+const ResetPassword        = lazy(() => import("@/pages/ResetPassword"));
+const Register             = lazy(() => import("@/pages/Register"));
+const AccountPage          = lazy(() => import("@/pages/AccountPage"));
+const WishlistPage         = lazy(() => import("@/pages/WishlistPage"));
+const ProtocolsPage        = lazy(() => import("@/pages/ProtocolsPage"));
+const FAQPage              = lazy(() => import("@/pages/FAQPage"));
+const GlossaryPage         = lazy(() => import("@/pages/GlossaryPage"));
+const LabTestsPage         = lazy(() => import("@/pages/LabTestsPage"));
+const BacWaterPage         = lazy(() => import("@/pages/BacWaterPage"));
+const AboutPage            = lazy(() => import("@/pages/AboutPage"));
+const ReferAFriendPage     = lazy(() => import("@/pages/ReferAFriendPage"));
+const BundleAndSavePage    = lazy(() => import("@/pages/BundleAndSavePage"));
+const StorageGuidePage     = lazy(() => import("@/pages/StorageGuidePage"));
+const ResearchResultsPage  = lazy(() => import("@/pages/ResearchResultsPage"));
+const ContactPage          = lazy(() => import("@/pages/ContactPage"));
+const ChatWidget            = lazy(() => import("@/components/ChatWidget"));
+const NotFound             = lazy(() => import("@/pages/not-found"));
 
 const queryClient = new QueryClient();
 
@@ -136,7 +138,9 @@ function App() {
                 <Header />
                 <JurisdictionWarning onActiveChange={setJurisdictionActive} />
                 <main className="flex-1">
-                  <Router />
+                  <Suspense fallback={null}>
+                    <Router />
+                  </Suspense>
                 </main>
                 <SiteDisclaimer />
                 <Footer />

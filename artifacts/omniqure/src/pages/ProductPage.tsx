@@ -252,8 +252,8 @@ export default function ProductPage() {
   const [bacWaterEnabled, setBacWaterEnabled] = useState(false);
   const [bacWaterSizeIdx, setBacWaterSizeIdx] = useState(0);
   const BAC_WATER_OPTIONS = [
-    { id: "bw-3ml",  name: "Bacteriostatic Water 3ml",  slug: "bacteriostatic-water-3ml",  price: 4.99,  label: "3ml",  image: "/bac-water-3ml.png",  category: "Accessories" },
-    { id: "bw-10ml", name: "Bacteriostatic Water 10ml", slug: "bacteriostatic-water-10ml", price: 8.99,  label: "10ml", image: "/bac-water-10ml.png", category: "Accessories" },
+    { id: "bw-3ml",  name: "Bacteriostatic Water 3ml",  slug: "bacteriostatic-water-3ml",  price: 4.99,  label: "3ml",  image: "/bac-water-3ml.webp",  category: "Accessories" },
+    { id: "bw-10ml", name: "Bacteriostatic Water 10ml", slug: "bacteriostatic-water-10ml", price: 8.99,  label: "10ml", image: "/bac-water-10ml.webp", category: "Accessories" },
   ] as const;
 
   const handleAddToCart = () => {

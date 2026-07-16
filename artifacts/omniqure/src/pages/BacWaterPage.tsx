@@ -14,7 +14,7 @@ const SIZES = [
     name: "Bacteriostatic Water 3ml",
     slug: "bacteriostatic-water-3ml",
     category: "Accessories",
-    image: "/bac-water-3ml.png",
+    image: "/bac-water-3ml.webp",
   },
   {
     label: "10ml",
@@ -24,7 +24,7 @@ const SIZES = [
     name: "Bacteriostatic Water 10ml",
     slug: "bacteriostatic-water-10ml",
     category: "Accessories",
-    image: "/bac-water-10ml.png",
+    image: "/bac-water-10ml.webp",
   },
 ] as const;
 

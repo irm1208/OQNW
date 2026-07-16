@@ -1,4 +1,4 @@
-import { jsPDF } from "jspdf";
+import type { jsPDF } from "jspdf";
 import type { Product } from "@/data/products";
 import type { ProductDetail } from "@/data/productDetails";
 import { getPurityStr, getLotDates } from "@/utils/productPurity";
@@ -159,7 +159,8 @@ function drawSignature(doc: jsPDF, bx: number, by: number) {
 // ─── Main export ─────────────────────────────────────────────────────────────
 
 export async function generateCOA(product: Product, detail: ProductDetail) {
-  const doc  = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
+  const { jsPDF: JPDF } = await import("jspdf");
+  const doc  = new JPDF({ unit: "mm", format: "a4", orientation: "portrait" });
   const logo = await loadLogo();
 
   const W  = 210;
