@@ -449,8 +449,8 @@ export default function Header() {
             <div ref={currencyRef} style={{ position: "relative", flexShrink: 0 }}>
               <button
                 onClick={() => setCurrencyOpen(o => !o)}
+                className="flex flex-col items-center sm:flex-row sm:gap-1"
                 style={{
-                  display: "flex", alignItems: "center", gap: "4px",
                   padding: "4px 8px", borderRadius: "8px",
                   border: "1.5px solid rgba(255,255,255,0.25)",
                   backgroundColor: "rgba(255,255,255,0.1)",
@@ -458,6 +458,7 @@ export default function Header() {
                 }}
               >
                 <span style={{ fontSize: "15px" }}>{currency.flag}</span>
+                <span className="sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Currency</span>
                 <span className="hidden sm:inline" style={{ fontSize: "13px", fontWeight: 600 }}>{currency.code}</span>
                 <span className="hidden sm:inline"><ChevronDown size={13} style={{ color: "rgba(255,255,255,0.6)" }} /></span>
               </button>
@@ -517,7 +518,7 @@ export default function Header() {
               <div ref={userMenuRef} style={{ position: "relative", flexShrink: 0 }}>
                 <button
                   onClick={() => setUserMenuOpen(o => !o)}
-                  className="flex items-center gap-1.5 text-sm font-medium transition-colors"
+                  className="flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-medium transition-colors"
                   style={{
                     background: "none", border: "none", cursor: "pointer",
                     color: "rgba(255,255,255,0.9)", padding: 0,
@@ -530,6 +531,7 @@ export default function Header() {
                   }}>
                     <User size={14} color="#fff" />
                   </div>
+                  <span className="sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Account</span>
                   <span className="hidden sm:inline" style={{ fontSize: "13px", fontWeight: 600, maxWidth: "100px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {customer.firstName}
                   </span>
@@ -607,12 +609,13 @@ export default function Header() {
             ) : (
               <Link
                 href="/sign-in"
-                className="header-icon-btn flex items-center gap-1.5 text-sm font-bold transition-colors"
+                className="header-icon-btn flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-bold transition-colors"
                 style={{ color: "#ffffff", textDecoration: "none" }}
                 onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#E2E8F0"}
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#ffffff"}
               >
                 <User size={18} />
+                <span className="sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Sign in</span>
                 <span className="hidden sm:inline">{loadingAuth ? "" : "Register / Sign in"}</span>
               </Link>
             )}
@@ -620,7 +623,7 @@ export default function Header() {
             {/* Wishlist */}
             <Link
               href="/wishlist"
-              className="header-icon-btn flex items-center gap-1.5 text-sm font-bold transition-colors relative"
+              className="header-icon-btn flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-bold transition-colors relative"
               style={{ color: "#ffffff", textDecoration: "none" }}
               onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#E2E8F0"}
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#ffffff"}
@@ -640,13 +643,14 @@ export default function Header() {
                   </span>
                 )}
               </span>
+              <span className="sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Wishlist</span>
               <span className="hidden sm:inline">Wishlist</span>
             </Link>
 
             {/* Cart */}
             <Link
               href="/cart"
-              className="header-icon-btn flex items-center gap-1.5 text-sm font-bold transition-colors relative"
+              className="header-icon-btn flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-bold transition-colors relative"
               style={{ color: "#ffffff", textDecoration: "none" }}
               onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#E2E8F0"}
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#ffffff"}
@@ -666,6 +670,7 @@ export default function Header() {
                   </span>
                 )}
               </span>
+              <span className="sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Cart</span>
               <span className="hidden sm:inline">My Cart</span>
             </Link>
 
