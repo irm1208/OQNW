@@ -337,6 +337,26 @@ function HeroBundleSlide() {
   );
 }
 
+function HeroBundleElectricSlide() {
+  return (
+    <Link
+      href="/bundle-and-save"
+      style={{
+        display: "block",
+        width: "100%",
+        height: "100%",
+        background: "#05040f",
+      }}
+    >
+      <img
+        src="/hero-bundle-save.png"
+        alt="Bundle and Save — buy 3+ peptides get free BAC water, 5+ get 1 free peptide, 10+ get 2 free peptides"
+        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+      />
+    </Link>
+  );
+}
+
 const HERO_AUTOPLAY_MS = 6500;
 
 function HeroCarousel() {
@@ -344,6 +364,7 @@ function HeroCarousel() {
     { key: "content", render: () => <HeroContentSlide /> },
     { key: "referral", render: () => <HeroReferralSlide /> },
     { key: "bundle", render: () => <HeroBundleSlide /> },
+    { key: "bundle-electric", render: () => <HeroBundleElectricSlide /> },
   ];
   const [idx, setIdx] = useState(0);
 
