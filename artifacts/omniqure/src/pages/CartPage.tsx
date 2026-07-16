@@ -11,7 +11,7 @@ import { useProducts } from "@/context/ProductsContext";
 import BacWaterUpsell from "@/components/BacWaterUpsell";
 import FreeShippingBar from "@/components/FreeShippingBar";
 import {
-  ShoppingCart, ChevronRight, Sparkles, CheckCircle2,
+  Trash2, Plus, Minus, ShoppingCart, ChevronRight, Sparkles, CheckCircle2,
   RefreshCw, CheckCheck, Lock, Shield, Truck,
 } from "lucide-react";
 
@@ -322,7 +322,7 @@ export default function CartPage() {
   const [, navigate] = useLocation();
   const {
     items, totalItems, subtotal, peptideQty, bundleFreeBacWater, bundleFreeItemsCount,
-    bundleDiscountAmount, freeUnitsByProductId,
+    bundleDiscountAmount, freeUnitsByProductId, removeFromCart, updateQuantity,
   } = useCart();
   const hasFreebie = bundleFreeBacWater || bundleFreeItemsCount > 0;
   const freebieLabel = bundleFreeItemsCount === 2 ? "2 peptides free" : bundleFreeItemsCount === 1 ? "1 peptide free" : "free BAC water";
@@ -1158,13 +1158,45 @@ export default function CartPage() {
                         fontSize: "11px", fontWeight: 700,
                       }}>{quantity}</div>
                     </div>
-                    <div style={{ flex: 1 }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
                       <p style={{ fontSize: "13px", fontWeight: 600, color: THEME.text, margin: 0 }}>{product.name}</p>
                       {freeQty > 0 && (
                         <p style={{ fontSize: "11px", color: "#059669", margin: "2px 0 0", fontWeight: 600 }}>
                           {freeQty} free (Bundle & Save)
                         </p>
                       )}
+                      <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6 }}>
+                        <div style={{ display: "flex", alignItems: "center", border: "1.5px solid #E2E8F0", borderRadius: 8, overflow: "hidden" }}>
+                          <button
+                            onClick={() => updateQuantity(product.id, quantity - 1)}
+                            className="hover:bg-slate-50 transition-colors"
+                            style={{ width: 26, height: 26, display: "flex", alignItems: "center", justifyContent: "center", color: "#475569", background: "none", border: "none", cursor: "pointer" }}
+                            aria-label="Decrease quantity"
+                          >
+                            <Minus size={11} />
+                          </button>
+                          <div style={{ width: 28, height: 26, display: "flex", alignItems: "center", justifyContent: "center", borderLeft: "1.5px solid #E2E8F0", borderRight: "1.5px solid #E2E8F0", color: "#0F172A", fontSize: "12px", fontWeight: 700 }}>
+                            {quantity}
+                          </div>
+                          <button
+                            onClick={() => updateQuantity(product.id, quantity + 1)}
+                            className="hover:bg-slate-50 transition-colors"
+                            style={{ width: 26, height: 26, display: "flex", alignItems: "center", justifyContent: "center", color: "#475569", background: "none", border: "none", cursor: "pointer" }}
+                            aria-label="Increase quantity"
+                          >
+                            <Plus size={11} />
+                          </button>
+                        </div>
+                        <button
+                          onClick={() => removeFromCart(product.id)}
+                          className="hover:bg-red-50 transition-colors"
+                          style={{ width: 26, height: 26, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 8, color: "#EF4444", border: "1.5px solid #FEE2E2", background: "none", cursor: "pointer" }}
+                          title="Remove"
+                          aria-label="Remove item"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
                     </div>
                     <div style={{ fontSize: "14px", fontWeight: 700, color: THEME.text, flexShrink: 0 }}>
                       £{(price * quantity).toFixed(2)}
