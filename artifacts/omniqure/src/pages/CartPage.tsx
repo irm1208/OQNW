@@ -766,7 +766,6 @@ export default function CartPage() {
         {/* ── LEFT COLUMN — items + checkout form ── */}
         <div style={{ flex: "1 1 0", minWidth: 0 }}>
 
-          <FreeShippingBar effectiveTotal={subtotal - bundleDiscountAmount} compact />
 
           {/* Line items */}
           <div className="space-y-3">
