@@ -363,7 +363,6 @@ function HeroCarousel() {
   const slides = [
     { key: "content", render: () => <HeroContentSlide /> },
     { key: "referral", render: () => <HeroReferralSlide /> },
-    { key: "bundle", render: () => <HeroBundleSlide /> },
     { key: "bundle-electric", render: () => <HeroBundleElectricSlide /> },
   ];
   const [idx, setIdx] = useState(0);
