@@ -118,8 +118,6 @@ export default function StorageGuidePage() {
           <div className="flex items-center gap-2 text-blue-200 text-sm mb-4">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
-            <Link href="/blog" className="hover:text-white transition-colors">Research & Education</Link>
-            <span>/</span>
             <span className="text-white">Storage & Handling Guide</span>
           </div>
           <div className="flex items-start gap-4 mb-6">

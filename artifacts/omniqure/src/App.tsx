@@ -30,8 +30,6 @@ import ProtocolsPage from "@/pages/ProtocolsPage";
 import FAQPage from "@/pages/FAQPage";
 import GlossaryPage from "@/pages/GlossaryPage";
 import LabTestsPage from "@/pages/LabTestsPage";
-import BlogPage from "@/pages/BlogPage";
-import BlogPostPage from "@/pages/BlogPostPage";
 import BacWaterPage from "@/pages/BacWaterPage";
 import AboutPage from "@/pages/AboutPage";
 import ReferAFriendPage from "@/pages/ReferAFriendPage";
@@ -99,8 +97,6 @@ function Router() {
       <Route path="/faq" component={FAQPage} />
       <Route path="/glossary" component={GlossaryPage} />
       <Route path="/lab-tests" component={LabTestsPage} />
-      <Route path="/blog" component={BlogPage} />
-      <Route path="/blog/:slug" component={BlogPostPage} />
       <Route path="/bac-water" component={BacWaterPage} />
       <Route path="/terms" component={TermsPage} />
       <Route path="/shipping" component={ShippingPage} />
