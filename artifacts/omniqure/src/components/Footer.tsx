@@ -105,33 +105,34 @@ export default function Footer() {
 
       {/* Main footer body */}
       <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", color: "#94A3B8" }}>
-        <div className="max-w-[1280px] mx-auto px-4 pt-2 md:pt-12 pb-8">
+        <div className="max-w-[1280px] mx-auto px-4 pt-2 md:pt-12 pb-4 md:pb-8">
 
           {/* Top row */}
-          <div className="flex flex-col md:flex-row gap-10 mb-10">
+          <div className="flex flex-col md:flex-row gap-4 md:gap-10 mb-4 md:mb-10">
 
             {/* Brand column */}
             <div className="md:w-[240px] flex-shrink-0 flex flex-col items-center md:items-start">
-              <div className="flex items-center gap-2.5 mb-4">
+              <div className="flex items-center gap-2.5 mb-2 md:mb-4">
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
                   <div style={{ display: "inline-block" }}>
                     <img
                       src="/omniqure-wordmark.png"
                       alt="OmniQure"
-                      style={{ height: "52px", width: "auto", maxWidth: "none", display: "block" }}
+                      className="h-8 md:h-[52px]"
+                      style={{ width: "auto", maxWidth: "none", display: "block" }}
                     />
-                    <span style={{ display: "block", width: "230px", textAlign: "right", color: "#E8A93E", fontSize: "8px", fontWeight: 900, letterSpacing: "0.18em", whiteSpace: "nowrap", overflow: "hidden", marginTop: "2px" }}>
+                    <span className="hidden md:block" style={{ display: "block", width: "230px", textAlign: "right", color: "#E8A93E", fontSize: "8px", fontWeight: 900, letterSpacing: "0.18em", whiteSpace: "nowrap", overflow: "hidden", marginTop: "2px" }}>
                       PEPTIDE RESEARCH INSTITUTE
                     </span>
                   </div>
                 </div>
               </div>
-              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.70)", lineHeight: "1.75", marginBottom: "16px" }}>
+              <p className="hidden md:block" style={{ fontSize: "13px", color: "rgba(255,255,255,0.70)", lineHeight: "1.75", marginBottom: "16px" }}>
                 Research peptides manufactured to the highest standards of quality and purity. 98%+ verified purity guaranteed on every product.
               </p>
 
               {/* Trust badges */}
-              <div className="flex flex-wrap gap-2 mb-5">
+              <div className="flex flex-wrap gap-2 mb-2 md:mb-5">
                 {["98%+", "COA Tested", "Secure Checkout"].map(b => (
                   <span
                     key={b}
@@ -144,7 +145,7 @@ export default function Footer() {
               </div>
 
               {/* Contact micro-info */}
-              <div className="flex flex-col gap-2">
+              <div className="hidden md:flex flex-col gap-2">
                 <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "rgba(255,255,255,0.70)" }}>
                   <Mail size={13} style={{ color: "rgba(255,255,255,0.50)", flexShrink: 0 }} />
                   research@omniqure.com
@@ -158,19 +159,19 @@ export default function Footer() {
             </div>
 
             {/* Link columns */}
-            <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-4 md:gap-6">
               {footerCategories.map(col => (
                 <div key={col.title}>
                   <Link
                     href={col.href}
-                    className="block font-bold mb-4"
+                    className="block font-bold mb-2 md:mb-4"
                     style={{ color: "#E8A93E", fontSize: "12.5px", textDecoration: "none", letterSpacing: "0.04em", textTransform: "uppercase" }}
                     onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#F5C76B"}
                     onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#E8A93E"}
                   >
                     {col.title}
                   </Link>
-                  <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
+                  <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
                     {col.links.map(link => (
                       <li key={link.label}>
                         <Link
@@ -191,7 +192,7 @@ export default function Footer() {
 
           {/* Bottom bar */}
           <div
-            className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6"
+            className="flex flex-col sm:flex-row items-center justify-between gap-2 md:gap-4 pt-3 md:pt-6"
             style={{ borderTop: "1px solid rgba(255,255,255,0.15)" }}
           >
             <div className="flex flex-wrap justify-center sm:justify-start gap-x-5 gap-y-1.5">
@@ -230,7 +231,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="text-center mt-5" style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>
+          <div className="text-center mt-3 md:mt-5" style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>
             © {new Date().getFullYear()} OmniQure Peptide Research Institute — All Rights Reserved · For Laboratory Research Use Only
           </div>
         </div>
