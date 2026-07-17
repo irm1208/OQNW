@@ -776,7 +776,6 @@ export default function CartPage() {
 
 
           <div className="upsells-top space-y-3">
-            <BacWaterUpsell />
             <CartUpsells />
           </div>
 
@@ -1209,6 +1208,11 @@ export default function CartPage() {
 
             <hr style={{ margin: 0, border: "none", borderTop: THEME.divider }} />
 
+            {/* BAC Water upsell — below cart items, above discount code */}
+            <div style={{ padding: "16px 20px 4px" }}>
+              <BacWaterUpsell />
+            </div>
+
             {/* Discount code */}
             <div style={{ padding: "16px 20px" }}>
               {appliedDiscount ? (
@@ -1351,7 +1355,6 @@ export default function CartPage() {
               {/* Upsells below Place Order — mobile only */}
               <div className="upsells-bottom" style={{ display: "none", marginTop: 20 }}>
                 <div className="space-y-3">
-                  <BacWaterUpsell />
                   <CartUpsells />
                 </div>
               </div>
