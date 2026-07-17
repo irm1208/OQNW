@@ -1056,6 +1056,89 @@ export default function CartPage() {
             </div>
           )}
 
+          <hr style={divider} />
+
+          {/* Confirm + CTA */}
+          <label style={{
+            display: "flex", alignItems: "flex-start", gap: 10,
+            fontSize: "13px", color: THEME.textSub, cursor: "pointer", marginBottom: 16,
+            lineHeight: 1.4,
+          }}>
+            <input type="checkbox" checked={confirmed} onChange={e => setConfirmed(e.target.checked)}
+              style={{ width: 16, height: 16, marginTop: 1, accentColor: THEME.cta, flexShrink: 0 }} />
+            I confirm that all products are for laboratory research purposes only, not for human consumption, and I am at least 18 years of age.
+          </label>
+          {errors.confirmed && <p style={{ ...errText, marginBottom: 12 }}>{errors.confirmed}</p>}
+
+          {placeError && (
+            <div style={{ marginBottom: 12, padding: "10px 12px", background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 6, fontSize: "13px", color: "#DC2626" }}>
+              {placeError}
+            </div>
+          )}
+          {stockErrors.length > 0 && (
+            <div style={{ marginBottom: 12, padding: "10px 12px", background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 6, fontSize: "13px", color: "#DC2626" }}>
+              {stockErrors.map(e => (
+                <p key={e.productName} style={{ margin: "0 0 4px" }}>
+                  {e.productName}: only {e.available} in stock (you requested {e.requested})
+                </p>
+              ))}
+            </div>
+          )}
+
+          <button
+            type="button"
+            onClick={placeOrder}
+            disabled={placing}
+            style={{
+              width: "100%", height: 52, borderRadius: 4,
+              background: placing ? THEME.ctaHover : THEME.cta,
+              color: "#fff", border: "none",
+              fontSize: "13px", fontWeight: 800,
+              letterSpacing: "0.1em", textTransform: "uppercase",
+              cursor: placing ? "not-allowed" : "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              transition: "background 0.15s",
+            }}
+            onMouseEnter={e => { if (!placing) (e.currentTarget as HTMLButtonElement).style.background = THEME.ctaHover; }}
+            onMouseLeave={e => { if (!placing) (e.currentTarget as HTMLButtonElement).style.background = THEME.cta; }}
+          >
+            {placing ? (
+              <>
+                <span style={{ width: 16, height: 16, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "#fff", borderRadius: "50%", animation: "spin 0.8s linear infinite", display: "inline-block" }} />
+                Processing…
+              </>
+            ) : (
+              <>
+                <Lock size={14} />
+                Place Order
+              </>
+            )}
+          </button>
+
+          <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 14 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "11px", color: THEME.textMuted, fontWeight: 600, letterSpacing: "0.05em" }}>
+              <Shield size={13} /> SECURE CHECKOUT
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "11px", color: THEME.textMuted, fontWeight: 600, letterSpacing: "0.05em" }}>
+              <Truck size={13} /> FAST SHIPPING
+            </div>
+          </div>
+
+          <Link
+            href="/all-peptides"
+            className="w-full rounded-xl font-semibold flex items-center justify-center gap-2 transition-opacity hover:opacity-80"
+            style={{ height: "40px", backgroundColor: "#F1F5F9", color: "#475569", textDecoration: "none", fontSize: "13px", marginTop: 14, display: "flex" }}
+          >
+            Continue Shopping
+          </Link>
+
+          {/* Upsells below Place Order — mobile only */}
+          <div className="upsells-bottom" style={{ display: "none", marginTop: 20 }}>
+            <div className="space-y-3">
+              <CartUpsells />
+            </div>
+          </div>
+
         </div>
 
         {/* ── RIGHT COLUMN — SINGLE ORDER SUMMARY ── */}
@@ -1275,90 +1358,6 @@ export default function CartPage() {
               </div>
             </div>
 
-            <hr style={{ margin: 0, border: "none", borderTop: THEME.divider }} />
-
-            {/* Confirm + CTA */}
-            <div style={{ padding: "16px 20px 20px" }}>
-              <label style={{
-                display: "flex", alignItems: "flex-start", gap: 10,
-                fontSize: "13px", color: THEME.textSub, cursor: "pointer", marginBottom: 16,
-                lineHeight: 1.4,
-              }}>
-                <input type="checkbox" checked={confirmed} onChange={e => setConfirmed(e.target.checked)}
-                  style={{ width: 16, height: 16, marginTop: 1, accentColor: THEME.cta, flexShrink: 0 }} />
-                I confirm that all products are for laboratory research purposes only, not for human consumption, and I am at least 18 years of age.
-              </label>
-              {errors.confirmed && <p style={{ ...errText, marginBottom: 12 }}>{errors.confirmed}</p>}
-
-              {placeError && (
-                <div style={{ marginBottom: 12, padding: "10px 12px", background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 6, fontSize: "13px", color: "#DC2626" }}>
-                  {placeError}
-                </div>
-              )}
-              {stockErrors.length > 0 && (
-                <div style={{ marginBottom: 12, padding: "10px 12px", background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 6, fontSize: "13px", color: "#DC2626" }}>
-                  {stockErrors.map(e => (
-                    <p key={e.productName} style={{ margin: "0 0 4px" }}>
-                      {e.productName}: only {e.available} in stock (you requested {e.requested})
-                    </p>
-                  ))}
-                </div>
-              )}
-
-              <button
-                type="button"
-                onClick={placeOrder}
-                disabled={placing}
-                style={{
-                  width: "100%", height: 52, borderRadius: 4,
-                  background: placing ? THEME.ctaHover : THEME.cta,
-                  color: "#fff", border: "none",
-                  fontSize: "13px", fontWeight: 800,
-                  letterSpacing: "0.1em", textTransform: "uppercase",
-                  cursor: placing ? "not-allowed" : "pointer",
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                  transition: "background 0.15s",
-                }}
-                onMouseEnter={e => { if (!placing) (e.currentTarget as HTMLButtonElement).style.background = THEME.ctaHover; }}
-                onMouseLeave={e => { if (!placing) (e.currentTarget as HTMLButtonElement).style.background = THEME.cta; }}
-              >
-                {placing ? (
-                  <>
-                    <span style={{ width: 16, height: 16, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "#fff", borderRadius: "50%", animation: "spin 0.8s linear infinite", display: "inline-block" }} />
-                    Processing…
-                  </>
-                ) : (
-                  <>
-                    <Lock size={14} />
-                    Place Order
-                  </>
-                )}
-              </button>
-
-              <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 14 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "11px", color: THEME.textMuted, fontWeight: 600, letterSpacing: "0.05em" }}>
-                  <Shield size={13} /> SECURE CHECKOUT
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "11px", color: THEME.textMuted, fontWeight: 600, letterSpacing: "0.05em" }}>
-                  <Truck size={13} /> FAST SHIPPING
-                </div>
-              </div>
-
-              <Link
-                href="/all-peptides"
-                className="w-full rounded-xl font-semibold flex items-center justify-center gap-2 transition-opacity hover:opacity-80"
-                style={{ height: "40px", backgroundColor: "#F1F5F9", color: "#475569", textDecoration: "none", fontSize: "13px", marginTop: 14 }}
-              >
-                Continue Shopping
-              </Link>
-
-              {/* Upsells below Place Order — mobile only */}
-              <div className="upsells-bottom" style={{ display: "none", marginTop: 20 }}>
-                <div className="space-y-3">
-                  <CartUpsells />
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
