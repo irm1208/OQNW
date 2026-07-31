@@ -61,9 +61,7 @@ export default function COADocument({ product }: COADocumentProps) {
   const coaRef     = getCOARef(product.id, lot);
   const detail     = productDetails[product.slug];
   const jd         = janoshikData[product.id];
-  const verifyUrl  = jd?.taskNumber && jd?.verifyKey
-    ? getJanoshikVerifyUrl(jd.taskNumber, jd.verifyKey)
-    : null;
+  const verifyUrl  = jd?.verifyUrl ?? null;
 
   const blue = "#1240A0";
   const divider: React.CSSProperties = { borderTop: "1px solid #E5E7EB", margin: "0 0 16px" };

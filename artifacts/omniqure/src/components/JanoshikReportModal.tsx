@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { X, ExternalLink } from "lucide-react";
-import { getJanoshikVerifyUrl } from "@/components/COADocument";
 
 interface JanoshikReportModalProps {
   taskNumber: string;
   verifyKey: string;
+  verifyUrl: string;
   image: string;
   productName: string;
   onClose: () => void;
@@ -13,11 +13,11 @@ interface JanoshikReportModalProps {
 export default function JanoshikReportModal({
   taskNumber,
   verifyKey,
+  verifyUrl,
   image,
   productName,
   onClose,
 }: JanoshikReportModalProps) {
-  const verifyUrl = getJanoshikVerifyUrl(taskNumber, verifyKey);
 
   // Close on Escape
   useEffect(() => {

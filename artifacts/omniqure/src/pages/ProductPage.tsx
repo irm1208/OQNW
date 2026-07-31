@@ -8,7 +8,6 @@ import { generateCOA } from "@/utils/generateCOA";
 import COADocument from "@/components/COADocument";
 import COAModal from "@/components/COAModal";
 import { janoshikData } from "@/data/janoshikData";
-import { getJanoshikVerifyUrl } from "@/components/COADocument";
 import JanoshikReportModal from "@/components/JanoshikReportModal";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -317,10 +316,11 @@ export default function ProductPage() {
       {/* Janoshik Report Modal */}
       {showJanoshikModal && (() => {
         const jd = janoshikData[product.id];
-        return jd?.taskNumber && jd?.verifyKey && jd?.image ? (
+        return jd?.image && jd?.verifyUrl ? (
           <JanoshikReportModal
-            taskNumber={jd.taskNumber}
-            verifyKey={jd.verifyKey}
+            taskNumber={jd.taskNumber ?? ""}
+            verifyKey={jd.verifyKey ?? ""}
+            verifyUrl={jd.verifyUrl}
             image={jd.image}
             productName={product.name}
             onClose={() => setShowJanoshikModal(false)}
@@ -470,9 +470,6 @@ export default function ProductPage() {
                 <div className="flex items-center gap-2 flex-shrink-0">
                   {(() => {
                     const jd = janoshikData[product.id];
-                    const verifyUrl = jd?.taskNumber && jd?.verifyKey
-                      ? getJanoshikVerifyUrl(jd.taskNumber, jd.verifyKey)
-                      : null;
                     return jd?.image ? (
                       <button
                         onClick={() => setShowJanoshikModal(true)}
