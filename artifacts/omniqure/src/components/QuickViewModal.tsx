@@ -121,15 +121,15 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
             background: "#F0F7FF", border: "1.5px solid #1240A0",
             display: "flex", alignItems: "center", gap: "8px",
           }}>
-            <svg width="14" height="16" viewBox="0 0 20 22" fill="none">
-              <path d="M10 1L2 4.5V10C2 14.75 5.5 19.2 10 21C14.5 19.2 18 14.75 18 10V4.5L10 1Z"
-                fill="#1240A0" fillOpacity="0.15" stroke="#1240A0" strokeWidth="1.4" strokeLinejoin="round"/>
-              <path d="M7 11L9 13L13 9" stroke="#1240A0" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+            {/* Janoshik logo mark — three interlocking arches */}
+            <svg width="26" height="18" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 22 C2 22 2 11 8 11 C14 11 14 22 14 22" stroke="#1F2937" strokeWidth="2.3" strokeLinecap="round"/>
+              <path d="M11 22 C11 22 11 3 18.5 3 C26 3 26 22 26 22"  stroke="#1F2937" strokeWidth="2.3" strokeLinecap="round"/>
+              <path d="M23 22 C23 22 23 11 29 11 C35 11 35 22 35 22" stroke="#1F2937" strokeWidth="2.3" strokeLinecap="round"/>
             </svg>
-            <div>
-              <div style={{ fontSize: "8px", fontWeight: 700, color: "#1240A0", letterSpacing: "0.12em" }}>THIRD-PARTY VERIFIED</div>
-              <div style={{ fontSize: "8px", color: "#6B7280", marginTop: "1px" }}>Janoshik Analytical</div>
-            </div>
+            <span style={{ fontSize: "9px", fontWeight: 800, color: "#1F2937", letterSpacing: "0.06em", fontFamily: "Arial, sans-serif" }}>
+              JANOSHIK
+            </span>
           </div>
         </div>
 
