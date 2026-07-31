@@ -20,6 +20,8 @@ export interface JanoshikResult {
   analysis: string;
   taskNumber?: string;
   verifyKey?: string;
+  /** Path to the report image served from /janoshik/<taskNumber>.png */
+  image?: string;
 }
 
 export const janoshikData: Record<string, JanoshikResult> = {
@@ -29,13 +31,13 @@ export const janoshikData: Record<string, JanoshikResult> = {
 
   // ── BPC-157 ───────────────────────────────────────────────────────────────
   "3":  { purity: 99.804, actualMass:  6.01, lot: "BP05-0326",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
-  "4":  { purity: 99.892, actualMass: 11.95, lot: "BP1070Q",           received: "22 Jun 2026", analysis: "29 Jun 2026", taskNumber: "208600", verifyKey: "DSDYDF1TRWRC" },
+  "4":  { purity: 99.892, actualMass: 11.95, lot: "BP1070Q",           received: "22 Jun 2026", analysis: "29 Jun 2026", taskNumber: "208600", verifyKey: "DSDYDF1TRWRC", image: "/janoshik/208600.png" },
   "5":  { purity: 99.203, actualMass: 23.01, lot: "BP20-0418",         received: "03 May 2026", analysis: "04 May 2026" },
   "6":  { purity: 99.827, actualMass: 46.46, lot: "BP40-0605",         received: "30 Jun 2026", analysis: "01 Jul 2026" },
 
   // ── BPC-157 + TB-500 Blend ────────────────────────────────────────────────
-  "7":  { actualMass: 23.44, lot: "BPTB040Q",              received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208601", verifyKey: "3N3R5JF1157F" },
-  "8":  { actualMass: 23.44, lot: "BPTB040Q",              received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208601", verifyKey: "3N3R5JF1157F" },
+  "7":  { actualMass: 23.44, lot: "BPTB040Q",              received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208601", verifyKey: "3N3R5JF1157F", image: "/janoshik/208601.png" },
+  "8":  { actualMass: 23.44, lot: "BPTB040Q",              received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208601", verifyKey: "3N3R5JF1157F", image: "/janoshik/208601.png" },
 
   // ── Cagrilintide ──────────────────────────────────────────────────────────
   "9":  { purity: 99.907, actualMass:  5.59, lot: "CAG5-0328",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
@@ -55,7 +57,7 @@ export const janoshikData: Record<string, JanoshikResult> = {
 
   // ── GHK-Cu ────────────────────────────────────────────────────────────────
   "17": { purity: 99.714, actualMass:  55.81, lot: "HK50-0505",        received: "25 May 2026", analysis: "26 May 2026" },
-  "18": { purity: 99.912, actualMass: 108.95, lot: "GH48730Q",         received: "22 Jun 2026", analysis: "30 Jun 2026", taskNumber: "208608", verifyKey: "PYKSNGJUCS1Y" },
+  "18": { purity: 99.912, actualMass: 108.95, lot: "GH48730Q",         received: "22 Jun 2026", analysis: "30 Jun 2026", taskNumber: "208608", verifyKey: "PYKSNGJUCS1Y", image: "/janoshik/208608.png" },
 
   // ── GHRP-2 ────────────────────────────────────────────────────────────────
   "19": { purity: 99.216, actualMass:  5.59, lot: "G205-0406",         received: "22 Apr 2026", analysis: "23 Apr 2026" },
@@ -74,10 +76,10 @@ export const janoshikData: Record<string, JanoshikResult> = {
   "32": { purity: 99.892, actualMass: 11.98, lot: "IP10-0611",         received: "30 Jun 2026", analysis: "01 Jul 2026" },
 
   // ── KPV ───────────────────────────────────────────────────────────────────
-  "31": { purity: 99.484, actualMass: 12.39, lot: "KP4850Q",           received: "15 Jun 2026", analysis: "01 Jul 2026", taskNumber: "208604", verifyKey: "LYIZTLMNR54K" },
+  "31": { purity: 99.484, actualMass: 12.39, lot: "KP4850Q",           received: "15 Jun 2026", analysis: "01 Jul 2026", taskNumber: "208604", verifyKey: "LYIZTLMNR54K", image: "/janoshik/208604.png" },
 
   // ── Melanotan 2 10mg ──────────────────────────────────────────────────────
-  "34": { purity: 99.887, actualMass: 11.12, lot: "MT28470Q",          received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208605", verifyKey: "CUHNDPBS5IUD" },
+  "34": { purity: 99.887, actualMass: 11.12, lot: "MT28470Q",          received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208605", verifyKey: "CUHNDPBS5IUD", image: "/janoshik/208605.png" },
 
   // ── KLOW BLEND ────────────────────────────────────────────────────────────
   "35": { actualMass: 90.35, lot: "KL080-0611",             received: "30 Jun 2026", analysis: "01 Jul 2026" },
@@ -117,10 +119,10 @@ export const janoshikData: Record<string, JanoshikResult> = {
   "52": { purity: 99.003, actualMass: 12.50, lot: "P210-0508",         received: "27 May 2026", analysis: "28 May 2026" },
 
   // ── Selank 10mg ───────────────────────────────────────────────────────────
-  "53": { purity: 99.161, actualMass: 10.55, lot: "SK8470Q",           received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208610", verifyKey: "FSSTD9WMADJH" },
+  "53": { purity: 99.161, actualMass: 10.55, lot: "SK8470Q",           received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208610", verifyKey: "FSSTD9WMADJH", image: "/janoshik/208610.png" },
 
   // ── Semax 10mg ────────────────────────────────────────────────────────────
-  "55": { purity: 99.138, actualMass: 11.32, lot: "SX8470Q",           received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208609", verifyKey: "I42F8EHHKVHG" },
+  "55": { purity: 99.138, actualMass: 11.32, lot: "SX8470Q",           received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208609", verifyKey: "I42F8EHHKVHG", image: "/janoshik/208609.png" },
 
   // ── Retatrutide ───────────────────────────────────────────────────────────
   "56": { purity: 99.729, actualMass: 12.33, lot: "RE10-0608",         received: "30 Jun 2026", analysis: "01 Jul 2026" },
@@ -131,7 +133,7 @@ export const janoshikData: Record<string, JanoshikResult> = {
   "61": { purity: 99.852, actualMass: 66.53, lot: "RE60-0327",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
 
   // ── TB-500 10mg ───────────────────────────────────────────────────────────
-  "62": { purity: 99.119, actualMass: 11.77, lot: "TB48780Q",          received: "15 Jun 2026", analysis: "01 Jul 2026", taskNumber: "208613", verifyKey: "A9RR18DUH522" },
+  "62": { purity: 99.119, actualMass: 11.77, lot: "TB48780Q",          received: "15 Jun 2026", analysis: "01 Jul 2026", taskNumber: "208613", verifyKey: "A9RR18DUH522", image: "/janoshik/208613.png" },
 
   // ── Semax ─────────────────────────────────────────────────────────────────
   "64": { purity: 99.020, actualMass: 11.92, lot: "SX10-0526",         received: "14 Jun 2026", analysis: "15 Jun 2026" },
@@ -149,10 +151,10 @@ export const janoshikData: Record<string, JanoshikResult> = {
   "73": { purity: 99.312, actualMass: 22.67, lot: "TB20-0605",         received: "30 Jun 2026", analysis: "01 Jul 2026" },
 
   // ── Tesamorelin 20mg ──────────────────────────────────────────────────────
-  "72": { purity: 99.358, actualMass: 23.57, lot: "TS3450Q",           received: "15 Jun 2026", analysis: "01 Jul 2026", taskNumber: "208612", verifyKey: "NJDR19MRS3WC" },
+  "72": { purity: 99.358, actualMass: 23.57, lot: "TS3450Q",           received: "15 Jun 2026", analysis: "01 Jul 2026", taskNumber: "208612", verifyKey: "NJDR19MRS3WC", image: "/janoshik/208612.png" },
 
   // ── CJC-1295 No DAC + Ipamorelin Blend ───────────────────────────────────
-  "74": { actualMass: 23.21, lot: "CJIPA0450Q",             received: "24 Jun 2026", analysis: "01 Jul 2026", taskNumber: "208602", verifyKey: "UM1G6NTFHJCB" },
+  "74": { actualMass: 23.21, lot: "CJIPA0450Q",             received: "24 Jun 2026", analysis: "01 Jul 2026", taskNumber: "208602", verifyKey: "UM1G6NTFHJCB", image: "/janoshik/208602.png" },
 
   // ── Thymosin Alpha-1 ──────────────────────────────────────────────────────
   "75": { purity: 99.839, actualMass: 12.11, lot: "TA110-0522",        received: "14 Jun 2026", analysis: "15 Jun 2026" },

@@ -7,8 +7,9 @@ import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus,
 import { generateCOA } from "@/utils/generateCOA";
 import COADocument from "@/components/COADocument";
 import COAModal from "@/components/COAModal";
-import { janoshikData, } from "@/data/janoshikData";
+import { janoshikData } from "@/data/janoshikData";
 import { getJanoshikVerifyUrl } from "@/components/COADocument";
+import JanoshikReportModal from "@/components/JanoshikReportModal";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getPurity, getPurityStr, getLotNumber } from "@/utils/productPurity";
@@ -143,6 +144,7 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [showCOAModal, setShowCOAModal] = useState(false);
+  const [showJanoshikModal, setShowJanoshikModal] = useState(false);
   const { addToCart, totalItems, peptideQty } = useCart();
   const { trackView } = useRecentlyViewed();
   const { customer } = useCustomerAuth();
@@ -312,6 +314,20 @@ export default function ProductPage() {
         />
       )}
 
+      {/* Janoshik Report Modal */}
+      {showJanoshikModal && (() => {
+        const jd = janoshikData[product.id];
+        return jd?.taskNumber && jd?.verifyKey && jd?.image ? (
+          <JanoshikReportModal
+            taskNumber={jd.taskNumber}
+            verifyKey={jd.verifyKey}
+            image={jd.image}
+            productName={product.name}
+            onClose={() => setShowJanoshikModal(false)}
+          />
+        ) : null;
+      })()}
+
 
       {/* Breadcrumb */}
       <div className="bg-white" style={{ borderBottom: "1px solid #E8EDF5" }}>
@@ -457,13 +473,11 @@ export default function ProductPage() {
                     const verifyUrl = jd?.taskNumber && jd?.verifyKey
                       ? getJanoshikVerifyUrl(jd.taskNumber, jd.verifyKey)
                       : null;
-                    return verifyUrl ? (
-                      <a
-                        href={verifyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    return jd?.image ? (
+                      <button
+                        onClick={() => setShowJanoshikModal(true)}
                         className="flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90"
-                        style={{ height: "38px", padding: "0 14px", backgroundColor: "#fff", color: "#1240A0", border: "1.5px solid #1240A0", cursor: "pointer", fontSize: "12px", textDecoration: "none", display: "flex", alignItems: "center" }}
+                        style={{ height: "38px", padding: "0 14px", backgroundColor: "#fff", color: "#1240A0", border: "1.5px solid #1240A0", cursor: "pointer", fontSize: "12px" }}
                       >
                         {/* Janoshik logo mark */}
                         <svg width="20" height="14" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -472,7 +486,7 @@ export default function ProductPage() {
                           <path d="M23 22 C23 22 23 11 29 11 C35 11 35 22 35 22" stroke="#1240A0" strokeWidth="2.5" strokeLinecap="round"/>
                         </svg>
                         Janoshik Report
-                      </a>
+                      </button>
                     ) : null;
                   })()}
                   <button
