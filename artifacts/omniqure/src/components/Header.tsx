@@ -30,10 +30,9 @@ function highlightMatch(text: string, query: string) {
   );
 }
 
-const navItems = [
+const BASE_NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "All Peptides", href: "/all-peptides" },
-  { label: "NAD+", href: "/product/nad-plus-500mg" },
   { label: "Bac Water", href: "/bac-water" },
   { label: "Lab Tests", href: "/lab-tests" },
   { label: "Independent Results", href: "/lab-reports" },
@@ -58,6 +57,16 @@ const rightNavItems = [
 export default function Header() {
   const { products: allProducts } = useProducts();
   const products = useMemo(() => allProducts.filter((p) => !isHiddenCategory(p.category)), [allProducts]);
+  const navItems = useMemo(() => {
+    const nadPublished = allProducts.some((p) => p.slug === "nad-plus-500mg");
+    if (!nadPublished) return BASE_NAV_ITEMS;
+    return [
+      BASE_NAV_ITEMS[0], // Home
+      BASE_NAV_ITEMS[1], // All Peptides
+      { label: "NAD+", href: "/product/nad-plus-500mg" },
+      ...BASE_NAV_ITEMS.slice(2),
+    ];
+  }, [allProducts]);
   const peptideGroups = useMemo(
     () => groupProducts(products).sort((a, b) => a.baseName.localeCompare(b.baseName)),
     [products]
