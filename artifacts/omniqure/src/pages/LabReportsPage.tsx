@@ -80,14 +80,6 @@ const REPORTS: Report[] = [
     url: "https://verify.janoshik.com/tests/208604-KPV_10mg_OmniQure_LYIZTLMNR54K",
   },
   {
-    id: "tirzepatide-30mg",
-    name: "Tirzepatide",
-    amount: "30mg",
-    testNumber: "208603",
-    methods: ["HPLC", "ESI-MS"],
-    url: "https://verify.janoshik.com/tests/208603-Tirzepatide_30mg_V3ZBG39CVZPW",
-  },
-  {
     id: "cjc-ipamorelin-blend",
     name: "CJC-1295 No DAC + Ipamorelin Blend",
     amount: "10:10mg",
@@ -104,30 +96,6 @@ const REPORTS: Report[] = [
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208601-BPC157_TB500_TB4_Blend_1010_OmniQure_3N3R5JF1157F",
     isBlend: true,
-  },
-  {
-    id: "cagrilintide-10mg",
-    name: "Cagrilintide",
-    amount: "10mg",
-    testNumber: "200664",
-    methods: ["HPLC", "ESI-MS"],
-    url: "https://verify.janoshik.com/tests/200664-Cag_10_XHPSD9IE65XR",
-  },
-  {
-    id: "r140",
-    name: "R-140",
-    amount: "—",
-    testNumber: "200652",
-    methods: ["HPLC", "ESI-MS"],
-    url: "https://verify.janoshik.com/tests/200652-R140_R4FW1ARFQ7KY",
-  },
-  {
-    id: "retatrutide-40mg",
-    name: "Retatrutide",
-    amount: "40mg",
-    testNumber: "203231",
-    methods: ["HPLC", "ESI-MS"],
-    url: "https://verify.janoshik.com/tests/203231-Retatrutide_40mg_XY2IAQ58G5EY",
   },
 ];
 
