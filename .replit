@@ -26,10 +26,6 @@ args = "API Server"
 task = "workflow.run"
 args = "Storefront"
 
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Admin Panel"
-
 [[workflows.workflow]]
 name = "API Server"
 author = "agent"
@@ -53,18 +49,6 @@ waitForPort = 5000
 
 [workflows.workflow.metadata]
 outputType = "webview"
-
-[[workflows.workflow]]
-name = "Admin Panel"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "PORT=8082 BASE_PATH=/admin pnpm --filter @workspace/admin-panel run dev"
-waitForPort = 8082
-
-[workflows.workflow.metadata]
-outputType = "console"
 
 [agent]
 stack = "BEST_EFFORT_FALLBACK"
