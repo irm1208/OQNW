@@ -7,6 +7,8 @@ import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus,
 import { generateCOA } from "@/utils/generateCOA";
 import COADocument from "@/components/COADocument";
 import COAModal from "@/components/COAModal";
+import { janoshikData, } from "@/data/janoshikData";
+import { getJanoshikVerifyUrl } from "@/components/COADocument";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getPurity, getPurityStr, getLotNumber } from "@/utils/productPurity";
@@ -449,13 +451,38 @@ export default function ProductPage() {
                     <p className="text-xs" style={{ color: "#3B82F6" }}>Full QC report — Lot {getLotNumber(product.id)}</p>
                   </div>
                 </div>
-                <button
-                  onClick={() => setShowCOAModal(true)}
-                  className="coa-btn-touch flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90 flex-shrink-0"
-                  style={{ height: "38px", padding: "0 16px", backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px" }}
-                >
-                  View Report →
-                </button>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  {(() => {
+                    const jd = janoshikData[product.id];
+                    const verifyUrl = jd?.taskNumber && jd?.verifyKey
+                      ? getJanoshikVerifyUrl(jd.taskNumber, jd.verifyKey)
+                      : null;
+                    return verifyUrl ? (
+                      <a
+                        href={verifyUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90"
+                        style={{ height: "38px", padding: "0 14px", backgroundColor: "#fff", color: "#1240A0", border: "1.5px solid #1240A0", cursor: "pointer", fontSize: "12px", textDecoration: "none", display: "flex", alignItems: "center" }}
+                      >
+                        {/* Janoshik logo mark */}
+                        <svg width="20" height="14" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M2 22 C2 22 2 11 8 11 C14 11 14 22 14 22" stroke="#1240A0" strokeWidth="2.5" strokeLinecap="round"/>
+                          <path d="M11 22 C11 22 11 3 18.5 3 C26 3 26 22 26 22"  stroke="#1240A0" strokeWidth="2.5" strokeLinecap="round"/>
+                          <path d="M23 22 C23 22 23 11 29 11 C35 11 35 22 35 22" stroke="#1240A0" strokeWidth="2.5" strokeLinecap="round"/>
+                        </svg>
+                        Janoshik Report
+                      </a>
+                    ) : null;
+                  })()}
+                  <button
+                    onClick={() => setShowCOAModal(true)}
+                    className="coa-btn-touch flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90"
+                    style={{ height: "38px", padding: "0 16px", backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px" }}
+                  >
+                    View Report →
+                  </button>
+                </div>
               </div>
             </div>
 
