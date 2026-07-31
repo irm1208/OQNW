@@ -64,10 +64,8 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
       .then((data: ApiProduct[] | null) => {
         if (cancelled || !data || !Array.isArray(data)) return;
         const apiProducts = data.map(toProduct);
-        // Deduplicate by slug so DB sequential IDs don't cause duplicates
-        const apiSlugs = new Set(apiProducts.map((p) => p.slug));
-        const fallback = staticProducts.filter((p) => !apiSlugs.has(p.slug));
-        setProducts([...apiProducts, ...fallback]);
+        // API is the source of truth — disabled products must not be re-added from the static list
+        setProducts(apiProducts);
       })
       .catch(() => {})
       .finally(() => {
