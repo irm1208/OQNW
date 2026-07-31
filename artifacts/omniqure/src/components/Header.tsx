@@ -36,7 +36,7 @@ const navItems = [
   { label: "NAD+", href: "/product/nad-plus-500mg" },
   { label: "Bac Water", href: "/bac-water" },
   { label: "Lab Tests", href: "/lab-tests" },
-  { label: "Lab Reports", href: "/lab-reports" },
+  { label: "Independent Results", href: "/lab-reports" },
   { label: "Peptide Calculator", href: "/calculator" },
   { label: "Research & Education", href: "/protocols" },
 ];
@@ -46,7 +46,7 @@ const researchLinks = [
   { label: "Storage & Handling", href: "/storage-guide", icon: Thermometer, desc: "Lyophilised storage, reconstitution & stability" },
   { label: "Research Results", href: "/research-results", icon: Activity, desc: "Before & after biomarker data from peer-reviewed studies" },
   { label: "Research Stacks", href: "/stacks", icon: Layers, desc: "Curated multi-peptide research stacks" },
-  { label: "Lab Reports", href: "/lab-reports", icon: GraduationCap, desc: "HPLC & ESI-MS independent lab reports for every peptide" },
+  { label: "Independent Results", href: "/lab-reports", icon: GraduationCap, desc: "HPLC & ESI-MS independent lab reports for every peptide" },
   { label: "Glossary", href: "/glossary", icon: BookMarked, desc: "Scientific terminology & definitions" },
 ];
 

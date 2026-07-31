@@ -231,7 +231,7 @@ function ReportCard({ report }: { report: Report }) {
 
 export default function LabReportsPage() {
   useSEO({
-    title: "Lab Reports",
+    title: "Independent Results",
     description:
       "Independent HPLC and ESI-MS lab reports for OmniQure peptides, verified by Janoshik Analytical. View purity data and molecular identity confirmation for every tested batch.",
     canonicalPath: "/lab-reports",
@@ -267,7 +267,7 @@ export default function LabReportsPage() {
             </span>
           </div>
           <h1 style={{ margin: "0 0 10px", fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em" }}>
-            Lab Reports
+            Independent Results
           </h1>
           <p style={{ margin: "0 0 28px", fontSize: "14px", color: "#BFDBFE", lineHeight: 1.7, maxWidth: "580px" }}>
             Every report below is hosted on Janoshik's own verification platform — an independent third-party analytical laboratory. Click "View Report" to see the raw purity, mass spec data, and chromatogram directly on their site.
