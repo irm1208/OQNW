@@ -1,6 +1,6 @@
 /**
- * Real Janoshik test results sourced from saltandpeps.co.uk/tests (Uther vendor)
- * Each entry keyed by product ID maps to the most recent test for that peptide/dose.
+ * Real Janoshik test results for OmniQure products.
+ * Each entry keyed by DB product ID maps to the most recent verified test.
  *
  * Fields
  *  purity     – verified purity %, e.g. 99.892 (undefined for blend/mass-only products)
@@ -8,6 +8,8 @@
  *  lot        – batch identifier used as the COA lot number
  *  received   – "DD Mon YYYY" sample-received date
  *  analysis   – "DD Mon YYYY" analysis-conducted date
+ *  taskNumber – Janoshik task number (links to verify.janoshik.com)
+ *  verifyKey  – unique key appended to the verify URL
  */
 
 export interface JanoshikResult {
@@ -16,6 +18,8 @@ export interface JanoshikResult {
   lot: string;
   received: string;
   analysis: string;
+  taskNumber?: string;
+  verifyKey?: string;
 }
 
 export const janoshikData: Record<string, JanoshikResult> = {
@@ -25,13 +29,13 @@ export const janoshikData: Record<string, JanoshikResult> = {
 
   // ── BPC-157 ───────────────────────────────────────────────────────────────
   "3":  { purity: 99.804, actualMass:  6.01, lot: "BP05-0326",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
-  "4":  { purity: 99.892, actualMass: 11.95, lot: "BP10-0609",         received: "28 Jun 2026", analysis: "29 Jun 2026" },
+  "4":  { purity: 99.892, actualMass: 11.95, lot: "BP1070Q",           received: "22 Jun 2026", analysis: "29 Jun 2026", taskNumber: "208600", verifyKey: "DSDYDF1TRWRC" },
   "5":  { purity: 99.203, actualMass: 23.01, lot: "BP20-0418",         received: "03 May 2026", analysis: "04 May 2026" },
   "6":  { purity: 99.827, actualMass: 46.46, lot: "BP40-0605",         received: "30 Jun 2026", analysis: "01 Jul 2026" },
 
   // ── BPC-157 + TB-500 Blend ────────────────────────────────────────────────
-  "7":  { actualMass: 29.60, lot: "T/B1010-0607",          received: "30 Jun 2026", analysis: "01 Jul 2026" },
-  "8":  { actualMass: 29.60, lot: "T/B1010-0607",          received: "30 Jun 2026", analysis: "01 Jul 2026" },
+  "7":  { actualMass: 23.44, lot: "BPTB040Q",              received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208601", verifyKey: "3N3R5JF1157F" },
+  "8":  { actualMass: 23.44, lot: "BPTB040Q",              received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208601", verifyKey: "3N3R5JF1157F" },
 
   // ── Cagrilintide ──────────────────────────────────────────────────────────
   "9":  { purity: 99.907, actualMass:  5.59, lot: "CAG5-0328",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
@@ -51,7 +55,7 @@ export const janoshikData: Record<string, JanoshikResult> = {
 
   // ── GHK-Cu ────────────────────────────────────────────────────────────────
   "17": { purity: 99.714, actualMass:  55.81, lot: "HK50-0505",        received: "25 May 2026", analysis: "26 May 2026" },
-  "18": { purity: 99.764, actualMass: 111.29, lot: "HK100-0531",       received: "15 Jun 2026", analysis: "16 Jun 2026" },
+  "18": { purity: 99.912, actualMass: 108.95, lot: "GH48730Q",         received: "22 Jun 2026", analysis: "30 Jun 2026", taskNumber: "208608", verifyKey: "PYKSNGJUCS1Y" },
 
   // ── GHRP-2 ────────────────────────────────────────────────────────────────
   "19": { purity: 99.216, actualMass:  5.59, lot: "G205-0406",         received: "22 Apr 2026", analysis: "23 Apr 2026" },
@@ -67,11 +71,13 @@ export const janoshikData: Record<string, JanoshikResult> = {
   "30": { purity: 98.021, actualMass:  1.20, lot: "IG1-0408",          received: "22 Apr 2026", analysis: "23 Apr 2026" },
 
   // ── Ipamorelin ────────────────────────────────────────────────────────────
-  "31": { purity: 99.852, actualMass:  5.74, lot: "IP05-0416",         received: "03 May 2026", analysis: "04 May 2026" },
   "32": { purity: 99.892, actualMass: 11.98, lot: "IP10-0611",         received: "30 Jun 2026", analysis: "01 Jul 2026" },
 
-  // ── Kisspeptin-10 ─────────────────────────────────────────────────────────
-  "34": { purity: 99.926, actualMass: 11.43, lot: "KS10-0614",         received: "30 Jun 2026", analysis: "01 Jul 2026" },
+  // ── KPV ───────────────────────────────────────────────────────────────────
+  "31": { purity: 99.484, actualMass: 12.39, lot: "KP4850Q",           received: "15 Jun 2026", analysis: "01 Jul 2026", taskNumber: "208604", verifyKey: "LYIZTLMNR54K" },
+
+  // ── Melanotan 2 10mg ──────────────────────────────────────────────────────
+  "34": { purity: 99.887, actualMass: 11.12, lot: "MT28470Q",          received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208605", verifyKey: "CUHNDPBS5IUD" },
 
   // ── KLOW BLEND ────────────────────────────────────────────────────────────
   "35": { actualMass: 90.35, lot: "KL080-0611",             received: "30 Jun 2026", analysis: "01 Jul 2026" },
@@ -110,8 +116,11 @@ export const janoshikData: Record<string, JanoshikResult> = {
   // ── P21 ───────────────────────────────────────────────────────────────────
   "52": { purity: 99.003, actualMass: 12.50, lot: "P210-0508",         received: "27 May 2026", analysis: "28 May 2026" },
 
-  // ── PE-22-28 ──────────────────────────────────────────────────────────────
-  "53": { purity: 99.754, actualMass: 12.86, lot: "PE10-0610",         received: "28 Jun 2026", analysis: "29 Jun 2026" },
+  // ── Selank 10mg ───────────────────────────────────────────────────────────
+  "53": { purity: 99.161, actualMass: 10.55, lot: "SK8470Q",           received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208610", verifyKey: "FSSTD9WMADJH" },
+
+  // ── Semax 10mg ────────────────────────────────────────────────────────────
+  "55": { purity: 99.138, actualMass: 11.32, lot: "SX8470Q",           received: "03 Jul 2026", analysis: "13 Jul 2026", taskNumber: "208609", verifyKey: "I42F8EHHKVHG" },
 
   // ── Retatrutide ───────────────────────────────────────────────────────────
   "56": { purity: 99.729, actualMass: 12.33, lot: "RE10-0608",         received: "30 Jun 2026", analysis: "01 Jul 2026" },
@@ -121,8 +130,8 @@ export const janoshikData: Record<string, JanoshikResult> = {
   "60": { purity: 99.822, actualMass: 54.93, lot: "RE50-0323",         received: "09 Apr 2026", analysis: "10 Apr 2026" },
   "61": { purity: 99.852, actualMass: 66.53, lot: "RE60-0327",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
 
-  // ── Selank ────────────────────────────────────────────────────────────────
-  "62": { purity: 99.798, actualMass: 12.71, lot: "SK10-0424",         received: "11 May 2026", analysis: "12 May 2026" },
+  // ── TB-500 10mg ───────────────────────────────────────────────────────────
+  "62": { purity: 99.119, actualMass: 11.77, lot: "TB48780Q",          received: "15 Jun 2026", analysis: "01 Jul 2026", taskNumber: "208613", verifyKey: "A9RR18DUH522" },
 
   // ── Semax ─────────────────────────────────────────────────────────────────
   "64": { purity: 99.020, actualMass: 11.92, lot: "SX10-0526",         received: "14 Jun 2026", analysis: "15 Jun 2026" },
@@ -137,11 +146,13 @@ export const janoshikData: Record<string, JanoshikResult> = {
 
   // ── TB-500 ────────────────────────────────────────────────────────────────
   "71": { purity: 99.766, actualMass:  5.98, lot: "TB405-0404",        received: "22 Apr 2026", analysis: "23 Apr 2026" },
-  "72": { purity: 99.959, actualMass: 11.42, lot: "TBF10-0607",        received: "30 Jun 2026", analysis: "01 Jul 2026" },
   "73": { purity: 99.312, actualMass: 22.67, lot: "TB20-0605",         received: "30 Jun 2026", analysis: "01 Jul 2026" },
 
-  // ── Tesamorelin + Ipamorelin Blend ────────────────────────────────────────
-  "74": { actualMass: 15.40, lot: "T/I103-0604",            received: "30 Jun 2026", analysis: "01 Jul 2026" },
+  // ── Tesamorelin 20mg ──────────────────────────────────────────────────────
+  "72": { purity: 99.358, actualMass: 23.57, lot: "TS3450Q",           received: "15 Jun 2026", analysis: "01 Jul 2026", taskNumber: "208612", verifyKey: "NJDR19MRS3WC" },
+
+  // ── CJC-1295 No DAC + Ipamorelin Blend ───────────────────────────────────
+  "74": { actualMass: 23.21, lot: "CJIPA0450Q",             received: "24 Jun 2026", analysis: "01 Jul 2026", taskNumber: "208602", verifyKey: "UM1G6NTFHJCB" },
 
   // ── Thymosin Alpha-1 ──────────────────────────────────────────────────────
   "75": { purity: 99.839, actualMass: 12.11, lot: "TA110-0522",        received: "14 Jun 2026", analysis: "15 Jun 2026" },

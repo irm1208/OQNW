@@ -3,6 +3,11 @@ import { janoshikData } from "@/data/janoshikData";
 import { productDetails } from "@/data/productDetails";
 import type { Product } from "@/data/products";
 
+export function getJanoshikVerifyUrl(taskNumber: string, verifyKey: string): string {
+  // Reconstruct the slug from the verify URL pattern used by Janoshik
+  return `https://verify.janoshik.com/tests/${taskNumber}-${verifyKey}`;
+}
+
 // ─── shared helpers ───────────────────────────────────────────────────────────
 
 export function parseBaseName(name: string): string {
@@ -55,6 +60,10 @@ export default function COADocument({ product }: COADocumentProps) {
   const baseName   = parseBaseName(product.name);
   const coaRef     = getCOARef(product.id, lot);
   const detail     = productDetails[product.slug];
+  const jd         = janoshikData[product.id];
+  const verifyUrl  = jd?.taskNumber && jd?.verifyKey
+    ? getJanoshikVerifyUrl(jd.taskNumber, jd.verifyKey)
+    : null;
 
   const blue = "#1240A0";
   const divider: React.CSSProperties = { borderTop: "1px solid #E5E7EB", margin: "0 0 16px" };
@@ -125,17 +134,32 @@ export default function COADocument({ product }: COADocumentProps) {
             { label: "Sample",       value: `${product.name}\u00A0\u00A0\u00A0${lot}`, highlight: false },
             { label: "Manufacturer", value: "OmniQure Peptide Research Institute", highlight: false },
             { label: "Batch",        value: lot, highlight: false },
-            { label: "Tested by",    value: "Janoshik Analytical\u00A0·\u00A0janoshik.com", highlight: true },
           ].map(row => (
             <tr key={row.label}>
               <td style={{ width: "130px", padding: "5px 12px 5px 0", color: blue, fontWeight: 600, verticalAlign: "top", fontSize: "12.5px" }}>
                 {row.label}
               </td>
-              <td style={{ padding: "5px 0", color: row.highlight ? "#15803D" : "#111827", verticalAlign: "top", fontWeight: row.highlight ? 600 : 400 }}>
+              <td style={{ padding: "5px 0", color: "#111827", verticalAlign: "top" }}>
                 {row.value}
               </td>
             </tr>
           ))}
+          <tr>
+            <td style={{ width: "130px", padding: "5px 12px 5px 0", color: blue, fontWeight: 600, verticalAlign: "top", fontSize: "12.5px" }}>
+              Tested by
+            </td>
+            <td style={{ padding: "5px 0", verticalAlign: "top", fontWeight: 600, color: "#15803D" }}>
+              Janoshik Analytical&nbsp;·&nbsp;janoshik.com
+              {verifyUrl && jd?.taskNumber && (
+                <span style={{ marginLeft: "10px", fontWeight: 400, fontSize: "11px" }}>
+                  <a href={verifyUrl} target="_blank" rel="noopener noreferrer"
+                    style={{ color: blue, textDecoration: "underline" }}>
+                    Task&nbsp;#{jd.taskNumber}
+                  </a>
+                </span>
+              )}
+            </td>
+          </tr>
         </tbody>
       </table>
 
