@@ -242,11 +242,13 @@ function CatalogTab() {
   }
 
   async function handleTogglePublished(p: CatalogProduct) {
+    const next = !p.isPublished;
     try {
-      await updateProduct.mutateAsync({ id: p.id, data: { isPublished: !p.isPublished } });
+      await updateProduct.mutateAsync({ id: p.id, data: { isPublished: next } });
       await invalidate();
+      toast.success(`${p.name} is now ${next ? "live on storefront" : "disabled and hidden"}`);
     } catch {
-      toast.error("Failed to update");
+      toast.error("Failed to update visibility");
     }
   }
 
@@ -329,11 +331,21 @@ function CatalogTab() {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      {product.isPublished ? (
-                        <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200 text-xs">Published</Badge>
-                      ) : (
-                        <Badge variant="outline" className="bg-gray-100 text-gray-600 border-gray-200 text-xs">Hidden</Badge>
-                      )}
+                      <button
+                        onClick={() => handleTogglePublished(product)}
+                        disabled={updateProduct.isPending}
+                        title={product.isPublished ? "Click to disable" : "Click to enable"}
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed ${
+                          product.isPublished
+                            ? "bg-green-100 text-green-800 border-green-200 hover:bg-red-50 hover:text-red-700 hover:border-red-200"
+                            : "bg-gray-100 text-gray-600 border-gray-200 hover:bg-green-50 hover:text-green-700 hover:border-green-200"
+                        }`}
+                      >
+                        {product.isPublished
+                          ? <><Eye className="w-3 h-3" /> Live</>
+                          : <><EyeOff className="w-3 h-3" /> Disabled</>
+                        }
+                      </button>
                       {product.isFeatured && (
                         <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
                       )}
@@ -341,15 +353,6 @@ function CatalogTab() {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8"
-                        title={product.isPublished ? "Hide" : "Publish"}
-                        onClick={() => handleTogglePublished(product)}
-                      >
-                        {product.isPublished ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-                      </Button>
                       <Button
                         variant="ghost"
                         size="icon"

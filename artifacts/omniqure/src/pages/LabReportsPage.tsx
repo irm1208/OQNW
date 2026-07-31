@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSEO } from "@/hooks/useSEO";
 import { BarChart2, Atom, ExternalLink, Search, CheckCircle2, ShieldCheck, FlaskConical } from "lucide-react";
 
@@ -12,6 +12,9 @@ interface Report {
   methods: string[];
   url: string;
   isBlend?: boolean;
+  /** Slugs of the matching product(s) in the catalogue. Report is hidden if
+   *  none of these slugs are currently published. Empty array = always show. */
+  productSlugs: string[];
 }
 
 const REPORTS: Report[] = [
@@ -22,6 +25,7 @@ const REPORTS: Report[] = [
     testNumber: "208600",
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208600-BPC157_10mg_OmniQure_DSDYDF1TRWRC",
+    productSlugs: ["bpc-157-10mg"],
   },
   {
     id: "tb500-10mg",
@@ -30,6 +34,7 @@ const REPORTS: Report[] = [
     testNumber: "208613",
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208613-TB500_TB4_10mg_OmniQure_A9RR18DUH522",
+    productSlugs: ["tb-500-10mg"],
   },
   {
     id: "tesamorelin-20mg",
@@ -38,6 +43,7 @@ const REPORTS: Report[] = [
     testNumber: "208612",
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208612-Tesamorelin_20mh_OmniQure_NJDR19MRS3WC",
+    productSlugs: ["tesamorelin-20mg"],
   },
   {
     id: "semax-10mg",
@@ -46,6 +52,7 @@ const REPORTS: Report[] = [
     testNumber: "208609",
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208609-Semax_10mg_OmniQure_I42F8EHHKVHG",
+    productSlugs: ["semax-10mg"],
   },
   {
     id: "selank-10mg",
@@ -54,6 +61,7 @@ const REPORTS: Report[] = [
     testNumber: "208610",
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208610-Selank_10mg_OmniQure_FSSTD9WMADJH",
+    productSlugs: ["selank-10mg"],
   },
   {
     id: "ghkcu-100mg",
@@ -62,6 +70,7 @@ const REPORTS: Report[] = [
     testNumber: "208608",
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208608-GHKCU_100mg_OmniQure_PYKSNGJUCS1Y",
+    productSlugs: ["ghk-cu-100mg"],
   },
   {
     id: "melanotan2-10mg",
@@ -70,6 +79,7 @@ const REPORTS: Report[] = [
     testNumber: "208605",
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208605-Melanotan_2_10mg_OmniQure_CUHNDPBS5IUD",
+    productSlugs: ["melanotan-2-10mg"],
   },
   {
     id: "kpv-10mg",
@@ -78,6 +88,7 @@ const REPORTS: Report[] = [
     testNumber: "208604",
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208604-KPV_10mg_OmniQure_LYIZTLMNR54K",
+    productSlugs: ["kpv-10mg"],
   },
   {
     id: "cjc-ipamorelin-blend",
@@ -87,6 +98,7 @@ const REPORTS: Report[] = [
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208602-CJC1295_No_DAC_Ipamorelin_Blend_1010_OmniQure_UM1G6NTFHJCB",
     isBlend: true,
+    productSlugs: ["cjc-1295-no-dac-ipamorelin-5mg"],
   },
   {
     id: "bpc157-tb500-blend",
@@ -96,6 +108,7 @@ const REPORTS: Report[] = [
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208601-BPC157_TB500_TB4_Blend_1010_OmniQure_3N3R5JF1157F",
     isBlend: true,
+    productSlugs: ["bpc-157-tb-500-blend-10mg", "bpc-157-tb-500-blend-20mg"],
   },
 ];
 
@@ -238,10 +251,31 @@ export default function LabReportsPage() {
   });
 
   const [search, setSearch] = useState("");
+  const [publishedSlugs, setPublishedSlugs] = useState<Set<string> | null>(null);
+
+  // Fetch published products to know which to show
+  useEffect(() => {
+    fetch("/api/products")
+      .then(r => r.json())
+      .then((products: { slug: string }[]) => {
+        setPublishedSlugs(new Set(products.map(p => p.slug)));
+      })
+      .catch(() => {
+        // On error, show all reports (fail open)
+        setPublishedSlugs(new Set());
+      });
+  }, []);
+
+  // A report is visible if its product is published (or it has no linked slug, or data not yet loaded)
+  const visibleReports = REPORTS.filter(r => {
+    if (publishedSlugs === null) return true; // still loading — show all
+    if (r.productSlugs.length === 0) return true; // no slug mapping — always show
+    return r.productSlugs.some(slug => publishedSlugs.has(slug));
+  });
 
   const filtered = search
-    ? REPORTS.filter(r => r.name.toLowerCase().includes(search.toLowerCase()))
-    : REPORTS;
+    ? visibleReports.filter(r => r.name.toLowerCase().includes(search.toLowerCase()))
+    : visibleReports;
 
   return (
     <div style={{ minHeight: "100vh", background: "#F5F8FC", fontFamily: "'Arimo', Arial, sans-serif" }}>
@@ -276,7 +310,7 @@ export default function LabReportsPage() {
           {/* Stats strip */}
           <div style={{ display: "flex", gap: "32px", flexWrap: "wrap" }}>
             {[
-              { value: `${REPORTS.length}`, label: "verified reports" },
+              { value: `${visibleReports.length}`, label: "verified reports" },
               { value: "HPLC + ESI-MS", label: "testing methods" },
               { value: "Janoshik", label: "independent lab" },
             ].map(s => (
