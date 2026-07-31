@@ -45,6 +45,7 @@ const researchLinks = [
   { label: "Storage & Handling", href: "/storage-guide", icon: Thermometer, desc: "Lyophilised storage, reconstitution & stability" },
   { label: "Research Results", href: "/research-results", icon: Activity, desc: "Before & after biomarker data from peer-reviewed studies" },
   { label: "Research Stacks", href: "/stacks", icon: Layers, desc: "Curated multi-peptide research stacks" },
+  { label: "Lab Reports", href: "/lab-reports", icon: GraduationCap, desc: "HPLC & ESI-MS independent lab reports for every peptide" },
   { label: "Glossary", href: "/glossary", icon: BookMarked, desc: "Scientific terminology & definitions" },
 ];
 

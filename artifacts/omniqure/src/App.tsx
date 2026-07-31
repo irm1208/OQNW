@@ -47,6 +47,7 @@ const ProtocolsPage        = lazy(() => import("@/pages/ProtocolsPage"));
 const FAQPage              = lazy(() => import("@/pages/FAQPage"));
 const GlossaryPage         = lazy(() => import("@/pages/GlossaryPage"));
 const LabTestsPage         = lazy(() => import("@/pages/LabTestsPage"));
+const LabReportsPage       = lazy(() => import("@/pages/LabReportsPage"));
 const BacWaterPage         = lazy(() => import("@/pages/BacWaterPage"));
 const AboutPage            = lazy(() => import("@/pages/AboutPage"));
 const ReferAFriendPage     = lazy(() => import("@/pages/ReferAFriendPage"));
@@ -99,6 +100,7 @@ function Router() {
       <Route path="/faq" component={FAQPage} />
       <Route path="/glossary" component={GlossaryPage} />
       <Route path="/lab-tests" component={LabTestsPage} />
+      <Route path="/lab-reports" component={LabReportsPage} />
       <Route path="/bac-water" component={BacWaterPage} />
       <Route path="/terms" component={TermsPage} />
       <Route path="/shipping" component={ShippingPage} />
