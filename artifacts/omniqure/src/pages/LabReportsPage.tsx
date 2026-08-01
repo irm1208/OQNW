@@ -316,12 +316,12 @@ export default function LabReportsPage() {
             <ShieldCheck size={14} color="#6EE7B7" />
             <span style={{ fontSize: "12px", fontWeight: 700, color: "#6EE7B7", letterSpacing: "0.08em" }}>INDEPENDENTLY TESTED BY</span>
             <span style={{
-              background: "#fff",
+              background: "#E8F0F8",
               borderRadius: "40px",
-              padding: "6px 16px",
+              padding: "7px 18px",
               display: "inline-flex",
               alignItems: "center",
-              boxShadow: "0 2px 12px rgba(0,0,0,0.18)",
+              boxShadow: "0 2px 14px rgba(0,0,0,0.22)",
             }}>
               <JanoshikLogo height={26} />
             </span>
