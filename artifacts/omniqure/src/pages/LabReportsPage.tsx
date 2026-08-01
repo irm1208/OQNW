@@ -312,11 +312,18 @@ export default function LabReportsPage() {
           pointerEvents: "none",
         }} />
         <div style={{ maxWidth: "960px", margin: "0 auto" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "10px", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", padding: "5px 16px 5px 12px", borderRadius: "20px", marginBottom: "16px" }}>
-            <ShieldCheck size={12} color="#6EE7B7" />
-            <span style={{ fontSize: "11px", fontWeight: 700, color: "#6EE7B7", letterSpacing: "0.06em" }}>INDEPENDENTLY TESTED BY</span>
-            <span style={{ background: "#fff", borderRadius: "5px", padding: "1px 6px", display: "inline-flex", alignItems: "center" }}>
-              <JanoshikLogo height={14} />
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "14px", background: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.22)", padding: "8px 10px 8px 18px", borderRadius: "50px", marginBottom: "20px", backdropFilter: "blur(6px)" }}>
+            <ShieldCheck size={14} color="#6EE7B7" />
+            <span style={{ fontSize: "12px", fontWeight: 700, color: "#6EE7B7", letterSpacing: "0.08em" }}>INDEPENDENTLY TESTED BY</span>
+            <span style={{
+              background: "#fff",
+              borderRadius: "40px",
+              padding: "6px 16px",
+              display: "inline-flex",
+              alignItems: "center",
+              boxShadow: "0 2px 12px rgba(0,0,0,0.18)",
+            }}>
+              <JanoshikLogo height={26} />
             </span>
           </div>
           <h1 style={{ margin: "0 0 10px", fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em" }}>
