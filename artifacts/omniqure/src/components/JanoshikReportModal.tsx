@@ -58,12 +58,7 @@ export default function JanoshikReportModal({
           padding: "14px 18px", borderBottom: "1px solid #E5E7EB", flexShrink: 0,
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            {/* Janoshik logo mark */}
-            <svg width="28" height="19" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 22 C2 22 2 11 8 11 C14 11 14 22 14 22" stroke="#1F2937" strokeWidth="2.3" strokeLinecap="round"/>
-              <path d="M11 22 C11 22 11 3 18.5 3 C26 3 26 22 26 22"  stroke="#1F2937" strokeWidth="2.3" strokeLinecap="round"/>
-              <path d="M23 22 C23 22 23 11 29 11 C35 11 35 22 35 22" stroke="#1F2937" strokeWidth="2.3" strokeLinecap="round"/>
-            </svg>
+            <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "22px", width: "auto", borderRadius: "3px", display: "block" }} />
             <div>
               <div style={{ fontSize: "13px", fontWeight: 700, color: "#111827" }}>Janoshik Test Report</div>
               <div style={{ fontSize: "11px", color: "#6B7280" }}>{productName} · Task #{taskNumber}</div>

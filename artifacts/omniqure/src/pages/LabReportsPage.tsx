@@ -4,47 +4,24 @@ import { BarChart2, Atom, ExternalLink, Search, CheckCircle2, ShieldCheck, Flask
 
 // ─── Janoshik logo components ─────────────────────────────────────────────────
 
-/** Three mountain peaks with upward arrows — the Janoshik icon mark */
-function JanoshikIcon({ size = 20, color = "#3A9D8B" }: { size?: number; color?: string }) {
+/** Renders the real Janoshik logo image.
+ *  invert=true  → white version for dark backgrounds (CSS brightness+invert)
+ *  height       → controls rendered height; width scales automatically
+ */
+function JanoshikLogo({ height = 22, invert = false }: { height?: number; invert?: boolean }) {
   return (
-    <svg width={size} height={Math.round(size * 0.72)} viewBox="0 0 58 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Left peak */}
-      <path d="M1 40 L13 15 L25 40" stroke={color} strokeWidth="2.9" strokeLinejoin="round" strokeLinecap="round"/>
-      <polyline points="10,21 13,15 16,21" stroke={color} strokeWidth="2.3" strokeLinejoin="round" strokeLinecap="round"/>
-      {/* Middle peak — tallest */}
-      <path d="M17 40 L30 2 L43 40" stroke={color} strokeWidth="2.9" strokeLinejoin="round" strokeLinecap="round"/>
-      <polyline points="27,8 30,2 33,8" stroke={color} strokeWidth="2.3" strokeLinejoin="round" strokeLinecap="round"/>
-      {/* Right peak */}
-      <path d="M35 40 L47 17 L59 40" stroke={color} strokeWidth="2.9" strokeLinejoin="round" strokeLinecap="round"/>
-      <polyline points="44,23 47,17 50,23" stroke={color} strokeWidth="2.3" strokeLinejoin="round" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
-/** Full Janoshik logo: icon + wordmark */
-function JanoshikLogo({
-  size = 20,
-  iconColor = "#3A9D8B",
-  textColor = "#1C1C1C",
-}: {
-  size?: number;
-  iconColor?: string;
-  textColor?: string;
-}) {
-  return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: Math.round(size * 0.38) + "px" }}>
-      <JanoshikIcon size={size} color={iconColor} />
-      <span style={{
-        fontWeight: 800,
-        fontSize: Math.round(size * 0.74) + "px",
-        letterSpacing: "0.05em",
-        color: textColor,
-        lineHeight: 1,
-        fontFamily: "'Arimo', Arial, sans-serif",
-      }}>
-        JANOSHIK
-      </span>
-    </span>
+    <img
+      src="/janoshik/janoshik-logo.jpg"
+      alt="Janoshik"
+      style={{
+        height: height + "px",
+        width: "auto",
+        display: "inline-block",
+        verticalAlign: "middle",
+        borderRadius: "3px",
+        filter: invert ? "brightness(0) invert(1)" : undefined,
+      }}
+    />
   );
 }
 
@@ -255,7 +232,7 @@ function ReportCard({ report }: { report: Report }) {
 
       {/* Janoshik attribution + link */}
       <div style={{ padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
-        <JanoshikLogo size={17} iconColor="#3A9D8B" textColor="#64748B" />
+        <JanoshikLogo height={17} />
         <a
           href={report.url}
           target="_blank"
@@ -338,7 +315,9 @@ export default function LabReportsPage() {
           <div style={{ display: "inline-flex", alignItems: "center", gap: "10px", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", padding: "5px 16px 5px 12px", borderRadius: "20px", marginBottom: "16px" }}>
             <ShieldCheck size={12} color="#6EE7B7" />
             <span style={{ fontSize: "11px", fontWeight: 700, color: "#6EE7B7", letterSpacing: "0.06em" }}>INDEPENDENTLY TESTED BY</span>
-            <JanoshikLogo size={16} iconColor="#6EE7B7" textColor="rgba(255,255,255,0.92)" />
+            <span style={{ background: "#fff", borderRadius: "5px", padding: "1px 6px", display: "inline-flex", alignItems: "center" }}>
+              <JanoshikLogo height={14} />
+            </span>
           </div>
           <h1 style={{ margin: "0 0 10px", fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em" }}>
             Independent Results
@@ -359,7 +338,9 @@ export default function LabReportsPage() {
               </div>
             ))}
             <div>
-              <JanoshikLogo size={20} iconColor="#6EE7B7" textColor="rgba(255,255,255,0.93)" />
+              <span style={{ background: "rgba(255,255,255,0.95)", borderRadius: "6px", padding: "3px 8px", display: "inline-flex", alignItems: "center" }}>
+                <JanoshikLogo height={18} />
+              </span>
               <p style={{ margin: "3px 0 0", fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>independent lab</p>
             </div>
           </div>
@@ -372,7 +353,7 @@ export default function LabReportsPage() {
           {[
             { icon: <FlaskConical size={15} color="#1B5CB5" />, title: "HPLC Analysis", desc: "Reverse-phase chromatography confirms purity by peak area at 214 nm UV." },
             { icon: <Atom size={15} color="#7C3AED" />, title: "ESI-MS", desc: "Electrospray ionisation mass spectrometry verifies the molecular identity." },
-            { icon: <JanoshikIcon size={20} color="#3A9D8B" />, title: "Independent lab", desc: "Reports are hosted and signed by Janoshik Analytical — not by OmniQure." },
+            { icon: <JanoshikLogo height={18} />, title: "Independent lab", desc: "Reports are hosted and signed by Janoshik Analytical — not by OmniQure." },
           ].map(item => (
             <div key={item.title} style={{ display: "flex", alignItems: "flex-start", gap: "10px", flex: "1 1 220px" }}>
               <span style={{ flexShrink: 0, marginTop: "1px" }}>{item.icon}</span>
