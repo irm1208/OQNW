@@ -2,6 +2,52 @@ import { useState, useEffect } from "react";
 import { useSEO } from "@/hooks/useSEO";
 import { BarChart2, Atom, ExternalLink, Search, CheckCircle2, ShieldCheck, FlaskConical } from "lucide-react";
 
+// ─── Janoshik logo components ─────────────────────────────────────────────────
+
+/** Three mountain peaks with upward arrows — the Janoshik icon mark */
+function JanoshikIcon({ size = 20, color = "#3A9D8B" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={Math.round(size * 0.72)} viewBox="0 0 58 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Left peak */}
+      <path d="M1 40 L13 15 L25 40" stroke={color} strokeWidth="2.9" strokeLinejoin="round" strokeLinecap="round"/>
+      <polyline points="10,21 13,15 16,21" stroke={color} strokeWidth="2.3" strokeLinejoin="round" strokeLinecap="round"/>
+      {/* Middle peak — tallest */}
+      <path d="M17 40 L30 2 L43 40" stroke={color} strokeWidth="2.9" strokeLinejoin="round" strokeLinecap="round"/>
+      <polyline points="27,8 30,2 33,8" stroke={color} strokeWidth="2.3" strokeLinejoin="round" strokeLinecap="round"/>
+      {/* Right peak */}
+      <path d="M35 40 L47 17 L59 40" stroke={color} strokeWidth="2.9" strokeLinejoin="round" strokeLinecap="round"/>
+      <polyline points="44,23 47,17 50,23" stroke={color} strokeWidth="2.3" strokeLinejoin="round" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
+/** Full Janoshik logo: icon + wordmark */
+function JanoshikLogo({
+  size = 20,
+  iconColor = "#3A9D8B",
+  textColor = "#1C1C1C",
+}: {
+  size?: number;
+  iconColor?: string;
+  textColor?: string;
+}) {
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: Math.round(size * 0.38) + "px" }}>
+      <JanoshikIcon size={size} color={iconColor} />
+      <span style={{
+        fontWeight: 800,
+        fontSize: Math.round(size * 0.74) + "px",
+        letterSpacing: "0.05em",
+        color: textColor,
+        lineHeight: 1,
+        fontFamily: "'Arimo', Arial, sans-serif",
+      }}>
+        JANOSHIK
+      </span>
+    </span>
+  );
+}
+
 // ─── Report data (Janoshik verified) ─────────────────────────────────────────
 
 interface Report {
@@ -209,12 +255,7 @@ function ReportCard({ report }: { report: Report }) {
 
       {/* Janoshik attribution + link */}
       <div style={{ padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-          <ShieldCheck size={13} color="#059669" />
-          <span style={{ fontSize: "11px", color: "#64748B", fontWeight: 500 }}>
-            Janoshik Analytical
-          </span>
-        </div>
+        <JanoshikLogo size={17} iconColor="#3A9D8B" textColor="#64748B" />
         <a
           href={report.url}
           target="_blank"
@@ -294,11 +335,10 @@ export default function LabReportsPage() {
           pointerEvents: "none",
         }} />
         <div style={{ maxWidth: "960px", margin: "0 auto" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", padding: "4px 13px", borderRadius: "20px", marginBottom: "16px" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "10px", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", padding: "5px 16px 5px 12px", borderRadius: "20px", marginBottom: "16px" }}>
             <ShieldCheck size={12} color="#6EE7B7" />
-            <span style={{ fontSize: "11px", fontWeight: 700, color: "#6EE7B7", letterSpacing: "0.06em" }}>
-              INDEPENDENTLY TESTED · JANOSHIK ANALYTICAL
-            </span>
+            <span style={{ fontSize: "11px", fontWeight: 700, color: "#6EE7B7", letterSpacing: "0.06em" }}>INDEPENDENTLY TESTED BY</span>
+            <JanoshikLogo size={16} iconColor="#6EE7B7" textColor="rgba(255,255,255,0.92)" />
           </div>
           <h1 style={{ margin: "0 0 10px", fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em" }}>
             Independent Results
@@ -308,17 +348,20 @@ export default function LabReportsPage() {
           </p>
 
           {/* Stats strip */}
-          <div style={{ display: "flex", gap: "32px", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: "32px", flexWrap: "wrap", alignItems: "flex-end" }}>
             {[
               { value: `${visibleReports.length}`, label: "verified reports" },
               { value: "HPLC + ESI-MS", label: "testing methods" },
-              { value: "Janoshik", label: "independent lab" },
             ].map(s => (
               <div key={s.label}>
                 <p style={{ margin: 0, fontSize: "18px", fontWeight: 900, color: "#fff" }}>{s.value}</p>
                 <p style={{ margin: 0, fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>{s.label}</p>
               </div>
             ))}
+            <div>
+              <JanoshikLogo size={20} iconColor="#6EE7B7" textColor="rgba(255,255,255,0.93)" />
+              <p style={{ margin: "3px 0 0", fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>independent lab</p>
+            </div>
           </div>
         </div>
       </div>
@@ -329,7 +372,7 @@ export default function LabReportsPage() {
           {[
             { icon: <FlaskConical size={15} color="#1B5CB5" />, title: "HPLC Analysis", desc: "Reverse-phase chromatography confirms purity by peak area at 214 nm UV." },
             { icon: <Atom size={15} color="#7C3AED" />, title: "ESI-MS", desc: "Electrospray ionisation mass spectrometry verifies the molecular identity." },
-            { icon: <ShieldCheck size={15} color="#059669" />, title: "Independent lab", desc: "Reports are hosted and signed by Janoshik Analytical — not by OmniQure." },
+            { icon: <JanoshikIcon size={20} color="#3A9D8B" />, title: "Independent lab", desc: "Reports are hosted and signed by Janoshik Analytical — not by OmniQure." },
           ].map(item => (
             <div key={item.title} style={{ display: "flex", alignItems: "flex-start", gap: "10px", flex: "1 1 220px" }}>
               <span style={{ flexShrink: 0, marginTop: "1px" }}>{item.icon}</span>
