@@ -48,7 +48,7 @@ const REPORTS: Report[] = [
     id: "bpc157-10mg",
     name: "BPC-157",
     amount: "10mg",
-    testNumber: "208600", purity: 99.892,
+    testNumber: "208600", purity: 99.892, actualMass: 11.95,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208600-BPC157_10mg_OmniQure_DSDYDF1TRWRC",
     productSlugs: ["bpc-157-10mg"],
@@ -57,7 +57,7 @@ const REPORTS: Report[] = [
     id: "tb500-10mg",
     name: "TB-500 (TB4)",
     amount: "10mg",
-    testNumber: "208613", purity: 99.119,
+    testNumber: "208613", purity: 99.119, actualMass: 11.77,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208613-TB500_TB4_10mg_OmniQure_A9RR18DUH522",
     productSlugs: ["tb-500-10mg"],
@@ -66,7 +66,7 @@ const REPORTS: Report[] = [
     id: "tesamorelin-20mg",
     name: "Tesamorelin",
     amount: "20mg",
-    testNumber: "208612", purity: 99.358,
+    testNumber: "208612", purity: 99.358, actualMass: 23.57,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208612-Tesamorelin_20mh_OmniQure_NJDR19MRS3WC",
     productSlugs: ["tesamorelin-20mg"],
@@ -75,7 +75,7 @@ const REPORTS: Report[] = [
     id: "semax-10mg",
     name: "Semax",
     amount: "10mg",
-    testNumber: "208609", purity: 99.138,
+    testNumber: "208609", purity: 99.138, actualMass: 11.32,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208609-Semax_10mg_OmniQure_I42F8EHHKVHG",
     productSlugs: ["semax-10mg"],
@@ -84,7 +84,7 @@ const REPORTS: Report[] = [
     id: "selank-10mg",
     name: "Selank",
     amount: "10mg",
-    testNumber: "208610", purity: 99.161,
+    testNumber: "208610", purity: 99.161, actualMass: 10.55,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208610-Selank_10mg_OmniQure_FSSTD9WMADJH",
     productSlugs: ["selank-10mg"],
@@ -93,7 +93,7 @@ const REPORTS: Report[] = [
     id: "ghkcu-100mg",
     name: "GHK-Cu",
     amount: "100mg",
-    testNumber: "208608", purity: 99.912,
+    testNumber: "208608", purity: 99.912, actualMass: 108.95,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208608-GHKCU_100mg_OmniQure_PYKSNGJUCS1Y",
     productSlugs: ["ghk-cu-100mg"],
@@ -102,7 +102,7 @@ const REPORTS: Report[] = [
     id: "melanotan2-10mg",
     name: "Melanotan 2",
     amount: "10mg",
-    testNumber: "208605", purity: 99.887,
+    testNumber: "208605", purity: 99.887, actualMass: 11.12,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208605-Melanotan_2_10mg_OmniQure_CUHNDPBS5IUD",
     productSlugs: ["melanotan-2-10mg"],
@@ -111,7 +111,7 @@ const REPORTS: Report[] = [
     id: "kpv-10mg",
     name: "KPV",
     amount: "10mg",
-    testNumber: "208604", purity: 99.484,
+    testNumber: "208604", purity: 99.484, actualMass: 12.39,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208604-KPV_10mg_OmniQure_LYIZTLMNR54K",
     productSlugs: ["kpv-10mg"],
@@ -210,57 +210,73 @@ function ReportCard({ report }: { report: Report }) {
           </span>
         </div>
 
-        {/* Purity / mass spotlight */}
-        {(report.purity !== undefined || report.actualMass !== undefined) && (
-          <div style={{
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(255,255,255,0.07)",
-            borderRadius: "12px",
-            padding: "12px 16px",
-            marginBottom: "14px",
-            display: "flex",
-            alignItems: "center",
-            gap: "16px",
-          }}>
-            {/* Left: big number */}
-            <div>
-              {report.purity !== undefined ? (
-                <>
-                  <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-                    <span style={{ fontSize: "34px", fontWeight: 900, color: "#6ee7b7", lineHeight: 1, letterSpacing: "-0.03em" }}>
-                      {report.purity.toFixed(1)}
-                    </span>
-                    <span style={{ fontSize: "15px", fontWeight: 700, color: "rgba(110,231,183,0.55)" }}>%</span>
-                  </div>
-                  <p style={{ margin: "2px 0 0", fontSize: "9px", color: "rgba(255,255,255,0.35)", fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" }}>
-                    Purity
-                  </p>
-                </>
-              ) : (
-                <>
-                  <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-                    <span style={{ fontSize: "30px", fontWeight: 900, color: "#a78bfa", lineHeight: 1, letterSpacing: "-0.03em" }}>
-                      {report.actualMass!.toFixed(2)}
-                    </span>
-                    <span style={{ fontSize: "13px", fontWeight: 700, color: "rgba(167,139,250,0.55)" }}>mg</span>
-                  </div>
-                  <p style={{ margin: "2px 0 0", fontSize: "9px", color: "rgba(255,255,255,0.35)", fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" }}>
-                    Mass confirmed
-                  </p>
-                </>
-              )}
-            </div>
-            {/* Right: test number */}
-            <div style={{ flex: 1, borderLeft: "1px solid rgba(255,255,255,0.08)", paddingLeft: "16px" }}>
-              <p style={{ margin: 0, fontSize: "9px", color: "rgba(255,255,255,0.35)", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 700 }}>
-                Test No.
-              </p>
-              <p style={{ margin: "3px 0 0", fontSize: "13px", fontWeight: 700, color: "rgba(255,255,255,0.55)", fontFamily: "monospace" }}>
-                #{report.testNumber}
-              </p>
-            </div>
+        {/* Results spotlight — purity + mass side by side */}
+        <div style={{
+          background: "rgba(255,255,255,0.04)",
+          border: "1px solid rgba(255,255,255,0.07)",
+          borderRadius: "12px",
+          padding: "12px 14px",
+          marginBottom: "14px",
+          display: "grid",
+          gridTemplateColumns: "1fr 1px 1fr",
+          gap: "0",
+          alignItems: "center",
+        }}>
+          {/* Purity */}
+          <div style={{ paddingRight: "12px" }}>
+            {report.purity !== undefined ? (
+              <>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
+                  <span style={{ fontSize: "28px", fontWeight: 900, color: "#6ee7b7", lineHeight: 1, letterSpacing: "-0.03em" }}>
+                    {report.purity.toFixed(1)}
+                  </span>
+                  <span style={{ fontSize: "13px", fontWeight: 700, color: "rgba(110,231,183,0.5)" }}>%</span>
+                </div>
+                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "rgba(255,255,255,0.35)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                  Purity
+                </p>
+              </>
+            ) : (
+              <>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
+                  <span style={{ fontSize: "22px", fontWeight: 900, color: "rgba(110,231,183,0.45)", lineHeight: 1, letterSpacing: "-0.02em" }}>—</span>
+                </div>
+                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "rgba(255,255,255,0.25)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                  Purity
+                </p>
+              </>
+            )}
           </div>
-        )}
+
+          {/* Divider */}
+          <div style={{ background: "rgba(255,255,255,0.08)", alignSelf: "stretch" }} />
+
+          {/* Mass */}
+          <div style={{ paddingLeft: "12px" }}>
+            {report.actualMass !== undefined ? (
+              <>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
+                  <span style={{ fontSize: "28px", fontWeight: 900, color: isBlend ? "#a78bfa" : "#93c5fd", lineHeight: 1, letterSpacing: "-0.03em" }}>
+                    {report.actualMass.toFixed(2)}
+                  </span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, color: isBlend ? "rgba(167,139,250,0.5)" : "rgba(147,197,253,0.5)" }}>mg</span>
+                </div>
+                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "rgba(255,255,255,0.35)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                  Mass confirmed
+                </p>
+              </>
+            ) : (
+              <>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
+                  <span style={{ fontSize: "22px", fontWeight: 900, color: "rgba(147,197,253,0.45)", lineHeight: 1 }}>—</span>
+                </div>
+                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "rgba(255,255,255,0.25)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                  Mass confirmed
+                </p>
+              </>
+            )}
+          </div>
+        </div>
 
         {/* Method pills */}
         <div style={{ display: "flex", gap: "6px" }}>
