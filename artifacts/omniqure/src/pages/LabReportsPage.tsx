@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSEO } from "@/hooks/useSEO";
 import { BarChart2, Atom, ExternalLink, Search, CheckCircle2, ShieldCheck, FlaskConical } from "lucide-react";
+import JanoshikReportModal from "@/components/JanoshikReportModal";
 
 // ─── Janoshik logo components ─────────────────────────────────────────────────
 
@@ -38,6 +39,8 @@ interface Report {
   purity?: number;
   /** For blends: confirmed mass per component (mg) shown in place of purity */
   actualMass?: number;
+  verifyKey: string;
+  image: string;
   /** Slugs of the matching product(s) in the catalogue. Report is hidden if
    *  none of these slugs are currently published. Empty array = always show. */
   productSlugs: string[];
@@ -51,6 +54,7 @@ const REPORTS: Report[] = [
     testNumber: "208600", purity: 99.892, actualMass: 11.95,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208600-BPC157_10mg_OmniQure_DSDYDF1TRWRC",
+    verifyKey: "DSDYDF1TRWRC", image: "/janoshik/208600.png",
     productSlugs: ["bpc-157-10mg"],
   },
   {
@@ -60,6 +64,7 @@ const REPORTS: Report[] = [
     testNumber: "208613", purity: 99.119, actualMass: 11.77,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208613-TB500_TB4_10mg_OmniQure_A9RR18DUH522",
+    verifyKey: "A9RR18DUH522", image: "/janoshik/208613.png",
     productSlugs: ["tb-500-10mg"],
   },
   {
@@ -69,6 +74,7 @@ const REPORTS: Report[] = [
     testNumber: "208612", purity: 99.358, actualMass: 23.57,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208612-Tesamorelin_20mh_OmniQure_NJDR19MRS3WC",
+    verifyKey: "NJDR19MRS3WC", image: "/janoshik/208612.png",
     productSlugs: ["tesamorelin-20mg"],
   },
   {
@@ -78,6 +84,7 @@ const REPORTS: Report[] = [
     testNumber: "208609", purity: 99.138, actualMass: 11.32,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208609-Semax_10mg_OmniQure_I42F8EHHKVHG",
+    verifyKey: "I42F8EHHKVHG", image: "/janoshik/208609.png",
     productSlugs: ["semax-10mg"],
   },
   {
@@ -87,6 +94,7 @@ const REPORTS: Report[] = [
     testNumber: "208610", purity: 99.161, actualMass: 10.55,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208610-Selank_10mg_OmniQure_FSSTD9WMADJH",
+    verifyKey: "FSSTD9WMADJH", image: "/janoshik/208610.png",
     productSlugs: ["selank-10mg"],
   },
   {
@@ -96,6 +104,7 @@ const REPORTS: Report[] = [
     testNumber: "208608", purity: 99.912, actualMass: 108.95,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208608-GHKCU_100mg_OmniQure_PYKSNGJUCS1Y",
+    verifyKey: "PYKSNGJUCS1Y", image: "/janoshik/208608.png",
     productSlugs: ["ghk-cu-100mg"],
   },
   {
@@ -105,6 +114,7 @@ const REPORTS: Report[] = [
     testNumber: "208605", purity: 99.887, actualMass: 11.12,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208605-Melanotan_2_10mg_OmniQure_CUHNDPBS5IUD",
+    verifyKey: "CUHNDPBS5IUD", image: "/janoshik/208605.png",
     productSlugs: ["melanotan-2-10mg"],
   },
   {
@@ -114,6 +124,7 @@ const REPORTS: Report[] = [
     testNumber: "208604", purity: 99.484, actualMass: 12.39,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208604-KPV_10mg_OmniQure_LYIZTLMNR54K",
+    verifyKey: "LYIZTLMNR54K", image: "/janoshik/208604.png",
     productSlugs: ["kpv-10mg"],
   },
   {
@@ -123,6 +134,7 @@ const REPORTS: Report[] = [
     testNumber: "208602",
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208602-CJC1295_No_DAC_Ipamorelin_Blend_1010_OmniQure_UM1G6NTFHJCB",
+    verifyKey: "UM1G6NTFHJCB", image: "/janoshik/208602.png",
     isBlend: true,
     actualMass: 23.21,
     productSlugs: ["cjc-1295-no-dac-ipamorelin-5mg"],
@@ -134,6 +146,7 @@ const REPORTS: Report[] = [
     testNumber: "208601",
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208601-BPC157_TB500_TB4_Blend_1010_OmniQure_3N3R5JF1157F",
+    verifyKey: "3N3R5JF1157F", image: "/janoshik/208601.png",
     isBlend: true,
     actualMass: 23.44,
     productSlugs: ["bpc-157-tb-500-blend-10mg", "bpc-157-tb-500-blend-20mg"],
@@ -142,7 +155,7 @@ const REPORTS: Report[] = [
 
 // ─── Card ─────────────────────────────────────────────────────────────────────
 
-function ReportCard({ report }: { report: Report }) {
+function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () => void }) {
   const isBlend = !!report.isBlend;
 
   // Site palette
@@ -314,28 +327,56 @@ function ReportCard({ report }: { report: Report }) {
         <span style={{ background: "#E8F0F8", borderRadius: "30px", padding: "4px 12px", display: "inline-flex", alignItems: "center" }}>
           <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "15px", width: "auto", display: "block" }} />
         </span>
-        <a
-          href={report.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: "inline-flex", alignItems: "center", gap: "6px",
-            fontSize: "12px", fontWeight: 700,
-            padding: "7px 16px", borderRadius: "8px",
-            background: topBar,
-            color: "#fff",
-            textDecoration: "none",
-            boxShadow: isBlend
-              ? "0 2px 10px rgba(91,33,182,0.25)"
-              : "0 2px 10px rgba(13,37,101,0.22)",
-            transition: "opacity 0.15s",
-            letterSpacing: "0.01em",
-          }}
-          onMouseOver={e => (e.currentTarget.style.opacity = "0.85")}
-          onMouseOut={e => (e.currentTarget.style.opacity = "1")}
-        >
-          View Report <ExternalLink size={11} />
-        </a>
+        <div style={{ display: "flex", gap: "6px" }}>
+          {/* Quick View */}
+          <button
+            onClick={onQuickView}
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "5px",
+              fontSize: "12px", fontWeight: 700,
+              padding: "7px 14px", borderRadius: "8px",
+              background: "#fff",
+              color: isBlend ? "#5b21b6" : navy,
+              border: `1.5px solid ${isBlend ? "#DDD6FE" : "#BFDBFE"}`,
+              cursor: "pointer",
+              transition: "background 0.15s, border-color 0.15s",
+              letterSpacing: "0.01em",
+            }}
+            onMouseOver={e => {
+              (e.currentTarget as HTMLButtonElement).style.background = isBlend ? "#F5F3FF" : "#EFF6FF";
+              (e.currentTarget as HTMLButtonElement).style.borderColor = isBlend ? "#c4b5fd" : "#93c5fd";
+            }}
+            onMouseOut={e => {
+              (e.currentTarget as HTMLButtonElement).style.background = "#fff";
+              (e.currentTarget as HTMLButtonElement).style.borderColor = isBlend ? "#DDD6FE" : "#BFDBFE";
+            }}
+          >
+            Quick View
+          </button>
+          {/* View on Janoshik */}
+          <a
+            href={report.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "5px",
+              fontSize: "12px", fontWeight: 700,
+              padding: "7px 14px", borderRadius: "8px",
+              background: topBar,
+              color: "#fff",
+              textDecoration: "none",
+              boxShadow: isBlend
+                ? "0 2px 10px rgba(91,33,182,0.25)"
+                : "0 2px 10px rgba(13,37,101,0.22)",
+              transition: "opacity 0.15s",
+              letterSpacing: "0.01em",
+            }}
+            onMouseOver={e => (e.currentTarget.style.opacity = "0.85")}
+            onMouseOut={e => (e.currentTarget.style.opacity = "1")}
+          >
+            Janoshik <ExternalLink size={11} />
+          </a>
+        </div>
       </div>
     </div>
   );
@@ -353,6 +394,7 @@ export default function LabReportsPage() {
 
   const [search, setSearch] = useState("");
   const [publishedSlugs, setPublishedSlugs] = useState<Set<string> | null>(null);
+  const [modalReport, setModalReport] = useState<Report | null>(null);
 
   // Fetch published products to know which to show
   useEffect(() => {
@@ -493,7 +535,7 @@ export default function LabReportsPage() {
           </div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "14px" }}>
-            {filtered.map(r => <ReportCard key={r.id} report={r} />)}
+            {filtered.map(r => <ReportCard key={r.id} report={r} onQuickView={() => setModalReport(r)} />)}
           </div>
         )}
 
@@ -503,6 +545,18 @@ export default function LabReportsPage() {
           Lab reports are independently issued by Janoshik Analytical and can be verified at verify.janoshik.com.
         </p>
       </div>
+
+      {/* Janoshik report modal */}
+      {modalReport && (
+        <JanoshikReportModal
+          taskNumber={modalReport.testNumber}
+          verifyKey={modalReport.verifyKey}
+          verifyUrl={modalReport.url}
+          image={modalReport.image}
+          productName={modalReport.name}
+          onClose={() => setModalReport(null)}
+        />
+      )}
     </div>
   );
 }
