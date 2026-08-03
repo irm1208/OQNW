@@ -198,7 +198,7 @@ function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured
 }
 
 
-const featuredIds = ["3", "17", "82", "71", "31", "15", "64"];
+const featuredIds = ["4", "7", "18", "37", "40", "62", "64", "72", "82", "85"];
 
 
 const pillars = [
@@ -625,7 +625,7 @@ export default function HomePage() {
           </div>
 
           <div className="featured-grid grid grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-20 sm:gap-x-12 sm:gap-y-24 md:gap-x-14 md:gap-y-28">
-            {featuredGroups.slice(0, 4).map(group => (
+            {featuredGroups.map(group => (
               <GroupedProductCard key={group.baseName} group={group} />
             ))}
           </div>
