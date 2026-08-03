@@ -614,13 +614,13 @@ export default function HomePage() {
               </p>
             </div>
             <Link
-              href="/popular-peptides"
+              href="/all-peptides"
               className="hidden sm:flex items-center gap-1.5 font-semibold"
               style={{ fontSize: "13px", color: "#1B5CB5", textDecoration: "none", transition: "opacity 0.15s" }}
               onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = "0.7"}
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = "1"}
             >
-              View popular collection <ChevronRight size={15} />
+              View collection <ChevronRight size={15} />
             </Link>
           </div>
 
