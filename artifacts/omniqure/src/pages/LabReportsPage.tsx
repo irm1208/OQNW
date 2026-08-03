@@ -36,6 +36,8 @@ interface Report {
   url: string;
   isBlend?: boolean;
   purity?: number;
+  /** For blends: confirmed mass per component (mg) shown in place of purity */
+  actualMass?: number;
   /** Slugs of the matching product(s) in the catalogue. Report is hidden if
    *  none of these slugs are currently published. Empty array = always show. */
   productSlugs: string[];
@@ -122,6 +124,7 @@ const REPORTS: Report[] = [
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208602-CJC1295_No_DAC_Ipamorelin_Blend_1010_OmniQure_UM1G6NTFHJCB",
     isBlend: true,
+    actualMass: 23.21,
     productSlugs: ["cjc-1295-no-dac-ipamorelin-5mg"],
   },
   {
@@ -132,6 +135,7 @@ const REPORTS: Report[] = [
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208601-BPC157_TB500_TB4_Blend_1010_OmniQure_3N3R5JF1157F",
     isBlend: true,
+    actualMass: 23.44,
     productSlugs: ["bpc-157-tb-500-blend-10mg", "bpc-157-tb-500-blend-20mg"],
   },
 ];
@@ -206,8 +210,8 @@ function ReportCard({ report }: { report: Report }) {
           </span>
         </div>
 
-        {/* Purity spotlight */}
-        {report.purity !== undefined ? (
+        {/* Purity / mass spotlight */}
+        {(report.purity !== undefined || report.actualMass !== undefined) && (
           <div style={{
             background: "rgba(255,255,255,0.04)",
             border: "1px solid rgba(255,255,255,0.07)",
@@ -218,17 +222,35 @@ function ReportCard({ report }: { report: Report }) {
             alignItems: "center",
             gap: "16px",
           }}>
+            {/* Left: big number */}
             <div>
-              <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-                <span style={{ fontSize: "34px", fontWeight: 900, color: "#6ee7b7", lineHeight: 1, letterSpacing: "-0.03em" }}>
-                  {report.purity.toFixed(1)}
-                </span>
-                <span style={{ fontSize: "15px", fontWeight: 700, color: "rgba(110,231,183,0.55)" }}>%</span>
-              </div>
-              <p style={{ margin: "2px 0 0", fontSize: "9px", color: "rgba(255,255,255,0.35)", fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" }}>
-                Purity
-              </p>
+              {report.purity !== undefined ? (
+                <>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
+                    <span style={{ fontSize: "34px", fontWeight: 900, color: "#6ee7b7", lineHeight: 1, letterSpacing: "-0.03em" }}>
+                      {report.purity.toFixed(1)}
+                    </span>
+                    <span style={{ fontSize: "15px", fontWeight: 700, color: "rgba(110,231,183,0.55)" }}>%</span>
+                  </div>
+                  <p style={{ margin: "2px 0 0", fontSize: "9px", color: "rgba(255,255,255,0.35)", fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" }}>
+                    Purity
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
+                    <span style={{ fontSize: "30px", fontWeight: 900, color: "#a78bfa", lineHeight: 1, letterSpacing: "-0.03em" }}>
+                      {report.actualMass!.toFixed(2)}
+                    </span>
+                    <span style={{ fontSize: "13px", fontWeight: 700, color: "rgba(167,139,250,0.55)" }}>mg</span>
+                  </div>
+                  <p style={{ margin: "2px 0 0", fontSize: "9px", color: "rgba(255,255,255,0.35)", fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" }}>
+                    Mass confirmed
+                  </p>
+                </>
+              )}
             </div>
+            {/* Right: test number */}
             <div style={{ flex: 1, borderLeft: "1px solid rgba(255,255,255,0.08)", paddingLeft: "16px" }}>
               <p style={{ margin: 0, fontSize: "9px", color: "rgba(255,255,255,0.35)", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 700 }}>
                 Test No.
@@ -237,12 +259,6 @@ function ReportCard({ report }: { report: Report }) {
                 #{report.testNumber}
               </p>
             </div>
-          </div>
-        ) : (
-          <div style={{ marginBottom: "14px" }}>
-            <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", fontFamily: "monospace" }}>
-              Test #{report.testNumber}
-            </span>
           </div>
         )}
 
@@ -322,8 +338,8 @@ export default function LabReportsPage() {
         setPublishedSlugs(new Set(products.map(p => p.slug)));
       })
       .catch(() => {
-        // On error, show all reports (fail open)
-        setPublishedSlugs(new Set());
+        // On error, show all reports (fail open) — null means "still loading / show all"
+        setPublishedSlugs(null);
       });
   }, []);
 
