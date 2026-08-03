@@ -304,14 +304,15 @@ export default function ProductPage() {
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
-      {/* COA Report Modal */}
-      {showCOAModal && (
+      {/* COA Report Modal — COA_DISABLED_TEMPORARILY (re-enable by removing the `false &&`) */}
+      {/* COA_DISABLED_TEMPORARILY — re-enable by removing the comment markers below */}
+      {/* {showCOAModal && (
         <COAModal
-          product={product}
-          filteredProducts={[product]}
+          product={product!}
+          filteredProducts={[product!]}
           onClose={() => setShowCOAModal(false)}
         />
-      )}
+      )} */}
 
       {/* Janoshik Report Modal */}
       {showJanoshikModal && (() => {
@@ -450,27 +451,29 @@ export default function ProductPage() {
                 ))}
               </div>
 
-              {/* COA — View Report */}
-              <div
-                className="flex items-center justify-between gap-3 px-4 py-3"
-                style={{ backgroundColor: "#F0F5FF", borderTop: "1px solid #BFDBFE" }}
-              >
-                <div className="flex items-center gap-3">
+              {/* Independent Lab Report — shows only when a Janoshik report exists */}
+              {/* COA_DISABLED_TEMPORARILY: OmniQure "View Report →" button removed; restore by un-commenting below */}
+              {(() => {
+                const jd = janoshikData[product.id];
+                if (!jd?.image) return null;
+                return (
                   <div
-                    className="rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{ width: "40px", height: "40px", backgroundColor: "#1B5CB5" }}
+                    className="flex items-center justify-between gap-3 px-4 py-3"
+                    style={{ backgroundColor: "#F0F5FF", borderTop: "1px solid #BFDBFE" }}
                   >
-                    <Download size={16} color="#fff" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm" style={{ color: "#1240A0" }}>Certificate of Analysis</p>
-                    <p className="text-xs" style={{ color: "#3B82F6" }}>Full QC report — Lot {getLotNumber(product.id)}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  {(() => {
-                    const jd = janoshikData[product.id];
-                    return jd?.image ? (
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="rounded-xl flex items-center justify-center flex-shrink-0"
+                        style={{ width: "40px", height: "40px", backgroundColor: "#1B5CB5" }}
+                      >
+                        <Download size={16} color="#fff" />
+                      </div>
+                      <div>
+                        <p className="font-bold text-sm" style={{ color: "#1240A0" }}>Independent Lab Report</p>
+                        <p className="text-xs" style={{ color: "#3B82F6" }}>Verified by Janoshik Analytical</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 flex-shrink-0">
                       <button
                         onClick={() => setShowJanoshikModal(true)}
                         className="flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90"
@@ -479,17 +482,19 @@ export default function ProductPage() {
                         <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "16px", width: "auto", borderRadius: "2px", display: "block" }} />
                         Report
                       </button>
-                    ) : null;
-                  })()}
-                  <button
-                    onClick={() => setShowCOAModal(true)}
-                    className="coa-btn-touch flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90"
-                    style={{ height: "38px", padding: "0 16px", backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px" }}
-                  >
-                    View Report →
-                  </button>
-                </div>
-              </div>
+                      {/* COA_DISABLED_TEMPORARILY — restore OmniQure COA button by un-commenting:
+                      <button
+                        onClick={() => setShowCOAModal(true)}
+                        className="coa-btn-touch flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90"
+                        style={{ height: "38px", padding: "0 16px", backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px" }}
+                      >
+                        View Report →
+                      </button>
+                      */}
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
           </div>
