@@ -35,6 +35,7 @@ interface Report {
   methods: string[];
   url: string;
   isBlend?: boolean;
+  purity?: number;
   /** Slugs of the matching product(s) in the catalogue. Report is hidden if
    *  none of these slugs are currently published. Empty array = always show. */
   productSlugs: string[];
@@ -45,7 +46,7 @@ const REPORTS: Report[] = [
     id: "bpc157-10mg",
     name: "BPC-157",
     amount: "10mg",
-    testNumber: "208600",
+    testNumber: "208600", purity: 99.892,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208600-BPC157_10mg_OmniQure_DSDYDF1TRWRC",
     productSlugs: ["bpc-157-10mg"],
@@ -54,7 +55,7 @@ const REPORTS: Report[] = [
     id: "tb500-10mg",
     name: "TB-500 (TB4)",
     amount: "10mg",
-    testNumber: "208613",
+    testNumber: "208613", purity: 99.119,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208613-TB500_TB4_10mg_OmniQure_A9RR18DUH522",
     productSlugs: ["tb-500-10mg"],
@@ -63,7 +64,7 @@ const REPORTS: Report[] = [
     id: "tesamorelin-20mg",
     name: "Tesamorelin",
     amount: "20mg",
-    testNumber: "208612",
+    testNumber: "208612", purity: 99.358,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208612-Tesamorelin_20mh_OmniQure_NJDR19MRS3WC",
     productSlugs: ["tesamorelin-20mg"],
@@ -72,7 +73,7 @@ const REPORTS: Report[] = [
     id: "semax-10mg",
     name: "Semax",
     amount: "10mg",
-    testNumber: "208609",
+    testNumber: "208609", purity: 99.138,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208609-Semax_10mg_OmniQure_I42F8EHHKVHG",
     productSlugs: ["semax-10mg"],
@@ -81,7 +82,7 @@ const REPORTS: Report[] = [
     id: "selank-10mg",
     name: "Selank",
     amount: "10mg",
-    testNumber: "208610",
+    testNumber: "208610", purity: 99.161,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208610-Selank_10mg_OmniQure_FSSTD9WMADJH",
     productSlugs: ["selank-10mg"],
@@ -90,7 +91,7 @@ const REPORTS: Report[] = [
     id: "ghkcu-100mg",
     name: "GHK-Cu",
     amount: "100mg",
-    testNumber: "208608",
+    testNumber: "208608", purity: 99.912,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208608-GHKCU_100mg_OmniQure_PYKSNGJUCS1Y",
     productSlugs: ["ghk-cu-100mg"],
@@ -99,7 +100,7 @@ const REPORTS: Report[] = [
     id: "melanotan2-10mg",
     name: "Melanotan 2",
     amount: "10mg",
-    testNumber: "208605",
+    testNumber: "208605", purity: 99.887,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208605-Melanotan_2_10mg_OmniQure_CUHNDPBS5IUD",
     productSlugs: ["melanotan-2-10mg"],
@@ -108,7 +109,7 @@ const REPORTS: Report[] = [
     id: "kpv-10mg",
     name: "KPV",
     amount: "10mg",
-    testNumber: "208604",
+    testNumber: "208604", purity: 99.484,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208604-KPV_10mg_OmniQure_LYIZTLMNR54K",
     productSlugs: ["kpv-10mg"],
@@ -138,120 +139,162 @@ const REPORTS: Report[] = [
 // ─── Card ─────────────────────────────────────────────────────────────────────
 
 function ReportCard({ report }: { report: Report }) {
+  const isBlend = !!report.isBlend;
+  const cardBg = isBlend
+    ? "linear-gradient(150deg, #150d2e 0%, #1e1060 55%, #130d38 100%)"
+    : "linear-gradient(150deg, #081628 0%, #0d2460 55%, #0a1e50 100%)";
+  const topBar = isBlend
+    ? "linear-gradient(90deg, #7c3aed, #a78bfa)"
+    : "linear-gradient(90deg, #1240a0, #3b82f6)";
+  const btnBg = isBlend
+    ? "linear-gradient(135deg, #5b21b6, #7c3aed)"
+    : "linear-gradient(135deg, #1240a0, #2563eb)";
+  const btnShadow = isBlend
+    ? "0 2px 14px rgba(124,58,237,0.45)"
+    : "0 2px 14px rgba(18,64,160,0.45)";
+
   return (
-    <div style={{
-      background: "#fff",
-      border: "1.5px solid #E8EDF5",
-      borderRadius: "14px",
-      overflow: "hidden",
-      boxShadow: "0 1px 6px rgba(0,0,0,0.05)",
-      display: "flex",
-      flexDirection: "column",
-      transition: "box-shadow 0.2s, border-color 0.2s",
-    }}
+    <div
+      style={{
+        background: cardBg,
+        borderRadius: "18px",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        border: "1px solid rgba(255,255,255,0.07)",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.32)",
+        transition: "transform 0.18s ease, box-shadow 0.18s ease",
+      }}
       onMouseOver={e => {
-        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(18,64,160,0.10)";
-        (e.currentTarget as HTMLDivElement).style.borderColor = "#BFDBFE";
+        (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)";
+        (e.currentTarget as HTMLDivElement).style.boxShadow =
+          isBlend
+            ? "0 16px 44px rgba(0,0,0,0.45), 0 0 0 1px rgba(167,139,250,0.3)"
+            : "0 16px 44px rgba(0,0,0,0.45), 0 0 0 1px rgba(96,165,250,0.3)";
       }}
       onMouseOut={e => {
-        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 1px 6px rgba(0,0,0,0.05)";
-        (e.currentTarget as HTMLDivElement).style.borderColor = "#E8EDF5";
+        (e.currentTarget as HTMLDivElement).style.transform = "none";
+        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 24px rgba(0,0,0,0.32)";
       }}
     >
-      {/* Top section */}
-      <div style={{ padding: "20px 20px 16px" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "10px", marginBottom: "12px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <span style={{
-              width: "38px", height: "38px", borderRadius: "10px",
-              background: report.isBlend
-                ? "linear-gradient(135deg, #F5F3FF, #EDE9FE)"
-                : "linear-gradient(135deg, #EFF6FF, #DBEAFE)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              flexShrink: 0,
-            }}>
-              <FlaskConical size={17} color={report.isBlend ? "#7C3AED" : "#1B5CB5"} />
-            </span>
-            <div>
-              <p style={{ margin: 0, fontSize: "15px", fontWeight: 800, color: "#0D2565", lineHeight: 1.2 }}>
-                {report.name}
+      {/* Coloured accent bar */}
+      <div style={{ height: "3px", background: topBar, flexShrink: 0 }} />
+
+      {/* Body */}
+      <div style={{ padding: "20px 20px 16px", flex: 1 }}>
+
+        {/* Name row */}
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "8px", marginBottom: "16px" }}>
+          <div>
+            <p style={{ margin: 0, fontSize: "16px", fontWeight: 900, color: "#fff", lineHeight: 1.2, letterSpacing: "-0.01em" }}>
+              {report.name}
+            </p>
+            {report.amount !== "—" && (
+              <p style={{ margin: "4px 0 0", fontSize: "12px", color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>
+                {report.amount}
               </p>
-              {report.amount !== "—" && (
-                <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#94A3B8", fontWeight: 600 }}>
-                  {report.amount}
-                </p>
-              )}
-            </div>
+            )}
           </div>
-          {/* Verified badge */}
           <span style={{
-            flexShrink: 0,
-            display: "inline-flex", alignItems: "center", gap: "4px",
-            fontSize: "10px", fontWeight: 700,
-            padding: "3px 8px", borderRadius: "20px",
-            background: "#ECFDF5", color: "#059669",
-            border: "1px solid #6EE7B7",
+            flexShrink: 0, display: "inline-flex", alignItems: "center", gap: "4px",
+            fontSize: "9.5px", fontWeight: 800, padding: "3px 9px", borderRadius: "20px",
+            background: "rgba(52,211,153,0.12)", color: "#34d399",
+            border: "1px solid rgba(52,211,153,0.28)", letterSpacing: "0.06em",
+            whiteSpace: "nowrap",
           }}>
-            <CheckCircle2 size={10} />
-            Verified
+            <CheckCircle2 size={9} /> VERIFIED
           </span>
         </div>
 
+        {/* Purity spotlight */}
+        {report.purity !== undefined ? (
+          <div style={{
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.07)",
+            borderRadius: "12px",
+            padding: "12px 16px",
+            marginBottom: "14px",
+            display: "flex",
+            alignItems: "center",
+            gap: "16px",
+          }}>
+            <div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
+                <span style={{ fontSize: "34px", fontWeight: 900, color: "#6ee7b7", lineHeight: 1, letterSpacing: "-0.03em" }}>
+                  {report.purity.toFixed(1)}
+                </span>
+                <span style={{ fontSize: "15px", fontWeight: 700, color: "rgba(110,231,183,0.55)" }}>%</span>
+              </div>
+              <p style={{ margin: "2px 0 0", fontSize: "9px", color: "rgba(255,255,255,0.35)", fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" }}>
+                Purity
+              </p>
+            </div>
+            <div style={{ flex: 1, borderLeft: "1px solid rgba(255,255,255,0.08)", paddingLeft: "16px" }}>
+              <p style={{ margin: 0, fontSize: "9px", color: "rgba(255,255,255,0.35)", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 700 }}>
+                Test No.
+              </p>
+              <p style={{ margin: "3px 0 0", fontSize: "13px", fontWeight: 700, color: "rgba(255,255,255,0.55)", fontFamily: "monospace" }}>
+                #{report.testNumber}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div style={{ marginBottom: "14px" }}>
+            <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", fontFamily: "monospace" }}>
+              Test #{report.testNumber}
+            </span>
+          </div>
+        )}
+
         {/* Method pills */}
-        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "6px" }}>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: "4px",
-            fontSize: "10.5px", fontWeight: 700,
-            padding: "3px 10px", borderRadius: "6px",
-            background: "#EFF6FF", color: "#1B5CB5",
+            fontSize: "10px", fontWeight: 800, padding: "4px 10px", borderRadius: "6px",
+            background: "rgba(59,130,246,0.14)", color: "#93c5fd",
+            border: "1px solid rgba(59,130,246,0.22)", letterSpacing: "0.04em",
           }}>
-            <BarChart2 size={10} />
-            HPLC
+            <BarChart2 size={9} /> HPLC
           </span>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: "4px",
-            fontSize: "10.5px", fontWeight: 700,
-            padding: "3px 10px", borderRadius: "6px",
-            background: "#F5F3FF", color: "#7C3AED",
+            fontSize: "10px", fontWeight: 800, padding: "4px 10px", borderRadius: "6px",
+            background: "rgba(139,92,246,0.14)", color: "#c4b5fd",
+            border: "1px solid rgba(139,92,246,0.22)", letterSpacing: "0.04em",
           }}>
-            <Atom size={10} />
-            ESI-MS
-          </span>
-          <span style={{
-            fontSize: "10.5px", fontWeight: 600,
-            padding: "3px 10px", borderRadius: "6px",
-            background: "#F8FAFC", color: "#64748B",
-          }}>
-            #{report.testNumber}
+            <Atom size={9} /> ESI-MS
           </span>
         </div>
       </div>
 
-      {/* Divider */}
-      <div style={{ borderTop: "1px solid #F1F5F9", margin: "0 20px" }} />
-
-      {/* Janoshik attribution + link */}
-      <div style={{ padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
-        <JanoshikLogo height={17} />
+      {/* Footer */}
+      <div style={{
+        padding: "12px 20px 16px",
+        borderTop: "1px solid rgba(255,255,255,0.07)",
+        background: "rgba(0,0,0,0.20)",
+        display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px",
+      }}>
+        <span style={{ background: "#E8F0F8", borderRadius: "30px", padding: "4px 12px", display: "inline-flex", alignItems: "center" }}>
+          <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "15px", width: "auto", display: "block" }} />
+        </span>
         <a
           href={report.url}
           target="_blank"
           rel="noopener noreferrer"
           style={{
-            display: "inline-flex", alignItems: "center", gap: "5px",
+            display: "inline-flex", alignItems: "center", gap: "6px",
             fontSize: "12px", fontWeight: 700,
-            padding: "6px 14px", borderRadius: "8px",
-            background: "linear-gradient(135deg, #0D2565, #1B5CB5)",
-            color: "#fff",
+            padding: "7px 16px", borderRadius: "9px",
+            background: btnBg, color: "#fff",
             textDecoration: "none",
-            boxShadow: "0 2px 8px rgba(18,64,160,0.25)",
+            boxShadow: btnShadow,
             transition: "opacity 0.15s",
+            letterSpacing: "0.01em",
           }}
-          onMouseOver={e => (e.currentTarget.style.opacity = "0.88")}
+          onMouseOver={e => (e.currentTarget.style.opacity = "0.82")}
           onMouseOut={e => (e.currentTarget.style.opacity = "1")}
         >
-          View Report
-          <ExternalLink size={11} />
+          View Report <ExternalLink size={11} />
         </a>
       </div>
     </div>
