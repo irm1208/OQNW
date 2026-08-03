@@ -332,9 +332,9 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
           <button
             onClick={onQuickView}
             style={{
-              display: "inline-flex", alignItems: "center", gap: "5px",
-              fontSize: "12px", fontWeight: 700,
-              padding: "7px 14px", borderRadius: "8px",
+              display: "inline-flex", alignItems: "center", gap: "4px",
+              fontSize: "11px", fontWeight: 700,
+              padding: "5px 10px", borderRadius: "6px",
               background: "#fff",
               color: isBlend ? "#5b21b6" : navy,
               border: `1.5px solid ${isBlend ? "#DDD6FE" : "#BFDBFE"}`,
@@ -359,9 +359,9 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              display: "inline-flex", alignItems: "center", gap: "5px",
-              fontSize: "12px", fontWeight: 700,
-              padding: "7px 14px", borderRadius: "8px",
+              display: "inline-flex", alignItems: "center", gap: "4px",
+              fontSize: "11px", fontWeight: 700,
+              padding: "5px 10px", borderRadius: "6px",
               background: topBar,
               color: "#fff",
               textDecoration: "none",
