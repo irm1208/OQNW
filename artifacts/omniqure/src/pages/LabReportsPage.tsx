@@ -144,57 +144,60 @@ const REPORTS: Report[] = [
 
 function ReportCard({ report }: { report: Report }) {
   const isBlend = !!report.isBlend;
-  const cardBg = isBlend
-    ? "linear-gradient(150deg, #150d2e 0%, #1e1060 55%, #130d38 100%)"
-    : "linear-gradient(150deg, #081628 0%, #0d2460 55%, #0a1e50 100%)";
-  const topBar = isBlend
-    ? "linear-gradient(90deg, #7c3aed, #a78bfa)"
-    : "linear-gradient(90deg, #1240a0, #3b82f6)";
-  const btnBg = isBlend
-    ? "linear-gradient(135deg, #5b21b6, #7c3aed)"
-    : "linear-gradient(135deg, #1240a0, #2563eb)";
-  const btnShadow = isBlend
-    ? "0 2px 14px rgba(124,58,237,0.45)"
-    : "0 2px 14px rgba(18,64,160,0.45)";
+
+  // Site palette
+  const navy      = "#0D2565";
+  const blue      = "#1B5CB5";
+  const blueLight = "#EFF6FF";
+  const border    = "#D1DDF5";
+  const topBar    = isBlend
+    ? "linear-gradient(90deg, #4f46e5, #7c3aed)"
+    : "linear-gradient(90deg, #0D2565, #1B5CB5)";
+  const spotBg    = isBlend ? "#F5F3FF" : blueLight;
+  const spotBdr   = isBlend ? "#DDD6FE" : "#BFDBFE";
+  const numColor  = isBlend ? "#5b21b6" : navy;
+  const unitColor = isBlend ? "#7c3aed" : blue;
+  const massColor = isBlend ? "#6d28d9" : "#1240A0";
 
   return (
     <div
       style={{
-        background: cardBg,
-        borderRadius: "18px",
+        background: "#fff",
+        borderRadius: "16px",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
-        border: "1px solid rgba(255,255,255,0.07)",
-        boxShadow: "0 4px 24px rgba(0,0,0,0.32)",
-        transition: "transform 0.18s ease, box-shadow 0.18s ease",
+        border: `1.5px solid ${border}`,
+        boxShadow: "0 2px 10px rgba(13,37,101,0.07)",
+        transition: "transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease",
       }}
       onMouseOver={e => {
         (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)";
-        (e.currentTarget as HTMLDivElement).style.boxShadow =
-          isBlend
-            ? "0 16px 44px rgba(0,0,0,0.45), 0 0 0 1px rgba(167,139,250,0.3)"
-            : "0 16px 44px rgba(0,0,0,0.45), 0 0 0 1px rgba(96,165,250,0.3)";
+        (e.currentTarget as HTMLDivElement).style.boxShadow = isBlend
+          ? "0 12px 32px rgba(91,33,182,0.14), 0 0 0 1.5px #c4b5fd"
+          : "0 12px 32px rgba(13,37,101,0.14), 0 0 0 1.5px #93C5FD";
+        (e.currentTarget as HTMLDivElement).style.borderColor = isBlend ? "#c4b5fd" : "#93C5FD";
       }}
       onMouseOut={e => {
         (e.currentTarget as HTMLDivElement).style.transform = "none";
-        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 24px rgba(0,0,0,0.32)";
+        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 10px rgba(13,37,101,0.07)";
+        (e.currentTarget as HTMLDivElement).style.borderColor = border;
       }}
     >
-      {/* Coloured accent bar */}
-      <div style={{ height: "3px", background: topBar, flexShrink: 0 }} />
+      {/* Accent bar */}
+      <div style={{ height: "4px", background: topBar, flexShrink: 0 }} />
 
       {/* Body */}
-      <div style={{ padding: "20px 20px 16px", flex: 1 }}>
+      <div style={{ padding: "18px 18px 14px", flex: 1 }}>
 
         {/* Name row */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "8px", marginBottom: "16px" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "8px", marginBottom: "14px" }}>
           <div>
-            <p style={{ margin: 0, fontSize: "16px", fontWeight: 900, color: "#fff", lineHeight: 1.2, letterSpacing: "-0.01em" }}>
+            <p style={{ margin: 0, fontSize: "15px", fontWeight: 900, color: navy, lineHeight: 1.25, letterSpacing: "-0.01em" }}>
               {report.name}
             </p>
             {report.amount !== "—" && (
-              <p style={{ margin: "4px 0 0", fontSize: "12px", color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>
+              <p style={{ margin: "3px 0 0", fontSize: "12px", color: "#64748B", fontWeight: 600 }}>
                 {report.amount}
               </p>
             )}
@@ -202,24 +205,23 @@ function ReportCard({ report }: { report: Report }) {
           <span style={{
             flexShrink: 0, display: "inline-flex", alignItems: "center", gap: "4px",
             fontSize: "9.5px", fontWeight: 800, padding: "3px 9px", borderRadius: "20px",
-            background: "rgba(52,211,153,0.12)", color: "#34d399",
-            border: "1px solid rgba(52,211,153,0.28)", letterSpacing: "0.06em",
+            background: "#ECFDF5", color: "#059669",
+            border: "1px solid #6EE7B7", letterSpacing: "0.06em",
             whiteSpace: "nowrap",
           }}>
             <CheckCircle2 size={9} /> VERIFIED
           </span>
         </div>
 
-        {/* Results spotlight — purity + mass side by side */}
+        {/* Results spotlight — purity + mass */}
         <div style={{
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid rgba(255,255,255,0.07)",
-          borderRadius: "12px",
-          padding: "12px 14px",
-          marginBottom: "14px",
+          background: spotBg,
+          border: `1px solid ${spotBdr}`,
+          borderRadius: "10px",
+          padding: "11px 14px",
+          marginBottom: "12px",
           display: "grid",
           gridTemplateColumns: "1fr 1px 1fr",
-          gap: "0",
           alignItems: "center",
         }}>
           {/* Purity */}
@@ -227,21 +229,19 @@ function ReportCard({ report }: { report: Report }) {
             {report.purity !== undefined ? (
               <>
                 <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-                  <span style={{ fontSize: "28px", fontWeight: 900, color: "#6ee7b7", lineHeight: 1, letterSpacing: "-0.03em" }}>
+                  <span style={{ fontSize: "26px", fontWeight: 900, color: numColor, lineHeight: 1, letterSpacing: "-0.03em" }}>
                     {report.purity.toFixed(1)}
                   </span>
-                  <span style={{ fontSize: "13px", fontWeight: 700, color: "rgba(110,231,183,0.5)" }}>%</span>
+                  <span style={{ fontSize: "12px", fontWeight: 700, color: unitColor }}>%</span>
                 </div>
-                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "rgba(255,255,255,0.35)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "#64748B", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
                   Purity
                 </p>
               </>
             ) : (
               <>
-                <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-                  <span style={{ fontSize: "22px", fontWeight: 900, color: "rgba(110,231,183,0.45)", lineHeight: 1, letterSpacing: "-0.02em" }}>—</span>
-                </div>
-                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "rgba(255,255,255,0.25)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                <span style={{ fontSize: "20px", fontWeight: 900, color: "#CBD5E1", lineHeight: 1 }}>—</span>
+                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "#94A3B8", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
                   Purity
                 </p>
               </>
@@ -249,28 +249,26 @@ function ReportCard({ report }: { report: Report }) {
           </div>
 
           {/* Divider */}
-          <div style={{ background: "rgba(255,255,255,0.08)", alignSelf: "stretch" }} />
+          <div style={{ background: spotBdr, alignSelf: "stretch" }} />
 
           {/* Mass */}
           <div style={{ paddingLeft: "12px" }}>
             {report.actualMass !== undefined ? (
               <>
                 <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-                  <span style={{ fontSize: "28px", fontWeight: 900, color: isBlend ? "#a78bfa" : "#93c5fd", lineHeight: 1, letterSpacing: "-0.03em" }}>
+                  <span style={{ fontSize: "26px", fontWeight: 900, color: massColor, lineHeight: 1, letterSpacing: "-0.03em" }}>
                     {report.actualMass.toFixed(2)}
                   </span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, color: isBlend ? "rgba(167,139,250,0.5)" : "rgba(147,197,253,0.5)" }}>mg</span>
+                  <span style={{ fontSize: "11px", fontWeight: 700, color: unitColor }}>mg</span>
                 </div>
-                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "rgba(255,255,255,0.35)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "#64748B", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
                   Mass confirmed
                 </p>
               </>
             ) : (
               <>
-                <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-                  <span style={{ fontSize: "22px", fontWeight: 900, color: "rgba(147,197,253,0.45)", lineHeight: 1 }}>—</span>
-                </div>
-                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "rgba(255,255,255,0.25)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                <span style={{ fontSize: "20px", fontWeight: 900, color: "#CBD5E1", lineHeight: 1 }}>—</span>
+                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "#94A3B8", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
                   Mass confirmed
                 </p>
               </>
@@ -282,28 +280,35 @@ function ReportCard({ report }: { report: Report }) {
         <div style={{ display: "flex", gap: "6px" }}>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: "4px",
-            fontSize: "10px", fontWeight: 800, padding: "4px 10px", borderRadius: "6px",
-            background: "rgba(59,130,246,0.14)", color: "#93c5fd",
-            border: "1px solid rgba(59,130,246,0.22)", letterSpacing: "0.04em",
+            fontSize: "10px", fontWeight: 700, padding: "3px 10px", borderRadius: "6px",
+            background: "#EFF6FF", color: "#1240A0",
+            border: "1px solid #BFDBFE", letterSpacing: "0.04em",
           }}>
             <BarChart2 size={9} /> HPLC
           </span>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: "4px",
-            fontSize: "10px", fontWeight: 800, padding: "4px 10px", borderRadius: "6px",
-            background: "rgba(139,92,246,0.14)", color: "#c4b5fd",
-            border: "1px solid rgba(139,92,246,0.22)", letterSpacing: "0.04em",
+            fontSize: "10px", fontWeight: 700, padding: "3px 10px", borderRadius: "6px",
+            background: "#F5F3FF", color: "#5B21B6",
+            border: "1px solid #DDD6FE", letterSpacing: "0.04em",
           }}>
             <Atom size={9} /> ESI-MS
+          </span>
+          <span style={{
+            fontSize: "10px", fontWeight: 600, padding: "3px 10px", borderRadius: "6px",
+            background: "#F8FAFC", color: "#64748B",
+            border: "1px solid #E2E8F0",
+          }}>
+            #{report.testNumber}
           </span>
         </div>
       </div>
 
       {/* Footer */}
       <div style={{
-        padding: "12px 20px 16px",
-        borderTop: "1px solid rgba(255,255,255,0.07)",
-        background: "rgba(0,0,0,0.20)",
+        padding: "10px 18px 14px",
+        borderTop: `1px solid ${border}`,
+        background: "#F8FAFD",
         display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px",
       }}>
         <span style={{ background: "#E8F0F8", borderRadius: "30px", padding: "4px 12px", display: "inline-flex", alignItems: "center" }}>
@@ -316,14 +321,17 @@ function ReportCard({ report }: { report: Report }) {
           style={{
             display: "inline-flex", alignItems: "center", gap: "6px",
             fontSize: "12px", fontWeight: 700,
-            padding: "7px 16px", borderRadius: "9px",
-            background: btnBg, color: "#fff",
+            padding: "7px 16px", borderRadius: "8px",
+            background: topBar,
+            color: "#fff",
             textDecoration: "none",
-            boxShadow: btnShadow,
+            boxShadow: isBlend
+              ? "0 2px 10px rgba(91,33,182,0.25)"
+              : "0 2px 10px rgba(13,37,101,0.22)",
             transition: "opacity 0.15s",
             letterSpacing: "0.01em",
           }}
-          onMouseOver={e => (e.currentTarget.style.opacity = "0.82")}
+          onMouseOver={e => (e.currentTarget.style.opacity = "0.85")}
           onMouseOut={e => (e.currentTarget.style.opacity = "1")}
         >
           View Report <ExternalLink size={11} />
