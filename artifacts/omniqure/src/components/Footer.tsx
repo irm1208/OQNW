@@ -133,7 +133,7 @@ export default function Footer() {
 
               {/* Trust badges */}
               <div className="flex flex-wrap gap-2 mb-2 md:mb-5">
-                {["98%+", "COA Tested", "Secure Checkout"].map(b => (
+                {["98%+", "Janoshik Verified", "Secure Checkout"].map(b => (
                   <span
                     key={b}
                     className="text-xs px-2.5 py-1 rounded-full inline-flex items-center gap-1"
@@ -229,6 +229,39 @@ export default function Footer() {
                 </span>
               ))}
             </div>
+          </div>
+
+          {/* Janoshik independent verification strip */}
+          <div
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4 md:mt-6 py-3 md:py-4"
+            style={{ borderTop: "1px solid rgba(255,255,255,0.12)", borderBottom: "1px solid rgba(255,255,255,0.12)" }}
+          >
+            <span style={{ fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.55)", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+              Independently Verified By
+            </span>
+            <a
+              href="/lab-reports"
+              style={{ display: "inline-flex", alignItems: "center", textDecoration: "none" }}
+              title="View our independent lab reports on Janoshik"
+            >
+              <span style={{
+                background: "#E8F0F8",
+                borderRadius: "40px",
+                padding: "5px 16px",
+                display: "inline-flex",
+                alignItems: "center",
+                boxShadow: "0 2px 10px rgba(0,0,0,0.25)",
+                transition: "box-shadow 0.15s, transform 0.15s",
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 18px rgba(0,0,0,0.35)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 10px rgba(0,0,0,0.25)"; (e.currentTarget as HTMLElement).style.transform = "none"; }}
+              >
+                <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "24px", width: "auto", borderRadius: "3px", display: "block" }} />
+              </span>
+            </a>
+            <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.40)" }}>
+              HPLC &amp; ESI-MS · Every batch tested
+            </span>
           </div>
 
           <div className="text-center mt-3 md:mt-5" style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>
