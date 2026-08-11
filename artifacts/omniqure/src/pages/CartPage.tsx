@@ -433,8 +433,8 @@ export default function CartPage() {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 4 }}>
         {SHIPPING_OPTIONS.map(opt => {
-          const cost = opt.freeOver && cartGBP >= opt.freeOver ? 0 : opt.price;
-          const isFree = opt.freeOver && cartGBP >= opt.freeOver;
+          const cost = isUK && opt.freeOver && cartGBP >= opt.freeOver ? 0 : opt.price;
+          const isFree = isUK && opt.freeOver && cartGBP >= opt.freeOver;
           const active = shipping === opt.id;
           return (
             <label
@@ -497,8 +497,9 @@ export default function CartPage() {
   }
 
   const cartGBP = items.reduce((s, { product, quantity }) => s + (product.price ?? 0) * quantity, 0);
+  const isUK = delivery.country === "United Kingdom";
   const selectedShipping = SHIPPING_OPTIONS.find(o => o.id === shipping)!;
-  const shippingCost = selectedShipping.freeOver && cartGBP >= selectedShipping.freeOver ? 0 : selectedShipping.price;
+  const shippingCost = isUK && selectedShipping.freeOver && cartGBP >= selectedShipping.freeOver ? 0 : selectedShipping.price;
   const discountAmount = appliedDiscount?.discountAmount ?? 0;
   const loyaltyDiscountGbp = loyaltyPointsToRedeem / 100;
   const freePeptideDeductGbp = redeemFreePeptide && referralCreditGbp > 0 ? Math.min(referralCreditGbp, cartGBP) : 0;
