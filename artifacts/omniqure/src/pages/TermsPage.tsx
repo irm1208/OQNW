@@ -5,7 +5,7 @@ import { useSEO } from "@/hooks/useSEO";
 const LAST_UPDATED = "1 May 2025";
 const COMPANY = "OmniQure Peptide Research Institute";
 const COMPANY_SHORT = "OmniQure";
-const EMAIL = "legal@omniqure.com";
+const EMAIL = "support@omniqure.com";
 
 interface SectionProps {
   id: string;
@@ -280,7 +280,7 @@ export default function TermsPage() {
               <div className="rounded-xl p-4" style={{ backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}>
                 <p className="font-semibold mb-2" style={{ color: "#1240A0" }}>{COMPANY}</p>
                 <p><strong>Legal enquiries:</strong> <a href={`mailto:${EMAIL}`} style={{ color: "#1B5CB5" }}>{EMAIL}</a></p>
-                <p><strong>General enquiries:</strong> <a href="mailto:research@omniqure.com" style={{ color: "#1B5CB5" }}>research@omniqure.com</a></p>
+                <p><strong>General enquiries:</strong> <a href="mailto:support@omniqure.com" style={{ color: "#1B5CB5" }}>support@omniqure.com</a></p>
               </div>
             </Section>
           </div>

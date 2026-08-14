@@ -8,7 +8,7 @@ function apiUrl(path: string) {
   return `${BASE_URL}api/${path}`.replace(/\/+/g, "/").replace(/^\/\//, "/");
 }
 
-const EMAIL = "research@omniqure.com";
+const EMAIL = "support@omniqure.com";
 
 const SUBJECTS = [
   "Product / Order Question",

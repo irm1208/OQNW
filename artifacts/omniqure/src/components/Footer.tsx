@@ -148,7 +148,7 @@ export default function Footer() {
               <div className="hidden md:flex flex-col gap-2">
                 <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "rgba(255,255,255,0.70)" }}>
                   <Mail size={13} style={{ color: "rgba(255,255,255,0.50)", flexShrink: 0 }} />
-                  research@omniqure.com
+                  support@omniqure.com
                 </span>
                 <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "rgba(255,255,255,0.70)" }}>
                   <FlaskConical size={13} style={{ color: "rgba(255,255,255,0.50)", flexShrink: 0 }} />

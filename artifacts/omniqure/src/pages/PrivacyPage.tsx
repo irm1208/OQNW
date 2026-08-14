@@ -5,8 +5,8 @@ import { useSEO } from "@/hooks/useSEO";
 const LAST_UPDATED = "1 May 2025";
 const COMPANY = "OmniQure Peptide Research Institute";
 const COMPANY_SHORT = "OmniQure";
-const EMAIL_PRIVACY = "privacy@omniqure.com";
-const EMAIL_GENERAL = "research@omniqure.com";
+const EMAIL_PRIVACY = "support@omniqure.com";
+const EMAIL_GENERAL = "support@omniqure.com";
 
 interface SectionProps {
   id: string;
