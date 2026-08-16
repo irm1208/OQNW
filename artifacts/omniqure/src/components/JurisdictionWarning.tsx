@@ -190,16 +190,23 @@ function SeverityIcon({ severity, size = 18 }: { severity: Severity; size?: numb
 
 // ─── Dismiss key helpers ──────────────────────────────────────────────────────
 
+const DISMISS_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
 function getDismissKey(country: string) {
   return `omniqure_juris_dismissed_${country}`;
 }
 
 function isDismissed(country: string): boolean {
-  try { return sessionStorage.getItem(getDismissKey(country)) === "1"; } catch { return false; }
+  try {
+    const raw = localStorage.getItem(getDismissKey(country));
+    if (!raw) return false;
+    const ts = parseInt(raw, 10);
+    return !isNaN(ts) && Date.now() - ts < DISMISS_TTL_MS;
+  } catch { return false; }
 }
 
 function setDismissed(country: string) {
-  try { sessionStorage.setItem(getDismissKey(country), "1"); } catch {}
+  try { localStorage.setItem(getDismissKey(country), String(Date.now())); } catch {}
 }
 
 // ─── Single banner ────────────────────────────────────────────────────────────
