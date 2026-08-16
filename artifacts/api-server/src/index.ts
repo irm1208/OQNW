@@ -5,6 +5,7 @@ import { startReviewRequestJob } from "./lib/reviewRequestJob";
 import { seedReviews } from "./lib/seed-reviews";
 import { seedBlog } from "./lib/seed-blog";
 import { seedBlogPeptides } from "./lib/seed-blog-peptides";
+import { seedProductsCatalog } from "./lib/seed-catalog";
 
 const rawPort = process.env["PORT"];
 
@@ -29,10 +30,18 @@ app.listen(port, (err) => {
   logger.info({ port }, "Server listening");
   startAbandonedCartJob();
   startReviewRequestJob();
-  seedReviews().then((r) => {
-    if (r.seeded) logger.info({ count: r.count }, "Reviews seeded");
-    else logger.info({ reason: r.reason }, "Reviews seed skipped");
-  }).catch((err) => logger.error({ err }, "Reviews seed failed"));
+  // Seed catalog first (reviews depend on published products existing)
+  seedProductsCatalog()
+    .then((r) => {
+      if (r.seeded) logger.info({ count: r.count }, "Products catalog seeded");
+      else logger.info({ reason: r.reason }, "Products catalog seed skipped");
+      return seedReviews();
+    })
+    .then((r) => {
+      if (r.seeded) logger.info({ count: r.count }, "Reviews seeded");
+      else logger.info({ reason: r.reason }, "Reviews seed skipped");
+    })
+    .catch((err) => logger.error({ err }, "Catalog/reviews seed failed"));
   seedBlog().catch((err) => logger.error({ err }, "Blog seed failed"));
   seedBlogPeptides().catch((err) => logger.error({ err }, "Blog peptides seed failed"));
 });
