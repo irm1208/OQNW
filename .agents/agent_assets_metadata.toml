@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "NUAsBvEQgGBdMzRH3Hz4o"
@@ -102,3 +101,10 @@ id = "91AleJFXXvWj_cXBqW1N5"
 uri = "file://artifacts/mockup-sandbox/public/images/warm-earth-trust.png"
 type = "image"
 title = "Microscope botanical aesthetic"
+
+[[outputs]]
+id = "GEBWte6Ed3WqZx-SwIIQL"
+uri = "file://email-preview.html"
+type = "text"
+title = "Order Confirmation Email"
+description = "Preview of the customer order confirmation email sent via Resend"
