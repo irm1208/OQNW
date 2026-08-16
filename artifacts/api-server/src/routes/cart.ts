@@ -26,7 +26,7 @@ function verifyCustomerSession(token: string): number | null {
   return isNaN(id) ? null : id;
 }
 
-router.post("/api/cart/save", async (req: Request, res: Response): Promise<void> => {
+router.post("/cart/save", async (req: Request, res: Response): Promise<void> => {
   const token = req.cookies?.customer_session as string | undefined;
   if (!token) {
     res.status(401).json({ error: "Not authenticated" });
@@ -87,7 +87,7 @@ router.post("/api/cart/save", async (req: Request, res: Response): Promise<void>
   res.json({ ok: true });
 });
 
-router.delete("/api/cart/save", async (req: Request, res: Response): Promise<void> => {
+router.delete("/cart/save", async (req: Request, res: Response): Promise<void> => {
   const token = req.cookies?.customer_session as string | undefined;
   if (!token) {
     res.json({ ok: true });
