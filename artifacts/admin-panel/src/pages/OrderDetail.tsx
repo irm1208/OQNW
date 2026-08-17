@@ -231,6 +231,8 @@ export default function OrderDetail() {
   const [isEditing, setIsEditing] = useState(false);
 
   const [sendingTracking, setSendingTracking] = useState(false);
+  const [sendingConfirmation, setSendingConfirmation] = useState(false);
+  const [sendingDelivery, setSendingDelivery] = useState(false);
   const [logReturnOpen, setLogReturnOpen] = useState(false);
   const [returnReason, setReturnReason] = useState("");
   const [submittingReturn, setSubmittingReturn] = useState(false);
@@ -380,11 +382,43 @@ export default function OrderDetail() {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Failed");
-      toast.success("Tracking notification sent to customer");
+      toast.success("Shipping notification sent to customer");
     } catch {
-      toast.error("Failed to send tracking notification");
+      toast.error("Failed to send shipping notification");
     } finally {
       setSendingTracking(false);
+    }
+  };
+
+  const handleSendConfirmation = async () => {
+    setSendingConfirmation(true);
+    try {
+      const res = await fetch(`/api/admin/orders/${orderId}/send-confirmation`, {
+        method: "POST",
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Failed");
+      toast.success("Order confirmation resent to customer");
+    } catch {
+      toast.error("Failed to resend order confirmation");
+    } finally {
+      setSendingConfirmation(false);
+    }
+  };
+
+  const handleSendDelivery = async () => {
+    setSendingDelivery(true);
+    try {
+      const res = await fetch(`/api/admin/orders/${orderId}/send-delivery`, {
+        method: "POST",
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Failed");
+      toast.success("Delivery confirmation sent to customer");
+    } catch {
+      toast.error("Failed to send delivery confirmation");
+    } finally {
+      setSendingDelivery(false);
     }
   };
 
@@ -534,15 +568,42 @@ export default function OrderDetail() {
                   {updateOrder.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                   Save Fulfillment Details
                 </Button>
-                <Button
-                  variant="outline"
-                  onClick={handleSendTracking}
-                  disabled={sendingTracking || !trackingNumber}
-                  title={!trackingNumber ? "Add a tracking number first" : "Send shipping notification email to customer"}
-                >
-                  {sendingTracking ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Send className="w-4 h-4 mr-2" />}
-                  Send Tracking Email
-                </Button>
+              </div>
+
+              <div className="border-t pt-4 mt-2">
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground/60 mb-3">Resend Emails</p>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleSendConfirmation}
+                    disabled={sendingConfirmation}
+                    title="Resend the order confirmation email to the customer"
+                  >
+                    {sendingConfirmation ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Send className="w-4 h-4 mr-2" />}
+                    Order Confirmation
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleSendTracking}
+                    disabled={sendingTracking || !trackingNumber}
+                    title={!trackingNumber ? "Add a tracking number first" : "Resend the shipping notification email"}
+                  >
+                    {sendingTracking ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Send className="w-4 h-4 mr-2" />}
+                    Shipping Notification
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleSendDelivery}
+                    disabled={sendingDelivery}
+                    title="Send the delivery confirmation email to the customer"
+                  >
+                    {sendingDelivery ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Send className="w-4 h-4 mr-2" />}
+                    Delivery Confirmation
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>

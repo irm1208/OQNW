@@ -239,6 +239,80 @@ router.get("/admin/orders/:id", async (req: Request, res: Response): Promise<voi
   }
 });
 
+// POST /api/admin/orders/:id/send-confirmation — resend order confirmation email
+router.post("/admin/orders/:id/send-confirmation", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid order ID" }); return; }
+  try {
+    const [order] = await db.select().from(ordersTable).where(eq(ordersTable.id, id));
+    if (!order) { res.status(404).json({ error: "Order not found" }); return; }
+    const items = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, id));
+    await sendOrderConfirmation({
+      orderNumber: order.orderNumber,
+      customerName: order.customerName,
+      customerEmail: order.customerEmail,
+      items: items.map(i => ({
+        productName: i.productName,
+        productCategory: i.productCategory ?? "",
+        quantity: i.quantity,
+        priceGbp: parseFloat(String(i.priceGbp)),
+      })),
+      subtotalGbp: parseFloat(String(order.subtotalGbp)),
+      shippingCostGbp: parseFloat(String(order.shippingCostGbp)),
+      totalGbp: parseFloat(String(order.totalGbp)),
+      shippingMethod: order.shippingMethod ?? null,
+      trackingNumber: order.trackingNumber ?? null,
+      address1: order.address1 ?? null,
+      address2: order.address2 ?? null,
+      city: order.city ?? null,
+      postcode: order.postcode ?? null,
+      country: order.country ?? null,
+    });
+    res.json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to resend order confirmation");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// POST /api/admin/orders/:id/send-delivery — send delivery confirmation email
+router.post("/admin/orders/:id/send-delivery", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid order ID" }); return; }
+  try {
+    const [order] = await db.select().from(ordersTable).where(eq(ordersTable.id, id));
+    if (!order) { res.status(404).json({ error: "Order not found" }); return; }
+    const items = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, id));
+    await sendDeliveryConfirmation({
+      orderNumber: order.orderNumber,
+      customerName: order.customerName,
+      customerEmail: order.customerEmail,
+      items: items.map(i => ({
+        productName: i.productName,
+        productCategory: i.productCategory ?? "",
+        quantity: i.quantity,
+        priceGbp: parseFloat(String(i.priceGbp)),
+      })),
+      subtotalGbp: parseFloat(String(order.subtotalGbp)),
+      shippingCostGbp: parseFloat(String(order.shippingCostGbp)),
+      totalGbp: parseFloat(String(order.totalGbp)),
+      shippingMethod: order.shippingMethod ?? null,
+      trackingNumber: order.trackingNumber ?? null,
+      address1: order.address1 ?? null,
+      address2: order.address2 ?? null,
+      city: order.city ?? null,
+      postcode: order.postcode ?? null,
+      country: order.country ?? null,
+    });
+    res.json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to send delivery confirmation");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 router.post("/admin/orders/:id/send-tracking", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
