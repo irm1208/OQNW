@@ -98,7 +98,7 @@ export default function AgeGate() {
           <div className="flex justify-center mb-5">
             <div>
               <img
-                src="/omniqure-wordmark.png"
+                src="/omniqure-wordmark.png?v=2"
                 alt="OmniQure"
                 style={{ height: "78px", width: "auto", display: "block" }}
               />

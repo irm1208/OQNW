@@ -305,7 +305,7 @@ export default function Header() {
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
               <div style={{ display: "inline-block" }}>
                 <img
-                  src="/omniqure-wordmark.png"
+                  src="/omniqure-wordmark.png?v=2"
                   alt="OmniQure"
                   className="h-8 sm:h-[52px]"
                   style={{ width: "auto", maxWidth: "none", display: "block" }}
