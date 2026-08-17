@@ -55,6 +55,7 @@ const StorageGuidePage     = lazy(() => import("@/pages/StorageGuidePage"));
 const ResearchResultsPage  = lazy(() => import("@/pages/ResearchResultsPage"));
 const ContactPage          = lazy(() => import("@/pages/ContactPage"));
 const ChatWidget            = lazy(() => import("@/components/ChatWidget"));
+const VerifyEmail          = lazy(() => import("@/pages/VerifyEmail"));
 const NotFound             = lazy(() => import("@/pages/not-found"));
 
 const queryClient = new QueryClient();
@@ -86,6 +87,7 @@ function Router() {
       <Route path="/sign-in" component={SignIn} />
       <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/reset-password" component={ResetPassword} />
+      <Route path="/verify-email" component={VerifyEmail} />
       <Route path="/register" component={Register} />
       <Route path="/account" component={AccountPage} />
       <Route path="/cart" component={CartPage} />

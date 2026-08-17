@@ -213,12 +213,27 @@ router.post("/auth/register", async (req: Request, res: Response): Promise<void>
       lastName: customer.lastName,
     });
 
-    // Fire welcome email — referral code is deterministic so we can compute it now
+    // Generate email verification token and send welcome email
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+    const verificationExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    await db
+      .update(customersTable)
+      .set({ verificationToken, verificationTokenExpiresAt: verificationExpiresAt })
+      .where(eq(customersTable.id, customer.id))
+      .catch(() => {});
+
+    const siteUrl = (
+      process.env.SITE_URL ||
+      (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "https://omniqure.com")
+    ).replace(/\/$/, "");
+    const verifyUrl = `${siteUrl}/verify-email?token=${verificationToken}`;
     const referralCode = `${firstName.trim().slice(0, 3).toUpperCase()}${String(customer.id).padStart(4, "0")}`;
+
     sendAccountCreatedEmail({
       customerName: `${customer.firstName} ${customer.lastName}`,
       customerEmail: customer.email,
       referralCode,
+      verifyUrl,
     }).catch((err) => req.log.error({ err }, "Failed to send account created email"));
 
   } catch (err) {
@@ -358,6 +373,37 @@ router.post("/auth/reset-password", async (req: Request, res: Response): Promise
     res.status(200).json({ ok: true });
   } catch (err) {
     req.log.error({ err }, "Failed to reset password");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/auth/verify-email", async (req: Request, res: Response): Promise<void> => {
+  const token = (req.query.token ?? req.body?.token) as string | undefined;
+  if (!token || typeof token !== "string" || !token.trim()) {
+    res.status(400).json({ error: "Verification token is required" });
+    return;
+  }
+  try {
+    const [customer] = await db
+      .select({ id: customersTable.id, verificationTokenExpiresAt: customersTable.verificationTokenExpiresAt })
+      .from(customersTable)
+      .where(eq(customersTable.verificationToken, token.trim()))
+      .limit(1);
+
+    if (!customer || !customer.verificationTokenExpiresAt || customer.verificationTokenExpiresAt < new Date()) {
+      res.status(400).json({ error: "This verification link is invalid or has expired." });
+      return;
+    }
+
+    await db
+      .update(customersTable)
+      .set({ emailVerified: true, verificationToken: null, verificationTokenExpiresAt: null })
+      .where(eq(customersTable.id, customer.id));
+
+    req.log.info({ customerId: customer.id }, "Email verified");
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to verify email");
     res.status(500).json({ error: "Internal server error" });
   }
 });

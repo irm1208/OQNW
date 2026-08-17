@@ -36,6 +36,9 @@ export const customersTable = pgTable("customers", {
   lastSeenCountry: text("last_seen_country"),
   knownIps: text("known_ips").array(),
   referralAbuseFlag: boolean("referral_abuse_flag").notNull().default(false),
+  emailVerified: boolean("email_verified").notNull().default(false),
+  verificationToken: text("verification_token"),
+  verificationTokenExpiresAt: timestamp("verification_token_expires_at", { withTimezone: true }),
 });
 
 export const insertCustomerSchema = createInsertSchema(customersTable).omit({

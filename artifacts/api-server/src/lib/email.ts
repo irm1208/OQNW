@@ -445,6 +445,7 @@ export async function sendAccountCreatedEmail(opts: {
   customerName: string;
   customerEmail: string;
   referralCode?: string | null;
+  verifyUrl?: string | null;
 }): Promise<void> {
   const firstName = opts.customerName.split(" ")[0];
   const subject = `Welcome to OmniQure, ${firstName}!`;
@@ -467,6 +468,12 @@ export async function sendAccountCreatedEmail(opts: {
       </div>
     </div>
 
+    ${opts.verifyUrl ? `
+    <div style="text-align:center;margin:4px 0 24px;">
+      <a href="${opts.verifyUrl}" style="display:inline-block;background:linear-gradient(90deg,#0d2565,#1b5cb5);color:#ffffff;padding:14px 32px;border-radius:8px;text-decoration:none;font-size:15px;font-weight:700;">Verify my email address</a>
+      <p style="margin:10px 0 0;font-size:12px;color:#94a3b8;">This link expires in 24 hours. If you didn't create an account, you can ignore this email.</p>
+    </div>` : ""}
+
     ${opts.referralCode ? `
     <div style="background:#f8fafc;border-radius:8px;padding:16px 20px;margin-bottom:24px;border:1.5px solid #e2e8f0;text-align:center;">
       <p style="margin:0 0 4px;font-size:11px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;">Your Referral Code</p>
@@ -475,7 +482,7 @@ export async function sendAccountCreatedEmail(opts: {
     </div>` : ""}
 
     <div style="margin-top:4px;display:flex;gap:12px;flex-wrap:wrap;">
-      <a href="${SITE_URL}/all-peptides" style="display:inline-block;background:linear-gradient(90deg,#0d2565,#1b5cb5);color:#ffffff;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;">Browse All Peptides</a>
+      <a href="${SITE_URL}/all-peptides" style="display:inline-block;background:#f8fafc;color:#0f172a;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;border:1.5px solid #e2e8f0;">Browse All Peptides</a>
       <a href="${SITE_URL}/account" style="display:inline-block;background:#f8fafc;color:#0f172a;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;border:1.5px solid #e2e8f0;">My Account</a>
     </div>
 
