@@ -1,12 +1,13 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
-import { ordersTable } from "@workspace/db";
+import { ordersTable, orderItemsTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import {
   verifyBtcPayWebhookSignature,
   type BtcPayWebhookEvent,
 } from "../lib/btcpay";
+import { sendOrderConfirmation } from "../lib/email";
 import { logger } from "../lib/logger";
 
 const router = Router();
@@ -51,6 +52,42 @@ router.post(
             .set({ status: "paid", updatedAt: new Date() })
             .where(eq(ordersTable.orderNumber, orderNumber));
           logger.info({ orderNumber, invoiceId: event.invoiceId }, "Order marked paid via BTCPay webhook");
+
+          // Send order confirmation email (fire-and-forget)
+          const [order] = await db
+            .select()
+            .from(ordersTable)
+            .where(eq(ordersTable.orderNumber, orderNumber))
+            .limit(1);
+          const items = await db
+            .select()
+            .from(orderItemsTable)
+            .where(eq(orderItemsTable.orderNumber, orderNumber));
+
+          if (order) {
+            sendOrderConfirmation({
+              orderNumber: order.orderNumber,
+              customerName: order.customerName,
+              customerEmail: order.customerEmail,
+              items: items.map(i => ({
+                name: i.productName,
+                variant: i.variantLabel ?? null,
+                qty: i.quantity,
+                unitPriceGbp: parseFloat(String(i.unitPriceGbp)),
+                isFree: i.isFree ?? false,
+              })),
+              subtotalGbp: parseFloat(String(order.subtotalGbp)),
+              shippingCostGbp: parseFloat(String(order.shippingCostGbp)),
+              totalGbp: parseFloat(String(order.totalGbp)),
+              shippingMethod: order.shippingMethod ?? null,
+              trackingNumber: order.trackingNumber ?? null,
+              address1: order.address1 ?? null,
+              address2: order.address2 ?? null,
+              city: order.city ?? null,
+              postcode: order.postcode ?? null,
+              country: order.country ?? null,
+            }).catch(err => logger.error({ err, orderNumber }, "Failed to send BTC confirmation email"));
+          }
         } catch (err) {
           logger.error({ err, orderNumber }, "Failed to update order status from BTCPay webhook");
           res.status(500).json({ error: "DB update failed" });

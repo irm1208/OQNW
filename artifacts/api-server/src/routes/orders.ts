@@ -16,6 +16,7 @@ import {
 import { eq, sql, inArray, and, gte, count } from "drizzle-orm";
 import {
   sendOrderConfirmation,
+  sendBankTransferInstructions,
   sendBitcoinInstructions,
   sendLowStockAlert,
   sendReferralReward,
@@ -925,6 +926,18 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     } else if (paymentMethodStr === "wallid") {
       // Wallid: confirmation email is sent by the webhook handler once payment
       // is confirmed as SUCCESS — not here, to avoid sending before payment settles.
+    } else if (paymentMethodStr === "bank_transfer" || paymentMethodStr === "bank") {
+      // Bank transfer: send payment instructions (sort code, account number, reference)
+      sendBankTransferInstructions({
+        orderNumber,
+        customerName,
+        customerEmail: d.email.toLowerCase(),
+        totalGbp,
+        items: emailItems,
+        subtotalGbp,
+        shippingCostGbp,
+        shippingMethod,
+      }).catch(() => {});
     } else {
       sendOrderConfirmation({
         orderNumber,
