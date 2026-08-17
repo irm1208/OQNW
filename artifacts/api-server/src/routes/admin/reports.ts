@@ -5,6 +5,9 @@ import { sql } from "drizzle-orm";
 
 const router = Router();
 
+// Only count revenue from orders where payment has been confirmed and cleared.
+const PAID_STATUSES = ["payment_received", "paid", "processing", "shipped", "delivered"] as const;
+
 function requireAdmin(req: Request, res: Response): boolean {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
@@ -35,12 +38,14 @@ router.get("/admin/reports/summary", async (req: Request, res: Response): Promis
         COALESCE(AVG(total_gbp), 0)::float AS aov
       FROM orders
       WHERE created_at >= ${from.toISOString()} AND created_at <= ${to.toISOString()}
+        AND status = ANY(${PAID_STATUSES})
     `);
     const unitStats = await db.execute(sql`
       SELECT COALESCE(SUM(oi.quantity), 0)::int AS units
       FROM order_items oi
       JOIN orders o ON o.id = oi.order_id
       WHERE o.created_at >= ${from.toISOString()} AND o.created_at <= ${to.toISOString()}
+        AND o.status = ANY(${PAID_STATUSES})
     `);
     const customerStats = await db.execute(sql`
       SELECT COUNT(*)::int AS new_customers
@@ -76,6 +81,7 @@ router.get("/admin/reports/timeseries", async (req: Request, res: Response): Pro
         COUNT(*)::int AS orders
       FROM orders
       WHERE created_at >= ${from.toISOString()} AND created_at <= ${to.toISOString()}
+        AND status = ANY(${PAID_STATUSES})
       GROUP BY DATE_TRUNC('day', created_at)
       ORDER BY date ASC
     `);
@@ -99,6 +105,7 @@ router.get("/admin/reports/top-products", async (req: Request, res: Response): P
       FROM order_items oi
       JOIN orders o ON o.id = oi.order_id
       WHERE o.created_at >= ${from.toISOString()} AND o.created_at <= ${to.toISOString()}
+        AND o.status = ANY(${PAID_STATUSES})
       GROUP BY oi.product_id
       ORDER BY "revenue" DESC
       LIMIT 20
@@ -123,6 +130,7 @@ router.get("/admin/reports/by-category", async (req: Request, res: Response): Pr
       FROM order_items oi
       JOIN orders o ON o.id = oi.order_id
       WHERE o.created_at >= ${from.toISOString()} AND o.created_at <= ${to.toISOString()}
+        AND o.status = ANY(${PAID_STATUSES})
       GROUP BY oi.product_category
       ORDER BY revenue DESC
     `);

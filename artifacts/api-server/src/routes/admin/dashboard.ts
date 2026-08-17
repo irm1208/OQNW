@@ -2,9 +2,12 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { ordersTable, orderItemsTable, customersTable } from "@workspace/db";
-import { sql, count, sum, avg, eq, gte } from "drizzle-orm";
+import { sql, count, sum, avg, eq, gte, inArray } from "drizzle-orm";
 
 const router = Router();
+
+// Only count revenue from orders where payment has been confirmed and cleared.
+const PAID_STATUSES = ["payment_received", "paid", "processing", "shipped", "delivered"] as const;
 
 function requireAdmin(req: Request, res: Response): boolean {
   if (req.cookies?.admin_session !== "authenticated") {
@@ -27,7 +30,8 @@ router.get("/admin/dashboard", async (req: Request, res: Response): Promise<void
 
     const [totalRevenueRow] = await db
       .select({ total: sum(ordersTable.totalGbp) })
-      .from(ordersTable);
+      .from(ordersTable)
+      .where(inArray(ordersTable.status, PAID_STATUSES));
 
     const [totalOrdersRow] = await db
       .select({ total: count() })
@@ -39,7 +43,8 @@ router.get("/admin/dashboard", async (req: Request, res: Response): Promise<void
 
     const [avgOrderRow] = await db
       .select({ avg: avg(ordersTable.totalGbp) })
-      .from(ordersTable);
+      .from(ordersTable)
+      .where(inArray(ordersTable.status, PAID_STATUSES));
 
     const statusCounts = await db
       .select({ status: ordersTable.status, cnt: count() })
@@ -55,7 +60,9 @@ router.get("/admin/dashboard", async (req: Request, res: Response): Promise<void
     const [revenueTodayRow] = await db
       .select({ total: sum(ordersTable.totalGbp) })
       .from(ordersTable)
-      .where(gte(ordersTable.createdAt, todayStart));
+      .where(
+        sql`${ordersTable.createdAt} >= ${todayStart} AND ${ordersTable.status} = ANY(${PAID_STATUSES})`
+      );
 
     const [ordersTodayRow] = await db
       .select({ total: count() })
@@ -94,6 +101,7 @@ router.get("/admin/dashboard/revenue", async (req: Request, res: Response): Prom
         COUNT(*)::int AS orders
       FROM orders
       WHERE created_at >= NOW() - INTERVAL '1 day' * ${period}
+        AND status = ANY(${PAID_STATUSES})
       GROUP BY DATE_TRUNC('day', created_at)
       ORDER BY date ASC
     `);
@@ -109,12 +117,14 @@ router.get("/admin/dashboard/top-products", async (req: Request, res: Response):
   try {
     const rows = await db.execute(sql`
       SELECT
-        product_id AS "productId",
-        MAX(product_name) AS "productName",
-        SUM(quantity)::int AS "totalSold",
-        SUM(quantity * price_gbp::numeric)::float AS "totalRevenue"
-      FROM order_items
-      GROUP BY product_id
+        oi.product_id AS "productId",
+        MAX(oi.product_name) AS "productName",
+        SUM(oi.quantity)::int AS "totalSold",
+        SUM(oi.quantity * oi.price_gbp::numeric)::float AS "totalRevenue"
+      FROM order_items oi
+      JOIN orders o ON o.id = oi.order_id
+      WHERE o.status = ANY(${PAID_STATUSES})
+      GROUP BY oi.product_id
       ORDER BY "totalSold" DESC
       LIMIT 10
     `);
@@ -165,11 +175,13 @@ router.get("/admin/dashboard/revenue-by-category", async (req: Request, res: Res
   try {
     const rows = await db.execute(sql`
       SELECT
-        product_category AS category,
-        SUM(quantity * price_gbp::numeric)::float AS revenue,
-        COUNT(DISTINCT order_id)::int AS orders
-      FROM order_items
-      GROUP BY product_category
+        oi.product_category AS category,
+        SUM(oi.quantity * oi.price_gbp::numeric)::float AS revenue,
+        COUNT(DISTINCT oi.order_id)::int AS orders
+      FROM order_items oi
+      JOIN orders o ON o.id = oi.order_id
+      WHERE o.status = ANY(${PAID_STATUSES})
+      GROUP BY oi.product_category
       ORDER BY revenue DESC
     `);
     res.status(200).json(rows.rows ?? rows);
