@@ -39,7 +39,7 @@ export default function Users() {
 
   const { data: users = [], isLoading } = useQuery<AdminUser[]>({
     queryKey: ["admin-users"],
-    queryFn: () => fetch(api("admin/users"), { credentials: "include" }).then(r => r.json() as Promise<AdminUser[]>),
+    queryFn: () => fetch(api("admin/users"), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<AdminUser[]>; }),
   });
 
   const save = useMutation({

@@ -60,7 +60,7 @@ export default function Settings() {
 
   const { data, isLoading } = useQuery<StoreSettings>({
     queryKey: ["store-settings"],
-    queryFn: () => fetch(api("admin/settings"), { credentials: "include" }).then(r => r.json() as Promise<StoreSettings>),
+    queryFn: () => fetch(api("admin/settings"), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<StoreSettings>; }),
   });
 
   useEffect(() => {

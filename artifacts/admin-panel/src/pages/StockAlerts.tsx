@@ -40,7 +40,7 @@ export default function StockAlerts() {
     queryKey: ["stock-alerts"],
     queryFn: () =>
       fetch(api("admin/stock-alerts"), { credentials: "include" })
-        .then(r => r.json() as Promise<AlertsData>),
+        .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<AlertsData>; }),
   });
 
   const notify = useMutation({

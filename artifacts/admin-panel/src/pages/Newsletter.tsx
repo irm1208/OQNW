@@ -33,7 +33,7 @@ export default function Newsletter() {
 
   const { data, isLoading } = useQuery<SubscribersResponse>({
     queryKey: ["newsletter-subscribers"],
-    queryFn: () => fetch(api("admin/newsletter/subscribers"), { credentials: "include" }).then(r => r.json() as Promise<SubscribersResponse>),
+    queryFn: () => fetch(api("admin/newsletter/subscribers"), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<SubscribersResponse>; }),
   });
 
   const broadcast = useMutation({

@@ -52,7 +52,7 @@ export default function InventoryAudit() {
 
   const { data, isLoading } = useQuery<{ total: number; entries: AuditEntry[] }>({
     queryKey: ["inventory-audit", changeType],
-    queryFn: () => fetch(api(`admin/inventory/audit-log?${params}`), { credentials: "include" }).then(r => r.json() as Promise<{ total: number; entries: AuditEntry[] }>),
+    queryFn: () => fetch(api(`admin/inventory/audit-log?${params}`), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<{ total: number; entries: AuditEntry[] }>; }),
   });
 
   const entries = (data?.entries ?? []).filter(e =>

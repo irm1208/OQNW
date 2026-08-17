@@ -28,7 +28,7 @@ export default function Refunds() {
 
   const { data: refunds = [], isLoading } = useQuery<RefundRow[]>({
     queryKey: ["refunds"],
-    queryFn: () => fetch(api("admin/refunds"), { credentials: "include" }).then(r => r.json() as Promise<RefundRow[]>),
+    queryFn: () => fetch(api("admin/refunds"), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<RefundRow[]>; }),
   });
 
   const filtered = refunds.filter(r =>

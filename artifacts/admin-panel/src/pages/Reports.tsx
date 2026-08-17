@@ -45,19 +45,19 @@ export default function Reports() {
 
   const { data: summary } = useQuery<Summary>({
     queryKey: ["report-summary", applied],
-    queryFn: () => fetch(api(`admin/reports/summary?${qs}`), { credentials: "include" }).then(r => r.json() as Promise<Summary>),
+    queryFn: () => fetch(api(`admin/reports/summary?${qs}`), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<Summary>; }),
   });
   const { data: days = [] } = useQuery<DayRow[]>({
     queryKey: ["report-timeseries", applied],
-    queryFn: () => fetch(api(`admin/reports/timeseries?${qs}`), { credentials: "include" }).then(r => r.json() as Promise<DayRow[]>),
+    queryFn: () => fetch(api(`admin/reports/timeseries?${qs}`), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<DayRow[]>; }),
   });
   const { data: products = [] } = useQuery<ProductRow[]>({
     queryKey: ["report-top-products", applied],
-    queryFn: () => fetch(api(`admin/reports/top-products?${qs}`), { credentials: "include" }).then(r => r.json() as Promise<ProductRow[]>),
+    queryFn: () => fetch(api(`admin/reports/top-products?${qs}`), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<ProductRow[]>; }),
   });
   const { data: categories = [] } = useQuery<CategoryRow[]>({
     queryKey: ["report-by-category", applied],
-    queryFn: () => fetch(api(`admin/reports/by-category?${qs}`), { credentials: "include" }).then(r => r.json() as Promise<CategoryRow[]>),
+    queryFn: () => fetch(api(`admin/reports/by-category?${qs}`), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<CategoryRow[]>; }),
   });
 
   const maxRevenue = Math.max(1, ...days.map(d => d.revenue));

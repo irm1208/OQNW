@@ -53,7 +53,7 @@ export default function Loyalty() {
     queryKey: ["loyalty-overview"],
     queryFn: () =>
       fetch(api("admin/loyalty/overview"), { credentials: "include" })
-        .then(r => r.json() as Promise<OverviewData>),
+        .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<OverviewData>; }),
   });
 
   const adjust = useMutation({
@@ -63,7 +63,7 @@ export default function Loyalty() {
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
-      }).then(r => r.json()),
+      }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
     onSuccess: () => {
       toast({ title: "Points adjusted successfully" });
       queryClient.invalidateQueries({ queryKey: ["loyalty-overview"] });

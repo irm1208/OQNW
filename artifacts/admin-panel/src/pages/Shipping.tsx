@@ -410,12 +410,12 @@ export default function Shipping() {
 
   const { data: zones = [], isLoading: zonesLoading } = useQuery<ShippingZone[]>({
     queryKey: ["shipping-zones"],
-    queryFn: () => fetch(api("admin/shipping/zones"), { credentials: "include" }).then(r => r.json() as Promise<ShippingZone[]>),
+    queryFn: () => fetch(api("admin/shipping/zones"), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<ShippingZone[]>; }),
   });
 
   const { data: rates = [] } = useQuery<ShippingRate[]>({
     queryKey: ["shipping-rates"],
-    queryFn: () => fetch(api("admin/shipping/rates"), { credentials: "include" }).then(r => r.json() as Promise<ShippingRate[]>),
+    queryFn: () => fetch(api("admin/shipping/rates"), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<ShippingRate[]>; }),
   });
 
   const saveZone = useMutation({

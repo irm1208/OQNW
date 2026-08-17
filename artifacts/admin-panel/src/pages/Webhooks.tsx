@@ -42,12 +42,12 @@ export default function Webhooks() {
 
   const { data: webhooks = [], isLoading } = useQuery<Webhook[]>({
     queryKey: ["webhooks"],
-    queryFn: () => fetch(api("admin/webhooks"), { credentials: "include" }).then(r => r.json() as Promise<Webhook[]>),
+    queryFn: () => fetch(api("admin/webhooks"), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<Webhook[]>; }),
   });
 
   const { data: deliveries = [], isLoading: deliveriesLoading } = useQuery<Delivery[]>({
     queryKey: ["webhook-deliveries", deliveriesFor?.id],
-    queryFn: () => fetch(api(`admin/webhooks/${deliveriesFor!.id}/deliveries`), { credentials: "include" }).then(r => r.json() as Promise<Delivery[]>),
+    queryFn: () => fetch(api(`admin/webhooks/${deliveriesFor!.id}/deliveries`), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<Delivery[]>; }),
     enabled: deliveriesFor !== null,
   });
 

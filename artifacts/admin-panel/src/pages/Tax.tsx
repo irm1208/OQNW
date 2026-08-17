@@ -34,7 +34,7 @@ export default function Tax() {
 
   const { data: rates = [], isLoading } = useQuery<TaxRate[]>({
     queryKey: ["tax-rates"],
-    queryFn: () => fetch(api("admin/tax-rates"), { credentials: "include" }).then(r => r.json() as Promise<TaxRate[]>),
+    queryFn: () => fetch(api("admin/tax-rates"), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<TaxRate[]>; }),
   });
 
   const save = useMutation({

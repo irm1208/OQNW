@@ -47,7 +47,7 @@ export default function Blog() {
 
   const { data, isLoading } = useQuery<{ total: number; posts: Post[] }>({
     queryKey: ["admin-blog", statusFilter, search],
-    queryFn: () => fetch(api(`admin/blog/posts?${params}`), { credentials: "include" }).then(r => r.json() as Promise<{ total: number; posts: Post[] }>),
+    queryFn: () => fetch(api(`admin/blog/posts?${params}`), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<{ total: number; posts: Post[] }>; }),
   });
 
   const posts = data?.posts ?? [];
