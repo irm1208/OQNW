@@ -1,199 +1,325 @@
 import { useCart, BUNDLE_FREE_BAC_THRESHOLD, BUNDLE_FREE_ONE_THRESHOLD, BUNDLE_FREE_TWO_THRESHOLD } from "@/context/CartContext";
 import { Link } from "wouter";
-import { ShoppingCart, ChevronUp, ChevronDown, Tag, ArrowRight } from "lucide-react";
+import { ShoppingCart, Tag, ArrowRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const TIERS = [
   { min: BUNDLE_FREE_BAC_THRESHOLD, label: "a free BAC" },
-  { min: BUNDLE_FREE_ONE_THRESHOLD, label: "1 pep free" },
-  { min: BUNDLE_FREE_TWO_THRESHOLD, label: "2 peps free" },
+  { min: BUNDLE_FREE_ONE_THRESHOLD, label: "1 peptide free" },
+  { min: BUNDLE_FREE_TWO_THRESHOLD, label: "2 peptides free" },
 ];
 
 export default function CartPreviewPanel() {
   const { items, totalItems, peptideQty, bundleFreeBacWater, bundleFreeItemsCount, subtotal, bundleDiscountAmount, freeUnitsByProductId } = useCart();
   const [expanded, setExpanded] = useState(false);
 
+  // Close panel when navigating to /cart
   useEffect(() => {
-    if (totalItems > 0) {
-      document.body.classList.add("has-cart-preview-bar");
-    } else {
-      document.body.classList.remove("has-cart-preview-bar");
-    }
-    return () => document.body.classList.remove("has-cart-preview-bar");
+    if (totalItems === 0) setExpanded(false);
   }, [totalItems]);
+
+  // Add right-side body offset when expanded so fixed content doesn't obscure page
+  useEffect(() => {
+    if (expanded) {
+      document.body.classList.add("has-cart-side-panel");
+    } else {
+      document.body.classList.remove("has-cart-side-panel");
+    }
+    return () => document.body.classList.remove("has-cart-side-panel");
+  }, [expanded]);
 
   if (totalItems === 0) return null;
 
   const discountedTotal = subtotal - bundleDiscountAmount;
   const hasFreebie = bundleFreeBacWater || bundleFreeItemsCount > 0;
   const next = TIERS.find(t => peptideQty < t.min) ?? null;
-  const freebieLabel = bundleFreeItemsCount === 2 ? "2 peps free" : bundleFreeItemsCount === 1 ? "1 pep free" : "a free BAC";
+  const freebieLabel =
+    bundleFreeItemsCount === 2 ? "2 peptides free"
+    : bundleFreeItemsCount === 1 ? "1 peptide free"
+    : "Free BAC Water";
+
+  const PANEL_WIDTH = 320;
 
   return (
-    <div
-      className="cart-preview-bar"
-      style={{
-        position: "fixed",
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 9000,
-        pointerEvents: "none",
-      }}
-    >
-      {/* Expanded item list */}
-      {expanded && (
-        <div
-          style={{
-            pointerEvents: "all",
-            background: "#fff",
-            borderTop: "1.5px solid #E2E8F0",
-            boxShadow: "0 -8px 32px rgba(15,23,42,0.1)",
-            maxHeight: "220px",
-            overflowY: "auto",
-            padding: "12px 20px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "6px",
-          }}
-        >
-          {items.map(({ product, quantity }) => {
-            const freeUnits = Math.min(freeUnitsByProductId[product.id] ?? 0, quantity);
-            return (
-            <div
-              key={product.id}
-              style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
-            >
-              <span style={{ fontSize: "12.5px", color: "#374151", flex: 1 }}>
-                {product.name}
-                {quantity > 1 && <span style={{ color: "#94A3B8", marginLeft: 4 }}>×{quantity}</span>}
-                {freeUnits > 0 && <span style={{ color: "#059669", fontWeight: 700, marginLeft: 4 }}>({freeUnits} free)</span>}
-              </span>
-              <span style={{ fontSize: "12.5px", fontWeight: 700, color: freeUnits > 0 ? "#059669" : "#0F172A" }}>
-                £{((product.price ?? 0) * (quantity - freeUnits)).toFixed(2)}
-              </span>
-            </div>
-            );
-          })}
-          {bundleFreeBacWater && (
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontSize: "12.5px", color: "#374151", flex: 1 }}>
-                Bacteriostatic Water 10ml <span style={{ color: "#059669", fontWeight: 700 }}>(free)</span>
-              </span>
-              <span style={{ fontSize: "12.5px", fontWeight: 700, color: "#059669" }}>£0.00</span>
-            </div>
-          )}
-        </div>
-      )}
+    <>
+      <style>{`
+        .cart-side-panel-enter {
+          animation: cartSlideIn 0.22s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+        @keyframes cartSlideIn {
+          from { opacity: 0; transform: translateX(24px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+      `}</style>
 
-      {/* Main bar */}
       <div
+        className="cart-preview-bar"
         style={{
-          pointerEvents: "all",
-          background: "linear-gradient(90deg, #0a1d4f 0%, #0D2565 50%, #0a1d4f 100%)",
-          borderTop: "2px solid rgba(255,255,255,0.08)",
-          boxShadow: "0 -4px 24px rgba(13,37,101,0.35)",
+          position: "fixed",
+          right: 0,
+          top: "50%",
+          transform: "translateY(-50%)",
+          zIndex: 9000,
           display: "flex",
-          alignItems: "center",
-          padding: "0 20px",
-          height: "60px",
-          gap: "16px",
+          alignItems: "stretch",
+          pointerEvents: "none",
         }}
       >
-        {/* Cart icon + count */}
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
-          <ShoppingCart size={18} style={{ color: "#93C5FD" }} />
-          <span style={{
-            fontSize: "10px", fontWeight: 900, color: "#0D2565",
-            backgroundColor: "#34D399", borderRadius: "10px", padding: "2px 8px",
-            lineHeight: 1.5,
-          }}>
-            {totalItems} item{totalItems !== 1 ? "s" : ""}
-          </span>
-        </div>
+        {/* ── Collapsed tab ── */}
+        {!expanded && (
+          <button
+            onClick={() => setExpanded(true)}
+            style={{
+              pointerEvents: "all",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              background: "linear-gradient(180deg, #0D2565 0%, #1240A0 100%)",
+              border: "none",
+              borderRadius: "12px 0 0 12px",
+              padding: "18px 10px",
+              cursor: "pointer",
+              boxShadow: "-4px 0 24px rgba(13,37,101,0.35)",
+              color: "#fff",
+              writingMode: "vertical-rl",
+              textOrientation: "mixed",
+            }}
+            title="View cart"
+          >
+            {/* Badge */}
+            <span style={{
+              fontSize: "10px", fontWeight: 900, color: "#0D2565",
+              backgroundColor: "#34D399", borderRadius: "10px",
+              padding: "2px 7px", lineHeight: 1.5,
+              writingMode: "horizontal-tb",
+            }}>
+              {totalItems}
+            </span>
+            <ShoppingCart size={18} style={{ color: "#93C5FD" }} />
+            <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.06em", color: "rgba(255,255,255,0.8)" }}>
+              Cart
+            </span>
+            <ChevronLeft size={14} style={{ color: "rgba(255,255,255,0.4)", marginTop: 2 }} />
+          </button>
+        )}
 
-        {/* Divider */}
-        <div style={{ width: "1px", height: "32px", background: "rgba(255,255,255,0.12)", flexShrink: 0 }} />
-
-        {/* Discount or nudge */}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          {hasFreebie ? (
-            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <Tag size={13} style={{ color: "#34D399", flexShrink: 0 }} />
-              <span style={{ fontSize: "12.5px", fontWeight: 800, color: "#34D399" }}>
-                {freebieLabel} — saving £{bundleDiscountAmount.toFixed(2)}
-              </span>
-              {next && (
-                <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)", marginLeft: 4 }}>
-                  · Add {next.min - peptideQty} more for {next.label}
+        {/* ── Expanded panel ── */}
+        {expanded && (
+          <div
+            className="cart-side-panel-enter"
+            style={{
+              pointerEvents: "all",
+              width: PANEL_WIDTH,
+              background: "#fff",
+              borderRadius: "16px 0 0 16px",
+              boxShadow: "-8px 0 48px rgba(13,37,101,0.18)",
+              display: "flex",
+              flexDirection: "column",
+              maxHeight: "90vh",
+              overflow: "hidden",
+            }}
+          >
+            {/* Header */}
+            <div style={{
+              background: "linear-gradient(90deg, #0a1d4f 0%, #0D2565 100%)",
+              padding: "14px 16px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexShrink: 0,
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <ShoppingCart size={15} style={{ color: "#93C5FD" }} />
+                <span style={{ fontSize: "13px", fontWeight: 800, color: "#fff", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+                  Your Order
                 </span>
+                <span style={{
+                  fontSize: "10px", fontWeight: 900, color: "#0D2565",
+                  backgroundColor: "#34D399", borderRadius: "10px",
+                  padding: "1px 7px", lineHeight: 1.6,
+                }}>
+                  {totalItems} item{totalItems !== 1 ? "s" : ""}
+                </span>
+              </div>
+              <button
+                onClick={() => setExpanded(false)}
+                style={{
+                  background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)",
+                  borderRadius: "8px", padding: "4px 6px", cursor: "pointer",
+                  color: "rgba(255,255,255,0.6)", display: "flex", alignItems: "center",
+                }}
+                title="Close"
+              >
+                <X size={13} />
+              </button>
+            </div>
+
+            {/* Item list */}
+            <div style={{
+              flex: 1, overflowY: "auto", padding: "14px 16px", display: "flex",
+              flexDirection: "column", gap: 12,
+            }}>
+              {items.map(({ product, quantity }) => {
+                const freeUnits = Math.min(freeUnitsByProductId[product.id] ?? 0, quantity);
+                const linePrice = (product.price ?? 0) * (quantity - freeUnits);
+                return (
+                  <div key={product.id} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                    {/* Thumbnail */}
+                    <div style={{
+                      width: 48, height: 48, borderRadius: 6,
+                      border: "1px solid #E8EDF5", overflow: "hidden",
+                      background: "#F8FAFC", flexShrink: 0, position: "relative",
+                    }}>
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                      />
+                      {quantity > 1 && (
+                        <span style={{
+                          position: "absolute", top: -5, right: -5,
+                          background: "#0D2565", color: "#fff",
+                          fontSize: "9px", fontWeight: 800,
+                          borderRadius: "8px", padding: "1px 5px", lineHeight: 1.5,
+                        }}>
+                          ×{quantity}
+                        </span>
+                      )}
+                    </div>
+                    {/* Info */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ fontSize: "12.5px", fontWeight: 600, color: "#0F172A", margin: 0, lineHeight: 1.35 }}>
+                        {product.name}
+                      </p>
+                      {freeUnits > 0 && (
+                        <span style={{ fontSize: "10.5px", color: "#059669", fontWeight: 700 }}>
+                          {freeUnits === quantity ? "Free" : `${freeUnits} free`}
+                        </span>
+                      )}
+                    </div>
+                    {/* Price */}
+                    <span style={{
+                      fontSize: "13px", fontWeight: 700, flexShrink: 0,
+                      color: freeUnits > 0 ? "#059669" : "#0F172A",
+                    }}>
+                      £{linePrice.toFixed(2)}
+                    </span>
+                  </div>
+                );
+              })}
+
+              {/* Free BAC water row */}
+              {bundleFreeBacWater && (
+                <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  <div style={{
+                    width: 48, height: 48, borderRadius: 6,
+                    border: "1px dashed #34D399", background: "#F0FDF4",
+                    flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center",
+                  }}>
+                    <Tag size={16} style={{ color: "#059669" }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: "12px", fontWeight: 600, color: "#059669", margin: 0 }}>
+                      BAC Water 10ml
+                    </p>
+                    <p style={{ fontSize: "10.5px", color: "#059669", margin: 0 }}>Free with bundle</p>
+                  </div>
+                  <span style={{ fontSize: "13px", fontWeight: 700, color: "#059669" }}>£0.00</span>
+                </div>
               )}
             </div>
-          ) : next ? (
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <span style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>
-                Add {next.min - peptideQty} more peptide{next.min - peptideQty !== 1 ? "s" : ""} for{" "}
-                <span style={{ color: "#34D399", fontWeight: 800 }}>{next.label}</span>
-              </span>
-              {/* mini progress */}
-              <div style={{ width: "80px", height: "4px", background: "rgba(255,255,255,0.12)", borderRadius: "4px", flexShrink: 0 }}>
-                <div style={{
-                  height: "4px", borderRadius: "4px",
-                  background: "linear-gradient(90deg, #34D399, #059669)",
-                  width: `${Math.min(100, (peptideQty / next.min) * 100)}%`,
-                  transition: "width 0.3s",
-                }} />
+
+            {/* Bundle nudge */}
+            {next && (
+              <div style={{
+                padding: "10px 16px",
+                borderTop: "1px solid #F1F5F9",
+                background: "#F8FAFC",
+                flexShrink: 0,
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
+                  <span style={{ fontSize: "11.5px", color: "#64748B" }}>
+                    Add <strong style={{ color: "#0D2565" }}>{next.min - peptideQty}</strong> more for{" "}
+                    <strong style={{ color: "#059669" }}>{next.label}</strong>
+                  </span>
+                  <span style={{ fontSize: "11px", color: "#94A3B8" }}>{peptideQty}/{next.min}</span>
+                </div>
+                <div style={{ height: 4, background: "#E2E8F0", borderRadius: 4 }}>
+                  <div style={{
+                    height: 4, borderRadius: 4,
+                    background: "linear-gradient(90deg, #34D399, #059669)",
+                    width: `${Math.min(100, (peptideQty / next.min) * 100)}%`,
+                    transition: "width 0.3s",
+                  }} />
+                </div>
               </div>
-            </div>
-          ) : null}
-        </div>
+            )}
 
-        {/* Divider */}
-        <div style={{ width: "1px", height: "32px", background: "rgba(255,255,255,0.12)", flexShrink: 0 }} />
+            {/* Freebie banner */}
+            {hasFreebie && (
+              <div style={{
+                padding: "8px 16px",
+                background: "#F0FDF4",
+                borderTop: "1px solid #D1FAE5",
+                display: "flex", alignItems: "center", gap: 6,
+                flexShrink: 0,
+              }}>
+                <Tag size={12} style={{ color: "#059669", flexShrink: 0 }} />
+                <span style={{ fontSize: "12px", fontWeight: 700, color: "#059669" }}>
+                  {freebieLabel} — saving £{bundleDiscountAmount.toFixed(2)}
+                </span>
+              </div>
+            )}
 
-        {/* Total */}
-        <div style={{ flexShrink: 0, textAlign: "right" }}>
-          {hasFreebie && (
-            <div style={{ fontSize: "10.5px", color: "rgba(255,255,255,0.35)", textDecoration: "line-through", lineHeight: 1.2 }}>
-              £{subtotal.toFixed(2)}
+            {/* Totals + CTA */}
+            <div style={{
+              padding: "14px 16px",
+              borderTop: "1px solid #E2E8F0",
+              flexShrink: 0,
+              background: "#fff",
+            }}>
+              {/* Subtotal row */}
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: hasFreebie ? 4 : 12 }}>
+                <span style={{ fontSize: "12.5px", color: "#64748B" }}>Subtotal</span>
+                <span style={{
+                  fontSize: "12.5px", fontWeight: 600,
+                  color: hasFreebie ? "#94A3B8" : "#0F172A",
+                  textDecoration: hasFreebie ? "line-through" : "none",
+                }}>
+                  £{subtotal.toFixed(2)}
+                </span>
+              </div>
+              {hasFreebie && (
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
+                  <span style={{ fontSize: "13px", fontWeight: 800, color: "#0F172A" }}>Total</span>
+                  <span style={{ fontSize: "16px", fontWeight: 900, color: "#059669" }}>
+                    £{discountedTotal.toFixed(2)}
+                  </span>
+                </div>
+              )}
+
+              <Link
+                href="/cart"
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+                  background: "linear-gradient(90deg, #34D399, #059669)",
+                  color: "#022c22", textDecoration: "none",
+                  borderRadius: "10px", padding: "11px 18px",
+                  fontSize: "13.5px", fontWeight: 900,
+                  width: "100%", boxSizing: "border-box",
+                  boxShadow: "0 0 16px rgba(52,211,153,0.25)",
+                }}
+                onClick={() => setExpanded(false)}
+              >
+                View Cart & Checkout <ArrowRight size={14} />
+              </Link>
             </div>
-          )}
-          <div style={{ fontSize: "16px", fontWeight: 900, color: hasFreebie ? "#34D399" : "#fff", lineHeight: 1.2 }}>
-            £{discountedTotal.toFixed(2)}
           </div>
-        </div>
-
-        {/* Expand toggle */}
-        <button
-          onClick={() => setExpanded(e => !e)}
-          style={{
-            background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)",
-            borderRadius: "8px", padding: "6px 8px", cursor: "pointer",
-            color: "rgba(255,255,255,0.6)", display: "flex", alignItems: "center",
-            flexShrink: 0,
-          }}
-          title={expanded ? "Hide items" : "Show items"}
-        >
-          {expanded ? <ChevronDown size={15} /> : <ChevronUp size={15} />}
-        </button>
-
-        {/* CTA */}
-        <Link
-          href="/cart"
-          style={{
-            display: "flex", alignItems: "center", gap: "6px",
-            background: "linear-gradient(90deg, #34D399, #059669)",
-            color: "#022c22", textDecoration: "none",
-            borderRadius: "10px", padding: "10px 18px",
-            fontSize: "13px", fontWeight: 900,
-            flexShrink: 0,
-            boxShadow: "0 0 16px rgba(52,211,153,0.3)",
-            whiteSpace: "nowrap",
-          }}
-        >
-          View Cart <ArrowRight size={14} />
-        </Link>
+        )}
       </div>
-    </div>
+    </>
   );
 }
