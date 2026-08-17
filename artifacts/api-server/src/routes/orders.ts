@@ -18,6 +18,8 @@ import {
   sendOrderConfirmation,
   sendBankTransferInstructions,
   sendBitcoinInstructions,
+  sendCryptoInstructions,
+  getCryptoWallet,
   sendLowStockAlert,
   sendReferralReward,
   sendWelcomeEmail,
@@ -910,14 +912,19 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
 
     // ── Payment-specific emails (non-blocking) ─────────────────────────────
     if (paymentMethodStr === "bitcoin") {
-      const FALLBACK_BTC_ADDRESS = process.env.BITCOIN_ADDRESS ?? "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
-      sendBitcoinInstructions({
+      const wallet = getCryptoWallet(cryptoCurrencyStr);
+      // For BTC via BTCPay, prefer the address/amount from the invoice; else fall back to wallet config
+      const resolvedAddress = cryptoCurrencyStr === "BTC" ? (btcAddress ?? wallet.address) : wallet.address;
+      sendCryptoInstructions({
         orderNumber,
         customerName,
         customerEmail: d.email.toLowerCase(),
         totalGbp,
-        btcAddress: btcAddress ?? FALLBACK_BTC_ADDRESS,
-        btcAmount: btcAmount ?? undefined,
+        currency: cryptoCurrencyStr,
+        walletAddress: resolvedAddress,
+        network: wallet.network,
+        accentColor: wallet.color,
+        cryptoAmount: cryptoCurrencyStr === "BTC" ? (btcAmount ?? undefined) : undefined,
         items: emailItems,
         subtotalGbp,
         shippingCostGbp,

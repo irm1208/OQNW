@@ -234,6 +234,103 @@ export async function sendBankTransferInstructions(opts: {
   }
 }
 
+// Wallet addresses — override per currency via env vars, else fall back to hardcoded defaults
+const CRYPTO_WALLETS: Record<string, { address: string; network: string; color: string }> = {
+  BTC:  { address: process.env.BTC_ADDRESS  ?? "bc1qs92tye4syd4zzeekv62j8yupek9mvzkgfkgz8u",          network: "Bitcoin",       color: "#F7931A" },
+  ETH:  { address: process.env.ETH_ADDRESS  ?? "0x612E36A53F95Fb487081bC5316a260262E58878b",           network: "ERC-20 / ETH",  color: "#627EEA" },
+  USDT: { address: process.env.USDT_ADDRESS ?? "0x612E36A53F95Fb487081bC5316a260262E58878b",           network: "ERC-20 / ETH",  color: "#26A17B" },
+  USDC: { address: process.env.USDC_ADDRESS ?? "0x612E36A53F95Fb487081bC5316a260262E58878b",           network: "ERC-20 / ETH",  color: "#2775CA" },
+  SOL:  { address: process.env.SOL_ADDRESS  ?? "E7EXxfoqVc9PMKzeU6xSJdcK2Ur83rKCZymcHQ9r8iNM",       network: "Solana",        color: "#9945FF" },
+};
+
+export function getCryptoWallet(currency: string) {
+  return CRYPTO_WALLETS[currency.toUpperCase()] ?? CRYPTO_WALLETS["BTC"];
+}
+
+export async function sendCryptoInstructions(opts: {
+  orderNumber: string;
+  customerName: string;
+  customerEmail: string;
+  totalGbp: number;
+  currency: string;        // "BTC" | "ETH" | "USDT" | "USDC" | "SOL"
+  walletAddress: string;
+  network: string;         // e.g. "Bitcoin" | "ERC-20 / ETH" | "Solana"
+  accentColor: string;     // hex, used in the email header strip
+  cryptoAmount?: string;
+  items: OrderItem[];
+  subtotalGbp: number;
+  shippingCostGbp: number;
+  shippingMethod: string | null;
+}): Promise<void> {
+  const currency = opts.currency.toUpperCase();
+  const subject = `${currency} Payment Details — ${opts.orderNumber}`;
+
+  const amountRow = opts.cryptoAmount
+    ? `<tr>
+         <td style="padding:9px 14px;font-size:13px;color:#64748b;font-weight:600;background:#fefce8;border-bottom:1px solid #fde68a;white-space:nowrap;">${currency} Amount</td>
+         <td style="padding:9px 14px;font-size:13px;color:#0f172a;font-weight:700;border-bottom:1px solid #fde68a;">${opts.cryptoAmount} ${currency}</td>
+       </tr>`
+    : `<tr>
+         <td style="padding:9px 14px;font-size:13px;color:#64748b;font-weight:600;background:#fefce8;border-bottom:1px solid #fde68a;white-space:nowrap;">GBP Amount</td>
+         <td style="padding:9px 14px;font-size:13px;color:#0f172a;font-weight:700;border-bottom:1px solid #fde68a;">${formatGbp(opts.totalGbp)} — convert to ${currency} at the current rate</td>
+       </tr>`;
+
+  const body = `
+    <h2 style="margin:0 0 6px;font-size:22px;color:#0f172a;">${currency} Payment Details</h2>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">
+      Hi ${opts.customerName}, your order <strong style="color:#0f172a;">${opts.orderNumber}</strong> is reserved.
+      Please send your ${currency} payment to the address below to confirm it.
+    </p>
+
+    <div style="background:#fefce8;border:1.5px solid #fde68a;border-radius:8px;overflow:hidden;margin-bottom:24px;">
+      <div style="background:${opts.accentColor};padding:12px 16px;">
+        <p style="margin:0;font-size:13px;font-weight:700;color:#fff;letter-spacing:0.04em;">${currency} PAYMENT DETAILS</p>
+      </div>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="padding:9px 14px;font-size:13px;color:#64748b;font-weight:600;background:#fefce8;border-bottom:1px solid #fde68a;white-space:nowrap;">${currency} Address</td>
+          <td style="padding:9px 14px;font-size:12px;color:#0f172a;font-weight:700;font-family:monospace;word-break:break-all;border-bottom:1px solid #fde68a;">${opts.walletAddress}</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 14px;font-size:13px;color:#64748b;font-weight:600;background:#fefce8;border-bottom:1px solid #fde68a;white-space:nowrap;">Network</td>
+          <td style="padding:9px 14px;font-size:13px;color:#0f172a;border-bottom:1px solid #fde68a;">${opts.network}</td>
+        </tr>
+        ${amountRow}
+        <tr>
+          <td style="padding:9px 14px;font-size:13px;color:#64748b;font-weight:600;background:#fefce8;white-space:nowrap;">Reference</td>
+          <td style="padding:9px 14px;font-size:13px;color:#15803d;font-weight:700;">${opts.orderNumber}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="background:#fefce8;border-radius:6px;padding:14px 16px;border-left:4px solid #eab308;margin-bottom:24px;">
+      <p style="margin:0;font-size:13px;color:#713f12;">
+        Include your order number <strong>${opts.orderNumber}</strong> in the memo/note field where your wallet allows.
+        ${currency === "BTC" ? "Transactions typically confirm within 1 hour on the Bitcoin network." :
+          currency === "SOL" ? "Solana transactions typically confirm within seconds." :
+          "ERC-20 transactions typically confirm within a few minutes depending on network congestion."}
+      </p>
+    </div>
+
+    ${itemsTable(opts.items)}
+    ${totalsBlock({ ...opts, trackingNumber: null, address1: null, address2: null, city: null, postcode: null, country: null, customerEmail: opts.customerEmail })}
+  `;
+
+  try {
+    const result = await getResend().emails.send({
+      from: FROM_ADDRESS,
+      to: opts.customerEmail,
+      subject,
+      html: baseTemplate(`${currency} Payment Instructions`, body),
+    });
+    logger.info({ orderNumber: opts.orderNumber, to: opts.customerEmail, currency }, "Crypto instructions email sent");
+    await logEmail({ toEmail: opts.customerEmail, subject, type: "bitcoin_instructions", status: "sent", resendId: result.data?.id, orderNumber: opts.orderNumber });
+  } catch (err) {
+    logger.error({ err, orderNumber: opts.orderNumber }, "Failed to send crypto instructions email");
+    await logEmail({ toEmail: opts.customerEmail, subject, type: "bitcoin_instructions", status: "failed", orderNumber: opts.orderNumber });
+  }
+}
+
 export async function sendBitcoinInstructions(opts: {
   orderNumber: string;
   customerName: string;
