@@ -876,19 +876,13 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         const successUrl = `${baseReturn}&status=success`;
         const failUrl    = `${baseReturn}&status=failed`;
 
-        const wallidItems: WallidItem[] = cartItems.map(i => ({
-          name:        i.productName,
-          category:    i.productCategory || "Peptides",
-          price_minor: Math.round(i.priceGbp * 100),
-          image_url:   `${origin}/og-image.jpg`,
-          product_url: i.productSlug
-            ? `${origin}/peptides/${i.productSlug}`
-            : `${origin}/peptides`,
-        }));
+        // ⚠️ TEST MODE — charge £1 regardless of cart total; remove before go-live
+        const TEST_AMOUNT_GBP = 1.00;
+        const wallidItems: WallidItem[] = [{ name: "Test Order", category: "Peptides", price_minor: 100, image_url: `${origin}/og-image.jpg`, product_url: `${origin}/peptides` }];
 
         const wallid = await createWallidPayment({
           orderNumber,
-          totalGbp,
+          totalGbp: TEST_AMOUNT_GBP,
           customerEmail: d.email.toLowerCase(),
           successUrl,
           failUrl,
