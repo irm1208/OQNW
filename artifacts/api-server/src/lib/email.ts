@@ -307,6 +307,143 @@ export async function sendBitcoinInstructions(opts: {
   }
 }
 
+export function generateReceiptHtml(order: OrderEmailData, dateStr?: string): string {
+  const date = dateStr ?? new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+
+  const itemRows = order.items.map(i => `
+    <tr>
+      <td style="padding:11px 0;border-bottom:1px solid #F1F5F9;font-size:13.5px;color:#1E293B;font-weight:500;">${i.productName}<br/><span style="font-size:11.5px;color:#94A3B8;font-weight:400;">${i.productCategory}</span></td>
+      <td style="padding:11px 0;border-bottom:1px solid #F1F5F9;font-size:13.5px;color:#64748B;text-align:center;">×${i.quantity}</td>
+      <td style="padding:11px 0;border-bottom:1px solid #F1F5F9;font-size:13.5px;color:#1E293B;text-align:right;font-weight:600;">${formatGbp(i.priceGbp)}</td>
+      <td style="padding:11px 0;border-bottom:1px solid #F1F5F9;font-size:13.5px;color:#1E293B;text-align:right;font-weight:600;">${formatGbp(i.priceGbp * i.quantity)}</td>
+    </tr>`).join("");
+
+  const addressLines = [
+    order.customerName,
+    order.address1,
+    order.address2,
+    [order.city, order.postcode].filter(Boolean).join(", "),
+    order.country,
+  ].filter(Boolean).join("<br/>");
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Receipt — ${order.orderNumber}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #F5F8FC; color: #1E293B; }
+    .page { max-width: 680px; margin: 40px auto; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 32px rgba(15,23,42,0.10); }
+    @media print {
+      body { background: #fff; }
+      .page { margin: 0; border-radius: 0; box-shadow: none; max-width: 100%; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div style="background:linear-gradient(110deg,#0D2565,#1B5CB5);padding:28px 36px;display:flex;align-items:center;justify-content:space-between;">
+    <div>
+      <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.03em;">OmniQure</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:0.08em;margin-top:2px;text-transform:uppercase;">Peptide Research Institute</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;">Receipt</div>
+      <div style="font-size:18px;font-weight:800;color:#fff;margin-top:2px;letter-spacing:0.04em;">${order.orderNumber}</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:3px;">${date}</div>
+    </div>
+  </div>
+
+  <!-- Paid banner -->
+  <div style="background:#ECFDF5;border-bottom:1.5px solid #6EE7B7;padding:12px 36px;display:flex;align-items:center;gap:10px;">
+    <div style="width:22px;height:22px;background:#059669;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="13" height="10" viewBox="0 0 13 10" fill="none"><path d="M1.5 5L5 8.5L11.5 1.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div style="font-size:13px;font-weight:700;color:#065F46;">Payment confirmed — ${formatGbp(order.totalGbp)} received</div>
+  </div>
+
+  <!-- Body -->
+  <div style="padding:32px 36px;">
+
+    <!-- Items table -->
+    <div style="margin-bottom:28px;">
+      <div style="font-size:11px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Items Ordered</div>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <thead>
+          <tr style="border-bottom:2px solid #E2E8F0;">
+            <th style="text-align:left;font-size:11px;font-weight:600;color:#94A3B8;padding-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;">Product</th>
+            <th style="text-align:center;font-size:11px;font-weight:600;color:#94A3B8;padding-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;">Qty</th>
+            <th style="text-align:right;font-size:11px;font-weight:600;color:#94A3B8;padding-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;">Unit Price</th>
+            <th style="text-align:right;font-size:11px;font-weight:600;color:#94A3B8;padding-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;">Total</th>
+          </tr>
+        </thead>
+        <tbody>${itemRows}</tbody>
+      </table>
+    </div>
+
+    <!-- Totals + Address row -->
+    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
+
+      <!-- Totals -->
+      <div style="flex:1;min-width:220px;">
+        <div style="font-size:11px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Summary</div>
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="font-size:13px;color:#64748B;padding:5px 0;">Subtotal</td>
+            <td style="font-size:13px;color:#64748B;text-align:right;padding:5px 0;">${formatGbp(order.subtotalGbp)}</td>
+          </tr>
+          <tr>
+            <td style="font-size:13px;color:#64748B;padding:5px 0;">Shipping${order.shippingMethod ? ` (${order.shippingMethod})` : ""}</td>
+            <td style="font-size:13px;color:#64748B;text-align:right;padding:5px 0;">${formatGbp(order.shippingCostGbp)}</td>
+          </tr>
+          <tr>
+            <td style="font-size:15px;font-weight:800;color:#0F172A;padding:14px 0 5px;border-top:2px solid #E2E8F0;">Total Paid</td>
+            <td style="font-size:15px;font-weight:800;color:#059669;text-align:right;padding:14px 0 5px;border-top:2px solid #E2E8F0;">${formatGbp(order.totalGbp)}</td>
+          </tr>
+        </table>
+        <div style="margin-top:16px;padding:10px 14px;background:#F8FAFF;border-radius:8px;border:1px solid #E2E8F0;">
+          <div style="font-size:10.5px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Payment Method</div>
+          <div style="font-size:13px;font-weight:600;color:#0F172A;">Open Banking (Wallid)</div>
+        </div>
+      </div>
+
+      <!-- Ship address -->
+      ${addressLines ? `
+      <div style="flex:1;min-width:180px;">
+        <div style="font-size:11px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Shipped To</div>
+        <div style="font-size:13px;color:#1E293B;line-height:1.7;">${addressLines}</div>
+        ${order.shippingMethod ? `<div style="margin-top:10px;font-size:12px;color:#64748B;">via <strong>${order.shippingMethod}</strong></div>` : ""}
+      </div>` : ""}
+
+    </div>
+
+    <!-- RUO disclaimer -->
+    <div style="margin-top:28px;padding:14px 16px;background:#FFFBEB;border-radius:8px;border-left:4px solid #F59E0B;">
+      <div style="font-size:11.5px;color:#713F12;line-height:1.6;">
+        <strong>Research Use Only:</strong> These products are for in-vitro laboratory research exclusively. Not for human or veterinary use. Handle and store in accordance with your institution's safety protocols.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div style="background:#F8FAFC;border-top:1px solid #E2E8F0;padding:18px 36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div style="font-size:11.5px;color:#94A3B8;">OmniQure Peptide Research Institute &bull; <a href="${SITE_URL}" style="color:#94A3B8;text-decoration:none;">omniqure.com</a></div>
+    <button class="no-print" onclick="window.print()" style="font-size:12px;font-weight:700;padding:8px 18px;border-radius:8px;border:1.5px solid #CBD5E1;background:#fff;color:#475569;cursor:pointer;display:flex;align-items:center;gap:6px;">
+      ↓ &nbsp;Download / Print
+    </button>
+  </div>
+
+</div>
+</body>
+</html>`;
+}
+
 export async function sendOrderConfirmation(order: OrderEmailData): Promise<void> {
   const subject = `Order Confirmed — ${order.orderNumber}`;
   const body = `

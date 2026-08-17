@@ -20,6 +20,8 @@ import {
   sendLowStockAlert,
   sendReferralReward,
   sendWelcomeEmail,
+  generateReceiptHtml,
+  type OrderEmailData,
 } from "../lib/email";
 import { createBtcPayInvoice, isBtcPayConfigured } from "../lib/btcpay";
 import { createWallidPayment, isWallidConfigured, type WallidItem } from "../lib/wallid";
@@ -1017,6 +1019,80 @@ router.get("/orders/track", async (req: Request, res: Response): Promise<void> =
   } catch (err) {
     req.log.error({ err }, "Failed to track order");
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// ── Receipt HTML page ─────────────────────────────────────────────────────────
+router.get("/orders/:orderNumber/receipt", async (req: Request, res: Response) => {
+  const { orderNumber } = req.params as { orderNumber: string };
+  try {
+    const [order] = await db
+      .select({
+        id: ordersTable.id,
+        orderNumber: ordersTable.orderNumber,
+        customerName: ordersTable.customerName,
+        customerEmail: ordersTable.customerEmail,
+        subtotalGbp: ordersTable.subtotalGbp,
+        shippingCostGbp: ordersTable.shippingCostGbp,
+        totalGbp: ordersTable.totalGbp,
+        shippingMethod: ordersTable.shippingMethod,
+        address1: ordersTable.address1,
+        address2: ordersTable.address2,
+        city: ordersTable.city,
+        postcode: ordersTable.postcode,
+        country: ordersTable.country,
+        createdAt: ordersTable.createdAt,
+      })
+      .from(ordersTable)
+      .where(eq(ordersTable.orderNumber, orderNumber))
+      .limit(1);
+
+    if (!order) {
+      res.status(404).send("<h2>Order not found</h2>");
+      return;
+    }
+
+    const items = await db
+      .select({
+        productName: orderItemsTable.productName,
+        productCategory: orderItemsTable.productCategory,
+        quantity: orderItemsTable.quantity,
+        priceGbp: orderItemsTable.priceGbp,
+      })
+      .from(orderItemsTable)
+      .where(eq(orderItemsTable.orderId, order.id));
+
+    const data: OrderEmailData = {
+      orderNumber: order.orderNumber,
+      customerName: order.customerName,
+      customerEmail: order.customerEmail,
+      items: items.map(i => ({
+        productName: i.productName,
+        productCategory: i.productCategory,
+        quantity: i.quantity,
+        priceGbp: parseFloat(String(i.priceGbp)),
+      })),
+      subtotalGbp: parseFloat(String(order.subtotalGbp)),
+      shippingCostGbp: parseFloat(String(order.shippingCostGbp)),
+      totalGbp: parseFloat(String(order.totalGbp)),
+      shippingMethod: order.shippingMethod ?? null,
+      trackingNumber: null,
+      address1: order.address1 ?? null,
+      address2: order.address2 ?? null,
+      city: order.city ?? null,
+      postcode: order.postcode ?? null,
+      country: order.country ?? null,
+    };
+
+    const dateStr = order.createdAt.toLocaleDateString("en-GB", {
+      day: "numeric", month: "long", year: "numeric",
+    });
+
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.send(generateReceiptHtml(data, dateStr));
+  } catch (err) {
+    req.log.error({ err }, "Failed to render receipt");
+    res.status(500).send("<h2>Internal server error</h2>");
   }
 });
 
