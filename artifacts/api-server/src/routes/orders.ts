@@ -16,13 +16,10 @@ import {
 import { eq, sql, inArray, and, gte, count } from "drizzle-orm";
 import {
   sendOrderConfirmation,
-  generateReceiptHtml,
   sendBitcoinInstructions,
   sendLowStockAlert,
   sendReferralReward,
   sendWelcomeEmail,
-  type OrderEmailData,
-  type OrderItem as EmailOrderItem,
 } from "../lib/email";
 import { createBtcPayInvoice, isBtcPayConfigured } from "../lib/btcpay";
 import { createWallidPayment, isWallidConfigured, type WallidItem } from "../lib/wallid";
@@ -879,19 +876,19 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         const successUrl = `${baseReturn}&status=success`;
         const failUrl    = `${baseReturn}&status=failed`;
 
-        // ⚠️ TEST MODE — charging £1 regardless of cart total. Remove before go-live.
-        const TEST_AMOUNT_GBP = 1.00;
-        const wallidItems: WallidItem[] = [{
-          name:        "Test Order",
-          category:    "Peptides",
-          price_minor: 100,
+        const wallidItems: WallidItem[] = cartItems.map(i => ({
+          name:        i.productName,
+          category:    i.productCategory || "Peptides",
+          price_minor: Math.round(i.priceGbp * 100),
           image_url:   `${origin}/og-image.jpg`,
-          product_url: `${origin}/peptides`,
-        }];
+          product_url: i.productSlug
+            ? `${origin}/peptides/${i.productSlug}`
+            : `${origin}/peptides`,
+        }));
 
         const wallid = await createWallidPayment({
           orderNumber,
-          totalGbp: TEST_AMOUNT_GBP,
+          totalGbp,
           customerEmail: d.email.toLowerCase(),
           successUrl,
           failUrl,
@@ -1026,82 +1023,6 @@ router.get("/orders/track", async (req: Request, res: Response): Promise<void> =
   } catch (err) {
     req.log.error({ err }, "Failed to track order");
     res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-// GET /api/orders/:orderNumber/receipt — renders a printable HTML receipt (public, order-number-gated)
-router.get("/orders/:orderNumber/receipt", async (req: Request, res: Response): Promise<void> => {
-  const { orderNumber } = req.params;
-  if (!orderNumber || !/^OQ-/i.test(orderNumber)) {
-    res.status(400).send("Invalid order number");
-    return;
-  }
-  try {
-    const [order] = await db
-      .select({
-        id:             ordersTable.id,
-        orderNumber:    ordersTable.orderNumber,
-        customerName:   ordersTable.customerName,
-        customerEmail:  ordersTable.customerEmail,
-        subtotalGbp:    ordersTable.subtotalGbp,
-        shippingCostGbp: ordersTable.shippingCostGbp,
-        totalGbp:       ordersTable.totalGbp,
-        shippingMethod: ordersTable.shippingMethod,
-        address1:       ordersTable.address1,
-        address2:       ordersTable.address2,
-        city:           ordersTable.city,
-        postcode:       ordersTable.postcode,
-        country:        ordersTable.country,
-        createdAt:      ordersTable.createdAt,
-      })
-      .from(ordersTable)
-      .where(eq(ordersTable.orderNumber, orderNumber.toUpperCase()))
-      .limit(1);
-
-    if (!order) {
-      res.status(404).send("Order not found");
-      return;
-    }
-
-    const rawItems = await db
-      .select({
-        productName:     orderItemsTable.productName,
-        productCategory: orderItemsTable.productCategory,
-        quantity:        orderItemsTable.quantity,
-        priceGbp:        orderItemsTable.priceGbp,
-      })
-      .from(orderItemsTable)
-      .where(eq(orderItemsTable.orderId, order.id));
-
-    const emailOrder: OrderEmailData = {
-      orderNumber:    order.orderNumber,
-      customerName:   order.customerName,
-      customerEmail:  order.customerEmail,
-      subtotalGbp:    parseFloat(String(order.subtotalGbp)),
-      shippingCostGbp: parseFloat(String(order.shippingCostGbp)),
-      totalGbp:       parseFloat(String(order.totalGbp)),
-      shippingMethod: order.shippingMethod ?? null,
-      trackingNumber: null,
-      address1:       order.address1 ?? null,
-      address2:       order.address2 ?? null,
-      city:           order.city ?? null,
-      postcode:       order.postcode ?? null,
-      country:        order.country ?? null,
-      items: rawItems.map((i): EmailOrderItem => ({
-        productName:     i.productName,
-        productCategory: i.productCategory,
-        quantity:        i.quantity,
-        priceGbp:        parseFloat(String(i.priceGbp)),
-      })),
-    };
-
-    const html = generateReceiptHtml(emailOrder, order.createdAt);
-    res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.setHeader("X-Robots-Tag", "noindex");
-    res.status(200).send(html);
-  } catch (err) {
-    req.log.error({ err, orderNumber }, "Failed to render receipt");
-    res.status(500).send("Could not load receipt");
   }
 });
 
