@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { db } from "@workspace/db";
 import { customersTable, loyaltyTransactionsTable } from "@workspace/db";
 import { eq, sql } from "drizzle-orm";
-import { sendPasswordReset } from "../lib/email";
+import { sendPasswordReset, sendAccountCreatedEmail } from "../lib/email";
 import { getClientIp, lookupCountry } from "../lib/geoip";
 
 const router = Router();
@@ -99,6 +99,10 @@ router.post("/auth/register", async (req: Request, res: Response): Promise<void>
       });
 
       req.log.info({ customerId: upgraded.id }, "Guest account upgraded to full account");
+      sendAccountCreatedEmail({
+        customerName: `${upgraded.firstName} ${upgraded.lastName}`,
+        customerEmail: upgraded.email,
+      }).catch((err) => req.log.error({ err }, "Failed to send account created email (guest upgrade)"));
       const ipUpgrade = getClientIp(req);
       if (ipUpgrade) {
         lookupCountry(ipUpgrade).then((cc) => {
@@ -208,6 +212,15 @@ router.post("/auth/register", async (req: Request, res: Response): Promise<void>
       firstName: customer.firstName,
       lastName: customer.lastName,
     });
+
+    // Fire welcome email — referral code is deterministic so we can compute it now
+    const referralCode = `${firstName.trim().slice(0, 3).toUpperCase()}${String(customer.id).padStart(4, "0")}`;
+    sendAccountCreatedEmail({
+      customerName: `${customer.firstName} ${customer.lastName}`,
+      customerEmail: customer.email,
+      referralCode,
+    }).catch((err) => req.log.error({ err }, "Failed to send account created email"));
+
   } catch (err) {
     req.log.error({ err }, "Failed to register customer");
     res.status(500).json({ error: "Internal server error" });

@@ -441,6 +441,64 @@ export function generateReceiptHtml(order: OrderEmailData, dateStr?: string): st
 </html>`;
 }
 
+export async function sendAccountCreatedEmail(opts: {
+  customerName: string;
+  customerEmail: string;
+  referralCode?: string | null;
+}): Promise<void> {
+  const firstName = opts.customerName.split(" ")[0];
+  const subject = `Welcome to OmniQure, ${firstName}!`;
+  const body = `
+    <h2 style="margin:0 0 6px;font-size:22px;color:#0f172a;">Your account is ready</h2>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">
+      Hi ${firstName}, welcome to OmniQure Peptide Research Institute.
+      Your account has been created and you're ready to start exploring our catalogue.
+    </p>
+
+    <div style="background:#f0f9ff;border-radius:8px;padding:18px 22px;margin-bottom:24px;border-left:4px solid #1b5cb5;">
+      <p style="margin:0 0 10px;font-size:12px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">What's included with your account</p>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        ${[
+          "Order history and tracking in one place",
+          "Saved shipping addresses for faster checkout",
+          "50 loyalty points added as a welcome bonus",
+          "Refer a friend and earn credit on every order they place",
+        ].map(s => `<p style="margin:0;font-size:13px;color:#475569;"><span style="color:#1b5cb5;font-weight:700;">✓</span> ${s}</p>`).join("")}
+      </div>
+    </div>
+
+    ${opts.referralCode ? `
+    <div style="background:#f8fafc;border-radius:8px;padding:16px 20px;margin-bottom:24px;border:1.5px solid #e2e8f0;text-align:center;">
+      <p style="margin:0 0 4px;font-size:11px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;">Your Referral Code</p>
+      <p style="margin:0;font-size:22px;font-weight:900;color:#0d2565;letter-spacing:0.12em;">${opts.referralCode}</p>
+      <p style="margin:6px 0 0;font-size:12px;color:#64748b;">Share this code — you'll earn credit when a friend places their first order.</p>
+    </div>` : ""}
+
+    <div style="margin-top:4px;display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="${SITE_URL}/all-peptides" style="display:inline-block;background:linear-gradient(90deg,#0d2565,#1b5cb5);color:#ffffff;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;">Browse All Peptides</a>
+      <a href="${SITE_URL}/account" style="display:inline-block;background:#f8fafc;color:#0f172a;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;border:1.5px solid #e2e8f0;">My Account</a>
+    </div>
+
+    <div style="margin-top:24px;padding:16px;background:#fefce8;border-radius:6px;border-left:4px solid #eab308;">
+      <p style="margin:0;font-size:13px;color:#713f12;">All products are sold strictly for research purposes only. Not for human consumption.</p>
+    </div>
+  `;
+
+  try {
+    const result = await getResend().emails.send({
+      from: FROM_ADDRESS,
+      to: opts.customerEmail,
+      subject,
+      html: baseTemplate("Welcome to OmniQure", body),
+    });
+    logger.info({ to: opts.customerEmail }, "Account created email sent");
+    await logEmail({ toEmail: opts.customerEmail, subject, type: "account_created", status: "sent", resendId: result.data?.id });
+  } catch (err) {
+    logger.error({ err }, "Failed to send account created email");
+    await logEmail({ toEmail: opts.customerEmail, subject, type: "account_created", status: "failed" });
+  }
+}
+
 export async function sendOrderConfirmation(order: OrderEmailData): Promise<void> {
   const subject = `Order Confirmed — ${order.orderNumber}`;
   const body = `
