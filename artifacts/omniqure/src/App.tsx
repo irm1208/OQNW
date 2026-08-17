@@ -34,7 +34,7 @@ const PrivacyPage          = lazy(() => import("@/pages/PrivacyPage"));
 const CartPage             = lazy(() => import("@/pages/CartPage"));
 const CheckoutPage         = lazy(() => import("@/pages/CheckoutPage"));
 const OrderConfirmation    = lazy(() => import("@/pages/OrderConfirmation"));
-const FenaReturn           = lazy(() => import("@/pages/FenaReturn"));
+const WallidReturn         = lazy(() => import("@/pages/WallidReturn"));
 const TrackOrderPage       = lazy(() => import("@/pages/TrackOrderPage"));
 const SignIn               = lazy(() => import("@/pages/SignIn"));
 const ForgotPassword       = lazy(() => import("@/pages/ForgotPassword"));
@@ -91,7 +91,7 @@ function Router() {
       <Route path="/cart" component={CartPage} />
       <Route path="/checkout" component={CheckoutPage} />
       <Route path="/order-confirmation" component={OrderConfirmation} />
-      <Route path="/fena-return" component={FenaReturn} />
+      <Route path="/wallid-return" component={WallidReturn} />
       <Route path="/track-order" component={TrackOrderPage} />
       <Route path="/wishlist" component={WishlistPage} />
       <Route path="/protocols" component={ProtocolsPage} />

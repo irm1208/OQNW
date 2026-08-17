@@ -346,7 +346,7 @@ export default function CartPage() {
   const [applyingDiscount, setApplyingDiscount] = useState(false);
 
   // Payment
-  const [paymentMethod, setPaymentMethod] = useState<"bitcoin" | "fena">("fena");
+  const [paymentMethod, setPaymentMethod] = useState<"bitcoin" | "wallid">("wallid");
   const [cryptoCurrency, setCryptoCurrency] = useState<CryptoCurrency>("BTC");
 
   // Loyalty
@@ -620,12 +620,12 @@ export default function CartPage() {
       const data = await res.json() as {
         orderNumber: string; customerName: string; totalGbp: number; shippingMethod: string;
         btcAddress?: string; btcAmount?: string; btcPaymentUrl?: string;
-        cryptoCurrency?: string; fenaPaymentUrl?: string;
+        cryptoCurrency?: string; wallidPaymentUrl?: string;
       };
       clearCart();
 
-      if (paymentMethod === "fena" && data.fenaPaymentUrl) {
-        window.location.href = data.fenaPaymentUrl;
+      if (paymentMethod === "wallid" && data.wallidPaymentUrl) {
+        window.location.href = data.wallidPaymentUrl;
         return;
       }
 
@@ -891,10 +891,10 @@ export default function CartPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
 
             {(() => {
-              const active = paymentMethod === "fena";
+              const active = paymentMethod === "wallid";
               return (
                 <div
-                  onClick={() => setPaymentMethod("fena")}
+                  onClick={() => setPaymentMethod("wallid")}
                   style={{
                     border: `1px solid ${active ? "#1240A0" : "#E8EDF5"}`,
                     borderRadius: 6, overflow: "hidden", cursor: "pointer",
@@ -902,7 +902,7 @@ export default function CartPage() {
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
-                    <input type="radio" checked={active} onChange={() => setPaymentMethod("fena")}
+                    <input type="radio" checked={active} onChange={() => setPaymentMethod("wallid")}
                       style={{ accentColor: THEME.cta, width: 16, height: 16, flexShrink: 0 }} />
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
@@ -922,7 +922,7 @@ export default function CartPage() {
                   {active && (
                     <div style={{ borderTop: "1px solid #F1F5F9", padding: "14px 16px" }}>
                       <p style={{ fontSize: "12px", color: THEME.textMuted, marginBottom: 12 }}>
-                        🏦 FCA-authorised open banking · Read-only · No card details stored
+                        🏦 Secure hosted checkout · No card details stored
                       </p>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
                         {BANK_SVGS.map(b => (

@@ -4,21 +4,21 @@ import { Link } from "wouter";
 import { CheckCircle2, Clock, Truck, FlaskConical, ArrowRight, Search, Download } from "lucide-react";
 
 /**
- * Landing page for customers returning from the Fena open-banking payment flow.
+ * Landing page for customers returning from the Wallid hosted-checkout payment flow.
  *
- * Fena appends our customRedirectUrl params plus any of its own (payment_id, status, etc.).
- * We read the params we set: order, name, total, ship.
+ * Wallid redirects to success_url or fail_url with our own query params appended.
+ * We read: order, name, total, ship, status (success | failed).
  */
-export default function FenaReturn() {
+export default function WallidReturn() {
   const params = new URLSearchParams(window.location.search);
   const order  = params.get("order") ?? "OQ-000000";
   const name   = params.get("name")  ?? "Researcher";
   const total  = params.get("total") ?? "0.00";
   const ship   = params.get("ship")  ?? "Standard";
 
-  // Fena status params (may or may not be present depending on Fena version)
-  const fenaStatus = params.get("status") ?? params.get("payment_status") ?? "";
-  const failed = fenaStatus.toLowerCase() === "failed" || fenaStatus.toLowerCase() === "cancelled";
+  // Wallid appends status=success or status=failed to the redirect URL
+  const wallidStatus = params.get("status") ?? "";
+  const failed = wallidStatus.toLowerCase() === "failed" || wallidStatus.toLowerCase() === "cancelled";
 
   const today = new Date();
   const deliveryDays = ship === "Next Day" ? 1 : ship === "Express" ? 2 : 5;
@@ -110,7 +110,7 @@ export default function FenaReturn() {
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
             <CheckCircle2 size={18} color="#059669" />
             <p style={{ fontSize: "14px", fontWeight: 800, color: "#065F46", margin: 0 }}>
-              Open banking payment submitted via Fena
+              Bank payment submitted via Wallid
             </p>
           </div>
           <p style={{ fontSize: "12.5px", color: "#166534", lineHeight: 1.65, margin: 0 }}>

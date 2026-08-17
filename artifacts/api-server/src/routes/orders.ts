@@ -22,7 +22,7 @@ import {
   sendWelcomeEmail,
 } from "../lib/email";
 import { createBtcPayInvoice, isBtcPayConfigured } from "../lib/btcpay";
-import { createFenaPayment, isFenaConfigured } from "../lib/fena";
+import { createWallidPayment, isWallidConfigured, type WallidItem } from "../lib/wallid";
 import { assessFraud } from "../lib/fraudScorer";
 import { getClientIp, lookupIpData } from "../lib/geoip";
 import { dispatchWebhook } from "../lib/webhookDispatcher";
@@ -112,7 +112,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
   };
   const cryptoCurrencyStr = typeof cryptoCurrency === "string" ? cryptoCurrency.toUpperCase() : "BTC";
 
-  const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "fena";
+  const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "wallid";
 
   // Basic validation
   const d = delivery as DeliveryDetails;
@@ -518,7 +518,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingCostGbp: String(shippingCostGbp.toFixed(2)),
         totalGbp: String(totalGbp.toFixed(2)),
         shippingMethod,
-        status: ["bitcoin", "fena"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
+        status: ["bitcoin", "wallid"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
         notes: [
           `Payment method: ${paymentMethodStr}`,
           bundleDiscountGbp > 0 ? `Bundle & Save: ${bundleFreeLabel} (-£${bundleDiscountGbp.toFixed(2)})` : null,
@@ -829,8 +829,8 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     let btcPaymentUrl: string | null = null;
     let btcInvoiceId: string | null = null;
 
-    // ── Fena open-banking payment (blocking — need redirect URL before responding) ──
-    let fenaPaymentUrl: string | null = null;
+    // ── Wallid hosted-checkout payment (blocking — need redirect URL before responding) ──
+    let wallidPaymentUrl: string | null = null;
 
     if (paymentMethodStr === "bitcoin" && cryptoCurrencyStr === "BTC") {
       try {
@@ -861,32 +861,45 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       }
     }
 
-    if (paymentMethodStr === "fena") {
+    if (paymentMethodStr === "wallid") {
       try {
         const origin =
           (req.headers.origin as string | undefined) ||
           process.env.SITE_URL ||
           "https://omniqure.com";
-        const redirectUrl =
-          `${origin}/fena-return` +
+        const baseReturn =
+          `${origin}/wallid-return` +
           `?order=${encodeURIComponent(orderNumber)}` +
           `&name=${encodeURIComponent(d.firstName)}` +
           `&total=${totalGbp.toFixed(2)}` +
           `&ship=${encodeURIComponent(shippingMethod)}`;
+        const successUrl = `${baseReturn}&status=success`;
+        const failUrl    = `${baseReturn}&status=failed`;
 
-        const fena = await createFenaPayment({
+        const wallidItems: WallidItem[] = cartItems.map(i => ({
+          name:        i.productName,
+          category:    i.productCategory || "Peptides",
+          price_minor: Math.round(i.priceGbp * 100),
+          image_url:   `${origin}/og-image.jpg`,
+          product_url: i.productSlug
+            ? `${origin}/peptides/${i.productSlug}`
+            : `${origin}/peptides`,
+        }));
+
+        const wallid = await createWallidPayment({
           orderNumber,
           totalGbp,
           customerEmail: d.email.toLowerCase(),
-          customerName,
-          redirectUrl,
+          successUrl,
+          failUrl,
+          items: wallidItems,
         });
-        if (fena) {
-          fenaPaymentUrl = fena.paymentUrl;
+        if (wallid) {
+          wallidPaymentUrl = wallid.paymentUrl;
           await db
             .update(ordersTable)
             .set({
-              notes: [order.notes, `Fena payment id: ${fena.hashedId}`]
+              notes: [order.notes, `Wallid payment id: ${wallid.apiPaymentId}`]
                 .filter(Boolean)
                 .join("; "),
             })
@@ -894,7 +907,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
             .catch(() => {});
         }
       } catch (err) {
-        req.log.warn({ err }, "Fena payment creation failed — order still placed");
+        req.log.warn({ err }, "Wallid payment creation failed — order still placed");
       }
     }
 
@@ -913,9 +926,9 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingCostGbp,
         shippingMethod,
       }).catch(() => {});
-    } else if (paymentMethodStr === "fena") {
-      // Fena handles the redirect; send a confirmation email so the customer
-      // has a paper trail while the open-banking payment settles.
+    } else if (paymentMethodStr === "wallid") {
+      // Wallid handles the redirect; send a confirmation email so the customer
+      // has a paper trail while the payment settles.
       sendOrderConfirmation({
         orderNumber,
         customerName,
@@ -974,7 +987,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       ...(btcAmount     && { btcAmount }),
       ...(btcPaymentUrl && { btcPaymentUrl }),
       ...(btcInvoiceId  && { btcInvoiceId }),
-      ...(fenaPaymentUrl && { fenaPaymentUrl }),
+      ...(wallidPaymentUrl && { wallidPaymentUrl }),
     });
   } catch (err) {
     req.log.error({ err }, "Failed to create order");
