@@ -152,6 +152,133 @@ function totalsBlock(order: OrderEmailData): string {
     </table>`;
 }
 
+// ── Order Receipt Template ────────────────────────────────────────────────────
+
+function receiptTemplate(body: string): string {
+  const logoUrl = `${SITE_URL}/omniqure-wordmark.png`;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Receipt — OmniQure</title>
+</head>
+<body style="margin:0;padding:0;background:#eef0f4;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#eef0f4;padding:40px 0 60px;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;">
+
+        <!-- Header -->
+        <tr>
+          <td style="background:#0E1F4D;border-radius:10px 10px 0 0;padding:28px 36px 24px;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td>
+                  <img src="${logoUrl}" alt="OmniQure" height="44" style="display:block;height:44px;width:auto;" />
+                  <p style="margin:5px 0 0;font-size:9px;font-weight:700;letter-spacing:0.18em;color:#E8A93E;text-transform:uppercase;">Peptide Research Institute</p>
+                </td>
+                <td align="right" valign="top">
+                  <span style="display:inline-block;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:700;color:#cbd5e1;letter-spacing:0.12em;text-transform:uppercase;">Receipt</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Confirmed banner -->
+        <tr>
+          <td style="background:#16803C;padding:14px 36px;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td>
+                  <span style="display:inline-block;background:rgba(255,255,255,0.18);border-radius:50%;width:22px;height:22px;line-height:22px;text-align:center;font-size:13px;color:#fff;vertical-align:middle;margin-right:8px;">✓</span>
+                  <span style="font-size:15px;font-weight:700;color:#ffffff;vertical-align:middle;">Payment confirmed</span>
+                </td>
+                <td align="right">
+                  <span style="font-size:12px;color:rgba(255,255,255,0.75);">Your order is being prepared</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- White body -->
+        <tr>
+          <td style="background:#ffffff;padding:36px 36px 32px;border-radius:0 0 10px 10px;">
+            ${body}
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="padding:24px 0 0;text-align:center;">
+            <p style="margin:0;font-size:11px;color:#94a3b8;line-height:1.7;">
+              OmniQure Peptide Research Institute &bull; For research purposes only<br/>
+              Questions? Email <a href="mailto:research@omniqure.com" style="color:#94a3b8;">research@omniqure.com</a>
+              &nbsp;&bull;&nbsp; <a href="${SITE_URL}" style="color:#94a3b8;">omniqure.com</a>
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
+function receiptItemsTable(items: OrderItem[]): string {
+  const rows = items.map(item => `
+    <tr>
+      <td style="padding:12px 0;border-bottom:1px solid #f1f5f9;vertical-align:top;">
+        <span style="display:block;font-size:14px;font-weight:600;color:#0f172a;">${item.productName}</span>
+        <span style="display:block;font-size:11px;color:#94a3b8;margin-top:2px;text-transform:uppercase;letter-spacing:0.06em;">${item.productCategory}</span>
+      </td>
+      <td style="padding:12px 12px;border-bottom:1px solid #f1f5f9;text-align:center;vertical-align:top;font-size:13px;color:#64748b;white-space:nowrap;">×${item.quantity}</td>
+      <td style="padding:12px 0;border-bottom:1px solid #f1f5f9;text-align:right;vertical-align:top;font-size:13px;color:#64748b;white-space:nowrap;">${formatGbp(item.priceGbp)} each</td>
+      <td style="padding:12px 0 12px 16px;border-bottom:1px solid #f1f5f9;text-align:right;vertical-align:top;font-size:14px;font-weight:600;color:#0f172a;white-space:nowrap;">${formatGbp(item.priceGbp * item.quantity)}</td>
+    </tr>`).join("");
+
+  return `
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 4px;">
+      <tr>
+        <th style="text-align:left;font-size:10px;color:#94a3b8;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding-bottom:10px;border-bottom:2px solid #e2e8f0;">Item</th>
+        <th style="text-align:center;font-size:10px;color:#94a3b8;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding-bottom:10px;border-bottom:2px solid #e2e8f0;padding-left:12px;padding-right:12px;">Qty</th>
+        <th style="text-align:right;font-size:10px;color:#94a3b8;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding-bottom:10px;border-bottom:2px solid #e2e8f0;">Unit</th>
+        <th style="text-align:right;font-size:10px;color:#94a3b8;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding-bottom:10px;border-bottom:2px solid #e2e8f0;padding-left:16px;">Total</th>
+      </tr>
+      ${rows}
+    </table>`;
+}
+
+function receiptTotalsBlock(order: OrderEmailData): string {
+  const shippingLabel = order.shippingMethod
+    ? `Shipping <span style="font-size:11px;color:#94a3b8;">(${order.shippingMethod})</span>`
+    : "Shipping";
+  const shippingValue = order.shippingCostGbp === 0 ? '<span style="color:#16803C;font-weight:600;">FREE</span>' : formatGbp(order.shippingCostGbp);
+
+  return `
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:4px;">
+      <tr>
+        <td style="font-size:13px;color:#64748b;padding:6px 0;">Subtotal</td>
+        <td style="font-size:13px;color:#64748b;text-align:right;padding:6px 0;">${formatGbp(order.subtotalGbp)}</td>
+      </tr>
+      <tr>
+        <td style="font-size:13px;color:#64748b;padding:6px 0;">${shippingLabel}</td>
+        <td style="font-size:13px;text-align:right;padding:6px 0;">${shippingValue}</td>
+      </tr>
+      <tr>
+        <td colspan="2" style="padding:4px 0;">
+          <div style="border-top:2px solid #0E1F4D;margin:4px 0;"></div>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-size:16px;font-weight:800;color:#0E1F4D;padding:6px 0;">Total paid</td>
+        <td style="font-size:20px;font-weight:800;color:#0E1F4D;text-align:right;padding:6px 0;">${formatGbp(order.totalGbp)}</td>
+      </tr>
+    </table>`;
+}
+
 // ── Bank Details (keep in sync with CheckoutPage.tsx) ────────────────────────
 const BANK_DETAILS = {
   accountName: process.env.BANK_ACCOUNT_NAME ?? "OmniQure Research Ltd",
@@ -308,32 +435,80 @@ export async function sendBitcoinInstructions(opts: {
 }
 
 export async function sendOrderConfirmation(order: OrderEmailData): Promise<void> {
-  const subject = `Order Confirmed — ${order.orderNumber}`;
-  const body = `
-    <h2 style="margin:0 0 4px;font-size:22px;color:#0f172a;">Order Confirmed</h2>
-    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Thank you, ${order.customerName}. We've received your order and will process it shortly.</p>
+  const subject = `Receipt — ${order.orderNumber} | OmniQure`;
+  const orderDate = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 
-    <div style="background:#f8fafc;border-radius:6px;padding:16px 20px;margin-bottom:24px;">
-      <p style="margin:0;font-size:12px;color:#94a3b8;font-weight:600;">ORDER NUMBER</p>
-      <p style="margin:4px 0 0;font-size:20px;font-weight:700;color:#0f172a;">${order.orderNumber}</p>
+  const body = `
+    <!-- Greeting + meta row -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
+      <tr>
+        <td>
+          <p style="margin:0 0 4px;font-size:20px;font-weight:800;color:#0E1F4D;">Thank you, ${order.customerName}!</p>
+          <p style="margin:0;font-size:14px;color:#64748b;">Here's your receipt. We'll email you again when your order ships.</p>
+        </td>
+        <td align="right" valign="top" style="white-space:nowrap;">
+          <p style="margin:0;font-size:10px;color:#94a3b8;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Date</p>
+          <p style="margin:2px 0 0;font-size:13px;color:#1e293b;">${orderDate}</p>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Order number pill -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
+      <tr>
+        <td style="background:#f1f5f9;border-radius:8px;padding:14px 20px;">
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td>
+                <p style="margin:0;font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;">Order number</p>
+                <p style="margin:4px 0 0;font-size:22px;font-weight:800;color:#0E1F4D;letter-spacing:-0.5px;">${order.orderNumber}</p>
+              </td>
+              <td align="right" valign="middle">
+                <span style="display:inline-block;background:#0E1F4D;color:#fff;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:6px 14px;border-radius:20px;">Processing</span>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Items -->
+    <p style="margin:0 0 10px;font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;">Items ordered</p>
+    ${receiptItemsTable(order.items)}
+
+    <!-- Totals -->
+    <div style="margin-top:20px;">
+      ${receiptTotalsBlock(order)}
     </div>
 
-    ${itemsTable(order.items)}
-    ${totalsBlock(order)}
-
+    <!-- Shipping address -->
     ${order.address1 ? `
-    <div style="margin-top:24px;padding-top:20px;border-top:1px solid #e2e8f0;">
-      <p style="margin:0 0 8px;font-size:12px;color:#94a3b8;font-weight:600;">SHIPPING TO</p>
-      <p style="margin:0;font-size:14px;color:#1e293b;line-height:1.6;">
-        ${order.customerName}<br/>
-        ${order.address1}${order.address2 ? `<br/>${order.address2}` : ""}<br/>
-        ${[order.city, order.postcode].filter(Boolean).join(", ")}<br/>
-        ${order.country ?? ""}
-      </p>
+    <div style="margin-top:28px;padding-top:24px;border-top:1px solid #e2e8f0;">
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td valign="top" width="50%">
+            <p style="margin:0 0 8px;font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;">Shipping to</p>
+            <p style="margin:0;font-size:14px;color:#1e293b;line-height:1.7;">
+              <strong>${order.customerName}</strong><br/>
+              ${order.address1}${order.address2 ? `<br/>${order.address2}` : ""}<br/>
+              ${[order.city, order.postcode].filter(Boolean).join(", ")}<br/>
+              ${order.country ?? ""}
+            </p>
+          </td>
+          <td valign="top" width="50%" style="padding-left:24px;">
+            <p style="margin:0 0 8px;font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;">Payment</p>
+            <p style="margin:0;font-size:14px;color:#1e293b;">Pay by Bank</p>
+            <p style="margin:2px 0 0;font-size:12px;color:#64748b;">Instant bank transfer</p>
+          </td>
+        </tr>
+      </table>
     </div>` : ""}
 
-    <div style="margin-top:24px;padding:16px;background:#fefce8;border-radius:6px;border-left:4px solid #eab308;">
-      <p style="margin:0;font-size:13px;color:#713f12;">All products are sold strictly for research purposes only. Not for human consumption.</p>
+    <!-- Research disclaimer -->
+    <div style="margin-top:28px;padding:14px 18px;background:#fffbeb;border-radius:6px;border-left:3px solid #f59e0b;">
+      <p style="margin:0;font-size:12px;color:#92400e;line-height:1.5;">
+        <strong>Research use only.</strong> All products are sold strictly for in-vitro scientific research purposes. Not for human consumption or clinical use.
+      </p>
     </div>
   `;
 
@@ -342,7 +517,7 @@ export async function sendOrderConfirmation(order: OrderEmailData): Promise<void
       from: FROM_ADDRESS,
       to: order.customerEmail,
       subject,
-      html: baseTemplate("Order Confirmation", body),
+      html: receiptTemplate(body),
     });
     logger.info({ orderNumber: order.orderNumber, to: order.customerEmail }, "Order confirmation email sent");
     await logEmail({ toEmail: order.customerEmail, subject, type: "order_confirmation", status: "sent", resendId: result.data?.id, orderNumber: order.orderNumber });
