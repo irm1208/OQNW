@@ -41,6 +41,11 @@ app.use(
 );
 app.use(express.urlencoded({ extended: true }));
 
+// Health check — autoscale startup probe hits GET / and requires HTTP 200
+app.get("/", (_req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
 app.use("/uploads", express.static(path.join(process.cwd(), "public/uploads")));
 // Dynamic sitemap — served at /sitemap.xml (outside /api prefix so robots.txt can reference it directly)
 app.use(sitemapRouter);
