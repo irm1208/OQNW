@@ -347,7 +347,7 @@ export function generateReceiptHtml(order: OrderEmailData, dateStr?: string): st
 <div class="page">
 
   <!-- Header -->
-  <div style="background:#3547C0;padding:22px 36px;display:flex;align-items:center;justify-content:space-between;">
+  <div style="background:linear-gradient(90deg,#0D2565 0%,#1240A0 40%,#1B5CB5 75%,#1E68CC 100%);padding:22px 36px;display:flex;align-items:center;justify-content:space-between;">
     <img src="${SITE_URL}/omniqure-logo-full.png" alt="OmniQure" style="height:56px;width:auto;display:block;" />
     <div style="text-align:right;flex-shrink:0;margin-left:24px;">
       <div style="font-size:10.5px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">Receipt</div>
@@ -405,7 +405,7 @@ export function generateReceiptHtml(order: OrderEmailData, dateStr?: string): st
         </table>
         <div style="margin-top:16px;padding:10px 14px;background:#F8FAFF;border-radius:8px;border:1px solid #E2E8F0;">
           <div style="font-size:10.5px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Payment Method</div>
-          <div style="font-size:13px;font-weight:600;color:#0F172A;">Open Banking (Wallid)</div>
+          <div style="font-size:13px;font-weight:600;color:#0F172A;">Open Banking</div>
         </div>
       </div>
 
