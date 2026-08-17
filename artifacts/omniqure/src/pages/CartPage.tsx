@@ -1378,7 +1378,7 @@ export default function CartPage() {
         @media (max-width: 900px) {
           .checkout-layout { flex-direction: column !important; align-items: stretch !important; padding: 12px !important; gap: 16px !important; }
           .checkout-layout > * { width: 100% !important; max-width: 100% !important; }
-          .checkout-sidebar { width: 100% !important; position: static !important; }
+          .checkout-sidebar { width: 100% !important; position: static !important; order: -1 !important; }
           .checkout-breadcrumb-bar { height: 40px !important; }
           .checkout-timer-banner { padding: 8px 12px !important; }
           .checkout-timer-clock { width: 26px !important; height: 26px !important; font-size: 12px !important; }
