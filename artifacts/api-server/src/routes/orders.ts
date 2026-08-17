@@ -23,6 +23,7 @@ import {
   sendWelcomeEmail,
 } from "../lib/email";
 import { createBtcPayInvoice, isBtcPayConfigured } from "../lib/btcpay";
+import { createWallidPayment, isWallidConfigured } from "../lib/wallid";
 import { assessFraud } from "../lib/fraudScorer";
 import { getClientIp, lookupIpData } from "../lib/geoip";
 import { dispatchWebhook } from "../lib/webhookDispatcher";
@@ -371,6 +372,62 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
 
     const customerName = `${d.firstName.trim()} ${d.lastName.trim()}`;
 
+    // ── Wallid: create payment session BEFORE any DB writes ────────────────────
+    // All values needed are available here (orderNumber, totalGbp, cartItems,
+    // customer email). Failing early means no inventory / discount / loyalty /
+    // customer-counter mutations are ever committed when no session is created.
+    let wallidPaymentUrl: string | null = null;
+    let wallidApiPaymentId: string | null = null;
+
+    if (paymentMethodStr === "wallid") {
+      // Use only the configured canonical origin — never the untrusted request
+      // Origin header, which could be an attacker-controlled value.
+      const origin = process.env.SITE_URL ?? "https://omniqure.com";
+
+      const wallidItems = (cartItems as CartItem[]).map(item => ({
+        name: item.productName,
+        category: item.productCategory || "Peptides",
+        price_minor: Math.round(item.priceGbp * 100),
+        image_url: `${origin}/products/${item.productId}.jpg`,
+        product_url: item.productSlug
+          ? `${origin}/product/${item.productSlug}`
+          : `${origin}/all-peptides`,
+      }));
+
+      let payment;
+      try {
+        payment = await createWallidPayment({
+          orderNumber,
+          totalGbp,
+          customerEmail: d.email.toLowerCase(),
+          successUrl:
+            `${origin}/wallid-return` +
+            `?order=${encodeURIComponent(orderNumber)}` +
+            `&status=success` +
+            `&name=${encodeURIComponent(d.firstName)}` +
+            `&total=${totalGbp.toFixed(2)}`,
+          failUrl:
+            `${origin}/wallid-return` +
+            `?order=${encodeURIComponent(orderNumber)}` +
+            `&status=failed`,
+          items: wallidItems,
+        });
+      } catch (err) {
+        req.log.warn({ err }, "Wallid payment creation threw — aborting checkout before DB writes");
+        payment = null;
+      }
+
+      if (!payment) {
+        res.status(503).json({
+          error: "Pay by Bank is temporarily unavailable. Please try again or choose Cryptocurrency.",
+        });
+        return;
+      }
+
+      wallidPaymentUrl = payment.paymentUrl;
+      wallidApiPaymentId = payment.apiPaymentId;
+    }
+
     // If a valid customer session cookie is present, use that customer ID directly.
     // This ensures orders are always linked to the authenticated account regardless
     // of what email the customer typed in the delivery form.
@@ -517,12 +574,13 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingCostGbp: String(shippingCostGbp.toFixed(2)),
         totalGbp: String(totalGbp.toFixed(2)),
         shippingMethod,
-        status: ["bank_transfer", "bitcoin"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
+        status: ["bank_transfer", "bitcoin", "wallid"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
         notes: [
           `Payment method: ${paymentMethodStr}`,
           bundleDiscountGbp > 0 ? `Bundle & Save: ${bundleFreeLabel} (-£${bundleDiscountGbp.toFixed(2)})` : null,
           validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-£${discountAmount.toFixed(2)})` : null,
           loyaltyPointsToDeduct > 0 ? `Loyalty: ${loyaltyPointsToDeduct} pts redeemed (-£${loyaltyDiscountGbp.toFixed(2)})` : null,
+          wallidApiPaymentId ? `Wallid payment id: ${wallidApiPaymentId}` : null,
         ].filter(Boolean).join("; ") || null,
         fraudScore,
         fraudFlags,
@@ -883,6 +941,9 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingCostGbp,
         shippingMethod,
       }).catch(() => {});
+    } else if (paymentMethodStr === "wallid") {
+      // No email at order creation — customer is redirected to Wallid to pay.
+      // Confirmation email should be sent from the webhook when payment settles.
     } else {
       sendOrderConfirmation({
         orderNumber,
@@ -924,7 +985,8 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       ...(btcAddress    && { btcAddress }),
       ...(btcAmount     && { btcAmount }),
       ...(btcPaymentUrl && { btcPaymentUrl }),
-      ...(btcInvoiceId  && { btcInvoiceId }),
+      ...(btcInvoiceId    && { btcInvoiceId }),
+      ...(wallidPaymentUrl && { wallidPaymentUrl }),
     });
   } catch (err) {
     req.log.error({ err }, "Failed to create order");

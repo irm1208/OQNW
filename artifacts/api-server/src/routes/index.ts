@@ -42,6 +42,7 @@ import taxRouter from "./tax";
 import shippingRouter from "./shipping";
 import blogRouter from "./blog";
 import btcpayWebhookRouter from "./btcpay-webhook";
+import wallidWebhookRouter from "./wallid-webhook";
 import contactRouter from "./contact";
 import addressLookupRouter from "./address-lookup";
 
@@ -90,6 +91,7 @@ router.use(taxRouter);
 router.use(shippingRouter);
 router.use(blogRouter);
 router.use(btcpayWebhookRouter);
+router.use(wallidWebhookRouter);
 router.use(contactRouter);
 router.use(addressLookupRouter);
 
