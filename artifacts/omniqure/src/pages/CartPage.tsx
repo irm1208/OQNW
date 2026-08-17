@@ -69,11 +69,11 @@ const SHIPPING_OPTIONS = [
 ];
 
 const CRYPTO_OPTIONS = [
-  { id: "BTC",  name: "Bitcoin",  symbol: "₿", color: "#F7931A", network: "Bitcoin",      address: "bc1qs92tye4syd4zzeekv62j8yupek9mvzkgfkgz8u" },
-  { id: "ETH",  name: "Ethereum", symbol: "Ξ", color: "#627EEA", network: "ERC-20 / ETH", address: "0x612E36A53F95Fb487081bC5316a260262E58878b" },
-  { id: "USDT", name: "USDT",     symbol: "₮", color: "#26A17B", network: "ERC-20 / ETH", address: "0x612E36A53F95Fb487081bC5316a260262E58878b" },
-  { id: "USDC", name: "USDC",     symbol: "◎", color: "#2775CA", network: "ERC-20 / ETH", address: "0x612E36A53F95Fb487081bC5316a260262E58878b" },
-  { id: "SOL",  name: "Solana",   symbol: "◎", color: "#9945FF", network: "Solana",       address: "E7EXxfoqVc9PMKzeU6xSJdcK2Ur83rKCZymcHQ9r8iNM" },
+  { id: "BTC",  name: "Bitcoin",  color: "#F7931A", network: "Bitcoin",      address: "bc1qs92tye4syd4zzeekv62j8yupek9mvzkgfkgz8u", logoSrc: "https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/btc.svg" },
+  { id: "ETH",  name: "Ethereum", color: "#627EEA", network: "ERC-20 / ETH", address: "0x612E36A53F95Fb487081bC5316a260262E58878b",  logoSrc: "https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/eth.svg" },
+  { id: "USDT", name: "USDT",     color: "#26A17B", network: "ERC-20 / ETH", address: "0x612E36A53F95Fb487081bC5316a260262E58878b",  logoSrc: "https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/usdt.svg" },
+  { id: "USDC", name: "USDC",     color: "#2775CA", network: "ERC-20 / ETH", address: "0x612E36A53F95Fb487081bC5316a260262E58878b",  logoSrc: "https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/usdc.svg" },
+  { id: "SOL",  name: "Solana",   color: "#9945FF", network: "Solana",       address: "E7EXxfoqVc9PMKzeU6xSJdcK2Ur83rKCZymcHQ9r8iNM", logoSrc: "https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/sol.svg" },
 ] as const;
 type CryptoCurrency = typeof CRYPTO_OPTIONS[number]["id"];
 
@@ -1009,12 +1009,8 @@ export default function CartPage() {
                               color: cryptoCurrency === c.id ? "#fff" : THEME.textSub,
                               fontSize: "13px", fontWeight: 600, cursor: "pointer",
                             }}>
-                            <span style={{
-                              display: "inline-flex", alignItems: "center", justifyContent: "center",
-                              width: 18, height: 18, borderRadius: "50%",
-                              background: cryptoCurrency === c.id ? "rgba(255,255,255,0.25)" : c.color,
-                              color: "#fff", fontSize: "9px", fontWeight: 800, flexShrink: 0,
-                            }}>{c.symbol}</span>
+                            <img src={c.logoSrc} alt={c.name}
+                              style={{ width: 18, height: 18, borderRadius: "50%", flexShrink: 0, display: "block" }} />
                             {c.name}
                           </button>
                         ))}
