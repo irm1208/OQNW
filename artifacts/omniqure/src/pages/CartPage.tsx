@@ -69,12 +69,11 @@ const SHIPPING_OPTIONS = [
 ];
 
 const CRYPTO_OPTIONS = [
-  { id: "BTC",  name: "Bitcoin",    symbol: "₿", color: "#F7931A", network: "Bitcoin",      address: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh" },
-  { id: "ETH",  name: "Ethereum",   symbol: "Ξ", color: "#627EEA", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
-  { id: "USDT", name: "USDT",       symbol: "₮", color: "#26A17B", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
-  { id: "USDC", name: "USDC",       symbol: "◎", color: "#2775CA", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
-  { id: "LTC",  name: "Litecoin",   symbol: "Ł", color: "#A6A9AA", network: "Litecoin",     address: "LYourLitecoinAddressHere" },
-  { id: "XMR",  name: "Monero",     symbol: "ɱ", color: "#FF6600", network: "Monero",       address: "YourMoneroAddressHere" },
+  { id: "BTC",  name: "Bitcoin",  symbol: "₿", color: "#F7931A", network: "Bitcoin",      address: "bc1qs92tye4syd4zzeekv62j8yupek9mvzkgfkgz8u" },
+  { id: "ETH",  name: "Ethereum", symbol: "Ξ", color: "#627EEA", network: "ERC-20 / ETH", address: "0x612E36A53F95Fb487081bC5316a260262E58878b" },
+  { id: "USDT", name: "USDT",     symbol: "₮", color: "#26A17B", network: "ERC-20 / ETH", address: "0x612E36A53F95Fb487081bC5316a260262E58878b" },
+  { id: "USDC", name: "USDC",     symbol: "◎", color: "#2775CA", network: "ERC-20 / ETH", address: "0x612E36A53F95Fb487081bC5316a260262E58878b" },
+  { id: "SOL",  name: "Solana",   symbol: "◎", color: "#9945FF", network: "Solana",       address: "E7EXxfoqVc9PMKzeU6xSJdcK2Ur83rKCZymcHQ9r8iNM" },
 ] as const;
 type CryptoCurrency = typeof CRYPTO_OPTIONS[number]["id"];
 
@@ -994,7 +993,7 @@ export default function CartPage() {
                       style={{ accentColor: THEME.cta, width: 16, height: 16, flexShrink: 0 }} />
                     <div>
                       <span style={{ fontSize: "15px", fontWeight: 700, color: THEME.text }}>Cryptocurrency</span>
-                      <p style={{ fontSize: "12px", color: THEME.textMuted, margin: "2px 0 0" }}>Bitcoin, Ethereum, USDT, USDC, Litecoin, Monero</p>
+                      <p style={{ fontSize: "12px", color: THEME.textMuted, margin: "2px 0 0" }}>Bitcoin, Ethereum, USDT, USDC, Solana</p>
                     </div>
                   </div>
                   {active && (

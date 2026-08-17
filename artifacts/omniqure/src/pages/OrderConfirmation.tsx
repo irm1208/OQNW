@@ -16,8 +16,7 @@ const CRYPTO_OPTIONS = [
   { id: "ETH",  name: "Ethereum", symbol: "Ξ", network: "ERC-20 / ETH", color: "#6366F1", bg: "#EEF2FF", border: "#C7D2FE", text: "#3730A3" },
   { id: "USDT", name: "USDT",     symbol: "₮", network: "ERC-20 / ETH", color: "#059669", bg: "#ECFDF5", border: "#6EE7B7", text: "#065F46" },
   { id: "USDC", name: "USDC",     symbol: "◎", network: "ERC-20 / ETH", color: "#2563EB", bg: "#EFF6FF", border: "#BFDBFE", text: "#1E40AF" },
-  { id: "LTC",  name: "Litecoin", symbol: "Ł", network: "Litecoin",     color: "#64748B", bg: "#F8FAFC", border: "#CBD5E1", text: "#334155" },
-  { id: "XMR",  name: "Monero",   symbol: "ɱ", network: "Monero",       color: "#EA580C", bg: "#FFF7ED", border: "#FED7AA", text: "#9A3412" },
+  { id: "SOL",  name: "Solana",   symbol: "◎", network: "Solana",       color: "#9945FF", bg: "#F5F3FF", border: "#DDD6FE", text: "#5B21B6" },
 ];
 
 export default function OrderConfirmation() {
