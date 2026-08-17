@@ -927,24 +927,8 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingMethod,
       }).catch(() => {});
     } else if (paymentMethodStr === "wallid") {
-      // Wallid handles the redirect; send a confirmation email so the customer
-      // has a paper trail while the payment settles.
-      sendOrderConfirmation({
-        orderNumber,
-        customerName,
-        customerEmail: d.email.toLowerCase(),
-        items: emailItems,
-        subtotalGbp,
-        shippingCostGbp,
-        totalGbp,
-        shippingMethod,
-        trackingNumber: null,
-        address1: d.address1,
-        address2: d.address2 ?? null,
-        city: d.city,
-        postcode: d.postcode,
-        country: d.country,
-      }).catch(() => {});
+      // Wallid: confirmation email is sent by the webhook handler once payment
+      // is confirmed as SUCCESS — not here, to avoid sending before payment settles.
     } else {
       sendOrderConfirmation({
         orderNumber,

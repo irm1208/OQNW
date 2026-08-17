@@ -2,10 +2,11 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import crypto from "crypto";
 import { db } from "@workspace/db";
-import { ordersTable } from "@workspace/db";
+import { ordersTable, orderItemsTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { WALLID_WEBHOOK_SECRET } from "../lib/wallid";
 import { logger } from "../lib/logger";
+import { sendOrderConfirmation } from "../lib/email";
 
 const router = Router();
 
@@ -116,11 +117,50 @@ router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<v
     }
 
     try {
-      await db
+      const [updated] = await db
         .update(ordersTable)
         .set({ status: "paid", updatedAt: new Date() })
-        .where(eq(ordersTable.orderNumber, orderId));
+        .where(eq(ordersTable.orderNumber, orderId))
+        .returning();
+
       logger.info({ orderId, status }, "Order marked paid via Wallid webhook");
+
+      // Send the confirmation email now that payment is verified
+      if (updated) {
+        const items = await db
+          .select({
+            productName: orderItemsTable.productName,
+            productCategory: orderItemsTable.productCategory,
+            quantity: orderItemsTable.quantity,
+            priceGbp: orderItemsTable.priceGbp,
+          })
+          .from(orderItemsTable)
+          .where(eq(orderItemsTable.orderId, updated.id));
+
+        sendOrderConfirmation({
+          orderNumber: updated.orderNumber,
+          customerName: updated.customerName,
+          customerEmail: updated.customerEmail,
+          items: items.map(i => ({
+            productName: i.productName,
+            productCategory: i.productCategory,
+            quantity: i.quantity,
+            priceGbp: parseFloat(String(i.priceGbp)),
+          })),
+          subtotalGbp: parseFloat(String(updated.subtotalGbp)),
+          shippingCostGbp: parseFloat(String(updated.shippingCostGbp)),
+          totalGbp: parseFloat(String(updated.totalGbp)),
+          shippingMethod: updated.shippingMethod ?? null,
+          trackingNumber: null,
+          address1: updated.address1 ?? null,
+          address2: updated.address2 ?? null,
+          city: updated.city ?? null,
+          postcode: updated.postcode ?? null,
+          country: updated.country ?? null,
+        }).catch((err) => {
+          logger.error({ err, orderId }, "Failed to send order confirmation email after Wallid payment");
+        });
+      }
     } catch (err) {
       logger.error({ err, orderId }, "Failed to update order status from Wallid webhook");
       // Don't return 500 — process remaining events first, then respond
