@@ -242,7 +242,7 @@ export default function WallidReturn() {
             <Search size={14} /> Track Order
           </Link>
           <button
-            onClick={() => window.print()}
+            onClick={() => window.open(`/api/orders/${order}/receipt`, "_blank")}
             style={{
               height: "46px", paddingLeft: "18px", paddingRight: "18px", borderRadius: "12px",
               border: "1.5px solid #E2E8F0", backgroundColor: "#fff",

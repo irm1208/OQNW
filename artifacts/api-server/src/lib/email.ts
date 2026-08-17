@@ -434,9 +434,9 @@ export async function sendBitcoinInstructions(opts: {
   }
 }
 
-export async function sendOrderConfirmation(order: OrderEmailData): Promise<void> {
-  const subject = `Receipt — ${order.orderNumber} | OmniQure`;
-  const orderDate = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+/** Renders the receipt body + wrapper HTML. Used by both the email sender and the receipt endpoint. */
+export function generateReceiptHtml(order: OrderEmailData, orderDate?: Date): string {
+  const dateStr = (orderDate ?? new Date()).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 
   const body = `
     <!-- Greeting + meta row -->
@@ -448,7 +448,7 @@ export async function sendOrderConfirmation(order: OrderEmailData): Promise<void
         </td>
         <td align="right" valign="top" style="white-space:nowrap;">
           <p style="margin:0;font-size:10px;color:#94a3b8;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Date</p>
-          <p style="margin:2px 0 0;font-size:13px;color:#1e293b;">${orderDate}</p>
+          <p style="margin:2px 0 0;font-size:13px;color:#1e293b;">${dateStr}</p>
         </td>
       </tr>
     </table>
@@ -512,12 +512,17 @@ export async function sendOrderConfirmation(order: OrderEmailData): Promise<void
     </div>
   `;
 
+  return receiptTemplate(body);
+}
+
+export async function sendOrderConfirmation(order: OrderEmailData, orderDate?: Date): Promise<void> {
+  const subject = `Receipt — ${order.orderNumber} | OmniQure`;
   try {
     const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: order.customerEmail,
       subject,
-      html: receiptTemplate(body),
+      html: generateReceiptHtml(order, orderDate),
     });
     logger.info({ orderNumber: order.orderNumber, to: order.customerEmail }, "Order confirmation email sent");
     await logEmail({ toEmail: order.customerEmail, subject, type: "order_confirmation", status: "sent", resendId: result.data?.id, orderNumber: order.orderNumber });
