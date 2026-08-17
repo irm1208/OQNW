@@ -310,6 +310,10 @@ export interface CatalogProduct {
   coaUrl?: string | null;
   /** @nullable */
   msImageUrl?: string | null;
+  /** @nullable */
+  seoTitle?: string | null;
+  /** @nullable */
+  seoDescription?: string | null;
   isPublished: boolean;
   isFeatured: boolean;
   sortOrder: number;
@@ -337,6 +341,8 @@ export interface CatalogProductInput {
   halfLife?: string;
   coaUrl?: string;
   msImageUrl?: string;
+  seoTitle?: string;
+  seoDescription?: string;
   isPublished?: boolean;
   isFeatured?: boolean;
   sortOrder?: number;
@@ -378,6 +384,10 @@ export interface CatalogProductPatch {
   coaUrl?: string | null;
   /** @nullable */
   msImageUrl?: string | null;
+  /** @nullable */
+  seoTitle?: string | null;
+  /** @nullable */
+  seoDescription?: string | null;
   isPublished?: boolean;
   isFeatured?: boolean;
   sortOrder?: number;

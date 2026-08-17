@@ -66,6 +66,8 @@ type ProductFormData = {
   halfLife: string;
   coaUrl: string;
   msImageUrl: string;
+  seoTitle: string;
+  seoDescription: string;
   isPublished: boolean;
   isFeatured: boolean;
 };
@@ -90,6 +92,8 @@ const emptyForm = (): ProductFormData => ({
   halfLife: "",
   coaUrl: "",
   msImageUrl: "",
+  seoTitle: "",
+  seoDescription: "",
   isPublished: true,
   isFeatured: false,
 });
@@ -115,6 +119,8 @@ function productToForm(p: CatalogProduct): ProductFormData {
     halfLife: p.halfLife ?? "",
     coaUrl: p.coaUrl ?? "",
     msImageUrl: p.msImageUrl ?? "",
+    seoTitle: p.seoTitle ?? "",
+    seoDescription: p.seoDescription ?? "",
     isPublished: p.isPublished,
     isFeatured: p.isFeatured,
   };
@@ -207,6 +213,8 @@ function CatalogTab() {
       halfLife: form.halfLife || undefined,
       coaUrl: form.coaUrl || undefined,
       msImageUrl: form.msImageUrl || undefined,
+      seoTitle: form.seoTitle || undefined,
+      seoDescription: form.seoDescription || undefined,
       isPublished: form.isPublished,
       isFeatured: form.isFeatured,
     };
@@ -583,6 +591,46 @@ function CatalogTab() {
                     </div>
                   </div>
                 ))}
+              </div>
+
+              {/* SEO */}
+              <div className="pt-2 border-t">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">SEO</p>
+                <p className="text-xs text-muted-foreground mb-3">
+                  Override the auto-generated title and description that appear in Google search results.
+                  Leave blank to use the defaults (product name + purity line).
+                </p>
+                <div className="space-y-3">
+                  <div className="space-y-1.5">
+                    <Label>
+                      SEO Title
+                      <span className="ml-1 text-muted-foreground font-normal text-xs">
+                        ({form.seoTitle.length}/60 chars)
+                      </span>
+                    </Label>
+                    <Input
+                      value={form.seoTitle}
+                      onChange={e => setForm(f => ({ ...f, seoTitle: e.target.value }))}
+                      placeholder={`${form.name || "BPC-157 5mg"} | OmniQure Peptide Research Institute`}
+                      maxLength={80}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label>
+                      SEO Description
+                      <span className="ml-1 text-muted-foreground font-normal text-xs">
+                        ({form.seoDescription.length}/160 chars)
+                      </span>
+                    </Label>
+                    <Textarea
+                      rows={2}
+                      value={form.seoDescription}
+                      onChange={e => setForm(f => ({ ...f, seoDescription: e.target.value }))}
+                      placeholder={`${form.name || "BPC-157 5mg"} — research peptide with 98%+ verified purity. For research use only.`}
+                      maxLength={200}
+                    />
+                  </div>
+                </div>
               </div>
 
               {/* Visibility toggles */}

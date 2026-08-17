@@ -89,6 +89,10 @@ export default defineConfig({
         target: `http://localhost:${process.env.API_PORT || 8080}`,
         changeOrigin: true,
       },
+      "/sitemap.xml": {
+        target: `http://localhost:${process.env.API_PORT || 8080}`,
+        changeOrigin: true,
+      },
     },
   },
   preview: {

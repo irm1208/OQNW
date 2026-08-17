@@ -152,19 +152,22 @@ export default function ProductPage() {
 
   // SEO — computed unconditionally (before any early return)
   const seoDetail = productDetails[product?.slug ?? ""];
-  const seoDesc = seoDetail?.description
+  // Use custom SEO fields from DB if set, otherwise auto-generate from product data
+  const autoDesc = seoDetail?.description
     ? `${seoDetail.description.slice(0, 140).split(". ")[0]}. ${product ? getPurityStr(product.id) : ""} verified purity. For research use only — OmniQure Peptide Research Institute.`
     : product
     ? `${product.name} — ${product.category} research peptide. ${getPurityStr(product.id)} verified purity. For research use only.`
     : undefined;
+  const seoTitle = product?.seoTitle || product?.name || null;
+  const seoDesc = product?.seoDescription || autoDesc || null;
   const seoAvailability = product?.stockLevel === 0
     ? "OutOfStock"
     : product?.stockLevel !== undefined && product.stockLevel <= 10
     ? "LimitedAvailability"
     : "InStock";
   useSEO({
-    title: product?.name ?? null,
-    description: seoDesc ?? null,
+    title: seoTitle,
+    description: seoDesc,
     ogType: "product",
     canonicalPath: product ? `/product/${product.slug}` : null,
     ogImage: product ? `${SITE_URL}${product.image}` : null,

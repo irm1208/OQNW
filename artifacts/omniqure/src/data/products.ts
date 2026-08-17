@@ -8,6 +8,8 @@ export type Product = {
   stockLevel?: number;
   coaUrl?: string | null;
   msImageUrl?: string | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
 };
 
 // Categories temporarily hidden from the storefront (catalog, search, nav, homepage,

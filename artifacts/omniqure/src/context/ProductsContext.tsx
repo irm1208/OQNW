@@ -29,6 +29,8 @@ type ApiProduct = {
   stockLevel: number | null;
   coaUrl?: string | null;
   msImageUrl?: string | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
 };
 
 function toProduct(p: ApiProduct): Product {
@@ -42,6 +44,8 @@ function toProduct(p: ApiProduct): Product {
     stockLevel: p.stockLevel ?? undefined,
     coaUrl: p.coaUrl ?? null,
     msImageUrl: p.msImageUrl ?? null,
+    seoTitle: p.seoTitle ?? null,
+    seoDescription: p.seoDescription ?? null,
   };
 }
 

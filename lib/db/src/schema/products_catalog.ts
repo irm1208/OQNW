@@ -31,6 +31,8 @@ export const productsCatalogTable = pgTable("products_catalog", {
   halfLife: text("half_life"),
   coaUrl: text("coa_url"),
   msImageUrl: text("ms_image_url"),
+  seoTitle: text("seo_title"),
+  seoDescription: text("seo_description"),
   isPublished: boolean("is_published").notNull().default(true),
   isFeatured: boolean("is_featured").notNull().default(false),
   sortOrder: integer("sort_order").notNull().default(0),

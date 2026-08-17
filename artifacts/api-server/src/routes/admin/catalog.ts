@@ -53,6 +53,8 @@ function catalogToResponse(p: typeof productsCatalogTable.$inferSelect) {
     halfLife: p.halfLife ?? null,
     coaUrl: p.coaUrl ?? null,
     msImageUrl: p.msImageUrl ?? null,
+    seoTitle: p.seoTitle ?? null,
+    seoDescription: p.seoDescription ?? null,
     isPublished: p.isPublished,
     isFeatured: p.isFeatured,
     sortOrder: p.sortOrder,
@@ -81,6 +83,8 @@ type ProductBody = {
   halfLife?: unknown;
   coaUrl?: unknown;
   msImageUrl?: unknown;
+  seoTitle?: unknown;
+  seoDescription?: unknown;
   isPublished?: unknown;
   isFeatured?: unknown;
   sortOrder?: unknown;
@@ -178,6 +182,8 @@ router.post("/admin/catalog", async (req: Request, res: Response): Promise<void>
         halfLife: strOrNull(body.halfLife),
         coaUrl: strOrNull(body.coaUrl),
         msImageUrl: strOrNull(body.msImageUrl),
+        seoTitle: strOrNull(body.seoTitle),
+        seoDescription: strOrNull(body.seoDescription),
         isPublished: isBool(body.isPublished) ? body.isPublished : true,
         isFeatured: isBool(body.isFeatured) ? body.isFeatured : false,
         sortOrder: isNum(body.sortOrder) ? body.sortOrder : 0,
@@ -223,6 +229,8 @@ router.patch("/admin/catalog/:id", async (req: Request, res: Response): Promise<
   if (body.halfLife !== undefined) updates.halfLife = strOrNull(body.halfLife);
   if (body.coaUrl !== undefined) updates.coaUrl = strOrNull(body.coaUrl);
   if (body.msImageUrl !== undefined) updates.msImageUrl = strOrNull(body.msImageUrl);
+  if (body.seoTitle !== undefined) updates.seoTitle = strOrNull(body.seoTitle);
+  if (body.seoDescription !== undefined) updates.seoDescription = strOrNull(body.seoDescription);
   if (body.isPublished !== undefined && isBool(body.isPublished)) updates.isPublished = body.isPublished;
   if (body.isFeatured !== undefined && isBool(body.isFeatured)) updates.isFeatured = body.isFeatured;
   if (body.sortOrder !== undefined && isNum(body.sortOrder)) updates.sortOrder = body.sortOrder;
@@ -325,6 +333,8 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
         purity: productsCatalogTable.purity,
         coaUrl: productsCatalogTable.coaUrl,
         msImageUrl: productsCatalogTable.msImageUrl,
+        seoTitle: productsCatalogTable.seoTitle,
+        seoDescription: productsCatalogTable.seoDescription,
         isFeatured: productsCatalogTable.isFeatured,
         stockLevel: productsInventoryTable.stockLevel,
         inventoryPublished: productsInventoryTable.isPublished,
@@ -348,6 +358,8 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
           purity: p.purity,
           coaUrl: p.coaUrl ?? null,
           msImageUrl: p.msImageUrl ?? null,
+          seoTitle: p.seoTitle ?? null,
+          seoDescription: p.seoDescription ?? null,
           isFeatured: p.isFeatured,
           stockLevel: p.stockLevel ?? null,
         }))
