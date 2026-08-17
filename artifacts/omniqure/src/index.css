@@ -1,4 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+/* Hide Replit feedback widget on published site */
+#__replco,
+[data-replit-badge],
+iframe[src*="replit.com/feedback"],
+div[class*="replit-ui-theme-root"] {
+  display: none !important;
+}
 @import "tailwindcss";
 @import "tw-animate-css";
 
