@@ -347,14 +347,11 @@ export function generateReceiptHtml(order: OrderEmailData, dateStr?: string): st
 <div class="page">
 
   <!-- Header -->
-  <div style="background:linear-gradient(110deg,#0D2565,#1B5CB5);padding:28px 36px;display:flex;align-items:center;justify-content:space-between;">
-    <div>
-      <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.03em;">OmniQure</div>
-      <div style="font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:0.08em;margin-top:2px;text-transform:uppercase;">Peptide Research Institute</div>
-    </div>
-    <div style="text-align:right;">
-      <div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;">Receipt</div>
-      <div style="font-size:18px;font-weight:800;color:#fff;margin-top:2px;letter-spacing:0.04em;">${order.orderNumber}</div>
+  <div style="background:#3547C0;padding:22px 36px;display:flex;align-items:center;justify-content:space-between;">
+    <img src="${SITE_URL}/omniqure-logo-full.png" alt="OmniQure" style="height:56px;width:auto;display:block;" />
+    <div style="text-align:right;flex-shrink:0;margin-left:24px;">
+      <div style="font-size:10.5px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">Receipt</div>
+      <div style="font-size:18px;font-weight:800;color:#fff;margin-top:3px;letter-spacing:0.04em;">${order.orderNumber}</div>
       <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:3px;">${date}</div>
     </div>
   </div>
