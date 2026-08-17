@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { trackViewContent } from "@/lib/pixels";
 import { Link, useParams, useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
@@ -238,18 +238,6 @@ export default function ProductPage() {
   const decreaseQty = () => setQuantity((q) => Math.max(1, q - 1));
   const increaseQty = () => setQuantity((q) => q + 1);
 
-  const ctaRef = useRef<HTMLDivElement>(null);
-  const [stickyVisible, setStickyVisible] = useState(false);
-  useEffect(() => {
-    const el = ctaRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => setStickyVisible(!entry.isIntersecting),
-      { threshold: 0 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [product?.id]);
 
   // Bac Water add-on state
   const [bacWaterEnabled, setBacWaterEnabled] = useState(false);
@@ -629,7 +617,6 @@ export default function ProductPage() {
 
             {/* Quantity + CTA */}
             <div
-              ref={ctaRef}
               className="rounded-2xl p-5 mb-5"
               style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}
             >
@@ -977,71 +964,6 @@ export default function ProductPage() {
         <RecentlyViewed excludeId={product.id} />
       </div>
 
-      {/* ── Sticky Add to Cart Bar ── */}
-      <div style={{
-        position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50,
-        transform: stickyVisible ? "translateY(0)" : "translateY(110%)",
-        transition: "transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)",
-        background: "linear-gradient(135deg, #0D2565 0%, #1240A0 100%)",
-        boxShadow: "0 -4px 24px rgba(15,23,42,0.25)",
-        borderTop: "1px solid rgba(255,255,255,0.10)",
-        fontFamily: "'Arimo', Arial, sans-serif",
-      }}>
-        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "10px 16px", display: "flex", alignItems: "center", gap: "12px" }}>
-          {/* Thumbnail */}
-          {product.image && (
-            <div style={{ width: 38, height: 38, borderRadius: 8, overflow: "hidden", flexShrink: 0, border: "1px solid rgba(255,255,255,0.18)" }}>
-              <img src={product.image} alt={product.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-            </div>
-          )}
-
-          {/* Name + price */}
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <p style={{ fontSize: "13px", fontWeight: 700, color: "#fff", margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-              {product.name}
-            </p>
-            {product.price != null && (
-              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.65)", margin: 0, marginTop: "1px" }}>
-                {formatPrice(product.price)}
-              </p>
-            )}
-          </div>
-
-          {/* Qty controls */}
-          <div style={{ display: "flex", alignItems: "center", borderRadius: 10, overflow: "hidden", border: "1px solid rgba(255,255,255,0.22)", flexShrink: 0 }}>
-            <button
-              onClick={decreaseQty}
-              style={{ width: 32, height: 38, background: "rgba(255,255,255,0.08)", border: "none", color: "#fff", fontSize: "16px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
-            >−</button>
-            <div style={{ width: 32, height: 38, background: "rgba(255,255,255,0.12)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: "13px", fontWeight: 700 }}>
-              {quantity}
-            </div>
-            <button
-              onClick={increaseQty}
-              style={{ width: 32, height: 38, background: "rgba(255,255,255,0.08)", border: "none", color: "#fff", fontSize: "16px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
-            >+</button>
-          </div>
-
-          {/* ATC button */}
-          <button
-            onClick={handleAddToCart}
-            disabled={product.stockLevel === 0}
-            style={{
-              display: "flex", alignItems: "center", gap: "6px",
-              padding: "0 18px", height: "38px", borderRadius: 10, border: "none", flexShrink: 0,
-              background: product.stockLevel === 0 ? "rgba(255,255,255,0.15)" : added ? "#059669" : "#fff",
-              color: product.stockLevel === 0 ? "rgba(255,255,255,0.4)" : added ? "#fff" : "#1240A0",
-              fontSize: "13px", fontWeight: 700,
-              cursor: product.stockLevel === 0 ? "not-allowed" : "pointer",
-              transition: "background 0.25s, color 0.25s",
-              whiteSpace: "nowrap",
-            }}
-          >
-            <ShoppingCart size={14} />
-            {product.stockLevel === 0 ? "Out of Stock" : added ? "✓ Added!" : "Add to Cart"}
-          </button>
-        </div>
-      </div>
 
     </div>
   );
