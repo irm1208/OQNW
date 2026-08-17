@@ -26,6 +26,7 @@ import Newsletter from "@/pages/Newsletter";
 import Settings from "@/pages/Settings";
 import Users from "@/pages/Users";
 import Reports from "@/pages/Reports";
+import FulfillmentQueue from "@/pages/FulfillmentQueue";
 
 const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
@@ -69,6 +70,11 @@ function AppRoutes() {
       <Route path="/orders/:id">
         <AdminLayout>
           <OrderDetail />
+        </AdminLayout>
+      </Route>
+      <Route path="/fulfillment">
+        <AdminLayout>
+          <FulfillmentQueue />
         </AdminLayout>
       </Route>
       <Route path="/customers">

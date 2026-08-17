@@ -500,6 +500,7 @@ export default function OrderDetail() {
                     <SelectContent>
                       <SelectItem value="pending">Pending</SelectItem>
                       <SelectItem value="awaiting_payment">Awaiting Payment</SelectItem>
+                      <SelectItem value="paid">Paid</SelectItem>
                       <SelectItem value="payment_received">Payment Received</SelectItem>
                       <SelectItem value="processing">Processing</SelectItem>
                       <SelectItem value="shipped">Shipped</SelectItem>

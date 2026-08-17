@@ -126,7 +126,7 @@ router.get("/admin/orders/export", async (req: Request, res: Response): Promise<
   }
 });
 
-const VALID_STATUSES = ["pending", "awaiting_payment", "payment_received", "processing", "shipped", "delivered", "cancelled"];
+const VALID_STATUSES = ["pending", "awaiting_payment", "paid", "payment_received", "processing", "shipped", "delivered", "cancelled"];
 
 // POST /api/admin/orders/bulk-update — update status on multiple orders at once
 router.post("/admin/orders/bulk-update", async (req: Request, res: Response): Promise<void> => {
