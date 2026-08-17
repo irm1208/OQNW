@@ -854,52 +854,85 @@ export default function CartPage() {
             {/* Pay by Bank (Wallid) */}
             {(() => {
               const active = paymentMethod === "wallid";
+              // Bank logo tiles: [label, bg colour, text colour, display name]
+              const banks: [string, string, string][] = [
+                ["#DB0011", "#fff", "HSBC"],
+                ["#00AEEF", "#fff", "BARC"],
+                ["#000000", "#fff", "LLOY"],
+                ["#FF6640", "#fff", "M"],
+                ["#EC0000", "#fff", "SAN"],
+              ];
               return (
                 <div
                   onClick={() => setPaymentMethod("wallid")}
                   style={{
-                    border: `1px solid ${active ? "#1240A0" : "#E8EDF5"}`,
-                    borderRadius: 6, overflow: "hidden", cursor: "pointer",
-                    background: active ? "#EEF4FF" : THEME.cardBg,
+                    border: `2px solid ${active ? "#1240A0" : "#D8E4FF"}`,
+                    borderRadius: 10, overflow: "hidden", cursor: "pointer",
+                    background: active ? "#EEF4FF" : "#F4F7FF",
+                    transition: "border-color 0.15s",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
-                    <input type="radio" checked={active} onChange={() => setPaymentMethod("wallid")}
-                      style={{ accentColor: THEME.cta, width: 16, height: 16, flexShrink: 0 }} />
+                  {/* Header row */}
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "16px 16px 0" }}>
+                    <input
+                      type="radio" checked={active} onChange={() => setPaymentMethod("wallid")}
+                      style={{ accentColor: "#1240A0", width: 18, height: 18, flexShrink: 0, marginTop: 2, cursor: "pointer" }}
+                    />
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: "15px", fontWeight: 700, color: THEME.text }}>Pay by Bank</span>
+                        <span style={{ fontSize: "16px", fontWeight: 800, color: "#0F172A" }}>Pay by Bank</span>
                         <span style={{
-                          fontSize: "11px", fontWeight: 700, letterSpacing: "0.06em",
+                          fontSize: "10px", fontWeight: 800, letterSpacing: "0.07em",
                           background: "#059669", color: "#fff",
-                          padding: "2px 8px", borderRadius: 100,
-                        }}>RECOMMENDED · INSTANT</span>
+                          padding: "3px 9px", borderRadius: 100,
+                        }}>RECOMMENDED · FASTEST</span>
                       </div>
-                      <p style={{ fontSize: "13px", fontWeight: 600, color: THEME.textSub, margin: "4px 0 0" }}>
-                        Approve directly in your banking app — no card details needed.
+                      <p style={{ fontSize: "13px", fontWeight: 700, color: "#1E293B", margin: "6px 0 0", lineHeight: 1.4 }}>
+                        Tap your bank, approve in your banking app — done in seconds.
                       </p>
                     </div>
                   </div>
-                  {active && (
-                    <div style={{ borderTop: "1px solid #F1F5F9", padding: "12px 16px" }}>
-                      <p style={{ fontSize: "12px", color: THEME.textMuted, margin: 0 }}>
-                        🏦 FCA-regulated open banking · Secure redirect · No card details stored
-                      </p>
-                      <div style={{ marginTop: 10, display: "flex", gap: 8, flexWrap: "wrap" }}>
-                        {["Choose your bank", "Approve in your app", "Instant confirmation"].map((step, i) => (
-                          <div key={step} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                            <span style={{
-                              width: 18, height: 18, borderRadius: "50%",
-                              background: THEME.cta, color: "#fff",
-                              display: "flex", alignItems: "center", justifyContent: "center",
-                              fontSize: "10px", fontWeight: 800, flexShrink: 0,
-                            }}>{i + 1}</span>
-                            <span style={{ fontSize: "12px", color: THEME.textSub }}>{step}</span>
-                          </div>
-                        ))}
-                      </div>
+
+                  {/* Body */}
+                  <div style={{ padding: "14px 16px 16px 46px" }}>
+                    {/* Trust line */}
+                    <p style={{ fontSize: "12px", color: "#64748B", margin: "0 0 12px", lineHeight: 1.5 }}>
+                      🏦 FCA-authorised open banking · Read-only · No card details stored
+                    </p>
+
+                    {/* Bank logos */}
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
+                      {banks.map(([bg, fg, label]) => (
+                        <div key={label} style={{
+                          width: 40, height: 40, borderRadius: 8,
+                          background: bg, color: fg,
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          fontSize: label.length > 2 ? "7px" : "14px",
+                          fontWeight: 900, flexShrink: 0,
+                          boxShadow: "0 1px 4px rgba(0,0,0,0.12)",
+                        }}>{label}</div>
+                      ))}
+                      <span style={{ fontSize: "13px", fontWeight: 600, color: "#64748B", marginLeft: 2 }}>+more</span>
                     </div>
-                  )}
+
+                    {/* How it works */}
+                    <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.1em", color: "#64748B", margin: "0 0 10px", textTransform: "uppercase" }}>
+                      How it works
+                    </p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      {["Choose your bank", "Approve in your banking app", "Order confirmed instantly"].map((step, i) => (
+                        <div key={step} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                          <span style={{
+                            width: 24, height: 24, borderRadius: "50%",
+                            background: "#1240A0", color: "#fff",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            fontSize: "11px", fontWeight: 800, flexShrink: 0,
+                          }}>{i + 1}</span>
+                          <span style={{ fontSize: "13px", color: "#334155", fontWeight: 500 }}>{step}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               );
             })()}
