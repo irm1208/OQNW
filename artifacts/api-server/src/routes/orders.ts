@@ -215,6 +215,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     for (const item of itemsWithSlug) {
       const catalogEntry = catalogBySlug.get(item.productSlug!);
       if (!catalogEntry) {
+        req.log.warn({ slug: item.productSlug, productName: item.productName }, "Order rejected: unrecognised product slug");
         res.status(400).json({ error: "Unrecognised product — please refresh your cart and try again" });
         return;
       }

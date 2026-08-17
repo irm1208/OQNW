@@ -83,13 +83,11 @@ const seedData = [
 
 export async function seedProductsCatalog() {
   try {
-    const existing = await db.select({ id: productsCatalogTable.id }).from(productsCatalogTable).limit(1);
-    if (existing.length > 0) {
-      return { seeded: false, reason: "already has data" };
-    }
+    let seeded = 0;
+    let updated = 0;
 
     for (const product of seedData) {
-      await db.insert(productsCatalogTable).values({
+      const values = {
         slug: product.slug,
         name: product.name,
         category: product.category,
@@ -110,10 +108,21 @@ export async function seedProductsCatalog() {
         isPublished: true,
         isFeatured: false,
         sortOrder: product.id,
-      }).onConflictDoNothing();
+      };
+      const [row] = await db.insert(productsCatalogTable).values(values)
+        .onConflictDoUpdate({
+          target: productsCatalogTable.slug,
+          set: { priceGbp: values.priceGbp, name: values.name, category: values.category },
+        })
+        .returning({ id: productsCatalogTable.id });
+      if (row) {
+        seeded++;
+      } else {
+        updated++;
+      }
     }
 
-    return { seeded: true, count: seedData.length };
+    return { seeded: true, count: seeded, updated };
   } catch (err) {
     console.error("Failed to seed products catalog:", err);
     return { seeded: false, reason: String(err) };
