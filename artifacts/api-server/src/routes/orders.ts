@@ -16,7 +16,6 @@ import {
 import { eq, sql, inArray, and, gte, count } from "drizzle-orm";
 import {
   sendOrderConfirmation,
-  sendBankTransferInstructions,
   sendBitcoinInstructions,
   sendLowStockAlert,
   sendReferralReward,
@@ -113,7 +112,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
   };
   const cryptoCurrencyStr = typeof cryptoCurrency === "string" ? cryptoCurrency.toUpperCase() : "BTC";
 
-  const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "bank_transfer";
+  const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "fena";
 
   // Basic validation
   const d = delivery as DeliveryDetails;
@@ -519,7 +518,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingCostGbp: String(shippingCostGbp.toFixed(2)),
         totalGbp: String(totalGbp.toFixed(2)),
         shippingMethod,
-        status: ["bank_transfer", "bitcoin", "fena"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
+        status: ["bitcoin", "fena"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
         notes: [
           `Payment method: ${paymentMethodStr}`,
           bundleDiscountGbp > 0 ? `Bundle & Save: ${bundleFreeLabel} (-£${bundleDiscountGbp.toFixed(2)})` : null,
@@ -900,18 +899,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     }
 
     // ── Payment-specific emails (non-blocking) ─────────────────────────────
-    if (paymentMethodStr === "bank_transfer") {
-      sendBankTransferInstructions({
-        orderNumber,
-        customerName,
-        customerEmail: d.email.toLowerCase(),
-        totalGbp,
-        items: emailItems,
-        subtotalGbp,
-        shippingCostGbp,
-        shippingMethod,
-      }).catch(() => {});
-    } else if (paymentMethodStr === "bitcoin") {
+    if (paymentMethodStr === "bitcoin") {
       const FALLBACK_BTC_ADDRESS = process.env.BITCOIN_ADDRESS ?? "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
       sendBitcoinInstructions({
         orderNumber,

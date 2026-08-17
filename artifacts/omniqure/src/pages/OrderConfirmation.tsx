@@ -1,16 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { trackPurchase } from "@/lib/pixels";
 import { Link } from "wouter";
-import { QRCodeSVG } from "qrcode.react";
-import { CheckCircle2, Package, Truck, FlaskConical, ArrowRight, Download, Search, Clock, Smartphone, Monitor } from "lucide-react";
+import { CheckCircle2, Package, Truck, FlaskConical, ArrowRight, Download, Search, Clock } from "lucide-react";
 
 // Keep in sync with CheckoutPage.tsx
-const BANK_DETAILS = {
-  accountName: "OmniQure Research Ltd",
-  sortCode: "20-00-00",
-  accountNumber: "12345678",
-  bank: "Barclays Bank",
-};
 const CRYPTO_OPTIONS = [
   { id: "BTC",  name: "Bitcoin",  symbol: "₿", network: "Bitcoin",       color: "#F59E0B", bg: "#FFFBEB", border: "#FDE68A", text: "#92400E" },
   { id: "ETH",  name: "Ethereum", symbol: "Ξ", network: "ERC-20 / ETH", color: "#6366F1", bg: "#EEF2FF", border: "#C7D2FE", text: "#3730A3" },
@@ -25,16 +18,12 @@ export default function OrderConfirmation() {
   const name           = params.get("name")           ?? "Researcher";
   const total          = params.get("total")          ?? "0.00";
   const ship           = params.get("ship")           ?? "Standard";
-  const payment        = params.get("payment")        ?? "bank_transfer";
+  const payment        = params.get("payment")        ?? "bitcoin";
   const cryptoCurrId   = params.get("cryptoCurrency") ?? "BTC";
   const cryptoAddress  = params.get("cryptoAddress")  ?? null;
   const btcAmount      = params.get("btcAmount")      ?? null;
   const btcUrl         = params.get("btcUrl")         ?? null;
   const coin = CRYPTO_OPTIONS.find(c => c.id === cryptoCurrId) ?? CRYPTO_OPTIONS[0];
-
-  const continuePaymentParams = new URLSearchParams({ order, name, total });
-  const continuePaymentUrl = `${window.location.origin}${import.meta.env.BASE_URL ?? "/"}continue-payment?${continuePaymentParams.toString()}`.replace(/([^:])\/\//, "$1/");
-  const [showOnDevice, setShowOnDevice] = useState(false);
 
   const today = new Date();
   const deliveryDays = ship === "Next Day" ? 1 : ship === "Express" ? 2 : 5;
@@ -79,81 +68,12 @@ export default function OrderConfirmation() {
             <CheckCircle2 size={40} color="#fff" strokeWidth={2.5} />
           </div>
           <h1 style={{ fontSize: "28px", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: "8px" }}>
-            {payment === "bank_transfer" ? "Order placed — payment awaited" : `Order placed — awaiting ${coin.name}`}
+            {`Order placed — awaiting ${coin.name}`}
           </h1>
           <p style={{ fontSize: "15px", color: "#64748B", lineHeight: 1.6 }}>
-            {payment === "bank_transfer"
-              ? <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order is reserved — please send your bank transfer to secure it.</>
-              : <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order is reserved — please send the {coin.name} equivalent to the address below.</>
-            }
+            <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order is reserved — please send the {coin.name} equivalent to the address below.</>
           </p>
         </div>
-
-        {/* Bank Transfer action panel */}
-        {payment === "bank_transfer" && (
-          <div style={{ borderRadius: "16px", border: "1.5px solid #BFDBFE", backgroundColor: "#EFF6FF", padding: "22px", marginBottom: "20px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "14px" }}>
-              <Clock size={18} color="#1E40AF" />
-              <p style={{ fontSize: "14px", fontWeight: 800, color: "#1E40AF", margin: 0 }}>
-                Send your bank transfer now
-              </p>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "7px", marginBottom: "12px" }}>
-              {[
-                { label: "Account Name",   value: BANK_DETAILS.accountName },
-                { label: "Sort Code",       value: BANK_DETAILS.sortCode },
-                { label: "Account Number",  value: BANK_DETAILS.accountNumber },
-                { label: "Bank",            value: BANK_DETAILS.bank },
-                { label: "Reference",       value: order },
-              ].map(row => (
-                <div key={row.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", borderRadius: "8px", backgroundColor: "#fff", border: "1px solid #DBEAFE" }}>
-                  <span style={{ fontSize: "12px", color: "#64748B", fontWeight: 600 }}>{row.label}</span>
-                  <span style={{ fontSize: "13px", fontWeight: 700, color: row.label === "Reference" ? "#059669" : "#1240A0" }}>{row.value}</span>
-                </div>
-              ))}
-            </div>
-            <p style={{ fontSize: "11.5px", color: "#475569", lineHeight: 1.6, margin: 0 }}>
-              Use your order number as the payment reference. Faster Payments usually clears same day. We'll email you once payment is confirmed and your order is dispatched.
-            </p>
-          </div>
-        )}
-
-        {/* Pay By Bank — scan to continue on phone */}
-        {payment === "bank_transfer" && (
-          <div style={{ borderRadius: "16px", border: "1.5px solid #E8EDF5", backgroundColor: "#fff", padding: "22px", marginBottom: "20px", boxShadow: "0 4px 20px rgba(15,23,42,0.05)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
-              <Smartphone size={18} color="#1240A0" />
-              <p style={{ fontSize: "13px", fontWeight: 800, color: "#0F172A", margin: 0, textTransform: "uppercase", letterSpacing: "0.04em" }}>
-                Scan to continue on your phone
-              </p>
-            </div>
-            {!showOnDevice ? (
-              <>
-                <div style={{ display: "flex", justifyContent: "center", padding: "16px", backgroundColor: "#F8FAFC", borderRadius: "12px", border: "1px solid #E2E8F0", marginBottom: "12px" }}>
-                  <QRCodeSVG value={continuePaymentUrl} size={180} bgColor="#F8FAFC" fgColor="#0F172A" />
-                </div>
-                <p style={{ fontSize: "12px", color: "#64748B", textAlign: "center", marginBottom: "14px" }}>
-                  Scan the QR code to open your payment details on your phone — handy if your banking app lives there.
-                </p>
-                <button
-                  onClick={() => setShowOnDevice(true)}
-                  style={{
-                    width: "100%", height: "42px", borderRadius: "10px",
-                    border: "1.5px solid #1240A0", backgroundColor: "#fff", color: "#1240A0",
-                    fontSize: "13px", fontWeight: 700, cursor: "pointer",
-                    display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-                  }}
-                >
-                  <Monitor size={15} /> Continue on this device
-                </button>
-              </>
-            ) : (
-              <p style={{ fontSize: "12.5px", color: "#475569", lineHeight: 1.6, margin: 0 }}>
-                No problem — the bank details above are all you need. Send the transfer from this device whenever you're ready.
-              </p>
-            )}
-          </div>
-        )}
 
         {/* Cryptocurrency action panel */}
         {payment === "bitcoin" && (
@@ -290,12 +210,7 @@ export default function OrderConfirmation() {
           <div style={{ padding: "18px 24px", backgroundColor: "#F8FAFF", borderTop: "1px solid #EEF4FF" }}>
             <p style={{ fontSize: "12px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "12px" }}>What happens next</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {(payment === "bank_transfer" ? [
-                "Send your bank transfer using the reference and account details above.",
-                "We'll email confirmation as soon as your payment clears (usually same day).",
-                "Our lab team will then prepare your secure, discreet packaging for dispatch.",
-                "You'll receive a dispatch notification with tracking information.",
-              ] : payment === "bitcoin" ? [
+              {(payment === "bitcoin" ? [
                 `Send the ${coin.name} equivalent to the address above — include your order number in the memo/payment ID.`,
                 `Your ${coin.network} transaction will be confirmed on the network.`,
                 "We'll email you once confirmed and your order is being prepared for dispatch.",
