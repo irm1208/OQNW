@@ -1120,6 +1120,15 @@ export default function CartPage() {
             </div>
           </div>
 
+          <div style={{
+            marginTop: 14, padding: "10px 14px", borderRadius: "10px",
+            backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0",
+            fontSize: "11.5px", color: "#64748B", textAlign: "center", lineHeight: 1.5,
+          }}>
+            <strong style={{ color: "#0F172A" }}>Payments accepted in GBP &amp; EUR only</strong>
+            <br />via Pay by Bank · Prices in other currencies are for reference only
+          </div>
+
           <Link
             href="/all-peptides"
             className="w-full rounded-xl font-semibold flex items-center justify-center gap-2 transition-opacity hover:opacity-80"

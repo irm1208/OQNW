@@ -521,6 +521,15 @@ export default function Header() {
                       ))}
                     </div>
                   ))}
+                  <div style={{
+                    margin: "6px 4px 2px", padding: "8px 10px", borderRadius: "8px",
+                    backgroundColor: "#FFF7ED", border: "1px solid #FED7AA",
+                    fontSize: "11px", color: "#92400E", lineHeight: 1.45, textAlign: "center",
+                  }}>
+                    Prices shown for reference only.<br />
+                    <strong>Payments accepted in GBP &amp; EUR only</strong><br />
+                    via Pay by Bank.
+                  </div>
                 </div>
               )}
             </div>
