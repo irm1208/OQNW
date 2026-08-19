@@ -307,6 +307,14 @@ export default function CartPage() {
   const freebieLabel = bundleFreeItemsCount === 2 ? "2 peptides free" : bundleFreeItemsCount === 1 ? "1 peptide free" : "free BAC water";
   const { formatPrice, currency, rates } = useCurrency();
   const { customer } = useCustomerAuth();
+  // Live product prices from the API — used at submission to override any stale
+  // prices that may be stored in localStorage from a previous session.
+  const { products: liveProducts } = useProducts();
+  const livePriceBySlug = Object.fromEntries(
+    liveProducts
+      .filter((p) => (p as { slug?: string }).slug && p.price != null)
+      .map((p) => [(p as { slug?: string }).slug!, p.price!])
+  );
 
   const checkoutFired = useRef(false);
 
@@ -579,14 +587,23 @@ export default function CartPage() {
           },
           shippingMethod: selectedShipping.label,
           shippingCostGbp: shippingCost,
-          items: items.map(({ product, quantity }) => ({
-            productId: parseInt(String(product.id)) || 0,
-            productSlug: (product as { slug?: string }).slug ?? "",
-            productName: product.name,
-            productCategory: product.category ?? "",
-            quantity,
-            priceGbp: product.price ?? 0,
-          })),
+          items: items.map(({ product, quantity }) => {
+            const slug = (product as { slug?: string }).slug ?? "";
+            // Prefer the live API price over the stored cart price — this prevents
+            // stale localStorage prices (e.g. from before a price-sheet update) from
+            // causing a server-side price-mismatch rejection.
+            const priceGbp = (slug && livePriceBySlug[slug] != null)
+              ? livePriceBySlug[slug]
+              : (product.price ?? 0);
+            return {
+              productId: parseInt(String(product.id)) || 0,
+              productSlug: slug,
+              productName: product.name,
+              productCategory: product.category ?? "",
+              quantity,
+              priceGbp,
+            };
+          }),
           discountCode: appliedDiscount?.code ?? null,
           loyaltyPointsRedeemed: loyaltyPointsToRedeem > 0 ? loyaltyPointsToRedeem : undefined,
           redeemFreePeptide: redeemFreePeptide && referralCreditGbp > 0 ? true : undefined,
