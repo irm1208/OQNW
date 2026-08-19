@@ -29,6 +29,8 @@ export const ordersTable = pgTable("orders", {
   shippingCostGbp: numeric("shipping_cost_gbp", { precision: 10, scale: 2 }).notNull().default("0"),
   taxAmountGbp: numeric("tax_amount_gbp", { precision: 10, scale: 2 }).notNull().default("0"),
   totalGbp: numeric("total_gbp", { precision: 10, scale: 2 }).notNull().default("0"),
+  paymentCurrency: text("payment_currency"),
+  paymentAmountMinor: integer("payment_amount_minor"),
   refundedAmountGbp: numeric("refunded_amount_gbp", { precision: 10, scale: 2 }).notNull().default("0"),
   refundStatus: text("refund_status").notNull().default("none"),
   shippingMethod: text("shipping_method"),

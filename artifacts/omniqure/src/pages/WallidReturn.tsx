@@ -19,7 +19,8 @@ import { useCart } from "@/context/CartContext";
  *   ?status=success     Wallid redirected to success_url
  *   ?status=failed      Wallid redirected to fail_url
  *   ?name=FirstName     customer first name
- *   ?total=99.00        order total in GBP
+ * Payment amount and currency are always read back from the server's tracked
+ * order record, rather than trusting URL parameters.
  */
 
 type VerifyState = "verifying" | "paid" | "pending_webhook" | "failed" | "error";
@@ -32,9 +33,8 @@ export default function WallidReturn() {
   const urlStatus   = params.get("status");   // "success" | "failed"
   const orderNumber = params.get("order") ?? "";
   const firstName   = params.get("name") ?? "";
-  const total       = params.get("total") ?? "";
-
   const { clearCart } = useCart();
+  const [payment, setPayment] = useState<{ currency: string; amountMinor: number } | null>(null);
 
   // failure path: no server call needed — Wallid redirected to failUrl
   const initialState: VerifyState = urlStatus === "failed" ? "failed" : "verifying";
@@ -55,7 +55,14 @@ export default function WallidReturn() {
       try {
         const res = await fetch(`/api/orders/track?number=${encodeURIComponent(orderNumber)}`);
         if (!res.ok) return false;
-        const data = (await res.json()) as { status?: string };
+        const data = (await res.json()) as {
+          status?: string;
+          paymentCurrency?: string | null;
+          paymentAmountMinor?: number | null;
+        };
+        if (data.paymentCurrency && typeof data.paymentAmountMinor === "number") {
+          setPayment({ currency: data.paymentCurrency, amountMinor: data.paymentAmountMinor });
+        }
         if (data.status === "paid") {
           if (!cancelledRef.current) {
             clearCart();
@@ -147,7 +154,11 @@ export default function WallidReturn() {
             }}>
               <p style={{ fontSize: "12px", color: "#059669", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", margin: 0 }}>Order Reference</p>
               <p style={{ fontSize: "18px", fontWeight: 900, color: "#0F172A", margin: "4px 0 0", letterSpacing: "0.04em" }}>{orderNumber}</p>
-              {total && <p style={{ fontSize: "13px", color: "#64748B", margin: "4px 0 0" }}>£{parseFloat(total).toFixed(2)} GBP</p>}
+              {payment && (
+                <p style={{ fontSize: "13px", color: "#64748B", margin: "4px 0 0" }}>
+                  {formatPaymentAmount(payment.amountMinor, payment.currency)}
+                </p>
+              )}
             </div>
           )}
 
@@ -324,3 +335,15 @@ const secondaryBtn: React.CSSProperties = {
   borderRadius: 10, padding: "13px 20px",
   fontSize: "14px", fontWeight: 700,
 };
+
+function formatPaymentAmount(amountMinor: number, currency: string) {
+  try {
+    return new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency,
+      minimumFractionDigits: 2,
+    }).format(amountMinor / 100) + ` ${currency}`;
+  } catch {
+    return `${(amountMinor / 100).toFixed(2)} ${currency}`;
+  }
+}

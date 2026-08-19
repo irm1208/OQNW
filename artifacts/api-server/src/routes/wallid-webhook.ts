@@ -122,6 +122,8 @@ router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<v
             status:   ordersTable.status,
             notes:    ordersTable.notes,
             totalGbp: ordersTable.totalGbp,
+            paymentCurrency: ordersTable.paymentCurrency,
+            paymentAmountMinor: ordersTable.paymentAmountMinor,
             orderNumber: ordersTable.orderNumber,
             customerName: ordersTable.customerName,
             customerEmail: ordersTable.customerEmail,
@@ -155,14 +157,18 @@ router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<v
           return;
         }
 
-        // Amount and currency must match what we charged
-        const expectedAmountMinor = Math.round(parseFloat(String(order.totalGbp)) * 100);
-        if (event.amount !== expectedAmountMinor || event.currency !== "GBP") {
+        // Amount and currency must match the server-owned quote used to create
+        // the Wallid session. Legacy GBP orders predate these columns, so keep
+        // their original GBP calculation as a narrow compatibility fallback.
+        const expectedCurrency = order.paymentCurrency ?? "GBP";
+        const expectedAmountMinor = order.paymentAmountMinor ??
+          Math.round(parseFloat(String(order.totalGbp)) * 100);
+        if (event.amount !== expectedAmountMinor || event.currency !== expectedCurrency) {
           logger.error(
             {
               orderNumber, event_id,
               expectedAmountMinor, actualAmount: event.amount,
-              expectedCurrency: "GBP", actualCurrency: event.currency,
+              expectedCurrency, actualCurrency: event.currency,
             },
             "Wallid webhook — amount or currency mismatch, rejecting event",
           );

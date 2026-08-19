@@ -24,6 +24,7 @@ import {
 } from "../lib/email";
 import { createBtcPayInvoice, isBtcPayConfigured } from "../lib/btcpay";
 import { createWallidPayment, isWallidConfigured } from "../lib/wallid";
+import { createWallidPaymentQuote, type WallidPaymentCurrency } from "../lib/payment-currency";
 import { assessFraud } from "../lib/fraudScorer";
 import { getClientIp, lookupIpData } from "../lib/geoip";
 import { dispatchWebhook } from "../lib/webhookDispatcher";
@@ -98,6 +99,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     discountCode,
     loyaltyPointsRedeemed,
     paymentMethod,
+    paymentCurrency,
     cryptoCurrency,
     redeemFreePeptide,
   } = req.body as {
@@ -108,12 +110,14 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     discountCode?: unknown;
     loyaltyPointsRedeemed?: unknown;
     paymentMethod?: unknown;
+    paymentCurrency?: unknown;
     cryptoCurrency?: unknown;
     redeemFreePeptide?: unknown;
   };
   const cryptoCurrencyStr = typeof cryptoCurrency === "string" ? cryptoCurrency.toUpperCase() : "BTC";
 
   const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "bank_transfer";
+  const paymentCurrencyStr = typeof paymentCurrency === "string" ? paymentCurrency.toUpperCase() : "GBP";
 
   // Basic validation
   const d = delivery as DeliveryDetails;
@@ -144,6 +148,15 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
 
   if (!Array.isArray(items) || items.length === 0) {
     res.status(400).json({ error: "Order must contain at least one item" });
+    return;
+  }
+
+  if (
+    paymentMethodStr === "wallid" &&
+    paymentCurrencyStr !== "GBP" &&
+    paymentCurrencyStr !== "EUR"
+  ) {
+    res.status(400).json({ error: "Pay by Bank supports GBP or EUR payments only" });
     return;
   }
 
@@ -378,16 +391,27 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     // customer-counter mutations are ever committed when no session is created.
     let wallidPaymentUrl: string | null = null;
     let wallidApiPaymentId: string | null = null;
+    let wallidPaymentCurrency: WallidPaymentCurrency | null = null;
+    let wallidPaymentAmountMinor: number | null = null;
 
     if (paymentMethodStr === "wallid") {
       // Use only the configured canonical origin — never the untrusted request
       // Origin header, which could be an attacker-controlled value.
       const origin = process.env.SITE_URL ?? "https://omniqure.com";
 
+      const selectedWallidCurrency = paymentCurrencyStr as WallidPaymentCurrency;
+      const quote = await createWallidPaymentQuote(totalGbp, selectedWallidCurrency);
+      if (!quote) {
+        res.status(503).json({
+          error: "EUR payment quotes are temporarily unavailable. Please retry or choose GBP.",
+        });
+        return;
+      }
+
       const wallidItems = (cartItems as CartItem[]).map(item => ({
         name: item.productName,
         category: item.productCategory || "Peptides",
-        price_minor: Math.round(item.priceGbp * 100),
+        price_minor: Math.round(item.priceGbp * quote.rate * 100),
         image_url: `${origin}/products/${item.productId}.jpg`,
         product_url: item.productSlug
           ? `${origin}/product/${item.productSlug}`
@@ -398,14 +422,16 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       try {
         payment = await createWallidPayment({
           orderNumber,
-          totalGbp,
+          amountMinor: quote.amountMinor,
+          currency: quote.currency,
           customerEmail: d.email.toLowerCase(),
           successUrl:
             `${origin}/wallid-return` +
             `?order=${encodeURIComponent(orderNumber)}` +
             `&status=success` +
             `&name=${encodeURIComponent(d.firstName)}` +
-            `&total=${totalGbp.toFixed(2)}`,
+            `&total=${(quote.amountMinor / 100).toFixed(2)}` +
+            `&currency=${quote.currency}`,
           failUrl:
             `${origin}/wallid-return` +
             `?order=${encodeURIComponent(orderNumber)}` +
@@ -426,6 +452,8 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
 
       wallidPaymentUrl = payment.paymentUrl;
       wallidApiPaymentId = payment.apiPaymentId;
+      wallidPaymentCurrency = quote.currency;
+      wallidPaymentAmountMinor = quote.amountMinor;
     }
 
     // If a valid customer session cookie is present, use that customer ID directly.
@@ -573,6 +601,8 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         bundleDiscountGbp: String(bundleDiscountGbp.toFixed(2)),
         shippingCostGbp: String(shippingCostGbp.toFixed(2)),
         totalGbp: String(totalGbp.toFixed(2)),
+        paymentCurrency: wallidPaymentCurrency,
+        paymentAmountMinor: wallidPaymentAmountMinor,
         shippingMethod,
         status: ["bank_transfer", "bitcoin", "wallid"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
         notes: [
@@ -979,6 +1009,8 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       orderNumber,
       customerName,
       totalGbp,
+      ...(wallidPaymentCurrency && { paymentCurrency: wallidPaymentCurrency }),
+      ...(wallidPaymentAmountMinor !== null && { paymentAmountMinor: wallidPaymentAmountMinor }),
       shippingMethod,
       paymentMethod: paymentMethodStr,
       ...(paymentMethodStr === "bitcoin" && { cryptoCurrency: cryptoCurrencyStr }),
@@ -1008,6 +1040,8 @@ router.get("/orders/track", async (req: Request, res: Response): Promise<void> =
         orderNumber: ordersTable.orderNumber,
         status: ordersTable.status,
         shippingMethod: ordersTable.shippingMethod,
+        paymentCurrency: ordersTable.paymentCurrency,
+        paymentAmountMinor: ordersTable.paymentAmountMinor,
         createdAt: ordersTable.createdAt,
       })
       .from(ordersTable)
@@ -1031,6 +1065,8 @@ router.get("/orders/track", async (req: Request, res: Response): Promise<void> =
       orderNumber: order.orderNumber,
       status: order.status,
       shippingMethod: order.shippingMethod,
+      paymentCurrency: order.paymentCurrency,
+      paymentAmountMinor: order.paymentAmountMinor,
       createdAt: order.createdAt.toISOString(),
       itemCount: items.reduce((s, i) => s + i.quantity, 0),
       items,

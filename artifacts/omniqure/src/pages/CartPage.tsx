@@ -168,7 +168,7 @@ const divider: React.CSSProperties = {
 function CartUpsellCard({ product }: { product: Product }) {
   const [added, setAdded] = useState(false);
   const { addToCart, items } = useCart();
-  const { formatPrice } = useCurrency();
+  const { formatPrice, currency, rates } = useCurrency();
   const alreadyInCart = items.some((i) => i.product.id === product.id);
 
   const handleAdd = (e: React.MouseEvent) => {
@@ -305,7 +305,7 @@ export default function CartPage() {
   } = useCart();
   const hasFreebie = bundleFreeBacWater || bundleFreeItemsCount > 0;
   const freebieLabel = bundleFreeItemsCount === 2 ? "2 peptides free" : bundleFreeItemsCount === 1 ? "1 peptide free" : "free BAC water";
-  const { formatPrice } = useCurrency();
+  const { formatPrice, currency, rates } = useCurrency();
   const { customer } = useCustomerAuth();
 
   const checkoutFired = useRef(false);
@@ -327,7 +327,15 @@ export default function CartPage() {
 
   // Payment
   const [paymentMethod, setPaymentMethod] = useState<"bitcoin" | "wallid">("wallid");
+  const [paymentCurrency, setPaymentCurrency] = useState<"GBP" | "EUR">("GBP");
   const [cryptoCurrency, setCryptoCurrency] = useState<CryptoCurrency>("BTC");
+  const paymentCurrencyChosen = useRef(false);
+
+  useEffect(() => {
+    if (!paymentCurrencyChosen.current && currency.code === "EUR") {
+      setPaymentCurrency("EUR");
+    }
+  }, [currency.code]);
 
   // Loyalty
   const [loyaltyBalance, setLoyaltyBalance] = useState<{ balance: number; gbpValue: number } | null>(null);
@@ -483,6 +491,9 @@ export default function CartPage() {
   const loyaltyDiscountGbp = loyaltyPointsToRedeem / 100;
   const freePeptideDeductGbp = redeemFreePeptide && referralCreditGbp > 0 ? Math.min(referralCreditGbp, cartGBP) : 0;
   const totalGBP = Math.max(0, cartGBP + shippingCost - bundleDiscountAmount - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp);
+  const displayedPaymentTotal = paymentCurrency === "EUR"
+    ? totalGBP * (rates.EUR ?? 1.17)
+    : totalGBP;
 
   const setD = (f: keyof DeliveryForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setDelivery(d => ({ ...d, [f]: e.target.value }));
@@ -580,6 +591,7 @@ export default function CartPage() {
           loyaltyPointsRedeemed: loyaltyPointsToRedeem > 0 ? loyaltyPointsToRedeem : undefined,
           redeemFreePeptide: redeemFreePeptide && referralCreditGbp > 0 ? true : undefined,
           paymentMethod,
+          paymentCurrency: paymentMethod === "wallid" ? paymentCurrency : undefined,
           cryptoCurrency: paymentMethod === "bitcoin" ? cryptoCurrency : undefined,
         }),
       });
@@ -601,6 +613,7 @@ export default function CartPage() {
         orderNumber: string; customerName: string; totalGbp: number; shippingMethod: string;
         btcAddress?: string; btcAmount?: string; btcPaymentUrl?: string;
         cryptoCurrency?: string; wallidPaymentUrl?: string;
+        paymentCurrency?: "GBP" | "EUR"; paymentAmountMinor?: number;
       };
 
       // Wallid: redirect to hosted payment page.
@@ -910,6 +923,48 @@ export default function CartPage() {
 
                   {/* Body */}
                   <div style={{ padding: "14px 16px 16px 46px" }}>
+                    {/* Payment currency */}
+                    <div style={{ marginBottom: 14 }}>
+                      <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.1em", color: "#64748B", margin: "0 0 8px", textTransform: "uppercase" }}>
+                        Pay in
+                      </p>
+                      <div role="radiogroup" aria-label="Pay by Bank currency" style={{ display: "flex", gap: 8 }}>
+                        {([
+                          { code: "GBP" as const, label: "£ GBP" },
+                          { code: "EUR" as const, label: "€ EUR" },
+                        ]).map(option => {
+                          const selected = paymentCurrency === option.code;
+                          return (
+                            <button
+                              key={option.code}
+                              type="button"
+                              role="radio"
+                              aria-checked={selected}
+                              onClick={event => {
+                                event.stopPropagation();
+                                paymentCurrencyChosen.current = true;
+                                setPaymentCurrency(option.code);
+                              }}
+                              style={{
+                                flex: 1, padding: "9px 10px", borderRadius: 7, cursor: "pointer",
+                                border: `1.5px solid ${selected ? "#1240A0" : "#D8E4FF"}`,
+                                background: selected ? "#1240A0" : "#fff",
+                                color: selected ? "#fff" : "#334155",
+                                fontSize: "13px", fontWeight: 800,
+                              }}
+                            >
+                              {option.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <p style={{ fontSize: "12px", color: "#475569", margin: "8px 0 0", lineHeight: 1.45 }}>
+                        You&apos;ll pay approximately <strong style={{ color: "#0F172A" }}>
+                          {paymentCurrency === "EUR" ? "€" : "£"}{displayedPaymentTotal.toFixed(2)} {paymentCurrency}
+                        </strong>. The final rate is confirmed securely when you continue to your bank.
+                      </p>
+                    </div>
+
                     {/* Trust line */}
                     <p style={{ fontSize: "12px", color: "#64748B", margin: "0 0 12px", lineHeight: 1.5 }}>
                       🏦 FCA-authorised open banking · Read-only · No card details stored

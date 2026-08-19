@@ -31,13 +31,15 @@ export interface WallidItem {
 /**
  * Create a Wallid hosted payment session.
  *
- * Amounts are converted from GBP float to minor units (pence) before sending.
+ * Callers provide the already-quoted amount in the selected currency's minor
+ * units (pence for GBP and cents for EUR).
  * Returns the hosted checkout URL and the api_payment_id to store for
  * reconciliation, or null if creation fails.
  */
 export async function createWallidPayment(opts: {
   orderNumber:    string;
-  totalGbp:       number;
+  amountMinor:    number;
+  currency:       "GBP" | "EUR";
   customerEmail:  string;
   customerId?:    string;
   successUrl:     string;
@@ -49,13 +51,10 @@ export async function createWallidPayment(opts: {
     return null;
   }
 
-  // Amounts must be integers in minor units (GBP pence)
-  const amountMinor = Math.round(opts.totalGbp * 100);
-
   const body = {
     order_id:       opts.orderNumber,
-    amount:         amountMinor,
-    currency:       "GBP",
+    amount:         opts.amountMinor,
+    currency:       opts.currency,
     success_url:    opts.successUrl,
     fail_url:       opts.failUrl,
     customer_email: opts.customerEmail,
