@@ -1,6 +1,46 @@
 import { db } from "@workspace/db";
 import { productsCatalogTable } from "@workspace/db";
 
+// Individual-vial prices supplied in the OmniUK price sheet (February 2026).
+// Products not listed in that sheet retain their catalog price.
+const PRICE_SHEET_OVERRIDES: Record<string, string> = {
+  "5-amino-1q-50mg": "18",
+  "ara-290-16mg": "15",
+  "bpc-157-tb-500-blend-10mg": "18",
+  "bpc-157-10mg": "8",
+  "cjc-1295-no-dac-ipamorelin-5mg": "20",
+  "cagrilintide-5mg": "25",
+  "cagrilintide-10mg": "35",
+  "dsip-10mg": "8",
+  "epithalon-10mg": "10",
+  "ghk-cu-100mg": "12",
+  "klow-blend-80mg": "35",
+  "kisspeptin-10-10mg": "12",
+  "kpv-10mg": "12",
+  "ll-37-5mg": "18",
+  "mots-c-10mg": "12",
+  "mots-c-20mg": "22",
+  "melanotan-2-10mg": "10",
+  "nad-plus-500mg": "25",
+  "oxytocin-10mg": "12",
+  "pe-22-28-10mg": "15",
+  "retatrutide-30mg": "40",
+  "retatrutide-40mg": "50",
+  "ss-31-10mg": "18",
+  "ss-31-30mg": "30",
+  "semax-10mg": "10",
+  "selank-10mg": "10",
+  "semax-selank-blend-20mg": "20",
+  "tb-500-5mg": "12",
+  "tb-500-10mg": "22",
+  "tesamorelin-20mg": "45",
+  "thymosin-alpha-1-10mg": "25",
+  "tirzepatide-30mg": "25",
+  "tirzepatide-45mg": "35",
+  "tirzepatide-60mg": "45",
+  "vip-10mg": "20",
+};
+
 const seedData = [
   { id: 1,  slug: "aod-9604-5mg",                         name: "AOD-9604 5mg",                          category: "Growth Peptides",       priceGbp: "55",  imageUrl: "/products/1.jpg",  purity: "99%+",  casNumber: "221231-10-3", formula: "C₄₅H₆₉N₉O₁₀", molecularWeight: "908.1 g/mol", alsoKnownAs: "AOD9604, hGH Fragment 176-191", storage: "Store lyophilized at -20°C. After reconstitution store at 4°C for up to 4 weeks.", appearance: "White lyophilized powder", solubility: "Soluble in sterile water or bacteriostatic water", halfLife: "Approximately 30 minutes", shortDescription: "A synthetic peptide analogue of the C-terminal fragment of human growth hormone (hGH), residues 176–191. Investigated for stimulating lipolysis and inhibiting lipogenesis.", description: "AOD-9604 is a synthetic peptide analogue of the C-terminal fragment of human growth hormone (hGH), specifically residues 176–191. It is investigated for its ability to stimulate lipolysis and inhibit lipogenesis without exhibiting the growth-promoting or insulin-desensitizing effects of full-length hGH." },
   { id: 2,  slug: "aod-9604-10mg",                        name: "AOD-9604 10mg",                         category: "Growth Peptides",       priceGbp: "95",  imageUrl: "/products/2.jpg",  purity: "99%+",  casNumber: "221231-10-3", formula: "C₄₅H₆₉N₉O₁₀", molecularWeight: "908.1 g/mol", alsoKnownAs: "AOD9604, hGH Fragment 176-191", storage: "Store lyophilized at -20°C. After reconstitution store at 4°C for up to 4 weeks.", appearance: "White lyophilized powder", solubility: "Soluble in sterile water or bacteriostatic water", halfLife: "Approximately 30 minutes", shortDescription: "10mg vial of AOD-9604 — a synthetic hGH fragment investigated for fat metabolism and lipolytic activity.", description: "AOD-9604 10mg is a synthetic peptide analogue of the C-terminal fragment of human growth hormone (hGH), residues 176–191. Investigated for stimulating lipolysis and inhibiting lipogenesis without the growth-promoting or insulin-desensitizing effects of full-length hGH." },
@@ -91,7 +131,7 @@ export async function seedProductsCatalog() {
         slug: product.slug,
         name: product.name,
         category: product.category,
-        priceGbp: product.priceGbp,
+        priceGbp: PRICE_SHEET_OVERRIDES[product.slug] ?? product.priceGbp,
         shortDescription: product.shortDescription ?? null,
         description: product.description ?? null,
         imageUrl: product.imageUrl ?? null,
