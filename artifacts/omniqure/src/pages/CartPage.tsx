@@ -28,18 +28,43 @@ interface RelatedApiItem {
 }
 
 const COUNTRIES = [
+  // Common / top destinations first
   "United Kingdom", "Ireland",
   "United States", "Canada",
   "Australia", "New Zealand",
+  // Europe — Western
   "Austria", "Belgium", "Denmark", "Finland", "France", "Germany",
   "Iceland", "Luxembourg", "Netherlands", "Norway", "Portugal", "Spain",
   "Sweden", "Switzerland",
-  "Bulgaria", "Croatia", "Cyprus", "Czech Republic", "Estonia", "Greece",
-  "Hungary", "Italy", "Latvia", "Lithuania", "Malta", "Poland", "Romania",
-  "Slovakia", "Slovenia",
-  "Hong Kong", "Japan", "Malaysia", "Singapore", "South Korea", "Taiwan", "Thailand",
-  "United Arab Emirates",
-];
+  // Europe — Eastern / Central / Mediterranean
+  "Albania", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Cyprus",
+  "Czech Republic", "Estonia", "Greece", "Hungary", "Kosovo",
+  "Latvia", "Lithuania", "Malta", "Moldova", "Montenegro",
+  "North Macedonia", "Poland", "Romania", "Serbia", "Slovakia", "Slovenia",
+  // Asia-Pacific
+  "Bangladesh", "Cambodia", "China", "Hong Kong", "India", "Indonesia",
+  "Japan", "Macau", "Malaysia", "Maldives", "Myanmar", "Nepal",
+  "Pakistan", "Philippines", "Singapore", "South Korea", "Sri Lanka",
+  "Taiwan", "Thailand", "Vietnam",
+  // Middle East
+  "Bahrain", "Israel", "Jordan", "Kuwait", "Lebanon", "Oman",
+  "Qatar", "Saudi Arabia", "Turkey", "United Arab Emirates",
+  // Americas
+  "Argentina", "Brazil", "Chile", "Colombia", "Costa Rica",
+  "Dominican Republic", "Ecuador", "El Salvador", "Guatemala",
+  "Honduras", "Jamaica", "Mexico", "Panama", "Peru",
+  "Trinidad and Tobago", "Uruguay",
+  // Africa
+  "Egypt", "Ghana", "Kenya", "Morocco", "Nigeria", "South Africa", "Tunisia",
+].sort((a, b) => {
+  // Keep UK and US at the top
+  const pinned = ["United Kingdom", "United States", "Canada", "Ireland", "Australia", "New Zealand"];
+  const ai = pinned.indexOf(a), bi = pinned.indexOf(b);
+  if (ai !== -1 && bi !== -1) return ai - bi;
+  if (ai !== -1) return -1;
+  if (bi !== -1) return 1;
+  return a.localeCompare(b);
+});
 
 const SHIPPING_OPTIONS = [
   {
@@ -403,8 +428,32 @@ export default function CartPage() {
     }
   }, [items]);
 
-  // Auto-fill city/county when a valid postcode is entered
-  const onPostcodeBlur = useCallback(async (pc: string) => {
+  // Countries that use a State/Province field instead of County
+  const STATE_PROVINCE_COUNTRIES = new Set([
+    "United States", "Canada", "Australia", "New Zealand",
+    "India", "Brazil", "Mexico", "Argentina", "Malaysia",
+  ]);
+  // Countries where postcode is not commonly required
+  const POSTCODE_OPTIONAL_COUNTRIES = new Set([
+    "Hong Kong", "Macau", "Maldives", "Qatar", "United Arab Emirates",
+    "Bahrain", "Oman", "Kuwait", "Saudi Arabia", "Lebanon",
+    "Jordan", "Ghana", "Nigeria", "Kenya", "South Africa",
+  ]);
+
+  const isUKPostcode = delivery.country === "United Kingdom";
+  const usesStateProvince = STATE_PROVINCE_COUNTRIES.has(delivery.country);
+  const postcodeOptional = POSTCODE_OPTIONAL_COUNTRIES.has(delivery.country);
+  const postcodeLabel = delivery.country === "United Kingdom"
+    ? "Postcode"
+    : delivery.country === "United States"
+      ? "ZIP Code"
+      : "Postal Code";
+  const stateLabel = delivery.country === "Canada" ? "Province" : "State";
+  const countyStateLabel = usesStateProvince ? stateLabel : "County / Region";
+
+  // Auto-fill city/county when a valid UK postcode is entered
+  const onPostcodeBlur = useCallback(async (pc: string, country: string) => {
+    if (country !== "United Kingdom") return;
     const q = pc.trim().toUpperCase().replace(/\s/g, "");
     if (q.length < 5) return;
     setPostcodeLoading(true);
@@ -513,7 +562,7 @@ export default function CartPage() {
     if (!delivery.lastName.trim()) e.lastName = "Required";
     if (!delivery.address1.trim()) e.address1 = "Required";
     if (!delivery.city.trim()) e.city = "Required";
-    if (!delivery.postcode.trim()) e.postcode = "Required";
+    if (!postcodeOptional && !delivery.postcode.trim()) e.postcode = "Required";
     if (!delivery.country.trim()) e.country = "Required";
     return e;
   }
@@ -813,7 +862,7 @@ export default function CartPage() {
               <label style={label}>Phone</label>
               <input
                 value={delivery.phone} onChange={setD("phone")} type="tel"
-                placeholder="+44 7700 900000" style={input}
+                placeholder="+1 555 000 0000" style={input}
                 onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
                 onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }}
               />
@@ -861,7 +910,7 @@ export default function CartPage() {
               onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }} />
           </div>
 
-          <div className="form-grid-3" style={{ marginBottom: 4 }}>
+          <div className="form-grid-2" style={{ marginBottom: 12 }}>
             <div>
               <label style={label}>City *</label>
               <input data-field="city" value={delivery.city} onChange={setD("city")} placeholder="City" style={inp("city")}
@@ -870,6 +919,17 @@ export default function CartPage() {
               {errors.city && <p style={errText}>{errors.city}</p>}
             </div>
             <div>
+              <label style={label}>{countyStateLabel} <span style={{ fontWeight: 400, textTransform: "none", letterSpacing: 0, fontSize: "10px" }}>(optional)</span></label>
+              <input value={delivery.county} onChange={setD("county")}
+                placeholder={usesStateProvince ? (delivery.country === "Canada" ? "Province" : "State") : "County / Region"}
+                style={input}
+                onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }} />
+            </div>
+          </div>
+
+          <div className="form-grid-2" style={{ marginBottom: 4 }}>
+            <div>
               <label style={label}>Country *</label>
               <select data-field="country" value={delivery.country} onChange={setD("country")}
                 style={{ ...inp("country"), height: 44, appearance: "none", cursor: "pointer" }}
@@ -877,14 +937,20 @@ export default function CartPage() {
                 onBlur={e => { e.currentTarget.style.borderColor = errors.country ? "#ef4444" : THEME.inputBorder; }}>
                 {COUNTRIES.map(c => <option key={c}>{c}</option>)}
               </select>
+              {errors.country && <p style={errText}>{errors.country}</p>}
             </div>
             <div>
-              <label style={label}>Postal Code *</label>
-              <input data-field="postcode" value={delivery.postcode} onChange={setD("postcode")} placeholder="Postal Code" style={inp("postcode")}
+              <label style={label}>
+                {postcodeLabel}{postcodeOptional
+                  ? <span style={{ fontWeight: 400, textTransform: "none", letterSpacing: 0, fontSize: "10px" }}> (optional)</span>
+                  : " *"}
+              </label>
+              <input data-field="postcode" value={delivery.postcode} onChange={setD("postcode")}
+                placeholder={postcodeLabel} style={inp("postcode")}
                 onFocus={e => { if (!errors.postcode) e.currentTarget.style.borderColor = "#1240A0"; }}
                 onBlur={e => {
                   e.currentTarget.style.borderColor = errors.postcode ? "#ef4444" : THEME.inputBorder;
-                  onPostcodeBlur(e.currentTarget.value);
+                  onPostcodeBlur(e.currentTarget.value, delivery.country);
                 }} />
               {postcodeLoading && <p style={{ fontSize: "12px", color: THEME.textMuted, marginTop: 4 }}>Looking up postcode…</p>}
               {errors.postcode && <p style={errText}>{errors.postcode}</p>}
