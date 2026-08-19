@@ -118,23 +118,24 @@ router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<v
         // ── Verify payment ID, amount, and currency before marking paid ────────
         const [order] = await db
           .select({
-            id:       ordersTable.id,
-            status:   ordersTable.status,
-            notes:    ordersTable.notes,
-            totalGbp: ordersTable.totalGbp,
+            id:                ordersTable.id,
+            status:            ordersTable.status,
+            notes:             ordersTable.notes,
+            totalGbp:          ordersTable.totalGbp,
             paymentCurrency: ordersTable.paymentCurrency,
             paymentAmountMinor: ordersTable.paymentAmountMinor,
-            orderNumber: ordersTable.orderNumber,
-            customerName: ordersTable.customerName,
-            customerEmail: ordersTable.customerEmail,
-            subtotalGbp: ordersTable.subtotalGbp,
-            shippingCostGbp: ordersTable.shippingCostGbp,
-            shippingMethod: ordersTable.shippingMethod,
-            address1: ordersTable.address1,
-            address2: ordersTable.address2,
-            city: ordersTable.city,
-            postcode: ordersTable.postcode,
-            country: ordersTable.country,
+            orderNumber:      ordersTable.orderNumber,
+            customerName:     ordersTable.customerName,
+            customerEmail:    ordersTable.customerEmail,
+            subtotalGbp:      ordersTable.subtotalGbp,
+            shippingCostGbp:  ordersTable.shippingCostGbp,
+            shippingMethod:   ordersTable.shippingMethod,
+            trackingNumber:   ordersTable.trackingNumber,
+            address1:         ordersTable.address1,
+            address2:         ordersTable.address2,
+            city:             ordersTable.city,
+            postcode:         ordersTable.postcode,
+            country:          ordersTable.country,
           })
           .from(ordersTable)
           .where(eq(ordersTable.orderNumber, orderNumber))
@@ -189,41 +190,46 @@ router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<v
 
         logger.info({ orderNumber, api_payment_id, event_id }, "Order marked paid via Wallid webhook");
 
-        // Payment is now server-verified; send the order confirmation without
-        // delaying or invalidating the successful webhook response if email fails.
-        const items = await db
-          .select({
-            productName: orderItemsTable.productName,
-            productCategory: orderItemsTable.productCategory,
-            quantity: orderItemsTable.quantity,
-            priceGbp: orderItemsTable.priceGbp,
-          })
-          .from(orderItemsTable)
-          .where(eq(orderItemsTable.orderId, order.id));
+        // Payment is now server-verified; email failures must not affect the
+        // successful webhook response or cause Wallid to retry the event.
+        try {
+          const items = await db
+            .select({
+              productName: orderItemsTable.productName,
+              productCategory: orderItemsTable.productCategory,
+              quantity: orderItemsTable.quantity,
+              priceGbp: orderItemsTable.priceGbp,
+            })
+            .from(orderItemsTable)
+            .where(eq(orderItemsTable.orderId, order.id));
 
-        void sendOrderConfirmation({
-          orderNumber: order.orderNumber,
-          customerName: order.customerName,
-          customerEmail: order.customerEmail,
-          items: items.map(item => ({
-            productName: item.productName,
-            productCategory: item.productCategory,
-            quantity: item.quantity,
-            priceGbp: parseFloat(String(item.priceGbp)),
-          })),
-          subtotalGbp: parseFloat(String(order.subtotalGbp)),
-          shippingCostGbp: parseFloat(String(order.shippingCostGbp)),
-          totalGbp: parseFloat(String(order.totalGbp)),
-          shippingMethod: order.shippingMethod ?? null,
-          trackingNumber: null,
-          address1: order.address1 ?? null,
-          address2: order.address2 ?? null,
-          city: order.city ?? null,
-          postcode: order.postcode ?? null,
-          country: order.country ?? null,
-        }).catch(err => {
-          logger.error({ err, orderNumber }, "Failed to send order confirmation email after Wallid payment");
-        });
+          await sendOrderConfirmation({
+            orderNumber: order.orderNumber,
+            customerName: order.customerName,
+            customerEmail: order.customerEmail,
+            items: items.map(item => ({
+              productName: item.productName,
+              productCategory: item.productCategory,
+              quantity: item.quantity,
+              priceGbp: parseFloat(String(item.priceGbp)),
+            })),
+            subtotalGbp: parseFloat(String(order.subtotalGbp)),
+            shippingCostGbp: parseFloat(String(order.shippingCostGbp)),
+            totalGbp: parseFloat(String(order.totalGbp)),
+            shippingMethod: order.shippingMethod ?? null,
+            trackingNumber: order.trackingNumber ?? null,
+            address1: order.address1 ?? null,
+            address2: order.address2 ?? null,
+            city: order.city ?? null,
+            postcode: order.postcode ?? null,
+            country: order.country ?? null,
+          });
+        } catch (emailErr) {
+          logger.error(
+            { emailErr, orderNumber },
+            "Failed to send order confirmation email after Wallid payment — order is still marked paid",
+          );
+        }
       } catch (err) {
         logger.error({ err, orderNumber, event_id }, "Failed to update order status from Wallid webhook");
         // Return 500 so Wallid retries
