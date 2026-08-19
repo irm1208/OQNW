@@ -1,132 +1,190 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import crypto from "crypto";
-import { db } from "@workspace/db";
-import { ordersTable, orderItemsTable } from "@workspace/db";
+import { db, orderItemsTable, ordersTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { WALLID_WEBHOOK_SECRET } from "../lib/wallid";
-import { logger } from "../lib/logger";
 import { sendOrderConfirmation } from "../lib/email";
+import { logger } from "../lib/logger";
 
 const router = Router();
 
-// Extend Request to include the rawBody buffer captured by express.json's verify callback
 interface RawRequest extends Request {
   rawBody?: Buffer;
 }
 
+interface WallidEvent {
+  event_id:       string;
+  api_payment_id: string;
+  order_id:       string;
+  status:         string;
+  status_error?:  string;
+  amount:         number;
+  currency:       string;
+  occurred_at:    string;
+}
+
+interface WallidWebhookBody {
+  events: WallidEvent[];
+}
+
 /**
- * Wallid webhook — called by Wallid when a payment reaches a final status.
+ * POST /wallid-webhook
  *
- * Security model:
- *  - If WALLID_WEBHOOK_SECRET is configured:
- *      • Requests WITHOUT a signature header are rejected (401).
- *      • Signature is verified as:
- *          sha256=hex(HMAC-SHA256(key=secret, data="${timestamp}.${rawBody}"))
- *        where timestamp is from X-Webhook-Timestamp header.
- *      • Requests older than 5 minutes are rejected (replay protection).
- *  - If WALLID_WEBHOOK_SECRET is not configured the route accepts all POSTs
- *    and logs a warning so the operator knows the endpoint is unprotected.
+ * Wallid delivers payment status updates as a JSON array of events.
  *
- * Paid detection: only explicit SUCCESS status is treated as paid.
- * FAILED and EXPIRED events are acknowledged but do not update the DB.
+ * WALLID_WEBHOOK_SECRET is required. Requests without a valid HMAC-SHA256
+ * signature are rejected with 400 (fail-closed). Configure WALLID_WEBHOOK_SECRET
+ * before enabling live webhook traffic in the Wallid dashboard.
  *
- * Wallid delivers events as { events: [...] } — multiple events may be batched.
+ * Each SUCCESS event is validated against the stored Wallid api_payment_id and
+ * expected GBP amount before the order is marked paid.
  */
 router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<void> => {
-  if (WALLID_WEBHOOK_SECRET) {
-    const sigHeader   = req.headers["x-webhook-signature"] as string | undefined;
-    const tsHeader    = req.headers["x-webhook-timestamp"] as string | undefined;
-
-    if (!sigHeader || !tsHeader) {
-      logger.warn("Wallid webhook rejected — missing signature or timestamp header");
-      res.status(401).json({ error: "Missing signature or timestamp header" });
-      return;
-    }
-
-    // Replay-attack protection: reject requests older than 5 minutes
-    const ts = parseInt(tsHeader, 10);
-    if (!ts || Math.abs(Date.now() / 1000 - ts) > 300) {
-      logger.warn({ ts }, "Wallid webhook rejected — timestamp too old or invalid");
-      res.status(401).json({ error: "Timestamp too old" });
-      return;
-    }
-
-    // Verify HMAC: message = "{timestamp}.{rawBody}"
-    const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(req.body));
-    const message  = `${tsHeader}.${rawBody.toString()}`;
-    const expected = "sha256=" + crypto
-      .createHmac("sha256", WALLID_WEBHOOK_SECRET)
-      .update(message)
-      .digest("hex");
-
-    // Constant-time comparison — lengths must match first
-    if (expected.length !== sigHeader.length) {
-      logger.warn("Wallid webhook rejected — signature length mismatch");
-      res.status(401).json({ error: "Invalid signature" });
-      return;
-    }
-    const valid = crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(sigHeader));
-    if (!valid) {
-      logger.warn({ received: sigHeader }, "Wallid webhook rejected — signature mismatch");
-      res.status(401).json({ error: "Invalid signature" });
-      return;
-    }
-  } else {
-    logger.warn(
-      "Wallid webhook received with no WALLID_WEBHOOK_SECRET configured — proceeding without signature verification",
-    );
+  // ── Require webhook secret — fail closed if not configured ────────────────
+  if (!WALLID_WEBHOOK_SECRET) {
+    logger.error("WALLID_WEBHOOK_SECRET is not configured — rejecting Wallid webhook request");
+    res.status(400).json({ error: "Webhook secret not configured" });
+    return;
   }
 
-  let body: { events?: unknown[] };
+  // ── Signature verification ─────────────────────────────────────────────────
+  const tsHeader  = req.headers["x-webhook-timestamp"] as string | undefined;
+  const sigHeader = req.headers["x-webhook-signature"] as string | undefined;
+
+  if (!tsHeader || !sigHeader) {
+    logger.warn("Wallid webhook rejected — missing X-Webhook-Timestamp or X-Webhook-Signature");
+    res.status(400).json({ error: "Missing signature headers" });
+    return;
+  }
+
+  // Replay protection: reject if timestamp is more than 5 minutes old
+  const ts = parseInt(tsHeader, 10);
+  if (!ts || Math.abs(Date.now() / 1000 - ts) > 300) {
+    logger.warn({ tsHeader }, "Wallid webhook rejected — stale or invalid timestamp");
+    res.status(400).json({ error: "Stale timestamp" });
+    return;
+  }
+
+  // Verify HMAC — signed message is "{timestamp}.{rawBody}"
+  const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(req.body));
+  const message = `${tsHeader}.${rawBody.toString()}`;
+  const expected = "sha256=" + crypto
+    .createHmac("sha256", WALLID_WEBHOOK_SECRET)
+    .update(message)
+    .digest("hex");
+
+  const received = sigHeader;
+  let sigValid = false;
+  try {
+    if (expected.length === received.length) {
+      sigValid = crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
+    }
+  } catch {
+    sigValid = false;
+  }
+
+  if (!sigValid) {
+    logger.warn({ received }, "Wallid webhook rejected — signature mismatch");
+    res.status(400).json({ error: "Invalid signature" });
+    return;
+  }
+
+  // ── Parse body ─────────────────────────────────────────────────────────────
+  let body: WallidWebhookBody;
   try {
     body = typeof req.body === "string"
-      ? (JSON.parse(req.body) as { events?: unknown[] })
-      : (req.body as { events?: unknown[] });
+      ? (JSON.parse(req.body) as WallidWebhookBody)
+      : (req.body as WallidWebhookBody);
   } catch {
     res.status(400).json({ error: "Invalid JSON" });
     return;
   }
 
-  logger.info({ body }, "Wallid webhook received");
+  const events: WallidEvent[] = Array.isArray(body?.events) ? body.events : [];
+  logger.info({ eventCount: events.length }, "Wallid webhook received");
 
-  const events = Array.isArray(body.events) ? body.events : [];
+  // ── Process events ─────────────────────────────────────────────────────────
+  for (const event of events) {
+    const { order_id: orderNumber, status, api_payment_id, event_id, status_error } = event;
 
-  for (const rawEvent of events) {
-    const event = rawEvent as {
-      event_id?:       string;
-      api_payment_id?: string;
-      order_id?:       string;
-      status?:         string;
-      status_error?:   string;
-    };
-
-    const { order_id: orderId, status = "" } = event;
-
-    if (!orderId) {
-      logger.warn({ event }, "Wallid webhook event missing order_id — skipping");
+    if (!orderNumber) {
+      logger.warn({ event }, "Wallid event missing order_id — skipping");
       continue;
     }
 
-    if (status.toUpperCase() !== "SUCCESS") {
-      logger.info(
-        { orderId, status },
-        "Wallid webhook event — status not SUCCESS, no DB update",
-      );
-      continue;
-    }
+    if (status === "SUCCESS") {
+      try {
+        // ── Verify payment ID, amount, and currency before marking paid ────────
+        const [order] = await db
+          .select({
+            id:       ordersTable.id,
+            status:   ordersTable.status,
+            notes:    ordersTable.notes,
+            totalGbp: ordersTable.totalGbp,
+            orderNumber: ordersTable.orderNumber,
+            customerName: ordersTable.customerName,
+            customerEmail: ordersTable.customerEmail,
+            subtotalGbp: ordersTable.subtotalGbp,
+            shippingCostGbp: ordersTable.shippingCostGbp,
+            shippingMethod: ordersTable.shippingMethod,
+            address1: ordersTable.address1,
+            address2: ordersTable.address2,
+            city: ordersTable.city,
+            postcode: ordersTable.postcode,
+            country: ordersTable.country,
+          })
+          .from(ordersTable)
+          .where(eq(ordersTable.orderNumber, orderNumber))
+          .limit(1);
 
-    try {
-      const [updated] = await db
-        .update(ordersTable)
-        .set({ status: "paid", updatedAt: new Date() })
-        .where(eq(ordersTable.orderNumber, orderId))
-        .returning();
+        if (!order) {
+          logger.error({ orderNumber, event_id }, "Wallid webhook SUCCESS — order not found");
+          // Respond 200 so Wallid doesn't retry for orders we don't recognise
+          continue;
+        }
 
-      logger.info({ orderId, status }, "Order marked paid via Wallid webhook");
+        // The api_payment_id stored at checkout must match the event's ID
+        const storedFragment = `Wallid payment id: ${api_payment_id}`;
+        if (!order.notes || !order.notes.includes(storedFragment)) {
+          logger.error(
+            { orderNumber, api_payment_id, event_id, notes: order.notes },
+            "Wallid webhook — api_payment_id mismatch, rejecting event",
+          );
+          res.status(400).json({ error: "Payment ID mismatch" });
+          return;
+        }
 
-      // Send the confirmation email now that payment is verified
-      if (updated) {
+        // Amount and currency must match what we charged
+        const expectedAmountMinor = Math.round(parseFloat(String(order.totalGbp)) * 100);
+        if (event.amount !== expectedAmountMinor || event.currency !== "GBP") {
+          logger.error(
+            {
+              orderNumber, event_id,
+              expectedAmountMinor, actualAmount: event.amount,
+              expectedCurrency: "GBP", actualCurrency: event.currency,
+            },
+            "Wallid webhook — amount or currency mismatch, rejecting event",
+          );
+          res.status(400).json({ error: "Amount or currency mismatch" });
+          return;
+        }
+
+        // Idempotency guard: already paid orders are skipped silently
+        if (order.status === "paid") {
+          logger.info({ orderNumber, event_id }, "Wallid webhook — order already paid, skipping");
+          continue;
+        }
+
+        await db
+          .update(ordersTable)
+          .set({ status: "paid", updatedAt: new Date() })
+          .where(eq(ordersTable.id, order.id));
+
+        logger.info({ orderNumber, api_payment_id, event_id }, "Order marked paid via Wallid webhook");
+
+        // Payment is now server-verified; send the order confirmation without
+        // delaying or invalidating the successful webhook response if email fails.
         const items = await db
           .select({
             productName: orderItemsTable.productName,
@@ -135,35 +193,41 @@ router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<v
             priceGbp: orderItemsTable.priceGbp,
           })
           .from(orderItemsTable)
-          .where(eq(orderItemsTable.orderId, updated.id));
+          .where(eq(orderItemsTable.orderId, order.id));
 
-        sendOrderConfirmation({
-          orderNumber: updated.orderNumber,
-          customerName: updated.customerName,
-          customerEmail: updated.customerEmail,
-          items: items.map(i => ({
-            productName: i.productName,
-            productCategory: i.productCategory,
-            quantity: i.quantity,
-            priceGbp: parseFloat(String(i.priceGbp)),
+        void sendOrderConfirmation({
+          orderNumber: order.orderNumber,
+          customerName: order.customerName,
+          customerEmail: order.customerEmail,
+          items: items.map(item => ({
+            productName: item.productName,
+            productCategory: item.productCategory,
+            quantity: item.quantity,
+            priceGbp: parseFloat(String(item.priceGbp)),
           })),
-          subtotalGbp: parseFloat(String(updated.subtotalGbp)),
-          shippingCostGbp: parseFloat(String(updated.shippingCostGbp)),
-          totalGbp: parseFloat(String(updated.totalGbp)),
-          shippingMethod: updated.shippingMethod ?? null,
+          subtotalGbp: parseFloat(String(order.subtotalGbp)),
+          shippingCostGbp: parseFloat(String(order.shippingCostGbp)),
+          totalGbp: parseFloat(String(order.totalGbp)),
+          shippingMethod: order.shippingMethod ?? null,
           trackingNumber: null,
-          address1: updated.address1 ?? null,
-          address2: updated.address2 ?? null,
-          city: updated.city ?? null,
-          postcode: updated.postcode ?? null,
-          country: updated.country ?? null,
-        }).catch((err) => {
-          logger.error({ err, orderId }, "Failed to send order confirmation email after Wallid payment");
+          address1: order.address1 ?? null,
+          address2: order.address2 ?? null,
+          city: order.city ?? null,
+          postcode: order.postcode ?? null,
+          country: order.country ?? null,
+        }).catch(err => {
+          logger.error({ err, orderNumber }, "Failed to send order confirmation email after Wallid payment");
         });
+      } catch (err) {
+        logger.error({ err, orderNumber, event_id }, "Failed to update order status from Wallid webhook");
+        // Return 500 so Wallid retries
+        res.status(500).json({ error: "DB update failed" });
+        return;
       }
-    } catch (err) {
-      logger.error({ err, orderId }, "Failed to update order status from Wallid webhook");
-      // Don't return 500 — process remaining events first, then respond
+    } else if (status === "FAILED" || status === "EXPIRED") {
+      logger.info({ orderNumber, status, status_error, event_id }, "Wallid payment not successful — no DB update");
+    } else {
+      logger.info({ orderNumber, status, event_id }, "Wallid webhook — intermediate status, no DB update");
     }
   }
 

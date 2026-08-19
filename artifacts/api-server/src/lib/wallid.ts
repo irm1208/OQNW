@@ -10,64 +10,73 @@ export function isWallidConfigured(): boolean {
   return !!(WALLID_API_KEY_ID && WALLID_API_KEY_SECRET);
 }
 
-function basicAuthHeader(): string {
-  const credentials = `${WALLID_API_KEY_ID}:${WALLID_API_KEY_SECRET}`;
-  return "Basic " + Buffer.from(credentials).toString("base64");
+/** Build the HTTP Basic Auth header value. */
+function basicAuth(): string {
+  return "Basic " + Buffer.from(`${WALLID_API_KEY_ID}:${WALLID_API_KEY_SECRET}`).toString("base64");
 }
 
 export interface WallidPayment {
-  paymentUrl: string;
+  paymentUrl:   string;
   apiPaymentId: string;
 }
 
 export interface WallidItem {
-  name: string;
-  category: string;
+  name:        string;
+  category:    string;
   price_minor: number;
-  image_url: string;
+  image_url:   string;
   product_url: string;
 }
 
+/**
+ * Create a Wallid hosted payment session.
+ *
+ * Amounts are converted from GBP float to minor units (pence) before sending.
+ * Returns the hosted checkout URL and the api_payment_id to store for
+ * reconciliation, or null if creation fails.
+ */
 export async function createWallidPayment(opts: {
-  orderNumber: string;
-  totalGbp: number;
-  customerEmail: string;
-  successUrl: string;
-  failUrl: string;
-  items: WallidItem[];
-  description?: string;
+  orderNumber:    string;
+  totalGbp:       number;
+  customerEmail:  string;
+  customerId?:    string;
+  successUrl:     string;
+  failUrl:        string;
+  items:          WallidItem[];
 }): Promise<WallidPayment | null> {
   if (!isWallidConfigured()) {
-    logger.warn(
-      "Wallid not configured — WALLID_API_KEY_ID or WALLID_API_KEY_SECRET missing",
-    );
+    logger.warn("Wallid not configured — WALLID_API_KEY_ID or WALLID_API_KEY_SECRET missing");
     return null;
   }
 
-  // Wallid amounts are in minor units (pence for GBP)
+  // Amounts must be integers in minor units (GBP pence)
   const amountMinor = Math.round(opts.totalGbp * 100);
+
+  const body = {
+    order_id:       opts.orderNumber,
+    amount:         amountMinor,
+    currency:       "GBP",
+    success_url:    opts.successUrl,
+    fail_url:       opts.failUrl,
+    customer_email: opts.customerEmail,
+    ...(opts.customerId && { customer_id: opts.customerId }),
+    locale:         "en",
+    country:        "GB",
+    items:          opts.items,
+  };
 
   try {
     const res = await fetch(`${WALLID_BASE_URL}/create`, {
-      method: "POST",
+      method:  "POST",
       headers: {
-        "Content-Type": "application/json",
-        Authorization: basicAuthHeader(),
+        "Content-Type":  "application/json",
+        "Authorization": basicAuth(),
       },
-      body: JSON.stringify({
-        order_id:       opts.orderNumber,
-        amount:         amountMinor,
-        currency:       "GBP",
-        success_url:    opts.successUrl,
-        fail_url:       opts.failUrl,
-        customer_email: opts.customerEmail,
-        description:    opts.description ?? `OmniQure order ${opts.orderNumber}`,
-        items:          opts.items,
-      }),
+      body: JSON.stringify(body),
     });
 
     if (!res.ok) {
-      const errText = await res.text();
+      const errText = await res.text().catch(() => "(no body)");
       logger.error(
         { status: res.status, errText, orderNumber: opts.orderNumber },
         "Wallid payment creation failed",
@@ -76,43 +85,18 @@ export async function createWallidPayment(opts: {
     }
 
     const data = (await res.json()) as {
-      api_payment_id: string;
-      payment_link:   string;
-      status:         string;
+      api_payment_id?: string;
+      payment_link?:   string;
     };
 
-    if (!data.payment_link || !data.api_payment_id) {
-      logger.error(
-        { data, orderNumber: opts.orderNumber },
-        "Wallid returned unexpected response",
-      );
+    if (!data.api_payment_id || !data.payment_link) {
+      logger.error({ data, orderNumber: opts.orderNumber }, "Wallid returned unexpected response");
       return null;
     }
 
     return { paymentUrl: data.payment_link, apiPaymentId: data.api_payment_id };
   } catch (err) {
     logger.error({ err, orderNumber: opts.orderNumber }, "Wallid payment creation threw");
-    return null;
-  }
-}
-
-export async function checkWallidPaymentStatus(
-  apiPaymentId: string,
-): Promise<{ paid: boolean; orderId?: string } | null> {
-  if (!isWallidConfigured()) return null;
-  try {
-    const res = await fetch(
-      `${WALLID_BASE_URL}/status?apiPaymentId=${encodeURIComponent(apiPaymentId)}`,
-      { headers: { Authorization: basicAuthHeader() } },
-    );
-    if (!res.ok) return null;
-    const data = (await res.json()) as { status: string; order_id?: string };
-    return {
-      paid:    data.status === "SUCCESS",
-      orderId: data.order_id,
-    };
-  } catch (err) {
-    logger.error({ err, apiPaymentId }, "Wallid payment status check threw");
     return null;
   }
 }

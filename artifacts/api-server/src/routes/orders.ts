@@ -18,16 +18,12 @@ import {
   sendOrderConfirmation,
   sendBankTransferInstructions,
   sendBitcoinInstructions,
-  sendCryptoInstructions,
-  getCryptoWallet,
   sendLowStockAlert,
   sendReferralReward,
   sendWelcomeEmail,
-  generateReceiptHtml,
-  type OrderEmailData,
 } from "../lib/email";
 import { createBtcPayInvoice, isBtcPayConfigured } from "../lib/btcpay";
-import { createWallidPayment, isWallidConfigured, type WallidItem } from "../lib/wallid";
+import { createWallidPayment, isWallidConfigured } from "../lib/wallid";
 import { assessFraud } from "../lib/fraudScorer";
 import { getClientIp, lookupIpData } from "../lib/geoip";
 import { dispatchWebhook } from "../lib/webhookDispatcher";
@@ -117,7 +113,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
   };
   const cryptoCurrencyStr = typeof cryptoCurrency === "string" ? cryptoCurrency.toUpperCase() : "BTC";
 
-  const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "wallid";
+  const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "bank_transfer";
 
   // Basic validation
   const d = delivery as DeliveryDetails;
@@ -219,7 +215,6 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     for (const item of itemsWithSlug) {
       const catalogEntry = catalogBySlug.get(item.productSlug!);
       if (!catalogEntry) {
-        req.log.warn({ slug: item.productSlug, productName: item.productName }, "Order rejected: unrecognised product slug");
         res.status(400).json({ error: "Unrecognised product — please refresh your cart and try again" });
         return;
       }
@@ -377,6 +372,62 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
 
     const customerName = `${d.firstName.trim()} ${d.lastName.trim()}`;
 
+    // ── Wallid: create payment session BEFORE any DB writes ────────────────────
+    // All values needed are available here (orderNumber, totalGbp, cartItems,
+    // customer email). Failing early means no inventory / discount / loyalty /
+    // customer-counter mutations are ever committed when no session is created.
+    let wallidPaymentUrl: string | null = null;
+    let wallidApiPaymentId: string | null = null;
+
+    if (paymentMethodStr === "wallid") {
+      // Use only the configured canonical origin — never the untrusted request
+      // Origin header, which could be an attacker-controlled value.
+      const origin = process.env.SITE_URL ?? "https://omniqure.com";
+
+      const wallidItems = (cartItems as CartItem[]).map(item => ({
+        name: item.productName,
+        category: item.productCategory || "Peptides",
+        price_minor: Math.round(item.priceGbp * 100),
+        image_url: `${origin}/products/${item.productId}.jpg`,
+        product_url: item.productSlug
+          ? `${origin}/product/${item.productSlug}`
+          : `${origin}/all-peptides`,
+      }));
+
+      let payment;
+      try {
+        payment = await createWallidPayment({
+          orderNumber,
+          totalGbp,
+          customerEmail: d.email.toLowerCase(),
+          successUrl:
+            `${origin}/wallid-return` +
+            `?order=${encodeURIComponent(orderNumber)}` +
+            `&status=success` +
+            `&name=${encodeURIComponent(d.firstName)}` +
+            `&total=${totalGbp.toFixed(2)}`,
+          failUrl:
+            `${origin}/wallid-return` +
+            `?order=${encodeURIComponent(orderNumber)}` +
+            `&status=failed`,
+          items: wallidItems,
+        });
+      } catch (err) {
+        req.log.warn({ err }, "Wallid payment creation threw — aborting checkout before DB writes");
+        payment = null;
+      }
+
+      if (!payment) {
+        res.status(503).json({
+          error: "Pay by Bank is temporarily unavailable. Please try again or choose Cryptocurrency.",
+        });
+        return;
+      }
+
+      wallidPaymentUrl = payment.paymentUrl;
+      wallidApiPaymentId = payment.apiPaymentId;
+    }
+
     // If a valid customer session cookie is present, use that customer ID directly.
     // This ensures orders are always linked to the authenticated account regardless
     // of what email the customer typed in the delivery form.
@@ -523,12 +574,13 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingCostGbp: String(shippingCostGbp.toFixed(2)),
         totalGbp: String(totalGbp.toFixed(2)),
         shippingMethod,
-        status: ["bitcoin", "wallid"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
+        status: ["bank_transfer", "bitcoin", "wallid"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
         notes: [
           `Payment method: ${paymentMethodStr}`,
           bundleDiscountGbp > 0 ? `Bundle & Save: ${bundleFreeLabel} (-£${bundleDiscountGbp.toFixed(2)})` : null,
           validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-£${discountAmount.toFixed(2)})` : null,
           loyaltyPointsToDeduct > 0 ? `Loyalty: ${loyaltyPointsToDeduct} pts redeemed (-£${loyaltyDiscountGbp.toFixed(2)})` : null,
+          wallidApiPaymentId ? `Wallid payment id: ${wallidApiPaymentId}` : null,
         ].filter(Boolean).join("; ") || null,
         fraudScore,
         fraudFlags,
@@ -834,9 +886,6 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     let btcPaymentUrl: string | null = null;
     let btcInvoiceId: string | null = null;
 
-    // ── Wallid hosted-checkout payment (blocking — need redirect URL before responding) ──
-    let wallidPaymentUrl: string | null = null;
-
     if (paymentMethodStr === "bitcoin" && cryptoCurrencyStr === "BTC") {
       try {
         const invoice = await createBtcPayInvoice({
@@ -866,79 +915,8 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       }
     }
 
-    if (paymentMethodStr === "wallid") {
-      try {
-        const origin =
-          (req.headers.origin as string | undefined) ||
-          process.env.SITE_URL ||
-          "https://omniqure.com";
-        const baseReturn =
-          `${origin}/wallid-return` +
-          `?order=${encodeURIComponent(orderNumber)}` +
-          `&name=${encodeURIComponent(d.firstName)}` +
-          `&total=${totalGbp.toFixed(2)}` +
-          `&ship=${encodeURIComponent(shippingMethod)}`;
-        const successUrl = `${baseReturn}&status=success`;
-        const failUrl    = `${baseReturn}&status=failed`;
-
-        const wallidItems: WallidItem[] = cartItems.map(i => ({
-          name: i.productName,
-          category: i.productCategory ?? "Peptides",
-          price_minor: Math.round(parseFloat(String(i.priceGbp)) * i.quantity * 100),
-          image_url: `${origin}/og-image.jpg`,
-          product_url: `${origin}/product/${i.productSlug ?? ""}`,
-        }));
-
-        const wallid = await createWallidPayment({
-          orderNumber,
-          totalGbp,
-          customerEmail: d.email.toLowerCase(),
-          successUrl,
-          failUrl,
-          items: wallidItems,
-        });
-        if (wallid) {
-          wallidPaymentUrl = wallid.paymentUrl;
-          await db
-            .update(ordersTable)
-            .set({
-              notes: [order.notes, `Wallid payment id: ${wallid.apiPaymentId}`]
-                .filter(Boolean)
-                .join("; "),
-            })
-            .where(eq(ordersTable.id, order.id))
-            .catch(() => {});
-        }
-      } catch (err) {
-        req.log.warn({ err }, "Wallid payment creation failed — order still placed");
-      }
-    }
-
     // ── Payment-specific emails (non-blocking) ─────────────────────────────
-    if (paymentMethodStr === "bitcoin") {
-      const wallet = getCryptoWallet(cryptoCurrencyStr);
-      // For BTC via BTCPay, prefer the address/amount from the invoice; else fall back to wallet config
-      const resolvedAddress = cryptoCurrencyStr === "BTC" ? (btcAddress ?? wallet.address) : wallet.address;
-      sendCryptoInstructions({
-        orderNumber,
-        customerName,
-        customerEmail: d.email.toLowerCase(),
-        totalGbp,
-        currency: cryptoCurrencyStr,
-        walletAddress: resolvedAddress,
-        network: wallet.network,
-        accentColor: wallet.color,
-        cryptoAmount: cryptoCurrencyStr === "BTC" ? (btcAmount ?? undefined) : undefined,
-        items: emailItems,
-        subtotalGbp,
-        shippingCostGbp,
-        shippingMethod,
-      }).catch(() => {});
-    } else if (paymentMethodStr === "wallid") {
-      // Wallid: confirmation email is sent by the webhook handler once payment
-      // is confirmed as SUCCESS — not here, to avoid sending before payment settles.
-    } else if (paymentMethodStr === "bank_transfer" || paymentMethodStr === "bank") {
-      // Bank transfer: send payment instructions (sort code, account number, reference)
+    if (paymentMethodStr === "bank_transfer") {
       sendBankTransferInstructions({
         orderNumber,
         customerName,
@@ -949,6 +927,23 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingCostGbp,
         shippingMethod,
       }).catch(() => {});
+    } else if (paymentMethodStr === "bitcoin") {
+      const FALLBACK_BTC_ADDRESS = process.env.BITCOIN_ADDRESS ?? "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
+      sendBitcoinInstructions({
+        orderNumber,
+        customerName,
+        customerEmail: d.email.toLowerCase(),
+        totalGbp,
+        btcAddress: btcAddress ?? FALLBACK_BTC_ADDRESS,
+        btcAmount: btcAmount ?? undefined,
+        items: emailItems,
+        subtotalGbp,
+        shippingCostGbp,
+        shippingMethod,
+      }).catch(() => {});
+    } else if (paymentMethodStr === "wallid") {
+      // No email at order creation — customer is redirected to Wallid to pay.
+      // Confirmation email should be sent from the webhook when payment settles.
     } else {
       sendOrderConfirmation({
         orderNumber,
@@ -990,7 +985,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       ...(btcAddress    && { btcAddress }),
       ...(btcAmount     && { btcAmount }),
       ...(btcPaymentUrl && { btcPaymentUrl }),
-      ...(btcInvoiceId  && { btcInvoiceId }),
+      ...(btcInvoiceId    && { btcInvoiceId }),
       ...(wallidPaymentUrl && { wallidPaymentUrl }),
     });
   } catch (err) {
@@ -1043,80 +1038,6 @@ router.get("/orders/track", async (req: Request, res: Response): Promise<void> =
   } catch (err) {
     req.log.error({ err }, "Failed to track order");
     res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-// ── Receipt HTML page ─────────────────────────────────────────────────────────
-router.get("/orders/:orderNumber/receipt", async (req: Request, res: Response) => {
-  const { orderNumber } = req.params as { orderNumber: string };
-  try {
-    const [order] = await db
-      .select({
-        id: ordersTable.id,
-        orderNumber: ordersTable.orderNumber,
-        customerName: ordersTable.customerName,
-        customerEmail: ordersTable.customerEmail,
-        subtotalGbp: ordersTable.subtotalGbp,
-        shippingCostGbp: ordersTable.shippingCostGbp,
-        totalGbp: ordersTable.totalGbp,
-        shippingMethod: ordersTable.shippingMethod,
-        address1: ordersTable.address1,
-        address2: ordersTable.address2,
-        city: ordersTable.city,
-        postcode: ordersTable.postcode,
-        country: ordersTable.country,
-        createdAt: ordersTable.createdAt,
-      })
-      .from(ordersTable)
-      .where(eq(ordersTable.orderNumber, orderNumber))
-      .limit(1);
-
-    if (!order) {
-      res.status(404).send("<h2>Order not found</h2>");
-      return;
-    }
-
-    const items = await db
-      .select({
-        productName: orderItemsTable.productName,
-        productCategory: orderItemsTable.productCategory,
-        quantity: orderItemsTable.quantity,
-        priceGbp: orderItemsTable.priceGbp,
-      })
-      .from(orderItemsTable)
-      .where(eq(orderItemsTable.orderId, order.id));
-
-    const data: OrderEmailData = {
-      orderNumber: order.orderNumber,
-      customerName: order.customerName,
-      customerEmail: order.customerEmail,
-      items: items.map(i => ({
-        productName: i.productName,
-        productCategory: i.productCategory,
-        quantity: i.quantity,
-        priceGbp: parseFloat(String(i.priceGbp)),
-      })),
-      subtotalGbp: parseFloat(String(order.subtotalGbp)),
-      shippingCostGbp: parseFloat(String(order.shippingCostGbp)),
-      totalGbp: parseFloat(String(order.totalGbp)),
-      shippingMethod: order.shippingMethod ?? null,
-      trackingNumber: null,
-      address1: order.address1 ?? null,
-      address2: order.address2 ?? null,
-      city: order.city ?? null,
-      postcode: order.postcode ?? null,
-      country: order.country ?? null,
-    };
-
-    const dateStr = order.createdAt.toLocaleDateString("en-GB", {
-      day: "numeric", month: "long", year: "numeric",
-    });
-
-    res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.send(generateReceiptHtml(data, dateStr));
-  } catch (err) {
-    req.log.error({ err }, "Failed to render receipt");
-    res.status(500).send("<h2>Internal server error</h2>");
   }
 });
 

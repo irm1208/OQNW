@@ -69,11 +69,12 @@ const SHIPPING_OPTIONS = [
 ];
 
 const CRYPTO_OPTIONS = [
-  { id: "BTC",  name: "Bitcoin",  color: "#F7931A", network: "Bitcoin",      address: "bc1qs92tye4syd4zzeekv62j8yupek9mvzkgfkgz8u", logoSrc: "https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/btc.svg" },
-  { id: "ETH",  name: "Ethereum", color: "#627EEA", network: "ERC-20 / ETH", address: "0x612E36A53F95Fb487081bC5316a260262E58878b",  logoSrc: "https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/eth.svg" },
-  { id: "USDT", name: "USDT",     color: "#26A17B", network: "ERC-20 / ETH", address: "0x612E36A53F95Fb487081bC5316a260262E58878b",  logoSrc: "https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/usdt.svg" },
-  { id: "USDC", name: "USDC",     color: "#2775CA", network: "ERC-20 / ETH", address: "0x612E36A53F95Fb487081bC5316a260262E58878b",  logoSrc: "https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/usdc.svg" },
-  { id: "SOL",  name: "Solana",   color: "#9945FF", network: "Solana",       address: "E7EXxfoqVc9PMKzeU6xSJdcK2Ur83rKCZymcHQ9r8iNM", logoSrc: "https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/sol.svg" },
+  { id: "BTC",  name: "Bitcoin",    symbol: "₿", color: "#F7931A", network: "Bitcoin",      address: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh" },
+  { id: "ETH",  name: "Ethereum",   symbol: "Ξ", color: "#627EEA", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
+  { id: "USDT", name: "USDT",       symbol: "₮", color: "#26A17B", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
+  { id: "USDC", name: "USDC",       symbol: "◎", color: "#2775CA", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
+  { id: "LTC",  name: "Litecoin",   symbol: "Ł", color: "#A6A9AA", network: "Litecoin",     address: "LYourLitecoinAddressHere" },
+  { id: "XMR",  name: "Monero",     symbol: "ɱ", color: "#FF6600", network: "Monero",       address: "YourMoneroAddressHere" },
 ] as const;
 type CryptoCurrency = typeof CRYPTO_OPTIONS[number]["id"];
 
@@ -96,30 +97,9 @@ const BANK_SVGS: BankEntry[] = [
     filled: true,
     path: "M21.043 3.629a3.235 3.235 0 0 0-1.048-.54 3.076 3.076 0 0 0-.937-.144h-.046c-.413.006-1.184.105-1.701.71a1.138 1.138 0 0 0-.226 1.023.9.9 0 0 0 .555.63s.088.032.228.058c-.04.078-.136.214-.136.214-.179.265-.576.612-1.668.612h-.063c-.578-.038-1.056-.189-1.616-.915-.347-.45-.523-1.207-.549-2.452-.022-.624-.107-1.165-.256-1.6-.1-.29-.333-.596-.557-.742a2.55 2.55 0 0 0-.694-.336c-.373-.12-.848-.14-1.204-.146-.462-.01-.717.096-.878.292-.027.033-.032.05-.068.046-.084-.006-.272-.006-.328-.006-.264 0-.498.043-.721.09-.47.1-.761.295-1.019.503-.12.095-.347.365-.399.653a.76.76 0 0 0 .097.578c.14-.148.374-.264.816-.266.493-.002 1.169.224 1.406.608.336.547.27.99.199 1.517-.183 1.347-.68 2.048-1.783 2.203-.191.026-.38.04-.56.04-.776 0-1.34-.248-1.63-.716a.71.71 0 0 1-.088-.168s.087-.021.163-.056c.294-.14.514-.344.594-.661.09-.353.004-.728-.23-1.007-.415-.47-.991-.708-1.713-.708-.4 0-.755.076-.982.14-.908.256-1.633.947-2.214 2.112-.412.824-.7 1.912-.81 3.067-.11 1.13-.056 2.085.019 2.949.124 1.437.363 2.298.708 3.22a15.68 15.68 0 0 0 1.609 3.19c.09-.094.15-.161.308-.318.188-.19.724-.893.876-1.11.19-.27.51-.779.664-1.147l.15.119c.16.127.252.348.249.592-.003.215-.053.464-.184.922a8.703 8.703 0 0 1-.784 1.818c-.189.341-.27.508-.199.584.015.015.038.03.06.026.116 0 .34-.117.585-.304.222-.17.813-.672 1.527-1.675a15.449 15.449 0 0 0 1.452-2.521c.12.046.255.101.317.226a.92.92 0 0 1 .08.563c-.065.539-.379 1.353-.63 1.94-.425.998-1.208 2.115-1.788 2.877-.022.03-.163.197-.186.227.9.792 1.944 1.555 3.007 2.136.725.408 2.203 1.162 3.183 1.424.98-.262 2.458-1.016 3.184-1.424a17.063 17.063 0 0 0 3.003-2.134c-.05-.076-.13-.158-.183-.23-.582-.763-1.365-1.881-1.79-2.875-.25-.59-.563-1.405-.628-1.94-.028-.221-.002-.417.08-.565.033-.098.274-.218.317-.226.405.884.887 1.73 1.452 2.522.715 1.003 1.306 1.506 1.527 1.674.248.191.467.304.586.304a.07.07 0 0 0 .044-.012c.094-.069.017-.234-.183-.594a9.003 9.003 0 0 1-.786-1.822c-.13-.456-.18-.706-.182-.92-.004-.246.088-.466.248-.594l.15-.118c.155.373.5.919.665 1.147.15.216.685.919.876 1.11.156.158.22.222.308.32a15.672 15.672 0 0 0 1.609-3.19c.343-.923.583-1.784.707-3.222.075-.86.128-1.81.02-2.948-.101-1.116-.404-2.264-.81-3.068-.249-.49-.605-1.112-1.171-1.566z",
   },
-  {
-    name: "Lloyds",
-    color: "#006A4D",
-    viewBox: "",
-    filled: false,
-    path: "",
-    imgSrc: "/banks/lloyds-v3.png",
-  },
-  {
-    name: "Monzo",
-    color: "#14233C",
-    viewBox: "",
-    filled: false,
-    path: "",
-    imgSrc: "/banks/monzo.png",
-  },
-  {
-    name: "Santander",
-    color: "#EC0000",
-    viewBox: "",
-    filled: false,
-    path: "",
-    imgSrc: "/banks/santander.png",
-  },
+  { name: "Lloyds",    color: "#006A4D", viewBox: "", filled: false, path: "", imgSrc: "/banks/lloyds-v3.png" },
+  { name: "Monzo",     color: "#14233C", viewBox: "", filled: false, path: "", imgSrc: "/banks/monzo.png" },
+  { name: "Santander", color: "#EC0000", viewBox: "", filled: false, path: "", imgSrc: "/banks/santander.png" },
 ];
 
 type DeliveryForm = {
@@ -622,12 +602,16 @@ export default function CartPage() {
         btcAddress?: string; btcAmount?: string; btcPaymentUrl?: string;
         cryptoCurrency?: string; wallidPaymentUrl?: string;
       };
-      clearCart();
 
+      // Wallid: redirect to hosted payment page.
+      // Cart is NOT cleared before redirect — WallidReturn clears it on confirmed
+      // success. If payment is cancelled or fails, the cart remains intact for retry.
       if (paymentMethod === "wallid" && data.wallidPaymentUrl) {
         window.location.href = data.wallidPaymentUrl;
         return;
       }
+
+      clearCart();
 
       const selectedCoin = CRYPTO_OPTIONS.find(c => c.id === cryptoCurrency) ?? CRYPTO_OPTIONS[0];
       const params = new URLSearchParams({
@@ -890,97 +874,92 @@ export default function CartPage() {
           <p style={sectionTitle}>Payment Method</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
 
+            {/* Pay by Bank (Wallid) */}
             {(() => {
               const active = paymentMethod === "wallid";
               return (
                 <div
                   onClick={() => setPaymentMethod("wallid")}
                   style={{
-                    border: `1px solid ${active ? "#1240A0" : "#E8EDF5"}`,
-                    borderRadius: 6, overflow: "hidden", cursor: "pointer",
-                    background: active ? "#EEF4FF" : THEME.cardBg,
+                    border: `2px solid ${active ? "#1240A0" : "#D8E4FF"}`,
+                    borderRadius: 10, overflow: "hidden", cursor: "pointer",
+                    background: active ? "#EEF4FF" : "#F4F7FF",
+                    transition: "border-color 0.15s",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
-                    <input type="radio" checked={active} onChange={() => setPaymentMethod("wallid")}
-                      style={{ accentColor: THEME.cta, width: 16, height: 16, flexShrink: 0 }} />
+                  {/* Header row */}
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "16px 16px 0" }}>
+                    <input
+                      type="radio" checked={active} onChange={() => setPaymentMethod("wallid")}
+                      style={{ accentColor: "#1240A0", width: 18, height: 18, flexShrink: 0, marginTop: 2, cursor: "pointer" }}
+                    />
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: "15px", fontWeight: 700, color: THEME.text }}>Pay by Bank</span>
+                        <span style={{ fontSize: "16px", fontWeight: 800, color: "#0F172A" }}>Pay by Bank</span>
                         <span style={{
-                          fontSize: "11px", fontWeight: 700, letterSpacing: "0.06em",
+                          fontSize: "10px", fontWeight: 800, letterSpacing: "0.07em",
                           background: "#059669", color: "#fff",
-                          padding: "2px 8px", borderRadius: 100,
+                          padding: "3px 9px", borderRadius: 100,
                         }}>RECOMMENDED · FASTEST</span>
                       </div>
-                      <p style={{ fontSize: "13px", fontWeight: 600, color: THEME.textSub, margin: "4px 0 0" }}>
+                      <p style={{ fontSize: "13px", fontWeight: 700, color: "#1E293B", margin: "6px 0 0", lineHeight: 1.4 }}>
                         Tap your bank, approve in your banking app — done in seconds.
                       </p>
                     </div>
                   </div>
 
-                  {active && (
-                    <div style={{ borderTop: "1px solid #F1F5F9", padding: "14px 16px" }}>
-                      <p style={{ fontSize: "12px", color: THEME.textMuted, marginBottom: 12 }}>
-                        🏦 Secure hosted checkout · No card details stored
-                      </p>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
-                        {BANK_SVGS.map(b => (
-                          <div key={b.name} title={b.name} style={{
-                            width: 34, height: 34, borderRadius: 8,
-                            background: "#fff", border: "1px solid #E8EDF5",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                            flexShrink: 0, overflow: "hidden",
-                          }}>
-                            {"imgSrc" in b ? (
-                              <img
-                                src={b.imgSrc}
-                                alt={b.name}
-                                style={{ width: 22, height: 22, objectFit: "contain" }}
-                              />
-                            ) : (
-                              <svg
-                                viewBox={b.viewBox}
-                                width={b.filled ? 20 : 26}
-                                height={b.filled ? 20 : 26}
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d={b.path}
-                                  fill={b.filled ? b.color : "none"}
-                                  stroke={b.filled ? "none" : b.color}
-                                  strokeWidth={b.filled ? undefined : 2}
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            )}
-                          </div>
-                        ))}
-                        <span style={{ fontSize: "13px", color: THEME.textMuted, fontWeight: 600 }}>+more</span>
-                      </div>
-                      <div style={{ borderTop: "1px solid #F1F5F9", paddingTop: 12 }}>
-                        <p style={{ fontSize: "11px", fontWeight: 800, color: THEME.textMuted, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
-                          How it works
-                        </p>
-                        {["Choose your bank", "Approve in your banking app", "Order confirmed instantly"].map((step, i) => (
-                          <div key={step} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-                            <div style={{
-                              width: 22, height: 22, borderRadius: "50%",
-                              background: THEME.cta, color: "#fff",
-                              display: "flex", alignItems: "center", justifyContent: "center",
-                              fontSize: "11px", fontWeight: 800, flexShrink: 0,
-                            }}>{i + 1}</div>
-                            <span style={{ fontSize: "13px", color: THEME.textSub }}>{step}</span>
-                          </div>
-                        ))}
-                      </div>
+                  {/* Body */}
+                  <div style={{ padding: "14px 16px 16px 46px" }}>
+                    {/* Trust line */}
+                    <p style={{ fontSize: "12px", color: "#64748B", margin: "0 0 12px", lineHeight: 1.5 }}>
+                      🏦 FCA-authorised open banking · Read-only · No card details stored
+                    </p>
+
+                    {/* Bank logos */}
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
+                      {BANK_SVGS.map(b => (
+                        <div key={b.name} title={b.name} style={{
+                          width: 40, height: 40, borderRadius: 8,
+                          background: "#fff", border: "1px solid #E8EDF5",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          flexShrink: 0, overflow: "hidden",
+                          boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+                        }}>
+                          {"imgSrc" in b ? (
+                            <img src={b.imgSrc} alt={b.name} style={{ width: 26, height: 26, objectFit: "contain" }} />
+                          ) : (
+                            <svg viewBox={b.viewBox} width={b.filled ? 22 : 28} height={b.filled ? 22 : 28} xmlns="http://www.w3.org/2000/svg">
+                              <path d={b.path} fill={b.filled ? b.color : "none"} stroke={b.filled ? "none" : b.color} strokeWidth={b.filled ? undefined : 2} strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          )}
+                        </div>
+                      ))}
+                      <span style={{ fontSize: "13px", fontWeight: 600, color: "#64748B", marginLeft: 2 }}>+more</span>
                     </div>
-                  )}
+
+                    {/* How it works */}
+                    <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.1em", color: "#64748B", margin: "0 0 10px", textTransform: "uppercase" }}>
+                      How it works
+                    </p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      {["Choose your bank", "Approve in your banking app", "Order confirmed instantly"].map((step, i) => (
+                        <div key={step} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                          <span style={{
+                            width: 24, height: 24, borderRadius: "50%",
+                            background: "#1240A0", color: "#fff",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            fontSize: "11px", fontWeight: 800, flexShrink: 0,
+                          }}>{i + 1}</span>
+                          <span style={{ fontSize: "13px", color: "#334155", fontWeight: 500 }}>{step}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               );
             })()}
 
+            {/* Cryptocurrency */}
             {(() => {
               const active = paymentMethod === "bitcoin";
               return (
@@ -993,7 +972,7 @@ export default function CartPage() {
                       style={{ accentColor: THEME.cta, width: 16, height: 16, flexShrink: 0 }} />
                     <div>
                       <span style={{ fontSize: "15px", fontWeight: 700, color: THEME.text }}>Cryptocurrency</span>
-                      <p style={{ fontSize: "12px", color: THEME.textMuted, margin: "2px 0 0" }}>Bitcoin, Ethereum, USDT, USDC, Solana</p>
+                      <p style={{ fontSize: "12px", color: THEME.textMuted, margin: "2px 0 0" }}>Bitcoin, Ethereum, USDT, USDC, Litecoin, Monero</p>
                     </div>
                   </div>
                   {active && (
@@ -1009,8 +988,12 @@ export default function CartPage() {
                               color: cryptoCurrency === c.id ? "#fff" : THEME.textSub,
                               fontSize: "13px", fontWeight: 600, cursor: "pointer",
                             }}>
-                            <img src={c.logoSrc} alt={c.name}
-                              style={{ width: 18, height: 18, borderRadius: "50%", flexShrink: 0, display: "block" }} />
+                            <span style={{
+                              display: "inline-flex", alignItems: "center", justifyContent: "center",
+                              width: 18, height: 18, borderRadius: "50%",
+                              background: cryptoCurrency === c.id ? "rgba(255,255,255,0.25)" : c.color,
+                              color: "#fff", fontSize: "9px", fontWeight: 800, flexShrink: 0,
+                            }}>{c.symbol}</span>
                             {c.name}
                           </button>
                         ))}
@@ -1118,15 +1101,6 @@ export default function CartPage() {
             <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "11px", color: THEME.textMuted, fontWeight: 600, letterSpacing: "0.05em" }}>
               <Truck size={13} /> FAST SHIPPING
             </div>
-          </div>
-
-          <div style={{
-            marginTop: 14, padding: "10px 14px", borderRadius: "10px",
-            backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0",
-            fontSize: "11.5px", color: "#64748B", textAlign: "center", lineHeight: 1.5,
-          }}>
-            <strong style={{ color: "#0F172A" }}>Payments accepted in GBP &amp; EUR only</strong>
-            <br />via Pay by Bank · Prices in other currencies are for reference only
           </div>
 
           <Link

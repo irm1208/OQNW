@@ -35,6 +35,7 @@ const CartPage             = lazy(() => import("@/pages/CartPage"));
 const CheckoutPage         = lazy(() => import("@/pages/CheckoutPage"));
 const OrderConfirmation    = lazy(() => import("@/pages/OrderConfirmation"));
 const WallidReturn         = lazy(() => import("@/pages/WallidReturn"));
+const ContinuePayment      = lazy(() => import("@/pages/ContinuePayment"));
 const TrackOrderPage       = lazy(() => import("@/pages/TrackOrderPage"));
 const SignIn               = lazy(() => import("@/pages/SignIn"));
 const ForgotPassword       = lazy(() => import("@/pages/ForgotPassword"));
@@ -55,7 +56,6 @@ const StorageGuidePage     = lazy(() => import("@/pages/StorageGuidePage"));
 const ResearchResultsPage  = lazy(() => import("@/pages/ResearchResultsPage"));
 const ContactPage          = lazy(() => import("@/pages/ContactPage"));
 const ChatWidget            = lazy(() => import("@/components/ChatWidget"));
-const VerifyEmail          = lazy(() => import("@/pages/VerifyEmail"));
 const NotFound             = lazy(() => import("@/pages/not-found"));
 
 const queryClient = new QueryClient();
@@ -87,13 +87,13 @@ function Router() {
       <Route path="/sign-in" component={SignIn} />
       <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/reset-password" component={ResetPassword} />
-      <Route path="/verify-email" component={VerifyEmail} />
       <Route path="/register" component={Register} />
       <Route path="/account" component={AccountPage} />
       <Route path="/cart" component={CartPage} />
       <Route path="/checkout" component={CheckoutPage} />
       <Route path="/order-confirmation" component={OrderConfirmation} />
       <Route path="/wallid-return" component={WallidReturn} />
+      <Route path="/continue-payment" component={ContinuePayment} />
       <Route path="/track-order" component={TrackOrderPage} />
       <Route path="/wishlist" component={WishlistPage} />
       <Route path="/protocols" component={ProtocolsPage} />

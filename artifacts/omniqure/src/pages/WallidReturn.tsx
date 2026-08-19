@@ -1,267 +1,326 @@
-import { useEffect, useRef } from "react";
-import { trackPurchase } from "@/lib/pixels";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
-import { CheckCircle2, Clock, Truck, FlaskConical, ArrowRight, Search, Download } from "lucide-react";
+import { CheckCircle, XCircle, ArrowRight, RotateCcw, Package, Loader2, Clock } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 /**
- * Landing page for customers returning from the Wallid hosted-checkout payment flow.
+ * /wallid-return
  *
- * Wallid redirects to success_url or fail_url with our own query params appended.
- * We read: order, name, total, ship, status (success | failed).
+ * Landing page after a Wallid hosted payment. Wallid redirects to our
+ * success_url or fail_url depending on the payment outcome.
+ *
+ * For the success path the page polls GET /api/orders/track to obtain the
+ * server-authoritative status before showing a confirmation or clearing the
+ * cart. This guards against direct URL navigation and the race where Wallid
+ * redirects before the webhook fires.
+ *
+ * URL params:
+ *   ?order=OQ-XXXXXX   order number
+ *   ?status=success     Wallid redirected to success_url
+ *   ?status=failed      Wallid redirected to fail_url
+ *   ?name=FirstName     customer first name
+ *   ?total=99.00        order total in GBP
  */
+
+type VerifyState = "verifying" | "paid" | "pending_webhook" | "failed" | "error";
+
+const MAX_POLL_ATTEMPTS = 40;   // 40 × 3 s ≈ 2 minutes
+const POLL_INTERVAL_MS  = 3000;
+
 export default function WallidReturn() {
-  const params = new URLSearchParams(window.location.search);
-  const order  = params.get("order") ?? "OQ-000000";
-  const name   = params.get("name")  ?? "Researcher";
-  const total  = params.get("total") ?? "0.00";
-  const ship   = params.get("ship")  ?? "Standard";
+  const params      = new URLSearchParams(window.location.search);
+  const urlStatus   = params.get("status");   // "success" | "failed"
+  const orderNumber = params.get("order") ?? "";
+  const firstName   = params.get("name") ?? "";
+  const total       = params.get("total") ?? "";
 
-  // Wallid appends status=success or status=failed to the redirect URL
-  const wallidStatus = params.get("status") ?? "";
-  const failed = wallidStatus.toLowerCase() === "failed" || wallidStatus.toLowerCase() === "cancelled";
+  const { clearCart } = useCart();
 
-  const today = new Date();
-  const deliveryDays = ship === "Next Day" ? 1 : ship === "Express" ? 2 : 5;
-  const delivery = new Date(today);
-  delivery.setDate(today.getDate() + deliveryDays);
-  const deliveryStr = delivery.toLocaleDateString("en-GB", {
-    weekday: "long", day: "numeric", month: "long",
-  });
+  // failure path: no server call needed — Wallid redirected to failUrl
+  const initialState: VerifyState = urlStatus === "failed" ? "failed" : "verifying";
+  const [verifyState, setVerifyState] = useState<VerifyState>(initialState);
 
-  const purchaseFired = useRef(false);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const attemptsRef = useRef(0);
+  const cancelledRef = useRef(false);
+
   useEffect(() => {
-    window.scrollTo({ top: 0 });
-    if (!purchaseFired.current && order !== "OQ-000000" && !failed) {
-      purchaseFired.current = true;
-      trackPurchase(order, parseFloat(total), 1);
+    if (verifyState === "failed") return; // failure — nothing to poll
+    if (!orderNumber) {
+      setVerifyState("error");
+      return;
     }
-  }, []);
 
-  if (failed) {
+    async function checkOrderStatus(): Promise<boolean> {
+      try {
+        const res = await fetch(`/api/orders/track?number=${encodeURIComponent(orderNumber)}`);
+        if (!res.ok) return false;
+        const data = (await res.json()) as { status?: string };
+        if (data.status === "paid") {
+          if (!cancelledRef.current) {
+            clearCart();
+            setVerifyState("paid");
+          }
+          return true;
+        }
+        return false;
+      } catch {
+        return false;
+      }
+    }
+
+    // Check immediately on mount, then start polling if not yet paid
+    void checkOrderStatus().then(done => {
+      if (done || cancelledRef.current) return;
+
+      pollRef.current = setInterval(() => {
+        if (cancelledRef.current) {
+          clearInterval(pollRef.current!);
+          return;
+        }
+        attemptsRef.current++;
+        void checkOrderStatus().then(done => {
+          if (done || cancelledRef.current) {
+            clearInterval(pollRef.current!);
+            return;
+          }
+          if (attemptsRef.current >= MAX_POLL_ATTEMPTS) {
+            clearInterval(pollRef.current!);
+            if (!cancelledRef.current) setVerifyState("pending_webhook");
+          }
+        });
+      }, POLL_INTERVAL_MS);
+    });
+
+    return () => {
+      cancelledRef.current = true;
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Verifying / polling ───────────────────────────────────────────────────
+  if (verifyState === "verifying") {
     return (
-      <div style={{
-        fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC",
-        minHeight: "70vh", padding: "48px 16px",
-      }}>
-        <div style={{ maxWidth: "560px", margin: "0 auto", textAlign: "center" }}>
-          <div style={{
-            width: "72px", height: "72px", borderRadius: "50%",
-            background: "linear-gradient(135deg, #DC2626, #EF4444)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            margin: "0 auto 20px",
-          }}>
-            <Clock size={36} color="#fff" strokeWidth={2.5} />
-          </div>
-          <h1 style={{ fontSize: "24px", fontWeight: 900, color: "#0F172A", marginBottom: "8px" }}>
-            Payment not completed
+      <PageShell bg="linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)">
+        <div style={{ textAlign: "center" }}>
+          <Loader2 size={56} style={{ color: "#0369A1", animation: "spin 1s linear infinite" }} />
+          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#0F172A", margin: "20px 0 8px" }}>
+            Confirming your payment…
           </h1>
-          <p style={{ fontSize: "15px", color: "#64748B", marginBottom: "28px", lineHeight: 1.6 }}>
-            Your order <strong style={{ color: "#0F172A" }}>{order}</strong> has been reserved but we haven't received payment yet. You can try again or choose a different payment method.
+          <p style={{ fontSize: "14px", color: "#64748B", lineHeight: 1.6 }}>
+            Please wait while we verify your payment with your bank.
           </p>
-          <Link
-            href="/cart"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: "8px",
-              height: "46px", paddingLeft: "24px", paddingRight: "24px",
-              borderRadius: "12px", background: "linear-gradient(90deg, #0D2565, #1B5CB5)",
-              color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none",
-            }}
-          >
-            Return to Cart
-          </Link>
+          {orderNumber && (
+            <p style={{ fontSize: "13px", color: "#94A3B8", marginTop: 12 }}>
+              Order reference: <strong style={{ color: "#0F172A" }}>{orderNumber}</strong>
+            </p>
+          )}
         </div>
-      </div>
+        <Branding />
+      </PageShell>
     );
   }
 
+  // ── Payment confirmed (server-verified) ───────────────────────────────────
+  if (verifyState === "paid") {
+    return (
+      <PageShell bg="linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%)">
+        <div style={{ textAlign: "center" }}>
+          <CheckCircle size={64} style={{ color: "#059669" }} />
+          <h1 style={{ fontSize: "24px", fontWeight: 900, color: "#0F172A", margin: "16px 0 8px" }}>
+            Payment Confirmed!
+          </h1>
+          {firstName && (
+            <p style={{ fontSize: "15px", color: "#64748B", marginBottom: 4 }}>
+              Thank you, <strong>{firstName}</strong>.
+            </p>
+          )}
+          <p style={{ fontSize: "15px", color: "#64748B", marginBottom: 24, lineHeight: 1.6 }}>
+            Your bank payment was received and your order is now being prepared.
+          </p>
+
+          {orderNumber && (
+            <div style={{
+              background: "#F0FDF4", border: "1px solid #D1FAE5",
+              borderRadius: 10, padding: "14px 20px", marginBottom: 28,
+            }}>
+              <p style={{ fontSize: "12px", color: "#059669", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", margin: 0 }}>Order Reference</p>
+              <p style={{ fontSize: "18px", fontWeight: 900, color: "#0F172A", margin: "4px 0 0", letterSpacing: "0.04em" }}>{orderNumber}</p>
+              {total && <p style={{ fontSize: "13px", color: "#64748B", margin: "4px 0 0" }}>£{parseFloat(total).toFixed(2)} GBP</p>}
+            </div>
+          )}
+
+          <p style={{ fontSize: "13px", color: "#94A3B8", marginBottom: 28, lineHeight: 1.6 }}>
+            A confirmation email will be sent shortly. Keep your order reference safe.
+          </p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <Link
+              href={orderNumber ? `/track-order?number=${encodeURIComponent(orderNumber)}` : "/track-order"}
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                background: "linear-gradient(90deg, #059669, #34D399)",
+                color: "#022c22", textDecoration: "none",
+                borderRadius: 10, padding: "13px 20px",
+                fontSize: "14px", fontWeight: 800,
+                boxShadow: "0 0 20px rgba(52,211,153,0.25)",
+              }}
+            >
+              <Package size={16} /> Track Your Order <ArrowRight size={14} />
+            </Link>
+            <Link href="/" style={secondaryBtn}>Continue Shopping</Link>
+          </div>
+        </div>
+        <Branding />
+      </PageShell>
+    );
+  }
+
+  // ── Webhook delayed — payment still processing ────────────────────────────
+  if (verifyState === "pending_webhook") {
+    return (
+      <PageShell bg="linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)">
+        <div style={{ textAlign: "center" }}>
+          <Clock size={56} style={{ color: "#D97706" }} />
+          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#0F172A", margin: "16px 0 8px" }}>
+            Payment Processing
+          </h1>
+          <p style={{ fontSize: "15px", color: "#64748B", marginBottom: 24, lineHeight: 1.6 }}>
+            Your bank has approved the payment and we're waiting for the final confirmation.
+            This may take a few minutes.
+          </p>
+          {orderNumber && (
+            <div style={{
+              background: "#FEF9EE", border: "1px solid #FDE68A",
+              borderRadius: 10, padding: "14px 20px", marginBottom: 24,
+            }}>
+              <p style={{ fontSize: "12px", color: "#D97706", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", margin: 0 }}>Order Reference</p>
+              <p style={{ fontSize: "17px", fontWeight: 900, color: "#0F172A", margin: "4px 0 0" }}>{orderNumber}</p>
+            </div>
+          )}
+          <p style={{ fontSize: "13px", color: "#94A3B8", marginBottom: 28, lineHeight: 1.6 }}>
+            You'll receive a confirmation email once the payment settles.
+            You can also check your order status below.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <Link
+              href={orderNumber ? `/track-order?number=${encodeURIComponent(orderNumber)}` : "/track-order"}
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                background: "linear-gradient(90deg, #D97706, #F59E0B)",
+                color: "#fff", textDecoration: "none",
+                borderRadius: 10, padding: "13px 20px",
+                fontSize: "14px", fontWeight: 800,
+              }}
+            >
+              <Package size={16} /> Check Order Status
+            </Link>
+            <Link href="/" style={secondaryBtn}>Back to Homepage</Link>
+          </div>
+        </div>
+        <Branding />
+      </PageShell>
+    );
+  }
+
+  // ── Failure / cancelled ───────────────────────────────────────────────────
+  if (verifyState === "failed") {
+    return (
+      <PageShell bg="linear-gradient(135deg, #FFF1F2 0%, #FFF5F5 100%)">
+        <div style={{ textAlign: "center" }}>
+          <XCircle size={64} style={{ color: "#EF4444" }} />
+          <h1 style={{ fontSize: "24px", fontWeight: 900, color: "#0F172A", margin: "16px 0 8px" }}>
+            Payment Unsuccessful
+          </h1>
+          <p style={{ fontSize: "15px", color: "#64748B", marginBottom: 24, lineHeight: 1.6 }}>
+            Your payment was not completed — it may have been declined or cancelled. Your order has not been charged.
+          </p>
+          {orderNumber && (
+            <div style={{
+              background: "#FFF1F2", border: "1px solid #FECDD3",
+              borderRadius: 10, padding: "12px 20px", marginBottom: 28,
+            }}>
+              <p style={{ fontSize: "12px", color: "#EF4444", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", margin: 0 }}>Order Reference</p>
+              <p style={{ fontSize: "16px", fontWeight: 800, color: "#0F172A", margin: "4px 0 0" }}>{orderNumber}</p>
+            </div>
+          )}
+          <p style={{ fontSize: "13px", color: "#94A3B8", marginBottom: 28 }}>
+            Your cart is still saved. Return to checkout to try again.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <Link href="/cart" style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              background: "linear-gradient(90deg, #0a1d4f, #1240A0)",
+              color: "#fff", textDecoration: "none",
+              borderRadius: 10, padding: "13px 20px",
+              fontSize: "14px", fontWeight: 800,
+            }}>
+              <RotateCcw size={15} /> Return to Checkout
+            </Link>
+            <Link href="/" style={secondaryBtn}>Back to Homepage</Link>
+          </div>
+        </div>
+        <Branding />
+      </PageShell>
+    );
+  }
+
+  // ── Generic error (no order number, network failure, etc.) ────────────────
+  return (
+    <PageShell bg="linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)">
+      <div style={{ textAlign: "center" }}>
+        <XCircle size={56} style={{ color: "#94A3B8" }} />
+        <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#0F172A", margin: "16px 0 8px" }}>
+          Something went wrong
+        </h1>
+        <p style={{ fontSize: "14px", color: "#64748B", marginBottom: 28, lineHeight: 1.6 }}>
+          We couldn't verify your payment status. If you believe your payment went through, please check your email or{" "}
+          <Link href="/track-order" style={{ color: "#1240A0" }}>track your order</Link>.
+        </p>
+        <Link href="/" style={secondaryBtn}>Back to Homepage</Link>
+      </div>
+      <Branding />
+    </PageShell>
+  );
+}
+
+// ── Shared layout helpers ─────────────────────────────────────────────────────
+
+function PageShell({ children, bg }: { children: React.ReactNode; bg: string }) {
   return (
     <div style={{
-      fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC",
-      minHeight: "70vh", padding: "48px 16px",
+      minHeight: "100vh",
+      background: bg,
+      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+      padding: "40px 20px", fontFamily: "'Arimo', Arial, sans-serif",
     }}>
-      <div style={{ maxWidth: "640px", margin: "0 auto" }}>
-
-        {/* Success icon */}
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <div style={{
-            width: "80px", height: "80px", borderRadius: "50%",
-            background: "linear-gradient(135deg, #059669, #34D399)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            margin: "0 auto 20px",
-            boxShadow: "0 12px 40px rgba(5,150,105,0.3)",
-          }}>
-            <CheckCircle2 size={40} color="#fff" strokeWidth={2.5} />
-          </div>
-          <h1 style={{ fontSize: "28px", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: "8px" }}>
-            Payment received — thank you!
-          </h1>
-          <p style={{ fontSize: "15px", color: "#64748B", lineHeight: 1.6 }}>
-            Your open banking payment has been submitted,{" "}
-            <strong style={{ color: "#0F172A" }}>{name}</strong>.
-            We'll confirm and dispatch once it clears — usually within minutes.
-          </p>
-        </div>
-
-        {/* Status card */}
-        <div style={{
-          borderRadius: "16px", border: "1.5px solid #BBF7D0",
-          backgroundColor: "#F0FDF4", padding: "22px", marginBottom: "20px",
-        }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-            <CheckCircle2 size={18} color="#059669" />
-            <p style={{ fontSize: "14px", fontWeight: 800, color: "#065F46", margin: 0 }}>
-              Bank payment submitted via Wallid
-            </p>
-          </div>
-          <p style={{ fontSize: "12.5px", color: "#166534", lineHeight: 1.65, margin: 0 }}>
-            Your payment has been initiated directly from your bank. Faster Payments typically settle within seconds. We'll send you an email confirmation once the funds are received and your order is dispatched.
-          </p>
-        </div>
-
-        {/* Order card */}
-        <div style={{
-          backgroundColor: "#fff", borderRadius: "20px",
-          border: "1.5px solid #E8EDF5", boxShadow: "0 8px 40px rgba(15,23,42,0.07)",
-          overflow: "hidden", marginBottom: "20px",
-        }}>
-          {/* Header */}
-          <div style={{ background: "linear-gradient(90deg, #0D2565, #1B5CB5)", padding: "18px 24px", color: "#fff" }}>
-            <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", color: "rgba(255,255,255,0.55)", textTransform: "uppercase" }}>
-              Order Reference
-            </p>
-            <p style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.05em", marginTop: "2px" }}>{order}</p>
-          </div>
-
-          {/* Status tracker */}
-          <div style={{ padding: "20px 24px", borderBottom: "1px solid #F1F5F9" }}>
-            <div style={{ display: "flex", gap: "0", position: "relative" }}>
-              {["Order Placed", "Payment Received", "Dispatched", "Delivered"].map((label, i) => (
-                <div key={label} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", position: "relative" }}>
-                  {i < 3 && (
-                    <div style={{
-                      position: "absolute", top: "12px", left: "50%", right: "-50%",
-                      height: "2px", backgroundColor: i <= 1 ? "#059669" : "#E2E8F0", zIndex: 0,
-                    }} />
-                  )}
-                  <div style={{
-                    width: "24px", height: "24px", borderRadius: "50%", zIndex: 1,
-                    backgroundColor: i <= 1 ? "#059669" : i === 2 ? "#FCD34D" : "#E2E8F0",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                  }}>
-                    {i <= 1
-                      ? <CheckCircle2 size={14} color="#fff" />
-                      : i === 2
-                      ? <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#fff" }} />
-                      : <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#CBD5E1" }} />
-                    }
-                  </div>
-                  <p style={{
-                    fontSize: "10.5px", fontWeight: i <= 1 ? 700 : 500,
-                    color: i <= 1 ? "#059669" : i === 2 ? "#D97706" : "#94A3B8",
-                    textAlign: "center",
-                  }}>
-                    {label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Details */}
-          <div style={{ padding: "20px 24px" }}>
-            <div className="form-grid-2" style={{ gap: "16px" }}>
-              {[
-                { icon: <CheckCircle2 size={16} />, label: "Order Total", value: `£${parseFloat(total).toFixed(2)}`, color: "#1240A0" },
-                { icon: <Truck size={16} />, label: "Shipping", value: ship, color: "#0F172A" },
-                { icon: <FlaskConical size={16} />, label: "Est. Delivery", value: deliveryStr, color: "#0F172A" },
-                { icon: <CheckCircle2 size={16} />, label: "Purity", value: "98%+ verified", color: "#059669" },
-              ].map(item => (
-                <div key={item.label} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
-                  <div style={{ color: "#1B5CB5", marginTop: "1px", flexShrink: 0 }}>{item.icon}</div>
-                  <div>
-                    <p style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "2px" }}>{item.label}</p>
-                    <p style={{ fontSize: "13.5px", fontWeight: 700, color: item.color }}>{item.value}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* What happens next */}
-          <div style={{ padding: "18px 24px", backgroundColor: "#F8FAFF", borderTop: "1px solid #EEF4FF" }}>
-            <p style={{ fontSize: "12px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "12px" }}>
-              What happens next
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {[
-                "Your open banking payment is being processed — Faster Payments usually settle in seconds.",
-                "We'll send a confirmation email once funds are received.",
-                "Our lab team will then prepare your secure, discreet packaging for dispatch.",
-                "You'll receive a dispatch notification with tracking information.",
-              ].map((text, i) => (
-                <div key={i} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
-                  <div style={{
-                    width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
-                    backgroundColor: "#EEF4FF", color: "#1B5CB5",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: "11px", fontWeight: 800,
-                  }}>
-                    {i + 1}
-                  </div>
-                  <p style={{ fontSize: "12.5px", color: "#475569", lineHeight: 1.55, margin: 0 }}>{text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>
-          <Link
-            href="/all-peptides"
-            style={{
-              flex: 1, height: "46px", borderRadius: "12px",
-              background: "linear-gradient(90deg, #0D2565, #1B5CB5)",
-              color: "#fff", fontSize: "14px", fontWeight: 700,
-              display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-              textDecoration: "none",
-            }}
-          >
-            Continue Shopping <ArrowRight size={15} />
-          </Link>
-          <Link
-            href={`/track-order?q=${encodeURIComponent(order)}`}
-            style={{
-              height: "46px", paddingLeft: "18px", paddingRight: "18px", borderRadius: "12px",
-              border: "1.5px solid #E2E8F0", backgroundColor: "#fff",
-              color: "#475569", fontSize: "14px", fontWeight: 600,
-              cursor: "pointer", display: "flex", alignItems: "center", gap: "8px",
-              textDecoration: "none",
-            }}
-          >
-            <Search size={14} /> Track Order
-          </Link>
-          <button
-            onClick={() => window.open(`/api/orders/${encodeURIComponent(order)}/receipt`, "_blank")}
-            style={{
-              height: "46px", paddingLeft: "18px", paddingRight: "18px", borderRadius: "12px",
-              border: "1.5px solid #E2E8F0", backgroundColor: "#fff",
-              color: "#475569", fontSize: "14px", fontWeight: 600,
-              cursor: "pointer", display: "flex", alignItems: "center", gap: "8px",
-            }}
-          >
-            <Download size={14} /> Receipt
-          </button>
-        </div>
-
-        {/* RUO reminder */}
-        <div style={{ padding: "16px", borderRadius: "12px", backgroundColor: "#FFFBEB", border: "1px solid #FDE68A", display: "flex", gap: "10px", alignItems: "flex-start" }}>
-          <span style={{ fontSize: "14px", flexShrink: 0 }}>⚠️</span>
-          <p style={{ fontSize: "12px", color: "#92400E", lineHeight: 1.6, margin: 0 }}>
-            <strong>Research Use Only:</strong> These products are for in-vitro laboratory research exclusively. Not for human or veterinary use. Please handle and store in accordance with your institution's safety protocols.
-          </p>
-        </div>
+      <div style={{
+        background: "#fff",
+        borderRadius: 16,
+        padding: "48px 40px",
+        maxWidth: 480,
+        width: "100%",
+        boxShadow: "0 20px 60px rgba(15,23,42,0.1)",
+      }}>
+        {children}
       </div>
     </div>
   );
 }
+
+function Branding() {
+  return (
+    <p style={{ marginTop: 32, fontSize: "12px", color: "#94A3B8", textAlign: "center" }}>
+      Secure payment powered by <strong style={{ color: "#0D2565" }}>Wallid</strong> · OmniQure Peptide Research Institute
+    </p>
+  );
+}
+
+const secondaryBtn: React.CSSProperties = {
+  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+  background: "#F8FAFC", border: "1px solid #E2E8F0",
+  color: "#0F172A", textDecoration: "none",
+  borderRadius: 10, padding: "13px 20px",
+  fontSize: "14px", fontWeight: 700,
+};
