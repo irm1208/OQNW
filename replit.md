@@ -12,6 +12,7 @@ Research-grade peptide e-commerce site for OmniQure Peptide Research Institute, 
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 - `pnpm run check:api-drift` — verify admin order/customer/refund/fraud response fields match `lib/api-spec/openapi.yaml` (also runs as part of `pnpm run build`)
 - Required env: `DATABASE_URL` — Postgres connection string
+- Required secret: `GOOGLE_ADDRESS_VALIDATION_API_KEY` — Google Address Validation API key. Checkout fails closed until a customer verifies a complete delivery address; keep this key server-side only.
 
 ## Stack
 

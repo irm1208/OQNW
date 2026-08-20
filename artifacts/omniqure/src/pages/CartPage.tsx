@@ -27,36 +27,27 @@ interface RelatedApiItem {
   coOccurrences: number;
 }
 
-const COUNTRIES = [
-  // Common / top destinations first
-  "United Kingdom", "Ireland",
-  "United States", "Canada",
-  "Australia", "New Zealand",
-  // Europe — Western
-  "Austria", "Belgium", "Denmark", "Finland", "France", "Germany",
-  "Iceland", "Luxembourg", "Netherlands", "Norway", "Portugal", "Spain",
-  "Sweden", "Switzerland",
-  // Europe — Eastern / Central / Mediterranean
-  "Albania", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Cyprus",
-  "Czech Republic", "Estonia", "Greece", "Hungary", "Kosovo",
-  "Latvia", "Lithuania", "Malta", "Moldova", "Montenegro",
-  "North Macedonia", "Poland", "Romania", "Serbia", "Slovakia", "Slovenia",
-  // Asia-Pacific
-  "Bangladesh", "Cambodia", "China", "Hong Kong", "India", "Indonesia",
-  "Japan", "Macau", "Malaysia", "Maldives", "Myanmar", "Nepal",
-  "Pakistan", "Philippines", "Singapore", "South Korea", "Sri Lanka",
-  "Taiwan", "Thailand", "Vietnam",
-  // Middle East
-  "Bahrain", "Israel", "Jordan", "Kuwait", "Lebanon", "Oman",
-  "Qatar", "Saudi Arabia", "Turkey", "United Arab Emirates",
-  // Americas
-  "Argentina", "Brazil", "Chile", "Colombia", "Costa Rica",
-  "Dominican Republic", "Ecuador", "El Salvador", "Guatemala",
-  "Honduras", "Jamaica", "Mexico", "Panama", "Peru",
-  "Trinidad and Tobago", "Uruguay",
-  // Africa
-  "Egypt", "Ghana", "Kenya", "Morocco", "Nigeria", "South Africa", "Tunisia",
-].sort((a, b) => {
+const ISO_COUNTRY_CODES = (
+  "AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ " +
+  "BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ " +
+  "CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ " +
+  "DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR " +
+  "GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY " +
+  "HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP " +
+  "KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY " +
+  "MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ " +
+  "NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA " +
+  "RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ " +
+  "TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ " +
+  "VA VC VE VG VI VN VU WF WS XK YE YT ZA ZM ZW"
+).split(" ");
+
+const COUNTRIES = (() => {
+  const displayNames = new Intl.DisplayNames(["en"], { type: "region" });
+  return ISO_COUNTRY_CODES
+    .map(code => displayNames.of(code))
+    .filter((name): name is string => Boolean(name))
+    .sort((a, b) => {
   // Keep UK and US at the top
   const pinned = ["United Kingdom", "United States", "Canada", "Ireland", "Australia", "New Zealand"];
   const ai = pinned.indexOf(a), bi = pinned.indexOf(b);
@@ -64,7 +55,8 @@ const COUNTRIES = [
   if (ai !== -1) return -1;
   if (bi !== -1) return 1;
   return a.localeCompare(b);
-});
+    });
+})();
 
 const SHIPPING_OPTIONS = [
   {
@@ -133,6 +125,23 @@ type DeliveryForm = {
   postcode: string; country: string;
 };
 
+type CanonicalAddress = {
+  address1: string;
+  address2?: string;
+  city: string;
+  county?: string;
+  postcode: string;
+  country: string;
+  countryCode: string;
+  formattedAddress: string;
+};
+
+type AddressVerification = {
+  canonicalAddress: CanonicalAddress;
+  verificationToken: string;
+  expiresAt: string;
+};
+
 type AppliedDiscount = {
   code: string; type: string; value: number; discountAmount: number;
 };
@@ -141,6 +150,33 @@ const emptyDelivery: DeliveryForm = {
   email: "", firstName: "", lastName: "", phone: "",
   address1: "", address2: "", city: "", county: "",
   postcode: "", country: "United Kingdom",
+};
+
+const ADDRESS_FIELDS = new Set<keyof DeliveryForm>([
+  "address1", "address2", "city", "county", "postcode", "country",
+]);
+
+const POSTCODE_RULES: Record<string, { pattern: RegExp; message: string }> = {
+  "United Kingdom": {
+    pattern: /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i,
+    message: "Enter a valid UK postcode",
+  },
+  "United States": {
+    pattern: /^\d{5}(?:-\d{4})?$/,
+    message: "Enter a valid ZIP code",
+  },
+  "Canada": {
+    pattern: /^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ][ -]?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i,
+    message: "Enter a valid Canadian postal code",
+  },
+  "Australia": {
+    pattern: /^\d{4}$/,
+    message: "Enter a valid Australian postcode",
+  },
+  "Japan": {
+    pattern: /^\d{3}-?\d{4}$/,
+    message: "Enter a valid Japanese postal code",
+  },
 };
 
 // ── Styles ──────────────────────────────────────────────────────────────────
@@ -351,6 +387,10 @@ export default function CartPage() {
   const [placeError, setPlaceError] = useState<string | null>(null);
   const [stockErrors, setStockErrors] = useState<{ productName: string; available: number; requested: number }[]>([]);
   const [confirmed, setConfirmed] = useState(false);
+  const [pendingAddressVerification, setPendingAddressVerification] = useState<AddressVerification | null>(null);
+  const [addressVerification, setAddressVerification] = useState<AddressVerification | null>(null);
+  const [addressVerificationLoading, setAddressVerificationLoading] = useState(false);
+  const [addressVerificationError, setAddressVerificationError] = useState<string | null>(null);
 
   // Discount
   const [discountInput, setDiscountInput] = useState("");
@@ -433,11 +473,9 @@ export default function CartPage() {
     "United States", "Canada", "Australia", "New Zealand",
     "India", "Brazil", "Mexico", "Argentina", "Malaysia",
   ]);
-  // Countries where postcode is not commonly required
+  // Countries that do not use postal codes for standard delivery addressing.
   const POSTCODE_OPTIONAL_COUNTRIES = new Set([
-    "Hong Kong", "Macau", "Maldives", "Qatar", "United Arab Emirates",
-    "Bahrain", "Oman", "Kuwait", "Saudi Arabia", "Lebanon",
-    "Jordan", "Ghana", "Nigeria", "Kenya", "South Africa",
+    "Hong Kong", "Macau", "Qatar", "United Arab Emirates",
   ]);
 
   const isUKPostcode = delivery.country === "United Kingdom";
@@ -451,7 +489,7 @@ export default function CartPage() {
   const stateLabel = delivery.country === "Canada" ? "Province" : "State";
   const countyStateLabel = usesStateProvince ? stateLabel : "County / Region";
 
-  // Auto-fill city/county when a valid UK postcode is entered
+  // Auto-fill city/county when a valid UK postcode is entered.
   const onPostcodeBlur = useCallback(async (pc: string, country: string) => {
     if (country !== "United Kingdom") return;
     const q = pc.trim().toUpperCase().replace(/\s/g, "");
@@ -552,19 +590,115 @@ export default function CartPage() {
     ? totalGBP * (rates.EUR ?? 1.17)
     : totalGBP;
 
-  const setD = (f: keyof DeliveryForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+  const setD = (f: keyof DeliveryForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    if (ADDRESS_FIELDS.has(f)) {
+      setAddressVerification(null);
+      setPendingAddressVerification(null);
+      setAddressVerificationError(null);
+    }
     setDelivery(d => ({ ...d, [f]: e.target.value }));
+  };
+
+  function validateAddressFields(): Record<string, string> {
+    const e: Record<string, string> = {};
+    if (!delivery.address1.trim()) e.address1 = "Required";
+    if (!delivery.city.trim()) e.city = "Required";
+    if (!delivery.country.trim()) e.country = "Required";
+    if (!postcodeOptional && !delivery.postcode.trim()) {
+      e.postcode = "Required";
+    } else {
+      const rule = POSTCODE_RULES[delivery.country];
+      if (delivery.postcode.trim() && rule && !rule.pattern.test(delivery.postcode.trim())) {
+        e.postcode = rule.message;
+      }
+    }
+    return e;
+  }
 
   function validateAll(): Record<string, string> {
-    const e: Record<string, string> = {};
+    const e = validateAddressFields();
     if (!delivery.email.includes("@")) e.email = "Valid email required";
     if (!delivery.firstName.trim()) e.firstName = "Required";
     if (!delivery.lastName.trim()) e.lastName = "Required";
-    if (!delivery.address1.trim()) e.address1 = "Required";
-    if (!delivery.city.trim()) e.city = "Required";
-    if (!postcodeOptional && !delivery.postcode.trim()) e.postcode = "Required";
-    if (!delivery.country.trim()) e.country = "Required";
+    if (!addressVerification) {
+      e.addressVerification = "Verify and confirm your delivery address";
+    }
     return e;
+  }
+
+  async function verifyDeliveryAddress() {
+    const fieldErrors = validateAddressFields();
+    if (Object.keys(fieldErrors).length > 0) {
+      setErrors(current => ({ ...current, ...fieldErrors }));
+      return;
+    }
+
+    setAddressVerificationLoading(true);
+    setAddressVerificationError(null);
+    setAddressVerification(null);
+    setPendingAddressVerification(null);
+    try {
+      const res = await fetch(apiUrl("address-verification"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          address1: delivery.address1,
+          address2: delivery.address2 || undefined,
+          city: delivery.city,
+          county: delivery.county || undefined,
+          postcode: delivery.postcode,
+          country: delivery.country,
+        }),
+      });
+      const data = await res.json().catch(() => ({})) as {
+        error?: string;
+        canonicalAddress?: CanonicalAddress;
+        verificationToken?: string;
+        expiresAt?: string;
+      };
+      if (
+        !res.ok ||
+        !data.canonicalAddress ||
+        !data.verificationToken ||
+        !data.expiresAt
+      ) {
+        throw new Error(data.error ?? "We could not verify that address. Check the details and try again.");
+      }
+      setPendingAddressVerification({
+        canonicalAddress: data.canonicalAddress,
+        verificationToken: data.verificationToken,
+        expiresAt: data.expiresAt,
+      });
+    } catch (error) {
+      const message = error instanceof Error
+        ? error.message
+        : "Address verification is temporarily unavailable. Please try again.";
+      setAddressVerificationError(message);
+      setErrors(current => ({ ...current, addressVerification: message }));
+    } finally {
+      setAddressVerificationLoading(false);
+    }
+  }
+
+  function useVerifiedAddress() {
+    if (!pendingAddressVerification) return;
+    const { canonicalAddress } = pendingAddressVerification;
+    setDelivery(current => ({
+      ...current,
+      address1: canonicalAddress.address1,
+      address2: canonicalAddress.address2 ?? "",
+      city: canonicalAddress.city,
+      county: canonicalAddress.county ?? "",
+      postcode: canonicalAddress.postcode,
+      country: canonicalAddress.country,
+    }));
+    setAddressVerification(pendingAddressVerification);
+    setPendingAddressVerification(null);
+    setAddressVerificationError(null);
+    setErrors(current => {
+      const { addressVerification: _addressVerification, ...rest } = current;
+      return rest;
+    });
   }
 
   async function applyDiscount() {
@@ -633,6 +767,7 @@ export default function CartPage() {
             county: delivery.county || undefined,
             postcode: delivery.postcode,
             country: delivery.country,
+            addressVerificationToken: addressVerification?.verificationToken,
           },
           shippingMethod: selectedShipping.label,
           shippingCostGbp: shippingCost,
@@ -955,6 +1090,102 @@ export default function CartPage() {
               {postcodeLoading && <p style={{ fontSize: "12px", color: THEME.textMuted, marginTop: 4 }}>Looking up postcode…</p>}
               {errors.postcode && <p style={errText}>{errors.postcode}</p>}
             </div>
+          </div>
+
+          <div
+            data-field="addressVerification"
+            tabIndex={-1}
+            style={{
+              marginTop: 14,
+              marginBottom: 16,
+              padding: "14px",
+              borderRadius: 6,
+              border: `1px solid ${
+                addressVerification
+                  ? "#86EFAC"
+                  : pendingAddressVerification
+                    ? "#93C5FD"
+                    : errors.addressVerification
+                      ? "#FCA5A5"
+                      : "#D8E4FF"
+              }`,
+              background: addressVerification
+                ? "#F0FDF4"
+                : pendingAddressVerification
+                  ? "#EFF6FF"
+                  : "#F8FBFF",
+            }}
+          >
+            <p style={{ fontSize: "13px", fontWeight: 700, color: THEME.text, margin: "0 0 5px" }}>
+              Verify delivery address
+            </p>
+            {addressVerification ? (
+              <>
+                <p style={{ margin: "0 0 10px", fontSize: "12px", color: "#166534", lineHeight: 1.5 }}>
+                  <CheckCircle2 size={14} style={{ display: "inline", verticalAlign: "text-bottom", marginRight: 5 }} />
+                  Address verified. This confirmation is required before payment.
+                </p>
+                <p style={{ margin: 0, fontSize: "12px", color: THEME.textSub, lineHeight: 1.5 }}>
+                  {addressVerification.canonicalAddress.formattedAddress}
+                </p>
+              </>
+            ) : pendingAddressVerification ? (
+              <>
+                <p style={{ margin: "0 0 9px", fontSize: "12px", color: THEME.textSub, lineHeight: 1.5 }}>
+                  We found this delivery address. Confirm it to continue:
+                </p>
+                <p style={{ margin: "0 0 12px", fontSize: "13px", color: THEME.text, fontWeight: 600, lineHeight: 1.5 }}>
+                  {pendingAddressVerification.canonicalAddress.formattedAddress}
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  <button
+                    type="button"
+                    onClick={useVerifiedAddress}
+                    style={{
+                      border: "none", borderRadius: 4, background: THEME.cta, color: "#fff",
+                      padding: "9px 12px", fontSize: "12px", fontWeight: 700, cursor: "pointer",
+                    }}
+                  >
+                    Use verified address
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPendingAddressVerification(null)}
+                    style={{
+                      border: `1px solid ${THEME.inputBorder}`, borderRadius: 4, background: "#fff", color: THEME.textSub,
+                      padding: "9px 12px", fontSize: "12px", fontWeight: 600, cursor: "pointer",
+                    }}
+                  >
+                    Edit address
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p style={{ margin: "0 0 11px", fontSize: "12px", color: THEME.textSub, lineHeight: 1.5 }}>
+                  We check the full address with our delivery-address provider before an order can be placed.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => void verifyDeliveryAddress()}
+                  disabled={addressVerificationLoading}
+                  style={{
+                    border: "none", borderRadius: 4,
+                    background: addressVerificationLoading ? "#94A3B8" : THEME.cta,
+                    color: "#fff", padding: "9px 12px", fontSize: "12px", fontWeight: 700,
+                    cursor: addressVerificationLoading ? "wait" : "pointer",
+                  }}
+                >
+                  {addressVerificationLoading ? "Verifying address…" : "Verify address"}
+                </button>
+              </>
+            )}
+            {addressVerificationError && (
+              <p style={{ ...errText, marginBottom: 0 }}>{addressVerificationError}</p>
+            )}
+            {!addressVerificationError && errors.addressVerification && !addressVerification && (
+              <p style={{ ...errText, marginBottom: 0 }}>{errors.addressVerification}</p>
+            )}
           </div>
 
           <hr style={divider} />

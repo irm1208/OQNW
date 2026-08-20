@@ -28,6 +28,11 @@ import { createWallidPaymentQuote, type WallidPaymentCurrency } from "../lib/pay
 import { assessFraud } from "../lib/fraudScorer";
 import { getClientIp, lookupIpData } from "../lib/geoip";
 import { dispatchWebhook } from "../lib/webhookDispatcher";
+import {
+  countryCodeForName,
+  postcodeIsRequired,
+  verifyAddressVerificationProof,
+} from "../lib/addressVerification";
 
 const COUNTRY_NAME_TO_CODE: Record<string, string> = {
   "United States": "US", "United Kingdom": "GB", "Canada": "CA",
@@ -88,6 +93,7 @@ interface DeliveryDetails {
   county?: string;
   postcode: string;
   country: string;
+  addressVerificationToken?: string;
 }
 
 router.post("/orders", async (req: Request, res: Response): Promise<void> => {
@@ -120,21 +126,44 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
   const paymentCurrencyStr = typeof paymentCurrency === "string" ? paymentCurrency.toUpperCase() : "GBP";
 
   // Basic validation
-  const d = delivery as DeliveryDetails;
+  const submittedDelivery = delivery as DeliveryDetails;
+  const countryCode = submittedDelivery ? countryCodeForName(submittedDelivery.country) : null;
   if (
-    !d ||
-    typeof d.email !== "string" ||
-    !d.email.includes("@") ||
-    typeof d.firstName !== "string" || !d.firstName.trim() ||
-    typeof d.lastName !== "string" || !d.lastName.trim() ||
-    typeof d.address1 !== "string" || !d.address1.trim() ||
-    typeof d.city !== "string" || !d.city.trim() ||
-    typeof d.postcode !== "string" || !d.postcode.trim() ||
-    typeof d.country !== "string" || !d.country.trim()
+    !submittedDelivery ||
+    typeof submittedDelivery.email !== "string" ||
+    !submittedDelivery.email.includes("@") ||
+    typeof submittedDelivery.firstName !== "string" || !submittedDelivery.firstName.trim() ||
+    typeof submittedDelivery.lastName !== "string" || !submittedDelivery.lastName.trim() ||
+    typeof submittedDelivery.address1 !== "string" || !submittedDelivery.address1.trim() ||
+    typeof submittedDelivery.city !== "string" || !submittedDelivery.city.trim() ||
+    typeof submittedDelivery.postcode !== "string" ||
+    (countryCode !== null && postcodeIsRequired(countryCode) && !submittedDelivery.postcode.trim()) ||
+    typeof submittedDelivery.country !== "string" || !submittedDelivery.country.trim() ||
+    !countryCode
   ) {
     res.status(400).json({ error: "Missing or invalid delivery details" });
     return;
   }
+
+  if (typeof submittedDelivery.addressVerificationToken !== "string") {
+    res.status(422).json({
+      error: "Please verify and confirm your delivery address before placing the order.",
+      code: "ADDRESS_VERIFICATION_REQUIRED",
+    });
+    return;
+  }
+  const addressProof = verifyAddressVerificationProof(
+    submittedDelivery.addressVerificationToken,
+    submittedDelivery,
+  );
+  if (!addressProof.valid) {
+    res.status(422).json({ error: addressProof.reason, code: "ADDRESS_VERIFICATION_REQUIRED" });
+    return;
+  }
+  const d: DeliveryDetails = {
+    ...submittedDelivery,
+    ...addressProof.canonical,
+  };
 
   if (typeof shippingMethod !== "string" || !shippingMethod.trim()) {
     res.status(400).json({ error: "Shipping method is required" });
