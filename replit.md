@@ -4,7 +4,7 @@ Research-grade peptide e-commerce site for OmniQure Peptide Research Institute, 
 
 ## Run & Operate
 
-- Three Replit workflows are configured and run automatically: **API Server** (port 8080), **Storefront** (port 5000, main preview), **Admin Panel** (port 8082). Restart them after server-side code changes.
+- The **Storefront** workflow starts the API Server (port 8080) first, waits for `/api/healthz`, then starts the storefront (port 5000, main preview). Restart it after server-side code changes.
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
