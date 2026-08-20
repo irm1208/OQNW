@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   AddressVerificationError,
   createAddressVerificationProof,
-  verifyAddressWithGoogle,
+  verifyAddressWithNominatim,
   type DeliveryAddress,
 } from "../lib/addressVerification";
 
@@ -85,7 +85,7 @@ router.post("/address-verification", async (req, res) => {
   }
 
   try {
-    const canonical = await verifyAddressWithGoogle({
+    const canonical = await verifyAddressWithNominatim({
       address1: delivery.address1,
       address2: typeof delivery.address2 === "string" ? delivery.address2 : undefined,
       city: delivery.city,

@@ -1,4 +1,6 @@
 import crypto from "crypto";
+import { db } from "@workspace/db";
+import { sql } from "drizzle-orm";
 
 export type DeliveryAddress = {
   address1: string;
@@ -14,25 +16,27 @@ export type VerifiedAddress = DeliveryAddress & {
   formattedAddress: string;
 };
 
-type GoogleAddressValidationResponse = {
-  result?: {
-    verdict?: {
-      addressComplete?: boolean;
-      hasUnconfirmedComponents?: boolean;
-      validationGranularity?: string;
-    };
-    address?: {
-      formattedAddress?: string;
-      postalAddress?: {
-        addressLines?: string[];
-        locality?: string;
-        administrativeArea?: string;
-        postalCode?: string;
-        regionCode?: string;
-      };
-    };
+type NominatimResult = {
+  display_name?: string;
+  type?: string;
+  address?: {
+    house_number?: string;
+    road?: string;
+    pedestrian?: string;
+    residential?: string;
+    unit?: string;
+    apartment?: string;
+    suburb?: string;
+    city?: string;
+    town?: string;
+    village?: string;
+    municipality?: string;
+    county?: string;
+    state?: string;
+    postcode?: string;
+    country?: string;
+    country_code?: string;
   };
-  error?: { message?: string };
 };
 
 type VerificationProof = {
@@ -42,8 +46,10 @@ type VerificationProof = {
 };
 
 const VERIFICATION_TTL_MS = 15 * 60 * 1000;
-const GLOBAL_ADDRESS_VALIDATION_URL =
-  "https://addressvalidation.googleapis.com/v1:validateAddress";
+const NOMINATIM_SEARCH_URL = "https://nominatim.openstreetmap.org/search";
+const NOMINATIM_MIN_REQUEST_INTERVAL_MS = 1_000;
+const NOMINATIM_ADVISORY_LOCK_KEY = 248_104_211;
+type NominatimRateLimiter = <T>(request: () => Promise<T>) => Promise<T>;
 
 const COUNTRY_ALIASES: Record<string, string> = {
   "bosnia and herzegovina": "BA",
@@ -125,20 +131,20 @@ function buildCountryNameMap(): Map<string, string> {
 
 const COUNTRY_NAME_TO_CODE = buildCountryNameMap();
 
-function signingSecret(): string {
-  return (
-    process.env.SESSION_SECRET ??
-    process.env.ADMIN_PASSWORD ??
-    "omniqure-cust-session-fallback-secret"
-  );
+function signingSecret(): string | null {
+  const secret = process.env.SESSION_SECRET?.trim();
+  return secret || null;
 }
 
 function encodedJson(value: unknown): string {
   return Buffer.from(JSON.stringify(value)).toString("base64url");
 }
 
-function sign(value: string): string {
-  return crypto.createHmac("sha256", signingSecret()).update(value).digest("base64url");
+function sign(value: string): string | null {
+  const secret = signingSecret();
+  return secret
+    ? crypto.createHmac("sha256", secret).update(value).digest("base64url")
+    : null;
 }
 
 function safeSignatureMatches(actual: string, expected: string): boolean {
@@ -173,24 +179,64 @@ function addressHash(address: DeliveryAddress): string {
   return crypto.createHash("sha256").update(normalized).digest("hex");
 }
 
-function toCanonicalAddress(
+function normalizePostcode(value: string | undefined): string {
+  return normalizeText(value).replace(/[\s-]/g, "").toLocaleUpperCase("en-GB");
+}
+
+async function withSharedNominatimRateLimit<T>(request: () => Promise<T>): Promise<T> {
+  return db.transaction(async tx => {
+    await tx.execute(sql`SET LOCAL lock_timeout = '5s'`);
+    await tx.execute(sql`SELECT pg_advisory_xact_lock(${NOMINATIM_ADVISORY_LOCK_KEY})`);
+    const dispatchedAt = Date.now();
+    try {
+      return await request();
+    } finally {
+      const remainingMs = NOMINATIM_MIN_REQUEST_INTERVAL_MS - (Date.now() - dispatchedAt);
+      if (remainingMs > 0) {
+        await tx.execute(sql`SELECT pg_sleep(${remainingMs / 1_000})`);
+      }
+    }
+  });
+}
+
+function canonicalAddressFromNominatim(
   input: DeliveryAddress,
-  response: GoogleAddressValidationResponse,
+  result: NominatimResult,
   countryCode: string,
-): VerifiedAddress {
-  const postalAddress = response.result?.address?.postalAddress;
-  const addressLines = postalAddress?.addressLines?.map(normalizeText).filter(Boolean) ?? [];
+): VerifiedAddress | null {
+  const address = result.address;
+  if (!address || address.country_code?.toUpperCase() !== countryCode) return null;
+
+  const road = normalizeText(address.road || address.pedestrian || address.residential);
+  const houseNumber = normalizeText(address.house_number);
+  const returnedPostcode = normalizeText(address.postcode);
+  const submittedPostcode = normalizePostcode(input.postcode);
+  if (
+    !road ||
+    !houseNumber ||
+    (postcodeIsRequired(countryCode) && !returnedPostcode) ||
+    (submittedPostcode && normalizePostcode(returnedPostcode) !== submittedPostcode)
+  ) {
+    return null;
+  }
+
+  const city = normalizeText(
+    address.city || address.town || address.village || address.municipality,
+  );
+  if (!city) return null;
+
   const canonical: DeliveryAddress = {
-    address1: addressLines[0] || normalizeText(input.address1),
-    address2: addressLines.slice(1).join(", ") || normalizeText(input.address2),
-    city: normalizeText(postalAddress?.locality) || normalizeText(input.city),
-    county:
-      normalizeText(postalAddress?.administrativeArea) || normalizeText(input.county),
-    postcode: normalizeText(postalAddress?.postalCode) || normalizeText(input.postcode),
+    address1: `${houseNumber} ${road}`,
+    address2: [normalizeText(address.unit), normalizeText(address.apartment)]
+      .filter(Boolean)
+      .join(", ") || normalizeText(input.address2),
+    city,
+    county: normalizeText(address.state || address.county),
+    postcode: returnedPostcode || normalizeText(input.postcode),
     country: normalizeText(input.country),
   };
   const formattedAddress =
-    normalizeText(response.result?.address?.formattedAddress) ||
+    normalizeText(result.display_name) ||
     [
       canonical.address1,
       canonical.address2,
@@ -205,9 +251,10 @@ function toCanonicalAddress(
   return { ...canonical, countryCode, formattedAddress };
 }
 
-export async function verifyAddressWithGoogle(
+export async function verifyAddressWithNominatim(
   input: DeliveryAddress,
   fetcher: typeof fetch = fetch,
+  rateLimiter: NominatimRateLimiter = withSharedNominatimRateLimit,
 ): Promise<VerifiedAddress> {
   const countryCode = countryCodeForName(input.country);
   if (!countryCode) {
@@ -229,30 +276,33 @@ export async function verifyAddressWithGoogle(
     );
   }
 
-  const apiKey = process.env.GOOGLE_ADDRESS_VALIDATION_API_KEY;
-  if (!apiKey) {
-    throw new AddressVerificationError(
-      "Address verification is temporarily unavailable. Please try again later.",
-      503,
-      "ADDRESS_VERIFICATION_UNAVAILABLE",
-    );
-  }
-
   let response: Response;
   try {
-    response = await fetcher(`${GLOBAL_ADDRESS_VALIDATION_URL}?key=${encodeURIComponent(apiKey)}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        address: {
-          regionCode: countryCode,
-          addressLines: [normalizeText(input.address1), normalizeText(input.address2)].filter(Boolean),
-          locality: normalizeText(input.city),
-          administrativeArea: normalizeText(input.county),
-          postalCode: normalizeText(input.postcode),
+    const params = new URLSearchParams({
+      format: "jsonv2",
+      addressdetails: "1",
+      limit: "5",
+      countrycodes: countryCode.toLowerCase(),
+      q: [
+        normalizeText(input.address1),
+        normalizeText(input.address2),
+        normalizeText(input.city),
+        normalizeText(input.postcode),
+        normalizeText(input.country),
+      ]
+        .filter(Boolean)
+        .join(", "),
+    });
+    response = await rateLimiter(() =>
+      fetcher(`${NOMINATIM_SEARCH_URL}?${params.toString()}`, {
+        headers: {
+          Accept: "application/json",
+          "User-Agent":
+            process.env.NOMINATIM_USER_AGENT ??
+            "OmniQure checkout address lookup (server-side)",
         },
       }),
-    });
+    );
   } catch {
     throw new AddressVerificationError(
       "Address verification is temporarily unavailable. Please try again later.",
@@ -261,9 +311,9 @@ export async function verifyAddressWithGoogle(
     );
   }
 
-  const payload = (await response.json().catch(() => ({}))) as GoogleAddressValidationResponse;
+  const payload = await response.json().catch(() => null);
   if (!response.ok) {
-    const providerUnavailable = response.status === 401 || response.status === 403 || response.status >= 500;
+    const providerUnavailable = response.status === 429 || response.status >= 500;
     throw new AddressVerificationError(
       providerUnavailable
         ? "Address verification is temporarily unavailable. Please try again later."
@@ -275,27 +325,26 @@ export async function verifyAddressWithGoogle(
     );
   }
 
-  const verdict = payload.result?.verdict;
-  if (!verdict?.addressComplete || verdict.hasUnconfirmedComponents) {
+  if (!Array.isArray(payload)) {
     throw new AddressVerificationError(
-      "We could not confirm this complete address. Check each field and try again.",
+      "Address verification is temporarily unavailable. Please try again later.",
+      503,
+      "ADDRESS_VERIFICATION_UNAVAILABLE",
+    );
+  }
+
+  const canonical = payload
+    .map(result => canonicalAddressFromNominatim(input, result as NominatimResult, countryCode))
+    .find((result): result is VerifiedAddress => result !== null);
+  if (!canonical) {
+    throw new AddressVerificationError(
+      "We could not confirm this specific address. Check the building number, street, city, and postcode.",
       422,
       "ADDRESS_NOT_CONFIRMED",
     );
   }
 
-  if (
-    verdict.validationGranularity !== "PREMISE" &&
-    verdict.validationGranularity !== "SUB_PREMISE"
-  ) {
-    throw new AddressVerificationError(
-      "Please enter a specific building or delivery address, not only a street or area.",
-      422,
-      "ADDRESS_TOO_BROAD",
-    );
-  }
-
-  return toCanonicalAddress(input, payload, countryCode);
+  return canonical;
 }
 
 export function createAddressVerificationProof(canonical: VerifiedAddress): {
@@ -308,8 +357,16 @@ export function createAddressVerificationProof(canonical: VerifiedAddress): {
     expiresAt: Date.now() + VERIFICATION_TTL_MS,
   };
   const encoded = encodedJson(payload);
+  const signature = sign(encoded);
+  if (!signature) {
+    throw new AddressVerificationError(
+      "Address confirmation is temporarily unavailable. Please try again later.",
+      503,
+      "ADDRESS_VERIFICATION_UNAVAILABLE",
+    );
+  }
   return {
-    token: `${encoded}.${sign(encoded)}`,
+    token: `${encoded}.${signature}`,
     expiresAt: new Date(payload.expiresAt).toISOString(),
   };
 }
@@ -323,7 +380,11 @@ export function verifyAddressVerificationProof(
 
   const encoded = token.slice(0, dot);
   const signature = token.slice(dot + 1);
-  if (!safeSignatureMatches(signature, sign(encoded))) {
+  const expectedSignature = sign(encoded);
+  if (!expectedSignature) {
+    return { valid: false, reason: "Address confirmation is temporarily unavailable. Please try again." };
+  }
+  if (!safeSignatureMatches(signature, expectedSignature)) {
     return { valid: false, reason: "Address verification is invalid. Please verify again." };
   }
 

@@ -621,7 +621,7 @@ export default function CartPage() {
     if (!delivery.firstName.trim()) e.firstName = "Required";
     if (!delivery.lastName.trim()) e.lastName = "Required";
     if (!addressVerification) {
-      e.addressVerification = "Verify and confirm your delivery address";
+      e.addressVerification = "Match and confirm your delivery address";
     }
     return e;
   }
@@ -1117,13 +1117,13 @@ export default function CartPage() {
             }}
           >
             <p style={{ fontSize: "13px", fontWeight: 700, color: THEME.text, margin: "0 0 5px" }}>
-              Verify delivery address
+              Confirm delivery address
             </p>
             {addressVerification ? (
               <>
                 <p style={{ margin: "0 0 10px", fontSize: "12px", color: "#166534", lineHeight: 1.5 }}>
                   <CheckCircle2 size={14} style={{ display: "inline", verticalAlign: "text-bottom", marginRight: 5 }} />
-                  Address verified. This confirmation is required before payment.
+                  Address matched to OpenStreetMap data and confirmed. Carrier delivery checks still apply.
                 </p>
                 <p style={{ margin: 0, fontSize: "12px", color: THEME.textSub, lineHeight: 1.5 }}>
                   {addressVerification.canonicalAddress.formattedAddress}
@@ -1132,7 +1132,7 @@ export default function CartPage() {
             ) : pendingAddressVerification ? (
               <>
                 <p style={{ margin: "0 0 9px", fontSize: "12px", color: THEME.textSub, lineHeight: 1.5 }}>
-                  We found this delivery address. Confirm it to continue:
+                  We found this mapped delivery address. Confirm it to continue:
                 </p>
                 <p style={{ margin: "0 0 12px", fontSize: "13px", color: THEME.text, fontWeight: 600, lineHeight: 1.5 }}>
                   {pendingAddressVerification.canonicalAddress.formattedAddress}
@@ -1163,7 +1163,7 @@ export default function CartPage() {
             ) : (
               <>
                 <p style={{ margin: "0 0 11px", fontSize: "12px", color: THEME.textSub, lineHeight: 1.5 }}>
-                  We check the full address with our delivery-address provider before an order can be placed.
+                  We match the address against OpenStreetMap data and ask you to confirm the standardized result.
                 </p>
                 <button
                   type="button"
@@ -1176,10 +1176,22 @@ export default function CartPage() {
                     cursor: addressVerificationLoading ? "wait" : "pointer",
                   }}
                 >
-                  {addressVerificationLoading ? "Verifying address…" : "Verify address"}
+                  {addressVerificationLoading ? "Checking address…" : "Check address"}
                 </button>
               </>
             )}
+            <p style={{ margin: "10px 0 0", fontSize: "11px", color: THEME.textSub, lineHeight: 1.4 }}>
+              Address data ©{" "}
+              <a
+                href="https://www.openstreetmap.org/copyright"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: THEME.cta }}
+              >
+                OpenStreetMap contributors
+              </a>
+              .
+            </p>
             {addressVerificationError && (
               <p style={{ ...errText, marginBottom: 0 }}>{addressVerificationError}</p>
             )}

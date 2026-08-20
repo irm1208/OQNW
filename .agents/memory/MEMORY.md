@@ -8,3 +8,4 @@
 - [Marketing copy is scattered widely](marketing-copy-scattered-widely.md) — a promo mechanic's tier numbers/text repeat across 10+ files (hero, strips, FAQ, T&Cs, chat bot, announcement bar); grep the whole app for the old value, not just the obvious pages.
 - [Orphaned features can be backend-coupled](orphaned-feature-backend-coupling.md) — a feature with no frontend UI can still be live-wired into shared endpoints (e.g. checkout); grep the whole backend before deleting, not just its own route file.
 - [GitHub connector and terminal Git](github-cli-auth.md) — GitHub OAuth API access does not automatically authenticate shell `git` commands.
+- [Nominatim checkout matching](nominatim-checkout-matching.md) — public OSM mapping confirms a mapped address, not carrier deliverability; preserve its limits and disclosure.

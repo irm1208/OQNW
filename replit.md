@@ -12,7 +12,8 @@ Research-grade peptide e-commerce site for OmniQure Peptide Research Institute, 
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 - `pnpm run check:api-drift` — verify admin order/customer/refund/fraud response fields match `lib/api-spec/openapi.yaml` (also runs as part of `pnpm run build`)
 - Required env: `DATABASE_URL` — Postgres connection string
-- Required secret: `GOOGLE_ADDRESS_VALIDATION_API_KEY` — Google Address Validation API key. Checkout fails closed until a customer verifies a complete delivery address; keep this key server-side only.
+- Required secret: `SESSION_SECRET` — random server-only key used to sign checkout address-confirmation proofs. Address confirmation and ordering fail closed if it is missing.
+- Address lookup: checkout uses the public Nominatim/OpenStreetMap API server-side with a PostgreSQL-coordinated 1 request/second limit across API replicas. No API key is required; `NOMINATIM_USER_AGENT` is an optional non-secret environment variable for a contact-identifying request header.
 
 ## Stack
 
