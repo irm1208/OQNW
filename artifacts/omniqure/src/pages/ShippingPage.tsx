@@ -199,7 +199,7 @@ export default function ShippingPage() {
             <p>International orders may be subject to customs duties, import taxes, and handling fees levied by the destination country. These charges are entirely the buyer's responsibility and are not included in our shipping prices.</p>
             <p>We are required by law to accurately describe the contents of all international shipments on customs documentation. We do not falsify customs declarations, mark orders as "gifts," or under-declare values. Any requests to do so will result in cancellation of the order.</p>
             <p>If an order is returned to us by customs, we will contact you to discuss re-shipment (at your cost) or a partial refund (excluding original shipping costs and any return shipping charges we incur).</p>
-            <p><strong>Countries we do not currently ship to include:</strong> Russia, Belarus, Iran, North Korea, and any country subject to comprehensive UK trade sanctions. This list is subject to change.</p>
+            <p><strong>Countries we do not currently ship to include:</strong> Russia, Belarus, Iran, North Korea, Israel, and any country subject to comprehensive UK trade sanctions. This list is subject to change.</p>
           </Section>
 
           <Section id="tracking" number="6" title="Tracking Your Order" icon={<Package size={15} />}>

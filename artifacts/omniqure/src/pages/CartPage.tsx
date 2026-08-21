@@ -47,6 +47,7 @@ const NON_SHIPPABLE_COUNTRIES = new Set([
   "Belarus",
   "Iran",
   "North Korea",
+  "Israel",
 ]);
 
 const COUNTRIES = (() => {
@@ -183,7 +184,6 @@ const PHONE_COUNTRY_CODES = [
   { code: "+52", country: "Mexico" },
   { code: "+90", country: "Turkey" },
   { code: "+7", country: "Kazakhstan" },
-  { code: "+972", country: "Israel" },
   { code: "custom", country: "Other country" },
 ] as const;
 const SHIPPABLE_PHONE_COUNTRY_CODES = PHONE_COUNTRY_CODES.filter(
@@ -222,7 +222,6 @@ const PHONE_CODE_BY_COUNTRY: Record<string, string> = {
   Mexico: "+52",
   Turkey: "+90",
   Kazakhstan: "+7",
-  Israel: "+972",
 };
 
 type AppliedDiscount = {

@@ -47,7 +47,7 @@ const COUNTRY_NAME_TO_CODE: Record<string, string> = {
   "Hungary": "HU", "Latvia": "LV", "Lithuania": "LT", "Malta": "MT",
   "Poland": "PL", "Romania": "RO", "Slovakia": "SK", "Slovenia": "SI",
 };
-const NON_SHIPPABLE_COUNTRY_CODES = new Set(["RU", "BY", "IR", "KP"]);
+const NON_SHIPPABLE_COUNTRY_CODES = new Set(["RU", "BY", "IR", "KP", "IL"]);
 
 const router = Router();
 
