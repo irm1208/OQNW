@@ -57,7 +57,15 @@ const NOMINATIM_SEARCH_URL = "https://nominatim.openstreetmap.org/search";
 const NOMINATIM_MIN_REQUEST_INTERVAL_MS = 1_000;
 const NOMINATIM_ADVISORY_LOCK_KEY = 248_104_211;
 const NOMINATIM_REQUEST_TIMEOUT_MS = 8_000;
+const ADDRESS_SUGGESTION_CACHE_TTL_MS = 60_000;
+const ADDRESS_SUGGESTION_CACHE_MAX_ENTRIES = 100;
 type NominatimRateLimiter = <T>(request: () => Promise<T>) => Promise<T>;
+
+const addressSuggestionCache = new Map<
+  string,
+  { expiresAt: number; suggestions: VerifiedAddress[] }
+>();
+const inFlightAddressSuggestions = new Map<string, Promise<VerifiedAddress[]>>();
 
 const COUNTRY_ALIASES: Record<string, string> = {
   "bosnia and herzegovina": "BA",
@@ -189,6 +197,33 @@ function addressHash(address: DeliveryAddress): string {
 
 function normalizePostcode(value: string | undefined): string {
   return normalizeText(value).replace(/[\s-]/g, "").toLocaleUpperCase("en-GB");
+}
+
+function addressSuggestionCacheKey(
+  input: Pick<DeliveryAddress, "address1" | "address2" | "postcode" | "country">,
+  countryCode: string,
+): string {
+  return [
+    normalizeText(input.address1).toLocaleLowerCase("en-GB"),
+    normalizeText(input.address2).toLocaleLowerCase("en-GB"),
+    normalizePostcode(input.postcode),
+    countryCode,
+  ].join("|");
+}
+
+function copySuggestions(suggestions: VerifiedAddress[]): VerifiedAddress[] {
+  return suggestions.map(suggestion => ({ ...suggestion }));
+}
+
+function cacheAddressSuggestions(key: string, suggestions: VerifiedAddress[]): void {
+  if (addressSuggestionCache.size >= ADDRESS_SUGGESTION_CACHE_MAX_ENTRIES) {
+    const oldestKey = addressSuggestionCache.keys().next().value;
+    if (oldestKey) addressSuggestionCache.delete(oldestKey);
+  }
+  addressSuggestionCache.set(key, {
+    expiresAt: Date.now() + ADDRESS_SUGGESTION_CACHE_TTL_MS,
+    suggestions: copySuggestions(suggestions),
+  });
 }
 
 async function withSharedNominatimRateLimit<T>(request: () => Promise<T>): Promise<T> {
@@ -360,19 +395,42 @@ export async function findNominatimAddressSuggestions(
     );
   }
 
-  const payload = await searchNominatim(
-    input,
-    countryCode,
-    fetcher,
-    rateLimiter,
-    requestTimeoutMs,
-  );
-  const suggestions = new Map<string, VerifiedAddress>();
-  for (const result of payload) {
-    const canonical = canonicalAddressFromNominatim(input, result, countryCode);
-    if (canonical) suggestions.set(canonical.formattedAddress, canonical);
+  const cacheKey = addressSuggestionCacheKey(input, countryCode);
+  const cached = addressSuggestionCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) {
+    return copySuggestions(cached.suggestions);
   }
-  return [...suggestions.values()].slice(0, 5);
+  if (cached) addressSuggestionCache.delete(cacheKey);
+
+  const inFlight = inFlightAddressSuggestions.get(cacheKey);
+  if (inFlight) return copySuggestions(await inFlight);
+
+  const lookup = (async () => {
+    const payload = await searchNominatim(
+      input,
+      countryCode,
+      fetcher,
+      rateLimiter,
+      requestTimeoutMs,
+    );
+    const suggestions = new Map<string, VerifiedAddress>();
+    for (const result of payload) {
+      const canonical = canonicalAddressFromNominatim(input, result, countryCode);
+      if (canonical) suggestions.set(canonical.formattedAddress, canonical);
+    }
+    const resolvedSuggestions = [...suggestions.values()].slice(0, 5);
+    cacheAddressSuggestions(cacheKey, resolvedSuggestions);
+    return resolvedSuggestions;
+  })();
+  inFlightAddressSuggestions.set(cacheKey, lookup);
+
+  try {
+    return copySuggestions(await lookup);
+  } finally {
+    if (inFlightAddressSuggestions.get(cacheKey) === lookup) {
+      inFlightAddressSuggestions.delete(cacheKey);
+    }
+  }
 }
 
 export async function verifyAddressWithNominatim(

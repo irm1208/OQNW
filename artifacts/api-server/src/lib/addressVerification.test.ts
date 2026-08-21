@@ -92,6 +92,45 @@ test("returns international address suggestions without requiring a submitted ci
   assert.equal(suggestions[0]?.city, "City of Westminster");
 });
 
+test("reuses concurrent and recent identical address suggestions", async () => {
+  let requests = 0;
+  const input = {
+    address1: "42 Cache Lane",
+    postcode: "EC1A 1BB",
+    country: "United Kingdom",
+  };
+  const fetcher: typeof fetch = async () => {
+    requests += 1;
+    await new Promise(resolve => setTimeout(resolve, 5));
+    return new Response(
+      JSON.stringify([
+        {
+          display_name: "42 Cache Lane, London, EC1A 1BB, United Kingdom",
+          address: {
+            house_number: "42",
+            road: "Cache Lane",
+            city: "London",
+            state: "England",
+            postcode: "EC1A 1BB",
+            country_code: "gb",
+          },
+        },
+      ]),
+      { status: 200 },
+    );
+  };
+
+  const [first, second] = await Promise.all([
+    findNominatimAddressSuggestions(input, fetcher, withoutNominatimRateLimit),
+    findNominatimAddressSuggestions(input, fetcher, withoutNominatimRateLimit),
+  ]);
+  const third = await findNominatimAddressSuggestions(input, fetcher, withoutNominatimRateLimit);
+
+  assert.equal(requests, 1);
+  assert.equal(first[0]?.formattedAddress, second[0]?.formattedAddress);
+  assert.equal(third[0]?.address1, "42 Cache Lane");
+});
+
 test("finds addresses in countries where postal codes are optional", async () => {
   const suggestions = await findNominatimAddressSuggestions(
     {

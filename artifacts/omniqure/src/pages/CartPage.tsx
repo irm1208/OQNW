@@ -142,6 +142,8 @@ type AddressVerification = {
   expiresAt: string;
 };
 type AddressSuggestion = AddressVerification;
+const ADDRESS_SUGGESTION_CACHE_TTL_MS = 60_000;
+const ADDRESS_SUGGESTION_CACHE_MAX_ENTRIES = 20;
 
 type AppliedDiscount = {
   code: string; type: string; value: number; discountAmount: number;
@@ -399,6 +401,10 @@ export default function CartPage() {
   const [manualAddressEntry, setManualAddressEntry] = useState(false);
   const addressSuggestionRequest = useRef(0);
   const lastAddressSuggestionKey = useRef<string | null>(null);
+  const addressSuggestionCache = useRef(new Map<string, {
+    expiresAt: number;
+    suggestions: AddressSuggestion[];
+  }>());
 
   // Discount
   const [discountInput, setDiscountInput] = useState("");
@@ -635,6 +641,16 @@ export default function CartPage() {
       lookup.postcode.trim().toLocaleUpperCase("en-GB"),
       lookup.country,
     ].join("|");
+    const cached = addressSuggestionCache.current.get(lookupKey);
+    if (cached && cached.expiresAt > Date.now()) {
+      lastAddressSuggestionKey.current = lookupKey;
+      setAddressSuggestions(cached.suggestions);
+      setAddressSuggestionsLoading(false);
+      setAddressSuggestionsError(null);
+      setAddressSuggestionsSearched(true);
+      return;
+    }
+    if (cached) addressSuggestionCache.current.delete(lookupKey);
     if (lastAddressSuggestionKey.current === lookupKey) return;
 
     lastAddressSuggestionKey.current = lookupKey;
@@ -661,6 +677,14 @@ export default function CartPage() {
         throw new Error(data.error ?? "We could not find matching addresses. Please check the details.");
       }
       if (requestId !== addressSuggestionRequest.current) return;
+      if (addressSuggestionCache.current.size >= ADDRESS_SUGGESTION_CACHE_MAX_ENTRIES) {
+        const oldestKey = addressSuggestionCache.current.keys().next().value;
+        if (oldestKey) addressSuggestionCache.current.delete(oldestKey);
+      }
+      addressSuggestionCache.current.set(lookupKey, {
+        expiresAt: Date.now() + ADDRESS_SUGGESTION_CACHE_TTL_MS,
+        suggestions: data.suggestions,
+      });
       setAddressSuggestions(data.suggestions);
       setAddressSuggestionsSearched(true);
     } catch (error) {
@@ -711,6 +735,11 @@ export default function CartPage() {
       } = current;
       return rest;
     });
+  }
+
+  function enterAddressManually() {
+    setManualAddressEntry(true);
+    void onPostcodeBlur(delivery.postcode, delivery.country);
   }
 
   function validateAddressFields(): Record<string, string> {
@@ -1169,7 +1198,9 @@ export default function CartPage() {
                 onFocus={e => { if (!errors.postcode) e.currentTarget.style.borderColor = "#1240A0"; }}
                 onBlur={e => {
                   e.currentTarget.style.borderColor = errors.postcode ? "#ef4444" : THEME.inputBorder;
-                  onPostcodeBlur(e.currentTarget.value, delivery.country);
+                  if (manualAddressEntry) {
+                    void onPostcodeBlur(e.currentTarget.value, delivery.country);
+                  }
                   void findAddressMatches({ postcode: e.currentTarget.value });
                 }} />
               {postcodeLoading && <p style={{ fontSize: "12px", color: THEME.textMuted, marginTop: 4 }}>Looking up postcode…</p>}
@@ -1265,7 +1296,7 @@ export default function CartPage() {
                     </p>
                     <button
                       type="button"
-                      onClick={() => setManualAddressEntry(true)}
+                      onClick={enterAddressManually}
                       style={{
                         border: `1px solid ${THEME.cta}`, borderRadius: 4, background: "#fff",
                         color: THEME.cta, padding: "8px 11px", fontSize: "11px",
@@ -1281,7 +1312,7 @@ export default function CartPage() {
                     <p style={{ ...errText, margin: "0 0 9px" }}>{addressSuggestionsError}</p>
                     <button
                       type="button"
-                      onClick={() => setManualAddressEntry(true)}
+                      onClick={enterAddressManually}
                       style={{
                         border: `1px solid ${THEME.cta}`, borderRadius: 4, background: "#fff",
                         color: THEME.cta, padding: "8px 11px", fontSize: "11px",
