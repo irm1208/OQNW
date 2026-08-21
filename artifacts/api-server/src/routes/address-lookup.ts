@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   AddressVerificationError,
   createAddressVerificationProof,
+  findNominatimAddressSuggestions,
   verifyAddressWithNominatim,
   type DeliveryAddress,
 } from "../lib/addressVerification";
@@ -107,6 +108,51 @@ router.post("/address-verification", async (req, res) => {
     req.log.error({ error }, "Unexpected address verification error");
     return res.status(503).json({
       error: "Address verification is temporarily unavailable. Please try again later.",
+      code: "ADDRESS_VERIFICATION_UNAVAILABLE",
+    });
+  }
+});
+
+/**
+ * POST /api/address-suggestions
+ * Finds specific, selectable international addresses after a customer has
+ * completed their street and postcode. This is intentionally not a
+ * keystroke-by-keystroke autocomplete endpoint.
+ */
+router.post("/address-suggestions", async (req, res) => {
+  const delivery = req.body as Partial<DeliveryAddress>;
+  if (
+    typeof delivery.address1 !== "string" ||
+    typeof delivery.postcode !== "string" ||
+    typeof delivery.country !== "string"
+  ) {
+    return res.status(400).json({ error: "A street address, postal code, and country are required." });
+  }
+
+  try {
+    const matches = await findNominatimAddressSuggestions({
+      address1: delivery.address1,
+      address2: typeof delivery.address2 === "string" ? delivery.address2 : undefined,
+      postcode: delivery.postcode,
+      country: delivery.country,
+    });
+    return res.status(200).json({
+      suggestions: matches.map(canonicalAddress => {
+        const proof = createAddressVerificationProof(canonicalAddress);
+        return {
+          canonicalAddress,
+          verificationToken: proof.token,
+          expiresAt: proof.expiresAt,
+        };
+      }),
+    });
+  } catch (error) {
+    if (error instanceof AddressVerificationError) {
+      return res.status(error.status).json({ error: error.message, code: error.code });
+    }
+    req.log.error({ error }, "Unexpected address suggestion error");
+    return res.status(503).json({
+      error: "Address lookup is temporarily unavailable. Please try again later.",
       code: "ADDRESS_VERIFICATION_UNAVAILABLE",
     });
   }

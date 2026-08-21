@@ -4,6 +4,7 @@ import {
   AddressVerificationError,
   countryCodeForName,
   createAddressVerificationProof,
+  findNominatimAddressSuggestions,
   postcodeIsRequired,
   verifyAddressVerificationProof,
   verifyAddressWithNominatim,
@@ -57,6 +58,86 @@ test("accepts a specific canonical address from Nominatim", async () => {
   assert.match(requestUrl, /countrycodes=us/);
   assert.doesNotMatch(new URL(requestUrl).searchParams.get("q") ?? "", /\bCA\b/);
   assert.equal(requestHeaders?.["User-Agent"], "OmniQure checkout address lookup (server-side)");
+});
+
+test("returns international address suggestions without requiring a submitted city", async () => {
+  const suggestions = await findNominatimAddressSuggestions(
+    {
+      address1: "10 Downing Street",
+      postcode: "SW1A 2AA",
+      country: "United Kingdom",
+    },
+    async () =>
+      new Response(
+        JSON.stringify([
+          {
+            display_name: "10 Downing Street, Westminster, London, SW1A 2AA, United Kingdom",
+            address: {
+              house_number: "10",
+              road: "Downing Street",
+              city: "City of Westminster",
+              state: "England",
+              postcode: "SW1A 2AA",
+              country_code: "gb",
+            },
+          },
+        ]),
+        { status: 200 },
+      ),
+    withoutNominatimRateLimit,
+  );
+
+  assert.equal(suggestions.length, 1);
+  assert.equal(suggestions[0]?.address1, "10 Downing Street");
+  assert.equal(suggestions[0]?.city, "City of Westminster");
+});
+
+test("finds addresses in countries where postal codes are optional", async () => {
+  const suggestions = await findNominatimAddressSuggestions(
+    {
+      address1: "1 Harbour Road",
+      postcode: "",
+      country: "Hong Kong",
+    },
+    async () =>
+      new Response(
+        JSON.stringify([
+          {
+            display_name: "1 Harbour Road, Wan Chai, Hong Kong",
+            address: {
+              house_number: "1",
+              road: "Harbour Road",
+              city: "Wan Chai",
+              state: "Hong Kong Island",
+              country_code: "hk",
+            },
+          },
+        ]),
+        { status: 200 },
+      ),
+    withoutNominatimRateLimit,
+  );
+
+  assert.equal(suggestions.length, 1);
+  assert.equal(suggestions[0]?.postcode, "");
+  assert.equal(suggestions[0]?.countryCode, "HK");
+});
+
+test("fails closed when the Nominatim request exceeds its deadline", async () => {
+  await assert.rejects(
+    verifyAddressWithNominatim(
+      address,
+      async (_url, init) =>
+        new Promise<Response>((_resolve, reject) => {
+          init?.signal?.addEventListener("abort", () => reject(new Error("aborted")));
+        }),
+      withoutNominatimRateLimit,
+      5,
+    ),
+    (error: unknown) =>
+      error instanceof AddressVerificationError &&
+      error.code === "ADDRESS_VERIFICATION_UNAVAILABLE",
+  );
 });
 
 test("rejects Nominatim matches without a building number", async () => {

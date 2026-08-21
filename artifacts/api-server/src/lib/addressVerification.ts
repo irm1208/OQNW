@@ -39,6 +39,13 @@ type NominatimResult = {
   };
 };
 
+type NominatimSearchInput = Pick<
+  DeliveryAddress,
+  "address1" | "address2" | "postcode" | "country"
+> & {
+  city?: string;
+};
+
 type VerificationProof = {
   addressHash: string;
   expiresAt: number;
@@ -49,6 +56,7 @@ const VERIFICATION_TTL_MS = 15 * 60 * 1000;
 const NOMINATIM_SEARCH_URL = "https://nominatim.openstreetmap.org/search";
 const NOMINATIM_MIN_REQUEST_INTERVAL_MS = 1_000;
 const NOMINATIM_ADVISORY_LOCK_KEY = 248_104_211;
+const NOMINATIM_REQUEST_TIMEOUT_MS = 8_000;
 type NominatimRateLimiter = <T>(request: () => Promise<T>) => Promise<T>;
 
 const COUNTRY_ALIASES: Record<string, string> = {
@@ -200,7 +208,7 @@ async function withSharedNominatimRateLimit<T>(request: () => Promise<T>): Promi
 }
 
 function canonicalAddressFromNominatim(
-  input: DeliveryAddress,
+  input: Pick<DeliveryAddress, "address1" | "address2" | "postcode" | "country">,
   result: NominatimResult,
   countryCode: string,
 ): VerifiedAddress | null {
@@ -251,31 +259,13 @@ function canonicalAddressFromNominatim(
   return { ...canonical, countryCode, formattedAddress };
 }
 
-export async function verifyAddressWithNominatim(
-  input: DeliveryAddress,
+async function searchNominatim(
+  input: NominatimSearchInput,
+  countryCode: string,
   fetcher: typeof fetch = fetch,
   rateLimiter: NominatimRateLimiter = withSharedNominatimRateLimit,
-): Promise<VerifiedAddress> {
-  const countryCode = countryCodeForName(input.country);
-  if (!countryCode) {
-    throw new AddressVerificationError(
-      "Choose a valid delivery country.",
-      400,
-      "INVALID_COUNTRY",
-    );
-  }
-  if (
-    !normalizeText(input.address1) ||
-    !normalizeText(input.city) ||
-    (postcodeIsRequired(countryCode) && !normalizeText(input.postcode))
-  ) {
-    throw new AddressVerificationError(
-      "Enter a complete delivery address before verifying it.",
-      400,
-      "ADDRESS_NOT_CONFIRMED",
-    );
-  }
-
+  requestTimeoutMs = NOMINATIM_REQUEST_TIMEOUT_MS,
+): Promise<NominatimResult[]> {
   let response: Response;
   try {
     const params = new URLSearchParams({
@@ -293,16 +283,23 @@ export async function verifyAddressWithNominatim(
         .filter(Boolean)
         .join(", "),
     });
-    response = await rateLimiter(() =>
-      fetcher(`${NOMINATIM_SEARCH_URL}?${params.toString()}`, {
-        headers: {
-          Accept: "application/json",
-          "User-Agent":
-            process.env.NOMINATIM_USER_AGENT ??
-            "OmniQure checkout address lookup (server-side)",
-        },
-      }),
-    );
+    response = await rateLimiter(async () => {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), requestTimeoutMs);
+      try {
+        return await fetcher(`${NOMINATIM_SEARCH_URL}?${params.toString()}`, {
+          headers: {
+            Accept: "application/json",
+            "User-Agent":
+              process.env.NOMINATIM_USER_AGENT ??
+              "OmniQure checkout address lookup (server-side)",
+          },
+          signal: controller.signal,
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
+    });
   } catch {
     throw new AddressVerificationError(
       "Address verification is temporarily unavailable. Please try again later.",
@@ -333,6 +330,84 @@ export async function verifyAddressWithNominatim(
     );
   }
 
+  return payload as NominatimResult[];
+}
+
+export async function findNominatimAddressSuggestions(
+  input: Pick<DeliveryAddress, "address1" | "address2" | "postcode" | "country">,
+  fetcher: typeof fetch = fetch,
+  rateLimiter: NominatimRateLimiter = withSharedNominatimRateLimit,
+  requestTimeoutMs = NOMINATIM_REQUEST_TIMEOUT_MS,
+): Promise<VerifiedAddress[]> {
+  const countryCode = countryCodeForName(input.country);
+  if (!countryCode) {
+    throw new AddressVerificationError(
+      "Choose a valid delivery country.",
+      400,
+      "INVALID_COUNTRY",
+    );
+  }
+  if (
+    !normalizeText(input.address1) ||
+    (postcodeIsRequired(countryCode) && !normalizeText(input.postcode))
+  ) {
+    throw new AddressVerificationError(
+      postcodeIsRequired(countryCode)
+        ? "Enter a street address and postal code to find matching addresses."
+        : "Enter a street address to find matching addresses.",
+      400,
+      "ADDRESS_NOT_CONFIRMED",
+    );
+  }
+
+  const payload = await searchNominatim(
+    input,
+    countryCode,
+    fetcher,
+    rateLimiter,
+    requestTimeoutMs,
+  );
+  const suggestions = new Map<string, VerifiedAddress>();
+  for (const result of payload) {
+    const canonical = canonicalAddressFromNominatim(input, result, countryCode);
+    if (canonical) suggestions.set(canonical.formattedAddress, canonical);
+  }
+  return [...suggestions.values()].slice(0, 5);
+}
+
+export async function verifyAddressWithNominatim(
+  input: DeliveryAddress,
+  fetcher: typeof fetch = fetch,
+  rateLimiter: NominatimRateLimiter = withSharedNominatimRateLimit,
+  requestTimeoutMs = NOMINATIM_REQUEST_TIMEOUT_MS,
+): Promise<VerifiedAddress> {
+  const countryCode = countryCodeForName(input.country);
+  if (!countryCode) {
+    throw new AddressVerificationError(
+      "Choose a valid delivery country.",
+      400,
+      "INVALID_COUNTRY",
+    );
+  }
+  if (
+    !normalizeText(input.address1) ||
+    !normalizeText(input.city) ||
+    (postcodeIsRequired(countryCode) && !normalizeText(input.postcode))
+  ) {
+    throw new AddressVerificationError(
+      "Enter a complete delivery address before verifying it.",
+      400,
+      "ADDRESS_NOT_CONFIRMED",
+    );
+  }
+
+  const payload = await searchNominatim(
+    input,
+    countryCode,
+    fetcher,
+    rateLimiter,
+    requestTimeoutMs,
+  );
   const canonical = payload
     .map(result => canonicalAddressFromNominatim(input, result as NominatimResult, countryCode))
     .find((result): result is VerifiedAddress => result !== null);

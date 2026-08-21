@@ -141,6 +141,7 @@ type AddressVerification = {
   verificationToken: string;
   expiresAt: string;
 };
+type AddressSuggestion = AddressVerification;
 
 type AppliedDiscount = {
   code: string; type: string; value: number; discountAmount: number;
@@ -391,6 +392,12 @@ export default function CartPage() {
   const [addressVerification, setAddressVerification] = useState<AddressVerification | null>(null);
   const [addressVerificationLoading, setAddressVerificationLoading] = useState(false);
   const [addressVerificationError, setAddressVerificationError] = useState<string | null>(null);
+  const [addressSuggestions, setAddressSuggestions] = useState<AddressSuggestion[]>([]);
+  const [addressSuggestionsLoading, setAddressSuggestionsLoading] = useState(false);
+  const [addressSuggestionsError, setAddressSuggestionsError] = useState<string | null>(null);
+  const [addressSuggestionsSearched, setAddressSuggestionsSearched] = useState(false);
+  const addressSuggestionRequest = useRef(0);
+  const lastAddressSuggestionKey = useRef<string | null>(null);
 
   // Discount
   const [discountInput, setDiscountInput] = useState("");
@@ -488,6 +495,9 @@ export default function CartPage() {
       : "Postal Code";
   const stateLabel = delivery.country === "Canada" ? "Province" : "State";
   const countyStateLabel = usesStateProvince ? stateLabel : "County / Region";
+  const canFindAddressMatches =
+    delivery.address1.trim().length >= 3 &&
+    (postcodeOptional || delivery.postcode.trim().length >= 3);
 
   // Auto-fill city/county when a valid UK postcode is entered.
   const onPostcodeBlur = useCallback(async (pc: string, country: string) => {
@@ -595,9 +605,110 @@ export default function CartPage() {
       setAddressVerification(null);
       setPendingAddressVerification(null);
       setAddressVerificationError(null);
+      addressSuggestionRequest.current += 1;
+      lastAddressSuggestionKey.current = null;
+      setAddressSuggestions([]);
+      setAddressSuggestionsError(null);
+      setAddressSuggestionsSearched(false);
     }
     setDelivery(d => ({ ...d, [f]: e.target.value }));
   };
+
+  async function findAddressMatches(
+    changes: Partial<Pick<DeliveryForm, "address1" | "address2" | "postcode" | "country">> = {},
+    force = false,
+  ) {
+    const lookup = { ...delivery, ...changes };
+    const lookupPostcodeOptional = POSTCODE_OPTIONAL_COUNTRIES.has(lookup.country);
+    if (
+      lookup.address1.trim().length < 3 ||
+      (!lookupPostcodeOptional && lookup.postcode.trim().length < 3)
+    ) {
+      return;
+    }
+
+    const lookupKey = [
+      lookup.address1.trim().toLocaleLowerCase("en-GB"),
+      lookup.address2.trim().toLocaleLowerCase("en-GB"),
+      lookup.postcode.trim().toLocaleUpperCase("en-GB"),
+      lookup.country,
+    ].join("|");
+    if (!force && lastAddressSuggestionKey.current === lookupKey) return;
+
+    lastAddressSuggestionKey.current = lookupKey;
+    const requestId = ++addressSuggestionRequest.current;
+    setAddressSuggestionsLoading(true);
+    setAddressSuggestionsError(null);
+    setAddressSuggestionsSearched(false);
+    try {
+      const res = await fetch(apiUrl("address-suggestions"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          address1: lookup.address1,
+          address2: lookup.address2 || undefined,
+          postcode: lookup.postcode,
+          country: lookup.country,
+        }),
+      });
+      const data = await res.json().catch(() => ({})) as {
+        error?: string;
+        suggestions?: AddressSuggestion[];
+      };
+      if (!res.ok || !Array.isArray(data.suggestions)) {
+        throw new Error(data.error ?? "We could not find matching addresses. Please check the details.");
+      }
+      if (requestId !== addressSuggestionRequest.current) return;
+      setAddressSuggestions(data.suggestions);
+      setAddressSuggestionsSearched(true);
+    } catch (error) {
+      if (requestId !== addressSuggestionRequest.current) return;
+      lastAddressSuggestionKey.current = null;
+      setAddressSuggestions([]);
+      setAddressSuggestionsSearched(true);
+      setAddressSuggestionsError(
+        error instanceof Error
+          ? error.message
+          : "Address lookup is temporarily unavailable. Please try again later.",
+      );
+    } finally {
+      if (requestId === addressSuggestionRequest.current) {
+        setAddressSuggestionsLoading(false);
+      }
+    }
+  }
+
+  function applyAddressSuggestion(suggestion: AddressSuggestion) {
+    const { canonicalAddress } = suggestion;
+    setDelivery(current => ({
+      ...current,
+      address1: canonicalAddress.address1,
+      address2: canonicalAddress.address2 ?? "",
+      city: canonicalAddress.city,
+      county: canonicalAddress.county ?? "",
+      postcode: canonicalAddress.postcode,
+      country: canonicalAddress.country,
+    }));
+    setAddressVerification(null);
+    setPendingAddressVerification(suggestion);
+    setAddressVerificationError(null);
+    setAddressSuggestions([]);
+    setAddressSuggestionsError(null);
+    setAddressSuggestionsSearched(false);
+    setErrors(current => {
+      const {
+        address1: _address1,
+        address2: _address2,
+        city: _city,
+        county: _county,
+        postcode: _postcode,
+        country: _country,
+        addressVerification: _addressVerification,
+        ...rest
+      } = current;
+      return rest;
+    });
+  }
 
   function validateAddressFields(): Record<string, string> {
     const e: Record<string, string> = {};
@@ -1034,7 +1145,10 @@ export default function CartPage() {
             <label style={label}>Address *</label>
             <input data-field="address1" value={delivery.address1} onChange={setD("address1")} placeholder="Street address" style={inp("address1")}
               onFocus={e => { if (!errors.address1) e.currentTarget.style.borderColor = "#1240A0"; }}
-              onBlur={e => { e.currentTarget.style.borderColor = errors.address1 ? "#ef4444" : THEME.inputBorder; }} />
+              onBlur={e => {
+                e.currentTarget.style.borderColor = errors.address1 ? "#ef4444" : THEME.inputBorder;
+                void findAddressMatches({ address1: e.currentTarget.value });
+              }} />
             {errors.address1 && <p style={errText}>{errors.address1}</p>}
           </div>
 
@@ -1066,7 +1180,10 @@ export default function CartPage() {
           <div className="form-grid-2" style={{ marginBottom: 4 }}>
             <div>
               <label style={label}>Country *</label>
-              <select data-field="country" value={delivery.country} onChange={setD("country")}
+              <select data-field="country" value={delivery.country} onChange={e => {
+                setD("country")(e);
+                void findAddressMatches({ country: e.target.value });
+              }}
                 style={{ ...inp("country"), height: 44, appearance: "none", cursor: "pointer" }}
                 onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
                 onBlur={e => { e.currentTarget.style.borderColor = errors.country ? "#ef4444" : THEME.inputBorder; }}>
@@ -1086,11 +1203,76 @@ export default function CartPage() {
                 onBlur={e => {
                   e.currentTarget.style.borderColor = errors.postcode ? "#ef4444" : THEME.inputBorder;
                   onPostcodeBlur(e.currentTarget.value, delivery.country);
+                  void findAddressMatches({ postcode: e.currentTarget.value });
                 }} />
               {postcodeLoading && <p style={{ fontSize: "12px", color: THEME.textMuted, marginTop: 4 }}>Looking up postcode…</p>}
               {errors.postcode && <p style={errText}>{errors.postcode}</p>}
             </div>
           </div>
+
+          {canFindAddressMatches && (
+            <div
+              data-field="addressSuggestions"
+              style={{
+                margin: "8px 0 14px",
+                padding: "12px",
+                borderRadius: 6,
+                border: `1px solid ${addressSuggestions.length ? "#93C5FD" : "#D8E4FF"}`,
+                background: "#F8FBFF",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                <p style={{ margin: 0, fontSize: "12px", color: THEME.textSub, lineHeight: 1.45 }}>
+                  Find a matching address from your street{postcodeOptional ? "" : ` and ${postcodeLabel.toLowerCase()}`}.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => void findAddressMatches({}, true)}
+                  disabled={addressSuggestionsLoading}
+                  style={{
+                    flexShrink: 0, border: `1px solid ${THEME.cta}`, borderRadius: 4,
+                    background: "#fff", color: THEME.cta, padding: "7px 10px",
+                    fontSize: "11px", fontWeight: 700,
+                    cursor: addressSuggestionsLoading ? "wait" : "pointer",
+                  }}
+                >
+                  {addressSuggestionsLoading ? "Finding…" : "Find matches"}
+                </button>
+              </div>
+
+              <div aria-live="polite">
+                {addressSuggestions.length > 0 && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 7, marginTop: 10 }}>
+                    <p style={{ margin: 0, fontSize: "11px", color: THEME.textMuted }}>
+                      Select the address you mean:
+                    </p>
+                    {addressSuggestions.map(suggestion => (
+                      <button
+                        key={suggestion.verificationToken}
+                        type="button"
+                        onClick={() => applyAddressSuggestion(suggestion)}
+                        style={{
+                          width: "100%", textAlign: "left", border: `1px solid ${THEME.inputBorder}`,
+                          borderRadius: 4, background: "#fff", color: THEME.text,
+                          padding: "9px 10px", fontSize: "12px", lineHeight: 1.45, cursor: "pointer",
+                        }}
+                      >
+                        {suggestion.canonicalAddress.formattedAddress}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {addressSuggestionsSearched && !addressSuggestionsLoading && !addressSuggestionsError && addressSuggestions.length === 0 && (
+                  <p style={{ margin: "10px 0 0", fontSize: "12px", color: THEME.textMuted }}>
+                    No specific mapped addresses found. Check the street, postal code, and country, or enter the details manually.
+                  </p>
+                )}
+                {addressSuggestionsError && (
+                  <p style={{ ...errText, marginBottom: 0 }}>{addressSuggestionsError}</p>
+                )}
+              </div>
+            </div>
+          )}
 
           <div
             data-field="addressVerification"
