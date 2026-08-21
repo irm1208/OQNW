@@ -483,6 +483,15 @@ export default function Header() {
                   minWidth: "220px", maxHeight: "360px", overflowY: "auto", overflowX: "hidden",
                   padding: "6px", scrollbarWidth: "thin", scrollbarColor: "#CBD5E1 transparent",
                 }}>
+                  <div style={{
+                    margin: "2px 4px 8px", padding: "10px 10px", borderRadius: "8px",
+                    backgroundColor: "#FFF7ED", border: "1px solid #FED7AA",
+                    fontSize: "11px", color: "#92400E", lineHeight: 1.45, textAlign: "center",
+                  }}>
+                    Prices shown for reference only.<br />
+                    <strong>Payments accepted in GBP &amp; EUR only</strong><br />
+                    via Pay by Bank.
+                  </div>
                   {[
                     { label: "Popular", codes: ["GBP","USD","EUR","AUD","CAD","CHF","NZD"] },
                     { label: "Scandinavia", codes: ["DKK","NOK","SEK"] },
@@ -521,15 +530,6 @@ export default function Header() {
                       ))}
                     </div>
                   ))}
-                  <div style={{
-                    margin: "6px 4px 2px", padding: "8px 10px", borderRadius: "8px",
-                    backgroundColor: "#FFF7ED", border: "1px solid #FED7AA",
-                    fontSize: "11px", color: "#92400E", lineHeight: 1.45, textAlign: "center",
-                  }}>
-                    Prices shown for reference only.<br />
-                    <strong>Payments accepted in GBP &amp; EUR only</strong><br />
-                    via Pay by Bank.
-                  </div>
                 </div>
               )}
             </div>
