@@ -144,6 +144,77 @@ type AddressVerification = {
 type AddressSuggestion = AddressVerification;
 const ADDRESS_SUGGESTION_CACHE_TTL_MS = 60_000;
 const ADDRESS_SUGGESTION_CACHE_MAX_ENTRIES = 20;
+const PHONE_COUNTRY_CODES = [
+  { code: "+44", country: "United Kingdom" },
+  { code: "+1", country: "United States / Canada" },
+  { code: "+61", country: "Australia" },
+  { code: "+64", country: "New Zealand" },
+  { code: "+353", country: "Ireland" },
+  { code: "+33", country: "France" },
+  { code: "+49", country: "Germany" },
+  { code: "+34", country: "Spain" },
+  { code: "+39", country: "Italy" },
+  { code: "+31", country: "Netherlands" },
+  { code: "+32", country: "Belgium" },
+  { code: "+41", country: "Switzerland" },
+  { code: "+43", country: "Austria" },
+  { code: "+45", country: "Denmark" },
+  { code: "+46", country: "Sweden" },
+  { code: "+47", country: "Norway" },
+  { code: "+48", country: "Poland" },
+  { code: "+351", country: "Portugal" },
+  { code: "+81", country: "Japan" },
+  { code: "+82", country: "South Korea" },
+  { code: "+86", country: "China" },
+  { code: "+91", country: "India" },
+  { code: "+65", country: "Singapore" },
+  { code: "+852", country: "Hong Kong" },
+  { code: "+971", country: "United Arab Emirates" },
+  { code: "+974", country: "Qatar" },
+  { code: "+27", country: "South Africa" },
+  { code: "+55", country: "Brazil" },
+  { code: "+52", country: "Mexico" },
+  { code: "+90", country: "Turkey" },
+  { code: "+7", country: "Russia / Kazakhstan" },
+  { code: "+972", country: "Israel" },
+  { code: "custom", country: "Other country" },
+] as const;
+const PHONE_CODE_BY_COUNTRY: Record<string, string> = {
+  "United Kingdom": "+44",
+  "United States": "+1",
+  Canada: "+1",
+  Australia: "+61",
+  "New Zealand": "+64",
+  Ireland: "+353",
+  France: "+33",
+  Germany: "+49",
+  Spain: "+34",
+  Italy: "+39",
+  Netherlands: "+31",
+  Belgium: "+32",
+  Switzerland: "+41",
+  Austria: "+43",
+  Denmark: "+45",
+  Sweden: "+46",
+  Norway: "+47",
+  Poland: "+48",
+  Portugal: "+351",
+  Japan: "+81",
+  "South Korea": "+82",
+  China: "+86",
+  India: "+91",
+  Singapore: "+65",
+  "Hong Kong": "+852",
+  "United Arab Emirates": "+971",
+  Qatar: "+974",
+  "South Africa": "+27",
+  Brazil: "+55",
+  Mexico: "+52",
+  Turkey: "+90",
+  Russia: "+7",
+  Kazakhstan: "+7",
+  Israel: "+972",
+};
 
 type AppliedDiscount = {
   code: string; type: string; value: number; discountAmount: number;
@@ -399,6 +470,10 @@ export default function CartPage() {
   const [addressSuggestionsError, setAddressSuggestionsError] = useState<string | null>(null);
   const [addressSuggestionsSearched, setAddressSuggestionsSearched] = useState(false);
   const [manualAddressEntry, setManualAddressEntry] = useState(false);
+  const [phoneCountryCode, setPhoneCountryCode] = useState("+44");
+  const [customPhoneCountryCode, setCustomPhoneCountryCode] = useState("");
+  const [phoneCodeDropdownOpen, setPhoneCodeDropdownOpen] = useState(false);
+  const phoneCountryCodeTouched = useRef(false);
   const addressSuggestionRequest = useRef(0);
   const lastAddressSuggestionKey = useRef<string | null>(null);
   const addressSuggestionCache = useRef(new Map<string, {
@@ -608,6 +683,12 @@ export default function CartPage() {
   const displayedPaymentTotal = paymentCurrency === "EUR"
     ? totalGBP * (rates.EUR ?? 1.17)
     : totalGBP;
+  const selectedPhonePrefix = phoneCountryCode === "custom"
+    ? customPhoneCountryCode.trim()
+    : phoneCountryCode;
+  const orderPhone = delivery.phone.trim()
+    ? [selectedPhonePrefix, delivery.phone.trim()].filter(Boolean).join(" ")
+    : undefined;
 
   const setD = (f: keyof DeliveryForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     if (ADDRESS_FIELDS.has(f)) {
@@ -903,7 +984,7 @@ export default function CartPage() {
             email: delivery.email,
             firstName: delivery.firstName,
             lastName: delivery.lastName,
-            phone: delivery.phone || undefined,
+            phone: orderPhone,
             address1: delivery.address1,
             address2: delivery.address2 || undefined,
             city: delivery.city,
@@ -1138,12 +1219,107 @@ export default function CartPage() {
             </div>
             <div>
               <label style={label}>Phone</label>
-              <input
-                value={delivery.phone} onChange={setD("phone")} type="tel"
-                placeholder="+1 555 000 0000" style={input}
-                onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }}
-              />
+              <div style={{ display: "grid", gridTemplateColumns: "minmax(105px, 0.42fr) minmax(0, 1fr)", gap: 8 }}>
+                <div style={{ position: "relative" }}>
+                  <button
+                    type="button"
+                    aria-label="Phone country code"
+                    aria-haspopup="listbox"
+                    aria-expanded={phoneCodeDropdownOpen}
+                    onClick={() => setPhoneCodeDropdownOpen(open => !open)}
+                    style={{
+                      ...input,
+                      width: "100%",
+                      height: 44,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      cursor: "pointer",
+                      textAlign: "left",
+                    }}
+                    onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
+                    onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }}
+                  >
+                    <span>
+                      {phoneCountryCode === "custom"
+                        ? customPhoneCountryCode.trim() || "Other"
+                        : phoneCountryCode}
+                    </span>
+                    <span aria-hidden="true" style={{ fontSize: 12, color: THEME.textMuted }}>⌄</span>
+                  </button>
+                  {phoneCodeDropdownOpen && (
+                    <div
+                      role="listbox"
+                      aria-label="Phone country codes"
+                      style={{
+                        position: "absolute",
+                        zIndex: 20,
+                        top: "calc(100% + 4px)",
+                        left: 0,
+                        right: 0,
+                        maxHeight: 240,
+                        overflowY: "auto",
+                        padding: 4,
+                        border: `1px solid ${THEME.inputBorder}`,
+                        borderRadius: 6,
+                        background: "#fff",
+                        boxShadow: "0 8px 20px rgba(15, 23, 42, 0.14)",
+                      }}
+                    >
+                      {PHONE_COUNTRY_CODES.map(option => (
+                        <button
+                          key={option.code}
+                          type="button"
+                          role="option"
+                          aria-selected={phoneCountryCode === option.code}
+                          onClick={() => {
+                            phoneCountryCodeTouched.current = true;
+                            setPhoneCountryCode(option.code);
+                            if (option.code !== "custom") setCustomPhoneCountryCode("");
+                            setPhoneCodeDropdownOpen(false);
+                          }}
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            gap: 8,
+                            width: "100%",
+                            border: "none",
+                            borderRadius: 4,
+                            background: phoneCountryCode === option.code ? "#EEF4FF" : "#fff",
+                            color: THEME.text,
+                            padding: "8px 7px",
+                            fontSize: "11px",
+                            textAlign: "left",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <span>{option.code === "custom" ? "Other country" : option.country}</span>
+                          <span style={{ color: THEME.textSub, fontWeight: 700 }}>
+                            {option.code === "custom" ? "—" : option.code}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <input
+                  data-field="phone"
+                  value={delivery.phone} onChange={setD("phone")} type="tel"
+                  placeholder="Local number" style={input}
+                  onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
+                  onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }}
+                />
+              </div>
+              {phoneCountryCode === "custom" && (
+                <input
+                  aria-label="Custom phone country code"
+                  value={customPhoneCountryCode}
+                  onChange={e => setCustomPhoneCountryCode(e.target.value)}
+                  inputMode="tel"
+                  placeholder="+358"
+                  style={{ ...input, marginTop: 8 }}
+                />
+              )}
             </div>
           </div>
           <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "13px", color: THEME.textSub, cursor: "pointer", marginBottom: 4 }}>
@@ -1177,7 +1353,11 @@ export default function CartPage() {
             <div>
               <label style={label}>Country *</label>
               <select data-field="country" value={delivery.country} onChange={e => {
+                const nextCountry = e.target.value;
                 setD("country")(e);
+                if (!phoneCountryCodeTouched.current) {
+                  setPhoneCountryCode(PHONE_CODE_BY_COUNTRY[nextCountry] ?? "custom");
+                }
                 void findAddressMatches({ country: e.target.value });
               }}
                 style={{ ...inp("country"), height: 44, appearance: "none", cursor: "pointer" }}
