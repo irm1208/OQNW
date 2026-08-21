@@ -396,6 +396,7 @@ export default function CartPage() {
   const [addressSuggestionsLoading, setAddressSuggestionsLoading] = useState(false);
   const [addressSuggestionsError, setAddressSuggestionsError] = useState<string | null>(null);
   const [addressSuggestionsSearched, setAddressSuggestionsSearched] = useState(false);
+  const [manualAddressEntry, setManualAddressEntry] = useState(false);
   const addressSuggestionRequest = useRef(0);
   const lastAddressSuggestionKey = useRef<string | null>(null);
 
@@ -498,6 +499,8 @@ export default function CartPage() {
   const canFindAddressMatches =
     delivery.address1.trim().length >= 3 &&
     (postcodeOptional || delivery.postcode.trim().length >= 3);
+  const showFullAddressFields =
+    manualAddressEntry || Boolean(pendingAddressVerification || addressVerification);
 
   // Auto-fill city/county when a valid UK postcode is entered.
   const onPostcodeBlur = useCallback(async (pc: string, country: string) => {
@@ -616,7 +619,6 @@ export default function CartPage() {
 
   async function findAddressMatches(
     changes: Partial<Pick<DeliveryForm, "address1" | "address2" | "postcode" | "country">> = {},
-    force = false,
   ) {
     const lookup = { ...delivery, ...changes };
     const lookupPostcodeOptional = POSTCODE_OPTIONAL_COUNTRIES.has(lookup.country);
@@ -633,7 +635,7 @@ export default function CartPage() {
       lookup.postcode.trim().toLocaleUpperCase("en-GB"),
       lookup.country,
     ].join("|");
-    if (!force && lastAddressSuggestionKey.current === lookupKey) return;
+    if (lastAddressSuggestionKey.current === lookupKey) return;
 
     lastAddressSuggestionKey.current = lookupKey;
     const requestId = ++addressSuggestionRequest.current;
@@ -691,6 +693,7 @@ export default function CartPage() {
     }));
     setAddressVerification(null);
     setPendingAddressVerification(suggestion);
+    setManualAddressEntry(true);
     setAddressVerificationError(null);
     setAddressSuggestions([]);
     setAddressSuggestionsError(null);
@@ -1141,43 +1144,7 @@ export default function CartPage() {
             </div>
           </div>
 
-          <div style={{ marginBottom: 12 }}>
-            <label style={label}>Address *</label>
-            <input data-field="address1" value={delivery.address1} onChange={setD("address1")} placeholder="Street address" style={inp("address1")}
-              onFocus={e => { if (!errors.address1) e.currentTarget.style.borderColor = "#1240A0"; }}
-              onBlur={e => {
-                e.currentTarget.style.borderColor = errors.address1 ? "#ef4444" : THEME.inputBorder;
-                void findAddressMatches({ address1: e.currentTarget.value });
-              }} />
-            {errors.address1 && <p style={errText}>{errors.address1}</p>}
-          </div>
-
-          <div style={{ marginBottom: 12 }}>
-            <label style={label}>Apt, Suite, Etc. (Optional)</label>
-            <input value={delivery.address2} onChange={setD("address2")} placeholder="Apartment, suite, etc." style={input}
-              onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
-              onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }} />
-          </div>
-
           <div className="form-grid-2" style={{ marginBottom: 12 }}>
-            <div>
-              <label style={label}>City *</label>
-              <input data-field="city" value={delivery.city} onChange={setD("city")} placeholder="City" style={inp("city")}
-                onFocus={e => { if (!errors.city) e.currentTarget.style.borderColor = "#1240A0"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = errors.city ? "#ef4444" : THEME.inputBorder; }} />
-              {errors.city && <p style={errText}>{errors.city}</p>}
-            </div>
-            <div>
-              <label style={label}>{countyStateLabel} <span style={{ fontWeight: 400, textTransform: "none", letterSpacing: 0, fontSize: "10px" }}>(optional)</span></label>
-              <input value={delivery.county} onChange={setD("county")}
-                placeholder={usesStateProvince ? (delivery.country === "Canada" ? "Province" : "State") : "County / Region"}
-                style={input}
-                onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }} />
-            </div>
-          </div>
-
-          <div className="form-grid-2" style={{ marginBottom: 4 }}>
             <div>
               <label style={label}>Country *</label>
               <select data-field="country" value={delivery.country} onChange={e => {
@@ -1210,6 +1177,46 @@ export default function CartPage() {
             </div>
           </div>
 
+          <div style={{ marginBottom: 12 }}>
+            <label style={label}>Address *</label>
+            <input data-field="address1" value={delivery.address1} onChange={setD("address1")} placeholder="Street address" style={inp("address1")}
+              onFocus={e => { if (!errors.address1) e.currentTarget.style.borderColor = "#1240A0"; }}
+              onBlur={e => {
+                e.currentTarget.style.borderColor = errors.address1 ? "#ef4444" : THEME.inputBorder;
+                void findAddressMatches({ address1: e.currentTarget.value });
+              }} />
+            {errors.address1 && <p style={errText}>{errors.address1}</p>}
+          </div>
+
+          {showFullAddressFields && (
+            <>
+              <div style={{ marginBottom: 12 }}>
+                <label style={label}>Apt, Suite, Etc. (Optional)</label>
+                <input value={delivery.address2} onChange={setD("address2")} placeholder="Apartment, suite, etc." style={input}
+                  onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
+                  onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }} />
+              </div>
+
+              <div className="form-grid-2" style={{ marginBottom: 12 }}>
+                <div>
+                  <label style={label}>City *</label>
+                  <input data-field="city" value={delivery.city} onChange={setD("city")} placeholder="City" style={inp("city")}
+                    onFocus={e => { if (!errors.city) e.currentTarget.style.borderColor = "#1240A0"; }}
+                    onBlur={e => { e.currentTarget.style.borderColor = errors.city ? "#ef4444" : THEME.inputBorder; }} />
+                  {errors.city && <p style={errText}>{errors.city}</p>}
+                </div>
+                <div>
+                  <label style={label}>{countyStateLabel} <span style={{ fontWeight: 400, textTransform: "none", letterSpacing: 0, fontSize: "10px" }}>(optional)</span></label>
+                  <input value={delivery.county} onChange={setD("county")}
+                    placeholder={usesStateProvince ? (delivery.country === "Canada" ? "Province" : "State") : "County / Region"}
+                    style={input}
+                    onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
+                    onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }} />
+                </div>
+              </div>
+            </>
+          )}
+
           {canFindAddressMatches && (
             <div
               data-field="addressSuggestions"
@@ -1223,21 +1230,10 @@ export default function CartPage() {
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
                 <p style={{ margin: 0, fontSize: "12px", color: THEME.textSub, lineHeight: 1.45 }}>
-                  Find a matching address from your street{postcodeOptional ? "" : ` and ${postcodeLabel.toLowerCase()}`}.
+                  {addressSuggestionsLoading
+                    ? "Finding matching addresses…"
+                    : "Select your address from the examples below."}
                 </p>
-                <button
-                  type="button"
-                  onClick={() => void findAddressMatches({}, true)}
-                  disabled={addressSuggestionsLoading}
-                  style={{
-                    flexShrink: 0, border: `1px solid ${THEME.cta}`, borderRadius: 4,
-                    background: "#fff", color: THEME.cta, padding: "7px 10px",
-                    fontSize: "11px", fontWeight: 700,
-                    cursor: addressSuggestionsLoading ? "wait" : "pointer",
-                  }}
-                >
-                  {addressSuggestionsLoading ? "Finding…" : "Find matches"}
-                </button>
               </div>
 
               <div aria-live="polite">
@@ -1263,21 +1259,48 @@ export default function CartPage() {
                   </div>
                 )}
                 {addressSuggestionsSearched && !addressSuggestionsLoading && !addressSuggestionsError && addressSuggestions.length === 0 && (
-                  <p style={{ margin: "10px 0 0", fontSize: "12px", color: THEME.textMuted }}>
-                    No specific mapped addresses found. Check the street, postal code, and country, or enter the details manually.
-                  </p>
+                  <div style={{ marginTop: 10 }}>
+                    <p style={{ margin: "0 0 9px", fontSize: "12px", color: THEME.textMuted }}>
+                      We couldn’t find a mapped match. You can enter the address manually.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setManualAddressEntry(true)}
+                      style={{
+                        border: `1px solid ${THEME.cta}`, borderRadius: 4, background: "#fff",
+                        color: THEME.cta, padding: "8px 11px", fontSize: "11px",
+                        fontWeight: 700, cursor: "pointer",
+                      }}
+                    >
+                      Enter address manually
+                    </button>
+                  </div>
                 )}
                 {addressSuggestionsError && (
-                  <p style={{ ...errText, marginBottom: 0 }}>{addressSuggestionsError}</p>
+                  <div style={{ marginTop: 10 }}>
+                    <p style={{ ...errText, margin: "0 0 9px" }}>{addressSuggestionsError}</p>
+                    <button
+                      type="button"
+                      onClick={() => setManualAddressEntry(true)}
+                      style={{
+                        border: `1px solid ${THEME.cta}`, borderRadius: 4, background: "#fff",
+                        color: THEME.cta, padding: "8px 11px", fontSize: "11px",
+                        fontWeight: 700, cursor: "pointer",
+                      }}
+                    >
+                      Enter address manually
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
           )}
 
-          <div
-            data-field="addressVerification"
-            tabIndex={-1}
-            style={{
+          {(showFullAddressFields || addressVerificationError || errors.addressVerification) && (
+            <div
+              data-field="addressVerification"
+              tabIndex={-1}
+              style={{
               marginTop: 14,
               marginBottom: 16,
               padding: "14px",
@@ -1296,8 +1319,8 @@ export default function CartPage() {
                 : pendingAddressVerification
                   ? "#EFF6FF"
                   : "#F8FBFF",
-            }}
-          >
+              }}
+            >
             <p style={{ fontSize: "13px", fontWeight: 700, color: THEME.text, margin: "0 0 5px" }}>
               Confirm delivery address
             </p>
@@ -1380,7 +1403,8 @@ export default function CartPage() {
             {!addressVerificationError && errors.addressVerification && !addressVerification && (
               <p style={{ ...errText, marginBottom: 0 }}>{errors.addressVerification}</p>
             )}
-          </div>
+            </div>
+          )}
 
           <hr style={divider} />
 

@@ -13,7 +13,7 @@ Research-grade peptide e-commerce site for OmniQure Peptide Research Institute, 
 - `pnpm run check:api-drift` — verify admin order/customer/refund/fraud response fields match `lib/api-spec/openapi.yaml` (also runs as part of `pnpm run build`)
 - Required env: `DATABASE_URL` — Postgres connection string
 - Required secret: `SESSION_SECRET` — random server-only key used to sign checkout address-confirmation proofs. Address confirmation and ordering fail closed if it is missing.
-- Address lookup: checkout uses the public Nominatim/OpenStreetMap API server-side with a PostgreSQL-coordinated 1 request/second limit across API replicas and an 8-second upstream timeout. After a customer completes a street and postal code (or just a street where postal codes are optional), it can offer a small list of matching international addresses; it is not keystroke-by-keystroke autocomplete. No API key is required; `NOMINATIM_USER_AGENT` is an optional non-secret environment variable for a contact-identifying request header.
+- Address lookup: checkout uses the public Nominatim/OpenStreetMap API server-side with a PostgreSQL-coordinated 1 request/second limit across API replicas and an 8-second upstream timeout. Checkout asks for country, then postcode/ZIP, then the first address line; after those fields are complete (or just country and street where postal codes are optional), it automatically offers a small list of matching international addresses. Customers can select a match to fill the rest of the address or enter it manually if no match is found. This is not keystroke-by-keystroke autocomplete. No API key is required; `NOMINATIM_USER_AGENT` is an optional non-secret environment variable for a contact-identifying request header.
 
 ## Stack
 
