@@ -42,11 +42,18 @@ const ISO_COUNTRY_CODES = (
   "VA VC VE VG VI VN VU WF WS XK YE YT ZA ZM ZW"
 ).split(" ");
 
+const NON_SHIPPABLE_COUNTRIES = new Set([
+  "Russia",
+  "Belarus",
+  "Iran",
+  "North Korea",
+]);
+
 const COUNTRIES = (() => {
   const displayNames = new Intl.DisplayNames(["en"], { type: "region" });
   return ISO_COUNTRY_CODES
     .map(code => displayNames.of(code))
-    .filter((name): name is string => Boolean(name))
+    .filter((name): name is string => name !== undefined && !NON_SHIPPABLE_COUNTRIES.has(name))
     .sort((a, b) => {
   // Keep UK and US at the top
   const pinned = ["United Kingdom", "United States", "Canada", "Ireland", "Australia", "New Zealand"];
@@ -175,10 +182,13 @@ const PHONE_COUNTRY_CODES = [
   { code: "+55", country: "Brazil" },
   { code: "+52", country: "Mexico" },
   { code: "+90", country: "Turkey" },
-  { code: "+7", country: "Russia / Kazakhstan" },
+  { code: "+7", country: "Kazakhstan" },
   { code: "+972", country: "Israel" },
   { code: "custom", country: "Other country" },
 ] as const;
+const SHIPPABLE_PHONE_COUNTRY_CODES = PHONE_COUNTRY_CODES.filter(
+  option => option.code === "custom" || !NON_SHIPPABLE_COUNTRIES.has(option.country),
+);
 const PHONE_CODE_BY_COUNTRY: Record<string, string> = {
   "United Kingdom": "+44",
   "United States": "+1",
@@ -211,7 +221,6 @@ const PHONE_CODE_BY_COUNTRY: Record<string, string> = {
   Brazil: "+55",
   Mexico: "+52",
   Turkey: "+90",
-  Russia: "+7",
   Kazakhstan: "+7",
   Israel: "+972",
 };
@@ -1266,7 +1275,7 @@ export default function CartPage() {
                         boxShadow: "0 8px 20px rgba(15, 23, 42, 0.14)",
                       }}
                     >
-                      {PHONE_COUNTRY_CODES.map(option => (
+                      {SHIPPABLE_PHONE_COUNTRY_CODES.map(option => (
                         <button
                           key={option.code}
                           type="button"

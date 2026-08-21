@@ -47,6 +47,7 @@ const COUNTRY_NAME_TO_CODE: Record<string, string> = {
   "Hungary": "HU", "Latvia": "LV", "Lithuania": "LT", "Malta": "MT",
   "Poland": "PL", "Romania": "RO", "Slovakia": "SK", "Slovenia": "SI",
 };
+const NON_SHIPPABLE_COUNTRY_CODES = new Set(["RU", "BY", "IR", "KP"]);
 
 const router = Router();
 
@@ -142,6 +143,14 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     !countryCode
   ) {
     res.status(400).json({ error: "Missing or invalid delivery details" });
+    return;
+  }
+
+  if (NON_SHIPPABLE_COUNTRY_CODES.has(countryCode)) {
+    res.status(422).json({
+      error: "We are unable to ship to this destination.",
+      code: "SHIPPING_DESTINATION_UNAVAILABLE",
+    });
     return;
   }
 
