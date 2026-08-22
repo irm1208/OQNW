@@ -1,0 +1,922 @@
+Below is a detailed handoff specification you can give to another Replit project. It describes the current crypto payment system, not the more complicated unique-address system.
+
+The receiving project should reproduce this model:
+
+One configured wallet per payment route
+        ↓
+Customer sees wallet, network, currency, and exact amount
+        ↓
+Customer sends crypto externally
+        ↓
+Customer submits transaction hash
+        ↓
+Server independently verifies the blockchain transaction
+        ↓
+Order becomes confirmed, pending, underpaid, or manual review
+        ↓
+Background worker retries pending payments
+        ↓
+Admin can audit transactions without changing order status
+
+Do not add HD wallets or unique deposit addresses to this version.
+
+1. Payment model
+The system uses configured wallet addresses rather than a new wallet for every order.
+
+Wallet addresses are stored in server-side configuration, typically in a site_config table.
+
+The main wallet configuration keys are:
+
+walletAddress
+wallet_eth
+wallet_btc
+wallet_arb
+wallet_polygon
+wallet_solana
+wallet_tron
+
+Wholesale-specific wallets may include:
+
+wholesale_usdt_wallet
+wholesale_usdc_erc20_wallet
+
+Group organisers and reshippers can also have crypto payment settings stored in their own records or JSON payment configuration.
+
+Wallet addresses are public. However, administrative changes to them must require admin authentication and should be logged.
+
+2. Supported payment rails
+The system currently supports these crypto routes:
+
+Currency	Network	Verification
+USDT	Ethereum ERC-20	ERC-20 transfer logs
+USDC	Ethereum ERC-20	ERC-20 transfer logs
+USDT	BSC / BEP-20	ERC-20-compatible transfer logs
+USDT	Arbitrum	ERC-20 transfer logs
+USDC	Arbitrum	ERC-20 transfer logs
+USDT	Polygon	ERC-20 transfer logs
+USDC	Polygon	ERC-20 transfer logs
+ETH	Ethereum mainnet	Native transaction value
+BTC	Bitcoin mainnet	Bitcoin transaction outputs
+USDC	Solana	SPL token balance changes
+USDT	Solana	SPL token balance changes
+USDT	Tron / TRC-20	Tronscan TRC-20 transfer data
+The server must match both:
+
+currency
+network
+
+A wallet address alone is not enough because the same-looking EVM address can exist on multiple networks.
+
+3. Token contract and mint configuration
+The verifier must use hardcoded server-side contract addresses, not contract addresses supplied by the client.
+
+Ethereum
+USDT:
+0xdac17f958d2ee523a2206206994597c13d831ec7
+USDC:
+0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48
+
+BSC
+USDT:
+0x55d398326f99059ff775485246999027b3197955
+
+Arbitrum
+USDT:
+0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9
+USDC:
+0xaf88d065e77c8cc2239327c5edb3a432268e5831
+
+Polygon
+USDT:
+0xc2132d05d31c914a87c6611c10748aeb04b58e8f
+USDC:
+0x3c499c542cef5e3811e1192ce70d8cc03d5c3359
+
+Solana
+USDC mint:
+EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v
+USDT mint:
+Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB
+
+Tron
+USDT:
+TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t
+
+Token decimals:
+
+Ethereum USDT: 6
+Ethereum USDC: 6
+Arbitrum USDT/USDC: 6
+Polygon USDT/USDC: 6
+BSC USDT: 18
+Solana tokens: use parsed token metadata
+Tron USDT: use transfer decimals
+ETH: 18
+BTC: 8
+
+4. Wallet routing
+The wallet is resolved server-side from the order type.
+
+The routing logic used by the current system is approximately:
+
+Global routing disabled
+If:
+
+paymentRoutingEnabled = false
+
+use:
+
+walletAddress
+currency = USDT
+network = ERC-20
+
+Shared wholesale order
+For a shared wholesale order:
+
+Look at the shared order’s organiser crypto options.
+If options exist, use the first valid configured option.
+Otherwise use wholesale_usdt_wallet.
+Otherwise use wholesale_usdc_erc20_wallet.
+Otherwise use the global walletAddress.
+The shared order’s organiser options look like:
+
+[
+  {
+    currency: "USDT",
+    network: "ERC-20",
+    walletAddress: "0x..."
+  }
+]
+
+Normal wholesale order
+For a normal wholesale order:
+
+Use wholesale_usdt_wallet if configured.
+Otherwise use wholesale_usdc_erc20_wallet.
+Otherwise use the global wallet.
+Group-buy order
+For a group-buy order:
+
+Look for a reshipper assignment matching the customer’s shipping country.
+If the reshipper has crypto enabled and a crypto wallet, use it.
+Otherwise look for organiser crypto payment settings.
+Otherwise fall back to the global wallet.
+A reshipper’s crypto settings include:
+
+cryptoWalletAddress
+cryptoCurrency
+cryptoNetwork
+
+Legacy usdtWallet settings are still supported for compatibility.
+
+Normal order
+Use the global wallet and default crypto route.
+
+The same resolver must be used by:
+
+Payment information display
+Rate locking
+Full payment submission
+Test payment submission
+Background auto-verification
+Admin audit verification
+5. Payment information endpoint
+The frontend requests payment details from the server.
+
+Conceptually:
+
+GET /api/payments-info?orderId=<ORDER_ID>
+
+The response should include:
+
+{
+  paymentsEnabled: boolean,
+  cryptoWalletAddress: string | null,
+  cryptoCurrency: string | null,
+  cryptoNetwork: string | null,
+  availableCryptoOptions: Array<{
+    currency: string,
+    network: string,
+    walletAddress: string
+  }>
+}
+
+The frontend uses this to display:
+
+Wallet address
+Network
+Currency
+QR code
+Available crypto choices
+Payment instructions
+Open-in-wallet link
+The client must not construct a wallet address or assume that a currency is valid.
+
+6. Currency-selection rules
+The current system treats the server as authoritative.
+
+The customer may select between USDT and USDC only on the Ethereum ERC-20 rail when the server has a valid EVM wallet.
+
+Conceptually:
+
+function effectiveStableCurrency(
+  baseCurrency: string,
+  network: string,
+  walletAddress: string | null,
+  customerChoice: string | null,
+): string {
+  const choice = customerChoice?.toUpperCase().trim();
+  const isEthereumErc20 =
+    baseCurrency.toUpperCase() === "USDT" &&
+    /erc.?20|ethereum/i.test(network) &&
+    isValidEthAddress(walletAddress ?? "");
+  if (
+    isEthereumErc20 &&
+    (choice === "USDT" || choice === "USDC")
+  ) {
+    return choice;
+  }
+  return baseCurrency;
+}
+
+Do not allow the customer to:
+
+Select USDC on a network where it was not configured
+Submit a different token than the server expected
+Change the token by editing a browser request
+Choose a different recipient wallet
+The server must re-read the effective currency at verification time.
+
+7. Database fields on orders
+The order needs payment fields similar to these:
+
+payment_status
+payment_tx_hash
+payment_tx_hashes
+test_payment_tx_hash
+payment_usd_amount
+payment_crypto_currency
+payment_crypto_rate
+payment_crypto_network
+payment_confirmed_at
+payment_rejection_reason
+payment_screenshot
+
+The current schema uses:
+
+payment_usd_amount
+payment_crypto_currency
+payment_crypto_rate
+payment_crypto_network
+
+payment_crypto_rate means:
+
+USD per coin
+
+For example:
+
+1 USDT = 1 USD
+1 ETH = 3,200 USD
+1 BTC = 100,000 USD
+
+The field name amountUsdt also appears in some verifier response objects even when the currency is ETH or BTC. A new implementation may rename that internal property to amountReceived, but it must do so consistently.
+
+8. Locking the payment rate
+The payment panel calls:
+
+POST /api/orders/:id/lock-usdt-rate
+
+The route name contains usdt for historical reasons, but the system supports additional currencies.
+
+The request contains the selected currency and network:
+
+{
+  "cryptoCurrency": "USDC",
+  "cryptoNetwork": "ERC-20"
+}
+
+The server then:
+
+Loads the order.
+Resolves the correct recipient wallet.
+Validates the requested currency/network against server-approved options.
+Converts the order total to USD.
+Stores the USD amount.
+Resolves the crypto rate.
+Stores the selected currency, network, and rate.
+Returns the exact amount to send.
+Conceptually:
+
+{
+  paymentUsdAmount: 100,
+  paymentCryptoCurrency: "USDC",
+  paymentCryptoNetwork: "ERC-20",
+  paymentCryptoRate: 1,
+  expectedCryptoAmount: 100
+}
+
+Rate rules
+Stablecoins:
+
+USDT = 1 USD
+USDC = 1 USD
+
+Volatile assets:
+
+Fetch live USD-per-coin pricing.
+Use CoinGecko or another price source.
+If no live rate is available, block the payment.
+Never guess a volatile-coin price.
+For group buys priced in GBP, EUR, or another currency:
+
+Convert the group-buy currency to USD.
+Lock the resulting USD amount.
+Convert the USD amount to crypto.
+Fiat conversion may use a live FX source with safe fallback rates. Crypto conversion must not silently use a guessed fallback.
+
+9. Rate-lock invalidation
+The rate lock must be cleared when an order total materially changes.
+
+The current system uses two protections:
+
+Order edits clear the stored payment lock unless the order is already paid-like.
+Verification checks for a material difference between the current total and the locked USD amount.
+A total-changing edit should clear:
+
+payment_usd_amount
+payment_crypto_rate
+
+It should generally preserve the lock only if the order is already in a paid-like state such as:
+
+confirmed
+test_confirmed
+
+A roughly 3% stale-lock check is also used as a safety net.
+
+This prevents the customer from paying against an old amount after:
+
+Product quantity changes
+Shipping changes
+Fees are added
+Credits are changed
+Shared-order adjustments are applied
+10. Customer full-payment endpoint
+The full-payment endpoint is:
+
+POST /api/orders/:id/pay
+
+Body:
+
+{
+  "txHash": "0x..."
+}
+
+The server must perform these checks:
+
+Validate the transaction hash format.
+Check that the hash has not already been used by another order.
+Load the order again.
+Confirm payment is allowed.
+Resolve the wallet, currency, and network from the server.
+Re-read the stored rate and USD lock.
+Recalculate the expected amount.
+Verify the blockchain transaction.
+Update the payment state transactionally.
+Never trust the client to provide:
+
+recipient wallet
+expected amount
+exchange rate
+token contract
+currency
+network
+
+11. Expected amount calculation
+The expected amount should be derived from server-side data.
+
+Conceptually:
+
+const lockedUsd = Number(order.paymentUsdAmount);
+const appliedCredits = Number(order.creditsApplied ?? 0);
+const confirmedTestAmount = getConfirmedTestAmount(order);
+const netUsd = Math.max(
+  0,
+  lockedUsd - appliedCredits - confirmedTestAmount
+);
+const usdPerCoin = resolveLockedUsdPerCoin(order, currency);
+const expectedCryptoAmount =
+  roundCrypto(netUsd / usdPerCoin, currency);
+
+Important:
+
+Stablecoins use a USD-per-coin rate of 1.
+Volatile coins use the stored locked rate.
+If the locked volatile rate is unavailable, fetch and persist a live rate.
+If the rate cannot be fetched, do not verify the payment.
+If the lock is materially stale, require the order to be recalculated.
+12. Transaction hash validation
+The current validator supports:
+
+EVM hashes with 0x
+EVM hashes without the 0x prefix
+Solana base58 signatures
+Conceptually:
+
+function isValidTxHash(hash: string): boolean {
+  return (
+    /^0x[0-9a-fA-F]{64}$/.test(hash) ||
+    /^[0-9a-fA-F]{64}$/.test(hash) ||
+    /^[1-9A-HJ-NP-Za-km-z]{86,88}$/.test(hash)
+  );
+}
+
+The hash should be normalized before lookup:
+
+const normalizedHash =
+  hash.startsWith("0x") ? hash : `0x${hash}`;
+
+For replay prevention:
+
+Search all relevant transaction-hash fields.
+Reject the hash if another order already uses it.
+Use a database uniqueness mechanism where possible.
+Treat transaction hashes as case-insensitive for EVM networks.
+13. ERC-20 verification
+For Ethereum, BSC, Arbitrum, and Polygon token payments:
+
+Call eth_getTransactionReceipt.
+Require a successful receipt status.
+Inspect the receipt logs.
+Match the exact configured token contract.
+Match the ERC-20 Transfer event topic.
+Decode the recipient from topics[2].
+Decode the raw token amount from the event data.
+Convert using the correct token decimals.
+Require the recipient to match the configured wallet.
+Compare the amount with the expected amount.
+Calculate block confirmations.
+The ERC-20 transfer event topic is:
+
+0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+
+The verifier must inspect every matching transfer in the receipt, not just the first log.
+
+This matters because one transaction can contain:
+
+Multiple token transfers
+Transfers to another wallet
+A transfer to the correct wallet
+A transfer of the wrong amount
+Observed transfers should be returned as evidence even when verification fails.
+
+14. Native ETH verification
+For ETH:
+
+Fetch the transaction receipt.
+Require a successful receipt.
+Fetch the transaction details.
+Confirm tx.to equals the configured wallet.
+Decode tx.value from wei.
+Convert to ETH.
+Compare against the expected amount.
+Calculate confirmations.
+An ETH transaction sent to the right wallet but below the required amount is an underpayment.
+
+A transaction sent to another recipient is a wrong-wallet result.
+
+15. Bitcoin verification
+For BTC:
+
+Fetch the transaction from a Bitcoin API such as Blockstream.
+If it is not found, return a pending result.
+Require at least one confirmation.
+Inspect every transaction output.
+Find an output sent to the configured Bitcoin address.
+Convert satoshis to BTC.
+Compare the output amount to the expected amount.
+Record confirmations.
+The verifier should not simply check the total transaction value. It must check the output that actually belongs to the configured payment wallet.
+
+16. Solana verification
+For Solana USDT and USDC:
+
+Fetch the transaction using Solana JSON-RPC.
+Use parsed JSON encoding.
+Require that the transaction exists.
+Require that meta.err is null.
+Match the expected token mint.
+Compare preTokenBalances and postTokenBalances.
+Calculate the positive token balance delta.
+Confirm the token account owner equals the expected wallet.
+Compare the received amount.
+A Solana payment that cannot yet be found should remain pending rather than failing permanently.
+
+17. Tron verification
+For Tron USDT:
+
+Fetch transaction details from Tronscan.
+Require the transaction to be confirmed.
+Inspect trc20TransferInfo.
+Match the official USDT contract.
+Confirm the to address equals the configured wallet.
+Decode the token amount using the transaction’s decimals.
+Compare against the expected amount.
+18. Amount tolerance
+The current policy uses a default tolerance of approximately 1% for underpayment.
+
+For ERC-20, BTC, and native ETH, the canonical verifier also prevents excessive overpayment. The effective policy is approximately:
+
+Minimum accepted:
+expected amount - max(expected amount × 1%, minimum threshold)
+Maximum accepted:
+expected amount × 1.02
+
+Examples:
+
+Expected: 100 USDT
+Minimum: approximately 99 USDT
+Maximum: 102 USDT
+
+The minimum threshold differs slightly by currency:
+
+ERC-20: minimum around 0.02 token
+ETH: very small wei-derived threshold
+BTC: approximately 1 satoshi-derived threshold
+
+The new project should use one shared amount comparison helper across every chain. Do not create separate inconsistent tolerance rules.
+
+19. Verification result shape
+The shared verifier returns a result similar to:
+
+type VerifyResult =
+  | {
+      verified: true;
+      amountUsdt: number;
+      blockConfirmations: number;
+      recipientAddress?: string;
+      observedTransfers?: Array<{
+        recipientAddress: string;
+        amount: number;
+      }>;
+    }
+  | {
+      verified: false;
+      reason: string;
+      pending?: boolean;
+      manual?: boolean;
+      recipientAddress?: string;
+      amountUsdt?: number;
+      blockConfirmations?: number;
+      observedTransfers?: Array<{
+        recipientAddress: string;
+        amount: number;
+      }>;
+    };
+
+The important distinction is:
+
+verified = true
+pending = true
+manual = true
+
+A transaction that cannot currently be read should not be treated as a permanent failure.
+
+An unsupported currency/network should return:
+
+{
+  verified: false,
+  manual: true,
+  reason: "Automated verification is not supported..."
+}
+
+20. Payment states
+The main order payment statuses include:
+
+unpaid
+test_ready
+test_confirmed
+pending_confirmation
+confirmed
+
+Confirmed
+Set when the on-chain transfer passes all checks.
+
+Update:
+
+payment_status = confirmed
+payment_tx_hash = submitted hash
+payment_confirmed_at = current time
+amount_due = 0
+
+Pending confirmation
+Use when:
+
+The transaction has not propagated
+The transaction is not confirmed yet
+The RPC service cannot currently read it
+The transaction requires more confirmations
+Store the submitted hash and allow the background verifier to retry.
+
+Underpaid
+Use when funds reached the expected wallet but are below the accepted amount.
+
+Keep the evidence:
+
+amount received
+expected amount
+shortfall
+recipient
+transaction hash
+
+Do not confirm the order automatically.
+
+Wrong wallet
+Use when the transaction is valid on-chain but funds were sent to an address that is not approved for that order.
+
+Manual review
+Use for:
+
+Unsupported crypto routes
+Ambiguous evidence
+Fiat references
+AnonPay references
+Unexpected token transfers
+Payments received after an order was cancelled or expired
+21. Test-payment flow
+Some orders require a small test payment first.
+
+Endpoint:
+
+POST /api/orders/:id/submit-test
+
+Body:
+
+{
+  "txHash": "0x..."
+}
+
+The test-payment flow uses the same:
+
+Wallet routing
+Currency validation
+Network validation
+Rate lock
+Token contract checks
+Recipient checks
+Amount tolerance
+Replay protection
+Blockchain verification
+On success:
+
+test_payment_tx_hash = submitted hash
+payment_status = test_confirmed
+
+When the customer later submits the full amount, the confirmed test amount is subtracted from the amount still owed.
+
+22. Background auto-verification
+A background job runs approximately every five minutes.
+
+It looks for orders with:
+
+payment_status = pending_confirmation
+payment_tx_hash is not null
+
+For each order it:
+
+Loads the order.
+Skips fiat and AnonPay references.
+Resolves the current payment route.
+Recalculates the expected amount.
+Uses the stored crypto rate.
+Calls the same verifier as the customer endpoint.
+Confirms the order if the transaction now passes.
+Leaves it pending if the transaction is still not visible or confirmed.
+Logs the outcome.
+The auto-verifier must not trust stale client data. It should work entirely from the database and server configuration.
+
+23. Admin payment audit
+The admin audit system is separate from automatic order confirmation.
+
+Its purpose is evidence and investigation.
+
+It must not automatically change:
+
+payment_status
+amount_due
+payment_confirmed_at
+
+Admin endpoints:
+
+GET    /api/admin/payment-audit
+POST   /api/admin/payment-audit/check
+POST   /api/admin/payment-audit/check-batch
+GET    /api/admin/payment-audit/wallet-history
+POST   /api/admin/payment-audit/wallet-history
+DELETE /api/admin/payment-audit/wallet-history/:id
+
+The admin page can show:
+
+Order
+Transaction hash
+Transaction type
+Currency
+Network
+Expected wallet
+Actual recipient
+Expected amount
+Received amount
+Confirmations
+Result
+Reason
+Last checked time
+Raw observed transfers
+24. Wallet-history table
+Wallet addresses may change over time. Old transactions must not be checked against a new wallet.
+
+Use a table like:
+
+approved_wallet_history
+-----------------------
+id
+scope
+network
+address
+effective_from
+effective_until
+note
+created_at
+updated_at
+
+Example scopes:
+
+all
+group_buy
+wholesale
+shared_order
+
+When auditing an old order:
+
+Determine the order type.
+Determine its network.
+Determine the order/payment date.
+Find wallet-history entries active on that date.
+Prefer an exact scope.
+Fall back to the all scope.
+Check the transaction against every applicable historical wallet.
+25. Audit-result table
+Use a table like:
+
+payment_audit_results
+---------------------
+id
+order_id
+tx_hash
+reference_source
+tx_kind
+status
+network
+currency
+expected_amount
+expected_wallet
+recipient_address
+received_amount
+confirmations
+reason
+checked_at
+
+Add a uniqueness constraint:
+
+(order_id, tx_hash, reference_source)
+
+This prevents repeated admin checks from creating duplicate records.
+
+Possible statuses:
+
+verified
+underpaid
+wrong_wallet
+review
+not_chain
+
+The audit record should retain evidence even when the result is not verified.
+
+For example, a wrong-wallet transaction should still show:
+
+actual recipient
+amount received
+observed transfers
+transaction confirmations
+
+26. RPC and blockchain data sources
+The current system does not use a crypto payment processor.
+
+It directly reads blockchain data through RPC and public blockchain APIs.
+
+The architecture uses fallback RPC endpoints for:
+
+Ethereum
+BSC
+Arbitrum
+Polygon
+Solana
+
+Bitcoin uses a service such as:
+
+Blockstream
+
+Tron uses:
+
+Tronscan
+
+A new implementation should put providers behind adapters:
+
+interface ChainVerifier {
+  verifyTransaction(input: VerifyInput): Promise<VerifyResult>;
+}
+
+Then implement:
+
+EvmTokenVerifier
+NativeEthVerifier
+BitcoinVerifier
+SolanaTokenVerifier
+TronUsdtVerifier
+
+RPC failure should normally produce a pending result where appropriate, not a false “wrong payment” result.
+
+27. Notifications and logging
+Every payment attempt should be logged with:
+
+order ID
+order code
+customer identifier
+transaction hash
+currency
+network
+wallet
+expected amount
+amount received
+result
+reason
+
+Important events include:
+
+payment_submitted
+payment_confirmed
+payment_pending
+payment_underpayment
+payment_wrong_wallet
+payment_manual_review
+payment_rate_unavailable
+payment_duplicate_hash
+payment_verification_failed
+
+Notifications should happen after the database transaction commits.
+
+A notification failure should not undo a successful payment confirmation.
+
+28. Critical security rules
+The receiving project must follow these rules:
+
+Never trust the client’s wallet address.
+Never trust the client’s expected amount.
+Never trust the client’s exchange rate.
+Validate currency and network against server configuration.
+Use exact token contract addresses.
+Match the exact recipient wallet.
+Reject reused transaction hashes.
+Use a narrow underpayment tolerance.
+Do not use a guessed volatile-coin rate.
+Clear payment locks after material order edits.
+Recalculate totals from server-side order data.
+Treat unsupported networks as manual review.
+Preserve wrong-wallet and multi-transfer evidence.
+Use RPC failover.
+Make confirmation updates transactional and idempotent.
+Keep admin audit separate from order-state mutation.
+Never expose admin secrets or wallet private keys to the frontend.
+Never store wallet private keys in the application database.
+Keep the payment-routing resolver consistent across every entry point.
+Store the transaction hash internally even when the customer submits it manually.
+29. Important implementation warning
+The current project contains verifier logic in two places:
+
+payments.ts
+payment-verify.ts
+
+The payment routes contain a local verifier path, while the shared library is also used by background/audit-related code.
+
+For the new project, do not copy both implementations independently.
+
+Use one canonical service:
+
+resolvePaymentRoute()
+resolveEffectiveCurrency()
+resolveLockedRate()
+calculateExpectedAmount()
+verifyTransaction()
+
+Every caller should use it:
+
+customer full payment **…**
+_This response is too long to display in full.
