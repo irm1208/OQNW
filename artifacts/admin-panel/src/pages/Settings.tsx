@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
 function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
@@ -20,6 +21,8 @@ type StoreSettings = {
   country: string | null;
   announcementBanner: string | null;
   maintenanceMode: boolean;
+  cryptoPaymentsEnabled: boolean;
+  cryptoPaymentRoutes: string;
   updatedAt: string;
 };
 
@@ -36,12 +39,15 @@ type Form = {
   country: string;
   announcementBanner: string;
   maintenanceMode: boolean;
+  cryptoPaymentsEnabled: boolean;
+  cryptoPaymentRoutes: string;
 };
 
 const EMPTY: Form = {
   storeName: "", supportEmail: "", supportPhone: "", currency: "GBP", orderPrefix: "OQ",
   addressLine1: "", addressLine2: "", city: "", postcode: "", country: "",
   announcementBanner: "", maintenanceMode: false,
+  cryptoPaymentsEnabled: false, cryptoPaymentRoutes: "[]",
 };
 
 function Field({ label, value, onChange, placeholder }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string }) {
@@ -78,6 +84,8 @@ export default function Settings() {
         country: data.country ?? "",
         announcementBanner: data.announcementBanner ?? "",
         maintenanceMode: data.maintenanceMode ?? false,
+        cryptoPaymentsEnabled: data.cryptoPaymentsEnabled ?? false,
+        cryptoPaymentRoutes: data.cryptoPaymentRoutes ?? "[]",
       });
     }
   }, [data]);
@@ -133,6 +141,38 @@ export default function Settings() {
           <input type="checkbox" checked={form.maintenanceMode} onChange={e => setForm(f => ({ ...f, maintenanceMode: e.target.checked }))} className="rounded" />
           Maintenance mode
         </label>
+      </section>
+
+      <section className="rounded-xl border bg-card p-6 space-y-4">
+        <div>
+          <h3 className="font-semibold">Direct Crypto Payments</h3>
+          <p className="text-sm text-muted-foreground mt-1">
+            Keep this disabled until every enabled route has a verified receiving address. Private keys are never stored here.
+          </p>
+        </div>
+        <label className="flex items-center gap-2 text-sm font-medium">
+          <input
+            type="checkbox"
+            checked={form.cryptoPaymentsEnabled}
+            onChange={e => setForm(f => ({ ...f, cryptoPaymentsEnabled: e.target.checked }))}
+            className="rounded"
+          />
+          Offer direct crypto payments at checkout
+        </label>
+        <div className="space-y-1">
+          <label className="text-sm font-medium">Wallet routes (JSON)</label>
+          <Textarea
+            value={form.cryptoPaymentRoutes}
+            onChange={e => setForm(f => ({ ...f, cryptoPaymentRoutes: e.target.value }))}
+            rows={12}
+            spellCheck={false}
+            placeholder={'[\n  { \"currency\": \"BTC\", \"network\": \"bitcoin\", \"walletAddress\": \"...\", \"enabled\": true },\n  { \"currency\": \"USDT\", \"network\": \"solana\", \"walletAddress\": \"...\", \"enabled\": true }\n]'}
+            className="font-mono text-xs"
+          />
+          <p className="text-xs text-muted-foreground">
+            Supported routes: BTC/bitcoin; ETH/ethereum; USDT or USDC on ethereum, bsc, arbitrum, polygon, or solana; USDT/tron.
+          </p>
+        </div>
       </section>
 
       <section className="rounded-xl border bg-card p-6 space-y-4">

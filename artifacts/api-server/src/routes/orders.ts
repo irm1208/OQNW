@@ -25,6 +25,7 @@ import {
 import { createBtcPayInvoice, isBtcPayConfigured } from "../lib/btcpay";
 import { createWallidPayment, isWallidConfigured } from "../lib/wallid";
 import { createWallidPaymentQuote, type WallidPaymentCurrency } from "../lib/payment-currency";
+import { prepareCryptoPayment } from "../lib/crypto-payments";
 import { assessFraud } from "../lib/fraudScorer";
 import { getClientIp, lookupIpData } from "../lib/geoip";
 import { dispatchWebhook } from "../lib/webhookDispatcher";
@@ -135,6 +136,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     paymentMethod,
     paymentCurrency,
     cryptoCurrency,
+    cryptoNetwork,
     redeemFreePeptide,
   } = req.body as {
     delivery: unknown;
@@ -146,9 +148,11 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     paymentMethod?: unknown;
     paymentCurrency?: unknown;
     cryptoCurrency?: unknown;
+    cryptoNetwork?: unknown;
     redeemFreePeptide?: unknown;
   };
   const cryptoCurrencyStr = typeof cryptoCurrency === "string" ? cryptoCurrency.toUpperCase() : "BTC";
+  const cryptoNetworkStr = typeof cryptoNetwork === "string" ? cryptoNetwork.toLowerCase() : "";
 
   const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "bank_transfer";
   const paymentCurrencyStr = typeof paymentCurrency === "string" ? paymentCurrency.toUpperCase() : "GBP";
@@ -452,6 +456,8 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     let wallidApiPaymentId: string | null = null;
     let wallidPaymentCurrency: WallidPaymentCurrency | null = null;
     let wallidPaymentAmountMinor: number | null = null;
+    let cryptoPayment: Awaited<ReturnType<typeof prepareCryptoPayment>> = null;
+    let cryptoPaymentAccessToken: string | null = null;
 
     if (paymentMethodStr === "wallid") {
       // Use only the configured canonical origin — never the untrusted request
@@ -513,6 +519,17 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       wallidApiPaymentId = payment.apiPaymentId;
       wallidPaymentCurrency = quote.currency;
       wallidPaymentAmountMinor = quote.amountMinor;
+    }
+
+    if (paymentMethodStr === "crypto") {
+      cryptoPayment = await prepareCryptoPayment(totalGbp, cryptoCurrencyStr, cryptoNetworkStr);
+      if (!cryptoPayment) {
+        res.status(400).json({
+          error: "The selected crypto route is unavailable or its live rate could not be locked. Please choose another payment option.",
+        });
+        return;
+      }
+      cryptoPaymentAccessToken = crypto.randomBytes(24).toString("base64url");
     }
 
     // If a valid customer session cookie is present, use that customer ID directly.
@@ -663,13 +680,26 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         paymentCurrency: wallidPaymentCurrency,
         paymentAmountMinor: wallidPaymentAmountMinor,
         shippingMethod,
-        status: ["bank_transfer", "bitcoin", "wallid"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
+        status: ["bank_transfer", "bitcoin", "wallid", "crypto"].includes(paymentMethodStr) ? "awaiting_payment" : "pending" as const,
+        ...(cryptoPayment && {
+          cryptoPaymentStatus: "rate_locked",
+          cryptoCurrency: cryptoPayment.details.currency,
+          cryptoNetwork: cryptoPayment.details.network,
+          cryptoWalletAddress: cryptoPayment.details.walletAddress,
+          cryptoRouteSnapshot: cryptoPayment.route,
+          cryptoExpectedAmount: cryptoPayment.details.expectedAmount,
+          cryptoRateUsd: String(cryptoPayment.details.rateUsd),
+          cryptoRateLockedAt: new Date(),
+          cryptoRateExpiresAt: new Date(cryptoPayment.details.rateExpiresAt),
+          cryptoPaymentAccessToken,
+        }),
         notes: [
           `Payment method: ${paymentMethodStr}`,
           bundleDiscountGbp > 0 ? `Bundle & Save: ${bundleFreeLabel} (-£${bundleDiscountGbp.toFixed(2)})` : null,
           validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-£${discountAmount.toFixed(2)})` : null,
           loyaltyPointsToDeduct > 0 ? `Loyalty: ${loyaltyPointsToDeduct} pts redeemed (-£${loyaltyDiscountGbp.toFixed(2)})` : null,
           wallidApiPaymentId ? `Wallid payment id: ${wallidApiPaymentId}` : null,
+          cryptoPayment ? `Crypto route: ${cryptoPayment.details.currency} on ${cryptoPayment.details.network}` : null,
         ].filter(Boolean).join("; ") || null,
         fraudScore,
         fraudFlags,
@@ -1030,7 +1060,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         shippingCostGbp,
         shippingMethod,
       }).catch(() => {});
-    } else if (paymentMethodStr === "wallid") {
+    } else if (paymentMethodStr === "wallid" || paymentMethodStr === "crypto") {
       // No email at order creation — customer is redirected to Wallid to pay.
       // Confirmation email should be sent from the webhook when payment settles.
     } else {
@@ -1073,6 +1103,10 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       shippingMethod,
       paymentMethod: paymentMethodStr,
       ...(paymentMethodStr === "bitcoin" && { cryptoCurrency: cryptoCurrencyStr }),
+      ...(cryptoPayment && {
+        cryptoPayment: cryptoPayment.details,
+        cryptoPaymentToken: cryptoPaymentAccessToken,
+      }),
       ...(btcAddress    && { btcAddress }),
       ...(btcAmount     && { btcAmount }),
       ...(btcPaymentUrl && { btcPaymentUrl }),

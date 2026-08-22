@@ -20,6 +20,8 @@ export const storeSettingsTable = pgTable("store_settings", {
   country: text("country"),
   announcementBanner: text("announcement_banner"),
   maintenanceMode: boolean("maintenance_mode").notNull().default(false),
+  cryptoPaymentsEnabled: boolean("crypto_payments_enabled").notNull().default(false),
+  cryptoPaymentRoutes: text("crypto_payment_routes").notNull().default("[]"),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
 });
 

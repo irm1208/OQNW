@@ -5,6 +5,7 @@ import { db } from "@workspace/db";
 import { blockedIpsTable, adminUsersTable } from "@workspace/db/schema";
 import { eq } from "drizzle-orm";
 import { verifyPassword } from "./users";
+import { createHmac, timingSafeEqual } from "crypto";
 
 const router = Router();
 
@@ -12,6 +13,7 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "omniqure-admin-2024";
 const SESSION_COOKIE = "admin_session";
 const EMAIL_COOKIE = "admin_email";
 const SESSION_VALUE = "authenticated";
+const SECURE_SESSION_COOKIE = "admin_secure_session";
 const COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 const MAX_ATTEMPTS = 5;
@@ -22,6 +24,23 @@ interface AttemptRecord {
   count: number;
   lockedUntil: number | null;
   lastAttemptAt: number;
+}
+
+function secureSessionValue(): string {
+  const expiresAt = Date.now() + COOKIE_MAX_AGE;
+  const payload = `admin:${expiresAt}`;
+  const signature = createHmac("sha256", process.env.SESSION_SECRET ?? ADMIN_PASSWORD).update(payload).digest("base64url");
+  return `${payload}:${signature}`;
+}
+
+export function hasSecureAdminSession(req: Request): boolean {
+  const value = req.cookies?.[SECURE_SESSION_COOKIE];
+  if (typeof value !== "string") return false;
+  const [role, expires, signature] = value.split(":");
+  if (role !== "admin" || !/^\d+$/.test(expires) || !signature || Number(expires) < Date.now()) return false;
+  const payload = `${role}:${expires}`;
+  const expected = createHmac("sha256", process.env.SESSION_SECRET ?? ADMIN_PASSWORD).update(payload).digest("base64url");
+  return signature.length === expected.length && timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
 }
 
 const attemptsByIp = new Map<string, AttemptRecord>();
@@ -139,6 +158,12 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
     maxAge: COOKIE_MAX_AGE,
     sameSite: "lax",
   });
+  res.cookie(SECURE_SESSION_COOKIE, secureSessionValue(), {
+    httpOnly: true,
+    maxAge: COOKIE_MAX_AGE,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  });
   if (sessionEmail) {
     res.cookie(EMAIL_COOKIE, sessionEmail, {
       httpOnly: true,
@@ -153,6 +178,7 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
 
 router.post("/admin/auth/logout", (_req: Request, res: Response): void => {
   res.clearCookie(SESSION_COOKIE);
+  res.clearCookie(SECURE_SESSION_COOKIE);
   res.clearCookie(EMAIL_COOKIE);
   res.status(204).send();
 });

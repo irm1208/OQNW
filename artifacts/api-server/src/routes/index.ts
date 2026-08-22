@@ -45,6 +45,8 @@ import btcpayWebhookRouter from "./btcpay-webhook";
 import wallidWebhookRouter from "./wallid-webhook";
 import contactRouter from "./contact";
 import addressLookupRouter from "./address-lookup";
+import cryptoPaymentsRouter from "./crypto-payments";
+import adminCryptoAuditsRouter from "./admin/crypto-audits";
 
 const router: IRouter = Router();
 
@@ -68,7 +70,9 @@ router.use(adminUsersRouter);
 router.use(adminReportsRouter);
 router.use(adminGdprRouter);
 router.use(adminBlogRouter);
+  router.use(adminCryptoAuditsRouter);
 router.use(publicOrdersRouter);
+  router.use(cryptoPaymentsRouter);
 router.use(publicDiscountsRouter);
 router.use(customerAuthRouter);
 router.use(customerAccountRouter);

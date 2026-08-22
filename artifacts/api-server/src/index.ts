@@ -6,6 +6,7 @@ import { seedReviews } from "./lib/seed-reviews";
 import { seedBlog } from "./lib/seed-blog";
 import { seedBlogPeptides } from "./lib/seed-blog-peptides";
 import { seedProductsCatalog } from "./lib/seed-catalog";
+import { startCryptoReconciliationJob } from "./lib/cryptoReconciliationJob";
 
 const rawPort = process.env["PORT"];
 
@@ -30,6 +31,7 @@ app.listen(port, (err) => {
   logger.info({ port }, "Server listening");
   startAbandonedCartJob();
   startReviewRequestJob();
+  startCryptoReconciliationJob();
   // Seed catalog first (reviews depend on published products existing)
   seedProductsCatalog()
     .then((r) => {

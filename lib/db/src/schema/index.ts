@@ -24,3 +24,5 @@ export * from "./customer_credits";
 export * from "./blocked_ips";
 export * from "./store_settings";
 export * from "./admin_users";
+export * from "./crypto_payment_attempts";
+export * from "./crypto_payment_audits";

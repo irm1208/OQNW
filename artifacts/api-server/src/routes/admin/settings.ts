@@ -3,11 +3,13 @@ import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { storeSettingsTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
+import { serializeCryptoRoutes } from "../../lib/crypto-payments";
+import { hasSecureAdminSession } from "./auth";
 
 const router = Router();
 
 function requireAdmin(req: Request, res: Response): boolean {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -18,6 +20,7 @@ const EDITABLE_FIELDS = [
   "storeName", "supportEmail", "supportPhone", "currency", "orderPrefix",
   "addressLine1", "addressLine2", "city", "postcode", "country",
   "announcementBanner", "maintenanceMode",
+  "cryptoPaymentsEnabled", "cryptoPaymentRoutes",
 ] as const;
 
 function settingsToResponse(s: typeof storeSettingsTable.$inferSelect) {
@@ -34,6 +37,8 @@ function settingsToResponse(s: typeof storeSettingsTable.$inferSelect) {
     country: s.country ?? null,
     announcementBanner: s.announcementBanner ?? null,
     maintenanceMode: s.maintenanceMode,
+    cryptoPaymentsEnabled: s.cryptoPaymentsEnabled,
+    cryptoPaymentRoutes: s.cryptoPaymentRoutes,
     updatedAt: s.updatedAt.toISOString(),
   };
 }
@@ -68,6 +73,22 @@ router.patch("/admin/settings", async (req: Request, res: Response): Promise<voi
     if (typeof updates.storeName === "string" && !updates.storeName.trim()) {
       res.status(400).json({ error: "Store name cannot be empty" });
       return;
+    }
+    if (updates.cryptoPaymentsEnabled !== undefined && typeof updates.cryptoPaymentsEnabled !== "boolean") {
+      res.status(400).json({ error: "Crypto payment setting must be true or false" });
+      return;
+    }
+    if (updates.cryptoPaymentRoutes !== undefined) {
+      if (typeof updates.cryptoPaymentRoutes !== "string") {
+        res.status(400).json({ error: "Crypto payment routes must be valid JSON" });
+        return;
+      }
+      try {
+        updates.cryptoPaymentRoutes = serializeCryptoRoutes(JSON.parse(updates.cryptoPaymentRoutes));
+      } catch {
+        res.status(400).json({ error: "Crypto payment routes must be valid JSON" });
+        return;
+      }
     }
     const [updated] = await db
       .update(storeSettingsTable)

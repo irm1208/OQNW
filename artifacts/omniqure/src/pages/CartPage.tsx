@@ -115,15 +115,30 @@ const SHIPPING_OPTIONS = [
   },
 ];
 
-const CRYPTO_OPTIONS = [
-  { id: "BTC",  name: "Bitcoin",    symbol: "₿", color: "#F7931A", network: "Bitcoin",      address: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh" },
-  { id: "ETH",  name: "Ethereum",   symbol: "Ξ", color: "#627EEA", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
-  { id: "USDT", name: "USDT",       symbol: "₮", color: "#26A17B", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
-  { id: "USDC", name: "USDC",       symbol: "◎", color: "#2775CA", network: "ERC-20 / ETH", address: "0xYourEthereumAddressHere" },
-  { id: "LTC",  name: "Litecoin",   symbol: "Ł", color: "#A6A9AA", network: "Litecoin",     address: "LYourLitecoinAddressHere" },
-  { id: "XMR",  name: "Monero",     symbol: "ɱ", color: "#FF6600", network: "Monero",       address: "YourMoneroAddressHere" },
-] as const;
-type CryptoCurrency = typeof CRYPTO_OPTIONS[number]["id"];
+type CryptoRoute = {
+  currency: "BTC" | "ETH" | "USDT" | "USDC";
+  network: string;
+  minConfirmations: number;
+};
+
+const CRYPTO_META: Record<CryptoRoute["currency"], { name: string; symbol: string; color: string }> = {
+  BTC: { name: "Bitcoin", symbol: "₿", color: "#F7931A" },
+  ETH: { name: "Ethereum", symbol: "Ξ", color: "#627EEA" },
+  USDT: { name: "Tether", symbol: "₮", color: "#26A17B" },
+  USDC: { name: "USD Coin", symbol: "◎", color: "#2775CA" },
+};
+
+function networkLabel(network: string): string {
+  return {
+    bitcoin: "Bitcoin",
+    ethereum: "Ethereum",
+    bsc: "BNB Smart Chain",
+    arbitrum: "Arbitrum",
+    polygon: "Polygon",
+    solana: "Solana",
+    tron: "Tron",
+  }[network] ?? network;
+}
 
 type BankEntry =
   | { name: string; color: string; viewBox: string; filled: boolean; path: string }
@@ -518,9 +533,10 @@ export default function CartPage() {
   const [applyingDiscount, setApplyingDiscount] = useState(false);
 
   // Payment
-  const [paymentMethod, setPaymentMethod] = useState<"bitcoin" | "wallid">("wallid");
+  const [paymentMethod, setPaymentMethod] = useState<"crypto" | "wallid">("wallid");
   const [paymentCurrency, setPaymentCurrency] = useState<"GBP" | "EUR">("GBP");
-  const [cryptoCurrency, setCryptoCurrency] = useState<CryptoCurrency>("BTC");
+  const [cryptoRoutes, setCryptoRoutes] = useState<CryptoRoute[]>([]);
+  const [cryptoRoute, setCryptoRoute] = useState<CryptoRoute | null>(null);
   const paymentCurrencyChosen = useRef(false);
 
   useEffect(() => {
@@ -528,6 +544,19 @@ export default function CartPage() {
       setPaymentCurrency("EUR");
     }
   }, [currency.code]);
+
+  useEffect(() => {
+    fetch(apiUrl("crypto/payment-options"))
+      .then((response) => response.ok ? response.json() as Promise<{ routes?: CryptoRoute[] }> : { routes: [] })
+      .then((data) => {
+        const routes = Array.isArray(data.routes) ? data.routes : [];
+        setCryptoRoutes(routes);
+        setCryptoRoute((current) => current && routes.some((route) => route.currency === current.currency && route.network === current.network)
+          ? current
+          : routes[0] ?? null);
+      })
+      .catch(() => setCryptoRoutes([]));
+  }, []);
 
   // Loyalty
   const [loyaltyBalance, setLoyaltyBalance] = useState<{ balance: number; gbpValue: number } | null>(null);
@@ -1046,7 +1075,8 @@ export default function CartPage() {
           redeemFreePeptide: redeemFreePeptide && referralCreditGbp > 0 ? true : undefined,
           paymentMethod,
           paymentCurrency: paymentMethod === "wallid" ? paymentCurrency : undefined,
-          cryptoCurrency: paymentMethod === "bitcoin" ? cryptoCurrency : undefined,
+          cryptoCurrency: paymentMethod === "crypto" ? cryptoRoute?.currency : undefined,
+          cryptoNetwork: paymentMethod === "crypto" ? cryptoRoute?.network : undefined,
         }),
       });
 
@@ -1065,8 +1095,9 @@ export default function CartPage() {
 
       const data = await res.json() as {
         orderNumber: string; customerName: string; totalGbp: number; shippingMethod: string;
-        btcAddress?: string; btcAmount?: string; btcPaymentUrl?: string;
-        cryptoCurrency?: string; wallidPaymentUrl?: string;
+        orderId: number; cryptoPaymentToken?: string;
+        cryptoPayment?: { currency: string; network: string; walletAddress: string; expectedAmount: string; rateExpiresAt: string };
+        wallidPaymentUrl?: string;
         paymentCurrency?: "GBP" | "EUR"; paymentAmountMinor?: number;
       };
 
@@ -1080,7 +1111,6 @@ export default function CartPage() {
 
       clearCart();
 
-      const selectedCoin = CRYPTO_OPTIONS.find(c => c.id === cryptoCurrency) ?? CRYPTO_OPTIONS[0];
       const params = new URLSearchParams({
         order: data.orderNumber,
         name: delivery.firstName,
@@ -1088,12 +1118,9 @@ export default function CartPage() {
         ship: data.shippingMethod,
         payment: paymentMethod,
       });
-      if (paymentMethod === "bitcoin") {
-        params.set("cryptoCurrency", cryptoCurrency);
-        const addr = data.btcAddress ?? selectedCoin.address;
-        params.set("cryptoAddress", addr);
-        if (data.btcAmount) params.set("btcAmount", data.btcAmount);
-        if (data.btcPaymentUrl) params.set("btcUrl", data.btcPaymentUrl);
+      if (paymentMethod === "crypto" && data.cryptoPaymentToken) {
+        params.set("orderId", String(data.orderId));
+        params.set("cryptoToken", data.cryptoPaymentToken);
       }
       navigate(`/order-confirmation?${params.toString()}`);
     } catch (err) {
@@ -1693,44 +1720,53 @@ export default function CartPage() {
             })()}
 
             {/* Cryptocurrency */}
-            {(() => {
-              const active = paymentMethod === "bitcoin";
+            {cryptoRoutes.length > 0 && (() => {
+              const active = paymentMethod === "crypto";
               return (
                 <div
-                  onClick={() => setPaymentMethod("bitcoin")}
+                  onClick={() => setPaymentMethod("crypto")}
                   style={{ border: `1px solid ${active ? "#1240A0" : "#E8EDF5"}`, borderRadius: 6, cursor: "pointer", background: active ? "#EEF4FF" : THEME.cardBg }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
-                    <input type="radio" checked={active} onChange={() => setPaymentMethod("bitcoin")}
+                    <input type="radio" checked={active} onChange={() => setPaymentMethod("crypto")}
                       style={{ accentColor: THEME.cta, width: 16, height: 16, flexShrink: 0 }} />
                     <div>
                       <span style={{ fontSize: "15px", fontWeight: 700, color: THEME.text }}>Cryptocurrency</span>
-                      <p style={{ fontSize: "12px", color: THEME.textMuted, margin: "2px 0 0" }}>Bitcoin, Ethereum, USDT, USDC, Litecoin, Monero</p>
+                      <p style={{ fontSize: "12px", color: THEME.textMuted, margin: "2px 0 0" }}>Pay from your wallet with a verified on-chain payment</p>
                     </div>
                   </div>
                   {active && (
                     <div style={{ borderTop: "1px solid #F1F5F9", padding: "14px 16px" }}>
                       <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                        {CRYPTO_OPTIONS.map(c => (
-                          <button key={c.id} type="button" onClick={e => { e.stopPropagation(); setCryptoCurrency(c.id); }}
+                        {cryptoRoutes.map(route => {
+                          const meta = CRYPTO_META[route.currency];
+                          const selected = cryptoRoute?.currency === route.currency && cryptoRoute?.network === route.network;
+                          return (
+                          <button key={`${route.network}:${route.currency}`} type="button" onClick={e => { e.stopPropagation(); setCryptoRoute(route); }}
                             style={{
                               display: "inline-flex", alignItems: "center", gap: 6,
                               padding: "6px 12px", borderRadius: 100, border: "1px solid",
-                              borderColor: cryptoCurrency === c.id ? THEME.cta : "#E2E8F0",
-                              background: cryptoCurrency === c.id ? THEME.cta : "#F8FAFC",
-                              color: cryptoCurrency === c.id ? "#fff" : THEME.textSub,
+                              borderColor: selected ? THEME.cta : "#E2E8F0",
+                              background: selected ? THEME.cta : "#F8FAFC",
+                              color: selected ? "#fff" : THEME.textSub,
                               fontSize: "13px", fontWeight: 600, cursor: "pointer",
                             }}>
                             <span style={{
                               display: "inline-flex", alignItems: "center", justifyContent: "center",
                               width: 18, height: 18, borderRadius: "50%",
-                              background: cryptoCurrency === c.id ? "rgba(255,255,255,0.25)" : c.color,
+                              background: selected ? "rgba(255,255,255,0.25)" : meta.color,
                               color: "#fff", fontSize: "9px", fontWeight: 800, flexShrink: 0,
-                            }}>{c.symbol}</span>
-                            {c.name}
+                            }}>{meta.symbol}</span>
+                            {route.currency} · {networkLabel(route.network)}
                           </button>
-                        ))}
+                          );
+                        })}
                       </div>
+                      {cryptoRoute && (
+                        <p style={{ fontSize: "12px", color: THEME.textMuted, margin: "12px 0 0", lineHeight: 1.45 }}>
+                          You&apos;ll receive the exact {cryptoRoute.currency} amount and verified wallet address after placing the order. Rate locks last 15 minutes.
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>

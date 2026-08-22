@@ -6,7 +6,7 @@ import {
   RotateCcw, Star, ShoppingBag, Mail, Gift, BellRing,
   Truck, RefreshCcw, FileText, Bell, ShieldAlert,
   ChevronDown, ChevronRight, Settings2, ShieldBan, Send, BarChart3,
-  Settings, UserCog, ClipboardList,
+  Settings, UserCog, ClipboardList, WalletCards,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAlerts, type AdminAlert } from "@/hooks/useAlerts";
@@ -30,6 +30,7 @@ const coreNavGroups: NavGroup[] = [
       { href: "/orders",      label: "Orders",           icon: ShoppingCart },
       { href: "/fulfillment", label: "Fulfilment Queue", icon: ClipboardList },
       { href: "/fraud",       label: "Fraud Queue",      icon: ShieldAlert },
+      { href: "/crypto-payments", label: "Crypto Audit", icon: WalletCards },
       { href: "/returns",     label: "Returns",          icon: RotateCcw },
       { href: "/refunds",     label: "Refunds",          icon: RefreshCcw },
     ],

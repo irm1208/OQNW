@@ -49,7 +49,7 @@ router.post(
         try {
           await db
             .update(ordersTable)
-            .set({ status: "paid", updatedAt: new Date() })
+            .set({ status: "payment_received", updatedAt: new Date() })
             .where(eq(ordersTable.orderNumber, orderNumber));
           logger.info({ orderNumber, invoiceId: event.invoiceId }, "Order marked paid via BTCPay webhook");
 
@@ -62,7 +62,7 @@ router.post(
           const items = await db
             .select()
             .from(orderItemsTable)
-            .where(eq(orderItemsTable.orderNumber, orderNumber));
+            .where(eq(orderItemsTable.orderId, order?.id ?? -1));
 
           if (order) {
             sendOrderConfirmation({
@@ -70,11 +70,10 @@ router.post(
               customerName: order.customerName,
               customerEmail: order.customerEmail,
               items: items.map(i => ({
-                name: i.productName,
-                variant: i.variantLabel ?? null,
-                qty: i.quantity,
-                unitPriceGbp: parseFloat(String(i.unitPriceGbp)),
-                isFree: i.isFree ?? false,
+                productName: i.productName,
+                productCategory: i.productCategory,
+                quantity: i.quantity,
+                priceGbp: parseFloat(String(i.priceGbp)),
               })),
               subtotalGbp: parseFloat(String(order.subtotalGbp)),
               shippingCostGbp: parseFloat(String(order.shippingCostGbp)),

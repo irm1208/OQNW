@@ -27,6 +27,7 @@ import Settings from "@/pages/Settings";
 import Users from "@/pages/Users";
 import Reports from "@/pages/Reports";
 import FulfillmentQueue from "@/pages/FulfillmentQueue";
+import CryptoPayments from "@/pages/CryptoPayments";
 
 const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
@@ -75,6 +76,11 @@ function AppRoutes() {
       <Route path="/fulfillment">
         <AdminLayout>
           <FulfillmentQueue />
+        </AdminLayout>
+      </Route>
+      <Route path="/crypto-payments">
+        <AdminLayout>
+          <CryptoPayments />
         </AdminLayout>
       </Route>
       <Route path="/customers">

@@ -11,3 +11,4 @@
 - [GitHub large repository imports](github-large-imports.md) — stage first; archive redirects and high-parallel file retrieval can require rate-limit-aware retries.
 - [Switching git origin to a different GitHub repo](git-origin-switch.md) — changing origin to an unrelated repo causes diverged history; fix with git commit-tree to bridge the two lineages.
 - [Nominatim checkout matching](nominatim-checkout-matching.md) — public OSM mapping confirms a mapped address, not carrier deliverability; preserve its limits and disclosure.
+- [Shared-wallet crypto payments](shared-wallet-crypto-payments.md) — direct crypto uses immutable route locks, post-lock transaction timing, and continued reconciliation to prevent replay and expiry loss.

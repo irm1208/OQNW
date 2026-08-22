@@ -1,287 +1,272 @@
-import { useEffect, useState, useRef } from "react";
-import { trackPurchase } from "@/lib/pixels";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
-import { CheckCircle2, Package, Truck, FlaskConical, ArrowRight, Download, Search, Clock } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
+import { ArrowRight, CheckCircle2, Clock, Copy, ExternalLink, Package, RefreshCw, ShieldCheck, Truck } from "lucide-react";
 
-// Keep in sync with CheckoutPage.tsx
-const CRYPTO_OPTIONS = [
-  { id: "BTC",  name: "Bitcoin",  symbol: "₿", network: "Bitcoin",       color: "#F59E0B", bg: "#FFFBEB", border: "#FDE68A", text: "#92400E" },
-  { id: "ETH",  name: "Ethereum", symbol: "Ξ", network: "ERC-20 / ETH", color: "#6366F1", bg: "#EEF2FF", border: "#C7D2FE", text: "#3730A3" },
-  { id: "USDT", name: "USDT",     symbol: "₮", network: "ERC-20 / ETH", color: "#059669", bg: "#ECFDF5", border: "#6EE7B7", text: "#065F46" },
-  { id: "USDC", name: "USDC",     symbol: "◎", network: "ERC-20 / ETH", color: "#2563EB", bg: "#EFF6FF", border: "#BFDBFE", text: "#1E40AF" },
-  { id: "SOL",  name: "Solana",   symbol: "◎", network: "Solana",       color: "#9945FF", bg: "#F5F3FF", border: "#DDD6FE", text: "#5B21B6" },
-];
+const BASE_URL = import.meta.env.BASE_URL ?? "/";
+const apiUrl = (path: string) => `${BASE_URL}api/${path}`.replace(/\/+/g, "/").replace(/^\/\//, "/");
+
+type CryptoPayment = {
+  currency: "BTC" | "ETH" | "USDT" | "USDC";
+  network: string;
+  walletAddress: string;
+  expectedAmount: string;
+  rateUsd: number;
+  rateExpiresAt: string;
+  confirmationsRequired: number;
+  status: "rate_locked" | "pending" | "confirmed" | "underpaid" | "wrong_wallet" | "manual_review";
+  txHash: string | null;
+  observedAmount: string | null;
+  confirmations: number | null;
+  reason: string | null;
+};
+
+const META: Record<CryptoPayment["currency"], { name: string; symbol: string; color: string; background: string; text: string }> = {
+  BTC: { name: "Bitcoin", symbol: "₿", color: "#F59E0B", background: "#FFFBEB", text: "#92400E" },
+  ETH: { name: "Ethereum", symbol: "Ξ", color: "#6366F1", background: "#EEF2FF", text: "#3730A3" },
+  USDT: { name: "Tether", symbol: "₮", color: "#059669", background: "#ECFDF5", text: "#065F46" },
+  USDC: { name: "USD Coin", symbol: "◎", color: "#2563EB", background: "#EFF6FF", text: "#1E40AF" },
+};
+
+function networkLabel(network: string): string {
+  return {
+    bitcoin: "Bitcoin",
+    ethereum: "Ethereum",
+    bsc: "BNB Smart Chain",
+    arbitrum: "Arbitrum",
+    polygon: "Polygon",
+    solana: "Solana",
+    tron: "Tron",
+  }[network] ?? network;
+}
+
+function statusLabel(status: CryptoPayment["status"]): string {
+  return {
+    rate_locked: "Ready to pay",
+    pending: "Payment detected",
+    confirmed: "Payment confirmed",
+    underpaid: "Payment needs review",
+    wrong_wallet: "Wrong wallet",
+    manual_review: "Manual review required",
+  }[status];
+}
 
 export default function OrderConfirmation() {
   const params = new URLSearchParams(window.location.search);
-  const order          = params.get("order")          ?? "OQ-000000";
-  const name           = params.get("name")           ?? "Researcher";
-  const total          = params.get("total")          ?? "0.00";
-  const ship           = params.get("ship")           ?? "Standard";
-  const payment        = params.get("payment")        ?? "bitcoin";
-  const cryptoCurrId   = params.get("cryptoCurrency") ?? "BTC";
-  const cryptoAddress  = params.get("cryptoAddress")  ?? null;
-  const btcAmount      = params.get("btcAmount")      ?? null;
-  const btcUrl         = params.get("btcUrl")         ?? null;
-  const coin = CRYPTO_OPTIONS.find(c => c.id === cryptoCurrId) ?? CRYPTO_OPTIONS[0];
-
-  const today = new Date();
-  const deliveryDays = ship === "Next Day" ? 1 : ship === "Express" ? 2 : 5;
-  const delivery = new Date(today);
-  delivery.setDate(today.getDate() + deliveryDays);
-  const deliveryStr = delivery.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
-
+  const order = params.get("order") ?? "OQ-000000";
+  const orderId = params.get("orderId") ?? order;
+  const payment = params.get("payment") ?? "wallid";
+  const cryptoToken = params.get("cryptoToken");
+  const name = params.get("name") ?? "Researcher";
+  const total = Number(params.get("total") ?? "0");
+  const ship = params.get("ship") ?? "Standard";
+  const isCrypto = payment === "crypto" && Boolean(cryptoToken);
+  const [cryptoPayment, setCryptoPayment] = useState<CryptoPayment | null>(null);
+  const [loading, setLoading] = useState(isCrypto);
+  const [error, setError] = useState<string | null>(null);
+  const [txHash, setTxHash] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
-  const purchaseFired = useRef(false);
-  function copy() {
-    navigator.clipboard.writeText(order).catch(() => {});
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }
+  const [now, setNow] = useState(Date.now());
+
+  const refreshPayment = async () => {
+    if (!isCrypto || !cryptoToken) return;
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `${apiUrl(`orders/${encodeURIComponent(orderId)}/crypto-payment`)}?token=${encodeURIComponent(cryptoToken)}`,
+      );
+      const data = await response.json().catch(() => ({})) as CryptoPayment & { error?: string };
+      if (!response.ok) throw new Error(data.error ?? "Unable to load the crypto payment");
+      setCryptoPayment(data);
+      setTxHash(data.txHash ?? "");
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to load the crypto payment");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    window.scrollTo({ top: 0 });
-    if (!purchaseFired.current && order !== "OQ-000000") {
-      purchaseFired.current = true;
-      trackPurchase(order, parseFloat(total), 1);
-    }
+    window.scrollTo(0, 0);
+    void refreshPayment();
   }, []);
 
-  return (
-    <div style={{
-      fontFamily: "'Arimo', Arial, sans-serif",
-      backgroundColor: "#F5F8FC",
-      minHeight: "70vh",
-      padding: "48px 16px",
-    }}>
-      <div style={{ maxWidth: "640px", margin: "0 auto" }}>
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 30_000);
+    return () => window.clearInterval(timer);
+  }, []);
 
-        {/* Success icon */}
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <div style={{
-            width: "80px", height: "80px", borderRadius: "50%",
-            background: "linear-gradient(135deg, #059669, #34D399)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            margin: "0 auto 20px",
-            boxShadow: "0 12px 40px rgba(5,150,105,0.3)",
-          }}>
-            <CheckCircle2 size={40} color="#fff" strokeWidth={2.5} />
+  const coin = cryptoPayment ? META[cryptoPayment.currency] : null;
+  const rateExpiresAt = cryptoPayment ? new Date(cryptoPayment.rateExpiresAt).getTime() : 0;
+  const rateExpired = Boolean(cryptoPayment && rateExpiresAt <= now);
+  const minutesRemaining = cryptoPayment && !rateExpired ? Math.max(1, Math.ceil((rateExpiresAt - now) / 60_000)) : 0;
+  const qrValue = useMemo(() => {
+    if (!cryptoPayment) return "";
+    if (cryptoPayment.network === "bitcoin") return `bitcoin:${cryptoPayment.walletAddress}?amount=${cryptoPayment.expectedAmount}`;
+    return cryptoPayment.walletAddress;
+  }, [cryptoPayment]);
+
+  async function copyAddress() {
+    if (!cryptoPayment) return;
+    await navigator.clipboard.writeText(cryptoPayment.walletAddress).catch(() => {});
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1800);
+  }
+
+  async function refreshRate() {
+    if (!cryptoPayment || !cryptoToken) return;
+    setSubmitting(true);
+    try {
+      const response = await fetch(apiUrl(`orders/${encodeURIComponent(orderId)}/lock-usdt-rate`), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          paymentToken: cryptoToken,
+          currency: cryptoPayment.currency,
+          network: cryptoPayment.network,
+        }),
+      });
+      const data = await response.json().catch(() => ({})) as { error?: string };
+      if (!response.ok) throw new Error(data.error ?? "Unable to refresh the rate");
+      await refreshPayment();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to refresh the rate");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function submitTransaction() {
+    if (!cryptoToken || !txHash.trim() || rateExpired) return;
+    setSubmitting(true);
+    try {
+      const response = await fetch(apiUrl(`orders/${encodeURIComponent(orderId)}/pay`), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paymentToken: cryptoToken, txHash: txHash.trim() }),
+      });
+      const data = await response.json().catch(() => ({})) as { error?: string };
+      if (!response.ok) throw new Error(data.error ?? "Unable to verify the transaction");
+      await refreshPayment();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to verify the transaction");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  const delivery = new Date();
+  delivery.setDate(delivery.getDate() + (ship === "Next Day" ? 1 : ship === "Express" ? 2 : 5));
+
+  return (
+    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", background: "#F5F8FC", minHeight: "70vh", padding: "48px 16px" }}>
+      <div style={{ maxWidth: 680, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: 28 }}>
+          <div style={{ width: 76, height: 76, borderRadius: "50%", background: "linear-gradient(135deg, #059669, #34D399)", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: "0 12px 40px rgba(5,150,105,.25)" }}>
+            <CheckCircle2 size={38} color="#fff" />
           </div>
-          <h1 style={{ fontSize: "28px", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: "8px" }}>
-            {`Order placed — awaiting ${coin.name}`}
+          <h1 style={{ fontSize: 28, fontWeight: 900, color: "#0F172A", margin: "18px 0 8px" }}>
+            {isCrypto ? `Order placed — ${cryptoPayment ? statusLabel(cryptoPayment.status).toLowerCase() : "loading payment"}` : "Order received"}
           </h1>
-          <p style={{ fontSize: "15px", color: "#64748B", lineHeight: 1.6 }}>
-            <>Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. Your order is reserved — please send the {coin.name} equivalent to the address below.</>
+          <p style={{ fontSize: 15, color: "#64748B", margin: 0, lineHeight: 1.55 }}>
+            Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. {isCrypto ? "Your order is reserved while we verify payment on-chain." : "We’ll email you with the next steps for your order."}
           </p>
         </div>
 
-        {/* Cryptocurrency action panel */}
-        {payment === "bitcoin" && (
-          <div style={{ borderRadius: "16px", border: `1.5px solid ${coin.border}`, backgroundColor: coin.bg, padding: "22px", marginBottom: "20px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "14px" }}>
-              <Clock size={18} color={coin.color} />
-              <p style={{ fontSize: "14px", fontWeight: 800, color: coin.text, margin: 0 }}>
-                Send your {coin.name} payment now
-              </p>
-              <span style={{ marginLeft: "auto", fontSize: "22px", lineHeight: 1 }}>{coin.symbol}</span>
-            </div>
+        {isCrypto && (
+          <section style={{ borderRadius: 16, border: `1.5px solid ${coin?.color ?? "#CBD5E1"}`, background: coin?.background ?? "#fff", padding: 22, marginBottom: 20 }}>
+            {loading && <p style={{ margin: 0, color: "#475569" }}>Loading your secure payment instructions…</p>}
+            {error && <p style={{ margin: 0, color: "#B91C1C", fontWeight: 700 }}>{error}</p>}
+            {!loading && cryptoPayment && coin && (
+              <>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+                  <Clock size={18} color={coin.color} />
+                  <strong style={{ color: coin.text }}>Send {coin.name} on {networkLabel(cryptoPayment.network)}</strong>
+                  <span style={{ marginLeft: "auto", fontSize: 24, color: coin.color }}>{coin.symbol}</span>
+                </div>
 
-            {/* BTC amount from BTCPay (BTC only) */}
-            {btcAmount && coin.id === "BTC" && (
-              <div style={{ padding: "12px 16px", borderRadius: "10px", backgroundColor: "#fff", border: `1.5px solid ${coin.border}`, marginBottom: "10px" }}>
-                <p style={{ fontSize: "10.5px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px" }}>Exact Amount to Send</p>
-                <p style={{ fontSize: "20px", fontWeight: 900, color: coin.text, margin: 0 }}>{btcAmount} <span style={{ fontSize: "14px" }}>BTC</span></p>
-                <p style={{ fontSize: "11px", color: "#94A3B8", margin: "2px 0 0" }}>≈ £{parseFloat(total).toFixed(2)} at current rate — locked for 60 min</p>
-              </div>
+                {cryptoPayment.status === "confirmed" ? (
+                  <div style={{ padding: 16, borderRadius: 10, background: "#ECFDF5", color: "#065F46", fontSize: 14, lineHeight: 1.55 }}>
+                    <strong>Payment confirmed.</strong> We have verified {cryptoPayment.observedAmount ?? cryptoPayment.expectedAmount} {cryptoPayment.currency} with {cryptoPayment.confirmations ?? 0} confirmation(s). Your order can now be prepared for dispatch.
+                  </div>
+                ) : (
+                  <>
+                    <div style={{ display: "grid", gridTemplateColumns: "110px 1fr", gap: 16, alignItems: "center", background: "#fff", borderRadius: 12, padding: 16, border: "1px solid rgba(15,23,42,.1)" }}>
+                      <QRCodeSVG value={qrValue} size={106} level="M" includeMargin />
+                      <div>
+                        <p style={{ fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 800, color: "#64748B", margin: "0 0 4px" }}>Exact amount to send</p>
+                        <p style={{ fontSize: 23, fontWeight: 900, color: "#0F172A", margin: 0 }}>{cryptoPayment.expectedAmount} <span style={{ fontSize: 14 }}>{cryptoPayment.currency}</span></p>
+                        <p style={{ fontSize: 12, color: rateExpired ? "#B91C1C" : "#475569", margin: "5px 0 0" }}>
+                          {rateExpired ? "This rate lock has expired." : `Rate locked for about ${minutesRemaining} minute${minutesRemaining === 1 ? "" : "s"}.`}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div style={{ background: "#fff", borderRadius: 12, padding: 16, border: "1px solid rgba(15,23,42,.1)", marginTop: 12 }}>
+                      <p style={{ fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 800, color: "#64748B", margin: "0 0 6px" }}>Receiving wallet · {networkLabel(cryptoPayment.network)}</p>
+                      <p style={{ fontFamily: "monospace", fontSize: 12.5, fontWeight: 700, color: "#0F172A", wordBreak: "break-all", lineHeight: 1.5, margin: 0 }}>{cryptoPayment.walletAddress}</p>
+                      <button type="button" onClick={() => void copyAddress()} style={{ marginTop: 10, border: 0, background: "#EEF4FF", color: "#1240A0", borderRadius: 7, padding: "7px 10px", fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+                        <Copy size={13} style={{ verticalAlign: "text-bottom", marginRight: 5 }} />{copied ? "Copied" : "Copy address"}
+                      </button>
+                    </div>
+
+                    {rateExpired ? (
+                      <button type="button" onClick={() => void refreshRate()} disabled={submitting} style={{ width: "100%", marginTop: 14, border: 0, background: "#1240A0", color: "#fff", padding: 12, borderRadius: 10, fontWeight: 800, cursor: "pointer" }}>
+                        <RefreshCw size={15} style={{ verticalAlign: "text-bottom", marginRight: 7 }} />{submitting ? "Refreshing…" : "Refresh locked rate"}
+                      </button>
+                    ) : (
+                      <div style={{ marginTop: 14 }}>
+                        <label style={{ display: "block", fontSize: 12, fontWeight: 800, color: coin.text, marginBottom: 6 }}>After sending, paste your transaction hash</label>
+                        <div style={{ display: "flex", gap: 8 }}>
+                          <input value={txHash} onChange={event => setTxHash(event.target.value)} placeholder="Transaction hash" style={{ flex: 1, minWidth: 0, border: "1px solid #CBD5E1", borderRadius: 9, padding: "11px 12px", fontFamily: "monospace", fontSize: 12 }} />
+                          <button type="button" onClick={() => void submitTransaction()} disabled={submitting || !txHash.trim()} style={{ border: 0, background: coin.color, color: "#fff", borderRadius: 9, padding: "0 14px", fontWeight: 800, cursor: "pointer", opacity: submitting || !txHash.trim() ? .6 : 1 }}>
+                            {submitting ? "Checking…" : "Verify"}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                    <p style={{ fontSize: 12, lineHeight: 1.6, color: coin.text, margin: "14px 0 0" }}>
+                      Send only <strong>{cryptoPayment.currency}</strong> on <strong>{networkLabel(cryptoPayment.network)}</strong>. Payments need {cryptoPayment.confirmationsRequired} confirmation{cryptoPayment.confirmationsRequired === 1 ? "" : "s"} before dispatch. Do not use a different network or token.
+                    </p>
+                  </>
+                )}
+              </>
             )}
-
-            {/* Wallet address */}
-            {cryptoAddress && (
-              <div style={{ padding: "12px 16px", borderRadius: "10px", backgroundColor: "#fff", border: `1.5px solid ${coin.border}`, marginBottom: "12px" }}>
-                <p style={{ fontSize: "10.5px", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "6px" }}>{coin.name} Address — {coin.network}</p>
-                <p style={{ fontSize: "12.5px", fontWeight: 700, color: "#0F172A", wordBreak: "break-all", fontFamily: "monospace", letterSpacing: "0.02em", margin: 0 }}>
-                  {cryptoAddress}
-                </p>
-              </div>
-            )}
-
-            {/* Open in BTCPay (BTC only) */}
-            {btcUrl && coin.id === "BTC" && (
-              <a
-                href={btcUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "block", textAlign: "center", padding: "12px", borderRadius: "10px",
-                  backgroundColor: coin.color, color: "#fff", fontWeight: 700, fontSize: "14px",
-                  textDecoration: "none", marginBottom: "12px",
-                }}
-              >
-                Open in Wallet / BTCPay Page ↗
-              </a>
-            )}
-
-            <div style={{ fontSize: "12px", color: coin.text, lineHeight: 1.8 }}>
-              {btcAmount && coin.id === "BTC"
-                ? <>{coin.symbol} Send <strong>{btcAmount} BTC</strong> — do not round the amount.</>
-                : <>{coin.symbol} Convert £{parseFloat(total).toFixed(2)} to {coin.id} at the current rate before sending.</>
-              }<br />
-              {coin.symbol} Use your order number <strong>{order}</strong> in the memo / payment ID field.<br />
-              {coin.symbol} We'll email you once your payment is confirmed and your order is dispatched.
-            </div>
-          </div>
+          </section>
         )}
 
-        {/* Order card */}
-        <div style={{
-          backgroundColor: "#fff", borderRadius: "20px",
-          border: "1.5px solid #E8EDF5", boxShadow: "0 8px 40px rgba(15,23,42,0.07)",
-          overflow: "hidden", marginBottom: "20px",
-        }}>
-          {/* Header */}
-          <div style={{ background: "linear-gradient(90deg, #0D2565, #1B5CB5)", padding: "18px 24px", color: "#fff" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div>
-                <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", color: "rgba(255,255,255,0.55)", textTransform: "uppercase" }}>Order Reference</p>
-                <p style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.05em", marginTop: "2px" }}>{order}</p>
+        <section style={{ background: "#fff", borderRadius: 16, border: "1px solid #E8EDF5", overflow: "hidden", boxShadow: "0 8px 35px rgba(15,23,42,.06)" }}>
+          <div style={{ background: "linear-gradient(90deg, #0D2565, #1B5CB5)", padding: "18px 22px", color: "#fff" }}>
+            <p style={{ fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", margin: 0, opacity: .7 }}>Order reference</p>
+            <p style={{ fontSize: 20, fontWeight: 900, letterSpacing: ".05em", margin: "3px 0 0" }}>{order}</p>
+          </div>
+          <div style={{ padding: 20, display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 18 }}>
+            {[
+              { icon: <Package size={16} />, label: "Order total", value: `£${total.toFixed(2)}` },
+              { icon: <Truck size={16} />, label: "Shipping", value: ship },
+              { icon: <Clock size={16} />, label: "Estimated delivery", value: delivery.toLocaleDateString("en-GB", { day: "numeric", month: "short" }) },
+              { icon: <ShieldCheck size={16} />, label: "Order status", value: isCrypto && cryptoPayment ? statusLabel(cryptoPayment.status) : "Received" },
+            ].map((item) => (
+              <div key={item.label} style={{ display: "flex", gap: 9 }}>
+                <span style={{ color: "#1B5CB5" }}>{item.icon}</span>
+                <div>
+                  <p style={{ fontSize: 10, color: "#94A3B8", textTransform: "uppercase", fontWeight: 800, margin: 0 }}>{item.label}</p>
+                  <p style={{ fontSize: 13, fontWeight: 800, color: "#0F172A", margin: "3px 0 0" }}>{item.value}</p>
+                </div>
               </div>
-              <button
-                onClick={copy}
-                style={{
-                  fontSize: "11.5px", fontWeight: 700, padding: "6px 14px", borderRadius: "8px",
-                  border: "1.5px solid rgba(255,255,255,0.3)", backgroundColor: "rgba(255,255,255,0.1)",
-                  color: "#fff", cursor: "pointer", transition: "background 0.15s",
-                }}
-              >
-                {copied ? "✓ Copied" : "Copy"}
-              </button>
-            </div>
+            ))}
           </div>
+        </section>
 
-          {/* Status row */}
-          <div style={{ padding: "20px 24px", borderBottom: "1px solid #F1F5F9" }}>
-            <div style={{ display: "flex", gap: "0", position: "relative" }}>
-              {["Order Placed", "Processing", "Dispatched", "Delivered"].map((label, i) => (
-                <div key={label} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", position: "relative" }}>
-                  {i < 3 && (
-                    <div style={{ position: "absolute", top: "12px", left: "50%", right: "-50%", height: "2px", backgroundColor: i === 0 ? "#059669" : "#E2E8F0", zIndex: 0 }} />
-                  )}
-                  <div style={{
-                    width: "24px", height: "24px", borderRadius: "50%", zIndex: 1,
-                    backgroundColor: i === 0 ? "#059669" : i === 1 ? "#FCD34D" : "#E2E8F0",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                  }}>
-                    {i === 0
-                      ? <CheckCircle2 size={14} color="#fff" />
-                      : i === 1
-                      ? <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#fff" }} />
-                      : <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#CBD5E1" }} />
-                    }
-                  </div>
-                  <p style={{ fontSize: "10.5px", fontWeight: i <= 1 ? 700 : 500, color: i === 0 ? "#059669" : i === 1 ? "#D97706" : "#94A3B8", textAlign: "center" }}>
-                    {label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Details */}
-          <div style={{ padding: "20px 24px" }}>
-            <div className="form-grid-2" style={{ gap: "16px" }}>
-              {[
-                { icon: <Package size={16} />, label: "Order Total", value: `£${parseFloat(total).toFixed(2)}`, color: "#1240A0" },
-                { icon: <Truck size={16} />, label: "Shipping", value: ship, color: "#0F172A" },
-                { icon: <FlaskConical size={16} />, label: "Est. Delivery", value: deliveryStr, color: "#0F172A" },
-                { icon: <CheckCircle2 size={16} />, label: "Purity", value: "98%+ verified", color: "#059669" },
-              ].map(item => (
-                <div key={item.label} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
-                  <div style={{ color: "#1B5CB5", marginTop: "1px", flexShrink: 0 }}>{item.icon}</div>
-                  <div>
-                    <p style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "2px" }}>{item.label}</p>
-                    <p style={{ fontSize: "13.5px", fontWeight: 700, color: item.color }}>{item.value}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* What happens next */}
-          <div style={{ padding: "18px 24px", backgroundColor: "#F8FAFF", borderTop: "1px solid #EEF4FF" }}>
-            <p style={{ fontSize: "12px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "12px" }}>What happens next</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {(payment === "bitcoin" ? [
-                `Send the ${coin.name} equivalent to the address above — include your order number in the memo/payment ID.`,
-                `Your ${coin.network} transaction will be confirmed on the network.`,
-                "We'll email you once confirmed and your order is being prepared for dispatch.",
-                "Your peptides arrive in insulated packaging maintaining −20°C.",
-              ] : [
-                "You will receive an order confirmation email within the next few minutes.",
-                "Our lab team will verify your order and prepare your secure, discreet packaging.",
-                "You'll receive a dispatch notification with tracking information.",
-                "Your peptides arrive in insulated packaging maintaining −20°C.",
-              ]).map((text, i) => (
-                <div key={i} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
-                  <div style={{
-                    width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
-                    backgroundColor: "#EEF4FF", color: "#1B5CB5",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: "11px", fontWeight: 800,
-                  }}>
-                    {i + 1}
-                  </div>
-                  <p style={{ fontSize: "12.5px", color: "#475569", lineHeight: 1.55, margin: 0 }}>{text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>
-          <Link
-            href="/all-peptides"
-            style={{
-              flex: 1, height: "46px", borderRadius: "12px",
-              background: "linear-gradient(90deg, #0D2565, #1B5CB5)",
-              color: "#fff", fontSize: "14px", fontWeight: 700,
-              display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-              textDecoration: "none",
-            }}
-          >
-            Continue Shopping <ArrowRight size={15} />
+        <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
+          <Link href="/all-peptides" style={{ flex: 1, borderRadius: 10, background: "#1240A0", color: "#fff", padding: 13, textAlign: "center", textDecoration: "none", fontWeight: 800, fontSize: 14 }}>
+            Continue shopping <ArrowRight size={15} style={{ verticalAlign: "text-bottom", marginLeft: 5 }} />
           </Link>
-          <Link
-            href={`/track-order?q=${encodeURIComponent(order)}`}
-            style={{
-              height: "46px", paddingLeft: "18px", paddingRight: "18px", borderRadius: "12px",
-              border: "1.5px solid #E2E8F0", backgroundColor: "#fff",
-              color: "#475569", fontSize: "14px", fontWeight: 600,
-              cursor: "pointer", display: "flex", alignItems: "center", gap: "8px",
-              textDecoration: "none",
-            }}
-          >
-            <Search size={14} /> Track Order
+          <Link href={`/track-order?q=${encodeURIComponent(order)}`} style={{ borderRadius: 10, border: "1px solid #CBD5E1", color: "#334155", padding: "13px 16px", textDecoration: "none", fontWeight: 800, fontSize: 14 }}>
+            Track order <ExternalLink size={14} style={{ verticalAlign: "text-bottom", marginLeft: 4 }} />
           </Link>
-          <button
-            onClick={() => window.open(`/api/orders/${encodeURIComponent(order)}/receipt`, "_blank")}
-            style={{
-              height: "46px", paddingLeft: "18px", paddingRight: "18px", borderRadius: "12px",
-              border: "1.5px solid #E2E8F0", backgroundColor: "#fff",
-              color: "#475569", fontSize: "14px", fontWeight: 600,
-              cursor: "pointer", display: "flex", alignItems: "center", gap: "8px",
-            }}
-          >
-            <Download size={14} /> Receipt
-          </button>
-        </div>
-
-        {/* RUO reminder */}
-        <div style={{ padding: "16px", borderRadius: "12px", backgroundColor: "#FFFBEB", border: "1px solid #FDE68A", display: "flex", gap: "10px", alignItems: "flex-start" }}>
-          <span style={{ fontSize: "14px", flexShrink: 0 }}>⚠️</span>
-          <p style={{ fontSize: "12px", color: "#92400E", lineHeight: 1.6, margin: 0 }}>
-            <strong>Research Use Only:</strong> These products are for in-vitro laboratory research exclusively. Not for human or veterinary use. Please handle and store in accordance with your institution's safety protocols.
-          </p>
         </div>
       </div>
     </div>
