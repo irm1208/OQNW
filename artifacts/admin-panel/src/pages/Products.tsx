@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useListCatalogProducts,
   getListCatalogProductsQueryKey,
@@ -25,7 +25,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-  Search, Loader2, AlertCircle, Plus, Pencil, Trash2, Star, Eye, EyeOff, Download,
+  Search, Loader2, AlertCircle, Plus, Pencil, Trash2, Star, Eye, EyeOff, Download, Save,
 } from "lucide-react";
 import { toast } from "sonner";
 import type { CatalogProduct, AdminProduct } from "@workspace/api-client-react";
@@ -147,6 +147,8 @@ function CatalogTab() {
   const [bulkDisableOpen, setBulkDisableOpen] = useState(false);
   const [form, setForm] = useState<ProductFormData>(emptyForm());
   const [saving, setSaving] = useState(false);
+  const [savingPrices, setSavingPrices] = useState(false);
+  const [priceDrafts, setPriceDrafts] = useState<Record<number, string>>({});
 
   const queryParams = {
     ...(search ? { search } : {}),
@@ -156,6 +158,19 @@ function CatalogTab() {
   const { data: products, isLoading } = useListCatalogProducts(queryParams, {
     query: { queryKey: getListCatalogProductsQueryKey(queryParams) },
   });
+
+  useEffect(() => {
+    if (!products) return;
+    setPriceDrafts(previous => {
+      const next = { ...previous };
+      for (const product of products) {
+        if (!(product.id in next)) {
+          next[product.id] = product.priceGbp != null ? String(product.priceGbp) : "";
+        }
+      }
+      return next;
+    });
+  }, [products]);
 
   const createProduct = useCreateCatalogProduct();
   const updateProduct = useUpdateCatalogProduct();
@@ -278,6 +293,47 @@ function CatalogTab() {
     }
   }
 
+  const changedPriceProducts = (products ?? []).filter(product => {
+    const draft = priceDrafts[product.id] ?? (product.priceGbp != null ? String(product.priceGbp) : "");
+    if (draft.trim() === "") return product.priceGbp != null;
+    const numericDraft = Number(draft);
+    return !Number.isFinite(numericDraft) || numericDraft !== Number(product.priceGbp);
+  });
+
+  async function handleSavePrices() {
+    if (changedPriceProducts.length === 0) return;
+
+    const invalidProduct = changedPriceProducts.find(product => {
+      const draft = (priceDrafts[product.id] ?? "").trim();
+      if (draft === "") return false;
+      const numericDraft = Number(draft);
+      return !Number.isFinite(numericDraft) || numericDraft < 0;
+    });
+    if (invalidProduct) {
+      toast.error(`Enter a valid non-negative price for ${invalidProduct.name}`);
+      return;
+    }
+
+    setSavingPrices(true);
+    try {
+      await Promise.all(
+        changedPriceProducts.map(product => {
+          const draft = (priceDrafts[product.id] ?? "").trim();
+          return updateProduct.mutateAsync({
+            id: product.id,
+            data: { priceGbp: draft === "" ? null : Number(draft) },
+          });
+        }),
+      );
+      await invalidate();
+      toast.success(`Saved ${changedPriceProducts.length} peptide price${changedPriceProducts.length === 1 ? "" : "s"}`);
+    } catch {
+      toast.error("Failed to save one or more prices");
+    } finally {
+      setSavingPrices(false);
+    }
+  }
+
   const isDialogOpen = isCreating || editingProduct !== null;
 
   return (
@@ -307,6 +363,14 @@ function CatalogTab() {
           </Select>
         </div>
         <div className="flex flex-wrap justify-end gap-2 shrink-0">
+          <Button
+            variant="default"
+            onClick={handleSavePrices}
+            disabled={savingPrices || changedPriceProducts.length === 0}
+          >
+            {savingPrices ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+            Save Prices{changedPriceProducts.length > 0 ? ` (${changedPriceProducts.length})` : ""}
+          </Button>
           <Button
             variant="outline"
             onClick={() => setBulkDisableOpen(true)}
@@ -364,8 +428,24 @@ function CatalogTab() {
                     <div className="text-xs text-muted-foreground font-mono">{product.slug}</div>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">{product.category}</TableCell>
-                  <TableCell className="text-sm font-medium">
-                    {product.priceGbp != null ? `£${Number(product.priceGbp).toFixed(2)}` : <span className="text-muted-foreground">—</span>}
+                  <TableCell>
+                    <div className="relative w-28">
+                      <span className="absolute left-2 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">£</span>
+                      <Input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        aria-label={`Price for ${product.name}`}
+                        className="h-8 pl-6 pr-2 text-sm font-medium"
+                        value={priceDrafts[product.id] ?? (product.priceGbp != null ? String(product.priceGbp) : "")}
+                        onChange={event => setPriceDrafts(previous => ({
+                          ...previous,
+                          [product.id]: event.target.value,
+                        }))}
+                        disabled={savingPrices}
+                        placeholder="—"
+                      />
+                    </div>
                   </TableCell>
                   <TableCell>
                     {product.hasJanoshikReport ? (
