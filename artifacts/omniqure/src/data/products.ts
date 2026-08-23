@@ -12,10 +12,9 @@ export type Product = {
   seoDescription?: string | null;
 };
 
-// Categories temporarily hidden from the storefront (catalog, search, nav, homepage,
-// product pages, "customers also bought"). Underlying product/detail/lab-result data
-// is left in place so this can be reversed later by simply clearing this list.
-export const HIDDEN_CATEGORIES: string[] = ["Weight Management"];
+// Categories hidden from the storefront (catalog, search, nav, homepage,
+// product pages, "customers also bought"). Empty = all categories visible.
+export const HIDDEN_CATEGORIES: string[] = [];
 export function isHiddenCategory(category?: string | null): boolean {
   return !!category && HIDDEN_CATEGORIES.includes(category);
 }
