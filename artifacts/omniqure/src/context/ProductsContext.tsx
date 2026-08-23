@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import type { Product } from "@/data/products";
 import { products as staticProducts } from "@/data/products";
 import type { ProductDetail } from "@/data/productDetails";
@@ -59,26 +59,52 @@ for (const p of staticProducts) {
 export function ProductsProvider({ children }: { children: ReactNode }) {
   const [products, setProducts] = useState<Product[]>(staticProducts);
   const [loading, setLoading] = useState(false);
+  const isMountedRef = useRef(false);
+  const latestRequestRef = useRef(0);
+
+  const refreshProducts = useCallback(async (showLoading = false) => {
+    const requestId = ++latestRequestRef.current;
+    if (showLoading && isMountedRef.current) setLoading(true);
+
+    try {
+      const response = await fetch("/api/products", { cache: "no-store" });
+      const data = response.ok ? await response.json() as ApiProduct[] : null;
+      if (!isMountedRef.current || requestId !== latestRequestRef.current || !data || !Array.isArray(data)) return;
+      // API is the source of truth — disabled products must not be re-added from the static list.
+      setProducts(data.map(toProduct));
+    } catch {
+      // Preserve the last successfully loaded catalog if a background refresh fails.
+    } finally {
+      if (showLoading && isMountedRef.current && requestId === latestRequestRef.current) {
+        setLoading(false);
+      }
+    }
+  }, []);
 
   useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    fetch("/api/products")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data: ApiProduct[] | null) => {
-        if (cancelled || !data || !Array.isArray(data)) return;
-        const apiProducts = data.map(toProduct);
-        // API is the source of truth — disabled products must not be re-added from the static list
-        setProducts(apiProducts);
-      })
-      .catch(() => {})
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
+    isMountedRef.current = true;
+    void refreshProducts(true);
+
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === "visible") void refreshProducts();
     };
-  }, []);
+    const refreshAfterCatalogUpdate = (event: StorageEvent) => {
+      if (event.key === "omniqure:catalog-updated") void refreshProducts();
+    };
+    const refreshInterval = window.setInterval(refreshWhenVisible, 15_000);
+
+    window.addEventListener("focus", refreshWhenVisible);
+    document.addEventListener("visibilitychange", refreshWhenVisible);
+    window.addEventListener("storage", refreshAfterCatalogUpdate);
+
+    return () => {
+      isMountedRef.current = false;
+      window.clearInterval(refreshInterval);
+      window.removeEventListener("focus", refreshWhenVisible);
+      document.removeEventListener("visibilitychange", refreshWhenVisible);
+      window.removeEventListener("storage", refreshAfterCatalogUpdate);
+    };
+  }, [refreshProducts]);
 
   return (
     <ProductsContext.Provider value={{ products, productDetails: slugProductDetails, loading }}>

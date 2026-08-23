@@ -90826,6 +90826,7 @@ router10.get("/products", async (req, res) => {
       stockLevel: productsInventoryTable.stockLevel,
       inventoryPublished: productsInventoryTable.isPublished
     }).from(productsCatalogTable).leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id)).where(and(...conditions)).orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
+    res.set("Cache-Control", "no-store");
     res.status(200).json(
       products.filter((p) => p.inventoryPublished !== false).map((p) => ({
         id: p.id,

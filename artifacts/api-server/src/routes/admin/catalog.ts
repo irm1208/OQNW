@@ -375,6 +375,7 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
       .where(and(...conditions))
       .orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
 
+    res.set("Cache-Control", "no-store");
     res.status(200).json(
       products
         .filter(p => p.inventoryPublished !== false)

@@ -180,6 +180,10 @@ function CatalogTab() {
   const invalidate = () =>
     queryClient.invalidateQueries({ queryKey: ["/api/admin/catalog"] });
 
+  function notifyStorefrontCatalogUpdated() {
+    window.localStorage.setItem("omniqure:catalog-updated", String(Date.now()));
+  }
+
   function openCreate() {
     setForm(emptyForm());
     setIsCreating(true);
@@ -246,6 +250,7 @@ function CatalogTab() {
         toast.success("Product created");
       }
       await invalidate();
+      notifyStorefrontCatalogUpdated();
       closeDialog();
     } catch {
       toast.error(editingProduct ? "Failed to update product" : "Failed to create product");
@@ -326,6 +331,7 @@ function CatalogTab() {
         }),
       );
       await invalidate();
+      notifyStorefrontCatalogUpdated();
       toast.success(`Saved ${changedPriceProducts.length} peptide price${changedPriceProducts.length === 1 ? "" : "s"}`);
     } catch {
       toast.error("Failed to save one or more prices");
