@@ -29,6 +29,12 @@ import {
   createWallidPaymentQuote,
   type WallidPaymentCurrency,
 } from "../lib/payment-currency";
+import {
+  CheckoutPaymentQuoteReplayGuard,
+  createCheckoutFingerprint,
+  createCheckoutPaymentQuoteToken,
+  verifyCheckoutPaymentQuoteToken,
+} from "../lib/checkoutPaymentQuote";
 import { prepareCryptoPayment } from "../lib/crypto-payments";
 import { assessFraud } from "../lib/fraudScorer";
 import { getClientIp, lookupIpData } from "../lib/geoip";
@@ -81,12 +87,32 @@ const NON_SHIPPABLE_COUNTRY_CODES = new Set([
   "ER", // Eritrea                  — UN arms embargo
 ]);
 
+const SHIPPING_METHODS: Record<string, { priceGbp: number; freeOver?: number }> = {
+  Standard: { priceGbp: 4.99, freeOver: 50 },
+  "Next Day Weekday": { priceGbp: 9.99 },
+  "Next-Day Weekend": { priceGbp: 14.99 },
+};
+
+function calculateShippingCostGbp(
+  shippingMethod: string,
+  subtotalGbp: number,
+  country: string,
+): number | null {
+  const shipping = SHIPPING_METHODS[shippingMethod];
+  if (!shipping) return null;
+  if (country === "United Kingdom" && shipping.freeOver && subtotalGbp >= shipping.freeOver) {
+    return 0;
+  }
+  return shipping.priceGbp;
+}
+
 const router = Router();
 
 const SESSION_SECRET =
   process.env.SESSION_SECRET ??
   process.env.ADMIN_PASSWORD ??
   "omniqure-cust-session-fallback-secret";
+const checkoutPaymentQuoteReplayGuard = new CheckoutPaymentQuoteReplayGuard();
 
 function verifyCustomerSession(token: string): number | null {
   const dot = token.lastIndexOf(".");
@@ -129,28 +155,32 @@ interface DeliveryDetails {
   addressVerificationToken?: string;
 }
 
-router.post("/orders", async (req: Request, res: Response): Promise<void> => {
+async function handleOrderRequest(
+  req: Request,
+  res: Response,
+  isCheckoutQuoteRequest: boolean,
+): Promise<void> {
   const {
     delivery,
     shippingMethod,
-    shippingCostGbp,
     items,
     discountCode,
     loyaltyPointsRedeemed,
     paymentMethod,
     paymentCurrency,
+    paymentQuoteToken,
     cryptoCurrency,
     cryptoNetwork,
     redeemFreePeptide,
   } = req.body as {
     delivery: unknown;
     shippingMethod: unknown;
-    shippingCostGbp: unknown;
     items: unknown;
     discountCode?: unknown;
     loyaltyPointsRedeemed?: unknown;
     paymentMethod?: unknown;
     paymentCurrency?: unknown;
+    paymentQuoteToken?: unknown;
     cryptoCurrency?: unknown;
     cryptoNetwork?: unknown;
     redeemFreePeptide?: unknown;
@@ -166,16 +196,30 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
   const countryCode = submittedDelivery ? countryCodeForName(submittedDelivery.country) : null;
   if (
     !submittedDelivery ||
-    typeof submittedDelivery.email !== "string" ||
-    !submittedDelivery.email.includes("@") ||
-    typeof submittedDelivery.firstName !== "string" || !submittedDelivery.firstName.trim() ||
-    typeof submittedDelivery.lastName !== "string" || !submittedDelivery.lastName.trim() ||
-    typeof submittedDelivery.address1 !== "string" || !submittedDelivery.address1.trim() ||
-    typeof submittedDelivery.city !== "string" || !submittedDelivery.city.trim() ||
-    typeof submittedDelivery.postcode !== "string" ||
-    (countryCode !== null && postcodeIsRequired(countryCode) && !submittedDelivery.postcode.trim()) ||
-    typeof submittedDelivery.country !== "string" || !submittedDelivery.country.trim() ||
+    typeof submittedDelivery.country !== "string" ||
+    !submittedDelivery.country.trim() ||
     !countryCode
+  ) {
+    res.status(400).json({
+      error: isCheckoutQuoteRequest
+        ? "Choose a valid shipping country to calculate your payment total"
+        : "Missing or invalid delivery details",
+    });
+    return;
+  }
+
+  if (
+    !isCheckoutQuoteRequest &&
+    (
+      typeof submittedDelivery.email !== "string" ||
+      !submittedDelivery.email.includes("@") ||
+      typeof submittedDelivery.firstName !== "string" || !submittedDelivery.firstName.trim() ||
+      typeof submittedDelivery.lastName !== "string" || !submittedDelivery.lastName.trim() ||
+      typeof submittedDelivery.address1 !== "string" || !submittedDelivery.address1.trim() ||
+      typeof submittedDelivery.city !== "string" || !submittedDelivery.city.trim() ||
+      typeof submittedDelivery.postcode !== "string" ||
+      (postcodeIsRequired(countryCode) && !submittedDelivery.postcode.trim())
+    )
   ) {
     res.status(400).json({ error: "Missing or invalid delivery details" });
     return;
@@ -208,11 +252,6 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     return;
   }
 
-  if (typeof shippingCostGbp !== "number" || shippingCostGbp < 0) {
-    res.status(400).json({ error: "Invalid shipping cost" });
-    return;
-  }
-
   if (!Array.isArray(items) || items.length === 0) {
     res.status(400).json({ error: "Order must contain at least one item" });
     return;
@@ -230,37 +269,40 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
   const cartItems = items as CartItem[];
   for (const item of cartItems) {
     if (
-      typeof item.productName !== "string" || !item.productName.trim() ||
-      typeof item.productCategory !== "string" ||
-      typeof item.quantity !== "number" || item.quantity < 1 ||
-      typeof item.priceGbp !== "number" || item.priceGbp < 0
+      typeof item.productSlug !== "string" || !item.productSlug.trim() ||
+      typeof item.quantity !== "number" || item.quantity < 1
     ) {
       res.status(400).json({ error: "Invalid item data" });
       return;
     }
+    item.productSlug = item.productSlug.trim();
   }
 
   try {
     // ── Catalog lookup by slug ──────────────────────────────────────────────────
     // The frontend assigns its own sequential IDs which do NOT match the DB serial
     // IDs.  Slug is the reliable cross-reference — look up everything by slug.
-    // Items without a slug (e.g. client-side Bac Water add-ons) are skipped for
-    // price/stock validation but still included in the order.
-    const itemsWithSlug = cartItems.filter(i => i.productSlug?.trim());
-    const catalogBySlug = new Map<string, { id: number; priceGbp: string | null; category: string }>();
+    // Every purchasable item must resolve to a catalog SKU. Client product IDs,
+    // names, categories, and prices are display-only and are replaced below.
+    const itemsWithSlug = cartItems;
+    const catalogBySlug = new Map<string, {
+      id: number;
+      name: string;
+      priceGbp: string | null;
+      category: string;
+    }>();
 
-    if (itemsWithSlug.length > 0) {
-      const slugRows = await db
-        .select({
-          id: productsCatalogTable.id,
-          slug: productsCatalogTable.slug,
-          priceGbp: productsCatalogTable.priceGbp,
-          category: productsCatalogTable.category,
-        })
-        .from(productsCatalogTable)
-        .where(inArray(productsCatalogTable.slug, itemsWithSlug.map(i => i.productSlug!)));
-      for (const r of slugRows) catalogBySlug.set(r.slug, r);
-    }
+    const slugRows = await db
+      .select({
+        id: productsCatalogTable.id,
+        slug: productsCatalogTable.slug,
+        name: productsCatalogTable.name,
+        priceGbp: productsCatalogTable.priceGbp,
+        category: productsCatalogTable.category,
+      })
+      .from(productsCatalogTable)
+      .where(inArray(productsCatalogTable.slug, itemsWithSlug.map(i => i.productSlug!.trim())));
+    for (const r of slugRows) catalogBySlug.set(r.slug, r);
 
     // Resolved DB product ID for a cart item (0 when slug not found or missing).
     function dbProductId(item: CartItem): number {
@@ -286,25 +328,23 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Price validation: verify submitted priceGbp against the catalog price.
-    // Items with a slug MUST resolve to a known catalog entry — an unrecognised
-    // slug is rejected outright so callers cannot spoof catalog products by sending
-    // an unknown slug to skip validation.  Items with no slug at all are treated
-    // as unverified add-ons (e.g. Bac Water) and are exempt from price checks.
-    // Category is taken from catalog here for Bundle & Save below.
-    for (const item of itemsWithSlug) {
-      const catalogEntry = catalogBySlug.get(item.productSlug!);
-      if (!catalogEntry) {
+    // Resolve all basket values from the catalog instead of validating client
+    // prices. This makes the quote a server-authoritative payment commitment.
+    for (const item of cartItems) {
+      const catalogEntry = catalogBySlug.get(item.productSlug!.trim());
+      if (!catalogEntry || catalogEntry.priceGbp === null) {
         res.status(400).json({ error: "Unrecognised product — please refresh your cart and try again" });
         return;
       }
-      if (catalogEntry.priceGbp != null) {
-        const catalogPrice = parseFloat(String(catalogEntry.priceGbp));
-        if (Math.abs(item.priceGbp - catalogPrice) > 0.01) {
-          res.status(400).json({ error: "Item price mismatch — please refresh your cart and try again" });
-          return;
-        }
+      const catalogPrice = parseFloat(String(catalogEntry.priceGbp));
+      if (!Number.isFinite(catalogPrice) || catalogPrice < 0) {
+        res.status(503).json({ error: "This product is temporarily unavailable. Please try again shortly." });
+        return;
       }
+      item.productId = catalogEntry.id;
+      item.productName = catalogEntry.name;
+      item.productCategory = catalogEntry.category;
+      item.priceGbp = catalogPrice;
     }
 
     // For Bundle & Save, an item qualifies as a "peptide" only when its slug
@@ -437,7 +477,66 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       : "";
 
     const subtotalGbp = cartItems.reduce((s, i) => s + i.priceGbp * i.quantity, 0);
-    const totalGbp = Math.max(0, subtotalGbp + shippingCostGbp - bundleDiscountGbp - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp);
+    const shippingCostGbp = calculateShippingCostGbp(shippingMethod, subtotalGbp, d.country);
+    if (shippingCostGbp === null) {
+      res.status(400).json({ error: "Invalid shipping method" });
+      return;
+    }
+    const totalGbp = Math.round(
+      Math.max(
+        0,
+        subtotalGbp + shippingCostGbp - bundleDiscountGbp - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp,
+      ) * 100,
+    ) / 100;
+    const selectedWallidCurrency = paymentCurrencyStr as WallidPaymentCurrency;
+    const checkoutFingerprint = createCheckoutFingerprint({
+      items: cartItems,
+      shippingMethod,
+      shippingCostGbp,
+      paymentCurrency: selectedWallidCurrency,
+      discountCode: validatedDiscountCode,
+      loyaltyPointsRedeemed: loyaltyPointsToDeduct,
+      referralCreditRedeemed: freePeptideCreditUsed,
+      country: d.country,
+    });
+
+    if (isCheckoutQuoteRequest) {
+      if (paymentMethodStr !== "wallid") {
+        res.status(400).json({ error: "Checkout quotes are available for Pay by Bank only" });
+        return;
+      }
+
+      const paymentQuote = await createWallidPaymentQuote(totalGbp, selectedWallidCurrency);
+      if (!paymentQuote) {
+        res.status(503).json({
+          error: "EUR payment quotes are temporarily unavailable. Please retry or choose GBP.",
+        });
+        return;
+      }
+
+      const signedQuote = createCheckoutPaymentQuoteToken({
+        currency: paymentQuote.currency,
+        amountMinor: paymentQuote.amountMinor,
+        totalGbpMinor: Math.round(totalGbp * 100),
+        checkoutFingerprint,
+        customerId: loyaltySessionCustomerId,
+      }, SESSION_SECRET);
+
+      res.status(200).json({
+        paymentQuoteToken: signedQuote.token,
+        expiresAt: signedQuote.expiresAt,
+        paymentCurrency: paymentQuote.currency,
+        paymentAmountMinor: paymentQuote.amountMinor,
+        totalGbp,
+        subtotalGbp,
+        shippingCostGbp,
+        bundleDiscountGbp,
+        discountAmountGbp: discountAmount,
+        loyaltyDiscountGbp,
+        referralCreditGbp: freePeptideDeductGbp,
+      });
+      return;
+    }
 
     // Generate unique order number (retry once on collision)
     let orderNumber = generateOrderNumber();
@@ -468,11 +567,30 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       // Origin header, which could be an attacker-controlled value.
       const origin = process.env.SITE_URL ?? "https://omniqure.com";
 
-      const selectedWallidCurrency = paymentCurrencyStr as WallidPaymentCurrency;
-      const quote = await createWallidPaymentQuote(totalGbp, selectedWallidCurrency);
+      if (typeof paymentQuoteToken !== "string") {
+        res.status(409).json({
+          code: "PAYMENT_QUOTE_REQUIRED",
+          error: "Your payment total needs to be confirmed. Please wait a moment and try again.",
+        });
+        return;
+      }
+      const quote = verifyCheckoutPaymentQuoteToken(paymentQuoteToken, SESSION_SECRET, {
+        currency: selectedWallidCurrency,
+        totalGbpMinor: Math.round(totalGbp * 100),
+        checkoutFingerprint,
+        customerId: loyaltySessionCustomerId,
+      });
       if (!quote) {
-        res.status(503).json({
-          error: "EUR payment quotes are temporarily unavailable. Please retry or choose GBP.",
+        res.status(409).json({
+          code: "PAYMENT_QUOTE_CHANGED",
+          error: "Your checkout total changed or expired. We’ve refreshed it—please review and place your order again.",
+        });
+        return;
+      }
+      if (!checkoutPaymentQuoteReplayGuard.consume(paymentQuoteToken, quote.expiresAt)) {
+        res.status(409).json({
+          code: "PAYMENT_QUOTE_USED",
+          error: "This payment total was already used. We’ve refreshed it—please review and place your order again.",
         });
         return;
       }
@@ -1128,7 +1246,15 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
     req.log.error({ err }, "Failed to create order");
     res.status(500).json({ error: "Internal server error" });
   }
-});
+}
+
+router.post("/orders/quote", (req: Request, res: Response) =>
+  handleOrderRequest(req, res, true),
+);
+
+router.post("/orders", (req: Request, res: Response) =>
+  handleOrderRequest(req, res, false),
+);
 
 // GET /api/orders/track?number=OQ-XXXXXX — public order tracking (limited data)
 router.get("/orders/track", async (req: Request, res: Response): Promise<void> => {

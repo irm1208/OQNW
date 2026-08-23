@@ -18772,14 +18772,14 @@ var require_etag = __commonJS({
   "../../node_modules/.pnpm/etag@1.8.1/node_modules/etag/index.js"(exports, module) {
     "use strict";
     module.exports = etag;
-    var crypto16 = __require("crypto");
+    var crypto17 = __require("crypto");
     var Stats = __require("fs").Stats;
     var toString = Object.prototype.toString;
     function entitytag(entity) {
       if (entity.length === 0) {
         return '"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"';
       }
-      var hash2 = crypto16.createHash("sha1").update(entity, "utf8").digest("base64").substring(0, 27);
+      var hash2 = crypto17.createHash("sha1").update(entity, "utf8").digest("base64").substring(0, 27);
       var len = typeof entity === "string" ? Buffer.byteLength(entity, "utf8") : entity.length;
       return '"' + len.toString(16) + "-" + hash2 + '"';
     }
@@ -22194,17 +22194,17 @@ var require_content_disposition = __commonJS({
 // ../../node_modules/.pnpm/cookie-signature@1.2.2/node_modules/cookie-signature/index.js
 var require_cookie_signature = __commonJS({
   "../../node_modules/.pnpm/cookie-signature@1.2.2/node_modules/cookie-signature/index.js"(exports) {
-    var crypto16 = __require("crypto");
+    var crypto17 = __require("crypto");
     exports.sign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Cookie value must be provided as a string.");
       if (null == secret) throw new TypeError("Secret key must be provided.");
-      return val + "." + crypto16.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
+      return val + "." + crypto17.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
     };
     exports.unsign = function(input, secret) {
       if ("string" != typeof input) throw new TypeError("Signed cookie string must be provided.");
       if (null == secret) throw new TypeError("Secret key must be provided.");
       var tentativeValue = input.slice(0, input.lastIndexOf(".")), expectedInput = exports.sign(tentativeValue, secret), expectedBuffer = Buffer.from(expectedInput), inputBuffer = Buffer.from(input);
-      return expectedBuffer.length === inputBuffer.length && crypto16.timingSafeEqual(expectedBuffer, inputBuffer) ? tentativeValue : false;
+      return expectedBuffer.length === inputBuffer.length && crypto17.timingSafeEqual(expectedBuffer, inputBuffer) ? tentativeValue : false;
     };
   }
 });
@@ -23834,11 +23834,11 @@ var require_lib3 = __commonJS({
 // ../../node_modules/.pnpm/cookie-signature@1.0.6/node_modules/cookie-signature/index.js
 var require_cookie_signature2 = __commonJS({
   "../../node_modules/.pnpm/cookie-signature@1.0.6/node_modules/cookie-signature/index.js"(exports) {
-    var crypto16 = __require("crypto");
+    var crypto17 = __require("crypto");
     exports.sign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Cookie value must be provided as a string.");
       if ("string" != typeof secret) throw new TypeError("Secret string must be provided.");
-      return val + "." + crypto16.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
+      return val + "." + crypto17.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
     };
     exports.unsign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Signed cookie string must be provided.");
@@ -23847,7 +23847,7 @@ var require_cookie_signature2 = __commonJS({
       return sha1(mac) == sha1(val) ? str : false;
     };
     function sha1(str) {
-      return crypto16.createHash("sha1").update(str).digest("hex");
+      return crypto17.createHash("sha1").update(str).digest("hex");
     }
   }
 });
@@ -29883,7 +29883,7 @@ var require_cert_signatures = __commonJS({
 var require_sasl = __commonJS({
   "../../node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/crypto/sasl.js"(exports, module) {
     "use strict";
-    var crypto16 = require_utils5();
+    var crypto17 = require_utils5();
     var { signatureAlgorithmHashFromCertificate } = require_cert_signatures();
     function startSession(mechanisms, stream) {
       const candidates = ["SCRAM-SHA-256"];
@@ -29895,7 +29895,7 @@ var require_sasl = __commonJS({
       if (mechanism === "SCRAM-SHA-256-PLUS" && typeof stream.getPeerCertificate !== "function") {
         throw new Error("SASL: Mechanism SCRAM-SHA-256-PLUS requires a certificate");
       }
-      const clientNonce = crypto16.randomBytes(18).toString("base64");
+      const clientNonce = crypto17.randomBytes(18).toString("base64");
       const gs2Header = mechanism === "SCRAM-SHA-256-PLUS" ? "p=tls-server-end-point" : stream ? "y" : "n";
       return {
         mechanism,
@@ -29930,20 +29930,20 @@ var require_sasl = __commonJS({
         const peerCert = stream.getPeerCertificate().raw;
         let hashName = signatureAlgorithmHashFromCertificate(peerCert);
         if (hashName === "MD5" || hashName === "SHA-1") hashName = "SHA-256";
-        const certHash = await crypto16.hashByName(hashName, peerCert);
+        const certHash = await crypto17.hashByName(hashName, peerCert);
         const bindingData = Buffer.concat([Buffer.from("p=tls-server-end-point,,"), Buffer.from(certHash)]);
         channelBinding = bindingData.toString("base64");
       }
       const clientFinalMessageWithoutProof = "c=" + channelBinding + ",r=" + sv.nonce;
       const authMessage = clientFirstMessageBare + "," + serverFirstMessage + "," + clientFinalMessageWithoutProof;
       const saltBytes = Buffer.from(sv.salt, "base64");
-      const saltedPassword = await crypto16.deriveKey(password, saltBytes, sv.iteration);
-      const clientKey = await crypto16.hmacSha256(saltedPassword, "Client Key");
-      const storedKey = await crypto16.sha256(clientKey);
-      const clientSignature = await crypto16.hmacSha256(storedKey, authMessage);
+      const saltedPassword = await crypto17.deriveKey(password, saltBytes, sv.iteration);
+      const clientKey = await crypto17.hmacSha256(saltedPassword, "Client Key");
+      const storedKey = await crypto17.sha256(clientKey);
+      const clientSignature = await crypto17.hmacSha256(storedKey, authMessage);
       const clientProof = xorBuffers(Buffer.from(clientKey), Buffer.from(clientSignature)).toString("base64");
-      const serverKey = await crypto16.hmacSha256(saltedPassword, "Server Key");
-      const serverSignatureBytes = await crypto16.hmacSha256(serverKey, authMessage);
+      const serverKey = await crypto17.hmacSha256(saltedPassword, "Server Key");
+      const serverSignatureBytes = await crypto17.hmacSha256(serverKey, authMessage);
       session.message = "SASLResponse";
       session.serverSignature = Buffer.from(serverSignatureBytes).toString("base64");
       session.response = clientFinalMessageWithoutProof + ",p=" + clientProof;
@@ -32111,7 +32111,7 @@ var require_client = __commonJS({
     var Query2 = require_query();
     var defaults2 = require_defaults();
     var Connection2 = require_connection();
-    var crypto16 = require_utils5();
+    var crypto17 = require_utils5();
     var activeQueryDeprecationNotice = nodeUtils.deprecate(
       () => {
       },
@@ -32346,7 +32346,7 @@ var require_client = __commonJS({
       _handleAuthMD5Password(msg) {
         this._getPassword(async () => {
           try {
-            const hashedPassword = await crypto16.postgresMd5PasswordHash(this.user, this.password, msg.salt);
+            const hashedPassword = await crypto17.postgresMd5PasswordHash(this.user, this.password, msg.salt);
             this.connection.password(hashedPassword);
           } catch (e) {
             this.emit("error", e);
@@ -58974,9 +58974,9 @@ var require_disk = __commonJS({
     var fs2 = __require("fs");
     var os = __require("os");
     var path3 = __require("path");
-    var crypto16 = __require("crypto");
+    var crypto17 = __require("crypto");
     function getFilename(req, file2, cb) {
-      crypto16.randomBytes(16, function(err, raw) {
+      crypto17.randomBytes(16, function(err, raw) {
         cb(err, err ? void 0 : raw.toString("hex"));
       });
     }
@@ -92601,7 +92601,7 @@ var blog_default = router21;
 
 // src/routes/orders.ts
 var import_express22 = __toESM(require_express2(), 1);
-import crypto7 from "crypto";
+import crypto8 from "crypto";
 init_drizzle_orm();
 
 // src/lib/btcpay.ts
@@ -92817,6 +92817,82 @@ async function createWallidPaymentQuote(totalGbp, currency) {
   return { currency, rate, amountMinor: toMinorUnits(totalGbp * rate) };
 }
 
+// src/lib/checkoutPaymentQuote.ts
+import crypto5 from "crypto";
+var QUOTE_TTL_MS = 5 * 60 * 1e3;
+function createCheckoutFingerprint(input) {
+  const payload = {
+    items: input.items.map((item) => ({
+      productId: item.productId,
+      productSlug: item.productSlug?.trim() ?? "",
+      quantity: item.quantity,
+      priceMinor: Math.round(item.priceGbp * 100)
+    })).sort(
+      (a, b) => a.productSlug.localeCompare(b.productSlug) || a.productId - b.productId || a.quantity - b.quantity || a.priceMinor - b.priceMinor
+    ),
+    shippingMethod: input.shippingMethod,
+    shippingMinor: Math.round(input.shippingCostGbp * 100),
+    paymentCurrency: input.paymentCurrency,
+    discountCode: input.discountCode ?? "",
+    loyaltyPointsRedeemed: input.loyaltyPointsRedeemed,
+    referralCreditRedeemed: input.referralCreditRedeemed,
+    country: input.country.trim()
+  };
+  return crypto5.createHash("sha256").update(JSON.stringify(payload)).digest("hex");
+}
+function createCheckoutPaymentQuoteToken(quote, secret, now = Date.now()) {
+  const payload = {
+    ...quote,
+    version: 1,
+    expiresAt: now + QUOTE_TTL_MS
+  };
+  const encodedPayload = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const signature = crypto5.createHmac("sha256", secret).update(encodedPayload).digest("base64url");
+  return {
+    token: `${encodedPayload}.${signature}`,
+    expiresAt: new Date(payload.expiresAt).toISOString()
+  };
+}
+function verifyCheckoutPaymentQuoteToken(token, secret, expected, now = Date.now()) {
+  const separator = token.lastIndexOf(".");
+  if (separator === -1) return null;
+  const encodedPayload = token.slice(0, separator);
+  const receivedSignature = token.slice(separator + 1);
+  const expectedSignature = crypto5.createHmac("sha256", secret).update(encodedPayload).digest("base64url");
+  if (receivedSignature.length !== expectedSignature.length || !crypto5.timingSafeEqual(Buffer.from(receivedSignature), Buffer.from(expectedSignature))) {
+    return null;
+  }
+  try {
+    const payload = JSON.parse(Buffer.from(encodedPayload, "base64url").toString("utf8"));
+    if (payload.version !== 1 || !Number.isInteger(payload.amountMinor) || payload.amountMinor < 0 || !Number.isInteger(payload.totalGbpMinor) || payload.totalGbpMinor < 0 || !Number.isFinite(payload.expiresAt) || payload.expiresAt <= now || payload.currency !== "GBP" && payload.currency !== "EUR" || payload.currency !== expected.currency || payload.totalGbpMinor !== expected.totalGbpMinor || payload.checkoutFingerprint !== expected.checkoutFingerprint || payload.customerId !== expected.customerId) {
+      return null;
+    }
+    return {
+      currency: payload.currency,
+      amountMinor: payload.amountMinor,
+      totalGbpMinor: payload.totalGbpMinor,
+      checkoutFingerprint: payload.checkoutFingerprint,
+      customerId: payload.customerId,
+      expiresAt: payload.expiresAt
+    };
+  } catch {
+    return null;
+  }
+}
+var CheckoutPaymentQuoteReplayGuard = class {
+  consumed = /* @__PURE__ */ new Map();
+  consume(token, expiresAt, now = Date.now()) {
+    for (const [tokenDigest2, expiry] of this.consumed) {
+      if (expiry <= now) this.consumed.delete(tokenDigest2);
+    }
+    if (expiresAt <= now) return false;
+    const tokenDigest = crypto5.createHash("sha256").update(token).digest("hex");
+    if (this.consumed.has(tokenDigest)) return false;
+    this.consumed.set(tokenDigest, expiresAt);
+    return true;
+  }
+};
+
 // src/lib/fraudScorer.ts
 var FREE_EMAIL_DOMAINS = /* @__PURE__ */ new Set([
   "gmail.com",
@@ -92937,7 +93013,7 @@ async function lookupIpData(ip) {
 }
 
 // src/lib/webhookDispatcher.ts
-import crypto5 from "crypto";
+import crypto6 from "crypto";
 init_drizzle_orm();
 async function dispatchWebhook(event, data) {
   try {
@@ -92952,7 +93028,7 @@ async function dispatchWebhook(event, data) {
     };
     const payloadStr = JSON.stringify(payload);
     for (const webhook of webhooks) {
-      const sig = crypto5.createHmac("sha256", webhook.secret).update(payloadStr).digest("hex");
+      const sig = crypto6.createHmac("sha256", webhook.secret).update(payloadStr).digest("hex");
       let status = "failed";
       let responseCode = null;
       let responseBody = null;
@@ -92987,7 +93063,7 @@ async function dispatchWebhook(event, data) {
 }
 
 // src/lib/addressVerification.ts
-import crypto6 from "crypto";
+import crypto7 from "crypto";
 init_drizzle_orm();
 var VERIFICATION_TTL_MS = 15 * 60 * 1e3;
 var NOMINATIM_SEARCH_URL = "https://nominatim.openstreetmap.org/search";
@@ -93053,12 +93129,12 @@ function encodedJson(value) {
 }
 function sign(value) {
   const secret = signingSecret();
-  return secret ? crypto6.createHmac("sha256", secret).update(value).digest("base64url") : null;
+  return secret ? crypto7.createHmac("sha256", secret).update(value).digest("base64url") : null;
 }
 function safeSignatureMatches(actual, expected) {
   const actualBuffer = Buffer.from(actual);
   const expectedBuffer = Buffer.from(expected);
-  return actualBuffer.length === expectedBuffer.length && crypto6.timingSafeEqual(actualBuffer, expectedBuffer);
+  return actualBuffer.length === expectedBuffer.length && crypto7.timingSafeEqual(actualBuffer, expectedBuffer);
 }
 function countryCodeForName(country) {
   const normalized = normalizeText(country);
@@ -93078,7 +93154,7 @@ function addressHash(address) {
     normalizeText(address.postcode).toLocaleUpperCase("en-GB"),
     countryCode.toLocaleUpperCase("en-GB")
   ].join("\n");
-  return crypto6.createHash("sha256").update(normalized).digest("hex");
+  return crypto7.createHash("sha256").update(normalized).digest("hex");
 }
 function normalizePostcode(value) {
   return normalizeText(value).replace(/[\s-]/g, "").toLocaleUpperCase("en-GB");
@@ -93435,14 +93511,28 @@ var NON_SHIPPABLE_COUNTRY_CODES = /* @__PURE__ */ new Set([
   "ER"
   // Eritrea                  — UN arms embargo
 ]);
+var SHIPPING_METHODS = {
+  Standard: { priceGbp: 4.99, freeOver: 50 },
+  "Next Day Weekday": { priceGbp: 9.99 },
+  "Next-Day Weekend": { priceGbp: 14.99 }
+};
+function calculateShippingCostGbp(shippingMethod, subtotalGbp, country) {
+  const shipping = SHIPPING_METHODS[shippingMethod];
+  if (!shipping) return null;
+  if (country === "United Kingdom" && shipping.freeOver && subtotalGbp >= shipping.freeOver) {
+    return 0;
+  }
+  return shipping.priceGbp;
+}
 var router22 = (0, import_express22.Router)();
 var SESSION_SECRET = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
+var checkoutPaymentQuoteReplayGuard = new CheckoutPaymentQuoteReplayGuard();
 function verifyCustomerSession(token) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto7.createHmac("sha256", SESSION_SECRET).update(payload).digest("hex");
+  const expected = crypto8.createHmac("sha256", SESSION_SECRET).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -93450,16 +93540,16 @@ function verifyCustomerSession(token) {
 function generateOrderNumber() {
   return `OQ-${Math.floor(1e5 + Math.random() * 9e5)}`;
 }
-router22.post("/orders", async (req, res) => {
+async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
   const {
     delivery,
     shippingMethod,
-    shippingCostGbp,
     items,
     discountCode,
     loyaltyPointsRedeemed,
     paymentMethod,
     paymentCurrency,
+    paymentQuoteToken,
     cryptoCurrency,
     cryptoNetwork,
     redeemFreePeptide
@@ -93470,7 +93560,13 @@ router22.post("/orders", async (req, res) => {
   const paymentCurrencyStr = typeof paymentCurrency === "string" ? paymentCurrency.toUpperCase() : "GBP";
   const submittedDelivery = delivery;
   const countryCode = submittedDelivery ? countryCodeForName(submittedDelivery.country) : null;
-  if (!submittedDelivery || typeof submittedDelivery.email !== "string" || !submittedDelivery.email.includes("@") || typeof submittedDelivery.firstName !== "string" || !submittedDelivery.firstName.trim() || typeof submittedDelivery.lastName !== "string" || !submittedDelivery.lastName.trim() || typeof submittedDelivery.address1 !== "string" || !submittedDelivery.address1.trim() || typeof submittedDelivery.city !== "string" || !submittedDelivery.city.trim() || typeof submittedDelivery.postcode !== "string" || countryCode !== null && postcodeIsRequired(countryCode) && !submittedDelivery.postcode.trim() || typeof submittedDelivery.country !== "string" || !submittedDelivery.country.trim() || !countryCode) {
+  if (!submittedDelivery || typeof submittedDelivery.country !== "string" || !submittedDelivery.country.trim() || !countryCode) {
+    res.status(400).json({
+      error: isCheckoutQuoteRequest ? "Choose a valid shipping country to calculate your payment total" : "Missing or invalid delivery details"
+    });
+    return;
+  }
+  if (!isCheckoutQuoteRequest && (typeof submittedDelivery.email !== "string" || !submittedDelivery.email.includes("@") || typeof submittedDelivery.firstName !== "string" || !submittedDelivery.firstName.trim() || typeof submittedDelivery.lastName !== "string" || !submittedDelivery.lastName.trim() || typeof submittedDelivery.address1 !== "string" || !submittedDelivery.address1.trim() || typeof submittedDelivery.city !== "string" || !submittedDelivery.city.trim() || typeof submittedDelivery.postcode !== "string" || postcodeIsRequired(countryCode) && !submittedDelivery.postcode.trim())) {
     res.status(400).json({ error: "Missing or invalid delivery details" });
     return;
   }
@@ -93495,10 +93591,6 @@ router22.post("/orders", async (req, res) => {
     res.status(400).json({ error: "Shipping method is required" });
     return;
   }
-  if (typeof shippingCostGbp !== "number" || shippingCostGbp < 0) {
-    res.status(400).json({ error: "Invalid shipping cost" });
-    return;
-  }
   if (!Array.isArray(items) || items.length === 0) {
     res.status(400).json({ error: "Order must contain at least one item" });
     return;
@@ -93509,10 +93601,11 @@ router22.post("/orders", async (req, res) => {
   }
   const cartItems = items;
   for (const item of cartItems) {
-    if (typeof item.productName !== "string" || !item.productName.trim() || typeof item.productCategory !== "string" || typeof item.quantity !== "number" || item.quantity < 1 || typeof item.priceGbp !== "number" || item.priceGbp < 0) {
+    if (typeof item.productSlug !== "string" || !item.productSlug.trim() || typeof item.quantity !== "number" || item.quantity < 1) {
       res.status(400).json({ error: "Invalid item data" });
       return;
     }
+    item.productSlug = item.productSlug.trim();
   }
   try {
     let dbProductId2 = function(item) {
@@ -93523,17 +93616,16 @@ router22.post("/orders", async (req, res) => {
       return entry !== void 0 && entry.category !== "Accessories";
     };
     var dbProductId = dbProductId2, isCatalogPeptide = isCatalogPeptide2;
-    const itemsWithSlug = cartItems.filter((i) => i.productSlug?.trim());
+    const itemsWithSlug = cartItems;
     const catalogBySlug = /* @__PURE__ */ new Map();
-    if (itemsWithSlug.length > 0) {
-      const slugRows = await db.select({
-        id: productsCatalogTable.id,
-        slug: productsCatalogTable.slug,
-        priceGbp: productsCatalogTable.priceGbp,
-        category: productsCatalogTable.category
-      }).from(productsCatalogTable).where(inArray(productsCatalogTable.slug, itemsWithSlug.map((i) => i.productSlug)));
-      for (const r of slugRows) catalogBySlug.set(r.slug, r);
-    }
+    const slugRows = await db.select({
+      id: productsCatalogTable.id,
+      slug: productsCatalogTable.slug,
+      name: productsCatalogTable.name,
+      priceGbp: productsCatalogTable.priceGbp,
+      category: productsCatalogTable.category
+    }).from(productsCatalogTable).where(inArray(productsCatalogTable.slug, itemsWithSlug.map((i) => i.productSlug.trim())));
+    for (const r of slugRows) catalogBySlug.set(r.slug, r);
     const stockErrors = [];
     for (const item of cartItems) {
       const dbId = dbProductId2(item);
@@ -93547,19 +93639,21 @@ router22.post("/orders", async (req, res) => {
       res.status(422).json({ error: "Some items in your cart have insufficient stock", stockErrors });
       return;
     }
-    for (const item of itemsWithSlug) {
-      const catalogEntry = catalogBySlug.get(item.productSlug);
-      if (!catalogEntry) {
+    for (const item of cartItems) {
+      const catalogEntry = catalogBySlug.get(item.productSlug.trim());
+      if (!catalogEntry || catalogEntry.priceGbp === null) {
         res.status(400).json({ error: "Unrecognised product \u2014 please refresh your cart and try again" });
         return;
       }
-      if (catalogEntry.priceGbp != null) {
-        const catalogPrice = parseFloat(String(catalogEntry.priceGbp));
-        if (Math.abs(item.priceGbp - catalogPrice) > 0.01) {
-          res.status(400).json({ error: "Item price mismatch \u2014 please refresh your cart and try again" });
-          return;
-        }
+      const catalogPrice = parseFloat(String(catalogEntry.priceGbp));
+      if (!Number.isFinite(catalogPrice) || catalogPrice < 0) {
+        res.status(503).json({ error: "This product is temporarily unavailable. Please try again shortly." });
+        return;
       }
+      item.productId = catalogEntry.id;
+      item.productName = catalogEntry.name;
+      item.productCategory = catalogEntry.category;
+      item.priceGbp = catalogPrice;
     }
     let discountAmount = 0;
     let validatedDiscountCode = null;
@@ -93630,7 +93724,62 @@ router22.post("/orders", async (req, res) => {
     ) / 100;
     const bundleFreeLabel = bundleFreeItemsCount === 2 ? "2 cheapest peptides free" : bundleFreeItemsCount === 1 ? "cheapest peptide free" : bundleFreeBacWater ? "free BAC water" : "";
     const subtotalGbp = cartItems.reduce((s, i) => s + i.priceGbp * i.quantity, 0);
-    const totalGbp = Math.max(0, subtotalGbp + shippingCostGbp - bundleDiscountGbp - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp);
+    const shippingCostGbp = calculateShippingCostGbp(shippingMethod, subtotalGbp, d.country);
+    if (shippingCostGbp === null) {
+      res.status(400).json({ error: "Invalid shipping method" });
+      return;
+    }
+    const totalGbp = Math.round(
+      Math.max(
+        0,
+        subtotalGbp + shippingCostGbp - bundleDiscountGbp - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp
+      ) * 100
+    ) / 100;
+    const selectedWallidCurrency = paymentCurrencyStr;
+    const checkoutFingerprint = createCheckoutFingerprint({
+      items: cartItems,
+      shippingMethod,
+      shippingCostGbp,
+      paymentCurrency: selectedWallidCurrency,
+      discountCode: validatedDiscountCode,
+      loyaltyPointsRedeemed: loyaltyPointsToDeduct,
+      referralCreditRedeemed: freePeptideCreditUsed,
+      country: d.country
+    });
+    if (isCheckoutQuoteRequest) {
+      if (paymentMethodStr !== "wallid") {
+        res.status(400).json({ error: "Checkout quotes are available for Pay by Bank only" });
+        return;
+      }
+      const paymentQuote = await createWallidPaymentQuote(totalGbp, selectedWallidCurrency);
+      if (!paymentQuote) {
+        res.status(503).json({
+          error: "EUR payment quotes are temporarily unavailable. Please retry or choose GBP."
+        });
+        return;
+      }
+      const signedQuote = createCheckoutPaymentQuoteToken({
+        currency: paymentQuote.currency,
+        amountMinor: paymentQuote.amountMinor,
+        totalGbpMinor: Math.round(totalGbp * 100),
+        checkoutFingerprint,
+        customerId: loyaltySessionCustomerId
+      }, SESSION_SECRET);
+      res.status(200).json({
+        paymentQuoteToken: signedQuote.token,
+        expiresAt: signedQuote.expiresAt,
+        paymentCurrency: paymentQuote.currency,
+        paymentAmountMinor: paymentQuote.amountMinor,
+        totalGbp,
+        subtotalGbp,
+        shippingCostGbp,
+        bundleDiscountGbp,
+        discountAmountGbp: discountAmount,
+        loyaltyDiscountGbp,
+        referralCreditGbp: freePeptideDeductGbp
+      });
+      return;
+    }
     let orderNumber = generateOrderNumber();
     const existing = await db.select({ orderNumber: ordersTable.orderNumber }).from(ordersTable).where(eq(ordersTable.orderNumber, orderNumber)).limit(1);
     if (existing.length > 0) {
@@ -93645,11 +93794,30 @@ router22.post("/orders", async (req, res) => {
     let cryptoPaymentAccessToken = null;
     if (paymentMethodStr === "wallid") {
       const origin = process.env.SITE_URL ?? "https://omniqure.com";
-      const selectedWallidCurrency = paymentCurrencyStr;
-      const quote = await createWallidPaymentQuote(totalGbp, selectedWallidCurrency);
+      if (typeof paymentQuoteToken !== "string") {
+        res.status(409).json({
+          code: "PAYMENT_QUOTE_REQUIRED",
+          error: "Your payment total needs to be confirmed. Please wait a moment and try again."
+        });
+        return;
+      }
+      const quote = verifyCheckoutPaymentQuoteToken(paymentQuoteToken, SESSION_SECRET, {
+        currency: selectedWallidCurrency,
+        totalGbpMinor: Math.round(totalGbp * 100),
+        checkoutFingerprint,
+        customerId: loyaltySessionCustomerId
+      });
       if (!quote) {
-        res.status(503).json({
-          error: "EUR payment quotes are temporarily unavailable. Please retry or choose GBP."
+        res.status(409).json({
+          code: "PAYMENT_QUOTE_CHANGED",
+          error: "Your checkout total changed or expired. We\u2019ve refreshed it\u2014please review and place your order again."
+        });
+        return;
+      }
+      if (!checkoutPaymentQuoteReplayGuard.consume(paymentQuoteToken, quote.expiresAt)) {
+        res.status(409).json({
+          code: "PAYMENT_QUOTE_USED",
+          error: "This payment total was already used. We\u2019ve refreshed it\u2014please review and place your order again."
         });
         return;
       }
@@ -93698,7 +93866,7 @@ router22.post("/orders", async (req, res) => {
         });
         return;
       }
-      cryptoPaymentAccessToken = crypto7.randomBytes(24).toString("base64url");
+      cryptoPaymentAccessToken = crypto8.randomBytes(24).toString("base64url");
     }
     const sessionToken = req.cookies?.customer_session;
     const sessionCustomerId = sessionToken ? verifyCustomerSession(sessionToken) : null;
@@ -94142,7 +94310,15 @@ router22.post("/orders", async (req, res) => {
     req.log.error({ err }, "Failed to create order");
     res.status(500).json({ error: "Internal server error" });
   }
-});
+}
+router22.post(
+  "/orders/quote",
+  (req, res) => handleOrderRequest(req, res, true)
+);
+router22.post(
+  "/orders",
+  (req, res) => handleOrderRequest(req, res, false)
+);
 router22.get("/orders/track", async (req, res) => {
   const orderNumber = typeof req.query.number === "string" ? req.query.number.trim().toUpperCase() : null;
   if (!orderNumber) {
@@ -94247,7 +94423,7 @@ var discounts_default2 = router23;
 
 // src/routes/auth.ts
 var import_express24 = __toESM(require_express2(), 1);
-import crypto8 from "crypto";
+import crypto9 from "crypto";
 
 // ../../node_modules/.pnpm/bcryptjs@3.0.3/node_modules/bcryptjs/index.js
 import nodeCrypto from "crypto";
@@ -95980,7 +96156,7 @@ var COOKIE_NAME = "customer_session";
 var COOKIE_MAX_AGE2 = 30 * 24 * 60 * 60 * 1e3;
 function signToken(customerId) {
   const payload = String(customerId);
-  const sig = crypto8.createHmac("sha256", SESSION_SECRET2).update(payload).digest("hex");
+  const sig = crypto9.createHmac("sha256", SESSION_SECRET2).update(payload).digest("hex");
   return `${payload}.${sig}`;
 }
 function verifyToken(token) {
@@ -95988,7 +96164,7 @@ function verifyToken(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto8.createHmac("sha256", SESSION_SECRET2).update(payload).digest("hex");
+  const expected = crypto9.createHmac("sha256", SESSION_SECRET2).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -96110,7 +96286,7 @@ router24.post("/auth/register", async (req, res) => {
       firstName: customer.firstName,
       lastName: customer.lastName
     });
-    const verificationToken = crypto8.randomBytes(32).toString("hex");
+    const verificationToken = crypto9.randomBytes(32).toString("hex");
     const verificationExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1e3);
     await db.update(customersTable).set({ verificationToken, verificationTokenExpiresAt: verificationExpiresAt }).where(eq(customersTable.id, customer.id)).catch(() => {
     });
@@ -96184,7 +96360,7 @@ router24.post("/auth/forgot-password", async (req, res) => {
   try {
     const [customer] = await db.select().from(customersTable).where(eq(customersTable.email, email3.toLowerCase())).limit(1);
     if (customer && customer.passwordHash) {
-      const token = crypto8.randomBytes(32).toString("hex");
+      const token = crypto9.randomBytes(32).toString("hex");
       const expiresAt = new Date(Date.now() + 60 * 60 * 1e3);
       await db.update(customersTable).set({ resetToken: token, resetTokenExpiresAt: expiresAt }).where(eq(customersTable.id, customer.id));
       const siteUrl = (process.env.SITE_URL || (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "https://omniqure.com")).replace(/\/$/, "");
@@ -96286,7 +96462,7 @@ var auth_default2 = router24;
 
 // src/routes/account.ts
 var import_express25 = __toESM(require_express2(), 1);
-import crypto9 from "crypto";
+import crypto10 from "crypto";
 init_drizzle_orm();
 var router25 = (0, import_express25.Router)();
 var SESSION_SECRET3 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
@@ -96296,7 +96472,7 @@ function verifyToken2(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto9.createHmac("sha256", SESSION_SECRET3).update(payload).digest("hex");
+  const expected = crypto10.createHmac("sha256", SESSION_SECRET3).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -96476,7 +96652,7 @@ var account_default = router25;
 
 // src/routes/reviews.ts
 var import_express26 = __toESM(require_express2(), 1);
-import crypto10 from "crypto";
+import crypto11 from "crypto";
 init_drizzle_orm();
 var router26 = (0, import_express26.Router)();
 var SESSION_SECRET4 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
@@ -96486,7 +96662,7 @@ function verifyCustomerSession2(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto10.createHmac("sha256", SESSION_SECRET4).update(payload).digest("hex");
+  const expected = crypto11.createHmac("sha256", SESSION_SECRET4).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -96740,7 +96916,7 @@ var reviews_default2 = router27;
 
 // src/routes/wishlist.ts
 var import_express28 = __toESM(require_express2(), 1);
-import crypto11 from "crypto";
+import crypto12 from "crypto";
 init_drizzle_orm();
 var router28 = (0, import_express28.Router)();
 var SESSION_SECRET5 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
@@ -96752,7 +96928,7 @@ function getCustomerId(req) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto11.createHmac("sha256", SESSION_SECRET5).update(payload).digest("hex");
+  const expected = crypto12.createHmac("sha256", SESSION_SECRET5).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -96813,7 +96989,7 @@ var wishlist_default = router28;
 
 // src/routes/returns.ts
 var import_express29 = __toESM(require_express2(), 1);
-import crypto12 from "crypto";
+import crypto13 from "crypto";
 init_drizzle_orm();
 var router29 = (0, import_express29.Router)();
 var SESSION_SECRET6 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
@@ -96825,7 +97001,7 @@ function getCustomerId2(req) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto12.createHmac("sha256", SESSION_SECRET6).update(payload).digest("hex");
+  const expected = crypto13.createHmac("sha256", SESSION_SECRET6).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -96982,7 +97158,7 @@ var products_default2 = router30;
 
 // src/routes/cart.ts
 var import_express31 = __toESM(require_express2(), 1);
-import crypto13 from "crypto";
+import crypto14 from "crypto";
 init_drizzle_orm();
 var router31 = (0, import_express31.Router)();
 var SESSION_SECRET7 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
@@ -96991,7 +97167,7 @@ function verifyCustomerSession3(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto13.createHmac("sha256", SESSION_SECRET7).update(payload).digest("hex");
+  const expected = crypto14.createHmac("sha256", SESSION_SECRET7).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -97504,7 +97680,7 @@ var emailLogs_default = router37;
 
 // src/routes/loyalty.ts
 var import_express38 = __toESM(require_express2(), 1);
-import crypto14 from "crypto";
+import crypto15 from "crypto";
 init_drizzle_orm();
 var router38 = (0, import_express38.Router)();
 var SESSION_SECRET8 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
@@ -97513,7 +97689,7 @@ function verifyCustomerSession4(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto14.createHmac("sha256", SESSION_SECRET8).update(payload).digest("hex");
+  const expected = crypto15.createHmac("sha256", SESSION_SECRET8).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -97854,7 +98030,7 @@ var btcpay_webhook_default = router42;
 
 // src/routes/wallid-webhook.ts
 var import_express43 = __toESM(require_express2(), 1);
-import crypto15 from "crypto";
+import crypto16 from "crypto";
 init_drizzle_orm();
 var router43 = (0, import_express43.Router)();
 router43.post("/wallid-webhook", async (req, res) => {
@@ -97878,12 +98054,12 @@ router43.post("/wallid-webhook", async (req, res) => {
   }
   const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(req.body));
   const message = `${tsHeader}.${rawBody.toString()}`;
-  const expected = "sha256=" + crypto15.createHmac("sha256", WALLID_WEBHOOK_SECRET).update(message).digest("hex");
+  const expected = "sha256=" + crypto16.createHmac("sha256", WALLID_WEBHOOK_SECRET).update(message).digest("hex");
   const received = sigHeader;
   let sigValid = false;
   try {
     if (expected.length === received.length) {
-      sigValid = crypto15.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
+      sigValid = crypto16.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
     }
   } catch {
     sigValid = false;

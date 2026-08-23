@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import { trackInitiateCheckout } from "@/lib/pixels";
+import { createCheckoutQuoteInputKey } from "@/lib/checkoutQuoteInputKey";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
@@ -265,6 +266,20 @@ type AppliedDiscount = {
   code: string; type: string; value: number; discountAmount: number;
 };
 
+type PaymentQuote = {
+  paymentQuoteToken: string;
+  expiresAt: string;
+  paymentCurrency: "GBP" | "EUR";
+  paymentAmountMinor: number;
+  totalGbp: number;
+  subtotalGbp: number;
+  shippingCostGbp: number;
+  bundleDiscountGbp: number;
+  discountAmountGbp: number;
+  loyaltyDiscountGbp: number;
+  referralCreditGbp: number;
+};
+
 const emptyDelivery: DeliveryForm = {
   email: "", firstName: "", lastName: "", phone: "",
   address1: "", address2: "", city: "", county: "",
@@ -348,7 +363,7 @@ const divider: React.CSSProperties = {
 function CartUpsellCard({ product }: { product: Product }) {
   const [added, setAdded] = useState(false);
   const { addToCart, items } = useCart();
-  const { formatPrice, currency, rates } = useCurrency();
+  const { formatPrice, currency } = useCurrency();
   const alreadyInCart = items.some((i) => i.product.id === product.id);
 
   const handleAdd = (e: React.MouseEvent) => {
@@ -536,6 +551,11 @@ export default function CartPage() {
   // Payment
   const [paymentMethod, setPaymentMethod] = useState<"crypto" | "wallid">("wallid");
   const [paymentCurrency, setPaymentCurrency] = useState<"GBP" | "EUR">("GBP");
+  const [paymentQuote, setPaymentQuote] = useState<PaymentQuote | null>(null);
+  const [paymentQuoteInputKey, setPaymentQuoteInputKey] = useState<string | null>(null);
+  const [paymentQuoteLoading, setPaymentQuoteLoading] = useState(false);
+  const [paymentQuoteError, setPaymentQuoteError] = useState<string | null>(null);
+  const [paymentQuoteRefresh, setPaymentQuoteRefresh] = useState(0);
   const [cryptoRoutes, setCryptoRoutes] = useState<CryptoRoute[]>([]);
   const [cryptoRoute, setCryptoRoute] = useState<CryptoRoute | null>(null);
   const paymentCurrencyChosen = useRef(false);
@@ -707,6 +727,135 @@ export default function CartPage() {
     );
   }
 
+  const quoteInputItems = items.map(({ product, quantity }) => {
+    const slug = (product as { slug?: string }).slug ?? "";
+    const priceGbp = (slug && livePriceBySlug[slug] != null)
+      ? livePriceBySlug[slug]
+      : (product.price ?? 0);
+    return {
+      productId: parseInt(String(product.id), 10) || 0,
+      productSlug: slug,
+      quantity,
+      priceGbp,
+    };
+  });
+  const currentPaymentQuoteInputKey = createCheckoutQuoteInputKey({
+    items: quoteInputItems,
+    shipping,
+    country: delivery.country,
+    discountCode: appliedDiscount?.code ?? null,
+    loyaltyPointsToRedeem,
+    redeemFreePeptide: redeemFreePeptide && referralCreditGbp > 0,
+    referralCreditGbp,
+    paymentCurrency,
+    paymentMethod,
+  });
+
+  useEffect(() => {
+    if (paymentMethod !== "wallid" || items.length === 0) {
+      setPaymentQuote(null);
+      setPaymentQuoteInputKey(null);
+      setPaymentQuoteLoading(false);
+      setPaymentQuoteError(null);
+      return;
+    }
+
+    const selectedOption = SHIPPING_OPTIONS.find((option) => option.id === shipping);
+    if (!selectedOption) {
+      setPaymentQuote(null);
+      setPaymentQuoteError("Choose a shipping option to confirm your payment total.");
+      return;
+    }
+
+    const controller = new AbortController();
+    const requestTimer = window.setTimeout(() => {
+      setPaymentQuoteLoading(true);
+      setPaymentQuoteError(null);
+      setPaymentQuote(null);
+      setPaymentQuoteInputKey(null);
+
+      const quoteItems = items.map(({ product, quantity }, index) => {
+        const quoteItem = quoteInputItems[index];
+        return {
+          productId: quoteItem.productId,
+          productSlug: quoteItem.productSlug,
+          productName: product.name,
+          productCategory: product.category ?? "",
+          quantity,
+          priceGbp: quoteItem.priceGbp,
+        };
+      });
+
+      void fetch(apiUrl("orders/quote"), {
+        method: "POST",
+        credentials: "include",
+        signal: controller.signal,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          delivery: { country: delivery.country },
+          shippingMethod: selectedOption.label,
+          items: quoteItems,
+          discountCode: appliedDiscount?.code ?? null,
+          loyaltyPointsRedeemed: loyaltyPointsToRedeem > 0 ? loyaltyPointsToRedeem : undefined,
+          redeemFreePeptide: redeemFreePeptide && referralCreditGbp > 0 ? true : undefined,
+          paymentMethod: "wallid",
+          paymentCurrency,
+        }),
+      })
+        .then(async (response) => {
+          const data = await response.json().catch(() => ({})) as Partial<PaymentQuote> & { error?: string };
+          if (!response.ok) throw new Error(data.error ?? "We could not confirm your payment total.");
+          if (
+            typeof data.paymentQuoteToken !== "string" ||
+            typeof data.expiresAt !== "string" ||
+            (data.paymentCurrency !== "GBP" && data.paymentCurrency !== "EUR") ||
+            typeof data.paymentAmountMinor !== "number" ||
+            typeof data.totalGbp !== "number" ||
+            typeof data.subtotalGbp !== "number" ||
+            typeof data.shippingCostGbp !== "number" ||
+            typeof data.bundleDiscountGbp !== "number" ||
+            typeof data.discountAmountGbp !== "number" ||
+            typeof data.loyaltyDiscountGbp !== "number" ||
+            typeof data.referralCreditGbp !== "number"
+          ) {
+            throw new Error("We received an incomplete payment total. Please try again.");
+          }
+          if (!controller.signal.aborted) {
+            setPaymentQuote(data as PaymentQuote);
+            setPaymentQuoteInputKey(currentPaymentQuoteInputKey);
+          }
+        })
+        .catch((error: unknown) => {
+          if (!controller.signal.aborted) {
+            setPaymentQuoteError(
+              error instanceof Error ? error.message : "We could not confirm your payment total.",
+            );
+          }
+        })
+        .finally(() => {
+          if (!controller.signal.aborted) setPaymentQuoteLoading(false);
+        });
+    }, 150);
+
+    return () => {
+      window.clearTimeout(requestTimer);
+      controller.abort();
+    };
+  }, [
+    currentPaymentQuoteInputKey,
+    paymentQuoteRefresh,
+  ]);
+
+  useEffect(() => {
+    if (!paymentQuote) return;
+    const refreshIn = Math.max(0, new Date(paymentQuote.expiresAt).getTime() - Date.now());
+    const refreshTimer = window.setTimeout(
+      () => setPaymentQuoteRefresh((current) => current + 1),
+      refreshIn,
+    );
+    return () => window.clearTimeout(refreshTimer);
+  }, [paymentQuote]);
+
   if (items.length === 0) {
     return (
       <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "60vh" }}>
@@ -743,9 +892,25 @@ export default function CartPage() {
   const loyaltyDiscountGbp = loyaltyPointsToRedeem / 100;
   const freePeptideDeductGbp = redeemFreePeptide && referralCreditGbp > 0 ? Math.min(referralCreditGbp, cartGBP) : 0;
   const totalGBP = Math.max(0, cartGBP + shippingCost - bundleDiscountAmount - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp);
-  const displayedPaymentTotal = paymentCurrency === "EUR"
-    ? totalGBP * (rates.EUR ?? 1.17)
-    : totalGBP;
+  const bankPaymentQuote = (
+    paymentMethod === "wallid" &&
+    paymentQuoteInputKey === currentPaymentQuoteInputKey &&
+    paymentQuote &&
+    new Date(paymentQuote.expiresAt).getTime() > Date.now()
+  ) ? paymentQuote : null;
+  const checkoutSubtotalGbp = bankPaymentQuote?.subtotalGbp ?? cartGBP;
+  const checkoutShippingCostGbp = bankPaymentQuote?.shippingCostGbp ?? shippingCost;
+  const checkoutBundleDiscountGbp = bankPaymentQuote?.bundleDiscountGbp ?? bundleDiscountAmount;
+  const checkoutDiscountGbp = bankPaymentQuote?.discountAmountGbp ?? discountAmount;
+  const checkoutLoyaltyDiscountGbp = bankPaymentQuote?.loyaltyDiscountGbp ?? loyaltyDiscountGbp;
+  const checkoutReferralCreditGbp = bankPaymentQuote?.referralCreditGbp ?? freePeptideDeductGbp;
+  const checkoutTotalGbp = bankPaymentQuote?.totalGbp ?? totalGBP;
+  const displayedPaymentTotal = bankPaymentQuote
+    ? bankPaymentQuote.paymentAmountMinor / 100
+    : null;
+  const bankPaymentReady = paymentMethod !== "wallid" || (
+    Boolean(bankPaymentQuote) && !paymentQuoteLoading && !paymentQuoteError
+  );
   const selectedPhonePrefix = phoneCountryCode === "custom"
     ? customPhoneCountryCode.trim()
     : phoneCountryCode;
@@ -1029,6 +1194,18 @@ export default function CartPage() {
       setErrors({ confirmed: "Please confirm before placing your order" });
       return;
     }
+    if (paymentMethod === "wallid") {
+      if (!bankPaymentReady || !bankPaymentQuote) {
+        setPlaceError(paymentQuoteError ?? "Confirming your exact payment total. Please wait a moment and try again.");
+        return;
+      }
+      if (new Date(bankPaymentQuote.expiresAt).getTime() <= Date.now()) {
+        setPaymentQuote(null);
+        setPaymentQuoteRefresh((current) => current + 1);
+        setPlaceError("Your payment total has expired. We’re refreshing it now—please review it and place your order again.");
+        return;
+      }
+    }
     setErrors({});
     setPlacing(true);
     setPlaceError(null);
@@ -1076,6 +1253,7 @@ export default function CartPage() {
           redeemFreePeptide: redeemFreePeptide && referralCreditGbp > 0 ? true : undefined,
           paymentMethod,
           paymentCurrency: paymentMethod === "wallid" ? paymentCurrency : undefined,
+          paymentQuoteToken: paymentMethod === "wallid" ? bankPaymentQuote?.paymentQuoteToken : undefined,
           cryptoCurrency: paymentMethod === "crypto" ? cryptoRoute?.currency : undefined,
           cryptoNetwork: paymentMethod === "crypto" ? cryptoRoute?.network : undefined,
         }),
@@ -1085,6 +1263,15 @@ export default function CartPage() {
         const body = await res.json().catch(() => ({})) as { error?: string; stockErrors?: { productName: string; available: number; requested: number }[] };
         setStockErrors(body.stockErrors ?? []);
         setPlaceError(body.error ?? "Some items in your cart are unavailable.");
+        setPlacing(false);
+        return;
+      }
+
+      if (res.status === 409 && paymentMethod === "wallid") {
+        const body = await res.json().catch(() => ({})) as { error?: string };
+        setPaymentQuote(null);
+        setPaymentQuoteRefresh((current) => current + 1);
+        setPlaceError(body.error ?? "Your payment total changed. We’re refreshing it now—please review it and place your order again.");
         setPlacing(false);
         return;
       }
@@ -1677,10 +1864,17 @@ export default function CartPage() {
                           );
                         })}
                       </div>
-                      <p style={{ fontSize: "12px", color: "#475569", margin: "8px 0 0", lineHeight: 1.45 }}>
-                        You&apos;ll pay approximately <strong style={{ color: "#0F172A" }}>
-                          {paymentCurrency === "EUR" ? "€" : "£"}{displayedPaymentTotal.toFixed(2)} {paymentCurrency}
-                        </strong>. The final rate is confirmed securely when you continue to your bank.
+                      <p style={{ fontSize: "12px", color: paymentQuoteError ? "#B91C1C" : "#475569", margin: "8px 0 0", lineHeight: 1.45 }}>
+                        {paymentQuoteLoading ? (
+                          "Confirming your exact payment total…"
+                        ) : displayedPaymentTotal !== null && bankPaymentQuote ? (
+                          <>You&apos;ll pay <strong style={{ color: "#0F172A" }}>
+                            {bankPaymentQuote.paymentCurrency === "EUR" ? "€" : "£"}
+                            {displayedPaymentTotal.toFixed(2)} {bankPaymentQuote.paymentCurrency}
+                          </strong>. This secured total is the exact amount sent to your bank.</>
+                        ) : (
+                          paymentQuoteError ?? "Your exact payment total is not available yet. Please wait before placing your order."
+                        )}
                       </p>
                     </div>
 
@@ -1850,24 +2044,29 @@ export default function CartPage() {
           <button
             type="button"
             onClick={placeOrder}
-            disabled={placing}
+            disabled={placing || !bankPaymentReady}
             style={{
               width: "100%", height: 52, borderRadius: 4,
-              background: placing ? THEME.ctaHover : THEME.cta,
+              background: placing || !bankPaymentReady ? THEME.ctaHover : THEME.cta,
               color: "#fff", border: "none",
               fontSize: "13px", fontWeight: 800,
               letterSpacing: "0.1em", textTransform: "uppercase",
-              cursor: placing ? "not-allowed" : "pointer",
+              cursor: placing || !bankPaymentReady ? "not-allowed" : "pointer",
               display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
               transition: "background 0.15s",
             }}
-            onMouseEnter={e => { if (!placing) (e.currentTarget as HTMLButtonElement).style.background = THEME.ctaHover; }}
-            onMouseLeave={e => { if (!placing) (e.currentTarget as HTMLButtonElement).style.background = THEME.cta; }}
+            onMouseEnter={e => { if (!placing && bankPaymentReady) (e.currentTarget as HTMLButtonElement).style.background = THEME.ctaHover; }}
+            onMouseLeave={e => { if (!placing && bankPaymentReady) (e.currentTarget as HTMLButtonElement).style.background = THEME.cta; }}
           >
             {placing ? (
               <>
                 <span style={{ width: 16, height: 16, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "#fff", borderRadius: "50%", animation: "spin 0.8s linear infinite", display: "inline-block" }} />
                 Processing…
+              </>
+            ) : !bankPaymentReady ? (
+              <>
+                <span style={{ width: 16, height: 16, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "#fff", borderRadius: "50%", animation: "spin 0.8s linear infinite", display: "inline-block" }} />
+                Confirming Total…
               </>
             ) : (
               <>
@@ -2102,12 +2301,12 @@ export default function CartPage() {
             {/* Totals */}
             <div style={{ padding: "16px 20px" }}>
               {[
-                ["Subtotal", `£${cartGBP.toFixed(2)}`],
-                ["Shipping", shippingCost === 0 ? "FREE" : `£${shippingCost.toFixed(2)}`],
-                ...(bundleDiscountAmount > 0 ? [["Bundle & Save", `−£${bundleDiscountAmount.toFixed(2)}`]] : []),
-                ...(discountAmount > 0 ? [[`Discount (${appliedDiscount?.code})`, `−£${discountAmount.toFixed(2)}`]] : []),
-                ...(loyaltyPointsToRedeem > 0 ? [["Loyalty Points", `−£${loyaltyDiscountGbp.toFixed(2)}`]] : []),
-                ...(freePeptideDeductGbp > 0 ? [["Referral Credit", `−£${freePeptideDeductGbp.toFixed(2)}`]] : []),
+                ["Subtotal", `£${checkoutSubtotalGbp.toFixed(2)}`],
+                ["Shipping", checkoutShippingCostGbp === 0 ? "FREE" : `£${checkoutShippingCostGbp.toFixed(2)}`],
+                ...(checkoutBundleDiscountGbp > 0 ? [["Bundle & Save", `−£${checkoutBundleDiscountGbp.toFixed(2)}`]] : []),
+                ...(checkoutDiscountGbp > 0 ? [[`Discount (${appliedDiscount?.code})`, `−£${checkoutDiscountGbp.toFixed(2)}`]] : []),
+                ...(checkoutLoyaltyDiscountGbp > 0 ? [["Loyalty Points", `−£${checkoutLoyaltyDiscountGbp.toFixed(2)}`]] : []),
+                ...(checkoutReferralCreditGbp > 0 ? [["Referral Credit", `−£${checkoutReferralCreditGbp.toFixed(2)}`]] : []),
               ].map(([k, v]) => (
                 <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
                   <span style={{ fontSize: "13px", color: THEME.textMuted }}>{k}</span>
@@ -2115,8 +2314,14 @@ export default function CartPage() {
                 </div>
               ))}
               <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12, paddingTop: 12, borderTop: THEME.divider }}>
-                <span style={{ fontSize: "16px", fontWeight: 800, color: THEME.text }}>Total</span>
-                <span style={{ fontSize: "20px", fontWeight: 800, color: THEME.text }}>£{totalGBP.toFixed(2)}</span>
+                <span style={{ fontSize: "16px", fontWeight: 800, color: THEME.text }}>
+                  {bankPaymentQuote ? "Pay by Bank total" : "Total"}
+                </span>
+                <span style={{ fontSize: "20px", fontWeight: 800, color: THEME.text }}>
+                  {bankPaymentQuote
+                    ? `${bankPaymentQuote.paymentCurrency === "EUR" ? "€" : "£"}${(bankPaymentQuote.paymentAmountMinor / 100).toFixed(2)} ${bankPaymentQuote.paymentCurrency}`
+                    : `£${checkoutTotalGbp.toFixed(2)}`}
+                </span>
               </div>
             </div>
 
