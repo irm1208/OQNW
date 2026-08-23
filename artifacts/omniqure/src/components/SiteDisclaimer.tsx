@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 
 const STORAGE_KEY = "omniqure_disclaimer_collapsed";
+const ALLOWED_PATHS = new Set(["/", "/checkout"]);
 
 export default function SiteDisclaimer() {
+  const [location] = useLocation();
+  if (!ALLOWED_PATHS.has(location)) return null;
   const [collapsed, setCollapsed] = useState(() => {
     try { return localStorage.getItem(STORAGE_KEY) === "1"; } catch { return false; }
   });
