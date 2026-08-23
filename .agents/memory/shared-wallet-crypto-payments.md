@@ -8,3 +8,9 @@ For crypto routes that share a receiving wallet, lock a complete route snapshot 
 **Why:** A public shared wallet otherwise permits reuse of historical qualifying transactions against new orders. Route edits after checkout also must not change what an existing customer was asked to pay, while early reconciliation cutoffs could strand legitimate transactions awaiting confirmations.
 
 **How to apply:** Treat a confirmed payment as terminal; use the order snapshot rather than current settings for payment verification and audit evidence. Preserve transaction-hash uniqueness and route all missing timing evidence to manual review rather than auto-approving.
+
+Secure payment-detail reads must not be served from a conditional cache after a transaction submission; a `304 Not Modified` has no response body and must never replace the current payment details in the confirmation UI.
+
+**Why:** A verification request can succeed, then its immediate payment refresh may receive an empty `304` body. Treating that body as a payment object makes the payment card appear to collapse or fail silently.
+
+**How to apply:** Send payment-detail responses with `Cache-Control: no-store`, request them with no-store/no-cache semantics, and reject incomplete payment payloads rather than putting them into UI state.

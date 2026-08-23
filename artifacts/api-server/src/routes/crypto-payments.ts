@@ -173,6 +173,7 @@ router.get("/crypto/payment-options", async (_req: Request, res: Response): Prom
 });
 
 router.get("/orders/:ref/crypto-payment", async (req: Request, res: Response): Promise<void> => {
+  res.setHeader("Cache-Control", "no-store");
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.query.token)) {
     res.status(404).json({ error: "Payment not found" });

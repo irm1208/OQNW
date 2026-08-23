@@ -65,6 +65,7 @@ export default function OrderConfirmation() {
   const [cryptoPayment, setCryptoPayment] = useState<CryptoPayment | null>(null);
   const [loading, setLoading] = useState(isCrypto);
   const [error, setError] = useState<string | null>(null);
+  const [submissionMessage, setSubmissionMessage] = useState<string | null>(null);
   const [txHash, setTxHash] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -76,9 +77,16 @@ export default function OrderConfirmation() {
     try {
       const response = await fetch(
         `${apiUrl(`orders/${encodeURIComponent(orderId)}/crypto-payment`)}?token=${encodeURIComponent(cryptoToken)}`,
+        { cache: "no-store", headers: { "Cache-Control": "no-cache" } },
       );
+      if (response.status === 304) {
+        return;
+      }
       const data = await response.json().catch(() => ({})) as CryptoPayment & { error?: string };
       if (!response.ok) throw new Error(data.error ?? "Unable to load the crypto payment");
+      if (!data.currency || !data.network || !data.walletAddress || !data.expectedAmount) {
+        throw new Error("The secure payment details were incomplete. Please refresh and try again.");
+      }
       setCryptoPayment(data);
       setTxHash(data.txHash ?? "");
       setError(null);
@@ -129,7 +137,10 @@ export default function OrderConfirmation() {
           network: cryptoPayment.network,
         }),
       });
-      const data = await response.json().catch(() => ({})) as { error?: string };
+      const data = await response.json().catch(() => ({})) as {
+        error?: string;
+        status?: CryptoPayment["status"];
+      };
       if (!response.ok) throw new Error(data.error ?? "Unable to refresh the rate");
       await refreshPayment();
     } catch (err) {
@@ -140,17 +151,38 @@ export default function OrderConfirmation() {
   }
 
   async function submitTransaction() {
-    if (!cryptoToken || !txHash.trim() || rateExpired) return;
+    if (!cryptoToken) {
+      setError("This payment link is missing its secure payment token. Please reopen the confirmation link.");
+      return;
+    }
+    if (!txHash.trim()) {
+      setError("Enter your transaction hash before clicking Verify.");
+      return;
+    }
+    if (rateExpired) {
+      setError("This rate lock has expired. Refresh the locked rate before verifying your transaction.");
+      return;
+    }
     setSubmitting(true);
+    setError(null);
+    setSubmissionMessage(null);
     try {
       const response = await fetch(apiUrl(`orders/${encodeURIComponent(orderId)}/pay`), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ paymentToken: cryptoToken, txHash: txHash.trim() }),
       });
-      const data = await response.json().catch(() => ({})) as { error?: string };
+      const data = await response.json().catch(() => ({})) as {
+        error?: string;
+        status?: CryptoPayment["status"];
+      };
       if (!response.ok) throw new Error(data.error ?? "Unable to verify the transaction");
       await refreshPayment();
+      setSubmissionMessage(
+        data.status === "confirmed"
+          ? "Payment verified successfully. Your order can now be prepared for dispatch."
+          : "Transaction received. We’re checking it on-chain and will update your order when confirmations are complete.",
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to verify the transaction");
     } finally {
@@ -222,10 +254,15 @@ export default function OrderConfirmation() {
                         <label style={{ display: "block", fontSize: 12, fontWeight: 800, color: coin.text, marginBottom: 6 }}>After sending, paste your transaction hash</label>
                         <div style={{ display: "flex", gap: 8 }}>
                           <input value={txHash} onChange={event => setTxHash(event.target.value)} placeholder="Transaction hash" style={{ flex: 1, minWidth: 0, border: "1px solid #CBD5E1", borderRadius: 9, padding: "11px 12px", fontFamily: "monospace", fontSize: 12 }} />
-                          <button type="button" onClick={() => void submitTransaction()} disabled={submitting || !txHash.trim()} style={{ border: 0, background: coin.color, color: "#fff", borderRadius: 9, padding: "0 14px", fontWeight: 800, cursor: "pointer", opacity: submitting || !txHash.trim() ? .6 : 1 }}>
+                          <button type="button" onClick={() => void submitTransaction()} disabled={submitting} aria-busy={submitting} style={{ border: 0, background: coin.color, color: "#fff", borderRadius: 9, padding: "0 14px", fontWeight: 800, cursor: submitting ? "wait" : "pointer", opacity: submitting ? .6 : 1 }}>
                             {submitting ? "Checking…" : "Verify"}
                           </button>
                         </div>
+                        {submissionMessage && (
+                          <p aria-live="polite" style={{ margin: "8px 0 0", color: "#047857", fontSize: 12, fontWeight: 700 }}>
+                            {submissionMessage}
+                          </p>
+                        )}
                       </div>
                     )}
                     <p style={{ fontSize: 12, lineHeight: 1.6, color: coin.text, margin: "14px 0 0" }}>
