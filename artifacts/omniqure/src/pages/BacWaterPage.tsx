@@ -7,16 +7,6 @@ import type { Product } from "@/data/products";
 
 const SIZES = [
   {
-    label: "30ml",
-    ref: "BW-30-ML",
-    price: 4.99,
-    id: "bw-30ml",
-    name: "Bacteriostatic Water 30ml",
-    slug: "bacteriostatic-water-30ml",
-    category: "Accessories",
-    image: "/bac-water-30ml.webp",
-  },
-  {
     label: "10ml",
     ref: "BW-10-ML",
     price: 8.99,
@@ -25,6 +15,16 @@ const SIZES = [
     slug: "bacteriostatic-water-10ml",
     category: "Accessories",
     image: "/bac-water-10ml.webp",
+  },
+  {
+    label: "30ml",
+    ref: "BW-30-ML",
+    price: 4.99,
+    id: "bw-30ml",
+    name: "Bacteriostatic Water 30ml",
+    slug: "bacteriostatic-water-30ml",
+    category: "Accessories",
+    image: "/bac-water-30ml.webp",
   },
 ] as const;
 
