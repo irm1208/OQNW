@@ -47,7 +47,7 @@ export default function JanoshikReportModal({
         style={{
           background: "#fff", borderRadius: "14px",
           maxWidth: "560px", width: "100%",
-          maxHeight: "90vh", display: "flex", flexDirection: "column",
+          height: "90vh", display: "flex", flexDirection: "column",
           boxShadow: "0 24px 64px rgba(0,0,0,0.35)",
           overflow: "hidden",
         }}
