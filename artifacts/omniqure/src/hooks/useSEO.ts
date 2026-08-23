@@ -27,6 +27,14 @@ function upsertCanonical(href: string) {
   el.setAttribute("href", href);
 }
 
+function removeCanonical() {
+  document.querySelector('link[rel="canonical"]')?.remove();
+}
+
+function removeMeta(attr: "name" | "property", key: string) {
+  document.querySelector(`meta[${attr}="${key}"]`)?.remove();
+}
+
 function upsertJsonLd(id: string, data: object) {
   let el = document.querySelector<HTMLScriptElement>(`script[data-seo="${id}"]`);
   if (!el) {
@@ -35,6 +43,7 @@ function upsertJsonLd(id: string, data: object) {
     el.setAttribute("data-seo", id);
     document.head.appendChild(el);
   }
+  el.id = `seo-jsonld-${id}`;
   el.textContent = JSON.stringify(data);
 }
 
@@ -51,6 +60,21 @@ export interface ProductJsonLd {
   category: string;
   purity: string;
   availability: "InStock" | "OutOfStock" | "LimitedAvailability";
+  currency?: string;
+  aggregateRating?: {
+    ratingValue: number;
+    reviewCount: number;
+  } | null;
+}
+
+export interface ArticleJsonLd {
+  headline: string;
+  description: string;
+  url: string;
+  image?: string | null;
+  datePublished?: string | null;
+  dateModified?: string | null;
+  author?: string | null;
 }
 
 export interface BreadcrumbItem {
@@ -68,6 +92,7 @@ interface SEOProps {
   noSiteSuffix?: boolean;
   noIndex?: boolean;
   product?: ProductJsonLd | null;
+  article?: ArticleJsonLd | null;
   breadcrumbs?: BreadcrumbItem[] | null;
 }
 
@@ -81,6 +106,7 @@ export function useSEO({
   noSiteSuffix = false,
   noIndex = false,
   product,
+  article,
   breadcrumbs,
 }: SEOProps) {
   useEffect(() => {
@@ -111,6 +137,7 @@ export function useSEO({
     upsertMeta("property", "og:image:alt", fullTitle);
     upsertMeta("property", "og:locale", "en");
     if (canonicalHref) upsertMeta("property", "og:url", canonicalHref);
+    else removeMeta("property", "og:url");
 
     // Twitter / X Cards — summary_large_image shows a rich preview
     upsertMeta("name", "twitter:card", "summary_large_image");
@@ -120,6 +147,7 @@ export function useSEO({
     upsertMeta("name", "twitter:image:alt", fullTitle);
 
     if (canonicalHref) upsertCanonical(canonicalHref);
+    else removeCanonical();
 
     // JSON-LD: Product structured data (Google Rich Results, Bing, Pinterest)
     if (product) {
@@ -138,19 +166,27 @@ export function useSEO({
           "@type": "Brand",
           name: SITE_NAME,
         },
-        offers: priceStr
+         offers: priceStr
           ? {
               "@type": "Offer",
               url: `${SITE_URL}/product/${product.productId}`,
-              priceCurrency: "GBP",
+               priceCurrency: product.currency ?? "GBP",
               price: priceStr,
               availability: `https://schema.org/${product.availability}`,
               seller: {
                 "@type": "Organization",
                 name: SITE_NAME,
               },
-            }
+             }
           : undefined,
+        aggregateRating:
+          product.aggregateRating && product.aggregateRating.reviewCount > 0
+            ? {
+                "@type": "AggregateRating",
+                ratingValue: product.aggregateRating.ratingValue,
+                reviewCount: product.aggregateRating.reviewCount,
+              }
+            : undefined,
         additionalProperty: [
           {
             "@type": "PropertyValue",
@@ -166,6 +202,39 @@ export function useSEO({
       });
     } else {
       removeJsonLd("product");
+    }
+
+    // JSON-LD: Article structured data for research posts
+    if (article) {
+      const articleUrl = article.url.startsWith("http")
+        ? article.url
+        : `${SITE_URL}${article.url}`;
+      const articleImage = article.image
+        ? article.image.startsWith("http")
+          ? article.image
+          : `${SITE_URL}${article.image}`
+        : undefined;
+      upsertJsonLd("article", {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: article.headline,
+        description: article.description,
+        url: articleUrl,
+        mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
+        image: articleImage,
+        datePublished: article.datePublished ?? undefined,
+        dateModified: article.dateModified ?? article.datePublished ?? undefined,
+        author: {
+          "@type": "Person",
+          name: article.author || "OmniQure Research Team",
+        },
+        publisher: {
+          "@type": "Organization",
+          name: SITE_NAME,
+        },
+      });
+    } else {
+      removeJsonLd("article");
     }
 
     // JSON-LD: BreadcrumbList (Google Search results path display)
@@ -187,7 +256,8 @@ export function useSEO({
     return () => {
       document.title = DEFAULT_TITLE;
       removeJsonLd("product");
+      removeJsonLd("article");
       removeJsonLd("breadcrumb");
     };
-  }, [title, description, keywords, ogType, canonicalPath, ogImage, noSiteSuffix, noIndex, product, breadcrumbs]);
+  }, [title, description, keywords, ogType, canonicalPath, ogImage, noSiteSuffix, noIndex, product, article, breadcrumbs]);
 }

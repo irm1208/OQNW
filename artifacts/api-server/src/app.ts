@@ -47,7 +47,7 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/uploads", express.static(path.join(process.cwd(), "public/uploads")));
-// Dynamic sitemap — served at /sitemap.xml (outside /api prefix so robots.txt can reference it directly)
+// Dynamic sitemap — support the API path requested by crawlers and the legacy root alias.
 app.use(sitemapRouter);
 app.use("/api", router);
 

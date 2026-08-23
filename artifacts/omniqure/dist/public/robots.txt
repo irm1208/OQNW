@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://omniqure.com/sitemap.xml
+Sitemap: https://omniqure.com/api/sitemap.xml

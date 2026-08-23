@@ -45,7 +45,7 @@ function isoDate(d: Date | string | null | undefined): string {
   return date.toISOString().split("T")[0];
 }
 
-router.get("/sitemap.xml", async (req: Request, res: Response): Promise<void> => {
+router.get(["/sitemap.xml", "/api/sitemap.xml"], async (req: Request, res: Response): Promise<void> => {
   try {
     const [products, blogPosts] = await Promise.all([
       db
@@ -65,6 +65,7 @@ router.get("/sitemap.xml", async (req: Request, res: Response): Promise<void> =>
           updatedAt: blogPostsTable.updatedAt,
         })
         .from(blogPostsTable)
+        .where(eq(blogPostsTable.status, "published"))
         .orderBy(desc(blogPostsTable.publishedAt)),
     ]);
 

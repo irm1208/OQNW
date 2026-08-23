@@ -57,6 +57,8 @@ const StorageGuidePage     = lazy(() => import("@/pages/StorageGuidePage"));
 const ResearchResultsPage  = lazy(() => import("@/pages/ResearchResultsPage"));
 const ContactPage          = lazy(() => import("@/pages/ContactPage"));
 const ChatWidget            = lazy(() => import("@/components/ChatWidget"));
+const BlogIndexPage        = lazy(() => import("@/pages/BlogIndexPage"));
+const BlogPostPage         = lazy(() => import("@/pages/BlogPostPage"));
 const NotFound             = lazy(() => import("@/pages/not-found"));
 
 const queryClient = new QueryClient();
@@ -215,6 +217,8 @@ function Router() {
       <Route path="/bundle-and-save" component={BundleAndSavePage} />
       <Route path="/storage-guide" component={StorageGuidePage} />
       <Route path="/research-results" component={ResearchResultsPage} />
+      <Route path="/blog" component={BlogIndexPage} />
+      <Route path="/blog/:slug" component={BlogPostPage} />
       <Route component={NotFound} />
     </Switch>
   );

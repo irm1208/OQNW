@@ -30,6 +30,11 @@ function parseBaseName(name: string): { base: string; strength: string } {
   return { base: name, strength: "" };
 }
 
+type ReviewSummary = {
+  avgRating: number | null;
+  totalCount: number;
+};
+
 const VOLUME_TIERS = [
   { min: 3,  label: "Free BAC water" },
   { min: 5,  label: "1 peptide free" },
@@ -149,6 +154,32 @@ export default function ProductPage() {
   const { customer } = useCustomerAuth();
   const { formatPrice } = useCurrency();
   const { toggle: toggleWishlist, has: inWishlist } = useWishlist();
+  const [reviewSummary, setReviewSummary] = useState<ReviewSummary | null>(null);
+
+  useEffect(() => {
+    if (!product) {
+      setReviewSummary(null);
+      return;
+    }
+
+    let cancelled = false;
+    setReviewSummary(null);
+    fetch(apiUrl(`products/${product.id}/reviews`), { credentials: "include" })
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to load review summary");
+        return response.json() as Promise<{ summary?: ReviewSummary }>;
+      })
+      .then((data) => {
+        if (!cancelled) setReviewSummary(data.summary ?? null);
+      })
+      .catch(() => {
+        if (!cancelled) setReviewSummary(null);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [product?.id]);
 
   // SEO — computed unconditionally (before any early return)
   const seoDetail = productDetails[product?.slug ?? ""];
@@ -176,10 +207,18 @@ export default function ProductPage() {
       description: seoDesc ?? product.name,
       image: product.image,
       price: product.price,
+       currency: "GBP",
       productId: product.slug,
       category: product.category,
       purity: getPurityStr(product.id),
       availability: seoAvailability as "InStock" | "OutOfStock" | "LimitedAvailability",
+       aggregateRating:
+         reviewSummary?.avgRating !== null && reviewSummary?.avgRating !== undefined
+           ? {
+               ratingValue: reviewSummary.avgRating,
+               reviewCount: reviewSummary.totalCount,
+             }
+           : null,
     } : null,
     breadcrumbs: product ? [
       { name: "Home", path: "/" },

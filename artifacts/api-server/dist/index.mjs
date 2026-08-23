@@ -18772,14 +18772,14 @@ var require_etag = __commonJS({
   "../../node_modules/.pnpm/etag@1.8.1/node_modules/etag/index.js"(exports, module) {
     "use strict";
     module.exports = etag;
-    var crypto17 = __require("crypto");
+    var crypto16 = __require("crypto");
     var Stats = __require("fs").Stats;
     var toString = Object.prototype.toString;
     function entitytag(entity) {
       if (entity.length === 0) {
         return '"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"';
       }
-      var hash2 = crypto17.createHash("sha1").update(entity, "utf8").digest("base64").substring(0, 27);
+      var hash2 = crypto16.createHash("sha1").update(entity, "utf8").digest("base64").substring(0, 27);
       var len = typeof entity === "string" ? Buffer.byteLength(entity, "utf8") : entity.length;
       return '"' + len.toString(16) + "-" + hash2 + '"';
     }
@@ -20488,27 +20488,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router51;
+    module.exports = Router50;
     module.exports.Route = Route;
-    function Router51(options) {
-      if (!(this instanceof Router51)) {
-        return new Router51(options);
+    function Router50(options) {
+      if (!(this instanceof Router50)) {
+        return new Router50(options);
       }
       const opts = options || {};
-      function router51(req, res, next) {
-        router51.handle(req, res, next);
+      function router50(req, res, next) {
+        router50.handle(req, res, next);
       }
-      Object.setPrototypeOf(router51, this);
-      router51.caseSensitive = opts.caseSensitive;
-      router51.mergeParams = opts.mergeParams;
-      router51.params = {};
-      router51.strict = opts.strict;
-      router51.stack = [];
-      return router51;
+      Object.setPrototypeOf(router50, this);
+      router50.caseSensitive = opts.caseSensitive;
+      router50.mergeParams = opts.mergeParams;
+      router50.params = {};
+      router50.strict = opts.strict;
+      router50.stack = [];
+      return router50;
     }
-    Router51.prototype = function() {
+    Router50.prototype = function() {
     };
-    Router51.prototype.param = function param2(name2, fn) {
+    Router50.prototype.param = function param2(name2, fn) {
       if (!name2) {
         throw new TypeError("argument name is required");
       }
@@ -20528,7 +20528,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router51.prototype.handle = function handle(req, res, callback) {
+    Router50.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20655,7 +20655,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router51.prototype.use = function use(handler) {
+    Router50.prototype.use = function use(handler) {
       let offset = 0;
       let path3 = "/";
       if (typeof handler !== "function") {
@@ -20688,7 +20688,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router51.prototype.route = function route(path3) {
+    Router50.prototype.route = function route(path3) {
       const route2 = new Route(path3);
       const layer = new Layer(path3, {
         sensitive: this.caseSensitive,
@@ -20703,7 +20703,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router51.prototype[method] = function(path3) {
+      Router50.prototype[method] = function(path3) {
         const route = this.route(path3);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -20886,13 +20886,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router51 = require_router();
+    var Router50 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router51 = null;
+      var router50 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -20901,13 +20901,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router51 === null) {
-            router51 = new Router51({
+          if (router50 === null) {
+            router50 = new Router50({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router51;
+          return router50;
         }
       });
     };
@@ -20978,15 +20978,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router51 = this.router;
+      var router50 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router51.use(path3, fn2);
+          return router50.use(path3, fn2);
         }
         debug(".use app under %s", path3);
         fn2.mountpath = path3;
         fn2.parent = this;
-        router51.use(path3, function mounted_app(req, res, next) {
+        router50.use(path3, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -22194,17 +22194,17 @@ var require_content_disposition = __commonJS({
 // ../../node_modules/.pnpm/cookie-signature@1.2.2/node_modules/cookie-signature/index.js
 var require_cookie_signature = __commonJS({
   "../../node_modules/.pnpm/cookie-signature@1.2.2/node_modules/cookie-signature/index.js"(exports) {
-    var crypto17 = __require("crypto");
+    var crypto16 = __require("crypto");
     exports.sign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Cookie value must be provided as a string.");
       if (null == secret) throw new TypeError("Secret key must be provided.");
-      return val + "." + crypto17.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
+      return val + "." + crypto16.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
     };
     exports.unsign = function(input, secret) {
       if ("string" != typeof input) throw new TypeError("Signed cookie string must be provided.");
       if (null == secret) throw new TypeError("Secret key must be provided.");
       var tentativeValue = input.slice(0, input.lastIndexOf(".")), expectedInput = exports.sign(tentativeValue, secret), expectedBuffer = Buffer.from(expectedInput), inputBuffer = Buffer.from(input);
-      return expectedBuffer.length === inputBuffer.length && crypto17.timingSafeEqual(expectedBuffer, inputBuffer) ? tentativeValue : false;
+      return expectedBuffer.length === inputBuffer.length && crypto16.timingSafeEqual(expectedBuffer, inputBuffer) ? tentativeValue : false;
     };
   }
 });
@@ -23513,7 +23513,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router51 = require_router();
+    var Router50 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module.exports = createApplication;
@@ -23535,8 +23535,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router51.Route;
-    exports.Router = Router51;
+    exports.Route = Router50.Route;
+    exports.Router = Router50;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -23834,11 +23834,11 @@ var require_lib3 = __commonJS({
 // ../../node_modules/.pnpm/cookie-signature@1.0.6/node_modules/cookie-signature/index.js
 var require_cookie_signature2 = __commonJS({
   "../../node_modules/.pnpm/cookie-signature@1.0.6/node_modules/cookie-signature/index.js"(exports) {
-    var crypto17 = __require("crypto");
+    var crypto16 = __require("crypto");
     exports.sign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Cookie value must be provided as a string.");
       if ("string" != typeof secret) throw new TypeError("Secret string must be provided.");
-      return val + "." + crypto17.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
+      return val + "." + crypto16.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
     };
     exports.unsign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Signed cookie string must be provided.");
@@ -23847,7 +23847,7 @@ var require_cookie_signature2 = __commonJS({
       return sha1(mac) == sha1(val) ? str : false;
     };
     function sha1(str) {
-      return crypto17.createHash("sha1").update(str).digest("hex");
+      return crypto16.createHash("sha1").update(str).digest("hex");
     }
   }
 });
@@ -29883,7 +29883,7 @@ var require_cert_signatures = __commonJS({
 var require_sasl = __commonJS({
   "../../node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/crypto/sasl.js"(exports, module) {
     "use strict";
-    var crypto17 = require_utils5();
+    var crypto16 = require_utils5();
     var { signatureAlgorithmHashFromCertificate } = require_cert_signatures();
     function startSession(mechanisms, stream) {
       const candidates = ["SCRAM-SHA-256"];
@@ -29895,7 +29895,7 @@ var require_sasl = __commonJS({
       if (mechanism === "SCRAM-SHA-256-PLUS" && typeof stream.getPeerCertificate !== "function") {
         throw new Error("SASL: Mechanism SCRAM-SHA-256-PLUS requires a certificate");
       }
-      const clientNonce = crypto17.randomBytes(18).toString("base64");
+      const clientNonce = crypto16.randomBytes(18).toString("base64");
       const gs2Header = mechanism === "SCRAM-SHA-256-PLUS" ? "p=tls-server-end-point" : stream ? "y" : "n";
       return {
         mechanism,
@@ -29930,20 +29930,20 @@ var require_sasl = __commonJS({
         const peerCert = stream.getPeerCertificate().raw;
         let hashName = signatureAlgorithmHashFromCertificate(peerCert);
         if (hashName === "MD5" || hashName === "SHA-1") hashName = "SHA-256";
-        const certHash = await crypto17.hashByName(hashName, peerCert);
+        const certHash = await crypto16.hashByName(hashName, peerCert);
         const bindingData = Buffer.concat([Buffer.from("p=tls-server-end-point,,"), Buffer.from(certHash)]);
         channelBinding = bindingData.toString("base64");
       }
       const clientFinalMessageWithoutProof = "c=" + channelBinding + ",r=" + sv.nonce;
       const authMessage = clientFirstMessageBare + "," + serverFirstMessage + "," + clientFinalMessageWithoutProof;
       const saltBytes = Buffer.from(sv.salt, "base64");
-      const saltedPassword = await crypto17.deriveKey(password, saltBytes, sv.iteration);
-      const clientKey = await crypto17.hmacSha256(saltedPassword, "Client Key");
-      const storedKey = await crypto17.sha256(clientKey);
-      const clientSignature = await crypto17.hmacSha256(storedKey, authMessage);
+      const saltedPassword = await crypto16.deriveKey(password, saltBytes, sv.iteration);
+      const clientKey = await crypto16.hmacSha256(saltedPassword, "Client Key");
+      const storedKey = await crypto16.sha256(clientKey);
+      const clientSignature = await crypto16.hmacSha256(storedKey, authMessage);
       const clientProof = xorBuffers(Buffer.from(clientKey), Buffer.from(clientSignature)).toString("base64");
-      const serverKey = await crypto17.hmacSha256(saltedPassword, "Server Key");
-      const serverSignatureBytes = await crypto17.hmacSha256(serverKey, authMessage);
+      const serverKey = await crypto16.hmacSha256(saltedPassword, "Server Key");
+      const serverSignatureBytes = await crypto16.hmacSha256(serverKey, authMessage);
       session.message = "SASLResponse";
       session.serverSignature = Buffer.from(serverSignatureBytes).toString("base64");
       session.response = clientFinalMessageWithoutProof + ",p=" + clientProof;
@@ -32111,7 +32111,7 @@ var require_client = __commonJS({
     var Query2 = require_query();
     var defaults2 = require_defaults();
     var Connection2 = require_connection();
-    var crypto17 = require_utils5();
+    var crypto16 = require_utils5();
     var activeQueryDeprecationNotice = nodeUtils.deprecate(
       () => {
       },
@@ -32346,7 +32346,7 @@ var require_client = __commonJS({
       _handleAuthMD5Password(msg) {
         this._getPassword(async () => {
           try {
-            const hashedPassword = await crypto17.postgresMd5PasswordHash(this.user, this.password, msg.salt);
+            const hashedPassword = await crypto16.postgresMd5PasswordHash(this.user, this.password, msg.salt);
             this.connection.password(hashedPassword);
           } catch (e) {
             this.emit("error", e);
@@ -58974,9 +58974,9 @@ var require_disk = __commonJS({
     var fs2 = __require("fs");
     var os = __require("os");
     var path3 = __require("path");
-    var crypto17 = __require("crypto");
+    var crypto16 = __require("crypto");
     function getFilename(req, file2, cb) {
-      crypto17.randomBytes(16, function(err, raw) {
+      crypto16.randomBytes(16, function(err, raw) {
         cb(err, err ? void 0 : raw.toString("hex"));
       });
     }
@@ -62540,14 +62540,14 @@ var require_multer = __commonJS({
 });
 
 // src/app.ts
-var import_express51 = __toESM(require_express2(), 1);
+var import_express50 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 var import_cookie_parser = __toESM(require_cookie_parser(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
 import path2 from "path";
 
 // src/routes/index.ts
-var import_express49 = __toESM(require_express2(), 1);
+var import_express48 = __toESM(require_express2(), 1);
 
 // src/routes/health.ts
 var import_express = __toESM(require_express2(), 1);
@@ -89082,52 +89082,6 @@ async function sendWelcomeEmail(data) {
     await logEmail({ toEmail: data.customerEmail, subject, type: "welcome", status: "failed" });
   }
 }
-async function sendNewsletterBroadcast(data) {
-  let sent = 0;
-  let failed = 0;
-  for (const sub of data.subscribers) {
-    const personalised = data.htmlBody.replace(/\{\{firstName\}\}/g, sub.firstName ?? "Researcher").replace(/\{\{unsubscribeUrl\}\}/g, sub.unsubscribeUrl);
-    const withFooter = personalised + `<div style="margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;text-align:center;"><p style="font-size:11px;color:#94a3b8;">You're receiving this because you subscribed to the OmniQure newsletter. <a href="${sub.unsubscribeUrl}" style="color:#94a3b8;">Unsubscribe</a></p></div>`;
-    try {
-      await getResend().emails.send({ from: FROM_ADDRESS, to: sub.email, subject: data.subject, html: baseTemplate(data.subject, withFooter) });
-      await logEmail({ toEmail: sub.email, subject: data.subject, type: "newsletter", status: "sent" });
-      sent++;
-    } catch {
-      await logEmail({ toEmail: sub.email, subject: data.subject, type: "newsletter", status: "failed" });
-      failed++;
-    }
-  }
-  return { sent, failed };
-}
-async function sendReorderReminder(data) {
-  const subject = `${data.customerName.split(" ")[0]}, is your research supply running low?`;
-  const itemList = data.items.map((i) => `<li style="padding:4px 0;font-size:14px;color:#1e293b;">${i.productName}</li>`).join("");
-  const body = `
-    <h2 style="margin:0 0 4px;font-size:22px;color:#0f172a;">Running Low on Research Supplies?</h2>
-    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Hi ${data.customerName.split(" ")[0]}, it's been about a month since your last order. Here's what you ordered \u2014 ready to restock?</p>
-
-    <div style="background:#f8fafc;border-radius:8px;padding:16px 20px;margin-bottom:24px;border:1px solid #e2e8f0;">
-      <p style="margin:0 0 10px;font-size:12px;color:#94a3b8;font-weight:600;text-transform:uppercase;">From Order ${data.orderNumber}</p>
-      <ul style="margin:0;padding:0 0 0 18px;">${itemList}</ul>
-    </div>
-
-    <div style="margin-top:4px;">
-      <a href="${SITE_URL}/all-peptides" style="display:inline-block;background:linear-gradient(90deg,#0d2565,#1b5cb5);color:#ffffff;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;">Reorder Now</a>
-    </div>
-
-    <div style="margin-top:24px;padding:16px;background:#fefce8;border-radius:6px;border-left:4px solid #eab308;">
-      <p style="margin:0;font-size:13px;color:#713f12;">All products are sold strictly for research purposes only. Not for human consumption.</p>
-    </div>
-  `;
-  try {
-    const result = await getResend().emails.send({ from: FROM_ADDRESS, to: data.customerEmail, subject, html: baseTemplate("Reorder Reminder", body) });
-    logger.info({ to: data.customerEmail, order: data.orderNumber }, "Reorder reminder sent");
-    await logEmail({ toEmail: data.customerEmail, subject, type: "reorder_reminder", status: "sent", resendId: result.data?.id, orderNumber: data.orderNumber });
-  } catch (err) {
-    logger.error({ err }, "Failed to send reorder reminder");
-    await logEmail({ toEmail: data.customerEmail, subject, type: "reorder_reminder", status: "failed", orderNumber: data.orderNumber });
-  }
-}
 
 // src/routes/admin/orders.ts
 var router5 = (0, import_express5.Router)();
@@ -90158,7 +90112,7 @@ var seedData = [
   { id: 83, slug: "5-amino-1q-50mg", name: "5-Amino-1Q 50mg", category: "Cellular Health", priceGbp: "95", imageUrl: "/products/83.jpg", purity: "99%+", casNumber: "42464-96-0", storage: "Store at room temperature away from light and moisture.", appearance: "White to off-white powder", shortDescription: "5-Amino-1MQ is a selective NNMT inhibitor studied for metabolic regulation, fat mass reduction, NAD\u207A metabolism, and cellular energy homeostasis.", description: "5-Amino-1MQ (5-Amino-1-methylquinolinium) is a selective, cell-permeable inhibitor of nicotinamide N-methyltransferase (NNMT) studied for its role in adipogenesis, metabolic disease, and NAD\u207A pathway regulation." },
   { id: 85, slug: "cjc-1295-no-dac-ipamorelin-5mg", name: "CJC-1295 No DAC + Ipamorelin 5mg", category: "Growth Hormone", priceGbp: "95", imageUrl: "/products/85.jpg", purity: "99%+ (each component)", casNumber: "863288-34-0 / 170851-70-4", alsoKnownAs: "Modified GRF 1-29 + Ipamorelin Blend, mGRF(1-29) + IPA Blend", storage: "Store lyophilized blend at -20\xB0C. After reconstitution store at 4\xB0C for up to 2 weeks.", appearance: "White lyophilized powder", shortDescription: "A dual-peptide blend combining CJC-1295 No DAC (5mg, GHRH analogue) and Ipamorelin (5mg, selective GHSR agonist) for synergistic GH secretion research via complementary receptor pathways.", description: "CJC-1295 No DAC + Ipamorelin Blend combines a GHRH receptor agonist with a selective ghrelin receptor agonist to study synergistic pulsatile GH release, body composition, and growth hormone axis physiology." },
   { id: 84, slug: "ara-290-16mg", name: "ARA-290 16mg", category: "Research Peptides", priceGbp: "120", imageUrl: "/products/84.jpg", purity: "99%+", casNumber: "506-32-1", alsoKnownAs: "Cibinetide, ARA290", storage: "Store lyophilized at -20\xB0C. After reconstitution store at 4\xB0C for up to 2 weeks.", appearance: "White lyophilized powder", solubility: "Soluble in sterile water or bacteriostatic water", formula: "C\u2082\u2080H\u2083\u2082O\u2082", molecularWeight: "304.47 g/mol", shortDescription: "ARA-290 (Cibinetide) is a selective innate repair receptor (IRR/EPOR-\u03B2cR) agonist studied for neuroprotection, small fiber neuropathy, anti-inflammatory activity, and tissue repair without erythropoietic effects.", description: "ARA-290 (Cibinetide) is a synthetic peptide ligand of the innate repair receptor studied for neuroprotection, small fiber neuropathy regeneration, sarcoidosis-associated nerve damage, and anti-inflammatory tissue protection without the hematopoietic activity of erythropoietin." },
-  { id: 86, slug: "bacteriostatic-water-3ml", name: "Bacteriostatic Water 3ml", category: "Accessories", priceGbp: "4.99", imageUrl: "/bac-water-3ml.webp", shortDescription: "3ml bacteriostatic water (0.9% benzyl alcohol) for peptide reconstitution. Pharmaceutical grade, endotoxin tested.", description: "Bacteriostatic Water 3ml \u2014 sterile water preserved with 0.9% benzyl alcohol. Suitable for reconstituting lyophilised peptides. Pharmaceutical grade, endotoxin tested and sterile-filtered. For research use only." },
+  { id: 86, slug: "bacteriostatic-water-30ml", name: "Bacteriostatic Water 30ml", category: "Accessories", priceGbp: "11.99", imageUrl: "/bac-water-30ml.webp", shortDescription: "30ml bacteriostatic water (0.9% benzyl alcohol) for peptide reconstitution. Pharmaceutical grade, endotoxin tested.", description: "Bacteriostatic Water 30ml \u2014 sterile water preserved with 0.9% benzyl alcohol. Suitable for reconstituting lyophilised peptides. Pharmaceutical grade, endotoxin tested and sterile-filtered. For research use only." },
   { id: 87, slug: "bacteriostatic-water-10ml", name: "Bacteriostatic Water 10ml", category: "Accessories", priceGbp: "8.99", imageUrl: "/bac-water-10ml.webp", shortDescription: "10ml bacteriostatic water (0.9% benzyl alcohol) for peptide reconstitution. Pharmaceutical grade, endotoxin tested.", description: "Bacteriostatic Water 10ml \u2014 sterile water preserved with 0.9% benzyl alcohol. Suitable for reconstituting lyophilised peptides. Pharmaceutical grade, endotoxin tested and sterile-filtered. For research use only." }
 ];
 async function seedProductsCatalog() {
@@ -93408,7 +93362,56 @@ var COUNTRY_NAME_TO_CODE2 = {
   "Slovakia": "SK",
   "Slovenia": "SI"
 };
-var NON_SHIPPABLE_COUNTRY_CODES = /* @__PURE__ */ new Set(["RU", "BY", "IR", "KP", "IL"]);
+var NON_SHIPPABLE_COUNTRY_CODES = /* @__PURE__ */ new Set([
+  "RU",
+  // Russia                   — UK/UN/EU comprehensive sanctions
+  "BY",
+  // Belarus                  — UK/UN/EU comprehensive sanctions
+  "IR",
+  // Iran                     — UK/UN/EU comprehensive sanctions
+  "KP",
+  // North Korea              — UN/UK comprehensive sanctions
+  "IL",
+  // Israel                   — business decision
+  "SY",
+  // Syria                    — UK/UN/EU comprehensive sanctions
+  "MM",
+  // Myanmar (Burma)          — UK/EU sanctions
+  "CU",
+  // Cuba                     — UK trade restrictions
+  "VE",
+  // Venezuela                — UK/US/EU sectoral sanctions
+  "SD",
+  // Sudan                    — UN arms embargo, UK sanctions
+  "SS",
+  // South Sudan              — UN/UK sanctions
+  "LY",
+  // Libya                    — UN arms embargo
+  "SO",
+  // Somalia                  — UN arms embargo
+  "YE",
+  // Yemen                    — UN sanctions
+  "AF",
+  // Afghanistan              — UN/UK sanctions (Taliban regime)
+  "NI",
+  // Nicaragua                — UK/US sanctions
+  "ZW",
+  // Zimbabwe                 — UK sanctions
+  "CD",
+  // DR Congo                 — UN arms embargo
+  "CF",
+  // Central African Republic — UN arms embargo
+  "ML",
+  // Mali                     — ECOWAS/UN sanctions
+  "GN",
+  // Guinea                   — ECOWAS sanctions
+  "GW",
+  // Guinea-Bissau            — UN sanctions
+  "HT",
+  // Haiti                    — US/UK sanctions
+  "ER"
+  // Eritrea                  — UN arms embargo
+]);
 var router22 = (0, import_express22.Router)();
 var SESSION_SECRET = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
 function verifyCustomerSession(token) {
@@ -93455,25 +93458,16 @@ router22.post("/orders", async (req, res) => {
     });
     return;
   }
-  if (typeof submittedDelivery.addressVerificationToken !== "string") {
-    res.status(422).json({
-      error: "Please verify and confirm your delivery address before placing the order.",
-      code: "ADDRESS_VERIFICATION_REQUIRED"
-    });
-    return;
+  let d = { ...submittedDelivery };
+  if (typeof submittedDelivery.addressVerificationToken === "string") {
+    const addressProof = verifyAddressVerificationProof(
+      submittedDelivery.addressVerificationToken,
+      submittedDelivery
+    );
+    if (addressProof.valid) {
+      d = { ...submittedDelivery, ...addressProof.canonical };
+    }
   }
-  const addressProof = verifyAddressVerificationProof(
-    submittedDelivery.addressVerificationToken,
-    submittedDelivery
-  );
-  if (!addressProof.valid) {
-    res.status(422).json({ error: addressProof.reason, code: "ADDRESS_VERIFICATION_REQUIRED" });
-    return;
-  }
-  const d = {
-    ...submittedDelivery,
-    ...addressProof.canonical
-  };
   if (typeof shippingMethod !== "string" || !shippingMethod.trim()) {
     res.status(400).json({ error: "Shipping method is required" });
     return;
@@ -97482,184 +97476,18 @@ router37.get("/admin/email-logs", async (req, res) => {
 });
 var emailLogs_default = router37;
 
-// src/routes/newsletter.ts
+// src/routes/loyalty.ts
 var import_express38 = __toESM(require_express2(), 1);
 import crypto14 from "crypto";
 init_drizzle_orm();
 var router38 = (0, import_express38.Router)();
-var SITE_URL2 = process.env.SITE_URL ?? "https://omniqure.com";
-var UNSUB_SECRET = process.env.ADMIN_PASSWORD ?? "omniqure-unsub-secret";
-function isAdmin(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
-    res.status(401).json({ error: "Unauthorized" });
-    return false;
-  }
-  return true;
-}
-function makeUnsubToken(email3) {
-  return crypto14.createHmac("sha256", UNSUB_SECRET).update(email3.toLowerCase()).digest("hex").slice(0, 24);
-}
-function makeUnsubUrl(email3) {
-  const token = makeUnsubToken(email3);
-  return `${SITE_URL2}/api/newsletter/unsubscribe?email=${encodeURIComponent(email3)}&token=${token}`;
-}
-router38.post("/newsletter/subscribe", async (req, res) => {
-  const { email: email3, firstName, source } = req.body;
-  if (typeof email3 !== "string" || !email3.includes("@")) {
-    res.status(400).json({ error: "A valid email address is required" });
-    return;
-  }
-  const cleanEmail = email3.toLowerCase().trim();
-  const cleanFirst = typeof firstName === "string" ? firstName.trim().slice(0, 100) : null;
-  const cleanSource = typeof source === "string" ? source.trim().slice(0, 50) : "website";
-  try {
-    await db.insert(newsletterSubscribersTable).values({
-      email: cleanEmail,
-      firstName: cleanFirst,
-      isActive: true,
-      source: cleanSource
-    }).onConflictDoUpdate({
-      target: newsletterSubscribersTable.email,
-      set: { isActive: true, firstName: cleanFirst ?? void 0, unsubscribedAt: null }
-    });
-    logger.info({ email: cleanEmail }, "Newsletter subscribe");
-    res.json({ success: true, message: "You're subscribed! Welcome to the OmniQure newsletter." });
-  } catch (err) {
-    logger.error({ err }, "Newsletter subscribe error");
-    res.status(500).json({ error: "Failed to subscribe. Please try again." });
-  }
-});
-router38.get("/newsletter/unsubscribe", async (req, res) => {
-  const { email: email3, token } = req.query;
-  if (!email3 || !token) {
-    res.status(400).send("Invalid unsubscribe link.");
-    return;
-  }
-  const expected = makeUnsubToken(email3);
-  if (token !== expected) {
-    res.status(403).send("Invalid or expired unsubscribe link.");
-    return;
-  }
-  try {
-    await db.update(newsletterSubscribersTable).set({ isActive: false, unsubscribedAt: /* @__PURE__ */ new Date() }).where(eq(newsletterSubscribersTable.email, email3.toLowerCase()));
-    res.send(`<!DOCTYPE html><html><head><title>Unsubscribed</title><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
-    <body style="font-family:Arial,sans-serif;text-align:center;padding:60px 20px;background:#f5f8fc;">
-    <h1 style="color:#0f172a;font-size:24px;">You've been unsubscribed</h1>
-    <p style="color:#64748b;font-size:15px;">You'll no longer receive newsletter emails from OmniQure.</p>
-    <a href="${SITE_URL2}" style="display:inline-block;margin-top:20px;background:#1240A0;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;">Return to site</a>
-    </body></html>`);
-  } catch (err) {
-    logger.error({ err }, "Newsletter unsubscribe error");
-    res.status(500).send("Something went wrong. Please try again.");
-  }
-});
-router38.get("/admin/newsletter/subscribers", async (req, res) => {
-  if (!isAdmin(req, res)) return;
-  try {
-    const rows = await db.select().from(newsletterSubscribersTable).orderBy(newsletterSubscribersTable.subscribedAt);
-    res.json({
-      total: rows.length,
-      active: rows.filter((r) => r.isActive).length,
-      subscribers: rows.map((r) => ({
-        id: r.id,
-        email: r.email,
-        firstName: r.firstName,
-        isActive: r.isActive,
-        source: r.source,
-        subscribedAt: r.subscribedAt.toISOString(),
-        unsubscribedAt: r.unsubscribedAt?.toISOString() ?? null
-      }))
-    });
-  } catch (err) {
-    logger.error({ err }, "Failed to list newsletter subscribers");
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-router38.post("/admin/newsletter/broadcast", async (req, res) => {
-  if (!isAdmin(req, res)) return;
-  const { subject, htmlBody } = req.body;
-  if (typeof subject !== "string" || !subject.trim()) {
-    res.status(400).json({ error: "subject is required" });
-    return;
-  }
-  if (typeof htmlBody !== "string" || !htmlBody.trim()) {
-    res.status(400).json({ error: "htmlBody is required" });
-    return;
-  }
-  try {
-    const activeSubscribers = await db.select({ email: newsletterSubscribersTable.email, firstName: newsletterSubscribersTable.firstName }).from(newsletterSubscribersTable).where(and(eq(newsletterSubscribersTable.isActive, true)));
-    if (activeSubscribers.length === 0) {
-      res.json({ sent: 0, message: "No active subscribers." });
-      return;
-    }
-    const results = await sendNewsletterBroadcast({
-      subject: subject.trim(),
-      htmlBody: htmlBody.trim(),
-      subscribers: activeSubscribers.map((s) => ({ email: s.email, firstName: s.firstName ?? void 0, unsubscribeUrl: makeUnsubUrl(s.email) }))
-    });
-    logger.info({ sent: results.sent, failed: results.failed, subject }, "Newsletter broadcast sent");
-    res.json({ sent: results.sent, failed: results.failed, total: activeSubscribers.length });
-  } catch (err) {
-    logger.error({ err }, "Newsletter broadcast error");
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-router38.post("/admin/newsletter/reorder-reminders", async (req, res) => {
-  if (!isAdmin(req, res)) return;
-  try {
-    const now = /* @__PURE__ */ new Date();
-    const from = new Date(now.getTime() - 32 * 24 * 60 * 60 * 1e3);
-    const to = new Date(now.getTime() - 28 * 24 * 60 * 60 * 1e3);
-    const candidates = await db.select({
-      orderId: ordersTable.id,
-      orderNumber: ordersTable.orderNumber,
-      customerEmail: ordersTable.customerEmail,
-      customerName: ordersTable.customerName,
-      createdAt: ordersTable.createdAt
-    }).from(ordersTable).where(and(gte(ordersTable.createdAt, from), lte(ordersTable.createdAt, to)));
-    if (candidates.length === 0) {
-      res.json({ sent: 0, skipped: 0, message: "No orders in the 28-32 day window." });
-      return;
-    }
-    const alreadySent = await db.select({ orderNumber: emailLogsTable.orderNumber }).from(emailLogsTable).where(and(eq(emailLogsTable.type, "reorder_reminder"), eq(emailLogsTable.status, "sent")));
-    const alreadySentSet = new Set(alreadySent.map((r) => r.orderNumber).filter(Boolean));
-    let sent = 0;
-    let skipped = 0;
-    for (const order of candidates) {
-      if (alreadySentSet.has(order.orderNumber)) {
-        skipped++;
-        continue;
-      }
-      const items = await db.select({ productName: orderItemsTable.productName, productId: orderItemsTable.productId }).from(orderItemsTable).where(eq(orderItemsTable.orderId, order.orderId));
-      await sendReorderReminder({
-        customerName: order.customerName,
-        customerEmail: order.customerEmail,
-        orderNumber: order.orderNumber,
-        items: items.map((i) => ({ productName: i.productName, productId: i.productId }))
-      });
-      sent++;
-    }
-    logger.info({ sent, skipped }, "Reorder reminders dispatched");
-    res.json({ sent, skipped, total: candidates.length });
-  } catch (err) {
-    logger.error({ err }, "Reorder reminder batch failed");
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-var newsletter_default = router38;
-
-// src/routes/loyalty.ts
-var import_express39 = __toESM(require_express2(), 1);
-import crypto15 from "crypto";
-init_drizzle_orm();
-var router39 = (0, import_express39.Router)();
 var SESSION_SECRET8 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
 function verifyCustomerSession4(token) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto15.createHmac("sha256", SESSION_SECRET8).update(payload).digest("hex");
+  const expected = crypto14.createHmac("sha256", SESSION_SECRET8).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -97668,7 +97496,7 @@ function getCustomerId3(req) {
   const token = req.cookies?.customer_session;
   return token ? verifyCustomerSession4(token) : null;
 }
-function isAdmin2(req, res) {
+function isAdmin(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Unauthorized" });
     return false;
@@ -97691,7 +97519,7 @@ function getTierInfo(lifetimeEarned) {
     progressPct: nextTier ? Math.min(100, Math.round((lifetimeEarned - tier.min) / (nextTier.min - tier.min) * 100)) : 100
   };
 }
-router39.get("/loyalty/balance", async (req, res) => {
+router38.get("/loyalty/balance", async (req, res) => {
   const customerId = getCustomerId3(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -97720,8 +97548,8 @@ router39.get("/loyalty/balance", async (req, res) => {
     }))
   });
 });
-router39.get("/admin/loyalty/overview", async (req, res) => {
-  if (!isAdmin2(req, res)) return;
+router38.get("/admin/loyalty/overview", async (req, res) => {
+  if (!isAdmin(req, res)) return;
   const result = await db.execute(sql`
     SELECT
       c.id,
@@ -97748,8 +97576,8 @@ router39.get("/admin/loyalty/overview", async (req, res) => {
   `);
   res.json({ customers: result.rows, stats: stats.rows[0] ?? {} });
 });
-router39.post("/admin/loyalty/adjust", async (req, res) => {
-  if (!isAdmin2(req, res)) return;
+router38.post("/admin/loyalty/adjust", async (req, res) => {
+  if (!isAdmin(req, res)) return;
   const { customerId, points, reason } = req.body;
   if (!customerId || typeof points !== "number" || !reason || typeof reason !== "string") {
     res.status(400).json({ error: "customerId, points (number), and reason are required" });
@@ -97764,13 +97592,13 @@ router39.post("/admin/loyalty/adjust", async (req, res) => {
   logger.info({ customerId, points, reason }, "Admin loyalty adjustment");
   res.json({ success: true });
 });
-var loyalty_default = router39;
+var loyalty_default = router38;
 
 // src/routes/tax.ts
-var import_express40 = __toESM(require_express2(), 1);
+var import_express39 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router40 = (0, import_express40.Router)();
-router40.get("/tax/calculate", async (req, res) => {
+var router39 = (0, import_express39.Router)();
+router39.get("/tax/calculate", async (req, res) => {
   const countryCode = String(req.query.country ?? "").toUpperCase();
   const subtotal = parseFloat(String(req.query.subtotal ?? "0"));
   if (!countryCode) {
@@ -97802,13 +97630,13 @@ router40.get("/tax/calculate", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var tax_default2 = router40;
+var tax_default2 = router39;
 
 // src/routes/shipping.ts
-var import_express41 = __toESM(require_express2(), 1);
+var import_express40 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router41 = (0, import_express41.Router)();
-router41.get("/shipping/rates", async (req, res) => {
+var router40 = (0, import_express40.Router)();
+router40.get("/shipping/rates", async (req, res) => {
   const country = String(req.query.country ?? "").toUpperCase();
   const orderTotal = parseFloat(String(req.query.orderTotal ?? "0"));
   if (!country) {
@@ -97851,13 +97679,13 @@ router41.get("/shipping/rates", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var shipping_default2 = router41;
+var shipping_default2 = router40;
 
 // src/routes/blog.ts
-var import_express42 = __toESM(require_express2(), 1);
+var import_express41 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router42 = (0, import_express42.Router)();
-router42.get("/blog/posts", async (req, res) => {
+var router41 = (0, import_express41.Router)();
+router41.get("/blog/posts", async (req, res) => {
   const limit = Math.min(parseInt(String(req.query.limit ?? "12"), 10), 50);
   const offset = parseInt(String(req.query.offset ?? "0"), 10);
   try {
@@ -97891,7 +97719,7 @@ router42.get("/blog/posts", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router42.get("/blog/posts/:slug", async (req, res) => {
+router41.get("/blog/posts/:slug", async (req, res) => {
   const slug = firstString(req.params.slug);
   if (!slug) {
     res.status(400).json({ error: "Invalid slug" });
@@ -97922,13 +97750,13 @@ router42.get("/blog/posts/:slug", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var blog_default2 = router42;
+var blog_default2 = router41;
 
 // src/routes/btcpay-webhook.ts
-var import_express43 = __toESM(require_express2(), 1);
+var import_express42 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router43 = (0, import_express43.Router)();
-router43.post(
+var router42 = (0, import_express42.Router)();
+router42.post(
   "/btcpay-webhook",
   async (req, res) => {
     const signature = req.headers["btcpay-sig"] || req.headers["x-btcpay-signature"] || "";
@@ -97996,14 +97824,14 @@ router43.post(
     res.status(200).json({ received: true });
   }
 );
-var btcpay_webhook_default = router43;
+var btcpay_webhook_default = router42;
 
 // src/routes/wallid-webhook.ts
-var import_express44 = __toESM(require_express2(), 1);
-import crypto16 from "crypto";
+var import_express43 = __toESM(require_express2(), 1);
+import crypto15 from "crypto";
 init_drizzle_orm();
-var router44 = (0, import_express44.Router)();
-router44.post("/wallid-webhook", async (req, res) => {
+var router43 = (0, import_express43.Router)();
+router43.post("/wallid-webhook", async (req, res) => {
   if (!WALLID_WEBHOOK_SECRET) {
     logger.error("WALLID_WEBHOOK_SECRET is not configured \u2014 rejecting Wallid webhook request");
     res.status(400).json({ error: "Webhook secret not configured" });
@@ -98024,12 +97852,12 @@ router44.post("/wallid-webhook", async (req, res) => {
   }
   const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(req.body));
   const message = `${tsHeader}.${rawBody.toString()}`;
-  const expected = "sha256=" + crypto16.createHmac("sha256", WALLID_WEBHOOK_SECRET).update(message).digest("hex");
+  const expected = "sha256=" + crypto15.createHmac("sha256", WALLID_WEBHOOK_SECRET).update(message).digest("hex");
   const received = sigHeader;
   let sigValid = false;
   try {
     if (expected.length === received.length) {
-      sigValid = crypto16.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
+      sigValid = crypto15.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
     }
   } catch {
     sigValid = false;
@@ -98159,12 +97987,12 @@ router44.post("/wallid-webhook", async (req, res) => {
   }
   res.status(200).json({ received: true });
 });
-var wallid_webhook_default = router44;
+var wallid_webhook_default = router43;
 
 // src/routes/contact.ts
-var import_express45 = __toESM(require_express2(), 1);
-var router45 = (0, import_express45.Router)();
-router45.post("/contact", async (req, res) => {
+var import_express44 = __toESM(require_express2(), 1);
+var router44 = (0, import_express44.Router)();
+router44.post("/contact", async (req, res) => {
   const { name: name2, email: email3, subject, message } = req.body;
   if (typeof name2 !== "string" || !name2.trim()) {
     res.status(400).json({ error: "Name is required" });
@@ -98196,12 +98024,12 @@ router45.post("/contact", async (req, res) => {
     res.status(500).json({ error: "Failed to send your message. Please try again or email us directly." });
   }
 });
-var contact_default = router45;
+var contact_default = router44;
 
 // src/routes/address-lookup.ts
-var import_express46 = __toESM(require_express2(), 1);
-var router46 = (0, import_express46.Router)();
-router46.get("/address-lookup", async (req, res) => {
+var import_express45 = __toESM(require_express2(), 1);
+var router45 = (0, import_express45.Router)();
+router45.get("/address-lookup", async (req, res) => {
   const postcode = req.query["postcode"]?.trim();
   if (!postcode) {
     return res.status(400).json({ error: "postcode query param required" });
@@ -98232,7 +98060,7 @@ router46.get("/address-lookup", async (req, res) => {
     return res.status(500).json({ error: "Address lookup request failed" });
   }
 });
-router46.post("/address-verification", async (req, res) => {
+router45.post("/address-verification", async (req, res) => {
   const delivery = req.body;
   if (typeof delivery.address1 !== "string" || typeof delivery.city !== "string" || typeof delivery.postcode !== "string" || typeof delivery.country !== "string") {
     return res.status(400).json({ error: "A complete delivery address is required." });
@@ -98264,7 +98092,7 @@ router46.post("/address-verification", async (req, res) => {
     });
   }
 });
-router46.post("/address-suggestions", async (req, res) => {
+router45.post("/address-suggestions", async (req, res) => {
   const delivery = req.body;
   if (typeof delivery.address1 !== "string" || typeof delivery.postcode !== "string" || typeof delivery.country !== "string") {
     return res.status(400).json({ error: "A street address, postal code, and country are required." });
@@ -98297,12 +98125,12 @@ router46.post("/address-suggestions", async (req, res) => {
     });
   }
 });
-var address_lookup_default = router46;
+var address_lookup_default = router45;
 
 // src/routes/crypto-payments.ts
-var import_express47 = __toESM(require_express2(), 1);
+var import_express46 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router47 = (0, import_express47.Router)();
+var router46 = (0, import_express46.Router)();
 function hasPaymentAccess(order, token) {
   return typeof token === "string" && Boolean(order.cryptoPaymentAccessToken) && token.length >= 24 && token === order.cryptoPaymentAccessToken;
 }
@@ -98412,14 +98240,14 @@ async function recordCryptoPaymentVerification(order, attemptId, txHash, applyOr
   }
   return result;
 }
-router47.get("/crypto/payment-options", async (_req, res) => {
+router46.get("/crypto/payment-options", async (_req, res) => {
   try {
     res.json({ routes: await getPublicCryptoPaymentOptions() });
   } catch {
     res.status(503).json({ error: "Crypto payment options are temporarily unavailable" });
   }
 });
-router47.get("/orders/:ref/crypto-payment", async (req, res) => {
+router46.get("/orders/:ref/crypto-payment", async (req, res) => {
   res.setHeader("Cache-Control", "no-store");
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.query.token)) {
@@ -98449,7 +98277,7 @@ router47.get("/orders/:ref/crypto-payment", async (req, res) => {
     }
   });
 });
-router47.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
+router46.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -98486,7 +98314,7 @@ router47.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
   }).where(eq(ordersTable.id, order.id));
   res.json({ orderId: order.id, orderNumber: order.orderNumber, ...prepared.details, status: "rate_locked" });
 });
-router47.post("/orders/:ref/crypto-payment/check", async (req, res) => {
+router46.post("/orders/:ref/crypto-payment/check", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -98514,7 +98342,7 @@ router47.post("/orders/:ref/crypto-payment/check", async (req, res) => {
     confirmations: result.confirmations ?? null
   });
 });
-router47.post("/orders/:ref/pay", async (req, res) => {
+router46.post("/orders/:ref/pay", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -98606,12 +98434,12 @@ async function reconcilePendingCryptoPayments() {
   }
   return checked;
 }
-var crypto_payments_default = router47;
+var crypto_payments_default = router46;
 
 // src/routes/admin/crypto-audits.ts
-var import_express48 = __toESM(require_express2(), 1);
+var import_express47 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router48 = (0, import_express48.Router)();
+var router47 = (0, import_express47.Router)();
 function requireAdmin26(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
@@ -98637,7 +98465,7 @@ function auditToResponse(audit) {
     checkedAt: audit.checkedAt.toISOString()
   };
 }
-router48.get("/admin/crypto/audits", async (req, res) => {
+router47.get("/admin/crypto/audits", async (req, res) => {
   if (!requireAdmin26(req, res)) return;
   try {
     const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 200);
@@ -98657,7 +98485,7 @@ router48.get("/admin/crypto/audits", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router48.get("/admin/crypto/audits/:id", async (req, res) => {
+router47.get("/admin/crypto/audits/:id", async (req, res) => {
   if (!requireAdmin26(req, res)) return;
   const id = Number(req.params.id);
   if (!Number.isInteger(id)) {
@@ -98671,7 +98499,7 @@ router48.get("/admin/crypto/audits/:id", async (req, res) => {
   }
   res.json(auditToResponse(audit));
 });
-router48.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
+router47.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
   if (!requireAdmin26(req, res)) return;
   const attemptId = Number(req.params.attemptId);
   if (!Number.isInteger(attemptId)) {
@@ -98696,7 +98524,7 @@ router48.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router48.post("/admin/crypto/audits/check-batch", async (req, res) => {
+router47.post("/admin/crypto/audits/check-batch", async (req, res) => {
   if (!requireAdmin26(req, res)) return;
   const attemptIds = Array.isArray(req.body?.attemptIds) ? req.body.attemptIds.filter((id) => Number.isInteger(id)).slice(0, 50) : [];
   if (attemptIds.length === 0) {
@@ -98718,7 +98546,7 @@ router48.post("/admin/crypto/audits/check-batch", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router48.get("/admin/crypto/wallet-history", async (req, res) => {
+router47.get("/admin/crypto/wallet-history", async (req, res) => {
   if (!requireAdmin26(req, res)) return;
   try {
     const attempts = await db.select({
@@ -98740,65 +98568,64 @@ router48.get("/admin/crypto/wallet-history", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var crypto_audits_default = router48;
+var crypto_audits_default = router47;
 
 // src/routes/index.ts
-var router49 = (0, import_express49.Router)();
-router49.use(health_default);
-router49.use(auth_default);
-router49.use(dashboard_default);
-router49.use(orders_default);
-router49.use(customers_default);
-router49.use(products_default);
-router49.use(discounts_default);
-router49.use(catalog_default);
-router49.use(returns_default);
-router49.use(tax_default);
-router49.use(shipping_default);
-router49.use(refunds_default);
-router49.use(inventory_audit_default);
-router49.use(export_default);
-router49.use(webhooks_default);
-router49.use(settings_default);
-router49.use(users_default);
-router49.use(reports_default);
-router49.use(gdpr_default);
-router49.use(blog_default);
-router49.use(crypto_audits_default);
-router49.use(orders_default2);
-router49.use(crypto_payments_default);
-router49.use(discounts_default2);
-router49.use(auth_default2);
-router49.use(account_default);
-router49.use(reviews_default);
-router49.use(reviews_default2);
-router49.use(wishlist_default);
-router49.use(returns_default2);
-router49.use(products_default2);
-router49.use(cart_default);
-router49.use(stock_alerts_default);
-router49.use(abandonedCarts_default);
-router49.use(alerts_default);
-router49.use(credits_default);
-router49.use(fraud_default);
-router49.use(blockedIps_default);
-router49.use(emailLogs_default);
-router49.use(newsletter_default);
-router49.use(loyalty_default);
-router49.use(tax_default2);
-router49.use(shipping_default2);
-router49.use(blog_default2);
-router49.use(btcpay_webhook_default);
-router49.use(wallid_webhook_default);
-router49.use(contact_default);
-router49.use(address_lookup_default);
-var routes_default = router49;
+var router48 = (0, import_express48.Router)();
+router48.use(health_default);
+router48.use(auth_default);
+router48.use(dashboard_default);
+router48.use(orders_default);
+router48.use(customers_default);
+router48.use(products_default);
+router48.use(discounts_default);
+router48.use(catalog_default);
+router48.use(returns_default);
+router48.use(tax_default);
+router48.use(shipping_default);
+router48.use(refunds_default);
+router48.use(inventory_audit_default);
+router48.use(export_default);
+router48.use(webhooks_default);
+router48.use(settings_default);
+router48.use(users_default);
+router48.use(reports_default);
+router48.use(gdpr_default);
+router48.use(blog_default);
+router48.use(crypto_audits_default);
+router48.use(orders_default2);
+router48.use(crypto_payments_default);
+router48.use(discounts_default2);
+router48.use(auth_default2);
+router48.use(account_default);
+router48.use(reviews_default);
+router48.use(reviews_default2);
+router48.use(wishlist_default);
+router48.use(returns_default2);
+router48.use(products_default2);
+router48.use(cart_default);
+router48.use(stock_alerts_default);
+router48.use(abandonedCarts_default);
+router48.use(alerts_default);
+router48.use(credits_default);
+router48.use(fraud_default);
+router48.use(blockedIps_default);
+router48.use(emailLogs_default);
+router48.use(loyalty_default);
+router48.use(tax_default2);
+router48.use(shipping_default2);
+router48.use(blog_default2);
+router48.use(btcpay_webhook_default);
+router48.use(wallid_webhook_default);
+router48.use(contact_default);
+router48.use(address_lookup_default);
+var routes_default = router48;
 
 // src/routes/sitemap.ts
-var import_express50 = __toESM(require_express2(), 1);
+var import_express49 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router50 = (0, import_express50.Router)();
-var SITE_URL3 = "https://omniqure.com";
+var router49 = (0, import_express49.Router)();
+var SITE_URL2 = "https://omniqure.com";
 var STATIC_PAGES = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/all-peptides", changefreq: "weekly", priority: "0.9" },
@@ -98827,7 +98654,7 @@ function isoDate(d) {
   const date6 = d instanceof Date ? d : new Date(d);
   return date6.toISOString().split("T")[0];
 }
-router50.get("/sitemap.xml", async (req, res) => {
+router49.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
   try {
     const [products, blogPosts] = await Promise.all([
       db.select({
@@ -98840,7 +98667,7 @@ router50.get("/sitemap.xml", async (req, res) => {
         slug: blogPostsTable.slug,
         publishedAt: blogPostsTable.publishedAt,
         updatedAt: blogPostsTable.updatedAt
-      }).from(blogPostsTable).orderBy(desc(blogPostsTable.publishedAt))
+      }).from(blogPostsTable).where(eq(blogPostsTable.status, "published")).orderBy(desc(blogPostsTable.publishedAt))
     ]);
     const today = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
     const lines = [
@@ -98853,7 +98680,7 @@ router50.get("/sitemap.xml", async (req, res) => {
     for (const page of STATIC_PAGES) {
       lines.push(
         `  <url>`,
-        `    <loc>${SITE_URL3}${page.path}</loc>`,
+        `    <loc>${SITE_URL2}${page.path}</loc>`,
         `    <changefreq>${page.changefreq}</changefreq>`,
         `    <priority>${page.priority}</priority>`,
         `    <lastmod>${today}</lastmod>`,
@@ -98862,9 +98689,9 @@ router50.get("/sitemap.xml", async (req, res) => {
     }
     lines.push("", "  <!-- Product pages -->");
     for (const p of products) {
-      const imgUrl = p.imageUrl ? p.imageUrl.startsWith("http") ? p.imageUrl : `${SITE_URL3}${p.imageUrl}` : null;
+      const imgUrl = p.imageUrl ? p.imageUrl.startsWith("http") ? p.imageUrl : `${SITE_URL2}${p.imageUrl}` : null;
       lines.push(`  <url>`);
-      lines.push(`    <loc>${SITE_URL3}/product/${xmlEsc(p.slug)}</loc>`);
+      lines.push(`    <loc>${SITE_URL2}/product/${xmlEsc(p.slug)}</loc>`);
       lines.push(`    <changefreq>weekly</changefreq>`);
       lines.push(`    <priority>0.85</priority>`);
       lines.push(`    <lastmod>${isoDate(p.updatedAt)}</lastmod>`);
@@ -98883,7 +98710,7 @@ router50.get("/sitemap.xml", async (req, res) => {
       const lastmod = isoDate(post.updatedAt ?? post.publishedAt);
       lines.push(
         `  <url>`,
-        `    <loc>${SITE_URL3}/blog/${xmlEsc(post.slug)}</loc>`,
+        `    <loc>${SITE_URL2}/blog/${xmlEsc(post.slug)}</loc>`,
         `    <changefreq>monthly</changefreq>`,
         `    <priority>0.6</priority>`,
         `    <lastmod>${lastmod}</lastmod>`,
@@ -98899,10 +98726,10 @@ router50.get("/sitemap.xml", async (req, res) => {
     res.status(500).send("<!-- sitemap generation error -->");
   }
 });
-var sitemap_default = router50;
+var sitemap_default = router49;
 
 // src/app.ts
-var app = (0, import_express51.default)();
+var app = (0, import_express50.default)();
 app.use(
   (0, import_pino_http.default)({
     logger,
@@ -98925,24 +98752,24 @@ app.use(
 app.use((0, import_cors.default)({ credentials: true, origin: true }));
 app.use((0, import_cookie_parser.default)());
 app.use(
-  import_express51.default.json({
+  import_express50.default.json({
     verify: (req, _res, buf) => {
       req.rawBody = buf;
     }
   })
 );
-app.use(import_express51.default.urlencoded({ extended: true }));
+app.use(import_express50.default.urlencoded({ extended: true }));
 app.get("/", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });
-app.use("/uploads", import_express51.default.static(path2.join(process.cwd(), "public/uploads")));
+app.use("/uploads", import_express50.default.static(path2.join(process.cwd(), "public/uploads")));
 app.use(sitemap_default);
 app.use("/api", routes_default);
 var app_default = app;
 
 // src/lib/abandonedCartJob.ts
 init_drizzle_orm();
-var SITE_URL4 = process.env.SITE_URL ?? "https://omniqure.com";
+var SITE_URL3 = process.env.SITE_URL ?? "https://omniqure.com";
 var INTERVAL_MS = 15 * 60 * 1e3;
 var ABANDON_AFTER_MS = 60 * 60 * 1e3;
 var MAX_AGE_MS = 48 * 60 * 60 * 1e3;
@@ -98977,7 +98804,7 @@ async function runCheck() {
         customerName: cart.customerName,
         customerEmail: cart.customerEmail,
         items: emailItems,
-        cartUrl: `${SITE_URL4}/cart`
+        cartUrl: `${SITE_URL3}/cart`
       });
       await db.update(abandonedCartsTable).set({ emailSentAt: /* @__PURE__ */ new Date() }).where(eq(abandonedCartsTable.customerId, cart.customerId));
     }
