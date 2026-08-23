@@ -197,6 +197,10 @@ router.post("/orders/:ref/lock-usdt-rate", async (req: Request, res: Response): 
     res.status(409).json({ error: "This order can no longer accept a new crypto rate." });
     return;
   }
+  if (order.cryptoTxHash || order.cryptoPaymentStatus === "pending") {
+    res.status(409).json({ error: "A transaction has already been submitted for this order. Its original rate and payment details are preserved while we verify it." });
+    return;
+  }
   const prepared = await prepareCryptoPayment(Number(order.totalGbp), req.body?.currency, req.body?.network);
   if (!prepared) {
     res.status(400).json({ error: "This crypto route is unavailable or its live rate could not be locked." });
@@ -222,6 +226,40 @@ router.post("/orders/:ref/lock-usdt-rate", async (req: Request, res: Response): 
     })
     .where(eq(ordersTable.id, order.id));
   res.json({ orderId: order.id, orderNumber: order.orderNumber, ...prepared.details, status: "rate_locked" });
+});
+
+router.post("/orders/:ref/crypto-payment/check", async (req: Request, res: Response): Promise<void> => {
+  const order = await getOrder(requestParam(req.params.ref));
+  if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
+    res.status(404).json({ error: "Payment not found" });
+    return;
+  }
+  if (order.status !== "awaiting_payment" || order.cryptoPaymentStatus !== "pending" || !order.cryptoTxHash) {
+    res.status(409).json({ error: "There is no pending crypto transaction to check for this order." });
+    return;
+  }
+  const attempt = await db
+    .select()
+    .from(cryptoPaymentAttemptsTable)
+    .where(and(
+      eq(cryptoPaymentAttemptsTable.orderId, order.id),
+      eq(cryptoPaymentAttemptsTable.txHash, order.cryptoTxHash),
+    ))
+    .limit(1)
+    .then((rows) => rows[0] ?? null);
+  if (!attempt) {
+    res.status(409).json({ error: "The submitted transaction record could not be found. Please contact support." });
+    return;
+  }
+  const result = await recordCryptoPaymentVerification(order, attempt.id, order.cryptoTxHash, true);
+  res.json({
+    orderId: order.id,
+    orderNumber: order.orderNumber,
+    status: result.status,
+    reason: result.reason,
+    observedAmount: result.observedAmount ?? null,
+    confirmations: result.confirmations ?? null,
+  });
 });
 
 router.post("/orders/:ref/pay", async (req: Request, res: Response): Promise<void> => {

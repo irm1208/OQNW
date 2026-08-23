@@ -91755,12 +91755,31 @@ var TOKEN_DEFAULTS = {
     USDT: { contract: "TR7NHqjeKQxGTCi8q8ZY4pL8otS5YDRu4M", decimals: 6 }
   }
 };
+function rpcEndpoints(configured, fallbacks) {
+  return [...new Set([configured, ...fallbacks].filter((endpoint) => Boolean(endpoint)))];
+}
 var RPC_ENDPOINTS = {
-  ethereum: [process.env.CRYPTO_RPC_ETHEREUM ?? "https://cloudflare-eth.com"],
-  bsc: [process.env.CRYPTO_RPC_BSC ?? "https://bsc-dataseed.binance.org"],
-  arbitrum: [process.env.CRYPTO_RPC_ARBITRUM ?? "https://arb1.arbitrum.io/rpc"],
-  polygon: [process.env.CRYPTO_RPC_POLYGON ?? "https://polygon-rpc.com"],
-  solana: [process.env.CRYPTO_RPC_SOLANA ?? "https://api.mainnet-beta.solana.com"]
+  ethereum: rpcEndpoints(process.env.CRYPTO_RPC_ETHEREUM, [
+    "https://ethereum-rpc.publicnode.com",
+    "https://1rpc.io/eth",
+    "https://cloudflare-eth.com"
+  ]),
+  bsc: rpcEndpoints(process.env.CRYPTO_RPC_BSC, [
+    "https://bsc-rpc.publicnode.com",
+    "https://bsc-dataseed.binance.org"
+  ]),
+  arbitrum: rpcEndpoints(process.env.CRYPTO_RPC_ARBITRUM, [
+    "https://arbitrum-one-rpc.publicnode.com",
+    "https://arb1.arbitrum.io/rpc"
+  ]),
+  polygon: rpcEndpoints(process.env.CRYPTO_RPC_POLYGON, [
+    "https://polygon-bor-rpc.publicnode.com",
+    "https://polygon-rpc.com"
+  ]),
+  solana: rpcEndpoints(process.env.CRYPTO_RPC_SOLANA, [
+    "https://solana-rpc.publicnode.com",
+    "https://api.mainnet-beta.solana.com"
+  ])
 };
 var cachedUsdRates = null;
 var cachedGbpUsdRate = null;
@@ -91949,6 +91968,10 @@ async function rpc(network, method, params) {
       return payload.result;
     } catch (err) {
       lastError = err;
+      logger.warn(
+        { err, network, method },
+        "Crypto RPC provider failed; trying the next configured provider"
+      );
     }
   }
   throw lastError instanceof Error ? lastError : new Error("No RPC provider is available");
@@ -98418,6 +98441,10 @@ router47.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
     res.status(409).json({ error: "This order can no longer accept a new crypto rate." });
     return;
   }
+  if (order.cryptoTxHash || order.cryptoPaymentStatus === "pending") {
+    res.status(409).json({ error: "A transaction has already been submitted for this order. Its original rate and payment details are preserved while we verify it." });
+    return;
+  }
   const prepared = await prepareCryptoPayment(Number(order.totalGbp), req.body?.currency, req.body?.network);
   if (!prepared) {
     res.status(400).json({ error: "This crypto route is unavailable or its live rate could not be locked." });
@@ -98440,6 +98467,34 @@ router47.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
     cryptoPaymentReason: null
   }).where(eq(ordersTable.id, order.id));
   res.json({ orderId: order.id, orderNumber: order.orderNumber, ...prepared.details, status: "rate_locked" });
+});
+router47.post("/orders/:ref/crypto-payment/check", async (req, res) => {
+  const order = await getOrder(requestParam(req.params.ref));
+  if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
+    res.status(404).json({ error: "Payment not found" });
+    return;
+  }
+  if (order.status !== "awaiting_payment" || order.cryptoPaymentStatus !== "pending" || !order.cryptoTxHash) {
+    res.status(409).json({ error: "There is no pending crypto transaction to check for this order." });
+    return;
+  }
+  const attempt = await db.select().from(cryptoPaymentAttemptsTable).where(and(
+    eq(cryptoPaymentAttemptsTable.orderId, order.id),
+    eq(cryptoPaymentAttemptsTable.txHash, order.cryptoTxHash)
+  )).limit(1).then((rows) => rows[0] ?? null);
+  if (!attempt) {
+    res.status(409).json({ error: "The submitted transaction record could not be found. Please contact support." });
+    return;
+  }
+  const result = await recordCryptoPaymentVerification(order, attempt.id, order.cryptoTxHash, true);
+  res.json({
+    orderId: order.id,
+    orderNumber: order.orderNumber,
+    status: result.status,
+    reason: result.reason,
+    observedAmount: result.observedAmount ?? null,
+    confirmations: result.confirmations ?? null
+  });
 });
 router47.post("/orders/:ref/pay", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));

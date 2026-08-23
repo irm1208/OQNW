@@ -14,3 +14,9 @@ Secure payment-detail reads must not be served from a conditional cache after a 
 **Why:** A verification request can succeed, then its immediate payment refresh may receive an empty `304` body. Treating that body as a payment object makes the payment card appear to collapse or fail silently.
 
 **How to apply:** Send payment-detail responses with `Cache-Control: no-store`, request them with no-store/no-cache semantics, and reject incomplete payment payloads rather than putting them into UI state.
+
+On-chain verification must use multiple RPC providers per network and fall through on transport, HTTP, or JSON-RPC errors; do not log endpoint URLs because a configured provider may encode credentials.
+
+**Why:** Public RPC endpoints can intermittently reject otherwise valid verification calls. Treating one provider's outage as a pending payment masks a check that can be completed immediately elsewhere, while logging a configured URL can expose provider credentials.
+
+**How to apply:** Prefer a configured provider, then use independent public fallbacks. Report the server's actual verification reason to the customer and recheck submitted pending hashes without changing their locked route or rate.

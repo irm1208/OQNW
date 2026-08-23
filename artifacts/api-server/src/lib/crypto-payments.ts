@@ -70,12 +70,32 @@ const TOKEN_DEFAULTS: Partial<Record<CryptoNetwork, Partial<Record<CryptoCurrenc
   },
 };
 
+function rpcEndpoints(configured: string | undefined, fallbacks: string[]): string[] {
+  return [...new Set([configured, ...fallbacks].filter((endpoint): endpoint is string => Boolean(endpoint)))];
+}
+
 const RPC_ENDPOINTS: Record<Exclude<CryptoNetwork, "bitcoin" | "tron">, string[]> = {
-  ethereum: [process.env.CRYPTO_RPC_ETHEREUM ?? "https://cloudflare-eth.com"],
-  bsc: [process.env.CRYPTO_RPC_BSC ?? "https://bsc-dataseed.binance.org"],
-  arbitrum: [process.env.CRYPTO_RPC_ARBITRUM ?? "https://arb1.arbitrum.io/rpc"],
-  polygon: [process.env.CRYPTO_RPC_POLYGON ?? "https://polygon-rpc.com"],
-  solana: [process.env.CRYPTO_RPC_SOLANA ?? "https://api.mainnet-beta.solana.com"],
+  ethereum: rpcEndpoints(process.env.CRYPTO_RPC_ETHEREUM, [
+    "https://ethereum-rpc.publicnode.com",
+    "https://1rpc.io/eth",
+    "https://cloudflare-eth.com",
+  ]),
+  bsc: rpcEndpoints(process.env.CRYPTO_RPC_BSC, [
+    "https://bsc-rpc.publicnode.com",
+    "https://bsc-dataseed.binance.org",
+  ]),
+  arbitrum: rpcEndpoints(process.env.CRYPTO_RPC_ARBITRUM, [
+    "https://arbitrum-one-rpc.publicnode.com",
+    "https://arb1.arbitrum.io/rpc",
+  ]),
+  polygon: rpcEndpoints(process.env.CRYPTO_RPC_POLYGON, [
+    "https://polygon-bor-rpc.publicnode.com",
+    "https://polygon-rpc.com",
+  ]),
+  solana: rpcEndpoints(process.env.CRYPTO_RPC_SOLANA, [
+    "https://solana-rpc.publicnode.com",
+    "https://api.mainnet-beta.solana.com",
+  ]),
 };
 
 let cachedUsdRates: { values: Partial<Record<CryptoCurrency, number>>; expiresAt: number } | null = null;
@@ -299,6 +319,10 @@ async function rpc(network: Exclude<CryptoNetwork, "bitcoin" | "tron">, method: 
       return payload.result;
     } catch (err) {
       lastError = err;
+      logger.warn(
+        { err, network, method },
+        "Crypto RPC provider failed; trying the next configured provider",
+      );
     }
   }
   throw lastError instanceof Error ? lastError : new Error("No RPC provider is available");

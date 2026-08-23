@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
 import { QRCodeSVG } from "qrcode.react";
 import { ArrowRight, CheckCircle2, Clock, Copy, ExternalLink, Package, RefreshCw, ShieldCheck, Truck } from "lucide-react";
@@ -20,6 +20,29 @@ type CryptoPayment = {
   confirmations: number | null;
   reason: string | null;
 };
+
+type CryptoPaymentCheck = Pick<
+  CryptoPayment,
+  "status" | "reason" | "observedAmount" | "confirmations"
+>;
+
+function verificationMessage(result: CryptoPaymentCheck, confirmationsRequired: number): string {
+  switch (result.status) {
+    case "confirmed":
+      return "Payment verified successfully. Your order can now be prepared for dispatch.";
+    case "pending":
+      if (result.confirmations !== null) {
+        return `${result.reason ?? "Payment detected."} ${result.confirmations} of ${confirmationsRequired} confirmation${confirmationsRequired === 1 ? "" : "s"} recorded.`;
+      }
+      return result.reason ?? "The transaction has not appeared on the selected network yet. We will keep checking it.";
+    case "underpaid":
+    case "wrong_wallet":
+    case "manual_review":
+      return result.reason ?? "This payment needs manual review before the order can be dispatched.";
+    default:
+      return result.reason ?? "Payment status updated.";
+  }
+}
 
 const META: Record<CryptoPayment["currency"], { name: string; symbol: string; color: string; background: string; text: string }> = {
   BTC: { name: "Bitcoin", symbol: "₿", color: "#F59E0B", background: "#FFFBEB", text: "#92400E" },
@@ -68,11 +91,12 @@ export default function OrderConfirmation() {
   const [submissionMessage, setSubmissionMessage] = useState<string | null>(null);
   const [txHash, setTxHash] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [checking, setChecking] = useState(false);
   const [copied, setCopied] = useState(false);
   const [now, setNow] = useState(Date.now());
 
-  const refreshPayment = async () => {
-    if (!isCrypto || !cryptoToken) return;
+  const refreshPayment = useCallback(async (): Promise<CryptoPayment | null> => {
+    if (!isCrypto || !cryptoToken) return null;
     setLoading(true);
     try {
       const response = await fetch(
@@ -80,7 +104,7 @@ export default function OrderConfirmation() {
         { cache: "no-store", headers: { "Cache-Control": "no-cache" } },
       );
       if (response.status === 304) {
-        return;
+        return null;
       }
       const data = await response.json().catch(() => ({})) as CryptoPayment & { error?: string };
       if (!response.ok) throw new Error(data.error ?? "Unable to load the crypto payment");
@@ -90,17 +114,19 @@ export default function OrderConfirmation() {
       setCryptoPayment(data);
       setTxHash(data.txHash ?? "");
       setError(null);
+      return data;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to load the crypto payment");
+      return null;
     } finally {
       setLoading(false);
     }
-  };
+  }, [cryptoToken, isCrypto, orderId]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     void refreshPayment();
-  }, []);
+  }, [refreshPayment]);
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(Date.now()), 30_000);
@@ -127,6 +153,8 @@ export default function OrderConfirmation() {
   async function refreshRate() {
     if (!cryptoPayment || !cryptoToken) return;
     setSubmitting(true);
+    setSubmissionMessage(null);
+    setError(null);
     try {
       const response = await fetch(apiUrl(`orders/${encodeURIComponent(orderId)}/lock-usdt-rate`), {
         method: "POST",
@@ -150,6 +178,35 @@ export default function OrderConfirmation() {
     }
   }
 
+  const checkPendingTransaction = useCallback(async () => {
+    const submittedHash = cryptoPayment?.txHash;
+    if (!cryptoToken || !submittedHash || cryptoPayment?.status !== "pending") return;
+    setChecking(true);
+    try {
+      const response = await fetch(apiUrl(`orders/${encodeURIComponent(orderId)}/crypto-payment/check`), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paymentToken: cryptoToken }),
+      });
+      const data = await response.json().catch(() => ({})) as CryptoPaymentCheck & { error?: string };
+      if (!response.ok) throw new Error(data.error ?? "Unable to check the transaction");
+      await refreshPayment();
+      setSubmissionMessage(verificationMessage(data, cryptoPayment.confirmationsRequired));
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to check the transaction");
+    } finally {
+      setChecking(false);
+    }
+  }, [cryptoPayment?.confirmationsRequired, cryptoPayment?.status, cryptoPayment?.txHash, cryptoToken, orderId, refreshPayment]);
+
+  useEffect(() => {
+    if (cryptoPayment?.status !== "pending" || !cryptoPayment.txHash) return;
+    void checkPendingTransaction();
+    const timer = window.setInterval(() => void checkPendingTransaction(), 20_000);
+    return () => window.clearInterval(timer);
+  }, [checkPendingTransaction, cryptoPayment?.status, cryptoPayment?.txHash]);
+
   async function submitTransaction() {
     if (!cryptoToken) {
       setError("This payment link is missing its secure payment token. Please reopen the confirmation link.");
@@ -172,17 +229,12 @@ export default function OrderConfirmation() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ paymentToken: cryptoToken, txHash: txHash.trim() }),
       });
-      const data = await response.json().catch(() => ({})) as {
+      const data = await response.json().catch(() => ({})) as CryptoPaymentCheck & {
         error?: string;
-        status?: CryptoPayment["status"];
       };
       if (!response.ok) throw new Error(data.error ?? "Unable to verify the transaction");
       await refreshPayment();
-      setSubmissionMessage(
-        data.status === "confirmed"
-          ? "Payment verified successfully. Your order can now be prepared for dispatch."
-          : "Transaction received. We’re checking it on-chain and will update your order when confirmations are complete.",
-      );
+      setSubmissionMessage(verificationMessage(data, cryptoPayment?.confirmationsRequired ?? 3));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to verify the transaction");
     } finally {
@@ -220,6 +272,25 @@ export default function OrderConfirmation() {
                   <span style={{ marginLeft: "auto", fontSize: 24, color: coin.color }}>{coin.symbol}</span>
                 </div>
 
+                {cryptoPayment.status !== "rate_locked" && (
+                  <div
+                    role="status"
+                    aria-live="polite"
+                    style={{
+                      marginBottom: 14, padding: "12px 14px", borderRadius: 10,
+                      background: cryptoPayment.status === "pending" ? "#EFF6FF" : cryptoPayment.status === "confirmed" ? "#ECFDF5" : "#FFF7ED",
+                      color: cryptoPayment.status === "pending" ? "#1D4ED8" : cryptoPayment.status === "confirmed" ? "#047857" : "#9A3412",
+                      fontSize: 13, lineHeight: 1.5,
+                    }}
+                  >
+                    <strong>{statusLabel(cryptoPayment.status)}.</strong>{" "}
+                    {cryptoPayment.reason ?? "Checking the submitted transaction."}
+                    {cryptoPayment.status === "pending" && (
+                      <> This page rechecks Ethereum every 20 seconds while it remains open.</>
+                    )}
+                  </div>
+                )}
+
                 {cryptoPayment.status === "confirmed" ? (
                   <div style={{ padding: 16, borderRadius: 10, background: "#ECFDF5", color: "#065F46", fontSize: 14, lineHeight: 1.55 }}>
                     <strong>Payment confirmed.</strong> We have verified {cryptoPayment.observedAmount ?? cryptoPayment.expectedAmount} {cryptoPayment.currency} with {cryptoPayment.confirmations ?? 0} confirmation(s). Your order can now be prepared for dispatch.
@@ -245,7 +316,23 @@ export default function OrderConfirmation() {
                       </button>
                     </div>
 
-                    {rateExpired ? (
+                    {cryptoPayment.status === "pending" && cryptoPayment.txHash ? (
+                      <div style={{ marginTop: 14 }}>
+                        <p style={{ margin: "0 0 8px", fontSize: 12, color: coin.text, lineHeight: 1.5 }}>
+                          Submitted transaction: <span style={{ fontFamily: "monospace", fontWeight: 700 }}>{cryptoPayment.txHash}</span>
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => void checkPendingTransaction()}
+                          disabled={checking}
+                          aria-busy={checking}
+                          style={{ width: "100%", border: 0, background: coin.color, color: "#fff", padding: 12, borderRadius: 10, fontWeight: 800, cursor: checking ? "wait" : "pointer", opacity: checking ? .6 : 1 }}
+                        >
+                          <RefreshCw size={15} style={{ verticalAlign: "text-bottom", marginRight: 7 }} />
+                          {checking ? "Checking Ethereum…" : "Check transaction now"}
+                        </button>
+                      </div>
+                    ) : rateExpired ? (
                       <button type="button" onClick={() => void refreshRate()} disabled={submitting} style={{ width: "100%", marginTop: 14, border: 0, background: "#1240A0", color: "#fff", padding: 12, borderRadius: 10, fontWeight: 800, cursor: "pointer" }}>
                         <RefreshCw size={15} style={{ verticalAlign: "text-bottom", marginRight: 7 }} />{submitting ? "Refreshing…" : "Refresh locked rate"}
                       </button>
@@ -259,7 +346,7 @@ export default function OrderConfirmation() {
                           </button>
                         </div>
                         {submissionMessage && (
-                          <p aria-live="polite" style={{ margin: "8px 0 0", color: "#047857", fontSize: 12, fontWeight: 700 }}>
+                          <p aria-live="polite" style={{ margin: "8px 0 0", color: cryptoPayment.status === "pending" ? "#1D4ED8" : ["underpaid", "wrong_wallet", "manual_review"].includes(cryptoPayment.status) ? "#B45309" : "#047857", fontSize: 12, fontWeight: 700 }}>
                             {submissionMessage}
                           </p>
                         )}
