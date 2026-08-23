@@ -1,1 +1,193 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgc2hpcHBpbmdab25lc1RhYmxlLCBzaGlwcGluZ1JhdGVzVGFibGUgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgZXEsIGRlc2MgfSBmcm9tICJkcml6emxlLW9ybSI7CmltcG9ydCB7IGZpcnN0U3RyaW5nIH0gZnJvbSAiLi4vLi4vbGliL3F1ZXJ5IjsKCmNvbnN0IHJvdXRlciA9IFJvdXRlcigpOwoKZnVuY3Rpb24gcmVxdWlyZUFkbWluKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IGJvb2xlYW4gewogIGlmIChyZXEuY29va2llcz8uYWRtaW5fc2Vzc2lvbiAhPT0gImF1dGhlbnRpY2F0ZWQiKSB7CiAgICByZXMuc3RhdHVzKDQwMSkuanNvbih7IGVycm9yOiAiTm90IGF1dGhlbnRpY2F0ZWQiIH0pOwogICAgcmV0dXJuIGZhbHNlOwogIH0KICByZXR1cm4gdHJ1ZTsKfQoKZnVuY3Rpb24gem9uZVRvUmVzcG9uc2UoejogdHlwZW9mIHNoaXBwaW5nWm9uZXNUYWJsZS4kaW5mZXJTZWxlY3QpIHsKICByZXR1cm4gewogICAgaWQ6IHouaWQsCiAgICBuYW1lOiB6Lm5hbWUsCiAgICBkZXNjcmlwdGlvbjogei5kZXNjcmlwdGlvbiA/PyBudWxsLAogICAgY291bnRyeUNvZGVzOiB6LmNvdW50cnlDb2RlcyA/PyBbXSwKICAgIGlzQWN0aXZlOiB6LmlzQWN0aXZlLAogICAgY3JlYXRlZEF0OiB6LmNyZWF0ZWRBdC50b0lTT1N0cmluZygpLAogIH07Cn0KCmZ1bmN0aW9uIHJhdGVUb1Jlc3BvbnNlKHI6IHR5cGVvZiBzaGlwcGluZ1JhdGVzVGFibGUuJGluZmVyU2VsZWN0KSB7CiAgcmV0dXJuIHsKICAgIGlkOiByLmlkLAogICAgem9uZUlkOiByLnpvbmVJZCwKICAgIG5hbWU6IHIubmFtZSwKICAgIGNhcnJpZXI6IHIuY2FycmllciwKICAgIHByaWNlR2JwOiBwYXJzZUZsb2F0KFN0cmluZyhyLnByaWNlR2JwKSksCiAgICBmcmVlQWJvdmVHYnA6IHIuZnJlZUFib3ZlR2JwICE9IG51bGwgPyBwYXJzZUZsb2F0KFN0cmluZyhyLmZyZWVBYm92ZUdicCkpIDogbnVsbCwKICAgIGVzdGltYXRlZERheXNNaW46IHIuZXN0aW1hdGVkRGF5c01pbiwKICAgIGVzdGltYXRlZERheXNNYXg6IHIuZXN0aW1hdGVkRGF5c01heCwKICAgIGlzQWN0aXZlOiByLmlzQWN0aXZlLAogICAgY3JlYXRlZEF0OiByLmNyZWF0ZWRBdC50b0lTT1N0cmluZygpLAogIH07Cn0KCnJvdXRlci5nZXQoIi9hZG1pbi9zaGlwcGluZy96b25lcyIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBpZiAoIXJlcXVpcmVBZG1pbihyZXEsIHJlcykpIHJldHVybjsKICB0cnkgewogICAgY29uc3Qgem9uZXMgPSBhd2FpdCBkYi5zZWxlY3QoKS5mcm9tKHNoaXBwaW5nWm9uZXNUYWJsZSkub3JkZXJCeShkZXNjKHNoaXBwaW5nWm9uZXNUYWJsZS5jcmVhdGVkQXQpKTsKICAgIHJlcy5qc29uKHpvbmVzLm1hcCh6b25lVG9SZXNwb25zZSkpOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGxpc3Qgc2hpcHBpbmcgem9uZXMiKTsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJJbnRlcm5hbCBzZXJ2ZXIgZXJyb3IiIH0pOwogIH0KfSk7Cgpyb3V0ZXIucG9zdCgiL2FkbWluL3NoaXBwaW5nL3pvbmVzIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGlmICghcmVxdWlyZUFkbWluKHJlcSwgcmVzKSkgcmV0dXJuOwogIGNvbnN0IHsgbmFtZSwgZGVzY3JpcHRpb24sIGNvdW50cnlDb2RlcyB9ID0gcmVxLmJvZHkgYXMgewogICAgbmFtZTogc3RyaW5nOyBkZXNjcmlwdGlvbj86IHN0cmluZzsgY291bnRyeUNvZGVzOiBzdHJpbmdbXTsKICB9OwogIGlmICghbmFtZSB8fCAhQXJyYXkuaXNBcnJheShjb3VudHJ5Q29kZXMpKSB7CiAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAibmFtZSBhbmQgY291bnRyeUNvZGVzIGFyZSByZXF1aXJlZCIgfSk7CiAgICByZXR1cm47CiAgfQogIHRyeSB7CiAgICBjb25zdCBbY3JlYXRlZF0gPSBhd2FpdCBkYgogICAgICAuaW5zZXJ0KHNoaXBwaW5nWm9uZXNUYWJsZSkKICAgICAgLnZhbHVlcyh7IG5hbWUsIGRlc2NyaXB0aW9uOiBkZXNjcmlwdGlvbiA/PyBudWxsLCBjb3VudHJ5Q29kZXM6IGNvdW50cnlDb2Rlcy5tYXAoYyA9PiBjLnRvVXBwZXJDYXNlKCkpIH0pCiAgICAgIC5yZXR1cm5pbmcoKTsKICAgIHJlcy5zdGF0dXMoMjAxKS5qc29uKHpvbmVUb1Jlc3BvbnNlKGNyZWF0ZWQpKTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBjcmVhdGUgc2hpcHBpbmcgem9uZSIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCnJvdXRlci5wYXRjaCgiL2FkbWluL3NoaXBwaW5nL3pvbmVzLzppZCIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBpZiAoIXJlcXVpcmVBZG1pbihyZXEsIHJlcykpIHJldHVybjsKICBjb25zdCBpZCA9IHBhcnNlSW50KGZpcnN0U3RyaW5nKHJlcS5wYXJhbXMuaWQpID8/ICIiLCAxMCk7CiAgaWYgKGlzTmFOKGlkKSkgeyByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiSW52YWxpZCBJRCIgfSk7IHJldHVybjsgfQogIGNvbnN0IHsgbmFtZSwgZGVzY3JpcHRpb24sIGNvdW50cnlDb2RlcywgaXNBY3RpdmUgfSA9IHJlcS5ib2R5IGFzIFBhcnRpYWw8ewogICAgbmFtZTogc3RyaW5nOyBkZXNjcmlwdGlvbjogc3RyaW5nOyBjb3VudHJ5Q29kZXM6IHN0cmluZ1tdOyBpc0FjdGl2ZTogYm9vbGVhbjsKICB9PjsKICBjb25zdCB1cGRhdGVzOiBQYXJ0aWFsPHR5cGVvZiBzaGlwcGluZ1pvbmVzVGFibGUuJGluZmVySW5zZXJ0PiA9IHt9OwogIGlmIChuYW1lICE9PSB1bmRlZmluZWQpIHVwZGF0ZXMubmFtZSA9IG5hbWU7CiAgaWYgKGRlc2NyaXB0aW9uICE9PSB1bmRlZmluZWQpIHVwZGF0ZXMuZGVzY3JpcHRpb24gPSBkZXNjcmlwdGlvbjsKICBpZiAoY291bnRyeUNvZGVzICE9PSB1bmRlZmluZWQpIHVwZGF0ZXMuY291bnRyeUNvZGVzID0gY291bnRyeUNvZGVzLm1hcChjID0+IGMudG9VcHBlckNhc2UoKSk7CiAgaWYgKGlzQWN0aXZlICE9PSB1bmRlZmluZWQpIHVwZGF0ZXMuaXNBY3RpdmUgPSBpc0FjdGl2ZTsKICB0cnkgewogICAgY29uc3QgW3VwZGF0ZWRdID0gYXdhaXQgZGIudXBkYXRlKHNoaXBwaW5nWm9uZXNUYWJsZSkuc2V0KHVwZGF0ZXMpLndoZXJlKGVxKHNoaXBwaW5nWm9uZXNUYWJsZS5pZCwgaWQpKS5yZXR1cm5pbmcoKTsKICAgIGlmICghdXBkYXRlZCkgeyByZXMuc3RhdHVzKDQwNCkuanNvbih7IGVycm9yOiAiWm9uZSBub3QgZm91bmQiIH0pOyByZXR1cm47IH0KICAgIHJlcy5qc29uKHpvbmVUb1Jlc3BvbnNlKHVwZGF0ZWQpKTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byB1cGRhdGUgc2hpcHBpbmcgem9uZSIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCnJvdXRlci5kZWxldGUoIi9hZG1pbi9zaGlwcGluZy96b25lcy86aWQiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgY29uc3QgaWQgPSBwYXJzZUludChmaXJzdFN0cmluZyhyZXEucGFyYW1zLmlkKSA/PyAiIiwgMTApOwogIGlmIChpc05hTihpZCkpIHsgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogIkludmFsaWQgSUQiIH0pOyByZXR1cm47IH0KICB0cnkgewogICAgY29uc3QgW2RlbGV0ZWRdID0gYXdhaXQgZGIuZGVsZXRlKHNoaXBwaW5nWm9uZXNUYWJsZSkud2hlcmUoZXEoc2hpcHBpbmdab25lc1RhYmxlLmlkLCBpZCkpLnJldHVybmluZygpOwogICAgaWYgKCFkZWxldGVkKSB7IHJlcy5zdGF0dXMoNDA0KS5qc29uKHsgZXJyb3I6ICJab25lIG5vdCBmb3VuZCIgfSk7IHJldHVybjsgfQogICAgcmVzLnN0YXR1cygyMDQpLnNlbmQoKTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBkZWxldGUgc2hpcHBpbmcgem9uZSIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCnJvdXRlci5nZXQoIi9hZG1pbi9zaGlwcGluZy9yYXRlcyIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBpZiAoIXJlcXVpcmVBZG1pbihyZXEsIHJlcykpIHJldHVybjsKICB0cnkgewogICAgY29uc3QgcmF0ZXMgPSBhd2FpdCBkYi5zZWxlY3QoKS5mcm9tKHNoaXBwaW5nUmF0ZXNUYWJsZSkub3JkZXJCeShkZXNjKHNoaXBwaW5nUmF0ZXNUYWJsZS5jcmVhdGVkQXQpKTsKICAgIHJlcy5qc29uKHJhdGVzLm1hcChyYXRlVG9SZXNwb25zZSkpOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGxpc3Qgc2hpcHBpbmcgcmF0ZXMiKTsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJJbnRlcm5hbCBzZXJ2ZXIgZXJyb3IiIH0pOwogIH0KfSk7Cgpyb3V0ZXIucG9zdCgiL2FkbWluL3NoaXBwaW5nL3JhdGVzIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGlmICghcmVxdWlyZUFkbWluKHJlcSwgcmVzKSkgcmV0dXJuOwogIGNvbnN0IHsgem9uZUlkLCBuYW1lLCBjYXJyaWVyLCBwcmljZUdicCwgZnJlZUFib3ZlR2JwLCBlc3RpbWF0ZWREYXlzTWluLCBlc3RpbWF0ZWREYXlzTWF4IH0gPSByZXEuYm9keSBhcyB7CiAgICB6b25lSWQ6IG51bWJlcjsgbmFtZTogc3RyaW5nOyBjYXJyaWVyPzogc3RyaW5nOyBwcmljZUdicDogbnVtYmVyOwogICAgZnJlZUFib3ZlR2JwPzogbnVtYmVyOyBlc3RpbWF0ZWREYXlzTWluPzogbnVtYmVyOyBlc3RpbWF0ZWREYXlzTWF4PzogbnVtYmVyOwogIH07CiAgaWYgKCF6b25lSWQgfHwgIW5hbWUgfHwgcHJpY2VHYnAgPT0gbnVsbCkgewogICAgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogInpvbmVJZCwgbmFtZSBhbmQgcHJpY2VHYnAgYXJlIHJlcXVpcmVkIiB9KTsKICAgIHJldHVybjsKICB9CiAgdHJ5IHsKICAgIGNvbnN0IFtjcmVhdGVkXSA9IGF3YWl0IGRiCiAgICAgIC5pbnNlcnQoc2hpcHBpbmdSYXRlc1RhYmxlKQogICAgICAudmFsdWVzKHsKICAgICAgICB6b25lSWQsCiAgICAgICAgbmFtZSwKICAgICAgICBjYXJyaWVyOiBjYXJyaWVyID8/ICJSb3lhbCBNYWlsIiwKICAgICAgICBwcmljZUdicDogU3RyaW5nKHByaWNlR2JwKSwKICAgICAgICBmcmVlQWJvdmVHYnA6IGZyZWVBYm92ZUdicCAhPSBudWxsID8gU3RyaW5nKGZyZWVBYm92ZUdicCkgOiBudWxsLAogICAgICAgIGVzdGltYXRlZERheXNNaW46IGVzdGltYXRlZERheXNNaW4gPz8gMiwKICAgICAgICBlc3RpbWF0ZWREYXlzTWF4OiBlc3RpbWF0ZWREYXlzTWF4ID8/IDUsCiAgICAgIH0pCiAgICAgIC5yZXR1cm5pbmcoKTsKICAgIHJlcy5zdGF0dXMoMjAxKS5qc29uKHJhdGVUb1Jlc3BvbnNlKGNyZWF0ZWQpKTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBjcmVhdGUgc2hpcHBpbmcgcmF0ZSIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCnJvdXRlci5wYXRjaCgiL2FkbWluL3NoaXBwaW5nL3JhdGVzLzppZCIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBpZiAoIXJlcXVpcmVBZG1pbihyZXEsIHJlcykpIHJldHVybjsKICBjb25zdCBpZCA9IHBhcnNlSW50KGZpcnN0U3RyaW5nKHJlcS5wYXJhbXMuaWQpID8/ICIiLCAxMCk7CiAgaWYgKGlzTmFOKGlkKSkgeyByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiSW52YWxpZCBJRCIgfSk7IHJldHVybjsgfQogIGNvbnN0IHsgbmFtZSwgY2FycmllciwgcHJpY2VHYnAsIGZyZWVBYm92ZUdicCwgZXN0aW1hdGVkRGF5c01pbiwgZXN0aW1hdGVkRGF5c01heCwgaXNBY3RpdmUgfSA9IHJlcS5ib2R5IGFzIFBhcnRpYWw8ewogICAgbmFtZTogc3RyaW5nOyBjYXJyaWVyOiBzdHJpbmc7IHByaWNlR2JwOiBudW1iZXI7IGZyZWVBYm92ZUdicDogbnVtYmVyIHwgbnVsbDsKICAgIGVzdGltYXRlZERheXNNaW46IG51bWJlcjsgZXN0aW1hdGVkRGF5c01heDogbnVtYmVyOyBpc0FjdGl2ZTogYm9vbGVhbjsKICB9PjsKICBjb25zdCB1cGRhdGVzOiBQYXJ0aWFsPHR5cGVvZiBzaGlwcGluZ1JhdGVzVGFibGUuJGluZmVySW5zZXJ0PiA9IHt9OwogIGlmIChuYW1lICE9PSB1bmRlZmluZWQpIHVwZGF0ZXMubmFtZSA9IG5hbWU7CiAgaWYgKGNhcnJpZXIgIT09IHVuZGVmaW5lZCkgdXBkYXRlcy5jYXJyaWVyID0gY2FycmllcjsKICBpZiAocHJpY2VHYnAgIT09IHVuZGVmaW5lZCkgdXBkYXRlcy5wcmljZUdicCA9IFN0cmluZyhwcmljZUdicCk7CiAgaWYgKGZyZWVBYm92ZUdicCAhPT0gdW5kZWZpbmVkKSB1cGRhdGVzLmZyZWVBYm92ZUdicCA9IGZyZWVBYm92ZUdicCAhPSBudWxsID8gU3RyaW5nKGZyZWVBYm92ZUdicCkgOiBudWxsOwogIGlmIChlc3RpbWF0ZWREYXlzTWluICE9PSB1bmRlZmluZWQpIHVwZGF0ZXMuZXN0aW1hdGVkRGF5c01pbiA9IGVzdGltYXRlZERheXNNaW47CiAgaWYgKGVzdGltYXRlZERheXNNYXggIT09IHVuZGVmaW5lZCkgdXBkYXRlcy5lc3RpbWF0ZWREYXlzTWF4ID0gZXN0aW1hdGVkRGF5c01heDsKICBpZiAoaXNBY3RpdmUgIT09IHVuZGVmaW5lZCkgdXBkYXRlcy5pc0FjdGl2ZSA9IGlzQWN0aXZlOwogIHRyeSB7CiAgICBjb25zdCBbdXBkYXRlZF0gPSBhd2FpdCBkYi51cGRhdGUoc2hpcHBpbmdSYXRlc1RhYmxlKS5zZXQodXBkYXRlcykud2hlcmUoZXEoc2hpcHBpbmdSYXRlc1RhYmxlLmlkLCBpZCkpLnJldHVybmluZygpOwogICAgaWYgKCF1cGRhdGVkKSB7IHJlcy5zdGF0dXMoNDA0KS5qc29uKHsgZXJyb3I6ICJSYXRlIG5vdCBmb3VuZCIgfSk7IHJldHVybjsgfQogICAgcmVzLmpzb24ocmF0ZVRvUmVzcG9uc2UodXBkYXRlZCkpOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIHVwZGF0ZSBzaGlwcGluZyByYXRlIik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKcm91dGVyLmRlbGV0ZSgiL2FkbWluL3NoaXBwaW5nL3JhdGVzLzppZCIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBpZiAoIXJlcXVpcmVBZG1pbihyZXEsIHJlcykpIHJldHVybjsKICBjb25zdCBpZCA9IHBhcnNlSW50KGZpcnN0U3RyaW5nKHJlcS5wYXJhbXMuaWQpID8/ICIiLCAxMCk7CiAgaWYgKGlzTmFOKGlkKSkgeyByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiSW52YWxpZCBJRCIgfSk7IHJldHVybjsgfQogIHRyeSB7CiAgICBjb25zdCBbZGVsZXRlZF0gPSBhd2FpdCBkYi5kZWxldGUoc2hpcHBpbmdSYXRlc1RhYmxlKS53aGVyZShlcShzaGlwcGluZ1JhdGVzVGFibGUuaWQsIGlkKSkucmV0dXJuaW5nKCk7CiAgICBpZiAoIWRlbGV0ZWQpIHsgcmVzLnN0YXR1cyg0MDQpLmpzb24oeyBlcnJvcjogIlJhdGUgbm90IGZvdW5kIiB9KTsgcmV0dXJuOyB9CiAgICByZXMuc3RhdHVzKDIwNCkuc2VuZCgpOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGRlbGV0ZSBzaGlwcGluZyByYXRlIik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKZXhwb3J0IGRlZmF1bHQgcm91dGVyOwo=
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { db } from "@workspace/db";
+import { shippingZonesTable, shippingRatesTable } from "@workspace/db";
+import { eq, desc } from "drizzle-orm";
+import { firstString } from "../../lib/query";
+
+const router = Router();
+
+function requireAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+
+function zoneToResponse(z: typeof shippingZonesTable.$inferSelect) {
+  return {
+    id: z.id,
+    name: z.name,
+    description: z.description ?? null,
+    countryCodes: z.countryCodes ?? [],
+    isActive: z.isActive,
+    createdAt: z.createdAt.toISOString(),
+  };
+}
+
+function rateToResponse(r: typeof shippingRatesTable.$inferSelect) {
+  return {
+    id: r.id,
+    zoneId: r.zoneId,
+    name: r.name,
+    carrier: r.carrier,
+    priceGbp: parseFloat(String(r.priceGbp)),
+    freeAboveGbp: r.freeAboveGbp != null ? parseFloat(String(r.freeAboveGbp)) : null,
+    estimatedDaysMin: r.estimatedDaysMin,
+    estimatedDaysMax: r.estimatedDaysMax,
+    isActive: r.isActive,
+    createdAt: r.createdAt.toISOString(),
+  };
+}
+
+router.get("/admin/shipping/zones", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const zones = await db.select().from(shippingZonesTable).orderBy(desc(shippingZonesTable.createdAt));
+    res.json(zones.map(zoneToResponse));
+  } catch (err) {
+    req.log.error({ err }, "Failed to list shipping zones");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/admin/shipping/zones", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const { name, description, countryCodes } = req.body as {
+    name: string; description?: string; countryCodes: string[];
+  };
+  if (!name || !Array.isArray(countryCodes)) {
+    res.status(400).json({ error: "name and countryCodes are required" });
+    return;
+  }
+  try {
+    const [created] = await db
+      .insert(shippingZonesTable)
+      .values({ name, description: description ?? null, countryCodes: countryCodes.map(c => c.toUpperCase()) })
+      .returning();
+    res.status(201).json(zoneToResponse(created));
+  } catch (err) {
+    req.log.error({ err }, "Failed to create shipping zone");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.patch("/admin/shipping/zones/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
+  const { name, description, countryCodes, isActive } = req.body as Partial<{
+    name: string; description: string; countryCodes: string[]; isActive: boolean;
+  }>;
+  const updates: Partial<typeof shippingZonesTable.$inferInsert> = {};
+  if (name !== undefined) updates.name = name;
+  if (description !== undefined) updates.description = description;
+  if (countryCodes !== undefined) updates.countryCodes = countryCodes.map(c => c.toUpperCase());
+  if (isActive !== undefined) updates.isActive = isActive;
+  try {
+    const [updated] = await db.update(shippingZonesTable).set(updates).where(eq(shippingZonesTable.id, id)).returning();
+    if (!updated) { res.status(404).json({ error: "Zone not found" }); return; }
+    res.json(zoneToResponse(updated));
+  } catch (err) {
+    req.log.error({ err }, "Failed to update shipping zone");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/admin/shipping/zones/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
+  try {
+    const [deleted] = await db.delete(shippingZonesTable).where(eq(shippingZonesTable.id, id)).returning();
+    if (!deleted) { res.status(404).json({ error: "Zone not found" }); return; }
+    res.status(204).send();
+  } catch (err) {
+    req.log.error({ err }, "Failed to delete shipping zone");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/admin/shipping/rates", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const rates = await db.select().from(shippingRatesTable).orderBy(desc(shippingRatesTable.createdAt));
+    res.json(rates.map(rateToResponse));
+  } catch (err) {
+    req.log.error({ err }, "Failed to list shipping rates");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/admin/shipping/rates", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const { zoneId, name, carrier, priceGbp, freeAboveGbp, estimatedDaysMin, estimatedDaysMax } = req.body as {
+    zoneId: number; name: string; carrier?: string; priceGbp: number;
+    freeAboveGbp?: number; estimatedDaysMin?: number; estimatedDaysMax?: number;
+  };
+  if (!zoneId || !name || priceGbp == null) {
+    res.status(400).json({ error: "zoneId, name and priceGbp are required" });
+    return;
+  }
+  try {
+    const [created] = await db
+      .insert(shippingRatesTable)
+      .values({
+        zoneId,
+        name,
+        carrier: carrier ?? "Royal Mail",
+        priceGbp: String(priceGbp),
+        freeAboveGbp: freeAboveGbp != null ? String(freeAboveGbp) : null,
+        estimatedDaysMin: estimatedDaysMin ?? 2,
+        estimatedDaysMax: estimatedDaysMax ?? 5,
+      })
+      .returning();
+    res.status(201).json(rateToResponse(created));
+  } catch (err) {
+    req.log.error({ err }, "Failed to create shipping rate");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.patch("/admin/shipping/rates/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
+  const { name, carrier, priceGbp, freeAboveGbp, estimatedDaysMin, estimatedDaysMax, isActive } = req.body as Partial<{
+    name: string; carrier: string; priceGbp: number; freeAboveGbp: number | null;
+    estimatedDaysMin: number; estimatedDaysMax: number; isActive: boolean;
+  }>;
+  const updates: Partial<typeof shippingRatesTable.$inferInsert> = {};
+  if (name !== undefined) updates.name = name;
+  if (carrier !== undefined) updates.carrier = carrier;
+  if (priceGbp !== undefined) updates.priceGbp = String(priceGbp);
+  if (freeAboveGbp !== undefined) updates.freeAboveGbp = freeAboveGbp != null ? String(freeAboveGbp) : null;
+  if (estimatedDaysMin !== undefined) updates.estimatedDaysMin = estimatedDaysMin;
+  if (estimatedDaysMax !== undefined) updates.estimatedDaysMax = estimatedDaysMax;
+  if (isActive !== undefined) updates.isActive = isActive;
+  try {
+    const [updated] = await db.update(shippingRatesTable).set(updates).where(eq(shippingRatesTable.id, id)).returning();
+    if (!updated) { res.status(404).json({ error: "Rate not found" }); return; }
+    res.json(rateToResponse(updated));
+  } catch (err) {
+    req.log.error({ err }, "Failed to update shipping rate");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/admin/shipping/rates/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
+  try {
+    const [deleted] = await db.delete(shippingRatesTable).where(eq(shippingRatesTable.id, id)).returning();
+    if (!deleted) { res.status(404).json({ error: "Rate not found" }); return; }
+    res.status(204).send();
+  } catch (err) {
+    req.log.error({ err }, "Failed to delete shipping rate");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;

@@ -1,1 +1,150 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IGNyeXB0byBmcm9tICJjcnlwdG8iOwppbXBvcnQgeyBkYiB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyBsb3lhbHR5VHJhbnNhY3Rpb25zVGFibGUgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgZXEsIHNxbCwgZGVzYyB9IGZyb20gImRyaXp6bGUtb3JtIjsKaW1wb3J0IHsgbG9nZ2VyIH0gZnJvbSAiLi4vbGliL2xvZ2dlciI7Cgpjb25zdCByb3V0ZXIgPSBSb3V0ZXIoKTsKCmNvbnN0IFNFU1NJT05fU0VDUkVUID0KICBwcm9jZXNzLmVudi5TRVNTSU9OX1NFQ1JFVCA/PwogIHByb2Nlc3MuZW52LkFETUlOX1BBU1NXT1JEID8/CiAgIm9tbmlxdXJlLWN1c3Qtc2Vzc2lvbi1mYWxsYmFjay1zZWNyZXQiOwoKZnVuY3Rpb24gdmVyaWZ5Q3VzdG9tZXJTZXNzaW9uKHRva2VuOiBzdHJpbmcpOiBudW1iZXIgfCBudWxsIHsKICBjb25zdCBkb3QgPSB0b2tlbi5sYXN0SW5kZXhPZigiLiIpOwogIGlmIChkb3QgPT09IC0xKSByZXR1cm4gbnVsbDsKICBjb25zdCBwYXlsb2FkID0gdG9rZW4uc2xpY2UoMCwgZG90KTsKICBjb25zdCBzaWcgPSB0b2tlbi5zbGljZShkb3QgKyAxKTsKICBjb25zdCBleHBlY3RlZCA9IGNyeXB0by5jcmVhdGVIbWFjKCJzaGEyNTYiLCBTRVNTSU9OX1NFQ1JFVCkudXBkYXRlKHBheWxvYWQpLmRpZ2VzdCgiaGV4Iik7CiAgaWYgKHNpZyAhPT0gZXhwZWN0ZWQpIHJldHVybiBudWxsOwogIGNvbnN0IGlkID0gcGFyc2VJbnQocGF5bG9hZCwgMTApOwogIHJldHVybiBpc05hTihpZCkgPyBudWxsIDogaWQ7Cn0KCmZ1bmN0aW9uIGdldEN1c3RvbWVySWQocmVxOiBSZXF1ZXN0KTogbnVtYmVyIHwgbnVsbCB7CiAgY29uc3QgdG9rZW4gPSByZXEuY29va2llcz8uY3VzdG9tZXJfc2Vzc2lvbjsKICByZXR1cm4gdG9rZW4gPyB2ZXJpZnlDdXN0b21lclNlc3Npb24odG9rZW4pIDogbnVsbDsKfQoKZnVuY3Rpb24gaXNBZG1pbihyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBib29sZWFuIHsKICBpZiAocmVxLmNvb2tpZXM/LmFkbWluX3Nlc3Npb24gIT09ICJhdXRoZW50aWNhdGVkIikgewogICAgcmVzLnN0YXR1cyg0MDEpLmpzb24oeyBlcnJvcjogIlVuYXV0aG9yaXplZCIgfSk7CiAgICByZXR1cm4gZmFsc2U7CiAgfQogIHJldHVybiB0cnVlOwp9Cgpjb25zdCBUSUVSUyA9IFsKICB7IG5hbWU6ICJCcm9uemUiLCBtaW46IDAsICAgIG1heDogNDk5LCAgICAgIGNvbG9yOiAiI0NEN0YzMiIsIGVtb2ppOiAi8J+liSIgfSwKICB7IG5hbWU6ICJTaWx2ZXIiLCBtaW46IDUwMCwgIG1heDogMTk5OSwgICAgIGNvbG9yOiAiIzlDQTNBRiIsIGVtb2ppOiAi8J+liCIgfSwKICB7IG5hbWU6ICJHb2xkIiwgICBtaW46IDIwMDAsIG1heDogSW5maW5pdHksIGNvbG9yOiAiI0Y1OUUwQiIsIGVtb2ppOiAi8J+lhyIgfSwKXTsKCmZ1bmN0aW9uIGdldFRpZXJJbmZvKGxpZmV0aW1lRWFybmVkOiBudW1iZXIpIHsKICBjb25zdCBpZHggPSBUSUVSUy5maW5kSW5kZXgodCA9PiBsaWZldGltZUVhcm5lZCA+PSB0Lm1pbiAmJiBsaWZldGltZUVhcm5lZCA8PSB0Lm1heCk7CiAgY29uc3QgdGllciA9IFRJRVJTW2lkeF0gPz8gVElFUlNbMF07CiAgY29uc3QgbmV4dFRpZXIgPSBUSUVSU1tpZHggKyAxXSA/PyBudWxsOwogIHJldHVybiB7CiAgICB0aWVyLAogICAgbmV4dFRpZXIsCiAgICBwb2ludHNUb05leHRUaWVyOiBuZXh0VGllciA/IG5leHRUaWVyLm1pbiAtIGxpZmV0aW1lRWFybmVkIDogMCwKICAgIHByb2dyZXNzUGN0OiBuZXh0VGllcgogICAgICA/IE1hdGgubWluKDEwMCwgTWF0aC5yb3VuZCgoKGxpZmV0aW1lRWFybmVkIC0gdGllci5taW4pIC8gKG5leHRUaWVyLm1pbiAtIHRpZXIubWluKSkgKiAxMDApKQogICAgICA6IDEwMCwKICB9Owp9CgovLyBHRVQgL2xveWFsdHkvYmFsYW5jZSDigJQgYXV0aGVudGljYXRlZCBjdXN0b21lcgpyb3V0ZXIuZ2V0KCIvbG95YWx0eS9iYWxhbmNlIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGNvbnN0IGN1c3RvbWVySWQgPSBnZXRDdXN0b21lcklkKHJlcSk7CiAgaWYgKCFjdXN0b21lcklkKSB7IHJlcy5zdGF0dXMoNDAxKS5qc29uKHsgZXJyb3I6ICJOb3QgYXV0aGVudGljYXRlZCIgfSk7IHJldHVybjsgfQoKICBjb25zdCB0cmFuc2FjdGlvbnMgPSBhd2FpdCBkYgogICAgLnNlbGVjdCgpCiAgICAuZnJvbShsb3lhbHR5VHJhbnNhY3Rpb25zVGFibGUpCiAgICAud2hlcmUoZXEobG95YWx0eVRyYW5zYWN0aW9uc1RhYmxlLmN1c3RvbWVySWQsIGN1c3RvbWVySWQpKQogICAgLm9yZGVyQnkoZGVzYyhsb3lhbHR5VHJhbnNhY3Rpb25zVGFibGUuY3JlYXRlZEF0KSkKICAgIC5saW1pdCg1MCk7CgogIGNvbnN0IGJhbGFuY2UgPSB0cmFuc2FjdGlvbnMucmVkdWNlKChzLCB0KSA9PiBzICsgdC5wb2ludHMsIDApOwogIGNvbnN0IGxpZmV0aW1lRWFybmVkID0gdHJhbnNhY3Rpb25zCiAgICAuZmlsdGVyKHQgPT4gdC50eXBlID09PSAiZWFybmVkIiAmJiB0LnBvaW50cyA+IDApCiAgICAucmVkdWNlKChzLCB0KSA9PiBzICsgdC5wb2ludHMsIDApOwoKICBjb25zdCB7IHRpZXIsIG5leHRUaWVyLCBwb2ludHNUb05leHRUaWVyLCBwcm9ncmVzc1BjdCB9ID0gZ2V0VGllckluZm8obGlmZXRpbWVFYXJuZWQpOwoKICByZXMuanNvbih7CiAgICBiYWxhbmNlLAogICAgbGlmZXRpbWVFYXJuZWQsCiAgICB0aWVyOiB0aWVyLm5hbWUsCiAgICB0aWVyQ29sb3I6IHRpZXIuY29sb3IsCiAgICB0aWVyRW1vamk6IHRpZXIuZW1vamksCiAgICBuZXh0VGllcjogbmV4dFRpZXI/Lm5hbWUgPz8gbnVsbCwKICAgIHBvaW50c1RvTmV4dFRpZXI6IG5leHRUaWVyID8gcG9pbnRzVG9OZXh0VGllciA6IG51bGwsCiAgICBwcm9ncmVzc1BjdCwKICAgIGdicFZhbHVlOiArKGJhbGFuY2UgLyAxMDApLnRvRml4ZWQoMiksCiAgICB0cmFuc2FjdGlvbnM6IHRyYW5zYWN0aW9ucy5tYXAodCA9PiAoewogICAgICBpZDogdC5pZCwKICAgICAgdHlwZTogdC50eXBlLAogICAgICBwb2ludHM6IHQucG9pbnRzLAogICAgICBkZXNjcmlwdGlvbjogdC5kZXNjcmlwdGlvbiwKICAgICAgY3JlYXRlZEF0OiB0LmNyZWF0ZWRBdCwKICAgIH0pKSwKICB9KTsKfSk7CgovLyBHRVQgL2FkbWluL2xveWFsdHkvb3ZlcnZpZXcKcm91dGVyLmdldCgiL2FkbWluL2xveWFsdHkvb3ZlcnZpZXciLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFpc0FkbWluKHJlcSwgcmVzKSkgcmV0dXJuOwoKICBjb25zdCByZXN1bHQgPSBhd2FpdCBkYi5leGVjdXRlKHNxbGAKICAgIFNFTEVDVAogICAgICBjLmlkLAogICAgICBjLmVtYWlsLAogICAgICBjLmZpcnN0X25hbWUgQVMgImZpcnN0TmFtZSIsCiAgICAgIGMubGFzdF9uYW1lICBBUyAibGFzdE5hbWUiLAogICAgICBDT0FMRVNDRShTVU0obHQucG9pbnRzKSwgMCk6OmludCBBUyBiYWxhbmNlLAogICAgICBDT0FMRVNDRShTVU0oQ0FTRSBXSEVOIGx0LnR5cGUgPSAnZWFybmVkJyBBTkQgbHQucG9pbnRzID4gMCBUSEVOIGx0LnBvaW50cyBFTFNFIDAgRU5EKSwgMCk6OmludCBBUyAibGlmZXRpbWVFYXJuZWQiLAogICAgICBDT1VOVChsdC5pZCk6OmludCBBUyAidHJhbnNhY3Rpb25Db3VudCIKICAgIEZST00gY3VzdG9tZXJzIGMKICAgIExFRlQgSk9JTiBsb3lhbHR5X3RyYW5zYWN0aW9ucyBsdCBPTiBsdC5jdXN0b21lcl9pZCA9IGMuaWQKICAgIEdST1VQIEJZIGMuaWQsIGMuZW1haWwsIGMuZmlyc3RfbmFtZSwgYy5sYXN0X25hbWUKICAgIEhBVklORyBDT1VOVChsdC5pZCkgPiAwCiAgICBPUkRFUiBCWSBiYWxhbmNlIERFU0MKICAgIExJTUlUIDIwMAogIGApOwoKICBjb25zdCBzdGF0cyA9IGF3YWl0IGRiLmV4ZWN1dGUoc3FsYAogICAgU0VMRUNUCiAgICAgIENPQUxFU0NFKFNVTShDQVNFIFdIRU4gcG9pbnRzID4gMCBUSEVOIHBvaW50cyBFTFNFIDAgRU5EKSwgMCk6OmludCBBUyAidG90YWxFYXJuZWQiLAogICAgICBDT0FMRVNDRShTVU0oQ0FTRSBXSEVOIHBvaW50cyA8IDAgVEhFTiBBQlMocG9pbnRzKSBFTFNFIDAgRU5EKSwgMCk6OmludCBBUyAidG90YWxSZWRlZW1lZCIsCiAgICAgIENPQUxFU0NFKFNVTShwb2ludHMpLCAwKTo6aW50IEFTICJ0b3RhbE91dHN0YW5kaW5nIiwKICAgICAgQ09VTlQoRElTVElOQ1QgY3VzdG9tZXJfaWQpOjppbnQgQVMgIm1lbWJlcnNXaXRoUG9pbnRzIgogICAgRlJPTSBsb3lhbHR5X3RyYW5zYWN0aW9ucwogIGApOwoKICByZXMuanNvbih7IGN1c3RvbWVyczogcmVzdWx0LnJvd3MsIHN0YXRzOiBzdGF0cy5yb3dzWzBdID8/IHt9IH0pOwp9KTsKCi8vIFBPU1QgL2FkbWluL2xveWFsdHkvYWRqdXN0CnJvdXRlci5wb3N0KCIvYWRtaW4vbG95YWx0eS9hZGp1c3QiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFpc0FkbWluKHJlcSwgcmVzKSkgcmV0dXJuOwogIGNvbnN0IHsgY3VzdG9tZXJJZCwgcG9pbnRzLCByZWFzb24gfSA9IHJlcS5ib2R5IGFzIHsgY3VzdG9tZXJJZD86IHVua25vd247IHBvaW50cz86IHVua25vd247IHJlYXNvbj86IHVua25vd24gfTsKICBpZiAoIWN1c3RvbWVySWQgfHwgdHlwZW9mIHBvaW50cyAhPT0gIm51bWJlciIgfHwgIXJlYXNvbiB8fCB0eXBlb2YgcmVhc29uICE9PSAic3RyaW5nIikgewogICAgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogImN1c3RvbWVySWQsIHBvaW50cyAobnVtYmVyKSwgYW5kIHJlYXNvbiBhcmUgcmVxdWlyZWQiIH0pOwogICAgcmV0dXJuOwogIH0KICBhd2FpdCBkYi5pbnNlcnQobG95YWx0eVRyYW5zYWN0aW9uc1RhYmxlKS52YWx1ZXMoewogICAgY3VzdG9tZXJJZDogTnVtYmVyKGN1c3RvbWVySWQpLAogICAgdHlwZTogImFkanVzdGVkIiwKICAgIHBvaW50czogTWF0aC5yb3VuZChwb2ludHMgYXMgbnVtYmVyKSwKICAgIGRlc2NyaXB0aW9uOiBgQWRtaW4gYWRqdXN0bWVudDogJHtyZWFzb259YCwKICB9KTsKICBsb2dnZXIuaW5mbyh7IGN1c3RvbWVySWQsIHBvaW50cywgcmVhc29uIH0sICJBZG1pbiBsb3lhbHR5IGFkanVzdG1lbnQiKTsKICByZXMuanNvbih7IHN1Y2Nlc3M6IHRydWUgfSk7Cn0pOwoKZXhwb3J0IGRlZmF1bHQgcm91dGVyOwo=
+import { Router } from "express";
+import type { Request, Response } from "express";
+import crypto from "crypto";
+import { db } from "@workspace/db";
+import { loyaltyTransactionsTable } from "@workspace/db";
+import { eq, sql, desc } from "drizzle-orm";
+import { logger } from "../lib/logger";
+
+const router = Router();
+
+const SESSION_SECRET =
+  process.env.SESSION_SECRET ??
+  process.env.ADMIN_PASSWORD ??
+  "omniqure-cust-session-fallback-secret";
+
+function verifyCustomerSession(token: string): number | null {
+  const dot = token.lastIndexOf(".");
+  if (dot === -1) return null;
+  const payload = token.slice(0, dot);
+  const sig = token.slice(dot + 1);
+  const expected = crypto.createHmac("sha256", SESSION_SECRET).update(payload).digest("hex");
+  if (sig !== expected) return null;
+  const id = parseInt(payload, 10);
+  return isNaN(id) ? null : id;
+}
+
+function getCustomerId(req: Request): number | null {
+  const token = req.cookies?.customer_session;
+  return token ? verifyCustomerSession(token) : null;
+}
+
+function isAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Unauthorized" });
+    return false;
+  }
+  return true;
+}
+
+const TIERS = [
+  { name: "Bronze", min: 0,    max: 499,      color: "#CD7F32", emoji: "🥉" },
+  { name: "Silver", min: 500,  max: 1999,     color: "#9CA3AF", emoji: "🥈" },
+  { name: "Gold",   min: 2000, max: Infinity, color: "#F59E0B", emoji: "🥇" },
+];
+
+function getTierInfo(lifetimeEarned: number) {
+  const idx = TIERS.findIndex(t => lifetimeEarned >= t.min && lifetimeEarned <= t.max);
+  const tier = TIERS[idx] ?? TIERS[0];
+  const nextTier = TIERS[idx + 1] ?? null;
+  return {
+    tier,
+    nextTier,
+    pointsToNextTier: nextTier ? nextTier.min - lifetimeEarned : 0,
+    progressPct: nextTier
+      ? Math.min(100, Math.round(((lifetimeEarned - tier.min) / (nextTier.min - tier.min)) * 100))
+      : 100,
+  };
+}
+
+// GET /loyalty/balance — authenticated customer
+router.get("/loyalty/balance", async (req: Request, res: Response): Promise<void> => {
+  const customerId = getCustomerId(req);
+  if (!customerId) { res.status(401).json({ error: "Not authenticated" }); return; }
+
+  const transactions = await db
+    .select()
+    .from(loyaltyTransactionsTable)
+    .where(eq(loyaltyTransactionsTable.customerId, customerId))
+    .orderBy(desc(loyaltyTransactionsTable.createdAt))
+    .limit(50);
+
+  const balance = transactions.reduce((s, t) => s + t.points, 0);
+  const lifetimeEarned = transactions
+    .filter(t => t.type === "earned" && t.points > 0)
+    .reduce((s, t) => s + t.points, 0);
+
+  const { tier, nextTier, pointsToNextTier, progressPct } = getTierInfo(lifetimeEarned);
+
+  res.json({
+    balance,
+    lifetimeEarned,
+    tier: tier.name,
+    tierColor: tier.color,
+    tierEmoji: tier.emoji,
+    nextTier: nextTier?.name ?? null,
+    pointsToNextTier: nextTier ? pointsToNextTier : null,
+    progressPct,
+    gbpValue: +(balance / 100).toFixed(2),
+    transactions: transactions.map(t => ({
+      id: t.id,
+      type: t.type,
+      points: t.points,
+      description: t.description,
+      createdAt: t.createdAt,
+    })),
+  });
+});
+
+// GET /admin/loyalty/overview
+router.get("/admin/loyalty/overview", async (req: Request, res: Response): Promise<void> => {
+  if (!isAdmin(req, res)) return;
+
+  const result = await db.execute(sql`
+    SELECT
+      c.id,
+      c.email,
+      c.first_name AS "firstName",
+      c.last_name  AS "lastName",
+      COALESCE(SUM(lt.points), 0)::int AS balance,
+      COALESCE(SUM(CASE WHEN lt.type = 'earned' AND lt.points > 0 THEN lt.points ELSE 0 END), 0)::int AS "lifetimeEarned",
+      COUNT(lt.id)::int AS "transactionCount"
+    FROM customers c
+    LEFT JOIN loyalty_transactions lt ON lt.customer_id = c.id
+    GROUP BY c.id, c.email, c.first_name, c.last_name
+    HAVING COUNT(lt.id) > 0
+    ORDER BY balance DESC
+    LIMIT 200
+  `);
+
+  const stats = await db.execute(sql`
+    SELECT
+      COALESCE(SUM(CASE WHEN points > 0 THEN points ELSE 0 END), 0)::int AS "totalEarned",
+      COALESCE(SUM(CASE WHEN points < 0 THEN ABS(points) ELSE 0 END), 0)::int AS "totalRedeemed",
+      COALESCE(SUM(points), 0)::int AS "totalOutstanding",
+      COUNT(DISTINCT customer_id)::int AS "membersWithPoints"
+    FROM loyalty_transactions
+  `);
+
+  res.json({ customers: result.rows, stats: stats.rows[0] ?? {} });
+});
+
+// POST /admin/loyalty/adjust
+router.post("/admin/loyalty/adjust", async (req: Request, res: Response): Promise<void> => {
+  if (!isAdmin(req, res)) return;
+  const { customerId, points, reason } = req.body as { customerId?: unknown; points?: unknown; reason?: unknown };
+  if (!customerId || typeof points !== "number" || !reason || typeof reason !== "string") {
+    res.status(400).json({ error: "customerId, points (number), and reason are required" });
+    return;
+  }
+  await db.insert(loyaltyTransactionsTable).values({
+    customerId: Number(customerId),
+    type: "adjusted",
+    points: Math.round(points as number),
+    description: `Admin adjustment: ${reason}`,
+  });
+  logger.info({ customerId, points, reason }, "Admin loyalty adjustment");
+  res.json({ success: true });
+});
+
+export default router;

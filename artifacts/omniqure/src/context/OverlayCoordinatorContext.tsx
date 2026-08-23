@@ -1,1 +1,50 @@
-aW1wb3J0IHsgY3JlYXRlQ29udGV4dCwgdXNlQ2FsbGJhY2ssIHVzZUNvbnRleHQsIHVzZU1lbW8sIHVzZVN0YXRlLCB0eXBlIFJlYWN0Tm9kZSB9IGZyb20gInJlYWN0IjsKCi8vIENvb3JkaW5hdGVzIGZpeGVkLXBvc2l0aW9uLCBib3R0b20tYW5jaG9yZWQgb3ZlcmxheXMgKGNvb2tpZSBjb25zZW50IGJhciwKLy8gbW9iaWxlIGNhcnQgYmFyLCBjaGF0IHdpZGdldCkgc28gdGhleSBzdGFjayBvbiB0b3Agb2YgZWFjaCBvdGhlciBpbnN0ZWFkIG9mCi8vIHZpc3VhbGx5IG92ZXJsYXBwaW5nLiBFYWNoIG92ZXJsYXkgcmVwb3J0cyBpdHMgb3duIHJlbmRlcmVkIGhlaWdodCB1bmRlciBhCi8vIHVuaXF1ZSBpZDsgY29uc3VtZXJzIChsaWtlIHRoZSBjaGF0IGJ1YmJsZSkgcmVhZCB0aGUgY29tYmluZWQgaW5zZXQgYW5kCi8vIHNoaWZ0IHRoZW1zZWx2ZXMgdXAgYnkgdGhhdCBhbW91bnQuCmludGVyZmFjZSBPdmVybGF5Q29vcmRpbmF0b3JWYWx1ZSB7CiAgYm90dG9tSW5zZXQ6IG51bWJlcjsKICByZWdpc3RlckJvdHRvbUluc2V0OiAoaWQ6IHN0cmluZywgaGVpZ2h0OiBudW1iZXIpID0+IHZvaWQ7Cn0KCmNvbnN0IE92ZXJsYXlDb29yZGluYXRvckNvbnRleHQgPSBjcmVhdGVDb250ZXh0PE92ZXJsYXlDb29yZGluYXRvclZhbHVlIHwgbnVsbD4obnVsbCk7CgpleHBvcnQgZnVuY3Rpb24gT3ZlcmxheUNvb3JkaW5hdG9yUHJvdmlkZXIoeyBjaGlsZHJlbiB9OiB7IGNoaWxkcmVuOiBSZWFjdE5vZGUgfSkgewogIGNvbnN0IFtpbnNldHMsIHNldEluc2V0c10gPSB1c2VTdGF0ZTxSZWNvcmQ8c3RyaW5nLCBudW1iZXI+Pih7fSk7CgogIGNvbnN0IHJlZ2lzdGVyQm90dG9tSW5zZXQgPSB1c2VDYWxsYmFjaygoaWQ6IHN0cmluZywgaGVpZ2h0OiBudW1iZXIpID0+IHsKICAgIHNldEluc2V0cyhwcmV2ID0+IHsKICAgICAgY29uc3Qgcm91bmRlZCA9IE1hdGgubWF4KDAsIE1hdGgucm91bmQoaGVpZ2h0KSk7CiAgICAgIGlmIChyb3VuZGVkIDw9IDApIHsKICAgICAgICBpZiAoIShpZCBpbiBwcmV2KSkgcmV0dXJuIHByZXY7CiAgICAgICAgY29uc3QgbmV4dCA9IHsgLi4ucHJldiB9OwogICAgICAgIGRlbGV0ZSBuZXh0W2lkXTsKICAgICAgICByZXR1cm4gbmV4dDsKICAgICAgfQogICAgICBpZiAocHJldltpZF0gPT09IHJvdW5kZWQpIHJldHVybiBwcmV2OwogICAgICByZXR1cm4geyAuLi5wcmV2LCBbaWRdOiByb3VuZGVkIH07CiAgICB9KTsKICB9LCBbXSk7CgogIGNvbnN0IGJvdHRvbUluc2V0ID0gdXNlTWVtbygKICAgICgpID0+IE9iamVjdC52YWx1ZXMoaW5zZXRzKS5yZWR1Y2UoKG1heCwgaCkgPT4gTWF0aC5tYXgobWF4LCBoKSwgMCksCiAgICBbaW5zZXRzXQogICk7CgogIGNvbnN0IHZhbHVlID0gdXNlTWVtbygoKSA9PiAoeyBib3R0b21JbnNldCwgcmVnaXN0ZXJCb3R0b21JbnNldCB9KSwgW2JvdHRvbUluc2V0LCByZWdpc3RlckJvdHRvbUluc2V0XSk7CgogIHJldHVybiAoCiAgICA8T3ZlcmxheUNvb3JkaW5hdG9yQ29udGV4dC5Qcm92aWRlciB2YWx1ZT17dmFsdWV9PgogICAgICB7Y2hpbGRyZW59CiAgICA8L092ZXJsYXlDb29yZGluYXRvckNvbnRleHQuUHJvdmlkZXI+CiAgKTsKfQoKZXhwb3J0IGZ1bmN0aW9uIHVzZU92ZXJsYXlDb29yZGluYXRvcigpOiBPdmVybGF5Q29vcmRpbmF0b3JWYWx1ZSB7CiAgY29uc3QgY3R4ID0gdXNlQ29udGV4dChPdmVybGF5Q29vcmRpbmF0b3JDb250ZXh0KTsKICBpZiAoIWN0eCkgcmV0dXJuIHsgYm90dG9tSW5zZXQ6IDAsIHJlZ2lzdGVyQm90dG9tSW5zZXQ6ICgpID0+IHt9IH07CiAgcmV0dXJuIGN0eDsKfQo=
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
+
+// Coordinates fixed-position, bottom-anchored overlays (cookie consent bar,
+// mobile cart bar, chat widget) so they stack on top of each other instead of
+// visually overlapping. Each overlay reports its own rendered height under a
+// unique id; consumers (like the chat bubble) read the combined inset and
+// shift themselves up by that amount.
+interface OverlayCoordinatorValue {
+  bottomInset: number;
+  registerBottomInset: (id: string, height: number) => void;
+}
+
+const OverlayCoordinatorContext = createContext<OverlayCoordinatorValue | null>(null);
+
+export function OverlayCoordinatorProvider({ children }: { children: ReactNode }) {
+  const [insets, setInsets] = useState<Record<string, number>>({});
+
+  const registerBottomInset = useCallback((id: string, height: number) => {
+    setInsets(prev => {
+      const rounded = Math.max(0, Math.round(height));
+      if (rounded <= 0) {
+        if (!(id in prev)) return prev;
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      }
+      if (prev[id] === rounded) return prev;
+      return { ...prev, [id]: rounded };
+    });
+  }, []);
+
+  const bottomInset = useMemo(
+    () => Object.values(insets).reduce((max, h) => Math.max(max, h), 0),
+    [insets]
+  );
+
+  const value = useMemo(() => ({ bottomInset, registerBottomInset }), [bottomInset, registerBottomInset]);
+
+  return (
+    <OverlayCoordinatorContext.Provider value={value}>
+      {children}
+    </OverlayCoordinatorContext.Provider>
+  );
+}
+
+export function useOverlayCoordinator(): OverlayCoordinatorValue {
+  const ctx = useContext(OverlayCoordinatorContext);
+  if (!ctx) return { bottomInset: 0, registerBottomInset: () => {} };
+  return ctx;
+}

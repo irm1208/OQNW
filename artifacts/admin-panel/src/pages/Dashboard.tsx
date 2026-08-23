@@ -1,1 +1,439 @@
-aW1wb3J0IHsgdXNlU3RhdGUgfSBmcm9tICJyZWFjdCI7CmltcG9ydCB7CiAgdXNlR2V0QWRtaW5EYXNoYm9hcmQsCiAgdXNlR2V0UmV2ZW51ZUNoYXJ0LAogIHVzZUdldFRvcFByb2R1Y3RzLAogIHVzZUdldE5ld0N1c3RvbWVyc0NoYXJ0LAogIHVzZUdldE9yZGVyU3RhdHVzQnJlYWtkb3duLAogIHVzZUdldFJldmVudWVCeUNhdGVnb3J5Q2hhcnQsCiAgZ2V0R2V0QWRtaW5EYXNoYm9hcmRRdWVyeUtleSwKICBnZXRHZXRUb3BQcm9kdWN0c1F1ZXJ5S2V5LAogIGdldEdldE9yZGVyU3RhdHVzQnJlYWtkb3duUXVlcnlLZXksCiAgZ2V0R2V0UmV2ZW51ZUJ5Q2F0ZWdvcnlDaGFydFF1ZXJ5S2V5LAp9IGZyb20gIkB3b3Jrc3BhY2UvYXBpLWNsaWVudC1yZWFjdCI7CmltcG9ydCB7IENhcmQsIENhcmRDb250ZW50LCBDYXJkSGVhZGVyLCBDYXJkVGl0bGUgfSBmcm9tICJAL2NvbXBvbmVudHMvdWkvY2FyZCI7CmltcG9ydCB7CiAgQXJlYSwKICBBcmVhQ2hhcnQsCiAgQmFyLAogIEJhckNoYXJ0LAogIENlbGwsCiAgTGluZSwKICBMaW5lQ2hhcnQsCiAgUGllLAogIFBpZUNoYXJ0LAogIFJlc3BvbnNpdmVDb250YWluZXIsCiAgVG9vbHRpcCwKICBYQXhpcywKICBZQXhpcywKICBMZWdlbmQsCn0gZnJvbSAicmVjaGFydHMiOwppbXBvcnQgewogIExvYWRlcjIsCiAgVHJlbmRpbmdVcCwKICBQYWNrYWdlLAogIFVzZXJzLAogIFNob3BwaW5nQ2FydCwKICBBbGVydENpcmNsZSwKICBDcmVkaXRDYXJkLAp9IGZyb20gImx1Y2lkZS1yZWFjdCI7Cgp0eXBlIFBlcmlvZCA9IDcgfCAzMCB8IDkwIHwgMzY1OwoKY29uc3QgUEVSSU9EX0xBQkVMUzogUmVjb3JkPFBlcmlvZCwgc3RyaW5nPiA9IHsgNzogIjdkIiwgMzA6ICIzMGQiLCA5MDogIjkwZCIsIDM2NTogIjF5IiB9OwoKY29uc3QgU1RBVFVTX0NPTE9SUzogUmVjb3JkPHN0cmluZywgc3RyaW5nPiA9IHsKICBwZW5kaW5nOiAiI2Y1OWUwYiIsCiAgcHJvY2Vzc2luZzogIiMzYjgyZjYiLAogIHNoaXBwZWQ6ICIjOGI1Y2Y2IiwKICBkZWxpdmVyZWQ6ICIjMTBiOTgxIiwKICBjYW5jZWxsZWQ6ICIjZWY0NDQ0IiwKICByZXR1cm5lZDogIiM2YjcyODAiLAp9OwoKY29uc3QgQ0FURUdPUllfQ09MT1JTID0gWwogICJoc2wodmFyKC0tcHJpbWFyeSkpIiwKICAiIzEwYjk4MSIsCiAgIiNmNTllMGIiLAogICIjOGI1Y2Y2IiwKICAiI2VmNDQ0NCIsCiAgIiMzYjgyZjYiLAogICIjZWM0ODk5IiwKICAiIzE0YjhhNiIsCl07CgpmdW5jdGlvbiBQZXJpb2RTZWxlY3Rvcih7IHZhbHVlLCBvbkNoYW5nZSB9OiB7IHZhbHVlOiBQZXJpb2Q7IG9uQ2hhbmdlOiAocDogUGVyaW9kKSA9PiB2b2lkIH0pIHsKICByZXR1cm4gKAogICAgPGRpdiBjbGFzc05hbWU9ImZsZXggZ2FwLTEgYmctbXV0ZWQgcm91bmRlZC1tZCBwLTEiPgogICAgICB7KE9iamVjdC5rZXlzKFBFUklPRF9MQUJFTFMpIGFzIHVua25vd24gYXMgUGVyaW9kW10pLm1hcCgocCkgPT4gKAogICAgICAgIDxidXR0b24KICAgICAgICAgIGtleT17cH0KICAgICAgICAgIG9uQ2xpY2s9eygpID0+IG9uQ2hhbmdlKHApfQogICAgICAgICAgY2xhc3NOYW1lPXtgcHgtMyBweS0xIHJvdW5kZWQgdGV4dC14cyBmb250LW1lZGl1bSB0cmFuc2l0aW9uLWNvbG9ycyAkewogICAgICAgICAgICB2YWx1ZSA9PT0gcAogICAgICAgICAgICAgID8gImJnLWJhY2tncm91bmQgc2hhZG93LXNtIHRleHQtZm9yZWdyb3VuZCIKICAgICAgICAgICAgICA6ICJ0ZXh0LW11dGVkLWZvcmVncm91bmQgaG92ZXI6dGV4dC1mb3JlZ3JvdW5kIgogICAgICAgICAgfWB9CiAgICAgICAgPgogICAgICAgICAge1BFUklPRF9MQUJFTFNbcF19CiAgICAgICAgPC9idXR0b24+CiAgICAgICkpfQogICAgPC9kaXY+CiAgKTsKfQoKZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gRGFzaGJvYXJkKCkgewogIGNvbnN0IFtwZXJpb2QsIHNldFBlcmlvZF0gPSB1c2VTdGF0ZTxQZXJpb2Q+KDMwKTsKCiAgY29uc3QgeyBkYXRhOiBzdGF0cywgaXNMb2FkaW5nOiBzdGF0c0xvYWRpbmcgfSA9IHVzZUdldEFkbWluRGFzaGJvYXJkKHsKICAgIHF1ZXJ5OiB7IHF1ZXJ5S2V5OiBnZXRHZXRBZG1pbkRhc2hib2FyZFF1ZXJ5S2V5KCkgfSwKICB9KTsKICBjb25zdCB7IGRhdGE6IHJldmVudWVEYXRhLCBpc0xvYWRpbmc6IGNoYXJ0TG9hZGluZyB9ID0gdXNlR2V0UmV2ZW51ZUNoYXJ0KAogICAgeyBwZXJpb2QgfSwKICAgIHsgcXVlcnk6IHsgcXVlcnlLZXk6IFsicmV2ZW51ZS1jaGFydCIsIHBlcmlvZF0gfSB9CiAgKTsKICBjb25zdCB7IGRhdGE6IHRvcFByb2R1Y3RzLCBpc0xvYWRpbmc6IHByb2R1Y3RzTG9hZGluZyB9ID0gdXNlR2V0VG9wUHJvZHVjdHMoewogICAgcXVlcnk6IHsgcXVlcnlLZXk6IGdldEdldFRvcFByb2R1Y3RzUXVlcnlLZXkoKSB9LAogIH0pOwogIGNvbnN0IHsgZGF0YTogbmV3Q3VzdG9tZXJzLCBpc0xvYWRpbmc6IGN1c3RvbWVyc0xvYWRpbmcgfSA9IHVzZUdldE5ld0N1c3RvbWVyc0NoYXJ0KAogICAgeyBwZXJpb2QgfSwKICAgIHsgcXVlcnk6IHsgcXVlcnlLZXk6IFsibmV3LWN1c3RvbWVycy1jaGFydCIsIHBlcmlvZF0gfSB9CiAgKTsKICBjb25zdCB7IGRhdGE6IG9yZGVyU3RhdHVzLCBpc0xvYWRpbmc6IHN0YXR1c0xvYWRpbmcgfSA9IHVzZUdldE9yZGVyU3RhdHVzQnJlYWtkb3duKHsKICAgIHF1ZXJ5OiB7IHF1ZXJ5S2V5OiBnZXRHZXRPcmRlclN0YXR1c0JyZWFrZG93blF1ZXJ5S2V5KCkgfSwKICB9KTsKICBjb25zdCB7IGRhdGE6IHJldmVudWVCeUNhdGVnb3J5LCBpc0xvYWRpbmc6IGNhdGVnb3J5TG9hZGluZyB9ID0gdXNlR2V0UmV2ZW51ZUJ5Q2F0ZWdvcnlDaGFydCh7CiAgICBxdWVyeTogeyBxdWVyeUtleTogZ2V0R2V0UmV2ZW51ZUJ5Q2F0ZWdvcnlDaGFydFF1ZXJ5S2V5KCkgfSwKICB9KTsKCiAgY29uc3QgZm9ybWF0Q3VycmVuY3kgPSAodmFsOiBudW1iZXIpID0+CiAgICBuZXcgSW50bC5OdW1iZXJGb3JtYXQoImVuLUdCIiwgeyBzdHlsZTogImN1cnJlbmN5IiwgY3VycmVuY3k6ICJHQlAiIH0pLmZvcm1hdCh2YWwpOwogIGNvbnN0IGZvcm1hdFNob3J0ID0gKHZhbDogbnVtYmVyKSA9PgogICAgdmFsID49IDEwMDAgPyBgwqMkeyh2YWwgLyAxMDAwKS50b0ZpeGVkKDEpfWtgIDogYMKjJHt2YWwudG9GaXhlZCgwKX1gOwogIGNvbnN0IGZtdERhdGUgPSAoZDogc3RyaW5nKSA9PgogICAgbmV3IERhdGUoZCkudG9Mb2NhbGVEYXRlU3RyaW5nKCJlbi1HQiIsIHsgbW9udGg6ICJzaG9ydCIsIGRheTogIm51bWVyaWMiIH0pOwoKICBjb25zdCBpc0xvYWRpbmcgPQogICAgc3RhdHNMb2FkaW5nIHx8IGNoYXJ0TG9hZGluZyB8fCBwcm9kdWN0c0xvYWRpbmcgfHwgY3VzdG9tZXJzTG9hZGluZyB8fCBzdGF0dXNMb2FkaW5nIHx8IGNhdGVnb3J5TG9hZGluZzsKCiAgaWYgKGlzTG9hZGluZykgewogICAgcmV0dXJuICgKICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggaC02NCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIiPgogICAgICAgIDxMb2FkZXIyIGNsYXNzTmFtZT0idy04IGgtOCBhbmltYXRlLXNwaW4gdGV4dC1wcmltYXJ5IiAvPgogICAgICA8L2Rpdj4KICAgICk7CiAgfQoKICBpZiAoIXN0YXRzKSByZXR1cm4gbnVsbDsKCiAgY29uc3Qgc3RhdENhcmRzID0gWwogICAgewogICAgICB0aXRsZTogIlRvZGF5J3MgUmV2ZW51ZSIsCiAgICAgIHZhbHVlOiBmb3JtYXRDdXJyZW5jeShzdGF0cy5yZXZlbnVlVG9kYXkpLAogICAgICBpY29uOiBUcmVuZGluZ1VwLAogICAgICBzdWI6IGAke3N0YXRzLm9yZGVyc1RvZGF5fSBvcmRlciR7c3RhdHMub3JkZXJzVG9kYXkgIT09IDEgPyAicyIgOiAiIn0gdG9kYXlgLAogICAgfSwKICAgIHsKICAgICAgdGl0bGU6ICJUb3RhbCBSZXZlbnVlIiwKICAgICAgdmFsdWU6IGZvcm1hdEN1cnJlbmN5KHN0YXRzLnRvdGFsUmV2ZW51ZSksCiAgICAgIGljb246IENyZWRpdENhcmQsCiAgICAgIHN1YjogbnVsbCwKICAgIH0sCiAgICB7CiAgICAgIHRpdGxlOiAiVG90YWwgT3JkZXJzIiwKICAgICAgdmFsdWU6IHN0YXRzLnRvdGFsT3JkZXJzLnRvTG9jYWxlU3RyaW5nKCksCiAgICAgIGljb246IFNob3BwaW5nQ2FydCwKICAgICAgc3ViOiBudWxsLAogICAgfSwKICAgIHsKICAgICAgdGl0bGU6ICJDdXN0b21lcnMiLAogICAgICB2YWx1ZTogc3RhdHMudG90YWxDdXN0b21lcnMudG9Mb2NhbGVTdHJpbmcoKSwKICAgICAgaWNvbjogVXNlcnMsCiAgICAgIHN1YjogbnVsbCwKICAgIH0sCiAgICB7CiAgICAgIHRpdGxlOiAiQXZnIE9yZGVyIFZhbHVlIiwKICAgICAgdmFsdWU6IGZvcm1hdEN1cnJlbmN5KHN0YXRzLmF2Z09yZGVyVmFsdWUpLAogICAgICBpY29uOiBQYWNrYWdlLAogICAgICBzdWI6IG51bGwsCiAgICB9LAogICAgewogICAgICB0aXRsZTogIkxvdyBTdG9jayBBbGVydHMiLAogICAgICB2YWx1ZTogc3RhdHMubG93U3RvY2tDb3VudC50b1N0cmluZygpLAogICAgICBpY29uOiBBbGVydENpcmNsZSwKICAgICAgc3ViOiBudWxsLAogICAgICBkYW5nZXI6IHN0YXRzLmxvd1N0b2NrQ291bnQgPiAwLAogICAgfSwKICBdOwoKICByZXR1cm4gKAogICAgPGRpdiBjbGFzc05hbWU9InNwYWNlLXktNiI+CiAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGZsZXgtY29sIHNtOmZsZXgtcm93IHNtOml0ZW1zLWNlbnRlciBqdXN0aWZ5LWJldHdlZW4gZ2FwLTQiPgogICAgICAgIDxoMiBjbGFzc05hbWU9InRleHQtMnhsIGZvbnQtYm9sZCB0cmFja2luZy10aWdodCI+T3ZlcnZpZXc8L2gyPgogICAgICAgIDxQZXJpb2RTZWxlY3RvciB2YWx1ZT17cGVyaW9kfSBvbkNoYW5nZT17c2V0UGVyaW9kfSAvPgogICAgICA8L2Rpdj4KCiAgICAgIHsvKiBTdGF0IENhcmRzICovfQogICAgICA8ZGl2IGNsYXNzTmFtZT0iZ3JpZCBnYXAtNCBncmlkLWNvbHMtMiBsZzpncmlkLWNvbHMtMyB4bDpncmlkLWNvbHMtNiI+CiAgICAgICAge3N0YXRDYXJkcy5tYXAoKGNhcmQpID0+ICgKICAgICAgICAgIDxDYXJkIGtleT17Y2FyZC50aXRsZX0+CiAgICAgICAgICAgIDxDYXJkSGVhZGVyIGNsYXNzTmFtZT0iZmxleCBmbGV4LXJvdyBpdGVtcy1jZW50ZXIganVzdGlmeS1iZXR3ZWVuIHBiLTIgc3BhY2UteS0wIj4KICAgICAgICAgICAgICA8Q2FyZFRpdGxlIGNsYXNzTmFtZT0idGV4dC1zbSBmb250LW1lZGl1bSI+e2NhcmQudGl0bGV9PC9DYXJkVGl0bGU+CiAgICAgICAgICAgICAgPGNhcmQuaWNvbgogICAgICAgICAgICAgICAgY2xhc3NOYW1lPXtgdy00IGgtNCAke2NhcmQuZGFuZ2VyID8gInRleHQtZGVzdHJ1Y3RpdmUiIDogInRleHQtbXV0ZWQtZm9yZWdyb3VuZCJ9YH0KICAgICAgICAgICAgICAvPgogICAgICAgICAgICA8L0NhcmRIZWFkZXI+CiAgICAgICAgICAgIDxDYXJkQ29udGVudD4KICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT17YHRleHQtMnhsIGZvbnQtYm9sZCAke2NhcmQuZGFuZ2VyID8gInRleHQtZGVzdHJ1Y3RpdmUiIDogIiJ9YH0+CiAgICAgICAgICAgICAgICB7Y2FyZC52YWx1ZX0KICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICB7Y2FyZC5zdWIgJiYgPHAgY2xhc3NOYW1lPSJ0ZXh0LXhzIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCBtdC0xIj57Y2FyZC5zdWJ9PC9wPn0KICAgICAgICAgICAgPC9DYXJkQ29udGVudD4KICAgICAgICAgIDwvQ2FyZD4KICAgICAgICApKX0KICAgICAgPC9kaXY+CgogICAgICB7LyogUmV2ZW51ZSArIE9yZGVyIFN0YXR1cyAqL30KICAgICAgPGRpdiBjbGFzc05hbWU9ImdyaWQgZ2FwLTYgbWQ6Z3JpZC1jb2xzLTciPgogICAgICAgIDxDYXJkIGNsYXNzTmFtZT0ibWQ6Y29sLXNwYW4tNSI+CiAgICAgICAgICA8Q2FyZEhlYWRlcj4KICAgICAgICAgICAgPENhcmRUaXRsZT5SZXZlbnVlPC9DYXJkVGl0bGU+CiAgICAgICAgICA8L0NhcmRIZWFkZXI+CiAgICAgICAgICA8Q2FyZENvbnRlbnQ+CiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJoLVsyNjBweF0iPgogICAgICAgICAgICAgIDxSZXNwb25zaXZlQ29udGFpbmVyIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgogICAgICAgICAgICAgICAgPEFyZWFDaGFydCBkYXRhPXtyZXZlbnVlRGF0YSA/PyBbXX0gbWFyZ2luPXt7IHRvcDogMTAsIHJpZ2h0OiAxMCwgbGVmdDogMCwgYm90dG9tOiAwIH19PgogICAgICAgICAgICAgICAgICA8ZGVmcz4KICAgICAgICAgICAgICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImNvbG9yUmV2IiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+CiAgICAgICAgICAgICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjUlIiBzdG9wQ29sb3I9ImhzbCh2YXIoLS1wcmltYXJ5KSkiIHN0b3BPcGFjaXR5PXswLjN9IC8+CiAgICAgICAgICAgICAgICAgICAgICA8c3RvcCBvZmZzZXQ9Ijk1JSIgc3RvcENvbG9yPSJoc2wodmFyKC0tcHJpbWFyeSkpIiBzdG9wT3BhY2l0eT17MH0gLz4KICAgICAgICAgICAgICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgICAgICAgICAgICAgICA8L2RlZnM+CiAgICAgICAgICAgICAgICAgIDxYQXhpcwogICAgICAgICAgICAgICAgICAgIGRhdGFLZXk9ImRhdGUiCiAgICAgICAgICAgICAgICAgICAgdGlja0Zvcm1hdHRlcj17Zm10RGF0ZX0KICAgICAgICAgICAgICAgICAgICBzdHJva2U9ImhzbCh2YXIoLS1tdXRlZC1mb3JlZ3JvdW5kKSkiCiAgICAgICAgICAgICAgICAgICAgZm9udFNpemU9ezExfQogICAgICAgICAgICAgICAgICAgIHRpY2tMaW5lPXtmYWxzZX0KICAgICAgICAgICAgICAgICAgICBheGlzTGluZT17ZmFsc2V9CiAgICAgICAgICAgICAgICAgIC8+CiAgICAgICAgICAgICAgICAgIDxZQXhpcwogICAgICAgICAgICAgICAgICAgIHRpY2tGb3JtYXR0ZXI9e2Zvcm1hdFNob3J0fQogICAgICAgICAgICAgICAgICAgIHN0cm9rZT0iaHNsKHZhcigtLW11dGVkLWZvcmVncm91bmQpKSIKICAgICAgICAgICAgICAgICAgICBmb250U2l6ZT17MTF9CiAgICAgICAgICAgICAgICAgICAgdGlja0xpbmU9e2ZhbHNlfQogICAgICAgICAgICAgICAgICAgIGF4aXNMaW5lPXtmYWxzZX0KICAgICAgICAgICAgICAgICAgLz4KICAgICAgICAgICAgICAgICAgPFRvb2x0aXAKICAgICAgICAgICAgICAgICAgICBmb3JtYXR0ZXI9eyh2YWx1ZTogbnVtYmVyKSA9PiBbZm9ybWF0Q3VycmVuY3kodmFsdWUpLCAiUmV2ZW51ZSJdfQogICAgICAgICAgICAgICAgICAgIGxhYmVsRm9ybWF0dGVyPXsobGFiZWwpID0+CiAgICAgICAgICAgICAgICAgICAgICBuZXcgRGF0ZShsYWJlbCBhcyBzdHJpbmcpLnRvTG9jYWxlRGF0ZVN0cmluZygiZW4tR0IiLCB7CiAgICAgICAgICAgICAgICAgICAgICAgIG1vbnRoOiAibG9uZyIsCiAgICAgICAgICAgICAgICAgICAgICAgIGRheTogIm51bWVyaWMiLAogICAgICAgICAgICAgICAgICAgICAgICB5ZWFyOiAibnVtZXJpYyIsCiAgICAgICAgICAgICAgICAgICAgICB9KQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICBjb250ZW50U3R5bGU9e3sKICAgICAgICAgICAgICAgICAgICAgIGJhY2tncm91bmRDb2xvcjogImhzbCh2YXIoLS1jYXJkKSkiLAogICAgICAgICAgICAgICAgICAgICAgYm9yZGVyOiAiMXB4IHNvbGlkIGhzbCh2YXIoLS1ib3JkZXIpKSIsCiAgICAgICAgICAgICAgICAgICAgICBib3JkZXJSYWRpdXM6ICI4cHgiLAogICAgICAgICAgICAgICAgICAgIH19CiAgICAgICAgICAgICAgICAgIC8+CiAgICAgICAgICAgICAgICAgIDxBcmVhCiAgICAgICAgICAgICAgICAgICAgdHlwZT0ibW9ub3RvbmUiCiAgICAgICAgICAgICAgICAgICAgZGF0YUtleT0icmV2ZW51ZSIKICAgICAgICAgICAgICAgICAgICBzdHJva2U9ImhzbCh2YXIoLS1wcmltYXJ5KSkiCiAgICAgICAgICAgICAgICAgICAgc3Ryb2tlV2lkdGg9ezJ9CiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk9ezF9CiAgICAgICAgICAgICAgICAgICAgZmlsbD0idXJsKCNjb2xvclJldikiCiAgICAgICAgICAgICAgICAgIC8+CiAgICAgICAgICAgICAgICA8L0FyZWFDaGFydD4KICAgICAgICAgICAgICA8L1Jlc3BvbnNpdmVDb250YWluZXI+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgPC9DYXJkQ29udGVudD4KICAgICAgICA8L0NhcmQ+CgogICAgICAgIDxDYXJkIGNsYXNzTmFtZT0ibWQ6Y29sLXNwYW4tMiI+CiAgICAgICAgICA8Q2FyZEhlYWRlcj4KICAgICAgICAgICAgPENhcmRUaXRsZT5PcmRlciBTdGF0dXM8L0NhcmRUaXRsZT4KICAgICAgICAgIDwvQ2FyZEhlYWRlcj4KICAgICAgICAgIDxDYXJkQ29udGVudD4KICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImgtWzIwMHB4XSI+CiAgICAgICAgICAgICAgPFJlc3BvbnNpdmVDb250YWluZXIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSI+CiAgICAgICAgICAgICAgICA8UGllQ2hhcnQ+CiAgICAgICAgICAgICAgICAgIDxQaWUKICAgICAgICAgICAgICAgICAgICBkYXRhPXtvcmRlclN0YXR1cyA/PyBbXX0KICAgICAgICAgICAgICAgICAgICBkYXRhS2V5PSJjb3VudCIKICAgICAgICAgICAgICAgICAgICBuYW1lS2V5PSJzdGF0dXMiCiAgICAgICAgICAgICAgICAgICAgY3g9IjUwJSIKICAgICAgICAgICAgICAgICAgICBjeT0iNTAlIgogICAgICAgICAgICAgICAgICAgIGlubmVyUmFkaXVzPXs1MH0KICAgICAgICAgICAgICAgICAgICBvdXRlclJhZGl1cz17ODB9CiAgICAgICAgICAgICAgICAgICAgcGFkZGluZ0FuZ2xlPXsyfQogICAgICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICAgICAgeyhvcmRlclN0YXR1cyA/PyBbXSkubWFwKChlbnRyeSkgPT4gKAogICAgICAgICAgICAgICAgICAgICAgPENlbGwKICAgICAgICAgICAgICAgICAgICAgICAga2V5PXtlbnRyeS5zdGF0dXN9CiAgICAgICAgICAgICAgICAgICAgICAgIGZpbGw9e1NUQVRVU19DT0xPUlNbZW50cnkuc3RhdHVzXSA/PyAiIzk0YTNiOCJ9CiAgICAgICAgICAgICAgICAgICAgICAvPgogICAgICAgICAgICAgICAgICAgICkpfQogICAgICAgICAgICAgICAgICA8L1BpZT4KICAgICAgICAgICAgICAgICAgPFRvb2x0aXAKICAgICAgICAgICAgICAgICAgICBmb3JtYXR0ZXI9eyh2YWw6IG51bWJlciwgbmFtZTogc3RyaW5nKSA9PiBbdmFsLCBuYW1lXX0KICAgICAgICAgICAgICAgICAgICBjb250ZW50U3R5bGU9e3sKICAgICAgICAgICAgICAgICAgICAgIGJhY2tncm91bmRDb2xvcjogImhzbCh2YXIoLS1jYXJkKSkiLAogICAgICAgICAgICAgICAgICAgICAgYm9yZGVyOiAiMXB4IHNvbGlkIGhzbCh2YXIoLS1ib3JkZXIpKSIsCiAgICAgICAgICAgICAgICAgICAgICBib3JkZXJSYWRpdXM6ICI4cHgiLAogICAgICAgICAgICAgICAgICAgIH19CiAgICAgICAgICAgICAgICAgIC8+CiAgICAgICAgICAgICAgICA8L1BpZUNoYXJ0PgogICAgICAgICAgICAgIDwvUmVzcG9uc2l2ZUNvbnRhaW5lcj4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGZsZXgtd3JhcCBnYXAteC0zIGdhcC15LTEgbXQtMiI+CiAgICAgICAgICAgICAgeyhvcmRlclN0YXR1cyA/PyBbXSkubWFwKChzKSA9PiAoCiAgICAgICAgICAgICAgICA8ZGl2IGtleT17cy5zdGF0dXN9IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTEgdGV4dC14cyI+CiAgICAgICAgICAgICAgICAgIDxzcGFuCiAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPSJ3LTIgaC0yIHJvdW5kZWQtZnVsbCBpbmxpbmUtYmxvY2siCiAgICAgICAgICAgICAgICAgICAgc3R5bGU9e3sgYmFja2dyb3VuZDogU1RBVFVTX0NPTE9SU1tzLnN0YXR1c10gPz8gIiM5NGEzYjgiIH19CiAgICAgICAgICAgICAgICAgIC8+CiAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0idGV4dC1tdXRlZC1mb3JlZ3JvdW5kIGNhcGl0YWxpemUiPntzLnN0YXR1c308L3NwYW4+CiAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0iZm9udC1tZWRpdW0iPntzLmNvdW50fTwvc3Bhbj4KICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICAgICkpfQogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgIDwvQ2FyZENvbnRlbnQ+CiAgICAgICAgPC9DYXJkPgogICAgICA8L2Rpdj4KCiAgICAgIHsvKiBOZXcgQ3VzdG9tZXJzICsgUmV2ZW51ZSBieSBDYXRlZ29yeSAqL30KICAgICAgPGRpdiBjbGFzc05hbWU9ImdyaWQgZ2FwLTYgbWQ6Z3JpZC1jb2xzLTIiPgogICAgICAgIDxDYXJkPgogICAgICAgICAgPENhcmRIZWFkZXI+CiAgICAgICAgICAgIDxDYXJkVGl0bGU+TmV3IEN1c3RvbWVyczwvQ2FyZFRpdGxlPgogICAgICAgICAgPC9DYXJkSGVhZGVyPgogICAgICAgICAgPENhcmRDb250ZW50PgogICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iaC1bMjIwcHhdIj4KICAgICAgICAgICAgICA8UmVzcG9uc2l2ZUNvbnRhaW5lciB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIj4KICAgICAgICAgICAgICAgIDxMaW5lQ2hhcnQKICAgICAgICAgICAgICAgICAgZGF0YT17bmV3Q3VzdG9tZXJzID8/IFtdfQogICAgICAgICAgICAgICAgICBtYXJnaW49e3sgdG9wOiAxMCwgcmlnaHQ6IDEwLCBsZWZ0OiAwLCBib3R0b206IDAgfX0KICAgICAgICAgICAgICAgID4KICAgICAgICAgICAgICAgICAgPFhBeGlzCiAgICAgICAgICAgICAgICAgICAgZGF0YUtleT0iZGF0ZSIKICAgICAgICAgICAgICAgICAgICB0aWNrRm9ybWF0dGVyPXtmbXREYXRlfQogICAgICAgICAgICAgICAgICAgIHN0cm9rZT0iaHNsKHZhcigtLW11dGVkLWZvcmVncm91bmQpKSIKICAgICAgICAgICAgICAgICAgICBmb250U2l6ZT17MTF9CiAgICAgICAgICAgICAgICAgICAgdGlja0xpbmU9e2ZhbHNlfQogICAgICAgICAgICAgICAgICAgIGF4aXNMaW5lPXtmYWxzZX0KICAgICAgICAgICAgICAgICAgLz4KICAgICAgICAgICAgICAgICAgPFlBeGlzCiAgICAgICAgICAgICAgICAgICAgYWxsb3dEZWNpbWFscz17ZmFsc2V9CiAgICAgICAgICAgICAgICAgICAgc3Ryb2tlPSJoc2wodmFyKC0tbXV0ZWQtZm9yZWdyb3VuZCkpIgogICAgICAgICAgICAgICAgICAgIGZvbnRTaXplPXsxMX0KICAgICAgICAgICAgICAgICAgICB0aWNrTGluZT17ZmFsc2V9CiAgICAgICAgICAgICAgICAgICAgYXhpc0xpbmU9e2ZhbHNlfQogICAgICAgICAgICAgICAgICAvPgogICAgICAgICAgICAgICAgICA8VG9vbHRpcAogICAgICAgICAgICAgICAgICAgIGZvcm1hdHRlcj17KHZhbDogbnVtYmVyKSA9PiBbdmFsLCAiTmV3IEN1c3RvbWVycyJdfQogICAgICAgICAgICAgICAgICAgIGxhYmVsRm9ybWF0dGVyPXtmbXREYXRlfQogICAgICAgICAgICAgICAgICAgIGNvbnRlbnRTdHlsZT17ewogICAgICAgICAgICAgICAgICAgICAgYmFja2dyb3VuZENvbG9yOiAiaHNsKHZhcigtLWNhcmQpKSIsCiAgICAgICAgICAgICAgICAgICAgICBib3JkZXI6ICIxcHggc29saWQgaHNsKHZhcigtLWJvcmRlcikpIiwKICAgICAgICAgICAgICAgICAgICAgIGJvcmRlclJhZGl1czogIjhweCIsCiAgICAgICAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgICAgICAgLz4KICAgICAgICAgICAgICAgICAgPExpbmUKICAgICAgICAgICAgICAgICAgICB0eXBlPSJtb25vdG9uZSIKICAgICAgICAgICAgICAgICAgICBkYXRhS2V5PSJuZXdDdXN0b21lcnMiCiAgICAgICAgICAgICAgICAgICAgc3Ryb2tlPSIjMTBiOTgxIgogICAgICAgICAgICAgICAgICAgIHN0cm9rZVdpZHRoPXsyfQogICAgICAgICAgICAgICAgICAgIGRvdD17ZmFsc2V9CiAgICAgICAgICAgICAgICAgIC8+CiAgICAgICAgICAgICAgICA8L0xpbmVDaGFydD4KICAgICAgICAgICAgICA8L1Jlc3BvbnNpdmVDb250YWluZXI+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgPC9DYXJkQ29udGVudD4KICAgICAgICA8L0NhcmQ+CgogICAgICAgIDxDYXJkPgogICAgICAgICAgPENhcmRIZWFkZXI+CiAgICAgICAgICAgIDxDYXJkVGl0bGU+UmV2ZW51ZSBieSBDYXRlZ29yeTwvQ2FyZFRpdGxlPgogICAgICAgICAgPC9DYXJkSGVhZGVyPgogICAgICAgICAgPENhcmRDb250ZW50PgogICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iaC1bMjIwcHhdIj4KICAgICAgICAgICAgICA8UmVzcG9uc2l2ZUNvbnRhaW5lciB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIj4KICAgICAgICAgICAgICAgIDxCYXJDaGFydAogICAgICAgICAgICAgICAgICBkYXRhPXtyZXZlbnVlQnlDYXRlZ29yeSA/PyBbXX0KICAgICAgICAgICAgICAgICAgbGF5b3V0PSJ2ZXJ0aWNhbCIKICAgICAgICAgICAgICAgICAgbWFyZ2luPXt7IHRvcDogMCwgcmlnaHQ6IDE2LCBsZWZ0OiAwLCBib3R0b206IDAgfX0KICAgICAgICAgICAgICAgID4KICAgICAgICAgICAgICAgICAgPFhBeGlzCiAgICAgICAgICAgICAgICAgICAgdHlwZT0ibnVtYmVyIgogICAgICAgICAgICAgICAgICAgIHRpY2tGb3JtYXR0ZXI9e2Zvcm1hdFNob3J0fQogICAgICAgICAgICAgICAgICAgIHN0cm9rZT0iaHNsKHZhcigtLW11dGVkLWZvcmVncm91bmQpKSIKICAgICAgICAgICAgICAgICAgICBmb250U2l6ZT17MTF9CiAgICAgICAgICAgICAgICAgICAgdGlja0xpbmU9e2ZhbHNlfQogICAgICAgICAgICAgICAgICAgIGF4aXNMaW5lPXtmYWxzZX0KICAgICAgICAgICAgICAgICAgLz4KICAgICAgICAgICAgICAgICAgPFlBeGlzCiAgICAgICAgICAgICAgICAgICAgdHlwZT0iY2F0ZWdvcnkiCiAgICAgICAgICAgICAgICAgICAgZGF0YUtleT0iY2F0ZWdvcnkiCiAgICAgICAgICAgICAgICAgICAgd2lkdGg9ezkwfQogICAgICAgICAgICAgICAgICAgIHN0cm9rZT0iaHNsKHZhcigtLW11dGVkLWZvcmVncm91bmQpKSIKICAgICAgICAgICAgICAgICAgICBmb250U2l6ZT17MTF9CiAgICAgICAgICAgICAgICAgICAgdGlja0xpbmU9e2ZhbHNlfQogICAgICAgICAgICAgICAgICAgIGF4aXNMaW5lPXtmYWxzZX0KICAgICAgICAgICAgICAgICAgICB0aWNrRm9ybWF0dGVyPXsodjogc3RyaW5nKSA9PgogICAgICAgICAgICAgICAgICAgICAgdi5sZW5ndGggPiAxNCA/IHYuc2xpY2UoMCwgMTMpICsgIuKApiIgOiB2CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAvPgogICAgICAgICAgICAgICAgICA8VG9vbHRpcAogICAgICAgICAgICAgICAgICAgIGZvcm1hdHRlcj17KHZhbDogbnVtYmVyKSA9PiBbZm9ybWF0Q3VycmVuY3kodmFsKSwgIlJldmVudWUiXX0KICAgICAgICAgICAgICAgICAgICBjb250ZW50U3R5bGU9e3sKICAgICAgICAgICAgICAgICAgICAgIGJhY2tncm91bmRDb2xvcjogImhzbCh2YXIoLS1jYXJkKSkiLAogICAgICAgICAgICAgICAgICAgICAgYm9yZGVyOiAiMXB4IHNvbGlkIGhzbCh2YXIoLS1ib3JkZXIpKSIsCiAgICAgICAgICAgICAgICAgICAgICBib3JkZXJSYWRpdXM6ICI4cHgiLAogICAgICAgICAgICAgICAgICAgIH19CiAgICAgICAgICAgICAgICAgIC8+CiAgICAgICAgICAgICAgICAgIDxCYXIgZGF0YUtleT0icmV2ZW51ZSIgcmFkaXVzPXtbMCwgNCwgNCwgMF19PgogICAgICAgICAgICAgICAgICAgIHsocmV2ZW51ZUJ5Q2F0ZWdvcnkgPz8gW10pLm1hcCgoXywgaSkgPT4gKAogICAgICAgICAgICAgICAgICAgICAgPENlbGwga2V5PXtpfSBmaWxsPXtDQVRFR09SWV9DT0xPUlNbaSAlIENBVEVHT1JZX0NPTE9SUy5sZW5ndGhdfSAvPgogICAgICAgICAgICAgICAgICAgICkpfQogICAgICAgICAgICAgICAgICA8L0Jhcj4KICAgICAgICAgICAgICAgIDwvQmFyQ2hhcnQ+CiAgICAgICAgICAgICAgPC9SZXNwb25zaXZlQ29udGFpbmVyPgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgIDwvQ2FyZENvbnRlbnQ+CiAgICAgICAgPC9DYXJkPgogICAgICA8L2Rpdj4KCiAgICAgIHsvKiBUb3AgUHJvZHVjdHMgKi99CiAgICAgIDxDYXJkPgogICAgICAgIDxDYXJkSGVhZGVyPgogICAgICAgICAgPENhcmRUaXRsZT5Ub3AgUHJvZHVjdHM8L0NhcmRUaXRsZT4KICAgICAgICA8L0NhcmRIZWFkZXI+CiAgICAgICAgPENhcmRDb250ZW50PgogICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImRpdmlkZS15Ij4KICAgICAgICAgICAgeyh0b3BQcm9kdWN0cyA/PyBbXSkubWFwKChwcm9kdWN0LCBpKSA9PiAoCiAgICAgICAgICAgICAgPGRpdiBrZXk9e3Byb2R1Y3QucHJvZHVjdElkfSBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIHB5LTMgZ2FwLTQiPgogICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9InctNyBoLTcgcm91bmRlZCBiZy1tdXRlZCBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBzaHJpbmstMCI+CiAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0idGV4dC14cyBmb250LWJvbGQgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIj57aSArIDF9PC9zcGFuPgogICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleC0xIG1pbi13LTAiPgogICAgICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9InRleHQtc20gZm9udC1tZWRpdW0gdHJ1bmNhdGUiPntwcm9kdWN0LnByb2R1Y3ROYW1lfTwvcD4KICAgICAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXhzIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+e3Byb2R1Y3QudG90YWxTb2xkfSB1bml0cyBzb2xkPC9wPgogICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0idGV4dC1zbSBmb250LXNlbWlib2xkIHRleHQtcmlnaHQiPgogICAgICAgICAgICAgICAgICB7Zm9ybWF0Q3VycmVuY3kocHJvZHVjdC50b3RhbFJldmVudWUpfQogICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICkpfQogICAgICAgICAgICB7KHRvcFByb2R1Y3RzID8/IFtdKS5sZW5ndGggPT09IDAgJiYgKAogICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1zbSB0ZXh0LW11dGVkLWZvcmVncm91bmQgdGV4dC1jZW50ZXIgcHktOCI+Tm8gcHJvZHVjdCBkYXRhIHlldDwvcD4KICAgICAgICAgICAgKX0KICAgICAgICAgIDwvZGl2PgogICAgICAgIDwvQ2FyZENvbnRlbnQ+CiAgICAgIDwvQ2FyZD4KICAgIDwvZGl2PgogICk7Cn0K
+import { useState } from "react";
+import {
+  useGetAdminDashboard,
+  useGetRevenueChart,
+  useGetTopProducts,
+  useGetNewCustomersChart,
+  useGetOrderStatusBreakdown,
+  useGetRevenueByCategoryChart,
+  getGetAdminDashboardQueryKey,
+  getGetTopProductsQueryKey,
+  getGetOrderStatusBreakdownQueryKey,
+  getGetRevenueByCategoryChartQueryKey,
+} from "@workspace/api-client-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  Cell,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  Legend,
+} from "recharts";
+import {
+  Loader2,
+  TrendingUp,
+  Package,
+  Users,
+  ShoppingCart,
+  AlertCircle,
+  CreditCard,
+} from "lucide-react";
+
+type Period = 7 | 30 | 90 | 365;
+
+const PERIOD_LABELS: Record<Period, string> = { 7: "7d", 30: "30d", 90: "90d", 365: "1y" };
+
+const STATUS_COLORS: Record<string, string> = {
+  pending: "#f59e0b",
+  processing: "#3b82f6",
+  shipped: "#8b5cf6",
+  delivered: "#10b981",
+  cancelled: "#ef4444",
+  returned: "#6b7280",
+};
+
+const CATEGORY_COLORS = [
+  "hsl(var(--primary))",
+  "#10b981",
+  "#f59e0b",
+  "#8b5cf6",
+  "#ef4444",
+  "#3b82f6",
+  "#ec4899",
+  "#14b8a6",
+];
+
+function PeriodSelector({ value, onChange }: { value: Period; onChange: (p: Period) => void }) {
+  return (
+    <div className="flex gap-1 bg-muted rounded-md p-1">
+      {(Object.keys(PERIOD_LABELS) as unknown as Period[]).map((p) => (
+        <button
+          key={p}
+          onClick={() => onChange(p)}
+          className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+            value === p
+              ? "bg-background shadow-sm text-foreground"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          {PERIOD_LABELS[p]}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+export default function Dashboard() {
+  const [period, setPeriod] = useState<Period>(30);
+
+  const { data: stats, isLoading: statsLoading } = useGetAdminDashboard({
+    query: { queryKey: getGetAdminDashboardQueryKey() },
+  });
+  const { data: revenueData, isLoading: chartLoading } = useGetRevenueChart(
+    { period },
+    { query: { queryKey: ["revenue-chart", period] } }
+  );
+  const { data: topProducts, isLoading: productsLoading } = useGetTopProducts({
+    query: { queryKey: getGetTopProductsQueryKey() },
+  });
+  const { data: newCustomers, isLoading: customersLoading } = useGetNewCustomersChart(
+    { period },
+    { query: { queryKey: ["new-customers-chart", period] } }
+  );
+  const { data: orderStatus, isLoading: statusLoading } = useGetOrderStatusBreakdown({
+    query: { queryKey: getGetOrderStatusBreakdownQueryKey() },
+  });
+  const { data: revenueByCategory, isLoading: categoryLoading } = useGetRevenueByCategoryChart({
+    query: { queryKey: getGetRevenueByCategoryChartQueryKey() },
+  });
+
+  const formatCurrency = (val: number) =>
+    new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(val);
+  const formatShort = (val: number) =>
+    val >= 1000 ? `£${(val / 1000).toFixed(1)}k` : `£${val.toFixed(0)}`;
+  const fmtDate = (d: string) =>
+    new Date(d).toLocaleDateString("en-GB", { month: "short", day: "numeric" });
+
+  const isLoading =
+    statsLoading || chartLoading || productsLoading || customersLoading || statusLoading || categoryLoading;
+
+  if (isLoading) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!stats) return null;
+
+  const statCards = [
+    {
+      title: "Today's Revenue",
+      value: formatCurrency(stats.revenueToday),
+      icon: TrendingUp,
+      sub: `${stats.ordersToday} order${stats.ordersToday !== 1 ? "s" : ""} today`,
+    },
+    {
+      title: "Total Revenue",
+      value: formatCurrency(stats.totalRevenue),
+      icon: CreditCard,
+      sub: null,
+    },
+    {
+      title: "Total Orders",
+      value: stats.totalOrders.toLocaleString(),
+      icon: ShoppingCart,
+      sub: null,
+    },
+    {
+      title: "Customers",
+      value: stats.totalCustomers.toLocaleString(),
+      icon: Users,
+      sub: null,
+    },
+    {
+      title: "Avg Order Value",
+      value: formatCurrency(stats.avgOrderValue),
+      icon: Package,
+      sub: null,
+    },
+    {
+      title: "Low Stock Alerts",
+      value: stats.lowStockCount.toString(),
+      icon: AlertCircle,
+      sub: null,
+      danger: stats.lowStockCount > 0,
+    },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <h2 className="text-2xl font-bold tracking-tight">Overview</h2>
+        <PeriodSelector value={period} onChange={setPeriod} />
+      </div>
+
+      {/* Stat Cards */}
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        {statCards.map((card) => (
+          <Card key={card.title}>
+            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+              <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
+              <card.icon
+                className={`w-4 h-4 ${card.danger ? "text-destructive" : "text-muted-foreground"}`}
+              />
+            </CardHeader>
+            <CardContent>
+              <div className={`text-2xl font-bold ${card.danger ? "text-destructive" : ""}`}>
+                {card.value}
+              </div>
+              {card.sub && <p className="text-xs text-muted-foreground mt-1">{card.sub}</p>}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Revenue + Order Status */}
+      <div className="grid gap-6 md:grid-cols-7">
+        <Card className="md:col-span-5">
+          <CardHeader>
+            <CardTitle>Revenue</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[260px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={revenueData ?? []} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <XAxis
+                    dataKey="date"
+                    tickFormatter={fmtDate}
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={11}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    tickFormatter={formatShort}
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={11}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <Tooltip
+                    formatter={(value: number) => [formatCurrency(value), "Revenue"]}
+                    labelFormatter={(label) =>
+                      new Date(label as string).toLocaleDateString("en-GB", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })
+                    }
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: "8px",
+                    }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="revenue"
+                    stroke="hsl(var(--primary))"
+                    strokeWidth={2}
+                    fillOpacity={1}
+                    fill="url(#colorRev)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle>Order Status</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[200px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={orderStatus ?? []}
+                    dataKey="count"
+                    nameKey="status"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={80}
+                    paddingAngle={2}
+                  >
+                    {(orderStatus ?? []).map((entry) => (
+                      <Cell
+                        key={entry.status}
+                        fill={STATUS_COLORS[entry.status] ?? "#94a3b8"}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(val: number, name: string) => [val, name]}
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: "8px",
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex flex-wrap gap-x-3 gap-y-1 mt-2">
+              {(orderStatus ?? []).map((s) => (
+                <div key={s.status} className="flex items-center gap-1 text-xs">
+                  <span
+                    className="w-2 h-2 rounded-full inline-block"
+                    style={{ background: STATUS_COLORS[s.status] ?? "#94a3b8" }}
+                  />
+                  <span className="text-muted-foreground capitalize">{s.status}</span>
+                  <span className="font-medium">{s.count}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* New Customers + Revenue by Category */}
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>New Customers</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[220px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={newCustomers ?? []}
+                  margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                >
+                  <XAxis
+                    dataKey="date"
+                    tickFormatter={fmtDate}
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={11}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    allowDecimals={false}
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={11}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <Tooltip
+                    formatter={(val: number) => [val, "New Customers"]}
+                    labelFormatter={fmtDate}
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: "8px",
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="newCustomers"
+                    stroke="#10b981"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Revenue by Category</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[220px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={revenueByCategory ?? []}
+                  layout="vertical"
+                  margin={{ top: 0, right: 16, left: 0, bottom: 0 }}
+                >
+                  <XAxis
+                    type="number"
+                    tickFormatter={formatShort}
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={11}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    type="category"
+                    dataKey="category"
+                    width={90}
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={11}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(v: string) =>
+                      v.length > 14 ? v.slice(0, 13) + "…" : v
+                    }
+                  />
+                  <Tooltip
+                    formatter={(val: number) => [formatCurrency(val), "Revenue"]}
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: "8px",
+                    }}
+                  />
+                  <Bar dataKey="revenue" radius={[0, 4, 4, 0]}>
+                    {(revenueByCategory ?? []).map((_, i) => (
+                      <Cell key={i} fill={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Top Products */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Top Products</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="divide-y">
+            {(topProducts ?? []).map((product, i) => (
+              <div key={product.productId} className="flex items-center py-3 gap-4">
+                <div className="w-7 h-7 rounded bg-muted flex items-center justify-center shrink-0">
+                  <span className="text-xs font-bold text-muted-foreground">{i + 1}</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate">{product.productName}</p>
+                  <p className="text-xs text-muted-foreground">{product.totalSold} units sold</p>
+                </div>
+                <div className="text-sm font-semibold text-right">
+                  {formatCurrency(product.totalRevenue)}
+                </div>
+              </div>
+            ))}
+            {(topProducts ?? []).length === 0 && (
+              <p className="text-sm text-muted-foreground text-center py-8">No product data yet</p>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

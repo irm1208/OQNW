@@ -1,1 +1,58 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgZW1haWxMb2dzVGFibGUgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgZGVzYywgZXEsIGNvdW50IH0gZnJvbSAiZHJpenpsZS1vcm0iOwoKY29uc3Qgcm91dGVyID0gUm91dGVyKCk7CgpmdW5jdGlvbiByZXF1aXJlQWRtaW4ocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogYm9vbGVhbiB7CiAgaWYgKHJlcS5jb29raWVzPy5hZG1pbl9zZXNzaW9uICE9PSAiYXV0aGVudGljYXRlZCIpIHsKICAgIHJlcy5zdGF0dXMoNDAxKS5qc29uKHsgZXJyb3I6ICJOb3QgYXV0aGVudGljYXRlZCIgfSk7CiAgICByZXR1cm4gZmFsc2U7CiAgfQogIHJldHVybiB0cnVlOwp9Cgpyb3V0ZXIuZ2V0KCIvYWRtaW4vZW1haWwtbG9ncyIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBpZiAoIXJlcXVpcmVBZG1pbihyZXEsIHJlcykpIHJldHVybjsKCiAgdHJ5IHsKICAgIGNvbnN0IFtsb2dzLCBzdGF0c1Jvd3NdID0gYXdhaXQgUHJvbWlzZS5hbGwoWwogICAgICBkYgogICAgICAgIC5zZWxlY3QoKQogICAgICAgIC5mcm9tKGVtYWlsTG9nc1RhYmxlKQogICAgICAgIC5vcmRlckJ5KGRlc2MoZW1haWxMb2dzVGFibGUuY3JlYXRlZEF0KSkKICAgICAgICAubGltaXQoNTAwKSwKICAgICAgZGIuc2VsZWN0KHsgc3RhdHVzOiBlbWFpbExvZ3NUYWJsZS5zdGF0dXMsIGNudDogY291bnQoKSB9KQogICAgICAgIC5mcm9tKGVtYWlsTG9nc1RhYmxlKQogICAgICAgIC5ncm91cEJ5KGVtYWlsTG9nc1RhYmxlLnN0YXR1cyksCiAgICBdKTsKCiAgICBjb25zdCBzZW50ID0gc3RhdHNSb3dzLmZpbmQoKHIpID0+IHIuc3RhdHVzID09PSAic2VudCIpPy5jbnQgPz8gMDsKICAgIGNvbnN0IGZhaWxlZCA9IHN0YXRzUm93cy5maW5kKChyKSA9PiByLnN0YXR1cyA9PT0gImZhaWxlZCIpPy5jbnQgPz8gMDsKCiAgICByZXMuanNvbih7CiAgICAgIGxvZ3M6IGxvZ3MubWFwKChsKSA9PiAoewogICAgICAgIGlkOiBsLmlkLAogICAgICAgIHRvRW1haWw6IGwudG9FbWFpbCwKICAgICAgICBzdWJqZWN0OiBsLnN1YmplY3QsCiAgICAgICAgdHlwZTogbC50eXBlLAogICAgICAgIHN0YXR1czogbC5zdGF0dXMsCiAgICAgICAgcmVzZW5kSWQ6IGwucmVzZW5kSWQgPz8gbnVsbCwKICAgICAgICBvcmRlck51bWJlcjogbC5vcmRlck51bWJlciA/PyBudWxsLAogICAgICAgIGNyZWF0ZWRBdDogbC5jcmVhdGVkQXQudG9JU09TdHJpbmcoKSwKICAgICAgfSkpLAogICAgICBzdGF0czogewogICAgICAgIHRvdGFsOiBOdW1iZXIoc2VudCkgKyBOdW1iZXIoZmFpbGVkKSwKICAgICAgICBzZW50OiBOdW1iZXIoc2VudCksCiAgICAgICAgZmFpbGVkOiBOdW1iZXIoZmFpbGVkKSwKICAgICAgfSwKICAgIH0pOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGxpc3QgZW1haWwgbG9ncyIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCmV4cG9ydCBkZWZhdWx0IHJvdXRlcjsK
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { db } from "@workspace/db";
+import { emailLogsTable } from "@workspace/db";
+import { desc, eq, count } from "drizzle-orm";
+
+const router = Router();
+
+function requireAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+
+router.get("/admin/email-logs", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+
+  try {
+    const [logs, statsRows] = await Promise.all([
+      db
+        .select()
+        .from(emailLogsTable)
+        .orderBy(desc(emailLogsTable.createdAt))
+        .limit(500),
+      db.select({ status: emailLogsTable.status, cnt: count() })
+        .from(emailLogsTable)
+        .groupBy(emailLogsTable.status),
+    ]);
+
+    const sent = statsRows.find((r) => r.status === "sent")?.cnt ?? 0;
+    const failed = statsRows.find((r) => r.status === "failed")?.cnt ?? 0;
+
+    res.json({
+      logs: logs.map((l) => ({
+        id: l.id,
+        toEmail: l.toEmail,
+        subject: l.subject,
+        type: l.type,
+        status: l.status,
+        resendId: l.resendId ?? null,
+        orderNumber: l.orderNumber ?? null,
+        createdAt: l.createdAt.toISOString(),
+      })),
+      stats: {
+        total: Number(sent) + Number(failed),
+        sent: Number(sent),
+        failed: Number(failed),
+      },
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to list email logs");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;

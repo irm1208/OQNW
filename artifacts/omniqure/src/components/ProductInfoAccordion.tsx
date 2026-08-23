@@ -1,1 +1,75 @@
-aW1wb3J0IHR5cGUgeyBQcm9kdWN0RGV0YWlsIH0gZnJvbSAiQC9kYXRhL3Byb2R1Y3REZXRhaWxzIjsKaW1wb3J0IHsgZ2V0UHVyaXR5U3RyIH0gZnJvbSAiQC91dGlscy9wcm9kdWN0UHVyaXR5IjsKCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIFByb2R1Y3RJbmZvQWNjb3JkaW9uKHsKICBkZXRhaWwsCiAgcHJvZHVjdElkLAp9OiB7CiAgZGV0YWlsOiBQcm9kdWN0RGV0YWlsOwogIHByb2R1Y3RJZDogc3RyaW5nOwp9KSB7CiAgY29uc3QgcHVyaXR5ID0gZ2V0UHVyaXR5U3RyKHByb2R1Y3RJZCk7CgogIGNvbnN0IGl0ZW1zID0gWwogICAgeyBsYWJlbDogIlB1cml0eSIsIHZhbHVlOiBg4omlJHtwdXJpdHl9YCB9LAogICAgeyBsYWJlbDogIkZvcm0iLCB2YWx1ZTogZGV0YWlsLmFwcGVhcmFuY2UgPz8gIkx5b3BoaWxpc2VkIHBvd2RlciIgfSwKICAgIC4uLihkZXRhaWwuYWxzb0tub3duQXMgPyBbeyBsYWJlbDogIkNvbXBvc2l0aW9uIiwgdmFsdWU6IGRldGFpbC5hbHNvS25vd25BcyB9XSA6IFtdKSwKICAgIHsKICAgICAgbGFiZWw6ICJTdG9yYWdlIiwKICAgICAgdmFsdWU6CiAgICAgICAgZGV0YWlsLnN0b3JhZ2UgPz8KICAgICAgICAiU3RvcmUgbHlvcGhpbGlzZWQgcG93ZGVyIGF0IDLigJM4wrBDLiBPbmNlIHJlY29uc3RpdHV0ZWQgZm9yIGluLXZpdHJvIHVzZSwgcmVmcmlnZXJhdGUgYW5kIHVzZSB3aXRoaW4gMzDigJM0NSBkYXlzLiBEbyBub3QgZnJlZXplLiIsCiAgICB9LAogIF07CgogIHJldHVybiAoCiAgICA8ZGl2IHN0eWxlPXt7IG1hcmdpblRvcDogIjEycHgiIH19PgogICAgICB7LyogRGVzY3JpcHRpb24gYmxvY2sgKi99CiAgICAgIHtkZXRhaWwuZGVzY3JpcHRpb24gJiYgKAogICAgICAgIDxkaXYKICAgICAgICAgIHN0eWxlPXt7CiAgICAgICAgICAgIGJvcmRlckxlZnQ6ICI0cHggc29saWQgIzFCNUNCNSIsCiAgICAgICAgICAgIGJhY2tncm91bmRDb2xvcjogIiNGMEY1RkYiLAogICAgICAgICAgICBwYWRkaW5nOiAiMTRweCAxNnB4IiwKICAgICAgICAgICAgYm9yZGVyUmFkaXVzOiAiMCA4cHggOHB4IDAiLAogICAgICAgICAgICBtYXJnaW5Cb3R0b206ICIxOHB4IiwKICAgICAgICAgIH19CiAgICAgICAgPgogICAgICAgICAgPHAgc3R5bGU9e3sgZm9udFNpemU6ICIxNHB4IiwgY29sb3I6ICIjMWUzYTVmIiwgbGluZUhlaWdodDogMS43NSwgbWFyZ2luOiAwIH19PgogICAgICAgICAgICB7ZGV0YWlsLmRlc2NyaXB0aW9ufQogICAgICAgICAgPC9wPgogICAgICAgIDwvZGl2PgogICAgICApfQoKICAgICAgey8qIENoZWNrbGlzdCAqL30KICAgICAgPGRpdiBzdHlsZT17eyBkaXNwbGF5OiAiZmxleCIsIGZsZXhEaXJlY3Rpb246ICJjb2x1bW4iLCBnYXA6ICIxMHB4IiwgbWFyZ2luQm90dG9tOiAiMThweCIgfX0+CiAgICAgICAge2l0ZW1zLm1hcCgoeyBsYWJlbCwgdmFsdWUgfSkgPT4gKAogICAgICAgICAgPGRpdiBrZXk9e2xhYmVsfSBzdHlsZT17eyBkaXNwbGF5OiAiZmxleCIsIGFsaWduSXRlbXM6ICJmbGV4LXN0YXJ0IiwgZ2FwOiAiMTBweCIgfX0+CiAgICAgICAgICAgIDxzcGFuIHN0eWxlPXt7IGNvbG9yOiAiIzFCNUNCNSIsIGZvbnRXZWlnaHQ6IDcwMCwgZm9udFNpemU6ICIxNXB4IiwgZmxleFNocmluazogMCwgbGluZUhlaWdodDogMS41IH19PuKckzwvc3Bhbj4KICAgICAgICAgICAgPHAgc3R5bGU9e3sgZm9udFNpemU6ICIxMy41cHgiLCBjb2xvcjogIiMzNzQxNTEiLCBsaW5lSGVpZ2h0OiAxLjY1LCBtYXJnaW46IDAgfX0+CiAgICAgICAgICAgICAgPHN0cm9uZyBzdHlsZT17eyBjb2xvcjogIiMwRjE3MkEiIH19PntsYWJlbH06PC9zdHJvbmc+IHt2YWx1ZX0KICAgICAgICAgICAgPC9wPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgKSl9CiAgICAgIDwvZGl2PgoKICAgICAgey8qIFJVTyBiYWRnZSAqL30KICAgICAgPGRpdgogICAgICAgIHN0eWxlPXt7CiAgICAgICAgICBkaXNwbGF5OiAiZmxleCIsCiAgICAgICAgICBhbGlnbkl0ZW1zOiAiY2VudGVyIiwKICAgICAgICAgIGdhcDogIjhweCIsCiAgICAgICAgICBib3JkZXI6ICIxcHggc29saWQgI0NCRDVFMSIsCiAgICAgICAgICBib3JkZXJSYWRpdXM6ICI4cHgiLAogICAgICAgICAgcGFkZGluZzogIjEwcHggMTRweCIsCiAgICAgICAgICBiYWNrZ3JvdW5kQ29sb3I6ICIjRjhGQUZDIiwKICAgICAgICB9fQogICAgICA+CiAgICAgICAgPHNwYW4gc3R5bGU9e3sgd2lkdGg6ICI4cHgiLCBoZWlnaHQ6ICI4cHgiLCBib3JkZXJSYWRpdXM6ICI1MCUiLCBiYWNrZ3JvdW5kQ29sb3I6ICIjMUI1Q0I1IiwgZmxleFNocmluazogMCB9fSAvPgogICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAiMTAuNXB4IiwgZm9udFdlaWdodDogNzAwLCBsZXR0ZXJTcGFjaW5nOiAiMC4xMmVtIiwgdGV4dFRyYW5zZm9ybTogInVwcGVyY2FzZSIsIGNvbG9yOiAiIzMzNDE1NSIsIG1hcmdpbjogMCB9fT4KICAgICAgICAgIEZvciBSZXNlYXJjaCBVc2UgT25seSDigJQgTm90IEZvciBIdW1hbiBDb25zdW1wdGlvbgogICAgICAgIDwvcD4KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KICApOwp9Cg==
+import type { ProductDetail } from "@/data/productDetails";
+import { getPurityStr } from "@/utils/productPurity";
+
+export default function ProductInfoAccordion({
+  detail,
+  productId,
+}: {
+  detail: ProductDetail;
+  productId: string;
+}) {
+  const purity = getPurityStr(productId);
+
+  const items = [
+    { label: "Purity", value: `≥${purity}` },
+    { label: "Form", value: detail.appearance ?? "Lyophilised powder" },
+    ...(detail.alsoKnownAs ? [{ label: "Composition", value: detail.alsoKnownAs }] : []),
+    {
+      label: "Storage",
+      value:
+        detail.storage ??
+        "Store lyophilised powder at 2–8°C. Once reconstituted for in-vitro use, refrigerate and use within 30–45 days. Do not freeze.",
+    },
+  ];
+
+  return (
+    <div style={{ marginTop: "12px" }}>
+      {/* Description block */}
+      {detail.description && (
+        <div
+          style={{
+            borderLeft: "4px solid #1B5CB5",
+            backgroundColor: "#F0F5FF",
+            padding: "14px 16px",
+            borderRadius: "0 8px 8px 0",
+            marginBottom: "18px",
+          }}
+        >
+          <p style={{ fontSize: "14px", color: "#1e3a5f", lineHeight: 1.75, margin: 0 }}>
+            {detail.description}
+          </p>
+        </div>
+      )}
+
+      {/* Checklist */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "18px" }}>
+        {items.map(({ label, value }) => (
+          <div key={label} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+            <span style={{ color: "#1B5CB5", fontWeight: 700, fontSize: "15px", flexShrink: 0, lineHeight: 1.5 }}>✓</span>
+            <p style={{ fontSize: "13.5px", color: "#374151", lineHeight: 1.65, margin: 0 }}>
+              <strong style={{ color: "#0F172A" }}>{label}:</strong> {value}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* RUO badge */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          border: "1px solid #CBD5E1",
+          borderRadius: "8px",
+          padding: "10px 14px",
+          backgroundColor: "#F8FAFC",
+        }}
+      >
+        <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#1B5CB5", flexShrink: 0 }} />
+        <p style={{ fontSize: "10.5px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#334155", margin: 0 }}>
+          For Research Use Only — Not For Human Consumption
+        </p>
+      </div>
+    </div>
+  );
+}

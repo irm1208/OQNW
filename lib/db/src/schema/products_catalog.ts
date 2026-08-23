@@ -1,1 +1,50 @@
-aW1wb3J0IHsKICBwZ1RhYmxlLAogIHNlcmlhbCwKICBpbnRlZ2VyLAogIHRleHQsCiAgYm9vbGVhbiwKICBudW1lcmljLAogIHRpbWVzdGFtcCwKfSBmcm9tICJkcml6emxlLW9ybS9wZy1jb3JlIjsKaW1wb3J0IHsgY3JlYXRlSW5zZXJ0U2NoZW1hIH0gZnJvbSAiZHJpenpsZS16b2QiOwppbXBvcnQgeyB6IH0gZnJvbSAiem9kL3Y0IjsKCmV4cG9ydCBjb25zdCBwcm9kdWN0c0NhdGFsb2dUYWJsZSA9IHBnVGFibGUoInByb2R1Y3RzX2NhdGFsb2ciLCB7CiAgaWQ6IHNlcmlhbCgiaWQiKS5wcmltYXJ5S2V5KCksCiAgc2x1ZzogdGV4dCgic2x1ZyIpLm5vdE51bGwoKS51bmlxdWUoKSwKICBuYW1lOiB0ZXh0KCJuYW1lIikubm90TnVsbCgpLAogIGNhdGVnb3J5OiB0ZXh0KCJjYXRlZ29yeSIpLm5vdE51bGwoKSwKICBwcmljZUdicDogbnVtZXJpYygicHJpY2VfZ2JwIiwgeyBwcmVjaXNpb246IDEwLCBzY2FsZTogMiB9KSwKICBzaG9ydERlc2NyaXB0aW9uOiB0ZXh0KCJzaG9ydF9kZXNjcmlwdGlvbiIpLAogIGRlc2NyaXB0aW9uOiB0ZXh0KCJkZXNjcmlwdGlvbiIpLAogIGltYWdlVXJsOiB0ZXh0KCJpbWFnZV91cmwiKSwKICBwdXJpdHk6IHRleHQoInB1cml0eSIpLAogIGFsc29Lbm93bkFzOiB0ZXh0KCJhbHNvX2tub3duX2FzIiksCiAgbW9sZWN1bGFyV2VpZ2h0OiB0ZXh0KCJtb2xlY3VsYXJfd2VpZ2h0IiksCiAgY2FzTnVtYmVyOiB0ZXh0KCJjYXNfbnVtYmVyIiksCiAgZm9ybXVsYTogdGV4dCgiZm9ybXVsYSIpLAogIHNlcXVlbmNlOiB0ZXh0KCJzZXF1ZW5jZSIpLAogIHN0b3JhZ2U6IHRleHQoInN0b3JhZ2UiKSwKICBhcHBlYXJhbmNlOiB0ZXh0KCJhcHBlYXJhbmNlIiksCiAgc29sdWJpbGl0eTogdGV4dCgic29sdWJpbGl0eSIpLAogIGhhbGZMaWZlOiB0ZXh0KCJoYWxmX2xpZmUiKSwKICBjb2FVcmw6IHRleHQoImNvYV91cmwiKSwKICBtc0ltYWdlVXJsOiB0ZXh0KCJtc19pbWFnZV91cmwiKSwKICBzZW9UaXRsZTogdGV4dCgic2VvX3RpdGxlIiksCiAgc2VvRGVzY3JpcHRpb246IHRleHQoInNlb19kZXNjcmlwdGlvbiIpLAogIGlzUHVibGlzaGVkOiBib29sZWFuKCJpc19wdWJsaXNoZWQiKS5ub3ROdWxsKCkuZGVmYXVsdCh0cnVlKSwKICBpc0ZlYXR1cmVkOiBib29sZWFuKCJpc19mZWF0dXJlZCIpLm5vdE51bGwoKS5kZWZhdWx0KGZhbHNlKSwKICBzb3J0T3JkZXI6IGludGVnZXIoInNvcnRfb3JkZXIiKS5ub3ROdWxsKCkuZGVmYXVsdCgwKSwKICBjcmVhdGVkQXQ6IHRpbWVzdGFtcCgiY3JlYXRlZF9hdCIsIHsgd2l0aFRpbWV6b25lOiB0cnVlIH0pLm5vdE51bGwoKS5kZWZhdWx0Tm93KCksCiAgdXBkYXRlZEF0OiB0aW1lc3RhbXAoInVwZGF0ZWRfYXQiLCB7IHdpdGhUaW1lem9uZTogdHJ1ZSB9KS5ub3ROdWxsKCkuZGVmYXVsdE5vdygpLiRvblVwZGF0ZSgoKSA9PiBuZXcgRGF0ZSgpKSwKfSk7CgpleHBvcnQgY29uc3QgaW5zZXJ0UHJvZHVjdENhdGFsb2dTY2hlbWEgPSBjcmVhdGVJbnNlcnRTY2hlbWEocHJvZHVjdHNDYXRhbG9nVGFibGUpLm9taXQoewogIGlkOiB0cnVlLAogIGNyZWF0ZWRBdDogdHJ1ZSwKICB1cGRhdGVkQXQ6IHRydWUsCn0pOwoKZXhwb3J0IHR5cGUgSW5zZXJ0UHJvZHVjdENhdGFsb2cgPSB6LmluZmVyPHR5cGVvZiBpbnNlcnRQcm9kdWN0Q2F0YWxvZ1NjaGVtYT47CmV4cG9ydCB0eXBlIFByb2R1Y3RDYXRhbG9nID0gdHlwZW9mIHByb2R1Y3RzQ2F0YWxvZ1RhYmxlLiRpbmZlclNlbGVjdDsK
+import {
+  pgTable,
+  serial,
+  integer,
+  text,
+  boolean,
+  numeric,
+  timestamp,
+} from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod/v4";
+
+export const productsCatalogTable = pgTable("products_catalog", {
+  id: serial("id").primaryKey(),
+  slug: text("slug").notNull().unique(),
+  name: text("name").notNull(),
+  category: text("category").notNull(),
+  priceGbp: numeric("price_gbp", { precision: 10, scale: 2 }),
+  shortDescription: text("short_description"),
+  description: text("description"),
+  imageUrl: text("image_url"),
+  purity: text("purity"),
+  alsoKnownAs: text("also_known_as"),
+  molecularWeight: text("molecular_weight"),
+  casNumber: text("cas_number"),
+  formula: text("formula"),
+  sequence: text("sequence"),
+  storage: text("storage"),
+  appearance: text("appearance"),
+  solubility: text("solubility"),
+  halfLife: text("half_life"),
+  coaUrl: text("coa_url"),
+  msImageUrl: text("ms_image_url"),
+  seoTitle: text("seo_title"),
+  seoDescription: text("seo_description"),
+  isPublished: boolean("is_published").notNull().default(true),
+  isFeatured: boolean("is_featured").notNull().default(false),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
+});
+
+export const insertProductCatalogSchema = createInsertSchema(productsCatalogTable).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertProductCatalog = z.infer<typeof insertProductCatalogSchema>;
+export type ProductCatalog = typeof productsCatalogTable.$inferSelect;

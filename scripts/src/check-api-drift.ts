@@ -1,1 +1,336 @@
-LyoqCiAqIEd1YXJkcyBhZ2FpbnN0IHRoZSBjbGFzcyBvZiBidWcgd2hlcmUgYW4gYWRtaW4gcm91dGUgaGFuZGxlciBzdGFydHMKICogcmV0dXJuaW5nIGEgbmV3IGZpZWxkIChlLmcuIGBmcmF1ZFNjb3JlYCwgYHJlZnVuZGVkQW1vdW50R2JwYCkgd2l0aG91dCB0aGUKICogT3BlbkFQSSBzcGVjIGJlaW5nIHVwZGF0ZWQgdG8gZGVjbGFyZSBpdC4gV2hlbiB0aGF0IGhhcHBlbnMsIGdlbmVyYXRlZAogKiBmcm9udGVuZCB0eXBlcyBzaWxlbnRseSBvbWl0IHRoZSBmaWVsZCBpbnN0ZWFkIG9mIGZhaWxpbmcgdG8gdHlwZWNoZWNrLAogKiBhbmQgYWRtaW4gc3RhZmYgY2FuIGVuZCB1cCBsb29raW5nIGF0IGEgVUkgdGhhdCBuZXZlciByZW5kZXJzIGRhdGEgdGhlCiAqIHNlcnZlciBpcyBhY3R1YWxseSBzZW5kaW5nLgogKgogKiBUaGlzIHNjcmlwdCBzdGF0aWNhbGx5IGV4dHJhY3RzIHRoZSBmaWVsZCBuYW1lcyByZXR1cm5lZCBieSBhIGN1cmF0ZWQgc2V0CiAqIG9mIGFkbWluIHJlc3BvbnNlIGJ1aWxkZXJzIGluIGFydGlmYWN0cy9hcGktc2VydmVyL3NyYy9yb3V0ZXMvYWRtaW4vKi50cwogKiBhbmQgY2hlY2tzIHRoYXQgZXZlcnkgZmllbGQgaXMgZGVjbGFyZWQgb24gdGhlIGNvcnJlc3BvbmRpbmcgc2NoZW1hIGluCiAqIGxpYi9hcGktc3BlYy9vcGVuYXBpLnlhbWwuIEl0IGRvZXMgTk9UIGNoZWNrIHRoZSByZXZlcnNlIChzY2hlbWEgZmllbGRzCiAqIG1pc3NpbmcgZnJvbSBjb2RlKSBzaW5jZSByb3V0ZXMgYXJlIGFsbG93ZWQgdG8gb21pdCBvcHRpb25hbCBmaWVsZHMuCiAqCiAqIFJ1biB3aXRoOiBwbnBtIC0tZmlsdGVyIEB3b3Jrc3BhY2Uvc2NyaXB0cyBydW4gY2hlY2s6YXBpLWRyaWZ0CiAqLwppbXBvcnQgeyByZWFkRmlsZVN5bmMgfSBmcm9tICJub2RlOmZzIjsKaW1wb3J0IHsgcmVzb2x2ZSB9IGZyb20gIm5vZGU6cGF0aCI7CmltcG9ydCB7IHBhcnNlIGFzIHBhcnNlWWFtbCB9IGZyb20gInlhbWwiOwoKY29uc3QgUk9PVCA9IHJlc29sdmUoaW1wb3J0Lm1ldGEuZGlybmFtZSwgIi4uLy4uIik7CmNvbnN0IE9QRU5BUElfUEFUSCA9IHJlc29sdmUoUk9PVCwgImxpYi9hcGktc3BlYy9vcGVuYXBpLnlhbWwiKTsKY29uc3QgQURNSU5fUk9VVEVTX0RJUiA9IHJlc29sdmUoUk9PVCwgImFydGlmYWN0cy9hcGktc2VydmVyL3NyYy9yb3V0ZXMvYWRtaW4iKTsKCnR5cGUgT3BlbkFwaVNjaGVtYSA9IHsKICBwcm9wZXJ0aWVzPzogUmVjb3JkPHN0cmluZywgdW5rbm93bj47Cn07Cgp0eXBlIE9wZW5BcGlEb2MgPSB7CiAgY29tcG9uZW50cz86IHsgc2NoZW1hcz86IFJlY29yZDxzdHJpbmcsIE9wZW5BcGlTY2hlbWE+IH07Cn07CgpmdW5jdGlvbiBsb2FkU2NoZW1hRmllbGROYW1lcyhkb2M6IE9wZW5BcGlEb2MsIHNjaGVtYU5hbWU6IHN0cmluZyk6IFNldDxzdHJpbmc+IHsKICBjb25zdCBzY2hlbWEgPSBkb2MuY29tcG9uZW50cz8uc2NoZW1hcz8uW3NjaGVtYU5hbWVdOwogIGlmICghc2NoZW1hKSB7CiAgICB0aHJvdyBuZXcgRXJyb3IoYE9wZW5BUEkgc3BlYyBoYXMgbm8gc2NoZW1hIG5hbWVkICIke3NjaGVtYU5hbWV9IiAoY29tcG9uZW50cy5zY2hlbWFzLiR7c2NoZW1hTmFtZX0pYCk7CiAgfQogIHJldHVybiBuZXcgU2V0KE9iamVjdC5rZXlzKHNjaGVtYS5wcm9wZXJ0aWVzID8/IHt9KSk7Cn0KCi8qKiBTa2lwIG92ZXIgYSBzdHJpbmcvdGVtcGxhdGUgbGl0ZXJhbCBzdGFydGluZyBhdCBgc3RhcnRgICh3aGljaCBwb2ludHMgYXQgdGhlIG9wZW5pbmcgcXVvdGUpLiAqLwpmdW5jdGlvbiBza2lwU3RyaW5nTGl0ZXJhbCh0ZXh0OiBzdHJpbmcsIHN0YXJ0OiBudW1iZXIpOiBudW1iZXIgewogIGNvbnN0IHF1b3RlID0gdGV4dFtzdGFydF07CiAgbGV0IGkgPSBzdGFydCArIDE7CiAgd2hpbGUgKGkgPCB0ZXh0Lmxlbmd0aCkgewogICAgaWYgKHRleHRbaV0gPT09ICJcXCIpIHsKICAgICAgaSArPSAyOwogICAgICBjb250aW51ZTsKICAgIH0KICAgIGlmICh0ZXh0W2ldID09PSBxdW90ZSkgcmV0dXJuIGkgKyAxOwogICAgaSsrOwogIH0KICB0aHJvdyBuZXcgRXJyb3IoIlVudGVybWluYXRlZCBzdHJpbmcgbGl0ZXJhbCB3aGlsZSBzY2FubmluZyBmb3Igb2JqZWN0IGxpdGVyYWwgYm91bmRhcmllcyIpOwp9CgovKiogR2l2ZW4gdGhlIGluZGV4IG9mIGFuIG9wZW5pbmcgYHtgLCByZXR1cm4gdGhlIHRleHQgYmV0d2VlbiBpdCBhbmQgaXRzIG1hdGNoaW5nIGB9YCAoZXhjbHVzaXZlIG9mIGJyYWNlcykuICovCmZ1bmN0aW9uIGV4dHJhY3RCYWxhbmNlZEJyYWNlcyh0ZXh0OiBzdHJpbmcsIG9wZW5JbmRleDogbnVtYmVyKTogc3RyaW5nIHsKICBsZXQgZGVwdGggPSAwOwogIGxldCBpID0gb3BlbkluZGV4OwogIHdoaWxlIChpIDwgdGV4dC5sZW5ndGgpIHsKICAgIGNvbnN0IGMgPSB0ZXh0W2ldOwogICAgaWYgKGMgPT09ICciJyB8fCBjID09PSAiJyIgfHwgYyA9PT0gImAiKSB7CiAgICAgIGkgPSBza2lwU3RyaW5nTGl0ZXJhbCh0ZXh0LCBpKTsKICAgICAgY29udGludWU7CiAgICB9CiAgICBpZiAoYyA9PT0gInsiKSB7CiAgICAgIGRlcHRoKys7CiAgICAgIGkrKzsKICAgICAgY29udGludWU7CiAgICB9CiAgICBpZiAoYyA9PT0gIn0iKSB7CiAgICAgIGRlcHRoLS07CiAgICAgIGlmIChkZXB0aCA9PT0gMCkgcmV0dXJuIHRleHQuc2xpY2Uob3BlbkluZGV4ICsgMSwgaSk7CiAgICAgIGkrKzsKICAgICAgY29udGludWU7CiAgICB9CiAgICBpKys7CiAgfQogIHRocm93IG5ldyBFcnJvcigiVW5iYWxhbmNlZCBicmFjZXMgd2hpbGUgc2Nhbm5pbmcgb2JqZWN0IGxpdGVyYWwiKTsKfQoKLyoqIFNwbGl0IGFuIG9iamVjdCBsaXRlcmFsJ3MgaW5uZXIgdGV4dCBpbnRvIGl0cyB0b3AtbGV2ZWwgYGtleTogdmFsdWVgIC8gYC4uLnNwcmVhZGAgZW50cmllcy4gKi8KZnVuY3Rpb24gc3BsaXRUb3BMZXZlbEVudHJpZXMoaW5uZXI6IHN0cmluZyk6IHN0cmluZ1tdIHsKICBjb25zdCBwYXJ0czogc3RyaW5nW10gPSBbXTsKICBsZXQgZGVwdGggPSAwOwogIGxldCBzdGFydCA9IDA7CiAgbGV0IGkgPSAwOwogIHdoaWxlIChpIDwgaW5uZXIubGVuZ3RoKSB7CiAgICBjb25zdCBjID0gaW5uZXJbaV07CiAgICBpZiAoYyA9PT0gJyInIHx8IGMgPT09ICInIiB8fCBjID09PSAiYCIpIHsKICAgICAgaSA9IHNraXBTdHJpbmdMaXRlcmFsKGlubmVyLCBpKTsKICAgICAgY29udGludWU7CiAgICB9CiAgICBpZiAoIntbKCIuaW5jbHVkZXMoYykpIHsKICAgICAgZGVwdGgrKzsKICAgIH0gZWxzZSBpZiAoIn1dKSIuaW5jbHVkZXMoYykpIHsKICAgICAgZGVwdGgtLTsKICAgIH0gZWxzZSBpZiAoYyA9PT0gIiwiICYmIGRlcHRoID09PSAwKSB7CiAgICAgIHBhcnRzLnB1c2goaW5uZXIuc2xpY2Uoc3RhcnQsIGkpKTsKICAgICAgc3RhcnQgPSBpICsgMTsKICAgIH0KICAgIGkrKzsKICB9CiAgcGFydHMucHVzaChpbm5lci5zbGljZShzdGFydCkpOwogIHJldHVybiBwYXJ0cy5tYXAoKHApID0+IHAudHJpbSgpKS5maWx0ZXIoQm9vbGVhbik7Cn0KCnR5cGUgUGFyc2VkRW50cnkgPSB7IGtpbmQ6ICJrZXkiOyBuYW1lOiBzdHJpbmcgfSB8IHsga2luZDogInNwcmVhZCI7IGNhbGxlZTogc3RyaW5nIH07CgpmdW5jdGlvbiBwYXJzZUVudHJ5KGVudHJ5OiBzdHJpbmcpOiBQYXJzZWRFbnRyeSB8IG51bGwgewogIGNvbnN0IHNwcmVhZE1hdGNoID0gZW50cnkubWF0Y2goL15cLlwuXC4oW0EtWmEtel9dW0EtWmEtejAtOV9dKilccypcKC8pOwogIGlmIChzcHJlYWRNYXRjaCkgcmV0dXJuIHsga2luZDogInNwcmVhZCIsIGNhbGxlZTogc3ByZWFkTWF0Y2hbMV0gfTsKICBjb25zdCBrZXlNYXRjaCA9IGVudHJ5Lm1hdGNoKC9eWyInXT8oW0EtWmEtel9dW0EtWmEtejAtOV9dKilbIiddP1xzKjovKTsKICBpZiAoa2V5TWF0Y2gpIHJldHVybiB7IGtpbmQ6ICJrZXkiLCBuYW1lOiBrZXlNYXRjaFsxXSB9OwogIHJldHVybiBudWxsOwp9CgovKiogRXh0cmFjdCB0aGUgb2JqZWN0IGxpdGVyYWwgdGhhdCBmb2xsb3dzIHRoZSBmaXJzdCBgcmV0dXJuIHtgIChvciBge2AgYWZ0ZXIgYGFuY2hvcmApIGluIGBjb250ZW50YCwgc3RhcnRpbmcgdGhlIHNlYXJjaCBhdCBgZnJvbUluZGV4YC4gKi8KZnVuY3Rpb24gZmluZE9iamVjdExpdGVyYWxBZnRlcihjb250ZW50OiBzdHJpbmcsIGZyb21JbmRleDogbnVtYmVyKTogc3RyaW5nIHsKICBjb25zdCBicmFjZUluZGV4ID0gY29udGVudC5pbmRleE9mKCJ7IiwgZnJvbUluZGV4KTsKICBpZiAoYnJhY2VJbmRleCA9PT0gLTEpIHRocm93IG5ldyBFcnJvcigiRXhwZWN0ZWQgYW4gb2JqZWN0IGxpdGVyYWwgYnV0IGZvdW5kIG5vbmUiKTsKICByZXR1cm4gZXh0cmFjdEJhbGFuY2VkQnJhY2VzKGNvbnRlbnQsIGJyYWNlSW5kZXgpOwp9CgovKioKICogUmVzb2x2ZSB0aGUgZnVsbCBzZXQgb2YgZmllbGQgbmFtZXMgYW4gb2JqZWN0IGxpdGVyYWwgcHJvZHVjZXMsIGZvbGxvd2luZwogKiBgLi4uc29tZUZ1bmN0aW9uKC4uLilgIHNwcmVhZHMgaW50byBvdGhlciBuYW1lZCBvYmplY3QtbGl0ZXJhbC1yZXR1cm5pbmcKICogZnVuY3Rpb25zIGRlY2xhcmVkIGluIHRoZSBzYW1lIGZpbGUgKG9uZSBsZXZlbCBvZiBpbmRpcmVjdGlvbiBpcyBlbm91Z2gKICogZm9yIHRoaXMgY29kZWJhc2UncyBtYXBwZXIgc3R5bGUpLgogKi8KZnVuY3Rpb24gcmVzb2x2ZUZpZWxkcyhjb250ZW50OiBzdHJpbmcsIG9iamVjdExpdGVyYWxUZXh0OiBzdHJpbmcsIGZ1bmN0aW9uc0J5TmFtZTogTWFwPHN0cmluZywgc3RyaW5nPik6IFNldDxzdHJpbmc+IHsKICBjb25zdCBmaWVsZHMgPSBuZXcgU2V0PHN0cmluZz4oKTsKICBmb3IgKGNvbnN0IGVudHJ5IG9mIHNwbGl0VG9wTGV2ZWxFbnRyaWVzKG9iamVjdExpdGVyYWxUZXh0KSkgewogICAgY29uc3QgcGFyc2VkID0gcGFyc2VFbnRyeShlbnRyeSk7CiAgICBpZiAoIXBhcnNlZCkgY29udGludWU7CiAgICBpZiAocGFyc2VkLmtpbmQgPT09ICJrZXkiKSB7CiAgICAgIGZpZWxkcy5hZGQocGFyc2VkLm5hbWUpOwogICAgfSBlbHNlIHsKICAgICAgY29uc3QgY2FsbGVlTGl0ZXJhbCA9IGZ1bmN0aW9uc0J5TmFtZS5nZXQocGFyc2VkLmNhbGxlZSk7CiAgICAgIGlmICghY2FsbGVlTGl0ZXJhbCkgewogICAgICAgIHRocm93IG5ldyBFcnJvcihgU3ByZWFkIG9mIHVua25vd24gZnVuY3Rpb24gIiR7cGFyc2VkLmNhbGxlZX0oLi4uKSIg4oCUIGFkZCBpdCB0byBmdW5jdGlvbnNCeU5hbWUgaWYgaXQgcmV0dXJucyBhbiBvYmplY3QgbGl0ZXJhbGApOwogICAgICB9CiAgICAgIGZvciAoY29uc3QgZiBvZiByZXNvbHZlRmllbGRzKGNvbnRlbnQsIGNhbGxlZUxpdGVyYWwsIGZ1bmN0aW9uc0J5TmFtZSkpIGZpZWxkcy5hZGQoZik7CiAgICB9CiAgfQogIHJldHVybiBmaWVsZHM7Cn0KCi8qKiBGaW5kIGBmdW5jdGlvbiA8bmFtZT4oLi4uKSB7IC4uLiByZXR1cm4geyAuLi4gfTsgfWAgYW5kIHJldHVybiB0aGUgaW5uZXIgdGV4dCBvZiBpdHMgcmV0dXJuZWQgb2JqZWN0IGxpdGVyYWwuICovCmZ1bmN0aW9uIGV4dHJhY3RGdW5jdGlvblJldHVybk9iamVjdChjb250ZW50OiBzdHJpbmcsIGZ1bmN0aW9uTmFtZTogc3RyaW5nKTogc3RyaW5nIHsKICBjb25zdCBmbk1hdGNoID0gY29udGVudC5tYXRjaChuZXcgUmVnRXhwKGBmdW5jdGlvblxccyske2Z1bmN0aW9uTmFtZX1cXHMqXFwoW14pXSpcXClbXntdKlxce2ApKTsKICBpZiAoIWZuTWF0Y2ggfHwgZm5NYXRjaC5pbmRleCA9PT0gdW5kZWZpbmVkKSB7CiAgICB0aHJvdyBuZXcgRXJyb3IoYENvdWxkIG5vdCBmaW5kIGZ1bmN0aW9uICR7ZnVuY3Rpb25OYW1lfSBpbiBmaWxlYCk7CiAgfQogIGNvbnN0IGZuQm9keSA9IGV4dHJhY3RCYWxhbmNlZEJyYWNlcyhjb250ZW50LCBjb250ZW50LmluZGV4T2YoInsiLCBmbk1hdGNoLmluZGV4KSk7CiAgY29uc3QgcmV0dXJuTWF0Y2ggPSBmbkJvZHkubWF0Y2goL3JldHVyblxzKlx7Lyk7CiAgaWYgKCFyZXR1cm5NYXRjaCB8fCByZXR1cm5NYXRjaC5pbmRleCA9PT0gdW5kZWZpbmVkKSB7CiAgICB0aHJvdyBuZXcgRXJyb3IoYEZ1bmN0aW9uICR7ZnVuY3Rpb25OYW1lfSBkb2VzIG5vdCBjb250YWluIGEgInJldHVybiB7IiBvYmplY3QgbGl0ZXJhbGApOwogIH0KICByZXR1cm4gZmluZE9iamVjdExpdGVyYWxBZnRlcihmbkJvZHksIHJldHVybk1hdGNoLmluZGV4KTsKfQoKLyoqIEZpbmQgdGhlIG9iamVjdCBsaXRlcmFsIGltbWVkaWF0ZWx5IGZvbGxvd2luZyB0aGUgZ2l2ZW4gbGl0ZXJhbCBhbmNob3Igc3RyaW5nIChmaXJzdCBvY2N1cnJlbmNlKS4gKi8KZnVuY3Rpb24gZXh0cmFjdE9iamVjdEFmdGVyQW5jaG9yKGNvbnRlbnQ6IHN0cmluZywgYW5jaG9yOiBzdHJpbmcpOiBzdHJpbmcgewogIGNvbnN0IGlkeCA9IGNvbnRlbnQuaW5kZXhPZihhbmNob3IpOwogIGlmIChpZHggPT09IC0xKSB0aHJvdyBuZXcgRXJyb3IoYENvdWxkIG5vdCBmaW5kIGFuY2hvciAiJHthbmNob3J9IiBpbiBmaWxlYCk7CiAgcmV0dXJuIGZpbmRPYmplY3RMaXRlcmFsQWZ0ZXIoY29udGVudCwgaWR4ICsgYW5jaG9yLmxlbmd0aCk7Cn0KCi8qKgogKiBGaW5kIHRoZSBvYmplY3QgbGl0ZXJhbCB0aGF0ICplbmNsb3NlcyogdGhlIGZpcnN0IG9jY3VycmVuY2Ugb2YgYG1hcmtlcmAKICogKGUuZy4gYSBkaXN0aW5jdGl2ZSBsaW5lIGluc2lkZSBhIGByZXMuanNvbih7IC4uLiB9KWAgY2FsbCksIGJ5IHNjYW5uaW5nCiAqIGJhY2t3YXJkcyBmb3IgdGhlIG5lYXJlc3QgdW5tYXRjaGVkIGB7YC4gVXNlIHRoaXMgd2hlbiB0aGUgb2JqZWN0IGxpdGVyYWwKICogeW91IGNhcmUgYWJvdXQgaXNuJ3QgdGhlIGZpcnN0IGB7YCBhZnRlciBzb21lIGFuY2hvciAoZS5nLiBpdCdzIG5lc3RlZAogKiBpbnNpZGUgYSByb3V0ZSBoYW5kbGVyJ3MgYXJyb3cgZnVuY3Rpb24gYm9keSkuCiAqLwpmdW5jdGlvbiBleHRyYWN0RW5jbG9zaW5nT2JqZWN0TGl0ZXJhbChjb250ZW50OiBzdHJpbmcsIG1hcmtlcjogc3RyaW5nKTogc3RyaW5nIHsKICBjb25zdCBtYXJrZXJJbmRleCA9IGNvbnRlbnQuaW5kZXhPZihtYXJrZXIpOwogIGlmIChtYXJrZXJJbmRleCA9PT0gLTEpIHRocm93IG5ldyBFcnJvcihgQ291bGQgbm90IGZpbmQgbWFya2VyICIke21hcmtlcn0iIGluIGZpbGVgKTsKICBsZXQgZGVwdGggPSAwOwogIGxldCBpID0gbWFya2VySW5kZXggLSAxOwogIHdoaWxlIChpID49IDApIHsKICAgIGNvbnN0IGMgPSBjb250ZW50W2ldOwogICAgaWYgKGMgPT09ICJ9IikgewogICAgICBkZXB0aCsrOwogICAgfSBlbHNlIGlmIChjID09PSAieyIpIHsKICAgICAgaWYgKGRlcHRoID09PSAwKSByZXR1cm4gZXh0cmFjdEJhbGFuY2VkQnJhY2VzKGNvbnRlbnQsIGkpOwogICAgICBkZXB0aC0tOwogICAgfQogICAgaS0tOwogIH0KICB0aHJvdyBuZXcgRXJyb3IoYENvdWxkIG5vdCBmaW5kIGVuY2xvc2luZyBvYmplY3QgbGl0ZXJhbCBmb3IgbWFya2VyICIke21hcmtlcn0iYCk7Cn0KCmludGVyZmFjZSBDaGVjayB7CiAgZmlsZTogc3RyaW5nOwogIC8qKiBIdW1hbi1yZWFkYWJsZSBsYWJlbCB1c2VkIGluIGVycm9yIG91dHB1dC4gKi8KICBsYWJlbDogc3RyaW5nOwogIC8qKiBFeHRyYSBuYW1lZCBvYmplY3QtbGl0ZXJhbC1yZXR1cm5pbmcgZnVuY3Rpb25zIHRoaXMgYmxvY2sgbWF5IHNwcmVhZCBpbiAobmFtZSAtPiBleHRyYWN0ZWQgbGl0ZXJhbCB0ZXh0KS4gKi8KICBoZWxwZXJGdW5jdGlvbk5hbWVzPzogc3RyaW5nW107CiAgLyoqIEhvdyB0byBmaW5kIHRoZSBvYmplY3QgbGl0ZXJhbCB0byBjaGVjay4gKi8KICBleHRyYWN0OiAoY29udGVudDogc3RyaW5nKSA9PiBzdHJpbmc7CiAgLyoqIE9wZW5BUEkgc2NoZW1hIG5hbWUgdGhlIGV4dHJhY3RlZCBmaWVsZHMgbXVzdCBiZSBhIHN1YnNldCBvZi4gKi8KICBzY2hlbWE6IHN0cmluZzsKfQoKY29uc3QgY2hlY2tzOiBDaGVja1tdID0gWwogIHsKICAgIGZpbGU6ICJvcmRlcnMudHMiLAogICAgbGFiZWw6ICJvcmRlclRvUmVzcG9uc2UoKSIsCiAgICBleHRyYWN0OiAoY29udGVudCkgPT4gZXh0cmFjdEZ1bmN0aW9uUmV0dXJuT2JqZWN0KGNvbnRlbnQsICJvcmRlclRvUmVzcG9uc2UiKSwKICAgIHNjaGVtYTogIk9yZGVyIiwKICB9LAogIHsKICAgIGZpbGU6ICJvcmRlcnMudHMiLAogICAgbGFiZWw6ICdHRVQgL2FkbWluL29yZGVycy86aWQgcmVzcG9uc2UgKHNwcmVhZHMgb3JkZXJUb1Jlc3BvbnNlICsgZXh0cmEgZmllbGRzKScsCiAgICBoZWxwZXJGdW5jdGlvbk5hbWVzOiBbIm9yZGVyVG9SZXNwb25zZSJdLAogICAgZXh0cmFjdDogKGNvbnRlbnQpID0+IGV4dHJhY3RFbmNsb3NpbmdPYmplY3RMaXRlcmFsKGNvbnRlbnQsICIuLi5vcmRlclRvUmVzcG9uc2Uob3JkZXIpLCIpLAogICAgc2NoZW1hOiAiT3JkZXJEZXRhaWwiLAogIH0sCiAgewogICAgZmlsZTogIm9yZGVycy50cyIsCiAgICBsYWJlbDogIkdFVCAvYWRtaW4vb3JkZXJzLzppZCBpdGVtc1tdIG1hcHBpbmciLAogICAgZXh0cmFjdDogKGNvbnRlbnQpID0+IGV4dHJhY3RPYmplY3RBZnRlckFuY2hvcihjb250ZW50LCAiaXRlbXM6IGl0ZW1zLm1hcCgoaXRlbSkgPT4gKCIpLAogICAgc2NoZW1hOiAiT3JkZXJJdGVtIiwKICB9LAogIHsKICAgIGZpbGU6ICJjdXN0b21lcnMudHMiLAogICAgbGFiZWw6ICJjdXN0b21lclRvUmVzcG9uc2UoKSIsCiAgICBleHRyYWN0OiAoY29udGVudCkgPT4gZXh0cmFjdEZ1bmN0aW9uUmV0dXJuT2JqZWN0KGNvbnRlbnQsICJjdXN0b21lclRvUmVzcG9uc2UiKSwKICAgIHNjaGVtYTogIkN1c3RvbWVyIiwKICB9LAogIHsKICAgIGZpbGU6ICJjdXN0b21lcnMudHMiLAogICAgbGFiZWw6ICdHRVQgL2FkbWluL2N1c3RvbWVycy86aWQgcmVzcG9uc2UgKHNwcmVhZHMgY3VzdG9tZXJUb1Jlc3BvbnNlICsgZXh0cmEgZmllbGRzKScsCiAgICBoZWxwZXJGdW5jdGlvbk5hbWVzOiBbImN1c3RvbWVyVG9SZXNwb25zZSJdLAogICAgZXh0cmFjdDogKGNvbnRlbnQpID0+IGV4dHJhY3RFbmNsb3NpbmdPYmplY3RMaXRlcmFsKGNvbnRlbnQsICIuLi5jdXN0b21lclRvUmVzcG9uc2UoY3VzdG9tZXIpLCIpLAogICAgc2NoZW1hOiAiQ3VzdG9tZXJEZXRhaWwiLAogIH0sCiAgewogICAgZmlsZTogImN1c3RvbWVycy50cyIsCiAgICBsYWJlbDogIkdFVCAvYWRtaW4vY3VzdG9tZXJzLzppZCBlbWJlZGRlZCBvcmRlcnNbXSBtYXBwaW5nIiwKICAgIGV4dHJhY3Q6IChjb250ZW50KSA9PiBleHRyYWN0T2JqZWN0QWZ0ZXJBbmNob3IoY29udGVudCwgIm9yZGVyczogb3JkZXJzLm1hcCgobykgPT4gKCIpLAogICAgc2NoZW1hOiAiT3JkZXIiLAogIH0sCiAgewogICAgZmlsZTogInJlZnVuZHMudHMiLAogICAgbGFiZWw6ICJyZWZ1bmRUb1Jlc3BvbnNlKCkiLAogICAgZXh0cmFjdDogKGNvbnRlbnQpID0+IGV4dHJhY3RGdW5jdGlvblJldHVybk9iamVjdChjb250ZW50LCAicmVmdW5kVG9SZXNwb25zZSIpLAogICAgc2NoZW1hOiAiUmVmdW5kIiwKICB9LAogIHsKICAgIGZpbGU6ICJmcmF1ZC50cyIsCiAgICBsYWJlbDogIkdFVCAvYWRtaW4vZnJhdWQgb3JkZXIgcXVldWUgc2VsZWN0KCkiLAogICAgLy8gVGhlIGZpcnN0IGAuc2VsZWN0KC4uLilgIGluIHRoaXMgZmlsZSBpcyB0aGUgb3JkZXItcXVldWUgcHJvamVjdGlvbjsKICAgIC8vIHRoZSBzZWNvbmQgKGZvciBgYWxsRmxhZ2dlZGApIG9ubHkgc2VsZWN0cyBmcmF1ZFNjb3JlL2ZyYXVkUmV2aWV3ZWQKICAgIC8vIGZvciBzdGF0cyBhbmQgaXMgaW50ZW50aW9uYWxseSBub3QgY2hlY2tlZCBoZXJlLgogICAgZXh0cmFjdDogKGNvbnRlbnQpID0+IGV4dHJhY3RPYmplY3RBZnRlckFuY2hvcihjb250ZW50LCAiLnNlbGVjdCgiKSwKICAgIHNjaGVtYTogIkZyYXVkUXVldWVPcmRlciIsCiAgfSwKICB7CiAgICBmaWxlOiAiZnJhdWQudHMiLAogICAgbGFiZWw6ICJHRVQgL2FkbWluL2ZyYXVkIHN0YXRzIG9iamVjdCIsCiAgICBleHRyYWN0OiAoY29udGVudCkgPT4gZXh0cmFjdE9iamVjdEFmdGVyQW5jaG9yKGNvbnRlbnQsICJjb25zdCBzdGF0cyA9ICIpLAogICAgc2NoZW1hOiAiRnJhdWRTdGF0cyIsCiAgfSwKXTsKCmZ1bmN0aW9uIG1haW4oKSB7CiAgY29uc3Qgb3BlbkFwaVJhdyA9IHJlYWRGaWxlU3luYyhPUEVOQVBJX1BBVEgsICJ1dGY4Iik7CiAgY29uc3QgZG9jID0gcGFyc2VZYW1sKG9wZW5BcGlSYXcpIGFzIE9wZW5BcGlEb2M7CgogIGNvbnN0IGZhaWx1cmVzOiBzdHJpbmdbXSA9IFtdOwogIGNvbnN0IGZpbGVDb250ZW50Q2FjaGUgPSBuZXcgTWFwPHN0cmluZywgc3RyaW5nPigpOwoKICBmb3IgKGNvbnN0IGNoZWNrIG9mIGNoZWNrcykgewogICAgY29uc3QgZmlsZVBhdGggPSByZXNvbHZlKEFETUlOX1JPVVRFU19ESVIsIGNoZWNrLmZpbGUpOwogICAgbGV0IGNvbnRlbnQgPSBmaWxlQ29udGVudENhY2hlLmdldChmaWxlUGF0aCk7CiAgICBpZiAoY29udGVudCA9PT0gdW5kZWZpbmVkKSB7CiAgICAgIGNvbnRlbnQgPSByZWFkRmlsZVN5bmMoZmlsZVBhdGgsICJ1dGY4Iik7CiAgICAgIGZpbGVDb250ZW50Q2FjaGUuc2V0KGZpbGVQYXRoLCBjb250ZW50KTsKICAgIH0KCiAgICBjb25zdCBmdW5jdGlvbnNCeU5hbWUgPSBuZXcgTWFwPHN0cmluZywgc3RyaW5nPigpOwogICAgZm9yIChjb25zdCBoZWxwZXJOYW1lIG9mIGNoZWNrLmhlbHBlckZ1bmN0aW9uTmFtZXMgPz8gW10pIHsKICAgICAgZnVuY3Rpb25zQnlOYW1lLnNldChoZWxwZXJOYW1lLCBleHRyYWN0RnVuY3Rpb25SZXR1cm5PYmplY3QoY29udGVudCwgaGVscGVyTmFtZSkpOwogICAgfQoKICAgIGxldCBvYmplY3RMaXRlcmFsVGV4dDogc3RyaW5nOwogICAgdHJ5IHsKICAgICAgb2JqZWN0TGl0ZXJhbFRleHQgPSBjaGVjay5leHRyYWN0KGNvbnRlbnQpOwogICAgfSBjYXRjaCAoZXJyKSB7CiAgICAgIGZhaWx1cmVzLnB1c2goCiAgICAgICAgYFske2NoZWNrLmZpbGV9XSBDb3VsZCBub3QgbG9jYXRlICIke2NoZWNrLmxhYmVsfSIg4oCUIHRoZSBjb2RlIG1vdmVkIG9yIHdhcyByZW5hbWVkLiBgICsKICAgICAgICAgIGBVcGRhdGUgc2NyaXB0cy9zcmMvY2hlY2stYXBpLWRyaWZ0LnRzIHRvIG1hdGNoLCBvciB0aGlzIGNoZWNrIGlzIHNpbGVudGx5IG5vIGxvbmdlciBydW5uaW5nLlxuICAkeyhlcnIgYXMgRXJyb3IpLm1lc3NhZ2V9YCwKICAgICAgKTsKICAgICAgY29udGludWU7CiAgICB9CgogICAgbGV0IGNvZGVGaWVsZHM6IFNldDxzdHJpbmc+OwogICAgdHJ5IHsKICAgICAgY29kZUZpZWxkcyA9IHJlc29sdmVGaWVsZHMoY29udGVudCwgb2JqZWN0TGl0ZXJhbFRleHQsIGZ1bmN0aW9uc0J5TmFtZSk7CiAgICB9IGNhdGNoIChlcnIpIHsKICAgICAgZmFpbHVyZXMucHVzaChgWyR7Y2hlY2suZmlsZX1dIEZhaWxlZCB0byBwYXJzZSBmaWVsZHMgZm9yICIke2NoZWNrLmxhYmVsfSI6ICR7KGVyciBhcyBFcnJvcikubWVzc2FnZX1gKTsKICAgICAgY29udGludWU7CiAgICB9CgogICAgbGV0IHNjaGVtYUZpZWxkczogU2V0PHN0cmluZz47CiAgICB0cnkgewogICAgICBzY2hlbWFGaWVsZHMgPSBsb2FkU2NoZW1hRmllbGROYW1lcyhkb2MsIGNoZWNrLnNjaGVtYSk7CiAgICB9IGNhdGNoIChlcnIpIHsKICAgICAgZmFpbHVyZXMucHVzaChgWyR7Y2hlY2suZmlsZX1dICR7KGVyciBhcyBFcnJvcikubWVzc2FnZX1gKTsKICAgICAgY29udGludWU7CiAgICB9CgogICAgY29uc3QgbWlzc2luZyA9IFsuLi5jb2RlRmllbGRzXS5maWx0ZXIoKGYpID0+ICFzY2hlbWFGaWVsZHMuaGFzKGYpKTsKICAgIGlmIChtaXNzaW5nLmxlbmd0aCA+IDApIHsKICAgICAgZmFpbHVyZXMucHVzaCgKICAgICAgICBgWyR7Y2hlY2suZmlsZX1dICIke2NoZWNrLmxhYmVsfSIgcmV0dXJucyBmaWVsZChzKSBub3QgZGVjbGFyZWQgb24gb3BlbmFwaS55YW1sIHNjaGVtYSAiJHtjaGVjay5zY2hlbWF9IjogJHttaXNzaW5nLmpvaW4oIiwgIil9XG5gICsKICAgICAgICAgIGAgIEZpeDogYWRkIHRoZSBmaWVsZChzKSB0byBjb21wb25lbnRzLnNjaGVtYXMuJHtjaGVjay5zY2hlbWF9IGluIGxpYi9hcGktc3BlYy9vcGVuYXBpLnlhbWwsIHRoZW4gcnVuIGAgKwogICAgICAgICAgYCJwbnBtIC0tZmlsdGVyIEB3b3Jrc3BhY2UvYXBpLXNwZWMgcnVuIGNvZGVnZW4iIGlmIHRoZSBzY2hlbWEgZmVlZHMgZ2VuZXJhdGVkIGZyb250ZW5kIHR5cGVzLmAsCiAgICAgICk7CiAgICB9CiAgfQoKICBpZiAoZmFpbHVyZXMubGVuZ3RoID4gMCkgewogICAgY29uc29sZS5lcnJvcigiXG7inJcgQVBJIHNwZWMgZHJpZnQgZGV0ZWN0ZWQgYmV0d2VlbiBhZG1pbiByb3V0ZXMgYW5kIGxpYi9hcGktc3BlYy9vcGVuYXBpLnlhbWw6XG4iKTsKICAgIGZvciAoY29uc3QgZiBvZiBmYWlsdXJlcykgY29uc29sZS5lcnJvcihgJHtmfVxuYCk7CiAgICBjb25zb2xlLmVycm9yKGAke2ZhaWx1cmVzLmxlbmd0aH0gZHJpZnQgaXNzdWUocykgZm91bmQuYCk7CiAgICBwcm9jZXNzLmV4aXQoMSk7CiAgfQoKICBjb25zb2xlLmxvZyhg4pyTIE5vIEFQSSBzcGVjIGRyaWZ0IGRldGVjdGVkIGFjcm9zcyAke2NoZWNrcy5sZW5ndGh9IGNoZWNrZWQgYWRtaW4gcmVzcG9uc2Ugc2hhcGUocykuYCk7Cn0KCm1haW4oKTsK
+/**
+ * Guards against the class of bug where an admin route handler starts
+ * returning a new field (e.g. `fraudScore`, `refundedAmountGbp`) without the
+ * OpenAPI spec being updated to declare it. When that happens, generated
+ * frontend types silently omit the field instead of failing to typecheck,
+ * and admin staff can end up looking at a UI that never renders data the
+ * server is actually sending.
+ *
+ * This script statically extracts the field names returned by a curated set
+ * of admin response builders in artifacts/api-server/src/routes/admin/*.ts
+ * and checks that every field is declared on the corresponding schema in
+ * lib/api-spec/openapi.yaml. It does NOT check the reverse (schema fields
+ * missing from code) since routes are allowed to omit optional fields.
+ *
+ * Run with: pnpm --filter @workspace/scripts run check:api-drift
+ */
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { parse as parseYaml } from "yaml";
+
+const ROOT = resolve(import.meta.dirname, "../..");
+const OPENAPI_PATH = resolve(ROOT, "lib/api-spec/openapi.yaml");
+const ADMIN_ROUTES_DIR = resolve(ROOT, "artifacts/api-server/src/routes/admin");
+
+type OpenApiSchema = {
+  properties?: Record<string, unknown>;
+};
+
+type OpenApiDoc = {
+  components?: { schemas?: Record<string, OpenApiSchema> };
+};
+
+function loadSchemaFieldNames(doc: OpenApiDoc, schemaName: string): Set<string> {
+  const schema = doc.components?.schemas?.[schemaName];
+  if (!schema) {
+    throw new Error(`OpenAPI spec has no schema named "${schemaName}" (components.schemas.${schemaName})`);
+  }
+  return new Set(Object.keys(schema.properties ?? {}));
+}
+
+/** Skip over a string/template literal starting at `start` (which points at the opening quote). */
+function skipStringLiteral(text: string, start: number): number {
+  const quote = text[start];
+  let i = start + 1;
+  while (i < text.length) {
+    if (text[i] === "\\") {
+      i += 2;
+      continue;
+    }
+    if (text[i] === quote) return i + 1;
+    i++;
+  }
+  throw new Error("Unterminated string literal while scanning for object literal boundaries");
+}
+
+/** Given the index of an opening `{`, return the text between it and its matching `}` (exclusive of braces). */
+function extractBalancedBraces(text: string, openIndex: number): string {
+  let depth = 0;
+  let i = openIndex;
+  while (i < text.length) {
+    const c = text[i];
+    if (c === '"' || c === "'" || c === "`") {
+      i = skipStringLiteral(text, i);
+      continue;
+    }
+    if (c === "{") {
+      depth++;
+      i++;
+      continue;
+    }
+    if (c === "}") {
+      depth--;
+      if (depth === 0) return text.slice(openIndex + 1, i);
+      i++;
+      continue;
+    }
+    i++;
+  }
+  throw new Error("Unbalanced braces while scanning object literal");
+}
+
+/** Split an object literal's inner text into its top-level `key: value` / `...spread` entries. */
+function splitTopLevelEntries(inner: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let start = 0;
+  let i = 0;
+  while (i < inner.length) {
+    const c = inner[i];
+    if (c === '"' || c === "'" || c === "`") {
+      i = skipStringLiteral(inner, i);
+      continue;
+    }
+    if ("{[(".includes(c)) {
+      depth++;
+    } else if ("}])".includes(c)) {
+      depth--;
+    } else if (c === "," && depth === 0) {
+      parts.push(inner.slice(start, i));
+      start = i + 1;
+    }
+    i++;
+  }
+  parts.push(inner.slice(start));
+  return parts.map((p) => p.trim()).filter(Boolean);
+}
+
+type ParsedEntry = { kind: "key"; name: string } | { kind: "spread"; callee: string };
+
+function parseEntry(entry: string): ParsedEntry | null {
+  const spreadMatch = entry.match(/^\.\.\.([A-Za-z_][A-Za-z0-9_]*)\s*\(/);
+  if (spreadMatch) return { kind: "spread", callee: spreadMatch[1] };
+  const keyMatch = entry.match(/^["']?([A-Za-z_][A-Za-z0-9_]*)["']?\s*:/);
+  if (keyMatch) return { kind: "key", name: keyMatch[1] };
+  return null;
+}
+
+/** Extract the object literal that follows the first `return {` (or `{` after `anchor`) in `content`, starting the search at `fromIndex`. */
+function findObjectLiteralAfter(content: string, fromIndex: number): string {
+  const braceIndex = content.indexOf("{", fromIndex);
+  if (braceIndex === -1) throw new Error("Expected an object literal but found none");
+  return extractBalancedBraces(content, braceIndex);
+}
+
+/**
+ * Resolve the full set of field names an object literal produces, following
+ * `...someFunction(...)` spreads into other named object-literal-returning
+ * functions declared in the same file (one level of indirection is enough
+ * for this codebase's mapper style).
+ */
+function resolveFields(content: string, objectLiteralText: string, functionsByName: Map<string, string>): Set<string> {
+  const fields = new Set<string>();
+  for (const entry of splitTopLevelEntries(objectLiteralText)) {
+    const parsed = parseEntry(entry);
+    if (!parsed) continue;
+    if (parsed.kind === "key") {
+      fields.add(parsed.name);
+    } else {
+      const calleeLiteral = functionsByName.get(parsed.callee);
+      if (!calleeLiteral) {
+        throw new Error(`Spread of unknown function "${parsed.callee}(...)" — add it to functionsByName if it returns an object literal`);
+      }
+      for (const f of resolveFields(content, calleeLiteral, functionsByName)) fields.add(f);
+    }
+  }
+  return fields;
+}
+
+/** Find `function <name>(...) { ... return { ... }; }` and return the inner text of its returned object literal. */
+function extractFunctionReturnObject(content: string, functionName: string): string {
+  const fnMatch = content.match(new RegExp(`function\\s+${functionName}\\s*\\([^)]*\\)[^{]*\\{`));
+  if (!fnMatch || fnMatch.index === undefined) {
+    throw new Error(`Could not find function ${functionName} in file`);
+  }
+  const fnBody = extractBalancedBraces(content, content.indexOf("{", fnMatch.index));
+  const returnMatch = fnBody.match(/return\s*\{/);
+  if (!returnMatch || returnMatch.index === undefined) {
+    throw new Error(`Function ${functionName} does not contain a "return {" object literal`);
+  }
+  return findObjectLiteralAfter(fnBody, returnMatch.index);
+}
+
+/** Find the object literal immediately following the given literal anchor string (first occurrence). */
+function extractObjectAfterAnchor(content: string, anchor: string): string {
+  const idx = content.indexOf(anchor);
+  if (idx === -1) throw new Error(`Could not find anchor "${anchor}" in file`);
+  return findObjectLiteralAfter(content, idx + anchor.length);
+}
+
+/**
+ * Find the object literal that *encloses* the first occurrence of `marker`
+ * (e.g. a distinctive line inside a `res.json({ ... })` call), by scanning
+ * backwards for the nearest unmatched `{`. Use this when the object literal
+ * you care about isn't the first `{` after some anchor (e.g. it's nested
+ * inside a route handler's arrow function body).
+ */
+function extractEnclosingObjectLiteral(content: string, marker: string): string {
+  const markerIndex = content.indexOf(marker);
+  if (markerIndex === -1) throw new Error(`Could not find marker "${marker}" in file`);
+  let depth = 0;
+  let i = markerIndex - 1;
+  while (i >= 0) {
+    const c = content[i];
+    if (c === "}") {
+      depth++;
+    } else if (c === "{") {
+      if (depth === 0) return extractBalancedBraces(content, i);
+      depth--;
+    }
+    i--;
+  }
+  throw new Error(`Could not find enclosing object literal for marker "${marker}"`);
+}
+
+interface Check {
+  file: string;
+  /** Human-readable label used in error output. */
+  label: string;
+  /** Extra named object-literal-returning functions this block may spread in (name -> extracted literal text). */
+  helperFunctionNames?: string[];
+  /** How to find the object literal to check. */
+  extract: (content: string) => string;
+  /** OpenAPI schema name the extracted fields must be a subset of. */
+  schema: string;
+}
+
+const checks: Check[] = [
+  {
+    file: "orders.ts",
+    label: "orderToResponse()",
+    extract: (content) => extractFunctionReturnObject(content, "orderToResponse"),
+    schema: "Order",
+  },
+  {
+    file: "orders.ts",
+    label: 'GET /admin/orders/:id response (spreads orderToResponse + extra fields)',
+    helperFunctionNames: ["orderToResponse"],
+    extract: (content) => extractEnclosingObjectLiteral(content, "...orderToResponse(order),"),
+    schema: "OrderDetail",
+  },
+  {
+    file: "orders.ts",
+    label: "GET /admin/orders/:id items[] mapping",
+    extract: (content) => extractObjectAfterAnchor(content, "items: items.map((item) => ("),
+    schema: "OrderItem",
+  },
+  {
+    file: "customers.ts",
+    label: "customerToResponse()",
+    extract: (content) => extractFunctionReturnObject(content, "customerToResponse"),
+    schema: "Customer",
+  },
+  {
+    file: "customers.ts",
+    label: 'GET /admin/customers/:id response (spreads customerToResponse + extra fields)',
+    helperFunctionNames: ["customerToResponse"],
+    extract: (content) => extractEnclosingObjectLiteral(content, "...customerToResponse(customer),"),
+    schema: "CustomerDetail",
+  },
+  {
+    file: "customers.ts",
+    label: "GET /admin/customers/:id embedded orders[] mapping",
+    extract: (content) => extractObjectAfterAnchor(content, "orders: orders.map((o) => ("),
+    schema: "Order",
+  },
+  {
+    file: "refunds.ts",
+    label: "refundToResponse()",
+    extract: (content) => extractFunctionReturnObject(content, "refundToResponse"),
+    schema: "Refund",
+  },
+  {
+    file: "fraud.ts",
+    label: "GET /admin/fraud order queue select()",
+    // The first `.select(...)` in this file is the order-queue projection;
+    // the second (for `allFlagged`) only selects fraudScore/fraudReviewed
+    // for stats and is intentionally not checked here.
+    extract: (content) => extractObjectAfterAnchor(content, ".select("),
+    schema: "FraudQueueOrder",
+  },
+  {
+    file: "fraud.ts",
+    label: "GET /admin/fraud stats object",
+    extract: (content) => extractObjectAfterAnchor(content, "const stats = "),
+    schema: "FraudStats",
+  },
+];
+
+function main() {
+  const openApiRaw = readFileSync(OPENAPI_PATH, "utf8");
+  const doc = parseYaml(openApiRaw) as OpenApiDoc;
+
+  const failures: string[] = [];
+  const fileContentCache = new Map<string, string>();
+
+  for (const check of checks) {
+    const filePath = resolve(ADMIN_ROUTES_DIR, check.file);
+    let content = fileContentCache.get(filePath);
+    if (content === undefined) {
+      content = readFileSync(filePath, "utf8");
+      fileContentCache.set(filePath, content);
+    }
+
+    const functionsByName = new Map<string, string>();
+    for (const helperName of check.helperFunctionNames ?? []) {
+      functionsByName.set(helperName, extractFunctionReturnObject(content, helperName));
+    }
+
+    let objectLiteralText: string;
+    try {
+      objectLiteralText = check.extract(content);
+    } catch (err) {
+      failures.push(
+        `[${check.file}] Could not locate "${check.label}" — the code moved or was renamed. ` +
+          `Update scripts/src/check-api-drift.ts to match, or this check is silently no longer running.\n  ${(err as Error).message}`,
+      );
+      continue;
+    }
+
+    let codeFields: Set<string>;
+    try {
+      codeFields = resolveFields(content, objectLiteralText, functionsByName);
+    } catch (err) {
+      failures.push(`[${check.file}] Failed to parse fields for "${check.label}": ${(err as Error).message}`);
+      continue;
+    }
+
+    let schemaFields: Set<string>;
+    try {
+      schemaFields = loadSchemaFieldNames(doc, check.schema);
+    } catch (err) {
+      failures.push(`[${check.file}] ${(err as Error).message}`);
+      continue;
+    }
+
+    const missing = [...codeFields].filter((f) => !schemaFields.has(f));
+    if (missing.length > 0) {
+      failures.push(
+        `[${check.file}] "${check.label}" returns field(s) not declared on openapi.yaml schema "${check.schema}": ${missing.join(", ")}\n` +
+          `  Fix: add the field(s) to components.schemas.${check.schema} in lib/api-spec/openapi.yaml, then run ` +
+          `"pnpm --filter @workspace/api-spec run codegen" if the schema feeds generated frontend types.`,
+      );
+    }
+  }
+
+  if (failures.length > 0) {
+    console.error("\n✗ API spec drift detected between admin routes and lib/api-spec/openapi.yaml:\n");
+    for (const f of failures) console.error(`${f}\n`);
+    console.error(`${failures.length} drift issue(s) found.`);
+    process.exit(1);
+  }
+
+  console.log(`✓ No API spec drift detected across ${checks.length} checked admin response shape(s).`);
+}
+
+main();

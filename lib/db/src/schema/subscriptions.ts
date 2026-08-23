@@ -1,1 +1,16 @@
-aW1wb3J0IHsgcGdUYWJsZSwgc2VyaWFsLCBpbnRlZ2VyLCB0ZXh0LCB0aW1lc3RhbXAgfSBmcm9tICJkcml6emxlLW9ybS9wZy1jb3JlIjsKCmV4cG9ydCBjb25zdCBzdWJzY3JpcHRpb25zVGFibGUgPSBwZ1RhYmxlKCJzdWJzY3JpcHRpb25zIiwgewogIGlkOiBzZXJpYWwoImlkIikucHJpbWFyeUtleSgpLAogIGN1c3RvbWVySWQ6IGludGVnZXIoImN1c3RvbWVyX2lkIikubm90TnVsbCgpLAogIGl0ZW1zSnNvbjogdGV4dCgiaXRlbXNfanNvbiIpLm5vdE51bGwoKSwKICBpbnRlcnZhbERheXM6IGludGVnZXIoImludGVydmFsX2RheXMiKS5ub3ROdWxsKCkuZGVmYXVsdCgzMCksCiAgbmV4dFJlbmV3YWxBdDogdGltZXN0YW1wKCJuZXh0X3JlbmV3YWxfYXQiLCB7IHdpdGhUaW1lem9uZTogdHJ1ZSB9KS5ub3ROdWxsKCksCiAgZGlzY291bnRQY3Q6IGludGVnZXIoImRpc2NvdW50X3BjdCIpLm5vdE51bGwoKS5kZWZhdWx0KDUpLAogIHN0YXR1czogdGV4dCgic3RhdHVzIikubm90TnVsbCgpLmRlZmF1bHQoImFjdGl2ZSIpLAogIHBhdXNlZEF0OiB0aW1lc3RhbXAoInBhdXNlZF9hdCIsIHsgd2l0aFRpbWV6b25lOiB0cnVlIH0pLAogIGNyZWF0ZWRBdDogdGltZXN0YW1wKCJjcmVhdGVkX2F0IiwgeyB3aXRoVGltZXpvbmU6IHRydWUgfSkubm90TnVsbCgpLmRlZmF1bHROb3coKSwKICB1cGRhdGVkQXQ6IHRpbWVzdGFtcCgidXBkYXRlZF9hdCIsIHsgd2l0aFRpbWV6b25lOiB0cnVlIH0pLm5vdE51bGwoKS5kZWZhdWx0Tm93KCksCn0pOwoKZXhwb3J0IHR5cGUgU3Vic2NyaXB0aW9uID0gdHlwZW9mIHN1YnNjcmlwdGlvbnNUYWJsZS4kaW5mZXJTZWxlY3Q7Cg==
+import { pgTable, serial, integer, text, timestamp } from "drizzle-orm/pg-core";
+
+export const subscriptionsTable = pgTable("subscriptions", {
+  id: serial("id").primaryKey(),
+  customerId: integer("customer_id").notNull(),
+  itemsJson: text("items_json").notNull(),
+  intervalDays: integer("interval_days").notNull().default(30),
+  nextRenewalAt: timestamp("next_renewal_at", { withTimezone: true }).notNull(),
+  discountPct: integer("discount_pct").notNull().default(5),
+  status: text("status").notNull().default("active"),
+  pausedAt: timestamp("paused_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type Subscription = typeof subscriptionsTable.$inferSelect;

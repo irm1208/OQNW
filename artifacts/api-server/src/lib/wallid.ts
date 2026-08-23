@@ -1,1 +1,101 @@
-aW1wb3J0IHsgbG9nZ2VyIH0gZnJvbSAiLi9sb2dnZXIiOwoKY29uc3QgV0FMTElEX0FQSV9LRVlfSUQgICAgID0gcHJvY2Vzcy5lbnYuV0FMTElEX0FQSV9LRVlfSUQ7CmNvbnN0IFdBTExJRF9BUElfS0VZX1NFQ1JFVCA9IHByb2Nlc3MuZW52LldBTExJRF9BUElfS0VZX1NFQ1JFVDsKZXhwb3J0IGNvbnN0IFdBTExJRF9XRUJIT09LX1NFQ1JFVCA9IHByb2Nlc3MuZW52LldBTExJRF9XRUJIT09LX1NFQ1JFVDsKCmNvbnN0IFdBTExJRF9CQVNFX1VSTCA9ICJodHRwczovL3BheW1lbnQtYXBpLndhbGxpZC5jby9hcGkvcGF5bWVudC1ndy92MSI7CgpleHBvcnQgZnVuY3Rpb24gaXNXYWxsaWRDb25maWd1cmVkKCk6IGJvb2xlYW4gewogIHJldHVybiAhIShXQUxMSURfQVBJX0tFWV9JRCAmJiBXQUxMSURfQVBJX0tFWV9TRUNSRVQpOwp9CgovKiogQnVpbGQgdGhlIEhUVFAgQmFzaWMgQXV0aCBoZWFkZXIgdmFsdWUuICovCmZ1bmN0aW9uIGJhc2ljQXV0aCgpOiBzdHJpbmcgewogIHJldHVybiAiQmFzaWMgIiArIEJ1ZmZlci5mcm9tKGAke1dBTExJRF9BUElfS0VZX0lEfToke1dBTExJRF9BUElfS0VZX1NFQ1JFVH1gKS50b1N0cmluZygiYmFzZTY0Iik7Cn0KCmV4cG9ydCBpbnRlcmZhY2UgV2FsbGlkUGF5bWVudCB7CiAgcGF5bWVudFVybDogICBzdHJpbmc7CiAgYXBpUGF5bWVudElkOiBzdHJpbmc7Cn0KCmV4cG9ydCBpbnRlcmZhY2UgV2FsbGlkSXRlbSB7CiAgbmFtZTogICAgICAgIHN0cmluZzsKICBjYXRlZ29yeTogICAgc3RyaW5nOwogIHByaWNlX21pbm9yOiBudW1iZXI7CiAgaW1hZ2VfdXJsOiAgIHN0cmluZzsKICBwcm9kdWN0X3VybDogc3RyaW5nOwp9CgovKioKICogQ3JlYXRlIGEgV2FsbGlkIGhvc3RlZCBwYXltZW50IHNlc3Npb24uCiAqCiAqIENhbGxlcnMgcHJvdmlkZSB0aGUgYWxyZWFkeS1xdW90ZWQgYW1vdW50IGluIHRoZSBzZWxlY3RlZCBjdXJyZW5jeSdzIG1pbm9yCiAqIHVuaXRzIChwZW5jZSBmb3IgR0JQIGFuZCBjZW50cyBmb3IgRVVSKS4KICogUmV0dXJucyB0aGUgaG9zdGVkIGNoZWNrb3V0IFVSTCBhbmQgdGhlIGFwaV9wYXltZW50X2lkIHRvIHN0b3JlIGZvcgogKiByZWNvbmNpbGlhdGlvbiwgb3IgbnVsbCBpZiBjcmVhdGlvbiBmYWlscy4KICovCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBjcmVhdGVXYWxsaWRQYXltZW50KG9wdHM6IHsKICBvcmRlck51bWJlcjogICAgc3RyaW5nOwogIGFtb3VudE1pbm9yOiAgICBudW1iZXI7CiAgY3VycmVuY3k6ICAgICAgICJHQlAiIHwgIkVVUiI7CiAgY3VzdG9tZXJFbWFpbDogIHN0cmluZzsKICBjdXN0b21lcklkPzogICAgc3RyaW5nOwogIHN1Y2Nlc3NVcmw6ICAgICBzdHJpbmc7CiAgZmFpbFVybDogICAgICAgIHN0cmluZzsKICBpdGVtczogICAgICAgICAgV2FsbGlkSXRlbVtdOwp9KTogUHJvbWlzZTxXYWxsaWRQYXltZW50IHwgbnVsbD4gewogIGlmICghaXNXYWxsaWRDb25maWd1cmVkKCkpIHsKICAgIGxvZ2dlci53YXJuKCJXYWxsaWQgbm90IGNvbmZpZ3VyZWQg4oCUIFdBTExJRF9BUElfS0VZX0lEIG9yIFdBTExJRF9BUElfS0VZX1NFQ1JFVCBtaXNzaW5nIik7CiAgICByZXR1cm4gbnVsbDsKICB9CgogIGNvbnN0IGJvZHkgPSB7CiAgICBvcmRlcl9pZDogICAgICAgb3B0cy5vcmRlck51bWJlciwKICAgIGFtb3VudDogICAgICAgICBvcHRzLmFtb3VudE1pbm9yLAogICAgY3VycmVuY3k6ICAgICAgIG9wdHMuY3VycmVuY3ksCiAgICBzdWNjZXNzX3VybDogICAgb3B0cy5zdWNjZXNzVXJsLAogICAgZmFpbF91cmw6ICAgICAgIG9wdHMuZmFpbFVybCwKICAgIGN1c3RvbWVyX2VtYWlsOiBvcHRzLmN1c3RvbWVyRW1haWwsCiAgICAuLi4ob3B0cy5jdXN0b21lcklkICYmIHsgY3VzdG9tZXJfaWQ6IG9wdHMuY3VzdG9tZXJJZCB9KSwKICAgIGxvY2FsZTogICAgICAgICAiZW4iLAogICAgY291bnRyeTogICAgICAgICJHQiIsCiAgICBpdGVtczogICAgICAgICAgb3B0cy5pdGVtcywKICB9OwoKICB0cnkgewogICAgY29uc3QgcmVzID0gYXdhaXQgZmV0Y2goYCR7V0FMTElEX0JBU0VfVVJMfS9jcmVhdGVgLCB7CiAgICAgIG1ldGhvZDogICJQT1NUIiwKICAgICAgaGVhZGVyczogewogICAgICAgICJDb250ZW50LVR5cGUiOiAgImFwcGxpY2F0aW9uL2pzb24iLAogICAgICAgICJBdXRob3JpemF0aW9uIjogYmFzaWNBdXRoKCksCiAgICAgIH0sCiAgICAgIGJvZHk6IEpTT04uc3RyaW5naWZ5KGJvZHkpLAogICAgfSk7CgogICAgaWYgKCFyZXMub2spIHsKICAgICAgY29uc3QgZXJyVGV4dCA9IGF3YWl0IHJlcy50ZXh0KCkuY2F0Y2goKCkgPT4gIihubyBib2R5KSIpOwogICAgICBsb2dnZXIuZXJyb3IoCiAgICAgICAgeyBzdGF0dXM6IHJlcy5zdGF0dXMsIGVyclRleHQsIG9yZGVyTnVtYmVyOiBvcHRzLm9yZGVyTnVtYmVyIH0sCiAgICAgICAgIldhbGxpZCBwYXltZW50IGNyZWF0aW9uIGZhaWxlZCIsCiAgICAgICk7CiAgICAgIHJldHVybiBudWxsOwogICAgfQoKICAgIGNvbnN0IGRhdGEgPSAoYXdhaXQgcmVzLmpzb24oKSkgYXMgewogICAgICBhcGlfcGF5bWVudF9pZD86IHN0cmluZzsKICAgICAgcGF5bWVudF9saW5rPzogICBzdHJpbmc7CiAgICB9OwoKICAgIGlmICghZGF0YS5hcGlfcGF5bWVudF9pZCB8fCAhZGF0YS5wYXltZW50X2xpbmspIHsKICAgICAgbG9nZ2VyLmVycm9yKHsgZGF0YSwgb3JkZXJOdW1iZXI6IG9wdHMub3JkZXJOdW1iZXIgfSwgIldhbGxpZCByZXR1cm5lZCB1bmV4cGVjdGVkIHJlc3BvbnNlIik7CiAgICAgIHJldHVybiBudWxsOwogICAgfQoKICAgIHJldHVybiB7IHBheW1lbnRVcmw6IGRhdGEucGF5bWVudF9saW5rLCBhcGlQYXltZW50SWQ6IGRhdGEuYXBpX3BheW1lbnRfaWQgfTsKICB9IGNhdGNoIChlcnIpIHsKICAgIGxvZ2dlci5lcnJvcih7IGVyciwgb3JkZXJOdW1iZXI6IG9wdHMub3JkZXJOdW1iZXIgfSwgIldhbGxpZCBwYXltZW50IGNyZWF0aW9uIHRocmV3Iik7CiAgICByZXR1cm4gbnVsbDsKICB9Cn0K
+import { logger } from "./logger";
+
+const WALLID_API_KEY_ID     = process.env.WALLID_API_KEY_ID;
+const WALLID_API_KEY_SECRET = process.env.WALLID_API_KEY_SECRET;
+export const WALLID_WEBHOOK_SECRET = process.env.WALLID_WEBHOOK_SECRET;
+
+const WALLID_BASE_URL = "https://payment-api.wallid.co/api/payment-gw/v1";
+
+export function isWallidConfigured(): boolean {
+  return !!(WALLID_API_KEY_ID && WALLID_API_KEY_SECRET);
+}
+
+/** Build the HTTP Basic Auth header value. */
+function basicAuth(): string {
+  return "Basic " + Buffer.from(`${WALLID_API_KEY_ID}:${WALLID_API_KEY_SECRET}`).toString("base64");
+}
+
+export interface WallidPayment {
+  paymentUrl:   string;
+  apiPaymentId: string;
+}
+
+export interface WallidItem {
+  name:        string;
+  category:    string;
+  price_minor: number;
+  image_url:   string;
+  product_url: string;
+}
+
+/**
+ * Create a Wallid hosted payment session.
+ *
+ * Callers provide the already-quoted amount in the selected currency's minor
+ * units (pence for GBP and cents for EUR).
+ * Returns the hosted checkout URL and the api_payment_id to store for
+ * reconciliation, or null if creation fails.
+ */
+export async function createWallidPayment(opts: {
+  orderNumber:    string;
+  amountMinor:    number;
+  currency:       "GBP" | "EUR";
+  customerEmail:  string;
+  customerId?:    string;
+  successUrl:     string;
+  failUrl:        string;
+  items:          WallidItem[];
+}): Promise<WallidPayment | null> {
+  if (!isWallidConfigured()) {
+    logger.warn("Wallid not configured — WALLID_API_KEY_ID or WALLID_API_KEY_SECRET missing");
+    return null;
+  }
+
+  const body = {
+    order_id:       opts.orderNumber,
+    amount:         opts.amountMinor,
+    currency:       opts.currency,
+    success_url:    opts.successUrl,
+    fail_url:       opts.failUrl,
+    customer_email: opts.customerEmail,
+    ...(opts.customerId && { customer_id: opts.customerId }),
+    locale:         "en",
+    country:        "GB",
+    items:          opts.items,
+  };
+
+  try {
+    const res = await fetch(`${WALLID_BASE_URL}/create`, {
+      method:  "POST",
+      headers: {
+        "Content-Type":  "application/json",
+        "Authorization": basicAuth(),
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text().catch(() => "(no body)");
+      logger.error(
+        { status: res.status, errText, orderNumber: opts.orderNumber },
+        "Wallid payment creation failed",
+      );
+      return null;
+    }
+
+    const data = (await res.json()) as {
+      api_payment_id?: string;
+      payment_link?:   string;
+    };
+
+    if (!data.api_payment_id || !data.payment_link) {
+      logger.error({ data, orderNumber: opts.orderNumber }, "Wallid returned unexpected response");
+      return null;
+    }
+
+    return { paymentUrl: data.payment_link, apiPaymentId: data.api_payment_id };
+  } catch (err) {
+    logger.error({ err, orderNumber: opts.orderNumber }, "Wallid payment creation threw");
+    return null;
+  }
+}

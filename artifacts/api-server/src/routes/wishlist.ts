@@ -1,1 +1,93 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IGNyeXB0byBmcm9tICJjcnlwdG8iOwppbXBvcnQgeyBkYiB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyB3aXNobGlzdHNUYWJsZSB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyBlcSwgYW5kIH0gZnJvbSAiZHJpenpsZS1vcm0iOwppbXBvcnQgeyBmaXJzdFN0cmluZyB9IGZyb20gIi4uL2xpYi9xdWVyeSI7Cgpjb25zdCByb3V0ZXIgPSBSb3V0ZXIoKTsKCmNvbnN0IFNFU1NJT05fU0VDUkVUID0KICBwcm9jZXNzLmVudi5TRVNTSU9OX1NFQ1JFVCA/PwogIHByb2Nlc3MuZW52LkFETUlOX1BBU1NXT1JEID8/CiAgIm9tbmlxdXJlLWN1c3Qtc2Vzc2lvbi1mYWxsYmFjay1zZWNyZXQiOwpjb25zdCBDT09LSUVfTkFNRSA9ICJjdXN0b21lcl9zZXNzaW9uIjsKCmZ1bmN0aW9uIGdldEN1c3RvbWVySWQocmVxOiBSZXF1ZXN0KTogbnVtYmVyIHwgbnVsbCB7CiAgY29uc3QgdG9rZW4gPSByZXEuY29va2llcz8uW0NPT0tJRV9OQU1FXSBhcyBzdHJpbmcgfCB1bmRlZmluZWQ7CiAgaWYgKCF0b2tlbikgcmV0dXJuIG51bGw7CiAgY29uc3QgZG90ID0gdG9rZW4ubGFzdEluZGV4T2YoIi4iKTsKICBpZiAoZG90ID09PSAtMSkgcmV0dXJuIG51bGw7CiAgY29uc3QgcGF5bG9hZCA9IHRva2VuLnNsaWNlKDAsIGRvdCk7CiAgY29uc3Qgc2lnID0gdG9rZW4uc2xpY2UoZG90ICsgMSk7CiAgY29uc3QgZXhwZWN0ZWQgPSBjcnlwdG8uY3JlYXRlSG1hYygic2hhMjU2IiwgU0VTU0lPTl9TRUNSRVQpLnVwZGF0ZShwYXlsb2FkKS5kaWdlc3QoImhleCIpOwogIGlmIChzaWcgIT09IGV4cGVjdGVkKSByZXR1cm4gbnVsbDsKICBjb25zdCBpZCA9IHBhcnNlSW50KHBheWxvYWQsIDEwKTsKICByZXR1cm4gaXNOYU4oaWQpID8gbnVsbCA6IGlkOwp9Cgpyb3V0ZXIuZ2V0KCIvd2lzaGxpc3QiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgY29uc3QgY3VzdG9tZXJJZCA9IGdldEN1c3RvbWVySWQocmVxKTsKICBpZiAoIWN1c3RvbWVySWQpIHsKICAgIHJlcy5zdGF0dXMoNDAxKS5qc29uKHsgZXJyb3I6ICJOb3QgYXV0aGVudGljYXRlZCIgfSk7CiAgICByZXR1cm47CiAgfQogIHRyeSB7CiAgICBjb25zdCByb3dzID0gYXdhaXQgZGIKICAgICAgLnNlbGVjdCh7IHByb2R1Y3RJZDogd2lzaGxpc3RzVGFibGUucHJvZHVjdElkIH0pCiAgICAgIC5mcm9tKHdpc2hsaXN0c1RhYmxlKQogICAgICAud2hlcmUoZXEod2lzaGxpc3RzVGFibGUuY3VzdG9tZXJJZCwgY3VzdG9tZXJJZCkpOwogICAgcmVzLmpzb24oeyBwcm9kdWN0SWRzOiByb3dzLm1hcCgocikgPT4gci5wcm9kdWN0SWQpIH0pOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGZldGNoIHdpc2hsaXN0Iik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKcm91dGVyLnBvc3QoIi93aXNobGlzdC86cHJvZHVjdElkIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGNvbnN0IGN1c3RvbWVySWQgPSBnZXRDdXN0b21lcklkKHJlcSk7CiAgaWYgKCFjdXN0b21lcklkKSB7CiAgICByZXMuc3RhdHVzKDQwMSkuanNvbih7IGVycm9yOiAiTm90IGF1dGhlbnRpY2F0ZWQiIH0pOwogICAgcmV0dXJuOwogIH0KICBjb25zdCBwcm9kdWN0SWQgPSBwYXJzZUludChmaXJzdFN0cmluZyhyZXEucGFyYW1zLnByb2R1Y3RJZCkgPz8gIiIsIDEwKTsKICBpZiAoaXNOYU4ocHJvZHVjdElkKSkgewogICAgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogIkludmFsaWQgcHJvZHVjdCBJRCIgfSk7CiAgICByZXR1cm47CiAgfQogIHRyeSB7CiAgICBhd2FpdCBkYgogICAgICAuaW5zZXJ0KHdpc2hsaXN0c1RhYmxlKQogICAgICAudmFsdWVzKHsgY3VzdG9tZXJJZCwgcHJvZHVjdElkIH0pCiAgICAgIC5vbkNvbmZsaWN0RG9Ob3RoaW5nKCk7CiAgICByZXMuc3RhdHVzKDIwMSkuanNvbih7IG9rOiB0cnVlIH0pOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGFkZCB0byB3aXNobGlzdCIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCnJvdXRlci5kZWxldGUoIi93aXNobGlzdC86cHJvZHVjdElkIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGNvbnN0IGN1c3RvbWVySWQgPSBnZXRDdXN0b21lcklkKHJlcSk7CiAgaWYgKCFjdXN0b21lcklkKSB7CiAgICByZXMuc3RhdHVzKDQwMSkuanNvbih7IGVycm9yOiAiTm90IGF1dGhlbnRpY2F0ZWQiIH0pOwogICAgcmV0dXJuOwogIH0KICBjb25zdCBwcm9kdWN0SWQgPSBwYXJzZUludChmaXJzdFN0cmluZyhyZXEucGFyYW1zLnByb2R1Y3RJZCkgPz8gIiIsIDEwKTsKICBpZiAoaXNOYU4ocHJvZHVjdElkKSkgewogICAgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogIkludmFsaWQgcHJvZHVjdCBJRCIgfSk7CiAgICByZXR1cm47CiAgfQogIHRyeSB7CiAgICBhd2FpdCBkYgogICAgICAuZGVsZXRlKHdpc2hsaXN0c1RhYmxlKQogICAgICAud2hlcmUoYW5kKGVxKHdpc2hsaXN0c1RhYmxlLmN1c3RvbWVySWQsIGN1c3RvbWVySWQpLCBlcSh3aXNobGlzdHNUYWJsZS5wcm9kdWN0SWQsIHByb2R1Y3RJZCkpKTsKICAgIHJlcy5qc29uKHsgb2s6IHRydWUgfSk7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gcmVtb3ZlIGZyb20gd2lzaGxpc3QiKTsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJJbnRlcm5hbCBzZXJ2ZXIgZXJyb3IiIH0pOwogIH0KfSk7CgpleHBvcnQgZGVmYXVsdCByb3V0ZXI7Cg==
+import { Router } from "express";
+import type { Request, Response } from "express";
+import crypto from "crypto";
+import { db } from "@workspace/db";
+import { wishlistsTable } from "@workspace/db";
+import { eq, and } from "drizzle-orm";
+import { firstString } from "../lib/query";
+
+const router = Router();
+
+const SESSION_SECRET =
+  process.env.SESSION_SECRET ??
+  process.env.ADMIN_PASSWORD ??
+  "omniqure-cust-session-fallback-secret";
+const COOKIE_NAME = "customer_session";
+
+function getCustomerId(req: Request): number | null {
+  const token = req.cookies?.[COOKIE_NAME] as string | undefined;
+  if (!token) return null;
+  const dot = token.lastIndexOf(".");
+  if (dot === -1) return null;
+  const payload = token.slice(0, dot);
+  const sig = token.slice(dot + 1);
+  const expected = crypto.createHmac("sha256", SESSION_SECRET).update(payload).digest("hex");
+  if (sig !== expected) return null;
+  const id = parseInt(payload, 10);
+  return isNaN(id) ? null : id;
+}
+
+router.get("/wishlist", async (req: Request, res: Response): Promise<void> => {
+  const customerId = getCustomerId(req);
+  if (!customerId) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+  try {
+    const rows = await db
+      .select({ productId: wishlistsTable.productId })
+      .from(wishlistsTable)
+      .where(eq(wishlistsTable.customerId, customerId));
+    res.json({ productIds: rows.map((r) => r.productId) });
+  } catch (err) {
+    req.log.error({ err }, "Failed to fetch wishlist");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/wishlist/:productId", async (req: Request, res: Response): Promise<void> => {
+  const customerId = getCustomerId(req);
+  if (!customerId) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+  const productId = parseInt(firstString(req.params.productId) ?? "", 10);
+  if (isNaN(productId)) {
+    res.status(400).json({ error: "Invalid product ID" });
+    return;
+  }
+  try {
+    await db
+      .insert(wishlistsTable)
+      .values({ customerId, productId })
+      .onConflictDoNothing();
+    res.status(201).json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to add to wishlist");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/wishlist/:productId", async (req: Request, res: Response): Promise<void> => {
+  const customerId = getCustomerId(req);
+  if (!customerId) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+  const productId = parseInt(firstString(req.params.productId) ?? "", 10);
+  if (isNaN(productId)) {
+    res.status(400).json({ error: "Invalid product ID" });
+    return;
+  }
+  try {
+    await db
+      .delete(wishlistsTable)
+      .where(and(eq(wishlistsTable.customerId, customerId), eq(wishlistsTable.productId, productId)));
+    res.json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to remove from wishlist");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;

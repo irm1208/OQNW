@@ -1,1 +1,135 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgY3VzdG9tZXJzVGFibGUsIHByb2R1Y3RzSW52ZW50b3J5VGFibGUsIHJlZnVuZHNMb2dUYWJsZSwgaW52ZW50b3J5QXVkaXRMb2dUYWJsZSB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyBkZXNjIH0gZnJvbSAiZHJpenpsZS1vcm0iOwoKY29uc3Qgcm91dGVyID0gUm91dGVyKCk7CgpmdW5jdGlvbiByZXF1aXJlQWRtaW4ocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogYm9vbGVhbiB7CiAgaWYgKHJlcS5jb29raWVzPy5hZG1pbl9zZXNzaW9uICE9PSAiYXV0aGVudGljYXRlZCIpIHsKICAgIHJlcy5zdGF0dXMoNDAxKS5qc29uKHsgZXJyb3I6ICJOb3QgYXV0aGVudGljYXRlZCIgfSk7CiAgICByZXR1cm4gZmFsc2U7CiAgfQogIHJldHVybiB0cnVlOwp9CgpmdW5jdGlvbiBlc2NhcGVDc3YodmFsOiB1bmtub3duKTogc3RyaW5nIHsKICBpZiAodmFsID09PSBudWxsIHx8IHZhbCA9PT0gdW5kZWZpbmVkKSByZXR1cm4gIiI7CiAgY29uc3Qgc3RyID0gU3RyaW5nKHZhbCk7CiAgaWYgKHN0ci5pbmNsdWRlcygiLCIpIHx8IHN0ci5pbmNsdWRlcygnIicpIHx8IHN0ci5pbmNsdWRlcygiXG4iKSkgewogICAgcmV0dXJuIGAiJHtzdHIucmVwbGFjZSgvIi9nLCAnIiInKX0iYDsKICB9CiAgcmV0dXJuIHN0cjsKfQoKZnVuY3Rpb24gdG9Dc3ZSb3codmFsdWVzOiB1bmtub3duW10pOiBzdHJpbmcgewogIHJldHVybiB2YWx1ZXMubWFwKGVzY2FwZUNzdikuam9pbigiLCIpOwp9Cgpyb3V0ZXIuZ2V0KCIvYWRtaW4vZXhwb3J0L2N1c3RvbWVycy5jc3YiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgdHJ5IHsKICAgIGNvbnN0IGN1c3RvbWVycyA9IGF3YWl0IGRiCiAgICAgIC5zZWxlY3QoKQogICAgICAuZnJvbShjdXN0b21lcnNUYWJsZSkKICAgICAgLm9yZGVyQnkoZGVzYyhjdXN0b21lcnNUYWJsZS5jcmVhdGVkQXQpKTsKCiAgICBjb25zdCBoZWFkZXJzID0gWyJJRCIsICJGaXJzdCBOYW1lIiwgIkxhc3QgTmFtZSIsICJFbWFpbCIsICJQaG9uZSIsICJUb3RhbCBPcmRlcnMiLCAiVG90YWwgU3BlbnQgKEdCUCkiLCAiQ3JlYXRlZCBBdCJdOwogICAgY29uc3Qgcm93cyA9IGN1c3RvbWVycy5tYXAoYyA9PiB0b0NzdlJvdyhbCiAgICAgIGMuaWQsIGMuZmlyc3ROYW1lLCBjLmxhc3ROYW1lLCBjLmVtYWlsLCBjLnBob25lID8/ICIiLAogICAgICBjLnRvdGFsT3JkZXJzLCBwYXJzZUZsb2F0KFN0cmluZyhjLnRvdGFsU3BlbmRHYnAgPz8gMCkpLnRvRml4ZWQoMiksCiAgICAgIGMuY3JlYXRlZEF0LnRvSVNPU3RyaW5nKCksCiAgICBdKSk7CgogICAgY29uc3QgY3N2ID0gW2hlYWRlcnMuam9pbigiLCIpLCAuLi5yb3dzXS5qb2luKCJcbiIpOwogICAgY29uc3QgdG9kYXkgPSBuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCkuc2xpY2UoMCwgMTApOwogICAgcmVzLnNldEhlYWRlcigiQ29udGVudC1UeXBlIiwgInRleHQvY3N2Iik7CiAgICByZXMuc2V0SGVhZGVyKCJDb250ZW50LURpc3Bvc2l0aW9uIiwgYGF0dGFjaG1lbnQ7IGZpbGVuYW1lPSJjdXN0b21lcnMtJHt0b2RheX0uY3N2ImApOwogICAgcmVzLnNlbmQoY3N2KTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBleHBvcnQgY3VzdG9tZXJzIik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKcm91dGVyLmdldCgiL2FkbWluL2V4cG9ydC9wcm9kdWN0cy5jc3YiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgdHJ5IHsKICAgIGNvbnN0IHByb2R1Y3RzID0gYXdhaXQgZGIKICAgICAgLnNlbGVjdCgpCiAgICAgIC5mcm9tKHByb2R1Y3RzSW52ZW50b3J5VGFibGUpCiAgICAgIC5vcmRlckJ5KHByb2R1Y3RzSW52ZW50b3J5VGFibGUucHJvZHVjdElkKTsKCiAgICBjb25zdCBoZWFkZXJzID0gWyJQcm9kdWN0IElEIiwgIk5hbWUiLCAiQ2F0ZWdvcnkiLCAiU3RvY2sgTGV2ZWwiLCAiTG93IFN0b2NrIFRocmVzaG9sZCIsICJJcyBQdWJsaXNoZWQiLCAiVXBkYXRlZCBBdCJdOwogICAgY29uc3Qgcm93cyA9IHByb2R1Y3RzLm1hcChwID0+IHRvQ3N2Um93KFsKICAgICAgcC5wcm9kdWN0SWQsIHAucHJvZHVjdE5hbWUsIHAucHJvZHVjdENhdGVnb3J5LAogICAgICBwLnN0b2NrTGV2ZWwsIHAubG93U3RvY2tUaHJlc2hvbGQsIHAuaXNQdWJsaXNoZWQgPyAiWWVzIiA6ICJObyIsCiAgICAgIHAudXBkYXRlZEF0LnRvSVNPU3RyaW5nKCksCiAgICBdKSk7CgogICAgY29uc3QgY3N2ID0gW2hlYWRlcnMuam9pbigiLCIpLCAuLi5yb3dzXS5qb2luKCJcbiIpOwogICAgY29uc3QgdG9kYXkgPSBuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCkuc2xpY2UoMCwgMTApOwogICAgcmVzLnNldEhlYWRlcigiQ29udGVudC1UeXBlIiwgInRleHQvY3N2Iik7CiAgICByZXMuc2V0SGVhZGVyKCJDb250ZW50LURpc3Bvc2l0aW9uIiwgYGF0dGFjaG1lbnQ7IGZpbGVuYW1lPSJwcm9kdWN0cy0ke3RvZGF5fS5jc3YiYCk7CiAgICByZXMuc2VuZChjc3YpOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGV4cG9ydCBwcm9kdWN0cyIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCnJvdXRlci5nZXQoIi9hZG1pbi9leHBvcnQvcmVmdW5kcy5jc3YiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgdHJ5IHsKICAgIGNvbnN0IHJlZnVuZHMgPSBhd2FpdCBkYgogICAgICAuc2VsZWN0KCkKICAgICAgLmZyb20ocmVmdW5kc0xvZ1RhYmxlKQogICAgICAub3JkZXJCeShkZXNjKHJlZnVuZHNMb2dUYWJsZS5jcmVhdGVkQXQpKTsKCiAgICBjb25zdCBoZWFkZXJzID0gWyJJRCIsICJPcmRlciBOdW1iZXIiLCAiQW1vdW50IChHQlApIiwgIlR5cGUiLCAiUmVhc29uIiwgIk5vdGVzIiwgIlJlc3RvcmUgSW52ZW50b3J5IiwgIkNyZWF0ZWQgQXQiXTsKICAgIGNvbnN0IHJvd3MgPSByZWZ1bmRzLm1hcChyID0+IHRvQ3N2Um93KFsKICAgICAgci5pZCwgci5vcmRlck51bWJlciwgcGFyc2VGbG9hdChTdHJpbmcoci5hbW91bnRHYnApKS50b0ZpeGVkKDIpLAogICAgICByLnR5cGUsIHIucmVhc29uLCByLm5vdGVzID8/ICIiLCByLnJlc3RvcmVJbnZlbnRvcnkgPyAiWWVzIiA6ICJObyIsCiAgICAgIHIuY3JlYXRlZEF0LnRvSVNPU3RyaW5nKCksCiAgICBdKSk7CgogICAgY29uc3QgY3N2ID0gW2hlYWRlcnMuam9pbigiLCIpLCAuLi5yb3dzXS5qb2luKCJcbiIpOwogICAgY29uc3QgdG9kYXkgPSBuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCkuc2xpY2UoMCwgMTApOwogICAgcmVzLnNldEhlYWRlcigiQ29udGVudC1UeXBlIiwgInRleHQvY3N2Iik7CiAgICByZXMuc2V0SGVhZGVyKCJDb250ZW50LURpc3Bvc2l0aW9uIiwgYGF0dGFjaG1lbnQ7IGZpbGVuYW1lPSJyZWZ1bmRzLSR7dG9kYXl9LmNzdiJgKTsKICAgIHJlcy5zZW5kKGNzdik7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gZXhwb3J0IHJlZnVuZHMiKTsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJJbnRlcm5hbCBzZXJ2ZXIgZXJyb3IiIH0pOwogIH0KfSk7Cgpyb3V0ZXIuZ2V0KCIvYWRtaW4vZXhwb3J0L2ludmVudG9yeS1hdWRpdC5jc3YiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgdHJ5IHsKICAgIGNvbnN0IGVudHJpZXMgPSBhd2FpdCBkYgogICAgICAuc2VsZWN0KCkKICAgICAgLmZyb20oaW52ZW50b3J5QXVkaXRMb2dUYWJsZSkKICAgICAgLm9yZGVyQnkoZGVzYyhpbnZlbnRvcnlBdWRpdExvZ1RhYmxlLmNyZWF0ZWRBdCkpCiAgICAgIC5saW1pdCg1MDAwKTsKCiAgICBjb25zdCBoZWFkZXJzID0gWyJJRCIsICJQcm9kdWN0IElEIiwgIlByb2R1Y3QgTmFtZSIsICJDaGFuZ2UgVHlwZSIsICJCZWZvcmUiLCAiQWZ0ZXIiLCAiQ2hhbmdlIiwgIlJlYXNvbiIsICJSZWZlcmVuY2UiLCAiRGF0ZSJdOwogICAgY29uc3Qgcm93cyA9IGVudHJpZXMubWFwKGUgPT4gdG9Dc3ZSb3coWwogICAgICBlLmlkLCBlLnByb2R1Y3RJZCwgZS5wcm9kdWN0TmFtZSwgZS5jaGFuZ2VUeXBlLAogICAgICBlLnF1YW50aXR5QmVmb3JlLCBlLnF1YW50aXR5QWZ0ZXIsIGUucXVhbnRpdHlDaGFuZ2UsCiAgICAgIGUucmVhc29uID8/ICIiLCBlLnJlZmVyZW5jZUlkID8/ICIiLCBlLmNyZWF0ZWRBdC50b0lTT1N0cmluZygpLAogICAgXSkpOwoKICAgIGNvbnN0IGNzdiA9IFtoZWFkZXJzLmpvaW4oIiwiKSwgLi4ucm93c10uam9pbigiXG4iKTsKICAgIGNvbnN0IHRvZGF5ID0gbmV3IERhdGUoKS50b0lTT1N0cmluZygpLnNsaWNlKDAsIDEwKTsKICAgIHJlcy5zZXRIZWFkZXIoIkNvbnRlbnQtVHlwZSIsICJ0ZXh0L2NzdiIpOwogICAgcmVzLnNldEhlYWRlcigiQ29udGVudC1EaXNwb3NpdGlvbiIsIGBhdHRhY2htZW50OyBmaWxlbmFtZT0iaW52ZW50b3J5LWF1ZGl0LSR7dG9kYXl9LmNzdiJgKTsKICAgIHJlcy5zZW5kKGNzdik7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gZXhwb3J0IGludmVudG9yeSBhdWRpdCIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCmV4cG9ydCBkZWZhdWx0IHJvdXRlcjsK
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { db } from "@workspace/db";
+import { customersTable, productsInventoryTable, refundsLogTable, inventoryAuditLogTable } from "@workspace/db";
+import { desc } from "drizzle-orm";
+
+const router = Router();
+
+function requireAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+
+function escapeCsv(val: unknown): string {
+  if (val === null || val === undefined) return "";
+  const str = String(val);
+  if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
+}
+
+function toCsvRow(values: unknown[]): string {
+  return values.map(escapeCsv).join(",");
+}
+
+router.get("/admin/export/customers.csv", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const customers = await db
+      .select()
+      .from(customersTable)
+      .orderBy(desc(customersTable.createdAt));
+
+    const headers = ["ID", "First Name", "Last Name", "Email", "Phone", "Total Orders", "Total Spent (GBP)", "Created At"];
+    const rows = customers.map(c => toCsvRow([
+      c.id, c.firstName, c.lastName, c.email, c.phone ?? "",
+      c.totalOrders, parseFloat(String(c.totalSpendGbp ?? 0)).toFixed(2),
+      c.createdAt.toISOString(),
+    ]));
+
+    const csv = [headers.join(","), ...rows].join("\n");
+    const today = new Date().toISOString().slice(0, 10);
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader("Content-Disposition", `attachment; filename="customers-${today}.csv"`);
+    res.send(csv);
+  } catch (err) {
+    req.log.error({ err }, "Failed to export customers");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/admin/export/products.csv", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const products = await db
+      .select()
+      .from(productsInventoryTable)
+      .orderBy(productsInventoryTable.productId);
+
+    const headers = ["Product ID", "Name", "Category", "Stock Level", "Low Stock Threshold", "Is Published", "Updated At"];
+    const rows = products.map(p => toCsvRow([
+      p.productId, p.productName, p.productCategory,
+      p.stockLevel, p.lowStockThreshold, p.isPublished ? "Yes" : "No",
+      p.updatedAt.toISOString(),
+    ]));
+
+    const csv = [headers.join(","), ...rows].join("\n");
+    const today = new Date().toISOString().slice(0, 10);
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader("Content-Disposition", `attachment; filename="products-${today}.csv"`);
+    res.send(csv);
+  } catch (err) {
+    req.log.error({ err }, "Failed to export products");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/admin/export/refunds.csv", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const refunds = await db
+      .select()
+      .from(refundsLogTable)
+      .orderBy(desc(refundsLogTable.createdAt));
+
+    const headers = ["ID", "Order Number", "Amount (GBP)", "Type", "Reason", "Notes", "Restore Inventory", "Created At"];
+    const rows = refunds.map(r => toCsvRow([
+      r.id, r.orderNumber, parseFloat(String(r.amountGbp)).toFixed(2),
+      r.type, r.reason, r.notes ?? "", r.restoreInventory ? "Yes" : "No",
+      r.createdAt.toISOString(),
+    ]));
+
+    const csv = [headers.join(","), ...rows].join("\n");
+    const today = new Date().toISOString().slice(0, 10);
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader("Content-Disposition", `attachment; filename="refunds-${today}.csv"`);
+    res.send(csv);
+  } catch (err) {
+    req.log.error({ err }, "Failed to export refunds");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/admin/export/inventory-audit.csv", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const entries = await db
+      .select()
+      .from(inventoryAuditLogTable)
+      .orderBy(desc(inventoryAuditLogTable.createdAt))
+      .limit(5000);
+
+    const headers = ["ID", "Product ID", "Product Name", "Change Type", "Before", "After", "Change", "Reason", "Reference", "Date"];
+    const rows = entries.map(e => toCsvRow([
+      e.id, e.productId, e.productName, e.changeType,
+      e.quantityBefore, e.quantityAfter, e.quantityChange,
+      e.reason ?? "", e.referenceId ?? "", e.createdAt.toISOString(),
+    ]));
+
+    const csv = [headers.join(","), ...rows].join("\n");
+    const today = new Date().toISOString().slice(0, 10);
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader("Content-Disposition", `attachment; filename="inventory-audit-${today}.csv"`);
+    res.send(csv);
+  } catch (err) {
+    req.log.error({ err }, "Failed to export inventory audit");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;

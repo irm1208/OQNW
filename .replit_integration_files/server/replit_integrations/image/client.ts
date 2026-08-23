@@ -1,1 +1,59 @@
-aW1wb3J0IGZzIGZyb20gIm5vZGU6ZnMiOwppbXBvcnQgT3BlbkFJLCB7IHRvRmlsZSB9IGZyb20gIm9wZW5haSI7CmltcG9ydCB7IEJ1ZmZlciB9IGZyb20gIm5vZGU6YnVmZmVyIjsKCmV4cG9ydCBjb25zdCBvcGVuYWkgPSBuZXcgT3BlbkFJKHsKICBhcGlLZXk6IHByb2Nlc3MuZW52LkFJX0lOVEVHUkFUSU9OU19PUEVOQUlfQVBJX0tFWSwKICBiYXNlVVJMOiBwcm9jZXNzLmVudi5BSV9JTlRFR1JBVElPTlNfT1BFTkFJX0JBU0VfVVJMLAp9KTsKCi8qKgogKiBHZW5lcmF0ZSBhbiBpbWFnZSBhbmQgcmV0dXJuIGFzIEJ1ZmZlci4KICogVXNlcyBncHQtaW1hZ2UtMSBtb2RlbCB2aWEgUmVwbGl0IEFJIEludGVncmF0aW9ucy4KICovCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBnZW5lcmF0ZUltYWdlQnVmZmVyKAogIHByb21wdDogc3RyaW5nLAogIHNpemU6ICIxMDI0eDEwMjQiIHwgIjUxMng1MTIiIHwgIjI1NngyNTYiID0gIjEwMjR4MTAyNCIKKTogUHJvbWlzZTxCdWZmZXI+IHsKICBjb25zdCByZXNwb25zZSA9IGF3YWl0IG9wZW5haS5pbWFnZXMuZ2VuZXJhdGUoewogICAgbW9kZWw6ICJncHQtaW1hZ2UtMSIsCiAgICBwcm9tcHQsCiAgICBzaXplLAogIH0pOwogIGNvbnN0IGJhc2U2NCA9IHJlc3BvbnNlLmRhdGFbMF0/LmI2NF9qc29uID8/ICIiOwogIHJldHVybiBCdWZmZXIuZnJvbShiYXNlNjQsICJiYXNlNjQiKTsKfQoKLyoqCiAqIEVkaXQvY29tYmluZSBtdWx0aXBsZSBpbWFnZXMgaW50byBhIGNvbXBvc2l0ZS4KICogVXNlcyBncHQtaW1hZ2UtMSBtb2RlbCB2aWEgUmVwbGl0IEFJIEludGVncmF0aW9ucy4KICovCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBlZGl0SW1hZ2VzKAogIGltYWdlRmlsZXM6IHN0cmluZ1tdLAogIHByb21wdDogc3RyaW5nLAogIG91dHB1dFBhdGg/OiBzdHJpbmcKKTogUHJvbWlzZTxCdWZmZXI+IHsKICBjb25zdCBpbWFnZXMgPSBhd2FpdCBQcm9taXNlLmFsbCgKICAgIGltYWdlRmlsZXMubWFwKChmaWxlKSA9PgogICAgICB0b0ZpbGUoZnMuY3JlYXRlUmVhZFN0cmVhbShmaWxlKSwgZmlsZSwgewogICAgICAgIHR5cGU6ICJpbWFnZS9wbmciLAogICAgICB9KQogICAgKQogICk7CgogIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgb3BlbmFpLmltYWdlcy5lZGl0KHsKICAgIG1vZGVsOiAiZ3B0LWltYWdlLTEiLAogICAgaW1hZ2U6IGltYWdlcywKICAgIHByb21wdCwKICB9KTsKCiAgY29uc3QgaW1hZ2VCYXNlNjQgPSByZXNwb25zZS5kYXRhWzBdPy5iNjRfanNvbiA/PyAiIjsKICBjb25zdCBpbWFnZUJ5dGVzID0gQnVmZmVyLmZyb20oaW1hZ2VCYXNlNjQsICJiYXNlNjQiKTsKCiAgaWYgKG91dHB1dFBhdGgpIHsKICAgIGZzLndyaXRlRmlsZVN5bmMob3V0cHV0UGF0aCwgaW1hZ2VCeXRlcyk7CiAgfQoKICByZXR1cm4gaW1hZ2VCeXRlczsKfQoK
+import fs from "node:fs";
+import OpenAI, { toFile } from "openai";
+import { Buffer } from "node:buffer";
+
+export const openai = new OpenAI({
+  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
+  baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
+});
+
+/**
+ * Generate an image and return as Buffer.
+ * Uses gpt-image-1 model via Replit AI Integrations.
+ */
+export async function generateImageBuffer(
+  prompt: string,
+  size: "1024x1024" | "512x512" | "256x256" = "1024x1024"
+): Promise<Buffer> {
+  const response = await openai.images.generate({
+    model: "gpt-image-1",
+    prompt,
+    size,
+  });
+  const base64 = response.data[0]?.b64_json ?? "";
+  return Buffer.from(base64, "base64");
+}
+
+/**
+ * Edit/combine multiple images into a composite.
+ * Uses gpt-image-1 model via Replit AI Integrations.
+ */
+export async function editImages(
+  imageFiles: string[],
+  prompt: string,
+  outputPath?: string
+): Promise<Buffer> {
+  const images = await Promise.all(
+    imageFiles.map((file) =>
+      toFile(fs.createReadStream(file), file, {
+        type: "image/png",
+      })
+    )
+  );
+
+  const response = await openai.images.edit({
+    model: "gpt-image-1",
+    image: images,
+    prompt,
+  });
+
+  const imageBase64 = response.data[0]?.b64_json ?? "";
+  const imageBytes = Buffer.from(imageBase64, "base64");
+
+  if (outputPath) {
+    fs.writeFileSync(outputPath, imageBytes);
+  }
+
+  return imageBytes;
+}
+

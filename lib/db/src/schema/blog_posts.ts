@@ -1,1 +1,26 @@
-aW1wb3J0IHsKICBwZ1RhYmxlLAogIHNlcmlhbCwKICB0ZXh0LAogIHRpbWVzdGFtcCwKfSBmcm9tICJkcml6emxlLW9ybS9wZy1jb3JlIjsKCmV4cG9ydCBjb25zdCBibG9nUG9zdHNUYWJsZSA9IHBnVGFibGUoImJsb2dfcG9zdHMiLCB7CiAgaWQ6IHNlcmlhbCgiaWQiKS5wcmltYXJ5S2V5KCksCiAgdGl0bGU6IHRleHQoInRpdGxlIikubm90TnVsbCgpLAogIHNsdWc6IHRleHQoInNsdWciKS5ub3ROdWxsKCkudW5pcXVlKCksCiAgZXhjZXJwdDogdGV4dCgiZXhjZXJwdCIpLAogIGNvbnRlbnQ6IHRleHQoImNvbnRlbnQiKS5ub3ROdWxsKCkuZGVmYXVsdCgiIiksCiAgYXV0aG9yOiB0ZXh0KCJhdXRob3IiKS5ub3ROdWxsKCkuZGVmYXVsdCgiT21uaVF1cmUgVGVhbSIpLAogIHRhZ3M6IHRleHQoInRhZ3MiKS5hcnJheSgpLm5vdE51bGwoKS5kZWZhdWx0KFtdKSwKICBzdGF0dXM6IHRleHQoInN0YXR1cyIpLm5vdE51bGwoKS5kZWZhdWx0KCJkcmFmdCIpLAogIGZlYXR1cmVkSW1hZ2VVcmw6IHRleHQoImZlYXR1cmVkX2ltYWdlX3VybCIpLAogIHNlb1RpdGxlOiB0ZXh0KCJzZW9fdGl0bGUiKSwKICBzZW9EZXNjcmlwdGlvbjogdGV4dCgic2VvX2Rlc2NyaXB0aW9uIiksCiAgcHVibGlzaGVkQXQ6IHRpbWVzdGFtcCgicHVibGlzaGVkX2F0IiwgeyB3aXRoVGltZXpvbmU6IHRydWUgfSksCiAgY3JlYXRlZEF0OiB0aW1lc3RhbXAoImNyZWF0ZWRfYXQiLCB7IHdpdGhUaW1lem9uZTogdHJ1ZSB9KS5ub3ROdWxsKCkuZGVmYXVsdE5vdygpLAogIHVwZGF0ZWRBdDogdGltZXN0YW1wKCJ1cGRhdGVkX2F0IiwgeyB3aXRoVGltZXpvbmU6IHRydWUgfSkubm90TnVsbCgpLmRlZmF1bHROb3coKS4kb25VcGRhdGUoKCkgPT4gbmV3IERhdGUoKSksCn0pOwoKZXhwb3J0IHR5cGUgQmxvZ1Bvc3QgPSB0eXBlb2YgYmxvZ1Bvc3RzVGFibGUuJGluZmVyU2VsZWN0OwpleHBvcnQgdHlwZSBJbnNlcnRCbG9nUG9zdCA9IHR5cGVvZiBibG9nUG9zdHNUYWJsZS4kaW5mZXJJbnNlcnQ7Cg==
+import {
+  pgTable,
+  serial,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
+
+export const blogPostsTable = pgTable("blog_posts", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  excerpt: text("excerpt"),
+  content: text("content").notNull().default(""),
+  author: text("author").notNull().default("OmniQure Team"),
+  tags: text("tags").array().notNull().default([]),
+  status: text("status").notNull().default("draft"),
+  featuredImageUrl: text("featured_image_url"),
+  seoTitle: text("seo_title"),
+  seoDescription: text("seo_description"),
+  publishedAt: timestamp("published_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
+});
+
+export type BlogPost = typeof blogPostsTable.$inferSelect;
+export type InsertBlogPost = typeof blogPostsTable.$inferInsert;

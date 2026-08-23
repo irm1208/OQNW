@@ -1,1 +1,100 @@
-aW1wb3J0IHsgTGluayB9IGZyb20gIndvdXRlciI7CgpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBMb2dvKCkgewogIHJldHVybiAoCiAgICA8TGluayBocmVmPSIvIiBzdHlsZT17eyB0ZXh0RGVjb3JhdGlvbjogIm5vbmUiLCBkaXNwbGF5OiAiaW5saW5lLWJsb2NrIiB9fT4KICAgICAgPGRpdgogICAgICAgIHN0eWxlPXt7CiAgICAgICAgICBiYWNrZ3JvdW5kOiAibGluZWFyLWdyYWRpZW50KDEzNWRlZywgIzEyNDBBMCAwJSwgIzFCNUNCNSAxMDAlKSIsCiAgICAgICAgICBib3JkZXJSYWRpdXM6ICIxMnB4IiwKICAgICAgICAgIHBhZGRpbmc6ICI4cHggMjBweCA5cHgiLAogICAgICAgICAgZGlzcGxheTogImlubGluZS1mbGV4IiwKICAgICAgICAgIGZsZXhEaXJlY3Rpb246ICJjb2x1bW4iLAogICAgICAgICAgYWxpZ25JdGVtczogImNlbnRlciIsCiAgICAgICAgICBib3hTaGFkb3c6ICIwIDRweCAxOHB4IHJnYmEoMTgsNjQsMTYwLDAuMjgpLCAwIDFweCAzcHggcmdiYSgxOCw2NCwxNjAsMC4yKSIsCiAgICAgICAgICBjdXJzb3I6ICJwb2ludGVyIiwKICAgICAgICAgIHVzZXJTZWxlY3Q6ICJub25lIiwKICAgICAgICB9fQogICAgICA+CiAgICAgICAgey8qIFdvcmRtYXJrIHJvdyAqL30KICAgICAgICA8ZGl2IHN0eWxlPXt7IGRpc3BsYXk6ICJmbGV4IiwgYWxpZ25JdGVtczogImZsZXgtZW5kIiwgbGluZUhlaWdodDogMSB9fT4KICAgICAgICAgIHsvKiAib21uIiAqL30KICAgICAgICAgIDxzcGFuCiAgICAgICAgICAgIHN0eWxlPXt7CiAgICAgICAgICAgICAgZm9udEZhbWlseTogIidBcmltbycsIEFyaWFsLCBzYW5zLXNlcmlmIiwKICAgICAgICAgICAgICBmb250U2l6ZTogIjI2cHgiLAogICAgICAgICAgICAgIGZvbnRXZWlnaHQ6IDMwMCwKICAgICAgICAgICAgICBjb2xvcjogIiNmZmYiLAogICAgICAgICAgICAgIGxldHRlclNwYWNpbmc6ICItMC4wMWVtIiwKICAgICAgICAgICAgfX0KICAgICAgICAgID4KICAgICAgICAgICAgb21uCiAgICAgICAgICA8L3NwYW4+CgogICAgICAgICAgey8qICJpIiB3aXRoIGN1c3RvbSBkb3QgaWNvbiAqL30KICAgICAgICAgIDxzcGFuIHN0eWxlPXt7IHBvc2l0aW9uOiAicmVsYXRpdmUiLCBkaXNwbGF5OiAiaW5saW5lLWJsb2NrIiB9fT4KICAgICAgICAgICAgey8qIFRoZSBsZW5zIC8gbW9sZWN1bGUgaWNvbiBhYm92ZSB0aGUgaSAqL30KICAgICAgICAgICAgPHNwYW4KICAgICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgICAgcG9zaXRpb246ICJhYnNvbHV0ZSIsCiAgICAgICAgICAgICAgICB0b3A6ICItOXB4IiwKICAgICAgICAgICAgICAgIGxlZnQ6ICI1MCUiLAogICAgICAgICAgICAgICAgdHJhbnNmb3JtOiAidHJhbnNsYXRlWCgtNTAlKSIsCiAgICAgICAgICAgICAgICB3aWR0aDogIjEycHgiLAogICAgICAgICAgICAgICAgaGVpZ2h0OiAiMTJweCIsCiAgICAgICAgICAgICAgICBkaXNwbGF5OiAiZmxleCIsCiAgICAgICAgICAgICAgICBhbGlnbkl0ZW1zOiAiY2VudGVyIiwKICAgICAgICAgICAgICAgIGp1c3RpZnlDb250ZW50OiAiY2VudGVyIiwKICAgICAgICAgICAgICB9fQogICAgICAgICAgICA+CiAgICAgICAgICAgICAgPHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSI+CiAgICAgICAgICAgICAgICA8Y2lyY2xlIGN4PSI2IiBjeT0iNiIgcj0iNS41IiBzdHJva2U9IndoaXRlIiBzdHJva2VXaWR0aD0iMS4yIiBmaWxsPSJub25lIiAvPgogICAgICAgICAgICAgICAgPGNpcmNsZSBjeD0iNiIgY3k9IjYiIHI9IjIuMiIgZmlsbD0id2hpdGUiIC8+CiAgICAgICAgICAgICAgPC9zdmc+CiAgICAgICAgICAgIDwvc3Bhbj4KICAgICAgICAgICAgPHNwYW4KICAgICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgICAgZm9udEZhbWlseTogIidBcmltbycsIEFyaWFsLCBzYW5zLXNlcmlmIiwKICAgICAgICAgICAgICAgIGZvbnRTaXplOiAiMjZweCIsCiAgICAgICAgICAgICAgICBmb250V2VpZ2h0OiAzMDAsCiAgICAgICAgICAgICAgICBjb2xvcjogIiNmZmYiLAogICAgICAgICAgICAgICAgbGV0dGVyU3BhY2luZzogIi0wLjAxZW0iLAogICAgICAgICAgICAgIH19CiAgICAgICAgICAgID4KICAgICAgICAgICAgICBpCiAgICAgICAgICAgIDwvc3Bhbj4KICAgICAgICAgIDwvc3Bhbj4KCiAgICAgICAgICB7LyogIlF1cmUiIOKAlCBoZWF2aWVyIHdlaWdodCAqL30KICAgICAgICAgIDxzcGFuCiAgICAgICAgICAgIHN0eWxlPXt7CiAgICAgICAgICAgICAgZm9udEZhbWlseTogIidBcmltbycsIEFyaWFsLCBzYW5zLXNlcmlmIiwKICAgICAgICAgICAgICBmb250U2l6ZTogIjI2cHgiLAogICAgICAgICAgICAgIGZvbnRXZWlnaHQ6IDgwMCwKICAgICAgICAgICAgICBjb2xvcjogIiNmZmYiLAogICAgICAgICAgICAgIGxldHRlclNwYWNpbmc6ICItMC4wMWVtIiwKICAgICAgICAgICAgfX0KICAgICAgICAgID4KICAgICAgICAgICAgUXVyZQogICAgICAgICAgPC9zcGFuPgogICAgICAgIDwvZGl2PgoKICAgICAgICB7LyogVGFnbGluZSAqL30KICAgICAgICA8ZGl2CiAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICBmb250RmFtaWx5OiAiJ0FyaW1vJywgQXJpYWwsIHNhbnMtc2VyaWYiLAogICAgICAgICAgICBmb250U2l6ZTogIjcuNXB4IiwKICAgICAgICAgICAgZm9udFdlaWdodDogNjAwLAogICAgICAgICAgICBjb2xvcjogIiNFOEE5M0UiLAogICAgICAgICAgICBsZXR0ZXJTcGFjaW5nOiAiMC4yZW0iLAogICAgICAgICAgICB0ZXh0VHJhbnNmb3JtOiAidXBwZXJjYXNlIiwKICAgICAgICAgICAgbWFyZ2luVG9wOiAiNHB4IiwKICAgICAgICAgICAgd2hpdGVTcGFjZTogIm5vd3JhcCIsCiAgICAgICAgICB9fQogICAgICAgID4KICAgICAgICAgIFBlcHRpZGUgUmVzZWFyY2ggSW5zdGl0dXRlCiAgICAgICAgPC9kaXY+CiAgICAgIDwvZGl2PgogICAgPC9MaW5rPgogICk7Cn0K
+import { Link } from "wouter";
+
+export default function Logo() {
+  return (
+    <Link href="/" style={{ textDecoration: "none", display: "inline-block" }}>
+      <div
+        style={{
+          background: "linear-gradient(135deg, #1240A0 0%, #1B5CB5 100%)",
+          borderRadius: "12px",
+          padding: "8px 20px 9px",
+          display: "inline-flex",
+          flexDirection: "column",
+          alignItems: "center",
+          boxShadow: "0 4px 18px rgba(18,64,160,0.28), 0 1px 3px rgba(18,64,160,0.2)",
+          cursor: "pointer",
+          userSelect: "none",
+        }}
+      >
+        {/* Wordmark row */}
+        <div style={{ display: "flex", alignItems: "flex-end", lineHeight: 1 }}>
+          {/* "omn" */}
+          <span
+            style={{
+              fontFamily: "'Arimo', Arial, sans-serif",
+              fontSize: "26px",
+              fontWeight: 300,
+              color: "#fff",
+              letterSpacing: "-0.01em",
+            }}
+          >
+            omn
+          </span>
+
+          {/* "i" with custom dot icon */}
+          <span style={{ position: "relative", display: "inline-block" }}>
+            {/* The lens / molecule icon above the i */}
+            <span
+              style={{
+                position: "absolute",
+                top: "-9px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "12px",
+                height: "12px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <circle cx="6" cy="6" r="5.5" stroke="white" strokeWidth="1.2" fill="none" />
+                <circle cx="6" cy="6" r="2.2" fill="white" />
+              </svg>
+            </span>
+            <span
+              style={{
+                fontFamily: "'Arimo', Arial, sans-serif",
+                fontSize: "26px",
+                fontWeight: 300,
+                color: "#fff",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              i
+            </span>
+          </span>
+
+          {/* "Qure" — heavier weight */}
+          <span
+            style={{
+              fontFamily: "'Arimo', Arial, sans-serif",
+              fontSize: "26px",
+              fontWeight: 800,
+              color: "#fff",
+              letterSpacing: "-0.01em",
+            }}
+          >
+            Qure
+          </span>
+        </div>
+
+        {/* Tagline */}
+        <div
+          style={{
+            fontFamily: "'Arimo', Arial, sans-serif",
+            fontSize: "7.5px",
+            fontWeight: 600,
+            color: "#E8A93E",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            marginTop: "4px",
+            whiteSpace: "nowrap",
+          }}
+        >
+          Peptide Research Institute
+        </div>
+      </div>
+    </Link>
+  );
+}

@@ -1,1 +1,25 @@
-aW1wb3J0IHsKICBwZ1RhYmxlLAogIHNlcmlhbCwKICB0ZXh0LAogIGJvb2xlYW4sCiAgdGltZXN0YW1wLAp9IGZyb20gImRyaXp6bGUtb3JtL3BnLWNvcmUiOwoKZXhwb3J0IGNvbnN0IGFkbWluVXNlcnNUYWJsZSA9IHBnVGFibGUoImFkbWluX3VzZXJzIiwgewogIGlkOiBzZXJpYWwoImlkIikucHJpbWFyeUtleSgpLAogIGVtYWlsOiB0ZXh0KCJlbWFpbCIpLm5vdE51bGwoKS51bmlxdWUoKSwKICBuYW1lOiB0ZXh0KCJuYW1lIikubm90TnVsbCgpLAogIHBhc3N3b3JkSGFzaDogdGV4dCgicGFzc3dvcmRfaGFzaCIpLm5vdE51bGwoKSwKICByb2xlOiB0ZXh0KCJyb2xlIikubm90TnVsbCgpLmRlZmF1bHQoInZpZXdlciIpLAogIGlzQWN0aXZlOiBib29sZWFuKCJpc19hY3RpdmUiKS5ub3ROdWxsKCkuZGVmYXVsdCh0cnVlKSwKICBsYXN0TG9naW5BdDogdGltZXN0YW1wKCJsYXN0X2xvZ2luX2F0IiwgeyB3aXRoVGltZXpvbmU6IHRydWUgfSksCiAgY3JlYXRlZEF0OiB0aW1lc3RhbXAoImNyZWF0ZWRfYXQiLCB7IHdpdGhUaW1lem9uZTogdHJ1ZSB9KS5ub3ROdWxsKCkuZGVmYXVsdE5vdygpLAogIHVwZGF0ZWRBdDogdGltZXN0YW1wKCJ1cGRhdGVkX2F0IiwgeyB3aXRoVGltZXpvbmU6IHRydWUgfSkubm90TnVsbCgpLmRlZmF1bHROb3coKS4kb25VcGRhdGUoKCkgPT4gbmV3IERhdGUoKSksCn0pOwoKZXhwb3J0IHR5cGUgQWRtaW5Vc2VyID0gdHlwZW9mIGFkbWluVXNlcnNUYWJsZS4kaW5mZXJTZWxlY3Q7CmV4cG9ydCB0eXBlIEluc2VydEFkbWluVXNlciA9IHR5cGVvZiBhZG1pblVzZXJzVGFibGUuJGluZmVySW5zZXJ0OwoKZXhwb3J0IGNvbnN0IEFETUlOX1JPTEVTID0gWyJvd25lciIsICJtYW5hZ2VyIiwgInZpZXdlciJdIGFzIGNvbnN0OwpleHBvcnQgdHlwZSBBZG1pblJvbGUgPSAodHlwZW9mIEFETUlOX1JPTEVTKVtudW1iZXJdOwo=
+import {
+  pgTable,
+  serial,
+  text,
+  boolean,
+  timestamp,
+} from "drizzle-orm/pg-core";
+
+export const adminUsersTable = pgTable("admin_users", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  name: text("name").notNull(),
+  passwordHash: text("password_hash").notNull(),
+  role: text("role").notNull().default("viewer"),
+  isActive: boolean("is_active").notNull().default(true),
+  lastLoginAt: timestamp("last_login_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
+});
+
+export type AdminUser = typeof adminUsersTable.$inferSelect;
+export type InsertAdminUser = typeof adminUsersTable.$inferInsert;
+
+export const ADMIN_ROLES = ["owner", "manager", "viewer"] as const;
+export type AdminRole = (typeof ADMIN_ROLES)[number];

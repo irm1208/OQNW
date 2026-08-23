@@ -1,1 +1,274 @@
-aW1wb3J0IHsgTGluayB9IGZyb20gIndvdXRlciI7CmltcG9ydCB7IEZsYXNrQ29uaWNhbCwgTWFpbCwgTWFwUGluIH0gZnJvbSAibHVjaWRlLXJlYWN0IjsKCmNvbnN0IGZvb3RlckNhdGVnb3JpZXMgPSBbCiAgewogICAgdGl0bGU6ICJQdXJjaGFzZSBQZXB0aWRlcyIsCiAgICBocmVmOiAiL2FsbC1wZXB0aWRlcyIsCiAgICBsaW5rczogWwogICAgICB7IGxhYmVsOiAiQlBDLTE1NyA1bWciLCAgICAgIGhyZWY6ICIvcHJvZHVjdC9icGMtMTU3LTVtZyIgfSwKICAgICAgeyBsYWJlbDogIklwYW1vcmVsaW4gNW1nIiwgICBocmVmOiAiL3Byb2R1Y3QvaXBhbW9yZWxpbi01bWciIH0sCiAgICAgIHsgbGFiZWw6ICJHSEstQ3UgNTBtZyIsICAgICAgaHJlZjogIi9wcm9kdWN0L2doay1jdS01MG1nIiB9LAogICAgICB7IGxhYmVsOiAiU2VybW9yZWxpbiA1bWciLCAgIGhyZWY6ICIvcHJvZHVjdC9zZXJtb3JlbGluLTVtZyIgfSwKICAgICAgeyBsYWJlbDogIkFPRC05NjA0IDVtZyIsICAgICBocmVmOiAiL3Byb2R1Y3QvYW9kLTk2MDQtNW1nIiB9LAogICAgICB7IGxhYmVsOiAiVEItNTAwIDVtZyIsICAgICAgIGhyZWY6ICIvcHJvZHVjdC90Yi01MDAtNW1nIiB9LAogICAgXSwKICB9LAogIHsKICAgIHRpdGxlOiAiUGVwdGlkZSBCbGVuZHMiLAogICAgaHJlZjogIi9hbGwtcGVwdGlkZXM/Y2F0ZWdvcnk9UGVwdGlkZStCbGVuZHMiLAogICAgbGlua3M6IFsKICAgICAgeyBsYWJlbDogIkJQQy0xNTcgKyBUQi01MDAgMTBtZyIsICAgaHJlZjogIi9wcm9kdWN0L2JwYy0xNTctdGItNTAwLWJsZW5kLTEwbWciIH0sCiAgICAgIHsgbGFiZWw6ICJCUEMtMTU3ICsgVEItNTAwIDIwbWciLCAgIGhyZWY6ICIvcHJvZHVjdC9icGMtMTU3LXRiLTUwMC1ibGVuZC0yMG1nIiB9LAogICAgICB7IGxhYmVsOiAiQ0pDLTEyOTUgKyBJcGFtb3JlbGluIiwgICBocmVmOiAiL3Byb2R1Y3QvY2pjLTEyOTUtbm8tZGFjLWlwYW1vcmVsaW4tNW1nIiB9LAogICAgICB7IGxhYmVsOiAiVGVzYW1vcmVsaW4gKyBJcGFtb3JlbGluIiwgaHJlZjogIi9wcm9kdWN0L3Rlc2Ftb3JlbGluLWlwYW1vcmVsaW4tYmxlbmQtOG1nIiB9LAogICAgICB7IGxhYmVsOiAiU2VtYXggKyBTZWxhbmsiLCAgICAgICAgICBocmVmOiAiL3Byb2R1Y3Qvc2VtYXgtc2VsYW5rLWJsZW5kLTIwbWciIH0sCiAgICBdLAogIH0sCiAgewogICAgdGl0bGU6ICJDYXRlZ29yaWVzIiwKICAgIGhyZWY6ICIvYWxsLXBlcHRpZGVzIiwKICAgIGxpbmtzOiBbCiAgICAgIHsgbGFiZWw6ICJHcm93dGggUGVwdGlkZXMiLCAgICAgaHJlZjogIi9hbGwtcGVwdGlkZXM/Y2F0ZWdvcnk9R3Jvd3RoK1BlcHRpZGVzIiAgICAgfSwKICAgICAgeyBsYWJlbDogIkhlYWxpbmcgUGVwdGlkZXMiLCAgICBocmVmOiAiL2FsbC1wZXB0aWRlcz9jYXRlZ29yeT1IZWFsaW5nK1BlcHRpZGVzIiAgICB9LAogICAgICB7IGxhYmVsOiAiTG9uZ2V2aXR5IFBlcHRpZGVzIiwgIGhyZWY6ICIvYWxsLXBlcHRpZGVzP2NhdGVnb3J5PUxvbmdldml0eStQZXB0aWRlcyIgIH0sCiAgICAgIHsgbGFiZWw6ICJOb290cm9waWNzIiwgICAgICAgICAgaHJlZjogIi9hbGwtcGVwdGlkZXM/Y2F0ZWdvcnk9Tm9vdHJvcGljcyIgICAgICAgICAgfSwKICAgIF0sCiAgfSwKICB7CiAgICB0aXRsZTogIkNvbXBhbnkiLAogICAgaHJlZjogIi9hYm91dCIsCiAgICBsaW5rczogWwogICAgICB7IGxhYmVsOiAiQWJvdXQgVXMiLCAgICAgICAgICAgICBocmVmOiAiL2Fib3V0IiAgICAgICAgICAgIH0sCiAgICAgIHsgbGFiZWw6ICJDb250YWN0IFVzIiwgICAgICAgICAgaHJlZjogIi9jb250YWN0IiAgICAgICAgICB9LAogICAgICB7IGxhYmVsOiAiVHJhY2sgWW91ciBPcmRlciIsICAgIGhyZWY6ICIvdHJhY2stb3JkZXIiICAgICAgfSwKICAgICAgeyBsYWJlbDogIlJlc2VhcmNoIFN0YWNrcyIsICAgICBocmVmOiAiL3N0YWNrcyIgICAgICAgICAgIH0sCiAgICAgIHsgbGFiZWw6ICJQcm90b2NvbHMiLCAgICAgICAgICAgaHJlZjogIi9wcm90b2NvbHMiICAgICAgICB9LAogICAgICB7IGxhYmVsOiAiU3RvcmFnZSBHdWlkZSIsICAgICAgIGhyZWY6ICIvc3RvcmFnZS1ndWlkZSIgICAgfSwKICAgICAgeyBsYWJlbDogIkZBUSIsICAgICAgICAgICAgICAgICBocmVmOiAiL2ZhcSIgICAgICAgICAgICAgIH0sCiAgICAgIHsgbGFiZWw6ICJHbG9zc2FyeSIsICAgICAgICAgICAgaHJlZjogIi9nbG9zc2FyeSIgICAgICAgICB9LAogICAgICB7IGxhYmVsOiAiQnVuZGxlICYgU2F2ZSIsICAgICAgIGhyZWY6ICIvYnVuZGxlLWFuZC1zYXZlIiAgfSwKICAgICAgeyBsYWJlbDogIkFsbCBQZXB0aWRlcyIsICAgICAgICBocmVmOiAiL2FsbC1wZXB0aWRlcyIgICAgIH0sCiAgICAgIHsgbGFiZWw6ICJSZWZlciBhIEZyaWVuZCIsICAgICAgaHJlZjogIi9yZWZlci1hLWZyaWVuZCIgICB9LAogICAgXSwKICB9LApdOwoKY29uc3QgbGVnYWxMaW5rcyA9IFsKICB7IGxhYmVsOiAiVGVybXMgJiBDb25kaXRpb25zIiwgaHJlZjogIi90ZXJtcyIgICAgfSwKICB7IGxhYmVsOiAiU2hpcHBpbmcgUG9saWN5IiwgICAgaHJlZjogIi9zaGlwcGluZyIgfSwKICB7IGxhYmVsOiAiUHJpdmFjeSBQb2xpY3kiLCAgICAgaHJlZjogIi9wcml2YWN5IiAgfSwKXTsKCmNvbnN0IHBheW1lbnRCYWRnZXMgPSBbCiAgewogICAgbGFiZWw6ICJQYXkgYnkgQmFuayIsCiAgICBpY29uOiAoCiAgICAgIDxzdmcgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2VXaWR0aD0iMiIgc3Ryb2tlTGluZWNhcD0icm91bmQiIHN0cm9rZUxpbmVqb2luPSJyb3VuZCI+CiAgICAgICAgPHBhdGggZD0iTTMgOWw5LTcgOSA3djExYTIgMiAwIDAgMS0yIDJINWEyIDIgMCAwIDEtMi0yeiIvPgogICAgICAgIDxwb2x5bGluZSBwb2ludHM9IjkgMjIgOSAxMiAxNSAxMiAxNSAyMiIvPgogICAgICA8L3N2Zz4KICAgICksCiAgfSwKICB7CiAgICBsYWJlbDogIkJpdGNvaW4iLAogICAgaWNvbjogKAogICAgICA8c3ZnIHdpZHRoPSIxMyIgaGVpZ2h0PSIxMyIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJjdXJyZW50Q29sb3IiPgogICAgICAgIDxwYXRoIGQ9Ik0xNy4wNiAxMS41N2MuMjktLjY5LjQ1LTEuNDUuNDUtMi4yM0MxNy41MSA2LjM3IDE1LjE0IDQgMTIuMTcgNEg4djNINnYyaDJ2Mkg2djJoMnY3aDQuNjVjMi43NSAwIDUtMi4wNiA1LjEyLTQuNzYuMDgtMS42NS0uNjktMy4xMS0xLjcxLTMuNjd6TTExIDdoMS4xN2MxLjAyIDAgMS44NC44MiAxLjg0IDEuODRTMTMuMTkgMTAuNjggMTIuMTcgMTAuNjhIMTFWN3ptMS42NSAxMEgxMXYtMy4zM2gxLjY1Yy45MiAwIDEuNjcuNzUgMS42NyAxLjY3cy0uNzUgMS42Ni0xLjY3IDEuNjZ6Ii8+CiAgICAgIDwvc3ZnPgogICAgKSwKICB9LAogIHsKICAgIGxhYmVsOiAiRXRoZXJldW0iLAogICAgaWNvbjogKAogICAgICA8c3ZnIHdpZHRoPSIxMyIgaGVpZ2h0PSIxMyIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJjdXJyZW50Q29sb3IiPgogICAgICAgIDxwYXRoIGQ9Ik0xMiAyTDUgMTIuNWw3IDQgNy00TDEyIDJ6TTUgMTRsNyA4IDctOC03IDQtNy00eiIvPgogICAgICA8L3N2Zz4KICAgICksCiAgfSwKICB7CiAgICBsYWJlbDogIlVTRFQiLAogICAgaWNvbjogKAogICAgICA8c3ZnIHdpZHRoPSIxMyIgaGVpZ2h0PSIxMyIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJjdXJyZW50Q29sb3IiPgogICAgICAgIDxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+CiAgICAgICAgPHBhdGggZD0iTTEzIDhoLTV2Mi41aDJ2NS41aDJWMTAuNWgyVjhoLTF6bTEgMGgxdjhoLTFWOHoiIGZpbGw9IndoaXRlIi8+CiAgICAgIDwvc3ZnPgogICAgKSwKICB9LApdOwoKCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIEZvb3RlcigpIHsKICByZXR1cm4gKAogICAgPGZvb3RlciBzdHlsZT17eyBmb250RmFtaWx5OiAiJ0FyaW1vJywgQXJpYWwsIHNhbnMtc2VyaWYiIH19PgoKCiAgICAgIHsvKiBNYWluIGZvb3RlciBib2R5ICovfQogICAgICA8ZGl2IHN0eWxlPXt7IGJhY2tncm91bmQ6ICJsaW5lYXItZ3JhZGllbnQoOTBkZWcsICMwRDI1NjUgMCUsICMxMjQwQTAgNDAlLCAjMUI1Q0I1IDc1JSwgIzFFNjhDQyAxMDAlKSIsIGNvbG9yOiAiIzk0QTNCOCIgfX0+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9Im1heC13LVsxMjgwcHhdIG14LWF1dG8gcHgtNCBwdC0yIG1kOnB0LTEyIHBiLTQgbWQ6cGItOCI+CgogICAgICAgICAgey8qIFRvcCByb3cgKi99CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBmbGV4LWNvbCBtZDpmbGV4LXJvdyBnYXAtNCBtZDpnYXAtMTAgbWItNCBtZDptYi0xMCI+CgogICAgICAgICAgICB7LyogQnJhbmQgY29sdW1uICovfQogICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ibWQ6dy1bMjQwcHhdIGZsZXgtc2hyaW5rLTAgZmxleCBmbGV4LWNvbCBpdGVtcy1jZW50ZXIgbWQ6aXRlbXMtc3RhcnQiPgogICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMi41IG1iLTIgbWQ6bWItNCI+CiAgICAgICAgICAgICAgICA8ZGl2IHN0eWxlPXt7IGRpc3BsYXk6ICJmbGV4IiwgZmxleERpcmVjdGlvbjogImNvbHVtbiIsIGFsaWduSXRlbXM6ICJjZW50ZXIiLCBnYXA6ICIxcHgiIH19PgogICAgICAgICAgICAgICAgICA8ZGl2IHN0eWxlPXt7IGRpc3BsYXk6ICJpbmxpbmUtYmxvY2siIH19PgogICAgICAgICAgICAgICAgICAgIDxpbWcKICAgICAgICAgICAgICAgICAgICAgIHNyYz0iL29tbmlxdXJlLXdvcmRtYXJrLnBuZyIKICAgICAgICAgICAgICAgICAgICAgIGFsdD0iT21uaVF1cmUiCiAgICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9ImgtOCBtZDpoLVs1MnB4XSIKICAgICAgICAgICAgICAgICAgICAgIHN0eWxlPXt7IHdpZHRoOiAiYXV0byIsIG1heFdpZHRoOiAibm9uZSIsIGRpc3BsYXk6ICJibG9jayIgfX0KICAgICAgICAgICAgICAgICAgICAvPgogICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0iaGlkZGVuIG1kOmJsb2NrIiBzdHlsZT17eyBkaXNwbGF5OiAiYmxvY2siLCB3aWR0aDogIjIzMHB4IiwgdGV4dEFsaWduOiAicmlnaHQiLCBjb2xvcjogIiNFOEE5M0UiLCBmb250U2l6ZTogIjhweCIsIGZvbnRXZWlnaHQ6IDkwMCwgbGV0dGVyU3BhY2luZzogIjAuMThlbSIsIHdoaXRlU3BhY2U6ICJub3dyYXAiLCBvdmVyZmxvdzogImhpZGRlbiIsIG1hcmdpblRvcDogIjJweCIgfX0+CiAgICAgICAgICAgICAgICAgICAgICBQRVBUSURFIFJFU0VBUkNIIElOU1RJVFVURQogICAgICAgICAgICAgICAgICAgIDwvc3Bhbj4KICAgICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9ImhpZGRlbiBtZDpibG9jayIgc3R5bGU9e3sgZm9udFNpemU6ICIxM3B4IiwgY29sb3I6ICJyZ2JhKDI1NSwyNTUsMjU1LDAuNzApIiwgbGluZUhlaWdodDogIjEuNzUiLCBtYXJnaW5Cb3R0b206ICIxNnB4IiB9fT4KICAgICAgICAgICAgICAgIFJlc2VhcmNoIHBlcHRpZGVzIG1hbnVmYWN0dXJlZCB0byB0aGUgaGlnaGVzdCBzdGFuZGFyZHMgb2YgcXVhbGl0eSBhbmQgcHVyaXR5LiA5OCUrIHZlcmlmaWVkIHB1cml0eSBndWFyYW50ZWVkIG9uIGV2ZXJ5IHByb2R1Y3QuCiAgICAgICAgICAgICAgPC9wPgoKICAgICAgICAgICAgICB7LyogVHJ1c3QgYmFkZ2VzICovfQogICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGZsZXgtd3JhcCBnYXAtMiBtYi0yIG1kOm1iLTUiPgogICAgICAgICAgICAgICAge1siOTglKyIsICJKYW5vc2hpayBWZXJpZmllZCIsICJTZWN1cmUgQ2hlY2tvdXQiXS5tYXAoYiA9PiAoCiAgICAgICAgICAgICAgICAgIDxzcGFuCiAgICAgICAgICAgICAgICAgICAga2V5PXtifQogICAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZT0idGV4dC14cyBweC0yLjUgcHktMSByb3VuZGVkLWZ1bGwgaW5saW5lLWZsZXggaXRlbXMtY2VudGVyIGdhcC0xIgogICAgICAgICAgICAgICAgICAgIHN0eWxlPXt7IGJhY2tncm91bmRDb2xvcjogInJnYmEoMCwwLDAsMC4yMCkiLCBjb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC44MCkiLCBib3JkZXI6ICIxcHggc29saWQgcmdiYSgyNTUsMjU1LDI1NSwwLjIwKSIsIGZvbnRTaXplOiAiMTFweCIgfX0KICAgICAgICAgICAgICAgICAgPgogICAgICAgICAgICAgICAgICAgIDxzcGFuIHN0eWxlPXt7IGNvbG9yOiAiIzM0RDM5OSIgfX0+4pyTPC9zcGFuPiB7Yn0KICAgICAgICAgICAgICAgICAgPC9zcGFuPgogICAgICAgICAgICAgICAgKSl9CiAgICAgICAgICAgICAgPC9kaXY+CgogICAgICAgICAgICAgIHsvKiBDb250YWN0IG1pY3JvLWluZm8gKi99CiAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImhpZGRlbiBtZDpmbGV4IGZsZXgtY29sIGdhcC0yIj4KICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTIiIHN0eWxlPXt7IGZvbnRTaXplOiAiMTJweCIsIGNvbG9yOiAicmdiYSgyNTUsMjU1LDI1NSwwLjcwKSIgfX0+CiAgICAgICAgICAgICAgICAgIDxNYWlsIHNpemU9ezEzfSBzdHlsZT17eyBjb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC41MCkiLCBmbGV4U2hyaW5rOiAwIH19IC8+CiAgICAgICAgICAgICAgICAgIHN1cHBvcnRAb21uaXF1cmUuY29tCiAgICAgICAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGdhcC0yIiBzdHlsZT17eyBmb250U2l6ZTogIjEycHgiLCBjb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC43MCkiIH19PgogICAgICAgICAgICAgICAgICA8Rmxhc2tDb25pY2FsIHNpemU9ezEzfSBzdHlsZT17eyBjb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC41MCkiLCBmbGV4U2hyaW5rOiAwIH19IC8+CiAgICAgICAgICAgICAgICAgIFJVTyDCtyBMYWIgQ2VydGlmaWVkIMK3IHZlcmlmaWVkCiAgICAgICAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICAgICAgPC9kaXY+CgogICAgICAgICAgICA8L2Rpdj4KCiAgICAgICAgICAgIHsvKiBMaW5rIGNvbHVtbnMgKi99CiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4LTEgZ3JpZCBncmlkLWNvbHMtMiBtZDpncmlkLWNvbHMtNCBnYXAteC00IGdhcC15LTQgbWQ6Z2FwLTYiPgogICAgICAgICAgICAgIHtmb290ZXJDYXRlZ29yaWVzLm1hcChjb2wgPT4gKAogICAgICAgICAgICAgICAgPGRpdiBrZXk9e2NvbC50aXRsZX0+CiAgICAgICAgICAgICAgICAgIDxMaW5rCiAgICAgICAgICAgICAgICAgICAgaHJlZj17Y29sLmhyZWZ9CiAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPSJibG9jayBmb250LWJvbGQgbWItMiBtZDptYi00IgogICAgICAgICAgICAgICAgICAgIHN0eWxlPXt7IGNvbG9yOiAiI0U4QTkzRSIsIGZvbnRTaXplOiAiMTIuNXB4IiwgdGV4dERlY29yYXRpb246ICJub25lIiwgbGV0dGVyU3BhY2luZzogIjAuMDRlbSIsIHRleHRUcmFuc2Zvcm06ICJ1cHBlcmNhc2UiIH19CiAgICAgICAgICAgICAgICAgICAgb25Nb3VzZUVudGVyPXtlID0+IChlLmN1cnJlbnRUYXJnZXQgYXMgSFRNTEVsZW1lbnQpLnN0eWxlLmNvbG9yID0gIiNGNUM3NkIifQogICAgICAgICAgICAgICAgICAgIG9uTW91c2VMZWF2ZT17ZSA9PiAoZS5jdXJyZW50VGFyZ2V0IGFzIEhUTUxFbGVtZW50KS5zdHlsZS5jb2xvciA9ICIjRThBOTNFIn0KICAgICAgICAgICAgICAgICAgPgogICAgICAgICAgICAgICAgICAgIHtjb2wudGl0bGV9CiAgICAgICAgICAgICAgICAgIDwvTGluaz4KICAgICAgICAgICAgICAgICAgPHVsIHN0eWxlPXt7IGxpc3RTdHlsZTogIm5vbmUiLCBtYXJnaW46IDAsIHBhZGRpbmc6IDAsIGRpc3BsYXk6ICJmbGV4IiwgZmxleERpcmVjdGlvbjogImNvbHVtbiIsIGdhcDogIjZweCIgfX0+CiAgICAgICAgICAgICAgICAgICAge2NvbC5saW5rcy5tYXAobGluayA9PiAoCiAgICAgICAgICAgICAgICAgICAgICA8bGkga2V5PXtsaW5rLmxhYmVsfT4KICAgICAgICAgICAgICAgICAgICAgICAgPExpbmsKICAgICAgICAgICAgICAgICAgICAgICAgICBocmVmPXtsaW5rLmhyZWZ9CiAgICAgICAgICAgICAgICAgICAgICAgICAgc3R5bGU9e3sgZm9udFNpemU6ICIxMi41cHgiLCBjb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC42MCkiLCB0ZXh0RGVjb3JhdGlvbjogIm5vbmUiLCB0cmFuc2l0aW9uOiAiY29sb3IgMC4xNXMiIH19CiAgICAgICAgICAgICAgICAgICAgICAgICAgb25Nb3VzZUVudGVyPXtlID0+IChlLmN1cnJlbnRUYXJnZXQgYXMgSFRNTEVsZW1lbnQpLnN0eWxlLmNvbG9yID0gIiNmZmYifQogICAgICAgICAgICAgICAgICAgICAgICAgIG9uTW91c2VMZWF2ZT17ZSA9PiAoZS5jdXJyZW50VGFyZ2V0IGFzIEhUTUxFbGVtZW50KS5zdHlsZS5jb2xvciA9ICJyZ2JhKDI1NSwyNTUsMjU1LDAuNjApIn0KICAgICAgICAgICAgICAgICAgICAgICAgPgogICAgICAgICAgICAgICAgICAgICAgICAgIHtsaW5rLmxhYmVsfQogICAgICAgICAgICAgICAgICAgICAgICA8L0xpbms+CiAgICAgICAgICAgICAgICAgICAgICA8L2xpPgogICAgICAgICAgICAgICAgICAgICkpfQogICAgICAgICAgICAgICAgICA8L3VsPgogICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgKSl9CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgPC9kaXY+CgogICAgICAgICAgey8qIEJvdHRvbSBiYXIgKi99CiAgICAgICAgICA8ZGl2CiAgICAgICAgICAgIGNsYXNzTmFtZT0iZmxleCBmbGV4LWNvbCBzbTpmbGV4LXJvdyBpdGVtcy1jZW50ZXIganVzdGlmeS1iZXR3ZWVuIGdhcC0yIG1kOmdhcC00IHB0LTMgbWQ6cHQtNiIKICAgICAgICAgICAgc3R5bGU9e3sgYm9yZGVyVG9wOiAiMXB4IHNvbGlkIHJnYmEoMjU1LDI1NSwyNTUsMC4xNSkiIH19CiAgICAgICAgICA+CiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGZsZXgtd3JhcCBqdXN0aWZ5LWNlbnRlciBzbTpqdXN0aWZ5LXN0YXJ0IGdhcC14LTUgZ2FwLXktMS41Ij4KICAgICAgICAgICAgICB7bGVnYWxMaW5rcy5tYXAobGluayA9PiAoCiAgICAgICAgICAgICAgICA8TGluawogICAgICAgICAgICAgICAgICBrZXk9e2xpbmsubGFiZWx9CiAgICAgICAgICAgICAgICAgIGhyZWY9e2xpbmsuaHJlZn0KICAgICAgICAgICAgICAgICAgc3R5bGU9e3sgZm9udFNpemU6ICIxMS41cHgiLCBjb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC41NSkiLCB0ZXh0RGVjb3JhdGlvbjogIm5vbmUiLCB0cmFuc2l0aW9uOiAiY29sb3IgMC4xNXMiIH19CiAgICAgICAgICAgICAgICAgIG9uTW91c2VFbnRlcj17ZSA9PiAoZS5jdXJyZW50VGFyZ2V0IGFzIEhUTUxFbGVtZW50KS5zdHlsZS5jb2xvciA9ICIjZmZmIn0KICAgICAgICAgICAgICAgICAgb25Nb3VzZUxlYXZlPXtlID0+IChlLmN1cnJlbnRUYXJnZXQgYXMgSFRNTEVsZW1lbnQpLnN0eWxlLmNvbG9yID0gInJnYmEoMjU1LDI1NSwyNTUsMC41NSkifQogICAgICAgICAgICAgICAgPgogICAgICAgICAgICAgICAgICB7bGluay5sYWJlbH0KICAgICAgICAgICAgICAgIDwvTGluaz4KICAgICAgICAgICAgICApKX0KICAgICAgICAgICAgPC9kaXY+CgogICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTIgZmxleC13cmFwIGp1c3RpZnktY2VudGVyIj4KICAgICAgICAgICAgICA8c3BhbiBzdHlsZT17eyBmb250U2l6ZTogIjExcHgiLCBjb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC41MCkiLCBtYXJnaW5SaWdodDogIjJweCIgfX0+V2UgQWNjZXB0Ojwvc3Bhbj4KICAgICAgICAgICAgICB7cGF5bWVudEJhZGdlcy5tYXAoYiA9PiAoCiAgICAgICAgICAgICAgICA8c3BhbgogICAgICAgICAgICAgICAgICBrZXk9e2IubGFiZWx9CiAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZT0icHgtMi41IHB5LTEgcm91bmRlZC1tZCIKICAgICAgICAgICAgICAgICAgc3R5bGU9e3sKICAgICAgICAgICAgICAgICAgICBkaXNwbGF5OiAiaW5saW5lLWZsZXgiLCBhbGlnbkl0ZW1zOiAiY2VudGVyIiwgZ2FwOiAiNXB4IiwKICAgICAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kQ29sb3I6ICJyZ2JhKDAsMCwwLDAuMjApIiwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC43NSkiLAogICAgICAgICAgICAgICAgICAgIGJvcmRlcjogIjFweCBzb2xpZCByZ2JhKDI1NSwyNTUsMjU1LDAuMjApIiwKICAgICAgICAgICAgICAgICAgICBmb250U2l6ZTogIjExcHgiLAogICAgICAgICAgICAgICAgICAgIGZvbnRXZWlnaHQ6IDYwMCwKICAgICAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgICAgID4KICAgICAgICAgICAgICAgICAge2IuaWNvbn0KICAgICAgICAgICAgICAgICAge2IubGFiZWx9CiAgICAgICAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICAgICAgKSl9CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgPC9kaXY+CgogICAgICAgICAgey8qIEphbm9zaGlrIGluZGVwZW5kZW50IHZlcmlmaWNhdGlvbiBzdHJpcCAqL30KICAgICAgICAgIDxkaXYKICAgICAgICAgICAgY2xhc3NOYW1lPSJmbGV4IGZsZXgtY29sIHNtOmZsZXgtcm93IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBnYXAtMyBtdC00IG1kOm10LTYgcHktMyBtZDpweS00IgogICAgICAgICAgICBzdHlsZT17eyBib3JkZXJUb3A6ICIxcHggc29saWQgcmdiYSgyNTUsMjU1LDI1NSwwLjEyKSIsIGJvcmRlckJvdHRvbTogIjFweCBzb2xpZCByZ2JhKDI1NSwyNTUsMjU1LDAuMTIpIiB9fQogICAgICAgICAgPgogICAgICAgICAgICA8c3BhbiBzdHlsZT17eyBmb250U2l6ZTogIjExcHgiLCBmb250V2VpZ2h0OiA3MDAsIGNvbG9yOiAicmdiYSgyNTUsMjU1LDI1NSwwLjU1KSIsIGxldHRlclNwYWNpbmc6ICIwLjA4ZW0iLCB0ZXh0VHJhbnNmb3JtOiAidXBwZXJjYXNlIiB9fT4KICAgICAgICAgICAgICBJbmRlcGVuZGVudGx5IFZlcmlmaWVkIEJ5CiAgICAgICAgICAgIDwvc3Bhbj4KICAgICAgICAgICAgPGEKICAgICAgICAgICAgICBocmVmPSIvbGFiLXJlcG9ydHMiCiAgICAgICAgICAgICAgc3R5bGU9e3sgZGlzcGxheTogImlubGluZS1mbGV4IiwgYWxpZ25JdGVtczogImNlbnRlciIsIHRleHREZWNvcmF0aW9uOiAibm9uZSIgfX0KICAgICAgICAgICAgICB0aXRsZT0iVmlldyBvdXIgaW5kZXBlbmRlbnQgbGFiIHJlcG9ydHMgb24gSmFub3NoaWsiCiAgICAgICAgICAgID4KICAgICAgICAgICAgICA8c3BhbiBzdHlsZT17ewogICAgICAgICAgICAgICAgYmFja2dyb3VuZDogIiNFOEYwRjgiLAogICAgICAgICAgICAgICAgYm9yZGVyUmFkaXVzOiAiNDBweCIsCiAgICAgICAgICAgICAgICBwYWRkaW5nOiAiNXB4IDE2cHgiLAogICAgICAgICAgICAgICAgZGlzcGxheTogImlubGluZS1mbGV4IiwKICAgICAgICAgICAgICAgIGFsaWduSXRlbXM6ICJjZW50ZXIiLAogICAgICAgICAgICAgICAgYm94U2hhZG93OiAiMCAycHggMTBweCByZ2JhKDAsMCwwLDAuMjUpIiwKICAgICAgICAgICAgICAgIHRyYW5zaXRpb246ICJib3gtc2hhZG93IDAuMTVzLCB0cmFuc2Zvcm0gMC4xNXMiLAogICAgICAgICAgICAgIH19CiAgICAgICAgICAgICAgICBvbk1vdXNlRW50ZXI9e2UgPT4geyAoZS5jdXJyZW50VGFyZ2V0IGFzIEhUTUxFbGVtZW50KS5zdHlsZS5ib3hTaGFkb3cgPSAiMCA0cHggMThweCByZ2JhKDAsMCwwLDAuMzUpIjsgKGUuY3VycmVudFRhcmdldCBhcyBIVE1MRWxlbWVudCkuc3R5bGUudHJhbnNmb3JtID0gInRyYW5zbGF0ZVkoLTFweCkiOyB9fQogICAgICAgICAgICAgICAgb25Nb3VzZUxlYXZlPXtlID0+IHsgKGUuY3VycmVudFRhcmdldCBhcyBIVE1MRWxlbWVudCkuc3R5bGUuYm94U2hhZG93ID0gIjAgMnB4IDEwcHggcmdiYSgwLDAsMCwwLjI1KSI7IChlLmN1cnJlbnRUYXJnZXQgYXMgSFRNTEVsZW1lbnQpLnN0eWxlLnRyYW5zZm9ybSA9ICJub25lIjsgfX0KICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICA8aW1nIHNyYz0iL2phbm9zaGlrL2phbm9zaGlrLWxvZ28uanBnIiBhbHQ9Ikphbm9zaGlrIiBzdHlsZT17eyBoZWlnaHQ6ICIyNHB4Iiwgd2lkdGg6ICJhdXRvIiwgYm9yZGVyUmFkaXVzOiAiM3B4IiwgZGlzcGxheTogImJsb2NrIiB9fSAvPgogICAgICAgICAgICAgIDwvc3Bhbj4KICAgICAgICAgICAgPC9hPgogICAgICAgICAgICA8c3BhbiBzdHlsZT17eyBmb250U2l6ZTogIjExcHgiLCBjb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC40MCkiIH19PgogICAgICAgICAgICAgIEhQTEMgJmFtcDsgRVNJLU1TIMK3IEV2ZXJ5IGJhdGNoIHRlc3RlZAogICAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICA8L2Rpdj4KCiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0idGV4dC1jZW50ZXIgbXQtMyBtZDptdC01IiBzdHlsZT17eyBmb250U2l6ZTogIjExcHgiLCBjb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC40NSkiIH19PgogICAgICAgICAgICDCqSB7bmV3IERhdGUoKS5nZXRGdWxsWWVhcigpfSBPbW5pUXVyZSBQZXB0aWRlIFJlc2VhcmNoIEluc3RpdHV0ZSDigJQgQWxsIFJpZ2h0cyBSZXNlcnZlZCDCtyBGb3IgTGFib3JhdG9yeSBSZXNlYXJjaCBVc2UgT25seQogICAgICAgICAgPC9kaXY+CiAgICAgICAgPC9kaXY+CiAgICAgIDwvZGl2PgogICAgPC9mb290ZXI+CiAgKTsKfQo=
+import { Link } from "wouter";
+import { FlaskConical, Mail, MapPin } from "lucide-react";
+
+const footerCategories = [
+  {
+    title: "Purchase Peptides",
+    href: "/all-peptides",
+    links: [
+      { label: "BPC-157 5mg",      href: "/product/bpc-157-5mg" },
+      { label: "Ipamorelin 5mg",   href: "/product/ipamorelin-5mg" },
+      { label: "GHK-Cu 50mg",      href: "/product/ghk-cu-50mg" },
+      { label: "Sermorelin 5mg",   href: "/product/sermorelin-5mg" },
+      { label: "AOD-9604 5mg",     href: "/product/aod-9604-5mg" },
+      { label: "TB-500 5mg",       href: "/product/tb-500-5mg" },
+    ],
+  },
+  {
+    title: "Peptide Blends",
+    href: "/all-peptides?category=Peptide+Blends",
+    links: [
+      { label: "BPC-157 + TB-500 10mg",   href: "/product/bpc-157-tb-500-blend-10mg" },
+      { label: "BPC-157 + TB-500 20mg",   href: "/product/bpc-157-tb-500-blend-20mg" },
+      { label: "CJC-1295 + Ipamorelin",   href: "/product/cjc-1295-no-dac-ipamorelin-5mg" },
+      { label: "Tesamorelin + Ipamorelin", href: "/product/tesamorelin-ipamorelin-blend-8mg" },
+      { label: "Semax + Selank",          href: "/product/semax-selank-blend-20mg" },
+    ],
+  },
+  {
+    title: "Categories",
+    href: "/all-peptides",
+    links: [
+      { label: "Growth Peptides",     href: "/all-peptides?category=Growth+Peptides"     },
+      { label: "Healing Peptides",    href: "/all-peptides?category=Healing+Peptides"    },
+      { label: "Longevity Peptides",  href: "/all-peptides?category=Longevity+Peptides"  },
+      { label: "Nootropics",          href: "/all-peptides?category=Nootropics"          },
+    ],
+  },
+  {
+    title: "Company",
+    href: "/about",
+    links: [
+      { label: "About Us",             href: "/about"            },
+      { label: "Contact Us",          href: "/contact"          },
+      { label: "Track Your Order",    href: "/track-order"      },
+      { label: "Research Stacks",     href: "/stacks"           },
+      { label: "Protocols",           href: "/protocols"        },
+      { label: "Storage Guide",       href: "/storage-guide"    },
+      { label: "FAQ",                 href: "/faq"              },
+      { label: "Glossary",            href: "/glossary"         },
+      { label: "Bundle & Save",       href: "/bundle-and-save"  },
+      { label: "All Peptides",        href: "/all-peptides"     },
+      { label: "Refer a Friend",      href: "/refer-a-friend"   },
+    ],
+  },
+];
+
+const legalLinks = [
+  { label: "Terms & Conditions", href: "/terms"    },
+  { label: "Shipping Policy",    href: "/shipping" },
+  { label: "Privacy Policy",     href: "/privacy"  },
+];
+
+const paymentBadges = [
+  {
+    label: "Pay by Bank",
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    ),
+  },
+  {
+    label: "Bitcoin",
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.06 11.57c.29-.69.45-1.45.45-2.23C17.51 6.37 15.14 4 12.17 4H8v3H6v2h2v2H6v2h2v7h4.65c2.75 0 5-2.06 5.12-4.76.08-1.65-.69-3.11-1.71-3.67zM11 7h1.17c1.02 0 1.84.82 1.84 1.84S13.19 10.68 12.17 10.68H11V7zm1.65 10H11v-3.33h1.65c.92 0 1.67.75 1.67 1.67s-.75 1.66-1.67 1.66z"/>
+      </svg>
+    ),
+  },
+  {
+    label: "Ethereum",
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L5 12.5l7 4 7-4L12 2zM5 14l7 8 7-8-7 4-7-4z"/>
+      </svg>
+    ),
+  },
+  {
+    label: "USDT",
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M13 8h-5v2.5h2v5.5h2V10.5h2V8h-1zm1 0h1v8h-1V8z" fill="white"/>
+      </svg>
+    ),
+  },
+];
+
+
+export default function Footer() {
+  return (
+    <footer style={{ fontFamily: "'Arimo', Arial, sans-serif" }}>
+
+
+      {/* Main footer body */}
+      <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", color: "#94A3B8" }}>
+        <div className="max-w-[1280px] mx-auto px-4 pt-2 md:pt-12 pb-4 md:pb-8">
+
+          {/* Top row */}
+          <div className="flex flex-col md:flex-row gap-4 md:gap-10 mb-4 md:mb-10">
+
+            {/* Brand column */}
+            <div className="md:w-[240px] flex-shrink-0 flex flex-col items-center md:items-start">
+              <div className="flex items-center gap-2.5 mb-2 md:mb-4">
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
+                  <div style={{ display: "inline-block" }}>
+                    <img
+                      src="/omniqure-wordmark.png"
+                      alt="OmniQure"
+                      className="h-8 md:h-[52px]"
+                      style={{ width: "auto", maxWidth: "none", display: "block" }}
+                    />
+                    <span className="hidden md:block" style={{ display: "block", width: "230px", textAlign: "right", color: "#E8A93E", fontSize: "8px", fontWeight: 900, letterSpacing: "0.18em", whiteSpace: "nowrap", overflow: "hidden", marginTop: "2px" }}>
+                      PEPTIDE RESEARCH INSTITUTE
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <p className="hidden md:block" style={{ fontSize: "13px", color: "rgba(255,255,255,0.70)", lineHeight: "1.75", marginBottom: "16px" }}>
+                Research peptides manufactured to the highest standards of quality and purity. 98%+ verified purity guaranteed on every product.
+              </p>
+
+              {/* Trust badges */}
+              <div className="flex flex-wrap gap-2 mb-2 md:mb-5">
+                {["98%+", "Janoshik Verified", "Secure Checkout"].map(b => (
+                  <span
+                    key={b}
+                    className="text-xs px-2.5 py-1 rounded-full inline-flex items-center gap-1"
+                    style={{ backgroundColor: "rgba(0,0,0,0.20)", color: "rgba(255,255,255,0.80)", border: "1px solid rgba(255,255,255,0.20)", fontSize: "11px" }}
+                  >
+                    <span style={{ color: "#34D399" }}>✓</span> {b}
+                  </span>
+                ))}
+              </div>
+
+              {/* Contact micro-info */}
+              <div className="hidden md:flex flex-col gap-2">
+                <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "rgba(255,255,255,0.70)" }}>
+                  <Mail size={13} style={{ color: "rgba(255,255,255,0.50)", flexShrink: 0 }} />
+                  support@omniqure.com
+                </span>
+                <span className="flex items-center gap-2" style={{ fontSize: "12px", color: "rgba(255,255,255,0.70)" }}>
+                  <FlaskConical size={13} style={{ color: "rgba(255,255,255,0.50)", flexShrink: 0 }} />
+                  RUO · Lab Certified · verified
+                </span>
+              </div>
+
+            </div>
+
+            {/* Link columns */}
+            <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-4 md:gap-6">
+              {footerCategories.map(col => (
+                <div key={col.title}>
+                  <Link
+                    href={col.href}
+                    className="block font-bold mb-2 md:mb-4"
+                    style={{ color: "#E8A93E", fontSize: "12.5px", textDecoration: "none", letterSpacing: "0.04em", textTransform: "uppercase" }}
+                    onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#F5C76B"}
+                    onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#E8A93E"}
+                  >
+                    {col.title}
+                  </Link>
+                  <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
+                    {col.links.map(link => (
+                      <li key={link.label}>
+                        <Link
+                          href={link.href}
+                          style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.60)", textDecoration: "none", transition: "color 0.15s" }}
+                          onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
+                          onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.60)"}
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom bar */}
+          <div
+            className="flex flex-col sm:flex-row items-center justify-between gap-2 md:gap-4 pt-3 md:pt-6"
+            style={{ borderTop: "1px solid rgba(255,255,255,0.15)" }}
+          >
+            <div className="flex flex-wrap justify-center sm:justify-start gap-x-5 gap-y-1.5">
+              {legalLinks.map(link => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.55)", textDecoration: "none", transition: "color 0.15s" }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#fff"}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.55)"}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap justify-center">
+              <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.50)", marginRight: "2px" }}>We Accept:</span>
+              {paymentBadges.map(b => (
+                <span
+                  key={b.label}
+                  className="px-2.5 py-1 rounded-md"
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: "5px",
+                    backgroundColor: "rgba(0,0,0,0.20)",
+                    color: "rgba(255,255,255,0.75)",
+                    border: "1px solid rgba(255,255,255,0.20)",
+                    fontSize: "11px",
+                    fontWeight: 600,
+                  }}
+                >
+                  {b.icon}
+                  {b.label}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Janoshik independent verification strip */}
+          <div
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4 md:mt-6 py-3 md:py-4"
+            style={{ borderTop: "1px solid rgba(255,255,255,0.12)", borderBottom: "1px solid rgba(255,255,255,0.12)" }}
+          >
+            <span style={{ fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.55)", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+              Independently Verified By
+            </span>
+            <a
+              href="/lab-reports"
+              style={{ display: "inline-flex", alignItems: "center", textDecoration: "none" }}
+              title="View our independent lab reports on Janoshik"
+            >
+              <span style={{
+                background: "#E8F0F8",
+                borderRadius: "40px",
+                padding: "5px 16px",
+                display: "inline-flex",
+                alignItems: "center",
+                boxShadow: "0 2px 10px rgba(0,0,0,0.25)",
+                transition: "box-shadow 0.15s, transform 0.15s",
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 18px rgba(0,0,0,0.35)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 10px rgba(0,0,0,0.25)"; (e.currentTarget as HTMLElement).style.transform = "none"; }}
+              >
+                <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "24px", width: "auto", borderRadius: "3px", display: "block" }} />
+              </span>
+            </a>
+            <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.40)" }}>
+              HPLC &amp; ESI-MS · Every batch tested
+            </span>
+          </div>
+
+          <div className="text-center mt-3 md:mt-5" style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>
+            © {new Date().getFullYear()} OmniQure Peptide Research Institute — All Rights Reserved · For Laboratory Research Use Only
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}

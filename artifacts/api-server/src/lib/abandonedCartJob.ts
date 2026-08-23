@@ -1,1 +1,78 @@
-aW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgYWJhbmRvbmVkQ2FydHNUYWJsZSB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyBhbmQsIGlzTnVsbCwgbHRlLCBndGUsIGVxIH0gZnJvbSAiZHJpenpsZS1vcm0iOwppbXBvcnQgeyBzZW5kQWJhbmRvbmVkQ2FydEVtYWlsIH0gZnJvbSAiLi9lbWFpbCI7CmltcG9ydCB7IGxvZ2dlciB9IGZyb20gIi4vbG9nZ2VyIjsKCmNvbnN0IFNJVEVfVVJMID0gcHJvY2Vzcy5lbnYuU0lURV9VUkwgPz8gImh0dHBzOi8vb21uaXF1cmUuY29tIjsKY29uc3QgSU5URVJWQUxfTVMgPSAxNSAqIDYwICogMTAwMDsKY29uc3QgQUJBTkRPTl9BRlRFUl9NUyA9IDYwICogNjAgKiAxMDAwOwpjb25zdCBNQVhfQUdFX01TID0gNDggKiA2MCAqIDYwICogMTAwMDsKCmludGVyZmFjZSBTYXZlZENhcnRJdGVtIHsKICBwcm9kdWN0SWQ/OiBudW1iZXI7CiAgcHJvZHVjdE5hbWU/OiBzdHJpbmc7CiAgcXVhbnRpdHk/OiBudW1iZXI7CiAgcHJpY2VHYnA/OiBudW1iZXI7Cn0KCmFzeW5jIGZ1bmN0aW9uIHJ1bkNoZWNrKCk6IFByb21pc2U8dm9pZD4gewogIHRyeSB7CiAgICBjb25zdCBub3cgPSBuZXcgRGF0ZSgpOwogICAgY29uc3QgYWJhbmRvbmVkQmVmb3JlID0gbmV3IERhdGUobm93LmdldFRpbWUoKSAtIEFCQU5ET05fQUZURVJfTVMpOwogICAgY29uc3QgbWF4QWdlQmVmb3JlID0gbmV3IERhdGUobm93LmdldFRpbWUoKSAtIE1BWF9BR0VfTVMpOwoKICAgIGNvbnN0IGNhcnRzID0gYXdhaXQgZGIKICAgICAgLnNlbGVjdCgpCiAgICAgIC5mcm9tKGFiYW5kb25lZENhcnRzVGFibGUpCiAgICAgIC53aGVyZSgKICAgICAgICBhbmQoCiAgICAgICAgICBpc051bGwoYWJhbmRvbmVkQ2FydHNUYWJsZS5lbWFpbFNlbnRBdCksCiAgICAgICAgICBpc051bGwoYWJhbmRvbmVkQ2FydHNUYWJsZS5jb252ZXJ0ZWRBdCksCiAgICAgICAgICBsdGUoYWJhbmRvbmVkQ2FydHNUYWJsZS51cGRhdGVkQXQsIGFiYW5kb25lZEJlZm9yZSksCiAgICAgICAgICBndGUoYWJhbmRvbmVkQ2FydHNUYWJsZS51cGRhdGVkQXQsIG1heEFnZUJlZm9yZSkKICAgICAgICApCiAgICAgICk7CgogICAgbG9nZ2VyLmluZm8oeyBjb3VudDogY2FydHMubGVuZ3RoIH0sICJBYmFuZG9uZWQgY2FydCBjaGVjayIpOwoKICAgIGZvciAoY29uc3QgY2FydCBvZiBjYXJ0cykgewogICAgICBsZXQgaXRlbXM6IFNhdmVkQ2FydEl0ZW1bXSA9IFtdOwogICAgICB0cnkgewogICAgICAgIGl0ZW1zID0gSlNPTi5wYXJzZShjYXJ0Lml0ZW1zSnNvbikgYXMgU2F2ZWRDYXJ0SXRlbVtdOwogICAgICB9IGNhdGNoIHsKICAgICAgICBjb250aW51ZTsKICAgICAgfQoKICAgICAgY29uc3QgZW1haWxJdGVtcyA9IGl0ZW1zCiAgICAgICAgLmZpbHRlcigoaSkgPT4gaS5wcm9kdWN0TmFtZSAmJiBpLnF1YW50aXR5ICYmIGkucHJpY2VHYnApCiAgICAgICAgLm1hcCgoaSkgPT4gKHsKICAgICAgICAgIHByb2R1Y3ROYW1lOiBpLnByb2R1Y3ROYW1lISwKICAgICAgICAgIHF1YW50aXR5OiBpLnF1YW50aXR5ISwKICAgICAgICAgIHByaWNlR2JwOiBpLnByaWNlR2JwISwKICAgICAgICB9KSk7CgogICAgICBpZiAoZW1haWxJdGVtcy5sZW5ndGggPT09IDApIGNvbnRpbnVlOwoKICAgICAgYXdhaXQgc2VuZEFiYW5kb25lZENhcnRFbWFpbCh7CiAgICAgICAgY3VzdG9tZXJOYW1lOiBjYXJ0LmN1c3RvbWVyTmFtZSwKICAgICAgICBjdXN0b21lckVtYWlsOiBjYXJ0LmN1c3RvbWVyRW1haWwsCiAgICAgICAgaXRlbXM6IGVtYWlsSXRlbXMsCiAgICAgICAgY2FydFVybDogYCR7U0lURV9VUkx9L2NhcnRgLAogICAgICB9KTsKCiAgICAgIGF3YWl0IGRiCiAgICAgICAgLnVwZGF0ZShhYmFuZG9uZWRDYXJ0c1RhYmxlKQogICAgICAgIC5zZXQoeyBlbWFpbFNlbnRBdDogbmV3IERhdGUoKSB9KQogICAgICAgIC53aGVyZShlcShhYmFuZG9uZWRDYXJ0c1RhYmxlLmN1c3RvbWVySWQsIGNhcnQuY3VzdG9tZXJJZCkpOwogICAgfQogIH0gY2F0Y2ggKGVycikgewogICAgbG9nZ2VyLmVycm9yKHsgZXJyIH0sICJBYmFuZG9uZWQgY2FydCBqb2IgZXJyb3IiKTsKICB9Cn0KCmV4cG9ydCBmdW5jdGlvbiBzdGFydEFiYW5kb25lZENhcnRKb2IoKTogdm9pZCB7CiAgbG9nZ2VyLmluZm8oIkFiYW5kb25lZCBjYXJ0IGpvYiBzdGFydGVkIik7CiAgdm9pZCBydW5DaGVjaygpOwogIHNldEludGVydmFsKCgpID0+IHsgdm9pZCBydW5DaGVjaygpOyB9LCBJTlRFUlZBTF9NUyk7Cn0K
+import { db } from "@workspace/db";
+import { abandonedCartsTable } from "@workspace/db";
+import { and, isNull, lte, gte, eq } from "drizzle-orm";
+import { sendAbandonedCartEmail } from "./email";
+import { logger } from "./logger";
+
+const SITE_URL = process.env.SITE_URL ?? "https://omniqure.com";
+const INTERVAL_MS = 15 * 60 * 1000;
+const ABANDON_AFTER_MS = 60 * 60 * 1000;
+const MAX_AGE_MS = 48 * 60 * 60 * 1000;
+
+interface SavedCartItem {
+  productId?: number;
+  productName?: string;
+  quantity?: number;
+  priceGbp?: number;
+}
+
+async function runCheck(): Promise<void> {
+  try {
+    const now = new Date();
+    const abandonedBefore = new Date(now.getTime() - ABANDON_AFTER_MS);
+    const maxAgeBefore = new Date(now.getTime() - MAX_AGE_MS);
+
+    const carts = await db
+      .select()
+      .from(abandonedCartsTable)
+      .where(
+        and(
+          isNull(abandonedCartsTable.emailSentAt),
+          isNull(abandonedCartsTable.convertedAt),
+          lte(abandonedCartsTable.updatedAt, abandonedBefore),
+          gte(abandonedCartsTable.updatedAt, maxAgeBefore)
+        )
+      );
+
+    logger.info({ count: carts.length }, "Abandoned cart check");
+
+    for (const cart of carts) {
+      let items: SavedCartItem[] = [];
+      try {
+        items = JSON.parse(cart.itemsJson) as SavedCartItem[];
+      } catch {
+        continue;
+      }
+
+      const emailItems = items
+        .filter((i) => i.productName && i.quantity && i.priceGbp)
+        .map((i) => ({
+          productName: i.productName!,
+          quantity: i.quantity!,
+          priceGbp: i.priceGbp!,
+        }));
+
+      if (emailItems.length === 0) continue;
+
+      await sendAbandonedCartEmail({
+        customerName: cart.customerName,
+        customerEmail: cart.customerEmail,
+        items: emailItems,
+        cartUrl: `${SITE_URL}/cart`,
+      });
+
+      await db
+        .update(abandonedCartsTable)
+        .set({ emailSentAt: new Date() })
+        .where(eq(abandonedCartsTable.customerId, cart.customerId));
+    }
+  } catch (err) {
+    logger.error({ err }, "Abandoned cart job error");
+  }
+}
+
+export function startAbandonedCartJob(): void {
+  logger.info("Abandoned cart job started");
+  void runCheck();
+  setInterval(() => { void runCheck(); }, INTERVAL_MS);
+}

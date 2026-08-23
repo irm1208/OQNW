@@ -1,1 +1,33 @@
-aW1wb3J0IHsKICBwZ1RhYmxlLAogIHNlcmlhbCwKICB0ZXh0LAogIGludGVnZXIsCiAgbnVtZXJpYywKICBib29sZWFuLAogIHRpbWVzdGFtcCwKfSBmcm9tICJkcml6emxlLW9ybS9wZy1jb3JlIjsKaW1wb3J0IHsgY3JlYXRlSW5zZXJ0U2NoZW1hIH0gZnJvbSAiZHJpenpsZS16b2QiOwppbXBvcnQgeyB6IH0gZnJvbSAiem9kL3Y0IjsKCmV4cG9ydCBjb25zdCBkaXNjb3VudENvZGVzVGFibGUgPSBwZ1RhYmxlKCJkaXNjb3VudF9jb2RlcyIsIHsKICBpZDogc2VyaWFsKCJpZCIpLnByaW1hcnlLZXkoKSwKICBjb2RlOiB0ZXh0KCJjb2RlIikubm90TnVsbCgpLnVuaXF1ZSgpLAogIHR5cGU6IHRleHQoInR5cGUiKS5ub3ROdWxsKCksIC8vICJwZXJjZW50YWdlIiB8ICJmaXhlZCIKICB2YWx1ZTogbnVtZXJpYygidmFsdWUiLCB7IHByZWNpc2lvbjogMTAsIHNjYWxlOiAyIH0pLm5vdE51bGwoKSwKICBtaW5TcGVuZDogbnVtZXJpYygibWluX3NwZW5kIiwgeyBwcmVjaXNpb246IDEwLCBzY2FsZTogMiB9KSwKICB1c2FnZUxpbWl0OiBpbnRlZ2VyKCJ1c2FnZV9saW1pdCIpLAogIHVzYWdlQ291bnQ6IGludGVnZXIoInVzYWdlX2NvdW50Iikubm90TnVsbCgpLmRlZmF1bHQoMCksCiAgZXhwaXJlc0F0OiB0aW1lc3RhbXAoImV4cGlyZXNfYXQiLCB7IHdpdGhUaW1lem9uZTogdHJ1ZSB9KSwKICBpc0FjdGl2ZTogYm9vbGVhbigiaXNfYWN0aXZlIikubm90TnVsbCgpLmRlZmF1bHQodHJ1ZSksCiAgY3JlYXRlZEF0OiB0aW1lc3RhbXAoImNyZWF0ZWRfYXQiLCB7IHdpdGhUaW1lem9uZTogdHJ1ZSB9KS5ub3ROdWxsKCkuZGVmYXVsdE5vdygpLAp9KTsKCmV4cG9ydCBjb25zdCBpbnNlcnREaXNjb3VudENvZGVTY2hlbWEgPSBjcmVhdGVJbnNlcnRTY2hlbWEoZGlzY291bnRDb2Rlc1RhYmxlKS5vbWl0KHsKICBpZDogdHJ1ZSwKICB1c2FnZUNvdW50OiB0cnVlLAogIGNyZWF0ZWRBdDogdHJ1ZSwKfSk7CgpleHBvcnQgdHlwZSBJbnNlcnREaXNjb3VudENvZGUgPSB6LmluZmVyPHR5cGVvZiBpbnNlcnREaXNjb3VudENvZGVTY2hlbWE+OwpleHBvcnQgdHlwZSBEaXNjb3VudENvZGUgPSB0eXBlb2YgZGlzY291bnRDb2Rlc1RhYmxlLiRpbmZlclNlbGVjdDsK
+import {
+  pgTable,
+  serial,
+  text,
+  integer,
+  numeric,
+  boolean,
+  timestamp,
+} from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod/v4";
+
+export const discountCodesTable = pgTable("discount_codes", {
+  id: serial("id").primaryKey(),
+  code: text("code").notNull().unique(),
+  type: text("type").notNull(), // "percentage" | "fixed"
+  value: numeric("value", { precision: 10, scale: 2 }).notNull(),
+  minSpend: numeric("min_spend", { precision: 10, scale: 2 }),
+  usageLimit: integer("usage_limit"),
+  usageCount: integer("usage_count").notNull().default(0),
+  expiresAt: timestamp("expires_at", { withTimezone: true }),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const insertDiscountCodeSchema = createInsertSchema(discountCodesTable).omit({
+  id: true,
+  usageCount: true,
+  createdAt: true,
+});
+
+export type InsertDiscountCode = z.infer<typeof insertDiscountCodeSchema>;
+export type DiscountCode = typeof discountCodesTable.$inferSelect;

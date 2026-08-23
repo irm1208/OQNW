@@ -1,1 +1,31 @@
-a2luZCA9ICJ3ZWIiCnByZXZpZXdQYXRoID0gIi8iCnRpdGxlID0gIk9tbmlRdXJlIgp2ZXJzaW9uID0gIjEuMC4wIgppZCA9ICJhcnRpZmFjdHMvcGVwdGlkZS1zY2llbmNlcyIKcm91dGVyID0gInBhdGgiCgpbW2ludGVncmF0ZWRTa2lsbHNdXQpuYW1lID0gInJlYWN0LXZpdGUiCnZlcnNpb24gPSAiMS4wLjAiCgpbW3NlcnZpY2VzXV0KbmFtZSA9ICJ3ZWIiCnBhdGhzID0gWyAiLyIgXQpsb2NhbFBvcnQgPSA4MDgxCgpbc2VydmljZXMuZGV2ZWxvcG1lbnRdCnJ1biA9ICJwbnBtIC0tZmlsdGVyIEB3b3Jrc3BhY2Uvb21uaXF1cmUgcnVuIGRldiIKCltzZXJ2aWNlcy5wcm9kdWN0aW9uXQpidWlsZCA9IFsgInBucG0iLCAiLS1maWx0ZXIiLCAiQHdvcmtzcGFjZS9vbW5pcXVyZSIsICJydW4iLCAiYnVpbGQiIF0KcHVibGljRGlyID0gImFydGlmYWN0cy9vbW5pcXVyZS9kaXN0L3B1YmxpYyIKc2VydmUgPSAic3RhdGljIgoKW1tzZXJ2aWNlcy5wcm9kdWN0aW9uLnJld3JpdGVzXV0KZnJvbSA9ICIvKiIKdG8gPSAiL2luZGV4Lmh0bWwiCgpbc2VydmljZXMuZW52XQpQT1JUID0gIjgwODEiCkJBU0VfUEFUSCA9ICIvIgo=
+kind = "web"
+previewPath = "/"
+title = "OmniQure"
+version = "1.0.0"
+id = "artifacts/peptide-sciences"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 8081
+
+[services.development]
+run = "pnpm --filter @workspace/omniqure run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/omniqure", "run", "build" ]
+publicDir = "artifacts/omniqure/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "8081"
+BASE_PATH = "/"

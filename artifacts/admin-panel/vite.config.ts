@@ -1,1 +1,81 @@
-aW1wb3J0IHsgZGVmaW5lQ29uZmlnIH0gZnJvbSAidml0ZSI7CmltcG9ydCByZWFjdCBmcm9tICJAdml0ZWpzL3BsdWdpbi1yZWFjdCI7CmltcG9ydCB0YWlsd2luZGNzcyBmcm9tICJAdGFpbHdpbmRjc3Mvdml0ZSI7CmltcG9ydCBwYXRoIGZyb20gInBhdGgiOwppbXBvcnQgcnVudGltZUVycm9yT3ZlcmxheSBmcm9tICJAcmVwbGl0L3ZpdGUtcGx1Z2luLXJ1bnRpbWUtZXJyb3ItbW9kYWwiOwoKY29uc3QgcmF3UG9ydCA9IHByb2Nlc3MuZW52LlBPUlQ7CgppZiAoIXJhd1BvcnQpIHsKICB0aHJvdyBuZXcgRXJyb3IoCiAgICAiUE9SVCBlbnZpcm9ubWVudCB2YXJpYWJsZSBpcyByZXF1aXJlZCBidXQgd2FzIG5vdCBwcm92aWRlZC4iLAogICk7Cn0KCmNvbnN0IHBvcnQgPSBOdW1iZXIocmF3UG9ydCk7CgppZiAoTnVtYmVyLmlzTmFOKHBvcnQpIHx8IHBvcnQgPD0gMCkgewogIHRocm93IG5ldyBFcnJvcihgSW52YWxpZCBQT1JUIHZhbHVlOiAiJHtyYXdQb3J0fSJgKTsKfQoKY29uc3QgYmFzZVBhdGggPSBwcm9jZXNzLmVudi5CQVNFX1BBVEg7CgppZiAoIWJhc2VQYXRoKSB7CiAgdGhyb3cgbmV3IEVycm9yKAogICAgIkJBU0VfUEFUSCBlbnZpcm9ubWVudCB2YXJpYWJsZSBpcyByZXF1aXJlZCBidXQgd2FzIG5vdCBwcm92aWRlZC4iLAogICk7Cn0KCmV4cG9ydCBkZWZhdWx0IGRlZmluZUNvbmZpZyh7CiAgYmFzZTogYmFzZVBhdGgsCiAgcGx1Z2luczogWwogICAgcmVhY3QoKSwKICAgIHRhaWx3aW5kY3NzKCksCiAgICBydW50aW1lRXJyb3JPdmVybGF5KCksCiAgICAuLi4ocHJvY2Vzcy5lbnYuTk9ERV9FTlYgIT09ICJwcm9kdWN0aW9uIiAmJgogICAgcHJvY2Vzcy5lbnYuUkVQTF9JRCAhPT0gdW5kZWZpbmVkCiAgICAgID8gWwogICAgICAgICAgYXdhaXQgaW1wb3J0KCJAcmVwbGl0L3ZpdGUtcGx1Z2luLWNhcnRvZ3JhcGhlciIpLnRoZW4oKG0pID0+CiAgICAgICAgICAgIG0uY2FydG9ncmFwaGVyKHsKICAgICAgICAgICAgICByb290OiBwYXRoLnJlc29sdmUoaW1wb3J0Lm1ldGEuZGlybmFtZSwgIi4uIiksCiAgICAgICAgICAgIH0pLAogICAgICAgICAgKSwKICAgICAgICAgIGF3YWl0IGltcG9ydCgiQHJlcGxpdC92aXRlLXBsdWdpbi1kZXYtYmFubmVyIikudGhlbigobSkgPT4KICAgICAgICAgICAgbS5kZXZCYW5uZXIoKSwKICAgICAgICAgICksCiAgICAgICAgXQogICAgICA6IFtdKSwKICBdLAogIHJlc29sdmU6IHsKICAgIGFsaWFzOiB7CiAgICAgICJAIjogcGF0aC5yZXNvbHZlKGltcG9ydC5tZXRhLmRpcm5hbWUsICJzcmMiKSwKICAgICAgIkBhc3NldHMiOiBwYXRoLnJlc29sdmUoaW1wb3J0Lm1ldGEuZGlybmFtZSwgIi4uIiwgIi4uIiwgImF0dGFjaGVkX2Fzc2V0cyIpLAogICAgfSwKICAgIGRlZHVwZTogWyJyZWFjdCIsICJyZWFjdC1kb20iXSwKICB9LAogIHJvb3Q6IHBhdGgucmVzb2x2ZShpbXBvcnQubWV0YS5kaXJuYW1lKSwKICBidWlsZDogewogICAgb3V0RGlyOiBwYXRoLnJlc29sdmUoaW1wb3J0Lm1ldGEuZGlybmFtZSwgImRpc3QvcHVibGljIiksCiAgICBlbXB0eU91dERpcjogdHJ1ZSwKICB9LAogIHNlcnZlcjogewogICAgcG9ydCwKICAgIHN0cmljdFBvcnQ6IHRydWUsCiAgICBob3N0OiAiMC4wLjAuMCIsCiAgICBhbGxvd2VkSG9zdHM6IHRydWUsCiAgICBmczogewogICAgICBzdHJpY3Q6IHRydWUsCiAgICB9LAogICAgcHJveHk6IHsKICAgICAgIi9hcGkiOiB7CiAgICAgICAgdGFyZ2V0OiBgaHR0cDovL2xvY2FsaG9zdDoke3Byb2Nlc3MuZW52LkFQSV9QT1JUIHx8IDgwODB9YCwKICAgICAgICBjaGFuZ2VPcmlnaW46IHRydWUsCiAgICAgIH0sCiAgICB9LAogIH0sCiAgcHJldmlldzogewogICAgcG9ydCwKICAgIGhvc3Q6ICIwLjAuMC4wIiwKICAgIGFsbG93ZWRIb3N0czogdHJ1ZSwKICB9LAp9KTsK
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import path from "path";
+import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+
+const rawPort = process.env.PORT;
+
+if (!rawPort) {
+  throw new Error(
+    "PORT environment variable is required but was not provided.",
+  );
+}
+
+const port = Number(rawPort);
+
+if (Number.isNaN(port) || port <= 0) {
+  throw new Error(`Invalid PORT value: "${rawPort}"`);
+}
+
+const basePath = process.env.BASE_PATH;
+
+if (!basePath) {
+  throw new Error(
+    "BASE_PATH environment variable is required but was not provided.",
+  );
+}
+
+export default defineConfig({
+  base: basePath,
+  plugins: [
+    react(),
+    tailwindcss(),
+    runtimeErrorOverlay(),
+    ...(process.env.NODE_ENV !== "production" &&
+    process.env.REPL_ID !== undefined
+      ? [
+          await import("@replit/vite-plugin-cartographer").then((m) =>
+            m.cartographer({
+              root: path.resolve(import.meta.dirname, ".."),
+            }),
+          ),
+          await import("@replit/vite-plugin-dev-banner").then((m) =>
+            m.devBanner(),
+          ),
+        ]
+      : []),
+  ],
+  resolve: {
+    alias: {
+      "@": path.resolve(import.meta.dirname, "src"),
+      "@assets": path.resolve(import.meta.dirname, "..", "..", "attached_assets"),
+    },
+    dedupe: ["react", "react-dom"],
+  },
+  root: path.resolve(import.meta.dirname),
+  build: {
+    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    emptyOutDir: true,
+  },
+  server: {
+    port,
+    strictPort: true,
+    host: "0.0.0.0",
+    allowedHosts: true,
+    fs: {
+      strict: true,
+    },
+    proxy: {
+      "/api": {
+        target: `http://localhost:${process.env.API_PORT || 8080}`,
+        changeOrigin: true,
+      },
+    },
+  },
+  preview: {
+    port,
+    host: "0.0.0.0",
+    allowedHosts: true,
+  },
+});

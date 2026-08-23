@@ -1,1 +1,104 @@
-aW1wb3J0IHsgdXNlUXVlcnkgfSBmcm9tICJAdGFuc3RhY2svcmVhY3QtcXVlcnkiOwppbXBvcnQgeyBjdXN0b21GZXRjaCB9IGZyb20gIkB3b3Jrc3BhY2UvYXBpLWNsaWVudC1yZWFjdCI7CmltcG9ydCB7IENhcmQsIENhcmRDb250ZW50LCBDYXJkSGVhZGVyLCBDYXJkVGl0bGUgfSBmcm9tICJAL2NvbXBvbmVudHMvdWkvY2FyZCI7CmltcG9ydCB7IElucHV0IH0gZnJvbSAiQC9jb21wb25lbnRzL3VpL2lucHV0IjsKaW1wb3J0IHsgTG9hZGVyMiwgQ3JlZGl0Q2FyZCwgU2VhcmNoIH0gZnJvbSAibHVjaWRlLXJlYWN0IjsKaW1wb3J0IHsgTGluayB9IGZyb20gIndvdXRlciI7CmltcG9ydCB7IHVzZVN0YXRlIH0gZnJvbSAicmVhY3QiOwoKaW50ZXJmYWNlIENyZWRpdFJvdyB7CiAgY3VzdG9tZXJJZDogbnVtYmVyOwogIGJhbGFuY2VQZW5jZTogbnVtYmVyOwogIHVwZGF0ZWRBdDogc3RyaW5nOwogIGZpcnN0TmFtZTogc3RyaW5nOwogIGxhc3ROYW1lOiBzdHJpbmc7CiAgZW1haWw6IHN0cmluZzsKfQoKZnVuY3Rpb24gYXBpKHBhdGg6IHN0cmluZykgeyByZXR1cm4gYC9hcGkvJHtwYXRofWAucmVwbGFjZSgvXC8rL2csICIvIik7IH0KCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIENyZWRpdHMoKSB7CiAgY29uc3QgW3NlYXJjaCwgc2V0U2VhcmNoXSA9IHVzZVN0YXRlKCIiKTsKCiAgY29uc3QgeyBkYXRhOiByb3dzLCBpc0xvYWRpbmcgfSA9IHVzZVF1ZXJ5PENyZWRpdFJvd1tdPih7CiAgICBxdWVyeUtleTogWyJhZG1pbi1jcmVkaXRzIl0sCiAgICBxdWVyeUZuOiAoKSA9PiBjdXN0b21GZXRjaDxDcmVkaXRSb3dbXT4oYXBpKCJhZG1pbi9jcmVkaXRzIikpLAogICAgc3RhbGVUaW1lOiAzMF8wMDAsCiAgfSk7CgogIGNvbnN0IGZtdCA9IChwZW5jZTogbnVtYmVyKSA9PgogICAgbmV3IEludGwuTnVtYmVyRm9ybWF0KCJlbi1HQiIsIHsgc3R5bGU6ICJjdXJyZW5jeSIsIGN1cnJlbmN5OiAiR0JQIiB9KS5mb3JtYXQocGVuY2UgLyAxMDApOwoKICBjb25zdCBmaWx0ZXJlZCA9IChBcnJheS5pc0FycmF5KHJvd3MpID8gcm93cyA6IFtdKS5maWx0ZXIoKHIpID0+IHsKICAgIGNvbnN0IHEgPSBzZWFyY2gudG9Mb3dlckNhc2UoKTsKICAgIHJldHVybiAoCiAgICAgICFxIHx8CiAgICAgIHIuZmlyc3ROYW1lLnRvTG93ZXJDYXNlKCkuaW5jbHVkZXMocSkgfHwKICAgICAgci5sYXN0TmFtZS50b0xvd2VyQ2FzZSgpLmluY2x1ZGVzKHEpIHx8CiAgICAgIHIuZW1haWwudG9Mb3dlckNhc2UoKS5pbmNsdWRlcyhxKQogICAgKTsKICB9KTsKCiAgY29uc3QgdG90YWxQZW5jZSA9IChBcnJheS5pc0FycmF5KHJvd3MpID8gcm93cyA6IFtdKS5yZWR1Y2UoKHMsIHIpID0+IHMgKyByLmJhbGFuY2VQZW5jZSwgMCk7CgogIHJldHVybiAoCiAgICA8ZGl2IGNsYXNzTmFtZT0ic3BhY2UteS02Ij4KICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggZmxleC1jb2wgc206ZmxleC1yb3cgc206aXRlbXMtY2VudGVyIGp1c3RpZnktYmV0d2VlbiBnYXAtNCI+CiAgICAgICAgPGgyIGNsYXNzTmFtZT0idGV4dC0yeGwgZm9udC1ib2xkIHRyYWNraW5nLXRpZ2h0Ij5DdXN0b21lciBDcmVkaXRzPC9oMj4KICAgICAgICA8Q2FyZCBjbGFzc05hbWU9InNtOm1pbi13LTQ4Ij4KICAgICAgICAgIDxDYXJkQ29udGVudCBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGdhcC0zIHAtNCI+CiAgICAgICAgICAgIDxDcmVkaXRDYXJkIGNsYXNzTmFtZT0idy01IGgtNSB0ZXh0LXByaW1hcnkiIC8+CiAgICAgICAgICAgIDxkaXY+CiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXhzIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+VG90YWwgSXNzdWVkPC9wPgogICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0iZm9udC1ib2xkIHRleHQtbGcgbGVhZGluZy10aWdodCI+e2ZtdCh0b3RhbFBlbmNlKX08L3A+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgPC9DYXJkQ29udGVudD4KICAgICAgICA8L0NhcmQ+CiAgICAgIDwvZGl2PgoKICAgICAgPENhcmQ+CiAgICAgICAgPENhcmRIZWFkZXIgY2xhc3NOYW1lPSJwYi00Ij4KICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJyZWxhdGl2ZSI+CiAgICAgICAgICAgIDxTZWFyY2ggY2xhc3NOYW1lPSJhYnNvbHV0ZSBsZWZ0LTMgdG9wLTEvMiAtdHJhbnNsYXRlLXktMS8yIHctNCBoLTQgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIiAvPgogICAgICAgICAgICA8SW5wdXQKICAgICAgICAgICAgICBwbGFjZWhvbGRlcj0iU2VhcmNoIGJ5IG5hbWUgb3IgZW1haWzigKYiCiAgICAgICAgICAgICAgY2xhc3NOYW1lPSJwbC05IgogICAgICAgICAgICAgIHZhbHVlPXtzZWFyY2h9CiAgICAgICAgICAgICAgb25DaGFuZ2U9eyhlKSA9PiBzZXRTZWFyY2goZS50YXJnZXQudmFsdWUpfQogICAgICAgICAgICAvPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgPC9DYXJkSGVhZGVyPgogICAgICAgIDxDYXJkQ29udGVudCBjbGFzc05hbWU9InAtMCI+CiAgICAgICAgICB7aXNMb2FkaW5nID8gKAogICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgcHktMTYiPgogICAgICAgICAgICAgIDxMb2FkZXIyIGNsYXNzTmFtZT0idy02IGgtNiBhbmltYXRlLXNwaW4gdGV4dC1wcmltYXJ5IiAvPgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICkgOiBmaWx0ZXJlZC5sZW5ndGggPT09IDAgPyAoCiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1zbSB0ZXh0LW11dGVkLWZvcmVncm91bmQgdGV4dC1jZW50ZXIgcHktMTIiPk5vIGNyZWRpdCBiYWxhbmNlcyBmb3VuZDwvcD4KICAgICAgICAgICkgOiAoCiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJkaXZpZGUteSI+CiAgICAgICAgICAgICAge2ZpbHRlcmVkLm1hcCgocm93KSA9PiAoCiAgICAgICAgICAgICAgICA8TGluayBrZXk9e3Jvdy5jdXN0b21lcklkfSBocmVmPXtgL2N1c3RvbWVycy8ke3Jvdy5jdXN0b21lcklkfWB9PgogICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1iZXR3ZWVuIHB4LTYgcHktNCBob3ZlcjpiZy1tdXRlZC80MCB0cmFuc2l0aW9uLWNvbG9ycyBjdXJzb3ItcG9pbnRlciI+CiAgICAgICAgICAgICAgICAgICAgPGRpdj4KICAgICAgICAgICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1zbSBmb250LW1lZGl1bSI+e3Jvdy5maXJzdE5hbWV9IHtyb3cubGFzdE5hbWV9PC9wPgogICAgICAgICAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXhzIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+e3Jvdy5lbWFpbH08L3A+CiAgICAgICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9InRleHQtcmlnaHQiPgogICAgICAgICAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPXtgdGV4dC1zbSBmb250LWJvbGQgJHtyb3cuYmFsYW5jZVBlbmNlID4gMCA/ICJ0ZXh0LWdyZWVuLTYwMCIgOiAidGV4dC1tdXRlZC1mb3JlZ3JvdW5kIn1gfT4KICAgICAgICAgICAgICAgICAgICAgICAge2ZtdChyb3cuYmFsYW5jZVBlbmNlKX0KICAgICAgICAgICAgICAgICAgICAgIDwvcD4KICAgICAgICAgICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC14cyB0ZXh0LW11dGVkLWZvcmVncm91bmQiPgogICAgICAgICAgICAgICAgICAgICAgICB1cGRhdGVkIHtuZXcgRGF0ZShyb3cudXBkYXRlZEF0KS50b0xvY2FsZURhdGVTdHJpbmcoImVuLUdCIil9CiAgICAgICAgICAgICAgICAgICAgICA8L3A+CiAgICAgICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICAgICAgPC9MaW5rPgogICAgICAgICAgICAgICkpfQogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICl9CiAgICAgICAgPC9DYXJkQ29udGVudD4KICAgICAgPC9DYXJkPgogICAgPC9kaXY+CiAgKTsKfQo=
+import { useQuery } from "@tanstack/react-query";
+import { customFetch } from "@workspace/api-client-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Loader2, CreditCard, Search } from "lucide-react";
+import { Link } from "wouter";
+import { useState } from "react";
+
+interface CreditRow {
+  customerId: number;
+  balancePence: number;
+  updatedAt: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
+function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
+
+export default function Credits() {
+  const [search, setSearch] = useState("");
+
+  const { data: rows, isLoading } = useQuery<CreditRow[]>({
+    queryKey: ["admin-credits"],
+    queryFn: () => customFetch<CreditRow[]>(api("admin/credits")),
+    staleTime: 30_000,
+  });
+
+  const fmt = (pence: number) =>
+    new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(pence / 100);
+
+  const filtered = (Array.isArray(rows) ? rows : []).filter((r) => {
+    const q = search.toLowerCase();
+    return (
+      !q ||
+      r.firstName.toLowerCase().includes(q) ||
+      r.lastName.toLowerCase().includes(q) ||
+      r.email.toLowerCase().includes(q)
+    );
+  });
+
+  const totalPence = (Array.isArray(rows) ? rows : []).reduce((s, r) => s + r.balancePence, 0);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <h2 className="text-2xl font-bold tracking-tight">Customer Credits</h2>
+        <Card className="sm:min-w-48">
+          <CardContent className="flex items-center gap-3 p-4">
+            <CreditCard className="w-5 h-5 text-primary" />
+            <div>
+              <p className="text-xs text-muted-foreground">Total Issued</p>
+              <p className="font-bold text-lg leading-tight">{fmt(totalPence)}</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader className="pb-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Search by name or email…"
+              className="pl-9"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-16">
+              <Loader2 className="w-6 h-6 animate-spin text-primary" />
+            </div>
+          ) : filtered.length === 0 ? (
+            <p className="text-sm text-muted-foreground text-center py-12">No credit balances found</p>
+          ) : (
+            <div className="divide-y">
+              {filtered.map((row) => (
+                <Link key={row.customerId} href={`/customers/${row.customerId}`}>
+                  <div className="flex items-center justify-between px-6 py-4 hover:bg-muted/40 transition-colors cursor-pointer">
+                    <div>
+                      <p className="text-sm font-medium">{row.firstName} {row.lastName}</p>
+                      <p className="text-xs text-muted-foreground">{row.email}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className={`text-sm font-bold ${row.balancePence > 0 ? "text-green-600" : "text-muted-foreground"}`}>
+                        {fmt(row.balancePence)}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        updated {new Date(row.updatedAt).toLocaleDateString("en-GB")}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

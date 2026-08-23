@@ -1,1 +1,143 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgZGlzY291bnRDb2Rlc1RhYmxlIH0gZnJvbSAiQHdvcmtzcGFjZS9kYiI7CmltcG9ydCB7CiAgQ3JlYXRlQWRtaW5EaXNjb3VudEJvZHksCiAgVXBkYXRlQWRtaW5EaXNjb3VudFBhcmFtcywKICBVcGRhdGVBZG1pbkRpc2NvdW50Qm9keSwKICBEZWxldGVBZG1pbkRpc2NvdW50UGFyYW1zLAp9IGZyb20gIkB3b3Jrc3BhY2UvYXBpLXpvZCI7CmltcG9ydCB7IGVxLCBkZXNjIH0gZnJvbSAiZHJpenpsZS1vcm0iOwoKY29uc3Qgcm91dGVyID0gUm91dGVyKCk7CgpmdW5jdGlvbiByZXF1aXJlQWRtaW4ocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogYm9vbGVhbiB7CiAgaWYgKHJlcS5jb29raWVzPy5hZG1pbl9zZXNzaW9uICE9PSAiYXV0aGVudGljYXRlZCIpIHsKICAgIHJlcy5zdGF0dXMoNDAxKS5qc29uKHsgZXJyb3I6ICJOb3QgYXV0aGVudGljYXRlZCIgfSk7CiAgICByZXR1cm4gZmFsc2U7CiAgfQogIHJldHVybiB0cnVlOwp9CgpmdW5jdGlvbiBkaXNjb3VudFRvUmVzcG9uc2UoZDogdHlwZW9mIGRpc2NvdW50Q29kZXNUYWJsZS4kaW5mZXJTZWxlY3QpIHsKICByZXR1cm4gewogICAgaWQ6IGQuaWQsCiAgICBjb2RlOiBkLmNvZGUsCiAgICB0eXBlOiBkLnR5cGUsCiAgICB2YWx1ZTogcGFyc2VGbG9hdChTdHJpbmcoZC52YWx1ZSkpLAogICAgbWluU3BlbmQ6IGQubWluU3BlbmQgPyBwYXJzZUZsb2F0KFN0cmluZyhkLm1pblNwZW5kKSkgOiBudWxsLAogICAgdXNhZ2VMaW1pdDogZC51c2FnZUxpbWl0ID8/IG51bGwsCiAgICB1c2FnZUNvdW50OiBkLnVzYWdlQ291bnQsCiAgICBleHBpcmVzQXQ6IGQuZXhwaXJlc0F0ID8gZC5leHBpcmVzQXQudG9JU09TdHJpbmcoKSA6IG51bGwsCiAgICBpc0FjdGl2ZTogZC5pc0FjdGl2ZSwKICAgIGNyZWF0ZWRBdDogZC5jcmVhdGVkQXQudG9JU09TdHJpbmcoKSwKICB9Owp9Cgpyb3V0ZXIuZ2V0KCIvYWRtaW4vZGlzY291bnRzIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGlmICghcmVxdWlyZUFkbWluKHJlcSwgcmVzKSkgcmV0dXJuOwogIHRyeSB7CiAgICBjb25zdCBkaXNjb3VudHMgPSBhd2FpdCBkYgogICAgICAuc2VsZWN0KCkKICAgICAgLmZyb20oZGlzY291bnRDb2Rlc1RhYmxlKQogICAgICAub3JkZXJCeShkZXNjKGRpc2NvdW50Q29kZXNUYWJsZS5jcmVhdGVkQXQpKTsKICAgIHJlcy5zdGF0dXMoMjAwKS5qc29uKGRpc2NvdW50cy5tYXAoZGlzY291bnRUb1Jlc3BvbnNlKSk7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gbGlzdCBkaXNjb3VudHMiKTsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJJbnRlcm5hbCBzZXJ2ZXIgZXJyb3IiIH0pOwogIH0KfSk7Cgpyb3V0ZXIucG9zdCgiL2FkbWluL2Rpc2NvdW50cyIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBpZiAoIXJlcXVpcmVBZG1pbihyZXEsIHJlcykpIHJldHVybjsKICBjb25zdCBwYXJzZWQgPSBDcmVhdGVBZG1pbkRpc2NvdW50Qm9keS5zYWZlUGFyc2UocmVxLmJvZHkpOwogIGlmICghcGFyc2VkLnN1Y2Nlc3MpIHsKICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJJbnZhbGlkIHJlcXVlc3QgYm9keSIgfSk7CiAgICByZXR1cm47CiAgfQogIGNvbnN0IHsgY29kZSwgdHlwZSwgdmFsdWUsIG1pblNwZW5kLCB1c2FnZUxpbWl0LCBleHBpcmVzQXQgfSA9IHBhcnNlZC5kYXRhOwogIHRyeSB7CiAgICBjb25zdCBleGlzdGluZyA9IGF3YWl0IGRiCiAgICAgIC5zZWxlY3QoKQogICAgICAuZnJvbShkaXNjb3VudENvZGVzVGFibGUpCiAgICAgIC53aGVyZShlcShkaXNjb3VudENvZGVzVGFibGUuY29kZSwgY29kZS50b1VwcGVyQ2FzZSgpKSk7CiAgICBpZiAoZXhpc3RpbmcubGVuZ3RoID4gMCkgewogICAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiRGlzY291bnQgY29kZSBhbHJlYWR5IGV4aXN0cyIgfSk7CiAgICAgIHJldHVybjsKICAgIH0KICAgIGNvbnN0IFtjcmVhdGVkXSA9IGF3YWl0IGRiCiAgICAgIC5pbnNlcnQoZGlzY291bnRDb2Rlc1RhYmxlKQogICAgICAudmFsdWVzKHsKICAgICAgICBjb2RlOiBjb2RlLnRvVXBwZXJDYXNlKCksCiAgICAgICAgdHlwZSwKICAgICAgICB2YWx1ZTogU3RyaW5nKHZhbHVlKSwKICAgICAgICBtaW5TcGVuZDogbWluU3BlbmQgIT09IHVuZGVmaW5lZCA/IFN0cmluZyhtaW5TcGVuZCkgOiBudWxsLAogICAgICAgIHVzYWdlTGltaXQ6IHVzYWdlTGltaXQgPz8gbnVsbCwKICAgICAgICBleHBpcmVzQXQ6IGV4cGlyZXNBdCA/IG5ldyBEYXRlKGV4cGlyZXNBdCkgOiBudWxsLAogICAgICB9KQogICAgICAucmV0dXJuaW5nKCk7CiAgICByZXMuc3RhdHVzKDIwMSkuanNvbihkaXNjb3VudFRvUmVzcG9uc2UoY3JlYXRlZCkpOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGNyZWF0ZSBkaXNjb3VudCIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCnJvdXRlci5wYXRjaCgiL2FkbWluL2Rpc2NvdW50cy86aWQiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgY29uc3QgcGFyYW1zUGFyc2VkID0gVXBkYXRlQWRtaW5EaXNjb3VudFBhcmFtcy5zYWZlUGFyc2UoeyBpZDogTnVtYmVyKHJlcS5wYXJhbXMuaWQpIH0pOwogIGNvbnN0IGJvZHlQYXJzZWQgPSBVcGRhdGVBZG1pbkRpc2NvdW50Qm9keS5zYWZlUGFyc2UocmVxLmJvZHkpOwogIGlmICghcGFyYW1zUGFyc2VkLnN1Y2Nlc3MgfHwgIWJvZHlQYXJzZWQuc3VjY2VzcykgewogICAgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogIkludmFsaWQgcmVxdWVzdCIgfSk7CiAgICByZXR1cm47CiAgfQogIHRyeSB7CiAgICBjb25zdCB1cGRhdGVzOiBQYXJ0aWFsPHR5cGVvZiBkaXNjb3VudENvZGVzVGFibGUuJGluZmVySW5zZXJ0PiA9IHt9OwogICAgY29uc3QgeyBpc0FjdGl2ZSwgdXNhZ2VMaW1pdCwgZXhwaXJlc0F0LCBtaW5TcGVuZCB9ID0gYm9keVBhcnNlZC5kYXRhOwogICAgaWYgKGlzQWN0aXZlICE9PSB1bmRlZmluZWQpIHVwZGF0ZXMuaXNBY3RpdmUgPSBpc0FjdGl2ZTsKICAgIGlmICh1c2FnZUxpbWl0ICE9PSB1bmRlZmluZWQpIHVwZGF0ZXMudXNhZ2VMaW1pdCA9IHVzYWdlTGltaXQ7CiAgICBpZiAoZXhwaXJlc0F0ICE9PSB1bmRlZmluZWQpIHVwZGF0ZXMuZXhwaXJlc0F0ID0gbmV3IERhdGUoZXhwaXJlc0F0KTsKICAgIGlmIChtaW5TcGVuZCAhPT0gdW5kZWZpbmVkKSB1cGRhdGVzLm1pblNwZW5kID0gU3RyaW5nKG1pblNwZW5kKTsKCiAgICBjb25zdCBbdXBkYXRlZF0gPSBhd2FpdCBkYgogICAgICAudXBkYXRlKGRpc2NvdW50Q29kZXNUYWJsZSkKICAgICAgLnNldCh1cGRhdGVzKQogICAgICAud2hlcmUoZXEoZGlzY291bnRDb2Rlc1RhYmxlLmlkLCBwYXJhbXNQYXJzZWQuZGF0YS5pZCkpCiAgICAgIC5yZXR1cm5pbmcoKTsKCiAgICBpZiAoIXVwZGF0ZWQpIHsKICAgICAgcmVzLnN0YXR1cyg0MDQpLmpzb24oeyBlcnJvcjogIkRpc2NvdW50IG5vdCBmb3VuZCIgfSk7CiAgICAgIHJldHVybjsKICAgIH0KICAgIHJlcy5zdGF0dXMoMjAwKS5qc29uKGRpc2NvdW50VG9SZXNwb25zZSh1cGRhdGVkKSk7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gdXBkYXRlIGRpc2NvdW50Iik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKcm91dGVyLmRlbGV0ZSgiL2FkbWluL2Rpc2NvdW50cy86aWQiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgY29uc3QgcGFyc2VkID0gRGVsZXRlQWRtaW5EaXNjb3VudFBhcmFtcy5zYWZlUGFyc2UoeyBpZDogTnVtYmVyKHJlcS5wYXJhbXMuaWQpIH0pOwogIGlmICghcGFyc2VkLnN1Y2Nlc3MpIHsKICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJJbnZhbGlkIGRpc2NvdW50IElEIiB9KTsKICAgIHJldHVybjsKICB9CiAgdHJ5IHsKICAgIGNvbnN0IFtkZWxldGVkXSA9IGF3YWl0IGRiCiAgICAgIC5kZWxldGUoZGlzY291bnRDb2Rlc1RhYmxlKQogICAgICAud2hlcmUoZXEoZGlzY291bnRDb2Rlc1RhYmxlLmlkLCBwYXJzZWQuZGF0YS5pZCkpCiAgICAgIC5yZXR1cm5pbmcoKTsKICAgIGlmICghZGVsZXRlZCkgewogICAgICByZXMuc3RhdHVzKDQwNCkuanNvbih7IGVycm9yOiAiRGlzY291bnQgbm90IGZvdW5kIiB9KTsKICAgICAgcmV0dXJuOwogICAgfQogICAgcmVzLnN0YXR1cygyMDQpLnNlbmQoKTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBkZWxldGUgZGlzY291bnQiKTsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJJbnRlcm5hbCBzZXJ2ZXIgZXJyb3IiIH0pOwogIH0KfSk7CgpleHBvcnQgZGVmYXVsdCByb3V0ZXI7Cg==
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { db } from "@workspace/db";
+import { discountCodesTable } from "@workspace/db";
+import {
+  CreateAdminDiscountBody,
+  UpdateAdminDiscountParams,
+  UpdateAdminDiscountBody,
+  DeleteAdminDiscountParams,
+} from "@workspace/api-zod";
+import { eq, desc } from "drizzle-orm";
+
+const router = Router();
+
+function requireAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+
+function discountToResponse(d: typeof discountCodesTable.$inferSelect) {
+  return {
+    id: d.id,
+    code: d.code,
+    type: d.type,
+    value: parseFloat(String(d.value)),
+    minSpend: d.minSpend ? parseFloat(String(d.minSpend)) : null,
+    usageLimit: d.usageLimit ?? null,
+    usageCount: d.usageCount,
+    expiresAt: d.expiresAt ? d.expiresAt.toISOString() : null,
+    isActive: d.isActive,
+    createdAt: d.createdAt.toISOString(),
+  };
+}
+
+router.get("/admin/discounts", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const discounts = await db
+      .select()
+      .from(discountCodesTable)
+      .orderBy(desc(discountCodesTable.createdAt));
+    res.status(200).json(discounts.map(discountToResponse));
+  } catch (err) {
+    req.log.error({ err }, "Failed to list discounts");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/admin/discounts", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const parsed = CreateAdminDiscountBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Invalid request body" });
+    return;
+  }
+  const { code, type, value, minSpend, usageLimit, expiresAt } = parsed.data;
+  try {
+    const existing = await db
+      .select()
+      .from(discountCodesTable)
+      .where(eq(discountCodesTable.code, code.toUpperCase()));
+    if (existing.length > 0) {
+      res.status(400).json({ error: "Discount code already exists" });
+      return;
+    }
+    const [created] = await db
+      .insert(discountCodesTable)
+      .values({
+        code: code.toUpperCase(),
+        type,
+        value: String(value),
+        minSpend: minSpend !== undefined ? String(minSpend) : null,
+        usageLimit: usageLimit ?? null,
+        expiresAt: expiresAt ? new Date(expiresAt) : null,
+      })
+      .returning();
+    res.status(201).json(discountToResponse(created));
+  } catch (err) {
+    req.log.error({ err }, "Failed to create discount");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.patch("/admin/discounts/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const paramsParsed = UpdateAdminDiscountParams.safeParse({ id: Number(req.params.id) });
+  const bodyParsed = UpdateAdminDiscountBody.safeParse(req.body);
+  if (!paramsParsed.success || !bodyParsed.success) {
+    res.status(400).json({ error: "Invalid request" });
+    return;
+  }
+  try {
+    const updates: Partial<typeof discountCodesTable.$inferInsert> = {};
+    const { isActive, usageLimit, expiresAt, minSpend } = bodyParsed.data;
+    if (isActive !== undefined) updates.isActive = isActive;
+    if (usageLimit !== undefined) updates.usageLimit = usageLimit;
+    if (expiresAt !== undefined) updates.expiresAt = new Date(expiresAt);
+    if (minSpend !== undefined) updates.minSpend = String(minSpend);
+
+    const [updated] = await db
+      .update(discountCodesTable)
+      .set(updates)
+      .where(eq(discountCodesTable.id, paramsParsed.data.id))
+      .returning();
+
+    if (!updated) {
+      res.status(404).json({ error: "Discount not found" });
+      return;
+    }
+    res.status(200).json(discountToResponse(updated));
+  } catch (err) {
+    req.log.error({ err }, "Failed to update discount");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/admin/discounts/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const parsed = DeleteAdminDiscountParams.safeParse({ id: Number(req.params.id) });
+  if (!parsed.success) {
+    res.status(400).json({ error: "Invalid discount ID" });
+    return;
+  }
+  try {
+    const [deleted] = await db
+      .delete(discountCodesTable)
+      .where(eq(discountCodesTable.id, parsed.data.id))
+      .returning();
+    if (!deleted) {
+      res.status(404).json({ error: "Discount not found" });
+      return;
+    }
+    res.status(204).send();
+  } catch (err) {
+    req.log.error({ err }, "Failed to delete discount");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;

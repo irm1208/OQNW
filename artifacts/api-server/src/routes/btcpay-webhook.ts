@@ -1,1 +1,114 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgb3JkZXJzVGFibGUsIG9yZGVySXRlbXNUYWJsZSB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyBlcSB9IGZyb20gImRyaXp6bGUtb3JtIjsKaW1wb3J0IHsKICB2ZXJpZnlCdGNQYXlXZWJob29rU2lnbmF0dXJlLAogIHR5cGUgQnRjUGF5V2ViaG9va0V2ZW50LAp9IGZyb20gIi4uL2xpYi9idGNwYXkiOwppbXBvcnQgeyBzZW5kT3JkZXJDb25maXJtYXRpb24gfSBmcm9tICIuLi9saWIvZW1haWwiOwppbXBvcnQgeyBsb2dnZXIgfSBmcm9tICIuLi9saWIvbG9nZ2VyIjsKCmNvbnN0IHJvdXRlciA9IFJvdXRlcigpOwoKcm91dGVyLnBvc3QoCiAgIi9idGNwYXktd2ViaG9vayIsCiAgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogICAgY29uc3Qgc2lnbmF0dXJlID0KICAgICAgKHJlcS5oZWFkZXJzWyJidGNwYXktc2lnIl0gYXMgc3RyaW5nKSB8fAogICAgICAocmVxLmhlYWRlcnNbIngtYnRjcGF5LXNpZ25hdHVyZSJdIGFzIHN0cmluZykgfHwKICAgICAgIiI7CgogICAgY29uc3QgcmF3Qm9keSA9CiAgICAgIHR5cGVvZiByZXEuYm9keSA9PT0gInN0cmluZyIKICAgICAgICA/IHJlcS5ib2R5CiAgICAgICAgOiBKU09OLnN0cmluZ2lmeShyZXEuYm9keSk7CgogICAgaWYgKCF2ZXJpZnlCdGNQYXlXZWJob29rU2lnbmF0dXJlKHJhd0JvZHksIHNpZ25hdHVyZSkpIHsKICAgICAgbG9nZ2VyLndhcm4oIkJUQ1BheSB3ZWJob29rIHNpZ25hdHVyZSBtaXNtYXRjaCDigJQgcmVqZWN0ZWQiKTsKICAgICAgcmVzLnN0YXR1cyg0MDEpLmpzb24oeyBlcnJvcjogIkludmFsaWQgc2lnbmF0dXJlIiB9KTsKICAgICAgcmV0dXJuOwogICAgfQoKICAgIGxldCBldmVudDogQnRjUGF5V2ViaG9va0V2ZW50OwogICAgdHJ5IHsKICAgICAgZXZlbnQgPSB0eXBlb2YgcmVxLmJvZHkgPT09ICJzdHJpbmciID8gSlNPTi5wYXJzZShyZXEuYm9keSkgOiByZXEuYm9keTsKICAgIH0gY2F0Y2ggewogICAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiSW52YWxpZCBKU09OIiB9KTsKICAgICAgcmV0dXJuOwogICAgfQoKICAgIGxvZ2dlci5pbmZvKHsgdHlwZTogZXZlbnQudHlwZSwgaW52b2ljZUlkOiBldmVudC5pbnZvaWNlSWQgfSwgIkJUQ1BheSB3ZWJob29rIHJlY2VpdmVkIik7CgogICAgY29uc3Qgc2V0dGxlZFR5cGVzID0gWyJJbnZvaWNlU2V0dGxlZCIsICJJbnZvaWNlUGF5bWVudFNldHRsZWQiLCAiSW52b2ljZUNvbXBsZXRlIl07CgogICAgaWYgKHNldHRsZWRUeXBlcy5pbmNsdWRlcyhldmVudC50eXBlKSkgewogICAgICBjb25zdCBvcmRlck51bWJlciA9IGV2ZW50Lm1ldGFkYXRhPy5vcmRlcklkOwogICAgICBpZiAob3JkZXJOdW1iZXIpIHsKICAgICAgICB0cnkgewogICAgICAgICAgYXdhaXQgZGIKICAgICAgICAgICAgLnVwZGF0ZShvcmRlcnNUYWJsZSkKICAgICAgICAgICAgLnNldCh7IHN0YXR1czogInBhaWQiLCB1cGRhdGVkQXQ6IG5ldyBEYXRlKCkgfSkKICAgICAgICAgICAgLndoZXJlKGVxKG9yZGVyc1RhYmxlLm9yZGVyTnVtYmVyLCBvcmRlck51bWJlcikpOwogICAgICAgICAgbG9nZ2VyLmluZm8oeyBvcmRlck51bWJlciwgaW52b2ljZUlkOiBldmVudC5pbnZvaWNlSWQgfSwgIk9yZGVyIG1hcmtlZCBwYWlkIHZpYSBCVENQYXkgd2ViaG9vayIpOwoKICAgICAgICAgIC8vIFNlbmQgb3JkZXIgY29uZmlybWF0aW9uIGVtYWlsIChmaXJlLWFuZC1mb3JnZXQpCiAgICAgICAgICBjb25zdCBbb3JkZXJdID0gYXdhaXQgZGIKICAgICAgICAgICAgLnNlbGVjdCgpCiAgICAgICAgICAgIC5mcm9tKG9yZGVyc1RhYmxlKQogICAgICAgICAgICAud2hlcmUoZXEob3JkZXJzVGFibGUub3JkZXJOdW1iZXIsIG9yZGVyTnVtYmVyKSkKICAgICAgICAgICAgLmxpbWl0KDEpOwogICAgICAgICAgY29uc3QgaXRlbXMgPSBhd2FpdCBkYgogICAgICAgICAgICAuc2VsZWN0KCkKICAgICAgICAgICAgLmZyb20ob3JkZXJJdGVtc1RhYmxlKQogICAgICAgICAgICAud2hlcmUoZXEob3JkZXJJdGVtc1RhYmxlLm9yZGVyTnVtYmVyLCBvcmRlck51bWJlcikpOwoKICAgICAgICAgIGlmIChvcmRlcikgewogICAgICAgICAgICBzZW5kT3JkZXJDb25maXJtYXRpb24oewogICAgICAgICAgICAgIG9yZGVyTnVtYmVyOiBvcmRlci5vcmRlck51bWJlciwKICAgICAgICAgICAgICBjdXN0b21lck5hbWU6IG9yZGVyLmN1c3RvbWVyTmFtZSwKICAgICAgICAgICAgICBjdXN0b21lckVtYWlsOiBvcmRlci5jdXN0b21lckVtYWlsLAogICAgICAgICAgICAgIGl0ZW1zOiBpdGVtcy5tYXAoaSA9PiAoewogICAgICAgICAgICAgICAgbmFtZTogaS5wcm9kdWN0TmFtZSwKICAgICAgICAgICAgICAgIHZhcmlhbnQ6IGkudmFyaWFudExhYmVsID8/IG51bGwsCiAgICAgICAgICAgICAgICBxdHk6IGkucXVhbnRpdHksCiAgICAgICAgICAgICAgICB1bml0UHJpY2VHYnA6IHBhcnNlRmxvYXQoU3RyaW5nKGkudW5pdFByaWNlR2JwKSksCiAgICAgICAgICAgICAgICBpc0ZyZWU6IGkuaXNGcmVlID8/IGZhbHNlLAogICAgICAgICAgICAgIH0pKSwKICAgICAgICAgICAgICBzdWJ0b3RhbEdicDogcGFyc2VGbG9hdChTdHJpbmcob3JkZXIuc3VidG90YWxHYnApKSwKICAgICAgICAgICAgICBzaGlwcGluZ0Nvc3RHYnA6IHBhcnNlRmxvYXQoU3RyaW5nKG9yZGVyLnNoaXBwaW5nQ29zdEdicCkpLAogICAgICAgICAgICAgIHRvdGFsR2JwOiBwYXJzZUZsb2F0KFN0cmluZyhvcmRlci50b3RhbEdicCkpLAogICAgICAgICAgICAgIHNoaXBwaW5nTWV0aG9kOiBvcmRlci5zaGlwcGluZ01ldGhvZCA/PyBudWxsLAogICAgICAgICAgICAgIHRyYWNraW5nTnVtYmVyOiBvcmRlci50cmFja2luZ051bWJlciA/PyBudWxsLAogICAgICAgICAgICAgIGFkZHJlc3MxOiBvcmRlci5hZGRyZXNzMSA/PyBudWxsLAogICAgICAgICAgICAgIGFkZHJlc3MyOiBvcmRlci5hZGRyZXNzMiA/PyBudWxsLAogICAgICAgICAgICAgIGNpdHk6IG9yZGVyLmNpdHkgPz8gbnVsbCwKICAgICAgICAgICAgICBwb3N0Y29kZTogb3JkZXIucG9zdGNvZGUgPz8gbnVsbCwKICAgICAgICAgICAgICBjb3VudHJ5OiBvcmRlci5jb3VudHJ5ID8/IG51bGwsCiAgICAgICAgICAgIH0pLmNhdGNoKGVyciA9PiBsb2dnZXIuZXJyb3IoeyBlcnIsIG9yZGVyTnVtYmVyIH0sICJGYWlsZWQgdG8gc2VuZCBCVEMgY29uZmlybWF0aW9uIGVtYWlsIikpOwogICAgICAgICAgfQogICAgICAgIH0gY2F0Y2ggKGVycikgewogICAgICAgICAgbG9nZ2VyLmVycm9yKHsgZXJyLCBvcmRlck51bWJlciB9LCAiRmFpbGVkIHRvIHVwZGF0ZSBvcmRlciBzdGF0dXMgZnJvbSBCVENQYXkgd2ViaG9vayIpOwogICAgICAgICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkRCIHVwZGF0ZSBmYWlsZWQiIH0pOwogICAgICAgICAgcmV0dXJuOwogICAgICAgIH0KICAgICAgfQogICAgfQoKICAgIGlmIChldmVudC50eXBlID09PSAiSW52b2ljZUV4cGlyZWQiKSB7CiAgICAgIGNvbnN0IG9yZGVyTnVtYmVyID0gZXZlbnQubWV0YWRhdGE/Lm9yZGVySWQ7CiAgICAgIGlmIChvcmRlck51bWJlcikgewogICAgICAgIGRiLnVwZGF0ZShvcmRlcnNUYWJsZSkKICAgICAgICAgIC5zZXQoeyBzdGF0dXM6ICJjYW5jZWxsZWQiLCB1cGRhdGVkQXQ6IG5ldyBEYXRlKCkgfSkKICAgICAgICAgIC53aGVyZShlcShvcmRlcnNUYWJsZS5vcmRlck51bWJlciwgb3JkZXJOdW1iZXIpKQogICAgICAgICAgLmNhdGNoKCgpID0+IHt9KTsKICAgICAgICBsb2dnZXIuaW5mbyh7IG9yZGVyTnVtYmVyIH0sICJPcmRlciBjYW5jZWxsZWQg4oCUIEJUQ1BheSBpbnZvaWNlIGV4cGlyZWQiKTsKICAgICAgfQogICAgfQoKICAgIHJlcy5zdGF0dXMoMjAwKS5qc29uKHsgcmVjZWl2ZWQ6IHRydWUgfSk7CiAgfQopOwoKZXhwb3J0IGRlZmF1bHQgcm91dGVyOwo=
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { db } from "@workspace/db";
+import { ordersTable, orderItemsTable } from "@workspace/db";
+import { eq } from "drizzle-orm";
+import {
+  verifyBtcPayWebhookSignature,
+  type BtcPayWebhookEvent,
+} from "../lib/btcpay";
+import { sendOrderConfirmation } from "../lib/email";
+import { logger } from "../lib/logger";
+
+const router = Router();
+
+router.post(
+  "/btcpay-webhook",
+  async (req: Request, res: Response): Promise<void> => {
+    const signature =
+      (req.headers["btcpay-sig"] as string) ||
+      (req.headers["x-btcpay-signature"] as string) ||
+      "";
+
+    const rawBody =
+      typeof req.body === "string"
+        ? req.body
+        : JSON.stringify(req.body);
+
+    if (!verifyBtcPayWebhookSignature(rawBody, signature)) {
+      logger.warn("BTCPay webhook signature mismatch — rejected");
+      res.status(401).json({ error: "Invalid signature" });
+      return;
+    }
+
+    let event: BtcPayWebhookEvent;
+    try {
+      event = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+    } catch {
+      res.status(400).json({ error: "Invalid JSON" });
+      return;
+    }
+
+    logger.info({ type: event.type, invoiceId: event.invoiceId }, "BTCPay webhook received");
+
+    const settledTypes = ["InvoiceSettled", "InvoicePaymentSettled", "InvoiceComplete"];
+
+    if (settledTypes.includes(event.type)) {
+      const orderNumber = event.metadata?.orderId;
+      if (orderNumber) {
+        try {
+          await db
+            .update(ordersTable)
+            .set({ status: "paid", updatedAt: new Date() })
+            .where(eq(ordersTable.orderNumber, orderNumber));
+          logger.info({ orderNumber, invoiceId: event.invoiceId }, "Order marked paid via BTCPay webhook");
+
+          // Send order confirmation email (fire-and-forget)
+          const [order] = await db
+            .select()
+            .from(ordersTable)
+            .where(eq(ordersTable.orderNumber, orderNumber))
+            .limit(1);
+          const items = await db
+            .select()
+            .from(orderItemsTable)
+            .where(eq(orderItemsTable.orderNumber, orderNumber));
+
+          if (order) {
+            sendOrderConfirmation({
+              orderNumber: order.orderNumber,
+              customerName: order.customerName,
+              customerEmail: order.customerEmail,
+              items: items.map(i => ({
+                name: i.productName,
+                variant: i.variantLabel ?? null,
+                qty: i.quantity,
+                unitPriceGbp: parseFloat(String(i.unitPriceGbp)),
+                isFree: i.isFree ?? false,
+              })),
+              subtotalGbp: parseFloat(String(order.subtotalGbp)),
+              shippingCostGbp: parseFloat(String(order.shippingCostGbp)),
+              totalGbp: parseFloat(String(order.totalGbp)),
+              shippingMethod: order.shippingMethod ?? null,
+              trackingNumber: order.trackingNumber ?? null,
+              address1: order.address1 ?? null,
+              address2: order.address2 ?? null,
+              city: order.city ?? null,
+              postcode: order.postcode ?? null,
+              country: order.country ?? null,
+            }).catch(err => logger.error({ err, orderNumber }, "Failed to send BTC confirmation email"));
+          }
+        } catch (err) {
+          logger.error({ err, orderNumber }, "Failed to update order status from BTCPay webhook");
+          res.status(500).json({ error: "DB update failed" });
+          return;
+        }
+      }
+    }
+
+    if (event.type === "InvoiceExpired") {
+      const orderNumber = event.metadata?.orderId;
+      if (orderNumber) {
+        db.update(ordersTable)
+          .set({ status: "cancelled", updatedAt: new Date() })
+          .where(eq(ordersTable.orderNumber, orderNumber))
+          .catch(() => {});
+        logger.info({ orderNumber }, "Order cancelled — BTCPay invoice expired");
+      }
+    }
+
+    res.status(200).json({ received: true });
+  }
+);
+
+export default router;

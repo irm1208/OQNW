@@ -1,1 +1,30 @@
-LS0tCm5hbWU6IEZlbmEgb3Blbi1iYW5raW5nIHBheW1lbnQgaW50ZWdyYXRpb24KZGVzY3JpcHRpb246IEhvdyBGZW5hIGlzIHdpcmVkIGludG8gT21uaVF1cmUgY2hlY2tvdXQg4oCUIEFQSSBzaGFwZSwgZW5kcG9pbnQsIGZsb3csIHdlYmhvb2sgc2VjdXJpdHkuCi0tLQoKIyMgQVBJIGVuZHBvaW50IChmcm9tIHRvb2xraXQtcGhwLXNkayBQYXltZW50LnBocCBzb3VyY2UpCi0gQ3JlYXRlOiBQT1NUIGBodHRwczovL2Vwb3MuYXBpLnByb2QtZ2NwLmZlbmEuY28vb3Blbi9wYXltZW50cy9zaW5nbGUvY3JlYXRlLWFuZC1wcm9jZXNzYAotIFN0YXR1czogR0VUIGBodHRwczovL2Vwb3MuYXBpLnByb2QtZ2NwLmZlbmEuY28vcHVibGljL3BheW1lbnQtZmxvdy9wYXltZW50L3toYXNoZWRJZH1gCi0gQXV0aCBoZWFkZXJzOiBgaW50ZWdyYXRpb24taWRgIGFuZCBgc2VjcmV0LWtleWAKLSBCb2R5OiBgcmVmZXJlbmNlYCwgYGFtb3VudGAgKDJkcCBzdHJpbmcpLCBgY3VzdG9tZXJFbWFpbGAsIGBjdXN0b21lck5hbWVgLCBgY3VzdG9tUmVkaXJlY3RVcmxgLCBgaXRlbXM6IFtdYAotIFJlc3BvbnNlOiBgeyBjcmVhdGVkOiB0cnVlLCByZXN1bHQ6IHsgbGluazogImh0dHBzOi8vLi4uP2lkPUhBU0hFRF9JRCIgfSB9YAoKKipXaHkgdG9vbGtpdCBzaGFwZSAocmVmZXJlbmNlKSBub3Qgb2xkIGZlbmEtcGhwLXNkayBzaGFwZSAoaW52b2ljZVJlZk51bWJlcik6KiogZW5kcG9pbnQgVVJMIGlzIGZyb20gdG9vbGtpdC1waHAtc2RrOyB1c2UgaXRzIGZpZWxkIG5hbWVzLgoKIyMgUGF5bWVudCBmbG93CjEuIENoZWNrb3V0IHNlbmRzIGBwYXltZW50TWV0aG9kOiAiZmVuYSJgIHRvIFBPU1QgL2FwaS9vcmRlcnMKMi4gU2VydmVyIGNyZWF0ZXMgb3JkZXIgKGF3YWl0aW5nX3BheW1lbnQpLCBjYWxscyBGZW5hIEFQSSB3aXRoIGN1c3RvbVJlZGlyZWN0VXJsID0gYHtyZXEuaGVhZGVycy5vcmlnaW59L2ZlbmEtcmV0dXJuP29yZGVyPS4uLiZuYW1lPS4uLiZ0b3RhbD0uLi4mc2hpcD0uLi5gCjMuIFNlcnZlciByZXR1cm5zIGB7IGZlbmFQYXltZW50VXJsIH1gIOKAlCBmcm9udGVuZCBkb2VzIGB3aW5kb3cubG9jYXRpb24uaHJlZiA9IGZlbmFQYXltZW50VXJsYAo0LiBDdXN0b21lciBhdXRoZW50aWNhdGVzIGF0IEZlbmE7IEZlbmEgcmVkaXJlY3RzIGJhY2sgdG8gL2ZlbmEtcmV0dXJuIChGZW5hUmV0dXJuLnRzeCkKNS4gRmVuYSBhbHNvIFBPU1RzIHRvIC9hcGkvZmVuYS13ZWJob29rIOKGkiBvcmRlciBtYXJrZWQgcGFpZAoKIyMgV2ViaG9vayBzZWN1cml0eQotIFJhdyBib2R5IGNhcHR1cmVkIHZpYSBgZXhwcmVzcy5qc29uKHsgdmVyaWZ5OiAocmVxLF9yZXMsYnVmKSA9PiB7IHJlcS5yYXdCb2R5ID0gYnVmOyB9IH0pYCBpbiBhcHAudHMKLSBGRU5BX1dFQkhPT0tfU0VDUkVUIHNldCDihpIgcmVxdWVzdHMgd2l0aG91dCBzaWduYXR1cmUgaGVhZGVyIGFyZSByZWplY3RlZCAoNDAxKQotIEhNQUMgdmVyaWZpZWQgYWdhaW5zdCByYXcgYnl0ZXM7IG9ubHkgQ09NUExFVEVEL1BBSUQvU1VDQ0VTUy9BVVRIT1JJWkVEIHN0YXR1c2VzIG1hcmsgcGFpZAoKIyMgS2V5IGZpbGVzCi0gYGFydGlmYWN0cy9hcGktc2VydmVyL3NyYy9saWIvZmVuYS50c2AKLSBgYXJ0aWZhY3RzL2FwaS1zZXJ2ZXIvc3JjL3JvdXRlcy9mZW5hLXdlYmhvb2sudHNgCi0gYGFydGlmYWN0cy9vbW5pcXVyZS9zcmMvcGFnZXMvRmVuYVJldHVybi50c3hgCg==
+---
+name: Fena open-banking payment integration
+description: How Fena is wired into OmniQure checkout — API shape, endpoint, flow, webhook security.
+---
+
+## API endpoint (from toolkit-php-sdk Payment.php source)
+- Create: POST `https://epos.api.prod-gcp.fena.co/open/payments/single/create-and-process`
+- Status: GET `https://epos.api.prod-gcp.fena.co/public/payment-flow/payment/{hashedId}`
+- Auth headers: `integration-id` and `secret-key`
+- Body: `reference`, `amount` (2dp string), `customerEmail`, `customerName`, `customRedirectUrl`, `items: []`
+- Response: `{ created: true, result: { link: "https://...?id=HASHED_ID" } }`
+
+**Why toolkit shape (reference) not old fena-php-sdk shape (invoiceRefNumber):** endpoint URL is from toolkit-php-sdk; use its field names.
+
+## Payment flow
+1. Checkout sends `paymentMethod: "fena"` to POST /api/orders
+2. Server creates order (awaiting_payment), calls Fena API with customRedirectUrl = `{req.headers.origin}/fena-return?order=...&name=...&total=...&ship=...`
+3. Server returns `{ fenaPaymentUrl }` — frontend does `window.location.href = fenaPaymentUrl`
+4. Customer authenticates at Fena; Fena redirects back to /fena-return (FenaReturn.tsx)
+5. Fena also POSTs to /api/fena-webhook → order marked paid
+
+## Webhook security
+- Raw body captured via `express.json({ verify: (req,_res,buf) => { req.rawBody = buf; } })` in app.ts
+- FENA_WEBHOOK_SECRET set → requests without signature header are rejected (401)
+- HMAC verified against raw bytes; only COMPLETED/PAID/SUCCESS/AUTHORIZED statuses mark paid
+
+## Key files
+- `artifacts/api-server/src/lib/fena.ts`
+- `artifacts/api-server/src/routes/fena-webhook.ts`
+- `artifacts/omniqure/src/pages/FenaReturn.tsx`

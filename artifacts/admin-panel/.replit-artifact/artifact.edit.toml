@@ -1,1 +1,31 @@
-a2luZCA9ICJ3ZWIiCnByZXZpZXdQYXRoID0gIi9hZG1pbi8iCnRpdGxlID0gIk9tbmlRdXJlIEFkbWluIgp2ZXJzaW9uID0gIjEuMC4wIgppZCA9ICJhcnRpZmFjdDp2MzpkZWZhdWx0LW9tbmlxdXJlLWFkbWluIgpyb3V0ZXIgPSAicGF0aCIKCltbaW50ZWdyYXRlZFNraWxsc11dCm5hbWUgPSAicmVhY3Qtdml0ZSIKdmVyc2lvbiA9ICIxLjAuMCIKCltbc2VydmljZXNdXQpuYW1lID0gIndlYiIKcGF0aHMgPSBbICIvYWRtaW4vIiBdCmxvY2FsUG9ydCA9IDgwODIKCltzZXJ2aWNlcy5kZXZlbG9wbWVudF0KcnVuID0gInBucG0gLS1maWx0ZXIgQHdvcmtzcGFjZS9hZG1pbi1wYW5lbCBydW4gZGV2IgoKW3NlcnZpY2VzLnByb2R1Y3Rpb25dCmJ1aWxkID0gWyAicG5wbSIsICItLWZpbHRlciIsICJAd29ya3NwYWNlL2FkbWluLXBhbmVsIiwgInJ1biIsICJidWlsZCIgXQpwdWJsaWNEaXIgPSAiYXJ0aWZhY3RzL2FkbWluLXBhbmVsL2Rpc3QvcHVibGljIgpzZXJ2ZSA9ICJzdGF0aWMiCgpbW3NlcnZpY2VzLnByb2R1Y3Rpb24ucmV3cml0ZXNdXQpmcm9tID0gIi8qIgp0byA9ICIvaW5kZXguaHRtbCIKCltzZXJ2aWNlcy5lbnZdClBPUlQgPSAiODA4MiIKQkFTRV9QQVRIID0gIi9hZG1pbi8iCg==
+kind = "web"
+previewPath = "/admin/"
+title = "OmniQure Admin"
+version = "1.0.0"
+id = "artifact:v3:default-omniqure-admin"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/admin/" ]
+localPort = 8082
+
+[services.development]
+run = "pnpm --filter @workspace/admin-panel run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/admin-panel", "run", "build" ]
+publicDir = "artifacts/admin-panel/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "8082"
+BASE_PATH = "/admin/"

@@ -1,1 +1,84 @@
-aW1wb3J0IHsgdXNlU3RhdGUgfSBmcm9tICJyZWFjdCI7CmltcG9ydCB7IFggfSBmcm9tICJsdWNpZGUtcmVhY3QiOwoKY29uc3QgbWVzc2FnZXMgPSBbCiAgIvCflKwgIDk4JSsgVmVyaWZpZWQgUHVyaXR5IOKAlCBHdWFyYW50ZWVkIG9uIEV2ZXJ5IFByb2R1Y3QiLAogICLwn46BICBSZWZlciBhIEZyaWVuZCDigJQgWW91IEJvdGggRWFybiDCozI1IENyZWRpdCBFYWNoIiwKICAi8J+amiAgRnJlZSBTaGlwcGluZyBvbiBPcmRlcnMgT3ZlciDCozUwIOKAlCBVSyBPbmx5IiwKICAi8J+SiiAgQnVuZGxlICYgU2F2ZSDigJQgRnJlZSBJdGVtcyBXaGVuIFlvdSBPcmRlciAzKyBWaWFscyIsCl07CgpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBBbm5vdW5jZW1lbnRCYXIoeyBzdXBwcmVzc2VkID0gZmFsc2UgfTogeyBzdXBwcmVzc2VkPzogYm9vbGVhbiB9KSB7CiAgY29uc3QgW3Zpc2libGUsIHNldFZpc2libGVdID0gdXNlU3RhdGUodHJ1ZSk7CiAgaWYgKCF2aXNpYmxlIHx8IHN1cHByZXNzZWQpIHJldHVybiBudWxsOwoKICBjb25zdCBkb3VibGVkID0gWy4uLm1lc3NhZ2VzLCAuLi5tZXNzYWdlc107CgogIHJldHVybiAoCiAgICA8ZGl2CiAgICAgIGNsYXNzTmFtZT0icmVsYXRpdmUgb3ZlcmZsb3ctaGlkZGVuIgogICAgICBzdHlsZT17ewogICAgICAgIGJhY2tncm91bmQ6ICJsaW5lYXItZ3JhZGllbnQoOTBkZWcsICMxODQ3QzIgMCUsICMyMDU4RDggMzAlLCAjMkI2RkY1IDU1JSwgIzIwNThEOCA4MCUsICMxODQ3QzIgMTAwJSkiLAogICAgICAgIGhlaWdodDogIjM2cHgiLAogICAgICB9fQogICAgPgogICAgICB7LyogU2hpbW1lciBvdmVybGF5ICovfQogICAgICA8ZGl2CiAgICAgICAgc3R5bGU9e3sKICAgICAgICAgIHBvc2l0aW9uOiAiYWJzb2x1dGUiLAogICAgICAgICAgaW5zZXQ6IDAsCiAgICAgICAgICBiYWNrZ3JvdW5kOiAibGluZWFyLWdyYWRpZW50KDkwZGVnLCB0cmFuc3BhcmVudCAwJSwgcmdiYSgyNTUsMjU1LDI1NSwwLjA0KSA1MCUsIHRyYW5zcGFyZW50IDEwMCUpIiwKICAgICAgICAgIGJhY2tncm91bmRTaXplOiAiMjAwJSAxMDAlIiwKICAgICAgICAgIGFuaW1hdGlvbjogInNoaW1tZXIgM3MgbGluZWFyIGluZmluaXRlIiwKICAgICAgICAgIHBvaW50ZXJFdmVudHM6ICJub25lIiwKICAgICAgICAgIHpJbmRleDogMSwKICAgICAgICB9fQogICAgICAvPgoKICAgICAgey8qIFNjcm9sbGluZyB0aWNrZXIgKi99CiAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBoLWZ1bGwgb3ZlcmZsb3ctaGlkZGVuIiBzdHlsZT17eyB6SW5kZXg6IDIsIHBvc2l0aW9uOiAicmVsYXRpdmUiIH19PgogICAgICAgIDxkaXYKICAgICAgICAgIGNsYXNzTmFtZT0iYW5pbWF0ZS10aWNrZXIgZmxleC1zaHJpbmstMCBmbGV4IGl0ZW1zLWNlbnRlciIKICAgICAgICAgIHN0eWxlPXt7IHdoaXRlU3BhY2U6ICJub3dyYXAiIH19CiAgICAgICAgPgogICAgICAgICAge2RvdWJsZWQubWFwKChtc2csIGkpID0+ICgKICAgICAgICAgICAgPHNwYW4KICAgICAgICAgICAgICBrZXk9e2l9CiAgICAgICAgICAgICAgc3R5bGU9e3sKICAgICAgICAgICAgICAgIGRpc3BsYXk6ICJpbmxpbmUtZmxleCIsCiAgICAgICAgICAgICAgICBhbGlnbkl0ZW1zOiAiY2VudGVyIiwKICAgICAgICAgICAgICAgIGZvbnRTaXplOiAiMTEuNXB4IiwKICAgICAgICAgICAgICAgIGZvbnRXZWlnaHQ6IDYwMCwKICAgICAgICAgICAgICAgIGNvbG9yOiAiI0UyRThGMCIsCiAgICAgICAgICAgICAgICBsZXR0ZXJTcGFjaW5nOiAiMC4wMjVlbSIsCiAgICAgICAgICAgICAgICBwYWRkaW5nUmlnaHQ6ICIwIiwKICAgICAgICAgICAgICB9fQogICAgICAgICAgICA+CiAgICAgICAgICAgICAge21zZ30KICAgICAgICAgICAgICA8c3BhbgogICAgICAgICAgICAgICAgc3R5bGU9e3sKICAgICAgICAgICAgICAgICAgZGlzcGxheTogImlubGluZS1ibG9jayIsCiAgICAgICAgICAgICAgICAgIHdpZHRoOiAiMXB4IiwKICAgICAgICAgICAgICAgICAgaGVpZ2h0OiAiMTJweCIsCiAgICAgICAgICAgICAgICAgIGJhY2tncm91bmRDb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC4yKSIsCiAgICAgICAgICAgICAgICAgIG1hcmdpbjogIjAgMzJweCIsCiAgICAgICAgICAgICAgICAgIHZlcnRpY2FsQWxpZ246ICJtaWRkbGUiLAogICAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgICAvPgogICAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICApKX0KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CgogICAgICB7LyogQ2xvc2UgKi99CiAgICAgIDxidXR0b24KICAgICAgICBvbkNsaWNrPXsoKSA9PiBzZXRWaXNpYmxlKGZhbHNlKX0KICAgICAgICBjbGFzc05hbWU9ImFic29sdXRlIHJpZ2h0LTMgdG9wLTEvMiAtdHJhbnNsYXRlLXktMS8yIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIHJvdW5kZWQtZnVsbCB0cmFuc2l0aW9uLWFsbCBob3ZlcjpiZy13aGl0ZS8xMCIKICAgICAgICBzdHlsZT17eyB3aWR0aDogIjIycHgiLCBoZWlnaHQ6ICIyMnB4Iiwgb3BhY2l0eTogMC42LCB6SW5kZXg6IDMsIGJvcmRlcjogIm5vbmUiLCBiYWNrZ3JvdW5kOiAibm9uZSIsIGN1cnNvcjogInBvaW50ZXIiLCBjb2xvcjogIiNmZmYiIH19CiAgICAgICAgYXJpYS1sYWJlbD0iQ2xvc2UiCiAgICAgID4KICAgICAgICA8WCBzaXplPXsxM30gLz4KICAgICAgPC9idXR0b24+CiAgICA8L2Rpdj4KICApOwp9Cg==
+import { useState } from "react";
+import { X } from "lucide-react";
+
+const messages = [
+  "🔬  98%+ Verified Purity — Guaranteed on Every Product",
+  "🎁  Refer a Friend — You Both Earn £25 Credit Each",
+  "🚚  Free Shipping on Orders Over £50 — UK Only",
+  "💊  Bundle & Save — Free Items When You Order 3+ Vials",
+];
+
+export default function AnnouncementBar({ suppressed = false }: { suppressed?: boolean }) {
+  const [visible, setVisible] = useState(true);
+  if (!visible || suppressed) return null;
+
+  const doubled = [...messages, ...messages];
+
+  return (
+    <div
+      className="relative overflow-hidden"
+      style={{
+        background: "linear-gradient(90deg, #1847C2 0%, #2058D8 30%, #2B6FF5 55%, #2058D8 80%, #1847C2 100%)",
+        height: "36px",
+      }}
+    >
+      {/* Shimmer overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%)",
+          backgroundSize: "200% 100%",
+          animation: "shimmer 3s linear infinite",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      />
+
+      {/* Scrolling ticker */}
+      <div className="flex items-center h-full overflow-hidden" style={{ zIndex: 2, position: "relative" }}>
+        <div
+          className="animate-ticker flex-shrink-0 flex items-center"
+          style={{ whiteSpace: "nowrap" }}
+        >
+          {doubled.map((msg, i) => (
+            <span
+              key={i}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                fontSize: "11.5px",
+                fontWeight: 600,
+                color: "#E2E8F0",
+                letterSpacing: "0.025em",
+                paddingRight: "0",
+              }}
+            >
+              {msg}
+              <span
+                style={{
+                  display: "inline-block",
+                  width: "1px",
+                  height: "12px",
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  margin: "0 32px",
+                  verticalAlign: "middle",
+                }}
+              />
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Close */}
+      <button
+        onClick={() => setVisible(false)}
+        className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all hover:bg-white/10"
+        style={{ width: "22px", height: "22px", opacity: 0.6, zIndex: 3, border: "none", background: "none", cursor: "pointer", color: "#fff" }}
+        aria-label="Close"
+      >
+        <X size={13} />
+      </button>
+    </div>
+  );
+}

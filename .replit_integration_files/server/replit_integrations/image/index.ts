@@ -1,1 +1,3 @@
-ZXhwb3J0IHsgcmVnaXN0ZXJJbWFnZVJvdXRlcyB9IGZyb20gIi4vcm91dGVzIjsKZXhwb3J0IHsgb3BlbmFpLCBnZW5lcmF0ZUltYWdlQnVmZmVyLCBlZGl0SW1hZ2VzIH0gZnJvbSAiLi9jbGllbnQiOwoK
+export { registerImageRoutes } from "./routes";
+export { openai, generateImageBuffer, editImages } from "./client";
+

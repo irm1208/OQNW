@@ -1,1 +1,88 @@
-aW1wb3J0IHsgdXNlQ3VycmVuY3kgfSBmcm9tICJAL2NvbnRleHQvQ3VycmVuY3lDb250ZXh0IjsKaW1wb3J0IHsgVHJ1Y2sgfSBmcm9tICJsdWNpZGUtcmVhY3QiOwoKZXhwb3J0IGNvbnN0IEZSRUVfU0hJUFBJTkdfVEhSRVNIT0xEX0dCUCA9IDUwOwoKLyoqCiAqIEZyZWUtc2hpcHBpbmcgcHJvZ3Jlc3MgaW5kaWNhdG9yLiBTaGFyZWQgYnkgdGhlIGNhcnQvY2hlY2tvdXQgZmxvdyBzbyB0aGUKICogdGhyZXNob2xkIGxvZ2ljIGFuZCBzdHlsaW5nIGxpdmUgaW4gb25lIHBsYWNlIGluc3RlYWQgb2YgYmVpbmcgZHVwbGljYXRlZAogKiBhY3Jvc3MgcGFnZXMuCiAqLwpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBGcmVlU2hpcHBpbmdCYXIoeyBlZmZlY3RpdmVUb3RhbCwgY29tcGFjdCA9IGZhbHNlIH06IHsgZWZmZWN0aXZlVG90YWw6IG51bWJlcjsgY29tcGFjdD86IGJvb2xlYW4gfSkgewogIGNvbnN0IHsgZm9ybWF0UHJpY2UsIHJhdGVzLCBjdXJyZW5jeSB9ID0gdXNlQ3VycmVuY3koKTsKICBjb25zdCByYXRlID0gcmF0ZXNbY3VycmVuY3kuY29kZV0gPz8gMTsKICBjb25zdCB0aHJlc2hvbGRMb2NhbCA9IEZSRUVfU0hJUFBJTkdfVEhSRVNIT0xEX0dCUCAqIHJhdGU7CiAgY29uc3QgcmVtYWluaW5nID0gTWF0aC5tYXgoMCwgdGhyZXNob2xkTG9jYWwgLSBlZmZlY3RpdmVUb3RhbCAqIHJhdGUpOwogIGNvbnN0IHBjdCA9IE1hdGgubWluKDEwMCwgKGVmZmVjdGl2ZVRvdGFsIC8gRlJFRV9TSElQUElOR19USFJFU0hPTERfR0JQKSAqIDEwMCk7CiAgY29uc3QgdW5sb2NrZWQgPSBwY3QgPj0gMTAwOwoKICBpZiAoY29tcGFjdCkgewogICAgcmV0dXJuICgKICAgICAgPGRpdiBzdHlsZT17ewogICAgICAgIGJvcmRlclJhZGl1czogIjEycHgiLCBwYWRkaW5nOiAiMTBweCAxNHB4IiwKICAgICAgICBiYWNrZ3JvdW5kOiB1bmxvY2tlZCA/ICJsaW5lYXItZ3JhZGllbnQoOTBkZWcsI0YwRkRGNCwjRENGQ0U3KSIgOiAibGluZWFyLWdyYWRpZW50KDkwZGVnLCNFRUY0RkYsI0UwRUFGRikiLAogICAgICAgIGJvcmRlcjogYDFweCBzb2xpZCAke3VubG9ja2VkID8gIiNCQkY3RDAiIDogIiNCRkRCRkUifWAsCiAgICAgICAgbWFyZ2luQm90dG9tOiAiMTJweCIsCiAgICAgIH19PgogICAgICAgIDxkaXYgc3R5bGU9e3sgZGlzcGxheTogImZsZXgiLCBhbGlnbkl0ZW1zOiAiY2VudGVyIiwgZ2FwOiAiN3B4IiwgbWFyZ2luQm90dG9tOiAiN3B4IiB9fT4KICAgICAgICAgIDxUcnVjayBzaXplPXsxM30gc3R5bGU9e3sgY29sb3I6IHVubG9ja2VkID8gIiMxNkEzNEEiIDogIiMxMjQwQTAiLCBmbGV4U2hyaW5rOiAwIH19IC8+CiAgICAgICAgICA8c3BhbiBzdHlsZT17eyBmb250U2l6ZTogIjEycHgiLCBmb250V2VpZ2h0OiA3MDAsIGNvbG9yOiB1bmxvY2tlZCA/ICIjMTY2NTM0IiA6ICIjMTI0MEEwIiB9fT4KICAgICAgICAgICAge3VubG9ja2VkCiAgICAgICAgICAgICAgPyAi8J+OiSBZb3UndmUgdW5sb2NrZWQgZnJlZSBzaGlwcGluZyEiCiAgICAgICAgICAgICAgOiBgQWRkICR7Zm9ybWF0UHJpY2UocmVtYWluaW5nIC8gcmF0ZSl9IG1vcmUgZm9yIGZyZWUgc2hpcHBpbmdgfQogICAgICAgICAgPC9zcGFuPgogICAgICAgIDwvZGl2PgogICAgICAgIDxkaXYgc3R5bGU9e3sgaGVpZ2h0OiAiNnB4IiwgYm9yZGVyUmFkaXVzOiAiOTlweCIsIGJhY2tncm91bmRDb2xvcjogdW5sb2NrZWQgPyAiI0JCRjdEMCIgOiAiI0JGREJGRSIsIG92ZXJmbG93OiAiaGlkZGVuIiB9fT4KICAgICAgICAgIDxkaXYgc3R5bGU9e3sKICAgICAgICAgICAgaGVpZ2h0OiAiMTAwJSIsIHdpZHRoOiBgJHtwY3R9JWAsIGJvcmRlclJhZGl1czogIjk5cHgiLAogICAgICAgICAgICBiYWNrZ3JvdW5kOiB1bmxvY2tlZAogICAgICAgICAgICAgID8gImxpbmVhci1ncmFkaWVudCg5MGRlZywjMTZBMzRBLCMyMkM1NUUpIgogICAgICAgICAgICAgIDogImxpbmVhci1ncmFkaWVudCg5MGRlZywjMTI0MEEwLCMzQjgyRjYpIiwKICAgICAgICAgICAgdHJhbnNpdGlvbjogIndpZHRoIDAuNXMgY3ViaWMtYmV6aWVyKC4yMiwuNjgsMCwxLjIpIiwKICAgICAgICAgIH19IC8+CiAgICAgICAgPC9kaXY+CiAgICAgICAgeyF1bmxvY2tlZCAmJiAoCiAgICAgICAgICA8cCBzdHlsZT17eyBmb250U2l6ZTogIjEwLjVweCIsIGNvbG9yOiAiIzY0NzQ4QiIsIG1hcmdpblRvcDogIjVweCIgfX0+CiAgICAgICAgICAgIHtmb3JtYXRQcmljZShlZmZlY3RpdmVUb3RhbCAqIHJhdGUgLyAocmF0ZSB8fCAxKSl9IG9mIHtmb3JtYXRQcmljZShGUkVFX1NISVBQSU5HX1RIUkVTSE9MRF9HQlApfSDigJQge01hdGgucm91bmQocGN0KX0lIHRoZXJlCiAgICAgICAgICA8L3A+CiAgICAgICAgKX0KICAgICAgPC9kaXY+CiAgICApOwogIH0KCiAgcmV0dXJuICgKICAgIDxkaXYgc3R5bGU9e3sKICAgICAgYm9yZGVyUmFkaXVzOiAiMTRweCIsIHBhZGRpbmc6ICIxNHB4IDE2cHgiLAogICAgICBiYWNrZ3JvdW5kOiB1bmxvY2tlZCA/ICJsaW5lYXItZ3JhZGllbnQoOTBkZWcsI0YwRkRGNCwjRENGQ0U3KSIgOiAibGluZWFyLWdyYWRpZW50KDEzNWRlZywjRUVGNEZGIDAlLCNFOEYwRkYgMTAwJSkiLAogICAgICBib3JkZXI6IGAxLjVweCBzb2xpZCAke3VubG9ja2VkID8gIiM4NkVGQUMiIDogIiNCRkRCRkUifWAsCiAgICAgIG1hcmdpbkJvdHRvbTogIjRweCIsCiAgICB9fT4KICAgICAgPGRpdiBzdHlsZT17eyBkaXNwbGF5OiAiZmxleCIsIGFsaWduSXRlbXM6ICJjZW50ZXIiLCBnYXA6ICI4cHgiLCBtYXJnaW5Cb3R0b206ICI5cHgiIH19PgogICAgICAgIDxUcnVjayBzaXplPXsxNX0gc3R5bGU9e3sgY29sb3I6IHVubG9ja2VkID8gIiMxNkEzNEEiIDogIiMxMjQwQTAiLCBmbGV4U2hyaW5rOiAwIH19IC8+CiAgICAgICAgPHNwYW4gc3R5bGU9e3sgZm9udFNpemU6ICIxM3B4IiwgZm9udFdlaWdodDogNzAwLCBjb2xvcjogdW5sb2NrZWQgPyAiIzE2NjUzNCIgOiAiIzEyNDBBMCIgfX0+CiAgICAgICAgICB7dW5sb2NrZWQKICAgICAgICAgICAgPyAi8J+OiSBGcmVlIHNoaXBwaW5nIHVubG9ja2VkIG9uIHRoaXMgb3JkZXIhIgogICAgICAgICAgICA6IDw+QWRkIDxzdHJvbmc+e2Zvcm1hdFByaWNlKHJlbWFpbmluZyAvIHJhdGUpfTwvc3Ryb25nPiBtb3JlIHRvIHVubG9jayBmcmVlIHNoaXBwaW5nPC8+fQogICAgICAgIDwvc3Bhbj4KICAgICAgPC9kaXY+CiAgICAgIDxkaXYgc3R5bGU9e3sgaGVpZ2h0OiAiOHB4IiwgYm9yZGVyUmFkaXVzOiAiOTlweCIsIGJhY2tncm91bmRDb2xvcjogdW5sb2NrZWQgPyAiI0JCRjdEMCIgOiAiI0RCRUFGRSIsIG92ZXJmbG93OiAiaGlkZGVuIiB9fT4KICAgICAgICA8ZGl2IHN0eWxlPXt7CiAgICAgICAgICBoZWlnaHQ6ICIxMDAlIiwgd2lkdGg6IGAke3BjdH0lYCwgYm9yZGVyUmFkaXVzOiAiOTlweCIsCiAgICAgICAgICBiYWNrZ3JvdW5kOiB1bmxvY2tlZAogICAgICAgICAgICA/ICJsaW5lYXItZ3JhZGllbnQoOTBkZWcsIzE2QTM0QSwjMjJDNTVFKSIKICAgICAgICAgICAgOiAibGluZWFyLWdyYWRpZW50KDkwZGVnLCMxMjQwQTAsIzI1NjNFQiwjM0I4MkY2KSIsCiAgICAgICAgICB0cmFuc2l0aW9uOiAid2lkdGggMC42cyBjdWJpYy1iZXppZXIoLjIyLC42OCwwLDEuMikiLAogICAgICAgICAgYm94U2hhZG93OiB1bmxvY2tlZCA/ICIwIDAgOHB4IHJnYmEoMzQsMTk3LDk0LDAuNCkiIDogIjAgMCA4cHggcmdiYSgzNyw5OSwyMzUsMC4zKSIsCiAgICAgICAgfX0gLz4KICAgICAgPC9kaXY+CiAgICAgIDxkaXYgc3R5bGU9e3sgZGlzcGxheTogImZsZXgiLCBqdXN0aWZ5Q29udGVudDogInNwYWNlLWJldHdlZW4iLCBtYXJnaW5Ub3A6ICI2cHgiIH19PgogICAgICAgIDxzcGFuIHN0eWxlPXt7IGZvbnRTaXplOiAiMTFweCIsIGNvbG9yOiAiIzY0NzQ4QiIgfX0+CiAgICAgICAgICB7Zm9ybWF0UHJpY2UoZWZmZWN0aXZlVG90YWwgKiByYXRlIC8gKHJhdGUgfHwgMSkpfSBzcGVudAogICAgICAgIDwvc3Bhbj4KICAgICAgICA8c3BhbiBzdHlsZT17eyBmb250U2l6ZTogIjExcHgiLCBjb2xvcjogIiM2NDc0OEIiIH19PgogICAgICAgICAgRnJlZSBzaGlwcGluZyBhdCB7Zm9ybWF0UHJpY2UoRlJFRV9TSElQUElOR19USFJFU0hPTERfR0JQKX0KICAgICAgICA8L3NwYW4+CiAgICAgIDwvZGl2PgogICAgPC9kaXY+CiAgKTsKfQo=
+import { useCurrency } from "@/context/CurrencyContext";
+import { Truck } from "lucide-react";
+
+export const FREE_SHIPPING_THRESHOLD_GBP = 50;
+
+/**
+ * Free-shipping progress indicator. Shared by the cart/checkout flow so the
+ * threshold logic and styling live in one place instead of being duplicated
+ * across pages.
+ */
+export default function FreeShippingBar({ effectiveTotal, compact = false }: { effectiveTotal: number; compact?: boolean }) {
+  const { formatPrice, rates, currency } = useCurrency();
+  const rate = rates[currency.code] ?? 1;
+  const thresholdLocal = FREE_SHIPPING_THRESHOLD_GBP * rate;
+  const remaining = Math.max(0, thresholdLocal - effectiveTotal * rate);
+  const pct = Math.min(100, (effectiveTotal / FREE_SHIPPING_THRESHOLD_GBP) * 100);
+  const unlocked = pct >= 100;
+
+  if (compact) {
+    return (
+      <div style={{
+        borderRadius: "12px", padding: "10px 14px",
+        background: unlocked ? "linear-gradient(90deg,#F0FDF4,#DCFCE7)" : "linear-gradient(90deg,#EEF4FF,#E0EAFF)",
+        border: `1px solid ${unlocked ? "#BBF7D0" : "#BFDBFE"}`,
+        marginBottom: "12px",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "7px" }}>
+          <Truck size={13} style={{ color: unlocked ? "#16A34A" : "#1240A0", flexShrink: 0 }} />
+          <span style={{ fontSize: "12px", fontWeight: 700, color: unlocked ? "#166534" : "#1240A0" }}>
+            {unlocked
+              ? "🎉 You've unlocked free shipping!"
+              : `Add ${formatPrice(remaining / rate)} more for free shipping`}
+          </span>
+        </div>
+        <div style={{ height: "6px", borderRadius: "99px", backgroundColor: unlocked ? "#BBF7D0" : "#BFDBFE", overflow: "hidden" }}>
+          <div style={{
+            height: "100%", width: `${pct}%`, borderRadius: "99px",
+            background: unlocked
+              ? "linear-gradient(90deg,#16A34A,#22C55E)"
+              : "linear-gradient(90deg,#1240A0,#3B82F6)",
+            transition: "width 0.5s cubic-bezier(.22,.68,0,1.2)",
+          }} />
+        </div>
+        {!unlocked && (
+          <p style={{ fontSize: "10.5px", color: "#64748B", marginTop: "5px" }}>
+            {formatPrice(effectiveTotal * rate / (rate || 1))} of {formatPrice(FREE_SHIPPING_THRESHOLD_GBP)} — {Math.round(pct)}% there
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      borderRadius: "14px", padding: "14px 16px",
+      background: unlocked ? "linear-gradient(90deg,#F0FDF4,#DCFCE7)" : "linear-gradient(135deg,#EEF4FF 0%,#E8F0FF 100%)",
+      border: `1.5px solid ${unlocked ? "#86EFAC" : "#BFDBFE"}`,
+      marginBottom: "4px",
+    }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "9px" }}>
+        <Truck size={15} style={{ color: unlocked ? "#16A34A" : "#1240A0", flexShrink: 0 }} />
+        <span style={{ fontSize: "13px", fontWeight: 700, color: unlocked ? "#166534" : "#1240A0" }}>
+          {unlocked
+            ? "🎉 Free shipping unlocked on this order!"
+            : <>Add <strong>{formatPrice(remaining / rate)}</strong> more to unlock free shipping</>}
+        </span>
+      </div>
+      <div style={{ height: "8px", borderRadius: "99px", backgroundColor: unlocked ? "#BBF7D0" : "#DBEAFE", overflow: "hidden" }}>
+        <div style={{
+          height: "100%", width: `${pct}%`, borderRadius: "99px",
+          background: unlocked
+            ? "linear-gradient(90deg,#16A34A,#22C55E)"
+            : "linear-gradient(90deg,#1240A0,#2563EB,#3B82F6)",
+          transition: "width 0.6s cubic-bezier(.22,.68,0,1.2)",
+          boxShadow: unlocked ? "0 0 8px rgba(34,197,94,0.4)" : "0 0 8px rgba(37,99,235,0.3)",
+        }} />
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: "6px" }}>
+        <span style={{ fontSize: "11px", color: "#64748B" }}>
+          {formatPrice(effectiveTotal * rate / (rate || 1))} spent
+        </span>
+        <span style={{ fontSize: "11px", color: "#64748B" }}>
+          Free shipping at {formatPrice(FREE_SHIPPING_THRESHOLD_GBP)}
+        </span>
+      </div>
+    </div>
+  );
+}

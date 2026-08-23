@@ -1,1 +1,21 @@
-aW1wb3J0IHsgQ2FyZCwgQ2FyZENvbnRlbnQgfSBmcm9tICJAL2NvbXBvbmVudHMvdWkvY2FyZCI7CmltcG9ydCB7IEFsZXJ0Q2lyY2xlIH0gZnJvbSAibHVjaWRlLXJlYWN0IjsKCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIE5vdEZvdW5kKCkgewogIHJldHVybiAoCiAgICA8ZGl2IGNsYXNzTmFtZT0ibWluLWgtc2NyZWVuIHctZnVsbCBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBiZy1ncmF5LTUwIj4KICAgICAgPENhcmQgY2xhc3NOYW1lPSJ3LWZ1bGwgbWF4LXctbWQgbXgtNCI+CiAgICAgICAgPENhcmRDb250ZW50IGNsYXNzTmFtZT0icHQtNiI+CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBtYi00IGdhcC0yIj4KICAgICAgICAgICAgPEFsZXJ0Q2lyY2xlIGNsYXNzTmFtZT0iaC04IHctOCB0ZXh0LXJlZC01MDAiIC8+CiAgICAgICAgICAgIDxoMSBjbGFzc05hbWU9InRleHQtMnhsIGZvbnQtYm9sZCB0ZXh0LWdyYXktOTAwIj40MDQgUGFnZSBOb3QgRm91bmQ8L2gxPgogICAgICAgICAgPC9kaXY+CgogICAgICAgICAgPHAgY2xhc3NOYW1lPSJtdC00IHRleHQtc20gdGV4dC1ncmF5LTYwMCI+CiAgICAgICAgICAgIERpZCB5b3UgZm9yZ2V0IHRvIGFkZCB0aGUgcGFnZSB0byB0aGUgcm91dGVyPwogICAgICAgICAgPC9wPgogICAgICAgIDwvQ2FyZENvbnRlbnQ+CiAgICAgIDwvQ2FyZD4KICAgIDwvZGl2PgogICk7Cn0K
+import { Card, CardContent } from "@/components/ui/card";
+import { AlertCircle } from "lucide-react";
+
+export default function NotFound() {
+  return (
+    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
+      <Card className="w-full max-w-md mx-4">
+        <CardContent className="pt-6">
+          <div className="flex mb-4 gap-2">
+            <AlertCircle className="h-8 w-8 text-red-500" />
+            <h1 className="text-2xl font-bold text-gray-900">404 Page Not Found</h1>
+          </div>
+
+          <p className="mt-4 text-sm text-gray-600">
+            Did you forget to add the page to the router?
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

@@ -1,1 +1,291 @@
-aW1wb3J0IHsgTGluayB9IGZyb20gIndvdXRlciI7CmltcG9ydCB7IFNoaWVsZCwgQ2hldnJvblJpZ2h0IH0gZnJvbSAibHVjaWRlLXJlYWN0IjsKaW1wb3J0IHsgdXNlU0VPIH0gZnJvbSAiQC9ob29rcy91c2VTRU8iOwoKY29uc3QgTEFTVF9VUERBVEVEID0gIjEgTWF5IDIwMjUiOwpjb25zdCBDT01QQU5ZID0gIk9tbmlRdXJlIFBlcHRpZGUgUmVzZWFyY2ggSW5zdGl0dXRlIjsKY29uc3QgQ09NUEFOWV9TSE9SVCA9ICJPbW5pUXVyZSI7CmNvbnN0IEVNQUlMID0gInN1cHBvcnRAb21uaXF1cmUuY29tIjsKCmludGVyZmFjZSBTZWN0aW9uUHJvcHMgewogIGlkOiBzdHJpbmc7CiAgbnVtYmVyOiBzdHJpbmc7CiAgdGl0bGU6IHN0cmluZzsKICBjaGlsZHJlbjogUmVhY3QuUmVhY3ROb2RlOwp9CgpmdW5jdGlvbiBTZWN0aW9uKHsgaWQsIG51bWJlciwgdGl0bGUsIGNoaWxkcmVuIH06IFNlY3Rpb25Qcm9wcykgewogIHJldHVybiAoCiAgICA8c2VjdGlvbiBpZD17aWR9IGNsYXNzTmFtZT0ibWItMTAiPgogICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1iYXNlbGluZSBnYXAtMyBtYi0zIj4KICAgICAgICA8c3BhbgogICAgICAgICAgY2xhc3NOYW1lPSJmb250LWJvbGQgZmxleC1zaHJpbmstMCIKICAgICAgICAgIHN0eWxlPXt7IGZvbnRTaXplOiAiMTNweCIsIGNvbG9yOiAiIzFCNUNCNSIsIG1pbldpZHRoOiAiMjRweCIgfX0KICAgICAgICA+CiAgICAgICAgICB7bnVtYmVyfS4KICAgICAgICA8L3NwYW4+CiAgICAgICAgPGgyIGNsYXNzTmFtZT0iZm9udC1ib2xkIiBzdHlsZT17eyBmb250U2l6ZTogIjE4cHgiLCBjb2xvcjogIiMwRjE3MkEiIH19PgogICAgICAgICAge3RpdGxlfQogICAgICAgIDwvaDI+CiAgICAgIDwvZGl2PgogICAgICA8ZGl2IGNsYXNzTmFtZT0icGwtOSBzcGFjZS15LTMgdGV4dC1zbSBsZWFkaW5nLXJlbGF4ZWQiIHN0eWxlPXt7IGNvbG9yOiAiIzM3NDE1MSIsIGxpbmVIZWlnaHQ6ICIxLjg1IiB9fT4KICAgICAgICB7Y2hpbGRyZW59CiAgICAgIDwvZGl2PgogICAgPC9zZWN0aW9uPgogICk7Cn0KCmNvbnN0IHRvYyA9IFsKICB7IGlkOiAiYWNjZXB0YW5jZSIsIGxhYmVsOiAiQWNjZXB0YW5jZSBvZiBUZXJtcyIgfSwKICB7IGlkOiAicnVvIiwgbGFiZWw6ICJSZXNlYXJjaCBVc2UgT25seSIgfSwKICB7IGlkOiAiZWxpZ2liaWxpdHkiLCBsYWJlbDogIkVsaWdpYmlsaXR5IiB9LAogIHsgaWQ6ICJwcm9kdWN0cyIsIGxhYmVsOiAiUHJvZHVjdHMgJiBEZXNjcmlwdGlvbnMiIH0sCiAgeyBpZDogIm9yZGVycyIsIGxhYmVsOiAiT3JkZXJzICYgUGF5bWVudCIgfSwKICB7IGlkOiAicHJpY2luZyIsIGxhYmVsOiAiUHJpY2luZyAmIEF2YWlsYWJpbGl0eSIgfSwKICB7IGlkOiAic2hpcHBpbmciLCBsYWJlbDogIlNoaXBwaW5nICYgRGVsaXZlcnkiIH0sCiAgeyBpZDogInJldHVybnMiLCBsYWJlbDogIlJldHVybnMgJiBSZWZ1bmRzIiB9LAogIHsgaWQ6ICJsaWFiaWxpdHkiLCBsYWJlbDogIkxpbWl0YXRpb24gb2YgTGlhYmlsaXR5IiB9LAogIHsgaWQ6ICJpcCIsIGxhYmVsOiAiSW50ZWxsZWN0dWFsIFByb3BlcnR5IiB9LAogIHsgaWQ6ICJwcml2YWN5IiwgbGFiZWw6ICJQcml2YWN5ICYgRGF0YSIgfSwKICB7IGlkOiAiZ292ZXJuaW5nIiwgbGFiZWw6ICJHb3Zlcm5pbmcgTGF3IiB9LAogIHsgaWQ6ICJjaGFuZ2VzIiwgbGFiZWw6ICJDaGFuZ2VzIHRvIFRlcm1zIiB9LAogIHsgaWQ6ICJjb250YWN0IiwgbGFiZWw6ICJDb250YWN0IiB9LApdOwoKZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gVGVybXNQYWdlKCkgewogIHVzZVNFTyh7CiAgICB0aXRsZTogIlRlcm1zICYgQ29uZGl0aW9ucyIsCiAgICBkZXNjcmlwdGlvbjogIlRlcm1zIGFuZCBjb25kaXRpb25zIGZvciBwdXJjaGFzaW5nIHJlc2VhcmNoIHBlcHRpZGVzIGZyb20gT21uaVF1cmUgUGVwdGlkZSBSZXNlYXJjaCBJbnN0aXR1dGUuIEFsbCBwcm9kdWN0cyBhcmUgZm9yIGluLXZpdHJvIHJlc2VhcmNoIHVzZSBvbmx5LiIsCiAgICBjYW5vbmljYWxQYXRoOiAiL3Rlcm1zIiwKICB9KTsKICByZXR1cm4gKAogICAgPGRpdiBzdHlsZT17eyBmb250RmFtaWx5OiAiJ0FyaW1vJywgQXJpYWwsIHNhbnMtc2VyaWYiLCBiYWNrZ3JvdW5kQ29sb3I6ICIjRjVGOEZDIiwgbWluSGVpZ2h0OiAiMTAwdmgiIH19PgogICAgICB7LyogSGVybyAqL30KICAgICAgPGRpdiBzdHlsZT17eyBiYWNrZ3JvdW5kOiAibGluZWFyLWdyYWRpZW50KDkwZGVnLCAjMEQyNTY1IDAlLCAjMTI0MEEwIDQwJSwgIzFCNUNCNSA3NSUsICMxRTY4Q0MgMTAwJSkiLCBwYWRkaW5nOiAiNDBweCAwIDMycHgiLCBwb3NpdGlvbjogInJlbGF0aXZlIiwgb3ZlcmZsb3c6ICJoaWRkZW4iIH19PgogICAgICAgIDxkaXYgc3R5bGU9e3sgcG9zaXRpb246ICJhYnNvbHV0ZSIsIGluc2V0OiAwLCBiYWNrZ3JvdW5kSW1hZ2U6ICJyYWRpYWwtZ3JhZGllbnQoY2lyY2xlIGF0IDFweCAxcHgsIHJnYmEoMjU1LDI1NSwyNTUsMC4wNikgMXB4LCB0cmFuc3BhcmVudCAwKSIsIGJhY2tncm91bmRTaXplOiAiMjhweCAyOHB4IiwgcG9pbnRlckV2ZW50czogIm5vbmUiIH19IC8+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9Im1heC13LVsxMjgwcHhdIG14LWF1dG8gcHgtNCI+CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTIgdGV4dC14cyBtYi0zIiBzdHlsZT17eyBjb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC41KSIgfX0+CiAgICAgICAgICAgIDxMaW5rIGhyZWY9Ii8iIHN0eWxlPXt7IGNvbG9yOiAicmdiYSgyNTUsMjU1LDI1NSwwLjUpIiwgdGV4dERlY29yYXRpb246ICJub25lIiB9fT5Ib21lPC9MaW5rPgogICAgICAgICAgICA8Q2hldnJvblJpZ2h0IHNpemU9ezEyfSAvPgogICAgICAgICAgICA8c3BhbiBzdHlsZT17eyBjb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC44KSIgfX0+VGVybXMgJiBDb25kaXRpb25zPC9zcGFuPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTMgbWItMyI+CiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJyb3VuZGVkLXhsIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIiBzdHlsZT17eyB3aWR0aDogIjQwcHgiLCBoZWlnaHQ6ICI0MHB4IiwgYmFja2dyb3VuZENvbG9yOiAicmdiYSgyNTUsMjU1LDI1NSwwLjEyKSIgfX0+CiAgICAgICAgICAgICAgPFNoaWVsZCBzaXplPXsyMH0gc3R5bGU9e3sgY29sb3I6ICIjOTNDNUZEIiB9fSAvPgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgPGgxIGNsYXNzTmFtZT0iZm9udC1ib2xkIHRleHQtd2hpdGUiIHN0eWxlPXt7IGZvbnRTaXplOiAiY2xhbXAoMjJweCwgNHZ3LCAzMnB4KSIgfX0+CiAgICAgICAgICAgICAgVGVybXMgJiBDb25kaXRpb25zCiAgICAgICAgICAgIDwvaDE+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAiMTNweCIsIGNvbG9yOiAicmdiYSgyNTUsMjU1LDI1NSwwLjUpIiB9fT4KICAgICAgICAgICAgTGFzdCB1cGRhdGVkOiB7TEFTVF9VUERBVEVEfSDCtyB7Q09NUEFOWX0KICAgICAgICAgIDwvcD4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CgogICAgICB7LyogUlVPIEJhbm5lciAqL30KICAgICAgPGRpdiBzdHlsZT17eyBiYWNrZ3JvdW5kQ29sb3I6ICIjRkVGMkYyIiwgYm9yZGVyQm90dG9tOiAiMXB4IHNvbGlkICNGRUNBQ0EiIH19PgogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJtYXgtdy1bMTI4MHB4XSBteC1hdXRvIHB4LTQgcHktMyBmbGV4IGl0ZW1zLXN0YXJ0IGdhcC0yIj4KICAgICAgICAgIDxzcGFuIHN0eWxlPXt7IGZvbnRTaXplOiAiMTVweCIsIGZsZXhTaHJpbms6IDAgfX0+4pqg77iPPC9zcGFuPgogICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXhzIGxlYWRpbmctcmVsYXhlZCBmb250LW1lZGl1bSIgc3R5bGU9e3sgY29sb3I6ICIjQjkxQzFDIiB9fT4KICAgICAgICAgICAgPHN0cm9uZz5JbXBvcnRhbnQ6PC9zdHJvbmc+IEFsbCBwcm9kdWN0cyBzb2xkIGJ5IHtDT01QQU5ZX1NIT1JUfSBhcmUgc3RyaWN0bHkgZm9yIGluLXZpdHJvIGxhYm9yYXRvcnkgcmVzZWFyY2ggdXNlIG9ubHkuIFRoZXkgYXJlIG5vdCBtZWRpY2luZXMsIGRydWdzLCBmb29kIHN1cHBsZW1lbnRzLCBvciBhcHByb3ZlZCBmb3IgaHVtYW4gb3IgdmV0ZXJpbmFyeSB1c2UuIEJ5IHB1cmNoYXNpbmcsIHlvdSBjb25maXJtIHlvdSBhcmUgMTggb3Igb3ZlciBhbmQgYSBxdWFsaWZpZWQgcmVzZWFyY2hlci4KICAgICAgICAgIDwvcD4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CgogICAgICA8ZGl2IGNsYXNzTmFtZT0ibWF4LXctWzEyODBweF0gbXgtYXV0byBweC00IHB5LTEwIj4KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBnYXAtMTAiPgogICAgICAgICAgey8qIFRhYmxlIG9mIENvbnRlbnRzIOKAlCBkZXNrdG9wIHN0aWNreSAqL30KICAgICAgICAgIDxhc2lkZSBjbGFzc05hbWU9ImhpZGRlbiBsZzpibG9jayIgc3R5bGU9e3sgd2lkdGg6ICIyMjBweCIsIGZsZXhTaHJpbms6IDAgfX0+CiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJzdGlja3kgdG9wLTI0Ij4KICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9InRleHQteHMgZm9udC1ib2xkIHVwcGVyY2FzZSB0cmFja2luZy13aWRlc3QgbWItMyIgc3R5bGU9e3sgY29sb3I6ICIjOTRBM0I4IiB9fT5Db250ZW50czwvcD4KICAgICAgICAgICAgICA8bmF2IGNsYXNzTmFtZT0ic3BhY2UteS0xIj4KICAgICAgICAgICAgICAgIHt0b2MubWFwKChpdGVtLCBpKSA9PiAoCiAgICAgICAgICAgICAgICAgIDxhCiAgICAgICAgICAgICAgICAgICAga2V5PXtpdGVtLmlkfQogICAgICAgICAgICAgICAgICAgIGhyZWY9e2AjJHtpdGVtLmlkfWB9CiAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMiB0ZXh0LXhzIHB5LTEgdHJhbnNpdGlvbi1jb2xvcnMgaG92ZXI6dGV4dC1ibHVlLTYwMCIKICAgICAgICAgICAgICAgICAgICBzdHlsZT17eyBjb2xvcjogIiM2NDc0OEIiLCB0ZXh0RGVjb3JhdGlvbjogIm5vbmUiIH19CiAgICAgICAgICAgICAgICAgID4KICAgICAgICAgICAgICAgICAgICA8c3BhbiBzdHlsZT17eyBjb2xvcjogIiNCRkRCRkUiLCBmb250U2l6ZTogIjExcHgiLCBmb250V2VpZ2h0OiA3MDAsIG1pbldpZHRoOiAiMThweCIgfX0+e2kgKyAxfS48L3NwYW4+CiAgICAgICAgICAgICAgICAgICAge2l0ZW0ubGFiZWx9CiAgICAgICAgICAgICAgICAgIDwvYT4KICAgICAgICAgICAgICAgICkpfQogICAgICAgICAgICAgIDwvbmF2PgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgIDwvYXNpZGU+CgogICAgICAgICAgey8qIENvbnRlbnQgKi99CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleC0xIG1pbi13LTAiPgogICAgICAgICAgICA8ZGl2CiAgICAgICAgICAgICAgY2xhc3NOYW1lPSJyb3VuZGVkLTJ4bCBwLTYgbWQ6cC04IG1iLTYiCiAgICAgICAgICAgICAgc3R5bGU9e3sgYmFja2dyb3VuZENvbG9yOiAiI2ZmZiIsIGJvcmRlcjogIjFweCBzb2xpZCAjRThFREY1IiwgYm94U2hhZG93OiAiMCAycHggMTZweCByZ2JhKDE1LDIzLDQyLDAuMDUpIiB9fQogICAgICAgICAgICA+CiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXNtIGxlYWRpbmctcmVsYXhlZCBtYi00IiBzdHlsZT17eyBjb2xvcjogIiM0NzU1NjkiLCBsaW5lSGVpZ2h0OiAiMS44NSIgfX0+CiAgICAgICAgICAgICAgICBUaGVzZSBUZXJtcyBhbmQgQ29uZGl0aW9ucyAoIlRlcm1zIikgZ292ZXJuIHlvdXIgdXNlIG9mIHRoZSB7Q09NUEFOWX0gd2Vic2l0ZSBhbmQgeW91ciBwdXJjaGFzZSBvZiBwcm9kdWN0cyBmcm9tIHVzLiBQbGVhc2UgcmVhZCB0aGVtIGNhcmVmdWxseSBiZWZvcmUgcGxhY2luZyBhbiBvcmRlci4gQnkgYWNjZXNzaW5nIG91ciB3ZWJzaXRlIG9yIHBsYWNpbmcgYW4gb3JkZXIsIHlvdSBhZ3JlZSB0byBiZSBib3VuZCBieSB0aGVzZSBUZXJtcy4KICAgICAgICAgICAgICA8L3A+CiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXNtIGxlYWRpbmctcmVsYXhlZCIgc3R5bGU9e3sgY29sb3I6ICIjNDc1NTY5IiB9fT4KICAgICAgICAgICAgICAgIFRoZXNlIFRlcm1zIGNvbnN0aXR1dGUgYSBsZWdhbGx5IGJpbmRpbmcgYWdyZWVtZW50IGJldHdlZW4geW91IGFuZCB7Q09NUEFOWX0gKHRyYWRpbmcgYXMgIntDT01QQU5ZX1NIT1JUfSIpLgogICAgICAgICAgICAgIDwvcD4KICAgICAgICAgICAgPC9kaXY+CgogICAgICAgICAgICA8U2VjdGlvbiBpZD0iYWNjZXB0YW5jZSIgbnVtYmVyPSIxIiB0aXRsZT0iQWNjZXB0YW5jZSBvZiBUZXJtcyI+CiAgICAgICAgICAgICAgPHA+QnkgYWNjZXNzaW5nIHRoaXMgd2Vic2l0ZSwgY3JlYXRpbmcgYW4gYWNjb3VudCwgb3IgcGxhY2luZyBhbiBvcmRlciwgeW91IGNvbmZpcm0gdGhhdCB5b3UgaGF2ZSByZWFkLCB1bmRlcnN0b29kLCBhbmQgYWdyZWUgdG8gYmUgYm91bmQgYnkgdGhlc2UgVGVybXMgaW4gZnVsbC4gSWYgeW91IGRvIG5vdCBhZ3JlZSwgeW91IG11c3Qgbm90IHVzZSB0aGlzIHdlYnNpdGUgb3IgcHVyY2hhc2UgZnJvbSB1cy48L3A+CiAgICAgICAgICAgICAgPHA+V2UgcmVzZXJ2ZSB0aGUgcmlnaHQgdG8gdXBkYXRlIHRoZXNlIFRlcm1zIGF0IGFueSB0aW1lLiBDb250aW51ZWQgdXNlIG9mIHRoZSB3ZWJzaXRlIGZvbGxvd2luZyBhbnkgY2hhbmdlcyBjb25zdGl0dXRlcyBhY2NlcHRhbmNlIG9mIHRoZSByZXZpc2VkIFRlcm1zLiBUaGUgZGF0ZSBvZiB0aGUgbW9zdCByZWNlbnQgcmV2aXNpb24gYXBwZWFycyBhdCB0aGUgdG9wIG9mIHRoaXMgcGFnZS48L3A+CiAgICAgICAgICAgIDwvU2VjdGlvbj4KCiAgICAgICAgICAgIDxTZWN0aW9uIGlkPSJydW8iIG51bWJlcj0iMiIgdGl0bGU9IlJlc2VhcmNoIFVzZSBPbmx5IOKAlCBDcml0aWNhbCBOb3RpY2UiPgogICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJyb3VuZGVkLXhsIHAtNCIgc3R5bGU9e3sgYmFja2dyb3VuZENvbG9yOiAiI0ZFRjJGMiIsIGJvcmRlcjogIjFweCBzb2xpZCAjRkVDQUNBIiB9fT4KICAgICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0iZm9udC1ib2xkIG1iLTIiIHN0eWxlPXt7IGNvbG9yOiAiI0I5MUMxQyIgfX0+QWxsIHByb2R1Y3RzIGFyZSBzb2xkIHN0cmljdGx5IGZvciBpbi12aXRybyBsYWJvcmF0b3J5IHJlc2VhcmNoIHVzZSBvbmx5LjwvcD4KICAgICAgICAgICAgICAgIDx1bCBjbGFzc05hbWU9InNwYWNlLXktMS41IHRleHQtc20iIHN0eWxlPXt7IGNvbG9yOiAiIzdGMUQxRCIgfX0+CiAgICAgICAgICAgICAgICAgIHtbCiAgICAgICAgICAgICAgICAgICAgIlByb2R1Y3RzIGFyZSBOT1QgYXBwcm92ZWQgYnkgdGhlIEZEQSwgTUhSQSwgRU1BLCBvciBhbnkgb3RoZXIgcmVndWxhdG9yeSBhdXRob3JpdHkgZm9yIGh1bWFuIG9yIHZldGVyaW5hcnkgdXNlLiIsCiAgICAgICAgICAgICAgICAgICAgIlByb2R1Y3RzIGFyZSBOT1QgaW50ZW5kZWQgdG8gZGlhZ25vc2UsIHRyZWF0LCBjdXJlLCBvciBwcmV2ZW50IGFueSBkaXNlYXNlIG9yIG1lZGljYWwgY29uZGl0aW9uLiIsCiAgICAgICAgICAgICAgICAgICAgIlByb2R1Y3RzIG11c3QgTk9UIGJlIGFkbWluaXN0ZXJlZCB0byBodW1hbnMgb3IgYW5pbWFscyB1bmRlciBhbnkgY2lyY3Vtc3RhbmNlcy4iLAogICAgICAgICAgICAgICAgICAgICJQcm9kdWN0cyBhcmUgTk9UIGZvb2Qgc3VwcGxlbWVudHMsIG1lZGljaW5lcywgb3IgdmV0ZXJpbmFyeSBwcmVwYXJhdGlvbnMuIiwKICAgICAgICAgICAgICAgICAgICAiQW55IG1pc3VzZSBvZiBwcm9kdWN0cyBpcyBzdHJpY3RseSBwcm9oaWJpdGVkIGFuZCBzb2xlbHkgdGhlIHJlc3BvbnNpYmlsaXR5IG9mIHRoZSBwdXJjaGFzZXIuIiwKICAgICAgICAgICAgICAgICAgXS5tYXAoKGl0ZW0pID0+ICgKICAgICAgICAgICAgICAgICAgICA8bGkga2V5PXtpdGVtfSBjbGFzc05hbWU9ImZsZXggaXRlbXMtc3RhcnQgZ2FwLTIiPgogICAgICAgICAgICAgICAgICAgICAgPHNwYW4gc3R5bGU9e3sgZmxleFNocmluazogMCB9fT7igKI8L3NwYW4+CiAgICAgICAgICAgICAgICAgICAgICB7aXRlbX0KICAgICAgICAgICAgICAgICAgICA8L2xpPgogICAgICAgICAgICAgICAgICApKX0KICAgICAgICAgICAgICAgIDwvdWw+CiAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgPHA+QnkgcHVyY2hhc2luZyBhbnkgcHJvZHVjdCBmcm9tIHtDT01QQU5ZX1NIT1JUfSwgeW91IGNvbmZpcm0gdGhhdCB5b3UgZnVsbHkgdW5kZXJzdGFuZCBhbmQgYWNjZXB0IHRoZXNlIHJlc3RyaWN0aW9ucy4ge0NPTVBBTllfU0hPUlR9IGFjY2VwdHMgbm8gbGlhYmlsaXR5IHdoYXRzb2V2ZXIgZm9yIGFueSBoYXJtLCBsb3NzLCBvciBsZWdhbCBjb25zZXF1ZW5jZSBhcmlzaW5nIGZyb20gbWlzdXNlIG9mIGl0cyBwcm9kdWN0cy48L3A+CiAgICAgICAgICAgIDwvU2VjdGlvbj4KCiAgICAgICAgICAgIDxTZWN0aW9uIGlkPSJlbGlnaWJpbGl0eSIgbnVtYmVyPSIzIiB0aXRsZT0iRWxpZ2liaWxpdHkgdG8gUHVyY2hhc2UiPgogICAgICAgICAgICAgIDxwPlRvIHB1cmNoYXNlIGZyb20ge0NPTVBBTllfU0hPUlR9LCB5b3UgbXVzdDo8L3A+CiAgICAgICAgICAgICAgPHVsIGNsYXNzTmFtZT0ic3BhY2UteS0xIHBsLTQiPgogICAgICAgICAgICAgICAge1sKICAgICAgICAgICAgICAgICAgIkJlIGF0IGxlYXN0IDE4IHllYXJzIG9mIGFnZTsiLAogICAgICAgICAgICAgICAgICAiQmUgYSBxdWFsaWZpZWQgcmVzZWFyY2hlciwgc2NpZW50aXN0LCBvciBhY2FkZW1pYyBwcm9mZXNzaW9uYWwgd2l0aCBsZWdpdGltYXRlIHJlc2VhcmNoIHB1cnBvc2VzOyIsCiAgICAgICAgICAgICAgICAgICJCZSBwdXJjaGFzaW5nIGZvciBib25hIGZpZGUgaW4tdml0cm8gbGFib3JhdG9yeSByZXNlYXJjaCBvbmx5OyIsCiAgICAgICAgICAgICAgICAgICJDb21wbHkgd2l0aCBhbGwgYXBwbGljYWJsZSBsYXdzIGFuZCByZWd1bGF0aW9ucyBpbiB5b3VyIGp1cmlzZGljdGlvbiByZWdhcmRpbmcgdGhlIHB1cmNoYXNlLCBwb3NzZXNzaW9uLCBhbmQgdXNlIG9mIHJlc2VhcmNoIGNoZW1pY2FsczsiLAogICAgICAgICAgICAgICAgICAiTm90IGJlIGxvY2F0ZWQgaW4gYSBqdXJpc2RpY3Rpb24gd2hlcmUgdGhlIHB1cmNoYXNlIG9yIHBvc3Nlc3Npb24gb2YgdGhlc2UgcHJvZHVjdHMgaXMgcHJvaGliaXRlZC4iLAogICAgICAgICAgICAgICAgXS5tYXAoKGl0ZW0pID0+ICgKICAgICAgICAgICAgICAgICAgPGxpIGtleT17aXRlbX0gY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLXN0YXJ0IGdhcC0yIj4KICAgICAgICAgICAgICAgICAgICA8c3BhbiBzdHlsZT17eyBmbGV4U2hyaW5rOiAwLCBjb2xvcjogIiMxQjVDQjUiIH19PuKAlDwvc3Bhbj4KICAgICAgICAgICAgICAgICAgICB7aXRlbX0KICAgICAgICAgICAgICAgICAgPC9saT4KICAgICAgICAgICAgICAgICkpfQogICAgICAgICAgICAgIDwvdWw+CiAgICAgICAgICAgICAgPHA+e0NPTVBBTllfU0hPUlR9IHJlc2VydmVzIHRoZSByaWdodCB0byByZWZ1c2UgYW55IG9yZGVyIGF0IGl0cyBzb2xlIGRpc2NyZXRpb24sIGluY2x1ZGluZyB3aGVyZSB0aGVyZSBpcyByZWFzb25hYmxlIHN1c3BpY2lvbiB0aGF0IHRoZXNlIGVsaWdpYmlsaXR5IHJlcXVpcmVtZW50cyBhcmUgbm90IG1ldC48L3A+CiAgICAgICAgICAgIDwvU2VjdGlvbj4KCiAgICAgICAgICAgIDxTZWN0aW9uIGlkPSJwcm9kdWN0cyIgbnVtYmVyPSI0IiB0aXRsZT0iUHJvZHVjdHMgJiBEZXNjcmlwdGlvbnMiPgogICAgICAgICAgICAgIDxwPldlIG1ha2UgZXZlcnkgZWZmb3J0IHRvIGVuc3VyZSB0aGF0IHByb2R1Y3QgZGVzY3JpcHRpb25zLCBzcGVjaWZpY2F0aW9ucywgaW1hZ2VzLCBhbmQgdGVjaG5pY2FsIGRhdGEgYXJlIGFjY3VyYXRlLiBIb3dldmVyLCB3ZSBkbyBub3Qgd2FycmFudCB0aGF0IGRlc2NyaXB0aW9ucyBhcmUgZXJyb3ItZnJlZSwgY29tcGxldGUsIG9yIGN1cnJlbnQuIFRlY2huaWNhbCBkYXRhIGluY2x1ZGluZyBwdXJpdHkgcGVyY2VudGFnZXMsIG1vbGVjdWxhciB3ZWlnaHRzLCBhbmQgc2VxdWVuY2UgaW5mb3JtYXRpb24gaXMgcHJvdmlkZWQgZm9yIHJlc2VhcmNoIHJlZmVyZW5jZSBwdXJwb3NlcyBvbmx5LjwvcD4KICAgICAgICAgICAgICA8cD5DZXJ0aWZpY2F0ZSBvZiBBbmFseXNpcyAoQ09BKSBkb2N1bWVudHMgYXJlIGdlbmVyYXRlZCBiYXNlZCBvbiBiYXRjaCB0ZXN0aW5nIGRhdGEuIEFjdHVhbCBsb3Qtc3BlY2lmaWMgQ09BcyBhcmUgYXZhaWxhYmxlIHVwb24gcmVxdWVzdCBmb3IgcXVhbGlmaWVkIHJlc2VhcmNoZXJzLiBQdXJpdHkgZmlndXJlcyBzdGF0ZWQgcmVwcmVzZW50IGluZGVwZW5kZW50IGFuYWx5c2lzIHJlc3VsdHMgZnJvbSByZXByZXNlbnRhdGl2ZSBiYXRjaCB0ZXN0aW5nLjwvcD4KICAgICAgICAgICAgICA8cD5Qcm9kdWN0IGltYWdlcyBhcmUgcmVwcmVzZW50YXRpdmUgYW5kIG1heSBkaWZmZXIgZnJvbSB0aGUgYWN0dWFsIHByb2R1Y3QgcmVjZWl2ZWQuIEFsbCBwZXB0aWRlcyBhcmUgc3VwcGxpZWQgYXMgbHlvcGhpbGlzZWQgKGZyZWV6ZS1kcmllZCkgcG93ZGVyIGluIHNlYWxlZCB2aWFscyB1bmxlc3Mgb3RoZXJ3aXNlIHN0YXRlZC48L3A+CiAgICAgICAgICAgICAgPHA+V2UgcmVzZXJ2ZSB0aGUgcmlnaHQgdG8gd2l0aGRyYXcgYW55IHByb2R1Y3QgZnJvbSBzYWxlIGF0IGFueSB0aW1lIHdpdGhvdXQgbm90aWNlLjwvcD4KICAgICAgICAgICAgPC9TZWN0aW9uPgoKICAgICAgICAgICAgPFNlY3Rpb24gaWQ9Im9yZGVycyIgbnVtYmVyPSI1IiB0aXRsZT0iT3JkZXJzICYgUGF5bWVudCI+CiAgICAgICAgICAgICAgPHA+QWxsIG9yZGVycyBwbGFjZWQgdGhyb3VnaCBvdXIgd2Vic2l0ZSBjb25zdGl0dXRlIGFuIG9mZmVyIHRvIHB1cmNoYXNlLiBXZSByZXNlcnZlIHRoZSByaWdodCB0byBhY2NlcHQgb3IgcmVqZWN0IGFueSBvcmRlci4gQW4gb3JkZXIgaXMgYWNjZXB0ZWQgb25seSB3aGVuIHdlIGRpc3BhdGNoIHRoZSBnb29kcyBhbmQgc2VuZCBhIGRpc3BhdGNoIGNvbmZpcm1hdGlvbiBlbWFpbC48L3A+CiAgICAgICAgICAgICAgPHA+UGF5bWVudCBpcyByZXF1aXJlZCBpbiBmdWxsIGF0IHRoZSB0aW1lIG9mIG9yZGVyaW5nLiBXZSBhY2NlcHQgbWFqb3IgY3JlZGl0IGFuZCBkZWJpdCBjYXJkcywgYXMgd2VsbCBhcyBjcnlwdG9jdXJyZW5jeSBwYXltZW50cy4gQWxsIGNhcmQgdHJhbnNhY3Rpb25zIGFyZSBwcm9jZXNzZWQgdGhyb3VnaCBQQ0ktRFNTIGNvbXBsaWFudCBwYXltZW50IHByb2Nlc3NvcnMuIFdlIGRvIG5vdCBzdG9yZSBjYXJkIGRldGFpbHMuPC9wPgogICAgICAgICAgICAgIDxwPlByaWNlcyBhcmUgZGlzcGxheWVkIGluIHlvdXIgc2VsZWN0ZWQgY3VycmVuY3kuIFdoZXJlIGN1cnJlbmN5IGNvbnZlcnNpb24gdG9vbHMgYXJlIHByb3ZpZGVkLCB0aGVzZSBhcmUgaW5kaWNhdGl2ZSBvbmx5LiBUaGUgZmluYWwgY2hhcmdlIHdpbGwgYmUgYXQgdGhlIHByZXZhaWxpbmcgcmF0ZSBhcHBsaWVkIGJ5IHlvdXIgY2FyZCBpc3N1ZXIgb3IgcGF5bWVudCBwcm92aWRlci48L3A+CiAgICAgICAgICAgICAgPHA+V2UgcmVzZXJ2ZSB0aGUgcmlnaHQgdG8gY2FuY2VsIGFuIG9yZGVyIGFuZCBpc3N1ZSBhIGZ1bGwgcmVmdW5kIGF0IGFueSB0aW1lLCBmb3IgYW55IHJlYXNvbiwgaW5jbHVkaW5nIHN1c3BlY3RlZCBmcmF1ZCwgZXhwb3J0IHJlc3RyaWN0aW9uIGlzc3Vlcywgb3Igc3RvY2sgYXZhaWxhYmlsaXR5LjwvcD4KICAgICAgICAgICAgPC9TZWN0aW9uPgoKICAgICAgICAgICAgPFNlY3Rpb24gaWQ9InByaWNpbmciIG51bWJlcj0iNiIgdGl0bGU9IlByaWNpbmcgJiBBdmFpbGFiaWxpdHkiPgogICAgICAgICAgICAgIDxwPkFsbCBwcmljZXMgYXJlIGRpc3BsYXllZCBpbmNsdXNpdmUgb2YgYW55IGFwcGxpY2FibGUgdGF4ZXMgd2hlcmUgc3RhdGVkLiBQcmljZXMgYXJlIHN1YmplY3QgdG8gY2hhbmdlIHdpdGhvdXQgbm90aWNlLiBUaGUgcHJpY2UgYXBwbGljYWJsZSB0byB5b3VyIG9yZGVyIGlzIHRoZSBwcmljZSBkaXNwbGF5ZWQgYXQgdGhlIHRpbWUgeW91IHBsYWNlIHRoZSBvcmRlci48L3A+CiAgICAgICAgICAgICAgPHA+U3RvY2sgYXZhaWxhYmlsaXR5IGlzIHVwZGF0ZWQgcmVndWxhcmx5IGJ1dCBjYW5ub3QgYmUgZ3VhcmFudGVlZCBpbiByZWFsIHRpbWUuIEluIHRoZSBldmVudCB0aGF0IGEgcHJvZHVjdCB5b3UgaGF2ZSBvcmRlcmVkIGlzIG91dCBvZiBzdG9jaywgd2Ugd2lsbCBjb250YWN0IHlvdSB0byBvZmZlciBhIHJlZnVuZCwgc3Vic3RpdHV0ZSBwcm9kdWN0LCBvciBiYWNrb3JkZXIgYXJyYW5nZW1lbnQuPC9wPgogICAgICAgICAgICAgIDxwPlByb21vdGlvbmFsIHByaWNpbmcsIGRpc2NvdW50IGNvZGVzLCBhbmQgYnVuZGxlIG9mZmVycyBtYXkgYmUgc3ViamVjdCB0byBhZGRpdGlvbmFsIHRlcm1zIGFuZCBtYXkgYmUgd2l0aGRyYXduIGF0IGFueSB0aW1lLjwvcD4KICAgICAgICAgICAgPC9TZWN0aW9uPgoKICAgICAgICAgICAgPFNlY3Rpb24gaWQ9InNoaXBwaW5nIiBudW1iZXI9IjciIHRpdGxlPSJTaGlwcGluZyAmIERlbGl2ZXJ5Ij4KICAgICAgICAgICAgICA8cD5QbGVhc2UgcmVmZXIgdG8gb3VyIGZ1bGwgPExpbmsgaHJlZj0iL3NoaXBwaW5nIiBzdHlsZT17eyBjb2xvcjogIiMxQjVDQjUiLCB0ZXh0RGVjb3JhdGlvbjogIm5vbmUiLCBmb250V2VpZ2h0OiA2MDAgfX0+U2hpcHBpbmcgUG9saWN5PC9MaW5rPiBmb3IgY29tcGxldGUgaW5mb3JtYXRpb24gb24gZGVsaXZlcnkgdGltZXNjYWxlcywgY2FycmllcnMsIHBhY2thZ2luZywgYW5kIGludGVybmF0aW9uYWwgc2hpcHBpbmcuPC9wPgogICAgICAgICAgICAgIDxwPlJpc2sgb2YgbG9zcyBhbmQgdGl0bGUgZm9yIHByb2R1Y3RzIHBhc3NlcyB0byB5b3UgdXBvbiBkaXNwYXRjaC4ge0NPTVBBTllfU0hPUlR9IGlzIG5vdCByZXNwb25zaWJsZSBmb3IgZGVsYXlzLCBsb3NzZXMsIG9yIGRhbWFnZXMgYXJpc2luZyBmcm9tIGNhcnJpZXIgaGFuZGxpbmcgb25jZSBwcm9kdWN0cyBoYXZlIGxlZnQgb3VyIGZhY2lsaXR5LjwvcD4KICAgICAgICAgICAgICA8cD5JdCBpcyB5b3VyIHJlc3BvbnNpYmlsaXR5IHRvIGVuc3VyZSB0aGF0IGltcG9ydGF0aW9uIG9mIHJlc2VhcmNoIGNoZW1pY2FscyBpcyBwZXJtaXR0ZWQgaW4geW91ciBqdXJpc2RpY3Rpb24uIFdlIGFjY2VwdCBubyBsaWFiaWxpdHkgZm9yIHByb2R1Y3RzIHNlaXplZCwgZGVsYXllZCwgb3IgZGVzdHJveWVkIGJ5IGN1c3RvbXMgYXV0aG9yaXRpZXMuPC9wPgogICAgICAgICAgICA8L1NlY3Rpb24+CgogICAgICAgICAgICA8U2VjdGlvbiBpZD0icmV0dXJucyIgbnVtYmVyPSI4IiB0aXRsZT0iUmV0dXJucyAmIFJlZnVuZHMiPgogICAgICAgICAgICAgIDxwPkR1ZSB0byB0aGUgbmF0dXJlIG9mIHJlc2VhcmNoIGNoZW1pY2FscyBhbmQgdGhlIHN0cmljdCBzdG9yYWdlIGFuZCBoYW5kbGluZyByZXF1aXJlbWVudHMgaW52b2x2ZWQsIHdlIGFyZSBnZW5lcmFsbHkgdW5hYmxlIHRvIGFjY2VwdCByZXR1cm5zIG9mIG9wZW5lZCBvciBkaXNwYXRjaGVkIHByb2R1Y3RzLiBUaGlzIGRvZXMgbm90IGFmZmVjdCB5b3VyIHN0YXR1dG9yeSByaWdodHMgdW5kZXIgVUsgY29uc3VtZXIgbGF3IHdoZXJlIGFwcGxpY2FibGUuPC9wPgogICAgICAgICAgICAgIDxwPklmIHlvdSByZWNlaXZlIGEgcHJvZHVjdCB0aGF0IGlzOjwvcD4KICAgICAgICAgICAgICA8dWwgY2xhc3NOYW1lPSJzcGFjZS15LTEgcGwtNCI+CiAgICAgICAgICAgICAgICB7WwogICAgICAgICAgICAgICAgICAiVmlzaWJseSBkYW1hZ2VkIHVwb24gYXJyaXZhbDsiLAogICAgICAgICAgICAgICAgICAiTWF0ZXJpYWxseSBkaWZmZXJlbnQgZnJvbSB0aGUgcHJvZHVjdCBvcmRlcmVkOyIsCiAgICAgICAgICAgICAgICAgICJNaXNzaW5nIGZyb20geW91ciBvcmRlcjsiLAogICAgICAgICAgICAgICAgXS5tYXAoKGl0ZW0pID0+ICgKICAgICAgICAgICAgICAgICAgPGxpIGtleT17aXRlbX0gY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLXN0YXJ0IGdhcC0yIj4KICAgICAgICAgICAgICAgICAgICA8c3BhbiBzdHlsZT17eyBmbGV4U2hyaW5rOiAwLCBjb2xvcjogIiMxQjVDQjUiIH19PuKAlDwvc3Bhbj4KICAgICAgICAgICAgICAgICAgICB7aXRlbX0KICAgICAgICAgICAgICAgICAgPC9saT4KICAgICAgICAgICAgICAgICkpfQogICAgICAgICAgICAgIDwvdWw+CiAgICAgICAgICAgICAgPHA+UGxlYXNlIGNvbnRhY3QgdXMgYXQgPGEgaHJlZj17YG1haWx0bzoke0VNQUlMfWB9IHN0eWxlPXt7IGNvbG9yOiAiIzFCNUNCNSIgfX0+e0VNQUlMfTwvYT4gd2l0aGluIDQ4IGhvdXJzIG9mIHJlY2VpcHQgd2l0aCBwaG90b2dyYXBoaWMgZXZpZGVuY2UuIFdlIHdpbGwgaW52ZXN0aWdhdGUgYW5kLCB3aGVyZSBhcHByb3ByaWF0ZSwgb2ZmZXIgYSByZXBsYWNlbWVudCBvciByZWZ1bmQgYXQgb3VyIGRpc2NyZXRpb24uPC9wPgogICAgICAgICAgICAgIDxwPlJlZnVuZHMsIHdoZXJlIGFwcHJvdmVkLCB3aWxsIGJlIGlzc3VlZCB0byB0aGUgb3JpZ2luYWwgcGF5bWVudCBtZXRob2Qgd2l0aGluIDXigJMxMCBidXNpbmVzcyBkYXlzLjwvcD4KICAgICAgICAgICAgPC9TZWN0aW9uPgoKICAgICAgICAgICAgPFNlY3Rpb24gaWQ9ImxpYWJpbGl0eSIgbnVtYmVyPSI5IiB0aXRsZT0iTGltaXRhdGlvbiBvZiBMaWFiaWxpdHkiPgogICAgICAgICAgICAgIDxwPntDT01QQU5ZX1NIT1JUfSdzIHRvdGFsIGxpYWJpbGl0eSB0byB5b3UgaW4gY29ubmVjdGlvbiB3aXRoIGFueSBvcmRlciBzaGFsbCBub3QgZXhjZWVkIHRoZSBwcmljZSBwYWlkIGZvciB0aGUgcmVsZXZhbnQgcHJvZHVjdHMuPC9wPgogICAgICAgICAgICAgIDxwPlRvIHRoZSBmdWxsZXN0IGV4dGVudCBwZXJtaXR0ZWQgYnkgbGF3LCB7Q09NUEFOWV9TSE9SVH0gZXhjbHVkZXMgYWxsIGxpYWJpbGl0eSBmb3I6PC9wPgogICAgICAgICAgICAgIDx1bCBjbGFzc05hbWU9InNwYWNlLXktMSBwbC00Ij4KICAgICAgICAgICAgICAgIHtbCiAgICAgICAgICAgICAgICAgICJBbnkgaW5kaXJlY3QsIGNvbnNlcXVlbnRpYWwsIG9yIHNwZWNpYWwgbG9zcyBvciBkYW1hZ2U7IiwKICAgICAgICAgICAgICAgICAgIkxvc3Mgb2YgcHJvZml0LCByZXZlbnVlLCBkYXRhLCBvciBidXNpbmVzczsiLAogICAgICAgICAgICAgICAgICAiQW55IGhhcm0sIGluanVyeSwgb3IgbGVnYWwgY29uc2VxdWVuY2UgcmVzdWx0aW5nIGZyb20gbWlzdXNlIG9yIHVuYXV0aG9yaXNlZCB1c2Ugb2Ygb3VyIHByb2R1Y3RzOyIsCiAgICAgICAgICAgICAgICAgICJBY3Rpb25zIHRha2VuIGJ5IHJlZ3VsYXRvcnkgb3IgbGF3IGVuZm9yY2VtZW50IGF1dGhvcml0aWVzIGluIHJlbGF0aW9uIHRvIHlvdXIgcHVyY2hhc2Ugb3IgdXNlIG9mIHByb2R1Y3RzOyIsCiAgICAgICAgICAgICAgICAgICJBbnkgcmVsaWFuY2Ugb24gaW5mb3JtYXRpb24gcHJvdmlkZWQgb24gdGhpcyB3ZWJzaXRlIGZvciBwdXJwb3NlcyBvdGhlciB0aGFuIGxlZ2l0aW1hdGUgcmVzZWFyY2guIiwKICAgICAgICAgICAgICAgIF0ubWFwKChpdGVtKSA9PiAoCiAgICAgICAgICAgICAgICAgIDxsaSBrZXk9e2l0ZW19IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1zdGFydCBnYXAtMiI+CiAgICAgICAgICAgICAgICAgICAgPHNwYW4gc3R5bGU9e3sgZmxleFNocmluazogMCwgY29sb3I6ICIjMUI1Q0I1IiB9fT7igJQ8L3NwYW4+CiAgICAgICAgICAgICAgICAgICAge2l0ZW19CiAgICAgICAgICAgICAgICAgIDwvbGk+CiAgICAgICAgICAgICAgICApKX0KICAgICAgICAgICAgICA8L3VsPgogICAgICAgICAgICAgIDxwPk5vdGhpbmcgaW4gdGhlc2UgVGVybXMgbGltaXRzIG91ciBsaWFiaWxpdHkgZm9yIGRlYXRoIG9yIHBlcnNvbmFsIGluanVyeSBjYXVzZWQgYnkgb3VyIG5lZ2xpZ2VuY2UsIG9yIGZvciBmcmF1ZCBvciBmcmF1ZHVsZW50IG1pc3JlcHJlc2VudGF0aW9uLCBvciBhbnkgb3RoZXIgbGlhYmlsaXR5IHRoYXQgY2Fubm90IGJlIGV4Y2x1ZGVkIGJ5IGxhdy48L3A+CiAgICAgICAgICAgIDwvU2VjdGlvbj4KCiAgICAgICAgICAgIDxTZWN0aW9uIGlkPSJpcCIgbnVtYmVyPSIxMCIgdGl0bGU9IkludGVsbGVjdHVhbCBQcm9wZXJ0eSI+CiAgICAgICAgICAgICAgPHA+QWxsIGNvbnRlbnQgb24gdGhpcyB3ZWJzaXRlLCBpbmNsdWRpbmcgdGV4dCwgZ3JhcGhpY3MsIGxvZ29zLCBpbWFnZXMsIHByb2R1Y3QgZGVzY3JpcHRpb25zLCBhbmQgQ09BIGRvY3VtZW50cywgaXMgdGhlIHByb3BlcnR5IG9mIHtDT01QQU5ZfSBvciBpdHMgbGljZW5zb3JzIGFuZCBpcyBwcm90ZWN0ZWQgYnkgY29weXJpZ2h0IGFuZCBvdGhlciBpbnRlbGxlY3R1YWwgcHJvcGVydHkgbGF3cy48L3A+CiAgICAgICAgICAgICAgPHA+WW91IG1heSBub3QgcmVwcm9kdWNlLCBkaXN0cmlidXRlLCBtb2RpZnksIG9yIHJlcHVibGlzaCBhbnkgY29udGVudCBmcm9tIHRoaXMgd2Vic2l0ZSB3aXRob3V0IG91ciBwcmlvciB3cml0dGVuIGNvbnNlbnQuIFlvdSBtYXkgZG93bmxvYWQgb3IgcHJpbnQgY29udGVudCBmb3IgcGVyc29uYWwsIG5vbi1jb21tZXJjaWFsIHJlc2VhcmNoIHJlZmVyZW5jZSBwdXJwb3NlcyBvbmx5LjwvcD4KICAgICAgICAgICAgPC9TZWN0aW9uPgoKICAgICAgICAgICAgPFNlY3Rpb24gaWQ9InByaXZhY3kiIG51bWJlcj0iMTEiIHRpdGxlPSJQcml2YWN5ICYgRGF0YSBQcm90ZWN0aW9uIj4KICAgICAgICAgICAgICA8cD5Zb3VyIHVzZSBvZiB0aGlzIHdlYnNpdGUgYW5kIG91ciBwcm9jZXNzaW5nIG9mIHlvdXIgcGVyc29uYWwgZGF0YSBhcmUgZ292ZXJuZWQgYnkgb3VyIDxMaW5rIGhyZWY9Ii9wcml2YWN5IiBzdHlsZT17eyBjb2xvcjogIiMxQjVDQjUiLCB0ZXh0RGVjb3JhdGlvbjogIm5vbmUiLCBmb250V2VpZ2h0OiA2MDAgfX0+UHJpdmFjeSBQb2xpY3k8L0xpbms+LCB3aGljaCBmb3JtcyBwYXJ0IG9mIHRoZXNlIFRlcm1zLjwvcD4KICAgICAgICAgICAgICA8cD5XZSBjb21wbHkgd2l0aCB0aGUgVUsgR2VuZXJhbCBEYXRhIFByb3RlY3Rpb24gUmVndWxhdGlvbiAoVUsgR0RQUikgYW5kIHRoZSBEYXRhIFByb3RlY3Rpb24gQWN0IDIwMTguIEJ5IHVzaW5nIHRoaXMgd2Vic2l0ZSwgeW91IGNvbnNlbnQgdG8gdGhlIHByb2Nlc3Npbmcgb2YgeW91ciBwZXJzb25hbCBkYXRhIGFzIGRlc2NyaWJlZCBpbiBvdXIgUHJpdmFjeSBQb2xpY3kuPC9wPgogICAgICAgICAgICA8L1NlY3Rpb24+CgogICAgICAgICAgICA8U2VjdGlvbiBpZD0icmVmZXJyYWwiIG51bWJlcj0iMTIiIHRpdGxlPSJSZWZlciBhIEZyaWVuZCBQcm9ncmFtbWUiPgogICAgICAgICAgICAgIDxwPk9tbmlRdXJlIG9wZXJhdGVzIGEgUmVmZXIgYSBGcmllbmQgcHJvZ3JhbW1lIHVuZGVyIHdoaWNoIGV4aXN0aW5nIHJlZ2lzdGVyZWQgY3VzdG9tZXJzICgiUmVmZXJyZXJzIikgYW5kIHRoZSBuZXcgY3VzdG9tZXJzIHRoZXkgcmVmZXIgKCJSZWZlcnJlZCBDdXN0b21lcnMiKSBtYXkgZWFjaCBlYXJuIMKjMjUgYWNjb3VudCBjcmVkaXQgd2hlbiB0aGUgUmVmZXJyZWQgQ3VzdG9tZXIgcGxhY2VzIHRoZWlyIGZpcnN0IG9yZGVyIHVzaW5nIHRoZSBSZWZlcnJlcidzIHVuaXF1ZSByZWZlcnJhbCBsaW5rLjwvcD4KICAgICAgICAgICAgICA8cD48c3Ryb25nPkVsaWdpYmlsaXR5Ljwvc3Ryb25nPiBUaGUgUmVmZXJyZWQgQ3VzdG9tZXIgbXVzdCBiZSBhIGdlbnVpbmVseSBuZXcgY3VzdG9tZXIgd2hvIGhhcyBuZXZlciBwcmV2aW91c2x5IGhlbGQgYW4gYWNjb3VudCBvciBwbGFjZWQgYW4gb3JkZXIgd2l0aCBPbW5pUXVyZS4gVGhlIFJlZmVycmVkIEN1c3RvbWVyIG11c3QgcmVnaXN0ZXIgYW5kIHBsYWNlIHRoZWlyIGZpcnN0IG9yZGVyIHVzaW5nIHRoZSBSZWZlcnJlcidzIGxpbmsuIFRoZSBSZWZlcnJlciBtdXN0IGhvbGQgYW4gYWN0aXZlLCB2ZXJpZmllZCBhY2NvdW50IGluIGdvb2Qgc3RhbmRpbmcuPC9wPgogICAgICAgICAgICAgIDxwPjxzdHJvbmc+UmV3YXJkIG1lY2hhbmljcy48L3N0cm9uZz4gVXBvbiB0aGUgUmVmZXJyZWQgQ3VzdG9tZXIncyBmaXJzdCBvcmRlciBiZWluZyBmdWxseSBwYWlkIGFuZCBub3Qgc3Vic2VxdWVudGx5IHJlZnVuZGVkLCBjYW5jZWxsZWQsIG9yIGNoYXJnZWQgYmFjaywgwqMyNSAob3IgbG9jYWwgY3VycmVuY3kgZXF1aXZhbGVudCkgYWNjb3VudCBjcmVkaXQgaXMgYWRkZWQgYXV0b21hdGljYWxseSB0byBib3RoIHRoZSBSZWZlcnJlcidzIGFuZCB0aGUgUmVmZXJyZWQgQ3VzdG9tZXIncyBhY2NvdW50cy4gQ3JlZGl0IGlzIGFwcGxpZWQgYXV0b21hdGljYWxseSBhdCBjaGVja291dCBhZ2FpbnN0IGEgZnV0dXJlIG9yZGVyLCB1cCB0byB0aGUgb3JkZXIncyB2YWx1ZSwgYW5kIGhhcyBubyBzdGFuZGFsb25lIGNhc2ggdmFsdWUuIEVhY2ggYWNjb3VudCBtYXkgaG9sZCBhIG1heGltdW0gdW5yZWRlZW1lZCBjcmVkaXQgYmFsYW5jZSBvZiDCozUwIChvciBsb2NhbCBjdXJyZW5jeSBlcXVpdmFsZW50KSBhdCBhbnkgdGltZTsgY3JlZGl0IGVhcm5lZCBiZXlvbmQgdGhpcyBjYXAgaXMgbm90IGlzc3VlZC4gQ3JlZGl0IGlzIG5vbi10cmFuc2ZlcmFibGUgYW5kIGRvZXMgbm90IGV4cGlyZSB3aGlsZSB0aGUgYWNjb3VudCByZW1haW5zIGFjdGl2ZS48L3A+CiAgICAgICAgICAgICAgPHA+PHN0cm9uZz5SZWZlcnJlZCBDdXN0b21lciBkaXNjb3VudC48L3N0cm9uZz4gVGhlIFJlZmVycmVkIEN1c3RvbWVyIGF1dG9tYXRpY2FsbHkgcmVjZWl2ZXMgMTAlIG9mZiB0aGVpciBmaXJzdCBvcmRlciwgYW5kIEJ1bmRsZSAmIFNhdmUgZnJlZS1pdGVtIHRpZXJzIGFwcGx5IGluIGFkZGl0aW9uLCBvbiBldmVyeSBvcmRlciB3aXRoIG5vIGV4Y2VwdGlvbnM6IG9yZGVycyBvZiAzLTQgaXRlbXMgcmVjZWl2ZSBhIGZyZWUgMTBtbCBiYWN0ZXJpb3N0YXRpYyB3YXRlcjsgb3JkZXJzIG9mIDUtOSBpdGVtcyByZWNlaXZlIHRoZSBjaGVhcGVzdCBwZXB0aWRlIGluIHRoZSBjYXJ0IGZyZWUgaW5zdGVhZDsgYW5kIG9yZGVycyBvZiAxMCBvciBtb3JlIGl0ZW1zIHJlY2VpdmUgdGhlIDIgY2hlYXBlc3QgcGVwdGlkZXMgZnJlZSBpbnN0ZWFkLiBUaGVzZSB0aWVycyBhcmUgbXV0dWFsbHkgZXhjbHVzaXZlIGFuZCBkbyBub3Qgc3RhY2sg4oCUIGVhY2ggb3JkZXIgcmVjZWl2ZXMgdGhlIHJld2FyZCBmb3IgaXRzIG93biB0aWVyIG9ubHkuPC9wPgogICAgICAgICAgICAgIDxwPjxzdHJvbmc+UHJvaGliaXRlZCBjb25kdWN0Ljwvc3Ryb25nPiBUaGUgZm9sbG93aW5nIGFyZSBzdHJpY3RseSBwcm9oaWJpdGVkIGFuZCBjb25zdGl0dXRlIGZyYXVkOjwvcD4KICAgICAgICAgICAgICA8dWwgc3R5bGU9e3sgcGFkZGluZ0xlZnQ6ICIyMHB4IiwgbGluZUhlaWdodDogMiB9fT4KICAgICAgICAgICAgICAgIDxsaT5TZWxmLXJlZmVycmFsIOKAlCByZWZlcnJpbmcgeW91cnNlbGYgdXNpbmcgYSBkaWZmZXJlbnQgZW1haWwgYWRkcmVzcywgbmFtZSwgb3IgYW55IG90aGVyIGFjY291bnQuPC9saT4KICAgICAgICAgICAgICAgIDxsaT5DcmVhdGluZyBmYWtlLCBkdXBsaWNhdGUsIG9yIHRoaXJkLXBhcnR5IGFjY291bnRzIHNvbGVseSB0byBnZW5lcmF0ZSByZWZlcnJhbCBjcmVkaXQuPC9saT4KICAgICAgICAgICAgICAgIDxsaT5BbnkgY29vcmRpbmF0ZWQgc2NoZW1lIHRvIGFidXNlIHRoZSByZWZlcnJhbCBwcm9ncmFtbWUsIGluY2x1ZGluZyBpbnN0cnVjdGluZyBvdGhlcnMgdG8gY3JlYXRlIGFjY291bnRzIHdpdGggdGhlIGludGVudGlvbiBvZiBpbW1lZGlhdGUgcmVmdW5kIG9yIGNhbmNlbGxhdGlvbi48L2xpPgogICAgICAgICAgICAgIDwvdWw+CiAgICAgICAgICAgICAgPHA+PHN0cm9uZz5GcmF1ZCBkZXRlY3Rpb24uPC9zdHJvbmc+IFJlZmVycmVkIGFjY291bnRzIGFyZSBhdXRvbWF0aWNhbGx5IHZlcmlmaWVkIGFnYWluc3QgZXhpc3RpbmcgYWNjb3VudHMgdXNpbmcgZW1haWwgYWRkcmVzcywgYmlsbGluZyBhZGRyZXNzLCBkZWxpdmVyeSBhZGRyZXNzLCBwYXltZW50IG1ldGhvZCwgSVAgYWRkcmVzcywgYW5kIGRldmljZSBmaW5nZXJwcmludC4gT21uaVF1cmUgcmVzZXJ2ZXMgdGhlIHJpZ2h0IHRvIGFwcGx5IGFkZGl0aW9uYWwgbWFudWFsIHJldmlldyBhdCBhbnkgdGltZS48L3A+CiAgICAgICAgICAgICAgPHA+PHN0cm9uZz5Db25zZXF1ZW5jZXMgb2YgbWlzdXNlLjwvc3Ryb25nPiBXaGVyZSBPbW5pUXVyZSBkZXRlcm1pbmVzLCBpbiBpdHMgc29sZSBkaXNjcmV0aW9uLCB0aGF0IHRoZSByZWZlcnJhbCBwcm9ncmFtbWUgaGFzIGJlZW4gYWJ1c2VkLCB3ZSByZXNlcnZlIHRoZSByaWdodCB0bzogaW1tZWRpYXRlbHkgdm9pZCBhbGwgYXNzb2NpYXRlZCBjcmVkaXQ7IHBlcm1hbmVudGx5IHRlcm1pbmF0ZSBhbGwgYWNjb3VudHMgaW52b2x2ZWQ7IGNhbmNlbCBhbnkgcGVuZGluZyBvcmRlcnMgd2l0aG91dCByZWZ1bmQ7IGNsYXcgYmFjayB0aGUgdmFsdWUgb2YgYW55IGNyZWRpdCBhbHJlYWR5IHJlZGVlbWVkOyBhbmQgcmVmZXIgdGhlIG1hdHRlciB0byByZWxldmFudCBhdXRob3JpdGllcyB3aGVyZSBmcmF1ZCBpcyBzdXNwZWN0ZWQuIE9tbmlRdXJlJ3MgZGVjaXNpb25zIHJlZ2FyZGluZyBwcm9ncmFtbWUgZWxpZ2liaWxpdHksIGZyYXVkLCBhbmQgZW5mb3JjZW1lbnQgYXJlIGZpbmFsLjwvcD4KICAgICAgICAgICAgICA8cD5PbW5pUXVyZSByZXNlcnZlcyB0aGUgcmlnaHQgdG8gYW1lbmQsIHN1c3BlbmQsIG9yIHRlcm1pbmF0ZSB0aGUgUmVmZXIgYSBGcmllbmQgcHJvZ3JhbW1lIGF0IGFueSB0aW1lIHdpdGhvdXQgcHJpb3Igbm90aWNlLjwvcD4KICAgICAgICAgICAgPC9TZWN0aW9uPgoKICAgICAgICAgICAgPFNlY3Rpb24gaWQ9ImdvdmVybmluZyIgbnVtYmVyPSIxMyIgdGl0bGU9IkdvdmVybmluZyBMYXcgJiBEaXNwdXRlcyI+CiAgICAgICAgICAgICAgPHA+VGhlc2UgVGVybXMgYW5kIGFueSBkaXNwdXRlIG9yIGNsYWltIGFyaXNpbmcgb3V0IG9mIG9yIGluIGNvbm5lY3Rpb24gd2l0aCB0aGVtIHNoYWxsIGJlIGdvdmVybmVkIGJ5IGFuZCBjb25zdHJ1ZWQgaW4gYWNjb3JkYW5jZSB3aXRoIHRoZSBsYXdzIG9mIEVuZ2xhbmQgYW5kIFdhbGVzLjwvcD4KICAgICAgICAgICAgICA8cD5BbnkgZGlzcHV0ZXMgc2hhbGwgYmUgc3ViamVjdCB0byB0aGUgZXhjbHVzaXZlIGp1cmlzZGljdGlvbiBvZiB0aGUgY291cnRzIG9mIEVuZ2xhbmQgYW5kIFdhbGVzLiBJZiB5b3UgYXJlIGEgY29uc3VtZXIgYmFzZWQgaW4gYW5vdGhlciBqdXJpc2RpY3Rpb24sIHRoaXMgZG9lcyBub3QgYWZmZWN0IGFueSBtYW5kYXRvcnkgY29uc3VtZXIgcmlnaHRzIHlvdSBtYXkgaGF2ZSB1bmRlciBsb2NhbCBsYXcuPC9wPgogICAgICAgICAgICAgIDxwPldlIGFpbSB0byByZXNvbHZlIGFueSBjb21wbGFpbnRzIG9yIGRpc3B1dGVzIGluZm9ybWFsbHkgYW5kIGluIGdvb2QgZmFpdGguIElmIHlvdSBoYXZlIGEgY29tcGxhaW50LCBwbGVhc2UgY29udGFjdCB1cyBmaXJzdCBhdCA8YSBocmVmPXtgbWFpbHRvOiR7RU1BSUx9YH0gc3R5bGU9e3sgY29sb3I6ICIjMUI1Q0I1IiB9fT57RU1BSUx9PC9hPi48L3A+CiAgICAgICAgICAgIDwvU2VjdGlvbj4KCiAgICAgICAgICAgIDxTZWN0aW9uIGlkPSJjaGFuZ2VzIiBudW1iZXI9IjE0IiB0aXRsZT0iQ2hhbmdlcyB0byBUaGVzZSBUZXJtcyI+CiAgICAgICAgICAgICAgPHA+V2UgcmVzZXJ2ZSB0aGUgcmlnaHQgdG8gbW9kaWZ5IHRoZXNlIFRlcm1zIGF0IGFueSB0aW1lLiBBbnkgY2hhbmdlcyB3aWxsIGJlIHBvc3RlZCBvbiB0aGlzIHBhZ2Ugd2l0aCBhbiB1cGRhdGVkIHJldmlzaW9uIGRhdGUuIFdoZXJlIGNoYW5nZXMgYXJlIG1hdGVyaWFsLCB3ZSB3aWxsIGVuZGVhdm91ciB0byBub3RpZnkgcmVnaXN0ZXJlZCBjdXN0b21lcnMgYnkgZW1haWwuPC9wPgogICAgICAgICAgICAgIDxwPllvdXIgY29udGludWVkIHVzZSBvZiB0aGUgd2Vic2l0ZSBvciBwbGFjZW1lbnQgb2YgYW4gb3JkZXIgZm9sbG93aW5nIGFueSBjaGFuZ2VzIGNvbnN0aXR1dGVzIGFjY2VwdGFuY2Ugb2YgdGhlIHJldmlzZWQgVGVybXMuPC9wPgogICAgICAgICAgICA8L1NlY3Rpb24+CgogICAgICAgICAgICA8U2VjdGlvbiBpZD0iY29udGFjdCIgbnVtYmVyPSIxNSIgdGl0bGU9IkNvbnRhY3QgVXMiPgogICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJyb3VuZGVkLXhsIHAtNCIgc3R5bGU9e3sgYmFja2dyb3VuZENvbG9yOiAiI0VFRjRGRiIsIGJvcmRlcjogIjFweCBzb2xpZCAjQkZEQkZFIiB9fT4KICAgICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0iZm9udC1zZW1pYm9sZCBtYi0yIiBzdHlsZT17eyBjb2xvcjogIiMxMjQwQTAiIH19PntDT01QQU5ZfTwvcD4KICAgICAgICAgICAgICAgIDxwPjxzdHJvbmc+TGVnYWwgZW5xdWlyaWVzOjwvc3Ryb25nPiA8YSBocmVmPXtgbWFpbHRvOiR7RU1BSUx9YH0gc3R5bGU9e3sgY29sb3I6ICIjMUI1Q0I1IiB9fT57RU1BSUx9PC9hPjwvcD4KICAgICAgICAgICAgICAgIDxwPjxzdHJvbmc+R2VuZXJhbCBlbnF1aXJpZXM6PC9zdHJvbmc+IDxhIGhyZWY9Im1haWx0bzpzdXBwb3J0QG9tbmlxdXJlLmNvbSIgc3R5bGU9e3sgY29sb3I6ICIjMUI1Q0I1IiB9fT5zdXBwb3J0QG9tbmlxdXJlLmNvbTwvYT48L3A+CiAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgIDwvU2VjdGlvbj4KICAgICAgICAgIDwvZGl2PgogICAgICAgIDwvZGl2PgogICAgICA8L2Rpdj4KICAgIDwvZGl2PgogICk7Cn0K
+import { Link } from "wouter";
+import { Shield, ChevronRight } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
+
+const LAST_UPDATED = "1 May 2025";
+const COMPANY = "OmniQure Peptide Research Institute";
+const COMPANY_SHORT = "OmniQure";
+const EMAIL = "support@omniqure.com";
+
+interface SectionProps {
+  id: string;
+  number: string;
+  title: string;
+  children: React.ReactNode;
+}
+
+function Section({ id, number, title, children }: SectionProps) {
+  return (
+    <section id={id} className="mb-10">
+      <div className="flex items-baseline gap-3 mb-3">
+        <span
+          className="font-bold flex-shrink-0"
+          style={{ fontSize: "13px", color: "#1B5CB5", minWidth: "24px" }}
+        >
+          {number}.
+        </span>
+        <h2 className="font-bold" style={{ fontSize: "18px", color: "#0F172A" }}>
+          {title}
+        </h2>
+      </div>
+      <div className="pl-9 space-y-3 text-sm leading-relaxed" style={{ color: "#374151", lineHeight: "1.85" }}>
+        {children}
+      </div>
+    </section>
+  );
+}
+
+const toc = [
+  { id: "acceptance", label: "Acceptance of Terms" },
+  { id: "ruo", label: "Research Use Only" },
+  { id: "eligibility", label: "Eligibility" },
+  { id: "products", label: "Products & Descriptions" },
+  { id: "orders", label: "Orders & Payment" },
+  { id: "pricing", label: "Pricing & Availability" },
+  { id: "shipping", label: "Shipping & Delivery" },
+  { id: "returns", label: "Returns & Refunds" },
+  { id: "liability", label: "Limitation of Liability" },
+  { id: "ip", label: "Intellectual Property" },
+  { id: "privacy", label: "Privacy & Data" },
+  { id: "governing", label: "Governing Law" },
+  { id: "changes", label: "Changes to Terms" },
+  { id: "contact", label: "Contact" },
+];
+
+export default function TermsPage() {
+  useSEO({
+    title: "Terms & Conditions",
+    description: "Terms and conditions for purchasing research peptides from OmniQure Peptide Research Institute. All products are for in-vitro research use only.",
+    canonicalPath: "/terms",
+  });
+  return (
+    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
+      {/* Hero */}
+      <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", padding: "40px 0 32px", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+        <div className="max-w-[1280px] mx-auto px-4">
+          <div className="flex items-center gap-2 text-xs mb-3" style={{ color: "rgba(255,255,255,0.5)" }}>
+            <Link href="/" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Home</Link>
+            <ChevronRight size={12} />
+            <span style={{ color: "rgba(255,255,255,0.8)" }}>Terms & Conditions</span>
+          </div>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="rounded-xl flex items-center justify-center" style={{ width: "40px", height: "40px", backgroundColor: "rgba(255,255,255,0.12)" }}>
+              <Shield size={20} style={{ color: "#93C5FD" }} />
+            </div>
+            <h1 className="font-bold text-white" style={{ fontSize: "clamp(22px, 4vw, 32px)" }}>
+              Terms & Conditions
+            </h1>
+          </div>
+          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)" }}>
+            Last updated: {LAST_UPDATED} · {COMPANY}
+          </p>
+        </div>
+      </div>
+
+      {/* RUO Banner */}
+      <div style={{ backgroundColor: "#FEF2F2", borderBottom: "1px solid #FECACA" }}>
+        <div className="max-w-[1280px] mx-auto px-4 py-3 flex items-start gap-2">
+          <span style={{ fontSize: "15px", flexShrink: 0 }}>⚠️</span>
+          <p className="text-xs leading-relaxed font-medium" style={{ color: "#B91C1C" }}>
+            <strong>Important:</strong> All products sold by {COMPANY_SHORT} are strictly for in-vitro laboratory research use only. They are not medicines, drugs, food supplements, or approved for human or veterinary use. By purchasing, you confirm you are 18 or over and a qualified researcher.
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-[1280px] mx-auto px-4 py-10">
+        <div className="flex gap-10">
+          {/* Table of Contents — desktop sticky */}
+          <aside className="hidden lg:block" style={{ width: "220px", flexShrink: 0 }}>
+            <div className="sticky top-24">
+              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#94A3B8" }}>Contents</p>
+              <nav className="space-y-1">
+                {toc.map((item, i) => (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    className="flex items-center gap-2 text-xs py-1 transition-colors hover:text-blue-600"
+                    style={{ color: "#64748B", textDecoration: "none" }}
+                  >
+                    <span style={{ color: "#BFDBFE", fontSize: "11px", fontWeight: 700, minWidth: "18px" }}>{i + 1}.</span>
+                    {item.label}
+                  </a>
+                ))}
+              </nav>
+            </div>
+          </aside>
+
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            <div
+              className="rounded-2xl p-6 md:p-8 mb-6"
+              style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 16px rgba(15,23,42,0.05)" }}
+            >
+              <p className="text-sm leading-relaxed mb-4" style={{ color: "#475569", lineHeight: "1.85" }}>
+                These Terms and Conditions ("Terms") govern your use of the {COMPANY} website and your purchase of products from us. Please read them carefully before placing an order. By accessing our website or placing an order, you agree to be bound by these Terms.
+              </p>
+              <p className="text-sm leading-relaxed" style={{ color: "#475569" }}>
+                These Terms constitute a legally binding agreement between you and {COMPANY} (trading as "{COMPANY_SHORT}").
+              </p>
+            </div>
+
+            <Section id="acceptance" number="1" title="Acceptance of Terms">
+              <p>By accessing this website, creating an account, or placing an order, you confirm that you have read, understood, and agree to be bound by these Terms in full. If you do not agree, you must not use this website or purchase from us.</p>
+              <p>We reserve the right to update these Terms at any time. Continued use of the website following any changes constitutes acceptance of the revised Terms. The date of the most recent revision appears at the top of this page.</p>
+            </Section>
+
+            <Section id="ruo" number="2" title="Research Use Only — Critical Notice">
+              <div className="rounded-xl p-4" style={{ backgroundColor: "#FEF2F2", border: "1px solid #FECACA" }}>
+                <p className="font-bold mb-2" style={{ color: "#B91C1C" }}>All products are sold strictly for in-vitro laboratory research use only.</p>
+                <ul className="space-y-1.5 text-sm" style={{ color: "#7F1D1D" }}>
+                  {[
+                    "Products are NOT approved by the FDA, MHRA, EMA, or any other regulatory authority for human or veterinary use.",
+                    "Products are NOT intended to diagnose, treat, cure, or prevent any disease or medical condition.",
+                    "Products must NOT be administered to humans or animals under any circumstances.",
+                    "Products are NOT food supplements, medicines, or veterinary preparations.",
+                    "Any misuse of products is strictly prohibited and solely the responsibility of the purchaser.",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <span style={{ flexShrink: 0 }}>•</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <p>By purchasing any product from {COMPANY_SHORT}, you confirm that you fully understand and accept these restrictions. {COMPANY_SHORT} accepts no liability whatsoever for any harm, loss, or legal consequence arising from misuse of its products.</p>
+            </Section>
+
+            <Section id="eligibility" number="3" title="Eligibility to Purchase">
+              <p>To purchase from {COMPANY_SHORT}, you must:</p>
+              <ul className="space-y-1 pl-4">
+                {[
+                  "Be at least 18 years of age;",
+                  "Be a qualified researcher, scientist, or academic professional with legitimate research purposes;",
+                  "Be purchasing for bona fide in-vitro laboratory research only;",
+                  "Comply with all applicable laws and regulations in your jurisdiction regarding the purchase, possession, and use of research chemicals;",
+                  "Not be located in a jurisdiction where the purchase or possession of these products is prohibited.",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span style={{ flexShrink: 0, color: "#1B5CB5" }}>—</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <p>{COMPANY_SHORT} reserves the right to refuse any order at its sole discretion, including where there is reasonable suspicion that these eligibility requirements are not met.</p>
+            </Section>
+
+            <Section id="products" number="4" title="Products & Descriptions">
+              <p>We make every effort to ensure that product descriptions, specifications, images, and technical data are accurate. However, we do not warrant that descriptions are error-free, complete, or current. Technical data including purity percentages, molecular weights, and sequence information is provided for research reference purposes only.</p>
+              <p>Certificate of Analysis (COA) documents are generated based on batch testing data. Actual lot-specific COAs are available upon request for qualified researchers. Purity figures stated represent independent analysis results from representative batch testing.</p>
+              <p>Product images are representative and may differ from the actual product received. All peptides are supplied as lyophilised (freeze-dried) powder in sealed vials unless otherwise stated.</p>
+              <p>We reserve the right to withdraw any product from sale at any time without notice.</p>
+            </Section>
+
+            <Section id="orders" number="5" title="Orders & Payment">
+              <p>All orders placed through our website constitute an offer to purchase. We reserve the right to accept or reject any order. An order is accepted only when we dispatch the goods and send a dispatch confirmation email.</p>
+              <p>Payment is required in full at the time of ordering. We accept major credit and debit cards, as well as cryptocurrency payments. All card transactions are processed through PCI-DSS compliant payment processors. We do not store card details.</p>
+              <p>Prices are displayed in your selected currency. Where currency conversion tools are provided, these are indicative only. The final charge will be at the prevailing rate applied by your card issuer or payment provider.</p>
+              <p>We reserve the right to cancel an order and issue a full refund at any time, for any reason, including suspected fraud, export restriction issues, or stock availability.</p>
+            </Section>
+
+            <Section id="pricing" number="6" title="Pricing & Availability">
+              <p>All prices are displayed inclusive of any applicable taxes where stated. Prices are subject to change without notice. The price applicable to your order is the price displayed at the time you place the order.</p>
+              <p>Stock availability is updated regularly but cannot be guaranteed in real time. In the event that a product you have ordered is out of stock, we will contact you to offer a refund, substitute product, or backorder arrangement.</p>
+              <p>Promotional pricing, discount codes, and bundle offers may be subject to additional terms and may be withdrawn at any time.</p>
+            </Section>
+
+            <Section id="shipping" number="7" title="Shipping & Delivery">
+              <p>Please refer to our full <Link href="/shipping" style={{ color: "#1B5CB5", textDecoration: "none", fontWeight: 600 }}>Shipping Policy</Link> for complete information on delivery timescales, carriers, packaging, and international shipping.</p>
+              <p>Risk of loss and title for products passes to you upon dispatch. {COMPANY_SHORT} is not responsible for delays, losses, or damages arising from carrier handling once products have left our facility.</p>
+              <p>It is your responsibility to ensure that importation of research chemicals is permitted in your jurisdiction. We accept no liability for products seized, delayed, or destroyed by customs authorities.</p>
+            </Section>
+
+            <Section id="returns" number="8" title="Returns & Refunds">
+              <p>Due to the nature of research chemicals and the strict storage and handling requirements involved, we are generally unable to accept returns of opened or dispatched products. This does not affect your statutory rights under UK consumer law where applicable.</p>
+              <p>If you receive a product that is:</p>
+              <ul className="space-y-1 pl-4">
+                {[
+                  "Visibly damaged upon arrival;",
+                  "Materially different from the product ordered;",
+                  "Missing from your order;",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span style={{ flexShrink: 0, color: "#1B5CB5" }}>—</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <p>Please contact us at <a href={`mailto:${EMAIL}`} style={{ color: "#1B5CB5" }}>{EMAIL}</a> within 48 hours of receipt with photographic evidence. We will investigate and, where appropriate, offer a replacement or refund at our discretion.</p>
+              <p>Refunds, where approved, will be issued to the original payment method within 5–10 business days.</p>
+            </Section>
+
+            <Section id="liability" number="9" title="Limitation of Liability">
+              <p>{COMPANY_SHORT}'s total liability to you in connection with any order shall not exceed the price paid for the relevant products.</p>
+              <p>To the fullest extent permitted by law, {COMPANY_SHORT} excludes all liability for:</p>
+              <ul className="space-y-1 pl-4">
+                {[
+                  "Any indirect, consequential, or special loss or damage;",
+                  "Loss of profit, revenue, data, or business;",
+                  "Any harm, injury, or legal consequence resulting from misuse or unauthorised use of our products;",
+                  "Actions taken by regulatory or law enforcement authorities in relation to your purchase or use of products;",
+                  "Any reliance on information provided on this website for purposes other than legitimate research.",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span style={{ flexShrink: 0, color: "#1B5CB5" }}>—</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <p>Nothing in these Terms limits our liability for death or personal injury caused by our negligence, or for fraud or fraudulent misrepresentation, or any other liability that cannot be excluded by law.</p>
+            </Section>
+
+            <Section id="ip" number="10" title="Intellectual Property">
+              <p>All content on this website, including text, graphics, logos, images, product descriptions, and COA documents, is the property of {COMPANY} or its licensors and is protected by copyright and other intellectual property laws.</p>
+              <p>You may not reproduce, distribute, modify, or republish any content from this website without our prior written consent. You may download or print content for personal, non-commercial research reference purposes only.</p>
+            </Section>
+
+            <Section id="privacy" number="11" title="Privacy & Data Protection">
+              <p>Your use of this website and our processing of your personal data are governed by our <Link href="/privacy" style={{ color: "#1B5CB5", textDecoration: "none", fontWeight: 600 }}>Privacy Policy</Link>, which forms part of these Terms.</p>
+              <p>We comply with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018. By using this website, you consent to the processing of your personal data as described in our Privacy Policy.</p>
+            </Section>
+
+            <Section id="referral" number="12" title="Refer a Friend Programme">
+              <p>OmniQure operates a Refer a Friend programme under which existing registered customers ("Referrers") and the new customers they refer ("Referred Customers") may each earn £25 account credit when the Referred Customer places their first order using the Referrer's unique referral link.</p>
+              <p><strong>Eligibility.</strong> The Referred Customer must be a genuinely new customer who has never previously held an account or placed an order with OmniQure. The Referred Customer must register and place their first order using the Referrer's link. The Referrer must hold an active, verified account in good standing.</p>
+              <p><strong>Reward mechanics.</strong> Upon the Referred Customer's first order being fully paid and not subsequently refunded, cancelled, or charged back, £25 (or local currency equivalent) account credit is added automatically to both the Referrer's and the Referred Customer's accounts. Credit is applied automatically at checkout against a future order, up to the order's value, and has no standalone cash value. Each account may hold a maximum unredeemed credit balance of £50 (or local currency equivalent) at any time; credit earned beyond this cap is not issued. Credit is non-transferable and does not expire while the account remains active.</p>
+              <p><strong>Referred Customer discount.</strong> The Referred Customer automatically receives 10% off their first order, and Bundle & Save free-item tiers apply in addition, on every order with no exceptions: orders of 3-4 items receive a free 10ml bacteriostatic water; orders of 5-9 items receive the cheapest peptide in the cart free instead; and orders of 10 or more items receive the 2 cheapest peptides free instead. These tiers are mutually exclusive and do not stack — each order receives the reward for its own tier only.</p>
+              <p><strong>Prohibited conduct.</strong> The following are strictly prohibited and constitute fraud:</p>
+              <ul style={{ paddingLeft: "20px", lineHeight: 2 }}>
+                <li>Self-referral — referring yourself using a different email address, name, or any other account.</li>
+                <li>Creating fake, duplicate, or third-party accounts solely to generate referral credit.</li>
+                <li>Any coordinated scheme to abuse the referral programme, including instructing others to create accounts with the intention of immediate refund or cancellation.</li>
+              </ul>
+              <p><strong>Fraud detection.</strong> Referred accounts are automatically verified against existing accounts using email address, billing address, delivery address, payment method, IP address, and device fingerprint. OmniQure reserves the right to apply additional manual review at any time.</p>
+              <p><strong>Consequences of misuse.</strong> Where OmniQure determines, in its sole discretion, that the referral programme has been abused, we reserve the right to: immediately void all associated credit; permanently terminate all accounts involved; cancel any pending orders without refund; claw back the value of any credit already redeemed; and refer the matter to relevant authorities where fraud is suspected. OmniQure's decisions regarding programme eligibility, fraud, and enforcement are final.</p>
+              <p>OmniQure reserves the right to amend, suspend, or terminate the Refer a Friend programme at any time without prior notice.</p>
+            </Section>
+
+            <Section id="governing" number="13" title="Governing Law & Disputes">
+              <p>These Terms and any dispute or claim arising out of or in connection with them shall be governed by and construed in accordance with the laws of England and Wales.</p>
+              <p>Any disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales. If you are a consumer based in another jurisdiction, this does not affect any mandatory consumer rights you may have under local law.</p>
+              <p>We aim to resolve any complaints or disputes informally and in good faith. If you have a complaint, please contact us first at <a href={`mailto:${EMAIL}`} style={{ color: "#1B5CB5" }}>{EMAIL}</a>.</p>
+            </Section>
+
+            <Section id="changes" number="14" title="Changes to These Terms">
+              <p>We reserve the right to modify these Terms at any time. Any changes will be posted on this page with an updated revision date. Where changes are material, we will endeavour to notify registered customers by email.</p>
+              <p>Your continued use of the website or placement of an order following any changes constitutes acceptance of the revised Terms.</p>
+            </Section>
+
+            <Section id="contact" number="15" title="Contact Us">
+              <div className="rounded-xl p-4" style={{ backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}>
+                <p className="font-semibold mb-2" style={{ color: "#1240A0" }}>{COMPANY}</p>
+                <p><strong>Legal enquiries:</strong> <a href={`mailto:${EMAIL}`} style={{ color: "#1B5CB5" }}>{EMAIL}</a></p>
+                <p><strong>General enquiries:</strong> <a href="mailto:support@omniqure.com" style={{ color: "#1B5CB5" }}>support@omniqure.com</a></p>
+              </div>
+            </Section>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

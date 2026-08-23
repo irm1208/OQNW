@@ -1,1 +1,109 @@
-aW1wb3J0IHsgdXNlRWZmZWN0IH0gZnJvbSAicmVhY3QiOwppbXBvcnQgeyBYLCBFeHRlcm5hbExpbmsgfSBmcm9tICJsdWNpZGUtcmVhY3QiOwoKaW50ZXJmYWNlIEphbm9zaGlrUmVwb3J0TW9kYWxQcm9wcyB7CiAgdGFza051bWJlcjogc3RyaW5nOwogIHZlcmlmeUtleTogc3RyaW5nOwogIHZlcmlmeVVybDogc3RyaW5nOwogIGltYWdlOiBzdHJpbmc7CiAgcHJvZHVjdE5hbWU6IHN0cmluZzsKICBvbkNsb3NlOiAoKSA9PiB2b2lkOwp9CgpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBKYW5vc2hpa1JlcG9ydE1vZGFsKHsKICB0YXNrTnVtYmVyLAogIHZlcmlmeUtleSwKICB2ZXJpZnlVcmwsCiAgaW1hZ2UsCiAgcHJvZHVjdE5hbWUsCiAgb25DbG9zZSwKfTogSmFub3NoaWtSZXBvcnRNb2RhbFByb3BzKSB7CgogIC8vIENsb3NlIG9uIEVzY2FwZQogIHVzZUVmZmVjdCgoKSA9PiB7CiAgICBjb25zdCBoYW5kbGVyID0gKGU6IEtleWJvYXJkRXZlbnQpID0+IHsgaWYgKGUua2V5ID09PSAiRXNjYXBlIikgb25DbG9zZSgpOyB9OwogICAgd2luZG93LmFkZEV2ZW50TGlzdGVuZXIoImtleWRvd24iLCBoYW5kbGVyKTsKICAgIHJldHVybiAoKSA9PiB3aW5kb3cucmVtb3ZlRXZlbnRMaXN0ZW5lcigia2V5ZG93biIsIGhhbmRsZXIpOwogIH0sIFtvbkNsb3NlXSk7CgogIC8vIFByZXZlbnQgYm9keSBzY3JvbGwKICB1c2VFZmZlY3QoKCkgPT4gewogICAgY29uc3QgcHJldiA9IGRvY3VtZW50LmJvZHkuc3R5bGUub3ZlcmZsb3c7CiAgICBkb2N1bWVudC5ib2R5LnN0eWxlLm92ZXJmbG93ID0gImhpZGRlbiI7CiAgICByZXR1cm4gKCkgPT4geyBkb2N1bWVudC5ib2R5LnN0eWxlLm92ZXJmbG93ID0gcHJldjsgfTsKICB9LCBbXSk7CgogIHJldHVybiAoCiAgICA8ZGl2CiAgICAgIHN0eWxlPXt7CiAgICAgICAgcG9zaXRpb246ICJmaXhlZCIsIGluc2V0OiAwLCB6SW5kZXg6IDk5OTksCiAgICAgICAgYmFja2dyb3VuZDogInJnYmEoMCwwLDAsMC43MikiLAogICAgICAgIGRpc3BsYXk6ICJmbGV4IiwgYWxpZ25JdGVtczogImNlbnRlciIsIGp1c3RpZnlDb250ZW50OiAiY2VudGVyIiwKICAgICAgICBwYWRkaW5nOiAiMTZweCIsCiAgICAgIH19CiAgICAgIG9uQ2xpY2s9eyhlKSA9PiB7IGlmIChlLnRhcmdldCA9PT0gZS5jdXJyZW50VGFyZ2V0KSBvbkNsb3NlKCk7IH19CiAgICA+CiAgICAgIDxkaXYKICAgICAgICBzdHlsZT17ewogICAgICAgICAgYmFja2dyb3VuZDogIiNmZmYiLCBib3JkZXJSYWRpdXM6ICIxNHB4IiwKICAgICAgICAgIG1heFdpZHRoOiAiNTYwcHgiLCB3aWR0aDogIjEwMCUiLAogICAgICAgICAgbWF4SGVpZ2h0OiAiOTB2aCIsIGRpc3BsYXk6ICJmbGV4IiwgZmxleERpcmVjdGlvbjogImNvbHVtbiIsCiAgICAgICAgICBib3hTaGFkb3c6ICIwIDI0cHggNjRweCByZ2JhKDAsMCwwLDAuMzUpIiwKICAgICAgICAgIG92ZXJmbG93OiAiaGlkZGVuIiwKICAgICAgICB9fQogICAgICA+CiAgICAgICAgey8qIEhlYWRlciAqL30KICAgICAgICA8ZGl2IHN0eWxlPXt7CiAgICAgICAgICBkaXNwbGF5OiAiZmxleCIsIGFsaWduSXRlbXM6ICJjZW50ZXIiLCBqdXN0aWZ5Q29udGVudDogInNwYWNlLWJldHdlZW4iLAogICAgICAgICAgcGFkZGluZzogIjE0cHggMThweCIsIGJvcmRlckJvdHRvbTogIjFweCBzb2xpZCAjRTVFN0VCIiwgZmxleFNocmluazogMCwKICAgICAgICB9fT4KICAgICAgICAgIDxkaXYgc3R5bGU9e3sgZGlzcGxheTogImZsZXgiLCBhbGlnbkl0ZW1zOiAiY2VudGVyIiwgZ2FwOiAiMTBweCIgfX0+CiAgICAgICAgICAgIDxpbWcgc3JjPSIvamFub3NoaWsvamFub3NoaWstbG9nby5qcGciIGFsdD0iSmFub3NoaWsiIHN0eWxlPXt7IGhlaWdodDogIjIycHgiLCB3aWR0aDogImF1dG8iLCBib3JkZXJSYWRpdXM6ICIzcHgiLCBkaXNwbGF5OiAiYmxvY2siIH19IC8+CiAgICAgICAgICAgIDxkaXY+CiAgICAgICAgICAgICAgPGRpdiBzdHlsZT17eyBmb250U2l6ZTogIjEzcHgiLCBmb250V2VpZ2h0OiA3MDAsIGNvbG9yOiAiIzExMTgyNyIgfX0+SmFub3NoaWsgVGVzdCBSZXBvcnQ8L2Rpdj4KICAgICAgICAgICAgICA8ZGl2IHN0eWxlPXt7IGZvbnRTaXplOiAiMTFweCIsIGNvbG9yOiAiIzZCNzI4MCIgfX0+e3Byb2R1Y3ROYW1lfSDCtyBUYXNrICN7dGFza051bWJlcn08L2Rpdj4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICAgIDxidXR0b24KICAgICAgICAgICAgb25DbGljaz17b25DbG9zZX0KICAgICAgICAgICAgc3R5bGU9e3sgYmFja2dyb3VuZDogIm5vbmUiLCBib3JkZXI6ICJub25lIiwgY3Vyc29yOiAicG9pbnRlciIsIHBhZGRpbmc6ICI0cHgiLCBjb2xvcjogIiM2QjcyODAiLCBsaW5lSGVpZ2h0OiAxIH19CiAgICAgICAgICA+CiAgICAgICAgICAgIDxYIHNpemU9ezIwfSAvPgogICAgICAgICAgPC9idXR0b24+CiAgICAgICAgPC9kaXY+CgogICAgICAgIHsvKiBSZXBvcnQgaW1hZ2UgKi99CiAgICAgICAgPGRpdiBzdHlsZT17eyBvdmVyZmxvd1k6ICJhdXRvIiwgZmxleDogMSB9fT4KICAgICAgICAgIDxpbWcKICAgICAgICAgICAgc3JjPXtpbWFnZX0KICAgICAgICAgICAgYWx0PXtgSmFub3NoaWsgdGVzdCByZXBvcnQgIyR7dGFza051bWJlcn0gZm9yICR7cHJvZHVjdE5hbWV9YH0KICAgICAgICAgICAgc3R5bGU9e3sgd2lkdGg6ICIxMDAlIiwgZGlzcGxheTogImJsb2NrIiB9fQogICAgICAgICAgLz4KICAgICAgICA8L2Rpdj4KCiAgICAgICAgey8qIEZvb3RlciAqL30KICAgICAgICA8ZGl2IHN0eWxlPXt7CiAgICAgICAgICBwYWRkaW5nOiAiMTJweCAxOHB4IiwgYm9yZGVyVG9wOiAiMXB4IHNvbGlkICNFNUU3RUIiLAogICAgICAgICAgZGlzcGxheTogImZsZXgiLCBhbGlnbkl0ZW1zOiAiY2VudGVyIiwganVzdGlmeUNvbnRlbnQ6ICJzcGFjZS1iZXR3ZWVuIiwKICAgICAgICAgIGZsZXhTaHJpbms6IDAsIGJhY2tncm91bmQ6ICIjRjlGQUZCIiwKICAgICAgICB9fT4KICAgICAgICAgIDxzcGFuIHN0eWxlPXt7IGZvbnRTaXplOiAiMTFweCIsIGNvbG9yOiAiIzZCNzI4MCIgfX0+CiAgICAgICAgICAgIFZlcmlmeSBrZXk6IDxzcGFuIHN0eWxlPXt7IGZvbnRGYW1pbHk6ICJtb25vc3BhY2UiLCBjb2xvcjogIiMzNzQxNTEiIH19Pnt2ZXJpZnlLZXl9PC9zcGFuPgogICAgICAgICAgPC9zcGFuPgogICAgICAgICAgPGEKICAgICAgICAgICAgaHJlZj17dmVyaWZ5VXJsfQogICAgICAgICAgICB0YXJnZXQ9Il9ibGFuayIKICAgICAgICAgICAgcmVsPSJub29wZW5lciBub3JlZmVycmVyIgogICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgIGRpc3BsYXk6ICJmbGV4IiwgYWxpZ25JdGVtczogImNlbnRlciIsIGdhcDogIjZweCIsCiAgICAgICAgICAgICAgZm9udFNpemU6ICIxMnB4IiwgZm9udFdlaWdodDogNjAwLCBjb2xvcjogIiMxMjQwQTAiLAogICAgICAgICAgICAgIHRleHREZWNvcmF0aW9uOiAibm9uZSIsCiAgICAgICAgICAgIH19CiAgICAgICAgICA+CiAgICAgICAgICAgIFZlcmlmeSBvbiBqYW5vc2hpay5jb20gPEV4dGVybmFsTGluayBzaXplPXsxM30gLz4KICAgICAgICAgIDwvYT4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KICApOwp9Cg==
+import { useEffect } from "react";
+import { X, ExternalLink } from "lucide-react";
+
+interface JanoshikReportModalProps {
+  taskNumber: string;
+  verifyKey: string;
+  verifyUrl: string;
+  image: string;
+  productName: string;
+  onClose: () => void;
+}
+
+export default function JanoshikReportModal({
+  taskNumber,
+  verifyKey,
+  verifyUrl,
+  image,
+  productName,
+  onClose,
+}: JanoshikReportModalProps) {
+
+  // Close on Escape
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  // Prevent body scroll
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, []);
+
+  return (
+    <div
+      style={{
+        position: "fixed", inset: 0, zIndex: 9999,
+        background: "rgba(0,0,0,0.72)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        padding: "16px",
+      }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div
+        style={{
+          background: "#fff", borderRadius: "14px",
+          maxWidth: "560px", width: "100%",
+          maxHeight: "90vh", display: "flex", flexDirection: "column",
+          boxShadow: "0 24px 64px rgba(0,0,0,0.35)",
+          overflow: "hidden",
+        }}
+      >
+        {/* Header */}
+        <div style={{
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "14px 18px", borderBottom: "1px solid #E5E7EB", flexShrink: 0,
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "22px", width: "auto", borderRadius: "3px", display: "block" }} />
+            <div>
+              <div style={{ fontSize: "13px", fontWeight: 700, color: "#111827" }}>Janoshik Test Report</div>
+              <div style={{ fontSize: "11px", color: "#6B7280" }}>{productName} · Task #{taskNumber}</div>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            style={{ background: "none", border: "none", cursor: "pointer", padding: "4px", color: "#6B7280", lineHeight: 1 }}
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Report image */}
+        <div style={{ overflowY: "auto", flex: 1 }}>
+          <img
+            src={image}
+            alt={`Janoshik test report #${taskNumber} for ${productName}`}
+            style={{ width: "100%", display: "block" }}
+          />
+        </div>
+
+        {/* Footer */}
+        <div style={{
+          padding: "12px 18px", borderTop: "1px solid #E5E7EB",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          flexShrink: 0, background: "#F9FAFB",
+        }}>
+          <span style={{ fontSize: "11px", color: "#6B7280" }}>
+            Verify key: <span style={{ fontFamily: "monospace", color: "#374151" }}>{verifyKey}</span>
+          </span>
+          <a
+            href={verifyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "flex", alignItems: "center", gap: "6px",
+              fontSize: "12px", fontWeight: 600, color: "#1240A0",
+              textDecoration: "none",
+            }}
+          >
+            Verify on janoshik.com <ExternalLink size={13} />
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}

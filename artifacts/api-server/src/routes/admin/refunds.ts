@@ -1,1 +1,155 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgcmVmdW5kc0xvZ1RhYmxlLCBvcmRlcnNUYWJsZSwgb3JkZXJJdGVtc1RhYmxlLCBwcm9kdWN0c0ludmVudG9yeVRhYmxlLCBpbnZlbnRvcnlBdWRpdExvZ1RhYmxlIH0gZnJvbSAiQHdvcmtzcGFjZS9kYiI7CmltcG9ydCB7IGVxLCBkZXNjLCBzcWwgfSBmcm9tICJkcml6emxlLW9ybSI7CmltcG9ydCB7IGZpcnN0U3RyaW5nIH0gZnJvbSAiLi4vLi4vbGliL3F1ZXJ5IjsKCmNvbnN0IHJvdXRlciA9IFJvdXRlcigpOwoKZnVuY3Rpb24gcmVxdWlyZUFkbWluKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IGJvb2xlYW4gewogIGlmIChyZXEuY29va2llcz8uYWRtaW5fc2Vzc2lvbiAhPT0gImF1dGhlbnRpY2F0ZWQiKSB7CiAgICByZXMuc3RhdHVzKDQwMSkuanNvbih7IGVycm9yOiAiTm90IGF1dGhlbnRpY2F0ZWQiIH0pOwogICAgcmV0dXJuIGZhbHNlOwogIH0KICByZXR1cm4gdHJ1ZTsKfQoKZnVuY3Rpb24gcmVmdW5kVG9SZXNwb25zZShyOiB0eXBlb2YgcmVmdW5kc0xvZ1RhYmxlLiRpbmZlclNlbGVjdCkgewogIHJldHVybiB7CiAgICBpZDogci5pZCwKICAgIG9yZGVySWQ6IHIub3JkZXJJZCwKICAgIG9yZGVyTnVtYmVyOiByLm9yZGVyTnVtYmVyLAogICAgYW1vdW50R2JwOiBwYXJzZUZsb2F0KFN0cmluZyhyLmFtb3VudEdicCkpLAogICAgdHlwZTogci50eXBlLAogICAgcmVhc29uOiByLnJlYXNvbiwKICAgIG5vdGVzOiByLm5vdGVzID8/IG51bGwsCiAgICByZXN0b3JlSW52ZW50b3J5OiByLnJlc3RvcmVJbnZlbnRvcnksCiAgICBsaW5lSXRlbXM6IHIubGluZUl0ZW1zSnNvbiA/IEpTT04ucGFyc2Uoci5saW5lSXRlbXNKc29uKSA6IG51bGwsCiAgICBjcmVhdGVkQXQ6IHIuY3JlYXRlZEF0LnRvSVNPU3RyaW5nKCksCiAgfTsKfQoKcm91dGVyLmdldCgiL2FkbWluL3JlZnVuZHMiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgdHJ5IHsKICAgIGNvbnN0IHJlZnVuZHMgPSBhd2FpdCBkYgogICAgICAuc2VsZWN0KCkKICAgICAgLmZyb20ocmVmdW5kc0xvZ1RhYmxlKQogICAgICAub3JkZXJCeShkZXNjKHJlZnVuZHNMb2dUYWJsZS5jcmVhdGVkQXQpKTsKICAgIHJlcy5qc29uKHJlZnVuZHMubWFwKHJlZnVuZFRvUmVzcG9uc2UpKTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBsaXN0IHJlZnVuZHMiKTsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJJbnRlcm5hbCBzZXJ2ZXIgZXJyb3IiIH0pOwogIH0KfSk7Cgpyb3V0ZXIuZ2V0KCIvYWRtaW4vb3JkZXJzLzppZC9yZWZ1bmRzIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGlmICghcmVxdWlyZUFkbWluKHJlcSwgcmVzKSkgcmV0dXJuOwogIGNvbnN0IG9yZGVySWQgPSBwYXJzZUludChmaXJzdFN0cmluZyhyZXEucGFyYW1zLmlkKSA/PyAiIiwgMTApOwogIGlmIChpc05hTihvcmRlcklkKSkgeyByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiSW52YWxpZCBvcmRlciBJRCIgfSk7IHJldHVybjsgfQogIHRyeSB7CiAgICBjb25zdCByZWZ1bmRzID0gYXdhaXQgZGIKICAgICAgLnNlbGVjdCgpCiAgICAgIC5mcm9tKHJlZnVuZHNMb2dUYWJsZSkKICAgICAgLndoZXJlKGVxKHJlZnVuZHNMb2dUYWJsZS5vcmRlcklkLCBvcmRlcklkKSkKICAgICAgLm9yZGVyQnkoZGVzYyhyZWZ1bmRzTG9nVGFibGUuY3JlYXRlZEF0KSk7CiAgICByZXMuanNvbihyZWZ1bmRzLm1hcChyZWZ1bmRUb1Jlc3BvbnNlKSk7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gbGlzdCBvcmRlciByZWZ1bmRzIik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKcm91dGVyLnBvc3QoIi9hZG1pbi9vcmRlcnMvOmlkL3JlZnVuZCIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBpZiAoIXJlcXVpcmVBZG1pbihyZXEsIHJlcykpIHJldHVybjsKICBjb25zdCBvcmRlcklkID0gcGFyc2VJbnQoZmlyc3RTdHJpbmcocmVxLnBhcmFtcy5pZCkgPz8gIiIsIDEwKTsKICBpZiAoaXNOYU4ob3JkZXJJZCkpIHsgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogIkludmFsaWQgb3JkZXIgSUQiIH0pOyByZXR1cm47IH0KCiAgY29uc3QgeyBhbW91bnRHYnAsIHJlYXNvbiwgbm90ZXMsIHJlc3RvcmVJbnZlbnRvcnksIGxpbmVJdGVtcyB9ID0gcmVxLmJvZHkgYXMgewogICAgYW1vdW50R2JwOiBudW1iZXI7CiAgICByZWFzb246IHN0cmluZzsKICAgIG5vdGVzPzogc3RyaW5nOwogICAgcmVzdG9yZUludmVudG9yeT86IGJvb2xlYW47CiAgICBsaW5lSXRlbXM/OiB7IHByb2R1Y3RJZDogbnVtYmVyOyBxdWFudGl0eTogbnVtYmVyOyBwcm9kdWN0TmFtZTogc3RyaW5nIH1bXTsKICB9OwoKICBpZiAoIWFtb3VudEdicCB8fCBhbW91bnRHYnAgPD0gMCB8fCAhcmVhc29uKSB7CiAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiYW1vdW50R2JwIGFuZCByZWFzb24gYXJlIHJlcXVpcmVkIiB9KTsKICAgIHJldHVybjsKICB9CgogIHRyeSB7CiAgICBjb25zdCBbb3JkZXJdID0gYXdhaXQgZGIuc2VsZWN0KCkuZnJvbShvcmRlcnNUYWJsZSkud2hlcmUoZXEob3JkZXJzVGFibGUuaWQsIG9yZGVySWQpKS5saW1pdCgxKTsKICAgIGlmICghb3JkZXIpIHsgcmVzLnN0YXR1cyg0MDQpLmpzb24oeyBlcnJvcjogIk9yZGVyIG5vdCBmb3VuZCIgfSk7IHJldHVybjsgfQoKICAgIGNvbnN0IG9yZGVyVG90YWwgPSBwYXJzZUZsb2F0KFN0cmluZyhvcmRlci50b3RhbEdicCkpOwogICAgY29uc3QgYWxyZWFkeVJlZnVuZGVkID0gcGFyc2VGbG9hdChTdHJpbmcob3JkZXIucmVmdW5kZWRBbW91bnRHYnApKTsKICAgIGNvbnN0IG1heFJlZnVuZGFibGUgPSBvcmRlclRvdGFsIC0gYWxyZWFkeVJlZnVuZGVkOwoKICAgIGlmIChhbW91bnRHYnAgPiBtYXhSZWZ1bmRhYmxlICsgMC4wMDEpIHsKICAgICAgcmVzLnN0YXR1cyg0MDApLmpzb24oewogICAgICAgIGVycm9yOiBgUmVmdW5kIGFtb3VudCDCoyR7YW1vdW50R2JwLnRvRml4ZWQoMil9IGV4Y2VlZHMgbWF4aW11bSByZWZ1bmRhYmxlIGFtb3VudCDCoyR7bWF4UmVmdW5kYWJsZS50b0ZpeGVkKDIpfWAKICAgICAgfSk7CiAgICAgIHJldHVybjsKICAgIH0KCiAgICBjb25zdCBuZXdSZWZ1bmRlZFRvdGFsID0gTWF0aC5yb3VuZCgoYWxyZWFkeVJlZnVuZGVkICsgYW1vdW50R2JwKSAqIDEwMCkgLyAxMDA7CiAgICBjb25zdCByZWZ1bmRTdGF0dXMgPSBuZXdSZWZ1bmRlZFRvdGFsID49IG9yZGVyVG90YWwgLSAwLjAwMSA/ICJmdWxsIiA6ICJwYXJ0aWFsIjsKCiAgICBjb25zdCBbcmVmdW5kXSA9IGF3YWl0IGRiCiAgICAgIC5pbnNlcnQocmVmdW5kc0xvZ1RhYmxlKQogICAgICAudmFsdWVzKHsKICAgICAgICBvcmRlcklkLAogICAgICAgIG9yZGVyTnVtYmVyOiBvcmRlci5vcmRlck51bWJlciwKICAgICAgICBhbW91bnRHYnA6IFN0cmluZyhhbW91bnRHYnApLAogICAgICAgIHR5cGU6IHJlZnVuZFN0YXR1cywKICAgICAgICByZWFzb24sCiAgICAgICAgbm90ZXM6IG5vdGVzID8/IG51bGwsCiAgICAgICAgcmVzdG9yZUludmVudG9yeTogcmVzdG9yZUludmVudG9yeSA/PyBmYWxzZSwKICAgICAgICBsaW5lSXRlbXNKc29uOiBsaW5lSXRlbXMgPyBKU09OLnN0cmluZ2lmeShsaW5lSXRlbXMpIDogbnVsbCwKICAgICAgfSkKICAgICAgLnJldHVybmluZygpOwoKICAgIGF3YWl0IGRiCiAgICAgIC51cGRhdGUob3JkZXJzVGFibGUpCiAgICAgIC5zZXQoewogICAgICAgIHJlZnVuZGVkQW1vdW50R2JwOiBTdHJpbmcobmV3UmVmdW5kZWRUb3RhbCksCiAgICAgICAgcmVmdW5kU3RhdHVzLAogICAgICB9KQogICAgICAud2hlcmUoZXEob3JkZXJzVGFibGUuaWQsIG9yZGVySWQpKTsKCiAgICBpZiAocmVzdG9yZUludmVudG9yeSAmJiBsaW5lSXRlbXMgJiYgbGluZUl0ZW1zLmxlbmd0aCA+IDApIHsKICAgICAgZm9yIChjb25zdCBpdGVtIG9mIGxpbmVJdGVtcykgewogICAgICAgIGNvbnN0IFtiZWZvcmVdID0gYXdhaXQgZGIKICAgICAgICAgIC5zZWxlY3QoeyBzdG9ja0xldmVsOiBwcm9kdWN0c0ludmVudG9yeVRhYmxlLnN0b2NrTGV2ZWwgfSkKICAgICAgICAgIC5mcm9tKHByb2R1Y3RzSW52ZW50b3J5VGFibGUpCiAgICAgICAgICAud2hlcmUoZXEocHJvZHVjdHNJbnZlbnRvcnlUYWJsZS5wcm9kdWN0SWQsIGl0ZW0ucHJvZHVjdElkKSkKICAgICAgICAgIC5saW1pdCgxKTsKICAgICAgICBjb25zdCBxQmVmb3JlID0gYmVmb3JlPy5zdG9ja0xldmVsID8/IDA7CiAgICAgICAgYXdhaXQgZGIKICAgICAgICAgIC51cGRhdGUocHJvZHVjdHNJbnZlbnRvcnlUYWJsZSkKICAgICAgICAgIC5zZXQoeyBzdG9ja0xldmVsOiBzcWxgJHtwcm9kdWN0c0ludmVudG9yeVRhYmxlLnN0b2NrTGV2ZWx9ICsgJHtpdGVtLnF1YW50aXR5fWAgfSkKICAgICAgICAgIC53aGVyZShlcShwcm9kdWN0c0ludmVudG9yeVRhYmxlLnByb2R1Y3RJZCwgaXRlbS5wcm9kdWN0SWQpKTsKICAgICAgICBkYi5pbnNlcnQoaW52ZW50b3J5QXVkaXRMb2dUYWJsZSkudmFsdWVzKHsKICAgICAgICAgIHByb2R1Y3RJZDogaXRlbS5wcm9kdWN0SWQsCiAgICAgICAgICBwcm9kdWN0TmFtZTogaXRlbS5wcm9kdWN0TmFtZSwKICAgICAgICAgIGNoYW5nZVR5cGU6ICJyZWZ1bmRfcmVzdG9yZSIsCiAgICAgICAgICBxdWFudGl0eUJlZm9yZTogcUJlZm9yZSwKICAgICAgICAgIHF1YW50aXR5QWZ0ZXI6IHFCZWZvcmUgKyBpdGVtLnF1YW50aXR5LAogICAgICAgICAgcXVhbnRpdHlDaGFuZ2U6IGl0ZW0ucXVhbnRpdHksCiAgICAgICAgICByZWFzb246IGBTdG9jayByZXN0b3JlZCB2aWEgcmVmdW5kIG9uIG9yZGVyICR7b3JkZXIub3JkZXJOdW1iZXJ9YCwKICAgICAgICAgIHJlZmVyZW5jZUlkOiBvcmRlci5vcmRlck51bWJlciwKICAgICAgICAgIHJlZmVyZW5jZVR5cGU6ICJyZWZ1bmQiLAogICAgICAgIH0pLmNhdGNoKCgpID0+IHt9KTsKICAgICAgfQogICAgfQoKICAgIHJlcy5zdGF0dXMoMjAxKS5qc29uKHJlZnVuZFRvUmVzcG9uc2UocmVmdW5kKSk7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gY3JlYXRlIHJlZnVuZCIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCmV4cG9ydCBkZWZhdWx0IHJvdXRlcjsK
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { db } from "@workspace/db";
+import { refundsLogTable, ordersTable, orderItemsTable, productsInventoryTable, inventoryAuditLogTable } from "@workspace/db";
+import { eq, desc, sql } from "drizzle-orm";
+import { firstString } from "../../lib/query";
+
+const router = Router();
+
+function requireAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+
+function refundToResponse(r: typeof refundsLogTable.$inferSelect) {
+  return {
+    id: r.id,
+    orderId: r.orderId,
+    orderNumber: r.orderNumber,
+    amountGbp: parseFloat(String(r.amountGbp)),
+    type: r.type,
+    reason: r.reason,
+    notes: r.notes ?? null,
+    restoreInventory: r.restoreInventory,
+    lineItems: r.lineItemsJson ? JSON.parse(r.lineItemsJson) : null,
+    createdAt: r.createdAt.toISOString(),
+  };
+}
+
+router.get("/admin/refunds", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const refunds = await db
+      .select()
+      .from(refundsLogTable)
+      .orderBy(desc(refundsLogTable.createdAt));
+    res.json(refunds.map(refundToResponse));
+  } catch (err) {
+    req.log.error({ err }, "Failed to list refunds");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/admin/orders/:id/refunds", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const orderId = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(orderId)) { res.status(400).json({ error: "Invalid order ID" }); return; }
+  try {
+    const refunds = await db
+      .select()
+      .from(refundsLogTable)
+      .where(eq(refundsLogTable.orderId, orderId))
+      .orderBy(desc(refundsLogTable.createdAt));
+    res.json(refunds.map(refundToResponse));
+  } catch (err) {
+    req.log.error({ err }, "Failed to list order refunds");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/admin/orders/:id/refund", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const orderId = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(orderId)) { res.status(400).json({ error: "Invalid order ID" }); return; }
+
+  const { amountGbp, reason, notes, restoreInventory, lineItems } = req.body as {
+    amountGbp: number;
+    reason: string;
+    notes?: string;
+    restoreInventory?: boolean;
+    lineItems?: { productId: number; quantity: number; productName: string }[];
+  };
+
+  if (!amountGbp || amountGbp <= 0 || !reason) {
+    res.status(400).json({ error: "amountGbp and reason are required" });
+    return;
+  }
+
+  try {
+    const [order] = await db.select().from(ordersTable).where(eq(ordersTable.id, orderId)).limit(1);
+    if (!order) { res.status(404).json({ error: "Order not found" }); return; }
+
+    const orderTotal = parseFloat(String(order.totalGbp));
+    const alreadyRefunded = parseFloat(String(order.refundedAmountGbp));
+    const maxRefundable = orderTotal - alreadyRefunded;
+
+    if (amountGbp > maxRefundable + 0.001) {
+      res.status(400).json({
+        error: `Refund amount £${amountGbp.toFixed(2)} exceeds maximum refundable amount £${maxRefundable.toFixed(2)}`
+      });
+      return;
+    }
+
+    const newRefundedTotal = Math.round((alreadyRefunded + amountGbp) * 100) / 100;
+    const refundStatus = newRefundedTotal >= orderTotal - 0.001 ? "full" : "partial";
+
+    const [refund] = await db
+      .insert(refundsLogTable)
+      .values({
+        orderId,
+        orderNumber: order.orderNumber,
+        amountGbp: String(amountGbp),
+        type: refundStatus,
+        reason,
+        notes: notes ?? null,
+        restoreInventory: restoreInventory ?? false,
+        lineItemsJson: lineItems ? JSON.stringify(lineItems) : null,
+      })
+      .returning();
+
+    await db
+      .update(ordersTable)
+      .set({
+        refundedAmountGbp: String(newRefundedTotal),
+        refundStatus,
+      })
+      .where(eq(ordersTable.id, orderId));
+
+    if (restoreInventory && lineItems && lineItems.length > 0) {
+      for (const item of lineItems) {
+        const [before] = await db
+          .select({ stockLevel: productsInventoryTable.stockLevel })
+          .from(productsInventoryTable)
+          .where(eq(productsInventoryTable.productId, item.productId))
+          .limit(1);
+        const qBefore = before?.stockLevel ?? 0;
+        await db
+          .update(productsInventoryTable)
+          .set({ stockLevel: sql`${productsInventoryTable.stockLevel} + ${item.quantity}` })
+          .where(eq(productsInventoryTable.productId, item.productId));
+        db.insert(inventoryAuditLogTable).values({
+          productId: item.productId,
+          productName: item.productName,
+          changeType: "refund_restore",
+          quantityBefore: qBefore,
+          quantityAfter: qBefore + item.quantity,
+          quantityChange: item.quantity,
+          reason: `Stock restored via refund on order ${order.orderNumber}`,
+          referenceId: order.orderNumber,
+          referenceType: "refund",
+        }).catch(() => {});
+      }
+    }
+
+    res.status(201).json(refundToResponse(refund));
+  } catch (err) {
+    req.log.error({ err }, "Failed to create refund");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;

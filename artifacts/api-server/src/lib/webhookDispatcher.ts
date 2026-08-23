@@ -1,1 +1,77 @@
-aW1wb3J0IGNyeXB0byBmcm9tICJjcnlwdG8iOwppbXBvcnQgeyBkYiB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyB3ZWJob29rc1RhYmxlLCB3ZWJob29rRGVsaXZlcmllc1RhYmxlIH0gZnJvbSAiQHdvcmtzcGFjZS9kYiI7CmltcG9ydCB7IGVxLCBzcWwgfSBmcm9tICJkcml6emxlLW9ybSI7CgpleHBvcnQgdHlwZSBXZWJob29rRXZlbnQgPQogIHwgIm9yZGVyLmNyZWF0ZWQiCiAgfCAib3JkZXIudXBkYXRlZCIKICB8ICJvcmRlci5jYW5jZWxsZWQiCiAgfCAib3JkZXIucmVmdW5kZWQiOwoKZXhwb3J0IGludGVyZmFjZSBXZWJob29rUGF5bG9hZCB7CiAgZXZlbnQ6IFdlYmhvb2tFdmVudDsKICBjcmVhdGVkQXQ6IHN0cmluZzsKICBkYXRhOiBSZWNvcmQ8c3RyaW5nLCB1bmtub3duPjsKfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGRpc3BhdGNoV2ViaG9vayhldmVudDogV2ViaG9va0V2ZW50LCBkYXRhOiBSZWNvcmQ8c3RyaW5nLCB1bmtub3duPik6IFByb21pc2U8dm9pZD4gewogIHRyeSB7CiAgICBjb25zdCB3ZWJob29rcyA9IGF3YWl0IGRiCiAgICAgIC5zZWxlY3QoKQogICAgICAuZnJvbSh3ZWJob29rc1RhYmxlKQogICAgICAud2hlcmUoCiAgICAgICAgc3FsYCR7d2ViaG9va3NUYWJsZS5pc0FjdGl2ZX0gPSB0cnVlIEFORCAke2V2ZW50fSA9IEFOWSgke3dlYmhvb2tzVGFibGUuZXZlbnRzfSlgCiAgICAgICk7CgogICAgaWYgKHdlYmhvb2tzLmxlbmd0aCA9PT0gMCkgcmV0dXJuOwoKICAgIGNvbnN0IHBheWxvYWQ6IFdlYmhvb2tQYXlsb2FkID0gewogICAgICBldmVudCwKICAgICAgY3JlYXRlZEF0OiBuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCksCiAgICAgIGRhdGEsCiAgICB9OwoKICAgIGNvbnN0IHBheWxvYWRTdHIgPSBKU09OLnN0cmluZ2lmeShwYXlsb2FkKTsKCiAgICBmb3IgKGNvbnN0IHdlYmhvb2sgb2Ygd2ViaG9va3MpIHsKICAgICAgY29uc3Qgc2lnID0gY3J5cHRvCiAgICAgICAgLmNyZWF0ZUhtYWMoInNoYTI1NiIsIHdlYmhvb2suc2VjcmV0KQogICAgICAgIC51cGRhdGUocGF5bG9hZFN0cikKICAgICAgICAuZGlnZXN0KCJoZXgiKTsKCiAgICAgIGxldCBzdGF0dXMgPSAiZmFpbGVkIjsKICAgICAgbGV0IHJlc3BvbnNlQ29kZTogbnVtYmVyIHwgbnVsbCA9IG51bGw7CiAgICAgIGxldCByZXNwb25zZUJvZHk6IHN0cmluZyB8IG51bGwgPSBudWxsOwoKICAgICAgdHJ5IHsKICAgICAgICBjb25zdCByZXMgPSBhd2FpdCBmZXRjaCh3ZWJob29rLnVybCwgewogICAgICAgICAgbWV0aG9kOiAiUE9TVCIsCiAgICAgICAgICBoZWFkZXJzOiB7CiAgICAgICAgICAgICJDb250ZW50LVR5cGUiOiAiYXBwbGljYXRpb24vanNvbiIsCiAgICAgICAgICAgICJYLU9tbmlRdXJlLVNpZ25hdHVyZSI6IGBzaGEyNTY9JHtzaWd9YCwKICAgICAgICAgICAgIlgtT21uaVF1cmUtRXZlbnQiOiBldmVudCwKICAgICAgICAgIH0sCiAgICAgICAgICBib2R5OiBwYXlsb2FkU3RyLAogICAgICAgICAgc2lnbmFsOiBBYm9ydFNpZ25hbC50aW1lb3V0KDEwXzAwMCksCiAgICAgICAgfSk7CiAgICAgICAgcmVzcG9uc2VDb2RlID0gcmVzLnN0YXR1czsKICAgICAgICByZXNwb25zZUJvZHkgPSAoYXdhaXQgcmVzLnRleHQoKSkuc2xpY2UoMCwgNTAwKTsKICAgICAgICBzdGF0dXMgPSByZXMub2sgPyAic3VjY2VzcyIgOiAiZmFpbGVkIjsKICAgICAgfSBjYXRjaCB7CiAgICAgICAgcmVzcG9uc2VCb2R5ID0gIlJlcXVlc3QgZmFpbGVkIG9yIHRpbWVkIG91dCI7CiAgICAgIH0KCiAgICAgIGF3YWl0IGRiLmluc2VydCh3ZWJob29rRGVsaXZlcmllc1RhYmxlKS52YWx1ZXMoewogICAgICAgIHdlYmhvb2tJZDogd2ViaG9vay5pZCwKICAgICAgICBldmVudFR5cGU6IGV2ZW50LAogICAgICAgIHBheWxvYWRKc29uOiBwYXlsb2FkU3RyLAogICAgICAgIHN0YXR1cywKICAgICAgICByZXNwb25zZUNvZGUsCiAgICAgICAgcmVzcG9uc2VCb2R5LAogICAgICB9KTsKICAgIH0KICB9IGNhdGNoIHsKICAgIC8vIFdlYmhvb2sgZGlzcGF0Y2ggaXMgbm9uLWJsb2NraW5nIOKAlCBlcnJvcnMgZG9uJ3QgYWZmZWN0IHRoZSBtYWluIGZsb3cKICB9Cn0K
+import crypto from "crypto";
+import { db } from "@workspace/db";
+import { webhooksTable, webhookDeliveriesTable } from "@workspace/db";
+import { eq, sql } from "drizzle-orm";
+
+export type WebhookEvent =
+  | "order.created"
+  | "order.updated"
+  | "order.cancelled"
+  | "order.refunded";
+
+export interface WebhookPayload {
+  event: WebhookEvent;
+  createdAt: string;
+  data: Record<string, unknown>;
+}
+
+export async function dispatchWebhook(event: WebhookEvent, data: Record<string, unknown>): Promise<void> {
+  try {
+    const webhooks = await db
+      .select()
+      .from(webhooksTable)
+      .where(
+        sql`${webhooksTable.isActive} = true AND ${event} = ANY(${webhooksTable.events})`
+      );
+
+    if (webhooks.length === 0) return;
+
+    const payload: WebhookPayload = {
+      event,
+      createdAt: new Date().toISOString(),
+      data,
+    };
+
+    const payloadStr = JSON.stringify(payload);
+
+    for (const webhook of webhooks) {
+      const sig = crypto
+        .createHmac("sha256", webhook.secret)
+        .update(payloadStr)
+        .digest("hex");
+
+      let status = "failed";
+      let responseCode: number | null = null;
+      let responseBody: string | null = null;
+
+      try {
+        const res = await fetch(webhook.url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-OmniQure-Signature": `sha256=${sig}`,
+            "X-OmniQure-Event": event,
+          },
+          body: payloadStr,
+          signal: AbortSignal.timeout(10_000),
+        });
+        responseCode = res.status;
+        responseBody = (await res.text()).slice(0, 500);
+        status = res.ok ? "success" : "failed";
+      } catch {
+        responseBody = "Request failed or timed out";
+      }
+
+      await db.insert(webhookDeliveriesTable).values({
+        webhookId: webhook.id,
+        eventType: event,
+        payloadJson: payloadStr,
+        status,
+        responseCode,
+        responseBody,
+      });
+    }
+  } catch {
+    // Webhook dispatch is non-blocking — errors don't affect the main flow
+  }
+}

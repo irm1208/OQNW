@@ -1,1 +1,102 @@
-Y29uc3QgRlJFRV9FTUFJTF9ET01BSU5TID0gbmV3IFNldChbCiAgImdtYWlsLmNvbSIsICJ5YWhvby5jb20iLCAiaG90bWFpbC5jb20iLCAib3V0bG9vay5jb20iLCAibGl2ZS5jb20iLAogICJpY2xvdWQuY29tIiwgInByb3Rvbm1haWwuY29tIiwgIm1haWwuY29tIiwgInltYWlsLmNvbSIsICJtc24uY29tIiwKICAiYW9sLmNvbSIsICJnbXguY29tIiwgInpvaG8uY29tIiwgImluYm94LmNvbSIsCl0pOwoKY29uc3QgUE9CT1hfUEFUVEVSTlMgPSAvXGIocG9ccypib3h8cFwub1wuXHMqYm94fHBvc3RccypvZmZpY2Vccypib3h8cG9iKVxiL2k7CgpleHBvcnQgaW50ZXJmYWNlIEZyYXVkQXNzZXNzbWVudCB7CiAgc2NvcmU6IG51bWJlcjsKICBmbGFnczogc3RyaW5nW107Cn0KCmV4cG9ydCBpbnRlcmZhY2UgRnJhdWRJbnB1dCB7CiAgZW1haWw6IHN0cmluZzsKICB0b3RhbEdicDogbnVtYmVyOwogIGNvdW50cnk6IHN0cmluZzsKICBhZGRyZXNzMT86IHN0cmluZzsKICBpc0ZpcnN0T3JkZXI6IGJvb2xlYW47CiAgb3JkZXJDb3VudDogbnVtYmVyOwogIHJlY2VudE9yZGVyc0xhc3RIb3VyOiBudW1iZXI7CiAgcGF5bWVudE1ldGhvZD86IHN0cmluZzsKICBpc05ld0FjY291bnQ/OiBib29sZWFuOwogIGlwQ291bnRyeT86IHN0cmluZyB8IG51bGw7CiAgc2hpcHBpbmdDb3VudHJ5Q29kZT86IHN0cmluZyB8IG51bGw7CiAgaXNQcm94eT86IGJvb2xlYW47Cn0KCmV4cG9ydCBmdW5jdGlvbiBhc3Nlc3NGcmF1ZChpbnB1dDogRnJhdWRJbnB1dCk6IEZyYXVkQXNzZXNzbWVudCB7CiAgY29uc3QgZmxhZ3M6IHN0cmluZ1tdID0gW107CiAgbGV0IHNjb3JlID0gMDsKCiAgaWYgKGlucHV0LmlzUHJveHkpIHsKICAgIHNjb3JlICs9IDMwOwogICAgZmxhZ3MucHVzaCgidnBuX3Byb3h5X2RldGVjdGVkIik7CiAgfQoKICBpZiAoCiAgICBpbnB1dC5pcENvdW50cnkgJiYKICAgIGlucHV0LnNoaXBwaW5nQ291bnRyeUNvZGUgJiYKICAgIGlucHV0LmlwQ291bnRyeS50b1VwcGVyQ2FzZSgpICE9PSBpbnB1dC5zaGlwcGluZ0NvdW50cnlDb2RlLnRvVXBwZXJDYXNlKCkKICApIHsKICAgIHNjb3JlICs9IDIwOwogICAgZmxhZ3MucHVzaCgiaXBfY291bnRyeV9taXNtYXRjaCIpOwogIH0KCiAgaWYgKGlucHV0LmlzTmV3QWNjb3VudCkgewogICAgc2NvcmUgKz0gMjA7CiAgICBmbGFncy5wdXNoKCJuZXdfYWNjb3VudCIpOwogIH0KCiAgaWYgKGlucHV0LmlzRmlyc3RPcmRlciAmJiBpbnB1dC50b3RhbEdicCA+IDIwMCkgewogICAgc2NvcmUgKz0gMjU7CiAgICBmbGFncy5wdXNoKCJoaWdoX3ZhbHVlX2ZpcnN0X29yZGVyIik7CiAgfSBlbHNlIGlmIChpbnB1dC5pc0ZpcnN0T3JkZXIgJiYgaW5wdXQudG90YWxHYnAgPiAxMDApIHsKICAgIHNjb3JlICs9IDEwOwogICAgZmxhZ3MucHVzaCgiZWxldmF0ZWRfdmFsdWVfZmlyc3Rfb3JkZXIiKTsKICB9CgogIGlmIChpbnB1dC5yZWNlbnRPcmRlcnNMYXN0SG91ciA+PSAzKSB7CiAgICBzY29yZSArPSAzMDsKICAgIGZsYWdzLnB1c2goIm11bHRpcGxlX29yZGVyc19zYW1lX2hvdXIiKTsKICB9IGVsc2UgaWYgKGlucHV0LnJlY2VudE9yZGVyc0xhc3RIb3VyID49IDIpIHsKICAgIHNjb3JlICs9IDE1OwogICAgZmxhZ3MucHVzaCgicmVwZWF0ZWRfb3JkZXJzX3Nob3J0X3dpbmRvdyIpOwogIH0KCiAgaWYgKGlucHV0LmFkZHJlc3MxICYmIFBPQk9YX1BBVFRFUk5TLnRlc3QoaW5wdXQuYWRkcmVzczEpKSB7CiAgICBzY29yZSArPSAxMDsKICAgIGZsYWdzLnB1c2goInBvX2JveF9hZGRyZXNzIik7CiAgfQoKICBjb25zdCBoaWdoVmFsdWVJbnRlcm5hdGlvbmFsID0KICAgICFbIkdCIiwgIlVTIiwgIkNBIiwgIkFVIiwgIk5aIiwgIklFIl0uaW5jbHVkZXMoCiAgICAgIChpbnB1dC5zaGlwcGluZ0NvdW50cnlDb2RlID8/IGlucHV0LmNvdW50cnkuc2xpY2UoMCwgMikpLnRvVXBwZXJDYXNlKCksCiAgICApICYmIGlucHV0LnRvdGFsR2JwID4gMTUwOwogIGlmIChoaWdoVmFsdWVJbnRlcm5hdGlvbmFsKSB7CiAgICBzY29yZSArPSAxNTsKICAgIGZsYWdzLnB1c2goImhpZ2hfdmFsdWVfaW50ZXJuYXRpb25hbCIpOwogIH0KCiAgaWYgKGlucHV0LnBheW1lbnRNZXRob2QgPT09ICJiaXRjb2luIikgewogICAgc2NvcmUgKz0gMTU7CiAgICBmbGFncy5wdXNoKCJjcnlwdG9jdXJyZW5jeV9wYXltZW50Iik7CiAgfSBlbHNlIGlmIChpbnB1dC5wYXltZW50TWV0aG9kID09PSAiYmFua190cmFuc2ZlciIpIHsKICAgIHNjb3JlICs9IDEwOwogICAgZmxhZ3MucHVzaCgiYmFua190cmFuc2Zlcl9wYXltZW50Iik7CiAgfQoKICBpZiAoaW5wdXQuZW1haWwuaW5jbHVkZXMoIisiKSAmJiAhaW5wdXQuZW1haWwuc3BsaXQoIkAiKVsxXT8uaW5jbHVkZXMoInByb3RvbiIpKSB7CiAgICBzY29yZSArPSA1OwogICAgZmxhZ3MucHVzaCgiZW1haWxfYWxpYXNfcGF0dGVybiIpOwogIH0KCiAgY29uc3QgZG9tYWluID0gaW5wdXQuZW1haWwuc3BsaXQoIkAiKVsxXT8udG9Mb3dlckNhc2UoKSA/PyAiIjsKICBpZiAoRlJFRV9FTUFJTF9ET01BSU5TLmhhcyhkb21haW4pKSB7CiAgICBzY29yZSArPSA1OwogICAgZmxhZ3MucHVzaCgiZnJlZV9lbWFpbF9wcm92aWRlciIpOwogIH0KCiAgcmV0dXJuIHsgc2NvcmU6IE1hdGgubWluKHNjb3JlLCAxMDApLCBmbGFncyB9Owp9Cg==
+const FREE_EMAIL_DOMAINS = new Set([
+  "gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "live.com",
+  "icloud.com", "protonmail.com", "mail.com", "ymail.com", "msn.com",
+  "aol.com", "gmx.com", "zoho.com", "inbox.com",
+]);
+
+const POBOX_PATTERNS = /\b(po\s*box|p\.o\.\s*box|post\s*office\s*box|pob)\b/i;
+
+export interface FraudAssessment {
+  score: number;
+  flags: string[];
+}
+
+export interface FraudInput {
+  email: string;
+  totalGbp: number;
+  country: string;
+  address1?: string;
+  isFirstOrder: boolean;
+  orderCount: number;
+  recentOrdersLastHour: number;
+  paymentMethod?: string;
+  isNewAccount?: boolean;
+  ipCountry?: string | null;
+  shippingCountryCode?: string | null;
+  isProxy?: boolean;
+}
+
+export function assessFraud(input: FraudInput): FraudAssessment {
+  const flags: string[] = [];
+  let score = 0;
+
+  if (input.isProxy) {
+    score += 30;
+    flags.push("vpn_proxy_detected");
+  }
+
+  if (
+    input.ipCountry &&
+    input.shippingCountryCode &&
+    input.ipCountry.toUpperCase() !== input.shippingCountryCode.toUpperCase()
+  ) {
+    score += 20;
+    flags.push("ip_country_mismatch");
+  }
+
+  if (input.isNewAccount) {
+    score += 20;
+    flags.push("new_account");
+  }
+
+  if (input.isFirstOrder && input.totalGbp > 200) {
+    score += 25;
+    flags.push("high_value_first_order");
+  } else if (input.isFirstOrder && input.totalGbp > 100) {
+    score += 10;
+    flags.push("elevated_value_first_order");
+  }
+
+  if (input.recentOrdersLastHour >= 3) {
+    score += 30;
+    flags.push("multiple_orders_same_hour");
+  } else if (input.recentOrdersLastHour >= 2) {
+    score += 15;
+    flags.push("repeated_orders_short_window");
+  }
+
+  if (input.address1 && POBOX_PATTERNS.test(input.address1)) {
+    score += 10;
+    flags.push("po_box_address");
+  }
+
+  const highValueInternational =
+    !["GB", "US", "CA", "AU", "NZ", "IE"].includes(
+      (input.shippingCountryCode ?? input.country.slice(0, 2)).toUpperCase(),
+    ) && input.totalGbp > 150;
+  if (highValueInternational) {
+    score += 15;
+    flags.push("high_value_international");
+  }
+
+  if (input.paymentMethod === "bitcoin") {
+    score += 15;
+    flags.push("cryptocurrency_payment");
+  } else if (input.paymentMethod === "bank_transfer") {
+    score += 10;
+    flags.push("bank_transfer_payment");
+  }
+
+  if (input.email.includes("+") && !input.email.split("@")[1]?.includes("proton")) {
+    score += 5;
+    flags.push("email_alias_pattern");
+  }
+
+  const domain = input.email.split("@")[1]?.toLowerCase() ?? "";
+  if (FREE_EMAIL_DOMAINS.has(domain)) {
+    score += 5;
+    flags.push("free_email_provider");
+  }
+
+  return { score: Math.min(score, 100), flags };
+}

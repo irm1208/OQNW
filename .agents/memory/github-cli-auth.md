@@ -1,1 +1,10 @@
-LS0tCm5hbWU6IEdpdEh1YiBjb25uZWN0b3IgYW5kIHRlcm1pbmFsIEdpdApkZXNjcmlwdGlvbjogR2l0SHViIE9BdXRoIGNvbm5lY3Rpb24gc3VwcG9ydHMgQVBJIG9wZXJhdGlvbnMgYnV0IGRvZXMgbm90IGF1dG9tYXRpY2FsbHkgYXV0aGVudGljYXRlIHNoZWxsIEdpdCBjb21tYW5kcy4KLS0tCgpUaGUgUmVwbGl0IEdpdEh1YiBjb25uZWN0aW9uIGNhbiByZWFkIGFuZCB3cml0ZSByZXBvc2l0b3JpZXMgdGhyb3VnaCBpdHMgc2VjdXJlIEFQSSBwcm94eSwgYnV0IGl0IGRvZXMgbm90IHBvcHVsYXRlIGEgdGVybWluYWwgY3JlZGVudGlhbCBoZWxwZXIsIEdpdEh1YiBDTEkgbG9naW4sIFNTSCBrZXksIG9yIEhUVFBTIHRva2VuLgoKKipXaHk6KiogQSBjb25uZWN0ZWQgR2l0SHViIGFjY291bnQgY2FuIHN0aWxsIGxlYXZlIGBnaXQgZmV0Y2hgLCBgZ2l0IHB1bGxgLCBhbmQgYGdpdCBwdXNoYCB1bmF1dGhlbnRpY2F0ZWQgaW4gdGhlIFJlcGwgc2hlbGwuCgoqKkhvdyB0byBhcHBseToqKiBGb3IgcmVwb3NpdG9yeSByZXBhaXJzLCB1c2UgdGhlIGNvbm5lY3RlZCBHaXRIdWIgQVBJIHdoZW4gYXBwcm9wcmlhdGUuIEZvciBvbmdvaW5nIHNoZWxsIEdpdCBjb21tYW5kcywgdGhlIHVzZXIgbXVzdCBhdXRoZW50aWNhdGUgR2l0IHNlcGFyYXRlbHkgdGhyb3VnaCB0aGVpciBwcmVmZXJyZWQgc2VjdXJlIEdpdC9TU0ggc2V0dXA7IG5ldmVyIGFzayB0aGVtIHRvIHBhc3RlIGEgdG9rZW4gaW50byBjaGF0Lg==
+---
+name: GitHub connector and terminal Git
+description: GitHub OAuth connection supports API operations but does not automatically authenticate shell Git commands.
+---
+
+The Replit GitHub connection can read and write repositories through its secure API proxy, but it does not populate a terminal credential helper, GitHub CLI login, SSH key, or HTTPS token.
+
+**Why:** A connected GitHub account can still leave `git fetch`, `git pull`, and `git push` unauthenticated in the Repl shell.
+
+**How to apply:** For repository repairs, use the connected GitHub API when appropriate. For ongoing shell Git commands, the user must authenticate Git separately through their preferred secure Git/SSH setup; never ask them to paste a token into chat.

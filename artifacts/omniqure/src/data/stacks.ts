@@ -1,1 +1,300 @@
-ZXhwb3J0IGludGVyZmFjZSBTdGFja1Byb2R1Y3QgewogIHNsdWc6IHN0cmluZzsKICByb2xlOiBzdHJpbmc7CiAgc3VnZ2VzdGVkRG9zZTogc3RyaW5nOwogIGZyZXF1ZW5jeTogc3RyaW5nOwogIG5vdGVzPzogc3RyaW5nOwp9CgpleHBvcnQgaW50ZXJmYWNlIFJlc2VhcmNoU3RhY2sgewogIGlkOiBzdHJpbmc7CiAgbmFtZTogc3RyaW5nOwogIHRhZ2xpbmU6IHN0cmluZzsKICBkZXNjcmlwdGlvbjogc3RyaW5nOwogIGJhZGdlOiBzdHJpbmc7CiAgYmFkZ2VDb2xvcjogc3RyaW5nOwogIGljb246IHN0cmluZzsKICBkaWZmaWN1bHR5OiAiQmVnaW5uZXIiIHwgIkludGVybWVkaWF0ZSIgfCAiQWR2YW5jZWQiOwogIGN5Y2xlTGVuZ3RoOiBzdHJpbmc7CiAgcmVzZWFyY2hBcmVhczogc3RyaW5nW107CiAgcmF0aW9uYWxlOiBzdHJpbmc7CiAgcHJvZHVjdHM6IFN0YWNrUHJvZHVjdFtdOwogIHN5bmVyZ3k6IHN0cmluZzsKICB3YXJuaW5nczogc3RyaW5nW107Cn0KCmV4cG9ydCBjb25zdCByZXNlYXJjaFN0YWNrczogUmVzZWFyY2hTdGFja1tdID0gWwogIHsKICAgIGlkOiAiaGVhbGluZy1yZWNvdmVyeSIsCiAgICBuYW1lOiAiSGVhbGluZyAmIFJlY292ZXJ5IFN0YWNrIiwKICAgIHRhZ2xpbmU6ICJUaGUgZ29sZCBzdGFuZGFyZCBjb21iaW5hdGlvbiBmb3IgdGlzc3VlIHJlcGFpciByZXNlYXJjaCIsCiAgICBkZXNjcmlwdGlvbjoKICAgICAgIkJQQy0xNTcgYW5kIFRCLTUwMCBhcmUgdGhlIHR3byBtb3N0IHJlc2VhcmNoZWQgcGVwdGlkZXMgZm9yIHJlZ2VuZXJhdGl2ZSBhcHBsaWNhdGlvbnMuIFRvZ2V0aGVyIHRoZXkgZGVtb25zdHJhdGUgY29tcGxlbWVudGFyeSBtZWNoYW5pc21zIOKAlCBCUEMtMTU3IHByb21vdGVzIGFuZ2lvZ2VuZXNpcyBhbmQgY29sbGFnZW4gc3ludGhlc2lzIGF0IHRoZSBpbmp1cnkgc2l0ZSwgd2hpbGUgVEItNTAwIG1vYmlsaXNlcyBzdGVtIGNlbGxzIGFuZCByZWR1Y2VzIGluZmxhbW1hdGlvbiBzeXN0ZW1pY2FsbHkuIFRoaXMgcGFpcmluZyBpcyBjaXRlZCBpbiBodW5kcmVkcyBvZiBwcmVjbGluaWNhbCBtb2RlbHMuIiwKICAgIGJhZGdlOiAiTW9zdCBQb3B1bGFyIiwKICAgIGJhZGdlQ29sb3I6ICIjMDU5NjY5IiwKICAgIGljb246ICLwn6m5IiwKICAgIGRpZmZpY3VsdHk6ICJCZWdpbm5lciIsCiAgICBjeWNsZUxlbmd0aDogIjjigJMxMiB3ZWVrcyIsCiAgICByZXNlYXJjaEFyZWFzOiBbIlRlbmRvbiBSZXBhaXIiLCAiTXVzY2xlIFJlY292ZXJ5IiwgIldvdW5kIEhlYWxpbmciLCAiR3V0IEhlYWx0aCJdLAogICAgcmF0aW9uYWxlOgogICAgICAiQlBDLTE1NyBhY3RzIGxvY2FsbHkgYXQgdGhlIGluanVyeSBzaXRlLCB1cHJlZ3VsYXRpbmcgZ3Jvd3RoIGhvcm1vbmUgcmVjZXB0b3JzIGluIGZpYnJvYmxhc3RzIGFuZCBzdGltdWxhdGluZyBWRUdGLiBUQi01MDAgKFRoeW1vc2luIEJldGEtNCkgYWN0cyBzeXN0ZW1pY2FsbHksIHByb21vdGluZyBjZWxsIG1pZ3JhdGlvbiBhbmQgZGlmZmVyZW50aWF0aW9uLiBUaGVpciBtZWNoYW5pc21zIGFyZSBub24tb3ZlcmxhcHBpbmcsIG1ha2luZyB0aGlzIG9uZSBvZiB0aGUgbW9zdCBzdHVkaWVkIHN5bmVyZ2lzdGljIHBhaXJpbmdzIGluIHBlcHRpZGUgcmVzZWFyY2guIiwKICAgIHByb2R1Y3RzOiBbCiAgICAgIHsKICAgICAgICBzbHVnOiAiYnBjLTE1Ny01bWciLAogICAgICAgIHJvbGU6ICJQcmltYXJ5IEhlYWxpbmcgQWdlbnQiLAogICAgICAgIHN1Z2dlc3RlZERvc2U6ICIyNTDigJM1MDAgbWNnIiwKICAgICAgICBmcmVxdWVuY3k6ICJEYWlseSIsCiAgICAgICAgbm90ZXM6ICJMb2NhbCBvciBzeXN0ZW1pYyBhZG1pbmlzdHJhdGlvbiBpbiByZXNlYXJjaCBtb2RlbHMuIFN0YWJsZSBpbiBnYXN0cmljIGp1aWNlLiIsCiAgICAgIH0sCiAgICAgIHsKICAgICAgICBzbHVnOiAidGItNTAwLTVtZyIsCiAgICAgICAgcm9sZTogIlN5c3RlbWljIFJlY292ZXJ5IFN1cHBvcnQiLAogICAgICAgIHN1Z2dlc3RlZERvc2U6ICIyLjDigJMyLjUgbWciLAogICAgICAgIGZyZXF1ZW5jeTogIlR3aWNlIHdlZWtseSAobG9hZGluZyksIHdlZWtseSAobWFpbnRlbmFuY2UpIiwKICAgICAgICBub3RlczogIkhpZ2ggc3lzdGVtaWMgZGlzdHJpYnV0aW9uLiBDb21tb25seSBzdHVkaWVkIGFsb25nc2lkZSBCUEMtMTU3IGluIG11c2N1bG9za2VsZXRhbCBtb2RlbHMuIiwKICAgICAgfSwKICAgIF0sCiAgICBzeW5lcmd5OgogICAgICAiQlBDLTE1NyB0YXJnZXRzIGxvY2FsIHRpc3N1ZSByZXBhaXIgcGF0aHdheXMgd2hpbGUgVEItNTAwIHByb3ZpZGVzIHN5c3RlbWljIHN0ZW0gY2VsbCBtb2JpbGlzYXRpb24uIFRvZ2V0aGVyIHRoZXkgYWRkcmVzcyBib3RoIHRoZSBpbmp1cnkgc2l0ZSBhbmQgdGhlIGJyb2FkZXIgaW5mbGFtbWF0b3J5IGVudmlyb25tZW50LCBkZW1vbnN0cmF0aW5nIHN1cGVyaW9yIG91dGNvbWVzIGluIGFuaW1hbCBtb2RlbHMgY29tcGFyZWQgdG8gZWl0aGVyIHBlcHRpZGUgYWxvbmUuIiwKICAgIHdhcm5pbmdzOiBbCiAgICAgICJGb3IgaW4tdml0cm8gYW5kIHByZWNsaW5pY2FsIHJlc2VhcmNoIHVzZSBvbmx5LiIsCiAgICAgICJOb3QgZm9yIGh1bWFuIG9yIHZldGVyaW5hcnkgYWRtaW5pc3RyYXRpb24uIiwKICAgICAgIlN0b3JlIGx5b3BoaWxpc2VkIHBvd2RlciBhdCAtMjDCsEMuIFJlY29uc3RpdHV0ZSB3aXRoIGJhY3Rlcmlvc3RhdGljIHdhdGVyLiIsCiAgICBdLAogIH0sCiAgewogICAgaWQ6ICJncm93dGgtaG9ybW9uZS1vcHRpbWlzYXRpb24iLAogICAgbmFtZTogIkdIIE9wdGltaXNhdGlvbiBTdGFjayIsCiAgICB0YWdsaW5lOiAiU3luZXJnaXN0aWMgR0hSSCArIEdIUyBjb21iaW5hdGlvbiBmb3IgZ3Jvd3RoIGhvcm1vbmUgYXhpcyByZXNlYXJjaCIsCiAgICBkZXNjcmlwdGlvbjoKICAgICAgIkNKQy0xMjk1IChObyBEQUMpIGlzIGEgR0hSSCBhbmFsb2d1ZSB0aGF0IHN0aW11bGF0ZXMgdGhlIHBpdHVpdGFyeSdzIG5hdHVyYWwgR0ggcHVsc2UsIHdoaWxlIElwYW1vcmVsaW4gaXMgYSBzZWxlY3RpdmUgR0hTIChHcm93dGggSG9ybW9uZSBTZWNyZXRhZ29ndWUpIHRoYXQgYW1wbGlmaWVzIHRoYXQgcHVsc2Ugd2l0aG91dCBzaWduaWZpY2FudGx5IGFmZmVjdGluZyBjb3J0aXNvbCBvciBwcm9sYWN0aW4uIFRoZWlyIGNvbWJpbmF0aW9uIGlzIHRoZSBtb3N0IHN0dWRpZWQgcHJvdG9jb2wgaW4gR0ggc2VjcmV0YWdvZ3VlIHJlc2VhcmNoLiIsCiAgICBiYWRnZTogIlJlc2VhcmNoIEZhdm91cml0ZSIsCiAgICBiYWRnZUNvbG9yOiAiIzFCNUNCNSIsCiAgICBpY29uOiAi8J+TiCIsCiAgICBkaWZmaWN1bHR5OiAiSW50ZXJtZWRpYXRlIiwKICAgIGN5Y2xlTGVuZ3RoOiAiMTLigJMxNiB3ZWVrcyIsCiAgICByZXNlYXJjaEFyZWFzOiBbIkdyb3d0aCBIb3Jtb25lIEF4aXMiLCAiTXVzY2xlIFRpc3N1ZSIsICJGYXQgTWV0YWJvbGlzbSIsICJJR0YtMSBNb2R1bGF0aW9uIl0sCiAgICByYXRpb25hbGU6CiAgICAgICJDSkMtMTI5NSBObyBEQUMgbWltaWNzIGVuZG9nZW5vdXMgR0hSSCB3aXRoIGEgc2hvcnQgaGFsZi1saWZlICh+MzAgbWluKSwgcHJlc2VydmluZyBwdWxzYXRpbGUgR0ggcmVsZWFzZSBwYXR0ZXJucy4gSXBhbW9yZWxpbiBzZWxlY3RpdmVseSBzdGltdWxhdGVzIEdIIHJlbGVhc2UgdmlhIGdocmVsaW4gcmVjZXB0b3JzLiBDb21iaW5pbmcgdGhlbSBwcm9kdWNlcyBhIHN5bmVyZ2lzdGljIEdIIHB1bHNlIHNpZ25pZmljYW50bHkgZ3JlYXRlciB0aGFuIGVpdGhlciBhbG9uZSDigJQgdGhlIGR1YWwgbWVjaGFuaXNtIGlzIHdlbGwtZG9jdW1lbnRlZCBpbiByb2RlbnQgYW5kIHByaW1hdGUgbW9kZWxzLiIsCiAgICBwcm9kdWN0czogWwogICAgICB7CiAgICAgICAgc2x1ZzogImNqYy0xMjk1LW5vLWRhYy01bWciLAogICAgICAgIHJvbGU6ICJHSFJIIEFuYWxvZ3VlIChQdWxzZSBJbml0aWF0b3IpIiwKICAgICAgICBzdWdnZXN0ZWREb3NlOiAiMTAw4oCTMjAwIG1jZyIsCiAgICAgICAgZnJlcXVlbmN5OiAiRGFpbHksIDMwIG1pbiBiZWZvcmUgcHJpbWFyeSBmYXN0IiwKICAgICAgICBub3RlczogIlNob3J0IGhhbGYtbGlmZSBwcmVzZXJ2ZXMgbmF0dXJhbCBwdWxzYXRpbGUgR0ggc2VjcmV0aW9uIHBhdHRlcm5zLiBPZnRlbiBjby1hZG1pbmlzdGVyZWQgd2l0aCBJcGFtb3JlbGluLiIsCiAgICAgIH0sCiAgICAgIHsKICAgICAgICBzbHVnOiAiaXBhbW9yZWxpbi01bWciLAogICAgICAgIHJvbGU6ICJTZWxlY3RpdmUgR0hTIChQdWxzZSBBbXBsaWZpZXIpIiwKICAgICAgICBzdWdnZXN0ZWREb3NlOiAiMjAw4oCTMzAwIG1jZyIsCiAgICAgICAgZnJlcXVlbmN5OiAiRGFpbHksIGNvLWFkbWluaXN0ZXJlZCB3aXRoIENKQy0xMjk1IiwKICAgICAgICBub3RlczogIkhpZ2hseSBzZWxlY3RpdmUgZm9yIEdIIHJlbGVhc2UuIE1pbmltYWwgZWZmZWN0IG9uIGNvcnRpc29sIG9yIHByb2xhY3RpbiBpbiByZXNlYXJjaCBtb2RlbHMuIiwKICAgICAgfSwKICAgIF0sCiAgICBzeW5lcmd5OgogICAgICAiQ0pDLTEyOTUgTm8gREFDIHRyaWdnZXJzIHRoZSBwaXR1aXRhcnkgdG8gcmVsZWFzZSBHSCB3aGlsZSBJcGFtb3JlbGluIGFtcGxpZmllcyB0aGUgZ2hyZWxpbi1yZWNlcHRvciBwYXRod2F5IHNpbXVsdGFuZW91c2x5LiBUaGUgdHdvIG1lY2hhbmlzbXMgcHJvZHVjZSBhIEdIIHB1bHNlIDPigJM1w5cgZ3JlYXRlciB0aGFuIHNhbGluZSBjb250cm9scyBpbiBwdWJsaXNoZWQgcmVzZWFyY2gsIHdpdGggbWluaW1hbCBibHVudGluZyBvZiBuYXR1cmFsIGZlZWRiYWNrIGxvb3BzLiIsCiAgICB3YXJuaW5nczogWwogICAgICAiRm9yIGluLXZpdHJvIGFuZCBwcmVjbGluaWNhbCByZXNlYXJjaCB1c2Ugb25seS4iLAogICAgICAiTm90IGZvciBodW1hbiBvciB2ZXRlcmluYXJ5IGFkbWluaXN0cmF0aW9uLiIsCiAgICAgICJUaW1pbmcgcmVsYXRpdmUgdG8gZm9vZCBpbnRha2Ugc2lnbmlmaWNhbnRseSBhZmZlY3RzIEdIIHB1bHNlIGFtcGxpdHVkZSBpbiByZXNlYXJjaCBtb2RlbHMuIiwKICAgIF0sCiAgfSwKICB7CiAgICBpZDogImNvZ25pdGl2ZS1ub290cm9waWMiLAogICAgbmFtZTogIkNvZ25pdGl2ZSBFbmhhbmNlbWVudCBTdGFjayIsCiAgICB0YWdsaW5lOiAiQW54aW9seXRpYyArIG5vb3Ryb3BpYyBwZXB0aWRlcyB3aXRoIGNvbXBsZW1lbnRhcnkgQ05TIHRhcmdldHMiLAogICAgZGVzY3JpcHRpb246CiAgICAgICJTZW1heCBpcyBhIHN5bnRoZXRpYyBoZXB0YXBlcHRpZGUgZGVyaXZlZCBmcm9tIEFDVEggdGhhdCB1cHJlZ3VsYXRlcyBCRE5GIGFuZCBOR0YgZXhwcmVzc2lvbiBpbiB0aGUgQ05TLiBTZWxhbmsgaXMgYSBzeW50aGV0aWMgYW5hbG9ndWUgb2YgdGhlIGVuZG9nZW5vdXMgcGVwdGlkZSB0dWZ0c2luLCB3aXRoIHN0cm9uZyBhbnhpb2x5dGljIGFuZCBtZW1vcnktZW5oYW5jaW5nIHByb3BlcnRpZXMuIFRvZ2V0aGVyIHRoZXkgcmVwcmVzZW50IHRoZSBtb3N0IHN0dWRpZWQgbm9vdHJvcGljIHBlcHRpZGUgcGFpcmluZyBpbiBSdXNzaWFuIGNsaW5pY2FsIGFuZCBwcmVjbGluaWNhbCByZXNlYXJjaC4iLAogICAgYmFkZ2U6ICJDTlMgUmVzZWFyY2giLAogICAgYmFkZ2VDb2xvcjogIiM3QzNBRUQiLAogICAgaWNvbjogIvCfp6AiLAogICAgZGlmZmljdWx0eTogIkludGVybWVkaWF0ZSIsCiAgICBjeWNsZUxlbmd0aDogIjTigJM4IHdlZWtzIiwKICAgIHJlc2VhcmNoQXJlYXM6IFsiQkRORiBVcHJlZ3VsYXRpb24iLCAiQW54aW9seXNpcyIsICJNZW1vcnkgJiBMZWFybmluZyIsICJOZXVyb3Byb3RlY3Rpb24iXSwKICAgIHJhdGlvbmFsZToKICAgICAgIlNlbWF4IGFjdHMgb24gQUNUSC9NU0ggcmVjZXB0b3JzIGFuZCB1cHJlZ3VsYXRlcyBCRE5GIHVwIHRvIDgwMCUgaW4gcm9kZW50IG1vZGVscywgbWFraW5nIGl0IHRoZSBwcmltYXJ5IGNvZ25pdGl2ZSBlbmhhbmNlciBpbiB0aGlzIHN0YWNrLiBTZWxhbmsgbW9kdWxhdGVzIHRoZSBHQUJBZXJnaWMgc3lzdGVtIGZvciBhbnhpb2x5c2lzIGFuZCBjb21wbGVtZW50cyBTZW1heCBieSByZWR1Y2luZyBzdHJlc3MtaW5kdWNlZCBjb2duaXRpdmUgaW1wYWlybWVudCDigJQgYSBrZXkgY29uZm91bmRpbmcgZmFjdG9yIGluIG1lbW9yeSByZXNlYXJjaC4iLAogICAgcHJvZHVjdHM6IFsKICAgICAgewogICAgICAgIHNsdWc6ICJzZW1heC0xMG1nIiwKICAgICAgICByb2xlOiAiUHJpbWFyeSBOb290cm9waWMgLyBCRE5GIFVwcmVndWxhdG9yIiwKICAgICAgICBzdWdnZXN0ZWREb3NlOiAiMjAw4oCTMzAwIG1jZyIsCiAgICAgICAgZnJlcXVlbmN5OiAiRGFpbHkiLAogICAgICAgIG5vdGVzOiAiSW50cmFuYXNhbCBkZWxpdmVyeSBpbiByb2RlbnQgbW9kZWxzIHNob3dzIHJhcGlkIENOUyB1cHRha2UuIE4tQWNldHlsIHZhcmlhbnQgb2ZmZXJzIGVuaGFuY2VkIHN0YWJpbGl0eS4iLAogICAgICB9LAogICAgICB7CiAgICAgICAgc2x1ZzogInNlbGFuay0xMG1nIiwKICAgICAgICByb2xlOiAiQW54aW9seXRpYyAvIFN0cmVzcyBNb2R1bGF0b3IiLAogICAgICAgIHN1Z2dlc3RlZERvc2U6ICIyMDDigJMzMDAgbWNnIiwKICAgICAgICBmcmVxdWVuY3k6ICJEYWlseSwgY28tYWRtaW5pc3RlcmVkIHdpdGggU2VtYXgiLAogICAgICAgIG5vdGVzOiAiVHVmdHNpbiBhbmFsb2d1ZSB3aXRoIEdBQkFlcmdpYyBtb2R1bGF0aW9uLiBSZWR1Y2VzIHN0cmVzcy1yZWxhdGVkIGltcGFpcm1lbnQgdG8gY29nbml0aXZlIGJlbmNobWFya3MuIiwKICAgICAgfSwKICAgIF0sCiAgICBzeW5lcmd5OgogICAgICAiU2VtYXggZHJpdmVzIHVwcmVndWxhdGlvbiBvZiBuZXVyb3Ryb3BoaW4gcGF0aHdheXMgKEJETkYsIE5HRikgd2hpbGUgU2VsYW5rIGFkZHJlc3NlcyB0aGUgYW54aW9seXRpYyBhbmQgaW1tdW5vbW9kdWxhdG9yeSBlbnZpcm9ubWVudCB0aGF0IHN0cmVzcyBjcmVhdGVzIOKAlCB3aGljaCBvdGhlcndpc2UgYmx1bnRzIGNvZ25pdGl2ZSBpbXByb3ZlbWVudC4gVG9nZXRoZXIgdGhleSBhZGRyZXNzIGJvdGggdGhlIGVuaGFuY2VtZW50IGFuZCB0aGUgYmFzZWxpbmUgY29nbml0aXZlIGRpc3J1cHRpb24gaW4gcmVzZWFyY2ggc3ViamVjdHMuIiwKICAgIHdhcm5pbmdzOiBbCiAgICAgICJGb3IgaW4tdml0cm8gYW5kIHByZWNsaW5pY2FsIHJlc2VhcmNoIHVzZSBvbmx5LiIsCiAgICAgICJOb3QgZm9yIGh1bWFuIG9yIHZldGVyaW5hcnkgYWRtaW5pc3RyYXRpb24uIiwKICAgICAgIkNOUy1hY3RpdmUgcGVwdGlkZXMgcmVxdWlyZSBjYXJlZnVsIGRvc2luZyBpbnRlcnZhbHMgaW4gcmVzZWFyY2ggcHJvdG9jb2xzLiIsCiAgICBdLAogIH0sCiAgewogICAgaWQ6ICJsb25nZXZpdHktY2VsbHVsYXIiLAogICAgbmFtZTogIkxvbmdldml0eSAmIENlbGx1bGFyIEhlYWx0aCBTdGFjayIsCiAgICB0YWdsaW5lOiAiVGVsb21lcmUsIG1pdG9jaG9uZHJpYWwsIGFuZCBOQUQrIHJlc2VhcmNoIGNvbWJpbmF0aW9uIiwKICAgIGRlc2NyaXB0aW9uOgogICAgICAiRXBpdGhhbG9uIGlzIGEgdGV0cmFwZXB0aWRlIHN0dWRpZWQgZm9yIGl0cyBhYmlsaXR5IHRvIGFjdGl2YXRlIHRlbG9tZXJhc2UgYW5kIGV4dGVuZCB0ZWxvbWVyZSBsZW5ndGggaW4gYWdlaW5nIGNlbGwgbGluZXMuIE1PVFMtQyBpcyBhIG1pdG9jaG9uZHJpYS1kZXJpdmVkIHBlcHRpZGUgKE1EUHMpIHRoYXQgcmVndWxhdGVzIG1ldGFib2xpYyBob21lb3N0YXNpcyBhbmQgbWl0b2Nob25kcmlhbCBiaW9nZW5lc2lzLiBDb21iaW5lZCB3aXRoIE5BRCssIHRoaXMgc3RhY2sgcmVwcmVzZW50cyB0aGUgbGVhZGluZyBwZXB0aWRlIGNvbWJpbmF0aW9uIGZvciBjZWxsdWxhciBsb25nZXZpdHkgcmVzZWFyY2guIiwKICAgIGJhZGdlOiAiQW50aS1BZ2VpbmcgUmVzZWFyY2giLAogICAgYmFkZ2VDb2xvcjogIiNCNDUzMDkiLAogICAgaWNvbjogIuKPsyIsCiAgICBkaWZmaWN1bHR5OiAiQWR2YW5jZWQiLAogICAgY3ljbGVMZW5ndGg6ICIxMOKAkzIwIGRheXMgKEVwaXRoYWxvbiksIG9uZ29pbmcgKE1PVFMtQyArIE5BRCspIiwKICAgIHJlc2VhcmNoQXJlYXM6IFsiVGVsb21lcmUgQmlvbG9neSIsICJNaXRvY2hvbmRyaWFsIEZ1bmN0aW9uIiwgIk1ldGFib2xpYyBIZWFsdGgiLCAiQ2VsbHVsYXIgU2VuZXNjZW5jZSJdLAogICAgcmF0aW9uYWxlOgogICAgICAiRXBpdGhhbG9uIGFjdHMgYXQgdGhlIHRlbG9tZXJhc2UgbGV2ZWwg4oCUIGEga2V5IG1lY2hhbmlzbSBpbiByZXBsaWNhdGl2ZSBzZW5lc2NlbmNlLiBNT1RTLUMgdGFyZ2V0cyBtaXRvY2hvbmRyaWFsIGJpb2dlbmVzaXMgYW5kIG1ldGFib2xpYyBlZmZpY2llbmN5LCBhZGRyZXNzaW5nIHRoZSBlbmVyZ3kgcHJvZHVjdGlvbiBkZWNsaW5lIHNlZW4gaW4gYWdlZCBjZWxscy4gTkFEKyBwcmVjdXJzb3Igc3VwcG9ydCB1bmRlcnBpbnMgYm90aCBwYXRod2F5cywgYXMgdGVsb21lcmUgbWFpbnRlbmFuY2UgYW5kIG1pdG9jaG9uZHJpYWwgZnVuY3Rpb24gYXJlIGJvdGggTkFEKy1kZXBlbmRlbnQuIiwKICAgIHByb2R1Y3RzOiBbCiAgICAgIHsKICAgICAgICBzbHVnOiAiZXBpdGhhbG9uLTEwbWciLAogICAgICAgIHJvbGU6ICJUZWxvbWVyYXNlIEFjdGl2YXRvciIsCiAgICAgICAgc3VnZ2VzdGVkRG9zZTogIjXigJMxMCBtZyIsCiAgICAgICAgZnJlcXVlbmN5OiAiRGFpbHkgZm9yIDEw4oCTMjAgZGF5IGN5Y2xlcyIsCiAgICAgICAgbm90ZXM6ICJTaG9ydCBpbnRlbnNpdmUgY3ljbGVzIGFyZSB0aGUgcHJlZG9taW5hbnQgbW9kZWwgaW4gcHVibGlzaGVkIHJlc2VhcmNoLiBQaW5lYWwgZ2xhbmQgcmVndWxhdG9yIGluIGFuaW1hbCBtb2RlbHMuIiwKICAgICAgfSwKICAgICAgewogICAgICAgIHNsdWc6ICJtb3RzLWMtMTBtZyIsCiAgICAgICAgcm9sZTogIk1pdG9jaG9uZHJpYS1EZXJpdmVkIFBlcHRpZGUiLAogICAgICAgIHN1Z2dlc3RlZERvc2U6ICI14oCTMTAgbWciLAogICAgICAgIGZyZXF1ZW5jeTogIldlZWtseSIsCiAgICAgICAgbm90ZXM6ICJFbmNvZGVkIGluIG1pdG9jaG9uZHJpYWwgMTJTIHJSTkEuIEV4ZXJjaXNlLW1pbWV0aWMgcHJvcGVydGllcyBkb2N1bWVudGVkIGluIG1ldGFib2xpYyBtb2RlbHMuIiwKICAgICAgfSwKICAgICAgewogICAgICAgIHNsdWc6ICJuYWQtcGx1cy01MDBtZyIsCiAgICAgICAgcm9sZTogIk5BRCsgUHJlY3Vyc29yIiwKICAgICAgICBzdWdnZXN0ZWREb3NlOiAiMjUw4oCTNTAwIG1nIiwKICAgICAgICBmcmVxdWVuY3k6ICJEYWlseSIsCiAgICAgICAgbm90ZXM6ICJTdXBwb3J0cyBzaXJ0dWluIGFjdGl2aXR5IGFuZCBETkEgcmVwYWlyIHBhdGh3YXlzIHRoYXQgdW5kZXJwaW4gYm90aCBFcGl0aGFsb24gYW5kIE1PVFMtQyBtZWNoYW5pc21zLiIsCiAgICAgIH0sCiAgICBdLAogICAgc3luZXJneToKICAgICAgIkVwaXRoYWxvbiBhZGRyZXNzZXMgdGVsb21lcmUgc2hvcnRlbmluZyBhdCB0aGUgbnVjbGVhciBsZXZlbDsgTU9UUy1DIGFkZHJlc3NlcyBtaXRvY2hvbmRyaWFsIGRlY2xpbmU7IE5BRCsgcHJvdmlkZXMgdGhlIGVuZXJnZXRpYyBzdWJzdHJhdGUgYm90aCBwcm9jZXNzZXMgZGVwZW5kIHVwb24uIFRoaXMgdGhyZWUtcHJvbmdlZCBhcHByb2FjaCBjb3ZlcnMgdGhlIHRocmVlIHByaW1hcnkgaGFsbG1hcmtzIG9mIGNlbGx1bGFyIGFnZWluZyBpbiBhIHNpbmdsZSByZXNlYXJjaCBwcm90b2NvbC4iLAogICAgd2FybmluZ3M6IFsKICAgICAgIkZvciBpbi12aXRybyBhbmQgcHJlY2xpbmljYWwgcmVzZWFyY2ggdXNlIG9ubHkuIiwKICAgICAgIk5vdCBmb3IgaHVtYW4gb3IgdmV0ZXJpbmFyeSBhZG1pbmlzdHJhdGlvbi4iLAogICAgICAiQWR2YW5jZWQgcHJvdG9jb2wg4oCUIHJldmlldyBhbGwgdGhyZWUgY29tcG91bmQgcHJvZmlsZXMgYmVmb3JlIGRlc2lnbmluZyByZXNlYXJjaCBtb2RlbHMuIiwKICAgIF0sCiAgfSwKICB7CiAgICBpZDogImltbXVuZS1kZWZlbmNlIiwKICAgIG5hbWU6ICJJbW11bmUgRGVmZW5jZSBTdGFjayIsCiAgICB0YWdsaW5lOiAiSW5uYXRlIGFuZCBhZGFwdGl2ZSBpbW11bmUgbW9kdWxhdGlvbiByZXNlYXJjaCBwcm90b2NvbCIsCiAgICBkZXNjcmlwdGlvbjoKICAgICAgIlRoeW1vc2luIEFscGhhLTEgaXMgdGhlIG1vc3QgY2xpbmljYWxseSBzdHVkaWVkIGltbXVub21vZHVsYXRvcnkgcGVwdGlkZSwgYXBwcm92ZWQgaW4gbXVsdGlwbGUgY291bnRyaWVzIGZvciBoZXBhdGl0aXMgYW5kIGNhbmNlciBhZGp1bmN0IHRoZXJhcHkuIExMLTM3IGlzIHRoZSBvbmx5IGh1bWFuIGNhdGhlbGljaWRpbiwgd2l0aCBicm9hZC1zcGVjdHJ1bSBhbnRpbWljcm9iaWFsIGFuZCBpbW11bm9tb2R1bGF0b3J5IHByb3BlcnRpZXMuIFRvZ2V0aGVyIHRoZXkgY292ZXIgYm90aCBhZGFwdGl2ZSAoVEEtMSkgYW5kIGlubmF0ZSAoTEwtMzcpIGltbXVuZSBwYXRod2F5cy4iLAogICAgYmFkZ2U6ICJJbW11bmUgUmVzZWFyY2giLAogICAgYmFkZ2VDb2xvcjogIiMwODkxQjIiLAogICAgaWNvbjogIvCfm6HvuI8iLAogICAgZGlmZmljdWx0eTogIkludGVybWVkaWF0ZSIsCiAgICBjeWNsZUxlbmd0aDogIjbigJMxMiB3ZWVrcyIsCiAgICByZXNlYXJjaEFyZWFzOiBbIlQtQ2VsbCBBY3RpdmF0aW9uIiwgIklubmF0ZSBJbW11bml0eSIsICJBbnRpbWljcm9iaWFsIERlZmVuY2UiLCAiSW1tdW5vbW9kdWxhdGlvbiJdLAogICAgcmF0aW9uYWxlOgogICAgICAiVGh5bW9zaW4gQWxwaGEtMSBlbmhhbmNlcyBULWx5bXBob2N5dGUgbWF0dXJhdGlvbiBhbmQgZnVuY3Rpb24sIGJvb3N0aW5nIGFkYXB0aXZlIGltbXVuZSByZXNwb25zZXMuIExMLTM3IChoQ0FQMTgpIHByb3ZpZGVzIGFudGltaWNyb2JpYWwgZGVmZW5jZSBhbmQgYWN0aXZhdGVzIGRlbmRyaXRpYyBjZWxscywgYnJpZGdpbmcgaW5uYXRlIGFuZCBhZGFwdGl2ZSBpbW11bml0eS4gVGhlaXIgY29tcGxlbWVudGFyeSBwYXRod2F5cyBtYWtlIHRoaXMgdGhlIG1vc3QgY29tcHJlaGVuc2l2ZSBpbW11bmUgcmVzZWFyY2ggc3RhY2sgYXZhaWxhYmxlLiIsCiAgICBwcm9kdWN0czogWwogICAgICB7CiAgICAgICAgc2x1ZzogInRoeW1vc2luLWFscGhhLTEtMTBtZyIsCiAgICAgICAgcm9sZTogIkFkYXB0aXZlIEltbXVuZSBNb2R1bGF0b3IiLAogICAgICAgIHN1Z2dlc3RlZERvc2U6ICIxLjYgbWciLAogICAgICAgIGZyZXF1ZW5jeTogIlR3aWNlIHdlZWtseSIsCiAgICAgICAgbm90ZXM6ICJNb3N0IGNsaW5pY2FsbHkgcmVzZWFyY2hlZCBpbW11bm9tb2R1bGF0b3J5IHBlcHRpZGUuIEFwcHJvdmVkIGluIDM3IGNvdW50cmllcyBmb3IgSEJWL0hDViBhbmQgY2FuY2VyIGNvbnRleHRzLiIsCiAgICAgIH0sCiAgICAgIHsKICAgICAgICBzbHVnOiAibGwtMzctNW1nIiwKICAgICAgICByb2xlOiAiSW5uYXRlIEltbXVuZSBBY3RpdmF0b3IgLyBBbnRpbWljcm9iaWFsIiwKICAgICAgICBzdWdnZXN0ZWREb3NlOiAiMTAw4oCTNTAwIG1jZyIsCiAgICAgICAgZnJlcXVlbmN5OiAiRGFpbHkgdG8gZXZlcnkgb3RoZXIgZGF5IiwKICAgICAgICBub3RlczogIkh1bWFuIGNhdGhlbGljaWRpbi4gQWN0aXZhdGVzIFRMUjQsIHByb21vdGVzIHdvdW5kIGhlYWxpbmcsIGFuZCBicmlkZ2VzIGlubmF0ZSB0byBhZGFwdGl2ZSBpbW11bmUgYWN0aXZhdGlvbi4iLAogICAgICB9LAogICAgXSwKICAgIHN5bmVyZ3k6CiAgICAgICJUQS0xIGRyaXZlcyBULWNlbGwgZGlmZmVyZW50aWF0aW9uIGFuZCBjeXRva2luZSBzaWduYWxsaW5nIGluIHRoZSBhZGFwdGl2ZSBpbW11bmUgc3lzdGVtLCB3aGlsZSBMTC0zNyBwcm92aWRlcyBmaXJzdC1saW5lIGFudGltaWNyb2JpYWwgZGVmZW5jZSBhbmQgYWN0aXZhdGVzIHBhdHRlcm4gcmVjb2duaXRpb24gcGF0aHdheXMuIFRvZ2V0aGVyIHRoZXkgcHJvdmlkZSBjb21wbGVtZW50YXJ5IGNvdmVyYWdlIG9mIGJvdGggaW1tdW5lIHN1YnN5c3RlbXMgaW4gYSBzaW5nbGUgcmVzZWFyY2ggcHJvdG9jb2wuIiwKICAgIHdhcm5pbmdzOiBbCiAgICAgICJGb3IgaW4tdml0cm8gYW5kIHByZWNsaW5pY2FsIHJlc2VhcmNoIHVzZSBvbmx5LiIsCiAgICAgICJOb3QgZm9yIGh1bWFuIG9yIHZldGVyaW5hcnkgYWRtaW5pc3RyYXRpb24uIiwKICAgICAgIkltbXVub21vZHVsYXRvcnkgcmVzZWFyY2ggcmVxdWlyZXMgY2FyZWZ1bCBiYXNlbGluZSBpbW11bmUgcHJvZmlsaW5nIG9mIHJlc2VhcmNoIHN1YmplY3RzLiIsCiAgICBdLAogIH0sCiAgewogICAgaWQ6ICJ3ZWlnaHQtbWV0YWJvbGljIiwKICAgIG5hbWU6ICJNZXRhYm9saWMgJiBXZWlnaHQgUmVzZWFyY2ggU3RhY2siLAogICAgdGFnbGluZTogIkdMUC0xL0dJUCBkdWFsIGFnb25pc20gY29tYmluZWQgd2l0aCBsaXBvbHl0aWMgcGVwdGlkZSByZXNlYXJjaCIsCiAgICBkZXNjcmlwdGlvbjoKICAgICAgIlRpcnplcGF0aWRlIChHTFAtMS9HSVAgZHVhbCBhZ29uaXN0KSBpcyB0aGUgbW9zdCBwb3RlbnQgYXBwcm92ZWQgbWV0YWJvbGljIHBlcHRpZGUsIGRlbW9uc3RyYXRpbmcgdXAgdG8gMjIlIGJvZHl3ZWlnaHQgcmVkdWN0aW9uIGluIGNsaW5pY2FsIHRyaWFscy4gQU9ELTk2MDQgaXMgYSBtb2RpZmllZCBmcmFnbWVudCBvZiBodW1hbiBncm93dGggaG9ybW9uZSBzcGVjaWZpY2FsbHkgc3R1ZGllZCBmb3IgbGlwb2x5dGljIGFjdGl2aXR5LiBUb2dldGhlciB0aGV5IHJlcHJlc2VudCBjb21wbGVtZW50YXJ5IG1ldGFib2xpYyBwYXRod2F5cyDigJQgY2VudHJhbCBhcHBldGl0ZSByZWd1bGF0aW9uIGNvbWJpbmVkIHdpdGggcGVyaXBoZXJhbCBmYXQgbW9iaWxpc2F0aW9uLiIsCiAgICBiYWRnZTogIk1ldGFib2xpYyBSZXNlYXJjaCIsCiAgICBiYWRnZUNvbG9yOiAiI0RDMjYyNiIsCiAgICBpY29uOiAi4pqW77iPIiwKICAgIGRpZmZpY3VsdHk6ICJBZHZhbmNlZCIsCiAgICBjeWNsZUxlbmd0aDogIjE24oCTMjQgd2Vla3MiLAogICAgcmVzZWFyY2hBcmVhczogWyJHTFAtMSBTaWduYWxsaW5nIiwgIkxpcG9seXNpcyIsICJJbnN1bGluIFNlbnNpdGl2aXR5IiwgIkFwcGV0aXRlIFJlZ3VsYXRpb24iXSwKICAgIHJhdGlvbmFsZToKICAgICAgIlRpcnplcGF0aWRlIGFjdHMgY2VudHJhbGx5IG9uIEdMUC0xIGFuZCBHSVAgcmVjZXB0b3JzLCByZWR1Y2luZyBhcHBldGl0ZSBzaWduYWxsaW5nIGFuZCBpbXByb3ZpbmcgaW5zdWxpbiBzZW5zaXRpdml0eS4gQU9ELTk2MDQgKGhHSCAxNzYtMTkxKSBzdGltdWxhdGVzIGZhdCBicmVha2Rvd24gdmlhIGJldGEtMyBhZHJlbmVyZ2ljIHJlY2VwdG9ycyB3aXRob3V0IGFmZmVjdGluZyBJR0YtMSBvciBnbHVjb3NlLiBUaGVpciBtZWNoYW5pc21zIG9wZXJhdGUgb24gZGlmZmVyZW50IGF4ZXMsIG1ha2luZyB0aGVtIGEgbG9naWNhbCByZXNlYXJjaCBwYWlyaW5nIGZvciBtZXRhYm9saWMgc3R1ZGllcy4iLAogICAgcHJvZHVjdHM6IFsKICAgICAgewogICAgICAgIHNsdWc6ICJ0aXJ6ZXBhdGlkZS0xMG1nIiwKICAgICAgICByb2xlOiAiR0xQLTEgLyBHSVAgRHVhbCBSZWNlcHRvciBBZ29uaXN0IiwKICAgICAgICBzdWdnZXN0ZWREb3NlOiAiMi414oCTNSBtZyIsCiAgICAgICAgZnJlcXVlbmN5OiAiV2Vla2x5IiwKICAgICAgICBub3RlczogIkRvc2UtZXNjYWxhdGlvbiBtb2RlbCAoMi41IG1nIOKGkiA1IG1nIOKGkiA3LjUgbWcpIGRyYXduIGZyb20gcHVibGlzaGVkIHBoYXJtYWNva2luZXRpYyByZXNlYXJjaC4gTW9zdCBwb3RlbnQgbWV0YWJvbGljIHBlcHRpZGUgaW4gcmVzZWFyY2guIiwKICAgICAgfSwKICAgICAgewogICAgICAgIHNsdWc6ICJhb2QtOTYwNC01bWciLAogICAgICAgIHJvbGU6ICJMaXBvbHl0aWMgaEdIIEZyYWdtZW50IiwKICAgICAgICBzdWdnZXN0ZWREb3NlOiAiMzAw4oCTNTAwIG1jZyIsCiAgICAgICAgZnJlcXVlbmN5OiAiRGFpbHkiLAogICAgICAgIG5vdGVzOiAiRnJhZ21lbnQgMTc2LTE5MSBvZiBoR0guIExpcG9seXRpYyBhY3Rpdml0eSB3aXRob3V0IElHRi0xIG9yIGdsdWNvc2UgZWZmZWN0cyBkb2N1bWVudGVkIGluIHJvZGVudCBtb2RlbHMuIiwKICAgICAgfSwKICAgIF0sCiAgICBzeW5lcmd5OgogICAgICAiVGlyemVwYXRpZGUgcmVkdWNlcyBjYWxvcmljIGludGFrZSB2aWEgY2VudHJhbCBhcHBldGl0ZSBzdXBwcmVzc2lvbiBhbmQgaW1wcm92ZXMgaW5zdWxpbi1tZWRpYXRlZCBnbHVjb3NlIGRpc3Bvc2FsLiBBT0QtOTYwNCBkaXJlY3RseSBhY3RpdmF0ZXMgbGlwb2x5dGljIHBhdGh3YXlzIGluIGFkaXBvc2UgdGlzc3VlIHBlcmlwaGVyYWxseS4gVGhlIGNvbWJpbmVkIGFwcHJvYWNoIHRhcmdldHMgZmF0IGZyb20gYm90aCBpbnB1dCAoYXBwZXRpdGUpIGFuZCBvdXRwdXQgKGxpcG9seXNpcykgc2lkZXMgb2YgdGhlIGVuZXJneSBlcXVhdGlvbi4iLAogICAgd2FybmluZ3M6IFsKICAgICAgIkZvciBpbi12aXRybyBhbmQgcHJlY2xpbmljYWwgcmVzZWFyY2ggdXNlIG9ubHkuIiwKICAgICAgIk5vdCBmb3IgaHVtYW4gb3IgdmV0ZXJpbmFyeSBhZG1pbmlzdHJhdGlvbi4iLAogICAgICAiRHVhbCBtZXRhYm9saWMgYWdlbnRzIHJlcXVpcmUgY2FyZWZ1bCBtb25pdG9yaW5nIG9mIGJsb29kIGdsdWNvc2UgcGFyYW1ldGVycyBpbiByZXNlYXJjaCBzdWJqZWN0cy4iLAogICAgXSwKICB9LAogIHsKICAgIGlkOiAic2tpbi1yZXBhaXIiLAogICAgbmFtZTogIlNraW4gJiBSZXBhaXIgU3RhY2siLAogICAgdGFnbGluZTogIkNvbGxhZ2VuIHN5bnRoZXNpcywgY29wcGVyIHBlcHRpZGUsIGFuZCB3b3VuZCByZXBhaXIgcmVzZWFyY2giLAogICAgZGVzY3JpcHRpb246CiAgICAgICJHSEstQ3UgKGNvcHBlciB0cmlwZXB0aWRlLTEpIGlzIG9uZSBvZiB0aGUgbW9zdCByZXNlYXJjaGVkIHBlcHRpZGVzIGluIGRlcm1hdG9sb2d5LCB3aXRoIGRvY3VtZW50ZWQgZWZmZWN0cyBvbiBjb2xsYWdlbiBzeW50aGVzaXMsIHdvdW5kIGhlYWxpbmcsIGFuZCBhbnRpb3hpZGFudCBkZWZlbmNlLiBDb21iaW5lZCB3aXRoIEJQQy0xNTcncyBhbmdpb2dlbmljIGFuZCB0aXNzdWUgcmVwYWlyIHByb3BlcnRpZXMsIHRoaXMgc3RhY2sgY292ZXJzIGJvdGggZGVybWFsIG1hdHJpeCByZWNvbnN0cnVjdGlvbiBhbmQgdmFzY3VsYXIgc3VwcG9ydCBmb3Igb3B0aW1hbCB3b3VuZCByZXNlYXJjaCBtb2RlbHMuIiwKICAgIGJhZGdlOiAiU2tpbiBSZXNlYXJjaCIsCiAgICBiYWRnZUNvbG9yOiAiI0JFMTg1RCIsCiAgICBpY29uOiAi4pyoIiwKICAgIGRpZmZpY3VsdHk6ICJCZWdpbm5lciIsCiAgICBjeWNsZUxlbmd0aDogIjbigJMxMCB3ZWVrcyIsCiAgICByZXNlYXJjaEFyZWFzOiBbIkNvbGxhZ2VuIFN5bnRoZXNpcyIsICJXb3VuZCBIZWFsaW5nIiwgIkFudGlveGlkYW50IERlZmVuY2UiLCAiQW5naW9nZW5lc2lzIl0sCiAgICByYXRpb25hbGU6CiAgICAgICJHSEstQ3Ugc3RpbXVsYXRlcyBjb2xsYWdlbiBhbmQgZWxhc3RpbiBzeW50aGVzaXMsIGluaGliaXRzIG1hdHJpeCBtZXRhbGxvcHJvdGVpbmFzZXMgdGhhdCBicmVhayBkb3duIHNraW4gc3RydWN0dXJlLCBhbmQgYWN0aXZhdGVzIGFudGlveGlkYW50IHN5c3RlbXMuIEJQQy0xNTcgZHJpdmVzIGFuZ2lvZ2VuZXNpcyAobmV3IGJsb29kIHZlc3NlbCBmb3JtYXRpb24pIHRvIHRoZSB3b3VuZCBzaXRlLCBlbnN1cmluZyB0aGUgY29sbGFnZW4gbWF0cml4IGJlaW5nIGJ1aWx0IGhhcyBhZGVxdWF0ZSB2YXNjdWxhciBzdXBwb3J0LiBUaGVzZSBhcmUgdGhlIHR3byBtb3N0IGV2aWRlbmNlLWJhY2tlZCBwZXB0aWRlcyBpbiBkZXJtYWwgcmVwYWlyIHJlc2VhcmNoLiIsCiAgICBwcm9kdWN0czogWwogICAgICB7CiAgICAgICAgc2x1ZzogImdoay1jdS01MG1nIiwKICAgICAgICByb2xlOiAiQ29wcGVyIFRyaXBlcHRpZGUgLyBDb2xsYWdlbiBTdGltdWxhdG9yIiwKICAgICAgICBzdWdnZXN0ZWREb3NlOiAiMeKAkzIgbWciLAogICAgICAgIGZyZXF1ZW5jeTogIkRhaWx5IiwKICAgICAgICBub3RlczogIldhdGVyLXNvbHVibGUsIGhpZ2ggc3RhYmlsaXR5LiBTdHJvbmcgZXZpZGVuY2UgYmFzZSBmb3IgZGVybWFsIG1hdHJpeCByZW1vZGVsbGluZyBpbiB2aXRybyBhbmQgaW4gdml2by4iLAogICAgICB9LAogICAgICB7CiAgICAgICAgc2x1ZzogImJwYy0xNTctNW1nIiwKICAgICAgICByb2xlOiAiQW5naW9nZW5lc2lzICYgVGlzc3VlIFJlcGFpciIsCiAgICAgICAgc3VnZ2VzdGVkRG9zZTogIjIwMOKAkzMwMCBtY2ciLAogICAgICAgIGZyZXF1ZW5jeTogIkRhaWx5IiwKICAgICAgICBub3RlczogIlByb21vdGVzIGJsb29kIHZlc3NlbCBncm93dGggdG8gdGhlIHJlcGFpciBzaXRlLCBzdXBwb3J0aW5nIHRoZSBjb2xsYWdlbiBtYXRyaXggcmVidWlsdCBieSBHSEstQ3UuIiwKICAgICAgfSwKICAgIF0sCiAgICBzeW5lcmd5OgogICAgICAiR0hLLUN1IHJlYnVpbGRzIHRoZSBleHRyYWNlbGx1bGFyIG1hdHJpeCBieSBzdGltdWxhdGluZyBjb2xsYWdlbiwgZWxhc3RpbiwgYW5kIEdBRyBzeW50aGVzaXMgd2hpbGUgaW5oaWJpdGluZyBtYXRyaXggZGVncmFkYXRpb24gZW56eW1lcy4gQlBDLTE1NyBlbnN1cmVzIHRoZSBuZXcgbWF0cml4IGhhcyBhZGVxdWF0ZSBibG9vZCBzdXBwbHkgdmlhIGFuZ2lvZ2VuZXNpcy4gVG9nZXRoZXIgdGhleSBhZGRyZXNzIGJvdGggdGhlIHN0cnVjdHVyYWwgYW5kIHZhc2N1bGFyIGNvbXBvbmVudHMgb2Ygd291bmQgaGVhbGluZy4iLAogICAgd2FybmluZ3M6IFsKICAgICAgIkZvciBpbi12aXRybyBhbmQgcHJlY2xpbmljYWwgcmVzZWFyY2ggdXNlIG9ubHkuIiwKICAgICAgIk5vdCBmb3IgaHVtYW4gb3IgdmV0ZXJpbmFyeSBhZG1pbmlzdHJhdGlvbi4iLAogICAgICAiR0hLLUN1IGlzIGEgY29wcGVyIGNoZWxhdGUg4oCUIGhhbmRsZSB3aXRoIHN0YW5kYXJkIG1ldGFsIGNoZWxhdGUgcHJlY2F1dGlvbnMgaW4gcmVzZWFyY2ggc2V0dGluZ3MuIiwKICAgIF0sCiAgfSwKXTsK
+export interface StackProduct {
+  slug: string;
+  role: string;
+  suggestedDose: string;
+  frequency: string;
+  notes?: string;
+}
+
+export interface ResearchStack {
+  id: string;
+  name: string;
+  tagline: string;
+  description: string;
+  badge: string;
+  badgeColor: string;
+  icon: string;
+  difficulty: "Beginner" | "Intermediate" | "Advanced";
+  cycleLength: string;
+  researchAreas: string[];
+  rationale: string;
+  products: StackProduct[];
+  synergy: string;
+  warnings: string[];
+}
+
+export const researchStacks: ResearchStack[] = [
+  {
+    id: "healing-recovery",
+    name: "Healing & Recovery Stack",
+    tagline: "The gold standard combination for tissue repair research",
+    description:
+      "BPC-157 and TB-500 are the two most researched peptides for regenerative applications. Together they demonstrate complementary mechanisms — BPC-157 promotes angiogenesis and collagen synthesis at the injury site, while TB-500 mobilises stem cells and reduces inflammation systemically. This pairing is cited in hundreds of preclinical models.",
+    badge: "Most Popular",
+    badgeColor: "#059669",
+    icon: "🩹",
+    difficulty: "Beginner",
+    cycleLength: "8–12 weeks",
+    researchAreas: ["Tendon Repair", "Muscle Recovery", "Wound Healing", "Gut Health"],
+    rationale:
+      "BPC-157 acts locally at the injury site, upregulating growth hormone receptors in fibroblasts and stimulating VEGF. TB-500 (Thymosin Beta-4) acts systemically, promoting cell migration and differentiation. Their mechanisms are non-overlapping, making this one of the most studied synergistic pairings in peptide research.",
+    products: [
+      {
+        slug: "bpc-157-5mg",
+        role: "Primary Healing Agent",
+        suggestedDose: "250–500 mcg",
+        frequency: "Daily",
+        notes: "Local or systemic administration in research models. Stable in gastric juice.",
+      },
+      {
+        slug: "tb-500-5mg",
+        role: "Systemic Recovery Support",
+        suggestedDose: "2.0–2.5 mg",
+        frequency: "Twice weekly (loading), weekly (maintenance)",
+        notes: "High systemic distribution. Commonly studied alongside BPC-157 in musculoskeletal models.",
+      },
+    ],
+    synergy:
+      "BPC-157 targets local tissue repair pathways while TB-500 provides systemic stem cell mobilisation. Together they address both the injury site and the broader inflammatory environment, demonstrating superior outcomes in animal models compared to either peptide alone.",
+    warnings: [
+      "For in-vitro and preclinical research use only.",
+      "Not for human or veterinary administration.",
+      "Store lyophilised powder at -20°C. Reconstitute with bacteriostatic water.",
+    ],
+  },
+  {
+    id: "growth-hormone-optimisation",
+    name: "GH Optimisation Stack",
+    tagline: "Synergistic GHRH + GHS combination for growth hormone axis research",
+    description:
+      "CJC-1295 (No DAC) is a GHRH analogue that stimulates the pituitary's natural GH pulse, while Ipamorelin is a selective GHS (Growth Hormone Secretagogue) that amplifies that pulse without significantly affecting cortisol or prolactin. Their combination is the most studied protocol in GH secretagogue research.",
+    badge: "Research Favourite",
+    badgeColor: "#1B5CB5",
+    icon: "📈",
+    difficulty: "Intermediate",
+    cycleLength: "12–16 weeks",
+    researchAreas: ["Growth Hormone Axis", "Muscle Tissue", "Fat Metabolism", "IGF-1 Modulation"],
+    rationale:
+      "CJC-1295 No DAC mimics endogenous GHRH with a short half-life (~30 min), preserving pulsatile GH release patterns. Ipamorelin selectively stimulates GH release via ghrelin receptors. Combining them produces a synergistic GH pulse significantly greater than either alone — the dual mechanism is well-documented in rodent and primate models.",
+    products: [
+      {
+        slug: "cjc-1295-no-dac-5mg",
+        role: "GHRH Analogue (Pulse Initiator)",
+        suggestedDose: "100–200 mcg",
+        frequency: "Daily, 30 min before primary fast",
+        notes: "Short half-life preserves natural pulsatile GH secretion patterns. Often co-administered with Ipamorelin.",
+      },
+      {
+        slug: "ipamorelin-5mg",
+        role: "Selective GHS (Pulse Amplifier)",
+        suggestedDose: "200–300 mcg",
+        frequency: "Daily, co-administered with CJC-1295",
+        notes: "Highly selective for GH release. Minimal effect on cortisol or prolactin in research models.",
+      },
+    ],
+    synergy:
+      "CJC-1295 No DAC triggers the pituitary to release GH while Ipamorelin amplifies the ghrelin-receptor pathway simultaneously. The two mechanisms produce a GH pulse 3–5× greater than saline controls in published research, with minimal blunting of natural feedback loops.",
+    warnings: [
+      "For in-vitro and preclinical research use only.",
+      "Not for human or veterinary administration.",
+      "Timing relative to food intake significantly affects GH pulse amplitude in research models.",
+    ],
+  },
+  {
+    id: "cognitive-nootropic",
+    name: "Cognitive Enhancement Stack",
+    tagline: "Anxiolytic + nootropic peptides with complementary CNS targets",
+    description:
+      "Semax is a synthetic heptapeptide derived from ACTH that upregulates BDNF and NGF expression in the CNS. Selank is a synthetic analogue of the endogenous peptide tuftsin, with strong anxiolytic and memory-enhancing properties. Together they represent the most studied nootropic peptide pairing in Russian clinical and preclinical research.",
+    badge: "CNS Research",
+    badgeColor: "#7C3AED",
+    icon: "🧠",
+    difficulty: "Intermediate",
+    cycleLength: "4–8 weeks",
+    researchAreas: ["BDNF Upregulation", "Anxiolysis", "Memory & Learning", "Neuroprotection"],
+    rationale:
+      "Semax acts on ACTH/MSH receptors and upregulates BDNF up to 800% in rodent models, making it the primary cognitive enhancer in this stack. Selank modulates the GABAergic system for anxiolysis and complements Semax by reducing stress-induced cognitive impairment — a key confounding factor in memory research.",
+    products: [
+      {
+        slug: "semax-10mg",
+        role: "Primary Nootropic / BDNF Upregulator",
+        suggestedDose: "200–300 mcg",
+        frequency: "Daily",
+        notes: "Intranasal delivery in rodent models shows rapid CNS uptake. N-Acetyl variant offers enhanced stability.",
+      },
+      {
+        slug: "selank-10mg",
+        role: "Anxiolytic / Stress Modulator",
+        suggestedDose: "200–300 mcg",
+        frequency: "Daily, co-administered with Semax",
+        notes: "Tuftsin analogue with GABAergic modulation. Reduces stress-related impairment to cognitive benchmarks.",
+      },
+    ],
+    synergy:
+      "Semax drives upregulation of neurotrophin pathways (BDNF, NGF) while Selank addresses the anxiolytic and immunomodulatory environment that stress creates — which otherwise blunts cognitive improvement. Together they address both the enhancement and the baseline cognitive disruption in research subjects.",
+    warnings: [
+      "For in-vitro and preclinical research use only.",
+      "Not for human or veterinary administration.",
+      "CNS-active peptides require careful dosing intervals in research protocols.",
+    ],
+  },
+  {
+    id: "longevity-cellular",
+    name: "Longevity & Cellular Health Stack",
+    tagline: "Telomere, mitochondrial, and NAD+ research combination",
+    description:
+      "Epithalon is a tetrapeptide studied for its ability to activate telomerase and extend telomere length in ageing cell lines. MOTS-C is a mitochondria-derived peptide (MDPs) that regulates metabolic homeostasis and mitochondrial biogenesis. Combined with NAD+, this stack represents the leading peptide combination for cellular longevity research.",
+    badge: "Anti-Ageing Research",
+    badgeColor: "#B45309",
+    icon: "⏳",
+    difficulty: "Advanced",
+    cycleLength: "10–20 days (Epithalon), ongoing (MOTS-C + NAD+)",
+    researchAreas: ["Telomere Biology", "Mitochondrial Function", "Metabolic Health", "Cellular Senescence"],
+    rationale:
+      "Epithalon acts at the telomerase level — a key mechanism in replicative senescence. MOTS-C targets mitochondrial biogenesis and metabolic efficiency, addressing the energy production decline seen in aged cells. NAD+ precursor support underpins both pathways, as telomere maintenance and mitochondrial function are both NAD+-dependent.",
+    products: [
+      {
+        slug: "epithalon-10mg",
+        role: "Telomerase Activator",
+        suggestedDose: "5–10 mg",
+        frequency: "Daily for 10–20 day cycles",
+        notes: "Short intensive cycles are the predominant model in published research. Pineal gland regulator in animal models.",
+      },
+      {
+        slug: "mots-c-10mg",
+        role: "Mitochondria-Derived Peptide",
+        suggestedDose: "5–10 mg",
+        frequency: "Weekly",
+        notes: "Encoded in mitochondrial 12S rRNA. Exercise-mimetic properties documented in metabolic models.",
+      },
+      {
+        slug: "nad-plus-500mg",
+        role: "NAD+ Precursor",
+        suggestedDose: "250–500 mg",
+        frequency: "Daily",
+        notes: "Supports sirtuin activity and DNA repair pathways that underpin both Epithalon and MOTS-C mechanisms.",
+      },
+    ],
+    synergy:
+      "Epithalon addresses telomere shortening at the nuclear level; MOTS-C addresses mitochondrial decline; NAD+ provides the energetic substrate both processes depend upon. This three-pronged approach covers the three primary hallmarks of cellular ageing in a single research protocol.",
+    warnings: [
+      "For in-vitro and preclinical research use only.",
+      "Not for human or veterinary administration.",
+      "Advanced protocol — review all three compound profiles before designing research models.",
+    ],
+  },
+  {
+    id: "immune-defence",
+    name: "Immune Defence Stack",
+    tagline: "Innate and adaptive immune modulation research protocol",
+    description:
+      "Thymosin Alpha-1 is the most clinically studied immunomodulatory peptide, approved in multiple countries for hepatitis and cancer adjunct therapy. LL-37 is the only human cathelicidin, with broad-spectrum antimicrobial and immunomodulatory properties. Together they cover both adaptive (TA-1) and innate (LL-37) immune pathways.",
+    badge: "Immune Research",
+    badgeColor: "#0891B2",
+    icon: "🛡️",
+    difficulty: "Intermediate",
+    cycleLength: "6–12 weeks",
+    researchAreas: ["T-Cell Activation", "Innate Immunity", "Antimicrobial Defence", "Immunomodulation"],
+    rationale:
+      "Thymosin Alpha-1 enhances T-lymphocyte maturation and function, boosting adaptive immune responses. LL-37 (hCAP18) provides antimicrobial defence and activates dendritic cells, bridging innate and adaptive immunity. Their complementary pathways make this the most comprehensive immune research stack available.",
+    products: [
+      {
+        slug: "thymosin-alpha-1-10mg",
+        role: "Adaptive Immune Modulator",
+        suggestedDose: "1.6 mg",
+        frequency: "Twice weekly",
+        notes: "Most clinically researched immunomodulatory peptide. Approved in 37 countries for HBV/HCV and cancer contexts.",
+      },
+      {
+        slug: "ll-37-5mg",
+        role: "Innate Immune Activator / Antimicrobial",
+        suggestedDose: "100–500 mcg",
+        frequency: "Daily to every other day",
+        notes: "Human cathelicidin. Activates TLR4, promotes wound healing, and bridges innate to adaptive immune activation.",
+      },
+    ],
+    synergy:
+      "TA-1 drives T-cell differentiation and cytokine signalling in the adaptive immune system, while LL-37 provides first-line antimicrobial defence and activates pattern recognition pathways. Together they provide complementary coverage of both immune subsystems in a single research protocol.",
+    warnings: [
+      "For in-vitro and preclinical research use only.",
+      "Not for human or veterinary administration.",
+      "Immunomodulatory research requires careful baseline immune profiling of research subjects.",
+    ],
+  },
+  {
+    id: "weight-metabolic",
+    name: "Metabolic & Weight Research Stack",
+    tagline: "GLP-1/GIP dual agonism combined with lipolytic peptide research",
+    description:
+      "Tirzepatide (GLP-1/GIP dual agonist) is the most potent approved metabolic peptide, demonstrating up to 22% bodyweight reduction in clinical trials. AOD-9604 is a modified fragment of human growth hormone specifically studied for lipolytic activity. Together they represent complementary metabolic pathways — central appetite regulation combined with peripheral fat mobilisation.",
+    badge: "Metabolic Research",
+    badgeColor: "#DC2626",
+    icon: "⚖️",
+    difficulty: "Advanced",
+    cycleLength: "16–24 weeks",
+    researchAreas: ["GLP-1 Signalling", "Lipolysis", "Insulin Sensitivity", "Appetite Regulation"],
+    rationale:
+      "Tirzepatide acts centrally on GLP-1 and GIP receptors, reducing appetite signalling and improving insulin sensitivity. AOD-9604 (hGH 176-191) stimulates fat breakdown via beta-3 adrenergic receptors without affecting IGF-1 or glucose. Their mechanisms operate on different axes, making them a logical research pairing for metabolic studies.",
+    products: [
+      {
+        slug: "tirzepatide-10mg",
+        role: "GLP-1 / GIP Dual Receptor Agonist",
+        suggestedDose: "2.5–5 mg",
+        frequency: "Weekly",
+        notes: "Dose-escalation model (2.5 mg → 5 mg → 7.5 mg) drawn from published pharmacokinetic research. Most potent metabolic peptide in research.",
+      },
+      {
+        slug: "aod-9604-5mg",
+        role: "Lipolytic hGH Fragment",
+        suggestedDose: "300–500 mcg",
+        frequency: "Daily",
+        notes: "Fragment 176-191 of hGH. Lipolytic activity without IGF-1 or glucose effects documented in rodent models.",
+      },
+    ],
+    synergy:
+      "Tirzepatide reduces caloric intake via central appetite suppression and improves insulin-mediated glucose disposal. AOD-9604 directly activates lipolytic pathways in adipose tissue peripherally. The combined approach targets fat from both input (appetite) and output (lipolysis) sides of the energy equation.",
+    warnings: [
+      "For in-vitro and preclinical research use only.",
+      "Not for human or veterinary administration.",
+      "Dual metabolic agents require careful monitoring of blood glucose parameters in research subjects.",
+    ],
+  },
+  {
+    id: "skin-repair",
+    name: "Skin & Repair Stack",
+    tagline: "Collagen synthesis, copper peptide, and wound repair research",
+    description:
+      "GHK-Cu (copper tripeptide-1) is one of the most researched peptides in dermatology, with documented effects on collagen synthesis, wound healing, and antioxidant defence. Combined with BPC-157's angiogenic and tissue repair properties, this stack covers both dermal matrix reconstruction and vascular support for optimal wound research models.",
+    badge: "Skin Research",
+    badgeColor: "#BE185D",
+    icon: "✨",
+    difficulty: "Beginner",
+    cycleLength: "6–10 weeks",
+    researchAreas: ["Collagen Synthesis", "Wound Healing", "Antioxidant Defence", "Angiogenesis"],
+    rationale:
+      "GHK-Cu stimulates collagen and elastin synthesis, inhibits matrix metalloproteinases that break down skin structure, and activates antioxidant systems. BPC-157 drives angiogenesis (new blood vessel formation) to the wound site, ensuring the collagen matrix being built has adequate vascular support. These are the two most evidence-backed peptides in dermal repair research.",
+    products: [
+      {
+        slug: "ghk-cu-50mg",
+        role: "Copper Tripeptide / Collagen Stimulator",
+        suggestedDose: "1–2 mg",
+        frequency: "Daily",
+        notes: "Water-soluble, high stability. Strong evidence base for dermal matrix remodelling in vitro and in vivo.",
+      },
+      {
+        slug: "bpc-157-5mg",
+        role: "Angiogenesis & Tissue Repair",
+        suggestedDose: "200–300 mcg",
+        frequency: "Daily",
+        notes: "Promotes blood vessel growth to the repair site, supporting the collagen matrix rebuilt by GHK-Cu.",
+      },
+    ],
+    synergy:
+      "GHK-Cu rebuilds the extracellular matrix by stimulating collagen, elastin, and GAG synthesis while inhibiting matrix degradation enzymes. BPC-157 ensures the new matrix has adequate blood supply via angiogenesis. Together they address both the structural and vascular components of wound healing.",
+    warnings: [
+      "For in-vitro and preclinical research use only.",
+      "Not for human or veterinary administration.",
+      "GHK-Cu is a copper chelate — handle with standard metal chelate precautions in research settings.",
+    ],
+  },
+];

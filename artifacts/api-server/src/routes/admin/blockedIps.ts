@@ -1,1 +1,73 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgYmxvY2tlZElwc1RhYmxlIH0gZnJvbSAiQHdvcmtzcGFjZS9kYi9zY2hlbWEiOwppbXBvcnQgeyBlcSB9IGZyb20gImRyaXp6bGUtb3JtIjsKaW1wb3J0IHsgZmlyc3RTdHJpbmcgfSBmcm9tICIuLi8uLi9saWIvcXVlcnkiOwoKY29uc3Qgcm91dGVyID0gUm91dGVyKCk7CgpmdW5jdGlvbiByZXF1aXJlQWRtaW4ocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogYm9vbGVhbiB7CiAgaWYgKHJlcS5jb29raWVzPy5hZG1pbl9zZXNzaW9uICE9PSAiYXV0aGVudGljYXRlZCIpIHsKICAgIHJlcy5zdGF0dXMoNDAxKS5qc29uKHsgZXJyb3I6ICJOb3QgYXV0aGVudGljYXRlZCIgfSk7CiAgICByZXR1cm4gZmFsc2U7CiAgfQogIHJldHVybiB0cnVlOwp9Cgpyb3V0ZXIuZ2V0KCIvYWRtaW4vYmxvY2tlZC1pcHMiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgdHJ5IHsKICAgIGNvbnN0IHJvd3MgPSBhd2FpdCBkYgogICAgICAuc2VsZWN0KCkKICAgICAgLmZyb20oYmxvY2tlZElwc1RhYmxlKQogICAgICAub3JkZXJCeShibG9ja2VkSXBzVGFibGUuYmxvY2tlZEF0KTsKICAgIHJlcy5qc29uKHJvd3MpOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkZhaWxlZCB0byBmZXRjaCBibG9ja2VkIElQcyIgfSk7CiAgfQp9KTsKCnJvdXRlci5wb3N0KCIvYWRtaW4vYmxvY2tlZC1pcHMiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgY29uc3QgeyBpcCwgcmVhc29uIH0gPSByZXEuYm9keSBhcyB7IGlwPzogc3RyaW5nOyByZWFzb24/OiBzdHJpbmcgfTsKICBpZiAoIWlwIHx8IHR5cGVvZiBpcCAhPT0gInN0cmluZyIgfHwgIWlwLnRyaW0oKSkgewogICAgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogImlwIGlzIHJlcXVpcmVkIiB9KTsKICAgIHJldHVybjsKICB9CiAgY29uc3Qgbm9ybWFsaXplZCA9IGlwLnRyaW0oKTsKICB0cnkgewogICAgY29uc3QgW3Jvd10gPSBhd2FpdCBkYgogICAgICAuaW5zZXJ0KGJsb2NrZWRJcHNUYWJsZSkKICAgICAgLnZhbHVlcyh7IGlwOiBub3JtYWxpemVkLCByZWFzb246IHJlYXNvbj8udHJpbSgpIHx8IG51bGwgfSkKICAgICAgLm9uQ29uZmxpY3REb05vdGhpbmcoKQogICAgICAucmV0dXJuaW5nKCk7CiAgICBpZiAoIXJvdykgewogICAgICByZXMuc3RhdHVzKDQwOSkuanNvbih7IGVycm9yOiAiSVAgYWxyZWFkeSBibG9ja2VkIiB9KTsKICAgICAgcmV0dXJuOwogICAgfQogICAgcmVzLnN0YXR1cygyMDEpLmpzb24ocm93KTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJGYWlsZWQgdG8gYmxvY2sgSVAiIH0pOwogIH0KfSk7Cgpyb3V0ZXIuZGVsZXRlKCIvYWRtaW4vYmxvY2tlZC1pcHMvOmlwIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGlmICghcmVxdWlyZUFkbWluKHJlcSwgcmVzKSkgcmV0dXJuOwogIGNvbnN0IGlwID0gZGVjb2RlVVJJQ29tcG9uZW50KGZpcnN0U3RyaW5nKHJlcS5wYXJhbXMuaXApID8/ICIiKTsKICB0cnkgewogICAgY29uc3QgZGVsZXRlZCA9IGF3YWl0IGRiCiAgICAgIC5kZWxldGUoYmxvY2tlZElwc1RhYmxlKQogICAgICAud2hlcmUoZXEoYmxvY2tlZElwc1RhYmxlLmlwLCBpcCkpCiAgICAgIC5yZXR1cm5pbmcoKTsKICAgIGlmIChkZWxldGVkLmxlbmd0aCA9PT0gMCkgewogICAgICByZXMuc3RhdHVzKDQwNCkuanNvbih7IGVycm9yOiAiSVAgbm90IGZvdW5kIiB9KTsKICAgICAgcmV0dXJuOwogICAgfQogICAgcmVzLnN0YXR1cygyMDQpLnNlbmQoKTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJGYWlsZWQgdG8gdW5ibG9jayBJUCIgfSk7CiAgfQp9KTsKCmV4cG9ydCBkZWZhdWx0IHJvdXRlcjsK
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { db } from "@workspace/db";
+import { blockedIpsTable } from "@workspace/db/schema";
+import { eq } from "drizzle-orm";
+import { firstString } from "../../lib/query";
+
+const router = Router();
+
+function requireAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+
+router.get("/admin/blocked-ips", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const rows = await db
+      .select()
+      .from(blockedIpsTable)
+      .orderBy(blockedIpsTable.blockedAt);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch blocked IPs" });
+  }
+});
+
+router.post("/admin/blocked-ips", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const { ip, reason } = req.body as { ip?: string; reason?: string };
+  if (!ip || typeof ip !== "string" || !ip.trim()) {
+    res.status(400).json({ error: "ip is required" });
+    return;
+  }
+  const normalized = ip.trim();
+  try {
+    const [row] = await db
+      .insert(blockedIpsTable)
+      .values({ ip: normalized, reason: reason?.trim() || null })
+      .onConflictDoNothing()
+      .returning();
+    if (!row) {
+      res.status(409).json({ error: "IP already blocked" });
+      return;
+    }
+    res.status(201).json(row);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to block IP" });
+  }
+});
+
+router.delete("/admin/blocked-ips/:ip", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const ip = decodeURIComponent(firstString(req.params.ip) ?? "");
+  try {
+    const deleted = await db
+      .delete(blockedIpsTable)
+      .where(eq(blockedIpsTable.ip, ip))
+      .returning();
+    if (deleted.length === 0) {
+      res.status(404).json({ error: "IP not found" });
+      return;
+    }
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ error: "Failed to unblock IP" });
+  }
+});
+
+export default router;

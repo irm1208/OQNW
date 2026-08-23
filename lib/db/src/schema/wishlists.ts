@@ -1,1 +1,8 @@
-aW1wb3J0IHsgcGdUYWJsZSwgc2VyaWFsLCBpbnRlZ2VyLCB0aW1lc3RhbXAgfSBmcm9tICJkcml6emxlLW9ybS9wZy1jb3JlIjsKCmV4cG9ydCBjb25zdCB3aXNobGlzdHNUYWJsZSA9IHBnVGFibGUoIndpc2hsaXN0cyIsIHsKICBpZDogc2VyaWFsKCJpZCIpLnByaW1hcnlLZXkoKSwKICBjdXN0b21lcklkOiBpbnRlZ2VyKCJjdXN0b21lcl9pZCIpLm5vdE51bGwoKSwKICBwcm9kdWN0SWQ6IGludGVnZXIoInByb2R1Y3RfaWQiKS5ub3ROdWxsKCksCiAgY3JlYXRlZEF0OiB0aW1lc3RhbXAoImNyZWF0ZWRfYXQiLCB7IHdpdGhUaW1lem9uZTogdHJ1ZSB9KS5ub3ROdWxsKCkuZGVmYXVsdE5vdygpLAp9KTsK
+import { pgTable, serial, integer, timestamp } from "drizzle-orm/pg-core";
+
+export const wishlistsTable = pgTable("wishlists", {
+  id: serial("id").primaryKey(),
+  customerId: integer("customer_id").notNull(),
+  productId: integer("product_id").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});

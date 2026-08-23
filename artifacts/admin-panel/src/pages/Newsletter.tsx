@@ -1,1 +1,174 @@
-aW1wb3J0IHsgdXNlU3RhdGUgfSBmcm9tICJyZWFjdCI7CmltcG9ydCB7IHVzZVF1ZXJ5LCB1c2VNdXRhdGlvbiwgdXNlUXVlcnlDbGllbnQgfSBmcm9tICJAdGFuc3RhY2svcmVhY3QtcXVlcnkiOwppbXBvcnQgeyBNYWlsLCBTZW5kLCBSZWZyZXNoQ3csIENoZWNrQ2lyY2xlMiwgWENpcmNsZSB9IGZyb20gImx1Y2lkZS1yZWFjdCI7CmltcG9ydCB7IEJ1dHRvbiB9IGZyb20gIkAvY29tcG9uZW50cy91aS9idXR0b24iOwppbXBvcnQgeyBJbnB1dCB9IGZyb20gIkAvY29tcG9uZW50cy91aS9pbnB1dCI7CmltcG9ydCB7IERpYWxvZywgRGlhbG9nQ29udGVudCwgRGlhbG9nSGVhZGVyLCBEaWFsb2dUaXRsZSwgRGlhbG9nRm9vdGVyIH0gZnJvbSAiQC9jb21wb25lbnRzL3VpL2RpYWxvZyI7CmltcG9ydCB7IHVzZVRvYXN0IH0gZnJvbSAiQC9ob29rcy91c2UtdG9hc3QiOwoKZnVuY3Rpb24gYXBpKHBhdGg6IHN0cmluZykgeyByZXR1cm4gYC9hcGkvJHtwYXRofWAucmVwbGFjZSgvXC8rL2csICIvIik7IH0KCnR5cGUgU3Vic2NyaWJlciA9IHsKICBpZDogbnVtYmVyOwogIGVtYWlsOiBzdHJpbmc7CiAgZmlyc3ROYW1lOiBzdHJpbmcgfCBudWxsOwogIGlzQWN0aXZlOiBib29sZWFuOwogIHNvdXJjZTogc3RyaW5nIHwgbnVsbDsKICBzdWJzY3JpYmVkQXQ6IHN0cmluZzsKICB1bnN1YnNjcmliZWRBdDogc3RyaW5nIHwgbnVsbDsKfTsKCnR5cGUgU3Vic2NyaWJlcnNSZXNwb25zZSA9IHsKICB0b3RhbDogbnVtYmVyOwogIGFjdGl2ZTogbnVtYmVyOwogIHN1YnNjcmliZXJzOiBTdWJzY3JpYmVyW107Cn07CgpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBOZXdzbGV0dGVyKCkgewogIGNvbnN0IHsgdG9hc3QgfSA9IHVzZVRvYXN0KCk7CiAgY29uc3QgcXVlcnlDbGllbnQgPSB1c2VRdWVyeUNsaWVudCgpOwogIGNvbnN0IFticm9hZGNhc3RPcGVuLCBzZXRCcm9hZGNhc3RPcGVuXSA9IHVzZVN0YXRlKGZhbHNlKTsKICBjb25zdCBbc3ViamVjdCwgc2V0U3ViamVjdF0gPSB1c2VTdGF0ZSgiIik7CiAgY29uc3QgW2h0bWxCb2R5LCBzZXRIdG1sQm9keV0gPSB1c2VTdGF0ZSgiIik7CgogIGNvbnN0IHsgZGF0YSwgaXNMb2FkaW5nIH0gPSB1c2VRdWVyeTxTdWJzY3JpYmVyc1Jlc3BvbnNlPih7CiAgICBxdWVyeUtleTogWyJuZXdzbGV0dGVyLXN1YnNjcmliZXJzIl0sCiAgICBxdWVyeUZuOiAoKSA9PiBmZXRjaChhcGkoImFkbWluL25ld3NsZXR0ZXIvc3Vic2NyaWJlcnMiKSwgeyBjcmVkZW50aWFsczogImluY2x1ZGUiIH0pLnRoZW4ociA9PiB7IGlmICghci5vaykgdGhyb3cgbmV3IEVycm9yKGBIVFRQICR7ci5zdGF0dXN9YCk7IHJldHVybiByLmpzb24oKWFzIFByb21pc2U8U3Vic2NyaWJlcnNSZXNwb25zZT47IH0pLAogIH0pOwoKICBjb25zdCBicm9hZGNhc3QgPSB1c2VNdXRhdGlvbih7CiAgICBtdXRhdGlvbkZuOiBhc3luYyAoKSA9PiB7CiAgICAgIGNvbnN0IHJlcyA9IGF3YWl0IGZldGNoKGFwaSgiYWRtaW4vbmV3c2xldHRlci9icm9hZGNhc3QiKSwgewogICAgICAgIG1ldGhvZDogIlBPU1QiLAogICAgICAgIGNyZWRlbnRpYWxzOiAiaW5jbHVkZSIsCiAgICAgICAgaGVhZGVyczogeyAiQ29udGVudC1UeXBlIjogImFwcGxpY2F0aW9uL2pzb24iIH0sCiAgICAgICAgYm9keTogSlNPTi5zdHJpbmdpZnkoeyBzdWJqZWN0LCBodG1sQm9keSB9KSwKICAgICAgfSk7CiAgICAgIGlmICghcmVzLm9rKSB0aHJvdyBuZXcgRXJyb3IoIkZhaWxlZCIpOwogICAgICByZXR1cm4gcmVzLmpzb24oKSBhcyBQcm9taXNlPHsgc2VudDogbnVtYmVyOyBmYWlsZWQ/OiBudW1iZXI7IHRvdGFsPzogbnVtYmVyOyBtZXNzYWdlPzogc3RyaW5nIH0+OwogICAgfSwKICAgIG9uU3VjY2VzczogKHIpID0+IHsKICAgICAgdG9hc3QoeyB0aXRsZTogYEJyb2FkY2FzdCBzZW50IHRvICR7ci5zZW50fSBzdWJzY3JpYmVyJHtyLnNlbnQgPT09IDEgPyAiIiA6ICJzIn1gLCBkZXNjcmlwdGlvbjogci5mYWlsZWQgPyBgJHtyLmZhaWxlZH0gZmFpbGVkYCA6IHVuZGVmaW5lZCB9KTsKICAgICAgc2V0QnJvYWRjYXN0T3BlbihmYWxzZSk7CiAgICAgIHNldFN1YmplY3QoIiIpOwogICAgICBzZXRIdG1sQm9keSgiIik7CiAgICB9LAogICAgb25FcnJvcjogKCkgPT4gdG9hc3QoeyB0aXRsZTogIkJyb2FkY2FzdCBmYWlsZWQiLCB2YXJpYW50OiAiZGVzdHJ1Y3RpdmUiIH0pLAogIH0pOwoKICBjb25zdCByZW9yZGVyUmVtaW5kZXJzID0gdXNlTXV0YXRpb24oewogICAgbXV0YXRpb25GbjogYXN5bmMgKCkgPT4gewogICAgICBjb25zdCByZXMgPSBhd2FpdCBmZXRjaChhcGkoImFkbWluL25ld3NsZXR0ZXIvcmVvcmRlci1yZW1pbmRlcnMiKSwgeyBtZXRob2Q6ICJQT1NUIiwgY3JlZGVudGlhbHM6ICJpbmNsdWRlIiB9KTsKICAgICAgaWYgKCFyZXMub2spIHRocm93IG5ldyBFcnJvcigiRmFpbGVkIik7CiAgICAgIHJldHVybiByZXMuanNvbigpIGFzIFByb21pc2U8eyBzZW50OiBudW1iZXI7IHNraXBwZWQ/OiBudW1iZXI7IG1lc3NhZ2U/OiBzdHJpbmcgfT47CiAgICB9LAogICAgb25TdWNjZXNzOiAocikgPT4gdG9hc3QoeyB0aXRsZTogYFJlb3JkZXIgcmVtaW5kZXJzOiAke3Iuc2VudH0gc2VudGAsIGRlc2NyaXB0aW9uOiByLm1lc3NhZ2UgPz8gKHIuc2tpcHBlZCA/IGAke3Iuc2tpcHBlZH0gc2tpcHBlZGAgOiB1bmRlZmluZWQpIH0pLAogICAgb25FcnJvcjogKCkgPT4gdG9hc3QoeyB0aXRsZTogIkZhaWxlZCB0byBzZW5kIHJlbWluZGVycyIsIHZhcmlhbnQ6ICJkZXN0cnVjdGl2ZSIgfSksCiAgfSk7CgogIGNvbnN0IHN1YnNjcmliZXJzID0gZGF0YT8uc3Vic2NyaWJlcnMgPz8gW107CgogIHJldHVybiAoCiAgICA8ZGl2IGNsYXNzTmFtZT0ic3BhY2UteS02Ij4KICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktYmV0d2VlbiI+CiAgICAgICAgPGRpdj4KICAgICAgICAgIDxoMiBjbGFzc05hbWU9InRleHQtMnhsIGZvbnQtYm9sZCB0cmFja2luZy10aWdodCI+TmV3c2xldHRlcjwvaDI+CiAgICAgICAgICA8cCBjbGFzc05hbWU9InRleHQtc20gdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIG10LTEiPk1hbmFnZSBzdWJzY3JpYmVycyBhbmQgc2VuZCBjYW1wYWlnbnM8L3A+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGdhcC0yIj4KICAgICAgICAgIDxCdXR0b24gdmFyaWFudD0ib3V0bGluZSIgb25DbGljaz17KCkgPT4gcmVvcmRlclJlbWluZGVycy5tdXRhdGUoKX0gZGlzYWJsZWQ9e3Jlb3JkZXJSZW1pbmRlcnMuaXNQZW5kaW5nfT4KICAgICAgICAgICAgPFJlZnJlc2hDdyBjbGFzc05hbWU9InctNCBoLTQgbXItMiIgLz4ge3Jlb3JkZXJSZW1pbmRlcnMuaXNQZW5kaW5nID8gIlNlbmRpbmfigKYiIDogIlJlb3JkZXIgUmVtaW5kZXJzIn0KICAgICAgICAgIDwvQnV0dG9uPgogICAgICAgICAgPEJ1dHRvbiBvbkNsaWNrPXsoKSA9PiBzZXRCcm9hZGNhc3RPcGVuKHRydWUpfT4KICAgICAgICAgICAgPFNlbmQgY2xhc3NOYW1lPSJ3LTQgaC00IG1yLTIiIC8+IE5ldyBCcm9hZGNhc3QKICAgICAgICAgIDwvQnV0dG9uPgogICAgICAgIDwvZGl2PgogICAgICA8L2Rpdj4KCiAgICAgIDxkaXYgY2xhc3NOYW1lPSJncmlkIGdyaWQtY29scy0xIHNtOmdyaWQtY29scy0zIGdhcC00Ij4KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0icm91bmRlZC14bCBib3JkZXIgYmctY2FyZCBwLTUiPgogICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXNtIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCBtYi0xIj5Ub3RhbCBTdWJzY3JpYmVyczwvcD4KICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC0zeGwgZm9udC1ib2xkIj57ZGF0YT8udG90YWwgPz8gMH08L3A+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9InJvdW5kZWQteGwgYm9yZGVyIGJnLWNhcmQgcC01Ij4KICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1zbSB0ZXh0LW11dGVkLWZvcmVncm91bmQgbWItMSI+QWN0aXZlPC9wPgogICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LTN4bCBmb250LWJvbGQgdGV4dC1ncmVlbi02MDAiPntkYXRhPy5hY3RpdmUgPz8gMH08L3A+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9InJvdW5kZWQteGwgYm9yZGVyIGJnLWNhcmQgcC01Ij4KICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1zbSB0ZXh0LW11dGVkLWZvcmVncm91bmQgbWItMSI+VW5zdWJzY3JpYmVkPC9wPgogICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LTN4bCBmb250LWJvbGQgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIj57KGRhdGE/LnRvdGFsID8/IDApIC0gKGRhdGE/LmFjdGl2ZSA/PyAwKX08L3A+CiAgICAgICAgPC9kaXY+CiAgICAgIDwvZGl2PgoKICAgICAgPGRpdiBjbGFzc05hbWU9InJvdW5kZWQteGwgYm9yZGVyIGJnLWNhcmQiPgogICAgICAgIHtpc0xvYWRpbmcgPyAoCiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0icC0xMiB0ZXh0LWNlbnRlciB0ZXh0LW11dGVkLWZvcmVncm91bmQiPkxvYWRpbmfigKY8L2Rpdj4KICAgICAgICApIDogc3Vic2NyaWJlcnMubGVuZ3RoID09PSAwID8gKAogICAgICAgICAgPGRpdiBjbGFzc05hbWU9InAtMTIgdGV4dC1jZW50ZXIiPgogICAgICAgICAgICA8TWFpbCBjbGFzc05hbWU9InctMTAgaC0xMCBteC1hdXRvIG1iLTMgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kLzQwIiAvPgogICAgICAgICAgICA8cCBjbGFzc05hbWU9InRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+Tm8gc3Vic2NyaWJlcnMgeWV0PC9wPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgKSA6ICgKICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJvdmVyZmxvdy14LWF1dG8iPgogICAgICAgICAgICA8dGFibGUgY2xhc3NOYW1lPSJ3LWZ1bGwgdGV4dC1zbSI+CiAgICAgICAgICAgICAgPHRoZWFkPgogICAgICAgICAgICAgICAgPHRyIGNsYXNzTmFtZT0iYm9yZGVyLWIiPgogICAgICAgICAgICAgICAgICA8dGggY2xhc3NOYW1lPSJ0ZXh0LWxlZnQgcHgtNCBweS0zIGZvbnQtbWVkaXVtIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+RW1haWw8L3RoPgogICAgICAgICAgICAgICAgICA8dGggY2xhc3NOYW1lPSJ0ZXh0LWxlZnQgcHgtNCBweS0zIGZvbnQtbWVkaXVtIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+TmFtZTwvdGg+CiAgICAgICAgICAgICAgICAgIDx0aCBjbGFzc05hbWU9InRleHQtbGVmdCBweC00IHB5LTMgZm9udC1tZWRpdW0gdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIj5Tb3VyY2U8L3RoPgogICAgICAgICAgICAgICAgICA8dGggY2xhc3NOYW1lPSJ0ZXh0LWxlZnQgcHgtNCBweS0zIGZvbnQtbWVkaXVtIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+U3RhdHVzPC90aD4KICAgICAgICAgICAgICAgICAgPHRoIGNsYXNzTmFtZT0idGV4dC1sZWZ0IHB4LTQgcHktMyBmb250LW1lZGl1bSB0ZXh0LW11dGVkLWZvcmVncm91bmQiPlN1YnNjcmliZWQ8L3RoPgogICAgICAgICAgICAgICAgPC90cj4KICAgICAgICAgICAgICA8L3RoZWFkPgogICAgICAgICAgICAgIDx0Ym9keT4KICAgICAgICAgICAgICAgIHtzdWJzY3JpYmVycy5tYXAocyA9PiAoCiAgICAgICAgICAgICAgICAgIDx0ciBrZXk9e3MuaWR9IGNsYXNzTmFtZT0iYm9yZGVyLWIgbGFzdDpib3JkZXItMCBob3ZlcjpiZy1tdXRlZC8zMCI+CiAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzTmFtZT0icHgtNCBweS0zIGZvbnQtbWVkaXVtIj57cy5lbWFpbH08L3RkPgogICAgICAgICAgICAgICAgICAgIDx0ZCBjbGFzc05hbWU9InB4LTQgcHktMyI+e3MuZmlyc3ROYW1lID8/ICLigJQifTwvdGQ+CiAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzTmFtZT0icHgtNCBweS0zIHRleHQteHMgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIj57cy5zb3VyY2UgPz8gIuKAlCJ9PC90ZD4KICAgICAgICAgICAgICAgICAgICA8dGQgY2xhc3NOYW1lPSJweC00IHB5LTMiPgogICAgICAgICAgICAgICAgICAgICAge3MuaXNBY3RpdmUKICAgICAgICAgICAgICAgICAgICAgICAgPyA8c3BhbiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGdhcC0xLjUgdGV4dC1ncmVlbi02MDAgdGV4dC14cyBmb250LW1lZGl1bSI+PENoZWNrQ2lyY2xlMiBjbGFzc05hbWU9InctNCBoLTQiIC8+IEFjdGl2ZTwvc3Bhbj4KICAgICAgICAgICAgICAgICAgICAgICAgOiA8c3BhbiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGdhcC0xLjUgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIHRleHQteHMiPjxYQ2lyY2xlIGNsYXNzTmFtZT0idy00IGgtNCIgLz4gVW5zdWJzY3JpYmVkPC9zcGFuPn0KICAgICAgICAgICAgICAgICAgICA8L3RkPgogICAgICAgICAgICAgICAgICAgIDx0ZCBjbGFzc05hbWU9InB4LTQgcHktMyB0ZXh0LXhzIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+e25ldyBEYXRlKHMuc3Vic2NyaWJlZEF0KS50b0xvY2FsZURhdGVTdHJpbmcoKX08L3RkPgogICAgICAgICAgICAgICAgICA8L3RyPgogICAgICAgICAgICAgICAgKSl9CiAgICAgICAgICAgICAgPC90Ym9keT4KICAgICAgICAgICAgPC90YWJsZT4KICAgICAgICAgIDwvZGl2PgogICAgICAgICl9CiAgICAgIDwvZGl2PgoKICAgICAgPERpYWxvZyBvcGVuPXticm9hZGNhc3RPcGVufSBvbk9wZW5DaGFuZ2U9e3NldEJyb2FkY2FzdE9wZW59PgogICAgICAgIDxEaWFsb2dDb250ZW50IGNsYXNzTmFtZT0ic206bWF4LXctbGciPgogICAgICAgICAgPERpYWxvZ0hlYWRlcj4KICAgICAgICAgICAgPERpYWxvZ1RpdGxlPk5ldyBCcm9hZGNhc3Q8L0RpYWxvZ1RpdGxlPgogICAgICAgICAgPC9EaWFsb2dIZWFkZXI+CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ic3BhY2UteS00IHB5LTIiPgogICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ic3BhY2UteS0xIj4KICAgICAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPSJ0ZXh0LXNtIGZvbnQtbWVkaXVtIj5TdWJqZWN0PC9sYWJlbD4KICAgICAgICAgICAgICA8SW5wdXQgcGxhY2Vob2xkZXI9ImUuZy4gTmV3IHBlcHRpZGVzIG5vdyBpbiBzdG9jayIgdmFsdWU9e3N1YmplY3R9IG9uQ2hhbmdlPXtlID0+IHNldFN1YmplY3QoZS50YXJnZXQudmFsdWUpfSAvPgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9InNwYWNlLXktMSI+CiAgICAgICAgICAgICAgPGxhYmVsIGNsYXNzTmFtZT0idGV4dC1zbSBmb250LW1lZGl1bSI+SFRNTCBCb2R5PC9sYWJlbD4KICAgICAgICAgICAgICA8dGV4dGFyZWEKICAgICAgICAgICAgICAgIGNsYXNzTmFtZT0idy1mdWxsIG1pbi1oLVsxODBweF0gcm91bmRlZC1tZCBib3JkZXIgYmctYmFja2dyb3VuZCBweC0zIHB5LTIgdGV4dC1zbSBmb250LW1vbm8iCiAgICAgICAgICAgICAgICBwbGFjZWhvbGRlcj0iPHA+SGVsbG8ge3tmaXJzdE5hbWV9fSw8L3A+IgogICAgICAgICAgICAgICAgdmFsdWU9e2h0bWxCb2R5fQogICAgICAgICAgICAgICAgb25DaGFuZ2U9e2UgPT4gc2V0SHRtbEJvZHkoZS50YXJnZXQudmFsdWUpfQogICAgICAgICAgICAgIC8+CiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXhzIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+U2VudCB0byBhbGwgYWN0aXZlIHN1YnNjcmliZXJzLiBBbiB1bnN1YnNjcmliZSBsaW5rIGlzIGFwcGVuZGVkIGF1dG9tYXRpY2FsbHkuPC9wPgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgIDwvZGl2PgogICAgICAgICAgPERpYWxvZ0Zvb3Rlcj4KICAgICAgICAgICAgPEJ1dHRvbiB2YXJpYW50PSJvdXRsaW5lIiBvbkNsaWNrPXsoKSA9PiBzZXRCcm9hZGNhc3RPcGVuKGZhbHNlKX0+Q2FuY2VsPC9CdXR0b24+CiAgICAgICAgICAgIDxCdXR0b24gb25DbGljaz17KCkgPT4gYnJvYWRjYXN0Lm11dGF0ZSgpfSBkaXNhYmxlZD17YnJvYWRjYXN0LmlzUGVuZGluZyB8fCAhc3ViamVjdC50cmltKCkgfHwgIWh0bWxCb2R5LnRyaW0oKX0+CiAgICAgICAgICAgICAge2Jyb2FkY2FzdC5pc1BlbmRpbmcgPyAiU2VuZGluZ+KApiIgOiBgU2VuZCB0byAke2RhdGE/LmFjdGl2ZSA/PyAwfWB9CiAgICAgICAgICAgIDwvQnV0dG9uPgogICAgICAgICAgPC9EaWFsb2dGb290ZXI+CiAgICAgICAgPC9EaWFsb2dDb250ZW50PgogICAgICA8L0RpYWxvZz4KICAgIDwvZGl2PgogICk7Cn0K
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Mail, Send, RefreshCw, CheckCircle2, XCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
+
+function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
+
+type Subscriber = {
+  id: number;
+  email: string;
+  firstName: string | null;
+  isActive: boolean;
+  source: string | null;
+  subscribedAt: string;
+  unsubscribedAt: string | null;
+};
+
+type SubscribersResponse = {
+  total: number;
+  active: number;
+  subscribers: Subscriber[];
+};
+
+export default function Newsletter() {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [broadcastOpen, setBroadcastOpen] = useState(false);
+  const [subject, setSubject] = useState("");
+  const [htmlBody, setHtmlBody] = useState("");
+
+  const { data, isLoading } = useQuery<SubscribersResponse>({
+    queryKey: ["newsletter-subscribers"],
+    queryFn: () => fetch(api("admin/newsletter/subscribers"), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<SubscribersResponse>; }),
+  });
+
+  const broadcast = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(api("admin/newsletter/broadcast"), {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ subject, htmlBody }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      return res.json() as Promise<{ sent: number; failed?: number; total?: number; message?: string }>;
+    },
+    onSuccess: (r) => {
+      toast({ title: `Broadcast sent to ${r.sent} subscriber${r.sent === 1 ? "" : "s"}`, description: r.failed ? `${r.failed} failed` : undefined });
+      setBroadcastOpen(false);
+      setSubject("");
+      setHtmlBody("");
+    },
+    onError: () => toast({ title: "Broadcast failed", variant: "destructive" }),
+  });
+
+  const reorderReminders = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(api("admin/newsletter/reorder-reminders"), { method: "POST", credentials: "include" });
+      if (!res.ok) throw new Error("Failed");
+      return res.json() as Promise<{ sent: number; skipped?: number; message?: string }>;
+    },
+    onSuccess: (r) => toast({ title: `Reorder reminders: ${r.sent} sent`, description: r.message ?? (r.skipped ? `${r.skipped} skipped` : undefined) }),
+    onError: () => toast({ title: "Failed to send reminders", variant: "destructive" }),
+  });
+
+  const subscribers = data?.subscribers ?? [];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Newsletter</h2>
+          <p className="text-sm text-muted-foreground mt-1">Manage subscribers and send campaigns</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={() => reorderReminders.mutate()} disabled={reorderReminders.isPending}>
+            <RefreshCw className="w-4 h-4 mr-2" /> {reorderReminders.isPending ? "Sending…" : "Reorder Reminders"}
+          </Button>
+          <Button onClick={() => setBroadcastOpen(true)}>
+            <Send className="w-4 h-4 mr-2" /> New Broadcast
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="rounded-xl border bg-card p-5">
+          <p className="text-sm text-muted-foreground mb-1">Total Subscribers</p>
+          <p className="text-3xl font-bold">{data?.total ?? 0}</p>
+        </div>
+        <div className="rounded-xl border bg-card p-5">
+          <p className="text-sm text-muted-foreground mb-1">Active</p>
+          <p className="text-3xl font-bold text-green-600">{data?.active ?? 0}</p>
+        </div>
+        <div className="rounded-xl border bg-card p-5">
+          <p className="text-sm text-muted-foreground mb-1">Unsubscribed</p>
+          <p className="text-3xl font-bold text-muted-foreground">{(data?.total ?? 0) - (data?.active ?? 0)}</p>
+        </div>
+      </div>
+
+      <div className="rounded-xl border bg-card">
+        {isLoading ? (
+          <div className="p-12 text-center text-muted-foreground">Loading…</div>
+        ) : subscribers.length === 0 ? (
+          <div className="p-12 text-center">
+            <Mail className="w-10 h-10 mx-auto mb-3 text-muted-foreground/40" />
+            <p className="text-muted-foreground">No subscribers yet</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Email</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Name</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Source</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Subscribed</th>
+                </tr>
+              </thead>
+              <tbody>
+                {subscribers.map(s => (
+                  <tr key={s.id} className="border-b last:border-0 hover:bg-muted/30">
+                    <td className="px-4 py-3 font-medium">{s.email}</td>
+                    <td className="px-4 py-3">{s.firstName ?? "—"}</td>
+                    <td className="px-4 py-3 text-xs text-muted-foreground">{s.source ?? "—"}</td>
+                    <td className="px-4 py-3">
+                      {s.isActive
+                        ? <span className="flex items-center gap-1.5 text-green-600 text-xs font-medium"><CheckCircle2 className="w-4 h-4" /> Active</span>
+                        : <span className="flex items-center gap-1.5 text-muted-foreground text-xs"><XCircle className="w-4 h-4" /> Unsubscribed</span>}
+                    </td>
+                    <td className="px-4 py-3 text-xs text-muted-foreground">{new Date(s.subscribedAt).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      <Dialog open={broadcastOpen} onOpenChange={setBroadcastOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>New Broadcast</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="space-y-1">
+              <label className="text-sm font-medium">Subject</label>
+              <Input placeholder="e.g. New peptides now in stock" value={subject} onChange={e => setSubject(e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium">HTML Body</label>
+              <textarea
+                className="w-full min-h-[180px] rounded-md border bg-background px-3 py-2 text-sm font-mono"
+                placeholder="<p>Hello {{firstName}},</p>"
+                value={htmlBody}
+                onChange={e => setHtmlBody(e.target.value)}
+              />
+              <p className="text-xs text-muted-foreground">Sent to all active subscribers. An unsubscribe link is appended automatically.</p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setBroadcastOpen(false)}>Cancel</Button>
+            <Button onClick={() => broadcast.mutate()} disabled={broadcast.isPending || !subject.trim() || !htmlBody.trim()}>
+              {broadcast.isPending ? "Sending…" : `Send to ${data?.active ?? 0}`}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}

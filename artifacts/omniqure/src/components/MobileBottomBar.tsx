@@ -1,1 +1,117 @@
-aW1wb3J0IHsgdXNlRWZmZWN0LCB1c2VSZWYgfSBmcm9tICJyZWFjdCI7CmltcG9ydCB7IHVzZUxvY2F0aW9uIH0gZnJvbSAid291dGVyIjsKaW1wb3J0IHsgdXNlQ2FydCB9IGZyb20gIkAvY29udGV4dC9DYXJ0Q29udGV4dCI7CmltcG9ydCB7IHVzZUN1cnJlbmN5IH0gZnJvbSAiQC9jb250ZXh0L0N1cnJlbmN5Q29udGV4dCI7CmltcG9ydCB7IHVzZU92ZXJsYXlDb29yZGluYXRvciB9IGZyb20gIkAvY29udGV4dC9PdmVybGF5Q29vcmRpbmF0b3JDb250ZXh0IjsKaW1wb3J0IHsgU2hvcHBpbmdDYXJ0LCBUYWcgfSBmcm9tICJsdWNpZGUtcmVhY3QiOwoKY29uc3QgSElEREVOX1BBVEhTID0gWyIvY2FydCIsICIvY2hlY2tvdXQiLCAiL2FjY291bnQiLCAiL3NpZ24taW4iLCAiL3JlZ2lzdGVyIiwgIi9mb3Jnb3QtcGFzc3dvcmQiLCAiL3Jlc2V0LXBhc3N3b3JkIiwgIi9vcmRlci1jb25maXJtYXRpb24iXTsKCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIE1vYmlsZUJvdHRvbUJhcigpIHsKICBjb25zdCBbbG9jYXRpb24sIG5hdmlnYXRlXSA9IHVzZUxvY2F0aW9uKCk7CiAgY29uc3QgeyB0b3RhbEl0ZW1zLCBzdWJ0b3RhbCwgYnVuZGxlRGlzY291bnRBbW91bnQsIGJ1bmRsZUZyZWVCYWNXYXRlciwgYnVuZGxlRnJlZUl0ZW1zQ291bnQgfSA9IHVzZUNhcnQoKTsKICBjb25zdCB7IGZvcm1hdFByaWNlIH0gPSB1c2VDdXJyZW5jeSgpOwogIGNvbnN0IGJhclJlZiA9IHVzZVJlZjxIVE1MRGl2RWxlbWVudD4obnVsbCk7CiAgY29uc3QgeyByZWdpc3RlckJvdHRvbUluc2V0IH0gPSB1c2VPdmVybGF5Q29vcmRpbmF0b3IoKTsKCiAgY29uc3QgaGFzRnJlZWJpZSA9IGJ1bmRsZUZyZWVCYWNXYXRlciB8fCBidW5kbGVGcmVlSXRlbXNDb3VudCA+IDA7CiAgY29uc3QgZnJlZWJpZUxhYmVsID0gYnVuZGxlRnJlZUl0ZW1zQ291bnQgPT09IDIKICAgID8gIjIgcGVwcyBmcmVlIgogICAgOiBidW5kbGVGcmVlSXRlbXNDb3VudCA9PT0gMQogICAgPyAiMSBwZXAgZnJlZSIKICAgIDogImEgZnJlZSBCQUMgd2F0ZXIiOwoKICBjb25zdCBoaWRkZW5CeVBhdGggPSBISURERU5fUEFUSFMuc29tZSgocCkgPT4gbG9jYXRpb24gPT09IHAgfHwgbG9jYXRpb24uc3RhcnRzV2l0aChwICsgIi8iKSk7CiAgY29uc3QgdmlzaWJsZSA9ICFoaWRkZW5CeVBhdGggJiYgdG90YWxJdGVtcyA+IDA7CgogIHVzZUVmZmVjdCgoKSA9PiB7CiAgICBpZiAodmlzaWJsZSkgewogICAgICBkb2N1bWVudC5ib2R5LmNsYXNzTGlzdC5hZGQoImhhcy1tb2JpbGUtYm90dG9tLWJhciIpOwogICAgfSBlbHNlIHsKICAgICAgZG9jdW1lbnQuYm9keS5jbGFzc0xpc3QucmVtb3ZlKCJoYXMtbW9iaWxlLWJvdHRvbS1iYXIiKTsKICAgIH0KICAgIHJldHVybiAoKSA9PiB7CiAgICAgIGRvY3VtZW50LmJvZHkuY2xhc3NMaXN0LnJlbW92ZSgiaGFzLW1vYmlsZS1ib3R0b20tYmFyIik7CiAgICB9OwogIH0sIFt2aXNpYmxlXSk7CgogIC8vIFJlcG9ydCBvdXIgcmVuZGVyZWQgaGVpZ2h0ICgwIG9uIGRlc2t0b3AsIHNpbmNlIENTUyBoaWRlcyB1cyB0aGVyZSkgc28gdGhlCiAgLy8gY2hhdCBidWJibGUgY2FuIHNoaWZ0IGFib3ZlIHVzIG9uIG1vYmlsZSBpbnN0ZWFkIG9mIG92ZXJsYXBwaW5nLgogIHVzZUVmZmVjdCgoKSA9PiB7CiAgICBpZiAoIXZpc2libGUpIHsKICAgICAgcmVnaXN0ZXJCb3R0b21JbnNldCgibW9iaWxlLWNhcnQtYmFyIiwgMCk7CiAgICAgIHJldHVybjsKICAgIH0KICAgIGNvbnN0IGVsID0gYmFyUmVmLmN1cnJlbnQ7CiAgICBpZiAoIWVsKSByZXR1cm47CiAgICBjb25zdCB1cGRhdGUgPSAoKSA9PiByZWdpc3RlckJvdHRvbUluc2V0KCJtb2JpbGUtY2FydC1iYXIiLCBlbC5vZmZzZXRIZWlnaHQpOwogICAgdXBkYXRlKCk7CiAgICBjb25zdCBvYnNlcnZlciA9IG5ldyBSZXNpemVPYnNlcnZlcih1cGRhdGUpOwogICAgb2JzZXJ2ZXIub2JzZXJ2ZShlbCk7CiAgICB3aW5kb3cuYWRkRXZlbnRMaXN0ZW5lcigicmVzaXplIiwgdXBkYXRlKTsKICAgIHJldHVybiAoKSA9PiB7CiAgICAgIG9ic2VydmVyLmRpc2Nvbm5lY3QoKTsKICAgICAgd2luZG93LnJlbW92ZUV2ZW50TGlzdGVuZXIoInJlc2l6ZSIsIHVwZGF0ZSk7CiAgICAgIHJlZ2lzdGVyQm90dG9tSW5zZXQoIm1vYmlsZS1jYXJ0LWJhciIsIDApOwogICAgfTsKICB9LCBbdmlzaWJsZSwgcmVnaXN0ZXJCb3R0b21JbnNldF0pOwoKICBpZiAoIXZpc2libGUpIHJldHVybiBudWxsOwoKICBjb25zdCBkaXNjb3VudGVkVG90YWwgPSBzdWJ0b3RhbCAtIGJ1bmRsZURpc2NvdW50QW1vdW50OwoKICByZXR1cm4gKAogICAgPGRpdgogICAgICByZWY9e2JhclJlZn0KICAgICAgY2xhc3NOYW1lPSJtb2JpbGUtYm90dG9tLWJhciIKICAgICAgcm9sZT0iY29tcGxlbWVudGFyeSIKICAgICAgYXJpYS1sYWJlbD0iQ2FydCBzdW1tYXJ5IgogICAgPgogICAgICB7LyogQnVuZGxlIHNhdmluZ3Mgc3RyaXAg4oCUIHNob3duIGFib3ZlIHRoZSBiYXIgd2hlbiBhIGZyZWViaWUgaXMgYWN0aXZlICovfQogICAgICB7aGFzRnJlZWJpZSAmJiAoCiAgICAgICAgPGRpdgogICAgICAgICAgc3R5bGU9e3sKICAgICAgICAgICAgYmFja2dyb3VuZDogImxpbmVhci1ncmFkaWVudCg5MGRlZywgIzA2NWY0NiwgIzA0Nzg1NykiLAogICAgICAgICAgICBkaXNwbGF5OiAiZmxleCIsCiAgICAgICAgICAgIGFsaWduSXRlbXM6ICJjZW50ZXIiLAogICAgICAgICAgICBqdXN0aWZ5Q29udGVudDogImNlbnRlciIsCiAgICAgICAgICAgIGdhcDogIjZweCIsCiAgICAgICAgICAgIHBhZGRpbmc6ICI1cHggMTZweCIsCiAgICAgICAgICAgIGJvcmRlckJvdHRvbTogIjFweCBzb2xpZCByZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLAogICAgICAgICAgfX0KICAgICAgICA+CiAgICAgICAgICA8VGFnIHNpemU9ezExfSBzdHlsZT17eyBjb2xvcjogIiM2RUU3QjciLCBmbGV4U2hyaW5rOiAwIH19IC8+CiAgICAgICAgICA8c3BhbiBzdHlsZT17eyBmb250U2l6ZTogIjExLjVweCIsIGZvbnRXZWlnaHQ6IDgwMCwgY29sb3I6ICIjNkVFN0I3IiwgbGV0dGVyU3BhY2luZzogIjAuMDJlbSIgfX0+CiAgICAgICAgICAgIFlvdSZhcG9zO3ZlIHVubG9ja2VkIHtmcmVlYmllTGFiZWx9IOKAlCBzYXZpbmcge2Zvcm1hdFByaWNlKGJ1bmRsZURpc2NvdW50QW1vdW50KX0KICAgICAgICAgIDwvc3Bhbj4KICAgICAgICA8L2Rpdj4KICAgICAgKX0KCiAgICAgIDxidXR0b24KICAgICAgICBvbkNsaWNrPXsoKSA9PiBuYXZpZ2F0ZSgiL2NhcnQiKX0KICAgICAgICBjbGFzc05hbWU9Im1vYmlsZS1ib3R0b20tYmFyX19pbm5lciIKICAgICAgICBhcmlhLWxhYmVsPXtgVmlldyBjYXJ0IOKAlCAke3RvdGFsSXRlbXN9IGl0ZW0ke3RvdGFsSXRlbXMgIT09IDEgPyAicyIgOiAiIn0sICR7Zm9ybWF0UHJpY2UoZGlzY291bnRlZFRvdGFsKX1gfQogICAgICA+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9Im1vYmlsZS1ib3R0b20tYmFyX19sZWZ0Ij4KICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0ibW9iaWxlLWJvdHRvbS1iYXJfX2ljb24td3JhcCI+CiAgICAgICAgICAgIDxTaG9wcGluZ0NhcnQgc2l6ZT17MjB9IHN0cm9rZVdpZHRoPXsyfSAvPgogICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9Im1vYmlsZS1ib3R0b20tYmFyX19iYWRnZSI+e3RvdGFsSXRlbXMgPiA5OSA/ICI5OSsiIDogdG90YWxJdGVtc308L3NwYW4+CiAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9Im1vYmlsZS1ib3R0b20tYmFyX19sYWJlbCI+VmlldyBDYXJ0PC9zcGFuPgogICAgICAgIDwvZGl2PgogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJtb2JpbGUtYm90dG9tLWJhcl9fcmlnaHQiPgogICAgICAgICAge2J1bmRsZURpc2NvdW50QW1vdW50ID4gMCAmJiAoCiAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0ibW9iaWxlLWJvdHRvbS1iYXJfX29yaWdpbmFsIj57Zm9ybWF0UHJpY2Uoc3VidG90YWwpfTwvc3Bhbj4KICAgICAgICAgICl9CiAgICAgICAgICA8c3BhbgogICAgICAgICAgICBjbGFzc05hbWU9Im1vYmlsZS1ib3R0b20tYmFyX190b3RhbCIKICAgICAgICAgICAgc3R5bGU9e3sgY29sb3I6IGhhc0ZyZWViaWUgPyAiIzZFRTdCNyIgOiAiI2ZmZiIgfX0KICAgICAgICAgID4KICAgICAgICAgICAge2Zvcm1hdFByaWNlKGRpc2NvdW50ZWRUb3RhbCl9CiAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9Im1vYmlsZS1ib3R0b20tYmFyX19jdGEiPkNoZWNrb3V0IOKGkjwvc3Bhbj4KICAgICAgICA8L2Rpdj4KICAgICAgPC9idXR0b24+CiAgICA8L2Rpdj4KICApOwp9Cg==
+import { useEffect, useRef } from "react";
+import { useLocation } from "wouter";
+import { useCart } from "@/context/CartContext";
+import { useCurrency } from "@/context/CurrencyContext";
+import { useOverlayCoordinator } from "@/context/OverlayCoordinatorContext";
+import { ShoppingCart, Tag } from "lucide-react";
+
+const HIDDEN_PATHS = ["/cart", "/checkout", "/account", "/sign-in", "/register", "/forgot-password", "/reset-password", "/order-confirmation"];
+
+export default function MobileBottomBar() {
+  const [location, navigate] = useLocation();
+  const { totalItems, subtotal, bundleDiscountAmount, bundleFreeBacWater, bundleFreeItemsCount } = useCart();
+  const { formatPrice } = useCurrency();
+  const barRef = useRef<HTMLDivElement>(null);
+  const { registerBottomInset } = useOverlayCoordinator();
+
+  const hasFreebie = bundleFreeBacWater || bundleFreeItemsCount > 0;
+  const freebieLabel = bundleFreeItemsCount === 2
+    ? "2 peps free"
+    : bundleFreeItemsCount === 1
+    ? "1 pep free"
+    : "a free BAC water";
+
+  const hiddenByPath = HIDDEN_PATHS.some((p) => location === p || location.startsWith(p + "/"));
+  const visible = !hiddenByPath && totalItems > 0;
+
+  useEffect(() => {
+    if (visible) {
+      document.body.classList.add("has-mobile-bottom-bar");
+    } else {
+      document.body.classList.remove("has-mobile-bottom-bar");
+    }
+    return () => {
+      document.body.classList.remove("has-mobile-bottom-bar");
+    };
+  }, [visible]);
+
+  // Report our rendered height (0 on desktop, since CSS hides us there) so the
+  // chat bubble can shift above us on mobile instead of overlapping.
+  useEffect(() => {
+    if (!visible) {
+      registerBottomInset("mobile-cart-bar", 0);
+      return;
+    }
+    const el = barRef.current;
+    if (!el) return;
+    const update = () => registerBottomInset("mobile-cart-bar", el.offsetHeight);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    window.addEventListener("resize", update);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", update);
+      registerBottomInset("mobile-cart-bar", 0);
+    };
+  }, [visible, registerBottomInset]);
+
+  if (!visible) return null;
+
+  const discountedTotal = subtotal - bundleDiscountAmount;
+
+  return (
+    <div
+      ref={barRef}
+      className="mobile-bottom-bar"
+      role="complementary"
+      aria-label="Cart summary"
+    >
+      {/* Bundle savings strip — shown above the bar when a freebie is active */}
+      {hasFreebie && (
+        <div
+          style={{
+            background: "linear-gradient(90deg, #065f46, #047857)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "6px",
+            padding: "5px 16px",
+            borderBottom: "1px solid rgba(255,255,255,0.1)",
+          }}
+        >
+          <Tag size={11} style={{ color: "#6EE7B7", flexShrink: 0 }} />
+          <span style={{ fontSize: "11.5px", fontWeight: 800, color: "#6EE7B7", letterSpacing: "0.02em" }}>
+            You&apos;ve unlocked {freebieLabel} — saving {formatPrice(bundleDiscountAmount)}
+          </span>
+        </div>
+      )}
+
+      <button
+        onClick={() => navigate("/cart")}
+        className="mobile-bottom-bar__inner"
+        aria-label={`View cart — ${totalItems} item${totalItems !== 1 ? "s" : ""}, ${formatPrice(discountedTotal)}`}
+      >
+        <div className="mobile-bottom-bar__left">
+          <span className="mobile-bottom-bar__icon-wrap">
+            <ShoppingCart size={20} strokeWidth={2} />
+            <span className="mobile-bottom-bar__badge">{totalItems > 99 ? "99+" : totalItems}</span>
+          </span>
+          <span className="mobile-bottom-bar__label">View Cart</span>
+        </div>
+        <div className="mobile-bottom-bar__right">
+          {bundleDiscountAmount > 0 && (
+            <span className="mobile-bottom-bar__original">{formatPrice(subtotal)}</span>
+          )}
+          <span
+            className="mobile-bottom-bar__total"
+            style={{ color: hasFreebie ? "#6EE7B7" : "#fff" }}
+          >
+            {formatPrice(discountedTotal)}
+          </span>
+          <span className="mobile-bottom-bar__cta">Checkout →</span>
+        </div>
+      </button>
+    </div>
+  );
+}

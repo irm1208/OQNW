@@ -1,1 +1,708 @@
-LyoqCiAqIEdlbmVyYXRlZCBieSBvcnZhbCB2OC41LjMg8J+NugogKiBEbyBub3QgZWRpdCBtYW51YWxseS4KICogQXBpCiAqIE9tbmlRdXJlIEFQSSBzcGVjaWZpY2F0aW9uCiAqIE9wZW5BUEkgc3BlYyB2ZXJzaW9uOiAwLjEuMAogKi8KaW1wb3J0ICogYXMgem9kIGZyb20gInpvZCI7CgovKioKICogQHN1bW1hcnkgSGVhbHRoIGNoZWNrCiAqLwpleHBvcnQgY29uc3QgSGVhbHRoQ2hlY2tSZXNwb25zZSA9IHpvZC5vYmplY3QoewogIHN0YXR1czogem9kLnN0cmluZygpLAp9KTsKCi8qKgogKiBAc3VtbWFyeSBBZG1pbiBsb2dpbgogKi8KZXhwb3J0IGNvbnN0IEFkbWluTG9naW5Cb2R5ID0gem9kLm9iamVjdCh7CiAgcGFzc3dvcmQ6IHpvZC5zdHJpbmcoKSwKfSk7CgpleHBvcnQgY29uc3QgQWRtaW5Mb2dpblJlc3BvbnNlID0gem9kLm9iamVjdCh7CiAgYXV0aGVudGljYXRlZDogem9kLmJvb2xlYW4oKSwKfSk7CgovKioKICogQHN1bW1hcnkgQ2hlY2sgYWRtaW4gc2Vzc2lvbgogKi8KZXhwb3J0IGNvbnN0IEFkbWluTWVSZXNwb25zZSA9IHpvZC5vYmplY3QoewogIGF1dGhlbnRpY2F0ZWQ6IHpvZC5ib29sZWFuKCksCn0pOwoKLyoqCiAqIEBzdW1tYXJ5IEdldCBkYXNoYm9hcmQgc3VtbWFyeSBzdGF0cwogKi8KZXhwb3J0IGNvbnN0IEdldEFkbWluRGFzaGJvYXJkUmVzcG9uc2UgPSB6b2Qub2JqZWN0KHsKICB0b3RhbFJldmVudWU6IHpvZC5udW1iZXIoKSwKICB0b3RhbE9yZGVyczogem9kLm51bWJlcigpLAogIHRvdGFsQ3VzdG9tZXJzOiB6b2QubnVtYmVyKCksCiAgcGVuZGluZ09yZGVyczogem9kLm51bWJlcigpLAogIHByb2Nlc3NpbmdPcmRlcnM6IHpvZC5udW1iZXIoKSwKICBzaGlwcGVkT3JkZXJzOiB6b2QubnVtYmVyKCksCiAgbG93U3RvY2tDb3VudDogem9kLm51bWJlcigpLAogIHJldmVudWVUb2RheTogem9kLm51bWJlcigpLAogIG9yZGVyc1RvZGF5OiB6b2QubnVtYmVyKCksCiAgYXZnT3JkZXJWYWx1ZTogem9kLm51bWJlcigpLAp9KTsKCi8qKgogKiBAc3VtbWFyeSBHZXQgZGFpbHkgcmV2ZW51ZSBmb3IgdGhlIHNwZWNpZmllZCBwZXJpb2QKICovCmV4cG9ydCBjb25zdCBnZXRSZXZlbnVlQ2hhcnRRdWVyeVBlcmlvZERlZmF1bHQgPSAzMDsKCmV4cG9ydCBjb25zdCBHZXRSZXZlbnVlQ2hhcnRRdWVyeVBhcmFtcyA9IHpvZC5vYmplY3QoewogIHBlcmlvZDogem9kCiAgICAudW5pb24oW3pvZC5saXRlcmFsKDcpLCB6b2QubGl0ZXJhbCgzMCksIHpvZC5saXRlcmFsKDkwKSwgem9kLmxpdGVyYWwoMzY1KV0pCiAgICAuZGVmYXVsdChnZXRSZXZlbnVlQ2hhcnRRdWVyeVBlcmlvZERlZmF1bHQpLAp9KTsKCmV4cG9ydCBjb25zdCBHZXRSZXZlbnVlQ2hhcnRSZXNwb25zZUl0ZW0gPSB6b2Qub2JqZWN0KHsKICBkYXRlOiB6b2Quc3RyaW5nKCksCiAgcmV2ZW51ZTogem9kLm51bWJlcigpLAogIG9yZGVyczogem9kLm51bWJlcigpLAp9KTsKZXhwb3J0IGNvbnN0IEdldFJldmVudWVDaGFydFJlc3BvbnNlID0gem9kLmFycmF5KEdldFJldmVudWVDaGFydFJlc3BvbnNlSXRlbSk7CgovKioKICogQHN1bW1hcnkgR2V0IHRvcCBzZWxsaW5nIHByb2R1Y3RzCiAqLwpleHBvcnQgY29uc3QgR2V0VG9wUHJvZHVjdHNSZXNwb25zZUl0ZW0gPSB6b2Qub2JqZWN0KHsKICBwcm9kdWN0SWQ6IHpvZC5udW1iZXIoKSwKICBwcm9kdWN0TmFtZTogem9kLnN0cmluZygpLAogIHRvdGFsU29sZDogem9kLm51bWJlcigpLAogIHRvdGFsUmV2ZW51ZTogem9kLm51bWJlcigpLAp9KTsKZXhwb3J0IGNvbnN0IEdldFRvcFByb2R1Y3RzUmVzcG9uc2UgPSB6b2QuYXJyYXkoR2V0VG9wUHJvZHVjdHNSZXNwb25zZUl0ZW0pOwoKLyoqCiAqIEBzdW1tYXJ5IEdldCBkYWlseSBuZXcgY3VzdG9tZXIgcmVnaXN0cmF0aW9ucyBmb3IgdGhlIHNwZWNpZmllZCBwZXJpb2QKICovCmV4cG9ydCBjb25zdCBnZXROZXdDdXN0b21lcnNDaGFydFF1ZXJ5UGVyaW9kRGVmYXVsdCA9IDMwOwoKZXhwb3J0IGNvbnN0IEdldE5ld0N1c3RvbWVyc0NoYXJ0UXVlcnlQYXJhbXMgPSB6b2Qub2JqZWN0KHsKICBwZXJpb2Q6IHpvZAogICAgLnVuaW9uKFt6b2QubGl0ZXJhbCg3KSwgem9kLmxpdGVyYWwoMzApLCB6b2QubGl0ZXJhbCg5MCksIHpvZC5saXRlcmFsKDM2NSldKQogICAgLmRlZmF1bHQoZ2V0TmV3Q3VzdG9tZXJzQ2hhcnRRdWVyeVBlcmlvZERlZmF1bHQpLAp9KTsKCmV4cG9ydCBjb25zdCBHZXROZXdDdXN0b21lcnNDaGFydFJlc3BvbnNlSXRlbSA9IHpvZC5vYmplY3QoewogIGRhdGU6IHpvZC5zdHJpbmcoKSwKICBuZXdDdXN0b21lcnM6IHpvZC5udW1iZXIoKSwKfSk7CmV4cG9ydCBjb25zdCBHZXROZXdDdXN0b21lcnNDaGFydFJlc3BvbnNlID0gem9kLmFycmF5KAogIEdldE5ld0N1c3RvbWVyc0NoYXJ0UmVzcG9uc2VJdGVtLAopOwoKLyoqCiAqIEBzdW1tYXJ5IEdldCBvcmRlciBjb3VudHMgZ3JvdXBlZCBieSBzdGF0dXMKICovCmV4cG9ydCBjb25zdCBHZXRPcmRlclN0YXR1c0JyZWFrZG93blJlc3BvbnNlSXRlbSA9IHpvZC5vYmplY3QoewogIHN0YXR1czogem9kLnN0cmluZygpLAogIGNvdW50OiB6b2QubnVtYmVyKCksCn0pOwpleHBvcnQgY29uc3QgR2V0T3JkZXJTdGF0dXNCcmVha2Rvd25SZXNwb25zZSA9IHpvZC5hcnJheSgKICBHZXRPcmRlclN0YXR1c0JyZWFrZG93blJlc3BvbnNlSXRlbSwKKTsKCi8qKgogKiBAc3VtbWFyeSBHZXQgdG90YWwgcmV2ZW51ZSBncm91cGVkIGJ5IHByb2R1Y3QgY2F0ZWdvcnkKICovCmV4cG9ydCBjb25zdCBHZXRSZXZlbnVlQnlDYXRlZ29yeUNoYXJ0UmVzcG9uc2VJdGVtID0gem9kLm9iamVjdCh7CiAgY2F0ZWdvcnk6IHpvZC5zdHJpbmcoKSwKICByZXZlbnVlOiB6b2QubnVtYmVyKCksCiAgb3JkZXJzOiB6b2QubnVtYmVyKCksCn0pOwpleHBvcnQgY29uc3QgR2V0UmV2ZW51ZUJ5Q2F0ZWdvcnlDaGFydFJlc3BvbnNlID0gem9kLmFycmF5KAogIEdldFJldmVudWVCeUNhdGVnb3J5Q2hhcnRSZXNwb25zZUl0ZW0sCik7CgovKioKICogQHN1bW1hcnkgTGlzdCBhbGwgb3JkZXJzIHdpdGggb3B0aW9uYWwgZmlsdGVycwogKi8KZXhwb3J0IGNvbnN0IExpc3RBZG1pbk9yZGVyc1F1ZXJ5UGFyYW1zID0gem9kLm9iamVjdCh7CiAgc3RhdHVzOiB6b2QuY29lcmNlLnN0cmluZygpLm9wdGlvbmFsKCksCiAgc2VhcmNoOiB6b2QuY29lcmNlLnN0cmluZygpLm9wdGlvbmFsKCksCiAgbGltaXQ6IHpvZC5jb2VyY2UubnVtYmVyKCkub3B0aW9uYWwoKSwKICBvZmZzZXQ6IHpvZC5jb2VyY2UubnVtYmVyKCkub3B0aW9uYWwoKSwKfSk7CgpleHBvcnQgY29uc3QgTGlzdEFkbWluT3JkZXJzUmVzcG9uc2UgPSB6b2Qub2JqZWN0KHsKICBvcmRlcnM6IHpvZC5hcnJheSgKICAgIHpvZC5vYmplY3QoewogICAgICBpZDogem9kLm51bWJlcigpLAogICAgICBvcmRlck51bWJlcjogem9kLnN0cmluZygpLAogICAgICBzdGF0dXM6IHpvZC5zdHJpbmcoKSwKICAgICAgY3VzdG9tZXJFbWFpbDogem9kLnN0cmluZygpLAogICAgICBjdXN0b21lck5hbWU6IHpvZC5zdHJpbmcoKSwKICAgICAgY3VzdG9tZXJJZDogem9kLm51bWJlcigpLm51bGxpc2goKSwKICAgICAgc3VidG90YWxHYnA6IHpvZC5udW1iZXIoKS5vcHRpb25hbCgpLAogICAgICBzaGlwcGluZ0Nvc3RHYnA6IHpvZC5udW1iZXIoKS5vcHRpb25hbCgpLAogICAgICB0b3RhbEdicDogem9kLm51bWJlcigpLAogICAgICBzaGlwcGluZ01ldGhvZDogem9kLnN0cmluZygpLm51bGxpc2goKSwKICAgICAgdHJhY2tpbmdOdW1iZXI6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgICAgIG5vdGVzOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogICAgICBjb3VudHJ5OiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogICAgICBjaXR5OiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogICAgICBhZGRyZXNzMTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICAgICAgcG9zdGNvZGU6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgICAgIHBob25lOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogICAgICByZWZ1bmRlZEFtb3VudEdicDogem9kLm51bWJlcigpLm9wdGlvbmFsKCksCiAgICAgIHJlZnVuZFN0YXR1czogem9kLnN0cmluZygpLm9wdGlvbmFsKCksCiAgICAgIGZyYXVkU2NvcmU6IHpvZC5udW1iZXIoKS5vcHRpb25hbCgpLAogICAgICBmcmF1ZEZsYWdzOiB6b2QuYXJyYXkoem9kLnN0cmluZygpKS5vcHRpb25hbCgpLAogICAgICBmcmF1ZFJldmlld2VkOiB6b2QuYm9vbGVhbigpLm9wdGlvbmFsKCksCiAgICAgIGZyYXVkUmV2aWV3Tm90ZTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICAgICAgY3JlYXRlZEF0OiB6b2QuY29lcmNlLmRhdGUoKSwKICAgICAgdXBkYXRlZEF0OiB6b2QuY29lcmNlLmRhdGUoKS5vcHRpb25hbCgpLAogICAgfSksCiAgKSwKICB0b3RhbDogem9kLm51bWJlcigpLAp9KTsKCi8qKgogKiBAc3VtbWFyeSBHZXQgb3JkZXIgZGV0YWlsIHdpdGggaXRlbXMKICovCmV4cG9ydCBjb25zdCBHZXRBZG1pbk9yZGVyUGFyYW1zID0gem9kLm9iamVjdCh7CiAgaWQ6IHpvZC5jb2VyY2UubnVtYmVyKCksCn0pOwoKZXhwb3J0IGNvbnN0IEdldEFkbWluT3JkZXJSZXNwb25zZSA9IHpvZC5vYmplY3QoewogIGlkOiB6b2QubnVtYmVyKCksCiAgb3JkZXJOdW1iZXI6IHpvZC5zdHJpbmcoKSwKICBzdGF0dXM6IHpvZC5zdHJpbmcoKSwKICBjdXN0b21lckVtYWlsOiB6b2Quc3RyaW5nKCksCiAgY3VzdG9tZXJOYW1lOiB6b2Quc3RyaW5nKCksCiAgY3VzdG9tZXJJZDogem9kLm51bWJlcigpLm51bGxpc2goKSwKICBzdWJ0b3RhbEdicDogem9kLm51bWJlcigpLm9wdGlvbmFsKCksCiAgc2hpcHBpbmdDb3N0R2JwOiB6b2QubnVtYmVyKCkub3B0aW9uYWwoKSwKICB0b3RhbEdicDogem9kLm51bWJlcigpLAogIHNoaXBwaW5nTWV0aG9kOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIHRyYWNraW5nTnVtYmVyOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIG5vdGVzOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGFkZHJlc3MxOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGFkZHJlc3MyOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGNpdHk6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgY291bnR5OiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIHBvc3Rjb2RlOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGNvdW50cnk6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgcGhvbmU6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgcmVmdW5kZWRBbW91bnRHYnA6IHpvZC5udW1iZXIoKS5vcHRpb25hbCgpLAogIHJlZnVuZFN0YXR1czogem9kLnN0cmluZygpLm9wdGlvbmFsKCksCiAgZnJhdWRTY29yZTogem9kLm51bWJlcigpLm9wdGlvbmFsKCksCiAgZnJhdWRGbGFnczogem9kLmFycmF5KHpvZC5zdHJpbmcoKSkub3B0aW9uYWwoKSwKICBmcmF1ZFJldmlld2VkOiB6b2QuYm9vbGVhbigpLm9wdGlvbmFsKCksCiAgZnJhdWRSZXZpZXdOb3RlOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGNyZWF0ZWRBdDogem9kLmNvZXJjZS5kYXRlKCksCiAgdXBkYXRlZEF0OiB6b2QuY29lcmNlLmRhdGUoKS5vcHRpb25hbCgpLAogIGl0ZW1zOiB6b2QuYXJyYXkoCiAgICB6b2Qub2JqZWN0KHsKICAgICAgaWQ6IHpvZC5udW1iZXIoKSwKICAgICAgb3JkZXJJZDogem9kLm51bWJlcigpLAogICAgICBwcm9kdWN0SWQ6IHpvZC5udW1iZXIoKSwKICAgICAgcHJvZHVjdE5hbWU6IHpvZC5zdHJpbmcoKSwKICAgICAgcHJvZHVjdENhdGVnb3J5OiB6b2Quc3RyaW5nKCksCiAgICAgIHF1YW50aXR5OiB6b2QubnVtYmVyKCksCiAgICAgIHByaWNlR2JwOiB6b2QubnVtYmVyKCksCiAgICB9KSwKICApLAp9KTsKCi8qKgogKiBAc3VtbWFyeSBVcGRhdGUgb3JkZXIgc3RhdHVzLCB0cmFja2luZywgb3Igbm90ZXMKICovCmV4cG9ydCBjb25zdCBVcGRhdGVBZG1pbk9yZGVyUGFyYW1zID0gem9kLm9iamVjdCh7CiAgaWQ6IHpvZC5jb2VyY2UubnVtYmVyKCksCn0pOwoKZXhwb3J0IGNvbnN0IFVwZGF0ZUFkbWluT3JkZXJCb2R5ID0gem9kLm9iamVjdCh7CiAgc3RhdHVzOiB6b2Quc3RyaW5nKCkub3B0aW9uYWwoKSwKICB0cmFja2luZ051bWJlcjogem9kLnN0cmluZygpLm9wdGlvbmFsKCksCiAgbm90ZXM6IHpvZC5zdHJpbmcoKS5vcHRpb25hbCgpLAp9KTsKCmV4cG9ydCBjb25zdCBVcGRhdGVBZG1pbk9yZGVyUmVzcG9uc2UgPSB6b2Qub2JqZWN0KHsKICBpZDogem9kLm51bWJlcigpLAogIG9yZGVyTnVtYmVyOiB6b2Quc3RyaW5nKCksCiAgc3RhdHVzOiB6b2Quc3RyaW5nKCksCiAgY3VzdG9tZXJFbWFpbDogem9kLnN0cmluZygpLAogIGN1c3RvbWVyTmFtZTogem9kLnN0cmluZygpLAogIGN1c3RvbWVySWQ6IHpvZC5udW1iZXIoKS5udWxsaXNoKCksCiAgc3VidG90YWxHYnA6IHpvZC5udW1iZXIoKS5vcHRpb25hbCgpLAogIHNoaXBwaW5nQ29zdEdicDogem9kLm51bWJlcigpLm9wdGlvbmFsKCksCiAgdG90YWxHYnA6IHpvZC5udW1iZXIoKSwKICBzaGlwcGluZ01ldGhvZDogem9kLnN0cmluZygpLm51bGxpc2goKSwKICB0cmFja2luZ051bWJlcjogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBub3Rlczogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBjb3VudHJ5OiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGNpdHk6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgYWRkcmVzczE6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgcG9zdGNvZGU6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgcGhvbmU6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgcmVmdW5kZWRBbW91bnRHYnA6IHpvZC5udW1iZXIoKS5vcHRpb25hbCgpLAogIHJlZnVuZFN0YXR1czogem9kLnN0cmluZygpLm9wdGlvbmFsKCksCiAgZnJhdWRTY29yZTogem9kLm51bWJlcigpLm9wdGlvbmFsKCksCiAgZnJhdWRGbGFnczogem9kLmFycmF5KHpvZC5zdHJpbmcoKSkub3B0aW9uYWwoKSwKICBmcmF1ZFJldmlld2VkOiB6b2QuYm9vbGVhbigpLm9wdGlvbmFsKCksCiAgZnJhdWRSZXZpZXdOb3RlOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGNyZWF0ZWRBdDogem9kLmNvZXJjZS5kYXRlKCksCiAgdXBkYXRlZEF0OiB6b2QuY29lcmNlLmRhdGUoKS5vcHRpb25hbCgpLAp9KTsKCi8qKgogKiBAc3VtbWFyeSBMaXN0IGFsbCBjdXN0b21lcnMKICovCmV4cG9ydCBjb25zdCBMaXN0QWRtaW5DdXN0b21lcnNRdWVyeVBhcmFtcyA9IHpvZC5vYmplY3QoewogIHNlYXJjaDogem9kLmNvZXJjZS5zdHJpbmcoKS5vcHRpb25hbCgpLAogIGxpbWl0OiB6b2QuY29lcmNlLm51bWJlcigpLm9wdGlvbmFsKCksCiAgb2Zmc2V0OiB6b2QuY29lcmNlLm51bWJlcigpLm9wdGlvbmFsKCksCn0pOwoKZXhwb3J0IGNvbnN0IExpc3RBZG1pbkN1c3RvbWVyc1Jlc3BvbnNlID0gem9kLm9iamVjdCh7CiAgY3VzdG9tZXJzOiB6b2QuYXJyYXkoCiAgICB6b2Qub2JqZWN0KHsKICAgICAgaWQ6IHpvZC5udW1iZXIoKSwKICAgICAgZW1haWw6IHpvZC5zdHJpbmcoKSwKICAgICAgZmlyc3ROYW1lOiB6b2Quc3RyaW5nKCksCiAgICAgIGxhc3ROYW1lOiB6b2Quc3RyaW5nKCksCiAgICAgIHBob25lOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogICAgICBjb3VudHJ5OiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogICAgICBjaXR5OiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogICAgICB0b3RhbE9yZGVyczogem9kLm51bWJlcigpLAogICAgICB0b3RhbFNwZW5kR2JwOiB6b2QubnVtYmVyKCksCiAgICAgIGNyZWF0ZWRBdDogem9kLmNvZXJjZS5kYXRlKCksCiAgICAgIGxhc3RTZWVuQ291bnRyeTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICAgICAgbGFzdFNlZW5JcDogem9kLnN0cmluZygpLm51bGxpc2goKSwKICAgIH0pLAogICksCiAgdG90YWw6IHpvZC5udW1iZXIoKSwKfSk7CgovKioKICogQHN1bW1hcnkgR2V0IGN1c3RvbWVyIGRldGFpbCB3aXRoIG9yZGVyIGhpc3RvcnkKICovCmV4cG9ydCBjb25zdCBHZXRBZG1pbkN1c3RvbWVyUGFyYW1zID0gem9kLm9iamVjdCh7CiAgaWQ6IHpvZC5jb2VyY2UubnVtYmVyKCksCn0pOwoKZXhwb3J0IGNvbnN0IEdldEFkbWluQ3VzdG9tZXJSZXNwb25zZSA9IHpvZC5vYmplY3QoewogIGlkOiB6b2QubnVtYmVyKCksCiAgZW1haWw6IHpvZC5zdHJpbmcoKSwKICBmaXJzdE5hbWU6IHpvZC5zdHJpbmcoKSwKICBsYXN0TmFtZTogem9kLnN0cmluZygpLAogIHBob25lOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGFkZHJlc3MxOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGFkZHJlc3MyOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGNpdHk6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgY291bnR5OiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIHBvc3Rjb2RlOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGNvdW50cnk6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgdG90YWxPcmRlcnM6IHpvZC5udW1iZXIoKSwKICB0b3RhbFNwZW5kR2JwOiB6b2QubnVtYmVyKCksCiAgY3JlYXRlZEF0OiB6b2QuY29lcmNlLmRhdGUoKSwKICBsYXN0U2VlbkNvdW50cnk6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgbGFzdFNlZW5JcDogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBvcmRlcnM6IHpvZC5hcnJheSgKICAgIHpvZC5vYmplY3QoewogICAgICBpZDogem9kLm51bWJlcigpLAogICAgICBvcmRlck51bWJlcjogem9kLnN0cmluZygpLAogICAgICBzdGF0dXM6IHpvZC5zdHJpbmcoKSwKICAgICAgY3VzdG9tZXJFbWFpbDogem9kLnN0cmluZygpLAogICAgICBjdXN0b21lck5hbWU6IHpvZC5zdHJpbmcoKSwKICAgICAgY3VzdG9tZXJJZDogem9kLm51bWJlcigpLm51bGxpc2goKSwKICAgICAgc3VidG90YWxHYnA6IHpvZC5udW1iZXIoKS5vcHRpb25hbCgpLAogICAgICBzaGlwcGluZ0Nvc3RHYnA6IHpvZC5udW1iZXIoKS5vcHRpb25hbCgpLAogICAgICB0b3RhbEdicDogem9kLm51bWJlcigpLAogICAgICBzaGlwcGluZ01ldGhvZDogem9kLnN0cmluZygpLm51bGxpc2goKSwKICAgICAgdHJhY2tpbmdOdW1iZXI6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgICAgIG5vdGVzOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogICAgICBjb3VudHJ5OiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogICAgICBjaXR5OiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogICAgICBhZGRyZXNzMTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICAgICAgcG9zdGNvZGU6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgICAgIHBob25lOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogICAgICByZWZ1bmRlZEFtb3VudEdicDogem9kLm51bWJlcigpLm9wdGlvbmFsKCksCiAgICAgIHJlZnVuZFN0YXR1czogem9kLnN0cmluZygpLm9wdGlvbmFsKCksCiAgICAgIGZyYXVkU2NvcmU6IHpvZC5udW1iZXIoKS5vcHRpb25hbCgpLAogICAgICBmcmF1ZEZsYWdzOiB6b2QuYXJyYXkoem9kLnN0cmluZygpKS5vcHRpb25hbCgpLAogICAgICBmcmF1ZFJldmlld2VkOiB6b2QuYm9vbGVhbigpLm9wdGlvbmFsKCksCiAgICAgIGZyYXVkUmV2aWV3Tm90ZTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICAgICAgY3JlYXRlZEF0OiB6b2QuY29lcmNlLmRhdGUoKSwKICAgICAgdXBkYXRlZEF0OiB6b2QuY29lcmNlLmRhdGUoKS5vcHRpb25hbCgpLAogICAgfSksCiAgKSwKfSk7CgovKioKICogQHN1bW1hcnkgTGlzdCBhbGwgcHJvZHVjdHMgd2l0aCBzdG9jayBsZXZlbHMKICovCmV4cG9ydCBjb25zdCBMaXN0QWRtaW5Qcm9kdWN0c1F1ZXJ5UGFyYW1zID0gem9kLm9iamVjdCh7CiAgc2VhcmNoOiB6b2QuY29lcmNlLnN0cmluZygpLm9wdGlvbmFsKCksCiAgbG93U3RvY2s6IHpvZC5jb2VyY2UuYm9vbGVhbigpLm9wdGlvbmFsKCksCn0pOwoKZXhwb3J0IGNvbnN0IExpc3RBZG1pblByb2R1Y3RzUmVzcG9uc2VJdGVtID0gem9kLm9iamVjdCh7CiAgaWQ6IHpvZC5udW1iZXIoKSwKICBwcm9kdWN0SWQ6IHpvZC5udW1iZXIoKSwKICBwcm9kdWN0TmFtZTogem9kLnN0cmluZygpLAogIHByb2R1Y3RDYXRlZ29yeTogem9kLnN0cmluZygpLAogIHByb2R1Y3RJbWFnZTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBzdG9ja0xldmVsOiB6b2QubnVtYmVyKCksCiAgbG93U3RvY2tUaHJlc2hvbGQ6IHpvZC5udW1iZXIoKSwKICBpc1B1Ymxpc2hlZDogem9kLmJvb2xlYW4oKSwKICB1cGRhdGVkQXQ6IHpvZC5jb2VyY2UuZGF0ZSgpLAp9KTsKZXhwb3J0IGNvbnN0IExpc3RBZG1pblByb2R1Y3RzUmVzcG9uc2UgPSB6b2QuYXJyYXkoCiAgTGlzdEFkbWluUHJvZHVjdHNSZXNwb25zZUl0ZW0sCik7CgovKioKICogQHN1bW1hcnkgVXBkYXRlIHByb2R1Y3Qgc3RvY2sgbGV2ZWwgYW5kIHRocmVzaG9sZAogKi8KZXhwb3J0IGNvbnN0IFVwZGF0ZVByb2R1Y3RJbnZlbnRvcnlQYXJhbXMgPSB6b2Qub2JqZWN0KHsKICBpZDogem9kLmNvZXJjZS5udW1iZXIoKSwKfSk7CgpleHBvcnQgY29uc3QgVXBkYXRlUHJvZHVjdEludmVudG9yeUJvZHkgPSB6b2Qub2JqZWN0KHsKICBzdG9ja0xldmVsOiB6b2QubnVtYmVyKCkub3B0aW9uYWwoKSwKICBsb3dTdG9ja1RocmVzaG9sZDogem9kLm51bWJlcigpLm9wdGlvbmFsKCksCn0pOwoKZXhwb3J0IGNvbnN0IFVwZGF0ZVByb2R1Y3RJbnZlbnRvcnlSZXNwb25zZSA9IHpvZC5vYmplY3QoewogIGlkOiB6b2QubnVtYmVyKCksCiAgcHJvZHVjdElkOiB6b2QubnVtYmVyKCksCiAgcHJvZHVjdE5hbWU6IHpvZC5zdHJpbmcoKSwKICBwcm9kdWN0Q2F0ZWdvcnk6IHpvZC5zdHJpbmcoKSwKICBwcm9kdWN0SW1hZ2U6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgc3RvY2tMZXZlbDogem9kLm51bWJlcigpLAogIGxvd1N0b2NrVGhyZXNob2xkOiB6b2QubnVtYmVyKCksCiAgaXNQdWJsaXNoZWQ6IHpvZC5ib29sZWFuKCksCiAgdXBkYXRlZEF0OiB6b2QuY29lcmNlLmRhdGUoKSwKfSk7CgovKioKICogQHN1bW1hcnkgVG9nZ2xlIHByb2R1Y3QgcHVibGlzaGVkL2RyYWZ0IHN0YXR1cwogKi8KZXhwb3J0IGNvbnN0IFVwZGF0ZVByb2R1Y3RWaXNpYmlsaXR5UGFyYW1zID0gem9kLm9iamVjdCh7CiAgaWQ6IHpvZC5jb2VyY2UubnVtYmVyKCksCn0pOwoKZXhwb3J0IGNvbnN0IFVwZGF0ZVByb2R1Y3RWaXNpYmlsaXR5Qm9keSA9IHpvZC5vYmplY3QoewogIGlzUHVibGlzaGVkOiB6b2QuYm9vbGVhbigpLAp9KTsKCmV4cG9ydCBjb25zdCBVcGRhdGVQcm9kdWN0VmlzaWJpbGl0eVJlc3BvbnNlID0gem9kLm9iamVjdCh7CiAgaWQ6IHpvZC5udW1iZXIoKSwKICBwcm9kdWN0SWQ6IHpvZC5udW1iZXIoKSwKICBwcm9kdWN0TmFtZTogem9kLnN0cmluZygpLAogIHByb2R1Y3RDYXRlZ29yeTogem9kLnN0cmluZygpLAogIHByb2R1Y3RJbWFnZTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBzdG9ja0xldmVsOiB6b2QubnVtYmVyKCksCiAgbG93U3RvY2tUaHJlc2hvbGQ6IHpvZC5udW1iZXIoKSwKICBpc1B1Ymxpc2hlZDogem9kLmJvb2xlYW4oKSwKICB1cGRhdGVkQXQ6IHpvZC5jb2VyY2UuZGF0ZSgpLAp9KTsKCi8qKgogKiBAc3VtbWFyeSBMaXN0IGFsbCBkaXNjb3VudCBjb2RlcwogKi8KZXhwb3J0IGNvbnN0IExpc3RBZG1pbkRpc2NvdW50c1Jlc3BvbnNlSXRlbSA9IHpvZC5vYmplY3QoewogIGlkOiB6b2QubnVtYmVyKCksCiAgY29kZTogem9kLnN0cmluZygpLAogIHR5cGU6IHpvZC5zdHJpbmcoKSwKICB2YWx1ZTogem9kLm51bWJlcigpLAogIG1pblNwZW5kOiB6b2QubnVtYmVyKCkubnVsbGlzaCgpLAogIHVzYWdlTGltaXQ6IHpvZC5udW1iZXIoKS5udWxsaXNoKCksCiAgdXNhZ2VDb3VudDogem9kLm51bWJlcigpLAogIGV4cGlyZXNBdDogem9kLmNvZXJjZS5kYXRlKCkubnVsbGlzaCgpLAogIGlzQWN0aXZlOiB6b2QuYm9vbGVhbigpLAogIGNyZWF0ZWRBdDogem9kLmNvZXJjZS5kYXRlKCksCn0pOwpleHBvcnQgY29uc3QgTGlzdEFkbWluRGlzY291bnRzUmVzcG9uc2UgPSB6b2QuYXJyYXkoCiAgTGlzdEFkbWluRGlzY291bnRzUmVzcG9uc2VJdGVtLAopOwoKLyoqCiAqIEBzdW1tYXJ5IENyZWF0ZSBhIG5ldyBkaXNjb3VudCBjb2RlCiAqLwpleHBvcnQgY29uc3QgQ3JlYXRlQWRtaW5EaXNjb3VudEJvZHkgPSB6b2Qub2JqZWN0KHsKICBjb2RlOiB6b2Quc3RyaW5nKCksCiAgdHlwZTogem9kLnN0cmluZygpLAogIHZhbHVlOiB6b2QubnVtYmVyKCksCiAgbWluU3BlbmQ6IHpvZC5udW1iZXIoKS5vcHRpb25hbCgpLAogIHVzYWdlTGltaXQ6IHpvZC5udW1iZXIoKS5vcHRpb25hbCgpLAogIGV4cGlyZXNBdDogem9kLnN0cmluZygpLm9wdGlvbmFsKCksCn0pOwoKLyoqCiAqIEBzdW1tYXJ5IFVwZGF0ZSBhIGRpc2NvdW50IGNvZGUKICovCmV4cG9ydCBjb25zdCBVcGRhdGVBZG1pbkRpc2NvdW50UGFyYW1zID0gem9kLm9iamVjdCh7CiAgaWQ6IHpvZC5jb2VyY2UubnVtYmVyKCksCn0pOwoKZXhwb3J0IGNvbnN0IFVwZGF0ZUFkbWluRGlzY291bnRCb2R5ID0gem9kLm9iamVjdCh7CiAgaXNBY3RpdmU6IHpvZC5ib29sZWFuKCkub3B0aW9uYWwoKSwKICB1c2FnZUxpbWl0OiB6b2QubnVtYmVyKCkub3B0aW9uYWwoKSwKICBleHBpcmVzQXQ6IHpvZC5zdHJpbmcoKS5vcHRpb25hbCgpLAogIG1pblNwZW5kOiB6b2QubnVtYmVyKCkub3B0aW9uYWwoKSwKfSk7CgpleHBvcnQgY29uc3QgVXBkYXRlQWRtaW5EaXNjb3VudFJlc3BvbnNlID0gem9kLm9iamVjdCh7CiAgaWQ6IHpvZC5udW1iZXIoKSwKICBjb2RlOiB6b2Quc3RyaW5nKCksCiAgdHlwZTogem9kLnN0cmluZygpLAogIHZhbHVlOiB6b2QubnVtYmVyKCksCiAgbWluU3BlbmQ6IHpvZC5udW1iZXIoKS5udWxsaXNoKCksCiAgdXNhZ2VMaW1pdDogem9kLm51bWJlcigpLm51bGxpc2goKSwKICB1c2FnZUNvdW50OiB6b2QubnVtYmVyKCksCiAgZXhwaXJlc0F0OiB6b2QuY29lcmNlLmRhdGUoKS5udWxsaXNoKCksCiAgaXNBY3RpdmU6IHpvZC5ib29sZWFuKCksCiAgY3JlYXRlZEF0OiB6b2QuY29lcmNlLmRhdGUoKSwKfSk7CgovKioKICogQHN1bW1hcnkgRGVsZXRlIGEgZGlzY291bnQgY29kZQogKi8KZXhwb3J0IGNvbnN0IERlbGV0ZUFkbWluRGlzY291bnRQYXJhbXMgPSB6b2Qub2JqZWN0KHsKICBpZDogem9kLmNvZXJjZS5udW1iZXIoKSwKfSk7CgovKioKICogQHN1bW1hcnkgTGlzdCBhbGwgcHJvZHVjdHMgaW4gdGhlIGNhdGFsb2cKICovCmV4cG9ydCBjb25zdCBMaXN0Q2F0YWxvZ1Byb2R1Y3RzUXVlcnlQYXJhbXMgPSB6b2Qub2JqZWN0KHsKICBzZWFyY2g6IHpvZC5jb2VyY2Uuc3RyaW5nKCkub3B0aW9uYWwoKSwKICBjYXRlZ29yeTogem9kLmNvZXJjZS5zdHJpbmcoKS5vcHRpb25hbCgpLAogIHB1Ymxpc2hlZDogem9kLmNvZXJjZS5ib29sZWFuKCkub3B0aW9uYWwoKSwKfSk7CgpleHBvcnQgY29uc3QgTGlzdENhdGFsb2dQcm9kdWN0c1Jlc3BvbnNlSXRlbSA9IHpvZC5vYmplY3QoewogIGlkOiB6b2QubnVtYmVyKCksCiAgc2x1Zzogem9kLnN0cmluZygpLAogIG5hbWU6IHpvZC5zdHJpbmcoKSwKICBjYXRlZ29yeTogem9kLnN0cmluZygpLAogIHByaWNlR2JwOiB6b2QubnVtYmVyKCkubnVsbGlzaCgpLAogIHNob3J0RGVzY3JpcHRpb246IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgZGVzY3JpcHRpb246IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgaW1hZ2VVcmw6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgcHVyaXR5OiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGFsc29Lbm93bkFzOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIG1vbGVjdWxhcldlaWdodDogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBjYXNOdW1iZXI6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgZm9ybXVsYTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBzZXF1ZW5jZTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBzdG9yYWdlOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGFwcGVhcmFuY2U6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgc29sdWJpbGl0eTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBoYWxmTGlmZTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBjb2FVcmw6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgbXNJbWFnZVVybDogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBzZW9UaXRsZTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBzZW9EZXNjcmlwdGlvbjogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBpc1B1Ymxpc2hlZDogem9kLmJvb2xlYW4oKSwKICBpc0ZlYXR1cmVkOiB6b2QuYm9vbGVhbigpLAogIHNvcnRPcmRlcjogem9kLm51bWJlcigpLAogIGNyZWF0ZWRBdDogem9kLmNvZXJjZS5kYXRlKCksCiAgdXBkYXRlZEF0OiB6b2QuY29lcmNlLmRhdGUoKSwKfSk7CmV4cG9ydCBjb25zdCBMaXN0Q2F0YWxvZ1Byb2R1Y3RzUmVzcG9uc2UgPSB6b2QuYXJyYXkoCiAgTGlzdENhdGFsb2dQcm9kdWN0c1Jlc3BvbnNlSXRlbSwKKTsKCi8qKgogKiBAc3VtbWFyeSBDcmVhdGUgYSBuZXcgcHJvZHVjdAogKi8KZXhwb3J0IGNvbnN0IENyZWF0ZUNhdGFsb2dQcm9kdWN0Qm9keSA9IHpvZC5vYmplY3QoewogIHNsdWc6IHpvZC5zdHJpbmcoKSwKICBuYW1lOiB6b2Quc3RyaW5nKCksCiAgY2F0ZWdvcnk6IHpvZC5zdHJpbmcoKSwKICBwcmljZUdicDogem9kLm51bWJlcigpLm9wdGlvbmFsKCksCiAgc2hvcnREZXNjcmlwdGlvbjogem9kLnN0cmluZygpLm9wdGlvbmFsKCksCiAgZGVzY3JpcHRpb246IHpvZC5zdHJpbmcoKS5vcHRpb25hbCgpLAogIGltYWdlVXJsOiB6b2Quc3RyaW5nKCkub3B0aW9uYWwoKSwKICBwdXJpdHk6IHpvZC5zdHJpbmcoKS5vcHRpb25hbCgpLAogIGFsc29Lbm93bkFzOiB6b2Quc3RyaW5nKCkub3B0aW9uYWwoKSwKICBtb2xlY3VsYXJXZWlnaHQ6IHpvZC5zdHJpbmcoKS5vcHRpb25hbCgpLAogIGNhc051bWJlcjogem9kLnN0cmluZygpLm9wdGlvbmFsKCksCiAgZm9ybXVsYTogem9kLnN0cmluZygpLm9wdGlvbmFsKCksCiAgc2VxdWVuY2U6IHpvZC5zdHJpbmcoKS5vcHRpb25hbCgpLAogIHN0b3JhZ2U6IHpvZC5zdHJpbmcoKS5vcHRpb25hbCgpLAogIGFwcGVhcmFuY2U6IHpvZC5zdHJpbmcoKS5vcHRpb25hbCgpLAogIHNvbHViaWxpdHk6IHpvZC5zdHJpbmcoKS5vcHRpb25hbCgpLAogIGhhbGZMaWZlOiB6b2Quc3RyaW5nKCkub3B0aW9uYWwoKSwKICBjb2FVcmw6IHpvZC5zdHJpbmcoKS5vcHRpb25hbCgpLAogIG1zSW1hZ2VVcmw6IHpvZC5zdHJpbmcoKS5vcHRpb25hbCgpLAogIHNlb1RpdGxlOiB6b2Quc3RyaW5nKCkub3B0aW9uYWwoKSwKICBzZW9EZXNjcmlwdGlvbjogem9kLnN0cmluZygpLm9wdGlvbmFsKCksCiAgaXNQdWJsaXNoZWQ6IHpvZC5ib29sZWFuKCkub3B0aW9uYWwoKSwKICBpc0ZlYXR1cmVkOiB6b2QuYm9vbGVhbigpLm9wdGlvbmFsKCksCiAgc29ydE9yZGVyOiB6b2QubnVtYmVyKCkub3B0aW9uYWwoKSwKfSk7CgovKioKICogQHN1bW1hcnkgR2V0IGEgc2luZ2xlIGNhdGFsb2cgcHJvZHVjdAogKi8KZXhwb3J0IGNvbnN0IEdldENhdGFsb2dQcm9kdWN0UGFyYW1zID0gem9kLm9iamVjdCh7CiAgaWQ6IHpvZC5jb2VyY2UubnVtYmVyKCksCn0pOwoKZXhwb3J0IGNvbnN0IEdldENhdGFsb2dQcm9kdWN0UmVzcG9uc2UgPSB6b2Qub2JqZWN0KHsKICBpZDogem9kLm51bWJlcigpLAogIHNsdWc6IHpvZC5zdHJpbmcoKSwKICBuYW1lOiB6b2Quc3RyaW5nKCksCiAgY2F0ZWdvcnk6IHpvZC5zdHJpbmcoKSwKICBwcmljZUdicDogem9kLm51bWJlcigpLm51bGxpc2goKSwKICBzaG9ydERlc2NyaXB0aW9uOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGRlc2NyaXB0aW9uOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGltYWdlVXJsOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIHB1cml0eTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBhbHNvS25vd25Bczogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBtb2xlY3VsYXJXZWlnaHQ6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgY2FzTnVtYmVyOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGZvcm11bGE6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgc2VxdWVuY2U6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgc3RvcmFnZTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBhcHBlYXJhbmNlOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIHNvbHViaWxpdHk6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgaGFsZkxpZmU6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgY29hVXJsOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIG1zSW1hZ2VVcmw6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgc2VvVGl0bGU6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgc2VvRGVzY3JpcHRpb246IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgaXNQdWJsaXNoZWQ6IHpvZC5ib29sZWFuKCksCiAgaXNGZWF0dXJlZDogem9kLmJvb2xlYW4oKSwKICBzb3J0T3JkZXI6IHpvZC5udW1iZXIoKSwKICBjcmVhdGVkQXQ6IHpvZC5jb2VyY2UuZGF0ZSgpLAogIHVwZGF0ZWRBdDogem9kLmNvZXJjZS5kYXRlKCksCn0pOwoKLyoqCiAqIEBzdW1tYXJ5IFVwZGF0ZSBhIGNhdGFsb2cgcHJvZHVjdAogKi8KZXhwb3J0IGNvbnN0IFVwZGF0ZUNhdGFsb2dQcm9kdWN0UGFyYW1zID0gem9kLm9iamVjdCh7CiAgaWQ6IHpvZC5jb2VyY2UubnVtYmVyKCksCn0pOwoKZXhwb3J0IGNvbnN0IFVwZGF0ZUNhdGFsb2dQcm9kdWN0Qm9keSA9IHpvZC5vYmplY3QoewogIHNsdWc6IHpvZC5zdHJpbmcoKS5vcHRpb25hbCgpLAogIG5hbWU6IHpvZC5zdHJpbmcoKS5vcHRpb25hbCgpLAogIGNhdGVnb3J5OiB6b2Quc3RyaW5nKCkub3B0aW9uYWwoKSwKICBwcmljZUdicDogem9kLm51bWJlcigpLm51bGxpc2goKSwKICBzaG9ydERlc2NyaXB0aW9uOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGRlc2NyaXB0aW9uOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGltYWdlVXJsOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIHB1cml0eTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBhbHNvS25vd25Bczogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBtb2xlY3VsYXJXZWlnaHQ6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgY2FzTnVtYmVyOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGZvcm11bGE6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgc2VxdWVuY2U6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgc3RvcmFnZTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBhcHBlYXJhbmNlOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIHNvbHViaWxpdHk6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgaGFsZkxpZmU6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgY29hVXJsOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIG1zSW1hZ2VVcmw6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgc2VvVGl0bGU6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgc2VvRGVzY3JpcHRpb246IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgaXNQdWJsaXNoZWQ6IHpvZC5ib29sZWFuKCkub3B0aW9uYWwoKSwKICBpc0ZlYXR1cmVkOiB6b2QuYm9vbGVhbigpLm9wdGlvbmFsKCksCiAgc29ydE9yZGVyOiB6b2QubnVtYmVyKCkub3B0aW9uYWwoKSwKfSk7CgpleHBvcnQgY29uc3QgVXBkYXRlQ2F0YWxvZ1Byb2R1Y3RSZXNwb25zZSA9IHpvZC5vYmplY3QoewogIGlkOiB6b2QubnVtYmVyKCksCiAgc2x1Zzogem9kLnN0cmluZygpLAogIG5hbWU6IHpvZC5zdHJpbmcoKSwKICBjYXRlZ29yeTogem9kLnN0cmluZygpLAogIHByaWNlR2JwOiB6b2QubnVtYmVyKCkubnVsbGlzaCgpLAogIHNob3J0RGVzY3JpcHRpb246IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgZGVzY3JpcHRpb246IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgaW1hZ2VVcmw6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgcHVyaXR5OiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGFsc29Lbm93bkFzOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIG1vbGVjdWxhcldlaWdodDogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBjYXNOdW1iZXI6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgZm9ybXVsYTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBzZXF1ZW5jZTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBzdG9yYWdlOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGFwcGVhcmFuY2U6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgc29sdWJpbGl0eTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBoYWxmTGlmZTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBjb2FVcmw6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgbXNJbWFnZVVybDogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBzZW9UaXRsZTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBzZW9EZXNjcmlwdGlvbjogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBpc1B1Ymxpc2hlZDogem9kLmJvb2xlYW4oKSwKICBpc0ZlYXR1cmVkOiB6b2QuYm9vbGVhbigpLAogIHNvcnRPcmRlcjogem9kLm51bWJlcigpLAogIGNyZWF0ZWRBdDogem9kLmNvZXJjZS5kYXRlKCksCiAgdXBkYXRlZEF0OiB6b2QuY29lcmNlLmRhdGUoKSwKfSk7CgovKioKICogQHN1bW1hcnkgRGVsZXRlIGEgY2F0YWxvZyBwcm9kdWN0CiAqLwpleHBvcnQgY29uc3QgRGVsZXRlQ2F0YWxvZ1Byb2R1Y3RQYXJhbXMgPSB6b2Qub2JqZWN0KHsKICBpZDogem9kLmNvZXJjZS5udW1iZXIoKSwKfSk7CgovKioKICogQHN1bW1hcnkgTGlzdCBwdWJsaXNoZWQgcHJvZHVjdHMgZm9yIHRoZSBzdG9yZWZyb250CiAqLwpleHBvcnQgY29uc3QgTGlzdFB1YmxpY1Byb2R1Y3RzUXVlcnlQYXJhbXMgPSB6b2Qub2JqZWN0KHsKICBjYXRlZ29yeTogem9kLmNvZXJjZS5zdHJpbmcoKS5vcHRpb25hbCgpLAogIHNlYXJjaDogem9kLmNvZXJjZS5zdHJpbmcoKS5vcHRpb25hbCgpLAogIGZlYXR1cmVkOiB6b2QuY29lcmNlLmJvb2xlYW4oKS5vcHRpb25hbCgpLAp9KTsKCmV4cG9ydCBjb25zdCBMaXN0UHVibGljUHJvZHVjdHNSZXNwb25zZUl0ZW0gPSB6b2Qub2JqZWN0KHsKICBpZDogem9kLm51bWJlcigpLAogIHNsdWc6IHpvZC5zdHJpbmcoKSwKICBuYW1lOiB6b2Quc3RyaW5nKCksCiAgY2F0ZWdvcnk6IHpvZC5zdHJpbmcoKSwKICBwcmljZUdicDogem9kLm51bWJlcigpLm51bGxpc2goKSwKICBzaG9ydERlc2NyaXB0aW9uOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGltYWdlVXJsOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIHB1cml0eTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBjb2FVcmw6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgbXNJbWFnZVVybDogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBpc0ZlYXR1cmVkOiB6b2QuYm9vbGVhbigpLm9wdGlvbmFsKCksCn0pOwpleHBvcnQgY29uc3QgTGlzdFB1YmxpY1Byb2R1Y3RzUmVzcG9uc2UgPSB6b2QuYXJyYXkoCiAgTGlzdFB1YmxpY1Byb2R1Y3RzUmVzcG9uc2VJdGVtLAopOwoKLyoqCiAqIEBzdW1tYXJ5IEdldCBhIHNpbmdsZSBwdWJsaXNoZWQgcHJvZHVjdCBieSBzbHVnCiAqLwpleHBvcnQgY29uc3QgR2V0UHVibGljUHJvZHVjdFBhcmFtcyA9IHpvZC5vYmplY3QoewogIHNsdWc6IHpvZC5jb2VyY2Uuc3RyaW5nKCksCn0pOwoKZXhwb3J0IGNvbnN0IEdldFB1YmxpY1Byb2R1Y3RSZXNwb25zZSA9IHpvZC5vYmplY3QoewogIGlkOiB6b2QubnVtYmVyKCksCiAgc2x1Zzogem9kLnN0cmluZygpLAogIG5hbWU6IHpvZC5zdHJpbmcoKSwKICBjYXRlZ29yeTogem9kLnN0cmluZygpLAogIHByaWNlR2JwOiB6b2QubnVtYmVyKCkubnVsbGlzaCgpLAogIHNob3J0RGVzY3JpcHRpb246IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgZGVzY3JpcHRpb246IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgaW1hZ2VVcmw6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgcHVyaXR5OiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGFsc29Lbm93bkFzOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIG1vbGVjdWxhcldlaWdodDogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBjYXNOdW1iZXI6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgZm9ybXVsYTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBzZXF1ZW5jZTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBzdG9yYWdlOiB6b2Quc3RyaW5nKCkubnVsbGlzaCgpLAogIGFwcGVhcmFuY2U6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgc29sdWJpbGl0eTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBoYWxmTGlmZTogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBjb2FVcmw6IHpvZC5zdHJpbmcoKS5udWxsaXNoKCksCiAgbXNJbWFnZVVybDogem9kLnN0cmluZygpLm51bGxpc2goKSwKICBpc0ZlYXR1cmVkOiB6b2QuYm9vbGVhbigpLm9wdGlvbmFsKCksCn0pOwo=
+/**
+ * Generated by orval v8.5.3 🍺
+ * Do not edit manually.
+ * Api
+ * OmniQure API specification
+ * OpenAPI spec version: 0.1.0
+ */
+import * as zod from "zod";
+
+/**
+ * @summary Health check
+ */
+export const HealthCheckResponse = zod.object({
+  status: zod.string(),
+});
+
+/**
+ * @summary Admin login
+ */
+export const AdminLoginBody = zod.object({
+  password: zod.string(),
+});
+
+export const AdminLoginResponse = zod.object({
+  authenticated: zod.boolean(),
+});
+
+/**
+ * @summary Check admin session
+ */
+export const AdminMeResponse = zod.object({
+  authenticated: zod.boolean(),
+});
+
+/**
+ * @summary Get dashboard summary stats
+ */
+export const GetAdminDashboardResponse = zod.object({
+  totalRevenue: zod.number(),
+  totalOrders: zod.number(),
+  totalCustomers: zod.number(),
+  pendingOrders: zod.number(),
+  processingOrders: zod.number(),
+  shippedOrders: zod.number(),
+  lowStockCount: zod.number(),
+  revenueToday: zod.number(),
+  ordersToday: zod.number(),
+  avgOrderValue: zod.number(),
+});
+
+/**
+ * @summary Get daily revenue for the specified period
+ */
+export const getRevenueChartQueryPeriodDefault = 30;
+
+export const GetRevenueChartQueryParams = zod.object({
+  period: zod
+    .union([zod.literal(7), zod.literal(30), zod.literal(90), zod.literal(365)])
+    .default(getRevenueChartQueryPeriodDefault),
+});
+
+export const GetRevenueChartResponseItem = zod.object({
+  date: zod.string(),
+  revenue: zod.number(),
+  orders: zod.number(),
+});
+export const GetRevenueChartResponse = zod.array(GetRevenueChartResponseItem);
+
+/**
+ * @summary Get top selling products
+ */
+export const GetTopProductsResponseItem = zod.object({
+  productId: zod.number(),
+  productName: zod.string(),
+  totalSold: zod.number(),
+  totalRevenue: zod.number(),
+});
+export const GetTopProductsResponse = zod.array(GetTopProductsResponseItem);
+
+/**
+ * @summary Get daily new customer registrations for the specified period
+ */
+export const getNewCustomersChartQueryPeriodDefault = 30;
+
+export const GetNewCustomersChartQueryParams = zod.object({
+  period: zod
+    .union([zod.literal(7), zod.literal(30), zod.literal(90), zod.literal(365)])
+    .default(getNewCustomersChartQueryPeriodDefault),
+});
+
+export const GetNewCustomersChartResponseItem = zod.object({
+  date: zod.string(),
+  newCustomers: zod.number(),
+});
+export const GetNewCustomersChartResponse = zod.array(
+  GetNewCustomersChartResponseItem,
+);
+
+/**
+ * @summary Get order counts grouped by status
+ */
+export const GetOrderStatusBreakdownResponseItem = zod.object({
+  status: zod.string(),
+  count: zod.number(),
+});
+export const GetOrderStatusBreakdownResponse = zod.array(
+  GetOrderStatusBreakdownResponseItem,
+);
+
+/**
+ * @summary Get total revenue grouped by product category
+ */
+export const GetRevenueByCategoryChartResponseItem = zod.object({
+  category: zod.string(),
+  revenue: zod.number(),
+  orders: zod.number(),
+});
+export const GetRevenueByCategoryChartResponse = zod.array(
+  GetRevenueByCategoryChartResponseItem,
+);
+
+/**
+ * @summary List all orders with optional filters
+ */
+export const ListAdminOrdersQueryParams = zod.object({
+  status: zod.coerce.string().optional(),
+  search: zod.coerce.string().optional(),
+  limit: zod.coerce.number().optional(),
+  offset: zod.coerce.number().optional(),
+});
+
+export const ListAdminOrdersResponse = zod.object({
+  orders: zod.array(
+    zod.object({
+      id: zod.number(),
+      orderNumber: zod.string(),
+      status: zod.string(),
+      customerEmail: zod.string(),
+      customerName: zod.string(),
+      customerId: zod.number().nullish(),
+      subtotalGbp: zod.number().optional(),
+      shippingCostGbp: zod.number().optional(),
+      totalGbp: zod.number(),
+      shippingMethod: zod.string().nullish(),
+      trackingNumber: zod.string().nullish(),
+      notes: zod.string().nullish(),
+      country: zod.string().nullish(),
+      city: zod.string().nullish(),
+      address1: zod.string().nullish(),
+      postcode: zod.string().nullish(),
+      phone: zod.string().nullish(),
+      refundedAmountGbp: zod.number().optional(),
+      refundStatus: zod.string().optional(),
+      fraudScore: zod.number().optional(),
+      fraudFlags: zod.array(zod.string()).optional(),
+      fraudReviewed: zod.boolean().optional(),
+      fraudReviewNote: zod.string().nullish(),
+      createdAt: zod.coerce.date(),
+      updatedAt: zod.coerce.date().optional(),
+    }),
+  ),
+  total: zod.number(),
+});
+
+/**
+ * @summary Get order detail with items
+ */
+export const GetAdminOrderParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetAdminOrderResponse = zod.object({
+  id: zod.number(),
+  orderNumber: zod.string(),
+  status: zod.string(),
+  customerEmail: zod.string(),
+  customerName: zod.string(),
+  customerId: zod.number().nullish(),
+  subtotalGbp: zod.number().optional(),
+  shippingCostGbp: zod.number().optional(),
+  totalGbp: zod.number(),
+  shippingMethod: zod.string().nullish(),
+  trackingNumber: zod.string().nullish(),
+  notes: zod.string().nullish(),
+  address1: zod.string().nullish(),
+  address2: zod.string().nullish(),
+  city: zod.string().nullish(),
+  county: zod.string().nullish(),
+  postcode: zod.string().nullish(),
+  country: zod.string().nullish(),
+  phone: zod.string().nullish(),
+  refundedAmountGbp: zod.number().optional(),
+  refundStatus: zod.string().optional(),
+  fraudScore: zod.number().optional(),
+  fraudFlags: zod.array(zod.string()).optional(),
+  fraudReviewed: zod.boolean().optional(),
+  fraudReviewNote: zod.string().nullish(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date().optional(),
+  items: zod.array(
+    zod.object({
+      id: zod.number(),
+      orderId: zod.number(),
+      productId: zod.number(),
+      productName: zod.string(),
+      productCategory: zod.string(),
+      quantity: zod.number(),
+      priceGbp: zod.number(),
+    }),
+  ),
+});
+
+/**
+ * @summary Update order status, tracking, or notes
+ */
+export const UpdateAdminOrderParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateAdminOrderBody = zod.object({
+  status: zod.string().optional(),
+  trackingNumber: zod.string().optional(),
+  notes: zod.string().optional(),
+});
+
+export const UpdateAdminOrderResponse = zod.object({
+  id: zod.number(),
+  orderNumber: zod.string(),
+  status: zod.string(),
+  customerEmail: zod.string(),
+  customerName: zod.string(),
+  customerId: zod.number().nullish(),
+  subtotalGbp: zod.number().optional(),
+  shippingCostGbp: zod.number().optional(),
+  totalGbp: zod.number(),
+  shippingMethod: zod.string().nullish(),
+  trackingNumber: zod.string().nullish(),
+  notes: zod.string().nullish(),
+  country: zod.string().nullish(),
+  city: zod.string().nullish(),
+  address1: zod.string().nullish(),
+  postcode: zod.string().nullish(),
+  phone: zod.string().nullish(),
+  refundedAmountGbp: zod.number().optional(),
+  refundStatus: zod.string().optional(),
+  fraudScore: zod.number().optional(),
+  fraudFlags: zod.array(zod.string()).optional(),
+  fraudReviewed: zod.boolean().optional(),
+  fraudReviewNote: zod.string().nullish(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date().optional(),
+});
+
+/**
+ * @summary List all customers
+ */
+export const ListAdminCustomersQueryParams = zod.object({
+  search: zod.coerce.string().optional(),
+  limit: zod.coerce.number().optional(),
+  offset: zod.coerce.number().optional(),
+});
+
+export const ListAdminCustomersResponse = zod.object({
+  customers: zod.array(
+    zod.object({
+      id: zod.number(),
+      email: zod.string(),
+      firstName: zod.string(),
+      lastName: zod.string(),
+      phone: zod.string().nullish(),
+      country: zod.string().nullish(),
+      city: zod.string().nullish(),
+      totalOrders: zod.number(),
+      totalSpendGbp: zod.number(),
+      createdAt: zod.coerce.date(),
+      lastSeenCountry: zod.string().nullish(),
+      lastSeenIp: zod.string().nullish(),
+    }),
+  ),
+  total: zod.number(),
+});
+
+/**
+ * @summary Get customer detail with order history
+ */
+export const GetAdminCustomerParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetAdminCustomerResponse = zod.object({
+  id: zod.number(),
+  email: zod.string(),
+  firstName: zod.string(),
+  lastName: zod.string(),
+  phone: zod.string().nullish(),
+  address1: zod.string().nullish(),
+  address2: zod.string().nullish(),
+  city: zod.string().nullish(),
+  county: zod.string().nullish(),
+  postcode: zod.string().nullish(),
+  country: zod.string().nullish(),
+  totalOrders: zod.number(),
+  totalSpendGbp: zod.number(),
+  createdAt: zod.coerce.date(),
+  lastSeenCountry: zod.string().nullish(),
+  lastSeenIp: zod.string().nullish(),
+  orders: zod.array(
+    zod.object({
+      id: zod.number(),
+      orderNumber: zod.string(),
+      status: zod.string(),
+      customerEmail: zod.string(),
+      customerName: zod.string(),
+      customerId: zod.number().nullish(),
+      subtotalGbp: zod.number().optional(),
+      shippingCostGbp: zod.number().optional(),
+      totalGbp: zod.number(),
+      shippingMethod: zod.string().nullish(),
+      trackingNumber: zod.string().nullish(),
+      notes: zod.string().nullish(),
+      country: zod.string().nullish(),
+      city: zod.string().nullish(),
+      address1: zod.string().nullish(),
+      postcode: zod.string().nullish(),
+      phone: zod.string().nullish(),
+      refundedAmountGbp: zod.number().optional(),
+      refundStatus: zod.string().optional(),
+      fraudScore: zod.number().optional(),
+      fraudFlags: zod.array(zod.string()).optional(),
+      fraudReviewed: zod.boolean().optional(),
+      fraudReviewNote: zod.string().nullish(),
+      createdAt: zod.coerce.date(),
+      updatedAt: zod.coerce.date().optional(),
+    }),
+  ),
+});
+
+/**
+ * @summary List all products with stock levels
+ */
+export const ListAdminProductsQueryParams = zod.object({
+  search: zod.coerce.string().optional(),
+  lowStock: zod.coerce.boolean().optional(),
+});
+
+export const ListAdminProductsResponseItem = zod.object({
+  id: zod.number(),
+  productId: zod.number(),
+  productName: zod.string(),
+  productCategory: zod.string(),
+  productImage: zod.string().nullish(),
+  stockLevel: zod.number(),
+  lowStockThreshold: zod.number(),
+  isPublished: zod.boolean(),
+  updatedAt: zod.coerce.date(),
+});
+export const ListAdminProductsResponse = zod.array(
+  ListAdminProductsResponseItem,
+);
+
+/**
+ * @summary Update product stock level and threshold
+ */
+export const UpdateProductInventoryParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateProductInventoryBody = zod.object({
+  stockLevel: zod.number().optional(),
+  lowStockThreshold: zod.number().optional(),
+});
+
+export const UpdateProductInventoryResponse = zod.object({
+  id: zod.number(),
+  productId: zod.number(),
+  productName: zod.string(),
+  productCategory: zod.string(),
+  productImage: zod.string().nullish(),
+  stockLevel: zod.number(),
+  lowStockThreshold: zod.number(),
+  isPublished: zod.boolean(),
+  updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Toggle product published/draft status
+ */
+export const UpdateProductVisibilityParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateProductVisibilityBody = zod.object({
+  isPublished: zod.boolean(),
+});
+
+export const UpdateProductVisibilityResponse = zod.object({
+  id: zod.number(),
+  productId: zod.number(),
+  productName: zod.string(),
+  productCategory: zod.string(),
+  productImage: zod.string().nullish(),
+  stockLevel: zod.number(),
+  lowStockThreshold: zod.number(),
+  isPublished: zod.boolean(),
+  updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary List all discount codes
+ */
+export const ListAdminDiscountsResponseItem = zod.object({
+  id: zod.number(),
+  code: zod.string(),
+  type: zod.string(),
+  value: zod.number(),
+  minSpend: zod.number().nullish(),
+  usageLimit: zod.number().nullish(),
+  usageCount: zod.number(),
+  expiresAt: zod.coerce.date().nullish(),
+  isActive: zod.boolean(),
+  createdAt: zod.coerce.date(),
+});
+export const ListAdminDiscountsResponse = zod.array(
+  ListAdminDiscountsResponseItem,
+);
+
+/**
+ * @summary Create a new discount code
+ */
+export const CreateAdminDiscountBody = zod.object({
+  code: zod.string(),
+  type: zod.string(),
+  value: zod.number(),
+  minSpend: zod.number().optional(),
+  usageLimit: zod.number().optional(),
+  expiresAt: zod.string().optional(),
+});
+
+/**
+ * @summary Update a discount code
+ */
+export const UpdateAdminDiscountParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateAdminDiscountBody = zod.object({
+  isActive: zod.boolean().optional(),
+  usageLimit: zod.number().optional(),
+  expiresAt: zod.string().optional(),
+  minSpend: zod.number().optional(),
+});
+
+export const UpdateAdminDiscountResponse = zod.object({
+  id: zod.number(),
+  code: zod.string(),
+  type: zod.string(),
+  value: zod.number(),
+  minSpend: zod.number().nullish(),
+  usageLimit: zod.number().nullish(),
+  usageCount: zod.number(),
+  expiresAt: zod.coerce.date().nullish(),
+  isActive: zod.boolean(),
+  createdAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Delete a discount code
+ */
+export const DeleteAdminDiscountParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List all products in the catalog
+ */
+export const ListCatalogProductsQueryParams = zod.object({
+  search: zod.coerce.string().optional(),
+  category: zod.coerce.string().optional(),
+  published: zod.coerce.boolean().optional(),
+});
+
+export const ListCatalogProductsResponseItem = zod.object({
+  id: zod.number(),
+  slug: zod.string(),
+  name: zod.string(),
+  category: zod.string(),
+  priceGbp: zod.number().nullish(),
+  shortDescription: zod.string().nullish(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  purity: zod.string().nullish(),
+  alsoKnownAs: zod.string().nullish(),
+  molecularWeight: zod.string().nullish(),
+  casNumber: zod.string().nullish(),
+  formula: zod.string().nullish(),
+  sequence: zod.string().nullish(),
+  storage: zod.string().nullish(),
+  appearance: zod.string().nullish(),
+  solubility: zod.string().nullish(),
+  halfLife: zod.string().nullish(),
+  coaUrl: zod.string().nullish(),
+  msImageUrl: zod.string().nullish(),
+  seoTitle: zod.string().nullish(),
+  seoDescription: zod.string().nullish(),
+  isPublished: zod.boolean(),
+  isFeatured: zod.boolean(),
+  sortOrder: zod.number(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+export const ListCatalogProductsResponse = zod.array(
+  ListCatalogProductsResponseItem,
+);
+
+/**
+ * @summary Create a new product
+ */
+export const CreateCatalogProductBody = zod.object({
+  slug: zod.string(),
+  name: zod.string(),
+  category: zod.string(),
+  priceGbp: zod.number().optional(),
+  shortDescription: zod.string().optional(),
+  description: zod.string().optional(),
+  imageUrl: zod.string().optional(),
+  purity: zod.string().optional(),
+  alsoKnownAs: zod.string().optional(),
+  molecularWeight: zod.string().optional(),
+  casNumber: zod.string().optional(),
+  formula: zod.string().optional(),
+  sequence: zod.string().optional(),
+  storage: zod.string().optional(),
+  appearance: zod.string().optional(),
+  solubility: zod.string().optional(),
+  halfLife: zod.string().optional(),
+  coaUrl: zod.string().optional(),
+  msImageUrl: zod.string().optional(),
+  seoTitle: zod.string().optional(),
+  seoDescription: zod.string().optional(),
+  isPublished: zod.boolean().optional(),
+  isFeatured: zod.boolean().optional(),
+  sortOrder: zod.number().optional(),
+});
+
+/**
+ * @summary Get a single catalog product
+ */
+export const GetCatalogProductParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetCatalogProductResponse = zod.object({
+  id: zod.number(),
+  slug: zod.string(),
+  name: zod.string(),
+  category: zod.string(),
+  priceGbp: zod.number().nullish(),
+  shortDescription: zod.string().nullish(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  purity: zod.string().nullish(),
+  alsoKnownAs: zod.string().nullish(),
+  molecularWeight: zod.string().nullish(),
+  casNumber: zod.string().nullish(),
+  formula: zod.string().nullish(),
+  sequence: zod.string().nullish(),
+  storage: zod.string().nullish(),
+  appearance: zod.string().nullish(),
+  solubility: zod.string().nullish(),
+  halfLife: zod.string().nullish(),
+  coaUrl: zod.string().nullish(),
+  msImageUrl: zod.string().nullish(),
+  seoTitle: zod.string().nullish(),
+  seoDescription: zod.string().nullish(),
+  isPublished: zod.boolean(),
+  isFeatured: zod.boolean(),
+  sortOrder: zod.number(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Update a catalog product
+ */
+export const UpdateCatalogProductParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateCatalogProductBody = zod.object({
+  slug: zod.string().optional(),
+  name: zod.string().optional(),
+  category: zod.string().optional(),
+  priceGbp: zod.number().nullish(),
+  shortDescription: zod.string().nullish(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  purity: zod.string().nullish(),
+  alsoKnownAs: zod.string().nullish(),
+  molecularWeight: zod.string().nullish(),
+  casNumber: zod.string().nullish(),
+  formula: zod.string().nullish(),
+  sequence: zod.string().nullish(),
+  storage: zod.string().nullish(),
+  appearance: zod.string().nullish(),
+  solubility: zod.string().nullish(),
+  halfLife: zod.string().nullish(),
+  coaUrl: zod.string().nullish(),
+  msImageUrl: zod.string().nullish(),
+  seoTitle: zod.string().nullish(),
+  seoDescription: zod.string().nullish(),
+  isPublished: zod.boolean().optional(),
+  isFeatured: zod.boolean().optional(),
+  sortOrder: zod.number().optional(),
+});
+
+export const UpdateCatalogProductResponse = zod.object({
+  id: zod.number(),
+  slug: zod.string(),
+  name: zod.string(),
+  category: zod.string(),
+  priceGbp: zod.number().nullish(),
+  shortDescription: zod.string().nullish(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  purity: zod.string().nullish(),
+  alsoKnownAs: zod.string().nullish(),
+  molecularWeight: zod.string().nullish(),
+  casNumber: zod.string().nullish(),
+  formula: zod.string().nullish(),
+  sequence: zod.string().nullish(),
+  storage: zod.string().nullish(),
+  appearance: zod.string().nullish(),
+  solubility: zod.string().nullish(),
+  halfLife: zod.string().nullish(),
+  coaUrl: zod.string().nullish(),
+  msImageUrl: zod.string().nullish(),
+  seoTitle: zod.string().nullish(),
+  seoDescription: zod.string().nullish(),
+  isPublished: zod.boolean(),
+  isFeatured: zod.boolean(),
+  sortOrder: zod.number(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Delete a catalog product
+ */
+export const DeleteCatalogProductParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List published products for the storefront
+ */
+export const ListPublicProductsQueryParams = zod.object({
+  category: zod.coerce.string().optional(),
+  search: zod.coerce.string().optional(),
+  featured: zod.coerce.boolean().optional(),
+});
+
+export const ListPublicProductsResponseItem = zod.object({
+  id: zod.number(),
+  slug: zod.string(),
+  name: zod.string(),
+  category: zod.string(),
+  priceGbp: zod.number().nullish(),
+  shortDescription: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  purity: zod.string().nullish(),
+  coaUrl: zod.string().nullish(),
+  msImageUrl: zod.string().nullish(),
+  isFeatured: zod.boolean().optional(),
+});
+export const ListPublicProductsResponse = zod.array(
+  ListPublicProductsResponseItem,
+);
+
+/**
+ * @summary Get a single published product by slug
+ */
+export const GetPublicProductParams = zod.object({
+  slug: zod.coerce.string(),
+});
+
+export const GetPublicProductResponse = zod.object({
+  id: zod.number(),
+  slug: zod.string(),
+  name: zod.string(),
+  category: zod.string(),
+  priceGbp: zod.number().nullish(),
+  shortDescription: zod.string().nullish(),
+  description: zod.string().nullish(),
+  imageUrl: zod.string().nullish(),
+  purity: zod.string().nullish(),
+  alsoKnownAs: zod.string().nullish(),
+  molecularWeight: zod.string().nullish(),
+  casNumber: zod.string().nullish(),
+  formula: zod.string().nullish(),
+  sequence: zod.string().nullish(),
+  storage: zod.string().nullish(),
+  appearance: zod.string().nullish(),
+  solubility: zod.string().nullish(),
+  halfLife: zod.string().nullish(),
+  coaUrl: zod.string().nullish(),
+  msImageUrl: zod.string().nullish(),
+  isFeatured: zod.boolean().optional(),
+});

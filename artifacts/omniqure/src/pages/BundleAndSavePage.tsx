@@ -1,1 +1,317 @@
-aW1wb3J0IHsgU2hvcHBpbmdDYXJ0LCBUYWcsIFphcCwgQ2hldnJvblJpZ2h0LCBDaGVja0NpcmNsZTIsIFBhY2thZ2UsIFBlcmNlbnQgfSBmcm9tICJsdWNpZGUtcmVhY3QiOwppbXBvcnQgeyBMaW5rIH0gZnJvbSAid291dGVyIjsKaW1wb3J0IHsgdXNlU0VPIH0gZnJvbSAiQC9ob29rcy91c2VTRU8iOwoKY29uc3QgVElFUlMgPSBbCiAgewogICAgcXR5OiAiMy00IiwKICAgIGZyZWViaWU6ICJGcmVlIEJBQyBXYXRlciIsCiAgICBsYWJlbDogIlN0YXJ0ZXIgQnVuZGxlIiwKICAgIGNvbG9yOiAiIzFCNUNCNSIsCiAgICBiZzogImxpbmVhci1ncmFkaWVudCgxMzVkZWcsICNFRUY0RkYsICNEQkVBRkUpIiwKICAgIGJvcmRlcjogIiNCRkRCRkUiLAogICAgYmFkZ2U6ICIiLAogICAgZGVzYzogIkEgZ3JlYXQgc3RhcnRpbmcgcG9pbnQg4oCUIHRyeSB0aHJlZSBvciBmb3VyIGRpZmZlcmVudCBwZXB0aWRlcyBhbmQgd2UnbGwgaW5jbHVkZSBhIGZyZWUgMTBtbCBiYWN0ZXJpb3N0YXRpYyB3YXRlci4iLAogIH0sCiAgewogICAgcXR5OiAiNS05IiwKICAgIGZyZWViaWU6ICIxIFBlcHRpZGUgRnJlZSIsCiAgICBsYWJlbDogIlJlc2VhcmNoIEJ1bmRsZSIsCiAgICBjb2xvcjogIiM3QzNBRUQiLAogICAgYmc6ICJsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjRjVGM0ZGLCAjRURFOUZFKSIsCiAgICBib3JkZXI6ICIjRERENkZFIiwKICAgIGJhZGdlOiAiUG9wdWxhciIsCiAgICBkZXNjOiAiQnVpbGQgb3V0IHlvdXIgcHJvdG9jb2wgc3RhY2sgd2l0aCBmaXZlIHRvIG5pbmUgY29tcG91bmRzIGFuZCB0aGUgY2hlYXBlc3Qgb25lIGluIHlvdXIgY2FydCBpcyBvbiB1cy4iLAogIH0sCiAgewogICAgcXR5OiAiMTArIiwKICAgIGZyZWViaWU6ICIyIFBlcHRpZGVzIEZyZWUiLAogICAgbGFiZWw6ICJJbnN0aXR1dGUgQnVuZGxlIiwKICAgIGNvbG9yOiAiIzA1OTY2OSIsCiAgICBiZzogImxpbmVhci1ncmFkaWVudCgxMzVkZWcsICNFQ0ZERjUsICNEMUZBRTUpIiwKICAgIGJvcmRlcjogIiM2RUU3QjciLAogICAgYmFkZ2U6ICJCZXN0IFZhbHVlIiwKICAgIGRlc2M6ICJNYXhpbXVtIHRpZXIg4oCUIHRoZSAyIGNoZWFwZXN0IHBlcHRpZGVzIGluIHlvdXIgY2FydCBhcmUgZnJlZS4gUmVzZXJ2ZWQgZm9yIG91ciBoaWdoZXN0LXZvbHVtZSByZXNlYXJjaGVycy4iLAogIH0sCl07Cgpjb25zdCBIT1dfSVRfV09SS1MgPSBbCiAgewogICAgaWNvbjogPFNob3BwaW5nQ2FydCBzaXplPXsyMH0gY29sb3I9IiNmZmYiIC8+LAogICAgYmc6ICJsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjMTI0MEEwLCAjMUI1Q0I1KSIsCiAgICB0aXRsZTogIkFkZCBwZXB0aWRlcyB0byB5b3VyIGNhcnQiLAogICAgZGVzYzogIkJyb3dzZSBvdXIgY2F0YWxvZ3VlIG9mIDgxIHZlcmlmaWVkIGNvbXBvdW5kcyBhbmQgYWRkIGFueSBjb21iaW5hdGlvbiB0byB5b3VyIGNhcnQuIiwKICB9LAogIHsKICAgIGljb246IDxUYWcgc2l6ZT17MjB9IGNvbG9yPSIjZmZmIiAvPiwKICAgIGJnOiAibGluZWFyLWdyYWRpZW50KDEzNWRlZywgIzdDM0FFRCwgI0E4NTVGNykiLAogICAgdGl0bGU6ICJEaXNjb3VudCBhcHBsaWVzIGF1dG9tYXRpY2FsbHkiLAogICAgZGVzYzogIk9uY2UgeW91IGhpdCBhIHRpZXIgdGhyZXNob2xkLCB0aGUgZGlzY291bnQgaXMgY2FsY3VsYXRlZCBhbmQgc2hvd24gaW4geW91ciBjYXJ0IOKAlCBubyBjb2RlIG5lZWRlZC4iLAogIH0sCiAgewogICAgaWNvbjogPFBhY2thZ2Ugc2l6ZT17MjB9IGNvbG9yPSIjZmZmIiAvPiwKICAgIGJnOiAibGluZWFyLWdyYWRpZW50KDEzNWRlZywgIzA1OTY2OSwgIzEwQjk4MSkiLAogICAgdGl0bGU6ICJDaGVja291dCAmIHNhdmUiLAogICAgZGVzYzogIkNvbXBsZXRlIHlvdXIgb3JkZXIgYXQgdGhlIGRpc2NvdW50ZWQgcHJpY2UuIEJ1bmRsZSBzYXZpbmdzIHN0YWNrIG9uIHRvcCBvZiBhbnkgc2FsZSBwcmljaW5nLiIsCiAgfSwKXTsKCmNvbnN0IEVYQU1QTEVTID0gWwogIHsgbGFiZWw6ICIzIMOXIEJQQy0xNTcgNW1nIiwgZnJlZWJpZTogIkZyZWUgMTBtbCBCQUMgd2F0ZXIiLCBzYXZpbmc6IDguOTkgfSwKICB7IGxhYmVsOiAiNSDDlyBNaXhlZCBncm93dGggc3RhY2siLCBmcmVlYmllOiAiQ2hlYXBlc3QgcGVwdGlkZSBmcmVlIiwgc2F2aW5nOiA2MCB9LAogIHsgbGFiZWw6ICIxMCDDlyBGdWxsIHJlc2VhcmNoIHBhbmVsIiwgZnJlZWJpZTogIjIgY2hlYXBlc3QgcGVwdGlkZXMgZnJlZSIsIHNhdmluZzogMTIwIH0sCl07CgpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBCdW5kbGVBbmRTYXZlUGFnZSgpIHsKICB1c2VTRU8oewogICAgdGl0bGU6ICJCdW5kbGUgJiBTYXZlIiwKICAgIGRlc2NyaXB0aW9uOiAiR2V0IGZyZWUgaXRlbXMgd2hlbiB5b3Ugb3JkZXIgbXVsdGlwbGUgcGVwdGlkZXMg4oCUIGZyZWUgQkFDIHdhdGVyIGF0IDMtNCwgYSBmcmVlIHBlcHRpZGUgYXQgNS05LCBhbmQgMiBmcmVlIHBlcHRpZGVzIGF0IDEwKy4gQXBwbGllZCBhdXRvbWF0aWNhbGx5IOKAlCBubyBjb2RlcyByZXF1aXJlZCwgYW5kIHRpZXJzIGRvbid0IHN0YWNrLiIsCiAgICBjYW5vbmljYWxQYXRoOiAiL2J1bmRsZS1hbmQtc2F2ZSIsCiAgfSk7CgogIHJldHVybiAoCiAgICA8ZGl2IHN0eWxlPXt7IGZvbnRGYW1pbHk6ICInQXJpbW8nLCBBcmlhbCwgc2Fucy1zZXJpZiIsIGJhY2tncm91bmRDb2xvcjogIiNGNUY4RkMiLCBtaW5IZWlnaHQ6ICIxMDB2aCIgfX0+CgogICAgICB7LyogSGVybyAqL30KICAgICAgPGRpdiBzdHlsZT17ewogICAgICAgIGJhY2tncm91bmQ6ICJsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjMEQyNTY1IDAlLCAjMTI0MEEwIDQ1JSwgIzFCNUNCNSA4MCUsICMxRTY4Q0MgMTAwJSkiLAogICAgICAgIHBhZGRpbmc6ICI2NHB4IDIwcHggNTZweCIsCiAgICAgICAgcG9zaXRpb246ICJyZWxhdGl2ZSIsIG92ZXJmbG93OiAiaGlkZGVuIiwKICAgICAgfX0+CiAgICAgICAgPGRpdiBzdHlsZT17ewogICAgICAgICAgcG9zaXRpb246ICJhYnNvbHV0ZSIsIGluc2V0OiAwLAogICAgICAgICAgYmFja2dyb3VuZEltYWdlOiAicmFkaWFsLWdyYWRpZW50KGNpcmNsZSBhdCAxcHggMXB4LCByZ2JhKDI1NSwyNTUsMjU1LDAuMDYpIDFweCwgdHJhbnNwYXJlbnQgMCkiLAogICAgICAgICAgYmFja2dyb3VuZFNpemU6ICIyOHB4IDI4cHgiLCBwb2ludGVyRXZlbnRzOiAibm9uZSIsCiAgICAgICAgfX0gLz4KICAgICAgICA8ZGl2IHN0eWxlPXt7IG1heFdpZHRoOiAiNzIwcHgiLCBtYXJnaW46ICIwIGF1dG8iLCB0ZXh0QWxpZ246ICJjZW50ZXIiLCBwb3NpdGlvbjogInJlbGF0aXZlIiwgekluZGV4OiAxIH19PgogICAgICAgICAgPGRpdiBzdHlsZT17ewogICAgICAgICAgICBkaXNwbGF5OiAiaW5saW5lLWZsZXgiLCBhbGlnbkl0ZW1zOiAiY2VudGVyIiwgZ2FwOiA4LAogICAgICAgICAgICBiYWNrZ3JvdW5kOiAicmdiYSgyNTUsMjU1LDI1NSwwLjEyKSIsIGJvcmRlclJhZGl1czogOTk5OSwKICAgICAgICAgICAgcGFkZGluZzogIjZweCAxOHB4IiwgbWFyZ2luQm90dG9tOiAyMCwKICAgICAgICAgIH19PgogICAgICAgICAgICA8UGVyY2VudCBzaXplPXsxNH0gY29sb3I9InJnYmEoMjU1LDI1NSwyNTUsMC44NSkiIC8+CiAgICAgICAgICAgIDxzcGFuIHN0eWxlPXt7IGZvbnRTaXplOiAxMiwgZm9udFdlaWdodDogNzAwLCBjb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC44NSkiLCBsZXR0ZXJTcGFjaW5nOiAiMC4wNmVtIiB9fT4KICAgICAgICAgICAgICBWT0xVTUUgRElTQ09VTlRTCiAgICAgICAgICAgIDwvc3Bhbj4KICAgICAgICAgIDwvZGl2PgogICAgICAgICAgPGgxIHN0eWxlPXt7CiAgICAgICAgICAgIGZvbnRTaXplOiAiY2xhbXAoMjhweCwgNXZ3LCA1MnB4KSIsIGZvbnRXZWlnaHQ6IDkwMCwgY29sb3I6ICIjZmZmIiwKICAgICAgICAgICAgbGV0dGVyU3BhY2luZzogIi0wLjAzZW0iLCBsaW5lSGVpZ2h0OiAxLjA4LCBtYXJnaW46ICIwIDAgMTZweCIsCiAgICAgICAgICB9fT4KICAgICAgICAgICAgVGhlIE1vcmUgWW91IFJlc2VhcmNoLDxiciAvPgogICAgICAgICAgICA8c3BhbiBzdHlsZT17eyBjb2xvcjogIiNFOEE5M0UiIH19PlRoZSBNb3JlIFlvdSBTYXZlPC9zcGFuPgogICAgICAgICAgPC9oMT4KICAgICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAxNywgY29sb3I6ICJyZ2JhKDI1NSwyNTUsMjU1LDAuNzUpIiwgbGluZUhlaWdodDogMS42NSwgbWF4V2lkdGg6IDU0MCwgbWFyZ2luOiAiMCBhdXRvIDMycHgiIH19PgogICAgICAgICAgICBBZGQgMyBvciBtb3JlIHBlcHRpZGVzIHRvIHlvdXIgY2FydCBhbmQgZnJlZSBpdGVtcyBhcHBseSBhdXRvbWF0aWNhbGx5IOKAlCB1cCB0byA8c3Ryb25nIHN0eWxlPXt7IGNvbG9yOiAiI2ZmZiIgfX0+MiBmcmVlIHBlcHRpZGVzPC9zdHJvbmc+IG9uIHlvdXIgb3JkZXIuCiAgICAgICAgICA8L3A+CiAgICAgICAgICA8TGluawogICAgICAgICAgICBocmVmPSIvYWxsLXBlcHRpZGVzIgogICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgIGRpc3BsYXk6ICJpbmxpbmUtZmxleCIsIGFsaWduSXRlbXM6ICJjZW50ZXIiLCBnYXA6IDgsCiAgICAgICAgICAgICAgYmFja2dyb3VuZDogIiNFOEE5M0UiLCBjb2xvcjogIiMwRDI1NjUiLAogICAgICAgICAgICAgIHBhZGRpbmc6ICIxNHB4IDMycHgiLCBib3JkZXJSYWRpdXM6IDEyLCBmb250V2VpZ2h0OiA4MDAsIGZvbnRTaXplOiAxNSwKICAgICAgICAgICAgICB0ZXh0RGVjb3JhdGlvbjogIm5vbmUiLCBib3hTaGFkb3c6ICIwIDRweCAxNnB4IHJnYmEoMjMyLDE2OSw2MiwwLjQpIiwKICAgICAgICAgICAgfX0KICAgICAgICAgID4KICAgICAgICAgICAgU2hvcCBBbGwgUGVwdGlkZXMgPENoZXZyb25SaWdodCBzaXplPXsxNn0gLz4KICAgICAgICAgIDwvTGluaz4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CgogICAgICB7LyogVGllciBjYXJkcyAqL30KICAgICAgPGRpdiBzdHlsZT17eyBwYWRkaW5nOiAiNTZweCAyMHB4IiB9fT4KICAgICAgICA8ZGl2IHN0eWxlPXt7IG1heFdpZHRoOiAxMDAwLCBtYXJnaW46ICIwIGF1dG8iIH19PgogICAgICAgICAgPGgyIHN0eWxlPXt7IGZvbnRTaXplOiAiY2xhbXAoMjBweCwzdncsMzBweCkiLCBmb250V2VpZ2h0OiA5MDAsIGNvbG9yOiAiIzBEMjU2NSIsIHRleHRBbGlnbjogImNlbnRlciIsIG1hcmdpbkJvdHRvbTogOCB9fT4KICAgICAgICAgICAgRnJlZS1JdGVtIFRpZXJzCiAgICAgICAgICA8L2gyPgogICAgICAgICAgPHAgc3R5bGU9e3sgZm9udFNpemU6IDE1LCBjb2xvcjogIiM2NDc0OEIiLCB0ZXh0QWxpZ246ICJjZW50ZXIiLCBtYXJnaW5Cb3R0b206IDQwIH19PgogICAgICAgICAgICBGcmVlIGl0ZW1zIGFwcGx5IGF1dG9tYXRpY2FsbHkgYXQgY2hlY2tvdXQg4oCUIG5vIGNvdXBvbiBjb2RlcyByZXF1aXJlZC4KICAgICAgICAgIDwvcD4KCiAgICAgICAgICA8ZGl2IHN0eWxlPXt7IGRpc3BsYXk6ICJncmlkIiwgZ3JpZFRlbXBsYXRlQ29sdW1uczogInJlcGVhdChhdXRvLWZpdCwgbWlubWF4KDIxMHB4LCAxZnIpKSIsIGdhcDogMTYgfX0+CiAgICAgICAgICAgIHtUSUVSUy5tYXAodGllciA9PiAoCiAgICAgICAgICAgICAgPGRpdiBrZXk9e3RpZXIucXR5fSBzdHlsZT17ewogICAgICAgICAgICAgICAgYm9yZGVyUmFkaXVzOiAxOCwgcGFkZGluZzogIjI4cHggMjJweCIsCiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kOiB0aWVyLmJnLCBib3JkZXI6IGAxLjVweCBzb2xpZCAke3RpZXIuYm9yZGVyfWAsCiAgICAgICAgICAgICAgICBwb3NpdGlvbjogInJlbGF0aXZlIiwgb3ZlcmZsb3c6ICJoaWRkZW4iLAogICAgICAgICAgICAgIH19PgogICAgICAgICAgICAgICAge3RpZXIuYmFkZ2UgJiYgKAogICAgICAgICAgICAgICAgICA8c3BhbiBzdHlsZT17ewogICAgICAgICAgICAgICAgICAgIHBvc2l0aW9uOiAiYWJzb2x1dGUiLCB0b3A6IDE0LCByaWdodDogMTQsCiAgICAgICAgICAgICAgICAgICAgZm9udFNpemU6IDkuNSwgZm9udFdlaWdodDogODAwLCBsZXR0ZXJTcGFjaW5nOiAiMC4wNWVtIiwKICAgICAgICAgICAgICAgICAgICB0ZXh0VHJhbnNmb3JtOiAidXBwZXJjYXNlIiwgY29sb3I6ICIjZmZmIiwKICAgICAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kOiB0aWVyLmNvbG9yLCBib3JkZXJSYWRpdXM6IDk5OTksIHBhZGRpbmc6ICIzcHggOXB4IiwKICAgICAgICAgICAgICAgICAgICBib3hTaGFkb3c6ICIwIDJweCA4cHggcmdiYSgwLDAsMCwwLjE4KSIsCiAgICAgICAgICAgICAgICAgIH19PgogICAgICAgICAgICAgICAgICAgIHt0aWVyLmJhZGdlfQogICAgICAgICAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICAgICAgICApfQoKICAgICAgICAgICAgICAgIDxkaXYgc3R5bGU9e3sKICAgICAgICAgICAgICAgICAgZm9udFNpemU6IDI2LCBmb250V2VpZ2h0OiA5MDAsIGNvbG9yOiB0aWVyLmNvbG9yLAogICAgICAgICAgICAgICAgICBsaW5lSGVpZ2h0OiAxLjE1LCBtYXJnaW5Cb3R0b206IDQsCiAgICAgICAgICAgICAgICB9fT4KICAgICAgICAgICAgICAgICAge3RpZXIuZnJlZWJpZX0KICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICAgICAgPGRpdiBzdHlsZT17eyBmb250U2l6ZTogMTEsIGZvbnRXZWlnaHQ6IDcwMCwgY29sb3I6IHRpZXIuY29sb3IsIHRleHRUcmFuc2Zvcm06ICJ1cHBlcmNhc2UiLCBsZXR0ZXJTcGFjaW5nOiAiMC4wNmVtIiwgbWFyZ2luQm90dG9tOiA4IH19PgogICAgICAgICAgICAgICAgICBhdCB7dGllci5xdHl9IGl0ZW1zCiAgICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAxMy41LCBmb250V2VpZ2h0OiA4MDAsIGNvbG9yOiAiIzBGMTcyQSIsIG1hcmdpbjogIjAgMCA4cHgiIH19PgogICAgICAgICAgICAgICAgICB7dGllci5sYWJlbH0KICAgICAgICAgICAgICAgIDwvcD4KICAgICAgICAgICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAxMi41LCBjb2xvcjogIiM0NzU1NjkiLCBsaW5lSGVpZ2h0OiAxLjYsIG1hcmdpbjogMCB9fT4KICAgICAgICAgICAgICAgICAge3RpZXIuZGVzY30KICAgICAgICAgICAgICAgIDwvcD4KICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgKSl9CiAgICAgICAgICA8L2Rpdj4KCiAgICAgICAgICB7LyogUmVmZXJyZWQgY3VzdG9tZXIgbm90ZSAqL30KICAgICAgICAgIDxkaXYgc3R5bGU9e3sKICAgICAgICAgICAgbWFyZ2luVG9wOiAyNCwKICAgICAgICAgICAgYm9yZGVyUmFkaXVzOiAxNCwKICAgICAgICAgICAgcGFkZGluZzogIjE4cHggMjJweCIsCiAgICAgICAgICAgIGJhY2tncm91bmQ6ICJsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjRkZGQkVCLCAjRkVGM0M3KSIsCiAgICAgICAgICAgIGJvcmRlcjogIjEuNXB4IHNvbGlkICNGREU2OEEiLAogICAgICAgICAgICBkaXNwbGF5OiAiZmxleCIsIGdhcDogMTQsIGFsaWduSXRlbXM6ICJmbGV4LXN0YXJ0IiwKICAgICAgICAgIH19PgogICAgICAgICAgICA8c3BhbiBzdHlsZT17eyBmb250U2l6ZTogMjIsIGZsZXhTaHJpbms6IDAsIGxpbmVIZWlnaHQ6IDEgfX0+8J+SoTwvc3Bhbj4KICAgICAgICAgICAgPGRpdj4KICAgICAgICAgICAgICA8cCBzdHlsZT17eyBmb250U2l6ZTogMTMuNSwgZm9udFdlaWdodDogODAwLCBjb2xvcjogIiM5MjQwMEUiLCBtYXJnaW46ICIwIDAgNHB4IiB9fT4KICAgICAgICAgICAgICAgIE5vdGUgZm9yIHJlZmVycmVkIGN1c3RvbWVycwogICAgICAgICAgICAgIDwvcD4KICAgICAgICAgICAgICA8cCBzdHlsZT17eyBmb250U2l6ZTogMTMsIGNvbG9yOiAiIzc4MzUwRiIsIGxpbmVIZWlnaHQ6IDEuNjUsIG1hcmdpbjogMCB9fT4KICAgICAgICAgICAgICAgIElmIHlvdSBhcnJpdmVkIHZpYSBhIHJlZmVycmFsIGxpbmssIHlvdXIgZmlyc3Qgb3JkZXIgc3RpbGwgcmVjZWl2ZXMgdGhlIDxzdHJvbmc+MTAlIHJlZmVycmFsIGRpc2NvdW50PC9zdHJvbmc+IOKAlCBhbmQgQnVuZGxlICYgU2F2ZSBmcmVlIGl0ZW1zIGFwcGx5IG9uIHRvcCwgYXQgZXZlcnkgb3JkZXIsIHdpdGggbm8gZXhjZXB0aW9ucy4gSGl0IDMtNCBpdGVtcyBmb3IgYSBmcmVlIEJBQyB3YXRlciwgNS05IGZvciBhIGZyZWUgcGVwdGlkZSwgb3IgMTArIGZvciAyIGZyZWUgcGVwdGlkZXMg4oCUIG9uZSByZXdhcmQgcGVyIG9yZGVyLCBiYXNlZCBvbiB0aGF0IG9yZGVyJ3Mgb3duIHRpZXIuCiAgICAgICAgICAgICAgPC9wPgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgIDwvZGl2PgogICAgICAgIDwvZGl2PgogICAgICA8L2Rpdj4KCiAgICAgIHsvKiBIb3cgaXQgd29ya3MgKi99CiAgICAgIDxkaXYgc3R5bGU9e3sgYmFja2dyb3VuZDogIiNmZmYiLCBwYWRkaW5nOiAiNTZweCAyMHB4IiB9fT4KICAgICAgICA8ZGl2IHN0eWxlPXt7IG1heFdpZHRoOiA4NjAsIG1hcmdpbjogIjAgYXV0byIgfX0+CiAgICAgICAgICA8aDIgc3R5bGU9e3sgZm9udFNpemU6ICJjbGFtcCgyMHB4LDN2dywyOHB4KSIsIGZvbnRXZWlnaHQ6IDkwMCwgY29sb3I6ICIjMEQyNTY1IiwgdGV4dEFsaWduOiAiY2VudGVyIiwgbWFyZ2luQm90dG9tOiA4IH19PgogICAgICAgICAgICBIb3cgSXQgV29ya3MKICAgICAgICAgIDwvaDI+CiAgICAgICAgICA8cCBzdHlsZT17eyBmb250U2l6ZTogMTUsIGNvbG9yOiAiIzY0NzQ4QiIsIHRleHRBbGlnbjogImNlbnRlciIsIG1hcmdpbkJvdHRvbTogNDAgfX0+CiAgICAgICAgICAgIE5vIGVmZm9ydCByZXF1aXJlZCDigJQganVzdCBzaG9wIGFuZCBzYXZlLgogICAgICAgICAgPC9wPgogICAgICAgICAgPGRpdiBzdHlsZT17eyBkaXNwbGF5OiAiZ3JpZCIsIGdyaWRUZW1wbGF0ZUNvbHVtbnM6ICJyZXBlYXQoYXV0by1maXQsIG1pbm1heCgyMjBweCwgMWZyKSkiLCBnYXA6IDIwIH19PgogICAgICAgICAgICB7SE9XX0lUX1dPUktTLm1hcCgocywgaSkgPT4gKAogICAgICAgICAgICAgIDxkaXYga2V5PXtpfSBzdHlsZT17ewogICAgICAgICAgICAgICAgYm9yZGVyUmFkaXVzOiAxNiwgcGFkZGluZzogIjI4cHggMjJweCIsCiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kOiAiI0Y4RkFGRiIsIGJvcmRlcjogIjFweCBzb2xpZCAjRThFREY1IiwKICAgICAgICAgICAgICB9fT4KICAgICAgICAgICAgICAgIDxzcGFuIHN0eWxlPXt7CiAgICAgICAgICAgICAgICAgIHdpZHRoOiA0NCwgaGVpZ2h0OiA0NCwgYm9yZGVyUmFkaXVzOiAxMiwKICAgICAgICAgICAgICAgICAgYmFja2dyb3VuZDogcy5iZywgZGlzcGxheTogImlubGluZS1mbGV4IiwKICAgICAgICAgICAgICAgICAgYWxpZ25JdGVtczogImNlbnRlciIsIGp1c3RpZnlDb250ZW50OiAiY2VudGVyIiwKICAgICAgICAgICAgICAgICAgbWFyZ2luQm90dG9tOiAxNiwgYm94U2hhZG93OiAiMCA0cHggMTRweCByZ2JhKDE4LDY0LDE2MCwwLjIpIiwKICAgICAgICAgICAgICAgIH19PgogICAgICAgICAgICAgICAgICB7cy5pY29ufQogICAgICAgICAgICAgICAgPC9zcGFuPgogICAgICAgICAgICAgICAgPHAgc3R5bGU9e3sgZm9udFNpemU6IDE1LCBmb250V2VpZ2h0OiA4MDAsIGNvbG9yOiAiIzBGMTcyQSIsIG1hcmdpbjogIjAgMCA4cHgiIH19PgogICAgICAgICAgICAgICAgICB7cy50aXRsZX0KICAgICAgICAgICAgICAgIDwvcD4KICAgICAgICAgICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAxMy41LCBjb2xvcjogIiM2NDc0OEIiLCBsaW5lSGVpZ2h0OiAxLjY1LCBtYXJnaW46IDAgfX0+CiAgICAgICAgICAgICAgICAgIHtzLmRlc2N9CiAgICAgICAgICAgICAgICA8L3A+CiAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICkpfQogICAgICAgICAgPC9kaXY+CiAgICAgICAgPC9kaXY+CiAgICAgIDwvZGl2PgoKICAgICAgey8qIFNhdmluZ3MgZXhhbXBsZXMgKi99CiAgICAgIDxkaXYgc3R5bGU9e3sgYmFja2dyb3VuZDogIiNGNUY4RkMiLCBwYWRkaW5nOiAiNTZweCAyMHB4IiB9fT4KICAgICAgICA8ZGl2IHN0eWxlPXt7IG1heFdpZHRoOiA2ODAsIG1hcmdpbjogIjAgYXV0byIgfX0+CiAgICAgICAgICA8aDIgc3R5bGU9e3sgZm9udFNpemU6ICJjbGFtcCgyMHB4LDN2dywyOHB4KSIsIGZvbnRXZWlnaHQ6IDkwMCwgY29sb3I6ICIjMEQyNTY1IiwgdGV4dEFsaWduOiAiY2VudGVyIiwgbWFyZ2luQm90dG9tOiAzNiB9fT4KICAgICAgICAgICAgRXhhbXBsZSBTYXZpbmdzCiAgICAgICAgICA8L2gyPgogICAgICAgICAgPGRpdiBzdHlsZT17eyBkaXNwbGF5OiAiZmxleCIsIGZsZXhEaXJlY3Rpb246ICJjb2x1bW4iLCBnYXA6IDEyIH19PgogICAgICAgICAgICB7RVhBTVBMRVMubWFwKChleCwgaSkgPT4gKAogICAgICAgICAgICAgIDxkaXYga2V5PXtpfSBzdHlsZT17ewogICAgICAgICAgICAgICAgYmFja2dyb3VuZDogIiNmZmYiLCBib3JkZXJSYWRpdXM6IDE0LCBwYWRkaW5nOiAiMThweCAyMnB4IiwKICAgICAgICAgICAgICAgIGJvcmRlcjogIjFweCBzb2xpZCAjRThFREY1IiwgYm94U2hhZG93OiAiMCAycHggOHB4IHJnYmEoMTUsMjMsNDIsMC4wNSkiLAogICAgICAgICAgICAgICAgZGlzcGxheTogImZsZXgiLCBhbGlnbkl0ZW1zOiAiY2VudGVyIiwganVzdGlmeUNvbnRlbnQ6ICJzcGFjZS1iZXR3ZWVuIiwgZmxleFdyYXA6ICJ3cmFwIiwgZ2FwOiAxMiwKICAgICAgICAgICAgICB9fT4KICAgICAgICAgICAgICAgIDxkaXY+CiAgICAgICAgICAgICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAxNCwgZm9udFdlaWdodDogNzAwLCBjb2xvcjogIiMwRjE3MkEiLCBtYXJnaW46ICIwIDAgMnB4IiB9fT57ZXgubGFiZWx9PC9wPgogICAgICAgICAgICAgICAgICA8cCBzdHlsZT17eyBmb250U2l6ZTogMTIsIGNvbG9yOiAiIzk0QTNCOCIsIG1hcmdpbjogMCB9fT4KICAgICAgICAgICAgICAgICAgICB7ZXguZnJlZWJpZX0KICAgICAgICAgICAgICAgICAgPC9wPgogICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICA8c3BhbiBzdHlsZT17ewogICAgICAgICAgICAgICAgICBmb250U2l6ZTogMTQsIGZvbnRXZWlnaHQ6IDkwMCwgY29sb3I6ICIjZmZmIiwKICAgICAgICAgICAgICAgICAgYmFja2dyb3VuZDogImxpbmVhci1ncmFkaWVudCgxMzVkZWcsICMwNTk2NjksICMxMEI5ODEpIiwKICAgICAgICAgICAgICAgICAgYm9yZGVyUmFkaXVzOiA5OTk5LCBwYWRkaW5nOiAiNXB4IDE0cHgiLAogICAgICAgICAgICAgICAgICBib3hTaGFkb3c6ICIwIDJweCA4cHggcmdiYSg1LDE1MCwxMDUsMC4yOCkiLAogICAgICAgICAgICAgICAgICB3aGl0ZVNwYWNlOiAibm93cmFwIiwKICAgICAgICAgICAgICAgIH19PgogICAgICAgICAgICAgICAgICBXb3J0aCDCo3tleC5zYXZpbmcudG9GaXhlZCgyKX0KICAgICAgICAgICAgICAgIDwvc3Bhbj4KICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgKSl9CiAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CgogICAgICB7LyogRmVhdHVyZXMgbGlzdCAqL30KICAgICAgPGRpdiBzdHlsZT17eyBiYWNrZ3JvdW5kOiAiI2ZmZiIsIHBhZGRpbmc6ICI0OHB4IDIwcHgiIH19PgogICAgICAgIDxkaXYgc3R5bGU9e3sgbWF4V2lkdGg6IDY4MCwgbWFyZ2luOiAiMCBhdXRvIiB9fT4KICAgICAgICAgIDxoMiBzdHlsZT17eyBmb250U2l6ZTogImNsYW1wKDE4cHgsMi41dncsMjRweCkiLCBmb250V2VpZ2h0OiA5MDAsIGNvbG9yOiAiIzBEMjU2NSIsIHRleHRBbGlnbjogImNlbnRlciIsIG1hcmdpbkJvdHRvbTogMjggfX0+CiAgICAgICAgICAgIFdoeSBCdW5kbGU/CiAgICAgICAgICA8L2gyPgogICAgICAgICAgPGRpdiBzdHlsZT17eyBkaXNwbGF5OiAiZ3JpZCIsIGdyaWRUZW1wbGF0ZUNvbHVtbnM6ICJyZXBlYXQoYXV0by1maXQsIG1pbm1heCgyMDBweCwgMWZyKSkiLCBnYXA6IDEyIH19PgogICAgICAgICAgICB7WwogICAgICAgICAgICAgICJObyBjb3Vwb24gY29kZXMgbmVlZGVkIiwKICAgICAgICAgICAgICAiU3RhY2tzIHdpdGggc2FsZSBwcmljaW5nIiwKICAgICAgICAgICAgICAiQW55IHBlcHRpZGUgY29tYmluYXRpb24iLAogICAgICAgICAgICAgICJBcHBsaWVzIGF0IGNoZWNrb3V0IGluc3RhbnRseSIsCiAgICAgICAgICAgICAgIk1peCBjYXRlZ29yaWVzIGZyZWVseSIsCiAgICAgICAgICAgICAgIk5vIG1pbmltdW0gb3JkZXIgdmFsdWUiLAogICAgICAgICAgICBdLm1hcChmID0+ICgKICAgICAgICAgICAgICA8ZGl2IGtleT17Zn0gc3R5bGU9e3sKICAgICAgICAgICAgICAgIGRpc3BsYXk6ICJmbGV4IiwgYWxpZ25JdGVtczogImNlbnRlciIsIGdhcDogMTAsCiAgICAgICAgICAgICAgICBwYWRkaW5nOiAiMTRweCAxNnB4IiwgYm9yZGVyUmFkaXVzOiAxMCwKICAgICAgICAgICAgICAgIGJhY2tncm91bmQ6ICIjRjhGQUZGIiwgYm9yZGVyOiAiMXB4IHNvbGlkICNFOEVERjUiLAogICAgICAgICAgICAgIH19PgogICAgICAgICAgICAgICAgPENoZWNrQ2lyY2xlMiBzaXplPXsxNn0gc3R5bGU9e3sgY29sb3I6ICIjMDU5NjY5IiwgZmxleFNocmluazogMCB9fSAvPgogICAgICAgICAgICAgICAgPHNwYW4gc3R5bGU9e3sgZm9udFNpemU6IDEzLjUsIGZvbnRXZWlnaHQ6IDYwMCwgY29sb3I6ICIjMEYxNzJBIiB9fT57Zn08L3NwYW4+CiAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICkpfQogICAgICAgICAgPC9kaXY+CiAgICAgICAgPC9kaXY+CiAgICAgIDwvZGl2PgoKICAgICAgey8qIENUQSAqL30KICAgICAgPGRpdiBzdHlsZT17ewogICAgICAgIGJhY2tncm91bmQ6ICJsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjMEQyNTY1IDAlLCAjMTI0MEEwIDUwJSwgIzFCNUNCNSAxMDAlKSIsCiAgICAgICAgcGFkZGluZzogIjU2cHggMjBweCIsCiAgICAgIH19PgogICAgICAgIDxkaXYgc3R5bGU9e3sgbWF4V2lkdGg6IDU2MCwgbWFyZ2luOiAiMCBhdXRvIiwgdGV4dEFsaWduOiAiY2VudGVyIiB9fT4KICAgICAgICAgIDxaYXAgc2l6ZT17MzZ9IGNvbG9yPSIjRThBOTNFIiBzdHlsZT17eyBtYXJnaW5Cb3R0b206IDE2IH19IC8+CiAgICAgICAgICA8aDIgc3R5bGU9e3sgZm9udFNpemU6ICJjbGFtcCgyMnB4LDN2dywzMnB4KSIsIGZvbnRXZWlnaHQ6IDkwMCwgY29sb3I6ICIjZmZmIiwgbWFyZ2luQm90dG9tOiAxMiB9fT4KICAgICAgICAgICAgUmVhZHkgdG8gc3RhcnQgYnVuZGxpbmc/CiAgICAgICAgICA8L2gyPgogICAgICAgICAgPHAgc3R5bGU9e3sgZm9udFNpemU6IDE2LCBjb2xvcjogInJnYmEoMjU1LDI1NSwyNTUsMC43NSkiLCBtYXJnaW5Cb3R0b206IDI4LCBsaW5lSGVpZ2h0OiAxLjYgfX0+CiAgICAgICAgICAgIEJyb3dzZSBhbGwgODEgdmVyaWZpZWQgcGVwdGlkZXMgYW5kIGJ1aWxkIHlvdXIgcmVzZWFyY2ggc3RhY2suIERpc2NvdW50cyBraWNrIGluIGF1dG9tYXRpY2FsbHkuCiAgICAgICAgICA8L3A+CiAgICAgICAgICA8TGluawogICAgICAgICAgICBocmVmPSIvYWxsLXBlcHRpZGVzIgogICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgIGRpc3BsYXk6ICJpbmxpbmUtZmxleCIsIGFsaWduSXRlbXM6ICJjZW50ZXIiLCBnYXA6IDgsCiAgICAgICAgICAgICAgYmFja2dyb3VuZDogIiNFOEE5M0UiLCBjb2xvcjogIiMwRDI1NjUiLAogICAgICAgICAgICAgIHBhZGRpbmc6ICIxNHB4IDMycHgiLCBib3JkZXJSYWRpdXM6IDEyLCBmb250V2VpZ2h0OiA4MDAsIGZvbnRTaXplOiAxNSwKICAgICAgICAgICAgICB0ZXh0RGVjb3JhdGlvbjogIm5vbmUiLCBib3hTaGFkb3c6ICIwIDRweCAxNnB4IHJnYmEoMjMyLDE2OSw2MiwwLjQpIiwKICAgICAgICAgICAgfX0KICAgICAgICAgID4KICAgICAgICAgICAgU2hvcCBBbGwgUGVwdGlkZXMgPENoZXZyb25SaWdodCBzaXplPXsxNn0gLz4KICAgICAgICAgIDwvTGluaz4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CgogICAgPC9kaXY+CiAgKTsKfQo=
+import { ShoppingCart, Tag, Zap, ChevronRight, CheckCircle2, Package, Percent } from "lucide-react";
+import { Link } from "wouter";
+import { useSEO } from "@/hooks/useSEO";
+
+const TIERS = [
+  {
+    qty: "3-4",
+    freebie: "Free BAC Water",
+    label: "Starter Bundle",
+    color: "#1B5CB5",
+    bg: "linear-gradient(135deg, #EEF4FF, #DBEAFE)",
+    border: "#BFDBFE",
+    badge: "",
+    desc: "A great starting point — try three or four different peptides and we'll include a free 10ml bacteriostatic water.",
+  },
+  {
+    qty: "5-9",
+    freebie: "1 Peptide Free",
+    label: "Research Bundle",
+    color: "#7C3AED",
+    bg: "linear-gradient(135deg, #F5F3FF, #EDE9FE)",
+    border: "#DDD6FE",
+    badge: "Popular",
+    desc: "Build out your protocol stack with five to nine compounds and the cheapest one in your cart is on us.",
+  },
+  {
+    qty: "10+",
+    freebie: "2 Peptides Free",
+    label: "Institute Bundle",
+    color: "#059669",
+    bg: "linear-gradient(135deg, #ECFDF5, #D1FAE5)",
+    border: "#6EE7B7",
+    badge: "Best Value",
+    desc: "Maximum tier — the 2 cheapest peptides in your cart are free. Reserved for our highest-volume researchers.",
+  },
+];
+
+const HOW_IT_WORKS = [
+  {
+    icon: <ShoppingCart size={20} color="#fff" />,
+    bg: "linear-gradient(135deg, #1240A0, #1B5CB5)",
+    title: "Add peptides to your cart",
+    desc: "Browse our catalogue of 81 verified compounds and add any combination to your cart.",
+  },
+  {
+    icon: <Tag size={20} color="#fff" />,
+    bg: "linear-gradient(135deg, #7C3AED, #A855F7)",
+    title: "Discount applies automatically",
+    desc: "Once you hit a tier threshold, the discount is calculated and shown in your cart — no code needed.",
+  },
+  {
+    icon: <Package size={20} color="#fff" />,
+    bg: "linear-gradient(135deg, #059669, #10B981)",
+    title: "Checkout & save",
+    desc: "Complete your order at the discounted price. Bundle savings stack on top of any sale pricing.",
+  },
+];
+
+const EXAMPLES = [
+  { label: "3 × BPC-157 5mg", freebie: "Free 10ml BAC water", saving: 8.99 },
+  { label: "5 × Mixed growth stack", freebie: "Cheapest peptide free", saving: 60 },
+  { label: "10 × Full research panel", freebie: "2 cheapest peptides free", saving: 120 },
+];
+
+export default function BundleAndSavePage() {
+  useSEO({
+    title: "Bundle & Save",
+    description: "Get free items when you order multiple peptides — free BAC water at 3-4, a free peptide at 5-9, and 2 free peptides at 10+. Applied automatically — no codes required, and tiers don't stack.",
+    canonicalPath: "/bundle-and-save",
+  });
+
+  return (
+    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
+
+      {/* Hero */}
+      <div style={{
+        background: "linear-gradient(135deg, #0D2565 0%, #1240A0 45%, #1B5CB5 80%, #1E68CC 100%)",
+        padding: "64px 20px 56px",
+        position: "relative", overflow: "hidden",
+      }}>
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)",
+          backgroundSize: "28px 28px", pointerEvents: "none",
+        }} />
+        <div style={{ maxWidth: "720px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            background: "rgba(255,255,255,0.12)", borderRadius: 9999,
+            padding: "6px 18px", marginBottom: 20,
+          }}>
+            <Percent size={14} color="rgba(255,255,255,0.85)" />
+            <span style={{ fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.85)", letterSpacing: "0.06em" }}>
+              VOLUME DISCOUNTS
+            </span>
+          </div>
+          <h1 style={{
+            fontSize: "clamp(28px, 5vw, 52px)", fontWeight: 900, color: "#fff",
+            letterSpacing: "-0.03em", lineHeight: 1.08, margin: "0 0 16px",
+          }}>
+            The More You Research,<br />
+            <span style={{ color: "#E8A93E" }}>The More You Save</span>
+          </h1>
+          <p style={{ fontSize: 17, color: "rgba(255,255,255,0.75)", lineHeight: 1.65, maxWidth: 540, margin: "0 auto 32px" }}>
+            Add 3 or more peptides to your cart and free items apply automatically — up to <strong style={{ color: "#fff" }}>2 free peptides</strong> on your order.
+          </p>
+          <Link
+            href="/all-peptides"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              background: "#E8A93E", color: "#0D2565",
+              padding: "14px 32px", borderRadius: 12, fontWeight: 800, fontSize: 15,
+              textDecoration: "none", boxShadow: "0 4px 16px rgba(232,169,62,0.4)",
+            }}
+          >
+            Shop All Peptides <ChevronRight size={16} />
+          </Link>
+        </div>
+      </div>
+
+      {/* Tier cards */}
+      <div style={{ padding: "56px 20px" }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+          <h2 style={{ fontSize: "clamp(20px,3vw,30px)", fontWeight: 900, color: "#0D2565", textAlign: "center", marginBottom: 8 }}>
+            Free-Item Tiers
+          </h2>
+          <p style={{ fontSize: 15, color: "#64748B", textAlign: "center", marginBottom: 40 }}>
+            Free items apply automatically at checkout — no coupon codes required.
+          </p>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 16 }}>
+            {TIERS.map(tier => (
+              <div key={tier.qty} style={{
+                borderRadius: 18, padding: "28px 22px",
+                background: tier.bg, border: `1.5px solid ${tier.border}`,
+                position: "relative", overflow: "hidden",
+              }}>
+                {tier.badge && (
+                  <span style={{
+                    position: "absolute", top: 14, right: 14,
+                    fontSize: 9.5, fontWeight: 800, letterSpacing: "0.05em",
+                    textTransform: "uppercase", color: "#fff",
+                    background: tier.color, borderRadius: 9999, padding: "3px 9px",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.18)",
+                  }}>
+                    {tier.badge}
+                  </span>
+                )}
+
+                <div style={{
+                  fontSize: 26, fontWeight: 900, color: tier.color,
+                  lineHeight: 1.15, marginBottom: 4,
+                }}>
+                  {tier.freebie}
+                </div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: tier.color, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
+                  at {tier.qty} items
+                </div>
+                <p style={{ fontSize: 13.5, fontWeight: 800, color: "#0F172A", margin: "0 0 8px" }}>
+                  {tier.label}
+                </p>
+                <p style={{ fontSize: 12.5, color: "#475569", lineHeight: 1.6, margin: 0 }}>
+                  {tier.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Referred customer note */}
+          <div style={{
+            marginTop: 24,
+            borderRadius: 14,
+            padding: "18px 22px",
+            background: "linear-gradient(135deg, #FFFBEB, #FEF3C7)",
+            border: "1.5px solid #FDE68A",
+            display: "flex", gap: 14, alignItems: "flex-start",
+          }}>
+            <span style={{ fontSize: 22, flexShrink: 0, lineHeight: 1 }}>💡</span>
+            <div>
+              <p style={{ fontSize: 13.5, fontWeight: 800, color: "#92400E", margin: "0 0 4px" }}>
+                Note for referred customers
+              </p>
+              <p style={{ fontSize: 13, color: "#78350F", lineHeight: 1.65, margin: 0 }}>
+                If you arrived via a referral link, your first order still receives the <strong>10% referral discount</strong> — and Bundle & Save free items apply on top, at every order, with no exceptions. Hit 3-4 items for a free BAC water, 5-9 for a free peptide, or 10+ for 2 free peptides — one reward per order, based on that order's own tier.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* How it works */}
+      <div style={{ background: "#fff", padding: "56px 20px" }}>
+        <div style={{ maxWidth: 860, margin: "0 auto" }}>
+          <h2 style={{ fontSize: "clamp(20px,3vw,28px)", fontWeight: 900, color: "#0D2565", textAlign: "center", marginBottom: 8 }}>
+            How It Works
+          </h2>
+          <p style={{ fontSize: 15, color: "#64748B", textAlign: "center", marginBottom: 40 }}>
+            No effort required — just shop and save.
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20 }}>
+            {HOW_IT_WORKS.map((s, i) => (
+              <div key={i} style={{
+                borderRadius: 16, padding: "28px 22px",
+                background: "#F8FAFF", border: "1px solid #E8EDF5",
+              }}>
+                <span style={{
+                  width: 44, height: 44, borderRadius: 12,
+                  background: s.bg, display: "inline-flex",
+                  alignItems: "center", justifyContent: "center",
+                  marginBottom: 16, boxShadow: "0 4px 14px rgba(18,64,160,0.2)",
+                }}>
+                  {s.icon}
+                </span>
+                <p style={{ fontSize: 15, fontWeight: 800, color: "#0F172A", margin: "0 0 8px" }}>
+                  {s.title}
+                </p>
+                <p style={{ fontSize: 13.5, color: "#64748B", lineHeight: 1.65, margin: 0 }}>
+                  {s.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Savings examples */}
+      <div style={{ background: "#F5F8FC", padding: "56px 20px" }}>
+        <div style={{ maxWidth: 680, margin: "0 auto" }}>
+          <h2 style={{ fontSize: "clamp(20px,3vw,28px)", fontWeight: 900, color: "#0D2565", textAlign: "center", marginBottom: 36 }}>
+            Example Savings
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {EXAMPLES.map((ex, i) => (
+              <div key={i} style={{
+                background: "#fff", borderRadius: 14, padding: "18px 22px",
+                border: "1px solid #E8EDF5", boxShadow: "0 2px 8px rgba(15,23,42,0.05)",
+                display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12,
+              }}>
+                <div>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: "#0F172A", margin: "0 0 2px" }}>{ex.label}</p>
+                  <p style={{ fontSize: 12, color: "#94A3B8", margin: 0 }}>
+                    {ex.freebie}
+                  </p>
+                </div>
+                <span style={{
+                  fontSize: 14, fontWeight: 900, color: "#fff",
+                  background: "linear-gradient(135deg, #059669, #10B981)",
+                  borderRadius: 9999, padding: "5px 14px",
+                  boxShadow: "0 2px 8px rgba(5,150,105,0.28)",
+                  whiteSpace: "nowrap",
+                }}>
+                  Worth £{ex.saving.toFixed(2)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Features list */}
+      <div style={{ background: "#fff", padding: "48px 20px" }}>
+        <div style={{ maxWidth: 680, margin: "0 auto" }}>
+          <h2 style={{ fontSize: "clamp(18px,2.5vw,24px)", fontWeight: 900, color: "#0D2565", textAlign: "center", marginBottom: 28 }}>
+            Why Bundle?
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
+            {[
+              "No coupon codes needed",
+              "Stacks with sale pricing",
+              "Any peptide combination",
+              "Applies at checkout instantly",
+              "Mix categories freely",
+              "No minimum order value",
+            ].map(f => (
+              <div key={f} style={{
+                display: "flex", alignItems: "center", gap: 10,
+                padding: "14px 16px", borderRadius: 10,
+                background: "#F8FAFF", border: "1px solid #E8EDF5",
+              }}>
+                <CheckCircle2 size={16} style={{ color: "#059669", flexShrink: 0 }} />
+                <span style={{ fontSize: 13.5, fontWeight: 600, color: "#0F172A" }}>{f}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{
+        background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)",
+        padding: "56px 20px",
+      }}>
+        <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
+          <Zap size={36} color="#E8A93E" style={{ marginBottom: 16 }} />
+          <h2 style={{ fontSize: "clamp(22px,3vw,32px)", fontWeight: 900, color: "#fff", marginBottom: 12 }}>
+            Ready to start bundling?
+          </h2>
+          <p style={{ fontSize: 16, color: "rgba(255,255,255,0.75)", marginBottom: 28, lineHeight: 1.6 }}>
+            Browse all 81 verified peptides and build your research stack. Discounts kick in automatically.
+          </p>
+          <Link
+            href="/all-peptides"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              background: "#E8A93E", color: "#0D2565",
+              padding: "14px 32px", borderRadius: 12, fontWeight: 800, fontSize: 15,
+              textDecoration: "none", boxShadow: "0 4px 16px rgba(232,169,62,0.4)",
+            }}
+          >
+            Shop All Peptides <ChevronRight size={16} />
+          </Link>
+        </div>
+      </div>
+
+    </div>
+  );
+}

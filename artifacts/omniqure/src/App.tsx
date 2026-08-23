@@ -1,1 +1,168 @@
-aW1wb3J0IHsgU3dpdGNoLCBSb3V0ZSwgUm91dGVyIGFzIFdvdXRlclJvdXRlciwgdXNlTG9jYXRpb24gfSBmcm9tICJ3b3V0ZXIiOwppbXBvcnQgeyBsYXp5LCBTdXNwZW5zZSwgdXNlRWZmZWN0LCB1c2VTdGF0ZSB9IGZyb20gInJlYWN0IjsKaW1wb3J0IHsgUXVlcnlDbGllbnQsIFF1ZXJ5Q2xpZW50UHJvdmlkZXIgfSBmcm9tICJAdGFuc3RhY2svcmVhY3QtcXVlcnkiOwppbXBvcnQgeyBUb2FzdGVyIH0gZnJvbSAiQC9jb21wb25lbnRzL3VpL3RvYXN0ZXIiOwppbXBvcnQgeyBUb29sdGlwUHJvdmlkZXIgfSBmcm9tICJAL2NvbXBvbmVudHMvdWkvdG9vbHRpcCI7CmltcG9ydCBIZWFkZXIgZnJvbSAiQC9jb21wb25lbnRzL0hlYWRlciI7CmltcG9ydCBGb290ZXIgZnJvbSAiQC9jb21wb25lbnRzL0Zvb3RlciI7CmltcG9ydCBBbm5vdW5jZW1lbnRCYXIgZnJvbSAiQC9jb21wb25lbnRzL0Fubm91bmNlbWVudEJhciI7CmltcG9ydCB7IENvb2tpZUNvbnNlbnQgfSBmcm9tICJAL2NvbXBvbmVudHMvQ29va2llQ29uc2VudCI7CmltcG9ydCB7IE92ZXJsYXlDb29yZGluYXRvclByb3ZpZGVyIH0gZnJvbSAiQC9jb250ZXh0L092ZXJsYXlDb29yZGluYXRvckNvbnRleHQiOwppbXBvcnQgeyBDYXJ0UHJvdmlkZXIgfSBmcm9tICJAL2NvbnRleHQvQ2FydENvbnRleHQiOwppbXBvcnQgeyBDdXJyZW5jeVByb3ZpZGVyIH0gZnJvbSAiQC9jb250ZXh0L0N1cnJlbmN5Q29udGV4dCI7CmltcG9ydCB7IFJlY2VudGx5Vmlld2VkUHJvdmlkZXIgfSBmcm9tICJAL2NvbnRleHQvUmVjZW50bHlWaWV3ZWRDb250ZXh0IjsKaW1wb3J0IHsgUHJvZHVjdHNQcm92aWRlciB9IGZyb20gIkAvY29udGV4dC9Qcm9kdWN0c0NvbnRleHQiOwppbXBvcnQgeyBDdXN0b21lckF1dGhQcm92aWRlciB9IGZyb20gIkAvY29udGV4dC9DdXN0b21lckF1dGhDb250ZXh0IjsKaW1wb3J0IHsgV2lzaGxpc3RQcm92aWRlciB9IGZyb20gIkAvY29udGV4dC9XaXNobGlzdENvbnRleHQiOwppbXBvcnQgSnVyaXNkaWN0aW9uV2FybmluZyBmcm9tICJAL2NvbXBvbmVudHMvSnVyaXNkaWN0aW9uV2FybmluZyI7CmltcG9ydCBBZ2VHYXRlIGZyb20gIkAvY29tcG9uZW50cy9BZ2VHYXRlIjsKaW1wb3J0IE1vYmlsZUJvdHRvbUJhciBmcm9tICJAL2NvbXBvbmVudHMvTW9iaWxlQm90dG9tQmFyIjsKaW1wb3J0IENhcnRQcmV2aWV3UGFuZWwgZnJvbSAiQC9jb21wb25lbnRzL0NhcnRQcmV2aWV3UGFuZWwiOwppbXBvcnQgU2l0ZURpc2NsYWltZXIgZnJvbSAiQC9jb21wb25lbnRzL1NpdGVEaXNjbGFpbWVyIjsKaW1wb3J0IHsgaW5pdFBpeGVscyB9IGZyb20gIkAvbGliL3BpeGVscyI7CmltcG9ydCB7IHVzZVBhZ2VUcmFja2luZyB9IGZyb20gIkAvaG9va3MvdXNlUGFnZVRyYWNraW5nIjsKCi8vIExhenktbG9hZGVkIHBhZ2VzIOKAlCBlYWNoIGJlY29tZXMgaXRzIG93biBKUyBjaHVuaywgbG9hZGVkIG9ubHkgd2hlbiB2aXNpdGVkCmNvbnN0IEhvbWVQYWdlICAgICAgICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvSG9tZVBhZ2UiKSk7CmNvbnN0IEFsbFBlcHRpZGVzICAgICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvQWxsUGVwdGlkZXMiKSk7CmNvbnN0IFByb2R1Y3RQYWdlICAgICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvUHJvZHVjdFBhZ2UiKSk7CmNvbnN0IFN0YWNrc1BhZ2UgICAgICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvU3RhY2tzUGFnZSIpKTsKY29uc3QgUmVjb25zdGl0dXRpb25DYWxjdWxhdG9yID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvUmVjb25zdGl0dXRpb25DYWxjdWxhdG9yIikpOwpjb25zdCBUZXJtc1BhZ2UgICAgICAgICAgICA9IGxhenkoKCkgPT4gaW1wb3J0KCJAL3BhZ2VzL1Rlcm1zUGFnZSIpKTsKY29uc3QgU2hpcHBpbmdQYWdlICAgICAgICAgPSBsYXp5KCgpID0+IGltcG9ydCgiQC9wYWdlcy9TaGlwcGluZ1BhZ2UiKSk7CmNvbnN0IFByaXZhY3lQYWdlICAgICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvUHJpdmFjeVBhZ2UiKSk7CmNvbnN0IENhcnRQYWdlICAgICAgICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvQ2FydFBhZ2UiKSk7CmNvbnN0IENoZWNrb3V0UGFnZSAgICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvQ2hlY2tvdXRQYWdlIikpOwpjb25zdCBPcmRlckNvbmZpcm1hdGlvbiAgICA9IGxhenkoKCkgPT4gaW1wb3J0KCJAL3BhZ2VzL09yZGVyQ29uZmlybWF0aW9uIikpOwpjb25zdCBXYWxsaWRSZXR1cm4gICAgICAgICA9IGxhenkoKCkgPT4gaW1wb3J0KCJAL3BhZ2VzL1dhbGxpZFJldHVybiIpKTsKY29uc3QgQ29udGludWVQYXltZW50ICAgICAgPSBsYXp5KCgpID0+IGltcG9ydCgiQC9wYWdlcy9Db250aW51ZVBheW1lbnQiKSk7CmNvbnN0IFRyYWNrT3JkZXJQYWdlICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvVHJhY2tPcmRlclBhZ2UiKSk7CmNvbnN0IFNpZ25JbiAgICAgICAgICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvU2lnbkluIikpOwpjb25zdCBGb3Jnb3RQYXNzd29yZCAgICAgICA9IGxhenkoKCkgPT4gaW1wb3J0KCJAL3BhZ2VzL0ZvcmdvdFBhc3N3b3JkIikpOwpjb25zdCBSZXNldFBhc3N3b3JkICAgICAgICA9IGxhenkoKCkgPT4gaW1wb3J0KCJAL3BhZ2VzL1Jlc2V0UGFzc3dvcmQiKSk7CmNvbnN0IFJlZ2lzdGVyICAgICAgICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvUmVnaXN0ZXIiKSk7CmNvbnN0IEFjY291bnRQYWdlICAgICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvQWNjb3VudFBhZ2UiKSk7CmNvbnN0IFdpc2hsaXN0UGFnZSAgICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvV2lzaGxpc3RQYWdlIikpOwpjb25zdCBQcm90b2NvbHNQYWdlICAgICAgICA9IGxhenkoKCkgPT4gaW1wb3J0KCJAL3BhZ2VzL1Byb3RvY29sc1BhZ2UiKSk7CmNvbnN0IEZBUVBhZ2UgICAgICAgICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvRkFRUGFnZSIpKTsKY29uc3QgR2xvc3NhcnlQYWdlICAgICAgICAgPSBsYXp5KCgpID0+IGltcG9ydCgiQC9wYWdlcy9HbG9zc2FyeVBhZ2UiKSk7CmNvbnN0IExhYlRlc3RzUGFnZSAgICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvTGFiVGVzdHNQYWdlIikpOwpjb25zdCBMYWJSZXBvcnRzUGFnZSAgICAgICA9IGxhenkoKCkgPT4gaW1wb3J0KCJAL3BhZ2VzL0xhYlJlcG9ydHNQYWdlIikpOwpjb25zdCBCYWNXYXRlclBhZ2UgICAgICAgICA9IGxhenkoKCkgPT4gaW1wb3J0KCJAL3BhZ2VzL0JhY1dhdGVyUGFnZSIpKTsKY29uc3QgQWJvdXRQYWdlICAgICAgICAgICAgPSBsYXp5KCgpID0+IGltcG9ydCgiQC9wYWdlcy9BYm91dFBhZ2UiKSk7CmNvbnN0IFJlZmVyQUZyaWVuZFBhZ2UgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvUmVmZXJBRnJpZW5kUGFnZSIpKTsKY29uc3QgQnVuZGxlQW5kU2F2ZVBhZ2UgICAgPSBsYXp5KCgpID0+IGltcG9ydCgiQC9wYWdlcy9CdW5kbGVBbmRTYXZlUGFnZSIpKTsKY29uc3QgU3RvcmFnZUd1aWRlUGFnZSAgICAgPSBsYXp5KCgpID0+IGltcG9ydCgiQC9wYWdlcy9TdG9yYWdlR3VpZGVQYWdlIikpOwpjb25zdCBSZXNlYXJjaFJlc3VsdHNQYWdlICA9IGxhenkoKCkgPT4gaW1wb3J0KCJAL3BhZ2VzL1Jlc2VhcmNoUmVzdWx0c1BhZ2UiKSk7CmNvbnN0IENvbnRhY3RQYWdlICAgICAgICAgID0gbGF6eSgoKSA9PiBpbXBvcnQoIkAvcGFnZXMvQ29udGFjdFBhZ2UiKSk7CmNvbnN0IENoYXRXaWRnZXQgICAgICAgICAgICA9IGxhenkoKCkgPT4gaW1wb3J0KCJAL2NvbXBvbmVudHMvQ2hhdFdpZGdldCIpKTsKY29uc3QgTm90Rm91bmQgICAgICAgICAgICAgPSBsYXp5KCgpID0+IGltcG9ydCgiQC9wYWdlcy9ub3QtZm91bmQiKSk7Cgpjb25zdCBxdWVyeUNsaWVudCA9IG5ldyBRdWVyeUNsaWVudCgpOwoKZnVuY3Rpb24gU2Nyb2xsVG9Ub3AoKSB7CiAgY29uc3QgW2xvY2F0aW9uXSA9IHVzZUxvY2F0aW9uKCk7CiAgdXNlRWZmZWN0KCgpID0+IHsKICAgIHdpbmRvdy5zY3JvbGxUbygwLCAwKTsKICB9LCBbbG9jYXRpb25dKTsKICByZXR1cm4gbnVsbDsKfQoKZnVuY3Rpb24gUGl4ZWxUcmFja2VyKCkgewogIHVzZUVmZmVjdCgoKSA9PiB7IGluaXRQaXhlbHMoKTsgfSwgW10pOwogIHVzZVBhZ2VUcmFja2luZygpOwogIHJldHVybiBudWxsOwp9CgoKZnVuY3Rpb24gUm91dGVyKCkgewogIHJldHVybiAoCiAgICA8U3dpdGNoPgogICAgICA8Um91dGUgcGF0aD0iLyIgY29tcG9uZW50PXtIb21lUGFnZX0gLz4KICAgICAgPFJvdXRlIHBhdGg9Ii9hbGwtcGVwdGlkZXMiIGNvbXBvbmVudD17QWxsUGVwdGlkZXN9IC8+CiAgICAgIDxSb3V0ZSBwYXRoPSIvcHJvZHVjdC86aWQiIGNvbXBvbmVudD17UHJvZHVjdFBhZ2V9IC8+CiAgICAgIDxSb3V0ZSBwYXRoPSIvc3RhY2tzIiBjb21wb25lbnQ9e1N0YWNrc1BhZ2V9IC8+CiAgICAgIDxSb3V0ZSBwYXRoPSIvY2FsY3VsYXRvciIgY29tcG9uZW50PXtSZWNvbnN0aXR1dGlvbkNhbGN1bGF0b3J9IC8+CiAgICAgIDxSb3V0ZSBwYXRoPSIvY29udGFjdCIgY29tcG9uZW50PXtDb250YWN0UGFnZX0gLz4KICAgICAgPFJvdXRlIHBhdGg9Ii9zaWduLWluIiBjb21wb25lbnQ9e1NpZ25Jbn0gLz4KICAgICAgPFJvdXRlIHBhdGg9Ii9mb3Jnb3QtcGFzc3dvcmQiIGNvbXBvbmVudD17Rm9yZ290UGFzc3dvcmR9IC8+CiAgICAgIDxSb3V0ZSBwYXRoPSIvcmVzZXQtcGFzc3dvcmQiIGNvbXBvbmVudD17UmVzZXRQYXNzd29yZH0gLz4KICAgICAgPFJvdXRlIHBhdGg9Ii9yZWdpc3RlciIgY29tcG9uZW50PXtSZWdpc3Rlcn0gLz4KICAgICAgPFJvdXRlIHBhdGg9Ii9hY2NvdW50IiBjb21wb25lbnQ9e0FjY291bnRQYWdlfSAvPgogICAgICA8Um91dGUgcGF0aD0iL2NhcnQiIGNvbXBvbmVudD17Q2FydFBhZ2V9IC8+CiAgICAgIDxSb3V0ZSBwYXRoPSIvY2hlY2tvdXQiIGNvbXBvbmVudD17Q2hlY2tvdXRQYWdlfSAvPgogICAgICA8Um91dGUgcGF0aD0iL29yZGVyLWNvbmZpcm1hdGlvbiIgY29tcG9uZW50PXtPcmRlckNvbmZpcm1hdGlvbn0gLz4KICAgICAgPFJvdXRlIHBhdGg9Ii93YWxsaWQtcmV0dXJuIiBjb21wb25lbnQ9e1dhbGxpZFJldHVybn0gLz4KICAgICAgPFJvdXRlIHBhdGg9Ii9jb250aW51ZS1wYXltZW50IiBjb21wb25lbnQ9e0NvbnRpbnVlUGF5bWVudH0gLz4KICAgICAgPFJvdXRlIHBhdGg9Ii90cmFjay1vcmRlciIgY29tcG9uZW50PXtUcmFja09yZGVyUGFnZX0gLz4KICAgICAgPFJvdXRlIHBhdGg9Ii93aXNobGlzdCIgY29tcG9uZW50PXtXaXNobGlzdFBhZ2V9IC8+CiAgICAgIDxSb3V0ZSBwYXRoPSIvcHJvdG9jb2xzIiBjb21wb25lbnQ9e1Byb3RvY29sc1BhZ2V9IC8+CiAgICAgIDxSb3V0ZSBwYXRoPSIvZmFxIiBjb21wb25lbnQ9e0ZBUVBhZ2V9IC8+CiAgICAgIDxSb3V0ZSBwYXRoPSIvZ2xvc3NhcnkiIGNvbXBvbmVudD17R2xvc3NhcnlQYWdlfSAvPgogICAgICA8Um91dGUgcGF0aD0iL2xhYi10ZXN0cyIgY29tcG9uZW50PXtMYWJUZXN0c1BhZ2V9IC8+CiAgICAgIDxSb3V0ZSBwYXRoPSIvbGFiLXJlcG9ydHMiIGNvbXBvbmVudD17TGFiUmVwb3J0c1BhZ2V9IC8+CiAgICAgIDxSb3V0ZSBwYXRoPSIvYmFjLXdhdGVyIiBjb21wb25lbnQ9e0JhY1dhdGVyUGFnZX0gLz4KICAgICAgPFJvdXRlIHBhdGg9Ii90ZXJtcyIgY29tcG9uZW50PXtUZXJtc1BhZ2V9IC8+CiAgICAgIDxSb3V0ZSBwYXRoPSIvc2hpcHBpbmciIGNvbXBvbmVudD17U2hpcHBpbmdQYWdlfSAvPgogICAgICA8Um91dGUgcGF0aD0iL3ByaXZhY3kiIGNvbXBvbmVudD17UHJpdmFjeVBhZ2V9IC8+CiAgICAgIDxSb3V0ZSBwYXRoPSIvYWJvdXQiIGNvbXBvbmVudD17QWJvdXRQYWdlfSAvPgogICAgICA8Um91dGUgcGF0aD0iL3JlZmVyLWEtZnJpZW5kIiBjb21wb25lbnQ9e1JlZmVyQUZyaWVuZFBhZ2V9IC8+CiAgICAgIDxSb3V0ZSBwYXRoPSIvYnVuZGxlLWFuZC1zYXZlIiBjb21wb25lbnQ9e0J1bmRsZUFuZFNhdmVQYWdlfSAvPgogICAgICA8Um91dGUgcGF0aD0iL3N0b3JhZ2UtZ3VpZGUiIGNvbXBvbmVudD17U3RvcmFnZUd1aWRlUGFnZX0gLz4KICAgICAgPFJvdXRlIHBhdGg9Ii9yZXNlYXJjaC1yZXN1bHRzIiBjb21wb25lbnQ9e1Jlc2VhcmNoUmVzdWx0c1BhZ2V9IC8+CiAgICAgIDxSb3V0ZSBjb21wb25lbnQ9e05vdEZvdW5kfSAvPgogICAgPC9Td2l0Y2g+CiAgKTsKfQoKZnVuY3Rpb24gQXBwKCkgewogIC8vIFdoZW4gYSBqdXJpc2RpY3Rpb24gY29tcGxpYW5jZSBiYW5uZXIgaXMgYWN0aXZlIGZvciB0aGUgdmlzaXRvcidzIGNvdW50cnksCiAgLy8gaXQgdGFrZXMgcHJpb3JpdHkgb3ZlciB0aGUgbWFya2V0aW5nIGFubm91bmNlbWVudCBiYXIg4oCUIHNob3dpbmcgYm90aCBhdAogIC8vIG9uY2Ugc3RhY2tzIHR3byBmdWxsLXdpZHRoIGJhcnMgYmFjayB0byBiYWNrIGZvciBubyBhZGRlZCB2YWx1ZS4KICBjb25zdCBbanVyaXNkaWN0aW9uQWN0aXZlLCBzZXRKdXJpc2RpY3Rpb25BY3RpdmVdID0gdXNlU3RhdGUoZmFsc2UpOwoKICByZXR1cm4gKAogICAgPFF1ZXJ5Q2xpZW50UHJvdmlkZXIgY2xpZW50PXtxdWVyeUNsaWVudH0+CiAgICAgIDxUb29sdGlwUHJvdmlkZXI+CiAgICAgICAgPFByb2R1Y3RzUHJvdmlkZXI+CiAgICAgICAgPEN1c3RvbWVyQXV0aFByb3ZpZGVyPgogICAgICAgIDxDdXJyZW5jeVByb3ZpZGVyPgogICAgICAgICAgPFJlY2VudGx5Vmlld2VkUHJvdmlkZXI+CiAgICAgICAgICA8V2lzaGxpc3RQcm92aWRlcj4KICAgICAgICAgIDxDYXJ0UHJvdmlkZXI+CiAgICAgICAgICAgIDxXb3V0ZXJSb3V0ZXIgYmFzZT17aW1wb3J0Lm1ldGEuZW52LkJBU0VfVVJMLnJlcGxhY2UoL1wvJC8sICIiKX0+CiAgICAgICAgICAgICAgPE92ZXJsYXlDb29yZGluYXRvclByb3ZpZGVyPgogICAgICAgICAgICAgIDxTY3JvbGxUb1RvcCAvPgogICAgICAgICAgICAgIDxQaXhlbFRyYWNrZXIgLz4KICAgICAgICAgICAgICA8Q29va2llQ29uc2VudCAvPgogICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJtaW4taC1zY3JlZW4gYmctd2hpdGUgZmxleCBmbGV4LWNvbCI+CiAgICAgICAgICAgICAgICA8QW5ub3VuY2VtZW50QmFyIHN1cHByZXNzZWQ9e2p1cmlzZGljdGlvbkFjdGl2ZX0gLz4KICAgICAgICAgICAgICAgIDxIZWFkZXIgLz4KICAgICAgICAgICAgICAgIDxKdXJpc2RpY3Rpb25XYXJuaW5nIG9uQWN0aXZlQ2hhbmdlPXtzZXRKdXJpc2RpY3Rpb25BY3RpdmV9IC8+CiAgICAgICAgICAgICAgICA8bWFpbiBjbGFzc05hbWU9ImZsZXgtMSI+CiAgICAgICAgICAgICAgICAgIDxTdXNwZW5zZSBmYWxsYmFjaz17bnVsbH0+CiAgICAgICAgICAgICAgICAgICAgPFJvdXRlciAvPgogICAgICAgICAgICAgICAgICA8L1N1c3BlbnNlPgogICAgICAgICAgICAgICAgPC9tYWluPgogICAgICAgICAgICAgICAgPFNpdGVEaXNjbGFpbWVyIC8+CiAgICAgICAgICAgICAgICA8Rm9vdGVyIC8+CiAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgPENhcnRQcmV2aWV3UGFuZWwgLz4KICAgICAgICAgICAgICA8TW9iaWxlQm90dG9tQmFyIC8+CiAgICAgICAgICAgICAgPENoYXRXaWRnZXQgLz4KICAgICAgICAgICAgICA8QWdlR2F0ZSAvPgogICAgICAgICAgICAgIDwvT3ZlcmxheUNvb3JkaW5hdG9yUHJvdmlkZXI+CiAgICAgICAgICAgIDwvV291dGVyUm91dGVyPgogICAgICAgICAgICA8VG9hc3RlciAvPgogICAgICAgICAgPC9DYXJ0UHJvdmlkZXI+CiAgICAgICAgICA8L1dpc2hsaXN0UHJvdmlkZXI+CiAgICAgICAgICA8L1JlY2VudGx5Vmlld2VkUHJvdmlkZXI+CiAgICAgICAgPC9DdXJyZW5jeVByb3ZpZGVyPgogICAgICAgIDwvQ3VzdG9tZXJBdXRoUHJvdmlkZXI+CiAgICAgICAgPC9Qcm9kdWN0c1Byb3ZpZGVyPgogICAgICA8L1Rvb2x0aXBQcm92aWRlcj4KICAgIDwvUXVlcnlDbGllbnRQcm92aWRlcj4KICApOwp9CgpleHBvcnQgZGVmYXVsdCBBcHA7Cg==
+import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
+import { lazy, Suspense, useEffect, useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import AnnouncementBar from "@/components/AnnouncementBar";
+import { CookieConsent } from "@/components/CookieConsent";
+import { OverlayCoordinatorProvider } from "@/context/OverlayCoordinatorContext";
+import { CartProvider } from "@/context/CartContext";
+import { CurrencyProvider } from "@/context/CurrencyContext";
+import { RecentlyViewedProvider } from "@/context/RecentlyViewedContext";
+import { ProductsProvider } from "@/context/ProductsContext";
+import { CustomerAuthProvider } from "@/context/CustomerAuthContext";
+import { WishlistProvider } from "@/context/WishlistContext";
+import JurisdictionWarning from "@/components/JurisdictionWarning";
+import AgeGate from "@/components/AgeGate";
+import MobileBottomBar from "@/components/MobileBottomBar";
+import CartPreviewPanel from "@/components/CartPreviewPanel";
+import SiteDisclaimer from "@/components/SiteDisclaimer";
+import { initPixels } from "@/lib/pixels";
+import { usePageTracking } from "@/hooks/usePageTracking";
+
+// Lazy-loaded pages — each becomes its own JS chunk, loaded only when visited
+const HomePage             = lazy(() => import("@/pages/HomePage"));
+const AllPeptides          = lazy(() => import("@/pages/AllPeptides"));
+const ProductPage          = lazy(() => import("@/pages/ProductPage"));
+const StacksPage           = lazy(() => import("@/pages/StacksPage"));
+const ReconstitutionCalculator = lazy(() => import("@/pages/ReconstitutionCalculator"));
+const TermsPage            = lazy(() => import("@/pages/TermsPage"));
+const ShippingPage         = lazy(() => import("@/pages/ShippingPage"));
+const PrivacyPage          = lazy(() => import("@/pages/PrivacyPage"));
+const CartPage             = lazy(() => import("@/pages/CartPage"));
+const CheckoutPage         = lazy(() => import("@/pages/CheckoutPage"));
+const OrderConfirmation    = lazy(() => import("@/pages/OrderConfirmation"));
+const WallidReturn         = lazy(() => import("@/pages/WallidReturn"));
+const ContinuePayment      = lazy(() => import("@/pages/ContinuePayment"));
+const TrackOrderPage       = lazy(() => import("@/pages/TrackOrderPage"));
+const SignIn               = lazy(() => import("@/pages/SignIn"));
+const ForgotPassword       = lazy(() => import("@/pages/ForgotPassword"));
+const ResetPassword        = lazy(() => import("@/pages/ResetPassword"));
+const Register             = lazy(() => import("@/pages/Register"));
+const AccountPage          = lazy(() => import("@/pages/AccountPage"));
+const WishlistPage         = lazy(() => import("@/pages/WishlistPage"));
+const ProtocolsPage        = lazy(() => import("@/pages/ProtocolsPage"));
+const FAQPage              = lazy(() => import("@/pages/FAQPage"));
+const GlossaryPage         = lazy(() => import("@/pages/GlossaryPage"));
+const LabTestsPage         = lazy(() => import("@/pages/LabTestsPage"));
+const LabReportsPage       = lazy(() => import("@/pages/LabReportsPage"));
+const BacWaterPage         = lazy(() => import("@/pages/BacWaterPage"));
+const AboutPage            = lazy(() => import("@/pages/AboutPage"));
+const ReferAFriendPage     = lazy(() => import("@/pages/ReferAFriendPage"));
+const BundleAndSavePage    = lazy(() => import("@/pages/BundleAndSavePage"));
+const StorageGuidePage     = lazy(() => import("@/pages/StorageGuidePage"));
+const ResearchResultsPage  = lazy(() => import("@/pages/ResearchResultsPage"));
+const ContactPage          = lazy(() => import("@/pages/ContactPage"));
+const ChatWidget            = lazy(() => import("@/components/ChatWidget"));
+const NotFound             = lazy(() => import("@/pages/not-found"));
+
+const queryClient = new QueryClient();
+
+function ScrollToTop() {
+  const [location] = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+  return null;
+}
+
+function PixelTracker() {
+  useEffect(() => { initPixels(); }, []);
+  usePageTracking();
+  return null;
+}
+
+
+function Router() {
+  return (
+    <Switch>
+      <Route path="/" component={HomePage} />
+      <Route path="/all-peptides" component={AllPeptides} />
+      <Route path="/product/:id" component={ProductPage} />
+      <Route path="/stacks" component={StacksPage} />
+      <Route path="/calculator" component={ReconstitutionCalculator} />
+      <Route path="/contact" component={ContactPage} />
+      <Route path="/sign-in" component={SignIn} />
+      <Route path="/forgot-password" component={ForgotPassword} />
+      <Route path="/reset-password" component={ResetPassword} />
+      <Route path="/register" component={Register} />
+      <Route path="/account" component={AccountPage} />
+      <Route path="/cart" component={CartPage} />
+      <Route path="/checkout" component={CheckoutPage} />
+      <Route path="/order-confirmation" component={OrderConfirmation} />
+      <Route path="/wallid-return" component={WallidReturn} />
+      <Route path="/continue-payment" component={ContinuePayment} />
+      <Route path="/track-order" component={TrackOrderPage} />
+      <Route path="/wishlist" component={WishlistPage} />
+      <Route path="/protocols" component={ProtocolsPage} />
+      <Route path="/faq" component={FAQPage} />
+      <Route path="/glossary" component={GlossaryPage} />
+      <Route path="/lab-tests" component={LabTestsPage} />
+      <Route path="/lab-reports" component={LabReportsPage} />
+      <Route path="/bac-water" component={BacWaterPage} />
+      <Route path="/terms" component={TermsPage} />
+      <Route path="/shipping" component={ShippingPage} />
+      <Route path="/privacy" component={PrivacyPage} />
+      <Route path="/about" component={AboutPage} />
+      <Route path="/refer-a-friend" component={ReferAFriendPage} />
+      <Route path="/bundle-and-save" component={BundleAndSavePage} />
+      <Route path="/storage-guide" component={StorageGuidePage} />
+      <Route path="/research-results" component={ResearchResultsPage} />
+      <Route component={NotFound} />
+    </Switch>
+  );
+}
+
+function App() {
+  // When a jurisdiction compliance banner is active for the visitor's country,
+  // it takes priority over the marketing announcement bar — showing both at
+  // once stacks two full-width bars back to back for no added value.
+  const [jurisdictionActive, setJurisdictionActive] = useState(false);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <ProductsProvider>
+        <CustomerAuthProvider>
+        <CurrencyProvider>
+          <RecentlyViewedProvider>
+          <WishlistProvider>
+          <CartProvider>
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+              <OverlayCoordinatorProvider>
+              <ScrollToTop />
+              <PixelTracker />
+              <CookieConsent />
+              <div className="min-h-screen bg-white flex flex-col">
+                <AnnouncementBar suppressed={jurisdictionActive} />
+                <Header />
+                <JurisdictionWarning onActiveChange={setJurisdictionActive} />
+                <main className="flex-1">
+                  <Suspense fallback={null}>
+                    <Router />
+                  </Suspense>
+                </main>
+                <SiteDisclaimer />
+                <Footer />
+              </div>
+              <CartPreviewPanel />
+              <MobileBottomBar />
+              <ChatWidget />
+              <AgeGate />
+              </OverlayCoordinatorProvider>
+            </WouterRouter>
+            <Toaster />
+          </CartProvider>
+          </WishlistProvider>
+          </RecentlyViewedProvider>
+        </CurrencyProvider>
+        </CustomerAuthProvider>
+        </ProductsProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
+
+export default App;

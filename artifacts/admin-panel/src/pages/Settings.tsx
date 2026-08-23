@@ -1,1 +1,158 @@
-aW1wb3J0IHsgdXNlU3RhdGUsIHVzZUVmZmVjdCB9IGZyb20gInJlYWN0IjsKaW1wb3J0IHsgdXNlUXVlcnksIHVzZU11dGF0aW9uLCB1c2VRdWVyeUNsaWVudCB9IGZyb20gIkB0YW5zdGFjay9yZWFjdC1xdWVyeSI7CmltcG9ydCB7IFNhdmUgfSBmcm9tICJsdWNpZGUtcmVhY3QiOwppbXBvcnQgeyBCdXR0b24gfSBmcm9tICJAL2NvbXBvbmVudHMvdWkvYnV0dG9uIjsKaW1wb3J0IHsgSW5wdXQgfSBmcm9tICJAL2NvbXBvbmVudHMvdWkvaW5wdXQiOwppbXBvcnQgeyB1c2VUb2FzdCB9IGZyb20gIkAvaG9va3MvdXNlLXRvYXN0IjsKCmZ1bmN0aW9uIGFwaShwYXRoOiBzdHJpbmcpIHsgcmV0dXJuIGAvYXBpLyR7cGF0aH1gLnJlcGxhY2UoL1wvKy9nLCAiLyIpOyB9Cgp0eXBlIFN0b3JlU2V0dGluZ3MgPSB7CiAgc3RvcmVOYW1lOiBzdHJpbmc7CiAgc3VwcG9ydEVtYWlsOiBzdHJpbmcgfCBudWxsOwogIHN1cHBvcnRQaG9uZTogc3RyaW5nIHwgbnVsbDsKICBjdXJyZW5jeTogc3RyaW5nOwogIG9yZGVyUHJlZml4OiBzdHJpbmc7CiAgYWRkcmVzc0xpbmUxOiBzdHJpbmcgfCBudWxsOwogIGFkZHJlc3NMaW5lMjogc3RyaW5nIHwgbnVsbDsKICBjaXR5OiBzdHJpbmcgfCBudWxsOwogIHBvc3Rjb2RlOiBzdHJpbmcgfCBudWxsOwogIGNvdW50cnk6IHN0cmluZyB8IG51bGw7CiAgYW5ub3VuY2VtZW50QmFubmVyOiBzdHJpbmcgfCBudWxsOwogIG1haW50ZW5hbmNlTW9kZTogYm9vbGVhbjsKICB1cGRhdGVkQXQ6IHN0cmluZzsKfTsKCnR5cGUgRm9ybSA9IHsKICBzdG9yZU5hbWU6IHN0cmluZzsKICBzdXBwb3J0RW1haWw6IHN0cmluZzsKICBzdXBwb3J0UGhvbmU6IHN0cmluZzsKICBjdXJyZW5jeTogc3RyaW5nOwogIG9yZGVyUHJlZml4OiBzdHJpbmc7CiAgYWRkcmVzc0xpbmUxOiBzdHJpbmc7CiAgYWRkcmVzc0xpbmUyOiBzdHJpbmc7CiAgY2l0eTogc3RyaW5nOwogIHBvc3Rjb2RlOiBzdHJpbmc7CiAgY291bnRyeTogc3RyaW5nOwogIGFubm91bmNlbWVudEJhbm5lcjogc3RyaW5nOwogIG1haW50ZW5hbmNlTW9kZTogYm9vbGVhbjsKfTsKCmNvbnN0IEVNUFRZOiBGb3JtID0gewogIHN0b3JlTmFtZTogIiIsIHN1cHBvcnRFbWFpbDogIiIsIHN1cHBvcnRQaG9uZTogIiIsIGN1cnJlbmN5OiAiR0JQIiwgb3JkZXJQcmVmaXg6ICJPUSIsCiAgYWRkcmVzc0xpbmUxOiAiIiwgYWRkcmVzc0xpbmUyOiAiIiwgY2l0eTogIiIsIHBvc3Rjb2RlOiAiIiwgY291bnRyeTogIiIsCiAgYW5ub3VuY2VtZW50QmFubmVyOiAiIiwgbWFpbnRlbmFuY2VNb2RlOiBmYWxzZSwKfTsKCmZ1bmN0aW9uIEZpZWxkKHsgbGFiZWwsIHZhbHVlLCBvbkNoYW5nZSwgcGxhY2Vob2xkZXIgfTogeyBsYWJlbDogc3RyaW5nOyB2YWx1ZTogc3RyaW5nOyBvbkNoYW5nZTogKHY6IHN0cmluZykgPT4gdm9pZDsgcGxhY2Vob2xkZXI/OiBzdHJpbmcgfSkgewogIHJldHVybiAoCiAgICA8ZGl2IGNsYXNzTmFtZT0ic3BhY2UteS0xIj4KICAgICAgPGxhYmVsIGNsYXNzTmFtZT0idGV4dC1zbSBmb250LW1lZGl1bSI+e2xhYmVsfTwvbGFiZWw+CiAgICAgIDxJbnB1dCB2YWx1ZT17dmFsdWV9IHBsYWNlaG9sZGVyPXtwbGFjZWhvbGRlcn0gb25DaGFuZ2U9e2UgPT4gb25DaGFuZ2UoZS50YXJnZXQudmFsdWUpfSAvPgogICAgPC9kaXY+CiAgKTsKfQoKZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gU2V0dGluZ3MoKSB7CiAgY29uc3QgeyB0b2FzdCB9ID0gdXNlVG9hc3QoKTsKICBjb25zdCBxdWVyeUNsaWVudCA9IHVzZVF1ZXJ5Q2xpZW50KCk7CiAgY29uc3QgW2Zvcm0sIHNldEZvcm1dID0gdXNlU3RhdGU8Rm9ybT4oRU1QVFkpOwoKICBjb25zdCB7IGRhdGEsIGlzTG9hZGluZyB9ID0gdXNlUXVlcnk8U3RvcmVTZXR0aW5ncz4oewogICAgcXVlcnlLZXk6IFsic3RvcmUtc2V0dGluZ3MiXSwKICAgIHF1ZXJ5Rm46ICgpID0+IGZldGNoKGFwaSgiYWRtaW4vc2V0dGluZ3MiKSwgeyBjcmVkZW50aWFsczogImluY2x1ZGUiIH0pLnRoZW4ociA9PiB7IGlmICghci5vaykgdGhyb3cgbmV3IEVycm9yKGBIVFRQICR7ci5zdGF0dXN9YCk7IHJldHVybiByLmpzb24oKWFzIFByb21pc2U8U3RvcmVTZXR0aW5ncz47IH0pLAogIH0pOwoKICB1c2VFZmZlY3QoKCkgPT4gewogICAgaWYgKGRhdGEpIHsKICAgICAgc2V0Rm9ybSh7CiAgICAgICAgc3RvcmVOYW1lOiBkYXRhLnN0b3JlTmFtZSA/PyAiIiwKICAgICAgICBzdXBwb3J0RW1haWw6IGRhdGEuc3VwcG9ydEVtYWlsID8/ICIiLAogICAgICAgIHN1cHBvcnRQaG9uZTogZGF0YS5zdXBwb3J0UGhvbmUgPz8gIiIsCiAgICAgICAgY3VycmVuY3k6IGRhdGEuY3VycmVuY3kgPz8gIkdCUCIsCiAgICAgICAgb3JkZXJQcmVmaXg6IGRhdGEub3JkZXJQcmVmaXggPz8gIk9RIiwKICAgICAgICBhZGRyZXNzTGluZTE6IGRhdGEuYWRkcmVzc0xpbmUxID8/ICIiLAogICAgICAgIGFkZHJlc3NMaW5lMjogZGF0YS5hZGRyZXNzTGluZTIgPz8gIiIsCiAgICAgICAgY2l0eTogZGF0YS5jaXR5ID8/ICIiLAogICAgICAgIHBvc3Rjb2RlOiBkYXRhLnBvc3Rjb2RlID8/ICIiLAogICAgICAgIGNvdW50cnk6IGRhdGEuY291bnRyeSA/PyAiIiwKICAgICAgICBhbm5vdW5jZW1lbnRCYW5uZXI6IGRhdGEuYW5ub3VuY2VtZW50QmFubmVyID8/ICIiLAogICAgICAgIG1haW50ZW5hbmNlTW9kZTogZGF0YS5tYWludGVuYW5jZU1vZGUgPz8gZmFsc2UsCiAgICAgIH0pOwogICAgfQogIH0sIFtkYXRhXSk7CgogIGNvbnN0IHNhdmUgPSB1c2VNdXRhdGlvbih7CiAgICBtdXRhdGlvbkZuOiBhc3luYyAoKSA9PiB7CiAgICAgIGNvbnN0IHJlcyA9IGF3YWl0IGZldGNoKGFwaSgiYWRtaW4vc2V0dGluZ3MiKSwgewogICAgICAgIG1ldGhvZDogIlBBVENIIiwKICAgICAgICBjcmVkZW50aWFsczogImluY2x1ZGUiLAogICAgICAgIGhlYWRlcnM6IHsgIkNvbnRlbnQtVHlwZSI6ICJhcHBsaWNhdGlvbi9qc29uIiB9LAogICAgICAgIGJvZHk6IEpTT04uc3RyaW5naWZ5KGZvcm0pLAogICAgICB9KTsKICAgICAgaWYgKCFyZXMub2spIHRocm93IG5ldyBFcnJvcigiRmFpbGVkIik7CiAgICAgIHJldHVybiByZXMuanNvbigpIGFzIFByb21pc2U8U3RvcmVTZXR0aW5ncz47CiAgICB9LAogICAgb25TdWNjZXNzOiAoKSA9PiB7CiAgICAgIHRvYXN0KHsgdGl0bGU6ICJTZXR0aW5ncyBzYXZlZCIgfSk7CiAgICAgIHZvaWQgcXVlcnlDbGllbnQuaW52YWxpZGF0ZVF1ZXJpZXMoeyBxdWVyeUtleTogWyJzdG9yZS1zZXR0aW5ncyJdIH0pOwogICAgfSwKICAgIG9uRXJyb3I6ICgpID0+IHRvYXN0KHsgdGl0bGU6ICJTYXZlIGZhaWxlZCIsIHZhcmlhbnQ6ICJkZXN0cnVjdGl2ZSIgfSksCiAgfSk7CgogIGNvbnN0IHNldCA9IChrOiBrZXlvZiBGb3JtKSA9PiAodjogc3RyaW5nKSA9PiBzZXRGb3JtKGYgPT4gKHsgLi4uZiwgW2tdOiB2IH0pKTsKCiAgaWYgKGlzTG9hZGluZykgewogICAgcmV0dXJuIDxkaXYgY2xhc3NOYW1lPSJwLTEyIHRleHQtY2VudGVyIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+TG9hZGluZ+KApjwvZGl2PjsKICB9CgogIHJldHVybiAoCiAgICA8ZGl2IGNsYXNzTmFtZT0ic3BhY2UteS02IG1heC13LTN4bCI+CiAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWJldHdlZW4iPgogICAgICAgIDxkaXY+CiAgICAgICAgICA8aDIgY2xhc3NOYW1lPSJ0ZXh0LTJ4bCBmb250LWJvbGQgdHJhY2tpbmctdGlnaHQiPlN0b3JlIFNldHRpbmdzPC9oMj4KICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1zbSB0ZXh0LW11dGVkLWZvcmVncm91bmQgbXQtMSI+R2VuZXJhbCBzdG9yZSBjb25maWd1cmF0aW9uIGFuZCBjb250YWN0IGRldGFpbHM8L3A+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPEJ1dHRvbiBvbkNsaWNrPXsoKSA9PiBzYXZlLm11dGF0ZSgpfSBkaXNhYmxlZD17c2F2ZS5pc1BlbmRpbmcgfHwgIWZvcm0uc3RvcmVOYW1lLnRyaW0oKX0+CiAgICAgICAgICA8U2F2ZSBjbGFzc05hbWU9InctNCBoLTQgbXItMiIgLz4ge3NhdmUuaXNQZW5kaW5nID8gIlNhdmluZ+KApiIgOiAiU2F2ZSBDaGFuZ2VzIn0KICAgICAgICA8L0J1dHRvbj4KICAgICAgPC9kaXY+CgogICAgICA8c2VjdGlvbiBjbGFzc05hbWU9InJvdW5kZWQteGwgYm9yZGVyIGJnLWNhcmQgcC02IHNwYWNlLXktNCI+CiAgICAgICAgPGgzIGNsYXNzTmFtZT0iZm9udC1zZW1pYm9sZCI+R2VuZXJhbDwvaDM+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9ImdyaWQgZ3JpZC1jb2xzLTEgc206Z3JpZC1jb2xzLTIgZ2FwLTQiPgogICAgICAgICAgPEZpZWxkIGxhYmVsPSJTdG9yZSBOYW1lIiB2YWx1ZT17Zm9ybS5zdG9yZU5hbWV9IG9uQ2hhbmdlPXtzZXQoInN0b3JlTmFtZSIpfSBwbGFjZWhvbGRlcj0iT21uaVF1cmUiIC8+CiAgICAgICAgICA8RmllbGQgbGFiZWw9IkN1cnJlbmN5IiB2YWx1ZT17Zm9ybS5jdXJyZW5jeX0gb25DaGFuZ2U9e3NldCgiY3VycmVuY3kiKX0gcGxhY2Vob2xkZXI9IkdCUCIgLz4KICAgICAgICAgIDxGaWVsZCBsYWJlbD0iT3JkZXIgTnVtYmVyIFByZWZpeCIgdmFsdWU9e2Zvcm0ub3JkZXJQcmVmaXh9IG9uQ2hhbmdlPXtzZXQoIm9yZGVyUHJlZml4Iil9IHBsYWNlaG9sZGVyPSJPUSIgLz4KICAgICAgICA8L2Rpdj4KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ic3BhY2UteS0xIj4KICAgICAgICAgIDxsYWJlbCBjbGFzc05hbWU9InRleHQtc20gZm9udC1tZWRpdW0iPkFubm91bmNlbWVudCBCYW5uZXI8L2xhYmVsPgogICAgICAgICAgPElucHV0IHZhbHVlPXtmb3JtLmFubm91bmNlbWVudEJhbm5lcn0gcGxhY2Vob2xkZXI9IlNob3duIGFjcm9zcyB0aGUgc3RvcmVmcm9udCAob3B0aW9uYWwpIiBvbkNoYW5nZT17ZSA9PiBzZXQoImFubm91bmNlbWVudEJhbm5lciIpKGUudGFyZ2V0LnZhbHVlKX0gLz4KICAgICAgICA8L2Rpdj4KICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMiB0ZXh0LXNtIGZvbnQtbWVkaXVtIHB0LTEiPgogICAgICAgICAgPGlucHV0IHR5cGU9ImNoZWNrYm94IiBjaGVja2VkPXtmb3JtLm1haW50ZW5hbmNlTW9kZX0gb25DaGFuZ2U9e2UgPT4gc2V0Rm9ybShmID0+ICh7IC4uLmYsIG1haW50ZW5hbmNlTW9kZTogZS50YXJnZXQuY2hlY2tlZCB9KSl9IGNsYXNzTmFtZT0icm91bmRlZCIgLz4KICAgICAgICAgIE1haW50ZW5hbmNlIG1vZGUKICAgICAgICA8L2xhYmVsPgogICAgICA8L3NlY3Rpb24+CgogICAgICA8c2VjdGlvbiBjbGFzc05hbWU9InJvdW5kZWQteGwgYm9yZGVyIGJnLWNhcmQgcC02IHNwYWNlLXktNCI+CiAgICAgICAgPGgzIGNsYXNzTmFtZT0iZm9udC1zZW1pYm9sZCI+Q29udGFjdDwvaDM+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9ImdyaWQgZ3JpZC1jb2xzLTEgc206Z3JpZC1jb2xzLTIgZ2FwLTQiPgogICAgICAgICAgPEZpZWxkIGxhYmVsPSJTdXBwb3J0IEVtYWlsIiB2YWx1ZT17Zm9ybS5zdXBwb3J0RW1haWx9IG9uQ2hhbmdlPXtzZXQoInN1cHBvcnRFbWFpbCIpfSBwbGFjZWhvbGRlcj0ic3VwcG9ydEBvbW5pcXVyZS5jb20iIC8+CiAgICAgICAgICA8RmllbGQgbGFiZWw9IlN1cHBvcnQgUGhvbmUiIHZhbHVlPXtmb3JtLnN1cHBvcnRQaG9uZX0gb25DaGFuZ2U9e3NldCgic3VwcG9ydFBob25lIil9IHBsYWNlaG9sZGVyPSIrNDQg4oCmIiAvPgogICAgICAgIDwvZGl2PgogICAgICA8L3NlY3Rpb24+CgogICAgICA8c2VjdGlvbiBjbGFzc05hbWU9InJvdW5kZWQteGwgYm9yZGVyIGJnLWNhcmQgcC02IHNwYWNlLXktNCI+CiAgICAgICAgPGgzIGNsYXNzTmFtZT0iZm9udC1zZW1pYm9sZCI+QnVzaW5lc3MgQWRkcmVzczwvaDM+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9ImdyaWQgZ3JpZC1jb2xzLTEgc206Z3JpZC1jb2xzLTIgZ2FwLTQiPgogICAgICAgICAgPEZpZWxkIGxhYmVsPSJBZGRyZXNzIExpbmUgMSIgdmFsdWU9e2Zvcm0uYWRkcmVzc0xpbmUxfSBvbkNoYW5nZT17c2V0KCJhZGRyZXNzTGluZTEiKX0gLz4KICAgICAgICAgIDxGaWVsZCBsYWJlbD0iQWRkcmVzcyBMaW5lIDIiIHZhbHVlPXtmb3JtLmFkZHJlc3NMaW5lMn0gb25DaGFuZ2U9e3NldCgiYWRkcmVzc0xpbmUyIil9IC8+CiAgICAgICAgICA8RmllbGQgbGFiZWw9IkNpdHkiIHZhbHVlPXtmb3JtLmNpdHl9IG9uQ2hhbmdlPXtzZXQoImNpdHkiKX0gLz4KICAgICAgICAgIDxGaWVsZCBsYWJlbD0iUG9zdGNvZGUiIHZhbHVlPXtmb3JtLnBvc3Rjb2RlfSBvbkNoYW5nZT17c2V0KCJwb3N0Y29kZSIpfSAvPgogICAgICAgICAgPEZpZWxkIGxhYmVsPSJDb3VudHJ5IiB2YWx1ZT17Zm9ybS5jb3VudHJ5fSBvbkNoYW5nZT17c2V0KCJjb3VudHJ5Iil9IC8+CiAgICAgICAgPC9kaXY+CiAgICAgIDwvc2VjdGlvbj4KICAgIDwvZGl2PgogICk7Cn0K
+import { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Save } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+
+function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
+
+type StoreSettings = {
+  storeName: string;
+  supportEmail: string | null;
+  supportPhone: string | null;
+  currency: string;
+  orderPrefix: string;
+  addressLine1: string | null;
+  addressLine2: string | null;
+  city: string | null;
+  postcode: string | null;
+  country: string | null;
+  announcementBanner: string | null;
+  maintenanceMode: boolean;
+  updatedAt: string;
+};
+
+type Form = {
+  storeName: string;
+  supportEmail: string;
+  supportPhone: string;
+  currency: string;
+  orderPrefix: string;
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  postcode: string;
+  country: string;
+  announcementBanner: string;
+  maintenanceMode: boolean;
+};
+
+const EMPTY: Form = {
+  storeName: "", supportEmail: "", supportPhone: "", currency: "GBP", orderPrefix: "OQ",
+  addressLine1: "", addressLine2: "", city: "", postcode: "", country: "",
+  announcementBanner: "", maintenanceMode: false,
+};
+
+function Field({ label, value, onChange, placeholder }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string }) {
+  return (
+    <div className="space-y-1">
+      <label className="text-sm font-medium">{label}</label>
+      <Input value={value} placeholder={placeholder} onChange={e => onChange(e.target.value)} />
+    </div>
+  );
+}
+
+export default function Settings() {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [form, setForm] = useState<Form>(EMPTY);
+
+  const { data, isLoading } = useQuery<StoreSettings>({
+    queryKey: ["store-settings"],
+    queryFn: () => fetch(api("admin/settings"), { credentials: "include" }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json()as Promise<StoreSettings>; }),
+  });
+
+  useEffect(() => {
+    if (data) {
+      setForm({
+        storeName: data.storeName ?? "",
+        supportEmail: data.supportEmail ?? "",
+        supportPhone: data.supportPhone ?? "",
+        currency: data.currency ?? "GBP",
+        orderPrefix: data.orderPrefix ?? "OQ",
+        addressLine1: data.addressLine1 ?? "",
+        addressLine2: data.addressLine2 ?? "",
+        city: data.city ?? "",
+        postcode: data.postcode ?? "",
+        country: data.country ?? "",
+        announcementBanner: data.announcementBanner ?? "",
+        maintenanceMode: data.maintenanceMode ?? false,
+      });
+    }
+  }, [data]);
+
+  const save = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(api("admin/settings"), {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error("Failed");
+      return res.json() as Promise<StoreSettings>;
+    },
+    onSuccess: () => {
+      toast({ title: "Settings saved" });
+      void queryClient.invalidateQueries({ queryKey: ["store-settings"] });
+    },
+    onError: () => toast({ title: "Save failed", variant: "destructive" }),
+  });
+
+  const set = (k: keyof Form) => (v: string) => setForm(f => ({ ...f, [k]: v }));
+
+  if (isLoading) {
+    return <div className="p-12 text-center text-muted-foreground">Loading…</div>;
+  }
+
+  return (
+    <div className="space-y-6 max-w-3xl">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Store Settings</h2>
+          <p className="text-sm text-muted-foreground mt-1">General store configuration and contact details</p>
+        </div>
+        <Button onClick={() => save.mutate()} disabled={save.isPending || !form.storeName.trim()}>
+          <Save className="w-4 h-4 mr-2" /> {save.isPending ? "Saving…" : "Save Changes"}
+        </Button>
+      </div>
+
+      <section className="rounded-xl border bg-card p-6 space-y-4">
+        <h3 className="font-semibold">General</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Field label="Store Name" value={form.storeName} onChange={set("storeName")} placeholder="OmniQure" />
+          <Field label="Currency" value={form.currency} onChange={set("currency")} placeholder="GBP" />
+          <Field label="Order Number Prefix" value={form.orderPrefix} onChange={set("orderPrefix")} placeholder="OQ" />
+        </div>
+        <div className="space-y-1">
+          <label className="text-sm font-medium">Announcement Banner</label>
+          <Input value={form.announcementBanner} placeholder="Shown across the storefront (optional)" onChange={e => set("announcementBanner")(e.target.value)} />
+        </div>
+        <label className="flex items-center gap-2 text-sm font-medium pt-1">
+          <input type="checkbox" checked={form.maintenanceMode} onChange={e => setForm(f => ({ ...f, maintenanceMode: e.target.checked }))} className="rounded" />
+          Maintenance mode
+        </label>
+      </section>
+
+      <section className="rounded-xl border bg-card p-6 space-y-4">
+        <h3 className="font-semibold">Contact</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Field label="Support Email" value={form.supportEmail} onChange={set("supportEmail")} placeholder="support@omniqure.com" />
+          <Field label="Support Phone" value={form.supportPhone} onChange={set("supportPhone")} placeholder="+44 …" />
+        </div>
+      </section>
+
+      <section className="rounded-xl border bg-card p-6 space-y-4">
+        <h3 className="font-semibold">Business Address</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Field label="Address Line 1" value={form.addressLine1} onChange={set("addressLine1")} />
+          <Field label="Address Line 2" value={form.addressLine2} onChange={set("addressLine2")} />
+          <Field label="City" value={form.city} onChange={set("city")} />
+          <Field label="Postcode" value={form.postcode} onChange={set("postcode")} />
+          <Field label="Country" value={form.country} onChange={set("country")} />
+        </div>
+      </section>
+    </div>
+  );
+}

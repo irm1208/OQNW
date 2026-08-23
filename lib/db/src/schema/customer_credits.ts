@@ -1,1 +1,29 @@
-aW1wb3J0IHsKICBwZ1RhYmxlLAogIHNlcmlhbCwKICBpbnRlZ2VyLAogIHRleHQsCiAgdGltZXN0YW1wLAp9IGZyb20gImRyaXp6bGUtb3JtL3BnLWNvcmUiOwoKZXhwb3J0IGNvbnN0IGN1c3RvbWVyQ3JlZGl0c1RhYmxlID0gcGdUYWJsZSgiY3VzdG9tZXJfY3JlZGl0cyIsIHsKICBpZDogc2VyaWFsKCJpZCIpLnByaW1hcnlLZXkoKSwKICBjdXN0b21lcklkOiBpbnRlZ2VyKCJjdXN0b21lcl9pZCIpLm5vdE51bGwoKS51bmlxdWUoKSwKICBiYWxhbmNlUGVuY2U6IGludGVnZXIoImJhbGFuY2VfcGVuY2UiKS5ub3ROdWxsKCkuZGVmYXVsdCgwKSwKICB1cGRhdGVkQXQ6IHRpbWVzdGFtcCgidXBkYXRlZF9hdCIsIHsgd2l0aFRpbWV6b25lOiB0cnVlIH0pLm5vdE51bGwoKS5kZWZhdWx0Tm93KCkuJG9uVXBkYXRlKCgpID0+IG5ldyBEYXRlKCkpLAp9KTsKCmV4cG9ydCB0eXBlIEN1c3RvbWVyQ3JlZGl0ID0gdHlwZW9mIGN1c3RvbWVyQ3JlZGl0c1RhYmxlLiRpbmZlclNlbGVjdDsKCmV4cG9ydCBjb25zdCBjdXN0b21lckNyZWRpdFRyYW5zYWN0aW9uc1RhYmxlID0gcGdUYWJsZSgiY3VzdG9tZXJfY3JlZGl0X3RyYW5zYWN0aW9ucyIsIHsKICBpZDogc2VyaWFsKCJpZCIpLnByaW1hcnlLZXkoKSwKICBjdXN0b21lcklkOiBpbnRlZ2VyKCJjdXN0b21lcl9pZCIpLm5vdE51bGwoKSwKICBhbW91bnRQZW5jZTogaW50ZWdlcigiYW1vdW50X3BlbmNlIikubm90TnVsbCgpLAogIHR5cGU6IHRleHQoInR5cGUiKS5ub3ROdWxsKCksCiAgcmVhc29uOiB0ZXh0KCJyZWFzb24iKS5ub3ROdWxsKCksCiAgYWRtaW5Ob3RlOiB0ZXh0KCJhZG1pbl9ub3RlIiksCiAgb3JkZXJJZDogaW50ZWdlcigib3JkZXJfaWQiKSwKICBjcmVhdGVkQXQ6IHRpbWVzdGFtcCgiY3JlYXRlZF9hdCIsIHsgd2l0aFRpbWV6b25lOiB0cnVlIH0pLm5vdE51bGwoKS5kZWZhdWx0Tm93KCksCn0pOwoKZXhwb3J0IHR5cGUgQ3VzdG9tZXJDcmVkaXRUcmFuc2FjdGlvbiA9IHR5cGVvZiBjdXN0b21lckNyZWRpdFRyYW5zYWN0aW9uc1RhYmxlLiRpbmZlclNlbGVjdDsK
+import {
+  pgTable,
+  serial,
+  integer,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
+
+export const customerCreditsTable = pgTable("customer_credits", {
+  id: serial("id").primaryKey(),
+  customerId: integer("customer_id").notNull().unique(),
+  balancePence: integer("balance_pence").notNull().default(0),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
+});
+
+export type CustomerCredit = typeof customerCreditsTable.$inferSelect;
+
+export const customerCreditTransactionsTable = pgTable("customer_credit_transactions", {
+  id: serial("id").primaryKey(),
+  customerId: integer("customer_id").notNull(),
+  amountPence: integer("amount_pence").notNull(),
+  type: text("type").notNull(),
+  reason: text("reason").notNull(),
+  adminNote: text("admin_note"),
+  orderId: integer("order_id"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type CustomerCreditTransaction = typeof customerCreditTransactionsTable.$inferSelect;

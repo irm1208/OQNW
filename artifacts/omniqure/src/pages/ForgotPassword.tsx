@@ -1,1 +1,171 @@
-aW1wb3J0IHsgdXNlU3RhdGUgfSBmcm9tICJyZWFjdCI7CmltcG9ydCB7IExpbmsgfSBmcm9tICJ3b3V0ZXIiOwppbXBvcnQgeyBNYWlsLCBGbGFza0NvbmljYWwsIEFycm93TGVmdCwgQ2hlY2tDaXJjbGUyIH0gZnJvbSAibHVjaWRlLXJlYWN0IjsKaW1wb3J0IHsgdXNlU0VPIH0gZnJvbSAiQC9ob29rcy91c2VTRU8iOwoKY29uc3QgQkFTRV9VUkwgPSBpbXBvcnQubWV0YS5lbnYuQkFTRV9VUkwgPz8gIi8iOwpmdW5jdGlvbiBhcGlVcmwocGF0aDogc3RyaW5nKSB7CiAgcmV0dXJuIGAke0JBU0VfVVJMfWFwaS8ke3BhdGh9YC5yZXBsYWNlKC9cLysvZywgIi8iKS5yZXBsYWNlKC9eXC9cLy8sICIvIik7Cn0KCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIEZvcmdvdFBhc3N3b3JkKCkgewogIHVzZVNFTyh7IHRpdGxlOiAiRm9yZ290IFBhc3N3b3JkIiwgbm9JbmRleDogdHJ1ZSB9KTsKICBjb25zdCBbZW1haWwsIHNldEVtYWlsXSA9IHVzZVN0YXRlKCIiKTsKICBjb25zdCBbbG9hZGluZywgc2V0TG9hZGluZ10gPSB1c2VTdGF0ZShmYWxzZSk7CiAgY29uc3QgW3NlbnQsIHNldFNlbnRdID0gdXNlU3RhdGUoZmFsc2UpOwogIGNvbnN0IFtlcnJvciwgc2V0RXJyb3JdID0gdXNlU3RhdGUoIiIpOwoKICBhc3luYyBmdW5jdGlvbiBoYW5kbGVTdWJtaXQoZTogUmVhY3QuRm9ybUV2ZW50KSB7CiAgICBlLnByZXZlbnREZWZhdWx0KCk7CiAgICBzZXRFcnJvcigiIik7CiAgICBpZiAoIWVtYWlsLnRyaW0oKSB8fCAhZW1haWwuaW5jbHVkZXMoIkAiKSkgewogICAgICBzZXRFcnJvcigiUGxlYXNlIGVudGVyIGEgdmFsaWQgZW1haWwgYWRkcmVzcy4iKTsKICAgICAgcmV0dXJuOwogICAgfQogICAgc2V0TG9hZGluZyh0cnVlKTsKICAgIHRyeSB7CiAgICAgIGNvbnN0IHJlcyA9IGF3YWl0IGZldGNoKGFwaVVybCgiYXV0aC9mb3Jnb3QtcGFzc3dvcmQiKSwgewogICAgICAgIG1ldGhvZDogIlBPU1QiLAogICAgICAgIGhlYWRlcnM6IHsgIkNvbnRlbnQtVHlwZSI6ICJhcHBsaWNhdGlvbi9qc29uIiB9LAogICAgICAgIGJvZHk6IEpTT04uc3RyaW5naWZ5KHsgZW1haWw6IGVtYWlsLnRyaW0oKS50b0xvd2VyQ2FzZSgpIH0pLAogICAgICB9KTsKICAgICAgaWYgKCFyZXMub2spIHsKICAgICAgICBjb25zdCBkID0gYXdhaXQgcmVzLmpzb24oKSBhcyB7IGVycm9yPzogc3RyaW5nIH07CiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGQuZXJyb3IgPz8gIlJlcXVlc3QgZmFpbGVkIik7CiAgICAgIH0KICAgICAgc2V0U2VudCh0cnVlKTsKICAgIH0gY2F0Y2ggKGVycikgewogICAgICBzZXRFcnJvcihlcnIgaW5zdGFuY2VvZiBFcnJvciA/IGVyci5tZXNzYWdlIDogIlNvbWV0aGluZyB3ZW50IHdyb25nLiBQbGVhc2UgdHJ5IGFnYWluLiIpOwogICAgfSBmaW5hbGx5IHsKICAgICAgc2V0TG9hZGluZyhmYWxzZSk7CiAgICB9CiAgfQoKICByZXR1cm4gKAogICAgPGRpdgogICAgICBzdHlsZT17ewogICAgICAgIGZvbnRGYW1pbHk6ICInQXJpbW8nLCBBcmlhbCwgc2Fucy1zZXJpZiIsCiAgICAgICAgbWluSGVpZ2h0OiAiY2FsYygxMDB2aCAtIDEyMHB4KSIsCiAgICAgICAgYmFja2dyb3VuZDogImxpbmVhci1ncmFkaWVudCgxMzVkZWcsICNGMEY1RkYgMCUsICNGN0ZBRkYgNTAlLCAjRUVGNEZGIDEwMCUpIiwKICAgICAgICBkaXNwbGF5OiAiZmxleCIsCiAgICAgICAgYWxpZ25JdGVtczogImNlbnRlciIsCiAgICAgICAganVzdGlmeUNvbnRlbnQ6ICJjZW50ZXIiLAogICAgICAgIHBhZGRpbmc6ICI0MHB4IDE2cHgiLAogICAgICB9fQogICAgPgogICAgICA8ZGl2IHN0eWxlPXt7IHdpZHRoOiAiMTAwJSIsIG1heFdpZHRoOiAiNDQwcHgiIH19PgoKICAgICAgICA8ZGl2IHN0eWxlPXt7IHRleHRBbGlnbjogImNlbnRlciIsIG1hcmdpbkJvdHRvbTogIjMycHgiIH19PgogICAgICAgICAgPGRpdiBzdHlsZT17ewogICAgICAgICAgICBkaXNwbGF5OiAiaW5saW5lLWZsZXgiLCBhbGlnbkl0ZW1zOiAiY2VudGVyIiwganVzdGlmeUNvbnRlbnQ6ICJjZW50ZXIiLAogICAgICAgICAgICB3aWR0aDogIjUycHgiLCBoZWlnaHQ6ICI1MnB4IiwgYm9yZGVyUmFkaXVzOiAiMTRweCIsCiAgICAgICAgICAgIGJhY2tncm91bmQ6ICJsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjMEQyNTY1LCAjMUI1Q0I1KSIsCiAgICAgICAgICAgIG1hcmdpbkJvdHRvbTogIjE2cHgiLAogICAgICAgICAgfX0+CiAgICAgICAgICAgIDxGbGFza0NvbmljYWwgc2l6ZT17MjR9IGNvbG9yPSIjZmZmIiAvPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8aDEgc3R5bGU9e3sgZm9udFNpemU6ICIyNnB4IiwgZm9udFdlaWdodDogODAwLCBjb2xvcjogIiMwRjE3MkEiLCBsZXR0ZXJTcGFjaW5nOiAiLTAuMDI1ZW0iLCBtYXJnaW5Cb3R0b206ICI2cHgiIH19PgogICAgICAgICAgICBGb3Jnb3QgeW91ciBwYXNzd29yZD8KICAgICAgICAgIDwvaDE+CiAgICAgICAgICA8cCBzdHlsZT17eyBmb250U2l6ZTogIjE0cHgiLCBjb2xvcjogIiM2NDc0OEIiIH19PgogICAgICAgICAgICBFbnRlciB5b3VyIGVtYWlsIGFuZCB3ZSdsbCBzZW5kIHlvdSBhIHJlc2V0IGxpbmsuCiAgICAgICAgICA8L3A+CiAgICAgICAgPC9kaXY+CgogICAgICAgIDxkaXYgc3R5bGU9e3sKICAgICAgICAgIGJhY2tncm91bmRDb2xvcjogIiNmZmYiLAogICAgICAgICAgYm9yZGVyUmFkaXVzOiAiMjBweCIsCiAgICAgICAgICBib3JkZXI6ICIxLjVweCBzb2xpZCAjRThFREY1IiwKICAgICAgICAgIGJveFNoYWRvdzogIjAgOHB4IDQ4cHggcmdiYSgxNSwyMyw0MiwwLjA5KSIsCiAgICAgICAgICBwYWRkaW5nOiAiMzZweCAzMnB4IiwKICAgICAgICB9fT4KICAgICAgICAgIHtzZW50ID8gKAogICAgICAgICAgICA8ZGl2IHN0eWxlPXt7IHRleHRBbGlnbjogImNlbnRlciIgfX0+CiAgICAgICAgICAgICAgPENoZWNrQ2lyY2xlMiBzaXplPXs0MH0gc3R5bGU9e3sgY29sb3I6ICIjMDU5NjY5IiwgbWFyZ2luOiAiMCBhdXRvIDE2cHgiIH19IC8+CiAgICAgICAgICAgICAgPGgyIHN0eWxlPXt7IGZvbnRTaXplOiAiMThweCIsIGZvbnRXZWlnaHQ6IDgwMCwgY29sb3I6ICIjMEYxNzJBIiwgbWFyZ2luQm90dG9tOiAiMTBweCIgfX0+CiAgICAgICAgICAgICAgICBDaGVjayB5b3VyIGluYm94CiAgICAgICAgICAgICAgPC9oMj4KICAgICAgICAgICAgICA8cCBzdHlsZT17eyBmb250U2l6ZTogIjE0cHgiLCBjb2xvcjogIiM2NDc0OEIiLCBsaW5lSGVpZ2h0OiAxLjYsIG1hcmdpbkJvdHRvbTogIjI0cHgiIH19PgogICAgICAgICAgICAgICAgSWYgYW4gYWNjb3VudCBleGlzdHMgZm9yIDxzdHJvbmc+e2VtYWlsfTwvc3Ryb25nPiwgd2UndmUgc2VudCBhIHBhc3N3b3JkIHJlc2V0IGxpbmsuIEl0IGV4cGlyZXMgaW4gMSBob3VyLgogICAgICAgICAgICAgIDwvcD4KICAgICAgICAgICAgICA8TGluawogICAgICAgICAgICAgICAgaHJlZj0iL3NpZ24taW4iCiAgICAgICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgICAgICBkaXNwbGF5OiAiaW5saW5lLWZsZXgiLCBhbGlnbkl0ZW1zOiAiY2VudGVyIiwgZ2FwOiAiNnB4IiwKICAgICAgICAgICAgICAgICAgZm9udFNpemU6ICIxNHB4IiwgY29sb3I6ICIjMUI1Q0I1IiwgZm9udFdlaWdodDogNjAwLCB0ZXh0RGVjb3JhdGlvbjogIm5vbmUiLAogICAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICA8QXJyb3dMZWZ0IHNpemU9ezE0fSAvPiBCYWNrIHRvIHNpZ24gaW4KICAgICAgICAgICAgICA8L0xpbms+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgKSA6ICgKICAgICAgICAgICAgPGZvcm0gb25TdWJtaXQ9e2hhbmRsZVN1Ym1pdH0gc3R5bGU9e3sgZGlzcGxheTogImZsZXgiLCBmbGV4RGlyZWN0aW9uOiAiY29sdW1uIiwgZ2FwOiAiMThweCIgfX0+CiAgICAgICAgICAgICAgPGRpdj4KICAgICAgICAgICAgICAgIDxsYWJlbCBzdHlsZT17eyBmb250U2l6ZTogIjEzcHgiLCBmb250V2VpZ2h0OiA2MDAsIGNvbG9yOiAiIzM3NDE1MSIsIGRpc3BsYXk6ICJibG9jayIsIG1hcmdpbkJvdHRvbTogIjZweCIgfX0+CiAgICAgICAgICAgICAgICAgIEVtYWlsIGFkZHJlc3MKICAgICAgICAgICAgICAgIDwvbGFiZWw+CiAgICAgICAgICAgICAgICA8ZGl2IHN0eWxlPXt7IHBvc2l0aW9uOiAicmVsYXRpdmUiIH19PgogICAgICAgICAgICAgICAgICA8TWFpbCBzaXplPXsxNX0gc3R5bGU9e3sKICAgICAgICAgICAgICAgICAgICBwb3NpdGlvbjogImFic29sdXRlIiwgbGVmdDogIjEycHgiLCB0b3A6ICI1MCUiLCB0cmFuc2Zvcm06ICJ0cmFuc2xhdGVZKC01MCUpIiwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogIiM5NEEzQjgiLCBwb2ludGVyRXZlbnRzOiAibm9uZSIsCiAgICAgICAgICAgICAgICAgIH19IC8+CiAgICAgICAgICAgICAgICAgIDxpbnB1dAogICAgICAgICAgICAgICAgICAgIHR5cGU9ImVtYWlsIgogICAgICAgICAgICAgICAgICAgIHZhbHVlPXtlbWFpbH0KICAgICAgICAgICAgICAgICAgICBvbkNoYW5nZT17ZSA9PiBzZXRFbWFpbChlLnRhcmdldC52YWx1ZSl9CiAgICAgICAgICAgICAgICAgICAgcGxhY2Vob2xkZXI9InJlc2VhcmNoZXJAaW5zdGl0dXRpb24uYWMudWsiCiAgICAgICAgICAgICAgICAgICAgYXV0b0NvbXBsZXRlPSJlbWFpbCIKICAgICAgICAgICAgICAgICAgICBhdXRvRm9jdXMKICAgICAgICAgICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgICAgICAgICAgd2lkdGg6ICIxMDAlIiwgaGVpZ2h0OiAiNDRweCIsIHBhZGRpbmdMZWZ0OiAiMzhweCIsIHBhZGRpbmdSaWdodDogIjE0cHgiLAogICAgICAgICAgICAgICAgICAgICAgYm9yZGVyUmFkaXVzOiAiMTBweCIsIGJvcmRlcjogIjEuNXB4IHNvbGlkICNFMkU4RjAiLAogICAgICAgICAgICAgICAgICAgICAgZm9udFNpemU6ICIxNHB4IiwgY29sb3I6ICIjMEYxNzJBIiwgb3V0bGluZTogIm5vbmUiLAogICAgICAgICAgICAgICAgICAgICAgYmFja2dyb3VuZENvbG9yOiAiI0Y4RkFGQyIsIGJveFNpemluZzogImJvcmRlci1ib3giLAogICAgICAgICAgICAgICAgICAgICAgdHJhbnNpdGlvbjogImJvcmRlci1jb2xvciAwLjE1cyIsCiAgICAgICAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgICAgICAgICBvbkZvY3VzPXtlID0+IChlLmN1cnJlbnRUYXJnZXQuc3R5bGUuYm9yZGVyQ29sb3IgPSAiIzFCNUNCNSIpfQogICAgICAgICAgICAgICAgICAgIG9uQmx1cj17ZSA9PiAoZS5jdXJyZW50VGFyZ2V0LnN0eWxlLmJvcmRlckNvbG9yID0gIiNFMkU4RjAiKX0KICAgICAgICAgICAgICAgICAgLz4KICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICAgIDwvZGl2PgoKICAgICAgICAgICAgICB7ZXJyb3IgJiYgKAogICAgICAgICAgICAgICAgPHAgc3R5bGU9e3sgZm9udFNpemU6ICIxM3B4IiwgY29sb3I6ICIjREMyNjI2IiwgYmFja2dyb3VuZENvbG9yOiAiI0ZFRjJGMiIsIGJvcmRlcjogIjFweCBzb2xpZCAjRkVDQUNBIiwgYm9yZGVyUmFkaXVzOiAiOHB4IiwgcGFkZGluZzogIjEwcHggMTJweCIsIG1hcmdpbjogMCB9fT4KICAgICAgICAgICAgICAgICAge2Vycm9yfQogICAgICAgICAgICAgICAgPC9wPgogICAgICAgICAgICAgICl9CgogICAgICAgICAgICAgIDxidXR0b24KICAgICAgICAgICAgICAgIHR5cGU9InN1Ym1pdCIKICAgICAgICAgICAgICAgIGRpc2FibGVkPXtsb2FkaW5nfQogICAgICAgICAgICAgICAgc3R5bGU9e3sKICAgICAgICAgICAgICAgICAgd2lkdGg6ICIxMDAlIiwgaGVpZ2h0OiAiNDZweCIsIGJvcmRlclJhZGl1czogIjEwcHgiLCBib3JkZXI6ICJub25lIiwKICAgICAgICAgICAgICAgICAgYmFja2dyb3VuZDogbG9hZGluZyA/ICIjOTNDNUZEIiA6ICJsaW5lYXItZ3JhZGllbnQoOTBkZWcsICMwRDI1NjUsICMxQjVDQjUpIiwKICAgICAgICAgICAgICAgICAgY29sb3I6ICIjZmZmIiwgZm9udFNpemU6ICIxNXB4IiwgZm9udFdlaWdodDogNzAwLAogICAgICAgICAgICAgICAgICBjdXJzb3I6IGxvYWRpbmcgPyAibm90LWFsbG93ZWQiIDogInBvaW50ZXIiLAogICAgICAgICAgICAgICAgICB0cmFuc2l0aW9uOiAib3BhY2l0eSAwLjJzIiwKICAgICAgICAgICAgICAgIH19CiAgICAgICAgICAgICAgICBvbk1vdXNlRW50ZXI9e2UgPT4geyBpZiAoIWxvYWRpbmcpIChlLmN1cnJlbnRUYXJnZXQgYXMgSFRNTEVsZW1lbnQpLnN0eWxlLm9wYWNpdHkgPSAiMC45IjsgfX0KICAgICAgICAgICAgICAgIG9uTW91c2VMZWF2ZT17ZSA9PiB7IGlmICghbG9hZGluZykgKGUuY3VycmVudFRhcmdldCBhcyBIVE1MRWxlbWVudCkuc3R5bGUub3BhY2l0eSA9ICIxIjsgfX0KICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICB7bG9hZGluZyA/ICJTZW5kaW5n4oCmIiA6ICJTZW5kIHJlc2V0IGxpbmsifQogICAgICAgICAgICAgIDwvYnV0dG9uPgoKICAgICAgICAgICAgICA8cCBzdHlsZT17eyB0ZXh0QWxpZ246ICJjZW50ZXIiLCBtYXJnaW46IDAgfX0+CiAgICAgICAgICAgICAgICA8TGluawogICAgICAgICAgICAgICAgICBocmVmPSIvc2lnbi1pbiIKICAgICAgICAgICAgICAgICAgc3R5bGU9e3sKICAgICAgICAgICAgICAgICAgICBkaXNwbGF5OiAiaW5saW5lLWZsZXgiLCBhbGlnbkl0ZW1zOiAiY2VudGVyIiwgZ2FwOiAiNnB4IiwKICAgICAgICAgICAgICAgICAgICBmb250U2l6ZTogIjEzcHgiLCBjb2xvcjogIiM2NDc0OEIiLCB0ZXh0RGVjb3JhdGlvbjogIm5vbmUiLCBmb250V2VpZ2h0OiA1MDAsCiAgICAgICAgICAgICAgICAgIH19CiAgICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICAgIDxBcnJvd0xlZnQgc2l6ZT17MTN9IC8+IEJhY2sgdG8gc2lnbiBpbgogICAgICAgICAgICAgICAgPC9MaW5rPgogICAgICAgICAgICAgIDwvcD4KICAgICAgICAgICAgPC9mb3JtPgogICAgICAgICAgKX0KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KICApOwp9Cg==
+import { useState } from "react";
+import { Link } from "wouter";
+import { Mail, FlaskConical, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
+
+const BASE_URL = import.meta.env.BASE_URL ?? "/";
+function apiUrl(path: string) {
+  return `${BASE_URL}api/${path}`.replace(/\/+/g, "/").replace(/^\/\//, "/");
+}
+
+export default function ForgotPassword() {
+  useSEO({ title: "Forgot Password", noIndex: true });
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    if (!email.trim() || !email.includes("@")) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch(apiUrl("auth/forgot-password"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
+      });
+      if (!res.ok) {
+        const d = await res.json() as { error?: string };
+        throw new Error(d.error ?? "Request failed");
+      }
+      setSent(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div
+      style={{
+        fontFamily: "'Arimo', Arial, sans-serif",
+        minHeight: "calc(100vh - 120px)",
+        background: "linear-gradient(135deg, #F0F5FF 0%, #F7FAFF 50%, #EEF4FF 100%)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "40px 16px",
+      }}
+    >
+      <div style={{ width: "100%", maxWidth: "440px" }}>
+
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+          <div style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            width: "52px", height: "52px", borderRadius: "14px",
+            background: "linear-gradient(135deg, #0D2565, #1B5CB5)",
+            marginBottom: "16px",
+          }}>
+            <FlaskConical size={24} color="#fff" />
+          </div>
+          <h1 style={{ fontSize: "26px", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: "6px" }}>
+            Forgot your password?
+          </h1>
+          <p style={{ fontSize: "14px", color: "#64748B" }}>
+            Enter your email and we'll send you a reset link.
+          </p>
+        </div>
+
+        <div style={{
+          backgroundColor: "#fff",
+          borderRadius: "20px",
+          border: "1.5px solid #E8EDF5",
+          boxShadow: "0 8px 48px rgba(15,23,42,0.09)",
+          padding: "36px 32px",
+        }}>
+          {sent ? (
+            <div style={{ textAlign: "center" }}>
+              <CheckCircle2 size={40} style={{ color: "#059669", margin: "0 auto 16px" }} />
+              <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A", marginBottom: "10px" }}>
+                Check your inbox
+              </h2>
+              <p style={{ fontSize: "14px", color: "#64748B", lineHeight: 1.6, marginBottom: "24px" }}>
+                If an account exists for <strong>{email}</strong>, we've sent a password reset link. It expires in 1 hour.
+              </p>
+              <Link
+                href="/sign-in"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "6px",
+                  fontSize: "14px", color: "#1B5CB5", fontWeight: 600, textDecoration: "none",
+                }}
+              >
+                <ArrowLeft size={14} /> Back to sign in
+              </Link>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+              <div>
+                <label style={{ fontSize: "13px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "6px" }}>
+                  Email address
+                </label>
+                <div style={{ position: "relative" }}>
+                  <Mail size={15} style={{
+                    position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)",
+                    color: "#94A3B8", pointerEvents: "none",
+                  }} />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="researcher@institution.ac.uk"
+                    autoComplete="email"
+                    autoFocus
+                    style={{
+                      width: "100%", height: "44px", paddingLeft: "38px", paddingRight: "14px",
+                      borderRadius: "10px", border: "1.5px solid #E2E8F0",
+                      fontSize: "14px", color: "#0F172A", outline: "none",
+                      backgroundColor: "#F8FAFC", boxSizing: "border-box",
+                      transition: "border-color 0.15s",
+                    }}
+                    onFocus={e => (e.currentTarget.style.borderColor = "#1B5CB5")}
+                    onBlur={e => (e.currentTarget.style.borderColor = "#E2E8F0")}
+                  />
+                </div>
+              </div>
+
+              {error && (
+                <p style={{ fontSize: "13px", color: "#DC2626", backgroundColor: "#FEF2F2", border: "1px solid #FECACA", borderRadius: "8px", padding: "10px 12px", margin: 0 }}>
+                  {error}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                style={{
+                  width: "100%", height: "46px", borderRadius: "10px", border: "none",
+                  background: loading ? "#93C5FD" : "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                  color: "#fff", fontSize: "15px", fontWeight: 700,
+                  cursor: loading ? "not-allowed" : "pointer",
+                  transition: "opacity 0.2s",
+                }}
+                onMouseEnter={e => { if (!loading) (e.currentTarget as HTMLElement).style.opacity = "0.9"; }}
+                onMouseLeave={e => { if (!loading) (e.currentTarget as HTMLElement).style.opacity = "1"; }}
+              >
+                {loading ? "Sending…" : "Send reset link"}
+              </button>
+
+              <p style={{ textAlign: "center", margin: 0 }}>
+                <Link
+                  href="/sign-in"
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: "6px",
+                    fontSize: "13px", color: "#64748B", textDecoration: "none", fontWeight: 500,
+                  }}
+                >
+                  <ArrowLeft size={13} /> Back to sign in
+                </Link>
+              </p>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

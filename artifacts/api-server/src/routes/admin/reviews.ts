@@ -1,1 +1,138 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgcHJvZHVjdFJldmlld3NUYWJsZSwgbG95YWx0eVRyYW5zYWN0aW9uc1RhYmxlIH0gZnJvbSAiQHdvcmtzcGFjZS9kYiI7CmltcG9ydCB7IGVxLCBkZXNjLCBhbmQsIGxpa2UsIHNxbCB9IGZyb20gImRyaXp6bGUtb3JtIjsKaW1wb3J0IHsgZmlyc3RTdHJpbmcgfSBmcm9tICIuLi8uLi9saWIvcXVlcnkiOwoKZnVuY3Rpb24gcmVxdWlyZUFkbWluKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IGJvb2xlYW4gewogIGlmIChyZXEuY29va2llcz8uYWRtaW5fc2Vzc2lvbiAhPT0gImF1dGhlbnRpY2F0ZWQiKSB7CiAgICByZXMuc3RhdHVzKDQwMSkuanNvbih7IGVycm9yOiAiVW5hdXRob3JpemVkIiB9KTsKICAgIHJldHVybiBmYWxzZTsKICB9CiAgcmV0dXJuIHRydWU7Cn0KCmNvbnN0IHJvdXRlciA9IFJvdXRlcigpOwoKcm91dGVyLmdldCgiL2FkbWluL3Jldmlld3MiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgdHJ5IHsKICAgIGNvbnN0IHN0YXR1cyA9IGZpcnN0U3RyaW5nKHJlcS5xdWVyeS5zdGF0dXMpOwogICAgY29uc3Qgc2VhcmNoID0gZmlyc3RTdHJpbmcocmVxLnF1ZXJ5LnNlYXJjaCk7CiAgICBjb25zdCBwYWdlID0gZmlyc3RTdHJpbmcocmVxLnF1ZXJ5LnBhZ2UpID8/ICIxIjsKICAgIGNvbnN0IGxpbWl0ID0gZmlyc3RTdHJpbmcocmVxLnF1ZXJ5LmxpbWl0KSA/PyAiMjUiOwogICAgY29uc3QgcGFnZU51bSA9IE1hdGgubWF4KDEsIHBhcnNlSW50KHBhZ2UsIDEwKSB8fCAxKTsKICAgIGNvbnN0IGxpbWl0TnVtID0gTWF0aC5taW4oMTAwLCBNYXRoLm1heCgxLCBwYXJzZUludChsaW1pdCwgMTApIHx8IDI1KSk7CiAgICBjb25zdCBvZmZzZXQgPSAocGFnZU51bSAtIDEpICogbGltaXROdW07CgogICAgY29uc3QgY29uZGl0aW9ucyA9IFtdOwogICAgaWYgKHN0YXR1cyA9PT0gInBlbmRpbmciKSBjb25kaXRpb25zLnB1c2goZXEocHJvZHVjdFJldmlld3NUYWJsZS5pc0FwcHJvdmVkLCBmYWxzZSkpOwogICAgaWYgKHN0YXR1cyA9PT0gImFwcHJvdmVkIikgY29uZGl0aW9ucy5wdXNoKGVxKHByb2R1Y3RSZXZpZXdzVGFibGUuaXNBcHByb3ZlZCwgdHJ1ZSkpOwogICAgaWYgKHNlYXJjaCkgY29uZGl0aW9ucy5wdXNoKGxpa2UocHJvZHVjdFJldmlld3NUYWJsZS5jdXN0b21lck5hbWUsIGAlJHtzZWFyY2h9JWApKTsKCiAgICBjb25zdCB3aGVyZUNsYXVzZSA9IGNvbmRpdGlvbnMubGVuZ3RoID4gMCA/IGFuZCguLi5jb25kaXRpb25zKSA6IHVuZGVmaW5lZDsKCiAgICBjb25zdCByZXZpZXdzID0gYXdhaXQgZGIKICAgICAgLnNlbGVjdCgpCiAgICAgIC5mcm9tKHByb2R1Y3RSZXZpZXdzVGFibGUpCiAgICAgIC53aGVyZSh3aGVyZUNsYXVzZSkKICAgICAgLm9yZGVyQnkoZGVzYyhwcm9kdWN0UmV2aWV3c1RhYmxlLmNyZWF0ZWRBdCkpCiAgICAgIC5saW1pdChsaW1pdE51bSkKICAgICAgLm9mZnNldChvZmZzZXQpOwoKICAgIGNvbnN0IFt7IHRvdGFsIH1dID0gYXdhaXQgZGIKICAgICAgLnNlbGVjdCh7IHRvdGFsOiBzcWw8bnVtYmVyPmBDT1VOVCgqKTo6aW50YCB9KQogICAgICAuZnJvbShwcm9kdWN0UmV2aWV3c1RhYmxlKQogICAgICAud2hlcmUod2hlcmVDbGF1c2UpOwoKICAgIHJlcy5zdGF0dXMoMjAwKS5qc29uKHsgcmV2aWV3cywgdG90YWwsIHBhZ2U6IHBhZ2VOdW0sIGxpbWl0OiBsaW1pdE51bSB9KTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBmZXRjaCByZXZpZXdzIik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKcm91dGVyLnBhdGNoKCIvYWRtaW4vcmV2aWV3cy86aWQiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgY29uc3QgaWQgPSBwYXJzZUludChmaXJzdFN0cmluZyhyZXEucGFyYW1zLmlkKSA/PyAiIiwgMTApOwogIGlmIChpc05hTihpZCkpIHsKICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJJbnZhbGlkIHJldmlldyBJRCIgfSk7CiAgICByZXR1cm47CiAgfQoKICBjb25zdCB7IGlzQXBwcm92ZWQgfSA9IHJlcS5ib2R5IGFzIHsgaXNBcHByb3ZlZDogdW5rbm93biB9OwogIGlmICh0eXBlb2YgaXNBcHByb3ZlZCAhPT0gImJvb2xlYW4iKSB7CiAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiaXNBcHByb3ZlZCBtdXN0IGJlIGEgYm9vbGVhbiIgfSk7CiAgICByZXR1cm47CiAgfQoKICB0cnkgewogICAgY29uc3QgW2V4aXN0aW5nXSA9IGF3YWl0IGRiCiAgICAgIC5zZWxlY3QoeyBpc0FwcHJvdmVkOiBwcm9kdWN0UmV2aWV3c1RhYmxlLmlzQXBwcm92ZWQsIGN1c3RvbWVySWQ6IHByb2R1Y3RSZXZpZXdzVGFibGUuY3VzdG9tZXJJZCwgaWQ6IHByb2R1Y3RSZXZpZXdzVGFibGUuaWQgfSkKICAgICAgLmZyb20ocHJvZHVjdFJldmlld3NUYWJsZSkKICAgICAgLndoZXJlKGVxKHByb2R1Y3RSZXZpZXdzVGFibGUuaWQsIGlkKSkKICAgICAgLmxpbWl0KDEpOwoKICAgIGlmICghZXhpc3RpbmcpIHsKICAgICAgcmVzLnN0YXR1cyg0MDQpLmpzb24oeyBlcnJvcjogIlJldmlldyBub3QgZm91bmQiIH0pOwogICAgICByZXR1cm47CiAgICB9CgogICAgY29uc3QgW3VwZGF0ZWRdID0gYXdhaXQgZGIKICAgICAgLnVwZGF0ZShwcm9kdWN0UmV2aWV3c1RhYmxlKQogICAgICAuc2V0KHsgaXNBcHByb3ZlZCB9KQogICAgICAud2hlcmUoZXEocHJvZHVjdFJldmlld3NUYWJsZS5pZCwgaWQpKQogICAgICAucmV0dXJuaW5nKCk7CgogICAgLy8gQXdhcmQgb25lLXRpbWUgYm9udXMgcG9pbnRzIHRoZSBmaXJzdCB0aW1lIGEgcmV2aWV3IGlzIGFwcHJvdmVkCiAgICBpZiAoaXNBcHByb3ZlZCAmJiAhZXhpc3RpbmcuaXNBcHByb3ZlZCAmJiBleGlzdGluZy5jdXN0b21lcklkKSB7CiAgICAgIGNvbnN0IFthbHJlYWR5QXdhcmRlZF0gPSBhd2FpdCBkYgogICAgICAgIC5zZWxlY3QoeyBpZDogbG95YWx0eVRyYW5zYWN0aW9uc1RhYmxlLmlkIH0pCiAgICAgICAgLmZyb20obG95YWx0eVRyYW5zYWN0aW9uc1RhYmxlKQogICAgICAgIC53aGVyZShlcShsb3lhbHR5VHJhbnNhY3Rpb25zVGFibGUuZGVzY3JpcHRpb24sIGBCb251czogcmV2aWV3ICMke2V4aXN0aW5nLmlkfSBhcHByb3ZlZGApKQogICAgICAgIC5saW1pdCgxKTsKICAgICAgaWYgKCFhbHJlYWR5QXdhcmRlZCkgewogICAgICAgIGF3YWl0IGRiLmluc2VydChsb3lhbHR5VHJhbnNhY3Rpb25zVGFibGUpLnZhbHVlcyh7CiAgICAgICAgICBjdXN0b21lcklkOiBleGlzdGluZy5jdXN0b21lcklkLAogICAgICAgICAgdHlwZTogImVhcm5lZCIsCiAgICAgICAgICBwb2ludHM6IDUwLAogICAgICAgICAgZGVzY3JpcHRpb246IGBCb251czogcmV2aWV3ICMke2V4aXN0aW5nLmlkfSBhcHByb3ZlZGAsCiAgICAgICAgfSkuY2F0Y2goKGVycikgPT4gcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGF3YXJkIHJldmlldyBib251cyBwb2ludHMiKSk7CiAgICAgIH0KICAgIH0KCiAgICByZXMuc3RhdHVzKDIwMCkuanNvbih1cGRhdGVkKTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byB1cGRhdGUgcmV2aWV3Iik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKcm91dGVyLmRlbGV0ZSgiL2FkbWluL3Jldmlld3MvOmlkIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGlmICghcmVxdWlyZUFkbWluKHJlcSwgcmVzKSkgcmV0dXJuOwogIGNvbnN0IGlkID0gcGFyc2VJbnQoZmlyc3RTdHJpbmcocmVxLnBhcmFtcy5pZCkgPz8gIiIsIDEwKTsKICBpZiAoaXNOYU4oaWQpKSB7CiAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiSW52YWxpZCByZXZpZXcgSUQiIH0pOwogICAgcmV0dXJuOwogIH0KCiAgdHJ5IHsKICAgIGNvbnN0IFtkZWxldGVkXSA9IGF3YWl0IGRiCiAgICAgIC5kZWxldGUocHJvZHVjdFJldmlld3NUYWJsZSkKICAgICAgLndoZXJlKGVxKHByb2R1Y3RSZXZpZXdzVGFibGUuaWQsIGlkKSkKICAgICAgLnJldHVybmluZyh7IGlkOiBwcm9kdWN0UmV2aWV3c1RhYmxlLmlkIH0pOwoKICAgIGlmICghZGVsZXRlZCkgewogICAgICByZXMuc3RhdHVzKDQwNCkuanNvbih7IGVycm9yOiAiUmV2aWV3IG5vdCBmb3VuZCIgfSk7CiAgICAgIHJldHVybjsKICAgIH0KCiAgICByZXMuc3RhdHVzKDIwMCkuanNvbih7IG9rOiB0cnVlIH0pOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGRlbGV0ZSByZXZpZXciKTsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJJbnRlcm5hbCBzZXJ2ZXIgZXJyb3IiIH0pOwogIH0KfSk7CgpleHBvcnQgZGVmYXVsdCByb3V0ZXI7Cg==
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { db } from "@workspace/db";
+import { productReviewsTable, loyaltyTransactionsTable } from "@workspace/db";
+import { eq, desc, and, like, sql } from "drizzle-orm";
+import { firstString } from "../../lib/query";
+
+function requireAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Unauthorized" });
+    return false;
+  }
+  return true;
+}
+
+const router = Router();
+
+router.get("/admin/reviews", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const status = firstString(req.query.status);
+    const search = firstString(req.query.search);
+    const page = firstString(req.query.page) ?? "1";
+    const limit = firstString(req.query.limit) ?? "25";
+    const pageNum = Math.max(1, parseInt(page, 10) || 1);
+    const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10) || 25));
+    const offset = (pageNum - 1) * limitNum;
+
+    const conditions = [];
+    if (status === "pending") conditions.push(eq(productReviewsTable.isApproved, false));
+    if (status === "approved") conditions.push(eq(productReviewsTable.isApproved, true));
+    if (search) conditions.push(like(productReviewsTable.customerName, `%${search}%`));
+
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
+    const reviews = await db
+      .select()
+      .from(productReviewsTable)
+      .where(whereClause)
+      .orderBy(desc(productReviewsTable.createdAt))
+      .limit(limitNum)
+      .offset(offset);
+
+    const [{ total }] = await db
+      .select({ total: sql<number>`COUNT(*)::int` })
+      .from(productReviewsTable)
+      .where(whereClause);
+
+    res.status(200).json({ reviews, total, page: pageNum, limit: limitNum });
+  } catch (err) {
+    req.log.error({ err }, "Failed to fetch reviews");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.patch("/admin/reviews/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid review ID" });
+    return;
+  }
+
+  const { isApproved } = req.body as { isApproved: unknown };
+  if (typeof isApproved !== "boolean") {
+    res.status(400).json({ error: "isApproved must be a boolean" });
+    return;
+  }
+
+  try {
+    const [existing] = await db
+      .select({ isApproved: productReviewsTable.isApproved, customerId: productReviewsTable.customerId, id: productReviewsTable.id })
+      .from(productReviewsTable)
+      .where(eq(productReviewsTable.id, id))
+      .limit(1);
+
+    if (!existing) {
+      res.status(404).json({ error: "Review not found" });
+      return;
+    }
+
+    const [updated] = await db
+      .update(productReviewsTable)
+      .set({ isApproved })
+      .where(eq(productReviewsTable.id, id))
+      .returning();
+
+    // Award one-time bonus points the first time a review is approved
+    if (isApproved && !existing.isApproved && existing.customerId) {
+      const [alreadyAwarded] = await db
+        .select({ id: loyaltyTransactionsTable.id })
+        .from(loyaltyTransactionsTable)
+        .where(eq(loyaltyTransactionsTable.description, `Bonus: review #${existing.id} approved`))
+        .limit(1);
+      if (!alreadyAwarded) {
+        await db.insert(loyaltyTransactionsTable).values({
+          customerId: existing.customerId,
+          type: "earned",
+          points: 50,
+          description: `Bonus: review #${existing.id} approved`,
+        }).catch((err) => req.log.error({ err }, "Failed to award review bonus points"));
+      }
+    }
+
+    res.status(200).json(updated);
+  } catch (err) {
+    req.log.error({ err }, "Failed to update review");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/admin/reviews/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid review ID" });
+    return;
+  }
+
+  try {
+    const [deleted] = await db
+      .delete(productReviewsTable)
+      .where(eq(productReviewsTable.id, id))
+      .returning({ id: productReviewsTable.id });
+
+    if (!deleted) {
+      res.status(404).json({ error: "Review not found" });
+      return;
+    }
+
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to delete review");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;

@@ -1,1 +1,268 @@
-aW1wb3J0IHsgdXNlU3RhdGUsIHVzZUVmZmVjdCB9IGZyb20gInJlYWN0IjsKaW1wb3J0IHsgU2hpZWxkQ2hlY2ssIEFsZXJ0VHJpYW5nbGUgfSBmcm9tICJsdWNpZGUtcmVhY3QiOwoKY29uc3QgU1RPUkFHRV9LRVkgPSAib21uaXF1cmVfYWdlX3ZlcmlmaWVkIjsKY29uc3QgQ1VSUkVOVF9WRVJTSU9OID0gIjIiOwoKLy8gRGlzcGF0Y2hlZCBvbiB0aGUgd2luZG93IHRoZSBtb21lbnQgYSB2aXNpdG9yIGNsZWFycyB0aGUgYWdlIGdhdGUsIHNvIG90aGVyCi8vIG92ZXJsYXlzIChlLmcuIHRoZSBjaGF0IGJ1YmJsZSkgY2FuIHdhaXQgdG8gYXBwZWFyIHVudGlsIHRoZSBwYWdlIGlzCi8vIGFjdHVhbGx5IHVzYWJsZSBpbnN0ZWFkIG9mIHJhY2luZyB0aGUgZ2F0ZSBvbiB0aGVpciBvd24gdGltZXIuCmV4cG9ydCBjb25zdCBBR0VfVkVSSUZJRURfRVZFTlQgPSAib21uaXF1cmU6YWdlLXZlcmlmaWVkIjsKCmV4cG9ydCBmdW5jdGlvbiBoYXNWZXJpZmllZCgpOiBib29sZWFuIHsKICB0cnkgewogICAgcmV0dXJuIGxvY2FsU3RvcmFnZS5nZXRJdGVtKFNUT1JBR0VfS0VZKSA9PT0gQ1VSUkVOVF9WRVJTSU9OOwogIH0gY2F0Y2ggewogICAgcmV0dXJuIGZhbHNlOwogIH0KfQoKZnVuY3Rpb24gc2V0VmVyaWZpZWQoKSB7CiAgdHJ5IHsKICAgIGxvY2FsU3RvcmFnZS5zZXRJdGVtKFNUT1JBR0VfS0VZLCBDVVJSRU5UX1ZFUlNJT04pOwogIH0gY2F0Y2gge30KICB0cnkgewogICAgd2luZG93LmRpc3BhdGNoRXZlbnQobmV3IEV2ZW50KEFHRV9WRVJJRklFRF9FVkVOVCkpOwogIH0gY2F0Y2gge30KfQoKZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gQWdlR2F0ZSgpIHsKICBjb25zdCBbdmlzaWJsZSwgc2V0VmlzaWJsZV0gPSB1c2VTdGF0ZShmYWxzZSk7CiAgY29uc3QgW2NoZWNrZWQxOCwgc2V0Q2hlY2tlZDE4XSA9IHVzZVN0YXRlKGZhbHNlKTsKICBjb25zdCBbc2hha2UsIHNldFNoYWtlXSA9IHVzZVN0YXRlKGZhbHNlKTsKCiAgdXNlRWZmZWN0KCgpID0+IHsKICAgIC8vIFNraXAgYWdlIGdhdGUgaW4gZGV2ZWxvcG1lbnQgc28gdGhlIHByZXZpZXcgcGFuZSB3b3JrcyB3aXRob3V0IGZyaWN0aW9uCiAgICBpZiAoaW1wb3J0Lm1ldGEuZW52LkRFVikgcmV0dXJuOwogICAgaWYgKCFoYXNWZXJpZmllZCgpKSB7CiAgICAgIHNldFZpc2libGUodHJ1ZSk7CiAgICAgIGRvY3VtZW50LmJvZHkuc3R5bGUub3ZlcmZsb3cgPSAiaGlkZGVuIjsKICAgIH0KICAgIHJldHVybiAoKSA9PiB7CiAgICAgIGRvY3VtZW50LmJvZHkuc3R5bGUub3ZlcmZsb3cgPSAiIjsKICAgIH07CiAgfSwgW10pOwoKICBpZiAoIXZpc2libGUpIHJldHVybiBudWxsOwoKICBmdW5jdGlvbiBoYW5kbGVFbnRlcigpIHsKICAgIGlmICghY2hlY2tlZDE4KSB7CiAgICAgIHNldFNoYWtlKHRydWUpOwogICAgICBzZXRUaW1lb3V0KCgpID0+IHNldFNoYWtlKGZhbHNlKSwgNTAwKTsKICAgICAgcmV0dXJuOwogICAgfQogICAgc2V0VmVyaWZpZWQoKTsKICAgIGRvY3VtZW50LmJvZHkuc3R5bGUub3ZlcmZsb3cgPSAiIjsKICAgIHNldFZpc2libGUoZmFsc2UpOwogIH0KCiAgZnVuY3Rpb24gaGFuZGxlRXhpdCgpIHsKICAgIHdpbmRvdy5sb2NhdGlvbi5ocmVmID0gImh0dHBzOi8vd3d3Lmdvb2dsZS5jb20iOwogIH0KCiAgcmV0dXJuICgKICAgIDxkaXYKICAgICAgY2xhc3NOYW1lPSJmaXhlZCBpbnNldC0wIHotWzk5OTldIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIHAtNCIKICAgICAgc3R5bGU9e3sKICAgICAgICBiYWNrZ3JvdW5kOiAicmdiYSg1LCAxNSwgNDUsIDAuOTcpIiwKICAgICAgICBiYWNrZHJvcEZpbHRlcjogImJsdXIoOHB4KSIsCiAgICAgICAgV2Via2l0QmFja2Ryb3BGaWx0ZXI6ICJibHVyKDhweCkiLAogICAgICB9fQogICAgPgogICAgICB7LyogUmFkaWFsIGdsb3cgKi99CiAgICAgIDxkaXYKICAgICAgICBjbGFzc05hbWU9ImFic29sdXRlIGluc2V0LTAgcG9pbnRlci1ldmVudHMtbm9uZSIKICAgICAgICBzdHlsZT17ewogICAgICAgICAgYmFja2dyb3VuZDoKICAgICAgICAgICAgInJhZGlhbC1ncmFkaWVudChlbGxpcHNlIDYwJSA1MCUgYXQgNTAlIDUwJSwgcmdiYSgxOCw2NCwxNjAsMC4yMikgMCUsIHRyYW5zcGFyZW50IDcwJSkiLAogICAgICAgIH19CiAgICAgIC8+CgogICAgICB7LyogQ2FyZCAqL30KICAgICAgPGRpdgogICAgICAgIGNsYXNzTmFtZT0icmVsYXRpdmUgdy1mdWxsIG1heC13LVs0NDBweF0gcm91bmRlZC0zeGwgb3ZlcmZsb3ctaGlkZGVuIgogICAgICAgIHN0eWxlPXt7CiAgICAgICAgICBiYWNrZ3JvdW5kOiAiI2ZmZiIsCiAgICAgICAgICBib3hTaGFkb3c6CiAgICAgICAgICAgICIwIDMycHggODBweCByZ2JhKDAsMCwwLDAuNTUpLCAwIDAgMCAxcHggcmdiYSgyNTUsMjU1LDI1NSwwLjA2KSIsCiAgICAgICAgfX0KICAgICAgPgogICAgICAgIHsvKiBIZWFkZXIgKi99CiAgICAgICAgPGRpdgogICAgICAgICAgY2xhc3NOYW1lPSJweC04IHB0LTggcGItNyB0ZXh0LWNlbnRlciIKICAgICAgICAgIHN0eWxlPXt7CiAgICAgICAgICAgIGJhY2tncm91bmQ6ICJsaW5lYXItZ3JhZGllbnQoMTYwZGVnLCAjMDcxQTRBIDAlLCAjMTI0MEEwIDEwMCUpIiwKICAgICAgICAgIH19CiAgICAgICAgPgogICAgICAgICAgey8qIE9tbmlRdXJlIGxvZ28gKi99CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBqdXN0aWZ5LWNlbnRlciBtYi01Ij4KICAgICAgICAgICAgPGRpdj4KICAgICAgICAgICAgICA8aW1nCiAgICAgICAgICAgICAgICBzcmM9Ii9vbW5pcXVyZS13b3JkbWFyay5wbmciCiAgICAgICAgICAgICAgICBhbHQ9Ik9tbmlRdXJlIgogICAgICAgICAgICAgICAgc3R5bGU9e3sgaGVpZ2h0OiAiNzhweCIsIHdpZHRoOiAiYXV0byIsIGRpc3BsYXk6ICJibG9jayIgfX0KICAgICAgICAgICAgICAvPgogICAgICAgICAgICAgIDxzcGFuIHN0eWxlPXt7IGRpc3BsYXk6ICJibG9jayIsIG1hcmdpbkxlZnQ6ICIzMyUiLCB3aWR0aDogIjYxJSIsIHRleHRBbGlnbjogImNlbnRlciIsIGNvbG9yOiAicmdiYSgyNTUsMjU1LDI1NSwwLjgyKSIsIGZvbnRTaXplOiAiOXB4IiwgZm9udFdlaWdodDogNzAwLCBsZXR0ZXJTcGFjaW5nOiAiMC4xOGVtIiwgb3ZlcmZsb3c6ICJoaWRkZW4iLCBtYXJnaW5Ub3A6ICIzcHgiIH19PgogICAgICAgICAgICAgICAgUEVQVElERSBSRVNFQVJDSCBJTlNUSVRVVEUKICAgICAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgPC9kaXY+CgogICAgICAgICAgey8qIDE4KyBiYWRnZSAqL30KICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGp1c3RpZnktY2VudGVyIG1iLTMiPgogICAgICAgICAgICA8c3BhbgogICAgICAgICAgICAgIGNsYXNzTmFtZT0iZm9udC1ibGFjayIKICAgICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgICAgZm9udFNpemU6ICI1NnB4IiwKICAgICAgICAgICAgICAgIGxpbmVIZWlnaHQ6IDEsCiAgICAgICAgICAgICAgICBjb2xvcjogIiNmZmYiLAogICAgICAgICAgICAgICAgbGV0dGVyU3BhY2luZzogIi0zcHgiLAogICAgICAgICAgICAgICAgdGV4dFNoYWRvdzogIjAgMnB4IDI0cHggcmdiYSgxNDcsMTk3LDI1MywwLjQ1KSIsCiAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgPgogICAgICAgICAgICAgIDE4KwogICAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICA8L2Rpdj4KCiAgICAgICAgICA8aDEgY2xhc3NOYW1lPSJmb250LWJvbGQgdGV4dC13aGl0ZSIgc3R5bGU9e3sgZm9udFNpemU6ICIxOXB4IiB9fT4KICAgICAgICAgICAgQWdlIFZlcmlmaWNhdGlvbgogICAgICAgICAgPC9oMT4KICAgICAgICA8L2Rpdj4KCiAgICAgICAgey8qIFJVTyBwaWxsIOKAlCBvdmVybGFwcyB0aGUgaGVhZGVyICovfQogICAgICAgIDxkaXYKICAgICAgICAgIGNsYXNzTmFtZT0ibXgtNiAtbXQtMyByb3VuZGVkLXhsIHB4LTQgcHktMi41IGZsZXggaXRlbXMtY2VudGVyIGdhcC0yLjUiCiAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICBiYWNrZ3JvdW5kOiAiI0ZFRjJGMiIsCiAgICAgICAgICAgIGJvcmRlcjogIjFweCBzb2xpZCAjRkVDQUNBIiwKICAgICAgICAgICAgYm94U2hhZG93OiAiMCAycHggOHB4IHJnYmEoMCwwLDAsMC4wNykiLAogICAgICAgICAgfX0KICAgICAgICA+CiAgICAgICAgICA8QWxlcnRUcmlhbmdsZSBzaXplPXsxNX0gc3R5bGU9e3sgY29sb3I6ICIjREMyNjI2IiwgZmxleFNocmluazogMCB9fSAvPgogICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXhzIGZvbnQtbWVkaXVtIGxlYWRpbmctcmVsYXhlZCIgc3R5bGU9e3sgY29sb3I6ICIjOTkxQjFCIiB9fT4KICAgICAgICAgICAgUHJvZHVjdHMgYXJlIDxzdHJvbmc+bm90PC9zdHJvbmc+IGFwcHJvdmVkIGZvciBodW1hbiBvciB2ZXRlcmluYXJ5CiAgICAgICAgICAgIHVzZS4gRm9yIGluLXZpdHJvIHJlc2VhcmNoIG9ubHkuCiAgICAgICAgICA8L3A+CiAgICAgICAgPC9kaXY+CgogICAgICAgIHsvKiBDaGVja2JveCAqL30KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0icHgtNiBwdC01IHBiLTIiPgogICAgICAgICAgPGxhYmVsCiAgICAgICAgICAgIGNsYXNzTmFtZT0iZmxleCBpdGVtcy1zdGFydCBnYXAtMyBjdXJzb3ItcG9pbnRlciByb3VuZGVkLXhsIHAtMy41IgogICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgIGJhY2tncm91bmQ6IGNoZWNrZWQxOCA/ICIjRUVGNEZGIiA6ICIjRjhGQUZDIiwKICAgICAgICAgICAgICBib3JkZXI6IGAxLjVweCBzb2xpZCAke2NoZWNrZWQxOCA/ICIjQkZEQkZFIiA6ICIjRTJFOEYwIn1gLAogICAgICAgICAgICAgIHRyYW5zaXRpb246ICJiYWNrZ3JvdW5kIDAuMTVzLCBib3JkZXItY29sb3IgMC4xNXMiLAogICAgICAgICAgICB9fQogICAgICAgICAgPgogICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0icmVsYXRpdmUgZmxleC1zaHJpbmstMCBtdC0wLjUiPgogICAgICAgICAgICAgIDxpbnB1dAogICAgICAgICAgICAgICAgdHlwZT0iY2hlY2tib3giCiAgICAgICAgICAgICAgICBjaGVja2VkPXtjaGVja2VkMTh9CiAgICAgICAgICAgICAgICBvbkNoYW5nZT17ZSA9PiBzZXRDaGVja2VkMTgoZS50YXJnZXQuY2hlY2tlZCl9CiAgICAgICAgICAgICAgICBjbGFzc05hbWU9InNyLW9ubHkiCiAgICAgICAgICAgICAgLz4KICAgICAgICAgICAgICA8ZGl2CiAgICAgICAgICAgICAgICBjbGFzc05hbWU9InctNSBoLTUgcm91bmRlZC1tZCBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciIKICAgICAgICAgICAgICAgIHN0eWxlPXt7CiAgICAgICAgICAgICAgICAgIGJhY2tncm91bmQ6IGNoZWNrZWQxOCA/ICIjMTI0MEEwIiA6ICIjZmZmIiwKICAgICAgICAgICAgICAgICAgYm9yZGVyOiBgMnB4IHNvbGlkICR7Y2hlY2tlZDE4ID8gIiMxMjQwQTAiIDogIiNDQkQ1RTEifWAsCiAgICAgICAgICAgICAgICAgIHRyYW5zaXRpb246ICJhbGwgMC4xNXMiLAogICAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICB7Y2hlY2tlZDE4ICYmICgKICAgICAgICAgICAgICAgICAgPHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDExIDgiIGZpbGw9Im5vbmUiPgogICAgICAgICAgICAgICAgICAgIDxwYXRoCiAgICAgICAgICAgICAgICAgICAgICBkPSJNMSA0TDQgN0wxMCAxIgogICAgICAgICAgICAgICAgICAgICAgc3Ryb2tlPSJ3aGl0ZSIKICAgICAgICAgICAgICAgICAgICAgIHN0cm9rZVdpZHRoPSIyIgogICAgICAgICAgICAgICAgICAgICAgc3Ryb2tlTGluZWNhcD0icm91bmQiCiAgICAgICAgICAgICAgICAgICAgICBzdHJva2VMaW5lam9pbj0icm91bmQiCiAgICAgICAgICAgICAgICAgICAgLz4KICAgICAgICAgICAgICAgICAgPC9zdmc+CiAgICAgICAgICAgICAgICApfQogICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJ0ZXh0LXNtIGxlYWRpbmctcmVsYXhlZCIgc3R5bGU9e3sgY29sb3I6ICIjMEYxNzJBIiB9fT4KICAgICAgICAgICAgICA8c3Ryb25nPkkgY29uZmlybSBJIGFtIDE4IHllYXJzIG9mIGFnZSBvciBvbGRlci48L3N0cm9uZz4KICAgICAgICAgICAgPC9zcGFuPgogICAgICAgICAgPC9sYWJlbD4KICAgICAgICA8L2Rpdj4KCiAgICAgICAgey8qIFZhbGlkYXRpb24gaGludCAqL30KICAgICAgICA8ZGl2CiAgICAgICAgICBjbGFzc05hbWU9Im14LTYgbWItNCBtdC0yIHRleHQtY2VudGVyIHRleHQteHMiCiAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICBjb2xvcjogIiM5NEEzQjgiLAogICAgICAgICAgICBtaW5IZWlnaHQ6ICIxNnB4IiwKICAgICAgICAgICAgb3BhY2l0eTogY2hlY2tlZDE4ID8gMCA6IDEsCiAgICAgICAgICAgIHRyYW5zaXRpb246ICJvcGFjaXR5IDAuMnMiLAogICAgICAgICAgfX0KICAgICAgICA+CiAgICAgICAgICBQbGVhc2UgY29uZmlybSB5b3UgYXJlIDE4IG9yIG9sZGVyIHRvIGNvbnRpbnVlLgogICAgICAgIDwvZGl2PgoKICAgICAgICB7LyogQnV0dG9ucyAqL30KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0icHgtNiBwYi01IHNwYWNlLXktMyI+CiAgICAgICAgICA8YnV0dG9uCiAgICAgICAgICAgIG9uQ2xpY2s9e2hhbmRsZUVudGVyfQogICAgICAgICAgICBjbGFzc05hbWU9e2B3LWZ1bGwgZm9udC1ib2xkIHB5LTMuNSByb3VuZGVkLXhsIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIGdhcC0yICR7c2hha2UgPyAiYW5pbWF0ZS1ib3VuY2UiIDogIiJ9YH0KICAgICAgICAgICAgc3R5bGU9e3sKICAgICAgICAgICAgICBiYWNrZ3JvdW5kOiBjaGVja2VkMTgKICAgICAgICAgICAgICAgID8gImxpbmVhci1ncmFkaWVudCgxMzVkZWcsICMwRDI1NjUsICMxQjVDQjUpIgogICAgICAgICAgICAgICAgOiAiI0NCRDVFMSIsCiAgICAgICAgICAgICAgY29sb3I6IGNoZWNrZWQxOCA/ICIjZmZmIiA6ICIjOTRBM0I4IiwKICAgICAgICAgICAgICBjdXJzb3I6IGNoZWNrZWQxOCA/ICJwb2ludGVyIiA6ICJub3QtYWxsb3dlZCIsCiAgICAgICAgICAgICAgZm9udFNpemU6ICIxNXB4IiwKICAgICAgICAgICAgICBib3hTaGFkb3c6IGNoZWNrZWQxOAogICAgICAgICAgICAgICAgPyAiMCA0cHggMjBweCByZ2JhKDE4LDY0LDE2MCwwLjM1KSIKICAgICAgICAgICAgICAgIDogIm5vbmUiLAogICAgICAgICAgICAgIHRyYW5zaXRpb246ICJhbGwgMC4ycyBlYXNlIiwKICAgICAgICAgICAgfX0KICAgICAgICAgID4KICAgICAgICAgICAge2NoZWNrZWQxOCAmJiA8U2hpZWxkQ2hlY2sgc2l6ZT17MTh9IC8+fQogICAgICAgICAgICBFbnRlciBTaXRlCiAgICAgICAgICA8L2J1dHRvbj4KCiAgICAgICAgICA8YnV0dG9uCiAgICAgICAgICAgIG9uQ2xpY2s9e2hhbmRsZUV4aXR9CiAgICAgICAgICAgIGNsYXNzTmFtZT0idy1mdWxsIGZvbnQtbWVkaXVtIHB5LTMgcm91bmRlZC14bCBob3ZlcjpiZy1zbGF0ZS01MCIKICAgICAgICAgICAgc3R5bGU9e3sKICAgICAgICAgICAgICBiYWNrZ3JvdW5kOiAidHJhbnNwYXJlbnQiLAogICAgICAgICAgICAgIGNvbG9yOiAiIzY0NzQ4QiIsCiAgICAgICAgICAgICAgZm9udFNpemU6ICIxNHB4IiwKICAgICAgICAgICAgICBib3JkZXI6ICIxLjVweCBzb2xpZCAjRTJFOEYwIiwKICAgICAgICAgICAgICB0cmFuc2l0aW9uOiAiYmFja2dyb3VuZCAwLjE1cyIsCiAgICAgICAgICAgIH19CiAgICAgICAgICA+CiAgICAgICAgICAgIEkgYW0gdW5kZXIgMTgg4oCUIExlYXZlCiAgICAgICAgICA8L2J1dHRvbj4KICAgICAgICA8L2Rpdj4KCiAgICAgICAgey8qIEZvb3RlciAqL30KICAgICAgICA8ZGl2CiAgICAgICAgICBjbGFzc05hbWU9InB4LTYgcGItNiB0ZXh0LWNlbnRlciB0ZXh0LXhzIGxlYWRpbmctcmVsYXhlZCIKICAgICAgICAgIHN0eWxlPXt7IGNvbG9yOiAiIzk0QTNCOCIgfX0KICAgICAgICA+CiAgICAgICAgICBCeSBlbnRlcmluZyB5b3UgYWdyZWUgdG8gb3VyeyIgIn0KICAgICAgICAgIDxhCiAgICAgICAgICAgIGhyZWY9Ii90ZXJtcyIKICAgICAgICAgICAgb25DbGljaz17ZSA9PiBlLnN0b3BQcm9wYWdhdGlvbigpfQogICAgICAgICAgICBzdHlsZT17eyBjb2xvcjogIiMxQjVDQjUiLCB0ZXh0RGVjb3JhdGlvbjogInVuZGVybGluZSIgfX0KICAgICAgICAgID4KICAgICAgICAgICAgVGVybXMgJiBDb25kaXRpb25zCiAgICAgICAgICA8L2E+eyIgIn0KICAgICAgICAgIGFuZHsiICJ9CiAgICAgICAgICA8YQogICAgICAgICAgICBocmVmPSIvcHJpdmFjeSIKICAgICAgICAgICAgb25DbGljaz17ZSA9PiBlLnN0b3BQcm9wYWdhdGlvbigpfQogICAgICAgICAgICBzdHlsZT17eyBjb2xvcjogIiMxQjVDQjUiLCB0ZXh0RGVjb3JhdGlvbjogInVuZGVybGluZSIgfX0KICAgICAgICAgID4KICAgICAgICAgICAgUHJpdmFjeSBQb2xpY3kKICAgICAgICAgIDwvYT4KICAgICAgICAgIC4gU3RvcmVkIGluIHlvdXIgYnJvd3NlciBmb3IgdGhpcyBkZXZpY2Ugb25seS4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KICApOwp9Cg==
+import { useState, useEffect } from "react";
+import { ShieldCheck, AlertTriangle } from "lucide-react";
+
+const STORAGE_KEY = "omniqure_age_verified";
+const CURRENT_VERSION = "2";
+
+// Dispatched on the window the moment a visitor clears the age gate, so other
+// overlays (e.g. the chat bubble) can wait to appear until the page is
+// actually usable instead of racing the gate on their own timer.
+export const AGE_VERIFIED_EVENT = "omniqure:age-verified";
+
+export function hasVerified(): boolean {
+  try {
+    return localStorage.getItem(STORAGE_KEY) === CURRENT_VERSION;
+  } catch {
+    return false;
+  }
+}
+
+function setVerified() {
+  try {
+    localStorage.setItem(STORAGE_KEY, CURRENT_VERSION);
+  } catch {}
+  try {
+    window.dispatchEvent(new Event(AGE_VERIFIED_EVENT));
+  } catch {}
+}
+
+export default function AgeGate() {
+  const [visible, setVisible] = useState(false);
+  const [checked18, setChecked18] = useState(false);
+  const [shake, setShake] = useState(false);
+
+  useEffect(() => {
+    // Skip age gate in development so the preview pane works without friction
+    if (import.meta.env.DEV) return;
+    if (!hasVerified()) {
+      setVisible(true);
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  if (!visible) return null;
+
+  function handleEnter() {
+    if (!checked18) {
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
+      return;
+    }
+    setVerified();
+    document.body.style.overflow = "";
+    setVisible(false);
+  }
+
+  function handleExit() {
+    window.location.href = "https://www.google.com";
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+      style={{
+        background: "rgba(5, 15, 45, 0.97)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+      }}
+    >
+      {/* Radial glow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(18,64,160,0.22) 0%, transparent 70%)",
+        }}
+      />
+
+      {/* Card */}
+      <div
+        className="relative w-full max-w-[440px] rounded-3xl overflow-hidden"
+        style={{
+          background: "#fff",
+          boxShadow:
+            "0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06)",
+        }}
+      >
+        {/* Header */}
+        <div
+          className="px-8 pt-8 pb-7 text-center"
+          style={{
+            background: "linear-gradient(160deg, #071A4A 0%, #1240A0 100%)",
+          }}
+        >
+          {/* OmniQure logo */}
+          <div className="flex justify-center mb-5">
+            <div>
+              <img
+                src="/omniqure-wordmark.png"
+                alt="OmniQure"
+                style={{ height: "78px", width: "auto", display: "block" }}
+              />
+              <span style={{ display: "block", marginLeft: "33%", width: "61%", textAlign: "center", color: "rgba(255,255,255,0.82)", fontSize: "9px", fontWeight: 700, letterSpacing: "0.18em", overflow: "hidden", marginTop: "3px" }}>
+                PEPTIDE RESEARCH INSTITUTE
+              </span>
+            </div>
+          </div>
+
+          {/* 18+ badge */}
+          <div className="flex justify-center mb-3">
+            <span
+              className="font-black"
+              style={{
+                fontSize: "56px",
+                lineHeight: 1,
+                color: "#fff",
+                letterSpacing: "-3px",
+                textShadow: "0 2px 24px rgba(147,197,253,0.45)",
+              }}
+            >
+              18+
+            </span>
+          </div>
+
+          <h1 className="font-bold text-white" style={{ fontSize: "19px" }}>
+            Age Verification
+          </h1>
+        </div>
+
+        {/* RUO pill — overlaps the header */}
+        <div
+          className="mx-6 -mt-3 rounded-xl px-4 py-2.5 flex items-center gap-2.5"
+          style={{
+            background: "#FEF2F2",
+            border: "1px solid #FECACA",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+          }}
+        >
+          <AlertTriangle size={15} style={{ color: "#DC2626", flexShrink: 0 }} />
+          <p className="text-xs font-medium leading-relaxed" style={{ color: "#991B1B" }}>
+            Products are <strong>not</strong> approved for human or veterinary
+            use. For in-vitro research only.
+          </p>
+        </div>
+
+        {/* Checkbox */}
+        <div className="px-6 pt-5 pb-2">
+          <label
+            className="flex items-start gap-3 cursor-pointer rounded-xl p-3.5"
+            style={{
+              background: checked18 ? "#EEF4FF" : "#F8FAFC",
+              border: `1.5px solid ${checked18 ? "#BFDBFE" : "#E2E8F0"}`,
+              transition: "background 0.15s, border-color 0.15s",
+            }}
+          >
+            <div className="relative flex-shrink-0 mt-0.5">
+              <input
+                type="checkbox"
+                checked={checked18}
+                onChange={e => setChecked18(e.target.checked)}
+                className="sr-only"
+              />
+              <div
+                className="w-5 h-5 rounded-md flex items-center justify-center"
+                style={{
+                  background: checked18 ? "#1240A0" : "#fff",
+                  border: `2px solid ${checked18 ? "#1240A0" : "#CBD5E1"}`,
+                  transition: "all 0.15s",
+                }}
+              >
+                {checked18 && (
+                  <svg width="11" height="8" viewBox="0 0 11 8" fill="none">
+                    <path
+                      d="M1 4L4 7L10 1"
+                      stroke="white"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+              </div>
+            </div>
+            <span className="text-sm leading-relaxed" style={{ color: "#0F172A" }}>
+              <strong>I confirm I am 18 years of age or older.</strong>
+            </span>
+          </label>
+        </div>
+
+        {/* Validation hint */}
+        <div
+          className="mx-6 mb-4 mt-2 text-center text-xs"
+          style={{
+            color: "#94A3B8",
+            minHeight: "16px",
+            opacity: checked18 ? 0 : 1,
+            transition: "opacity 0.2s",
+          }}
+        >
+          Please confirm you are 18 or older to continue.
+        </div>
+
+        {/* Buttons */}
+        <div className="px-6 pb-5 space-y-3">
+          <button
+            onClick={handleEnter}
+            className={`w-full font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 ${shake ? "animate-bounce" : ""}`}
+            style={{
+              background: checked18
+                ? "linear-gradient(135deg, #0D2565, #1B5CB5)"
+                : "#CBD5E1",
+              color: checked18 ? "#fff" : "#94A3B8",
+              cursor: checked18 ? "pointer" : "not-allowed",
+              fontSize: "15px",
+              boxShadow: checked18
+                ? "0 4px 20px rgba(18,64,160,0.35)"
+                : "none",
+              transition: "all 0.2s ease",
+            }}
+          >
+            {checked18 && <ShieldCheck size={18} />}
+            Enter Site
+          </button>
+
+          <button
+            onClick={handleExit}
+            className="w-full font-medium py-3 rounded-xl hover:bg-slate-50"
+            style={{
+              background: "transparent",
+              color: "#64748B",
+              fontSize: "14px",
+              border: "1.5px solid #E2E8F0",
+              transition: "background 0.15s",
+            }}
+          >
+            I am under 18 — Leave
+          </button>
+        </div>
+
+        {/* Footer */}
+        <div
+          className="px-6 pb-6 text-center text-xs leading-relaxed"
+          style={{ color: "#94A3B8" }}
+        >
+          By entering you agree to our{" "}
+          <a
+            href="/terms"
+            onClick={e => e.stopPropagation()}
+            style={{ color: "#1B5CB5", textDecoration: "underline" }}
+          >
+            Terms & Conditions
+          </a>{" "}
+          and{" "}
+          <a
+            href="/privacy"
+            onClick={e => e.stopPropagation()}
+            style={{ color: "#1B5CB5", textDecoration: "underline" }}
+          >
+            Privacy Policy
+          </a>
+          . Stored in your browser for this device only.
+        </div>
+      </div>
+    </div>
+  );
+}

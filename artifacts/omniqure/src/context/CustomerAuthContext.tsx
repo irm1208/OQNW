@@ -1,1 +1,101 @@
-aW1wb3J0IHsKICBjcmVhdGVDb250ZXh0LAogIHVzZUNvbnRleHQsCiAgdXNlU3RhdGUsCiAgdXNlRWZmZWN0LAogIHVzZUNhbGxiYWNrLAogIHR5cGUgUmVhY3ROb2RlLAp9IGZyb20gInJlYWN0IjsKCmV4cG9ydCB0eXBlIEN1c3RvbWVyVXNlciA9IHsKICBpZDogbnVtYmVyOwogIGVtYWlsOiBzdHJpbmc7CiAgZmlyc3ROYW1lOiBzdHJpbmc7CiAgbGFzdE5hbWU6IHN0cmluZzsKfTsKCnR5cGUgQ3VzdG9tZXJBdXRoQ29udGV4dFR5cGUgPSB7CiAgY3VzdG9tZXI6IEN1c3RvbWVyVXNlciB8IG51bGw7CiAgbG9hZGluZ0F1dGg6IGJvb2xlYW47CiAgc2lnbkluOiAoZW1haWw6IHN0cmluZywgcGFzc3dvcmQ6IHN0cmluZykgPT4gUHJvbWlzZTx2b2lkPjsKICByZWdpc3RlcjogKGRhdGE6IHsKICAgIGVtYWlsOiBzdHJpbmc7CiAgICBwYXNzd29yZDogc3RyaW5nOwogICAgZmlyc3ROYW1lOiBzdHJpbmc7CiAgICBsYXN0TmFtZTogc3RyaW5nOwogICAgaW5zdGl0dXRpb24/OiBzdHJpbmc7CiAgICByZWZlcnJlZEJ5Pzogc3RyaW5nOwogIH0pID0+IFByb21pc2U8dm9pZD47CiAgc2lnbk91dDogKCkgPT4gUHJvbWlzZTx2b2lkPjsKfTsKCmNvbnN0IEN1c3RvbWVyQXV0aENvbnRleHQgPSBjcmVhdGVDb250ZXh0PEN1c3RvbWVyQXV0aENvbnRleHRUeXBlIHwgbnVsbD4obnVsbCk7Cgpjb25zdCBCQVNFX1VSTCA9IGltcG9ydC5tZXRhLmVudi5CQVNFX1VSTCA/PyAiLyI7CmZ1bmN0aW9uIGFwaVVybChwYXRoOiBzdHJpbmcpIHsKICByZXR1cm4gYCR7QkFTRV9VUkx9YXBpLyR7cGF0aH1gLnJlcGxhY2UoL1wvKy9nLCAiLyIpLnJlcGxhY2UoL15cL1wvLywgIi8iKTsKfQoKZXhwb3J0IGZ1bmN0aW9uIEN1c3RvbWVyQXV0aFByb3ZpZGVyKHsgY2hpbGRyZW4gfTogeyBjaGlsZHJlbjogUmVhY3ROb2RlIH0pIHsKICBjb25zdCBbY3VzdG9tZXIsIHNldEN1c3RvbWVyXSA9IHVzZVN0YXRlPEN1c3RvbWVyVXNlciB8IG51bGw+KG51bGwpOwogIGNvbnN0IFtsb2FkaW5nQXV0aCwgc2V0TG9hZGluZ0F1dGhdID0gdXNlU3RhdGUodHJ1ZSk7CgogIHVzZUVmZmVjdCgoKSA9PiB7CiAgICBmZXRjaChhcGlVcmwoImF1dGgvbWUiKSwgeyBjcmVkZW50aWFsczogImluY2x1ZGUiIH0pCiAgICAgIC50aGVuKChyKSA9PiAoci5vayA/IChyLmpzb24oKSBhcyBQcm9taXNlPEN1c3RvbWVyVXNlcj4pIDogbnVsbCkpCiAgICAgIC50aGVuKChkYXRhKSA9PiBzZXRDdXN0b21lcihkYXRhID8/IG51bGwpKQogICAgICAuY2F0Y2goKCkgPT4gc2V0Q3VzdG9tZXIobnVsbCkpCiAgICAgIC5maW5hbGx5KCgpID0+IHNldExvYWRpbmdBdXRoKGZhbHNlKSk7CiAgfSwgW10pOwoKICBjb25zdCBzaWduSW4gPSB1c2VDYWxsYmFjayhhc3luYyAoZW1haWw6IHN0cmluZywgcGFzc3dvcmQ6IHN0cmluZykgPT4gewogICAgY29uc3QgcmVzID0gYXdhaXQgZmV0Y2goYXBpVXJsKCJhdXRoL2xvZ2luIiksIHsKICAgICAgbWV0aG9kOiAiUE9TVCIsCiAgICAgIGhlYWRlcnM6IHsgIkNvbnRlbnQtVHlwZSI6ICJhcHBsaWNhdGlvbi9qc29uIiB9LAogICAgICBjcmVkZW50aWFsczogImluY2x1ZGUiLAogICAgICBib2R5OiBKU09OLnN0cmluZ2lmeSh7IGVtYWlsLCBwYXNzd29yZCB9KSwKICAgIH0pOwogICAgY29uc3QgZGF0YSA9IChhd2FpdCByZXMuanNvbigpKSBhcyBDdXN0b21lclVzZXIgJiB7IGVycm9yPzogc3RyaW5nIH07CiAgICBpZiAoIXJlcy5vaykgdGhyb3cgbmV3IEVycm9yKGRhdGEuZXJyb3IgPz8gIlNpZ24gaW4gZmFpbGVkIik7CiAgICBzZXRDdXN0b21lcih7IGlkOiBkYXRhLmlkLCBlbWFpbDogZGF0YS5lbWFpbCwgZmlyc3ROYW1lOiBkYXRhLmZpcnN0TmFtZSwgbGFzdE5hbWU6IGRhdGEubGFzdE5hbWUgfSk7CiAgfSwgW10pOwoKICBjb25zdCByZWdpc3RlciA9IHVzZUNhbGxiYWNrKAogICAgYXN5bmMgKGZvcm06IHsKICAgICAgZW1haWw6IHN0cmluZzsKICAgICAgcGFzc3dvcmQ6IHN0cmluZzsKICAgICAgZmlyc3ROYW1lOiBzdHJpbmc7CiAgICAgIGxhc3ROYW1lOiBzdHJpbmc7CiAgICAgIGluc3RpdHV0aW9uPzogc3RyaW5nOwogICAgICByZWZlcnJlZEJ5Pzogc3RyaW5nOwogICAgfSkgPT4gewogICAgICBjb25zdCByZXMgPSBhd2FpdCBmZXRjaChhcGlVcmwoImF1dGgvcmVnaXN0ZXIiKSwgewogICAgICAgIG1ldGhvZDogIlBPU1QiLAogICAgICAgIGhlYWRlcnM6IHsgIkNvbnRlbnQtVHlwZSI6ICJhcHBsaWNhdGlvbi9qc29uIiB9LAogICAgICAgIGNyZWRlbnRpYWxzOiAiaW5jbHVkZSIsCiAgICAgICAgYm9keTogSlNPTi5zdHJpbmdpZnkoZm9ybSksCiAgICAgIH0pOwogICAgICBjb25zdCBkYXRhID0gKGF3YWl0IHJlcy5qc29uKCkpIGFzIEN1c3RvbWVyVXNlciAmIHsgZXJyb3I/OiBzdHJpbmcgfTsKICAgICAgaWYgKCFyZXMub2spIHRocm93IG5ldyBFcnJvcihkYXRhLmVycm9yID8/ICJSZWdpc3RyYXRpb24gZmFpbGVkIik7CiAgICAgIHNldEN1c3RvbWVyKHsgaWQ6IGRhdGEuaWQsIGVtYWlsOiBkYXRhLmVtYWlsLCBmaXJzdE5hbWU6IGRhdGEuZmlyc3ROYW1lLCBsYXN0TmFtZTogZGF0YS5sYXN0TmFtZSB9KTsKICAgIH0sCiAgICBbXQogICk7CgogIGNvbnN0IHNpZ25PdXQgPSB1c2VDYWxsYmFjayhhc3luYyAoKSA9PiB7CiAgICBhd2FpdCBmZXRjaChhcGlVcmwoImF1dGgvbG9nb3V0IiksIHsgbWV0aG9kOiAiUE9TVCIsIGNyZWRlbnRpYWxzOiAiaW5jbHVkZSIgfSk7CiAgICBzZXRDdXN0b21lcihudWxsKTsKICB9LCBbXSk7CgogIHJldHVybiAoCiAgICA8Q3VzdG9tZXJBdXRoQ29udGV4dC5Qcm92aWRlciB2YWx1ZT17eyBjdXN0b21lciwgbG9hZGluZ0F1dGgsIHNpZ25JbiwgcmVnaXN0ZXIsIHNpZ25PdXQgfX0+CiAgICAgIHtjaGlsZHJlbn0KICAgIDwvQ3VzdG9tZXJBdXRoQ29udGV4dC5Qcm92aWRlcj4KICApOwp9CgpleHBvcnQgZnVuY3Rpb24gdXNlQ3VzdG9tZXJBdXRoKCkgewogIGNvbnN0IGN0eCA9IHVzZUNvbnRleHQoQ3VzdG9tZXJBdXRoQ29udGV4dCk7CiAgaWYgKCFjdHgpIHRocm93IG5ldyBFcnJvcigidXNlQ3VzdG9tZXJBdXRoIG11c3QgYmUgdXNlZCB3aXRoaW4gQ3VzdG9tZXJBdXRoUHJvdmlkZXIiKTsKICByZXR1cm4gY3R4Owp9Cg==
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  type ReactNode,
+} from "react";
+
+export type CustomerUser = {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+};
+
+type CustomerAuthContextType = {
+  customer: CustomerUser | null;
+  loadingAuth: boolean;
+  signIn: (email: string, password: string) => Promise<void>;
+  register: (data: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    institution?: string;
+    referredBy?: string;
+  }) => Promise<void>;
+  signOut: () => Promise<void>;
+};
+
+const CustomerAuthContext = createContext<CustomerAuthContextType | null>(null);
+
+const BASE_URL = import.meta.env.BASE_URL ?? "/";
+function apiUrl(path: string) {
+  return `${BASE_URL}api/${path}`.replace(/\/+/g, "/").replace(/^\/\//, "/");
+}
+
+export function CustomerAuthProvider({ children }: { children: ReactNode }) {
+  const [customer, setCustomer] = useState<CustomerUser | null>(null);
+  const [loadingAuth, setLoadingAuth] = useState(true);
+
+  useEffect(() => {
+    fetch(apiUrl("auth/me"), { credentials: "include" })
+      .then((r) => (r.ok ? (r.json() as Promise<CustomerUser>) : null))
+      .then((data) => setCustomer(data ?? null))
+      .catch(() => setCustomer(null))
+      .finally(() => setLoadingAuth(false));
+  }, []);
+
+  const signIn = useCallback(async (email: string, password: string) => {
+    const res = await fetch(apiUrl("auth/login"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
+    const data = (await res.json()) as CustomerUser & { error?: string };
+    if (!res.ok) throw new Error(data.error ?? "Sign in failed");
+    setCustomer({ id: data.id, email: data.email, firstName: data.firstName, lastName: data.lastName });
+  }, []);
+
+  const register = useCallback(
+    async (form: {
+      email: string;
+      password: string;
+      firstName: string;
+      lastName: string;
+      institution?: string;
+      referredBy?: string;
+    }) => {
+      const res = await fetch(apiUrl("auth/register"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(form),
+      });
+      const data = (await res.json()) as CustomerUser & { error?: string };
+      if (!res.ok) throw new Error(data.error ?? "Registration failed");
+      setCustomer({ id: data.id, email: data.email, firstName: data.firstName, lastName: data.lastName });
+    },
+    []
+  );
+
+  const signOut = useCallback(async () => {
+    await fetch(apiUrl("auth/logout"), { method: "POST", credentials: "include" });
+    setCustomer(null);
+  }, []);
+
+  return (
+    <CustomerAuthContext.Provider value={{ customer, loadingAuth, signIn, register, signOut }}>
+      {children}
+    </CustomerAuthContext.Provider>
+  );
+}
+
+export function useCustomerAuth() {
+  const ctx = useContext(CustomerAuthContext);
+  if (!ctx) throw new Error("useCustomerAuth must be used within CustomerAuthProvider");
+  return ctx;
+}

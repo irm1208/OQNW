@@ -1,1 +1,539 @@
-aW1wb3J0IGNyeXB0byBmcm9tICJjcnlwdG8iOwppbXBvcnQgeyBkYiB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyBzcWwgfSBmcm9tICJkcml6emxlLW9ybSI7CgpleHBvcnQgdHlwZSBEZWxpdmVyeUFkZHJlc3MgPSB7CiAgYWRkcmVzczE6IHN0cmluZzsKICBhZGRyZXNzMj86IHN0cmluZzsKICBjaXR5OiBzdHJpbmc7CiAgY291bnR5Pzogc3RyaW5nOwogIHBvc3Rjb2RlOiBzdHJpbmc7CiAgY291bnRyeTogc3RyaW5nOwp9OwoKZXhwb3J0IHR5cGUgVmVyaWZpZWRBZGRyZXNzID0gRGVsaXZlcnlBZGRyZXNzICYgewogIGNvdW50cnlDb2RlOiBzdHJpbmc7CiAgZm9ybWF0dGVkQWRkcmVzczogc3RyaW5nOwp9OwoKdHlwZSBOb21pbmF0aW1SZXN1bHQgPSB7CiAgZGlzcGxheV9uYW1lPzogc3RyaW5nOwogIHR5cGU/OiBzdHJpbmc7CiAgYWRkcmVzcz86IHsKICAgIGhvdXNlX251bWJlcj86IHN0cmluZzsKICAgIHJvYWQ/OiBzdHJpbmc7CiAgICBwZWRlc3RyaWFuPzogc3RyaW5nOwogICAgcmVzaWRlbnRpYWw/OiBzdHJpbmc7CiAgICB1bml0Pzogc3RyaW5nOwogICAgYXBhcnRtZW50Pzogc3RyaW5nOwogICAgc3VidXJiPzogc3RyaW5nOwogICAgY2l0eT86IHN0cmluZzsKICAgIHRvd24/OiBzdHJpbmc7CiAgICB2aWxsYWdlPzogc3RyaW5nOwogICAgbXVuaWNpcGFsaXR5Pzogc3RyaW5nOwogICAgY291bnR5Pzogc3RyaW5nOwogICAgc3RhdGU/OiBzdHJpbmc7CiAgICBwb3N0Y29kZT86IHN0cmluZzsKICAgIGNvdW50cnk/OiBzdHJpbmc7CiAgICBjb3VudHJ5X2NvZGU/OiBzdHJpbmc7CiAgfTsKfTsKCnR5cGUgTm9taW5hdGltU2VhcmNoSW5wdXQgPSBQaWNrPAogIERlbGl2ZXJ5QWRkcmVzcywKICAiYWRkcmVzczEiIHwgImFkZHJlc3MyIiB8ICJwb3N0Y29kZSIgfCAiY291bnRyeSIKPiAmIHsKICBjaXR5Pzogc3RyaW5nOwp9OwoKdHlwZSBWZXJpZmljYXRpb25Qcm9vZiA9IHsKICBhZGRyZXNzSGFzaDogc3RyaW5nOwogIGV4cGlyZXNBdDogbnVtYmVyOwogIGNhbm9uaWNhbDogVmVyaWZpZWRBZGRyZXNzOwp9OwoKY29uc3QgVkVSSUZJQ0FUSU9OX1RUTF9NUyA9IDE1ICogNjAgKiAxMDAwOwpjb25zdCBOT01JTkFUSU1fU0VBUkNIX1VSTCA9ICJodHRwczovL25vbWluYXRpbS5vcGVuc3RyZWV0bWFwLm9yZy9zZWFyY2giOwpjb25zdCBOT01JTkFUSU1fTUlOX1JFUVVFU1RfSU5URVJWQUxfTVMgPSAxXzAwMDsKY29uc3QgTk9NSU5BVElNX0FEVklTT1JZX0xPQ0tfS0VZID0gMjQ4XzEwNF8yMTE7CmNvbnN0IE5PTUlOQVRJTV9SRVFVRVNUX1RJTUVPVVRfTVMgPSA4XzAwMDsKY29uc3QgQUREUkVTU19TVUdHRVNUSU9OX0NBQ0hFX1RUTF9NUyA9IDYwXzAwMDsKY29uc3QgQUREUkVTU19TVUdHRVNUSU9OX0NBQ0hFX01BWF9FTlRSSUVTID0gMTAwOwp0eXBlIE5vbWluYXRpbVJhdGVMaW1pdGVyID0gPFQ+KHJlcXVlc3Q6ICgpID0+IFByb21pc2U8VD4pID0+IFByb21pc2U8VD47Cgpjb25zdCBhZGRyZXNzU3VnZ2VzdGlvbkNhY2hlID0gbmV3IE1hcDwKICBzdHJpbmcsCiAgeyBleHBpcmVzQXQ6IG51bWJlcjsgc3VnZ2VzdGlvbnM6IFZlcmlmaWVkQWRkcmVzc1tdIH0KPigpOwpjb25zdCBpbkZsaWdodEFkZHJlc3NTdWdnZXN0aW9ucyA9IG5ldyBNYXA8c3RyaW5nLCBQcm9taXNlPFZlcmlmaWVkQWRkcmVzc1tdPj4oKTsKCmNvbnN0IENPVU5UUllfQUxJQVNFUzogUmVjb3JkPHN0cmluZywgc3RyaW5nPiA9IHsKICAiYm9zbmlhIGFuZCBoZXJ6ZWdvdmluYSI6ICJCQSIsCiAgImN6ZWNoIHJlcHVibGljIjogIkNaIiwKICAiaG9uZyBrb25nIjogIkhLIiwKICAia29zb3ZvIjogIlhLIiwKICAibWFjYXUiOiAiTU8iLAogICJtb2xkb3ZhIjogIk1EIiwKICAibm9ydGggbWFjZWRvbmlhIjogIk1LIiwKICAic291dGgga29yZWEiOiAiS1IiLAogICJ0YWl3YW4iOiAiVFciLAogICJ0dXJrZXkiOiAiVFIiLAogICJ1bml0ZWQga2luZ2RvbSI6ICJHQiIsCiAgInVuaXRlZCBzdGF0ZXMiOiAiVVMiLAogICJ2aWV0bmFtIjogIlZOIiwKfTsKCmNvbnN0IElTT19SRUdJT05fQ09ERVMgPSAoCiAgIkFEIEFFIEFGIEFHIEFJIEFMIEFNIEFPIEFRIEFSIEFTIEFUIEFVIEFXIEFYIEFaICIgKwogICJCQSBCQiBCRCBCRSBCRiBCRyBCSCBCSSBCSiBCTCBCTSBCTiBCTyBCUSBCUiBCUyBCVCBCViBCVyBCWSBCWiAiICsKICAiQ0EgQ0MgQ0QgQ0YgQ0cgQ0ggQ0kgQ0sgQ0wgQ00gQ04gQ08gQ1IgQ1UgQ1YgQ1cgQ1ggQ1kgQ1ogIiArCiAgIkRFIERKIERLIERNIERPIERaIEVDIEVFIEVHIEVIIEVSIEVTIEVUIEZJIEZKIEZLIEZNIEZPIEZSICIgKwogICJHQSBHQiBHRCBHRSBHRiBHRyBHSCBHSSBHTCBHTSBHTiBHUCBHUSBHUiBHUyBHVCBHVSBHVyBHWSAiICsKICAiSEsgSE0gSE4gSFIgSFQgSFUgSUQgSUUgSUwgSU0gSU4gSU8gSVEgSVIgSVMgSVQgSkUgSk0gSk8gSlAgIiArCiAgIktFIEtHIEtIIEtJIEtNIEtOIEtQIEtSIEtXIEtZIEtaIExBIExCIExDIExJIExLIExSIExTIExUIExVIExWIExZICIgKwogICJNQSBNQyBNRCBNRSBNRiBNRyBNSCBNSyBNTCBNTSBNTiBNTyBNUCBNUSBNUiBNUyBNVCBNVSBNViBNVyBNWCBNWSBNWiAiICsKICAiTkEgTkMgTkUgTkYgTkcgTkkgTkwgTk8gTlAgTlIgTlUgTlogT00gUEEgUEUgUEYgUEcgUEggUEsgUEwgUE0gUE4gUFIgUFMgUFQgUFcgUFkgUUEgIiArCiAgIlJFIFJPIFJTIFJVIFJXIFNBIFNCIFNDIFNEIFNFIFNHIFNIIFNJIFNKIFNLIFNMIFNNIFNOIFNPIFNSIFNTIFNUIFNWIFNYIFNZIFNaICIgKwogICJUQyBURCBURiBURyBUSCBUSiBUSyBUTCBUTSBUTiBUTyBUUiBUVCBUViBUVyBUWiBVQSBVRyBVTSBVUyBVWSBVWiAiICsKICAiVkEgVkMgVkUgVkcgVkkgVk4gVlUgV0YgV1MgWEsgWUUgWVQgWkEgWk0gWlciCikuc3BsaXQoIiAiKTsKCmNvbnN0IFBPU1RDT0RFX09QVElPTkFMX0NPVU5UUllfQ09ERVMgPSBuZXcgU2V0KFsiQUUiLCAiSEsiLCAiTU8iLCAiUUEiXSk7CgpleHBvcnQgY2xhc3MgQWRkcmVzc1ZlcmlmaWNhdGlvbkVycm9yIGV4dGVuZHMgRXJyb3IgewogIGNvbnN0cnVjdG9yKAogICAgbWVzc2FnZTogc3RyaW5nLAogICAgcmVhZG9ubHkgc3RhdHVzOiBudW1iZXIsCiAgICByZWFkb25seSBjb2RlOgogICAgICB8ICJBRERSRVNTX05PVF9DT05GSVJNRUQiCiAgICAgIHwgIkFERFJFU1NfVE9PX0JST0FEIgogICAgICB8ICJBRERSRVNTX1ZFUklGSUNBVElPTl9VTkFWQUlMQUJMRSIKICAgICAgfCAiSU5WQUxJRF9DT1VOVFJZIiwKICApIHsKICAgIHN1cGVyKG1lc3NhZ2UpOwogIH0KfQoKZnVuY3Rpb24gbm9ybWFsaXplVGV4dCh2YWx1ZTogc3RyaW5nIHwgdW5kZWZpbmVkKTogc3RyaW5nIHsKICByZXR1cm4gKHZhbHVlID8/ICIiKQogICAgLm5vcm1hbGl6ZSgiTkZLQyIpCiAgICAudHJpbSgpCiAgICAucmVwbGFjZSgvXHMrL2csICIgIik7Cn0KCmZ1bmN0aW9uIGNvdW50cnlMb29rdXBLZXkodmFsdWU6IHN0cmluZyk6IHN0cmluZyB7CiAgcmV0dXJuIG5vcm1hbGl6ZVRleHQodmFsdWUpLnRvTG9jYWxlTG93ZXJDYXNlKCJlbi1HQiIpOwp9CgpmdW5jdGlvbiBidWlsZENvdW50cnlOYW1lTWFwKCk6IE1hcDxzdHJpbmcsIHN0cmluZz4gewogIGNvbnN0IGNvdW50cmllcyA9IG5ldyBNYXA8c3RyaW5nLCBzdHJpbmc+KCk7CiAgZm9yIChjb25zdCBbbmFtZSwgY29kZV0gb2YgT2JqZWN0LmVudHJpZXMoQ09VTlRSWV9BTElBU0VTKSkgewogICAgY291bnRyaWVzLnNldChuYW1lLCBjb2RlKTsKICB9CgogIHRyeSB7CiAgICBjb25zdCBkaXNwbGF5TmFtZXMgPSBuZXcgSW50bC5EaXNwbGF5TmFtZXMoWyJlbiJdLCB7IHR5cGU6ICJyZWdpb24iIH0pOwogICAgZm9yIChjb25zdCBjb2RlIG9mIElTT19SRUdJT05fQ09ERVMpIHsKICAgICAgY29uc3QgbmFtZSA9IGRpc3BsYXlOYW1lcy5vZihjb2RlKTsKICAgICAgaWYgKG5hbWUpIGNvdW50cmllcy5zZXQoY291bnRyeUxvb2t1cEtleShuYW1lKSwgY29kZSk7CiAgICB9CiAgfSBjYXRjaCB7CiAgICAvLyBUaGUgYWxpYXNlcyBhYm92ZSBjb3ZlciB0aGUgc3RvcmVmcm9udCdzIHByaW1hcnkgZGVzdGluYXRpb25zLiBBIGNhbGxlcgogICAgLy8gcmVjZWl2ZXMgYW4gZXhwbGljaXQgaW52YWxpZC1jb3VudHJ5IHJlc3BvbnNlIGlmIElDVSBkYXRhIGlzIHVuYXZhaWxhYmxlLgogIH0KCiAgcmV0dXJuIGNvdW50cmllczsKfQoKY29uc3QgQ09VTlRSWV9OQU1FX1RPX0NPREUgPSBidWlsZENvdW50cnlOYW1lTWFwKCk7CgpmdW5jdGlvbiBzaWduaW5nU2VjcmV0KCk6IHN0cmluZyB8IG51bGwgewogIGNvbnN0IHNlY3JldCA9IHByb2Nlc3MuZW52LlNFU1NJT05fU0VDUkVUPy50cmltKCk7CiAgcmV0dXJuIHNlY3JldCB8fCBudWxsOwp9CgpmdW5jdGlvbiBlbmNvZGVkSnNvbih2YWx1ZTogdW5rbm93bik6IHN0cmluZyB7CiAgcmV0dXJuIEJ1ZmZlci5mcm9tKEpTT04uc3RyaW5naWZ5KHZhbHVlKSkudG9TdHJpbmcoImJhc2U2NHVybCIpOwp9CgpmdW5jdGlvbiBzaWduKHZhbHVlOiBzdHJpbmcpOiBzdHJpbmcgfCBudWxsIHsKICBjb25zdCBzZWNyZXQgPSBzaWduaW5nU2VjcmV0KCk7CiAgcmV0dXJuIHNlY3JldAogICAgPyBjcnlwdG8uY3JlYXRlSG1hYygic2hhMjU2Iiwgc2VjcmV0KS51cGRhdGUodmFsdWUpLmRpZ2VzdCgiYmFzZTY0dXJsIikKICAgIDogbnVsbDsKfQoKZnVuY3Rpb24gc2FmZVNpZ25hdHVyZU1hdGNoZXMoYWN0dWFsOiBzdHJpbmcsIGV4cGVjdGVkOiBzdHJpbmcpOiBib29sZWFuIHsKICBjb25zdCBhY3R1YWxCdWZmZXIgPSBCdWZmZXIuZnJvbShhY3R1YWwpOwogIGNvbnN0IGV4cGVjdGVkQnVmZmVyID0gQnVmZmVyLmZyb20oZXhwZWN0ZWQpOwogIHJldHVybiAoCiAgICBhY3R1YWxCdWZmZXIubGVuZ3RoID09PSBleHBlY3RlZEJ1ZmZlci5sZW5ndGggJiYKICAgIGNyeXB0by50aW1pbmdTYWZlRXF1YWwoYWN0dWFsQnVmZmVyLCBleHBlY3RlZEJ1ZmZlcikKICApOwp9CgpleHBvcnQgZnVuY3Rpb24gY291bnRyeUNvZGVGb3JOYW1lKGNvdW50cnk6IHN0cmluZyk6IHN0cmluZyB8IG51bGwgewogIGNvbnN0IG5vcm1hbGl6ZWQgPSBub3JtYWxpemVUZXh0KGNvdW50cnkpOwogIGlmICgvXltBLVphLXpdezJ9JC8udGVzdChub3JtYWxpemVkKSkgcmV0dXJuIG5vcm1hbGl6ZWQudG9VcHBlckNhc2UoKTsKICByZXR1cm4gQ09VTlRSWV9OQU1FX1RPX0NPREUuZ2V0KGNvdW50cnlMb29rdXBLZXkobm9ybWFsaXplZCkpID8/IG51bGw7Cn0KCmV4cG9ydCBmdW5jdGlvbiBwb3N0Y29kZUlzUmVxdWlyZWQoY291bnRyeUNvZGU6IHN0cmluZyk6IGJvb2xlYW4gewogIHJldHVybiAhUE9TVENPREVfT1BUSU9OQUxfQ09VTlRSWV9DT0RFUy5oYXMoY291bnRyeUNvZGUpOwp9CgpmdW5jdGlvbiBhZGRyZXNzSGFzaChhZGRyZXNzOiBEZWxpdmVyeUFkZHJlc3MpOiBzdHJpbmcgewogIGNvbnN0IGNvdW50cnlDb2RlID0gY291bnRyeUNvZGVGb3JOYW1lKGFkZHJlc3MuY291bnRyeSkgPz8gYWRkcmVzcy5jb3VudHJ5OwogIGNvbnN0IG5vcm1hbGl6ZWQgPSBbCiAgICBub3JtYWxpemVUZXh0KGFkZHJlc3MuYWRkcmVzczEpLnRvTG9jYWxlTG93ZXJDYXNlKCJlbi1HQiIpLAogICAgbm9ybWFsaXplVGV4dChhZGRyZXNzLmFkZHJlc3MyKS50b0xvY2FsZUxvd2VyQ2FzZSgiZW4tR0IiKSwKICAgIG5vcm1hbGl6ZVRleHQoYWRkcmVzcy5jaXR5KS50b0xvY2FsZUxvd2VyQ2FzZSgiZW4tR0IiKSwKICAgIG5vcm1hbGl6ZVRleHQoYWRkcmVzcy5jb3VudHkpLnRvTG9jYWxlTG93ZXJDYXNlKCJlbi1HQiIpLAogICAgbm9ybWFsaXplVGV4dChhZGRyZXNzLnBvc3Rjb2RlKS50b0xvY2FsZVVwcGVyQ2FzZSgiZW4tR0IiKSwKICAgIGNvdW50cnlDb2RlLnRvTG9jYWxlVXBwZXJDYXNlKCJlbi1HQiIpLAogIF0uam9pbigiXG4iKTsKICByZXR1cm4gY3J5cHRvLmNyZWF0ZUhhc2goInNoYTI1NiIpLnVwZGF0ZShub3JtYWxpemVkKS5kaWdlc3QoImhleCIpOwp9CgpmdW5jdGlvbiBub3JtYWxpemVQb3N0Y29kZSh2YWx1ZTogc3RyaW5nIHwgdW5kZWZpbmVkKTogc3RyaW5nIHsKICByZXR1cm4gbm9ybWFsaXplVGV4dCh2YWx1ZSkucmVwbGFjZSgvW1xzLV0vZywgIiIpLnRvTG9jYWxlVXBwZXJDYXNlKCJlbi1HQiIpOwp9CgpmdW5jdGlvbiBhZGRyZXNzU3VnZ2VzdGlvbkNhY2hlS2V5KAogIGlucHV0OiBQaWNrPERlbGl2ZXJ5QWRkcmVzcywgImFkZHJlc3MxIiB8ICJhZGRyZXNzMiIgfCAicG9zdGNvZGUiIHwgImNvdW50cnkiPiwKICBjb3VudHJ5Q29kZTogc3RyaW5nLAopOiBzdHJpbmcgewogIHJldHVybiBbCiAgICBub3JtYWxpemVUZXh0KGlucHV0LmFkZHJlc3MxKS50b0xvY2FsZUxvd2VyQ2FzZSgiZW4tR0IiKSwKICAgIG5vcm1hbGl6ZVRleHQoaW5wdXQuYWRkcmVzczIpLnRvTG9jYWxlTG93ZXJDYXNlKCJlbi1HQiIpLAogICAgbm9ybWFsaXplUG9zdGNvZGUoaW5wdXQucG9zdGNvZGUpLAogICAgY291bnRyeUNvZGUsCiAgXS5qb2luKCJ8Iik7Cn0KCmZ1bmN0aW9uIGNvcHlTdWdnZXN0aW9ucyhzdWdnZXN0aW9uczogVmVyaWZpZWRBZGRyZXNzW10pOiBWZXJpZmllZEFkZHJlc3NbXSB7CiAgcmV0dXJuIHN1Z2dlc3Rpb25zLm1hcChzdWdnZXN0aW9uID0+ICh7IC4uLnN1Z2dlc3Rpb24gfSkpOwp9CgpmdW5jdGlvbiBjYWNoZUFkZHJlc3NTdWdnZXN0aW9ucyhrZXk6IHN0cmluZywgc3VnZ2VzdGlvbnM6IFZlcmlmaWVkQWRkcmVzc1tdKTogdm9pZCB7CiAgaWYgKGFkZHJlc3NTdWdnZXN0aW9uQ2FjaGUuc2l6ZSA+PSBBRERSRVNTX1NVR0dFU1RJT05fQ0FDSEVfTUFYX0VOVFJJRVMpIHsKICAgIGNvbnN0IG9sZGVzdEtleSA9IGFkZHJlc3NTdWdnZXN0aW9uQ2FjaGUua2V5cygpLm5leHQoKS52YWx1ZTsKICAgIGlmIChvbGRlc3RLZXkpIGFkZHJlc3NTdWdnZXN0aW9uQ2FjaGUuZGVsZXRlKG9sZGVzdEtleSk7CiAgfQogIGFkZHJlc3NTdWdnZXN0aW9uQ2FjaGUuc2V0KGtleSwgewogICAgZXhwaXJlc0F0OiBEYXRlLm5vdygpICsgQUREUkVTU19TVUdHRVNUSU9OX0NBQ0hFX1RUTF9NUywKICAgIHN1Z2dlc3Rpb25zOiBjb3B5U3VnZ2VzdGlvbnMoc3VnZ2VzdGlvbnMpLAogIH0pOwp9Cgphc3luYyBmdW5jdGlvbiB3aXRoU2hhcmVkTm9taW5hdGltUmF0ZUxpbWl0PFQ+KHJlcXVlc3Q6ICgpID0+IFByb21pc2U8VD4pOiBQcm9taXNlPFQ+IHsKICByZXR1cm4gZGIudHJhbnNhY3Rpb24oYXN5bmMgdHggPT4gewogICAgYXdhaXQgdHguZXhlY3V0ZShzcWxgU0VUIExPQ0FMIGxvY2tfdGltZW91dCA9ICc1cydgKTsKICAgIGF3YWl0IHR4LmV4ZWN1dGUoc3FsYFNFTEVDVCBwZ19hZHZpc29yeV94YWN0X2xvY2soJHtOT01JTkFUSU1fQURWSVNPUllfTE9DS19LRVl9KWApOwogICAgY29uc3QgZGlzcGF0Y2hlZEF0ID0gRGF0ZS5ub3coKTsKICAgIHRyeSB7CiAgICAgIHJldHVybiBhd2FpdCByZXF1ZXN0KCk7CiAgICB9IGZpbmFsbHkgewogICAgICBjb25zdCByZW1haW5pbmdNcyA9IE5PTUlOQVRJTV9NSU5fUkVRVUVTVF9JTlRFUlZBTF9NUyAtIChEYXRlLm5vdygpIC0gZGlzcGF0Y2hlZEF0KTsKICAgICAgaWYgKHJlbWFpbmluZ01zID4gMCkgewogICAgICAgIGF3YWl0IHR4LmV4ZWN1dGUoc3FsYFNFTEVDVCBwZ19zbGVlcCgke3JlbWFpbmluZ01zIC8gMV8wMDB9KWApOwogICAgICB9CiAgICB9CiAgfSk7Cn0KCmZ1bmN0aW9uIGNhbm9uaWNhbEFkZHJlc3NGcm9tTm9taW5hdGltKAogIGlucHV0OiBQaWNrPERlbGl2ZXJ5QWRkcmVzcywgImFkZHJlc3MxIiB8ICJhZGRyZXNzMiIgfCAicG9zdGNvZGUiIHwgImNvdW50cnkiPiwKICByZXN1bHQ6IE5vbWluYXRpbVJlc3VsdCwKICBjb3VudHJ5Q29kZTogc3RyaW5nLAopOiBWZXJpZmllZEFkZHJlc3MgfCBudWxsIHsKICBjb25zdCBhZGRyZXNzID0gcmVzdWx0LmFkZHJlc3M7CiAgaWYgKCFhZGRyZXNzIHx8IGFkZHJlc3MuY291bnRyeV9jb2RlPy50b1VwcGVyQ2FzZSgpICE9PSBjb3VudHJ5Q29kZSkgcmV0dXJuIG51bGw7CgogIGNvbnN0IHJvYWQgPSBub3JtYWxpemVUZXh0KGFkZHJlc3Mucm9hZCB8fCBhZGRyZXNzLnBlZGVzdHJpYW4gfHwgYWRkcmVzcy5yZXNpZGVudGlhbCk7CiAgY29uc3QgaG91c2VOdW1iZXIgPSBub3JtYWxpemVUZXh0KGFkZHJlc3MuaG91c2VfbnVtYmVyKTsKICBjb25zdCByZXR1cm5lZFBvc3Rjb2RlID0gbm9ybWFsaXplVGV4dChhZGRyZXNzLnBvc3Rjb2RlKTsKICBjb25zdCBzdWJtaXR0ZWRQb3N0Y29kZSA9IG5vcm1hbGl6ZVBvc3Rjb2RlKGlucHV0LnBvc3Rjb2RlKTsKICBpZiAoCiAgICAhcm9hZCB8fAogICAgIWhvdXNlTnVtYmVyIHx8CiAgICAocG9zdGNvZGVJc1JlcXVpcmVkKGNvdW50cnlDb2RlKSAmJiAhcmV0dXJuZWRQb3N0Y29kZSkgfHwKICAgIChzdWJtaXR0ZWRQb3N0Y29kZSAmJiBub3JtYWxpemVQb3N0Y29kZShyZXR1cm5lZFBvc3Rjb2RlKSAhPT0gc3VibWl0dGVkUG9zdGNvZGUpCiAgKSB7CiAgICByZXR1cm4gbnVsbDsKICB9CgogIGNvbnN0IGNpdHkgPSBub3JtYWxpemVUZXh0KAogICAgYWRkcmVzcy5jaXR5IHx8IGFkZHJlc3MudG93biB8fCBhZGRyZXNzLnZpbGxhZ2UgfHwgYWRkcmVzcy5tdW5pY2lwYWxpdHksCiAgKTsKICBpZiAoIWNpdHkpIHJldHVybiBudWxsOwoKICBjb25zdCBjYW5vbmljYWw6IERlbGl2ZXJ5QWRkcmVzcyA9IHsKICAgIGFkZHJlc3MxOiBgJHtob3VzZU51bWJlcn0gJHtyb2FkfWAsCiAgICBhZGRyZXNzMjogW25vcm1hbGl6ZVRleHQoYWRkcmVzcy51bml0KSwgbm9ybWFsaXplVGV4dChhZGRyZXNzLmFwYXJ0bWVudCldCiAgICAgIC5maWx0ZXIoQm9vbGVhbikKICAgICAgLmpvaW4oIiwgIikgfHwgbm9ybWFsaXplVGV4dChpbnB1dC5hZGRyZXNzMiksCiAgICBjaXR5LAogICAgY291bnR5OiBub3JtYWxpemVUZXh0KGFkZHJlc3Muc3RhdGUgfHwgYWRkcmVzcy5jb3VudHkpLAogICAgcG9zdGNvZGU6IHJldHVybmVkUG9zdGNvZGUgfHwgbm9ybWFsaXplVGV4dChpbnB1dC5wb3N0Y29kZSksCiAgICBjb3VudHJ5OiBub3JtYWxpemVUZXh0KGlucHV0LmNvdW50cnkpLAogIH07CiAgY29uc3QgZm9ybWF0dGVkQWRkcmVzcyA9CiAgICBub3JtYWxpemVUZXh0KHJlc3VsdC5kaXNwbGF5X25hbWUpIHx8CiAgICBbCiAgICAgIGNhbm9uaWNhbC5hZGRyZXNzMSwKICAgICAgY2Fub25pY2FsLmFkZHJlc3MyLAogICAgICBjYW5vbmljYWwuY2l0eSwKICAgICAgY2Fub25pY2FsLmNvdW50eSwKICAgICAgY2Fub25pY2FsLnBvc3Rjb2RlLAogICAgICBjYW5vbmljYWwuY291bnRyeSwKICAgIF0KICAgICAgLmZpbHRlcihCb29sZWFuKQogICAgICAuam9pbigiLCAiKTsKCiAgcmV0dXJuIHsgLi4uY2Fub25pY2FsLCBjb3VudHJ5Q29kZSwgZm9ybWF0dGVkQWRkcmVzcyB9Owp9Cgphc3luYyBmdW5jdGlvbiBzZWFyY2hOb21pbmF0aW0oCiAgaW5wdXQ6IE5vbWluYXRpbVNlYXJjaElucHV0LAogIGNvdW50cnlDb2RlOiBzdHJpbmcsCiAgZmV0Y2hlcjogdHlwZW9mIGZldGNoID0gZmV0Y2gsCiAgcmF0ZUxpbWl0ZXI6IE5vbWluYXRpbVJhdGVMaW1pdGVyID0gd2l0aFNoYXJlZE5vbWluYXRpbVJhdGVMaW1pdCwKICByZXF1ZXN0VGltZW91dE1zID0gTk9NSU5BVElNX1JFUVVFU1RfVElNRU9VVF9NUywKKTogUHJvbWlzZTxOb21pbmF0aW1SZXN1bHRbXT4gewogIGxldCByZXNwb25zZTogUmVzcG9uc2U7CiAgdHJ5IHsKICAgIGNvbnN0IHBhcmFtcyA9IG5ldyBVUkxTZWFyY2hQYXJhbXMoewogICAgICBmb3JtYXQ6ICJqc29udjIiLAogICAgICBhZGRyZXNzZGV0YWlsczogIjEiLAogICAgICBsaW1pdDogIjUiLAogICAgICBjb3VudHJ5Y29kZXM6IGNvdW50cnlDb2RlLnRvTG93ZXJDYXNlKCksCiAgICAgIHE6IFsKICAgICAgICBub3JtYWxpemVUZXh0KGlucHV0LmFkZHJlc3MxKSwKICAgICAgICBub3JtYWxpemVUZXh0KGlucHV0LmFkZHJlc3MyKSwKICAgICAgICBub3JtYWxpemVUZXh0KGlucHV0LmNpdHkpLAogICAgICAgIG5vcm1hbGl6ZVRleHQoaW5wdXQucG9zdGNvZGUpLAogICAgICAgIG5vcm1hbGl6ZVRleHQoaW5wdXQuY291bnRyeSksCiAgICAgIF0KICAgICAgICAuZmlsdGVyKEJvb2xlYW4pCiAgICAgICAgLmpvaW4oIiwgIiksCiAgICB9KTsKICAgIHJlc3BvbnNlID0gYXdhaXQgcmF0ZUxpbWl0ZXIoYXN5bmMgKCkgPT4gewogICAgICBjb25zdCBjb250cm9sbGVyID0gbmV3IEFib3J0Q29udHJvbGxlcigpOwogICAgICBjb25zdCB0aW1lb3V0ID0gc2V0VGltZW91dCgoKSA9PiBjb250cm9sbGVyLmFib3J0KCksIHJlcXVlc3RUaW1lb3V0TXMpOwogICAgICB0cnkgewogICAgICAgIHJldHVybiBhd2FpdCBmZXRjaGVyKGAke05PTUlOQVRJTV9TRUFSQ0hfVVJMfT8ke3BhcmFtcy50b1N0cmluZygpfWAsIHsKICAgICAgICAgIGhlYWRlcnM6IHsKICAgICAgICAgICAgQWNjZXB0OiAiYXBwbGljYXRpb24vanNvbiIsCiAgICAgICAgICAgICJVc2VyLUFnZW50IjoKICAgICAgICAgICAgICBwcm9jZXNzLmVudi5OT01JTkFUSU1fVVNFUl9BR0VOVCA/PwogICAgICAgICAgICAgICJPbW5pUXVyZSBjaGVja291dCBhZGRyZXNzIGxvb2t1cCAoc2VydmVyLXNpZGUpIiwKICAgICAgICAgIH0sCiAgICAgICAgICBzaWduYWw6IGNvbnRyb2xsZXIuc2lnbmFsLAogICAgICAgIH0pOwogICAgICB9IGZpbmFsbHkgewogICAgICAgIGNsZWFyVGltZW91dCh0aW1lb3V0KTsKICAgICAgfQogICAgfSk7CiAgfSBjYXRjaCB7CiAgICB0aHJvdyBuZXcgQWRkcmVzc1ZlcmlmaWNhdGlvbkVycm9yKAogICAgICAiQWRkcmVzcyB2ZXJpZmljYXRpb24gaXMgdGVtcG9yYXJpbHkgdW5hdmFpbGFibGUuIFBsZWFzZSB0cnkgYWdhaW4gbGF0ZXIuIiwKICAgICAgNTAzLAogICAgICAiQUREUkVTU19WRVJJRklDQVRJT05fVU5BVkFJTEFCTEUiLAogICAgKTsKICB9CgogIGNvbnN0IHBheWxvYWQgPSBhd2FpdCByZXNwb25zZS5qc29uKCkuY2F0Y2goKCkgPT4gbnVsbCk7CiAgaWYgKCFyZXNwb25zZS5vaykgewogICAgY29uc3QgcHJvdmlkZXJVbmF2YWlsYWJsZSA9IHJlc3BvbnNlLnN0YXR1cyA9PT0gNDI5IHx8IHJlc3BvbnNlLnN0YXR1cyA+PSA1MDA7CiAgICB0aHJvdyBuZXcgQWRkcmVzc1ZlcmlmaWNhdGlvbkVycm9yKAogICAgICBwcm92aWRlclVuYXZhaWxhYmxlCiAgICAgICAgPyAiQWRkcmVzcyB2ZXJpZmljYXRpb24gaXMgdGVtcG9yYXJpbHkgdW5hdmFpbGFibGUuIFBsZWFzZSB0cnkgYWdhaW4gbGF0ZXIuIgogICAgICAgIDogIldlIGNvdWxkIG5vdCB2ZXJpZnkgdGhhdCBhZGRyZXNzLiBDaGVjayB0aGUgZGV0YWlscyBhbmQgdHJ5IGFnYWluLiIsCiAgICAgIHByb3ZpZGVyVW5hdmFpbGFibGUgPyA1MDMgOiA0MjIsCiAgICAgIHByb3ZpZGVyVW5hdmFpbGFibGUKICAgICAgICA/ICJBRERSRVNTX1ZFUklGSUNBVElPTl9VTkFWQUlMQUJMRSIKICAgICAgICA6ICJBRERSRVNTX05PVF9DT05GSVJNRUQiLAogICAgKTsKICB9CgogIGlmICghQXJyYXkuaXNBcnJheShwYXlsb2FkKSkgewogICAgdGhyb3cgbmV3IEFkZHJlc3NWZXJpZmljYXRpb25FcnJvcigKICAgICAgIkFkZHJlc3MgdmVyaWZpY2F0aW9uIGlzIHRlbXBvcmFyaWx5IHVuYXZhaWxhYmxlLiBQbGVhc2UgdHJ5IGFnYWluIGxhdGVyLiIsCiAgICAgIDUwMywKICAgICAgIkFERFJFU1NfVkVSSUZJQ0FUSU9OX1VOQVZBSUxBQkxFIiwKICAgICk7CiAgfQoKICByZXR1cm4gcGF5bG9hZCBhcyBOb21pbmF0aW1SZXN1bHRbXTsKfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGZpbmROb21pbmF0aW1BZGRyZXNzU3VnZ2VzdGlvbnMoCiAgaW5wdXQ6IFBpY2s8RGVsaXZlcnlBZGRyZXNzLCAiYWRkcmVzczEiIHwgImFkZHJlc3MyIiB8ICJwb3N0Y29kZSIgfCAiY291bnRyeSI+LAogIGZldGNoZXI6IHR5cGVvZiBmZXRjaCA9IGZldGNoLAogIHJhdGVMaW1pdGVyOiBOb21pbmF0aW1SYXRlTGltaXRlciA9IHdpdGhTaGFyZWROb21pbmF0aW1SYXRlTGltaXQsCiAgcmVxdWVzdFRpbWVvdXRNcyA9IE5PTUlOQVRJTV9SRVFVRVNUX1RJTUVPVVRfTVMsCik6IFByb21pc2U8VmVyaWZpZWRBZGRyZXNzW10+IHsKICBjb25zdCBjb3VudHJ5Q29kZSA9IGNvdW50cnlDb2RlRm9yTmFtZShpbnB1dC5jb3VudHJ5KTsKICBpZiAoIWNvdW50cnlDb2RlKSB7CiAgICB0aHJvdyBuZXcgQWRkcmVzc1ZlcmlmaWNhdGlvbkVycm9yKAogICAgICAiQ2hvb3NlIGEgdmFsaWQgZGVsaXZlcnkgY291bnRyeS4iLAogICAgICA0MDAsCiAgICAgICJJTlZBTElEX0NPVU5UUlkiLAogICAgKTsKICB9CiAgaWYgKAogICAgIW5vcm1hbGl6ZVRleHQoaW5wdXQuYWRkcmVzczEpIHx8CiAgICAocG9zdGNvZGVJc1JlcXVpcmVkKGNvdW50cnlDb2RlKSAmJiAhbm9ybWFsaXplVGV4dChpbnB1dC5wb3N0Y29kZSkpCiAgKSB7CiAgICB0aHJvdyBuZXcgQWRkcmVzc1ZlcmlmaWNhdGlvbkVycm9yKAogICAgICBwb3N0Y29kZUlzUmVxdWlyZWQoY291bnRyeUNvZGUpCiAgICAgICAgPyAiRW50ZXIgYSBzdHJlZXQgYWRkcmVzcyBhbmQgcG9zdGFsIGNvZGUgdG8gZmluZCBtYXRjaGluZyBhZGRyZXNzZXMuIgogICAgICAgIDogIkVudGVyIGEgc3RyZWV0IGFkZHJlc3MgdG8gZmluZCBtYXRjaGluZyBhZGRyZXNzZXMuIiwKICAgICAgNDAwLAogICAgICAiQUREUkVTU19OT1RfQ09ORklSTUVEIiwKICAgICk7CiAgfQoKICBjb25zdCBjYWNoZUtleSA9IGFkZHJlc3NTdWdnZXN0aW9uQ2FjaGVLZXkoaW5wdXQsIGNvdW50cnlDb2RlKTsKICBjb25zdCBjYWNoZWQgPSBhZGRyZXNzU3VnZ2VzdGlvbkNhY2hlLmdldChjYWNoZUtleSk7CiAgaWYgKGNhY2hlZCAmJiBjYWNoZWQuZXhwaXJlc0F0ID4gRGF0ZS5ub3coKSkgewogICAgcmV0dXJuIGNvcHlTdWdnZXN0aW9ucyhjYWNoZWQuc3VnZ2VzdGlvbnMpOwogIH0KICBpZiAoY2FjaGVkKSBhZGRyZXNzU3VnZ2VzdGlvbkNhY2hlLmRlbGV0ZShjYWNoZUtleSk7CgogIGNvbnN0IGluRmxpZ2h0ID0gaW5GbGlnaHRBZGRyZXNzU3VnZ2VzdGlvbnMuZ2V0KGNhY2hlS2V5KTsKICBpZiAoaW5GbGlnaHQpIHJldHVybiBjb3B5U3VnZ2VzdGlvbnMoYXdhaXQgaW5GbGlnaHQpOwoKICBjb25zdCBsb29rdXAgPSAoYXN5bmMgKCkgPT4gewogICAgY29uc3QgcGF5bG9hZCA9IGF3YWl0IHNlYXJjaE5vbWluYXRpbSgKICAgICAgaW5wdXQsCiAgICAgIGNvdW50cnlDb2RlLAogICAgICBmZXRjaGVyLAogICAgICByYXRlTGltaXRlciwKICAgICAgcmVxdWVzdFRpbWVvdXRNcywKICAgICk7CiAgICBjb25zdCBzdWdnZXN0aW9ucyA9IG5ldyBNYXA8c3RyaW5nLCBWZXJpZmllZEFkZHJlc3M+KCk7CiAgICBmb3IgKGNvbnN0IHJlc3VsdCBvZiBwYXlsb2FkKSB7CiAgICAgIGNvbnN0IGNhbm9uaWNhbCA9IGNhbm9uaWNhbEFkZHJlc3NGcm9tTm9taW5hdGltKGlucHV0LCByZXN1bHQsIGNvdW50cnlDb2RlKTsKICAgICAgaWYgKGNhbm9uaWNhbCkgc3VnZ2VzdGlvbnMuc2V0KGNhbm9uaWNhbC5mb3JtYXR0ZWRBZGRyZXNzLCBjYW5vbmljYWwpOwogICAgfQogICAgY29uc3QgcmVzb2x2ZWRTdWdnZXN0aW9ucyA9IFsuLi5zdWdnZXN0aW9ucy52YWx1ZXMoKV0uc2xpY2UoMCwgNSk7CiAgICBjYWNoZUFkZHJlc3NTdWdnZXN0aW9ucyhjYWNoZUtleSwgcmVzb2x2ZWRTdWdnZXN0aW9ucyk7CiAgICByZXR1cm4gcmVzb2x2ZWRTdWdnZXN0aW9uczsKICB9KSgpOwogIGluRmxpZ2h0QWRkcmVzc1N1Z2dlc3Rpb25zLnNldChjYWNoZUtleSwgbG9va3VwKTsKCiAgdHJ5IHsKICAgIHJldHVybiBjb3B5U3VnZ2VzdGlvbnMoYXdhaXQgbG9va3VwKTsKICB9IGZpbmFsbHkgewogICAgaWYgKGluRmxpZ2h0QWRkcmVzc1N1Z2dlc3Rpb25zLmdldChjYWNoZUtleSkgPT09IGxvb2t1cCkgewogICAgICBpbkZsaWdodEFkZHJlc3NTdWdnZXN0aW9ucy5kZWxldGUoY2FjaGVLZXkpOwogICAgfQogIH0KfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHZlcmlmeUFkZHJlc3NXaXRoTm9taW5hdGltKAogIGlucHV0OiBEZWxpdmVyeUFkZHJlc3MsCiAgZmV0Y2hlcjogdHlwZW9mIGZldGNoID0gZmV0Y2gsCiAgcmF0ZUxpbWl0ZXI6IE5vbWluYXRpbVJhdGVMaW1pdGVyID0gd2l0aFNoYXJlZE5vbWluYXRpbVJhdGVMaW1pdCwKICByZXF1ZXN0VGltZW91dE1zID0gTk9NSU5BVElNX1JFUVVFU1RfVElNRU9VVF9NUywKKTogUHJvbWlzZTxWZXJpZmllZEFkZHJlc3M+IHsKICBjb25zdCBjb3VudHJ5Q29kZSA9IGNvdW50cnlDb2RlRm9yTmFtZShpbnB1dC5jb3VudHJ5KTsKICBpZiAoIWNvdW50cnlDb2RlKSB7CiAgICB0aHJvdyBuZXcgQWRkcmVzc1ZlcmlmaWNhdGlvbkVycm9yKAogICAgICAiQ2hvb3NlIGEgdmFsaWQgZGVsaXZlcnkgY291bnRyeS4iLAogICAgICA0MDAsCiAgICAgICJJTlZBTElEX0NPVU5UUlkiLAogICAgKTsKICB9CiAgaWYgKAogICAgIW5vcm1hbGl6ZVRleHQoaW5wdXQuYWRkcmVzczEpIHx8CiAgICAhbm9ybWFsaXplVGV4dChpbnB1dC5jaXR5KSB8fAogICAgKHBvc3Rjb2RlSXNSZXF1aXJlZChjb3VudHJ5Q29kZSkgJiYgIW5vcm1hbGl6ZVRleHQoaW5wdXQucG9zdGNvZGUpKQogICkgewogICAgdGhyb3cgbmV3IEFkZHJlc3NWZXJpZmljYXRpb25FcnJvcigKICAgICAgIkVudGVyIGEgY29tcGxldGUgZGVsaXZlcnkgYWRkcmVzcyBiZWZvcmUgdmVyaWZ5aW5nIGl0LiIsCiAgICAgIDQwMCwKICAgICAgIkFERFJFU1NfTk9UX0NPTkZJUk1FRCIsCiAgICApOwogIH0KCiAgY29uc3QgcGF5bG9hZCA9IGF3YWl0IHNlYXJjaE5vbWluYXRpbSgKICAgIGlucHV0LAogICAgY291bnRyeUNvZGUsCiAgICBmZXRjaGVyLAogICAgcmF0ZUxpbWl0ZXIsCiAgICByZXF1ZXN0VGltZW91dE1zLAogICk7CiAgY29uc3QgY2Fub25pY2FsID0gcGF5bG9hZAogICAgLm1hcChyZXN1bHQgPT4gY2Fub25pY2FsQWRkcmVzc0Zyb21Ob21pbmF0aW0oaW5wdXQsIHJlc3VsdCBhcyBOb21pbmF0aW1SZXN1bHQsIGNvdW50cnlDb2RlKSkKICAgIC5maW5kKChyZXN1bHQpOiByZXN1bHQgaXMgVmVyaWZpZWRBZGRyZXNzID0+IHJlc3VsdCAhPT0gbnVsbCk7CiAgaWYgKCFjYW5vbmljYWwpIHsKICAgIHRocm93IG5ldyBBZGRyZXNzVmVyaWZpY2F0aW9uRXJyb3IoCiAgICAgICJXZSBjb3VsZCBub3QgY29uZmlybSB0aGlzIHNwZWNpZmljIGFkZHJlc3MuIENoZWNrIHRoZSBidWlsZGluZyBudW1iZXIsIHN0cmVldCwgY2l0eSwgYW5kIHBvc3Rjb2RlLiIsCiAgICAgIDQyMiwKICAgICAgIkFERFJFU1NfTk9UX0NPTkZJUk1FRCIsCiAgICApOwogIH0KCiAgcmV0dXJuIGNhbm9uaWNhbDsKfQoKZXhwb3J0IGZ1bmN0aW9uIGNyZWF0ZUFkZHJlc3NWZXJpZmljYXRpb25Qcm9vZihjYW5vbmljYWw6IFZlcmlmaWVkQWRkcmVzcyk6IHsKICB0b2tlbjogc3RyaW5nOwogIGV4cGlyZXNBdDogc3RyaW5nOwp9IHsKICBjb25zdCBwYXlsb2FkOiBWZXJpZmljYXRpb25Qcm9vZiA9IHsKICAgIGFkZHJlc3NIYXNoOiBhZGRyZXNzSGFzaChjYW5vbmljYWwpLAogICAgY2Fub25pY2FsLAogICAgZXhwaXJlc0F0OiBEYXRlLm5vdygpICsgVkVSSUZJQ0FUSU9OX1RUTF9NUywKICB9OwogIGNvbnN0IGVuY29kZWQgPSBlbmNvZGVkSnNvbihwYXlsb2FkKTsKICBjb25zdCBzaWduYXR1cmUgPSBzaWduKGVuY29kZWQpOwogIGlmICghc2lnbmF0dXJlKSB7CiAgICB0aHJvdyBuZXcgQWRkcmVzc1ZlcmlmaWNhdGlvbkVycm9yKAogICAgICAiQWRkcmVzcyBjb25maXJtYXRpb24gaXMgdGVtcG9yYXJpbHkgdW5hdmFpbGFibGUuIFBsZWFzZSB0cnkgYWdhaW4gbGF0ZXIuIiwKICAgICAgNTAzLAogICAgICAiQUREUkVTU19WRVJJRklDQVRJT05fVU5BVkFJTEFCTEUiLAogICAgKTsKICB9CiAgcmV0dXJuIHsKICAgIHRva2VuOiBgJHtlbmNvZGVkfS4ke3NpZ25hdHVyZX1gLAogICAgZXhwaXJlc0F0OiBuZXcgRGF0ZShwYXlsb2FkLmV4cGlyZXNBdCkudG9JU09TdHJpbmcoKSwKICB9Owp9CgpleHBvcnQgZnVuY3Rpb24gdmVyaWZ5QWRkcmVzc1ZlcmlmaWNhdGlvblByb29mKAogIHRva2VuOiBzdHJpbmcsCiAgc3VibWl0dGVkQWRkcmVzczogRGVsaXZlcnlBZGRyZXNzLAopOiB7IHZhbGlkOiB0cnVlOyBjYW5vbmljYWw6IFZlcmlmaWVkQWRkcmVzcyB9IHwgeyB2YWxpZDogZmFsc2U7IHJlYXNvbjogc3RyaW5nIH0gewogIGNvbnN0IGRvdCA9IHRva2VuLmxhc3RJbmRleE9mKCIuIik7CiAgaWYgKGRvdCA9PT0gLTEpIHJldHVybiB7IHZhbGlkOiBmYWxzZSwgcmVhc29uOiAiQWRkcmVzcyB2ZXJpZmljYXRpb24gaXMgbWlzc2luZy4iIH07CgogIGNvbnN0IGVuY29kZWQgPSB0b2tlbi5zbGljZSgwLCBkb3QpOwogIGNvbnN0IHNpZ25hdHVyZSA9IHRva2VuLnNsaWNlKGRvdCArIDEpOwogIGNvbnN0IGV4cGVjdGVkU2lnbmF0dXJlID0gc2lnbihlbmNvZGVkKTsKICBpZiAoIWV4cGVjdGVkU2lnbmF0dXJlKSB7CiAgICByZXR1cm4geyB2YWxpZDogZmFsc2UsIHJlYXNvbjogIkFkZHJlc3MgY29uZmlybWF0aW9uIGlzIHRlbXBvcmFyaWx5IHVuYXZhaWxhYmxlLiBQbGVhc2UgdHJ5IGFnYWluLiIgfTsKICB9CiAgaWYgKCFzYWZlU2lnbmF0dXJlTWF0Y2hlcyhzaWduYXR1cmUsIGV4cGVjdGVkU2lnbmF0dXJlKSkgewogICAgcmV0dXJuIHsgdmFsaWQ6IGZhbHNlLCByZWFzb246ICJBZGRyZXNzIHZlcmlmaWNhdGlvbiBpcyBpbnZhbGlkLiBQbGVhc2UgdmVyaWZ5IGFnYWluLiIgfTsKICB9CgogIHRyeSB7CiAgICBjb25zdCBwYXlsb2FkID0gSlNPTi5wYXJzZShCdWZmZXIuZnJvbShlbmNvZGVkLCAiYmFzZTY0dXJsIikudG9TdHJpbmcoInV0ZjgiKSkgYXMgVmVyaWZpY2F0aW9uUHJvb2Y7CiAgICBpZiAoIXBheWxvYWQuZXhwaXJlc0F0IHx8IHBheWxvYWQuZXhwaXJlc0F0IDw9IERhdGUubm93KCkpIHsKICAgICAgcmV0dXJuIHsgdmFsaWQ6IGZhbHNlLCByZWFzb246ICJBZGRyZXNzIHZlcmlmaWNhdGlvbiBoYXMgZXhwaXJlZC4gUGxlYXNlIHZlcmlmeSBhZ2Fpbi4iIH07CiAgICB9CiAgICBpZiAoIXBheWxvYWQuY2Fub25pY2FsIHx8IHBheWxvYWQuYWRkcmVzc0hhc2ggIT09IGFkZHJlc3NIYXNoKHN1Ym1pdHRlZEFkZHJlc3MpKSB7CiAgICAgIHJldHVybiB7CiAgICAgICAgdmFsaWQ6IGZhbHNlLAogICAgICAgIHJlYXNvbjogIkFkZHJlc3MgZGV0YWlscyBjaGFuZ2VkIGFmdGVyIHZlcmlmaWNhdGlvbi4gUGxlYXNlIHZlcmlmeSB0aGUgYWRkcmVzcyBhZ2Fpbi4iLAogICAgICB9OwogICAgfQogICAgcmV0dXJuIHsgdmFsaWQ6IHRydWUsIGNhbm9uaWNhbDogcGF5bG9hZC5jYW5vbmljYWwgfTsKICB9IGNhdGNoIHsKICAgIHJldHVybiB7IHZhbGlkOiBmYWxzZSwgcmVhc29uOiAiQWRkcmVzcyB2ZXJpZmljYXRpb24gaXMgaW52YWxpZC4gUGxlYXNlIHZlcmlmeSBhZ2Fpbi4iIH07CiAgfQp9
+import crypto from "crypto";
+import { db } from "@workspace/db";
+import { sql } from "drizzle-orm";
+
+export type DeliveryAddress = {
+  address1: string;
+  address2?: string;
+  city: string;
+  county?: string;
+  postcode: string;
+  country: string;
+};
+
+export type VerifiedAddress = DeliveryAddress & {
+  countryCode: string;
+  formattedAddress: string;
+};
+
+type NominatimResult = {
+  display_name?: string;
+  type?: string;
+  address?: {
+    house_number?: string;
+    road?: string;
+    pedestrian?: string;
+    residential?: string;
+    unit?: string;
+    apartment?: string;
+    suburb?: string;
+    city?: string;
+    town?: string;
+    village?: string;
+    municipality?: string;
+    county?: string;
+    state?: string;
+    postcode?: string;
+    country?: string;
+    country_code?: string;
+  };
+};
+
+type NominatimSearchInput = Pick<
+  DeliveryAddress,
+  "address1" | "address2" | "postcode" | "country"
+> & {
+  city?: string;
+};
+
+type VerificationProof = {
+  addressHash: string;
+  expiresAt: number;
+  canonical: VerifiedAddress;
+};
+
+const VERIFICATION_TTL_MS = 15 * 60 * 1000;
+const NOMINATIM_SEARCH_URL = "https://nominatim.openstreetmap.org/search";
+const NOMINATIM_MIN_REQUEST_INTERVAL_MS = 1_000;
+const NOMINATIM_ADVISORY_LOCK_KEY = 248_104_211;
+const NOMINATIM_REQUEST_TIMEOUT_MS = 8_000;
+const ADDRESS_SUGGESTION_CACHE_TTL_MS = 60_000;
+const ADDRESS_SUGGESTION_CACHE_MAX_ENTRIES = 100;
+type NominatimRateLimiter = <T>(request: () => Promise<T>) => Promise<T>;
+
+const addressSuggestionCache = new Map<
+  string,
+  { expiresAt: number; suggestions: VerifiedAddress[] }
+>();
+const inFlightAddressSuggestions = new Map<string, Promise<VerifiedAddress[]>>();
+
+const COUNTRY_ALIASES: Record<string, string> = {
+  "bosnia and herzegovina": "BA",
+  "czech republic": "CZ",
+  "hong kong": "HK",
+  "kosovo": "XK",
+  "macau": "MO",
+  "moldova": "MD",
+  "north macedonia": "MK",
+  "south korea": "KR",
+  "taiwan": "TW",
+  "turkey": "TR",
+  "united kingdom": "GB",
+  "united states": "US",
+  "vietnam": "VN",
+};
+
+const ISO_REGION_CODES = (
+  "AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ " +
+  "BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ " +
+  "CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ " +
+  "DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR " +
+  "GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY " +
+  "HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP " +
+  "KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY " +
+  "MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ " +
+  "NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA " +
+  "RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ " +
+  "TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ " +
+  "VA VC VE VG VI VN VU WF WS XK YE YT ZA ZM ZW"
+).split(" ");
+
+const POSTCODE_OPTIONAL_COUNTRY_CODES = new Set(["AE", "HK", "MO", "QA"]);
+
+export class AddressVerificationError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+    readonly code:
+      | "ADDRESS_NOT_CONFIRMED"
+      | "ADDRESS_TOO_BROAD"
+      | "ADDRESS_VERIFICATION_UNAVAILABLE"
+      | "INVALID_COUNTRY",
+  ) {
+    super(message);
+  }
+}
+
+function normalizeText(value: string | undefined): string {
+  return (value ?? "")
+    .normalize("NFKC")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+function countryLookupKey(value: string): string {
+  return normalizeText(value).toLocaleLowerCase("en-GB");
+}
+
+function buildCountryNameMap(): Map<string, string> {
+  const countries = new Map<string, string>();
+  for (const [name, code] of Object.entries(COUNTRY_ALIASES)) {
+    countries.set(name, code);
+  }
+
+  try {
+    const displayNames = new Intl.DisplayNames(["en"], { type: "region" });
+    for (const code of ISO_REGION_CODES) {
+      const name = displayNames.of(code);
+      if (name) countries.set(countryLookupKey(name), code);
+    }
+  } catch {
+    // The aliases above cover the storefront's primary destinations. A caller
+    // receives an explicit invalid-country response if ICU data is unavailable.
+  }
+
+  return countries;
+}
+
+const COUNTRY_NAME_TO_CODE = buildCountryNameMap();
+
+function signingSecret(): string | null {
+  const secret = process.env.SESSION_SECRET?.trim();
+  return secret || null;
+}
+
+function encodedJson(value: unknown): string {
+  return Buffer.from(JSON.stringify(value)).toString("base64url");
+}
+
+function sign(value: string): string | null {
+  const secret = signingSecret();
+  return secret
+    ? crypto.createHmac("sha256", secret).update(value).digest("base64url")
+    : null;
+}
+
+function safeSignatureMatches(actual: string, expected: string): boolean {
+  const actualBuffer = Buffer.from(actual);
+  const expectedBuffer = Buffer.from(expected);
+  return (
+    actualBuffer.length === expectedBuffer.length &&
+    crypto.timingSafeEqual(actualBuffer, expectedBuffer)
+  );
+}
+
+export function countryCodeForName(country: string): string | null {
+  const normalized = normalizeText(country);
+  if (/^[A-Za-z]{2}$/.test(normalized)) return normalized.toUpperCase();
+  return COUNTRY_NAME_TO_CODE.get(countryLookupKey(normalized)) ?? null;
+}
+
+export function postcodeIsRequired(countryCode: string): boolean {
+  return !POSTCODE_OPTIONAL_COUNTRY_CODES.has(countryCode);
+}
+
+function addressHash(address: DeliveryAddress): string {
+  const countryCode = countryCodeForName(address.country) ?? address.country;
+  const normalized = [
+    normalizeText(address.address1).toLocaleLowerCase("en-GB"),
+    normalizeText(address.address2).toLocaleLowerCase("en-GB"),
+    normalizeText(address.city).toLocaleLowerCase("en-GB"),
+    normalizeText(address.county).toLocaleLowerCase("en-GB"),
+    normalizeText(address.postcode).toLocaleUpperCase("en-GB"),
+    countryCode.toLocaleUpperCase("en-GB"),
+  ].join("\n");
+  return crypto.createHash("sha256").update(normalized).digest("hex");
+}
+
+function normalizePostcode(value: string | undefined): string {
+  return normalizeText(value).replace(/[\s-]/g, "").toLocaleUpperCase("en-GB");
+}
+
+function addressSuggestionCacheKey(
+  input: Pick<DeliveryAddress, "address1" | "address2" | "postcode" | "country">,
+  countryCode: string,
+): string {
+  return [
+    normalizeText(input.address1).toLocaleLowerCase("en-GB"),
+    normalizeText(input.address2).toLocaleLowerCase("en-GB"),
+    normalizePostcode(input.postcode),
+    countryCode,
+  ].join("|");
+}
+
+function copySuggestions(suggestions: VerifiedAddress[]): VerifiedAddress[] {
+  return suggestions.map(suggestion => ({ ...suggestion }));
+}
+
+function cacheAddressSuggestions(key: string, suggestions: VerifiedAddress[]): void {
+  if (addressSuggestionCache.size >= ADDRESS_SUGGESTION_CACHE_MAX_ENTRIES) {
+    const oldestKey = addressSuggestionCache.keys().next().value;
+    if (oldestKey) addressSuggestionCache.delete(oldestKey);
+  }
+  addressSuggestionCache.set(key, {
+    expiresAt: Date.now() + ADDRESS_SUGGESTION_CACHE_TTL_MS,
+    suggestions: copySuggestions(suggestions),
+  });
+}
+
+async function withSharedNominatimRateLimit<T>(request: () => Promise<T>): Promise<T> {
+  return db.transaction(async tx => {
+    await tx.execute(sql`SET LOCAL lock_timeout = '5s'`);
+    await tx.execute(sql`SELECT pg_advisory_xact_lock(${NOMINATIM_ADVISORY_LOCK_KEY})`);
+    const dispatchedAt = Date.now();
+    try {
+      return await request();
+    } finally {
+      const remainingMs = NOMINATIM_MIN_REQUEST_INTERVAL_MS - (Date.now() - dispatchedAt);
+      if (remainingMs > 0) {
+        await tx.execute(sql`SELECT pg_sleep(${remainingMs / 1_000})`);
+      }
+    }
+  });
+}
+
+function canonicalAddressFromNominatim(
+  input: Pick<DeliveryAddress, "address1" | "address2" | "postcode" | "country">,
+  result: NominatimResult,
+  countryCode: string,
+): VerifiedAddress | null {
+  const address = result.address;
+  if (!address || address.country_code?.toUpperCase() !== countryCode) return null;
+
+  const road = normalizeText(address.road || address.pedestrian || address.residential);
+  const houseNumber = normalizeText(address.house_number);
+  const returnedPostcode = normalizeText(address.postcode);
+  const submittedPostcode = normalizePostcode(input.postcode);
+  if (
+    !road ||
+    !houseNumber ||
+    (postcodeIsRequired(countryCode) && !returnedPostcode) ||
+    (submittedPostcode && normalizePostcode(returnedPostcode) !== submittedPostcode)
+  ) {
+    return null;
+  }
+
+  const city = normalizeText(
+    address.city || address.town || address.village || address.municipality,
+  );
+  if (!city) return null;
+
+  const canonical: DeliveryAddress = {
+    address1: `${houseNumber} ${road}`,
+    address2: [normalizeText(address.unit), normalizeText(address.apartment)]
+      .filter(Boolean)
+      .join(", ") || normalizeText(input.address2),
+    city,
+    county: normalizeText(address.state || address.county),
+    postcode: returnedPostcode || normalizeText(input.postcode),
+    country: normalizeText(input.country),
+  };
+  const formattedAddress =
+    normalizeText(result.display_name) ||
+    [
+      canonical.address1,
+      canonical.address2,
+      canonical.city,
+      canonical.county,
+      canonical.postcode,
+      canonical.country,
+    ]
+      .filter(Boolean)
+      .join(", ");
+
+  return { ...canonical, countryCode, formattedAddress };
+}
+
+async function searchNominatim(
+  input: NominatimSearchInput,
+  countryCode: string,
+  fetcher: typeof fetch = fetch,
+  rateLimiter: NominatimRateLimiter = withSharedNominatimRateLimit,
+  requestTimeoutMs = NOMINATIM_REQUEST_TIMEOUT_MS,
+): Promise<NominatimResult[]> {
+  let response: Response;
+  try {
+    const params = new URLSearchParams({
+      format: "jsonv2",
+      addressdetails: "1",
+      limit: "5",
+      countrycodes: countryCode.toLowerCase(),
+      q: [
+        normalizeText(input.address1),
+        normalizeText(input.address2),
+        normalizeText(input.city),
+        normalizeText(input.postcode),
+        normalizeText(input.country),
+      ]
+        .filter(Boolean)
+        .join(", "),
+    });
+    response = await rateLimiter(async () => {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), requestTimeoutMs);
+      try {
+        return await fetcher(`${NOMINATIM_SEARCH_URL}?${params.toString()}`, {
+          headers: {
+            Accept: "application/json",
+            "User-Agent":
+              process.env.NOMINATIM_USER_AGENT ??
+              "OmniQure checkout address lookup (server-side)",
+          },
+          signal: controller.signal,
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
+    });
+  } catch {
+    throw new AddressVerificationError(
+      "Address verification is temporarily unavailable. Please try again later.",
+      503,
+      "ADDRESS_VERIFICATION_UNAVAILABLE",
+    );
+  }
+
+  const payload = await response.json().catch(() => null);
+  if (!response.ok) {
+    const providerUnavailable = response.status === 429 || response.status >= 500;
+    throw new AddressVerificationError(
+      providerUnavailable
+        ? "Address verification is temporarily unavailable. Please try again later."
+        : "We could not verify that address. Check the details and try again.",
+      providerUnavailable ? 503 : 422,
+      providerUnavailable
+        ? "ADDRESS_VERIFICATION_UNAVAILABLE"
+        : "ADDRESS_NOT_CONFIRMED",
+    );
+  }
+
+  if (!Array.isArray(payload)) {
+    throw new AddressVerificationError(
+      "Address verification is temporarily unavailable. Please try again later.",
+      503,
+      "ADDRESS_VERIFICATION_UNAVAILABLE",
+    );
+  }
+
+  return payload as NominatimResult[];
+}
+
+export async function findNominatimAddressSuggestions(
+  input: Pick<DeliveryAddress, "address1" | "address2" | "postcode" | "country">,
+  fetcher: typeof fetch = fetch,
+  rateLimiter: NominatimRateLimiter = withSharedNominatimRateLimit,
+  requestTimeoutMs = NOMINATIM_REQUEST_TIMEOUT_MS,
+): Promise<VerifiedAddress[]> {
+  const countryCode = countryCodeForName(input.country);
+  if (!countryCode) {
+    throw new AddressVerificationError(
+      "Choose a valid delivery country.",
+      400,
+      "INVALID_COUNTRY",
+    );
+  }
+  if (
+    !normalizeText(input.address1) ||
+    (postcodeIsRequired(countryCode) && !normalizeText(input.postcode))
+  ) {
+    throw new AddressVerificationError(
+      postcodeIsRequired(countryCode)
+        ? "Enter a street address and postal code to find matching addresses."
+        : "Enter a street address to find matching addresses.",
+      400,
+      "ADDRESS_NOT_CONFIRMED",
+    );
+  }
+
+  const cacheKey = addressSuggestionCacheKey(input, countryCode);
+  const cached = addressSuggestionCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) {
+    return copySuggestions(cached.suggestions);
+  }
+  if (cached) addressSuggestionCache.delete(cacheKey);
+
+  const inFlight = inFlightAddressSuggestions.get(cacheKey);
+  if (inFlight) return copySuggestions(await inFlight);
+
+  const lookup = (async () => {
+    const payload = await searchNominatim(
+      input,
+      countryCode,
+      fetcher,
+      rateLimiter,
+      requestTimeoutMs,
+    );
+    const suggestions = new Map<string, VerifiedAddress>();
+    for (const result of payload) {
+      const canonical = canonicalAddressFromNominatim(input, result, countryCode);
+      if (canonical) suggestions.set(canonical.formattedAddress, canonical);
+    }
+    const resolvedSuggestions = [...suggestions.values()].slice(0, 5);
+    cacheAddressSuggestions(cacheKey, resolvedSuggestions);
+    return resolvedSuggestions;
+  })();
+  inFlightAddressSuggestions.set(cacheKey, lookup);
+
+  try {
+    return copySuggestions(await lookup);
+  } finally {
+    if (inFlightAddressSuggestions.get(cacheKey) === lookup) {
+      inFlightAddressSuggestions.delete(cacheKey);
+    }
+  }
+}
+
+export async function verifyAddressWithNominatim(
+  input: DeliveryAddress,
+  fetcher: typeof fetch = fetch,
+  rateLimiter: NominatimRateLimiter = withSharedNominatimRateLimit,
+  requestTimeoutMs = NOMINATIM_REQUEST_TIMEOUT_MS,
+): Promise<VerifiedAddress> {
+  const countryCode = countryCodeForName(input.country);
+  if (!countryCode) {
+    throw new AddressVerificationError(
+      "Choose a valid delivery country.",
+      400,
+      "INVALID_COUNTRY",
+    );
+  }
+  if (
+    !normalizeText(input.address1) ||
+    !normalizeText(input.city) ||
+    (postcodeIsRequired(countryCode) && !normalizeText(input.postcode))
+  ) {
+    throw new AddressVerificationError(
+      "Enter a complete delivery address before verifying it.",
+      400,
+      "ADDRESS_NOT_CONFIRMED",
+    );
+  }
+
+  const payload = await searchNominatim(
+    input,
+    countryCode,
+    fetcher,
+    rateLimiter,
+    requestTimeoutMs,
+  );
+  const canonical = payload
+    .map(result => canonicalAddressFromNominatim(input, result as NominatimResult, countryCode))
+    .find((result): result is VerifiedAddress => result !== null);
+  if (!canonical) {
+    throw new AddressVerificationError(
+      "We could not confirm this specific address. Check the building number, street, city, and postcode.",
+      422,
+      "ADDRESS_NOT_CONFIRMED",
+    );
+  }
+
+  return canonical;
+}
+
+export function createAddressVerificationProof(canonical: VerifiedAddress): {
+  token: string;
+  expiresAt: string;
+} {
+  const payload: VerificationProof = {
+    addressHash: addressHash(canonical),
+    canonical,
+    expiresAt: Date.now() + VERIFICATION_TTL_MS,
+  };
+  const encoded = encodedJson(payload);
+  const signature = sign(encoded);
+  if (!signature) {
+    throw new AddressVerificationError(
+      "Address confirmation is temporarily unavailable. Please try again later.",
+      503,
+      "ADDRESS_VERIFICATION_UNAVAILABLE",
+    );
+  }
+  return {
+    token: `${encoded}.${signature}`,
+    expiresAt: new Date(payload.expiresAt).toISOString(),
+  };
+}
+
+export function verifyAddressVerificationProof(
+  token: string,
+  submittedAddress: DeliveryAddress,
+): { valid: true; canonical: VerifiedAddress } | { valid: false; reason: string } {
+  const dot = token.lastIndexOf(".");
+  if (dot === -1) return { valid: false, reason: "Address verification is missing." };
+
+  const encoded = token.slice(0, dot);
+  const signature = token.slice(dot + 1);
+  const expectedSignature = sign(encoded);
+  if (!expectedSignature) {
+    return { valid: false, reason: "Address confirmation is temporarily unavailable. Please try again." };
+  }
+  if (!safeSignatureMatches(signature, expectedSignature)) {
+    return { valid: false, reason: "Address verification is invalid. Please verify again." };
+  }
+
+  try {
+    const payload = JSON.parse(Buffer.from(encoded, "base64url").toString("utf8")) as VerificationProof;
+    if (!payload.expiresAt || payload.expiresAt <= Date.now()) {
+      return { valid: false, reason: "Address verification has expired. Please verify again." };
+    }
+    if (!payload.canonical || payload.addressHash !== addressHash(submittedAddress)) {
+      return {
+        valid: false,
+        reason: "Address details changed after verification. Please verify the address again.",
+      };
+    }
+    return { valid: true, canonical: payload.canonical };
+  } catch {
+    return { valid: false, reason: "Address verification is invalid. Please verify again." };
+  }
+}

@@ -1,1 +1,27 @@
-LS0tCm5hbWU6IGFkbWluLXBhbmVsIEFQSSBjYWxsIHJvdXRpbmcKZGVzY3JpcHRpb246IFdoeSBhZG1pbi1wYW5lbCBmZXRjaCgpIGNhbGxzIG11c3QgdXNlIGFic29sdXRlIC9hcGkvLi4uIGFuZCBuZXZlciBwcmVwZW5kIEJBU0VfVVJMCi0tLQoKIyBBZG1pbiBwYW5lbCBBUEkgY2FsbHMgbXVzdCBiZSBhYnNvbHV0ZSBgL2FwaS8uLi5gLCBuZXZlciBgJHtCQVNFfS9hcGkvLi4uYAoKVGhlIGFkbWluLXBhbmVsIGFydGlmYWN0IGlzIHNlcnZlZCB1bmRlciBhIGJhc2UgcGF0aCAoYEJBU0VfUEFUSD0vYWRtaW4vYCwgc2V0IGluCmBhcnRpZmFjdHMvYWRtaW4tcGFuZWwvLnJlcGxpdC1hcnRpZmFjdC9hcnRpZmFjdC50b21sYCB1bmRlciBgW3NlcnZpY2VzLmVudl1gKS4gU28KYGltcG9ydC5tZXRhLmVudi5CQVNFX1VSTGAgaXMgYC9hZG1pbi9gLgoKKipSdWxlOioqIGFsbCBgZmV0Y2goKWAgY2FsbHMgdG8gdGhlIGJhY2tlbmQgbXVzdCB0YXJnZXQgYWJzb2x1dGUgYC9hcGkvLi4uYC4gRG8gTk9UCnByZWZpeCB3aXRoIGBCQVNFYCAvIGBCQVNFX1VSTGAgKGUuZy4gYCR7QkFTRX0vYXBpLy4uLmAg4oaSIGAvYWRtaW4vYXBpLy4uLmApLgoKKipXaHk6KiogdGhlIHBsYXRmb3JtIHJvdXRlciAoYHJvdXRlciA9ICJwYXRoImApIGRpc3BhdGNoZXMgYnkgdG9wLWxldmVsIHBhdGggcHJlZml4OgpgL2FwaS8qYCDihpIgYXBpLXNlcnZlciAocG9ydCA4MDgwKSwgYC9hZG1pbi8qYCDihpIgYWRtaW4tcGFuZWwncyBvd24gdml0ZSBkZXYgc2VydmVyCihwb3J0IDgwODIpLiBBIHJlcXVlc3QgdG8gYC9hZG1pbi9hcGkvLi4uYCB0aGVyZWZvcmUgaGl0cyB0aGUgYWRtaW4gcGFuZWwncyB2aXRlCnNlcnZlciAod2hpY2ggb25seSBwcm94aWVzIGJhcmUgYC9hcGlgIGFuZCBvdGhlcndpc2UgU1BBLTQwNHMpLCBuZXZlciByZWFjaGluZyB0aGUKQVBJLiBJbiB0aGUgYnJvd3NlciB0aGlzIHN1cmZhY2VzIGFzIGEgdGhyb3duIGZldGNoIC8gYHJlcy5qc29uKClgIGZhaWx1cmUg4oCUIGUuZy4KdGhlIGxvZ2luIHBhZ2Ugc2hvd2VkICJDb25uZWN0aW9uIGVycm9yIOKAlCBwbGVhc2UgdHJ5IGFnYWluIiAoaXRzIGNhdGNoLWJsb2NrCm1lc3NhZ2UpLCB3aGljaCBsb29rcyBsaWtlIGEgbmV0d29yay9zZXJ2ZXIgb3V0YWdlIGJ1dCBpcyBhY3R1YWxseSBhIHdyb25nLVVSTCA0MDQuCgoqKkhvdyB0byBhcHBseToqKiB3aGVuIGFkZGluZyBhZG1pbiBBUEkgY2FsbHMgb3IgYW4gYGFwaSgpYCBoZWxwZXIsIHVzZQpgYCBgL2FwaS8ke3BhdGh9YCBgYCAob3IgcGxhaW4gYC9hcGkvLi4uYCkuIElmIHlvdSBzZWUgYGNvbnN0IEJBU0UgPSBpbXBvcnQubWV0YS5lbnYuQkFTRV9VUkwuLi5gCnVzZWQgb25seSB0byBidWlsZCBBUEkgVVJMcywgdGhhdCdzIHRoZSBidWcuIFZlcmlmeSByb3V0aW5nIHRocm91Z2ggdGhlIHJlYWwgcHJveHksCm5vdCBqdXN0IGxvY2FsaG9zdDogYGN1cmwgaHR0cHM6Ly8kUkVQTElUX0RFVl9ET01BSU4vYXBpL2FkbWluL2F1dGgvbG9naW5gIChyZWFjaGVzCkFQSSwgNDAxLzIwMCkgdnMgYC4uLi9hZG1pbi9hcGkvYWRtaW4vYXV0aC9sb2dpbmAgKDQwNCBmcm9tIHZpdGUpLgo=
+---
+name: admin-panel API call routing
+description: Why admin-panel fetch() calls must use absolute /api/... and never prepend BASE_URL
+---
+
+# Admin panel API calls must be absolute `/api/...`, never `${BASE}/api/...`
+
+The admin-panel artifact is served under a base path (`BASE_PATH=/admin/`, set in
+`artifacts/admin-panel/.replit-artifact/artifact.toml` under `[services.env]`). So
+`import.meta.env.BASE_URL` is `/admin/`.
+
+**Rule:** all `fetch()` calls to the backend must target absolute `/api/...`. Do NOT
+prefix with `BASE` / `BASE_URL` (e.g. `${BASE}/api/...` → `/admin/api/...`).
+
+**Why:** the platform router (`router = "path"`) dispatches by top-level path prefix:
+`/api/*` → api-server (port 8080), `/admin/*` → admin-panel's own vite dev server
+(port 8082). A request to `/admin/api/...` therefore hits the admin panel's vite
+server (which only proxies bare `/api` and otherwise SPA-404s), never reaching the
+API. In the browser this surfaces as a thrown fetch / `res.json()` failure — e.g.
+the login page showed "Connection error — please try again" (its catch-block
+message), which looks like a network/server outage but is actually a wrong-URL 404.
+
+**How to apply:** when adding admin API calls or an `api()` helper, use
+`` `/api/${path}` `` (or plain `/api/...`). If you see `const BASE = import.meta.env.BASE_URL...`
+used only to build API URLs, that's the bug. Verify routing through the real proxy,
+not just localhost: `curl https://$REPLIT_DEV_DOMAIN/api/admin/auth/login` (reaches
+API, 401/200) vs `.../admin/api/admin/auth/login` (404 from vite).

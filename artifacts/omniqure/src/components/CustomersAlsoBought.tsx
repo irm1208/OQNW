@@ -1,1 +1,224 @@
-aW1wb3J0IHsgTGluayB9IGZyb20gIndvdXRlciI7CmltcG9ydCB7IFNob3BwaW5nQ2FydCwgQ2hlY2tDaXJjbGUyLCBVc2VycyB9IGZyb20gImx1Y2lkZS1yZWFjdCI7CmltcG9ydCB7IHVzZVN0YXRlLCB1c2VFZmZlY3QgfSBmcm9tICJyZWFjdCI7CmltcG9ydCB7IHR5cGUgUHJvZHVjdCB9IGZyb20gIkAvZGF0YS9wcm9kdWN0cyI7CmltcG9ydCB7IGlzSGlkZGVuQ2F0ZWdvcnkgfSBmcm9tICJAL2RhdGEvcHJvZHVjdHMiOwppbXBvcnQgeyB1c2VQcm9kdWN0cyB9IGZyb20gIkAvY29udGV4dC9Qcm9kdWN0c0NvbnRleHQiOwppbXBvcnQgeyB1c2VDYXJ0IH0gZnJvbSAiQC9jb250ZXh0L0NhcnRDb250ZXh0IjsKaW1wb3J0IHsgdXNlQ3VycmVuY3kgfSBmcm9tICJAL2NvbnRleHQvQ3VycmVuY3lDb250ZXh0IjsKaW1wb3J0IHsgZ2V0UHVyaXR5U3RyIH0gZnJvbSAiQC91dGlscy9wcm9kdWN0UHVyaXR5IjsKCmNvbnN0IEJBU0VfVVJMID0gaW1wb3J0Lm1ldGEuZW52LkJBU0VfVVJMID8/ICIvIjsKZnVuY3Rpb24gYXBpVXJsKHBhdGg6IHN0cmluZykgewogIHJldHVybiBgJHtCQVNFX1VSTH1hcGkvJHtwYXRofWAucmVwbGFjZSgvXC8rL2csICIvIikucmVwbGFjZSgvXlwvXC8vLCAiLyIpOwp9Cgpjb25zdCBDT01QTEVNRU5UQVJZOiBSZWNvcmQ8c3RyaW5nLCBzdHJpbmdbXT4gPSB7CiAgIkhlYWxpbmcgUGVwdGlkZXMiOiAgIFsiSW1tdW5lIFN1cHBvcnQiLCAiQW50aS1JbmZsYW1tYXRvcnkiLCAiUGVwdGlkZSBCbGVuZHMiXSwKICAiR3Jvd3RoIFBlcHRpZGVzIjogICAgWyJHcm93dGggSG9ybW9uZSIsICJIb3Jtb25hbCBQZXB0aWRlcyIsICJDZWxsdWxhciBIZWFsdGgiXSwKICAiV2VpZ2h0IE1hbmFnZW1lbnQiOiAgWyJDZWxsdWxhciBIZWFsdGgiLCAiSG9ybW9uYWwgUGVwdGlkZXMiLCAiUmVzZWFyY2ggUGVwdGlkZXMiXSwKICAiTm9vdHJvcGljcyI6ICAgICAgICAgWyJDb2duaXRpdmUgUGVwdGlkZXMiLCAiUmVzZWFyY2ggUGVwdGlkZXMiLCAiQ2VsbHVsYXIgSGVhbHRoIl0sCiAgIkxvbmdldml0eSBQZXB0aWRlcyI6IFsiQ2VsbHVsYXIgSGVhbHRoIiwgIkFudGktSW5mbGFtbWF0b3J5IiwgIkltbXVuZSBTdXBwb3J0Il0sCiAgIkNlbGx1bGFyIEhlYWx0aCI6ICAgIFsiTG9uZ2V2aXR5IFBlcHRpZGVzIiwgIkFudGktSW5mbGFtbWF0b3J5IiwgIkdyb3d0aCBQZXB0aWRlcyJdLAogICJJbW11bmUgU3VwcG9ydCI6ICAgICBbIkhlYWxpbmcgUGVwdGlkZXMiLCAiQW50aS1JbmZsYW1tYXRvcnkiLCAiUmVzZWFyY2ggUGVwdGlkZXMiXSwKICAiU2tpbiAmIFJlcGFpciI6ICAgICAgWyJIZWFsaW5nIFBlcHRpZGVzIiwgIkNlbGx1bGFyIEhlYWx0aCIsICJBbnRpLUluZmxhbW1hdG9yeSJdLAogICJBbnRpLUluZmxhbW1hdG9yeSI6ICBbIkhlYWxpbmcgUGVwdGlkZXMiLCAiSW1tdW5lIFN1cHBvcnQiLCAiQ2VsbHVsYXIgSGVhbHRoIl0sCiAgIkhvcm1vbmFsIFBlcHRpZGVzIjogIFsiR3Jvd3RoIFBlcHRpZGVzIiwgIlJlc2VhcmNoIFBlcHRpZGVzIiwgIkNlbGx1bGFyIEhlYWx0aCJdLAogICJHcm93dGggSG9ybW9uZSI6ICAgICBbIkdyb3d0aCBQZXB0aWRlcyIsICJIb3Jtb25hbCBQZXB0aWRlcyIsICJDZWxsdWxhciBIZWFsdGgiXSwKICAiQ29nbml0aXZlIFBlcHRpZGVzIjogWyJOb290cm9waWNzIiwgIlJlc2VhcmNoIFBlcHRpZGVzIiwgIkNlbGx1bGFyIEhlYWx0aCJdLAogICJQZXB0aWRlIEJsZW5kcyI6ICAgICBbIkhlYWxpbmcgUGVwdGlkZXMiLCAiR3Jvd3RoIFBlcHRpZGVzIiwgIkltbXVuZSBTdXBwb3J0Il0sCiAgIlJlc2VhcmNoIFBlcHRpZGVzIjogIFsiTm9vdHJvcGljcyIsICJDb2duaXRpdmUgUGVwdGlkZXMiLCAiQ2VsbHVsYXIgSGVhbHRoIl0sCn07CgpmdW5jdGlvbiBwYXJzZUJhc2UobmFtZTogc3RyaW5nKTogc3RyaW5nIHsKICBjb25zdCBtYXRjaCA9IG5hbWUubWF0Y2goL14oLio/KVxzK1xkKyg/OlwuXGQrKT9ccyooPzptZ3xJVXxtY2d8ZykvaSk7CiAgcmV0dXJuIG1hdGNoID8gbWF0Y2hbMV0udHJpbSgpIDogbmFtZTsKfQoKZnVuY3Rpb24gZ2V0U3RhdGljQWxzb0JvdWdodChwcm9kdWN0OiBQcm9kdWN0LCBwcm9kdWN0czogUHJvZHVjdFtdKTogUHJvZHVjdFtdIHsKICBjb25zdCBjdXJyZW50QmFzZSA9IHBhcnNlQmFzZShwcm9kdWN0Lm5hbWUpOwogIGNvbnN0IGNvbXBsZW1lbnRhcnlDYXRlZ29yaWVzID0gQ09NUExFTUVOVEFSWVtwcm9kdWN0LmNhdGVnb3J5XSA/PyBbXTsKICBjb25zdCBlbGlnaWJsZSA9IHByb2R1Y3RzLmZpbHRlcigocCkgPT4gIWlzSGlkZGVuQ2F0ZWdvcnkocC5jYXRlZ29yeSkpOwogIGNvbnN0IHNhbWVDYXQgPSBlbGlnaWJsZS5maWx0ZXIoCiAgICAocCkgPT4gcC5pZCAhPT0gcHJvZHVjdC5pZCAmJiBwLmNhdGVnb3J5ID09PSBwcm9kdWN0LmNhdGVnb3J5ICYmIHBhcnNlQmFzZShwLm5hbWUpICE9PSBjdXJyZW50QmFzZQogICk7CiAgY29uc3QgY3Jvc3NDYXQgPSBlbGlnaWJsZS5maWx0ZXIoCiAgICAocCkgPT4gcC5pZCAhPT0gcHJvZHVjdC5pZCAmJiBjb21wbGVtZW50YXJ5Q2F0ZWdvcmllcy5pbmNsdWRlcyhwLmNhdGVnb3J5KSAmJiBwYXJzZUJhc2UocC5uYW1lKSAhPT0gY3VycmVudEJhc2UKICApOwogIGNvbnN0IHNlZW5CYXNlcyA9IG5ldyBTZXQ8c3RyaW5nPigpOwogIGNvbnN0IHBpY2tlZDogUHJvZHVjdFtdID0gW107CiAgY29uc3QgYWRkVW5pcXVlID0gKHA6IFByb2R1Y3QpID0+IHsKICAgIGNvbnN0IGJhc2UgPSBwYXJzZUJhc2UocC5uYW1lKTsKICAgIGlmICghc2VlbkJhc2VzLmhhcyhiYXNlKSAmJiBwaWNrZWQubGVuZ3RoIDwgNSkgeyBzZWVuQmFzZXMuYWRkKGJhc2UpOyBwaWNrZWQucHVzaChwKTsgfQogIH07CiAgY29uc3Qgc2VlZCA9IHBhcnNlSW50KHByb2R1Y3QuaWQsIDEwKSB8fCAxOwogIGNvbnN0IHNodWZmbGUgPSA8VCw+KGFycjogVFtdKTogVFtdID0+IHsKICAgIGNvbnN0IGNvcHkgPSBbLi4uYXJyXTsKICAgIGZvciAobGV0IGkgPSBjb3B5Lmxlbmd0aCAtIDE7IGkgPiAwOyBpLS0pIHsKICAgICAgY29uc3QgaiA9IChzZWVkICogKGkgKyA3KSAqIDMxMzM3KSAlIChpICsgMSk7CiAgICAgIFtjb3B5W2ldLCBjb3B5W2pdXSA9IFtjb3B5W2pdLCBjb3B5W2ldXTsKICAgIH0KICAgIHJldHVybiBjb3B5OwogIH07CiAgc2h1ZmZsZShzYW1lQ2F0KS5zbGljZSgwLCAyKS5mb3JFYWNoKGFkZFVuaXF1ZSk7CiAgc2h1ZmZsZShjcm9zc0NhdCkuc2xpY2UoMCwgMykuZm9yRWFjaChhZGRVbmlxdWUpOwogIGlmIChwaWNrZWQubGVuZ3RoIDwgNSkgc2h1ZmZsZShzYW1lQ2F0KS5mb3JFYWNoKGFkZFVuaXF1ZSk7CiAgcmV0dXJuIHBpY2tlZDsKfQoKZnVuY3Rpb24gQWxzb0JvdWdodENhcmQoeyBwcm9kdWN0IH06IHsgcHJvZHVjdDogUHJvZHVjdCB9KSB7CiAgY29uc3QgW2FkZGVkLCBzZXRBZGRlZF0gPSB1c2VTdGF0ZShmYWxzZSk7CiAgY29uc3QgeyBhZGRUb0NhcnQgfSA9IHVzZUNhcnQoKTsKICBjb25zdCB7IGZvcm1hdFByaWNlIH0gPSB1c2VDdXJyZW5jeSgpOwoKICBjb25zdCBoYW5kbGVBZGQgPSAoZTogUmVhY3QuTW91c2VFdmVudCkgPT4gewogICAgZS5wcmV2ZW50RGVmYXVsdCgpOwogICAgYWRkVG9DYXJ0KHByb2R1Y3QsIDEpOwogICAgc2V0QWRkZWQodHJ1ZSk7CiAgICBzZXRUaW1lb3V0KCgpID0+IHNldEFkZGVkKGZhbHNlKSwgMTgwMCk7CiAgfTsKCiAgcmV0dXJuICgKICAgIDxMaW5rIGhyZWY9e2AvcHJvZHVjdC8ke3Byb2R1Y3QuaWR9YH0gc3R5bGU9e3sgdGV4dERlY29yYXRpb246ICJub25lIiB9fT4KICAgICAgPGRpdgogICAgICAgIGNsYXNzTmFtZT0icm91bmRlZC0yeGwgb3ZlcmZsb3ctaGlkZGVuIGJnLXdoaXRlIGZsZXggZmxleC1jb2wgaC1mdWxsIGN1cnNvci1wb2ludGVyIHRyYW5zaXRpb24tYWxsIGR1cmF0aW9uLTIwMCIKICAgICAgICBzdHlsZT17eyBib3JkZXI6ICIxLjVweCBzb2xpZCAjRThFREY1IiwgYm94U2hhZG93OiAiMCAycHggMTBweCByZ2JhKDE1LDIzLDQyLDAuMDUpIiB9fQogICAgICAgIG9uTW91c2VFbnRlcj17KGUpID0+IHsKICAgICAgICAgIGNvbnN0IGVsID0gZS5jdXJyZW50VGFyZ2V0IGFzIEhUTUxEaXZFbGVtZW50OwogICAgICAgICAgZWwuc3R5bGUuYm9yZGVyQ29sb3IgPSAiIzkzQjhGMCI7CiAgICAgICAgICBlbC5zdHlsZS5ib3hTaGFkb3cgPSAiMCA4cHggMjRweCByZ2JhKDI3LDkyLDE4MSwwLjEwKSI7CiAgICAgICAgICBlbC5zdHlsZS50cmFuc2Zvcm0gPSAidHJhbnNsYXRlWSgtMnB4KSI7CiAgICAgICAgfX0KICAgICAgICBvbk1vdXNlTGVhdmU9eyhlKSA9PiB7CiAgICAgICAgICBjb25zdCBlbCA9IGUuY3VycmVudFRhcmdldCBhcyBIVE1MRGl2RWxlbWVudDsKICAgICAgICAgIGVsLnN0eWxlLmJvcmRlckNvbG9yID0gIiNFOEVERjUiOwogICAgICAgICAgZWwuc3R5bGUuYm94U2hhZG93ID0gIjAgMnB4IDEwcHggcmdiYSgxNSwyMyw0MiwwLjA1KSI7CiAgICAgICAgICBlbC5zdHlsZS50cmFuc2Zvcm0gPSAidHJhbnNsYXRlWSgwKSI7CiAgICAgICAgfX0KICAgICAgPgogICAgICAgIDxkaXYKICAgICAgICAgIGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgcmVsYXRpdmUiCiAgICAgICAgICBzdHlsZT17eyBoZWlnaHQ6ICIxMzBweCIsIGJhY2tncm91bmQ6ICJsaW5lYXItZ3JhZGllbnQoMTQ1ZGVnLCAjRjRGOEZGIDAlLCAjRUJGMkZGIDEwMCUpIiB9fQogICAgICAgID4KICAgICAgICAgIDxpbWcKICAgICAgICAgICAgc3JjPXtwcm9kdWN0LmltYWdlfQogICAgICAgICAgICBhbHQ9e3Byb2R1Y3QubmFtZX0KICAgICAgICAgICAgc3R5bGU9e3sgd2lkdGg6ICIxMDAlIiwgaGVpZ2h0OiAiMTAwJSIsIG9iamVjdEZpdDogImNvbnRhaW4iLCBwYWRkaW5nOiAiMTJweCIgfX0KICAgICAgICAgICAgb25FcnJvcj17KGUpID0+IHsgKGUuY3VycmVudFRhcmdldCBhcyBIVE1MSW1hZ2VFbGVtZW50KS5zdHlsZS5kaXNwbGF5ID0gIm5vbmUiOyB9fQogICAgICAgICAgLz4KICAgICAgICAgIDxzcGFuCiAgICAgICAgICAgIGNsYXNzTmFtZT0iYWJzb2x1dGUgdG9wLTIgcmlnaHQtMiB0ZXh0LXhzIGZvbnQtYm9sZCBweC0yIHB5LTAuNSByb3VuZGVkLWZ1bGwiCiAgICAgICAgICAgIHN0eWxlPXt7IGJhY2tncm91bmRDb2xvcjogIiNFQ0ZERjUiLCBjb2xvcjogIiMwNTk2NjkiLCBib3JkZXI6ICIxcHggc29saWQgI0E3RjNEMCIsIGZvbnRTaXplOiAiOS41cHgiIH19CiAgICAgICAgICA+CiAgICAgICAgICAgIHtnZXRQdXJpdHlTdHIocHJvZHVjdC5pZCl9CiAgICAgICAgICA8L3NwYW4+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggZmxleC1jb2wgZmxleC0xIHB4LTMgcHQtMi41IHBiLTMiPgogICAgICAgICAgPHNwYW4KICAgICAgICAgICAgY2xhc3NOYW1lPSJ0ZXh0LXhzIGZvbnQtYm9sZCBtYi0xIHVwcGVyY2FzZSB0cmFja2luZy13aWRlIgogICAgICAgICAgICBzdHlsZT17eyBjb2xvcjogIiMxQjVDQjUiLCBmb250U2l6ZTogIjlweCIsIGxldHRlclNwYWNpbmc6ICIwLjA2ZW0iIH19CiAgICAgICAgICA+CiAgICAgICAgICAgIHtwcm9kdWN0LmNhdGVnb3J5fQogICAgICAgICAgPC9zcGFuPgogICAgICAgICAgPHAKICAgICAgICAgICAgY2xhc3NOYW1lPSJmb250LXNlbWlib2xkIGxlYWRpbmctc251ZyBmbGV4LTEgbWItMiIKICAgICAgICAgICAgc3R5bGU9e3sgZm9udFNpemU6ICIxMi41cHgiLCBjb2xvcjogIiMwRjE3MkEiLCBsaW5lSGVpZ2h0OiAxLjM1IH19CiAgICAgICAgICA+CiAgICAgICAgICAgIHtwcm9kdWN0Lm5hbWV9CiAgICAgICAgICA8L3A+CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1iZXR3ZWVuIGdhcC0yIj4KICAgICAgICAgICAge3Byb2R1Y3QucHJpY2UgIT0gbnVsbCAmJiAoCiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJmb250LWJvbGQiIHN0eWxlPXt7IGZvbnRTaXplOiAiMTVweCIsIGNvbG9yOiAiIzEyNDBBMCIgfX0+CiAgICAgICAgICAgICAgICB7Zm9ybWF0UHJpY2UocHJvZHVjdC5wcmljZSl9CiAgICAgICAgICAgICAgPC9wPgogICAgICAgICAgICApfQogICAgICAgICAgICA8YnV0dG9uCiAgICAgICAgICAgICAgb25DbGljaz17aGFuZGxlQWRkfQogICAgICAgICAgICAgIGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTEgZm9udC1zZW1pYm9sZCByb3VuZGVkLXhsIHRyYW5zaXRpb24tYWxsIgogICAgICAgICAgICAgIHN0eWxlPXt7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kQ29sb3I6IGFkZGVkID8gIiMwNTk2NjkiIDogIiMxMjQwQTAiLAogICAgICAgICAgICAgICAgY29sb3I6ICIjZmZmIiwKICAgICAgICAgICAgICAgIGJvcmRlcjogIm5vbmUiLAogICAgICAgICAgICAgICAgY3Vyc29yOiAicG9pbnRlciIsCiAgICAgICAgICAgICAgICBmb250U2l6ZTogIjExcHgiLAogICAgICAgICAgICAgICAgcGFkZGluZzogIjZweCAxMHB4IiwKICAgICAgICAgICAgICAgIGhlaWdodDogIjMwcHgiLAogICAgICAgICAgICAgICAgZmxleFNocmluazogMCwKICAgICAgICAgICAgICAgIHRyYW5zaXRpb246ICJiYWNrZ3JvdW5kLWNvbG9yIDAuMnMiLAogICAgICAgICAgICAgIH19CiAgICAgICAgICAgICAgb25Nb3VzZUVudGVyPXsoZSkgPT4geyBpZiAoIWFkZGVkKSAoZS5jdXJyZW50VGFyZ2V0IGFzIEhUTUxFbGVtZW50KS5zdHlsZS5iYWNrZ3JvdW5kQ29sb3IgPSAiIzFCNUNCNSI7IH19CiAgICAgICAgICAgICAgb25Nb3VzZUxlYXZlPXsoZSkgPT4geyBpZiAoIWFkZGVkKSAoZS5jdXJyZW50VGFyZ2V0IGFzIEhUTUxFbGVtZW50KS5zdHlsZS5iYWNrZ3JvdW5kQ29sb3IgPSAiIzEyNDBBMCI7IH19CiAgICAgICAgICAgID4KICAgICAgICAgICAgICB7YWRkZWQgPyA8PjxDaGVja0NpcmNsZTIgc2l6ZT17MTF9IC8+IEFkZGVkITwvPiA6IDw+PFNob3BwaW5nQ2FydCBzaXplPXsxMX0gLz4gQWRkPC8+fQogICAgICAgICAgICA8L2J1dHRvbj4KICAgICAgICAgIDwvZGl2PgogICAgICAgIDwvZGl2PgogICAgICA8L2Rpdj4KICAgIDwvTGluaz4KICApOwp9CgppbnRlcmZhY2UgUmVsYXRlZEFwaUl0ZW0gewogIHByb2R1Y3RJZDogbnVtYmVyOwogIHByb2R1Y3ROYW1lOiBzdHJpbmc7CiAgcHJvZHVjdENhdGVnb3J5OiBzdHJpbmc7CiAgY29PY2N1cnJlbmNlczogbnVtYmVyOwp9CgppbnRlcmZhY2UgQ3VzdG9tZXJzQWxzb0JvdWdodFByb3BzIHsKICBwcm9kdWN0OiBQcm9kdWN0Owp9CgpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBDdXN0b21lcnNBbHNvQm91Z2h0KHsgcHJvZHVjdCB9OiBDdXN0b21lcnNBbHNvQm91Z2h0UHJvcHMpIHsKICBjb25zdCB7IHByb2R1Y3RzIH0gPSB1c2VQcm9kdWN0cygpOwogIGNvbnN0IFthcGlSZWxhdGVkLCBzZXRBcGlSZWxhdGVkXSA9IHVzZVN0YXRlPFByb2R1Y3RbXSB8IG51bGw+KG51bGwpOwoKICB1c2VFZmZlY3QoKCkgPT4gewogICAgY29uc3QgcHJvZHVjdElkSW50ID0gcGFyc2VJbnQocHJvZHVjdC5pZCwgMTApOwogICAgaWYgKCFwcm9kdWN0SWRJbnQpIHJldHVybjsKCiAgICBmZXRjaChhcGlVcmwoYHByb2R1Y3RzLyR7cHJvZHVjdElkSW50fS9yZWxhdGVkYCksIHsgY3JlZGVudGlhbHM6ICJpbmNsdWRlIiB9KQogICAgICAudGhlbigocikgPT4gci5vayA/IHIuanNvbigpIGFzIFByb21pc2U8UmVsYXRlZEFwaUl0ZW1bXT4gOiBQcm9taXNlLnJlc29sdmUoW10pKQogICAgICAudGhlbigoaXRlbXMpID0+IHsKICAgICAgICBpZiAoaXRlbXMubGVuZ3RoID49IDMpIHsKICAgICAgICAgIGNvbnN0IHJlc29sdmVkID0gaXRlbXMKICAgICAgICAgICAgLm1hcCgoaXRlbSkgPT4gcHJvZHVjdHMuZmluZCgocCkgPT4gcGFyc2VJbnQocC5pZCwgMTApID09PSBpdGVtLnByb2R1Y3RJZCkpCiAgICAgICAgICAgIC5maWx0ZXIoKHApOiBwIGlzIFByb2R1Y3QgPT4gISFwICYmICFpc0hpZGRlbkNhdGVnb3J5KHAuY2F0ZWdvcnkpKTsKICAgICAgICAgIGlmIChyZXNvbHZlZC5sZW5ndGggPj0gMykgewogICAgICAgICAgICBzZXRBcGlSZWxhdGVkKHJlc29sdmVkLnNsaWNlKDAsIDUpKTsKICAgICAgICAgICAgcmV0dXJuOwogICAgICAgICAgfQogICAgICAgIH0KICAgICAgICBzZXRBcGlSZWxhdGVkKG51bGwpOwogICAgICB9KQogICAgICAuY2F0Y2goKCkgPT4geyBzZXRBcGlSZWxhdGVkKG51bGwpOyB9KTsKICB9LCBbcHJvZHVjdC5pZF0pOwoKICBjb25zdCBhbHNvQm91Z2h0ID0gYXBpUmVsYXRlZCA/PyBnZXRTdGF0aWNBbHNvQm91Z2h0KHByb2R1Y3QsIHByb2R1Y3RzKTsKCiAgaWYgKGFsc29Cb3VnaHQubGVuZ3RoID09PSAwKSByZXR1cm4gbnVsbDsKCiAgcmV0dXJuICgKICAgIDxkaXYgY2xhc3NOYW1lPSJtYi04Ij4KICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGdhcC0yLjUgbWItNCI+CiAgICAgICAgPGRpdgogICAgICAgICAgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciByb3VuZGVkLWxnIgogICAgICAgICAgc3R5bGU9e3sgd2lkdGg6ICIzMHB4IiwgaGVpZ2h0OiAiMzBweCIsIGJhY2tncm91bmRDb2xvcjogIiNFRUY0RkYiIH19CiAgICAgICAgPgogICAgICAgICAgPFVzZXJzIHNpemU9ezE1fSBzdHlsZT17eyBjb2xvcjogIiMxQjVDQjUiIH19IC8+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGgyIGNsYXNzTmFtZT0iZm9udC1ib2xkIiBzdHlsZT17eyBmb250U2l6ZTogIjE4cHgiLCBjb2xvcjogIiMwRjE3MkEiIH19PgogICAgICAgICAgQ3VzdG9tZXJzIEFsc28gQm91Z2h0CiAgICAgICAgPC9oMj4KICAgICAgPC9kaXY+CiAgICAgIDxkaXYKICAgICAgICBjbGFzc05hbWU9ImdyaWQgZ2FwLTMiCiAgICAgICAgc3R5bGU9e3sgZ3JpZFRlbXBsYXRlQ29sdW1uczogInJlcGVhdChhdXRvLWZpbGwsIG1pbm1heCgxNjBweCwgMWZyKSkiIH19CiAgICAgID4KICAgICAgICB7YWxzb0JvdWdodC5tYXAoKHApID0+ICgKICAgICAgICAgIDxBbHNvQm91Z2h0Q2FyZCBrZXk9e3AuaWR9IHByb2R1Y3Q9e3B9IC8+CiAgICAgICAgKSl9CiAgICAgIDwvZGl2PgogICAgPC9kaXY+CiAgKTsKfQo=
+import { Link } from "wouter";
+import { ShoppingCart, CheckCircle2, Users } from "lucide-react";
+import { useState, useEffect } from "react";
+import { type Product } from "@/data/products";
+import { isHiddenCategory } from "@/data/products";
+import { useProducts } from "@/context/ProductsContext";
+import { useCart } from "@/context/CartContext";
+import { useCurrency } from "@/context/CurrencyContext";
+import { getPurityStr } from "@/utils/productPurity";
+
+const BASE_URL = import.meta.env.BASE_URL ?? "/";
+function apiUrl(path: string) {
+  return `${BASE_URL}api/${path}`.replace(/\/+/g, "/").replace(/^\/\//, "/");
+}
+
+const COMPLEMENTARY: Record<string, string[]> = {
+  "Healing Peptides":   ["Immune Support", "Anti-Inflammatory", "Peptide Blends"],
+  "Growth Peptides":    ["Growth Hormone", "Hormonal Peptides", "Cellular Health"],
+  "Weight Management":  ["Cellular Health", "Hormonal Peptides", "Research Peptides"],
+  "Nootropics":         ["Cognitive Peptides", "Research Peptides", "Cellular Health"],
+  "Longevity Peptides": ["Cellular Health", "Anti-Inflammatory", "Immune Support"],
+  "Cellular Health":    ["Longevity Peptides", "Anti-Inflammatory", "Growth Peptides"],
+  "Immune Support":     ["Healing Peptides", "Anti-Inflammatory", "Research Peptides"],
+  "Skin & Repair":      ["Healing Peptides", "Cellular Health", "Anti-Inflammatory"],
+  "Anti-Inflammatory":  ["Healing Peptides", "Immune Support", "Cellular Health"],
+  "Hormonal Peptides":  ["Growth Peptides", "Research Peptides", "Cellular Health"],
+  "Growth Hormone":     ["Growth Peptides", "Hormonal Peptides", "Cellular Health"],
+  "Cognitive Peptides": ["Nootropics", "Research Peptides", "Cellular Health"],
+  "Peptide Blends":     ["Healing Peptides", "Growth Peptides", "Immune Support"],
+  "Research Peptides":  ["Nootropics", "Cognitive Peptides", "Cellular Health"],
+};
+
+function parseBase(name: string): string {
+  const match = name.match(/^(.*?)\s+\d+(?:\.\d+)?\s*(?:mg|IU|mcg|g)/i);
+  return match ? match[1].trim() : name;
+}
+
+function getStaticAlsoBought(product: Product, products: Product[]): Product[] {
+  const currentBase = parseBase(product.name);
+  const complementaryCategories = COMPLEMENTARY[product.category] ?? [];
+  const eligible = products.filter((p) => !isHiddenCategory(p.category));
+  const sameCat = eligible.filter(
+    (p) => p.id !== product.id && p.category === product.category && parseBase(p.name) !== currentBase
+  );
+  const crossCat = eligible.filter(
+    (p) => p.id !== product.id && complementaryCategories.includes(p.category) && parseBase(p.name) !== currentBase
+  );
+  const seenBases = new Set<string>();
+  const picked: Product[] = [];
+  const addUnique = (p: Product) => {
+    const base = parseBase(p.name);
+    if (!seenBases.has(base) && picked.length < 5) { seenBases.add(base); picked.push(p); }
+  };
+  const seed = parseInt(product.id, 10) || 1;
+  const shuffle = <T,>(arr: T[]): T[] => {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = (seed * (i + 7) * 31337) % (i + 1);
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  };
+  shuffle(sameCat).slice(0, 2).forEach(addUnique);
+  shuffle(crossCat).slice(0, 3).forEach(addUnique);
+  if (picked.length < 5) shuffle(sameCat).forEach(addUnique);
+  return picked;
+}
+
+function AlsoBoughtCard({ product }: { product: Product }) {
+  const [added, setAdded] = useState(false);
+  const { addToCart } = useCart();
+  const { formatPrice } = useCurrency();
+
+  const handleAdd = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addToCart(product, 1);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1800);
+  };
+
+  return (
+    <Link href={`/product/${product.id}`} style={{ textDecoration: "none" }}>
+      <div
+        className="rounded-2xl overflow-hidden bg-white flex flex-col h-full cursor-pointer transition-all duration-200"
+        style={{ border: "1.5px solid #E8EDF5", boxShadow: "0 2px 10px rgba(15,23,42,0.05)" }}
+        onMouseEnter={(e) => {
+          const el = e.currentTarget as HTMLDivElement;
+          el.style.borderColor = "#93B8F0";
+          el.style.boxShadow = "0 8px 24px rgba(27,92,181,0.10)";
+          el.style.transform = "translateY(-2px)";
+        }}
+        onMouseLeave={(e) => {
+          const el = e.currentTarget as HTMLDivElement;
+          el.style.borderColor = "#E8EDF5";
+          el.style.boxShadow = "0 2px 10px rgba(15,23,42,0.05)";
+          el.style.transform = "translateY(0)";
+        }}
+      >
+        <div
+          className="flex items-center justify-center relative"
+          style={{ height: "130px", background: "linear-gradient(145deg, #F4F8FF 0%, #EBF2FF 100%)" }}
+        >
+          <img
+            src={product.image}
+            alt={product.name}
+            style={{ width: "100%", height: "100%", objectFit: "contain", padding: "12px" }}
+            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+          />
+          <span
+            className="absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full"
+            style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0", fontSize: "9.5px" }}
+          >
+            {getPurityStr(product.id)}
+          </span>
+        </div>
+        <div className="flex flex-col flex-1 px-3 pt-2.5 pb-3">
+          <span
+            className="text-xs font-bold mb-1 uppercase tracking-wide"
+            style={{ color: "#1B5CB5", fontSize: "9px", letterSpacing: "0.06em" }}
+          >
+            {product.category}
+          </span>
+          <p
+            className="font-semibold leading-snug flex-1 mb-2"
+            style={{ fontSize: "12.5px", color: "#0F172A", lineHeight: 1.35 }}
+          >
+            {product.name}
+          </p>
+          <div className="flex items-center justify-between gap-2">
+            {product.price != null && (
+              <p className="font-bold" style={{ fontSize: "15px", color: "#1240A0" }}>
+                {formatPrice(product.price)}
+              </p>
+            )}
+            <button
+              onClick={handleAdd}
+              className="flex items-center gap-1 font-semibold rounded-xl transition-all"
+              style={{
+                backgroundColor: added ? "#059669" : "#1240A0",
+                color: "#fff",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "11px",
+                padding: "6px 10px",
+                height: "30px",
+                flexShrink: 0,
+                transition: "background-color 0.2s",
+              }}
+              onMouseEnter={(e) => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1B5CB5"; }}
+              onMouseLeave={(e) => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0"; }}
+            >
+              {added ? <><CheckCircle2 size={11} /> Added!</> : <><ShoppingCart size={11} /> Add</>}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+interface RelatedApiItem {
+  productId: number;
+  productName: string;
+  productCategory: string;
+  coOccurrences: number;
+}
+
+interface CustomersAlsoBoughtProps {
+  product: Product;
+}
+
+export default function CustomersAlsoBought({ product }: CustomersAlsoBoughtProps) {
+  const { products } = useProducts();
+  const [apiRelated, setApiRelated] = useState<Product[] | null>(null);
+
+  useEffect(() => {
+    const productIdInt = parseInt(product.id, 10);
+    if (!productIdInt) return;
+
+    fetch(apiUrl(`products/${productIdInt}/related`), { credentials: "include" })
+      .then((r) => r.ok ? r.json() as Promise<RelatedApiItem[]> : Promise.resolve([]))
+      .then((items) => {
+        if (items.length >= 3) {
+          const resolved = items
+            .map((item) => products.find((p) => parseInt(p.id, 10) === item.productId))
+            .filter((p): p is Product => !!p && !isHiddenCategory(p.category));
+          if (resolved.length >= 3) {
+            setApiRelated(resolved.slice(0, 5));
+            return;
+          }
+        }
+        setApiRelated(null);
+      })
+      .catch(() => { setApiRelated(null); });
+  }, [product.id]);
+
+  const alsoBought = apiRelated ?? getStaticAlsoBought(product, products);
+
+  if (alsoBought.length === 0) return null;
+
+  return (
+    <div className="mb-8">
+      <div className="flex items-center gap-2.5 mb-4">
+        <div
+          className="flex items-center justify-center rounded-lg"
+          style={{ width: "30px", height: "30px", backgroundColor: "#EEF4FF" }}
+        >
+          <Users size={15} style={{ color: "#1B5CB5" }} />
+        </div>
+        <h2 className="font-bold" style={{ fontSize: "18px", color: "#0F172A" }}>
+          Customers Also Bought
+        </h2>
+      </div>
+      <div
+        className="grid gap-3"
+        style={{ gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))" }}
+      >
+        {alsoBought.map((p) => (
+          <AlsoBoughtCard key={p.id} product={p} />
+        ))}
+      </div>
+    </div>
+  );
+}

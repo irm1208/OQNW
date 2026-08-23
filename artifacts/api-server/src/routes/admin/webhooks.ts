@@ -1,1 +1,127 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IGNyeXB0byBmcm9tICJjcnlwdG8iOwppbXBvcnQgeyBkYiB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyB3ZWJob29rc1RhYmxlLCB3ZWJob29rRGVsaXZlcmllc1RhYmxlIH0gZnJvbSAiQHdvcmtzcGFjZS9kYiI7CmltcG9ydCB7IGVxLCBkZXNjIH0gZnJvbSAiZHJpenpsZS1vcm0iOwppbXBvcnQgeyBmaXJzdFN0cmluZyB9IGZyb20gIi4uLy4uL2xpYi9xdWVyeSI7Cgpjb25zdCByb3V0ZXIgPSBSb3V0ZXIoKTsKCmZ1bmN0aW9uIHJlcXVpcmVBZG1pbihyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBib29sZWFuIHsKICBpZiAocmVxLmNvb2tpZXM/LmFkbWluX3Nlc3Npb24gIT09ICJhdXRoZW50aWNhdGVkIikgewogICAgcmVzLnN0YXR1cyg0MDEpLmpzb24oeyBlcnJvcjogIk5vdCBhdXRoZW50aWNhdGVkIiB9KTsKICAgIHJldHVybiBmYWxzZTsKICB9CiAgcmV0dXJuIHRydWU7Cn0KCmNvbnN0IEFMTE9XRURfRVZFTlRTID0gWyJvcmRlci5jcmVhdGVkIiwgIm9yZGVyLnVwZGF0ZWQiLCAib3JkZXIuY2FuY2VsbGVkIiwgIm9yZGVyLnJlZnVuZGVkIl07CgpmdW5jdGlvbiB3ZWJob29rVG9SZXNwb25zZSh3OiB0eXBlb2Ygd2ViaG9va3NUYWJsZS4kaW5mZXJTZWxlY3QpIHsKICByZXR1cm4gewogICAgaWQ6IHcuaWQsCiAgICB1cmw6IHcudXJsLAogICAgZXZlbnRzOiB3LmV2ZW50cyA/PyBbXSwKICAgIGRlc2NyaXB0aW9uOiB3LmRlc2NyaXB0aW9uID8/IG51bGwsCiAgICBpc0FjdGl2ZTogdy5pc0FjdGl2ZSwKICAgIGNyZWF0ZWRBdDogdy5jcmVhdGVkQXQudG9JU09TdHJpbmcoKSwKICB9Owp9Cgpyb3V0ZXIuZ2V0KCIvYWRtaW4vd2ViaG9va3MiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgdHJ5IHsKICAgIGNvbnN0IHdlYmhvb2tzID0gYXdhaXQgZGIuc2VsZWN0KCkuZnJvbSh3ZWJob29rc1RhYmxlKS5vcmRlckJ5KGRlc2Mod2ViaG9va3NUYWJsZS5jcmVhdGVkQXQpKTsKICAgIHJlcy5qc29uKHdlYmhvb2tzLm1hcCh3ZWJob29rVG9SZXNwb25zZSkpOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGxpc3Qgd2ViaG9va3MiKTsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJJbnRlcm5hbCBzZXJ2ZXIgZXJyb3IiIH0pOwogIH0KfSk7Cgpyb3V0ZXIucG9zdCgiL2FkbWluL3dlYmhvb2tzIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGlmICghcmVxdWlyZUFkbWluKHJlcSwgcmVzKSkgcmV0dXJuOwogIGNvbnN0IHsgdXJsLCBldmVudHMsIGRlc2NyaXB0aW9uIH0gPSByZXEuYm9keSBhcyB7IHVybDogc3RyaW5nOyBldmVudHM6IHN0cmluZ1tdOyBkZXNjcmlwdGlvbj86IHN0cmluZyB9OwogIGlmICghdXJsIHx8ICFBcnJheS5pc0FycmF5KGV2ZW50cykgfHwgZXZlbnRzLmxlbmd0aCA9PT0gMCkgewogICAgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogInVybCBhbmQgYXQgbGVhc3Qgb25lIGV2ZW50IGFyZSByZXF1aXJlZCIgfSk7CiAgICByZXR1cm47CiAgfQogIGNvbnN0IGludmFsaWRFdmVudHMgPSBldmVudHMuZmlsdGVyKGUgPT4gIUFMTE9XRURfRVZFTlRTLmluY2x1ZGVzKGUpKTsKICBpZiAoaW52YWxpZEV2ZW50cy5sZW5ndGggPiAwKSB7CiAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiBgSW52YWxpZCBldmVudHM6ICR7aW52YWxpZEV2ZW50cy5qb2luKCIsICIpfWAgfSk7CiAgICByZXR1cm47CiAgfQogIHRyeSB7CiAgICBjb25zdCBzZWNyZXQgPSBjcnlwdG8ucmFuZG9tQnl0ZXMoMzIpLnRvU3RyaW5nKCJoZXgiKTsKICAgIGNvbnN0IFtjcmVhdGVkXSA9IGF3YWl0IGRiCiAgICAgIC5pbnNlcnQod2ViaG9va3NUYWJsZSkKICAgICAgLnZhbHVlcyh7IHVybCwgZXZlbnRzLCBzZWNyZXQsIGRlc2NyaXB0aW9uOiBkZXNjcmlwdGlvbiA/PyBudWxsIH0pCiAgICAgIC5yZXR1cm5pbmcoKTsKICAgIHJlcy5zdGF0dXMoMjAxKS5qc29uKHsgLi4ud2ViaG9va1RvUmVzcG9uc2UoY3JlYXRlZCksIHNlY3JldCB9KTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBjcmVhdGUgd2ViaG9vayIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCnJvdXRlci5wYXRjaCgiL2FkbWluL3dlYmhvb2tzLzppZCIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBpZiAoIXJlcXVpcmVBZG1pbihyZXEsIHJlcykpIHJldHVybjsKICBjb25zdCBpZCA9IHBhcnNlSW50KGZpcnN0U3RyaW5nKHJlcS5wYXJhbXMuaWQpID8/ICIiLCAxMCk7CiAgaWYgKGlzTmFOKGlkKSkgeyByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiSW52YWxpZCBJRCIgfSk7IHJldHVybjsgfQogIGNvbnN0IHsgdXJsLCBldmVudHMsIGRlc2NyaXB0aW9uLCBpc0FjdGl2ZSB9ID0gcmVxLmJvZHkgYXMgUGFydGlhbDx7IHVybDogc3RyaW5nOyBldmVudHM6IHN0cmluZ1tdOyBkZXNjcmlwdGlvbjogc3RyaW5nOyBpc0FjdGl2ZTogYm9vbGVhbiB9PjsKICBjb25zdCB1cGRhdGVzOiBQYXJ0aWFsPHR5cGVvZiB3ZWJob29rc1RhYmxlLiRpbmZlckluc2VydD4gPSB7fTsKICBpZiAodXJsICE9PSB1bmRlZmluZWQpIHVwZGF0ZXMudXJsID0gdXJsOwogIGlmIChldmVudHMgIT09IHVuZGVmaW5lZCkgdXBkYXRlcy5ldmVudHMgPSBldmVudHM7CiAgaWYgKGRlc2NyaXB0aW9uICE9PSB1bmRlZmluZWQpIHVwZGF0ZXMuZGVzY3JpcHRpb24gPSBkZXNjcmlwdGlvbjsKICBpZiAoaXNBY3RpdmUgIT09IHVuZGVmaW5lZCkgdXBkYXRlcy5pc0FjdGl2ZSA9IGlzQWN0aXZlOwogIHRyeSB7CiAgICBjb25zdCBbdXBkYXRlZF0gPSBhd2FpdCBkYi51cGRhdGUod2ViaG9va3NUYWJsZSkuc2V0KHVwZGF0ZXMpLndoZXJlKGVxKHdlYmhvb2tzVGFibGUuaWQsIGlkKSkucmV0dXJuaW5nKCk7CiAgICBpZiAoIXVwZGF0ZWQpIHsgcmVzLnN0YXR1cyg0MDQpLmpzb24oeyBlcnJvcjogIldlYmhvb2sgbm90IGZvdW5kIiB9KTsgcmV0dXJuOyB9CiAgICByZXMuanNvbih3ZWJob29rVG9SZXNwb25zZSh1cGRhdGVkKSk7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gdXBkYXRlIHdlYmhvb2siKTsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJJbnRlcm5hbCBzZXJ2ZXIgZXJyb3IiIH0pOwogIH0KfSk7Cgpyb3V0ZXIuZGVsZXRlKCIvYWRtaW4vd2ViaG9va3MvOmlkIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGlmICghcmVxdWlyZUFkbWluKHJlcSwgcmVzKSkgcmV0dXJuOwogIGNvbnN0IGlkID0gcGFyc2VJbnQoZmlyc3RTdHJpbmcocmVxLnBhcmFtcy5pZCkgPz8gIiIsIDEwKTsKICBpZiAoaXNOYU4oaWQpKSB7IHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJJbnZhbGlkIElEIiB9KTsgcmV0dXJuOyB9CiAgdHJ5IHsKICAgIGNvbnN0IFtkZWxldGVkXSA9IGF3YWl0IGRiLmRlbGV0ZSh3ZWJob29rc1RhYmxlKS53aGVyZShlcSh3ZWJob29rc1RhYmxlLmlkLCBpZCkpLnJldHVybmluZygpOwogICAgaWYgKCFkZWxldGVkKSB7IHJlcy5zdGF0dXMoNDA0KS5qc29uKHsgZXJyb3I6ICJXZWJob29rIG5vdCBmb3VuZCIgfSk7IHJldHVybjsgfQogICAgcmVzLnN0YXR1cygyMDQpLnNlbmQoKTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBkZWxldGUgd2ViaG9vayIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCnJvdXRlci5nZXQoIi9hZG1pbi93ZWJob29rcy86aWQvZGVsaXZlcmllcyIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBpZiAoIXJlcXVpcmVBZG1pbihyZXEsIHJlcykpIHJldHVybjsKICBjb25zdCBpZCA9IHBhcnNlSW50KGZpcnN0U3RyaW5nKHJlcS5wYXJhbXMuaWQpID8/ICIiLCAxMCk7CiAgaWYgKGlzTmFOKGlkKSkgeyByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiSW52YWxpZCBJRCIgfSk7IHJldHVybjsgfQogIHRyeSB7CiAgICBjb25zdCBkZWxpdmVyaWVzID0gYXdhaXQgZGIKICAgICAgLnNlbGVjdCgpCiAgICAgIC5mcm9tKHdlYmhvb2tEZWxpdmVyaWVzVGFibGUpCiAgICAgIC53aGVyZShlcSh3ZWJob29rRGVsaXZlcmllc1RhYmxlLndlYmhvb2tJZCwgaWQpKQogICAgICAub3JkZXJCeShkZXNjKHdlYmhvb2tEZWxpdmVyaWVzVGFibGUuYXR0ZW1wdGVkQXQpKQogICAgICAubGltaXQoNTApOwogICAgcmVzLmpzb24oZGVsaXZlcmllcy5tYXAoZCA9PiAoewogICAgICBpZDogZC5pZCwKICAgICAgZXZlbnRUeXBlOiBkLmV2ZW50VHlwZSwKICAgICAgc3RhdHVzOiBkLnN0YXR1cywKICAgICAgcmVzcG9uc2VDb2RlOiBkLnJlc3BvbnNlQ29kZSA/PyBudWxsLAogICAgICByZXNwb25zZUJvZHk6IGQucmVzcG9uc2VCb2R5ID8/IG51bGwsCiAgICAgIGF0dGVtcHRlZEF0OiBkLmF0dGVtcHRlZEF0LnRvSVNPU3RyaW5nKCksCiAgICB9KSkpOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGZldGNoIHdlYmhvb2sgZGVsaXZlcmllcyIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCmV4cG9ydCBkZWZhdWx0IHJvdXRlcjsK
+import { Router } from "express";
+import type { Request, Response } from "express";
+import crypto from "crypto";
+import { db } from "@workspace/db";
+import { webhooksTable, webhookDeliveriesTable } from "@workspace/db";
+import { eq, desc } from "drizzle-orm";
+import { firstString } from "../../lib/query";
+
+const router = Router();
+
+function requireAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+
+const ALLOWED_EVENTS = ["order.created", "order.updated", "order.cancelled", "order.refunded"];
+
+function webhookToResponse(w: typeof webhooksTable.$inferSelect) {
+  return {
+    id: w.id,
+    url: w.url,
+    events: w.events ?? [],
+    description: w.description ?? null,
+    isActive: w.isActive,
+    createdAt: w.createdAt.toISOString(),
+  };
+}
+
+router.get("/admin/webhooks", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const webhooks = await db.select().from(webhooksTable).orderBy(desc(webhooksTable.createdAt));
+    res.json(webhooks.map(webhookToResponse));
+  } catch (err) {
+    req.log.error({ err }, "Failed to list webhooks");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/admin/webhooks", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const { url, events, description } = req.body as { url: string; events: string[]; description?: string };
+  if (!url || !Array.isArray(events) || events.length === 0) {
+    res.status(400).json({ error: "url and at least one event are required" });
+    return;
+  }
+  const invalidEvents = events.filter(e => !ALLOWED_EVENTS.includes(e));
+  if (invalidEvents.length > 0) {
+    res.status(400).json({ error: `Invalid events: ${invalidEvents.join(", ")}` });
+    return;
+  }
+  try {
+    const secret = crypto.randomBytes(32).toString("hex");
+    const [created] = await db
+      .insert(webhooksTable)
+      .values({ url, events, secret, description: description ?? null })
+      .returning();
+    res.status(201).json({ ...webhookToResponse(created), secret });
+  } catch (err) {
+    req.log.error({ err }, "Failed to create webhook");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.patch("/admin/webhooks/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
+  const { url, events, description, isActive } = req.body as Partial<{ url: string; events: string[]; description: string; isActive: boolean }>;
+  const updates: Partial<typeof webhooksTable.$inferInsert> = {};
+  if (url !== undefined) updates.url = url;
+  if (events !== undefined) updates.events = events;
+  if (description !== undefined) updates.description = description;
+  if (isActive !== undefined) updates.isActive = isActive;
+  try {
+    const [updated] = await db.update(webhooksTable).set(updates).where(eq(webhooksTable.id, id)).returning();
+    if (!updated) { res.status(404).json({ error: "Webhook not found" }); return; }
+    res.json(webhookToResponse(updated));
+  } catch (err) {
+    req.log.error({ err }, "Failed to update webhook");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/admin/webhooks/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
+  try {
+    const [deleted] = await db.delete(webhooksTable).where(eq(webhooksTable.id, id)).returning();
+    if (!deleted) { res.status(404).json({ error: "Webhook not found" }); return; }
+    res.status(204).send();
+  } catch (err) {
+    req.log.error({ err }, "Failed to delete webhook");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/admin/webhooks/:id/deliveries", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
+  try {
+    const deliveries = await db
+      .select()
+      .from(webhookDeliveriesTable)
+      .where(eq(webhookDeliveriesTable.webhookId, id))
+      .orderBy(desc(webhookDeliveriesTable.attemptedAt))
+      .limit(50);
+    res.json(deliveries.map(d => ({
+      id: d.id,
+      eventType: d.eventType,
+      status: d.status,
+      responseCode: d.responseCode ?? null,
+      responseBody: d.responseBody ?? null,
+      attemptedAt: d.attemptedAt.toISOString(),
+    })));
+  } catch (err) {
+    req.log.error({ err }, "Failed to fetch webhook deliveries");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;

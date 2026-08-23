@@ -1,1 +1,16 @@
-ewogICJuYW1lIjogIkB3b3Jrc3BhY2Uvc2NyaXB0cyIsCiAgInZlcnNpb24iOiAiMC4wLjAiLAogICJwcml2YXRlIjogdHJ1ZSwKICAidHlwZSI6ICJtb2R1bGUiLAogICJzY3JpcHRzIjogewogICAgImhlbGxvIjogInRzeCAuL3NyYy9oZWxsby50cyIsCiAgICAiY2hlY2s6YXBpLWRyaWZ0IjogInRzeCAuL3NyYy9jaGVjay1hcGktZHJpZnQudHMiLAogICAgInR5cGVjaGVjayI6ICJ0c2MgLXAgdHNjb25maWcuanNvbiAtLW5vRW1pdCIKICB9LAogICJkZXZEZXBlbmRlbmNpZXMiOiB7CiAgICAiQHR5cGVzL25vZGUiOiAiY2F0YWxvZzoiLAogICAgInRzeCI6ICJjYXRhbG9nOiIsCiAgICAieWFtbCI6ICJeMi44LjIiCiAgfQp9Cg==
+{
+  "name": "@workspace/scripts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "hello": "tsx ./src/hello.ts",
+    "check:api-drift": "tsx ./src/check-api-drift.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "tsx": "catalog:",
+    "yaml": "^2.8.2"
+  }
+}

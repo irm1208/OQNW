@@ -1,1 +1,349 @@
-aW1wb3J0IHsgdXNlRWZmZWN0LCB1c2VSZWYsIHVzZVN0YXRlIH0gZnJvbSAicmVhY3QiOwppbXBvcnQgeyBMaW5rIH0gZnJvbSAid291dGVyIjsKaW1wb3J0IHsgQ2hlY2tDaXJjbGUsIFhDaXJjbGUsIEFycm93UmlnaHQsIFJvdGF0ZUNjdywgUGFja2FnZSwgTG9hZGVyMiwgQ2xvY2sgfSBmcm9tICJsdWNpZGUtcmVhY3QiOwppbXBvcnQgeyB1c2VDYXJ0IH0gZnJvbSAiQC9jb250ZXh0L0NhcnRDb250ZXh0IjsKCi8qKgogKiAvd2FsbGlkLXJldHVybgogKgogKiBMYW5kaW5nIHBhZ2UgYWZ0ZXIgYSBXYWxsaWQgaG9zdGVkIHBheW1lbnQuIFdhbGxpZCByZWRpcmVjdHMgdG8gb3VyCiAqIHN1Y2Nlc3NfdXJsIG9yIGZhaWxfdXJsIGRlcGVuZGluZyBvbiB0aGUgcGF5bWVudCBvdXRjb21lLgogKgogKiBGb3IgdGhlIHN1Y2Nlc3MgcGF0aCB0aGUgcGFnZSBwb2xscyBHRVQgL2FwaS9vcmRlcnMvdHJhY2sgdG8gb2J0YWluIHRoZQogKiBzZXJ2ZXItYXV0aG9yaXRhdGl2ZSBzdGF0dXMgYmVmb3JlIHNob3dpbmcgYSBjb25maXJtYXRpb24gb3IgY2xlYXJpbmcgdGhlCiAqIGNhcnQuIFRoaXMgZ3VhcmRzIGFnYWluc3QgZGlyZWN0IFVSTCBuYXZpZ2F0aW9uIGFuZCB0aGUgcmFjZSB3aGVyZSBXYWxsaWQKICogcmVkaXJlY3RzIGJlZm9yZSB0aGUgd2ViaG9vayBmaXJlcy4KICoKICogVVJMIHBhcmFtczoKICogICA/b3JkZXI9T1EtWFhYWFhYICAgb3JkZXIgbnVtYmVyCiAqICAgP3N0YXR1cz1zdWNjZXNzICAgICBXYWxsaWQgcmVkaXJlY3RlZCB0byBzdWNjZXNzX3VybAogKiAgID9zdGF0dXM9ZmFpbGVkICAgICAgV2FsbGlkIHJlZGlyZWN0ZWQgdG8gZmFpbF91cmwKICogICA/bmFtZT1GaXJzdE5hbWUgICAgIGN1c3RvbWVyIGZpcnN0IG5hbWUKICogUGF5bWVudCBhbW91bnQgYW5kIGN1cnJlbmN5IGFyZSBhbHdheXMgcmVhZCBiYWNrIGZyb20gdGhlIHNlcnZlcidzIHRyYWNrZWQKICogb3JkZXIgcmVjb3JkLCByYXRoZXIgdGhhbiB0cnVzdGluZyBVUkwgcGFyYW1ldGVycy4KICovCgp0eXBlIFZlcmlmeVN0YXRlID0gInZlcmlmeWluZyIgfCAicGFpZCIgfCAicGVuZGluZ193ZWJob29rIiB8ICJmYWlsZWQiIHwgImVycm9yIjsKCmNvbnN0IE1BWF9QT0xMX0FUVEVNUFRTID0gNDA7ICAgLy8gNDAgw5cgMyBzIOKJiCAyIG1pbnV0ZXMKY29uc3QgUE9MTF9JTlRFUlZBTF9NUyAgPSAzMDAwOwoKZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gV2FsbGlkUmV0dXJuKCkgewogIGNvbnN0IHBhcmFtcyAgICAgID0gbmV3IFVSTFNlYXJjaFBhcmFtcyh3aW5kb3cubG9jYXRpb24uc2VhcmNoKTsKICBjb25zdCB1cmxTdGF0dXMgICA9IHBhcmFtcy5nZXQoInN0YXR1cyIpOyAgIC8vICJzdWNjZXNzIiB8ICJmYWlsZWQiCiAgY29uc3Qgb3JkZXJOdW1iZXIgPSBwYXJhbXMuZ2V0KCJvcmRlciIpID8/ICIiOwogIGNvbnN0IGZpcnN0TmFtZSAgID0gcGFyYW1zLmdldCgibmFtZSIpID8/ICIiOwogIGNvbnN0IHsgY2xlYXJDYXJ0IH0gPSB1c2VDYXJ0KCk7CiAgY29uc3QgW3BheW1lbnQsIHNldFBheW1lbnRdID0gdXNlU3RhdGU8eyBjdXJyZW5jeTogc3RyaW5nOyBhbW91bnRNaW5vcjogbnVtYmVyIH0gfCBudWxsPihudWxsKTsKCiAgLy8gZmFpbHVyZSBwYXRoOiBubyBzZXJ2ZXIgY2FsbCBuZWVkZWQg4oCUIFdhbGxpZCByZWRpcmVjdGVkIHRvIGZhaWxVcmwKICBjb25zdCBpbml0aWFsU3RhdGU6IFZlcmlmeVN0YXRlID0gdXJsU3RhdHVzID09PSAiZmFpbGVkIiA/ICJmYWlsZWQiIDogInZlcmlmeWluZyI7CiAgY29uc3QgW3ZlcmlmeVN0YXRlLCBzZXRWZXJpZnlTdGF0ZV0gPSB1c2VTdGF0ZTxWZXJpZnlTdGF0ZT4oaW5pdGlhbFN0YXRlKTsKCiAgY29uc3QgcG9sbFJlZiA9IHVzZVJlZjxSZXR1cm5UeXBlPHR5cGVvZiBzZXRJbnRlcnZhbD4gfCBudWxsPihudWxsKTsKICBjb25zdCBhdHRlbXB0c1JlZiA9IHVzZVJlZigwKTsKICBjb25zdCBjYW5jZWxsZWRSZWYgPSB1c2VSZWYoZmFsc2UpOwoKICB1c2VFZmZlY3QoKCkgPT4gewogICAgaWYgKHZlcmlmeVN0YXRlID09PSAiZmFpbGVkIikgcmV0dXJuOyAvLyBmYWlsdXJlIOKAlCBub3RoaW5nIHRvIHBvbGwKICAgIGlmICghb3JkZXJOdW1iZXIpIHsKICAgICAgc2V0VmVyaWZ5U3RhdGUoImVycm9yIik7CiAgICAgIHJldHVybjsKICAgIH0KCiAgICBhc3luYyBmdW5jdGlvbiBjaGVja09yZGVyU3RhdHVzKCk6IFByb21pc2U8Ym9vbGVhbj4gewogICAgICB0cnkgewogICAgICAgIGNvbnN0IHJlcyA9IGF3YWl0IGZldGNoKGAvYXBpL29yZGVycy90cmFjaz9udW1iZXI9JHtlbmNvZGVVUklDb21wb25lbnQob3JkZXJOdW1iZXIpfWApOwogICAgICAgIGlmICghcmVzLm9rKSByZXR1cm4gZmFsc2U7CiAgICAgICAgY29uc3QgZGF0YSA9IChhd2FpdCByZXMuanNvbigpKSBhcyB7CiAgICAgICAgICBzdGF0dXM/OiBzdHJpbmc7CiAgICAgICAgICBwYXltZW50Q3VycmVuY3k/OiBzdHJpbmcgfCBudWxsOwogICAgICAgICAgcGF5bWVudEFtb3VudE1pbm9yPzogbnVtYmVyIHwgbnVsbDsKICAgICAgICB9OwogICAgICAgIGlmIChkYXRhLnBheW1lbnRDdXJyZW5jeSAmJiB0eXBlb2YgZGF0YS5wYXltZW50QW1vdW50TWlub3IgPT09ICJudW1iZXIiKSB7CiAgICAgICAgICBzZXRQYXltZW50KHsgY3VycmVuY3k6IGRhdGEucGF5bWVudEN1cnJlbmN5LCBhbW91bnRNaW5vcjogZGF0YS5wYXltZW50QW1vdW50TWlub3IgfSk7CiAgICAgICAgfQogICAgICAgIGlmIChkYXRhLnN0YXR1cyA9PT0gInBhaWQiKSB7CiAgICAgICAgICBpZiAoIWNhbmNlbGxlZFJlZi5jdXJyZW50KSB7CiAgICAgICAgICAgIGNsZWFyQ2FydCgpOwogICAgICAgICAgICBzZXRWZXJpZnlTdGF0ZSgicGFpZCIpOwogICAgICAgICAgfQogICAgICAgICAgcmV0dXJuIHRydWU7CiAgICAgICAgfQogICAgICAgIHJldHVybiBmYWxzZTsKICAgICAgfSBjYXRjaCB7CiAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgICB9CiAgICB9CgogICAgLy8gQ2hlY2sgaW1tZWRpYXRlbHkgb24gbW91bnQsIHRoZW4gc3RhcnQgcG9sbGluZyBpZiBub3QgeWV0IHBhaWQKICAgIHZvaWQgY2hlY2tPcmRlclN0YXR1cygpLnRoZW4oZG9uZSA9PiB7CiAgICAgIGlmIChkb25lIHx8IGNhbmNlbGxlZFJlZi5jdXJyZW50KSByZXR1cm47CgogICAgICBwb2xsUmVmLmN1cnJlbnQgPSBzZXRJbnRlcnZhbCgoKSA9PiB7CiAgICAgICAgaWYgKGNhbmNlbGxlZFJlZi5jdXJyZW50KSB7CiAgICAgICAgICBjbGVhckludGVydmFsKHBvbGxSZWYuY3VycmVudCEpOwogICAgICAgICAgcmV0dXJuOwogICAgICAgIH0KICAgICAgICBhdHRlbXB0c1JlZi5jdXJyZW50Kys7CiAgICAgICAgdm9pZCBjaGVja09yZGVyU3RhdHVzKCkudGhlbihkb25lID0+IHsKICAgICAgICAgIGlmIChkb25lIHx8IGNhbmNlbGxlZFJlZi5jdXJyZW50KSB7CiAgICAgICAgICAgIGNsZWFySW50ZXJ2YWwocG9sbFJlZi5jdXJyZW50ISk7CiAgICAgICAgICAgIHJldHVybjsKICAgICAgICAgIH0KICAgICAgICAgIGlmIChhdHRlbXB0c1JlZi5jdXJyZW50ID49IE1BWF9QT0xMX0FUVEVNUFRTKSB7CiAgICAgICAgICAgIGNsZWFySW50ZXJ2YWwocG9sbFJlZi5jdXJyZW50ISk7CiAgICAgICAgICAgIGlmICghY2FuY2VsbGVkUmVmLmN1cnJlbnQpIHNldFZlcmlmeVN0YXRlKCJwZW5kaW5nX3dlYmhvb2siKTsKICAgICAgICAgIH0KICAgICAgICB9KTsKICAgICAgfSwgUE9MTF9JTlRFUlZBTF9NUyk7CiAgICB9KTsKCiAgICByZXR1cm4gKCkgPT4gewogICAgICBjYW5jZWxsZWRSZWYuY3VycmVudCA9IHRydWU7CiAgICAgIGlmIChwb2xsUmVmLmN1cnJlbnQpIGNsZWFySW50ZXJ2YWwocG9sbFJlZi5jdXJyZW50KTsKICAgIH07CiAgfSwgW10pOyAvLyBlc2xpbnQtZGlzYWJsZS1saW5lIHJlYWN0LWhvb2tzL2V4aGF1c3RpdmUtZGVwcwoKICAvLyDilIDilIAgVmVyaWZ5aW5nIC8gcG9sbGluZyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKICBpZiAodmVyaWZ5U3RhdGUgPT09ICJ2ZXJpZnlpbmciKSB7CiAgICByZXR1cm4gKAogICAgICA8UGFnZVNoZWxsIGJnPSJsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjRjBGOUZGIDAlLCAjRTBGMkZFIDEwMCUpIj4KICAgICAgICA8ZGl2IHN0eWxlPXt7IHRleHRBbGlnbjogImNlbnRlciIgfX0+CiAgICAgICAgICA8TG9hZGVyMiBzaXplPXs1Nn0gc3R5bGU9e3sgY29sb3I6ICIjMDM2OUExIiwgYW5pbWF0aW9uOiAic3BpbiAxcyBsaW5lYXIgaW5maW5pdGUiIH19IC8+CiAgICAgICAgICA8c3R5bGU+e2BAa2V5ZnJhbWVzIHNwaW4geyB0byB7IHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZyk7IH0gfWB9PC9zdHlsZT4KICAgICAgICAgIDxoMSBzdHlsZT17eyBmb250U2l6ZTogIjIycHgiLCBmb250V2VpZ2h0OiA4MDAsIGNvbG9yOiAiIzBGMTcyQSIsIG1hcmdpbjogIjIwcHggMCA4cHgiIH19PgogICAgICAgICAgICBDb25maXJtaW5nIHlvdXIgcGF5bWVudOKApgogICAgICAgICAgPC9oMT4KICAgICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAiMTRweCIsIGNvbG9yOiAiIzY0NzQ4QiIsIGxpbmVIZWlnaHQ6IDEuNiB9fT4KICAgICAgICAgICAgUGxlYXNlIHdhaXQgd2hpbGUgd2UgdmVyaWZ5IHlvdXIgcGF5bWVudCB3aXRoIHlvdXIgYmFuay4KICAgICAgICAgIDwvcD4KICAgICAgICAgIHtvcmRlck51bWJlciAmJiAoCiAgICAgICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAiMTNweCIsIGNvbG9yOiAiIzk0QTNCOCIsIG1hcmdpblRvcDogMTIgfX0+CiAgICAgICAgICAgICAgT3JkZXIgcmVmZXJlbmNlOiA8c3Ryb25nIHN0eWxlPXt7IGNvbG9yOiAiIzBGMTcyQSIgfX0+e29yZGVyTnVtYmVyfTwvc3Ryb25nPgogICAgICAgICAgICA8L3A+CiAgICAgICAgICApfQogICAgICAgIDwvZGl2PgogICAgICAgIDxCcmFuZGluZyAvPgogICAgICA8L1BhZ2VTaGVsbD4KICAgICk7CiAgfQoKICAvLyDilIDilIAgUGF5bWVudCBjb25maXJtZWQgKHNlcnZlci12ZXJpZmllZCkg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACiAgaWYgKHZlcmlmeVN0YXRlID09PSAicGFpZCIpIHsKICAgIHJldHVybiAoCiAgICAgIDxQYWdlU2hlbGwgYmc9ImxpbmVhci1ncmFkaWVudCgxMzVkZWcsICNGMEZERjQgMCUsICNFQ0ZERjUgMTAwJSkiPgogICAgICAgIDxkaXYgc3R5bGU9e3sgdGV4dEFsaWduOiAiY2VudGVyIiB9fT4KICAgICAgICAgIDxDaGVja0NpcmNsZSBzaXplPXs2NH0gc3R5bGU9e3sgY29sb3I6ICIjMDU5NjY5IiB9fSAvPgogICAgICAgICAgPGgxIHN0eWxlPXt7IGZvbnRTaXplOiAiMjRweCIsIGZvbnRXZWlnaHQ6IDkwMCwgY29sb3I6ICIjMEYxNzJBIiwgbWFyZ2luOiAiMTZweCAwIDhweCIgfX0+CiAgICAgICAgICAgIFBheW1lbnQgQ29uZmlybWVkIQogICAgICAgICAgPC9oMT4KICAgICAgICAgIHtmaXJzdE5hbWUgJiYgKAogICAgICAgICAgICA8cCBzdHlsZT17eyBmb250U2l6ZTogIjE1cHgiLCBjb2xvcjogIiM2NDc0OEIiLCBtYXJnaW5Cb3R0b206IDQgfX0+CiAgICAgICAgICAgICAgVGhhbmsgeW91LCA8c3Ryb25nPntmaXJzdE5hbWV9PC9zdHJvbmc+LgogICAgICAgICAgICA8L3A+CiAgICAgICAgICApfQogICAgICAgICAgPHAgc3R5bGU9e3sgZm9udFNpemU6ICIxNXB4IiwgY29sb3I6ICIjNjQ3NDhCIiwgbWFyZ2luQm90dG9tOiAyNCwgbGluZUhlaWdodDogMS42IH19PgogICAgICAgICAgICBZb3VyIGJhbmsgcGF5bWVudCB3YXMgcmVjZWl2ZWQgYW5kIHlvdXIgb3JkZXIgaXMgbm93IGJlaW5nIHByZXBhcmVkLgogICAgICAgICAgPC9wPgoKICAgICAgICAgIHtvcmRlck51bWJlciAmJiAoCiAgICAgICAgICAgIDxkaXYgc3R5bGU9e3sKICAgICAgICAgICAgICBiYWNrZ3JvdW5kOiAiI0YwRkRGNCIsIGJvcmRlcjogIjFweCBzb2xpZCAjRDFGQUU1IiwKICAgICAgICAgICAgICBib3JkZXJSYWRpdXM6IDEwLCBwYWRkaW5nOiAiMTRweCAyMHB4IiwgbWFyZ2luQm90dG9tOiAyOCwKICAgICAgICAgICAgfX0+CiAgICAgICAgICAgICAgPHAgc3R5bGU9e3sgZm9udFNpemU6ICIxMnB4IiwgY29sb3I6ICIjMDU5NjY5IiwgZm9udFdlaWdodDogNzAwLCB0ZXh0VHJhbnNmb3JtOiAidXBwZXJjYXNlIiwgbGV0dGVyU3BhY2luZzogIjAuMDhlbSIsIG1hcmdpbjogMCB9fT5PcmRlciBSZWZlcmVuY2U8L3A+CiAgICAgICAgICAgICAgPHAgc3R5bGU9e3sgZm9udFNpemU6ICIxOHB4IiwgZm9udFdlaWdodDogOTAwLCBjb2xvcjogIiMwRjE3MkEiLCBtYXJnaW46ICI0cHggMCAwIiwgbGV0dGVyU3BhY2luZzogIjAuMDRlbSIgfX0+e29yZGVyTnVtYmVyfTwvcD4KICAgICAgICAgICAgICB7cGF5bWVudCAmJiAoCiAgICAgICAgICAgICAgICA8cCBzdHlsZT17eyBmb250U2l6ZTogIjEzcHgiLCBjb2xvcjogIiM2NDc0OEIiLCBtYXJnaW46ICI0cHggMCAwIiB9fT4KICAgICAgICAgICAgICAgICAge2Zvcm1hdFBheW1lbnRBbW91bnQocGF5bWVudC5hbW91bnRNaW5vciwgcGF5bWVudC5jdXJyZW5jeSl9CiAgICAgICAgICAgICAgICA8L3A+CiAgICAgICAgICAgICAgKX0KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICApfQoKICAgICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAiMTNweCIsIGNvbG9yOiAiIzk0QTNCOCIsIG1hcmdpbkJvdHRvbTogMjgsIGxpbmVIZWlnaHQ6IDEuNiB9fT4KICAgICAgICAgICAgQSBjb25maXJtYXRpb24gZW1haWwgd2lsbCBiZSBzZW50IHNob3J0bHkuIEtlZXAgeW91ciBvcmRlciByZWZlcmVuY2Ugc2FmZS4KICAgICAgICAgIDwvcD4KCiAgICAgICAgICA8ZGl2IHN0eWxlPXt7IGRpc3BsYXk6ICJmbGV4IiwgZmxleERpcmVjdGlvbjogImNvbHVtbiIsIGdhcDogMTAgfX0+CiAgICAgICAgICAgIDxMaW5rCiAgICAgICAgICAgICAgaHJlZj17b3JkZXJOdW1iZXIgPyBgL3RyYWNrLW9yZGVyP251bWJlcj0ke2VuY29kZVVSSUNvbXBvbmVudChvcmRlck51bWJlcil9YCA6ICIvdHJhY2stb3JkZXIifQogICAgICAgICAgICAgIHN0eWxlPXt7CiAgICAgICAgICAgICAgICBkaXNwbGF5OiAiZmxleCIsIGFsaWduSXRlbXM6ICJjZW50ZXIiLCBqdXN0aWZ5Q29udGVudDogImNlbnRlciIsIGdhcDogOCwKICAgICAgICAgICAgICAgIGJhY2tncm91bmQ6ICJsaW5lYXItZ3JhZGllbnQoOTBkZWcsICMwNTk2NjksICMzNEQzOTkpIiwKICAgICAgICAgICAgICAgIGNvbG9yOiAiIzAyMmMyMiIsIHRleHREZWNvcmF0aW9uOiAibm9uZSIsCiAgICAgICAgICAgICAgICBib3JkZXJSYWRpdXM6IDEwLCBwYWRkaW5nOiAiMTNweCAyMHB4IiwKICAgICAgICAgICAgICAgIGZvbnRTaXplOiAiMTRweCIsIGZvbnRXZWlnaHQ6IDgwMCwKICAgICAgICAgICAgICAgIGJveFNoYWRvdzogIjAgMCAyMHB4IHJnYmEoNTIsMjExLDE1MywwLjI1KSIsCiAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgPgogICAgICAgICAgICAgIDxQYWNrYWdlIHNpemU9ezE2fSAvPiBUcmFjayBZb3VyIE9yZGVyIDxBcnJvd1JpZ2h0IHNpemU9ezE0fSAvPgogICAgICAgICAgICA8L0xpbms+CiAgICAgICAgICAgIDxMaW5rIGhyZWY9Ii8iIHN0eWxlPXtzZWNvbmRhcnlCdG59PkNvbnRpbnVlIFNob3BwaW5nPC9MaW5rPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPEJyYW5kaW5nIC8+CiAgICAgIDwvUGFnZVNoZWxsPgogICAgKTsKICB9CgogIC8vIOKUgOKUgCBXZWJob29rIGRlbGF5ZWQg4oCUIHBheW1lbnQgc3RpbGwgcHJvY2Vzc2luZyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKICBpZiAodmVyaWZ5U3RhdGUgPT09ICJwZW5kaW5nX3dlYmhvb2siKSB7CiAgICByZXR1cm4gKAogICAgICA8UGFnZVNoZWxsIGJnPSJsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjRkZGQkVCIDAlLCAjRkVGM0M3IDEwMCUpIj4KICAgICAgICA8ZGl2IHN0eWxlPXt7IHRleHRBbGlnbjogImNlbnRlciIgfX0+CiAgICAgICAgICA8Q2xvY2sgc2l6ZT17NTZ9IHN0eWxlPXt7IGNvbG9yOiAiI0Q5NzcwNiIgfX0gLz4KICAgICAgICAgIDxoMSBzdHlsZT17eyBmb250U2l6ZTogIjIycHgiLCBmb250V2VpZ2h0OiA4MDAsIGNvbG9yOiAiIzBGMTcyQSIsIG1hcmdpbjogIjE2cHggMCA4cHgiIH19PgogICAgICAgICAgICBQYXltZW50IFByb2Nlc3NpbmcKICAgICAgICAgIDwvaDE+CiAgICAgICAgICA8cCBzdHlsZT17eyBmb250U2l6ZTogIjE1cHgiLCBjb2xvcjogIiM2NDc0OEIiLCBtYXJnaW5Cb3R0b206IDI0LCBsaW5lSGVpZ2h0OiAxLjYgfX0+CiAgICAgICAgICAgIFlvdXIgYmFuayBoYXMgYXBwcm92ZWQgdGhlIHBheW1lbnQgYW5kIHdlJ3JlIHdhaXRpbmcgZm9yIHRoZSBmaW5hbCBjb25maXJtYXRpb24uCiAgICAgICAgICAgIFRoaXMgbWF5IHRha2UgYSBmZXcgbWludXRlcy4KICAgICAgICAgIDwvcD4KICAgICAgICAgIHtvcmRlck51bWJlciAmJiAoCiAgICAgICAgICAgIDxkaXYgc3R5bGU9e3sKICAgICAgICAgICAgICBiYWNrZ3JvdW5kOiAiI0ZFRjlFRSIsIGJvcmRlcjogIjFweCBzb2xpZCAjRkRFNjhBIiwKICAgICAgICAgICAgICBib3JkZXJSYWRpdXM6IDEwLCBwYWRkaW5nOiAiMTRweCAyMHB4IiwgbWFyZ2luQm90dG9tOiAyNCwKICAgICAgICAgICAgfX0+CiAgICAgICAgICAgICAgPHAgc3R5bGU9e3sgZm9udFNpemU6ICIxMnB4IiwgY29sb3I6ICIjRDk3NzA2IiwgZm9udFdlaWdodDogNzAwLCB0ZXh0VHJhbnNmb3JtOiAidXBwZXJjYXNlIiwgbGV0dGVyU3BhY2luZzogIjAuMDhlbSIsIG1hcmdpbjogMCB9fT5PcmRlciBSZWZlcmVuY2U8L3A+CiAgICAgICAgICAgICAgPHAgc3R5bGU9e3sgZm9udFNpemU6ICIxN3B4IiwgZm9udFdlaWdodDogOTAwLCBjb2xvcjogIiMwRjE3MkEiLCBtYXJnaW46ICI0cHggMCAwIiB9fT57b3JkZXJOdW1iZXJ9PC9wPgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICl9CiAgICAgICAgICA8cCBzdHlsZT17eyBmb250U2l6ZTogIjEzcHgiLCBjb2xvcjogIiM5NEEzQjgiLCBtYXJnaW5Cb3R0b206IDI4LCBsaW5lSGVpZ2h0OiAxLjYgfX0+CiAgICAgICAgICAgIFlvdSdsbCByZWNlaXZlIGEgY29uZmlybWF0aW9uIGVtYWlsIG9uY2UgdGhlIHBheW1lbnQgc2V0dGxlcy4KICAgICAgICAgICAgWW91IGNhbiBhbHNvIGNoZWNrIHlvdXIgb3JkZXIgc3RhdHVzIGJlbG93LgogICAgICAgICAgPC9wPgogICAgICAgICAgPGRpdiBzdHlsZT17eyBkaXNwbGF5OiAiZmxleCIsIGZsZXhEaXJlY3Rpb246ICJjb2x1bW4iLCBnYXA6IDEwIH19PgogICAgICAgICAgICA8TGluawogICAgICAgICAgICAgIGhyZWY9e29yZGVyTnVtYmVyID8gYC90cmFjay1vcmRlcj9udW1iZXI9JHtlbmNvZGVVUklDb21wb25lbnQob3JkZXJOdW1iZXIpfWAgOiAiL3RyYWNrLW9yZGVyIn0KICAgICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgICAgZGlzcGxheTogImZsZXgiLCBhbGlnbkl0ZW1zOiAiY2VudGVyIiwganVzdGlmeUNvbnRlbnQ6ICJjZW50ZXIiLCBnYXA6IDgsCiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kOiAibGluZWFyLWdyYWRpZW50KDkwZGVnLCAjRDk3NzA2LCAjRjU5RTBCKSIsCiAgICAgICAgICAgICAgICBjb2xvcjogIiNmZmYiLCB0ZXh0RGVjb3JhdGlvbjogIm5vbmUiLAogICAgICAgICAgICAgICAgYm9yZGVyUmFkaXVzOiAxMCwgcGFkZGluZzogIjEzcHggMjBweCIsCiAgICAgICAgICAgICAgICBmb250U2l6ZTogIjE0cHgiLCBmb250V2VpZ2h0OiA4MDAsCiAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgPgogICAgICAgICAgICAgIDxQYWNrYWdlIHNpemU9ezE2fSAvPiBDaGVjayBPcmRlciBTdGF0dXMKICAgICAgICAgICAgPC9MaW5rPgogICAgICAgICAgICA8TGluayBocmVmPSIvIiBzdHlsZT17c2Vjb25kYXJ5QnRufT5CYWNrIHRvIEhvbWVwYWdlPC9MaW5rPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPEJyYW5kaW5nIC8+CiAgICAgIDwvUGFnZVNoZWxsPgogICAgKTsKICB9CgogIC8vIOKUgOKUgCBGYWlsdXJlIC8gY2FuY2VsbGVkIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAogIGlmICh2ZXJpZnlTdGF0ZSA9PT0gImZhaWxlZCIpIHsKICAgIHJldHVybiAoCiAgICAgIDxQYWdlU2hlbGwgYmc9ImxpbmVhci1ncmFkaWVudCgxMzVkZWcsICNGRkYxRjIgMCUsICNGRkY1RjUgMTAwJSkiPgogICAgICAgIDxkaXYgc3R5bGU9e3sgdGV4dEFsaWduOiAiY2VudGVyIiB9fT4KICAgICAgICAgIDxYQ2lyY2xlIHNpemU9ezY0fSBzdHlsZT17eyBjb2xvcjogIiNFRjQ0NDQiIH19IC8+CiAgICAgICAgICA8aDEgc3R5bGU9e3sgZm9udFNpemU6ICIyNHB4IiwgZm9udFdlaWdodDogOTAwLCBjb2xvcjogIiMwRjE3MkEiLCBtYXJnaW46ICIxNnB4IDAgOHB4IiB9fT4KICAgICAgICAgICAgUGF5bWVudCBVbnN1Y2Nlc3NmdWwKICAgICAgICAgIDwvaDE+CiAgICAgICAgICA8cCBzdHlsZT17eyBmb250U2l6ZTogIjE1cHgiLCBjb2xvcjogIiM2NDc0OEIiLCBtYXJnaW5Cb3R0b206IDI0LCBsaW5lSGVpZ2h0OiAxLjYgfX0+CiAgICAgICAgICAgIFlvdXIgcGF5bWVudCB3YXMgbm90IGNvbXBsZXRlZCDigJQgaXQgbWF5IGhhdmUgYmVlbiBkZWNsaW5lZCBvciBjYW5jZWxsZWQuIFlvdXIgb3JkZXIgaGFzIG5vdCBiZWVuIGNoYXJnZWQuCiAgICAgICAgICA8L3A+CiAgICAgICAgICB7b3JkZXJOdW1iZXIgJiYgKAogICAgICAgICAgICA8ZGl2IHN0eWxlPXt7CiAgICAgICAgICAgICAgYmFja2dyb3VuZDogIiNGRkYxRjIiLCBib3JkZXI6ICIxcHggc29saWQgI0ZFQ0REMyIsCiAgICAgICAgICAgICAgYm9yZGVyUmFkaXVzOiAxMCwgcGFkZGluZzogIjEycHggMjBweCIsIG1hcmdpbkJvdHRvbTogMjgsCiAgICAgICAgICAgIH19PgogICAgICAgICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAiMTJweCIsIGNvbG9yOiAiI0VGNDQ0NCIsIGZvbnRXZWlnaHQ6IDcwMCwgdGV4dFRyYW5zZm9ybTogInVwcGVyY2FzZSIsIGxldHRlclNwYWNpbmc6ICIwLjA4ZW0iLCBtYXJnaW46IDAgfX0+T3JkZXIgUmVmZXJlbmNlPC9wPgogICAgICAgICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAiMTZweCIsIGZvbnRXZWlnaHQ6IDgwMCwgY29sb3I6ICIjMEYxNzJBIiwgbWFyZ2luOiAiNHB4IDAgMCIgfX0+e29yZGVyTnVtYmVyfTwvcD4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICApfQogICAgICAgICAgPHAgc3R5bGU9e3sgZm9udFNpemU6ICIxM3B4IiwgY29sb3I6ICIjOTRBM0I4IiwgbWFyZ2luQm90dG9tOiAyOCB9fT4KICAgICAgICAgICAgWW91ciBjYXJ0IGlzIHN0aWxsIHNhdmVkLiBSZXR1cm4gdG8gY2hlY2tvdXQgdG8gdHJ5IGFnYWluLgogICAgICAgICAgPC9wPgogICAgICAgICAgPGRpdiBzdHlsZT17eyBkaXNwbGF5OiAiZmxleCIsIGZsZXhEaXJlY3Rpb246ICJjb2x1bW4iLCBnYXA6IDEwIH19PgogICAgICAgICAgICA8TGluayBocmVmPSIvY2FydCIgc3R5bGU9e3sKICAgICAgICAgICAgICBkaXNwbGF5OiAiZmxleCIsIGFsaWduSXRlbXM6ICJjZW50ZXIiLCBqdXN0aWZ5Q29udGVudDogImNlbnRlciIsIGdhcDogOCwKICAgICAgICAgICAgICBiYWNrZ3JvdW5kOiAibGluZWFyLWdyYWRpZW50KDkwZGVnLCAjMGExZDRmLCAjMTI0MEEwKSIsCiAgICAgICAgICAgICAgY29sb3I6ICIjZmZmIiwgdGV4dERlY29yYXRpb246ICJub25lIiwKICAgICAgICAgICAgICBib3JkZXJSYWRpdXM6IDEwLCBwYWRkaW5nOiAiMTNweCAyMHB4IiwKICAgICAgICAgICAgICBmb250U2l6ZTogIjE0cHgiLCBmb250V2VpZ2h0OiA4MDAsCiAgICAgICAgICAgIH19PgogICAgICAgICAgICAgIDxSb3RhdGVDY3cgc2l6ZT17MTV9IC8+IFJldHVybiB0byBDaGVja291dAogICAgICAgICAgICA8L0xpbms+CiAgICAgICAgICAgIDxMaW5rIGhyZWY9Ii8iIHN0eWxlPXtzZWNvbmRhcnlCdG59PkJhY2sgdG8gSG9tZXBhZ2U8L0xpbms+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgICA8QnJhbmRpbmcgLz4KICAgICAgPC9QYWdlU2hlbGw+CiAgICApOwogIH0KCiAgLy8g4pSA4pSAIEdlbmVyaWMgZXJyb3IgKG5vIG9yZGVyIG51bWJlciwgbmV0d29yayBmYWlsdXJlLCBldGMuKSDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKICByZXR1cm4gKAogICAgPFBhZ2VTaGVsbCBiZz0ibGluZWFyLWdyYWRpZW50KDEzNWRlZywgI0Y4RkFGQyAwJSwgI0YxRjVGOSAxMDAlKSI+CiAgICAgIDxkaXYgc3R5bGU9e3sgdGV4dEFsaWduOiAiY2VudGVyIiB9fT4KICAgICAgICA8WENpcmNsZSBzaXplPXs1Nn0gc3R5bGU9e3sgY29sb3I6ICIjOTRBM0I4IiB9fSAvPgogICAgICAgIDxoMSBzdHlsZT17eyBmb250U2l6ZTogIjIycHgiLCBmb250V2VpZ2h0OiA4MDAsIGNvbG9yOiAiIzBGMTcyQSIsIG1hcmdpbjogIjE2cHggMCA4cHgiIH19PgogICAgICAgICAgU29tZXRoaW5nIHdlbnQgd3JvbmcKICAgICAgICA8L2gxPgogICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAiMTRweCIsIGNvbG9yOiAiIzY0NzQ4QiIsIG1hcmdpbkJvdHRvbTogMjgsIGxpbmVIZWlnaHQ6IDEuNiB9fT4KICAgICAgICAgIFdlIGNvdWxkbid0IHZlcmlmeSB5b3VyIHBheW1lbnQgc3RhdHVzLiBJZiB5b3UgYmVsaWV2ZSB5b3VyIHBheW1lbnQgd2VudCB0aHJvdWdoLCBwbGVhc2UgY2hlY2sgeW91ciBlbWFpbCBvcnsiICJ9CiAgICAgICAgICA8TGluayBocmVmPSIvdHJhY2stb3JkZXIiIHN0eWxlPXt7IGNvbG9yOiAiIzEyNDBBMCIgfX0+dHJhY2sgeW91ciBvcmRlcjwvTGluaz4uCiAgICAgICAgPC9wPgogICAgICAgIDxMaW5rIGhyZWY9Ii8iIHN0eWxlPXtzZWNvbmRhcnlCdG59PkJhY2sgdG8gSG9tZXBhZ2U8L0xpbms+CiAgICAgIDwvZGl2PgogICAgICA8QnJhbmRpbmcgLz4KICAgIDwvUGFnZVNoZWxsPgogICk7Cn0KCi8vIOKUgOKUgCBTaGFyZWQgbGF5b3V0IGhlbHBlcnMg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACgpmdW5jdGlvbiBQYWdlU2hlbGwoeyBjaGlsZHJlbiwgYmcgfTogeyBjaGlsZHJlbjogUmVhY3QuUmVhY3ROb2RlOyBiZzogc3RyaW5nIH0pIHsKICByZXR1cm4gKAogICAgPGRpdiBzdHlsZT17ewogICAgICBtaW5IZWlnaHQ6ICIxMDB2aCIsCiAgICAgIGJhY2tncm91bmQ6IGJnLAogICAgICBkaXNwbGF5OiAiZmxleCIsIGZsZXhEaXJlY3Rpb246ICJjb2x1bW4iLCBhbGlnbkl0ZW1zOiAiY2VudGVyIiwganVzdGlmeUNvbnRlbnQ6ICJjZW50ZXIiLAogICAgICBwYWRkaW5nOiAiNDBweCAyMHB4IiwgZm9udEZhbWlseTogIidBcmltbycsIEFyaWFsLCBzYW5zLXNlcmlmIiwKICAgIH19PgogICAgICA8ZGl2IHN0eWxlPXt7CiAgICAgICAgYmFja2dyb3VuZDogIiNmZmYiLAogICAgICAgIGJvcmRlclJhZGl1czogMTYsCiAgICAgICAgcGFkZGluZzogIjQ4cHggNDBweCIsCiAgICAgICAgbWF4V2lkdGg6IDQ4MCwKICAgICAgICB3aWR0aDogIjEwMCUiLAogICAgICAgIGJveFNoYWRvdzogIjAgMjBweCA2MHB4IHJnYmEoMTUsMjMsNDIsMC4xKSIsCiAgICAgIH19PgogICAgICAgIHtjaGlsZHJlbn0KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KICApOwp9CgpmdW5jdGlvbiBCcmFuZGluZygpIHsKICByZXR1cm4gKAogICAgPHAgc3R5bGU9e3sgbWFyZ2luVG9wOiAzMiwgZm9udFNpemU6ICIxMnB4IiwgY29sb3I6ICIjOTRBM0I4IiwgdGV4dEFsaWduOiAiY2VudGVyIiB9fT4KICAgICAgU2VjdXJlIHBheW1lbnQgcG93ZXJlZCBieSA8c3Ryb25nIHN0eWxlPXt7IGNvbG9yOiAiIzBEMjU2NSIgfX0+V2FsbGlkPC9zdHJvbmc+IMK3IE9tbmlRdXJlIFBlcHRpZGUgUmVzZWFyY2ggSW5zdGl0dXRlCiAgICA8L3A+CiAgKTsKfQoKY29uc3Qgc2Vjb25kYXJ5QnRuOiBSZWFjdC5DU1NQcm9wZXJ0aWVzID0gewogIGRpc3BsYXk6ICJmbGV4IiwgYWxpZ25JdGVtczogImNlbnRlciIsIGp1c3RpZnlDb250ZW50OiAiY2VudGVyIiwgZ2FwOiA4LAogIGJhY2tncm91bmQ6ICIjRjhGQUZDIiwgYm9yZGVyOiAiMXB4IHNvbGlkICNFMkU4RjAiLAogIGNvbG9yOiAiIzBGMTcyQSIsIHRleHREZWNvcmF0aW9uOiAibm9uZSIsCiAgYm9yZGVyUmFkaXVzOiAxMCwgcGFkZGluZzogIjEzcHggMjBweCIsCiAgZm9udFNpemU6ICIxNHB4IiwgZm9udFdlaWdodDogNzAwLAp9OwoKZnVuY3Rpb24gZm9ybWF0UGF5bWVudEFtb3VudChhbW91bnRNaW5vcjogbnVtYmVyLCBjdXJyZW5jeTogc3RyaW5nKSB7CiAgdHJ5IHsKICAgIHJldHVybiBuZXcgSW50bC5OdW1iZXJGb3JtYXQodW5kZWZpbmVkLCB7CiAgICAgIHN0eWxlOiAiY3VycmVuY3kiLAogICAgICBjdXJyZW5jeSwKICAgICAgbWluaW11bUZyYWN0aW9uRGlnaXRzOiAyLAogICAgfSkuZm9ybWF0KGFtb3VudE1pbm9yIC8gMTAwKSArIGAgJHtjdXJyZW5jeX1gOwogIH0gY2F0Y2ggewogICAgcmV0dXJuIGAkeyhhbW91bnRNaW5vciAvIDEwMCkudG9GaXhlZCgyKX0gJHtjdXJyZW5jeX1gOwogIH0KfQo=
+import { useEffect, useRef, useState } from "react";
+import { Link } from "wouter";
+import { CheckCircle, XCircle, ArrowRight, RotateCcw, Package, Loader2, Clock } from "lucide-react";
+import { useCart } from "@/context/CartContext";
+
+/**
+ * /wallid-return
+ *
+ * Landing page after a Wallid hosted payment. Wallid redirects to our
+ * success_url or fail_url depending on the payment outcome.
+ *
+ * For the success path the page polls GET /api/orders/track to obtain the
+ * server-authoritative status before showing a confirmation or clearing the
+ * cart. This guards against direct URL navigation and the race where Wallid
+ * redirects before the webhook fires.
+ *
+ * URL params:
+ *   ?order=OQ-XXXXXX   order number
+ *   ?status=success     Wallid redirected to success_url
+ *   ?status=failed      Wallid redirected to fail_url
+ *   ?name=FirstName     customer first name
+ * Payment amount and currency are always read back from the server's tracked
+ * order record, rather than trusting URL parameters.
+ */
+
+type VerifyState = "verifying" | "paid" | "pending_webhook" | "failed" | "error";
+
+const MAX_POLL_ATTEMPTS = 40;   // 40 × 3 s ≈ 2 minutes
+const POLL_INTERVAL_MS  = 3000;
+
+export default function WallidReturn() {
+  const params      = new URLSearchParams(window.location.search);
+  const urlStatus   = params.get("status");   // "success" | "failed"
+  const orderNumber = params.get("order") ?? "";
+  const firstName   = params.get("name") ?? "";
+  const { clearCart } = useCart();
+  const [payment, setPayment] = useState<{ currency: string; amountMinor: number } | null>(null);
+
+  // failure path: no server call needed — Wallid redirected to failUrl
+  const initialState: VerifyState = urlStatus === "failed" ? "failed" : "verifying";
+  const [verifyState, setVerifyState] = useState<VerifyState>(initialState);
+
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const attemptsRef = useRef(0);
+  const cancelledRef = useRef(false);
+
+  useEffect(() => {
+    if (verifyState === "failed") return; // failure — nothing to poll
+    if (!orderNumber) {
+      setVerifyState("error");
+      return;
+    }
+
+    async function checkOrderStatus(): Promise<boolean> {
+      try {
+        const res = await fetch(`/api/orders/track?number=${encodeURIComponent(orderNumber)}`);
+        if (!res.ok) return false;
+        const data = (await res.json()) as {
+          status?: string;
+          paymentCurrency?: string | null;
+          paymentAmountMinor?: number | null;
+        };
+        if (data.paymentCurrency && typeof data.paymentAmountMinor === "number") {
+          setPayment({ currency: data.paymentCurrency, amountMinor: data.paymentAmountMinor });
+        }
+        if (data.status === "paid") {
+          if (!cancelledRef.current) {
+            clearCart();
+            setVerifyState("paid");
+          }
+          return true;
+        }
+        return false;
+      } catch {
+        return false;
+      }
+    }
+
+    // Check immediately on mount, then start polling if not yet paid
+    void checkOrderStatus().then(done => {
+      if (done || cancelledRef.current) return;
+
+      pollRef.current = setInterval(() => {
+        if (cancelledRef.current) {
+          clearInterval(pollRef.current!);
+          return;
+        }
+        attemptsRef.current++;
+        void checkOrderStatus().then(done => {
+          if (done || cancelledRef.current) {
+            clearInterval(pollRef.current!);
+            return;
+          }
+          if (attemptsRef.current >= MAX_POLL_ATTEMPTS) {
+            clearInterval(pollRef.current!);
+            if (!cancelledRef.current) setVerifyState("pending_webhook");
+          }
+        });
+      }, POLL_INTERVAL_MS);
+    });
+
+    return () => {
+      cancelledRef.current = true;
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Verifying / polling ───────────────────────────────────────────────────
+  if (verifyState === "verifying") {
+    return (
+      <PageShell bg="linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)">
+        <div style={{ textAlign: "center" }}>
+          <Loader2 size={56} style={{ color: "#0369A1", animation: "spin 1s linear infinite" }} />
+          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#0F172A", margin: "20px 0 8px" }}>
+            Confirming your payment…
+          </h1>
+          <p style={{ fontSize: "14px", color: "#64748B", lineHeight: 1.6 }}>
+            Please wait while we verify your payment with your bank.
+          </p>
+          {orderNumber && (
+            <p style={{ fontSize: "13px", color: "#94A3B8", marginTop: 12 }}>
+              Order reference: <strong style={{ color: "#0F172A" }}>{orderNumber}</strong>
+            </p>
+          )}
+        </div>
+        <Branding />
+      </PageShell>
+    );
+  }
+
+  // ── Payment confirmed (server-verified) ───────────────────────────────────
+  if (verifyState === "paid") {
+    return (
+      <PageShell bg="linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%)">
+        <div style={{ textAlign: "center" }}>
+          <CheckCircle size={64} style={{ color: "#059669" }} />
+          <h1 style={{ fontSize: "24px", fontWeight: 900, color: "#0F172A", margin: "16px 0 8px" }}>
+            Payment Confirmed!
+          </h1>
+          {firstName && (
+            <p style={{ fontSize: "15px", color: "#64748B", marginBottom: 4 }}>
+              Thank you, <strong>{firstName}</strong>.
+            </p>
+          )}
+          <p style={{ fontSize: "15px", color: "#64748B", marginBottom: 24, lineHeight: 1.6 }}>
+            Your bank payment was received and your order is now being prepared.
+          </p>
+
+          {orderNumber && (
+            <div style={{
+              background: "#F0FDF4", border: "1px solid #D1FAE5",
+              borderRadius: 10, padding: "14px 20px", marginBottom: 28,
+            }}>
+              <p style={{ fontSize: "12px", color: "#059669", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", margin: 0 }}>Order Reference</p>
+              <p style={{ fontSize: "18px", fontWeight: 900, color: "#0F172A", margin: "4px 0 0", letterSpacing: "0.04em" }}>{orderNumber}</p>
+              {payment && (
+                <p style={{ fontSize: "13px", color: "#64748B", margin: "4px 0 0" }}>
+                  {formatPaymentAmount(payment.amountMinor, payment.currency)}
+                </p>
+              )}
+            </div>
+          )}
+
+          <p style={{ fontSize: "13px", color: "#94A3B8", marginBottom: 28, lineHeight: 1.6 }}>
+            A confirmation email will be sent shortly. Keep your order reference safe.
+          </p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <Link
+              href={orderNumber ? `/track-order?number=${encodeURIComponent(orderNumber)}` : "/track-order"}
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                background: "linear-gradient(90deg, #059669, #34D399)",
+                color: "#022c22", textDecoration: "none",
+                borderRadius: 10, padding: "13px 20px",
+                fontSize: "14px", fontWeight: 800,
+                boxShadow: "0 0 20px rgba(52,211,153,0.25)",
+              }}
+            >
+              <Package size={16} /> Track Your Order <ArrowRight size={14} />
+            </Link>
+            <Link href="/" style={secondaryBtn}>Continue Shopping</Link>
+          </div>
+        </div>
+        <Branding />
+      </PageShell>
+    );
+  }
+
+  // ── Webhook delayed — payment still processing ────────────────────────────
+  if (verifyState === "pending_webhook") {
+    return (
+      <PageShell bg="linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)">
+        <div style={{ textAlign: "center" }}>
+          <Clock size={56} style={{ color: "#D97706" }} />
+          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#0F172A", margin: "16px 0 8px" }}>
+            Payment Processing
+          </h1>
+          <p style={{ fontSize: "15px", color: "#64748B", marginBottom: 24, lineHeight: 1.6 }}>
+            Your bank has approved the payment and we're waiting for the final confirmation.
+            This may take a few minutes.
+          </p>
+          {orderNumber && (
+            <div style={{
+              background: "#FEF9EE", border: "1px solid #FDE68A",
+              borderRadius: 10, padding: "14px 20px", marginBottom: 24,
+            }}>
+              <p style={{ fontSize: "12px", color: "#D97706", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", margin: 0 }}>Order Reference</p>
+              <p style={{ fontSize: "17px", fontWeight: 900, color: "#0F172A", margin: "4px 0 0" }}>{orderNumber}</p>
+            </div>
+          )}
+          <p style={{ fontSize: "13px", color: "#94A3B8", marginBottom: 28, lineHeight: 1.6 }}>
+            You'll receive a confirmation email once the payment settles.
+            You can also check your order status below.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <Link
+              href={orderNumber ? `/track-order?number=${encodeURIComponent(orderNumber)}` : "/track-order"}
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                background: "linear-gradient(90deg, #D97706, #F59E0B)",
+                color: "#fff", textDecoration: "none",
+                borderRadius: 10, padding: "13px 20px",
+                fontSize: "14px", fontWeight: 800,
+              }}
+            >
+              <Package size={16} /> Check Order Status
+            </Link>
+            <Link href="/" style={secondaryBtn}>Back to Homepage</Link>
+          </div>
+        </div>
+        <Branding />
+      </PageShell>
+    );
+  }
+
+  // ── Failure / cancelled ───────────────────────────────────────────────────
+  if (verifyState === "failed") {
+    return (
+      <PageShell bg="linear-gradient(135deg, #FFF1F2 0%, #FFF5F5 100%)">
+        <div style={{ textAlign: "center" }}>
+          <XCircle size={64} style={{ color: "#EF4444" }} />
+          <h1 style={{ fontSize: "24px", fontWeight: 900, color: "#0F172A", margin: "16px 0 8px" }}>
+            Payment Unsuccessful
+          </h1>
+          <p style={{ fontSize: "15px", color: "#64748B", marginBottom: 24, lineHeight: 1.6 }}>
+            Your payment was not completed — it may have been declined or cancelled. Your order has not been charged.
+          </p>
+          {orderNumber && (
+            <div style={{
+              background: "#FFF1F2", border: "1px solid #FECDD3",
+              borderRadius: 10, padding: "12px 20px", marginBottom: 28,
+            }}>
+              <p style={{ fontSize: "12px", color: "#EF4444", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", margin: 0 }}>Order Reference</p>
+              <p style={{ fontSize: "16px", fontWeight: 800, color: "#0F172A", margin: "4px 0 0" }}>{orderNumber}</p>
+            </div>
+          )}
+          <p style={{ fontSize: "13px", color: "#94A3B8", marginBottom: 28 }}>
+            Your cart is still saved. Return to checkout to try again.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <Link href="/cart" style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              background: "linear-gradient(90deg, #0a1d4f, #1240A0)",
+              color: "#fff", textDecoration: "none",
+              borderRadius: 10, padding: "13px 20px",
+              fontSize: "14px", fontWeight: 800,
+            }}>
+              <RotateCcw size={15} /> Return to Checkout
+            </Link>
+            <Link href="/" style={secondaryBtn}>Back to Homepage</Link>
+          </div>
+        </div>
+        <Branding />
+      </PageShell>
+    );
+  }
+
+  // ── Generic error (no order number, network failure, etc.) ────────────────
+  return (
+    <PageShell bg="linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)">
+      <div style={{ textAlign: "center" }}>
+        <XCircle size={56} style={{ color: "#94A3B8" }} />
+        <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#0F172A", margin: "16px 0 8px" }}>
+          Something went wrong
+        </h1>
+        <p style={{ fontSize: "14px", color: "#64748B", marginBottom: 28, lineHeight: 1.6 }}>
+          We couldn't verify your payment status. If you believe your payment went through, please check your email or{" "}
+          <Link href="/track-order" style={{ color: "#1240A0" }}>track your order</Link>.
+        </p>
+        <Link href="/" style={secondaryBtn}>Back to Homepage</Link>
+      </div>
+      <Branding />
+    </PageShell>
+  );
+}
+
+// ── Shared layout helpers ─────────────────────────────────────────────────────
+
+function PageShell({ children, bg }: { children: React.ReactNode; bg: string }) {
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: bg,
+      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+      padding: "40px 20px", fontFamily: "'Arimo', Arial, sans-serif",
+    }}>
+      <div style={{
+        background: "#fff",
+        borderRadius: 16,
+        padding: "48px 40px",
+        maxWidth: 480,
+        width: "100%",
+        boxShadow: "0 20px 60px rgba(15,23,42,0.1)",
+      }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function Branding() {
+  return (
+    <p style={{ marginTop: 32, fontSize: "12px", color: "#94A3B8", textAlign: "center" }}>
+      Secure payment powered by <strong style={{ color: "#0D2565" }}>Wallid</strong> · OmniQure Peptide Research Institute
+    </p>
+  );
+}
+
+const secondaryBtn: React.CSSProperties = {
+  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+  background: "#F8FAFC", border: "1px solid #E2E8F0",
+  color: "#0F172A", textDecoration: "none",
+  borderRadius: 10, padding: "13px 20px",
+  fontSize: "14px", fontWeight: 700,
+};
+
+function formatPaymentAmount(amountMinor: number, currency: string) {
+  try {
+    return new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency,
+      minimumFractionDigits: 2,
+    }).format(amountMinor / 100) + ` ${currency}`;
+  } catch {
+    return `${(amountMinor / 100).toFixed(2)} ${currency}`;
+  }
+}

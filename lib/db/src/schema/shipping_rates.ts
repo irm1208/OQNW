@@ -1,1 +1,29 @@
-aW1wb3J0IHsKICBwZ1RhYmxlLAogIHNlcmlhbCwKICB0ZXh0LAogIGludGVnZXIsCiAgbnVtZXJpYywKICBib29sZWFuLAogIHRpbWVzdGFtcCwKfSBmcm9tICJkcml6emxlLW9ybS9wZy1jb3JlIjsKaW1wb3J0IHsgc2hpcHBpbmdab25lc1RhYmxlIH0gZnJvbSAiLi9zaGlwcGluZ196b25lcyI7CgpleHBvcnQgY29uc3Qgc2hpcHBpbmdSYXRlc1RhYmxlID0gcGdUYWJsZSgic2hpcHBpbmdfcmF0ZXMiLCB7CiAgaWQ6IHNlcmlhbCgiaWQiKS5wcmltYXJ5S2V5KCksCiAgem9uZUlkOiBpbnRlZ2VyKCJ6b25lX2lkIikKICAgIC5ub3ROdWxsKCkKICAgIC5yZWZlcmVuY2VzKCgpID0+IHNoaXBwaW5nWm9uZXNUYWJsZS5pZCwgeyBvbkRlbGV0ZTogImNhc2NhZGUiIH0pLAogIG5hbWU6IHRleHQoIm5hbWUiKS5ub3ROdWxsKCksCiAgY2FycmllcjogdGV4dCgiY2FycmllciIpLm5vdE51bGwoKS5kZWZhdWx0KCJSb3lhbCBNYWlsIiksCiAgcHJpY2VHYnA6IG51bWVyaWMoInByaWNlX2dicCIsIHsgcHJlY2lzaW9uOiAxMCwgc2NhbGU6IDIgfSkubm90TnVsbCgpLmRlZmF1bHQoIjAiKSwKICBmcmVlQWJvdmVHYnA6IG51bWVyaWMoImZyZWVfYWJvdmVfZ2JwIiwgeyBwcmVjaXNpb246IDEwLCBzY2FsZTogMiB9KSwKICBlc3RpbWF0ZWREYXlzTWluOiBpbnRlZ2VyKCJlc3RpbWF0ZWRfZGF5c19taW4iKS5ub3ROdWxsKCkuZGVmYXVsdCgyKSwKICBlc3RpbWF0ZWREYXlzTWF4OiBpbnRlZ2VyKCJlc3RpbWF0ZWRfZGF5c19tYXgiKS5ub3ROdWxsKCkuZGVmYXVsdCg1KSwKICBpc0FjdGl2ZTogYm9vbGVhbigiaXNfYWN0aXZlIikubm90TnVsbCgpLmRlZmF1bHQodHJ1ZSksCiAgY3JlYXRlZEF0OiB0aW1lc3RhbXAoImNyZWF0ZWRfYXQiLCB7IHdpdGhUaW1lem9uZTogdHJ1ZSB9KS5ub3ROdWxsKCkuZGVmYXVsdE5vdygpLAogIHVwZGF0ZWRBdDogdGltZXN0YW1wKCJ1cGRhdGVkX2F0IiwgeyB3aXRoVGltZXpvbmU6IHRydWUgfSkubm90TnVsbCgpLmRlZmF1bHROb3coKS4kb25VcGRhdGUoKCkgPT4gbmV3IERhdGUoKSksCn0pOwoKZXhwb3J0IHR5cGUgU2hpcHBpbmdSYXRlID0gdHlwZW9mIHNoaXBwaW5nUmF0ZXNUYWJsZS4kaW5mZXJTZWxlY3Q7CmV4cG9ydCB0eXBlIEluc2VydFNoaXBwaW5nUmF0ZSA9IHR5cGVvZiBzaGlwcGluZ1JhdGVzVGFibGUuJGluZmVySW5zZXJ0Owo=
+import {
+  pgTable,
+  serial,
+  text,
+  integer,
+  numeric,
+  boolean,
+  timestamp,
+} from "drizzle-orm/pg-core";
+import { shippingZonesTable } from "./shipping_zones";
+
+export const shippingRatesTable = pgTable("shipping_rates", {
+  id: serial("id").primaryKey(),
+  zoneId: integer("zone_id")
+    .notNull()
+    .references(() => shippingZonesTable.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  carrier: text("carrier").notNull().default("Royal Mail"),
+  priceGbp: numeric("price_gbp", { precision: 10, scale: 2 }).notNull().default("0"),
+  freeAboveGbp: numeric("free_above_gbp", { precision: 10, scale: 2 }),
+  estimatedDaysMin: integer("estimated_days_min").notNull().default(2),
+  estimatedDaysMax: integer("estimated_days_max").notNull().default(5),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
+});
+
+export type ShippingRate = typeof shippingRatesTable.$inferSelect;
+export type InsertShippingRate = typeof shippingRatesTable.$inferInsert;

@@ -1,1 +1,17 @@
-ewogICJuYW1lIjogIndvcmtzcGFjZSIsCiAgInZlcnNpb24iOiAiMC4wLjAiLAogICJsaWNlbnNlIjogIk1JVCIsCiAgInNjcmlwdHMiOiB7CiAgICAicHJlaW5zdGFsbCI6ICJzaCAtYyAncm0gLWYgcGFja2FnZS1sb2NrLmpzb24geWFybi5sb2NrOyBjYXNlIFwiJG5wbV9jb25maWdfdXNlcl9hZ2VudFwiIGluIHBucG0vKikgOzsgKikgZWNobyBcIlVzZSBwbnBtIGluc3RlYWRcIiA+JjI7IGV4aXQgMSA7OyBlc2FjJyIsCiAgICAiYnVpbGQiOiAicG5wbSBydW4gdHlwZWNoZWNrICYmIHBucG0gcnVuIGNoZWNrOmFwaS1kcmlmdCAmJiBwbnBtIC1yIC0taWYtcHJlc2VudCBydW4gYnVpbGQiLAogICAgInR5cGVjaGVjazpsaWJzIjogInRzYyAtLWJ1aWxkIiwKICAgICJ0eXBlY2hlY2siOiAicG5wbSBydW4gdHlwZWNoZWNrOmxpYnMgJiYgcG5wbSAtciAtLWZpbHRlciBcIi4vYXJ0aWZhY3RzLyoqXCIgLS1maWx0ZXIgXCIuL3NjcmlwdHNcIiAtLWlmLXByZXNlbnQgcnVuIHR5cGVjaGVjayIsCiAgICAiY2hlY2s6YXBpLWRyaWZ0IjogInBucG0gLS1maWx0ZXIgQHdvcmtzcGFjZS9zY3JpcHRzIHJ1biBjaGVjazphcGktZHJpZnQiCiAgfSwKICAicHJpdmF0ZSI6IHRydWUsCiAgImRldkRlcGVuZGVuY2llcyI6IHsKICAgICJ0eXBlc2NyaXB0IjogIn41LjkuMiIsCiAgICAicHJldHRpZXIiOiAiXjMuOC4xIgogIH0KfQo=
+{
+  "name": "workspace",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
+    "build": "pnpm run typecheck && pnpm run check:api-drift && pnpm -r --if-present run build",
+    "typecheck:libs": "tsc --build",
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
+    "check:api-drift": "pnpm --filter @workspace/scripts run check:api-drift"
+  },
+  "private": true,
+  "devDependencies": {
+    "typescript": "~5.9.2",
+    "prettier": "^3.8.1"
+  }
+}

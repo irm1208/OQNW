@@ -1,1 +1,118 @@
-aW1wb3J0IHR5cGUgeyBFeHByZXNzLCBSZXF1ZXN0LCBSZXNwb25zZSB9IGZyb20gImV4cHJlc3MiOwppbXBvcnQgT3BlbkFJIGZyb20gIm9wZW5haSI7CmltcG9ydCB7IGNoYXRTdG9yYWdlIH0gZnJvbSAiLi9zdG9yYWdlIjsKCmNvbnN0IG9wZW5haSA9IG5ldyBPcGVuQUkoewogIGFwaUtleTogcHJvY2Vzcy5lbnYuQUlfSU5URUdSQVRJT05TX09QRU5BSV9BUElfS0VZLAogIGJhc2VVUkw6IHByb2Nlc3MuZW52LkFJX0lOVEVHUkFUSU9OU19PUEVOQUlfQkFTRV9VUkwsCn0pOwoKZXhwb3J0IGZ1bmN0aW9uIHJlZ2lzdGVyQ2hhdFJvdXRlcyhhcHA6IEV4cHJlc3MpOiB2b2lkIHsKICAvLyBHZXQgYWxsIGNvbnZlcnNhdGlvbnMKICBhcHAuZ2V0KCIvYXBpL2NvbnZlcnNhdGlvbnMiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKSA9PiB7CiAgICB0cnkgewogICAgICBjb25zdCBjb252ZXJzYXRpb25zID0gYXdhaXQgY2hhdFN0b3JhZ2UuZ2V0QWxsQ29udmVyc2F0aW9ucygpOwogICAgICByZXMuanNvbihjb252ZXJzYXRpb25zKTsKICAgIH0gY2F0Y2ggKGVycm9yKSB7CiAgICAgIGNvbnNvbGUuZXJyb3IoIkVycm9yIGZldGNoaW5nIGNvbnZlcnNhdGlvbnM6IiwgZXJyb3IpOwogICAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiRmFpbGVkIHRvIGZldGNoIGNvbnZlcnNhdGlvbnMiIH0pOwogICAgfQogIH0pOwoKICAvLyBHZXQgc2luZ2xlIGNvbnZlcnNhdGlvbiB3aXRoIG1lc3NhZ2VzCiAgYXBwLmdldCgiL2FwaS9jb252ZXJzYXRpb25zLzppZCIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpID0+IHsKICAgIHRyeSB7CiAgICAgIGNvbnN0IGlkID0gcGFyc2VJbnQocmVxLnBhcmFtcy5pZCk7CiAgICAgIGNvbnN0IGNvbnZlcnNhdGlvbiA9IGF3YWl0IGNoYXRTdG9yYWdlLmdldENvbnZlcnNhdGlvbihpZCk7CiAgICAgIGlmICghY29udmVyc2F0aW9uKSB7CiAgICAgICAgcmV0dXJuIHJlcy5zdGF0dXMoNDA0KS5qc29uKHsgZXJyb3I6ICJDb252ZXJzYXRpb24gbm90IGZvdW5kIiB9KTsKICAgICAgfQogICAgICBjb25zdCBtZXNzYWdlcyA9IGF3YWl0IGNoYXRTdG9yYWdlLmdldE1lc3NhZ2VzQnlDb252ZXJzYXRpb24oaWQpOwogICAgICByZXMuanNvbih7IC4uLmNvbnZlcnNhdGlvbiwgbWVzc2FnZXMgfSk7CiAgICB9IGNhdGNoIChlcnJvcikgewogICAgICBjb25zb2xlLmVycm9yKCJFcnJvciBmZXRjaGluZyBjb252ZXJzYXRpb246IiwgZXJyb3IpOwogICAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiRmFpbGVkIHRvIGZldGNoIGNvbnZlcnNhdGlvbiIgfSk7CiAgICB9CiAgfSk7CgogIC8vIENyZWF0ZSBuZXcgY29udmVyc2F0aW9uCiAgYXBwLnBvc3QoIi9hcGkvY29udmVyc2F0aW9ucyIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpID0+IHsKICAgIHRyeSB7CiAgICAgIGNvbnN0IHsgdGl0bGUgfSA9IHJlcS5ib2R5OwogICAgICBjb25zdCBjb252ZXJzYXRpb24gPSBhd2FpdCBjaGF0U3RvcmFnZS5jcmVhdGVDb252ZXJzYXRpb24odGl0bGUgfHwgIk5ldyBDaGF0Iik7CiAgICAgIHJlcy5zdGF0dXMoMjAxKS5qc29uKGNvbnZlcnNhdGlvbik7CiAgICB9IGNhdGNoIChlcnJvcikgewogICAgICBjb25zb2xlLmVycm9yKCJFcnJvciBjcmVhdGluZyBjb252ZXJzYXRpb246IiwgZXJyb3IpOwogICAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiRmFpbGVkIHRvIGNyZWF0ZSBjb252ZXJzYXRpb24iIH0pOwogICAgfQogIH0pOwoKICAvLyBEZWxldGUgY29udmVyc2F0aW9uCiAgYXBwLmRlbGV0ZSgiL2FwaS9jb252ZXJzYXRpb25zLzppZCIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpID0+IHsKICAgIHRyeSB7CiAgICAgIGNvbnN0IGlkID0gcGFyc2VJbnQocmVxLnBhcmFtcy5pZCk7CiAgICAgIGF3YWl0IGNoYXRTdG9yYWdlLmRlbGV0ZUNvbnZlcnNhdGlvbihpZCk7CiAgICAgIHJlcy5zdGF0dXMoMjA0KS5zZW5kKCk7CiAgICB9IGNhdGNoIChlcnJvcikgewogICAgICBjb25zb2xlLmVycm9yKCJFcnJvciBkZWxldGluZyBjb252ZXJzYXRpb246IiwgZXJyb3IpOwogICAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiRmFpbGVkIHRvIGRlbGV0ZSBjb252ZXJzYXRpb24iIH0pOwogICAgfQogIH0pOwoKICAvLyBTZW5kIG1lc3NhZ2UgYW5kIGdldCBBSSByZXNwb25zZSAoc3RyZWFtaW5nKQogIGFwcC5wb3N0KCIvYXBpL2NvbnZlcnNhdGlvbnMvOmlkL21lc3NhZ2VzIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSkgPT4gewogICAgdHJ5IHsKICAgICAgY29uc3QgY29udmVyc2F0aW9uSWQgPSBwYXJzZUludChyZXEucGFyYW1zLmlkKTsKICAgICAgY29uc3QgeyBjb250ZW50IH0gPSByZXEuYm9keTsKCiAgICAgIC8vIFNhdmUgdXNlciBtZXNzYWdlCiAgICAgIGF3YWl0IGNoYXRTdG9yYWdlLmNyZWF0ZU1lc3NhZ2UoY29udmVyc2F0aW9uSWQsICJ1c2VyIiwgY29udGVudCk7CgogICAgICAvLyBHZXQgY29udmVyc2F0aW9uIGhpc3RvcnkgZm9yIGNvbnRleHQKICAgICAgY29uc3QgbWVzc2FnZXMgPSBhd2FpdCBjaGF0U3RvcmFnZS5nZXRNZXNzYWdlc0J5Q29udmVyc2F0aW9uKGNvbnZlcnNhdGlvbklkKTsKICAgICAgY29uc3QgY2hhdE1lc3NhZ2VzID0gbWVzc2FnZXMubWFwKChtKSA9PiAoewogICAgICAgIHJvbGU6IG0ucm9sZSBhcyAidXNlciIgfCAiYXNzaXN0YW50IiwKICAgICAgICBjb250ZW50OiBtLmNvbnRlbnQsCiAgICAgIH0pKTsKCiAgICAgIC8vIFNldCB1cCBTU0UKICAgICAgcmVzLnNldEhlYWRlcigiQ29udGVudC1UeXBlIiwgInRleHQvZXZlbnQtc3RyZWFtIik7CiAgICAgIHJlcy5zZXRIZWFkZXIoIkNhY2hlLUNvbnRyb2wiLCAibm8tY2FjaGUiKTsKICAgICAgcmVzLnNldEhlYWRlcigiQ29ubmVjdGlvbiIsICJrZWVwLWFsaXZlIik7CgogICAgICAvLyBTdHJlYW0gcmVzcG9uc2UgZnJvbSBPcGVuQUkKICAgICAgY29uc3Qgc3RyZWFtID0gYXdhaXQgb3BlbmFpLmNoYXQuY29tcGxldGlvbnMuY3JlYXRlKHsKICAgICAgICBtb2RlbDogImdwdC01LjQiLAogICAgICAgIG1lc3NhZ2VzOiBjaGF0TWVzc2FnZXMsCiAgICAgICAgc3RyZWFtOiB0cnVlLAogICAgICAgIG1heF9jb21wbGV0aW9uX3Rva2VuczogODE5MiwKICAgICAgfSk7CgogICAgICBsZXQgZnVsbFJlc3BvbnNlID0gIiI7CgogICAgICBmb3IgYXdhaXQgKGNvbnN0IGNodW5rIG9mIHN0cmVhbSkgewogICAgICAgIGNvbnN0IGNvbnRlbnQgPSBjaHVuay5jaG9pY2VzWzBdPy5kZWx0YT8uY29udGVudCB8fCAiIjsKICAgICAgICBpZiAoY29udGVudCkgewogICAgICAgICAgZnVsbFJlc3BvbnNlICs9IGNvbnRlbnQ7CiAgICAgICAgICByZXMud3JpdGUoYGRhdGE6ICR7SlNPTi5zdHJpbmdpZnkoeyBjb250ZW50IH0pfVxuXG5gKTsKICAgICAgICB9CiAgICAgIH0KCiAgICAgIC8vIFNhdmUgYXNzaXN0YW50IG1lc3NhZ2UKICAgICAgYXdhaXQgY2hhdFN0b3JhZ2UuY3JlYXRlTWVzc2FnZShjb252ZXJzYXRpb25JZCwgImFzc2lzdGFudCIsIGZ1bGxSZXNwb25zZSk7CgogICAgICByZXMud3JpdGUoYGRhdGE6ICR7SlNPTi5zdHJpbmdpZnkoeyBkb25lOiB0cnVlIH0pfVxuXG5gKTsKICAgICAgcmVzLmVuZCgpOwogICAgfSBjYXRjaCAoZXJyb3IpIHsKICAgICAgY29uc29sZS5lcnJvcigiRXJyb3Igc2VuZGluZyBtZXNzYWdlOiIsIGVycm9yKTsKICAgICAgLy8gQ2hlY2sgaWYgaGVhZGVycyBhbHJlYWR5IHNlbnQgKFNTRSBzdHJlYW1pbmcgc3RhcnRlZCkKICAgICAgaWYgKHJlcy5oZWFkZXJzU2VudCkgewogICAgICAgIHJlcy53cml0ZShgZGF0YTogJHtKU09OLnN0cmluZ2lmeSh7IGVycm9yOiAiRmFpbGVkIHRvIHNlbmQgbWVzc2FnZSIgfSl9XG5cbmApOwogICAgICAgIHJlcy5lbmQoKTsKICAgICAgfSBlbHNlIHsKICAgICAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiRmFpbGVkIHRvIHNlbmQgbWVzc2FnZSIgfSk7CiAgICAgIH0KICAgIH0KICB9KTsKfQoK
+import type { Express, Request, Response } from "express";
+import OpenAI from "openai";
+import { chatStorage } from "./storage";
+
+const openai = new OpenAI({
+  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
+  baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
+});
+
+export function registerChatRoutes(app: Express): void {
+  // Get all conversations
+  app.get("/api/conversations", async (req: Request, res: Response) => {
+    try {
+      const conversations = await chatStorage.getAllConversations();
+      res.json(conversations);
+    } catch (error) {
+      console.error("Error fetching conversations:", error);
+      res.status(500).json({ error: "Failed to fetch conversations" });
+    }
+  });
+
+  // Get single conversation with messages
+  app.get("/api/conversations/:id", async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      const conversation = await chatStorage.getConversation(id);
+      if (!conversation) {
+        return res.status(404).json({ error: "Conversation not found" });
+      }
+      const messages = await chatStorage.getMessagesByConversation(id);
+      res.json({ ...conversation, messages });
+    } catch (error) {
+      console.error("Error fetching conversation:", error);
+      res.status(500).json({ error: "Failed to fetch conversation" });
+    }
+  });
+
+  // Create new conversation
+  app.post("/api/conversations", async (req: Request, res: Response) => {
+    try {
+      const { title } = req.body;
+      const conversation = await chatStorage.createConversation(title || "New Chat");
+      res.status(201).json(conversation);
+    } catch (error) {
+      console.error("Error creating conversation:", error);
+      res.status(500).json({ error: "Failed to create conversation" });
+    }
+  });
+
+  // Delete conversation
+  app.delete("/api/conversations/:id", async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      await chatStorage.deleteConversation(id);
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting conversation:", error);
+      res.status(500).json({ error: "Failed to delete conversation" });
+    }
+  });
+
+  // Send message and get AI response (streaming)
+  app.post("/api/conversations/:id/messages", async (req: Request, res: Response) => {
+    try {
+      const conversationId = parseInt(req.params.id);
+      const { content } = req.body;
+
+      // Save user message
+      await chatStorage.createMessage(conversationId, "user", content);
+
+      // Get conversation history for context
+      const messages = await chatStorage.getMessagesByConversation(conversationId);
+      const chatMessages = messages.map((m) => ({
+        role: m.role as "user" | "assistant",
+        content: m.content,
+      }));
+
+      // Set up SSE
+      res.setHeader("Content-Type", "text/event-stream");
+      res.setHeader("Cache-Control", "no-cache");
+      res.setHeader("Connection", "keep-alive");
+
+      // Stream response from OpenAI
+      const stream = await openai.chat.completions.create({
+        model: "gpt-5.4",
+        messages: chatMessages,
+        stream: true,
+        max_completion_tokens: 8192,
+      });
+
+      let fullResponse = "";
+
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content || "";
+        if (content) {
+          fullResponse += content;
+          res.write(`data: ${JSON.stringify({ content })}\n\n`);
+        }
+      }
+
+      // Save assistant message
+      await chatStorage.createMessage(conversationId, "assistant", fullResponse);
+
+      res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+      res.end();
+    } catch (error) {
+      console.error("Error sending message:", error);
+      // Check if headers already sent (SSE streaming started)
+      if (res.headersSent) {
+        res.write(`data: ${JSON.stringify({ error: "Failed to send message" })}\n\n`);
+        res.end();
+      } else {
+        res.status(500).json({ error: "Failed to send message" });
+      }
+    }
+  });
+}
+

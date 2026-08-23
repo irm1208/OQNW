@@ -1,1 +1,250 @@
-aW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgdGVzdCBmcm9tICJub2RlOnRlc3QiOwppbXBvcnQgewogIEFkZHJlc3NWZXJpZmljYXRpb25FcnJvciwKICBjb3VudHJ5Q29kZUZvck5hbWUsCiAgY3JlYXRlQWRkcmVzc1ZlcmlmaWNhdGlvblByb29mLAogIGZpbmROb21pbmF0aW1BZGRyZXNzU3VnZ2VzdGlvbnMsCiAgcG9zdGNvZGVJc1JlcXVpcmVkLAogIHZlcmlmeUFkZHJlc3NWZXJpZmljYXRpb25Qcm9vZiwKICB2ZXJpZnlBZGRyZXNzV2l0aE5vbWluYXRpbSwKICB0eXBlIERlbGl2ZXJ5QWRkcmVzcywKfSBmcm9tICIuL2FkZHJlc3NWZXJpZmljYXRpb24iOwoKY29uc3QgYWRkcmVzczogRGVsaXZlcnlBZGRyZXNzID0gewogIGFkZHJlc3MxOiAiMTYwMCBBbXBoaXRoZWF0cmUgUGFya3dheSIsCiAgY2l0eTogIk1vdW50YWluIFZpZXciLAogIGNvdW50eTogIkNBIiwKICBwb3N0Y29kZTogIjk0MDQzIiwKICBjb3VudHJ5OiAiVW5pdGVkIFN0YXRlcyIsCn07CmNvbnN0IHdpdGhvdXROb21pbmF0aW1SYXRlTGltaXQgPSA8VD4ocmVxdWVzdDogKCkgPT4gUHJvbWlzZTxUPikgPT4gcmVxdWVzdCgpOwoKdGVzdCgicmVzb2x2ZXMgc3VwcG9ydGVkIGNvdW50cnkgbmFtZXMgYW5kIHBvc3RhbCByZXF1aXJlbWVudHMiLCAoKSA9PiB7CiAgYXNzZXJ0LmVxdWFsKGNvdW50cnlDb2RlRm9yTmFtZSgiVW5pdGVkIEtpbmdkb20iKSwgIkdCIik7CiAgYXNzZXJ0LmVxdWFsKGNvdW50cnlDb2RlRm9yTmFtZSgiSmFwYW4iKSwgIkpQIik7CiAgYXNzZXJ0LmVxdWFsKHBvc3Rjb2RlSXNSZXF1aXJlZCgiVVMiKSwgdHJ1ZSk7CiAgYXNzZXJ0LmVxdWFsKHBvc3Rjb2RlSXNSZXF1aXJlZCgiSEsiKSwgZmFsc2UpOwp9KTsKCnRlc3QoImFjY2VwdHMgYSBzcGVjaWZpYyBjYW5vbmljYWwgYWRkcmVzcyBmcm9tIE5vbWluYXRpbSIsIGFzeW5jICgpID0+IHsKICBsZXQgcmVxdWVzdFVybCA9ICIiOwogIGxldCByZXF1ZXN0SGVhZGVyczogUmVjb3JkPHN0cmluZywgc3RyaW5nPiB8IHVuZGVmaW5lZDsKICBjb25zdCB2ZXJpZmllZCA9IGF3YWl0IHZlcmlmeUFkZHJlc3NXaXRoTm9taW5hdGltKGFkZHJlc3MsIGFzeW5jICh1cmwsIGluaXQpID0+IHsKICAgICAgcmVxdWVzdFVybCA9IFN0cmluZyh1cmwpOwogICAgICByZXF1ZXN0SGVhZGVycyA9IGluaXQ/LmhlYWRlcnMgYXMgUmVjb3JkPHN0cmluZywgc3RyaW5nPiB8IHVuZGVmaW5lZDsKICAgICAgcmV0dXJuIG5ldyBSZXNwb25zZSgKICAgICAgICBKU09OLnN0cmluZ2lmeSgKICAgICAgICAgIFsKICAgICAgICAgICAgewogICAgICAgICAgICAgIGRpc3BsYXlfbmFtZTogIjE2MDAgQW1waGl0aGVhdHJlIFBrd3ksIE1vdW50YWluIFZpZXcsIENBIDk0MDQzLCBVbml0ZWQgU3RhdGVzIiwKICAgICAgICAgICAgICB0eXBlOiAiaG91c2UiLAogICAgICAgICAgICAgIGFkZHJlc3M6IHsKICAgICAgICAgICAgICAgIGhvdXNlX251bWJlcjogIjE2MDAiLAogICAgICAgICAgICAgICAgcm9hZDogIkFtcGhpdGhlYXRyZSBQa3d5IiwKICAgICAgICAgICAgICAgIGNpdHk6ICJNb3VudGFpbiBWaWV3IiwKICAgICAgICAgICAgICAgIHN0YXRlOiAiQ0EiLAogICAgICAgICAgICAgICAgcG9zdGNvZGU6ICI5NDA0MyIsCiAgICAgICAgICAgICAgICBjb3VudHJ5X2NvZGU6ICJ1cyIsCiAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgfSwKICAgICAgICAgIF0sCiAgICAgICAgKSwKICAgICAgICB7IHN0YXR1czogMjAwIH0sCiAgICAgICk7CiAgfSwgd2l0aG91dE5vbWluYXRpbVJhdGVMaW1pdCk7CiAgYXNzZXJ0LmVxdWFsKHZlcmlmaWVkLmFkZHJlc3MxLCAiMTYwMCBBbXBoaXRoZWF0cmUgUGt3eSIpOwogIGFzc2VydC5lcXVhbCh2ZXJpZmllZC5jb3VudHJ5Q29kZSwgIlVTIik7CiAgYXNzZXJ0Lm1hdGNoKHJlcXVlc3RVcmwsIC9jb3VudHJ5Y29kZXM9dXMvKTsKICBhc3NlcnQuZG9lc05vdE1hdGNoKG5ldyBVUkwocmVxdWVzdFVybCkuc2VhcmNoUGFyYW1zLmdldCgicSIpID8/ICIiLCAvXGJDQVxiLyk7CiAgYXNzZXJ0LmVxdWFsKHJlcXVlc3RIZWFkZXJzPy5bIlVzZXItQWdlbnQiXSwgIk9tbmlRdXJlIGNoZWNrb3V0IGFkZHJlc3MgbG9va3VwIChzZXJ2ZXItc2lkZSkiKTsKfSk7Cgp0ZXN0KCJyZXR1cm5zIGludGVybmF0aW9uYWwgYWRkcmVzcyBzdWdnZXN0aW9ucyB3aXRob3V0IHJlcXVpcmluZyBhIHN1Ym1pdHRlZCBjaXR5IiwgYXN5bmMgKCkgPT4gewogIGNvbnN0IHN1Z2dlc3Rpb25zID0gYXdhaXQgZmluZE5vbWluYXRpbUFkZHJlc3NTdWdnZXN0aW9ucygKICAgIHsKICAgICAgYWRkcmVzczE6ICIxMCBEb3duaW5nIFN0cmVldCIsCiAgICAgIHBvc3Rjb2RlOiAiU1cxQSAyQUEiLAogICAgICBjb3VudHJ5OiAiVW5pdGVkIEtpbmdkb20iLAogICAgfSwKICAgIGFzeW5jICgpID0+CiAgICAgIG5ldyBSZXNwb25zZSgKICAgICAgICBKU09OLnN0cmluZ2lmeShbCiAgICAgICAgICB7CiAgICAgICAgICAgIGRpc3BsYXlfbmFtZTogIjEwIERvd25pbmcgU3RyZWV0LCBXZXN0bWluc3RlciwgTG9uZG9uLCBTVzFBIDJBQSwgVW5pdGVkIEtpbmdkb20iLAogICAgICAgICAgICBhZGRyZXNzOiB7CiAgICAgICAgICAgICAgaG91c2VfbnVtYmVyOiAiMTAiLAogICAgICAgICAgICAgIHJvYWQ6ICJEb3duaW5nIFN0cmVldCIsCiAgICAgICAgICAgICAgY2l0eTogIkNpdHkgb2YgV2VzdG1pbnN0ZXIiLAogICAgICAgICAgICAgIHN0YXRlOiAiRW5nbGFuZCIsCiAgICAgICAgICAgICAgcG9zdGNvZGU6ICJTVzFBIDJBQSIsCiAgICAgICAgICAgICAgY291bnRyeV9jb2RlOiAiZ2IiLAogICAgICAgICAgICB9LAogICAgICAgICAgfSwKICAgICAgICBdKSwKICAgICAgICB7IHN0YXR1czogMjAwIH0sCiAgICAgICksCiAgICB3aXRob3V0Tm9taW5hdGltUmF0ZUxpbWl0LAogICk7CgogIGFzc2VydC5lcXVhbChzdWdnZXN0aW9ucy5sZW5ndGgsIDEpOwogIGFzc2VydC5lcXVhbChzdWdnZXN0aW9uc1swXT8uYWRkcmVzczEsICIxMCBEb3duaW5nIFN0cmVldCIpOwogIGFzc2VydC5lcXVhbChzdWdnZXN0aW9uc1swXT8uY2l0eSwgIkNpdHkgb2YgV2VzdG1pbnN0ZXIiKTsKfSk7Cgp0ZXN0KCJyZXVzZXMgY29uY3VycmVudCBhbmQgcmVjZW50IGlkZW50aWNhbCBhZGRyZXNzIHN1Z2dlc3Rpb25zIiwgYXN5bmMgKCkgPT4gewogIGxldCByZXF1ZXN0cyA9IDA7CiAgY29uc3QgaW5wdXQgPSB7CiAgICBhZGRyZXNzMTogIjQyIENhY2hlIExhbmUiLAogICAgcG9zdGNvZGU6ICJFQzFBIDFCQiIsCiAgICBjb3VudHJ5OiAiVW5pdGVkIEtpbmdkb20iLAogIH07CiAgY29uc3QgZmV0Y2hlcjogdHlwZW9mIGZldGNoID0gYXN5bmMgKCkgPT4gewogICAgcmVxdWVzdHMgKz0gMTsKICAgIGF3YWl0IG5ldyBQcm9taXNlKHJlc29sdmUgPT4gc2V0VGltZW91dChyZXNvbHZlLCA1KSk7CiAgICByZXR1cm4gbmV3IFJlc3BvbnNlKAogICAgICBKU09OLnN0cmluZ2lmeShbCiAgICAgICAgewogICAgICAgICAgZGlzcGxheV9uYW1lOiAiNDIgQ2FjaGUgTGFuZSwgTG9uZG9uLCBFQzFBIDFCQiwgVW5pdGVkIEtpbmdkb20iLAogICAgICAgICAgYWRkcmVzczogewogICAgICAgICAgICBob3VzZV9udW1iZXI6ICI0MiIsCiAgICAgICAgICAgIHJvYWQ6ICJDYWNoZSBMYW5lIiwKICAgICAgICAgICAgY2l0eTogIkxvbmRvbiIsCiAgICAgICAgICAgIHN0YXRlOiAiRW5nbGFuZCIsCiAgICAgICAgICAgIHBvc3Rjb2RlOiAiRUMxQSAxQkIiLAogICAgICAgICAgICBjb3VudHJ5X2NvZGU6ICJnYiIsCiAgICAgICAgICB9LAogICAgICAgIH0sCiAgICAgIF0pLAogICAgICB7IHN0YXR1czogMjAwIH0sCiAgICApOwogIH07CgogIGNvbnN0IFtmaXJzdCwgc2Vjb25kXSA9IGF3YWl0IFByb21pc2UuYWxsKFsKICAgIGZpbmROb21pbmF0aW1BZGRyZXNzU3VnZ2VzdGlvbnMoaW5wdXQsIGZldGNoZXIsIHdpdGhvdXROb21pbmF0aW1SYXRlTGltaXQpLAogICAgZmluZE5vbWluYXRpbUFkZHJlc3NTdWdnZXN0aW9ucyhpbnB1dCwgZmV0Y2hlciwgd2l0aG91dE5vbWluYXRpbVJhdGVMaW1pdCksCiAgXSk7CiAgY29uc3QgdGhpcmQgPSBhd2FpdCBmaW5kTm9taW5hdGltQWRkcmVzc1N1Z2dlc3Rpb25zKGlucHV0LCBmZXRjaGVyLCB3aXRob3V0Tm9taW5hdGltUmF0ZUxpbWl0KTsKCiAgYXNzZXJ0LmVxdWFsKHJlcXVlc3RzLCAxKTsKICBhc3NlcnQuZXF1YWwoZmlyc3RbMF0/LmZvcm1hdHRlZEFkZHJlc3MsIHNlY29uZFswXT8uZm9ybWF0dGVkQWRkcmVzcyk7CiAgYXNzZXJ0LmVxdWFsKHRoaXJkWzBdPy5hZGRyZXNzMSwgIjQyIENhY2hlIExhbmUiKTsKfSk7Cgp0ZXN0KCJmaW5kcyBhZGRyZXNzZXMgaW4gY291bnRyaWVzIHdoZXJlIHBvc3RhbCBjb2RlcyBhcmUgb3B0aW9uYWwiLCBhc3luYyAoKSA9PiB7CiAgY29uc3Qgc3VnZ2VzdGlvbnMgPSBhd2FpdCBmaW5kTm9taW5hdGltQWRkcmVzc1N1Z2dlc3Rpb25zKAogICAgewogICAgICBhZGRyZXNzMTogIjEgSGFyYm91ciBSb2FkIiwKICAgICAgcG9zdGNvZGU6ICIiLAogICAgICBjb3VudHJ5OiAiSG9uZyBLb25nIiwKICAgIH0sCiAgICBhc3luYyAoKSA9PgogICAgICBuZXcgUmVzcG9uc2UoCiAgICAgICAgSlNPTi5zdHJpbmdpZnkoWwogICAgICAgICAgewogICAgICAgICAgICBkaXNwbGF5X25hbWU6ICIxIEhhcmJvdXIgUm9hZCwgV2FuIENoYWksIEhvbmcgS29uZyIsCiAgICAgICAgICAgIGFkZHJlc3M6IHsKICAgICAgICAgICAgICBob3VzZV9udW1iZXI6ICIxIiwKICAgICAgICAgICAgICByb2FkOiAiSGFyYm91ciBSb2FkIiwKICAgICAgICAgICAgICBjaXR5OiAiV2FuIENoYWkiLAogICAgICAgICAgICAgIHN0YXRlOiAiSG9uZyBLb25nIElzbGFuZCIsCiAgICAgICAgICAgICAgY291bnRyeV9jb2RlOiAiaGsiLAogICAgICAgICAgICB9LAogICAgICAgICAgfSwKICAgICAgICBdKSwKICAgICAgICB7IHN0YXR1czogMjAwIH0sCiAgICAgICksCiAgICB3aXRob3V0Tm9taW5hdGltUmF0ZUxpbWl0LAogICk7CgogIGFzc2VydC5lcXVhbChzdWdnZXN0aW9ucy5sZW5ndGgsIDEpOwogIGFzc2VydC5lcXVhbChzdWdnZXN0aW9uc1swXT8ucG9zdGNvZGUsICIiKTsKICBhc3NlcnQuZXF1YWwoc3VnZ2VzdGlvbnNbMF0/LmNvdW50cnlDb2RlLCAiSEsiKTsKfSk7Cgp0ZXN0KCJmYWlscyBjbG9zZWQgd2hlbiB0aGUgTm9taW5hdGltIHJlcXVlc3QgZXhjZWVkcyBpdHMgZGVhZGxpbmUiLCBhc3luYyAoKSA9PiB7CiAgYXdhaXQgYXNzZXJ0LnJlamVjdHMoCiAgICB2ZXJpZnlBZGRyZXNzV2l0aE5vbWluYXRpbSgKICAgICAgYWRkcmVzcywKICAgICAgYXN5bmMgKF91cmwsIGluaXQpID0+CiAgICAgICAgbmV3IFByb21pc2U8UmVzcG9uc2U+KChfcmVzb2x2ZSwgcmVqZWN0KSA9PiB7CiAgICAgICAgICBpbml0Py5zaWduYWw/LmFkZEV2ZW50TGlzdGVuZXIoImFib3J0IiwgKCkgPT4gcmVqZWN0KG5ldyBFcnJvcigiYWJvcnRlZCIpKSk7CiAgICAgICAgfSksCiAgICAgIHdpdGhvdXROb21pbmF0aW1SYXRlTGltaXQsCiAgICAgIDUsCiAgICApLAogICAgKGVycm9yOiB1bmtub3duKSA9PgogICAgICBlcnJvciBpbnN0YW5jZW9mIEFkZHJlc3NWZXJpZmljYXRpb25FcnJvciAmJgogICAgICBlcnJvci5jb2RlID09PSAiQUREUkVTU19WRVJJRklDQVRJT05fVU5BVkFJTEFCTEUiLAogICk7Cn0pOwoKdGVzdCgicmVqZWN0cyBOb21pbmF0aW0gbWF0Y2hlcyB3aXRob3V0IGEgYnVpbGRpbmcgbnVtYmVyIiwgYXN5bmMgKCkgPT4gewogIGF3YWl0IGFzc2VydC5yZWplY3RzKAogICAgICB2ZXJpZnlBZGRyZXNzV2l0aE5vbWluYXRpbSgKICAgICAgICBhZGRyZXNzLAogICAgICAgIGFzeW5jICgpID0+CiAgICAgICAgICBuZXcgUmVzcG9uc2UoCiAgICAgICAgICAgIEpTT04uc3RyaW5naWZ5KAogICAgICAgICAgICAgIFsKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgZGlzcGxheV9uYW1lOiAiQW1waGl0aGVhdHJlIFBrd3ksIE1vdW50YWluIFZpZXcsIENBIDk0MDQzLCBVbml0ZWQgU3RhdGVzIiwKICAgICAgICAgICAgICAgICAgdHlwZTogInJvYWQiLAogICAgICAgICAgICAgICAgICBhZGRyZXNzOiB7CiAgICAgICAgICAgICAgICAgICAgcm9hZDogIkFtcGhpdGhlYXRyZSBQa3d5IiwKICAgICAgICAgICAgICAgICAgICBjaXR5OiAiTW91bnRhaW4gVmlldyIsCiAgICAgICAgICAgICAgICAgICAgcG9zdGNvZGU6ICI5NDA0MyIsCiAgICAgICAgICAgICAgICAgICAgY291bnRyeV9jb2RlOiAidXMiLAogICAgICAgICAgICAgICAgICB9LAogICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICBdLAogICAgICAgICAgICApLAogICAgICAgICAgICB7IHN0YXR1czogMjAwIH0sCiAgICAgICAgICApLAogICAgICAgIHdpdGhvdXROb21pbmF0aW1SYXRlTGltaXQsCiAgICAgICksCiAgICAgIChlcnJvcjogdW5rbm93bikgPT4KICAgICAgICBlcnJvciBpbnN0YW5jZW9mIEFkZHJlc3NWZXJpZmljYXRpb25FcnJvciAmJiBlcnJvci5jb2RlID09PSAiQUREUkVTU19OT1RfQ09ORklSTUVEIiwKICAgICk7Cn0pOwoKdGVzdCgicmVqZWN0cyBhIHZlcmlmaWNhdGlvbiBwcm9vZiB3aGVuIGRlbGl2ZXJ5IGRldGFpbHMgYXJlIGNoYW5nZWQiLCAoKSA9PiB7CiAgY29uc3Qgb3JpZ2luYWxTZWNyZXQgPSBwcm9jZXNzLmVudi5TRVNTSU9OX1NFQ1JFVDsKICBwcm9jZXNzLmVudi5TRVNTSU9OX1NFQ1JFVCA9ICJ0ZXN0LW9ubHktYWRkcmVzcy12ZXJpZmljYXRpb24tc2lnbmluZy1zZWNyZXQiOwogIHRyeSB7CiAgICBjb25zdCBwcm9vZiA9IGNyZWF0ZUFkZHJlc3NWZXJpZmljYXRpb25Qcm9vZih7CiAgICAgIC4uLmFkZHJlc3MsCiAgICAgIGNvdW50cnlDb2RlOiAiVVMiLAogICAgICBmb3JtYXR0ZWRBZGRyZXNzOiAiMTYwMCBBbXBoaXRoZWF0cmUgUGt3eSwgTW91bnRhaW4gVmlldywgQ0EgOTQwNDMsIFVTQSIsCiAgICB9KTsKICAgIGFzc2VydC5lcXVhbCh2ZXJpZnlBZGRyZXNzVmVyaWZpY2F0aW9uUHJvb2YocHJvb2YudG9rZW4sIGFkZHJlc3MpLnZhbGlkLCB0cnVlKTsKICAgIGFzc2VydC5lcXVhbCgKICAgICAgdmVyaWZ5QWRkcmVzc1ZlcmlmaWNhdGlvblByb29mKHByb29mLnRva2VuLCB7IC4uLmFkZHJlc3MsIHBvc3Rjb2RlOiAiOTQwNDAiIH0pLnZhbGlkLAogICAgICBmYWxzZSwKICAgICk7CiAgfSBmaW5hbGx5IHsKICAgIGlmIChvcmlnaW5hbFNlY3JldCA9PT0gdW5kZWZpbmVkKSBkZWxldGUgcHJvY2Vzcy5lbnYuU0VTU0lPTl9TRUNSRVQ7CiAgICBlbHNlIHByb2Nlc3MuZW52LlNFU1NJT05fU0VDUkVUID0gb3JpZ2luYWxTZWNyZXQ7CiAgfQp9KTsKCnRlc3QoImZhaWxzIGNsb3NlZCB3aGVuIG5vIHNlcnZlciBzaWduaW5nIHNlY3JldCBpcyBjb25maWd1cmVkIiwgKCkgPT4gewogIGNvbnN0IG9yaWdpbmFsU2VjcmV0ID0gcHJvY2Vzcy5lbnYuU0VTU0lPTl9TRUNSRVQ7CiAgZGVsZXRlIHByb2Nlc3MuZW52LlNFU1NJT05fU0VDUkVUOwogIHRyeSB7CiAgICBhc3NlcnQudGhyb3dzKAogICAgICAoKSA9PgogICAgICAgIGNyZWF0ZUFkZHJlc3NWZXJpZmljYXRpb25Qcm9vZih7CiAgICAgICAgICAuLi5hZGRyZXNzLAogICAgICAgICAgY291bnRyeUNvZGU6ICJVUyIsCiAgICAgICAgICBmb3JtYXR0ZWRBZGRyZXNzOiAiMTYwMCBBbXBoaXRoZWF0cmUgUGt3eSwgTW91bnRhaW4gVmlldywgQ0EgOTQwNDMsIFVTQSIsCiAgICAgICAgfSksCiAgICAgIChlcnJvcjogdW5rbm93bikgPT4KICAgICAgICBlcnJvciBpbnN0YW5jZW9mIEFkZHJlc3NWZXJpZmljYXRpb25FcnJvciAmJgogICAgICAgIGVycm9yLmNvZGUgPT09ICJBRERSRVNTX1ZFUklGSUNBVElPTl9VTkFWQUlMQUJMRSIsCiAgICApOwogIH0gZmluYWxseSB7CiAgICBpZiAob3JpZ2luYWxTZWNyZXQgPT09IHVuZGVmaW5lZCkgZGVsZXRlIHByb2Nlc3MuZW52LlNFU1NJT05fU0VDUkVUOwogICAgZWxzZSBwcm9jZXNzLmVudi5TRVNTSU9OX1NFQ1JFVCA9IG9yaWdpbmFsU2VjcmV0OwogIH0KfSk7
+import assert from "node:assert/strict";
+import test from "node:test";
+import {
+  AddressVerificationError,
+  countryCodeForName,
+  createAddressVerificationProof,
+  findNominatimAddressSuggestions,
+  postcodeIsRequired,
+  verifyAddressVerificationProof,
+  verifyAddressWithNominatim,
+  type DeliveryAddress,
+} from "./addressVerification";
+
+const address: DeliveryAddress = {
+  address1: "1600 Amphitheatre Parkway",
+  city: "Mountain View",
+  county: "CA",
+  postcode: "94043",
+  country: "United States",
+};
+const withoutNominatimRateLimit = <T>(request: () => Promise<T>) => request();
+
+test("resolves supported country names and postal requirements", () => {
+  assert.equal(countryCodeForName("United Kingdom"), "GB");
+  assert.equal(countryCodeForName("Japan"), "JP");
+  assert.equal(postcodeIsRequired("US"), true);
+  assert.equal(postcodeIsRequired("HK"), false);
+});
+
+test("accepts a specific canonical address from Nominatim", async () => {
+  let requestUrl = "";
+  let requestHeaders: Record<string, string> | undefined;
+  const verified = await verifyAddressWithNominatim(address, async (url, init) => {
+      requestUrl = String(url);
+      requestHeaders = init?.headers as Record<string, string> | undefined;
+      return new Response(
+        JSON.stringify(
+          [
+            {
+              display_name: "1600 Amphitheatre Pkwy, Mountain View, CA 94043, United States",
+              type: "house",
+              address: {
+                house_number: "1600",
+                road: "Amphitheatre Pkwy",
+                city: "Mountain View",
+                state: "CA",
+                postcode: "94043",
+                country_code: "us",
+              },
+            },
+          ],
+        ),
+        { status: 200 },
+      );
+  }, withoutNominatimRateLimit);
+  assert.equal(verified.address1, "1600 Amphitheatre Pkwy");
+  assert.equal(verified.countryCode, "US");
+  assert.match(requestUrl, /countrycodes=us/);
+  assert.doesNotMatch(new URL(requestUrl).searchParams.get("q") ?? "", /\bCA\b/);
+  assert.equal(requestHeaders?.["User-Agent"], "OmniQure checkout address lookup (server-side)");
+});
+
+test("returns international address suggestions without requiring a submitted city", async () => {
+  const suggestions = await findNominatimAddressSuggestions(
+    {
+      address1: "10 Downing Street",
+      postcode: "SW1A 2AA",
+      country: "United Kingdom",
+    },
+    async () =>
+      new Response(
+        JSON.stringify([
+          {
+            display_name: "10 Downing Street, Westminster, London, SW1A 2AA, United Kingdom",
+            address: {
+              house_number: "10",
+              road: "Downing Street",
+              city: "City of Westminster",
+              state: "England",
+              postcode: "SW1A 2AA",
+              country_code: "gb",
+            },
+          },
+        ]),
+        { status: 200 },
+      ),
+    withoutNominatimRateLimit,
+  );
+
+  assert.equal(suggestions.length, 1);
+  assert.equal(suggestions[0]?.address1, "10 Downing Street");
+  assert.equal(suggestions[0]?.city, "City of Westminster");
+});
+
+test("reuses concurrent and recent identical address suggestions", async () => {
+  let requests = 0;
+  const input = {
+    address1: "42 Cache Lane",
+    postcode: "EC1A 1BB",
+    country: "United Kingdom",
+  };
+  const fetcher: typeof fetch = async () => {
+    requests += 1;
+    await new Promise(resolve => setTimeout(resolve, 5));
+    return new Response(
+      JSON.stringify([
+        {
+          display_name: "42 Cache Lane, London, EC1A 1BB, United Kingdom",
+          address: {
+            house_number: "42",
+            road: "Cache Lane",
+            city: "London",
+            state: "England",
+            postcode: "EC1A 1BB",
+            country_code: "gb",
+          },
+        },
+      ]),
+      { status: 200 },
+    );
+  };
+
+  const [first, second] = await Promise.all([
+    findNominatimAddressSuggestions(input, fetcher, withoutNominatimRateLimit),
+    findNominatimAddressSuggestions(input, fetcher, withoutNominatimRateLimit),
+  ]);
+  const third = await findNominatimAddressSuggestions(input, fetcher, withoutNominatimRateLimit);
+
+  assert.equal(requests, 1);
+  assert.equal(first[0]?.formattedAddress, second[0]?.formattedAddress);
+  assert.equal(third[0]?.address1, "42 Cache Lane");
+});
+
+test("finds addresses in countries where postal codes are optional", async () => {
+  const suggestions = await findNominatimAddressSuggestions(
+    {
+      address1: "1 Harbour Road",
+      postcode: "",
+      country: "Hong Kong",
+    },
+    async () =>
+      new Response(
+        JSON.stringify([
+          {
+            display_name: "1 Harbour Road, Wan Chai, Hong Kong",
+            address: {
+              house_number: "1",
+              road: "Harbour Road",
+              city: "Wan Chai",
+              state: "Hong Kong Island",
+              country_code: "hk",
+            },
+          },
+        ]),
+        { status: 200 },
+      ),
+    withoutNominatimRateLimit,
+  );
+
+  assert.equal(suggestions.length, 1);
+  assert.equal(suggestions[0]?.postcode, "");
+  assert.equal(suggestions[0]?.countryCode, "HK");
+});
+
+test("fails closed when the Nominatim request exceeds its deadline", async () => {
+  await assert.rejects(
+    verifyAddressWithNominatim(
+      address,
+      async (_url, init) =>
+        new Promise<Response>((_resolve, reject) => {
+          init?.signal?.addEventListener("abort", () => reject(new Error("aborted")));
+        }),
+      withoutNominatimRateLimit,
+      5,
+    ),
+    (error: unknown) =>
+      error instanceof AddressVerificationError &&
+      error.code === "ADDRESS_VERIFICATION_UNAVAILABLE",
+  );
+});
+
+test("rejects Nominatim matches without a building number", async () => {
+  await assert.rejects(
+      verifyAddressWithNominatim(
+        address,
+        async () =>
+          new Response(
+            JSON.stringify(
+              [
+                {
+                  display_name: "Amphitheatre Pkwy, Mountain View, CA 94043, United States",
+                  type: "road",
+                  address: {
+                    road: "Amphitheatre Pkwy",
+                    city: "Mountain View",
+                    postcode: "94043",
+                    country_code: "us",
+                  },
+                },
+              ],
+            ),
+            { status: 200 },
+          ),
+        withoutNominatimRateLimit,
+      ),
+      (error: unknown) =>
+        error instanceof AddressVerificationError && error.code === "ADDRESS_NOT_CONFIRMED",
+    );
+});
+
+test("rejects a verification proof when delivery details are changed", () => {
+  const originalSecret = process.env.SESSION_SECRET;
+  process.env.SESSION_SECRET = "test-only-address-verification-signing-secret";
+  try {
+    const proof = createAddressVerificationProof({
+      ...address,
+      countryCode: "US",
+      formattedAddress: "1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA",
+    });
+    assert.equal(verifyAddressVerificationProof(proof.token, address).valid, true);
+    assert.equal(
+      verifyAddressVerificationProof(proof.token, { ...address, postcode: "94040" }).valid,
+      false,
+    );
+  } finally {
+    if (originalSecret === undefined) delete process.env.SESSION_SECRET;
+    else process.env.SESSION_SECRET = originalSecret;
+  }
+});
+
+test("fails closed when no server signing secret is configured", () => {
+  const originalSecret = process.env.SESSION_SECRET;
+  delete process.env.SESSION_SECRET;
+  try {
+    assert.throws(
+      () =>
+        createAddressVerificationProof({
+          ...address,
+          countryCode: "US",
+          formattedAddress: "1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA",
+        }),
+      (error: unknown) =>
+        error instanceof AddressVerificationError &&
+        error.code === "ADDRESS_VERIFICATION_UNAVAILABLE",
+    );
+  } finally {
+    if (originalSecret === undefined) delete process.env.SESSION_SECRET;
+    else process.env.SESSION_SECRET = originalSecret;
+  }
+});

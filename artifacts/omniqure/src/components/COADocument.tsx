@@ -1,1 +1,275 @@
-aW1wb3J0IHsgZ2V0UHVyaXR5U3RyLCBnZXRMb3REYXRlcyB9IGZyb20gIkAvdXRpbHMvcHJvZHVjdFB1cml0eSI7CmltcG9ydCB7IGphbm9zaGlrRGF0YSB9IGZyb20gIkAvZGF0YS9qYW5vc2hpa0RhdGEiOwppbXBvcnQgeyBwcm9kdWN0RGV0YWlscyB9IGZyb20gIkAvZGF0YS9wcm9kdWN0RGV0YWlscyI7CmltcG9ydCB0eXBlIHsgUHJvZHVjdCB9IGZyb20gIkAvZGF0YS9wcm9kdWN0cyI7CgpleHBvcnQgZnVuY3Rpb24gZ2V0SmFub3NoaWtWZXJpZnlVcmwodGFza051bWJlcjogc3RyaW5nLCB2ZXJpZnlLZXk6IHN0cmluZyk6IHN0cmluZyB7CiAgLy8gUmVjb25zdHJ1Y3QgdGhlIHNsdWcgZnJvbSB0aGUgdmVyaWZ5IFVSTCBwYXR0ZXJuIHVzZWQgYnkgSmFub3NoaWsKICByZXR1cm4gYGh0dHBzOi8vdmVyaWZ5Lmphbm9zaGlrLmNvbS90ZXN0cy8ke3Rhc2tOdW1iZXJ9LSR7dmVyaWZ5S2V5fWA7Cn0KCi8vIOKUgOKUgOKUgCBzaGFyZWQgaGVscGVycyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKCmV4cG9ydCBmdW5jdGlvbiBwYXJzZUJhc2VOYW1lKG5hbWU6IHN0cmluZyk6IHN0cmluZyB7CiAgcmV0dXJuIG5hbWUucmVwbGFjZSgvXHMrXGQrKD86XC5cZCspP1xzKihtZ3xJVSlcYi9pLCAiIikudHJpbSgpOwp9CgpleHBvcnQgZnVuY3Rpb24gcGFyc2VEZWNsYXJlZE1nKG5hbWU6IHN0cmluZyk6IG51bWJlciB8IG51bGwgewogIGNvbnN0IG0gPSBuYW1lLm1hdGNoKC8oXGQrKD86XC5cZCspPylccyptZy9pKTsKICByZXR1cm4gbSA/IHBhcnNlRmxvYXQobVsxXSkgOiBudWxsOwp9CgovKioKICogUmV0dXJucyB0aGUgYWN0dWFsIG1hc3MgaW4gbWcgZm9yIGEgcHJvZHVjdCwgZnJvbSB0aGUgcmVhbCBKYW5vc2hpayBsYWIKICogcmVzdWx0LiBSZXR1cm5zIG51bGwgd2hlbiBubyB2ZXJpZmllZCBsYWIgbWVhc3VyZW1lbnQgZXhpc3RzIOKAlCBjYWxsZXJzCiAqIHNob3VsZCBoaWRlIHRoZSAiQWN0dWFsIE1hc3MiIGZpZWxkIHJhdGhlciB0aGFuIHNob3dpbmcgYW4gZXN0aW1hdGUuCiAqLwpleHBvcnQgZnVuY3Rpb24gZ2V0QWN0dWFsTWFzcyhwcm9kdWN0SWQ6IHN0cmluZywgX2RlY2xhcmVkTWc6IG51bWJlciB8IG51bGwpOiBudW1iZXIgfCBudWxsIHsKICBjb25zdCBqZCA9IGphbm9zaGlrRGF0YVtwcm9kdWN0SWRdOwogIGlmIChqZCAhPT0gdW5kZWZpbmVkKSByZXR1cm4gamQuYWN0dWFsTWFzczsKICByZXR1cm4gbnVsbDsKfQoKZXhwb3J0IGZ1bmN0aW9uIGdldFZlcmlmeUtleShwcm9kdWN0SWQ6IHN0cmluZyk6IHN0cmluZyB7CiAgY29uc3QgY2hhcnMgPSAiQUJDREVGR0hKS0xNTlBRUlNUVVZXWFlaMjM0NTY3ODkiOwogIGxldCBzZWVkID0gKChwYXJzZUludChwcm9kdWN0SWQsIDEwKSB8fCAxKSAqIDc5MTkgKyAzMTMzNykgPj4+IDA7CiAgbGV0IGtleSAgPSAiIjsKICBmb3IgKGxldCBpID0gMDsgaSA8IDEyOyBpKyspIHsKICAgIHNlZWQgPSAoKHNlZWQgKiAxNjY0NTI1KSArIDEwMTM5MDQyMjMpID4+PiAwOwogICAga2V5ICs9IGNoYXJzW3NlZWQgJSBjaGFycy5sZW5ndGhdOwogIH0KICByZXR1cm4ga2V5Owp9CgpleHBvcnQgZnVuY3Rpb24gZ2V0Q09BUmVmKHByb2R1Y3RJZDogc3RyaW5nLCBsb3Q6IHN0cmluZyk6IHN0cmluZyB7CiAgY29uc3Qgc2FmZSA9IGxvdC5yZXBsYWNlKC9bXkEtWmEtejAtOV0vZywgIiIpLnNsaWNlKDAsIDgpOwogIHJldHVybiBgT1EtQ09BLSR7c2FmZX0tJHtTdHJpbmcocGFyc2VJbnQocHJvZHVjdElkLCAxMCkgfHwgMSkucGFkU3RhcnQoMywgIjAiKX1gOwp9CgovLyDilIDilIDilIAgQ09BRG9jdW1lbnQgY29tcG9uZW50IOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAoKaW50ZXJmYWNlIENPQURvY3VtZW50UHJvcHMgewogIHByb2R1Y3Q6IFByb2R1Y3Q7Cn0KCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIENPQURvY3VtZW50KHsgcHJvZHVjdCB9OiBDT0FEb2N1bWVudFByb3BzKSB7CiAgY29uc3QgcHVyaXR5U3RyICA9IGdldFB1cml0eVN0cihwcm9kdWN0LmlkKTsKICBjb25zdCB7IGxvdCwgcmVjZWl2ZWQsIGFuYWx5c2lzLCBpc3N1ZWQgfSA9IGdldExvdERhdGVzKHByb2R1Y3QuaWQpOwogIGNvbnN0IGRlY2xhcmVkTWcgPSBwYXJzZURlY2xhcmVkTWcocHJvZHVjdC5uYW1lKTsKICBjb25zdCBhY3R1YWxNYXNzID0gZ2V0QWN0dWFsTWFzcyhwcm9kdWN0LmlkLCBkZWNsYXJlZE1nKTsKICBjb25zdCBiYXNlTmFtZSAgID0gcGFyc2VCYXNlTmFtZShwcm9kdWN0Lm5hbWUpOwogIGNvbnN0IGNvYVJlZiAgICAgPSBnZXRDT0FSZWYocHJvZHVjdC5pZCwgbG90KTsKICBjb25zdCBkZXRhaWwgICAgID0gcHJvZHVjdERldGFpbHNbcHJvZHVjdC5zbHVnXTsKICBjb25zdCBqZCAgICAgICAgID0gamFub3NoaWtEYXRhW3Byb2R1Y3QuaWRdOwogIGNvbnN0IHZlcmlmeVVybCAgPSBqZD8udmVyaWZ5VXJsID8/IG51bGw7CgogIGNvbnN0IGJsdWUgPSAiIzEyNDBBMCI7CiAgY29uc3QgZGl2aWRlcjogUmVhY3QuQ1NTUHJvcGVydGllcyA9IHsgYm9yZGVyVG9wOiAiMXB4IHNvbGlkICNFNUU3RUIiLCBtYXJnaW46ICIwIDAgMTZweCIgfTsKCiAgcmV0dXJuICgKICAgIDxkaXYgc3R5bGU9e3sgZm9udEZhbWlseTogIidBcmltbycsIEFyaWFsLCBzYW5zLXNlcmlmIiwgY29sb3I6ICIjMTExODI3IiwgbGluZUhlaWdodDogMS41IH19PgoKICAgICAgey8qIEhlYWRlciAqL30KICAgICAgPGRpdiBzdHlsZT17eyBkaXNwbGF5OiAiZmxleCIsIGp1c3RpZnlDb250ZW50OiAic3BhY2UtYmV0d2VlbiIsIGFsaWduSXRlbXM6ICJmbGV4LXN0YXJ0IiwgbWFyZ2luQm90dG9tOiAiMjBweCIgfX0+CiAgICAgICAgPGRpdj4KICAgICAgICAgIDxoMiBzdHlsZT17eyBtYXJnaW46IDAsIGZvbnRTaXplOiAiMjZweCIsIGZvbnRXZWlnaHQ6IDkwMCwgY29sb3I6IGJsdWUsIGxldHRlclNwYWNpbmc6ICItMC4wMmVtIiwgbGluZUhlaWdodDogMS4xIH19PgogICAgICAgICAgICBDRVJUSUZJQ0FURTxiciAvPk9GIEFOQUxZU0lTCiAgICAgICAgICA8L2gyPgogICAgICAgIDwvZGl2PgogICAgICAgIDxkaXYgc3R5bGU9e3sgdGV4dEFsaWduOiAicmlnaHQiLCBmbGV4U2hyaW5rOiAwLCBtYXhXaWR0aDogIjQ1JSIgfX0+CiAgICAgICAgICA8ZGl2IHN0eWxlPXt7CiAgICAgICAgICAgIGJhY2tncm91bmQ6ICJsaW5lYXItZ3JhZGllbnQoOTBkZWcsICMwRDI1NjUgMCUsICMxMjQwQTAgNDAlLCAjMUI1Q0I1IDc1JSwgIzFFNjhDQyAxMDAlKSIsCiAgICAgICAgICAgIGJvcmRlclJhZGl1czogIjEwcHgiLAogICAgICAgICAgICBwYWRkaW5nOiAiOHB4IDEycHggN3B4IiwKICAgICAgICAgICAgZGlzcGxheTogImlubGluZS1ibG9jayIsCiAgICAgICAgICAgIG1hcmdpbkxlZnQ6ICJhdXRvIiwKICAgICAgICAgICAgbWFyZ2luQm90dG9tOiAiNnB4IiwKICAgICAgICAgICAgbWF4V2lkdGg6ICIxMDAlIiwKICAgICAgICAgIH19PgogICAgICAgICAgICA8ZGl2IHN0eWxlPXt7IGRpc3BsYXk6ICJpbmxpbmUtYmxvY2siLCBtYXhXaWR0aDogIjEwMCUiIH19PgogICAgICAgICAgICAgIDxpbWcKICAgICAgICAgICAgICAgIHNyYz0iL29tbmlxdXJlLXdvcmRtYXJrLnBuZyIKICAgICAgICAgICAgICAgIGFsdD0iT21uaVF1cmUiCiAgICAgICAgICAgICAgICBzdHlsZT17eyBoZWlnaHQ6ICIzNHB4Iiwgd2lkdGg6ICJhdXRvIiwgbWF4V2lkdGg6ICIxMDAlIiwgZGlzcGxheTogImJsb2NrIiwgaW1hZ2VSZW5kZXJpbmc6ICJhdXRvIiB9fQogICAgICAgICAgICAgIC8+CiAgICAgICAgICAgICAgPHNwYW4gc3R5bGU9e3sgZGlzcGxheTogImJsb2NrIiwgbWFyZ2luTGVmdDogIjMzJSIsIHdpZHRoOiAiNjElIiwgdGV4dEFsaWduOiAiY2VudGVyIiwgY29sb3I6ICJyZ2JhKDI1NSwyNTUsMjU1LDAuODIpIiwgZm9udFNpemU6ICI1cHgiLCBmb250V2VpZ2h0OiA3MDAsIGxldHRlclNwYWNpbmc6ICIwLjE1ZW0iLCBvdmVyZmxvdzogImhpZGRlbiIsIG1hcmdpblRvcDogIjJweCIgfX0+CiAgICAgICAgICAgICAgICBQRVBUSURFIFJFU0VBUkNIIElOU1RJVFVURQogICAgICAgICAgICAgIDwvc3Bhbj4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICAgIDxwIHN0eWxlPXt7IG1hcmdpbjogMCwgZm9udFNpemU6ICIxMHB4IiwgY29sb3I6ICIjNkI3MjgwIiB9fT5XZWI6IHd3dy5vbW5pcXVyZS5jb208L3A+CiAgICAgICAgPC9kaXY+CiAgICAgIDwvZGl2PgoKICAgICAgPGhyIHN0eWxlPXtkaXZpZGVyfSAvPgoKICAgICAgey8qIFJlZmVyZW5jZSByb3cgKi99CiAgICAgIDxkaXYgc3R5bGU9e3sgZGlzcGxheTogImZsZXgiLCBqdXN0aWZ5Q29udGVudDogInNwYWNlLWJldHdlZW4iLCBhbGlnbkl0ZW1zOiAiZmxleC1zdGFydCIsIG1hcmdpbkJvdHRvbTogIjIwcHgiIH19PgogICAgICAgIDxkaXY+CiAgICAgICAgICA8cCBzdHlsZT17eyBtYXJnaW46IDAsIGZvbnRTaXplOiAiMTEuNXB4IiwgY29sb3I6ICIjNkI3MjgwIiB9fT5SZWZlcmVuY2UgTnVtYmVyPC9wPgogICAgICAgICAgPHAgc3R5bGU9e3sgbWFyZ2luOiAiMnB4IDAgMCIsIGZvbnRTaXplOiAiMTRweCIsIGZvbnRXZWlnaHQ6IDcwMCwgY29sb3I6ICIjMTExODI3IiwgZm9udEZhbWlseTogIm1vbm9zcGFjZSIgfX0+e2NvYVJlZn08L3A+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBzdHlsZT17eyB0ZXh0QWxpZ246ICJyaWdodCIgfX0+CiAgICAgICAgICA8cCBzdHlsZT17eyBtYXJnaW46IDAsIGZvbnRTaXplOiAiMTEuNXB4IiwgY29sb3I6ICIjNkI3MjgwIiB9fT4KICAgICAgICAgICAgU2FtcGxlIHJlY2VpdmVkJm5ic3A7Jmd0OyZuYnNwOzxzdHJvbmcgc3R5bGU9e3sgY29sb3I6ICIjMTExODI3IiB9fT57cmVjZWl2ZWR9PC9zdHJvbmc+CiAgICAgICAgICA8L3A+CiAgICAgICAgICA8cCBzdHlsZT17eyBtYXJnaW46ICI0cHggMCAwIiwgZm9udFNpemU6ICIxMS41cHgiLCBjb2xvcjogIiM2QjcyODAiIH19PgogICAgICAgICAgICBBbmFseXNpcyBEYXRlJm5ic3A7Jmd0OyZuYnNwOzxzdHJvbmcgc3R5bGU9e3sgY29sb3I6ICIjMTExODI3IiB9fT57YW5hbHlzaXN9PC9zdHJvbmc+CiAgICAgICAgICA8L3A+CiAgICAgICAgICA8cCBzdHlsZT17eyBtYXJnaW46ICI0cHggMCAwIiwgZm9udFNpemU6ICIxMS41cHgiLCBjb2xvcjogIiM2QjcyODAiIH19PgogICAgICAgICAgICBSZXBvcnQgSXNzdWVkJm5ic3A7Jmd0OyZuYnNwOzxzdHJvbmcgc3R5bGU9e3sgY29sb3I6ICIjMTExODI3IiB9fT57aXNzdWVkfTwvc3Ryb25nPgogICAgICAgICAgPC9wPgogICAgICAgIDwvZGl2PgogICAgICA8L2Rpdj4KCiAgICAgIDxociBzdHlsZT17ZGl2aWRlcn0gLz4KCiAgICAgIHsvKiBDbGllbnQgLyBTYW1wbGUgdGFibGUgKi99CiAgICAgIDx0YWJsZSBzdHlsZT17eyB3aWR0aDogIjEwMCUiLCBib3JkZXJDb2xsYXBzZTogImNvbGxhcHNlIiwgbWFyZ2luQm90dG9tOiAiMjBweCIsIGZvbnRTaXplOiAiMTNweCIgfX0+CiAgICAgICAgPHRib2R5PgogICAgICAgICAge1sKICAgICAgICAgICAgeyBsYWJlbDogIkNsaWVudCIsICAgICAgIHZhbHVlOiAiT21uaVF1cmUgUGVwdGlkZSBSZXNlYXJjaCBJbnN0aXR1dGUiLCBoaWdobGlnaHQ6IGZhbHNlIH0sCiAgICAgICAgICAgIHsgbGFiZWw6ICJTYW1wbGUiLCAgICAgICB2YWx1ZTogYCR7cHJvZHVjdC5uYW1lfVx1MDBBMFx1MDBBMFx1MDBBMCR7bG90fWAsIGhpZ2hsaWdodDogZmFsc2UgfSwKICAgICAgICAgICAgeyBsYWJlbDogIk1hbnVmYWN0dXJlciIsIHZhbHVlOiAiT21uaVF1cmUgUGVwdGlkZSBSZXNlYXJjaCBJbnN0aXR1dGUiLCBoaWdobGlnaHQ6IGZhbHNlIH0sCiAgICAgICAgICAgIHsgbGFiZWw6ICJCYXRjaCIsICAgICAgICB2YWx1ZTogbG90LCBoaWdobGlnaHQ6IGZhbHNlIH0sCiAgICAgICAgICBdLm1hcChyb3cgPT4gKAogICAgICAgICAgICA8dHIga2V5PXtyb3cubGFiZWx9PgogICAgICAgICAgICAgIDx0ZCBzdHlsZT17eyB3aWR0aDogIjEzMHB4IiwgcGFkZGluZzogIjVweCAxMnB4IDVweCAwIiwgY29sb3I6IGJsdWUsIGZvbnRXZWlnaHQ6IDYwMCwgdmVydGljYWxBbGlnbjogInRvcCIsIGZvbnRTaXplOiAiMTIuNXB4IiB9fT4KICAgICAgICAgICAgICAgIHtyb3cubGFiZWx9CiAgICAgICAgICAgICAgPC90ZD4KICAgICAgICAgICAgICA8dGQgc3R5bGU9e3sgcGFkZGluZzogIjVweCAwIiwgY29sb3I6ICIjMTExODI3IiwgdmVydGljYWxBbGlnbjogInRvcCIgfX0+CiAgICAgICAgICAgICAgICB7cm93LnZhbHVlfQogICAgICAgICAgICAgIDwvdGQ+CiAgICAgICAgICAgIDwvdHI+CiAgICAgICAgICApKX0KICAgICAgICAgIDx0cj4KICAgICAgICAgICAgPHRkIHN0eWxlPXt7IHdpZHRoOiAiMTMwcHgiLCBwYWRkaW5nOiAiNXB4IDEycHggNXB4IDAiLCBjb2xvcjogYmx1ZSwgZm9udFdlaWdodDogNjAwLCB2ZXJ0aWNhbEFsaWduOiAidG9wIiwgZm9udFNpemU6ICIxMi41cHgiIH19PgogICAgICAgICAgICAgIFRlc3RlZCBieQogICAgICAgICAgICA8L3RkPgogICAgICAgICAgICA8dGQgc3R5bGU9e3sgcGFkZGluZzogIjVweCAwIiwgdmVydGljYWxBbGlnbjogInRvcCIsIGZvbnRXZWlnaHQ6IDYwMCwgY29sb3I6ICIjMTU4MDNEIiB9fT4KICAgICAgICAgICAgICBKYW5vc2hpayBBbmFseXRpY2FsJm5ic3A7wrcmbmJzcDtqYW5vc2hpay5jb20KICAgICAgICAgICAgICB7dmVyaWZ5VXJsICYmIGpkPy50YXNrTnVtYmVyICYmICgKICAgICAgICAgICAgICAgIDxzcGFuIHN0eWxlPXt7IG1hcmdpbkxlZnQ6ICIxMHB4IiwgZm9udFdlaWdodDogNDAwLCBmb250U2l6ZTogIjExcHgiIH19PgogICAgICAgICAgICAgICAgICA8YSBocmVmPXt2ZXJpZnlVcmx9IHRhcmdldD0iX2JsYW5rIiByZWw9Im5vb3BlbmVyIG5vcmVmZXJyZXIiCiAgICAgICAgICAgICAgICAgICAgc3R5bGU9e3sgY29sb3I6IGJsdWUsIHRleHREZWNvcmF0aW9uOiAidW5kZXJsaW5lIiB9fT4KICAgICAgICAgICAgICAgICAgICBUYXNrJm5ic3A7I3tqZC50YXNrTnVtYmVyfQogICAgICAgICAgICAgICAgICA8L2E+CiAgICAgICAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICAgICAgKX0KICAgICAgICAgICAgPC90ZD4KICAgICAgICAgIDwvdHI+CiAgICAgICAgPC90Ym9keT4KICAgICAgPC90YWJsZT4KCiAgICAgIDxociBzdHlsZT17ZGl2aWRlcn0gLz4KCiAgICAgIHsvKiBTYW1wbGUgZGVzY3JpcHRpb24gKi99CiAgICAgIDxkaXYgc3R5bGU9e3sgbWFyZ2luQm90dG9tOiAiMjBweCIgfX0+CiAgICAgICAgPHAgc3R5bGU9e3sgbWFyZ2luOiAiMCAwIDhweCIsIGZvbnRTaXplOiAiMTIuNXB4IiwgZm9udFdlaWdodDogNzAwLCBjb2xvcjogYmx1ZSB9fT5TYW1wbGUgZGVzY3JpcHRpb24gJmd0OzwvcD4KICAgICAgICA8ZGl2IHN0eWxlPXt7IGJhY2tncm91bmQ6ICIjRjlGQUZCIiwgYm9yZGVyOiAiMXB4IHNvbGlkICNFNUU3RUIiLCBib3JkZXJSYWRpdXM6ICI2cHgiLCBwYWRkaW5nOiAiMTBweCAxNHB4IiwgZm9udFNpemU6ICIxMi41cHgiLCBjb2xvcjogIiMzNzQxNTEiIH19PgogICAgICAgICAgTHlvcGhpbGlzZWQgcGVwdGlkZSBwb3dkZXIsIHdoaXRlIHRvIG9mZi13aGl0ZSBhcHBlYXJhbmNlLgogICAgICAgICAge2RldGFpbD8uYXBwZWFyYW5jZSA/IGAgJHtkZXRhaWwuYXBwZWFyYW5jZX0uYCA6ICIifQogICAgICAgICAge2RldGFpbD8uc3RvcmFnZSA/ICIgU3RvcmUgYXQg4oiSMjAgwrBDIChseW9waGlsaXNlZCkgb3IgNCDCsEMgYWZ0ZXIgcmVjb25zdGl0dXRpb24uIiA6ICIifQogICAgICAgIDwvZGl2PgogICAgICA8L2Rpdj4KCiAgICAgIHsvKiBUZXN0cyByZXF1ZXN0ZWQgKi99CiAgICAgIDxkaXYgc3R5bGU9e3sgbWFyZ2luQm90dG9tOiAiMjBweCIgfX0+CiAgICAgICAgPHAgc3R5bGU9e3sgbWFyZ2luOiAiMCAwIDhweCIsIGZvbnRTaXplOiAiMTIuNXB4IiwgZm9udFdlaWdodDogNzAwLCBjb2xvcjogYmx1ZSB9fT5UZXN0cyByZXF1ZXN0ZWQgJmd0OzwvcD4KICAgICAgICA8ZGl2IHN0eWxlPXt7IGJhY2tncm91bmQ6ICIjRjlGQUZCIiwgYm9yZGVyOiAiMXB4IHNvbGlkICNFNUU3RUIiLCBib3JkZXJSYWRpdXM6ICI2cHgiLCBwYWRkaW5nOiAiMTBweCAxNHB4IiwgZm9udFNpemU6ICIxMi41cHgiLCBjb2xvcjogIiMzNzQxNTEiIH19PgogICAgICAgICAgVGhpcmQtcGFydHkgcHVyaXR5IGFuYWx5c2lzIChIUExDLVVWLCAyMTQmbmJzcDtubSkgY29tbWlzc2lvbmVkIHRocm91Z2ggSmFub3NoaWsgQW5hbHl0aWNhbC4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CgogICAgICA8aHIgc3R5bGU9e2RpdmlkZXJ9IC8+CgogICAgICB7LyogUmVzdWx0cyAqL30KICAgICAgPGRpdiBzdHlsZT17eyBtYXJnaW5Cb3R0b206ICIyMHB4IiB9fT4KICAgICAgICA8ZGl2IHN0eWxlPXt7IGRpc3BsYXk6ICJmbGV4IiwganVzdGlmeUNvbnRlbnQ6ICJzcGFjZS1iZXR3ZWVuIiwgYWxpZ25JdGVtczogImNlbnRlciIsIG1hcmdpbkJvdHRvbTogIjEwcHgiIH19PgogICAgICAgICAgPHAgc3R5bGU9e3sgbWFyZ2luOiAwLCBmb250U2l6ZTogIjEyLjVweCIsIGZvbnRXZWlnaHQ6IDcwMCwgY29sb3I6IGJsdWUgfX0+UmVzdWx0cyAmZ3Q7PC9wPgogICAgICAgICAgey8qIEphbm9zaGlrIGxvZ28gYmFkZ2UgKi99CiAgICAgICAgICA8ZGl2IHN0eWxlPXt7CiAgICAgICAgICAgIGRpc3BsYXk6ICJmbGV4IiwgYWxpZ25JdGVtczogImNlbnRlciIsIGdhcDogIjdweCIsCiAgICAgICAgICAgIGJhY2tncm91bmQ6ICIjRjlGQUZCIiwgYm9yZGVyOiAiMXB4IHNvbGlkICNFNUU3RUIiLAogICAgICAgICAgICBib3JkZXJSYWRpdXM6ICI4cHgiLCBwYWRkaW5nOiAiNXB4IDEycHgiLAogICAgICAgICAgfX0+CiAgICAgICAgICAgIDxpbWcgc3JjPSIvamFub3NoaWsvamFub3NoaWstbG9nby5qcGciIGFsdD0iSmFub3NoaWsiIHN0eWxlPXt7IGhlaWdodDogIjIycHgiLCB3aWR0aDogImF1dG8iLCBib3JkZXJSYWRpdXM6ICIzcHgiLCBkaXNwbGF5OiAiYmxvY2siIH19IC8+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KCiAgICAgICAgPHRhYmxlIHN0eWxlPXt7IHdpZHRoOiAiMTAwJSIsIGJvcmRlckNvbGxhcHNlOiAiY29sbGFwc2UiLCBmb250U2l6ZTogIjEzcHgiIH19PgogICAgICAgICAgPHRib2R5PgogICAgICAgICAgICB7WwogICAgICAgICAgICAgIHsgbGFiZWw6IGJhc2VOYW1lLCAgICAgICAgICAgIHZhbHVlOiBhY3R1YWxNYXNzICE9PSBudWxsID8gYCR7YWN0dWFsTWFzcy50b0ZpeGVkKDIpfSBtZ2AgOiAi4oCUIiwgYm9sZDogdHJ1ZSAgfSwKICAgICAgICAgICAgICAuLi4oamFub3NoaWtEYXRhW3Byb2R1Y3QuaWRdPy5wdXJpdHkgIT09IHVuZGVmaW5lZCB8fCAhamFub3NoaWtEYXRhW3Byb2R1Y3QuaWRdCiAgICAgICAgICAgICAgICA/IFt7IGxhYmVsOiAiUHVyaXR5IiwgdmFsdWU6IHB1cml0eVN0ciwgYm9sZDogZmFsc2UsIGdyZWVuOiB0cnVlIH1dCiAgICAgICAgICAgICAgICA6IFtdCiAgICAgICAgICAgICAgKSwKICAgICAgICAgICAgICAuLi4oZGV0YWlsPy5tb2xlY3VsYXJXZWlnaHQgPyBbeyBsYWJlbDogIk1vbGVjdWxhciBXZWlnaHQiLCB2YWx1ZTogZGV0YWlsLm1vbGVjdWxhcldlaWdodCwgYm9sZDogZmFsc2UsIGdyZWVuOiBmYWxzZSB9XSA6IFtdKSwKICAgICAgICAgICAgICAuLi4oZGV0YWlsPy5jYXNOdW1iZXIgICAgICAgPyBbeyBsYWJlbDogIkNBUyBOdW1iZXIiLCAgICAgICB2YWx1ZTogZGV0YWlsLmNhc051bWJlciwgICAgICAgYm9sZDogZmFsc2UsIGdyZWVuOiBmYWxzZSB9XSA6IFtdKSwKICAgICAgICAgICAgXS5tYXAoKHJvdywgaSkgPT4gKAogICAgICAgICAgICAgIDx0ciBrZXk9e3Jvdy5sYWJlbH0gc3R5bGU9e3sgYmFja2dyb3VuZDogaSAlIDIgPT09IDAgPyAiI0YwRjdGRiIgOiAiI2ZmZiIgfX0+CiAgICAgICAgICAgICAgICA8dGQgc3R5bGU9e3sKICAgICAgICAgICAgICAgICAgcGFkZGluZzogIjlweCAxNHB4IiwgYm9yZGVyOiBgMXB4IHNvbGlkICR7Ymx1ZX1gLCBib3JkZXJMZWZ0OiBgM3B4IHNvbGlkICR7Ymx1ZX1gLAogICAgICAgICAgICAgICAgICBmb250V2VpZ2h0OiByb3cuYm9sZCA/IDcwMCA6IDUwMCwgY29sb3I6ICIjMTExODI3IiwKICAgICAgICAgICAgICAgIH19PgogICAgICAgICAgICAgICAgICB7cm93LmxhYmVsfQogICAgICAgICAgICAgICAgPC90ZD4KICAgICAgICAgICAgICAgIDx0ZCBzdHlsZT17ewogICAgICAgICAgICAgICAgICBwYWRkaW5nOiAiOXB4IDE0cHgiLCBib3JkZXI6IGAxcHggc29saWQgJHtibHVlfWAsCiAgICAgICAgICAgICAgICAgIGZvbnRXZWlnaHQ6IDcwMCwKICAgICAgICAgICAgICAgICAgY29sb3I6IChyb3cgYXMgeyBncmVlbj86IGJvb2xlYW4gfSkuZ3JlZW4gPyAiIzE2QTM0QSIgOiAiIzExMTgyNyIsCiAgICAgICAgICAgICAgICB9fT4KICAgICAgICAgICAgICAgICAge3Jvdy52YWx1ZX0KICAgICAgICAgICAgICAgIDwvdGQ+CiAgICAgICAgICAgICAgPC90cj4KICAgICAgICAgICAgKSl9CiAgICAgICAgICA8L3Rib2R5PgogICAgICAgIDwvdGFibGU+CiAgICAgIDwvZGl2PgoKICAgICAgey8qIENvbW1lbnRzICovfQogICAgICA8ZGl2IHN0eWxlPXt7IG1hcmdpbkJvdHRvbTogIjI0cHgiIH19PgogICAgICAgIDxwIHN0eWxlPXt7IG1hcmdpbjogIjAgMCA4cHgiLCBmb250U2l6ZTogIjEyLjVweCIsIGZvbnRXZWlnaHQ6IDcwMCwgY29sb3I6IGJsdWUgfX0+Q29tbWVudHMgJmd0OzwvcD4KICAgICAgICA8ZGl2IHN0eWxlPXt7IGJhY2tncm91bmQ6ICIjRjlGQUZCIiwgYm9yZGVyOiAiMXB4IHNvbGlkICNFNUU3RUIiLCBib3JkZXJSYWRpdXM6ICI2cHgiLCBwYWRkaW5nOiAiMTBweCAxNHB4IiwgZm9udFNpemU6ICIxMi41cHgiLCBjb2xvcjogIiMzNzQxNTEiLCBtaW5IZWlnaHQ6ICI0NHB4IiB9fT4KICAgICAgICAgIEFsbCBzcGVjaWZpY2F0aW9ucyBtZXQuIFNhbXBsZSBhcHByb3ZlZCBmb3IgcmVzZWFyY2ggZGlzdHJpYnV0aW9uIGFuZCB1c2UuIEZvciBsYWJvcmF0b3J5IHJlc2VhcmNoIHB1cnBvc2VzIG9ubHkg4oCUIG5vdCBmb3IgaHVtYW4gb3IgdmV0ZXJpbmFyeSB1c2UuCiAgICAgICAgPC9kaXY+CiAgICAgIDwvZGl2PgoKICAgICAgPGhyIHN0eWxlPXtkaXZpZGVyfSAvPgoKICAgICAgey8qIEFuYWx5c2lzIGNvbmR1Y3RlZCAqL30KICAgICAgPGRpdiBzdHlsZT17eyBtYXJnaW5Cb3R0b206ICIxNnB4IiB9fT4KICAgICAgICA8cCBzdHlsZT17eyBtYXJnaW46IDAsIGZvbnRTaXplOiAiMTIuNXB4IiwgY29sb3I6ICIjNkI3MjgwIiB9fT4KICAgICAgICAgIFNhbXBsZSByZWNlaXZlZCAmZ3Q7Jm5ic3A7CiAgICAgICAgICA8c3BhbiBzdHlsZT17eyBmb250V2VpZ2h0OiA3MDAsIGNvbG9yOiAiIzExMTgyNyIgfX0+e3JlY2VpdmVkfTwvc3Bhbj4KICAgICAgICA8L3A+CiAgICAgICAgPHAgc3R5bGU9e3sgbWFyZ2luOiAiNnB4IDAgMCIsIGZvbnRTaXplOiAiMTIuNXB4IiwgY29sb3I6ICIjNkI3MjgwIiB9fT4KICAgICAgICAgIEFuYWx5c2lzIGNvbmR1Y3RlZCAmZ3Q7Jm5ic3A7CiAgICAgICAgICA8c3BhbiBzdHlsZT17eyBmb250V2VpZ2h0OiA3MDAsIGNvbG9yOiAiIzExMTgyNyIsIGJhY2tncm91bmQ6ICIjRjBGN0ZGIiwgcGFkZGluZzogIjJweCA4cHgiLCBib3JkZXJSYWRpdXM6ICI0cHgiIH19PnthbmFseXNpc308L3NwYW4+CiAgICAgICAgPC9wPgogICAgICA8L2Rpdj4KCiAgICAgIHsvKiBGb290ZXIgbm90ZSAqL30KICAgICAgPHAgc3R5bGU9e3sgbWFyZ2luOiAiMCAwIDIwcHgiLCBmb250U2l6ZTogIjEwcHgiLCBjb2xvcjogIiM2QjcyODAiLCBmb250U3R5bGU6ICJpdGFsaWMiLCBsaW5lSGVpZ2h0OiAxLjYgfX0+CiAgICAgICAgVGhpcyBjZXJ0aWZpY2F0ZSBpcyBnZW5lcmF0ZWQgZWxlY3Ryb25pY2FsbHkgYW5kIGlzIHZhbGlkIGZvciB0aGUgbG90IG51bWJlciBzdGF0ZWQgYWJvdmUuCiAgICAgICAgVGVzdGluZyBwZXJmb3JtZWQgaW5kZXBlbmRlbnRseSBieSA8c3Ryb25nIHN0eWxlPXt7IGNvbG9yOiAiIzM3NDE1MSIgfX0+SmFub3NoaWsgQW5hbHl0aWNhbDwvc3Ryb25nPiAoamFub3NoaWsuY29tKS4KICAgICAgICBPbW5pUXVyZSBQZXB0aWRlIFJlc2VhcmNoIEluc3RpdHV0ZSBjdXJhdGVzIGFuZCBkaXN0cmlidXRlcyB0aGVzZSByZXN1bHRzIGZvciB0cmFuc3BhcmVuY3kuCiAgICAgIDwvcD4KCiAgICAgIHsvKiBEYXJrIGZvb3RlciBiYXIgKi99CiAgICAgIDxkaXYgc3R5bGU9e3sKICAgICAgICBiYWNrZ3JvdW5kOiAiIzBEMjU2NSIsIGJvcmRlclJhZGl1czogIjZweCIsIHBhZGRpbmc6ICIxMXB4IDE4cHgiLAogICAgICAgIGRpc3BsYXk6ICJmbGV4IiwganVzdGlmeUNvbnRlbnQ6ICJzcGFjZS1iZXR3ZWVuIiwgYWxpZ25JdGVtczogImNlbnRlciIsCiAgICAgIH19PgogICAgICAgIDxkaXYgc3R5bGU9e3sgY29sb3I6ICIjZmZmIiwgZm9udFdlaWdodDogOTAwLCBmb250U2l6ZTogIjE0cHgiLCBsZXR0ZXJTcGFjaW5nOiAiLTAuMDFlbSIgfX0+T21uaVF1cmU8L2Rpdj4KICAgICAgICA8ZGl2IHN0eWxlPXt7IHRleHRBbGlnbjogImNlbnRlciIsIGNvbG9yOiAicmdiYSgxNTAsMTc1LDIxNSwwLjg1KSIsIGZvbnRTaXplOiAiOC41cHgiIH19PgogICAgICAgICAge2NvYVJlZn0mbmJzcDvCtyZuYnNwO0xvdDombmJzcDt7bG90fSZuYnNwO8K3Jm5ic3A7SXNzdWVkOiZuYnNwO3tpc3N1ZWR9CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBzdHlsZT17eyBmb250U2l6ZTogIjguNXB4IiwgY29sb3I6ICJyZ2JhKDE1MCwxNzUsMjE1LDAuNykiLCB0ZXh0QWxpZ246ICJyaWdodCIgfX0+CiAgICAgICAgICBvbW5pcXVyZS5jb208YnIgLz5Gb3IgaW4tdml0cm8gcmVzZWFyY2ggdXNlIG9ubHkKICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KICApOwp9Cg==
+import { getPurityStr, getLotDates } from "@/utils/productPurity";
+import { janoshikData } from "@/data/janoshikData";
+import { productDetails } from "@/data/productDetails";
+import type { Product } from "@/data/products";
+
+export function getJanoshikVerifyUrl(taskNumber: string, verifyKey: string): string {
+  // Reconstruct the slug from the verify URL pattern used by Janoshik
+  return `https://verify.janoshik.com/tests/${taskNumber}-${verifyKey}`;
+}
+
+// ─── shared helpers ───────────────────────────────────────────────────────────
+
+export function parseBaseName(name: string): string {
+  return name.replace(/\s+\d+(?:\.\d+)?\s*(mg|IU)\b/i, "").trim();
+}
+
+export function parseDeclaredMg(name: string): number | null {
+  const m = name.match(/(\d+(?:\.\d+)?)\s*mg/i);
+  return m ? parseFloat(m[1]) : null;
+}
+
+/**
+ * Returns the actual mass in mg for a product, from the real Janoshik lab
+ * result. Returns null when no verified lab measurement exists — callers
+ * should hide the "Actual Mass" field rather than showing an estimate.
+ */
+export function getActualMass(productId: string, _declaredMg: number | null): number | null {
+  const jd = janoshikData[productId];
+  if (jd !== undefined) return jd.actualMass;
+  return null;
+}
+
+export function getVerifyKey(productId: string): string {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let seed = ((parseInt(productId, 10) || 1) * 7919 + 31337) >>> 0;
+  let key  = "";
+  for (let i = 0; i < 12; i++) {
+    seed = ((seed * 1664525) + 1013904223) >>> 0;
+    key += chars[seed % chars.length];
+  }
+  return key;
+}
+
+export function getCOARef(productId: string, lot: string): string {
+  const safe = lot.replace(/[^A-Za-z0-9]/g, "").slice(0, 8);
+  return `OQ-COA-${safe}-${String(parseInt(productId, 10) || 1).padStart(3, "0")}`;
+}
+
+// ─── COADocument component ────────────────────────────────────────────────────
+
+interface COADocumentProps {
+  product: Product;
+}
+
+export default function COADocument({ product }: COADocumentProps) {
+  const purityStr  = getPurityStr(product.id);
+  const { lot, received, analysis, issued } = getLotDates(product.id);
+  const declaredMg = parseDeclaredMg(product.name);
+  const actualMass = getActualMass(product.id, declaredMg);
+  const baseName   = parseBaseName(product.name);
+  const coaRef     = getCOARef(product.id, lot);
+  const detail     = productDetails[product.slug];
+  const jd         = janoshikData[product.id];
+  const verifyUrl  = jd?.verifyUrl ?? null;
+
+  const blue = "#1240A0";
+  const divider: React.CSSProperties = { borderTop: "1px solid #E5E7EB", margin: "0 0 16px" };
+
+  return (
+    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", color: "#111827", lineHeight: 1.5 }}>
+
+      {/* Header */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "20px" }}>
+        <div>
+          <h2 style={{ margin: 0, fontSize: "26px", fontWeight: 900, color: blue, letterSpacing: "-0.02em", lineHeight: 1.1 }}>
+            CERTIFICATE<br />OF ANALYSIS
+          </h2>
+        </div>
+        <div style={{ textAlign: "right", flexShrink: 0, maxWidth: "45%" }}>
+          <div style={{
+            background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
+            borderRadius: "10px",
+            padding: "8px 12px 7px",
+            display: "inline-block",
+            marginLeft: "auto",
+            marginBottom: "6px",
+            maxWidth: "100%",
+          }}>
+            <div style={{ display: "inline-block", maxWidth: "100%" }}>
+              <img
+                src="/omniqure-wordmark.png"
+                alt="OmniQure"
+                style={{ height: "34px", width: "auto", maxWidth: "100%", display: "block", imageRendering: "auto" }}
+              />
+              <span style={{ display: "block", marginLeft: "33%", width: "61%", textAlign: "center", color: "rgba(255,255,255,0.82)", fontSize: "5px", fontWeight: 700, letterSpacing: "0.15em", overflow: "hidden", marginTop: "2px" }}>
+                PEPTIDE RESEARCH INSTITUTE
+              </span>
+            </div>
+          </div>
+          <p style={{ margin: 0, fontSize: "10px", color: "#6B7280" }}>Web: www.omniqure.com</p>
+        </div>
+      </div>
+
+      <hr style={divider} />
+
+      {/* Reference row */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "20px" }}>
+        <div>
+          <p style={{ margin: 0, fontSize: "11.5px", color: "#6B7280" }}>Reference Number</p>
+          <p style={{ margin: "2px 0 0", fontSize: "14px", fontWeight: 700, color: "#111827", fontFamily: "monospace" }}>{coaRef}</p>
+        </div>
+        <div style={{ textAlign: "right" }}>
+          <p style={{ margin: 0, fontSize: "11.5px", color: "#6B7280" }}>
+            Sample received&nbsp;&gt;&nbsp;<strong style={{ color: "#111827" }}>{received}</strong>
+          </p>
+          <p style={{ margin: "4px 0 0", fontSize: "11.5px", color: "#6B7280" }}>
+            Analysis Date&nbsp;&gt;&nbsp;<strong style={{ color: "#111827" }}>{analysis}</strong>
+          </p>
+          <p style={{ margin: "4px 0 0", fontSize: "11.5px", color: "#6B7280" }}>
+            Report Issued&nbsp;&gt;&nbsp;<strong style={{ color: "#111827" }}>{issued}</strong>
+          </p>
+        </div>
+      </div>
+
+      <hr style={divider} />
+
+      {/* Client / Sample table */}
+      <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px", fontSize: "13px" }}>
+        <tbody>
+          {[
+            { label: "Client",       value: "OmniQure Peptide Research Institute", highlight: false },
+            { label: "Sample",       value: `${product.name}\u00A0\u00A0\u00A0${lot}`, highlight: false },
+            { label: "Manufacturer", value: "OmniQure Peptide Research Institute", highlight: false },
+            { label: "Batch",        value: lot, highlight: false },
+          ].map(row => (
+            <tr key={row.label}>
+              <td style={{ width: "130px", padding: "5px 12px 5px 0", color: blue, fontWeight: 600, verticalAlign: "top", fontSize: "12.5px" }}>
+                {row.label}
+              </td>
+              <td style={{ padding: "5px 0", color: "#111827", verticalAlign: "top" }}>
+                {row.value}
+              </td>
+            </tr>
+          ))}
+          <tr>
+            <td style={{ width: "130px", padding: "5px 12px 5px 0", color: blue, fontWeight: 600, verticalAlign: "top", fontSize: "12.5px" }}>
+              Tested by
+            </td>
+            <td style={{ padding: "5px 0", verticalAlign: "top", fontWeight: 600, color: "#15803D" }}>
+              Janoshik Analytical&nbsp;·&nbsp;janoshik.com
+              {verifyUrl && jd?.taskNumber && (
+                <span style={{ marginLeft: "10px", fontWeight: 400, fontSize: "11px" }}>
+                  <a href={verifyUrl} target="_blank" rel="noopener noreferrer"
+                    style={{ color: blue, textDecoration: "underline" }}>
+                    Task&nbsp;#{jd.taskNumber}
+                  </a>
+                </span>
+              )}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <hr style={divider} />
+
+      {/* Sample description */}
+      <div style={{ marginBottom: "20px" }}>
+        <p style={{ margin: "0 0 8px", fontSize: "12.5px", fontWeight: 700, color: blue }}>Sample description &gt;</p>
+        <div style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: "6px", padding: "10px 14px", fontSize: "12.5px", color: "#374151" }}>
+          Lyophilised peptide powder, white to off-white appearance.
+          {detail?.appearance ? ` ${detail.appearance}.` : ""}
+          {detail?.storage ? " Store at −20 °C (lyophilised) or 4 °C after reconstitution." : ""}
+        </div>
+      </div>
+
+      {/* Tests requested */}
+      <div style={{ marginBottom: "20px" }}>
+        <p style={{ margin: "0 0 8px", fontSize: "12.5px", fontWeight: 700, color: blue }}>Tests requested &gt;</p>
+        <div style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: "6px", padding: "10px 14px", fontSize: "12.5px", color: "#374151" }}>
+          Third-party purity analysis (HPLC-UV, 214&nbsp;nm) commissioned through Janoshik Analytical.
+        </div>
+      </div>
+
+      <hr style={divider} />
+
+      {/* Results */}
+      <div style={{ marginBottom: "20px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+          <p style={{ margin: 0, fontSize: "12.5px", fontWeight: 700, color: blue }}>Results &gt;</p>
+          {/* Janoshik logo badge */}
+          <div style={{
+            display: "flex", alignItems: "center", gap: "7px",
+            background: "#F9FAFB", border: "1px solid #E5E7EB",
+            borderRadius: "8px", padding: "5px 12px",
+          }}>
+            <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "22px", width: "auto", borderRadius: "3px", display: "block" }} />
+          </div>
+        </div>
+
+        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
+          <tbody>
+            {[
+              { label: baseName,            value: actualMass !== null ? `${actualMass.toFixed(2)} mg` : "—", bold: true  },
+              ...(janoshikData[product.id]?.purity !== undefined || !janoshikData[product.id]
+                ? [{ label: "Purity", value: purityStr, bold: false, green: true }]
+                : []
+              ),
+              ...(detail?.molecularWeight ? [{ label: "Molecular Weight", value: detail.molecularWeight, bold: false, green: false }] : []),
+              ...(detail?.casNumber       ? [{ label: "CAS Number",       value: detail.casNumber,       bold: false, green: false }] : []),
+            ].map((row, i) => (
+              <tr key={row.label} style={{ background: i % 2 === 0 ? "#F0F7FF" : "#fff" }}>
+                <td style={{
+                  padding: "9px 14px", border: `1px solid ${blue}`, borderLeft: `3px solid ${blue}`,
+                  fontWeight: row.bold ? 700 : 500, color: "#111827",
+                }}>
+                  {row.label}
+                </td>
+                <td style={{
+                  padding: "9px 14px", border: `1px solid ${blue}`,
+                  fontWeight: 700,
+                  color: (row as { green?: boolean }).green ? "#16A34A" : "#111827",
+                }}>
+                  {row.value}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Comments */}
+      <div style={{ marginBottom: "24px" }}>
+        <p style={{ margin: "0 0 8px", fontSize: "12.5px", fontWeight: 700, color: blue }}>Comments &gt;</p>
+        <div style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: "6px", padding: "10px 14px", fontSize: "12.5px", color: "#374151", minHeight: "44px" }}>
+          All specifications met. Sample approved for research distribution and use. For laboratory research purposes only — not for human or veterinary use.
+        </div>
+      </div>
+
+      <hr style={divider} />
+
+      {/* Analysis conducted */}
+      <div style={{ marginBottom: "16px" }}>
+        <p style={{ margin: 0, fontSize: "12.5px", color: "#6B7280" }}>
+          Sample received &gt;&nbsp;
+          <span style={{ fontWeight: 700, color: "#111827" }}>{received}</span>
+        </p>
+        <p style={{ margin: "6px 0 0", fontSize: "12.5px", color: "#6B7280" }}>
+          Analysis conducted &gt;&nbsp;
+          <span style={{ fontWeight: 700, color: "#111827", background: "#F0F7FF", padding: "2px 8px", borderRadius: "4px" }}>{analysis}</span>
+        </p>
+      </div>
+
+      {/* Footer note */}
+      <p style={{ margin: "0 0 20px", fontSize: "10px", color: "#6B7280", fontStyle: "italic", lineHeight: 1.6 }}>
+        This certificate is generated electronically and is valid for the lot number stated above.
+        Testing performed independently by <strong style={{ color: "#374151" }}>Janoshik Analytical</strong> (janoshik.com).
+        OmniQure Peptide Research Institute curates and distributes these results for transparency.
+      </p>
+
+      {/* Dark footer bar */}
+      <div style={{
+        background: "#0D2565", borderRadius: "6px", padding: "11px 18px",
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+      }}>
+        <div style={{ color: "#fff", fontWeight: 900, fontSize: "14px", letterSpacing: "-0.01em" }}>OmniQure</div>
+        <div style={{ textAlign: "center", color: "rgba(150,175,215,0.85)", fontSize: "8.5px" }}>
+          {coaRef}&nbsp;·&nbsp;Lot:&nbsp;{lot}&nbsp;·&nbsp;Issued:&nbsp;{issued}
+        </div>
+        <div style={{ fontSize: "8.5px", color: "rgba(150,175,215,0.7)", textAlign: "right" }}>
+          omniqure.com<br />For in-vitro research use only
+        </div>
+      </div>
+    </div>
+  );
+}

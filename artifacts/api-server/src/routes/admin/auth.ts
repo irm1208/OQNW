@@ -1,1 +1,181 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgQWRtaW5Mb2dpbkJvZHkgfSBmcm9tICJAd29ya3NwYWNlL2FwaS16b2QiOwppbXBvcnQgeyBkYiB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyBibG9ja2VkSXBzVGFibGUsIGFkbWluVXNlcnNUYWJsZSB9IGZyb20gIkB3b3Jrc3BhY2UvZGIvc2NoZW1hIjsKaW1wb3J0IHsgZXEgfSBmcm9tICJkcml6emxlLW9ybSI7CmltcG9ydCB7IHZlcmlmeVBhc3N3b3JkIH0gZnJvbSAiLi91c2VycyI7Cgpjb25zdCByb3V0ZXIgPSBSb3V0ZXIoKTsKCmNvbnN0IEFETUlOX1BBU1NXT1JEID0gcHJvY2Vzcy5lbnYuQURNSU5fUEFTU1dPUkQgPz8gIm9tbmlxdXJlLWFkbWluLTIwMjQiOwpjb25zdCBTRVNTSU9OX0NPT0tJRSA9ICJhZG1pbl9zZXNzaW9uIjsKY29uc3QgRU1BSUxfQ09PS0lFID0gImFkbWluX2VtYWlsIjsKY29uc3QgU0VTU0lPTl9WQUxVRSA9ICJhdXRoZW50aWNhdGVkIjsKY29uc3QgQ09PS0lFX01BWF9BR0UgPSA3ICogMjQgKiA2MCAqIDYwICogMTAwMDsgLy8gNyBkYXlzCgpjb25zdCBNQVhfQVRURU1QVFMgPSA1Owpjb25zdCBMT0NLT1VUX01TID0gMTUgKiA2MCAqIDEwMDA7IC8vIDE1IG1pbnV0ZXMKY29uc3QgQVRURU1QVF9XSU5ET1dfTVMgPSAzMCAqIDYwICogMTAwMDsgLy8gcmVzZXQgd2luZG93IGFmdGVyIDMwIG1pbiBvZiBubyBhY3Rpdml0eQoKaW50ZXJmYWNlIEF0dGVtcHRSZWNvcmQgewogIGNvdW50OiBudW1iZXI7CiAgbG9ja2VkVW50aWw6IG51bWJlciB8IG51bGw7CiAgbGFzdEF0dGVtcHRBdDogbnVtYmVyOwp9Cgpjb25zdCBhdHRlbXB0c0J5SXAgPSBuZXcgTWFwPHN0cmluZywgQXR0ZW1wdFJlY29yZD4oKTsKCmZ1bmN0aW9uIGdldENsaWVudElwKHJlcTogUmVxdWVzdCk6IHN0cmluZyB7CiAgY29uc3QgZm9yd2FyZGVkID0gcmVxLmhlYWRlcnNbIngtZm9yd2FyZGVkLWZvciJdOwogIGlmICh0eXBlb2YgZm9yd2FyZGVkID09PSAic3RyaW5nIikgcmV0dXJuIGZvcndhcmRlZC5zcGxpdCgiLCIpWzBdLnRyaW0oKTsKICByZXR1cm4gcmVxLnNvY2tldD8ucmVtb3RlQWRkcmVzcyA/PyAidW5rbm93biI7Cn0KCmZ1bmN0aW9uIGdldFJlY29yZChpcDogc3RyaW5nKTogQXR0ZW1wdFJlY29yZCB7CiAgY29uc3QgZXhpc3RpbmcgPSBhdHRlbXB0c0J5SXAuZ2V0KGlwKTsKICBpZiAoIWV4aXN0aW5nKSByZXR1cm4geyBjb3VudDogMCwgbG9ja2VkVW50aWw6IG51bGwsIGxhc3RBdHRlbXB0QXQ6IERhdGUubm93KCkgfTsKCiAgY29uc3Qgbm93ID0gRGF0ZS5ub3coKTsKCiAgaWYgKGV4aXN0aW5nLmxvY2tlZFVudGlsICYmIG5vdyA+IGV4aXN0aW5nLmxvY2tlZFVudGlsKSB7CiAgICBhdHRlbXB0c0J5SXAuZGVsZXRlKGlwKTsKICAgIHJldHVybiB7IGNvdW50OiAwLCBsb2NrZWRVbnRpbDogbnVsbCwgbGFzdEF0dGVtcHRBdDogbm93IH07CiAgfQoKICBpZiAoIWV4aXN0aW5nLmxvY2tlZFVudGlsICYmIG5vdyAtIGV4aXN0aW5nLmxhc3RBdHRlbXB0QXQgPiBBVFRFTVBUX1dJTkRPV19NUykgewogICAgYXR0ZW1wdHNCeUlwLmRlbGV0ZShpcCk7CiAgICByZXR1cm4geyBjb3VudDogMCwgbG9ja2VkVW50aWw6IG51bGwsIGxhc3RBdHRlbXB0QXQ6IG5vdyB9OwogIH0KCiAgcmV0dXJuIGV4aXN0aW5nOwp9Cgpyb3V0ZXIucG9zdCgiL2FkbWluL2F1dGgvbG9naW4iLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgY29uc3QgaXAgPSBnZXRDbGllbnRJcChyZXEpOwoKICBjb25zdCBbYmxvY2tlZF0gPSBhd2FpdCBkYgogICAgLnNlbGVjdCh7IGlwOiBibG9ja2VkSXBzVGFibGUuaXAgfSkKICAgIC5mcm9tKGJsb2NrZWRJcHNUYWJsZSkKICAgIC53aGVyZShlcShibG9ja2VkSXBzVGFibGUuaXAsIGlwKSkKICAgIC5saW1pdCgxKTsKCiAgaWYgKGJsb2NrZWQpIHsKICAgIHJlcy5zdGF0dXMoNDAzKS5qc29uKHsgZXJyb3I6ICJBY2Nlc3MgZGVuaWVkLiIgfSk7CiAgICByZXR1cm47CiAgfQoKICBjb25zdCByZWNvcmQgPSBnZXRSZWNvcmQoaXApOwoKICBpZiAocmVjb3JkLmxvY2tlZFVudGlsICYmIERhdGUubm93KCkgPCByZWNvcmQubG9ja2VkVW50aWwpIHsKICAgIGNvbnN0IHJldHJ5QWZ0ZXJNcyA9IHJlY29yZC5sb2NrZWRVbnRpbCAtIERhdGUubm93KCk7CiAgICByZXMuc3RhdHVzKDQyOSkuanNvbih7CiAgICAgIGVycm9yOiAiVG9vIG1hbnkgZmFpbGVkIGF0dGVtcHRzLiBBY2NvdW50IHRlbXBvcmFyaWx5IGxvY2tlZC4iLAogICAgICBsb2NrZWRVbnRpbDogcmVjb3JkLmxvY2tlZFVudGlsLAogICAgICByZXRyeUFmdGVyU2Vjb25kczogTWF0aC5jZWlsKHJldHJ5QWZ0ZXJNcyAvIDEwMDApLAogICAgfSk7CiAgICByZXR1cm47CiAgfQoKICBjb25zdCBwYXJzZWQgPSBBZG1pbkxvZ2luQm9keS5zYWZlUGFyc2UocmVxLmJvZHkpOwogIGlmICghcGFyc2VkLnN1Y2Nlc3MpIHsKICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJJbnZhbGlkIHJlcXVlc3QgYm9keSIgfSk7CiAgICByZXR1cm47CiAgfQoKICBjb25zdCB7IHBhc3N3b3JkIH0gPSBwYXJzZWQuZGF0YTsKICBjb25zdCBlbWFpbCA9IHR5cGVvZiAocmVxLmJvZHkgYXMgeyBlbWFpbD86IHVua25vd24gfSk/LmVtYWlsID09PSAic3RyaW5nIgogICAgPyAocmVxLmJvZHkgYXMgeyBlbWFpbDogc3RyaW5nIH0pLmVtYWlsLnRvTG93ZXJDYXNlKCkudHJpbSgpCiAgICA6ICIiOwoKICBsZXQgYXV0aGVkID0gZmFsc2U7CiAgbGV0IHNlc3Npb25FbWFpbDogc3RyaW5nIHwgbnVsbCA9IG51bGw7CgogIGlmIChlbWFpbCkgewogICAgY29uc3QgW3VzZXJdID0gYXdhaXQgZGIKICAgICAgLnNlbGVjdCgpCiAgICAgIC5mcm9tKGFkbWluVXNlcnNUYWJsZSkKICAgICAgLndoZXJlKGVxKGFkbWluVXNlcnNUYWJsZS5lbWFpbCwgZW1haWwpKQogICAgICAubGltaXQoMSk7CiAgICBpZiAodXNlciAmJiB1c2VyLmlzQWN0aXZlICYmIHZlcmlmeVBhc3N3b3JkKHBhc3N3b3JkLCB1c2VyLnBhc3N3b3JkSGFzaCkpIHsKICAgICAgYXV0aGVkID0gdHJ1ZTsKICAgICAgc2Vzc2lvbkVtYWlsID0gdXNlci5lbWFpbDsKICAgICAgYXdhaXQgZGIudXBkYXRlKGFkbWluVXNlcnNUYWJsZSkuc2V0KHsgbGFzdExvZ2luQXQ6IG5ldyBEYXRlKCkgfSkud2hlcmUoZXEoYWRtaW5Vc2Vyc1RhYmxlLmlkLCB1c2VyLmlkKSk7CiAgICB9CiAgfSBlbHNlIGlmIChwYXNzd29yZCA9PT0gQURNSU5fUEFTU1dPUkQpIHsKICAgIGF1dGhlZCA9IHRydWU7CiAgfQoKICBpZiAoIWF1dGhlZCkgewogICAgY29uc3QgbmV3Q291bnQgPSByZWNvcmQuY291bnQgKyAxOwogICAgY29uc3QgcmVtYWluaW5nID0gTUFYX0FUVEVNUFRTIC0gbmV3Q291bnQ7CiAgICBjb25zdCBsb2NrZWRVbnRpbCA9IHJlbWFpbmluZyA8PSAwID8gRGF0ZS5ub3coKSArIExPQ0tPVVRfTVMgOiBudWxsOwoKICAgIGF0dGVtcHRzQnlJcC5zZXQoaXAsIHsKICAgICAgY291bnQ6IG5ld0NvdW50LAogICAgICBsb2NrZWRVbnRpbCwKICAgICAgbGFzdEF0dGVtcHRBdDogRGF0ZS5ub3coKSwKICAgIH0pOwoKICAgIGlmIChsb2NrZWRVbnRpbCkgewogICAgICByZXMuc3RhdHVzKDQyOSkuanNvbih7CiAgICAgICAgZXJyb3I6ICJUb28gbWFueSBmYWlsZWQgYXR0ZW1wdHMuIEFjY291bnQgdGVtcG9yYXJpbHkgbG9ja2VkLiIsCiAgICAgICAgbG9ja2VkVW50aWwsCiAgICAgICAgcmV0cnlBZnRlclNlY29uZHM6IE1hdGguY2VpbChMT0NLT1VUX01TIC8gMTAwMCksCiAgICAgIH0pOwogICAgfSBlbHNlIHsKICAgICAgcmVzLnN0YXR1cyg0MDEpLmpzb24oewogICAgICAgIGVycm9yOiAiSW52YWxpZCBwYXNzd29yZCIsCiAgICAgICAgYXR0ZW1wdHNSZW1haW5pbmc6IHJlbWFpbmluZywKICAgICAgfSk7CiAgICB9CiAgICByZXR1cm47CiAgfQoKICBhdHRlbXB0c0J5SXAuZGVsZXRlKGlwKTsKCiAgcmVzLmNvb2tpZShTRVNTSU9OX0NPT0tJRSwgU0VTU0lPTl9WQUxVRSwgewogICAgaHR0cE9ubHk6IHRydWUsCiAgICBtYXhBZ2U6IENPT0tJRV9NQVhfQUdFLAogICAgc2FtZVNpdGU6ICJsYXgiLAogIH0pOwogIGlmIChzZXNzaW9uRW1haWwpIHsKICAgIHJlcy5jb29raWUoRU1BSUxfQ09PS0lFLCBzZXNzaW9uRW1haWwsIHsKICAgICAgaHR0cE9ubHk6IHRydWUsCiAgICAgIG1heEFnZTogQ09PS0lFX01BWF9BR0UsCiAgICAgIHNhbWVTaXRlOiAibGF4IiwKICAgIH0pOwogIH0gZWxzZSB7CiAgICByZXMuY2xlYXJDb29raWUoRU1BSUxfQ09PS0lFKTsKICB9CiAgcmVzLnN0YXR1cygyMDApLmpzb24oeyBhdXRoZW50aWNhdGVkOiB0cnVlIH0pOwp9KTsKCnJvdXRlci5wb3N0KCIvYWRtaW4vYXV0aC9sb2dvdXQiLCAoX3JlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IHZvaWQgPT4gewogIHJlcy5jbGVhckNvb2tpZShTRVNTSU9OX0NPT0tJRSk7CiAgcmVzLmNsZWFyQ29va2llKEVNQUlMX0NPT0tJRSk7CiAgcmVzLnN0YXR1cygyMDQpLnNlbmQoKTsKfSk7Cgpyb3V0ZXIuZ2V0KCIvYWRtaW4vYXV0aC9tZSIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBjb25zdCBzZXNzaW9uID0gcmVxLmNvb2tpZXM/LltTRVNTSU9OX0NPT0tJRV07CiAgaWYgKHNlc3Npb24gIT09IFNFU1NJT05fVkFMVUUpIHsKICAgIHJlcy5zdGF0dXMoNDAxKS5qc29uKHsgZXJyb3I6ICJOb3QgYXV0aGVudGljYXRlZCIgfSk7CiAgICByZXR1cm47CiAgfQogIGNvbnN0IGVtYWlsID0gcmVxLmNvb2tpZXM/LltFTUFJTF9DT09LSUVdOwogIGlmICh0eXBlb2YgZW1haWwgPT09ICJzdHJpbmciICYmIGVtYWlsKSB7CiAgICBjb25zdCBbdXNlcl0gPSBhd2FpdCBkYgogICAgICAuc2VsZWN0KCkKICAgICAgLmZyb20oYWRtaW5Vc2Vyc1RhYmxlKQogICAgICAud2hlcmUoZXEoYWRtaW5Vc2Vyc1RhYmxlLmVtYWlsLCBlbWFpbCkpCiAgICAgIC5saW1pdCgxKTsKICAgIGlmICh1c2VyICYmIHVzZXIuaXNBY3RpdmUpIHsKICAgICAgcmVzLnN0YXR1cygyMDApLmpzb24oeyBhdXRoZW50aWNhdGVkOiB0cnVlLCBlbWFpbDogdXNlci5lbWFpbCwgbmFtZTogdXNlci5uYW1lLCByb2xlOiB1c2VyLnJvbGUgfSk7CiAgICAgIHJldHVybjsKICAgIH0KICB9CiAgcmVzLnN0YXR1cygyMDApLmpzb24oeyBhdXRoZW50aWNhdGVkOiB0cnVlLCByb2xlOiAib3duZXIiLCBuYW1lOiAiT3duZXIiIH0pOwp9KTsKCmV4cG9ydCBkZWZhdWx0IHJvdXRlcjsK
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { AdminLoginBody } from "@workspace/api-zod";
+import { db } from "@workspace/db";
+import { blockedIpsTable, adminUsersTable } from "@workspace/db/schema";
+import { eq } from "drizzle-orm";
+import { verifyPassword } from "./users";
+
+const router = Router();
+
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "omniqure-admin-2024";
+const SESSION_COOKIE = "admin_session";
+const EMAIL_COOKIE = "admin_email";
+const SESSION_VALUE = "authenticated";
+const COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_MS = 15 * 60 * 1000; // 15 minutes
+const ATTEMPT_WINDOW_MS = 30 * 60 * 1000; // reset window after 30 min of no activity
+
+interface AttemptRecord {
+  count: number;
+  lockedUntil: number | null;
+  lastAttemptAt: number;
+}
+
+const attemptsByIp = new Map<string, AttemptRecord>();
+
+function getClientIp(req: Request): string {
+  const forwarded = req.headers["x-forwarded-for"];
+  if (typeof forwarded === "string") return forwarded.split(",")[0].trim();
+  return req.socket?.remoteAddress ?? "unknown";
+}
+
+function getRecord(ip: string): AttemptRecord {
+  const existing = attemptsByIp.get(ip);
+  if (!existing) return { count: 0, lockedUntil: null, lastAttemptAt: Date.now() };
+
+  const now = Date.now();
+
+  if (existing.lockedUntil && now > existing.lockedUntil) {
+    attemptsByIp.delete(ip);
+    return { count: 0, lockedUntil: null, lastAttemptAt: now };
+  }
+
+  if (!existing.lockedUntil && now - existing.lastAttemptAt > ATTEMPT_WINDOW_MS) {
+    attemptsByIp.delete(ip);
+    return { count: 0, lockedUntil: null, lastAttemptAt: now };
+  }
+
+  return existing;
+}
+
+router.post("/admin/auth/login", async (req: Request, res: Response): Promise<void> => {
+  const ip = getClientIp(req);
+
+  const [blocked] = await db
+    .select({ ip: blockedIpsTable.ip })
+    .from(blockedIpsTable)
+    .where(eq(blockedIpsTable.ip, ip))
+    .limit(1);
+
+  if (blocked) {
+    res.status(403).json({ error: "Access denied." });
+    return;
+  }
+
+  const record = getRecord(ip);
+
+  if (record.lockedUntil && Date.now() < record.lockedUntil) {
+    const retryAfterMs = record.lockedUntil - Date.now();
+    res.status(429).json({
+      error: "Too many failed attempts. Account temporarily locked.",
+      lockedUntil: record.lockedUntil,
+      retryAfterSeconds: Math.ceil(retryAfterMs / 1000),
+    });
+    return;
+  }
+
+  const parsed = AdminLoginBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Invalid request body" });
+    return;
+  }
+
+  const { password } = parsed.data;
+  const email = typeof (req.body as { email?: unknown })?.email === "string"
+    ? (req.body as { email: string }).email.toLowerCase().trim()
+    : "";
+
+  let authed = false;
+  let sessionEmail: string | null = null;
+
+  if (email) {
+    const [user] = await db
+      .select()
+      .from(adminUsersTable)
+      .where(eq(adminUsersTable.email, email))
+      .limit(1);
+    if (user && user.isActive && verifyPassword(password, user.passwordHash)) {
+      authed = true;
+      sessionEmail = user.email;
+      await db.update(adminUsersTable).set({ lastLoginAt: new Date() }).where(eq(adminUsersTable.id, user.id));
+    }
+  } else if (password === ADMIN_PASSWORD) {
+    authed = true;
+  }
+
+  if (!authed) {
+    const newCount = record.count + 1;
+    const remaining = MAX_ATTEMPTS - newCount;
+    const lockedUntil = remaining <= 0 ? Date.now() + LOCKOUT_MS : null;
+
+    attemptsByIp.set(ip, {
+      count: newCount,
+      lockedUntil,
+      lastAttemptAt: Date.now(),
+    });
+
+    if (lockedUntil) {
+      res.status(429).json({
+        error: "Too many failed attempts. Account temporarily locked.",
+        lockedUntil,
+        retryAfterSeconds: Math.ceil(LOCKOUT_MS / 1000),
+      });
+    } else {
+      res.status(401).json({
+        error: "Invalid password",
+        attemptsRemaining: remaining,
+      });
+    }
+    return;
+  }
+
+  attemptsByIp.delete(ip);
+
+  res.cookie(SESSION_COOKIE, SESSION_VALUE, {
+    httpOnly: true,
+    maxAge: COOKIE_MAX_AGE,
+    sameSite: "lax",
+  });
+  if (sessionEmail) {
+    res.cookie(EMAIL_COOKIE, sessionEmail, {
+      httpOnly: true,
+      maxAge: COOKIE_MAX_AGE,
+      sameSite: "lax",
+    });
+  } else {
+    res.clearCookie(EMAIL_COOKIE);
+  }
+  res.status(200).json({ authenticated: true });
+});
+
+router.post("/admin/auth/logout", (_req: Request, res: Response): void => {
+  res.clearCookie(SESSION_COOKIE);
+  res.clearCookie(EMAIL_COOKIE);
+  res.status(204).send();
+});
+
+router.get("/admin/auth/me", async (req: Request, res: Response): Promise<void> => {
+  const session = req.cookies?.[SESSION_COOKIE];
+  if (session !== SESSION_VALUE) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+  const email = req.cookies?.[EMAIL_COOKIE];
+  if (typeof email === "string" && email) {
+    const [user] = await db
+      .select()
+      .from(adminUsersTable)
+      .where(eq(adminUsersTable.email, email))
+      .limit(1);
+    if (user && user.isActive) {
+      res.status(200).json({ authenticated: true, email: user.email, name: user.name, role: user.role });
+      return;
+    }
+  }
+  res.status(200).json({ authenticated: true, role: "owner", name: "Owner" });
+});
+
+export default router;

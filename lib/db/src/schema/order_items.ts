@@ -1,1 +1,32 @@
-aW1wb3J0IHsKICBwZ1RhYmxlLAogIHNlcmlhbCwKICBpbnRlZ2VyLAogIHRleHQsCiAgbnVtZXJpYywKICB0aW1lc3RhbXAsCn0gZnJvbSAiZHJpenpsZS1vcm0vcGctY29yZSI7CmltcG9ydCB7IGNyZWF0ZUluc2VydFNjaGVtYSB9IGZyb20gImRyaXp6bGUtem9kIjsKaW1wb3J0IHsgeiB9IGZyb20gInpvZC92NCI7CmltcG9ydCB7IG9yZGVyc1RhYmxlIH0gZnJvbSAiLi9vcmRlcnMiOwoKZXhwb3J0IGNvbnN0IG9yZGVySXRlbXNUYWJsZSA9IHBnVGFibGUoIm9yZGVyX2l0ZW1zIiwgewogIGlkOiBzZXJpYWwoImlkIikucHJpbWFyeUtleSgpLAogIG9yZGVySWQ6IGludGVnZXIoIm9yZGVyX2lkIikKICAgIC5ub3ROdWxsKCkKICAgIC5yZWZlcmVuY2VzKCgpID0+IG9yZGVyc1RhYmxlLmlkLCB7IG9uRGVsZXRlOiAiY2FzY2FkZSIgfSksCiAgcHJvZHVjdElkOiBpbnRlZ2VyKCJwcm9kdWN0X2lkIikubm90TnVsbCgpLAogIHByb2R1Y3ROYW1lOiB0ZXh0KCJwcm9kdWN0X25hbWUiKS5ub3ROdWxsKCksCiAgcHJvZHVjdENhdGVnb3J5OiB0ZXh0KCJwcm9kdWN0X2NhdGVnb3J5Iikubm90TnVsbCgpLAogIHF1YW50aXR5OiBpbnRlZ2VyKCJxdWFudGl0eSIpLm5vdE51bGwoKS5kZWZhdWx0KDEpLAogIHByaWNlR2JwOiBudW1lcmljKCJwcmljZV9nYnAiLCB7IHByZWNpc2lvbjogMTAsIHNjYWxlOiAyIH0pLm5vdE51bGwoKS5kZWZhdWx0KCIwIiksCiAgY3JlYXRlZEF0OiB0aW1lc3RhbXAoImNyZWF0ZWRfYXQiLCB7IHdpdGhUaW1lem9uZTogdHJ1ZSB9KS5ub3ROdWxsKCkuZGVmYXVsdE5vdygpLAp9KTsKCmV4cG9ydCBjb25zdCBpbnNlcnRPcmRlckl0ZW1TY2hlbWEgPSBjcmVhdGVJbnNlcnRTY2hlbWEob3JkZXJJdGVtc1RhYmxlKS5vbWl0KHsKICBpZDogdHJ1ZSwKICBjcmVhdGVkQXQ6IHRydWUsCn0pOwoKZXhwb3J0IHR5cGUgSW5zZXJ0T3JkZXJJdGVtID0gei5pbmZlcjx0eXBlb2YgaW5zZXJ0T3JkZXJJdGVtU2NoZW1hPjsKZXhwb3J0IHR5cGUgT3JkZXJJdGVtID0gdHlwZW9mIG9yZGVySXRlbXNUYWJsZS4kaW5mZXJTZWxlY3Q7Cg==
+import {
+  pgTable,
+  serial,
+  integer,
+  text,
+  numeric,
+  timestamp,
+} from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod/v4";
+import { ordersTable } from "./orders";
+
+export const orderItemsTable = pgTable("order_items", {
+  id: serial("id").primaryKey(),
+  orderId: integer("order_id")
+    .notNull()
+    .references(() => ordersTable.id, { onDelete: "cascade" }),
+  productId: integer("product_id").notNull(),
+  productName: text("product_name").notNull(),
+  productCategory: text("product_category").notNull(),
+  quantity: integer("quantity").notNull().default(1),
+  priceGbp: numeric("price_gbp", { precision: 10, scale: 2 }).notNull().default("0"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const insertOrderItemSchema = createInsertSchema(orderItemsTable).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertOrderItem = z.infer<typeof insertOrderItemSchema>;
+export type OrderItem = typeof orderItemsTable.$inferSelect;

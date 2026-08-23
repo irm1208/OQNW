@@ -1,1 +1,129 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsKICBjdXN0b21lckNyZWRpdHNUYWJsZSwKICBjdXN0b21lckNyZWRpdFRyYW5zYWN0aW9uc1RhYmxlLAogIGN1c3RvbWVyc1RhYmxlLAp9IGZyb20gIkB3b3Jrc3BhY2UvZGIvc2NoZW1hIjsKaW1wb3J0IHsgZXEsIGRlc2MgfSBmcm9tICJkcml6emxlLW9ybSI7CmltcG9ydCB7IGZpcnN0U3RyaW5nIH0gZnJvbSAiLi4vLi4vbGliL3F1ZXJ5IjsKCmNvbnN0IHJvdXRlciA9IFJvdXRlcigpOwoKZnVuY3Rpb24gcmVxdWlyZUFkbWluKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IGJvb2xlYW4gewogIGlmIChyZXEuY29va2llcz8uYWRtaW5fc2Vzc2lvbiAhPT0gImF1dGhlbnRpY2F0ZWQiKSB7CiAgICByZXMuc3RhdHVzKDQwMSkuanNvbih7IGVycm9yOiAiTm90IGF1dGhlbnRpY2F0ZWQiIH0pOwogICAgcmV0dXJuIGZhbHNlOwogIH0KICByZXR1cm4gdHJ1ZTsKfQoKYXN5bmMgZnVuY3Rpb24gZ2V0T3JDcmVhdGVCYWxhbmNlKGN1c3RvbWVySWQ6IG51bWJlcik6IFByb21pc2U8bnVtYmVyPiB7CiAgY29uc3QgW2V4aXN0aW5nXSA9IGF3YWl0IGRiCiAgICAuc2VsZWN0KCkKICAgIC5mcm9tKGN1c3RvbWVyQ3JlZGl0c1RhYmxlKQogICAgLndoZXJlKGVxKGN1c3RvbWVyQ3JlZGl0c1RhYmxlLmN1c3RvbWVySWQsIGN1c3RvbWVySWQpKTsKCiAgaWYgKGV4aXN0aW5nKSByZXR1cm4gZXhpc3RpbmcuYmFsYW5jZVBlbmNlOwoKICBhd2FpdCBkYi5pbnNlcnQoY3VzdG9tZXJDcmVkaXRzVGFibGUpLnZhbHVlcyh7IGN1c3RvbWVySWQsIGJhbGFuY2VQZW5jZTogMCB9KTsKICByZXR1cm4gMDsKfQoKcm91dGVyLmdldCgiL2FkbWluL2N1c3RvbWVycy86aWQvY3JlZGl0cyIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBpZiAoIXJlcXVpcmVBZG1pbihyZXEsIHJlcykpIHJldHVybjsKICBjb25zdCBjdXN0b21lcklkID0gcGFyc2VJbnQoZmlyc3RTdHJpbmcocmVxLnBhcmFtcy5pZCkgPz8gIiIsIDEwKTsKICBpZiAoaXNOYU4oY3VzdG9tZXJJZCkpIHsgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogIkludmFsaWQgY3VzdG9tZXIgSUQiIH0pOyByZXR1cm47IH0KCiAgdHJ5IHsKICAgIGNvbnN0IGJhbGFuY2VQZW5jZSA9IGF3YWl0IGdldE9yQ3JlYXRlQmFsYW5jZShjdXN0b21lcklkKTsKICAgIGNvbnN0IHRyYW5zYWN0aW9ucyA9IGF3YWl0IGRiCiAgICAgIC5zZWxlY3QoKQogICAgICAuZnJvbShjdXN0b21lckNyZWRpdFRyYW5zYWN0aW9uc1RhYmxlKQogICAgICAud2hlcmUoZXEoY3VzdG9tZXJDcmVkaXRUcmFuc2FjdGlvbnNUYWJsZS5jdXN0b21lcklkLCBjdXN0b21lcklkKSkKICAgICAgLm9yZGVyQnkoZGVzYyhjdXN0b21lckNyZWRpdFRyYW5zYWN0aW9uc1RhYmxlLmNyZWF0ZWRBdCkpCiAgICAgIC5saW1pdCg1MCk7CgogICAgcmVzLmpzb24oeyBiYWxhbmNlUGVuY2UsIHRyYW5zYWN0aW9ucyB9KTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBnZXQgY3VzdG9tZXIgY3JlZGl0cyIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkZhaWxlZCB0byBnZXQgY3VzdG9tZXIgY3JlZGl0cyIgfSk7CiAgfQp9KTsKCnJvdXRlci5wb3N0KCIvYWRtaW4vY3VzdG9tZXJzLzppZC9jcmVkaXRzIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGlmICghcmVxdWlyZUFkbWluKHJlcSwgcmVzKSkgcmV0dXJuOwogIGNvbnN0IGN1c3RvbWVySWQgPSBwYXJzZUludChmaXJzdFN0cmluZyhyZXEucGFyYW1zLmlkKSA/PyAiIiwgMTApOwogIGlmIChpc05hTihjdXN0b21lcklkKSkgeyByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiSW52YWxpZCBjdXN0b21lciBJRCIgfSk7IHJldHVybjsgfQoKICBjb25zdCB7IGFtb3VudFBlbmNlLCByZWFzb24sIGFkbWluTm90ZSwgb3JkZXJJZCB9ID0gcmVxLmJvZHkgPz8ge307CgogIGlmICh0eXBlb2YgYW1vdW50UGVuY2UgIT09ICJudW1iZXIiIHx8ICFOdW1iZXIuaXNJbnRlZ2VyKGFtb3VudFBlbmNlKSB8fCBhbW91bnRQZW5jZSA9PT0gMCkgewogICAgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogImFtb3VudFBlbmNlIG11c3QgYmUgYSBub24temVybyBpbnRlZ2VyIiB9KTsgcmV0dXJuOwogIH0KICBpZiAodHlwZW9mIHJlYXNvbiAhPT0gInN0cmluZyIgfHwgcmVhc29uLnRyaW0oKS5sZW5ndGggPT09IDAgfHwgcmVhc29uLmxlbmd0aCA+IDMwMCkgewogICAgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogInJlYXNvbiBtdXN0IGJlIGEgbm9uLWVtcHR5IHN0cmluZyAobWF4IDMwMCBjaGFycykiIH0pOyByZXR1cm47CiAgfQoKICB0cnkgewogICAgY29uc3QgW2N1c3RvbWVyXSA9IGF3YWl0IGRiCiAgICAgIC5zZWxlY3QoeyBpZDogY3VzdG9tZXJzVGFibGUuaWQgfSkKICAgICAgLmZyb20oY3VzdG9tZXJzVGFibGUpCiAgICAgIC53aGVyZShlcShjdXN0b21lcnNUYWJsZS5pZCwgY3VzdG9tZXJJZCkpOwoKICAgIGlmICghY3VzdG9tZXIpIHsgcmVzLnN0YXR1cyg0MDQpLmpzb24oeyBlcnJvcjogIkN1c3RvbWVyIG5vdCBmb3VuZCIgfSk7IHJldHVybjsgfQoKICAgIGNvbnN0IGN1cnJlbnRCYWxhbmNlID0gYXdhaXQgZ2V0T3JDcmVhdGVCYWxhbmNlKGN1c3RvbWVySWQpOwogICAgY29uc3QgbmV3QmFsYW5jZSA9IGN1cnJlbnRCYWxhbmNlICsgYW1vdW50UGVuY2U7CgogICAgaWYgKG5ld0JhbGFuY2UgPCAwKSB7CiAgICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJJbnN1ZmZpY2llbnQgY3JlZGl0IGJhbGFuY2UiIH0pOwogICAgICByZXR1cm47CiAgICB9CgogICAgYXdhaXQgZGIKICAgICAgLnVwZGF0ZShjdXN0b21lckNyZWRpdHNUYWJsZSkKICAgICAgLnNldCh7IGJhbGFuY2VQZW5jZTogbmV3QmFsYW5jZSB9KQogICAgICAud2hlcmUoZXEoY3VzdG9tZXJDcmVkaXRzVGFibGUuY3VzdG9tZXJJZCwgY3VzdG9tZXJJZCkpOwoKICAgIGF3YWl0IGRiLmluc2VydChjdXN0b21lckNyZWRpdFRyYW5zYWN0aW9uc1RhYmxlKS52YWx1ZXMoewogICAgICBjdXN0b21lcklkLAogICAgICBhbW91bnRQZW5jZSwKICAgICAgdHlwZTogYW1vdW50UGVuY2UgPiAwID8gImNyZWRpdCIgOiAiZGViaXQiLAogICAgICByZWFzb24sCiAgICAgIGFkbWluTm90ZTogYWRtaW5Ob3RlID8/IG51bGwsCiAgICAgIG9yZGVySWQ6IG9yZGVySWQgPz8gbnVsbCwKICAgIH0pOwoKICAgIHJlcy5qc29uKHsgYmFsYW5jZVBlbmNlOiBuZXdCYWxhbmNlIH0pOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGFkanVzdCBjdXN0b21lciBjcmVkaXRzIik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiRmFpbGVkIHRvIGFkanVzdCBjcmVkaXRzIiB9KTsKICB9Cn0pOwoKcm91dGVyLmdldCgiL2FkbWluL2NyZWRpdHMiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgdHJ5IHsKICAgIGNvbnN0IHJvd3MgPSBhd2FpdCBkYgogICAgICAuc2VsZWN0KHsKICAgICAgICBjdXN0b21lcklkOiBjdXN0b21lckNyZWRpdHNUYWJsZS5jdXN0b21lcklkLAogICAgICAgIGJhbGFuY2VQZW5jZTogY3VzdG9tZXJDcmVkaXRzVGFibGUuYmFsYW5jZVBlbmNlLAogICAgICAgIHVwZGF0ZWRBdDogY3VzdG9tZXJDcmVkaXRzVGFibGUudXBkYXRlZEF0LAogICAgICAgIGZpcnN0TmFtZTogY3VzdG9tZXJzVGFibGUuZmlyc3ROYW1lLAogICAgICAgIGxhc3ROYW1lOiBjdXN0b21lcnNUYWJsZS5sYXN0TmFtZSwKICAgICAgICBlbWFpbDogY3VzdG9tZXJzVGFibGUuZW1haWwsCiAgICAgIH0pCiAgICAgIC5mcm9tKGN1c3RvbWVyQ3JlZGl0c1RhYmxlKQogICAgICAuaW5uZXJKb2luKGN1c3RvbWVyc1RhYmxlLCBlcShjdXN0b21lckNyZWRpdHNUYWJsZS5jdXN0b21lcklkLCBjdXN0b21lcnNUYWJsZS5pZCkpCiAgICAgIC5vcmRlckJ5KGRlc2MoY3VzdG9tZXJDcmVkaXRzVGFibGUuYmFsYW5jZVBlbmNlKSk7CgogICAgcmVzLmpzb24ocm93cyk7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gbGlzdCBjdXN0b21lciBjcmVkaXRzIik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiRmFpbGVkIHRvIGxpc3QgY3JlZGl0cyIgfSk7CiAgfQp9KTsKCmV4cG9ydCBkZWZhdWx0IHJvdXRlcjsK
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { db } from "@workspace/db";
+import {
+  customerCreditsTable,
+  customerCreditTransactionsTable,
+  customersTable,
+} from "@workspace/db/schema";
+import { eq, desc } from "drizzle-orm";
+import { firstString } from "../../lib/query";
+
+const router = Router();
+
+function requireAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+
+async function getOrCreateBalance(customerId: number): Promise<number> {
+  const [existing] = await db
+    .select()
+    .from(customerCreditsTable)
+    .where(eq(customerCreditsTable.customerId, customerId));
+
+  if (existing) return existing.balancePence;
+
+  await db.insert(customerCreditsTable).values({ customerId, balancePence: 0 });
+  return 0;
+}
+
+router.get("/admin/customers/:id/credits", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const customerId = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(customerId)) { res.status(400).json({ error: "Invalid customer ID" }); return; }
+
+  try {
+    const balancePence = await getOrCreateBalance(customerId);
+    const transactions = await db
+      .select()
+      .from(customerCreditTransactionsTable)
+      .where(eq(customerCreditTransactionsTable.customerId, customerId))
+      .orderBy(desc(customerCreditTransactionsTable.createdAt))
+      .limit(50);
+
+    res.json({ balancePence, transactions });
+  } catch (err) {
+    req.log.error({ err }, "Failed to get customer credits");
+    res.status(500).json({ error: "Failed to get customer credits" });
+  }
+});
+
+router.post("/admin/customers/:id/credits", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const customerId = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(customerId)) { res.status(400).json({ error: "Invalid customer ID" }); return; }
+
+  const { amountPence, reason, adminNote, orderId } = req.body ?? {};
+
+  if (typeof amountPence !== "number" || !Number.isInteger(amountPence) || amountPence === 0) {
+    res.status(400).json({ error: "amountPence must be a non-zero integer" }); return;
+  }
+  if (typeof reason !== "string" || reason.trim().length === 0 || reason.length > 300) {
+    res.status(400).json({ error: "reason must be a non-empty string (max 300 chars)" }); return;
+  }
+
+  try {
+    const [customer] = await db
+      .select({ id: customersTable.id })
+      .from(customersTable)
+      .where(eq(customersTable.id, customerId));
+
+    if (!customer) { res.status(404).json({ error: "Customer not found" }); return; }
+
+    const currentBalance = await getOrCreateBalance(customerId);
+    const newBalance = currentBalance + amountPence;
+
+    if (newBalance < 0) {
+      res.status(400).json({ error: "Insufficient credit balance" });
+      return;
+    }
+
+    await db
+      .update(customerCreditsTable)
+      .set({ balancePence: newBalance })
+      .where(eq(customerCreditsTable.customerId, customerId));
+
+    await db.insert(customerCreditTransactionsTable).values({
+      customerId,
+      amountPence,
+      type: amountPence > 0 ? "credit" : "debit",
+      reason,
+      adminNote: adminNote ?? null,
+      orderId: orderId ?? null,
+    });
+
+    res.json({ balancePence: newBalance });
+  } catch (err) {
+    req.log.error({ err }, "Failed to adjust customer credits");
+    res.status(500).json({ error: "Failed to adjust credits" });
+  }
+});
+
+router.get("/admin/credits", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const rows = await db
+      .select({
+        customerId: customerCreditsTable.customerId,
+        balancePence: customerCreditsTable.balancePence,
+        updatedAt: customerCreditsTable.updatedAt,
+        firstName: customersTable.firstName,
+        lastName: customersTable.lastName,
+        email: customersTable.email,
+      })
+      .from(customerCreditsTable)
+      .innerJoin(customersTable, eq(customerCreditsTable.customerId, customersTable.id))
+      .orderBy(desc(customerCreditsTable.balancePence));
+
+    res.json(rows);
+  } catch (err) {
+    req.log.error({ err }, "Failed to list customer credits");
+    res.status(500).json({ error: "Failed to list credits" });
+  }
+});
+
+export default router;

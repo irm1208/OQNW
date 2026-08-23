@@ -1,1 +1,49 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgc2VuZENvbnRhY3RGb3JtU3VibWlzc2lvbiB9IGZyb20gIi4uL2xpYi9lbWFpbCI7CmltcG9ydCB7IGxvZ2dlciB9IGZyb20gIi4uL2xpYi9sb2dnZXIiOwoKY29uc3Qgcm91dGVyID0gUm91dGVyKCk7CgovLyBQT1NUIC9jb250YWN0CnJvdXRlci5wb3N0KCIvY29udGFjdCIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBjb25zdCB7IG5hbWUsIGVtYWlsLCBzdWJqZWN0LCBtZXNzYWdlIH0gPSByZXEuYm9keSBhcyB7CiAgICBuYW1lPzogdW5rbm93bjsKICAgIGVtYWlsPzogdW5rbm93bjsKICAgIHN1YmplY3Q/OiB1bmtub3duOwogICAgbWVzc2FnZT86IHVua25vd247CiAgfTsKCiAgaWYgKHR5cGVvZiBuYW1lICE9PSAic3RyaW5nIiB8fCAhbmFtZS50cmltKCkpIHsKICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJOYW1lIGlzIHJlcXVpcmVkIiB9KTsKICAgIHJldHVybjsKICB9CiAgaWYgKHR5cGVvZiBlbWFpbCAhPT0gInN0cmluZyIgfHwgIWVtYWlsLmluY2x1ZGVzKCJAIikpIHsKICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJBIHZhbGlkIGVtYWlsIGFkZHJlc3MgaXMgcmVxdWlyZWQiIH0pOwogICAgcmV0dXJuOwogIH0KICBpZiAodHlwZW9mIHN1YmplY3QgIT09ICJzdHJpbmciIHx8ICFzdWJqZWN0LnRyaW0oKSkgewogICAgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogIlN1YmplY3QgaXMgcmVxdWlyZWQiIH0pOwogICAgcmV0dXJuOwogIH0KICBpZiAodHlwZW9mIG1lc3NhZ2UgIT09ICJzdHJpbmciIHx8IG1lc3NhZ2UudHJpbSgpLmxlbmd0aCA8IDEwKSB7CiAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiTWVzc2FnZSBtdXN0IGJlIGF0IGxlYXN0IDEwIGNoYXJhY3RlcnMiIH0pOwogICAgcmV0dXJuOwogIH0KCiAgdHJ5IHsKICAgIGF3YWl0IHNlbmRDb250YWN0Rm9ybVN1Ym1pc3Npb24oewogICAgICBuYW1lOiBuYW1lLnRyaW0oKS5zbGljZSgwLCAyMDApLAogICAgICBlbWFpbDogZW1haWwudHJpbSgpLnNsaWNlKDAsIDIwMCksCiAgICAgIHN1YmplY3Q6IHN1YmplY3QudHJpbSgpLnNsaWNlKDAsIDIwMCksCiAgICAgIG1lc3NhZ2U6IG1lc3NhZ2UudHJpbSgpLnNsaWNlKDAsIDUwMDApLAogICAgfSk7CiAgICBsb2dnZXIuaW5mbyh7IGVtYWlsIH0sICJDb250YWN0IGZvcm0gc3VibWl0dGVkIik7CiAgICByZXMuanNvbih7IHN1Y2Nlc3M6IHRydWUsIG1lc3NhZ2U6ICJZb3VyIG1lc3NhZ2UgaGFzIGJlZW4gc2VudC4gV2UnbGwgZ2V0IGJhY2sgdG8geW91IHdpdGhpbiAxIGJ1c2luZXNzIGRheS4iIH0pOwogIH0gY2F0Y2ggKGVycikgewogICAgbG9nZ2VyLmVycm9yKHsgZXJyIH0sICJDb250YWN0IGZvcm0gc3VibWlzc2lvbiBlcnJvciIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkZhaWxlZCB0byBzZW5kIHlvdXIgbWVzc2FnZS4gUGxlYXNlIHRyeSBhZ2FpbiBvciBlbWFpbCB1cyBkaXJlY3RseS4iIH0pOwogIH0KfSk7CgpleHBvcnQgZGVmYXVsdCByb3V0ZXI7Cg==
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { sendContactFormSubmission } from "../lib/email";
+import { logger } from "../lib/logger";
+
+const router = Router();
+
+// POST /contact
+router.post("/contact", async (req: Request, res: Response): Promise<void> => {
+  const { name, email, subject, message } = req.body as {
+    name?: unknown;
+    email?: unknown;
+    subject?: unknown;
+    message?: unknown;
+  };
+
+  if (typeof name !== "string" || !name.trim()) {
+    res.status(400).json({ error: "Name is required" });
+    return;
+  }
+  if (typeof email !== "string" || !email.includes("@")) {
+    res.status(400).json({ error: "A valid email address is required" });
+    return;
+  }
+  if (typeof subject !== "string" || !subject.trim()) {
+    res.status(400).json({ error: "Subject is required" });
+    return;
+  }
+  if (typeof message !== "string" || message.trim().length < 10) {
+    res.status(400).json({ error: "Message must be at least 10 characters" });
+    return;
+  }
+
+  try {
+    await sendContactFormSubmission({
+      name: name.trim().slice(0, 200),
+      email: email.trim().slice(0, 200),
+      subject: subject.trim().slice(0, 200),
+      message: message.trim().slice(0, 5000),
+    });
+    logger.info({ email }, "Contact form submitted");
+    res.json({ success: true, message: "Your message has been sent. We'll get back to you within 1 business day." });
+  } catch (err) {
+    logger.error({ err }, "Contact form submission error");
+    res.status(500).json({ error: "Failed to send your message. Please try again or email us directly." });
+  }
+});
+
+export default router;

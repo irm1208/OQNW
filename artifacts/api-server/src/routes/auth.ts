@@ -1,1 +1,455 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IGNyeXB0byBmcm9tICJjcnlwdG8iOwppbXBvcnQgYmNyeXB0IGZyb20gImJjcnlwdGpzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgY3VzdG9tZXJzVGFibGUsIGxveWFsdHlUcmFuc2FjdGlvbnNUYWJsZSB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyBlcSwgc3FsIH0gZnJvbSAiZHJpenpsZS1vcm0iOwppbXBvcnQgeyBzZW5kUGFzc3dvcmRSZXNldCwgc2VuZEFjY291bnRDcmVhdGVkRW1haWwgfSBmcm9tICIuLi9saWIvZW1haWwiOwppbXBvcnQgeyBnZXRDbGllbnRJcCwgbG9va3VwQ291bnRyeSB9IGZyb20gIi4uL2xpYi9nZW9pcCI7Cgpjb25zdCByb3V0ZXIgPSBSb3V0ZXIoKTsKCmNvbnN0IFNFU1NJT05fU0VDUkVUID0KICBwcm9jZXNzLmVudi5TRVNTSU9OX1NFQ1JFVCA/PwogIHByb2Nlc3MuZW52LkFETUlOX1BBU1NXT1JEID8/CiAgIm9tbmlxdXJlLWN1c3Qtc2Vzc2lvbi1mYWxsYmFjay1zZWNyZXQiOwpjb25zdCBDT09LSUVfTkFNRSA9ICJjdXN0b21lcl9zZXNzaW9uIjsKY29uc3QgQ09PS0lFX01BWF9BR0UgPSAzMCAqIDI0ICogNjAgKiA2MCAqIDEwMDA7CgpmdW5jdGlvbiBzaWduVG9rZW4oY3VzdG9tZXJJZDogbnVtYmVyKTogc3RyaW5nIHsKICBjb25zdCBwYXlsb2FkID0gU3RyaW5nKGN1c3RvbWVySWQpOwogIGNvbnN0IHNpZyA9IGNyeXB0bwogICAgLmNyZWF0ZUhtYWMoInNoYTI1NiIsIFNFU1NJT05fU0VDUkVUKQogICAgLnVwZGF0ZShwYXlsb2FkKQogICAgLmRpZ2VzdCgiaGV4Iik7CiAgcmV0dXJuIGAke3BheWxvYWR9LiR7c2lnfWA7Cn0KCmZ1bmN0aW9uIHZlcmlmeVRva2VuKHRva2VuOiBzdHJpbmcpOiBudW1iZXIgfCBudWxsIHsKICBjb25zdCBkb3QgPSB0b2tlbi5sYXN0SW5kZXhPZigiLiIpOwogIGlmIChkb3QgPT09IC0xKSByZXR1cm4gbnVsbDsKICBjb25zdCBwYXlsb2FkID0gdG9rZW4uc2xpY2UoMCwgZG90KTsKICBjb25zdCBzaWcgPSB0b2tlbi5zbGljZShkb3QgKyAxKTsKICBjb25zdCBleHBlY3RlZCA9IGNyeXB0bwogICAgLmNyZWF0ZUhtYWMoInNoYTI1NiIsIFNFU1NJT05fU0VDUkVUKQogICAgLnVwZGF0ZShwYXlsb2FkKQogICAgLmRpZ2VzdCgiaGV4Iik7CiAgaWYgKHNpZyAhPT0gZXhwZWN0ZWQpIHJldHVybiBudWxsOwogIGNvbnN0IGlkID0gcGFyc2VJbnQocGF5bG9hZCwgMTApOwogIHJldHVybiBpc05hTihpZCkgPyBudWxsIDogaWQ7Cn0KCnJvdXRlci5wb3N0KCIvYXV0aC9yZWdpc3RlciIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBjb25zdCB7IGVtYWlsLCBwYXNzd29yZCwgZmlyc3ROYW1lLCBsYXN0TmFtZSwgaW5zdGl0dXRpb24sIHJlZmVycmVkQnkgfSA9IHJlcS5ib2R5IGFzIHsKICAgIGVtYWlsOiB1bmtub3duOwogICAgcGFzc3dvcmQ6IHVua25vd247CiAgICBmaXJzdE5hbWU6IHVua25vd247CiAgICBsYXN0TmFtZTogdW5rbm93bjsKICAgIGluc3RpdHV0aW9uPzogdW5rbm93bjsKICAgIHJlZmVycmVkQnk/OiB1bmtub3duOwogIH07CgogIGlmICgKICAgIHR5cGVvZiBlbWFpbCAhPT0gInN0cmluZyIgfHwKICAgICFlbWFpbC5pbmNsdWRlcygiQCIpIHx8CiAgICB0eXBlb2YgcGFzc3dvcmQgIT09ICJzdHJpbmciIHx8CiAgICBwYXNzd29yZC5sZW5ndGggPCA4IHx8CiAgICB0eXBlb2YgZmlyc3ROYW1lICE9PSAic3RyaW5nIiB8fAogICAgIWZpcnN0TmFtZS50cmltKCkgfHwKICAgIHR5cGVvZiBsYXN0TmFtZSAhPT0gInN0cmluZyIgfHwKICAgICFsYXN0TmFtZS50cmltKCkKICApIHsKICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJJbnZhbGlkIHJlZ2lzdHJhdGlvbiBkYXRhIiB9KTsKICAgIHJldHVybjsKICB9CgogIHRyeSB7CiAgICBjb25zdCBbZXhpc3RpbmddID0gYXdhaXQgZGIKICAgICAgLnNlbGVjdCgpCiAgICAgIC5mcm9tKGN1c3RvbWVyc1RhYmxlKQogICAgICAud2hlcmUoZXEoY3VzdG9tZXJzVGFibGUuZW1haWwsIGVtYWlsLnRvTG93ZXJDYXNlKCkpKQogICAgICAubGltaXQoMSk7CgogICAgaWYgKGV4aXN0aW5nKSB7CiAgICAgIGlmIChleGlzdGluZy5wYXNzd29yZEhhc2gpIHsKICAgICAgICAvLyBSZWFsIGFjY291bnQgYWxyZWFkeSBleGlzdHMg4oCUIGNhbm5vdCByZWdpc3RlciBhZ2FpbgogICAgICAgIHJlcy5zdGF0dXMoNDA5KS5qc29uKHsgZXJyb3I6ICJBbiBhY2NvdW50IHdpdGggdGhpcyBlbWFpbCBhbHJlYWR5IGV4aXN0cyIgfSk7CiAgICAgICAgcmV0dXJuOwogICAgICB9CgogICAgICAvLyBHdWVzdCBhY2NvdW50IChubyBwYXNzd29yZCkg4oCUIHVwZ3JhZGUgaXQgd2l0aCB0aGUgbmV3IGNyZWRlbnRpYWxzCiAgICAgIGNvbnN0IHBhc3N3b3JkSGFzaCA9IGF3YWl0IGJjcnlwdC5oYXNoKHBhc3N3b3JkLCAxMik7CiAgICAgIGNvbnN0IFt1cGdyYWRlZF0gPSBhd2FpdCBkYgogICAgICAgIC51cGRhdGUoY3VzdG9tZXJzVGFibGUpCiAgICAgICAgLnNldCh7CiAgICAgICAgICBmaXJzdE5hbWU6IGZpcnN0TmFtZS50cmltKCksCiAgICAgICAgICBsYXN0TmFtZTogbGFzdE5hbWUudHJpbSgpLAogICAgICAgICAgcGFzc3dvcmRIYXNoLAogICAgICAgIH0pCiAgICAgICAgLndoZXJlKGVxKGN1c3RvbWVyc1RhYmxlLmlkLCBleGlzdGluZy5pZCkpCiAgICAgICAgLnJldHVybmluZygpOwoKICAgICAgY29uc3QgdG9rZW4gPSBzaWduVG9rZW4odXBncmFkZWQuaWQpOwogICAgICByZXMuY29va2llKENPT0tJRV9OQU1FLCB0b2tlbiwgewogICAgICAgIGh0dHBPbmx5OiB0cnVlLAogICAgICAgIHNhbWVTaXRlOiAibGF4IiwKICAgICAgICBtYXhBZ2U6IENPT0tJRV9NQVhfQUdFLAogICAgICAgIHBhdGg6ICIvIiwKICAgICAgfSk7CgogICAgICByZXEubG9nLmluZm8oeyBjdXN0b21lcklkOiB1cGdyYWRlZC5pZCB9LCAiR3Vlc3QgYWNjb3VudCB1cGdyYWRlZCB0byBmdWxsIGFjY291bnQiKTsKICAgICAgc2VuZEFjY291bnRDcmVhdGVkRW1haWwoewogICAgICAgIGN1c3RvbWVyTmFtZTogYCR7dXBncmFkZWQuZmlyc3ROYW1lfSAke3VwZ3JhZGVkLmxhc3ROYW1lfWAsCiAgICAgICAgY3VzdG9tZXJFbWFpbDogdXBncmFkZWQuZW1haWwsCiAgICAgIH0pLmNhdGNoKChlcnIpID0+IHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBzZW5kIGFjY291bnQgY3JlYXRlZCBlbWFpbCAoZ3Vlc3QgdXBncmFkZSkiKSk7CiAgICAgIGNvbnN0IGlwVXBncmFkZSA9IGdldENsaWVudElwKHJlcSk7CiAgICAgIGlmIChpcFVwZ3JhZGUpIHsKICAgICAgICBsb29rdXBDb3VudHJ5KGlwVXBncmFkZSkudGhlbigoY2MpID0+IHsKICAgICAgICAgIGRiLnVwZGF0ZShjdXN0b21lcnNUYWJsZSkuc2V0KHsKICAgICAgICAgICAgbGFzdFNlZW5JcDogaXBVcGdyYWRlLAogICAgICAgICAgICAuLi4oY2MgPyB7IGxhc3RTZWVuQ291bnRyeTogY2MgfSA6IHt9KSwKICAgICAgICAgICAga25vd25JcHM6IHNxbGAoU0VMRUNUIGFycmF5X2FnZyhESVNUSU5DVCB4KSBGUk9NIHVubmVzdChhcnJheV9hcHBlbmQoQ09BTEVTQ0Uoa25vd25faXBzLCBBUlJBWVtdOjp0ZXh0W10pLCAke2lwVXBncmFkZX06OnRleHQpKSBBUyB4KWAsCiAgICAgICAgICB9KS53aGVyZShlcShjdXN0b21lcnNUYWJsZS5pZCwgdXBncmFkZWQuaWQpKS5jYXRjaCgoKSA9PiB7fSk7CiAgICAgICAgfSkuY2F0Y2goKCkgPT4ge30pOwogICAgICB9CiAgICAgIHJlcy5zdGF0dXMoMjAwKS5qc29uKHsKICAgICAgICBpZDogdXBncmFkZWQuaWQsCiAgICAgICAgZW1haWw6IHVwZ3JhZGVkLmVtYWlsLAogICAgICAgIGZpcnN0TmFtZTogdXBncmFkZWQuZmlyc3ROYW1lLAogICAgICAgIGxhc3ROYW1lOiB1cGdyYWRlZC5sYXN0TmFtZSwKICAgICAgfSk7CiAgICAgIHJldHVybjsKICAgIH0KCiAgICBjb25zdCBwYXNzd29yZEhhc2ggPSBhd2FpdCBiY3J5cHQuaGFzaChwYXNzd29yZCwgMTIpOwoKICAgIGNvbnN0IHJlZkJ5UmF3ID0gdHlwZW9mIHJlZmVycmVkQnkgPT09ICJzdHJpbmciICYmIHJlZmVycmVkQnkudHJpbSgpID8gcmVmZXJyZWRCeS50cmltKCkudG9VcHBlckNhc2UoKSA6IG51bGw7CgogICAgLy8gVmFsaWRhdGUgcmVmZXJyYWwgY29kZSBhdCByZWdpc3RyYXRpb24gdGltZSBhbmQgcnVuIElQLWJhc2VkIGFidXNlIGNoZWNrcwogICAgbGV0IHJlZkJ5ID0gcmVmQnlSYXc7CiAgICBpZiAocmVmQnkpIHsKICAgICAgdHJ5IHsKICAgICAgICBjb25zdCBpcEF0UmVnID0gZ2V0Q2xpZW50SXAocmVxKTsKCiAgICAgICAgLy8gMS4gQ29uZmlybSB0aGUgcmVmZXJyYWwgY29kZSBhY3R1YWxseSBleGlzdHMKICAgICAgICBjb25zdCBbY29kZU93bmVyXSA9IGF3YWl0IGRiCiAgICAgICAgICAuc2VsZWN0KHsgaWQ6IGN1c3RvbWVyc1RhYmxlLmlkLCBrbm93bklwczogY3VzdG9tZXJzVGFibGUua25vd25JcHMsIGxhc3RTZWVuSXA6IGN1c3RvbWVyc1RhYmxlLmxhc3RTZWVuSXAgfSkKICAgICAgICAgIC5mcm9tKGN1c3RvbWVyc1RhYmxlKQogICAgICAgICAgLndoZXJlKGVxKGN1c3RvbWVyc1RhYmxlLnJlZmVycmFsQ29kZSwgcmVmQnkpKQogICAgICAgICAgLmxpbWl0KDEpOwoKICAgICAgICBpZiAoIWNvZGVPd25lcikgewogICAgICAgICAgLy8gUmVmZXJyYWwgY29kZSBkb2Vzbid0IGV4aXN0IOKAlCByZWplY3Qgc2lsZW50bHkKICAgICAgICAgIHJlZkJ5ID0gbnVsbDsKICAgICAgICB9IGVsc2UgaWYgKGlwQXRSZWcpIHsKICAgICAgICAgIC8vIDIuIEJsb2NrIGlmIHJlZ2lzdGVyaW5nIElQIG1hdGNoZXMgYW55IElQIG9uIHRoZSByZWZlcnJlcidzIGFjY291bnQgKHNlbGYtcmVmZXJyYWwpCiAgICAgICAgICBjb25zdCByZWZlcnJlcklwczogc3RyaW5nW10gPSBjb2RlT3duZXIua25vd25JcHMgPz8gKGNvZGVPd25lci5sYXN0U2VlbklwID8gW2NvZGVPd25lci5sYXN0U2VlbklwXSA6IFtdKTsKICAgICAgICAgIGlmIChyZWZlcnJlcklwcy5pbmNsdWRlcyhpcEF0UmVnKSkgewogICAgICAgICAgICByZWZCeSA9IG51bGw7IC8vIFNhbWUgZGV2aWNlL0lQIGFzIHRoZSByZWZlcnJlciDigJQgc2VsZi1yZWZlcnJhbAogICAgICAgICAgfSBlbHNlIHsKICAgICAgICAgICAgLy8gMy4gQmxvY2sgaWYgcmVnaXN0ZXJpbmcgSVAgaXMgYWxyZWFkeSBhc3NvY2lhdGVkIHdpdGggYW55IG90aGVyIGFjY291bnQgKG11bHRpLWFjY291bnQpCiAgICAgICAgICAgIGNvbnN0IFtpcENvbmZsaWN0XSA9IGF3YWl0IGRiCiAgICAgICAgICAgICAgLnNlbGVjdCh7IGlkOiBjdXN0b21lcnNUYWJsZS5pZCB9KQogICAgICAgICAgICAgIC5mcm9tKGN1c3RvbWVyc1RhYmxlKQogICAgICAgICAgICAgIC53aGVyZShzcWxgJHtpcEF0UmVnfSA9IEFOWShDT0FMRVNDRSgke2N1c3RvbWVyc1RhYmxlLmtub3duSXBzfSwgQVJSQVlbXTo6dGV4dFtdKSlgKQogICAgICAgICAgICAgIC5saW1pdCgxKTsKICAgICAgICAgICAgaWYgKGlwQ29uZmxpY3QpIHsKICAgICAgICAgICAgICByZWZCeSA9IG51bGw7IC8vIElQIGFscmVhZHkgc2VlbiBvbiBhbiBleGlzdGluZyBhY2NvdW50CiAgICAgICAgICAgIH0KICAgICAgICAgIH0KICAgICAgICB9CiAgICAgIH0gY2F0Y2ggewogICAgICAgIC8vIFZhbGlkYXRpb24gZmFpbGVkIOKAlCBwcm9jZWVkIHdpdGhvdXQgcmVmZXJyYWwgcmF0aGVyIHRoYW4gYmxvY2tpbmcgcmVnaXN0cmF0aW9uCiAgICAgICAgcmVmQnkgPSBudWxsOwogICAgICB9CiAgICB9CgogICAgY29uc3QgW2N1c3RvbWVyXSA9IGF3YWl0IGRiCiAgICAgIC5pbnNlcnQoY3VzdG9tZXJzVGFibGUpCiAgICAgIC52YWx1ZXMoewogICAgICAgIGVtYWlsOiBlbWFpbC50b0xvd2VyQ2FzZSgpLAogICAgICAgIGZpcnN0TmFtZTogZmlyc3ROYW1lLnRyaW0oKSwKICAgICAgICBsYXN0TmFtZTogbGFzdE5hbWUudHJpbSgpLAogICAgICAgIHBhc3N3b3JkSGFzaCwKICAgICAgICB0b3RhbE9yZGVyczogMCwKICAgICAgICB0b3RhbFNwZW5kR2JwOiAiMCIsCiAgICAgICAgcmVmZXJyZWRCeTogcmVmQnksCiAgICAgIH0pCiAgICAgIC5yZXR1cm5pbmcoKTsKCiAgICBkYi5pbnNlcnQobG95YWx0eVRyYW5zYWN0aW9uc1RhYmxlKS52YWx1ZXMoewogICAgICBjdXN0b21lcklkOiBjdXN0b21lci5pZCwKICAgICAgdHlwZTogImVhcm5lZCIsCiAgICAgIHBvaW50czogNTAsCiAgICAgIGRlc2NyaXB0aW9uOiAiV2VsY29tZSBib251czogYWNjb3VudCBjcmVhdGVkIiwKICAgIH0pLmNhdGNoKChlcnIpID0+IHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBhd2FyZCB3ZWxjb21lIGJvbnVzIHBvaW50cyIpKTsKCiAgICBjb25zdCBnZW5lcmF0ZWRDb2RlID0gYCR7Zmlyc3ROYW1lLnRyaW0oKS5zbGljZSgwLCAzKS50b1VwcGVyQ2FzZSgpfSR7U3RyaW5nKGN1c3RvbWVyLmlkKS5wYWRTdGFydCg0LCAiMCIpfWA7CiAgICBjb25zdCBpcFJlZyA9IGdldENsaWVudElwKHJlcSk7CiAgICBsb29rdXBDb3VudHJ5KGlwUmVnID8/ICIiKS50aGVuKChjYykgPT4gewogICAgICBkYi51cGRhdGUoY3VzdG9tZXJzVGFibGUpLnNldCh7CiAgICAgICAgcmVmZXJyYWxDb2RlOiBnZW5lcmF0ZWRDb2RlLAogICAgICAgIC4uLihpcFJlZyA/IHsgbGFzdFNlZW5JcDogaXBSZWcgfSA6IHt9KSwKICAgICAgICAuLi4oY2MgPyB7IGxhc3RTZWVuQ291bnRyeTogY2MgfSA6IHt9KSwKICAgICAgICAuLi4oaXBSZWcgPyB7IGtub3duSXBzOiBzcWxgKFNFTEVDVCBhcnJheV9hZ2coRElTVElOQ1QgeCkgRlJPTSB1bm5lc3QoYXJyYXlfYXBwZW5kKENPQUxFU0NFKGtub3duX2lwcywgQVJSQVlbXTo6dGV4dFtdKSwgJHtpcFJlZ306OnRleHQpKSBBUyB4KWAgfSA6IHt9KSwKICAgICAgfSkud2hlcmUoZXEoY3VzdG9tZXJzVGFibGUuaWQsIGN1c3RvbWVyLmlkKSkuY2F0Y2goKCkgPT4ge30pOwogICAgfSkuY2F0Y2goKCkgPT4gewogICAgICBkYi51cGRhdGUoY3VzdG9tZXJzVGFibGUpLnNldCh7IHJlZmVycmFsQ29kZTogZ2VuZXJhdGVkQ29kZSB9KS53aGVyZShlcShjdXN0b21lcnNUYWJsZS5pZCwgY3VzdG9tZXIuaWQpKS5jYXRjaCgoKSA9PiB7fSk7CiAgICB9KTsKCiAgICBjb25zdCB0b2tlbiA9IHNpZ25Ub2tlbihjdXN0b21lci5pZCk7CiAgICByZXMuY29va2llKENPT0tJRV9OQU1FLCB0b2tlbiwgewogICAgICBodHRwT25seTogdHJ1ZSwKICAgICAgc2FtZVNpdGU6ICJsYXgiLAogICAgICBtYXhBZ2U6IENPT0tJRV9NQVhfQUdFLAogICAgICBwYXRoOiAiLyIsCiAgICB9KTsKCiAgICByZXMuc3RhdHVzKDIwMSkuanNvbih7CiAgICAgIGlkOiBjdXN0b21lci5pZCwKICAgICAgZW1haWw6IGN1c3RvbWVyLmVtYWlsLAogICAgICBmaXJzdE5hbWU6IGN1c3RvbWVyLmZpcnN0TmFtZSwKICAgICAgbGFzdE5hbWU6IGN1c3RvbWVyLmxhc3ROYW1lLAogICAgfSk7CgogICAgLy8gR2VuZXJhdGUgZW1haWwgdmVyaWZpY2F0aW9uIHRva2VuIGFuZCBzZW5kIHdlbGNvbWUgZW1haWwKICAgIGNvbnN0IHZlcmlmaWNhdGlvblRva2VuID0gY3J5cHRvLnJhbmRvbUJ5dGVzKDMyKS50b1N0cmluZygiaGV4Iik7CiAgICBjb25zdCB2ZXJpZmljYXRpb25FeHBpcmVzQXQgPSBuZXcgRGF0ZShEYXRlLm5vdygpICsgMjQgKiA2MCAqIDYwICogMTAwMCk7CiAgICBhd2FpdCBkYgogICAgICAudXBkYXRlKGN1c3RvbWVyc1RhYmxlKQogICAgICAuc2V0KHsgdmVyaWZpY2F0aW9uVG9rZW4sIHZlcmlmaWNhdGlvblRva2VuRXhwaXJlc0F0OiB2ZXJpZmljYXRpb25FeHBpcmVzQXQgfSkKICAgICAgLndoZXJlKGVxKGN1c3RvbWVyc1RhYmxlLmlkLCBjdXN0b21lci5pZCkpCiAgICAgIC5jYXRjaCgoKSA9PiB7fSk7CgogICAgY29uc3Qgc2l0ZVVybCA9ICgKICAgICAgcHJvY2Vzcy5lbnYuU0lURV9VUkwgfHwKICAgICAgKHByb2Nlc3MuZW52LlJFUExJVF9ERVZfRE9NQUlOID8gYGh0dHBzOi8vJHtwcm9jZXNzLmVudi5SRVBMSVRfREVWX0RPTUFJTn1gIDogImh0dHBzOi8vb21uaXF1cmUuY29tIikKICAgICkucmVwbGFjZSgvXC8kLywgIiIpOwogICAgY29uc3QgdmVyaWZ5VXJsID0gYCR7c2l0ZVVybH0vdmVyaWZ5LWVtYWlsP3Rva2VuPSR7dmVyaWZpY2F0aW9uVG9rZW59YDsKICAgIGNvbnN0IHJlZmVycmFsQ29kZSA9IGAke2ZpcnN0TmFtZS50cmltKCkuc2xpY2UoMCwgMykudG9VcHBlckNhc2UoKX0ke1N0cmluZyhjdXN0b21lci5pZCkucGFkU3RhcnQoNCwgIjAiKX1gOwoKICAgIHNlbmRBY2NvdW50Q3JlYXRlZEVtYWlsKHsKICAgICAgY3VzdG9tZXJOYW1lOiBgJHtjdXN0b21lci5maXJzdE5hbWV9ICR7Y3VzdG9tZXIubGFzdE5hbWV9YCwKICAgICAgY3VzdG9tZXJFbWFpbDogY3VzdG9tZXIuZW1haWwsCiAgICAgIHJlZmVycmFsQ29kZSwKICAgICAgdmVyaWZ5VXJsLAogICAgfSkuY2F0Y2goKGVycikgPT4gcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIHNlbmQgYWNjb3VudCBjcmVhdGVkIGVtYWlsIikpOwoKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byByZWdpc3RlciBjdXN0b21lciIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCnJvdXRlci5wb3N0KCIvYXV0aC9sb2dpbiIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBjb25zdCB7IGVtYWlsLCBwYXNzd29yZCB9ID0gcmVxLmJvZHkgYXMgeyBlbWFpbDogdW5rbm93bjsgcGFzc3dvcmQ6IHVua25vd24gfTsKCiAgaWYgKHR5cGVvZiBlbWFpbCAhPT0gInN0cmluZyIgfHwgdHlwZW9mIHBhc3N3b3JkICE9PSAic3RyaW5nIikgewogICAgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogIkVtYWlsIGFuZCBwYXNzd29yZCBhcmUgcmVxdWlyZWQiIH0pOwogICAgcmV0dXJuOwogIH0KCiAgdHJ5IHsKICAgIGNvbnN0IFtjdXN0b21lcl0gPSBhd2FpdCBkYgogICAgICAuc2VsZWN0KCkKICAgICAgLmZyb20oY3VzdG9tZXJzVGFibGUpCiAgICAgIC53aGVyZShlcShjdXN0b21lcnNUYWJsZS5lbWFpbCwgZW1haWwudG9Mb3dlckNhc2UoKSkpCiAgICAgIC5saW1pdCgxKTsKCiAgICBpZiAoIWN1c3RvbWVyIHx8ICFjdXN0b21lci5wYXNzd29yZEhhc2gpIHsKICAgICAgcmVzLnN0YXR1cyg0MDEpLmpzb24oeyBlcnJvcjogIkludmFsaWQgZW1haWwgb3IgcGFzc3dvcmQiIH0pOwogICAgICByZXR1cm47CiAgICB9CgogICAgY29uc3QgbWF0Y2ggPSBhd2FpdCBiY3J5cHQuY29tcGFyZShwYXNzd29yZCwgY3VzdG9tZXIucGFzc3dvcmRIYXNoKTsKICAgIGlmICghbWF0Y2gpIHsKICAgICAgcmVzLnN0YXR1cyg0MDEpLmpzb24oeyBlcnJvcjogIkludmFsaWQgZW1haWwgb3IgcGFzc3dvcmQiIH0pOwogICAgICByZXR1cm47CiAgICB9CgogICAgY29uc3QgdG9rZW4gPSBzaWduVG9rZW4oY3VzdG9tZXIuaWQpOwogICAgcmVzLmNvb2tpZShDT09LSUVfTkFNRSwgdG9rZW4sIHsKICAgICAgaHR0cE9ubHk6IHRydWUsCiAgICAgIHNhbWVTaXRlOiAibGF4IiwKICAgICAgbWF4QWdlOiBDT09LSUVfTUFYX0FHRSwKICAgICAgcGF0aDogIi8iLAogICAgfSk7CgogICAgY29uc3QgaXBMb2dpbiA9IGdldENsaWVudElwKHJlcSk7CiAgICBpZiAoaXBMb2dpbikgewogICAgICBsb29rdXBDb3VudHJ5KGlwTG9naW4pLnRoZW4oKGNjKSA9PiB7CiAgICAgICAgZGIudXBkYXRlKGN1c3RvbWVyc1RhYmxlKS5zZXQoewogICAgICAgICAgbGFzdFNlZW5JcDogaXBMb2dpbiwKICAgICAgICAgIC4uLihjYyA/IHsgbGFzdFNlZW5Db3VudHJ5OiBjYyB9IDoge30pLAogICAgICAgICAga25vd25JcHM6IHNxbGAoU0VMRUNUIGFycmF5X2FnZyhESVNUSU5DVCB4KSBGUk9NIHVubmVzdChhcnJheV9hcHBlbmQoQ09BTEVTQ0Uoa25vd25faXBzLCBBUlJBWVtdOjp0ZXh0W10pLCAke2lwTG9naW59Ojp0ZXh0KSkgQVMgeClgLAogICAgICAgIH0pLndoZXJlKGVxKGN1c3RvbWVyc1RhYmxlLmlkLCBjdXN0b21lci5pZCkpLmNhdGNoKCgpID0+IHt9KTsKICAgICAgfSkuY2F0Y2goKCkgPT4ge30pOwogICAgfQoKICAgIHJlcy5zdGF0dXMoMjAwKS5qc29uKHsKICAgICAgaWQ6IGN1c3RvbWVyLmlkLAogICAgICBlbWFpbDogY3VzdG9tZXIuZW1haWwsCiAgICAgIGZpcnN0TmFtZTogY3VzdG9tZXIuZmlyc3ROYW1lLAogICAgICBsYXN0TmFtZTogY3VzdG9tZXIubGFzdE5hbWUsCiAgICB9KTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBzaWduIGluIGN1c3RvbWVyIik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKcm91dGVyLnBvc3QoIi9hdXRoL2ZvcmdvdC1wYXNzd29yZCIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBjb25zdCB7IGVtYWlsIH0gPSByZXEuYm9keSBhcyB7IGVtYWlsOiB1bmtub3duIH07CiAgaWYgKHR5cGVvZiBlbWFpbCAhPT0gInN0cmluZyIgfHwgIWVtYWlsLmluY2x1ZGVzKCJAIikpIHsKICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJWYWxpZCBlbWFpbCBhZGRyZXNzIGlzIHJlcXVpcmVkIiB9KTsKICAgIHJldHVybjsKICB9CiAgdHJ5IHsKICAgIGNvbnN0IFtjdXN0b21lcl0gPSBhd2FpdCBkYgogICAgICAuc2VsZWN0KCkKICAgICAgLmZyb20oY3VzdG9tZXJzVGFibGUpCiAgICAgIC53aGVyZShlcShjdXN0b21lcnNUYWJsZS5lbWFpbCwgZW1haWwudG9Mb3dlckNhc2UoKSkpCiAgICAgIC5saW1pdCgxKTsKCiAgICBpZiAoY3VzdG9tZXIgJiYgY3VzdG9tZXIucGFzc3dvcmRIYXNoKSB7CiAgICAgIGNvbnN0IHRva2VuID0gY3J5cHRvLnJhbmRvbUJ5dGVzKDMyKS50b1N0cmluZygiaGV4Iik7CiAgICAgIGNvbnN0IGV4cGlyZXNBdCA9IG5ldyBEYXRlKERhdGUubm93KCkgKyA2MCAqIDYwICogMTAwMCk7CiAgICAgIGF3YWl0IGRiCiAgICAgICAgLnVwZGF0ZShjdXN0b21lcnNUYWJsZSkKICAgICAgICAuc2V0KHsgcmVzZXRUb2tlbjogdG9rZW4sIHJlc2V0VG9rZW5FeHBpcmVzQXQ6IGV4cGlyZXNBdCB9KQogICAgICAgIC53aGVyZShlcShjdXN0b21lcnNUYWJsZS5pZCwgY3VzdG9tZXIuaWQpKTsKCiAgICAgIGNvbnN0IHNpdGVVcmwgPSAoCiAgICAgICAgcHJvY2Vzcy5lbnYuU0lURV9VUkwgfHwKICAgICAgICAocHJvY2Vzcy5lbnYuUkVQTElUX0RFVl9ET01BSU4gPyBgaHR0cHM6Ly8ke3Byb2Nlc3MuZW52LlJFUExJVF9ERVZfRE9NQUlOfWAgOiAiaHR0cHM6Ly9vbW5pcXVyZS5jb20iKQogICAgICApLnJlcGxhY2UoL1wvJC8sICIiKTsKICAgICAgY29uc3QgcmVzZXRVcmwgPSBgJHtzaXRlVXJsfS9yZXNldC1wYXNzd29yZD90b2tlbj0ke3Rva2VufWA7CiAgICAgIHNlbmRQYXNzd29yZFJlc2V0KHsKICAgICAgICBjdXN0b21lckVtYWlsOiBjdXN0b21lci5lbWFpbCwKICAgICAgICBjdXN0b21lck5hbWU6IGAke2N1c3RvbWVyLmZpcnN0TmFtZX0gJHtjdXN0b21lci5sYXN0TmFtZX1gLAogICAgICAgIHJlc2V0VXJsLAogICAgICB9KS5jYXRjaCgoKSA9PiB7fSk7CgogICAgICByZXEubG9nLmluZm8oeyBjdXN0b21lcklkOiBjdXN0b21lci5pZCB9LCAiUGFzc3dvcmQgcmVzZXQgdG9rZW4gaXNzdWVkIik7CiAgICB9CgogICAgcmVzLnN0YXR1cygyMDApLmpzb24oeyBvazogdHJ1ZSB9KTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBwcm9jZXNzIGZvcmdvdC1wYXNzd29yZCIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCnJvdXRlci5wb3N0KCIvYXV0aC9yZXNldC1wYXNzd29yZCIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBjb25zdCB7IHRva2VuLCBwYXNzd29yZCB9ID0gcmVxLmJvZHkgYXMgeyB0b2tlbjogdW5rbm93bjsgcGFzc3dvcmQ6IHVua25vd24gfTsKICBpZiAodHlwZW9mIHRva2VuICE9PSAic3RyaW5nIiB8fCAhdG9rZW4udHJpbSgpKSB7CiAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiUmVzZXQgdG9rZW4gaXMgcmVxdWlyZWQiIH0pOwogICAgcmV0dXJuOwogIH0KICBpZiAodHlwZW9mIHBhc3N3b3JkICE9PSAic3RyaW5nIiB8fCBwYXNzd29yZC5sZW5ndGggPCA4KSB7CiAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiUGFzc3dvcmQgbXVzdCBiZSBhdCBsZWFzdCA4IGNoYXJhY3RlcnMiIH0pOwogICAgcmV0dXJuOwogIH0KICB0cnkgewogICAgY29uc3QgW2N1c3RvbWVyXSA9IGF3YWl0IGRiCiAgICAgIC5zZWxlY3QoKQogICAgICAuZnJvbShjdXN0b21lcnNUYWJsZSkKICAgICAgLndoZXJlKGVxKGN1c3RvbWVyc1RhYmxlLnJlc2V0VG9rZW4sIHRva2VuLnRyaW0oKSkpCiAgICAgIC5saW1pdCgxKTsKCiAgICBpZiAoIWN1c3RvbWVyIHx8ICFjdXN0b21lci5yZXNldFRva2VuRXhwaXJlc0F0IHx8IGN1c3RvbWVyLnJlc2V0VG9rZW5FeHBpcmVzQXQgPCBuZXcgRGF0ZSgpKSB7CiAgICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJUaGlzIHJlc2V0IGxpbmsgaXMgaW52YWxpZCBvciBoYXMgZXhwaXJlZC4gUGxlYXNlIHJlcXVlc3QgYSBuZXcgb25lLiIgfSk7CiAgICAgIHJldHVybjsKICAgIH0KCiAgICBjb25zdCBwYXNzd29yZEhhc2ggPSBhd2FpdCBiY3J5cHQuaGFzaChwYXNzd29yZCwgMTIpOwogICAgYXdhaXQgZGIKICAgICAgLnVwZGF0ZShjdXN0b21lcnNUYWJsZSkKICAgICAgLnNldCh7IHBhc3N3b3JkSGFzaCwgcmVzZXRUb2tlbjogbnVsbCwgcmVzZXRUb2tlbkV4cGlyZXNBdDogbnVsbCB9KQogICAgICAud2hlcmUoZXEoY3VzdG9tZXJzVGFibGUuaWQsIGN1c3RvbWVyLmlkKSk7CgogICAgcmVxLmxvZy5pbmZvKHsgY3VzdG9tZXJJZDogY3VzdG9tZXIuaWQgfSwgIlBhc3N3b3JkIHJlc2V0IHN1Y2Nlc3NmdWxseSIpOwogICAgcmVzLnN0YXR1cygyMDApLmpzb24oeyBvazogdHJ1ZSB9KTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byByZXNldCBwYXNzd29yZCIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCnJvdXRlci5wb3N0KCIvYXV0aC92ZXJpZnktZW1haWwiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgY29uc3QgdG9rZW4gPSAocmVxLnF1ZXJ5LnRva2VuID8/IHJlcS5ib2R5Py50b2tlbikgYXMgc3RyaW5nIHwgdW5kZWZpbmVkOwogIGlmICghdG9rZW4gfHwgdHlwZW9mIHRva2VuICE9PSAic3RyaW5nIiB8fCAhdG9rZW4udHJpbSgpKSB7CiAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiVmVyaWZpY2F0aW9uIHRva2VuIGlzIHJlcXVpcmVkIiB9KTsKICAgIHJldHVybjsKICB9CiAgdHJ5IHsKICAgIGNvbnN0IFtjdXN0b21lcl0gPSBhd2FpdCBkYgogICAgICAuc2VsZWN0KHsgaWQ6IGN1c3RvbWVyc1RhYmxlLmlkLCB2ZXJpZmljYXRpb25Ub2tlbkV4cGlyZXNBdDogY3VzdG9tZXJzVGFibGUudmVyaWZpY2F0aW9uVG9rZW5FeHBpcmVzQXQgfSkKICAgICAgLmZyb20oY3VzdG9tZXJzVGFibGUpCiAgICAgIC53aGVyZShlcShjdXN0b21lcnNUYWJsZS52ZXJpZmljYXRpb25Ub2tlbiwgdG9rZW4udHJpbSgpKSkKICAgICAgLmxpbWl0KDEpOwoKICAgIGlmICghY3VzdG9tZXIgfHwgIWN1c3RvbWVyLnZlcmlmaWNhdGlvblRva2VuRXhwaXJlc0F0IHx8IGN1c3RvbWVyLnZlcmlmaWNhdGlvblRva2VuRXhwaXJlc0F0IDwgbmV3IERhdGUoKSkgewogICAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiVGhpcyB2ZXJpZmljYXRpb24gbGluayBpcyBpbnZhbGlkIG9yIGhhcyBleHBpcmVkLiIgfSk7CiAgICAgIHJldHVybjsKICAgIH0KCiAgICBhd2FpdCBkYgogICAgICAudXBkYXRlKGN1c3RvbWVyc1RhYmxlKQogICAgICAuc2V0KHsgZW1haWxWZXJpZmllZDogdHJ1ZSwgdmVyaWZpY2F0aW9uVG9rZW46IG51bGwsIHZlcmlmaWNhdGlvblRva2VuRXhwaXJlc0F0OiBudWxsIH0pCiAgICAgIC53aGVyZShlcShjdXN0b21lcnNUYWJsZS5pZCwgY3VzdG9tZXIuaWQpKTsKCiAgICByZXEubG9nLmluZm8oeyBjdXN0b21lcklkOiBjdXN0b21lci5pZCB9LCAiRW1haWwgdmVyaWZpZWQiKTsKICAgIHJlcy5zdGF0dXMoMjAwKS5qc29uKHsgb2s6IHRydWUgfSk7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gdmVyaWZ5IGVtYWlsIik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKcm91dGVyLnBvc3QoIi9hdXRoL2xvZ291dCIsIChfcmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogdm9pZCA9PiB7CiAgcmVzLmNsZWFyQ29va2llKENPT0tJRV9OQU1FLCB7IHBhdGg6ICIvIiB9KTsKICByZXMuc3RhdHVzKDIwMCkuanNvbih7IG9rOiB0cnVlIH0pOwp9KTsKCnJvdXRlci5nZXQoIi9hdXRoL21lIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGNvbnN0IHRva2VuID0gcmVxLmNvb2tpZXM/LltDT09LSUVfTkFNRV0gYXMgc3RyaW5nIHwgdW5kZWZpbmVkOwogIGlmICghdG9rZW4pIHsKICAgIHJlcy5zdGF0dXMoNDAxKS5qc29uKHsgZXJyb3I6ICJOb3QgYXV0aGVudGljYXRlZCIgfSk7CiAgICByZXR1cm47CiAgfQoKICBjb25zdCBjdXN0b21lcklkID0gdmVyaWZ5VG9rZW4odG9rZW4pOwogIGlmICghY3VzdG9tZXJJZCkgewogICAgcmVzLmNsZWFyQ29va2llKENPT0tJRV9OQU1FLCB7IHBhdGg6ICIvIiB9KTsKICAgIHJlcy5zdGF0dXMoNDAxKS5qc29uKHsgZXJyb3I6ICJJbnZhbGlkIHNlc3Npb24iIH0pOwogICAgcmV0dXJuOwogIH0KCiAgdHJ5IHsKICAgIGNvbnN0IFtjdXN0b21lcl0gPSBhd2FpdCBkYgogICAgICAuc2VsZWN0KHsKICAgICAgICBpZDogY3VzdG9tZXJzVGFibGUuaWQsCiAgICAgICAgZW1haWw6IGN1c3RvbWVyc1RhYmxlLmVtYWlsLAogICAgICAgIGZpcnN0TmFtZTogY3VzdG9tZXJzVGFibGUuZmlyc3ROYW1lLAogICAgICAgIGxhc3ROYW1lOiBjdXN0b21lcnNUYWJsZS5sYXN0TmFtZSwKICAgICAgfSkKICAgICAgLmZyb20oY3VzdG9tZXJzVGFibGUpCiAgICAgIC53aGVyZShlcShjdXN0b21lcnNUYWJsZS5pZCwgY3VzdG9tZXJJZCkpCiAgICAgIC5saW1pdCgxKTsKCiAgICBpZiAoIWN1c3RvbWVyKSB7CiAgICAgIHJlcy5jbGVhckNvb2tpZShDT09LSUVfTkFNRSwgeyBwYXRoOiAiLyIgfSk7CiAgICAgIHJlcy5zdGF0dXMoNDAxKS5qc29uKHsgZXJyb3I6ICJDdXN0b21lciBub3QgZm91bmQiIH0pOwogICAgICByZXR1cm47CiAgICB9CgogICAgcmVzLnN0YXR1cygyMDApLmpzb24oY3VzdG9tZXIpOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGdldCBjdXN0b21lciBzZXNzaW9uIik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKZXhwb3J0IGRlZmF1bHQgcm91dGVyOwo=
+import { Router } from "express";
+import type { Request, Response } from "express";
+import crypto from "crypto";
+import bcrypt from "bcryptjs";
+import { db } from "@workspace/db";
+import { customersTable, loyaltyTransactionsTable } from "@workspace/db";
+import { eq, sql } from "drizzle-orm";
+import { sendPasswordReset, sendAccountCreatedEmail } from "../lib/email";
+import { getClientIp, lookupCountry } from "../lib/geoip";
+
+const router = Router();
+
+const SESSION_SECRET =
+  process.env.SESSION_SECRET ??
+  process.env.ADMIN_PASSWORD ??
+  "omniqure-cust-session-fallback-secret";
+const COOKIE_NAME = "customer_session";
+const COOKIE_MAX_AGE = 30 * 24 * 60 * 60 * 1000;
+
+function signToken(customerId: number): string {
+  const payload = String(customerId);
+  const sig = crypto
+    .createHmac("sha256", SESSION_SECRET)
+    .update(payload)
+    .digest("hex");
+  return `${payload}.${sig}`;
+}
+
+function verifyToken(token: string): number | null {
+  const dot = token.lastIndexOf(".");
+  if (dot === -1) return null;
+  const payload = token.slice(0, dot);
+  const sig = token.slice(dot + 1);
+  const expected = crypto
+    .createHmac("sha256", SESSION_SECRET)
+    .update(payload)
+    .digest("hex");
+  if (sig !== expected) return null;
+  const id = parseInt(payload, 10);
+  return isNaN(id) ? null : id;
+}
+
+router.post("/auth/register", async (req: Request, res: Response): Promise<void> => {
+  const { email, password, firstName, lastName, institution, referredBy } = req.body as {
+    email: unknown;
+    password: unknown;
+    firstName: unknown;
+    lastName: unknown;
+    institution?: unknown;
+    referredBy?: unknown;
+  };
+
+  if (
+    typeof email !== "string" ||
+    !email.includes("@") ||
+    typeof password !== "string" ||
+    password.length < 8 ||
+    typeof firstName !== "string" ||
+    !firstName.trim() ||
+    typeof lastName !== "string" ||
+    !lastName.trim()
+  ) {
+    res.status(400).json({ error: "Invalid registration data" });
+    return;
+  }
+
+  try {
+    const [existing] = await db
+      .select()
+      .from(customersTable)
+      .where(eq(customersTable.email, email.toLowerCase()))
+      .limit(1);
+
+    if (existing) {
+      if (existing.passwordHash) {
+        // Real account already exists — cannot register again
+        res.status(409).json({ error: "An account with this email already exists" });
+        return;
+      }
+
+      // Guest account (no password) — upgrade it with the new credentials
+      const passwordHash = await bcrypt.hash(password, 12);
+      const [upgraded] = await db
+        .update(customersTable)
+        .set({
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          passwordHash,
+        })
+        .where(eq(customersTable.id, existing.id))
+        .returning();
+
+      const token = signToken(upgraded.id);
+      res.cookie(COOKIE_NAME, token, {
+        httpOnly: true,
+        sameSite: "lax",
+        maxAge: COOKIE_MAX_AGE,
+        path: "/",
+      });
+
+      req.log.info({ customerId: upgraded.id }, "Guest account upgraded to full account");
+      sendAccountCreatedEmail({
+        customerName: `${upgraded.firstName} ${upgraded.lastName}`,
+        customerEmail: upgraded.email,
+      }).catch((err) => req.log.error({ err }, "Failed to send account created email (guest upgrade)"));
+      const ipUpgrade = getClientIp(req);
+      if (ipUpgrade) {
+        lookupCountry(ipUpgrade).then((cc) => {
+          db.update(customersTable).set({
+            lastSeenIp: ipUpgrade,
+            ...(cc ? { lastSeenCountry: cc } : {}),
+            knownIps: sql`(SELECT array_agg(DISTINCT x) FROM unnest(array_append(COALESCE(known_ips, ARRAY[]::text[]), ${ipUpgrade}::text)) AS x)`,
+          }).where(eq(customersTable.id, upgraded.id)).catch(() => {});
+        }).catch(() => {});
+      }
+      res.status(200).json({
+        id: upgraded.id,
+        email: upgraded.email,
+        firstName: upgraded.firstName,
+        lastName: upgraded.lastName,
+      });
+      return;
+    }
+
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    const refByRaw = typeof referredBy === "string" && referredBy.trim() ? referredBy.trim().toUpperCase() : null;
+
+    // Validate referral code at registration time and run IP-based abuse checks
+    let refBy = refByRaw;
+    if (refBy) {
+      try {
+        const ipAtReg = getClientIp(req);
+
+        // 1. Confirm the referral code actually exists
+        const [codeOwner] = await db
+          .select({ id: customersTable.id, knownIps: customersTable.knownIps, lastSeenIp: customersTable.lastSeenIp })
+          .from(customersTable)
+          .where(eq(customersTable.referralCode, refBy))
+          .limit(1);
+
+        if (!codeOwner) {
+          // Referral code doesn't exist — reject silently
+          refBy = null;
+        } else if (ipAtReg) {
+          // 2. Block if registering IP matches any IP on the referrer's account (self-referral)
+          const referrerIps: string[] = codeOwner.knownIps ?? (codeOwner.lastSeenIp ? [codeOwner.lastSeenIp] : []);
+          if (referrerIps.includes(ipAtReg)) {
+            refBy = null; // Same device/IP as the referrer — self-referral
+          } else {
+            // 3. Block if registering IP is already associated with any other account (multi-account)
+            const [ipConflict] = await db
+              .select({ id: customersTable.id })
+              .from(customersTable)
+              .where(sql`${ipAtReg} = ANY(COALESCE(${customersTable.knownIps}, ARRAY[]::text[]))`)
+              .limit(1);
+            if (ipConflict) {
+              refBy = null; // IP already seen on an existing account
+            }
+          }
+        }
+      } catch {
+        // Validation failed — proceed without referral rather than blocking registration
+        refBy = null;
+      }
+    }
+
+    const [customer] = await db
+      .insert(customersTable)
+      .values({
+        email: email.toLowerCase(),
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        passwordHash,
+        totalOrders: 0,
+        totalSpendGbp: "0",
+        referredBy: refBy,
+      })
+      .returning();
+
+    db.insert(loyaltyTransactionsTable).values({
+      customerId: customer.id,
+      type: "earned",
+      points: 50,
+      description: "Welcome bonus: account created",
+    }).catch((err) => req.log.error({ err }, "Failed to award welcome bonus points"));
+
+    const generatedCode = `${firstName.trim().slice(0, 3).toUpperCase()}${String(customer.id).padStart(4, "0")}`;
+    const ipReg = getClientIp(req);
+    lookupCountry(ipReg ?? "").then((cc) => {
+      db.update(customersTable).set({
+        referralCode: generatedCode,
+        ...(ipReg ? { lastSeenIp: ipReg } : {}),
+        ...(cc ? { lastSeenCountry: cc } : {}),
+        ...(ipReg ? { knownIps: sql`(SELECT array_agg(DISTINCT x) FROM unnest(array_append(COALESCE(known_ips, ARRAY[]::text[]), ${ipReg}::text)) AS x)` } : {}),
+      }).where(eq(customersTable.id, customer.id)).catch(() => {});
+    }).catch(() => {
+      db.update(customersTable).set({ referralCode: generatedCode }).where(eq(customersTable.id, customer.id)).catch(() => {});
+    });
+
+    const token = signToken(customer.id);
+    res.cookie(COOKIE_NAME, token, {
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: COOKIE_MAX_AGE,
+      path: "/",
+    });
+
+    res.status(201).json({
+      id: customer.id,
+      email: customer.email,
+      firstName: customer.firstName,
+      lastName: customer.lastName,
+    });
+
+    // Generate email verification token and send welcome email
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+    const verificationExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    await db
+      .update(customersTable)
+      .set({ verificationToken, verificationTokenExpiresAt: verificationExpiresAt })
+      .where(eq(customersTable.id, customer.id))
+      .catch(() => {});
+
+    const siteUrl = (
+      process.env.SITE_URL ||
+      (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "https://omniqure.com")
+    ).replace(/\/$/, "");
+    const verifyUrl = `${siteUrl}/verify-email?token=${verificationToken}`;
+    const referralCode = `${firstName.trim().slice(0, 3).toUpperCase()}${String(customer.id).padStart(4, "0")}`;
+
+    sendAccountCreatedEmail({
+      customerName: `${customer.firstName} ${customer.lastName}`,
+      customerEmail: customer.email,
+      referralCode,
+      verifyUrl,
+    }).catch((err) => req.log.error({ err }, "Failed to send account created email"));
+
+  } catch (err) {
+    req.log.error({ err }, "Failed to register customer");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/auth/login", async (req: Request, res: Response): Promise<void> => {
+  const { email, password } = req.body as { email: unknown; password: unknown };
+
+  if (typeof email !== "string" || typeof password !== "string") {
+    res.status(400).json({ error: "Email and password are required" });
+    return;
+  }
+
+  try {
+    const [customer] = await db
+      .select()
+      .from(customersTable)
+      .where(eq(customersTable.email, email.toLowerCase()))
+      .limit(1);
+
+    if (!customer || !customer.passwordHash) {
+      res.status(401).json({ error: "Invalid email or password" });
+      return;
+    }
+
+    const match = await bcrypt.compare(password, customer.passwordHash);
+    if (!match) {
+      res.status(401).json({ error: "Invalid email or password" });
+      return;
+    }
+
+    const token = signToken(customer.id);
+    res.cookie(COOKIE_NAME, token, {
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: COOKIE_MAX_AGE,
+      path: "/",
+    });
+
+    const ipLogin = getClientIp(req);
+    if (ipLogin) {
+      lookupCountry(ipLogin).then((cc) => {
+        db.update(customersTable).set({
+          lastSeenIp: ipLogin,
+          ...(cc ? { lastSeenCountry: cc } : {}),
+          knownIps: sql`(SELECT array_agg(DISTINCT x) FROM unnest(array_append(COALESCE(known_ips, ARRAY[]::text[]), ${ipLogin}::text)) AS x)`,
+        }).where(eq(customersTable.id, customer.id)).catch(() => {});
+      }).catch(() => {});
+    }
+
+    res.status(200).json({
+      id: customer.id,
+      email: customer.email,
+      firstName: customer.firstName,
+      lastName: customer.lastName,
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to sign in customer");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/auth/forgot-password", async (req: Request, res: Response): Promise<void> => {
+  const { email } = req.body as { email: unknown };
+  if (typeof email !== "string" || !email.includes("@")) {
+    res.status(400).json({ error: "Valid email address is required" });
+    return;
+  }
+  try {
+    const [customer] = await db
+      .select()
+      .from(customersTable)
+      .where(eq(customersTable.email, email.toLowerCase()))
+      .limit(1);
+
+    if (customer && customer.passwordHash) {
+      const token = crypto.randomBytes(32).toString("hex");
+      const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+      await db
+        .update(customersTable)
+        .set({ resetToken: token, resetTokenExpiresAt: expiresAt })
+        .where(eq(customersTable.id, customer.id));
+
+      const siteUrl = (
+        process.env.SITE_URL ||
+        (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "https://omniqure.com")
+      ).replace(/\/$/, "");
+      const resetUrl = `${siteUrl}/reset-password?token=${token}`;
+      sendPasswordReset({
+        customerEmail: customer.email,
+        customerName: `${customer.firstName} ${customer.lastName}`,
+        resetUrl,
+      }).catch(() => {});
+
+      req.log.info({ customerId: customer.id }, "Password reset token issued");
+    }
+
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to process forgot-password");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/auth/reset-password", async (req: Request, res: Response): Promise<void> => {
+  const { token, password } = req.body as { token: unknown; password: unknown };
+  if (typeof token !== "string" || !token.trim()) {
+    res.status(400).json({ error: "Reset token is required" });
+    return;
+  }
+  if (typeof password !== "string" || password.length < 8) {
+    res.status(400).json({ error: "Password must be at least 8 characters" });
+    return;
+  }
+  try {
+    const [customer] = await db
+      .select()
+      .from(customersTable)
+      .where(eq(customersTable.resetToken, token.trim()))
+      .limit(1);
+
+    if (!customer || !customer.resetTokenExpiresAt || customer.resetTokenExpiresAt < new Date()) {
+      res.status(400).json({ error: "This reset link is invalid or has expired. Please request a new one." });
+      return;
+    }
+
+    const passwordHash = await bcrypt.hash(password, 12);
+    await db
+      .update(customersTable)
+      .set({ passwordHash, resetToken: null, resetTokenExpiresAt: null })
+      .where(eq(customersTable.id, customer.id));
+
+    req.log.info({ customerId: customer.id }, "Password reset successfully");
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to reset password");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/auth/verify-email", async (req: Request, res: Response): Promise<void> => {
+  const token = (req.query.token ?? req.body?.token) as string | undefined;
+  if (!token || typeof token !== "string" || !token.trim()) {
+    res.status(400).json({ error: "Verification token is required" });
+    return;
+  }
+  try {
+    const [customer] = await db
+      .select({ id: customersTable.id, verificationTokenExpiresAt: customersTable.verificationTokenExpiresAt })
+      .from(customersTable)
+      .where(eq(customersTable.verificationToken, token.trim()))
+      .limit(1);
+
+    if (!customer || !customer.verificationTokenExpiresAt || customer.verificationTokenExpiresAt < new Date()) {
+      res.status(400).json({ error: "This verification link is invalid or has expired." });
+      return;
+    }
+
+    await db
+      .update(customersTable)
+      .set({ emailVerified: true, verificationToken: null, verificationTokenExpiresAt: null })
+      .where(eq(customersTable.id, customer.id));
+
+    req.log.info({ customerId: customer.id }, "Email verified");
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to verify email");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/auth/logout", (_req: Request, res: Response): void => {
+  res.clearCookie(COOKIE_NAME, { path: "/" });
+  res.status(200).json({ ok: true });
+});
+
+router.get("/auth/me", async (req: Request, res: Response): Promise<void> => {
+  const token = req.cookies?.[COOKIE_NAME] as string | undefined;
+  if (!token) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+
+  const customerId = verifyToken(token);
+  if (!customerId) {
+    res.clearCookie(COOKIE_NAME, { path: "/" });
+    res.status(401).json({ error: "Invalid session" });
+    return;
+  }
+
+  try {
+    const [customer] = await db
+      .select({
+        id: customersTable.id,
+        email: customersTable.email,
+        firstName: customersTable.firstName,
+        lastName: customersTable.lastName,
+      })
+      .from(customersTable)
+      .where(eq(customersTable.id, customerId))
+      .limit(1);
+
+    if (!customer) {
+      res.clearCookie(COOKIE_NAME, { path: "/" });
+      res.status(401).json({ error: "Customer not found" });
+      return;
+    }
+
+    res.status(200).json(customer);
+  } catch (err) {
+    req.log.error({ err }, "Failed to get customer session");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;

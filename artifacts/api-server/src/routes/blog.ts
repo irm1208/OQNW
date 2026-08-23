@@ -1,1 +1,72 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgYmxvZ1Bvc3RzVGFibGUgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgZXEsIGRlc2MsIGFuZCwgc3FsIH0gZnJvbSAiZHJpenpsZS1vcm0iOwppbXBvcnQgeyBmaXJzdFN0cmluZyB9IGZyb20gIi4uL2xpYi9xdWVyeSI7Cgpjb25zdCByb3V0ZXIgPSBSb3V0ZXIoKTsKCnJvdXRlci5nZXQoIi9ibG9nL3Bvc3RzIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGNvbnN0IGxpbWl0ID0gTWF0aC5taW4ocGFyc2VJbnQoU3RyaW5nKHJlcS5xdWVyeS5saW1pdCA/PyAiMTIiKSwgMTApLCA1MCk7CiAgY29uc3Qgb2Zmc2V0ID0gcGFyc2VJbnQoU3RyaW5nKHJlcS5xdWVyeS5vZmZzZXQgPz8gIjAiKSwgMTApOwogIHRyeSB7CiAgICBjb25zdCBbcG9zdHMsIFt7IHRvdGFsIH1dXSA9IGF3YWl0IFByb21pc2UuYWxsKFsKICAgICAgZGIuc2VsZWN0KHsKICAgICAgICBpZDogYmxvZ1Bvc3RzVGFibGUuaWQsCiAgICAgICAgdGl0bGU6IGJsb2dQb3N0c1RhYmxlLnRpdGxlLAogICAgICAgIHNsdWc6IGJsb2dQb3N0c1RhYmxlLnNsdWcsCiAgICAgICAgZXhjZXJwdDogYmxvZ1Bvc3RzVGFibGUuZXhjZXJwdCwKICAgICAgICBhdXRob3I6IGJsb2dQb3N0c1RhYmxlLmF1dGhvciwKICAgICAgICB0YWdzOiBibG9nUG9zdHNUYWJsZS50YWdzLAogICAgICAgIGZlYXR1cmVkSW1hZ2VVcmw6IGJsb2dQb3N0c1RhYmxlLmZlYXR1cmVkSW1hZ2VVcmwsCiAgICAgICAgcHVibGlzaGVkQXQ6IGJsb2dQb3N0c1RhYmxlLnB1Ymxpc2hlZEF0LAogICAgICAgIGNyZWF0ZWRBdDogYmxvZ1Bvc3RzVGFibGUuY3JlYXRlZEF0LAogICAgICB9KS5mcm9tKGJsb2dQb3N0c1RhYmxlKQogICAgICAgIC53aGVyZShlcShibG9nUG9zdHNUYWJsZS5zdGF0dXMsICJwdWJsaXNoZWQiKSkKICAgICAgICAub3JkZXJCeShkZXNjKGJsb2dQb3N0c1RhYmxlLnB1Ymxpc2hlZEF0KSkKICAgICAgICAubGltaXQobGltaXQpLm9mZnNldChvZmZzZXQpLAogICAgICBkYi5zZWxlY3QoeyB0b3RhbDogc3FsPG51bWJlcj5gY291bnQoKik6OmludGAgfSkuZnJvbShibG9nUG9zdHNUYWJsZSkKICAgICAgICAud2hlcmUoZXEoYmxvZ1Bvc3RzVGFibGUuc3RhdHVzLCAicHVibGlzaGVkIikpLAogICAgXSk7CiAgICByZXMuanNvbih7CiAgICAgIHRvdGFsLAogICAgICBwb3N0czogcG9zdHMubWFwKHAgPT4gKHsKICAgICAgICAuLi5wLAogICAgICAgIGV4Y2VycHQ6IHAuZXhjZXJwdCA/PyBudWxsLAogICAgICAgIGZlYXR1cmVkSW1hZ2VVcmw6IHAuZmVhdHVyZWRJbWFnZVVybCA/PyBudWxsLAogICAgICAgIHRhZ3M6IHAudGFncyA/PyBbXSwKICAgICAgICBwdWJsaXNoZWRBdDogcC5wdWJsaXNoZWRBdCA/IHAucHVibGlzaGVkQXQudG9JU09TdHJpbmcoKSA6IG51bGwsCiAgICAgICAgY3JlYXRlZEF0OiBwLmNyZWF0ZWRBdC50b0lTT1N0cmluZygpLAogICAgICB9KSksCiAgICB9KTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBsaXN0IGJsb2cgcG9zdHMiKTsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJJbnRlcm5hbCBzZXJ2ZXIgZXJyb3IiIH0pOwogIH0KfSk7Cgpyb3V0ZXIuZ2V0KCIvYmxvZy9wb3N0cy86c2x1ZyIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBjb25zdCBzbHVnID0gZmlyc3RTdHJpbmcocmVxLnBhcmFtcy5zbHVnKTsKICBpZiAoIXNsdWcpIHsgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogIkludmFsaWQgc2x1ZyIgfSk7IHJldHVybjsgfQogIHRyeSB7CiAgICBjb25zdCBbcG9zdF0gPSBhd2FpdCBkYi5zZWxlY3QoKS5mcm9tKGJsb2dQb3N0c1RhYmxlKQogICAgICAud2hlcmUoYW5kKGVxKGJsb2dQb3N0c1RhYmxlLnNsdWcsIHNsdWcpLCBlcShibG9nUG9zdHNUYWJsZS5zdGF0dXMsICJwdWJsaXNoZWQiKSkpCiAgICAgIC5saW1pdCgxKTsKICAgIGlmICghcG9zdCkgeyByZXMuc3RhdHVzKDQwNCkuanNvbih7IGVycm9yOiAiUG9zdCBub3QgZm91bmQiIH0pOyByZXR1cm47IH0KICAgIHJlcy5qc29uKHsKICAgICAgaWQ6IHBvc3QuaWQsIHRpdGxlOiBwb3N0LnRpdGxlLCBzbHVnOiBwb3N0LnNsdWcsCiAgICAgIGV4Y2VycHQ6IHBvc3QuZXhjZXJwdCA/PyBudWxsLCBjb250ZW50OiBwb3N0LmNvbnRlbnQsCiAgICAgIGF1dGhvcjogcG9zdC5hdXRob3IsIHRhZ3M6IHBvc3QudGFncyA/PyBbXSwKICAgICAgZmVhdHVyZWRJbWFnZVVybDogcG9zdC5mZWF0dXJlZEltYWdlVXJsID8/IG51bGwsCiAgICAgIHNlb1RpdGxlOiBwb3N0LnNlb1RpdGxlID8/IG51bGwsIHNlb0Rlc2NyaXB0aW9uOiBwb3N0LnNlb0Rlc2NyaXB0aW9uID8/IG51bGwsCiAgICAgIHB1Ymxpc2hlZEF0OiBwb3N0LnB1Ymxpc2hlZEF0ID8gcG9zdC5wdWJsaXNoZWRBdC50b0lTT1N0cmluZygpIDogbnVsbCwKICAgICAgY3JlYXRlZEF0OiBwb3N0LmNyZWF0ZWRBdC50b0lTT1N0cmluZygpLAogICAgfSk7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gZmV0Y2ggYmxvZyBwb3N0Iik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKZXhwb3J0IGRlZmF1bHQgcm91dGVyOwo=
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { db } from "@workspace/db";
+import { blogPostsTable } from "@workspace/db";
+import { eq, desc, and, sql } from "drizzle-orm";
+import { firstString } from "../lib/query";
+
+const router = Router();
+
+router.get("/blog/posts", async (req: Request, res: Response): Promise<void> => {
+  const limit = Math.min(parseInt(String(req.query.limit ?? "12"), 10), 50);
+  const offset = parseInt(String(req.query.offset ?? "0"), 10);
+  try {
+    const [posts, [{ total }]] = await Promise.all([
+      db.select({
+        id: blogPostsTable.id,
+        title: blogPostsTable.title,
+        slug: blogPostsTable.slug,
+        excerpt: blogPostsTable.excerpt,
+        author: blogPostsTable.author,
+        tags: blogPostsTable.tags,
+        featuredImageUrl: blogPostsTable.featuredImageUrl,
+        publishedAt: blogPostsTable.publishedAt,
+        createdAt: blogPostsTable.createdAt,
+      }).from(blogPostsTable)
+        .where(eq(blogPostsTable.status, "published"))
+        .orderBy(desc(blogPostsTable.publishedAt))
+        .limit(limit).offset(offset),
+      db.select({ total: sql<number>`count(*)::int` }).from(blogPostsTable)
+        .where(eq(blogPostsTable.status, "published")),
+    ]);
+    res.json({
+      total,
+      posts: posts.map(p => ({
+        ...p,
+        excerpt: p.excerpt ?? null,
+        featuredImageUrl: p.featuredImageUrl ?? null,
+        tags: p.tags ?? [],
+        publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
+        createdAt: p.createdAt.toISOString(),
+      })),
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to list blog posts");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/blog/posts/:slug", async (req: Request, res: Response): Promise<void> => {
+  const slug = firstString(req.params.slug);
+  if (!slug) { res.status(400).json({ error: "Invalid slug" }); return; }
+  try {
+    const [post] = await db.select().from(blogPostsTable)
+      .where(and(eq(blogPostsTable.slug, slug), eq(blogPostsTable.status, "published")))
+      .limit(1);
+    if (!post) { res.status(404).json({ error: "Post not found" }); return; }
+    res.json({
+      id: post.id, title: post.title, slug: post.slug,
+      excerpt: post.excerpt ?? null, content: post.content,
+      author: post.author, tags: post.tags ?? [],
+      featuredImageUrl: post.featuredImageUrl ?? null,
+      seoTitle: post.seoTitle ?? null, seoDescription: post.seoDescription ?? null,
+      publishedAt: post.publishedAt ? post.publishedAt.toISOString() : null,
+      createdAt: post.createdAt.toISOString(),
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to fetch blog post");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;

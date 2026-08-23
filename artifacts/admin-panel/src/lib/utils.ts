@@ -1,1 +1,22 @@
-aW1wb3J0IHsgY2xzeCwgdHlwZSBDbGFzc1ZhbHVlIH0gZnJvbSAiY2xzeCIKaW1wb3J0IHsgdHdNZXJnZSB9IGZyb20gInRhaWx3aW5kLW1lcmdlIgoKZXhwb3J0IGZ1bmN0aW9uIGNuKC4uLmlucHV0czogQ2xhc3NWYWx1ZVtdKSB7CiAgcmV0dXJuIHR3TWVyZ2UoY2xzeChpbnB1dHMpKQp9CgovKiogU2hhcmVkIEFQSSBwYXRoIGhlbHBlciDigJQgbm9ybWFsaXNlcyBkb3VibGUtc2xhc2hlcy4gKi8KZXhwb3J0IGZ1bmN0aW9uIGFwaShwYXRoOiBzdHJpbmcpIHsKICByZXR1cm4gYC9hcGkvJHtwYXRofWAucmVwbGFjZSgvXC8rL2csICIvIik7Cn0KCi8qKgogKiBGZXRjaCBKU09OIGFuZCB0aHJvdyBvbiBhbnkgbm9uLTJ4eCByZXNwb25zZSBzbyBSZWFjdCBRdWVyeSBtYXJrcyB0aGUKICogcXVlcnkgYXMgZXJyb3JlZCAoa2VlcGluZyBgZGF0YWAgdW5kZWZpbmVkIC8gdGhlIGRlZmF1bHQgdmFsdWUpIGluc3RlYWQgb2YKICogc3RvcmluZyB0aGUgZXJyb3IgYm9keSBhcyBkYXRhIGFuZCBjcmFzaGluZyBkb3duc3RyZWFtIGAubWFwKClgIGNhbGxzLgogKi8KZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGZldGNoSnNvbjxUPih1cmw6IHN0cmluZywgaW5pdD86IFJlcXVlc3RJbml0KTogUHJvbWlzZTxUPiB7CiAgY29uc3QgciA9IGF3YWl0IGZldGNoKHVybCwgaW5pdCk7CiAgaWYgKCFyLm9rKSB0aHJvdyBuZXcgRXJyb3IoYEhUVFAgJHtyLnN0YXR1c31gKTsKICByZXR1cm4gci5qc29uKCkgYXMgUHJvbWlzZTxUPjsKfQo=
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+/** Shared API path helper — normalises double-slashes. */
+export function api(path: string) {
+  return `/api/${path}`.replace(/\/+/g, "/");
+}
+
+/**
+ * Fetch JSON and throw on any non-2xx response so React Query marks the
+ * query as errored (keeping `data` undefined / the default value) instead of
+ * storing the error body as data and crashing downstream `.map()` calls.
+ */
+export async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
+  const r = await fetch(url, init);
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json() as Promise<T>;
+}

@@ -1,1 +1,121 @@
-aW1wb3J0IHsgdXNlQ2FydCB9IGZyb20gIkAvY29udGV4dC9DYXJ0Q29udGV4dCI7CmltcG9ydCB7IHVzZUN1cnJlbmN5IH0gZnJvbSAiQC9jb250ZXh0L0N1cnJlbmN5Q29udGV4dCI7CmltcG9ydCB7IERyb3BsZXRzLCBDaGVjayB9IGZyb20gImx1Y2lkZS1yZWFjdCI7Cgpjb25zdCBCQUNfV0FURVJfT1BUSU9OUyA9IFsKICB7IGlkOiAiYnctM21sIiwgbmFtZTogIkJhY3Rlcmlvc3RhdGljIFdhdGVyIDNtbCIsIHNsdWc6ICJiYWN0ZXJpb3N0YXRpYy13YXRlci0zbWwiLCBwcmljZTogNC45OSwgbGFiZWw6ICIzbWwiLCBpbWFnZTogIi9iYWMtd2F0ZXItM21sLndlYnAiLCBjYXRlZ29yeTogIkFjY2Vzc29yaWVzIiB9LAogIHsgaWQ6ICJidy0xMG1sIiwgbmFtZTogIkJhY3Rlcmlvc3RhdGljIFdhdGVyIDEwbWwiLCBzbHVnOiAiYmFjdGVyaW9zdGF0aWMtd2F0ZXItMTBtbCIsIHByaWNlOiA4Ljk5LCBsYWJlbDogIjEwbWwiLCBpbWFnZTogIi9iYWMtd2F0ZXItMTBtbC53ZWJwIiwgY2F0ZWdvcnk6ICJBY2Nlc3NvcmllcyIgfSwKXSBhcyBjb25zdDsKCi8qKgogKiBVcHNlbGwgcHJvbXB0IGZvciBCYWN0ZXJpb3N0YXRpYyBXYXRlciDigJQgc2hvd24gd2hlbiB0aGUgY2FydCBoYXMgcGVwdGlkZXMKICogdGhhdCBuZWVkIHJlY29uc3RpdHV0aW5nIGJ1dCBubyBCQUMgd2F0ZXIgbGluZSBpdGVtIHlldCwgYW5kIHRoZSBjdXN0b21lcgogKiBoYXNuJ3QgYWxyZWFkeSB1bmxvY2tlZCBpdCBmb3IgZnJlZSB2aWEgdGhlIEJ1bmRsZSAmIFNhdmUgMy00IHBlcHRpZGUgdGllci4KICovCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIEJhY1dhdGVyVXBzZWxsKHsgY29tcGFjdCA9IGZhbHNlIH06IHsgY29tcGFjdD86IGJvb2xlYW4gfSkgewogIGNvbnN0IHsgaXRlbXMsIHBlcHRpZGVRdHksIGJ1bmRsZUZyZWVCYWNXYXRlciwgYWRkVG9DYXJ0LCByZW1vdmVGcm9tQ2FydCB9ID0gdXNlQ2FydCgpOwogIGNvbnN0IHsgZm9ybWF0UHJpY2UgfSA9IHVzZUN1cnJlbmN5KCk7CgogIGNvbnN0IGhhc0JhY1dhdGVyID0gaXRlbXMuc29tZSgoaSkgPT4gaS5wcm9kdWN0LmlkID09PSAiYnctM21sIiB8fCBpLnByb2R1Y3QuaWQgPT09ICJidy0xMG1sIik7CgogIGlmIChwZXB0aWRlUXR5ID09PSAwIHx8IGhhc0JhY1dhdGVyIHx8IGJ1bmRsZUZyZWVCYWNXYXRlcikgcmV0dXJuIG51bGw7CgogIGZ1bmN0aW9uIHRvZ2dsZShidzogdHlwZW9mIEJBQ19XQVRFUl9PUFRJT05TW251bWJlcl0sIGFkZGVkOiBib29sZWFuKSB7CiAgICBpZiAoYWRkZWQpIHsKICAgICAgcmVtb3ZlRnJvbUNhcnQoYncuaWQpOwogICAgfSBlbHNlIHsKICAgICAgYWRkVG9DYXJ0KHsgaWQ6IGJ3LmlkLCBuYW1lOiBidy5uYW1lLCBzbHVnOiBidy5zbHVnLCBwcmljZTogYncucHJpY2UsIGltYWdlOiBidy5pbWFnZSwgY2F0ZWdvcnk6IGJ3LmNhdGVnb3J5IH0sIDEpOwogICAgfQogIH0KCiAgcmV0dXJuICgKICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGZsZXgtY29sIiBzdHlsZT17eyBnYXA6IGNvbXBhY3QgPyAiOHB4IiA6ICIxMHB4IiB9fT4KICAgICAge0JBQ19XQVRFUl9PUFRJT05TLm1hcCgoYncsIGkpID0+IHsKICAgICAgICBjb25zdCBhZGRlZCA9IGl0ZW1zLnNvbWUoKGl0KSA9PiBpdC5wcm9kdWN0LmlkID09PSBidy5pZCk7CiAgICAgICAgcmV0dXJuICgKICAgICAgICAgIDxkaXYKICAgICAgICAgICAga2V5PXtidy5pZH0KICAgICAgICAgICAgY2xhc3NOYW1lPSJyZWxhdGl2ZSByb3VuZGVkLTJ4bCIKICAgICAgICAgICAgc3R5bGU9e3sKICAgICAgICAgICAgICBiYWNrZ3JvdW5kOiAibGluZWFyLWdyYWRpZW50KDE4MGRlZywgI0ZCRkRGRiAwJSwgI0YzRjhGRiAxMDAlKSIsCiAgICAgICAgICAgICAgYm9yZGVyOiBgMS41cHggc29saWQgJHthZGRlZCA/ICIjNjBBNUZBIiA6ICIjRENFOUZCIn1gLAogICAgICAgICAgICAgIGJveFNoYWRvdzogIjAgMnB4IDEwcHggcmdiYSgxNSwyMyw0MiwwLjA1KSIsCiAgICAgICAgICAgICAgcGFkZGluZzogY29tcGFjdCA/ICIxMHB4IDE2cHgiIDogIjEycHggMThweCIsCiAgICAgICAgICAgIH19CiAgICAgICAgICA+CiAgICAgICAgICAgIHtpID09PSAwICYmICgKICAgICAgICAgICAgICA8c3BhbgogICAgICAgICAgICAgICAgY2xhc3NOYW1lPSJhYnNvbHV0ZSBmb250LWJvbGQiCiAgICAgICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgICAgICB0b3A6ICItMTFweCIsIGxlZnQ6ICI1MCUiLCB0cmFuc2Zvcm06ICJ0cmFuc2xhdGVYKC01MCUpIiwKICAgICAgICAgICAgICAgICAgZm9udFNpemU6ICIxMHB4IiwgbGV0dGVyU3BhY2luZzogIjAuMDhlbSIsCiAgICAgICAgICAgICAgICAgIGNvbG9yOiAiIzFCNUNCNSIsIGJhY2tncm91bmQ6ICIjZmZmIiwKICAgICAgICAgICAgICAgICAgYm9yZGVyOiAiMXB4IHNvbGlkICNCRkRCRkUiLCBib3JkZXJSYWRpdXM6ICI5OTlweCIsCiAgICAgICAgICAgICAgICAgIHBhZGRpbmc6ICIzcHggMTJweCIsIHdoaXRlU3BhY2U6ICJub3dyYXAiLAogICAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICBSRUNPTU1FTkRFRAogICAgICAgICAgICAgIDwvc3Bhbj4KICAgICAgICAgICAgKX0KCiAgICAgICAgICAgIDxidXR0b24KICAgICAgICAgICAgICB0eXBlPSJidXR0b24iCiAgICAgICAgICAgICAgb25DbGljaz17KCkgPT4gdG9nZ2xlKGJ3LCBhZGRlZCl9CiAgICAgICAgICAgICAgY2xhc3NOYW1lPSJ3LWZ1bGwgZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTMgdGV4dC1sZWZ0IgogICAgICAgICAgICAgIHN0eWxlPXt7IGJhY2tncm91bmQ6ICJub25lIiwgYm9yZGVyOiAibm9uZSIsIGN1cnNvcjogInBvaW50ZXIiLCBwYWRkaW5nOiAwIH19CiAgICAgICAgICAgID4KICAgICAgICAgICAgICB7LyogQ2hlY2tib3ggKi99CiAgICAgICAgICAgICAgPHNwYW4KICAgICAgICAgICAgICAgIGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgZmxleC1zaHJpbmstMCByb3VuZGVkLWxnIgogICAgICAgICAgICAgICAgc3R5bGU9e3sKICAgICAgICAgICAgICAgICAgd2lkdGg6ICIyMnB4IiwgaGVpZ2h0OiAiMjJweCIsCiAgICAgICAgICAgICAgICAgIGJvcmRlcjogYDJweCBzb2xpZCAke2FkZGVkID8gIiMxQjVDQjUiIDogIiNDQkQ1RTEifWAsCiAgICAgICAgICAgICAgICAgIGJhY2tncm91bmQ6IGFkZGVkID8gIiMxQjVDQjUiIDogIiNmZmYiLAogICAgICAgICAgICAgICAgICB0cmFuc2l0aW9uOiAiYmFja2dyb3VuZCAwLjE1cywgYm9yZGVyLWNvbG9yIDAuMTVzIiwKICAgICAgICAgICAgICAgIH19CiAgICAgICAgICAgICAgPgogICAgICAgICAgICAgICAge2FkZGVkICYmIDxDaGVjayBzaXplPXsxM30gY29sb3I9IiNmZmYiIHN0cm9rZVdpZHRoPXszfSAvPn0KICAgICAgICAgICAgICA8L3NwYW4+CgogICAgICAgICAgICAgIHsvKiBJY29uIGF2YXRhciAqL30KICAgICAgICAgICAgICA8c3BhbgogICAgICAgICAgICAgICAgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBmbGV4LXNocmluay0wIHJvdW5kZWQteGwiCiAgICAgICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgICAgICB3aWR0aDogIjQwcHgiLCBoZWlnaHQ6ICI0MHB4IiwKICAgICAgICAgICAgICAgICAgYmFja2dyb3VuZDogImxpbmVhci1ncmFkaWVudCgxNDVkZWcsICM2MEE1RkEgMCUsICMxQjVDQjUgMTAwJSkiLAogICAgICAgICAgICAgICAgICBib3hTaGFkb3c6ICIwIDNweCA4cHggcmdiYSgyNyw5MiwxODEsMC4yNSkiLAogICAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICA8RHJvcGxldHMgc2l6ZT17MTh9IGNvbG9yPSIjZmZmIiBzdHJva2VXaWR0aD17Mi4yfSAvPgogICAgICAgICAgICAgIDwvc3Bhbj4KCiAgICAgICAgICAgICAgey8qIENvcHkgKi99CiAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJmbGV4LTEgbWluLXctMCI+CiAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9ImJsb2NrIGZvbnQtYm9sZCIgc3R5bGU9e3sgZm9udFNpemU6ICIxMy41cHgiLCBjb2xvcjogIiMwRjE3MkEiLCBsaW5lSGVpZ2h0OiAxLjM1IH19PgogICAgICAgICAgICAgICAgICBBZGQgQmFjdGVyaW9zdGF0aWMgV2F0ZXIge2J3LmxhYmVsfQogICAgICAgICAgICAgICAgPC9zcGFuPgogICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJibG9jayB0cnVuY2F0ZSIgc3R5bGU9e3sgZm9udFNpemU6ICIxMS41cHgiLCBjb2xvcjogIiMzQjZGQzQiLCBtYXJnaW5Ub3A6ICIxcHgiIH19PgogICAgICAgICAgICAgICAgICBFc3NlbnRpYWwgZm9yIHJlY29uc3RpdHV0aW5nIHlvdXIgcGVwdGlkZQogICAgICAgICAgICAgICAgPC9zcGFuPgogICAgICAgICAgICAgIDwvc3Bhbj4KCiAgICAgICAgICAgICAgey8qIFByaWNlIHBpbGwgKi99CiAgICAgICAgICAgICAgPHNwYW4KICAgICAgICAgICAgICAgIGNsYXNzTmFtZT0iZmxleC1zaHJpbmstMCBmb250LWJvbGQgcm91bmRlZC1mdWxsIgogICAgICAgICAgICAgICAgc3R5bGU9e3sKICAgICAgICAgICAgICAgICAgZm9udFNpemU6ICIxMi41cHgiLAogICAgICAgICAgICAgICAgICBwYWRkaW5nOiAiOHB4IDE2cHgiLAogICAgICAgICAgICAgICAgICBjb2xvcjogIiNmZmYiLAogICAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kOiBhZGRlZCA/ICIjMDU5NjY5IiA6ICIjMUI1Q0I1IiwKICAgICAgICAgICAgICAgICAgdHJhbnNpdGlvbjogImJhY2tncm91bmQgMC4xNXMiLAogICAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICB7YWRkZWQgPyAiQWRkZWQiIDogYCske2Zvcm1hdFByaWNlKGJ3LnByaWNlKX1gfQogICAgICAgICAgICAgIDwvc3Bhbj4KICAgICAgICAgICAgPC9idXR0b24+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICApOwogICAgICB9KX0KICAgIDwvZGl2PgogICk7Cn0K
+import { useCart } from "@/context/CartContext";
+import { useCurrency } from "@/context/CurrencyContext";
+import { Droplets, Check } from "lucide-react";
+
+const BAC_WATER_OPTIONS = [
+  { id: "bw-3ml", name: "Bacteriostatic Water 3ml", slug: "bacteriostatic-water-3ml", price: 4.99, label: "3ml", image: "/bac-water-3ml.webp", category: "Accessories" },
+  { id: "bw-10ml", name: "Bacteriostatic Water 10ml", slug: "bacteriostatic-water-10ml", price: 8.99, label: "10ml", image: "/bac-water-10ml.webp", category: "Accessories" },
+] as const;
+
+/**
+ * Upsell prompt for Bacteriostatic Water — shown when the cart has peptides
+ * that need reconstituting but no BAC water line item yet, and the customer
+ * hasn't already unlocked it for free via the Bundle & Save 3-4 peptide tier.
+ */
+export default function BacWaterUpsell({ compact = false }: { compact?: boolean }) {
+  const { items, peptideQty, bundleFreeBacWater, addToCart, removeFromCart } = useCart();
+  const { formatPrice } = useCurrency();
+
+  const hasBacWater = items.some((i) => i.product.id === "bw-3ml" || i.product.id === "bw-10ml");
+
+  if (peptideQty === 0 || hasBacWater || bundleFreeBacWater) return null;
+
+  function toggle(bw: typeof BAC_WATER_OPTIONS[number], added: boolean) {
+    if (added) {
+      removeFromCart(bw.id);
+    } else {
+      addToCart({ id: bw.id, name: bw.name, slug: bw.slug, price: bw.price, image: bw.image, category: bw.category }, 1);
+    }
+  }
+
+  return (
+    <div className="flex flex-col" style={{ gap: compact ? "8px" : "10px" }}>
+      {BAC_WATER_OPTIONS.map((bw, i) => {
+        const added = items.some((it) => it.product.id === bw.id);
+        return (
+          <div
+            key={bw.id}
+            className="relative rounded-2xl"
+            style={{
+              background: "linear-gradient(180deg, #FBFDFF 0%, #F3F8FF 100%)",
+              border: `1.5px solid ${added ? "#60A5FA" : "#DCE9FB"}`,
+              boxShadow: "0 2px 10px rgba(15,23,42,0.05)",
+              padding: compact ? "10px 16px" : "12px 18px",
+            }}
+          >
+            {i === 0 && (
+              <span
+                className="absolute font-bold"
+                style={{
+                  top: "-11px", left: "50%", transform: "translateX(-50%)",
+                  fontSize: "10px", letterSpacing: "0.08em",
+                  color: "#1B5CB5", background: "#fff",
+                  border: "1px solid #BFDBFE", borderRadius: "999px",
+                  padding: "3px 12px", whiteSpace: "nowrap",
+                }}
+              >
+                RECOMMENDED
+              </span>
+            )}
+
+            <button
+              type="button"
+              onClick={() => toggle(bw, added)}
+              className="w-full flex items-center gap-3 text-left"
+              style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            >
+              {/* Checkbox */}
+              <span
+                className="flex items-center justify-center flex-shrink-0 rounded-lg"
+                style={{
+                  width: "22px", height: "22px",
+                  border: `2px solid ${added ? "#1B5CB5" : "#CBD5E1"}`,
+                  background: added ? "#1B5CB5" : "#fff",
+                  transition: "background 0.15s, border-color 0.15s",
+                }}
+              >
+                {added && <Check size={13} color="#fff" strokeWidth={3} />}
+              </span>
+
+              {/* Icon avatar */}
+              <span
+                className="flex items-center justify-center flex-shrink-0 rounded-xl"
+                style={{
+                  width: "40px", height: "40px",
+                  background: "linear-gradient(145deg, #60A5FA 0%, #1B5CB5 100%)",
+                  boxShadow: "0 3px 8px rgba(27,92,181,0.25)",
+                }}
+              >
+                <Droplets size={18} color="#fff" strokeWidth={2.2} />
+              </span>
+
+              {/* Copy */}
+              <span className="flex-1 min-w-0">
+                <span className="block font-bold" style={{ fontSize: "13.5px", color: "#0F172A", lineHeight: 1.35 }}>
+                  Add Bacteriostatic Water {bw.label}
+                </span>
+                <span className="block truncate" style={{ fontSize: "11.5px", color: "#3B6FC4", marginTop: "1px" }}>
+                  Essential for reconstituting your peptide
+                </span>
+              </span>
+
+              {/* Price pill */}
+              <span
+                className="flex-shrink-0 font-bold rounded-full"
+                style={{
+                  fontSize: "12.5px",
+                  padding: "8px 16px",
+                  color: "#fff",
+                  background: added ? "#059669" : "#1B5CB5",
+                  transition: "background 0.15s",
+                }}
+              >
+                {added ? "Added" : `+${formatPrice(bw.price)}`}
+              </span>
+            </button>
+          </div>
+        );
+      })}
+    </div>
+  );
+}

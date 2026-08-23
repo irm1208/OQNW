@@ -1,1 +1,507 @@
-aW1wb3J0IHsgdXNlU3RhdGUsIHVzZUNhbGxiYWNrIH0gZnJvbSAicmVhY3QiOwppbXBvcnQgeyBMaW5rIH0gZnJvbSAid291dGVyIjsKaW1wb3J0IHsgdXNlUXVlcnksIHVzZVF1ZXJ5Q2xpZW50IH0gZnJvbSAiQHRhbnN0YWNrL3JlYWN0LXF1ZXJ5IjsKaW1wb3J0IHsgQmFkZ2UgfSBmcm9tICJAL2NvbXBvbmVudHMvdWkvYmFkZ2UiOwppbXBvcnQgeyBCdXR0b24gfSBmcm9tICJAL2NvbXBvbmVudHMvdWkvYnV0dG9uIjsKaW1wb3J0IHsgQ2hlY2tib3ggfSBmcm9tICJAL2NvbXBvbmVudHMvdWkvY2hlY2tib3giOwppbXBvcnQgeyBJbnB1dCB9IGZyb20gIkAvY29tcG9uZW50cy91aS9pbnB1dCI7CmltcG9ydCB7IENhcmQsIENhcmRDb250ZW50IH0gZnJvbSAiQC9jb21wb25lbnRzL3VpL2NhcmQiOwppbXBvcnQgewogIERpYWxvZywgRGlhbG9nQ29udGVudCwgRGlhbG9nSGVhZGVyLCBEaWFsb2dUaXRsZSwgRGlhbG9nRm9vdGVyLAp9IGZyb20gIkAvY29tcG9uZW50cy91aS9kaWFsb2ciOwppbXBvcnQgewogIExvYWRlcjIsIFBhY2thZ2UsIFByaW50ZXIsIFRydWNrLCBBcnJvd1JpZ2h0LAogIENoZWNrQ2lyY2xlMiwgRXh0ZXJuYWxMaW5rLCBDbGlwYm9hcmRMaXN0LAp9IGZyb20gImx1Y2lkZS1yZWFjdCI7CmltcG9ydCB7IHRvYXN0IH0gZnJvbSAic29ubmVyIjsKCi8vIOKUgOKUgCBUeXBlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKCmludGVyZmFjZSBGdWxmaWxsbWVudEl0ZW0gewogIGlkOiBudW1iZXI7CiAgcHJvZHVjdE5hbWU6IHN0cmluZzsKICBwcm9kdWN0Q2F0ZWdvcnk6IHN0cmluZyB8IG51bGw7CiAgcXVhbnRpdHk6IG51bWJlcjsKICBwcmljZUdicDogbnVtYmVyOwp9CgppbnRlcmZhY2UgRnVsZmlsbG1lbnRPcmRlciB7CiAgaWQ6IG51bWJlcjsKICBvcmRlck51bWJlcjogc3RyaW5nOwogIHN0YXR1czogc3RyaW5nOwogIGN1c3RvbWVyTmFtZTogc3RyaW5nOwogIGN1c3RvbWVyRW1haWw6IHN0cmluZzsKICBwaG9uZTogc3RyaW5nIHwgbnVsbDsKICBhZGRyZXNzMTogc3RyaW5nIHwgbnVsbDsKICBhZGRyZXNzMjogc3RyaW5nIHwgbnVsbDsKICBjaXR5OiBzdHJpbmcgfCBudWxsOwogIGNvdW50eTogc3RyaW5nIHwgbnVsbDsKICBwb3N0Y29kZTogc3RyaW5nIHwgbnVsbDsKICBjb3VudHJ5OiBzdHJpbmcgfCBudWxsOwogIHNoaXBwaW5nTWV0aG9kOiBzdHJpbmcgfCBudWxsOwogIHRyYWNraW5nTnVtYmVyOiBzdHJpbmcgfCBudWxsOwogIHRvdGFsR2JwOiBudW1iZXI7CiAgbm90ZXM6IHN0cmluZyB8IG51bGw7CiAgY3JlYXRlZEF0OiBzdHJpbmc7CiAgaXRlbXM6IEZ1bGZpbGxtZW50SXRlbVtdOwp9Cgp0eXBlIFRhYiA9ICJyZWFkeSIgfCAicHJvY2Vzc2luZyIgfCAic2hpcHBlZCI7Cgpjb25zdCBUQUJfTEFCRUxTOiBSZWNvcmQ8VGFiLCBzdHJpbmc+ID0gewogIHJlYWR5OiAgICAgICJSZWFkeSB0byBQaWNrIiwKICBwcm9jZXNzaW5nOiAiUHJvY2Vzc2luZyIsCiAgc2hpcHBlZDogICAgIlNoaXBwZWQiLAp9OwoKLy8g4pSA4pSAIEFQSSBoZWxwZXJzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAoKYXN5bmMgZnVuY3Rpb24gZmV0Y2hGdWxmaWxsbWVudCh0YWI6IFRhYik6IFByb21pc2U8eyBvcmRlcnM6IEZ1bGZpbGxtZW50T3JkZXJbXTsgdG90YWw6IG51bWJlciB9PiB7CiAgY29uc3QgcmVzID0gYXdhaXQgZmV0Y2goYC9hcGkvYWRtaW4vZnVsZmlsbG1lbnQ/dGFiPSR7dGFifSZsaW1pdD0xMDBgLCB7IGNyZWRlbnRpYWxzOiAiaW5jbHVkZSIgfSk7CiAgaWYgKCFyZXMub2spIHRocm93IG5ldyBFcnJvcigiRmFpbGVkIHRvIGxvYWQgZnVsZmlsbG1lbnQgcXVldWUiKTsKICByZXR1cm4gcmVzLmpzb24oKTsKfQoKYXN5bmMgZnVuY3Rpb24gcGF0Y2hPcmRlcihpZDogbnVtYmVyLCBib2R5OiBSZWNvcmQ8c3RyaW5nLCB1bmtub3duPikgewogIGNvbnN0IHJlcyA9IGF3YWl0IGZldGNoKGAvYXBpL2FkbWluL29yZGVycy8ke2lkfWAsIHsKICAgIG1ldGhvZDogIlBBVENIIiwKICAgIGNyZWRlbnRpYWxzOiAiaW5jbHVkZSIsCiAgICBoZWFkZXJzOiB7ICJDb250ZW50LVR5cGUiOiAiYXBwbGljYXRpb24vanNvbiIgfSwKICAgIGJvZHk6IEpTT04uc3RyaW5naWZ5KGJvZHkpLAogIH0pOwogIGlmICghcmVzLm9rKSB0aHJvdyBuZXcgRXJyb3IoIkZhaWxlZCB0byB1cGRhdGUgb3JkZXIiKTsKICByZXR1cm4gcmVzLmpzb24oKTsKfQoKYXN5bmMgZnVuY3Rpb24gYnVsa1VwZGF0ZShpZHM6IG51bWJlcltdLCBzdGF0dXM6IHN0cmluZykgewogIGNvbnN0IHJlcyA9IGF3YWl0IGZldGNoKCIvYXBpL2FkbWluL29yZGVycy9idWxrLXVwZGF0ZSIsIHsKICAgIG1ldGhvZDogIlBPU1QiLAogICAgY3JlZGVudGlhbHM6ICJpbmNsdWRlIiwKICAgIGhlYWRlcnM6IHsgIkNvbnRlbnQtVHlwZSI6ICJhcHBsaWNhdGlvbi9qc29uIiB9LAogICAgYm9keTogSlNPTi5zdHJpbmdpZnkoeyBpZHMsIHN0YXR1cyB9KSwKICB9KTsKICBpZiAoIXJlcy5vaykgdGhyb3cgbmV3IEVycm9yKCJGYWlsZWQgdG8gYnVsay11cGRhdGUgb3JkZXJzIik7Cn0KCmZ1bmN0aW9uIG9wZW5QYWNraW5nU2xpcChpZHM6IG51bWJlcltdKSB7CiAgaWYgKGlkcy5sZW5ndGggPT09IDEpIHsKICAgIHdpbmRvdy5vcGVuKGAvYXBpL2FkbWluL29yZGVycy8ke2lkc1swXX0vcGFja2luZy1zbGlwYCwgIl9ibGFuayIpOwogICAgcmV0dXJuOwogIH0KICAvLyBNdWx0aS1zbGlwOiBQT1NULCBvcGVuIGJsb2IgVVJMCiAgZmV0Y2goIi9hcGkvYWRtaW4vZnVsZmlsbG1lbnQvcGFja2luZy1zbGlwcyIsIHsKICAgIG1ldGhvZDogIlBPU1QiLAogICAgY3JlZGVudGlhbHM6ICJpbmNsdWRlIiwKICAgIGhlYWRlcnM6IHsgIkNvbnRlbnQtVHlwZSI6ICJhcHBsaWNhdGlvbi9qc29uIiB9LAogICAgYm9keTogSlNPTi5zdHJpbmdpZnkoeyBpZHMgfSksCiAgfSkKICAgIC50aGVuKHIgPT4gci50ZXh0KCkpCiAgICAudGhlbihodG1sID0+IHsKICAgICAgY29uc3QgYmxvYiA9IG5ldyBCbG9iKFtodG1sXSwgeyB0eXBlOiAidGV4dC9odG1sIiB9KTsKICAgICAgd2luZG93Lm9wZW4oVVJMLmNyZWF0ZU9iamVjdFVSTChibG9iKSwgIl9ibGFuayIpOwogICAgfSkKICAgIC5jYXRjaCgoKSA9PiB0b2FzdC5lcnJvcigiRmFpbGVkIHRvIGdlbmVyYXRlIHBhY2tpbmcgc2xpcHMiKSk7Cn0KCi8vIOKUgOKUgCBTdWItY29tcG9uZW50cyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKCmZ1bmN0aW9uIFN0YXR1c0JhZGdlKHsgc3RhdHVzIH06IHsgc3RhdHVzOiBzdHJpbmcgfSkgewogIGNvbnN0IG1hcDogUmVjb3JkPHN0cmluZywgc3RyaW5nPiA9IHsKICAgIHBhaWQ6ICAgICAgICAgICAgICAiYmctZW1lcmFsZC0xMDAgdGV4dC1lbWVyYWxkLTgwMCBib3JkZXItZW1lcmFsZC0yMDAiLAogICAgcGF5bWVudF9yZWNlaXZlZDogICJiZy1lbWVyYWxkLTEwMCB0ZXh0LWVtZXJhbGQtODAwIGJvcmRlci1lbWVyYWxkLTIwMCIsCiAgICBwcm9jZXNzaW5nOiAgICAgICAgImJnLWJsdWUtMTAwIHRleHQtYmx1ZS04MDAgYm9yZGVyLWJsdWUtMjAwIiwKICAgIHNoaXBwZWQ6ICAgICAgICAgICAiYmctdmlvbGV0LTEwMCB0ZXh0LXZpb2xldC04MDAgYm9yZGVyLXZpb2xldC0yMDAiLAogIH07CiAgY29uc3QgbGFiZWxzOiBSZWNvcmQ8c3RyaW5nLCBzdHJpbmc+ID0gewogICAgcGFpZDogICAgICAgICAgICAgIlBhaWQiLAogICAgcGF5bWVudF9yZWNlaXZlZDogIlBheW1lbnQgUmVjZWl2ZWQiLAogICAgcHJvY2Vzc2luZzogICAgICAgIlByb2Nlc3NpbmciLAogICAgc2hpcHBlZDogICAgICAgICAgIlNoaXBwZWQiLAogIH07CiAgY29uc3QgY2xzID0gbWFwW3N0YXR1c10gPz8gImJnLWdyYXktMTAwIHRleHQtZ3JheS03MDAgYm9yZGVyLWdyYXktMjAwIjsKICByZXR1cm4gKAogICAgPHNwYW4gY2xhc3NOYW1lPXtgaW5saW5lLWZsZXggaXRlbXMtY2VudGVyIHB4LTIgcHktMC41IHJvdW5kZWQtZnVsbCB0ZXh0LXhzIGZvbnQtbWVkaXVtIGJvcmRlciAke2Nsc31gfT4KICAgICAge2xhYmVsc1tzdGF0dXNdID8/IHN0YXR1c30KICAgIDwvc3Bhbj4KICApOwp9CgpmdW5jdGlvbiBTaGlwRGlhbG9nKHsKICBvcmRlciwKICBvcGVuLAogIG9uQ2xvc2UsCiAgb25Eb25lLAp9OiB7CiAgb3JkZXI6IEZ1bGZpbGxtZW50T3JkZXI7CiAgb3BlbjogYm9vbGVhbjsKICBvbkNsb3NlOiAoKSA9PiB2b2lkOwogIG9uRG9uZTogKCkgPT4gdm9pZDsKfSkgewogIGNvbnN0IFt0cmFja2luZywgc2V0VHJhY2tpbmddID0gdXNlU3RhdGUob3JkZXIudHJhY2tpbmdOdW1iZXIgPz8gIiIpOwogIGNvbnN0IFtzYXZpbmcsIHNldFNhdmluZ10gPSB1c2VTdGF0ZShmYWxzZSk7CgogIGFzeW5jIGZ1bmN0aW9uIGhhbmRsZVNoaXAoKSB7CiAgICBzZXRTYXZpbmcodHJ1ZSk7CiAgICB0cnkgewogICAgICBhd2FpdCBwYXRjaE9yZGVyKG9yZGVyLmlkLCB7IHN0YXR1czogInNoaXBwZWQiLCB0cmFja2luZ051bWJlcjogdHJhY2tpbmcgfHwgdW5kZWZpbmVkIH0pOwogICAgICB0b2FzdC5zdWNjZXNzKGAke29yZGVyLm9yZGVyTnVtYmVyfSBtYXJrZWQgYXMgc2hpcHBlZGApOwogICAgICBvbkRvbmUoKTsKICAgIH0gY2F0Y2ggewogICAgICB0b2FzdC5lcnJvcigiRmFpbGVkIHRvIG1hcmsgb3JkZXIgYXMgc2hpcHBlZCIpOwogICAgfSBmaW5hbGx5IHsKICAgICAgc2V0U2F2aW5nKGZhbHNlKTsKICAgIH0KICB9CgogIHJldHVybiAoCiAgICA8RGlhbG9nIG9wZW49e29wZW59IG9uT3BlbkNoYW5nZT17diA9PiAhdiAmJiBvbkNsb3NlKCl9PgogICAgICA8RGlhbG9nQ29udGVudD4KICAgICAgICA8RGlhbG9nSGVhZGVyPgogICAgICAgICAgPERpYWxvZ1RpdGxlPk1hcmsgYXMgU2hpcHBlZCDigJQge29yZGVyLm9yZGVyTnVtYmVyfTwvRGlhbG9nVGl0bGU+CiAgICAgICAgPC9EaWFsb2dIZWFkZXI+CiAgICAgICAgPGRpdiBjbGFzc05hbWU9InNwYWNlLXktMyBweS0yIj4KICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1zbSB0ZXh0LW11dGVkLWZvcmVncm91bmQiPgogICAgICAgICAgICBTaGlwcGluZyB0byA8c3Ryb25nPntvcmRlci5jdXN0b21lck5hbWV9PC9zdHJvbmc+CiAgICAgICAgICAgIHtvcmRlci5jaXR5ID8gYCwgJHtvcmRlci5jaXR5fWAgOiAiIn0uCiAgICAgICAgICAgIEEgc2hpcHBpbmcgbm90aWZpY2F0aW9uIGVtYWlsIHdpbGwgYmUgc2VudCBhdXRvbWF0aWNhbGx5LgogICAgICAgICAgPC9wPgogICAgICAgICAgPGRpdiBjbGFzc05hbWU9InNwYWNlLXktMSI+CiAgICAgICAgICAgIDxsYWJlbCBjbGFzc05hbWU9InRleHQtc20gZm9udC1tZWRpdW0iPlRyYWNraW5nIE51bWJlciAob3B0aW9uYWwpPC9sYWJlbD4KICAgICAgICAgICAgPElucHV0CiAgICAgICAgICAgICAgcGxhY2Vob2xkZXI9IkVudGVyIHRyYWNraW5nIElEIgogICAgICAgICAgICAgIHZhbHVlPXt0cmFja2luZ30KICAgICAgICAgICAgICBvbkNoYW5nZT17ZSA9PiBzZXRUcmFja2luZyhlLnRhcmdldC52YWx1ZSl9CiAgICAgICAgICAgICAgYXV0b0ZvY3VzCiAgICAgICAgICAgIC8+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgICA8RGlhbG9nRm9vdGVyPgogICAgICAgICAgPEJ1dHRvbiB2YXJpYW50PSJvdXRsaW5lIiBvbkNsaWNrPXtvbkNsb3NlfT5DYW5jZWw8L0J1dHRvbj4KICAgICAgICAgIDxCdXR0b24gb25DbGljaz17aGFuZGxlU2hpcH0gZGlzYWJsZWQ9e3NhdmluZ30+CiAgICAgICAgICAgIHtzYXZpbmcgPyA8TG9hZGVyMiBjbGFzc05hbWU9InctNCBoLTQgYW5pbWF0ZS1zcGluIG1yLTIiIC8+IDogPFRydWNrIGNsYXNzTmFtZT0idy00IGgtNCBtci0yIiAvPn0KICAgICAgICAgICAgQ29uZmlybSBTaGlwcGVkCiAgICAgICAgICA8L0J1dHRvbj4KICAgICAgICA8L0RpYWxvZ0Zvb3Rlcj4KICAgICAgPC9EaWFsb2dDb250ZW50PgogICAgPC9EaWFsb2c+CiAgKTsKfQoKZnVuY3Rpb24gT3JkZXJDYXJkKHsKICBvcmRlciwKICBzZWxlY3RlZCwKICBvblNlbGVjdCwKICBvblJlZnJlc2gsCn06IHsKICBvcmRlcjogRnVsZmlsbG1lbnRPcmRlcjsKICBzZWxlY3RlZDogYm9vbGVhbjsKICBvblNlbGVjdDogKGlkOiBudW1iZXIsIGNoZWNrZWQ6IGJvb2xlYW4pID0+IHZvaWQ7CiAgb25SZWZyZXNoOiAoKSA9PiB2b2lkOwp9KSB7CiAgY29uc3QgW3NoaXBPcGVuLCBzZXRTaGlwT3Blbl0gPSB1c2VTdGF0ZShmYWxzZSk7CiAgY29uc3QgW2FkdmFuY2luZywgc2V0QWR2YW5jaW5nXSA9IHVzZVN0YXRlKGZhbHNlKTsKCiAgY29uc3QgYWRkcmVzcyA9IFtvcmRlci5hZGRyZXNzMSwgb3JkZXIuYWRkcmVzczIsIG9yZGVyLmNpdHksIG9yZGVyLnBvc3Rjb2RlLCBvcmRlci5jb3VudHJ5XQogICAgLmZpbHRlcihCb29sZWFuKS5qb2luKCIsICIpOwoKICBhc3luYyBmdW5jdGlvbiBoYW5kbGVBZHZhbmNlKCkgewogICAgc2V0QWR2YW5jaW5nKHRydWUpOwogICAgdHJ5IHsKICAgICAgY29uc3QgbmV4dCA9IG9yZGVyLnN0YXR1cyA9PT0gInByb2Nlc3NpbmciID8gInNoaXBwZWQiIDogInByb2Nlc3NpbmciOwogICAgICBpZiAobmV4dCA9PT0gInNoaXBwZWQiKSB7IHNldFNoaXBPcGVuKHRydWUpOyBzZXRBZHZhbmNpbmcoZmFsc2UpOyByZXR1cm47IH0KICAgICAgYXdhaXQgcGF0Y2hPcmRlcihvcmRlci5pZCwgeyBzdGF0dXM6IG5leHQgfSk7CiAgICAgIHRvYXN0LnN1Y2Nlc3MoYCR7b3JkZXIub3JkZXJOdW1iZXJ9IG1vdmVkIHRvIFByb2Nlc3NpbmdgKTsKICAgICAgb25SZWZyZXNoKCk7CiAgICB9IGNhdGNoIHsKICAgICAgdG9hc3QuZXJyb3IoIkZhaWxlZCB0byB1cGRhdGUgb3JkZXIiKTsKICAgIH0gZmluYWxseSB7CiAgICAgIHNldEFkdmFuY2luZyhmYWxzZSk7CiAgICB9CiAgfQoKICByZXR1cm4gKAogICAgPENhcmQgY2xhc3NOYW1lPXtgdHJhbnNpdGlvbi1zaGFkb3cgJHtzZWxlY3RlZCA/ICJyaW5nLTIgcmluZy1wcmltYXJ5IiA6ICIifWB9PgogICAgICA8Q2FyZENvbnRlbnQgY2xhc3NOYW1lPSJwLTQiPgogICAgICAgIHsvKiBSb3cgMTogY2hlY2tib3ggKyBvcmRlciAjICsgc3RhdHVzICsgYWN0aW9ucyAqL30KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1zdGFydCBnYXAtMyI+CiAgICAgICAgICA8Q2hlY2tib3gKICAgICAgICAgICAgY2hlY2tlZD17c2VsZWN0ZWR9CiAgICAgICAgICAgIG9uQ2hlY2tlZENoYW5nZT17diA9PiBvblNlbGVjdChvcmRlci5pZCwgISF2KX0KICAgICAgICAgICAgY2xhc3NOYW1lPSJtdC0wLjUgc2hyaW5rLTAiCiAgICAgICAgICAvPgogICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXgtMSBtaW4tdy0wIj4KICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGdhcC0yIGZsZXgtd3JhcCI+CiAgICAgICAgICAgICAgPExpbmsgaHJlZj17YC9vcmRlcnMvJHtvcmRlci5pZH1gfT4KICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0iZm9udC1tb25vIGZvbnQtc2VtaWJvbGQgdGV4dC1zbSBob3Zlcjp1bmRlcmxpbmUgdGV4dC1wcmltYXJ5IGN1cnNvci1wb2ludGVyIj4KICAgICAgICAgICAgICAgICAge29yZGVyLm9yZGVyTnVtYmVyfQogICAgICAgICAgICAgICAgPC9zcGFuPgogICAgICAgICAgICAgIDwvTGluaz4KICAgICAgICAgICAgICA8U3RhdHVzQmFkZ2Ugc3RhdHVzPXtvcmRlci5zdGF0dXN9IC8+CiAgICAgICAgICAgICAge29yZGVyLnNoaXBwaW5nTWV0aG9kICYmICgKICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0idGV4dC14cyBiZy1tdXRlZCBweC0yIHB5LTAuNSByb3VuZGVkLWZ1bGwgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIj4KICAgICAgICAgICAgICAgICAge29yZGVyLnNoaXBwaW5nTWV0aG9kfQogICAgICAgICAgICAgICAgPC9zcGFuPgogICAgICAgICAgICAgICl9CiAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJ0ZXh0LXhzIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCBtbC1hdXRvIj4KICAgICAgICAgICAgICAgIHtuZXcgRGF0ZShvcmRlci5jcmVhdGVkQXQpLnRvTG9jYWxlRGF0ZVN0cmluZygiZW4tR0IiLCB7IGRheTogIjItZGlnaXQiLCBtb250aDogInNob3J0IiB9KX0KICAgICAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICAgIDwvZGl2PgoKICAgICAgICAgICAgey8qIEN1c3RvbWVyICsgYWRkcmVzcyAqL30KICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9Im10LTIgdGV4dC1zbSI+CiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJmb250LW1lZGl1bSI+e29yZGVyLmN1c3RvbWVyTmFtZX08L3A+CiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LW11dGVkLWZvcmVncm91bmQgdGV4dC14cyBtdC0wLjUiPnthZGRyZXNzfTwvcD4KICAgICAgICAgICAgPC9kaXY+CgogICAgICAgICAgICB7LyogSXRlbXMgKi99CiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJtdC0zIGJvcmRlciByb3VuZGVkLW1kIG92ZXJmbG93LWhpZGRlbiI+CiAgICAgICAgICAgICAgPHRhYmxlIGNsYXNzTmFtZT0idy1mdWxsIHRleHQteHMiPgogICAgICAgICAgICAgICAgPHRoZWFkIGNsYXNzTmFtZT0iYmctbXV0ZWQvNTAiPgogICAgICAgICAgICAgICAgICA8dHI+CiAgICAgICAgICAgICAgICAgICAgPHRoIGNsYXNzTmFtZT0idGV4dC1sZWZ0IHB4LTMgcHktMS41IGZvbnQtbWVkaXVtIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+UHJvZHVjdDwvdGg+CiAgICAgICAgICAgICAgICAgICAgPHRoIGNsYXNzTmFtZT0idGV4dC1yaWdodCBweC0zIHB5LTEuNSBmb250LW1lZGl1bSB0ZXh0LW11dGVkLWZvcmVncm91bmQgdy0xMiI+UXR5PC90aD4KICAgICAgICAgICAgICAgICAgPC90cj4KICAgICAgICAgICAgICAgIDwvdGhlYWQ+CiAgICAgICAgICAgICAgICA8dGJvZHkgY2xhc3NOYW1lPSJkaXZpZGUteSI+CiAgICAgICAgICAgICAgICAgIHtvcmRlci5pdGVtcy5tYXAoaXRlbSA9PiAoCiAgICAgICAgICAgICAgICAgICAgPHRyIGtleT17aXRlbS5pZH0+CiAgICAgICAgICAgICAgICAgICAgICA8dGQgY2xhc3NOYW1lPSJweC0zIHB5LTIiPgogICAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9ImZvbnQtbWVkaXVtIj57aXRlbS5wcm9kdWN0TmFtZX08L3NwYW4+CiAgICAgICAgICAgICAgICAgICAgICAgIHtpdGVtLnByb2R1Y3RDYXRlZ29yeSAmJiAoCiAgICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJ0ZXh0LW11dGVkLWZvcmVncm91bmQgbWwtMSI+4oCUIHtpdGVtLnByb2R1Y3RDYXRlZ29yeX08L3NwYW4+CiAgICAgICAgICAgICAgICAgICAgICAgICl9CiAgICAgICAgICAgICAgICAgICAgICA8L3RkPgogICAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzTmFtZT0icHgtMyBweS0yIHRleHQtcmlnaHQgZm9udC1tb25vIGZvbnQtc2VtaWJvbGQiPntpdGVtLnF1YW50aXR5fTwvdGQ+CiAgICAgICAgICAgICAgICAgICAgPC90cj4KICAgICAgICAgICAgICAgICAgKSl9CiAgICAgICAgICAgICAgICA8L3Rib2R5PgogICAgICAgICAgICAgIDwvdGFibGU+CiAgICAgICAgICAgIDwvZGl2PgoKICAgICAgICAgICAgey8qIE5vdGVzICovfQogICAgICAgICAgICB7b3JkZXIubm90ZXMgJiYgKAogICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0ibXQtMiB0ZXh0LXhzIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCBpdGFsaWMgYm9yZGVyLWwtMiBib3JkZXItbXV0ZWQgcGwtMiI+CiAgICAgICAgICAgICAgICB7b3JkZXIubm90ZXN9CiAgICAgICAgICAgICAgPC9wPgogICAgICAgICAgICApfQoKICAgICAgICAgICAgey8qIEFjdGlvbnMgKi99CiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJtdC0zIGZsZXggZmxleC13cmFwIGdhcC0yIj4KICAgICAgICAgICAgICA8QnV0dG9uCiAgICAgICAgICAgICAgICBzaXplPSJzbSIgdmFyaWFudD0ib3V0bGluZSIKICAgICAgICAgICAgICAgIG9uQ2xpY2s9eygpID0+IG9wZW5QYWNraW5nU2xpcChbb3JkZXIuaWRdKX0KICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICA8UHJpbnRlciBjbGFzc05hbWU9InctMy41IGgtMy41IG1yLTEuNSIgLz4gUHJpbnQgU2xpcAogICAgICAgICAgICAgIDwvQnV0dG9uPgogICAgICAgICAgICAgIHtvcmRlci5zdGF0dXMgIT09ICJzaGlwcGVkIiAmJiAoCiAgICAgICAgICAgICAgICA8QnV0dG9uIHNpemU9InNtIiBvbkNsaWNrPXtoYW5kbGVBZHZhbmNlfSBkaXNhYmxlZD17YWR2YW5jaW5nfT4KICAgICAgICAgICAgICAgICAge2FkdmFuY2luZwogICAgICAgICAgICAgICAgICAgID8gPExvYWRlcjIgY2xhc3NOYW1lPSJ3LTMuNSBoLTMuNSBhbmltYXRlLXNwaW4gbXItMS41IiAvPgogICAgICAgICAgICAgICAgICAgIDogPEFycm93UmlnaHQgY2xhc3NOYW1lPSJ3LTMuNSBoLTMuNSBtci0xLjUiIC8+fQogICAgICAgICAgICAgICAgICB7b3JkZXIuc3RhdHVzID09PSAicHJvY2Vzc2luZyIgPyAiTWFyayBTaGlwcGVkIiA6ICJNYXJrIFByb2Nlc3NpbmcifQogICAgICAgICAgICAgICAgPC9CdXR0b24+CiAgICAgICAgICAgICAgKX0KICAgICAgICAgICAgICA8TGluayBocmVmPXtgL29yZGVycy8ke29yZGVyLmlkfWB9PgogICAgICAgICAgICAgICAgPEJ1dHRvbiBzaXplPSJzbSIgdmFyaWFudD0iZ2hvc3QiPgogICAgICAgICAgICAgICAgICA8RXh0ZXJuYWxMaW5rIGNsYXNzTmFtZT0idy0zLjUgaC0zLjUgbXItMS41IiAvPiBEZXRhaWwKICAgICAgICAgICAgICAgIDwvQnV0dG9uPgogICAgICAgICAgICAgIDwvTGluaz4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgPC9DYXJkQ29udGVudD4KCiAgICAgIHtzaGlwT3BlbiAmJiAoCiAgICAgICAgPFNoaXBEaWFsb2cKICAgICAgICAgIG9yZGVyPXtvcmRlcn0KICAgICAgICAgIG9wZW49e3NoaXBPcGVufQogICAgICAgICAgb25DbG9zZT17KCkgPT4gc2V0U2hpcE9wZW4oZmFsc2UpfQogICAgICAgICAgb25Eb25lPXsoKSA9PiB7IHNldFNoaXBPcGVuKGZhbHNlKTsgb25SZWZyZXNoKCk7IH19CiAgICAgICAgLz4KICAgICAgKX0KICAgIDwvQ2FyZD4KICApOwp9CgovLyDilIDilIAgTWFpbiBwYWdlIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAoKZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gRnVsZmlsbG1lbnRRdWV1ZSgpIHsKICBjb25zdCBbdGFiLCBzZXRUYWJdID0gdXNlU3RhdGU8VGFiPigicmVhZHkiKTsKICBjb25zdCBbc2VsZWN0ZWRJZHMsIHNldFNlbGVjdGVkSWRzXSA9IHVzZVN0YXRlPFNldDxudW1iZXI+PihuZXcgU2V0KCkpOwogIGNvbnN0IFtidWxrQWN0aW9uLCBzZXRCdWxrQWN0aW9uXSA9IHVzZVN0YXRlPCJwcm9jZXNzaW5nIiB8ICJzaGlwcGVkIiB8IG51bGw+KG51bGwpOwogIGNvbnN0IFthcHBseWluZywgc2V0QXBwbHlpbmddID0gdXNlU3RhdGUoZmFsc2UpOwogIGNvbnN0IHFjID0gdXNlUXVlcnlDbGllbnQoKTsKCiAgY29uc3QgcXVlcnlLZXkgPSBbImZ1bGZpbGxtZW50IiwgdGFiXTsKICBjb25zdCB7IGRhdGEsIGlzTG9hZGluZyB9ID0gdXNlUXVlcnkoewogICAgcXVlcnlLZXksCiAgICBxdWVyeUZuOiAoKSA9PiBmZXRjaEZ1bGZpbGxtZW50KHRhYiksCiAgICBzdGFsZVRpbWU6IDIwXzAwMCwKICB9KTsKCiAgY29uc3Qgb3JkZXJzID0gZGF0YT8ub3JkZXJzID8/IFtdOwogIGNvbnN0IHRvdGFsICA9IGRhdGE/LnRvdGFsICA/PyAwOwoKICBjb25zdCByZWZyZXNoID0gdXNlQ2FsbGJhY2soKCkgPT4gewogICAgc2V0U2VsZWN0ZWRJZHMobmV3IFNldCgpKTsKICAgIHFjLmludmFsaWRhdGVRdWVyaWVzKHsgcXVlcnlLZXk6IFsiZnVsZmlsbG1lbnQiXSB9KTsKICB9LCBbcWNdKTsKCiAgZnVuY3Rpb24gdG9nZ2xlU2VsZWN0KGlkOiBudW1iZXIsIGNoZWNrZWQ6IGJvb2xlYW4pIHsKICAgIHNldFNlbGVjdGVkSWRzKHByZXYgPT4gewogICAgICBjb25zdCBuZXh0ID0gbmV3IFNldChwcmV2KTsKICAgICAgY2hlY2tlZCA/IG5leHQuYWRkKGlkKSA6IG5leHQuZGVsZXRlKGlkKTsKICAgICAgcmV0dXJuIG5leHQ7CiAgICB9KTsKICB9CgogIGZ1bmN0aW9uIHRvZ2dsZUFsbCgpIHsKICAgIGlmIChzZWxlY3RlZElkcy5zaXplID09PSBvcmRlcnMubGVuZ3RoKSB7CiAgICAgIHNldFNlbGVjdGVkSWRzKG5ldyBTZXQoKSk7CiAgICB9IGVsc2UgewogICAgICBzZXRTZWxlY3RlZElkcyhuZXcgU2V0KG9yZGVycy5tYXAobyA9PiBvLmlkKSkpOwogICAgfQogIH0KCiAgYXN5bmMgZnVuY3Rpb24gaGFuZGxlQnVsa0FwcGx5KCkgewogICAgaWYgKCFidWxrQWN0aW9uIHx8IHNlbGVjdGVkSWRzLnNpemUgPT09IDApIHJldHVybjsKICAgIHNldEFwcGx5aW5nKHRydWUpOwogICAgdHJ5IHsKICAgICAgYXdhaXQgYnVsa1VwZGF0ZShbLi4uc2VsZWN0ZWRJZHNdLCBidWxrQWN0aW9uKTsKICAgICAgdG9hc3Quc3VjY2VzcyhgJHtzZWxlY3RlZElkcy5zaXplfSBvcmRlciR7c2VsZWN0ZWRJZHMuc2l6ZSA+IDEgPyAicyIgOiAiIn0gdXBkYXRlZCB0byAke2J1bGtBY3Rpb259YCk7CiAgICAgIHJlZnJlc2goKTsKICAgIH0gY2F0Y2ggewogICAgICB0b2FzdC5lcnJvcigiQnVsayB1cGRhdGUgZmFpbGVkIik7CiAgICB9IGZpbmFsbHkgewogICAgICBzZXRBcHBseWluZyhmYWxzZSk7CiAgICAgIHNldEJ1bGtBY3Rpb24obnVsbCk7CiAgICB9CiAgfQoKICBjb25zdCBhbGxTZWxlY3RlZCA9IG9yZGVycy5sZW5ndGggPiAwICYmIHNlbGVjdGVkSWRzLnNpemUgPT09IG9yZGVycy5sZW5ndGg7CiAgY29uc3Qgc29tZVNlbGVjdGVkID0gc2VsZWN0ZWRJZHMuc2l6ZSA+IDA7CgogIHJldHVybiAoCiAgICA8ZGl2IGNsYXNzTmFtZT0ic3BhY2UteS02Ij4KICAgICAgey8qIEhlYWRlciAqL30KICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktYmV0d2VlbiBmbGV4LXdyYXAgZ2FwLTMiPgogICAgICAgIDxkaXY+CiAgICAgICAgICA8aDEgY2xhc3NOYW1lPSJ0ZXh0LTJ4bCBmb250LWJvbGQgZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTIiPgogICAgICAgICAgICA8Q2xpcGJvYXJkTGlzdCBjbGFzc05hbWU9InctNiBoLTYiIC8+IEZ1bGZpbG1lbnQgUXVldWUKICAgICAgICAgIDwvaDE+CiAgICAgICAgICA8cCBjbGFzc05hbWU9InRleHQtbXV0ZWQtZm9yZWdyb3VuZCB0ZXh0LXNtIG10LTAuNSI+CiAgICAgICAgICAgIFBpY2ssIHBhY2ssIGFuZCBkaXNwYXRjaCBwYWlkIG9yZGVycwogICAgICAgICAgPC9wPgogICAgICAgIDwvZGl2PgogICAgICA8L2Rpdj4KCiAgICAgIHsvKiBUYWJzICovfQogICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBnYXAtMSBib3JkZXItYiI+CiAgICAgICAgeyhbInJlYWR5IiwgInByb2Nlc3NpbmciLCAic2hpcHBlZCJdIGFzIFRhYltdKS5tYXAodCA9PiAoCiAgICAgICAgICA8YnV0dG9uCiAgICAgICAgICAgIGtleT17dH0KICAgICAgICAgICAgb25DbGljaz17KCkgPT4geyBzZXRUYWIodCk7IHNldFNlbGVjdGVkSWRzKG5ldyBTZXQoKSk7IH19CiAgICAgICAgICAgIGNsYXNzTmFtZT17YHB4LTQgcHktMiB0ZXh0LXNtIGZvbnQtbWVkaXVtIHRyYW5zaXRpb24tY29sb3JzIGJvcmRlci1iLTIgLW1iLXB4ICR7CiAgICAgICAgICAgICAgdGFiID09PSB0CiAgICAgICAgICAgICAgICA/ICJib3JkZXItcHJpbWFyeSB0ZXh0LXByaW1hcnkiCiAgICAgICAgICAgICAgICA6ICJib3JkZXItdHJhbnNwYXJlbnQgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIGhvdmVyOnRleHQtZm9yZWdyb3VuZCIKICAgICAgICAgICAgfWB9CiAgICAgICAgICA+CiAgICAgICAgICAgIHtUQUJfTEFCRUxTW3RdfQogICAgICAgICAgICB7dCA9PT0gInJlYWR5IiAmJiB0b3RhbCA+IDAgJiYgdGFiID09PSB0ICYmICgKICAgICAgICAgICAgICA8QmFkZ2UgdmFyaWFudD0iZGVzdHJ1Y3RpdmUiIGNsYXNzTmFtZT0ibWwtMiB0ZXh0LXhzIHB4LTEuNSBweS0wIj57dG90YWx9PC9CYWRnZT4KICAgICAgICAgICAgKX0KICAgICAgICAgIDwvYnV0dG9uPgogICAgICAgICkpfQogICAgICA8L2Rpdj4KCiAgICAgIHsvKiBCdWxrIHRvb2xiYXIgKi99CiAgICAgIHtzb21lU2VsZWN0ZWQgJiYgKAogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMyBweC00IHB5LTIuNSBiZy1tdXRlZC82MCBib3JkZXIgcm91bmRlZC1sZyBmbGV4LXdyYXAiPgogICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJ0ZXh0LXNtIGZvbnQtbWVkaXVtIj57c2VsZWN0ZWRJZHMuc2l6ZX0gc2VsZWN0ZWQ8L3NwYW4+CiAgICAgICAgICA8QnV0dG9uCiAgICAgICAgICAgIHNpemU9InNtIiB2YXJpYW50PSJvdXRsaW5lIgogICAgICAgICAgICBvbkNsaWNrPXsoKSA9PiBvcGVuUGFja2luZ1NsaXAoWy4uLnNlbGVjdGVkSWRzXSl9CiAgICAgICAgICA+CiAgICAgICAgICAgIDxQcmludGVyIGNsYXNzTmFtZT0idy0zLjUgaC0zLjUgbXItMS41IiAvPgogICAgICAgICAgICBQcmludCB7c2VsZWN0ZWRJZHMuc2l6ZSA+IDEgPyBgJHtzZWxlY3RlZElkcy5zaXplfSBzbGlwc2AgOiAic2xpcCJ9CiAgICAgICAgICA8L0J1dHRvbj4KICAgICAgICAgIHt0YWIgPT09ICJyZWFkeSIgJiYgKAogICAgICAgICAgICA8QnV0dG9uCiAgICAgICAgICAgICAgc2l6ZT0ic20iCiAgICAgICAgICAgICAgb25DbGljaz17KCkgPT4geyBzZXRCdWxrQWN0aW9uKCJwcm9jZXNzaW5nIik7IH19CiAgICAgICAgICAgICAgZGlzYWJsZWQ9e2FwcGx5aW5nfQogICAgICAgICAgICA+CiAgICAgICAgICAgICAgPEFycm93UmlnaHQgY2xhc3NOYW1lPSJ3LTMuNSBoLTMuNSBtci0xLjUiIC8+IE1hcmsgUHJvY2Vzc2luZwogICAgICAgICAgICA8L0J1dHRvbj4KICAgICAgICAgICl9CiAgICAgICAgICB7dGFiID09PSAicHJvY2Vzc2luZyIgJiYgKAogICAgICAgICAgICA8QnV0dG9uCiAgICAgICAgICAgICAgc2l6ZT0ic20iCiAgICAgICAgICAgICAgb25DbGljaz17KCkgPT4geyBzZXRCdWxrQWN0aW9uKCJzaGlwcGVkIik7IH19CiAgICAgICAgICAgICAgZGlzYWJsZWQ9e2FwcGx5aW5nfQogICAgICAgICAgICA+CiAgICAgICAgICAgICAgPFRydWNrIGNsYXNzTmFtZT0idy0zLjUgaC0zLjUgbXItMS41IiAvPiBNYXJrIFNoaXBwZWQKICAgICAgICAgICAgPC9CdXR0b24+CiAgICAgICAgICApfQogICAgICAgICAge2J1bGtBY3Rpb24gJiYgKAogICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTIgbWwtYXV0byI+CiAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJ0ZXh0LXNtIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+CiAgICAgICAgICAgICAgICBNb3ZlIHtzZWxlY3RlZElkcy5zaXplfSBvcmRlcntzZWxlY3RlZElkcy5zaXplID4gMSA/ICJzIiA6ICIifSB0b3siICJ9CiAgICAgICAgICAgICAgICA8c3Ryb25nPntidWxrQWN0aW9ufTwvc3Ryb25nPj8KICAgICAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICAgICAgPEJ1dHRvbiBzaXplPSJzbSIgb25DbGljaz17aGFuZGxlQnVsa0FwcGx5fSBkaXNhYmxlZD17YXBwbHlpbmd9PgogICAgICAgICAgICAgICAge2FwcGx5aW5nID8gPExvYWRlcjIgY2xhc3NOYW1lPSJ3LTQgaC00IGFuaW1hdGUtc3BpbiBtci0xLjUiIC8+IDogPENoZWNrQ2lyY2xlMiBjbGFzc05hbWU9InctNCBoLTQgbXItMS41IiAvPn0KICAgICAgICAgICAgICAgIENvbmZpcm0KICAgICAgICAgICAgICA8L0J1dHRvbj4KICAgICAgICAgICAgICA8QnV0dG9uIHNpemU9InNtIiB2YXJpYW50PSJnaG9zdCIgb25DbGljaz17KCkgPT4gc2V0QnVsa0FjdGlvbihudWxsKX0+Q2FuY2VsPC9CdXR0b24+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgKX0KICAgICAgICA8L2Rpdj4KICAgICAgKX0KCiAgICAgIHsvKiBTZWxlY3QgYWxsIHJvdyAqL30KICAgICAge29yZGVycy5sZW5ndGggPiAwICYmICgKICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTIiPgogICAgICAgICAgPENoZWNrYm94IGNoZWNrZWQ9e2FsbFNlbGVjdGVkfSBvbkNoZWNrZWRDaGFuZ2U9e3RvZ2dsZUFsbH0gLz4KICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0idGV4dC1zbSB0ZXh0LW11dGVkLWZvcmVncm91bmQiPgogICAgICAgICAgICB7YWxsU2VsZWN0ZWQgPyAiRGVzZWxlY3QgYWxsIiA6IGBTZWxlY3QgYWxsICR7b3JkZXJzLmxlbmd0aH1gfQogICAgICAgICAgPC9zcGFuPgogICAgICAgIDwvZGl2PgogICAgICApfQoKICAgICAgey8qIENvbnRlbnQgKi99CiAgICAgIHtpc0xvYWRpbmcgPyAoCiAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXgganVzdGlmeS1jZW50ZXIgcHktMjAiPgogICAgICAgICAgPExvYWRlcjIgY2xhc3NOYW1lPSJ3LTggaC04IGFuaW1hdGUtc3BpbiB0ZXh0LW11dGVkLWZvcmVncm91bmQiIC8+CiAgICAgICAgPC9kaXY+CiAgICAgICkgOiBvcmRlcnMubGVuZ3RoID09PSAwID8gKAogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGZsZXgtY29sIGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBweS0yNCB0ZXh0LWNlbnRlciI+CiAgICAgICAgICA8UGFja2FnZSBjbGFzc05hbWU9InctMTIgaC0xMiB0ZXh0LW11dGVkLWZvcmVncm91bmQvNDAgbWItNCIgLz4KICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1sZyBmb250LW1lZGl1bSB0ZXh0LW11dGVkLWZvcmVncm91bmQiPgogICAgICAgICAgICB7dGFiID09PSAicmVhZHkiID8gIk5vIG9yZGVycyB3YWl0aW5nIHRvIGJlIHBpY2tlZCIgOgogICAgICAgICAgICAgdGFiID09PSAicHJvY2Vzc2luZyIgPyAiTm8gb3JkZXJzIGN1cnJlbnRseSBiZWluZyBwcm9jZXNzZWQiIDoKICAgICAgICAgICAgICJObyBzaGlwcGVkIG9yZGVycyB5ZXQifQogICAgICAgICAgPC9wPgogICAgICAgICAge3RhYiA9PT0gInJlYWR5IiAmJiAoCiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1zbSB0ZXh0LW11dGVkLWZvcmVncm91bmQgbXQtMSI+CiAgICAgICAgICAgICAgTmV3IHBhaWQgb3JkZXJzIHdpbGwgYXBwZWFyIGhlcmUgYXV0b21hdGljYWxseS4KICAgICAgICAgICAgPC9wPgogICAgICAgICAgKX0KICAgICAgICA8L2Rpdj4KICAgICAgKSA6ICgKICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ic3BhY2UteS0zIj4KICAgICAgICAgIHtvcmRlcnMubWFwKG9yZGVyID0+ICgKICAgICAgICAgICAgPE9yZGVyQ2FyZAogICAgICAgICAgICAgIGtleT17b3JkZXIuaWR9CiAgICAgICAgICAgICAgb3JkZXI9e29yZGVyfQogICAgICAgICAgICAgIHNlbGVjdGVkPXtzZWxlY3RlZElkcy5oYXMob3JkZXIuaWQpfQogICAgICAgICAgICAgIG9uU2VsZWN0PXt0b2dnbGVTZWxlY3R9CiAgICAgICAgICAgICAgb25SZWZyZXNoPXtyZWZyZXNofQogICAgICAgICAgICAvPgogICAgICAgICAgKSl9CiAgICAgICAgPC9kaXY+CiAgICAgICl9CiAgICA8L2Rpdj4KICApOwp9Cg==
+import { useState, useCallback } from "react";
+import { Link } from "wouter";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Loader2, Package, Printer, Truck, ArrowRight,
+  CheckCircle2, ExternalLink, ClipboardList,
+} from "lucide-react";
+import { toast } from "sonner";
+
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+interface FulfillmentItem {
+  id: number;
+  productName: string;
+  productCategory: string | null;
+  quantity: number;
+  priceGbp: number;
+}
+
+interface FulfillmentOrder {
+  id: number;
+  orderNumber: string;
+  status: string;
+  customerName: string;
+  customerEmail: string;
+  phone: string | null;
+  address1: string | null;
+  address2: string | null;
+  city: string | null;
+  county: string | null;
+  postcode: string | null;
+  country: string | null;
+  shippingMethod: string | null;
+  trackingNumber: string | null;
+  totalGbp: number;
+  notes: string | null;
+  createdAt: string;
+  items: FulfillmentItem[];
+}
+
+type Tab = "ready" | "processing" | "shipped";
+
+const TAB_LABELS: Record<Tab, string> = {
+  ready:      "Ready to Pick",
+  processing: "Processing",
+  shipped:    "Shipped",
+};
+
+// ── API helpers ───────────────────────────────────────────────────────────────
+
+async function fetchFulfillment(tab: Tab): Promise<{ orders: FulfillmentOrder[]; total: number }> {
+  const res = await fetch(`/api/admin/fulfillment?tab=${tab}&limit=100`, { credentials: "include" });
+  if (!res.ok) throw new Error("Failed to load fulfillment queue");
+  return res.json();
+}
+
+async function patchOrder(id: number, body: Record<string, unknown>) {
+  const res = await fetch(`/api/admin/orders/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error("Failed to update order");
+  return res.json();
+}
+
+async function bulkUpdate(ids: number[], status: string) {
+  const res = await fetch("/api/admin/orders/bulk-update", {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ids, status }),
+  });
+  if (!res.ok) throw new Error("Failed to bulk-update orders");
+}
+
+function openPackingSlip(ids: number[]) {
+  if (ids.length === 1) {
+    window.open(`/api/admin/orders/${ids[0]}/packing-slip`, "_blank");
+    return;
+  }
+  // Multi-slip: POST, open blob URL
+  fetch("/api/admin/fulfillment/packing-slips", {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ids }),
+  })
+    .then(r => r.text())
+    .then(html => {
+      const blob = new Blob([html], { type: "text/html" });
+      window.open(URL.createObjectURL(blob), "_blank");
+    })
+    .catch(() => toast.error("Failed to generate packing slips"));
+}
+
+// ── Sub-components ────────────────────────────────────────────────────────────
+
+function StatusBadge({ status }: { status: string }) {
+  const map: Record<string, string> = {
+    paid:              "bg-emerald-100 text-emerald-800 border-emerald-200",
+    payment_received:  "bg-emerald-100 text-emerald-800 border-emerald-200",
+    processing:        "bg-blue-100 text-blue-800 border-blue-200",
+    shipped:           "bg-violet-100 text-violet-800 border-violet-200",
+  };
+  const labels: Record<string, string> = {
+    paid:             "Paid",
+    payment_received: "Payment Received",
+    processing:       "Processing",
+    shipped:          "Shipped",
+  };
+  const cls = map[status] ?? "bg-gray-100 text-gray-700 border-gray-200";
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${cls}`}>
+      {labels[status] ?? status}
+    </span>
+  );
+}
+
+function ShipDialog({
+  order,
+  open,
+  onClose,
+  onDone,
+}: {
+  order: FulfillmentOrder;
+  open: boolean;
+  onClose: () => void;
+  onDone: () => void;
+}) {
+  const [tracking, setTracking] = useState(order.trackingNumber ?? "");
+  const [saving, setSaving] = useState(false);
+
+  async function handleShip() {
+    setSaving(true);
+    try {
+      await patchOrder(order.id, { status: "shipped", trackingNumber: tracking || undefined });
+      toast.success(`${order.orderNumber} marked as shipped`);
+      onDone();
+    } catch {
+      toast.error("Failed to mark order as shipped");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={v => !v && onClose()}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Mark as Shipped — {order.orderNumber}</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-3 py-2">
+          <p className="text-sm text-muted-foreground">
+            Shipping to <strong>{order.customerName}</strong>
+            {order.city ? `, ${order.city}` : ""}.
+            A shipping notification email will be sent automatically.
+          </p>
+          <div className="space-y-1">
+            <label className="text-sm font-medium">Tracking Number (optional)</label>
+            <Input
+              placeholder="Enter tracking ID"
+              value={tracking}
+              onChange={e => setTracking(e.target.value)}
+              autoFocus
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button onClick={handleShip} disabled={saving}>
+            {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Truck className="w-4 h-4 mr-2" />}
+            Confirm Shipped
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function OrderCard({
+  order,
+  selected,
+  onSelect,
+  onRefresh,
+}: {
+  order: FulfillmentOrder;
+  selected: boolean;
+  onSelect: (id: number, checked: boolean) => void;
+  onRefresh: () => void;
+}) {
+  const [shipOpen, setShipOpen] = useState(false);
+  const [advancing, setAdvancing] = useState(false);
+
+  const address = [order.address1, order.address2, order.city, order.postcode, order.country]
+    .filter(Boolean).join(", ");
+
+  async function handleAdvance() {
+    setAdvancing(true);
+    try {
+      const next = order.status === "processing" ? "shipped" : "processing";
+      if (next === "shipped") { setShipOpen(true); setAdvancing(false); return; }
+      await patchOrder(order.id, { status: next });
+      toast.success(`${order.orderNumber} moved to Processing`);
+      onRefresh();
+    } catch {
+      toast.error("Failed to update order");
+    } finally {
+      setAdvancing(false);
+    }
+  }
+
+  return (
+    <Card className={`transition-shadow ${selected ? "ring-2 ring-primary" : ""}`}>
+      <CardContent className="p-4">
+        {/* Row 1: checkbox + order # + status + actions */}
+        <div className="flex items-start gap-3">
+          <Checkbox
+            checked={selected}
+            onCheckedChange={v => onSelect(order.id, !!v)}
+            className="mt-0.5 shrink-0"
+          />
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <Link href={`/orders/${order.id}`}>
+                <span className="font-mono font-semibold text-sm hover:underline text-primary cursor-pointer">
+                  {order.orderNumber}
+                </span>
+              </Link>
+              <StatusBadge status={order.status} />
+              {order.shippingMethod && (
+                <span className="text-xs bg-muted px-2 py-0.5 rounded-full text-muted-foreground">
+                  {order.shippingMethod}
+                </span>
+              )}
+              <span className="text-xs text-muted-foreground ml-auto">
+                {new Date(order.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short" })}
+              </span>
+            </div>
+
+            {/* Customer + address */}
+            <div className="mt-2 text-sm">
+              <p className="font-medium">{order.customerName}</p>
+              <p className="text-muted-foreground text-xs mt-0.5">{address}</p>
+            </div>
+
+            {/* Items */}
+            <div className="mt-3 border rounded-md overflow-hidden">
+              <table className="w-full text-xs">
+                <thead className="bg-muted/50">
+                  <tr>
+                    <th className="text-left px-3 py-1.5 font-medium text-muted-foreground">Product</th>
+                    <th className="text-right px-3 py-1.5 font-medium text-muted-foreground w-12">Qty</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  {order.items.map(item => (
+                    <tr key={item.id}>
+                      <td className="px-3 py-2">
+                        <span className="font-medium">{item.productName}</span>
+                        {item.productCategory && (
+                          <span className="text-muted-foreground ml-1">— {item.productCategory}</span>
+                        )}
+                      </td>
+                      <td className="px-3 py-2 text-right font-mono font-semibold">{item.quantity}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Notes */}
+            {order.notes && (
+              <p className="mt-2 text-xs text-muted-foreground italic border-l-2 border-muted pl-2">
+                {order.notes}
+              </p>
+            )}
+
+            {/* Actions */}
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Button
+                size="sm" variant="outline"
+                onClick={() => openPackingSlip([order.id])}
+              >
+                <Printer className="w-3.5 h-3.5 mr-1.5" /> Print Slip
+              </Button>
+              {order.status !== "shipped" && (
+                <Button size="sm" onClick={handleAdvance} disabled={advancing}>
+                  {advancing
+                    ? <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" />
+                    : <ArrowRight className="w-3.5 h-3.5 mr-1.5" />}
+                  {order.status === "processing" ? "Mark Shipped" : "Mark Processing"}
+                </Button>
+              )}
+              <Link href={`/orders/${order.id}`}>
+                <Button size="sm" variant="ghost">
+                  <ExternalLink className="w-3.5 h-3.5 mr-1.5" /> Detail
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+
+      {shipOpen && (
+        <ShipDialog
+          order={order}
+          open={shipOpen}
+          onClose={() => setShipOpen(false)}
+          onDone={() => { setShipOpen(false); onRefresh(); }}
+        />
+      )}
+    </Card>
+  );
+}
+
+// ── Main page ─────────────────────────────────────────────────────────────────
+
+export default function FulfillmentQueue() {
+  const [tab, setTab] = useState<Tab>("ready");
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+  const [bulkAction, setBulkAction] = useState<"processing" | "shipped" | null>(null);
+  const [applying, setApplying] = useState(false);
+  const qc = useQueryClient();
+
+  const queryKey = ["fulfillment", tab];
+  const { data, isLoading } = useQuery({
+    queryKey,
+    queryFn: () => fetchFulfillment(tab),
+    staleTime: 20_000,
+  });
+
+  const orders = data?.orders ?? [];
+  const total  = data?.total  ?? 0;
+
+  const refresh = useCallback(() => {
+    setSelectedIds(new Set());
+    qc.invalidateQueries({ queryKey: ["fulfillment"] });
+  }, [qc]);
+
+  function toggleSelect(id: number, checked: boolean) {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      checked ? next.add(id) : next.delete(id);
+      return next;
+    });
+  }
+
+  function toggleAll() {
+    if (selectedIds.size === orders.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(orders.map(o => o.id)));
+    }
+  }
+
+  async function handleBulkApply() {
+    if (!bulkAction || selectedIds.size === 0) return;
+    setApplying(true);
+    try {
+      await bulkUpdate([...selectedIds], bulkAction);
+      toast.success(`${selectedIds.size} order${selectedIds.size > 1 ? "s" : ""} updated to ${bulkAction}`);
+      refresh();
+    } catch {
+      toast.error("Bulk update failed");
+    } finally {
+      setApplying(false);
+      setBulkAction(null);
+    }
+  }
+
+  const allSelected = orders.length > 0 && selectedIds.size === orders.length;
+  const someSelected = selectedIds.size > 0;
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h1 className="text-2xl font-bold flex items-center gap-2">
+            <ClipboardList className="w-6 h-6" /> Fulfilment Queue
+          </h1>
+          <p className="text-muted-foreground text-sm mt-0.5">
+            Pick, pack, and dispatch paid orders
+          </p>
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-1 border-b">
+        {(["ready", "processing", "shipped"] as Tab[]).map(t => (
+          <button
+            key={t}
+            onClick={() => { setTab(t); setSelectedIds(new Set()); }}
+            className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px ${
+              tab === t
+                ? "border-primary text-primary"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {TAB_LABELS[t]}
+            {t === "ready" && total > 0 && tab === t && (
+              <Badge variant="destructive" className="ml-2 text-xs px-1.5 py-0">{total}</Badge>
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Bulk toolbar */}
+      {someSelected && (
+        <div className="flex items-center gap-3 px-4 py-2.5 bg-muted/60 border rounded-lg flex-wrap">
+          <span className="text-sm font-medium">{selectedIds.size} selected</span>
+          <Button
+            size="sm" variant="outline"
+            onClick={() => openPackingSlip([...selectedIds])}
+          >
+            <Printer className="w-3.5 h-3.5 mr-1.5" />
+            Print {selectedIds.size > 1 ? `${selectedIds.size} slips` : "slip"}
+          </Button>
+          {tab === "ready" && (
+            <Button
+              size="sm"
+              onClick={() => { setBulkAction("processing"); }}
+              disabled={applying}
+            >
+              <ArrowRight className="w-3.5 h-3.5 mr-1.5" /> Mark Processing
+            </Button>
+          )}
+          {tab === "processing" && (
+            <Button
+              size="sm"
+              onClick={() => { setBulkAction("shipped"); }}
+              disabled={applying}
+            >
+              <Truck className="w-3.5 h-3.5 mr-1.5" /> Mark Shipped
+            </Button>
+          )}
+          {bulkAction && (
+            <div className="flex items-center gap-2 ml-auto">
+              <span className="text-sm text-muted-foreground">
+                Move {selectedIds.size} order{selectedIds.size > 1 ? "s" : ""} to{" "}
+                <strong>{bulkAction}</strong>?
+              </span>
+              <Button size="sm" onClick={handleBulkApply} disabled={applying}>
+                {applying ? <Loader2 className="w-4 h-4 animate-spin mr-1.5" /> : <CheckCircle2 className="w-4 h-4 mr-1.5" />}
+                Confirm
+              </Button>
+              <Button size="sm" variant="ghost" onClick={() => setBulkAction(null)}>Cancel</Button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Select all row */}
+      {orders.length > 0 && (
+        <div className="flex items-center gap-2">
+          <Checkbox checked={allSelected} onCheckedChange={toggleAll} />
+          <span className="text-sm text-muted-foreground">
+            {allSelected ? "Deselect all" : `Select all ${orders.length}`}
+          </span>
+        </div>
+      )}
+
+      {/* Content */}
+      {isLoading ? (
+        <div className="flex justify-center py-20">
+          <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+        </div>
+      ) : orders.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-24 text-center">
+          <Package className="w-12 h-12 text-muted-foreground/40 mb-4" />
+          <p className="text-lg font-medium text-muted-foreground">
+            {tab === "ready" ? "No orders waiting to be picked" :
+             tab === "processing" ? "No orders currently being processed" :
+             "No shipped orders yet"}
+          </p>
+          {tab === "ready" && (
+            <p className="text-sm text-muted-foreground mt-1">
+              New paid orders will appear here automatically.
+            </p>
+          )}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {orders.map(order => (
+            <OrderCard
+              key={order.id}
+              order={order}
+              selected={selectedIds.has(order.id)}
+              onSelect={toggleSelect}
+              onRefresh={refresh}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

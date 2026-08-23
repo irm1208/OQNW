@@ -1,1 +1,117 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgdGF4UmF0ZXNUYWJsZSB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyBlcSwgZGVzYyB9IGZyb20gImRyaXp6bGUtb3JtIjsKaW1wb3J0IHsgZmlyc3RTdHJpbmcgfSBmcm9tICIuLi8uLi9saWIvcXVlcnkiOwoKY29uc3Qgcm91dGVyID0gUm91dGVyKCk7CgpmdW5jdGlvbiByZXF1aXJlQWRtaW4ocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogYm9vbGVhbiB7CiAgaWYgKHJlcS5jb29raWVzPy5hZG1pbl9zZXNzaW9uICE9PSAiYXV0aGVudGljYXRlZCIpIHsKICAgIHJlcy5zdGF0dXMoNDAxKS5qc29uKHsgZXJyb3I6ICJOb3QgYXV0aGVudGljYXRlZCIgfSk7CiAgICByZXR1cm4gZmFsc2U7CiAgfQogIHJldHVybiB0cnVlOwp9CgpmdW5jdGlvbiByYXRlVG9SZXNwb25zZShyOiB0eXBlb2YgdGF4UmF0ZXNUYWJsZS4kaW5mZXJTZWxlY3QpIHsKICByZXR1cm4gewogICAgaWQ6IHIuaWQsCiAgICBuYW1lOiByLm5hbWUsCiAgICBjb3VudHJ5Q29kZTogci5jb3VudHJ5Q29kZSwKICAgIGNvdW50cnlOYW1lOiByLmNvdW50cnlOYW1lLAogICAgcmVnaW9uOiByLnJlZ2lvbiA/PyBudWxsLAogICAgcmF0ZTogcGFyc2VGbG9hdChTdHJpbmcoci5yYXRlKSksCiAgICBpc0luY2x1c2l2ZTogci5pc0luY2x1c2l2ZSwKICAgIGlzQWN0aXZlOiByLmlzQWN0aXZlLAogICAgY3JlYXRlZEF0OiByLmNyZWF0ZWRBdC50b0lTT1N0cmluZygpLAogICAgdXBkYXRlZEF0OiByLnVwZGF0ZWRBdC50b0lTT1N0cmluZygpLAogIH07Cn0KCnJvdXRlci5nZXQoIi9hZG1pbi90YXgtcmF0ZXMiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgdHJ5IHsKICAgIGNvbnN0IHJhdGVzID0gYXdhaXQgZGIuc2VsZWN0KCkuZnJvbSh0YXhSYXRlc1RhYmxlKS5vcmRlckJ5KGRlc2ModGF4UmF0ZXNUYWJsZS5jcmVhdGVkQXQpKTsKICAgIHJlcy5qc29uKHJhdGVzLm1hcChyYXRlVG9SZXNwb25zZSkpOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGxpc3QgdGF4IHJhdGVzIik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKcm91dGVyLnBvc3QoIi9hZG1pbi90YXgtcmF0ZXMiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgY29uc3QgeyBuYW1lLCBjb3VudHJ5Q29kZSwgY291bnRyeU5hbWUsIHJlZ2lvbiwgcmF0ZSwgaXNJbmNsdXNpdmUgfSA9IHJlcS5ib2R5IGFzIHsKICAgIG5hbWU6IHN0cmluZzsKICAgIGNvdW50cnlDb2RlOiBzdHJpbmc7CiAgICBjb3VudHJ5TmFtZTogc3RyaW5nOwogICAgcmVnaW9uPzogc3RyaW5nOwogICAgcmF0ZTogbnVtYmVyOwogICAgaXNJbmNsdXNpdmU6IGJvb2xlYW47CiAgfTsKICBpZiAoIW5hbWUgfHwgIWNvdW50cnlDb2RlIHx8ICFjb3VudHJ5TmFtZSB8fCByYXRlID09IG51bGwpIHsKICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJuYW1lLCBjb3VudHJ5Q29kZSwgY291bnRyeU5hbWUgYW5kIHJhdGUgYXJlIHJlcXVpcmVkIiB9KTsKICAgIHJldHVybjsKICB9CiAgdHJ5IHsKICAgIGNvbnN0IFtjcmVhdGVkXSA9IGF3YWl0IGRiCiAgICAgIC5pbnNlcnQodGF4UmF0ZXNUYWJsZSkKICAgICAgLnZhbHVlcyh7CiAgICAgICAgbmFtZSwKICAgICAgICBjb3VudHJ5Q29kZTogY291bnRyeUNvZGUudG9VcHBlckNhc2UoKSwKICAgICAgICBjb3VudHJ5TmFtZSwKICAgICAgICByZWdpb246IHJlZ2lvbiA/PyBudWxsLAogICAgICAgIHJhdGU6IFN0cmluZyhyYXRlKSwKICAgICAgICBpc0luY2x1c2l2ZTogaXNJbmNsdXNpdmUgPz8gdHJ1ZSwKICAgICAgfSkKICAgICAgLnJldHVybmluZygpOwogICAgcmVzLnN0YXR1cygyMDEpLmpzb24ocmF0ZVRvUmVzcG9uc2UoY3JlYXRlZCkpOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGNyZWF0ZSB0YXggcmF0ZSIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCnJvdXRlci5wYXRjaCgiL2FkbWluL3RheC1yYXRlcy86aWQiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgaWYgKCFyZXF1aXJlQWRtaW4ocmVxLCByZXMpKSByZXR1cm47CiAgY29uc3QgaWQgPSBwYXJzZUludChmaXJzdFN0cmluZyhyZXEucGFyYW1zLmlkKSA/PyAiIiwgMTApOwogIGlmIChpc05hTihpZCkpIHsgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogIkludmFsaWQgSUQiIH0pOyByZXR1cm47IH0KICBjb25zdCB7IG5hbWUsIGNvdW50cnlDb2RlLCBjb3VudHJ5TmFtZSwgcmVnaW9uLCByYXRlLCBpc0luY2x1c2l2ZSwgaXNBY3RpdmUgfSA9IHJlcS5ib2R5IGFzIFBhcnRpYWw8ewogICAgbmFtZTogc3RyaW5nOyBjb3VudHJ5Q29kZTogc3RyaW5nOyBjb3VudHJ5TmFtZTogc3RyaW5nOyByZWdpb246IHN0cmluZzsKICAgIHJhdGU6IG51bWJlcjsgaXNJbmNsdXNpdmU6IGJvb2xlYW47IGlzQWN0aXZlOiBib29sZWFuOwogIH0+OwogIGNvbnN0IHVwZGF0ZXM6IFBhcnRpYWw8dHlwZW9mIHRheFJhdGVzVGFibGUuJGluZmVySW5zZXJ0PiA9IHt9OwogIGlmIChuYW1lICE9PSB1bmRlZmluZWQpIHVwZGF0ZXMubmFtZSA9IG5hbWU7CiAgaWYgKGNvdW50cnlDb2RlICE9PSB1bmRlZmluZWQpIHVwZGF0ZXMuY291bnRyeUNvZGUgPSBjb3VudHJ5Q29kZS50b1VwcGVyQ2FzZSgpOwogIGlmIChjb3VudHJ5TmFtZSAhPT0gdW5kZWZpbmVkKSB1cGRhdGVzLmNvdW50cnlOYW1lID0gY291bnRyeU5hbWU7CiAgaWYgKHJlZ2lvbiAhPT0gdW5kZWZpbmVkKSB1cGRhdGVzLnJlZ2lvbiA9IHJlZ2lvbjsKICBpZiAocmF0ZSAhPT0gdW5kZWZpbmVkKSB1cGRhdGVzLnJhdGUgPSBTdHJpbmcocmF0ZSk7CiAgaWYgKGlzSW5jbHVzaXZlICE9PSB1bmRlZmluZWQpIHVwZGF0ZXMuaXNJbmNsdXNpdmUgPSBpc0luY2x1c2l2ZTsKICBpZiAoaXNBY3RpdmUgIT09IHVuZGVmaW5lZCkgdXBkYXRlcy5pc0FjdGl2ZSA9IGlzQWN0aXZlOwogIHRyeSB7CiAgICBjb25zdCBbdXBkYXRlZF0gPSBhd2FpdCBkYi51cGRhdGUodGF4UmF0ZXNUYWJsZSkuc2V0KHVwZGF0ZXMpLndoZXJlKGVxKHRheFJhdGVzVGFibGUuaWQsIGlkKSkucmV0dXJuaW5nKCk7CiAgICBpZiAoIXVwZGF0ZWQpIHsgcmVzLnN0YXR1cyg0MDQpLmpzb24oeyBlcnJvcjogIlRheCByYXRlIG5vdCBmb3VuZCIgfSk7IHJldHVybjsgfQogICAgcmVzLmpzb24ocmF0ZVRvUmVzcG9uc2UodXBkYXRlZCkpOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIHVwZGF0ZSB0YXggcmF0ZSIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCnJvdXRlci5kZWxldGUoIi9hZG1pbi90YXgtcmF0ZXMvOmlkIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGlmICghcmVxdWlyZUFkbWluKHJlcSwgcmVzKSkgcmV0dXJuOwogIGNvbnN0IGlkID0gcGFyc2VJbnQoZmlyc3RTdHJpbmcocmVxLnBhcmFtcy5pZCkgPz8gIiIsIDEwKTsKICBpZiAoaXNOYU4oaWQpKSB7IHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJJbnZhbGlkIElEIiB9KTsgcmV0dXJuOyB9CiAgdHJ5IHsKICAgIGNvbnN0IFtkZWxldGVkXSA9IGF3YWl0IGRiLmRlbGV0ZSh0YXhSYXRlc1RhYmxlKS53aGVyZShlcSh0YXhSYXRlc1RhYmxlLmlkLCBpZCkpLnJldHVybmluZygpOwogICAgaWYgKCFkZWxldGVkKSB7IHJlcy5zdGF0dXMoNDA0KS5qc29uKHsgZXJyb3I6ICJUYXggcmF0ZSBub3QgZm91bmQiIH0pOyByZXR1cm47IH0KICAgIHJlcy5zdGF0dXMoMjA0KS5zZW5kKCk7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gZGVsZXRlIHRheCByYXRlIik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKZXhwb3J0IGRlZmF1bHQgcm91dGVyOwo=
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { db } from "@workspace/db";
+import { taxRatesTable } from "@workspace/db";
+import { eq, desc } from "drizzle-orm";
+import { firstString } from "../../lib/query";
+
+const router = Router();
+
+function requireAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+
+function rateToResponse(r: typeof taxRatesTable.$inferSelect) {
+  return {
+    id: r.id,
+    name: r.name,
+    countryCode: r.countryCode,
+    countryName: r.countryName,
+    region: r.region ?? null,
+    rate: parseFloat(String(r.rate)),
+    isInclusive: r.isInclusive,
+    isActive: r.isActive,
+    createdAt: r.createdAt.toISOString(),
+    updatedAt: r.updatedAt.toISOString(),
+  };
+}
+
+router.get("/admin/tax-rates", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const rates = await db.select().from(taxRatesTable).orderBy(desc(taxRatesTable.createdAt));
+    res.json(rates.map(rateToResponse));
+  } catch (err) {
+    req.log.error({ err }, "Failed to list tax rates");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/admin/tax-rates", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const { name, countryCode, countryName, region, rate, isInclusive } = req.body as {
+    name: string;
+    countryCode: string;
+    countryName: string;
+    region?: string;
+    rate: number;
+    isInclusive: boolean;
+  };
+  if (!name || !countryCode || !countryName || rate == null) {
+    res.status(400).json({ error: "name, countryCode, countryName and rate are required" });
+    return;
+  }
+  try {
+    const [created] = await db
+      .insert(taxRatesTable)
+      .values({
+        name,
+        countryCode: countryCode.toUpperCase(),
+        countryName,
+        region: region ?? null,
+        rate: String(rate),
+        isInclusive: isInclusive ?? true,
+      })
+      .returning();
+    res.status(201).json(rateToResponse(created));
+  } catch (err) {
+    req.log.error({ err }, "Failed to create tax rate");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.patch("/admin/tax-rates/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
+  const { name, countryCode, countryName, region, rate, isInclusive, isActive } = req.body as Partial<{
+    name: string; countryCode: string; countryName: string; region: string;
+    rate: number; isInclusive: boolean; isActive: boolean;
+  }>;
+  const updates: Partial<typeof taxRatesTable.$inferInsert> = {};
+  if (name !== undefined) updates.name = name;
+  if (countryCode !== undefined) updates.countryCode = countryCode.toUpperCase();
+  if (countryName !== undefined) updates.countryName = countryName;
+  if (region !== undefined) updates.region = region;
+  if (rate !== undefined) updates.rate = String(rate);
+  if (isInclusive !== undefined) updates.isInclusive = isInclusive;
+  if (isActive !== undefined) updates.isActive = isActive;
+  try {
+    const [updated] = await db.update(taxRatesTable).set(updates).where(eq(taxRatesTable.id, id)).returning();
+    if (!updated) { res.status(404).json({ error: "Tax rate not found" }); return; }
+    res.json(rateToResponse(updated));
+  } catch (err) {
+    req.log.error({ err }, "Failed to update tax rate");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/admin/tax-rates/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
+  try {
+    const [deleted] = await db.delete(taxRatesTable).where(eq(taxRatesTable.id, id)).returning();
+    if (!deleted) { res.status(404).json({ error: "Tax rate not found" }); return; }
+    res.status(204).send();
+  } catch (err) {
+    req.log.error({ err }, "Failed to delete tax rate");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;

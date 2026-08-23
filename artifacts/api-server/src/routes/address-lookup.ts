@@ -1,1 +1,161 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB7CiAgQWRkcmVzc1ZlcmlmaWNhdGlvbkVycm9yLAogIGNyZWF0ZUFkZHJlc3NWZXJpZmljYXRpb25Qcm9vZiwKICBmaW5kTm9taW5hdGltQWRkcmVzc1N1Z2dlc3Rpb25zLAogIHZlcmlmeUFkZHJlc3NXaXRoTm9taW5hdGltLAogIHR5cGUgRGVsaXZlcnlBZGRyZXNzLAp9IGZyb20gIi4uL2xpYi9hZGRyZXNzVmVyaWZpY2F0aW9uIjsKCmNvbnN0IHJvdXRlciA9IFJvdXRlcigpOwoKaW50ZXJmYWNlIEdldEFkZHJlc3NSZXN1bHQgewogIHBvc3Rjb2RlOiBzdHJpbmc7CiAgbGF0aXR1ZGU6IG51bWJlcjsKICBsb25naXR1ZGU6IG51bWJlcjsKICBhZGRyZXNzZXM6IEFycmF5PHsKICAgIGZvcm1hdHRlZF9hZGRyZXNzOiBzdHJpbmdbXTsKICAgIGxpbmVfMTogc3RyaW5nOwogICAgbGluZV8yOiBzdHJpbmc7CiAgICBsaW5lXzM6IHN0cmluZzsKICAgIGxpbmVfNDogc3RyaW5nOwogICAgbG9jYWxpdHk6IHN0cmluZzsKICAgIHRvd25fb3JfY2l0eTogc3RyaW5nOwogICAgY291bnR5OiBzdHJpbmc7CiAgICBkaXN0cmljdDogc3RyaW5nOwogICAgY291bnRyeTogc3RyaW5nOwogIH0+Owp9CgovKioKICogR0VUIC9hcGkvYWRkcmVzcy1sb29rdXA/cG9zdGNvZGU9U1cxQTFBQQogKiBQcm94aWVzIHRvIGdldGFkZHJlc3MuaW8gc28gdGhlIEFQSSBrZXkgaXMgbmV2ZXIgZXhwb3NlZCB0byB0aGUgYnJvd3Nlci4KICovCnJvdXRlci5nZXQoIi9hZGRyZXNzLWxvb2t1cCIsIGFzeW5jIChyZXEsIHJlcykgPT4gewogIGNvbnN0IHBvc3Rjb2RlID0gKHJlcS5xdWVyeVsicG9zdGNvZGUiXSBhcyBzdHJpbmcgfCB1bmRlZmluZWQpPy50cmltKCk7CiAgaWYgKCFwb3N0Y29kZSkgewogICAgcmV0dXJuIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJwb3N0Y29kZSBxdWVyeSBwYXJhbSByZXF1aXJlZCIgfSk7CiAgfQoKICBjb25zdCBhcGlLZXkgPSBwcm9jZXNzLmVudlsiR0VUQUREUkVTU19BUElfS0VZIl07CiAgaWYgKCFhcGlLZXkpIHsKICAgIHJldHVybiByZXMuc3RhdHVzKDUwMykuanNvbih7IGVycm9yOiAiQWRkcmVzcyBsb29rdXAgbm90IGNvbmZpZ3VyZWQiIH0pOwogIH0KCiAgdHJ5IHsKICAgIGNvbnN0IHVybCA9IGBodHRwczovL2FwaS5nZXRhZGRyZXNzLmlvL2ZpbmQvJHtlbmNvZGVVUklDb21wb25lbnQocG9zdGNvZGUpfT9hcGkta2V5PSR7YXBpS2V5fSZleHBhbmQ9dHJ1ZWA7CiAgICBjb25zdCB1cHN0cmVhbSA9IGF3YWl0IGZldGNoKHVybCk7CgogICAgaWYgKHVwc3RyZWFtLnN0YXR1cyA9PT0gNDA0KSB7CiAgICAgIHJldHVybiByZXMuc3RhdHVzKDQwNCkuanNvbih7IGVycm9yOiAiTm8gYWRkcmVzc2VzIGZvdW5kIGZvciB0aGlzIHBvc3Rjb2RlIiB9KTsKICAgIH0KICAgIGlmICghdXBzdHJlYW0ub2spIHsKICAgICAgcmV0dXJuIHJlcy5zdGF0dXModXBzdHJlYW0uc3RhdHVzKS5qc29uKHsgZXJyb3I6ICJBZGRyZXNzIGxvb2t1cCBmYWlsZWQiIH0pOwogICAgfQoKICAgIGNvbnN0IGRhdGEgPSAoYXdhaXQgdXBzdHJlYW0uanNvbigpKSBhcyBHZXRBZGRyZXNzUmVzdWx0OwoKICAgIGNvbnN0IGFkZHJlc3NlcyA9IChkYXRhLmFkZHJlc3NlcyA/PyBbXSkubWFwKGEgPT4gKHsKICAgICAgbGluZTE6IGEubGluZV8xLAogICAgICBsaW5lMjogW2EubGluZV8yLCBhLmxpbmVfMywgYS5saW5lXzRdLmZpbHRlcihCb29sZWFuKS5qb2luKCIsICIpLAogICAgICBjaXR5OiBhLnRvd25fb3JfY2l0eSB8fCBhLmxvY2FsaXR5IHx8IGEuZGlzdHJpY3QsCiAgICAgIGNvdW50eTogYS5jb3VudHksCiAgICAgIGxhYmVsOiBbYS5saW5lXzEsIGEubGluZV8yLCBhLnRvd25fb3JfY2l0eV0uZmlsdGVyKEJvb2xlYW4pLmpvaW4oIiwgIiksCiAgICB9KSk7CgogICAgcmV0dXJuIHJlcy5qc29uKHsgcG9zdGNvZGU6IGRhdGEucG9zdGNvZGUsIGFkZHJlc3NlcyB9KTsKICB9IGNhdGNoIHsKICAgIHJldHVybiByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiQWRkcmVzcyBsb29rdXAgcmVxdWVzdCBmYWlsZWQiIH0pOwogIH0KfSk7CgovKioKICogUE9TVCAvYXBpL2FkZHJlc3MtdmVyaWZpY2F0aW9uCiAqIFZhbGlkYXRlcyBhIGNvbXBsZXRlIGludGVybmF0aW9uYWwgZGVsaXZlcnkgYWRkcmVzcyBzZXJ2ZXItc2lkZS4gVGhlIHJlc3BvbnNlCiAqIGluY2x1ZGVzIGEgc2hvcnQtbGl2ZWQgcHJvb2YgYm91bmQgdG8gdGhlIGNhbm9uaWNhbCBhZGRyZXNzIGZvciB1c2UgYXQgY2hlY2tvdXQuCiAqLwpyb3V0ZXIucG9zdCgiL2FkZHJlc3MtdmVyaWZpY2F0aW9uIiwgYXN5bmMgKHJlcSwgcmVzKSA9PiB7CiAgY29uc3QgZGVsaXZlcnkgPSByZXEuYm9keSBhcyBQYXJ0aWFsPERlbGl2ZXJ5QWRkcmVzcz47CiAgaWYgKAogICAgdHlwZW9mIGRlbGl2ZXJ5LmFkZHJlc3MxICE9PSAic3RyaW5nIiB8fAogICAgdHlwZW9mIGRlbGl2ZXJ5LmNpdHkgIT09ICJzdHJpbmciIHx8CiAgICB0eXBlb2YgZGVsaXZlcnkucG9zdGNvZGUgIT09ICJzdHJpbmciIHx8CiAgICB0eXBlb2YgZGVsaXZlcnkuY291bnRyeSAhPT0gInN0cmluZyIKICApIHsKICAgIHJldHVybiByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiQSBjb21wbGV0ZSBkZWxpdmVyeSBhZGRyZXNzIGlzIHJlcXVpcmVkLiIgfSk7CiAgfQoKICB0cnkgewogICAgY29uc3QgY2Fub25pY2FsID0gYXdhaXQgdmVyaWZ5QWRkcmVzc1dpdGhOb21pbmF0aW0oewogICAgICBhZGRyZXNzMTogZGVsaXZlcnkuYWRkcmVzczEsCiAgICAgIGFkZHJlc3MyOiB0eXBlb2YgZGVsaXZlcnkuYWRkcmVzczIgPT09ICJzdHJpbmciID8gZGVsaXZlcnkuYWRkcmVzczIgOiB1bmRlZmluZWQsCiAgICAgIGNpdHk6IGRlbGl2ZXJ5LmNpdHksCiAgICAgIGNvdW50eTogdHlwZW9mIGRlbGl2ZXJ5LmNvdW50eSA9PT0gInN0cmluZyIgPyBkZWxpdmVyeS5jb3VudHkgOiB1bmRlZmluZWQsCiAgICAgIHBvc3Rjb2RlOiBkZWxpdmVyeS5wb3N0Y29kZSwKICAgICAgY291bnRyeTogZGVsaXZlcnkuY291bnRyeSwKICAgIH0pOwogICAgY29uc3QgcHJvb2YgPSBjcmVhdGVBZGRyZXNzVmVyaWZpY2F0aW9uUHJvb2YoY2Fub25pY2FsKTsKICAgIHJldHVybiByZXMuc3RhdHVzKDIwMCkuanNvbih7CiAgICAgIHZlcmlmaWVkOiB0cnVlLAogICAgICBjYW5vbmljYWxBZGRyZXNzOiBjYW5vbmljYWwsCiAgICAgIHZlcmlmaWNhdGlvblRva2VuOiBwcm9vZi50b2tlbiwKICAgICAgZXhwaXJlc0F0OiBwcm9vZi5leHBpcmVzQXQsCiAgICB9KTsKICB9IGNhdGNoIChlcnJvcikgewogICAgaWYgKGVycm9yIGluc3RhbmNlb2YgQWRkcmVzc1ZlcmlmaWNhdGlvbkVycm9yKSB7CiAgICAgIHJldHVybiByZXMuc3RhdHVzKGVycm9yLnN0YXR1cykuanNvbih7IGVycm9yOiBlcnJvci5tZXNzYWdlLCBjb2RlOiBlcnJvci5jb2RlIH0pOwogICAgfQogICAgcmVxLmxvZy5lcnJvcih7IGVycm9yIH0sICJVbmV4cGVjdGVkIGFkZHJlc3MgdmVyaWZpY2F0aW9uIGVycm9yIik7CiAgICByZXR1cm4gcmVzLnN0YXR1cyg1MDMpLmpzb24oewogICAgICBlcnJvcjogIkFkZHJlc3MgdmVyaWZpY2F0aW9uIGlzIHRlbXBvcmFyaWx5IHVuYXZhaWxhYmxlLiBQbGVhc2UgdHJ5IGFnYWluIGxhdGVyLiIsCiAgICAgIGNvZGU6ICJBRERSRVNTX1ZFUklGSUNBVElPTl9VTkFWQUlMQUJMRSIsCiAgICB9KTsKICB9Cn0pOwoKLyoqCiAqIFBPU1QgL2FwaS9hZGRyZXNzLXN1Z2dlc3Rpb25zCiAqIEZpbmRzIHNwZWNpZmljLCBzZWxlY3RhYmxlIGludGVybmF0aW9uYWwgYWRkcmVzc2VzIGFmdGVyIGEgY3VzdG9tZXIgaGFzCiAqIGNvbXBsZXRlZCB0aGVpciBzdHJlZXQgYW5kIHBvc3Rjb2RlLiBUaGlzIGlzIGludGVudGlvbmFsbHkgbm90IGEKICoga2V5c3Ryb2tlLWJ5LWtleXN0cm9rZSBhdXRvY29tcGxldGUgZW5kcG9pbnQuCiAqLwpyb3V0ZXIucG9zdCgiL2FkZHJlc3Mtc3VnZ2VzdGlvbnMiLCBhc3luYyAocmVxLCByZXMpID0+IHsKICBjb25zdCBkZWxpdmVyeSA9IHJlcS5ib2R5IGFzIFBhcnRpYWw8RGVsaXZlcnlBZGRyZXNzPjsKICBpZiAoCiAgICB0eXBlb2YgZGVsaXZlcnkuYWRkcmVzczEgIT09ICJzdHJpbmciIHx8CiAgICB0eXBlb2YgZGVsaXZlcnkucG9zdGNvZGUgIT09ICJzdHJpbmciIHx8CiAgICB0eXBlb2YgZGVsaXZlcnkuY291bnRyeSAhPT0gInN0cmluZyIKICApIHsKICAgIHJldHVybiByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiQSBzdHJlZXQgYWRkcmVzcywgcG9zdGFsIGNvZGUsIGFuZCBjb3VudHJ5IGFyZSByZXF1aXJlZC4iIH0pOwogIH0KCiAgdHJ5IHsKICAgIGNvbnN0IG1hdGNoZXMgPSBhd2FpdCBmaW5kTm9taW5hdGltQWRkcmVzc1N1Z2dlc3Rpb25zKHsKICAgICAgYWRkcmVzczE6IGRlbGl2ZXJ5LmFkZHJlc3MxLAogICAgICBhZGRyZXNzMjogdHlwZW9mIGRlbGl2ZXJ5LmFkZHJlc3MyID09PSAic3RyaW5nIiA/IGRlbGl2ZXJ5LmFkZHJlc3MyIDogdW5kZWZpbmVkLAogICAgICBwb3N0Y29kZTogZGVsaXZlcnkucG9zdGNvZGUsCiAgICAgIGNvdW50cnk6IGRlbGl2ZXJ5LmNvdW50cnksCiAgICB9KTsKICAgIHJldHVybiByZXMuc3RhdHVzKDIwMCkuanNvbih7CiAgICAgIHN1Z2dlc3Rpb25zOiBtYXRjaGVzLm1hcChjYW5vbmljYWxBZGRyZXNzID0+IHsKICAgICAgICBjb25zdCBwcm9vZiA9IGNyZWF0ZUFkZHJlc3NWZXJpZmljYXRpb25Qcm9vZihjYW5vbmljYWxBZGRyZXNzKTsKICAgICAgICByZXR1cm4gewogICAgICAgICAgY2Fub25pY2FsQWRkcmVzcywKICAgICAgICAgIHZlcmlmaWNhdGlvblRva2VuOiBwcm9vZi50b2tlbiwKICAgICAgICAgIGV4cGlyZXNBdDogcHJvb2YuZXhwaXJlc0F0LAogICAgICAgIH07CiAgICAgIH0pLAogICAgfSk7CiAgfSBjYXRjaCAoZXJyb3IpIHsKICAgIGlmIChlcnJvciBpbnN0YW5jZW9mIEFkZHJlc3NWZXJpZmljYXRpb25FcnJvcikgewogICAgICByZXR1cm4gcmVzLnN0YXR1cyhlcnJvci5zdGF0dXMpLmpzb24oeyBlcnJvcjogZXJyb3IubWVzc2FnZSwgY29kZTogZXJyb3IuY29kZSB9KTsKICAgIH0KICAgIHJlcS5sb2cuZXJyb3IoeyBlcnJvciB9LCAiVW5leHBlY3RlZCBhZGRyZXNzIHN1Z2dlc3Rpb24gZXJyb3IiKTsKICAgIHJldHVybiByZXMuc3RhdHVzKDUwMykuanNvbih7CiAgICAgIGVycm9yOiAiQWRkcmVzcyBsb29rdXAgaXMgdGVtcG9yYXJpbHkgdW5hdmFpbGFibGUuIFBsZWFzZSB0cnkgYWdhaW4gbGF0ZXIuIiwKICAgICAgY29kZTogIkFERFJFU1NfVkVSSUZJQ0FUSU9OX1VOQVZBSUxBQkxFIiwKICAgIH0pOwogIH0KfSk7CgpleHBvcnQgZGVmYXVsdCByb3V0ZXI7Cg==
+import { Router } from "express";
+import {
+  AddressVerificationError,
+  createAddressVerificationProof,
+  findNominatimAddressSuggestions,
+  verifyAddressWithNominatim,
+  type DeliveryAddress,
+} from "../lib/addressVerification";
+
+const router = Router();
+
+interface GetAddressResult {
+  postcode: string;
+  latitude: number;
+  longitude: number;
+  addresses: Array<{
+    formatted_address: string[];
+    line_1: string;
+    line_2: string;
+    line_3: string;
+    line_4: string;
+    locality: string;
+    town_or_city: string;
+    county: string;
+    district: string;
+    country: string;
+  }>;
+}
+
+/**
+ * GET /api/address-lookup?postcode=SW1A1AA
+ * Proxies to getaddress.io so the API key is never exposed to the browser.
+ */
+router.get("/address-lookup", async (req, res) => {
+  const postcode = (req.query["postcode"] as string | undefined)?.trim();
+  if (!postcode) {
+    return res.status(400).json({ error: "postcode query param required" });
+  }
+
+  const apiKey = process.env["GETADDRESS_API_KEY"];
+  if (!apiKey) {
+    return res.status(503).json({ error: "Address lookup not configured" });
+  }
+
+  try {
+    const url = `https://api.getaddress.io/find/${encodeURIComponent(postcode)}?api-key=${apiKey}&expand=true`;
+    const upstream = await fetch(url);
+
+    if (upstream.status === 404) {
+      return res.status(404).json({ error: "No addresses found for this postcode" });
+    }
+    if (!upstream.ok) {
+      return res.status(upstream.status).json({ error: "Address lookup failed" });
+    }
+
+    const data = (await upstream.json()) as GetAddressResult;
+
+    const addresses = (data.addresses ?? []).map(a => ({
+      line1: a.line_1,
+      line2: [a.line_2, a.line_3, a.line_4].filter(Boolean).join(", "),
+      city: a.town_or_city || a.locality || a.district,
+      county: a.county,
+      label: [a.line_1, a.line_2, a.town_or_city].filter(Boolean).join(", "),
+    }));
+
+    return res.json({ postcode: data.postcode, addresses });
+  } catch {
+    return res.status(500).json({ error: "Address lookup request failed" });
+  }
+});
+
+/**
+ * POST /api/address-verification
+ * Validates a complete international delivery address server-side. The response
+ * includes a short-lived proof bound to the canonical address for use at checkout.
+ */
+router.post("/address-verification", async (req, res) => {
+  const delivery = req.body as Partial<DeliveryAddress>;
+  if (
+    typeof delivery.address1 !== "string" ||
+    typeof delivery.city !== "string" ||
+    typeof delivery.postcode !== "string" ||
+    typeof delivery.country !== "string"
+  ) {
+    return res.status(400).json({ error: "A complete delivery address is required." });
+  }
+
+  try {
+    const canonical = await verifyAddressWithNominatim({
+      address1: delivery.address1,
+      address2: typeof delivery.address2 === "string" ? delivery.address2 : undefined,
+      city: delivery.city,
+      county: typeof delivery.county === "string" ? delivery.county : undefined,
+      postcode: delivery.postcode,
+      country: delivery.country,
+    });
+    const proof = createAddressVerificationProof(canonical);
+    return res.status(200).json({
+      verified: true,
+      canonicalAddress: canonical,
+      verificationToken: proof.token,
+      expiresAt: proof.expiresAt,
+    });
+  } catch (error) {
+    if (error instanceof AddressVerificationError) {
+      return res.status(error.status).json({ error: error.message, code: error.code });
+    }
+    req.log.error({ error }, "Unexpected address verification error");
+    return res.status(503).json({
+      error: "Address verification is temporarily unavailable. Please try again later.",
+      code: "ADDRESS_VERIFICATION_UNAVAILABLE",
+    });
+  }
+});
+
+/**
+ * POST /api/address-suggestions
+ * Finds specific, selectable international addresses after a customer has
+ * completed their street and postcode. This is intentionally not a
+ * keystroke-by-keystroke autocomplete endpoint.
+ */
+router.post("/address-suggestions", async (req, res) => {
+  const delivery = req.body as Partial<DeliveryAddress>;
+  if (
+    typeof delivery.address1 !== "string" ||
+    typeof delivery.postcode !== "string" ||
+    typeof delivery.country !== "string"
+  ) {
+    return res.status(400).json({ error: "A street address, postal code, and country are required." });
+  }
+
+  try {
+    const matches = await findNominatimAddressSuggestions({
+      address1: delivery.address1,
+      address2: typeof delivery.address2 === "string" ? delivery.address2 : undefined,
+      postcode: delivery.postcode,
+      country: delivery.country,
+    });
+    return res.status(200).json({
+      suggestions: matches.map(canonicalAddress => {
+        const proof = createAddressVerificationProof(canonicalAddress);
+        return {
+          canonicalAddress,
+          verificationToken: proof.token,
+          expiresAt: proof.expiresAt,
+        };
+      }),
+    });
+  } catch (error) {
+    if (error instanceof AddressVerificationError) {
+      return res.status(error.status).json({ error: error.message, code: error.code });
+    }
+    req.log.error({ error }, "Unexpected address suggestion error");
+    return res.status(503).json({
+      error: "Address lookup is temporarily unavailable. Please try again later.",
+      code: "ADDRESS_VERIFICATION_UNAVAILABLE",
+    });
+  }
+});
+
+export default router;

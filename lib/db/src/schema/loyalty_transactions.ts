@@ -1,1 +1,11 @@
-aW1wb3J0IHsgcGdUYWJsZSwgc2VyaWFsLCBpbnRlZ2VyLCB0ZXh0LCB2YXJjaGFyLCB0aW1lc3RhbXAgfSBmcm9tICJkcml6emxlLW9ybS9wZy1jb3JlIjsKCmV4cG9ydCBjb25zdCBsb3lhbHR5VHJhbnNhY3Rpb25zVGFibGUgPSBwZ1RhYmxlKCJsb3lhbHR5X3RyYW5zYWN0aW9ucyIsIHsKICBpZDogc2VyaWFsKCJpZCIpLnByaW1hcnlLZXkoKSwKICBjdXN0b21lcklkOiBpbnRlZ2VyKCJjdXN0b21lcl9pZCIpLm5vdE51bGwoKSwKICBvcmRlcklkOiBpbnRlZ2VyKCJvcmRlcl9pZCIpLAogIHR5cGU6IHZhcmNoYXIoInR5cGUiLCB7IGxlbmd0aDogMjAgfSkubm90TnVsbCgpLAogIHBvaW50czogaW50ZWdlcigicG9pbnRzIikubm90TnVsbCgpLAogIGRlc2NyaXB0aW9uOiB0ZXh0KCJkZXNjcmlwdGlvbiIpLm5vdE51bGwoKSwKICBjcmVhdGVkQXQ6IHRpbWVzdGFtcCgiY3JlYXRlZF9hdCIpLmRlZmF1bHROb3coKS5ub3ROdWxsKCksCn0pOwo=
+import { pgTable, serial, integer, text, varchar, timestamp } from "drizzle-orm/pg-core";
+
+export const loyaltyTransactionsTable = pgTable("loyalty_transactions", {
+  id: serial("id").primaryKey(),
+  customerId: integer("customer_id").notNull(),
+  orderId: integer("order_id"),
+  type: varchar("type", { length: 20 }).notNull(),
+  points: integer("points").notNull(),
+  description: text("description").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});

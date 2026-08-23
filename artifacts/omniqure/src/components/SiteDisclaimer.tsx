@@ -1,1 +1,129 @@
-aW1wb3J0IHsgdXNlU3RhdGUgfSBmcm9tICJyZWFjdCI7Cgpjb25zdCBTVE9SQUdFX0tFWSA9ICJvbW5pcXVyZV9kaXNjbGFpbWVyX2NvbGxhcHNlZCI7CgpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBTaXRlRGlzY2xhaW1lcigpIHsKICBjb25zdCBbY29sbGFwc2VkLCBzZXRDb2xsYXBzZWRdID0gdXNlU3RhdGUoKCkgPT4gewogICAgdHJ5IHsgcmV0dXJuIGxvY2FsU3RvcmFnZS5nZXRJdGVtKFNUT1JBR0VfS0VZKSA9PT0gIjEiOyB9IGNhdGNoIHsgcmV0dXJuIGZhbHNlOyB9CiAgfSk7CgogIGZ1bmN0aW9uIHRvZ2dsZSgpIHsKICAgIGNvbnN0IG5leHQgPSAhY29sbGFwc2VkOwogICAgc2V0Q29sbGFwc2VkKG5leHQpOwogICAgdHJ5IHsgbG9jYWxTdG9yYWdlLnNldEl0ZW0oU1RPUkFHRV9LRVksIG5leHQgPyAiMSIgOiAiMCIpOyB9IGNhdGNoIHt9CiAgfQoKICByZXR1cm4gKAogICAgPGRpdgogICAgICBzdHlsZT17ewogICAgICAgIGJhY2tncm91bmQ6ICIjZmZmZmZmIiwKICAgICAgICBwYWRkaW5nOiAiMTZweCAxNnB4IiwKICAgICAgICBmb250RmFtaWx5OiAiJ0FyaW1vJywgQXJpYWwsIHNhbnMtc2VyaWYiLAogICAgICB9fQogICAgPgogICAgICA8ZGl2CiAgICAgICAgY2xhc3NOYW1lPSJtYXgtdy1bODYwcHhdIG14LWF1dG8gcm91bmRlZC0yeGwiCiAgICAgICAgc3R5bGU9e3sKICAgICAgICAgIGJhY2tncm91bmQ6ICJsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjMEQyNTY1IDAlLCAjMEYyRTZCIDUwJSwgIzBEMjU2NSAxMDAlKSIsCiAgICAgICAgICBib3JkZXI6ICIxLjVweCBzb2xpZCByZ2JhKDIzMiwxNjksNjIsMC4yMCkiLAogICAgICAgICAgb3ZlcmZsb3c6ICJoaWRkZW4iLAogICAgICAgIH19CiAgICAgID4KICAgICAgICB7LyogSGVhZGVyIOKAlCBhbHdheXMgdmlzaWJsZSwgY2xpY2sgdG8gdG9nZ2xlICovfQogICAgICAgIDxidXR0b24KICAgICAgICAgIG9uQ2xpY2s9e3RvZ2dsZX0KICAgICAgICAgIHN0eWxlPXt7CiAgICAgICAgICAgIHdpZHRoOiAiMTAwJSIsCiAgICAgICAgICAgIGRpc3BsYXk6ICJmbGV4IiwKICAgICAgICAgICAgYWxpZ25JdGVtczogImNlbnRlciIsCiAgICAgICAgICAgIGp1c3RpZnlDb250ZW50OiAic3BhY2UtYmV0d2VlbiIsCiAgICAgICAgICAgIHBhZGRpbmc6IGNvbGxhcHNlZCA/ICIxNHB4IDMycHgiIDogIjI4cHggMzJweCAwIDMycHgiLAogICAgICAgICAgICBiYWNrZ3JvdW5kOiAidHJhbnNwYXJlbnQiLAogICAgICAgICAgICBib3JkZXI6ICJub25lIiwKICAgICAgICAgICAgY3Vyc29yOiAicG9pbnRlciIsCiAgICAgICAgICAgIGdhcDogIjEycHgiLAogICAgICAgICAgfX0KICAgICAgICAgIGFyaWEtZXhwYW5kZWQ9eyFjb2xsYXBzZWR9CiAgICAgICAgPgogICAgICAgICAgPHAKICAgICAgICAgICAgc3R5bGU9e3sKICAgICAgICAgICAgICBmb250U2l6ZTogIjExcHgiLAogICAgICAgICAgICAgIGZvbnRXZWlnaHQ6IDcwMCwKICAgICAgICAgICAgICBsZXR0ZXJTcGFjaW5nOiAiMC4xOGVtIiwKICAgICAgICAgICAgICBjb2xvcjogIiNFOEE5M0UiLAogICAgICAgICAgICAgIHRleHRUcmFuc2Zvcm06ICJ1cHBlcmNhc2UiLAogICAgICAgICAgICAgIG1hcmdpbjogMCwKICAgICAgICAgICAgfX0KICAgICAgICAgID4KICAgICAgICAgICAgSW1wb3J0YW50IOKAlCBQbGVhc2UgUmVhZCBCZWZvcmUgWW91IE9yZGVyCiAgICAgICAgICA8L3A+CiAgICAgICAgICA8c3BhbgogICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgIGNvbG9yOiAicmdiYSgyMzIsMTY5LDYyLDAuNjUpIiwKICAgICAgICAgICAgICBmb250U2l6ZTogIjEzcHgiLAogICAgICAgICAgICAgIGZsZXhTaHJpbms6IDAsCiAgICAgICAgICAgICAgdHJhbnNpdGlvbjogInRyYW5zZm9ybSAwLjJzIiwKICAgICAgICAgICAgICB0cmFuc2Zvcm06IGNvbGxhcHNlZCA/ICJyb3RhdGUoMGRlZykiIDogInJvdGF0ZSgxODBkZWcpIiwKICAgICAgICAgICAgICBkaXNwbGF5OiAiaW5saW5lLWJsb2NrIiwKICAgICAgICAgICAgfX0KICAgICAgICAgICAgYXJpYS1oaWRkZW4KICAgICAgICAgID4KICAgICAgICAgICAg4payCiAgICAgICAgICA8L3NwYW4+CiAgICAgICAgPC9idXR0b24+CgogICAgICAgIHsvKiBCb2R5IOKAlCBoaWRkZW4gd2hlbiBjb2xsYXBzZWQgKi99CiAgICAgICAgeyFjb2xsYXBzZWQgJiYgKAogICAgICAgICAgPGRpdiBzdHlsZT17eyBwYWRkaW5nOiAiMThweCAzMnB4IDI4cHgiIH19PgogICAgICAgICAgICB7LyogSW50cm8gKi99CiAgICAgICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAiMTMuNXB4IiwgY29sb3I6ICIjRThBOTNFIiwgbGluZUhlaWdodDogMS43NSwgbWFyZ2luQm90dG9tOiAiMThweCIgfX0+CiAgICAgICAgICAgICAgT21uaVF1cmUgc2VsbHMgcmVzZWFyY2gtZ3JhZGUgcGVwdGlkZXMgZm9yIGxhYiB1c2Ugb25seS4gT3JkZXJpbmcgbWVhbnMgeW91J3ZlIHJlYWQgYW5kIGFncmVlIHRvIHRoZSB0ZXJtcyBiZWxvdy4KICAgICAgICAgICAgPC9wPgoKICAgICAgICAgICAgey8qIFNlY3Rpb25zICovfQogICAgICAgICAgICB7WwogICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIGxhYmVsOiAiUmVzZWFyY2ggdXNlIG9ubHkuIiwKICAgICAgICAgICAgICAgIGJvZHk6ICJQcm9kdWN0cyBhcmUgc29sZCBzdHJpY3RseSBmb3IgaW4tdml0cm8gbGFiIGFuZCBhbmFseXRpY2FsIHVzZSDigJQgbmV2ZXIgZm9yIGh1bWFuIG9yIGFuaW1hbCBjb25zdW1wdGlvbiwgb3IgYW55IG1lZGljaW5hbCwgdGhlcmFwZXV0aWMsIGRpYWdub3N0aWMsIGNvc21ldGljIG9yIGhvdXNlaG9sZCBwdXJwb3NlLiIsCiAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICBsYWJlbDogIk5vdCBtZWRpY2luZXMgb3IgY29uc3VtZXIgZ29vZHMuIiwKICAgICAgICAgICAgICAgIGJvZHk6ICJOb3RoaW5nIHdlIHNlbGwgaXMgYSBtZWRpY2luZSwgc3VwcGxlbWVudCwgZm9vZCBvciBjb3NtZXRpYywgYW5kIG5vbmUgb2YgaXQgaXMgYXBwcm92ZWQgZm9yIHVzZSBpbiBvciBvbiBwZW9wbGUgb3IgYW5pbWFscy4iLAogICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgbGFiZWw6ICJFbGlnaWJpbGl0eS4iLAogICAgICAgICAgICAgICAgYm9keTogIllvdSBtdXN0IGJlIGF0IGxlYXN0IDE4IGFuZCBvcmRlcmluZyBhcyBhIHF1YWxpZmllZCByZXNlYXJjaGVyIGZvciBhIHByb2Zlc3Npb25hbCBvciByZXNlYXJjaCBwdXJwb3NlLiIsCiAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICBsYWJlbDogIllvdXIgcmVzcG9uc2liaWxpdHkuIiwKICAgICAgICAgICAgICAgIGJvZHk6ICJZb3UncmUgcmVzcG9uc2libGUgZm9yIGNvbXBseWluZyB3aXRoIGFsbCBsYXdzIHRoYXQgYXBwbHkgdG8geW91ciBwdXJjaGFzZSBhbmQgdXNlLiBXZSBvZmZlciBubyB1c2FnZSBhZHZpY2UgYW5kIG5vIGd1YXJhbnRlZSBvZiBmaXRuZXNzIGZvciBhbnkgcHVycG9zZSBiZXlvbmQgbGFiIHJlc2VhcmNoLCBhbmQgYWNjZXB0IG5vIGxpYWJpbGl0eSBmb3IgbWlzdXNlIG9yIHJlc3VsdGluZyBsb3NzIG9yIGhhcm0uIiwKICAgICAgICAgICAgICB9LAogICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIGxhYmVsOiAiSGFuZGxpbmcgJiByZXR1cm5zLiIsCiAgICAgICAgICAgICAgICBib2R5OiAiUmV0dXJucyBhcmUgbGltaXRlZCBnaXZlbiB0aGUgbmF0dXJlIG9mIHRoZXNlIG1hdGVyaWFscyDigJQgc2VlIG91ciBUZXJtcyAmIENvbmRpdGlvbnMgZm9yIGRldGFpbHMgb24gZGFtYWdlZCwgZmF1bHR5IG9yIHF1YWxpdHkgaXNzdWVzLiIsCiAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgXS5tYXAoKHsgbGFiZWwsIGJvZHkgfSkgPT4gKAogICAgICAgICAgICAgIDxwIGtleT17bGFiZWx9IHN0eWxlPXt7IGZvbnRTaXplOiAiMTMuNXB4IiwgY29sb3I6ICIjRThBOTNFIiwgbGluZUhlaWdodDogMS43NSwgbWFyZ2luQm90dG9tOiAiMTRweCIgfX0+CiAgICAgICAgICAgICAgICA8c3Ryb25nIHN0eWxlPXt7IGNvbG9yOiAiI0U4QTkzRSIsIGZvbnRXZWlnaHQ6IDcwMCB9fT57bGFiZWx9PC9zdHJvbmc+eyIgIn0KICAgICAgICAgICAgICAgIHtib2R5fQogICAgICAgICAgICAgIDwvcD4KICAgICAgICAgICAgKSl9CgogICAgICAgICAgICB7LyogQ2xvc2luZyAqL30KICAgICAgICAgICAgPHAKICAgICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgICAgZm9udFNpemU6ICIxMi41cHgiLAogICAgICAgICAgICAgICAgY29sb3I6ICJyZ2JhKDIzMiwxNjksNjIsMC42NSkiLAogICAgICAgICAgICAgICAgZm9udFN0eWxlOiAiaXRhbGljIiwKICAgICAgICAgICAgICAgIG1hcmdpblRvcDogIjZweCIsCiAgICAgICAgICAgICAgICBsaW5lSGVpZ2h0OiAxLjYsCiAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgPgogICAgICAgICAgICAgIENvbXBsZXRpbmcgeW91ciBwdXJjaGFzZSBjb25maXJtcyB0aGF0IHlvdSBoYXZlIHJlYWQgYW5kIGFjY2VwdGVkIHRoZXNlIHRlcm1zIGluIGZ1bGwuCiAgICAgICAgICAgIDwvcD4KICAgICAgICAgIDwvZGl2PgogICAgICAgICl9CiAgICAgIDwvZGl2PgogICAgPC9kaXY+CiAgKTsKfQo=
+import { useState } from "react";
+
+const STORAGE_KEY = "omniqure_disclaimer_collapsed";
+
+export default function SiteDisclaimer() {
+  const [collapsed, setCollapsed] = useState(() => {
+    try { return localStorage.getItem(STORAGE_KEY) === "1"; } catch { return false; }
+  });
+
+  function toggle() {
+    const next = !collapsed;
+    setCollapsed(next);
+    try { localStorage.setItem(STORAGE_KEY, next ? "1" : "0"); } catch {}
+  }
+
+  return (
+    <div
+      style={{
+        background: "#ffffff",
+        padding: "16px 16px",
+        fontFamily: "'Arimo', Arial, sans-serif",
+      }}
+    >
+      <div
+        className="max-w-[860px] mx-auto rounded-2xl"
+        style={{
+          background: "linear-gradient(135deg, #0D2565 0%, #0F2E6B 50%, #0D2565 100%)",
+          border: "1.5px solid rgba(232,169,62,0.20)",
+          overflow: "hidden",
+        }}
+      >
+        {/* Header — always visible, click to toggle */}
+        <button
+          onClick={toggle}
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: collapsed ? "14px 32px" : "28px 32px 0 32px",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+            gap: "12px",
+          }}
+          aria-expanded={!collapsed}
+        >
+          <p
+            style={{
+              fontSize: "11px",
+              fontWeight: 700,
+              letterSpacing: "0.18em",
+              color: "#E8A93E",
+              textTransform: "uppercase",
+              margin: 0,
+            }}
+          >
+            Important — Please Read Before You Order
+          </p>
+          <span
+            style={{
+              color: "rgba(232,169,62,0.65)",
+              fontSize: "13px",
+              flexShrink: 0,
+              transition: "transform 0.2s",
+              transform: collapsed ? "rotate(0deg)" : "rotate(180deg)",
+              display: "inline-block",
+            }}
+            aria-hidden
+          >
+            ▲
+          </span>
+        </button>
+
+        {/* Body — hidden when collapsed */}
+        {!collapsed && (
+          <div style={{ padding: "18px 32px 28px" }}>
+            {/* Intro */}
+            <p style={{ fontSize: "13.5px", color: "#E8A93E", lineHeight: 1.75, marginBottom: "18px" }}>
+              OmniQure sells research-grade peptides for lab use only. Ordering means you've read and agree to the terms below.
+            </p>
+
+            {/* Sections */}
+            {[
+              {
+                label: "Research use only.",
+                body: "Products are sold strictly for in-vitro lab and analytical use — never for human or animal consumption, or any medicinal, therapeutic, diagnostic, cosmetic or household purpose.",
+              },
+              {
+                label: "Not medicines or consumer goods.",
+                body: "Nothing we sell is a medicine, supplement, food or cosmetic, and none of it is approved for use in or on people or animals.",
+              },
+              {
+                label: "Eligibility.",
+                body: "You must be at least 18 and ordering as a qualified researcher for a professional or research purpose.",
+              },
+              {
+                label: "Your responsibility.",
+                body: "You're responsible for complying with all laws that apply to your purchase and use. We offer no usage advice and no guarantee of fitness for any purpose beyond lab research, and accept no liability for misuse or resulting loss or harm.",
+              },
+              {
+                label: "Handling & returns.",
+                body: "Returns are limited given the nature of these materials — see our Terms & Conditions for details on damaged, faulty or quality issues.",
+              },
+            ].map(({ label, body }) => (
+              <p key={label} style={{ fontSize: "13.5px", color: "#E8A93E", lineHeight: 1.75, marginBottom: "14px" }}>
+                <strong style={{ color: "#E8A93E", fontWeight: 700 }}>{label}</strong>{" "}
+                {body}
+              </p>
+            ))}
+
+            {/* Closing */}
+            <p
+              style={{
+                fontSize: "12.5px",
+                color: "rgba(232,169,62,0.65)",
+                fontStyle: "italic",
+                marginTop: "6px",
+                lineHeight: 1.6,
+              }}
+            >
+              Completing your purchase confirms that you have read and accepted these terms in full.
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

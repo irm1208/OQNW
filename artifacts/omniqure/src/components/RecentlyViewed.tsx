@@ -1,1 +1,103 @@
-aW1wb3J0IHsgTGluayB9IGZyb20gIndvdXRlciI7CmltcG9ydCB7IENsb2NrIH0gZnJvbSAibHVjaWRlLXJlYWN0IjsKaW1wb3J0IHsgdXNlUHJvZHVjdHMgfSBmcm9tICJAL2NvbnRleHQvUHJvZHVjdHNDb250ZXh0IjsKaW1wb3J0IHsgdXNlUmVjZW50bHlWaWV3ZWQgfSBmcm9tICJAL2NvbnRleHQvUmVjZW50bHlWaWV3ZWRDb250ZXh0IjsKaW1wb3J0IHsgdXNlQ3VycmVuY3kgfSBmcm9tICJAL2NvbnRleHQvQ3VycmVuY3lDb250ZXh0IjsKCmludGVyZmFjZSBSZWNlbnRseVZpZXdlZFByb3BzIHsKICBleGNsdWRlSWQ/OiBzdHJpbmc7Cn0KCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIFJlY2VudGx5Vmlld2VkKHsgZXhjbHVkZUlkIH06IFJlY2VudGx5Vmlld2VkUHJvcHMpIHsKICBjb25zdCB7IHByb2R1Y3RzIH0gPSB1c2VQcm9kdWN0cygpOwogIGNvbnN0IHsgcmVjZW50SWRzIH0gPSB1c2VSZWNlbnRseVZpZXdlZCgpOwogIGNvbnN0IHsgZm9ybWF0UHJpY2UgfSA9IHVzZUN1cnJlbmN5KCk7CgogIGNvbnN0IHJlY2VudFByb2R1Y3RzID0gcmVjZW50SWRzCiAgICAuZmlsdGVyKChpZCkgPT4gaWQgIT09IGV4Y2x1ZGVJZCkKICAgIC5tYXAoKGlkKSA9PiBwcm9kdWN0cy5maW5kKChwKSA9PiBwLmlkID09PSBpZCkpCiAgICAuZmlsdGVyKEJvb2xlYW4pCiAgICAuc2xpY2UoMCwgOCkgYXMgdHlwZW9mIHByb2R1Y3RzOwoKICBpZiAocmVjZW50UHJvZHVjdHMubGVuZ3RoID09PSAwKSByZXR1cm4gbnVsbDsKCiAgcmV0dXJuICgKICAgIDxkaXYgY2xhc3NOYW1lPSJtYi04Ij4KICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGdhcC0yLjUgbWItNCI+CiAgICAgICAgPGRpdgogICAgICAgICAgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciByb3VuZGVkLWxnIgogICAgICAgICAgc3R5bGU9e3sgd2lkdGg6ICIzMHB4IiwgaGVpZ2h0OiAiMzBweCIsIGJhY2tncm91bmRDb2xvcjogIiNFRUY0RkYiIH19CiAgICAgICAgPgogICAgICAgICAgPENsb2NrIHNpemU9ezE1fSBzdHlsZT17eyBjb2xvcjogIiMxQjVDQjUiIH19IC8+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGgyIGNsYXNzTmFtZT0iZm9udC1ib2xkIiBzdHlsZT17eyBmb250U2l6ZTogIjE4cHgiLCBjb2xvcjogIiMwRjE3MkEiIH19PgogICAgICAgICAgUmVjZW50bHkgVmlld2VkCiAgICAgICAgPC9oMj4KICAgICAgPC9kaXY+CgogICAgICA8ZGl2CiAgICAgICAgY2xhc3NOYW1lPSJmbGV4IGdhcC0zIG92ZXJmbG93LXgtYXV0byBwYi0yIgogICAgICAgIHN0eWxlPXt7IHNjcm9sbGJhcldpZHRoOiAidGhpbiIsIHNjcm9sbGJhckNvbG9yOiAiI0NCRDVFMSB0cmFuc3BhcmVudCIgfX0KICAgICAgPgogICAgICAgIHtyZWNlbnRQcm9kdWN0cy5tYXAoKHByb2R1Y3QpID0+ICgKICAgICAgICAgIDxMaW5rCiAgICAgICAgICAgIGtleT17cHJvZHVjdC5pZH0KICAgICAgICAgICAgaHJlZj17YC9wcm9kdWN0LyR7cHJvZHVjdC5pZH1gfQogICAgICAgICAgICBzdHlsZT17eyB0ZXh0RGVjb3JhdGlvbjogIm5vbmUiLCBmbGV4U2hyaW5rOiAwIH19CiAgICAgICAgICA+CiAgICAgICAgICAgIDxkaXYKICAgICAgICAgICAgICBjbGFzc05hbWU9InJvdW5kZWQtMnhsIG92ZXJmbG93LWhpZGRlbiBiZy13aGl0ZSBmbGV4IGZsZXgtY29sIHRyYW5zaXRpb24tYWxsIGR1cmF0aW9uLTIwMCBjdXJzb3ItcG9pbnRlciIKICAgICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgICAgd2lkdGg6ICIxNDhweCIsCiAgICAgICAgICAgICAgICBib3JkZXI6ICIxLjVweCBzb2xpZCAjRThFREY1IiwKICAgICAgICAgICAgICAgIGJveFNoYWRvdzogIjAgMXB4IDZweCByZ2JhKDE1LDIzLDQyLDAuMDUpIiwKICAgICAgICAgICAgICB9fQogICAgICAgICAgICAgIG9uTW91c2VFbnRlcj17KGUpID0+IHsKICAgICAgICAgICAgICAgIGNvbnN0IGVsID0gZS5jdXJyZW50VGFyZ2V0IGFzIEhUTUxEaXZFbGVtZW50OwogICAgICAgICAgICAgICAgZWwuc3R5bGUuYm9yZGVyQ29sb3IgPSAiIzkzQjhGMCI7CiAgICAgICAgICAgICAgICBlbC5zdHlsZS5ib3hTaGFkb3cgPSAiMCA4cHggMjRweCByZ2JhKDI3LDkyLDE4MSwwLjEwKSI7CiAgICAgICAgICAgICAgICBlbC5zdHlsZS50cmFuc2Zvcm0gPSAidHJhbnNsYXRlWSgtMnB4KSI7CiAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgICBvbk1vdXNlTGVhdmU9eyhlKSA9PiB7CiAgICAgICAgICAgICAgICBjb25zdCBlbCA9IGUuY3VycmVudFRhcmdldCBhcyBIVE1MRGl2RWxlbWVudDsKICAgICAgICAgICAgICAgIGVsLnN0eWxlLmJvcmRlckNvbG9yID0gIiNFOEVERjUiOwogICAgICAgICAgICAgICAgZWwuc3R5bGUuYm94U2hhZG93ID0gIjAgMXB4IDZweCByZ2JhKDE1LDIzLDQyLDAuMDUpIjsKICAgICAgICAgICAgICAgIGVsLnN0eWxlLnRyYW5zZm9ybSA9ICJ0cmFuc2xhdGVZKDApIjsKICAgICAgICAgICAgICB9fQogICAgICAgICAgICA+CiAgICAgICAgICAgICAgPGRpdgogICAgICAgICAgICAgICAgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciIKICAgICAgICAgICAgICAgIHN0eWxlPXt7CiAgICAgICAgICAgICAgICAgIGhlaWdodDogIjEwMHB4IiwKICAgICAgICAgICAgICAgICAgYmFja2dyb3VuZDogImxpbmVhci1ncmFkaWVudCgxNDVkZWcsICNGNEY4RkYgMCUsICNFQkYyRkYgMTAwJSkiLAogICAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICA8aW1nCiAgICAgICAgICAgICAgICAgIHNyYz17cHJvZHVjdC5pbWFnZX0KICAgICAgICAgICAgICAgICAgYWx0PXtwcm9kdWN0Lm5hbWV9CiAgICAgICAgICAgICAgICAgIHN0eWxlPXt7IHdpZHRoOiAiMTAwJSIsIGhlaWdodDogIjEwMCUiLCBvYmplY3RGaXQ6ICJjb250YWluIiwgcGFkZGluZzogIjEwcHgiIH19CiAgICAgICAgICAgICAgICAgIG9uRXJyb3I9eyhlKSA9PiB7CiAgICAgICAgICAgICAgICAgICAgKGUuY3VycmVudFRhcmdldCBhcyBIVE1MSW1hZ2VFbGVtZW50KS5zdHlsZS5kaXNwbGF5ID0gIm5vbmUiOwogICAgICAgICAgICAgICAgICB9fQogICAgICAgICAgICAgICAgLz4KICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0icHgtMyBweS0yLjUiPgogICAgICAgICAgICAgICAgPHAKICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPSJmb250LXNlbWlib2xkIGxlYWRpbmctc251ZyBtYi0xIgogICAgICAgICAgICAgICAgICBzdHlsZT17eyBmb250U2l6ZTogIjExLjVweCIsIGNvbG9yOiAiIzBGMTcyQSIsIGxpbmVIZWlnaHQ6IDEuMyB9fQogICAgICAgICAgICAgICAgPgogICAgICAgICAgICAgICAgICB7cHJvZHVjdC5uYW1lfQogICAgICAgICAgICAgICAgPC9wPgogICAgICAgICAgICAgICAge3Byb2R1Y3QucHJpY2UgIT0gbnVsbCAmJiAoCiAgICAgICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0iZm9udC1ib2xkIiBzdHlsZT17eyBmb250U2l6ZTogIjEzcHgiLCBjb2xvcjogIiMxQjVDQjUiIH19PgogICAgICAgICAgICAgICAgICAgIHtmb3JtYXRQcmljZShwcm9kdWN0LnByaWNlKX0KICAgICAgICAgICAgICAgICAgPC9wPgogICAgICAgICAgICAgICAgKX0KICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8L0xpbms+CiAgICAgICAgKSl9CiAgICAgIDwvZGl2PgogICAgPC9kaXY+CiAgKTsKfQo=
+import { Link } from "wouter";
+import { Clock } from "lucide-react";
+import { useProducts } from "@/context/ProductsContext";
+import { useRecentlyViewed } from "@/context/RecentlyViewedContext";
+import { useCurrency } from "@/context/CurrencyContext";
+
+interface RecentlyViewedProps {
+  excludeId?: string;
+}
+
+export default function RecentlyViewed({ excludeId }: RecentlyViewedProps) {
+  const { products } = useProducts();
+  const { recentIds } = useRecentlyViewed();
+  const { formatPrice } = useCurrency();
+
+  const recentProducts = recentIds
+    .filter((id) => id !== excludeId)
+    .map((id) => products.find((p) => p.id === id))
+    .filter(Boolean)
+    .slice(0, 8) as typeof products;
+
+  if (recentProducts.length === 0) return null;
+
+  return (
+    <div className="mb-8">
+      <div className="flex items-center gap-2.5 mb-4">
+        <div
+          className="flex items-center justify-center rounded-lg"
+          style={{ width: "30px", height: "30px", backgroundColor: "#EEF4FF" }}
+        >
+          <Clock size={15} style={{ color: "#1B5CB5" }} />
+        </div>
+        <h2 className="font-bold" style={{ fontSize: "18px", color: "#0F172A" }}>
+          Recently Viewed
+        </h2>
+      </div>
+
+      <div
+        className="flex gap-3 overflow-x-auto pb-2"
+        style={{ scrollbarWidth: "thin", scrollbarColor: "#CBD5E1 transparent" }}
+      >
+        {recentProducts.map((product) => (
+          <Link
+            key={product.id}
+            href={`/product/${product.id}`}
+            style={{ textDecoration: "none", flexShrink: 0 }}
+          >
+            <div
+              className="rounded-2xl overflow-hidden bg-white flex flex-col transition-all duration-200 cursor-pointer"
+              style={{
+                width: "148px",
+                border: "1.5px solid #E8EDF5",
+                boxShadow: "0 1px 6px rgba(15,23,42,0.05)",
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLDivElement;
+                el.style.borderColor = "#93B8F0";
+                el.style.boxShadow = "0 8px 24px rgba(27,92,181,0.10)";
+                el.style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLDivElement;
+                el.style.borderColor = "#E8EDF5";
+                el.style.boxShadow = "0 1px 6px rgba(15,23,42,0.05)";
+                el.style.transform = "translateY(0)";
+              }}
+            >
+              <div
+                className="flex items-center justify-center"
+                style={{
+                  height: "100px",
+                  background: "linear-gradient(145deg, #F4F8FF 0%, #EBF2FF 100%)",
+                }}
+              >
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  style={{ width: "100%", height: "100%", objectFit: "contain", padding: "10px" }}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                  }}
+                />
+              </div>
+              <div className="px-3 py-2.5">
+                <p
+                  className="font-semibold leading-snug mb-1"
+                  style={{ fontSize: "11.5px", color: "#0F172A", lineHeight: 1.3 }}
+                >
+                  {product.name}
+                </p>
+                {product.price != null && (
+                  <p className="font-bold" style={{ fontSize: "13px", color: "#1B5CB5" }}>
+                    {formatPrice(product.price)}
+                  </p>
+                )}
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}

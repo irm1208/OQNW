@@ -1,1 +1,190 @@
-aW1wb3J0IHsgdXNlU3RhdGUgfSBmcm9tICJyZWFjdCI7CmltcG9ydCB7IFRhYmxlLCBUYWJsZUJvZHksIFRhYmxlQ2VsbCwgVGFibGVIZWFkLCBUYWJsZUhlYWRlciwgVGFibGVSb3cgfSBmcm9tICJAL2NvbXBvbmVudHMvdWkvdGFibGUiOwppbXBvcnQgeyBCYWRnZSB9IGZyb20gIkAvY29tcG9uZW50cy91aS9iYWRnZSI7CmltcG9ydCB7IExvYWRlcjIsIE1haWwsIE1haWxDaGVjaywgWENpcmNsZSwgUmVmcmVzaEN3IH0gZnJvbSAibHVjaWRlLXJlYWN0IjsKaW1wb3J0IHsgdXNlUXVlcnkgfSBmcm9tICJAdGFuc3RhY2svcmVhY3QtcXVlcnkiOwoKZnVuY3Rpb24gYXBpKHBhdGg6IHN0cmluZykgeyByZXR1cm4gYC9hcGkke3BhdGh9YDsgfQpmdW5jdGlvbiBhcGlGZXRjaCh1cmw6IHN0cmluZykgewogIHJldHVybiBmZXRjaCh1cmwsIHsgY3JlZGVudGlhbHM6ICJpbmNsdWRlIiB9KS50aGVuKHIgPT4gewogICAgaWYgKCFyLm9rKSB0aHJvdyBuZXcgRXJyb3IoIlJlcXVlc3QgZmFpbGVkIik7CiAgICByZXR1cm4gci5qc29uKCk7CiAgfSk7Cn0KCmZ1bmN0aW9uIGZvcm1hdERhdGVUaW1lKGlzbzogc3RyaW5nKSB7CiAgcmV0dXJuIG5ldyBEYXRlKGlzbykudG9Mb2NhbGVTdHJpbmcoImVuLUdCIiwgewogICAgZGF5OiAibnVtZXJpYyIsIG1vbnRoOiAic2hvcnQiLCB5ZWFyOiAibnVtZXJpYyIsCiAgICBob3VyOiAiMi1kaWdpdCIsIG1pbnV0ZTogIjItZGlnaXQiLAogIH0pOwp9Cgpjb25zdCBUWVBFX0xBQkVMUzogUmVjb3JkPHN0cmluZywgeyBsYWJlbDogc3RyaW5nOyBjb2xvcjogc3RyaW5nIH0+ID0gewogIG9yZGVyX2NvbmZpcm1hdGlvbjogeyBsYWJlbDogIk9yZGVyIENvbmZpcm1hdGlvbiIsIGNvbG9yOiAidGV4dC1ibHVlLTcwMCBib3JkZXItYmx1ZS0yMDAgYmctYmx1ZS01MCIgfSwKICBzaGlwcGluZzogICAgICAgICAgeyBsYWJlbDogIlNoaXBwaW5nIiwgICAgICAgICAgICBjb2xvcjogInRleHQtZ3JlZW4tNzAwIGJvcmRlci1ncmVlbi0yMDAgYmctZ3JlZW4tNTAiIH0sCiAgcGFzc3dvcmRfcmVzZXQ6ICAgIHsgbGFiZWw6ICJQYXNzd29yZCBSZXNldCIsICAgICAgY29sb3I6ICJ0ZXh0LXB1cnBsZS03MDAgYm9yZGVyLXB1cnBsZS0yMDAgYmctcHVycGxlLTUwIiB9LAogIHJldHVybl91cGRhdGU6ICAgICB7IGxhYmVsOiAiUmV0dXJuIFVwZGF0ZSIsICAgICAgIGNvbG9yOiAidGV4dC1vcmFuZ2UtNzAwIGJvcmRlci1vcmFuZ2UtMjAwIGJnLW9yYW5nZS01MCIgfSwKICBsb3dfc3RvY2s6ICAgICAgICAgeyBsYWJlbDogIkxvdyBTdG9jayIsICAgICAgICAgICBjb2xvcjogInRleHQtcmVkLTcwMCBib3JkZXItcmVkLTIwMCBiZy1yZWQtNTAiIH0sCiAgYWJhbmRvbmVkX2NhcnQ6ICAgIHsgbGFiZWw6ICJBYmFuZG9uZWQgQ2FydCIsICAgICAgY29sb3I6ICJ0ZXh0LXllbGxvdy03MDAgYm9yZGVyLXllbGxvdy0yMDAgYmcteWVsbG93LTUwIiB9LAogIGJhY2tfaW5fc3RvY2s6ICAgICB7IGxhYmVsOiAiQmFjayBpbiBTdG9jayIsICAgICAgIGNvbG9yOiAidGV4dC10ZWFsLTcwMCBib3JkZXItdGVhbC0yMDAgYmctdGVhbC01MCIgfSwKICByZXZpZXdfcmVxdWVzdDogICAgeyBsYWJlbDogIlJldmlldyBSZXF1ZXN0IiwgICAgICBjb2xvcjogInRleHQtc2xhdGUtNzAwIGJvcmRlci1zbGF0ZS0yMDAgYmctc2xhdGUtNTAiIH0sCiAgcmVmZXJyYWxfcmV3YXJkOiAgIHsgbGFiZWw6ICJSZWZlcnJhbCBSZXdhcmQiLCAgICAgY29sb3I6ICJ0ZXh0LXBpbmstNzAwIGJvcmRlci1waW5rLTIwMCBiZy1waW5rLTUwIiB9LAp9OwoKY29uc3QgQUxMX1RZUEVTID0gT2JqZWN0LmtleXMoVFlQRV9MQUJFTFMpOwoKaW50ZXJmYWNlIEVtYWlsTG9nRW50cnkgewogIGlkOiBudW1iZXI7CiAgdG9FbWFpbDogc3RyaW5nOwogIHN1YmplY3Q6IHN0cmluZzsKICB0eXBlOiBzdHJpbmc7CiAgc3RhdHVzOiBzdHJpbmc7CiAgcmVzZW5kSWQ6IHN0cmluZyB8IG51bGw7CiAgb3JkZXJOdW1iZXI6IHN0cmluZyB8IG51bGw7CiAgY3JlYXRlZEF0OiBzdHJpbmc7Cn0KaW50ZXJmYWNlIFN0YXRzIHsgdG90YWw6IG51bWJlcjsgc2VudDogbnVtYmVyOyBmYWlsZWQ6IG51bWJlcjsgfQppbnRlcmZhY2UgQXBpUmVzcG9uc2UgeyBsb2dzOiBFbWFpbExvZ0VudHJ5W107IHN0YXRzOiBTdGF0czsgfQoKZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gRW1haWxMb2coKSB7CiAgY29uc3QgW3R5cGVGaWx0ZXIsIHNldFR5cGVGaWx0ZXJdID0gdXNlU3RhdGU8c3RyaW5nPigiYWxsIik7CgogIGNvbnN0IHsgZGF0YSwgaXNMb2FkaW5nLCBlcnJvciwgcmVmZXRjaCwgaXNGZXRjaGluZyB9ID0gdXNlUXVlcnk8QXBpUmVzcG9uc2U+KHsKICAgIHF1ZXJ5S2V5OiBbImFkbWluLWVtYWlsLWxvZ3MiXSwKICAgIHF1ZXJ5Rm46ICgpID0+IGFwaUZldGNoKGFwaSgiL2FkbWluL2VtYWlsLWxvZ3MiKSkgYXMgUHJvbWlzZTxBcGlSZXNwb25zZT4sCiAgICByZWZldGNoSW50ZXJ2YWw6IDYwXzAwMCwKICB9KTsKCiAgaWYgKGlzTG9hZGluZykgewogICAgcmV0dXJuICgKICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIGgtNDgiPgogICAgICAgIDxMb2FkZXIyIGNsYXNzTmFtZT0idy02IGgtNiBhbmltYXRlLXNwaW4gdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIiAvPgogICAgICA8L2Rpdj4KICAgICk7CiAgfQogIGlmIChlcnJvcikgewogICAgcmV0dXJuIDxkaXYgY2xhc3NOYW1lPSJ0ZXh0LWRlc3RydWN0aXZlIHRleHQtc20iPkZhaWxlZCB0byBsb2FkIGVtYWlsIGxvZ3MuPC9kaXY+OwogIH0KCiAgY29uc3QgeyBsb2dzID0gW10sIHN0YXRzID0geyB0b3RhbDogMCwgc2VudDogMCwgZmFpbGVkOiAwIH0gfSA9IGRhdGEgPz8ge307CiAgY29uc3QgZmlsdGVyZWQgPSB0eXBlRmlsdGVyID09PSAiYWxsIiA/IGxvZ3MgOiBsb2dzLmZpbHRlcigobCkgPT4gbC50eXBlID09PSB0eXBlRmlsdGVyKTsKCiAgcmV0dXJuICgKICAgIDxkaXYgY2xhc3NOYW1lPSJzcGFjZS15LTYiPgogICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1zdGFydCBqdXN0aWZ5LWJldHdlZW4iPgogICAgICAgIDxkaXY+CiAgICAgICAgICA8aDEgY2xhc3NOYW1lPSJ0ZXh0LTJ4bCBmb250LWJvbGQgdHJhY2tpbmctdGlnaHQiPkVtYWlsIExvZzwvaDE+CiAgICAgICAgICA8cCBjbGFzc05hbWU9InRleHQtbXV0ZWQtZm9yZWdyb3VuZCB0ZXh0LXNtIG10LTEiPkFsbCB0cmFuc2FjdGlvbmFsIGVtYWlscyBzZW50IGJ5IHRoZSBwbGF0Zm9ybTwvcD4KICAgICAgICA8L2Rpdj4KICAgICAgICA8YnV0dG9uCiAgICAgICAgICBvbkNsaWNrPXsoKSA9PiByZWZldGNoKCl9CiAgICAgICAgICBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGdhcC0xLjUgdGV4dC14cyB0ZXh0LW11dGVkLWZvcmVncm91bmQgaG92ZXI6dGV4dC1mb3JlZ3JvdW5kIGJvcmRlciByb3VuZGVkLW1kIHB4LTMgcHktMS41IHRyYW5zaXRpb24tY29sb3JzIgogICAgICAgID4KICAgICAgICAgIDxSZWZyZXNoQ3cgY2xhc3NOYW1lPXtgdy0zIGgtMyAke2lzRmV0Y2hpbmcgPyAiYW5pbWF0ZS1zcGluIiA6ICIifWB9IC8+CiAgICAgICAgICBSZWZyZXNoCiAgICAgICAgPC9idXR0b24+CiAgICAgIDwvZGl2PgoKICAgICAgey8qIFN0YXRzICovfQogICAgICA8ZGl2IGNsYXNzTmFtZT0iZ3JpZCBncmlkLWNvbHMtMyBnYXAtNCI+CiAgICAgICAge1sKICAgICAgICAgIHsgbGFiZWw6ICJUb3RhbCBTZW50IiwgdmFsdWU6IFN0cmluZyhzdGF0cy50b3RhbCksIGljb246IE1haWwsIGNvbG9yOiAidGV4dC1zbGF0ZS02MDAiIH0sCiAgICAgICAgICB7IGxhYmVsOiAiRGVsaXZlcmVkIiwgdmFsdWU6IFN0cmluZyhzdGF0cy5zZW50KSwgaWNvbjogTWFpbENoZWNrLCBjb2xvcjogInRleHQtZ3JlZW4tNjAwIiB9LAogICAgICAgICAgeyBsYWJlbDogIkZhaWxlZCIsIHZhbHVlOiBTdHJpbmcoc3RhdHMuZmFpbGVkKSwgaWNvbjogWENpcmNsZSwgY29sb3I6ICJ0ZXh0LXJlZC02MDAiIH0sCiAgICAgICAgXS5tYXAoKHMpID0+ICgKICAgICAgICAgIDxkaXYga2V5PXtzLmxhYmVsfSBjbGFzc05hbWU9InJvdW5kZWQteGwgYm9yZGVyIGJnLWNhcmQgcC00Ij4KICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGdhcC0yIG1iLTEiPgogICAgICAgICAgICAgIDxzLmljb24gY2xhc3NOYW1lPXtgdy00IGgtNCAke3MuY29sb3J9YH0gLz4KICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9InRleHQteHMgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIGZvbnQtbWVkaXVtIj57cy5sYWJlbH08L3A+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICA8cCBjbGFzc05hbWU9e2B0ZXh0LTJ4bCBmb250LWJvbGQgJHtzLmNvbG9yfWB9PntzLnZhbHVlfTwvcD4KICAgICAgICAgIDwvZGl2PgogICAgICAgICkpfQogICAgICA8L2Rpdj4KCiAgICAgIHsvKiBUeXBlIGZpbHRlciAqL30KICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggZmxleC13cmFwIGdhcC0yIj4KICAgICAgICA8YnV0dG9uCiAgICAgICAgICBvbkNsaWNrPXsoKSA9PiBzZXRUeXBlRmlsdGVyKCJhbGwiKX0KICAgICAgICAgIGNsYXNzTmFtZT17YHRleHQteHMgcHgtMyBweS0xLjUgcm91bmRlZC1mdWxsIGZvbnQtbWVkaXVtIGJvcmRlciB0cmFuc2l0aW9uLWNvbG9ycyAkewogICAgICAgICAgICB0eXBlRmlsdGVyID09PSAiYWxsIgogICAgICAgICAgICAgID8gImJnLXByaW1hcnkgdGV4dC1wcmltYXJ5LWZvcmVncm91bmQgYm9yZGVyLXByaW1hcnkiCiAgICAgICAgICAgICAgOiAiYmctYmFja2dyb3VuZCB0ZXh0LW11dGVkLWZvcmVncm91bmQgYm9yZGVyLWJvcmRlciBob3ZlcjpiZy1tdXRlZCIKICAgICAgICAgIH1gfQogICAgICAgID4KICAgICAgICAgIEFsbAogICAgICAgIDwvYnV0dG9uPgogICAgICAgIHtBTExfVFlQRVMubWFwKCh0KSA9PiAoCiAgICAgICAgICA8YnV0dG9uCiAgICAgICAgICAgIGtleT17dH0KICAgICAgICAgICAgb25DbGljaz17KCkgPT4gc2V0VHlwZUZpbHRlcih0KX0KICAgICAgICAgICAgY2xhc3NOYW1lPXtgdGV4dC14cyBweC0zIHB5LTEuNSByb3VuZGVkLWZ1bGwgZm9udC1tZWRpdW0gYm9yZGVyIHRyYW5zaXRpb24tY29sb3JzICR7CiAgICAgICAgICAgICAgdHlwZUZpbHRlciA9PT0gdAogICAgICAgICAgICAgICAgPyAiYmctcHJpbWFyeSB0ZXh0LXByaW1hcnktZm9yZWdyb3VuZCBib3JkZXItcHJpbWFyeSIKICAgICAgICAgICAgICAgIDogImJnLWJhY2tncm91bmQgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIGJvcmRlci1ib3JkZXIgaG92ZXI6YmctbXV0ZWQiCiAgICAgICAgICAgIH1gfQogICAgICAgICAgPgogICAgICAgICAgICB7VFlQRV9MQUJFTFNbdF0/LmxhYmVsID8/IHR9CiAgICAgICAgICA8L2J1dHRvbj4KICAgICAgICApKX0KICAgICAgPC9kaXY+CgogICAgICB7ZmlsdGVyZWQubGVuZ3RoID09PSAwID8gKAogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGZsZXgtY29sIGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBoLTQ4IHRleHQtbXV0ZWQtZm9yZWdyb3VuZCBnYXAtMiI+CiAgICAgICAgICA8TWFpbCBjbGFzc05hbWU9InctOCBoLTggb3BhY2l0eS0zMCIgLz4KICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1zbSI+Tm8gZW1haWxzIGxvZ2dlZCB5ZXQ8L3A+CiAgICAgICAgPC9kaXY+CiAgICAgICkgOiAoCiAgICAgICAgPGRpdiBjbGFzc05hbWU9InJvdW5kZWQteGwgYm9yZGVyIGJnLWNhcmQgb3ZlcmZsb3ctaGlkZGVuIj4KICAgICAgICAgIDxUYWJsZT4KICAgICAgICAgICAgPFRhYmxlSGVhZGVyPgogICAgICAgICAgICAgIDxUYWJsZVJvdz4KICAgICAgICAgICAgICAgIDxUYWJsZUhlYWQ+RGF0ZSAvIFRpbWU8L1RhYmxlSGVhZD4KICAgICAgICAgICAgICAgIDxUYWJsZUhlYWQ+VHlwZTwvVGFibGVIZWFkPgogICAgICAgICAgICAgICAgPFRhYmxlSGVhZD5SZWNpcGllbnQ8L1RhYmxlSGVhZD4KICAgICAgICAgICAgICAgIDxUYWJsZUhlYWQ+U3ViamVjdDwvVGFibGVIZWFkPgogICAgICAgICAgICAgICAgPFRhYmxlSGVhZD5PcmRlcjwvVGFibGVIZWFkPgogICAgICAgICAgICAgICAgPFRhYmxlSGVhZD5TdGF0dXM8L1RhYmxlSGVhZD4KICAgICAgICAgICAgICA8L1RhYmxlUm93PgogICAgICAgICAgICA8L1RhYmxlSGVhZGVyPgogICAgICAgICAgICA8VGFibGVCb2R5PgogICAgICAgICAgICAgIHtmaWx0ZXJlZC5tYXAoKGxvZykgPT4gewogICAgICAgICAgICAgICAgY29uc3QgdHlwZUNmZyA9IFRZUEVfTEFCRUxTW2xvZy50eXBlXSA/PyB7IGxhYmVsOiBsb2cudHlwZSwgY29sb3I6ICJ0ZXh0LXNsYXRlLTcwMCBib3JkZXItc2xhdGUtMjAwIGJnLXNsYXRlLTUwIiB9OwogICAgICAgICAgICAgICAgcmV0dXJuICgKICAgICAgICAgICAgICAgICAgPFRhYmxlUm93IGtleT17bG9nLmlkfT4KICAgICAgICAgICAgICAgICAgICA8VGFibGVDZWxsIGNsYXNzTmFtZT0idGV4dC14cyB0ZXh0LW11dGVkLWZvcmVncm91bmQgd2hpdGVzcGFjZS1ub3dyYXAiPgogICAgICAgICAgICAgICAgICAgICAge2Zvcm1hdERhdGVUaW1lKGxvZy5jcmVhdGVkQXQpfQogICAgICAgICAgICAgICAgICAgIDwvVGFibGVDZWxsPgogICAgICAgICAgICAgICAgICAgIDxUYWJsZUNlbGw+CiAgICAgICAgICAgICAgICAgICAgICA8QmFkZ2UgdmFyaWFudD0ib3V0bGluZSIgY2xhc3NOYW1lPXtgdGV4dC14cyBnYXAtMSAke3R5cGVDZmcuY29sb3J9YH0+CiAgICAgICAgICAgICAgICAgICAgICAgIHt0eXBlQ2ZnLmxhYmVsfQogICAgICAgICAgICAgICAgICAgICAgPC9CYWRnZT4KICAgICAgICAgICAgICAgICAgICA8L1RhYmxlQ2VsbD4KICAgICAgICAgICAgICAgICAgICA8VGFibGVDZWxsIGNsYXNzTmFtZT0idGV4dC1zbSI+e2xvZy50b0VtYWlsfTwvVGFibGVDZWxsPgogICAgICAgICAgICAgICAgICAgIDxUYWJsZUNlbGwgY2xhc3NOYW1lPSJ0ZXh0LXNtIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCBtYXgtdy14cyB0cnVuY2F0ZSI+CiAgICAgICAgICAgICAgICAgICAgICB7bG9nLnN1YmplY3R9CiAgICAgICAgICAgICAgICAgICAgPC9UYWJsZUNlbGw+CiAgICAgICAgICAgICAgICAgICAgPFRhYmxlQ2VsbCBjbGFzc05hbWU9InRleHQtc20gZm9udC1tb25vIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+CiAgICAgICAgICAgICAgICAgICAgICB7bG9nLm9yZGVyTnVtYmVyID8/ICLigJQifQogICAgICAgICAgICAgICAgICAgIDwvVGFibGVDZWxsPgogICAgICAgICAgICAgICAgICAgIDxUYWJsZUNlbGw+CiAgICAgICAgICAgICAgICAgICAgICB7bG9nLnN0YXR1cyA9PT0gImZhaWxlZCIgPyAoCiAgICAgICAgICAgICAgICAgICAgICAgIDxCYWRnZSB2YXJpYW50PSJvdXRsaW5lIiBjbGFzc05hbWU9ImdhcC0xIHRleHQtcmVkLTcwMCBib3JkZXItcmVkLTIwMCBiZy1yZWQtNTAiPgogICAgICAgICAgICAgICAgICAgICAgICAgIDxYQ2lyY2xlIGNsYXNzTmFtZT0idy0zIGgtMyIgLz4gRmFpbGVkCiAgICAgICAgICAgICAgICAgICAgICAgIDwvQmFkZ2U+CiAgICAgICAgICAgICAgICAgICAgICApIDogKAogICAgICAgICAgICAgICAgICAgICAgICA8QmFkZ2UgdmFyaWFudD0ib3V0bGluZSIgY2xhc3NOYW1lPSJnYXAtMSB0ZXh0LWdyZWVuLTcwMCBib3JkZXItZ3JlZW4tMjAwIGJnLWdyZWVuLTUwIj4KICAgICAgICAgICAgICAgICAgICAgICAgICA8TWFpbENoZWNrIGNsYXNzTmFtZT0idy0zIGgtMyIgLz4gU2VudAogICAgICAgICAgICAgICAgICAgICAgICA8L0JhZGdlPgogICAgICAgICAgICAgICAgICAgICAgKX0KICAgICAgICAgICAgICAgICAgICA8L1RhYmxlQ2VsbD4KICAgICAgICAgICAgICAgICAgPC9UYWJsZVJvdz4KICAgICAgICAgICAgICAgICk7CiAgICAgICAgICAgICAgfSl9CiAgICAgICAgICAgIDwvVGFibGVCb2R5PgogICAgICAgICAgPC9UYWJsZT4KICAgICAgICA8L2Rpdj4KICAgICAgKX0KICAgIDwvZGl2PgogICk7Cn0K
+import { useState } from "react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Loader2, Mail, MailCheck, XCircle, RefreshCw } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+
+function api(path: string) { return `/api${path}`; }
+function apiFetch(url: string) {
+  return fetch(url, { credentials: "include" }).then(r => {
+    if (!r.ok) throw new Error("Request failed");
+    return r.json();
+  });
+}
+
+function formatDateTime(iso: string) {
+  return new Date(iso).toLocaleString("en-GB", {
+    day: "numeric", month: "short", year: "numeric",
+    hour: "2-digit", minute: "2-digit",
+  });
+}
+
+const TYPE_LABELS: Record<string, { label: string; color: string }> = {
+  order_confirmation: { label: "Order Confirmation", color: "text-blue-700 border-blue-200 bg-blue-50" },
+  shipping:          { label: "Shipping",            color: "text-green-700 border-green-200 bg-green-50" },
+  password_reset:    { label: "Password Reset",      color: "text-purple-700 border-purple-200 bg-purple-50" },
+  return_update:     { label: "Return Update",       color: "text-orange-700 border-orange-200 bg-orange-50" },
+  low_stock:         { label: "Low Stock",           color: "text-red-700 border-red-200 bg-red-50" },
+  abandoned_cart:    { label: "Abandoned Cart",      color: "text-yellow-700 border-yellow-200 bg-yellow-50" },
+  back_in_stock:     { label: "Back in Stock",       color: "text-teal-700 border-teal-200 bg-teal-50" },
+  review_request:    { label: "Review Request",      color: "text-slate-700 border-slate-200 bg-slate-50" },
+  referral_reward:   { label: "Referral Reward",     color: "text-pink-700 border-pink-200 bg-pink-50" },
+};
+
+const ALL_TYPES = Object.keys(TYPE_LABELS);
+
+interface EmailLogEntry {
+  id: number;
+  toEmail: string;
+  subject: string;
+  type: string;
+  status: string;
+  resendId: string | null;
+  orderNumber: string | null;
+  createdAt: string;
+}
+interface Stats { total: number; sent: number; failed: number; }
+interface ApiResponse { logs: EmailLogEntry[]; stats: Stats; }
+
+export default function EmailLog() {
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+
+  const { data, isLoading, error, refetch, isFetching } = useQuery<ApiResponse>({
+    queryKey: ["admin-email-logs"],
+    queryFn: () => apiFetch(api("/admin/email-logs")) as Promise<ApiResponse>,
+    refetchInterval: 60_000,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-48">
+        <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+  if (error) {
+    return <div className="text-destructive text-sm">Failed to load email logs.</div>;
+  }
+
+  const { logs = [], stats = { total: 0, sent: 0, failed: 0 } } = data ?? {};
+  const filtered = typeFilter === "all" ? logs : logs.filter((l) => l.type === typeFilter);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Email Log</h1>
+          <p className="text-muted-foreground text-sm mt-1">All transactional emails sent by the platform</p>
+        </div>
+        <button
+          onClick={() => refetch()}
+          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground border rounded-md px-3 py-1.5 transition-colors"
+        >
+          <RefreshCw className={`w-3 h-3 ${isFetching ? "animate-spin" : ""}`} />
+          Refresh
+        </button>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-3 gap-4">
+        {[
+          { label: "Total Sent", value: String(stats.total), icon: Mail, color: "text-slate-600" },
+          { label: "Delivered", value: String(stats.sent), icon: MailCheck, color: "text-green-600" },
+          { label: "Failed", value: String(stats.failed), icon: XCircle, color: "text-red-600" },
+        ].map((s) => (
+          <div key={s.label} className="rounded-xl border bg-card p-4">
+            <div className="flex items-center gap-2 mb-1">
+              <s.icon className={`w-4 h-4 ${s.color}`} />
+              <p className="text-xs text-muted-foreground font-medium">{s.label}</p>
+            </div>
+            <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Type filter */}
+      <div className="flex flex-wrap gap-2">
+        <button
+          onClick={() => setTypeFilter("all")}
+          className={`text-xs px-3 py-1.5 rounded-full font-medium border transition-colors ${
+            typeFilter === "all"
+              ? "bg-primary text-primary-foreground border-primary"
+              : "bg-background text-muted-foreground border-border hover:bg-muted"
+          }`}
+        >
+          All
+        </button>
+        {ALL_TYPES.map((t) => (
+          <button
+            key={t}
+            onClick={() => setTypeFilter(t)}
+            className={`text-xs px-3 py-1.5 rounded-full font-medium border transition-colors ${
+              typeFilter === t
+                ? "bg-primary text-primary-foreground border-primary"
+                : "bg-background text-muted-foreground border-border hover:bg-muted"
+            }`}
+          >
+            {TYPE_LABELS[t]?.label ?? t}
+          </button>
+        ))}
+      </div>
+
+      {filtered.length === 0 ? (
+        <div className="flex flex-col items-center justify-center h-48 text-muted-foreground gap-2">
+          <Mail className="w-8 h-8 opacity-30" />
+          <p className="text-sm">No emails logged yet</p>
+        </div>
+      ) : (
+        <div className="rounded-xl border bg-card overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Date / Time</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Recipient</TableHead>
+                <TableHead>Subject</TableHead>
+                <TableHead>Order</TableHead>
+                <TableHead>Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filtered.map((log) => {
+                const typeCfg = TYPE_LABELS[log.type] ?? { label: log.type, color: "text-slate-700 border-slate-200 bg-slate-50" };
+                return (
+                  <TableRow key={log.id}>
+                    <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
+                      {formatDateTime(log.createdAt)}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className={`text-xs gap-1 ${typeCfg.color}`}>
+                        {typeCfg.label}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-sm">{log.toEmail}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground max-w-xs truncate">
+                      {log.subject}
+                    </TableCell>
+                    <TableCell className="text-sm font-mono text-muted-foreground">
+                      {log.orderNumber ?? "—"}
+                    </TableCell>
+                    <TableCell>
+                      {log.status === "failed" ? (
+                        <Badge variant="outline" className="gap-1 text-red-700 border-red-200 bg-red-50">
+                          <XCircle className="w-3 h-3" /> Failed
+                        </Badge>
+                      ) : (
+                        <Badge variant="outline" className="gap-1 text-green-700 border-green-200 bg-green-50">
+                          <MailCheck className="w-3 h-3" /> Sent
+                        </Badge>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      )}
+    </div>
+  );
+}

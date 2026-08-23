@@ -1,1 +1,193 @@
-aW1wb3J0IHsgTGluayB9IGZyb20gIndvdXRlciI7CmltcG9ydCB7IEhlYXJ0LCBTaG9wcGluZ0NhcnQsIFgsIFBhY2thZ2UgfSBmcm9tICJsdWNpZGUtcmVhY3QiOwppbXBvcnQgeyB1c2VXaXNobGlzdCB9IGZyb20gIkAvY29udGV4dC9XaXNobGlzdENvbnRleHQiOwppbXBvcnQgeyB1c2VQcm9kdWN0cyB9IGZyb20gIkAvY29udGV4dC9Qcm9kdWN0c0NvbnRleHQiOwppbXBvcnQgeyB1c2VDYXJ0IH0gZnJvbSAiQC9jb250ZXh0L0NhcnRDb250ZXh0IjsKaW1wb3J0IHsgdXNlU0VPIH0gZnJvbSAiQC9ob29rcy91c2VTRU8iOwppbXBvcnQgeyB1c2VDdXJyZW5jeSB9IGZyb20gIkAvY29udGV4dC9DdXJyZW5jeUNvbnRleHQiOwoKZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gV2lzaGxpc3RQYWdlKCkgewogIHVzZVNFTyh7IHRpdGxlOiAiTXkgV2lzaGxpc3QiLCBkZXNjcmlwdGlvbjogIllvdXIgc2F2ZWQgcmVzZWFyY2ggcGVwdGlkZXMgZnJvbSBPbW5pUXVyZSBQZXB0aWRlIFJlc2VhcmNoIEluc3RpdHV0ZS4iLCBjYW5vbmljYWxQYXRoOiAiL3dpc2hsaXN0IiB9KTsKICBjb25zdCB7IHdpc2hsaXN0SWRzLCB0b2dnbGUgfSA9IHVzZVdpc2hsaXN0KCk7CiAgY29uc3QgeyBwcm9kdWN0cyB9ID0gdXNlUHJvZHVjdHMoKTsKICBjb25zdCB7IGFkZFRvQ2FydCB9ID0gdXNlQ2FydCgpOwogIGNvbnN0IHsgZm9ybWF0UHJpY2UgfSA9IHVzZUN1cnJlbmN5KCk7CgogIGNvbnN0IHNhdmVkID0gcHJvZHVjdHMuZmlsdGVyKChwKSA9PiB3aXNobGlzdElkcy5oYXMocGFyc2VJbnQoU3RyaW5nKHAuaWQpLCAxMCkpKTsKCiAgcmV0dXJuICgKICAgIDxkaXYgc3R5bGU9e3sgZm9udEZhbWlseTogIidBcmltbycsIEFyaWFsLCBzYW5zLXNlcmlmIiwgYmFja2dyb3VuZENvbG9yOiAiI0Y1RjhGQyIsIG1pbkhlaWdodDogIjYwdmgiIH19PgoKICAgICAgey8qIFBhZ2UgaGVhZGVyICovfQogICAgICA8ZGl2IHN0eWxlPXt7IGJhY2tncm91bmQ6ICJsaW5lYXItZ3JhZGllbnQoOTBkZWcsICMwRDI1NjUgMCUsICMxMjQwQTAgNDAlLCAjMUI1Q0I1IDc1JSwgIzFFNjhDQyAxMDAlKSIsIHBhZGRpbmc6ICIzNnB4IDAgMzBweCIsIHBvc2l0aW9uOiAicmVsYXRpdmUiLCBvdmVyZmxvdzogImhpZGRlbiIgfX0+CiAgICAgICAgPGRpdiBzdHlsZT17eyBwb3NpdGlvbjogImFic29sdXRlIiwgaW5zZXQ6IDAsIGJhY2tncm91bmRJbWFnZTogInJhZGlhbC1ncmFkaWVudChjaXJjbGUgYXQgMXB4IDFweCwgcmdiYSgyNTUsMjU1LDI1NSwwLjA2KSAxcHgsIHRyYW5zcGFyZW50IDApIiwgYmFja2dyb3VuZFNpemU6ICIyOHB4IDI4cHgiLCBwb2ludGVyRXZlbnRzOiAibm9uZSIgfX0gLz4KICAgICAgICA8ZGl2IHN0eWxlPXt7IHBvc2l0aW9uOiAiYWJzb2x1dGUiLCB0b3A6ICItNjBweCIsIHJpZ2h0OiAiMTAlIiwgd2lkdGg6ICIyODBweCIsIGhlaWdodDogIjI4MHB4IiwgYm9yZGVyUmFkaXVzOiAiNTAlIiwgYmFja2dyb3VuZDogInJhZGlhbC1ncmFkaWVudChjaXJjbGUsIHJnYmEoNTksMTMwLDI0NiwwLjIyKSAwJSwgdHJhbnNwYXJlbnQgNzAlKSIsIHBvaW50ZXJFdmVudHM6ICJub25lIiB9fSAvPgogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJtYXgtdy1bMTI4MHB4XSBteC1hdXRvIHB4LTMgbWQ6cHgtNCIgc3R5bGU9e3sgcG9zaXRpb246ICJyZWxhdGl2ZSIsIHpJbmRleDogMSB9fT4KICAgICAgICAgIDxwIHN0eWxlPXt7IGZvbnRTaXplOiAiMTBweCIsIGZvbnRXZWlnaHQ6IDgwMCwgbGV0dGVyU3BhY2luZzogIjAuMTRlbSIsIGNvbG9yOiAicmdiYSgyNTUsMjU1LDI1NSwwLjQpIiwgdGV4dFRyYW5zZm9ybTogInVwcGVyY2FzZSIsIG1hcmdpbkJvdHRvbTogIjhweCIgfX0+CiAgICAgICAgICAgIE9tbmlRdXJlIMK3IE15IEFjY291bnQKICAgICAgICAgIDwvcD4KICAgICAgICAgIDxkaXYgc3R5bGU9e3sgZGlzcGxheTogImZsZXgiLCBhbGlnbkl0ZW1zOiAiY2VudGVyIiwgZ2FwOiAiMTBweCIsIG1hcmdpbkJvdHRvbTogIjlweCIgfX0+CiAgICAgICAgICAgIDxIZWFydCBzaXplPXsyMH0gc3R5bGU9e3sgY29sb3I6ICIjRjg3MTcxIiwgZmlsbDogIiNGODcxNzEiLCBmbGV4U2hyaW5rOiAwIH19IC8+CiAgICAgICAgICAgIDxoMSBzdHlsZT17eyBmb250U2l6ZTogImNsYW1wKDIycHgsIDR2dywgMzRweCkiLCBmb250V2VpZ2h0OiA5MDAsIGNvbG9yOiAiI2ZmZiIsIGxldHRlclNwYWNpbmc6ICItMC4wMjVlbSIsIGxpbmVIZWlnaHQ6IDEuMSwgbWFyZ2luOiAwIH19PgogICAgICAgICAgICAgIE15IFdpc2hsaXN0CiAgICAgICAgICAgICAge3NhdmVkLmxlbmd0aCA+IDAgJiYgKAogICAgICAgICAgICAgICAgPHNwYW4gc3R5bGU9e3sgbWFyZ2luTGVmdDogIjEwcHgiLCBmb250U2l6ZTogIjE2cHgiLCBmb250V2VpZ2h0OiA1MDAsIGNvbG9yOiAicmdiYSgyNTUsMjU1LDI1NSwwLjQ1KSIgfX0+CiAgICAgICAgICAgICAgICAgICh7c2F2ZWQubGVuZ3RofSBpdGVte3NhdmVkLmxlbmd0aCAhPT0gMSA/ICJzIiA6ICIifSkKICAgICAgICAgICAgICAgIDwvc3Bhbj4KICAgICAgICAgICAgICApfQogICAgICAgICAgICA8L2gxPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8cCBzdHlsZT17eyBmb250U2l6ZTogIjEzLjVweCIsIGNvbG9yOiAicmdiYSgyNTUsMjU1LDI1NSwwLjUpIiwgbGluZUhlaWdodDogMS42NSB9fT4KICAgICAgICAgICAgWW91ciBzYXZlZCByZXNlYXJjaCBwZXB0aWRlcyBmcm9tIE9tbmlRdXJlLgogICAgICAgICAgPC9wPgogICAgICAgIDwvZGl2PgogICAgICA8L2Rpdj4KCiAgICAgIDxkaXYgY2xhc3NOYW1lPSJtYXgtdy1bMTI4MHB4XSBteC1hdXRvIHB4LTQgcHktOCBtZDpweS0xMCI+CgogICAgICAgIHtzYXZlZC5sZW5ndGggPT09IDAgPyAoCiAgICAgICAgICAvKiBFbXB0eSBzdGF0ZSAqLwogICAgICAgICAgPGRpdgogICAgICAgICAgICBjbGFzc05hbWU9ImZsZXggZmxleC1jb2wgaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIHB5LTIwIHJvdW5kZWQtMnhsIgogICAgICAgICAgICBzdHlsZT17eyBiYWNrZ3JvdW5kQ29sb3I6ICIjZmZmIiwgYm9yZGVyOiAiMXB4IHNvbGlkICNFOEVERjUiLCBib3hTaGFkb3c6ICIwIDJweCAxMnB4IHJnYmEoMTUsMjMsNDIsMC4wNSkiIH19CiAgICAgICAgICA+CiAgICAgICAgICAgIDxkaXYKICAgICAgICAgICAgICBjbGFzc05hbWU9InctMTYgaC0xNiByb3VuZGVkLWZ1bGwgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgbWItNCIKICAgICAgICAgICAgICBzdHlsZT17eyBiYWNrZ3JvdW5kQ29sb3I6ICIjRkVGMkYyIiB9fQogICAgICAgICAgICA+CiAgICAgICAgICAgICAgPEhlYXJ0IHNpemU9ezI4fSBzdHlsZT17eyBjb2xvcjogIiNGRUNBQ0EiIH19IC8+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICA8aDIgY2xhc3NOYW1lPSJ0ZXh0LWxnIGZvbnQtc2VtaWJvbGQgbWItMiIgc3R5bGU9e3sgY29sb3I6ICIjMEYxNzJBIiB9fT5Zb3VyIHdpc2hsaXN0IGlzIGVtcHR5PC9oMj4KICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXNtIG1iLTYiIHN0eWxlPXt7IGNvbG9yOiAiIzY0NzQ4QiIgfX0+CiAgICAgICAgICAgICAgU2F2ZSBpdGVtcyB5b3UncmUgaW50ZXJlc3RlZCBpbiBieSBjbGlja2luZyB0aGUgaGVhcnQgb24gYW55IHByb2R1Y3QgcGFnZS4KICAgICAgICAgICAgPC9wPgogICAgICAgICAgICA8TGluawogICAgICAgICAgICAgIGhyZWY9Ii9hbGwtcGVwdGlkZXMiCiAgICAgICAgICAgICAgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMiBweC01IHB5LTIuNSByb3VuZGVkLXhsIHRleHQtc20gZm9udC1zZW1pYm9sZCB0ZXh0LXdoaXRlIHRyYW5zaXRpb24tb3BhY2l0eSBob3ZlcjpvcGFjaXR5LTkwIgogICAgICAgICAgICAgIHN0eWxlPXt7IGJhY2tncm91bmRDb2xvcjogIiMxQjVDQjUiLCB0ZXh0RGVjb3JhdGlvbjogIm5vbmUiIH19CiAgICAgICAgICAgID4KICAgICAgICAgICAgICA8UGFja2FnZSBzaXplPXsxNX0gLz4KICAgICAgICAgICAgICBCcm93c2UgQWxsIFBlcHRpZGVzCiAgICAgICAgICAgIDwvTGluaz4KICAgICAgICAgIDwvZGl2PgogICAgICAgICkgOiAoCiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZ3JpZCBncmlkLWNvbHMtMSBzbTpncmlkLWNvbHMtMiBsZzpncmlkLWNvbHMtNCBnYXAteC0xMCBnYXAteS0yMCBzbTpnYXAteS0yNCI+CiAgICAgICAgICAgIHtzYXZlZC5tYXAoKHByb2R1Y3QpID0+IHsKICAgICAgICAgICAgICBjb25zdCBwcm9kdWN0SWRJbnQgPSBwYXJzZUludChTdHJpbmcocHJvZHVjdC5pZCksIDEwKTsKICAgICAgICAgICAgICBjb25zdCBvdXRPZlN0b2NrID0gcHJvZHVjdC5zdG9ja0xldmVsID09PSAwOwoKICAgICAgICAgICAgICByZXR1cm4gKAogICAgICAgICAgICAgICAgPGRpdgogICAgICAgICAgICAgICAgICBrZXk9e3Byb2R1Y3QuaWR9CiAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZT0icm91bmRlZC0yeGwgb3ZlcmZsb3ctaGlkZGVuIGZsZXggZmxleC1jb2wiCiAgICAgICAgICAgICAgICAgIHN0eWxlPXt7CiAgICAgICAgICAgICAgICAgICAgYmFja2dyb3VuZENvbG9yOiAiI2ZmZiIsCiAgICAgICAgICAgICAgICAgICAgYm9yZGVyOiAiMXB4IHNvbGlkICNFOEVERjUiLAogICAgICAgICAgICAgICAgICAgIGJveFNoYWRvdzogIjAgMnB4IDEycHggcmdiYSgxNSwyMyw0MiwwLjA2KSIsCiAgICAgICAgICAgICAgICAgICAgcG9zaXRpb246ICJyZWxhdGl2ZSIsCiAgICAgICAgICAgICAgICAgIH19CiAgICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICAgIHsvKiBSZW1vdmUgYnV0dG9uICovfQogICAgICAgICAgICAgICAgICA8YnV0dG9uCiAgICAgICAgICAgICAgICAgICAgb25DbGljaz17KCkgPT4gdm9pZCB0b2dnbGUocHJvZHVjdElkSW50KX0KICAgICAgICAgICAgICAgICAgICB0aXRsZT0iUmVtb3ZlIGZyb20gd2lzaGxpc3QiCiAgICAgICAgICAgICAgICAgICAgc3R5bGU9e3sKICAgICAgICAgICAgICAgICAgICAgIHBvc2l0aW9uOiAiYWJzb2x1dGUiLCB0b3A6ICIxMHB4IiwgcmlnaHQ6ICIxMHB4IiwgekluZGV4OiAxMCwKICAgICAgICAgICAgICAgICAgICAgIHdpZHRoOiAiMzBweCIsIGhlaWdodDogIjMwcHgiLCBib3JkZXJSYWRpdXM6ICI1MCUiLAogICAgICAgICAgICAgICAgICAgICAgYmFja2dyb3VuZENvbG9yOiAicmdiYSgyNTUsMjU1LDI1NSwwLjkyKSIsIGJvcmRlcjogIjFweCBzb2xpZCAjRTJFOEYwIiwKICAgICAgICAgICAgICAgICAgICAgIGRpc3BsYXk6ICJmbGV4IiwgYWxpZ25JdGVtczogImNlbnRlciIsIGp1c3RpZnlDb250ZW50OiAiY2VudGVyIiwKICAgICAgICAgICAgICAgICAgICAgIGN1cnNvcjogInBvaW50ZXIiLCBib3hTaGFkb3c6ICIwIDFweCA0cHggcmdiYSgwLDAsMCwwLjA4KSIsCiAgICAgICAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgICAgICAgPgogICAgICAgICAgICAgICAgICAgIDxYIHNpemU9ezE0fSBzdHlsZT17eyBjb2xvcjogIiM5NEEzQjgiIH19IC8+CiAgICAgICAgICAgICAgICAgIDwvYnV0dG9uPgoKICAgICAgICAgICAgICAgICAgey8qIFByb2R1Y3QgaW1hZ2UgKi99CiAgICAgICAgICAgICAgICAgIDxMaW5rIGhyZWY9e2AvcHJvZHVjdC8ke3Byb2R1Y3QuaWR9YH0gc3R5bGU9e3sgdGV4dERlY29yYXRpb246ICJub25lIiwgZGlzcGxheTogImJsb2NrIiB9fT4KICAgICAgICAgICAgICAgICAgICA8ZGl2CiAgICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIgogICAgICAgICAgICAgICAgICAgICAgc3R5bGU9e3sgaGVpZ2h0OiAiMTgwcHgiLCBiYWNrZ3JvdW5kQ29sb3I6ICIjRjhGQUZDIiwgcGFkZGluZzogIjEycHgiIH19CiAgICAgICAgICAgICAgICAgICAgPgogICAgICAgICAgICAgICAgICAgICAgPGltZwogICAgICAgICAgICAgICAgICAgICAgICBzcmM9e3Byb2R1Y3QuaW1hZ2V9CiAgICAgICAgICAgICAgICAgICAgICAgIGFsdD17cHJvZHVjdC5uYW1lfQogICAgICAgICAgICAgICAgICAgICAgICBzdHlsZT17eyB3aWR0aDogIjEwMCUiLCBoZWlnaHQ6ICIxMDAlIiwgb2JqZWN0Rml0OiAiY29udGFpbiIgfX0KICAgICAgICAgICAgICAgICAgICAgICAgb25FcnJvcj17KGUpID0+IHsgKGUuY3VycmVudFRhcmdldCBhcyBIVE1MSW1hZ2VFbGVtZW50KS5zdHlsZS5vcGFjaXR5ID0gIjAuMiI7IH19CiAgICAgICAgICAgICAgICAgICAgICAvPgogICAgICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICAgICAgICA8L0xpbms+CgogICAgICAgICAgICAgICAgICB7LyogSW5mbyAqL30KICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9InAtNCBmbGV4IGZsZXgtY29sIGZsZXgtMSBnYXAtMiI+CiAgICAgICAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXhzIGZvbnQtbWVkaXVtIiBzdHlsZT17eyBjb2xvcjogIiM5NEEzQjgiIH19Pntwcm9kdWN0LmNhdGVnb3J5fTwvcD4KICAgICAgICAgICAgICAgICAgICA8TGluayBocmVmPXtgL3Byb2R1Y3QvJHtwcm9kdWN0LmlkfWB9IHN0eWxlPXt7IHRleHREZWNvcmF0aW9uOiAibm9uZSIgfX0+CiAgICAgICAgICAgICAgICAgICAgICA8cAogICAgICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9InRleHQtc20gZm9udC1zZW1pYm9sZCBsZWFkaW5nLXNudWciCiAgICAgICAgICAgICAgICAgICAgICAgIHN0eWxlPXt7IGNvbG9yOiAiIzBGMTcyQSIgfX0KICAgICAgICAgICAgICAgICAgICAgICAgb25Nb3VzZUVudGVyPXsoZSkgPT4gKChlLmN1cnJlbnRUYXJnZXQgYXMgSFRNTEVsZW1lbnQpLnN0eWxlLmNvbG9yID0gIiMxQjVDQjUiKX0KICAgICAgICAgICAgICAgICAgICAgICAgb25Nb3VzZUxlYXZlPXsoZSkgPT4gKChlLmN1cnJlbnRUYXJnZXQgYXMgSFRNTEVsZW1lbnQpLnN0eWxlLmNvbG9yID0gIiMwRjE3MkEiKX0KICAgICAgICAgICAgICAgICAgICAgID4KICAgICAgICAgICAgICAgICAgICAgICAge3Byb2R1Y3QubmFtZX0KICAgICAgICAgICAgICAgICAgICAgIDwvcD4KICAgICAgICAgICAgICAgICAgICA8L0xpbms+CgogICAgICAgICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1iYXNlIGZvbnQtYm9sZCIgc3R5bGU9e3sgY29sb3I6ICIjMTI0MEEwIiB9fT4KICAgICAgICAgICAgICAgICAgICAgIHtwcm9kdWN0LnByaWNlICE9IG51bGwgPyBmb3JtYXRQcmljZShwcm9kdWN0LnByaWNlKSA6ICLigJQifQogICAgICAgICAgICAgICAgICAgIDwvcD4KCiAgICAgICAgICAgICAgICAgICAgey8qIFN0b2NrICovfQogICAgICAgICAgICAgICAgICAgIDxwCiAgICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9InRleHQteHMgZm9udC1tZWRpdW0iCiAgICAgICAgICAgICAgICAgICAgICBzdHlsZT17ewogICAgICAgICAgICAgICAgICAgICAgICBjb2xvcjogb3V0T2ZTdG9jawogICAgICAgICAgICAgICAgICAgICAgICAgID8gIiNEQzI2MjYiCiAgICAgICAgICAgICAgICAgICAgICAgICAgOiBwcm9kdWN0LnN0b2NrTGV2ZWwgIT09IHVuZGVmaW5lZCAmJiBwcm9kdWN0LnN0b2NrTGV2ZWwgPD0gMTAKICAgICAgICAgICAgICAgICAgICAgICAgICA/ICIjRDk3NzA2IgogICAgICAgICAgICAgICAgICAgICAgICAgIDogIiMwNTk2NjkiLAogICAgICAgICAgICAgICAgICAgICAgfX0KICAgICAgICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICAgICAgICB7b3V0T2ZTdG9jawogICAgICAgICAgICAgICAgICAgICAgICA/ICJPdXQgb2YgU3RvY2siCiAgICAgICAgICAgICAgICAgICAgICAgIDogcHJvZHVjdC5zdG9ja0xldmVsICE9PSB1bmRlZmluZWQgJiYgcHJvZHVjdC5zdG9ja0xldmVsIDw9IDEwCiAgICAgICAgICAgICAgICAgICAgICAgID8gYExvdyBTdG9jayAoJHtwcm9kdWN0LnN0b2NrTGV2ZWx9IGxlZnQpYAogICAgICAgICAgICAgICAgICAgICAgICA6ICJJbiBTdG9jayJ9CiAgICAgICAgICAgICAgICAgICAgPC9wPgoKICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBnYXAtMiBtdC1hdXRvIHB0LTIiPgogICAgICAgICAgICAgICAgICAgICAgPGJ1dHRvbgogICAgICAgICAgICAgICAgICAgICAgICBkaXNhYmxlZD17b3V0T2ZTdG9ja30KICAgICAgICAgICAgICAgICAgICAgICAgb25DbGljaz17KCkgPT4gYWRkVG9DYXJ0KHByb2R1Y3QsIDEpfQogICAgICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9ImZsZXgtMSBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBnYXAtMS41IHJvdW5kZWQteGwgdGV4dC14cyBmb250LXNlbWlib2xkIHRleHQtd2hpdGUgdHJhbnNpdGlvbi1vcGFjaXR5IGhvdmVyOm9wYWNpdHktOTAiCiAgICAgICAgICAgICAgICAgICAgICAgIHN0eWxlPXt7CiAgICAgICAgICAgICAgICAgICAgICAgICAgaGVpZ2h0OiAiMzZweCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgYmFja2dyb3VuZENvbG9yOiBvdXRPZlN0b2NrID8gIiM5NEEzQjgiIDogIiMxQjVDQjUiLAogICAgICAgICAgICAgICAgICAgICAgICAgIGJvcmRlcjogIm5vbmUiLAogICAgICAgICAgICAgICAgICAgICAgICAgIGN1cnNvcjogb3V0T2ZTdG9jayA/ICJub3QtYWxsb3dlZCIgOiAicG9pbnRlciIsCiAgICAgICAgICAgICAgICAgICAgICAgIH19CiAgICAgICAgICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICAgICAgICAgIDxTaG9wcGluZ0NhcnQgc2l6ZT17MTN9IC8+CiAgICAgICAgICAgICAgICAgICAgICAgIHtvdXRPZlN0b2NrID8gIk91dCBvZiBTdG9jayIgOiAiQWRkIHRvIENhcnQifQogICAgICAgICAgICAgICAgICAgICAgPC9idXR0b24+CiAgICAgICAgICAgICAgICAgICAgICA8TGluawogICAgICAgICAgICAgICAgICAgICAgICBocmVmPXtgL3Byb2R1Y3QvJHtwcm9kdWN0LmlkfWB9CiAgICAgICAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgcm91bmRlZC14bCB0ZXh0LXhzIGZvbnQtc2VtaWJvbGQgdHJhbnNpdGlvbi1jb2xvcnMiCiAgICAgICAgICAgICAgICAgICAgICAgIHN0eWxlPXt7CiAgICAgICAgICAgICAgICAgICAgICAgICAgd2lkdGg6ICIzNnB4IiwgaGVpZ2h0OiAiMzZweCIsIGZsZXhTaHJpbms6IDAsCiAgICAgICAgICAgICAgICAgICAgICAgICAgYmFja2dyb3VuZENvbG9yOiAiI0YxRjVGOSIsIGJvcmRlcjogIjFweCBzb2xpZCAjRTJFOEYwIiwKICAgICAgICAgICAgICAgICAgICAgICAgICBjb2xvcjogIiM0NzU1NjkiLCB0ZXh0RGVjb3JhdGlvbjogIm5vbmUiLAogICAgICAgICAgICAgICAgICAgICAgICB9fQogICAgICAgICAgICAgICAgICAgICAgICB0aXRsZT0iVmlldyBwcm9kdWN0IgogICAgICAgICAgICAgICAgICAgICAgPgogICAgICAgICAgICAgICAgICAgICAgICDihpIKICAgICAgICAgICAgICAgICAgICAgIDwvTGluaz4KICAgICAgICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICApOwogICAgICAgICAgICB9KX0KICAgICAgICAgIDwvZGl2PgogICAgICAgICl9CiAgICAgIDwvZGl2PgogICAgPC9kaXY+CiAgKTsKfQo=
+import { Link } from "wouter";
+import { Heart, ShoppingCart, X, Package } from "lucide-react";
+import { useWishlist } from "@/context/WishlistContext";
+import { useProducts } from "@/context/ProductsContext";
+import { useCart } from "@/context/CartContext";
+import { useSEO } from "@/hooks/useSEO";
+import { useCurrency } from "@/context/CurrencyContext";
+
+export default function WishlistPage() {
+  useSEO({ title: "My Wishlist", description: "Your saved research peptides from OmniQure Peptide Research Institute.", canonicalPath: "/wishlist" });
+  const { wishlistIds, toggle } = useWishlist();
+  const { products } = useProducts();
+  const { addToCart } = useCart();
+  const { formatPrice } = useCurrency();
+
+  const saved = products.filter((p) => wishlistIds.has(parseInt(String(p.id), 10)));
+
+  return (
+    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "60vh" }}>
+
+      {/* Page header */}
+      <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", padding: "36px 0 30px", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "-60px", right: "10%", width: "280px", height: "280px", borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div className="max-w-[1280px] mx-auto px-3 md:px-4" style={{ position: "relative", zIndex: 1 }}>
+          <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.14em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", marginBottom: "8px" }}>
+            OmniQure · My Account
+          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "9px" }}>
+            <Heart size={20} style={{ color: "#F87171", fill: "#F87171", flexShrink: 0 }} />
+            <h1 style={{ fontSize: "clamp(22px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.1, margin: 0 }}>
+              My Wishlist
+              {saved.length > 0 && (
+                <span style={{ marginLeft: "10px", fontSize: "16px", fontWeight: 500, color: "rgba(255,255,255,0.45)" }}>
+                  ({saved.length} item{saved.length !== 1 ? "s" : ""})
+                </span>
+              )}
+            </h1>
+          </div>
+          <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", lineHeight: 1.65 }}>
+            Your saved research peptides from OmniQure.
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-[1280px] mx-auto px-4 py-8 md:py-10">
+
+        {saved.length === 0 ? (
+          /* Empty state */
+          <div
+            className="flex flex-col items-center justify-center py-20 rounded-2xl"
+            style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}
+          >
+            <div
+              className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+              style={{ backgroundColor: "#FEF2F2" }}
+            >
+              <Heart size={28} style={{ color: "#FECACA" }} />
+            </div>
+            <h2 className="text-lg font-semibold mb-2" style={{ color: "#0F172A" }}>Your wishlist is empty</h2>
+            <p className="text-sm mb-6" style={{ color: "#64748B" }}>
+              Save items you're interested in by clicking the heart on any product page.
+            </p>
+            <Link
+              href="/all-peptides"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              style={{ backgroundColor: "#1B5CB5", textDecoration: "none" }}
+            >
+              <Package size={15} />
+              Browse All Peptides
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-20 sm:gap-y-24">
+            {saved.map((product) => {
+              const productIdInt = parseInt(String(product.id), 10);
+              const outOfStock = product.stockLevel === 0;
+
+              return (
+                <div
+                  key={product.id}
+                  className="rounded-2xl overflow-hidden flex flex-col"
+                  style={{
+                    backgroundColor: "#fff",
+                    border: "1px solid #E8EDF5",
+                    boxShadow: "0 2px 12px rgba(15,23,42,0.06)",
+                    position: "relative",
+                  }}
+                >
+                  {/* Remove button */}
+                  <button
+                    onClick={() => void toggle(productIdInt)}
+                    title="Remove from wishlist"
+                    style={{
+                      position: "absolute", top: "10px", right: "10px", zIndex: 10,
+                      width: "30px", height: "30px", borderRadius: "50%",
+                      backgroundColor: "rgba(255,255,255,0.92)", border: "1px solid #E2E8F0",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      cursor: "pointer", boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+                    }}
+                  >
+                    <X size={14} style={{ color: "#94A3B8" }} />
+                  </button>
+
+                  {/* Product image */}
+                  <Link href={`/product/${product.id}`} style={{ textDecoration: "none", display: "block" }}>
+                    <div
+                      className="flex items-center justify-center"
+                      style={{ height: "180px", backgroundColor: "#F8FAFC", padding: "12px" }}
+                    >
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = "0.2"; }}
+                      />
+                    </div>
+                  </Link>
+
+                  {/* Info */}
+                  <div className="p-4 flex flex-col flex-1 gap-2">
+                    <p className="text-xs font-medium" style={{ color: "#94A3B8" }}>{product.category}</p>
+                    <Link href={`/product/${product.id}`} style={{ textDecoration: "none" }}>
+                      <p
+                        className="text-sm font-semibold leading-snug"
+                        style={{ color: "#0F172A" }}
+                        onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#1B5CB5")}
+                        onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#0F172A")}
+                      >
+                        {product.name}
+                      </p>
+                    </Link>
+
+                    <p className="text-base font-bold" style={{ color: "#1240A0" }}>
+                      {product.price != null ? formatPrice(product.price) : "—"}
+                    </p>
+
+                    {/* Stock */}
+                    <p
+                      className="text-xs font-medium"
+                      style={{
+                        color: outOfStock
+                          ? "#DC2626"
+                          : product.stockLevel !== undefined && product.stockLevel <= 10
+                          ? "#D97706"
+                          : "#059669",
+                      }}
+                    >
+                      {outOfStock
+                        ? "Out of Stock"
+                        : product.stockLevel !== undefined && product.stockLevel <= 10
+                        ? `Low Stock (${product.stockLevel} left)`
+                        : "In Stock"}
+                    </p>
+
+                    <div className="flex gap-2 mt-auto pt-2">
+                      <button
+                        disabled={outOfStock}
+                        onClick={() => addToCart(product, 1)}
+                        className="flex-1 flex items-center justify-center gap-1.5 rounded-xl text-xs font-semibold text-white transition-opacity hover:opacity-90"
+                        style={{
+                          height: "36px",
+                          backgroundColor: outOfStock ? "#94A3B8" : "#1B5CB5",
+                          border: "none",
+                          cursor: outOfStock ? "not-allowed" : "pointer",
+                        }}
+                      >
+                        <ShoppingCart size={13} />
+                        {outOfStock ? "Out of Stock" : "Add to Cart"}
+                      </button>
+                      <Link
+                        href={`/product/${product.id}`}
+                        className="flex items-center justify-center rounded-xl text-xs font-semibold transition-colors"
+                        style={{
+                          width: "36px", height: "36px", flexShrink: 0,
+                          backgroundColor: "#F1F5F9", border: "1px solid #E2E8F0",
+                          color: "#475569", textDecoration: "none",
+                        }}
+                        title="View product"
+                      >
+                        →
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

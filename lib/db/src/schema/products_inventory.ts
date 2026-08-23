@@ -1,1 +1,30 @@
-aW1wb3J0IHsKICBwZ1RhYmxlLAogIHNlcmlhbCwKICBpbnRlZ2VyLAogIHRleHQsCiAgYm9vbGVhbiwKICB0aW1lc3RhbXAsCn0gZnJvbSAiZHJpenpsZS1vcm0vcGctY29yZSI7CmltcG9ydCB7IGNyZWF0ZUluc2VydFNjaGVtYSB9IGZyb20gImRyaXp6bGUtem9kIjsKaW1wb3J0IHsgeiB9IGZyb20gInpvZC92NCI7CgpleHBvcnQgY29uc3QgcHJvZHVjdHNJbnZlbnRvcnlUYWJsZSA9IHBnVGFibGUoInByb2R1Y3RzX2ludmVudG9yeSIsIHsKICBpZDogc2VyaWFsKCJpZCIpLnByaW1hcnlLZXkoKSwKICBwcm9kdWN0SWQ6IGludGVnZXIoInByb2R1Y3RfaWQiKS5ub3ROdWxsKCkudW5pcXVlKCksCiAgcHJvZHVjdE5hbWU6IHRleHQoInByb2R1Y3RfbmFtZSIpLm5vdE51bGwoKSwKICBwcm9kdWN0Q2F0ZWdvcnk6IHRleHQoInByb2R1Y3RfY2F0ZWdvcnkiKS5ub3ROdWxsKCksCiAgcHJvZHVjdEltYWdlOiB0ZXh0KCJwcm9kdWN0X2ltYWdlIiksCiAgc3RvY2tMZXZlbDogaW50ZWdlcigic3RvY2tfbGV2ZWwiKS5ub3ROdWxsKCkuZGVmYXVsdCgxMDApLAogIGxvd1N0b2NrVGhyZXNob2xkOiBpbnRlZ2VyKCJsb3dfc3RvY2tfdGhyZXNob2xkIikubm90TnVsbCgpLmRlZmF1bHQoMTApLAogIGlzUHVibGlzaGVkOiBib29sZWFuKCJpc19wdWJsaXNoZWQiKS5ub3ROdWxsKCkuZGVmYXVsdCh0cnVlKSwKICB1cGRhdGVkQXQ6IHRpbWVzdGFtcCgidXBkYXRlZF9hdCIsIHsgd2l0aFRpbWV6b25lOiB0cnVlIH0pLm5vdE51bGwoKS5kZWZhdWx0Tm93KCkuJG9uVXBkYXRlKCgpID0+IG5ldyBEYXRlKCkpLAp9KTsKCmV4cG9ydCBjb25zdCBpbnNlcnRQcm9kdWN0SW52ZW50b3J5U2NoZW1hID0gY3JlYXRlSW5zZXJ0U2NoZW1hKHByb2R1Y3RzSW52ZW50b3J5VGFibGUpLm9taXQoewogIGlkOiB0cnVlLAogIHVwZGF0ZWRBdDogdHJ1ZSwKfSk7CgpleHBvcnQgdHlwZSBJbnNlcnRQcm9kdWN0SW52ZW50b3J5ID0gei5pbmZlcjx0eXBlb2YgaW5zZXJ0UHJvZHVjdEludmVudG9yeVNjaGVtYT47CmV4cG9ydCB0eXBlIFByb2R1Y3RJbnZlbnRvcnkgPSB0eXBlb2YgcHJvZHVjdHNJbnZlbnRvcnlUYWJsZS4kaW5mZXJTZWxlY3Q7Cg==
+import {
+  pgTable,
+  serial,
+  integer,
+  text,
+  boolean,
+  timestamp,
+} from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod/v4";
+
+export const productsInventoryTable = pgTable("products_inventory", {
+  id: serial("id").primaryKey(),
+  productId: integer("product_id").notNull().unique(),
+  productName: text("product_name").notNull(),
+  productCategory: text("product_category").notNull(),
+  productImage: text("product_image"),
+  stockLevel: integer("stock_level").notNull().default(100),
+  lowStockThreshold: integer("low_stock_threshold").notNull().default(10),
+  isPublished: boolean("is_published").notNull().default(true),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
+});
+
+export const insertProductInventorySchema = createInsertSchema(productsInventoryTable).omit({
+  id: true,
+  updatedAt: true,
+});
+
+export type InsertProductInventory = z.infer<typeof insertProductInventorySchema>;
+export type ProductInventory = typeof productsInventoryTable.$inferSelect;

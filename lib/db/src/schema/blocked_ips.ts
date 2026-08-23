@@ -1,1 +1,10 @@
-aW1wb3J0IHsgcGdUYWJsZSwgc2VyaWFsLCB0ZXh0LCB0aW1lc3RhbXAgfSBmcm9tICJkcml6emxlLW9ybS9wZy1jb3JlIjsKCmV4cG9ydCBjb25zdCBibG9ja2VkSXBzVGFibGUgPSBwZ1RhYmxlKCJibG9ja2VkX2lwcyIsIHsKICBpZDogc2VyaWFsKCJpZCIpLnByaW1hcnlLZXkoKSwKICBpcDogdGV4dCgiaXAiKS5ub3ROdWxsKCkudW5pcXVlKCksCiAgcmVhc29uOiB0ZXh0KCJyZWFzb24iKSwKICBibG9ja2VkQXQ6IHRpbWVzdGFtcCgiYmxvY2tlZF9hdCIsIHsgd2l0aFRpbWV6b25lOiB0cnVlIH0pLm5vdE51bGwoKS5kZWZhdWx0Tm93KCksCn0pOwoKZXhwb3J0IHR5cGUgQmxvY2tlZElwID0gdHlwZW9mIGJsb2NrZWRJcHNUYWJsZS4kaW5mZXJTZWxlY3Q7Cg==
+import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+
+export const blockedIpsTable = pgTable("blocked_ips", {
+  id: serial("id").primaryKey(),
+  ip: text("ip").notNull().unique(),
+  reason: text("reason"),
+  blockedAt: timestamp("blocked_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type BlockedIp = typeof blockedIpsTable.$inferSelect;

@@ -1,1 +1,193 @@
-aW1wb3J0IHsgdXNlRWZmZWN0IH0gZnJvbSAicmVhY3QiOwoKZXhwb3J0IGNvbnN0IFNJVEVfTkFNRSA9ICJPbW5pUXVyZSBQZXB0aWRlIFJlc2VhcmNoIEluc3RpdHV0ZSI7CmV4cG9ydCBjb25zdCBTSVRFX1VSTCA9ICJodHRwczovL29tbmlxdXJlLmNvbSI7CmNvbnN0IERFRkFVTFRfVElUTEUgPSAiT21uaVF1cmUgUGVwdGlkZSBSZXNlYXJjaCBJbnN0aXR1dGUg4oCUIFZlcmlmaWVkIFJlc2VhcmNoIFBlcHRpZGVzIjsKY29uc3QgREVGQVVMVF9ERVNDUklQVElPTiA9CiAgIkJ1eSBoaWdoLXB1cml0eSByZXNlYXJjaCBwZXB0aWRlcyB2ZXJpZmllZCB0byA5OCUrLiBCUEMtMTU3LCBUQi01MDAsIElwYW1vcmVsaW4sIENKQy0xMjk1LCBFcGl0aGFsb24gYW5kIDEwMCsgcGVwdGlkZXMuIFdvcmxkd2lkZSBzaGlwcGluZy4gRm9yIHJlc2VhcmNoIHVzZSBvbmx5LiI7CmNvbnN0IERFRkFVTFRfT0dfSU1BR0UgPSBgJHtTSVRFX1VSTH0vb3BlbmdyYXBoLmpwZ2A7CgpmdW5jdGlvbiB1cHNlcnRNZXRhKGF0dHI6ICJuYW1lIiB8ICJwcm9wZXJ0eSIsIGtleTogc3RyaW5nLCBjb250ZW50OiBzdHJpbmcpIHsKICBsZXQgZWwgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yPEhUTUxNZXRhRWxlbWVudD4oYG1ldGFbJHthdHRyfT0iJHtrZXl9Il1gKTsKICBpZiAoIWVsKSB7CiAgICBlbCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoIm1ldGEiKTsKICAgIGVsLnNldEF0dHJpYnV0ZShhdHRyLCBrZXkpOwogICAgZG9jdW1lbnQuaGVhZC5hcHBlbmRDaGlsZChlbCk7CiAgfQogIGVsLnNldEF0dHJpYnV0ZSgiY29udGVudCIsIGNvbnRlbnQpOwp9CgpmdW5jdGlvbiB1cHNlcnRDYW5vbmljYWwoaHJlZjogc3RyaW5nKSB7CiAgbGV0IGVsID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcjxIVE1MTGlua0VsZW1lbnQ+KCdsaW5rW3JlbD0iY2Fub25pY2FsIl0nKTsKICBpZiAoIWVsKSB7CiAgICBlbCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoImxpbmsiKTsKICAgIGVsLnNldEF0dHJpYnV0ZSgicmVsIiwgImNhbm9uaWNhbCIpOwogICAgZG9jdW1lbnQuaGVhZC5hcHBlbmRDaGlsZChlbCk7CiAgfQogIGVsLnNldEF0dHJpYnV0ZSgiaHJlZiIsIGhyZWYpOwp9CgpmdW5jdGlvbiB1cHNlcnRKc29uTGQoaWQ6IHN0cmluZywgZGF0YTogb2JqZWN0KSB7CiAgbGV0IGVsID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcjxIVE1MU2NyaXB0RWxlbWVudD4oYHNjcmlwdFtkYXRhLXNlbz0iJHtpZH0iXWApOwogIGlmICghZWwpIHsKICAgIGVsID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7CiAgICBlbC5zZXRBdHRyaWJ1dGUoInR5cGUiLCAiYXBwbGljYXRpb24vbGQranNvbiIpOwogICAgZWwuc2V0QXR0cmlidXRlKCJkYXRhLXNlbyIsIGlkKTsKICAgIGRvY3VtZW50LmhlYWQuYXBwZW5kQ2hpbGQoZWwpOwogIH0KICBlbC50ZXh0Q29udGVudCA9IEpTT04uc3RyaW5naWZ5KGRhdGEpOwp9CgpmdW5jdGlvbiByZW1vdmVKc29uTGQoaWQ6IHN0cmluZykgewogIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFtkYXRhLXNlbz0iJHtpZH0iXWApPy5yZW1vdmUoKTsKfQoKZXhwb3J0IGludGVyZmFjZSBQcm9kdWN0SnNvbkxkIHsKICBuYW1lOiBzdHJpbmc7CiAgZGVzY3JpcHRpb246IHN0cmluZzsKICBpbWFnZTogc3RyaW5nOwogIHByaWNlOiBudW1iZXIgfCBudWxsOwogIHByb2R1Y3RJZDogc3RyaW5nOwogIGNhdGVnb3J5OiBzdHJpbmc7CiAgcHVyaXR5OiBzdHJpbmc7CiAgYXZhaWxhYmlsaXR5OiAiSW5TdG9jayIgfCAiT3V0T2ZTdG9jayIgfCAiTGltaXRlZEF2YWlsYWJpbGl0eSI7Cn0KCmV4cG9ydCBpbnRlcmZhY2UgQnJlYWRjcnVtYkl0ZW0gewogIG5hbWU6IHN0cmluZzsKICBwYXRoOiBzdHJpbmc7Cn0KCmludGVyZmFjZSBTRU9Qcm9wcyB7CiAgdGl0bGU/OiBzdHJpbmcgfCBudWxsOwogIGRlc2NyaXB0aW9uPzogc3RyaW5nIHwgbnVsbDsKICBrZXl3b3Jkcz86IHN0cmluZyB8IG51bGw7CiAgb2dUeXBlPzogc3RyaW5nOwogIGNhbm9uaWNhbFBhdGg/OiBzdHJpbmcgfCBudWxsOwogIG9nSW1hZ2U/OiBzdHJpbmcgfCBudWxsOwogIG5vU2l0ZVN1ZmZpeD86IGJvb2xlYW47CiAgbm9JbmRleD86IGJvb2xlYW47CiAgcHJvZHVjdD86IFByb2R1Y3RKc29uTGQgfCBudWxsOwogIGJyZWFkY3J1bWJzPzogQnJlYWRjcnVtYkl0ZW1bXSB8IG51bGw7Cn0KCmV4cG9ydCBmdW5jdGlvbiB1c2VTRU8oewogIHRpdGxlLAogIGRlc2NyaXB0aW9uLAogIGtleXdvcmRzLAogIG9nVHlwZSA9ICJ3ZWJzaXRlIiwKICBjYW5vbmljYWxQYXRoLAogIG9nSW1hZ2UsCiAgbm9TaXRlU3VmZml4ID0gZmFsc2UsCiAgbm9JbmRleCA9IGZhbHNlLAogIHByb2R1Y3QsCiAgYnJlYWRjcnVtYnMsCn06IFNFT1Byb3BzKSB7CiAgdXNlRWZmZWN0KCgpID0+IHsKICAgIGNvbnN0IGZ1bGxUaXRsZSA9IHRpdGxlCiAgICAgID8gbm9TaXRlU3VmZml4CiAgICAgICAgPyB0aXRsZQogICAgICAgIDogYCR7dGl0bGV9IHwgJHtTSVRFX05BTUV9YAogICAgICA6IERFRkFVTFRfVElUTEU7CiAgICBjb25zdCBkZXNjID0gZGVzY3JpcHRpb24gPz8gREVGQVVMVF9ERVNDUklQVElPTjsKICAgIGNvbnN0IGltZyA9IG9nSW1hZ2UgPz8gREVGQVVMVF9PR19JTUFHRTsKICAgIGNvbnN0IGNhbm9uaWNhbEhyZWYgPSBjYW5vbmljYWxQYXRoID8gYCR7U0lURV9VUkx9JHtjYW5vbmljYWxQYXRofWAgOiBudWxsOwoKICAgIGRvY3VtZW50LnRpdGxlID0gZnVsbFRpdGxlOwoKICAgIC8vIFN0YW5kYXJkCiAgICB1cHNlcnRNZXRhKCJuYW1lIiwgImRlc2NyaXB0aW9uIiwgZGVzYyk7CiAgICB1cHNlcnRNZXRhKCJuYW1lIiwgInJvYm90cyIsIG5vSW5kZXggPyAibm9pbmRleCwgbm9mb2xsb3ciIDogImluZGV4LCBmb2xsb3ciKTsKICAgIGlmIChrZXl3b3JkcykgdXBzZXJ0TWV0YSgibmFtZSIsICJrZXl3b3JkcyIsIGtleXdvcmRzKTsKCiAgICAvLyBPcGVuIEdyYXBoIOKAlCBGYWNlYm9vaywgTGlua2VkSW4sIFdoYXRzQXBwLCBEaXNjb3JkLCBTbGFjaywgaU1lc3NhZ2UKICAgIHVwc2VydE1ldGEoInByb3BlcnR5IiwgIm9nOnR5cGUiLCBvZ1R5cGUpOwogICAgdXBzZXJ0TWV0YSgicHJvcGVydHkiLCAib2c6c2l0ZV9uYW1lIiwgU0lURV9OQU1FKTsKICAgIHVwc2VydE1ldGEoInByb3BlcnR5IiwgIm9nOnRpdGxlIiwgZnVsbFRpdGxlKTsKICAgIHVwc2VydE1ldGEoInByb3BlcnR5IiwgIm9nOmRlc2NyaXB0aW9uIiwgZGVzYyk7CiAgICB1cHNlcnRNZXRhKCJwcm9wZXJ0eSIsICJvZzppbWFnZSIsIGltZyk7CiAgICB1cHNlcnRNZXRhKCJwcm9wZXJ0eSIsICJvZzppbWFnZTp3aWR0aCIsICIxMjAwIik7CiAgICB1cHNlcnRNZXRhKCJwcm9wZXJ0eSIsICJvZzppbWFnZTpoZWlnaHQiLCAiNjMwIik7CiAgICB1cHNlcnRNZXRhKCJwcm9wZXJ0eSIsICJvZzppbWFnZTphbHQiLCBmdWxsVGl0bGUpOwogICAgdXBzZXJ0TWV0YSgicHJvcGVydHkiLCAib2c6bG9jYWxlIiwgImVuIik7CiAgICBpZiAoY2Fub25pY2FsSHJlZikgdXBzZXJ0TWV0YSgicHJvcGVydHkiLCAib2c6dXJsIiwgY2Fub25pY2FsSHJlZik7CgogICAgLy8gVHdpdHRlciAvIFggQ2FyZHMg4oCUIHN1bW1hcnlfbGFyZ2VfaW1hZ2Ugc2hvd3MgYSByaWNoIHByZXZpZXcKICAgIHVwc2VydE1ldGEoIm5hbWUiLCAidHdpdHRlcjpjYXJkIiwgInN1bW1hcnlfbGFyZ2VfaW1hZ2UiKTsKICAgIHVwc2VydE1ldGEoIm5hbWUiLCAidHdpdHRlcjp0aXRsZSIsIGZ1bGxUaXRsZSk7CiAgICB1cHNlcnRNZXRhKCJuYW1lIiwgInR3aXR0ZXI6ZGVzY3JpcHRpb24iLCBkZXNjKTsKICAgIHVwc2VydE1ldGEoIm5hbWUiLCAidHdpdHRlcjppbWFnZSIsIGltZyk7CiAgICB1cHNlcnRNZXRhKCJuYW1lIiwgInR3aXR0ZXI6aW1hZ2U6YWx0IiwgZnVsbFRpdGxlKTsKCiAgICBpZiAoY2Fub25pY2FsSHJlZikgdXBzZXJ0Q2Fub25pY2FsKGNhbm9uaWNhbEhyZWYpOwoKICAgIC8vIEpTT04tTEQ6IFByb2R1Y3Qgc3RydWN0dXJlZCBkYXRhIChHb29nbGUgUmljaCBSZXN1bHRzLCBCaW5nLCBQaW50ZXJlc3QpCiAgICBpZiAocHJvZHVjdCkgewogICAgICBjb25zdCBwcmljZVN0ciA9IHByb2R1Y3QucHJpY2UgIT0gbnVsbCA/IHByb2R1Y3QucHJpY2UudG9GaXhlZCgyKSA6IHVuZGVmaW5lZDsKICAgICAgdXBzZXJ0SnNvbkxkKCJwcm9kdWN0IiwgewogICAgICAgICJAY29udGV4dCI6ICJodHRwczovL3NjaGVtYS5vcmciLAogICAgICAgICJAdHlwZSI6ICJQcm9kdWN0IiwKICAgICAgICAiQGlkIjogYCR7U0lURV9VUkx9L3Byb2R1Y3QvJHtwcm9kdWN0LnByb2R1Y3RJZH0jcHJvZHVjdGAsCiAgICAgICAgbmFtZTogcHJvZHVjdC5uYW1lLAogICAgICAgIGRlc2NyaXB0aW9uOiBwcm9kdWN0LmRlc2NyaXB0aW9uLAogICAgICAgIGltYWdlOiBwcm9kdWN0LmltYWdlLnN0YXJ0c1dpdGgoImh0dHAiKQogICAgICAgICAgPyBwcm9kdWN0LmltYWdlCiAgICAgICAgICA6IGAke1NJVEVfVVJMfSR7cHJvZHVjdC5pbWFnZX1gLAogICAgICAgIGNhdGVnb3J5OiBwcm9kdWN0LmNhdGVnb3J5LAogICAgICAgIGJyYW5kOiB7CiAgICAgICAgICAiQHR5cGUiOiAiQnJhbmQiLAogICAgICAgICAgbmFtZTogU0lURV9OQU1FLAogICAgICAgIH0sCiAgICAgICAgb2ZmZXJzOiBwcmljZVN0cgogICAgICAgICAgPyB7CiAgICAgICAgICAgICAgIkB0eXBlIjogIk9mZmVyIiwKICAgICAgICAgICAgICB1cmw6IGAke1NJVEVfVVJMfS9wcm9kdWN0LyR7cHJvZHVjdC5wcm9kdWN0SWR9YCwKICAgICAgICAgICAgICBwcmljZUN1cnJlbmN5OiAiR0JQIiwKICAgICAgICAgICAgICBwcmljZTogcHJpY2VTdHIsCiAgICAgICAgICAgICAgYXZhaWxhYmlsaXR5OiBgaHR0cHM6Ly9zY2hlbWEub3JnLyR7cHJvZHVjdC5hdmFpbGFiaWxpdHl9YCwKICAgICAgICAgICAgICBzZWxsZXI6IHsKICAgICAgICAgICAgICAgICJAdHlwZSI6ICJPcmdhbml6YXRpb24iLAogICAgICAgICAgICAgICAgbmFtZTogU0lURV9OQU1FLAogICAgICAgICAgICAgIH0sCiAgICAgICAgICAgIH0KICAgICAgICAgIDogdW5kZWZpbmVkLAogICAgICAgIGFkZGl0aW9uYWxQcm9wZXJ0eTogWwogICAgICAgICAgewogICAgICAgICAgICAiQHR5cGUiOiAiUHJvcGVydHlWYWx1ZSIsCiAgICAgICAgICAgIG5hbWU6ICJQdXJpdHkiLAogICAgICAgICAgICB2YWx1ZTogYCR7cHJvZHVjdC5wdXJpdHl9YCwKICAgICAgICAgIH0sCiAgICAgICAgICB7CiAgICAgICAgICAgICJAdHlwZSI6ICJQcm9wZXJ0eVZhbHVlIiwKICAgICAgICAgICAgbmFtZTogIlJlc2VhcmNoIFVzZSBPbmx5IiwKICAgICAgICAgICAgdmFsdWU6ICJZZXMiLAogICAgICAgICAgfSwKICAgICAgICBdLAogICAgICB9KTsKICAgIH0gZWxzZSB7CiAgICAgIHJlbW92ZUpzb25MZCgicHJvZHVjdCIpOwogICAgfQoKICAgIC8vIEpTT04tTEQ6IEJyZWFkY3J1bWJMaXN0IChHb29nbGUgU2VhcmNoIHJlc3VsdHMgcGF0aCBkaXNwbGF5KQogICAgaWYgKGJyZWFkY3J1bWJzICYmIGJyZWFkY3J1bWJzLmxlbmd0aCA+IDApIHsKICAgICAgdXBzZXJ0SnNvbkxkKCJicmVhZGNydW1iIiwgewogICAgICAgICJAY29udGV4dCI6ICJodHRwczovL3NjaGVtYS5vcmciLAogICAgICAgICJAdHlwZSI6ICJCcmVhZGNydW1iTGlzdCIsCiAgICAgICAgaXRlbUxpc3RFbGVtZW50OiBicmVhZGNydW1icy5tYXAoKGIsIGkpID0+ICh7CiAgICAgICAgICAiQHR5cGUiOiAiTGlzdEl0ZW0iLAogICAgICAgICAgcG9zaXRpb246IGkgKyAxLAogICAgICAgICAgbmFtZTogYi5uYW1lLAogICAgICAgICAgaXRlbTogYCR7U0lURV9VUkx9JHtiLnBhdGh9YCwKICAgICAgICB9KSksCiAgICAgIH0pOwogICAgfSBlbHNlIHsKICAgICAgcmVtb3ZlSnNvbkxkKCJicmVhZGNydW1iIik7CiAgICB9CgogICAgcmV0dXJuICgpID0+IHsKICAgICAgZG9jdW1lbnQudGl0bGUgPSBERUZBVUxUX1RJVExFOwogICAgICByZW1vdmVKc29uTGQoInByb2R1Y3QiKTsKICAgICAgcmVtb3ZlSnNvbkxkKCJicmVhZGNydW1iIik7CiAgICB9OwogIH0sIFt0aXRsZSwgZGVzY3JpcHRpb24sIGtleXdvcmRzLCBvZ1R5cGUsIGNhbm9uaWNhbFBhdGgsIG9nSW1hZ2UsIG5vU2l0ZVN1ZmZpeCwgbm9JbmRleCwgcHJvZHVjdCwgYnJlYWRjcnVtYnNdKTsKfQo=
+import { useEffect } from "react";
+
+export const SITE_NAME = "OmniQure Peptide Research Institute";
+export const SITE_URL = "https://omniqure.com";
+const DEFAULT_TITLE = "OmniQure Peptide Research Institute — Verified Research Peptides";
+const DEFAULT_DESCRIPTION =
+  "Buy high-purity research peptides verified to 98%+. BPC-157, TB-500, Ipamorelin, CJC-1295, Epithalon and 100+ peptides. Worldwide shipping. For research use only.";
+const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph.jpg`;
+
+function upsertMeta(attr: "name" | "property", key: string, content: string) {
+  let el = document.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute(attr, key);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", content);
+}
+
+function upsertCanonical(href: string) {
+  let el = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  if (!el) {
+    el = document.createElement("link");
+    el.setAttribute("rel", "canonical");
+    document.head.appendChild(el);
+  }
+  el.setAttribute("href", href);
+}
+
+function upsertJsonLd(id: string, data: object) {
+  let el = document.querySelector<HTMLScriptElement>(`script[data-seo="${id}"]`);
+  if (!el) {
+    el = document.createElement("script");
+    el.setAttribute("type", "application/ld+json");
+    el.setAttribute("data-seo", id);
+    document.head.appendChild(el);
+  }
+  el.textContent = JSON.stringify(data);
+}
+
+function removeJsonLd(id: string) {
+  document.querySelector(`script[data-seo="${id}"]`)?.remove();
+}
+
+export interface ProductJsonLd {
+  name: string;
+  description: string;
+  image: string;
+  price: number | null;
+  productId: string;
+  category: string;
+  purity: string;
+  availability: "InStock" | "OutOfStock" | "LimitedAvailability";
+}
+
+export interface BreadcrumbItem {
+  name: string;
+  path: string;
+}
+
+interface SEOProps {
+  title?: string | null;
+  description?: string | null;
+  keywords?: string | null;
+  ogType?: string;
+  canonicalPath?: string | null;
+  ogImage?: string | null;
+  noSiteSuffix?: boolean;
+  noIndex?: boolean;
+  product?: ProductJsonLd | null;
+  breadcrumbs?: BreadcrumbItem[] | null;
+}
+
+export function useSEO({
+  title,
+  description,
+  keywords,
+  ogType = "website",
+  canonicalPath,
+  ogImage,
+  noSiteSuffix = false,
+  noIndex = false,
+  product,
+  breadcrumbs,
+}: SEOProps) {
+  useEffect(() => {
+    const fullTitle = title
+      ? noSiteSuffix
+        ? title
+        : `${title} | ${SITE_NAME}`
+      : DEFAULT_TITLE;
+    const desc = description ?? DEFAULT_DESCRIPTION;
+    const img = ogImage ?? DEFAULT_OG_IMAGE;
+    const canonicalHref = canonicalPath ? `${SITE_URL}${canonicalPath}` : null;
+
+    document.title = fullTitle;
+
+    // Standard
+    upsertMeta("name", "description", desc);
+    upsertMeta("name", "robots", noIndex ? "noindex, nofollow" : "index, follow");
+    if (keywords) upsertMeta("name", "keywords", keywords);
+
+    // Open Graph — Facebook, LinkedIn, WhatsApp, Discord, Slack, iMessage
+    upsertMeta("property", "og:type", ogType);
+    upsertMeta("property", "og:site_name", SITE_NAME);
+    upsertMeta("property", "og:title", fullTitle);
+    upsertMeta("property", "og:description", desc);
+    upsertMeta("property", "og:image", img);
+    upsertMeta("property", "og:image:width", "1200");
+    upsertMeta("property", "og:image:height", "630");
+    upsertMeta("property", "og:image:alt", fullTitle);
+    upsertMeta("property", "og:locale", "en");
+    if (canonicalHref) upsertMeta("property", "og:url", canonicalHref);
+
+    // Twitter / X Cards — summary_large_image shows a rich preview
+    upsertMeta("name", "twitter:card", "summary_large_image");
+    upsertMeta("name", "twitter:title", fullTitle);
+    upsertMeta("name", "twitter:description", desc);
+    upsertMeta("name", "twitter:image", img);
+    upsertMeta("name", "twitter:image:alt", fullTitle);
+
+    if (canonicalHref) upsertCanonical(canonicalHref);
+
+    // JSON-LD: Product structured data (Google Rich Results, Bing, Pinterest)
+    if (product) {
+      const priceStr = product.price != null ? product.price.toFixed(2) : undefined;
+      upsertJsonLd("product", {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "@id": `${SITE_URL}/product/${product.productId}#product`,
+        name: product.name,
+        description: product.description,
+        image: product.image.startsWith("http")
+          ? product.image
+          : `${SITE_URL}${product.image}`,
+        category: product.category,
+        brand: {
+          "@type": "Brand",
+          name: SITE_NAME,
+        },
+        offers: priceStr
+          ? {
+              "@type": "Offer",
+              url: `${SITE_URL}/product/${product.productId}`,
+              priceCurrency: "GBP",
+              price: priceStr,
+              availability: `https://schema.org/${product.availability}`,
+              seller: {
+                "@type": "Organization",
+                name: SITE_NAME,
+              },
+            }
+          : undefined,
+        additionalProperty: [
+          {
+            "@type": "PropertyValue",
+            name: "Purity",
+            value: `${product.purity}`,
+          },
+          {
+            "@type": "PropertyValue",
+            name: "Research Use Only",
+            value: "Yes",
+          },
+        ],
+      });
+    } else {
+      removeJsonLd("product");
+    }
+
+    // JSON-LD: BreadcrumbList (Google Search results path display)
+    if (breadcrumbs && breadcrumbs.length > 0) {
+      upsertJsonLd("breadcrumb", {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: breadcrumbs.map((b, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: b.name,
+          item: `${SITE_URL}${b.path}`,
+        })),
+      });
+    } else {
+      removeJsonLd("breadcrumb");
+    }
+
+    return () => {
+      document.title = DEFAULT_TITLE;
+      removeJsonLd("product");
+      removeJsonLd("breadcrumb");
+    };
+  }, [title, description, keywords, ogType, canonicalPath, ogImage, noSiteSuffix, noIndex, product, breadcrumbs]);
+}

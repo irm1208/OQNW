@@ -1,1 +1,183 @@
-aW1wb3J0IHsgdXNlU3RhdGUgfSBmcm9tICJyZWFjdCI7CmltcG9ydCB7IFRhYmxlLCBUYWJsZUJvZHksIFRhYmxlQ2VsbCwgVGFibGVIZWFkLCBUYWJsZUhlYWRlciwgVGFibGVSb3cgfSBmcm9tICJAL2NvbXBvbmVudHMvdWkvdGFibGUiOwppbXBvcnQgeyBCYWRnZSB9IGZyb20gIkAvY29tcG9uZW50cy91aS9iYWRnZSI7CmltcG9ydCB7IExvYWRlcjIsIFNob3BwaW5nQ2FydCwgTWFpbCwgTWFpbENoZWNrLCBDaGV2cm9uRG93biwgQ2hldnJvblJpZ2h0IH0gZnJvbSAibHVjaWRlLXJlYWN0IjsKaW1wb3J0IHsgdXNlUXVlcnkgfSBmcm9tICJAdGFuc3RhY2svcmVhY3QtcXVlcnkiOwoKZnVuY3Rpb24gYXBpKHBhdGg6IHN0cmluZykgeyByZXR1cm4gYC9hcGkke3BhdGh9YDsgfQpmdW5jdGlvbiBhcGlGZXRjaCh1cmw6IHN0cmluZykgewogIHJldHVybiBmZXRjaCh1cmwsIHsgY3JlZGVudGlhbHM6ICJpbmNsdWRlIiB9KS50aGVuKHIgPT4gewogICAgaWYgKCFyLm9rKSB0aHJvdyBuZXcgRXJyb3IoIlJlcXVlc3QgZmFpbGVkIik7CiAgICByZXR1cm4gci5qc29uKCk7CiAgfSk7Cn0KCmZ1bmN0aW9uIGZvcm1hdEdicCh2YWw6IG51bWJlcikgewogIHJldHVybiBgwqMke3ZhbC50b0ZpeGVkKDIpfWA7Cn0KCmZ1bmN0aW9uIHRpbWVBZ28oaXNvOiBzdHJpbmcpIHsKICBjb25zdCBkaWZmID0gRGF0ZS5ub3coKSAtIG5ldyBEYXRlKGlzbykuZ2V0VGltZSgpOwogIGNvbnN0IGhvdXJzID0gTWF0aC5mbG9vcihkaWZmIC8gM182MDBfMDAwKTsKICBjb25zdCBkYXlzID0gTWF0aC5mbG9vcihob3VycyAvIDI0KTsKICBpZiAoZGF5cyA+IDApIHJldHVybiBgJHtkYXlzfWQgYWdvYDsKICBpZiAoaG91cnMgPiAwKSByZXR1cm4gYCR7aG91cnN9aCBhZ29gOwogIGNvbnN0IG1pbnMgPSBNYXRoLmZsb29yKGRpZmYgLyA2MF8wMDApOwogIHJldHVybiBgJHttaW5zfW0gYWdvYDsKfQoKaW50ZXJmYWNlIENhcnRJdGVtIHsgcHJvZHVjdE5hbWU6IHN0cmluZzsgcXVhbnRpdHk6IG51bWJlcjsgcHJpY2VHYnA6IG51bWJlcjsgfQppbnRlcmZhY2UgQWJhbmRvbmVkQ2FydCB7CiAgaWQ6IG51bWJlcjsKICBjdXN0b21lckVtYWlsOiBzdHJpbmc7CiAgY3VzdG9tZXJOYW1lOiBzdHJpbmc7CiAgaXRlbUNvdW50OiBudW1iZXI7CiAgdG90YWxWYWx1ZTogbnVtYmVyOwogIHVwZGF0ZWRBdDogc3RyaW5nOwogIGVtYWlsU2VudEF0OiBzdHJpbmcgfCBudWxsOwogIGl0ZW1zOiBDYXJ0SXRlbVtdOwp9CmludGVyZmFjZSBTdGF0cyB7IHRvdGFsOiBudW1iZXI7IHRvdGFsQWJhbmRvbmVkVmFsdWU6IG51bWJlcjsgZW1haWxzU2VudDogbnVtYmVyOyBwZW5kaW5nRW1haWw6IG51bWJlcjsgfQppbnRlcmZhY2UgQXBpUmVzcG9uc2UgeyBjYXJ0czogQWJhbmRvbmVkQ2FydFtdOyBzdGF0czogU3RhdHM7IH0KCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIEFiYW5kb25lZENhcnRzKCkgewogIGNvbnN0IFtleHBhbmRlZCwgc2V0RXhwYW5kZWRdID0gdXNlU3RhdGU8U2V0PG51bWJlcj4+KG5ldyBTZXQoKSk7CgogIGNvbnN0IHsgZGF0YSwgaXNMb2FkaW5nLCBlcnJvciB9ID0gdXNlUXVlcnk8QXBpUmVzcG9uc2U+KHsKICAgIHF1ZXJ5S2V5OiBbImFkbWluLWFiYW5kb25lZC1jYXJ0cyJdLAogICAgcXVlcnlGbjogKCkgPT4gYXBpRmV0Y2goYXBpKCIvYWRtaW4vYWJhbmRvbmVkLWNhcnRzIikpIGFzIFByb21pc2U8QXBpUmVzcG9uc2U+LAogICAgcmVmZXRjaEludGVydmFsOiA2MF8wMDAsCiAgfSk7CgogIGNvbnN0IHRvZ2dsZUV4cGFuZCA9IChpZDogbnVtYmVyKSA9PiB7CiAgICBzZXRFeHBhbmRlZChwcmV2ID0+IHsKICAgICAgY29uc3QgbmV4dCA9IG5ldyBTZXQocHJldik7CiAgICAgIGlmIChuZXh0LmhhcyhpZCkpIG5leHQuZGVsZXRlKGlkKTsKICAgICAgZWxzZSBuZXh0LmFkZChpZCk7CiAgICAgIHJldHVybiBuZXh0OwogICAgfSk7CiAgfTsKCiAgaWYgKGlzTG9hZGluZykgewogICAgcmV0dXJuICgKICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIGgtNDgiPgogICAgICAgIDxMb2FkZXIyIGNsYXNzTmFtZT0idy02IGgtNiBhbmltYXRlLXNwaW4gdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIiAvPgogICAgICA8L2Rpdj4KICAgICk7CiAgfQoKICBpZiAoZXJyb3IpIHsKICAgIHJldHVybiA8ZGl2IGNsYXNzTmFtZT0idGV4dC1kZXN0cnVjdGl2ZSB0ZXh0LXNtIj5GYWlsZWQgdG8gbG9hZCBhYmFuZG9uZWQgY2FydHMuPC9kaXY+OwogIH0KCiAgY29uc3QgeyBjYXJ0cyA9IFtdLCBzdGF0cyB9ID0gZGF0YSA/PyB7IGNhcnRzOiBbXSwgc3RhdHM6IHsgdG90YWw6IDAsIHRvdGFsQWJhbmRvbmVkVmFsdWU6IDAsIGVtYWlsc1NlbnQ6IDAsIHBlbmRpbmdFbWFpbDogMCB9IH07CgogIHJldHVybiAoCiAgICA8ZGl2IGNsYXNzTmFtZT0ic3BhY2UteS02Ij4KICAgICAgPGRpdj4KICAgICAgICA8aDEgY2xhc3NOYW1lPSJ0ZXh0LTJ4bCBmb250LWJvbGQgdHJhY2tpbmctdGlnaHQiPkFiYW5kb25lZCBDYXJ0czwvaDE+CiAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LW11dGVkLWZvcmVncm91bmQgdGV4dC1zbSBtdC0xIj5Mb2dnZWQtaW4gY3VzdG9tZXJzIHdobyBsZWZ0IGl0ZW1zIHdpdGhvdXQgY2hlY2tpbmcgb3V0PC9wPgogICAgICA8L2Rpdj4KCiAgICAgIHsvKiBTdGF0cyAqL30KICAgICAgPGRpdiBjbGFzc05hbWU9ImdyaWQgZ3JpZC1jb2xzLTIgbGc6Z3JpZC1jb2xzLTQgZ2FwLTQiPgogICAgICAgIHtbCiAgICAgICAgICB7IGxhYmVsOiAiVG90YWwgQWJhbmRvbmVkIiwgdmFsdWU6IFN0cmluZyhzdGF0cy50b3RhbCksIGljb246IFNob3BwaW5nQ2FydCwgY29sb3I6ICJ0ZXh0LXNsYXRlLTYwMCIgfSwKICAgICAgICAgIHsgbGFiZWw6ICJBYmFuZG9uZWQgVmFsdWUiLCB2YWx1ZTogZm9ybWF0R2JwKHN0YXRzLnRvdGFsQWJhbmRvbmVkVmFsdWUpLCBpY29uOiBTaG9wcGluZ0NhcnQsIGNvbG9yOiAidGV4dC1vcmFuZ2UtNjAwIiB9LAogICAgICAgICAgeyBsYWJlbDogIkVtYWlscyBTZW50IiwgdmFsdWU6IFN0cmluZyhzdGF0cy5lbWFpbHNTZW50KSwgaWNvbjogTWFpbENoZWNrLCBjb2xvcjogInRleHQtZ3JlZW4tNjAwIiB9LAogICAgICAgICAgeyBsYWJlbDogIkF3YWl0aW5nIEVtYWlsIiwgdmFsdWU6IFN0cmluZyhzdGF0cy5wZW5kaW5nRW1haWwpLCBpY29uOiBNYWlsLCBjb2xvcjogInRleHQteWVsbG93LTYwMCIgfSwKICAgICAgICBdLm1hcCgocykgPT4gKAogICAgICAgICAgPGRpdiBrZXk9e3MubGFiZWx9IGNsYXNzTmFtZT0icm91bmRlZC14bCBib3JkZXIgYmctY2FyZCBwLTQiPgogICAgICAgICAgICA8cCBjbGFzc05hbWU9InRleHQteHMgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIGZvbnQtbWVkaXVtIj57cy5sYWJlbH08L3A+CiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT17YHRleHQtMnhsIGZvbnQtYm9sZCBtdC0xICR7cy5jb2xvcn1gfT57cy52YWx1ZX08L3A+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICApKX0KICAgICAgPC9kaXY+CgogICAgICB7Y2FydHMubGVuZ3RoID09PSAwID8gKAogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGZsZXgtY29sIGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBoLTQ4IHRleHQtbXV0ZWQtZm9yZWdyb3VuZCBnYXAtMiI+CiAgICAgICAgICA8U2hvcHBpbmdDYXJ0IGNsYXNzTmFtZT0idy04IGgtOCBvcGFjaXR5LTMwIiAvPgogICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXNtIj5ObyBhYmFuZG9uZWQgY2FydHMgcmlnaHQgbm93PC9wPgogICAgICAgIDwvZGl2PgogICAgICApIDogKAogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJyb3VuZGVkLXhsIGJvcmRlciBiZy1jYXJkIG92ZXJmbG93LWhpZGRlbiI+CiAgICAgICAgICA8VGFibGU+CiAgICAgICAgICAgIDxUYWJsZUhlYWRlcj4KICAgICAgICAgICAgICA8VGFibGVSb3c+CiAgICAgICAgICAgICAgICA8VGFibGVIZWFkIGNsYXNzTmFtZT0idy04Ij48L1RhYmxlSGVhZD4KICAgICAgICAgICAgICAgIDxUYWJsZUhlYWQ+Q3VzdG9tZXI8L1RhYmxlSGVhZD4KICAgICAgICAgICAgICAgIDxUYWJsZUhlYWQ+SXRlbXM8L1RhYmxlSGVhZD4KICAgICAgICAgICAgICAgIDxUYWJsZUhlYWQ+VmFsdWU8L1RhYmxlSGVhZD4KICAgICAgICAgICAgICAgIDxUYWJsZUhlYWQ+TGFzdCBTZWVuPC9UYWJsZUhlYWQ+CiAgICAgICAgICAgICAgICA8VGFibGVIZWFkPkVtYWlsPC9UYWJsZUhlYWQ+CiAgICAgICAgICAgICAgPC9UYWJsZVJvdz4KICAgICAgICAgICAgPC9UYWJsZUhlYWRlcj4KICAgICAgICAgICAgPFRhYmxlQm9keT4KICAgICAgICAgICAgICB7Y2FydHMubWFwKChjYXJ0KSA9PiAoCiAgICAgICAgICAgICAgICA8PgogICAgICAgICAgICAgICAgICA8VGFibGVSb3cKICAgICAgICAgICAgICAgICAgICBrZXk9e2NhcnQuaWR9CiAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPSJjdXJzb3ItcG9pbnRlciIKICAgICAgICAgICAgICAgICAgICBvbkNsaWNrPXsoKSA9PiB0b2dnbGVFeHBhbmQoY2FydC5pZCl9CiAgICAgICAgICAgICAgICAgID4KICAgICAgICAgICAgICAgICAgICA8VGFibGVDZWxsIGNsYXNzTmFtZT0icHItMCI+CiAgICAgICAgICAgICAgICAgICAgICB7ZXhwYW5kZWQuaGFzKGNhcnQuaWQpCiAgICAgICAgICAgICAgICAgICAgICAgID8gPENoZXZyb25Eb3duIGNsYXNzTmFtZT0idy00IGgtNCB0ZXh0LW11dGVkLWZvcmVncm91bmQiIC8+CiAgICAgICAgICAgICAgICAgICAgICAgIDogPENoZXZyb25SaWdodCBjbGFzc05hbWU9InctNCBoLTQgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIiAvPn0KICAgICAgICAgICAgICAgICAgICA8L1RhYmxlQ2VsbD4KICAgICAgICAgICAgICAgICAgICA8VGFibGVDZWxsPgogICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZvbnQtbWVkaXVtIHRleHQtc20iPntjYXJ0LmN1c3RvbWVyTmFtZX08L2Rpdj4KICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJ0ZXh0LXhzIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+e2NhcnQuY3VzdG9tZXJFbWFpbH08L2Rpdj4KICAgICAgICAgICAgICAgICAgICA8L1RhYmxlQ2VsbD4KICAgICAgICAgICAgICAgICAgICA8VGFibGVDZWxsIGNsYXNzTmFtZT0idGV4dC1zbSI+e2NhcnQuaXRlbUNvdW50fSBpdGVte2NhcnQuaXRlbUNvdW50ICE9PSAxID8gInMiIDogIiJ9PC9UYWJsZUNlbGw+CiAgICAgICAgICAgICAgICAgICAgPFRhYmxlQ2VsbCBjbGFzc05hbWU9ImZvbnQtbWVkaXVtIHRleHQtc20iPntmb3JtYXRHYnAoY2FydC50b3RhbFZhbHVlKX08L1RhYmxlQ2VsbD4KICAgICAgICAgICAgICAgICAgICA8VGFibGVDZWxsIGNsYXNzTmFtZT0idGV4dC1zbSB0ZXh0LW11dGVkLWZvcmVncm91bmQiPnt0aW1lQWdvKGNhcnQudXBkYXRlZEF0KX08L1RhYmxlQ2VsbD4KICAgICAgICAgICAgICAgICAgICA8VGFibGVDZWxsPgogICAgICAgICAgICAgICAgICAgICAge2NhcnQuZW1haWxTZW50QXQgPyAoCiAgICAgICAgICAgICAgICAgICAgICAgIDxCYWRnZSB2YXJpYW50PSJvdXRsaW5lIiBjbGFzc05hbWU9InRleHQtZ3JlZW4tNzAwIGJvcmRlci1ncmVlbi0yMDAgYmctZ3JlZW4tNTAgZ2FwLTEiPgogICAgICAgICAgICAgICAgICAgICAgICAgIDxNYWlsQ2hlY2sgY2xhc3NOYW1lPSJ3LTMgaC0zIiAvPiBTZW50CiAgICAgICAgICAgICAgICAgICAgICAgIDwvQmFkZ2U+CiAgICAgICAgICAgICAgICAgICAgICApIDogKAogICAgICAgICAgICAgICAgICAgICAgICA8QmFkZ2UgdmFyaWFudD0ib3V0bGluZSIgY2xhc3NOYW1lPSJ0ZXh0LXllbGxvdy03MDAgYm9yZGVyLXllbGxvdy0yMDAgYmcteWVsbG93LTUwIGdhcC0xIj4KICAgICAgICAgICAgICAgICAgICAgICAgICA8TWFpbCBjbGFzc05hbWU9InctMyBoLTMiIC8+IFBlbmRpbmcKICAgICAgICAgICAgICAgICAgICAgICAgPC9CYWRnZT4KICAgICAgICAgICAgICAgICAgICAgICl9CiAgICAgICAgICAgICAgICAgICAgPC9UYWJsZUNlbGw+CiAgICAgICAgICAgICAgICAgIDwvVGFibGVSb3c+CiAgICAgICAgICAgICAgICAgIHtleHBhbmRlZC5oYXMoY2FydC5pZCkgJiYgKAogICAgICAgICAgICAgICAgICAgIDxUYWJsZVJvdyBrZXk9e2Ake2NhcnQuaWR9LWRldGFpbGB9IGNsYXNzTmFtZT0iYmctbXV0ZWQvMzAgaG92ZXI6YmctbXV0ZWQvMzAiPgogICAgICAgICAgICAgICAgICAgICAgPFRhYmxlQ2VsbCAvPgogICAgICAgICAgICAgICAgICAgICAgPFRhYmxlQ2VsbCBjb2xTcGFuPXs1fSBjbGFzc05hbWU9InBiLTQiPgogICAgICAgICAgICAgICAgICAgICAgICA8dGFibGUgY2xhc3NOYW1lPSJ3LWZ1bGwgdGV4dC1zbSI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgPHRoZWFkPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRyIGNsYXNzTmFtZT0idGV4dC14cyB0ZXh0LW11dGVkLWZvcmVncm91bmQiPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGggY2xhc3NOYW1lPSJ0ZXh0LWxlZnQgcGItMSBmb250LW1lZGl1bSI+UHJvZHVjdDwvdGg+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0aCBjbGFzc05hbWU9InRleHQtY2VudGVyIHBiLTEgZm9udC1tZWRpdW0iPlF0eTwvdGg+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0aCBjbGFzc05hbWU9InRleHQtcmlnaHQgcGItMSBmb250LW1lZGl1bSI+TGluZTwvdGg+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3RyPgogICAgICAgICAgICAgICAgICAgICAgICAgIDwvdGhlYWQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgPHRib2R5PgogICAgICAgICAgICAgICAgICAgICAgICAgICAge2NhcnQuaXRlbXMubWFwKChpdGVtLCBpKSA9PiAoCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ciBrZXk9e2l9IGNsYXNzTmFtZT0iYm9yZGVyLXQgYm9yZGVyLWJvcmRlci80MCI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzTmFtZT0icHktMS41IHRleHQtc20iPntpdGVtLnByb2R1Y3ROYW1lfTwvdGQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzTmFtZT0icHktMS41IHRleHQtY2VudGVyIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+w5d7aXRlbS5xdWFudGl0eX08L3RkPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZCBjbGFzc05hbWU9InB5LTEuNSB0ZXh0LXJpZ2h0IGZvbnQtbWVkaXVtIj57Zm9ybWF0R2JwKGl0ZW0ucHJpY2VHYnAgKiBpdGVtLnF1YW50aXR5KX08L3RkPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3RyPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgKSl9CiAgICAgICAgICAgICAgICAgICAgICAgICAgPC90Ym9keT4KICAgICAgICAgICAgICAgICAgICAgICAgPC90YWJsZT4KICAgICAgICAgICAgICAgICAgICAgICAge2NhcnQuZW1haWxTZW50QXQgJiYgKAogICAgICAgICAgICAgICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC14cyB0ZXh0LW11dGVkLWZvcmVncm91bmQgbXQtMiI+UmVjb3ZlcnkgZW1haWwgc2VudCB7dGltZUFnbyhjYXJ0LmVtYWlsU2VudEF0KX08L3A+CiAgICAgICAgICAgICAgICAgICAgICAgICl9CiAgICAgICAgICAgICAgICAgICAgICA8L1RhYmxlQ2VsbD4KICAgICAgICAgICAgICAgICAgICA8L1RhYmxlUm93PgogICAgICAgICAgICAgICAgICApfQogICAgICAgICAgICAgICAgPC8+CiAgICAgICAgICAgICAgKSl9CiAgICAgICAgICAgIDwvVGFibGVCb2R5PgogICAgICAgICAgPC9UYWJsZT4KICAgICAgICA8L2Rpdj4KICAgICAgKX0KICAgIDwvZGl2PgogICk7Cn0K
+import { useState } from "react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Loader2, ShoppingCart, Mail, MailCheck, ChevronDown, ChevronRight } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+
+function api(path: string) { return `/api${path}`; }
+function apiFetch(url: string) {
+  return fetch(url, { credentials: "include" }).then(r => {
+    if (!r.ok) throw new Error("Request failed");
+    return r.json();
+  });
+}
+
+function formatGbp(val: number) {
+  return `£${val.toFixed(2)}`;
+}
+
+function timeAgo(iso: string) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const hours = Math.floor(diff / 3_600_000);
+  const days = Math.floor(hours / 24);
+  if (days > 0) return `${days}d ago`;
+  if (hours > 0) return `${hours}h ago`;
+  const mins = Math.floor(diff / 60_000);
+  return `${mins}m ago`;
+}
+
+interface CartItem { productName: string; quantity: number; priceGbp: number; }
+interface AbandonedCart {
+  id: number;
+  customerEmail: string;
+  customerName: string;
+  itemCount: number;
+  totalValue: number;
+  updatedAt: string;
+  emailSentAt: string | null;
+  items: CartItem[];
+}
+interface Stats { total: number; totalAbandonedValue: number; emailsSent: number; pendingEmail: number; }
+interface ApiResponse { carts: AbandonedCart[]; stats: Stats; }
+
+export default function AbandonedCarts() {
+  const [expanded, setExpanded] = useState<Set<number>>(new Set());
+
+  const { data, isLoading, error } = useQuery<ApiResponse>({
+    queryKey: ["admin-abandoned-carts"],
+    queryFn: () => apiFetch(api("/admin/abandoned-carts")) as Promise<ApiResponse>,
+    refetchInterval: 60_000,
+  });
+
+  const toggleExpand = (id: number) => {
+    setExpanded(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-48">
+        <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-destructive text-sm">Failed to load abandoned carts.</div>;
+  }
+
+  const { carts = [], stats } = data ?? { carts: [], stats: { total: 0, totalAbandonedValue: 0, emailsSent: 0, pendingEmail: 0 } };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight">Abandoned Carts</h1>
+        <p className="text-muted-foreground text-sm mt-1">Logged-in customers who left items without checking out</p>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { label: "Total Abandoned", value: String(stats.total), icon: ShoppingCart, color: "text-slate-600" },
+          { label: "Abandoned Value", value: formatGbp(stats.totalAbandonedValue), icon: ShoppingCart, color: "text-orange-600" },
+          { label: "Emails Sent", value: String(stats.emailsSent), icon: MailCheck, color: "text-green-600" },
+          { label: "Awaiting Email", value: String(stats.pendingEmail), icon: Mail, color: "text-yellow-600" },
+        ].map((s) => (
+          <div key={s.label} className="rounded-xl border bg-card p-4">
+            <p className="text-xs text-muted-foreground font-medium">{s.label}</p>
+            <p className={`text-2xl font-bold mt-1 ${s.color}`}>{s.value}</p>
+          </div>
+        ))}
+      </div>
+
+      {carts.length === 0 ? (
+        <div className="flex flex-col items-center justify-center h-48 text-muted-foreground gap-2">
+          <ShoppingCart className="w-8 h-8 opacity-30" />
+          <p className="text-sm">No abandoned carts right now</p>
+        </div>
+      ) : (
+        <div className="rounded-xl border bg-card overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-8"></TableHead>
+                <TableHead>Customer</TableHead>
+                <TableHead>Items</TableHead>
+                <TableHead>Value</TableHead>
+                <TableHead>Last Seen</TableHead>
+                <TableHead>Email</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {carts.map((cart) => (
+                <>
+                  <TableRow
+                    key={cart.id}
+                    className="cursor-pointer"
+                    onClick={() => toggleExpand(cart.id)}
+                  >
+                    <TableCell className="pr-0">
+                      {expanded.has(cart.id)
+                        ? <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                        : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
+                    </TableCell>
+                    <TableCell>
+                      <div className="font-medium text-sm">{cart.customerName}</div>
+                      <div className="text-xs text-muted-foreground">{cart.customerEmail}</div>
+                    </TableCell>
+                    <TableCell className="text-sm">{cart.itemCount} item{cart.itemCount !== 1 ? "s" : ""}</TableCell>
+                    <TableCell className="font-medium text-sm">{formatGbp(cart.totalValue)}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{timeAgo(cart.updatedAt)}</TableCell>
+                    <TableCell>
+                      {cart.emailSentAt ? (
+                        <Badge variant="outline" className="text-green-700 border-green-200 bg-green-50 gap-1">
+                          <MailCheck className="w-3 h-3" /> Sent
+                        </Badge>
+                      ) : (
+                        <Badge variant="outline" className="text-yellow-700 border-yellow-200 bg-yellow-50 gap-1">
+                          <Mail className="w-3 h-3" /> Pending
+                        </Badge>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                  {expanded.has(cart.id) && (
+                    <TableRow key={`${cart.id}-detail`} className="bg-muted/30 hover:bg-muted/30">
+                      <TableCell />
+                      <TableCell colSpan={5} className="pb-4">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="text-xs text-muted-foreground">
+                              <th className="text-left pb-1 font-medium">Product</th>
+                              <th className="text-center pb-1 font-medium">Qty</th>
+                              <th className="text-right pb-1 font-medium">Line</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {cart.items.map((item, i) => (
+                              <tr key={i} className="border-t border-border/40">
+                                <td className="py-1.5 text-sm">{item.productName}</td>
+                                <td className="py-1.5 text-center text-muted-foreground">×{item.quantity}</td>
+                                <td className="py-1.5 text-right font-medium">{formatGbp(item.priceGbp * item.quantity)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                        {cart.emailSentAt && (
+                          <p className="text-xs text-muted-foreground mt-2">Recovery email sent {timeAgo(cart.emailSentAt)}</p>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      )}
+    </div>
+  );
+}

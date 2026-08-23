@@ -1,1 +1,105 @@
-LyoqCiAqIFJlYWN0IGhvb2sgZm9yIHN0cmVhbWluZyBhdWRpbyBwbGF5YmFjayB1c2luZyBBdWRpb1dvcmtsZXQuCiAqIFN1cHBvcnRzIHJlYWwtdGltZSBQQ00xNiBhdWRpbyBzdHJlYW1pbmcgZnJvbSBTU0UgcmVzcG9uc2VzLgogKiBJbmNsdWRlcyBzZXF1ZW5jZSBidWZmZXIgZm9yIHJlb3JkZXJpbmcgb3V0LW9mLW9yZGVyIGNodW5rcy4KICovCmltcG9ydCB7IHVzZVJlZiwgdXNlQ2FsbGJhY2ssIHVzZVN0YXRlIH0gZnJvbSAicmVhY3QiOwppbXBvcnQgeyBkZWNvZGVQQ00xNlRvRmxvYXQzMiB9IGZyb20gIi4vYXVkaW8tdXRpbHMiOwoKZXhwb3J0IHR5cGUgUGxheWJhY2tTdGF0ZSA9ICJpZGxlIiB8ICJwbGF5aW5nIiB8ICJlbmRlZCI7CgovKioKICogUmVvcmRlcnMgYXVkaW8gY2h1bmtzIHRoYXQgbWF5IGFycml2ZSBvdXQgb2Ygc2VxdWVuY2UuCiAqIEJ1ZmZlcnMgY2h1bmtzIHVudGlsIHRoZXkgY2FuIGJlIHBsYXllZCBpbiBjb3JyZWN0IG9yZGVyLgogKgogKiBFeGFtcGxlOiBJZiBjaHVua3MgYXJyaXZlIGFzIHNlcSAyLCBzZXEgMCwgc2VxIDE6CiAqIC0gc2VxIDIgYXJyaXZlcyDihpIgYnVmZmVyZWQgKHdhaXRpbmcgZm9yIHNlcSAwKQogKiAtIHNlcSAwIGFycml2ZXMg4oaSIHBsYXllZCBpbW1lZGlhdGVseSwgdGhlbiBjaGVjayBidWZmZXIKICogLSBzZXEgMSBhcnJpdmVzIOKGkiBwbGF5ZWQgaW1tZWRpYXRlbHkgKHNlcSAwIGRvbmUpLCBzZXEgMiBub3cgcGxheXMKICovCmNsYXNzIFNlcXVlbmNlQnVmZmVyIHsKICBwcml2YXRlIHBlbmRpbmcgPSBuZXcgTWFwPG51bWJlciwgc3RyaW5nW10+KCk7CiAgcHJpdmF0ZSBuZXh0U2VxID0gMDsKCiAgLyoqIEFkZCBjaHVuayB3aXRoIHNlcXVlbmNlIG51bWJlciwgcmV0dXJucyBjaHVua3MgcmVhZHkgdG8gcGxheSBpbiBvcmRlciAqLwogIHB1c2goc2VxOiBudW1iZXIsIGRhdGE6IHN0cmluZyk6IHN0cmluZ1tdIHsKICAgIC8vIFN0b3JlIHRoZSBjaHVuayB1bmRlciBpdHMgc2VxdWVuY2UgbnVtYmVyCiAgICBpZiAoIXRoaXMucGVuZGluZy5oYXMoc2VxKSkgewogICAgICB0aGlzLnBlbmRpbmcuc2V0KHNlcSwgW10pOwogICAgfQogICAgdGhpcy5wZW5kaW5nLmdldChzZXEpIS5wdXNoKGRhdGEpOwoKICAgIC8vIERyYWluIGNvbnNlY3V0aXZlIHJlYWR5IHNlcXVlbmNlcwogICAgY29uc3QgcmVhZHk6IHN0cmluZ1tdID0gW107CiAgICB3aGlsZSAodGhpcy5wZW5kaW5nLmhhcyh0aGlzLm5leHRTZXEpKSB7CiAgICAgIHJlYWR5LnB1c2goLi4udGhpcy5wZW5kaW5nLmdldCh0aGlzLm5leHRTZXEpISk7CiAgICAgIHRoaXMucGVuZGluZy5kZWxldGUodGhpcy5uZXh0U2VxKTsKICAgICAgdGhpcy5uZXh0U2VxKys7CiAgICB9CiAgICByZXR1cm4gcmVhZHk7CiAgfQoKICByZXNldCgpIHsKICAgIHRoaXMucGVuZGluZy5jbGVhcigpOwogICAgdGhpcy5uZXh0U2VxID0gMDsKICB9Cn0KCmV4cG9ydCBmdW5jdGlvbiB1c2VBdWRpb1BsYXliYWNrKHdvcmtsZXRQYXRoID0gIi9hdWRpby1wbGF5YmFjay13b3JrbGV0LmpzIikgewogIGNvbnN0IFtzdGF0ZSwgc2V0U3RhdGVdID0gdXNlU3RhdGU8UGxheWJhY2tTdGF0ZT4oImlkbGUiKTsKICBjb25zdCBjdHhSZWYgPSB1c2VSZWY8QXVkaW9Db250ZXh0IHwgbnVsbD4obnVsbCk7CiAgY29uc3Qgd29ya2xldFJlZiA9IHVzZVJlZjxBdWRpb1dvcmtsZXROb2RlIHwgbnVsbD4obnVsbCk7CiAgY29uc3QgcmVhZHlSZWYgPSB1c2VSZWYoZmFsc2UpOwogIGNvbnN0IHNlcUJ1ZmZlclJlZiA9IHVzZVJlZihuZXcgU2VxdWVuY2VCdWZmZXIoKSk7CgogIGNvbnN0IGluaXQgPSB1c2VDYWxsYmFjayhhc3luYyAoKSA9PiB7CiAgICBpZiAocmVhZHlSZWYuY3VycmVudCkgcmV0dXJuOwoKICAgIGNvbnN0IGN0eCA9IG5ldyBBdWRpb0NvbnRleHQoeyBzYW1wbGVSYXRlOiAyNDAwMCB9KTsKICAgIGF3YWl0IGN0eC5hdWRpb1dvcmtsZXQuYWRkTW9kdWxlKHdvcmtsZXRQYXRoKTsKICAgIGNvbnN0IHdvcmtsZXQgPSBuZXcgQXVkaW9Xb3JrbGV0Tm9kZShjdHgsICJhdWRpby1wbGF5YmFjay1wcm9jZXNzb3IiKTsKICAgIHdvcmtsZXQuY29ubmVjdChjdHguZGVzdGluYXRpb24pOwoKICAgIHdvcmtsZXQucG9ydC5vbm1lc3NhZ2UgPSAoZSkgPT4gewogICAgICBpZiAoZS5kYXRhLnR5cGUgPT09ICJlbmRlZCIpIHNldFN0YXRlKCJpZGxlIik7CiAgICB9OwoKICAgIGN0eFJlZi5jdXJyZW50ID0gY3R4OwogICAgd29ya2xldFJlZi5jdXJyZW50ID0gd29ya2xldDsKICAgIHJlYWR5UmVmLmN1cnJlbnQgPSB0cnVlOwogIH0sIFt3b3JrbGV0UGF0aF0pOwoKICAvKiogUHVzaCBhdWRpbyBkaXJlY3RseSAobm8gc2VxdWVuY2luZykgLSBmb3Igc2ltcGxlIHN0cmVhbWluZyAqLwogIGNvbnN0IHB1c2hBdWRpbyA9IHVzZUNhbGxiYWNrKChiYXNlNjRBdWRpbzogc3RyaW5nKSA9PiB7CiAgICBpZiAoIXdvcmtsZXRSZWYuY3VycmVudCkgcmV0dXJuOwogICAgY29uc3Qgc2FtcGxlcyA9IGRlY29kZVBDTTE2VG9GbG9hdDMyKGJhc2U2NEF1ZGlvKTsKICAgIHdvcmtsZXRSZWYuY3VycmVudC5wb3J0LnBvc3RNZXNzYWdlKHsgdHlwZTogImF1ZGlvIiwgc2FtcGxlcyB9KTsKICAgIHNldFN0YXRlKCJwbGF5aW5nIik7CiAgfSwgW10pOwoKICAvKiogUHVzaCBhdWRpbyB3aXRoIHNlcXVlbmNlIG51bWJlciAtIHJlb3JkZXJzIGJlZm9yZSBwbGF5YmFjayAqLwogIGNvbnN0IHB1c2hTZXF1ZW5jZWRBdWRpbyA9IHVzZUNhbGxiYWNrKChzZXE6IG51bWJlciwgYmFzZTY0QXVkaW86IHN0cmluZykgPT4gewogICAgaWYgKCF3b3JrbGV0UmVmLmN1cnJlbnQpIHJldHVybjsKCiAgICBjb25zdCByZWFkeUNodW5rcyA9IHNlcUJ1ZmZlclJlZi5jdXJyZW50LnB1c2goc2VxLCBiYXNlNjRBdWRpbyk7CiAgICBmb3IgKGNvbnN0IGNodW5rIG9mIHJlYWR5Q2h1bmtzKSB7CiAgICAgIGNvbnN0IHNhbXBsZXMgPSBkZWNvZGVQQ00xNlRvRmxvYXQzMihjaHVuayk7CiAgICAgIHdvcmtsZXRSZWYuY3VycmVudC5wb3J0LnBvc3RNZXNzYWdlKHsgdHlwZTogImF1ZGlvIiwgc2FtcGxlcyB9KTsKICAgIH0KICAgIGlmIChyZWFkeUNodW5rcy5sZW5ndGggPiAwKSB7CiAgICAgIHNldFN0YXRlKCJwbGF5aW5nIik7CiAgICB9CiAgfSwgW10pOwoKICBjb25zdCBzaWduYWxDb21wbGV0ZSA9IHVzZUNhbGxiYWNrKCgpID0+IHsKICAgIHdvcmtsZXRSZWYuY3VycmVudD8ucG9ydC5wb3N0TWVzc2FnZSh7IHR5cGU6ICJzdHJlYW1Db21wbGV0ZSIgfSk7CiAgfSwgW10pOwoKICBjb25zdCBjbGVhciA9IHVzZUNhbGxiYWNrKCgpID0+IHsKICAgIHdvcmtsZXRSZWYuY3VycmVudD8ucG9ydC5wb3N0TWVzc2FnZSh7IHR5cGU6ICJjbGVhciIgfSk7CiAgICBzZXFCdWZmZXJSZWYuY3VycmVudC5yZXNldCgpOwogICAgc2V0U3RhdGUoImlkbGUiKTsKICB9LCBbXSk7CgogIHJldHVybiB7IHN0YXRlLCBpbml0LCBwdXNoQXVkaW8sIHB1c2hTZXF1ZW5jZWRBdWRpbywgc2lnbmFsQ29tcGxldGUsIGNsZWFyIH07Cn0K
+/**
+ * React hook for streaming audio playback using AudioWorklet.
+ * Supports real-time PCM16 audio streaming from SSE responses.
+ * Includes sequence buffer for reordering out-of-order chunks.
+ */
+import { useRef, useCallback, useState } from "react";
+import { decodePCM16ToFloat32 } from "./audio-utils";
+
+export type PlaybackState = "idle" | "playing" | "ended";
+
+/**
+ * Reorders audio chunks that may arrive out of sequence.
+ * Buffers chunks until they can be played in correct order.
+ *
+ * Example: If chunks arrive as seq 2, seq 0, seq 1:
+ * - seq 2 arrives → buffered (waiting for seq 0)
+ * - seq 0 arrives → played immediately, then check buffer
+ * - seq 1 arrives → played immediately (seq 0 done), seq 2 now plays
+ */
+class SequenceBuffer {
+  private pending = new Map<number, string[]>();
+  private nextSeq = 0;
+
+  /** Add chunk with sequence number, returns chunks ready to play in order */
+  push(seq: number, data: string): string[] {
+    // Store the chunk under its sequence number
+    if (!this.pending.has(seq)) {
+      this.pending.set(seq, []);
+    }
+    this.pending.get(seq)!.push(data);
+
+    // Drain consecutive ready sequences
+    const ready: string[] = [];
+    while (this.pending.has(this.nextSeq)) {
+      ready.push(...this.pending.get(this.nextSeq)!);
+      this.pending.delete(this.nextSeq);
+      this.nextSeq++;
+    }
+    return ready;
+  }
+
+  reset() {
+    this.pending.clear();
+    this.nextSeq = 0;
+  }
+}
+
+export function useAudioPlayback(workletPath = "/audio-playback-worklet.js") {
+  const [state, setState] = useState<PlaybackState>("idle");
+  const ctxRef = useRef<AudioContext | null>(null);
+  const workletRef = useRef<AudioWorkletNode | null>(null);
+  const readyRef = useRef(false);
+  const seqBufferRef = useRef(new SequenceBuffer());
+
+  const init = useCallback(async () => {
+    if (readyRef.current) return;
+
+    const ctx = new AudioContext({ sampleRate: 24000 });
+    await ctx.audioWorklet.addModule(workletPath);
+    const worklet = new AudioWorkletNode(ctx, "audio-playback-processor");
+    worklet.connect(ctx.destination);
+
+    worklet.port.onmessage = (e) => {
+      if (e.data.type === "ended") setState("idle");
+    };
+
+    ctxRef.current = ctx;
+    workletRef.current = worklet;
+    readyRef.current = true;
+  }, [workletPath]);
+
+  /** Push audio directly (no sequencing) - for simple streaming */
+  const pushAudio = useCallback((base64Audio: string) => {
+    if (!workletRef.current) return;
+    const samples = decodePCM16ToFloat32(base64Audio);
+    workletRef.current.port.postMessage({ type: "audio", samples });
+    setState("playing");
+  }, []);
+
+  /** Push audio with sequence number - reorders before playback */
+  const pushSequencedAudio = useCallback((seq: number, base64Audio: string) => {
+    if (!workletRef.current) return;
+
+    const readyChunks = seqBufferRef.current.push(seq, base64Audio);
+    for (const chunk of readyChunks) {
+      const samples = decodePCM16ToFloat32(chunk);
+      workletRef.current.port.postMessage({ type: "audio", samples });
+    }
+    if (readyChunks.length > 0) {
+      setState("playing");
+    }
+  }, []);
+
+  const signalComplete = useCallback(() => {
+    workletRef.current?.port.postMessage({ type: "streamComplete" });
+  }, []);
+
+  const clear = useCallback(() => {
+    workletRef.current?.port.postMessage({ type: "clear" });
+    seqBufferRef.current.reset();
+    setState("idle");
+  }, []);
+
+  return { state, init, pushAudio, pushSequencedAudio, signalComplete, clear };
+}

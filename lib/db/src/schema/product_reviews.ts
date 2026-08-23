@@ -1,1 +1,32 @@
-aW1wb3J0IHsKICBwZ1RhYmxlLAogIHNlcmlhbCwKICBpbnRlZ2VyLAogIHRleHQsCiAgYm9vbGVhbiwKICB0aW1lc3RhbXAsCiAgdW5pcXVlLAp9IGZyb20gImRyaXp6bGUtb3JtL3BnLWNvcmUiOwoKZXhwb3J0IGNvbnN0IHByb2R1Y3RSZXZpZXdzVGFibGUgPSBwZ1RhYmxlKAogICJwcm9kdWN0X3Jldmlld3MiLAogIHsKICAgIGlkOiBzZXJpYWwoImlkIikucHJpbWFyeUtleSgpLAogICAgcHJvZHVjdElkOiBpbnRlZ2VyKCJwcm9kdWN0X2lkIikubm90TnVsbCgpLAogICAgY3VzdG9tZXJJZDogaW50ZWdlcigiY3VzdG9tZXJfaWQiKS5ub3ROdWxsKCksCiAgICBjdXN0b21lck5hbWU6IHRleHQoImN1c3RvbWVyX25hbWUiKS5ub3ROdWxsKCksCiAgICByYXRpbmc6IGludGVnZXIoInJhdGluZyIpLm5vdE51bGwoKSwKICAgIHRpdGxlOiB0ZXh0KCJ0aXRsZSIpLm5vdE51bGwoKSwKICAgIGJvZHk6IHRleHQoImJvZHkiKS5ub3ROdWxsKCksCiAgICBpc0FwcHJvdmVkOiBib29sZWFuKCJpc19hcHByb3ZlZCIpLm5vdE51bGwoKS5kZWZhdWx0KGZhbHNlKSwKICAgIGNyZWF0ZWRBdDogdGltZXN0YW1wKCJjcmVhdGVkX2F0IiwgeyB3aXRoVGltZXpvbmU6IHRydWUgfSkubm90TnVsbCgpLmRlZmF1bHROb3coKSwKICB9LAogICh0YWJsZSkgPT4gKHsKICAgIHVuaXF1ZVJldmlldzogdW5pcXVlKCJwcm9kdWN0X3Jldmlld3NfY3VzdG9tZXJfcHJvZHVjdF91bmlxdWUiKS5vbigKICAgICAgdGFibGUucHJvZHVjdElkLAogICAgICB0YWJsZS5jdXN0b21lcklkLAogICAgKSwKICB9KSwKKTsKCmV4cG9ydCB0eXBlIFByb2R1Y3RSZXZpZXcgPSB0eXBlb2YgcHJvZHVjdFJldmlld3NUYWJsZS4kaW5mZXJTZWxlY3Q7Cg==
+import {
+  pgTable,
+  serial,
+  integer,
+  text,
+  boolean,
+  timestamp,
+  unique,
+} from "drizzle-orm/pg-core";
+
+export const productReviewsTable = pgTable(
+  "product_reviews",
+  {
+    id: serial("id").primaryKey(),
+    productId: integer("product_id").notNull(),
+    customerId: integer("customer_id").notNull(),
+    customerName: text("customer_name").notNull(),
+    rating: integer("rating").notNull(),
+    title: text("title").notNull(),
+    body: text("body").notNull(),
+    isApproved: boolean("is_approved").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => ({
+    uniqueReview: unique("product_reviews_customer_product_unique").on(
+      table.productId,
+      table.customerId,
+    ),
+  }),
+);
+
+export type ProductReview = typeof productReviewsTable.$inferSelect;

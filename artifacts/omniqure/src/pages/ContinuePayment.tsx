@@ -1,1 +1,4 @@
-aW1wb3J0IHsgUmVkaXJlY3QgfSBmcm9tICJ3b3V0ZXIiOwpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBDb250aW51ZVBheW1lbnQoKSB7CiAgcmV0dXJuIDxSZWRpcmVjdCB0bz0iLyIgLz47Cn0K
+import { Redirect } from "wouter";
+export default function ContinuePayment() {
+  return <Redirect to="/" />;
+}

@@ -1,1 +1,90 @@
-bW9kdWxlcyA9IFsibm9kZWpzLTIwIiwgIndlYiIsICJiYXNoIiwgInBvc3RncmVzcWwtMTYiXQoKW2RlcGxveW1lbnRdCnJvdXRlciA9ICJhcHBsaWNhdGlvbiIKZGVwbG95bWVudFRhcmdldCA9ICJhdXRvc2NhbGUiCnJ1biA9IFsiYmFzaCIsICItYyIsICJQT1JUPTgwODAgTk9ERV9FTlY9cHJvZHVjdGlvbiBub2RlIC0tZW5hYmxlLXNvdXJjZS1tYXBzIGFydGlmYWN0cy9hcGktc2VydmVyL2Rpc3QvaW5kZXgubWpzICYgUE9SVD01MDAwIEJBU0VfUEFUSD0vIHBucG0gLS1maWx0ZXIgQHdvcmtzcGFjZS9vbW5pcXVyZSBydW4gc2VydmUiXQpidWlsZCA9IFsiYmFzaCIsICItYyIsICJwbnBtIGluc3RhbGwgJiYgcG5wbSAtLWZpbHRlciBAd29ya3NwYWNlL2RiIHJ1biBwdXNoICYmIHBucG0gLS1maWx0ZXIgQHdvcmtzcGFjZS9hcGktc2VydmVyIHJ1biBidWlsZCAmJiBwbnBtIC0tZmlsdGVyIEB3b3Jrc3BhY2Uvb21uaXF1cmUgcnVuIGJ1aWxkIl0KCltkZXBsb3ltZW50LnBvc3RCdWlsZF0KYXJncyA9IFsicG5wbSIsICJzdG9yZSIsICJwcnVuZSJdCmVudiA9IHsgIkNJIiA9ICJ0cnVlIiB9Cgpbd29ya2Zsb3dzXQpydW5CdXR0b24gPSAiUHJvamVjdCIKCltbd29ya2Zsb3dzLndvcmtmbG93XV0KbmFtZSA9ICJQcm9qZWN0Igptb2RlID0gInBhcmFsbGVsIgphdXRob3IgPSAiYWdlbnQiCgpbW3dvcmtmbG93cy53b3JrZmxvdy50YXNrc11dCnRhc2sgPSAid29ya2Zsb3cucnVuIgphcmdzID0gIlN0b3JlZnJvbnQiCgpbW3dvcmtmbG93cy53b3JrZmxvd11dCm5hbWUgPSAiU3RvcmVmcm9udCIKYXV0aG9yID0gImFnZW50IgoKW3dvcmtmbG93cy53b3JrZmxvdy5tZXRhZGF0YV0Kb3V0cHV0VHlwZSA9ICJ3ZWJ2aWV3IgoKW1t3b3JrZmxvd3Mud29ya2Zsb3cudGFza3NdXQp0YXNrID0gInNoZWxsLmV4ZWMiCmFyZ3MgPSAiUE9SVD01MDAwIEJBU0VfUEFUSD0vIEFQSV9QT1JUPTgwODAgcG5wbSAtLWZpbHRlciBAd29ya3NwYWNlL29tbmlxdXJlIHJ1biBkZXYiCndhaXRGb3JQb3J0ID0gNTAwMAoKW2FnZW50XQpzdGFjayA9ICJCRVNUX0VGRk9SVF9GQUxMQkFDSyIKZXhwZXJ0TW9kZSA9IHRydWUKaW50ZWdyYXRpb25zID0gWyJqYXZhc2NyaXB0X29wZW5haV9haV9pbnRlZ3JhdGlvbnM6Mi4wLjAiXQoKW3Bvc3RNZXJnZV0KcGF0aCA9ICJzY3JpcHRzL3Bvc3QtbWVyZ2Uuc2giCnRpbWVvdXRNcyA9IDIwMDAwCgpbW3BvcnRzXV0KbG9jYWxQb3J0ID0gMzAwMApleHRlcm5hbFBvcnQgPSAzMDAwCgpbW3BvcnRzXV0KbG9jYWxQb3J0ID0gMzAwMgpleHRlcm5hbFBvcnQgPSA0MjAwCgpbW3BvcnRzXV0KbG9jYWxQb3J0ID0gNTAwMApleHRlcm5hbFBvcnQgPSA4MAoKW1twb3J0c11dCmxvY2FsUG9ydCA9IDgwODAKZXh0ZXJuYWxQb3J0ID0gODA4MAoKW1twb3J0c11dCmxvY2FsUG9ydCA9IDgwODEKZXh0ZXJuYWxQb3J0ID0gODA4MQoKW1twb3J0c11dCmxvY2FsUG9ydCA9IDgwODIKZXh0ZXJuYWxQb3J0ID0gMzAwMgoKW1twb3J0c11dCmxvY2FsUG9ydCA9IDgwODMKZXh0ZXJuYWxQb3J0ID0gMzAwMQoKW1twb3J0c11dCmxvY2FsUG9ydCA9IDI1NTUzCmV4dGVybmFsUG9ydCA9IDMwMDAKCltuaXhdCmNoYW5uZWwgPSAic3RhYmxlLTI1XzA1IgoKW3VzZXJlbnZdCgpbdXNlcmVudi5zaGFyZWRdCkxPR19MRVZFTCA9ICJpbmZvIgpTSVRFX1VSTCA9ICJodHRwczovL29tbmlxdXJlLmNvbSIKRU1BSUxfRlJPTSA9ICJPbW5pUXVyZSA8bm9yZXBseUBvbW5pcXVyZS5jb20+IgpQT1JUID0gIjUwMDAiCkFQSV9QT1JUID0gIjgwODAiCkJBU0VfUEFUSCA9ICIvIgpOT0RFX0VOViA9ICJkZXZlbG9wbWVudCIK
+modules = ["nodejs-20", "web", "bash", "postgresql-16"]
+
+[deployment]
+router = "application"
+deploymentTarget = "autoscale"
+run = ["bash", "-c", "PORT=8080 NODE_ENV=production node --enable-source-maps artifacts/api-server/dist/index.mjs & PORT=5000 BASE_PATH=/ pnpm --filter @workspace/omniqure run serve"]
+build = ["bash", "-c", "pnpm install && pnpm --filter @workspace/db run push && pnpm --filter @workspace/api-server run build && pnpm --filter @workspace/omniqure run build"]
+
+[deployment.postBuild]
+args = ["pnpm", "store", "prune"]
+env = { "CI" = "true" }
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Storefront"
+
+[[workflows.workflow]]
+name = "Storefront"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=5000 BASE_PATH=/ API_PORT=8080 pnpm --filter @workspace/omniqure run dev"
+waitForPort = 5000
+
+[agent]
+stack = "BEST_EFFORT_FALLBACK"
+expertMode = true
+integrations = ["javascript_openai_ai_integrations:2.0.0"]
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 20000
+
+[[ports]]
+localPort = 3000
+externalPort = 3000
+
+[[ports]]
+localPort = 3002
+externalPort = 4200
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 8080
+externalPort = 8080
+
+[[ports]]
+localPort = 8081
+externalPort = 8081
+
+[[ports]]
+localPort = 8082
+externalPort = 3002
+
+[[ports]]
+localPort = 8083
+externalPort = 3001
+
+[[ports]]
+localPort = 25553
+externalPort = 3000
+
+[nix]
+channel = "stable-25_05"
+
+[userenv]
+
+[userenv.shared]
+LOG_LEVEL = "info"
+SITE_URL = "https://omniqure.com"
+EMAIL_FROM = "OmniQure <noreply@omniqure.com>"
+PORT = "5000"
+API_PORT = "8080"
+BASE_PATH = "/"
+NODE_ENV = "development"

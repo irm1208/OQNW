@@ -1,1 +1,11 @@
-aW1wb3J0IHsgcGdUYWJsZSwgc2VyaWFsLCB2YXJjaGFyLCB0aW1lc3RhbXAsIGJvb2xlYW4gfSBmcm9tICJkcml6emxlLW9ybS9wZy1jb3JlIjsKCmV4cG9ydCBjb25zdCBuZXdzbGV0dGVyU3Vic2NyaWJlcnNUYWJsZSA9IHBnVGFibGUoIm5ld3NsZXR0ZXJfc3Vic2NyaWJlcnMiLCB7CiAgaWQ6IHNlcmlhbCgiaWQiKS5wcmltYXJ5S2V5KCksCiAgZW1haWw6IHZhcmNoYXIoImVtYWlsIiwgeyBsZW5ndGg6IDI1NSB9KS5ub3ROdWxsKCkudW5pcXVlKCksCiAgZmlyc3ROYW1lOiB2YXJjaGFyKCJmaXJzdF9uYW1lIiwgeyBsZW5ndGg6IDEwMCB9KSwKICBpc0FjdGl2ZTogYm9vbGVhbigiaXNfYWN0aXZlIikuZGVmYXVsdCh0cnVlKS5ub3ROdWxsKCksCiAgc291cmNlOiB2YXJjaGFyKCJzb3VyY2UiLCB7IGxlbmd0aDogNTAgfSkuZGVmYXVsdCgid2Vic2l0ZSIpLm5vdE51bGwoKSwKICBzdWJzY3JpYmVkQXQ6IHRpbWVzdGFtcCgic3Vic2NyaWJlZF9hdCIpLmRlZmF1bHROb3coKS5ub3ROdWxsKCksCiAgdW5zdWJzY3JpYmVkQXQ6IHRpbWVzdGFtcCgidW5zdWJzY3JpYmVkX2F0IiksCn0pOwo=
+import { pgTable, serial, varchar, timestamp, boolean } from "drizzle-orm/pg-core";
+
+export const newsletterSubscribersTable = pgTable("newsletter_subscribers", {
+  id: serial("id").primaryKey(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  firstName: varchar("first_name", { length: 100 }),
+  isActive: boolean("is_active").default(true).notNull(),
+  source: varchar("source", { length: 50 }).default("website").notNull(),
+  subscribedAt: timestamp("subscribed_at").defaultNow().notNull(),
+  unsubscribedAt: timestamp("unsubscribed_at"),
+});

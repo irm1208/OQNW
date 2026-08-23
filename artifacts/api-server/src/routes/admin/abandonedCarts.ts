@@ -1,1 +1,60 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgYWJhbmRvbmVkQ2FydHNUYWJsZSB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyBpc051bGwsIGRlc2MsIHNxbCB9IGZyb20gImRyaXp6bGUtb3JtIjsKCmNvbnN0IHJvdXRlciA9IFJvdXRlcigpOwoKZnVuY3Rpb24gcmVxdWlyZUFkbWluKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IGJvb2xlYW4gewogIGlmIChyZXEuY29va2llcz8uYWRtaW5fc2Vzc2lvbiAhPT0gImF1dGhlbnRpY2F0ZWQiKSB7CiAgICByZXMuc3RhdHVzKDQwMSkuanNvbih7IGVycm9yOiAiTm90IGF1dGhlbnRpY2F0ZWQiIH0pOwogICAgcmV0dXJuIGZhbHNlOwogIH0KICByZXR1cm4gdHJ1ZTsKfQoKcm91dGVyLmdldCgiL2FkbWluL2FiYW5kb25lZC1jYXJ0cyIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBpZiAoIXJlcXVpcmVBZG1pbihyZXEsIHJlcykpIHJldHVybjsKCiAgdHJ5IHsKICAgIGNvbnN0IGNhcnRzID0gYXdhaXQgZGIKICAgICAgLnNlbGVjdCgpCiAgICAgIC5mcm9tKGFiYW5kb25lZENhcnRzVGFibGUpCiAgICAgIC53aGVyZShpc051bGwoYWJhbmRvbmVkQ2FydHNUYWJsZS5jb252ZXJ0ZWRBdCkpCiAgICAgIC5vcmRlckJ5KGRlc2MoYWJhbmRvbmVkQ2FydHNUYWJsZS51cGRhdGVkQXQpKTsKCiAgICBpbnRlcmZhY2UgQ2FydEl0ZW0gewogICAgICBwcm9kdWN0TmFtZT86IHN0cmluZzsKICAgICAgcXVhbnRpdHk/OiBudW1iZXI7CiAgICAgIHByaWNlR2JwPzogbnVtYmVyOwogICAgfQoKICAgIGNvbnN0IHJvd3MgPSBjYXJ0cy5tYXAoKGMpID0+IHsKICAgICAgbGV0IGl0ZW1zOiBDYXJ0SXRlbVtdID0gW107CiAgICAgIHRyeSB7IGl0ZW1zID0gSlNPTi5wYXJzZShjLml0ZW1zSnNvbikgYXMgQ2FydEl0ZW1bXTsgfSBjYXRjaCB7IGl0ZW1zID0gW107IH0KICAgICAgY29uc3QgdG90YWxWYWx1ZSA9IGl0ZW1zLnJlZHVjZSgocywgaSkgPT4gcyArICgoaS5wcmljZUdicCA/PyAwKSAqIChpLnF1YW50aXR5ID8/IDEpKSwgMCk7CiAgICAgIHJldHVybiB7CiAgICAgICAgaWQ6IGMuaWQsCiAgICAgICAgY3VzdG9tZXJFbWFpbDogYy5jdXN0b21lckVtYWlsLAogICAgICAgIGN1c3RvbWVyTmFtZTogYy5jdXN0b21lck5hbWUsCiAgICAgICAgaXRlbUNvdW50OiBpdGVtcy5sZW5ndGgsCiAgICAgICAgdG90YWxWYWx1ZSwKICAgICAgICB1cGRhdGVkQXQ6IGMudXBkYXRlZEF0LnRvSVNPU3RyaW5nKCksCiAgICAgICAgZW1haWxTZW50QXQ6IGMuZW1haWxTZW50QXQ/LnRvSVNPU3RyaW5nKCkgPz8gbnVsbCwKICAgICAgICBpdGVtczogaXRlbXMubWFwKChpKSA9PiAoeyBwcm9kdWN0TmFtZTogaS5wcm9kdWN0TmFtZSA/PyAiIiwgcXVhbnRpdHk6IGkucXVhbnRpdHkgPz8gMSwgcHJpY2VHYnA6IGkucHJpY2VHYnAgPz8gMCB9KSksCiAgICAgIH07CiAgICB9KTsKCiAgICBjb25zdCB0b3RhbEFiYW5kb25lZFZhbHVlID0gcm93cy5yZWR1Y2UoKHMsIHIpID0+IHMgKyByLnRvdGFsVmFsdWUsIDApOwogICAgY29uc3QgZW1haWxzU2VudCA9IHJvd3MuZmlsdGVyKChyKSA9PiByLmVtYWlsU2VudEF0ICE9PSBudWxsKS5sZW5ndGg7CiAgICBjb25zdCBwZW5kaW5nRW1haWwgPSByb3dzLmZpbHRlcigocikgPT4gci5lbWFpbFNlbnRBdCA9PT0gbnVsbCkubGVuZ3RoOwoKICAgIHJlcy5qc29uKHsgY2FydHM6IHJvd3MsIHN0YXRzOiB7IHRvdGFsOiByb3dzLmxlbmd0aCwgdG90YWxBYmFuZG9uZWRWYWx1ZSwgZW1haWxzU2VudCwgcGVuZGluZ0VtYWlsIH0gfSk7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gbGlzdCBhYmFuZG9uZWQgY2FydHMiKTsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJJbnRlcm5hbCBzZXJ2ZXIgZXJyb3IiIH0pOwogIH0KfSk7CgpleHBvcnQgZGVmYXVsdCByb3V0ZXI7Cg==
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { db } from "@workspace/db";
+import { abandonedCartsTable } from "@workspace/db";
+import { isNull, desc, sql } from "drizzle-orm";
+
+const router = Router();
+
+function requireAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+
+router.get("/admin/abandoned-carts", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+
+  try {
+    const carts = await db
+      .select()
+      .from(abandonedCartsTable)
+      .where(isNull(abandonedCartsTable.convertedAt))
+      .orderBy(desc(abandonedCartsTable.updatedAt));
+
+    interface CartItem {
+      productName?: string;
+      quantity?: number;
+      priceGbp?: number;
+    }
+
+    const rows = carts.map((c) => {
+      let items: CartItem[] = [];
+      try { items = JSON.parse(c.itemsJson) as CartItem[]; } catch { items = []; }
+      const totalValue = items.reduce((s, i) => s + ((i.priceGbp ?? 0) * (i.quantity ?? 1)), 0);
+      return {
+        id: c.id,
+        customerEmail: c.customerEmail,
+        customerName: c.customerName,
+        itemCount: items.length,
+        totalValue,
+        updatedAt: c.updatedAt.toISOString(),
+        emailSentAt: c.emailSentAt?.toISOString() ?? null,
+        items: items.map((i) => ({ productName: i.productName ?? "", quantity: i.quantity ?? 1, priceGbp: i.priceGbp ?? 0 })),
+      };
+    });
+
+    const totalAbandonedValue = rows.reduce((s, r) => s + r.totalValue, 0);
+    const emailsSent = rows.filter((r) => r.emailSentAt !== null).length;
+    const pendingEmail = rows.filter((r) => r.emailSentAt === null).length;
+
+    res.json({ carts: rows, stats: { total: rows.length, totalAbandonedValue, emailsSent, pendingEmail } });
+  } catch (err) {
+    req.log.error({ err }, "Failed to list abandoned carts");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;

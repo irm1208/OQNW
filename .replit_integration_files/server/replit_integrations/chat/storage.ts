@@ -1,1 +1,43 @@
-aW1wb3J0IHsgZGIgfSBmcm9tICIuLi8uLi9kYiI7CmltcG9ydCB7IGNvbnZlcnNhdGlvbnMsIG1lc3NhZ2VzIH0gZnJvbSAiQHNoYXJlZC9zY2hlbWEiOwppbXBvcnQgeyBlcSwgZGVzYyB9IGZyb20gImRyaXp6bGUtb3JtIjsKCmV4cG9ydCBpbnRlcmZhY2UgSUNoYXRTdG9yYWdlIHsKICBnZXRDb252ZXJzYXRpb24oaWQ6IG51bWJlcik6IFByb21pc2U8dHlwZW9mIGNvbnZlcnNhdGlvbnMuJGluZmVyU2VsZWN0IHwgdW5kZWZpbmVkPjsKICBnZXRBbGxDb252ZXJzYXRpb25zKCk6IFByb21pc2U8KHR5cGVvZiBjb252ZXJzYXRpb25zLiRpbmZlclNlbGVjdClbXT47CiAgY3JlYXRlQ29udmVyc2F0aW9uKHRpdGxlOiBzdHJpbmcpOiBQcm9taXNlPHR5cGVvZiBjb252ZXJzYXRpb25zLiRpbmZlclNlbGVjdD47CiAgZGVsZXRlQ29udmVyc2F0aW9uKGlkOiBudW1iZXIpOiBQcm9taXNlPHZvaWQ+OwogIGdldE1lc3NhZ2VzQnlDb252ZXJzYXRpb24oY29udmVyc2F0aW9uSWQ6IG51bWJlcik6IFByb21pc2U8KHR5cGVvZiBtZXNzYWdlcy4kaW5mZXJTZWxlY3QpW10+OwogIGNyZWF0ZU1lc3NhZ2UoY29udmVyc2F0aW9uSWQ6IG51bWJlciwgcm9sZTogc3RyaW5nLCBjb250ZW50OiBzdHJpbmcpOiBQcm9taXNlPHR5cGVvZiBtZXNzYWdlcy4kaW5mZXJTZWxlY3Q+Owp9CgpleHBvcnQgY29uc3QgY2hhdFN0b3JhZ2U6IElDaGF0U3RvcmFnZSA9IHsKICBhc3luYyBnZXRDb252ZXJzYXRpb24oaWQ6IG51bWJlcikgewogICAgY29uc3QgW2NvbnZlcnNhdGlvbl0gPSBhd2FpdCBkYi5zZWxlY3QoKS5mcm9tKGNvbnZlcnNhdGlvbnMpLndoZXJlKGVxKGNvbnZlcnNhdGlvbnMuaWQsIGlkKSk7CiAgICByZXR1cm4gY29udmVyc2F0aW9uOwogIH0sCgogIGFzeW5jIGdldEFsbENvbnZlcnNhdGlvbnMoKSB7CiAgICByZXR1cm4gZGIuc2VsZWN0KCkuZnJvbShjb252ZXJzYXRpb25zKS5vcmRlckJ5KGRlc2MoY29udmVyc2F0aW9ucy5jcmVhdGVkQXQpKTsKICB9LAoKICBhc3luYyBjcmVhdGVDb252ZXJzYXRpb24odGl0bGU6IHN0cmluZykgewogICAgY29uc3QgW2NvbnZlcnNhdGlvbl0gPSBhd2FpdCBkYi5pbnNlcnQoY29udmVyc2F0aW9ucykudmFsdWVzKHsgdGl0bGUgfSkucmV0dXJuaW5nKCk7CiAgICByZXR1cm4gY29udmVyc2F0aW9uOwogIH0sCgogIGFzeW5jIGRlbGV0ZUNvbnZlcnNhdGlvbihpZDogbnVtYmVyKSB7CiAgICBhd2FpdCBkYi5kZWxldGUobWVzc2FnZXMpLndoZXJlKGVxKG1lc3NhZ2VzLmNvbnZlcnNhdGlvbklkLCBpZCkpOwogICAgYXdhaXQgZGIuZGVsZXRlKGNvbnZlcnNhdGlvbnMpLndoZXJlKGVxKGNvbnZlcnNhdGlvbnMuaWQsIGlkKSk7CiAgfSwKCiAgYXN5bmMgZ2V0TWVzc2FnZXNCeUNvbnZlcnNhdGlvbihjb252ZXJzYXRpb25JZDogbnVtYmVyKSB7CiAgICByZXR1cm4gZGIuc2VsZWN0KCkuZnJvbShtZXNzYWdlcykud2hlcmUoZXEobWVzc2FnZXMuY29udmVyc2F0aW9uSWQsIGNvbnZlcnNhdGlvbklkKSkub3JkZXJCeShtZXNzYWdlcy5jcmVhdGVkQXQpOwogIH0sCgogIGFzeW5jIGNyZWF0ZU1lc3NhZ2UoY29udmVyc2F0aW9uSWQ6IG51bWJlciwgcm9sZTogc3RyaW5nLCBjb250ZW50OiBzdHJpbmcpIHsKICAgIGNvbnN0IFttZXNzYWdlXSA9IGF3YWl0IGRiLmluc2VydChtZXNzYWdlcykudmFsdWVzKHsgY29udmVyc2F0aW9uSWQsIHJvbGUsIGNvbnRlbnQgfSkucmV0dXJuaW5nKCk7CiAgICByZXR1cm4gbWVzc2FnZTsKICB9LAp9OwoK
+import { db } from "../../db";
+import { conversations, messages } from "@shared/schema";
+import { eq, desc } from "drizzle-orm";
+
+export interface IChatStorage {
+  getConversation(id: number): Promise<typeof conversations.$inferSelect | undefined>;
+  getAllConversations(): Promise<(typeof conversations.$inferSelect)[]>;
+  createConversation(title: string): Promise<typeof conversations.$inferSelect>;
+  deleteConversation(id: number): Promise<void>;
+  getMessagesByConversation(conversationId: number): Promise<(typeof messages.$inferSelect)[]>;
+  createMessage(conversationId: number, role: string, content: string): Promise<typeof messages.$inferSelect>;
+}
+
+export const chatStorage: IChatStorage = {
+  async getConversation(id: number) {
+    const [conversation] = await db.select().from(conversations).where(eq(conversations.id, id));
+    return conversation;
+  },
+
+  async getAllConversations() {
+    return db.select().from(conversations).orderBy(desc(conversations.createdAt));
+  },
+
+  async createConversation(title: string) {
+    const [conversation] = await db.insert(conversations).values({ title }).returning();
+    return conversation;
+  },
+
+  async deleteConversation(id: number) {
+    await db.delete(messages).where(eq(messages.conversationId, id));
+    await db.delete(conversations).where(eq(conversations.id, id));
+  },
+
+  async getMessagesByConversation(conversationId: number) {
+    return db.select().from(messages).where(eq(messages.conversationId, conversationId)).orderBy(messages.createdAt);
+  },
+
+  async createMessage(conversationId: number, role: string, content: string) {
+    const [message] = await db.insert(messages).values({ conversationId, role, content }).returning();
+    return message;
+  },
+};
+

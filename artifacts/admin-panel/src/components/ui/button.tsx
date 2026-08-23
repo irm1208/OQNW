@@ -1,1 +1,65 @@
-aW1wb3J0ICogYXMgUmVhY3QgZnJvbSAicmVhY3QiCmltcG9ydCB7IFNsb3QgfSBmcm9tICJAcmFkaXgtdWkvcmVhY3Qtc2xvdCIKaW1wb3J0IHsgY3ZhLCB0eXBlIFZhcmlhbnRQcm9wcyB9IGZyb20gImNsYXNzLXZhcmlhbmNlLWF1dGhvcml0eSIKCmltcG9ydCB7IGNuIH0gZnJvbSAiQC9saWIvdXRpbHMiCgpjb25zdCBidXR0b25WYXJpYW50cyA9IGN2YSgKICAiaW5saW5lLWZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIGdhcC0yIHdoaXRlc3BhY2Utbm93cmFwIHJvdW5kZWQtbWQgdGV4dC1zbSBmb250LW1lZGl1bSB0cmFuc2l0aW9uLWNvbG9ycyBmb2N1cy12aXNpYmxlOm91dGxpbmUtbm9uZSBmb2N1cy12aXNpYmxlOnJpbmctMSBmb2N1cy12aXNpYmxlOnJpbmctcmluZyBkaXNhYmxlZDpwb2ludGVyLWV2ZW50cy1ub25lIGRpc2FibGVkOm9wYWNpdHktNTAgWyZfc3ZnXTpwb2ludGVyLWV2ZW50cy1ub25lIFsmX3N2Z106c2l6ZS00IFsmX3N2Z106c2hyaW5rLTAiICsKIiBob3Zlci1lbGV2YXRlIGFjdGl2ZS1lbGV2YXRlLTIiLAogIHsKICAgIHZhcmlhbnRzOiB7CiAgICAgIHZhcmlhbnQ6IHsKICAgICAgICBkZWZhdWx0OgogICAgICAgICAgIC8vIEByZXBsaXQ6IG5vIGhvdmVyLCBhbmQgYWRkIHByaW1hcnkgYm9yZGVyCiAgICAgICAgICAgImJnLXByaW1hcnkgdGV4dC1wcmltYXJ5LWZvcmVncm91bmQgYm9yZGVyIGJvcmRlci1wcmltYXJ5LWJvcmRlciIsCiAgICAgICAgZGVzdHJ1Y3RpdmU6CiAgICAgICAgICAiYmctZGVzdHJ1Y3RpdmUgdGV4dC1kZXN0cnVjdGl2ZS1mb3JlZ3JvdW5kIHNoYWRvdy1zbSBib3JkZXItZGVzdHJ1Y3RpdmUtYm9yZGVyIiwKICAgICAgICBvdXRsaW5lOgogICAgICAgICAgLy8gQHJlcGxpdCBTaG93cyB0aGUgYmFja2dyb3VuZCBjb2xvciBvZiB3aGF0ZXZlciBjYXJkIC8gc2lkZWJhciAvIGFjY2VudCBiYWNrZ3JvdW5kIGl0IGlzIGluc2lkZSBvZi4KICAgICAgICAgIC8vIEluaGVyaXRzIHRoZSBjdXJyZW50IHRleHQgY29sb3IuIFVzZXMgc2hhZG93LXhzLiBubyBzaGFkb3cgb24gYWN0aXZlCiAgICAgICAgICAvLyBObyBob3ZlciBzdGF0ZQogICAgICAgICAgIiBib3JkZXIgW2JvcmRlci1jb2xvcjp2YXIoLS1idXR0b24tb3V0bGluZSldIHNoYWRvdy14cyBhY3RpdmU6c2hhZG93LW5vbmUgIiwKICAgICAgICBzZWNvbmRhcnk6CiAgICAgICAgICAvLyBAcmVwbGl0IGJvcmRlciwgbm8gaG92ZXIsIG5vIHNoYWRvdywgc2Vjb25kYXJ5IGJvcmRlci4KICAgICAgICAgICJib3JkZXIgYmctc2Vjb25kYXJ5IHRleHQtc2Vjb25kYXJ5LWZvcmVncm91bmQgYm9yZGVyIGJvcmRlci1zZWNvbmRhcnktYm9yZGVyICIsCiAgICAgICAgLy8gQHJlcGxpdCBubyBob3ZlciwgdHJhbnNwYXJlbnQgYm9yZGVyCiAgICAgICAgZ2hvc3Q6ICJib3JkZXIgYm9yZGVyLXRyYW5zcGFyZW50IiwKICAgICAgICBsaW5rOiAidGV4dC1wcmltYXJ5IHVuZGVybGluZS1vZmZzZXQtNCBob3Zlcjp1bmRlcmxpbmUiLAogICAgICB9LAogICAgICBzaXplOiB7CiAgICAgICAgLy8gQHJlcGxpdCBjaGFuZ2VkIHNpemVzCiAgICAgICAgZGVmYXVsdDogIm1pbi1oLTkgcHgtNCBweS0yIiwKICAgICAgICBzbTogIm1pbi1oLTggcm91bmRlZC1tZCBweC0zIHRleHQteHMiLAogICAgICAgIGxnOiAibWluLWgtMTAgcm91bmRlZC1tZCBweC04IiwKICAgICAgICBpY29uOiAiaC05IHctOSIsCiAgICAgIH0sCiAgICB9LAogICAgZGVmYXVsdFZhcmlhbnRzOiB7CiAgICAgIHZhcmlhbnQ6ICJkZWZhdWx0IiwKICAgICAgc2l6ZTogImRlZmF1bHQiLAogICAgfSwKICB9CikKCmV4cG9ydCBpbnRlcmZhY2UgQnV0dG9uUHJvcHMKICBleHRlbmRzIFJlYWN0LkJ1dHRvbkhUTUxBdHRyaWJ1dGVzPEhUTUxCdXR0b25FbGVtZW50PiwKICAgIFZhcmlhbnRQcm9wczx0eXBlb2YgYnV0dG9uVmFyaWFudHM+IHsKICBhc0NoaWxkPzogYm9vbGVhbgp9Cgpjb25zdCBCdXR0b24gPSBSZWFjdC5mb3J3YXJkUmVmPEhUTUxCdXR0b25FbGVtZW50LCBCdXR0b25Qcm9wcz4oCiAgKHsgY2xhc3NOYW1lLCB2YXJpYW50LCBzaXplLCBhc0NoaWxkID0gZmFsc2UsIC4uLnByb3BzIH0sIHJlZikgPT4gewogICAgY29uc3QgQ29tcCA9IGFzQ2hpbGQgPyBTbG90IDogImJ1dHRvbiIKICAgIHJldHVybiAoCiAgICAgIDxDb21wCiAgICAgICAgY2xhc3NOYW1lPXtjbihidXR0b25WYXJpYW50cyh7IHZhcmlhbnQsIHNpemUsIGNsYXNzTmFtZSB9KSl9CiAgICAgICAgcmVmPXtyZWZ9CiAgICAgICAgey4uLnByb3BzfQogICAgICAvPgogICAgKQogIH0KKQpCdXR0b24uZGlzcGxheU5hbWUgPSAiQnV0dG9uIgoKZXhwb3J0IHsgQnV0dG9uLCBidXR0b25WYXJpYW50cyB9Cg==
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0" +
+" hover-elevate active-elevate-2",
+  {
+    variants: {
+      variant: {
+        default:
+           // @replit: no hover, and add primary border
+           "bg-primary text-primary-foreground border border-primary-border",
+        destructive:
+          "bg-destructive text-destructive-foreground shadow-sm border-destructive-border",
+        outline:
+          // @replit Shows the background color of whatever card / sidebar / accent background it is inside of.
+          // Inherits the current text color. Uses shadow-xs. no shadow on active
+          // No hover state
+          " border [border-color:var(--button-outline)] shadow-xs active:shadow-none ",
+        secondary:
+          // @replit border, no hover, no shadow, secondary border.
+          "border bg-secondary text-secondary-foreground border border-secondary-border ",
+        // @replit no hover, transparent border
+        ghost: "border border-transparent",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        // @replit changed sizes
+        default: "min-h-9 px-4 py-2",
+        sm: "min-h-8 rounded-md px-3 text-xs",
+        lg: "min-h-10 rounded-md px-8",
+        icon: "h-9 w-9",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
+
+export { Button, buttonVariants }

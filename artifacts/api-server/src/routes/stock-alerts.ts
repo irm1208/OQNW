@@ -1,1 +1,179 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgc3RvY2tBbGVydHNUYWJsZSB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyBhbmQsIGVxLCBpc051bGwsIGlzTm90TnVsbCwgc3FsIH0gZnJvbSAiZHJpenpsZS1vcm0iOwppbXBvcnQgeyBzZW5kQmFja0luU3RvY2tFbWFpbCB9IGZyb20gIi4uL2xpYi9lbWFpbCI7CgpmdW5jdGlvbiByZXF1aXJlQWRtaW4ocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogYm9vbGVhbiB7CiAgaWYgKHJlcS5jb29raWVzPy5hZG1pbl9zZXNzaW9uICE9PSAiYXV0aGVudGljYXRlZCIpIHsKICAgIHJlcy5zdGF0dXMoNDAxKS5qc29uKHsgZXJyb3I6ICJVbmF1dGhvcml6ZWQiIH0pOwogICAgcmV0dXJuIGZhbHNlOwogIH0KICByZXR1cm4gdHJ1ZTsKfQoKY29uc3Qgcm91dGVyID0gUm91dGVyKCk7Cgpyb3V0ZXIucG9zdCgiL3Byb2R1Y3RzLzpwcm9kdWN0SWQvc3RvY2stYWxlcnQiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgY29uc3QgcHJvZHVjdElkID0gcGFyc2VJbnQocmVxLnBhcmFtcy5wcm9kdWN0SWQgYXMgc3RyaW5nLCAxMCk7CiAgaWYgKGlzTmFOKHByb2R1Y3RJZCkpIHsKICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJJbnZhbGlkIHByb2R1Y3QgSUQiIH0pOwogICAgcmV0dXJuOwogIH0KCiAgY29uc3QgeyBlbWFpbCwgbmFtZSwgcHJvZHVjdE5hbWUgfSA9IHJlcS5ib2R5IGFzIHsKICAgIGVtYWlsPzogdW5rbm93bjsKICAgIG5hbWU/OiB1bmtub3duOwogICAgcHJvZHVjdE5hbWU/OiB1bmtub3duOwogIH07CgogIGlmICh0eXBlb2YgZW1haWwgIT09ICJzdHJpbmciIHx8ICFlbWFpbC5pbmNsdWRlcygiQCIpKSB7CiAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiVmFsaWQgZW1haWwgYWRkcmVzcyBpcyByZXF1aXJlZCIgfSk7CiAgICByZXR1cm47CiAgfQoKICB0cnkgewogICAgYXdhaXQgZGIKICAgICAgLmluc2VydChzdG9ja0FsZXJ0c1RhYmxlKQogICAgICAudmFsdWVzKHsKICAgICAgICBwcm9kdWN0SWQsCiAgICAgICAgcHJvZHVjdE5hbWU6IHR5cGVvZiBwcm9kdWN0TmFtZSA9PT0gInN0cmluZyIgPyBwcm9kdWN0TmFtZSA6ICJQcm9kdWN0IiwKICAgICAgICBjdXN0b21lckVtYWlsOiBlbWFpbC50b0xvd2VyQ2FzZSgpLnRyaW0oKSwKICAgICAgICBjdXN0b21lck5hbWU6IHR5cGVvZiBuYW1lID09PSAic3RyaW5nIiA/IG5hbWUudHJpbSgpIHx8IG51bGwgOiBudWxsLAogICAgICAgIG5vdGlmaWVkQXQ6IG51bGwsCiAgICAgIH0pCiAgICAgIC5vbkNvbmZsaWN0RG9Ob3RoaW5nKCk7CgogICAgcmVzLmpzb24oeyBvazogdHJ1ZSB9KTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byBzYXZlIHN0b2NrIGFsZXJ0Iik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKcm91dGVyLmRlbGV0ZSgiL3Byb2R1Y3RzLzpwcm9kdWN0SWQvc3RvY2stYWxlcnQiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgY29uc3QgcHJvZHVjdElkID0gcGFyc2VJbnQocmVxLnBhcmFtcy5wcm9kdWN0SWQgYXMgc3RyaW5nLCAxMCk7CiAgY29uc3QgZW1haWwgPSB0eXBlb2YgcmVxLnF1ZXJ5LmVtYWlsID09PSAic3RyaW5nIiA/IHJlcS5xdWVyeS5lbWFpbC50b0xvd2VyQ2FzZSgpLnRyaW0oKSA6IG51bGw7CiAgaWYgKGlzTmFOKHByb2R1Y3RJZCkgfHwgIWVtYWlsKSB7CiAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiSW52YWxpZCByZXF1ZXN0IiB9KTsKICAgIHJldHVybjsKICB9CgogIHRyeSB7CiAgICBhd2FpdCBkYgogICAgICAuZGVsZXRlKHN0b2NrQWxlcnRzVGFibGUpCiAgICAgIC53aGVyZShhbmQoZXEoc3RvY2tBbGVydHNUYWJsZS5wcm9kdWN0SWQsIHByb2R1Y3RJZCksIGVxKHN0b2NrQWxlcnRzVGFibGUuY3VzdG9tZXJFbWFpbCwgZW1haWwpKSk7CiAgICByZXMuanNvbih7IG9rOiB0cnVlIH0pOwogIH0gY2F0Y2ggewogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCi8vIEdFVCAvYWRtaW4vc3RvY2stYWxlcnRzIOKAlCBsaXN0IGFsbCByZXF1ZXN0cyBncm91cGVkIGJ5IHByb2R1Y3QKcm91dGVyLmdldCgiL2FkbWluL3N0b2NrLWFsZXJ0cyIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBpZiAoIXJlcXVpcmVBZG1pbihyZXEsIHJlcykpIHJldHVybjsKICB0cnkgewogICAgY29uc3QgYWxsID0gYXdhaXQgZGIuc2VsZWN0KCkuZnJvbShzdG9ja0FsZXJ0c1RhYmxlKTsKCiAgICBjb25zdCBieVByb2R1Y3Q6IFJlY29yZDxudW1iZXIsIHsKICAgICAgcHJvZHVjdElkOiBudW1iZXI7CiAgICAgIHByb2R1Y3ROYW1lOiBzdHJpbmc7CiAgICAgIHBlbmRpbmdDb3VudDogbnVtYmVyOwogICAgICB0b3RhbENvdW50OiBudW1iZXI7CiAgICAgIGxhc3RTaWdudXBBdDogc3RyaW5nIHwgbnVsbDsKICAgIH0+ID0ge307CgogICAgZm9yIChjb25zdCByb3cgb2YgYWxsKSB7CiAgICAgIGlmICghYnlQcm9kdWN0W3Jvdy5wcm9kdWN0SWRdKSB7CiAgICAgICAgYnlQcm9kdWN0W3Jvdy5wcm9kdWN0SWRdID0gewogICAgICAgICAgcHJvZHVjdElkOiByb3cucHJvZHVjdElkLAogICAgICAgICAgcHJvZHVjdE5hbWU6IHJvdy5wcm9kdWN0TmFtZSA/PyAiVW5rbm93biIsCiAgICAgICAgICBwZW5kaW5nQ291bnQ6IDAsCiAgICAgICAgICB0b3RhbENvdW50OiAwLAogICAgICAgICAgbGFzdFNpZ251cEF0OiBudWxsLAogICAgICAgIH07CiAgICAgIH0KICAgICAgYnlQcm9kdWN0W3Jvdy5wcm9kdWN0SWRdLnRvdGFsQ291bnQrKzsKICAgICAgaWYgKCFyb3cubm90aWZpZWRBdCkgYnlQcm9kdWN0W3Jvdy5wcm9kdWN0SWRdLnBlbmRpbmdDb3VudCsrOwogICAgICBjb25zdCByb3dEYXRlID0gcm93LmNyZWF0ZWRBdD8udG9JU09TdHJpbmcoKSA/PyBudWxsOwogICAgICBpZiAocm93RGF0ZSAmJiAoIWJ5UHJvZHVjdFtyb3cucHJvZHVjdElkXS5sYXN0U2lnbnVwQXQgfHwgcm93RGF0ZSA+IGJ5UHJvZHVjdFtyb3cucHJvZHVjdElkXS5sYXN0U2lnbnVwQXQhKSkgewogICAgICAgIGJ5UHJvZHVjdFtyb3cucHJvZHVjdElkXS5sYXN0U2lnbnVwQXQgPSByb3dEYXRlOwogICAgICB9CiAgICB9CgogICAgY29uc3QgdG90YWxQZW5kaW5nID0gYWxsLmZpbHRlcihyID0+ICFyLm5vdGlmaWVkQXQpLmxlbmd0aDsKICAgIGNvbnN0IHRvdGFsTm90aWZpZWQgPSBhbGwuZmlsdGVyKHIgPT4gISFyLm5vdGlmaWVkQXQpLmxlbmd0aDsKCiAgICByZXMuanNvbih7CiAgICAgIHN0YXRzOiB7IHRvdGFsUGVuZGluZywgdG90YWxOb3RpZmllZCwgcHJvZHVjdHNXaXRoV2FpdGxpc3Q6IE9iamVjdC52YWx1ZXMoYnlQcm9kdWN0KS5maWx0ZXIocCA9PiBwLnBlbmRpbmdDb3VudCA+IDApLmxlbmd0aCB9LAogICAgICBwcm9kdWN0czogT2JqZWN0LnZhbHVlcyhieVByb2R1Y3QpLnNvcnQoKGEsIGIpID0+IGIucGVuZGluZ0NvdW50IC0gYS5wZW5kaW5nQ291bnQpLAogICAgfSk7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gZ2V0IHN0b2NrIGFsZXJ0cyIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCi8vIFBPU1QgL2FkbWluL3N0b2NrLWFsZXJ0cy9ub3RpZnkvOnByb2R1Y3RJZCDigJQgbWFudWFsbHkgZmlyZSBlbWFpbHMgZm9yIGEgcHJvZHVjdApyb3V0ZXIucG9zdCgiL2FkbWluL3N0b2NrLWFsZXJ0cy9ub3RpZnkvOnByb2R1Y3RJZCIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBpZiAoIXJlcXVpcmVBZG1pbihyZXEsIHJlcykpIHJldHVybjsKICBjb25zdCBwcm9kdWN0SWQgPSBwYXJzZUludChyZXEucGFyYW1zLnByb2R1Y3RJZCBhcyBzdHJpbmcsIDEwKTsKICBpZiAoaXNOYU4ocHJvZHVjdElkKSkgeyByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiSW52YWxpZCBwcm9kdWN0IElEIiB9KTsgcmV0dXJuOyB9CiAgdHJ5IHsKICAgIGNvbnN0IHBlbmRpbmcgPSBhd2FpdCBkYgogICAgICAuc2VsZWN0KCkKICAgICAgLmZyb20oc3RvY2tBbGVydHNUYWJsZSkKICAgICAgLndoZXJlKGFuZChlcShzdG9ja0FsZXJ0c1RhYmxlLnByb2R1Y3RJZCwgcHJvZHVjdElkKSwgaXNOdWxsKHN0b2NrQWxlcnRzVGFibGUubm90aWZpZWRBdCkpKTsKCiAgICBpZiAocGVuZGluZy5sZW5ndGggPT09IDApIHsgcmVzLmpzb24oeyBzZW50OiAwIH0pOyByZXR1cm47IH0KCiAgICBjb25zdCBwcm9kdWN0TmFtZSA9IHBlbmRpbmdbMF0ucHJvZHVjdE5hbWUgPz8gIlByb2R1Y3QiOwogICAgbGV0IHNlbnQgPSAwOwogICAgZm9yIChjb25zdCBhbGVydCBvZiBwZW5kaW5nKSB7CiAgICAgIGF3YWl0IHNlbmRCYWNrSW5TdG9ja0VtYWlsKHsKICAgICAgICBjdXN0b21lckVtYWlsOiBhbGVydC5jdXN0b21lckVtYWlsLAogICAgICAgIGN1c3RvbWVyTmFtZTogYWxlcnQuY3VzdG9tZXJOYW1lID8/ICJSZXNlYXJjaGVyIiwKICAgICAgICBwcm9kdWN0TmFtZSwKICAgICAgfSk7CiAgICAgIGF3YWl0IGRiLnVwZGF0ZShzdG9ja0FsZXJ0c1RhYmxlKS5zZXQoeyBub3RpZmllZEF0OiBuZXcgRGF0ZSgpIH0pLndoZXJlKGVxKHN0b2NrQWxlcnRzVGFibGUuaWQsIGFsZXJ0LmlkKSk7CiAgICAgIHNlbnQrKzsKICAgIH0KCiAgICByZXEubG9nLmluZm8oeyBwcm9kdWN0SWQsIHNlbnQgfSwgIk1hbnVhbCBiYWNrLWluLXN0b2NrIG5vdGlmaWNhdGlvbiBzZW50Iik7CiAgICByZXMuanNvbih7IHNlbnQgfSk7CiAgfSBjYXRjaCAoZXJyKSB7CiAgICByZXEubG9nLmVycm9yKHsgZXJyIH0sICJGYWlsZWQgdG8gc2VuZCBzdG9jayBhbGVydHMiKTsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJJbnRlcm5hbCBzZXJ2ZXIgZXJyb3IiIH0pOwogIH0KfSk7CgpleHBvcnQgYXN5bmMgZnVuY3Rpb24gbm90aWZ5U3RvY2tBbGVydHMocHJvZHVjdElkOiBudW1iZXIsIHByb2R1Y3ROYW1lOiBzdHJpbmcpOiBQcm9taXNlPHZvaWQ+IHsKICB0cnkgewogICAgY29uc3QgYWxlcnRzID0gYXdhaXQgZGIKICAgICAgLnNlbGVjdCgpCiAgICAgIC5mcm9tKHN0b2NrQWxlcnRzVGFibGUpCiAgICAgIC53aGVyZSgKICAgICAgICBhbmQoCiAgICAgICAgICBlcShzdG9ja0FsZXJ0c1RhYmxlLnByb2R1Y3RJZCwgcHJvZHVjdElkKSwKICAgICAgICAgIGlzTnVsbChzdG9ja0FsZXJ0c1RhYmxlLm5vdGlmaWVkQXQpCiAgICAgICAgKQogICAgICApOwoKICAgIGZvciAoY29uc3QgYWxlcnQgb2YgYWxlcnRzKSB7CiAgICAgIGF3YWl0IHNlbmRCYWNrSW5TdG9ja0VtYWlsKHsKICAgICAgICBjdXN0b21lckVtYWlsOiBhbGVydC5jdXN0b21lckVtYWlsLAogICAgICAgIGN1c3RvbWVyTmFtZTogYWxlcnQuY3VzdG9tZXJOYW1lID8/ICJSZXNlYXJjaGVyIiwKICAgICAgICBwcm9kdWN0TmFtZSwKICAgICAgfSk7CgogICAgICBhd2FpdCBkYgogICAgICAgIC51cGRhdGUoc3RvY2tBbGVydHNUYWJsZSkKICAgICAgICAuc2V0KHsgbm90aWZpZWRBdDogbmV3IERhdGUoKSB9KQogICAgICAgIC53aGVyZShlcShzdG9ja0FsZXJ0c1RhYmxlLmlkLCBhbGVydC5pZCkpOwogICAgfQogIH0gY2F0Y2ggewogIH0KfQoKZXhwb3J0IGRlZmF1bHQgcm91dGVyOwo=
+import { Router } from "express";
+import type { Request, Response } from "express";
+import { db } from "@workspace/db";
+import { stockAlertsTable } from "@workspace/db";
+import { and, eq, isNull, isNotNull, sql } from "drizzle-orm";
+import { sendBackInStockEmail } from "../lib/email";
+
+function requireAdmin(req: Request, res: Response): boolean {
+  if (req.cookies?.admin_session !== "authenticated") {
+    res.status(401).json({ error: "Unauthorized" });
+    return false;
+  }
+  return true;
+}
+
+const router = Router();
+
+router.post("/products/:productId/stock-alert", async (req: Request, res: Response): Promise<void> => {
+  const productId = parseInt(req.params.productId as string, 10);
+  if (isNaN(productId)) {
+    res.status(400).json({ error: "Invalid product ID" });
+    return;
+  }
+
+  const { email, name, productName } = req.body as {
+    email?: unknown;
+    name?: unknown;
+    productName?: unknown;
+  };
+
+  if (typeof email !== "string" || !email.includes("@")) {
+    res.status(400).json({ error: "Valid email address is required" });
+    return;
+  }
+
+  try {
+    await db
+      .insert(stockAlertsTable)
+      .values({
+        productId,
+        productName: typeof productName === "string" ? productName : "Product",
+        customerEmail: email.toLowerCase().trim(),
+        customerName: typeof name === "string" ? name.trim() || null : null,
+        notifiedAt: null,
+      })
+      .onConflictDoNothing();
+
+    res.json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to save stock alert");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/products/:productId/stock-alert", async (req: Request, res: Response): Promise<void> => {
+  const productId = parseInt(req.params.productId as string, 10);
+  const email = typeof req.query.email === "string" ? req.query.email.toLowerCase().trim() : null;
+  if (isNaN(productId) || !email) {
+    res.status(400).json({ error: "Invalid request" });
+    return;
+  }
+
+  try {
+    await db
+      .delete(stockAlertsTable)
+      .where(and(eq(stockAlertsTable.productId, productId), eq(stockAlertsTable.customerEmail, email)));
+    res.json({ ok: true });
+  } catch {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// GET /admin/stock-alerts — list all requests grouped by product
+router.get("/admin/stock-alerts", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    const all = await db.select().from(stockAlertsTable);
+
+    const byProduct: Record<number, {
+      productId: number;
+      productName: string;
+      pendingCount: number;
+      totalCount: number;
+      lastSignupAt: string | null;
+    }> = {};
+
+    for (const row of all) {
+      if (!byProduct[row.productId]) {
+        byProduct[row.productId] = {
+          productId: row.productId,
+          productName: row.productName ?? "Unknown",
+          pendingCount: 0,
+          totalCount: 0,
+          lastSignupAt: null,
+        };
+      }
+      byProduct[row.productId].totalCount++;
+      if (!row.notifiedAt) byProduct[row.productId].pendingCount++;
+      const rowDate = row.createdAt?.toISOString() ?? null;
+      if (rowDate && (!byProduct[row.productId].lastSignupAt || rowDate > byProduct[row.productId].lastSignupAt!)) {
+        byProduct[row.productId].lastSignupAt = rowDate;
+      }
+    }
+
+    const totalPending = all.filter(r => !r.notifiedAt).length;
+    const totalNotified = all.filter(r => !!r.notifiedAt).length;
+
+    res.json({
+      stats: { totalPending, totalNotified, productsWithWaitlist: Object.values(byProduct).filter(p => p.pendingCount > 0).length },
+      products: Object.values(byProduct).sort((a, b) => b.pendingCount - a.pendingCount),
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to get stock alerts");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// POST /admin/stock-alerts/notify/:productId — manually fire emails for a product
+router.post("/admin/stock-alerts/notify/:productId", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const productId = parseInt(req.params.productId as string, 10);
+  if (isNaN(productId)) { res.status(400).json({ error: "Invalid product ID" }); return; }
+  try {
+    const pending = await db
+      .select()
+      .from(stockAlertsTable)
+      .where(and(eq(stockAlertsTable.productId, productId), isNull(stockAlertsTable.notifiedAt)));
+
+    if (pending.length === 0) { res.json({ sent: 0 }); return; }
+
+    const productName = pending[0].productName ?? "Product";
+    let sent = 0;
+    for (const alert of pending) {
+      await sendBackInStockEmail({
+        customerEmail: alert.customerEmail,
+        customerName: alert.customerName ?? "Researcher",
+        productName,
+      });
+      await db.update(stockAlertsTable).set({ notifiedAt: new Date() }).where(eq(stockAlertsTable.id, alert.id));
+      sent++;
+    }
+
+    req.log.info({ productId, sent }, "Manual back-in-stock notification sent");
+    res.json({ sent });
+  } catch (err) {
+    req.log.error({ err }, "Failed to send stock alerts");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export async function notifyStockAlerts(productId: number, productName: string): Promise<void> {
+  try {
+    const alerts = await db
+      .select()
+      .from(stockAlertsTable)
+      .where(
+        and(
+          eq(stockAlertsTable.productId, productId),
+          isNull(stockAlertsTable.notifiedAt)
+        )
+      );
+
+    for (const alert of alerts) {
+      await sendBackInStockEmail({
+        customerEmail: alert.customerEmail,
+        customerName: alert.customerName ?? "Researcher",
+        productName,
+      });
+
+      await db
+        .update(stockAlertsTable)
+        .set({ notifiedAt: new Date() })
+        .where(eq(stockAlertsTable.id, alert.id));
+    }
+  } catch {
+  }
+}
+
+export default router;

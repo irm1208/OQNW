@@ -1,1 +1,59 @@
-aW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgb3JkZXJzVGFibGUsIG9yZGVySXRlbXNUYWJsZSB9IGZyb20gIkB3b3Jrc3BhY2UvZGIiOwppbXBvcnQgeyBhbmQsIGlzTnVsbCwgbHRlLCBlcSB9IGZyb20gImRyaXp6bGUtb3JtIjsKaW1wb3J0IHsgc2VuZFJldmlld1JlcXVlc3RFbWFpbCB9IGZyb20gIi4vZW1haWwiOwppbXBvcnQgeyBsb2dnZXIgfSBmcm9tICIuL2xvZ2dlciI7Cgpjb25zdCBJTlRFUlZBTF9NUyA9IDYwICogNjAgKiAxMDAwOwpjb25zdCBERUxBWV9BRlRFUl9NUyA9IDcgKiAyNCAqIDYwICogNjAgKiAxMDAwOwoKYXN5bmMgZnVuY3Rpb24gcnVuQ2hlY2soKTogUHJvbWlzZTx2b2lkPiB7CiAgdHJ5IHsKICAgIGNvbnN0IGN1dG9mZiA9IG5ldyBEYXRlKERhdGUubm93KCkgLSBERUxBWV9BRlRFUl9NUyk7CgogICAgY29uc3Qgb3JkZXJzID0gYXdhaXQgZGIKICAgICAgLnNlbGVjdCgpCiAgICAgIC5mcm9tKG9yZGVyc1RhYmxlKQogICAgICAud2hlcmUoCiAgICAgICAgYW5kKAogICAgICAgICAgZXEob3JkZXJzVGFibGUuc3RhdHVzLCAiZGVsaXZlcmVkIiksCiAgICAgICAgICBpc051bGwob3JkZXJzVGFibGUucmV2aWV3UmVxdWVzdFNlbnRBdCksCiAgICAgICAgICBsdGUob3JkZXJzVGFibGUudXBkYXRlZEF0LCBjdXRvZmYpCiAgICAgICAgKQogICAgICApOwoKICAgIGxvZ2dlci5pbmZvKHsgY291bnQ6IG9yZGVycy5sZW5ndGggfSwgIlJldmlldyByZXF1ZXN0IGpvYiBjaGVjayIpOwoKICAgIGZvciAoY29uc3Qgb3JkZXIgb2Ygb3JkZXJzKSB7CiAgICAgIGNvbnN0IGl0ZW1zID0gYXdhaXQgZGIKICAgICAgICAuc2VsZWN0KHsgcHJvZHVjdElkOiBvcmRlckl0ZW1zVGFibGUucHJvZHVjdElkLCBwcm9kdWN0TmFtZTogb3JkZXJJdGVtc1RhYmxlLnByb2R1Y3ROYW1lIH0pCiAgICAgICAgLmZyb20ob3JkZXJJdGVtc1RhYmxlKQogICAgICAgIC53aGVyZShlcShvcmRlckl0ZW1zVGFibGUub3JkZXJJZCwgb3JkZXIuaWQpKTsKCiAgICAgIGlmIChpdGVtcy5sZW5ndGggPT09IDApIGNvbnRpbnVlOwoKICAgICAgYXdhaXQgc2VuZFJldmlld1JlcXVlc3RFbWFpbCh7CiAgICAgICAgY3VzdG9tZXJFbWFpbDogb3JkZXIuY3VzdG9tZXJFbWFpbCwKICAgICAgICBjdXN0b21lck5hbWU6IG9yZGVyLmN1c3RvbWVyTmFtZSwKICAgICAgICBvcmRlck51bWJlcjogb3JkZXIub3JkZXJOdW1iZXIsCiAgICAgICAgaXRlbXM6IGl0ZW1zLm1hcCgoaSkgPT4gKHsKICAgICAgICAgIHByb2R1Y3RJZDogaS5wcm9kdWN0SWQgPz8gMCwKICAgICAgICAgIHByb2R1Y3ROYW1lOiBpLnByb2R1Y3ROYW1lLAogICAgICAgIH0pKSwKICAgICAgfSk7CgogICAgICBhd2FpdCBkYgogICAgICAgIC51cGRhdGUob3JkZXJzVGFibGUpCiAgICAgICAgLnNldCh7IHJldmlld1JlcXVlc3RTZW50QXQ6IG5ldyBEYXRlKCkgfSkKICAgICAgICAud2hlcmUoZXEob3JkZXJzVGFibGUuaWQsIG9yZGVyLmlkKSk7CiAgICB9CiAgfSBjYXRjaCAoZXJyKSB7CiAgICBsb2dnZXIuZXJyb3IoeyBlcnIgfSwgIlJldmlldyByZXF1ZXN0IGpvYiBlcnJvciIpOwogIH0KfQoKZXhwb3J0IGZ1bmN0aW9uIHN0YXJ0UmV2aWV3UmVxdWVzdEpvYigpOiB2b2lkIHsKICBsb2dnZXIuaW5mbygiUmV2aWV3IHJlcXVlc3Qgam9iIHN0YXJ0ZWQiKTsKICB2b2lkIHJ1bkNoZWNrKCk7CiAgc2V0SW50ZXJ2YWwoKCkgPT4geyB2b2lkIHJ1bkNoZWNrKCk7IH0sIElOVEVSVkFMX01TKTsKfQo=
+import { db } from "@workspace/db";
+import { ordersTable, orderItemsTable } from "@workspace/db";
+import { and, isNull, lte, eq } from "drizzle-orm";
+import { sendReviewRequestEmail } from "./email";
+import { logger } from "./logger";
+
+const INTERVAL_MS = 60 * 60 * 1000;
+const DELAY_AFTER_MS = 7 * 24 * 60 * 60 * 1000;
+
+async function runCheck(): Promise<void> {
+  try {
+    const cutoff = new Date(Date.now() - DELAY_AFTER_MS);
+
+    const orders = await db
+      .select()
+      .from(ordersTable)
+      .where(
+        and(
+          eq(ordersTable.status, "delivered"),
+          isNull(ordersTable.reviewRequestSentAt),
+          lte(ordersTable.updatedAt, cutoff)
+        )
+      );
+
+    logger.info({ count: orders.length }, "Review request job check");
+
+    for (const order of orders) {
+      const items = await db
+        .select({ productId: orderItemsTable.productId, productName: orderItemsTable.productName })
+        .from(orderItemsTable)
+        .where(eq(orderItemsTable.orderId, order.id));
+
+      if (items.length === 0) continue;
+
+      await sendReviewRequestEmail({
+        customerEmail: order.customerEmail,
+        customerName: order.customerName,
+        orderNumber: order.orderNumber,
+        items: items.map((i) => ({
+          productId: i.productId ?? 0,
+          productName: i.productName,
+        })),
+      });
+
+      await db
+        .update(ordersTable)
+        .set({ reviewRequestSentAt: new Date() })
+        .where(eq(ordersTable.id, order.id));
+    }
+  } catch (err) {
+    logger.error({ err }, "Review request job error");
+  }
+}
+
+export function startReviewRequestJob(): void {
+  logger.info("Review request job started");
+  void runCheck();
+  setInterval(() => { void runCheck(); }, INTERVAL_MS);
+}

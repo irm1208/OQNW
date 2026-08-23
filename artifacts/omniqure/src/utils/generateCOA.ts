@@ -1,1 +1,448 @@
-aW1wb3J0IHR5cGUgeyBqc1BERiB9IGZyb20gImpzcGRmIjsKaW1wb3J0IHR5cGUgeyBQcm9kdWN0IH0gZnJvbSAiQC9kYXRhL3Byb2R1Y3RzIjsKaW1wb3J0IHR5cGUgeyBQcm9kdWN0RGV0YWlsIH0gZnJvbSAiQC9kYXRhL3Byb2R1Y3REZXRhaWxzIjsKaW1wb3J0IHsgZ2V0UHVyaXR5U3RyLCBnZXRMb3REYXRlcyB9IGZyb20gIkAvdXRpbHMvcHJvZHVjdFB1cml0eSI7CmltcG9ydCB7CiAgcGFyc2VCYXNlTmFtZSwgcGFyc2VEZWNsYXJlZE1nLCBnZXRBY3R1YWxNYXNzLAogIGdldENPQVJlZiwKfSBmcm9tICJAL2NvbXBvbmVudHMvQ09BRG9jdW1lbnQiOwoKLy8g4pSA4pSA4pSAIEJyYW5kIGNvbG91cnMgKG1hdGNoaW5nIEhUTUwgQ09BRG9jdW1lbnQpIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgApjb25zdCBCTFVFICAgID0gWzE4LCAgNjQsICAxNjBdIGFzIFtudW1iZXIsbnVtYmVyLG51bWJlcl07IC8vICMxMjQwQTAKY29uc3QgSU5LICAgICA9IFsxNywgIDI0LCAgIDM5XSBhcyBbbnVtYmVyLG51bWJlcixudW1iZXJdOyAvLyAjMTExODI3CmNvbnN0IE1VVEVEICAgPSBbMTA3LCAxMTQsIDEyOF0gYXMgW251bWJlcixudW1iZXIsbnVtYmVyXTsgLy8gIzZCNzI4MApjb25zdCBST1dBTFQgID0gWzI0MCwgMjQ3LCAyNTVdIGFzIFtudW1iZXIsbnVtYmVyLG51bWJlcl07IC8vICNGMEY3RkYKY29uc3QgQkdMSUdIVCA9IFsyNDksIDI1MCwgMjUxXSBhcyBbbnVtYmVyLG51bWJlcixudW1iZXJdOyAvLyAjRjlGQUZCCmNvbnN0IEJPUkRFUiAgPSBbMjI5LCAyMzEsIDIzNV0gYXMgW251bWJlcixudW1iZXIsbnVtYmVyXTsgLy8gI0U1RTdFQgpjb25zdCBHUkVFTiAgID0gWyAyMiwgMTYzLCAgNzRdIGFzIFtudW1iZXIsbnVtYmVyLG51bWJlcl07IC8vICMxNkEzNEEKCi8vIOKUgOKUgOKUgCBIZWxwZXJzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAoKZnVuY3Rpb24gaGxpbmUoCiAgZG9jOiBqc1BERiwgeDogbnVtYmVyLCB5OiBudW1iZXIsIHc6IG51bWJlciwKICByOiBudW1iZXIsIGc6IG51bWJlciwgYjogbnVtYmVyLCBsdyA9IDAuMywKKSB7CiAgZG9jLnNldERyYXdDb2xvcihyLCBnLCBiKTsKICBkb2Muc2V0TGluZVdpZHRoKGx3KTsKICBkb2MubGluZSh4LCB5LCB4ICsgdywgeSk7Cn0KCmZ1bmN0aW9uIGZpbGxSZWN0KAogIGRvYzoganNQREYsIHg6IG51bWJlciwgeTogbnVtYmVyLCB3OiBudW1iZXIsIGg6IG51bWJlciwKICByOiBudW1iZXIsIGc6IG51bWJlciwgYjogbnVtYmVyLAopIHsKICBkb2Muc2V0RmlsbENvbG9yKHIsIGcsIGIpOwogIGRvYy5yZWN0KHgsIHksIHcsIGgsICJGIik7Cn0KCmZ1bmN0aW9uIHN0cm9rZVJlY3QoCiAgZG9jOiBqc1BERiwgeDogbnVtYmVyLCB5OiBudW1iZXIsIHc6IG51bWJlciwgaDogbnVtYmVyLAogIHI6IG51bWJlciwgZzogbnVtYmVyLCBiOiBudW1iZXIsIGx3ID0gMC4yNSwKKSB7CiAgZG9jLnNldERyYXdDb2xvcihyLCBnLCBiKTsKICBkb2Muc2V0TGluZVdpZHRoKGx3KTsKICBkb2MucmVjdCh4LCB5LCB3LCBoLCAiUyIpOwp9CgpmdW5jdGlvbiBsYWJlbFRleHQoCiAgZG9jOiBqc1BERiwgdGV4dDogc3RyaW5nLCB4OiBudW1iZXIsIHk6IG51bWJlciwKKSB7CiAgZG9jLnNldEZvbnQoImhlbHZldGljYSIsICJib2xkIik7CiAgZG9jLnNldEZvbnRTaXplKDcuNSk7CiAgZG9jLnNldFRleHRDb2xvciguLi5CTFVFKTsKICBkb2MudGV4dCh0ZXh0LCB4LCB5KTsKfQoKZnVuY3Rpb24gYm9keVRleHQoCiAgZG9jOiBqc1BERiwgdGV4dDogc3RyaW5nLCB4OiBudW1iZXIsIHk6IG51bWJlciwKICBtYXhXaWR0aD86IG51bWJlciwKKSB7CiAgZG9jLnNldEZvbnQoImhlbHZldGljYSIsICJub3JtYWwiKTsKICBkb2Muc2V0Rm9udFNpemUoOCk7CiAgZG9jLnNldFRleHRDb2xvciguLi5JTkspOwogIGlmIChtYXhXaWR0aCkgewogICAgZG9jLnRleHQoZG9jLnNwbGl0VGV4dFRvU2l6ZSh0ZXh0LCBtYXhXaWR0aCksIHgsIHkpOwogIH0gZWxzZSB7CiAgICBkb2MudGV4dCh0ZXh0LCB4LCB5KTsKICB9Cn0KCi8vIOKUgOKUgOKUgCBMb2dvIGxvYWRlciDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKCmludGVyZmFjZSBMb2dvQXNzZXQgeyBkYXRhVXJsOiBzdHJpbmc7IG5hdHVyYWxXOiBudW1iZXI7IG5hdHVyYWxIOiBudW1iZXI7IH0KCmFzeW5jIGZ1bmN0aW9uIGxvYWRMb2dvKCk6IFByb21pc2U8TG9nb0Fzc2V0IHwgbnVsbD4gewogIHRyeSB7CiAgICBjb25zdCByZXMgID0gYXdhaXQgZmV0Y2goIi9vbW5pcXVyZS13b3JkbWFyay5wbmciKTsKICAgIGNvbnN0IGJsb2IgPSBhd2FpdCByZXMuYmxvYigpOwogICAgY29uc3QgcmF3VXJsID0gYXdhaXQgbmV3IFByb21pc2U8c3RyaW5nPigocmVzb2x2ZSwgcmVqZWN0KSA9PiB7CiAgICAgIGNvbnN0IHJlYWRlciA9IG5ldyBGaWxlUmVhZGVyKCk7CiAgICAgIHJlYWRlci5vbmxvYWQgID0gKCkgPT4gcmVzb2x2ZShyZWFkZXIucmVzdWx0IGFzIHN0cmluZyk7CiAgICAgIHJlYWRlci5vbmVycm9yID0gcmVqZWN0OwogICAgICByZWFkZXIucmVhZEFzRGF0YVVSTChibG9iKTsKICAgIH0pOwogICAgY29uc3QgaW1nMiA9IG5ldyBJbWFnZSgpOwogICAgY29uc3QgeyB3LCBoIH0gPSBhd2FpdCBuZXcgUHJvbWlzZTx7IHc6IG51bWJlcjsgaDogbnVtYmVyIH0+KChyZXNvbHZlKSA9PiB7CiAgICAgIGltZzIub25sb2FkICA9ICgpID0+IHJlc29sdmUoeyB3OiBpbWcyLm5hdHVyYWxXaWR0aCwgaDogaW1nMi5uYXR1cmFsSGVpZ2h0IH0pOwogICAgICBpbWcyLm9uZXJyb3IgPSAoKSA9PiByZXNvbHZlKHsgdzogMSwgaDogMSB9KTsKICAgICAgaW1nMi5zcmMgPSByYXdVcmw7CiAgICB9KTsKICAgIHJldHVybiB7IGRhdGFVcmw6IHJhd1VybCwgbmF0dXJhbFc6IHcsIG5hdHVyYWxIOiBoIH07CiAgfSBjYXRjaCB7IHJldHVybiBudWxsOyB9Cn0KCmZ1bmN0aW9uIGZpdExvZ28obG9nbzogTG9nb0Fzc2V0LCBtYXhXOiBudW1iZXIsIG1heEg6IG51bWJlcikgewogIGNvbnN0IHJhdGlvID0gbG9nby5uYXR1cmFsVyAvIGxvZ28ubmF0dXJhbEg7CiAgbGV0IHcgPSBtYXhXLCBoID0gdyAvIHJhdGlvOwogIGlmIChoID4gbWF4SCkgeyBoID0gbWF4SDsgdyA9IGggKiByYXRpbzsgfQogIHJldHVybiB7IHcsIGggfTsKfQoKLy8g4pSA4pSA4pSAIFNpZ25hdHVyZSBkcmF3aW5nIChtYXRjaGVzIFNWRyBpbiBDT0FEb2N1bWVudC50c3gpIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAovLyBTVkcgdmlld0JveDogMTQ4IMOXIDUyIHB4ICDihpIgIHJlbmRlcmVkIGF0IDUyIG1tIMOXIDE4IG1tIGluIFBERgoKZnVuY3Rpb24gZHJhd1NpZ25hdHVyZShkb2M6IGpzUERGLCBieDogbnVtYmVyLCBieTogbnVtYmVyKSB7CiAgY29uc3Qgc1cgPSA1Miwgc0ggPSAxODsKICBjb25zdCBzWCA9IHNXIC8gMTQ4LCBzWSA9IHNIIC8gNTI7CiAgY29uc3QgcHQgPSAocHg6IG51bWJlciwgcHk6IG51bWJlcik6IFtudW1iZXIsIG51bWJlcl0gPT4KICAgIFtieCArIHB4ICogc1gsIGJ5ICsgcHkgKiBzWV07CgogIGRvYy5zZXREcmF3Q29sb3IoMjYsIDI2LCA0Nik7CgogIC8vIFBhdGggMSDigJQgdGFsbCBjYXBpdGFsIGxvb3AgKHN0cm9rZVdpZHRo4omIMC43KQogIGRvYy5zZXRMaW5lV2lkdGgoMC43KTsKICBkb2MubGluZXMoCiAgICBbWy0xLC0xNCw0LC0yOCwxMCwtMjZdLFs2LDIsNCwxNCwyLDIyXSxbLTIsNiwyLDgsNiwyXV0gYXMgbnVtYmVyW11bXSwKICAgIC4uLnB0KDYsIDM4KSwgW3NYLCBzWV0sICJTIiwKICApOwoKICAvLyBQYXRoIDIg4oCUIHIgZmxpY2sgKHN0cm9rZVdpZHRo4omIMC42KQogIGRvYy5zZXRMaW5lV2lkdGgoMC42KTsKICBkb2MubGluZXMoCiAgICBbWzMsLTEwLDksLTE2LDEzLC0xMl1dIGFzIG51bWJlcltdW10sCiAgICAuLi5wdCgyNCwgMzYpLCBbc1gsIHNZXSwgIlMiLAogICk7CgogIC8vIFBhdGggMyDigJQgZmxvd2luZyBib2R5IChzdHJva2VXaWR0aOKJiDAuNjUpCiAgZG9jLnNldExpbmVXaWR0aCgwLjY1KTsKICBkb2MubGluZXMoCiAgICBbWzMsLTIsNyw2LDksMTBdLFsyLDQsNiwtNiwxMSwtMTJdLFs1LC02LDExLC0yLDEzLDZdXSBhcyBudW1iZXJbXVtdLAogICAgLi4ucHQoMzcsIDI0KSwgW3NYLCBzWV0sICJTIiwKICApOwoKICAvLyBQYXRoIDQg4oCUIGxvb3AgKyBzZWNvbmQgY2x1c3RlciAoc3Ryb2tlV2lkdGjiiYgwLjU4KQogIGRvYy5zZXRMaW5lV2lkdGgoMC41OCk7CiAgZG9jLmxpbmVzKAogICAgW1syLDYsMCwxMiw0LDEwXSxbNCwtMiw4LC0xNCwxNCwtMThdLFs2LC00LDEyLDIsMTQsMTBdXSBhcyBudW1iZXJbXVtdLAogICAgLi4ucHQoNzAsIDI4KSwgW3NYLCBzWV0sICJTIiwKICApOwoKICAvLyBQYXRoIDUg4oCUIGxvbmcgdGFpbCBmbG91cmlzaCAoc3Ryb2tlV2lkdGjiiYgwLjQ3KQogIGRvYy5zZXRMaW5lV2lkdGgoMC40Nyk7CiAgZG9jLmxpbmVzKAogICAgW1s2LC00LDE0LC0xMCwyMiwtNl0sWzYsMywxMCwxMCwxNiw2XSxbMywtMiw0LC00LDUsLTZdXSBhcyBudW1iZXJbXVtdLAogICAgLi4ucHQoMTAyLCAzMCksIFtzWCwgc1ldLCAiUyIsCiAgKTsKCiAgLy8gRG90IGFib3ZlIHIgKHBlbi1saWZ0IGRldGFpbCkKICBkb2Muc2V0RmlsbENvbG9yKDI2LCAyNiwgNDYpOwogIGRvYy5jaXJjbGUoLi4ucHQoMzgsIDE0KSwgMC40LCAiRiIpOwoKICAvLyBVbmRlcmxpbmUgZmxvdXJpc2gKICBkb2Muc2V0TGluZVdpZHRoKDAuMzIpOwogIGRvYy5saW5lcygKICAgIFtbMzUsMyw5MSwyLDEzOCwtMl1dIGFzIG51bWJlcltdW10sCiAgICAuLi5wdCg1LCA0NiksIFtzWCwgc1ldLCAiUyIsCiAgKTsKfQoKLy8g4pSA4pSA4pSAIE1haW4gZXhwb3J0IOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGdlbmVyYXRlQ09BKHByb2R1Y3Q6IFByb2R1Y3QsIGRldGFpbDogUHJvZHVjdERldGFpbCkgewogIGNvbnN0IHsganNQREY6IEpQREYgfSA9IGF3YWl0IGltcG9ydCgianNwZGYiKTsKICBjb25zdCBkb2MgID0gbmV3IEpQREYoeyB1bml0OiAibW0iLCBmb3JtYXQ6ICJhNCIsIG9yaWVudGF0aW9uOiAicG9ydHJhaXQiIH0pOwogIGNvbnN0IGxvZ28gPSBhd2FpdCBsb2FkTG9nbygpOwoKICBjb25zdCBXICA9IDIxMDsKICBjb25zdCBNICA9IDE0OwogIGNvbnN0IENXID0gVyAtIE0gKiAyOwoKICBjb25zdCB7IGxvdCwgcmVjZWl2ZWQsIGFuYWx5c2lzLCBpc3N1ZWQgfSA9IGdldExvdERhdGVzKHByb2R1Y3QuaWQpOwogIGNvbnN0IHB1cml0eVN0ciAgPSBnZXRQdXJpdHlTdHIocHJvZHVjdC5pZCk7CiAgY29uc3QgZGVjbGFyZWRNZyA9IHBhcnNlRGVjbGFyZWRNZyhwcm9kdWN0Lm5hbWUpOwogIGNvbnN0IGFjdHVhbE1hc3MgPSBnZXRBY3R1YWxNYXNzKHByb2R1Y3QuaWQsIGRlY2xhcmVkTWcpOwogIGNvbnN0IGJhc2VOYW1lICAgPSBwYXJzZUJhc2VOYW1lKHByb2R1Y3QubmFtZSk7CiAgY29uc3QgY29hUmVmICAgICA9IGdldENPQVJlZihwcm9kdWN0LmlkLCBsb3QpOwoKICAvLyDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZDilZAKICAvLyAgUEFHRSAxIOKAlCBDZXJ0aWZpY2F0ZSBvZiBBbmFseXNpcyAgKHdoaXRlLCBtYXRjaGluZyBIVE1MIENPQURvY3VtZW50KQogIC8vIOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkAoKICBsZXQgeSA9IE07CgogIC8vIOKUgOKUgCBIZWFkZXIg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACiAgLy8gVGl0bGUgKGxlZnQpCiAgZG9jLnNldEZvbnQoImhlbHZldGljYSIsICJib2xkIik7CiAgZG9jLnNldEZvbnRTaXplKDIyKTsKICBkb2Muc2V0VGV4dENvbG9yKC4uLkJMVUUpOwogIGRvYy50ZXh0KCJDRVJUSUZJQ0FURSIsIE0sIHkgKyA4KTsKICBkb2MudGV4dCgiT0YgQU5BTFlTSVMiLCBNLCB5ICsgMTcpOwoKICAvLyBMb2dvIChyaWdodCkg4oCUIGdyYWRpZW50IHJvdW5kZWQgcGlsbAogIGlmIChsb2dvKSB7CiAgICBjb25zdCBwYWRIID0gMywgcGFkVlQgPSAyLjUsIHN1YkggPSAzLjg7CiAgICBjb25zdCB7IHc6IGx3LCBoOiBsaCB9ID0gZml0TG9nbyhsb2dvLCA0NCwgMTMpOwogICAgY29uc3QgYnggPSBXIC0gTSAtIGx3IC0gcGFkSCAqIDI7CiAgICBjb25zdCBieSA9IHkgLSBwYWRWVDsKICAgIGNvbnN0IGJ3ID0gbHcgKyBwYWRIICogMjsKICAgIGNvbnN0IGJoID0gbGggKyBwYWRWVCArIHN1YkggKyAxOwogICAgLy8gR3JhZGllbnQ6IHN0cmlwIGxvb3AgZnJvbSAjMEQyNTY1IOKGkiAjMUU2OENDCiAgICBjb25zdCBnRnJvbSA9IFsxMywgMzcsIDEwMV0sIGdUbyA9IFszMCwgMTA0LCAyMDRdOwogICAgY29uc3Qgc3RlcHMgPSBNYXRoLmNlaWwoYncpOwogICAgZm9yIChsZXQgcyA9IDA7IHMgPCBzdGVwczsgcysrKSB7CiAgICAgIGNvbnN0IHQgPSBzIC8gc3RlcHM7CiAgICAgIGNvbnN0IHIgPSBNYXRoLnJvdW5kKGdGcm9tWzBdICsgdCAqIChnVG9bMF0gLSBnRnJvbVswXSkpOwogICAgICBjb25zdCBnID0gTWF0aC5yb3VuZChnRnJvbVsxXSArIHQgKiAoZ1RvWzFdIC0gZ0Zyb21bMV0pKTsKICAgICAgY29uc3QgYiA9IE1hdGgucm91bmQoZ0Zyb21bMl0gKyB0ICogKGdUb1syXSAtIGdGcm9tWzJdKSk7CiAgICAgIGRvYy5zZXRGaWxsQ29sb3IociwgZywgYik7CiAgICAgIGRvYy5yZWN0KGJ4ICsgcywgYnksIDEsIGJoLCAiRiIpOwogICAgfQogICAgLy8gUm91bmRlZCBvdmVybGF5IG1hc2s6IHJlLWRyYXcgY29ybmVycyBpbiBwYWdlLXdoaXRlCiAgICBkb2Muc2V0RmlsbENvbG9yKDI1NSwgMjU1LCAyNTUpOwogICAgY29uc3QgY3IgPSAyLjU7CiAgICAvLyBwdW5jaCBvdXQgNCBjb3JuZXJzIHdpdGggd2hpdGUgc3F1YXJlcywgdGhlbiByZS1jdXJ2ZQogICAgZG9jLnJvdW5kZWRSZWN0KGJ4LCBieSwgYncsIGJoLCBjciwgY3IsICJTIik7IC8vIGJvcmRlciBvbmx5CiAgICBkb2MuYWRkSW1hZ2UobG9nby5kYXRhVXJsLCAiUE5HIiwgYnggKyBwYWRILCB5LCBsdywgbGgpOwogICAgLy8gU3VidGl0bGUgaW5zaWRlIGJveAogICAgZG9jLnNldEZvbnQoImhlbHZldGljYSIsICJib2xkIik7CiAgICBkb2Muc2V0Rm9udFNpemUoNC4yKTsKICAgIGRvYy5zZXRUZXh0Q29sb3IoMjIwLCAyMjUsIDI0MCk7CiAgICBjb25zdCBzdWJDWCA9IGJ4ICsgcGFkSCArIGx3ICogMC4zMyArIChsdyAqIDAuNjEpIC8gMjsKICAgIGRvYy50ZXh0KCJQRVBUSURFIFJFU0VBUkNIIElOU1RJVFVURSIsIHN1YkNYLCB5ICsgbGggKyAyLjUsIHsgYWxpZ246ICJjZW50ZXIiLCBjaGFyU3BhY2U6IDAuMzUgfSk7CiAgfQogIC8vIENvbnRhY3QgbGluZXMgdW5kZXIgbG9nbwogIGRvYy5zZXRGb250KCJoZWx2ZXRpY2EiLCAibm9ybWFsIik7CiAgZG9jLnNldEZvbnRTaXplKDYuNSk7CiAgZG9jLnNldFRleHRDb2xvciguLi5NVVRFRCk7CiAgZG9jLnRleHQoIldlYjogd3d3Lm9tbmlxdXJlLmNvbSIsIFcgLSBNLCB5ICsgMTgsIHsgYWxpZ246ICJyaWdodCIgfSk7CgogIHkgKz0gMjQ7CgogIC8vIOKUgOKUgCBEaXZpZGVyIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAogIGhsaW5lKGRvYywgTSwgeSwgQ1csIC4uLkJPUkRFUiwgMC40KTsKICB5ICs9IDU7CgogIC8vIOKUgOKUgCBSZWZlcmVuY2Ugcm93IOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAogIC8vIExlZnQ6IHJlZmVyZW5jZSBudW1iZXIKICBkb2Muc2V0Rm9udCgiaGVsdmV0aWNhIiwgIm5vcm1hbCIpOwogIGRvYy5zZXRGb250U2l6ZSg2LjUpOwogIGRvYy5zZXRUZXh0Q29sb3IoLi4uTVVURUQpOwogIGRvYy50ZXh0KCJSZWZlcmVuY2UgTnVtYmVyIiwgTSwgeSk7CiAgZG9jLnNldEZvbnQoImhlbHZldGljYSIsICJib2xkIik7CiAgZG9jLnNldEZvbnRTaXplKDkpOwogIGRvYy5zZXRUZXh0Q29sb3IoLi4uSU5LKTsKICBkb2MudGV4dChjb2FSZWYsIE0sIHkgKyA1LjUpOwoKICAvLyBSaWdodDogZGF0ZXMKICBkb2Muc2V0Rm9udCgiaGVsdmV0aWNhIiwgIm5vcm1hbCIpOwogIGRvYy5zZXRGb250U2l6ZSg3LjUpOwogIGRvYy5zZXRUZXh0Q29sb3IoLi4uTVVURUQpOwogIGRvYy50ZXh0KCJTYW1wbGUgcmVjZWl2ZWQgID4iLCBXIC0gTSwgeSwgeyBhbGlnbjogInJpZ2h0IiB9KTsKICBkb2Muc2V0Rm9udCgiaGVsdmV0aWNhIiwgImJvbGQiKTsKICBkb2Muc2V0VGV4dENvbG9yKC4uLklOSyk7CiAgZG9jLnRleHQocmVjZWl2ZWQsIFcgLSBNIC0gMzgsIHkpOwoKICBkb2Muc2V0Rm9udCgiaGVsdmV0aWNhIiwgIm5vcm1hbCIpOwogIGRvYy5zZXRUZXh0Q29sb3IoLi4uTVVURUQpOwogIGRvYy50ZXh0KCJBbmFseXNpcyBEYXRlICA+IiwgVyAtIE0sIHkgKyA2LCB7IGFsaWduOiAicmlnaHQiIH0pOwogIGRvYy5zZXRGb250KCJoZWx2ZXRpY2EiLCAiYm9sZCIpOwogIGRvYy5zZXRUZXh0Q29sb3IoLi4uSU5LKTsKICBkb2MudGV4dChhbmFseXNpcywgVyAtIE0gLSAzNCwgeSArIDYpOwoKICBkb2Muc2V0Rm9udCgiaGVsdmV0aWNhIiwgIm5vcm1hbCIpOwogIGRvYy5zZXRUZXh0Q29sb3IoLi4uTVVURUQpOwogIGRvYy50ZXh0KCJSZXBvcnQgSXNzdWVkICA+IiwgIFcgLSBNLCB5ICsgMTIsIHsgYWxpZ246ICJyaWdodCIgfSk7CiAgZG9jLnNldEZvbnQoImhlbHZldGljYSIsICJib2xkIik7CiAgZG9jLnNldFRleHRDb2xvciguLi5JTkspOwogIGRvYy50ZXh0KGlzc3VlZCwgVyAtIE0gLSAzNCwgeSArIDEyKTsKCiAgeSArPSAyMDsKCiAgLy8g4pSA4pSAIERpdmlkZXIg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACiAgaGxpbmUoZG9jLCBNLCB5LCBDVywgLi4uQk9SREVSLCAwLjQpOwogIHkgKz0gNTsKCiAgLy8g4pSA4pSAIENsaWVudCAvIFNhbXBsZSB0YWJsZSDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKICBjb25zdCBjbGllbnRSb3dzID0gWwogICAgeyBsYWJlbDogIkNsaWVudCIsICAgICAgIHZhbHVlOiAiT21uaVF1cmUgUGVwdGlkZSBSZXNlYXJjaCBJbnN0aXR1dGUiIH0sCiAgICB7IGxhYmVsOiAiU2FtcGxlIiwgICAgICAgdmFsdWU6IGAke3Byb2R1Y3QubmFtZX0gICAgICR7bG90fWAgfSwKICAgIHsgbGFiZWw6ICJNYW51ZmFjdHVyZXIiLCB2YWx1ZTogIk9tbmlRdXJlIFBlcHRpZGUgUmVzZWFyY2ggSW5zdGl0dXRlIiB9LAogICAgeyBsYWJlbDogIkJhdGNoIiwgICAgICAgIHZhbHVlOiBsb3QgfSwKICBdOwogIGNvbnN0IENPTDEgPSAzNDsgLy8gbGFiZWwgY29sdW1uIHdpZHRoCiAgY2xpZW50Um93cy5mb3JFYWNoKHJvdyA9PiB7CiAgICBkb2Muc2V0Rm9udCgiaGVsdmV0aWNhIiwgImJvbGQiKTsKICAgIGRvYy5zZXRGb250U2l6ZSg3LjUpOwogICAgZG9jLnNldFRleHRDb2xvciguLi5CTFVFKTsKICAgIGRvYy50ZXh0KHJvdy5sYWJlbCwgTSwgeSArIDQpOwogICAgZG9jLnNldEZvbnQoImhlbHZldGljYSIsICJub3JtYWwiKTsKICAgIGRvYy5zZXRGb250U2l6ZSg4KTsKICAgIGRvYy5zZXRUZXh0Q29sb3IoLi4uSU5LKTsKICAgIGRvYy50ZXh0KHJvdy52YWx1ZSwgTSArIENPTDEsIHkgKyA0KTsKICAgIHkgKz0gNi41OwogIH0pOwoKICB5ICs9IDI7CgogIC8vIOKUgOKUgCBEaXZpZGVyIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAogIGhsaW5lKGRvYywgTSwgeSwgQ1csIC4uLkJPUkRFUiwgMC40KTsKICB5ICs9IDU7CgogIC8vIOKUgOKUgCBTYW1wbGUgZGVzY3JpcHRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACiAgbGFiZWxUZXh0KGRvYywgIlNhbXBsZSBkZXNjcmlwdGlvbiAgPiIsIE0sIHkgKyA0KTsKICB5ICs9IDc7CiAgY29uc3Qgc2FtcGxlRGVzYyA9CiAgICBgTHlvcGhpbGlzZWQgcGVwdGlkZSBwb3dkZXIsIHdoaXRlIHRvIG9mZi13aGl0ZSBhcHBlYXJhbmNlLmAgKwogICAgKGRldGFpbD8uYXBwZWFyYW5jZSA/IGAgJHtkZXRhaWwuYXBwZWFyYW5jZX0uYCA6ICIiKSArCiAgICAoZGV0YWlsPy5zdG9yYWdlICAgPyAiIFN0b3JlIGF0IOKIkjIwIMKwQyAobHlvcGhpbGlzZWQpIG9yIDQgwrBDIGFmdGVyIHJlY29uc3RpdHV0aW9uLiIgOiAiIik7CiAgZmlsbFJlY3QoZG9jLCBNLCB5LCBDVywgMTMsIC4uLkJHTElHSFQpOwogIHN0cm9rZVJlY3QoZG9jLCBNLCB5LCBDVywgMTMsIC4uLkJPUkRFUiwgMC4zKTsKICBib2R5VGV4dChkb2MsIHNhbXBsZURlc2MsIE0gKyAzLCB5ICsgNSwgQ1cgLSA2KTsKICB5ICs9IDE2OwoKICAvLyDilIDilIAgVGVzdHMgcmVxdWVzdGVkIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAogIGxhYmVsVGV4dChkb2MsICJUZXN0cyByZXF1ZXN0ZWQgID4iLCBNLCB5ICsgNCk7CiAgeSArPSA3OwogIGNvbnN0IHRlc3RzRGVzYyA9CiAgICAiSW5kZXBlbmRlbnQgcHVyaXR5IGFuYWx5c2lzIChVViBkZXRlY3Rpb24gYXQgMjE0IG5tKS4iOwogIGZpbGxSZWN0KGRvYywgTSwgeSwgQ1csIDEzLCAuLi5CR0xJR0hUKTsKICBzdHJva2VSZWN0KGRvYywgTSwgeSwgQ1csIDEzLCAuLi5CT1JERVIsIDAuMyk7CiAgYm9keVRleHQoZG9jLCB0ZXN0c0Rlc2MsIE0gKyAzLCB5ICsgNSwgQ1cgLSA2KTsKICB5ICs9IDE2OwoKICAvLyDilIDilIAgRGl2aWRlciDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKICBobGluZShkb2MsIE0sIHksIENXLCAuLi5CT1JERVIsIDAuNCk7CiAgeSArPSA1OwoKICAvLyDilIDilIAgUmVzdWx0cyB0YWJsZSDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKICAvLyAiUmVzdWx0cyA+IiBsYWJlbCArIE9tbmlRdXJlIHNlYWwgKHJpZ2h0KQogIGxhYmVsVGV4dChkb2MsICJSZXN1bHRzICA+IiwgTSwgeSArIDQpOwoKICAvLyBTZWFsIGNpcmNsZSAocmlnaHQgc2lkZSkKICBjb25zdCBzZWFsWCA9IFcgLSBNIC0gMTEsIHNlYWxZID0geSArIDExLCBzZWFsUiA9IDExOwogIGRvYy5zZXREcmF3Q29sb3IoLi4uQkxVRSk7CiAgZG9jLnNldExpbmVXaWR0aCgwLjUpOwogIGRvYy5jaXJjbGUoc2VhbFgsIHNlYWxZLCBzZWFsUiwgIlMiKTsKICBkb2Muc2V0Rm9udCgiaGVsdmV0aWNhIiwgImJvbGQiKTsKICBkb2Muc2V0Rm9udFNpemUoNCk7CiAgZG9jLnNldFRleHRDb2xvciguLi5CTFVFKTsKICBkb2MudGV4dCgiT01OSVFVUkUiLCBzZWFsWCwgc2VhbFkgLSA0LCAgeyBhbGlnbjogImNlbnRlciIgfSk7CiAgZG9jLnRleHQoIkxBQlMiLCAgICAgc2VhbFgsIHNlYWxZIC0gMSwgIHsgYWxpZ246ICJjZW50ZXIiIH0pOwogIC8vIGNoZWNrbWFyawogIGRvYy5zZXRGb250KCJoZWx2ZXRpY2EiLCAiYm9sZCIpOwogIGRvYy5zZXRGb250U2l6ZSg2KTsKICBkb2MudGV4dCgi4pyTIiwgICAgICAgIHNlYWxYLCBzZWFsWSArIDMsICB7IGFsaWduOiAiY2VudGVyIiB9KTsKICBkb2Muc2V0Rm9udFNpemUoMy41KTsKICBkb2MudGV4dCgiVkVSSUZJRUQiLCBzZWFsWCwgc2VhbFkgKyA2LjUsIHsgYWxpZ246ICJjZW50ZXIiIH0pOwoKICB5ICs9IDg7CgogIGNvbnN0IHJlc3VsdFJvd3M6IHsgbGFiZWw6IHN0cmluZzsgdmFsdWU6IHN0cmluZzsgaXNHcmVlbj86IGJvb2xlYW47IGlzQm9sZD86IGJvb2xlYW4gfVtdID0gWwogICAgeyBsYWJlbDogYmFzZU5hbWUsICAgICAgICAgICAgdmFsdWU6IGFjdHVhbE1hc3MgIT09IG51bGwgPyBgJHthY3R1YWxNYXNzLnRvRml4ZWQoMil9IG1nYCA6ICLigJQiLCBpc0JvbGQ6IHRydWUgfSwKICAgIHsgbGFiZWw6ICJQdXJpdHkiLCAgICAgICAgICAgIHZhbHVlOiBwdXJpdHlTdHIsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaXNHcmVlbjogdHJ1ZSB9LAogICAgLi4uKGRldGFpbD8ubW9sZWN1bGFyV2VpZ2h0ID8gW3sgbGFiZWw6ICJNb2xlY3VsYXIgV2VpZ2h0IiwgdmFsdWU6IGRldGFpbC5tb2xlY3VsYXJXZWlnaHQgfV0gOiBbXSksCiAgICAuLi4oZGV0YWlsPy5jYXNOdW1iZXIgICAgICAgPyBbeyBsYWJlbDogIkNBUyBOdW1iZXIiLCAgICAgICB2YWx1ZTogZGV0YWlsLmNhc051bWJlciB9XSAgICAgICA6IFtdKSwKICBdOwogIGNvbnN0IFJIID0gODsKICBjb25zdCBDT0wxVyA9IDY0OyAvLyBsYWJlbCBjb2x1bW4KICByZXN1bHRSb3dzLmZvckVhY2goKHJvdywgaSkgPT4gewogICAgY29uc3Qgcm93WSA9IHkgKyBpICogUkg7CiAgICBpZiAoaSAlIDIgPT09IDApIGZpbGxSZWN0KGRvYywgTSwgcm93WSwgQ1cgLSAyMiwgUkgsIC4uLlJPV0FMVCk7CiAgICBlbHNlICAgICAgICAgICAgIGZpbGxSZWN0KGRvYywgTSwgcm93WSwgQ1cgLSAyMiwgUkgsIDI1NSwgMjU1LCAyNTUpOwogICAgc3Ryb2tlUmVjdChkb2MsIE0sIHJvd1ksIENXIC0gMjIsIFJILCAuLi5CTFVFLCAwLjMpOwogICAgLy8gbGVmdCBib3JkZXIgYWNjZW50CiAgICBmaWxsUmVjdChkb2MsIE0sIHJvd1ksIDEsIFJILCAuLi5CTFVFKTsKICAgIC8vIGxhYmVsCiAgICBkb2Muc2V0Rm9udCgiaGVsdmV0aWNhIiwgcm93LmlzQm9sZCA/ICJib2xkIiA6ICJub3JtYWwiKTsKICAgIGRvYy5zZXRGb250U2l6ZSg3LjUpOwogICAgZG9jLnNldFRleHRDb2xvciguLi5JTkspOwogICAgZG9jLnRleHQocm93LmxhYmVsLCBNICsgMywgcm93WSArIDUuNSk7CiAgICAvLyB2YWx1ZQogICAgZG9jLnNldEZvbnQoImhlbHZldGljYSIsICJib2xkIik7CiAgICBkb2Muc2V0Rm9udFNpemUoOCk7CiAgICBkb2Muc2V0VGV4dENvbG9yKC4uLihyb3cuaXNHcmVlbiA/IEdSRUVOIDogSU5LKSk7CiAgICBkb2MudGV4dChyb3cudmFsdWUsIE0gKyBDT0wxVywgcm93WSArIDUuNSk7CiAgfSk7CiAgeSArPSByZXN1bHRSb3dzLmxlbmd0aCAqIFJIICsgNTsKCiAgLy8g4pSA4pSAIENvbW1lbnRzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAogIGxhYmVsVGV4dChkb2MsICJDb21tZW50cyAgPiIsIE0sIHkgKyA0KTsKICB5ICs9IDc7CiAgY29uc3QgY29tbWVudHMgPQogICAgIkFsbCBzcGVjaWZpY2F0aW9ucyBtZXQuIFNhbXBsZSBhcHByb3ZlZCBmb3IgcmVzZWFyY2ggZGlzdHJpYnV0aW9uIGFuZCB1c2UuICIgKwogICAgIkZvciBsYWJvcmF0b3J5IHJlc2VhcmNoIHB1cnBvc2VzIG9ubHkg4oCUIG5vdCBmb3IgaHVtYW4gb3IgdmV0ZXJpbmFyeSB1c2UuIjsKICBmaWxsUmVjdChkb2MsIE0sIHksIENXLCAxNCwgLi4uQkdMSUdIVCk7CiAgc3Ryb2tlUmVjdChkb2MsIE0sIHksIENXLCAxNCwgLi4uQk9SREVSLCAwLjMpOwogIGJvZHlUZXh0KGRvYywgY29tbWVudHMsIE0gKyAzLCB5ICsgNS41LCBDVyAtIDYpOwogIHkgKz0gMTg7CgogIC8vIOKUgOKUgCBEaXZpZGVyIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAogIGhsaW5lKGRvYywgTSwgeSwgQ1csIC4uLkJPUkRFUiwgMC40KTsKICB5ICs9IDU7CgogIC8vIOKUgOKUgCBBbmFseXNpcyBjb25kdWN0ZWQgKyBTaWduYXR1cmUg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACiAgLy8gTGVmdDogc2FtcGxlIHJlY2VpdmVkICsgYW5hbHlzaXMgZGF0ZSBwaWxscwogIGRvYy5zZXRGb250KCJoZWx2ZXRpY2EiLCAibm9ybWFsIik7CiAgZG9jLnNldEZvbnRTaXplKDcuNSk7CiAgZG9jLnNldFRleHRDb2xvciguLi5NVVRFRCk7CiAgZG9jLnRleHQoIlNhbXBsZSByZWNlaXZlZCAgPiIsIE0sIHkgKyA0KTsKICBkb2Muc2V0Rm9udCgiaGVsdmV0aWNhIiwgImJvbGQiKTsKICBkb2Muc2V0Rm9udFNpemUoNy41KTsKICBkb2Muc2V0VGV4dENvbG9yKC4uLklOSyk7CiAgZG9jLnRleHQocmVjZWl2ZWQsIE0gKyA0MCwgeSArIDQpOwogIHkgKz0gODsKICBkb2Muc2V0Rm9udCgiaGVsdmV0aWNhIiwgIm5vcm1hbCIpOwogIGRvYy5zZXRUZXh0Q29sb3IoLi4uTVVURUQpOwogIGRvYy50ZXh0KCJBbmFseXNpcyBjb25kdWN0ZWQgID4iLCBNLCB5ICsgNCk7CiAgZmlsbFJlY3QoZG9jLCBNICsgNDcsIHkgLSAxLCAyOCwgOCwgLi4uUk9XQUxUKTsKICBzdHJva2VSZWN0KGRvYywgTSArIDQ3LCB5IC0gMSwgMjgsIDgsIC4uLkJMVUUsIDAuMjUpOwogIGRvYy5zZXRGb250KCJoZWx2ZXRpY2EiLCAiYm9sZCIpOwogIGRvYy5zZXRGb250U2l6ZSg3LjUpOwogIGRvYy5zZXRUZXh0Q29sb3IoLi4uSU5LKTsKICBkb2MudGV4dChhbmFseXNpcywgTSArIDQ4LCB5ICsgNC41KTsKCiAgeSArPSAxNjsKCiAgLy8g4pSA4pSAIEZvb3RlciBub3RlIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAogIGRvYy5zZXRGb250KCJoZWx2ZXRpY2EiLCAiaXRhbGljIik7CiAgZG9jLnNldEZvbnRTaXplKDYpOwogIGRvYy5zZXRUZXh0Q29sb3IoLi4uTVVURUQpOwogIGRvYy50ZXh0KAogICAgIlRoaXMgY2VydGlmaWNhdGUgaXMgZ2VuZXJhdGVkIGVsZWN0cm9uaWNhbGx5IGFuZCBpcyB2YWxpZCBmb3IgdGhlIGxvdCBudW1iZXIgc3RhdGVkIGFib3ZlLiAiICsKICAgICJBbmFseXNlZCBhdCBPbW5pUXVyZSBRQyBMYWJvcmF0b3J5LCBIZXJ0Zm9yZHNoaXJlLCBVSy4iLAogICAgTSwgeSArIDQsIHsgbWF4V2lkdGg6IENXIH0sCiAgKTsKCiAgY29uc3QgRk9PVEVSX1kgPSAyNzM7CgogIC8vIEZvb3RlcgogIGhsaW5lKGRvYywgMCwgRk9PVEVSX1ksIFcsIDI3LCA5MiwgMTgxLCAwLjYpOwogIGZpbGxSZWN0KGRvYywgMCwgRk9PVEVSX1ksIFcsIDI0LCAxMywgMzcsIDEwMSk7CiAgaWYgKGxvZ28pIHsKICAgIGNvbnN0IHsgdzogbHcsIGg6IGxoIH0gPSBmaXRMb2dvKGxvZ28sIDMyLCAxNCk7CiAgICBkb2MuYWRkSW1hZ2UobG9nby5kYXRhVXJsLCAiUE5HIiwgTSwgRk9PVEVSX1kgKyAoMjQgLSBsaCkgLyAyLCBsdywgbGgpOwogIH0KICBkb2Muc2V0Rm9udCgiaGVsdmV0aWNhIiwgIm5vcm1hbCIpOwogIGRvYy5zZXRGb250U2l6ZSg2LjUpOwogIGRvYy5zZXRUZXh0Q29sb3IoMTUwLCAxNzUsIDIxNSk7CiAgZG9jLnRleHQoCiAgICBgJHtjb2FSZWZ9ICDCtyAgTG90OiAke2xvdH0gIMK3ICBJc3N1ZWQ6ICR7aXNzdWVkfWAsCiAgICBXIC8gMiArIDEwLCBGT09URVJfWSArIDksIHsgYWxpZ246ICJjZW50ZXIiIH0sCiAgKTsKICBkb2MudGV4dCgKICAgICJvbW5pcXVyZS5jb20gIMK3ICBGb3IgaW4tdml0cm8gcmVzZWFyY2ggdXNlIG9ubHkgIMK3ICBUaGlzIGRvY3VtZW50IHN1cGVyc2VkZXMgYWxsIHByZXZpb3VzIHZlcnNpb25zIGZvciB0aGlzIGxvdC4iLAogICAgVyAvIDIgKyAxMCwgRk9PVEVSX1kgKyAxNiwgeyBhbGlnbjogImNlbnRlciIgfSwKICApOwoKICBkb2Muc2F2ZShgJHtwcm9kdWN0Lm5hbWUucmVwbGFjZSgvW15hLXowLTldL2dpLCAiXyIpfV9DT0FfJHtsb3R9LnBkZmApOwp9Cg==
+import type { jsPDF } from "jspdf";
+import type { Product } from "@/data/products";
+import type { ProductDetail } from "@/data/productDetails";
+import { getPurityStr, getLotDates } from "@/utils/productPurity";
+import {
+  parseBaseName, parseDeclaredMg, getActualMass,
+  getCOARef,
+} from "@/components/COADocument";
+
+// ─── Brand colours (matching HTML COADocument) ───────────────────────────────
+const BLUE    = [18,  64,  160] as [number,number,number]; // #1240A0
+const INK     = [17,  24,   39] as [number,number,number]; // #111827
+const MUTED   = [107, 114, 128] as [number,number,number]; // #6B7280
+const ROWALT  = [240, 247, 255] as [number,number,number]; // #F0F7FF
+const BGLIGHT = [249, 250, 251] as [number,number,number]; // #F9FAFB
+const BORDER  = [229, 231, 235] as [number,number,number]; // #E5E7EB
+const GREEN   = [ 22, 163,  74] as [number,number,number]; // #16A34A
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function hline(
+  doc: jsPDF, x: number, y: number, w: number,
+  r: number, g: number, b: number, lw = 0.3,
+) {
+  doc.setDrawColor(r, g, b);
+  doc.setLineWidth(lw);
+  doc.line(x, y, x + w, y);
+}
+
+function fillRect(
+  doc: jsPDF, x: number, y: number, w: number, h: number,
+  r: number, g: number, b: number,
+) {
+  doc.setFillColor(r, g, b);
+  doc.rect(x, y, w, h, "F");
+}
+
+function strokeRect(
+  doc: jsPDF, x: number, y: number, w: number, h: number,
+  r: number, g: number, b: number, lw = 0.25,
+) {
+  doc.setDrawColor(r, g, b);
+  doc.setLineWidth(lw);
+  doc.rect(x, y, w, h, "S");
+}
+
+function labelText(
+  doc: jsPDF, text: string, x: number, y: number,
+) {
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7.5);
+  doc.setTextColor(...BLUE);
+  doc.text(text, x, y);
+}
+
+function bodyText(
+  doc: jsPDF, text: string, x: number, y: number,
+  maxWidth?: number,
+) {
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(...INK);
+  if (maxWidth) {
+    doc.text(doc.splitTextToSize(text, maxWidth), x, y);
+  } else {
+    doc.text(text, x, y);
+  }
+}
+
+// ─── Logo loader ─────────────────────────────────────────────────────────────
+
+interface LogoAsset { dataUrl: string; naturalW: number; naturalH: number; }
+
+async function loadLogo(): Promise<LogoAsset | null> {
+  try {
+    const res  = await fetch("/omniqure-wordmark.png");
+    const blob = await res.blob();
+    const rawUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload  = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+    const img2 = new Image();
+    const { w, h } = await new Promise<{ w: number; h: number }>((resolve) => {
+      img2.onload  = () => resolve({ w: img2.naturalWidth, h: img2.naturalHeight });
+      img2.onerror = () => resolve({ w: 1, h: 1 });
+      img2.src = rawUrl;
+    });
+    return { dataUrl: rawUrl, naturalW: w, naturalH: h };
+  } catch { return null; }
+}
+
+function fitLogo(logo: LogoAsset, maxW: number, maxH: number) {
+  const ratio = logo.naturalW / logo.naturalH;
+  let w = maxW, h = w / ratio;
+  if (h > maxH) { h = maxH; w = h * ratio; }
+  return { w, h };
+}
+
+// ─── Signature drawing (matches SVG in COADocument.tsx) ──────────────────────
+// SVG viewBox: 148 × 52 px  →  rendered at 52 mm × 18 mm in PDF
+
+function drawSignature(doc: jsPDF, bx: number, by: number) {
+  const sW = 52, sH = 18;
+  const sX = sW / 148, sY = sH / 52;
+  const pt = (px: number, py: number): [number, number] =>
+    [bx + px * sX, by + py * sY];
+
+  doc.setDrawColor(26, 26, 46);
+
+  // Path 1 — tall capital loop (strokeWidth≈0.7)
+  doc.setLineWidth(0.7);
+  doc.lines(
+    [[-1,-14,4,-28,10,-26],[6,2,4,14,2,22],[-2,6,2,8,6,2]] as number[][],
+    ...pt(6, 38), [sX, sY], "S",
+  );
+
+  // Path 2 — r flick (strokeWidth≈0.6)
+  doc.setLineWidth(0.6);
+  doc.lines(
+    [[3,-10,9,-16,13,-12]] as number[][],
+    ...pt(24, 36), [sX, sY], "S",
+  );
+
+  // Path 3 — flowing body (strokeWidth≈0.65)
+  doc.setLineWidth(0.65);
+  doc.lines(
+    [[3,-2,7,6,9,10],[2,4,6,-6,11,-12],[5,-6,11,-2,13,6]] as number[][],
+    ...pt(37, 24), [sX, sY], "S",
+  );
+
+  // Path 4 — loop + second cluster (strokeWidth≈0.58)
+  doc.setLineWidth(0.58);
+  doc.lines(
+    [[2,6,0,12,4,10],[4,-2,8,-14,14,-18],[6,-4,12,2,14,10]] as number[][],
+    ...pt(70, 28), [sX, sY], "S",
+  );
+
+  // Path 5 — long tail flourish (strokeWidth≈0.47)
+  doc.setLineWidth(0.47);
+  doc.lines(
+    [[6,-4,14,-10,22,-6],[6,3,10,10,16,6],[3,-2,4,-4,5,-6]] as number[][],
+    ...pt(102, 30), [sX, sY], "S",
+  );
+
+  // Dot above r (pen-lift detail)
+  doc.setFillColor(26, 26, 46);
+  doc.circle(...pt(38, 14), 0.4, "F");
+
+  // Underline flourish
+  doc.setLineWidth(0.32);
+  doc.lines(
+    [[35,3,91,2,138,-2]] as number[][],
+    ...pt(5, 46), [sX, sY], "S",
+  );
+}
+
+// ─── Main export ─────────────────────────────────────────────────────────────
+
+export async function generateCOA(product: Product, detail: ProductDetail) {
+  const { jsPDF: JPDF } = await import("jspdf");
+  const doc  = new JPDF({ unit: "mm", format: "a4", orientation: "portrait" });
+  const logo = await loadLogo();
+
+  const W  = 210;
+  const M  = 14;
+  const CW = W - M * 2;
+
+  const { lot, received, analysis, issued } = getLotDates(product.id);
+  const purityStr  = getPurityStr(product.id);
+  const declaredMg = parseDeclaredMg(product.name);
+  const actualMass = getActualMass(product.id, declaredMg);
+  const baseName   = parseBaseName(product.name);
+  const coaRef     = getCOARef(product.id, lot);
+
+  // ══════════════════════════════════════════════════════════════════════
+  //  PAGE 1 — Certificate of Analysis  (white, matching HTML COADocument)
+  // ══════════════════════════════════════════════════════════════════════
+
+  let y = M;
+
+  // ── Header ────────────────────────────────────────────────────────────
+  // Title (left)
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(22);
+  doc.setTextColor(...BLUE);
+  doc.text("CERTIFICATE", M, y + 8);
+  doc.text("OF ANALYSIS", M, y + 17);
+
+  // Logo (right) — gradient rounded pill
+  if (logo) {
+    const padH = 3, padVT = 2.5, subH = 3.8;
+    const { w: lw, h: lh } = fitLogo(logo, 44, 13);
+    const bx = W - M - lw - padH * 2;
+    const by = y - padVT;
+    const bw = lw + padH * 2;
+    const bh = lh + padVT + subH + 1;
+    // Gradient: strip loop from #0D2565 → #1E68CC
+    const gFrom = [13, 37, 101], gTo = [30, 104, 204];
+    const steps = Math.ceil(bw);
+    for (let s = 0; s < steps; s++) {
+      const t = s / steps;
+      const r = Math.round(gFrom[0] + t * (gTo[0] - gFrom[0]));
+      const g = Math.round(gFrom[1] + t * (gTo[1] - gFrom[1]));
+      const b = Math.round(gFrom[2] + t * (gTo[2] - gFrom[2]));
+      doc.setFillColor(r, g, b);
+      doc.rect(bx + s, by, 1, bh, "F");
+    }
+    // Rounded overlay mask: re-draw corners in page-white
+    doc.setFillColor(255, 255, 255);
+    const cr = 2.5;
+    // punch out 4 corners with white squares, then re-curve
+    doc.roundedRect(bx, by, bw, bh, cr, cr, "S"); // border only
+    doc.addImage(logo.dataUrl, "PNG", bx + padH, y, lw, lh);
+    // Subtitle inside box
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(4.2);
+    doc.setTextColor(220, 225, 240);
+    const subCX = bx + padH + lw * 0.33 + (lw * 0.61) / 2;
+    doc.text("PEPTIDE RESEARCH INSTITUTE", subCX, y + lh + 2.5, { align: "center", charSpace: 0.35 });
+  }
+  // Contact lines under logo
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(6.5);
+  doc.setTextColor(...MUTED);
+  doc.text("Web: www.omniqure.com", W - M, y + 18, { align: "right" });
+
+  y += 24;
+
+  // ── Divider ───────────────────────────────────────────────────────────
+  hline(doc, M, y, CW, ...BORDER, 0.4);
+  y += 5;
+
+  // ── Reference row ─────────────────────────────────────────────────────
+  // Left: reference number
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(6.5);
+  doc.setTextColor(...MUTED);
+  doc.text("Reference Number", M, y);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9);
+  doc.setTextColor(...INK);
+  doc.text(coaRef, M, y + 5.5);
+
+  // Right: dates
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.setTextColor(...MUTED);
+  doc.text("Sample received  >", W - M, y, { align: "right" });
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(...INK);
+  doc.text(received, W - M - 38, y);
+
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(...MUTED);
+  doc.text("Analysis Date  >", W - M, y + 6, { align: "right" });
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(...INK);
+  doc.text(analysis, W - M - 34, y + 6);
+
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(...MUTED);
+  doc.text("Report Issued  >",  W - M, y + 12, { align: "right" });
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(...INK);
+  doc.text(issued, W - M - 34, y + 12);
+
+  y += 20;
+
+  // ── Divider ───────────────────────────────────────────────────────────
+  hline(doc, M, y, CW, ...BORDER, 0.4);
+  y += 5;
+
+  // ── Client / Sample table ─────────────────────────────────────────────
+  const clientRows = [
+    { label: "Client",       value: "OmniQure Peptide Research Institute" },
+    { label: "Sample",       value: `${product.name}     ${lot}` },
+    { label: "Manufacturer", value: "OmniQure Peptide Research Institute" },
+    { label: "Batch",        value: lot },
+  ];
+  const COL1 = 34; // label column width
+  clientRows.forEach(row => {
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(7.5);
+    doc.setTextColor(...BLUE);
+    doc.text(row.label, M, y + 4);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(...INK);
+    doc.text(row.value, M + COL1, y + 4);
+    y += 6.5;
+  });
+
+  y += 2;
+
+  // ── Divider ───────────────────────────────────────────────────────────
+  hline(doc, M, y, CW, ...BORDER, 0.4);
+  y += 5;
+
+  // ── Sample description ────────────────────────────────────────────────
+  labelText(doc, "Sample description  >", M, y + 4);
+  y += 7;
+  const sampleDesc =
+    `Lyophilised peptide powder, white to off-white appearance.` +
+    (detail?.appearance ? ` ${detail.appearance}.` : "") +
+    (detail?.storage   ? " Store at −20 °C (lyophilised) or 4 °C after reconstitution." : "");
+  fillRect(doc, M, y, CW, 13, ...BGLIGHT);
+  strokeRect(doc, M, y, CW, 13, ...BORDER, 0.3);
+  bodyText(doc, sampleDesc, M + 3, y + 5, CW - 6);
+  y += 16;
+
+  // ── Tests requested ───────────────────────────────────────────────────
+  labelText(doc, "Tests requested  >", M, y + 4);
+  y += 7;
+  const testsDesc =
+    "Independent purity analysis (UV detection at 214 nm).";
+  fillRect(doc, M, y, CW, 13, ...BGLIGHT);
+  strokeRect(doc, M, y, CW, 13, ...BORDER, 0.3);
+  bodyText(doc, testsDesc, M + 3, y + 5, CW - 6);
+  y += 16;
+
+  // ── Divider ───────────────────────────────────────────────────────────
+  hline(doc, M, y, CW, ...BORDER, 0.4);
+  y += 5;
+
+  // ── Results table ─────────────────────────────────────────────────────
+  // "Results >" label + OmniQure seal (right)
+  labelText(doc, "Results  >", M, y + 4);
+
+  // Seal circle (right side)
+  const sealX = W - M - 11, sealY = y + 11, sealR = 11;
+  doc.setDrawColor(...BLUE);
+  doc.setLineWidth(0.5);
+  doc.circle(sealX, sealY, sealR, "S");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(4);
+  doc.setTextColor(...BLUE);
+  doc.text("OMNIQURE", sealX, sealY - 4,  { align: "center" });
+  doc.text("LABS",     sealX, sealY - 1,  { align: "center" });
+  // checkmark
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(6);
+  doc.text("✓",        sealX, sealY + 3,  { align: "center" });
+  doc.setFontSize(3.5);
+  doc.text("VERIFIED", sealX, sealY + 6.5, { align: "center" });
+
+  y += 8;
+
+  const resultRows: { label: string; value: string; isGreen?: boolean; isBold?: boolean }[] = [
+    { label: baseName,            value: actualMass !== null ? `${actualMass.toFixed(2)} mg` : "—", isBold: true },
+    { label: "Purity",            value: purityStr,                                                   isGreen: true },
+    ...(detail?.molecularWeight ? [{ label: "Molecular Weight", value: detail.molecularWeight }] : []),
+    ...(detail?.casNumber       ? [{ label: "CAS Number",       value: detail.casNumber }]       : []),
+  ];
+  const RH = 8;
+  const COL1W = 64; // label column
+  resultRows.forEach((row, i) => {
+    const rowY = y + i * RH;
+    if (i % 2 === 0) fillRect(doc, M, rowY, CW - 22, RH, ...ROWALT);
+    else             fillRect(doc, M, rowY, CW - 22, RH, 255, 255, 255);
+    strokeRect(doc, M, rowY, CW - 22, RH, ...BLUE, 0.3);
+    // left border accent
+    fillRect(doc, M, rowY, 1, RH, ...BLUE);
+    // label
+    doc.setFont("helvetica", row.isBold ? "bold" : "normal");
+    doc.setFontSize(7.5);
+    doc.setTextColor(...INK);
+    doc.text(row.label, M + 3, rowY + 5.5);
+    // value
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(...(row.isGreen ? GREEN : INK));
+    doc.text(row.value, M + COL1W, rowY + 5.5);
+  });
+  y += resultRows.length * RH + 5;
+
+  // ── Comments ──────────────────────────────────────────────────────────
+  labelText(doc, "Comments  >", M, y + 4);
+  y += 7;
+  const comments =
+    "All specifications met. Sample approved for research distribution and use. " +
+    "For laboratory research purposes only — not for human or veterinary use.";
+  fillRect(doc, M, y, CW, 14, ...BGLIGHT);
+  strokeRect(doc, M, y, CW, 14, ...BORDER, 0.3);
+  bodyText(doc, comments, M + 3, y + 5.5, CW - 6);
+  y += 18;
+
+  // ── Divider ───────────────────────────────────────────────────────────
+  hline(doc, M, y, CW, ...BORDER, 0.4);
+  y += 5;
+
+  // ── Analysis conducted + Signature ────────────────────────────────────
+  // Left: sample received + analysis date pills
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.setTextColor(...MUTED);
+  doc.text("Sample received  >", M, y + 4);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7.5);
+  doc.setTextColor(...INK);
+  doc.text(received, M + 40, y + 4);
+  y += 8;
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(...MUTED);
+  doc.text("Analysis conducted  >", M, y + 4);
+  fillRect(doc, M + 47, y - 1, 28, 8, ...ROWALT);
+  strokeRect(doc, M + 47, y - 1, 28, 8, ...BLUE, 0.25);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7.5);
+  doc.setTextColor(...INK);
+  doc.text(analysis, M + 48, y + 4.5);
+
+  y += 16;
+
+  // ── Footer note ───────────────────────────────────────────────────────
+  doc.setFont("helvetica", "italic");
+  doc.setFontSize(6);
+  doc.setTextColor(...MUTED);
+  doc.text(
+    "This certificate is generated electronically and is valid for the lot number stated above. " +
+    "Analysed at OmniQure QC Laboratory, Hertfordshire, UK.",
+    M, y + 4, { maxWidth: CW },
+  );
+
+  const FOOTER_Y = 273;
+
+  // Footer
+  hline(doc, 0, FOOTER_Y, W, 27, 92, 181, 0.6);
+  fillRect(doc, 0, FOOTER_Y, W, 24, 13, 37, 101);
+  if (logo) {
+    const { w: lw, h: lh } = fitLogo(logo, 32, 14);
+    doc.addImage(logo.dataUrl, "PNG", M, FOOTER_Y + (24 - lh) / 2, lw, lh);
+  }
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(6.5);
+  doc.setTextColor(150, 175, 215);
+  doc.text(
+    `${coaRef}  ·  Lot: ${lot}  ·  Issued: ${issued}`,
+    W / 2 + 10, FOOTER_Y + 9, { align: "center" },
+  );
+  doc.text(
+    "omniqure.com  ·  For in-vitro research use only  ·  This document supersedes all previous versions for this lot.",
+    W / 2 + 10, FOOTER_Y + 16, { align: "center" },
+  );
+
+  doc.save(`${product.name.replace(/[^a-z0-9]/gi, "_")}_COA_${lot}.pdf`);
+}

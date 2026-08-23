@@ -1,1 +1,272 @@
-aW1wb3J0IHsgUm91dGVyIH0gZnJvbSAiZXhwcmVzcyI7CmltcG9ydCB0eXBlIHsgUmVxdWVzdCwgUmVzcG9uc2UgfSBmcm9tICJleHByZXNzIjsKaW1wb3J0IGNyeXB0byBmcm9tICJjcnlwdG8iOwppbXBvcnQgYmNyeXB0IGZyb20gImJjcnlwdGpzIjsKaW1wb3J0IHsgZGIgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgY3VzdG9tZXJzVGFibGUsIG9yZGVyc1RhYmxlLCBvcmRlckl0ZW1zVGFibGUgfSBmcm9tICJAd29ya3NwYWNlL2RiIjsKaW1wb3J0IHsgZXEsIGRlc2MsIGluQXJyYXksIGNvdW50IH0gZnJvbSAiZHJpenpsZS1vcm0iOwoKY29uc3Qgcm91dGVyID0gUm91dGVyKCk7Cgpjb25zdCBTRVNTSU9OX1NFQ1JFVCA9CiAgcHJvY2Vzcy5lbnYuU0VTU0lPTl9TRUNSRVQgPz8KICBwcm9jZXNzLmVudi5BRE1JTl9QQVNTV09SRCA/PwogICJvbW5pcXVyZS1jdXN0LXNlc3Npb24tZmFsbGJhY2stc2VjcmV0IjsKY29uc3QgQ09PS0lFX05BTUUgPSAiY3VzdG9tZXJfc2Vzc2lvbiI7CgpmdW5jdGlvbiB2ZXJpZnlUb2tlbih0b2tlbjogc3RyaW5nKTogbnVtYmVyIHwgbnVsbCB7CiAgY29uc3QgZG90ID0gdG9rZW4ubGFzdEluZGV4T2YoIi4iKTsKICBpZiAoZG90ID09PSAtMSkgcmV0dXJuIG51bGw7CiAgY29uc3QgcGF5bG9hZCA9IHRva2VuLnNsaWNlKDAsIGRvdCk7CiAgY29uc3Qgc2lnID0gdG9rZW4uc2xpY2UoZG90ICsgMSk7CiAgY29uc3QgZXhwZWN0ZWQgPSBjcnlwdG8KICAgIC5jcmVhdGVIbWFjKCJzaGEyNTYiLCBTRVNTSU9OX1NFQ1JFVCkKICAgIC51cGRhdGUocGF5bG9hZCkKICAgIC5kaWdlc3QoImhleCIpOwogIGlmIChzaWcgIT09IGV4cGVjdGVkKSByZXR1cm4gbnVsbDsKICBjb25zdCBpZCA9IHBhcnNlSW50KHBheWxvYWQsIDEwKTsKICByZXR1cm4gaXNOYU4oaWQpID8gbnVsbCA6IGlkOwp9CgpmdW5jdGlvbiByZXF1aXJlQ3VzdG9tZXIocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogbnVtYmVyIHwgbnVsbCB7CiAgY29uc3QgdG9rZW4gPSByZXEuY29va2llcz8uW0NPT0tJRV9OQU1FXSBhcyBzdHJpbmcgfCB1bmRlZmluZWQ7CiAgaWYgKCF0b2tlbikgewogICAgcmVzLnN0YXR1cyg0MDEpLmpzb24oeyBlcnJvcjogIk5vdCBhdXRoZW50aWNhdGVkIiB9KTsKICAgIHJldHVybiBudWxsOwogIH0KICBjb25zdCBpZCA9IHZlcmlmeVRva2VuKHRva2VuKTsKICBpZiAoIWlkKSB7CiAgICByZXMuY2xlYXJDb29raWUoQ09PS0lFX05BTUUsIHsgcGF0aDogIi8iIH0pOwogICAgcmVzLnN0YXR1cyg0MDEpLmpzb24oeyBlcnJvcjogIkludmFsaWQgc2Vzc2lvbiIgfSk7CiAgICByZXR1cm4gbnVsbDsKICB9CiAgcmV0dXJuIGlkOwp9CgovLyBHRVQgL2FjY291bnQvbWUg4oCUIGZ1bGwgY3VzdG9tZXIgcHJvZmlsZQpyb3V0ZXIuZ2V0KCIvYWNjb3VudC9tZSIsIGFzeW5jIChyZXE6IFJlcXVlc3QsIHJlczogUmVzcG9uc2UpOiBQcm9taXNlPHZvaWQ+ID0+IHsKICBjb25zdCBjdXN0b21lcklkID0gcmVxdWlyZUN1c3RvbWVyKHJlcSwgcmVzKTsKICBpZiAoIWN1c3RvbWVySWQpIHJldHVybjsKCiAgdHJ5IHsKICAgIGNvbnN0IFtjdXN0b21lcl0gPSBhd2FpdCBkYgogICAgICAuc2VsZWN0KHsKICAgICAgICBpZDogY3VzdG9tZXJzVGFibGUuaWQsCiAgICAgICAgZW1haWw6IGN1c3RvbWVyc1RhYmxlLmVtYWlsLAogICAgICAgIGZpcnN0TmFtZTogY3VzdG9tZXJzVGFibGUuZmlyc3ROYW1lLAogICAgICAgIGxhc3ROYW1lOiBjdXN0b21lcnNUYWJsZS5sYXN0TmFtZSwKICAgICAgICB0b3RhbE9yZGVyczogY3VzdG9tZXJzVGFibGUudG90YWxPcmRlcnMsCiAgICAgICAgdG90YWxTcGVuZEdicDogY3VzdG9tZXJzVGFibGUudG90YWxTcGVuZEdicCwKICAgICAgICBjcmVhdGVkQXQ6IGN1c3RvbWVyc1RhYmxlLmNyZWF0ZWRBdCwKICAgICAgfSkKICAgICAgLmZyb20oY3VzdG9tZXJzVGFibGUpCiAgICAgIC53aGVyZShlcShjdXN0b21lcnNUYWJsZS5pZCwgY3VzdG9tZXJJZCkpCiAgICAgIC5saW1pdCgxKTsKCiAgICBpZiAoIWN1c3RvbWVyKSB7CiAgICAgIHJlcy5jbGVhckNvb2tpZShDT09LSUVfTkFNRSwgeyBwYXRoOiAiLyIgfSk7CiAgICAgIHJlcy5zdGF0dXMoNDAxKS5qc29uKHsgZXJyb3I6ICJDdXN0b21lciBub3QgZm91bmQiIH0pOwogICAgICByZXR1cm47CiAgICB9CgogICAgcmVzLnN0YXR1cygyMDApLmpzb24oewogICAgICBpZDogY3VzdG9tZXIuaWQsCiAgICAgIGVtYWlsOiBjdXN0b21lci5lbWFpbCwKICAgICAgZmlyc3ROYW1lOiBjdXN0b21lci5maXJzdE5hbWUsCiAgICAgIGxhc3ROYW1lOiBjdXN0b21lci5sYXN0TmFtZSwKICAgICAgdG90YWxPcmRlcnM6IGN1c3RvbWVyLnRvdGFsT3JkZXJzLAogICAgICB0b3RhbFNwZW5kR2JwOiBwYXJzZUZsb2F0KFN0cmluZyhjdXN0b21lci50b3RhbFNwZW5kR2JwKSksCiAgICAgIG1lbWJlclNpbmNlOiBjdXN0b21lci5jcmVhdGVkQXQudG9JU09TdHJpbmcoKSwKICAgIH0pOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGdldCBhY2NvdW50IHByb2ZpbGUiKTsKICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6ICJJbnRlcm5hbCBzZXJ2ZXIgZXJyb3IiIH0pOwogIH0KfSk7CgovLyBHRVQgL2FjY291bnQvb3JkZXJzIOKAlCBjdXN0b21lcidzIG9yZGVyIGhpc3Rvcnkgd2l0aCBpdGVtcwpyb3V0ZXIuZ2V0KCIvYWNjb3VudC9vcmRlcnMiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgY29uc3QgY3VzdG9tZXJJZCA9IHJlcXVpcmVDdXN0b21lcihyZXEsIHJlcyk7CiAgaWYgKCFjdXN0b21lcklkKSByZXR1cm47CgogIHRyeSB7CiAgICBjb25zdCBvcmRlcnMgPSBhd2FpdCBkYgogICAgICAuc2VsZWN0KHsKICAgICAgICBpZDogb3JkZXJzVGFibGUuaWQsCiAgICAgICAgb3JkZXJOdW1iZXI6IG9yZGVyc1RhYmxlLm9yZGVyTnVtYmVyLAogICAgICAgIHN0YXR1czogb3JkZXJzVGFibGUuc3RhdHVzLAogICAgICAgIHRvdGFsR2JwOiBvcmRlcnNUYWJsZS50b3RhbEdicCwKICAgICAgICBzaGlwcGluZ01ldGhvZDogb3JkZXJzVGFibGUuc2hpcHBpbmdNZXRob2QsCiAgICAgICAgdHJhY2tpbmdOdW1iZXI6IG9yZGVyc1RhYmxlLnRyYWNraW5nTnVtYmVyLAogICAgICAgIGNyZWF0ZWRBdDogb3JkZXJzVGFibGUuY3JlYXRlZEF0LAogICAgICB9KQogICAgICAuZnJvbShvcmRlcnNUYWJsZSkKICAgICAgLndoZXJlKGVxKG9yZGVyc1RhYmxlLmN1c3RvbWVySWQsIGN1c3RvbWVySWQpKQogICAgICAub3JkZXJCeShkZXNjKG9yZGVyc1RhYmxlLmNyZWF0ZWRBdCkpCiAgICAgIC5saW1pdCg1MCk7CgogICAgaWYgKG9yZGVycy5sZW5ndGggPT09IDApIHsKICAgICAgcmVzLnN0YXR1cygyMDApLmpzb24oW10pOwogICAgICByZXR1cm47CiAgICB9CgogICAgY29uc3Qgb3JkZXJJZHMgPSBvcmRlcnMubWFwKChvKSA9PiBvLmlkKTsKICAgIGNvbnN0IGFsbEl0ZW1zID0gYXdhaXQgZGIKICAgICAgLnNlbGVjdCh7CiAgICAgICAgb3JkZXJJZDogb3JkZXJJdGVtc1RhYmxlLm9yZGVySWQsCiAgICAgICAgcHJvZHVjdElkOiBvcmRlckl0ZW1zVGFibGUucHJvZHVjdElkLAogICAgICAgIHByb2R1Y3ROYW1lOiBvcmRlckl0ZW1zVGFibGUucHJvZHVjdE5hbWUsCiAgICAgICAgcHJvZHVjdENhdGVnb3J5OiBvcmRlckl0ZW1zVGFibGUucHJvZHVjdENhdGVnb3J5LAogICAgICAgIHF1YW50aXR5OiBvcmRlckl0ZW1zVGFibGUucXVhbnRpdHksCiAgICAgICAgcHJpY2VHYnA6IG9yZGVySXRlbXNUYWJsZS5wcmljZUdicCwKICAgICAgfSkKICAgICAgLmZyb20ob3JkZXJJdGVtc1RhYmxlKQogICAgICAud2hlcmUoaW5BcnJheShvcmRlckl0ZW1zVGFibGUub3JkZXJJZCwgb3JkZXJJZHMpKTsKCiAgICBjb25zdCBpdGVtc0J5T3JkZXJJZDogUmVjb3JkPG51bWJlciwgdHlwZW9mIGFsbEl0ZW1zPiA9IHt9OwogICAgZm9yIChjb25zdCBpdGVtIG9mIGFsbEl0ZW1zKSB7CiAgICAgIGlmICghaXRlbXNCeU9yZGVySWRbaXRlbS5vcmRlcklkXSkgaXRlbXNCeU9yZGVySWRbaXRlbS5vcmRlcklkXSA9IFtdOwogICAgICBpdGVtc0J5T3JkZXJJZFtpdGVtLm9yZGVySWRdLnB1c2goaXRlbSk7CiAgICB9CgogICAgcmVzLnN0YXR1cygyMDApLmpzb24oCiAgICAgIG9yZGVycy5tYXAoKG8pID0+ICh7CiAgICAgICAgb3JkZXJOdW1iZXI6IG8ub3JkZXJOdW1iZXIsCiAgICAgICAgc3RhdHVzOiBvLnN0YXR1cywKICAgICAgICB0b3RhbEdicDogcGFyc2VGbG9hdChTdHJpbmcoby50b3RhbEdicCkpLAogICAgICAgIHNoaXBwaW5nTWV0aG9kOiBvLnNoaXBwaW5nTWV0aG9kID8/IG51bGwsCiAgICAgICAgdHJhY2tpbmdOdW1iZXI6IG8udHJhY2tpbmdOdW1iZXIgPz8gbnVsbCwKICAgICAgICBjcmVhdGVkQXQ6IG8uY3JlYXRlZEF0LnRvSVNPU3RyaW5nKCksCiAgICAgICAgaXRlbXM6IChpdGVtc0J5T3JkZXJJZFtvLmlkXSA/PyBbXSkubWFwKChpKSA9PiAoewogICAgICAgICAgcHJvZHVjdElkOiBpLnByb2R1Y3RJZCA/PyAwLAogICAgICAgICAgcHJvZHVjdE5hbWU6IGkucHJvZHVjdE5hbWUsCiAgICAgICAgICBwcm9kdWN0Q2F0ZWdvcnk6IGkucHJvZHVjdENhdGVnb3J5LAogICAgICAgICAgcXVhbnRpdHk6IGkucXVhbnRpdHksCiAgICAgICAgICBwcmljZUdicDogcGFyc2VGbG9hdChTdHJpbmcoaS5wcmljZUdicCkpLAogICAgICAgIH0pKSwKICAgICAgfSkpCiAgICApOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGdldCBhY2NvdW50IG9yZGVycyIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCi8vIEdFVCAvYWNjb3VudC9yZWZlcnJhbCDigJQgcmVmZXJyYWwgY29kZSArIHN0YXRzCnJvdXRlci5nZXQoIi9hY2NvdW50L3JlZmVycmFsIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGNvbnN0IGN1c3RvbWVySWQgPSByZXF1aXJlQ3VzdG9tZXIocmVxLCByZXMpOwogIGlmICghY3VzdG9tZXJJZCkgcmV0dXJuOwogIHRyeSB7CiAgICBjb25zdCBbY3VzdG9tZXJdID0gYXdhaXQgZGIKICAgICAgLnNlbGVjdCh7CiAgICAgICAgcmVmZXJyYWxDb2RlOiBjdXN0b21lcnNUYWJsZS5yZWZlcnJhbENvZGUsCiAgICAgICAgZmlyc3ROYW1lOiBjdXN0b21lcnNUYWJsZS5maXJzdE5hbWUsCiAgICAgICAgcmVmZXJyYWxDcmVkaXRHYnA6IGN1c3RvbWVyc1RhYmxlLnJlZmVycmFsQ3JlZGl0R2JwLAogICAgICB9KQogICAgICAuZnJvbShjdXN0b21lcnNUYWJsZSkKICAgICAgLndoZXJlKGVxKGN1c3RvbWVyc1RhYmxlLmlkLCBjdXN0b21lcklkKSkKICAgICAgLmxpbWl0KDEpOwoKICAgIGlmICghY3VzdG9tZXIpIHsgcmVzLnN0YXR1cyg0MDEpLmpzb24oeyBlcnJvcjogIkN1c3RvbWVyIG5vdCBmb3VuZCIgfSk7IHJldHVybjsgfQoKICAgIGxldCByZWZlcnJhbENvZGUgPSBjdXN0b21lci5yZWZlcnJhbENvZGU7CiAgICBpZiAoIXJlZmVycmFsQ29kZSkgewogICAgICByZWZlcnJhbENvZGUgPSBgJHtjdXN0b21lci5maXJzdE5hbWUuc2xpY2UoMCwgMykudG9VcHBlckNhc2UoKX0ke1N0cmluZyhjdXN0b21lcklkKS5wYWRTdGFydCg0LCAiMCIpfWA7CiAgICAgIGF3YWl0IGRiLnVwZGF0ZShjdXN0b21lcnNUYWJsZSkuc2V0KHsgcmVmZXJyYWxDb2RlIH0pLndoZXJlKGVxKGN1c3RvbWVyc1RhYmxlLmlkLCBjdXN0b21lcklkKSk7CiAgICB9CgogICAgY29uc3QgcmVmZXJyZWRDb3VudCA9IGF3YWl0IGRiCiAgICAgIC5zZWxlY3QoeyBuOiBjb3VudCgpIH0pCiAgICAgIC5mcm9tKGN1c3RvbWVyc1RhYmxlKQogICAgICAud2hlcmUoZXEoY3VzdG9tZXJzVGFibGUucmVmZXJyZWRCeSwgcmVmZXJyYWxDb2RlKSk7CgogICAgcmVzLmpzb24oewogICAgICByZWZlcnJhbENvZGUsCiAgICAgIHJlZmVycmFsQ291bnQ6IHJlZmVycmVkQ291bnRbMF0/Lm4gPz8gMCwKICAgICAgcmVmZXJyYWxDcmVkaXRHYnA6IE51bWJlcihjdXN0b21lci5yZWZlcnJhbENyZWRpdEdicCA/PyAwKSwKICAgIH0pOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGdldCByZWZlcnJhbCBpbmZvIik7CiAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IGVycm9yOiAiSW50ZXJuYWwgc2VydmVyIGVycm9yIiB9KTsKICB9Cn0pOwoKLy8gUEFUQ0ggL2FjY291bnQvcHJvZmlsZSDigJQgdXBkYXRlIG5hbWUKcm91dGVyLnBhdGNoKCIvYWNjb3VudC9wcm9maWxlIiwgYXN5bmMgKHJlcTogUmVxdWVzdCwgcmVzOiBSZXNwb25zZSk6IFByb21pc2U8dm9pZD4gPT4gewogIGNvbnN0IGN1c3RvbWVySWQgPSByZXF1aXJlQ3VzdG9tZXIocmVxLCByZXMpOwogIGlmICghY3VzdG9tZXJJZCkgcmV0dXJuOwoKICBjb25zdCB7IGZpcnN0TmFtZSwgbGFzdE5hbWUgfSA9IHJlcS5ib2R5IGFzIHsgZmlyc3ROYW1lPzogdW5rbm93bjsgbGFzdE5hbWU/OiB1bmtub3duIH07CgogIGlmICgKICAgIHR5cGVvZiBmaXJzdE5hbWUgIT09ICJzdHJpbmciIHx8ICFmaXJzdE5hbWUudHJpbSgpIHx8CiAgICB0eXBlb2YgbGFzdE5hbWUgIT09ICJzdHJpbmciIHx8ICFsYXN0TmFtZS50cmltKCkKICApIHsKICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgZXJyb3I6ICJGaXJzdCBuYW1lIGFuZCBsYXN0IG5hbWUgYXJlIHJlcXVpcmVkIiB9KTsKICAgIHJldHVybjsKICB9CgogIHRyeSB7CiAgICBhd2FpdCBkYgogICAgICAudXBkYXRlKGN1c3RvbWVyc1RhYmxlKQogICAgICAuc2V0KHsgZmlyc3ROYW1lOiBmaXJzdE5hbWUudHJpbSgpLCBsYXN0TmFtZTogbGFzdE5hbWUudHJpbSgpIH0pCiAgICAgIC53aGVyZShlcShjdXN0b21lcnNUYWJsZS5pZCwgY3VzdG9tZXJJZCkpOwoKICAgIHJlcy5zdGF0dXMoMjAwKS5qc29uKHsgb2s6IHRydWUsIGZpcnN0TmFtZTogZmlyc3ROYW1lLnRyaW0oKSwgbGFzdE5hbWU6IGxhc3ROYW1lLnRyaW0oKSB9KTsKICB9IGNhdGNoIChlcnIpIHsKICAgIHJlcS5sb2cuZXJyb3IoeyBlcnIgfSwgIkZhaWxlZCB0byB1cGRhdGUgcHJvZmlsZSIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCi8vIFBPU1QgL2FjY291bnQvcGFzc3dvcmQg4oCUIGNoYW5nZSBwYXNzd29yZApyb3V0ZXIucG9zdCgiL2FjY291bnQvcGFzc3dvcmQiLCBhc3luYyAocmVxOiBSZXF1ZXN0LCByZXM6IFJlc3BvbnNlKTogUHJvbWlzZTx2b2lkPiA9PiB7CiAgY29uc3QgY3VzdG9tZXJJZCA9IHJlcXVpcmVDdXN0b21lcihyZXEsIHJlcyk7CiAgaWYgKCFjdXN0b21lcklkKSByZXR1cm47CgogIGNvbnN0IHsgY3VycmVudFBhc3N3b3JkLCBuZXdQYXNzd29yZCB9ID0gcmVxLmJvZHkgYXMgewogICAgY3VycmVudFBhc3N3b3JkPzogdW5rbm93bjsKICAgIG5ld1Bhc3N3b3JkPzogdW5rbm93bjsKICB9OwoKICBpZiAoCiAgICB0eXBlb2YgY3VycmVudFBhc3N3b3JkICE9PSAic3RyaW5nIiB8fAogICAgdHlwZW9mIG5ld1Bhc3N3b3JkICE9PSAic3RyaW5nIiB8fAogICAgbmV3UGFzc3dvcmQubGVuZ3RoIDwgOAogICkgewogICAgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcjogIk5ldyBwYXNzd29yZCBtdXN0IGJlIGF0IGxlYXN0IDggY2hhcmFjdGVycyIgfSk7CiAgICByZXR1cm47CiAgfQoKICB0cnkgewogICAgY29uc3QgW2N1c3RvbWVyXSA9IGF3YWl0IGRiCiAgICAgIC5zZWxlY3QoeyBwYXNzd29yZEhhc2g6IGN1c3RvbWVyc1RhYmxlLnBhc3N3b3JkSGFzaCB9KQogICAgICAuZnJvbShjdXN0b21lcnNUYWJsZSkKICAgICAgLndoZXJlKGVxKGN1c3RvbWVyc1RhYmxlLmlkLCBjdXN0b21lcklkKSkKICAgICAgLmxpbWl0KDEpOwoKICAgIGlmICghY3VzdG9tZXIgfHwgIWN1c3RvbWVyLnBhc3N3b3JkSGFzaCkgewogICAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IGVycm9yOiAiTm8gcGFzc3dvcmQgc2V0IG9uIHRoaXMgYWNjb3VudCIgfSk7CiAgICAgIHJldHVybjsKICAgIH0KCiAgICBjb25zdCBtYXRjaCA9IGF3YWl0IGJjcnlwdC5jb21wYXJlKGN1cnJlbnRQYXNzd29yZCwgY3VzdG9tZXIucGFzc3dvcmRIYXNoKTsKICAgIGlmICghbWF0Y2gpIHsKICAgICAgcmVzLnN0YXR1cyg0MDEpLmpzb24oeyBlcnJvcjogIkN1cnJlbnQgcGFzc3dvcmQgaXMgaW5jb3JyZWN0IiB9KTsKICAgICAgcmV0dXJuOwogICAgfQoKICAgIGNvbnN0IG5ld0hhc2ggPSBhd2FpdCBiY3J5cHQuaGFzaChuZXdQYXNzd29yZCwgMTIpOwogICAgYXdhaXQgZGIKICAgICAgLnVwZGF0ZShjdXN0b21lcnNUYWJsZSkKICAgICAgLnNldCh7IHBhc3N3b3JkSGFzaDogbmV3SGFzaCB9KQogICAgICAud2hlcmUoZXEoY3VzdG9tZXJzVGFibGUuaWQsIGN1c3RvbWVySWQpKTsKCiAgICByZXMuc3RhdHVzKDIwMCkuanNvbih7IG9rOiB0cnVlIH0pOwogIH0gY2F0Y2ggKGVycikgewogICAgcmVxLmxvZy5lcnJvcih7IGVyciB9LCAiRmFpbGVkIHRvIGNoYW5nZSBwYXNzd29yZCIpOwogICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogIkludGVybmFsIHNlcnZlciBlcnJvciIgfSk7CiAgfQp9KTsKCmV4cG9ydCBkZWZhdWx0IHJvdXRlcjsK
+import { Router } from "express";
+import type { Request, Response } from "express";
+import crypto from "crypto";
+import bcrypt from "bcryptjs";
+import { db } from "@workspace/db";
+import { customersTable, ordersTable, orderItemsTable } from "@workspace/db";
+import { eq, desc, inArray, count } from "drizzle-orm";
+
+const router = Router();
+
+const SESSION_SECRET =
+  process.env.SESSION_SECRET ??
+  process.env.ADMIN_PASSWORD ??
+  "omniqure-cust-session-fallback-secret";
+const COOKIE_NAME = "customer_session";
+
+function verifyToken(token: string): number | null {
+  const dot = token.lastIndexOf(".");
+  if (dot === -1) return null;
+  const payload = token.slice(0, dot);
+  const sig = token.slice(dot + 1);
+  const expected = crypto
+    .createHmac("sha256", SESSION_SECRET)
+    .update(payload)
+    .digest("hex");
+  if (sig !== expected) return null;
+  const id = parseInt(payload, 10);
+  return isNaN(id) ? null : id;
+}
+
+function requireCustomer(req: Request, res: Response): number | null {
+  const token = req.cookies?.[COOKIE_NAME] as string | undefined;
+  if (!token) {
+    res.status(401).json({ error: "Not authenticated" });
+    return null;
+  }
+  const id = verifyToken(token);
+  if (!id) {
+    res.clearCookie(COOKIE_NAME, { path: "/" });
+    res.status(401).json({ error: "Invalid session" });
+    return null;
+  }
+  return id;
+}
+
+// GET /account/me — full customer profile
+router.get("/account/me", async (req: Request, res: Response): Promise<void> => {
+  const customerId = requireCustomer(req, res);
+  if (!customerId) return;
+
+  try {
+    const [customer] = await db
+      .select({
+        id: customersTable.id,
+        email: customersTable.email,
+        firstName: customersTable.firstName,
+        lastName: customersTable.lastName,
+        totalOrders: customersTable.totalOrders,
+        totalSpendGbp: customersTable.totalSpendGbp,
+        createdAt: customersTable.createdAt,
+      })
+      .from(customersTable)
+      .where(eq(customersTable.id, customerId))
+      .limit(1);
+
+    if (!customer) {
+      res.clearCookie(COOKIE_NAME, { path: "/" });
+      res.status(401).json({ error: "Customer not found" });
+      return;
+    }
+
+    res.status(200).json({
+      id: customer.id,
+      email: customer.email,
+      firstName: customer.firstName,
+      lastName: customer.lastName,
+      totalOrders: customer.totalOrders,
+      totalSpendGbp: parseFloat(String(customer.totalSpendGbp)),
+      memberSince: customer.createdAt.toISOString(),
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to get account profile");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// GET /account/orders — customer's order history with items
+router.get("/account/orders", async (req: Request, res: Response): Promise<void> => {
+  const customerId = requireCustomer(req, res);
+  if (!customerId) return;
+
+  try {
+    const orders = await db
+      .select({
+        id: ordersTable.id,
+        orderNumber: ordersTable.orderNumber,
+        status: ordersTable.status,
+        totalGbp: ordersTable.totalGbp,
+        shippingMethod: ordersTable.shippingMethod,
+        trackingNumber: ordersTable.trackingNumber,
+        createdAt: ordersTable.createdAt,
+      })
+      .from(ordersTable)
+      .where(eq(ordersTable.customerId, customerId))
+      .orderBy(desc(ordersTable.createdAt))
+      .limit(50);
+
+    if (orders.length === 0) {
+      res.status(200).json([]);
+      return;
+    }
+
+    const orderIds = orders.map((o) => o.id);
+    const allItems = await db
+      .select({
+        orderId: orderItemsTable.orderId,
+        productId: orderItemsTable.productId,
+        productName: orderItemsTable.productName,
+        productCategory: orderItemsTable.productCategory,
+        quantity: orderItemsTable.quantity,
+        priceGbp: orderItemsTable.priceGbp,
+      })
+      .from(orderItemsTable)
+      .where(inArray(orderItemsTable.orderId, orderIds));
+
+    const itemsByOrderId: Record<number, typeof allItems> = {};
+    for (const item of allItems) {
+      if (!itemsByOrderId[item.orderId]) itemsByOrderId[item.orderId] = [];
+      itemsByOrderId[item.orderId].push(item);
+    }
+
+    res.status(200).json(
+      orders.map((o) => ({
+        orderNumber: o.orderNumber,
+        status: o.status,
+        totalGbp: parseFloat(String(o.totalGbp)),
+        shippingMethod: o.shippingMethod ?? null,
+        trackingNumber: o.trackingNumber ?? null,
+        createdAt: o.createdAt.toISOString(),
+        items: (itemsByOrderId[o.id] ?? []).map((i) => ({
+          productId: i.productId ?? 0,
+          productName: i.productName,
+          productCategory: i.productCategory,
+          quantity: i.quantity,
+          priceGbp: parseFloat(String(i.priceGbp)),
+        })),
+      }))
+    );
+  } catch (err) {
+    req.log.error({ err }, "Failed to get account orders");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// GET /account/referral — referral code + stats
+router.get("/account/referral", async (req: Request, res: Response): Promise<void> => {
+  const customerId = requireCustomer(req, res);
+  if (!customerId) return;
+  try {
+    const [customer] = await db
+      .select({
+        referralCode: customersTable.referralCode,
+        firstName: customersTable.firstName,
+        referralCreditGbp: customersTable.referralCreditGbp,
+      })
+      .from(customersTable)
+      .where(eq(customersTable.id, customerId))
+      .limit(1);
+
+    if (!customer) { res.status(401).json({ error: "Customer not found" }); return; }
+
+    let referralCode = customer.referralCode;
+    if (!referralCode) {
+      referralCode = `${customer.firstName.slice(0, 3).toUpperCase()}${String(customerId).padStart(4, "0")}`;
+      await db.update(customersTable).set({ referralCode }).where(eq(customersTable.id, customerId));
+    }
+
+    const referredCount = await db
+      .select({ n: count() })
+      .from(customersTable)
+      .where(eq(customersTable.referredBy, referralCode));
+
+    res.json({
+      referralCode,
+      referralCount: referredCount[0]?.n ?? 0,
+      referralCreditGbp: Number(customer.referralCreditGbp ?? 0),
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to get referral info");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// PATCH /account/profile — update name
+router.patch("/account/profile", async (req: Request, res: Response): Promise<void> => {
+  const customerId = requireCustomer(req, res);
+  if (!customerId) return;
+
+  const { firstName, lastName } = req.body as { firstName?: unknown; lastName?: unknown };
+
+  if (
+    typeof firstName !== "string" || !firstName.trim() ||
+    typeof lastName !== "string" || !lastName.trim()
+  ) {
+    res.status(400).json({ error: "First name and last name are required" });
+    return;
+  }
+
+  try {
+    await db
+      .update(customersTable)
+      .set({ firstName: firstName.trim(), lastName: lastName.trim() })
+      .where(eq(customersTable.id, customerId));
+
+    res.status(200).json({ ok: true, firstName: firstName.trim(), lastName: lastName.trim() });
+  } catch (err) {
+    req.log.error({ err }, "Failed to update profile");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// POST /account/password — change password
+router.post("/account/password", async (req: Request, res: Response): Promise<void> => {
+  const customerId = requireCustomer(req, res);
+  if (!customerId) return;
+
+  const { currentPassword, newPassword } = req.body as {
+    currentPassword?: unknown;
+    newPassword?: unknown;
+  };
+
+  if (
+    typeof currentPassword !== "string" ||
+    typeof newPassword !== "string" ||
+    newPassword.length < 8
+  ) {
+    res.status(400).json({ error: "New password must be at least 8 characters" });
+    return;
+  }
+
+  try {
+    const [customer] = await db
+      .select({ passwordHash: customersTable.passwordHash })
+      .from(customersTable)
+      .where(eq(customersTable.id, customerId))
+      .limit(1);
+
+    if (!customer || !customer.passwordHash) {
+      res.status(400).json({ error: "No password set on this account" });
+      return;
+    }
+
+    const match = await bcrypt.compare(currentPassword, customer.passwordHash);
+    if (!match) {
+      res.status(401).json({ error: "Current password is incorrect" });
+      return;
+    }
+
+    const newHash = await bcrypt.hash(newPassword, 12);
+    await db
+      .update(customersTable)
+      .set({ passwordHash: newHash })
+      .where(eq(customersTable.id, customerId));
+
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to change password");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;
