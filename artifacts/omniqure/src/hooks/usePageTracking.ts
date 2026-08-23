@@ -1,10 +1,1 @@
-import { useEffect } from "react";
-import { useLocation } from "wouter";
-import { trackPageView } from "@/lib/pixels";
-
-export function usePageTracking() {
-  const [location] = useLocation();
-  useEffect(() => {
-    trackPageView();
-  }, [location]);
-}
+aW1wb3J0IHsgdXNlRWZmZWN0IH0gZnJvbSAicmVhY3QiOwppbXBvcnQgeyB1c2VMb2NhdGlvbiB9IGZyb20gIndvdXRlciI7CmltcG9ydCB7IHRyYWNrUGFnZVZpZXcgfSBmcm9tICJAL2xpYi9waXhlbHMiOwoKZXhwb3J0IGZ1bmN0aW9uIHVzZVBhZ2VUcmFja2luZygpIHsKICBjb25zdCBbbG9jYXRpb25dID0gdXNlTG9jYXRpb24oKTsKICB1c2VFZmZlY3QoKCkgPT4gewogICAgdHJhY2tQYWdlVmlldygpOwogIH0sIFtsb2NhdGlvbl0pOwp9Cg==

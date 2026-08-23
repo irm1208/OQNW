@@ -1,12 +1,1 @@
-/**
- * Express query and route params can be `string | string[]` (e.g. `?status=a&status=b`,
- * or a repeated route segment). This helper normalizes that to a single string, taking
- * the first value when an array is provided, so downstream code never receives an
- * unsound cast.
- */
-export function firstString(value: unknown): string | undefined {
-  if (Array.isArray(value)) {
-    return typeof value[0] === "string" ? value[0] : undefined;
-  }
-  return typeof value === "string" ? value : undefined;
-}
+LyoqCiAqIEV4cHJlc3MgcXVlcnkgYW5kIHJvdXRlIHBhcmFtcyBjYW4gYmUgYHN0cmluZyB8IHN0cmluZ1tdYCAoZS5nLiBgP3N0YXR1cz1hJnN0YXR1cz1iYCwKICogb3IgYSByZXBlYXRlZCByb3V0ZSBzZWdtZW50KS4gVGhpcyBoZWxwZXIgbm9ybWFsaXplcyB0aGF0IHRvIGEgc2luZ2xlIHN0cmluZywgdGFraW5nCiAqIHRoZSBmaXJzdCB2YWx1ZSB3aGVuIGFuIGFycmF5IGlzIHByb3ZpZGVkLCBzbyBkb3duc3RyZWFtIGNvZGUgbmV2ZXIgcmVjZWl2ZXMgYW4KICogdW5zb3VuZCBjYXN0LgogKi8KZXhwb3J0IGZ1bmN0aW9uIGZpcnN0U3RyaW5nKHZhbHVlOiB1bmtub3duKTogc3RyaW5nIHwgdW5kZWZpbmVkIHsKICBpZiAoQXJyYXkuaXNBcnJheSh2YWx1ZSkpIHsKICAgIHJldHVybiB0eXBlb2YgdmFsdWVbMF0gPT09ICJzdHJpbmciID8gdmFsdWVbMF0gOiB1bmRlZmluZWQ7CiAgfQogIHJldHVybiB0eXBlb2YgdmFsdWUgPT09ICJzdHJpbmciID8gdmFsdWUgOiB1bmRlZmluZWQ7Cn0K

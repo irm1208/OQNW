@@ -1,17 +1,1 @@
-{
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src",
-    "types": ["node"]
-  },
-  "include": ["src"],
-  "references": [
-    {
-      "path": "../../lib/db"
-    },
-    {
-      "path": "../../lib/api-zod"
-    }
-  ]
-}
+ewogICJleHRlbmRzIjogIi4uLy4uL3RzY29uZmlnLmJhc2UuanNvbiIsCiAgImNvbXBpbGVyT3B0aW9ucyI6IHsKICAgICJvdXREaXIiOiAiZGlzdCIsCiAgICAicm9vdERpciI6ICJzcmMiLAogICAgInR5cGVzIjogWyJub2RlIl0KICB9LAogICJpbmNsdWRlIjogWyJzcmMiXSwKICAicmVmZXJlbmNlcyI6IFsKICAgIHsKICAgICAgInBhdGgiOiAiLi4vLi4vbGliL2RiIgogICAgfSwKICAgIHsKICAgICAgInBhdGgiOiAiLi4vLi4vbGliL2FwaS16b2QiCiAgICB9CiAgXQp9Cg==

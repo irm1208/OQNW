@@ -1,14 +1,1 @@
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
-
-export const emailLogsTable = pgTable("email_logs", {
-  id: serial("id").primaryKey(),
-  toEmail: text("to_email").notNull(),
-  subject: text("subject").notNull(),
-  type: text("type").notNull(),
-  status: text("status").notNull().default("sent"),
-  resendId: text("resend_id"),
-  orderNumber: text("order_number"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export type EmailLog = typeof emailLogsTable.$inferSelect;
+aW1wb3J0IHsgcGdUYWJsZSwgc2VyaWFsLCB0ZXh0LCB0aW1lc3RhbXAgfSBmcm9tICJkcml6emxlLW9ybS9wZy1jb3JlIjsKCmV4cG9ydCBjb25zdCBlbWFpbExvZ3NUYWJsZSA9IHBnVGFibGUoImVtYWlsX2xvZ3MiLCB7CiAgaWQ6IHNlcmlhbCgiaWQiKS5wcmltYXJ5S2V5KCksCiAgdG9FbWFpbDogdGV4dCgidG9fZW1haWwiKS5ub3ROdWxsKCksCiAgc3ViamVjdDogdGV4dCgic3ViamVjdCIpLm5vdE51bGwoKSwKICB0eXBlOiB0ZXh0KCJ0eXBlIikubm90TnVsbCgpLAogIHN0YXR1czogdGV4dCgic3RhdHVzIikubm90TnVsbCgpLmRlZmF1bHQoInNlbnQiKSwKICByZXNlbmRJZDogdGV4dCgicmVzZW5kX2lkIiksCiAgb3JkZXJOdW1iZXI6IHRleHQoIm9yZGVyX251bWJlciIpLAogIGNyZWF0ZWRBdDogdGltZXN0YW1wKCJjcmVhdGVkX2F0IiwgeyB3aXRoVGltZXpvbmU6IHRydWUgfSkubm90TnVsbCgpLmRlZmF1bHROb3coKSwKfSk7CgpleHBvcnQgdHlwZSBFbWFpbExvZyA9IHR5cGVvZiBlbWFpbExvZ3NUYWJsZS4kaW5mZXJTZWxlY3Q7Cg==

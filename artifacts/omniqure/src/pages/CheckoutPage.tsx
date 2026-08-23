@@ -1,17 +1,1 @@
-import { useEffect } from "react";
-import { useLocation } from "wouter";
-import { useSEO } from "@/hooks/useSEO";
-
-/**
- * Cart and checkout were merged into a single flow living at /cart. This route
- * is kept only so old links/bookmarks to /checkout don't 404 — it immediately
- * redirects to the unified page.
- */
-export default function CheckoutPage() {
-  useSEO({ title: "Checkout", noIndex: true });
-  const [, navigate] = useLocation();
-  useEffect(() => {
-    navigate("/cart", { replace: true });
-  }, [navigate]);
-  return null;
-}
+aW1wb3J0IHsgdXNlRWZmZWN0IH0gZnJvbSAicmVhY3QiOwppbXBvcnQgeyB1c2VMb2NhdGlvbiB9IGZyb20gIndvdXRlciI7CmltcG9ydCB7IHVzZVNFTyB9IGZyb20gIkAvaG9va3MvdXNlU0VPIjsKCi8qKgogKiBDYXJ0IGFuZCBjaGVja291dCB3ZXJlIG1lcmdlZCBpbnRvIGEgc2luZ2xlIGZsb3cgbGl2aW5nIGF0IC9jYXJ0LiBUaGlzIHJvdXRlCiAqIGlzIGtlcHQgb25seSBzbyBvbGQgbGlua3MvYm9va21hcmtzIHRvIC9jaGVja291dCBkb24ndCA0MDQg4oCUIGl0IGltbWVkaWF0ZWx5CiAqIHJlZGlyZWN0cyB0byB0aGUgdW5pZmllZCBwYWdlLgogKi8KZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gQ2hlY2tvdXRQYWdlKCkgewogIHVzZVNFTyh7IHRpdGxlOiAiQ2hlY2tvdXQiLCBub0luZGV4OiB0cnVlIH0pOwogIGNvbnN0IFssIG5hdmlnYXRlXSA9IHVzZUxvY2F0aW9uKCk7CiAgdXNlRWZmZWN0KCgpID0+IHsKICAgIG5hdmlnYXRlKCIvY2FydCIsIHsgcmVwbGFjZTogdHJ1ZSB9KTsKICB9LCBbbmF2aWdhdGVdKTsKICByZXR1cm4gbnVsbDsKfQo=

@@ -1,13 +1,1 @@
-import { pgTable, serial, integer, text, timestamp } from "drizzle-orm/pg-core";
-
-export const stockAlertsTable = pgTable("stock_alerts", {
-  id: serial("id").primaryKey(),
-  productId: integer("product_id").notNull(),
-  productName: text("product_name").notNull(),
-  customerEmail: text("customer_email").notNull(),
-  customerName: text("customer_name"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  notifiedAt: timestamp("notified_at", { withTimezone: true }),
-});
-
-export type StockAlert = typeof stockAlertsTable.$inferSelect;
+aW1wb3J0IHsgcGdUYWJsZSwgc2VyaWFsLCBpbnRlZ2VyLCB0ZXh0LCB0aW1lc3RhbXAgfSBmcm9tICJkcml6emxlLW9ybS9wZy1jb3JlIjsKCmV4cG9ydCBjb25zdCBzdG9ja0FsZXJ0c1RhYmxlID0gcGdUYWJsZSgic3RvY2tfYWxlcnRzIiwgewogIGlkOiBzZXJpYWwoImlkIikucHJpbWFyeUtleSgpLAogIHByb2R1Y3RJZDogaW50ZWdlcigicHJvZHVjdF9pZCIpLm5vdE51bGwoKSwKICBwcm9kdWN0TmFtZTogdGV4dCgicHJvZHVjdF9uYW1lIikubm90TnVsbCgpLAogIGN1c3RvbWVyRW1haWw6IHRleHQoImN1c3RvbWVyX2VtYWlsIikubm90TnVsbCgpLAogIGN1c3RvbWVyTmFtZTogdGV4dCgiY3VzdG9tZXJfbmFtZSIpLAogIGNyZWF0ZWRBdDogdGltZXN0YW1wKCJjcmVhdGVkX2F0IiwgeyB3aXRoVGltZXpvbmU6IHRydWUgfSkubm90TnVsbCgpLmRlZmF1bHROb3coKSwKICBub3RpZmllZEF0OiB0aW1lc3RhbXAoIm5vdGlmaWVkX2F0IiwgeyB3aXRoVGltZXpvbmU6IHRydWUgfSksCn0pOwoKZXhwb3J0IHR5cGUgU3RvY2tBbGVydCA9IHR5cGVvZiBzdG9ja0FsZXJ0c1RhYmxlLiRpbmZlclNlbGVjdDsK

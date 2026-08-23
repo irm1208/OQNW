@@ -1,3 +1,1 @@
-export { registerChatRoutes } from "./routes";
-export { chatStorage, type IChatStorage } from "./storage";
-
+ZXhwb3J0IHsgcmVnaXN0ZXJDaGF0Um91dGVzIH0gZnJvbSAiLi9yb3V0ZXMiOwpleHBvcnQgeyBjaGF0U3RvcmFnZSwgdHlwZSBJQ2hhdFN0b3JhZ2UgfSBmcm9tICIuL3N0b3JhZ2UiOwoK
