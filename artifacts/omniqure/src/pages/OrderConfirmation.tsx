@@ -7,7 +7,7 @@ const BASE_URL = import.meta.env.BASE_URL ?? "/";
 const apiUrl = (path: string) => `${BASE_URL}api/${path}`.replace(/\/+/g, "/").replace(/^\/\//, "/");
 
 type CryptoPayment = {
-  currency: "BTC" | "ETH" | "USDT" | "USDC";
+  currency: "BTC" | "ETH" | "SOL" | "USDT" | "USDC";
   network: string;
   walletAddress: string;
   expectedAmount: string;
@@ -24,6 +24,7 @@ type CryptoPayment = {
 const META: Record<CryptoPayment["currency"], { name: string; symbol: string; color: string; background: string; text: string }> = {
   BTC: { name: "Bitcoin", symbol: "₿", color: "#F59E0B", background: "#FFFBEB", text: "#92400E" },
   ETH: { name: "Ethereum", symbol: "Ξ", color: "#6366F1", background: "#EEF2FF", text: "#3730A3" },
+  SOL: { name: "Solana", symbol: "◎", color: "#0EA5E9", background: "#F0F9FF", text: "#075985" },
   USDT: { name: "Tether", symbol: "₮", color: "#059669", background: "#ECFDF5", text: "#065F46" },
   USDC: { name: "USD Coin", symbol: "◎", color: "#2563EB", background: "#EFF6FF", text: "#1E40AF" },
 };

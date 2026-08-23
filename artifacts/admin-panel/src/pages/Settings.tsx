@@ -3,7 +3,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
 function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
@@ -40,15 +39,68 @@ type Form = {
   announcementBanner: string;
   maintenanceMode: boolean;
   cryptoPaymentsEnabled: boolean;
-  cryptoPaymentRoutes: string;
+  cryptoAddresses: CryptoAddresses;
+};
+
+type CryptoAddresses = {
+  bitcoin: string;
+  ethereum: string;
+  usdcErc20: string;
+  usdtErc20: string;
+  solana: string;
+  usdcSol: string;
+  usdtSol: string;
+};
+
+const EMPTY_CRYPTO_ADDRESSES: CryptoAddresses = {
+  bitcoin: "", ethereum: "", usdcErc20: "", usdtErc20: "",
+  solana: "", usdcSol: "", usdtSol: "",
 };
 
 const EMPTY: Form = {
   storeName: "", supportEmail: "", supportPhone: "", currency: "GBP", orderPrefix: "OQ",
   addressLine1: "", addressLine2: "", city: "", postcode: "", country: "",
   announcementBanner: "", maintenanceMode: false,
-  cryptoPaymentsEnabled: false, cryptoPaymentRoutes: "[]",
+  cryptoPaymentsEnabled: false, cryptoAddresses: EMPTY_CRYPTO_ADDRESSES,
 };
+
+function parseCryptoAddresses(raw: string): CryptoAddresses {
+  const addresses = { ...EMPTY_CRYPTO_ADDRESSES };
+  try {
+    const routes = JSON.parse(raw) as Array<{ currency?: string; network?: string; walletAddress?: string }>;
+    for (const route of Array.isArray(routes) ? routes : []) {
+      if (typeof route.walletAddress !== "string") continue;
+      const key =
+        route.currency === "BTC" && route.network === "bitcoin" ? "bitcoin" :
+        route.currency === "ETH" && route.network === "ethereum" ? "ethereum" :
+        route.currency === "USDC" && route.network === "ethereum" ? "usdcErc20" :
+        route.currency === "USDT" && route.network === "ethereum" ? "usdtErc20" :
+        route.currency === "SOL" && route.network === "solana" ? "solana" :
+        route.currency === "USDC" && route.network === "solana" ? "usdcSol" :
+        route.currency === "USDT" && route.network === "solana" ? "usdtSol" :
+        null;
+      if (key) addresses[key] = route.walletAddress;
+    }
+  } catch {
+    // Invalid legacy JSON is treated as empty fields; the API validates the next save.
+  }
+  return addresses;
+}
+
+function cryptoRoutesJson(addresses: CryptoAddresses): string {
+  const routes = [
+    ["BTC", "bitcoin", addresses.bitcoin],
+    ["ETH", "ethereum", addresses.ethereum],
+    ["USDC", "ethereum", addresses.usdcErc20],
+    ["USDT", "ethereum", addresses.usdtErc20],
+    ["SOL", "solana", addresses.solana],
+    ["USDC", "solana", addresses.usdcSol],
+    ["USDT", "solana", addresses.usdtSol],
+  ] as const;
+  return JSON.stringify(routes
+    .filter(([, , walletAddress]) => walletAddress.trim())
+    .map(([currency, network, walletAddress]) => ({ currency, network, walletAddress: walletAddress.trim(), enabled: true })));
+}
 
 function Field({ label, value, onChange, placeholder }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string }) {
   return (
@@ -85,7 +137,7 @@ export default function Settings() {
         announcementBanner: data.announcementBanner ?? "",
         maintenanceMode: data.maintenanceMode ?? false,
         cryptoPaymentsEnabled: data.cryptoPaymentsEnabled ?? false,
-        cryptoPaymentRoutes: data.cryptoPaymentRoutes ?? "[]",
+        cryptoAddresses: parseCryptoAddresses(data.cryptoPaymentRoutes ?? "[]"),
       });
     }
   }, [data]);
@@ -96,7 +148,10 @@ export default function Settings() {
         method: "PATCH",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          cryptoPaymentRoutes: cryptoRoutesJson(form.cryptoAddresses),
+        }),
       });
       if (!res.ok) throw new Error("Failed");
       return res.json() as Promise<StoreSettings>;
@@ -159,20 +214,28 @@ export default function Settings() {
           />
           Offer direct crypto payments at checkout
         </label>
-        <div className="space-y-1">
-          <label className="text-sm font-medium">Wallet routes (JSON)</label>
-          <Textarea
-            value={form.cryptoPaymentRoutes}
-            onChange={e => setForm(f => ({ ...f, cryptoPaymentRoutes: e.target.value }))}
-            rows={12}
-            spellCheck={false}
-            placeholder={'[\n  { \"currency\": \"BTC\", \"network\": \"bitcoin\", \"walletAddress\": \"...\", \"enabled\": true },\n  { \"currency\": \"USDT\", \"network\": \"solana\", \"walletAddress\": \"...\", \"enabled\": true }\n]'}
-            className="font-mono text-xs"
-          />
-          <p className="text-xs text-muted-foreground">
-            Supported routes: BTC/bitcoin; ETH/ethereum; USDT or USDC on ethereum, bsc, arbitrum, polygon, or solana; USDT/tron.
-          </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {([
+            ["bitcoin", "Bitcoin Address", "Your BTC receiving address"],
+            ["ethereum", "Ethereum Address", "Your ETH receiving address"],
+            ["usdcErc20", "USDC ERC20", "Your Ethereum ERC20 receiving address"],
+            ["usdtErc20", "USDT ERC20", "Your Ethereum ERC20 receiving address"],
+            ["solana", "Solana Address", "Your native SOL receiving address"],
+            ["usdcSol", "USDC SOL", "Your Solana receiving address"],
+            ["usdtSol", "USDT SOL", "Your Solana receiving address"],
+          ] as const).map(([key, label, placeholder]) => (
+            <Field
+              key={key}
+              label={label}
+              value={form.cryptoAddresses[key]}
+              onChange={value => setForm(f => ({ ...f, cryptoAddresses: { ...f.cryptoAddresses, [key]: value } }))}
+              placeholder={placeholder}
+            />
+          ))}
         </div>
+        <p className="text-xs text-muted-foreground">
+          Only public receiving addresses are needed. Each address must belong to the matching network.
+        </p>
       </section>
 
       <section className="rounded-xl border bg-card p-6 space-y-4">

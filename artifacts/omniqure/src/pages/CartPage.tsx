@@ -116,7 +116,7 @@ const SHIPPING_OPTIONS = [
 ];
 
 type CryptoRoute = {
-  currency: "BTC" | "ETH" | "USDT" | "USDC";
+  currency: "BTC" | "ETH" | "SOL" | "USDT" | "USDC";
   network: string;
   minConfirmations: number;
 };
@@ -124,6 +124,7 @@ type CryptoRoute = {
 const CRYPTO_META: Record<CryptoRoute["currency"], { name: string; symbol: string; color: string }> = {
   BTC: { name: "Bitcoin", symbol: "₿", color: "#F7931A" },
   ETH: { name: "Ethereum", symbol: "Ξ", color: "#627EEA" },
+  SOL: { name: "Solana", symbol: "◎", color: "#14F195" },
   USDT: { name: "Tether", symbol: "₮", color: "#26A17B" },
   USDC: { name: "USD Coin", symbol: "◎", color: "#2775CA" },
 };
