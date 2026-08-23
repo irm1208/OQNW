@@ -9,4 +9,5 @@
 - [Orphaned features can be backend-coupled](orphaned-feature-backend-coupling.md) — a feature with no frontend UI can still be live-wired into shared endpoints (e.g. checkout); grep the whole backend before deleting, not just its own route file.
 - [GitHub connector and terminal Git](github-cli-auth.md) — GitHub OAuth API access does not automatically authenticate shell `git` commands.
 - [GitHub large repository imports](github-large-imports.md) — stage first; archive redirects and high-parallel file retrieval can require rate-limit-aware retries.
+- [Switching git origin to a different GitHub repo](git-origin-switch.md) — changing origin to an unrelated repo causes diverged history; fix with git commit-tree to bridge the two lineages.
 - [Nominatim checkout matching](nominatim-checkout-matching.md) — public OSM mapping confirms a mapped address, not carrier deliverability; preserve its limits and disclosure.
