@@ -1673,7 +1673,7 @@ export default function CartPage() {
 
                     {/* Trust line */}
                     <p style={{ fontSize: "12px", color: "#64748B", margin: "0 0 12px", lineHeight: 1.5 }}>
-                      🏦 FCA-authorised open banking · Read-only · No card details stored
+                      Pay by Card / Bank Transfer via Wallid
                     </p>
 
                     {/* Bank logos */}

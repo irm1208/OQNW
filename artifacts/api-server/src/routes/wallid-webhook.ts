@@ -2,7 +2,7 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import crypto from "crypto";
 import { db, orderItemsTable, ordersTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { and, eq, ne } from "drizzle-orm";
 import { WALLID_WEBHOOK_SECRET } from "../lib/wallid";
 import { sendOrderConfirmation } from "../lib/email";
 import { logger } from "../lib/logger";
@@ -177,16 +177,18 @@ router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<v
           return;
         }
 
-        // Idempotency guard: already paid orders are skipped silently
-        if (order.status === "paid") {
+        // Atomically claim the transition so concurrent duplicate deliveries
+        // cannot both trigger confirmation side effects.
+        const settled = await db
+          .update(ordersTable)
+          .set({ status: "paid", updatedAt: new Date() })
+          .where(and(eq(ordersTable.id, order.id), ne(ordersTable.status, "paid")))
+          .returning({ id: ordersTable.id });
+
+        if (settled.length === 0) {
           logger.info({ orderNumber, event_id }, "Wallid webhook — order already paid, skipping");
           continue;
         }
-
-        await db
-          .update(ordersTable)
-          .set({ status: "paid", updatedAt: new Date() })
-          .where(eq(ordersTable.id, order.id));
 
         logger.info({ orderNumber, api_payment_id, event_id }, "Order marked paid via Wallid webhook");
 

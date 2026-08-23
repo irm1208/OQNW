@@ -476,6 +476,7 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
       const wallidItems = (cartItems as CartItem[]).map(item => ({
         name: item.productName,
         category: item.productCategory || "Peptides",
+        quantity: item.quantity,
         price_minor: Math.round(item.priceGbp * quote.rate * 100),
         image_url: `${origin}/products/${item.productId}.jpg`,
         product_url: item.productSlug

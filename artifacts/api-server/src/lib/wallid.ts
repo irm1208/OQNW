@@ -20,9 +20,19 @@ export interface WallidPayment {
   apiPaymentId: string;
 }
 
+export interface WallidPaymentStatus {
+  api_payment_id: string;
+  order_id:       string;
+  status:         string;
+  status_error?:  string;
+  amount:         number;
+  currency:       string;
+}
+
 export interface WallidItem {
   name:        string;
   category:    string;
+  quantity:    number;
   price_minor: number;
   image_url:   string;
   product_url: string;
@@ -96,6 +106,57 @@ export async function createWallidPayment(opts: {
     return { paymentUrl: data.payment_link, apiPaymentId: data.api_payment_id };
   } catch (err) {
     logger.error({ err, orderNumber: opts.orderNumber }, "Wallid payment creation threw");
+    return null;
+  }
+}
+
+/**
+ * Fetch the latest server-authoritative status for a Wallid payment.
+ */
+export async function checkWallidPaymentStatus(
+  apiPaymentId: string,
+): Promise<WallidPaymentStatus | null> {
+  if (!isWallidConfigured()) {
+    logger.warn("Wallid not configured — WALLID_API_KEY_ID or WALLID_API_KEY_SECRET missing");
+    return null;
+  }
+
+  try {
+    const url = new URL(`${WALLID_BASE_URL}/status`);
+    url.searchParams.set("apiPaymentId", apiPaymentId);
+
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+        "Authorization": basicAuth(),
+      },
+    });
+
+    if (!res.ok) {
+      const errText = await res.text().catch(() => "(no body)");
+      logger.error(
+        { status: res.status, errText, apiPaymentId },
+        "Wallid payment status request failed",
+      );
+      return null;
+    }
+
+    const data = (await res.json()) as Partial<WallidPaymentStatus>;
+    if (
+      !data.api_payment_id ||
+      !data.order_id ||
+      !data.status ||
+      typeof data.amount !== "number" ||
+      !data.currency
+    ) {
+      logger.error({ data, apiPaymentId }, "Wallid returned unexpected status response");
+      return null;
+    }
+
+    return data as WallidPaymentStatus;
+  } catch (err) {
+    logger.error({ err, apiPaymentId }, "Wallid payment status request threw");
     return null;
   }
 }
