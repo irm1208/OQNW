@@ -3,7 +3,7 @@ import { trackViewContent } from "@/lib/pixels";
 import { Link, useParams, useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
 import { isHiddenCategory } from "@/data/products";
-import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Loader2, Heart, Droplets, Gift, Sparkles } from "lucide-react";
+import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Loader2, Heart, Droplets, Gift, Sparkles, ExternalLink } from "lucide-react";
 import { generateCOA } from "@/utils/generateCOA";
 import COADocument from "@/components/COADocument";
 import COAModal from "@/components/COAModal";
@@ -476,11 +476,26 @@ export default function ProductPage() {
                       </div>
                     </div>
                     {hasPublicReport && (
-                      <div className="flex items-center gap-2 flex-shrink-0">
+                      <div style={{ display: "flex", gap: "6px", flexShrink: 0 }}>
                         <button
                           onClick={() => setShowJanoshikModal(true)}
-                          className="flex items-center gap-1.5 font-bold rounded-xl transition-opacity hover:opacity-90"
-                          style={{ height: "36px", padding: "0 12px", backgroundColor: "#fff", color: "#1240A0", border: "1.5px solid #1240A0", cursor: "pointer", fontSize: "12px" }}
+                          style={{
+                            display: "inline-flex", alignItems: "center", gap: "4px",
+                            fontSize: "11px", fontWeight: 700,
+                            padding: "5px 10px", borderRadius: "6px",
+                            background: "#fff", color: "#0D2565",
+                            border: "1.5px solid #BFDBFE",
+                            cursor: "pointer", letterSpacing: "0.01em",
+                            transition: "background 0.15s, border-color 0.15s",
+                          }}
+                          onMouseOver={e => {
+                            (e.currentTarget as HTMLButtonElement).style.background = "#EFF6FF";
+                            (e.currentTarget as HTMLButtonElement).style.borderColor = "#93C5FD";
+                          }}
+                          onMouseOut={e => {
+                            (e.currentTarget as HTMLButtonElement).style.background = "#fff";
+                            (e.currentTarget as HTMLButtonElement).style.borderColor = "#BFDBFE";
+                          }}
                         >
                           Quick View
                         </button>
@@ -488,11 +503,20 @@ export default function ProductPage() {
                           href={jd.verifyUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-1.5 font-bold rounded-xl transition-opacity hover:opacity-90"
-                          style={{ height: "36px", padding: "0 12px", backgroundColor: "#1240A0", color: "#fff", border: "1.5px solid #1240A0", textDecoration: "none", fontSize: "12px", display: "flex", alignItems: "center" }}
+                          style={{
+                            display: "inline-flex", alignItems: "center", gap: "4px",
+                            fontSize: "11px", fontWeight: 700,
+                            padding: "5px 10px", borderRadius: "6px",
+                            background: "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                            color: "#fff", textDecoration: "none",
+                            boxShadow: "0 2px 10px rgba(13,37,101,0.22)",
+                            letterSpacing: "0.01em",
+                            transition: "opacity 0.15s",
+                          }}
+                          onMouseOver={e => (e.currentTarget.style.opacity = "0.85")}
+                          onMouseOut={e => (e.currentTarget.style.opacity = "1")}
                         >
-                          <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "14px", width: "auto", borderRadius: "2px", display: "block", filter: "brightness(0) invert(1)" }} />
-                          Verify ↗
+                          Janoshik <ExternalLink size={11} />
                         </a>
                       </div>
                     )}
