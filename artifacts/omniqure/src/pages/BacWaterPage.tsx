@@ -19,7 +19,7 @@ const SIZES = [
   {
     label: "30ml",
     ref: "BW-30-ML",
-    price: 4.99,
+    price: 11.99,
     id: "bw-30ml",
     name: "Bacteriostatic Water 30ml",
     slug: "bacteriostatic-water-30ml",
