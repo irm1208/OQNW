@@ -187,6 +187,7 @@ function Router() {
       <Route path="/product/:id" component={ProductPage} />
       <Route path="/stacks" component={StacksPage} />
       <Route path="/calculator" component={ReconstitutionCalculator} />
+      <Route path="/peptide-calculator">{() => { const [, nav] = useLocation(); useEffect(() => nav("/calculator", { replace: true }), []); return null; }}</Route>
       <Route path="/contact" component={ContactPage} />
       <Route path="/sign-in" component={SignIn} />
       <Route path="/forgot-password" component={ForgotPassword} />
