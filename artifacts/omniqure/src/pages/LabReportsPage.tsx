@@ -151,6 +151,36 @@ const REPORTS: Report[] = [
     actualMass: 23.44,
     productSlugs: ["bpc-157-tb-500-blend-10mg", "bpc-157-tb-500-blend-20mg"],
   },
+  {
+    id: "tirzepatide-30mg",
+    name: "Tirzepatide",
+    amount: "30mg",
+    testNumber: "208603", purity: 99.924, actualMass: 37.99,
+    methods: ["HPLC", "ESI-MS"],
+    url: "https://verify.janoshik.com/tests/208603-Tirzepatide_30mg_V3ZBG39CVZPW",
+    verifyKey: "V3ZBG39CVZPW", image: "/janoshik/208603.png",
+    productSlugs: ["tirzepatide-30mg"],
+  },
+  {
+    id: "cagrilintide-10mg",
+    name: "Cagrilintide",
+    amount: "10mg",
+    testNumber: "200664", purity: 99.868, actualMass: 11.23,
+    methods: ["HPLC", "ESI-MS"],
+    url: "https://verify.janoshik.com/tests/200664-Cag_10_XHPSD9IE65XR",
+    verifyKey: "XHPSD9IE65XR", image: "/janoshik/200664.png",
+    productSlugs: ["cagrilintide-10mg"],
+  },
+  {
+    id: "retatrutide-40mg",
+    name: "Retatrutide",
+    amount: "40mg",
+    testNumber: "203231", purity: 99.691, actualMass: 40.51,
+    methods: ["HPLC", "ESI-MS"],
+    url: "https://verify.janoshik.com/tests/203231-Retatrutide_40mg_XY2IAQ58G5EY",
+    verifyKey: "XY2IAQ58G5EY", image: "/janoshik/203231.png",
+    productSlugs: ["retatrutide-40mg"],
+  },
 ];
 
 // ─── Card ─────────────────────────────────────────────────────────────────────

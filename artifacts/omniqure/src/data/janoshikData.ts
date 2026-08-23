@@ -43,7 +43,7 @@ export const janoshikData: Record<string, JanoshikResult> = {
 
   // ── Cagrilintide ──────────────────────────────────────────────────────────
   "9":  { purity: 99.907, actualMass:  5.59, lot: "CAG5-0328",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
-  "10": { purity: 99.868, actualMass: 11.23, lot: "CAG10-0502",        received: "20 May 2026", analysis: "21 May 2026" },
+  "10": { purity: 99.868, actualMass: 11.23, lot: "OQCAG10",           received: "20 May 2026", analysis: "21 May 2026", taskNumber: "200664", verifyKey: "XHPSD9IE65XR", verifyUrl: "https://verify.janoshik.com/tests/200664-Cag_10_XHPSD9IE65XR", image: "/janoshik/200664.png" },
 
   // ── CJC-1295 No DAC ───────────────────────────────────────────────────────
   "11": { purity: 98.882, actualMass:  6.08, lot: "CJD5-0320",         received: "08 Apr 2026", analysis: "09 Apr 2026" },
@@ -130,7 +130,7 @@ export const janoshikData: Record<string, JanoshikResult> = {
   "56": { purity: 99.729, actualMass: 12.33, lot: "RE10-0608",         received: "30 Jun 2026", analysis: "01 Jul 2026" },
   "57": { purity: 99.704, actualMass: 24.25, lot: "RE20-0613",         received: "01 Jul 2026", analysis: "02 Jul 2026" },
   "58": { purity: 99.787, actualMass: 34.23, lot: "RE30-0610",         received: "30 Jun 2026", analysis: "01 Jul 2026" },
-  "59": { purity: 99.691, actualMass: 40.51, lot: "RE40-0602",         received: "22 Jun 2026", analysis: "23 Jun 2026" },
+  "59": { purity: 99.691, actualMass: 40.51, lot: "RT40PQ",            received: "22 Jun 2026", analysis: "23 Jun 2026", taskNumber: "203231", verifyKey: "XY2IAQ58G5EY", verifyUrl: "https://verify.janoshik.com/tests/203231-Retatrutide_40mg_XY2IAQ58G5EY", image: "/janoshik/203231.png" },
   "60": { purity: 99.822, actualMass: 54.93, lot: "RE50-0323",         received: "09 Apr 2026", analysis: "10 Apr 2026" },
   "61": { purity: 99.852, actualMass: 66.53, lot: "RE60-0327",         received: "12 Apr 2026", analysis: "13 Apr 2026" },
 
@@ -164,7 +164,7 @@ export const janoshikData: Record<string, JanoshikResult> = {
   // ── Tirzepatide ───────────────────────────────────────────────────────────
   "76": { purity: 99.707, actualMass: 12.35, lot: "ZE10-0530",         received: "21 Jun 2026", analysis: "22 Jun 2026" },
   "77": { purity: 99.836, actualMass: 17.82, lot: "ZE15-0612",         received: "01 Jul 2026", analysis: "02 Jul 2026" },
-  "78": { purity: 99.924, actualMass: 37.99, lot: "ZE30-0611",         received: "01 Jul 2026", analysis: "02 Jul 2026" },
+  "78": { purity: 99.924, actualMass: 37.99, lot: "TZ9390Q",           received: "01 Jul 2026", analysis: "02 Jul 2026", taskNumber: "208603", verifyKey: "V3ZBG39CVZPW", verifyUrl: "https://verify.janoshik.com/tests/208603-Tirzepatide_30mg_V3ZBG39CVZPW", image: "/janoshik/208603.png" },
   "79": { purity: 99.924, actualMass: 37.99, lot: "ZE30-0611",         received: "01 Jul 2026", analysis: "02 Jul 2026" },
   "80": { purity: 99.765, actualMass: 67.59, lot: "ZE60-0528",         received: "16 Jun 2026", analysis: "17 Jun 2026" },
 
