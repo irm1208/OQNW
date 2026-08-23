@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 
 const STORAGE_KEY = "omniqure_disclaimer_collapsed";
-const ALLOWED_PATHS = new Set(["/", "/checkout"]);
+const ALLOWED_PATHS = new Set(["/", "/cart", "/checkout"]);
 
 export default function SiteDisclaimer() {
   const [location] = useLocation();
