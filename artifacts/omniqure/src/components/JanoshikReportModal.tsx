@@ -72,12 +72,12 @@ export default function JanoshikReportModal({
           </button>
         </div>
 
-        {/* Report image */}
-        <div style={{ overflowY: "auto", flex: 1 }}>
+        {/* Report image — scales to fit, no scroll */}
+        <div style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "#F9FAFB", padding: "8px" }}>
           <img
             src={image}
             alt={`Janoshik test report #${taskNumber} for ${productName}`}
-            style={{ width: "100%", display: "block" }}
+            style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", display: "block", borderRadius: "6px" }}
           />
         </div>
 
