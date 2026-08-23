@@ -93616,6 +93616,7 @@ router22.post("/orders", async (req, res) => {
       const wallidItems = cartItems.map((item) => ({
         name: item.productName,
         category: item.productCategory || "Peptides",
+        quantity: item.quantity,
         price_minor: Math.round(item.priceGbp * quote.rate * 100),
         image_url: `${origin}/products/${item.productId}.jpg`,
         product_url: item.productSlug ? `${origin}/product/${item.productSlug}` : `${origin}/all-peptides`
@@ -98082,11 +98083,11 @@ router44.post("/wallid-webhook", async (req, res) => {
           res.status(400).json({ error: "Amount or currency mismatch" });
           return;
         }
-        if (order.status === "paid") {
+        const settled = await db.update(ordersTable).set({ status: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(and(eq(ordersTable.id, order.id), ne(ordersTable.status, "paid"))).returning({ id: ordersTable.id });
+        if (settled.length === 0) {
           logger.info({ orderNumber, event_id }, "Wallid webhook \u2014 order already paid, skipping");
           continue;
         }
-        await db.update(ordersTable).set({ status: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(eq(ordersTable.id, order.id));
         logger.info({ orderNumber, api_payment_id, event_id }, "Order marked paid via Wallid webhook");
         try {
           const items = await db.select({
