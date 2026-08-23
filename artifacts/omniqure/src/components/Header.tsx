@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { prefetchRoute } from "@/lib/prefetch";
 import { Link, useLocation } from "wouter";
 import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, BookMarked, GraduationCap, Thermometer, Activity, Layers } from "lucide-react";
 import { useCart } from "@/context/CartContext";
@@ -107,6 +108,8 @@ export default function Header() {
   const openAllPeptides = useCallback(() => {
     if (allPeptidesTimer.current) clearTimeout(allPeptidesTimer.current);
     setAllPeptidesOpen(true);
+    prefetchRoute("/all-peptides");
+    prefetchRoute("/product");
   }, []);
 
   const closeAllPeptides = useCallback(() => {
@@ -125,6 +128,11 @@ export default function Header() {
   const openResearch = useCallback(() => {
     if (researchTimer.current) clearTimeout(researchTimer.current);
     setResearchOpen(true);
+    prefetchRoute("/protocols");
+    prefetchRoute("/storage-guide");
+    prefetchRoute("/research-results");
+    prefetchRoute("/stacks");
+    prefetchRoute("/glossary");
   }, []);
 
   const closeResearch = useCallback(() => {
@@ -632,7 +640,7 @@ export default function Header() {
                 href="/sign-in"
                 className="header-icon-btn flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-bold transition-colors"
                 style={{ color: "#ffffff", textDecoration: "none" }}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#E2E8F0"}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#E2E8F0"; prefetchRoute("/sign-in"); }}
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#ffffff"}
               >
                 <User size={18} />
@@ -646,7 +654,7 @@ export default function Header() {
               href="/wishlist"
               className="header-icon-btn flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-bold transition-colors relative"
               style={{ color: "#ffffff", textDecoration: "none" }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#E2E8F0"}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#E2E8F0"; prefetchRoute("/wishlist"); }}
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#ffffff"}
             >
               <span className="relative">
@@ -673,7 +681,7 @@ export default function Header() {
               href="/cart"
               className="header-icon-btn flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-bold transition-colors relative"
               style={{ color: "#ffffff", textDecoration: "none" }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#E2E8F0"}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#E2E8F0"; prefetchRoute("/cart"); }}
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#ffffff"}
             >
               <span className="relative">
@@ -989,6 +997,7 @@ export default function Header() {
                     fontWeight: active ? 600 : 500,
                     textDecoration: "none", marginBottom: "-1px",
                   }}
+                  onMouseEnter={() => prefetchRoute(item.href)}
                 >
                   {item.label}
                 </Link>
@@ -1002,6 +1011,7 @@ export default function Header() {
                 href={item.href}
                 className="px-4 py-3 text-sm whitespace-nowrap transition-colors"
                 style={{ color: "#64748B", textDecoration: "none", fontWeight: 500 }}
+                onMouseEnter={() => prefetchRoute(item.href)}
               >
                 {item.label}
               </Link>

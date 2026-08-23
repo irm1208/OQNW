@@ -21,6 +21,7 @@ import CartPreviewPanel from "@/components/CartPreviewPanel";
 import SiteDisclaimer from "@/components/SiteDisclaimer";
 import { initPixels } from "@/lib/pixels";
 import { usePageTracking } from "@/hooks/usePageTracking";
+import { idlePrefetch } from "@/lib/prefetch";
 
 // Lazy-loaded pages — each becomes its own JS chunk, loaded only when visited
 const HomePage             = lazy(() => import("@/pages/HomePage"));
@@ -71,6 +72,28 @@ function ScrollToTop() {
 function PixelTracker() {
   useEffect(() => { initPixels(); }, []);
   usePageTracking();
+  return null;
+}
+
+function IdlePrefetcher() {
+  useEffect(() => {
+    // Kick off background chunk downloads after the first paint settles.
+    // Order = most-visited first so the highest-value routes load earliest.
+    idlePrefetch([
+      "/all-peptides",
+      "/product",
+      "/cart",
+      "/bac-water",
+      "/protocols",
+      "/faq",
+      "/stacks",
+      "/sign-in",
+      "/account",
+      "/checkout",
+      "/about",
+      "/shipping",
+    ]);
+  }, []);
   return null;
 }
 
@@ -134,6 +157,7 @@ function App() {
               <OverlayCoordinatorProvider>
               <ScrollToTop />
               <PixelTracker />
+              <IdlePrefetcher />
               <CookieConsent />
               <div className="min-h-screen bg-white flex flex-col">
                 <AnnouncementBar suppressed={jurisdictionActive} />
