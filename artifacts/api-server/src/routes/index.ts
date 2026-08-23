@@ -36,7 +36,7 @@ import adminCreditsRouter from "./admin/credits";
 import adminFraudRouter from "./admin/fraud";
 import adminBlockedIpsRouter from "./admin/blockedIps";
 import adminEmailLogsRouter from "./admin/emailLogs";
-import newsletterRouter from "./newsletter";
+
 import loyaltyRouter from "./loyalty";
 import taxRouter from "./tax";
 import shippingRouter from "./shipping";
@@ -85,7 +85,7 @@ router.use(adminCreditsRouter);
 router.use(adminFraudRouter);
 router.use(adminBlockedIpsRouter);
 router.use(adminEmailLogsRouter);
-router.use(newsletterRouter);
+
 router.use(loyaltyRouter);
 router.use(taxRouter);
 router.use(shippingRouter);

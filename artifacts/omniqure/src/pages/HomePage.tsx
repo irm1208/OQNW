@@ -3,8 +3,8 @@ import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import {
   Shield, FlaskConical, Truck, Award,
-  ChevronRight, ArrowRight, CheckCircle,
-  Mail, Gift, UserPlus, ShoppingCart,
+  ChevronRight, ArrowRight,
+  Gift, UserPlus, ShoppingCart,
 } from "lucide-react";
 import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
@@ -466,13 +466,7 @@ export default function HomePage() {
     canonicalPath: "/",
   });
 
-  const [emailInput, setEmailInput] = useState("");
-  const [emailSubscribed, setEmailSubscribed] = useState(false);
   const [faqOpenIdx, setFaqOpenIdx] = useState<number | null>(null);
-  function handleEmailSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (emailInput.includes("@")) setEmailSubscribed(true);
-  }
 
   const featuredGroups = (() => {
     const featuredProducts = featuredIds
@@ -1052,48 +1046,6 @@ export default function HomePage() {
       {/* ── RECENTLY VIEWED ───────────────────────────────────── */}
       <RecentlyViewed />
 
-      {/* ── EMAIL CAPTURE ─────────────────────────────────────── */}
-      <section className="home-section-email" style={{ background: "linear-gradient(135deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)", padding: "64px 0", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)", backgroundSize: "32px 32px", pointerEvents: "none" }} />
-        <div className="max-w-[560px] mx-auto px-4 text-center" style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ width: 52, height: 52, borderRadius: 14, background: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.20)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
-            <Mail size={24} style={{ color: "#93C5FD" }} />
-          </div>
-          <h2 style={{ fontSize: "clamp(22px, 3vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: 12 }}>
-            Stay at the forefront of peptide research.
-          </h2>
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.60)", lineHeight: 1.75, maxWidth: 400, margin: "0 auto 28px" }}>
-            Join 8,000+ researchers — protocol guides, new compound alerts, and exclusive member pricing sent directly to you.
-          </p>
-          {emailSubscribed ? (
-            <div style={{ background: "rgba(52,211,153,0.15)", border: "1px solid rgba(52,211,153,0.40)", borderRadius: 14, padding: "20px 28px", display: "inline-flex", alignItems: "center", gap: 12 }}>
-              <CheckCircle size={22} style={{ color: "#34D399", flexShrink: 0 }} />
-              <div style={{ textAlign: "left" }}>
-                <p style={{ fontSize: 14, fontWeight: 800, color: "#34D399", margin: 0 }}>You're in!</p>
-                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.60)", margin: "2px 0 0" }}>Welcome to the OmniQure research community.</p>
-              </div>
-            </div>
-          ) : (
-            <form onSubmit={handleEmailSubmit} className="flex gap-2" style={{ maxWidth: 420, margin: "0 auto" }}>
-              <input
-                type="email"
-                required
-                placeholder="your@institution.edu"
-                value={emailInput}
-                onChange={e => setEmailInput(e.target.value)}
-                style={{ flex: 1, height: 48, borderRadius: 10, border: "1.5px solid rgba(255,255,255,0.20)", background: "rgba(255,255,255,0.08)", color: "#fff", padding: "0 16px", fontSize: 14, outline: "none" }}
-              />
-              <button
-                type="submit"
-                style={{ height: 48, borderRadius: 10, background: "linear-gradient(90deg, #34D399, #059669)", color: "#022c22", fontWeight: 800, fontSize: 13, border: "none", cursor: "pointer", padding: "0 20px", flexShrink: 0, whiteSpace: "nowrap" }}
-              >
-                Subscribe
-              </button>
-            </form>
-          )}
-          <p style={{ fontSize: 11, color: "rgba(255,255,255,0.30)", marginTop: 12 }}>No spam. Unsubscribe anytime.</p>
-        </div>
-      </section>
 
 
     </div>
