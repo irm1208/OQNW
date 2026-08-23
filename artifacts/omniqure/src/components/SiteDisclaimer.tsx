@@ -6,10 +6,12 @@ const ALLOWED_PATHS = new Set(["/", "/checkout"]);
 
 export default function SiteDisclaimer() {
   const [location] = useLocation();
-  if (!ALLOWED_PATHS.has(location)) return null;
+  // All hooks must be called unconditionally before any early return
   const [collapsed, setCollapsed] = useState(() => {
     try { return localStorage.getItem(STORAGE_KEY) === "1"; } catch { return false; }
   });
+
+  if (!ALLOWED_PATHS.has(location)) return null;
 
   function toggle() {
     const next = !collapsed;
