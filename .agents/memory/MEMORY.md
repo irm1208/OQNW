@@ -13,3 +13,4 @@
 - [Nominatim checkout matching](nominatim-checkout-matching.md) — public OSM mapping confirms a mapped address, not carrier deliverability; preserve its limits and disclosure.
 - [Shared-wallet crypto payments](shared-wallet-crypto-payments.md) — direct crypto uses immutable route locks, post-lock transaction timing, and continued reconciliation to prevent replay and expiry loss.
 - [Durable test data IDs](durable-test-data-ids.md) — durable CodeExecution blocks may reject time and random helpers; use checked, fixed dev-only IDs for database-backed browser tests.
+- [Workspace TypeScript scratch runner](typescript-scratch-runner.md) — root and API packages lack `tsx`; run ad-hoc TypeScript assertions with `scripts/node_modules/.bin/tsx`.

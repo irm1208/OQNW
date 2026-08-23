@@ -24,7 +24,11 @@ import {
 } from "../lib/email";
 import { createBtcPayInvoice, isBtcPayConfigured } from "../lib/btcpay";
 import { createWallidPayment, isWallidConfigured } from "../lib/wallid";
-import { createWallidPaymentQuote, type WallidPaymentCurrency } from "../lib/payment-currency";
+import {
+  allocatePaymentLineAmounts,
+  createWallidPaymentQuote,
+  type WallidPaymentCurrency,
+} from "../lib/payment-currency";
 import { prepareCryptoPayment } from "../lib/crypto-payments";
 import { assessFraud } from "../lib/fraudScorer";
 import { getClientIp, lookupIpData } from "../lib/geoip";
@@ -473,11 +477,17 @@ router.post("/orders", async (req: Request, res: Response): Promise<void> => {
         return;
       }
 
-      const wallidItems = (cartItems as CartItem[]).map(item => ({
+      // Wallid's item schema contains a full line price but no quantity field.
+      // Allocate the final, quoted payment across product lines so Wallid's
+      // displayed total always matches `amount`, even with shipping or discounts.
+      const lineAmounts = allocatePaymentLineAmounts(
+        quote.amountMinor,
+        (cartItems as CartItem[]).map((item) => item.priceGbp * item.quantity),
+      );
+      const wallidItems = (cartItems as CartItem[]).map((item, index) => ({
         name: item.productName,
         category: item.productCategory || "Peptides",
-        quantity: item.quantity,
-        price_minor: Math.round(item.priceGbp * quote.rate * 100),
+        price_minor: lineAmounts[index],
         image_url: `${origin}/products/${item.productId}.jpg`,
         product_url: item.productSlug
           ? `${origin}/product/${item.productSlug}`

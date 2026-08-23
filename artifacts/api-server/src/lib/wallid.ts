@@ -32,7 +32,6 @@ export interface WallidPaymentStatus {
 export interface WallidItem {
   name:        string;
   category:    string;
-  quantity:    number;
   price_minor: number;
   image_url:   string;
   product_url: string;

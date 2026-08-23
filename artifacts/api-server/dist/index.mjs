@@ -92760,6 +92760,29 @@ var cachedEurRate = null;
 function toMinorUnits(amount) {
   return Math.round(amount * 100);
 }
+function allocatePaymentLineAmounts(totalMinor, lineWeights) {
+  if (!Number.isInteger(totalMinor) || totalMinor < 0) {
+    throw new Error("Payment total must be a non-negative integer in minor units");
+  }
+  if (lineWeights.some((weight) => !Number.isFinite(weight) || weight < 0)) {
+    throw new Error("Payment line weights must be finite, non-negative numbers");
+  }
+  if (lineWeights.length === 0) return [];
+  const weightTotal = lineWeights.reduce((sum2, weight) => sum2 + weight, 0);
+  if (weightTotal === 0) {
+    return lineWeights.map((_, index) => index === 0 ? totalMinor : 0);
+  }
+  const rawAmounts = lineWeights.map((weight) => totalMinor * weight / weightTotal);
+  const allocations = rawAmounts.map((amount) => Math.floor(amount));
+  let remainder = totalMinor - allocations.reduce((sum2, amount) => sum2 + amount, 0);
+  const byLargestFraction = rawAmounts.map((amount, index) => ({ index, fraction: amount - Math.floor(amount) })).sort((a, b) => b.fraction - a.fraction || a.index - b.index);
+  for (const { index } of byLargestFraction) {
+    if (remainder === 0) break;
+    allocations[index] += 1;
+    remainder -= 1;
+  }
+  return allocations;
+}
 async function getEurRate() {
   if (cachedEurRate && cachedEurRate.expiresAt > Date.now()) {
     return cachedEurRate.value;
@@ -93630,11 +93653,14 @@ router22.post("/orders", async (req, res) => {
         });
         return;
       }
-      const wallidItems = cartItems.map((item) => ({
+      const lineAmounts = allocatePaymentLineAmounts(
+        quote.amountMinor,
+        cartItems.map((item) => item.priceGbp * item.quantity)
+      );
+      const wallidItems = cartItems.map((item, index) => ({
         name: item.productName,
         category: item.productCategory || "Peptides",
-        quantity: item.quantity,
-        price_minor: Math.round(item.priceGbp * quote.rate * 100),
+        price_minor: lineAmounts[index],
         image_url: `${origin}/products/${item.productId}.jpg`,
         product_url: item.productSlug ? `${origin}/product/${item.productSlug}` : `${origin}/all-peptides`
       }));
