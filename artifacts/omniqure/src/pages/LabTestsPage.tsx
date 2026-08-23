@@ -15,7 +15,7 @@ const CATEGORIES = [
   "All", "Growth Peptides", "Healing Peptides",
   "Longevity Peptides", "Nootropics", "Cellular Health", "Hormonal Peptides",
   "Skin & Repair", "Immune Support", "Research Peptides", "Peptide Blends",
-  "Anti-Inflammatory", "Cognitive Peptides", "Growth Hormone",
+  "Anti-Inflammatory", "Cognitive Peptides", "Growth Hormone", "Weight Management",
 ];
 
 

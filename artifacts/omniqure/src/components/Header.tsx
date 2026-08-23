@@ -35,7 +35,7 @@ const BASE_NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "All Peptides", href: "/all-peptides" },
   { label: "Bac Water", href: "/bac-water" },
-  // COA_DISABLED_TEMPORARILY: { label: "Lab Tests", href: "/lab-tests" },
+  { label: "Lab Tests", href: "/lab-tests" },
   { label: "Independent Results", href: "/lab-reports" },
   { label: "Peptide Calculator", href: "/calculator" },
   { label: "Research & Education", href: "/protocols" },

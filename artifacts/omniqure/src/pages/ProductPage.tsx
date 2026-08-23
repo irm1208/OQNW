@@ -442,11 +442,13 @@ export default function ProductPage() {
                 ))}
               </div>
 
-              {/* Independent Lab Report — shows only when a Janoshik report exists */}
-              {/* COA_DISABLED_TEMPORARILY: OmniQure "View Report →" button removed; restore by un-commenting below */}
+              {/* Independent Lab Report — shows when Janoshik data exists (full public report or internal data) */}
               {(() => {
                 const jd = janoshikData[product.id];
-                if (!jd?.image) return null;
+                if (!jd?.purity && !jd?.image) return null;
+
+                const hasPublicReport = !!jd.image;
+
                 return (
                   <div
                     className="flex items-center justify-between gap-3 px-4 py-3"
@@ -461,28 +463,30 @@ export default function ProductPage() {
                       </div>
                       <div>
                         <p className="font-bold text-sm" style={{ color: "#1240A0" }}>Independent Lab Report</p>
-                        <p className="text-xs" style={{ color: "#3B82F6" }}>Verified by Janoshik Analytical</p>
+                        {hasPublicReport ? (
+                          <p className="text-xs" style={{ color: "#3B82F6" }}>Verified by Janoshik Analytical</p>
+                        ) : (
+                          <p className="text-xs" style={{ color: "#3B82F6" }}>
+                            Tested by Janoshik Analytical
+                            {jd.purity != null && <> · Purity <strong>{jd.purity.toFixed(2)}%</strong></>}
+                            {jd.lot && <> · Lot {jd.lot}</>}
+                            {jd.analysis && <> · {jd.analysis}</>}
+                          </p>
+                        )}
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <button
-                        onClick={() => setShowJanoshikModal(true)}
-                        className="flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90"
-                        style={{ height: "38px", padding: "0 14px", backgroundColor: "#fff", color: "#1240A0", border: "1.5px solid #1240A0", cursor: "pointer", fontSize: "12px" }}
-                      >
-                        <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "16px", width: "auto", borderRadius: "2px", display: "block" }} />
-                        Report
-                      </button>
-                      {/* COA_DISABLED_TEMPORARILY — restore OmniQure COA button by un-commenting:
-                      <button
-                        onClick={() => setShowCOAModal(true)}
-                        className="coa-btn-touch flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90"
-                        style={{ height: "38px", padding: "0 16px", backgroundColor: "#1B5CB5", color: "#fff", border: "none", cursor: "pointer", fontSize: "13px" }}
-                      >
-                        View Report →
-                      </button>
-                      */}
-                    </div>
+                    {hasPublicReport && (
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <button
+                          onClick={() => setShowJanoshikModal(true)}
+                          className="flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90"
+                          style={{ height: "38px", padding: "0 14px", backgroundColor: "#fff", color: "#1240A0", border: "1.5px solid #1240A0", cursor: "pointer", fontSize: "12px" }}
+                        >
+                          <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "16px", width: "auto", borderRadius: "2px", display: "block" }} />
+                          Report
+                        </button>
+                      </div>
+                    )}
                   </div>
                 );
               })()}
