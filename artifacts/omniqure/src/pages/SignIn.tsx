@@ -8,6 +8,12 @@ export default function SignIn() {
   useSEO({ title: "Sign In", noIndex: true });
   const [, navigate] = useLocation();
   const { signIn } = useCustomerAuth();
+  const search = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : new URLSearchParams();
+  const returnToAccount = search.get("returnTo") === "account";
+  const orderNumber = search.get("order");
+  const destination = returnToAccount
+    ? `/account${orderNumber ? `?order=${encodeURIComponent(orderNumber)}` : ""}`
+    : "/";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +30,7 @@ export default function SignIn() {
     setLoading(true);
     try {
       await signIn(email, password);
-      navigate("/");
+      navigate(destination);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign in failed. Please try again.");
     } finally {
@@ -187,7 +193,9 @@ export default function SignIn() {
           {/* Register link */}
           <p style={{ textAlign: "center", fontSize: "14px", color: "#64748B", margin: 0 }}>
             Don't have an account?{" "}
-            <Link href="/register" style={{ color: "#1B5CB5", fontWeight: 700, textDecoration: "none" }}
+            <Link
+              href={`/register${returnToAccount ? `?returnTo=account${orderNumber ? `&order=${encodeURIComponent(orderNumber)}` : ""}` : ""}`}
+              style={{ color: "#1B5CB5", fontWeight: 700, textDecoration: "none" }}
               onMouseEnter={e => ((e.currentTarget as HTMLElement).style.textDecoration = "underline")}
               onMouseLeave={e => ((e.currentTarget as HTMLElement).style.textDecoration = "none")}
             >

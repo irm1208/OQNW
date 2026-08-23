@@ -1096,11 +1096,25 @@ export default function CartPage() {
 
       const data = await res.json() as {
         orderNumber: string; customerName: string; totalGbp: number; shippingMethod: string;
-        orderId: number; cryptoPaymentToken?: string;
+        cryptoPaymentToken?: string;
         cryptoPayment?: { currency: string; network: string; walletAddress: string; expectedAmount: string; rateExpiresAt: string };
         wallidPaymentUrl?: string;
         paymentCurrency?: "GBP" | "EUR"; paymentAmountMinor?: number;
       };
+
+      // Retain only same-browser, post-checkout account context. This lets the
+      // registration page prefill the guest's identity without putting email
+      // addresses into payment-return URLs.
+      try {
+        window.sessionStorage.setItem("omniqure:checkout-account", JSON.stringify({
+          orderNumber: data.orderNumber,
+          firstName: delivery.firstName,
+          lastName: delivery.lastName,
+          email: delivery.email,
+        }));
+      } catch {
+        // Account creation remains available if storage is unavailable.
+      }
 
       // Wallid: redirect to hosted payment page.
       // Cart is NOT cleared before redirect — WallidReturn clears it on confirmed
@@ -1120,7 +1134,6 @@ export default function CartPage() {
         payment: paymentMethod,
       });
       if (paymentMethod === "crypto" && data.cryptoPaymentToken) {
-        params.set("orderId", String(data.orderId));
         params.set("cryptoToken", data.cryptoPaymentToken);
       }
       navigate(`/order-confirmation?${params.toString()}`);

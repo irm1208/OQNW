@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { CheckCircle, XCircle, ArrowRight, RotateCcw, Package, Loader2, Clock } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import PostOrderAccountPrompt from "@/components/PostOrderAccountPrompt";
 
 /**
  * /wallid-return
@@ -165,6 +166,7 @@ export default function WallidReturn() {
           <p style={{ fontSize: "13px", color: "#94A3B8", marginBottom: 28, lineHeight: 1.6 }}>
             A confirmation email will be sent shortly. Keep your order reference safe.
           </p>
+          <PostOrderAccountPrompt orderNumber={orderNumber} />
 
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <Link
@@ -214,6 +216,7 @@ export default function WallidReturn() {
             You'll receive a confirmation email once the payment settles.
             You can also check your order status below.
           </p>
+          <PostOrderAccountPrompt orderNumber={orderNumber} />
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <Link
               href={orderNumber ? `/track-order?number=${encodeURIComponent(orderNumber)}` : "/track-order"}

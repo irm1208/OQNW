@@ -4,15 +4,45 @@ import { Eye, EyeOff, Mail, Lock, User, Building2, FlaskConical, CheckCircle2 } 
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useSEO } from "@/hooks/useSEO";
 
+type CheckoutAccountContext = {
+  orderNumber: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+};
+
+function checkoutAccountContext(orderNumber: string | null): CheckoutAccountContext | null {
+  if (!orderNumber || typeof window === "undefined") return null;
+  try {
+    const parsed = JSON.parse(window.sessionStorage.getItem("omniqure:checkout-account") ?? "null") as Partial<CheckoutAccountContext> | null;
+    if (
+      parsed?.orderNumber === orderNumber &&
+      typeof parsed.firstName === "string" &&
+      typeof parsed.lastName === "string" &&
+      typeof parsed.email === "string"
+    ) {
+      return parsed as CheckoutAccountContext;
+    }
+  } catch {
+    // The standard empty registration form is a safe fallback.
+  }
+  return null;
+}
+
 export default function Register() {
   useSEO({ title: "Create Account", noIndex: true });
   const [, navigate] = useLocation();
   const { register } = useCustomerAuth();
-  const refCode = typeof window !== "undefined"
-    ? new URLSearchParams(window.location.search).get("ref") ?? undefined
-    : undefined;
+  const search = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : new URLSearchParams();
+  const refCode = search.get("ref") ?? undefined;
+  const returnToAccount = search.get("returnTo") === "account";
+  const orderNumber = search.get("order");
+  const checkoutContext = checkoutAccountContext(orderNumber);
   const [form, setForm] = useState({
-    firstName: "", lastName: "", email: "", institution: "", password: "", confirm: "",
+    firstName: checkoutContext?.firstName ?? "",
+    lastName: checkoutContext?.lastName ?? "",
+    email: checkoutContext?.email ?? "",
+    institution: "", password: "", confirm: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -49,7 +79,12 @@ export default function Register() {
         institution: form.institution || undefined,
         referredBy: refCode,
       });
-      navigate("/");
+      if (checkoutContext) {
+        window.sessionStorage.removeItem("omniqure:checkout-account");
+      }
+      navigate(returnToAccount
+        ? `/account${orderNumber ? `?order=${encodeURIComponent(orderNumber)}` : ""}`
+        : "/");
     } catch (err) {
       setErrors((prev) => ({
         ...prev,
@@ -256,7 +291,15 @@ export default function Register() {
 
             {errors.submit && (
               <p style={{ fontSize: "13px", color: "#DC2626", backgroundColor: "#FEF2F2", border: "1px solid #FECACA", borderRadius: "8px", padding: "10px 12px", margin: 0 }}>
-                {errors.submit}
+                {errors.submit}{" "}
+                {errors.submit.includes("already exists") && (
+                  <Link
+                    href={`/sign-in${returnToAccount ? `?returnTo=account${orderNumber ? `&order=${encodeURIComponent(orderNumber)}` : ""}` : ""}`}
+                    style={{ color: "#B91C1C", fontWeight: 800 }}
+                  >
+                    Sign in instead
+                  </Link>
+                )}
               </p>
             )}
 
@@ -282,7 +325,9 @@ export default function Register() {
           {/* Sign in link */}
           <p style={{ textAlign: "center", fontSize: "14px", color: "#64748B", margin: "24px 0 0" }}>
             Already have an account?{" "}
-            <Link href="/sign-in" style={{ color: "#1B5CB5", fontWeight: 700, textDecoration: "none" }}
+            <Link
+              href={`/sign-in${returnToAccount ? `?returnTo=account${orderNumber ? `&order=${encodeURIComponent(orderNumber)}` : ""}` : ""}`}
+              style={{ color: "#1B5CB5", fontWeight: 700, textDecoration: "none" }}
               onMouseEnter={e => ((e.currentTarget as HTMLElement).style.textDecoration = "underline")}
               onMouseLeave={e => ((e.currentTarget as HTMLElement).style.textDecoration = "none")}
             >

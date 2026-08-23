@@ -129,6 +129,9 @@ export default function AccountPage() {
   const { wishlistIds, toggle: toggleWishlist, has: inWishlist } = useWishlist();
   const { products } = useProducts();
   const { addToCart } = useCart();
+  const highlightedOrder = typeof window !== "undefined"
+    ? new URLSearchParams(window.location.search).get("order")
+    : null;
 
   const [activeTab, setActiveTab] = useState<"orders" | "profile" | "wishlist" | "referral" | "loyalty">("orders");
 
@@ -194,7 +197,12 @@ export default function AccountPage() {
 
     fetch(apiUrl("account/orders"), { credentials: "include" })
       .then((r) => (r.ok ? (r.json() as Promise<AccountOrder[]>) : []))
-      .then((data) => setOrders(data))
+      .then((data) => {
+        setOrders(data);
+        if (highlightedOrder && data.some((order) => order.orderNumber === highlightedOrder)) {
+          setExpandedOrder(highlightedOrder);
+        }
+      })
       .catch(() => setOrders([]))
       .finally(() => setLoadingOrders(false));
 
@@ -217,7 +225,7 @@ export default function AccountPage() {
       .then((data) => { if (data) setLoyalty(data); })
       .catch(() => {})
       .finally(() => setLoadingLoyalty(false));
-  }, [customer]);
+  }, [customer, highlightedOrder]);
 
   async function handleRequestReturn(e: React.FormEvent) {
     e.preventDefault();
