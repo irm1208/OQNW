@@ -98330,7 +98330,9 @@ function paymentDetails(order) {
     txHash: order.cryptoTxHash,
     observedAmount: order.cryptoObservedAmount ? String(order.cryptoObservedAmount) : null,
     confirmations: order.cryptoConfirmations,
-    reason: order.cryptoPaymentReason
+    reason: order.cryptoPaymentReason,
+    confirmedAt: order.cryptoConfirmedAt?.toISOString() ?? null,
+    lastCheckedAt: order.cryptoLastCheckedAt?.toISOString() ?? null
   };
 }
 async function recordCryptoPaymentVerification(order, attemptId, txHash, applyOrderStatus) {
@@ -98429,7 +98431,23 @@ router47.get("/orders/:ref/crypto-payment", async (req, res) => {
     res.status(404).json({ error: "Crypto payment not found" });
     return;
   }
-  res.json({ orderId: order.id, orderNumber: order.orderNumber, ...details });
+  const items = await db.select({
+    productName: orderItemsTable.productName,
+    quantity: orderItemsTable.quantity
+  }).from(orderItemsTable).where(eq(orderItemsTable.orderId, order.id));
+  res.json({
+    orderId: order.id,
+    orderNumber: order.orderNumber,
+    ...details,
+    order: {
+      orderNumber: order.orderNumber,
+      status: order.status,
+      totalGbp: Number(order.totalGbp),
+      shippingMethod: order.shippingMethod,
+      createdAt: order.createdAt.toISOString(),
+      items
+    }
+  });
 });
 router47.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
