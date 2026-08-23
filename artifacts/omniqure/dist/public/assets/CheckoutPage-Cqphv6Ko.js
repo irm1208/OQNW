@@ -1,0 +1,1 @@
+import{r}from"./vendor-react-Bj9VB9s6.js";import{d as e}from"./index-CJmf6Qgc.js";import{u as o}from"./useSEO-BvZGKjAw.js";import"./vendor-pdf-CNF4ElAv.js";import"./vendor-query-7sjfPW3Y.js";import"./vendor-radix-L1KsVQW9.js";function p(){o({title:"Checkout",noIndex:!0});const[,t]=e();return r.useEffect(()=>{t("/cart",{replace:!0})},[t]),null}export{p as default};
