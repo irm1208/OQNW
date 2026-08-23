@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, ExternalLink } from "lucide-react";
 
 interface JanoshikReportModalProps {
@@ -19,6 +20,11 @@ export default function JanoshikReportModal({
   onClose,
 }: JanoshikReportModalProps) {
 
+  // Portal target — evaluated lazily so it only runs in the browser
+  const [portalTarget] = useState<Element | null>(() =>
+    typeof document !== "undefined" ? document.body : null
+  );
+
   // Close on Escape
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -33,7 +39,9 @@ export default function JanoshikReportModal({
     return () => { document.body.style.overflow = prev; };
   }, []);
 
-  return (
+  if (!portalTarget) return null;
+
+  return createPortal(
     <div
       style={{
         position: "fixed", inset: 0, zIndex: 9999,
@@ -72,12 +80,18 @@ export default function JanoshikReportModal({
           </button>
         </div>
 
-        {/* Report image — scales to fit, no scroll */}
-        <div style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "#F9FAFB", padding: "8px" }}>
+        {/* Report image — explicit calc height so it never scrolls */}
+        <div style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "#F9FAFB", padding: "8px", overflow: "hidden" }}>
           <img
             src={image}
             alt={`Janoshik test report #${taskNumber} for ${productName}`}
-            style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", display: "block", borderRadius: "6px" }}
+            style={{
+              maxWidth: "100%",
+              height: "calc(90vh - 130px)",
+              objectFit: "contain",
+              display: "block",
+              borderRadius: "6px",
+            }}
           />
         </div>
 
@@ -104,6 +118,7 @@ export default function JanoshikReportModal({
           </a>
         </div>
       </div>
-    </div>
+    </div>,
+    portalTarget
   );
 }
