@@ -479,12 +479,21 @@ export default function ProductPage() {
                       <div className="flex items-center gap-2 flex-shrink-0">
                         <button
                           onClick={() => setShowJanoshikModal(true)}
-                          className="flex items-center gap-2 font-bold rounded-xl transition-opacity hover:opacity-90"
-                          style={{ height: "38px", padding: "0 14px", backgroundColor: "#fff", color: "#1240A0", border: "1.5px solid #1240A0", cursor: "pointer", fontSize: "12px" }}
+                          className="flex items-center gap-1.5 font-bold rounded-xl transition-opacity hover:opacity-90"
+                          style={{ height: "36px", padding: "0 12px", backgroundColor: "#fff", color: "#1240A0", border: "1.5px solid #1240A0", cursor: "pointer", fontSize: "12px" }}
                         >
-                          <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "16px", width: "auto", borderRadius: "2px", display: "block" }} />
-                          Report
+                          Quick View
                         </button>
+                        <a
+                          href={jd.verifyUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 font-bold rounded-xl transition-opacity hover:opacity-90"
+                          style={{ height: "36px", padding: "0 12px", backgroundColor: "#1240A0", color: "#fff", border: "1.5px solid #1240A0", textDecoration: "none", fontSize: "12px", display: "flex", alignItems: "center" }}
+                        >
+                          <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "14px", width: "auto", borderRadius: "2px", display: "block", filter: "brightness(0) invert(1)" }} />
+                          Verify ↗
+                        </a>
                       </div>
                     )}
                   </div>
