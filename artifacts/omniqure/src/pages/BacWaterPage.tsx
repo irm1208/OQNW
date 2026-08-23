@@ -7,14 +7,14 @@ import type { Product } from "@/data/products";
 
 const SIZES = [
   {
-    label: "3ml",
-    ref: "BW-03-ML",
+    label: "30ml",
+    ref: "BW-30-ML",
     price: 4.99,
-    id: "bw-3ml",
-    name: "Bacteriostatic Water 3ml",
-    slug: "bacteriostatic-water-3ml",
+    id: "bw-30ml",
+    name: "Bacteriostatic Water 30ml",
+    slug: "bacteriostatic-water-30ml",
     category: "Accessories",
-    image: "/bac-water-3ml.webp",
+    image: "/bac-water-30ml.webp",
   },
   {
     label: "10ml",
@@ -38,7 +38,7 @@ const FEATURES = [
 export default function BacWaterPage() {
   useSEO({
     title: "Bacteriostatic Water for Peptide Reconstitution",
-    description: "High-quality bacteriostatic water (BAC water) for peptide reconstitution. Available in 3ml and 10ml vials. Sterile, 0.9% benzyl alcohol preserved. Ships with all OmniQure peptide orders.",
+    description: "High-quality bacteriostatic water (BAC water) for peptide reconstitution. Available in 30ml and 10ml vials. Sterile, 0.9% benzyl alcohol preserved. Ships with all OmniQure peptide orders.",
     canonicalPath: "/bac-water",
   });
   const [selectedIdx, setSelectedIdx] = useState(0);
