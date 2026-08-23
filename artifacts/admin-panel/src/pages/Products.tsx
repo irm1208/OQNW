@@ -5,6 +5,7 @@ import {
   useCreateCatalogProduct,
   useUpdateCatalogProduct,
   useDeleteCatalogProduct,
+  useDisableCatalogProductsWithoutJanoshikReport,
   useListAdminProducts,
   getListAdminProductsQueryKey,
   useUpdateProductInventory,
@@ -143,6 +144,7 @@ function CatalogTab() {
   const [editingProduct, setEditingProduct] = useState<CatalogProduct | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<CatalogProduct | null>(null);
+  const [bulkDisableOpen, setBulkDisableOpen] = useState(false);
   const [form, setForm] = useState<ProductFormData>(emptyForm());
   const [saving, setSaving] = useState(false);
 
@@ -158,6 +160,7 @@ function CatalogTab() {
   const createProduct = useCreateCatalogProduct();
   const updateProduct = useUpdateCatalogProduct();
   const deleteProduct = useDeleteCatalogProduct();
+  const disableWithoutReport = useDisableCatalogProductsWithoutJanoshikReport();
 
   const invalidate = () =>
     queryClient.invalidateQueries({ queryKey: ["/api/admin/catalog"] });
@@ -260,6 +263,21 @@ function CatalogTab() {
     }
   }
 
+  async function handleBulkDisableWithoutReport() {
+    try {
+      const result = await disableWithoutReport.mutateAsync();
+      await invalidate();
+      setBulkDisableOpen(false);
+      if (result.disabledCount === 0) {
+        toast.success("All products already have a Janoshik report or are disabled");
+      } else {
+        toast.success(`Disabled ${result.disabledCount} product${result.disabledCount === 1 ? "" : "s"} without a Janoshik report`);
+      }
+    } catch {
+      toast.error("Failed to disable products without Janoshik reports");
+    }
+  }
+
   const isDialogOpen = isCreating || editingProduct !== null;
 
   return (
@@ -288,10 +306,21 @@ function CatalogTab() {
             </SelectContent>
           </Select>
         </div>
-        <Button onClick={openCreate} className="shrink-0">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Product
-        </Button>
+        <div className="flex flex-wrap justify-end gap-2 shrink-0">
+          <Button
+            variant="outline"
+            onClick={() => setBulkDisableOpen(true)}
+            disabled={disableWithoutReport.isPending}
+            className="text-destructive border-destructive/30 hover:bg-destructive/5"
+          >
+            {disableWithoutReport.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <EyeOff className="w-4 h-4 mr-2" />}
+            Disable Without Report
+          </Button>
+          <Button onClick={openCreate}>
+            <Plus className="w-4 h-4 mr-2" />
+            Add Product
+          </Button>
+        </div>
       </div>
 
       <div className="border rounded-md bg-card">
@@ -302,6 +331,7 @@ function CatalogTab() {
               <TableHead>Product</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Price</TableHead>
+              <TableHead>Janoshik</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -309,13 +339,13 @@ function CatalogTab() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center">
+                <TableCell colSpan={7} className="h-24 text-center">
                   <Loader2 className="w-6 h-6 animate-spin text-primary mx-auto" />
                 </TableCell>
               </TableRow>
             ) : products?.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
                   No products found.
                 </TableCell>
               </TableRow>
@@ -336,6 +366,13 @@ function CatalogTab() {
                   <TableCell className="text-sm text-muted-foreground">{product.category}</TableCell>
                   <TableCell className="text-sm font-medium">
                     {product.priceGbp != null ? `£${Number(product.priceGbp).toFixed(2)}` : <span className="text-muted-foreground">—</span>}
+                  </TableCell>
+                  <TableCell>
+                    {product.hasJanoshikReport ? (
+                      <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">Verified</Badge>
+                    ) : (
+                      <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200">Missing</Badge>
+                    )}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
@@ -385,6 +422,30 @@ function CatalogTab() {
           </TableBody>
         </Table>
       </div>
+
+      <AlertDialog open={bulkDisableOpen} onOpenChange={setBulkDisableOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Disable products without a Janoshik report?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will hide every currently published peptide that is not linked to a published,
+              verifiable Janoshik report. Existing orders are not changed, and you can re-enable
+              products individually later.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={disableWithoutReport.isPending}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleBulkDisableWithoutReport}
+              disabled={disableWithoutReport.isPending}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {disableWithoutReport.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              Disable Products
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Create / Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={open => { if (!open) closeDialog(); }}>

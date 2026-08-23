@@ -484,6 +484,7 @@ export const ListCatalogProductsResponseItem = zod.object({
   slug: zod.string(),
   name: zod.string(),
   category: zod.string(),
+  hasJanoshikReport: zod.boolean(),
   priceGbp: zod.number().nullish(),
   shortDescription: zod.string().nullish(),
   description: zod.string().nullish(),
@@ -535,11 +536,23 @@ export const CreateCatalogProductBody = zod.object({
   halfLife: zod.string().optional(),
   coaUrl: zod.string().optional(),
   msImageUrl: zod.string().optional(),
-  seoTitle: zod.string().optional(),
-  seoDescription: zod.string().optional(),
   isPublished: zod.boolean().optional(),
   isFeatured: zod.boolean().optional(),
   sortOrder: zod.number().optional(),
+});
+
+/**
+ * @summary Disable catalog products without a Janoshik report
+ */
+export const DisableCatalogProductsWithoutJanoshikReportResponse = zod.object({
+  disabledCount: zod.number(),
+  disabledProducts: zod.array(
+    zod.object({
+      id: zod.number(),
+      slug: zod.string(),
+      name: zod.string(),
+    }),
+  ),
 });
 
 /**
@@ -554,6 +567,7 @@ export const GetCatalogProductResponse = zod.object({
   slug: zod.string(),
   name: zod.string(),
   category: zod.string(),
+  hasJanoshikReport: zod.boolean(),
   priceGbp: zod.number().nullish(),
   shortDescription: zod.string().nullish(),
   description: zod.string().nullish(),
@@ -606,8 +620,6 @@ export const UpdateCatalogProductBody = zod.object({
   halfLife: zod.string().nullish(),
   coaUrl: zod.string().nullish(),
   msImageUrl: zod.string().nullish(),
-  seoTitle: zod.string().nullish(),
-  seoDescription: zod.string().nullish(),
   isPublished: zod.boolean().optional(),
   isFeatured: zod.boolean().optional(),
   sortOrder: zod.number().optional(),
@@ -618,6 +630,7 @@ export const UpdateCatalogProductResponse = zod.object({
   slug: zod.string(),
   name: zod.string(),
   category: zod.string(),
+  hasJanoshikReport: zod.boolean(),
   priceGbp: zod.number().nullish(),
   shortDescription: zod.string().nullish(),
   description: zod.string().nullish(),

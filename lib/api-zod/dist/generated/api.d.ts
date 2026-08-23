@@ -1281,6 +1281,7 @@ export declare const ListCatalogProductsResponseItem: zod.ZodObject<{
     slug: zod.ZodString;
     name: zod.ZodString;
     category: zod.ZodString;
+    hasJanoshikReport: zod.ZodBoolean;
     priceGbp: zod.ZodOptional<zod.ZodNullable<zod.ZodNumber>>;
     shortDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     description: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
@@ -1312,6 +1313,7 @@ export declare const ListCatalogProductsResponseItem: zod.ZodObject<{
     isPublished: boolean;
     slug: string;
     name: string;
+    hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
     priceGbp?: number | null | undefined;
@@ -1340,6 +1342,7 @@ export declare const ListCatalogProductsResponseItem: zod.ZodObject<{
     isPublished: boolean;
     slug: string;
     name: string;
+    hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
     priceGbp?: number | null | undefined;
@@ -1366,6 +1369,7 @@ export declare const ListCatalogProductsResponse: zod.ZodArray<zod.ZodObject<{
     slug: zod.ZodString;
     name: zod.ZodString;
     category: zod.ZodString;
+    hasJanoshikReport: zod.ZodBoolean;
     priceGbp: zod.ZodOptional<zod.ZodNullable<zod.ZodNumber>>;
     shortDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     description: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
@@ -1397,6 +1401,7 @@ export declare const ListCatalogProductsResponse: zod.ZodArray<zod.ZodObject<{
     isPublished: boolean;
     slug: string;
     name: string;
+    hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
     priceGbp?: number | null | undefined;
@@ -1425,6 +1430,7 @@ export declare const ListCatalogProductsResponse: zod.ZodArray<zod.ZodObject<{
     isPublished: boolean;
     slug: string;
     name: string;
+    hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
     priceGbp?: number | null | undefined;
@@ -1469,8 +1475,6 @@ export declare const CreateCatalogProductBody: zod.ZodObject<{
     halfLife: zod.ZodOptional<zod.ZodString>;
     coaUrl: zod.ZodOptional<zod.ZodString>;
     msImageUrl: zod.ZodOptional<zod.ZodString>;
-    seoTitle: zod.ZodOptional<zod.ZodString>;
-    seoDescription: zod.ZodOptional<zod.ZodString>;
     isPublished: zod.ZodOptional<zod.ZodBoolean>;
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
     sortOrder: zod.ZodOptional<zod.ZodNumber>;
@@ -1495,8 +1499,6 @@ export declare const CreateCatalogProductBody: zod.ZodObject<{
     halfLife?: string | undefined;
     coaUrl?: string | undefined;
     msImageUrl?: string | undefined;
-    seoTitle?: string | undefined;
-    seoDescription?: string | undefined;
     isFeatured?: boolean | undefined;
     sortOrder?: number | undefined;
 }, {
@@ -1520,10 +1522,41 @@ export declare const CreateCatalogProductBody: zod.ZodObject<{
     halfLife?: string | undefined;
     coaUrl?: string | undefined;
     msImageUrl?: string | undefined;
-    seoTitle?: string | undefined;
-    seoDescription?: string | undefined;
     isFeatured?: boolean | undefined;
     sortOrder?: number | undefined;
+}>;
+/**
+ * @summary Disable catalog products without a Janoshik report
+ */
+export declare const DisableCatalogProductsWithoutJanoshikReportResponse: zod.ZodObject<{
+    disabledCount: zod.ZodNumber;
+    disabledProducts: zod.ZodArray<zod.ZodObject<{
+        id: zod.ZodNumber;
+        slug: zod.ZodString;
+        name: zod.ZodString;
+    }, "strip", zod.ZodTypeAny, {
+        id: number;
+        slug: string;
+        name: string;
+    }, {
+        id: number;
+        slug: string;
+        name: string;
+    }>, "many">;
+}, "strip", zod.ZodTypeAny, {
+    disabledCount: number;
+    disabledProducts: {
+        id: number;
+        slug: string;
+        name: string;
+    }[];
+}, {
+    disabledCount: number;
+    disabledProducts: {
+        id: number;
+        slug: string;
+        name: string;
+    }[];
 }>;
 /**
  * @summary Get a single catalog product
@@ -1540,6 +1573,7 @@ export declare const GetCatalogProductResponse: zod.ZodObject<{
     slug: zod.ZodString;
     name: zod.ZodString;
     category: zod.ZodString;
+    hasJanoshikReport: zod.ZodBoolean;
     priceGbp: zod.ZodOptional<zod.ZodNullable<zod.ZodNumber>>;
     shortDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     description: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
@@ -1571,6 +1605,7 @@ export declare const GetCatalogProductResponse: zod.ZodObject<{
     isPublished: boolean;
     slug: string;
     name: string;
+    hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
     priceGbp?: number | null | undefined;
@@ -1599,6 +1634,7 @@ export declare const GetCatalogProductResponse: zod.ZodObject<{
     isPublished: boolean;
     slug: string;
     name: string;
+    hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
     priceGbp?: number | null | undefined;
@@ -1650,8 +1686,6 @@ export declare const UpdateCatalogProductBody: zod.ZodObject<{
     halfLife: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     coaUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     msImageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    seoTitle: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isPublished: zod.ZodOptional<zod.ZodBoolean>;
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
     sortOrder: zod.ZodOptional<zod.ZodNumber>;
@@ -1676,8 +1710,6 @@ export declare const UpdateCatalogProductBody: zod.ZodObject<{
     halfLife?: string | null | undefined;
     coaUrl?: string | null | undefined;
     msImageUrl?: string | null | undefined;
-    seoTitle?: string | null | undefined;
-    seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
     sortOrder?: number | undefined;
 }, {
@@ -1701,8 +1733,6 @@ export declare const UpdateCatalogProductBody: zod.ZodObject<{
     halfLife?: string | null | undefined;
     coaUrl?: string | null | undefined;
     msImageUrl?: string | null | undefined;
-    seoTitle?: string | null | undefined;
-    seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
     sortOrder?: number | undefined;
 }>;
@@ -1711,6 +1741,7 @@ export declare const UpdateCatalogProductResponse: zod.ZodObject<{
     slug: zod.ZodString;
     name: zod.ZodString;
     category: zod.ZodString;
+    hasJanoshikReport: zod.ZodBoolean;
     priceGbp: zod.ZodOptional<zod.ZodNullable<zod.ZodNumber>>;
     shortDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     description: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
@@ -1742,6 +1773,7 @@ export declare const UpdateCatalogProductResponse: zod.ZodObject<{
     isPublished: boolean;
     slug: string;
     name: string;
+    hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
     priceGbp?: number | null | undefined;
@@ -1770,6 +1802,7 @@ export declare const UpdateCatalogProductResponse: zod.ZodObject<{
     isPublished: boolean;
     slug: string;
     name: string;
+    hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
     priceGbp?: number | null | undefined;

@@ -573,6 +573,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiError"
 
+  /admin/catalog/disable-without-janoshik-report:
+    post:
+      operationId: disableCatalogProductsWithoutJanoshikReport
+      tags: [admin-catalog]
+      summary: Disable catalog products without a Janoshik report
+      responses:
+        "200":
+          description: Products disabled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisableCatalogProductsWithoutJanoshikReportResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
   /admin/catalog/{id}:
     get:
       operationId: getCatalogProduct
@@ -1216,7 +1235,7 @@ components:
     # ── CATALOG ───────────────────────────────────────────────────────────────
     CatalogProduct:
       type: object
-      required: [id, slug, name, category, isPublished, isFeatured, sortOrder, createdAt, updatedAt]
+      required: [id, slug, name, category, hasJanoshikReport, isPublished, isFeatured, sortOrder, createdAt, updatedAt]
       properties:
         id:
           type: integer
@@ -1226,6 +1245,8 @@ components:
           type: string
         category:
           type: string
+        hasJanoshikReport:
+          type: boolean
         priceGbp:
           type: ["number", "null"]
         shortDescription:
@@ -1258,6 +1279,10 @@ components:
           type: ["string", "null"]
         msImageUrl:
           type: ["string", "null"]
+        seoTitle:
+          type: ["string", "null"]
+        seoDescription:
+          type: ["string", "null"]
         isPublished:
           type: boolean
         isFeatured:
@@ -1270,6 +1295,25 @@ components:
         updatedAt:
           type: string
           format: date-time
+
+    DisableCatalogProductsWithoutJanoshikReportResponse:
+      type: object
+      required: [disabledCount, disabledProducts]
+      properties:
+        disabledCount:
+          type: integer
+        disabledProducts:
+          type: array
+          items:
+            type: object
+            required: [id, slug, name]
+            properties:
+              id:
+                type: integer
+              slug:
+                type: string
+              name:
+                type: string
 
     CatalogProductInput:
       type: object

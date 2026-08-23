@@ -28,6 +28,7 @@ import type {
   CustomerDetail,
   CustomerList,
   DashboardStats,
+  DisableCatalogProductsWithoutJanoshikReportResponse,
   DiscountCode,
   DiscountCodeInput,
   DiscountCodePatch,
@@ -2108,6 +2109,94 @@ export const useCreateCatalogProduct = <
   TContext
 > => {
   return useMutation(getCreateCatalogProductMutationOptions(options));
+};
+
+/**
+ * @summary Disable catalog products without a Janoshik report
+ */
+export const getDisableCatalogProductsWithoutJanoshikReportUrl = () => {
+  return `/api/admin/catalog/disable-without-janoshik-report`;
+};
+
+export const disableCatalogProductsWithoutJanoshikReport = async (
+  options?: RequestInit,
+): Promise<DisableCatalogProductsWithoutJanoshikReportResponse> => {
+  return customFetch<DisableCatalogProductsWithoutJanoshikReportResponse>(
+    getDisableCatalogProductsWithoutJanoshikReportUrl(),
+    {
+      ...options,
+      method: "POST",
+    },
+  );
+};
+
+export const getDisableCatalogProductsWithoutJanoshikReportMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof disableCatalogProductsWithoutJanoshikReport>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof disableCatalogProductsWithoutJanoshikReport>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["disableCatalogProductsWithoutJanoshikReport"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof disableCatalogProductsWithoutJanoshikReport>>,
+    void
+  > = () => {
+    return disableCatalogProductsWithoutJanoshikReport(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DisableCatalogProductsWithoutJanoshikReportMutationResult =
+  NonNullable<
+    Awaited<ReturnType<typeof disableCatalogProductsWithoutJanoshikReport>>
+  >;
+
+export type DisableCatalogProductsWithoutJanoshikReportMutationError =
+  ErrorType<ApiError>;
+
+/**
+ * @summary Disable catalog products without a Janoshik report
+ */
+export const useDisableCatalogProductsWithoutJanoshikReport = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof disableCatalogProductsWithoutJanoshikReport>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof disableCatalogProductsWithoutJanoshikReport>>,
+  TError,
+  void,
+  TContext
+> => {
+  return useMutation(
+    getDisableCatalogProductsWithoutJanoshikReportMutationOptions(options),
+  );
 };
 
 /**

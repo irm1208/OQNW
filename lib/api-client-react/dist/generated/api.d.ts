@@ -1,5 +1,5 @@
 import type { QueryKey, UseMutationOptions, UseMutationResult, UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import type { AdminLoginInput, AdminProduct, AdminSession, ApiError, CatalogProduct, CatalogProductInput, CatalogProductPatch, CategoryRevenue, CustomerDetail, CustomerList, DashboardStats, DiscountCode, DiscountCodeInput, DiscountCodePatch, GetNewCustomersChartParams, GetRevenueChartParams, HealthStatus, InventoryUpdate, ListAdminCustomersParams, ListAdminOrdersParams, ListAdminProductsParams, ListCatalogProductsParams, ListPublicProductsParams, NewCustomerDataPoint, Order, OrderDetail, OrderList, OrderStatusCount, OrderUpdate, PublicProduct, PublicProductDetail, RevenueDataPoint, TopProduct, VisibilityUpdate } from "./api.schemas";
+import type { AdminLoginInput, AdminProduct, AdminSession, ApiError, CatalogProduct, CatalogProductInput, CatalogProductPatch, CategoryRevenue, CustomerDetail, CustomerList, DashboardStats, DisableCatalogProductsWithoutJanoshikReportResponse, DiscountCode, DiscountCodeInput, DiscountCodePatch, GetNewCustomersChartParams, GetRevenueChartParams, HealthStatus, InventoryUpdate, ListAdminCustomersParams, ListAdminOrdersParams, ListAdminProductsParams, ListCatalogProductsParams, ListPublicProductsParams, NewCustomerDataPoint, Order, OrderDetail, OrderList, OrderStatusCount, OrderUpdate, PublicProduct, PublicProductDetail, RevenueDataPoint, TopProduct, VisibilityUpdate } from "./api.schemas";
 import { customFetch } from "../custom-fetch";
 import type { ErrorType, BodyType } from "../custom-fetch";
 type AwaitedInput<T> = PromiseLike<T> | T;
@@ -599,6 +599,24 @@ export declare const useCreateCatalogProduct: <TError = ErrorType<ApiError>, TCo
 }) => UseMutationResult<Awaited<ReturnType<typeof createCatalogProduct>>, TError, {
     data: BodyType<CatalogProductInput>;
 }, TContext>;
+/**
+ * @summary Disable catalog products without a Janoshik report
+ */
+export declare const getDisableCatalogProductsWithoutJanoshikReportUrl: () => string;
+export declare const disableCatalogProductsWithoutJanoshikReport: (options?: RequestInit) => Promise<DisableCatalogProductsWithoutJanoshikReportResponse>;
+export declare const getDisableCatalogProductsWithoutJanoshikReportMutationOptions: <TError = ErrorType<ApiError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof disableCatalogProductsWithoutJanoshikReport>>, TError, void, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationOptions<Awaited<ReturnType<typeof disableCatalogProductsWithoutJanoshikReport>>, TError, void, TContext>;
+export type DisableCatalogProductsWithoutJanoshikReportMutationResult = NonNullable<Awaited<ReturnType<typeof disableCatalogProductsWithoutJanoshikReport>>>;
+export type DisableCatalogProductsWithoutJanoshikReportMutationError = ErrorType<ApiError>;
+/**
+ * @summary Disable catalog products without a Janoshik report
+ */
+export declare const useDisableCatalogProductsWithoutJanoshikReport: <TError = ErrorType<ApiError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof disableCatalogProductsWithoutJanoshikReport>>, TError, void, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationResult<Awaited<ReturnType<typeof disableCatalogProductsWithoutJanoshikReport>>, TError, void, TContext>;
 /**
  * @summary Get a single catalog product
  */

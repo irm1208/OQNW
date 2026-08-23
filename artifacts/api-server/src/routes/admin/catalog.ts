@@ -2,9 +2,10 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { productsCatalogTable, productsInventoryTable } from "@workspace/db";
-import { eq, ilike, and } from "drizzle-orm";
+import { eq, ilike, and, ne, notInArray } from "drizzle-orm";
 import { seedProductsCatalog } from "../../lib/seed-catalog";
 import { seedReviews } from "../../lib/seed-reviews";
+import { hasJanoshikReport, JANOSHIK_REPORTED_PRODUCT_SLUGS } from "../../lib/janoshikReports";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -55,6 +56,7 @@ function catalogToResponse(p: typeof productsCatalogTable.$inferSelect) {
     msImageUrl: p.msImageUrl ?? null,
     seoTitle: p.seoTitle ?? null,
     seoDescription: p.seoDescription ?? null,
+    hasJanoshikReport: hasJanoshikReport(p.slug),
     isPublished: p.isPublished,
     isFeatured: p.isFeatured,
     sortOrder: p.sortOrder,
@@ -132,6 +134,35 @@ router.get("/admin/catalog", async (req: Request, res: Response): Promise<void> 
     res.status(200).json(products.map(catalogToResponse));
   } catch (err) {
     req.log.error({ err }, "Failed to list catalog products");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// POST /api/admin/catalog/disable-without-janoshik-report
+router.post("/admin/catalog/disable-without-janoshik-report", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    await ensureSeeded();
+    const disabled = await db
+      .update(productsCatalogTable)
+      .set({ isPublished: false })
+      .where(and(
+        eq(productsCatalogTable.isPublished, true),
+        ne(productsCatalogTable.category, "Accessories"),
+        notInArray(productsCatalogTable.slug, [...JANOSHIK_REPORTED_PRODUCT_SLUGS]),
+      ))
+      .returning({
+        id: productsCatalogTable.id,
+        slug: productsCatalogTable.slug,
+        name: productsCatalogTable.name,
+      });
+
+    res.status(200).json({
+      disabledCount: disabled.length,
+      disabledProducts: disabled,
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to disable products without Janoshik reports");
     res.status(500).json({ error: "Internal server error" });
   }
 });

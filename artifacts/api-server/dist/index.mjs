@@ -66806,6 +66806,7 @@ var ListCatalogProductsResponseItem = objectType({
   slug: stringType(),
   name: stringType(),
   category: stringType(),
+  hasJanoshikReport: booleanType(),
   priceGbp: numberType().nullish(),
   shortDescription: stringType().nullish(),
   description: stringType().nullish(),
@@ -66853,11 +66854,19 @@ var CreateCatalogProductBody = objectType({
   halfLife: stringType().optional(),
   coaUrl: stringType().optional(),
   msImageUrl: stringType().optional(),
-  seoTitle: stringType().optional(),
-  seoDescription: stringType().optional(),
   isPublished: booleanType().optional(),
   isFeatured: booleanType().optional(),
   sortOrder: numberType().optional()
+});
+var DisableCatalogProductsWithoutJanoshikReportResponse = objectType({
+  disabledCount: numberType(),
+  disabledProducts: arrayType(
+    objectType({
+      id: numberType(),
+      slug: stringType(),
+      name: stringType()
+    })
+  )
 });
 var GetCatalogProductParams = objectType({
   id: coerce.number()
@@ -66867,6 +66876,7 @@ var GetCatalogProductResponse = objectType({
   slug: stringType(),
   name: stringType(),
   category: stringType(),
+  hasJanoshikReport: booleanType(),
   priceGbp: numberType().nullish(),
   shortDescription: stringType().nullish(),
   description: stringType().nullish(),
@@ -66914,8 +66924,6 @@ var UpdateCatalogProductBody = objectType({
   halfLife: stringType().nullish(),
   coaUrl: stringType().nullish(),
   msImageUrl: stringType().nullish(),
-  seoTitle: stringType().nullish(),
-  seoDescription: stringType().nullish(),
   isPublished: booleanType().optional(),
   isFeatured: booleanType().optional(),
   sortOrder: numberType().optional()
@@ -66925,6 +66933,7 @@ var UpdateCatalogProductResponse = objectType({
   slug: stringType(),
   name: stringType(),
   category: stringType(),
+  hasJanoshikReport: booleanType(),
   priceGbp: numberType().nullish(),
   shortDescription: stringType().nullish(),
   description: stringType().nullish(),
@@ -90486,6 +90495,28 @@ async function seedReviews() {
   }
 }
 
+// src/lib/janoshikReports.ts
+var JANOSHIK_REPORTED_PRODUCT_SLUGS = [
+  "bpc-157-10mg",
+  "tb-500-10mg",
+  "tesamorelin-20mg",
+  "semax-10mg",
+  "selank-10mg",
+  "ghk-cu-100mg",
+  "melanotan-2-10mg",
+  "kpv-10mg",
+  "cjc-1295-no-dac-ipamorelin-5mg",
+  "bpc-157-tb-500-blend-10mg",
+  "bpc-157-tb-500-blend-20mg",
+  "tirzepatide-30mg",
+  "cagrilintide-10mg",
+  "retatrutide-40mg"
+];
+var janoshikReportedProductSlugs = new Set(JANOSHIK_REPORTED_PRODUCT_SLUGS);
+function hasJanoshikReport(slug) {
+  return janoshikReportedProductSlugs.has(slug);
+}
+
 // src/routes/admin/catalog.ts
 var import_multer = __toESM(require_multer(), 1);
 import path from "path";
@@ -90532,6 +90563,7 @@ function catalogToResponse(p) {
     msImageUrl: p.msImageUrl ?? null,
     seoTitle: p.seoTitle ?? null,
     seoDescription: p.seoDescription ?? null,
+    hasJanoshikReport: hasJanoshikReport(p.slug),
     isPublished: p.isPublished,
     isFeatured: p.isFeatured,
     sortOrder: p.sortOrder,
@@ -90577,6 +90609,28 @@ router10.get("/admin/catalog", async (req, res) => {
     res.status(200).json(products.map(catalogToResponse));
   } catch (err) {
     req.log.error({ err }, "Failed to list catalog products");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+router10.post("/admin/catalog/disable-without-janoshik-report", async (req, res) => {
+  if (!requireAdmin8(req, res)) return;
+  try {
+    await ensureSeeded();
+    const disabled = await db.update(productsCatalogTable).set({ isPublished: false }).where(and(
+      eq(productsCatalogTable.isPublished, true),
+      ne(productsCatalogTable.category, "Accessories"),
+      notInArray(productsCatalogTable.slug, [...JANOSHIK_REPORTED_PRODUCT_SLUGS])
+    )).returning({
+      id: productsCatalogTable.id,
+      slug: productsCatalogTable.slug,
+      name: productsCatalogTable.name
+    });
+    res.status(200).json({
+      disabledCount: disabled.length,
+      disabledProducts: disabled
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to disable products without Janoshik reports");
     res.status(500).json({ error: "Internal server error" });
   }
 });
