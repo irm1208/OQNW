@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef, type ReactNode } from "react";
 import type { Product } from "@/data/products";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
+import { useProducts } from "@/context/ProductsContext";
 import { trackAddToCart } from "@/lib/pixels";
 import { toast } from "@/hooks/use-toast";
 
@@ -97,7 +98,18 @@ function loadFromStorage(): CartItem[] {
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(loadFromStorage);
   const { customer } = useCustomerAuth();
+  const { products } = useProducts();
   const syncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setItems(previous => {
+      const next = previous.map(item => {
+        const latestProduct = products.find(product => product.id === item.product.id);
+        return latestProduct ? { ...item, product: latestProduct } : item;
+      });
+      return next.some((item, index) => item.product !== previous[index].product) ? next : previous;
+    });
+  }, [products]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
@@ -131,6 +143,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addToCart = useCallback(
     (product: Product, qty = 1) => {
+      if (product.stockLevel === 0) {
+        toast({
+          title: "Sold out",
+          description: `${product.name} is currently unavailable.`,
+        });
+        return;
+      }
       trackAddToCart({ id: product.id, name: product.name, price: product.price ?? null, category: product.category }, qty);
       setItems((prev) => {
         const before = computeBundleFreebies(prev);
@@ -186,6 +205,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     (productId: string, qty: number) => {
       if (qty < 1) return;
       setItems((prev) => {
+        const item = prev.find(cartItem => cartItem.product.id === productId);
+        if (item?.product.stockLevel !== undefined && qty > item.product.stockLevel) {
+          toast({
+            title: "Only limited stock is available",
+            description: `Only ${item.product.stockLevel} of ${item.product.name} remain in stock.`,
+          });
+          return prev;
+        }
         const next = prev.map((i) =>
           i.product.id === productId ? { ...i, quantity: qty } : i
         );

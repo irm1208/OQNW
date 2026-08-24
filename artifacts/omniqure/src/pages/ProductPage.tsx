@@ -290,7 +290,7 @@ export default function ProductPage() {
   ] as const;
 
   const handleAddToCart = () => {
-    if (!product) return;
+    if (!product || product.stockLevel === 0) return;
     addToCart(product, quantity);
     if (bacWaterEnabled) {
       const bw = BAC_WATER_OPTIONS[bacWaterSizeIdx];
@@ -590,7 +590,7 @@ export default function ProductPage() {
                     className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
                     style={{ backgroundColor: "#FEF2F2", color: "#DC2626", border: "1px solid #FECACA" }}
                   >
-                    ✗ Out of Stock
+                    ✗ Sold Out
                   </span>
                 ) : product.stockLevel !== undefined && product.stockLevel <= 10 ? (
                   <span
@@ -745,7 +745,7 @@ export default function ProductPage() {
                   }}
                 >
                   <ShoppingCart size={16} />
-                  {product.stockLevel === 0 ? "Out of Stock" : added ? "✓ Added to Cart!" : "Add to Cart"}
+                  {product.stockLevel === 0 ? "Sold Out" : added ? "✓ Added to Cart!" : "Add to Cart"}
                 </button>
 
                 {/* Wishlist icon button */}

@@ -47,14 +47,16 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
   const selectedVariant = group.variants[selectedIdx];
   const productIdInt = parseInt(String(selectedVariant?.id ?? group.variants[0]?.id), 10);
   const cat = CATEGORY_COLORS[group.category] ?? BLUE;
-  const isSellingFast = group.variants.some(v => sellingFastSlugs.has(v.slug));
-  const isHotBuy = !isSellingFast && group.variants.some(v => hotBuySlugs.has(v.slug));
+  const isSoldOut = selectedVariant.stockLevel === 0;
+  const isSellingFast = !isSoldOut && group.variants.some(v => sellingFastSlugs.has(v.slug));
+  const isHotBuy = !isSoldOut && !isSellingFast && group.variants.some(v => hotBuySlugs.has(v.slug));
   const productUrl = `/product/${selectedVariant.id}`;
 
   const goToProduct = () => navigate(productUrl);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (isSoldOut) return;
     addToCart(selectedVariant, qty);
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
@@ -84,7 +86,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
       style={{ border: "none", transition: "border-color 0.2s, box-shadow 0.2s" }}
     >
       {/* Accent bar */}
-      <div style={{ height: "3px", background: cat.gradient, flexShrink: 0 }} />
+      <div style={{ height: "3px", background: isSoldOut ? "#CBD5E1" : cat.gradient, flexShrink: 0 }} />
 
       {/* Image — clickable to product page */}
       <div
@@ -122,6 +124,17 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           </div>
         )}
 
+        {isSoldOut && (
+          <div style={{
+            position: "absolute", top: "10px", left: "10px", zIndex: 10,
+            backgroundColor: "#DC2626", color: "#fff",
+            fontSize: "10px", fontWeight: 800, letterSpacing: "0.06em",
+            padding: "4px 9px", borderRadius: "8px", textTransform: "uppercase",
+          }}>
+            Sold Out
+          </div>
+        )}
+
         {/* Wishlist heart */}
         <button
           onClick={(e) => { e.stopPropagation(); void toggleWishlist(productIdInt); }}
@@ -150,12 +163,13 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           style={{
             width: "100%", height: "100%", objectFit: "contain", padding: "16px",
             transition: "transform 0.4s cubic-bezier(.22,.68,0,1.2)",
-            transform: imgHovered ? "scale(1.07)" : "scale(1)",
+            transform: imgHovered && !isSoldOut ? "scale(1.07)" : "scale(1)",
+            filter: isSoldOut ? "grayscale(0.45)" : "none",
             pointerEvents: "none",
           }}
         />
         {/* Hover overlay */}
-        <div style={{
+        {!isSoldOut && <div style={{
           position: "absolute", bottom: 0, left: 0, right: 0,
           height: imgHovered ? "56px" : "0px",
           background: `linear-gradient(to top, ${cat.color}F2, ${cat.color}99, transparent)`,
@@ -177,7 +191,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           >
             <Eye size={12} /> Quick View
           </button>
-        </div>
+        </div>}
       </div>
 
       {/* Info */}
@@ -220,7 +234,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
               padding: "2px 7px", borderRadius: "5px",
               display: "inline-flex", alignItems: "center", gap: "3px",
             }}>
-              ✗ Out of Stock
+              ✗ Sold Out
             </span>
           ) : selectedVariant.stockLevel !== undefined && selectedVariant.stockLevel <= 10 ? (
             <span style={{
@@ -319,12 +333,14 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
             <div className="card-qty">
               <button
                 onClick={e => { stopProp(e); setQty(q => Math.max(1, q - 1)); }}
+                disabled={isSoldOut}
                 onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = cat.color}
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
               >−</button>
               <span>{qty}</span>
               <button
-                onClick={e => { stopProp(e); setQty(q => q + 1); }}
+                onClick={e => { stopProp(e); if (!isSoldOut) setQty(q => q + 1); }}
+                disabled={isSoldOut}
                 onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = cat.color}
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
               >+</button>
@@ -332,18 +348,19 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
 
             <button
               onClick={handleAddToCart}
+                disabled={isSoldOut}
               className="card-cart-btn"
               style={{
-                backgroundColor: added ? "#059669" : "#1240A0",
-                color: "#fff",
-                cursor: "pointer",
+                backgroundColor: isSoldOut ? "#E2E8F0" : added ? "#059669" : "#1240A0",
+                color: isSoldOut ? "#94A3B8" : "#fff",
+                cursor: isSoldOut ? "not-allowed" : "pointer",
               }}
-              onMouseEnter={e => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1B5CB5"; }}
-              onMouseLeave={e => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0"; }}
+              onMouseEnter={e => { if (!isSoldOut && !added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1B5CB5"; }}
+              onMouseLeave={e => { if (!isSoldOut && !added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0"; }}
             >
               {added
                 ? <><CheckCircle2 size={14} /> Added!</>
-                : <><ShoppingCart size={14} /> Add to Cart</>
+                : isSoldOut ? "Sold Out" : <><ShoppingCart size={14} /> Add to Cart</>
               }
             </button>
           </div>

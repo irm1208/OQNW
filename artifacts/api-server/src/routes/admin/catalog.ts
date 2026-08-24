@@ -65,6 +65,25 @@ function catalogToResponse(p: typeof productsCatalogTable.$inferSelect) {
   };
 }
 
+async function syncInventoryProduct(product: typeof productsCatalogTable.$inferSelect) {
+  await db
+    .insert(productsInventoryTable)
+    .values({
+      productId: product.id,
+      productName: product.name,
+      productCategory: product.category,
+      productImage: product.imageUrl,
+    })
+    .onConflictDoUpdate({
+      target: productsInventoryTable.productId,
+      set: {
+        productName: product.name,
+        productCategory: product.category,
+        productImage: product.imageUrl,
+      },
+    });
+}
+
 type ProductBody = {
   slug?: unknown;
   name?: unknown;
@@ -220,6 +239,7 @@ router.post("/admin/catalog", async (req: Request, res: Response): Promise<void>
         sortOrder: isNum(body.sortOrder) ? body.sortOrder : 0,
       })
       .returning();
+    await syncInventoryProduct(created);
     res.status(201).json(catalogToResponse(created));
   } catch (err: unknown) {
     const pgErr = err as { code?: string };
@@ -278,6 +298,7 @@ router.patch("/admin/catalog/:id", async (req: Request, res: Response): Promise<
       .where(eq(productsCatalogTable.id, id))
       .returning();
     if (!updated) { res.status(404).json({ error: "Product not found" }); return; }
+    await syncInventoryProduct(updated);
     res.status(200).json(catalogToResponse(updated));
   } catch (err) {
     req.log.error({ err }, "Failed to update catalog product");

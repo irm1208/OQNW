@@ -143,7 +143,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               padding: "4px 10px", borderRadius: "8px",
               textTransform: "uppercase",
             }}>
-              Out of Stock
+              Sold Out
             </div>
           )}
           {isLowStock && (
@@ -221,7 +221,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 padding: "2px 7px", borderRadius: "5px",
                 display: "inline-flex", alignItems: "center", gap: "3px",
               }}>
-                ✗ Out of Stock
+                ✗ Sold Out
               </span>
             ) : isLowStock ? (
               <span style={{

@@ -90156,6 +90156,19 @@ async function seedProductsCatalog() {
         set: { priceGbp: values.priceGbp, name: values.name, category: values.category }
       }).returning({ id: productsCatalogTable.id });
       if (row) {
+        await db.insert(productsInventoryTable).values({
+          productId: row.id,
+          productName: values.name,
+          productCategory: values.category,
+          productImage: values.imageUrl
+        }).onConflictDoUpdate({
+          target: productsInventoryTable.productId,
+          set: {
+            productName: values.name,
+            productCategory: values.category,
+            productImage: values.imageUrl
+          }
+        });
         seeded2++;
       } else {
         updated++;
@@ -90571,6 +90584,21 @@ function catalogToResponse(p) {
     updatedAt: p.updatedAt.toISOString()
   };
 }
+async function syncInventoryProduct(product) {
+  await db.insert(productsInventoryTable).values({
+    productId: product.id,
+    productName: product.name,
+    productCategory: product.category,
+    productImage: product.imageUrl
+  }).onConflictDoUpdate({
+    target: productsInventoryTable.productId,
+    set: {
+      productName: product.name,
+      productCategory: product.category,
+      productImage: product.imageUrl
+    }
+  });
+}
 function isStr(v) {
   return typeof v === "string";
 }
@@ -90687,6 +90715,7 @@ router10.post("/admin/catalog", async (req, res) => {
       isFeatured: isBool(body.isFeatured) ? body.isFeatured : false,
       sortOrder: isNum(body.sortOrder) ? body.sortOrder : 0
     }).returning();
+    await syncInventoryProduct(created);
     res.status(201).json(catalogToResponse(created));
   } catch (err) {
     const pgErr = err;
@@ -90741,6 +90770,7 @@ router10.patch("/admin/catalog/:id", async (req, res) => {
       res.status(404).json({ error: "Product not found" });
       return;
     }
+    await syncInventoryProduct(updated);
     res.status(200).json(catalogToResponse(updated));
   } catch (err) {
     req.log.error({ err }, "Failed to update catalog product");

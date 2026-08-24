@@ -47,6 +47,10 @@ const CATEGORIES = [
   "Cellular Health",
 ];
 
+function notifyStorefrontCatalogUpdated() {
+  window.localStorage.setItem("omniqure:catalog-updated", String(Date.now()));
+}
+
 type ProductFormData = {
   name: string;
   slug: string;
@@ -179,10 +183,6 @@ function CatalogTab() {
 
   const invalidate = () =>
     queryClient.invalidateQueries({ queryKey: ["/api/admin/catalog"] });
-
-  function notifyStorefrontCatalogUpdated() {
-    window.localStorage.setItem("omniqure:catalog-updated", String(Date.now()));
-  }
 
   function openCreate() {
     setForm(emptyForm());
@@ -861,6 +861,7 @@ function InventoryTab() {
         queryClient.setQueryData(getListAdminProductsQueryKey(queryParams), (old: AdminProduct[]) =>
           old ? old.map(p => p.id === product.id ? { ...p, isPublished: checked } : p) : old
         );
+        notifyStorefrontCatalogUpdated();
       },
       onError: () => toast.error("Failed to update visibility"),
     });
@@ -875,6 +876,7 @@ function InventoryTab() {
         queryClient.setQueryData(getListAdminProductsQueryKey(queryParams), (old: AdminProduct[]) =>
           old ? old.map(p => p.id === product.id ? { ...p, stockLevel } : p) : old
         );
+        notifyStorefrontCatalogUpdated();
       },
       onError: () => toast.error("Failed to update stock"),
     });

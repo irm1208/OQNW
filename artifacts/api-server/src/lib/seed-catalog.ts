@@ -1,5 +1,5 @@
 import { db } from "@workspace/db";
-import { productsCatalogTable } from "@workspace/db";
+import { productsCatalogTable, productsInventoryTable } from "@workspace/db";
 
 // Individual-vial prices supplied in the OmniUK price sheet (February 2026).
 // Products not listed in that sheet retain their catalog price.
@@ -156,6 +156,22 @@ export async function seedProductsCatalog() {
         })
         .returning({ id: productsCatalogTable.id });
       if (row) {
+        await db
+          .insert(productsInventoryTable)
+          .values({
+            productId: row.id,
+            productName: values.name,
+            productCategory: values.category,
+            productImage: values.imageUrl,
+          })
+          .onConflictDoUpdate({
+            target: productsInventoryTable.productId,
+            set: {
+              productName: values.name,
+              productCategory: values.category,
+              productImage: values.imageUrl,
+            },
+          });
         seeded++;
       } else {
         updated++;

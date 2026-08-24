@@ -237,7 +237,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
               fontSize: "11px", fontWeight: 700, color: "#DC2626",
               background: "#FEF2F2", border: "1px solid #FECACA",
               padding: "4px 10px", borderRadius: "6px", alignSelf: "flex-start",
-            }}>✗ Out of Stock</span>
+            }}>✗ Sold Out</span>
           ) : isLow ? (
             <span style={{
               fontSize: "11px", fontWeight: 700, color: "#B45309",
@@ -302,7 +302,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
               {added
                 ? <><CheckCircle2 size={15} /> Added to Cart!</>
                 : isOos
-                  ? "Out of Stock"
+                  ? "Sold Out"
                   : <><ShoppingCart size={15} /> Add to Cart</>
               }
             </button>
