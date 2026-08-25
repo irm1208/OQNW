@@ -4,7 +4,7 @@ import { Link, useParams, useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
 import { isHiddenCategory } from "@/data/products";
 import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Loader2, Heart, Droplets, Gift, Sparkles, ExternalLink } from "lucide-react";
-import { janoshikData } from "@/data/janoshikData";
+import { janoshikDataBySlug } from "@/data/janoshikData";
 import JanoshikReportModal from "@/components/JanoshikReportModal";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -334,7 +334,7 @@ export default function ProductPage() {
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
       {/* Janoshik Report Modal */}
       {showJanoshikModal && (() => {
-        const jd = janoshikData[product.id];
+        const jd = janoshikDataBySlug[product.slug];
         return jd?.image && jd?.verifyUrl ? (
           <JanoshikReportModal
             taskNumber={jd.taskNumber ?? ""}
@@ -469,12 +469,10 @@ export default function ProductPage() {
                 ))}
               </div>
 
-              {/* Independent Lab Report — shows when Janoshik data exists (full public report or internal data) */}
+              {/* Independent Lab Report — only show a published Janoshik report */}
               {(() => {
-                const jd = janoshikData[product.id];
-                if (!jd?.purity && !jd?.image) return null;
-
-                const hasPublicReport = !!jd.image;
+                const jd = janoshikDataBySlug[product.slug];
+                if (!jd?.taskNumber || !jd.verifyUrl || !jd.image) return null;
 
                 return (
                   <div
@@ -490,20 +488,10 @@ export default function ProductPage() {
                       </div>
                       <div>
                         <p className="font-bold text-sm" style={{ color: "#1240A0" }}>Independent Lab Report</p>
-                        {hasPublicReport ? (
-                          <p className="text-xs" style={{ color: "#3B82F6" }}>Verified by Janoshik Analytical</p>
-                        ) : (
-                          <p className="text-xs" style={{ color: "#3B82F6" }}>
-                            Tested by Janoshik Analytical
-                            {jd.purity != null && <> · Purity <strong>{jd.purity.toFixed(2)}%</strong></>}
-                            {jd.lot && <> · Lot {jd.lot}</>}
-                            {jd.analysis && <> · {jd.analysis}</>}
-                          </p>
-                        )}
+                        <p className="text-xs" style={{ color: "#3B82F6" }}>Verified by Janoshik Analytical</p>
                       </div>
                     </div>
-                    {hasPublicReport && (
-                      <div style={{ display: "flex", gap: "6px", flexShrink: 0 }}>
+                    <div style={{ display: "flex", gap: "6px", flexShrink: 0 }}>
                         <button
                           onClick={() => setShowJanoshikModal(true)}
                           style={{
@@ -545,8 +533,7 @@ export default function ProductPage() {
                         >
                           Janoshik <ExternalLink size={11} />
                         </a>
-                      </div>
-                    )}
+                    </div>
                   </div>
                 );
               })()}

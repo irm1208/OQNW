@@ -183,3 +183,27 @@ export const janoshikData: Record<string, JanoshikResult> = {
   // ── CJC-1295 No DAC + Ipamorelin Blend ───────────────────────────────────
   "85": { actualMass: 22.85, lot: "C/I1010-0613",           received: "30 Jun 2026", analysis: "01 Jul 2026" },
 };
+
+/**
+ * Published report lookup for storefront products.
+ *
+ * Product IDs are not stable across catalogue imports, so product-page
+ * verification must be matched by slug. Only entries with a real task number,
+ * verification URL, and report image are included here.
+ */
+export const janoshikDataBySlug: Record<string, JanoshikResult> = {
+  "bpc-157-10mg": janoshikData["4"],
+  "tb-500-10mg": janoshikData["62"],
+  "tesamorelin-20mg": janoshikData["72"],
+  "semax-10mg": janoshikData["55"],
+  "selank-10mg": janoshikData["53"],
+  "ghk-cu-100mg": janoshikData["18"],
+  "melanotan-2-10mg": janoshikData["34"],
+  "kpv-10mg": janoshikData["31"],
+  "cjc-1295-no-dac-ipamorelin-5mg": janoshikData["74"],
+  "bpc-157-tb-500-blend-10mg": janoshikData["7"],
+  "bpc-157-tb-500-blend-20mg": janoshikData["7"],
+  "tirzepatide-30mg": janoshikData["78"],
+  "cagrilintide-10mg": janoshikData["10"],
+  "retatrutide-40mg": janoshikData["59"],
+};

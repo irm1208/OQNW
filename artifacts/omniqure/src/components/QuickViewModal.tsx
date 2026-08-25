@@ -10,6 +10,7 @@ import { useWishlist } from "@/context/WishlistContext";
 import { Heart } from "lucide-react";
 import { getPurityStr } from "@/utils/productPurity";
 import { productDetails } from "@/data/productDetails";
+import { janoshikDataBySlug } from "@/data/janoshikData";
 
 interface QuickViewModalProps {
   group: GroupedProduct;
@@ -30,6 +31,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
   const variant = group.variants[selectedIdx];
   const productIdInt = parseInt(String(variant?.id ?? group.variants[0]?.id), 10);
   const purityStr = getPurityStr(variant.id);
+  const janoshikReport = janoshikDataBySlug[variant.slug];
   const detail = productDetails[variant.slug] ?? productDetails[String(productIdInt)];
   const description = detail?.description ?? "";
   const shortDesc = description.length > 200 ? description.slice(0, 200).trimEnd() + "…" : description;
@@ -115,14 +117,15 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
             style={{ maxWidth: "100%", maxHeight: "240px", objectFit: "contain" }}
           />
 
-          {/* Third-party verified */}
-          <div style={{
-            marginTop: "16px", padding: "7px 14px", borderRadius: "10px",
-            background: "#F0F7FF", border: "1.5px solid #1240A0",
-            display: "flex", alignItems: "center", gap: "8px",
-          }}>
-            <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "18px", width: "auto", borderRadius: "3px", display: "block" }} />
-          </div>
+          {janoshikReport?.taskNumber && janoshikReport.verifyUrl && janoshikReport.image && (
+            <div style={{
+              marginTop: "16px", padding: "7px 14px", borderRadius: "10px",
+              background: "#F0F7FF", border: "1.5px solid #1240A0",
+              display: "flex", alignItems: "center", gap: "8px",
+            }}>
+              <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "18px", width: "auto", borderRadius: "3px", display: "block" }} />
+            </div>
+          )}
         </div>
 
         {/* Right — details */}
