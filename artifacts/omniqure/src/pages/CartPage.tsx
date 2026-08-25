@@ -285,6 +285,32 @@ type PaymentQuote = {
   };
 };
 
+const WALLID_TEST_CHECKOUT_STORAGE_KEY = "omniqure.wallid-test-checkout";
+
+function readSavedWallidTestToken(): string | null {
+  try {
+    return window.sessionStorage.getItem(WALLID_TEST_CHECKOUT_STORAGE_KEY) || null;
+  } catch {
+    return null;
+  }
+}
+
+function saveWallidTestToken(token: string): void {
+  try {
+    window.sessionStorage.setItem(WALLID_TEST_CHECKOUT_STORAGE_KEY, token);
+  } catch {
+    // The URL token remains sufficient when browser storage is unavailable.
+  }
+}
+
+function clearSavedWallidTestToken(): void {
+  try {
+    window.sessionStorage.removeItem(WALLID_TEST_CHECKOUT_STORAGE_KEY);
+  } catch {
+    // Nothing else is needed when browser storage is unavailable.
+  }
+}
+
 const emptyDelivery: DeliveryForm = {
   email: "", firstName: "", lastName: "", phone: "",
   address1: "", address2: "", city: "", county: "",
@@ -499,7 +525,16 @@ function CartUpsells() {
 export default function CartPage() {
   useSEO({ title: "Cart & Checkout", description: "Review your research peptide cart and complete checkout in one step. OmniQure Peptide Research Institute.", canonicalPath: "/cart" });
   const [, navigate] = useLocation();
-  const wallidTestToken = new URLSearchParams(window.location.search).get("wallidTest")?.trim() || null;
+  const wallidTestTokenFromUrl = new URLSearchParams(window.location.search).get("wallidTest")?.trim() || null;
+  // Test links begin with an empty cart. Persist the one-time capability in
+  // this tab while an admin browses for products and returns via /cart.
+  const [wallidTestToken] = useState(() => {
+    if (wallidTestTokenFromUrl) {
+      saveWallidTestToken(wallidTestTokenFromUrl);
+      return wallidTestTokenFromUrl;
+    }
+    return readSavedWallidTestToken();
+  });
   const isWallidTestCheckout = Boolean(wallidTestToken);
   const {
     items, totalItems, subtotal, peptideQty, bundleFreeBacWater, bundleFreeItemsCount,
@@ -854,10 +889,14 @@ export default function CartPage() {
         })
         .catch((error: unknown) => {
           if (!controller.signal.aborted) {
-            setPaymentQuoteError(
-              error instanceof Error ? error.message : "We could not confirm your payment total.",
-            );
-            if (wallidTestToken) setWallidTestStatus("invalid");
+            const message = error instanceof Error ? error.message : "We could not confirm your payment total.";
+            setPaymentQuoteError(message);
+            if (wallidTestToken) {
+              setWallidTestStatus("invalid");
+              if (/test checkout link is invalid|expired|no longer authorised/i.test(message)) {
+                clearSavedWallidTestToken();
+              }
+            }
           }
         })
         .finally(() => {
@@ -900,6 +939,11 @@ export default function CartPage() {
           <p className="mb-8" style={{ fontSize: "14px", color: "#64748B" }}>
             Browse our catalogue of 81 research-grade peptides.
           </p>
+          {isWallidTestCheckout && (
+            <p style={{ color: "#9A3412", background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 6, fontSize: "13px", fontWeight: 600, lineHeight: 1.5, margin: "0 auto 20px", maxWidth: 520, padding: "10px 14px" }}>
+              Your £1 Wallid test session stays active in this browser tab while you add a product, then return to your cart.
+            </p>
+          )}
           <Link
             href="/all-peptides"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-opacity hover:opacity-90"
@@ -1337,6 +1381,7 @@ export default function CartPage() {
       // Cart is NOT cleared before redirect — WallidReturn clears it on confirmed
       // success. If payment is cancelled or fails, the cart remains intact for retry.
       if (paymentMethod === "wallid" && data.wallidPaymentUrl) {
+        if (wallidTestToken) clearSavedWallidTestToken();
         window.location.href = data.wallidPaymentUrl;
         return;
       }
