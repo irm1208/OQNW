@@ -860,46 +860,44 @@ export default function ProductPage() {
                       textTransform: "uppercase",
                       marginBottom: 5,
                     }}>
-                      Select Size
+                      Select Bac Water Size
                     </label>
-                    <div style={{ position: "relative" }}>
-                      <select
-                        value={bacWaterSizeIdx}
-                        onChange={(e) => setBacWaterSizeIdx(Number(e.target.value))}
-                        style={{
-                          width: "100%",
-                          padding: "9px 34px 9px 12px",
-                          borderRadius: 10,
-                          border: "2px solid #0EA5E9",
-                          backgroundColor: "#fff",
-                          color: "#0369A1",
-                          fontSize: 14,
-                          fontWeight: 800,
-                          fontFamily: "inherit",
-                          appearance: "none",
-                          WebkitAppearance: "none",
-                          MozAppearance: "none",
-                          cursor: "pointer",
-                          outline: "none",
-                          boxShadow: "0 2px 8px rgba(14,165,233,0.12)",
-                        }}
-                      >
-                        {bacWaterOptions.map((opt, idx) => {
-                          const isBest = idx === bacWaterOptions.length - 1;
-                          return (
-                            <option key={opt.id} value={idx}>
-                              {opt.label} — {formatPrice(opt.price)}{isBest ? " (Best value)" : ""}
-                            </option>
-                          );
-                        })}
-                      </select>
-                      <svg
-                        width="13" height="13" viewBox="0 0 24 24"
-                        fill="none" stroke="#0EA5E9" strokeWidth="2.5"
-                        style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}
-                      >
-                        <polyline points="6 9 12 15 18 9" />
-                      </svg>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 8 }}>
+                      {bacWaterOptions.map((opt, idx) => {
+                        const isSelected = idx === bacWaterSizeIdx;
+                        const isBest = idx === bacWaterOptions.length - 1;
+                        return (
+                          <button
+                            key={opt.id}
+                            type="button"
+                            onClick={() => setBacWaterSizeIdx(idx)}
+                            aria-pressed={isSelected}
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "flex-start",
+                              gap: 3,
+                              padding: "10px 12px",
+                              borderRadius: 10,
+                              border: isSelected ? "2px solid #0EA5E9" : "1px solid #BAE6FD",
+                              backgroundColor: isSelected ? "#E0F2FE" : "#fff",
+                              color: "#0369A1",
+                              fontSize: 13,
+                              fontWeight: 800,
+                              fontFamily: "inherit",
+                              cursor: "pointer",
+                              textAlign: "left",
+                              boxShadow: isSelected ? "0 2px 8px rgba(14,165,233,0.12)" : "none",
+                              transition: "border-color 0.15s, background-color 0.15s, box-shadow 0.15s",
+                            }}
+                          >
+                            <span>{opt.label}</span>
+                            <span style={{ fontSize: 11, color: "#64748B", fontWeight: 600 }}>
+                              {formatPrice(opt.price)}{isBest ? " · Best value" : ""}
+                            </span>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
