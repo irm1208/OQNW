@@ -102,7 +102,7 @@ export default function Loyalty() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Loyalty Programme</h1>
         <p className="text-muted-foreground text-sm mt-1">
@@ -111,7 +111,7 @@ export default function Loyalty() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: "Total Points Issued",     value: stats?.totalEarned?.toLocaleString() ?? "—",       icon: <TrendingUp className="w-5 h-5" />, color: "text-blue-600"  },
           { label: "Points Redeemed",         value: stats?.totalRedeemed?.toLocaleString() ?? "—",     icon: <Gift className="w-5 h-5" />,       color: "text-green-600" },
@@ -128,7 +128,7 @@ export default function Loyalty() {
 
       {/* Customer table */}
       <div className="bg-card border rounded-xl overflow-hidden">
-        <div className="px-6 py-4 border-b flex items-center justify-between">
+        <div className="px-4 sm:px-6 py-4 border-b flex items-center justify-between gap-3">
           <h2 className="font-semibold flex items-center gap-2">
             <Award className="w-4 h-4 text-amber-500" />
             Member Balances
@@ -155,10 +155,14 @@ export default function Loyalty() {
                   ].map(col => (
                     <th
                       key={col.key}
-                      className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide cursor-pointer hover:text-foreground text-muted-foreground"
-                      onClick={() => handleSort(col.key)}
+                      className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide text-muted-foreground"
                     >
-                      {col.label}<SortIcon col={col.key} />
+                      <button
+                        className="min-h-11 -my-3 inline-flex items-center hover:text-foreground"
+                        onClick={() => handleSort(col.key)}
+                      >
+                        {col.label}<SortIcon col={col.key} />
+                      </button>
                     </th>
                   ))}
                   <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide text-muted-foreground">Tier</th>
@@ -210,14 +214,14 @@ export default function Loyalty() {
           className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
           onClick={e => { if (e.target === e.currentTarget) setAdjustModal(null); }}
         >
-          <div className="bg-card rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+          <div className="bg-card rounded-2xl shadow-2xl w-full max-w-md max-h-[calc(100dvh-2rem)] overflow-y-auto">
             <div className="px-6 py-5 border-b">
               <h3 className="font-bold text-lg">Adjust Points</h3>
               <p className="text-sm text-muted-foreground mt-0.5">
                 {adjustModal.firstName} {adjustModal.lastName} · Current balance: <strong>{adjustModal.balance}</strong> pts
               </p>
             </div>
-            <div className="p-6 space-y-4">
+            <div className="p-4 sm:p-6 space-y-4">
               <div className="space-y-1.5">
                 <Label>Points adjustment</Label>
                 <div className="flex gap-2">

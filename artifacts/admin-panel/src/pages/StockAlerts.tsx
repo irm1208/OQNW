@@ -74,7 +74,7 @@ export default function StockAlerts() {
   const alreadyNotified = products.filter(p => p.pendingCount === 0 && p.totalCount > 0);
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Back-in-Stock Alerts</h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -122,7 +122,8 @@ export default function StockAlerts() {
                 Pending Waitlists ({withWaitlist.length})
               </h2>
               <div className="rounded-xl border bg-card overflow-hidden">
-                <table className="w-full text-sm">
+                <div className="overflow-x-auto">
+                <table className="w-full min-w-[520px] text-sm">
                   <thead>
                     <tr className="border-b bg-muted/40">
                       <th className="text-left px-4 py-3 font-semibold text-muted-foreground">Product</th>
@@ -169,6 +170,7 @@ export default function StockAlerts() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
             </div>
           )}
@@ -180,7 +182,8 @@ export default function StockAlerts() {
                 Already Notified
               </h2>
               <div className="rounded-xl border bg-card overflow-hidden">
-                <table className="w-full text-sm">
+                <div className="overflow-x-auto">
+                <table className="w-full min-w-[520px] text-sm">
                   <thead>
                     <tr className="border-b bg-muted/40">
                       <th className="text-left px-4 py-3 font-semibold text-muted-foreground">Product</th>
@@ -215,6 +218,7 @@ export default function StockAlerts() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
             </div>
           )}

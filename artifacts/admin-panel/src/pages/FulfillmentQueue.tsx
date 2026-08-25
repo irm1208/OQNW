@@ -382,9 +382,9 @@ export default function FulfillmentQueue() {
   const someSelected = selectedIds.size > 0;
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
+      <div className="page-header flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
             <ClipboardList className="w-6 h-6" /> Fulfilment Queue
@@ -396,7 +396,7 @@ export default function FulfillmentQueue() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b">
+      <div className="flex gap-1 border-b overflow-x-auto">
         {(["ready", "processing", "shipped"] as Tab[]).map(t => (
           <button
             key={t}
@@ -417,7 +417,7 @@ export default function FulfillmentQueue() {
 
       {/* Bulk toolbar */}
       {someSelected && (
-        <div className="flex items-center gap-3 px-4 py-2.5 bg-muted/60 border rounded-lg flex-wrap">
+        <div className="page-actions flex items-center gap-3 px-4 py-2.5 bg-muted/60 border rounded-lg flex-wrap">
           <span className="text-sm font-medium">{selectedIds.size} selected</span>
           <Button
             size="sm" variant="outline"

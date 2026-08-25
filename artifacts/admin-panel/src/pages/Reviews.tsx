@@ -90,13 +90,13 @@ export default function Reviews() {
   const offset = (page - 1) * limit;
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page space-y-6">
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Reviews</h2>
         <p className="text-sm text-muted-foreground mt-1">Moderate customer product reviews</p>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="page-filters flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -209,7 +209,7 @@ export default function Reviews() {
       </div>
 
       {total > limit && (
-        <div className="flex items-center justify-between">
+        <div className="page-pagination flex items-center justify-between">
           <div className="text-sm text-muted-foreground">
             Showing {offset + 1} to {Math.min(offset + limit, total)} of {total} entries
           </div>

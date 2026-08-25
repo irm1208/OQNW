@@ -42,7 +42,7 @@ export default function Refunds() {
   const partialCount = refunds.filter(r => r.type === "partial").length;
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page space-y-6">
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Refunds</h2>
         <p className="text-sm text-muted-foreground mt-1">All refunds issued from order detail pages</p>
@@ -65,7 +65,7 @@ export default function Refunds() {
 
       <div className="rounded-xl border bg-card">
         <div className="p-4 border-b">
-          <div className="relative max-w-sm">
+          <div className="relative max-w-sm w-full">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <Input className="pl-9" placeholder="Search by order or reason…" value={search} onChange={e => setSearch(e.target.value)} />
           </div>

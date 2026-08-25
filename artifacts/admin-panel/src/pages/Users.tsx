@@ -111,15 +111,17 @@ export default function Users() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="admin-page space-y-6">
+      <div className="page-header flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Admin Users</h2>
           <p className="text-sm text-muted-foreground mt-1">Manage admin accounts and their roles</p>
         </div>
-        <Button onClick={openCreate}>
-          <Plus className="w-4 h-4 mr-2" /> Add Admin
-        </Button>
+        <div className="page-actions">
+          <Button onClick={openCreate}>
+            <Plus className="w-4 h-4 mr-2" /> Add Admin
+          </Button>
+        </div>
       </div>
 
       <div className="rounded-xl border bg-amber-50 border-amber-200 p-4 flex items-start gap-3">

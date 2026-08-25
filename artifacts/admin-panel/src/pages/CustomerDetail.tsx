@@ -263,8 +263,8 @@ export default function CustomerDetail() {
   }
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
-      <div className="flex items-center gap-4 flex-wrap">
+    <div className="admin-page space-y-6 max-w-5xl mx-auto">
+      <div className="page-header flex items-center gap-3 sm:gap-4 flex-wrap">
         <Button variant="outline" size="icon" asChild>
           <Link href="/customers"><ArrowLeft className="w-4 h-4" /></Link>
         </Button>
@@ -340,7 +340,7 @@ export default function CustomerDetail() {
         </div>
 
         <div className="md:col-span-2 space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Card>
               <CardContent className="p-6 flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">

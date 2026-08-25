@@ -373,9 +373,9 @@ function CatalogTab() {
   const isDialogOpen = isCreating || editingProduct !== null;
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row justify-between gap-4">
-        <div className="flex flex-col sm:flex-row gap-3 flex-1">
+    <div className="admin-page space-y-4">
+      <div className="page-header flex flex-col sm:flex-row justify-between gap-4">
+        <div className="page-filters flex flex-col sm:flex-row gap-3 flex-1">
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -408,7 +408,7 @@ function CatalogTab() {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex flex-wrap justify-end gap-2 shrink-0">
+        <div className="page-actions flex flex-wrap justify-end gap-2 shrink-0">
           <Button
             variant="default"
             onClick={handleSavePrices}
@@ -899,7 +899,7 @@ function InventoryTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row gap-4 items-center">
+      <div className="page-filters flex flex-col sm:flex-row gap-4 items-center">
         <div className="relative flex-1 max-w-sm w-full">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -1016,7 +1016,7 @@ export default function Products() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between gap-4">
+      <div className="page-header flex flex-col sm:flex-row justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Products</h2>
           <p className="text-sm text-muted-foreground mt-1">Manage your product catalog and stock levels</p>

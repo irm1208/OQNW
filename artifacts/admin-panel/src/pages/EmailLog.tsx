@@ -70,23 +70,25 @@ export default function EmailLog() {
   const filtered = typeFilter === "all" ? logs : logs.filter((l) => l.type === typeFilter);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-start justify-between">
+    <div className="admin-page space-y-6">
+      <div className="page-header flex flex-col sm:flex-row sm:items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Email Log</h1>
           <p className="text-muted-foreground text-sm mt-1">All transactional emails sent by the platform</p>
         </div>
-        <button
-          onClick={() => refetch()}
-          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground border rounded-md px-3 py-1.5 transition-colors"
-        >
-          <RefreshCw className={`w-3 h-3 ${isFetching ? "animate-spin" : ""}`} />
-          Refresh
-        </button>
+        <div className="page-actions">
+          <button
+            onClick={() => refetch()}
+            className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-foreground border rounded-md px-3 py-2 transition-colors"
+          >
+            <RefreshCw className={`w-3 h-3 ${isFetching ? "animate-spin" : ""}`} />
+            Refresh
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { label: "Total Sent", value: String(stats.total), icon: Mail, color: "text-slate-600" },
           { label: "Delivered", value: String(stats.sent), icon: MailCheck, color: "text-green-600" },

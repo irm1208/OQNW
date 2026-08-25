@@ -82,18 +82,20 @@ export default function CryptoPayments() {
   const isLoading = auditsQuery.isLoading || walletsQuery.isLoading;
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div className="admin-page space-y-6">
+      <div className="page-header flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Crypto Payment Audit</h2>
           <p className="text-sm text-muted-foreground mt-1">Review on-chain evidence without changing an order’s payment status.</p>
         </div>
-        <Button variant="outline" disabled={audits.length === 0} onClick={() => void refresh(audits.flatMap((audit) => audit.attemptId ? [audit.attemptId] : []))}>
-          <RefreshCw className="w-4 h-4 mr-2" /> Recheck visible
-        </Button>
+        <div className="page-actions">
+          <Button variant="outline" disabled={audits.length === 0} onClick={() => void refresh(audits.flatMap((audit) => audit.attemptId ? [audit.attemptId] : []))}>
+            <RefreshCw className="w-4 h-4 mr-2" /> Recheck visible
+          </Button>
+        </div>
       </div>
 
-      <section className="rounded-xl border bg-card p-5">
+      <section className="rounded-xl border bg-card p-4 sm:p-5">
         <div className="flex items-center gap-2 mb-4">
           <WalletCards className="w-5 h-5 text-primary" />
           <h3 className="font-semibold">Wallet history</h3>

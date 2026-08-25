@@ -125,13 +125,15 @@ export default function Discounts() {
   const formatCurrency = (val: number) => new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(val);
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between gap-4">
+    <div className="admin-page space-y-6">
+      <div className="page-header flex flex-col sm:flex-row justify-between gap-4">
         <h2 className="text-2xl font-bold tracking-tight">Discounts & Promotions</h2>
-        <Button onClick={openCreateDialog}>
-          <Plus className="w-4 h-4 mr-2" />
-          Create Discount
-        </Button>
+        <div className="page-actions">
+          <Button onClick={openCreateDialog}>
+            <Plus className="w-4 h-4 mr-2" />
+            Create Discount
+          </Button>
+        </div>
       </div>
 
       <div className="border rounded-md bg-card">
@@ -219,7 +221,7 @@ export default function Discounts() {
                 )}
               />
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="type"
@@ -257,7 +259,7 @@ export default function Discounts() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="minSpend"

@@ -148,16 +148,18 @@ export default function Orders() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between gap-4">
+    <div className="admin-page space-y-6">
+      <div className="page-header flex flex-col sm:flex-row justify-between gap-4">
         <h2 className="text-2xl font-bold tracking-tight">Orders</h2>
-        <Button variant="outline" size="sm" onClick={handleExport} disabled={exporting}>
+        <div className="page-actions">
+          <Button variant="outline" size="sm" onClick={handleExport} disabled={exporting}>
           {exporting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
           Export CSV
-        </Button>
+          </Button>
+        </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+      <div className="page-filters flex flex-col sm:flex-row gap-4 mb-6">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -186,7 +188,7 @@ export default function Orders() {
           <span className="text-sm font-medium text-muted-foreground">
             {selectedIds.size} order{selectedIds.size !== 1 ? "s" : ""} selected
           </span>
-          <div className="flex items-center gap-2 ml-auto">
+          <div className="page-actions flex items-center gap-2 ml-auto">
             <Select value={bulkStatus} onValueChange={setBulkStatus}>
               <SelectTrigger className="w-[160px] h-8 text-sm">
                 <SelectValue placeholder="Change status to…" />
@@ -305,7 +307,7 @@ export default function Orders() {
       </div>
 
       {data && data.total > limit && (
-        <div className="flex items-center justify-between">
+        <div className="page-pagination flex items-center justify-between">
           <div className="text-sm text-muted-foreground">
             Showing {offset + 1} to {Math.min(offset + limit, data.total)} of {data.total} entries
           </div>

@@ -167,14 +167,14 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="admin-page space-y-6">
+      <div className="page-header flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h2 className="text-2xl font-bold tracking-tight">Overview</h2>
         <PeriodSelector value={period} onChange={setPeriod} />
       </div>
 
       {/* Stat Cards */}
-      <div className="grid gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         {statCards.map((card) => (
           <Card key={card.title}>
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">

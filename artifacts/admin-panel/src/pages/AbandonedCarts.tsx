@@ -73,14 +73,14 @@ export default function AbandonedCarts() {
   const { carts = [], stats } = data ?? { carts: [], stats: { total: 0, totalAbandonedValue: 0, emailsSent: 0, pendingEmail: 0 } };
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Abandoned Carts</h1>
         <p className="text-muted-foreground text-sm mt-1">Logged-in customers who left items without checking out</p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: "Total Abandoned", value: String(stats.total), icon: ShoppingCart, color: "text-slate-600" },
           { label: "Abandoned Value", value: formatGbp(stats.totalAbandonedValue), icon: ShoppingCart, color: "text-orange-600" },

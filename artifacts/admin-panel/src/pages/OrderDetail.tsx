@@ -431,12 +431,12 @@ export default function OrderDetail() {
   }
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
-      <div className="flex items-center gap-4">
+    <div className="admin-page space-y-6 max-w-5xl mx-auto">
+      <div className="page-header flex items-center gap-3 sm:gap-4 flex-wrap">
         <Button variant="outline" size="icon" asChild>
           <Link href="/orders"><ArrowLeft className="w-4 h-4" /></Link>
         </Button>
-        <h2 className="text-2xl font-bold tracking-tight">Order {order.orderNumber}</h2>
+        <h2 className="text-xl sm:text-2xl font-bold tracking-tight min-w-0 break-words">Order {order.orderNumber}</h2>
         <Badge variant="outline" className={`${getStatusColor(order.status)} text-sm px-3 py-1`}>
           {STATUS_LABELS[order.status] ?? (order.status.charAt(0).toUpperCase() + order.status.slice(1))}
         </Badge>

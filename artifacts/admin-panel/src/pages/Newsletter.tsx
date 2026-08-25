@@ -69,13 +69,13 @@ export default function Newsletter() {
   const subscribers = data?.subscribers ?? [];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="admin-page space-y-6">
+      <div className="page-header flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Newsletter</h2>
           <p className="text-sm text-muted-foreground mt-1">Manage subscribers and send campaigns</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="page-actions flex items-center gap-2">
           <Button variant="outline" onClick={() => reorderReminders.mutate()} disabled={reorderReminders.isPending}>
             <RefreshCw className="w-4 h-4 mr-2" /> {reorderReminders.isPending ? "Sending…" : "Reorder Reminders"}
           </Button>

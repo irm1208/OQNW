@@ -128,13 +128,15 @@ export default function Blog() {
   const drafts = posts.filter(p => p.status === "draft").length;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="admin-page space-y-6">
+      <div className="page-header flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Blog</h2>
           <p className="text-sm text-muted-foreground mt-1">Research articles and educational content</p>
         </div>
-        <Button onClick={openCreate}><Plus className="w-4 h-4 mr-2" /> New Post</Button>
+        <div className="page-actions">
+          <Button onClick={openCreate}><Plus className="w-4 h-4 mr-2" /> New Post</Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -153,7 +155,7 @@ export default function Blog() {
       </div>
 
       <div className="rounded-xl border bg-card">
-        <div className="p-4 border-b flex flex-col sm:flex-row gap-3">
+          <div className="page-filters p-4 border-b flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1 max-w-sm">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <Input className="pl-9" placeholder="Search posts…" value={search} onChange={e => setSearch(e.target.value)} />
@@ -224,7 +226,7 @@ export default function Blog() {
             <DialogTitle>{editing ? "Edit Post" : "New Blog Post"}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="col-span-2 space-y-1">
                 <label className="text-sm font-medium">Title</label>
                 <Input placeholder="Post title" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
@@ -248,7 +250,7 @@ export default function Blog() {
               <label className="text-sm font-medium">Content (Markdown supported)</label>
               <Textarea placeholder="Write your article…" rows={10} value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} className="font-mono text-sm" />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1">
                 <label className="text-sm font-medium">Author</label>
                 <Input value={form.author} onChange={e => setForm(f => ({ ...f, author: e.target.value }))} />

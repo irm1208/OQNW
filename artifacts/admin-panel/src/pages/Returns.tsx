@@ -109,10 +109,10 @@ export default function Returns() {
   const total = data?.total ?? 0;
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page space-y-6">
       <h2 className="text-2xl font-bold tracking-tight">Returns & Refunds</h2>
 
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="page-filters flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -204,7 +204,7 @@ export default function Returns() {
       </div>
 
       {total > limit && (
-        <div className="flex items-center justify-between">
+        <div className="page-pagination flex items-center justify-between">
           <div className="text-sm text-muted-foreground">
             Showing {offset + 1} to {Math.min(offset + limit, total)} of {total} entries
           </div>

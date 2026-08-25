@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 
 function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
@@ -560,13 +560,13 @@ export default function Shipping() {
   const activeZones = zones.filter(z => z.isActive).length;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="admin-page space-y-6">
+      <div className="page-header flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Shipping</h2>
           <p className="text-sm text-muted-foreground mt-1">Manage zones and delivery rates by region</p>
         </div>
-        <div className="flex gap-2">
+        <div className="page-actions flex gap-2">
           {zones.length === 0 && (
             <Button variant="outline" onClick={() => setPresetOpen(true)}>
               <Globe className="w-4 h-4 mr-2" /> Use Presets
@@ -581,7 +581,7 @@ export default function Shipping() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="rounded-xl border bg-card p-5">
           <p className="text-sm text-muted-foreground mb-1">Zones</p>
           <p className="text-3xl font-bold">{zones.length}</p>
@@ -606,7 +606,7 @@ export default function Shipping() {
         <div className="p-12 text-center rounded-xl border bg-card">
           <Truck className="w-10 h-10 mx-auto mb-3 text-muted-foreground/40" />
           <p className="text-muted-foreground mb-4">No shipping zones configured</p>
-          <div className="flex gap-2 justify-center">
+            <div className="page-actions flex gap-2 justify-center">
             <Button variant="outline" onClick={() => setPresetOpen(true)}>
               <Globe className="w-4 h-4 mr-2" /> Use Presets
             </Button>
@@ -623,12 +623,12 @@ export default function Shipping() {
             return (
               <div key={zone.id} className={`rounded-xl border bg-card transition-opacity ${!zone.isActive ? "opacity-60" : ""}`}>
                 <div
-                  className="flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-muted/30"
+                   className="flex flex-col sm:flex-row sm:items-center gap-3 px-4 sm:px-5 py-4 cursor-pointer hover:bg-muted/30"
                   onClick={() => toggleZoneExpanded(zone.id)}
                 >
                   {expanded ? <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" /> : <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />}
                   <Globe className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <div className="flex-1 min-w-0">
+                   <div className="flex-1 min-w-0 w-full">
                     <div className="flex items-center gap-2">
                       <p className="font-semibold">{zone.name}</p>
                       {!zone.isActive && (
@@ -638,7 +638,7 @@ export default function Shipping() {
                     {zone.description && <p className="text-xs text-muted-foreground">{zone.description}</p>}
                   </div>
 
-                  <div className="flex flex-wrap gap-1 max-w-[280px] justify-end">
+                   <div className="flex flex-wrap gap-1 w-full sm:w-auto sm:max-w-[280px] justify-start sm:justify-end">
                     {zone.countryCodes.slice(0, 8).map(cc => {
                       const c = countryInfo(cc);
                       return (
@@ -656,7 +656,7 @@ export default function Shipping() {
                     )}
                   </div>
 
-                  <div className="flex items-center gap-1 shrink-0 ml-2" onClick={e => e.stopPropagation()}>
+                   <div className="flex flex-wrap items-center gap-1 shrink-0 self-end sm:self-auto sm:ml-2" onClick={e => e.stopPropagation()}>
                     <Switch
                       checked={zone.isActive}
                       onCheckedChange={(v) => toggleZoneActive.mutate({ id: zone.id, isActive: v })}
@@ -696,7 +696,8 @@ export default function Shipping() {
                         <button className="underline text-primary" onClick={() => openCreateRate(zone.id)}>Add one</button>
                       </p>
                     ) : (
-                      <table className="w-full text-sm">
+                       <div className="overflow-x-auto">
+                       <table className="w-full min-w-[620px] text-sm">
                         <thead>
                           <tr className="border-b bg-muted/20">
                             <th className="text-left px-5 py-2.5 font-medium text-muted-foreground">Method</th>
@@ -728,7 +729,8 @@ export default function Shipping() {
                             </tr>
                           ))}
                         </tbody>
-                      </table>
+                       </table>
+                       </div>
                     )}
                   </div>
                 )}
@@ -742,6 +744,9 @@ export default function Shipping() {
         <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editingZone ? "Edit Zone" : "Create Shipping Zone"}</DialogTitle>
+            <DialogDescription>
+              Set the zone name, optional description, and the countries it covers.
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="grid grid-cols-2 gap-3">
@@ -775,6 +780,9 @@ export default function Shipping() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>{editingRate ? "Edit Shipping Rate" : "Add Shipping Rate"}</DialogTitle>
+            <DialogDescription>
+              Configure the delivery method, pricing, and estimated delivery time.
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="space-y-1">
@@ -833,6 +841,9 @@ export default function Shipping() {
             <DialogTitle className="flex items-center gap-2">
               <Globe className="w-5 h-5" /> Preset Shipping Zones
             </DialogTitle>
+            <DialogDescription>
+              Choose the regions to create before adding their delivery rates.
+            </DialogDescription>
           </DialogHeader>
           <div className="py-2 space-y-3">
             <p className="text-sm text-muted-foreground">

@@ -63,26 +63,26 @@ export default function Reports() {
   const maxRevenue = Math.max(1, ...days.map(d => d.revenue));
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+    <div className="admin-page space-y-6">
+      <div className="page-header flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Reports</h2>
           <p className="text-sm text-muted-foreground mt-1">Sales performance over a custom date range</p>
         </div>
-        <div className="flex items-end gap-2">
+        <div className="page-actions flex items-end gap-2">
           <div className="space-y-1">
             <label className="text-xs font-medium text-muted-foreground">From</label>
-            <Input type="date" value={from} max={to} onChange={e => setFrom(e.target.value)} className="w-40" />
+            <Input type="date" value={from} max={to} onChange={e => setFrom(e.target.value)} className="w-full sm:w-40" />
           </div>
           <div className="space-y-1">
             <label className="text-xs font-medium text-muted-foreground">To</label>
-            <Input type="date" value={to} min={from} onChange={e => setTo(e.target.value)} className="w-40" />
+            <Input type="date" value={to} min={from} onChange={e => setTo(e.target.value)} className="w-full sm:w-40" />
           </div>
           <Button onClick={() => setApplied({ from, to })}>Apply</Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <div className="rounded-xl border bg-card p-5">
           <p className="text-sm text-muted-foreground mb-1">Revenue</p>
           <p className="text-2xl font-bold">{gbp(summary?.revenue ?? 0)}</p>
@@ -143,7 +143,8 @@ export default function Reports() {
           {products.length === 0 ? (
             <div className="p-10 text-center text-muted-foreground">No data</div>
           ) : (
-            <table className="w-full text-sm">
+            <div className="overflow-x-auto">
+            <table className="w-full min-w-[360px] text-sm">
               <thead>
                 <tr className="border-b">
                   <th className="text-left px-4 py-2 font-medium text-muted-foreground">Product</th>
@@ -161,6 +162,7 @@ export default function Reports() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </section>
 
@@ -175,7 +177,8 @@ export default function Reports() {
           {categories.length === 0 ? (
             <div className="p-10 text-center text-muted-foreground">No data</div>
           ) : (
-            <table className="w-full text-sm">
+            <div className="overflow-x-auto">
+            <table className="w-full min-w-[360px] text-sm">
               <thead>
                 <tr className="border-b">
                   <th className="text-left px-4 py-2 font-medium text-muted-foreground">Category</th>
@@ -193,6 +196,7 @@ export default function Reports() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </section>
       </div>

@@ -6,9 +6,10 @@ import {
   RotateCcw, Star, ShoppingBag, Mail, Gift, BellRing,
   Truck, RefreshCcw, FileText, Bell, ShieldAlert,
   ChevronDown, ChevronRight, Settings2, ShieldBan, Send, BarChart3,
-  Settings, UserCog, ClipboardList, WalletCards,
+  Settings, UserCog, ClipboardList, WalletCards, Menu,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useAlerts, type AdminAlert } from "@/hooks/useAlerts";
 import { Link as WLink } from "wouter";
 
@@ -162,7 +163,15 @@ function BellButton() {
   );
 }
 
-function NavGroups({ groups, location }: { groups: NavGroup[]; location: string }) {
+function NavGroups({
+  groups,
+  location,
+  onNavigate,
+}: {
+  groups: NavGroup[];
+  location: string;
+  onNavigate?: () => void;
+}) {
   return (
     <>
       {groups.map((group) => (
@@ -177,6 +186,7 @@ function NavGroups({ groups, location }: { groups: NavGroup[]; location: string 
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={onNavigate}
                   className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     isActive
                       ? "bg-primary text-primary-foreground"
@@ -200,6 +210,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const { data: session, isLoading } = useAdminMe();
   const logout = useAdminLogout();
   const [advancedOpen, setAdvancedOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -221,13 +232,13 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-muted/40">
-      <aside className="w-64 flex-col bg-card border-r hidden md:flex">
+      <aside className="w-64 flex-col bg-card border-r hidden lg:flex">
         <div className="h-14 flex items-center justify-between px-6 border-b">
           <h1 className="font-bold text-lg text-primary tracking-tight">OmniQure Admin</h1>
           <BellButton />
         </div>
         <nav className="flex-1 px-3 py-4 space-y-4 overflow-y-auto">
-          <NavGroups groups={coreNavGroups} location={location} />
+           <NavGroups groups={coreNavGroups} location={location} />
 
           <div className="border-t pt-3">
             <button
@@ -255,20 +266,72 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
 
-      <main className="flex-1 flex flex-col min-w-0">
-        <header className="h-14 flex items-center justify-between px-6 bg-card border-b md:hidden">
-          <h1 className="font-bold text-lg text-primary">OmniQure Admin</h1>
+       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <header className="min-h-14 flex items-center justify-between gap-3 px-4 sm:px-6 bg-card border-b lg:hidden">
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Open admin navigation"
+            onClick={() => setMobileNavOpen(true)}
+          >
+            <Menu className="w-5 h-5" />
+          </Button>
+          <h1 className="font-bold text-base sm:text-lg text-primary truncate flex-1">OmniQure Admin</h1>
           <div className="flex items-center gap-1">
             <BellButton />
-            <Button variant="ghost" size="icon" onClick={handleLogout}>
+            <Button variant="ghost" size="icon" aria-label="Log out" onClick={handleLogout}>
               <LogOut className="w-5 h-5" />
             </Button>
           </div>
         </header>
-        <div className="flex-1 p-6 md:p-8 overflow-y-auto">
-          {children}
+        <div data-admin-content className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto overflow-x-hidden">
+          <div className="admin-page">{children}</div>
         </div>
       </main>
+
+       <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+         <SheetContent
+           side="left"
+           className="w-[min(88vw,20rem)] p-0 bg-card [&>button]:right-3 [&>button]:top-4"
+         >
+           <SheetHeader className="sr-only">
+             <SheetTitle>Admin navigation</SheetTitle>
+             <SheetDescription>Navigate to an admin section.</SheetDescription>
+           </SheetHeader>
+           <div className="flex h-full flex-col">
+             <div className="h-14 shrink-0 flex items-center px-5 border-b">
+               <h1 className="font-bold text-lg text-primary tracking-tight">OmniQure Admin</h1>
+             </div>
+             <nav className="flex-1 px-3 py-4 space-y-4 overflow-y-auto">
+               <NavGroups groups={coreNavGroups} location={location} onNavigate={() => setMobileNavOpen(false)} />
+               <div className="border-t pt-3">
+                 <button
+                   onClick={() => setAdvancedOpen(o => !o)}
+                   className="w-full min-h-11 flex items-center gap-2 px-3 py-2 rounded-md text-xs font-semibold uppercase tracking-widest text-muted-foreground/70 hover:text-muted-foreground hover:bg-muted/50 transition-colors"
+                   aria-expanded={advancedOpen}
+                 >
+                   <Settings2 className="w-4 h-4 shrink-0" />
+                   <span className="flex-1 text-left">Advanced</span>
+                   {advancedOpen
+                     ? <ChevronDown className="w-4 h-4 shrink-0" />
+                     : <ChevronRight className="w-4 h-4 shrink-0" />}
+                 </button>
+                 {advancedOpen && (
+                   <div className="mt-3 space-y-4">
+                     <NavGroups groups={advancedNavGroups} location={location} onNavigate={() => setMobileNavOpen(false)} />
+                   </div>
+                 )}
+               </div>
+             </nav>
+             <div className="p-4 border-t">
+               <Button variant="ghost" className="w-full min-h-11 justify-start text-muted-foreground" onClick={handleLogout}>
+                 <LogOut className="w-4 h-4 mr-2" />
+                 Logout
+               </Button>
+             </div>
+           </div>
+         </SheetContent>
+       </Sheet>
     </div>
   );
 }

@@ -172,7 +172,7 @@ export default function Fraud() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page space-y-6">
       <div className="flex items-center gap-3">
         <ShieldAlert className="w-6 h-6 text-red-500" />
         <h2 className="text-2xl font-bold tracking-tight">Fraud Queue</h2>

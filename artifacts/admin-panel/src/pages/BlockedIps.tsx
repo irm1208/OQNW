@@ -91,7 +91,7 @@ export default function BlockedIps() {
   };
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="admin-page space-y-6 max-w-3xl">
       <div>
         <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
           <ShieldBan className="w-6 h-6 text-red-500" />
@@ -102,7 +102,7 @@ export default function BlockedIps() {
         </p>
       </div>
 
-      <form onSubmit={handleAdd} className="flex gap-2">
+      <form onSubmit={handleAdd} className="page-filters flex flex-col sm:flex-row gap-2">
         <Input
           placeholder="IP address (e.g. 203.0.113.42)"
           value={ip}
@@ -133,7 +133,8 @@ export default function BlockedIps() {
         </div>
       ) : (
         <div className="rounded-lg border overflow-hidden">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full min-w-[540px] text-sm">
             <thead>
               <tr className="border-b bg-muted/40">
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground">IP Address</th>
@@ -167,6 +168,7 @@ export default function BlockedIps() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>

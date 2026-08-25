@@ -170,18 +170,20 @@ export default function Settings() {
   }
 
   return (
-    <div className="space-y-6 max-w-3xl">
-      <div className="flex items-center justify-between">
+    <div className="admin-page space-y-6 max-w-3xl">
+      <div className="page-header flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Store Settings</h2>
           <p className="text-sm text-muted-foreground mt-1">General store configuration and contact details</p>
         </div>
-        <Button onClick={() => save.mutate()} disabled={save.isPending || !form.storeName.trim()}>
-          <Save className="w-4 h-4 mr-2" /> {save.isPending ? "Saving…" : "Save Changes"}
-        </Button>
+        <div className="page-actions">
+          <Button onClick={() => save.mutate()} disabled={save.isPending || !form.storeName.trim()}>
+            <Save className="w-4 h-4 mr-2" /> {save.isPending ? "Saving…" : "Save Changes"}
+          </Button>
+        </div>
       </div>
 
-      <section className="rounded-xl border bg-card p-6 space-y-4">
+      <section className="rounded-xl border bg-card p-4 sm:p-6 space-y-4">
         <h3 className="font-semibold">General</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Store Name" value={form.storeName} onChange={set("storeName")} placeholder="OmniQure" />
@@ -198,7 +200,7 @@ export default function Settings() {
         </label>
       </section>
 
-      <section className="rounded-xl border bg-card p-6 space-y-4">
+      <section className="rounded-xl border bg-card p-4 sm:p-6 space-y-4">
         <div>
           <h3 className="font-semibold">Direct Crypto Payments</h3>
           <p className="text-sm text-muted-foreground mt-1">
@@ -238,7 +240,7 @@ export default function Settings() {
         </p>
       </section>
 
-      <section className="rounded-xl border bg-card p-6 space-y-4">
+      <section className="rounded-xl border bg-card p-4 sm:p-6 space-y-4">
         <h3 className="font-semibold">Contact</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Support Email" value={form.supportEmail} onChange={set("supportEmail")} placeholder="support@omniqure.com" />
@@ -246,7 +248,7 @@ export default function Settings() {
         </div>
       </section>
 
-      <section className="rounded-xl border bg-card p-6 space-y-4">
+      <section className="rounded-xl border bg-card p-4 sm:p-6 space-y-4">
         <h3 className="font-semibold">Business Address</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Address Line 1" value={form.addressLine1} onChange={set("addressLine1")} />
