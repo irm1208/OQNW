@@ -21,7 +21,7 @@ const SIZES = [
     ref: "BW-30-ML",
     price: 11.99,
     id: "bw-30ml",
-    name: "Bacteriostatic Water 30ml",
+    name: "Bacteriostatic Water 30ml Vial",
     slug: "bacteriostatic-water-30ml",
     category: "Accessories",
     image: "/bac-water-30ml.webp",
@@ -108,7 +108,7 @@ export default function BacWaterPage() {
             </div>
 
             <h1 style={{ fontSize: "clamp(26px,4vw,38px)", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: "6px" }}>
-              Bacteriostatic Water
+              {selected.name}
             </h1>
 
             {/* REF */}

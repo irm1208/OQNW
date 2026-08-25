@@ -3,7 +3,7 @@ import { useCurrency } from "@/context/CurrencyContext";
 import { Droplets, Check } from "lucide-react";
 
 const BAC_WATER_OPTIONS = [
-  { id: "bw-30ml", name: "Bacteriostatic Water 30ml", slug: "bacteriostatic-water-30ml", price: 11.99, label: "30ml", image: "/bac-water-30ml.webp", category: "Accessories" },
+  { id: "bw-30ml", name: "Bacteriostatic Water 30ml Vial", slug: "bacteriostatic-water-30ml", price: 11.99, label: "30ml", image: "/bac-water-30ml.webp", category: "Accessories" },
   { id: "bw-10ml", name: "Bacteriostatic Water 10ml Ampule", slug: "bacteriostatic-water-10ml", price: 8.99, label: "10ml", image: "/bac-water-10ml.png", category: "Accessories" },
 ] as const;
 
