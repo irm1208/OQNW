@@ -424,7 +424,7 @@ function CatalogTab() {
             className="text-green-700 border-green-300 hover:bg-green-50"
           >
             {enableAllPeptides.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Eye className="w-4 h-4 mr-2" />}
-            Re-enable All Peptides
+            Enable All
           </Button>
           <Button
             variant="outline"
@@ -433,7 +433,7 @@ function CatalogTab() {
             className="text-destructive border-destructive/30 hover:bg-destructive/5"
           >
             {disableWithoutReport.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <EyeOff className="w-4 h-4 mr-2" />}
-            Disable Without Report
+            Disable Unverified
           </Button>
           <Button onClick={openCreate}>
             <Plus className="w-4 h-4 mr-2" />
@@ -561,7 +561,7 @@ function CatalogTab() {
       <AlertDialog open={bulkDisableOpen} onOpenChange={setBulkDisableOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Disable products without a Janoshik report?</AlertDialogTitle>
+            <AlertDialogTitle>Disable unverified products?</AlertDialogTitle>
             <AlertDialogDescription>
               This will hide every currently published peptide that is not linked to a published,
               verifiable Janoshik report. Existing orders are not changed, and you can re-enable
@@ -576,7 +576,7 @@ function CatalogTab() {
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               {disableWithoutReport.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Disable Products
+              Disable Unverified
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -585,7 +585,7 @@ function CatalogTab() {
       <AlertDialog open={bulkEnableOpen} onOpenChange={setBulkEnableOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Re-enable all peptides?</AlertDialogTitle>
+            <AlertDialogTitle>Enable all peptides?</AlertDialogTitle>
             <AlertDialogDescription>
               This will make every disabled peptide live on the storefront, including products
               without a Janoshik report. Accessories, prices, stock, report status, and existing
@@ -599,7 +599,7 @@ function CatalogTab() {
               disabled={enableAllPeptides.isPending}
             >
               {enableAllPeptides.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Re-enable All Peptides
+              Enable All
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
