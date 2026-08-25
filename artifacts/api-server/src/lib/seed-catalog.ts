@@ -152,7 +152,9 @@ export async function seedProductsCatalog() {
       const [row] = await db.insert(productsCatalogTable).values(values)
         .onConflictDoUpdate({
           target: productsCatalogTable.slug,
-          set: { priceGbp: values.priceGbp, name: values.name, category: values.category },
+          // Admin-managed pricing must survive API restarts. Seed prices only apply
+          // when a catalogue SKU is created for the first time.
+          set: { name: values.name, category: values.category },
         })
         .returning({ id: productsCatalogTable.id });
       if (row) {

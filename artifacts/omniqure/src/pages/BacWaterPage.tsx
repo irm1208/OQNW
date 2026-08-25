@@ -3,32 +3,8 @@ import { ShoppingCart, Minus, Plus, ShieldCheck, Droplets, FlaskConical, Package
 import { useSEO } from "@/hooks/useSEO";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
-import type { Product } from "@/data/products";
-
-const SIZES = [
-  {
-    label: "10ml Ampule",
-    unit: "ampule",
-    ref: "BW-10-ML",
-    price: 8.99,
-    id: "bw-10ml",
-    name: "Bacteriostatic Water 10ml Ampule",
-    slug: "bacteriostatic-water-10ml",
-    category: "Accessories",
-    image: "/bac-water-10ml.png",
-  },
-  {
-    label: "30ml Vial",
-    unit: "vial",
-    ref: "BW-30-ML",
-    price: 11.99,
-    id: "bw-30ml",
-    name: "Bacteriostatic Water 30ml Vial",
-    slug: "bacteriostatic-water-30ml",
-    category: "Accessories",
-    image: "/bac-water-30ml.webp",
-  },
-] as const;
+import { resolveBacWaterProducts } from "@/data/bacWaterProducts";
+import { useProducts } from "@/context/ProductsContext";
 
 const FEATURES = [
   { icon: Droplets,    label: "Sterile Water",               detail: "0.9% benzyl alcohol preserved" },
@@ -43,23 +19,24 @@ export default function BacWaterPage() {
     description: "High-quality bacteriostatic water (BAC water) for peptide reconstitution. Available in 30ml vials and 10ml ampules. Sterile, 0.9% benzyl alcohol preserved. Ships with all OmniQure peptide orders.",
     canonicalPath: "/bac-water",
   });
-  const [selectedIdx, setSelectedIdx] = useState(0);
+  const [selectedSlug, setSelectedSlug] = useState("bacteriostatic-water-10ml");
   const [qty, setQty] = useState(1);
   const { addToCart } = useCart();
   const { toast } = useToast();
+  const { products } = useProducts();
+  const sizes = resolveBacWaterProducts(products);
+  const selected = sizes.find((size) => size.slug === selectedSlug) ?? sizes[0];
 
-  const selected = SIZES[selectedIdx];
+  if (!selected) {
+    return (
+      <main className="max-w-[1100px] mx-auto px-4 py-16 text-center">
+        <p style={{ color: "#64748B" }}>Loading current Bac Water availability and pricing…</p>
+      </main>
+    );
+  }
 
   function handleAdd() {
-    const product: Product = {
-      id: selected.id,
-      name: selected.name,
-      slug: selected.slug,
-      price: selected.price,
-      image: selected.image,
-      category: selected.category,
-    };
-    for (let i = 0; i < qty; i++) addToCart(product, 1);
+    for (let i = 0; i < qty; i++) addToCart(selected, 1);
     toast({
       title: "Added to cart",
       description: `${qty} × ${selected.name}`,
@@ -131,8 +108,8 @@ export default function BacWaterPage() {
               </p>
               <div style={{ position: "relative" }}>
                 <select
-                  value={selectedIdx}
-                  onChange={e => setSelectedIdx(Number(e.target.value))}
+                  value={selected.slug}
+                  onChange={e => setSelectedSlug(e.target.value)}
                   style={{
                     width: "100%",
                     padding: "11px 38px 11px 14px",
@@ -151,8 +128,8 @@ export default function BacWaterPage() {
                     boxShadow: "0 2px 8px rgba(18,64,160,0.12)",
                   }}
                 >
-                  {SIZES.map((s, i) => (
-                    <option key={s.label} value={i}>
+                  {sizes.map((s) => (
+                    <option key={s.slug} value={s.slug}>
                       {s.label} — £{s.price.toFixed(2)}
                     </option>
                   ))}

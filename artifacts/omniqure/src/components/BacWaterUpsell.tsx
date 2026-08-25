@@ -1,11 +1,8 @@
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
+import { useProducts } from "@/context/ProductsContext";
+import { resolveBacWaterProducts, type BacWaterProductOption } from "@/data/bacWaterProducts";
 import { Droplets, Check } from "lucide-react";
-
-const BAC_WATER_OPTIONS = [
-  { id: "bw-30ml", name: "Bacteriostatic Water 30ml Vial", slug: "bacteriostatic-water-30ml", price: 11.99, label: "30ml Vial", image: "/bac-water-30ml.webp", category: "Accessories" },
-  { id: "bw-10ml", name: "Bacteriostatic Water 10ml Ampule", slug: "bacteriostatic-water-10ml", price: 8.99, label: "10ml Ampule", image: "/bac-water-10ml.png", category: "Accessories" },
-] as const;
 
 /**
  * Upsell prompt for Bacteriostatic Water — shown when the cart has peptides
@@ -15,23 +12,28 @@ const BAC_WATER_OPTIONS = [
 export default function BacWaterUpsell({ compact = false }: { compact?: boolean }) {
   const { items, peptideQty, bundleFreeBacWater, addToCart, removeFromCart } = useCart();
   const { formatPrice } = useCurrency();
+  const { products } = useProducts();
+  const bacWaterOptions = resolveBacWaterProducts(products);
 
-  const hasBacWater = items.some((i) => i.product.id === "bw-30ml" || i.product.id === "bw-10ml");
+  const hasBacWater = items.some((item) =>
+    bacWaterOptions.some((option) => option.slug === item.product.slug)
+  );
 
-  if (peptideQty === 0 || hasBacWater || bundleFreeBacWater) return null;
+  if (peptideQty === 0 || hasBacWater || bundleFreeBacWater || bacWaterOptions.length === 0) return null;
 
-  function toggle(bw: typeof BAC_WATER_OPTIONS[number], added: boolean) {
+  function toggle(bw: BacWaterProductOption, added: boolean) {
     if (added) {
-      removeFromCart(bw.id);
+      const cartItem = items.find((item) => item.product.slug === bw.slug);
+      if (cartItem) removeFromCart(cartItem.product.id);
     } else {
-      addToCart({ id: bw.id, name: bw.name, slug: bw.slug, price: bw.price, image: bw.image, category: bw.category }, 1);
+      addToCart(bw, 1);
     }
   }
 
   return (
     <div className="flex flex-col" style={{ gap: compact ? "8px" : "10px" }}>
-      {BAC_WATER_OPTIONS.map((bw, i) => {
-        const added = items.some((it) => it.product.id === bw.id);
+      {bacWaterOptions.map((bw, i) => {
+        const added = items.some((item) => item.product.slug === bw.slug);
         return (
           <div
             key={bw.id}

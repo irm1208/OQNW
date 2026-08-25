@@ -73484,7 +73484,9 @@ async function seedProductsCatalog() {
       };
       const [row] = await db.insert(productsCatalogTable).values(values).onConflictDoUpdate({
         target: productsCatalogTable.slug,
-        set: { priceGbp: values.priceGbp, name: values.name, category: values.category }
+        // Admin-managed pricing must survive API restarts. Seed prices only apply
+        // when a catalogue SKU is created for the first time.
+        set: { name: values.name, category: values.category }
       }).returning({ id: productsCatalogTable.id });
       if (row) {
         await db.insert(productsInventoryTable).values({
@@ -76880,6 +76882,7 @@ var SHIPPING_METHODS = {
   "Next Day Weekday": { priceGbp: 9.99 },
   "Next-Day Weekend": { priceGbp: 14.99 }
 };
+var FREE_BAC_WATER_SLUG = "bacteriostatic-water-10ml";
 function calculateShippingCostGbp(shippingMethod, subtotalGbp, country) {
   const shipping = SHIPPING_METHODS[shippingMethod];
   if (!shipping) return null;
@@ -76988,7 +76991,10 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
       name: productsCatalogTable.name,
       priceGbp: productsCatalogTable.priceGbp,
       category: productsCatalogTable.category
-    }).from(productsCatalogTable).where(inArray(productsCatalogTable.slug, itemsWithSlug.map((i) => i.productSlug.trim())));
+    }).from(productsCatalogTable).where(inArray(
+      productsCatalogTable.slug,
+      [.../* @__PURE__ */ new Set([...itemsWithSlug.map((item) => item.productSlug.trim()), FREE_BAC_WATER_SLUG])]
+    ));
     for (const r of slugRows) catalogBySlug.set(r.slug, r);
     const stockErrors = [];
     for (const item of cartItems) {
@@ -77066,7 +77072,6 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
         freePeptideCreditUsed = referralCreditRedeemedGbp > 0;
       }
     }
-    const FREE_BAC_WATER_VALUE_GBP = 8.99;
     const peptideUnits = [];
     let peptideQty = 0;
     for (const item of cartItems) {
@@ -77076,6 +77081,11 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
     }
     const bundleFreeItemsCount = peptideQty >= 10 ? 2 : peptideQty >= 5 ? 1 : 0;
     const bundleFreeBacWater = peptideQty >= 3 && peptideQty < 5;
+    const freeBacWaterValueGbp = Number(catalogBySlug.get(FREE_BAC_WATER_SLUG)?.priceGbp);
+    if (bundleFreeBacWater && (!Number.isFinite(freeBacWaterValueGbp) || freeBacWaterValueGbp < 0)) {
+      res.status(503).json({ error: "The Bundle & Save reward is temporarily unavailable. Please try again shortly." });
+      return;
+    }
     const cheapestFreeUnits = peptideUnits.map((u, idx) => ({ ...u, idx })).sort((a, b) => a.price - b.price || a.idx - b.idx).slice(0, bundleFreeItemsCount);
     const freeUnitsByProductId = /* @__PURE__ */ new Map();
     let freeItemsValue = 0;
@@ -77084,7 +77094,7 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
       freeItemsValue += u.price;
     }
     const bundleDiscountGbp = Math.round(
-      (freeItemsValue + (bundleFreeBacWater ? FREE_BAC_WATER_VALUE_GBP : 0)) * 100
+      (freeItemsValue + (bundleFreeBacWater ? freeBacWaterValueGbp : 0)) * 100
     ) / 100;
     const bundleFreeLabel = bundleFreeItemsCount === 2 ? "2 cheapest peptides free" : bundleFreeItemsCount === 1 ? "cheapest peptide free" : bundleFreeBacWater ? "free 10ml BAC water ampule" : "";
     const subtotalGbp = cartItems.reduce((s, i) => s + i.priceGbp * i.quantity, 0);

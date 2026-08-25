@@ -92,6 +92,7 @@ const SHIPPING_METHODS: Record<string, { priceGbp: number; freeOver?: number }> 
   "Next Day Weekday": { priceGbp: 9.99 },
   "Next-Day Weekend": { priceGbp: 14.99 },
 };
+const FREE_BAC_WATER_SLUG = "bacteriostatic-water-10ml";
 
 function calculateShippingCostGbp(
   shippingMethod: string,
@@ -301,7 +302,10 @@ async function handleOrderRequest(
         category: productsCatalogTable.category,
       })
       .from(productsCatalogTable)
-      .where(inArray(productsCatalogTable.slug, itemsWithSlug.map(i => i.productSlug!.trim())));
+      .where(inArray(
+        productsCatalogTable.slug,
+        [...new Set([...itemsWithSlug.map((item) => item.productSlug!.trim()), FREE_BAC_WATER_SLUG])],
+      ));
     for (const r of slugRows) catalogBySlug.set(r.slug, r);
 
     // Resolved DB product ID for a cart item (0 when slug not found or missing).
@@ -437,12 +441,11 @@ async function handleOrderRequest(
     // ── Bundle & Save — server-side free-item tier calculation ────────────────
     // Tiers (peptide-item quantity, accessories like Bac Water excluded) — mutually
     // exclusive, not cumulative:
-    //   3-4  -> a free 10ml bacteriostatic water (FREE_BAC_WATER_VALUE_GBP)
+    //   3-4  -> a free 10ml bacteriostatic water at its live catalogue price
     //   5-9  -> the cheapest peptide unit in the cart is free (no free BAC water)
     //   10+  -> the 2 cheapest peptide units in the cart are free (no free BAC water)
     // This applies unconditionally, including to a referred customer's first order —
     // there is no longer a percentage-discount stacking conflict with the referral reward.
-    const FREE_BAC_WATER_VALUE_GBP = 8.99;
     const peptideUnits: { productId: number; price: number }[] = [];
     let peptideQty = 0;
     for (const item of cartItems as CartItem[]) {
@@ -452,6 +455,11 @@ async function handleOrderRequest(
     }
     const bundleFreeItemsCount = peptideQty >= 10 ? 2 : peptideQty >= 5 ? 1 : 0;
     const bundleFreeBacWater = peptideQty >= 3 && peptideQty < 5;
+    const freeBacWaterValueGbp = Number(catalogBySlug.get(FREE_BAC_WATER_SLUG)?.priceGbp);
+    if (bundleFreeBacWater && (!Number.isFinite(freeBacWaterValueGbp) || freeBacWaterValueGbp < 0)) {
+      res.status(503).json({ error: "The Bundle & Save reward is temporarily unavailable. Please try again shortly." });
+      return;
+    }
     // The cheapest N peptide units become free; track which specific product(s) they
     // came from so the persisted order items can split into paid/free line items —
     // mirrors the frontend's freeUnitsByProductId so cart, checkout, and order records agree.
@@ -466,7 +474,7 @@ async function handleOrderRequest(
       freeItemsValue += u.price;
     }
     const bundleDiscountGbp = Math.round(
-      (freeItemsValue + (bundleFreeBacWater ? FREE_BAC_WATER_VALUE_GBP : 0)) * 100
+      (freeItemsValue + (bundleFreeBacWater ? freeBacWaterValueGbp : 0)) * 100
     ) / 100;
     const bundleFreeLabel = bundleFreeItemsCount === 2
       ? "2 cheapest peptides free"

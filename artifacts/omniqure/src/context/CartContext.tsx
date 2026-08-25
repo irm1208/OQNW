@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, useCallback, useRef, ty
 import type { Product } from "@/data/products";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useProducts } from "@/context/ProductsContext";
+import { FREE_BAC_WATER_SLUG } from "@/data/bacWaterProducts";
 import { trackAddToCart } from "@/lib/pixels";
 import { toast } from "@/hooks/use-toast";
 
@@ -37,13 +38,12 @@ type CartContextType = {
 export const BUNDLE_FREE_BAC_THRESHOLD = 3;
 export const BUNDLE_FREE_ONE_THRESHOLD = 5;
 export const BUNDLE_FREE_TWO_THRESHOLD = 10;
-export const FREE_BAC_WATER_VALUE_GBP = 8.99;
 
 function isAccessory(product: Product): boolean {
   return product.category === "Accessories";
 }
 
-function computeBundleFreebies(items: CartItem[]) {
+function computeBundleFreebies(items: CartItem[], freeBacWaterValueGbp: number) {
   const qualifyingUnits: { productId: string; price: number }[] = [];
   let peptideQty = 0;
   for (const { product, quantity } of items) {
@@ -73,7 +73,7 @@ function computeBundleFreebies(items: CartItem[]) {
     freeItemsValue += u.price;
   }
 
-  const bundleDiscountAmount = freeItemsValue + (bundleFreeBacWater ? FREE_BAC_WATER_VALUE_GBP : 0);
+  const bundleDiscountAmount = freeItemsValue + (bundleFreeBacWater ? freeBacWaterValueGbp : 0);
 
   return { peptideQty, bundleFreeBacWater, bundleFreeItemsCount, bundleDiscountAmount, freeUnitsByProductId };
 }
@@ -100,6 +100,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const { customer } = useCustomerAuth();
   const { products } = useProducts();
   const syncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const freeBacWaterValueGbp = products.find(
+    (product) => product.slug === FREE_BAC_WATER_SLUG
+  )?.price ?? 0;
 
   useEffect(() => {
     setItems(previous => {
@@ -152,7 +155,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       trackAddToCart({ id: product.id, name: product.name, price: product.price ?? null, category: product.category }, qty);
       setItems((prev) => {
-        const before = computeBundleFreebies(prev);
+        const before = computeBundleFreebies(prev, freeBacWaterValueGbp);
         const existing = prev.find((i) => i.product.id === product.id);
         const next = existing
           ? prev.map((i) =>
@@ -163,7 +166,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           : [...prev, { product, quantity: qty }];
         syncToServer(next, customer);
 
-        const after = computeBundleFreebies(next);
+        const after = computeBundleFreebies(next, freeBacWaterValueGbp);
         if (after.bundleFreeItemsCount > before.bundleFreeItemsCount) {
           toast({
             title: after.bundleFreeItemsCount === 2 ? "🎁 2 free peptides unlocked!" : "🎁 1 free peptide unlocked!",
@@ -187,7 +190,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         return next;
       });
     },
-    [customer, syncToServer]
+    [customer, freeBacWaterValueGbp, syncToServer]
   );
 
   const removeFromCart = useCallback(
@@ -235,7 +238,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
   const subtotal = items.reduce((sum, i) => sum + (i.product.price ?? 0) * i.quantity, 0);
-  const { peptideQty, bundleFreeBacWater, bundleFreeItemsCount, bundleDiscountAmount, freeUnitsByProductId } = computeBundleFreebies(items);
+  const { peptideQty, bundleFreeBacWater, bundleFreeItemsCount, bundleDiscountAmount, freeUnitsByProductId } =
+    computeBundleFreebies(items, freeBacWaterValueGbp);
 
   return (
     <CartContext.Provider value={{ items, totalItems, subtotal, peptideQty, bundleFreeBacWater, bundleFreeItemsCount, bundleDiscountAmount, freeUnitsByProductId, addToCart, removeFromCart, updateQuantity, clearCart }}>

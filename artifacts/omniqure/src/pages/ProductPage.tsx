@@ -5,6 +5,7 @@ import { useProducts } from "@/context/ProductsContext";
 import { isHiddenCategory } from "@/data/products";
 import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Loader2, Heart, Droplets, Gift, Sparkles, ExternalLink } from "lucide-react";
 import { janoshikDataBySlug } from "@/data/janoshikData";
+import { resolveBacWaterProducts } from "@/data/bacWaterProducts";
 import JanoshikReportModal from "@/components/JanoshikReportModal";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -282,17 +283,14 @@ export default function ProductPage() {
   // Bac Water add-on state
   const [bacWaterEnabled, setBacWaterEnabled] = useState(false);
   const [bacWaterSizeIdx, setBacWaterSizeIdx] = useState(0);
-  const BAC_WATER_OPTIONS = [
-    { id: "bw-30ml",  name: "Bacteriostatic Water 30ml Vial",  slug: "bacteriostatic-water-30ml",  price: 11.99,  label: "30ml Vial",  image: "/bac-water-30ml.webp",  category: "Accessories" },
-    { id: "bw-10ml", name: "Bacteriostatic Water 10ml Ampule", slug: "bacteriostatic-water-10ml", price: 8.99,  label: "10ml Ampule", image: "/bac-water-10ml.png", category: "Accessories" },
-  ] as const;
+  const bacWaterOptions = resolveBacWaterProducts(products);
+  const selectedBacWater = bacWaterOptions[bacWaterSizeIdx] ?? bacWaterOptions[0];
 
   const handleAddToCart = () => {
     if (!product || product.stockLevel === 0) return;
     addToCart(product, quantity);
-    if (bacWaterEnabled) {
-      const bw = BAC_WATER_OPTIONS[bacWaterSizeIdx];
-      addToCart({ id: bw.id, name: bw.name, slug: bw.slug, price: bw.price, image: bw.image, category: bw.category }, 1);
+    if (bacWaterEnabled && selectedBacWater) {
+      addToCart(selectedBacWater, 1);
     }
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
@@ -751,7 +749,7 @@ export default function ProductPage() {
 
 
             {/* ── Bac Water Add-on ──────────────────────────────── */}
-            {product.stockLevel !== 0 && (
+            {product.stockLevel !== 0 && selectedBacWater && (
               <div
                 className="rounded-2xl mb-3"
                 style={{
@@ -840,7 +838,7 @@ export default function ProductPage() {
                     borderRadius: 9999, padding: "5px 12px",
                     boxShadow: "0 2px 8px rgba(14,165,233,0.3)",
                   }}>
-                    +{formatPrice(BAC_WATER_OPTIONS[bacWaterSizeIdx].price)}
+                    +{formatPrice(selectedBacWater.price)}
                   </span>
                 </button>
 
@@ -886,8 +884,8 @@ export default function ProductPage() {
                           boxShadow: "0 2px 8px rgba(14,165,233,0.12)",
                         }}
                       >
-                        {BAC_WATER_OPTIONS.map((opt, idx) => {
-                          const isBest = idx === BAC_WATER_OPTIONS.length - 1;
+                        {bacWaterOptions.map((opt, idx) => {
+                          const isBest = idx === bacWaterOptions.length - 1;
                           return (
                             <option key={opt.id} value={idx}>
                               {opt.label} — {formatPrice(opt.price)}{isBest ? " (Best value)" : ""}

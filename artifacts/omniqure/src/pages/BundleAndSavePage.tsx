@@ -1,6 +1,8 @@
 import { ShoppingCart, Tag, Zap, ChevronRight, CheckCircle2, Package, Percent } from "lucide-react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
+import { useProducts } from "@/context/ProductsContext";
+import { FREE_BAC_WATER_SLUG } from "@/data/bacWaterProducts";
 
 const TIERS = [
   {
@@ -56,13 +58,19 @@ const HOW_IT_WORKS = [
   },
 ];
 
-const EXAMPLES = [
-  { label: "3 × BPC-157 5mg", freebie: "Free 10ml BAC water", saving: 8.99 },
+const EXAMPLES: { label: string; freebie: string; saving: number | null }[] = [
+  { label: "3 × BPC-157 5mg", freebie: "Free 10ml BAC water", saving: null },
   { label: "5 × Mixed growth stack", freebie: "Cheapest peptide free", saving: 60 },
   { label: "10 × Full research panel", freebie: "2 cheapest peptides free", saving: 120 },
 ];
 
 export default function BundleAndSavePage() {
+  const { products } = useProducts();
+  const freeBacWaterValue = products.find((product) => product.slug === FREE_BAC_WATER_SLUG)?.price ?? null;
+  const examples = EXAMPLES.map((example) =>
+    example.saving === null ? { ...example, saving: freeBacWaterValue } : example
+  );
+
   useSEO({
     title: "Bundle & Save",
     description: "Get free items when you order multiple peptides — a free 10ml Bac Water ampule at 3-4, a free peptide at 5-9, and 2 free peptides at 10+. Applied automatically — no codes required, and tiers don't stack.",
@@ -230,7 +238,7 @@ export default function BundleAndSavePage() {
             Example Savings
           </h2>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {EXAMPLES.map((ex, i) => (
+            {examples.map((ex, i) => (
               <div key={i} style={{
                 background: "#fff", borderRadius: 14, padding: "18px 22px",
                 border: "1px solid #E8EDF5", boxShadow: "0 2px 8px rgba(15,23,42,0.05)",
@@ -249,7 +257,7 @@ export default function BundleAndSavePage() {
                   boxShadow: "0 2px 8px rgba(5,150,105,0.28)",
                   whiteSpace: "nowrap",
                 }}>
-                  Worth £{ex.saving.toFixed(2)}
+                  {ex.saving === null ? "Loading price…" : `Worth £${ex.saving.toFixed(2)}`}
                 </span>
               </div>
             ))}
