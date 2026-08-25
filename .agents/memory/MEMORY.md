@@ -16,3 +16,4 @@
 - [Durable test data IDs](durable-test-data-ids.md) — durable CodeExecution blocks may reject time and random helpers; use checked, fixed dev-only IDs for database-backed browser tests.
 - [Workspace TypeScript scratch runner](typescript-scratch-runner.md) — root and API packages lack `tsx`; run ad-hoc TypeScript assertions with `scripts/node_modules/.bin/tsx`.
 - [Checkout quote replay scaling](checkout-quote-replay-scaling.md) — the current one-time Pay by Bank quote guard is process-local; use a durable claim before scaling API workers.
+- [Production catalogue price sync](production-catalogue-price-sync.md) — publishing does not copy development catalogue prices to production; update live prices via production admin or a reviewed slug-based sync.
