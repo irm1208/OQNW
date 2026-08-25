@@ -13,7 +13,7 @@ import {
   loyaltyTransactionsTable,
   inventoryAuditLogTable,
 } from "@workspace/db";
-import { eq, sql, inArray, and, gte, count } from "drizzle-orm";
+import { eq, sql, inArray, notInArray, and, gte, count } from "drizzle-orm";
 import {
   sendOrderConfirmation,
   sendBankTransferInstructions,
@@ -39,6 +39,7 @@ import { prepareCryptoPayment } from "../lib/crypto-payments";
 import { assessFraud } from "../lib/fraudScorer";
 import { getClientIp, lookupIpData } from "../lib/geoip";
 import { dispatchWebhook } from "../lib/webhookDispatcher";
+import { RETIRED_PRODUCT_SLUGS } from "../lib/retiredProducts";
 import {
   countryCodeForName,
   postcodeIsRequired,
@@ -302,9 +303,13 @@ async function handleOrderRequest(
         category: productsCatalogTable.category,
       })
       .from(productsCatalogTable)
-      .where(inArray(
-        productsCatalogTable.slug,
-        [...new Set([...itemsWithSlug.map((item) => item.productSlug!.trim()), FREE_BAC_WATER_SLUG])],
+      .where(and(
+        inArray(
+          productsCatalogTable.slug,
+          [...new Set([...itemsWithSlug.map((item) => item.productSlug!.trim()), FREE_BAC_WATER_SLUG])],
+        ),
+        eq(productsCatalogTable.isPublished, true),
+        notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS]),
       ));
     for (const r of slugRows) catalogBySlug.set(r.slug, r);
 

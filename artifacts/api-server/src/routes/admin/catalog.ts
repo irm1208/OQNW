@@ -6,6 +6,11 @@ import { eq, ilike, and, ne, notInArray } from "drizzle-orm";
 import { seedProductsCatalog } from "../../lib/seed-catalog";
 import { seedReviews } from "../../lib/seed-reviews";
 import { hasJanoshikReport, JANOSHIK_REPORTED_PRODUCT_SLUGS } from "../../lib/janoshikReports";
+import {
+  isRetiredProductSlug,
+  RETIRED_PRODUCT_SLUGS,
+  retireRemovedProducts,
+} from "../../lib/retiredProducts";
 
 const router = Router();
 
@@ -105,6 +110,7 @@ let seeded = false;
 async function ensureSeeded() {
   if (!seeded) {
     await seedProductsCatalog();
+    await retireRemovedProducts();
     await seedReviews();
     seeded = true;
   }
@@ -119,12 +125,16 @@ router.get("/admin/catalog", async (req: Request, res: Response): Promise<void> 
     const category = isStr(req.query.category) ? req.query.category : undefined;
     const published = req.query.published;
 
-    const conditions =
+    const conditions = [
+      notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS]),
+      ...(
       published === "true"
         ? [eq(productsCatalogTable.isPublished, true)]
         : published === "false"
         ? [eq(productsCatalogTable.isPublished, false)]
-        : [];
+        : []
+      ),
+    ];
     if (search) conditions.push(ilike(productsCatalogTable.name, `%${search}%`));
     if (category) conditions.push(eq(productsCatalogTable.category, category));
 
@@ -210,7 +220,10 @@ router.get("/admin/catalog/:id", async (req: Request, res: Response): Promise<vo
       .where(
         eq(productsCatalogTable.id, id)
       );
-    if (!product) { res.status(404).json({ error: "Product not found" }); return; }
+    if (!product || isRetiredProductSlug(product.slug)) {
+      res.status(404).json({ error: "Product not found" });
+      return;
+    }
     res.status(200).json(catalogToResponse(product));
   } catch (err) {
     req.log.error({ err }, "Failed to get catalog product");
@@ -224,6 +237,10 @@ router.post("/admin/catalog", async (req: Request, res: Response): Promise<void>
   const body = req.body as ProductBody;
   if (!isStr(body.slug) || !body.slug || !isStr(body.name) || !body.name || !isStr(body.category) || !body.category) {
     res.status(400).json({ error: "slug, name, and category are required strings" });
+    return;
+  }
+  if (isRetiredProductSlug(body.slug)) {
+    res.status(400).json({ error: "This product has been permanently removed from the catalogue" });
     return;
   }
   try {
@@ -303,8 +320,21 @@ router.patch("/admin/catalog/:id", async (req: Request, res: Response): Promise<
     res.status(400).json({ error: "No valid fields to update" });
     return;
   }
+  if (updates.slug && isRetiredProductSlug(updates.slug)) {
+    res.status(400).json({ error: "This product has been permanently removed from the catalogue" });
+    return;
+  }
 
   try {
+    const [existing] = await db
+      .select({ slug: productsCatalogTable.slug })
+      .from(productsCatalogTable)
+      .where(eq(productsCatalogTable.id, id));
+    if (!existing || isRetiredProductSlug(existing.slug)) {
+      res.status(404).json({ error: "Product not found" });
+      return;
+    }
+
     const [updated] = await db
       .update(productsCatalogTable)
       .set(updates)
@@ -325,6 +355,15 @@ router.delete("/admin/catalog/:id", async (req: Request, res: Response): Promise
   const id = Number(req.params.id);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
   try {
+    const [existing] = await db
+      .select({ slug: productsCatalogTable.slug })
+      .from(productsCatalogTable)
+      .where(eq(productsCatalogTable.id, id));
+    if (!existing || isRetiredProductSlug(existing.slug)) {
+      res.status(404).json({ error: "Product not found" });
+      return;
+    }
+
     const [deleted] = await db
       .delete(productsCatalogTable)
       .where(eq(productsCatalogTable.id, id))
@@ -347,7 +386,10 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
     const search = isStr(req.query.search) ? req.query.search : undefined;
     const featured = req.query.featured;
 
-    const conditions = [eq(productsCatalogTable.isPublished, true)];
+    const conditions = [
+      eq(productsCatalogTable.isPublished, true),
+      notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS]),
+    ];
     if (category) conditions.push(eq(productsCatalogTable.category, category));
     if (search) conditions.push(ilike(productsCatalogTable.name, `%${search}%`));
     if (featured === "true") conditions.push(eq(productsCatalogTable.isFeatured, true));
@@ -404,6 +446,10 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
 router.get("/products/:slug", async (req: Request, res: Response): Promise<void> => {
   try {
     const slug = String(req.params.slug);
+    if (isRetiredProductSlug(slug)) {
+      res.status(404).json({ error: "Product not found" });
+      return;
+    }
     const [product] = await db
       .select()
       .from(productsCatalogTable)

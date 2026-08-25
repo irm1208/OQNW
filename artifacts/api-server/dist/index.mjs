@@ -73873,6 +73873,20 @@ function hasJanoshikReport(slug) {
   return janoshikReportedProductSlugs.has(slug);
 }
 
+// src/lib/retiredProducts.ts
+init_drizzle_orm();
+var RETIRED_PRODUCT_SLUGS = ["bacteriostatic-water-3ml"];
+function isRetiredProductSlug(slug) {
+  return RETIRED_PRODUCT_SLUGS.includes(slug);
+}
+async function retireRemovedProducts() {
+  const retired = await db.update(productsCatalogTable).set({ isPublished: false, isFeatured: false }).where(inArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS])).returning({ id: productsCatalogTable.id });
+  if (retired.length > 0) {
+    await db.update(productsInventoryTable).set({ isPublished: false }).where(inArray(productsInventoryTable.productId, retired.map((product) => product.id)));
+  }
+  return retired.length;
+}
+
 // src/routes/admin/catalog.ts
 var router10 = (0, import_express10.Router)();
 function requireAdmin8(req, res) {
@@ -73944,6 +73958,7 @@ var seeded = false;
 async function ensureSeeded() {
   if (!seeded) {
     await seedProductsCatalog();
+    await retireRemovedProducts();
     await seedReviews();
     seeded = true;
   }
@@ -73955,7 +73970,10 @@ router10.get("/admin/catalog", async (req, res) => {
     const search = isStr(req.query.search) ? req.query.search : void 0;
     const category = isStr(req.query.category) ? req.query.category : void 0;
     const published = req.query.published;
-    const conditions = published === "true" ? [eq(productsCatalogTable.isPublished, true)] : published === "false" ? [eq(productsCatalogTable.isPublished, false)] : [];
+    const conditions = [
+      notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS]),
+      ...published === "true" ? [eq(productsCatalogTable.isPublished, true)] : published === "false" ? [eq(productsCatalogTable.isPublished, false)] : []
+    ];
     if (search) conditions.push(ilike(productsCatalogTable.name, `%${search}%`));
     if (category) conditions.push(eq(productsCatalogTable.category, category));
     const where = conditions.length > 0 ? and(...conditions) : void 0;
@@ -74020,7 +74038,7 @@ router10.get("/admin/catalog/:id", async (req, res) => {
     const [product] = await db.select().from(productsCatalogTable).where(
       eq(productsCatalogTable.id, id)
     );
-    if (!product) {
+    if (!product || isRetiredProductSlug(product.slug)) {
       res.status(404).json({ error: "Product not found" });
       return;
     }
@@ -74035,6 +74053,10 @@ router10.post("/admin/catalog", async (req, res) => {
   const body = req.body;
   if (!isStr(body.slug) || !body.slug || !isStr(body.name) || !body.name || !isStr(body.category) || !body.category) {
     res.status(400).json({ error: "slug, name, and category are required strings" });
+    return;
+  }
+  if (isRetiredProductSlug(body.slug)) {
+    res.status(400).json({ error: "This product has been permanently removed from the catalogue" });
     return;
   }
   try {
@@ -74109,7 +74131,16 @@ router10.patch("/admin/catalog/:id", async (req, res) => {
     res.status(400).json({ error: "No valid fields to update" });
     return;
   }
+  if (updates.slug && isRetiredProductSlug(updates.slug)) {
+    res.status(400).json({ error: "This product has been permanently removed from the catalogue" });
+    return;
+  }
   try {
+    const [existing] = await db.select({ slug: productsCatalogTable.slug }).from(productsCatalogTable).where(eq(productsCatalogTable.id, id));
+    if (!existing || isRetiredProductSlug(existing.slug)) {
+      res.status(404).json({ error: "Product not found" });
+      return;
+    }
     const [updated] = await db.update(productsCatalogTable).set(updates).where(eq(productsCatalogTable.id, id)).returning();
     if (!updated) {
       res.status(404).json({ error: "Product not found" });
@@ -74130,6 +74161,11 @@ router10.delete("/admin/catalog/:id", async (req, res) => {
     return;
   }
   try {
+    const [existing] = await db.select({ slug: productsCatalogTable.slug }).from(productsCatalogTable).where(eq(productsCatalogTable.id, id));
+    if (!existing || isRetiredProductSlug(existing.slug)) {
+      res.status(404).json({ error: "Product not found" });
+      return;
+    }
     const [deleted] = await db.delete(productsCatalogTable).where(eq(productsCatalogTable.id, id)).returning({ id: productsCatalogTable.id });
     if (!deleted) {
       res.status(404).json({ error: "Product not found" });
@@ -74147,7 +74183,10 @@ router10.get("/products", async (req, res) => {
     const category = isStr(req.query.category) ? req.query.category : void 0;
     const search = isStr(req.query.search) ? req.query.search : void 0;
     const featured = req.query.featured;
-    const conditions = [eq(productsCatalogTable.isPublished, true)];
+    const conditions = [
+      eq(productsCatalogTable.isPublished, true),
+      notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS])
+    ];
     if (category) conditions.push(eq(productsCatalogTable.category, category));
     if (search) conditions.push(ilike(productsCatalogTable.name, `%${search}%`));
     if (featured === "true") conditions.push(eq(productsCatalogTable.isFeatured, true));
@@ -74193,6 +74232,10 @@ router10.get("/products", async (req, res) => {
 router10.get("/products/:slug", async (req, res) => {
   try {
     const slug = String(req.params.slug);
+    if (isRetiredProductSlug(slug)) {
+      res.status(404).json({ error: "Product not found" });
+      return;
+    }
     const [product] = await db.select().from(productsCatalogTable).where(
       and(
         eq(productsCatalogTable.slug, slug),
@@ -77043,9 +77086,13 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
       name: productsCatalogTable.name,
       priceGbp: productsCatalogTable.priceGbp,
       category: productsCatalogTable.category
-    }).from(productsCatalogTable).where(inArray(
-      productsCatalogTable.slug,
-      [.../* @__PURE__ */ new Set([...itemsWithSlug.map((item) => item.productSlug.trim()), FREE_BAC_WATER_SLUG])]
+    }).from(productsCatalogTable).where(and(
+      inArray(
+        productsCatalogTable.slug,
+        [.../* @__PURE__ */ new Set([...itemsWithSlug.map((item) => item.productSlug.trim()), FREE_BAC_WATER_SLUG])]
+      ),
+      eq(productsCatalogTable.isPublished, true),
+      notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS])
     ));
     for (const r of slugRows) catalogBySlug.set(r.slug, r);
     const stockErrors = [];
@@ -82289,7 +82336,10 @@ router49.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
         name: productsCatalogTable.name,
         imageUrl: productsCatalogTable.imageUrl,
         updatedAt: productsCatalogTable.updatedAt
-      }).from(productsCatalogTable).where(eq(productsCatalogTable.isPublished, true)).orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name),
+      }).from(productsCatalogTable).where(and(
+        eq(productsCatalogTable.isPublished, true),
+        notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS])
+      )).orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name),
       db.select({
         slug: blogPostsTable.slug,
         publishedAt: blogPostsTable.publishedAt,
@@ -85047,9 +85097,11 @@ app_default.listen(port, (err) => {
   startAbandonedCartJob();
   startReviewRequestJob();
   startCryptoReconciliationJob();
-  seedProductsCatalog().then((r) => {
+  seedProductsCatalog().then(async (r) => {
     if (r.seeded) logger.info({ count: r.count }, "Products catalog seeded");
     else logger.info({ reason: r.reason }, "Products catalog seed skipped");
+    const retiredCount = await retireRemovedProducts();
+    if (retiredCount > 0) logger.info({ retiredCount }, "Removed products retired");
     return seedReviews();
   }).then((r) => {
     if (r.seeded) logger.info({ count: r.count }, "Reviews seeded");

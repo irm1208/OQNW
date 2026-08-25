@@ -106,11 +106,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setItems(previous => {
-      const next = previous.map(item => {
+      const next = previous.flatMap(item => {
         const latestProduct = products.find(product => product.id === item.product.id);
-        return latestProduct ? { ...item, product: latestProduct } : item;
+        return latestProduct ? [{ ...item, product: latestProduct }] : [];
       });
-      return next.some((item, index) => item.product !== previous[index].product) ? next : previous;
+      return next.length !== previous.length ||
+        next.some((item, index) => item.product !== previous[index]?.product)
+        ? next
+        : previous;
     });
   }, [products]);
 

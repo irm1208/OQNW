@@ -2,7 +2,8 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { productsCatalogTable, blogPostsTable } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { and, eq, desc, notInArray } from "drizzle-orm";
+import { RETIRED_PRODUCT_SLUGS } from "../lib/retiredProducts";
 
 const router = Router();
 
@@ -55,7 +56,10 @@ router.get(["/sitemap.xml", "/api/sitemap.xml"], async (req: Request, res: Respo
           updatedAt: productsCatalogTable.updatedAt,
         })
         .from(productsCatalogTable)
-        .where(eq(productsCatalogTable.isPublished, true))
+        .where(and(
+          eq(productsCatalogTable.isPublished, true),
+          notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS]),
+        ))
         .orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name),
       db
         .select({

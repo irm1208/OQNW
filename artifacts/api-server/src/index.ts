@@ -6,6 +6,7 @@ import { seedReviews } from "./lib/seed-reviews";
 import { seedBlog } from "./lib/seed-blog";
 import { seedBlogPeptides } from "./lib/seed-blog-peptides";
 import { seedProductsCatalog } from "./lib/seed-catalog";
+import { retireRemovedProducts } from "./lib/retiredProducts";
 import { startCryptoReconciliationJob } from "./lib/cryptoReconciliationJob";
 
 const rawPort = process.env["PORT"];
@@ -34,9 +35,11 @@ app.listen(port, (err) => {
   startCryptoReconciliationJob();
   // Seed catalog first (reviews depend on published products existing)
   seedProductsCatalog()
-    .then((r) => {
+    .then(async (r) => {
       if (r.seeded) logger.info({ count: r.count }, "Products catalog seeded");
       else logger.info({ reason: r.reason }, "Products catalog seed skipped");
+      const retiredCount = await retireRemovedProducts();
+      if (retiredCount > 0) logger.info({ retiredCount }, "Removed products retired");
       return seedReviews();
     })
     .then((r) => {
