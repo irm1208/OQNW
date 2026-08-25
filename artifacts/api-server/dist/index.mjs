@@ -74870,16 +74870,39 @@ router16.get("/admin/export/customers.csv", async (req, res) => {
 router16.get("/admin/export/products.csv", async (req, res) => {
   if (!requireAdmin14(req, res)) return;
   try {
-    const products = await db.select().from(productsInventoryTable).orderBy(productsInventoryTable.productId);
-    const headers = ["Product ID", "Name", "Category", "Stock Level", "Low Stock Threshold", "Is Published", "Updated At"];
+    const products = await db.select({
+      productId: productsCatalogTable.id,
+      name: productsCatalogTable.name,
+      category: productsCatalogTable.category,
+      individualPriceGbp: productsCatalogTable.priceGbp,
+      stockLevel: productsInventoryTable.stockLevel,
+      lowStockThreshold: productsInventoryTable.lowStockThreshold,
+      isPublished: productsInventoryTable.isPublished,
+      inventoryUpdatedAt: productsInventoryTable.updatedAt,
+      catalogUpdatedAt: productsCatalogTable.updatedAt
+    }).from(productsCatalogTable).leftJoin(
+      productsInventoryTable,
+      eq(productsInventoryTable.productId, productsCatalogTable.id)
+    ).orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
+    const headers = [
+      "Product ID",
+      "Name",
+      "Category",
+      "Individual Price (GBP)",
+      "Stock Level",
+      "Low Stock Threshold",
+      "Is Published",
+      "Updated At"
+    ];
     const rows = products.map((p) => toCsvRow3([
       p.productId,
-      p.productName,
-      p.productCategory,
+      p.name,
+      p.category,
+      p.individualPriceGbp === null ? "" : parseFloat(String(p.individualPriceGbp)).toFixed(2),
       p.stockLevel,
       p.lowStockThreshold,
       p.isPublished ? "Yes" : "No",
-      p.updatedAt.toISOString()
+      (p.inventoryUpdatedAt ?? p.catalogUpdatedAt).toISOString()
     ]));
     const csv = [headers.join(","), ...rows].join("\n");
     const today = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);

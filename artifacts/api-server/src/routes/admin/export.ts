@@ -1,8 +1,14 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
-import { customersTable, productsInventoryTable, refundsLogTable, inventoryAuditLogTable } from "@workspace/db";
-import { desc } from "drizzle-orm";
+import {
+  customersTable,
+  productsCatalogTable,
+  productsInventoryTable,
+  refundsLogTable,
+  inventoryAuditLogTable,
+} from "@workspace/db";
+import { desc, eq } from "drizzle-orm";
 
 const router = Router();
 
@@ -57,15 +63,43 @@ router.get("/admin/export/products.csv", async (req: Request, res: Response): Pr
   if (!requireAdmin(req, res)) return;
   try {
     const products = await db
-      .select()
-      .from(productsInventoryTable)
-      .orderBy(productsInventoryTable.productId);
+      .select({
+        productId: productsCatalogTable.id,
+        name: productsCatalogTable.name,
+        category: productsCatalogTable.category,
+        individualPriceGbp: productsCatalogTable.priceGbp,
+        stockLevel: productsInventoryTable.stockLevel,
+        lowStockThreshold: productsInventoryTable.lowStockThreshold,
+        isPublished: productsInventoryTable.isPublished,
+        inventoryUpdatedAt: productsInventoryTable.updatedAt,
+        catalogUpdatedAt: productsCatalogTable.updatedAt,
+      })
+      .from(productsCatalogTable)
+      .leftJoin(
+        productsInventoryTable,
+        eq(productsInventoryTable.productId, productsCatalogTable.id),
+      )
+      .orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
 
-    const headers = ["Product ID", "Name", "Category", "Stock Level", "Low Stock Threshold", "Is Published", "Updated At"];
+    const headers = [
+      "Product ID",
+      "Name",
+      "Category",
+      "Individual Price (GBP)",
+      "Stock Level",
+      "Low Stock Threshold",
+      "Is Published",
+      "Updated At",
+    ];
     const rows = products.map(p => toCsvRow([
-      p.productId, p.productName, p.productCategory,
-      p.stockLevel, p.lowStockThreshold, p.isPublished ? "Yes" : "No",
-      p.updatedAt.toISOString(),
+      p.productId,
+      p.name,
+      p.category,
+      p.individualPriceGbp === null ? "" : parseFloat(String(p.individualPriceGbp)).toFixed(2),
+      p.stockLevel,
+      p.lowStockThreshold,
+      p.isPublished ? "Yes" : "No",
+      (p.inventoryUpdatedAt ?? p.catalogUpdatedAt).toISOString(),
     ]));
 
     const csv = [headers.join(","), ...rows].join("\n");
