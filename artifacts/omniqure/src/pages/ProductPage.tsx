@@ -35,7 +35,7 @@ type ReviewSummary = {
 };
 
 const VOLUME_TIERS = [
-  { min: 3,  range: "3–4", label: "Free 10ml BAC water" },
+  { min: 3,  range: "3–4", label: "Free 10ml BAC water ampule" },
   { min: 5,  range: "5–9", label: "1 peptide free" },
   { min: 10, range: "10+", label: "2 peptides free" },
 ];
