@@ -95,6 +95,15 @@ const paymentBadges = [
       </svg>
     ),
   },
+  {
+    label: "USDC",
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M15.5 9.5c-.6-.75-1.5-1.2-2.5-1.2h-1.8c-1.1 0-2 .75-2 1.7s.7 1.45 1.8 1.7l2 .4c1.1.25 1.8.8 1.8 1.7s-.9 1.7-2 1.7H11c-1 0-1.9-.45-2.5-1.2M12 6.5v11" fill="none" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+      </svg>
+    ),
+  },
 ];
 
 
