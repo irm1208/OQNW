@@ -267,7 +267,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
        <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header className="min-h-14 flex items-center justify-between gap-3 px-4 sm:px-6 bg-card border-b lg:hidden">
+        <header className="min-h-12 sm:min-h-14 flex items-center justify-between gap-3 px-3 sm:px-6 bg-card border-b lg:hidden">
           <Button
             variant="ghost"
             size="icon"

@@ -82,7 +82,7 @@ export default function Reports() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
         <div className="rounded-xl border bg-card p-5">
           <p className="text-sm text-muted-foreground mb-1">Revenue</p>
           <p className="text-2xl font-bold">{gbp(summary?.revenue ?? 0)}</p>

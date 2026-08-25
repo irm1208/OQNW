@@ -83,7 +83,7 @@ export default function StockAlerts() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
         {[
           { label: "Pending Notifications", value: stats?.totalPending ?? 0, icon: BellRing, color: "text-amber-600", bg: "bg-amber-50 border-amber-200" },
           { label: "Products with Waitlists", value: stats?.productsWithWaitlist ?? 0, icon: Package, color: "text-blue-600", bg: "bg-blue-50 border-blue-200" },

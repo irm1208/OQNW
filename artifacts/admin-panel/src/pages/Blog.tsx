@@ -139,7 +139,7 @@ export default function Blog() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
         <div className="rounded-xl border bg-card p-5">
           <p className="text-sm text-muted-foreground mb-1">Published</p>
           <p className="text-3xl font-bold text-green-600">{published}</p>

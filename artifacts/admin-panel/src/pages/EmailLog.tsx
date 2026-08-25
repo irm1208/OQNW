@@ -88,7 +88,7 @@ export default function EmailLog() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
         {[
           { label: "Total Sent", value: String(stats.total), icon: Mail, color: "text-slate-600" },
           { label: "Delivered", value: String(stats.sent), icon: MailCheck, color: "text-green-600" },

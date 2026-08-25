@@ -80,7 +80,7 @@ export default function AbandonedCarts() {
       </div>
 
       {/* Stats */}
-       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[
           { label: "Total Abandoned", value: String(stats.total), icon: ShoppingCart, color: "text-slate-600" },
           { label: "Abandoned Value", value: formatGbp(stats.totalAbandonedValue), icon: ShoppingCart, color: "text-orange-600" },
