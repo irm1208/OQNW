@@ -877,7 +877,7 @@ async function handleOrderRequest(
       orderItemRows.push({
         orderId: order.id,
         productId: 0,
-        productName: "Bacteriostatic Water 10ml (Bundle & Save — free)",
+        productName: "Bacteriostatic Water 10ml Ampule (Bundle & Save — free)",
         productCategory: "Accessories",
         quantity: 1,
         priceGbp: "0.00",

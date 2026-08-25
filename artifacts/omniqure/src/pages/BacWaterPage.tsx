@@ -11,7 +11,7 @@ const SIZES = [
     ref: "BW-10-ML",
     price: 8.99,
     id: "bw-10ml",
-    name: "Bacteriostatic Water 10ml",
+    name: "Bacteriostatic Water 10ml Ampule",
     slug: "bacteriostatic-water-10ml",
     category: "Accessories",
     image: "/bac-water-10ml.png",

@@ -2183,7 +2183,7 @@ export default function CartPage() {
                 <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 14 }}>
                   <div style={{ width: 56, height: 56, borderRadius: 6, border: "1px solid #E8EDF5", background: "#DCFCE7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", flexShrink: 0 }}>💧</div>
                   <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: "13px", fontWeight: 600, color: THEME.text, margin: 0 }}>Bacteriostatic Water 10ml</p>
+                    <p style={{ fontSize: "13px", fontWeight: 600, color: THEME.text, margin: 0 }}>Bacteriostatic Water 10ml Ampule</p>
                     <p style={{ fontSize: "11px", color: "#059669", margin: "2px 0 0", fontWeight: 600 }}>Free (Bundle & Save)</p>
                   </div>
                   <div style={{ fontSize: "14px", fontWeight: 700, color: "#059669", flexShrink: 0 }}>£0.00</div>
