@@ -68,7 +68,9 @@ export default function Header() {
     ];
   }, [allProducts]);
   const peptideGroups = useMemo(
-    () => groupProducts(products).sort((a, b) => a.baseName.localeCompare(b.baseName)),
+    () => groupProducts(products)
+      .filter((group) => group.category !== "Accessories")
+      .sort((a, b) => a.baseName.localeCompare(b.baseName)),
     [products]
   );
   const popularGroups = useMemo(() => {
