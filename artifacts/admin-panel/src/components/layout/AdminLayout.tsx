@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation, Redirect } from "wouter";
-import { useAdminLogout, useAdminMe } from "@workspace/api-client-react";
+import { getAdminMeQueryKey, useAdminLogout, useAdminMe } from "@workspace/api-client-react";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2,
   RotateCcw, Star, ShoppingBag, Mail, Gift, BellRing,
@@ -209,6 +210,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [location, navigate] = useLocation();
   const { data: session, isLoading } = useAdminMe();
   const logout = useAdminLogout();
+  const queryClient = useQueryClient();
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
@@ -225,8 +227,13 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   }
 
   const handleLogout = () => {
+    if (logout.isPending) return;
     logout.mutate(undefined, {
-      onSuccess: () => navigate("/login"),
+      onSuccess: () => {
+        queryClient.clear();
+        queryClient.setQueryData(getAdminMeQueryKey(), { authenticated: false });
+        navigate("/login");
+      },
     });
   };
 

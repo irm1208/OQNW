@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
-import { useAdminMe } from "@workspace/api-client-react";
+import { getAdminMeQueryKey, useAdminMe } from "@workspace/api-client-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,6 +16,7 @@ function formatCountdown(seconds: number): string {
 export default function Login() {
   const [password, setPassword] = useState("");
   const [, setLocation] = useLocation();
+  const queryClient = useQueryClient();
   const [isPending, setIsPending] = useState(false);
   const [attemptsRemaining, setAttemptsRemaining] = useState<number | null>(null);
   const [lockedUntil, setLockedUntil] = useState<number | null>(null);
@@ -65,6 +67,7 @@ export default function Login() {
         };
 
         if (res.ok && data.authenticated) {
+          queryClient.setQueryData(getAdminMeQueryKey(), { authenticated: true });
           setLocation("/dashboard");
           return;
         }
@@ -87,7 +90,7 @@ export default function Login() {
         setIsPending(false);
       }
     },
-    [password, isPending, isLocked, setLocation],
+    [password, isPending, isLocked, queryClient, setLocation],
   );
 
   if (checkingSession) {
