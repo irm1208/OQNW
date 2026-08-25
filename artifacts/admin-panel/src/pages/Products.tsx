@@ -515,15 +515,16 @@ function CatalogTab() {
                         onClick={() => handleTogglePublished(product)}
                         disabled={updateProduct.isPending}
                         title={product.isPublished ? "Click to disable" : "Click to enable"}
+                        aria-label={product.isPublished ? `Enabled: click to disable ${product.name}` : `Disabled: click to enable ${product.name}`}
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed ${
                           product.isPublished
-                            ? "bg-red-100 text-red-800 border-red-200 hover:bg-red-200 hover:text-red-900 hover:border-red-300"
-                            : "bg-green-100 text-green-800 border-green-200 hover:bg-green-200 hover:text-green-900 hover:border-green-300"
+                            ? "bg-green-100 text-green-800 border-green-200 hover:bg-green-200 hover:text-green-900 hover:border-green-300"
+                            : "bg-red-100 text-red-800 border-red-200 hover:bg-red-200 hover:text-red-900 hover:border-red-300"
                         }`}
                       >
                         {product.isPublished
-                          ? <><EyeOff className="w-3 h-3" /> Disable</>
-                          : <><Eye className="w-3 h-3" /> Enable</>
+                          ? <><Eye className="w-3 h-3" /> Enabled</>
+                          : <><EyeOff className="w-3 h-3" /> Disabled</>
                         }
                       </button>
                       {product.isFeatured && (
