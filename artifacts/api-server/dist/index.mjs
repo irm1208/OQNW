@@ -66973,10 +66973,13 @@ var ListPublicProductsResponseItem = objectType({
   category: stringType(),
   priceGbp: numberType().nullish(),
   shortDescription: stringType().nullish(),
+  description: stringType().nullish(),
   imageUrl: stringType().nullish(),
   purity: stringType().nullish(),
   coaUrl: stringType().nullish(),
   msImageUrl: stringType().nullish(),
+  seoTitle: stringType().nullish(),
+  seoDescription: stringType().nullish(),
   isFeatured: booleanType().optional()
 });
 var ListPublicProductsResponse = arrayType(
@@ -67006,6 +67009,8 @@ var GetPublicProductResponse = objectType({
   halfLife: stringType().nullish(),
   coaUrl: stringType().nullish(),
   msImageUrl: stringType().nullish(),
+  seoTitle: stringType().nullish(),
+  seoDescription: stringType().nullish(),
   isFeatured: booleanType().optional()
 });
 
@@ -90846,6 +90851,7 @@ router10.get("/products", async (req, res) => {
       category: productsCatalogTable.category,
       priceGbp: productsCatalogTable.priceGbp,
       shortDescription: productsCatalogTable.shortDescription,
+      description: productsCatalogTable.description,
       imageUrl: productsCatalogTable.imageUrl,
       purity: productsCatalogTable.purity,
       coaUrl: productsCatalogTable.coaUrl,
@@ -90865,6 +90871,7 @@ router10.get("/products", async (req, res) => {
         category: p.category,
         priceGbp: p.priceGbp !== null ? Number(p.priceGbp) : null,
         shortDescription: p.shortDescription,
+        description: p.description,
         imageUrl: p.imageUrl,
         purity: p.purity,
         coaUrl: p.coaUrl ?? null,

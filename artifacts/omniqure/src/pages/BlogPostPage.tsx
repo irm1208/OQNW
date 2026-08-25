@@ -3,6 +3,7 @@ import { useBlogPost } from "@/hooks/useBlog";
 import { useSEO } from "@/hooks/useSEO";
 import { ArrowLeft, Loader2, Twitter, Linkedin } from "lucide-react";
 import NotFound from "./not-found";
+import { getBlogSeoMetadata, getPublicBlogPath } from "@workspace/api-client-react";
 
 function SafePostContent({ content }: { content: string }) {
   const documentFragment = new DOMParser().parseFromString(content, "text/html");
@@ -58,22 +59,28 @@ export default function BlogPostPage() {
   const slug = match ? params?.slug : "";
 
   const { data: post, isLoading, isError, error } = useBlogPost(slug || "");
+  const seoMetadata = getBlogSeoMetadata({
+    title: post?.title,
+    excerpt: post?.excerpt,
+    seoTitle: post?.seoTitle,
+    seoDescription: post?.seoDescription,
+  });
 
   useSEO(post ? {
-    title: post.seoTitle || post.title,
-    description: post.seoDescription || post.excerpt,
+    title: seoMetadata.title,
+    description: seoMetadata.description,
     ogImage: post.featuredImageUrl,
     ogType: "article",
-    canonicalPath: `/blog/${encodeURIComponent(post.slug)}`,
+    canonicalPath: getPublicBlogPath(post.slug),
     breadcrumbs: [
       { name: "Home", path: "/" },
       { name: "Blog", path: "/blog" },
-      { name: post.title, path: `/blog/${post.slug}` }
+      { name: post.title, path: getPublicBlogPath(post.slug) }
     ],
     article: {
       headline: post.title,
-      description: post.seoDescription || post.excerpt || "",
-      url: `/blog/${post.slug}`,
+      description: seoMetadata.description,
+      url: getPublicBlogPath(post.slug),
       image: post.featuredImageUrl,
       datePublished: post.publishedAt,
       dateModified: post.publishedAt,

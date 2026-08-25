@@ -18,6 +18,7 @@ import ProductInfoAccordion from "@/components/ProductInfoAccordion";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useSEO, SITE_URL } from "@/hooks/useSEO";
+import { getProductSeoMetadata, getPublicProductPath } from "@workspace/api-client-react";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -182,15 +183,16 @@ export default function ProductPage() {
   }, [product?.id]);
 
   // SEO — computed unconditionally (before any early return)
-  const seoDetail = productDetails[product?.slug ?? ""];
-  // Use custom SEO fields from DB if set, otherwise auto-generate from product data
-  const autoDesc = seoDetail?.description
-    ? `${seoDetail.description.slice(0, 140).split(". ")[0]}. ${product ? getPurityStr(product.id) : ""} verified purity. For research use only — OmniQure Peptide Research Institute.`
-    : product
-    ? `${product.name} — ${product.category} research peptide. ${getPurityStr(product.id)} verified purity. For research use only.`
-    : undefined;
-  const seoTitle = product?.seoTitle || product?.name || null;
-  const seoDesc = product?.seoDescription || autoDesc || null;
+  const seoMetadata = getProductSeoMetadata({
+    name: product?.name,
+    category: product?.category,
+    description: product?.description,
+    purity: product?.purity,
+    seoTitle: product?.seoTitle,
+    seoDescription: product?.seoDescription,
+  });
+  const seoTitle = product ? seoMetadata.title : null;
+  const seoDesc = product ? seoMetadata.description : null;
   const seoAvailability = product?.stockLevel === 0
     ? "OutOfStock"
     : product?.stockLevel !== undefined && product.stockLevel <= 10
@@ -200,7 +202,7 @@ export default function ProductPage() {
     title: seoTitle,
     description: seoDesc,
     ogType: "product",
-    canonicalPath: product ? `/product/${product.slug}` : null,
+    canonicalPath: product ? getPublicProductPath(product.slug) : null,
     ogImage: product ? `${SITE_URL}${product.image}` : null,
     product: product ? {
       name: product.name,
@@ -224,7 +226,7 @@ export default function ProductPage() {
       { name: "Home", path: "/" },
       { name: "All Peptides", path: "/all-peptides" },
       { name: product.category, path: `/all-peptides?category=${encodeURIComponent(product.category)}` },
-      { name: product.name, path: `/product/${product.slug}` },
+      { name: product.name, path: getPublicProductPath(product.slug) },
     ] : null,
   });
 
@@ -976,8 +978,6 @@ export default function ProductPage() {
             )}
 
 
-
-
           </div>
         </div>
 
@@ -1036,7 +1036,6 @@ export default function ProductPage() {
             </div>
           </div>
         </div>
-
 
 
         {/* Recently Viewed */}

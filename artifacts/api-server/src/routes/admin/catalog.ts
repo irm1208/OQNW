@@ -138,7 +138,7 @@ router.get("/admin/catalog", async (req: Request, res: Response): Promise<void> 
     const category = isStr(req.query.category) ? req.query.category : undefined;
     const published = req.query.published;
 
-    const conditions = [];
+    const conditions = [eq(productsCatalogTable.isPublished, true)];
     if (search) conditions.push(ilike(productsCatalogTable.name, `%${search}%`));
     if (category) conditions.push(eq(productsCatalogTable.category, category));
     if (published === "true") conditions.push(eq(productsCatalogTable.isPublished, true));
@@ -146,9 +146,27 @@ router.get("/admin/catalog", async (req: Request, res: Response): Promise<void> 
 
     const where = conditions.length > 0 ? and(...conditions) : undefined;
     const products = await db
-      .select()
+      .select({
+        id: productsCatalogTable.id,
+        slug: productsCatalogTable.slug,
+        name: productsCatalogTable.name,
+        category: productsCatalogTable.category,
+        priceGbp: productsCatalogTable.priceGbp,
+        shortDescription: productsCatalogTable.shortDescription,
+        description: productsCatalogTable.description,
+        imageUrl: productsCatalogTable.imageUrl,
+        purity: productsCatalogTable.purity,
+        coaUrl: productsCatalogTable.coaUrl,
+        msImageUrl: productsCatalogTable.msImageUrl,
+        seoTitle: productsCatalogTable.seoTitle,
+        seoDescription: productsCatalogTable.seoDescription,
+        isFeatured: productsCatalogTable.isFeatured,
+        stockLevel: productsInventoryTable.stockLevel,
+        inventoryPublished: productsInventoryTable.isPublished,
+      })
       .from(productsCatalogTable)
-      .where(where)
+      .leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id))
+      .where(and(...conditions))
       .orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
     res.status(200).json(products.map(catalogToResponse));
   } catch (err) {
@@ -192,7 +210,15 @@ router.get("/admin/catalog/:id", async (req: Request, res: Response): Promise<vo
   const id = Number(req.params.id);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
   try {
-    const [product] = await db.select().from(productsCatalogTable).where(eq(productsCatalogTable.id, id));
+    const [product] = await db
+      .select()
+      .from(productsCatalogTable)
+      .where(
+        and(
+          eq(productsCatalogTable.slug, slug),
+          eq(productsCatalogTable.isPublished, true)
+        )
+      );
     if (!product) { res.status(404).json({ error: "Product not found" }); return; }
     res.status(200).json(catalogToResponse(product));
   } catch (err) {
@@ -292,30 +318,24 @@ router.patch("/admin/catalog/:id", async (req: Request, res: Response): Promise<
   }
 
   try {
-    const [updated] = await db
-      .update(productsCatalogTable)
-      .set(updates)
-      .where(eq(productsCatalogTable.id, id))
-      .returning();
-    if (!updated) { res.status(404).json({ error: "Product not found" }); return; }
-    await syncInventoryProduct(updated);
-    res.status(200).json(catalogToResponse(updated));
-  } catch (err) {
-    req.log.error({ err }, "Failed to update catalog product");
-    res.status(500).json({ error: "Internal server error" });
+      const [updated] = await db
+        .update(productsCatalogTable)
+        .set({ [field]: url } as Partial<typeof productsCatalogTable.$inferInsert>)
+        .where(eq(productsCatalogTable.id, id))
+        .returning();
+      if (!updated) { res.status(404).json({ error: "Product not found" }); return; }
+      res.status(200).json({ url });
+    } catch (err) {
+      req.log.error({ err }, "Failed to save uploaded document URL");
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
-});
+);
 
-// POST /api/admin/catalog/:id/upload-doc — upload a lab document (COA / MS)
-router.post(
-  "/admin/catalog/:id/upload-doc",
-  (req: Request, res: Response, next) => {
-    if (!requireAdmin(req, res)) return;
-    next();
-  },
-  upload.single("file"),
-  async (req: Request, res: Response): Promise<void> => {
-    const id = Number(req.params.id);
+// DELETE /api/admin/catalog/:id
+router.delete("/admin/catalog/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = Number(req.params.id);
     if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
     if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
@@ -381,6 +401,7 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
         category: productsCatalogTable.category,
         priceGbp: productsCatalogTable.priceGbp,
         shortDescription: productsCatalogTable.shortDescription,
+        description: productsCatalogTable.description,
         imageUrl: productsCatalogTable.imageUrl,
         purity: productsCatalogTable.purity,
         coaUrl: productsCatalogTable.coaUrl,
@@ -407,6 +428,7 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
           category: p.category,
           priceGbp: p.priceGbp !== null ? Number(p.priceGbp) : null,
           shortDescription: p.shortDescription,
+           description: p.description,
           imageUrl: p.imageUrl,
           purity: p.purity,
           coaUrl: p.coaUrl ?? null,

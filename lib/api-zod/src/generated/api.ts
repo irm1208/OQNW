@@ -679,10 +679,13 @@ export const ListPublicProductsResponseItem = zod.object({
   category: zod.string(),
   priceGbp: zod.number().nullish(),
   shortDescription: zod.string().nullish(),
+  description: zod.string().nullish(),
   imageUrl: zod.string().nullish(),
   purity: zod.string().nullish(),
   coaUrl: zod.string().nullish(),
   msImageUrl: zod.string().nullish(),
+  seoTitle: zod.string().nullish(),
+  seoDescription: zod.string().nullish(),
   isFeatured: zod.boolean().optional(),
 });
 export const ListPublicProductsResponse = zod.array(
@@ -717,5 +720,7 @@ export const GetPublicProductResponse = zod.object({
   halfLife: zod.string().nullish(),
   coaUrl: zod.string().nullish(),
   msImageUrl: zod.string().nullish(),
+  seoTitle: zod.string().nullish(),
+  seoDescription: zod.string().nullish(),
   isFeatured: zod.boolean().optional(),
 });

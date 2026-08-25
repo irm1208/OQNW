@@ -5,6 +5,8 @@ export type Product = {
   price: number | null;
   image: string;
   category: string;
+  description?: string | null;
+  purity?: string | null;
   stockLevel?: number;
   coaUrl?: string | null;
   msImageUrl?: string | null;

@@ -29,6 +29,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import type { CatalogProduct, AdminProduct } from "@workspace/api-client-react";
+import SeoSearchPreview, {
+import { getPublicProductPath } from "@workspace/api-client-react";
 
 const CATEGORIES = [
   "Growth Peptides",
@@ -235,15 +237,22 @@ function CatalogTab() {
       halfLife: form.halfLife || undefined,
       coaUrl: form.coaUrl || undefined,
       msImageUrl: form.msImageUrl || undefined,
-      seoTitle: form.seoTitle || undefined,
-      seoDescription: form.seoDescription || undefined,
+      seoTitle: form.seoTitle.trim() || undefined,
+      seoDescription: form.seoDescription.trim() || undefined,
       isPublished: form.isPublished,
       isFeatured: form.isFeatured,
     };
 
     try {
       if (editingProduct) {
-        await updateProduct.mutateAsync({ id: editingProduct.id, data: payload });
+        await updateProduct.mutateAsync({
+          id: editingProduct.id,
+          data: {
+            ...payload,
+            seoTitle: form.seoTitle.trim() || null,
+            seoDescription: form.seoDescription.trim() || null,
+          },
+        });
         toast.success("Product updated");
       } else {
         await createProduct.mutateAsync({ data: payload });
@@ -747,18 +756,36 @@ function CatalogTab() {
                   Override the auto-generated title and description that appear in Google search results.
                   Leave blank to use the defaults (product name + purity line).
                 </p>
+                {(() => {
+                  const searchMetadata = getProductSearchMetadata({
+                    name: form.name,
+                    category: form.category,
+                    purity: form.purity,
+                    description: form.description,
+                    seoTitle: form.seoTitle,
+                    seoDescription: form.seoDescription,
+                  });
+                  return (
+                    <div className="mb-4">
+                      <SeoSearchPreview
+                        {...searchMetadata}
+                        urlPath={getPublicProductPath(form.slug.trim() || "product")}
+                      />
+                    </div>
+                  );
+                })()}
                 <div className="space-y-3">
                   <div className="space-y-1.5">
                     <Label>
                       SEO Title
                       <span className="ml-1 text-muted-foreground font-normal text-xs">
-                        ({form.seoTitle.length}/60 chars)
+                        ({form.seoTitle.length} custom chars; {SEO_TITLE_LIMIT} recommended after the storefront suffix)
                       </span>
                     </Label>
                     <Input
                       value={form.seoTitle}
                       onChange={e => setForm(f => ({ ...f, seoTitle: e.target.value }))}
-                      placeholder={`${form.name || "BPC-157 5mg"} | OmniQure Peptide Research Institute`}
+                      placeholder={form.name || "BPC-157 5mg"}
                       maxLength={80}
                     />
                   </div>
@@ -766,7 +793,7 @@ function CatalogTab() {
                     <Label>
                       SEO Description
                       <span className="ml-1 text-muted-foreground font-normal text-xs">
-                        ({form.seoDescription.length}/160 chars)
+                        ({form.seoDescription.length}/{SEO_DESCRIPTION_LIMIT} chars)
                       </span>
                     </Label>
                     <Textarea

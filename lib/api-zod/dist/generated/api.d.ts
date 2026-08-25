@@ -1857,10 +1857,13 @@ export declare const ListPublicProductsResponseItem: zod.ZodObject<{
     category: zod.ZodString;
     priceGbp: zod.ZodOptional<zod.ZodNullable<zod.ZodNumber>>;
     shortDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    description: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     imageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     purity: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     coaUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     msImageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    seoTitle: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
 }, "strip", zod.ZodTypeAny, {
     category: string;
@@ -1869,10 +1872,13 @@ export declare const ListPublicProductsResponseItem: zod.ZodObject<{
     name: string;
     priceGbp?: number | null | undefined;
     shortDescription?: string | null | undefined;
+    description?: string | null | undefined;
     imageUrl?: string | null | undefined;
     purity?: string | null | undefined;
     coaUrl?: string | null | undefined;
     msImageUrl?: string | null | undefined;
+    seoTitle?: string | null | undefined;
+    seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
 }, {
     category: string;
@@ -1881,10 +1887,13 @@ export declare const ListPublicProductsResponseItem: zod.ZodObject<{
     name: string;
     priceGbp?: number | null | undefined;
     shortDescription?: string | null | undefined;
+    description?: string | null | undefined;
     imageUrl?: string | null | undefined;
     purity?: string | null | undefined;
     coaUrl?: string | null | undefined;
     msImageUrl?: string | null | undefined;
+    seoTitle?: string | null | undefined;
+    seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
 }>;
 export declare const ListPublicProductsResponse: zod.ZodArray<zod.ZodObject<{
@@ -1894,10 +1903,13 @@ export declare const ListPublicProductsResponse: zod.ZodArray<zod.ZodObject<{
     category: zod.ZodString;
     priceGbp: zod.ZodOptional<zod.ZodNullable<zod.ZodNumber>>;
     shortDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    description: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     imageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     purity: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     coaUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     msImageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    seoTitle: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
 }, "strip", zod.ZodTypeAny, {
     category: string;
@@ -1906,10 +1918,13 @@ export declare const ListPublicProductsResponse: zod.ZodArray<zod.ZodObject<{
     name: string;
     priceGbp?: number | null | undefined;
     shortDescription?: string | null | undefined;
+    description?: string | null | undefined;
     imageUrl?: string | null | undefined;
     purity?: string | null | undefined;
     coaUrl?: string | null | undefined;
     msImageUrl?: string | null | undefined;
+    seoTitle?: string | null | undefined;
+    seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
 }, {
     category: string;
@@ -1918,10 +1933,13 @@ export declare const ListPublicProductsResponse: zod.ZodArray<zod.ZodObject<{
     name: string;
     priceGbp?: number | null | undefined;
     shortDescription?: string | null | undefined;
+    description?: string | null | undefined;
     imageUrl?: string | null | undefined;
     purity?: string | null | undefined;
     coaUrl?: string | null | undefined;
     msImageUrl?: string | null | undefined;
+    seoTitle?: string | null | undefined;
+    seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
 }>, "many">;
 /**
@@ -1955,6 +1973,8 @@ export declare const GetPublicProductResponse: zod.ZodObject<{
     halfLife: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     coaUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     msImageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    seoTitle: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
 }, "strip", zod.ZodTypeAny, {
     category: string;
@@ -1977,6 +1997,8 @@ export declare const GetPublicProductResponse: zod.ZodObject<{
     halfLife?: string | null | undefined;
     coaUrl?: string | null | undefined;
     msImageUrl?: string | null | undefined;
+    seoTitle?: string | null | undefined;
+    seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
 }, {
     category: string;
@@ -1999,6 +2021,8 @@ export declare const GetPublicProductResponse: zod.ZodObject<{
     halfLife?: string | null | undefined;
     coaUrl?: string | null | undefined;
     msImageUrl?: string | null | undefined;
+    seoTitle?: string | null | undefined;
+    seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
 }>;
 //# sourceMappingURL=api.d.ts.map

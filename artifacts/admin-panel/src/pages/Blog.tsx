@@ -8,6 +8,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { getPublicBlogPath } from "@workspace/api-client-react";
+import SeoSearchPreview, {
+  getBlogSearchMetadata,
+  SEO_DESCRIPTION_LIMIT,
+  SEO_TITLE_LIMIT,
+  slugifyPreview,
+} from "@/components/SeoSearchPreview";
 
 function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
 
@@ -257,13 +264,50 @@ export default function Blog() {
             </div>
             <div className="border-t pt-4 space-y-3">
               <p className="text-sm font-medium text-muted-foreground">SEO</p>
+                {(() => {
+                  const searchMetadata = getBlogSearchMetadata({
+                    title: form.title,
+                    excerpt: form.excerpt,
+                    seoTitle: form.seoTitle,
+                    seoDescription: form.seoDescription,
+                  });
+                  const previewSlug = editing?.slug || slugifyPreview(form.title) || "article";
+                  return (
+                    <SeoSearchPreview
+                      {...searchMetadata}
+                      urlPath={getPublicBlogPath(previewSlug)}
+                      urlNote={!editing ? "Save the post to generate its final public URL." : undefined}
+                    />
+                  );
+                })()}
               <div className="space-y-1">
-                <label className="text-sm font-medium">SEO Title</label>
-                <Input placeholder="Overrides page title for search engines" value={form.seoTitle} onChange={e => setForm(f => ({ ...f, seoTitle: e.target.value }))} />
+                  <label className="text-sm font-medium">
+                    SEO Title
+                    <span className="ml-1 text-xs font-normal text-muted-foreground">
+                      ({form.seoTitle.length} custom chars; {SEO_TITLE_LIMIT} recommended after the storefront suffix)
+                    </span>
+                  </label>
+                  <Input
+                    placeholder="Overrides page title for search engines"
+                    value={form.seoTitle}
+                    onChange={e => setForm(f => ({ ...f, seoTitle: e.target.value }))}
+                    maxLength={80}
+                  />
               </div>
               <div className="space-y-1">
-                <label className="text-sm font-medium">Meta Description</label>
-                <Textarea placeholder="150–160 chars shown in search results" rows={2} value={form.seoDescription} onChange={e => setForm(f => ({ ...f, seoDescription: e.target.value }))} />
+                  <label className="text-sm font-medium">
+                    Meta Description
+                    <span className="ml-1 text-xs font-normal text-muted-foreground">
+                      ({form.seoDescription.length}/{SEO_DESCRIPTION_LIMIT} chars)
+                    </span>
+                  </label>
+                  <Textarea
+                    placeholder="150–160 chars shown in search results"
+                    rows={2}
+                    value={form.seoDescription}
+                    onChange={e => setForm(f => ({ ...f, seoDescription: e.target.value }))}
+                    maxLength={200}
+                  />
               </div>
             </div>
           </div>

@@ -380,6 +380,8 @@ export interface PublicProduct {
     /** @nullable */
     shortDescription?: string | null;
     /** @nullable */
+    description?: string | null;
+    /** @nullable */
     imageUrl?: string | null;
     /** @nullable */
     purity?: string | null;
@@ -387,6 +389,10 @@ export interface PublicProduct {
     coaUrl?: string | null;
     /** @nullable */
     msImageUrl?: string | null;
+    /** @nullable */
+    seoTitle?: string | null;
+    /** @nullable */
+    seoDescription?: string | null;
     isFeatured?: boolean;
 }
 export type RefundLineItemsItem = {
@@ -474,6 +480,10 @@ export interface PublicProductDetail {
     coaUrl?: string | null;
     /** @nullable */
     msImageUrl?: string | null;
+    /** @nullable */
+    seoTitle?: string | null;
+    /** @nullable */
+    seoDescription?: string | null;
     isFeatured?: boolean;
 }
 export type GetRevenueChartParams = {

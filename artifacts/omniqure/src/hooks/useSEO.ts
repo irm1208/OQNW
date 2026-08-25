@@ -1,10 +1,14 @@
 import { useEffect } from "react";
+import {
+  DEFAULT_SITE_DESCRIPTION,
+  DEFAULT_SITE_TITLE,
+  SITE_NAME,
+  SITE_URL,
+} from "@workspace/api-client-react";
 
-export const SITE_NAME = "OmniQure Peptide Research Institute";
-export const SITE_URL = "https://omniqure.com";
-export const DEFAULT_TITLE = "OmniQure Peptide Research Institute — Verified Research Peptides";
-export const DEFAULT_DESCRIPTION =
-  "Buy high-purity research peptides verified to 98%+. BPC-157, TB-500, Ipamorelin, CJC-1295, Epithalon and 100+ peptides. Worldwide shipping. For research use only.";
+export { SITE_NAME, SITE_URL };
+const DEFAULT_TITLE = DEFAULT_SITE_TITLE;
+const DEFAULT_DESCRIPTION = DEFAULT_SITE_DESCRIPTION;
 const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph.jpg`;
 
 function upsertMeta(attr: "name" | "property", key: string, content: string) {
@@ -286,7 +290,6 @@ export function useSEO({
     }
 
     return () => {
-      document.title = DEFAULT_TITLE;
       removeJsonLd("product");
       removeJsonLd("article");
       removeJsonLd("breadcrumb");

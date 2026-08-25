@@ -24,6 +24,7 @@ type ApiProduct = {
   priceGbp: number | null;
   imageUrl: string | null;
   shortDescription: string | null;
+  description?: string | null;
   purity: string | null;
   isFeatured: boolean;
   stockLevel: number | null;
@@ -41,6 +42,8 @@ function toProduct(p: ApiProduct): Product {
     price: p.priceGbp,
     image: p.imageUrl ?? `/products/${p.id}.jpg`,
     category: p.category,
+    description: p.description ?? null,
+    purity: p.purity ?? null,
     stockLevel: p.stockLevel ?? undefined,
     coaUrl: p.coaUrl ?? null,
     msImageUrl: p.msImageUrl ?? null,
