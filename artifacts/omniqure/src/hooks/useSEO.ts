@@ -2,8 +2,8 @@ import { useEffect } from "react";
 
 export const SITE_NAME = "OmniQure Peptide Research Institute";
 export const SITE_URL = "https://omniqure.com";
-const DEFAULT_TITLE = "OmniQure Peptide Research Institute — Verified Research Peptides";
-const DEFAULT_DESCRIPTION =
+export const DEFAULT_TITLE = "OmniQure Peptide Research Institute — Verified Research Peptides";
+export const DEFAULT_DESCRIPTION =
   "Buy high-purity research peptides verified to 98%+. BPC-157, TB-500, Ipamorelin, CJC-1295, Epithalon and 100+ peptides. Worldwide shipping. For research use only.";
 const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph.jpg`;
 
@@ -82,6 +82,114 @@ export interface BreadcrumbItem {
   path: string;
 }
 
+export interface ResolvedSeoMetadata {
+  title: string;
+  description: string;
+  image: string;
+  canonicalHref: string | null;
+}
+
+export function resolveSeoMetadata({
+  title,
+  description,
+  ogImage,
+  canonicalPath,
+  noSiteSuffix = false,
+}: Pick<SEOProps, "title" | "description" | "ogImage" | "canonicalPath" | "noSiteSuffix">): ResolvedSeoMetadata {
+  return {
+    title: title
+      ? noSiteSuffix
+        ? title
+        : `${title} | ${SITE_NAME}`
+      : DEFAULT_TITLE,
+    description: description ?? DEFAULT_DESCRIPTION,
+    image: ogImage ?? DEFAULT_OG_IMAGE,
+    canonicalHref: canonicalPath ? `${SITE_URL}${canonicalPath}` : null,
+  };
+}
+
+export function createProductJsonLd(product: ProductJsonLd) {
+  const price = product.price != null ? product.price.toFixed(2) : undefined;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": `${SITE_URL}/product/${product.productId}#product`,
+    name: product.name,
+    description: product.description,
+    image: product.image.startsWith("http")
+      ? product.image
+      : `${SITE_URL}${product.image}`,
+    category: product.category,
+    brand: {
+      "@type": "Brand",
+      name: SITE_NAME,
+    },
+    offers: price
+      ? {
+          "@type": "Offer",
+          url: `${SITE_URL}/product/${product.productId}`,
+          priceCurrency: product.currency ?? "GBP",
+          price,
+          availability: `https://schema.org/${product.availability}`,
+          seller: {
+            "@type": "Organization",
+            name: SITE_NAME,
+          },
+        }
+      : undefined,
+    aggregateRating:
+      product.aggregateRating && product.aggregateRating.reviewCount > 0
+        ? {
+            "@type": "AggregateRating",
+            ratingValue: product.aggregateRating.ratingValue,
+            reviewCount: product.aggregateRating.reviewCount,
+          }
+        : undefined,
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Purity",
+        value: `${product.purity}`,
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Research Use Only",
+        value: "Yes",
+      },
+    ],
+  };
+}
+
+export function createArticleJsonLd(article: ArticleJsonLd) {
+  const articleUrl = article.url.startsWith("http")
+    ? article.url
+    : `${SITE_URL}${article.url}`;
+  const articleImage = article.image
+    ? article.image.startsWith("http")
+      ? article.image
+      : `${SITE_URL}${article.image}`
+    : undefined;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.headline,
+    description: article.description,
+    url: articleUrl,
+    mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
+    image: articleImage,
+    datePublished: article.datePublished ?? undefined,
+    dateModified: article.dateModified ?? article.datePublished ?? undefined,
+    author: {
+      "@type": "Person",
+      name: article.author || "OmniQure Research Team",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+    },
+  };
+}
+
 interface SEOProps {
   title?: string | null;
   description?: string | null;
@@ -110,14 +218,12 @@ export function useSEO({
   breadcrumbs,
 }: SEOProps) {
   useEffect(() => {
-    const fullTitle = title
-      ? noSiteSuffix
-        ? title
-        : `${title} | ${SITE_NAME}`
-      : DEFAULT_TITLE;
-    const desc = description ?? DEFAULT_DESCRIPTION;
-    const img = ogImage ?? DEFAULT_OG_IMAGE;
-    const canonicalHref = canonicalPath ? `${SITE_URL}${canonicalPath}` : null;
+    const {
+      title: fullTitle,
+      description: desc,
+      image: img,
+      canonicalHref,
+    } = resolveSeoMetadata({ title, description, ogImage, canonicalPath, noSiteSuffix });
 
     document.title = fullTitle;
 
@@ -151,88 +257,14 @@ export function useSEO({
 
     // JSON-LD: Product structured data (Google Rich Results, Bing, Pinterest)
     if (product) {
-      const priceStr = product.price != null ? product.price.toFixed(2) : undefined;
-      upsertJsonLd("product", {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        "@id": `${SITE_URL}/product/${product.productId}#product`,
-        name: product.name,
-        description: product.description,
-        image: product.image.startsWith("http")
-          ? product.image
-          : `${SITE_URL}${product.image}`,
-        category: product.category,
-        brand: {
-          "@type": "Brand",
-          name: SITE_NAME,
-        },
-         offers: priceStr
-          ? {
-              "@type": "Offer",
-              url: `${SITE_URL}/product/${product.productId}`,
-               priceCurrency: product.currency ?? "GBP",
-              price: priceStr,
-              availability: `https://schema.org/${product.availability}`,
-              seller: {
-                "@type": "Organization",
-                name: SITE_NAME,
-              },
-             }
-          : undefined,
-        aggregateRating:
-          product.aggregateRating && product.aggregateRating.reviewCount > 0
-            ? {
-                "@type": "AggregateRating",
-                ratingValue: product.aggregateRating.ratingValue,
-                reviewCount: product.aggregateRating.reviewCount,
-              }
-            : undefined,
-        additionalProperty: [
-          {
-            "@type": "PropertyValue",
-            name: "Purity",
-            value: `${product.purity}`,
-          },
-          {
-            "@type": "PropertyValue",
-            name: "Research Use Only",
-            value: "Yes",
-          },
-        ],
-      });
+      upsertJsonLd("product", createProductJsonLd(product));
     } else {
       removeJsonLd("product");
     }
 
     // JSON-LD: Article structured data for research posts
     if (article) {
-      const articleUrl = article.url.startsWith("http")
-        ? article.url
-        : `${SITE_URL}${article.url}`;
-      const articleImage = article.image
-        ? article.image.startsWith("http")
-          ? article.image
-          : `${SITE_URL}${article.image}`
-        : undefined;
-      upsertJsonLd("article", {
-        "@context": "https://schema.org",
-        "@type": "Article",
-        headline: article.headline,
-        description: article.description,
-        url: articleUrl,
-        mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
-        image: articleImage,
-        datePublished: article.datePublished ?? undefined,
-        dateModified: article.dateModified ?? article.datePublished ?? undefined,
-        author: {
-          "@type": "Person",
-          name: article.author || "OmniQure Research Team",
-        },
-        publisher: {
-          "@type": "Organization",
-          name: SITE_NAME,
-        },
-      });
+      upsertJsonLd("article", createArticleJsonLd(article));
     } else {
       removeJsonLd("article");
     }
