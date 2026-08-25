@@ -80,7 +80,7 @@ export default function CartPreviewPanel() {
       ? "2 peptides free"
       : bundleFreeItemsCount === 1
       ? "1 peptide free"
-      : "Free 10ml BAC Water";
+      : "Free 10ml BAC Water Ampule";
 
   return (
     <>

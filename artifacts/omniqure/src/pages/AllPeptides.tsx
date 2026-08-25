@@ -202,7 +202,7 @@ export default function AllPeptides() {
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", alignItems: "center" }}>
               {[
-                { label: "3-4 vials", freebie: "Free 10ml BAC Water",  bg: "rgba(96,165,250,0.15)",  border: "rgba(96,165,250,0.4)",  color: "#93C5FD" },
+                { label: "3-4 vials", freebie: "Free 10ml BAC Water Ampule",  bg: "rgba(96,165,250,0.15)",  border: "rgba(96,165,250,0.4)",  color: "#93C5FD" },
                 { label: "5-9 vials", freebie: "1 Peptide Free",  bg: "rgba(52,211,153,0.15)",  border: "rgba(52,211,153,0.4)",  color: "#6EE7B7" },
                 { label: "10+ vials", freebie: "2 Peptides Free", bg: "rgba(248,113,113,0.18)", border: "rgba(248,113,113,0.45)", color: "#FCA5A5" },
               ].map(t => (
