@@ -7,7 +7,8 @@ import type { Product } from "@/data/products";
 
 const SIZES = [
   {
-    label: "10ml",
+    label: "10ml Ampule",
+    unit: "ampule",
     ref: "BW-10-ML",
     price: 8.99,
     id: "bw-10ml",
@@ -17,7 +18,8 @@ const SIZES = [
     image: "/bac-water-10ml.png",
   },
   {
-    label: "30ml",
+    label: "30ml Vial",
+    unit: "vial",
     ref: "BW-30-ML",
     price: 11.99,
     id: "bw-30ml",
@@ -38,7 +40,7 @@ const FEATURES = [
 export default function BacWaterPage() {
   useSEO({
     title: "Bacteriostatic Water for Peptide Reconstitution",
-    description: "High-quality bacteriostatic water (BAC water) for peptide reconstitution. Available in 30ml and 10ml vials. Sterile, 0.9% benzyl alcohol preserved. Ships with all OmniQure peptide orders.",
+    description: "High-quality bacteriostatic water (BAC water) for peptide reconstitution. Available in 30ml vials and 10ml ampules. Sterile, 0.9% benzyl alcohol preserved. Ships with all OmniQure peptide orders.",
     canonicalPath: "/bac-water",
   });
   const [selectedIdx, setSelectedIdx] = useState(0);
@@ -170,7 +172,7 @@ export default function BacWaterPage() {
               <span style={{ fontSize: "36px", fontWeight: 900, color: "#0D2565", lineHeight: 1 }}>
                 £{selected.price.toFixed(2)}
               </span>
-              <span style={{ fontSize: "13px", color: "#94A3B8", marginLeft: "8px" }}>per vial</span>
+               <span style={{ fontSize: "13px", color: "#94A3B8", marginLeft: "8px" }}>per {selected.unit}</span>
             </div>
 
             {/* Qty + Add */}
