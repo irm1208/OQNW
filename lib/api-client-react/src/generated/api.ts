@@ -32,6 +32,7 @@ import type {
   DiscountCode,
   DiscountCodeInput,
   DiscountCodePatch,
+  EnableAllPeptideCatalogProductsResponse,
   GetNewCustomersChartParams,
   GetRevenueChartParams,
   HealthStatus,
@@ -2196,6 +2197,92 @@ export const useDisableCatalogProductsWithoutJanoshikReport = <
 > => {
   return useMutation(
     getDisableCatalogProductsWithoutJanoshikReportMutationOptions(options),
+  );
+};
+
+/**
+ * @summary Re-enable all peptide products in the catalog
+ */
+export const getEnableAllPeptideCatalogProductsUrl = () => {
+  return `/api/admin/catalog/enable-all-peptides`;
+};
+
+export const enableAllPeptideCatalogProducts = async (
+  options?: RequestInit,
+): Promise<EnableAllPeptideCatalogProductsResponse> => {
+  return customFetch<EnableAllPeptideCatalogProductsResponse>(
+    getEnableAllPeptideCatalogProductsUrl(),
+    {
+      ...options,
+      method: "POST",
+    },
+  );
+};
+
+export const getEnableAllPeptideCatalogProductsMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof enableAllPeptideCatalogProducts>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof enableAllPeptideCatalogProducts>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["enableAllPeptideCatalogProducts"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof enableAllPeptideCatalogProducts>>,
+    void
+  > = () => {
+    return enableAllPeptideCatalogProducts(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type EnableAllPeptideCatalogProductsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof enableAllPeptideCatalogProducts>>
+>;
+
+export type EnableAllPeptideCatalogProductsMutationError = ErrorType<ApiError>;
+
+/**
+ * @summary Re-enable all peptide products in the catalog
+ */
+export const useEnableAllPeptideCatalogProducts = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof enableAllPeptideCatalogProducts>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof enableAllPeptideCatalogProducts>>,
+  TError,
+  void,
+  TContext
+> => {
+  return useMutation(
+    getEnableAllPeptideCatalogProductsMutationOptions(options),
   );
 };
 

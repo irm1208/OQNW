@@ -119,11 +119,14 @@ router.get("/admin/catalog", async (req: Request, res: Response): Promise<void> 
     const category = isStr(req.query.category) ? req.query.category : undefined;
     const published = req.query.published;
 
-    const conditions = [eq(productsCatalogTable.isPublished, true)];
+    const conditions =
+      published === "true"
+        ? [eq(productsCatalogTable.isPublished, true)]
+        : published === "false"
+        ? [eq(productsCatalogTable.isPublished, false)]
+        : [];
     if (search) conditions.push(ilike(productsCatalogTable.name, `%${search}%`));
     if (category) conditions.push(eq(productsCatalogTable.category, category));
-    if (published === "true") conditions.push(eq(productsCatalogTable.isPublished, true));
-    if (published === "false") conditions.push(eq(productsCatalogTable.isPublished, false));
 
     const where = conditions.length > 0 ? and(...conditions) : undefined;
     const products = await db
@@ -163,6 +166,34 @@ router.post("/admin/catalog/disable-without-janoshik-report", async (req: Reques
     });
   } catch (err) {
     req.log.error({ err }, "Failed to disable products without Janoshik reports");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// POST /api/admin/catalog/enable-all-peptides
+router.post("/admin/catalog/enable-all-peptides", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  try {
+    await ensureSeeded();
+    const enabled = await db
+      .update(productsCatalogTable)
+      .set({ isPublished: true })
+      .where(and(
+        eq(productsCatalogTable.isPublished, false),
+        ne(productsCatalogTable.category, "Accessories"),
+      ))
+      .returning({
+        id: productsCatalogTable.id,
+        slug: productsCatalogTable.slug,
+        name: productsCatalogTable.name,
+      });
+
+    res.status(200).json({
+      enabledCount: enabled.length,
+      enabledProducts: enabled,
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to enable all peptide products");
     res.status(500).json({ error: "Internal server error" });
   }
 });

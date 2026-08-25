@@ -592,6 +592,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiError"
 
+  /admin/catalog/enable-all-peptides:
+    post:
+      operationId: enableAllPeptideCatalogProducts
+      tags: [admin-catalog]
+      summary: Re-enable all peptide products in the catalog
+      responses:
+        "200":
+          description: Peptide products enabled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnableAllPeptideCatalogProductsResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
   /admin/catalog/{id}:
     get:
       operationId: getCatalogProduct
@@ -1299,6 +1318,25 @@ components:
         disabledCount:
           type: integer
         disabledProducts:
+          type: array
+          items:
+            type: object
+            required: [id, slug, name]
+            properties:
+              id:
+                type: integer
+              slug:
+                type: string
+              name:
+                type: string
+
+    EnableAllPeptideCatalogProductsResponse:
+      type: object
+      required: [enabledCount, enabledProducts]
+      properties:
+        enabledCount:
+          type: integer
+        enabledProducts:
           type: array
           items:
             type: object

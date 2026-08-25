@@ -6,6 +6,7 @@ import {
   useUpdateCatalogProduct,
   useDeleteCatalogProduct,
   useDisableCatalogProductsWithoutJanoshikReport,
+  useEnableAllPeptideCatalogProducts,
   useListAdminProducts,
   getListAdminProductsQueryKey,
   useUpdateProductInventory,
@@ -146,10 +147,12 @@ function CatalogTab() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [publicationFilter, setPublicationFilter] = useState<"all" | "published" | "disabled">("all");
   const [editingProduct, setEditingProduct] = useState<CatalogProduct | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<CatalogProduct | null>(null);
   const [bulkDisableOpen, setBulkDisableOpen] = useState(false);
+  const [bulkEnableOpen, setBulkEnableOpen] = useState(false);
   const [form, setForm] = useState<ProductFormData>(emptyForm());
   const [saving, setSaving] = useState(false);
   const [savingPrices, setSavingPrices] = useState(false);
@@ -158,6 +161,8 @@ function CatalogTab() {
   const queryParams = {
     ...(search ? { search } : {}),
     ...(categoryFilter && categoryFilter !== "all" ? { category: categoryFilter } : {}),
+    ...(publicationFilter === "published" ? { published: true } : {}),
+    ...(publicationFilter === "disabled" ? { published: false } : {}),
   };
 
   const { data: products, isLoading } = useListCatalogProducts(queryParams, {
@@ -181,6 +186,7 @@ function CatalogTab() {
   const updateProduct = useUpdateCatalogProduct();
   const deleteProduct = useDeleteCatalogProduct();
   const disableWithoutReport = useDisableCatalogProductsWithoutJanoshikReport();
+  const enableAllPeptides = useEnableAllPeptideCatalogProducts();
 
   const invalidate = () =>
     queryClient.invalidateQueries({ queryKey: ["/api/admin/catalog"] });
@@ -283,6 +289,7 @@ function CatalogTab() {
     try {
       await updateProduct.mutateAsync({ id: p.id, data: { isPublished: next } });
       await invalidate();
+      notifyStorefrontCatalogUpdated();
       toast.success(`${p.name} is now ${next ? "live on storefront" : "disabled and hidden"}`);
     } catch {
       toast.error("Failed to update visibility");
@@ -293,6 +300,7 @@ function CatalogTab() {
     try {
       const result = await disableWithoutReport.mutateAsync();
       await invalidate();
+      notifyStorefrontCatalogUpdated();
       setBulkDisableOpen(false);
       if (result.disabledCount === 0) {
         toast.success("All products already have a Janoshik report or are disabled");
@@ -301,6 +309,22 @@ function CatalogTab() {
       }
     } catch {
       toast.error("Failed to disable products without Janoshik reports");
+    }
+  }
+
+  async function handleBulkEnableAllPeptides() {
+    try {
+      const result = await enableAllPeptides.mutateAsync();
+      await invalidate();
+      notifyStorefrontCatalogUpdated();
+      setBulkEnableOpen(false);
+      if (result.enabledCount === 0) {
+        toast.success("All peptides are already live on the storefront");
+      } else {
+        toast.success(`Re-enabled ${result.enabledCount} peptide${result.enabledCount === 1 ? "" : "s"} on the storefront`);
+      }
+    } catch {
+      toast.error("Failed to re-enable all peptides");
     }
   }
 
@@ -373,6 +397,16 @@ function CatalogTab() {
               ))}
             </SelectContent>
           </Select>
+          <Select value={publicationFilter} onValueChange={(value) => setPublicationFilter(value as "all" | "published" | "disabled")}>
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="All statuses" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All statuses</SelectItem>
+              <SelectItem value="published">Live</SelectItem>
+              <SelectItem value="disabled">Disabled</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <div className="flex flex-wrap justify-end gap-2 shrink-0">
           <Button
@@ -382,6 +416,15 @@ function CatalogTab() {
           >
             {savingPrices ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
             Save Prices{changedPriceProducts.length > 0 ? ` (${changedPriceProducts.length})` : ""}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => setBulkEnableOpen(true)}
+            disabled={enableAllPeptides.isPending}
+            className="text-green-700 border-green-300 hover:bg-green-50"
+          >
+            {enableAllPeptides.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Eye className="w-4 h-4 mr-2" />}
+            Re-enable All Peptides
           </Button>
           <Button
             variant="outline"
@@ -479,8 +522,8 @@ function CatalogTab() {
                         }`}
                       >
                         {product.isPublished
-                          ? <><Eye className="w-3 h-3" /> Live</>
-                          : <><EyeOff className="w-3 h-3" /> Disabled</>
+                          ? <><EyeOff className="w-3 h-3" /> Disable</>
+                          : <><Eye className="w-3 h-3" /> Enable</>
                         }
                       </button>
                       {product.isFeatured && (
@@ -534,6 +577,29 @@ function CatalogTab() {
             >
               {disableWithoutReport.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               Disable Products
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={bulkEnableOpen} onOpenChange={setBulkEnableOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Re-enable all peptides?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will make every disabled peptide live on the storefront, including products
+              without a Janoshik report. Accessories, prices, stock, report status, and existing
+              orders will not be changed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={enableAllPeptides.isPending}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleBulkEnableAllPeptides}
+              disabled={enableAllPeptides.isPending}
+            >
+              {enableAllPeptides.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              Re-enable All Peptides
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

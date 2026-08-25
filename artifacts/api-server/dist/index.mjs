@@ -50204,6 +50204,16 @@ var DisableCatalogProductsWithoutJanoshikReportResponse = objectType({
     })
   )
 });
+var EnableAllPeptideCatalogProductsResponse = objectType({
+  enabledCount: numberType(),
+  enabledProducts: arrayType(
+    objectType({
+      id: numberType(),
+      slug: stringType(),
+      name: stringType()
+    })
+  )
+});
 var GetCatalogProductParams = objectType({
   id: coerce.number()
 });
@@ -73945,11 +73955,9 @@ router10.get("/admin/catalog", async (req, res) => {
     const search = isStr(req.query.search) ? req.query.search : void 0;
     const category = isStr(req.query.category) ? req.query.category : void 0;
     const published = req.query.published;
-    const conditions = [eq(productsCatalogTable.isPublished, true)];
+    const conditions = published === "true" ? [eq(productsCatalogTable.isPublished, true)] : published === "false" ? [eq(productsCatalogTable.isPublished, false)] : [];
     if (search) conditions.push(ilike(productsCatalogTable.name, `%${search}%`));
     if (category) conditions.push(eq(productsCatalogTable.category, category));
-    if (published === "true") conditions.push(eq(productsCatalogTable.isPublished, true));
-    if (published === "false") conditions.push(eq(productsCatalogTable.isPublished, false));
     const where = conditions.length > 0 ? and(...conditions) : void 0;
     const products = await db.select().from(productsCatalogTable).where(where).orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
     res.status(200).json(products.map(catalogToResponse));
@@ -73977,6 +73985,27 @@ router10.post("/admin/catalog/disable-without-janoshik-report", async (req, res)
     });
   } catch (err) {
     req.log.error({ err }, "Failed to disable products without Janoshik reports");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+router10.post("/admin/catalog/enable-all-peptides", async (req, res) => {
+  if (!requireAdmin8(req, res)) return;
+  try {
+    await ensureSeeded();
+    const enabled = await db.update(productsCatalogTable).set({ isPublished: true }).where(and(
+      eq(productsCatalogTable.isPublished, false),
+      ne(productsCatalogTable.category, "Accessories")
+    )).returning({
+      id: productsCatalogTable.id,
+      slug: productsCatalogTable.slug,
+      name: productsCatalogTable.name
+    });
+    res.status(200).json({
+      enabledCount: enabled.length,
+      enabledProducts: enabled
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to enable all peptide products");
     res.status(500).json({ error: "Internal server error" });
   }
 });

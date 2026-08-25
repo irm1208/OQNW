@@ -554,6 +554,20 @@ export const DisableCatalogProductsWithoutJanoshikReportResponse = zod.object({
 });
 
 /**
+ * @summary Re-enable all peptide products in the catalog
+ */
+export const EnableAllPeptideCatalogProductsResponse = zod.object({
+  enabledCount: zod.number(),
+  enabledProducts: zod.array(
+    zod.object({
+      id: zod.number(),
+      slug: zod.string(),
+      name: zod.string(),
+    }),
+  ),
+});
+
+/**
  * @summary Get a single catalog product
  */
 export const GetCatalogProductParams = zod.object({

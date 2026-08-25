@@ -302,6 +302,15 @@ export interface DisableCatalogProductsWithoutJanoshikReportResponse {
     disabledCount: number;
     disabledProducts: DisableCatalogProductsWithoutJanoshikReportResponseDisabledProductsItem[];
 }
+export type EnableAllPeptideCatalogProductsResponseEnabledProductsItem = {
+    id: number;
+    slug: string;
+    name: string;
+};
+export interface EnableAllPeptideCatalogProductsResponse {
+    enabledCount: number;
+    enabledProducts: EnableAllPeptideCatalogProductsResponseEnabledProductsItem[];
+}
 export interface CatalogProductInput {
     slug: string;
     name: string;

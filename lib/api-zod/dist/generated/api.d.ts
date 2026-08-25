@@ -1547,6 +1547,39 @@ export declare const DisableCatalogProductsWithoutJanoshikReportResponse: zod.Zo
     }[];
 }>;
 /**
+ * @summary Re-enable all peptide products in the catalog
+ */
+export declare const EnableAllPeptideCatalogProductsResponse: zod.ZodObject<{
+    enabledCount: zod.ZodNumber;
+    enabledProducts: zod.ZodArray<zod.ZodObject<{
+        id: zod.ZodNumber;
+        slug: zod.ZodString;
+        name: zod.ZodString;
+    }, "strip", zod.ZodTypeAny, {
+        id: number;
+        slug: string;
+        name: string;
+    }, {
+        id: number;
+        slug: string;
+        name: string;
+    }>, "many">;
+}, "strip", zod.ZodTypeAny, {
+    enabledCount: number;
+    enabledProducts: {
+        id: number;
+        slug: string;
+        name: string;
+    }[];
+}, {
+    enabledCount: number;
+    enabledProducts: {
+        id: number;
+        slug: string;
+        name: string;
+    }[];
+}>;
+/**
  * @summary Get a single catalog product
  */
 export declare const GetCatalogProductParams: zod.ZodObject<{
