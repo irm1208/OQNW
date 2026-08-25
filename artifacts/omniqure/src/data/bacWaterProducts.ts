@@ -28,6 +28,10 @@ export const BAC_WATER_PRODUCT_OPTIONS: readonly BacWaterMetadata[] = [
 
 export const FREE_BAC_WATER_SLUG = "bacteriostatic-water-10ml";
 
+export function isBacWaterProduct(product: Pick<Product, "slug">): boolean {
+  return BAC_WATER_PRODUCT_OPTIONS.some((option) => option.slug === product.slug);
+}
+
 /**
  * Resolves Bac Water display metadata against the live catalogue.
  * Prices, IDs, stock, names, and images always come from the API-backed product list.

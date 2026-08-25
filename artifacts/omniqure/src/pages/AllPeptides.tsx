@@ -5,6 +5,7 @@ import GroupedProductCard from "@/components/GroupedProductCard";
 import { groupProducts } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
 import { isHiddenCategory } from "@/data/products";
+import { isBacWaterProduct } from "@/data/bacWaterProducts";
 import { useSEO } from "@/hooks/useSEO";
 
 
@@ -62,7 +63,7 @@ export default function AllPeptides() {
   }, [location]);
 
   const groupedProducts = useMemo(() => {
-    let result = products.filter((p) => !isHiddenCategory(p.category));
+    let result = products.filter((p) => !isHiddenCategory(p.category) && !isBacWaterProduct(p));
     if (searchQuery.trim()) {
       const q = searchQuery.trim().toLowerCase();
       result = result.filter(
