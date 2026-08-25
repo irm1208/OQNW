@@ -18772,14 +18772,14 @@ var require_etag = __commonJS({
   "../../node_modules/.pnpm/etag@1.8.1/node_modules/etag/index.js"(exports, module) {
     "use strict";
     module.exports = etag;
-    var crypto17 = __require("crypto");
+    var crypto18 = __require("crypto");
     var Stats = __require("fs").Stats;
     var toString = Object.prototype.toString;
     function entitytag(entity) {
       if (entity.length === 0) {
         return '"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"';
       }
-      var hash2 = crypto17.createHash("sha1").update(entity, "utf8").digest("base64").substring(0, 27);
+      var hash2 = crypto18.createHash("sha1").update(entity, "utf8").digest("base64").substring(0, 27);
       var len = typeof entity === "string" ? Buffer.byteLength(entity, "utf8") : entity.length;
       return '"' + len.toString(16) + "-" + hash2 + '"';
     }
@@ -22194,17 +22194,17 @@ var require_content_disposition = __commonJS({
 // ../../node_modules/.pnpm/cookie-signature@1.2.2/node_modules/cookie-signature/index.js
 var require_cookie_signature = __commonJS({
   "../../node_modules/.pnpm/cookie-signature@1.2.2/node_modules/cookie-signature/index.js"(exports) {
-    var crypto17 = __require("crypto");
+    var crypto18 = __require("crypto");
     exports.sign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Cookie value must be provided as a string.");
       if (null == secret) throw new TypeError("Secret key must be provided.");
-      return val + "." + crypto17.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
+      return val + "." + crypto18.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
     };
     exports.unsign = function(input, secret) {
       if ("string" != typeof input) throw new TypeError("Signed cookie string must be provided.");
       if (null == secret) throw new TypeError("Secret key must be provided.");
       var tentativeValue = input.slice(0, input.lastIndexOf(".")), expectedInput = exports.sign(tentativeValue, secret), expectedBuffer = Buffer.from(expectedInput), inputBuffer = Buffer.from(input);
-      return expectedBuffer.length === inputBuffer.length && crypto17.timingSafeEqual(expectedBuffer, inputBuffer) ? tentativeValue : false;
+      return expectedBuffer.length === inputBuffer.length && crypto18.timingSafeEqual(expectedBuffer, inputBuffer) ? tentativeValue : false;
     };
   }
 });
@@ -23834,11 +23834,11 @@ var require_lib3 = __commonJS({
 // ../../node_modules/.pnpm/cookie-signature@1.0.6/node_modules/cookie-signature/index.js
 var require_cookie_signature2 = __commonJS({
   "../../node_modules/.pnpm/cookie-signature@1.0.6/node_modules/cookie-signature/index.js"(exports) {
-    var crypto17 = __require("crypto");
+    var crypto18 = __require("crypto");
     exports.sign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Cookie value must be provided as a string.");
       if ("string" != typeof secret) throw new TypeError("Secret string must be provided.");
-      return val + "." + crypto17.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
+      return val + "." + crypto18.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
     };
     exports.unsign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Signed cookie string must be provided.");
@@ -23847,7 +23847,7 @@ var require_cookie_signature2 = __commonJS({
       return sha1(mac) == sha1(val) ? str : false;
     };
     function sha1(str) {
-      return crypto17.createHash("sha1").update(str).digest("hex");
+      return crypto18.createHash("sha1").update(str).digest("hex");
     }
   }
 });
@@ -29883,7 +29883,7 @@ var require_cert_signatures = __commonJS({
 var require_sasl = __commonJS({
   "../../node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/crypto/sasl.js"(exports, module) {
     "use strict";
-    var crypto17 = require_utils5();
+    var crypto18 = require_utils5();
     var { signatureAlgorithmHashFromCertificate } = require_cert_signatures();
     function startSession(mechanisms, stream) {
       const candidates = ["SCRAM-SHA-256"];
@@ -29895,7 +29895,7 @@ var require_sasl = __commonJS({
       if (mechanism === "SCRAM-SHA-256-PLUS" && typeof stream.getPeerCertificate !== "function") {
         throw new Error("SASL: Mechanism SCRAM-SHA-256-PLUS requires a certificate");
       }
-      const clientNonce = crypto17.randomBytes(18).toString("base64");
+      const clientNonce = crypto18.randomBytes(18).toString("base64");
       const gs2Header = mechanism === "SCRAM-SHA-256-PLUS" ? "p=tls-server-end-point" : stream ? "y" : "n";
       return {
         mechanism,
@@ -29930,20 +29930,20 @@ var require_sasl = __commonJS({
         const peerCert = stream.getPeerCertificate().raw;
         let hashName = signatureAlgorithmHashFromCertificate(peerCert);
         if (hashName === "MD5" || hashName === "SHA-1") hashName = "SHA-256";
-        const certHash = await crypto17.hashByName(hashName, peerCert);
+        const certHash = await crypto18.hashByName(hashName, peerCert);
         const bindingData = Buffer.concat([Buffer.from("p=tls-server-end-point,,"), Buffer.from(certHash)]);
         channelBinding = bindingData.toString("base64");
       }
       const clientFinalMessageWithoutProof = "c=" + channelBinding + ",r=" + sv.nonce;
       const authMessage = clientFirstMessageBare + "," + serverFirstMessage + "," + clientFinalMessageWithoutProof;
       const saltBytes = Buffer.from(sv.salt, "base64");
-      const saltedPassword = await crypto17.deriveKey(password, saltBytes, sv.iteration);
-      const clientKey = await crypto17.hmacSha256(saltedPassword, "Client Key");
-      const storedKey = await crypto17.sha256(clientKey);
-      const clientSignature = await crypto17.hmacSha256(storedKey, authMessage);
+      const saltedPassword = await crypto18.deriveKey(password, saltBytes, sv.iteration);
+      const clientKey = await crypto18.hmacSha256(saltedPassword, "Client Key");
+      const storedKey = await crypto18.sha256(clientKey);
+      const clientSignature = await crypto18.hmacSha256(storedKey, authMessage);
       const clientProof = xorBuffers(Buffer.from(clientKey), Buffer.from(clientSignature)).toString("base64");
-      const serverKey = await crypto17.hmacSha256(saltedPassword, "Server Key");
-      const serverSignatureBytes = await crypto17.hmacSha256(serverKey, authMessage);
+      const serverKey = await crypto18.hmacSha256(saltedPassword, "Server Key");
+      const serverSignatureBytes = await crypto18.hmacSha256(serverKey, authMessage);
       session.message = "SASLResponse";
       session.serverSignature = Buffer.from(serverSignatureBytes).toString("base64");
       session.response = clientFinalMessageWithoutProof + ",p=" + clientProof;
@@ -32111,7 +32111,7 @@ var require_client = __commonJS({
     var Query2 = require_query();
     var defaults2 = require_defaults();
     var Connection2 = require_connection();
-    var crypto17 = require_utils5();
+    var crypto18 = require_utils5();
     var activeQueryDeprecationNotice = nodeUtils.deprecate(
       () => {
       },
@@ -32346,7 +32346,7 @@ var require_client = __commonJS({
       _handleAuthMD5Password(msg) {
         this._getPassword(async () => {
           try {
-            const hashedPassword = await crypto17.postgresMd5PasswordHash(this.user, this.password, msg.salt);
+            const hashedPassword = await crypto18.postgresMd5PasswordHash(this.user, this.password, msg.salt);
             this.connection.password(hashedPassword);
           } catch (e) {
             this.emit("error", e);
@@ -66355,6 +66355,58 @@ var users_default = router2;
 
 // src/routes/admin/auth.ts
 import { createHmac, timingSafeEqual } from "crypto";
+
+// src/lib/wallidTestCheckout.ts
+import crypto3 from "crypto";
+var WALLID_TEST_AMOUNT_MINOR = 100;
+var TEST_CHECKOUT_TTL_MS = 15 * 60 * 1e3;
+function createWallidTestCheckoutToken(secret, now = Date.now()) {
+  const payload = {
+    version: 1,
+    id: crypto3.randomBytes(24).toString("base64url"),
+    expiresAt: now + TEST_CHECKOUT_TTL_MS
+  };
+  const encodedPayload = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const signature = crypto3.createHmac("sha256", secret).update(encodedPayload).digest("base64url");
+  return {
+    token: `${encodedPayload}.${signature}`,
+    expiresAt: new Date(payload.expiresAt).toISOString()
+  };
+}
+function verifyWallidTestCheckoutToken(token, secret, now = Date.now()) {
+  const separator = token.lastIndexOf(".");
+  if (separator === -1) return null;
+  const encodedPayload = token.slice(0, separator);
+  const receivedSignature = token.slice(separator + 1);
+  const expectedSignature = crypto3.createHmac("sha256", secret).update(encodedPayload).digest("base64url");
+  if (receivedSignature.length !== expectedSignature.length || !crypto3.timingSafeEqual(Buffer.from(receivedSignature), Buffer.from(expectedSignature))) {
+    return null;
+  }
+  try {
+    const payload = JSON.parse(
+      Buffer.from(encodedPayload, "base64url").toString("utf8")
+    );
+    if (payload.version !== 1 || typeof payload.id !== "string" || !/^[A-Za-z0-9_-]{32}$/.test(payload.id) || !Number.isFinite(payload.expiresAt) || payload.expiresAt <= now) {
+      return null;
+    }
+    return { id: payload.id, expiresAt: payload.expiresAt };
+  } catch {
+    return null;
+  }
+}
+var WallidTestCheckoutReplayGuard = class {
+  consumed = /* @__PURE__ */ new Map();
+  consume(sessionId, expiresAt, now = Date.now()) {
+    for (const [id, expiry] of this.consumed) {
+      if (expiry <= now) this.consumed.delete(id);
+    }
+    if (expiresAt <= now || this.consumed.has(sessionId)) return false;
+    this.consumed.set(sessionId, expiresAt);
+    return true;
+  }
+};
+
+// src/routes/admin/auth.ts
 var router3 = (0, import_express3.Router)();
 var ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "omniqure-admin-2024";
 var SESSION_COOKIE = "admin_session";
@@ -66487,6 +66539,26 @@ router3.post("/admin/auth/logout", (_req, res) => {
   res.clearCookie(SECURE_SESSION_COOKIE);
   res.clearCookie(EMAIL_COOKIE);
   res.status(204).send();
+});
+router3.post("/admin/test-payments/session", (req, res) => {
+  if (!hasSecureAdminSession(req)) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+  const testCheckoutSecret = process.env.SESSION_SECRET;
+  if (!testCheckoutSecret) {
+    res.status(503).json({ error: "Wallid test checkout is unavailable because secure session signing is not configured." });
+    return;
+  }
+  const { token, expiresAt } = createWallidTestCheckoutToken(
+    testCheckoutSecret
+  );
+  res.status(201).json({
+    checkoutPath: `/cart?wallidTest=${encodeURIComponent(token)}`,
+    expiresAt,
+    amountMinor: 100,
+    currency: "GBP"
+  });
 });
 router3.get("/admin/auth/me", async (req, res) => {
   const session = req.cookies?.[SESSION_COOKIE];
@@ -75013,7 +75085,7 @@ var export_default = router16;
 
 // src/routes/admin/webhooks.ts
 var import_express17 = __toESM(require_express2(), 1);
-import crypto3 from "crypto";
+import crypto4 from "crypto";
 init_drizzle_orm();
 var router17 = (0, import_express17.Router)();
 function requireAdmin15(req, res) {
@@ -75057,7 +75129,7 @@ router17.post("/admin/webhooks", async (req, res) => {
     return;
   }
   try {
-    const secret = crypto3.randomBytes(32).toString("hex");
+    const secret = crypto4.randomBytes(32).toString("hex");
     const [created] = await db.insert(webhooksTable).values({ url: url2, events, secret, description: description ?? null }).returning();
     res.status(201).json({ ...webhookToResponse(created), secret });
   } catch (err) {
@@ -76062,11 +76134,11 @@ var blog_default = router21;
 
 // src/routes/orders.ts
 var import_express22 = __toESM(require_express2(), 1);
-import crypto8 from "crypto";
+import crypto9 from "crypto";
 init_drizzle_orm();
 
 // src/lib/btcpay.ts
-import crypto4 from "crypto";
+import crypto5 from "crypto";
 var BTCPAY_URL = process.env.BTCPAY_URL?.replace(/\/$/, "");
 var BTCPAY_API_KEY = process.env.BTCPAY_API_KEY;
 var BTCPAY_STORE_ID = process.env.BTCPAY_STORE_ID;
@@ -76150,9 +76222,9 @@ async function createBtcPayInvoice(opts) {
 }
 function verifyBtcPayWebhookSignature(rawBody, signatureHeader) {
   if (!BTCPAY_WEBHOOK_SECRET) return true;
-  const expected = crypto4.createHmac("sha256", BTCPAY_WEBHOOK_SECRET).update(rawBody).digest("hex");
+  const expected = crypto5.createHmac("sha256", BTCPAY_WEBHOOK_SECRET).update(rawBody).digest("hex");
   const received = signatureHeader.startsWith("sha256=") ? signatureHeader.slice(7) : signatureHeader;
-  return crypto4.timingSafeEqual(
+  return crypto5.timingSafeEqual(
     Buffer.from(expected, "hex"),
     Buffer.from(received, "hex")
   );
@@ -76279,7 +76351,7 @@ async function createWallidPaymentQuote(totalGbp, currency) {
 }
 
 // src/lib/checkoutPaymentQuote.ts
-import crypto5 from "crypto";
+import crypto6 from "crypto";
 var QUOTE_TTL_MS = 5 * 60 * 1e3;
 function createCheckoutFingerprint(input) {
   const payload = {
@@ -76297,9 +76369,10 @@ function createCheckoutFingerprint(input) {
     discountCode: input.discountCode ?? "",
     loyaltyPointsRedeemed: input.loyaltyPointsRedeemed,
     referralCreditRedeemed: input.referralCreditRedeemed,
-    country: input.country.trim()
+    country: input.country.trim(),
+    testPaymentSessionId: input.testPaymentSessionId ?? ""
   };
-  return crypto5.createHash("sha256").update(JSON.stringify(payload)).digest("hex");
+  return crypto6.createHash("sha256").update(JSON.stringify(payload)).digest("hex");
 }
 function createCheckoutPaymentQuoteToken(quote, secret, now = Date.now()) {
   const payload = {
@@ -76308,7 +76381,7 @@ function createCheckoutPaymentQuoteToken(quote, secret, now = Date.now()) {
     expiresAt: now + QUOTE_TTL_MS
   };
   const encodedPayload = Buffer.from(JSON.stringify(payload)).toString("base64url");
-  const signature = crypto5.createHmac("sha256", secret).update(encodedPayload).digest("base64url");
+  const signature = crypto6.createHmac("sha256", secret).update(encodedPayload).digest("base64url");
   return {
     token: `${encodedPayload}.${signature}`,
     expiresAt: new Date(payload.expiresAt).toISOString()
@@ -76319,8 +76392,8 @@ function verifyCheckoutPaymentQuoteToken(token, secret, expected, now = Date.now
   if (separator === -1) return null;
   const encodedPayload = token.slice(0, separator);
   const receivedSignature = token.slice(separator + 1);
-  const expectedSignature = crypto5.createHmac("sha256", secret).update(encodedPayload).digest("base64url");
-  if (receivedSignature.length !== expectedSignature.length || !crypto5.timingSafeEqual(Buffer.from(receivedSignature), Buffer.from(expectedSignature))) {
+  const expectedSignature = crypto6.createHmac("sha256", secret).update(encodedPayload).digest("base64url");
+  if (receivedSignature.length !== expectedSignature.length || !crypto6.timingSafeEqual(Buffer.from(receivedSignature), Buffer.from(expectedSignature))) {
     return null;
   }
   try {
@@ -76347,7 +76420,7 @@ var CheckoutPaymentQuoteReplayGuard = class {
       if (expiry <= now) this.consumed.delete(tokenDigest2);
     }
     if (expiresAt <= now) return false;
-    const tokenDigest = crypto5.createHash("sha256").update(token).digest("hex");
+    const tokenDigest = crypto6.createHash("sha256").update(token).digest("hex");
     if (this.consumed.has(tokenDigest)) return false;
     this.consumed.set(tokenDigest, expiresAt);
     return true;
@@ -76474,7 +76547,7 @@ async function lookupIpData(ip) {
 }
 
 // src/lib/webhookDispatcher.ts
-import crypto6 from "crypto";
+import crypto7 from "crypto";
 init_drizzle_orm();
 async function dispatchWebhook(event, data) {
   try {
@@ -76489,7 +76562,7 @@ async function dispatchWebhook(event, data) {
     };
     const payloadStr = JSON.stringify(payload);
     for (const webhook of webhooks) {
-      const sig = crypto6.createHmac("sha256", webhook.secret).update(payloadStr).digest("hex");
+      const sig = crypto7.createHmac("sha256", webhook.secret).update(payloadStr).digest("hex");
       let status = "failed";
       let responseCode = null;
       let responseBody = null;
@@ -76524,7 +76597,7 @@ async function dispatchWebhook(event, data) {
 }
 
 // src/lib/addressVerification.ts
-import crypto7 from "crypto";
+import crypto8 from "crypto";
 init_drizzle_orm();
 var VERIFICATION_TTL_MS = 15 * 60 * 1e3;
 var NOMINATIM_SEARCH_URL = "https://nominatim.openstreetmap.org/search";
@@ -76590,12 +76663,12 @@ function encodedJson(value) {
 }
 function sign(value) {
   const secret = signingSecret();
-  return secret ? crypto7.createHmac("sha256", secret).update(value).digest("base64url") : null;
+  return secret ? crypto8.createHmac("sha256", secret).update(value).digest("base64url") : null;
 }
 function safeSignatureMatches(actual, expected) {
   const actualBuffer = Buffer.from(actual);
   const expectedBuffer = Buffer.from(expected);
-  return actualBuffer.length === expectedBuffer.length && crypto7.timingSafeEqual(actualBuffer, expectedBuffer);
+  return actualBuffer.length === expectedBuffer.length && crypto8.timingSafeEqual(actualBuffer, expectedBuffer);
 }
 function countryCodeForName(country) {
   const normalized = normalizeText(country);
@@ -76615,7 +76688,7 @@ function addressHash(address) {
     normalizeText(address.postcode).toLocaleUpperCase("en-GB"),
     countryCode.toLocaleUpperCase("en-GB")
   ].join("\n");
-  return crypto7.createHash("sha256").update(normalized).digest("hex");
+  return crypto8.createHash("sha256").update(normalized).digest("hex");
 }
 function normalizePostcode(value) {
   return normalizeText(value).replace(/[\s-]/g, "").toLocaleUpperCase("en-GB");
@@ -76988,13 +77061,15 @@ function calculateShippingCostGbp(shippingMethod, subtotalGbp, country) {
 }
 var router22 = (0, import_express22.Router)();
 var SESSION_SECRET = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
+var WALLID_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
 var checkoutPaymentQuoteReplayGuard = new CheckoutPaymentQuoteReplayGuard();
+var wallidTestCheckoutReplayGuard = new WallidTestCheckoutReplayGuard();
 function verifyCustomerSession(token) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto8.createHmac("sha256", SESSION_SECRET).update(payload).digest("hex");
+  const expected = crypto9.createHmac("sha256", SESSION_SECRET).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -77014,12 +77089,29 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
     paymentQuoteToken,
     cryptoCurrency,
     cryptoNetwork,
-    redeemFreePeptide
+    redeemFreePeptide,
+    wallidTestToken
   } = req.body;
   const cryptoCurrencyStr = typeof cryptoCurrency === "string" ? cryptoCurrency.toUpperCase() : "BTC";
   const cryptoNetworkStr = typeof cryptoNetwork === "string" ? cryptoNetwork.toLowerCase() : "";
   const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "bank_transfer";
   const paymentCurrencyStr = typeof paymentCurrency === "string" ? paymentCurrency.toUpperCase() : "GBP";
+  const submittedWallidTestToken = typeof wallidTestToken === "string" ? wallidTestToken : null;
+  if (submittedWallidTestToken && !WALLID_TEST_CHECKOUT_SECRET) {
+    res.status(503).json({ error: "Wallid test checkout is unavailable because secure session signing is not configured." });
+    return;
+  }
+  const wallidTestCheckout = submittedWallidTestToken && WALLID_TEST_CHECKOUT_SECRET ? verifyWallidTestCheckoutToken(submittedWallidTestToken, WALLID_TEST_CHECKOUT_SECRET) : null;
+  if (submittedWallidTestToken) {
+    if (paymentMethodStr !== "wallid" || paymentCurrencyStr !== "GBP") {
+      res.status(400).json({ error: "The \xA31 test checkout is available for Wallid GBP payments only." });
+      return;
+    }
+    if (!hasSecureAdminSession(req) || !wallidTestCheckout) {
+      res.status(403).json({ error: "This Wallid test checkout link is invalid, expired, or no longer authorised." });
+      return;
+    }
+  }
   const submittedDelivery = delivery;
   const countryCode = submittedDelivery ? countryCodeForName(submittedDelivery.country) : null;
   if (!submittedDelivery || typeof submittedDelivery.country !== "string" || !submittedDelivery.country.trim() || !countryCode) {
@@ -77202,12 +77294,18 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
       res.status(400).json({ error: "Invalid shipping method" });
       return;
     }
-    const totalGbp = Math.round(
+    const standardTotalGbp = Math.round(
       Math.max(
         0,
         subtotalGbp + shippingCostGbp - bundleDiscountGbp - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp
       ) * 100
     ) / 100;
+    if (wallidTestCheckout && standardTotalGbp < WALLID_TEST_AMOUNT_MINOR / 100) {
+      res.status(400).json({ error: "A \xA31 Wallid test checkout requires a cart total of at least \xA31.00." });
+      return;
+    }
+    const testPaymentAdjustmentGbp = wallidTestCheckout ? Math.round((standardTotalGbp - WALLID_TEST_AMOUNT_MINOR / 100) * 100) / 100 : 0;
+    const totalGbp = wallidTestCheckout ? WALLID_TEST_AMOUNT_MINOR / 100 : standardTotalGbp;
     const selectedWallidCurrency = paymentCurrencyStr;
     const checkoutFingerprint = createCheckoutFingerprint({
       items: cartItems,
@@ -77217,7 +77315,8 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
       discountCode: validatedDiscountCode,
       loyaltyPointsRedeemed: loyaltyPointsToDeduct,
       referralCreditRedeemed: freePeptideCreditUsed,
-      country: d.country
+      country: d.country,
+      testPaymentSessionId: wallidTestCheckout?.id ?? null
     });
     if (isCheckoutQuoteRequest) {
       if (paymentMethodStr !== "wallid") {
@@ -77249,7 +77348,14 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
         bundleDiscountGbp,
         discountAmountGbp: discountAmount,
         loyaltyDiscountGbp,
-        referralCreditGbp: freePeptideDeductGbp
+        referralCreditGbp: freePeptideDeductGbp,
+        ...wallidTestCheckout && {
+          testPayment: {
+            active: true,
+            normalTotalGbp: standardTotalGbp,
+            adjustmentGbp: testPaymentAdjustmentGbp
+          }
+        }
       });
       return;
     }
@@ -77291,6 +77397,16 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
         res.status(409).json({
           code: "PAYMENT_QUOTE_USED",
           error: "This payment total was already used. We\u2019ve refreshed it\u2014please review and place your order again."
+        });
+        return;
+      }
+      if (wallidTestCheckout && (!submittedWallidTestToken || !wallidTestCheckoutReplayGuard.consume(
+        wallidTestCheckout.id,
+        wallidTestCheckout.expiresAt
+      ))) {
+        res.status(409).json({
+          code: "WALLID_TEST_SESSION_USED",
+          error: "This \xA31 Wallid test checkout was already used or has expired. Generate a new test link from the admin panel."
         });
         return;
       }
@@ -77339,7 +77455,7 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
         });
         return;
       }
-      cryptoPaymentAccessToken = crypto8.randomBytes(24).toString("base64url");
+      cryptoPaymentAccessToken = crypto9.randomBytes(24).toString("base64url");
     }
     const sessionToken = req.cookies?.customer_session;
     const sessionCustomerId = sessionToken ? verifyCustomerSession(sessionToken) : null;
@@ -77458,6 +77574,7 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
         bundleDiscountGbp > 0 ? `Bundle & Save: ${bundleFreeLabel} (-\xA3${bundleDiscountGbp.toFixed(2)})` : null,
         validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-\xA3${discountAmount.toFixed(2)})` : null,
         loyaltyPointsToDeduct > 0 ? `Loyalty: ${loyaltyPointsToDeduct} pts redeemed (-\xA3${loyaltyDiscountGbp.toFixed(2)})` : null,
+        wallidTestCheckout ? `WALLID \xA31 TEST CHECKOUT: normal total \xA3${standardTotalGbp.toFixed(2)}, test adjustment -\xA3${testPaymentAdjustmentGbp.toFixed(2)}` : null,
         wallidApiPaymentId ? `Wallid payment id: ${wallidApiPaymentId}` : null,
         cryptoPayment ? `Crypto route: ${cryptoPayment.details.currency} on ${cryptoPayment.details.network}` : null
       ].filter(Boolean).join("; ") || null,
@@ -77896,7 +78013,7 @@ var discounts_default2 = router23;
 
 // src/routes/auth.ts
 var import_express24 = __toESM(require_express2(), 1);
-import crypto9 from "crypto";
+import crypto10 from "crypto";
 
 // ../../node_modules/.pnpm/bcryptjs@3.0.3/node_modules/bcryptjs/index.js
 import nodeCrypto from "crypto";
@@ -79629,7 +79746,7 @@ var COOKIE_NAME = "customer_session";
 var COOKIE_MAX_AGE2 = 30 * 24 * 60 * 60 * 1e3;
 function signToken(customerId) {
   const payload = String(customerId);
-  const sig = crypto9.createHmac("sha256", SESSION_SECRET2).update(payload).digest("hex");
+  const sig = crypto10.createHmac("sha256", SESSION_SECRET2).update(payload).digest("hex");
   return `${payload}.${sig}`;
 }
 function verifyToken(token) {
@@ -79637,7 +79754,7 @@ function verifyToken(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto9.createHmac("sha256", SESSION_SECRET2).update(payload).digest("hex");
+  const expected = crypto10.createHmac("sha256", SESSION_SECRET2).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -79759,7 +79876,7 @@ router24.post("/auth/register", async (req, res) => {
       firstName: customer.firstName,
       lastName: customer.lastName
     });
-    const verificationToken = crypto9.randomBytes(32).toString("hex");
+    const verificationToken = crypto10.randomBytes(32).toString("hex");
     const verificationExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1e3);
     await db.update(customersTable).set({ verificationToken, verificationTokenExpiresAt: verificationExpiresAt }).where(eq(customersTable.id, customer.id)).catch(() => {
     });
@@ -79833,7 +79950,7 @@ router24.post("/auth/forgot-password", async (req, res) => {
   try {
     const [customer] = await db.select().from(customersTable).where(eq(customersTable.email, email3.toLowerCase())).limit(1);
     if (customer && customer.passwordHash) {
-      const token = crypto9.randomBytes(32).toString("hex");
+      const token = crypto10.randomBytes(32).toString("hex");
       const expiresAt = new Date(Date.now() + 60 * 60 * 1e3);
       await db.update(customersTable).set({ resetToken: token, resetTokenExpiresAt: expiresAt }).where(eq(customersTable.id, customer.id));
       const siteUrl = (process.env.SITE_URL || (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "https://omniqure.com")).replace(/\/$/, "");
@@ -79935,7 +80052,7 @@ var auth_default2 = router24;
 
 // src/routes/account.ts
 var import_express25 = __toESM(require_express2(), 1);
-import crypto10 from "crypto";
+import crypto11 from "crypto";
 init_drizzle_orm();
 var router25 = (0, import_express25.Router)();
 var SESSION_SECRET3 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
@@ -79945,7 +80062,7 @@ function verifyToken2(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto10.createHmac("sha256", SESSION_SECRET3).update(payload).digest("hex");
+  const expected = crypto11.createHmac("sha256", SESSION_SECRET3).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -80125,7 +80242,7 @@ var account_default = router25;
 
 // src/routes/reviews.ts
 var import_express26 = __toESM(require_express2(), 1);
-import crypto11 from "crypto";
+import crypto12 from "crypto";
 init_drizzle_orm();
 var router26 = (0, import_express26.Router)();
 var SESSION_SECRET4 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
@@ -80135,7 +80252,7 @@ function verifyCustomerSession2(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto11.createHmac("sha256", SESSION_SECRET4).update(payload).digest("hex");
+  const expected = crypto12.createHmac("sha256", SESSION_SECRET4).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -80389,7 +80506,7 @@ var reviews_default2 = router27;
 
 // src/routes/wishlist.ts
 var import_express28 = __toESM(require_express2(), 1);
-import crypto12 from "crypto";
+import crypto13 from "crypto";
 init_drizzle_orm();
 var router28 = (0, import_express28.Router)();
 var SESSION_SECRET5 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
@@ -80401,7 +80518,7 @@ function getCustomerId(req) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto12.createHmac("sha256", SESSION_SECRET5).update(payload).digest("hex");
+  const expected = crypto13.createHmac("sha256", SESSION_SECRET5).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -80462,7 +80579,7 @@ var wishlist_default = router28;
 
 // src/routes/returns.ts
 var import_express29 = __toESM(require_express2(), 1);
-import crypto13 from "crypto";
+import crypto14 from "crypto";
 init_drizzle_orm();
 var router29 = (0, import_express29.Router)();
 var SESSION_SECRET6 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
@@ -80474,7 +80591,7 @@ function getCustomerId2(req) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto13.createHmac("sha256", SESSION_SECRET6).update(payload).digest("hex");
+  const expected = crypto14.createHmac("sha256", SESSION_SECRET6).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -80631,7 +80748,7 @@ var products_default2 = router30;
 
 // src/routes/cart.ts
 var import_express31 = __toESM(require_express2(), 1);
-import crypto14 from "crypto";
+import crypto15 from "crypto";
 init_drizzle_orm();
 var router31 = (0, import_express31.Router)();
 var SESSION_SECRET7 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
@@ -80640,7 +80757,7 @@ function verifyCustomerSession3(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto14.createHmac("sha256", SESSION_SECRET7).update(payload).digest("hex");
+  const expected = crypto15.createHmac("sha256", SESSION_SECRET7).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -81153,7 +81270,7 @@ var emailLogs_default = router37;
 
 // src/routes/loyalty.ts
 var import_express38 = __toESM(require_express2(), 1);
-import crypto15 from "crypto";
+import crypto16 from "crypto";
 init_drizzle_orm();
 var router38 = (0, import_express38.Router)();
 var SESSION_SECRET8 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
@@ -81162,7 +81279,7 @@ function verifyCustomerSession4(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto15.createHmac("sha256", SESSION_SECRET8).update(payload).digest("hex");
+  const expected = crypto16.createHmac("sha256", SESSION_SECRET8).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -81503,7 +81620,7 @@ var btcpay_webhook_default = router42;
 
 // src/routes/wallid-webhook.ts
 var import_express43 = __toESM(require_express2(), 1);
-import crypto16 from "crypto";
+import crypto17 from "crypto";
 init_drizzle_orm();
 var router43 = (0, import_express43.Router)();
 router43.post("/wallid-webhook", async (req, res) => {
@@ -81527,12 +81644,12 @@ router43.post("/wallid-webhook", async (req, res) => {
   }
   const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(req.body));
   const message = `${tsHeader}.${rawBody.toString()}`;
-  const expected = "sha256=" + crypto16.createHmac("sha256", WALLID_WEBHOOK_SECRET).update(message).digest("hex");
+  const expected = "sha256=" + crypto17.createHmac("sha256", WALLID_WEBHOOK_SECRET).update(message).digest("hex");
   const received = sigHeader;
   let sigValid = false;
   try {
     if (expected.length === received.length) {
-      sigValid = crypto16.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
+      sigValid = crypto17.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
     }
   } catch {
     sigValid = false;

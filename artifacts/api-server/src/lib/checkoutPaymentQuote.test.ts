@@ -106,6 +106,7 @@ test("checkout fingerprints change for every price-affecting checkout selection"
   assert.notEqual(createFingerprint({ loyaltyPointsRedeemed: 200 }), baseline);
   assert.notEqual(createFingerprint({ referralCreditRedeemed: true }), baseline);
   assert.notEqual(createFingerprint({ paymentCurrency: "EUR" }), baseline);
+  assert.notEqual(createFingerprint({ testPaymentSessionId: "test-session" }), baseline);
   assert.notEqual(createFingerprint({ items: [{ productId: 12, productSlug: "bpc-157", quantity: 5, priceGbp: 21 }] }), baseline);
 });
 

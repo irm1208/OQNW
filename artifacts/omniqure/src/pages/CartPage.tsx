@@ -278,6 +278,11 @@ type PaymentQuote = {
   discountAmountGbp: number;
   loyaltyDiscountGbp: number;
   referralCreditGbp: number;
+  testPayment?: {
+    active: boolean;
+    normalTotalGbp: number;
+    adjustmentGbp: number;
+  };
 };
 
 const emptyDelivery: DeliveryForm = {
@@ -494,6 +499,8 @@ function CartUpsells() {
 export default function CartPage() {
   useSEO({ title: "Cart & Checkout", description: "Review your research peptide cart and complete checkout in one step. OmniQure Peptide Research Institute.", canonicalPath: "/cart" });
   const [, navigate] = useLocation();
+  const wallidTestToken = new URLSearchParams(window.location.search).get("wallidTest")?.trim() || null;
+  const isWallidTestCheckout = Boolean(wallidTestToken);
   const {
     items, totalItems, subtotal, peptideQty, bundleFreeBacWater, bundleFreeItemsCount,
     bundleDiscountAmount, freeUnitsByProductId, removeFromCart, updateQuantity, clearCart,
@@ -556,6 +563,9 @@ export default function CartPage() {
   const [paymentQuoteLoading, setPaymentQuoteLoading] = useState(false);
   const [paymentQuoteError, setPaymentQuoteError] = useState<string | null>(null);
   const [paymentQuoteRefresh, setPaymentQuoteRefresh] = useState(0);
+  const [wallidTestStatus, setWallidTestStatus] = useState<"checking" | "active" | "invalid">(
+    wallidTestToken ? "checking" : "invalid",
+  );
   const [cryptoRoutes, setCryptoRoutes] = useState<CryptoRoute[]>([]);
   const [cryptoRoute, setCryptoRoute] = useState<CryptoRoute | null>(null);
   const paymentCurrencyChosen = useRef(false);
@@ -565,6 +575,14 @@ export default function CartPage() {
       setPaymentCurrency("EUR");
     }
   }, [currency.code]);
+
+  useEffect(() => {
+    if (!wallidTestToken) return;
+    paymentCurrencyChosen.current = true;
+    setPaymentMethod("wallid");
+    setPaymentCurrency("GBP");
+    setWallidTestStatus("checking");
+  }, [wallidTestToken]);
 
   useEffect(() => {
     fetch(apiUrl("crypto/payment-options"))
@@ -749,6 +767,7 @@ export default function CartPage() {
     referralCreditGbp,
     paymentCurrency,
     paymentMethod,
+    wallidTestToken,
   });
 
   useEffect(() => {
@@ -773,6 +792,7 @@ export default function CartPage() {
       setPaymentQuoteError(null);
       setPaymentQuote(null);
       setPaymentQuoteInputKey(null);
+      if (wallidTestToken) setWallidTestStatus("checking");
 
       const quoteItems = items.map(({ product, quantity }, index) => {
         const quoteItem = quoteInputItems[index];
@@ -800,6 +820,7 @@ export default function CartPage() {
           redeemFreePeptide: redeemFreePeptide && referralCreditGbp > 0 ? true : undefined,
           paymentMethod: "wallid",
           paymentCurrency,
+          wallidTestToken: wallidTestToken ?? undefined,
         }),
       })
         .then(async (response) => {
@@ -817,12 +838,18 @@ export default function CartPage() {
             typeof data.discountAmountGbp !== "number" ||
             typeof data.loyaltyDiscountGbp !== "number" ||
             typeof data.referralCreditGbp !== "number"
+            || (wallidTestToken !== null && (
+              data.testPayment?.active !== true ||
+              typeof data.testPayment.normalTotalGbp !== "number" ||
+              typeof data.testPayment.adjustmentGbp !== "number"
+            ))
           ) {
             throw new Error("We received an incomplete payment total. Please try again.");
           }
           if (!controller.signal.aborted) {
             setPaymentQuote(data as PaymentQuote);
             setPaymentQuoteInputKey(currentPaymentQuoteInputKey);
+            if (wallidTestToken) setWallidTestStatus("active");
           }
         })
         .catch((error: unknown) => {
@@ -830,6 +857,7 @@ export default function CartPage() {
             setPaymentQuoteError(
               error instanceof Error ? error.message : "We could not confirm your payment total.",
             );
+            if (wallidTestToken) setWallidTestStatus("invalid");
           }
         })
         .finally(() => {
@@ -905,6 +933,7 @@ export default function CartPage() {
   const checkoutLoyaltyDiscountGbp = bankPaymentQuote?.loyaltyDiscountGbp ?? loyaltyDiscountGbp;
   const checkoutReferralCreditGbp = bankPaymentQuote?.referralCreditGbp ?? freePeptideDeductGbp;
   const checkoutTotalGbp = bankPaymentQuote?.totalGbp ?? totalGBP;
+  const checkoutTestPaymentAdjustmentGbp = bankPaymentQuote?.testPayment?.adjustmentGbp ?? 0;
   const displayedPaymentTotal = bankPaymentQuote
     ? bankPaymentQuote.paymentAmountMinor / 100
     : null;
@@ -1254,6 +1283,7 @@ export default function CartPage() {
           paymentMethod,
           paymentCurrency: paymentMethod === "wallid" ? paymentCurrency : undefined,
           paymentQuoteToken: paymentMethod === "wallid" ? bankPaymentQuote?.paymentQuoteToken : undefined,
+          wallidTestToken: paymentMethod === "wallid" ? wallidTestToken ?? undefined : undefined,
           cryptoCurrency: paymentMethod === "crypto" ? cryptoRoute?.currency : undefined,
           cryptoNetwork: paymentMethod === "crypto" ? cryptoRoute?.network : undefined,
         }),
@@ -1336,6 +1366,20 @@ export default function CartPage() {
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
+      {isWallidTestCheckout && (
+        <div style={{
+          background: wallidTestStatus === "invalid" ? "#FEF2F2" : "#FFF7ED",
+          borderBottom: `1px solid ${wallidTestStatus === "invalid" ? "#FECACA" : "#FED7AA"}`,
+          color: wallidTestStatus === "invalid" ? "#B91C1C" : "#9A3412",
+          padding: "10px 16px", textAlign: "center", fontSize: "13px", fontWeight: 700,
+        }}>
+          {wallidTestStatus === "invalid"
+            ? "This £1 Wallid test checkout link is invalid, expired, or no longer authorised. Generate a new link from the admin panel."
+            : wallidTestStatus === "checking"
+              ? "Verifying your admin Wallid test checkout…"
+              : "Admin Wallid test checkout — this is a real £1.00 bank payment and expires shortly."}
+        </div>
+      )}
 
       {/* ── Session expired overlay ── */}
       {timerExpired && (
@@ -1838,7 +1882,7 @@ export default function CartPage() {
                         {([
                           { code: "GBP" as const, label: "£ GBP" },
                           { code: "EUR" as const, label: "€ EUR" },
-                        ]).map(option => {
+                        ].filter(option => !isWallidTestCheckout || option.code === "GBP")).map(option => {
                           const selected = paymentCurrency === option.code;
                           return (
                             <button
@@ -1848,8 +1892,10 @@ export default function CartPage() {
                               aria-checked={selected}
                               onClick={event => {
                                 event.stopPropagation();
-                                paymentCurrencyChosen.current = true;
-                                setPaymentCurrency(option.code);
+                                if (!isWallidTestCheckout) {
+                                  paymentCurrencyChosen.current = true;
+                                  setPaymentCurrency(option.code);
+                                }
                               }}
                               style={{
                                 flex: 1, padding: "9px 10px", borderRadius: 7, cursor: "pointer",
@@ -1928,7 +1974,7 @@ export default function CartPage() {
             })()}
 
             {/* Cryptocurrency */}
-            {cryptoRoutes.length > 0 && (() => {
+            {!isWallidTestCheckout && cryptoRoutes.length > 0 && (() => {
               const active = paymentMethod === "crypto";
               return (
                 <div
@@ -2308,6 +2354,7 @@ export default function CartPage() {
                 ...(checkoutDiscountGbp > 0 ? [[`Discount (${appliedDiscount?.code})`, `−£${checkoutDiscountGbp.toFixed(2)}`]] : []),
                 ...(checkoutLoyaltyDiscountGbp > 0 ? [["Loyalty Points", `−£${checkoutLoyaltyDiscountGbp.toFixed(2)}`]] : []),
                 ...(checkoutReferralCreditGbp > 0 ? [["Referral Credit", `−£${checkoutReferralCreditGbp.toFixed(2)}`]] : []),
+                ...(checkoutTestPaymentAdjustmentGbp > 0 ? [["Admin £1 test adjustment", `−£${checkoutTestPaymentAdjustmentGbp.toFixed(2)}`]] : []),
               ].map(([k, v]) => (
                 <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
                   <span style={{ fontSize: "13px", color: THEME.textMuted }}>{k}</span>

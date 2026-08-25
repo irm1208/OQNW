@@ -115,6 +115,7 @@ export default function Settings() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [form, setForm] = useState<Form>(EMPTY);
+  const [testCheckout, setTestCheckout] = useState<{ checkoutPath: string; expiresAt: string } | null>(null);
 
   const { data, isLoading } = useQuery<StoreSettings>({
     queryKey: ["store-settings"],
@@ -163,6 +164,36 @@ export default function Settings() {
     onError: () => toast({ title: "Save failed", variant: "destructive" }),
   });
 
+  const createWallidTestCheckout = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(api("admin/test-payments/session"), {
+        method: "POST",
+        credentials: "include",
+      });
+      const data = await res.json().catch(() => ({})) as {
+        checkoutPath?: string;
+        expiresAt?: string;
+        error?: string;
+      };
+      if (!res.ok || !data.checkoutPath || !data.expiresAt) {
+        throw new Error(data.error ?? "Could not create the test checkout.");
+      }
+      return { checkoutPath: data.checkoutPath, expiresAt: data.expiresAt };
+    },
+    onSuccess: (data) => {
+      setTestCheckout(data);
+      toast({
+        title: "£1 test checkout ready",
+        description: "Open it in this browser before the link expires.",
+      });
+    },
+    onError: (error: Error) => toast({
+      title: "Could not create test checkout",
+      description: error.message,
+      variant: "destructive",
+    }),
+  });
+
   const set = (k: keyof Form) => (v: string) => setForm(f => ({ ...f, [k]: v }));
 
   if (isLoading) {
@@ -198,6 +229,39 @@ export default function Settings() {
           <input type="checkbox" checked={form.maintenanceMode} onChange={e => setForm(f => ({ ...f, maintenanceMode: e.target.checked }))} className="rounded" />
           Maintenance mode
         </label>
+      </section>
+
+      <section className="rounded-xl border border-amber-200 bg-amber-50/50 p-4 sm:p-6 space-y-3">
+        <div>
+          <h3 className="font-semibold text-amber-950">Wallid £1 Test Payment</h3>
+          <p className="text-sm text-amber-900/80 mt-1">
+            Creates a short-lived, one-time checkout for a real £1.00 Wallid payment. Retail prices remain unchanged and the resulting order is marked as a test payment.
+          </p>
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => createWallidTestCheckout.mutate()}
+          disabled={createWallidTestCheckout.isPending}
+        >
+          {createWallidTestCheckout.isPending ? "Creating test checkout…" : "Create £1 Wallid test checkout"}
+        </Button>
+        {testCheckout && (
+          <div className="rounded-md border border-amber-200 bg-white p-3 text-sm">
+            <p className="font-medium text-amber-950">Your one-time test checkout is ready.</p>
+            <p className="text-amber-900/80 mt-1">
+              It expires at {new Date(testCheckout.expiresAt).toLocaleTimeString()} and must be opened in this browser while you remain signed in to the admin panel.
+            </p>
+            <a
+              href={testCheckout.checkoutPath}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex mt-3 font-medium text-primary underline underline-offset-4"
+            >
+              Open £1 Wallid test checkout
+            </a>
+          </div>
+        )}
       </section>
 
       <section className="rounded-xl border bg-card p-4 sm:p-6 space-y-4">

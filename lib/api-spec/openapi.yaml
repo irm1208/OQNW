@@ -94,6 +94,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiError"
 
+  /admin/test-payments/session:
+    post:
+      operationId: createAdminWallidTestPaymentSession
+      tags: [admin-auth]
+      summary: Create a one-time £1 Wallid test checkout
+      responses:
+        "201":
+          description: Test checkout created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminWallidTestPaymentSession"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
   # ── DASHBOARD ──────────────────────────────────────────────────────────────
   /admin/dashboard:
     get:
@@ -768,6 +787,22 @@ components:
       properties:
         authenticated:
           type: boolean
+
+    AdminWallidTestPaymentSession:
+      type: object
+      required: [checkoutPath, expiresAt, amountMinor, currency]
+      properties:
+        checkoutPath:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+        amountMinor:
+          type: integer
+          const: 100
+        currency:
+          type: string
+          const: GBP
 
     # ── DASHBOARD ────────────────────────────────────────────────────────────
     DashboardStats:

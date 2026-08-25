@@ -31,6 +31,7 @@ export function createCheckoutFingerprint(input: {
   loyaltyPointsRedeemed: number;
   referralCreditRedeemed: boolean;
   country: string;
+  testPaymentSessionId?: string | null;
 }): string {
   const payload = {
     items: input.items
@@ -53,6 +54,7 @@ export function createCheckoutFingerprint(input: {
     loyaltyPointsRedeemed: input.loyaltyPointsRedeemed,
     referralCreditRedeemed: input.referralCreditRedeemed,
     country: input.country.trim(),
+    testPaymentSessionId: input.testPaymentSessionId ?? "",
   };
 
   return crypto.createHash("sha256").update(JSON.stringify(payload)).digest("hex");

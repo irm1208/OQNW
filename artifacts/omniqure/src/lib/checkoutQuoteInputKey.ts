@@ -13,6 +13,7 @@ export type CheckoutQuoteInputKey = {
   referralCreditGbp: number;
   paymentCurrency: "GBP" | "EUR";
   paymentMethod: "crypto" | "wallid";
+  wallidTestToken?: string | null;
 };
 
 /**

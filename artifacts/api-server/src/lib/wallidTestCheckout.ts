@@ -1,0 +1,99 @@
+import crypto from "crypto";
+
+export const WALLID_TEST_AMOUNT_MINOR = 100;
+const TEST_CHECKOUT_TTL_MS = 15 * 60 * 1000;
+
+type SignedWallidTestCheckout = {
+  version: 1;
+  id: string;
+  expiresAt: number;
+};
+
+export type WallidTestCheckout = {
+  id: string;
+  expiresAt: number;
+};
+
+/**
+ * Creates a short-lived capability for a real £1 Wallid checkout. The
+ * capability is not sufficient by itself: public checkout handlers also
+ * require a current secure admin session before accepting it.
+ */
+export function createWallidTestCheckoutToken(
+  secret: string,
+  now = Date.now(),
+): { token: string; expiresAt: string } {
+  const payload: SignedWallidTestCheckout = {
+    version: 1,
+    id: crypto.randomBytes(24).toString("base64url"),
+    expiresAt: now + TEST_CHECKOUT_TTL_MS,
+  };
+  const encodedPayload = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const signature = crypto
+    .createHmac("sha256", secret)
+    .update(encodedPayload)
+    .digest("base64url");
+
+  return {
+    token: `${encodedPayload}.${signature}`,
+    expiresAt: new Date(payload.expiresAt).toISOString(),
+  };
+}
+
+export function verifyWallidTestCheckoutToken(
+  token: string,
+  secret: string,
+  now = Date.now(),
+): WallidTestCheckout | null {
+  const separator = token.lastIndexOf(".");
+  if (separator === -1) return null;
+
+  const encodedPayload = token.slice(0, separator);
+  const receivedSignature = token.slice(separator + 1);
+  const expectedSignature = crypto
+    .createHmac("sha256", secret)
+    .update(encodedPayload)
+    .digest("base64url");
+  if (
+    receivedSignature.length !== expectedSignature.length ||
+    !crypto.timingSafeEqual(Buffer.from(receivedSignature), Buffer.from(expectedSignature))
+  ) {
+    return null;
+  }
+
+  try {
+    const payload = JSON.parse(
+      Buffer.from(encodedPayload, "base64url").toString("utf8"),
+    ) as SignedWallidTestCheckout;
+    if (
+      payload.version !== 1 ||
+      typeof payload.id !== "string" ||
+      !/^[A-Za-z0-9_-]{32}$/.test(payload.id) ||
+      !Number.isFinite(payload.expiresAt) ||
+      payload.expiresAt <= now
+    ) {
+      return null;
+    }
+    return { id: payload.id, expiresAt: payload.expiresAt };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The checkout API currently runs as a single process, matching the existing
+ * payment-quote replay guard. Claiming a session before creating the Wallid
+ * payment prevents double-clicks and makes every test session single-use.
+ */
+export class WallidTestCheckoutReplayGuard {
+  private readonly consumed = new Map<string, number>();
+
+  consume(sessionId: string, expiresAt: number, now = Date.now()): boolean {
+    for (const [id, expiry] of this.consumed) {
+      if (expiry <= now) this.consumed.delete(id);
+    }
+    if (expiresAt <= now || this.consumed.has(sessionId)) return false;
+    this.consumed.set(sessionId, expiresAt);
+    return true;
+  }
+}

@@ -6,6 +6,7 @@ import { blockedIpsTable, adminUsersTable } from "@workspace/db/schema";
 import { eq } from "drizzle-orm";
 import { verifyPassword } from "./users";
 import { createHmac, timingSafeEqual } from "crypto";
+import { createWallidTestCheckoutToken } from "../../lib/wallidTestCheckout";
 
 const router = Router();
 
@@ -181,6 +182,29 @@ router.post("/admin/auth/logout", (_req: Request, res: Response): void => {
   res.clearCookie(SECURE_SESSION_COOKIE);
   res.clearCookie(EMAIL_COOKIE);
   res.status(204).send();
+});
+
+router.post("/admin/test-payments/session", (req: Request, res: Response): void => {
+  if (!hasSecureAdminSession(req)) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+
+  const testCheckoutSecret = process.env.SESSION_SECRET;
+  if (!testCheckoutSecret) {
+    res.status(503).json({ error: "Wallid test checkout is unavailable because secure session signing is not configured." });
+    return;
+  }
+
+  const { token, expiresAt } = createWallidTestCheckoutToken(
+    testCheckoutSecret,
+  );
+  res.status(201).json({
+    checkoutPath: `/cart?wallidTest=${encodeURIComponent(token)}`,
+    expiresAt,
+    amountMinor: 100,
+    currency: "GBP",
+  });
 });
 
 router.get("/admin/auth/me", async (req: Request, res: Response): Promise<void> => {
