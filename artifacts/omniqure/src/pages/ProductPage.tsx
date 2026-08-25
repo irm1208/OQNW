@@ -34,9 +34,9 @@ type ReviewSummary = {
 };
 
 const VOLUME_TIERS = [
-  { min: 3,  label: "Free BAC water" },
-  { min: 5,  label: "1 peptide free" },
-  { min: 10, label: "2 peptides free" },
+  { min: 3,  range: "3–4", label: "Free 10ml BAC water" },
+  { min: 5,  range: "5–9", label: "1 peptide free" },
+  { min: 10, range: "10+", label: "2 peptides free" },
 ];
 
 function VolumePricingTable({
@@ -96,7 +96,7 @@ function VolumePricingTable({
                 className="text-xs font-bold mb-0.5"
                 style={{ color: isActive ? "#fff" : isPast ? "#1B5CB5" : "#64748B" }}
               >
-                {tier.min}+ items
+                {tier.range} items
               </span>
               <span
                 className="font-extrabold"

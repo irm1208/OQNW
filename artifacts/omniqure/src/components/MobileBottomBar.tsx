@@ -19,7 +19,7 @@ export default function MobileBottomBar() {
     ? "2 peps free"
     : bundleFreeItemsCount === 1
     ? "1 pep free"
-    : "a free BAC water";
+    : "a free 10ml BAC water ampule";
 
   const hiddenByPath = HIDDEN_PATHS.some((p) => location === p || location.startsWith(p + "/"));
   const visible = !hiddenByPath && totalItems > 0;

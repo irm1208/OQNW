@@ -77086,7 +77086,7 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
     const bundleDiscountGbp = Math.round(
       (freeItemsValue + (bundleFreeBacWater ? FREE_BAC_WATER_VALUE_GBP : 0)) * 100
     ) / 100;
-    const bundleFreeLabel = bundleFreeItemsCount === 2 ? "2 cheapest peptides free" : bundleFreeItemsCount === 1 ? "cheapest peptide free" : bundleFreeBacWater ? "free BAC water" : "";
+    const bundleFreeLabel = bundleFreeItemsCount === 2 ? "2 cheapest peptides free" : bundleFreeItemsCount === 1 ? "cheapest peptide free" : bundleFreeBacWater ? "free 10ml BAC water ampule" : "";
     const subtotalGbp = cartItems.reduce((s, i) => s + i.priceGbp * i.quantity, 0);
     const shippingCostGbp = calculateShippingCostGbp(shippingMethod, subtotalGbp, d.country);
     if (shippingCostGbp === null) {

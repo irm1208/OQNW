@@ -5,7 +5,7 @@ const messages = [
   "🔬  98%+ Verified Purity — Guaranteed on Every Product",
   "🎁  Refer a Friend — You Both Earn £25 Credit Each",
   "🚚  Free Shipping on Orders Over £50 — UK Only",
-  "💊  Bundle & Save — Free Items When You Order 3+ Vials",
+  "💊  Bundle & Save — 3-4 Vials Unlock a Free 10ml Bac Water Ampule",
 ];
 
 export default function AnnouncementBar({ suppressed = false }: { suppressed?: boolean }) {

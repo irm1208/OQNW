@@ -473,7 +473,7 @@ async function handleOrderRequest(
       : bundleFreeItemsCount === 1
       ? "cheapest peptide free"
       : bundleFreeBacWater
-      ? "free BAC water"
+      ? "free 10ml BAC water ampule"
       : "";
 
     const subtotalGbp = cartItems.reduce((s, i) => s + i.priceGbp * i.quantity, 0);
@@ -871,7 +871,7 @@ async function handleOrderRequest(
         });
       }
     }
-    // The free 10ml BAC water (3+ peptide tier) is a server-computed freebie, not something
+    // The free 10ml BAC water ampule (3-4 peptide tier) is a server-computed freebie, not something
     // the client adds to its own cart — insert it as its own zero-priced order item.
     if (bundleFreeBacWater) {
       orderItemRows.push({

@@ -97,7 +97,7 @@ export default function ReferAFriendPage() {
       bg: "linear-gradient(135deg, #7C3AED, #A855F7)",
       step: "02",
       title: "Friend Places an Order",
-      desc: "Your friend uses your link and gets 10% off their first order automatically at checkout — no code needed. Bundle & Save free items apply too — 3-4 vials for free BAC water, 5-9 for a free peptide, or 10+ for 2 free peptides (one reward per order, no stacking).",
+      desc: "Your friend uses your link and gets 10% off their first order automatically at checkout — no code needed. Bundle & Save free items apply too — 3-4 vials for a free 10ml BAC water ampule, 5-9 for a free peptide, or 10+ for 2 free peptides (one reward per order, no stacking).",
     },
     {
       icon: <Gift size={22} color="#fff" />,
@@ -123,7 +123,7 @@ export default function ReferAFriendPage() {
     },
     {
       q: "Can my referred friend also use bundle discounts on their first order?",
-      a: "Yes. The 10% referral discount is automatically applied to your friend's first order, and Bundle & Save free items apply on top with no exceptions — 3-4 vials for a free BAC water, 5-9 for a free peptide, or 10+ for 2 free peptides. These tiers don't stack — each order gets the reward for its own tier.",
+      a: "Yes. The 10% referral discount is automatically applied to your friend's first order, and Bundle & Save free items apply on top with no exceptions — 3-4 vials for a free 10ml BAC water ampule, 5-9 for a free peptide, or 10+ for 2 free peptides. These tiers don't stack — each order gets the reward for its own tier.",
     },
     {
       q: "Is there a limit to how many people I can refer?",

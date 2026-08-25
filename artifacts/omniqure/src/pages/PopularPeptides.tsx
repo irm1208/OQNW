@@ -171,11 +171,11 @@ export default function PopularPeptides() {
               <div style={{ backgroundColor: "#34D399", borderRadius: "5px", padding: "2px 8px" }}>
                 <span style={{ fontSize: "9.5px", fontWeight: 900, letterSpacing: "0.1em", color: "#022c22", textTransform: "uppercase" }}>Bundle & Save</span>
               </div>
-              <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>Buy more, get peptides free — starts at just 3 vials</span>
+              <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>Buy more, get rewards — 3-4 vials unlock a free 10ml BAC water ampule</span>
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", alignItems: "center" }}>
               {[
-                { label: "3-4 vials", freebie: "Free BAC Water",  bg: "rgba(96,165,250,0.15)",  border: "rgba(96,165,250,0.4)",  color: "#93C5FD" },
+                { label: "3-4 vials", freebie: "Free 10ml BAC Water",  bg: "rgba(96,165,250,0.15)",  border: "rgba(96,165,250,0.4)",  color: "#93C5FD" },
                 { label: "5-9 vials", freebie: "1 Peptide Free",  bg: "rgba(52,211,153,0.15)",  border: "rgba(52,211,153,0.4)",  color: "#6EE7B7" },
                 { label: "10+ vials", freebie: "2 Peptides Free", bg: "rgba(248,113,113,0.18)", border: "rgba(248,113,113,0.45)", color: "#FCA5A5" },
               ].map(t => (

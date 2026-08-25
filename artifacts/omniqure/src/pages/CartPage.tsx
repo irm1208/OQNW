@@ -499,7 +499,7 @@ export default function CartPage() {
     bundleDiscountAmount, freeUnitsByProductId, removeFromCart, updateQuantity, clearCart,
   } = useCart();
   const hasFreebie = bundleFreeBacWater || bundleFreeItemsCount > 0;
-  const freebieLabel = bundleFreeItemsCount === 2 ? "2 peptides free" : bundleFreeItemsCount === 1 ? "1 peptide free" : "free BAC water";
+  const freebieLabel = bundleFreeItemsCount === 2 ? "2 peptides free" : bundleFreeItemsCount === 1 ? "1 peptide free" : "free 10ml BAC water ampule";
   const { formatPrice, currency, rates } = useCurrency();
   const { customer } = useCustomerAuth();
   // Live product prices from the API — used at submission to override any stale
@@ -2204,7 +2204,7 @@ export default function CartPage() {
                   {peptideQty < 3 ? (
                     <>
                       <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#1240A0", marginBottom: "6px" }}>
-                        Bundle & Save — add {3 - peptideQty} more {3 - peptideQty === 1 ? "peptide" : "peptides"} for a free BAC water
+                        Bundle & Save — add {3 - peptideQty} more {3 - peptideQty === 1 ? "peptide" : "peptides"} for a free 10ml BAC water ampule
                       </p>
                       <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
                         <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#DBEAFE", overflow: "hidden" }}>
@@ -2212,12 +2212,12 @@ export default function CartPage() {
                         </div>
                         <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{peptideQty}/3</span>
                       </div>
-                      <p style={{ fontSize: "10.5px", color: "#475569", marginTop: "5px" }}>3-4 = free BAC water · 5-9 = 1 peptide free · 10+ = 2 peptides free</p>
+                      <p style={{ fontSize: "10.5px", color: "#475569", marginTop: "5px" }}>3-4 = free 10ml BAC water ampule · 5-9 = 1 peptide free · 10+ = 2 peptides free</p>
                     </>
                   ) : bundleFreeItemsCount === 0 ? (
                     <>
                       <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669", marginBottom: "6px" }}>
-                        ✓ Free BAC water unlocked — add {5 - peptideQty} more for 1 peptide free
+                        ✓ Free 10ml BAC water ampule unlocked — add {5 - peptideQty} more for 1 peptide free
                       </p>
                       <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
                         <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#BBF7D0", overflow: "hidden" }}>
@@ -2225,6 +2225,7 @@ export default function CartPage() {
                         </div>
                         <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{peptideQty}/5</span>
                       </div>
+                        <p style={{ fontSize: "10.5px", color: "#475569", marginTop: "5px" }}>3-4 = free 10ml BAC water ampule · 5-9 = 1 peptide free · 10+ = 2 peptides free</p>
                     </>
                   ) : (
                     <>

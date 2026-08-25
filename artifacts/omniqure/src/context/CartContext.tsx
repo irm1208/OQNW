@@ -16,9 +16,9 @@ type CartContextType = {
   subtotal: number;
   /** Number of qualifying (non-accessory) peptide units in the cart — the quantity that unlocks free-item tiers. */
   peptideQty: number;
-  /** True once 3+ peptides are in the cart — customer gets a free 10ml bacteriostatic water. */
+  /** True for 3-4 qualifying peptides in the cart — customer gets a free 10ml bacteriostatic water ampule. */
   bundleFreeBacWater: boolean;
-  /** How many peptide units are free at the current tier (0, 1 at 5+, or 2 at 10+). Not cumulative across tiers. */
+  /** How many peptide units are free at the current tier (0 at 3-4, 1 at 5-9, or 2 at 10+). Not cumulative across tiers. */
   bundleFreeItemsCount: number;
   /** Combined monetary value of all free items (free BAC water + free peptide units) — subtract from subtotal for the discounted total. */
   bundleDiscountAmount: number;
@@ -172,14 +172,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
         } else if (!before.bundleFreeBacWater && after.bundleFreeBacWater) {
           toast({
             title: "🎁 Free 10ml BAC water unlocked!",
-            description: "You've reached 3-4 peptides — a free bacteriostatic water has been added to your order automatically.",
+            description: "You've reached 3-4 peptides — a free 10ml bacteriostatic water ampule has been added to your order automatically.",
           });
         } else if (!isAccessory(product) && !after.bundleFreeBacWater) {
           const remaining = BUNDLE_FREE_BAC_THRESHOLD - after.peptideQty;
           if (remaining > 0) {
             toast({
               title: "Added to cart",
-              description: `Add ${remaining} more peptide${remaining !== 1 ? "s" : ""} to unlock a free BAC water.`,
+              description: `Add ${remaining} more peptide${remaining !== 1 ? "s" : ""} to unlock a free 10ml BAC water ampule.`,
             });
           }
         }

@@ -201,7 +201,7 @@ const FAQS: FAQItem[] = [
   {
     category: "ordering",
     q: "Can a referred customer also use bundle discounts on their first order?",
-    a: "Yes. The 10% referral discount is automatically applied to the referred customer's first order, and Bundle & Save free items apply on top with no exceptions — ordering 3-4 peptides gets a free BAC water, 5-9 gets a free peptide, and 10+ gets 2 free peptides. These tiers don't stack — each order gets the reward for its own tier.",
+    a: "Yes. The 10% referral discount is automatically applied to the referred customer's first order, and Bundle & Save free items apply on top with no exceptions — ordering 3-4 peptides gets a free 10ml BAC water ampule, 5-9 gets a free peptide, and 10+ gets 2 free peptides. These tiers don't stack — each order gets the reward for its own tier.",
     tags: ["refer", "referral", "bundle", "discount", "first order", "stack"],
   },
   {

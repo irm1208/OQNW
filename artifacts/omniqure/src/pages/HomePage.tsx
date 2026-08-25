@@ -330,7 +330,7 @@ function HeroBundleSlide() {
     >
       <img
         src={bundleAndSaveHeroImg}
-        alt="Bundle and Save exclusive offers — free BAC water on 3+ peptides, 1 peptide free on 5+ peptides, 2 peptides free on 10+ peptides"
+        alt="Bundle and Save exclusive offers — free 10ml BAC water ampule on 3-4 peptides, 1 peptide free on 5-9 peptides, 2 peptides free on 10+ peptides"
         style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />
     </Link>
@@ -350,7 +350,7 @@ function HeroBundleElectricSlide() {
     >
       <img
         src="/hero-bundle-save.webp"
-        alt="Bundle and Save — buy 3+ peptides get free BAC water, 5+ get 1 free peptide, 10+ get 2 free peptides"
+        alt="Bundle and Save — buy 3-4 peptides and get a free 10ml BAC water ampule, 5-9 get 1 free peptide, 10+ get 2 free peptides"
         style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />
     </Link>
@@ -533,7 +533,7 @@ export default function HomePage() {
             {/* Tiers + CTA */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "7px", alignItems: "center" }}>
               {[
-                { label: "3-4 vials", freebie: "Free BAC Water",   bg: "rgba(96,165,250,0.18)",  border: "rgba(96,165,250,0.40)",  color: "#93C5FD" },
+                { label: "3-4 vials", freebie: "Free 10ml BAC Water",   bg: "rgba(96,165,250,0.18)",  border: "rgba(96,165,250,0.40)",  color: "#93C5FD" },
                 { label: "5-9 vials", freebie: "1 Peptide Free",   bg: "rgba(52,211,153,0.18)",  border: "rgba(52,211,153,0.40)",  color: "#6EE7B7" },
                 { label: "10+ vials", freebie: "2 Peptides Free",  bg: "rgba(167,139,250,0.18)", border: "rgba(167,139,250,0.40)", color: "#C4B5FD" },
               ].map(t => (
