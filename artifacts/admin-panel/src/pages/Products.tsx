@@ -517,8 +517,8 @@ function CatalogTab() {
                         title={product.isPublished ? "Click to disable" : "Click to enable"}
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed ${
                           product.isPublished
-                            ? "bg-green-100 text-green-800 border-green-200 hover:bg-red-50 hover:text-red-700 hover:border-red-200"
-                            : "bg-red-100 text-red-800 border-red-200 hover:bg-green-50 hover:text-green-700 hover:border-green-200"
+                            ? "bg-red-100 text-red-800 border-red-200 hover:bg-red-200 hover:text-red-900 hover:border-red-300"
+                            : "bg-green-100 text-green-800 border-green-200 hover:bg-green-200 hover:text-green-900 hover:border-green-300"
                         }`}
                       >
                         {product.isPublished
