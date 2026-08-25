@@ -404,7 +404,7 @@ Research reproducibility depends critically on compound identity and purity. A p
 
 ## How Purity Is Measured
 
-Analytical laboratories separate the components of a peptide sample and measure the relative abundance of each. The dominant component is the target peptide; everything else is classed as an impurity — truncated synthesis fragments, deletion sequences, oxidised or reduced variants, residual protecting groups, or reagent contaminants. The **purity figure** reported on a Certificate of Analysis is the proportion of the sample made up by the target compound.
+Analytical laboratories separate the components of a peptide sample and measure the relative abundance of each. The dominant component is the target peptide; everything else is classed as an impurity — truncated synthesis fragments, deletion sequences, oxidised or reduced variants, residual protecting groups, or reagent contaminants. The **purity figure** reported by an independent laboratory is the proportion of the sample made up by the target compound.
 
 ### Consistency Between Batches
 A well-controlled manufacturing process produces consistent purity results across lots. Reputable suppliers publish lot-specific data rather than a single generic figure for a product line.
@@ -421,7 +421,7 @@ For a research-grade peptide, a single dominant, well-resolved result indicates 
 | 90–94% | Lower grade; impurity effects must be considered |
 | <90% | Not recommended for mechanistic research |
 
-OmniQure provides only ≥98% independently verified peptides. Our COA data is available for every product.
+OmniQure provides only ≥98% independently verified peptides. Available Janoshik reports can be reviewed on the relevant product pages.
 
 ## What a Purity Result Cannot Tell You
 
@@ -434,7 +434,7 @@ This is critical: **purity does not confirm identity**. A result showing 99% pur
 
 ## Practical Tips for Evaluating Supplier Data
 
-1. **Request the full Certificate of Analysis** — not just a purity number. Lot number, manufacturing date, and testing method all matter.
+1. **Review the independent report** — not just a purity number. Lot number, testing method, and the original verification record all matter.
 2. **Check for lot-specific data** — generic, product-wide claims are far weaker evidence than per-batch results.
 3. **Ask which laboratory performed the analysis** — independent, accredited labs are more credible than in-house-only claims.
 4. **Compare purity alongside identity confirmation** — purity and identity are separate questions, and both matter.

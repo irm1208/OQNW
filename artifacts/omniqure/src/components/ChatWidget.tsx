@@ -21,9 +21,9 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
       "Hello! I'm the OmniQure Research Assistant. I can help with questions about our peptides, ordering, shipping, storage, and more. What can I help you with today?",
   },
   {
-    patterns: [/purity|99%|quality|certificate|coa/i],
+    patterns: [/purity|99%|quality|janoshik|report/i],
     answer:
-      "Every OmniQure peptide is tested using **independent laboratory testing** and verified to **≥99% purity**. You can download the Certificate of Analysis (COA) directly from each product page — no account required.",
+      "Every OmniQure peptide is tested using **independent laboratory testing** and verified to **≥99% purity**. Available Janoshik reports are linked directly from the relevant product pages — no account required.",
   },
   {
     patterns: [/ship|deliver|dispatch|postage|worldwide|uk|europe|international/i],
@@ -63,7 +63,7 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/cjc.?1295|dac/i],
     answer:
-      "**CJC-1295** is a GHRH analogue studied for growth hormone secretagogue activity. Available with or without DAC (Drug Affinity Complex). Both variants are verified to ≥99% purity with full COA.",
+      "**CJC-1295** is a GHRH analogue studied for growth hormone secretagogue activity. Available with or without DAC (Drug Affinity Complex). Both variants are verified to ≥99% purity.",
   },
   {
     patterns: [/ipamorelin/i],

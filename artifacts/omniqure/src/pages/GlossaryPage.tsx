@@ -78,15 +78,8 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "CAS Number",
     category: "chemistry",
-    definition: "A Chemical Abstracts Service Registry Number — a unique numerical identifier assigned to every chemical substance by the American Chemical Society's Chemical Abstracts Service (CAS). CAS numbers allow unambiguous identification of compounds regardless of trade name or synonym. For example, BPC-157 has the CAS number 137525-51-0. CAS numbers are listed on each product's Certificate of Analysis.",
-    related: ["Certificate of Analysis", "Molecular Weight", "Formula"],
-  },
-  {
-    term: "Certificate of Analysis (COA)",
-    category: "research",
-    definition: "A quality assurance document issued for each batch of a research compound, confirming that it meets specified standards. A typical peptide COA includes: compound name and CAS number, lot number, manufacturing date, expiry date, verified purity percentage, appearance, and storage conditions. OmniQure COAs are generated from laboratory testing.",
-    related: ["Independent Purity Testing", "Purity"],
-    seeAlso: { label: "Lab Tests & COA", href: "/lab-tests" },
+    definition: "A Chemical Abstracts Service Registry Number — a unique numerical identifier assigned to every chemical substance by the American Chemical Society's Chemical Abstracts Service (CAS). CAS numbers allow unambiguous identification of compounds regardless of trade name or synonym. For example, BPC-157 has the CAS number 137525-51-0.",
+    related: ["Molecular Weight", "Formula"],
   },
   {
     term: "Cyclic Peptide",
@@ -192,8 +185,8 @@ const GLOSSARY: GlossaryEntry[] = [
     term: "Independent Purity Testing",
     category: "research",
     definition: "Third-party laboratory analysis used to determine peptide purity. A sample is analysed and the relative abundance of each component in the mixture is measured; purity is expressed as the percentage of the target peptide relative to all detected components. All OmniQure peptides are tested to ≥99% purity by independent laboratories.",
-    related: ["Purity", "Certificate of Analysis"],
-    seeAlso: { label: "Lab Tests & COA", href: "/lab-tests" },
+    related: ["Purity"],
+    seeAlso: { label: "Janoshik Reports", href: "/lab-reports" },
   },
   {
     term: "HPG Axis (Hypothalamic-Pituitary-Gonadal)",
@@ -329,8 +322,8 @@ const GLOSSARY: GlossaryEntry[] = [
     term: "Purity",
     category: "chemistry",
     definition: "A measure of the proportion of a sample that consists of the target compound, expressed as a percentage. OmniQure peptides are verified to ≥99% purity by independent laboratory testing, meaning at least 99% of the material in each vial is the intended peptide, with ≤1% consisting of impurities (truncated sequences, oxidation products, residual solvents, or other related substances).",
-    related: ["Independent Purity Testing", "Certificate of Analysis", "Impurity"],
-    seeAlso: { label: "Lab Tests & COA", href: "/lab-tests" },
+    related: ["Independent Purity Testing", "Impurity"],
+    seeAlso: { label: "Janoshik Reports", href: "/lab-reports" },
   },
 
   // R

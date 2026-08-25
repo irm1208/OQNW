@@ -31,7 +31,7 @@ const PILLARS = [
     color: "#10B981",
     bg: "#ECFDF5",
     title: "Transparent Testing",
-    body: "We don't just claim quality — we prove it. Every batch ships with a downloadable COA showing verified purity and sterility testing where applicable.",
+    body: "We don't just claim quality — we prove it through independently published Janoshik reports.",
   },
   {
     icon: <Truck size={22} />,
@@ -70,7 +70,7 @@ const TIMELINE = [
   {
     year: "Quality",
     title: "Every Batch Tested",
-    body: "We established our testing programme before we shipped a single order. Every compound in our catalogue has been verified, mass-confirmed, and documented. COAs are publicly available on each product page.",
+    body: "We established our testing programme before we shipped a single order. Every compound in our catalogue is independently verified, mass-confirmed, and documented through published Janoshik reports.",
   },
   {
     year: "Today",
@@ -80,7 +80,7 @@ const TIMELINE = [
 ];
 
 const VALUES = [
-  { icon: <CheckCircle size={16} />, text: "Publish every COA — no selective disclosure" },
+  { icon: <CheckCircle size={16} />, text: "Publish independent Janoshik reports — no selective disclosure" },
   { icon: <CheckCircle size={16} />, text: "Never overstate efficacy claims beyond peer-reviewed data" },
   { icon: <CheckCircle size={16} />, text: "Respond to support queries within 1–2 business days" },
   { icon: <CheckCircle size={16} />, text: "Retest batches that fall below our purity threshold" },
@@ -134,7 +134,7 @@ export default function AboutPage() {
           </h1>
 
           <p style={{ fontSize: 17, color: "rgba(255,255,255,0.68)", lineHeight: 1.8, maxWidth: 580, marginBottom: 40 }}>
-            OmniQure was founded on a single belief: researchers deserve peptide suppliers that are as rigorous about quality documentation as they are about their own work. Every vial we ship is verified, mass-confirmed, and backed by a published certificate of analysis.
+            OmniQure was founded on a single belief: researchers deserve peptide suppliers that are as rigorous about quality documentation as they are about their own work. Every vial we ship is independently verified, mass-confirmed, and backed by a published Janoshik report.
           </p>
 
           <div className="flex flex-wrap gap-3">
@@ -152,7 +152,7 @@ export default function AboutPage() {
               Browse All Peptides <ArrowRight size={15} />
             </Link>
             <Link
-              href="/lab-tests"
+              href="/lab-reports"
               style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
                 background: "rgba(255,255,255,0.1)",
@@ -395,7 +395,7 @@ export default function AboutPage() {
             Ready to order?
           </h2>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.60)", lineHeight: 1.75, maxWidth: 480, margin: "0 auto 36px" }}>
-            Browse our full catalogue of 81+ verified peptides, download the COA for any compound before you buy, and check out with your preferred currency.
+            Browse our full catalogue of 81+ verified peptides, review Janoshik reports where available, and check out with your preferred currency.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link

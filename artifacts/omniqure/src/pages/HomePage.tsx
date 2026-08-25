@@ -213,7 +213,7 @@ const pillars = [
   {
     num: "02",
     icon: <Award size={24} />,
-    title: "Full COA Data",
+    title: "Independent Reports",
     body: "Certificates of Analysis available for every product.",
     color: "#059669",
     bg: "#ECFDF5",
@@ -491,7 +491,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-[#EEF2F7]">
             {[
               { icon: <FlaskConical size={20} />, title: "98%+ Verified Purity", sub: "Guaranteed on every product",     color: "#1B5CB5", bg: "#EEF4FF" },
-              { icon: <Award size={20} />,        title: "Full COA Data",        sub: "Independent purity report",       color: "#059669", bg: "#ECFDF5" },
+              { icon: <Award size={20} />,        title: "Independent Reports", sub: "Janoshik verification",            color: "#059669", bg: "#ECFDF5" },
               { icon: <Shield size={20} />,       title: "Research Grade",       sub: "For qualified researchers only",  color: "#7C3AED", bg: "#F5F3FF" },
               { icon: <Truck size={20} />,        title: "Free UK Shipping £50+", sub: "Discreet packaging included",     color: "#0E7490", bg: "#ECFEFF" },
             ].map((item, i) => (
@@ -940,11 +940,11 @@ export default function HomePage() {
             {([
               {
                 q: "What purity standards do your peptides meet?",
-                a: "All OmniQure peptides are HPLC-verified to ≥99% purity. Every batch undergoes high-performance liquid chromatography (HPLC) analysis, and results are published in the Certificate of Analysis (COA) available on each product page.",
+                a: "All OmniQure peptides are HPLC-verified to ≥99% purity. Available independent testing results are published as Janoshik reports on the relevant product pages.",
               },
               {
-                q: "Do products come with a Certificate of Analysis and HPLC data?",
-                a: "Yes. Every product has a batch-specific COA, full HPLC chromatogram, and ESI-MS (mass spectrometry) data confirming identity and purity. These are published directly on each product page and accessible before and after purchase — no physical paperwork is included with shipments.",
+                q: "Do products have independent verification reports?",
+                a: "Available Janoshik reports include independent test results confirming product quality. They are published directly on the relevant product pages and are accessible before and after purchase — no physical paperwork is included with shipments.",
               },
               {
                 q: "Are these products approved for human use?",

@@ -145,10 +145,10 @@ export default function PopularPeptides() {
             Popular Peptides
           </h1>
           <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", maxWidth: "540px", lineHeight: 1.65, marginBottom: "16px" }}>
-            Our most researched compounds across {availableCategories.length} categories — hand-picked by the OmniQure team. Each 98%+ verified with full COA documentation.
+            Our most researched compounds across {availableCategories.length} categories — hand-picked by the OmniQure team. Each independently verified at 98%+ purity.
           </p>
           <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-            {["98%+ Verified Purity", "Full COA", "Lyophilized"].map(t => (
+            {["98%+ Verified Purity", "Janoshik Verified", "Lyophilized"].map(t => (
               <span key={t} style={{
                 fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.6)",
                 backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)",

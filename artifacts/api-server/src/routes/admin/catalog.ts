@@ -6,21 +6,6 @@ import { eq, ilike, and, ne, notInArray } from "drizzle-orm";
 import { seedProductsCatalog } from "../../lib/seed-catalog";
 import { seedReviews } from "../../lib/seed-reviews";
 import { hasJanoshikReport, JANOSHIK_REPORTED_PRODUCT_SLUGS } from "../../lib/janoshikReports";
-import multer from "multer";
-import path from "path";
-import fs from "fs";
-
-const uploadsDir = path.join(process.cwd(), "public/uploads");
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
-
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadsDir),
-  filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    cb(null, `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
-  },
-});
-const upload = multer({ storage, limits: { fileSize: 20 * 1024 * 1024 } });
 
 const router = Router();
 
@@ -52,8 +37,6 @@ function catalogToResponse(p: typeof productsCatalogTable.$inferSelect) {
     appearance: p.appearance ?? null,
     solubility: p.solubility ?? null,
     halfLife: p.halfLife ?? null,
-    coaUrl: p.coaUrl ?? null,
-    msImageUrl: p.msImageUrl ?? null,
     seoTitle: p.seoTitle ?? null,
     seoDescription: p.seoDescription ?? null,
     hasJanoshikReport: hasJanoshikReport(p.slug),
@@ -102,8 +85,6 @@ type ProductBody = {
   appearance?: unknown;
   solubility?: unknown;
   halfLife?: unknown;
-  coaUrl?: unknown;
-  msImageUrl?: unknown;
   seoTitle?: unknown;
   seoDescription?: unknown;
   isPublished?: unknown;
@@ -146,27 +127,9 @@ router.get("/admin/catalog", async (req: Request, res: Response): Promise<void> 
 
     const where = conditions.length > 0 ? and(...conditions) : undefined;
     const products = await db
-      .select({
-        id: productsCatalogTable.id,
-        slug: productsCatalogTable.slug,
-        name: productsCatalogTable.name,
-        category: productsCatalogTable.category,
-        priceGbp: productsCatalogTable.priceGbp,
-        shortDescription: productsCatalogTable.shortDescription,
-        description: productsCatalogTable.description,
-        imageUrl: productsCatalogTable.imageUrl,
-        purity: productsCatalogTable.purity,
-        coaUrl: productsCatalogTable.coaUrl,
-        msImageUrl: productsCatalogTable.msImageUrl,
-        seoTitle: productsCatalogTable.seoTitle,
-        seoDescription: productsCatalogTable.seoDescription,
-        isFeatured: productsCatalogTable.isFeatured,
-        stockLevel: productsInventoryTable.stockLevel,
-        inventoryPublished: productsInventoryTable.isPublished,
-      })
+      .select()
       .from(productsCatalogTable)
-      .leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id))
-      .where(and(...conditions))
+      .where(where)
       .orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
     res.status(200).json(products.map(catalogToResponse));
   } catch (err) {
@@ -214,10 +177,7 @@ router.get("/admin/catalog/:id", async (req: Request, res: Response): Promise<vo
       .select()
       .from(productsCatalogTable)
       .where(
-        and(
-          eq(productsCatalogTable.slug, slug),
-          eq(productsCatalogTable.isPublished, true)
-        )
+        eq(productsCatalogTable.id, id)
       );
     if (!product) { res.status(404).json({ error: "Product not found" }); return; }
     res.status(200).json(catalogToResponse(product));
@@ -256,8 +216,6 @@ router.post("/admin/catalog", async (req: Request, res: Response): Promise<void>
         appearance: strOrNull(body.appearance),
         solubility: strOrNull(body.solubility),
         halfLife: strOrNull(body.halfLife),
-        coaUrl: strOrNull(body.coaUrl),
-        msImageUrl: strOrNull(body.msImageUrl),
         seoTitle: strOrNull(body.seoTitle),
         seoDescription: strOrNull(body.seoDescription),
         isPublished: isBool(body.isPublished) ? body.isPublished : true,
@@ -304,8 +262,6 @@ router.patch("/admin/catalog/:id", async (req: Request, res: Response): Promise<
   if (body.appearance !== undefined) updates.appearance = strOrNull(body.appearance);
   if (body.solubility !== undefined) updates.solubility = strOrNull(body.solubility);
   if (body.halfLife !== undefined) updates.halfLife = strOrNull(body.halfLife);
-  if (body.coaUrl !== undefined) updates.coaUrl = strOrNull(body.coaUrl);
-  if (body.msImageUrl !== undefined) updates.msImageUrl = strOrNull(body.msImageUrl);
   if (body.seoTitle !== undefined) updates.seoTitle = strOrNull(body.seoTitle);
   if (body.seoDescription !== undefined) updates.seoDescription = strOrNull(body.seoDescription);
   if (body.isPublished !== undefined && isBool(body.isPublished)) updates.isPublished = body.isPublished;
@@ -318,47 +274,19 @@ router.patch("/admin/catalog/:id", async (req: Request, res: Response): Promise<
   }
 
   try {
-      const [updated] = await db
-        .update(productsCatalogTable)
-        .set({ [field]: url } as Partial<typeof productsCatalogTable.$inferInsert>)
-        .where(eq(productsCatalogTable.id, id))
-        .returning();
-      if (!updated) { res.status(404).json({ error: "Product not found" }); return; }
-      res.status(200).json({ url });
-    } catch (err) {
-      req.log.error({ err }, "Failed to save uploaded document URL");
-      res.status(500).json({ error: "Internal server error" });
-    }
+    const [updated] = await db
+      .update(productsCatalogTable)
+      .set(updates)
+      .where(eq(productsCatalogTable.id, id))
+      .returning();
+    if (!updated) { res.status(404).json({ error: "Product not found" }); return; }
+    await syncInventoryProduct(updated);
+    res.status(200).json(catalogToResponse(updated));
+  } catch (err) {
+    req.log.error({ err }, "Failed to update catalog product");
+    res.status(500).json({ error: "Internal server error" });
   }
-);
-
-// DELETE /api/admin/catalog/:id
-router.delete("/admin/catalog/:id", async (req: Request, res: Response): Promise<void> => {
-  if (!requireAdmin(req, res)) return;
-  const id = Number(req.params.id);
-    if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
-    if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
-
-    const docType = isStr(req.query.type) ? req.query.type : "coa";
-    const url = `/uploads/${req.file.filename}`;
-
-    const field =
-      docType === "ms" ? "msImageUrl" : "coaUrl";
-
-    try {
-      const [updated] = await db
-        .update(productsCatalogTable)
-        .set({ [field]: url } as Partial<typeof productsCatalogTable.$inferInsert>)
-        .where(eq(productsCatalogTable.id, id))
-        .returning();
-      if (!updated) { res.status(404).json({ error: "Product not found" }); return; }
-      res.status(200).json({ url });
-    } catch (err) {
-      req.log.error({ err }, "Failed to save uploaded document URL");
-      res.status(500).json({ error: "Internal server error" });
-    }
-  }
-);
+});
 
 // DELETE /api/admin/catalog/:id
 router.delete("/admin/catalog/:id", async (req: Request, res: Response): Promise<void> => {
@@ -404,8 +332,6 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
         description: productsCatalogTable.description,
         imageUrl: productsCatalogTable.imageUrl,
         purity: productsCatalogTable.purity,
-        coaUrl: productsCatalogTable.coaUrl,
-        msImageUrl: productsCatalogTable.msImageUrl,
         seoTitle: productsCatalogTable.seoTitle,
         seoDescription: productsCatalogTable.seoDescription,
         isFeatured: productsCatalogTable.isFeatured,
@@ -431,8 +357,6 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
            description: p.description,
           imageUrl: p.imageUrl,
           purity: p.purity,
-          coaUrl: p.coaUrl ?? null,
-          msImageUrl: p.msImageUrl ?? null,
           seoTitle: p.seoTitle ?? null,
           seoDescription: p.seoDescription ?? null,
           isFeatured: p.isFeatured,

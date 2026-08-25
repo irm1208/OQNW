@@ -517,7 +517,7 @@ export default function StorageGuidePage() {
             <h2 className="text-xl font-bold text-gray-900" style={{ fontFamily: "'Arimo', Arial, sans-serif" }}>Peptide Stability by Class</h2>
           </div>
           <p className="text-sm text-gray-600 mb-5 leading-relaxed">
-            Stability varies by sequence composition, disulfide bond content, and molecular weight. The table below provides general guidance — always refer to individual product COAs for specific stability data.
+            Stability varies by sequence composition, disulfide bond content, and molecular weight. The table below provides general guidance — always refer to product-specific documentation for specific stability data.
           </p>
           <div className="rounded-xl border border-gray-200 overflow-hidden">
             <table className="w-full text-sm">

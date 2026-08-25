@@ -8,8 +8,6 @@ export type Product = {
   description?: string | null;
   purity?: string | null;
   stockLevel?: number;
-  coaUrl?: string | null;
-  msImageUrl?: string | null;
   seoTitle?: string | null;
   seoDescription?: string | null;
 };

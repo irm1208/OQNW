@@ -28,8 +28,6 @@ type ApiProduct = {
   purity: string | null;
   isFeatured: boolean;
   stockLevel: number | null;
-  coaUrl?: string | null;
-  msImageUrl?: string | null;
   seoTitle?: string | null;
   seoDescription?: string | null;
 };
@@ -45,8 +43,6 @@ function toProduct(p: ApiProduct): Product {
     description: p.description ?? null,
     purity: p.purity ?? null,
     stockLevel: p.stockLevel ?? undefined,
-    coaUrl: p.coaUrl ?? null,
-    msImageUrl: p.msImageUrl ?? null,
     seoTitle: p.seoTitle ?? null,
     seoDescription: p.seoDescription ?? null,
   };

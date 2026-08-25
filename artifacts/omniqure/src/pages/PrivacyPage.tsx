@@ -151,7 +151,7 @@ export default function PrivacyPage() {
                   },
                   {
                     category: "Order & Transaction Data",
-                    items: ["Billing and delivery address", "Order history and product details", "Payment method (card type and last 4 digits only — full card details are never stored by us)", "Invoice and COA download records"],
+                    items: ["Billing and delivery address", "Order history and product details", "Payment method (card type and last 4 digits only — full card details are never stored by us)", "Invoice download records"],
                   },
                   {
                     category: "Technical & Usage Data",

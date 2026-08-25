@@ -309,40 +309,6 @@ export declare const productsCatalogTable: import("drizzle-orm/pg-core").PgTable
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        coaUrl: import("drizzle-orm/pg-core").PgColumn<{
-            name: "coa_url";
-            tableName: "products_catalog";
-            dataType: "string";
-            columnType: "PgText";
-            data: string;
-            driverParam: string;
-            notNull: false;
-            hasDefault: false;
-            isPrimaryKey: false;
-            isAutoincrement: false;
-            hasRuntimeDefault: false;
-            enumValues: [string, ...string[]];
-            baseColumn: never;
-            identity: undefined;
-            generated: undefined;
-        }, {}, {}>;
-        msImageUrl: import("drizzle-orm/pg-core").PgColumn<{
-            name: "ms_image_url";
-            tableName: "products_catalog";
-            dataType: "string";
-            columnType: "PgText";
-            data: string;
-            driverParam: string;
-            notNull: false;
-            hasDefault: false;
-            isPrimaryKey: false;
-            isAutoincrement: false;
-            hasRuntimeDefault: false;
-            enumValues: [string, ...string[]];
-            baseColumn: never;
-            identity: undefined;
-            generated: undefined;
-        }, {}, {}>;
         seoTitle: import("drizzle-orm/pg-core").PgColumn<{
             name: "seo_title";
             tableName: "products_catalog";
@@ -466,11 +432,10 @@ export declare const productsCatalogTable: import("drizzle-orm/pg-core").PgTable
     dialect: "pg";
 }>;
 export declare const insertProductCatalogSchema: z.ZodObject<{
-    name: z.ZodString;
-    priceGbp: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-    isPublished: z.ZodOptional<z.ZodBoolean>;
     slug: z.ZodString;
+    name: z.ZodString;
     category: z.ZodString;
+    priceGbp: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     shortDescription: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     description: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     imageUrl: z.ZodOptional<z.ZodNullable<z.ZodString>>;
@@ -484,10 +449,9 @@ export declare const insertProductCatalogSchema: z.ZodObject<{
     appearance: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     solubility: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     halfLife: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-    coaUrl: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-    msImageUrl: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     seoTitle: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     seoDescription: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    isPublished: z.ZodOptional<z.ZodBoolean>;
     isFeatured: z.ZodOptional<z.ZodBoolean>;
     sortOrder: z.ZodOptional<z.ZodInt>;
 }, {

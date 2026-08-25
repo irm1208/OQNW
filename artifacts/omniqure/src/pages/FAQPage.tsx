@@ -50,9 +50,9 @@ const FAQS: FAQItem[] = [
   },
   {
     category: "products",
-    q: "Do you provide Certificates of Analysis (COA)?",
-    a: "Yes. Every product comes with a downloadable Certificate of Analysis showing the verified purity result, molecular weight, lot number, and manufacturing date. You can access COAs directly from the Lab Results page or from any individual product page.",
-    tags: ["coa", "certificate", "analysis", "lab"],
+    q: "Where can I find independent verification reports?",
+    a: "We publish available independent Janoshik reports on the Lab Reports page and on the relevant product pages. Each report links to the original Janoshik verification record.",
+    tags: ["janoshik", "verification", "analysis", "lab"],
   },
   {
     category: "products",
@@ -171,7 +171,7 @@ const FAQS: FAQItem[] = [
   {
     category: "ordering",
     q: "Do I need to create an account to order?",
-    a: "You can browse all products without an account. To complete a purchase you will need to register an account, which also enables order tracking, order history, wishlist saving, and access to your previous COA downloads. Registration is quick and requires only a valid email address.",
+    a: "You can browse all products without an account. To complete a purchase you will need to register an account, which also enables order tracking, order history, and wishlist saving. Registration is quick and requires only a valid email address.",
     tags: ["account", "register", "guest checkout"],
   },
   {

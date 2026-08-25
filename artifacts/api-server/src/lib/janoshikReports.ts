@@ -2,7 +2,7 @@
  * Product slugs with a published, verifiable Janoshik report.
  *
  * Keep this list aligned with the product links on the storefront's
- * Lab Reports page. A generated COA or fallback purity value is not a
+ * Lab Reports page. A fallback purity value is not a
  * Janoshik report and must not qualify a product for publication.
  */
 export const JANOSHIK_REPORTED_PRODUCT_SLUGS = [

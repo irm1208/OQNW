@@ -12,7 +12,7 @@ const EMAIL = "support@omniqure.com";
 
 const SUBJECTS = [
   "Product / Order Question",
-  "Certificate of Analysis (COA) Request",
+  "Janoshik Report Question",
   "Shipping & Tracking",
   "Returns & Refunds",
   "Wholesale / Bulk Enquiry",
@@ -22,7 +22,7 @@ const SUBJECTS = [
 export default function ContactPage() {
   useSEO({
     title: "Contact Us",
-    description: "Get in touch with the OmniQure Peptide Research Institute team. Questions about orders, peptide specifications, COA documents, or reconstitution — we're here to help.",
+    description: "Get in touch with the OmniQure Peptide Research Institute team. Questions about orders, peptide specifications, Janoshik reports, or reconstitution — we're here to help.",
     canonicalPath: "/contact",
   });
   const [name, setName] = useState("");
@@ -88,7 +88,7 @@ export default function ContactPage() {
             </h1>
           </div>
           <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.6)", maxWidth: "560px" }}>
-            Questions about an order, a product's COA, or our research materials? Send us a message and our team will get back to you.
+            Questions about an order, a product's Janoshik report, or our research materials? Send us a message and our team will get back to you.
           </p>
         </div>
       </div>
@@ -218,7 +218,7 @@ export default function ContactPage() {
             <p className="font-bold mb-3" style={{ fontSize: "14px", color: "#0F172A" }}>Looking for something specific?</p>
             <div className="flex flex-col gap-2">
               <Link href="/track-order" style={{ fontSize: "13px", color: "#1B5CB5", textDecoration: "none" }}>Track an order →</Link>
-              <Link href="/lab-tests" style={{ fontSize: "13px", color: "#1B5CB5", textDecoration: "none" }}>View COA & lab results →</Link>
+              <Link href="/lab-reports" style={{ fontSize: "13px", color: "#1B5CB5", textDecoration: "none" }}>View Janoshik reports →</Link>
               <Link href="/faq" style={{ fontSize: "13px", color: "#1B5CB5", textDecoration: "none" }}>Read the FAQ →</Link>
               <Link href="/shipping" style={{ fontSize: "13px", color: "#1B5CB5", textDecoration: "none" }}>Shipping policy →</Link>
             </div>

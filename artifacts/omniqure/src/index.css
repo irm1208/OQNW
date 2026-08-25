@@ -764,12 +764,11 @@ div[class*="replit-ui-theme-root"] {
   }
 }
 
-/* ── PRODUCT PAGE NOTIFY-ME + COA TOUCH TARGETS ─────────── */
+/* ── PRODUCT PAGE NOTIFY-ME TOUCH TARGETS ───────────────── */
 
 @media (max-width: 768px) {
   .notify-input-touch { height: 44px !important; }
   .notify-btn-touch   { height: 44px !important; }
-  .coa-btn-touch      { height: 44px !important; }
 }
 
 /* ── PRODUCT PAGE QTY + ADD-TO-CART — STACK ON TINY ─────── */

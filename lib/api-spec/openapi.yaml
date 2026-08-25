@@ -1275,10 +1275,6 @@ components:
           type: ["string", "null"]
         halfLife:
           type: ["string", "null"]
-        coaUrl:
-          type: ["string", "null"]
-        msImageUrl:
-          type: ["string", "null"]
         seoTitle:
           type: ["string", "null"]
         seoDescription:
@@ -1353,10 +1349,6 @@ components:
           type: string
         halfLife:
           type: string
-        coaUrl:
-          type: string
-        msImageUrl:
-          type: string
         seoTitle:
           type: string
         seoDescription:
@@ -1405,10 +1397,6 @@ components:
           type: ["string", "null"]
         halfLife:
           type: ["string", "null"]
-        coaUrl:
-          type: ["string", "null"]
-        msImageUrl:
-          type: ["string", "null"]
         seoTitle:
           type: ["string", "null"]
         seoDescription:
@@ -1442,10 +1430,6 @@ components:
         imageUrl:
           type: ["string", "null"]
         purity:
-          type: ["string", "null"]
-        coaUrl:
-          type: ["string", "null"]
-        msImageUrl:
           type: ["string", "null"]
         seoTitle:
           type: ["string", "null"]
@@ -1610,10 +1594,6 @@ components:
         solubility:
           type: ["string", "null"]
         halfLife:
-          type: ["string", "null"]
-        coaUrl:
-          type: ["string", "null"]
-        msImageUrl:
           type: ["string", "null"]
         seoTitle:
           type: ["string", "null"]

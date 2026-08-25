@@ -15,7 +15,6 @@ const STATIC_PAGES = [
   { path: "/stacks",         changefreq: "monthly", priority: "0.7" },
   { path: "/bundle-and-save",changefreq: "monthly", priority: "0.7" },
   { path: "/blog",           changefreq: "weekly",  priority: "0.7" },
-  { path: "/lab-tests",      changefreq: "monthly", priority: "0.6" },
   { path: "/protocols",      changefreq: "monthly", priority: "0.6" },
   { path: "/storage-guide",  changefreq: "monthly", priority: "0.6" },
   { path: "/calculator",     changefreq: "monthly", priority: "0.6" },

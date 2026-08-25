@@ -1,6 +1,6 @@
 # OmniQure
 
-Research-grade peptide e-commerce site for OmniQure Peptide Research Institute, featuring 81 HPLC-verified peptides with COA, HPLC chromatograms, and ESI-MS data per product.
+Research-grade peptide e-commerce site for OmniQure Peptide Research Institute, featuring independently verified peptides and published Janoshik reports where available.
 
 ## Run & Operate
 

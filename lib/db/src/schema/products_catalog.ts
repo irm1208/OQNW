@@ -29,8 +29,6 @@ export const productsCatalogTable = pgTable("products_catalog", {
   appearance: text("appearance"),
   solubility: text("solubility"),
   halfLife: text("half_life"),
-  coaUrl: text("coa_url"),
-  msImageUrl: text("ms_image_url"),
   seoTitle: text("seo_title"),
   seoDescription: text("seo_description"),
   isPublished: boolean("is_published").notNull().default(true),

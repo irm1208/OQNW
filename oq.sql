@@ -2274,3 +2274,21 @@ ALTER TABLE ONLY public.webhook_deliveries
 
 \unrestrict gimyoF4eDJCLw7TfHGecw5HDGDGf95ZknQelptydGK1Hil0wl2Dz9o3CEpLVGg3
 
+-- Keep restored development snapshots aligned with the current Janoshik-only
+-- verification model.
+ALTER TABLE public.products_catalog
+    DROP COLUMN IF EXISTS coa_url,
+    DROP COLUMN IF EXISTS ms_image_url;
+
+UPDATE public.blog_posts
+SET content = replace(
+  replace(
+    content,
+    'Our COA data is available for every product.',
+    'Available Janoshik reports are linked on relevant product pages.'
+  ),
+  'Certificate of Analysis',
+  'independent laboratory report'
+)
+WHERE slug = 'purity-testing-explained';
+

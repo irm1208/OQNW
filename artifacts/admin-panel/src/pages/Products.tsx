@@ -30,6 +30,11 @@ import {
 import { toast } from "sonner";
 import type { CatalogProduct, AdminProduct } from "@workspace/api-client-react";
 import SeoSearchPreview, {
+  getProductSearchMetadata,
+  SEO_DESCRIPTION_LIMIT,
+  SEO_TITLE_LIMIT,
+  slugifyPreview,
+} from "@/components/SeoSearchPreview";
 import { getPublicProductPath } from "@workspace/api-client-react";
 
 const CATEGORIES = [
@@ -71,8 +76,6 @@ type ProductFormData = {
   appearance: string;
   solubility: string;
   halfLife: string;
-  coaUrl: string;
-  msImageUrl: string;
   seoTitle: string;
   seoDescription: string;
   isPublished: boolean;
@@ -97,8 +100,6 @@ const emptyForm = (): ProductFormData => ({
   appearance: "",
   solubility: "",
   halfLife: "",
-  coaUrl: "",
-  msImageUrl: "",
   seoTitle: "",
   seoDescription: "",
   isPublished: true,
@@ -124,8 +125,6 @@ function productToForm(p: CatalogProduct): ProductFormData {
     appearance: p.appearance ?? "",
     solubility: p.solubility ?? "",
     halfLife: p.halfLife ?? "",
-    coaUrl: p.coaUrl ?? "",
-    msImageUrl: p.msImageUrl ?? "",
     seoTitle: p.seoTitle ?? "",
     seoDescription: p.seoDescription ?? "",
     isPublished: p.isPublished,
@@ -235,8 +234,6 @@ function CatalogTab() {
       appearance: form.appearance || undefined,
       solubility: form.solubility || undefined,
       halfLife: form.halfLife || undefined,
-      coaUrl: form.coaUrl || undefined,
-      msImageUrl: form.msImageUrl || undefined,
       seoTitle: form.seoTitle.trim() || undefined,
       seoDescription: form.seoDescription.trim() || undefined,
       isPublished: form.isPublished,
@@ -671,82 +668,6 @@ function CatalogTab() {
                   <Label>Storage</Label>
                   <Input value={form.storage} onChange={e => setForm(f => ({ ...f, storage: e.target.value }))} placeholder="Store lyophilized at -20°C." />
                 </div>
-              </div>
-
-              {/* Lab Documents */}
-              <div className="pt-2 border-t">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Lab Documents</p>
-                <p className="text-xs text-muted-foreground mb-3">
-                  Upload or paste URLs for real lab-verified documents. These appear as "Download Lab PDF" buttons in the COA modal on the storefront.
-                  {!editingProduct && " (Save the product first to enable file uploads.)"}
-                </p>
-                {(
-                  [
-                    { key: "coaUrl" as const, label: "COA PDF", type: "coa", placeholder: "https://…/coa.pdf" },
-                    { key: "msImageUrl" as const, label: "MS Spectrum", type: "ms", placeholder: "https://…/ms.pdf" },
-                  ] as const
-                ).map(doc => (
-                  <div key={doc.key} className="space-y-1.5 mb-3">
-                    <Label>{doc.label}</Label>
-                    <div className="flex gap-2 items-center">
-                      <Input
-                        value={form[doc.key]}
-                        onChange={e => setForm(f => ({ ...f, [doc.key]: e.target.value }))}
-                        placeholder={doc.placeholder}
-                        className="flex-1"
-                      />
-                      {editingProduct && (
-                        <>
-                          <input
-                            type="file"
-                            accept=".pdf,image/*"
-                            id={`upload-${doc.key}`}
-                            className="hidden"
-                            onChange={async e => {
-                              const file = e.target.files?.[0];
-                              if (!file) return;
-                              const fd = new FormData();
-                              fd.append("file", file);
-                              try {
-                                const r = await fetch(`/api/admin/catalog/${editingProduct.id}/upload-doc?type=${doc.type}`, {
-                                  method: "POST",
-                                  credentials: "include",
-                                  body: fd,
-                                });
-                                if (r.ok) {
-                                  const { url } = await r.json() as { url: string };
-                                  setForm(f => ({ ...f, [doc.key]: url }));
-                                  toast.success(`${doc.label} uploaded`);
-                                } else {
-                                  toast.error("Upload failed");
-                                }
-                              } catch {
-                                toast.error("Upload failed");
-                              }
-                              e.target.value = "";
-                            }}
-                          />
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            className="shrink-0"
-                            onClick={() => document.getElementById(`upload-${doc.key}`)?.click()}
-                          >
-                            Upload
-                          </Button>
-                        </>
-                      )}
-                      {form[doc.key] && (
-                        <a href={form[doc.key]} target="_blank" rel="noopener noreferrer" className="shrink-0">
-                          <Button type="button" variant="ghost" size="icon" className="h-9 w-9" title="View">
-                            <Download className="w-4 h-4" />
-                          </Button>
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                ))}
               </div>
 
               {/* SEO */}

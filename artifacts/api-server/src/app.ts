@@ -2,7 +2,6 @@ import express, { type Express } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import pinoHttp from "pino-http";
-import path from "path";
 import router from "./routes";
 import sitemapRouter from "./routes/sitemap";
 import { logger } from "./lib/logger";
@@ -46,7 +45,6 @@ app.get("/", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
-app.use("/uploads", express.static(path.join(process.cwd(), "public/uploads")));
 // Dynamic sitemap — support the API path requested by crawlers and the legacy root alias.
 app.use(sitemapRouter);
 app.use("/api", router);

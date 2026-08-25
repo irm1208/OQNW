@@ -176,7 +176,7 @@ export default function TermsPage() {
 
             <Section id="products" number="4" title="Products & Descriptions">
               <p>We make every effort to ensure that product descriptions, specifications, images, and technical data are accurate. However, we do not warrant that descriptions are error-free, complete, or current. Technical data including purity percentages, molecular weights, and sequence information is provided for research reference purposes only.</p>
-              <p>Certificate of Analysis (COA) documents are generated based on batch testing data. Actual lot-specific COAs are available upon request for qualified researchers. Purity figures stated represent independent analysis results from representative batch testing.</p>
+              <p>Janoshik reports are published where available for independent verification. Purity figures stated represent independent analysis results from representative batch testing.</p>
               <p>Product images are representative and may differ from the actual product received. All peptides are supplied as lyophilised (freeze-dried) powder in sealed vials unless otherwise stated.</p>
               <p>We reserve the right to withdraw any product from sale at any time without notice.</p>
             </Section>
@@ -240,7 +240,7 @@ export default function TermsPage() {
             </Section>
 
             <Section id="ip" number="10" title="Intellectual Property">
-              <p>All content on this website, including text, graphics, logos, images, product descriptions, and COA documents, is the property of {COMPANY} or its licensors and is protected by copyright and other intellectual property laws.</p>
+              <p>All content on this website, including text, graphics, logos, images, product descriptions, and Janoshik report links, is the property of {COMPANY} or its licensors and is protected by copyright and other intellectual property laws.</p>
               <p>You may not reproduce, distribute, modify, or republish any content from this website without our prior written consent. You may download or print content for personal, non-commercial research reference purposes only.</p>
             </Section>
 

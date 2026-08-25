@@ -1296,8 +1296,6 @@ export declare const ListCatalogProductsResponseItem: zod.ZodObject<{
     appearance: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     solubility: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     halfLife: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    coaUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    msImageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     seoTitle: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isPublished: zod.ZodBoolean;
@@ -1330,8 +1328,6 @@ export declare const ListCatalogProductsResponseItem: zod.ZodObject<{
     appearance?: string | null | undefined;
     solubility?: string | null | undefined;
     halfLife?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
 }, {
@@ -1359,8 +1355,6 @@ export declare const ListCatalogProductsResponseItem: zod.ZodObject<{
     appearance?: string | null | undefined;
     solubility?: string | null | undefined;
     halfLife?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
 }>;
@@ -1384,8 +1378,6 @@ export declare const ListCatalogProductsResponse: zod.ZodArray<zod.ZodObject<{
     appearance: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     solubility: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     halfLife: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    coaUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    msImageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     seoTitle: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isPublished: zod.ZodBoolean;
@@ -1418,8 +1410,6 @@ export declare const ListCatalogProductsResponse: zod.ZodArray<zod.ZodObject<{
     appearance?: string | null | undefined;
     solubility?: string | null | undefined;
     halfLife?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
 }, {
@@ -1447,8 +1437,6 @@ export declare const ListCatalogProductsResponse: zod.ZodArray<zod.ZodObject<{
     appearance?: string | null | undefined;
     solubility?: string | null | undefined;
     halfLife?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
 }>, "many">;
@@ -1473,8 +1461,8 @@ export declare const CreateCatalogProductBody: zod.ZodObject<{
     appearance: zod.ZodOptional<zod.ZodString>;
     solubility: zod.ZodOptional<zod.ZodString>;
     halfLife: zod.ZodOptional<zod.ZodString>;
-    coaUrl: zod.ZodOptional<zod.ZodString>;
-    msImageUrl: zod.ZodOptional<zod.ZodString>;
+    seoTitle: zod.ZodOptional<zod.ZodString>;
+    seoDescription: zod.ZodOptional<zod.ZodString>;
     isPublished: zod.ZodOptional<zod.ZodBoolean>;
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
     sortOrder: zod.ZodOptional<zod.ZodNumber>;
@@ -1497,8 +1485,8 @@ export declare const CreateCatalogProductBody: zod.ZodObject<{
     appearance?: string | undefined;
     solubility?: string | undefined;
     halfLife?: string | undefined;
-    coaUrl?: string | undefined;
-    msImageUrl?: string | undefined;
+    seoTitle?: string | undefined;
+    seoDescription?: string | undefined;
     isFeatured?: boolean | undefined;
     sortOrder?: number | undefined;
 }, {
@@ -1520,8 +1508,8 @@ export declare const CreateCatalogProductBody: zod.ZodObject<{
     appearance?: string | undefined;
     solubility?: string | undefined;
     halfLife?: string | undefined;
-    coaUrl?: string | undefined;
-    msImageUrl?: string | undefined;
+    seoTitle?: string | undefined;
+    seoDescription?: string | undefined;
     isFeatured?: boolean | undefined;
     sortOrder?: number | undefined;
 }>;
@@ -1588,8 +1576,6 @@ export declare const GetCatalogProductResponse: zod.ZodObject<{
     appearance: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     solubility: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     halfLife: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    coaUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    msImageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     seoTitle: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isPublished: zod.ZodBoolean;
@@ -1622,8 +1608,6 @@ export declare const GetCatalogProductResponse: zod.ZodObject<{
     appearance?: string | null | undefined;
     solubility?: string | null | undefined;
     halfLife?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
 }, {
@@ -1651,8 +1635,6 @@ export declare const GetCatalogProductResponse: zod.ZodObject<{
     appearance?: string | null | undefined;
     solubility?: string | null | undefined;
     halfLife?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
 }>;
@@ -1684,8 +1666,8 @@ export declare const UpdateCatalogProductBody: zod.ZodObject<{
     appearance: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     solubility: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     halfLife: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    coaUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    msImageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    seoTitle: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isPublished: zod.ZodOptional<zod.ZodBoolean>;
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
     sortOrder: zod.ZodOptional<zod.ZodNumber>;
@@ -1708,8 +1690,8 @@ export declare const UpdateCatalogProductBody: zod.ZodObject<{
     appearance?: string | null | undefined;
     solubility?: string | null | undefined;
     halfLife?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
+    seoTitle?: string | null | undefined;
+    seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
     sortOrder?: number | undefined;
 }, {
@@ -1731,8 +1713,8 @@ export declare const UpdateCatalogProductBody: zod.ZodObject<{
     appearance?: string | null | undefined;
     solubility?: string | null | undefined;
     halfLife?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
+    seoTitle?: string | null | undefined;
+    seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
     sortOrder?: number | undefined;
 }>;
@@ -1756,8 +1738,6 @@ export declare const UpdateCatalogProductResponse: zod.ZodObject<{
     appearance: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     solubility: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     halfLife: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    coaUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    msImageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     seoTitle: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isPublished: zod.ZodBoolean;
@@ -1790,8 +1770,6 @@ export declare const UpdateCatalogProductResponse: zod.ZodObject<{
     appearance?: string | null | undefined;
     solubility?: string | null | undefined;
     halfLife?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
 }, {
@@ -1819,8 +1797,6 @@ export declare const UpdateCatalogProductResponse: zod.ZodObject<{
     appearance?: string | null | undefined;
     solubility?: string | null | undefined;
     halfLife?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
 }>;
@@ -1860,8 +1836,6 @@ export declare const ListPublicProductsResponseItem: zod.ZodObject<{
     description: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     imageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     purity: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    coaUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    msImageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     seoTitle: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
@@ -1875,8 +1849,6 @@ export declare const ListPublicProductsResponseItem: zod.ZodObject<{
     description?: string | null | undefined;
     imageUrl?: string | null | undefined;
     purity?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
@@ -1890,8 +1862,6 @@ export declare const ListPublicProductsResponseItem: zod.ZodObject<{
     description?: string | null | undefined;
     imageUrl?: string | null | undefined;
     purity?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
@@ -1906,8 +1876,6 @@ export declare const ListPublicProductsResponse: zod.ZodArray<zod.ZodObject<{
     description: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     imageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     purity: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    coaUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    msImageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     seoTitle: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
@@ -1921,8 +1889,6 @@ export declare const ListPublicProductsResponse: zod.ZodArray<zod.ZodObject<{
     description?: string | null | undefined;
     imageUrl?: string | null | undefined;
     purity?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
@@ -1936,8 +1902,6 @@ export declare const ListPublicProductsResponse: zod.ZodArray<zod.ZodObject<{
     description?: string | null | undefined;
     imageUrl?: string | null | undefined;
     purity?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
@@ -1971,8 +1935,6 @@ export declare const GetPublicProductResponse: zod.ZodObject<{
     appearance: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     solubility: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     halfLife: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    coaUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
-    msImageUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     seoTitle: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
@@ -1995,8 +1957,6 @@ export declare const GetPublicProductResponse: zod.ZodObject<{
     appearance?: string | null | undefined;
     solubility?: string | null | undefined;
     halfLife?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
@@ -2019,8 +1979,6 @@ export declare const GetPublicProductResponse: zod.ZodObject<{
     appearance?: string | null | undefined;
     solubility?: string | null | undefined;
     halfLife?: string | null | undefined;
-    coaUrl?: string | null | undefined;
-    msImageUrl?: string | null | undefined;
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;

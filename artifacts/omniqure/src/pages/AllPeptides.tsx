@@ -135,11 +135,11 @@ export default function AllPeptides() {
             {searchQuery.trim()
               ? `Showing results for "${searchQuery.trim()}" — verified at 98%+ purity.`
               : selectedCategory === "All Peptides"
-              ? "81 verified compounds — each backed by full COA documentation."
-              : `Precision peptides for ${selectedCategory.toLowerCase()} research, each verified at 98%+ purity with full COA documentation.`}
+              ? "81 verified compounds — each independently verified."
+              : `Precision peptides for ${selectedCategory.toLowerCase()} research, each independently verified at 98%+ purity.`}
           </p>
           <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "16px" }}>
-            {["98%+ Verified Purity", "Full COA", "Lyophilized"].map(t => (
+            {["98%+ Verified Purity", "Janoshik Verified", "Lyophilized"].map(t => (
               <span key={t} style={{
                 fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.6)",
                 backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)",

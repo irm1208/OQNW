@@ -5,7 +5,7 @@
  * Fields
  *  purity     – verified purity %, e.g. 99.892 (undefined for blend/mass-only products)
  *  actualMass – mass found by the lab in mg
- *  lot        – batch identifier used as the COA lot number
+ *  lot        – batch identifier shown with the report
  *  received   – "DD Mon YYYY" sample-received date
  *  analysis   – "DD Mon YYYY" analysis-conducted date
  *  taskNumber – Janoshik task number (links to verify.janoshik.com)

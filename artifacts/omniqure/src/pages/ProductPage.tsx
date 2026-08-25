@@ -4,9 +4,6 @@ import { Link, useParams, useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
 import { isHiddenCategory } from "@/data/products";
 import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Loader2, Heart, Droplets, Gift, Sparkles, ExternalLink } from "lucide-react";
-import { generateCOA } from "@/utils/generateCOA";
-import COADocument from "@/components/COADocument";
-import COAModal from "@/components/COAModal";
 import { janoshikData } from "@/data/janoshikData";
 import JanoshikReportModal from "@/components/JanoshikReportModal";
 import { useCart } from "@/context/CartContext";
@@ -148,7 +145,6 @@ export default function ProductPage() {
   const product = rawProduct && !isHiddenCategory(rawProduct.category) ? rawProduct : undefined;
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
-  const [showCOAModal, setShowCOAModal] = useState(false);
   const [showJanoshikModal, setShowJanoshikModal] = useState(false);
   const { addToCart, totalItems, peptideQty } = useCart();
   const { trackView } = useRecentlyViewed();
@@ -336,16 +332,6 @@ export default function ProductPage() {
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
-      {/* COA Report Modal — COA_DISABLED_TEMPORARILY (re-enable by removing the `false &&`) */}
-      {/* COA_DISABLED_TEMPORARILY — re-enable by removing the comment markers below */}
-      {/* {showCOAModal && (
-        <COAModal
-          product={product!}
-          filteredProducts={[product!]}
-          onClose={() => setShowCOAModal(false)}
-        />
-      )} */}
-
       {/* Janoshik Report Modal */}
       {showJanoshikModal && (() => {
         const jd = janoshikData[product.id];

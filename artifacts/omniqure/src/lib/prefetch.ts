@@ -26,7 +26,6 @@ const ROUTE_LOADERS: Record<string, () => Promise<unknown>> = {
   "/protocols":        () => import("@/pages/ProtocolsPage"),
   "/faq":              () => import("@/pages/FAQPage"),
   "/glossary":         () => import("@/pages/GlossaryPage"),
-  "/lab-tests":        () => import("@/pages/LabTestsPage"),
   "/lab-reports":      () => import("@/pages/LabReportsPage"),
   "/bac-water":        () => import("@/pages/BacWaterPage"),
   "/terms":            () => import("@/pages/TermsPage"),

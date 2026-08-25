@@ -341,7 +341,7 @@ export default function ResearchResultsPage() {
                 Research Protocols <ArrowRight size={13} />
               </div>
             </Link>
-            <Link href="/lab-tests" style={{ textDecoration: "none" }}>
+            <Link href="/lab-reports" style={{ textDecoration: "none" }}>
               <div style={{
                 display: "inline-flex", alignItems: "center", gap: "6px",
                 background: "#fff", color: "#1B5CB5",
@@ -349,7 +349,7 @@ export default function ResearchResultsPage() {
                 fontSize: "13px", fontWeight: 700,
                 padding: "9px 18px", borderRadius: "9px", cursor: "pointer",
               }}>
-                Lab Results & COAs <ArrowRight size={13} />
+                Janoshik Reports <ArrowRight size={13} />
               </div>
             </Link>
           </div>
