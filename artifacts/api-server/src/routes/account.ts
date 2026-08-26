@@ -4,7 +4,13 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { db } from "@workspace/db";
 import { customersTable, ordersTable, orderItemsTable } from "@workspace/db";
-import { eq, desc, inArray, count } from "drizzle-orm";
+import { and, eq, desc, inArray, count } from "drizzle-orm";
+import { checkWallidPaymentStatus } from "../lib/wallid";
+import {
+  validateSuccessfulWallidPayment,
+  wallidPaymentIdFromNotes,
+} from "../lib/wallidReconciliation";
+import { sendOrderConfirmation } from "../lib/email";
 
 const router = Router();
 
@@ -96,6 +102,18 @@ router.get("/account/orders", async (req: Request, res: Response): Promise<void>
         orderNumber: ordersTable.orderNumber,
         status: ordersTable.status,
         totalGbp: ordersTable.totalGbp,
+        paymentCurrency: ordersTable.paymentCurrency,
+        paymentAmountMinor: ordersTable.paymentAmountMinor,
+        notes: ordersTable.notes,
+        customerName: ordersTable.customerName,
+        customerEmail: ordersTable.customerEmail,
+        subtotalGbp: ordersTable.subtotalGbp,
+        shippingCostGbp: ordersTable.shippingCostGbp,
+        address1: ordersTable.address1,
+        address2: ordersTable.address2,
+        city: ordersTable.city,
+        postcode: ordersTable.postcode,
+        country: ordersTable.country,
         shippingMethod: ordersTable.shippingMethod,
         trackingNumber: ordersTable.trackingNumber,
         createdAt: ordersTable.createdAt,
@@ -108,6 +126,56 @@ router.get("/account/orders", async (req: Request, res: Response): Promise<void>
     if (orders.length === 0) {
       res.status(200).json([]);
       return;
+    }
+
+    const settledOrderIds = new Set<number>();
+    for (const order of orders) {
+      if (
+        order.status !== "awaiting_payment" ||
+        !order.paymentCurrency ||
+        order.paymentAmountMinor === null
+      ) {
+        continue;
+      }
+
+      const apiPaymentId = wallidPaymentIdFromNotes(order.notes);
+      if (!apiPaymentId) continue;
+
+      const providerStatus = await checkWallidPaymentStatus(apiPaymentId);
+      const validation = validateSuccessfulWallidPayment(
+        {
+          apiPaymentId,
+          orderNumber: order.orderNumber,
+          amountMinor: order.paymentAmountMinor,
+          currency: order.paymentCurrency,
+        },
+        providerStatus,
+      );
+      if (!validation.ok) {
+        if (providerStatus?.status === "SUCCESS") {
+          req.log.error(
+            { orderNumber: order.orderNumber, apiPaymentId, reason: validation.reason },
+            "Wallid SUCCESS status failed account-order reconciliation validation",
+          );
+        }
+        continue;
+      }
+
+      const settled = await db
+        .update(ordersTable)
+        .set({ status: "paid", updatedAt: new Date() })
+        .where(and(
+          eq(ordersTable.id, order.id),
+          eq(ordersTable.status, "awaiting_payment"),
+        ))
+        .returning({ id: ordersTable.id });
+      if (settled.length > 0) {
+        settledOrderIds.add(order.id);
+        req.log.info(
+          { orderNumber: order.orderNumber, apiPaymentId },
+          "Order marked paid via account-order Wallid reconciliation",
+        );
+      }
     }
 
     const orderIds = orders.map((o) => o.id);
@@ -129,10 +197,39 @@ router.get("/account/orders", async (req: Request, res: Response): Promise<void>
       itemsByOrderId[item.orderId].push(item);
     }
 
+    for (const order of orders) {
+      if (!settledOrderIds.has(order.id)) continue;
+      const items = itemsByOrderId[order.id] ?? [];
+      sendOrderConfirmation({
+        orderNumber: order.orderNumber,
+        customerName: order.customerName,
+        customerEmail: order.customerEmail,
+        items: items.map((item) => ({
+          productName: item.productName,
+          productCategory: item.productCategory,
+          quantity: item.quantity,
+          priceGbp: Number(item.priceGbp),
+        })),
+        subtotalGbp: Number(order.subtotalGbp),
+        shippingCostGbp: Number(order.shippingCostGbp),
+        totalGbp: Number(order.totalGbp),
+        shippingMethod: order.shippingMethod,
+        trackingNumber: order.trackingNumber,
+        address1: order.address1,
+        address2: order.address2,
+        city: order.city,
+        postcode: order.postcode,
+        country: order.country,
+      }).catch((emailErr) => req.log.error(
+        { emailErr, orderNumber: order.orderNumber },
+        "Failed to send order confirmation after account-order Wallid reconciliation",
+      ));
+    }
+
     res.status(200).json(
       orders.map((o) => ({
         orderNumber: o.orderNumber,
-        status: o.status,
+        status: settledOrderIds.has(o.id) ? "paid" : o.status,
         totalGbp: parseFloat(String(o.totalGbp)),
         shippingMethod: o.shippingMethod ?? null,
         trackingNumber: o.trackingNumber ?? null,
