@@ -126,23 +126,33 @@ router.get("/admin/catalog", async (req: Request, res: Response): Promise<void> 
     const published = req.query.published;
 
     const conditions = [
+      eq(productsCatalogTable.isPublished, true),
       notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS]),
-      ...(
-      published === "true"
-        ? [eq(productsCatalogTable.isPublished, true)]
-        : published === "false"
-        ? [eq(productsCatalogTable.isPublished, false)]
-        : []
-      ),
     ];
     if (search) conditions.push(ilike(productsCatalogTable.name, `%${search}%`));
     if (category) conditions.push(eq(productsCatalogTable.category, category));
 
     const where = conditions.length > 0 ? and(...conditions) : undefined;
     const products = await db
-      .select()
+      .select({
+        id: productsCatalogTable.id,
+        slug: productsCatalogTable.slug,
+        name: productsCatalogTable.name,
+        category: productsCatalogTable.category,
+        priceGbp: productsCatalogTable.priceGbp,
+        shortDescription: productsCatalogTable.shortDescription,
+        description: productsCatalogTable.description,
+        imageUrl: productsCatalogTable.imageUrl,
+        purity: productsCatalogTable.purity,
+        seoTitle: productsCatalogTable.seoTitle,
+        seoDescription: productsCatalogTable.seoDescription,
+        isFeatured: productsCatalogTable.isFeatured,
+        stockLevel: productsInventoryTable.stockLevel,
+        inventoryPublished: productsInventoryTable.isPublished,
+      })
       .from(productsCatalogTable)
-      .where(where)
+      .leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id))
+      .where(and(...conditions))
       .orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
     res.status(200).json(products.map(catalogToResponse));
   } catch (err) {
@@ -215,10 +225,17 @@ router.get("/admin/catalog/:id", async (req: Request, res: Response): Promise<vo
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
   try {
     const [product] = await db
-      .select()
+      .select({
+        product: productsCatalogTable,
+        inventoryPublished: productsInventoryTable.isPublished,
+      })
       .from(productsCatalogTable)
+      .leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id))
       .where(
-        eq(productsCatalogTable.id, id)
+        and(
+          eq(productsCatalogTable.slug, slug),
+          eq(productsCatalogTable.isPublished, true)
+        )
       );
     if (!product || isRetiredProductSlug(product.slug)) {
       res.status(404).json({ error: "Product not found" });
@@ -451,16 +468,23 @@ router.get("/products/:slug", async (req: Request, res: Response): Promise<void>
       return;
     }
     const [product] = await db
-      .select()
+      .select({
+        product: productsCatalogTable,
+        inventoryPublished: productsInventoryTable.isPublished,
+      })
       .from(productsCatalogTable)
+      .leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id))
       .where(
         and(
           eq(productsCatalogTable.slug, slug),
           eq(productsCatalogTable.isPublished, true)
         )
       );
-    if (!product) { res.status(404).json({ error: "Product not found" }); return; }
-    res.status(200).json(catalogToResponse(product));
+    if (!product || product.inventoryPublished === false) {
+      res.status(404).json({ error: "Product not found" });
+      return;
+    }
+    res.status(200).json(catalogToResponse(product.product));
   } catch (err) {
     req.log.error({ err }, "Failed to get public product");
     res.status(500).json({ error: "Internal server error" });

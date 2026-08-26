@@ -4759,7 +4759,7 @@ var require_dbcs_data = __commonJS({
   "../../node_modules/.pnpm/iconv-lite@0.7.2/node_modules/iconv-lite/encodings/dbcs-data.js"(exports, module) {
     "use strict";
     module.exports = {
-      // == Japanese/ShiftJIS ====================================================
+      // == Japanese/ShiftJIS -------------------------------------------------===
       // All japanese encodings are based on JIS X set of standards:
       // JIS X 0201 - Single-byte encoding of ASCII + ¥ + Kana chars at 0xA1-0xDF.
       // JIS X 0208 - Main set of 6879 characters, placed in 94x94 plane, to be encoded by 2 bytes.
@@ -4817,7 +4817,7 @@ var require_dbcs_data = __commonJS({
       // TODO: KDDI extension to Shift_JIS
       // TODO: IBM CCSID 942 = CP932, but F0-F9 custom chars and other char changes.
       // TODO: IBM CCSID 943 = Shift_JIS = CP932 with original Shift_JIS lower 128 chars.
-      // == Chinese/GBK ==========================================================
+      // == Chinese/GBK --------------------------------------------------------==
       // http://en.wikipedia.org/wiki/GBK
       // We mostly implement W3C recommendation: https://www.w3.org/TR/encoding/#gbk-encoder
       // Oldest GB2312 (1981, ~7600 chars) is a subset of CP936
@@ -4863,7 +4863,7 @@ var require_dbcs_data = __commonJS({
         encodeAdd: { "\u20AC": 41699 }
       },
       chinese: "gb18030",
-      // == Korean ===============================================================
+      // == Korean ---------------------------------------------------------------
       // EUC-KR, KS_C_5601 and KS X 1001 are exactly the same.
       windows949: "cp949",
       ms949: "cp949",
@@ -4882,7 +4882,7 @@ var require_dbcs_data = __commonJS({
       ksc56011987: "cp949",
       ksc56011989: "cp949",
       ksc5601: "cp949",
-      // == Big5/Taiwan/Hong Kong ================================================
+      // == Big5/Taiwan/Hong Kong ------------------------------------------======
       // There are lots of tables for Big5 and cp950. Please see the following links for history:
       // http://moztw.org/docs/big5/  http://www.haible.de/bruno/charsets/conversion-tables/Big5.html
       // Variations, in roughly number of defined chars:
@@ -74450,15 +74450,15 @@ var JANOSHIK_REPORTED_PRODUCT_SLUGS = [
   "retatrutide-40mg"
 ];
 var janoshikReportedProductSlugs = new Set(JANOSHIK_REPORTED_PRODUCT_SLUGS);
-function hasJanoshikReport(slug) {
-  return janoshikReportedProductSlugs.has(slug);
+function hasJanoshikReport(slug2) {
+  return janoshikReportedProductSlugs.has(slug2);
 }
 
 // src/lib/retiredProducts.ts
 init_drizzle_orm();
 var RETIRED_PRODUCT_SLUGS = ["bacteriostatic-water-3ml"];
-function isRetiredProductSlug(slug) {
-  return RETIRED_PRODUCT_SLUGS.includes(slug);
+function isRetiredProductSlug(slug2) {
+  return RETIRED_PRODUCT_SLUGS.includes(slug2);
 }
 async function retireRemovedProducts() {
   const retired = await db.update(productsCatalogTable).set({ isPublished: false, isFeatured: false }).where(inArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS])).returning({ id: productsCatalogTable.id });
@@ -74552,13 +74552,28 @@ router10.get("/admin/catalog", async (req, res) => {
     const category = isStr(req.query.category) ? req.query.category : void 0;
     const published = req.query.published;
     const conditions = [
-      notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS]),
-      ...published === "true" ? [eq(productsCatalogTable.isPublished, true)] : published === "false" ? [eq(productsCatalogTable.isPublished, false)] : []
+      eq(productsCatalogTable.isPublished, true),
+      notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS])
     ];
     if (search) conditions.push(ilike(productsCatalogTable.name, `%${search}%`));
     if (category) conditions.push(eq(productsCatalogTable.category, category));
     const where = conditions.length > 0 ? and(...conditions) : void 0;
-    const products = await db.select().from(productsCatalogTable).where(where).orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
+    const products = await db.select({
+      id: productsCatalogTable.id,
+      slug: productsCatalogTable.slug,
+      name: productsCatalogTable.name,
+      category: productsCatalogTable.category,
+      priceGbp: productsCatalogTable.priceGbp,
+      shortDescription: productsCatalogTable.shortDescription,
+      description: productsCatalogTable.description,
+      imageUrl: productsCatalogTable.imageUrl,
+      purity: productsCatalogTable.purity,
+      seoTitle: productsCatalogTable.seoTitle,
+      seoDescription: productsCatalogTable.seoDescription,
+      isFeatured: productsCatalogTable.isFeatured,
+      stockLevel: productsInventoryTable.stockLevel,
+      inventoryPublished: productsInventoryTable.isPublished
+    }).from(productsCatalogTable).leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id)).where(and(...conditions)).orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
     res.status(200).json(products.map(catalogToResponse));
   } catch (err) {
     req.log.error({ err }, "Failed to list catalog products");
@@ -74616,8 +74631,14 @@ router10.get("/admin/catalog/:id", async (req, res) => {
     return;
   }
   try {
-    const [product] = await db.select().from(productsCatalogTable).where(
-      eq(productsCatalogTable.id, id)
+    const [product] = await db.select({
+      product: productsCatalogTable,
+      inventoryPublished: productsInventoryTable.isPublished
+    }).from(productsCatalogTable).leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id)).where(
+      and(
+        eq(productsCatalogTable.slug, slug),
+        eq(productsCatalogTable.isPublished, true)
+      )
     );
     if (!product || isRetiredProductSlug(product.slug)) {
       res.status(404).json({ error: "Product not found" });
@@ -74812,22 +74833,25 @@ router10.get("/products", async (req, res) => {
 });
 router10.get("/products/:slug", async (req, res) => {
   try {
-    const slug = String(req.params.slug);
-    if (isRetiredProductSlug(slug)) {
+    const slug2 = String(req.params.slug);
+    if (isRetiredProductSlug(slug2)) {
       res.status(404).json({ error: "Product not found" });
       return;
     }
-    const [product] = await db.select().from(productsCatalogTable).where(
+    const [product] = await db.select({
+      product: productsCatalogTable,
+      inventoryPublished: productsInventoryTable.isPublished
+    }).from(productsCatalogTable).leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id)).where(
       and(
-        eq(productsCatalogTable.slug, slug),
+        eq(productsCatalogTable.slug, slug2),
         eq(productsCatalogTable.isPublished, true)
       )
     );
-    if (!product) {
+    if (!product || product.inventoryPublished === false) {
       res.status(404).json({ error: "Product not found" });
       return;
     }
-    res.status(200).json(catalogToResponse(product));
+    res.status(200).json(catalogToResponse(product.product));
   } catch (err) {
     req.log.error({ err }, "Failed to get public product");
     res.status(500).json({ error: "Internal server error" });
@@ -76142,11 +76166,11 @@ router21.post("/admin/blog/posts", async (req, res) => {
     return;
   }
   const baseSlug = slugify(title);
-  const slug = `${baseSlug}-${Date.now().toString(36)}`;
+  const slug2 = `${baseSlug}-${Date.now().toString(36)}`;
   try {
     const [created] = await db.insert(blogPostsTable).values({
       title,
-      slug,
+      slug: slug2,
       excerpt: excerpt ?? null,
       content: content ?? "",
       author: author ?? "OmniQure Team",
@@ -81832,13 +81856,13 @@ router41.get("/blog/posts", async (req, res) => {
   }
 });
 router41.get("/blog/posts/:slug", async (req, res) => {
-  const slug = firstString(req.params.slug);
-  if (!slug) {
+  const slug2 = firstString(req.params.slug);
+  if (!slug2) {
     res.status(400).json({ error: "Invalid slug" });
     return;
   }
   try {
-    const [post] = await db.select().from(blogPostsTable).where(and(eq(blogPostsTable.slug, slug), eq(blogPostsTable.status, "published"))).limit(1);
+    const [post] = await db.select().from(blogPostsTable).where(and(eq(blogPostsTable.slug, slug2), eq(blogPostsTable.status, "published"))).limit(1);
     if (!post) {
       res.status(404).json({ error: "Post not found" });
       return;
@@ -82772,8 +82796,9 @@ router49.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
         slug: productsCatalogTable.slug,
         name: productsCatalogTable.name,
         imageUrl: productsCatalogTable.imageUrl,
-        updatedAt: productsCatalogTable.updatedAt
-      }).from(productsCatalogTable).where(and(
+        updatedAt: productsCatalogTable.updatedAt,
+        inventoryPublished: productsInventoryTable.isPublished
+      }).from(productsCatalogTable).leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id)).where(and(
         eq(productsCatalogTable.isPublished, true),
         notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS])
       )).orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name),
@@ -82802,7 +82827,7 @@ router49.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
       );
     }
     lines.push("", "  <!-- Product pages -->");
-    for (const p of products) {
+    for (const p of products.filter((product) => product.inventoryPublished !== false)) {
       const imgUrl = p.imageUrl ? p.imageUrl.startsWith("http") ? p.imageUrl : `${SITE_URL2}${p.imageUrl}` : null;
       lines.push(`  <url>`);
       lines.push(`    <loc>${SITE_URL2}/product/${xmlEsc(p.slug)}</loc>`);

@@ -20,3 +20,4 @@
 - [Catalogue retirements](catalogue-retirements.md) — retire discontinued SKUs by slug across active paths while preserving completed-order history.
 - [Wallid reconciliation ownership](wallid-reconciliation-ownership.md) — payment settlement must run server-side on a schedule; never depend on which customer or admin page is opened.
 - [Admin test checkout claims](admin-test-checkout-claims.md) — one-time payment-test links need atomic database claims; process-local replay maps fail across restarts and replicas.
+- [Vite SPA fallback SEO injection](vite-spa-seo-injection.md) — `transformIndexHtml` alone misses history-fallback routes; inject before fallback and share JSON-LD IDs with client cleanup.

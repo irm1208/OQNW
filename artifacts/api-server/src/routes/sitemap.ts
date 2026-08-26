@@ -1,7 +1,7 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
-import { productsCatalogTable, blogPostsTable } from "@workspace/db";
+import { productsCatalogTable, productsInventoryTable, blogPostsTable } from "@workspace/db";
 import { and, eq, desc, notInArray } from "drizzle-orm";
 import { RETIRED_PRODUCT_SLUGS } from "../lib/retiredProducts";
 
@@ -54,8 +54,10 @@ router.get(["/sitemap.xml", "/api/sitemap.xml"], async (req: Request, res: Respo
           name: productsCatalogTable.name,
           imageUrl: productsCatalogTable.imageUrl,
           updatedAt: productsCatalogTable.updatedAt,
+          inventoryPublished: productsInventoryTable.isPublished,
         })
         .from(productsCatalogTable)
+        .leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id))
         .where(and(
           eq(productsCatalogTable.isPublished, true),
           notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS]),
@@ -94,7 +96,7 @@ router.get(["/sitemap.xml", "/api/sitemap.xml"], async (req: Request, res: Respo
 
     lines.push("", "  <!-- Product pages -->");
 
-    for (const p of products) {
+    for (const p of products.filter((product) => product.inventoryPublished !== false)) {
       const imgUrl = p.imageUrl
         ? p.imageUrl.startsWith("http")
           ? p.imageUrl

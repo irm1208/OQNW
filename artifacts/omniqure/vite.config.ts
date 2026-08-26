@@ -2,7 +2,9 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
+import { readFile } from "node:fs/promises";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+import { injectSeoIntoHtml, routeFromHtmlUrl, seoForApiRecord } from "./src/seo/prerender";
 
 const rawPort = process.env.PORT;
 
@@ -26,12 +28,118 @@ if (!basePath) {
   );
 }
 
+const seoApiBaseUrl = `http://127.0.0.1:${process.env.API_PORT || 8080}`;
+
+type InitialSeoResult =
+  | { kind: "not-seo-route" | "not-found" }
+  | { kind: "available"; seo: ReturnType<typeof seoForApiRecord> }
+  | { kind: "unavailable" };
+
+async function fetchInitialSeo(url: string) {
+  const route = routeFromHtmlUrl(url);
+  if (!route) return { kind: "not-seo-route" } as const;
+
+  const endpoint = route.kind === "product" ? "products" : "blog/posts";
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 2_000);
+    try {
+      const response = await fetch(
+        `${seoApiBaseUrl}/api/${endpoint}/${encodeURIComponent(route.slug)}`,
+        { signal: controller.signal, headers: { accept: "application/json" } },
+      );
+      if (response.status === 404) return { kind: "not-found" } as const;
+      if (response.ok) {
+        return {
+          kind: "available",
+          seo: seoForApiRecord(route.kind, await response.json()),
+        } as const;
+      }
+    } catch {
+      // Retry to cover the API's short startup window before returning 503.
+    } finally {
+      clearTimeout(timeout);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 250 * (attempt + 1)));
+  }
+  return { kind: "unavailable" } as const;
+}
+
+function routeSeoPlugin() {
+  return {
+    name: "omniqure-route-seo",
+    configureServer(server: {
+      middlewares: {
+        use: (handler: (
+          req: { method?: string; url?: string },
+          res: { statusCode: number; setHeader: (name: string, value: string) => void; end: (body?: string) => void },
+          next: () => void,
+        ) => void | Promise<void>) => void;
+      };
+      transformIndexHtml: (url: string, html: string) => Promise<string>;
+      config: { root: string };
+    }) {
+      server.middlewares.use(async (req, res, next) => {
+        if (req.method !== "GET" && req.method !== "HEAD") return next();
+        const url = req.url ?? "/";
+        const result: InitialSeoResult = await fetchInitialSeo(url);
+        if (result.kind === "not-seo-route" || result.kind === "not-found") return next();
+        if (result.kind === "unavailable") {
+          res.statusCode = 503;
+          res.setHeader("Content-Type", "text/plain; charset=utf-8");
+          res.setHeader("Retry-After", "5");
+          res.end(req.method === "HEAD" ? undefined : "SEO metadata is temporarily unavailable. Please retry.");
+          return;
+        }
+
+        const shell = await readFile(path.join(server.config.root, "index.html"), "utf8");
+        const transformed = injectSeoIntoHtml(
+          await server.transformIndexHtml(url, shell),
+          result.seo,
+        );
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        res.end(req.method === "HEAD" ? undefined : transformed);
+      });
+    },
+    configurePreviewServer(server: {
+      middlewares: {
+        use: (handler: (
+          req: { method?: string; url?: string },
+          res: { statusCode: number; setHeader: (name: string, value: string) => void; end: (body?: string) => void },
+          next: () => void,
+        ) => void | Promise<void>) => void;
+      };
+      config: { build: { outDir: string } };
+    }) {
+      server.middlewares.use(async (req, res, next) => {
+        if (req.method !== "GET" && req.method !== "HEAD") return next();
+        const result: InitialSeoResult = await fetchInitialSeo(req.url ?? "/");
+        if (result.kind === "not-seo-route" || result.kind === "not-found") return next();
+        if (result.kind === "unavailable") {
+          res.statusCode = 503;
+          res.setHeader("Content-Type", "text/plain; charset=utf-8");
+          res.setHeader("Retry-After", "5");
+          res.end(req.method === "HEAD" ? undefined : "SEO metadata is temporarily unavailable. Please retry.");
+          return;
+        }
+
+        const shell = await readFile(path.join(server.config.build.outDir, "index.html"), "utf8");
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        res.end(req.method === "HEAD" ? undefined : injectSeoIntoHtml(shell, result.seo));
+      });
+    },
+  };
+}
+
 export default defineConfig({
   base: basePath,
   plugins: [
     react(),
     tailwindcss(),
     runtimeErrorOverlay(),
+    routeSeoPlugin(),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [

@@ -7,8 +7,8 @@ import {
 } from "@workspace/api-client-react";
 
 export { SITE_NAME, SITE_URL };
-const DEFAULT_TITLE = DEFAULT_SITE_TITLE;
-const DEFAULT_DESCRIPTION = DEFAULT_SITE_DESCRIPTION;
+export const DEFAULT_TITLE = DEFAULT_SITE_TITLE;
+export const DEFAULT_DESCRIPTION = DEFAULT_SITE_DESCRIPTION;
 const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph.jpg`;
 
 function upsertMeta(attr: "name" | "property", key: string, content: string) {
