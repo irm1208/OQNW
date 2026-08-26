@@ -75376,7 +75376,7 @@ async function getUsdRate(currency) {
   }
   try {
     const response = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd",
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd",
       { signal: AbortSignal.timeout(5e3) }
     );
     if (!response.ok) return null;

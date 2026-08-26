@@ -223,7 +223,7 @@ async function getUsdRate(currency: CryptoCurrency): Promise<number | null> {
   }
   try {
     const response = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd",
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd",
       { signal: AbortSignal.timeout(5000) },
     );
     if (!response.ok) return null;
