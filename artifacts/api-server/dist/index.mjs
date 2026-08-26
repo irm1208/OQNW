@@ -76288,6 +76288,40 @@ async function createWallidPayment(opts) {
     return null;
   }
 }
+async function checkWallidPaymentStatus(apiPaymentId) {
+  if (!isWallidConfigured()) {
+    logger.warn("Wallid not configured \u2014 WALLID_API_KEY_ID or WALLID_API_KEY_SECRET missing");
+    return null;
+  }
+  try {
+    const url2 = new URL(`${WALLID_BASE_URL}/status`);
+    url2.searchParams.set("apiPaymentId", apiPaymentId);
+    const res = await fetch(url2, {
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+        "Authorization": basicAuth()
+      }
+    });
+    if (!res.ok) {
+      const errText = await res.text().catch(() => "(no body)");
+      logger.error(
+        { status: res.status, errText, apiPaymentId },
+        "Wallid payment status request failed"
+      );
+      return null;
+    }
+    const data = await res.json();
+    if (!data.api_payment_id || !data.order_id || !data.status || typeof data.amount !== "number" || !data.currency) {
+      logger.error({ data, apiPaymentId }, "Wallid returned unexpected status response");
+      return null;
+    }
+    return data;
+  } catch (err) {
+    logger.error({ err, apiPaymentId }, "Wallid payment status request threw");
+    return null;
+  }
+}
 
 // src/lib/payment-currency.ts
 var EUR_RATE_CACHE_TTL_MS = 60 * 60 * 1e3;
@@ -76949,6 +76983,28 @@ function verifyAddressVerificationProof(token, submittedAddress) {
   } catch {
     return { valid: false, reason: "Address verification is invalid. Please verify again." };
   }
+}
+
+// src/lib/wallidReconciliation.ts
+function wallidPaymentIdFromNotes(notes) {
+  return notes?.match(/(?:^|;\s*)Wallid payment id:\s*([^;\s]+)/)?.[1] ?? null;
+}
+function validateSuccessfulWallidPayment(expected, actual) {
+  if (!actual) return { ok: false, reason: "provider_unavailable" };
+  if (actual.status !== "SUCCESS") return { ok: false, reason: "not_successful" };
+  if (actual.api_payment_id !== expected.apiPaymentId) {
+    return { ok: false, reason: "payment_id_mismatch" };
+  }
+  if (actual.order_id !== expected.orderNumber) {
+    return { ok: false, reason: "order_id_mismatch" };
+  }
+  if (actual.amount !== expected.amountMinor) {
+    return { ok: false, reason: "amount_mismatch" };
+  }
+  if (actual.currency !== expected.currency) {
+    return { ok: false, reason: "currency_mismatch" };
+  }
+  return { ok: true };
 }
 
 // src/routes/orders.ts
@@ -77918,32 +77974,88 @@ router22.get("/orders/track", async (req, res) => {
     return;
   }
   try {
-    const [order] = await db.select({
-      id: ordersTable.id,
-      orderNumber: ordersTable.orderNumber,
-      status: ordersTable.status,
-      shippingMethod: ordersTable.shippingMethod,
-      paymentCurrency: ordersTable.paymentCurrency,
-      paymentAmountMinor: ordersTable.paymentAmountMinor,
-      createdAt: ordersTable.createdAt
-    }).from(ordersTable).where(eq(ordersTable.orderNumber, orderNumber)).limit(1);
+    const [order] = await db.select().from(ordersTable).where(eq(ordersTable.orderNumber, orderNumber)).limit(1);
     if (!order) {
       res.status(404).json({ error: "Order not found" });
       return;
     }
-    const items = await db.select({
-      productName: orderItemsTable.productName,
-      quantity: orderItemsTable.quantity
-    }).from(orderItemsTable).where(eq(orderItemsTable.orderId, order.id));
+    let trackedStatus = order.status;
+    let settledByReconciliation = false;
+    const wallidPaymentId = order.status === "awaiting_payment" ? wallidPaymentIdFromNotes(order.notes) : null;
+    if (wallidPaymentId && order.paymentCurrency && order.paymentAmountMinor !== null) {
+      const providerStatus = await checkWallidPaymentStatus(wallidPaymentId);
+      const validation = validateSuccessfulWallidPayment(
+        {
+          apiPaymentId: wallidPaymentId,
+          orderNumber: order.orderNumber,
+          amountMinor: order.paymentAmountMinor,
+          currency: order.paymentCurrency
+        },
+        providerStatus
+      );
+      if (validation.ok) {
+        const settled = await db.update(ordersTable).set({ status: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(and(
+          eq(ordersTable.id, order.id),
+          eq(ordersTable.status, "awaiting_payment")
+        )).returning({ status: ordersTable.status });
+        if (settled.length > 0) {
+          trackedStatus = "paid";
+          settledByReconciliation = true;
+          req.log.info(
+            { orderNumber: order.orderNumber, apiPaymentId: wallidPaymentId },
+            "Order marked paid via Wallid status reconciliation"
+          );
+        } else {
+          const [current] = await db.select({ status: ordersTable.status }).from(ordersTable).where(eq(ordersTable.id, order.id)).limit(1);
+          trackedStatus = current?.status ?? trackedStatus;
+        }
+      } else if (providerStatus?.status === "SUCCESS") {
+        req.log.error(
+          {
+            orderNumber: order.orderNumber,
+            apiPaymentId: wallidPaymentId,
+            reason: validation.reason
+          },
+          "Wallid SUCCESS status failed reconciliation validation"
+        );
+      }
+    }
+    const items = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, order.id));
+    if (settledByReconciliation) {
+      sendOrderConfirmation({
+        orderNumber: order.orderNumber,
+        customerName: order.customerName,
+        customerEmail: order.customerEmail,
+        items: items.map((item) => ({
+          productName: item.productName,
+          productCategory: item.productCategory,
+          quantity: item.quantity,
+          priceGbp: Number(item.priceGbp)
+        })),
+        subtotalGbp: Number(order.subtotalGbp),
+        shippingCostGbp: Number(order.shippingCostGbp),
+        totalGbp: Number(order.totalGbp),
+        shippingMethod: order.shippingMethod,
+        trackingNumber: order.trackingNumber,
+        address1: order.address1,
+        address2: order.address2,
+        city: order.city,
+        postcode: order.postcode,
+        country: order.country
+      }).catch((emailErr) => req.log.error(
+        { emailErr, orderNumber: order.orderNumber },
+        "Failed to send order confirmation after Wallid status reconciliation"
+      ));
+    }
     res.status(200).json({
       orderNumber: order.orderNumber,
-      status: order.status,
+      status: trackedStatus,
       shippingMethod: order.shippingMethod,
       paymentCurrency: order.paymentCurrency,
       paymentAmountMinor: order.paymentAmountMinor,
       createdAt: order.createdAt.toISOString(),
       itemCount: items.reduce((s, i) => s + i.quantity, 0),
-      items
+      items: items.map(({ productName, quantity }) => ({ productName, quantity }))
     });
   } catch (err) {
     req.log.error({ err }, "Failed to track order");

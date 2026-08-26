@@ -23,7 +23,11 @@ import {
   sendWelcomeEmail,
 } from "../lib/email";
 import { createBtcPayInvoice, isBtcPayConfigured } from "../lib/btcpay";
-import { createWallidPayment, isWallidConfigured } from "../lib/wallid";
+import {
+  checkWallidPaymentStatus,
+  createWallidPayment,
+  isWallidConfigured,
+} from "../lib/wallid";
 import {
   allocatePaymentLineAmounts,
   createWallidPaymentQuote,
@@ -51,6 +55,10 @@ import {
   WallidTestCheckoutReplayGuard,
   verifyWallidTestCheckoutToken,
 } from "../lib/wallidTestCheckout";
+import {
+  validateSuccessfulWallidPayment,
+  wallidPaymentIdFromNotes,
+} from "../lib/wallidReconciliation";
 
 const COUNTRY_NAME_TO_CODE: Record<string, string> = {
   "United States": "US", "United Kingdom": "GB", "Canada": "CA",
@@ -1338,15 +1346,7 @@ router.get("/orders/track", async (req: Request, res: Response): Promise<void> =
   }
   try {
     const [order] = await db
-      .select({
-        id: ordersTable.id,
-        orderNumber: ordersTable.orderNumber,
-        status: ordersTable.status,
-        shippingMethod: ordersTable.shippingMethod,
-        paymentCurrency: ordersTable.paymentCurrency,
-        paymentAmountMinor: ordersTable.paymentAmountMinor,
-        createdAt: ordersTable.createdAt,
-      })
+      .select()
       .from(ordersTable)
       .where(eq(ordersTable.orderNumber, orderNumber))
       .limit(1);
@@ -1356,23 +1356,106 @@ router.get("/orders/track", async (req: Request, res: Response): Promise<void> =
       return;
     }
 
+    let trackedStatus = order.status;
+    let settledByReconciliation = false;
+    const wallidPaymentId = order.status === "awaiting_payment"
+      ? wallidPaymentIdFromNotes(order.notes)
+      : null;
+
+    if (
+      wallidPaymentId &&
+      order.paymentCurrency &&
+      order.paymentAmountMinor !== null
+    ) {
+      const providerStatus = await checkWallidPaymentStatus(wallidPaymentId);
+      const validation = validateSuccessfulWallidPayment(
+        {
+          apiPaymentId: wallidPaymentId,
+          orderNumber: order.orderNumber,
+          amountMinor: order.paymentAmountMinor,
+          currency: order.paymentCurrency,
+        },
+        providerStatus,
+      );
+
+      if (validation.ok) {
+        const settled = await db
+          .update(ordersTable)
+          .set({ status: "paid", updatedAt: new Date() })
+          .where(and(
+            eq(ordersTable.id, order.id),
+            eq(ordersTable.status, "awaiting_payment"),
+          ))
+          .returning({ status: ordersTable.status });
+
+        if (settled.length > 0) {
+          trackedStatus = "paid";
+          settledByReconciliation = true;
+          req.log.info(
+            { orderNumber: order.orderNumber, apiPaymentId: wallidPaymentId },
+            "Order marked paid via Wallid status reconciliation",
+          );
+        } else {
+          const [current] = await db
+            .select({ status: ordersTable.status })
+            .from(ordersTable)
+            .where(eq(ordersTable.id, order.id))
+            .limit(1);
+          trackedStatus = current?.status ?? trackedStatus;
+        }
+      } else if (providerStatus?.status === "SUCCESS") {
+        req.log.error(
+          {
+            orderNumber: order.orderNumber,
+            apiPaymentId: wallidPaymentId,
+            reason: validation.reason,
+          },
+          "Wallid SUCCESS status failed reconciliation validation",
+        );
+      }
+    }
+
     const items = await db
-      .select({
-        productName: orderItemsTable.productName,
-        quantity: orderItemsTable.quantity,
-      })
+      .select()
       .from(orderItemsTable)
       .where(eq(orderItemsTable.orderId, order.id));
 
+    if (settledByReconciliation) {
+      sendOrderConfirmation({
+        orderNumber: order.orderNumber,
+        customerName: order.customerName,
+        customerEmail: order.customerEmail,
+        items: items.map((item) => ({
+          productName: item.productName,
+          productCategory: item.productCategory,
+          quantity: item.quantity,
+          priceGbp: Number(item.priceGbp),
+        })),
+        subtotalGbp: Number(order.subtotalGbp),
+        shippingCostGbp: Number(order.shippingCostGbp),
+        totalGbp: Number(order.totalGbp),
+        shippingMethod: order.shippingMethod,
+        trackingNumber: order.trackingNumber,
+        address1: order.address1,
+        address2: order.address2,
+        city: order.city,
+        postcode: order.postcode,
+        country: order.country,
+      }).catch((emailErr) => req.log.error(
+        { emailErr, orderNumber: order.orderNumber },
+        "Failed to send order confirmation after Wallid status reconciliation",
+      ));
+    }
+
     res.status(200).json({
       orderNumber: order.orderNumber,
-      status: order.status,
+      status: trackedStatus,
       shippingMethod: order.shippingMethod,
       paymentCurrency: order.paymentCurrency,
       paymentAmountMinor: order.paymentAmountMinor,
       createdAt: order.createdAt.toISOString(),
       itemCount: items.reduce((s, i) => s + i.quantity, 0),
-      items,
+      items: items.map(({ productName, quantity }) => ({ productName, quantity })),
     });
   } catch (err) {
     req.log.error({ err }, "Failed to track order");
