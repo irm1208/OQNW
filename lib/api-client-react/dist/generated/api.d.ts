@@ -1,5 +1,5 @@
 import type { QueryKey, UseMutationOptions, UseMutationResult, UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import type { AdminLoginInput, AdminProduct, AdminSession, ApiError, CatalogProduct, CatalogProductInput, CatalogProductPatch, CategoryRevenue, CustomerDetail, CustomerList, DashboardStats, DisableCatalogProductsWithoutJanoshikReportResponse, DiscountCode, DiscountCodeInput, DiscountCodePatch, EnableAllPeptideCatalogProductsResponse, GetNewCustomersChartParams, GetRevenueChartParams, HealthStatus, InventoryUpdate, ListAdminCustomersParams, ListAdminOrdersParams, ListAdminProductsParams, ListCatalogProductsParams, ListPublicProductsParams, NewCustomerDataPoint, Order, OrderDetail, OrderList, OrderStatusCount, OrderUpdate, PublicProduct, PublicProductDetail, RevenueDataPoint, TopProduct, VisibilityUpdate } from "./api.schemas";
+import type { AdminCryptoTestPaymentSession, AdminLoginInput, AdminProduct, AdminSession, AdminWallidTestPaymentSession, ApiError, CatalogProduct, CatalogProductInput, CatalogProductPatch, CategoryRevenue, CustomerDetail, CustomerList, DashboardStats, DisableCatalogProductsWithoutJanoshikReportResponse, DiscountCode, DiscountCodeInput, DiscountCodePatch, EnableAllPeptideCatalogProductsResponse, GetNewCustomersChartParams, GetRevenueChartParams, HealthStatus, InventoryUpdate, ListAdminCustomersParams, ListAdminOrdersParams, ListAdminProductsParams, ListCatalogProductsParams, ListPublicProductsParams, NewCustomerDataPoint, Order, OrderDetail, OrderList, OrderStatusCount, OrderUpdate, PublicProduct, PublicProductDetail, RevenueDataPoint, TopProduct, VisibilityUpdate } from "./api.schemas";
 import { customFetch } from "../custom-fetch";
 import type { ErrorType, BodyType } from "../custom-fetch";
 type AwaitedInput<T> = PromiseLike<T> | T;
@@ -96,6 +96,42 @@ export declare function useAdminMe<TData = Awaited<ReturnType<typeof adminMe>>, 
 }): UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
 };
+/**
+ * @summary Create a one-time £1 Wallid test checkout
+ */
+export declare const getCreateAdminWallidTestPaymentSessionUrl: () => string;
+export declare const createAdminWallidTestPaymentSession: (options?: RequestInit) => Promise<AdminWallidTestPaymentSession>;
+export declare const getCreateAdminWallidTestPaymentSessionMutationOptions: <TError = ErrorType<ApiError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof createAdminWallidTestPaymentSession>>, TError, void, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationOptions<Awaited<ReturnType<typeof createAdminWallidTestPaymentSession>>, TError, void, TContext>;
+export type CreateAdminWallidTestPaymentSessionMutationResult = NonNullable<Awaited<ReturnType<typeof createAdminWallidTestPaymentSession>>>;
+export type CreateAdminWallidTestPaymentSessionMutationError = ErrorType<ApiError>;
+/**
+ * @summary Create a one-time £1 Wallid test checkout
+ */
+export declare const useCreateAdminWallidTestPaymentSession: <TError = ErrorType<ApiError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof createAdminWallidTestPaymentSession>>, TError, void, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationResult<Awaited<ReturnType<typeof createAdminWallidTestPaymentSession>>, TError, void, TContext>;
+/**
+ * @summary Create a one-time £1 crypto test checkout
+ */
+export declare const getCreateAdminCryptoTestPaymentSessionUrl: () => string;
+export declare const createAdminCryptoTestPaymentSession: (options?: RequestInit) => Promise<AdminCryptoTestPaymentSession>;
+export declare const getCreateAdminCryptoTestPaymentSessionMutationOptions: <TError = ErrorType<ApiError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof createAdminCryptoTestPaymentSession>>, TError, void, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationOptions<Awaited<ReturnType<typeof createAdminCryptoTestPaymentSession>>, TError, void, TContext>;
+export type CreateAdminCryptoTestPaymentSessionMutationResult = NonNullable<Awaited<ReturnType<typeof createAdminCryptoTestPaymentSession>>>;
+export type CreateAdminCryptoTestPaymentSessionMutationError = ErrorType<ApiError>;
+/**
+ * @summary Create a one-time £1 crypto test checkout
+ */
+export declare const useCreateAdminCryptoTestPaymentSession: <TError = ErrorType<ApiError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof createAdminCryptoTestPaymentSession>>, TError, void, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationResult<Awaited<ReturnType<typeof createAdminCryptoTestPaymentSession>>, TError, void, TContext>;
 /**
  * @summary Get dashboard summary stats
  */

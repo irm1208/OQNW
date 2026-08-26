@@ -286,6 +286,7 @@ type PaymentQuote = {
 };
 
 const WALLID_TEST_CHECKOUT_STORAGE_KEY = "omniqure.wallid-test-checkout";
+const CRYPTO_TEST_CHECKOUT_STORAGE_KEY = "omniqure.crypto-test-checkout";
 
 function readSavedWallidTestToken(): string | null {
   try {
@@ -306,6 +307,30 @@ function saveWallidTestToken(token: string): void {
 function clearSavedWallidTestToken(): void {
   try {
     window.sessionStorage.removeItem(WALLID_TEST_CHECKOUT_STORAGE_KEY);
+  } catch {
+    // Nothing else is needed when browser storage is unavailable.
+  }
+}
+
+function readSavedCryptoTestToken(): string | null {
+  try {
+    return window.sessionStorage.getItem(CRYPTO_TEST_CHECKOUT_STORAGE_KEY) || null;
+  } catch {
+    return null;
+  }
+}
+
+function saveCryptoTestToken(token: string): void {
+  try {
+    window.sessionStorage.setItem(CRYPTO_TEST_CHECKOUT_STORAGE_KEY, token);
+  } catch {
+    // The URL token remains sufficient when browser storage is unavailable.
+  }
+}
+
+function clearSavedCryptoTestToken(): void {
+  try {
+    window.sessionStorage.removeItem(CRYPTO_TEST_CHECKOUT_STORAGE_KEY);
   } catch {
     // Nothing else is needed when browser storage is unavailable.
   }
@@ -526,16 +551,30 @@ export default function CartPage() {
   useSEO({ title: "Cart & Checkout", description: "Review your research peptide cart and complete checkout in one step. OmniQure Peptide Research Institute.", canonicalPath: "/cart" });
   const [, navigate] = useLocation();
   const wallidTestTokenFromUrl = new URLSearchParams(window.location.search).get("wallidTest")?.trim() || null;
+  const cryptoTestTokenFromUrl = new URLSearchParams(window.location.search).get("cryptoTest")?.trim() || null;
   // Test links begin with an empty cart. Persist the one-time capability in
   // this tab while an admin browses for products and returns via /cart.
   const [wallidTestToken] = useState(() => {
+    if (cryptoTestTokenFromUrl) return null;
     if (wallidTestTokenFromUrl) {
+      clearSavedCryptoTestToken();
       saveWallidTestToken(wallidTestTokenFromUrl);
       return wallidTestTokenFromUrl;
     }
     return readSavedWallidTestToken();
   });
+  const [cryptoTestToken] = useState(() => {
+    if (wallidTestTokenFromUrl) return null;
+    if (cryptoTestTokenFromUrl) {
+      clearSavedWallidTestToken();
+      saveCryptoTestToken(cryptoTestTokenFromUrl);
+      return cryptoTestTokenFromUrl;
+    }
+    return readSavedWallidTestToken() ? null : readSavedCryptoTestToken();
+  });
   const isWallidTestCheckout = Boolean(wallidTestToken);
+  const isCryptoTestCheckout = Boolean(cryptoTestToken);
+  const isAdminTestCheckout = isWallidTestCheckout || isCryptoTestCheckout;
   const {
     items, totalItems, subtotal, peptideQty, bundleFreeBacWater, bundleFreeItemsCount,
     bundleDiscountAmount, freeUnitsByProductId, removeFromCart, updateQuantity, clearCart,
@@ -554,6 +593,7 @@ export default function CartPage() {
   );
 
   const checkoutFired = useRef(false);
+  const testCartReset = useRef(false);
 
   // Checkout form state
   const [delivery, setDelivery] = useState<DeliveryForm>(emptyDelivery);
@@ -601,6 +641,9 @@ export default function CartPage() {
   const [wallidTestStatus, setWallidTestStatus] = useState<"checking" | "active" | "invalid">(
     wallidTestToken ? "checking" : "invalid",
   );
+  const [cryptoTestStatus, setCryptoTestStatus] = useState<"checking" | "active" | "invalid">(
+    cryptoTestToken ? "checking" : "invalid",
+  );
   const [cryptoRoutes, setCryptoRoutes] = useState<CryptoRoute[]>([]);
   const [cryptoRoute, setCryptoRoute] = useState<CryptoRoute | null>(null);
   const paymentCurrencyChosen = useRef(false);
@@ -620,6 +663,18 @@ export default function CartPage() {
   }, [wallidTestToken]);
 
   useEffect(() => {
+    if (!cryptoTestToken) return;
+    setPaymentMethod("crypto");
+    setCryptoTestStatus("checking");
+  }, [cryptoTestToken]);
+
+  useEffect(() => {
+    if (!cryptoTestTokenFromUrl || testCartReset.current) return;
+    testCartReset.current = true;
+    clearCart();
+  }, [clearCart, cryptoTestTokenFromUrl]);
+
+  useEffect(() => {
     fetch(apiUrl("crypto/payment-options"))
       .then((response) => response.ok ? response.json() as Promise<{ routes?: CryptoRoute[] }> : { routes: [] })
       .then((data) => {
@@ -628,9 +683,13 @@ export default function CartPage() {
         setCryptoRoute((current) => current && routes.some((route) => route.currency === current.currency && route.network === current.network)
           ? current
           : routes[0] ?? null);
+        if (cryptoTestToken) setCryptoTestStatus(routes.length > 0 ? "active" : "invalid");
       })
-      .catch(() => setCryptoRoutes([]));
-  }, []);
+      .catch(() => {
+        setCryptoRoutes([]);
+        if (cryptoTestToken) setCryptoTestStatus("invalid");
+      });
+  }, [cryptoTestToken]);
 
   // Loyalty
   const [loyaltyBalance, setLoyaltyBalance] = useState<{ balance: number; gbpValue: number } | null>(null);
@@ -939,9 +998,9 @@ export default function CartPage() {
           <p className="mb-8" style={{ fontSize: "14px", color: "#64748B" }}>
             Browse our catalogue of 81 research-grade peptides.
           </p>
-          {isWallidTestCheckout && (
+          {isAdminTestCheckout && (
             <p style={{ color: "#9A3412", background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 6, fontSize: "13px", fontWeight: 600, lineHeight: 1.5, margin: "0 auto 20px", maxWidth: 520, padding: "10px 14px" }}>
-              Your £1 Wallid test session stays active in this browser tab while you add a product, then return to your cart.
+              Your £1 {isCryptoTestCheckout ? "crypto" : "Wallid"} test session stays active in this browser tab while you add a product, then return to your cart.
             </p>
           )}
           <Link
@@ -976,8 +1035,10 @@ export default function CartPage() {
   const checkoutDiscountGbp = bankPaymentQuote?.discountAmountGbp ?? discountAmount;
   const checkoutLoyaltyDiscountGbp = bankPaymentQuote?.loyaltyDiscountGbp ?? loyaltyDiscountGbp;
   const checkoutReferralCreditGbp = bankPaymentQuote?.referralCreditGbp ?? freePeptideDeductGbp;
-  const checkoutTotalGbp = bankPaymentQuote?.totalGbp ?? totalGBP;
-  const checkoutTestPaymentAdjustmentGbp = bankPaymentQuote?.testPayment?.adjustmentGbp ?? 0;
+  const checkoutTotalGbp = isCryptoTestCheckout ? 1 : bankPaymentQuote?.totalGbp ?? totalGBP;
+  const checkoutTestPaymentAdjustmentGbp = isCryptoTestCheckout
+    ? Math.max(0, Math.round((totalGBP - 1) * 100) / 100)
+    : bankPaymentQuote?.testPayment?.adjustmentGbp ?? 0;
   const displayedPaymentTotal = bankPaymentQuote
     ? bankPaymentQuote.paymentAmountMinor / 100
     : null;
@@ -1279,6 +1340,10 @@ export default function CartPage() {
         return;
       }
     }
+    if (paymentMethod === "crypto" && (!cryptoRoute || cryptoTestStatus === "invalid")) {
+      setPlaceError("Choose an available crypto route before placing the test order.");
+      return;
+    }
     setErrors({});
     setPlacing(true);
     setPlaceError(null);
@@ -1330,6 +1395,7 @@ export default function CartPage() {
           wallidTestToken: paymentMethod === "wallid" ? wallidTestToken ?? undefined : undefined,
           cryptoCurrency: paymentMethod === "crypto" ? cryptoRoute?.currency : undefined,
           cryptoNetwork: paymentMethod === "crypto" ? cryptoRoute?.network : undefined,
+          cryptoTestToken: paymentMethod === "crypto" ? cryptoTestToken ?? undefined : undefined,
         }),
       });
 
@@ -1386,6 +1452,7 @@ export default function CartPage() {
         return;
       }
 
+      if (cryptoTestToken) clearSavedCryptoTestToken();
       clearCart();
 
       const params = new URLSearchParams({
@@ -1423,6 +1490,23 @@ export default function CartPage() {
             : wallidTestStatus === "checking"
               ? "Verifying your admin Wallid test checkout…"
               : "Admin Wallid test checkout — this is a real £1.00 bank payment and expires shortly."}
+        </div>
+      )}
+      {isCryptoTestCheckout && (
+        <div
+          data-testid="status-crypto-test-checkout"
+          style={{
+            background: cryptoTestStatus === "invalid" ? "#FEF2F2" : "#EFF6FF",
+            borderBottom: `1px solid ${cryptoTestStatus === "invalid" ? "#FECACA" : "#BFDBFE"}`,
+            color: cryptoTestStatus === "invalid" ? "#B91C1C" : "#1E40AF",
+            padding: "10px 16px", textAlign: "center", fontSize: "13px", fontWeight: 700,
+          }}
+        >
+          {cryptoTestStatus === "invalid"
+            ? "This £1 crypto test checkout is unavailable, expired, or has no configured payment route. Generate a new link from the admin panel."
+            : cryptoTestStatus === "checking"
+              ? "Checking configured crypto payment routes…"
+              : "Admin crypto test checkout — this creates a real £1.00 on-chain payment and expires shortly."}
         </div>
       )}
 
@@ -1883,7 +1967,7 @@ export default function CartPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
 
             {/* Pay by Bank (Wallid) */}
-            {(() => {
+            {!isCryptoTestCheckout && (() => {
               const active = paymentMethod === "wallid";
               return (
                 <div

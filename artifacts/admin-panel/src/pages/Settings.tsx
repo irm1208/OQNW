@@ -115,7 +115,8 @@ export default function Settings() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [form, setForm] = useState<Form>(EMPTY);
-  const [testCheckout, setTestCheckout] = useState<{ checkoutPath: string; expiresAt: string } | null>(null);
+  const [wallidTestCheckout, setWallidTestCheckout] = useState<{ checkoutPath: string; expiresAt: string } | null>(null);
+  const [cryptoTestCheckout, setCryptoTestCheckout] = useState<{ checkoutPath: string; expiresAt: string } | null>(null);
 
   const { data, isLoading } = useQuery<StoreSettings>({
     queryKey: ["store-settings"],
@@ -181,7 +182,7 @@ export default function Settings() {
       return { checkoutPath: data.checkoutPath, expiresAt: data.expiresAt };
     },
     onSuccess: (data) => {
-      setTestCheckout(data);
+      setWallidTestCheckout(data);
       toast({
         title: "£1 test checkout ready",
         description: "Open it in this browser before the link expires.",
@@ -189,6 +190,36 @@ export default function Settings() {
     },
     onError: (error: Error) => toast({
       title: "Could not create test checkout",
+      description: error.message,
+      variant: "destructive",
+    }),
+  });
+
+  const createCryptoTestCheckout = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(api("admin/test-payments/crypto-session"), {
+        method: "POST",
+        credentials: "include",
+      });
+      const data = await res.json().catch(() => ({})) as {
+        checkoutPath?: string;
+        expiresAt?: string;
+        error?: string;
+      };
+      if (!res.ok || !data.checkoutPath || !data.expiresAt) {
+        throw new Error(data.error ?? "Could not create the crypto test checkout.");
+      }
+      return { checkoutPath: data.checkoutPath, expiresAt: data.expiresAt };
+    },
+    onSuccess: (data) => {
+      setCryptoTestCheckout(data);
+      toast({
+        title: "£1 crypto test checkout ready",
+        description: "Open it in this browser before the link expires.",
+      });
+    },
+    onError: (error: Error) => toast({
+      title: "Could not create crypto test checkout",
       description: error.message,
       variant: "destructive",
     }),
@@ -241,21 +272,23 @@ export default function Settings() {
         <Button
           type="button"
           variant="outline"
+          data-testid="button-create-wallid-test-checkout"
           onClick={() => createWallidTestCheckout.mutate()}
           disabled={createWallidTestCheckout.isPending}
         >
           {createWallidTestCheckout.isPending ? "Creating test checkout…" : "Create £1 Wallid test checkout"}
         </Button>
-        {testCheckout && (
-          <div className="rounded-md border border-amber-200 bg-white p-3 text-sm">
+        {wallidTestCheckout && (
+          <div className="rounded-md border border-amber-200 bg-white p-3 text-sm" data-testid="status-wallid-test-checkout">
             <p className="font-medium text-amber-950">Your one-time test checkout is ready.</p>
             <p className="text-amber-900/80 mt-1">
-              It expires at {new Date(testCheckout.expiresAt).toLocaleTimeString()} and must be opened in this browser while you remain signed in to the admin panel.
+              It expires at {new Date(wallidTestCheckout.expiresAt).toLocaleTimeString()} and must be opened in this browser while you remain signed in to the admin panel.
             </p>
             <a
-              href={testCheckout.checkoutPath}
+              href={wallidTestCheckout.checkoutPath}
               target="_blank"
               rel="noreferrer"
+              data-testid="link-open-wallid-test-checkout"
               className="inline-flex mt-3 font-medium text-primary underline underline-offset-4"
             >
               Open £1 Wallid test checkout
@@ -302,6 +335,45 @@ export default function Settings() {
         <p className="text-xs text-muted-foreground">
           Only public receiving addresses are needed. Each address must belong to the matching network.
         </p>
+        <div className="rounded-lg border border-blue-200 bg-blue-50/60 p-4 space-y-3">
+          <div>
+            <h4 className="font-semibold text-blue-950">Crypto £1 Test Payment</h4>
+            <p className="text-sm text-blue-900/80 mt-1">
+              Creates a short-lived, one-time checkout for a real £1.00 on-chain payment using one of the saved routes above. Normal catalogue prices remain unchanged.
+            </p>
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            data-testid="button-create-crypto-test-checkout"
+            onClick={() => createCryptoTestCheckout.mutate()}
+            disabled={createCryptoTestCheckout.isPending || !form.cryptoPaymentsEnabled}
+          >
+            {createCryptoTestCheckout.isPending ? "Creating crypto test checkout…" : "Create £1 crypto test checkout"}
+          </Button>
+          {!form.cryptoPaymentsEnabled && (
+            <p className="text-xs text-blue-900/70" data-testid="status-crypto-test-requirement">
+              Enable direct crypto payments and save at least one receiving address first.
+            </p>
+          )}
+          {cryptoTestCheckout && (
+            <div className="rounded-md border border-blue-200 bg-white p-3 text-sm" data-testid="status-crypto-test-checkout">
+              <p className="font-medium text-blue-950">Your one-time crypto test checkout is ready.</p>
+              <p className="text-blue-900/80 mt-1">
+                It expires at {new Date(cryptoTestCheckout.expiresAt).toLocaleTimeString()} and must be opened in this browser while you remain signed in to the admin panel.
+              </p>
+              <a
+                href={cryptoTestCheckout.checkoutPath}
+                target="_blank"
+                rel="noreferrer"
+                data-testid="link-open-crypto-test-checkout"
+                className="inline-flex mt-3 font-medium text-primary underline underline-offset-4"
+              >
+                Open £1 crypto test checkout
+              </a>
+            </div>
+          )}
+        </div>
       </section>
 
       <section className="rounded-xl border bg-card p-4 sm:p-6 space-y-4">

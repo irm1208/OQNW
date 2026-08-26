@@ -17,9 +17,11 @@ import type {
 } from "@tanstack/react-query";
 
 import type {
+  AdminCryptoTestPaymentSession,
   AdminLoginInput,
   AdminProduct,
   AdminSession,
+  AdminWallidTestPaymentSession,
   ApiError,
   CatalogProduct,
   CatalogProductInput,
@@ -368,6 +370,180 @@ export function useAdminMe<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * @summary Create a one-time £1 Wallid test checkout
+ */
+export const getCreateAdminWallidTestPaymentSessionUrl = () => {
+  return `/api/admin/test-payments/session`;
+};
+
+export const createAdminWallidTestPaymentSession = async (
+  options?: RequestInit,
+): Promise<AdminWallidTestPaymentSession> => {
+  return customFetch<AdminWallidTestPaymentSession>(
+    getCreateAdminWallidTestPaymentSessionUrl(),
+    {
+      ...options,
+      method: "POST",
+    },
+  );
+};
+
+export const getCreateAdminWallidTestPaymentSessionMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createAdminWallidTestPaymentSession>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createAdminWallidTestPaymentSession>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["createAdminWallidTestPaymentSession"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createAdminWallidTestPaymentSession>>,
+    void
+  > = () => {
+    return createAdminWallidTestPaymentSession(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type CreateAdminWallidTestPaymentSessionMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createAdminWallidTestPaymentSession>>
+>;
+
+export type CreateAdminWallidTestPaymentSessionMutationError =
+  ErrorType<ApiError>;
+
+/**
+ * @summary Create a one-time £1 Wallid test checkout
+ */
+export const useCreateAdminWallidTestPaymentSession = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createAdminWallidTestPaymentSession>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof createAdminWallidTestPaymentSession>>,
+  TError,
+  void,
+  TContext
+> => {
+  return useMutation(
+    getCreateAdminWallidTestPaymentSessionMutationOptions(options),
+  );
+};
+
+/**
+ * @summary Create a one-time £1 crypto test checkout
+ */
+export const getCreateAdminCryptoTestPaymentSessionUrl = () => {
+  return `/api/admin/test-payments/crypto-session`;
+};
+
+export const createAdminCryptoTestPaymentSession = async (
+  options?: RequestInit,
+): Promise<AdminCryptoTestPaymentSession> => {
+  return customFetch<AdminCryptoTestPaymentSession>(
+    getCreateAdminCryptoTestPaymentSessionUrl(),
+    {
+      ...options,
+      method: "POST",
+    },
+  );
+};
+
+export const getCreateAdminCryptoTestPaymentSessionMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createAdminCryptoTestPaymentSession>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createAdminCryptoTestPaymentSession>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["createAdminCryptoTestPaymentSession"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createAdminCryptoTestPaymentSession>>,
+    void
+  > = () => {
+    return createAdminCryptoTestPaymentSession(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type CreateAdminCryptoTestPaymentSessionMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createAdminCryptoTestPaymentSession>>
+>;
+
+export type CreateAdminCryptoTestPaymentSessionMutationError =
+  ErrorType<ApiError>;
+
+/**
+ * @summary Create a one-time £1 crypto test checkout
+ */
+export const useCreateAdminCryptoTestPaymentSession = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createAdminCryptoTestPaymentSession>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof createAdminCryptoTestPaymentSession>>,
+  TError,
+  void,
+  TContext
+> => {
+  return useMutation(
+    getCreateAdminCryptoTestPaymentSessionMutationOptions(options),
+  );
+};
 
 /**
  * @summary Get dashboard summary stats

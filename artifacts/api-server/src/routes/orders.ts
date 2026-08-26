@@ -56,6 +56,11 @@ import {
   verifyWallidTestCheckoutToken,
 } from "../lib/wallidTestCheckout";
 import {
+  calculateCryptoTestPaymentTotal,
+  verifyCryptoTestCheckoutToken,
+} from "../lib/cryptoTestCheckout";
+import { claimCryptoTestCheckoutSession } from "../lib/cryptoTestCheckoutClaims";
+import {
   validateSuccessfulWallidPayment,
   wallidPaymentIdFromNotes,
 } from "../lib/wallidReconciliation";
@@ -129,6 +134,7 @@ const SESSION_SECRET =
   process.env.ADMIN_PASSWORD ??
   "omniqure-cust-session-fallback-secret";
 const WALLID_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
+const CRYPTO_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
 const checkoutPaymentQuoteReplayGuard = new CheckoutPaymentQuoteReplayGuard();
 const wallidTestCheckoutReplayGuard = new WallidTestCheckoutReplayGuard();
 
@@ -191,6 +197,7 @@ async function handleOrderRequest(
     cryptoNetwork,
     redeemFreePeptide,
     wallidTestToken,
+    cryptoTestToken,
   } = req.body as {
     delivery: unknown;
     shippingMethod: unknown;
@@ -204,6 +211,7 @@ async function handleOrderRequest(
     cryptoNetwork?: unknown;
     redeemFreePeptide?: unknown;
     wallidTestToken?: unknown;
+    cryptoTestToken?: unknown;
   };
   const cryptoCurrencyStr = typeof cryptoCurrency === "string" ? cryptoCurrency.toUpperCase() : "BTC";
   const cryptoNetworkStr = typeof cryptoNetwork === "string" ? cryptoNetwork.toLowerCase() : "";
@@ -211,12 +219,24 @@ async function handleOrderRequest(
   const paymentMethodStr = typeof paymentMethod === "string" ? paymentMethod : "bank_transfer";
   const paymentCurrencyStr = typeof paymentCurrency === "string" ? paymentCurrency.toUpperCase() : "GBP";
   const submittedWallidTestToken = typeof wallidTestToken === "string" ? wallidTestToken : null;
+  const submittedCryptoTestToken = typeof cryptoTestToken === "string" ? cryptoTestToken : null;
+  if (submittedWallidTestToken && submittedCryptoTestToken) {
+    res.status(400).json({ error: "Choose only one admin test checkout." });
+    return;
+  }
   if (submittedWallidTestToken && !WALLID_TEST_CHECKOUT_SECRET) {
     res.status(503).json({ error: "Wallid test checkout is unavailable because secure session signing is not configured." });
     return;
   }
   const wallidTestCheckout = submittedWallidTestToken && WALLID_TEST_CHECKOUT_SECRET
     ? verifyWallidTestCheckoutToken(submittedWallidTestToken, WALLID_TEST_CHECKOUT_SECRET)
+    : null;
+  if (submittedCryptoTestToken && !CRYPTO_TEST_CHECKOUT_SECRET) {
+    res.status(503).json({ error: "Crypto test checkout is unavailable because secure session signing is not configured." });
+    return;
+  }
+  const cryptoTestCheckout = submittedCryptoTestToken && CRYPTO_TEST_CHECKOUT_SECRET
+    ? verifyCryptoTestCheckoutToken(submittedCryptoTestToken, CRYPTO_TEST_CHECKOUT_SECRET)
     : null;
 
   if (submittedWallidTestToken) {
@@ -226,6 +246,16 @@ async function handleOrderRequest(
     }
     if (!hasSecureAdminSession(req) || !wallidTestCheckout) {
       res.status(403).json({ error: "This Wallid test checkout link is invalid, expired, or no longer authorised." });
+      return;
+    }
+  }
+  if (submittedCryptoTestToken) {
+    if (paymentMethodStr !== "crypto") {
+      res.status(400).json({ error: "The £1 crypto test checkout is available for cryptocurrency payments only." });
+      return;
+    }
+    if (!hasSecureAdminSession(req) || !cryptoTestCheckout) {
+      res.status(403).json({ error: "This crypto test checkout link is invalid, expired, or no longer authorised." });
       return;
     }
   }
@@ -538,14 +568,22 @@ async function handleOrderRequest(
         subtotalGbp + shippingCostGbp - bundleDiscountGbp - discountAmount - loyaltyDiscountGbp - freePeptideDeductGbp,
       ) * 100,
     ) / 100;
-    if (wallidTestCheckout && standardTotalGbp < WALLID_TEST_AMOUNT_MINOR / 100) {
-      res.status(400).json({ error: "A £1 Wallid test checkout requires a cart total of at least £1.00." });
+    const cryptoTestPaymentTotal = cryptoTestCheckout
+      ? calculateCryptoTestPaymentTotal(standardTotalGbp)
+      : null;
+    if (
+      (wallidTestCheckout && standardTotalGbp < WALLID_TEST_AMOUNT_MINOR / 100) ||
+      (cryptoTestCheckout && !cryptoTestPaymentTotal)
+    ) {
+      res.status(400).json({ error: "A £1 test checkout requires a cart total of at least £1.00." });
       return;
     }
     const testPaymentAdjustmentGbp = wallidTestCheckout
       ? Math.round((standardTotalGbp - WALLID_TEST_AMOUNT_MINOR / 100) * 100) / 100
-      : 0;
-    const totalGbp = wallidTestCheckout ? WALLID_TEST_AMOUNT_MINOR / 100 : standardTotalGbp;
+      : cryptoTestPaymentTotal?.adjustmentGbp ?? 0;
+    const totalGbp = wallidTestCheckout
+      ? WALLID_TEST_AMOUNT_MINOR / 100
+      : cryptoTestPaymentTotal?.totalGbp ?? standardTotalGbp;
     const selectedWallidCurrency = paymentCurrencyStr as WallidPaymentCurrency;
     const checkoutFingerprint = createCheckoutFingerprint({
       items: cartItems,
@@ -738,6 +776,20 @@ async function handleOrderRequest(
         });
         return;
       }
+      if (
+        cryptoTestCheckout &&
+        (!submittedCryptoTestToken ||
+          !await claimCryptoTestCheckoutSession(
+            cryptoTestCheckout.id,
+            cryptoTestCheckout.expiresAt,
+          ))
+      ) {
+        res.status(409).json({
+          code: "CRYPTO_TEST_SESSION_USED",
+          error: "This £1 crypto test checkout was already used or has expired. Generate a new test link from the admin panel.",
+        });
+        return;
+      }
       cryptoPaymentAccessToken = crypto.randomBytes(24).toString("base64url");
     }
 
@@ -908,6 +960,7 @@ async function handleOrderRequest(
           validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-£${discountAmount.toFixed(2)})` : null,
           loyaltyPointsToDeduct > 0 ? `Loyalty: ${loyaltyPointsToDeduct} pts redeemed (-£${loyaltyDiscountGbp.toFixed(2)})` : null,
           wallidTestCheckout ? `WALLID £1 TEST CHECKOUT: normal total £${standardTotalGbp.toFixed(2)}, test adjustment -£${testPaymentAdjustmentGbp.toFixed(2)}` : null,
+          cryptoTestCheckout ? `CRYPTO £1 TEST CHECKOUT: normal total £${standardTotalGbp.toFixed(2)}, test adjustment -£${testPaymentAdjustmentGbp.toFixed(2)}` : null,
           wallidApiPaymentId ? `Wallid payment id: ${wallidApiPaymentId}` : null,
           cryptoPayment ? `Crypto route: ${cryptoPayment.details.currency} on ${cryptoPayment.details.network}` : null,
         ].filter(Boolean).join("; ") || null,

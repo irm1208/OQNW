@@ -7,6 +7,8 @@ import { eq } from "drizzle-orm";
 import { verifyPassword } from "./users";
 import { createHmac, timingSafeEqual } from "crypto";
 import { createWallidTestCheckoutToken } from "../../lib/wallidTestCheckout";
+import { createCryptoTestCheckoutToken } from "../../lib/cryptoTestCheckout";
+import { getPublicCryptoPaymentOptions } from "../../lib/crypto-payments";
 
 const router = Router();
 
@@ -205,6 +207,38 @@ router.post("/admin/test-payments/session", (req: Request, res: Response): void 
     amountMinor: 100,
     currency: "GBP",
   });
+});
+
+router.post("/admin/test-payments/crypto-session", async (req: Request, res: Response): Promise<void> => {
+  if (!hasSecureAdminSession(req)) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+
+  const testCheckoutSecret = process.env.SESSION_SECRET;
+  if (!testCheckoutSecret) {
+    res.status(503).json({ error: "Crypto test checkout is unavailable because secure session signing is not configured." });
+    return;
+  }
+
+  try {
+    const routes = await getPublicCryptoPaymentOptions();
+    if (routes.length === 0) {
+      res.status(409).json({ error: "Enable crypto payments and save at least one valid receiving address before creating a test checkout." });
+      return;
+    }
+
+    const { token, expiresAt } = createCryptoTestCheckoutToken(testCheckoutSecret);
+    res.status(201).json({
+      checkoutPath: `/cart?cryptoTest=${encodeURIComponent(token)}`,
+      expiresAt,
+      amountMinor: 100,
+      currency: "GBP",
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to create crypto test checkout");
+    res.status(503).json({ error: "Crypto test checkout is temporarily unavailable." });
+  }
 });
 
 router.get("/admin/auth/me", async (req: Request, res: Response): Promise<void> => {

@@ -17,6 +17,18 @@ export interface AdminLoginInput {
 export interface AdminSession {
     authenticated: boolean;
 }
+export interface AdminWallidTestPaymentSession {
+    checkoutPath: string;
+    expiresAt: string;
+    amountMinor: 100;
+    currency: "GBP";
+}
+export interface AdminCryptoTestPaymentSession {
+    checkoutPath: string;
+    expiresAt: string;
+    amountMinor: 100;
+    currency: "GBP";
+}
 export interface DashboardStats {
     totalRevenue: number;
     totalOrders: number;

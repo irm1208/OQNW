@@ -113,6 +113,31 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiError"
 
+  /admin/test-payments/crypto-session:
+    post:
+      operationId: createAdminCryptoTestPaymentSession
+      tags: [admin-auth]
+      summary: Create a one-time £1 crypto test checkout
+      responses:
+        "201":
+          description: Test checkout created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminCryptoTestPaymentSession"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "409":
+          description: No crypto payment route is configured
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
   # ── DASHBOARD ──────────────────────────────────────────────────────────────
   /admin/dashboard:
     get:
@@ -789,6 +814,22 @@ components:
           type: boolean
 
     AdminWallidTestPaymentSession:
+      type: object
+      required: [checkoutPath, expiresAt, amountMinor, currency]
+      properties:
+        checkoutPath:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+        amountMinor:
+          type: integer
+          const: 100
+        currency:
+          type: string
+          const: GBP
+
+    AdminCryptoTestPaymentSession:
       type: object
       required: [checkoutPath, expiresAt, amountMinor, currency]
       properties:
