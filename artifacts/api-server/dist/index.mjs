@@ -85386,6 +85386,106 @@ function startCryptoReconciliationJob() {
   }, INTERVAL_MS3);
 }
 
+// src/lib/wallidReconciliationJob.ts
+init_drizzle_orm();
+var INTERVAL_MS4 = 2 * 60 * 1e3;
+var BATCH_SIZE = 100;
+var running = false;
+async function reconcilePendingWallidPayments() {
+  const pendingOrders = await db.select().from(ordersTable).where(and(
+    eq(ordersTable.status, "awaiting_payment"),
+    ilike(ordersTable.notes, "%Wallid payment id:%")
+  )).orderBy(desc(ordersTable.createdAt)).limit(BATCH_SIZE);
+  let checked = 0;
+  let settled = 0;
+  for (const order of pendingOrders) {
+    if (!order.paymentCurrency || order.paymentAmountMinor === null) continue;
+    const apiPaymentId = wallidPaymentIdFromNotes(order.notes);
+    if (!apiPaymentId) continue;
+    checked += 1;
+    const providerStatus = await checkWallidPaymentStatus(apiPaymentId);
+    const validation = validateSuccessfulWallidPayment(
+      {
+        apiPaymentId,
+        orderNumber: order.orderNumber,
+        amountMinor: order.paymentAmountMinor,
+        currency: order.paymentCurrency
+      },
+      providerStatus
+    );
+    if (!validation.ok) {
+      if (providerStatus?.status === "SUCCESS") {
+        logger.error(
+          { orderNumber: order.orderNumber, apiPaymentId, reason: validation.reason },
+          "Wallid SUCCESS status failed scheduled reconciliation validation"
+        );
+      }
+      continue;
+    }
+    const claimed = await db.update(ordersTable).set({ status: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(and(
+      eq(ordersTable.id, order.id),
+      eq(ordersTable.status, "awaiting_payment")
+    )).returning({ id: ordersTable.id });
+    if (claimed.length === 0) continue;
+    settled += 1;
+    logger.info(
+      { orderNumber: order.orderNumber, apiPaymentId },
+      "Order marked paid via scheduled Wallid reconciliation"
+    );
+    try {
+      const items = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, order.id));
+      await sendOrderConfirmation({
+        orderNumber: order.orderNumber,
+        customerName: order.customerName,
+        customerEmail: order.customerEmail,
+        items: items.map((item) => ({
+          productName: item.productName,
+          productCategory: item.productCategory,
+          quantity: item.quantity,
+          priceGbp: Number(item.priceGbp)
+        })),
+        subtotalGbp: Number(order.subtotalGbp),
+        shippingCostGbp: Number(order.shippingCostGbp),
+        totalGbp: Number(order.totalGbp),
+        shippingMethod: order.shippingMethod,
+        trackingNumber: order.trackingNumber,
+        address1: order.address1,
+        address2: order.address2,
+        city: order.city,
+        postcode: order.postcode,
+        country: order.country
+      });
+    } catch (err) {
+      logger.error(
+        { err, orderNumber: order.orderNumber },
+        "Failed to send confirmation after scheduled Wallid reconciliation"
+      );
+    }
+  }
+  return { checked, settled };
+}
+async function runCheck4() {
+  if (running) return;
+  running = true;
+  try {
+    const result = await reconcilePendingWallidPayments();
+    if (result.checked > 0) {
+      logger.info(result, "Wallid payment reconciliation completed");
+    }
+  } catch (err) {
+    logger.error({ err }, "Wallid payment reconciliation failed");
+  } finally {
+    running = false;
+  }
+}
+function startWallidReconciliationJob() {
+  logger.info("Wallid payment reconciliation job started");
+  void runCheck4();
+  setInterval(() => {
+    void runCheck4();
+  }, INTERVAL_MS4);
+}
+
 // src/index.ts
 var rawPort = process.env["PORT"];
 if (!rawPort) {
@@ -85406,6 +85506,7 @@ app_default.listen(port, (err) => {
   startAbandonedCartJob();
   startReviewRequestJob();
   startCryptoReconciliationJob();
+  startWallidReconciliationJob();
   seedProductsCatalog().then(async (r) => {
     if (r.seeded) logger.info({ count: r.count }, "Products catalog seeded");
     else logger.info({ reason: r.reason }, "Products catalog seed skipped");
