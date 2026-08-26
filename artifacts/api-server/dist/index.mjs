@@ -71715,7 +71715,7 @@ function getResend() {
 var FROM_ADDRESS = process.env.EMAIL_FROM ?? "OmniQure <orders@omniqure.com>";
 var ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? null;
 var SITE_URL = process.env.SITE_URL ?? "https://omniqure.com";
-var LOGO_URL = `${SITE_URL}/omniqure-logo-full.png`;
+var LOGO_URL = `${SITE_URL}/omniqure-email-header.png`;
 async function logEmail(opts) {
   try {
     await db.insert(emailLogsTable).values({

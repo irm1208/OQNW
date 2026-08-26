@@ -18,7 +18,7 @@ function getResend(): Resend {
 const FROM_ADDRESS = process.env.EMAIL_FROM ?? "OmniQure <orders@omniqure.com>";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? null;
 const SITE_URL = process.env.SITE_URL ?? "https://omniqure.com";
-const LOGO_URL = `${SITE_URL}/omniqure-logo-full.png`;
+const LOGO_URL = `${SITE_URL}/omniqure-email-header.png`;
 
 async function logEmail(opts: {
   toEmail: string;
