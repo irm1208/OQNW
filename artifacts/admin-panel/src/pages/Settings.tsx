@@ -226,6 +226,7 @@ export default function Settings() {
   });
 
   const set = (k: keyof Form) => (v: string) => setForm(f => ({ ...f, [k]: v }));
+  const hasSavedCryptoRoute = Object.values(form.cryptoAddresses).some(address => address.trim().length > 0);
 
   if (isLoading) {
     return <div className="p-12 text-center text-muted-foreground">Loading…</div>;
@@ -297,6 +298,46 @@ export default function Settings() {
         )}
       </section>
 
+      <section className="rounded-xl border border-blue-200 bg-blue-50/50 p-4 sm:p-6 space-y-3">
+        <div>
+          <h3 className="font-semibold text-blue-950">Crypto £1 Test Payment</h3>
+          <p className="text-sm text-blue-900/80 mt-1">
+            Creates a short-lived, one-time checkout for a real £1.00 on-chain payment. Retail prices remain unchanged and the resulting order is marked as a test payment.
+          </p>
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          data-testid="button-create-crypto-test-checkout"
+          onClick={() => createCryptoTestCheckout.mutate()}
+          disabled={createCryptoTestCheckout.isPending || !form.cryptoPaymentsEnabled || !hasSavedCryptoRoute}
+        >
+          {createCryptoTestCheckout.isPending ? "Creating crypto test checkout…" : "Create £1 crypto test checkout"}
+        </Button>
+        {(!form.cryptoPaymentsEnabled || !hasSavedCryptoRoute) && (
+          <p className="text-xs text-blue-900/70" data-testid="status-crypto-test-requirement">
+            Enable direct crypto payments and save at least one receiving address below first.
+          </p>
+        )}
+        {cryptoTestCheckout && (
+          <div className="rounded-md border border-blue-200 bg-white p-3 text-sm" data-testid="status-crypto-test-checkout">
+            <p className="font-medium text-blue-950">Your one-time crypto test checkout is ready.</p>
+            <p className="text-blue-900/80 mt-1">
+              It expires at {new Date(cryptoTestCheckout.expiresAt).toLocaleTimeString()} and must be opened in this browser while you remain signed in to the admin panel.
+            </p>
+            <a
+              href={cryptoTestCheckout.checkoutPath}
+              target="_blank"
+              rel="noreferrer"
+              data-testid="link-open-crypto-test-checkout"
+              className="inline-flex mt-3 font-medium text-primary underline underline-offset-4"
+            >
+              Open £1 crypto test checkout
+            </a>
+          </div>
+        )}
+      </section>
+
       <section className="rounded-xl border bg-card p-4 sm:p-6 space-y-4">
         <div>
           <h3 className="font-semibold">Direct Crypto Payments</h3>
@@ -335,45 +376,6 @@ export default function Settings() {
         <p className="text-xs text-muted-foreground">
           Only public receiving addresses are needed. Each address must belong to the matching network.
         </p>
-        <div className="rounded-lg border border-blue-200 bg-blue-50/60 p-4 space-y-3">
-          <div>
-            <h4 className="font-semibold text-blue-950">Crypto £1 Test Payment</h4>
-            <p className="text-sm text-blue-900/80 mt-1">
-              Creates a short-lived, one-time checkout for a real £1.00 on-chain payment using one of the saved routes above. Normal catalogue prices remain unchanged.
-            </p>
-          </div>
-          <Button
-            type="button"
-            variant="outline"
-            data-testid="button-create-crypto-test-checkout"
-            onClick={() => createCryptoTestCheckout.mutate()}
-            disabled={createCryptoTestCheckout.isPending || !form.cryptoPaymentsEnabled}
-          >
-            {createCryptoTestCheckout.isPending ? "Creating crypto test checkout…" : "Create £1 crypto test checkout"}
-          </Button>
-          {!form.cryptoPaymentsEnabled && (
-            <p className="text-xs text-blue-900/70" data-testid="status-crypto-test-requirement">
-              Enable direct crypto payments and save at least one receiving address first.
-            </p>
-          )}
-          {cryptoTestCheckout && (
-            <div className="rounded-md border border-blue-200 bg-white p-3 text-sm" data-testid="status-crypto-test-checkout">
-              <p className="font-medium text-blue-950">Your one-time crypto test checkout is ready.</p>
-              <p className="text-blue-900/80 mt-1">
-                It expires at {new Date(cryptoTestCheckout.expiresAt).toLocaleTimeString()} and must be opened in this browser while you remain signed in to the admin panel.
-              </p>
-              <a
-                href={cryptoTestCheckout.checkoutPath}
-                target="_blank"
-                rel="noreferrer"
-                data-testid="link-open-crypto-test-checkout"
-                className="inline-flex mt-3 font-medium text-primary underline underline-offset-4"
-              >
-                Open £1 crypto test checkout
-              </a>
-            </div>
-          )}
-        </div>
       </section>
 
       <section className="rounded-xl border bg-card p-4 sm:p-6 space-y-4">
