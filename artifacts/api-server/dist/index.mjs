@@ -71715,6 +71715,7 @@ function getResend() {
 var FROM_ADDRESS = process.env.EMAIL_FROM ?? "OmniQure <orders@omniqure.com>";
 var ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? null;
 var SITE_URL = process.env.SITE_URL ?? "https://omniqure.com";
+var LOGO_URL = `${SITE_URL}/omniqure-logo-full.png`;
 async function logEmail(opts) {
   try {
     await db.insert(emailLogsTable).values({
@@ -71748,8 +71749,9 @@ function baseTemplate(title, body) {
           <!-- Header -->
           <tr>
             <td style="background:#0f172a;padding:24px 32px;">
-              <p style="margin:0;color:#ffffff;font-size:20px;font-weight:700;letter-spacing:-0.5px;">OmniQure</p>
-              <p style="margin:4px 0 0;color:#94a3b8;font-size:12px;">Peptide Research Institute</p>
+              <a href="${SITE_URL}" style="display:inline-block;text-decoration:none;">
+                <img src="${LOGO_URL}" alt="OmniQure Peptide Research Institute" width="235" style="display:block;width:235px;max-width:100%;height:auto;border:0;" />
+              </a>
             </td>
           </tr>
           <!-- Body -->
