@@ -108,3 +108,18 @@ uri = "file://email-preview.html"
 type = "text"
 title = "Order Confirmation Email"
 description = "Preview of the customer order confirmation email sent via Resend"
+logical_id = "1ba2d5b4-4377-4621-a91c-056ce4cacef3"
+
+[[outputs]]
+id = "YCx36kZ8Iqz8sX4x4SjEP"
+uri = "file://screenshots/email-preview-sample.jpg"
+type = "image"
+title = "OmniQure email header sample"
+description = "Sample order-confirmation email showing the attached OmniQure business logo in the header."
+logical_id = "68cd707a-c90a-46e2-b331-6f7dfb27f94d"
+content_hash = "sha256:319e5a850900a3ea0f53e6454e265d0beffabdddef1e7a05e2dedda9d8433316"
+size = 37088
+mtime_ms = 1787762448817
+storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:72159070-0bd7-448d-aaa8-655b3ff0e5ea/68cd707a-c90a-46e2-b331-6f7dfb27f94d/43189394-b2e6-460e-bcc0-64bc02a6f2d5"
+storage_version_token = "1787762456022150"
+content_type = "image/jpeg"
