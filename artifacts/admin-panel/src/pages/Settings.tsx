@@ -263,80 +263,82 @@ export default function Settings() {
         </label>
       </section>
 
-      <section className="rounded-xl border border-amber-200 bg-amber-50/50 p-4 sm:p-6 space-y-3">
-        <div>
-          <h3 className="font-semibold text-amber-950">Wallid £1 Test Payment</h3>
-          <p className="text-sm text-amber-900/80 mt-1">
-            Creates a short-lived, one-time checkout for a real £1.00 Wallid payment. Retail prices remain unchanged and the resulting order is marked as a test payment.
-          </p>
-        </div>
-        <Button
-          type="button"
-          variant="outline"
-          data-testid="button-create-wallid-test-checkout"
-          onClick={() => createWallidTestCheckout.mutate()}
-          disabled={createWallidTestCheckout.isPending}
-        >
-          {createWallidTestCheckout.isPending ? "Creating test checkout…" : "Create £1 Wallid test checkout"}
-        </Button>
-        {wallidTestCheckout && (
-          <div className="rounded-md border border-amber-200 bg-white p-3 text-sm" data-testid="status-wallid-test-checkout">
-            <p className="font-medium text-amber-950">Your one-time test checkout is ready.</p>
-            <p className="text-amber-900/80 mt-1">
-              It expires at {new Date(wallidTestCheckout.expiresAt).toLocaleTimeString()} and must be opened in this browser while you remain signed in to the admin panel.
+      <div className="grid gap-6 md:grid-cols-2">
+        <section className="rounded-xl border border-amber-200 bg-amber-50/50 p-4 sm:p-6 space-y-3">
+          <div>
+            <h3 className="font-semibold text-amber-950">Wallid £1 Test Payment</h3>
+            <p className="text-sm text-amber-900/80 mt-1">
+              Creates a short-lived, one-time checkout for a real £1.00 Wallid payment. Retail prices remain unchanged and the resulting order is marked as a test payment.
             </p>
-            <a
-              href={wallidTestCheckout.checkoutPath}
-              target="_blank"
-              rel="noreferrer"
-              data-testid="link-open-wallid-test-checkout"
-              className="inline-flex mt-3 font-medium text-primary underline underline-offset-4"
-            >
-              Open £1 Wallid test checkout
-            </a>
           </div>
-        )}
-      </section>
+          <Button
+            type="button"
+            variant="outline"
+            data-testid="button-create-wallid-test-checkout"
+            onClick={() => createWallidTestCheckout.mutate()}
+            disabled={createWallidTestCheckout.isPending}
+          >
+            {createWallidTestCheckout.isPending ? "Creating test checkout…" : "Create £1 Wallid test checkout"}
+          </Button>
+          {wallidTestCheckout && (
+            <div className="rounded-md border border-amber-200 bg-white p-3 text-sm" data-testid="status-wallid-test-checkout">
+              <p className="font-medium text-amber-950">Your one-time test checkout is ready.</p>
+              <p className="text-amber-900/80 mt-1">
+                It expires at {new Date(wallidTestCheckout.expiresAt).toLocaleTimeString()} and must be opened in this browser while you remain signed in to the admin panel.
+              </p>
+              <a
+                href={wallidTestCheckout.checkoutPath}
+                target="_blank"
+                rel="noreferrer"
+                data-testid="link-open-wallid-test-checkout"
+                className="inline-flex mt-3 font-medium text-primary underline underline-offset-4"
+              >
+                Open £1 Wallid test checkout
+              </a>
+            </div>
+          )}
+        </section>
 
-      <section className="rounded-xl border border-blue-200 bg-blue-50/50 p-4 sm:p-6 space-y-3">
-        <div>
-          <h3 className="font-semibold text-blue-950">Crypto £1 Test Payment</h3>
-          <p className="text-sm text-blue-900/80 mt-1">
-            Creates a short-lived, one-time checkout for a real £1.00 on-chain payment. Retail prices remain unchanged and the resulting order is marked as a test payment.
-          </p>
-        </div>
-        <Button
-          type="button"
-          variant="outline"
-          data-testid="button-create-crypto-test-checkout"
-          onClick={() => createCryptoTestCheckout.mutate()}
-          disabled={createCryptoTestCheckout.isPending || !form.cryptoPaymentsEnabled || !hasSavedCryptoRoute}
-        >
-          {createCryptoTestCheckout.isPending ? "Creating crypto test checkout…" : "Create £1 crypto test checkout"}
-        </Button>
-        {(!form.cryptoPaymentsEnabled || !hasSavedCryptoRoute) && (
-          <p className="text-xs text-blue-900/70" data-testid="status-crypto-test-requirement">
-            Enable direct crypto payments and save at least one receiving address below first.
-          </p>
-        )}
-        {cryptoTestCheckout && (
-          <div className="rounded-md border border-blue-200 bg-white p-3 text-sm" data-testid="status-crypto-test-checkout">
-            <p className="font-medium text-blue-950">Your one-time crypto test checkout is ready.</p>
-            <p className="text-blue-900/80 mt-1">
-              It expires at {new Date(cryptoTestCheckout.expiresAt).toLocaleTimeString()} and must be opened in this browser while you remain signed in to the admin panel.
+        <section className="rounded-xl border border-blue-200 bg-blue-50/50 p-4 sm:p-6 space-y-3">
+          <div>
+            <h3 className="font-semibold text-blue-950">Crypto £1 Test Payment</h3>
+            <p className="text-sm text-blue-900/80 mt-1">
+              Creates a short-lived, one-time checkout for a real £1.00 on-chain payment. Retail prices remain unchanged and the resulting order is marked as a test payment.
             </p>
-            <a
-              href={cryptoTestCheckout.checkoutPath}
-              target="_blank"
-              rel="noreferrer"
-              data-testid="link-open-crypto-test-checkout"
-              className="inline-flex mt-3 font-medium text-primary underline underline-offset-4"
-            >
-              Open £1 crypto test checkout
-            </a>
           </div>
-        )}
-      </section>
+          <Button
+            type="button"
+            variant="outline"
+            data-testid="button-create-crypto-test-checkout"
+            onClick={() => createCryptoTestCheckout.mutate()}
+            disabled={createCryptoTestCheckout.isPending || !form.cryptoPaymentsEnabled || !hasSavedCryptoRoute}
+          >
+            {createCryptoTestCheckout.isPending ? "Creating crypto test checkout…" : "Create £1 crypto test checkout"}
+          </Button>
+          {(!form.cryptoPaymentsEnabled || !hasSavedCryptoRoute) && (
+            <p className="text-xs text-blue-900/70" data-testid="status-crypto-test-requirement">
+              Enable direct crypto payments and save at least one receiving address below first.
+            </p>
+          )}
+          {cryptoTestCheckout && (
+            <div className="rounded-md border border-blue-200 bg-white p-3 text-sm" data-testid="status-crypto-test-checkout">
+              <p className="font-medium text-blue-950">Your one-time crypto test checkout is ready.</p>
+              <p className="text-blue-900/80 mt-1">
+                It expires at {new Date(cryptoTestCheckout.expiresAt).toLocaleTimeString()} and must be opened in this browser while you remain signed in to the admin panel.
+              </p>
+              <a
+                href={cryptoTestCheckout.checkoutPath}
+                target="_blank"
+                rel="noreferrer"
+                data-testid="link-open-crypto-test-checkout"
+                className="inline-flex mt-3 font-medium text-primary underline underline-offset-4"
+              >
+                Open £1 crypto test checkout
+              </a>
+            </div>
+          )}
+        </section>
+      </div>
 
       <section className="rounded-xl border bg-card p-4 sm:p-6 space-y-4">
         <div>
