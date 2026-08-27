@@ -355,6 +355,49 @@ export interface EnableAllPeptideCatalogProductsResponse {
   enabledProducts: EnableAllPeptideCatalogProductsResponseEnabledProductsItem[];
 }
 
+export interface CatalogPrice {
+  slug: string;
+  /** @nullable */
+  priceGbp: number | null;
+}
+
+export interface CatalogPriceChange {
+  slug: string;
+  name: string;
+  /** @nullable */
+  productionPriceGbp: number | null;
+  /** @nullable */
+  cataloguePriceGbp: number | null;
+}
+
+export interface CatalogPriceSyncPreviewRequest {
+  /** @maxItems 1000 */
+  prices: CatalogPrice[];
+}
+
+export interface CatalogPriceSyncPreview {
+  sourceCount: number;
+  productionCount: number;
+  matchedCount: number;
+  unchangedCount: number;
+  changes: CatalogPriceChange[];
+  sourceOnlySlugs: string[];
+  productionOnlySlugs: string[];
+  confirmationToken: string;
+  confirmationExpiresAt: string;
+}
+
+export interface CatalogPriceSyncApplyRequest {
+  /** @maxItems 1000 */
+  changes: CatalogPriceChange[];
+  confirmationToken: string;
+}
+
+export interface CatalogPriceSyncApplyResponse {
+  updatedCount: number;
+  updatedSlugs: string[];
+}
+
 export interface CatalogProductInput {
   slug: string;
   name: string;

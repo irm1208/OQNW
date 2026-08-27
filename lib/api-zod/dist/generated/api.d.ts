@@ -1580,6 +1580,137 @@ export declare const EnableAllPeptideCatalogProductsResponse: zod.ZodObject<{
     }[];
 }>;
 /**
+ * @summary Preview a slug-keyed price-only catalogue sync
+ */
+export declare const previewCatalogPriceSyncBodyPricesMax = 1000;
+export declare const PreviewCatalogPriceSyncBody: zod.ZodObject<{
+    prices: zod.ZodArray<zod.ZodObject<{
+        slug: zod.ZodString;
+        priceGbp: zod.ZodNullable<zod.ZodNumber>;
+    }, "strip", zod.ZodTypeAny, {
+        priceGbp: number | null;
+        slug: string;
+    }, {
+        priceGbp: number | null;
+        slug: string;
+    }>, "many">;
+}, "strip", zod.ZodTypeAny, {
+    prices: {
+        priceGbp: number | null;
+        slug: string;
+    }[];
+}, {
+    prices: {
+        priceGbp: number | null;
+        slug: string;
+    }[];
+}>;
+export declare const PreviewCatalogPriceSyncResponse: zod.ZodObject<{
+    sourceCount: zod.ZodNumber;
+    productionCount: zod.ZodNumber;
+    matchedCount: zod.ZodNumber;
+    unchangedCount: zod.ZodNumber;
+    changes: zod.ZodArray<zod.ZodObject<{
+        slug: zod.ZodString;
+        name: zod.ZodString;
+        productionPriceGbp: zod.ZodNullable<zod.ZodNumber>;
+        cataloguePriceGbp: zod.ZodNullable<zod.ZodNumber>;
+    }, "strip", zod.ZodTypeAny, {
+        slug: string;
+        name: string;
+        productionPriceGbp: number | null;
+        cataloguePriceGbp: number | null;
+    }, {
+        slug: string;
+        name: string;
+        productionPriceGbp: number | null;
+        cataloguePriceGbp: number | null;
+    }>, "many">;
+    sourceOnlySlugs: zod.ZodArray<zod.ZodString, "many">;
+    productionOnlySlugs: zod.ZodArray<zod.ZodString, "many">;
+    confirmationToken: zod.ZodString;
+    confirmationExpiresAt: zod.ZodDate;
+}, "strip", zod.ZodTypeAny, {
+    sourceCount: number;
+    productionCount: number;
+    matchedCount: number;
+    unchangedCount: number;
+    changes: {
+        slug: string;
+        name: string;
+        productionPriceGbp: number | null;
+        cataloguePriceGbp: number | null;
+    }[];
+    sourceOnlySlugs: string[];
+    productionOnlySlugs: string[];
+    confirmationToken: string;
+    confirmationExpiresAt: Date;
+}, {
+    sourceCount: number;
+    productionCount: number;
+    matchedCount: number;
+    unchangedCount: number;
+    changes: {
+        slug: string;
+        name: string;
+        productionPriceGbp: number | null;
+        cataloguePriceGbp: number | null;
+    }[];
+    sourceOnlySlugs: string[];
+    productionOnlySlugs: string[];
+    confirmationToken: string;
+    confirmationExpiresAt: Date;
+}>;
+/**
+ * @summary Apply an explicitly confirmed price-only catalogue sync
+ */
+export declare const applyCatalogPriceSyncBodyChangesMax = 1000;
+export declare const ApplyCatalogPriceSyncBody: zod.ZodObject<{
+    changes: zod.ZodArray<zod.ZodObject<{
+        slug: zod.ZodString;
+        name: zod.ZodString;
+        productionPriceGbp: zod.ZodNullable<zod.ZodNumber>;
+        cataloguePriceGbp: zod.ZodNullable<zod.ZodNumber>;
+    }, "strip", zod.ZodTypeAny, {
+        slug: string;
+        name: string;
+        productionPriceGbp: number | null;
+        cataloguePriceGbp: number | null;
+    }, {
+        slug: string;
+        name: string;
+        productionPriceGbp: number | null;
+        cataloguePriceGbp: number | null;
+    }>, "many">;
+    confirmationToken: zod.ZodString;
+}, "strip", zod.ZodTypeAny, {
+    changes: {
+        slug: string;
+        name: string;
+        productionPriceGbp: number | null;
+        cataloguePriceGbp: number | null;
+    }[];
+    confirmationToken: string;
+}, {
+    changes: {
+        slug: string;
+        name: string;
+        productionPriceGbp: number | null;
+        cataloguePriceGbp: number | null;
+    }[];
+    confirmationToken: string;
+}>;
+export declare const ApplyCatalogPriceSyncResponse: zod.ZodObject<{
+    updatedCount: zod.ZodNumber;
+    updatedSlugs: zod.ZodArray<zod.ZodString, "many">;
+}, "strip", zod.ZodTypeAny, {
+    updatedCount: number;
+    updatedSlugs: string[];
+}, {
+    updatedCount: number;
+    updatedSlugs: string[];
+}>;
+/**
  * @summary Get a single catalog product
  */
 export declare const GetCatalogProductParams: zod.ZodObject<{

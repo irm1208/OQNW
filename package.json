@@ -7,7 +7,8 @@
     "build": "pnpm run typecheck && pnpm run check:api-drift && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
-    "check:api-drift": "pnpm --filter @workspace/scripts run check:api-drift"
+    "check:api-drift": "pnpm --filter @workspace/scripts run check:api-drift",
+    "sync:production-prices": "pnpm --filter @workspace/scripts run sync:production-prices"
   },
   "private": true,
   "devDependencies": {

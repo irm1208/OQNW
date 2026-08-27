@@ -13,7 +13,7 @@ type ProductsContextType = {
 const ProductsContext = createContext<ProductsContextType>({
   products: staticProducts,
   productDetails: staticProductDetails,
-  loading: false,
+  loading: true,
 });
 
 type ApiProduct = {
@@ -57,7 +57,7 @@ for (const p of staticProducts) {
 
 export function ProductsProvider({ children }: { children: ReactNode }) {
   const [products, setProducts] = useState<Product[]>(staticProducts);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const isMountedRef = useRef(false);
   const latestRequestRef = useRef(0);
 

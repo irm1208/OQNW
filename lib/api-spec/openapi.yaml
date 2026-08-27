@@ -655,6 +655,62 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiError"
 
+  /admin/catalog/price-sync/preview:
+    post:
+      operationId: previewCatalogPriceSync
+      tags: [admin-catalog]
+      summary: Preview a slug-keyed price-only catalogue sync
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CatalogPriceSyncPreviewRequest"
+      responses:
+        "200":
+          description: Reviewable production price diff
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogPriceSyncPreview"
+        "400":
+          description: Invalid price rows
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /admin/catalog/price-sync/apply:
+    post:
+      operationId: applyCatalogPriceSync
+      tags: [admin-catalog]
+      summary: Apply an explicitly confirmed price-only catalogue sync
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CatalogPriceSyncApplyRequest"
+      responses:
+        "200":
+          description: Confirmed production prices updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogPriceSyncApplyResponse"
+        "400":
+          description: Invalid or unconfirmed price diff
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "409":
+          description: A production price changed after preview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
   /admin/catalog/{id}:
     get:
       operationId: getCatalogProduct
@@ -1424,6 +1480,93 @@ components:
                 type: string
               name:
                 type: string
+
+    CatalogPrice:
+      type: object
+      required: [slug, priceGbp]
+      properties:
+        slug:
+          type: string
+        priceGbp:
+          type: ["number", "null"]
+
+    CatalogPriceChange:
+      type: object
+      required: [slug, name, productionPriceGbp, cataloguePriceGbp]
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        productionPriceGbp:
+          type: ["number", "null"]
+        cataloguePriceGbp:
+          type: ["number", "null"]
+
+    CatalogPriceSyncPreviewRequest:
+      type: object
+      required: [prices]
+      properties:
+        prices:
+          type: array
+          maxItems: 1000
+          items:
+            $ref: "#/components/schemas/CatalogPrice"
+
+    CatalogPriceSyncPreview:
+      type: object
+      required:
+        [sourceCount, productionCount, matchedCount, unchangedCount, changes,
+         sourceOnlySlugs, productionOnlySlugs, confirmationToken, confirmationExpiresAt]
+      properties:
+        sourceCount:
+          type: integer
+        productionCount:
+          type: integer
+        matchedCount:
+          type: integer
+        unchangedCount:
+          type: integer
+        changes:
+          type: array
+          items:
+            $ref: "#/components/schemas/CatalogPriceChange"
+        sourceOnlySlugs:
+          type: array
+          items:
+            type: string
+        productionOnlySlugs:
+          type: array
+          items:
+            type: string
+        confirmationToken:
+          type: string
+        confirmationExpiresAt:
+          type: string
+          format: date-time
+
+    CatalogPriceSyncApplyRequest:
+      type: object
+      required: [changes, confirmationToken]
+      properties:
+        changes:
+          type: array
+          maxItems: 1000
+          items:
+            $ref: "#/components/schemas/CatalogPriceChange"
+        confirmationToken:
+          type: string
+
+    CatalogPriceSyncApplyResponse:
+      type: object
+      required: [updatedCount, updatedSlugs]
+      properties:
+        updatedCount:
+          type: integer
+        updatedSlugs:
+          type: array
+          items:
+            type: string
 
     CatalogProductInput:
       type: object

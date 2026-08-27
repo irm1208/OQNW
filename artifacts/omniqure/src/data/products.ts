@@ -19,46 +19,6 @@ export function isHiddenCategory(category?: string | null): boolean {
   return !!category && HIDDEN_CATEGORIES.includes(category);
 }
 
-// Individual-vial prices supplied in the OmniUK price sheet (February 2026).
-// Products that are not listed retain their existing price.
-const PRICE_SHEET_OVERRIDES: Record<string, number> = {
-  "5-amino-1q-50mg": 18,
-  "ara-290-16mg": 15,
-  "bpc-157-tb-500-blend-10mg": 18,
-  "bpc-157-10mg": 8,
-  "cjc-1295-no-dac-ipamorelin-5mg": 20,
-  "cagrilintide-5mg": 25,
-  "cagrilintide-10mg": 35,
-  "dsip-10mg": 8,
-  "epithalon-10mg": 10,
-  "ghk-cu-100mg": 12,
-  "klow-blend-80mg": 35,
-  "kisspeptin-10-10mg": 12,
-  "kpv-10mg": 12,
-  "ll-37-5mg": 18,
-  "mots-c-10mg": 12,
-  "mots-c-20mg": 22,
-  "melanotan-2-10mg": 10,
-  "nad-plus-500mg": 25,
-  "oxytocin-10mg": 12,
-  "pe-22-28-10mg": 15,
-  "retatrutide-30mg": 40,
-  "retatrutide-40mg": 50,
-  "ss-31-10mg": 18,
-  "ss-31-30mg": 30,
-  "semax-10mg": 10,
-  "selank-10mg": 10,
-  "semax-selank-blend-20mg": 20,
-  "tb-500-5mg": 12,
-  "tb-500-10mg": 22,
-  "tesamorelin-20mg": 45,
-  "thymosin-alpha-1-10mg": 25,
-  "tirzepatide-30mg": 25,
-  "tirzepatide-45mg": 35,
-  "tirzepatide-60mg": 45,
-  "vip-10mg": 20,
-};
-
 export const products: Product[] = [
   { id: "1",  name: "AOD-9604 5mg",                          slug: "aod-9604-5mg",                         price: 55,  image: "/products/1.jpg",  category: "Growth Peptides" },
   { id: "2",  name: "AOD-9604 10mg",                         slug: "aod-9604-10mg",                        price: 95,  image: "/products/2.jpg",  category: "Growth Peptides" },
@@ -139,5 +99,7 @@ export const products: Product[] = [
   { id: "85", name: "CJC-1295 No DAC + Ipamorelin 5mg",     slug: "cjc-1295-no-dac-ipamorelin-5mg",       price: 95,  image: "/products/85.jpg", category: "Growth Hormone" },
 ].map((product) => ({
   ...product,
-  price: PRICE_SHEET_OVERRIDES[product.slug] ?? product.price,
+  // Static records are metadata-only fallbacks. A price must come from the
+  // catalogue API so an old bundle can never override an admin-set price.
+  price: null,
 }));

@@ -2,7 +2,7 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { productsCatalogTable, productsInventoryTable } from "@workspace/db";
-import { eq, ilike, and, ne, notInArray } from "drizzle-orm";
+import { eq, ilike, and, ne, notInArray, isNull } from "drizzle-orm";
 import { seedProductsCatalog } from "../../lib/seed-catalog";
 import { seedReviews } from "../../lib/seed-reviews";
 import { hasJanoshikReport, JANOSHIK_REPORTED_PRODUCT_SLUGS } from "../../lib/janoshikReports";
@@ -11,8 +11,18 @@ import {
   RETIRED_PRODUCT_SLUGS,
   retireRemovedProducts,
 } from "../../lib/retiredProducts";
+import {
+  buildCatalogPricePreview,
+  CatalogPriceInputError,
+  createPriceSyncConfirmationToken,
+  parseApprovedPriceChanges,
+  parseCataloguePrices,
+  verifyPriceSyncConfirmationToken,
+} from "../../lib/catalogPriceSync";
+import { hasSecureAdminSession } from "./auth";
 
 const router = Router();
+const PRICE_SYNC_CONFIRMATION_TTL_MS = 10 * 60 * 1000;
 
 function requireAdmin(req: Request, res: Response): boolean {
   if (req.cookies?.admin_session !== "authenticated") {
@@ -20,6 +30,23 @@ function requireAdmin(req: Request, res: Response): boolean {
     return false;
   }
   return true;
+}
+
+function requireSecureAdmin(req: Request, res: Response): boolean {
+  if (!hasSecureAdminSession(req)) {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+
+function priceSyncSecret(res: Response): string | null {
+  const secret = process.env.SESSION_SECRET;
+  if (!secret) {
+    res.status(503).json({ error: "Price sync is unavailable because secure session signing is not configured" });
+    return null;
+  }
+  return secret;
 }
 
 function catalogToResponse(p: typeof productsCatalogTable.$inferSelect) {
@@ -132,26 +159,9 @@ router.get("/admin/catalog", async (req: Request, res: Response): Promise<void> 
     if (search) conditions.push(ilike(productsCatalogTable.name, `%${search}%`));
     if (category) conditions.push(eq(productsCatalogTable.category, category));
 
-    const where = conditions.length > 0 ? and(...conditions) : undefined;
     const products = await db
-      .select({
-        id: productsCatalogTable.id,
-        slug: productsCatalogTable.slug,
-        name: productsCatalogTable.name,
-        category: productsCatalogTable.category,
-        priceGbp: productsCatalogTable.priceGbp,
-        shortDescription: productsCatalogTable.shortDescription,
-        description: productsCatalogTable.description,
-        imageUrl: productsCatalogTable.imageUrl,
-        purity: productsCatalogTable.purity,
-        seoTitle: productsCatalogTable.seoTitle,
-        seoDescription: productsCatalogTable.seoDescription,
-        isFeatured: productsCatalogTable.isFeatured,
-        stockLevel: productsInventoryTable.stockLevel,
-        inventoryPublished: productsInventoryTable.isPublished,
-      })
+      .select()
       .from(productsCatalogTable)
-      .leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id))
       .where(and(...conditions))
       .orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
     res.status(200).json(products.map(catalogToResponse));
@@ -218,6 +228,109 @@ router.post("/admin/catalog/enable-all-peptides", async (req: Request, res: Resp
   }
 });
 
+// POST /api/admin/catalog/price-sync/preview
+// The caller supplies the development catalogue's slug/price rows. This route
+// compares them with the current environment without changing either catalogue.
+router.post("/admin/catalog/price-sync/preview", async (req: Request, res: Response): Promise<void> => {
+  if (!requireSecureAdmin(req, res)) return;
+  const secret = priceSyncSecret(res);
+  if (!secret) return;
+  try {
+    const sourcePrices = parseCataloguePrices((req.body as { prices?: unknown })?.prices);
+    const currentPrices = await db
+      .select({
+        slug: productsCatalogTable.slug,
+        name: productsCatalogTable.name,
+        priceGbp: productsCatalogTable.priceGbp,
+      })
+      .from(productsCatalogTable)
+      .orderBy(productsCatalogTable.slug);
+
+    const preview = buildCatalogPricePreview(sourcePrices, currentPrices);
+    const confirmationExpiresAt = Date.now() + PRICE_SYNC_CONFIRMATION_TTL_MS;
+    res.status(200).json({
+      ...preview,
+      confirmationToken: createPriceSyncConfirmationToken(
+        preview.changes,
+        secret,
+        confirmationExpiresAt,
+      ),
+      confirmationExpiresAt: new Date(confirmationExpiresAt).toISOString(),
+    });
+  } catch (err) {
+    if (err instanceof CatalogPriceInputError) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    req.log.error({ err }, "Failed to preview catalog price sync");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+class CatalogPriceSyncConflict extends Error {
+  constructor(readonly slug: string) {
+    super(`Production price changed after preview for ${slug}`);
+  }
+}
+
+// POST /api/admin/catalog/price-sync/apply
+// Applies only the exact reviewed price changes. Slugs must already exist and
+// each production price must still match the preview, otherwise all changes roll back.
+router.post("/admin/catalog/price-sync/apply", async (req: Request, res: Response): Promise<void> => {
+  if (!requireSecureAdmin(req, res)) return;
+  const secret = priceSyncSecret(res);
+  if (!secret) return;
+  try {
+    const body = req.body as { changes?: unknown; confirmationToken?: unknown };
+    const changes = parseApprovedPriceChanges(body?.changes);
+    if (!verifyPriceSyncConfirmationToken(body?.confirmationToken, changes, secret)) {
+      res.status(400).json({ error: "The confirmation token is invalid, expired, or does not match the reviewed price diff" });
+      return;
+    }
+
+    const updatedSlugs = await db.transaction(async (tx) => {
+      const slugs: string[] = [];
+      for (const change of changes) {
+        const currentPriceCondition = change.productionPriceGbp === null
+          ? isNull(productsCatalogTable.priceGbp)
+          : eq(productsCatalogTable.priceGbp, String(change.productionPriceGbp));
+        const [updated] = await tx
+          .update(productsCatalogTable)
+          .set({
+            priceGbp: change.cataloguePriceGbp === null ? null : String(change.cataloguePriceGbp),
+          })
+          .where(and(
+            eq(productsCatalogTable.slug, change.slug),
+            currentPriceCondition,
+          ))
+          .returning({ slug: productsCatalogTable.slug });
+        if (!updated) throw new CatalogPriceSyncConflict(change.slug);
+        slugs.push(updated.slug);
+      }
+      return slugs;
+    });
+
+    res.status(200).json({
+      updatedCount: updatedSlugs.length,
+      updatedSlugs,
+    });
+  } catch (err) {
+    if (err instanceof CatalogPriceInputError) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    if (err instanceof CatalogPriceSyncConflict) {
+      res.status(409).json({
+        error: err.message,
+        slug: err.slug,
+      });
+      return;
+    }
+    req.log.error({ err }, "Failed to apply catalog price sync");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // GET /api/admin/catalog/:id
 router.get("/admin/catalog/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
@@ -225,15 +338,11 @@ router.get("/admin/catalog/:id", async (req: Request, res: Response): Promise<vo
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
   try {
     const [product] = await db
-      .select({
-        product: productsCatalogTable,
-        inventoryPublished: productsInventoryTable.isPublished,
-      })
+      .select()
       .from(productsCatalogTable)
-      .leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id))
       .where(
         and(
-          eq(productsCatalogTable.slug, slug),
+          eq(productsCatalogTable.id, id),
           eq(productsCatalogTable.isPublished, true)
         )
       );

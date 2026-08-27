@@ -6,7 +6,11 @@
   "scripts": {
     "hello": "tsx ./src/hello.ts",
     "check:api-drift": "tsx ./src/check-api-drift.ts",
+    "sync:production-prices": "tsx ./src/sync-production-catalogue-prices.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@workspace/db": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "catalog:",

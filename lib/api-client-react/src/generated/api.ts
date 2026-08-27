@@ -23,6 +23,10 @@ import type {
   AdminSession,
   AdminWallidTestPaymentSession,
   ApiError,
+  CatalogPriceSyncApplyRequest,
+  CatalogPriceSyncApplyResponse,
+  CatalogPriceSyncPreview,
+  CatalogPriceSyncPreviewRequest,
   CatalogProduct,
   CatalogProductInput,
   CatalogProductPatch,
@@ -2460,6 +2464,183 @@ export const useEnableAllPeptideCatalogProducts = <
   return useMutation(
     getEnableAllPeptideCatalogProductsMutationOptions(options),
   );
+};
+
+/**
+ * @summary Preview a slug-keyed price-only catalogue sync
+ */
+export const getPreviewCatalogPriceSyncUrl = () => {
+  return `/api/admin/catalog/price-sync/preview`;
+};
+
+export const previewCatalogPriceSync = async (
+  catalogPriceSyncPreviewRequest: CatalogPriceSyncPreviewRequest,
+  options?: RequestInit,
+): Promise<CatalogPriceSyncPreview> => {
+  return customFetch<CatalogPriceSyncPreview>(getPreviewCatalogPriceSyncUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(catalogPriceSyncPreviewRequest),
+  });
+};
+
+export const getPreviewCatalogPriceSyncMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof previewCatalogPriceSync>>,
+    TError,
+    { data: BodyType<CatalogPriceSyncPreviewRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof previewCatalogPriceSync>>,
+  TError,
+  { data: BodyType<CatalogPriceSyncPreviewRequest> },
+  TContext
+> => {
+  const mutationKey = ["previewCatalogPriceSync"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof previewCatalogPriceSync>>,
+    { data: BodyType<CatalogPriceSyncPreviewRequest> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return previewCatalogPriceSync(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PreviewCatalogPriceSyncMutationResult = NonNullable<
+  Awaited<ReturnType<typeof previewCatalogPriceSync>>
+>;
+export type PreviewCatalogPriceSyncMutationBody =
+  BodyType<CatalogPriceSyncPreviewRequest>;
+export type PreviewCatalogPriceSyncMutationError = ErrorType<ApiError>;
+
+/**
+ * @summary Preview a slug-keyed price-only catalogue sync
+ */
+export const usePreviewCatalogPriceSync = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof previewCatalogPriceSync>>,
+    TError,
+    { data: BodyType<CatalogPriceSyncPreviewRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof previewCatalogPriceSync>>,
+  TError,
+  { data: BodyType<CatalogPriceSyncPreviewRequest> },
+  TContext
+> => {
+  return useMutation(getPreviewCatalogPriceSyncMutationOptions(options));
+};
+
+/**
+ * @summary Apply an explicitly confirmed price-only catalogue sync
+ */
+export const getApplyCatalogPriceSyncUrl = () => {
+  return `/api/admin/catalog/price-sync/apply`;
+};
+
+export const applyCatalogPriceSync = async (
+  catalogPriceSyncApplyRequest: CatalogPriceSyncApplyRequest,
+  options?: RequestInit,
+): Promise<CatalogPriceSyncApplyResponse> => {
+  return customFetch<CatalogPriceSyncApplyResponse>(
+    getApplyCatalogPriceSyncUrl(),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(catalogPriceSyncApplyRequest),
+    },
+  );
+};
+
+export const getApplyCatalogPriceSyncMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof applyCatalogPriceSync>>,
+    TError,
+    { data: BodyType<CatalogPriceSyncApplyRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof applyCatalogPriceSync>>,
+  TError,
+  { data: BodyType<CatalogPriceSyncApplyRequest> },
+  TContext
+> => {
+  const mutationKey = ["applyCatalogPriceSync"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof applyCatalogPriceSync>>,
+    { data: BodyType<CatalogPriceSyncApplyRequest> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return applyCatalogPriceSync(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ApplyCatalogPriceSyncMutationResult = NonNullable<
+  Awaited<ReturnType<typeof applyCatalogPriceSync>>
+>;
+export type ApplyCatalogPriceSyncMutationBody =
+  BodyType<CatalogPriceSyncApplyRequest>;
+export type ApplyCatalogPriceSyncMutationError = ErrorType<ApiError>;
+
+/**
+ * @summary Apply an explicitly confirmed price-only catalogue sync
+ */
+export const useApplyCatalogPriceSync = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof applyCatalogPriceSync>>,
+    TError,
+    { data: BodyType<CatalogPriceSyncApplyRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof applyCatalogPriceSync>>,
+  TError,
+  { data: BodyType<CatalogPriceSyncApplyRequest> },
+  TContext
+> => {
+  return useMutation(getApplyCatalogPriceSyncMutationOptions(options));
 };
 
 /**

@@ -44821,7 +44821,7 @@ var require_timing_safe_equal = __commonJS({
         throw new Error(msg);
       }
     }
-    function timingSafeEqual2(a, b) {
+    function timingSafeEqual3(a, b) {
       if (a.byteLength !== b.byteLength) {
         return false;
       }
@@ -44841,7 +44841,7 @@ var require_timing_safe_equal = __commonJS({
       }
       return out === 0;
     }
-    exports.timingSafeEqual = timingSafeEqual2;
+    exports.timingSafeEqual = timingSafeEqual3;
   }
 });
 
@@ -50213,6 +50213,49 @@ var EnableAllPeptideCatalogProductsResponse = objectType({
       name: stringType()
     })
   )
+});
+var previewCatalogPriceSyncBodyPricesMax = 1e3;
+var PreviewCatalogPriceSyncBody = objectType({
+  prices: arrayType(
+    objectType({
+      slug: stringType(),
+      priceGbp: numberType().nullable()
+    })
+  ).max(previewCatalogPriceSyncBodyPricesMax)
+});
+var PreviewCatalogPriceSyncResponse = objectType({
+  sourceCount: numberType(),
+  productionCount: numberType(),
+  matchedCount: numberType(),
+  unchangedCount: numberType(),
+  changes: arrayType(
+    objectType({
+      slug: stringType(),
+      name: stringType(),
+      productionPriceGbp: numberType().nullable(),
+      cataloguePriceGbp: numberType().nullable()
+    })
+  ),
+  sourceOnlySlugs: arrayType(stringType()),
+  productionOnlySlugs: arrayType(stringType()),
+  confirmationToken: stringType(),
+  confirmationExpiresAt: coerce.date()
+});
+var applyCatalogPriceSyncBodyChangesMax = 1e3;
+var ApplyCatalogPriceSyncBody = objectType({
+  changes: arrayType(
+    objectType({
+      slug: stringType(),
+      name: stringType(),
+      productionPriceGbp: numberType().nullable(),
+      cataloguePriceGbp: numberType().nullable()
+    })
+  ).max(applyCatalogPriceSyncBodyChangesMax),
+  confirmationToken: stringType()
+});
+var ApplyCatalogPriceSyncResponse = objectType({
+  updatedCount: numberType(),
+  updatedSlugs: arrayType(stringType())
 });
 var GetCatalogProductParams = objectType({
   id: coerce.number()
@@ -74450,15 +74493,15 @@ var JANOSHIK_REPORTED_PRODUCT_SLUGS = [
   "retatrutide-40mg"
 ];
 var janoshikReportedProductSlugs = new Set(JANOSHIK_REPORTED_PRODUCT_SLUGS);
-function hasJanoshikReport(slug2) {
-  return janoshikReportedProductSlugs.has(slug2);
+function hasJanoshikReport(slug) {
+  return janoshikReportedProductSlugs.has(slug);
 }
 
 // src/lib/retiredProducts.ts
 init_drizzle_orm();
 var RETIRED_PRODUCT_SLUGS = ["bacteriostatic-water-3ml"];
-function isRetiredProductSlug(slug2) {
-  return RETIRED_PRODUCT_SLUGS.includes(slug2);
+function isRetiredProductSlug(slug) {
+  return RETIRED_PRODUCT_SLUGS.includes(slug);
 }
 async function retireRemovedProducts() {
   const retired = await db.update(productsCatalogTable).set({ isPublished: false, isFeatured: false }).where(inArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS])).returning({ id: productsCatalogTable.id });
@@ -74468,14 +74511,167 @@ async function retireRemovedProducts() {
   return retired.length;
 }
 
+// src/lib/catalogPriceSync.ts
+import { createHash, createHmac as createHmac2, timingSafeEqual as timingSafeEqual2 } from "node:crypto";
+var CatalogPriceInputError = class extends Error {
+};
+var MAX_ROWS = 1e3;
+var MAX_PRICE_GBP = 9999999999e-2;
+function normalizePrice(value, label) {
+  if (value === null) return null;
+  if (typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > MAX_PRICE_GBP || Math.abs(value * 100 - Math.round(value * 100)) > 1e-7) {
+    throw new CatalogPriceInputError(`${label} must be null or a non-negative GBP amount with at most two decimal places`);
+  }
+  return Number(value.toFixed(2));
+}
+function normalizeSlug(value, label) {
+  if (typeof value !== "string" || value.trim() === "") {
+    throw new CatalogPriceInputError(`${label} must be a non-empty string`);
+  }
+  return value.trim();
+}
+function rejectDuplicateSlugs(rows) {
+  const seen = /* @__PURE__ */ new Set();
+  for (const row of rows) {
+    if (seen.has(row.slug)) {
+      throw new CatalogPriceInputError(`Duplicate slug: ${row.slug}`);
+    }
+    seen.add(row.slug);
+  }
+}
+function parseCataloguePrices(value) {
+  if (!Array.isArray(value) || value.length > MAX_ROWS) {
+    throw new CatalogPriceInputError(`prices must be an array containing at most ${MAX_ROWS} rows`);
+  }
+  const rows = value.map((row, index) => {
+    if (!row || typeof row !== "object") {
+      throw new CatalogPriceInputError(`prices[${index}] must be an object`);
+    }
+    const candidate = row;
+    return {
+      slug: normalizeSlug(candidate.slug, `prices[${index}].slug`),
+      priceGbp: normalizePrice(candidate.priceGbp, `prices[${index}].priceGbp`)
+    };
+  });
+  rejectDuplicateSlugs(rows);
+  return rows;
+}
+function parseApprovedPriceChanges(value) {
+  if (!Array.isArray(value) || value.length > MAX_ROWS) {
+    throw new CatalogPriceInputError(`changes must be an array containing at most ${MAX_ROWS} rows`);
+  }
+  const rows = value.map((row, index) => {
+    if (!row || typeof row !== "object") {
+      throw new CatalogPriceInputError(`changes[${index}] must be an object`);
+    }
+    const candidate = row;
+    const productionPriceGbp = normalizePrice(
+      candidate.productionPriceGbp,
+      `changes[${index}].productionPriceGbp`
+    );
+    const cataloguePriceGbp = normalizePrice(
+      candidate.cataloguePriceGbp,
+      `changes[${index}].cataloguePriceGbp`
+    );
+    if (productionPriceGbp === cataloguePriceGbp) {
+      throw new CatalogPriceInputError(`changes[${index}] does not change the price`);
+    }
+    return {
+      slug: normalizeSlug(candidate.slug, `changes[${index}].slug`),
+      name: normalizeSlug(candidate.name, `changes[${index}].name`),
+      productionPriceGbp,
+      cataloguePriceGbp
+    };
+  });
+  rejectDuplicateSlugs(rows);
+  return rows.sort((a, b) => a.slug.localeCompare(b.slug));
+}
+function priceSyncDiffDigest(changes) {
+  const canonical = changes.map(({ slug, productionPriceGbp, cataloguePriceGbp }) => ({
+    slug,
+    productionPriceGbp,
+    cataloguePriceGbp
+  })).sort((a, b) => a.slug.localeCompare(b.slug));
+  return createHash("sha256").update(JSON.stringify(canonical)).digest("hex");
+}
+function createPriceSyncConfirmationToken(changes, secret, expiresAt) {
+  const digest = priceSyncDiffDigest(changes);
+  const payload = `catalog-price-sync:${expiresAt}:${digest}`;
+  const signature = createHmac2("sha256", secret).update(payload).digest("base64url");
+  return `${expiresAt}.${digest}.${signature}`;
+}
+function verifyPriceSyncConfirmationToken(token, changes, secret, now = Date.now()) {
+  if (typeof token !== "string") return false;
+  const [expires, digest, signature] = token.split(".");
+  if (!/^\d+$/.test(expires) || !/^[a-f0-9]{64}$/.test(digest) || !signature) return false;
+  const expiresAt = Number(expires);
+  if (!Number.isSafeInteger(expiresAt) || expiresAt < now) return false;
+  const expectedDigest = priceSyncDiffDigest(changes);
+  if (digest !== expectedDigest) return false;
+  const payload = `catalog-price-sync:${expiresAt}:${digest}`;
+  const expected = createHmac2("sha256", secret).update(payload).digest("base64url");
+  return signature.length === expected.length && timingSafeEqual2(Buffer.from(signature), Buffer.from(expected));
+}
+function buildCatalogPricePreview(cataloguePrices, productionPrices) {
+  const sourceBySlug = new Map(cataloguePrices.map((row) => [row.slug, row]));
+  const productionBySlug = new Map(productionPrices.map((row) => [row.slug, row]));
+  const changes = [];
+  let matchedCount = 0;
+  let unchangedCount = 0;
+  for (const source of cataloguePrices) {
+    const production = productionBySlug.get(source.slug);
+    if (!production) continue;
+    matchedCount += 1;
+    const productionPriceGbp = production.priceGbp === null ? null : Number(production.priceGbp);
+    if (productionPriceGbp === source.priceGbp) {
+      unchangedCount += 1;
+      continue;
+    }
+    changes.push({
+      slug: source.slug,
+      name: production.name,
+      productionPriceGbp,
+      cataloguePriceGbp: source.priceGbp
+    });
+  }
+  changes.sort((a, b) => a.slug.localeCompare(b.slug));
+  const sourceOnlySlugs = cataloguePrices.filter((row) => !productionBySlug.has(row.slug)).map((row) => row.slug).sort();
+  const productionOnlySlugs = productionPrices.filter((row) => !sourceBySlug.has(row.slug)).map((row) => row.slug).sort();
+  return {
+    sourceCount: cataloguePrices.length,
+    productionCount: productionPrices.length,
+    matchedCount,
+    unchangedCount,
+    changes,
+    sourceOnlySlugs,
+    productionOnlySlugs
+  };
+}
+
 // src/routes/admin/catalog.ts
 var router10 = (0, import_express10.Router)();
+var PRICE_SYNC_CONFIRMATION_TTL_MS = 10 * 60 * 1e3;
 function requireAdmin8(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
+}
+function requireSecureAdmin(req, res) {
+  if (!hasSecureAdminSession(req)) {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+function priceSyncSecret(res) {
+  const secret = process.env.SESSION_SECRET;
+  if (!secret) {
+    res.status(503).json({ error: "Price sync is unavailable because secure session signing is not configured" });
+    return null;
+  }
+  return secret;
 }
 function catalogToResponse(p) {
   return {
@@ -74557,23 +74753,7 @@ router10.get("/admin/catalog", async (req, res) => {
     ];
     if (search) conditions.push(ilike(productsCatalogTable.name, `%${search}%`));
     if (category) conditions.push(eq(productsCatalogTable.category, category));
-    const where = conditions.length > 0 ? and(...conditions) : void 0;
-    const products = await db.select({
-      id: productsCatalogTable.id,
-      slug: productsCatalogTable.slug,
-      name: productsCatalogTable.name,
-      category: productsCatalogTable.category,
-      priceGbp: productsCatalogTable.priceGbp,
-      shortDescription: productsCatalogTable.shortDescription,
-      description: productsCatalogTable.description,
-      imageUrl: productsCatalogTable.imageUrl,
-      purity: productsCatalogTable.purity,
-      seoTitle: productsCatalogTable.seoTitle,
-      seoDescription: productsCatalogTable.seoDescription,
-      isFeatured: productsCatalogTable.isFeatured,
-      stockLevel: productsInventoryTable.stockLevel,
-      inventoryPublished: productsInventoryTable.isPublished
-    }).from(productsCatalogTable).leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id)).where(and(...conditions)).orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
+    const products = await db.select().from(productsCatalogTable).where(and(...conditions)).orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
     res.status(200).json(products.map(catalogToResponse));
   } catch (err) {
     req.log.error({ err }, "Failed to list catalog products");
@@ -74623,6 +74803,89 @@ router10.post("/admin/catalog/enable-all-peptides", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+router10.post("/admin/catalog/price-sync/preview", async (req, res) => {
+  if (!requireSecureAdmin(req, res)) return;
+  const secret = priceSyncSecret(res);
+  if (!secret) return;
+  try {
+    const sourcePrices = parseCataloguePrices(req.body?.prices);
+    const currentPrices = await db.select({
+      slug: productsCatalogTable.slug,
+      name: productsCatalogTable.name,
+      priceGbp: productsCatalogTable.priceGbp
+    }).from(productsCatalogTable).orderBy(productsCatalogTable.slug);
+    const preview = buildCatalogPricePreview(sourcePrices, currentPrices);
+    const confirmationExpiresAt = Date.now() + PRICE_SYNC_CONFIRMATION_TTL_MS;
+    res.status(200).json({
+      ...preview,
+      confirmationToken: createPriceSyncConfirmationToken(
+        preview.changes,
+        secret,
+        confirmationExpiresAt
+      ),
+      confirmationExpiresAt: new Date(confirmationExpiresAt).toISOString()
+    });
+  } catch (err) {
+    if (err instanceof CatalogPriceInputError) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    req.log.error({ err }, "Failed to preview catalog price sync");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+var CatalogPriceSyncConflict = class extends Error {
+  constructor(slug) {
+    super(`Production price changed after preview for ${slug}`);
+    this.slug = slug;
+  }
+};
+router10.post("/admin/catalog/price-sync/apply", async (req, res) => {
+  if (!requireSecureAdmin(req, res)) return;
+  const secret = priceSyncSecret(res);
+  if (!secret) return;
+  try {
+    const body = req.body;
+    const changes = parseApprovedPriceChanges(body?.changes);
+    if (!verifyPriceSyncConfirmationToken(body?.confirmationToken, changes, secret)) {
+      res.status(400).json({ error: "The confirmation token is invalid, expired, or does not match the reviewed price diff" });
+      return;
+    }
+    const updatedSlugs = await db.transaction(async (tx) => {
+      const slugs = [];
+      for (const change of changes) {
+        const currentPriceCondition = change.productionPriceGbp === null ? isNull(productsCatalogTable.priceGbp) : eq(productsCatalogTable.priceGbp, String(change.productionPriceGbp));
+        const [updated] = await tx.update(productsCatalogTable).set({
+          priceGbp: change.cataloguePriceGbp === null ? null : String(change.cataloguePriceGbp)
+        }).where(and(
+          eq(productsCatalogTable.slug, change.slug),
+          currentPriceCondition
+        )).returning({ slug: productsCatalogTable.slug });
+        if (!updated) throw new CatalogPriceSyncConflict(change.slug);
+        slugs.push(updated.slug);
+      }
+      return slugs;
+    });
+    res.status(200).json({
+      updatedCount: updatedSlugs.length,
+      updatedSlugs
+    });
+  } catch (err) {
+    if (err instanceof CatalogPriceInputError) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    if (err instanceof CatalogPriceSyncConflict) {
+      res.status(409).json({
+        error: err.message,
+        slug: err.slug
+      });
+      return;
+    }
+    req.log.error({ err }, "Failed to apply catalog price sync");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 router10.get("/admin/catalog/:id", async (req, res) => {
   if (!requireAdmin8(req, res)) return;
   const id = Number(req.params.id);
@@ -74631,12 +74894,9 @@ router10.get("/admin/catalog/:id", async (req, res) => {
     return;
   }
   try {
-    const [product] = await db.select({
-      product: productsCatalogTable,
-      inventoryPublished: productsInventoryTable.isPublished
-    }).from(productsCatalogTable).leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id)).where(
+    const [product] = await db.select().from(productsCatalogTable).where(
       and(
-        eq(productsCatalogTable.slug, slug),
+        eq(productsCatalogTable.id, id),
         eq(productsCatalogTable.isPublished, true)
       )
     );
@@ -74833,8 +75093,8 @@ router10.get("/products", async (req, res) => {
 });
 router10.get("/products/:slug", async (req, res) => {
   try {
-    const slug2 = String(req.params.slug);
-    if (isRetiredProductSlug(slug2)) {
+    const slug = String(req.params.slug);
+    if (isRetiredProductSlug(slug)) {
       res.status(404).json({ error: "Product not found" });
       return;
     }
@@ -74843,7 +75103,7 @@ router10.get("/products/:slug", async (req, res) => {
       inventoryPublished: productsInventoryTable.isPublished
     }).from(productsCatalogTable).leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id)).where(
       and(
-        eq(productsCatalogTable.slug, slug2),
+        eq(productsCatalogTable.slug, slug),
         eq(productsCatalogTable.isPublished, true)
       )
     );
@@ -76166,11 +76426,11 @@ router21.post("/admin/blog/posts", async (req, res) => {
     return;
   }
   const baseSlug = slugify(title);
-  const slug2 = `${baseSlug}-${Date.now().toString(36)}`;
+  const slug = `${baseSlug}-${Date.now().toString(36)}`;
   try {
     const [created] = await db.insert(blogPostsTable).values({
       title,
-      slug: slug2,
+      slug,
       excerpt: excerpt ?? null,
       content: content ?? "",
       author: author ?? "OmniQure Team",
@@ -81856,13 +82116,13 @@ router41.get("/blog/posts", async (req, res) => {
   }
 });
 router41.get("/blog/posts/:slug", async (req, res) => {
-  const slug2 = firstString(req.params.slug);
-  if (!slug2) {
+  const slug = firstString(req.params.slug);
+  if (!slug) {
     res.status(400).json({ error: "Invalid slug" });
     return;
   }
   try {
-    const [post] = await db.select().from(blogPostsTable).where(and(eq(blogPostsTable.slug, slug2), eq(blogPostsTable.status, "published"))).limit(1);
+    const [post] = await db.select().from(blogPostsTable).where(and(eq(blogPostsTable.slug, slug), eq(blogPostsTable.status, "published"))).limit(1);
     if (!post) {
       res.status(404).json({ error: "Post not found" });
       return;

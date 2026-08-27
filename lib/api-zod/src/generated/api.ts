@@ -568,6 +568,65 @@ export const EnableAllPeptideCatalogProductsResponse = zod.object({
 });
 
 /**
+ * @summary Preview a slug-keyed price-only catalogue sync
+ */
+export const previewCatalogPriceSyncBodyPricesMax = 1000;
+
+export const PreviewCatalogPriceSyncBody = zod.object({
+  prices: zod
+    .array(
+      zod.object({
+        slug: zod.string(),
+        priceGbp: zod.number().nullable(),
+      }),
+    )
+    .max(previewCatalogPriceSyncBodyPricesMax),
+});
+
+export const PreviewCatalogPriceSyncResponse = zod.object({
+  sourceCount: zod.number(),
+  productionCount: zod.number(),
+  matchedCount: zod.number(),
+  unchangedCount: zod.number(),
+  changes: zod.array(
+    zod.object({
+      slug: zod.string(),
+      name: zod.string(),
+      productionPriceGbp: zod.number().nullable(),
+      cataloguePriceGbp: zod.number().nullable(),
+    }),
+  ),
+  sourceOnlySlugs: zod.array(zod.string()),
+  productionOnlySlugs: zod.array(zod.string()),
+  confirmationToken: zod.string(),
+  confirmationExpiresAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Apply an explicitly confirmed price-only catalogue sync
+ */
+export const applyCatalogPriceSyncBodyChangesMax = 1000;
+
+export const ApplyCatalogPriceSyncBody = zod.object({
+  changes: zod
+    .array(
+      zod.object({
+        slug: zod.string(),
+        name: zod.string(),
+        productionPriceGbp: zod.number().nullable(),
+        cataloguePriceGbp: zod.number().nullable(),
+      }),
+    )
+    .max(applyCatalogPriceSyncBodyChangesMax),
+  confirmationToken: zod.string(),
+});
+
+export const ApplyCatalogPriceSyncResponse = zod.object({
+  updatedCount: zod.number(),
+  updatedSlugs: zod.array(zod.string()),
+});
+
+/**
  * @summary Get a single catalog product
  */
 export const GetCatalogProductParams = zod.object({

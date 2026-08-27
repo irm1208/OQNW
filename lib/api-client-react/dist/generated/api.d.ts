@@ -1,5 +1,5 @@
 import type { QueryKey, UseMutationOptions, UseMutationResult, UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import type { AdminCryptoTestPaymentSession, AdminLoginInput, AdminProduct, AdminSession, AdminWallidTestPaymentSession, ApiError, CatalogProduct, CatalogProductInput, CatalogProductPatch, CategoryRevenue, CustomerDetail, CustomerList, DashboardStats, DisableCatalogProductsWithoutJanoshikReportResponse, DiscountCode, DiscountCodeInput, DiscountCodePatch, EnableAllPeptideCatalogProductsResponse, GetNewCustomersChartParams, GetRevenueChartParams, HealthStatus, InventoryUpdate, ListAdminCustomersParams, ListAdminOrdersParams, ListAdminProductsParams, ListCatalogProductsParams, ListPublicProductsParams, NewCustomerDataPoint, Order, OrderDetail, OrderList, OrderStatusCount, OrderUpdate, PublicProduct, PublicProductDetail, RevenueDataPoint, TopProduct, VisibilityUpdate } from "./api.schemas";
+import type { AdminCryptoTestPaymentSession, AdminLoginInput, AdminProduct, AdminSession, AdminWallidTestPaymentSession, ApiError, CatalogPriceSyncApplyRequest, CatalogPriceSyncApplyResponse, CatalogPriceSyncPreview, CatalogPriceSyncPreviewRequest, CatalogProduct, CatalogProductInput, CatalogProductPatch, CategoryRevenue, CustomerDetail, CustomerList, DashboardStats, DisableCatalogProductsWithoutJanoshikReportResponse, DiscountCode, DiscountCodeInput, DiscountCodePatch, EnableAllPeptideCatalogProductsResponse, GetNewCustomersChartParams, GetRevenueChartParams, HealthStatus, InventoryUpdate, ListAdminCustomersParams, ListAdminOrdersParams, ListAdminProductsParams, ListCatalogProductsParams, ListPublicProductsParams, NewCustomerDataPoint, Order, OrderDetail, OrderList, OrderStatusCount, OrderUpdate, PublicProduct, PublicProductDetail, RevenueDataPoint, TopProduct, VisibilityUpdate } from "./api.schemas";
 import { customFetch } from "../custom-fetch";
 import type { ErrorType, BodyType } from "../custom-fetch";
 type AwaitedInput<T> = PromiseLike<T> | T;
@@ -671,6 +671,60 @@ export declare const useEnableAllPeptideCatalogProducts: <TError = ErrorType<Api
     mutation?: UseMutationOptions<Awaited<ReturnType<typeof enableAllPeptideCatalogProducts>>, TError, void, TContext>;
     request?: SecondParameter<typeof customFetch>;
 }) => UseMutationResult<Awaited<ReturnType<typeof enableAllPeptideCatalogProducts>>, TError, void, TContext>;
+/**
+ * @summary Preview a slug-keyed price-only catalogue sync
+ */
+export declare const getPreviewCatalogPriceSyncUrl: () => string;
+export declare const previewCatalogPriceSync: (catalogPriceSyncPreviewRequest: CatalogPriceSyncPreviewRequest, options?: RequestInit) => Promise<CatalogPriceSyncPreview>;
+export declare const getPreviewCatalogPriceSyncMutationOptions: <TError = ErrorType<ApiError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof previewCatalogPriceSync>>, TError, {
+        data: BodyType<CatalogPriceSyncPreviewRequest>;
+    }, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationOptions<Awaited<ReturnType<typeof previewCatalogPriceSync>>, TError, {
+    data: BodyType<CatalogPriceSyncPreviewRequest>;
+}, TContext>;
+export type PreviewCatalogPriceSyncMutationResult = NonNullable<Awaited<ReturnType<typeof previewCatalogPriceSync>>>;
+export type PreviewCatalogPriceSyncMutationBody = BodyType<CatalogPriceSyncPreviewRequest>;
+export type PreviewCatalogPriceSyncMutationError = ErrorType<ApiError>;
+/**
+ * @summary Preview a slug-keyed price-only catalogue sync
+ */
+export declare const usePreviewCatalogPriceSync: <TError = ErrorType<ApiError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof previewCatalogPriceSync>>, TError, {
+        data: BodyType<CatalogPriceSyncPreviewRequest>;
+    }, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationResult<Awaited<ReturnType<typeof previewCatalogPriceSync>>, TError, {
+    data: BodyType<CatalogPriceSyncPreviewRequest>;
+}, TContext>;
+/**
+ * @summary Apply an explicitly confirmed price-only catalogue sync
+ */
+export declare const getApplyCatalogPriceSyncUrl: () => string;
+export declare const applyCatalogPriceSync: (catalogPriceSyncApplyRequest: CatalogPriceSyncApplyRequest, options?: RequestInit) => Promise<CatalogPriceSyncApplyResponse>;
+export declare const getApplyCatalogPriceSyncMutationOptions: <TError = ErrorType<ApiError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof applyCatalogPriceSync>>, TError, {
+        data: BodyType<CatalogPriceSyncApplyRequest>;
+    }, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationOptions<Awaited<ReturnType<typeof applyCatalogPriceSync>>, TError, {
+    data: BodyType<CatalogPriceSyncApplyRequest>;
+}, TContext>;
+export type ApplyCatalogPriceSyncMutationResult = NonNullable<Awaited<ReturnType<typeof applyCatalogPriceSync>>>;
+export type ApplyCatalogPriceSyncMutationBody = BodyType<CatalogPriceSyncApplyRequest>;
+export type ApplyCatalogPriceSyncMutationError = ErrorType<ApiError>;
+/**
+ * @summary Apply an explicitly confirmed price-only catalogue sync
+ */
+export declare const useApplyCatalogPriceSync: <TError = ErrorType<ApiError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof applyCatalogPriceSync>>, TError, {
+        data: BodyType<CatalogPriceSyncApplyRequest>;
+    }, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationResult<Awaited<ReturnType<typeof applyCatalogPriceSync>>, TError, {
+    data: BodyType<CatalogPriceSyncApplyRequest>;
+}, TContext>;
 /**
  * @summary Get a single catalog product
  */
