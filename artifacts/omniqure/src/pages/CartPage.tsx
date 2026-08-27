@@ -820,7 +820,20 @@ export default function CartPage() {
             >
               <input type="radio" name="shipping" value={opt.id} checked={active}
                 onChange={() => setShipping(opt.id)}
-                style={{ marginTop: 2, accentColor: THEME.cta, flexShrink: 0 }} />
+                style={{
+                  appearance: "none",
+                  WebkitAppearance: "none",
+                  width: 18,
+                  height: 18,
+                  marginTop: 2,
+                  flexShrink: 0,
+                  border: `2px solid ${active ? THEME.cta : "#94A3B8"}`,
+                  borderRadius: "50%",
+                  backgroundColor: "#fff",
+                  boxShadow: active ? `inset 0 0 0 4px ${THEME.cta}` : "none",
+                  cursor: "pointer",
+                  transition: "border-color 0.15s, box-shadow 0.15s",
+                }} />
               <div style={{ flex: 1 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "14px", fontWeight: 600, color: THEME.text }}>{opt.displayLabel}</span>
@@ -1340,8 +1353,16 @@ export default function CartPage() {
         return;
       }
     }
-    if (paymentMethod === "crypto" && (!cryptoRoute || cryptoTestStatus === "invalid")) {
-      setPlaceError("Choose an available crypto route before placing the test order.");
+    if (paymentMethod === "crypto" && !cryptoRoute) {
+      setPlaceError("Choose an available crypto route before placing your order.");
+      return;
+    }
+    if (paymentMethod === "crypto" && isCryptoTestCheckout && cryptoTestStatus !== "active") {
+      setPlaceError(
+        cryptoTestStatus === "checking"
+          ? "Checking your crypto test link. Please wait a moment and try again."
+          : "This crypto test link is invalid or expired. Create a new link from the admin panel.",
+      );
       return;
     }
     setErrors({});
