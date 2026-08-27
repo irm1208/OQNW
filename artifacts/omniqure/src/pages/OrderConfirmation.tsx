@@ -103,6 +103,17 @@ function shortHash(value: string): string {
   return value.length > 22 ? `${value.slice(0, 12)}…${value.slice(-8)}` : value;
 }
 
+function formatCryptoAmount(value: string | number): string {
+  const raw = String(value).trim();
+  const match = raw.match(/^(-?)(\d+)(?:\.(\d+))?$/);
+  if (!match) return raw;
+
+  const sign = match[1];
+  const whole = match[2].replace(/^0+(?=\d)/, "");
+  const fraction = (match[3] ?? "").replace(/0+$/, "");
+  return `${sign}${whole}${fraction ? `.${fraction}` : ""}`;
+}
+
 export default function OrderConfirmation() {
   const [, navigate] = useLocation();
   const params = new URLSearchParams(window.location.search);
@@ -172,6 +183,10 @@ export default function OrderConfirmation() {
   const createdAt = orderSummary?.createdAt ? new Date(orderSummary.createdAt) : new Date();
   const delivery = new Date(createdAt);
   delivery.setDate(delivery.getDate() + (shippingMethod === "Next Day" ? 1 : shippingMethod === "Express" ? 2 : 5));
+  const displayedExpectedAmount = cryptoPayment ? formatCryptoAmount(cryptoPayment.expectedAmount) : "";
+  const displayedObservedAmount = cryptoPayment?.observedAmount
+    ? formatCryptoAmount(cryptoPayment.observedAmount)
+    : null;
   const qrValue = useMemo(() => {
     if (!cryptoPayment) return "";
     return cryptoPayment.network === "bitcoin"
@@ -313,7 +328,7 @@ export default function OrderConfirmation() {
 
                 {cryptoPayment.status === "confirmed" ? (
                   <div style={{ padding: 16, borderRadius: 10, background: "#ECFDF5", color: "#065F46", fontSize: 14, lineHeight: 1.55 }}>
-                    <strong>Payment confirmed.</strong> We verified {cryptoPayment.observedAmount ?? cryptoPayment.expectedAmount} {cryptoPayment.currency} with {cryptoPayment.confirmations ?? 0} confirmation(s). Your order can now be prepared for dispatch.
+                    <strong>Payment confirmed.</strong> We verified {displayedObservedAmount ?? displayedExpectedAmount} {cryptoPayment.currency} with {cryptoPayment.confirmations ?? 0} confirmation(s). Your order can now be prepared for dispatch.
                   </div>
                 ) : !cryptoPayment.txHash && (
                   <>
@@ -321,7 +336,7 @@ export default function OrderConfirmation() {
                       <QRCodeSVG value={qrValue} size={106} level="M" includeMargin />
                       <div>
                         <p style={{ fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 800, color: "#64748B", margin: "0 0 4px" }}>Exact amount to send</p>
-                        <p style={{ fontSize: 23, fontWeight: 900, color: "#0F172A", margin: 0 }}>{cryptoPayment.expectedAmount} <span style={{ fontSize: 14 }}>{cryptoPayment.currency}</span></p>
+                        <p style={{ fontSize: 23, fontWeight: 900, color: "#0F172A", margin: 0 }}>{displayedExpectedAmount} <span style={{ fontSize: 14 }}>{cryptoPayment.currency}</span></p>
                         <p style={{ fontSize: 12, color: rateExpired ? "#B91C1C" : "#475569", margin: "5px 0 0" }}>
                           {rateExpired ? "This rate lock has expired." : `Rate locked for about ${minutesRemaining} minute${minutesRemaining === 1 ? "" : "s"}.`}
                         </p>
@@ -358,7 +373,7 @@ export default function OrderConfirmation() {
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 12 }}>
                         {[
                           { label: "Asset & network", value: `${cryptoPayment.currency} · ${networkLabel(cryptoPayment.network)}` },
-                          { label: "Amount received", value: `${cryptoPayment.observedAmount ?? "Checking…"} ${cryptoPayment.currency}` },
+                          { label: "Amount received", value: `${displayedObservedAmount ?? "Checking…"} ${cryptoPayment.currency}` },
                           { label: "Confirmations", value: `${cryptoPayment.confirmations ?? 0} of ${cryptoPayment.confirmationsRequired}` },
                           { label: "Last verified", value: cryptoPayment.confirmedAt || cryptoPayment.lastCheckedAt ? new Date(cryptoPayment.confirmedAt ?? cryptoPayment.lastCheckedAt!).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" }) : "Awaiting check" },
                         ].map((item) => (
