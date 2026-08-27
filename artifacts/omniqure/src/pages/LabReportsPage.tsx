@@ -37,8 +37,12 @@ interface Report {
   url: string;
   isBlend?: boolean;
   purity?: number;
+  /** When a report contains multiple tested vials, display all reported values. */
+  purityLabel?: string;
   /** For blends: confirmed mass per component (mg) shown in place of purity */
   actualMass?: number;
+  /** When a report contains multiple tested vials, display all reported values. */
+  actualMassLabel?: string;
   verifyKey: string;
   image: string;
   /** Slugs of the matching product(s) in the catalogue. Report is hidden if
@@ -156,6 +160,8 @@ const REPORTS: Report[] = [
     name: "Tirzepatide",
     amount: "30mg",
     testNumber: "208603", purity: 99.924, actualMass: 37.99,
+    purityLabel: "99.924 / 99.791 / 99.790",
+    actualMassLabel: "37.99 / 33.76 / 33.70",
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/208603-Tirzepatide_30mg_V3ZBG39CVZPW",
     verifyKey: "V3ZBG39CVZPW", image: "/janoshik/208603.png",
@@ -165,7 +171,9 @@ const REPORTS: Report[] = [
     id: "cagrilintide-10mg",
     name: "Cagrilintide",
     amount: "10mg",
-    testNumber: "200664", purity: 99.868, actualMass: 11.23,
+    testNumber: "200664", purity: 99.952, actualMass: 10.05,
+    purityLabel: "99.952 / 99.922",
+    actualMassLabel: "10.05 / 10.32",
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/200664-Cag_10_XHPSD9IE65XR",
     verifyKey: "XHPSD9IE65XR", image: "/janoshik/200664.png",
@@ -175,7 +183,7 @@ const REPORTS: Report[] = [
     id: "retatrutide-40mg",
     name: "Retatrutide",
     amount: "40mg",
-    testNumber: "203231", purity: 99.691, actualMass: 40.51,
+    testNumber: "203231", purity: 99.714, actualMass: 50.93,
     methods: ["HPLC", "ESI-MS"],
     url: "https://verify.janoshik.com/tests/203231-Retatrutide_40mg_XY2IAQ58G5EY",
     verifyKey: "XY2IAQ58G5EY", image: "/janoshik/203231.png",
@@ -187,6 +195,10 @@ const REPORTS: Report[] = [
 
 function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () => void }) {
   const isBlend = !!report.isBlend;
+  const hasPurity = report.purityLabel !== undefined || report.purity !== undefined;
+  const purityDisplay = report.purityLabel ?? report.purity?.toFixed(1);
+  const hasMass = report.actualMassLabel !== undefined || report.actualMass !== undefined;
+  const massDisplay = report.actualMassLabel ?? report.actualMass?.toFixed(2);
 
   // Site palette
   const navy      = "#0D2565";
@@ -269,11 +281,11 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
         }}>
           {/* Purity */}
           <div style={{ paddingRight: "12px" }}>
-            {report.purity !== undefined ? (
+            {hasPurity ? (
               <>
                 <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-                  <span style={{ fontSize: "26px", fontWeight: 900, color: numColor, lineHeight: 1, letterSpacing: "-0.03em" }}>
-                    {report.purity.toFixed(1)}
+                  <span style={{ fontSize: report.purityLabel ? "15px" : "26px", fontWeight: 900, color: numColor, lineHeight: 1, letterSpacing: report.purityLabel ? "-0.02em" : "-0.03em", whiteSpace: "nowrap" }}>
+                    {purityDisplay}
                   </span>
                   <span style={{ fontSize: "12px", fontWeight: 700, color: unitColor }}>%</span>
                 </div>
@@ -296,11 +308,11 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
 
           {/* Mass */}
           <div style={{ paddingLeft: "12px" }}>
-            {report.actualMass !== undefined ? (
+            {hasMass ? (
               <>
                 <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-                  <span style={{ fontSize: "26px", fontWeight: 900, color: massColor, lineHeight: 1, letterSpacing: "-0.03em" }}>
-                    {report.actualMass.toFixed(2)}
+                  <span style={{ fontSize: report.actualMassLabel ? "15px" : "26px", fontWeight: 900, color: massColor, lineHeight: 1, letterSpacing: report.actualMassLabel ? "-0.02em" : "-0.03em", whiteSpace: "nowrap" }}>
+                    {massDisplay}
                   </span>
                   <span style={{ fontSize: "11px", fontWeight: 700, color: unitColor }}>mg</span>
                 </div>
