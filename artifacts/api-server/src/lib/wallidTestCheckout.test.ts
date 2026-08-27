@@ -1,10 +1,13 @@
 import assert from "node:assert/strict";
+import { randomBytes } from "node:crypto";
 import test from "node:test";
+import { adminTestPaymentClaimsTable, db } from "@workspace/db";
+import { eq } from "drizzle-orm";
 import {
   createWallidTestCheckoutToken,
   verifyWallidTestCheckoutToken,
-  WallidTestCheckoutReplayGuard,
 } from "./wallidTestCheckout";
+import { claimWallidTestCheckoutSession } from "./wallidTestCheckoutClaims";
 
 const secret = "wallid-test-checkout-test-secret";
 
@@ -21,12 +24,35 @@ test("Wallid test checkout tokens are signed and expire after their short lifeti
   assert.equal(verifyWallidTestCheckoutToken(token, secret, now + 15 * 60 * 1_000), null);
 });
 
-test("Wallid test checkout sessions can be claimed once only", () => {
-  const guard = new WallidTestCheckoutReplayGuard();
-  const now = 1_700_000_000_000;
+test("Wallid test checkout claims are atomic and survive independent callers", async () => {
+  const sessionId = `wallid-test-${randomBytes(20).toString("hex")}`;
+  const expiresAt = Date.now() + 60_000;
 
-  assert.equal(guard.consume("test-session", now + 1_000, now), true);
-  assert.equal(guard.consume("test-session", now + 1_000, now), false);
-  assert.equal(guard.consume("expired-session", now, now), false);
-  assert.equal(guard.consume("next-session", now + 2_000, now + 1_001), true);
+  try {
+    const claims = await Promise.all(
+      Array.from({ length: 8 }, () =>
+        claimWallidTestCheckoutSession(sessionId, expiresAt),
+      ),
+    );
+    assert.equal(claims.filter(Boolean).length, 1);
+
+    assert.equal(
+      await claimWallidTestCheckoutSession(sessionId, expiresAt),
+      false,
+    );
+  } finally {
+    await db
+      .delete(adminTestPaymentClaimsTable)
+      .where(eq(adminTestPaymentClaimsTable.sessionId, sessionId));
+  }
+});
+
+test("Expired Wallid test checkout sessions cannot be claimed", async () => {
+  assert.equal(
+    await claimWallidTestCheckoutSession(
+      `wallid-expired-${randomBytes(20).toString("hex")}`,
+      Date.now() - 1,
+    ),
+    false,
+  );
 });

@@ -66446,17 +66446,6 @@ function verifyWallidTestCheckoutToken(token, secret, now = Date.now()) {
     return null;
   }
 }
-var WallidTestCheckoutReplayGuard = class {
-  consumed = /* @__PURE__ */ new Map();
-  consume(sessionId, expiresAt, now = Date.now()) {
-    for (const [id, expiry] of this.consumed) {
-      if (expiry <= now) this.consumed.delete(id);
-    }
-    if (expiresAt <= now || this.consumed.has(sessionId)) return false;
-    this.consumed.set(sessionId, expiresAt);
-    return true;
-  }
-};
 
 // src/lib/cryptoTestCheckout.ts
 import crypto4 from "crypto";
@@ -77383,6 +77372,17 @@ function verifyAddressVerificationProof(token, submittedAddress) {
   }
 }
 
+// src/lib/wallidTestCheckoutClaims.ts
+async function claimWallidTestCheckoutSession(sessionId, expiresAt, now = Date.now()) {
+  if (expiresAt <= now) return false;
+  const inserted = await db.insert(adminTestPaymentClaimsTable).values({
+    sessionId,
+    paymentMethod: "wallid",
+    expiresAt: new Date(expiresAt)
+  }).onConflictDoNothing({ target: adminTestPaymentClaimsTable.sessionId }).returning({ sessionId: adminTestPaymentClaimsTable.sessionId });
+  return inserted.length === 1;
+}
+
 // src/lib/cryptoTestCheckoutClaims.ts
 async function claimCryptoTestCheckoutSession(sessionId, expiresAt, now = Date.now()) {
   if (expiresAt <= now) return false;
@@ -77531,7 +77531,6 @@ var SESSION_SECRET = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ??
 var WALLID_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
 var CRYPTO_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
 var checkoutPaymentQuoteReplayGuard = new CheckoutPaymentQuoteReplayGuard();
-var wallidTestCheckoutReplayGuard = new WallidTestCheckoutReplayGuard();
 function verifyCustomerSession(token) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
@@ -77890,7 +77889,7 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
         });
         return;
       }
-      if (wallidTestCheckout && (!submittedWallidTestToken || !wallidTestCheckoutReplayGuard.consume(
+      if (wallidTestCheckout && (!submittedWallidTestToken || !await claimWallidTestCheckoutSession(
         wallidTestCheckout.id,
         wallidTestCheckout.expiresAt
       ))) {

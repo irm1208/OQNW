@@ -79,21 +79,3 @@ export function verifyWallidTestCheckoutToken(
     return null;
   }
 }
-
-/**
- * The checkout API currently runs as a single process, matching the existing
- * payment-quote replay guard. Claiming a session before creating the Wallid
- * payment prevents double-clicks and makes every test session single-use.
- */
-export class WallidTestCheckoutReplayGuard {
-  private readonly consumed = new Map<string, number>();
-
-  consume(sessionId: string, expiresAt: number, now = Date.now()): boolean {
-    for (const [id, expiry] of this.consumed) {
-      if (expiry <= now) this.consumed.delete(id);
-    }
-    if (expiresAt <= now || this.consumed.has(sessionId)) return false;
-    this.consumed.set(sessionId, expiresAt);
-    return true;
-  }
-}

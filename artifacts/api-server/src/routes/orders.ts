@@ -52,9 +52,9 @@ import {
 import { hasSecureAdminSession } from "./admin/auth";
 import {
   WALLID_TEST_AMOUNT_MINOR,
-  WallidTestCheckoutReplayGuard,
   verifyWallidTestCheckoutToken,
 } from "../lib/wallidTestCheckout";
+import { claimWallidTestCheckoutSession } from "../lib/wallidTestCheckoutClaims";
 import {
   calculateCryptoTestPaymentTotal,
   verifyCryptoTestCheckoutToken,
@@ -136,7 +136,6 @@ const SESSION_SECRET =
 const WALLID_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
 const CRYPTO_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
 const checkoutPaymentQuoteReplayGuard = new CheckoutPaymentQuoteReplayGuard();
-const wallidTestCheckoutReplayGuard = new WallidTestCheckoutReplayGuard();
 
 function verifyCustomerSession(token: string): number | null {
   const dot = token.lastIndexOf(".");
@@ -701,7 +700,7 @@ async function handleOrderRequest(
       if (
         wallidTestCheckout &&
         (!submittedWallidTestToken ||
-          !wallidTestCheckoutReplayGuard.consume(
+          !await claimWallidTestCheckoutSession(
             wallidTestCheckout.id,
             wallidTestCheckout.expiresAt,
           ))
