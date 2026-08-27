@@ -227,7 +227,8 @@ export default function OrderConfirmation() {
 
   const checkPendingTransaction = useCallback(async () => {
     const submittedHash = cryptoPayment?.txHash;
-    if (!cryptoToken || !submittedHash || cryptoPayment?.status !== "pending") return;
+    const isRecheckable = cryptoPayment?.status === "pending" || cryptoPayment?.status === "wrong_wallet";
+    if (!cryptoToken || !submittedHash || !isRecheckable) return;
     setChecking(true);
     try {
       const response = await fetch(apiUrl(`orders/${encodeURIComponent(orderRef)}/crypto-payment/check`), {
@@ -257,10 +258,6 @@ export default function OrderConfirmation() {
   async function submitTransaction() {
     if (!cryptoToken || !txHash.trim()) {
       setError("Enter your transaction hash before clicking Verify.");
-      return;
-    }
-    if (rateExpired) {
-      setError("This rate lock has expired. Refresh the locked rate before verifying your transaction.");
       return;
     }
     setSubmitting(true);
@@ -330,7 +327,7 @@ export default function OrderConfirmation() {
                   <div style={{ padding: 16, borderRadius: 10, background: "#ECFDF5", color: "#065F46", fontSize: 14, lineHeight: 1.55 }}>
                     <strong>Payment confirmed.</strong> We verified {displayedObservedAmount ?? displayedExpectedAmount} {cryptoPayment.currency} with {cryptoPayment.confirmations ?? 0} confirmation(s). Your order can now be prepared for dispatch.
                   </div>
-                ) : !cryptoPayment.txHash && (
+                ) : !cryptoPayment.txHash && !rateExpired && (
                   <>
                     <div style={{ display: "grid", gridTemplateColumns: "110px 1fr", gap: 16, alignItems: "center", background: "#fff", borderRadius: 12, padding: 16, border: "1px solid rgba(15,23,42,.1)" }}>
                       <QRCodeSVG value={qrValue} size={106} level="M" includeMargin />
@@ -338,7 +335,11 @@ export default function OrderConfirmation() {
                         <p style={{ fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 800, color: "#64748B", margin: "0 0 4px" }}>Exact amount to send</p>
                         <p style={{ fontSize: 23, fontWeight: 900, color: "#0F172A", margin: 0 }}>{displayedExpectedAmount} <span style={{ fontSize: 14 }}>{cryptoPayment.currency}</span></p>
                         <p style={{ fontSize: 12, color: rateExpired ? "#B91C1C" : "#475569", margin: "5px 0 0" }}>
-                          {rateExpired ? "This rate lock has expired." : `Rate locked for about ${minutesRemaining} minute${minutesRemaining === 1 ? "" : "s"}.`}
+                          {rateExpired
+                            ? "The one-hour rate lock has ended."
+                            : minutesRemaining >= 60
+                              ? "Rate locked for about 1 hour."
+                              : `Rate locked for about ${minutesRemaining} minute${minutesRemaining === 1 ? "" : "s"}.`}
                         </p>
                       </div>
                     </div>
@@ -391,23 +392,31 @@ export default function OrderConfirmation() {
                   </section>
                 )}
 
-                {cryptoPayment.status === "pending" && cryptoPayment.txHash ? (
+                {(cryptoPayment.status === "pending" || cryptoPayment.status === "wrong_wallet") && cryptoPayment.txHash ? (
                   <button type="button" onClick={() => void checkPendingTransaction()} disabled={checking} aria-busy={checking} style={{ width: "100%", border: 0, background: coin.color, color: "#fff", padding: 12, borderRadius: 10, fontWeight: 800, cursor: checking ? "wait" : "pointer", opacity: checking ? .6 : 1, marginTop: 14 }}>
                     <RefreshCw size={15} style={{ verticalAlign: "text-bottom", marginRight: 7 }} />{checking ? "Checking…" : "Check transaction now"}
                   </button>
-                ) : !cryptoPayment.txHash && rateExpired ? (
-                  <button type="button" onClick={() => void refreshRate()} disabled={submitting} style={{ width: "100%", marginTop: 14, border: 0, background: "#1240A0", color: "#fff", padding: 12, borderRadius: 10, fontWeight: 800, cursor: "pointer" }}>
-                    <RefreshCw size={15} style={{ verticalAlign: "text-bottom", marginRight: 7 }} />{submitting ? "Refreshing…" : "Refresh locked rate"}
-                  </button>
                 ) : !cryptoPayment.txHash && cryptoPayment.status === "rate_locked" ? (
                   <div style={{ marginTop: 14 }}>
-                    <label style={{ display: "block", fontSize: 12, fontWeight: 800, color: coin.text, marginBottom: 6 }}>After sending, paste your transaction hash</label>
+                    {rateExpired && (
+                      <div role="status" style={{ marginBottom: 12, padding: "11px 12px", borderRadius: 9, background: "#FFF7ED", border: "1px solid #FDBA74", color: "#9A3412", fontSize: 12, lineHeight: 1.5 }}>
+                        <strong>Do not send payment using the expired instructions.</strong> If you already paid before the lock ended, paste the transaction hash below. We will verify it against the original locked amount even though market rates may have changed.
+                      </div>
+                    )}
+                    <label style={{ display: "block", fontSize: 12, fontWeight: 800, color: coin.text, marginBottom: 6 }}>
+                      {rateExpired ? "Paste the transaction hash for payment already sent" : "After sending, paste your transaction hash"}
+                    </label>
                     <div style={{ display: "flex", gap: 8 }}>
                       <input value={txHash} onChange={(event) => setTxHash(event.target.value)} placeholder="Transaction hash" style={{ flex: 1, minWidth: 0, border: "1px solid #CBD5E1", borderRadius: 9, padding: "11px 12px", fontFamily: "monospace", fontSize: 12 }} />
                       <button type="button" onClick={() => void submitTransaction()} disabled={submitting} aria-busy={submitting} style={{ border: 0, background: coin.color, color: "#fff", borderRadius: 9, padding: "0 14px", fontWeight: 800, cursor: submitting ? "wait" : "pointer", opacity: submitting ? .6 : 1 }}>
                         {submitting ? "Checking…" : "Verify"}
                       </button>
                     </div>
+                    {rateExpired && (
+                      <button type="button" onClick={() => void refreshRate()} disabled={submitting} style={{ width: "100%", marginTop: 10, border: "1px solid #1240A0", background: "#fff", color: "#1240A0", padding: 11, borderRadius: 9, fontWeight: 800, cursor: submitting ? "wait" : "pointer", opacity: submitting ? .6 : 1 }}>
+                        <RefreshCw size={15} style={{ verticalAlign: "text-bottom", marginRight: 7 }} />{submitting ? "Refreshing…" : "I have not paid — refresh rate"}
+                      </button>
+                    )}
                   </div>
                 ) : null}
 

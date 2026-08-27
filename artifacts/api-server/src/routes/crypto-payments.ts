@@ -11,12 +11,15 @@ import { and, eq, or } from "drizzle-orm";
 import {
   cryptoRouteFromSnapshot,
   getPublicCryptoPaymentOptions,
-  isRateLockExpired,
   normalizeTransactionHash,
   prepareCryptoPayment,
   type CryptoPaymentStatus,
   verifyCryptoPayment,
 } from "../lib/crypto-payments";
+import {
+  canAutoConfirmCryptoTransaction,
+  isCryptoTransactionSubmissionOpen,
+} from "../lib/cryptoPaymentPolicy";
 import { sendOrderConfirmation } from "../lib/email";
 import { logger } from "../lib/logger";
 
@@ -52,6 +55,7 @@ function paymentDetails(order: typeof ordersTable.$inferSelect) {
   ) {
     return null;
   }
+  const route = cryptoRouteFromSnapshot(order.cryptoRouteSnapshot);
   return {
     currency: order.cryptoCurrency,
     network: order.cryptoNetwork,
@@ -59,7 +63,7 @@ function paymentDetails(order: typeof ordersTable.$inferSelect) {
     expectedAmount: String(order.cryptoExpectedAmount),
     rateUsd: Number(order.cryptoRateUsd),
     rateExpiresAt: order.cryptoRateExpiresAt.toISOString(),
-    confirmationsRequired: order.cryptoNetwork === "bitcoin" ? 1 : 3,
+    confirmationsRequired: route?.minConfirmations ?? (order.cryptoNetwork === "bitcoin" ? 1 : 3),
     status: order.cryptoPaymentStatus,
     txHash: order.cryptoTxHash,
     observedAmount: order.cryptoObservedAmount ? String(order.cryptoObservedAmount) : null,
@@ -72,7 +76,7 @@ function paymentDetails(order: typeof ordersTable.$inferSelect) {
 
 export async function recordCryptoPaymentVerification(
   order: typeof ordersTable.$inferSelect,
-  attemptId: number,
+  attempt: Pick<typeof cryptoPaymentAttemptsTable.$inferSelect, "id" | "submittedAt">,
   txHash: string,
   applyOrderStatus: boolean,
 ) {
@@ -83,13 +87,23 @@ export async function recordCryptoPaymentVerification(
   let result = await verifyCryptoPayment(route, txHash, String(order.cryptoExpectedAmount));
   if (
     result.status === "confirmed" &&
-    (!result.occurredAt || !order.cryptoRateLockedAt || new Date(result.occurredAt).getTime() < order.cryptoRateLockedAt.getTime())
+    !canAutoConfirmCryptoTransaction(
+      result.occurredAt,
+      order.cryptoRateLockedAt,
+      order.cryptoRateExpiresAt,
+      attempt.submittedAt,
+    )
   ) {
     result = {
       ...result,
       status: "manual_review",
-      reason: "The transaction timestamp could not be proven to be after this order's rate lock.",
-      evidence: { ...result.evidence, rateLockedAt: order.cryptoRateLockedAt?.toISOString() ?? null },
+      reason: "The transaction could not be proven to belong to this order's active rate-lock window.",
+      evidence: {
+        ...result.evidence,
+        rateLockedAt: order.cryptoRateLockedAt?.toISOString() ?? null,
+        rateExpiresAt: order.cryptoRateExpiresAt?.toISOString() ?? null,
+        attemptSubmittedAt: attempt.submittedAt?.toISOString() ?? null,
+      },
     };
   }
   const now = new Date();
@@ -106,11 +120,11 @@ export async function recordCryptoPaymentVerification(
       lastCheckedAt: now,
       confirmedAt: result.status === "confirmed" ? now : null,
     })
-    .where(eq(cryptoPaymentAttemptsTable.id, attemptId));
+    .where(eq(cryptoPaymentAttemptsTable.id, attempt.id));
 
   await db.insert(cryptoPaymentAuditsTable).values({
     orderId: order.id,
-    attemptId,
+    attemptId: attempt.id,
     txHash,
     currency: route.currency,
     network: route.network,
@@ -256,8 +270,9 @@ router.post("/orders/:ref/crypto-payment/check", async (req: Request, res: Respo
     res.status(404).json({ error: "Payment not found" });
     return;
   }
-  if (order.status !== "awaiting_payment" || order.cryptoPaymentStatus !== "pending" || !order.cryptoTxHash) {
-    res.status(409).json({ error: "There is no pending crypto transaction to check for this order." });
+  const isRecheckable = order.cryptoPaymentStatus === "pending" || order.cryptoPaymentStatus === "wrong_wallet";
+  if (order.status !== "awaiting_payment" || !isRecheckable || !order.cryptoTxHash) {
+    res.status(409).json({ error: "There is no submitted crypto transaction to check for this order." });
     return;
   }
   const attempt = await db
@@ -273,7 +288,7 @@ router.post("/orders/:ref/crypto-payment/check", async (req: Request, res: Respo
     res.status(409).json({ error: "The submitted transaction record could not be found. Please contact support." });
     return;
   }
-  const result = await recordCryptoPaymentVerification(order, attempt.id, order.cryptoTxHash, true);
+  const result = await recordCryptoPaymentVerification(order, attempt, order.cryptoTxHash, true);
   res.json({
     orderId: order.id,
     orderNumber: order.orderNumber,
@@ -294,11 +309,7 @@ router.post("/orders/:ref/pay", async (req: Request, res: Response): Promise<voi
     res.status(409).json({ error: "No crypto payment route is locked for this order." });
     return;
   }
-  if (isRateLockExpired(order.cryptoRateExpiresAt)) {
-    res.status(409).json({ error: "This crypto rate lock has expired. Lock a fresh rate before submitting payment." });
-    return;
-  }
-  if (order.status !== "awaiting_payment" || !["rate_locked", "pending"].includes(order.cryptoPaymentStatus)) {
+  if (!isCryptoTransactionSubmissionOpen(order.status, order.cryptoPaymentStatus)) {
     res.status(409).json({ error: "This crypto payment is no longer accepting transaction submissions." });
     return;
   }
@@ -362,7 +373,7 @@ router.post("/orders/:ref/pay", async (req: Request, res: Response): Promise<voi
     res.json({ orderId: order.id, orderNumber: order.orderNumber, status: conflict.status, reason: conflict.reason, idempotent: true });
     return;
   }
-  const result = await recordCryptoPaymentVerification(order, attempt.id, txHash, true);
+  const result = await recordCryptoPaymentVerification(order, attempt, txHash, true);
   res.json({
     orderId: order.id,
     orderNumber: order.orderNumber,
@@ -395,7 +406,7 @@ export async function reconcilePendingCryptoPayments(): Promise<number> {
       .limit(1)
       .then((rows) => rows[0] ?? null);
     if (!attempt) continue;
-    await recordCryptoPaymentVerification(order, attempt.id, order.cryptoTxHash, true);
+    await recordCryptoPaymentVerification(order, attempt, order.cryptoTxHash, true);
     checked += 1;
   }
   return checked;

@@ -1,6 +1,7 @@
 import { db, storeSettingsTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { logger } from "./logger";
+import { cryptoRateLockExpiresAt } from "./cryptoPaymentPolicy";
 
 export const CRYPTO_CURRENCIES = ["BTC", "ETH", "SOL", "USDT", "USDC"] as const;
 export const CRYPTO_NETWORKS = ["bitcoin", "ethereum", "bsc", "arbitrum", "polygon", "solana", "tron"] as const;
@@ -41,8 +42,8 @@ export type CryptoVerificationResult = {
 const STABLECOINS = new Set<CryptoCurrency>(["USDT", "USDC"]);
 const RATE_TTL_MS = 2 * 60 * 1000;
 const GBP_USD_TTL_MS = 5 * 60 * 1000;
-const RATE_LOCK_MS = 15 * 60 * 1000;
 const PAYMENT_TOLERANCE = 0.005;
+const LEGACY_SOLANA_USDT_MINT = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY6bmFFP1VMZ8c";
 
 const TOKEN_DEFAULTS: Partial<Record<CryptoNetwork, Partial<Record<CryptoCurrency, { contract: string; decimals: number }>>>> = {
   ethereum: {
@@ -62,7 +63,7 @@ const TOKEN_DEFAULTS: Partial<Record<CryptoNetwork, Partial<Record<CryptoCurrenc
     USDC: { contract: "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359", decimals: 6 },
   },
   solana: {
-    USDT: { contract: "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY6bmFFP1VMZ8c", decimals: 6 },
+    USDT: { contract: "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", decimals: 6 },
     USDC: { contract: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", decimals: 6 },
   },
   tron: {
@@ -143,9 +144,14 @@ function parseRoutes(raw: string): CryptoPaymentRoute[] {
     const walletAddress = typeof data.walletAddress === "string" ? data.walletAddress.trim() : "";
     if (!currency || !network || walletAddress.length < 12) continue;
     const defaults = tokenDefaults(currency, network);
-    const tokenContract = typeof data.tokenContract === "string" && data.tokenContract.trim()
+    const configuredTokenContract = typeof data.tokenContract === "string" && data.tokenContract.trim()
       ? data.tokenContract.trim()
       : defaults?.contract;
+    const tokenContract = currency === "USDT" &&
+      network === "solana" &&
+      configuredTokenContract === LEGACY_SOLANA_USDT_MINT
+      ? defaults?.contract
+      : configuredTokenContract;
     const tokenDecimals = Number.isInteger(data.tokenDecimals) && Number(data.tokenDecimals) >= 0
       ? Number(data.tokenDecimals)
       : defaults?.decimals ?? (currency === "BTC" ? 8 : currency === "SOL" ? 9 : 18);
@@ -265,7 +271,7 @@ export async function prepareCryptoPayment(
   if (!gbpUsd || !assetUsd) return null;
   const expectedAmount = totalGbp * gbpUsd / assetUsd;
   if (!Number.isFinite(expectedAmount) || expectedAmount <= 0) return null;
-  const rateExpiresAt = new Date(Date.now() + RATE_LOCK_MS);
+  const rateExpiresAt = cryptoRateLockExpiresAt();
   return {
     route,
     details: {
@@ -438,6 +444,37 @@ async function verifyBitcoin(route: CryptoPaymentRoute, txHash: string, expected
   return { status: "confirmed", reason: "Payment was verified on Bitcoin.", observedAmount: formatAmount(observedAmount, 8), confirmations, occurredAt: transaction.status?.block_time ? new Date(transaction.status.block_time * 1000).toISOString() : undefined, evidence: { txHash, route: route.id } };
 }
 
+type SolanaTokenBalance = {
+  accountIndex?: number;
+  mint?: string;
+  owner?: string;
+  uiTokenAmount?: { amount?: string };
+};
+
+export function receivedSolanaTokenUnits(
+  preTokenBalances: SolanaTokenBalance[],
+  postTokenBalances: SolanaTokenBalance[],
+  tokenMint: string | undefined,
+  walletAddress: string,
+): bigint {
+  if (!tokenMint) return 0n;
+  const before = new Map<number, bigint>();
+  for (const balance of preTokenBalances) {
+    if (balance.accountIndex !== undefined && balance.mint === tokenMint && balance.owner === walletAddress) {
+      before.set(balance.accountIndex, BigInt(balance.uiTokenAmount?.amount ?? "0"));
+    }
+  }
+  let receivedUnits = 0n;
+  for (const balance of postTokenBalances) {
+    if (balance.accountIndex !== undefined && balance.mint === tokenMint && balance.owner === walletAddress) {
+      const after = BigInt(balance.uiTokenAmount?.amount ?? "0");
+      const previous = before.get(balance.accountIndex) ?? 0n;
+      if (after > previous) receivedUnits += after - previous;
+    }
+  }
+  return receivedUnits;
+}
+
 async function verifySolana(route: CryptoPaymentRoute, txHash: string, expectedAmount: number): Promise<CryptoVerificationResult> {
   const tx = await rpc("solana", "getTransaction", [txHash, { encoding: "jsonParsed", commitment: "finalized", maxSupportedTransactionVersion: 0 }]) as {
     slot?: number;
@@ -447,8 +484,8 @@ async function verifySolana(route: CryptoPaymentRoute, txHash: string, expectedA
       err?: unknown;
       preBalances?: number[];
       postBalances?: number[];
-      preTokenBalances?: Array<{ accountIndex?: number; mint?: string; owner?: string; uiTokenAmount?: { amount?: string } }>;
-      postTokenBalances?: Array<{ accountIndex?: number; mint?: string; owner?: string; uiTokenAmount?: { amount?: string } }>;
+      preTokenBalances?: SolanaTokenBalance[];
+      postTokenBalances?: SolanaTokenBalance[];
     };
   } | null;
   if (!tx) return { status: "pending", reason: "Transaction has not appeared on Solana yet.", evidence: { txHash } };
@@ -466,20 +503,12 @@ async function verifySolana(route: CryptoPaymentRoute, txHash: string, expectedA
     }
     return { status: "confirmed", reason: "Payment was verified on Solana.", observedAmount: formatAmount(observedAmount, route.tokenDecimals), confirmations: route.minConfirmations, occurredAt: typeof tx.blockTime === "number" ? new Date(tx.blockTime * 1000).toISOString() : undefined, evidence: { txHash, slot: tx.slot, route: route.id } };
   }
-  const before = new Map<number, bigint>();
-  for (const balance of tx.meta?.preTokenBalances ?? []) {
-    if (balance.accountIndex !== undefined && balance.mint === route.tokenContract && balance.owner === route.walletAddress) {
-      before.set(balance.accountIndex, BigInt(balance.uiTokenAmount?.amount ?? "0"));
-    }
-  }
-  let receivedUnits = 0n;
-  for (const balance of tx.meta?.postTokenBalances ?? []) {
-    if (balance.accountIndex !== undefined && balance.mint === route.tokenContract && balance.owner === route.walletAddress) {
-      const after = BigInt(balance.uiTokenAmount?.amount ?? "0");
-      const previous = before.get(balance.accountIndex) ?? 0n;
-      if (after > previous) receivedUnits += after - previous;
-    }
-  }
+  const receivedUnits = receivedSolanaTokenUnits(
+    tx.meta?.preTokenBalances ?? [],
+    tx.meta?.postTokenBalances ?? [],
+    route.tokenContract,
+    route.walletAddress,
+  );
   const observedAmount = decimalFromUnits(receivedUnits, route.tokenDecimals);
   if (!receivedUnits) return { status: "wrong_wallet", reason: "No selected token was received by the configured Solana wallet.", evidence: { txHash, route: route.id } };
   if (expectedAmountMatches(observedAmount, expectedAmount) === "underpaid") {
@@ -535,8 +564,4 @@ export async function verifyCryptoPayment(
       evidence: { txHash, route: route.id, verifierError: true },
     };
   }
-}
-
-export function isRateLockExpired(value: Date | null): boolean {
-  return !value || value.getTime() <= Date.now();
 }

@@ -66524,14 +66524,37 @@ var logger = (0, import_pino.default)({
   }
 });
 
+// src/lib/cryptoPaymentPolicy.ts
+var CRYPTO_RATE_LOCK_MS = 60 * 60 * 1e3;
+function cryptoRateLockExpiresAt(now = Date.now()) {
+  return new Date(now + CRYPTO_RATE_LOCK_MS);
+}
+function isCryptoTransactionSubmissionOpen(orderStatus, paymentStatus) {
+  return orderStatus === "awaiting_payment" && (paymentStatus === "rate_locked" || paymentStatus === "pending");
+}
+function canAutoConfirmCryptoTransaction(occurredAt, rateLockedAt, rateExpiresAt, attemptSubmittedAt) {
+  if (!occurredAt || !rateLockedAt || !rateExpiresAt || !attemptSubmittedAt) return false;
+  const occurredAtMs = new Date(occurredAt).getTime();
+  const lockedAtMs = rateLockedAt.getTime();
+  const expiresAtMs = rateExpiresAt.getTime();
+  const submittedAtMs = attemptSubmittedAt.getTime();
+  if (!Number.isFinite(occurredAtMs) || !Number.isFinite(lockedAtMs) || !Number.isFinite(expiresAtMs) || !Number.isFinite(submittedAtMs) || occurredAtMs < lockedAtMs || submittedAtMs < lockedAtMs) {
+    return false;
+  }
+  if (submittedAtMs < expiresAtMs) {
+    return true;
+  }
+  return occurredAtMs < expiresAtMs;
+}
+
 // src/lib/crypto-payments.ts
 var CRYPTO_CURRENCIES = ["BTC", "ETH", "SOL", "USDT", "USDC"];
 var CRYPTO_NETWORKS = ["bitcoin", "ethereum", "bsc", "arbitrum", "polygon", "solana", "tron"];
 var STABLECOINS = /* @__PURE__ */ new Set(["USDT", "USDC"]);
 var RATE_TTL_MS = 2 * 60 * 1e3;
 var GBP_USD_TTL_MS = 5 * 60 * 1e3;
-var RATE_LOCK_MS = 15 * 60 * 1e3;
 var PAYMENT_TOLERANCE = 5e-3;
+var LEGACY_SOLANA_USDT_MINT = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY6bmFFP1VMZ8c";
 var TOKEN_DEFAULTS = {
   ethereum: {
     USDT: { contract: "0xdAC17F958D2ee523a2206206994597C13D831ec7", decimals: 6 },
@@ -66550,7 +66573,7 @@ var TOKEN_DEFAULTS = {
     USDC: { contract: "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359", decimals: 6 }
   },
   solana: {
-    USDT: { contract: "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY6bmFFP1VMZ8c", decimals: 6 },
+    USDT: { contract: "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", decimals: 6 },
     USDC: { contract: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", decimals: 6 }
   },
   tron: {
@@ -66622,7 +66645,8 @@ function parseRoutes(raw) {
     const walletAddress = typeof data.walletAddress === "string" ? data.walletAddress.trim() : "";
     if (!currency || !network || walletAddress.length < 12) continue;
     const defaults2 = tokenDefaults(currency, network);
-    const tokenContract = typeof data.tokenContract === "string" && data.tokenContract.trim() ? data.tokenContract.trim() : defaults2?.contract;
+    const configuredTokenContract = typeof data.tokenContract === "string" && data.tokenContract.trim() ? data.tokenContract.trim() : defaults2?.contract;
+    const tokenContract = currency === "USDT" && network === "solana" && configuredTokenContract === LEGACY_SOLANA_USDT_MINT ? defaults2?.contract : configuredTokenContract;
     const tokenDecimals = Number.isInteger(data.tokenDecimals) && Number(data.tokenDecimals) >= 0 ? Number(data.tokenDecimals) : defaults2?.decimals ?? (currency === "BTC" ? 8 : currency === "SOL" ? 9 : 18);
     const minConfirmations = Number.isInteger(data.minConfirmations) && Number(data.minConfirmations) > 0 ? Math.min(Number(data.minConfirmations), 100) : network === "bitcoin" ? 1 : network === "solana" || network === "tron" ? 1 : 3;
     const id = `${network}:${currency}`;
@@ -66721,7 +66745,7 @@ async function prepareCryptoPayment(totalGbp, currency, network) {
   if (!gbpUsd || !assetUsd) return null;
   const expectedAmount = totalGbp * gbpUsd / assetUsd;
   if (!Number.isFinite(expectedAmount) || expectedAmount <= 0) return null;
-  const rateExpiresAt = new Date(Date.now() + RATE_LOCK_MS);
+  const rateExpiresAt = cryptoRateLockExpiresAt();
   return {
     route,
     details: {
@@ -66869,6 +66893,24 @@ async function verifyBitcoin(route, txHash, expectedAmount) {
   }
   return { status: "confirmed", reason: "Payment was verified on Bitcoin.", observedAmount: formatAmount(observedAmount, 8), confirmations, occurredAt: transaction.status?.block_time ? new Date(transaction.status.block_time * 1e3).toISOString() : void 0, evidence: { txHash, route: route.id } };
 }
+function receivedSolanaTokenUnits(preTokenBalances, postTokenBalances, tokenMint, walletAddress) {
+  if (!tokenMint) return 0n;
+  const before = /* @__PURE__ */ new Map();
+  for (const balance of preTokenBalances) {
+    if (balance.accountIndex !== void 0 && balance.mint === tokenMint && balance.owner === walletAddress) {
+      before.set(balance.accountIndex, BigInt(balance.uiTokenAmount?.amount ?? "0"));
+    }
+  }
+  let receivedUnits = 0n;
+  for (const balance of postTokenBalances) {
+    if (balance.accountIndex !== void 0 && balance.mint === tokenMint && balance.owner === walletAddress) {
+      const after = BigInt(balance.uiTokenAmount?.amount ?? "0");
+      const previous = before.get(balance.accountIndex) ?? 0n;
+      if (after > previous) receivedUnits += after - previous;
+    }
+  }
+  return receivedUnits;
+}
 async function verifySolana(route, txHash, expectedAmount) {
   const tx = await rpc("solana", "getTransaction", [txHash, { encoding: "jsonParsed", commitment: "finalized", maxSupportedTransactionVersion: 0 }]);
   if (!tx) return { status: "pending", reason: "Transaction has not appeared on Solana yet.", evidence: { txHash } };
@@ -66884,20 +66926,12 @@ async function verifySolana(route, txHash, expectedAmount) {
     }
     return { status: "confirmed", reason: "Payment was verified on Solana.", observedAmount: formatAmount(observedAmount2, route.tokenDecimals), confirmations: route.minConfirmations, occurredAt: typeof tx.blockTime === "number" ? new Date(tx.blockTime * 1e3).toISOString() : void 0, evidence: { txHash, slot: tx.slot, route: route.id } };
   }
-  const before = /* @__PURE__ */ new Map();
-  for (const balance of tx.meta?.preTokenBalances ?? []) {
-    if (balance.accountIndex !== void 0 && balance.mint === route.tokenContract && balance.owner === route.walletAddress) {
-      before.set(balance.accountIndex, BigInt(balance.uiTokenAmount?.amount ?? "0"));
-    }
-  }
-  let receivedUnits = 0n;
-  for (const balance of tx.meta?.postTokenBalances ?? []) {
-    if (balance.accountIndex !== void 0 && balance.mint === route.tokenContract && balance.owner === route.walletAddress) {
-      const after = BigInt(balance.uiTokenAmount?.amount ?? "0");
-      const previous = before.get(balance.accountIndex) ?? 0n;
-      if (after > previous) receivedUnits += after - previous;
-    }
-  }
+  const receivedUnits = receivedSolanaTokenUnits(
+    tx.meta?.preTokenBalances ?? [],
+    tx.meta?.postTokenBalances ?? [],
+    route.tokenContract,
+    route.walletAddress
+  );
   const observedAmount = decimalFromUnits(receivedUnits, route.tokenDecimals);
   if (!receivedUnits) return { status: "wrong_wallet", reason: "No selected token was received by the configured Solana wallet.", evidence: { txHash, route: route.id } };
   if (expectedAmountMatches(observedAmount, expectedAmount) === "underpaid") {
@@ -66941,9 +66975,6 @@ async function verifyCryptoPayment(route, txHash, expectedAmount) {
       evidence: { txHash, route: route.id, verifierError: true }
     };
   }
-}
-function isRateLockExpired(value) {
-  return !value || value.getTime() <= Date.now();
 }
 
 // src/routes/admin/auth.ts
@@ -82542,6 +82573,7 @@ function paymentDetails(order) {
   if (!order.cryptoCurrency || !order.cryptoNetwork || !order.cryptoWalletAddress || !order.cryptoExpectedAmount || !order.cryptoRateUsd || !order.cryptoRateExpiresAt) {
     return null;
   }
+  const route = cryptoRouteFromSnapshot(order.cryptoRouteSnapshot);
   return {
     currency: order.cryptoCurrency,
     network: order.cryptoNetwork,
@@ -82549,7 +82581,7 @@ function paymentDetails(order) {
     expectedAmount: String(order.cryptoExpectedAmount),
     rateUsd: Number(order.cryptoRateUsd),
     rateExpiresAt: order.cryptoRateExpiresAt.toISOString(),
-    confirmationsRequired: order.cryptoNetwork === "bitcoin" ? 1 : 3,
+    confirmationsRequired: route?.minConfirmations ?? (order.cryptoNetwork === "bitcoin" ? 1 : 3),
     status: order.cryptoPaymentStatus,
     txHash: order.cryptoTxHash,
     observedAmount: order.cryptoObservedAmount ? String(order.cryptoObservedAmount) : null,
@@ -82559,18 +82591,28 @@ function paymentDetails(order) {
     lastCheckedAt: order.cryptoLastCheckedAt?.toISOString() ?? null
   };
 }
-async function recordCryptoPaymentVerification(order, attemptId, txHash, applyOrderStatus) {
+async function recordCryptoPaymentVerification(order, attempt, txHash, applyOrderStatus) {
   const route = cryptoRouteFromSnapshot(order.cryptoRouteSnapshot);
   if (!route || !order.cryptoExpectedAmount) {
     return { status: "manual_review", reason: "The configured payment route is no longer available.", evidence: {} };
   }
   let result = await verifyCryptoPayment(route, txHash, String(order.cryptoExpectedAmount));
-  if (result.status === "confirmed" && (!result.occurredAt || !order.cryptoRateLockedAt || new Date(result.occurredAt).getTime() < order.cryptoRateLockedAt.getTime())) {
+  if (result.status === "confirmed" && !canAutoConfirmCryptoTransaction(
+    result.occurredAt,
+    order.cryptoRateLockedAt,
+    order.cryptoRateExpiresAt,
+    attempt.submittedAt
+  )) {
     result = {
       ...result,
       status: "manual_review",
-      reason: "The transaction timestamp could not be proven to be after this order's rate lock.",
-      evidence: { ...result.evidence, rateLockedAt: order.cryptoRateLockedAt?.toISOString() ?? null }
+      reason: "The transaction could not be proven to belong to this order's active rate-lock window.",
+      evidence: {
+        ...result.evidence,
+        rateLockedAt: order.cryptoRateLockedAt?.toISOString() ?? null,
+        rateExpiresAt: order.cryptoRateExpiresAt?.toISOString() ?? null,
+        attemptSubmittedAt: attempt.submittedAt?.toISOString() ?? null
+      }
     };
   }
   const now = /* @__PURE__ */ new Date();
@@ -82583,10 +82625,10 @@ async function recordCryptoPaymentVerification(order, attemptId, txHash, applyOr
     evidence: result.evidence,
     lastCheckedAt: now,
     confirmedAt: result.status === "confirmed" ? now : null
-  }).where(eq(cryptoPaymentAttemptsTable.id, attemptId));
+  }).where(eq(cryptoPaymentAttemptsTable.id, attempt.id));
   await db.insert(cryptoPaymentAuditsTable).values({
     orderId: order.id,
-    attemptId,
+    attemptId: attempt.id,
     txHash,
     currency: route.currency,
     network: route.network,
@@ -82716,8 +82758,9 @@ router46.post("/orders/:ref/crypto-payment/check", async (req, res) => {
     res.status(404).json({ error: "Payment not found" });
     return;
   }
-  if (order.status !== "awaiting_payment" || order.cryptoPaymentStatus !== "pending" || !order.cryptoTxHash) {
-    res.status(409).json({ error: "There is no pending crypto transaction to check for this order." });
+  const isRecheckable = order.cryptoPaymentStatus === "pending" || order.cryptoPaymentStatus === "wrong_wallet";
+  if (order.status !== "awaiting_payment" || !isRecheckable || !order.cryptoTxHash) {
+    res.status(409).json({ error: "There is no submitted crypto transaction to check for this order." });
     return;
   }
   const attempt = await db.select().from(cryptoPaymentAttemptsTable).where(and(
@@ -82728,7 +82771,7 @@ router46.post("/orders/:ref/crypto-payment/check", async (req, res) => {
     res.status(409).json({ error: "The submitted transaction record could not be found. Please contact support." });
     return;
   }
-  const result = await recordCryptoPaymentVerification(order, attempt.id, order.cryptoTxHash, true);
+  const result = await recordCryptoPaymentVerification(order, attempt, order.cryptoTxHash, true);
   res.json({
     orderId: order.id,
     orderNumber: order.orderNumber,
@@ -82748,11 +82791,7 @@ router46.post("/orders/:ref/pay", async (req, res) => {
     res.status(409).json({ error: "No crypto payment route is locked for this order." });
     return;
   }
-  if (isRateLockExpired(order.cryptoRateExpiresAt)) {
-    res.status(409).json({ error: "This crypto rate lock has expired. Lock a fresh rate before submitting payment." });
-    return;
-  }
-  if (order.status !== "awaiting_payment" || !["rate_locked", "pending"].includes(order.cryptoPaymentStatus)) {
+  if (!isCryptoTransactionSubmissionOpen(order.status, order.cryptoPaymentStatus)) {
     res.status(409).json({ error: "This crypto payment is no longer accepting transaction submissions." });
     return;
   }
@@ -82803,7 +82842,7 @@ router46.post("/orders/:ref/pay", async (req, res) => {
     res.json({ orderId: order.id, orderNumber: order.orderNumber, status: conflict.status, reason: conflict.reason, idempotent: true });
     return;
   }
-  const result = await recordCryptoPaymentVerification(order, attempt.id, txHash, true);
+  const result = await recordCryptoPaymentVerification(order, attempt, txHash, true);
   res.json({
     orderId: order.id,
     orderNumber: order.orderNumber,
@@ -82825,7 +82864,7 @@ async function reconcilePendingCryptoPayments() {
     if (!order.cryptoTxHash) continue;
     const attempt = await db.select().from(cryptoPaymentAttemptsTable).where(and(eq(cryptoPaymentAttemptsTable.orderId, order.id), eq(cryptoPaymentAttemptsTable.txHash, order.cryptoTxHash))).limit(1).then((rows) => rows[0] ?? null);
     if (!attempt) continue;
-    await recordCryptoPaymentVerification(order, attempt.id, order.cryptoTxHash, true);
+    await recordCryptoPaymentVerification(order, attempt, order.cryptoTxHash, true);
     checked += 1;
   }
   return checked;
@@ -82913,7 +82952,7 @@ router47.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
       res.status(404).json({ error: "Order not found" });
       return;
     }
-    const result = await recordCryptoPaymentVerification(order, attempt.id, attempt.txHash, false);
+    const result = await recordCryptoPaymentVerification(order, attempt, attempt.txHash, false);
     res.json({ status: result.status, reason: result.reason, observedAmount: result.observedAmount ?? null, confirmations: result.confirmations ?? null });
   } catch (err) {
     req.log.error({ err }, "Failed to audit crypto payment");
@@ -82933,7 +82972,7 @@ router47.post("/admin/crypto/audits/check-batch", async (req, res) => {
     for (const attempt of attempts) {
       const [order] = await db.select().from(ordersTable).where(eq(ordersTable.id, attempt.orderId)).limit(1);
       if (!order) continue;
-      const result = await recordCryptoPaymentVerification(order, attempt.id, attempt.txHash, false);
+      const result = await recordCryptoPaymentVerification(order, attempt, attempt.txHash, false);
       results.push({ attemptId: attempt.id, status: result.status, reason: result.reason });
     }
     res.json({ checked: results.length, results });

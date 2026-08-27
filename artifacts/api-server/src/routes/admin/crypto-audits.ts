@@ -99,7 +99,7 @@ router.post("/admin/crypto/audits/:attemptId/check", async (req: Request, res: R
       res.status(404).json({ error: "Order not found" });
       return;
     }
-    const result = await recordCryptoPaymentVerification(order, attempt.id, attempt.txHash, false);
+    const result = await recordCryptoPaymentVerification(order, attempt, attempt.txHash, false);
     res.json({ status: result.status, reason: result.reason, observedAmount: result.observedAmount ?? null, confirmations: result.confirmations ?? null });
   } catch (err) {
     req.log.error({ err }, "Failed to audit crypto payment");
@@ -125,7 +125,7 @@ router.post("/admin/crypto/audits/check-batch", async (req: Request, res: Respon
     for (const attempt of attempts) {
       const [order] = await db.select().from(ordersTable).where(eq(ordersTable.id, attempt.orderId)).limit(1);
       if (!order) continue;
-      const result = await recordCryptoPaymentVerification(order, attempt.id, attempt.txHash, false);
+      const result = await recordCryptoPaymentVerification(order, attempt, attempt.txHash, false);
       results.push({ attemptId: attempt.id, status: result.status, reason: result.reason });
     }
     res.json({ checked: results.length, results });

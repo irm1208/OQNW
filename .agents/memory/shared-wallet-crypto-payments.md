@@ -3,11 +3,11 @@ name: Shared-wallet crypto payments
 description: Safety rules for the direct crypto flow when the store does not use unique deposit addresses.
 ---
 
-For crypto routes that share a receiving wallet, lock a complete route snapshot with the order and only auto-confirm transactions whose on-chain time is at or after that order's lock. A rate expiry stops new submissions and re-locking, but never stops reconciliation of a transaction already submitted.
+For crypto routes that share a receiving wallet, lock a complete route snapshot with the order and only auto-confirm transactions tied to that lock window. Expiry hides stale payment instructions and requires unpaid customers to re-lock, but it must not strand a transaction already sent.
 
-**Why:** A public shared wallet otherwise permits reuse of historical qualifying transactions against new orders. Route edits after checkout also must not change what an existing customer was asked to pay, while early reconciliation cutoffs could strand legitimate transactions awaiting confirmations.
+**Why:** A public shared wallet otherwise permits reuse of historical qualifying transactions against new orders. Route edits after checkout must not change what an existing customer was asked to pay, while confirmation delays can extend beyond the quote window.
 
-**How to apply:** Treat a confirmed payment as terminal; use the order snapshot rather than current settings for payment verification and audit evidence. Preserve transaction-hash uniqueness and route all missing timing evidence to manual review rather than auto-approving.
+**How to apply:** Use the saved route and amount, never a live reprice. Reconcile attempts submitted during the lock after expiry; late-submitted hashes auto-confirm only with on-chain time inside the lock. Route missing or unsafe timing evidence to manual review.
 
 Secure payment-detail reads must not be served from a conditional cache after a transaction submission; a `304 Not Modified` has no response body and must never replace the current payment details in the confirmation UI.
 
@@ -20,3 +20,9 @@ On-chain verification must use multiple RPC providers per network and fall throu
 **Why:** Public RPC endpoints can intermittently reject otherwise valid verification calls. Treating one provider's outage as a pending payment masks a check that can be completed immediately elsewhere, while logging a configured URL can expose provider credentials.
 
 **How to apply:** Prefer a configured provider, then use independent public fallbacks. Report the server's actual verification reason to the customer and recheck submitted pending hashes without changing their locked route or rate.
+
+Known-bad historical token identifiers in saved route snapshots need an explicit, narrowly scoped compatibility alias when the canonical identifier is corrected.
+
+**Why:** Route snapshots should normally be immutable, but preserving an invalid built-in token mint can strand a fully paid order by making a valid transfer look like the wrong token.
+
+**How to apply:** Verify the canonical identifier against real on-chain transaction data, normalize only the exact known-bad legacy value during parsing, and retain strict checks for token mint, wallet owner, and received balance delta.

@@ -8,6 +8,7 @@
     "build": "node ./build.mjs",
     "start": "node --enable-source-maps ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:crypto-payments": "../../scripts/node_modules/.bin/tsx --test src/lib/cryptoPaymentPolicy.test.ts src/lib/cryptoRoutes.test.ts",
     "test:seo": "../../scripts/node_modules/.bin/tsx --test src/routes/seo-publication.test.ts"
   },
   "dependencies": {
