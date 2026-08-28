@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { prefetchRoute } from "@/lib/prefetch";
 import { Link, useLocation } from "wouter";
-import { Search, User, ShoppingCart, Menu, X, ChevronDown, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, BookMarked, GraduationCap, Thermometer, Activity, Layers } from "lucide-react";
+import { Search, User, ShoppingCart, Menu, X, ChevronDown, ArrowUpRight, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, BookMarked, GraduationCap, Thermometer, Activity, Layers } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
@@ -1065,15 +1065,25 @@ export default function Header() {
             style={{ width: "min(90vw, 420px)" }}
           >
             <div
-              className="flex items-center justify-between px-5 py-4 border-b border-slate-100"
-              style={{ paddingTop: "max(16px, env(safe-area-inset-top))" }}
+              className="flex items-center justify-between px-5 py-4"
+              style={{
+                paddingTop: "max(16px, env(safe-area-inset-top))",
+                position: "relative",
+                overflow: "hidden",
+                background: "linear-gradient(135deg, #0F2F91 0%, #1240A0 48%, #1F72D1 100%)",
+              }}
             >
-              <div>
-                <p style={{ margin: 0, color: "#1240A0", fontSize: "11px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase" }}>
+              <span aria-hidden="true" style={{ position: "absolute", width: 180, height: 180, borderRadius: "50%", right: -86, top: -112, background: "rgba(255,255,255,0.12)" }} />
+              <span aria-hidden="true" style={{ position: "absolute", width: 92, height: 92, borderRadius: "50%", right: 50, bottom: -66, border: "1px solid rgba(255,255,255,0.18)" }} />
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <p style={{ margin: 0, color: "rgba(255,255,255,0.72)", fontSize: "10px", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase" }}>
                   OmniQure
                 </p>
-                <p style={{ margin: "3px 0 0", color: "#0F172A", fontSize: "18px", fontWeight: 800 }}>
+                <p style={{ margin: "4px 0 0", color: "#fff", fontSize: "20px", lineHeight: 1.15, fontWeight: 800, letterSpacing: "-0.02em" }}>
                   Explore the site
+                </p>
+                <p style={{ margin: "6px 0 0", color: "rgba(255,255,255,0.76)", fontSize: "12px" }}>
+                  Research-grade tools, made clear.
                 </p>
               </div>
               <button
@@ -1081,8 +1091,9 @@ export default function Header() {
                 aria-label="Close navigation menu"
                 style={{
                   width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: "center",
-                  borderRadius: 10, border: "1px solid #E2E8F0", background: "#F8FAFC",
-                  color: "#475569", cursor: "pointer",
+                  position: "relative", zIndex: 1, borderRadius: 12,
+                  border: "1px solid rgba(255,255,255,0.3)", background: "rgba(255,255,255,0.14)",
+                  color: "#fff", cursor: "pointer", backdropFilter: "blur(8px)",
                 }}
               >
                 <X size={20} />
@@ -1090,7 +1101,35 @@ export default function Header() {
             </div>
 
             <div className="flex-1 overflow-y-auto" style={{ overscrollBehavior: "contain" }}>
-              <div style={{ padding: "12px 12px 8px" }}>
+              <Link
+                href="/all-peptides"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
+                  margin: "16px 16px 8px", padding: "15px 16px", borderRadius: 16,
+                  color: "#fff", textDecoration: "none", overflow: "hidden", position: "relative",
+                  background: "linear-gradient(120deg, #1240A0 0%, #1B5CB5 62%, #2F80D8 100%)",
+                  boxShadow: "0 10px 22px rgba(18,64,160,0.2)",
+                }}
+              >
+                <span aria-hidden="true" style={{ position: "absolute", width: 110, height: 110, borderRadius: "50%", right: -45, top: -58, background: "rgba(255,255,255,0.12)" }} />
+                <span style={{ position: "relative", zIndex: 1 }}>
+                  <span style={{ display: "block", marginBottom: 5, color: "rgba(255,255,255,0.7)", fontSize: 9.5, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase" }}>
+                    Featured
+                  </span>
+                  <span style={{ display: "block", fontSize: 15, fontWeight: 800, lineHeight: 1.15 }}>
+                    Browse the collection
+                  </span>
+                  <span style={{ display: "block", marginTop: 4, color: "rgba(255,255,255,0.76)", fontSize: 11.5 }}>
+                    Explore peptides for your research.
+                  </span>
+                </span>
+                <span style={{ position: "relative", zIndex: 1, width: 32, height: 32, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 10, background: "rgba(255,255,255,0.16)" }}>
+                  <ArrowUpRight size={18} />
+                </span>
+              </Link>
+
+              <div style={{ padding: "8px 12px 8px" }}>
                 <p style={{ margin: "0 8px 7px", color: "#94A3B8", fontSize: 10, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" }}>
                   Main menu
                 </p>
@@ -1103,31 +1142,35 @@ export default function Header() {
                       className="flex items-center justify-between rounded-xl px-3 transition-colors"
                       style={{
                         minHeight: 48, color: location === item.href ? "#1240A0" : "#334155",
-                        background: location === item.href ? "#EEF4FF" : "transparent",
+                        background: location === item.href ? "linear-gradient(90deg, #EEF4FF 0%, #F7FAFF 100%)" : "transparent",
+                        borderLeft: location === item.href ? "3px solid #1B5CB5" : "3px solid transparent",
                         textDecoration: "none", fontSize: 15, fontWeight: location === item.href ? 700 : 600,
                       }}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.label}
-                      <ChevronDown size={15} style={{ transform: "rotate(-90deg)", color: "#CBD5E1" }} />
+                      <ChevronDown size={15} style={{ transform: "rotate(-90deg)", color: location === item.href ? "#1B5CB5" : "#CBD5E1" }} />
                     </Link>
                   ))}
               </div>
 
-              <div style={{ borderTop: "1px solid #F1F5F9", borderBottom: "1px solid #F1F5F9" }}>
+              <div style={{ marginTop: 6, borderTop: "1px solid #E5EDFA", borderBottom: "1px solid #E5EDFA", background: mobileResearchOpen ? "#F8FBFF" : "#fff" }}>
                 <button
                   onClick={() => setMobileResearchOpen(open => !open)}
                   aria-expanded={mobileResearchOpen}
                   style={{
-                    width: "100%", minHeight: 52, padding: "0 20px", display: "flex", alignItems: "center", gap: 10,
+                    width: "100%", minHeight: 60, padding: "0 20px", display: "flex", alignItems: "center", gap: 10,
                     border: "none", background: mobileResearchOpen ? "#F8FAFC" : "#fff",
                     color: "#475569", cursor: "pointer", textAlign: "left",
                   }}
                 >
-                  <span style={{ width: 30, height: 30, borderRadius: 9, background: "#EEF4FF", color: "#1240A0", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ width: 34, height: 34, borderRadius: 11, background: "linear-gradient(135deg, #DBEAFE 0%, #EEF4FF 100%)", color: "#1240A0", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 0 0 1px rgba(18,64,160,0.06)" }}>
                     <GraduationCap size={16} />
                   </span>
-                  <span style={{ flex: 1, fontSize: 14, fontWeight: 800 }}>Research &amp; Education</span>
+                  <span style={{ flex: 1 }}>
+                    <span style={{ display: "block", fontSize: 14, fontWeight: 800 }}>Research &amp; Education</span>
+                    <span style={{ display: "block", marginTop: 2, color: "#94A3B8", fontSize: 11 }}>Guides, data &amp; research tools</span>
+                  </span>
                   <ChevronDown size={17} style={{ color: "#94A3B8", transform: mobileResearchOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
                 </button>
 
