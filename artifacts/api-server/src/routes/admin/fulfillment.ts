@@ -5,11 +5,12 @@ import { ordersTable, orderItemsTable } from "@workspace/db";
 import { eq, inArray, desc, count } from "drizzle-orm";
 import { generatePackingSlipHtml, generateMultiPackingSlipHtml } from "../../lib/packingSlip";
 import { firstString } from "../../lib/query";
+import { hasSecureAdminSession } from "./auth";
 
 const router = Router();
 
 function requireAdmin(req: Request, res: Response): boolean {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -80,7 +81,9 @@ router.get("/admin/fulfillment", async (req: Request, res: Response): Promise<vo
       postcode:       o.postcode       ?? null,
       country:        o.country        ?? null,
       shippingMethod: o.shippingMethod ?? null,
+      carrierName:    o.carrierName    ?? null,
       trackingNumber: o.trackingNumber ?? null,
+      trackingUrl:    o.trackingUrl    ?? null,
       subtotalGbp:    parseFloat(String(o.subtotalGbp)),
       shippingCostGbp:parseFloat(String(o.shippingCostGbp)),
       totalGbp:       parseFloat(String(o.totalGbp)),

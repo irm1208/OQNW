@@ -266,7 +266,9 @@ export declare const ListAdminOrdersResponse: zod.ZodObject<{
         shippingCostGbp: zod.ZodOptional<zod.ZodNumber>;
         totalGbp: zod.ZodNumber;
         shippingMethod: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        carrierName: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         trackingNumber: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        trackingUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         notes: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         country: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         city: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
@@ -293,7 +295,9 @@ export declare const ListAdminOrdersResponse: zod.ZodObject<{
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
         shippingMethod?: string | null | undefined;
+        carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
+        trackingUrl?: string | null | undefined;
         notes?: string | null | undefined;
         country?: string | null | undefined;
         city?: string | null | undefined;
@@ -319,7 +323,9 @@ export declare const ListAdminOrdersResponse: zod.ZodObject<{
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
         shippingMethod?: string | null | undefined;
+        carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
+        trackingUrl?: string | null | undefined;
         notes?: string | null | undefined;
         country?: string | null | undefined;
         city?: string | null | undefined;
@@ -348,7 +354,9 @@ export declare const ListAdminOrdersResponse: zod.ZodObject<{
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
         shippingMethod?: string | null | undefined;
+        carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
+        trackingUrl?: string | null | undefined;
         notes?: string | null | undefined;
         country?: string | null | undefined;
         city?: string | null | undefined;
@@ -377,7 +385,9 @@ export declare const ListAdminOrdersResponse: zod.ZodObject<{
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
         shippingMethod?: string | null | undefined;
+        carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
+        trackingUrl?: string | null | undefined;
         notes?: string | null | undefined;
         country?: string | null | undefined;
         city?: string | null | undefined;
@@ -415,7 +425,9 @@ export declare const GetAdminOrderResponse: zod.ZodObject<{
     shippingCostGbp: zod.ZodOptional<zod.ZodNumber>;
     totalGbp: zod.ZodNumber;
     shippingMethod: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    carrierName: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     trackingNumber: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    trackingUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     notes: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     address1: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     address2: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
@@ -478,7 +490,9 @@ export declare const GetAdminOrderResponse: zod.ZodObject<{
     subtotalGbp?: number | undefined;
     shippingCostGbp?: number | undefined;
     shippingMethod?: string | null | undefined;
+    carrierName?: string | null | undefined;
     trackingNumber?: string | null | undefined;
+    trackingUrl?: string | null | undefined;
     notes?: string | null | undefined;
     country?: string | null | undefined;
     city?: string | null | undefined;
@@ -515,7 +529,9 @@ export declare const GetAdminOrderResponse: zod.ZodObject<{
     subtotalGbp?: number | undefined;
     shippingCostGbp?: number | undefined;
     shippingMethod?: string | null | undefined;
+    carrierName?: string | null | undefined;
     trackingNumber?: string | null | undefined;
+    trackingUrl?: string | null | undefined;
     notes?: string | null | undefined;
     country?: string | null | undefined;
     city?: string | null | undefined;
@@ -544,15 +560,21 @@ export declare const UpdateAdminOrderParams: zod.ZodObject<{
 }>;
 export declare const UpdateAdminOrderBody: zod.ZodObject<{
     status: zod.ZodOptional<zod.ZodString>;
+    carrierName: zod.ZodOptional<zod.ZodString>;
     trackingNumber: zod.ZodOptional<zod.ZodString>;
+    trackingUrl: zod.ZodOptional<zod.ZodString>;
     notes: zod.ZodOptional<zod.ZodString>;
 }, "strip", zod.ZodTypeAny, {
     status?: string | undefined;
+    carrierName?: string | undefined;
     trackingNumber?: string | undefined;
+    trackingUrl?: string | undefined;
     notes?: string | undefined;
 }, {
     status?: string | undefined;
+    carrierName?: string | undefined;
     trackingNumber?: string | undefined;
+    trackingUrl?: string | undefined;
     notes?: string | undefined;
 }>;
 export declare const UpdateAdminOrderResponse: zod.ZodObject<{
@@ -566,7 +588,9 @@ export declare const UpdateAdminOrderResponse: zod.ZodObject<{
     shippingCostGbp: zod.ZodOptional<zod.ZodNumber>;
     totalGbp: zod.ZodNumber;
     shippingMethod: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    carrierName: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     trackingNumber: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    trackingUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     notes: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     country: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     city: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
@@ -593,7 +617,9 @@ export declare const UpdateAdminOrderResponse: zod.ZodObject<{
     subtotalGbp?: number | undefined;
     shippingCostGbp?: number | undefined;
     shippingMethod?: string | null | undefined;
+    carrierName?: string | null | undefined;
     trackingNumber?: string | null | undefined;
+    trackingUrl?: string | null | undefined;
     notes?: string | null | undefined;
     country?: string | null | undefined;
     city?: string | null | undefined;
@@ -619,7 +645,9 @@ export declare const UpdateAdminOrderResponse: zod.ZodObject<{
     subtotalGbp?: number | undefined;
     shippingCostGbp?: number | undefined;
     shippingMethod?: string | null | undefined;
+    carrierName?: string | null | undefined;
     trackingNumber?: string | null | undefined;
+    trackingUrl?: string | null | undefined;
     notes?: string | null | undefined;
     country?: string | null | undefined;
     city?: string | null | undefined;
@@ -633,6 +661,265 @@ export declare const UpdateAdminOrderResponse: zod.ZodObject<{
     fraudReviewed?: boolean | undefined;
     fraudReviewNote?: string | null | undefined;
     updatedAt?: Date | undefined;
+}>;
+/**
+ * @summary Dispatch an order and send its tracking notification
+ */
+export declare const DispatchAdminOrderParams: zod.ZodObject<{
+    id: zod.ZodNumber;
+}, "strip", zod.ZodTypeAny, {
+    id: number;
+}, {
+    id: number;
+}>;
+export declare const dispatchAdminOrderBodyCarrierNameMax = 100;
+export declare const dispatchAdminOrderBodyTrackingNumberMax = 120;
+export declare const dispatchAdminOrderBodyTrackingUrlMax = 2048;
+export declare const dispatchAdminOrderBodyTrackingUrlRegExp: RegExp;
+export declare const DispatchAdminOrderBody: zod.ZodObject<{
+    carrierName: zod.ZodString;
+    trackingNumber: zod.ZodString;
+    trackingUrl: zod.ZodString;
+}, "strip", zod.ZodTypeAny, {
+    carrierName: string;
+    trackingNumber: string;
+    trackingUrl: string;
+}, {
+    carrierName: string;
+    trackingNumber: string;
+    trackingUrl: string;
+}>;
+export declare const DispatchAdminOrderResponse: zod.ZodObject<{
+    order: zod.ZodObject<{
+        id: zod.ZodNumber;
+        orderNumber: zod.ZodString;
+        status: zod.ZodString;
+        customerEmail: zod.ZodString;
+        customerName: zod.ZodString;
+        customerId: zod.ZodOptional<zod.ZodNullable<zod.ZodNumber>>;
+        subtotalGbp: zod.ZodOptional<zod.ZodNumber>;
+        shippingCostGbp: zod.ZodOptional<zod.ZodNumber>;
+        totalGbp: zod.ZodNumber;
+        shippingMethod: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        carrierName: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        trackingNumber: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        trackingUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        notes: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        country: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        city: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        address1: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        postcode: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        phone: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        refundedAmountGbp: zod.ZodOptional<zod.ZodNumber>;
+        refundStatus: zod.ZodOptional<zod.ZodString>;
+        fraudScore: zod.ZodOptional<zod.ZodNumber>;
+        fraudFlags: zod.ZodOptional<zod.ZodArray<zod.ZodString, "many">>;
+        fraudReviewed: zod.ZodOptional<zod.ZodBoolean>;
+        fraudReviewNote: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        createdAt: zod.ZodDate;
+        updatedAt: zod.ZodOptional<zod.ZodDate>;
+    }, "strip", zod.ZodTypeAny, {
+        status: string;
+        id: number;
+        orderNumber: string;
+        customerEmail: string;
+        customerName: string;
+        totalGbp: number;
+        createdAt: Date;
+        customerId?: number | null | undefined;
+        subtotalGbp?: number | undefined;
+        shippingCostGbp?: number | undefined;
+        shippingMethod?: string | null | undefined;
+        carrierName?: string | null | undefined;
+        trackingNumber?: string | null | undefined;
+        trackingUrl?: string | null | undefined;
+        notes?: string | null | undefined;
+        country?: string | null | undefined;
+        city?: string | null | undefined;
+        address1?: string | null | undefined;
+        postcode?: string | null | undefined;
+        phone?: string | null | undefined;
+        refundedAmountGbp?: number | undefined;
+        refundStatus?: string | undefined;
+        fraudScore?: number | undefined;
+        fraudFlags?: string[] | undefined;
+        fraudReviewed?: boolean | undefined;
+        fraudReviewNote?: string | null | undefined;
+        updatedAt?: Date | undefined;
+    }, {
+        status: string;
+        id: number;
+        orderNumber: string;
+        customerEmail: string;
+        customerName: string;
+        totalGbp: number;
+        createdAt: Date;
+        customerId?: number | null | undefined;
+        subtotalGbp?: number | undefined;
+        shippingCostGbp?: number | undefined;
+        shippingMethod?: string | null | undefined;
+        carrierName?: string | null | undefined;
+        trackingNumber?: string | null | undefined;
+        trackingUrl?: string | null | undefined;
+        notes?: string | null | undefined;
+        country?: string | null | undefined;
+        city?: string | null | undefined;
+        address1?: string | null | undefined;
+        postcode?: string | null | undefined;
+        phone?: string | null | undefined;
+        refundedAmountGbp?: number | undefined;
+        refundStatus?: string | undefined;
+        fraudScore?: number | undefined;
+        fraudFlags?: string[] | undefined;
+        fraudReviewed?: boolean | undefined;
+        fraudReviewNote?: string | null | undefined;
+        updatedAt?: Date | undefined;
+    }>;
+    emailSent: zod.ZodBoolean;
+    warning: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+}, "strip", zod.ZodTypeAny, {
+    order: {
+        status: string;
+        id: number;
+        orderNumber: string;
+        customerEmail: string;
+        customerName: string;
+        totalGbp: number;
+        createdAt: Date;
+        customerId?: number | null | undefined;
+        subtotalGbp?: number | undefined;
+        shippingCostGbp?: number | undefined;
+        shippingMethod?: string | null | undefined;
+        carrierName?: string | null | undefined;
+        trackingNumber?: string | null | undefined;
+        trackingUrl?: string | null | undefined;
+        notes?: string | null | undefined;
+        country?: string | null | undefined;
+        city?: string | null | undefined;
+        address1?: string | null | undefined;
+        postcode?: string | null | undefined;
+        phone?: string | null | undefined;
+        refundedAmountGbp?: number | undefined;
+        refundStatus?: string | undefined;
+        fraudScore?: number | undefined;
+        fraudFlags?: string[] | undefined;
+        fraudReviewed?: boolean | undefined;
+        fraudReviewNote?: string | null | undefined;
+        updatedAt?: Date | undefined;
+    };
+    emailSent: boolean;
+    warning?: string | null | undefined;
+}, {
+    order: {
+        status: string;
+        id: number;
+        orderNumber: string;
+        customerEmail: string;
+        customerName: string;
+        totalGbp: number;
+        createdAt: Date;
+        customerId?: number | null | undefined;
+        subtotalGbp?: number | undefined;
+        shippingCostGbp?: number | undefined;
+        shippingMethod?: string | null | undefined;
+        carrierName?: string | null | undefined;
+        trackingNumber?: string | null | undefined;
+        trackingUrl?: string | null | undefined;
+        notes?: string | null | undefined;
+        country?: string | null | undefined;
+        city?: string | null | undefined;
+        address1?: string | null | undefined;
+        postcode?: string | null | undefined;
+        phone?: string | null | undefined;
+        refundedAmountGbp?: number | undefined;
+        refundStatus?: string | undefined;
+        fraudScore?: number | undefined;
+        fraudFlags?: string[] | undefined;
+        fraudReviewed?: boolean | undefined;
+        fraudReviewNote?: string | null | undefined;
+        updatedAt?: Date | undefined;
+    };
+    emailSent: boolean;
+    warning?: string | null | undefined;
+}>;
+/**
+ * @summary Resend the tracking notification for a dispatched order
+ */
+export declare const ResendAdminOrderTrackingParams: zod.ZodObject<{
+    id: zod.ZodNumber;
+}, "strip", zod.ZodTypeAny, {
+    id: number;
+}, {
+    id: number;
+}>;
+export declare const ResendAdminOrderTrackingResponse: zod.ZodObject<{
+    ok: zod.ZodBoolean;
+}, "strip", zod.ZodTypeAny, {
+    ok: boolean;
+}, {
+    ok: boolean;
+}>;
+/**
+ * @summary Track an order by its public order number
+ */
+export declare const TrackPublicOrderQueryParams: zod.ZodObject<{
+    number: zod.ZodString;
+}, "strip", zod.ZodTypeAny, {
+    number: string;
+}, {
+    number: string;
+}>;
+export declare const TrackPublicOrderResponse: zod.ZodObject<{
+    orderNumber: zod.ZodString;
+    status: zod.ZodString;
+    shippingMethod: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    carrierName: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    trackingNumber: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    trackingUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    paymentCurrency: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    paymentAmountMinor: zod.ZodOptional<zod.ZodNullable<zod.ZodNumber>>;
+    createdAt: zod.ZodDate;
+    itemCount: zod.ZodNumber;
+    items: zod.ZodArray<zod.ZodObject<{
+        productName: zod.ZodString;
+        quantity: zod.ZodNumber;
+    }, "strip", zod.ZodTypeAny, {
+        productName: string;
+        quantity: number;
+    }, {
+        productName: string;
+        quantity: number;
+    }>, "many">;
+}, "strip", zod.ZodTypeAny, {
+    status: string;
+    orderNumber: string;
+    createdAt: Date;
+    items: {
+        productName: string;
+        quantity: number;
+    }[];
+    itemCount: number;
+    shippingMethod?: string | null | undefined;
+    carrierName?: string | null | undefined;
+    trackingNumber?: string | null | undefined;
+    trackingUrl?: string | null | undefined;
+    paymentCurrency?: string | null | undefined;
+    paymentAmountMinor?: number | null | undefined;
+}, {
+    status: string;
+    orderNumber: string;
+    createdAt: Date;
+    items: {
+        productName: string;
+        quantity: number;
+    }[];
+    itemCount: number;
+    shippingMethod?: string | null | undefined;
+    carrierName?: string | null | undefined;
+    trackingNumber?: string | null | undefined;
+    trackingUrl?: string | null | undefined;
+    paymentCurrency?: string | null | undefined;
+    paymentAmountMinor?: number | null | undefined;
 }>;
 /**
  * @summary List all customers
@@ -763,7 +1050,9 @@ export declare const GetAdminCustomerResponse: zod.ZodObject<{
         shippingCostGbp: zod.ZodOptional<zod.ZodNumber>;
         totalGbp: zod.ZodNumber;
         shippingMethod: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        carrierName: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         trackingNumber: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        trackingUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         notes: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         country: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         city: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
@@ -790,7 +1079,9 @@ export declare const GetAdminCustomerResponse: zod.ZodObject<{
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
         shippingMethod?: string | null | undefined;
+        carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
+        trackingUrl?: string | null | undefined;
         notes?: string | null | undefined;
         country?: string | null | undefined;
         city?: string | null | undefined;
@@ -816,7 +1107,9 @@ export declare const GetAdminCustomerResponse: zod.ZodObject<{
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
         shippingMethod?: string | null | undefined;
+        carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
+        trackingUrl?: string | null | undefined;
         notes?: string | null | undefined;
         country?: string | null | undefined;
         city?: string | null | undefined;
@@ -845,7 +1138,9 @@ export declare const GetAdminCustomerResponse: zod.ZodObject<{
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
         shippingMethod?: string | null | undefined;
+        carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
+        trackingUrl?: string | null | undefined;
         notes?: string | null | undefined;
         country?: string | null | undefined;
         city?: string | null | undefined;
@@ -889,7 +1184,9 @@ export declare const GetAdminCustomerResponse: zod.ZodObject<{
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
         shippingMethod?: string | null | undefined;
+        carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
+        trackingUrl?: string | null | undefined;
         notes?: string | null | undefined;
         country?: string | null | undefined;
         city?: string | null | undefined;

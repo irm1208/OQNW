@@ -1,5 +1,5 @@
 import type { QueryKey, UseMutationOptions, UseMutationResult, UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import type { AdminCryptoTestPaymentSession, AdminLoginInput, AdminProduct, AdminSession, AdminWallidTestPaymentSession, ApiError, CatalogPriceSyncApplyRequest, CatalogPriceSyncApplyResponse, CatalogPriceSyncPreview, CatalogPriceSyncPreviewRequest, CatalogProduct, CatalogProductInput, CatalogProductPatch, CategoryRevenue, CustomerDetail, CustomerList, DashboardStats, DisableCatalogProductsWithoutJanoshikReportResponse, DiscountCode, DiscountCodeInput, DiscountCodePatch, EnableAllPeptideCatalogProductsResponse, GetNewCustomersChartParams, GetRevenueChartParams, HealthStatus, InventoryUpdate, ListAdminCustomersParams, ListAdminOrdersParams, ListAdminProductsParams, ListCatalogProductsParams, ListPublicProductsParams, NewCustomerDataPoint, Order, OrderDetail, OrderList, OrderStatusCount, OrderUpdate, PublicProduct, PublicProductDetail, RevenueDataPoint, TopProduct, VisibilityUpdate } from "./api.schemas";
+import type { AdminCryptoTestPaymentSession, AdminLoginInput, AdminProduct, AdminSession, AdminWallidTestPaymentSession, ApiError, CatalogPriceSyncApplyRequest, CatalogPriceSyncApplyResponse, CatalogPriceSyncPreview, CatalogPriceSyncPreviewRequest, CatalogProduct, CatalogProductInput, CatalogProductPatch, CategoryRevenue, CustomerDetail, CustomerList, DashboardStats, DisableCatalogProductsWithoutJanoshikReportResponse, DiscountCode, DiscountCodeInput, DiscountCodePatch, DispatchOrderInput, DispatchOrderResponse, EnableAllPeptideCatalogProductsResponse, GetNewCustomersChartParams, GetRevenueChartParams, HealthStatus, InventoryUpdate, ListAdminCustomersParams, ListAdminOrdersParams, ListAdminProductsParams, ListCatalogProductsParams, ListPublicProductsParams, NewCustomerDataPoint, NotificationResult, Order, OrderDetail, OrderList, OrderStatusCount, OrderUpdate, PublicOrderTracking, PublicProduct, PublicProductDetail, RevenueDataPoint, TopProduct, TrackPublicOrderParams, VisibilityUpdate } from "./api.schemas";
 import { customFetch } from "../custom-fetch";
 import type { ErrorType, BodyType } from "../custom-fetch";
 type AwaitedInput<T> = PromiseLike<T> | T;
@@ -347,6 +347,86 @@ export declare const useUpdateAdminOrder: <TError = ErrorType<ApiError>, TContex
     id: number;
     data: BodyType<OrderUpdate>;
 }, TContext>;
+/**
+ * @summary Dispatch an order and send its tracking notification
+ */
+export declare const getDispatchAdminOrderUrl: (id: number) => string;
+export declare const dispatchAdminOrder: (id: number, dispatchOrderInput: DispatchOrderInput, options?: RequestInit) => Promise<DispatchOrderResponse>;
+export declare const getDispatchAdminOrderMutationOptions: <TError = ErrorType<ApiError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof dispatchAdminOrder>>, TError, {
+        id: number;
+        data: BodyType<DispatchOrderInput>;
+    }, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationOptions<Awaited<ReturnType<typeof dispatchAdminOrder>>, TError, {
+    id: number;
+    data: BodyType<DispatchOrderInput>;
+}, TContext>;
+export type DispatchAdminOrderMutationResult = NonNullable<Awaited<ReturnType<typeof dispatchAdminOrder>>>;
+export type DispatchAdminOrderMutationBody = BodyType<DispatchOrderInput>;
+export type DispatchAdminOrderMutationError = ErrorType<ApiError>;
+/**
+ * @summary Dispatch an order and send its tracking notification
+ */
+export declare const useDispatchAdminOrder: <TError = ErrorType<ApiError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof dispatchAdminOrder>>, TError, {
+        id: number;
+        data: BodyType<DispatchOrderInput>;
+    }, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationResult<Awaited<ReturnType<typeof dispatchAdminOrder>>, TError, {
+    id: number;
+    data: BodyType<DispatchOrderInput>;
+}, TContext>;
+/**
+ * @summary Resend the tracking notification for a dispatched order
+ */
+export declare const getResendAdminOrderTrackingUrl: (id: number) => string;
+export declare const resendAdminOrderTracking: (id: number, options?: RequestInit) => Promise<NotificationResult>;
+export declare const getResendAdminOrderTrackingMutationOptions: <TError = ErrorType<ApiError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof resendAdminOrderTracking>>, TError, {
+        id: number;
+    }, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationOptions<Awaited<ReturnType<typeof resendAdminOrderTracking>>, TError, {
+    id: number;
+}, TContext>;
+export type ResendAdminOrderTrackingMutationResult = NonNullable<Awaited<ReturnType<typeof resendAdminOrderTracking>>>;
+export type ResendAdminOrderTrackingMutationError = ErrorType<ApiError>;
+/**
+ * @summary Resend the tracking notification for a dispatched order
+ */
+export declare const useResendAdminOrderTracking: <TError = ErrorType<ApiError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof resendAdminOrderTracking>>, TError, {
+        id: number;
+    }, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationResult<Awaited<ReturnType<typeof resendAdminOrderTracking>>, TError, {
+    id: number;
+}, TContext>;
+/**
+ * @summary Track an order by its public order number
+ */
+export declare const getTrackPublicOrderUrl: (params: TrackPublicOrderParams) => string;
+export declare const trackPublicOrder: (params: TrackPublicOrderParams, options?: RequestInit) => Promise<PublicOrderTracking>;
+export declare const getTrackPublicOrderQueryKey: (params?: TrackPublicOrderParams) => readonly ["/api/orders/track", ...TrackPublicOrderParams[]];
+export declare const getTrackPublicOrderQueryOptions: <TData = Awaited<ReturnType<typeof trackPublicOrder>>, TError = ErrorType<ApiError>>(params: TrackPublicOrderParams, options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<typeof trackPublicOrder>>, TError, TData>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseQueryOptions<Awaited<ReturnType<typeof trackPublicOrder>>, TError, TData> & {
+    queryKey: QueryKey;
+};
+export type TrackPublicOrderQueryResult = NonNullable<Awaited<ReturnType<typeof trackPublicOrder>>>;
+export type TrackPublicOrderQueryError = ErrorType<ApiError>;
+/**
+ * @summary Track an order by its public order number
+ */
+export declare function useTrackPublicOrder<TData = Awaited<ReturnType<typeof trackPublicOrder>>, TError = ErrorType<ApiError>>(params: TrackPublicOrderParams, options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<typeof trackPublicOrder>>, TError, TData>;
+    request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+};
 /**
  * @summary List all customers
  */

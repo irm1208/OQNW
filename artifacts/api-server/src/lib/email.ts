@@ -58,7 +58,9 @@ export interface OrderEmailData {
   shippingCostGbp: number;
   totalGbp: number;
   shippingMethod: string | null;
+  carrierName?: string | null;
   trackingNumber: string | null;
+  trackingUrl?: string | null;
   address1: string | null;
   address2: string | null;
   city: string | null;
@@ -68,6 +70,31 @@ export interface OrderEmailData {
 
 function formatGbp(amount: number): string {
   return `£${amount.toFixed(2)}`;
+}
+
+function escapeHtml(value: string): string {
+  return value.replace(
+    /[&<>"']/g,
+    (character) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    })[character] ?? character,
+  );
+}
+
+function safeHttpsUrl(value: string | null | undefined): string | null {
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && !url.username && !url.password
+      ? escapeHtml(url.toString())
+      : null;
+  } catch {
+    return null;
+  }
 }
 
 function baseTemplate(title: string, body: string): string {
@@ -652,11 +679,15 @@ export async function sendOrderConfirmation(order: OrderEmailData): Promise<void
 
 export async function sendShippingNotification(order: OrderEmailData): Promise<void> {
   const subject = `Your Order Has Shipped — ${order.orderNumber}`;
+  const trackingUrl = safeHttpsUrl(order.trackingUrl);
+  const carrierName = order.carrierName ? escapeHtml(order.carrierName) : null;
+  const trackingNumber = order.trackingNumber ? escapeHtml(order.trackingNumber) : null;
   const trackingSection = order.trackingNumber ? `
     <div style="background:#f0fdf4;border-radius:6px;padding:16px 20px;margin:20px 0;border-left:4px solid #22c55e;">
       <p style="margin:0 0 4px;font-size:12px;color:#166534;font-weight:600;">TRACKING NUMBER</p>
-      <p style="margin:0;font-size:18px;font-weight:700;color:#15803d;letter-spacing:1px;">${order.trackingNumber}</p>
-      ${order.shippingMethod ? `<p style="margin:6px 0 0;font-size:13px;color:#166534;">via ${order.shippingMethod}</p>` : ""}
+      <p style="margin:0;font-size:18px;font-weight:700;color:#15803d;letter-spacing:1px;">${trackingNumber}</p>
+      ${carrierName ? `<p style="margin:6px 0 0;font-size:13px;color:#166534;">via ${carrierName}</p>` : ""}
+      ${trackingUrl ? `<a href="${trackingUrl}" style="display:inline-block;margin-top:14px;background:#15803d;color:#ffffff;padding:11px 20px;border-radius:7px;text-decoration:none;font-size:14px;font-weight:700;">Track your package</a>` : ""}
     </div>` : `
     <div style="background:#f0fdf4;border-radius:6px;padding:16px 20px;margin:20px 0;border-left:4px solid #22c55e;">
       <p style="margin:0;font-size:14px;color:#166534;">Your order is on its way! Tracking information will be available shortly.</p>
@@ -664,12 +695,19 @@ export async function sendShippingNotification(order: OrderEmailData): Promise<v
 
   const body = `
     <h2 style="margin:0 0 4px;font-size:22px;color:#0f172a;">Your Order Is On Its Way</h2>
-    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Good news, ${order.customerName} — your order <strong>${order.orderNumber}</strong> has been dispatched.</p>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Good news, ${escapeHtml(order.customerName)} — your order <strong>${escapeHtml(order.orderNumber)}</strong> has been dispatched.</p>
 
     ${trackingSection}
 
     ${itemsTable(order.items)}
     ${totalsBlock(order)}
+
+    <div style="margin-top:24px;text-align:center;">
+      <a href="${SITE_URL}/account?order=${encodeURIComponent(order.orderNumber)}"
+         style="display:inline-block;background:#f8fafc;color:#0f172a;padding:12px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;border:1.5px solid #e2e8f0;">
+        View order in my account
+      </a>
+    </div>
 
     <div style="margin-top:24px;padding:16px;background:#fefce8;border-radius:6px;border-left:4px solid #eab308;">
       <p style="margin:0;font-size:13px;color:#713f12;">All products are sold strictly for research purposes only. Not for human consumption.</p>
@@ -688,6 +726,7 @@ export async function sendShippingNotification(order: OrderEmailData): Promise<v
   } catch (err) {
     logger.error({ err, orderNumber: order.orderNumber }, "Failed to send shipping notification email");
     await logEmail({ toEmail: order.customerEmail, subject, type: "shipping", status: "failed", orderNumber: order.orderNumber });
+    throw err;
   }
 }
 

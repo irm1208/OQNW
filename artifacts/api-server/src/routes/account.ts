@@ -115,7 +115,9 @@ router.get("/account/orders", async (req: Request, res: Response): Promise<void>
         postcode: ordersTable.postcode,
         country: ordersTable.country,
         shippingMethod: ordersTable.shippingMethod,
+        carrierName: ordersTable.carrierName,
         trackingNumber: ordersTable.trackingNumber,
+        trackingUrl: ordersTable.trackingUrl,
         createdAt: ordersTable.createdAt,
       })
       .from(ordersTable)
@@ -232,7 +234,9 @@ router.get("/account/orders", async (req: Request, res: Response): Promise<void>
         status: settledOrderIds.has(o.id) ? "paid" : o.status,
         totalGbp: parseFloat(String(o.totalGbp)),
         shippingMethod: o.shippingMethod ?? null,
-        trackingNumber: o.trackingNumber ?? null,
+        carrierName: ["shipped", "delivered"].includes(o.status) ? o.carrierName ?? null : null,
+        trackingNumber: ["shipped", "delivered"].includes(o.status) ? o.trackingNumber ?? null : null,
+        trackingUrl: ["shipped", "delivered"].includes(o.status) ? o.trackingUrl ?? null : null,
         createdAt: o.createdAt.toISOString(),
         items: (itemsByOrderId[o.id] ?? []).map((i) => ({
           productId: i.productId ?? 0,

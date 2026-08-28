@@ -4,11 +4,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
-} from "@/components/ui/dialog";
+import { DispatchDialog } from "@/components/DispatchDialog";
+import { isSafeTrackingUrl } from "@/lib/tracking-carriers";
 import {
   Loader2, Package, Printer, Truck, ArrowRight,
   CheckCircle2, ExternalLink, ClipboardList,
@@ -39,7 +37,9 @@ interface FulfillmentOrder {
   postcode: string | null;
   country: string | null;
   shippingMethod: string | null;
+  carrierName: string | null;
   trackingNumber: string | null;
+  trackingUrl: string | null;
   totalGbp: number;
   notes: string | null;
   createdAt: string;
@@ -123,67 +123,6 @@ function StatusBadge({ status }: { status: string }) {
     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${cls}`}>
       {labels[status] ?? status}
     </span>
-  );
-}
-
-function ShipDialog({
-  order,
-  open,
-  onClose,
-  onDone,
-}: {
-  order: FulfillmentOrder;
-  open: boolean;
-  onClose: () => void;
-  onDone: () => void;
-}) {
-  const [tracking, setTracking] = useState(order.trackingNumber ?? "");
-  const [saving, setSaving] = useState(false);
-
-  async function handleShip() {
-    setSaving(true);
-    try {
-      await patchOrder(order.id, { status: "shipped", trackingNumber: tracking || undefined });
-      toast.success(`${order.orderNumber} marked as shipped`);
-      onDone();
-    } catch {
-      toast.error("Failed to mark order as shipped");
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={v => !v && onClose()}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Mark as Shipped — {order.orderNumber}</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-3 py-2">
-          <p className="text-sm text-muted-foreground">
-            Shipping to <strong>{order.customerName}</strong>
-            {order.city ? `, ${order.city}` : ""}.
-            A shipping notification email will be sent automatically.
-          </p>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">Tracking Number (optional)</label>
-            <Input
-              placeholder="Enter tracking ID"
-              value={tracking}
-              onChange={e => setTracking(e.target.value)}
-              autoFocus
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={handleShip} disabled={saving}>
-            {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Truck className="w-4 h-4 mr-2" />}
-            Confirm Shipped
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   );
 }
 
@@ -284,6 +223,16 @@ function OrderCard({
                 {order.notes}
               </p>
             )}
+             {order.status === "shipped" && order.trackingNumber && (
+               <div className="mt-2 text-xs text-muted-foreground flex flex-wrap items-center gap-x-2">
+                 <span><strong>{order.carrierName ?? "Carrier"}:</strong> {order.trackingNumber}</span>
+                 {isSafeTrackingUrl(order.trackingUrl) && (
+                   <a data-testid={`link-tracking-${order.id}`} href={order.trackingUrl!} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center">
+                     Track parcel <ExternalLink className="w-3 h-3 ml-1" />
+                   </a>
+                 )}
+               </div>
+             )}
 
             {/* Actions */}
             <div className="mt-3 flex flex-wrap gap-2">
@@ -312,11 +261,11 @@ function OrderCard({
       </CardContent>
 
       {shipOpen && (
-        <ShipDialog
+        <DispatchDialog
           order={order}
           open={shipOpen}
-          onClose={() => setShipOpen(false)}
-          onDone={() => { setShipOpen(false); onRefresh(); }}
+          onOpenChange={setShipOpen}
+          onDispatched={onRefresh}
         />
       )}
     </Card>
@@ -328,7 +277,7 @@ function OrderCard({
 export default function FulfillmentQueue() {
   const [tab, setTab] = useState<Tab>("ready");
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
-  const [bulkAction, setBulkAction] = useState<"processing" | "shipped" | null>(null);
+  const [bulkAction, setBulkAction] = useState<"processing" | null>(null);
   const [applying, setApplying] = useState(false);
   const qc = useQueryClient();
 
@@ -433,15 +382,6 @@ export default function FulfillmentQueue() {
               disabled={applying}
             >
               <ArrowRight className="w-3.5 h-3.5 mr-1.5" /> Mark Processing
-            </Button>
-          )}
-          {tab === "processing" && (
-            <Button
-              size="sm"
-              onClick={() => { setBulkAction("shipped"); }}
-              disabled={applying}
-            >
-              <Truck className="w-3.5 h-3.5 mr-1.5" /> Mark Shipped
             </Button>
           )}
           {bulkAction && (

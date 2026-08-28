@@ -91,7 +91,11 @@ export interface Order {
   /** @nullable */
   shippingMethod?: string | null;
   /** @nullable */
+  carrierName?: string | null;
+  /** @nullable */
   trackingNumber?: string | null;
+  /** @nullable */
+  trackingUrl?: string | null;
   /** @nullable */
   notes?: string | null;
   /** @nullable */
@@ -139,7 +143,11 @@ export interface OrderDetail {
   /** @nullable */
   shippingMethod?: string | null;
   /** @nullable */
+  carrierName?: string | null;
+  /** @nullable */
   trackingNumber?: string | null;
+  /** @nullable */
+  trackingUrl?: string | null;
   /** @nullable */
   notes?: string | null;
   /** @nullable */
@@ -175,8 +183,64 @@ export interface OrderList {
 
 export interface OrderUpdate {
   status?: string;
+  carrierName?: string;
   trackingNumber?: string;
+  trackingUrl?: string;
   notes?: string;
+}
+
+export interface DispatchOrderInput {
+  /**
+   * @minLength 1
+   * @maxLength 100
+   */
+  carrierName: string;
+  /**
+   * @minLength 1
+   * @maxLength 120
+   */
+  trackingNumber: string;
+  /**
+   * @maxLength 2048
+   * @pattern ^https://
+   */
+  trackingUrl: string;
+}
+
+export interface DispatchOrderResponse {
+  order: Order;
+  emailSent: boolean;
+  /** @nullable */
+  warning?: string | null;
+}
+
+export interface NotificationResult {
+  ok: boolean;
+}
+
+export interface PublicOrderTrackingItem {
+  productName: string;
+  quantity: number;
+}
+
+export interface PublicOrderTracking {
+  orderNumber: string;
+  status: string;
+  /** @nullable */
+  shippingMethod?: string | null;
+  /** @nullable */
+  carrierName?: string | null;
+  /** @nullable */
+  trackingNumber?: string | null;
+  /** @nullable */
+  trackingUrl?: string | null;
+  /** @nullable */
+  paymentCurrency?: string | null;
+  /** @nullable */
+  paymentAmountMinor?: number | null;
+  createdAt: string;
+  itemCount: number;
+  items: PublicOrderTrackingItem[];
 }
 
 export interface Customer {
@@ -610,6 +674,10 @@ export type ListAdminOrdersParams = {
   search?: string;
   limit?: number;
   offset?: number;
+};
+
+export type TrackPublicOrderParams = {
+  number: string;
 };
 
 export type ListAdminCustomersParams = {

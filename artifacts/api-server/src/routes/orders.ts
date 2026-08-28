@@ -1499,10 +1499,14 @@ router.get("/orders/track", async (req: Request, res: Response): Promise<void> =
       ));
     }
 
+    const isDispatched = trackedStatus === "shipped" || trackedStatus === "delivered";
     res.status(200).json({
       orderNumber: order.orderNumber,
       status: trackedStatus,
       shippingMethod: order.shippingMethod,
+      carrierName: isDispatched ? order.carrierName : null,
+      trackingNumber: isDispatched ? order.trackingNumber : null,
+      trackingUrl: isDispatched ? order.trackingUrl : null,
       paymentCurrency: order.paymentCurrency,
       paymentAmountMinor: order.paymentAmountMinor,
       createdAt: order.createdAt.toISOString(),

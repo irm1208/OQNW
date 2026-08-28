@@ -3,10 +3,10 @@ import { Link, useLocation } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import {
   User, Package, Settings, LogOut, ChevronRight,
-  ShoppingBag, Clock, Shield, Eye, EyeOff, CheckCircle2,
+  ShoppingBag, Clock, Eye, EyeOff, CheckCircle2,
   AlertCircle, Truck, Zap, FlaskConical, Heart, RotateCcw, X,
   Users, Copy, CheckCheck, Share2,
-  Repeat, Award, Gift, TrendingUp, Star,
+  Repeat, Award, Gift, TrendingUp, Star, ExternalLink,
 } from "lucide-react";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -43,7 +43,9 @@ type AccountOrder = {
   status: string;
   totalGbp: number;
   shippingMethod: string | null;
+  carrierName: string | null;
   trackingNumber: string | null;
+  trackingUrl: string | null;
   createdAt: string;
   items: OrderItem[];
 };
@@ -124,6 +126,18 @@ function formatDate(iso: string): string {
 
 function formatMemberSince(iso: string): string {
   return new Date(iso).toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+}
+
+function getHttpsUrl(value: string | null): string | null {
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && !!url.hostname && !url.username && !url.password
+      ? url.href
+      : null;
+  } catch {
+    return null;
+  }
 }
 
 export default function AccountPage() {
@@ -629,6 +643,8 @@ export default function AccountPage() {
                     {orders.map((order) => {
                       const isExpanded = expandedOrder === order.orderNumber;
                       const itemCount = order.items.reduce((s, i) => s + i.quantity, 0);
+                      const trackingUrl = getHttpsUrl(order.trackingUrl);
+                      const isDispatched = ["shipped", "delivered"].includes(order.status);
                       return (
                         <div
                           key={order.orderNumber}
@@ -751,6 +767,45 @@ export default function AccountPage() {
                                 );
                               })()}
 
+                              {/* Dispatch tracking */}
+                              {isDispatched && (
+                                <div
+                                  data-testid={`panel-dispatch-tracking-${order.orderNumber}`}
+                                  style={{ marginBottom: "18px", padding: "16px", borderRadius: "12px", background: "linear-gradient(135deg, #F0FDF4, #F0F7FF)", border: "1px solid #BBF7D0" }}
+                                >
+                                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
+                                    <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "#DCFCE7", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                                      <Truck size={14} style={{ color: "#15803D" }} />
+                                    </div>
+                                    <div>
+                                      <p style={{ fontSize: "13px", fontWeight: 800, color: "#14532D", margin: 0 }}>Dispatch tracking</p>
+                                      <p style={{ fontSize: "11px", color: "#4B7A5B", margin: 0 }}>Your shipment details</p>
+                                    </div>
+                                  </div>
+                                  <div className="form-grid-2" style={{ gap: "12px" }}>
+                                    <div>
+                                      <p style={{ fontSize: "10px", color: "#4B7A5B", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "3px" }}>Logistics company</p>
+                                      <p data-testid={`text-carrier-${order.orderNumber}`} style={{ fontSize: "13px", fontWeight: 700, color: "#14532D", margin: 0 }}>{order.carrierName ?? "Details coming soon"}</p>
+                                    </div>
+                                    <div>
+                                      <p style={{ fontSize: "10px", color: "#4B7A5B", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "3px" }}>Tracking number</p>
+                                      <p data-testid={`text-tracking-number-${order.orderNumber}`} style={{ fontSize: "13px", fontWeight: 700, color: "#14532D", margin: 0, overflowWrap: "anywhere" }}>{order.trackingNumber ?? "Awaiting carrier reference"}</p>
+                                    </div>
+                                  </div>
+                                  {trackingUrl && (
+                                    <a
+                                      data-testid={`link-track-package-${order.orderNumber}`}
+                                      href={trackingUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{ display: "inline-flex", alignItems: "center", gap: "6px", marginTop: "14px", padding: "8px 12px", borderRadius: "8px", backgroundColor: "#15803D", color: "#fff", fontSize: "12px", fontWeight: 700, textDecoration: "none" }}
+                                    >
+                                      Track package <ExternalLink size={13} />
+                                    </a>
+                                  )}
+                                </div>
+                              )}
+
                               {/* Items list */}
                               <div style={{ marginBottom: "14px" }}>
                                 {order.items.map((item, i) => (
@@ -828,12 +883,6 @@ export default function AccountPage() {
                                   <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "8px 14px", borderRadius: "8px", backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
                                     <Truck size={13} style={{ color: "#64748B" }} />
                                     <span style={{ fontSize: "13px", color: "#64748B", fontWeight: 500 }}>{order.shippingMethod}</span>
-                                  </div>
-                                )}
-                                {order.trackingNumber && (
-                                  <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "8px 14px", borderRadius: "8px", backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0" }}>
-                                    <Shield size={13} style={{ color: "#16A34A" }} />
-                                    <span style={{ fontSize: "13px", color: "#15803D", fontWeight: 600 }}>Tracking: {order.trackingNumber}</span>
                                   </div>
                                 )}
                                 {/* Request Return button — only for shipped/delivered with no active return */}

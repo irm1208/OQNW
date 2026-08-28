@@ -18420,8 +18420,8 @@ var require_escape_html = __commonJS({
   "../../node_modules/.pnpm/escape-html@1.0.3/node_modules/escape-html/index.js"(exports, module) {
     "use strict";
     var matchHtmlRegExp = /["'&<>]/;
-    module.exports = escapeHtml2;
-    function escapeHtml2(string4) {
+    module.exports = escapeHtml3;
+    function escapeHtml3(string4) {
       var str = "" + string4;
       var match = matchHtmlRegExp.exec(str);
       if (!match) {
@@ -18552,13 +18552,13 @@ var require_finalhandler = __commonJS({
     "use strict";
     var debug = require_src()("finalhandler");
     var encodeUrl = require_encodeurl();
-    var escapeHtml2 = require_escape_html();
+    var escapeHtml3 = require_escape_html();
     var onFinished = require_on_finished();
     var parseUrl = require_parseurl();
     var statuses = require_statuses();
     var isFinished = onFinished.isFinished;
     function createHtmlDocument(message) {
-      var body = escapeHtml2(message).replaceAll("\n", "<br>").replaceAll("  ", " &nbsp;");
+      var body = escapeHtml3(message).replaceAll("\n", "<br>").replaceAll("  ", " &nbsp;");
       return '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<title>Error</title>\n</head>\n<body>\n<pre>' + body + "</pre>\n</body>\n</html>\n";
     }
     module.exports = finalhandler;
@@ -20488,27 +20488,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router50;
+    module.exports = Router51;
     module.exports.Route = Route;
-    function Router50(options) {
-      if (!(this instanceof Router50)) {
-        return new Router50(options);
+    function Router51(options) {
+      if (!(this instanceof Router51)) {
+        return new Router51(options);
       }
       const opts = options || {};
-      function router50(req, res, next) {
-        router50.handle(req, res, next);
+      function router51(req, res, next) {
+        router51.handle(req, res, next);
       }
-      Object.setPrototypeOf(router50, this);
-      router50.caseSensitive = opts.caseSensitive;
-      router50.mergeParams = opts.mergeParams;
-      router50.params = {};
-      router50.strict = opts.strict;
-      router50.stack = [];
-      return router50;
+      Object.setPrototypeOf(router51, this);
+      router51.caseSensitive = opts.caseSensitive;
+      router51.mergeParams = opts.mergeParams;
+      router51.params = {};
+      router51.strict = opts.strict;
+      router51.stack = [];
+      return router51;
     }
-    Router50.prototype = function() {
+    Router51.prototype = function() {
     };
-    Router50.prototype.param = function param2(name2, fn) {
+    Router51.prototype.param = function param2(name2, fn) {
       if (!name2) {
         throw new TypeError("argument name is required");
       }
@@ -20528,7 +20528,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router50.prototype.handle = function handle(req, res, callback) {
+    Router51.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20655,7 +20655,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router50.prototype.use = function use(handler) {
+    Router51.prototype.use = function use(handler) {
       let offset = 0;
       let path = "/";
       if (typeof handler !== "function") {
@@ -20688,7 +20688,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router50.prototype.route = function route(path) {
+    Router51.prototype.route = function route(path) {
       const route2 = new Route(path);
       const layer = new Layer(path, {
         sensitive: this.caseSensitive,
@@ -20703,7 +20703,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router50.prototype[method] = function(path) {
+      Router51.prototype[method] = function(path) {
         const route = this.route(path);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -20886,13 +20886,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router50 = require_router();
+    var Router51 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router50 = null;
+      var router51 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -20901,13 +20901,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router50 === null) {
-            router50 = new Router50({
+          if (router51 === null) {
+            router51 = new Router51({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router50;
+          return router51;
         }
       });
     };
@@ -20978,15 +20978,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router50 = this.router;
+      var router51 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router50.use(path, fn2);
+          return router51.use(path, fn2);
         }
         debug(".use app under %s", path);
         fn2.mountpath = path;
         fn2.parent = this;
-        router50.use(path, function mounted_app(req, res, next) {
+        router51.use(path, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -22382,7 +22382,7 @@ var require_send = __commonJS({
     var createError = require_http_errors();
     var debug = require_src()("send");
     var encodeUrl = require_encodeurl();
-    var escapeHtml2 = require_escape_html();
+    var escapeHtml3 = require_escape_html();
     var etag = require_etag();
     var fresh = require_fresh();
     var fs = __require("fs");
@@ -22435,7 +22435,7 @@ var require_send = __commonJS({
       }
       var res = this.res;
       var msg = statuses.message[status] || String(status);
-      var doc = createHtmlDocument("Error", escapeHtml2(msg));
+      var doc = createHtmlDocument("Error", escapeHtml3(msg));
       clearHeaders(res);
       if (err && err.headers) {
         setHeaders(res, err.headers);
@@ -22535,7 +22535,7 @@ var require_send = __commonJS({
         return;
       }
       var loc = encodeUrl(collapseLeadingSlashes(this.path + "/"));
-      var doc = createHtmlDocument("Redirecting", "Redirecting to " + escapeHtml2(loc));
+      var doc = createHtmlDocument("Redirecting", "Redirecting to " + escapeHtml3(loc));
       res.statusCode = 301;
       res.setHeader("Content-Type", "text/html; charset=UTF-8");
       res.setHeader("Content-Length", Buffer.byteLength(doc));
@@ -22939,7 +22939,7 @@ var require_response = __commonJS({
     var createError = require_http_errors();
     var deprecate = require_depd()("express");
     var encodeUrl = require_encodeurl();
-    var escapeHtml2 = require_escape_html();
+    var escapeHtml3 = require_escape_html();
     var http = __require("node:http");
     var onFinished = require_on_finished();
     var mime = require_mime_types();
@@ -23278,7 +23278,7 @@ var require_response = __commonJS({
           body = statuses.message[status] + ". Redirecting to " + address;
         },
         html: function() {
-          var u = escapeHtml2(address);
+          var u = escapeHtml3(address);
           body = "<p>" + statuses.message[status] + ". Redirecting to " + u + "</p>";
         },
         default: function() {
@@ -23406,7 +23406,7 @@ var require_serve_static = __commonJS({
   "../../node_modules/.pnpm/serve-static@2.2.1/node_modules/serve-static/index.js"(exports, module) {
     "use strict";
     var encodeUrl = require_encodeurl();
-    var escapeHtml2 = require_escape_html();
+    var escapeHtml3 = require_escape_html();
     var parseUrl = require_parseurl();
     var resolve = __require("path").resolve;
     var send = require_send();
@@ -23492,7 +23492,7 @@ var require_serve_static = __commonJS({
         originalUrl.path = null;
         originalUrl.pathname = collapseLeadingSlashes(originalUrl.pathname + "/");
         var loc = encodeUrl(url2.format(originalUrl));
-        var doc = createHtmlDocument("Redirecting", "Redirecting to " + escapeHtml2(loc));
+        var doc = createHtmlDocument("Redirecting", "Redirecting to " + escapeHtml3(loc));
         res.statusCode = 301;
         res.setHeader("Content-Type", "text/html; charset=UTF-8");
         res.setHeader("Content-Length", Buffer.byteLength(doc));
@@ -23513,7 +23513,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router50 = require_router();
+    var Router51 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module.exports = createApplication;
@@ -23535,8 +23535,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router50.Route;
-    exports.Router = Router50;
+    exports.Route = Router51.Route;
+    exports.Router = Router51;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -45879,13 +45879,13 @@ var require_dist4 = __commonJS({
 });
 
 // src/app.ts
-var import_express50 = __toESM(require_express2(), 1);
+var import_express51 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 var import_cookie_parser = __toESM(require_cookie_parser(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
 
 // src/routes/index.ts
-var import_express48 = __toESM(require_express2(), 1);
+var import_express49 = __toESM(require_express2(), 1);
 
 // src/routes/health.ts
 var import_express = __toESM(require_express2(), 1);
@@ -49863,7 +49863,9 @@ var ListAdminOrdersResponse = objectType({
       shippingCostGbp: numberType().optional(),
       totalGbp: numberType(),
       shippingMethod: stringType().nullish(),
+      carrierName: stringType().nullish(),
       trackingNumber: stringType().nullish(),
+      trackingUrl: stringType().nullish(),
       notes: stringType().nullish(),
       country: stringType().nullish(),
       city: stringType().nullish(),
@@ -49896,7 +49898,9 @@ var GetAdminOrderResponse = objectType({
   shippingCostGbp: numberType().optional(),
   totalGbp: numberType(),
   shippingMethod: stringType().nullish(),
+  carrierName: stringType().nullish(),
   trackingNumber: stringType().nullish(),
+  trackingUrl: stringType().nullish(),
   notes: stringType().nullish(),
   address1: stringType().nullish(),
   address2: stringType().nullish(),
@@ -49930,7 +49934,9 @@ var UpdateAdminOrderParams = objectType({
 });
 var UpdateAdminOrderBody = objectType({
   status: stringType().optional(),
+  carrierName: stringType().optional(),
   trackingNumber: stringType().optional(),
+  trackingUrl: stringType().optional(),
   notes: stringType().optional()
 });
 var UpdateAdminOrderResponse = objectType({
@@ -49944,7 +49950,9 @@ var UpdateAdminOrderResponse = objectType({
   shippingCostGbp: numberType().optional(),
   totalGbp: numberType(),
   shippingMethod: stringType().nullish(),
+  carrierName: stringType().nullish(),
   trackingNumber: stringType().nullish(),
+  trackingUrl: stringType().nullish(),
   notes: stringType().nullish(),
   country: stringType().nullish(),
   city: stringType().nullish(),
@@ -49959,6 +49967,78 @@ var UpdateAdminOrderResponse = objectType({
   fraudReviewNote: stringType().nullish(),
   createdAt: coerce.date(),
   updatedAt: coerce.date().optional()
+});
+var DispatchAdminOrderParams = objectType({
+  id: coerce.number()
+});
+var dispatchAdminOrderBodyCarrierNameMax = 100;
+var dispatchAdminOrderBodyTrackingNumberMax = 120;
+var dispatchAdminOrderBodyTrackingUrlMax = 2048;
+var dispatchAdminOrderBodyTrackingUrlRegExp = new RegExp("^https:/");
+var DispatchAdminOrderBody = objectType({
+  carrierName: stringType().min(1).max(dispatchAdminOrderBodyCarrierNameMax),
+  trackingNumber: stringType().min(1).max(dispatchAdminOrderBodyTrackingNumberMax),
+  trackingUrl: stringType().url().max(dispatchAdminOrderBodyTrackingUrlMax).regex(dispatchAdminOrderBodyTrackingUrlRegExp)
+});
+var DispatchAdminOrderResponse = objectType({
+  order: objectType({
+    id: numberType(),
+    orderNumber: stringType(),
+    status: stringType(),
+    customerEmail: stringType(),
+    customerName: stringType(),
+    customerId: numberType().nullish(),
+    subtotalGbp: numberType().optional(),
+    shippingCostGbp: numberType().optional(),
+    totalGbp: numberType(),
+    shippingMethod: stringType().nullish(),
+    carrierName: stringType().nullish(),
+    trackingNumber: stringType().nullish(),
+    trackingUrl: stringType().nullish(),
+    notes: stringType().nullish(),
+    country: stringType().nullish(),
+    city: stringType().nullish(),
+    address1: stringType().nullish(),
+    postcode: stringType().nullish(),
+    phone: stringType().nullish(),
+    refundedAmountGbp: numberType().optional(),
+    refundStatus: stringType().optional(),
+    fraudScore: numberType().optional(),
+    fraudFlags: arrayType(stringType()).optional(),
+    fraudReviewed: booleanType().optional(),
+    fraudReviewNote: stringType().nullish(),
+    createdAt: coerce.date(),
+    updatedAt: coerce.date().optional()
+  }),
+  emailSent: booleanType(),
+  warning: stringType().nullish()
+});
+var ResendAdminOrderTrackingParams = objectType({
+  id: coerce.number()
+});
+var ResendAdminOrderTrackingResponse = objectType({
+  ok: booleanType()
+});
+var TrackPublicOrderQueryParams = objectType({
+  number: coerce.string()
+});
+var TrackPublicOrderResponse = objectType({
+  orderNumber: stringType(),
+  status: stringType(),
+  shippingMethod: stringType().nullish(),
+  carrierName: stringType().nullish(),
+  trackingNumber: stringType().nullish(),
+  trackingUrl: stringType().nullish(),
+  paymentCurrency: stringType().nullish(),
+  paymentAmountMinor: numberType().nullish(),
+  createdAt: coerce.date(),
+  itemCount: numberType(),
+  items: arrayType(
+    objectType({
+      productName: stringType(),
+      quantity: numberType()
+    })
+  )
 });
 var ListAdminCustomersQueryParams = objectType({
   search: coerce.string().optional(),
@@ -50016,7 +50096,9 @@ var GetAdminCustomerResponse = objectType({
       shippingCostGbp: numberType().optional(),
       totalGbp: numberType(),
       shippingMethod: stringType().nullish(),
+      carrierName: stringType().nullish(),
       trackingNumber: stringType().nullish(),
+      trackingUrl: stringType().nullish(),
       notes: stringType().nullish(),
       country: stringType().nullish(),
       city: stringType().nullish(),
@@ -65774,7 +65856,10 @@ var ordersTable = pgTable("orders", {
   refundStatus: text("refund_status").notNull().default("none"),
   shippingMethod: text("shipping_method"),
   shippingRateId: integer("shipping_rate_id"),
+  carrierName: text("carrier_name"),
   trackingNumber: text("tracking_number"),
+  trackingUrl: text("tracking_url"),
+  dispatchedAt: timestamp("dispatched_at", { withTimezone: true }),
   notes: text("notes"),
   fraudScore: integer("fraud_score").notNull().default(0),
   fraudFlags: text("fraud_flags").array().notNull().default([]),
@@ -72303,6 +72388,27 @@ async function logEmail(opts) {
 function formatGbp(amount) {
   return `\xA3${amount.toFixed(2)}`;
 }
+function escapeHtml2(value) {
+  return value.replace(
+    /[&<>"']/g,
+    (character) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[character] ?? character
+  );
+}
+function safeHttpsUrl(value) {
+  if (!value) return null;
+  try {
+    const url2 = new URL(value);
+    return url2.protocol === "https:" && !url2.username && !url2.password ? escapeHtml2(url2.toString()) : null;
+  } catch {
+    return null;
+  }
+}
 function baseTemplate(title, body) {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -72616,23 +72722,34 @@ async function sendOrderConfirmation(order) {
 }
 async function sendShippingNotification(order) {
   const subject = `Your Order Has Shipped \u2014 ${order.orderNumber}`;
+  const trackingUrl = safeHttpsUrl(order.trackingUrl);
+  const carrierName = order.carrierName ? escapeHtml2(order.carrierName) : null;
+  const trackingNumber = order.trackingNumber ? escapeHtml2(order.trackingNumber) : null;
   const trackingSection = order.trackingNumber ? `
     <div style="background:#f0fdf4;border-radius:6px;padding:16px 20px;margin:20px 0;border-left:4px solid #22c55e;">
       <p style="margin:0 0 4px;font-size:12px;color:#166534;font-weight:600;">TRACKING NUMBER</p>
-      <p style="margin:0;font-size:18px;font-weight:700;color:#15803d;letter-spacing:1px;">${order.trackingNumber}</p>
-      ${order.shippingMethod ? `<p style="margin:6px 0 0;font-size:13px;color:#166534;">via ${order.shippingMethod}</p>` : ""}
+      <p style="margin:0;font-size:18px;font-weight:700;color:#15803d;letter-spacing:1px;">${trackingNumber}</p>
+      ${carrierName ? `<p style="margin:6px 0 0;font-size:13px;color:#166534;">via ${carrierName}</p>` : ""}
+      ${trackingUrl ? `<a href="${trackingUrl}" style="display:inline-block;margin-top:14px;background:#15803d;color:#ffffff;padding:11px 20px;border-radius:7px;text-decoration:none;font-size:14px;font-weight:700;">Track your package</a>` : ""}
     </div>` : `
     <div style="background:#f0fdf4;border-radius:6px;padding:16px 20px;margin:20px 0;border-left:4px solid #22c55e;">
       <p style="margin:0;font-size:14px;color:#166534;">Your order is on its way! Tracking information will be available shortly.</p>
     </div>`;
   const body = `
     <h2 style="margin:0 0 4px;font-size:22px;color:#0f172a;">Your Order Is On Its Way</h2>
-    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Good news, ${order.customerName} \u2014 your order <strong>${order.orderNumber}</strong> has been dispatched.</p>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Good news, ${escapeHtml2(order.customerName)} \u2014 your order <strong>${escapeHtml2(order.orderNumber)}</strong> has been dispatched.</p>
 
     ${trackingSection}
 
     ${itemsTable(order.items)}
     ${totalsBlock(order)}
+
+    <div style="margin-top:24px;text-align:center;">
+      <a href="${SITE_URL}/account?order=${encodeURIComponent(order.orderNumber)}"
+         style="display:inline-block;background:#f8fafc;color:#0f172a;padding:12px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;border:1.5px solid #e2e8f0;">
+        View order in my account
+      </a>
+    </div>
 
     <div style="margin-top:24px;padding:16px;background:#fefce8;border-radius:6px;border-left:4px solid #eab308;">
       <p style="margin:0;font-size:13px;color:#713f12;">All products are sold strictly for research purposes only. Not for human consumption.</p>
@@ -72650,6 +72767,7 @@ async function sendShippingNotification(order) {
   } catch (err) {
     logger.error({ err, orderNumber: order.orderNumber }, "Failed to send shipping notification email");
     await logEmail({ toEmail: order.customerEmail, subject, type: "shipping", status: "failed", orderNumber: order.orderNumber });
+    throw err;
   }
 }
 async function sendDeliveryConfirmation(order) {
@@ -73077,10 +73195,57 @@ async function sendWelcomeEmail(data) {
   }
 }
 
+// src/lib/tracking.ts
+var DISPATCHABLE_ORDER_STATUSES = ["paid", "payment_received", "processing"];
+var DISPATCHED_ORDER_STATUSES = ["shipped", "delivered"];
+function cleanSingleLine(value, maxLength) {
+  if (typeof value !== "string") return null;
+  const cleaned = value.trim().replace(/\s+/g, " ");
+  if (!cleaned || cleaned.length > maxLength || /[\u0000-\u001f\u007f]/.test(cleaned)) return null;
+  return cleaned;
+}
+function normalizeHttpsTrackingUrl(value) {
+  if (typeof value !== "string" || value.length > 2048) return null;
+  try {
+    const url2 = new URL(value.trim());
+    if (url2.protocol !== "https:" || !url2.hostname || url2.username || url2.password) {
+      return null;
+    }
+    return url2.toString();
+  } catch {
+    return null;
+  }
+}
+function validateDispatchDetails(input) {
+  if (!input || typeof input !== "object") {
+    return { ok: false, error: "Dispatch details are required" };
+  }
+  const body = input;
+  const carrierName = cleanSingleLine(body.carrierName, 100);
+  const trackingNumber = cleanSingleLine(body.trackingNumber, 120);
+  const trackingUrl = normalizeHttpsTrackingUrl(body.trackingUrl);
+  if (!carrierName) {
+    return { ok: false, error: "Logistics company is required" };
+  }
+  if (!trackingNumber) {
+    return { ok: false, error: "Tracking number is required" };
+  }
+  if (!trackingUrl) {
+    return { ok: false, error: "A valid HTTPS tracking link is required" };
+  }
+  return { ok: true, value: { carrierName, trackingNumber, trackingUrl } };
+}
+function isAllowedAdminStatusTransition(current, next) {
+  if (current === next) return true;
+  if (current === "shipped") return next === "delivered";
+  if (current === "delivered") return false;
+  return next !== "shipped" && next !== "delivered";
+}
+
 // src/routes/admin/orders.ts
 var router5 = (0, import_express5.Router)();
 function requireAdmin3(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -73098,7 +73263,9 @@ function orderToResponse(o) {
     shippingCostGbp: parseFloat(String(o.shippingCostGbp)),
     totalGbp: parseFloat(String(o.totalGbp)),
     shippingMethod: o.shippingMethod ?? null,
+    carrierName: o.carrierName ?? null,
     trackingNumber: o.trackingNumber ?? null,
+    trackingUrl: o.trackingUrl ?? null,
     notes: o.notes ?? null,
     country: o.country ?? null,
     city: o.city ?? null,
@@ -73191,13 +73358,16 @@ var VALID_STATUSES = ["pending", "awaiting_payment", "paid", "payment_received",
 router5.post("/admin/orders/bulk-update", async (req, res) => {
   if (!requireAdmin3(req, res)) return;
   const { ids, status } = req.body;
-  if (!Array.isArray(ids) || ids.length === 0 || ids.some((id) => typeof id !== "number") || typeof status !== "string" || !VALID_STATUSES.includes(status)) {
-    res.status(400).json({ error: "Invalid payload: ids must be a non-empty number array and status must be valid" });
+  if (!Array.isArray(ids) || ids.length === 0 || ids.some((id) => typeof id !== "number") || typeof status !== "string" || !VALID_STATUSES.includes(status) || status === "shipped" || status === "delivered") {
+    res.status(400).json({ error: "Invalid payload. Orders must be dispatched individually with tracking details." });
     return;
   }
   try {
-    await db.update(ordersTable).set({ status, updatedAt: /* @__PURE__ */ new Date() }).where(inArray(ordersTable.id, ids));
-    res.status(200).json({ updated: ids.length });
+    const updated = await db.update(ordersTable).set({ status, updatedAt: /* @__PURE__ */ new Date() }).where(and(
+      inArray(ordersTable.id, ids),
+      notInArray(ordersTable.status, [...DISPATCHED_ORDER_STATUSES])
+    )).returning({ id: ordersTable.id });
+    res.status(200).json({ updated: updated.length });
   } catch (err) {
     req.log.error({ err }, "Failed to bulk-update orders");
     res.status(500).json({ error: "Internal server error" });
@@ -73368,6 +73538,15 @@ router5.post("/admin/orders/:id/send-tracking", async (req, res) => {
       res.status(404).json({ error: "Order not found" });
       return;
     }
+    if (!DISPATCHED_ORDER_STATUSES.includes(order.status)) {
+      res.status(409).json({ error: "Shipping notifications can only be resent after dispatch" });
+      return;
+    }
+    const dispatch = validateDispatchDetails(order);
+    if (!dispatch.ok) {
+      res.status(409).json({ error: "Complete valid tracking details before resending the notification" });
+      return;
+    }
     const items = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, id));
     const emailData = {
       orderNumber: order.orderNumber,
@@ -73383,7 +73562,9 @@ router5.post("/admin/orders/:id/send-tracking", async (req, res) => {
       shippingCostGbp: parseFloat(String(order.shippingCostGbp)),
       totalGbp: parseFloat(String(order.totalGbp)),
       shippingMethod: order.shippingMethod ?? null,
+      carrierName: order.carrierName ?? null,
       trackingNumber: order.trackingNumber ?? null,
+      trackingUrl: order.trackingUrl ?? null,
       address1: order.address1 ?? null,
       address2: order.address2 ?? null,
       city: order.city ?? null,
@@ -73394,6 +73575,87 @@ router5.post("/admin/orders/:id/send-tracking", async (req, res) => {
     res.json({ ok: true });
   } catch (err) {
     req.log.error({ err }, "Failed to send tracking notification");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+router5.post("/admin/orders/:id/dispatch", async (req, res) => {
+  if (!requireAdmin3(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid order ID" });
+    return;
+  }
+  const dispatch = validateDispatchDetails(req.body);
+  if (!dispatch.ok) {
+    res.status(400).json({ error: dispatch.error });
+    return;
+  }
+  try {
+    const [updated] = await db.update(ordersTable).set({
+      status: "shipped",
+      carrierName: dispatch.value.carrierName,
+      trackingNumber: dispatch.value.trackingNumber,
+      trackingUrl: dispatch.value.trackingUrl,
+      dispatchedAt: /* @__PURE__ */ new Date(),
+      updatedAt: /* @__PURE__ */ new Date()
+    }).where(and(
+      eq(ordersTable.id, id),
+      inArray(ordersTable.status, [...DISPATCHABLE_ORDER_STATUSES]),
+      isNull(ordersTable.dispatchedAt)
+    )).returning();
+    if (!updated) {
+      const [current] = await db.select({ status: ordersTable.status }).from(ordersTable).where(eq(ordersTable.id, id)).limit(1);
+      if (!current) {
+        res.status(404).json({ error: "Order not found" });
+      } else if (current.status === "shipped" || current.status === "delivered") {
+        res.status(409).json({ error: "This order has already been dispatched" });
+      } else {
+        res.status(409).json({ error: "This order is not ready to dispatch" });
+      }
+      return;
+    }
+    const items = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, updated.id));
+    let emailSent = true;
+    let warning = null;
+    try {
+      await sendShippingNotification({
+        orderNumber: updated.orderNumber,
+        customerName: updated.customerName,
+        customerEmail: updated.customerEmail,
+        items: items.map((item) => ({
+          productName: item.productName,
+          productCategory: item.productCategory ?? "",
+          quantity: item.quantity,
+          priceGbp: Number(item.priceGbp)
+        })),
+        subtotalGbp: Number(updated.subtotalGbp),
+        shippingCostGbp: Number(updated.shippingCostGbp),
+        totalGbp: Number(updated.totalGbp),
+        shippingMethod: updated.shippingMethod,
+        carrierName: updated.carrierName,
+        trackingNumber: updated.trackingNumber,
+        trackingUrl: updated.trackingUrl,
+        address1: updated.address1,
+        address2: updated.address2,
+        city: updated.city,
+        postcode: updated.postcode,
+        country: updated.country
+      });
+    } catch (emailError) {
+      emailSent = false;
+      warning = "Order dispatched, but the customer email could not be sent. Use Resend Emails to try again.";
+      req.log.error(
+        { emailError, orderNumber: updated.orderNumber },
+        "Dispatch persisted but shipping notification failed"
+      );
+    }
+    res.status(emailSent ? 200 : 202).json({
+      order: orderToResponse(updated),
+      emailSent,
+      warning
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to dispatch order");
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -73408,13 +73670,47 @@ router5.patch("/admin/orders/:id", async (req, res) => {
   try {
     const previousOrder = await db.select().from(ordersTable).where(eq(ordersTable.id, paramsParsed.data.id)).then((rows) => rows[0]);
     const updates = {};
-    const { status, trackingNumber, notes } = bodyParsed.data;
+    const { status, carrierName, trackingNumber, trackingUrl, notes } = bodyParsed.data;
+    if (status === "shipped") {
+      res.status(400).json({ error: "Use the dispatch action to mark an order shipped" });
+      return;
+    }
+    if (previousOrder && status !== void 0 && !isAllowedAdminStatusTransition(previousOrder.status, status)) {
+      res.status(409).json({ error: `Order status cannot move from ${previousOrder.status} to ${status}` });
+      return;
+    }
     if (status !== void 0) updates.status = status;
-    if (trackingNumber !== void 0) updates.trackingNumber = trackingNumber;
+    if (carrierName !== void 0 || trackingNumber !== void 0 || trackingUrl !== void 0) {
+      const tracking = validateDispatchDetails({
+        carrierName: carrierName ?? previousOrder?.carrierName,
+        trackingNumber: trackingNumber ?? previousOrder?.trackingNumber,
+        trackingUrl: trackingUrl ?? previousOrder?.trackingUrl
+      });
+      if (!tracking.ok) {
+        res.status(400).json({ error: tracking.error });
+        return;
+      }
+      updates.carrierName = tracking.value.carrierName;
+      updates.trackingNumber = tracking.value.trackingNumber;
+      updates.trackingUrl = tracking.value.trackingUrl;
+    }
     if (notes !== void 0) updates.notes = notes;
-    const [updated] = await db.update(ordersTable).set(updates).where(eq(ordersTable.id, paramsParsed.data.id)).returning();
+    if (Object.keys(updates).length === 0) {
+      res.status(400).json({ error: "No changes supplied" });
+      return;
+    }
+    const updateWhere = status === "delivered" ? and(
+      eq(ordersTable.id, paramsParsed.data.id),
+      eq(ordersTable.status, "shipped"),
+      isNotNull(ordersTable.dispatchedAt)
+    ) : eq(ordersTable.id, paramsParsed.data.id);
+    const [updated] = await db.update(ordersTable).set(updates).where(updateWhere).returning();
     if (!updated) {
-      res.status(404).json({ error: "Order not found" });
+      if (previousOrder) {
+        res.status(409).json({ error: "Order status changed before this update could be applied" });
+      } else {
+        res.status(404).json({ error: "Order not found" });
+      }
       return;
     }
     res.status(200).json(orderToResponse(updated));
@@ -73448,9 +73744,6 @@ router5.patch("/admin/orders/:id", async (req, res) => {
       } else if (status === "processing" && previousOrder.status === "awaiting_payment") {
         sendOrderConfirmation(emailData).catch(() => {
         });
-      } else if (status === "shipped") {
-        sendShippingNotification(emailData).catch(() => {
-        });
       } else if (status === "delivered") {
         sendDeliveryConfirmation(emailData).catch(() => {
         });
@@ -73463,11 +73756,329 @@ router5.patch("/admin/orders/:id", async (req, res) => {
 });
 var orders_default = router5;
 
-// src/routes/admin/customers.ts
+// src/routes/admin/fulfillment.ts
 var import_express6 = __toESM(require_express2(), 1);
 init_drizzle_orm();
+
+// src/lib/packingSlip.ts
+function esc2(s) {
+  if (s === null || s === void 0) return "";
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+function fmt(gbp) {
+  const n = parseFloat(String(gbp));
+  return isNaN(n) ? "\u2014" : `\xA3${n.toFixed(2)}`;
+}
+function fmtDate(d) {
+  return new Date(d).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  });
+}
+function addressLines(o) {
+  return [o.address1, o.address2, o.city, o.county, o.postcode, o.country].filter(Boolean).map(esc2).join("<br>");
+}
+function itemRows(items) {
+  return items.map((i) => `
+    <tr>
+      <td class="name">${esc2(i.productName)}</td>
+      <td class="cat">${esc2(i.productCategory ?? "")}</td>
+      <td class="qty">${i.quantity}</td>
+      <td class="price">${fmt(i.priceGbp)}</td>
+      <td class="line">${fmt(parseFloat(String(i.priceGbp)) * i.quantity)}</td>
+    </tr>`).join("");
+}
+function generatePackingSlipHtml(order, items) {
+  const subtotal = items.reduce((s, i) => s + parseFloat(String(i.priceGbp)) * i.quantity, 0);
+  const shipping = parseFloat(String(order.shippingCostGbp));
+  const total = parseFloat(String(order.totalGbp));
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Packing Slip \u2014 ${esc2(order.orderNumber)}</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  @page { size: A4; margin: 14mm; }
+  body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 12px; color: #111; background: #fff; }
+
+  .slip { max-width: 720px; margin: 0 auto; padding: 24px 0; }
+
+  /* \u2500\u2500 Header \u2500\u2500 */
+  .header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 16px; border-bottom: 2px solid #111; margin-bottom: 20px; }
+  .brand  { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+  .brand span { color: #4f7c6a; }
+  .slip-title { text-align: right; }
+  .slip-title h1 { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .slip-title p  { font-size: 11px; color: #555; margin-top: 3px; }
+
+  /* \u2500\u2500 Meta row \u2500\u2500 */
+  .meta { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .meta-box h3  { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #777; margin-bottom: 6px; }
+  .meta-box p   { font-size: 12px; line-height: 1.5; }
+  .meta-box .big { font-size: 14px; font-weight: 700; }
+
+  /* \u2500\u2500 Ship-to \u2500\u2500 */
+  .ship-to { background: #f6f6f4; border-radius: 6px; padding: 14px 16px; margin-bottom: 20px; }
+  .ship-to h3 { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #777; margin-bottom: 8px; }
+  .ship-to p  { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .ship-to address { font-style: normal; font-size: 12px; line-height: 1.6; }
+
+  /* \u2500\u2500 Items table \u2500\u2500 */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+  thead th { background: #111; color: #fff; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 10px; text-align: left; }
+  tbody tr:nth-child(even) { background: #f9f9f7; }
+  tbody td { padding: 8px 10px; font-size: 12px; border-bottom: 1px solid #e8e8e4; vertical-align: middle; }
+  td.qty, td.price, td.line { text-align: right; }
+  td.qty { width: 48px; }
+  td.price, td.line { width: 80px; }
+  td.cat  { color: #666; font-size: 11px; width: 120px; }
+
+  /* \u2500\u2500 Totals \u2500\u2500 */
+  .totals { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+  .totals-box { width: 240px; }
+  .totals-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 12px; border-bottom: 1px solid #e8e8e4; }
+  .totals-row:last-child { border-bottom: none; font-weight: 700; font-size: 14px; padding-top: 8px; }
+
+  /* \u2500\u2500 Notes \u2500\u2500 */
+  .notes { border: 1px solid #e0e0da; border-radius: 6px; padding: 12px 14px; margin-bottom: 20px; }
+  .notes h3 { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #777; margin-bottom: 6px; }
+  .notes p  { font-size: 12px; line-height: 1.5; white-space: pre-wrap; }
+
+  /* \u2500\u2500 Footer \u2500\u2500 */
+  .footer { border-top: 1px solid #ddd; padding-top: 12px; display: flex; justify-content: space-between; font-size: 10px; color: #999; }
+
+  @media print {
+    .slip { padding: 0; }
+    body  { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<div class="slip">
+
+  <div class="header">
+    <div class="brand">Omni<span>Qure</span></div>
+    <div class="slip-title">
+      <h1>Packing Slip</h1>
+      <p>Printed ${fmtDate(/* @__PURE__ */ new Date())}</p>
+    </div>
+  </div>
+
+  <div class="meta">
+    <div class="meta-box">
+      <h3>Order</h3>
+      <p class="big">${esc2(order.orderNumber)}</p>
+      <p style="color:#666; margin-top:3px;">${fmtDate(order.createdAt)}</p>
+    </div>
+    <div class="meta-box">
+      <h3>Shipping Method</h3>
+      <p>${esc2(order.shippingMethod ?? "Standard")}</p>
+    </div>
+    <div class="meta-box">
+      <h3>Items</h3>
+      <p class="big">${items.reduce((s, i) => s + i.quantity, 0)}</p>
+    </div>
+  </div>
+
+  <div class="ship-to">
+    <h3>Ship To</h3>
+    <p>${esc2(order.customerName)}</p>
+    <address>${addressLines(order)}</address>
+    ${order.phone ? `<p style="margin-top:6px; font-size:11px; color:#555;">\u{1F4DE} ${esc2(order.phone)}</p>` : ""}
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Category</th>
+        <th style="text-align:right">Qty</th>
+        <th style="text-align:right">Unit</th>
+        <th style="text-align:right">Line Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${itemRows(items)}
+    </tbody>
+  </table>
+
+  <div class="totals">
+    <div class="totals-box">
+      <div class="totals-row"><span>Subtotal</span><span>${fmt(subtotal)}</span></div>
+      <div class="totals-row"><span>Shipping</span><span>${fmt(shipping)}</span></div>
+      <div class="totals-row"><span>Total</span><span>${fmt(total)}</span></div>
+    </div>
+  </div>
+
+  ${order.notes ? `
+  <div class="notes">
+    <h3>Order Notes</h3>
+    <p>${esc2(order.notes)}</p>
+  </div>` : ""}
+
+  <div class="footer">
+    <span>OmniQure \u2014 omniqure.com</span>
+    <span>${esc2(order.orderNumber)}</span>
+  </div>
+
+</div>
+<script>window.onload = () => window.print();</script>
+</body>
+</html>`;
+}
+function generateMultiPackingSlipHtml(orders) {
+  if (orders.length === 0) return "<html><body><p>No orders selected.</p></body></html>";
+  const slipBodies = orders.map(({ order, items }, idx) => {
+    const html = generatePackingSlipHtml(order, items);
+    const bodyMatch = html.match(/<body>([\s\S]*)<\/body>/i);
+    const inner = bodyMatch ? bodyMatch[1].replace(/<script[\s\S]*?<\/script>/gi, "") : "";
+    const pageBreak = idx < orders.length - 1 ? 'style="page-break-after:always"' : "";
+    return `<div class="slip-wrap" ${pageBreak}>${inner}</div>`;
+  });
+  const firstSlip = generatePackingSlipHtml(orders[0].order, orders[0].items);
+  const headMatch = firstSlip.match(/<head>([\s\S]*)<\/head>/i);
+  const headInner = headMatch ? headMatch[1] : "";
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>${headInner}</head>
+<body>
+${slipBodies.join("\n")}
+<script>window.onload = () => window.print();</script>
+</body>
+</html>`;
+}
+
+// src/routes/admin/fulfillment.ts
 var router6 = (0, import_express6.Router)();
 function requireAdmin4(req, res) {
+  if (!hasSecureAdminSession(req)) {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+var READY_STATUSES = ["paid", "payment_received"];
+router6.get("/admin/fulfillment", async (req, res) => {
+  if (!requireAdmin4(req, res)) return;
+  const tab = firstString(req.query.tab) ?? "ready";
+  const limit = Math.min(parseInt(firstString(req.query.limit) ?? "50", 10), 100);
+  const offset = parseInt(firstString(req.query.offset) ?? "0", 10);
+  let statusFilter;
+  if (tab === "processing") {
+    statusFilter = ["processing"];
+  } else if (tab === "shipped") {
+    statusFilter = ["shipped"];
+  } else {
+    statusFilter = [...READY_STATUSES];
+  }
+  try {
+    const where = inArray(ordersTable.status, statusFilter);
+    const [orders, totalRow] = await Promise.all([
+      db.select().from(ordersTable).where(where).orderBy(desc(ordersTable.createdAt)).limit(limit).offset(offset),
+      db.select({ cnt: count() }).from(ordersTable).where(where)
+    ]);
+    const orderIds = orders.map((o) => o.id);
+    const allItems = orderIds.length > 0 ? await db.select().from(orderItemsTable).where(inArray(orderItemsTable.orderId, orderIds)) : [];
+    const itemsByOrder = /* @__PURE__ */ new Map();
+    for (const item of allItems) {
+      const list = itemsByOrder.get(item.orderId) ?? [];
+      list.push(item);
+      itemsByOrder.set(item.orderId, list);
+    }
+    const result = orders.map((o) => ({
+      id: o.id,
+      orderNumber: o.orderNumber,
+      status: o.status,
+      customerName: o.customerName,
+      customerEmail: o.customerEmail,
+      phone: o.phone ?? null,
+      address1: o.address1 ?? null,
+      address2: o.address2 ?? null,
+      city: o.city ?? null,
+      county: o.county ?? null,
+      postcode: o.postcode ?? null,
+      country: o.country ?? null,
+      shippingMethod: o.shippingMethod ?? null,
+      carrierName: o.carrierName ?? null,
+      trackingNumber: o.trackingNumber ?? null,
+      trackingUrl: o.trackingUrl ?? null,
+      subtotalGbp: parseFloat(String(o.subtotalGbp)),
+      shippingCostGbp: parseFloat(String(o.shippingCostGbp)),
+      totalGbp: parseFloat(String(o.totalGbp)),
+      notes: o.notes ?? null,
+      createdAt: o.createdAt.toISOString(),
+      items: (itemsByOrder.get(o.id) ?? []).map((i) => ({
+        id: i.id,
+        productName: i.productName,
+        productCategory: i.productCategory ?? null,
+        quantity: i.quantity,
+        priceGbp: parseFloat(String(i.priceGbp))
+      }))
+    }));
+    res.status(200).json({ orders: result, total: Number(totalRow[0]?.cnt ?? 0) });
+  } catch (err) {
+    req.log.error({ err }, "Failed to list fulfillment orders");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+router6.get("/admin/orders/:id/packing-slip", async (req, res) => {
+  if (!requireAdmin4(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid order ID" });
+    return;
+  }
+  try {
+    const [order] = await db.select().from(ordersTable).where(eq(ordersTable.id, id));
+    if (!order) {
+      res.status(404).json({ error: "Order not found" });
+      return;
+    }
+    const items = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, id));
+    const html = generatePackingSlipHtml(order, items);
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.status(200).send(html);
+  } catch (err) {
+    req.log.error({ err }, "Failed to generate packing slip");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+router6.post("/admin/fulfillment/packing-slips", async (req, res) => {
+  if (!requireAdmin4(req, res)) return;
+  const { ids } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0 || ids.some((id) => typeof id !== "number")) {
+    res.status(400).json({ error: "ids must be a non-empty array of numbers" });
+    return;
+  }
+  try {
+    const orders = await db.select().from(ordersTable).where(inArray(ordersTable.id, ids));
+    const allItems = await db.select().from(orderItemsTable).where(inArray(orderItemsTable.orderId, ids));
+    const itemsByOrder = /* @__PURE__ */ new Map();
+    for (const item of allItems) {
+      const list = itemsByOrder.get(item.orderId) ?? [];
+      list.push(item);
+      itemsByOrder.set(item.orderId, list);
+    }
+    const sorted = ids.map((id) => orders.find((o) => o.id === id)).filter(Boolean);
+    const html = generateMultiPackingSlipHtml(
+      sorted.map((o) => ({ order: o, items: itemsByOrder.get(o.id) ?? [] }))
+    );
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.status(200).send(html);
+  } catch (err) {
+    req.log.error({ err }, "Failed to generate bulk packing slips");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+var fulfillment_default = router6;
+
+// src/routes/admin/customers.ts
+var import_express7 = __toESM(require_express2(), 1);
+init_drizzle_orm();
+var router7 = (0, import_express7.Router)();
+function requireAdmin5(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -73501,8 +74112,8 @@ function escapeCsv2(val) {
 function toCsvRow2(fields) {
   return fields.map(escapeCsv2).join(",");
 }
-router6.get("/admin/customers/export", async (req, res) => {
-  if (!requireAdmin4(req, res)) return;
+router7.get("/admin/customers/export", async (req, res) => {
+  if (!requireAdmin5(req, res)) return;
   try {
     const search = typeof req.query.search === "string" ? req.query.search : void 0;
     const conditions = [];
@@ -73554,8 +74165,8 @@ router6.get("/admin/customers/export", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router6.get("/admin/customers", async (req, res) => {
-  if (!requireAdmin4(req, res)) return;
+router7.get("/admin/customers", async (req, res) => {
+  if (!requireAdmin5(req, res)) return;
   const parsed = ListAdminCustomersQueryParams.safeParse(req.query);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid query params" });
@@ -73587,8 +74198,8 @@ router6.get("/admin/customers", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router6.get("/admin/customers/:id", async (req, res) => {
-  if (!requireAdmin4(req, res)) return;
+router7.get("/admin/customers/:id", async (req, res) => {
+  if (!requireAdmin5(req, res)) return;
   const parsed = GetAdminCustomerParams.safeParse({ id: Number(req.params.id) });
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid customer ID" });
@@ -73631,24 +74242,24 @@ router6.get("/admin/customers/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var customers_default = router6;
+var customers_default = router7;
 
 // src/routes/admin/products.ts
-var import_express8 = __toESM(require_express2(), 1);
+var import_express9 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 
 // src/routes/stock-alerts.ts
-var import_express7 = __toESM(require_express2(), 1);
+var import_express8 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-function requireAdmin5(req, res) {
+function requireAdmin6(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Unauthorized" });
     return false;
   }
   return true;
 }
-var router7 = (0, import_express7.Router)();
-router7.post("/products/:productId/stock-alert", async (req, res) => {
+var router8 = (0, import_express8.Router)();
+router8.post("/products/:productId/stock-alert", async (req, res) => {
   const productId = parseInt(req.params.productId, 10);
   if (isNaN(productId)) {
     res.status(400).json({ error: "Invalid product ID" });
@@ -73673,7 +74284,7 @@ router7.post("/products/:productId/stock-alert", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router7.delete("/products/:productId/stock-alert", async (req, res) => {
+router8.delete("/products/:productId/stock-alert", async (req, res) => {
   const productId = parseInt(req.params.productId, 10);
   const email3 = typeof req.query.email === "string" ? req.query.email.toLowerCase().trim() : null;
   if (isNaN(productId) || !email3) {
@@ -73687,8 +74298,8 @@ router7.delete("/products/:productId/stock-alert", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router7.get("/admin/stock-alerts", async (req, res) => {
-  if (!requireAdmin5(req, res)) return;
+router8.get("/admin/stock-alerts", async (req, res) => {
+  if (!requireAdmin6(req, res)) return;
   try {
     const all = await db.select().from(stockAlertsTable);
     const byProduct = {};
@@ -73720,8 +74331,8 @@ router7.get("/admin/stock-alerts", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router7.post("/admin/stock-alerts/notify/:productId", async (req, res) => {
-  if (!requireAdmin5(req, res)) return;
+router8.post("/admin/stock-alerts/notify/:productId", async (req, res) => {
+  if (!requireAdmin6(req, res)) return;
   const productId = parseInt(req.params.productId, 10);
   if (isNaN(productId)) {
     res.status(400).json({ error: "Invalid product ID" });
@@ -73770,11 +74381,11 @@ async function notifyStockAlerts(productId, productName) {
   } catch {
   }
 }
-var stock_alerts_default = router7;
+var stock_alerts_default = router8;
 
 // src/routes/admin/products.ts
-var router8 = (0, import_express8.Router)();
-function requireAdmin6(req, res) {
+var router9 = (0, import_express9.Router)();
+function requireAdmin7(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -73794,8 +74405,8 @@ function productToResponse(p) {
     updatedAt: p.updatedAt.toISOString()
   };
 }
-router8.get("/admin/products", async (req, res) => {
-  if (!requireAdmin6(req, res)) return;
+router9.get("/admin/products", async (req, res) => {
+  if (!requireAdmin7(req, res)) return;
   const parsed = ListAdminProductsQueryParams.safeParse(req.query);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid query params" });
@@ -73818,8 +74429,8 @@ router8.get("/admin/products", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router8.patch("/admin/products/:id/inventory", async (req, res) => {
-  if (!requireAdmin6(req, res)) return;
+router9.patch("/admin/products/:id/inventory", async (req, res) => {
+  if (!requireAdmin7(req, res)) return;
   const paramsParsed = UpdateProductInventoryParams.safeParse({ id: Number(req.params.id) });
   const bodyParsed = UpdateProductInventoryBody.safeParse(req.body);
   if (!paramsParsed.success || !bodyParsed.success) {
@@ -73856,8 +74467,8 @@ router8.patch("/admin/products/:id/inventory", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router8.patch("/admin/products/:id/visibility", async (req, res) => {
-  if (!requireAdmin6(req, res)) return;
+router9.patch("/admin/products/:id/visibility", async (req, res) => {
+  if (!requireAdmin7(req, res)) return;
   const paramsParsed = UpdateProductVisibilityParams.safeParse({ id: Number(req.params.id) });
   const bodyParsed = UpdateProductVisibilityBody.safeParse(req.body);
   if (!paramsParsed.success || !bodyParsed.success) {
@@ -73876,13 +74487,13 @@ router8.patch("/admin/products/:id/visibility", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var products_default = router8;
+var products_default = router9;
 
 // src/routes/admin/discounts.ts
-var import_express9 = __toESM(require_express2(), 1);
+var import_express10 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router9 = (0, import_express9.Router)();
-function requireAdmin7(req, res) {
+var router10 = (0, import_express10.Router)();
+function requireAdmin8(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -73903,8 +74514,8 @@ function discountToResponse(d) {
     createdAt: d.createdAt.toISOString()
   };
 }
-router9.get("/admin/discounts", async (req, res) => {
-  if (!requireAdmin7(req, res)) return;
+router10.get("/admin/discounts", async (req, res) => {
+  if (!requireAdmin8(req, res)) return;
   try {
     const discounts = await db.select().from(discountCodesTable).orderBy(desc(discountCodesTable.createdAt));
     res.status(200).json(discounts.map(discountToResponse));
@@ -73913,8 +74524,8 @@ router9.get("/admin/discounts", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router9.post("/admin/discounts", async (req, res) => {
-  if (!requireAdmin7(req, res)) return;
+router10.post("/admin/discounts", async (req, res) => {
+  if (!requireAdmin8(req, res)) return;
   const parsed = CreateAdminDiscountBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid request body" });
@@ -73941,8 +74552,8 @@ router9.post("/admin/discounts", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router9.patch("/admin/discounts/:id", async (req, res) => {
-  if (!requireAdmin7(req, res)) return;
+router10.patch("/admin/discounts/:id", async (req, res) => {
+  if (!requireAdmin8(req, res)) return;
   const paramsParsed = UpdateAdminDiscountParams.safeParse({ id: Number(req.params.id) });
   const bodyParsed = UpdateAdminDiscountBody.safeParse(req.body);
   if (!paramsParsed.success || !bodyParsed.success) {
@@ -73967,8 +74578,8 @@ router9.patch("/admin/discounts/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router9.delete("/admin/discounts/:id", async (req, res) => {
-  if (!requireAdmin7(req, res)) return;
+router10.delete("/admin/discounts/:id", async (req, res) => {
+  if (!requireAdmin8(req, res)) return;
   const parsed = DeleteAdminDiscountParams.safeParse({ id: Number(req.params.id) });
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid discount ID" });
@@ -73986,10 +74597,10 @@ router9.delete("/admin/discounts/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var discounts_default = router9;
+var discounts_default = router10;
 
 // src/routes/admin/catalog.ts
-var import_express10 = __toESM(require_express2(), 1);
+var import_express11 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 
 // src/lib/seed-catalog.ts
@@ -74669,9 +75280,9 @@ function buildCatalogPricePreview(cataloguePrices, productionPrices) {
 }
 
 // src/routes/admin/catalog.ts
-var router10 = (0, import_express10.Router)();
+var router11 = (0, import_express11.Router)();
 var PRICE_SYNC_CONFIRMATION_TTL_MS = 10 * 60 * 1e3;
-function requireAdmin8(req, res) {
+function requireAdmin9(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -74760,8 +75371,8 @@ async function ensureSeeded() {
     seeded = true;
   }
 }
-router10.get("/admin/catalog", async (req, res) => {
-  if (!requireAdmin8(req, res)) return;
+router11.get("/admin/catalog", async (req, res) => {
+  if (!requireAdmin9(req, res)) return;
   try {
     await ensureSeeded();
     const search = isStr(req.query.search) ? req.query.search : void 0;
@@ -74780,8 +75391,8 @@ router10.get("/admin/catalog", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router10.post("/admin/catalog/disable-without-janoshik-report", async (req, res) => {
-  if (!requireAdmin8(req, res)) return;
+router11.post("/admin/catalog/disable-without-janoshik-report", async (req, res) => {
+  if (!requireAdmin9(req, res)) return;
   try {
     await ensureSeeded();
     const disabled = await db.update(productsCatalogTable).set({ isPublished: false }).where(and(
@@ -74802,8 +75413,8 @@ router10.post("/admin/catalog/disable-without-janoshik-report", async (req, res)
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router10.post("/admin/catalog/enable-all-peptides", async (req, res) => {
-  if (!requireAdmin8(req, res)) return;
+router11.post("/admin/catalog/enable-all-peptides", async (req, res) => {
+  if (!requireAdmin9(req, res)) return;
   try {
     await ensureSeeded();
     const enabled = await db.update(productsCatalogTable).set({ isPublished: true }).where(and(
@@ -74823,7 +75434,7 @@ router10.post("/admin/catalog/enable-all-peptides", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router10.post("/admin/catalog/price-sync/preview", async (req, res) => {
+router11.post("/admin/catalog/price-sync/preview", async (req, res) => {
   if (!requireSecureAdmin(req, res)) return;
   const secret = priceSyncSecret(res);
   if (!secret) return;
@@ -74860,7 +75471,7 @@ var CatalogPriceSyncConflict = class extends Error {
     this.slug = slug;
   }
 };
-router10.post("/admin/catalog/price-sync/apply", async (req, res) => {
+router11.post("/admin/catalog/price-sync/apply", async (req, res) => {
   if (!requireSecureAdmin(req, res)) return;
   const secret = priceSyncSecret(res);
   if (!secret) return;
@@ -74906,8 +75517,8 @@ router10.post("/admin/catalog/price-sync/apply", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router10.get("/admin/catalog/:id", async (req, res) => {
-  if (!requireAdmin8(req, res)) return;
+router11.get("/admin/catalog/:id", async (req, res) => {
+  if (!requireAdmin9(req, res)) return;
   const id = Number(req.params.id);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid id" });
@@ -74930,8 +75541,8 @@ router10.get("/admin/catalog/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router10.post("/admin/catalog", async (req, res) => {
-  if (!requireAdmin8(req, res)) return;
+router11.post("/admin/catalog", async (req, res) => {
+  if (!requireAdmin9(req, res)) return;
   const body = req.body;
   if (!isStr(body.slug) || !body.slug || !isStr(body.name) || !body.name || !isStr(body.category) || !body.category) {
     res.status(400).json({ error: "slug, name, and category are required strings" });
@@ -74978,8 +75589,8 @@ router10.post("/admin/catalog", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router10.patch("/admin/catalog/:id", async (req, res) => {
-  if (!requireAdmin8(req, res)) return;
+router11.patch("/admin/catalog/:id", async (req, res) => {
+  if (!requireAdmin9(req, res)) return;
   const id = Number(req.params.id);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid id" });
@@ -75035,8 +75646,8 @@ router10.patch("/admin/catalog/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router10.delete("/admin/catalog/:id", async (req, res) => {
-  if (!requireAdmin8(req, res)) return;
+router11.delete("/admin/catalog/:id", async (req, res) => {
+  if (!requireAdmin9(req, res)) return;
   const id = Number(req.params.id);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid id" });
@@ -75059,7 +75670,7 @@ router10.delete("/admin/catalog/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router10.get("/products", async (req, res) => {
+router11.get("/products", async (req, res) => {
   try {
     await ensureSeeded();
     const category = isStr(req.query.category) ? req.query.category : void 0;
@@ -75111,7 +75722,7 @@ router10.get("/products", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router10.get("/products/:slug", async (req, res) => {
+router11.get("/products/:slug", async (req, res) => {
   try {
     const slug = String(req.params.slug);
     if (isRetiredProductSlug(slug)) {
@@ -75137,13 +75748,13 @@ router10.get("/products/:slug", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var catalog_default = router10;
+var catalog_default = router11;
 
 // src/routes/admin/returns.ts
-var import_express11 = __toESM(require_express2(), 1);
+var import_express12 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router11 = (0, import_express11.Router)();
-function requireAdmin9(req, res) {
+var router12 = (0, import_express12.Router)();
+function requireAdmin10(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -75166,8 +75777,8 @@ function returnToResponse(r) {
     updatedAt: r.updatedAt.toISOString()
   };
 }
-router11.get("/admin/returns", async (req, res) => {
-  if (!requireAdmin9(req, res)) return;
+router12.get("/admin/returns", async (req, res) => {
+  if (!requireAdmin10(req, res)) return;
   const search = typeof req.query.search === "string" ? req.query.search : void 0;
   const status = typeof req.query.status === "string" ? req.query.status : void 0;
   const limit = Math.min(Number(req.query.limit) || 20, 100);
@@ -75195,8 +75806,8 @@ router11.get("/admin/returns", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router11.get("/admin/orders/:id/returns", async (req, res) => {
-  if (!requireAdmin9(req, res)) return;
+router12.get("/admin/orders/:id/returns", async (req, res) => {
+  if (!requireAdmin10(req, res)) return;
   const orderId = Number(req.params.id);
   if (!Number.isFinite(orderId)) {
     res.status(400).json({ error: "Invalid order ID" });
@@ -75210,8 +75821,8 @@ router11.get("/admin/orders/:id/returns", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router11.post("/admin/orders/:id/returns", async (req, res) => {
-  if (!requireAdmin9(req, res)) return;
+router12.post("/admin/orders/:id/returns", async (req, res) => {
+  if (!requireAdmin10(req, res)) return;
   const orderId = Number(req.params.id);
   if (!Number.isFinite(orderId)) {
     res.status(400).json({ error: "Invalid order ID" });
@@ -75242,8 +75853,8 @@ router11.post("/admin/orders/:id/returns", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router11.patch("/admin/returns/:id", async (req, res) => {
-  if (!requireAdmin9(req, res)) return;
+router12.patch("/admin/returns/:id", async (req, res) => {
+  if (!requireAdmin10(req, res)) return;
   const returnId = Number(req.params.id);
   if (!Number.isFinite(returnId)) {
     res.status(400).json({ error: "Invalid return ID" });
@@ -75282,13 +75893,13 @@ router11.patch("/admin/returns/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var returns_default = router11;
+var returns_default = router12;
 
 // src/routes/admin/tax.ts
-var import_express12 = __toESM(require_express2(), 1);
+var import_express13 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router12 = (0, import_express12.Router)();
-function requireAdmin10(req, res) {
+var router13 = (0, import_express13.Router)();
+function requireAdmin11(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -75309,8 +75920,8 @@ function rateToResponse(r) {
     updatedAt: r.updatedAt.toISOString()
   };
 }
-router12.get("/admin/tax-rates", async (req, res) => {
-  if (!requireAdmin10(req, res)) return;
+router13.get("/admin/tax-rates", async (req, res) => {
+  if (!requireAdmin11(req, res)) return;
   try {
     const rates = await db.select().from(taxRatesTable).orderBy(desc(taxRatesTable.createdAt));
     res.json(rates.map(rateToResponse));
@@ -75319,8 +75930,8 @@ router12.get("/admin/tax-rates", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router12.post("/admin/tax-rates", async (req, res) => {
-  if (!requireAdmin10(req, res)) return;
+router13.post("/admin/tax-rates", async (req, res) => {
+  if (!requireAdmin11(req, res)) return;
   const { name: name2, countryCode, countryName, region, rate, isInclusive } = req.body;
   if (!name2 || !countryCode || !countryName || rate == null) {
     res.status(400).json({ error: "name, countryCode, countryName and rate are required" });
@@ -75341,8 +75952,8 @@ router12.post("/admin/tax-rates", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router12.patch("/admin/tax-rates/:id", async (req, res) => {
-  if (!requireAdmin10(req, res)) return;
+router13.patch("/admin/tax-rates/:id", async (req, res) => {
+  if (!requireAdmin11(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -75369,8 +75980,8 @@ router12.patch("/admin/tax-rates/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router12.delete("/admin/tax-rates/:id", async (req, res) => {
-  if (!requireAdmin10(req, res)) return;
+router13.delete("/admin/tax-rates/:id", async (req, res) => {
+  if (!requireAdmin11(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -75388,13 +75999,13 @@ router12.delete("/admin/tax-rates/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var tax_default = router12;
+var tax_default = router13;
 
 // src/routes/admin/shipping.ts
-var import_express13 = __toESM(require_express2(), 1);
+var import_express14 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router13 = (0, import_express13.Router)();
-function requireAdmin11(req, res) {
+var router14 = (0, import_express14.Router)();
+function requireAdmin12(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -75425,8 +76036,8 @@ function rateToResponse2(r) {
     createdAt: r.createdAt.toISOString()
   };
 }
-router13.get("/admin/shipping/zones", async (req, res) => {
-  if (!requireAdmin11(req, res)) return;
+router14.get("/admin/shipping/zones", async (req, res) => {
+  if (!requireAdmin12(req, res)) return;
   try {
     const zones = await db.select().from(shippingZonesTable).orderBy(desc(shippingZonesTable.createdAt));
     res.json(zones.map(zoneToResponse));
@@ -75435,8 +76046,8 @@ router13.get("/admin/shipping/zones", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router13.post("/admin/shipping/zones", async (req, res) => {
-  if (!requireAdmin11(req, res)) return;
+router14.post("/admin/shipping/zones", async (req, res) => {
+  if (!requireAdmin12(req, res)) return;
   const { name: name2, description, countryCodes } = req.body;
   if (!name2 || !Array.isArray(countryCodes)) {
     res.status(400).json({ error: "name and countryCodes are required" });
@@ -75450,8 +76061,8 @@ router13.post("/admin/shipping/zones", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router13.patch("/admin/shipping/zones/:id", async (req, res) => {
-  if (!requireAdmin11(req, res)) return;
+router14.patch("/admin/shipping/zones/:id", async (req, res) => {
+  if (!requireAdmin12(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -75475,8 +76086,8 @@ router13.patch("/admin/shipping/zones/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router13.delete("/admin/shipping/zones/:id", async (req, res) => {
-  if (!requireAdmin11(req, res)) return;
+router14.delete("/admin/shipping/zones/:id", async (req, res) => {
+  if (!requireAdmin12(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -75494,8 +76105,8 @@ router13.delete("/admin/shipping/zones/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router13.get("/admin/shipping/rates", async (req, res) => {
-  if (!requireAdmin11(req, res)) return;
+router14.get("/admin/shipping/rates", async (req, res) => {
+  if (!requireAdmin12(req, res)) return;
   try {
     const rates = await db.select().from(shippingRatesTable).orderBy(desc(shippingRatesTable.createdAt));
     res.json(rates.map(rateToResponse2));
@@ -75504,8 +76115,8 @@ router13.get("/admin/shipping/rates", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router13.post("/admin/shipping/rates", async (req, res) => {
-  if (!requireAdmin11(req, res)) return;
+router14.post("/admin/shipping/rates", async (req, res) => {
+  if (!requireAdmin12(req, res)) return;
   const { zoneId, name: name2, carrier, priceGbp, freeAboveGbp, estimatedDaysMin, estimatedDaysMax } = req.body;
   if (!zoneId || !name2 || priceGbp == null) {
     res.status(400).json({ error: "zoneId, name and priceGbp are required" });
@@ -75527,8 +76138,8 @@ router13.post("/admin/shipping/rates", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router13.patch("/admin/shipping/rates/:id", async (req, res) => {
-  if (!requireAdmin11(req, res)) return;
+router14.patch("/admin/shipping/rates/:id", async (req, res) => {
+  if (!requireAdmin12(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -75555,8 +76166,8 @@ router13.patch("/admin/shipping/rates/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router13.delete("/admin/shipping/rates/:id", async (req, res) => {
-  if (!requireAdmin11(req, res)) return;
+router14.delete("/admin/shipping/rates/:id", async (req, res) => {
+  if (!requireAdmin12(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -75574,13 +76185,13 @@ router13.delete("/admin/shipping/rates/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var shipping_default = router13;
+var shipping_default = router14;
 
 // src/routes/admin/refunds.ts
-var import_express14 = __toESM(require_express2(), 1);
+var import_express15 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router14 = (0, import_express14.Router)();
-function requireAdmin12(req, res) {
+var router15 = (0, import_express15.Router)();
+function requireAdmin13(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -75601,8 +76212,8 @@ function refundToResponse(r) {
     createdAt: r.createdAt.toISOString()
   };
 }
-router14.get("/admin/refunds", async (req, res) => {
-  if (!requireAdmin12(req, res)) return;
+router15.get("/admin/refunds", async (req, res) => {
+  if (!requireAdmin13(req, res)) return;
   try {
     const refunds = await db.select().from(refundsLogTable).orderBy(desc(refundsLogTable.createdAt));
     res.json(refunds.map(refundToResponse));
@@ -75611,8 +76222,8 @@ router14.get("/admin/refunds", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router14.get("/admin/orders/:id/refunds", async (req, res) => {
-  if (!requireAdmin12(req, res)) return;
+router15.get("/admin/orders/:id/refunds", async (req, res) => {
+  if (!requireAdmin13(req, res)) return;
   const orderId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(orderId)) {
     res.status(400).json({ error: "Invalid order ID" });
@@ -75626,8 +76237,8 @@ router14.get("/admin/orders/:id/refunds", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router14.post("/admin/orders/:id/refund", async (req, res) => {
-  if (!requireAdmin12(req, res)) return;
+router15.post("/admin/orders/:id/refund", async (req, res) => {
+  if (!requireAdmin13(req, res)) return;
   const orderId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(orderId)) {
     res.status(400).json({ error: "Invalid order ID" });
@@ -75694,21 +76305,21 @@ router14.post("/admin/orders/:id/refund", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var refunds_default = router14;
+var refunds_default = router15;
 
 // src/routes/admin/inventory-audit.ts
-var import_express15 = __toESM(require_express2(), 1);
+var import_express16 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router15 = (0, import_express15.Router)();
-function requireAdmin13(req, res) {
+var router16 = (0, import_express16.Router)();
+function requireAdmin14(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router15.get("/admin/inventory/audit-log", async (req, res) => {
-  if (!requireAdmin13(req, res)) return;
+router16.get("/admin/inventory/audit-log", async (req, res) => {
+  if (!requireAdmin14(req, res)) return;
   const productId = req.query.productId ? parseInt(String(req.query.productId), 10) : null;
   const changeType = typeof req.query.changeType === "string" ? req.query.changeType : null;
   const from = typeof req.query.from === "string" ? req.query.from : null;
@@ -75746,13 +76357,13 @@ router15.get("/admin/inventory/audit-log", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var inventory_audit_default = router15;
+var inventory_audit_default = router16;
 
 // src/routes/admin/export.ts
-var import_express16 = __toESM(require_express2(), 1);
+var import_express17 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router16 = (0, import_express16.Router)();
-function requireAdmin14(req, res) {
+var router17 = (0, import_express17.Router)();
+function requireAdmin15(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -75770,8 +76381,8 @@ function escapeCsv3(val) {
 function toCsvRow3(values) {
   return values.map(escapeCsv3).join(",");
 }
-router16.get("/admin/export/customers.csv", async (req, res) => {
-  if (!requireAdmin14(req, res)) return;
+router17.get("/admin/export/customers.csv", async (req, res) => {
+  if (!requireAdmin15(req, res)) return;
   try {
     const customers = await db.select().from(customersTable).orderBy(desc(customersTable.createdAt));
     const headers = ["ID", "First Name", "Last Name", "Email", "Phone", "Total Orders", "Total Spent (GBP)", "Created At"];
@@ -75795,8 +76406,8 @@ router16.get("/admin/export/customers.csv", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router16.get("/admin/export/products.csv", async (req, res) => {
-  if (!requireAdmin14(req, res)) return;
+router17.get("/admin/export/products.csv", async (req, res) => {
+  if (!requireAdmin15(req, res)) return;
   try {
     const products = await db.select({
       productId: productsCatalogTable.id,
@@ -75842,8 +76453,8 @@ router16.get("/admin/export/products.csv", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router16.get("/admin/export/refunds.csv", async (req, res) => {
-  if (!requireAdmin14(req, res)) return;
+router17.get("/admin/export/refunds.csv", async (req, res) => {
+  if (!requireAdmin15(req, res)) return;
   try {
     const refunds = await db.select().from(refundsLogTable).orderBy(desc(refundsLogTable.createdAt));
     const headers = ["ID", "Order Number", "Amount (GBP)", "Type", "Reason", "Notes", "Restore Inventory", "Created At"];
@@ -75867,8 +76478,8 @@ router16.get("/admin/export/refunds.csv", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router16.get("/admin/export/inventory-audit.csv", async (req, res) => {
-  if (!requireAdmin14(req, res)) return;
+router17.get("/admin/export/inventory-audit.csv", async (req, res) => {
+  if (!requireAdmin15(req, res)) return;
   try {
     const entries = await db.select().from(inventoryAuditLogTable).orderBy(desc(inventoryAuditLogTable.createdAt)).limit(5e3);
     const headers = ["ID", "Product ID", "Product Name", "Change Type", "Before", "After", "Change", "Reason", "Reference", "Date"];
@@ -75894,14 +76505,14 @@ router16.get("/admin/export/inventory-audit.csv", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var export_default = router16;
+var export_default = router17;
 
 // src/routes/admin/webhooks.ts
-var import_express17 = __toESM(require_express2(), 1);
+var import_express18 = __toESM(require_express2(), 1);
 import crypto5 from "crypto";
 init_drizzle_orm();
-var router17 = (0, import_express17.Router)();
-function requireAdmin15(req, res) {
+var router18 = (0, import_express18.Router)();
+function requireAdmin16(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -75919,8 +76530,8 @@ function webhookToResponse(w) {
     createdAt: w.createdAt.toISOString()
   };
 }
-router17.get("/admin/webhooks", async (req, res) => {
-  if (!requireAdmin15(req, res)) return;
+router18.get("/admin/webhooks", async (req, res) => {
+  if (!requireAdmin16(req, res)) return;
   try {
     const webhooks = await db.select().from(webhooksTable).orderBy(desc(webhooksTable.createdAt));
     res.json(webhooks.map(webhookToResponse));
@@ -75929,8 +76540,8 @@ router17.get("/admin/webhooks", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router17.post("/admin/webhooks", async (req, res) => {
-  if (!requireAdmin15(req, res)) return;
+router18.post("/admin/webhooks", async (req, res) => {
+  if (!requireAdmin16(req, res)) return;
   const { url: url2, events, description } = req.body;
   if (!url2 || !Array.isArray(events) || events.length === 0) {
     res.status(400).json({ error: "url and at least one event are required" });
@@ -75950,8 +76561,8 @@ router17.post("/admin/webhooks", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router17.patch("/admin/webhooks/:id", async (req, res) => {
-  if (!requireAdmin15(req, res)) return;
+router18.patch("/admin/webhooks/:id", async (req, res) => {
+  if (!requireAdmin16(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -75975,8 +76586,8 @@ router17.patch("/admin/webhooks/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router17.delete("/admin/webhooks/:id", async (req, res) => {
-  if (!requireAdmin15(req, res)) return;
+router18.delete("/admin/webhooks/:id", async (req, res) => {
+  if (!requireAdmin16(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -75994,8 +76605,8 @@ router17.delete("/admin/webhooks/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router17.get("/admin/webhooks/:id/deliveries", async (req, res) => {
-  if (!requireAdmin15(req, res)) return;
+router18.get("/admin/webhooks/:id/deliveries", async (req, res) => {
+  if (!requireAdmin16(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -76016,13 +76627,13 @@ router17.get("/admin/webhooks/:id/deliveries", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var webhooks_default = router17;
+var webhooks_default = router18;
 
 // src/routes/admin/settings.ts
-var import_express18 = __toESM(require_express2(), 1);
+var import_express19 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router18 = (0, import_express18.Router)();
-function requireAdmin16(req, res) {
+var router19 = (0, import_express19.Router)();
+function requireAdmin17(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -76070,8 +76681,8 @@ async function getOrCreateSettings() {
   const [created] = await db.insert(storeSettingsTable).values({}).returning();
   return created;
 }
-router18.get("/admin/settings", async (req, res) => {
-  if (!requireAdmin16(req, res)) return;
+router19.get("/admin/settings", async (req, res) => {
+  if (!requireAdmin17(req, res)) return;
   try {
     const settings = await getOrCreateSettings();
     res.json(settingsToResponse(settings));
@@ -76080,8 +76691,8 @@ router18.get("/admin/settings", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router18.patch("/admin/settings", async (req, res) => {
-  if (!requireAdmin16(req, res)) return;
+router19.patch("/admin/settings", async (req, res) => {
+  if (!requireAdmin17(req, res)) return;
   try {
     const current = await getOrCreateSettings();
     const body = req.body;
@@ -76116,19 +76727,19 @@ router18.patch("/admin/settings", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var settings_default = router18;
+var settings_default = router19;
 
 // src/routes/admin/reports.ts
-var import_express19 = __toESM(require_express2(), 1);
+var import_express20 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router19 = (0, import_express19.Router)();
+var router20 = (0, import_express20.Router)();
 var PAID_STATUS_CLAUSE = sql.raw(
   `status IN ('payment_received', 'paid', 'processing', 'shipped', 'delivered')`
 );
 var PAID_STATUS_CLAUSE_O = sql.raw(
   `o.status IN ('payment_received', 'paid', 'processing', 'shipped', 'delivered')`
 );
-function requireAdmin17(req, res) {
+function requireAdmin18(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -76145,8 +76756,8 @@ function parseRange(req) {
   to.setHours(23, 59, 59, 999);
   return { from, to };
 }
-router19.get("/admin/reports/summary", async (req, res) => {
-  if (!requireAdmin17(req, res)) return;
+router20.get("/admin/reports/summary", async (req, res) => {
+  if (!requireAdmin18(req, res)) return;
   const { from, to } = parseRange(req);
   try {
     const orderStats = await db.execute(sql`
@@ -76187,8 +76798,8 @@ router19.get("/admin/reports/summary", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router19.get("/admin/reports/timeseries", async (req, res) => {
-  if (!requireAdmin17(req, res)) return;
+router20.get("/admin/reports/timeseries", async (req, res) => {
+  if (!requireAdmin18(req, res)) return;
   const { from, to } = parseRange(req);
   try {
     const rows = await db.execute(sql`
@@ -76208,8 +76819,8 @@ router19.get("/admin/reports/timeseries", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router19.get("/admin/reports/top-products", async (req, res) => {
-  if (!requireAdmin17(req, res)) return;
+router20.get("/admin/reports/top-products", async (req, res) => {
+  if (!requireAdmin18(req, res)) return;
   const { from, to } = parseRange(req);
   try {
     const rows = await db.execute(sql`
@@ -76232,8 +76843,8 @@ router19.get("/admin/reports/top-products", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router19.get("/admin/reports/by-category", async (req, res) => {
-  if (!requireAdmin17(req, res)) return;
+router20.get("/admin/reports/by-category", async (req, res) => {
+  if (!requireAdmin18(req, res)) return;
   const { from, to } = parseRange(req);
   try {
     const rows = await db.execute(sql`
@@ -76255,21 +76866,21 @@ router19.get("/admin/reports/by-category", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var reports_default = router19;
+var reports_default = router20;
 
 // src/routes/admin/gdpr.ts
-var import_express20 = __toESM(require_express2(), 1);
+var import_express21 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router20 = (0, import_express20.Router)();
-function requireAdmin18(req, res) {
+var router21 = (0, import_express21.Router)();
+function requireAdmin19(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router20.get("/admin/customers/:id/gdpr-export", async (req, res) => {
-  if (!requireAdmin18(req, res)) return;
+router21.get("/admin/customers/:id/gdpr-export", async (req, res) => {
+  if (!requireAdmin19(req, res)) return;
   const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -76341,8 +76952,8 @@ router20.get("/admin/customers/:id/gdpr-export", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router20.delete("/admin/customers/:id/gdpr-erase", async (req, res) => {
-  if (!requireAdmin18(req, res)) return;
+router21.delete("/admin/customers/:id/gdpr-erase", async (req, res) => {
+  if (!requireAdmin19(req, res)) return;
   const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -76384,13 +76995,13 @@ router20.delete("/admin/customers/:id/gdpr-erase", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var gdpr_default = router20;
+var gdpr_default = router21;
 
 // src/routes/admin/blog.ts
-var import_express21 = __toESM(require_express2(), 1);
+var import_express22 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router21 = (0, import_express21.Router)();
-function requireAdmin19(req, res) {
+var router22 = (0, import_express22.Router)();
+function requireAdmin20(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -76418,8 +77029,8 @@ function postToResponse(p) {
     updatedAt: p.updatedAt.toISOString()
   };
 }
-router21.get("/admin/blog/posts", async (req, res) => {
-  if (!requireAdmin19(req, res)) return;
+router22.get("/admin/blog/posts", async (req, res) => {
+  if (!requireAdmin20(req, res)) return;
   const search = typeof req.query.search === "string" ? req.query.search : null;
   const status = typeof req.query.status === "string" ? req.query.status : null;
   const limit = Math.min(parseInt(String(req.query.limit ?? "50"), 10), 200);
@@ -76438,8 +77049,8 @@ router21.get("/admin/blog/posts", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router21.post("/admin/blog/posts", async (req, res) => {
-  if (!requireAdmin19(req, res)) return;
+router22.post("/admin/blog/posts", async (req, res) => {
+  if (!requireAdmin20(req, res)) return;
   const { title, excerpt, content, author, tags, status, featuredImageUrl, seoTitle, seoDescription } = req.body;
   if (!title) {
     res.status(400).json({ error: "title is required" });
@@ -76467,8 +77078,8 @@ router21.post("/admin/blog/posts", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router21.patch("/admin/blog/posts/:id", async (req, res) => {
-  if (!requireAdmin19(req, res)) return;
+router22.patch("/admin/blog/posts/:id", async (req, res) => {
+  if (!requireAdmin20(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -76500,8 +77111,8 @@ router21.patch("/admin/blog/posts/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router21.delete("/admin/blog/posts/:id", async (req, res) => {
-  if (!requireAdmin19(req, res)) return;
+router22.delete("/admin/blog/posts/:id", async (req, res) => {
+  if (!requireAdmin20(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -76519,10 +77130,10 @@ router21.delete("/admin/blog/posts/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var blog_default = router21;
+var blog_default = router22;
 
 // src/routes/orders.ts
-var import_express22 = __toESM(require_express2(), 1);
+var import_express23 = __toESM(require_express2(), 1);
 import crypto10 from "crypto";
 init_drizzle_orm();
 
@@ -77526,7 +78137,7 @@ function calculateShippingCostGbp(shippingMethod, subtotalGbp, country) {
   }
   return shipping.priceGbp;
 }
-var router22 = (0, import_express22.Router)();
+var router23 = (0, import_express23.Router)();
 var SESSION_SECRET = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
 var WALLID_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
 var CRYPTO_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
@@ -78401,15 +79012,15 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
     res.status(500).json({ error: "Internal server error" });
   }
 }
-router22.post(
+router23.post(
   "/orders/quote",
   (req, res) => handleOrderRequest(req, res, true)
 );
-router22.post(
+router23.post(
   "/orders",
   (req, res) => handleOrderRequest(req, res, false)
 );
-router22.get("/orders/track", async (req, res) => {
+router23.get("/orders/track", async (req, res) => {
   const orderNumber = typeof req.query.number === "string" ? req.query.number.trim().toUpperCase() : null;
   if (!orderNumber) {
     res.status(400).json({ error: "Order number is required" });
@@ -78489,10 +79100,14 @@ router22.get("/orders/track", async (req, res) => {
         "Failed to send order confirmation after Wallid status reconciliation"
       ));
     }
+    const isDispatched = trackedStatus === "shipped" || trackedStatus === "delivered";
     res.status(200).json({
       orderNumber: order.orderNumber,
       status: trackedStatus,
       shippingMethod: order.shippingMethod,
+      carrierName: isDispatched ? order.carrierName : null,
+      trackingNumber: isDispatched ? order.trackingNumber : null,
+      trackingUrl: isDispatched ? order.trackingUrl : null,
       paymentCurrency: order.paymentCurrency,
       paymentAmountMinor: order.paymentAmountMinor,
       createdAt: order.createdAt.toISOString(),
@@ -78504,13 +79119,13 @@ router22.get("/orders/track", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var orders_default2 = router22;
+var orders_default2 = router23;
 
 // src/routes/discounts.ts
-var import_express23 = __toESM(require_express2(), 1);
+var import_express24 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router23 = (0, import_express23.Router)();
-router23.post("/discounts/validate", async (req, res) => {
+var router24 = (0, import_express24.Router)();
+router24.post("/discounts/validate", async (req, res) => {
   const { code, cartTotal } = req.body;
   if (typeof code !== "string" || !code.trim()) {
     res.status(400).json({ valid: false, error: "Discount code is required" });
@@ -78565,10 +79180,10 @@ router23.post("/discounts/validate", async (req, res) => {
     res.status(500).json({ valid: false, error: "Internal server error" });
   }
 });
-var discounts_default2 = router23;
+var discounts_default2 = router24;
 
 // src/routes/auth.ts
-var import_express24 = __toESM(require_express2(), 1);
+var import_express25 = __toESM(require_express2(), 1);
 import crypto11 from "crypto";
 
 // ../../node_modules/.pnpm/bcryptjs@3.0.3/node_modules/bcryptjs/index.js
@@ -80296,7 +80911,7 @@ var bcryptjs_default = {
 
 // src/routes/auth.ts
 init_drizzle_orm();
-var router24 = (0, import_express24.Router)();
+var router25 = (0, import_express25.Router)();
 var SESSION_SECRET2 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
 var COOKIE_NAME = "customer_session";
 var COOKIE_MAX_AGE2 = 30 * 24 * 60 * 60 * 1e3;
@@ -80315,7 +80930,7 @@ function verifyToken(token) {
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
 }
-router24.post("/auth/register", async (req, res) => {
+router25.post("/auth/register", async (req, res) => {
   const { email: email3, password, firstName, lastName, institution, referredBy } = req.body;
   if (typeof email3 !== "string" || !email3.includes("@") || typeof password !== "string" || password.length < 8 || typeof firstName !== "string" || !firstName.trim() || typeof lastName !== "string" || !lastName.trim()) {
     res.status(400).json({ error: "Invalid registration data" });
@@ -80450,7 +81065,7 @@ router24.post("/auth/register", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router24.post("/auth/login", async (req, res) => {
+router25.post("/auth/login", async (req, res) => {
   const { email: email3, password } = req.body;
   if (typeof email3 !== "string" || typeof password !== "string") {
     res.status(400).json({ error: "Email and password are required" });
@@ -80497,7 +81112,7 @@ router24.post("/auth/login", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router24.post("/auth/forgot-password", async (req, res) => {
+router25.post("/auth/forgot-password", async (req, res) => {
   const { email: email3 } = req.body;
   if (typeof email3 !== "string" || !email3.includes("@")) {
     res.status(400).json({ error: "Valid email address is required" });
@@ -80525,7 +81140,7 @@ router24.post("/auth/forgot-password", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router24.post("/auth/reset-password", async (req, res) => {
+router25.post("/auth/reset-password", async (req, res) => {
   const { token, password } = req.body;
   if (typeof token !== "string" || !token.trim()) {
     res.status(400).json({ error: "Reset token is required" });
@@ -80550,7 +81165,7 @@ router24.post("/auth/reset-password", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router24.post("/auth/verify-email", async (req, res) => {
+router25.post("/auth/verify-email", async (req, res) => {
   const token = req.query.token ?? req.body?.token;
   if (!token || typeof token !== "string" || !token.trim()) {
     res.status(400).json({ error: "Verification token is required" });
@@ -80570,11 +81185,11 @@ router24.post("/auth/verify-email", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router24.post("/auth/logout", (_req, res) => {
+router25.post("/auth/logout", (_req, res) => {
   res.clearCookie(COOKIE_NAME, { path: "/" });
   res.status(200).json({ ok: true });
 });
-router24.get("/auth/me", async (req, res) => {
+router25.get("/auth/me", async (req, res) => {
   const token = req.cookies?.[COOKIE_NAME];
   if (!token) {
     res.status(401).json({ error: "Not authenticated" });
@@ -80604,13 +81219,13 @@ router24.get("/auth/me", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var auth_default2 = router24;
+var auth_default2 = router25;
 
 // src/routes/account.ts
-var import_express25 = __toESM(require_express2(), 1);
+var import_express26 = __toESM(require_express2(), 1);
 import crypto12 from "crypto";
 init_drizzle_orm();
-var router25 = (0, import_express25.Router)();
+var router26 = (0, import_express26.Router)();
 var SESSION_SECRET3 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
 var COOKIE_NAME2 = "customer_session";
 function verifyToken2(token) {
@@ -80637,7 +81252,7 @@ function requireCustomer(req, res) {
   }
   return id;
 }
-router25.get("/account/me", async (req, res) => {
+router26.get("/account/me", async (req, res) => {
   const customerId = requireCustomer(req, res);
   if (!customerId) return;
   try {
@@ -80669,7 +81284,7 @@ router25.get("/account/me", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router25.get("/account/orders", async (req, res) => {
+router26.get("/account/orders", async (req, res) => {
   const customerId = requireCustomer(req, res);
   if (!customerId) return;
   try {
@@ -80691,7 +81306,9 @@ router25.get("/account/orders", async (req, res) => {
       postcode: ordersTable.postcode,
       country: ordersTable.country,
       shippingMethod: ordersTable.shippingMethod,
+      carrierName: ordersTable.carrierName,
       trackingNumber: ordersTable.trackingNumber,
+      trackingUrl: ordersTable.trackingUrl,
       createdAt: ordersTable.createdAt
     }).from(ordersTable).where(eq(ordersTable.customerId, customerId)).orderBy(desc(ordersTable.createdAt)).limit(50);
     if (orders.length === 0) {
@@ -80784,7 +81401,9 @@ router25.get("/account/orders", async (req, res) => {
         status: settledOrderIds.has(o.id) ? "paid" : o.status,
         totalGbp: parseFloat(String(o.totalGbp)),
         shippingMethod: o.shippingMethod ?? null,
-        trackingNumber: o.trackingNumber ?? null,
+        carrierName: ["shipped", "delivered"].includes(o.status) ? o.carrierName ?? null : null,
+        trackingNumber: ["shipped", "delivered"].includes(o.status) ? o.trackingNumber ?? null : null,
+        trackingUrl: ["shipped", "delivered"].includes(o.status) ? o.trackingUrl ?? null : null,
         createdAt: o.createdAt.toISOString(),
         items: (itemsByOrderId[o.id] ?? []).map((i) => ({
           productId: i.productId ?? 0,
@@ -80800,7 +81419,7 @@ router25.get("/account/orders", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router25.get("/account/referral", async (req, res) => {
+router26.get("/account/referral", async (req, res) => {
   const customerId = requireCustomer(req, res);
   if (!customerId) return;
   try {
@@ -80829,7 +81448,7 @@ router25.get("/account/referral", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router25.patch("/account/profile", async (req, res) => {
+router26.patch("/account/profile", async (req, res) => {
   const customerId = requireCustomer(req, res);
   if (!customerId) return;
   const { firstName, lastName } = req.body;
@@ -80845,7 +81464,7 @@ router25.patch("/account/profile", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router25.post("/account/password", async (req, res) => {
+router26.post("/account/password", async (req, res) => {
   const customerId = requireCustomer(req, res);
   if (!customerId) return;
   const { currentPassword, newPassword } = req.body;
@@ -80872,13 +81491,13 @@ router25.post("/account/password", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var account_default = router25;
+var account_default = router26;
 
 // src/routes/reviews.ts
-var import_express26 = __toESM(require_express2(), 1);
+var import_express27 = __toESM(require_express2(), 1);
 import crypto13 from "crypto";
 init_drizzle_orm();
-var router26 = (0, import_express26.Router)();
+var router27 = (0, import_express27.Router)();
 var SESSION_SECRET4 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
 var COOKIE_NAME3 = "customer_session";
 function verifyCustomerSession2(token) {
@@ -80891,7 +81510,7 @@ function verifyCustomerSession2(token) {
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
 }
-router26.get("/products/:productId/reviews", async (req, res) => {
+router27.get("/products/:productId/reviews", async (req, res) => {
   const productId = parseInt(firstString(req.params.productId) ?? "", 10);
   if (isNaN(productId)) {
     res.status(400).json({ error: "Invalid product ID" });
@@ -80982,7 +81601,7 @@ router26.get("/products/:productId/reviews", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router26.post("/products/:productId/reviews", async (req, res) => {
+router27.post("/products/:productId/reviews", async (req, res) => {
   const productId = parseInt(firstString(req.params.productId) ?? "", 10);
   if (isNaN(productId)) {
     res.status(400).json({ error: "Invalid product ID" });
@@ -81045,21 +81664,21 @@ router26.post("/products/:productId/reviews", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var reviews_default = router26;
+var reviews_default = router27;
 
 // src/routes/admin/reviews.ts
-var import_express27 = __toESM(require_express2(), 1);
+var import_express28 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-function requireAdmin20(req, res) {
+function requireAdmin21(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Unauthorized" });
     return false;
   }
   return true;
 }
-var router27 = (0, import_express27.Router)();
-router27.get("/admin/reviews", async (req, res) => {
-  if (!requireAdmin20(req, res)) return;
+var router28 = (0, import_express28.Router)();
+router28.get("/admin/reviews", async (req, res) => {
+  if (!requireAdmin21(req, res)) return;
   try {
     const status = firstString(req.query.status);
     const search = firstString(req.query.search);
@@ -81081,8 +81700,8 @@ router27.get("/admin/reviews", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router27.patch("/admin/reviews/:id", async (req, res) => {
-  if (!requireAdmin20(req, res)) return;
+router28.patch("/admin/reviews/:id", async (req, res) => {
+  if (!requireAdmin21(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid review ID" });
@@ -81117,8 +81736,8 @@ router27.patch("/admin/reviews/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router27.delete("/admin/reviews/:id", async (req, res) => {
-  if (!requireAdmin20(req, res)) return;
+router28.delete("/admin/reviews/:id", async (req, res) => {
+  if (!requireAdmin21(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid review ID" });
@@ -81136,13 +81755,13 @@ router27.delete("/admin/reviews/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var reviews_default2 = router27;
+var reviews_default2 = router28;
 
 // src/routes/wishlist.ts
-var import_express28 = __toESM(require_express2(), 1);
+var import_express29 = __toESM(require_express2(), 1);
 import crypto14 from "crypto";
 init_drizzle_orm();
-var router28 = (0, import_express28.Router)();
+var router29 = (0, import_express29.Router)();
 var SESSION_SECRET5 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
 var COOKIE_NAME4 = "customer_session";
 function getCustomerId(req) {
@@ -81157,7 +81776,7 @@ function getCustomerId(req) {
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
 }
-router28.get("/wishlist", async (req, res) => {
+router29.get("/wishlist", async (req, res) => {
   const customerId = getCustomerId(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -81171,7 +81790,7 @@ router28.get("/wishlist", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router28.post("/wishlist/:productId", async (req, res) => {
+router29.post("/wishlist/:productId", async (req, res) => {
   const customerId = getCustomerId(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -81190,7 +81809,7 @@ router28.post("/wishlist/:productId", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router28.delete("/wishlist/:productId", async (req, res) => {
+router29.delete("/wishlist/:productId", async (req, res) => {
   const customerId = getCustomerId(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -81209,13 +81828,13 @@ router28.delete("/wishlist/:productId", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var wishlist_default = router28;
+var wishlist_default = router29;
 
 // src/routes/returns.ts
-var import_express29 = __toESM(require_express2(), 1);
+var import_express30 = __toESM(require_express2(), 1);
 import crypto15 from "crypto";
 init_drizzle_orm();
-var router29 = (0, import_express29.Router)();
+var router30 = (0, import_express30.Router)();
 var SESSION_SECRET6 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
 var COOKIE_NAME5 = "customer_session";
 function getCustomerId2(req) {
@@ -81232,7 +81851,7 @@ function getCustomerId2(req) {
 }
 var RETURNABLE_STATUSES = ["shipped", "delivered"];
 var ACTIVE_RETURN_STATUSES = ["requested", "approved"];
-router29.get("/returns", async (req, res) => {
+router30.get("/returns", async (req, res) => {
   const customerId = getCustomerId2(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -81265,7 +81884,7 @@ router29.get("/returns", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router29.post("/returns", async (req, res) => {
+router30.post("/returns", async (req, res) => {
   const customerId = getCustomerId2(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -81320,13 +81939,13 @@ router29.post("/returns", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var returns_default2 = router29;
+var returns_default2 = router30;
 
 // src/routes/products.ts
-var import_express30 = __toESM(require_express2(), 1);
+var import_express31 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router30 = (0, import_express30.Router)();
-router30.get("/products/:productId/related", async (req, res) => {
+var router31 = (0, import_express31.Router)();
+router31.get("/products/:productId/related", async (req, res) => {
   const productId = parseInt(firstString(req.params.productId) ?? "", 10);
   if (isNaN(productId) || productId <= 0) {
     res.status(400).json({ error: "Invalid product ID" });
@@ -81378,13 +81997,13 @@ router30.get("/products/:productId/related", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var products_default2 = router30;
+var products_default2 = router31;
 
 // src/routes/cart.ts
-var import_express31 = __toESM(require_express2(), 1);
+var import_express32 = __toESM(require_express2(), 1);
 import crypto16 from "crypto";
 init_drizzle_orm();
-var router31 = (0, import_express31.Router)();
+var router32 = (0, import_express32.Router)();
 var SESSION_SECRET7 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
 function verifyCustomerSession3(token) {
   const dot = token.lastIndexOf(".");
@@ -81396,7 +82015,7 @@ function verifyCustomerSession3(token) {
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
 }
-router31.post("/cart/save", async (req, res) => {
+router32.post("/cart/save", async (req, res) => {
   const token = req.cookies?.customer_session;
   if (!token) {
     res.status(401).json({ error: "Not authenticated" });
@@ -81438,7 +82057,7 @@ router31.post("/cart/save", async (req, res) => {
   });
   res.json({ ok: true });
 });
-router31.delete("/cart/save", async (req, res) => {
+router32.delete("/cart/save", async (req, res) => {
   const token = req.cookies?.customer_session;
   if (!token) {
     res.json({ ok: true });
@@ -81452,21 +82071,21 @@ router31.delete("/cart/save", async (req, res) => {
   await db.update(abandonedCartsTable).set({ convertedAt: /* @__PURE__ */ new Date() }).where(eq(abandonedCartsTable.customerId, customerId));
   res.json({ ok: true });
 });
-var cart_default = router31;
+var cart_default = router32;
 
 // src/routes/admin/abandonedCarts.ts
-var import_express32 = __toESM(require_express2(), 1);
+var import_express33 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router32 = (0, import_express32.Router)();
-function requireAdmin21(req, res) {
+var router33 = (0, import_express33.Router)();
+function requireAdmin22(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router32.get("/admin/abandoned-carts", async (req, res) => {
-  if (!requireAdmin21(req, res)) return;
+router33.get("/admin/abandoned-carts", async (req, res) => {
+  if (!requireAdmin22(req, res)) return;
   try {
     const carts = await db.select().from(abandonedCartsTable).where(isNull(abandonedCartsTable.convertedAt)).orderBy(desc(abandonedCartsTable.updatedAt));
     const rows = carts.map((c) => {
@@ -81497,13 +82116,13 @@ router32.get("/admin/abandoned-carts", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var abandonedCarts_default = router32;
+var abandonedCarts_default = router33;
 
 // src/routes/admin/alerts.ts
-var import_express33 = __toESM(require_express2(), 1);
+var import_express34 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router33 = (0, import_express33.Router)();
-router33.get("/admin/alerts", async (req, res) => {
+var router34 = (0, import_express34.Router)();
+router34.get("/admin/alerts", async (req, res) => {
   try {
     const alerts = [];
     const [pendingOrders, pendingReturns, lowStockItems, abandonedCarts, fraudOrders] = await Promise.all([
@@ -81613,13 +82232,13 @@ router33.get("/admin/alerts", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch alerts" });
   }
 });
-var alerts_default = router33;
+var alerts_default = router34;
 
 // src/routes/admin/credits.ts
-var import_express34 = __toESM(require_express2(), 1);
+var import_express35 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router34 = (0, import_express34.Router)();
-function requireAdmin22(req, res) {
+var router35 = (0, import_express35.Router)();
+function requireAdmin23(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -81632,8 +82251,8 @@ async function getOrCreateBalance(customerId) {
   await db.insert(customerCreditsTable).values({ customerId, balancePence: 0 });
   return 0;
 }
-router34.get("/admin/customers/:id/credits", async (req, res) => {
-  if (!requireAdmin22(req, res)) return;
+router35.get("/admin/customers/:id/credits", async (req, res) => {
+  if (!requireAdmin23(req, res)) return;
   const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) {
     res.status(400).json({ error: "Invalid customer ID" });
@@ -81648,8 +82267,8 @@ router34.get("/admin/customers/:id/credits", async (req, res) => {
     res.status(500).json({ error: "Failed to get customer credits" });
   }
 });
-router34.post("/admin/customers/:id/credits", async (req, res) => {
-  if (!requireAdmin22(req, res)) return;
+router35.post("/admin/customers/:id/credits", async (req, res) => {
+  if (!requireAdmin23(req, res)) return;
   const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) {
     res.status(400).json({ error: "Invalid customer ID" });
@@ -81691,8 +82310,8 @@ router34.post("/admin/customers/:id/credits", async (req, res) => {
     res.status(500).json({ error: "Failed to adjust credits" });
   }
 });
-router34.get("/admin/credits", async (req, res) => {
-  if (!requireAdmin22(req, res)) return;
+router35.get("/admin/credits", async (req, res) => {
+  if (!requireAdmin23(req, res)) return;
   try {
     const rows = await db.select({
       customerId: customerCreditsTable.customerId,
@@ -81708,21 +82327,21 @@ router34.get("/admin/credits", async (req, res) => {
     res.status(500).json({ error: "Failed to list credits" });
   }
 });
-var credits_default = router34;
+var credits_default = router35;
 
 // src/routes/admin/fraud.ts
-var import_express35 = __toESM(require_express2(), 1);
+var import_express36 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router35 = (0, import_express35.Router)();
-function requireAdmin23(req, res) {
+var router36 = (0, import_express36.Router)();
+function requireAdmin24(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router35.get("/admin/fraud", async (req, res) => {
-  if (!requireAdmin23(req, res)) return;
+router36.get("/admin/fraud", async (req, res) => {
+  if (!requireAdmin24(req, res)) return;
   try {
     const minScore = Math.max(1, parseInt(String(req.query.minScore ?? "20"), 10) || 20);
     const reviewedParam = req.query.reviewed;
@@ -81779,10 +82398,10 @@ router35.get("/admin/fraud", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch fraud queue" });
   }
 });
-router35.patch(
+router36.patch(
   "/admin/fraud/:id/review",
   async (req, res) => {
-    if (!requireAdmin23(req, res)) return;
+    if (!requireAdmin24(req, res)) return;
     try {
       const id = parseInt(firstString(req.params.id) ?? "", 10);
       if (!id) {
@@ -81801,21 +82420,21 @@ router35.patch(
     }
   }
 );
-var fraud_default = router35;
+var fraud_default = router36;
 
 // src/routes/admin/blockedIps.ts
-var import_express36 = __toESM(require_express2(), 1);
+var import_express37 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router36 = (0, import_express36.Router)();
-function requireAdmin24(req, res) {
+var router37 = (0, import_express37.Router)();
+function requireAdmin25(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router36.get("/admin/blocked-ips", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router37.get("/admin/blocked-ips", async (req, res) => {
+  if (!requireAdmin25(req, res)) return;
   try {
     const rows = await db.select().from(blockedIpsTable).orderBy(blockedIpsTable.blockedAt);
     res.json(rows);
@@ -81823,8 +82442,8 @@ router36.get("/admin/blocked-ips", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch blocked IPs" });
   }
 });
-router36.post("/admin/blocked-ips", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router37.post("/admin/blocked-ips", async (req, res) => {
+  if (!requireAdmin25(req, res)) return;
   const { ip, reason } = req.body;
   if (!ip || typeof ip !== "string" || !ip.trim()) {
     res.status(400).json({ error: "ip is required" });
@@ -81842,8 +82461,8 @@ router36.post("/admin/blocked-ips", async (req, res) => {
     res.status(500).json({ error: "Failed to block IP" });
   }
 });
-router36.delete("/admin/blocked-ips/:ip", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router37.delete("/admin/blocked-ips/:ip", async (req, res) => {
+  if (!requireAdmin25(req, res)) return;
   const ip = decodeURIComponent(firstString(req.params.ip) ?? "");
   try {
     const deleted = await db.delete(blockedIpsTable).where(eq(blockedIpsTable.ip, ip)).returning();
@@ -81856,21 +82475,21 @@ router36.delete("/admin/blocked-ips/:ip", async (req, res) => {
     res.status(500).json({ error: "Failed to unblock IP" });
   }
 });
-var blockedIps_default = router36;
+var blockedIps_default = router37;
 
 // src/routes/admin/emailLogs.ts
-var import_express37 = __toESM(require_express2(), 1);
+var import_express38 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router37 = (0, import_express37.Router)();
-function requireAdmin25(req, res) {
+var router38 = (0, import_express38.Router)();
+function requireAdmin26(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router37.get("/admin/email-logs", async (req, res) => {
-  if (!requireAdmin25(req, res)) return;
+router38.get("/admin/email-logs", async (req, res) => {
+  if (!requireAdmin26(req, res)) return;
   try {
     const [logs, statsRows] = await Promise.all([
       db.select().from(emailLogsTable).orderBy(desc(emailLogsTable.createdAt)).limit(500),
@@ -81900,13 +82519,13 @@ router37.get("/admin/email-logs", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var emailLogs_default = router37;
+var emailLogs_default = router38;
 
 // src/routes/loyalty.ts
-var import_express38 = __toESM(require_express2(), 1);
+var import_express39 = __toESM(require_express2(), 1);
 import crypto17 from "crypto";
 init_drizzle_orm();
-var router38 = (0, import_express38.Router)();
+var router39 = (0, import_express39.Router)();
 var SESSION_SECRET8 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
 function verifyCustomerSession4(token) {
   const dot = token.lastIndexOf(".");
@@ -81945,7 +82564,7 @@ function getTierInfo(lifetimeEarned) {
     progressPct: nextTier ? Math.min(100, Math.round((lifetimeEarned - tier.min) / (nextTier.min - tier.min) * 100)) : 100
   };
 }
-router38.get("/loyalty/balance", async (req, res) => {
+router39.get("/loyalty/balance", async (req, res) => {
   const customerId = getCustomerId3(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -81974,7 +82593,7 @@ router38.get("/loyalty/balance", async (req, res) => {
     }))
   });
 });
-router38.get("/admin/loyalty/overview", async (req, res) => {
+router39.get("/admin/loyalty/overview", async (req, res) => {
   if (!isAdmin(req, res)) return;
   const result = await db.execute(sql`
     SELECT
@@ -82002,7 +82621,7 @@ router38.get("/admin/loyalty/overview", async (req, res) => {
   `);
   res.json({ customers: result.rows, stats: stats.rows[0] ?? {} });
 });
-router38.post("/admin/loyalty/adjust", async (req, res) => {
+router39.post("/admin/loyalty/adjust", async (req, res) => {
   if (!isAdmin(req, res)) return;
   const { customerId, points, reason } = req.body;
   if (!customerId || typeof points !== "number" || !reason || typeof reason !== "string") {
@@ -82018,13 +82637,13 @@ router38.post("/admin/loyalty/adjust", async (req, res) => {
   logger.info({ customerId, points, reason }, "Admin loyalty adjustment");
   res.json({ success: true });
 });
-var loyalty_default = router38;
+var loyalty_default = router39;
 
 // src/routes/tax.ts
-var import_express39 = __toESM(require_express2(), 1);
+var import_express40 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router39 = (0, import_express39.Router)();
-router39.get("/tax/calculate", async (req, res) => {
+var router40 = (0, import_express40.Router)();
+router40.get("/tax/calculate", async (req, res) => {
   const countryCode = String(req.query.country ?? "").toUpperCase();
   const subtotal = parseFloat(String(req.query.subtotal ?? "0"));
   if (!countryCode) {
@@ -82056,13 +82675,13 @@ router39.get("/tax/calculate", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var tax_default2 = router39;
+var tax_default2 = router40;
 
 // src/routes/shipping.ts
-var import_express40 = __toESM(require_express2(), 1);
+var import_express41 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router40 = (0, import_express40.Router)();
-router40.get("/shipping/rates", async (req, res) => {
+var router41 = (0, import_express41.Router)();
+router41.get("/shipping/rates", async (req, res) => {
   const country = String(req.query.country ?? "").toUpperCase();
   const orderTotal = parseFloat(String(req.query.orderTotal ?? "0"));
   if (!country) {
@@ -82105,13 +82724,13 @@ router40.get("/shipping/rates", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var shipping_default2 = router40;
+var shipping_default2 = router41;
 
 // src/routes/blog.ts
-var import_express41 = __toESM(require_express2(), 1);
+var import_express42 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router41 = (0, import_express41.Router)();
-router41.get("/blog/posts", async (req, res) => {
+var router42 = (0, import_express42.Router)();
+router42.get("/blog/posts", async (req, res) => {
   const limit = Math.min(parseInt(String(req.query.limit ?? "12"), 10), 50);
   const offset = parseInt(String(req.query.offset ?? "0"), 10);
   try {
@@ -82145,7 +82764,7 @@ router41.get("/blog/posts", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router41.get("/blog/posts/:slug", async (req, res) => {
+router42.get("/blog/posts/:slug", async (req, res) => {
   const slug = firstString(req.params.slug);
   if (!slug) {
     res.status(400).json({ error: "Invalid slug" });
@@ -82176,13 +82795,13 @@ router41.get("/blog/posts/:slug", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var blog_default2 = router41;
+var blog_default2 = router42;
 
 // src/routes/btcpay-webhook.ts
-var import_express42 = __toESM(require_express2(), 1);
+var import_express43 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router42 = (0, import_express42.Router)();
-router42.post(
+var router43 = (0, import_express43.Router)();
+router43.post(
   "/btcpay-webhook",
   async (req, res) => {
     const signature = req.headers["btcpay-sig"] || req.headers["x-btcpay-signature"] || "";
@@ -82250,14 +82869,14 @@ router42.post(
     res.status(200).json({ received: true });
   }
 );
-var btcpay_webhook_default = router42;
+var btcpay_webhook_default = router43;
 
 // src/routes/wallid-webhook.ts
-var import_express43 = __toESM(require_express2(), 1);
+var import_express44 = __toESM(require_express2(), 1);
 import crypto18 from "crypto";
 init_drizzle_orm();
-var router43 = (0, import_express43.Router)();
-router43.post("/wallid-webhook", async (req, res) => {
+var router44 = (0, import_express44.Router)();
+router44.post("/wallid-webhook", async (req, res) => {
   if (!WALLID_WEBHOOK_SECRET) {
     logger.error("WALLID_WEBHOOK_SECRET is not configured \u2014 rejecting Wallid webhook request");
     res.status(400).json({ error: "Webhook secret not configured" });
@@ -82413,12 +83032,12 @@ router43.post("/wallid-webhook", async (req, res) => {
   }
   res.status(200).json({ received: true });
 });
-var wallid_webhook_default = router43;
+var wallid_webhook_default = router44;
 
 // src/routes/contact.ts
-var import_express44 = __toESM(require_express2(), 1);
-var router44 = (0, import_express44.Router)();
-router44.post("/contact", async (req, res) => {
+var import_express45 = __toESM(require_express2(), 1);
+var router45 = (0, import_express45.Router)();
+router45.post("/contact", async (req, res) => {
   const { name: name2, email: email3, subject, message } = req.body;
   if (typeof name2 !== "string" || !name2.trim()) {
     res.status(400).json({ error: "Name is required" });
@@ -82450,12 +83069,12 @@ router44.post("/contact", async (req, res) => {
     res.status(500).json({ error: "Failed to send your message. Please try again or email us directly." });
   }
 });
-var contact_default = router44;
+var contact_default = router45;
 
 // src/routes/address-lookup.ts
-var import_express45 = __toESM(require_express2(), 1);
-var router45 = (0, import_express45.Router)();
-router45.get("/address-lookup", async (req, res) => {
+var import_express46 = __toESM(require_express2(), 1);
+var router46 = (0, import_express46.Router)();
+router46.get("/address-lookup", async (req, res) => {
   const postcode = req.query["postcode"]?.trim();
   if (!postcode) {
     return res.status(400).json({ error: "postcode query param required" });
@@ -82486,7 +83105,7 @@ router45.get("/address-lookup", async (req, res) => {
     return res.status(500).json({ error: "Address lookup request failed" });
   }
 });
-router45.post("/address-verification", async (req, res) => {
+router46.post("/address-verification", async (req, res) => {
   const delivery = req.body;
   if (typeof delivery.address1 !== "string" || typeof delivery.city !== "string" || typeof delivery.postcode !== "string" || typeof delivery.country !== "string") {
     return res.status(400).json({ error: "A complete delivery address is required." });
@@ -82518,7 +83137,7 @@ router45.post("/address-verification", async (req, res) => {
     });
   }
 });
-router45.post("/address-suggestions", async (req, res) => {
+router46.post("/address-suggestions", async (req, res) => {
   const delivery = req.body;
   if (typeof delivery.address1 !== "string" || typeof delivery.postcode !== "string" || typeof delivery.country !== "string") {
     return res.status(400).json({ error: "A street address, postal code, and country are required." });
@@ -82551,12 +83170,12 @@ router45.post("/address-suggestions", async (req, res) => {
     });
   }
 });
-var address_lookup_default = router45;
+var address_lookup_default = router46;
 
 // src/routes/crypto-payments.ts
-var import_express46 = __toESM(require_express2(), 1);
+var import_express47 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router46 = (0, import_express46.Router)();
+var router47 = (0, import_express47.Router)();
 function hasPaymentAccess(order, token) {
   return typeof token === "string" && Boolean(order.cryptoPaymentAccessToken) && token.length >= 24 && token === order.cryptoPaymentAccessToken;
 }
@@ -82677,14 +83296,14 @@ async function recordCryptoPaymentVerification(order, attempt, txHash, applyOrde
   }
   return result;
 }
-router46.get("/crypto/payment-options", async (_req, res) => {
+router47.get("/crypto/payment-options", async (_req, res) => {
   try {
     res.json({ routes: await getPublicCryptoPaymentOptions() });
   } catch {
     res.status(503).json({ error: "Crypto payment options are temporarily unavailable" });
   }
 });
-router46.get("/orders/:ref/crypto-payment", async (req, res) => {
+router47.get("/orders/:ref/crypto-payment", async (req, res) => {
   res.setHeader("Cache-Control", "no-store");
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.query.token)) {
@@ -82714,7 +83333,7 @@ router46.get("/orders/:ref/crypto-payment", async (req, res) => {
     }
   });
 });
-router46.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
+router47.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -82751,7 +83370,7 @@ router46.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
   }).where(eq(ordersTable.id, order.id));
   res.json({ orderId: order.id, orderNumber: order.orderNumber, ...prepared.details, status: "rate_locked" });
 });
-router46.post("/orders/:ref/crypto-payment/check", async (req, res) => {
+router47.post("/orders/:ref/crypto-payment/check", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -82780,7 +83399,7 @@ router46.post("/orders/:ref/crypto-payment/check", async (req, res) => {
     confirmations: result.confirmations ?? null
   });
 });
-router46.post("/orders/:ref/pay", async (req, res) => {
+router47.post("/orders/:ref/pay", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -82868,13 +83487,13 @@ async function reconcilePendingCryptoPayments() {
   }
   return checked;
 }
-var crypto_payments_default = router46;
+var crypto_payments_default = router47;
 
 // src/routes/admin/crypto-audits.ts
-var import_express47 = __toESM(require_express2(), 1);
+var import_express48 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router47 = (0, import_express47.Router)();
-function requireAdmin26(req, res) {
+var router48 = (0, import_express48.Router)();
+function requireAdmin27(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -82899,8 +83518,8 @@ function auditToResponse(audit) {
     checkedAt: audit.checkedAt.toISOString()
   };
 }
-router47.get("/admin/crypto/audits", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+router48.get("/admin/crypto/audits", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   try {
     const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 200);
     const audits = await db.select().from(cryptoPaymentAuditsTable).orderBy(desc(cryptoPaymentAuditsTable.checkedAt)).limit(limit);
@@ -82919,8 +83538,8 @@ router47.get("/admin/crypto/audits", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router47.get("/admin/crypto/audits/:id", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+router48.get("/admin/crypto/audits/:id", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   const id = Number(req.params.id);
   if (!Number.isInteger(id)) {
     res.status(400).json({ error: "Invalid audit ID" });
@@ -82933,8 +83552,8 @@ router47.get("/admin/crypto/audits/:id", async (req, res) => {
   }
   res.json(auditToResponse(audit));
 });
-router47.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+router48.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   const attemptId = Number(req.params.attemptId);
   if (!Number.isInteger(attemptId)) {
     res.status(400).json({ error: "Invalid payment attempt" });
@@ -82958,8 +83577,8 @@ router47.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router47.post("/admin/crypto/audits/check-batch", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+router48.post("/admin/crypto/audits/check-batch", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   const attemptIds = Array.isArray(req.body?.attemptIds) ? req.body.attemptIds.filter((id) => Number.isInteger(id)).slice(0, 50) : [];
   if (attemptIds.length === 0) {
     res.status(400).json({ error: "Select one or more payment attempts to check." });
@@ -82980,8 +83599,8 @@ router47.post("/admin/crypto/audits/check-batch", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router47.get("/admin/crypto/wallet-history", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+router48.get("/admin/crypto/wallet-history", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   try {
     const attempts = await db.select({
       walletAddress: cryptoPaymentAttemptsTable.walletAddress,
@@ -83002,63 +83621,64 @@ router47.get("/admin/crypto/wallet-history", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var crypto_audits_default = router47;
+var crypto_audits_default = router48;
 
 // src/routes/index.ts
-var router48 = (0, import_express48.Router)();
-router48.use(health_default);
-router48.use(auth_default);
-router48.use(dashboard_default);
-router48.use(orders_default);
-router48.use(customers_default);
-router48.use(products_default);
-router48.use(discounts_default);
-router48.use(catalog_default);
-router48.use(returns_default);
-router48.use(tax_default);
-router48.use(shipping_default);
-router48.use(refunds_default);
-router48.use(inventory_audit_default);
-router48.use(export_default);
-router48.use(webhooks_default);
-router48.use(settings_default);
-router48.use(users_default);
-router48.use(reports_default);
-router48.use(gdpr_default);
-router48.use(blog_default);
-router48.use(crypto_audits_default);
-router48.use(orders_default2);
-router48.use(crypto_payments_default);
-router48.use(discounts_default2);
-router48.use(auth_default2);
-router48.use(account_default);
-router48.use(reviews_default);
-router48.use(reviews_default2);
-router48.use(wishlist_default);
-router48.use(returns_default2);
-router48.use(products_default2);
-router48.use(cart_default);
-router48.use(stock_alerts_default);
-router48.use(abandonedCarts_default);
-router48.use(alerts_default);
-router48.use(credits_default);
-router48.use(fraud_default);
-router48.use(blockedIps_default);
-router48.use(emailLogs_default);
-router48.use(loyalty_default);
-router48.use(tax_default2);
-router48.use(shipping_default2);
-router48.use(blog_default2);
-router48.use(btcpay_webhook_default);
-router48.use(wallid_webhook_default);
-router48.use(contact_default);
-router48.use(address_lookup_default);
-var routes_default = router48;
+var router49 = (0, import_express49.Router)();
+router49.use(health_default);
+router49.use(auth_default);
+router49.use(dashboard_default);
+router49.use(orders_default);
+router49.use(fulfillment_default);
+router49.use(customers_default);
+router49.use(products_default);
+router49.use(discounts_default);
+router49.use(catalog_default);
+router49.use(returns_default);
+router49.use(tax_default);
+router49.use(shipping_default);
+router49.use(refunds_default);
+router49.use(inventory_audit_default);
+router49.use(export_default);
+router49.use(webhooks_default);
+router49.use(settings_default);
+router49.use(users_default);
+router49.use(reports_default);
+router49.use(gdpr_default);
+router49.use(blog_default);
+router49.use(crypto_audits_default);
+router49.use(orders_default2);
+router49.use(crypto_payments_default);
+router49.use(discounts_default2);
+router49.use(auth_default2);
+router49.use(account_default);
+router49.use(reviews_default);
+router49.use(reviews_default2);
+router49.use(wishlist_default);
+router49.use(returns_default2);
+router49.use(products_default2);
+router49.use(cart_default);
+router49.use(stock_alerts_default);
+router49.use(abandonedCarts_default);
+router49.use(alerts_default);
+router49.use(credits_default);
+router49.use(fraud_default);
+router49.use(blockedIps_default);
+router49.use(emailLogs_default);
+router49.use(loyalty_default);
+router49.use(tax_default2);
+router49.use(shipping_default2);
+router49.use(blog_default2);
+router49.use(btcpay_webhook_default);
+router49.use(wallid_webhook_default);
+router49.use(contact_default);
+router49.use(address_lookup_default);
+var routes_default = router49;
 
 // src/routes/sitemap.ts
-var import_express49 = __toESM(require_express2(), 1);
+var import_express50 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router49 = (0, import_express49.Router)();
+var router50 = (0, import_express50.Router)();
 var SITE_URL2 = "https://omniqure.com";
 var STATIC_PAGES = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
@@ -83087,7 +83707,7 @@ function isoDate(d) {
   const date6 = d instanceof Date ? d : new Date(d);
   return date6.toISOString().split("T")[0];
 }
-router49.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
+router50.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
   try {
     const [products, blogPosts] = await Promise.all([
       db.select({
@@ -83163,10 +83783,10 @@ router49.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
     res.status(500).send("<!-- sitemap generation error -->");
   }
 });
-var sitemap_default = router49;
+var sitemap_default = router50;
 
 // src/app.ts
-var app = (0, import_express50.default)();
+var app = (0, import_express51.default)();
 app.use(
   (0, import_pino_http.default)({
     logger,
@@ -83189,13 +83809,13 @@ app.use(
 app.use((0, import_cors.default)({ credentials: true, origin: true }));
 app.use((0, import_cookie_parser.default)());
 app.use(
-  import_express50.default.json({
+  import_express51.default.json({
     verify: (req, _res, buf) => {
       req.rawBody = buf;
     }
   })
 );
-app.use(import_express50.default.urlencoded({ extended: true }));
+app.use(import_express51.default.urlencoded({ extended: true }));
 app.get("/", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });

@@ -38,6 +38,8 @@ import type {
   DiscountCode,
   DiscountCodeInput,
   DiscountCodePatch,
+  DispatchOrderInput,
+  DispatchOrderResponse,
   EnableAllPeptideCatalogProductsResponse,
   GetNewCustomersChartParams,
   GetRevenueChartParams,
@@ -49,15 +51,18 @@ import type {
   ListCatalogProductsParams,
   ListPublicProductsParams,
   NewCustomerDataPoint,
+  NotificationResult,
   Order,
   OrderDetail,
   OrderList,
   OrderStatusCount,
   OrderUpdate,
+  PublicOrderTracking,
   PublicProduct,
   PublicProductDetail,
   RevenueDataPoint,
   TopProduct,
+  TrackPublicOrderParams,
   VisibilityUpdate,
 } from "./api.schemas";
 
@@ -1318,6 +1323,274 @@ export const useUpdateAdminOrder = <
 > => {
   return useMutation(getUpdateAdminOrderMutationOptions(options));
 };
+
+/**
+ * @summary Dispatch an order and send its tracking notification
+ */
+export const getDispatchAdminOrderUrl = (id: number) => {
+  return `/api/admin/orders/${id}/dispatch`;
+};
+
+export const dispatchAdminOrder = async (
+  id: number,
+  dispatchOrderInput: DispatchOrderInput,
+  options?: RequestInit,
+): Promise<DispatchOrderResponse> => {
+  return customFetch<DispatchOrderResponse>(getDispatchAdminOrderUrl(id), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(dispatchOrderInput),
+  });
+};
+
+export const getDispatchAdminOrderMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof dispatchAdminOrder>>,
+    TError,
+    { id: number; data: BodyType<DispatchOrderInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof dispatchAdminOrder>>,
+  TError,
+  { id: number; data: BodyType<DispatchOrderInput> },
+  TContext
+> => {
+  const mutationKey = ["dispatchAdminOrder"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof dispatchAdminOrder>>,
+    { id: number; data: BodyType<DispatchOrderInput> }
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return dispatchAdminOrder(id, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DispatchAdminOrderMutationResult = NonNullable<
+  Awaited<ReturnType<typeof dispatchAdminOrder>>
+>;
+export type DispatchAdminOrderMutationBody = BodyType<DispatchOrderInput>;
+export type DispatchAdminOrderMutationError = ErrorType<ApiError>;
+
+/**
+ * @summary Dispatch an order and send its tracking notification
+ */
+export const useDispatchAdminOrder = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof dispatchAdminOrder>>,
+    TError,
+    { id: number; data: BodyType<DispatchOrderInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof dispatchAdminOrder>>,
+  TError,
+  { id: number; data: BodyType<DispatchOrderInput> },
+  TContext
+> => {
+  return useMutation(getDispatchAdminOrderMutationOptions(options));
+};
+
+/**
+ * @summary Resend the tracking notification for a dispatched order
+ */
+export const getResendAdminOrderTrackingUrl = (id: number) => {
+  return `/api/admin/orders/${id}/send-tracking`;
+};
+
+export const resendAdminOrderTracking = async (
+  id: number,
+  options?: RequestInit,
+): Promise<NotificationResult> => {
+  return customFetch<NotificationResult>(getResendAdminOrderTrackingUrl(id), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getResendAdminOrderTrackingMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof resendAdminOrderTracking>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof resendAdminOrderTracking>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["resendAdminOrderTracking"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof resendAdminOrderTracking>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return resendAdminOrderTracking(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ResendAdminOrderTrackingMutationResult = NonNullable<
+  Awaited<ReturnType<typeof resendAdminOrderTracking>>
+>;
+
+export type ResendAdminOrderTrackingMutationError = ErrorType<ApiError>;
+
+/**
+ * @summary Resend the tracking notification for a dispatched order
+ */
+export const useResendAdminOrderTracking = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof resendAdminOrderTracking>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof resendAdminOrderTracking>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getResendAdminOrderTrackingMutationOptions(options));
+};
+
+/**
+ * @summary Track an order by its public order number
+ */
+export const getTrackPublicOrderUrl = (params: TrackPublicOrderParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/orders/track?${stringifiedParams}`
+    : `/api/orders/track`;
+};
+
+export const trackPublicOrder = async (
+  params: TrackPublicOrderParams,
+  options?: RequestInit,
+): Promise<PublicOrderTracking> => {
+  return customFetch<PublicOrderTracking>(getTrackPublicOrderUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getTrackPublicOrderQueryKey = (
+  params?: TrackPublicOrderParams,
+) => {
+  return [`/api/orders/track`, ...(params ? [params] : [])] as const;
+};
+
+export const getTrackPublicOrderQueryOptions = <
+  TData = Awaited<ReturnType<typeof trackPublicOrder>>,
+  TError = ErrorType<ApiError>,
+>(
+  params: TrackPublicOrderParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof trackPublicOrder>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getTrackPublicOrderQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof trackPublicOrder>>
+  > = ({ signal }) => trackPublicOrder(params, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof trackPublicOrder>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type TrackPublicOrderQueryResult = NonNullable<
+  Awaited<ReturnType<typeof trackPublicOrder>>
+>;
+export type TrackPublicOrderQueryError = ErrorType<ApiError>;
+
+/**
+ * @summary Track an order by its public order number
+ */
+
+export function useTrackPublicOrder<
+  TData = Awaited<ReturnType<typeof trackPublicOrder>>,
+  TError = ErrorType<ApiError>,
+>(
+  params: TrackPublicOrderParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof trackPublicOrder>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getTrackPublicOrderQueryOptions(params, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
 
 /**
  * @summary List all customers

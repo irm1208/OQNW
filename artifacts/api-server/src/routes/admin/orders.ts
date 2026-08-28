@@ -8,14 +8,21 @@ import {
   UpdateAdminOrderParams,
   UpdateAdminOrderBody,
 } from "@workspace/api-zod";
-import { eq, ilike, and, desc, count, or, inArray } from "drizzle-orm";
+import { eq, ilike, and, desc, count, or, inArray, isNull, isNotNull, notInArray } from "drizzle-orm";
 import { sendOrderConfirmation, sendShippingNotification, sendDeliveryConfirmation } from "../../lib/email";
 import { firstString } from "../../lib/query";
+import {
+  DISPATCHABLE_ORDER_STATUSES,
+  DISPATCHED_ORDER_STATUSES,
+  isAllowedAdminStatusTransition,
+  validateDispatchDetails,
+} from "../../lib/tracking";
+import { hasSecureAdminSession } from "./auth";
 
 const router = Router();
 
 function requireAdmin(req: Request, res: Response): boolean {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -34,7 +41,9 @@ function orderToResponse(o: typeof ordersTable.$inferSelect) {
     shippingCostGbp: parseFloat(String(o.shippingCostGbp)),
     totalGbp: parseFloat(String(o.totalGbp)),
     shippingMethod: o.shippingMethod ?? null,
+    carrierName: o.carrierName ?? null,
     trackingNumber: o.trackingNumber ?? null,
+    trackingUrl: o.trackingUrl ?? null,
     notes: o.notes ?? null,
     country: o.country ?? null,
     city: o.city ?? null,
@@ -137,17 +146,23 @@ router.post("/admin/orders/bulk-update", async (req: Request, res: Response): Pr
     ids.length === 0 ||
     ids.some((id) => typeof id !== "number") ||
     typeof status !== "string" ||
-    !VALID_STATUSES.includes(status)
+    !VALID_STATUSES.includes(status) ||
+    status === "shipped" ||
+    status === "delivered"
   ) {
-    res.status(400).json({ error: "Invalid payload: ids must be a non-empty number array and status must be valid" });
+    res.status(400).json({ error: "Invalid payload. Orders must be dispatched individually with tracking details." });
     return;
   }
   try {
-    await db
+    const updated = await db
       .update(ordersTable)
       .set({ status: status as typeof ordersTable.$inferSelect["status"], updatedAt: new Date() })
-      .where(inArray(ordersTable.id, ids as number[]));
-    res.status(200).json({ updated: ids.length });
+      .where(and(
+        inArray(ordersTable.id, ids as number[]),
+        notInArray(ordersTable.status, [...DISPATCHED_ORDER_STATUSES]),
+      ))
+      .returning({ id: ordersTable.id });
+    res.status(200).json({ updated: updated.length });
   } catch (err) {
     req.log.error({ err }, "Failed to bulk-update orders");
     res.status(500).json({ error: "Internal server error" });
@@ -320,6 +335,15 @@ router.post("/admin/orders/:id/send-tracking", async (req: Request, res: Respons
   try {
     const [order] = await db.select().from(ordersTable).where(eq(ordersTable.id, id));
     if (!order) { res.status(404).json({ error: "Order not found" }); return; }
+    if (!DISPATCHED_ORDER_STATUSES.includes(order.status as never)) {
+      res.status(409).json({ error: "Shipping notifications can only be resent after dispatch" });
+      return;
+    }
+    const dispatch = validateDispatchDetails(order);
+    if (!dispatch.ok) {
+      res.status(409).json({ error: "Complete valid tracking details before resending the notification" });
+      return;
+    }
     const items = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, id));
     const emailData = {
       orderNumber: order.orderNumber,
@@ -335,7 +359,9 @@ router.post("/admin/orders/:id/send-tracking", async (req: Request, res: Respons
       shippingCostGbp: parseFloat(String(order.shippingCostGbp)),
       totalGbp: parseFloat(String(order.totalGbp)),
       shippingMethod: order.shippingMethod ?? null,
+      carrierName: order.carrierName ?? null,
       trackingNumber: order.trackingNumber ?? null,
+      trackingUrl: order.trackingUrl ?? null,
       address1: order.address1 ?? null,
       address2: order.address2 ?? null,
       city: order.city ?? null,
@@ -346,6 +372,103 @@ router.post("/admin/orders/:id/send-tracking", async (req: Request, res: Respons
     res.json({ ok: true });
   } catch (err) {
     req.log.error({ err }, "Failed to send tracking notification");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/admin/orders/:id/dispatch", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(firstString(req.params.id) ?? "", 10);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid order ID" });
+    return;
+  }
+  const dispatch = validateDispatchDetails(req.body);
+  if (!dispatch.ok) {
+    res.status(400).json({ error: dispatch.error });
+    return;
+  }
+
+  try {
+    const [updated] = await db
+      .update(ordersTable)
+      .set({
+        status: "shipped",
+        carrierName: dispatch.value.carrierName,
+        trackingNumber: dispatch.value.trackingNumber,
+        trackingUrl: dispatch.value.trackingUrl,
+        dispatchedAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .where(and(
+        eq(ordersTable.id, id),
+        inArray(ordersTable.status, [...DISPATCHABLE_ORDER_STATUSES]),
+        isNull(ordersTable.dispatchedAt),
+      ))
+      .returning();
+
+    if (!updated) {
+      const [current] = await db
+        .select({ status: ordersTable.status })
+        .from(ordersTable)
+        .where(eq(ordersTable.id, id))
+        .limit(1);
+      if (!current) {
+        res.status(404).json({ error: "Order not found" });
+      } else if (current.status === "shipped" || current.status === "delivered") {
+        res.status(409).json({ error: "This order has already been dispatched" });
+      } else {
+        res.status(409).json({ error: "This order is not ready to dispatch" });
+      }
+      return;
+    }
+
+    const items = await db
+      .select()
+      .from(orderItemsTable)
+      .where(eq(orderItemsTable.orderId, updated.id));
+    let emailSent = true;
+    let warning: string | null = null;
+    try {
+      await sendShippingNotification({
+        orderNumber: updated.orderNumber,
+        customerName: updated.customerName,
+        customerEmail: updated.customerEmail,
+        items: items.map((item) => ({
+          productName: item.productName,
+          productCategory: item.productCategory ?? "",
+          quantity: item.quantity,
+          priceGbp: Number(item.priceGbp),
+        })),
+        subtotalGbp: Number(updated.subtotalGbp),
+        shippingCostGbp: Number(updated.shippingCostGbp),
+        totalGbp: Number(updated.totalGbp),
+        shippingMethod: updated.shippingMethod,
+        carrierName: updated.carrierName,
+        trackingNumber: updated.trackingNumber,
+        trackingUrl: updated.trackingUrl,
+        address1: updated.address1,
+        address2: updated.address2,
+        city: updated.city,
+        postcode: updated.postcode,
+        country: updated.country,
+      });
+    } catch (emailError) {
+      emailSent = false;
+      warning = "Order dispatched, but the customer email could not be sent. Use Resend Emails to try again.";
+      req.log.error(
+        { emailError, orderNumber: updated.orderNumber },
+        "Dispatch persisted but shipping notification failed",
+      );
+    }
+
+    res.status(emailSent ? 200 : 202).json({
+      order: orderToResponse(updated),
+      emailSent,
+      warning,
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to dispatch order");
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -366,19 +489,59 @@ router.patch("/admin/orders/:id", async (req: Request, res: Response): Promise<v
       .then(rows => rows[0]);
 
     const updates: Partial<typeof ordersTable.$inferInsert> = {};
-    const { status, trackingNumber, notes } = bodyParsed.data;
+    const { status, carrierName, trackingNumber, trackingUrl, notes } = bodyParsed.data;
+    if (status === "shipped") {
+      res.status(400).json({ error: "Use the dispatch action to mark an order shipped" });
+      return;
+    }
+    if (
+      previousOrder &&
+      status !== undefined &&
+      !isAllowedAdminStatusTransition(previousOrder.status, status)
+    ) {
+      res.status(409).json({ error: `Order status cannot move from ${previousOrder.status} to ${status}` });
+      return;
+    }
     if (status !== undefined) updates.status = status;
-    if (trackingNumber !== undefined) updates.trackingNumber = trackingNumber;
+    if (carrierName !== undefined || trackingNumber !== undefined || trackingUrl !== undefined) {
+      const tracking = validateDispatchDetails({
+        carrierName: carrierName ?? previousOrder?.carrierName,
+        trackingNumber: trackingNumber ?? previousOrder?.trackingNumber,
+        trackingUrl: trackingUrl ?? previousOrder?.trackingUrl,
+      });
+      if (!tracking.ok) {
+        res.status(400).json({ error: tracking.error });
+        return;
+      }
+      updates.carrierName = tracking.value.carrierName;
+      updates.trackingNumber = tracking.value.trackingNumber;
+      updates.trackingUrl = tracking.value.trackingUrl;
+    }
     if (notes !== undefined) updates.notes = notes;
+    if (Object.keys(updates).length === 0) {
+      res.status(400).json({ error: "No changes supplied" });
+      return;
+    }
 
+    const updateWhere = status === "delivered"
+      ? and(
+          eq(ordersTable.id, paramsParsed.data.id),
+          eq(ordersTable.status, "shipped"),
+          isNotNull(ordersTable.dispatchedAt),
+        )
+      : eq(ordersTable.id, paramsParsed.data.id);
     const [updated] = await db
       .update(ordersTable)
       .set(updates)
-      .where(eq(ordersTable.id, paramsParsed.data.id))
+      .where(updateWhere)
       .returning();
 
     if (!updated) {
-      res.status(404).json({ error: "Order not found" });
+      if (previousOrder) {
+        res.status(409).json({ error: "Order status changed before this update could be applied" });
+      } else {
+        res.status(404).json({ error: "Order not found" });
+      }
       return;
     }
 
@@ -417,8 +580,6 @@ router.patch("/admin/orders/:id", async (req: Request, res: Response): Promise<v
         sendOrderConfirmation(emailData).catch(() => {});
       } else if (status === "processing" && previousOrder.status === "awaiting_payment") {
         sendOrderConfirmation(emailData).catch(() => {});
-      } else if (status === "shipped") {
-        sendShippingNotification(emailData).catch(() => {});
       } else if (status === "delivered") {
         sendDeliveryConfirmation(emailData).catch(() => {});
       }

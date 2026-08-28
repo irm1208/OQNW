@@ -685,6 +685,23 @@ export declare const ordersTable: import("drizzle-orm/pg-core").PgTableWithColum
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
+        carrierName: import("drizzle-orm/pg-core").PgColumn<{
+            name: "carrier_name";
+            tableName: "orders";
+            dataType: "string";
+            columnType: "PgText";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
         trackingNumber: import("drizzle-orm/pg-core").PgColumn<{
             name: "tracking_number";
             tableName: "orders";
@@ -698,6 +715,40 @@ export declare const ordersTable: import("drizzle-orm/pg-core").PgTableWithColum
             isAutoincrement: false;
             hasRuntimeDefault: false;
             enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        trackingUrl: import("drizzle-orm/pg-core").PgColumn<{
+            name: "tracking_url";
+            tableName: "orders";
+            dataType: "string";
+            columnType: "PgText";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        dispatchedAt: import("drizzle-orm/pg-core").PgColumn<{
+            name: "dispatched_at";
+            tableName: "orders";
+            dataType: "date";
+            columnType: "PgTimestamp";
+            data: Date;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
             baseColumn: never;
             identity: undefined;
             generated: undefined;
@@ -907,7 +958,10 @@ export declare const insertOrderSchema: z.ZodObject<{
     refundStatus: z.ZodOptional<z.ZodString>;
     shippingMethod: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     shippingRateId: z.ZodOptional<z.ZodNullable<z.ZodInt>>;
+    carrierName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     trackingNumber: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    trackingUrl: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    dispatchedAt: z.ZodOptional<z.ZodNullable<z.ZodDate>>;
     notes: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     fraudScore: z.ZodOptional<z.ZodInt>;
     fraudFlags: z.ZodOptional<z.ZodArray<z.ZodString>>;

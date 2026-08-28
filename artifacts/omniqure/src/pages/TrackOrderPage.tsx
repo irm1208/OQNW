@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Search, Package, Truck, CheckCircle2, Clock, XCircle, FlaskConical, ChevronRight } from "lucide-react";
+import { Search, Package, Truck, CheckCircle2, Clock, XCircle, FlaskConical, ChevronRight, ExternalLink } from "lucide-react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 
@@ -14,6 +14,9 @@ type TrackResult = {
   orderNumber: string;
   status: OrderStatus;
   shippingMethod: string | null;
+  carrierName: string | null;
+  trackingNumber: string | null;
+  trackingUrl: string | null;
   createdAt: string;
   itemCount: number;
   items: Array<{ productName: string; quantity: number }>;
@@ -30,6 +33,18 @@ const STATUS_CONFIG: Record<OrderStatus, { label: string; color: string; bg: str
 };
 
 const STEPS = ["Order Placed", "Processing", "Dispatched", "Delivered"];
+
+function getHttpsUrl(value: string | null): string | null {
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && !!url.hostname && !url.username && !url.password
+      ? url.href
+      : null;
+  } catch {
+    return null;
+  }
+}
 
 export default function TrackOrderPage() {
   useSEO({
@@ -89,6 +104,8 @@ export default function TrackOrderPage() {
   }
 
   const cfg = result ? STATUS_CONFIG[result.status] ?? STATUS_CONFIG.pending : null;
+  const trackingUrl = result ? getHttpsUrl(result.trackingUrl) : null;
+  const isDispatched = result?.status === "shipped" || result?.status === "delivered";
 
   return (
     <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "70vh", padding: "48px 16px" }}>
@@ -267,6 +284,45 @@ export default function TrackOrderPage() {
                 ))}
               </div>
             </div>
+
+            {/* Dispatch tracking */}
+            {isDispatched && (
+              <div
+                data-testid="panel-dispatch-tracking"
+                style={{ margin: "20px 24px 0", padding: "16px", borderRadius: "12px", background: "linear-gradient(135deg, #F0FDF4, #F0F7FF)", border: "1px solid #BBF7D0" }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
+                  <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "#DCFCE7", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <Truck size={14} style={{ color: "#15803D" }} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: "13px", fontWeight: 800, color: "#14532D", margin: 0 }}>Dispatch tracking</p>
+                    <p style={{ fontSize: "11px", color: "#4B7A5B", margin: 0 }}>Your shipment details</p>
+                  </div>
+                </div>
+                <div className="form-grid-2" style={{ gap: "12px" }}>
+                  <div>
+                    <p style={{ fontSize: "10px", color: "#4B7A5B", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "3px" }}>Logistics company</p>
+                    <p data-testid="text-carrier" style={{ fontSize: "13px", fontWeight: 700, color: "#14532D", margin: 0 }}>{result.carrierName ?? "Details coming soon"}</p>
+                  </div>
+                  <div>
+                    <p style={{ fontSize: "10px", color: "#4B7A5B", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "3px" }}>Tracking number</p>
+                    <p data-testid="text-tracking-number" style={{ fontSize: "13px", fontWeight: 700, color: "#14532D", margin: 0, overflowWrap: "anywhere" }}>{result.trackingNumber ?? "Awaiting carrier reference"}</p>
+                  </div>
+                </div>
+                {trackingUrl && (
+                  <a
+                    data-testid="link-track-package"
+                    href={trackingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display: "inline-flex", alignItems: "center", gap: "6px", marginTop: "14px", padding: "8px 12px", borderRadius: "8px", backgroundColor: "#15803D", color: "#fff", fontSize: "12px", fontWeight: 700, textDecoration: "none" }}
+                  >
+                    Track package <ExternalLink size={13} />
+                  </a>
+                )}
+              </div>
+            )}
 
             {/* Items list */}
             <div style={{ padding: "18px 24px 20px" }}>

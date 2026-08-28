@@ -142,7 +142,9 @@ export const ListAdminOrdersResponse = zod.object({
       shippingCostGbp: zod.number().optional(),
       totalGbp: zod.number(),
       shippingMethod: zod.string().nullish(),
+      carrierName: zod.string().nullish(),
       trackingNumber: zod.string().nullish(),
+      trackingUrl: zod.string().nullish(),
       notes: zod.string().nullish(),
       country: zod.string().nullish(),
       city: zod.string().nullish(),
@@ -180,7 +182,9 @@ export const GetAdminOrderResponse = zod.object({
   shippingCostGbp: zod.number().optional(),
   totalGbp: zod.number(),
   shippingMethod: zod.string().nullish(),
+  carrierName: zod.string().nullish(),
   trackingNumber: zod.string().nullish(),
+  trackingUrl: zod.string().nullish(),
   notes: zod.string().nullish(),
   address1: zod.string().nullish(),
   address2: zod.string().nullish(),
@@ -219,7 +223,9 @@ export const UpdateAdminOrderParams = zod.object({
 
 export const UpdateAdminOrderBody = zod.object({
   status: zod.string().optional(),
+  carrierName: zod.string().optional(),
   trackingNumber: zod.string().optional(),
+  trackingUrl: zod.string().optional(),
   notes: zod.string().optional(),
 });
 
@@ -234,7 +240,9 @@ export const UpdateAdminOrderResponse = zod.object({
   shippingCostGbp: zod.number().optional(),
   totalGbp: zod.number(),
   shippingMethod: zod.string().nullish(),
+  carrierName: zod.string().nullish(),
   trackingNumber: zod.string().nullish(),
+  trackingUrl: zod.string().nullish(),
   notes: zod.string().nullish(),
   country: zod.string().nullish(),
   city: zod.string().nullish(),
@@ -249,6 +257,105 @@ export const UpdateAdminOrderResponse = zod.object({
   fraudReviewNote: zod.string().nullish(),
   createdAt: zod.coerce.date(),
   updatedAt: zod.coerce.date().optional(),
+});
+
+/**
+ * @summary Dispatch an order and send its tracking notification
+ */
+export const DispatchAdminOrderParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const dispatchAdminOrderBodyCarrierNameMax = 100;
+
+export const dispatchAdminOrderBodyTrackingNumberMax = 120;
+
+export const dispatchAdminOrderBodyTrackingUrlMax = 2048;
+
+export const dispatchAdminOrderBodyTrackingUrlRegExp = new RegExp("^https:\/");
+
+export const DispatchAdminOrderBody = zod.object({
+  carrierName: zod.string().min(1).max(dispatchAdminOrderBodyCarrierNameMax),
+  trackingNumber: zod
+    .string()
+    .min(1)
+    .max(dispatchAdminOrderBodyTrackingNumberMax),
+  trackingUrl: zod
+    .string()
+    .url()
+    .max(dispatchAdminOrderBodyTrackingUrlMax)
+    .regex(dispatchAdminOrderBodyTrackingUrlRegExp),
+});
+
+export const DispatchAdminOrderResponse = zod.object({
+  order: zod.object({
+    id: zod.number(),
+    orderNumber: zod.string(),
+    status: zod.string(),
+    customerEmail: zod.string(),
+    customerName: zod.string(),
+    customerId: zod.number().nullish(),
+    subtotalGbp: zod.number().optional(),
+    shippingCostGbp: zod.number().optional(),
+    totalGbp: zod.number(),
+    shippingMethod: zod.string().nullish(),
+    carrierName: zod.string().nullish(),
+    trackingNumber: zod.string().nullish(),
+    trackingUrl: zod.string().nullish(),
+    notes: zod.string().nullish(),
+    country: zod.string().nullish(),
+    city: zod.string().nullish(),
+    address1: zod.string().nullish(),
+    postcode: zod.string().nullish(),
+    phone: zod.string().nullish(),
+    refundedAmountGbp: zod.number().optional(),
+    refundStatus: zod.string().optional(),
+    fraudScore: zod.number().optional(),
+    fraudFlags: zod.array(zod.string()).optional(),
+    fraudReviewed: zod.boolean().optional(),
+    fraudReviewNote: zod.string().nullish(),
+    createdAt: zod.coerce.date(),
+    updatedAt: zod.coerce.date().optional(),
+  }),
+  emailSent: zod.boolean(),
+  warning: zod.string().nullish(),
+});
+
+/**
+ * @summary Resend the tracking notification for a dispatched order
+ */
+export const ResendAdminOrderTrackingParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const ResendAdminOrderTrackingResponse = zod.object({
+  ok: zod.boolean(),
+});
+
+/**
+ * @summary Track an order by its public order number
+ */
+export const TrackPublicOrderQueryParams = zod.object({
+  number: zod.coerce.string(),
+});
+
+export const TrackPublicOrderResponse = zod.object({
+  orderNumber: zod.string(),
+  status: zod.string(),
+  shippingMethod: zod.string().nullish(),
+  carrierName: zod.string().nullish(),
+  trackingNumber: zod.string().nullish(),
+  trackingUrl: zod.string().nullish(),
+  paymentCurrency: zod.string().nullish(),
+  paymentAmountMinor: zod.number().nullish(),
+  createdAt: zod.coerce.date(),
+  itemCount: zod.number(),
+  items: zod.array(
+    zod.object({
+      productName: zod.string(),
+      quantity: zod.number(),
+    }),
+  ),
 });
 
 /**
@@ -316,7 +423,9 @@ export const GetAdminCustomerResponse = zod.object({
       shippingCostGbp: zod.number().optional(),
       totalGbp: zod.number(),
       shippingMethod: zod.string().nullish(),
+      carrierName: zod.string().nullish(),
       trackingNumber: zod.string().nullish(),
+      trackingUrl: zod.string().nullish(),
       notes: zod.string().nullish(),
       country: zod.string().nullish(),
       city: zod.string().nullish(),

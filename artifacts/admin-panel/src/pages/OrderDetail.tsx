@@ -14,6 +14,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { DispatchDialog } from "@/components/DispatchDialog";
+import { isSafeTrackingUrl } from "@/lib/tracking-carriers";
 import { Loader2, ArrowLeft, Package, User, MapPin, Truck, RotateCcw, Plus, Send, DollarSign, ShieldAlert, ShieldCheck, CheckCircle2, Shield } from "lucide-react";
 import { toast } from "sonner";
 
@@ -227,8 +229,11 @@ export default function OrderDetail() {
   const updateOrder = useUpdateAdminOrder();
 
   const [trackingNumber, setTrackingNumber] = useState("");
+  const [carrierName, setCarrierName] = useState("");
+  const [trackingUrl, setTrackingUrl] = useState("");
   const [notes, setNotes] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [dispatchOpen, setDispatchOpen] = useState(false);
 
   const [sendingTracking, setSendingTracking] = useState(false);
   const [sendingConfirmation, setSendingConfirmation] = useState(false);
@@ -311,8 +316,10 @@ export default function OrderDetail() {
   }
 
   // Initialize form state when order loads
-  if (order && !isEditing && (trackingNumber !== (order.trackingNumber || "") || notes !== (order.notes || ""))) {
+  if (order && !isEditing && (trackingNumber !== (order.trackingNumber || "") || carrierName !== (order.carrierName || "") || trackingUrl !== (order.trackingUrl || "") || notes !== (order.notes || ""))) {
     setTrackingNumber(order.trackingNumber || "");
+    setCarrierName(order.carrierName || "");
+    setTrackingUrl(order.trackingUrl || "");
     setNotes(order.notes || "");
     setIsEditing(true);
   }
@@ -355,6 +362,10 @@ export default function OrderDetail() {
 
   const handleStatusChange = (newStatus: string) => {
     if (!order) return;
+    if (newStatus === "shipped") {
+      setDispatchOpen(true);
+      return;
+    }
     updateOrder.mutate({ id: orderId, data: { status: newStatus } }, {
       onSuccess: (updatedOrder) => {
         toast.success(`Order status updated to ${newStatus}`);
@@ -365,10 +376,23 @@ export default function OrderDetail() {
   };
 
   const handleSaveDetails = () => {
-    updateOrder.mutate({ id: orderId, data: { trackingNumber, notes } }, {
+    const hasAnyTrackingDetail = !!(carrierName.trim() || trackingNumber.trim() || trackingUrl.trim());
+    if (hasAnyTrackingDetail && (!carrierName.trim() || !trackingNumber.trim() || !isSafeTrackingUrl(trackingUrl))) {
+      toast.error("Add a carrier, tracking number, and valid HTTPS tracking link");
+      return;
+    }
+    const data = hasAnyTrackingDetail
+      ? {
+          carrierName: carrierName.trim(),
+          trackingNumber: trackingNumber.trim(),
+          trackingUrl: trackingUrl.trim(),
+          notes,
+        }
+      : { notes };
+    updateOrder.mutate({ id: orderId, data }, {
       onSuccess: () => {
         toast.success("Order details saved");
-        queryClient.setQueryData(getGetAdminOrderQueryKey(orderId), { ...order, trackingNumber, notes });
+        queryClient.setQueryData(getGetAdminOrderQueryKey(orderId), { ...order, carrierName, trackingNumber, trackingUrl, notes });
       },
       onError: () => toast.error("Failed to save details")
     });
@@ -544,14 +568,50 @@ export default function OrderDetail() {
                   </Select>
                 </div>
                 <div className="space-y-2">
+                  <label className="text-sm font-medium text-muted-foreground">Carrier</label>
+                  <Input
+                    data-testid="input-fulfillment-carrier"
+                    placeholder="Carrier company"
+                    value={carrierName}
+                    onChange={(e) => setCarrierName(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
                   <label className="text-sm font-medium text-muted-foreground">Tracking Number</label>
                   <Input 
+                    data-testid="input-fulfillment-tracking-number"
                     placeholder="Enter tracking ID" 
                     value={trackingNumber} 
                     onChange={(e) => setTrackingNumber(e.target.value)} 
                   />
                 </div>
               </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-muted-foreground">Tracking URL</label>
+                <Input
+                  data-testid="input-fulfillment-tracking-url"
+                  type="url"
+                  placeholder="https://…"
+                  value={trackingUrl}
+                  onChange={(e) => setTrackingUrl(e.target.value)}
+                />
+                {trackingUrl && !isSafeTrackingUrl(trackingUrl) && <p className="text-xs text-destructive">Tracking links must use HTTPS.</p>}
+              </div>
+              {["paid", "payment_received", "processing"].includes(order.status) && (
+                <Button data-testid="button-dispatch-order" onClick={() => setDispatchOpen(true)}>
+                  <Truck className="w-4 h-4 mr-2" /> Dispatch Order
+                </Button>
+              )}
+              {["shipped", "delivered"].includes(order.status) && order.trackingNumber && (
+                <div className="rounded-md border bg-muted/30 px-3 py-2 text-sm flex flex-wrap items-center gap-x-2">
+                  <span><strong>{order.carrierName ?? "Carrier"}:</strong> {order.trackingNumber}</span>
+                  {isSafeTrackingUrl(order.trackingUrl) && (
+                    <a data-testid="link-order-tracking" href={order.trackingUrl!} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      Track shipment
+                    </a>
+                  )}
+                </div>
+              )}
               
               <div className="space-y-2">
                 <label className="text-sm font-medium text-muted-foreground">Admin Notes</label>
@@ -587,8 +647,8 @@ export default function OrderDetail() {
                     variant="outline"
                     size="sm"
                     onClick={handleSendTracking}
-                    disabled={sendingTracking || !trackingNumber}
-                    title={!trackingNumber ? "Add a tracking number first" : "Resend the shipping notification email"}
+                    disabled={sendingTracking || !["shipped", "delivered"].includes(order.status) || !carrierName || !trackingNumber || !isSafeTrackingUrl(trackingUrl)}
+                    title={!["shipped", "delivered"].includes(order.status) ? "Dispatch the order first" : "Resend the shipping notification email"}
                   >
                     {sendingTracking ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Send className="w-4 h-4 mr-2" />}
                     Shipping Notification
@@ -735,6 +795,12 @@ export default function OrderDetail() {
           </div>
         </div>
       </div>
+      <DispatchDialog
+        order={order}
+        open={dispatchOpen}
+        onOpenChange={setDispatchOpen}
+        onDispatched={() => queryClient.invalidateQueries({ queryKey: getGetAdminOrderQueryKey(orderId) })}
+      />
 
       <Dialog open={refundOpen} onOpenChange={(open) => { setRefundOpen(open); if (!open) { setRefundAmount(""); setRefundReason(""); setRefundNotes(""); setRestoreInventory(false); } }}>
         <DialogContent className="sm:max-w-md">

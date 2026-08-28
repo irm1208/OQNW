@@ -332,6 +332,111 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiError"
 
+  /admin/orders/{id}/dispatch:
+    post:
+      operationId: dispatchAdminOrder
+      tags: [admin-orders]
+      summary: Dispatch an order and send its tracking notification
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DispatchOrderInput"
+      responses:
+        "200":
+          description: Order dispatched and notification sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DispatchOrderResponse"
+        "202":
+          description: Order dispatched but notification delivery failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DispatchOrderResponse"
+        "400":
+          description: Invalid dispatch details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "404":
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "409":
+          description: Order is not ready to dispatch or was already dispatched
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /admin/orders/{id}/send-tracking:
+    post:
+      operationId: resendAdminOrderTracking
+      tags: [admin-orders]
+      summary: Resend the tracking notification for a dispatched order
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Notification sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationResult"
+        "404":
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "409":
+          description: Order has not been dispatched or tracking details are incomplete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /orders/track:
+    get:
+      operationId: trackPublicOrder
+      tags: [orders]
+      summary: Track an order by its public order number
+      parameters:
+        - name: number
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Limited public order tracking details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicOrderTracking"
+        "404":
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
   # ── CUSTOMERS ─────────────────────────────────────────────────────────────
   /admin/customers:
     get:
@@ -1022,7 +1127,11 @@ components:
           type: number
         shippingMethod:
           type: ["string", "null"]
+        carrierName:
+          type: ["string", "null"]
         trackingNumber:
+          type: ["string", "null"]
+        trackingUrl:
           type: ["string", "null"]
         notes:
           type: ["string", "null"]
@@ -1108,7 +1217,11 @@ components:
           type: number
         shippingMethod:
           type: ["string", "null"]
+        carrierName:
+          type: ["string", "null"]
         trackingNumber:
+          type: ["string", "null"]
+        trackingUrl:
           type: ["string", "null"]
         notes:
           type: ["string", "null"]
@@ -1167,10 +1280,89 @@ components:
       properties:
         status:
           type: string
+        carrierName:
+          type: string
         trackingNumber:
+          type: string
+        trackingUrl:
           type: string
         notes:
           type: string
+
+    DispatchOrderInput:
+      type: object
+      required: [carrierName, trackingNumber, trackingUrl]
+      properties:
+        carrierName:
+          type: string
+          minLength: 1
+          maxLength: 100
+        trackingNumber:
+          type: string
+          minLength: 1
+          maxLength: 120
+        trackingUrl:
+          type: string
+          format: uri
+          pattern: "^https://"
+          maxLength: 2048
+
+    DispatchOrderResponse:
+      type: object
+      required: [order, emailSent]
+      properties:
+        order:
+          $ref: "#/components/schemas/Order"
+        emailSent:
+          type: boolean
+        warning:
+          type: ["string", "null"]
+
+    NotificationResult:
+      type: object
+      required: [ok]
+      properties:
+        ok:
+          type: boolean
+
+    PublicOrderTrackingItem:
+      type: object
+      required: [productName, quantity]
+      properties:
+        productName:
+          type: string
+        quantity:
+          type: integer
+
+    PublicOrderTracking:
+      type: object
+      required: [orderNumber, status, createdAt, itemCount, items]
+      properties:
+        orderNumber:
+          type: string
+        status:
+          type: string
+        shippingMethod:
+          type: ["string", "null"]
+        carrierName:
+          type: ["string", "null"]
+        trackingNumber:
+          type: ["string", "null"]
+        trackingUrl:
+          type: ["string", "null"]
+        paymentCurrency:
+          type: ["string", "null"]
+        paymentAmountMinor:
+          type: ["integer", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        itemCount:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicOrderTrackingItem"
 
     # ── CUSTOMERS ────────────────────────────────────────────────────────────
     Customer:
