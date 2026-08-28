@@ -493,7 +493,7 @@ export default function HomePage() {
               { icon: <FlaskConical size={20} />, title: "98%+ Verified Purity", sub: "Guaranteed on every product",     color: "#1B5CB5", bg: "#EEF4FF" },
               { icon: <Award size={20} />,        title: "Independent Reports", sub: "Janoshik verification",            color: "#059669", bg: "#ECFDF5" },
               { icon: <Shield size={20} />,       title: "Research Grade",       sub: "For qualified researchers only",  color: "#7C3AED", bg: "#F5F3FF" },
-              { icon: <Truck size={20} />,        title: "Free UK Shipping £50+", sub: "Discreet packaging included",     color: "#0E7490", bg: "#ECFEFF" },
+              { icon: <Truck size={20} />,        title: "Free UK Shipping",       sub: "Mainland, Highlands & NI",       color: "#0E7490", bg: "#ECFEFF" },
             ].map((item, i) => (
               <div
                 key={i}

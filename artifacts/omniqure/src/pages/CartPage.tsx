@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import { trackInitiateCheckout } from "@/lib/pixels";
 import { createCheckoutQuoteInputKey } from "@/lib/checkoutQuoteInputKey";
+import { standardShippingPriceGbpForCountry } from "@/lib/shipping";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
@@ -10,7 +11,6 @@ import { type Product, isHiddenCategory } from "@/data/products";
 import { getPurityStr } from "@/utils/productPurity";
 import { useProducts } from "@/context/ProductsContext";
 import BacWaterUpsell from "@/components/BacWaterUpsell";
-import FreeShippingBar from "@/components/FreeShippingBar";
 import {
   Trash2, Plus, Minus, ShoppingCart, ChevronRight, Sparkles, CheckCircle2,
   Lock, Shield, Truck,
@@ -95,7 +95,6 @@ const SHIPPING_OPTIONS = [
     label: "Standard",
     displayLabel: "Standard Tracked (2–3 business days)",
     price: 4.99,
-    freeOver: 50,
     note: "Tracked parcel delivery, up to 2kg. Remote areas (Highlands, NI, Channel Islands) may take 1–2 extra days.",
   },
   {
@@ -804,8 +803,10 @@ export default function CartPage() {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 4 }}>
         {SHIPPING_OPTIONS.map(opt => {
-          const cost = isUK && opt.freeOver && cartGBP >= opt.freeOver ? 0 : opt.price;
-          const isFree = isUK && opt.freeOver && cartGBP >= opt.freeOver;
+          const isFree = isUK && opt.id === "standard";
+          const cost = opt.id === "standard"
+            ? standardShippingPriceGbpForCountry(delivery.country)
+            : opt.price;
           const active = shipping === opt.id;
           return (
             <label
@@ -1031,7 +1032,9 @@ export default function CartPage() {
   const cartGBP = items.reduce((s, { product, quantity }) => s + (product.price ?? 0) * quantity, 0);
   const isUK = delivery.country === "United Kingdom";
   const selectedShipping = SHIPPING_OPTIONS.find(o => o.id === shipping)!;
-  const shippingCost = isUK && selectedShipping.freeOver && cartGBP >= selectedShipping.freeOver ? 0 : selectedShipping.price;
+  const shippingCost = selectedShipping.id === "standard"
+    ? standardShippingPriceGbpForCountry(delivery.country)
+    : selectedShipping.price;
   const discountAmount = appliedDiscount?.discountAmount ?? 0;
   const loyaltyDiscountGbp = loyaltyPointsToRedeem / 100;
   const freePeptideDeductGbp = redeemFreePeptide && referralCreditGbp > 0 ? Math.min(referralCreditGbp, cartGBP) : 0;

@@ -78027,6 +78027,62 @@ function validateSuccessfulWallidPayment(expected, actual) {
   return { ok: true };
 }
 
+// src/lib/shipping.ts
+var FREE_STANDARD_UK_COUNTRY = "United Kingdom";
+var CHANNEL_ISLANDS = /* @__PURE__ */ new Set(["Guernsey", "Jersey", "Isle of Man"]);
+var EUROPE_ZONE_A = /* @__PURE__ */ new Set([
+  "Germany",
+  "France",
+  "Netherlands",
+  "Belgium",
+  "Austria",
+  "Ireland",
+  "Spain",
+  "Italy"
+]);
+var EUROPE_ZONE_B = /* @__PURE__ */ new Set([
+  "Poland",
+  "Czechia",
+  "Czech Republic",
+  "Sweden",
+  "Denmark",
+  "Norway",
+  "Finland",
+  "Switzerland"
+]);
+var NORTH_AMERICA = /* @__PURE__ */ new Set(["United States", "Canada"]);
+var AUSTRALIA_AND_NEW_ZEALAND = /* @__PURE__ */ new Set(["Australia", "New Zealand"]);
+var ASIA_PACIFIC = /* @__PURE__ */ new Set([
+  "Japan",
+  "Singapore",
+  "Hong Kong",
+  "South Korea",
+  "Taiwan",
+  "Malaysia",
+  "Thailand"
+]);
+var SHIPPING_METHODS = {
+  Standard: { priceGbp: 4.99, freeForUk: true },
+  "Next Day Weekday": { priceGbp: 9.99 },
+  "Next-Day Weekend": { priceGbp: 14.99 }
+};
+function standardShippingPriceGbpForCountry(country) {
+  if (country === FREE_STANDARD_UK_COUNTRY) return 0;
+  if (CHANNEL_ISLANDS.has(country)) return 9.95;
+  if (EUROPE_ZONE_A.has(country)) return 14.99;
+  if (EUROPE_ZONE_B.has(country)) return 17.99;
+  if (NORTH_AMERICA.has(country)) return 22.99;
+  if (AUSTRALIA_AND_NEW_ZEALAND.has(country)) return 27.99;
+  if (ASIA_PACIFIC.has(country)) return 23.99;
+  return 29.99;
+}
+function calculateShippingCostGbp(shippingMethod, _subtotalGbp, country) {
+  const shipping = SHIPPING_METHODS[shippingMethod];
+  if (!shipping) return null;
+  if (shipping.freeForUk) return standardShippingPriceGbpForCountry(country);
+  return shipping.priceGbp;
+}
+
 // src/routes/orders.ts
 var COUNTRY_NAME_TO_CODE2 = {
   "United States": "US",
@@ -78123,20 +78179,7 @@ var NON_SHIPPABLE_COUNTRY_CODES = /* @__PURE__ */ new Set([
   "ER"
   // Eritrea                  — UN arms embargo
 ]);
-var SHIPPING_METHODS = {
-  Standard: { priceGbp: 4.99, freeOver: 50 },
-  "Next Day Weekday": { priceGbp: 9.99 },
-  "Next-Day Weekend": { priceGbp: 14.99 }
-};
 var FREE_BAC_WATER_SLUG = "bacteriostatic-water-10ml";
-function calculateShippingCostGbp(shippingMethod, subtotalGbp, country) {
-  const shipping = SHIPPING_METHODS[shippingMethod];
-  if (!shipping) return null;
-  if (country === "United Kingdom" && shipping.freeOver && subtotalGbp >= shipping.freeOver) {
-    return 0;
-  }
-  return shipping.priceGbp;
-}
 var router23 = (0, import_express23.Router)();
 var SESSION_SECRET = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
 var WALLID_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;

@@ -28,12 +28,12 @@ const KB: Array<{ patterns: RegExp[]; answer: string }> = [
   {
     patterns: [/ship|deliver|dispatch|postage|worldwide|uk|europe|international/i],
     answer:
-      "We ship **worldwide via tracked courier**. UK orders typically arrive within 1–3 business days; international orders take 3–14 business days depending on destination. **Free shipping on UK orders over £50**. All orders are dispatched in plain, unmarked packaging.",
+      "We ship **worldwide via tracked courier**. UK orders typically arrive within 1–3 business days; international orders take 3–14 business days depending on destination. **Free standard shipping is available to UK Mainland, Scotland Highlands, and Northern Ireland**. All orders are dispatched in plain, unmarked packaging.",
   },
   {
     patterns: [/free ship|shipping threshold|£50|£100|50 pounds|100 pounds/i],
     answer:
-      "Free shipping is available on **UK orders over £50**. International orders carry a standard shipping fee regardless of order value.",
+      "Free standard tracked shipping is available to **UK Mainland, Scotland Highlands, and Northern Ireland**. Express services, Channel Islands, and international destinations carry the shipping fee shown at checkout.",
   },
   {
     patterns: [/stor|keep|refrigerat|freezer|temper|-20|shelf life/i],

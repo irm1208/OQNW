@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { Truck, ChevronRight, Shield, Package, Clock, Globe, AlertTriangle } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
 
-const LAST_UPDATED = "1 May 2025";
+const LAST_UPDATED = "28 August 2026";
 const COMPANY_SHORT = "OmniQure";
 const EMAIL = "support@omniqure.com";
 
@@ -36,10 +36,10 @@ function Section({ id, number, title, icon, children }: SectionProps) {
 }
 
 const UK_ZONES: { zone: string; service: string; time: string; price: string }[] = [
-  { zone: "UK Mainland",         service: "Tracked Parcel (up to 2kg)",    time: "2–3 business days",  price: "£4.99 / Free over £50" },
-  { zone: "Scotland Highlands",  service: "Tracked Parcel (up to 2kg)",    time: "3–5 business days",  price: "£7.49" },
-  { zone: "Northern Ireland",    service: "Tracked Parcel (up to 2kg)",    time: "3–5 business days",  price: "£7.49" },
-  { zone: "Channel Islands",     service: "Tracked International Parcel",  time: "3–5 business days",  price: "£9.95" },
+  { zone: "UK Mainland",         service: "Tracked Parcel (up to 2kg)",    time: "2–3 business days",  price: "FREE" },
+  { zone: "Scotland Highlands",  service: "Tracked Parcel (up to 2kg)",    time: "3–5 business days",  price: "FREE" },
+  { zone: "Northern Ireland",    service: "Tracked Parcel (up to 2kg)",    time: "3–5 business days",  price: "FREE" },
+  { zone: "Channel Islands & Isle of Man", service: "Tracked International Parcel", time: "3–5 business days", price: "£9.95" },
 ];
 
 const INTL_ZONES: { zone: string; countries: string; time: string; price: string }[] = [
@@ -87,7 +87,7 @@ export default function ShippingPage() {
         <div className="max-w-[1280px] mx-auto px-4 py-5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { icon: <Truck size={16} />, label: "Free UK Shipping", value: "Orders over £50" },
+              { icon: <Truck size={16} />, label: "Free UK Shipping", value: "Standard tracked service" },
               { icon: <Shield size={16} />, label: "Discreet Dispatch", value: "All orders" },
               { icon: <Package size={16} />, label: "Discreet Packaging", value: "Plain outer box" },
               { icon: <Globe size={16} />, label: "Ships Worldwide", value: "50+ countries" },
@@ -162,7 +162,7 @@ export default function ShippingPage() {
                 </tbody>
               </table>
             </div>
-            <p className="text-xs" style={{ color: "#94A3B8" }}>* Free shipping threshold applies to the product subtotal before any discounts or promotions. Tracked service included on all UK orders.</p>
+            <p className="text-xs" style={{ color: "#94A3B8" }}>Free standard tracked shipping applies to UK Mainland, Scotland Highlands, and Northern Ireland. Express services, Channel Islands, and international destinations are charged as listed.</p>
           </Section>
 
           <Section id="intl-shipping" number="4" title="International Shipping" icon={<Globe size={15} />}>

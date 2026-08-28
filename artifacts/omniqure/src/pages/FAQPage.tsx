@@ -221,8 +221,14 @@ const FAQS: FAQItem[] = [
   {
     category: "shipping",
     q: "How long does shipping take?",
-    a: "Domestic (UK) orders typically arrive within 2–4 business days. International orders are usually delivered within 5–14 business days depending on destination and customs clearance. Expedited shipping options may be available at checkout. All orders are processed within 1–2 business days of payment confirmation.",
+    a: "Domestic (UK) orders typically arrive within 2–4 business days, with free standard tracked shipping to UK Mainland, Scotland Highlands, and Northern Ireland. International orders are usually delivered within 5–14 business days depending on destination and customs clearance. Expedited shipping options and other destination charges are shown at checkout. All orders are processed within 1–2 business days of payment confirmation.",
     tags: ["delivery time", "shipping time", "days", "international"],
+  },
+  {
+    category: "shipping",
+    q: "Is standard UK shipping free?",
+    a: "Yes. Standard tracked shipping is free for UK Mainland, Scotland Highlands, and Northern Ireland, regardless of order value. Express services, Channel Islands, and international destinations are charged as shown at checkout.",
+    tags: ["free shipping", "UK shipping", "postage", "cost", "shipping"],
   },
   {
     category: "shipping",

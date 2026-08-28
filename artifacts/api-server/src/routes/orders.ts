@@ -64,6 +64,7 @@ import {
   validateSuccessfulWallidPayment,
   wallidPaymentIdFromNotes,
 } from "../lib/wallidReconciliation";
+import { calculateShippingCostGbp } from "../lib/shipping";
 
 const COUNTRY_NAME_TO_CODE: Record<string, string> = {
   "United States": "US", "United Kingdom": "GB", "Canada": "CA",
@@ -107,25 +108,7 @@ const NON_SHIPPABLE_COUNTRY_CODES = new Set([
   "ER", // Eritrea                  — UN arms embargo
 ]);
 
-const SHIPPING_METHODS: Record<string, { priceGbp: number; freeOver?: number }> = {
-  Standard: { priceGbp: 4.99, freeOver: 50 },
-  "Next Day Weekday": { priceGbp: 9.99 },
-  "Next-Day Weekend": { priceGbp: 14.99 },
-};
 const FREE_BAC_WATER_SLUG = "bacteriostatic-water-10ml";
-
-function calculateShippingCostGbp(
-  shippingMethod: string,
-  subtotalGbp: number,
-  country: string,
-): number | null {
-  const shipping = SHIPPING_METHODS[shippingMethod];
-  if (!shipping) return null;
-  if (country === "United Kingdom" && shipping.freeOver && subtotalGbp >= shipping.freeOver) {
-    return 0;
-  }
-  return shipping.priceGbp;
-}
 
 const router = Router();
 
