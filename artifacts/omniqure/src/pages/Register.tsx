@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Eye, EyeOff, Mail, Lock, User, Building2, FlaskConical, CheckCircle2 } from "lucide-react";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useSEO } from "@/hooks/useSEO";
+import { REFERRAL_SHARE_DESCRIPTION, REFERRAL_SHARE_TITLE } from "@/seo/referral";
 
 type CheckoutAccountContext = {
   orderNumber: string;
@@ -30,11 +31,21 @@ function checkoutAccountContext(orderNumber: string | null): CheckoutAccountCont
 }
 
 export default function Register() {
-  useSEO({ title: "Create Account", noIndex: true });
   const [, navigate] = useLocation();
   const { register } = useCustomerAuth();
   const search = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : new URLSearchParams();
   const refCode = search.get("ref") ?? undefined;
+  useSEO({
+    title: refCode ? REFERRAL_SHARE_TITLE : "Create Account",
+    description: refCode ? REFERRAL_SHARE_DESCRIPTION : undefined,
+    canonicalPath: refCode ? "/sign-up" : null,
+    noIndex: true,
+  });
+  useEffect(() => {
+    if (!refCode) {
+      document.querySelector('script[data-seo="referral"]')?.remove();
+    }
+  }, [refCode]);
   const returnToAccount = search.get("returnTo") === "account";
   const orderNumber = search.get("order");
   const checkoutContext = checkoutAccountContext(orderNumber);

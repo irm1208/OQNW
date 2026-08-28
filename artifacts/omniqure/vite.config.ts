@@ -2,9 +2,9 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
-import { readFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
-import { injectSeoIntoHtml, routeFromHtmlUrl, seoForApiRecord } from "./src/seo/prerender";
+import { injectSeoIntoHtml, routeFromHtmlUrl, seoForApiRecord, seoForReferral } from "./src/seo/prerender";
 
 const rawPort = process.env.PORT;
 
@@ -38,6 +38,9 @@ type InitialSeoResult =
 async function fetchInitialSeo(url: string) {
   const route = routeFromHtmlUrl(url);
   if (!route) return { kind: "not-seo-route" } as const;
+  if (route.kind === "referral") {
+    return { kind: "available", seo: seoForReferral() } as const;
+  }
 
   const endpoint = route.kind === "product" ? "products" : "blog/posts";
   for (let attempt = 0; attempt < 3; attempt += 1) {
@@ -133,6 +136,24 @@ function routeSeoPlugin() {
   };
 }
 
+function referralStaticBuildPlugin() {
+  return {
+    name: "omniqure-referral-static-build",
+    apply: "build" as const,
+    async closeBundle() {
+      const publicDir = path.resolve(import.meta.dirname, "dist/public");
+      const shell = await readFile(path.join(publicDir, "index.html"), "utf8");
+      const referralDir = path.join(publicDir, "sign-up");
+      await mkdir(referralDir, { recursive: true });
+      await writeFile(
+        path.join(referralDir, "index.html"),
+        injectSeoIntoHtml(shell, seoForReferral()),
+        "utf8",
+      );
+    },
+  };
+}
+
 export default defineConfig({
   base: basePath,
   plugins: [
@@ -140,6 +161,7 @@ export default defineConfig({
     tailwindcss(),
     runtimeErrorOverlay(),
     routeSeoPlugin(),
+    referralStaticBuildPlugin(),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [

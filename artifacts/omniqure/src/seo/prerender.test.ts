@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { injectSeoIntoHtml, routeFromHtmlUrl, seoForApiRecord } from "./prerender";
+import { injectSeoIntoHtml, routeFromHtmlUrl, seoForApiRecord, seoForReferral } from "./prerender";
 
 const shell = `<!doctype html><html><head>
   <title>Default title</title>
@@ -55,4 +55,25 @@ test("blog routes preserve encoded slugs and use their configured article metada
   assert.match(html, /property="og:type" content="article"/);
   assert.match(html, /rel="canonical" href="https:\/\/omniqure\.com\/blog\/purity-testing"/);
   assert.match(html, /data-seo="article">.*"@type":"Article"/);
+});
+
+test("referral signup links receive a branded social preview without exposing the referral code", () => {
+  assert.deepEqual(routeFromHtmlUrl("/sign-up?ref=ABC123"), { kind: "referral" });
+  assert.equal(routeFromHtmlUrl("/sign-up"), null);
+
+  const html = injectSeoIntoHtml(
+    shell,
+    seoForReferral(),
+  );
+
+  assert.match(html, /<title>Join OmniQure — Get 10% Off Your First Order \| OmniQure Peptide Research Institute<\/title>/);
+  assert.match(html, /name="robots" content="noindex, nofollow"/);
+  assert.match(html, /property="og:type" content="website"/);
+  assert.match(html, /property="og:title" content="Join OmniQure — Get 10% Off Your First Order \| OmniQure Peptide Research Institute"/);
+  assert.match(html, /property="og:description" content="You've been invited to join OmniQure\. Create your research account to unlock 10% off your first order, and you and your friend can each earn £25 credit when the order ships\."/);
+  assert.match(html, /name="twitter:card" content="summary_large_image"/);
+  assert.match(html, /name="twitter:image" content="https:\/\/omniqure\.com\/opengraph\.jpg"/);
+  assert.match(html, /rel="canonical" href="https:\/\/omniqure\.com\/sign-up"/);
+  assert.match(html, /data-seo="referral">.*"@type":"WebPage"/);
+  assert.doesNotMatch(html, /ABC123/);
 });

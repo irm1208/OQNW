@@ -7,6 +7,7 @@ import {
   SITE_NAME,
   SITE_URL,
 } from "../../../../lib/api-client-react/src/seo-metadata";
+import { REFERRAL_SHARE_DESCRIPTION, REFERRAL_SHARE_TITLE } from "./referral";
 
 type ProductSeoRecord = {
   slug: string;
@@ -37,7 +38,8 @@ type SeoValues = {
   image: string;
   canonical: string;
   type: "website" | "article" | "product";
-  jsonLdId: "product" | "article";
+  robots?: "index, follow" | "noindex, nofollow";
+  jsonLdId: "product" | "article" | "referral";
   jsonLd: object;
   breadcrumb: object;
 };
@@ -173,8 +175,51 @@ function makeBlogSeo(post: BlogSeoRecord): SeoValues {
   };
 }
 
-export function routeFromHtmlUrl(url: string): { kind: "product" | "blog"; slug: string } | null {
-  const pathname = new URL(url, SITE_URL).pathname.replace(/\/+$/, "") || "/";
+function makeReferralSeo(): SeoValues {
+  const canonical = `${SITE_URL}/sign-up`;
+  const image = `${SITE_URL}/opengraph.jpg`;
+
+  return {
+    title: `${REFERRAL_SHARE_TITLE} | ${SITE_NAME}`,
+    description: REFERRAL_SHARE_DESCRIPTION,
+    image,
+    canonical,
+    type: "website",
+    robots: "noindex, nofollow",
+    jsonLdId: "referral",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": `${canonical}#referral`,
+      name: REFERRAL_SHARE_TITLE,
+      description: REFERRAL_SHARE_DESCRIPTION,
+      url: canonical,
+      image,
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+    },
+    breadcrumb: {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Refer a Friend", item: `${SITE_URL}/refer-a-friend` },
+        { "@type": "ListItem", position: 3, name: "Create Account", item: canonical },
+      ],
+    },
+  };
+}
+
+type HtmlRoute =
+  | { kind: "product" | "blog"; slug: string }
+  | { kind: "referral" };
+
+export function routeFromHtmlUrl(url: string): HtmlRoute | null {
+  const parsedUrl = new URL(url, SITE_URL);
+  const pathname = parsedUrl.pathname.replace(/\/+$/, "") || "/";
+  if (pathname === "/sign-up" && parsedUrl.searchParams.get("ref")?.trim()) {
+    return { kind: "referral" };
+  }
+
   const match = pathname.match(/^\/(product|blog)\/([^/]+)$/);
   if (!match) return null;
 
@@ -192,7 +237,7 @@ export function injectSeoIntoHtml(html: string, seo: SeoValues): string {
   const headTags = [
     `<title>${escapeHtml(seo.title)}</title>`,
     metaTag("name", "description", seo.description),
-    metaTag("name", "robots", "index, follow"),
+    metaTag("name", "robots", seo.robots ?? "index, follow"),
     metaTag("property", "og:type", seo.type),
     metaTag("property", "og:site_name", SITE_NAME),
     metaTag("property", "og:title", seo.title),
@@ -246,4 +291,8 @@ export function seoForApiRecord(
   return kind === "product"
     ? makeProductSeo(record as ProductSeoRecord)
     : makeBlogSeo(record as BlogSeoRecord);
+}
+
+export function seoForReferral(): SeoValues {
+  return makeReferralSeo();
 }

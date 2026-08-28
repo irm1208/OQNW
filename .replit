@@ -10,6 +10,10 @@ build = ["bash", "-c", "pnpm install && pnpm --filter @workspace/api-server run 
 args = ["pnpm", "store", "prune"]
 env = { "CI" = "true" }
 
+[[deployment.rewrites]]
+from = "/sign-up"
+to = "/sign-up/index.html"
+
 [workflows]
 runButton = "Project"
 
