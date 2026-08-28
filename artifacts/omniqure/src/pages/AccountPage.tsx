@@ -5,7 +5,7 @@ import {
   User, Package, Settings, LogOut, ChevronRight,
   ShoppingBag, Clock, Shield, Eye, EyeOff, CheckCircle2,
   AlertCircle, Truck, Zap, FlaskConical, Heart, RotateCcw, X,
-  Users, Copy, CheckCheck,
+  Users, Copy, CheckCheck, Share2,
   Repeat, Award, Gift, TrendingUp, Star,
 } from "lucide-react";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
@@ -13,7 +13,11 @@ import { useCurrency } from "@/context/CurrencyContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useProducts } from "@/context/ProductsContext";
 import { useCart } from "@/context/CartContext";
-import { REFERRAL_LANDING_PATH } from "@/seo/referral";
+import {
+  REFERRAL_LANDING_PATH,
+  REFERRAL_SHARE_MESSAGE,
+  REFERRAL_SHARE_TITLE,
+} from "@/seo/referral";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -326,6 +330,31 @@ export default function AccountPage() {
     if (!referral) return;
     const url = `${window.location.origin}${REFERRAL_LANDING_PATH}?ref=${encodeURIComponent(referral.referralCode)}`;
     void navigator.clipboard.writeText(url);
+    setReferralCopied(true);
+    setTimeout(() => setReferralCopied(false), 2500);
+  }
+
+  async function shareReferral() {
+    if (!referral) return;
+    const url = `${window.location.origin}${REFERRAL_LANDING_PATH}?ref=${encodeURIComponent(referral.referralCode)}`;
+    const message = `${REFERRAL_SHARE_MESSAGE}\n\n${url}`;
+
+    if (typeof navigator.share === "function") {
+      try {
+        await navigator.share({
+          title: REFERRAL_SHARE_TITLE,
+          text: REFERRAL_SHARE_MESSAGE,
+          url,
+        });
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        // Some desktop browsers expose navigator.share but reject when no
+        // share target is available; use the full message as the fallback.
+      }
+    }
+
+    await navigator.clipboard.writeText(message);
     setReferralCopied(true);
     setTimeout(() => setReferralCopied(false), 2500);
   }
@@ -884,7 +913,7 @@ export default function AccountPage() {
                     <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A", marginBottom: "4px" }}>Your referral link</h3>
                     <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "16px" }}>Share this link — when a friend places their first order using it, you both get £25 credit added to your accounts (up to £50 unredeemed balance each). Credit is applied automatically at checkout on your next order.</p>
 
-                    <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+                    <div style={{ display: "flex", gap: "8px", marginBottom: "16px", flexWrap: "wrap" }}>
                       <div style={{ flex: 1, height: "44px", padding: "0 14px", borderRadius: "10px", border: "1.5px solid #E2E8F0", backgroundColor: "#F8FAFC", display: "flex", alignItems: "center", overflow: "hidden" }}>
                         <span style={{ fontSize: "13px", color: "#64748B", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                           {`${window.location.origin}${REFERRAL_LANDING_PATH}?ref=${encodeURIComponent(referral.referralCode)}`}
@@ -901,6 +930,18 @@ export default function AccountPage() {
                         }}
                       >
                         {referralCopied ? <><CheckCheck size={14} /> Copied!</> : <><Copy size={14} /> Copy link</>}
+                      </button>
+                      <button
+                        onClick={() => void shareReferral()}
+                        style={{
+                          display: "inline-flex", alignItems: "center", gap: "6px",
+                          padding: "0 18px", height: "44px", borderRadius: "10px",
+                          border: "1.5px solid #C7D7F7", background: "#F0F5FF",
+                          color: "#1240A0", fontWeight: 700, fontSize: "13px",
+                          cursor: "pointer", whiteSpace: "nowrap",
+                        }}
+                      >
+                        <Share2 size={14} /> Share referral
                       </button>
                     </div>
 
