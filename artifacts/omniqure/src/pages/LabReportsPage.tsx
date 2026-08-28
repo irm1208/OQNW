@@ -276,20 +276,21 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
           padding: "11px 14px",
           marginBottom: "12px",
           display: "grid",
-          gridTemplateColumns: "1fr 1px 1fr",
+           // Let long multi-result labels shrink inside each column.
+           gridTemplateColumns: "minmax(0, 1fr) 1px minmax(0, 1fr)",
           alignItems: "center",
         }}>
           {/* Purity */}
-          <div style={{ paddingRight: "12px" }}>
+           <div style={{ minWidth: 0, paddingRight: "12px" }}>
             {hasPurity ? (
               <>
-                <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-                  <span style={{ fontSize: report.purityLabel ? "15px" : "26px", fontWeight: 900, color: numColor, lineHeight: 1, letterSpacing: report.purityLabel ? "-0.02em" : "-0.03em", whiteSpace: "nowrap" }}>
+                 <div style={{ display: "flex", alignItems: "baseline", gap: "2px", minWidth: 0 }}>
+                   <span style={{ minWidth: 0, fontSize: report.purityLabel ? "15px" : "26px", fontWeight: 900, color: numColor, lineHeight: 1.15, letterSpacing: report.purityLabel ? "-0.02em" : "-0.03em", whiteSpace: report.purityLabel ? "normal" : "nowrap", overflowWrap: "break-word" }}>
                     {purityDisplay}
                   </span>
-                  <span style={{ fontSize: "12px", fontWeight: 700, color: unitColor }}>%</span>
+                   <span style={{ flexShrink: 0, fontSize: "12px", fontWeight: 700, color: unitColor }}>%</span>
                 </div>
-                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "#64748B", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                 <p style={{ margin: "2px 0 0", fontSize: "9px", lineHeight: 1.2, color: "#64748B", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", whiteSpace: "normal" }}>
                   Purity
                 </p>
               </>
@@ -307,16 +308,16 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
           <div style={{ background: spotBdr, alignSelf: "stretch" }} />
 
           {/* Mass */}
-          <div style={{ paddingLeft: "12px" }}>
+           <div style={{ minWidth: 0, paddingLeft: "12px" }}>
             {hasMass ? (
               <>
-                <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-                  <span style={{ fontSize: report.actualMassLabel ? "15px" : "26px", fontWeight: 900, color: massColor, lineHeight: 1, letterSpacing: report.actualMassLabel ? "-0.02em" : "-0.03em", whiteSpace: "nowrap" }}>
+                 <div style={{ display: "flex", alignItems: "baseline", gap: "2px", minWidth: 0 }}>
+                   <span style={{ minWidth: 0, fontSize: report.actualMassLabel ? "15px" : "26px", fontWeight: 900, color: massColor, lineHeight: 1.15, letterSpacing: report.actualMassLabel ? "-0.02em" : "-0.03em", whiteSpace: report.actualMassLabel ? "normal" : "nowrap", overflowWrap: "break-word" }}>
                     {massDisplay}
                   </span>
-                  <span style={{ fontSize: "11px", fontWeight: 700, color: unitColor }}>mg</span>
+                   <span style={{ flexShrink: 0, fontSize: "11px", fontWeight: 700, color: unitColor }}>mg</span>
                 </div>
-                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "#64748B", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                 <p style={{ margin: "2px 0 0", fontSize: "9px", lineHeight: 1.2, color: "#64748B", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", whiteSpace: "normal" }}>
                   Mass confirmed
                 </p>
               </>
