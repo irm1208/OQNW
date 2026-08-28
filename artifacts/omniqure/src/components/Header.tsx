@@ -93,6 +93,7 @@ export default function Header() {
   }, [products]);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileResearchOpen, setMobileResearchOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(-1);
   const [currencyOpen, setCurrencyOpen] = useState(false);
@@ -193,8 +194,27 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Close user menu on route change
-  useEffect(() => { setUserMenuOpen(false); }, [location]);
+  // Close transient menus on route change.
+  useEffect(() => {
+    setUserMenuOpen(false);
+    setMobileMenuOpen(false);
+    setMobileResearchOpen(false);
+  }, [location]);
+
+  // Keep the page from scrolling behind the mobile/tablet drawer and support Escape.
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileMenuOpen(false);
+    };
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [mobileMenuOpen]);
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (!open || results.length === 0) {
@@ -301,9 +321,11 @@ export default function Header() {
 
           {/* Hamburger — mobile only, left side */}
           <button
-            className="md:hidden p-1 order-0 flex-shrink-0 flex flex-col items-center"
+            className="lg:hidden p-1 order-0 flex-shrink-0 flex flex-col items-center"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             style={{ color: "rgba(255,255,255,0.85)", background: "none", border: "none", cursor: "pointer" }}
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             <span className="sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Menu</span>
@@ -711,7 +733,7 @@ export default function Header() {
 
       {/* Main nav — tablet and above */}
       <nav
-        className="bg-white hidden md:block"
+        className="bg-white hidden lg:block"
         style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.06)", borderTop: "1px solid #F8FAFC", position: "relative", zIndex: 1 }}
       >
         <div className="max-w-[1280px] mx-auto px-4 flex items-center justify-between">
@@ -1022,67 +1044,158 @@ export default function Header() {
       </nav>
 
 
-      {/* Mobile menu */}
+      {/* Mobile and tablet navigation drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-gray-100 shadow-xl">
-          {[...navItems, ...rightNavItems].map((item) => {
-            if (item.label === "Research & Education") {
-              return (
-                <div key={item.label}>
-                  <div className="px-4 py-2.5 text-xs font-700 border-b border-gray-50 flex items-center gap-2"
-                    style={{ color: "#94A3B8", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", backgroundColor: "#F8FAFC" }}>
-                    <GraduationCap size={12} />
-                    Research & Education
-                  </div>
-                  {researchLinks.map(link => {
-                    const Icon = link.icon;
-                    return (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className="flex items-center gap-3 px-5 py-3 text-sm border-b border-gray-50 transition-colors"
-                        style={{ color: "#374151", textDecoration: "none" }}
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        <Icon size={15} style={{ color: "#64748B", flexShrink: 0 }} />
-                        {link.label}
-                      </Link>
-                    );
-                  })}
-                </div>
-              );
-            }
-            return (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="block px-4 py-3.5 text-sm font-medium border-b border-gray-50 transition-colors"
-                style={{ color: "#374151", textDecoration: "none" }}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-          {customer && (
-            <>
-              <Link
-                href="/account"
-                className="block px-4 py-3.5 text-sm font-medium border-b border-gray-50"
-                style={{ color: "#1B5CB5", textDecoration: "none" }}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                My Account
-              </Link>
+        <div
+          className="lg:hidden fixed inset-0"
+          style={{ zIndex: 70 }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Site navigation"
+        >
+          <button
+            aria-label="Close navigation menu"
+            onClick={() => setMobileMenuOpen(false)}
+            className="absolute inset-0 w-full h-full border-0 cursor-default"
+            style={{ backgroundColor: "rgba(15,23,42,0.42)", backdropFilter: "blur(2px)" }}
+          />
+
+          <aside
+            className="absolute left-0 top-0 bottom-0 flex flex-col bg-white shadow-2xl"
+            style={{ width: "min(90vw, 420px)" }}
+          >
+            <div
+              className="flex items-center justify-between px-5 py-4 border-b border-slate-100"
+              style={{ paddingTop: "max(16px, env(safe-area-inset-top))" }}
+            >
+              <div>
+                <p style={{ margin: 0, color: "#1240A0", fontSize: "11px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase" }}>
+                  OmniQure
+                </p>
+                <p style={{ margin: "3px 0 0", color: "#0F172A", fontSize: "18px", fontWeight: 800 }}>
+                  Explore the site
+                </p>
+              </div>
               <button
-                onClick={() => { setMobileMenuOpen(false); void handleSignOut(); }}
-                className="block w-full text-left px-4 py-3.5 text-sm font-medium border-b border-gray-50"
-                style={{ color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close navigation menu"
+                style={{
+                  width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: "center",
+                  borderRadius: 10, border: "1px solid #E2E8F0", background: "#F8FAFC",
+                  color: "#475569", cursor: "pointer",
+                }}
               >
-                Sign out
+                <X size={20} />
               </button>
-            </>
-          )}
+            </div>
+
+            <div className="flex-1 overflow-y-auto" style={{ overscrollBehavior: "contain" }}>
+              <div style={{ padding: "12px 12px 8px" }}>
+                <p style={{ margin: "0 8px 7px", color: "#94A3B8", fontSize: 10, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                  Main menu
+                </p>
+                {navItems
+                  .filter(item => item.label !== "Research & Education")
+                  .map(item => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      className="flex items-center justify-between rounded-xl px-3 transition-colors"
+                      style={{
+                        minHeight: 48, color: location === item.href ? "#1240A0" : "#334155",
+                        background: location === item.href ? "#EEF4FF" : "transparent",
+                        textDecoration: "none", fontSize: 15, fontWeight: location === item.href ? 700 : 600,
+                      }}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.label}
+                      <ChevronDown size={15} style={{ transform: "rotate(-90deg)", color: "#CBD5E1" }} />
+                    </Link>
+                  ))}
+              </div>
+
+              <div style={{ borderTop: "1px solid #F1F5F9", borderBottom: "1px solid #F1F5F9" }}>
+                <button
+                  onClick={() => setMobileResearchOpen(open => !open)}
+                  aria-expanded={mobileResearchOpen}
+                  style={{
+                    width: "100%", minHeight: 52, padding: "0 20px", display: "flex", alignItems: "center", gap: 10,
+                    border: "none", background: mobileResearchOpen ? "#F8FAFC" : "#fff",
+                    color: "#475569", cursor: "pointer", textAlign: "left",
+                  }}
+                >
+                  <span style={{ width: 30, height: 30, borderRadius: 9, background: "#EEF4FF", color: "#1240A0", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <GraduationCap size={16} />
+                  </span>
+                  <span style={{ flex: 1, fontSize: 14, fontWeight: 800 }}>Research &amp; Education</span>
+                  <ChevronDown size={17} style={{ color: "#94A3B8", transform: mobileResearchOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
+                </button>
+
+                {mobileResearchOpen && (
+                  <div style={{ padding: "0 12px 10px", background: "#F8FAFC" }}>
+                    {researchLinks.map(link => {
+                      const Icon = link.icon;
+                      return (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className="flex items-center gap-3 rounded-xl px-3 py-2.5"
+                          style={{ color: "#475569", textDecoration: "none" }}
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          <Icon size={17} style={{ color: "#64748B", flexShrink: 0 }} />
+                          <span style={{ minWidth: 0 }}>
+                            <span style={{ display: "block", fontSize: 14, fontWeight: 700 }}>{link.label}</span>
+                            <span style={{ display: "block", marginTop: 2, color: "#94A3B8", fontSize: 11.5, lineHeight: 1.35 }}>{link.desc}</span>
+                          </span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              <div style={{ padding: "12px 12px 8px" }}>
+                <p style={{ margin: "0 8px 7px", color: "#94A3B8", fontSize: 10, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                  More
+                </p>
+                {[...rightNavItems, ...(!customer ? [{ label: "Sign in", href: "/sign-in" }] : [])].map(item => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="flex items-center justify-between rounded-xl px-3"
+                    style={{ minHeight: 46, color: "#475569", textDecoration: "none", fontSize: 14, fontWeight: 600 }}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                    <ChevronDown size={15} style={{ transform: "rotate(-90deg)", color: "#CBD5E1" }} />
+                  </Link>
+                ))}
+              </div>
+
+              {customer && (
+                <div style={{ margin: "4px 12px 20px", padding: "10px", borderRadius: 14, background: "#F0F5FF", border: "1px solid #DBEAFE" }}>
+                  <Link
+                    href="/account"
+                    className="flex items-center rounded-xl px-3"
+                    style={{ minHeight: 46, color: "#1240A0", textDecoration: "none", fontSize: 14, fontWeight: 700 }}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <User size={17} style={{ marginRight: 10 }} />
+                    My Account
+                  </Link>
+                  <button
+                    onClick={() => { setMobileMenuOpen(false); void handleSignOut(); }}
+                    className="flex items-center w-full rounded-xl px-3"
+                    style={{ minHeight: 46, color: "#DC2626", background: "transparent", border: "none", cursor: "pointer", fontSize: 14, fontWeight: 700, textAlign: "left" }}
+                  >
+                    <LogOut size={17} style={{ marginRight: 10 }} />
+                    Sign out
+                  </button>
+                </div>
+              )}
+            </div>
+          </aside>
         </div>
       )}
     </header>
