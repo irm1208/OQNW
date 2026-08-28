@@ -14,6 +14,10 @@ env = { "CI" = "true" }
 from = "/sign-up"
 to = "/sign-up/index.html"
 
+[[deployment.rewrites]]
+from = "/refer-a-friend"
+to = "/refer-a-friend/index.html"
+
 [workflows]
 runButton = "Project"
 

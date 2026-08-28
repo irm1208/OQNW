@@ -1,3 +1,5 @@
+export const REFERRAL_LANDING_PATH = "/refer-a-friend";
+
 export const REFERRAL_SHARE_TITLE = "Join OmniQure — Get 10% Off Your First Order";
 
 export const REFERRAL_SHARE_DESCRIPTION =

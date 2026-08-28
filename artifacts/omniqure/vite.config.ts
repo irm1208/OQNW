@@ -143,13 +143,15 @@ function referralStaticBuildPlugin() {
     async closeBundle() {
       const publicDir = path.resolve(import.meta.dirname, "dist/public");
       const shell = await readFile(path.join(publicDir, "index.html"), "utf8");
-      const referralDir = path.join(publicDir, "sign-up");
-      await mkdir(referralDir, { recursive: true });
-      await writeFile(
-        path.join(referralDir, "index.html"),
-        injectSeoIntoHtml(shell, seoForReferral()),
-        "utf8",
-      );
+      for (const route of ["refer-a-friend", "sign-up"]) {
+        const referralDir = path.join(publicDir, route);
+        await mkdir(referralDir, { recursive: true });
+        await writeFile(
+          path.join(referralDir, "index.html"),
+          injectSeoIntoHtml(shell, seoForReferral()),
+          "utf8",
+        );
+      }
     },
   };
 }

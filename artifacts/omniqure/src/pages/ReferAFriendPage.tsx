@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
+import { REFERRAL_SHARE_DESCRIPTION, REFERRAL_SHARE_TITLE } from "@/seo/referral";
 
 // Value of a single £25 referral credit reward, in each supported currency.
 const REFERRAL_CREDIT_VALUE: Record<CurrencyCode, string> = {
@@ -63,10 +64,18 @@ const PERKS = [
 ];
 
 export default function ReferAFriendPage() {
+  const search = typeof window !== "undefined"
+    ? new URLSearchParams(window.location.search)
+    : new URLSearchParams();
+  const refCode = search.get("ref")?.trim() || null;
+
   useSEO({
-    title: "Refer a Friend",
-    description: "Share OmniQure with a fellow researcher. When they place their first order, you both earn £25 credit each — up to £50 unredeemed balance.",
+    title: refCode ? REFERRAL_SHARE_TITLE : "Refer a Friend",
+    description: refCode
+      ? REFERRAL_SHARE_DESCRIPTION
+      : "Share OmniQure with a fellow researcher. When they place their first order, you both earn £25 credit each — up to £50 unredeemed balance.",
     canonicalPath: "/refer-a-friend",
+    noIndex: Boolean(refCode),
   });
 
   const { currency } = useCurrency();
@@ -77,6 +86,9 @@ export default function ReferAFriendPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const referralLink = "https://omniqure.com/ref/YOUR-CODE";
+  const registerHref = refCode
+    ? `/register?ref=${encodeURIComponent(refCode)}`
+    : "/register";
 
   function copyLink() {
     void navigator.clipboard.writeText(referralLink);
@@ -187,7 +199,7 @@ export default function ReferAFriendPage() {
           {/* CTA */}
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <Link
-              href="/register"
+              href={registerHref}
               style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
                 background: "#E8A93E", color: "#0D2565",

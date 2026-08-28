@@ -13,6 +13,7 @@ import { useCurrency } from "@/context/CurrencyContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useProducts } from "@/context/ProductsContext";
 import { useCart } from "@/context/CartContext";
+import { REFERRAL_LANDING_PATH } from "@/seo/referral";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -323,7 +324,7 @@ export default function AccountPage() {
 
   function copyReferralLink() {
     if (!referral) return;
-    const url = `${window.location.origin}/sign-up?ref=${referral.referralCode}`;
+    const url = `${window.location.origin}${REFERRAL_LANDING_PATH}?ref=${encodeURIComponent(referral.referralCode)}`;
     void navigator.clipboard.writeText(url);
     setReferralCopied(true);
     setTimeout(() => setReferralCopied(false), 2500);
@@ -886,7 +887,7 @@ export default function AccountPage() {
                     <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
                       <div style={{ flex: 1, height: "44px", padding: "0 14px", borderRadius: "10px", border: "1.5px solid #E2E8F0", backgroundColor: "#F8FAFC", display: "flex", alignItems: "center", overflow: "hidden" }}>
                         <span style={{ fontSize: "13px", color: "#64748B", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                          {`${window.location.origin}/sign-up?ref=${referral.referralCode}`}
+                          {`${window.location.origin}${REFERRAL_LANDING_PATH}?ref=${encodeURIComponent(referral.referralCode)}`}
                         </span>
                       </div>
                       <button

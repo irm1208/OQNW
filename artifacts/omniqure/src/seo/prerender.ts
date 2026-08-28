@@ -7,7 +7,11 @@ import {
   SITE_NAME,
   SITE_URL,
 } from "../../../../lib/api-client-react/src/seo-metadata";
-import { REFERRAL_SHARE_DESCRIPTION, REFERRAL_SHARE_TITLE } from "./referral";
+import {
+  REFERRAL_LANDING_PATH,
+  REFERRAL_SHARE_DESCRIPTION,
+  REFERRAL_SHARE_TITLE,
+} from "./referral";
 
 type ProductSeoRecord = {
   slug: string;
@@ -176,7 +180,7 @@ function makeBlogSeo(post: BlogSeoRecord): SeoValues {
 }
 
 function makeReferralSeo(): SeoValues {
-  const canonical = `${SITE_URL}/sign-up`;
+  const canonical = `${SITE_URL}${REFERRAL_LANDING_PATH}`;
   const image = `${SITE_URL}/opengraph.jpg`;
 
   return {
@@ -216,7 +220,10 @@ type HtmlRoute =
 export function routeFromHtmlUrl(url: string): HtmlRoute | null {
   const parsedUrl = new URL(url, SITE_URL);
   const pathname = parsedUrl.pathname.replace(/\/+$/, "") || "/";
-  if (pathname === "/sign-up" && parsedUrl.searchParams.get("ref")?.trim()) {
+  if (
+    (pathname === REFERRAL_LANDING_PATH || pathname === "/sign-up") &&
+    parsedUrl.searchParams.get("ref")?.trim()
+  ) {
     return { kind: "referral" };
   }
 
