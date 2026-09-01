@@ -29708,7 +29708,7 @@ var require_utils_webcrypto = __commonJS({
     var nodeCrypto2 = __require("crypto");
     module.exports = {
       postgresMd5PasswordHash,
-      randomBytes: randomBytes2,
+      randomBytes: randomBytes3,
       deriveKey,
       sha256,
       hashByName,
@@ -29718,7 +29718,7 @@ var require_utils_webcrypto = __commonJS({
     var webCrypto = nodeCrypto2.webcrypto || globalThis.crypto;
     var subtleCrypto = webCrypto.subtle;
     var textEncoder2 = new TextEncoder();
-    function randomBytes2(length) {
+    function randomBytes3(length) {
       return webCrypto.getRandomValues(Buffer.alloc(length));
     }
     async function md5(string4) {
@@ -49781,13 +49781,41 @@ var HealthCheckResponse = objectType({
   status: stringType()
 });
 var AdminLoginBody = objectType({
-  password: stringType()
+  password: stringType(),
+  email: stringType().email().optional(),
+  challengeToken: stringType().optional(),
+  mfaCode: stringType().optional(),
+  recoveryCode: stringType().optional()
 });
 var AdminLoginResponse = objectType({
-  authenticated: booleanType()
+  authenticated: booleanType(),
+  email: stringType().optional(),
+  name: stringType().optional(),
+  role: stringType().optional(),
+  recentAuth: booleanType().optional(),
+  mfaEnabled: booleanType().optional(),
+  mfaRequired: booleanType().optional(),
+  enrollmentRequired: booleanType().optional(),
+  enrollmentCompleted: booleanType().optional(),
+  challengeToken: stringType().optional(),
+  secret: stringType().optional(),
+  otpauthUri: stringType().optional(),
+  recoveryCodes: arrayType(stringType()).optional()
 });
 var AdminMeResponse = objectType({
-  authenticated: booleanType()
+  authenticated: booleanType(),
+  email: stringType().optional(),
+  name: stringType().optional(),
+  role: stringType().optional(),
+  recentAuth: booleanType().optional(),
+  mfaEnabled: booleanType().optional(),
+  mfaRequired: booleanType().optional(),
+  enrollmentRequired: booleanType().optional(),
+  enrollmentCompleted: booleanType().optional(),
+  challengeToken: stringType().optional(),
+  secret: stringType().optional(),
+  otpauthUri: stringType().optional(),
+  recoveryCodes: arrayType(stringType()).optional()
 });
 var GetAdminDashboardResponse = objectType({
   totalRevenue: numberType(),
@@ -54392,6 +54420,10 @@ var schema_exports = {};
 __export(schema_exports, {
   ADMIN_ROLES: () => ADMIN_ROLES,
   abandonedCartsTable: () => abandonedCartsTable,
+  adminAuditEventsTable: () => adminAuditEventsTable,
+  adminAuthChallengesTable: () => adminAuthChallengesTable,
+  adminLoginAttemptsTable: () => adminLoginAttemptsTable,
+  adminRecoveryCodesTable: () => adminRecoveryCodesTable,
   adminTestPaymentClaimsTable: () => adminTestPaymentClaimsTable,
   adminUsersTable: () => adminUsersTable,
   blockedIpsTable: () => blockedIpsTable,
@@ -66283,11 +66315,59 @@ var adminUsersTable = pgTable("admin_users", {
   passwordHash: text("password_hash").notNull(),
   role: text("role").notNull().default("viewer"),
   isActive: boolean("is_active").notNull().default(true),
+  mfaSecretEncrypted: text("mfa_secret_encrypted"),
+  pendingMfaSecretEncrypted: text("pending_mfa_secret_encrypted"),
+  mfaEnabled: boolean("mfa_enabled").notNull().default(false),
+  mfaEnrolledAt: timestamp("mfa_enrolled_at", { withTimezone: true }),
+  mfaLastUsedAt: timestamp("mfa_last_used_at", { withTimezone: true }),
+  sessionVersion: integer("session_version").notNull().default(0),
   lastLoginAt: timestamp("last_login_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
 });
 var ADMIN_ROLES = ["owner", "manager", "viewer"];
+
+// ../../lib/db/src/schema/admin_login_attempts.ts
+var adminLoginAttemptsTable = pgTable("admin_login_attempts", {
+  id: serial("id").primaryKey(),
+  ip: text("ip").notNull().unique(),
+  failedAttempts: integer("failed_attempts").notNull().default(0),
+  lastAttemptAt: timestamp("last_attempt_at", { withTimezone: true }).notNull().defaultNow(),
+  lockedUntil: timestamp("locked_until", { withTimezone: true })
+});
+
+// ../../lib/db/src/schema/admin_auth_challenges.ts
+var adminAuthChallengesTable = pgTable("admin_auth_challenges", {
+  id: serial("id").primaryKey(),
+  adminUserId: integer("admin_user_id").notNull().references(() => adminUsersTable.id, { onDelete: "cascade" }),
+  tokenHash: text("token_hash").notNull().unique(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  usedAt: timestamp("used_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+});
+
+// ../../lib/db/src/schema/admin_recovery_codes.ts
+var adminRecoveryCodesTable = pgTable("admin_recovery_codes", {
+  id: serial("id").primaryKey(),
+  adminUserId: integer("admin_user_id").notNull().references(() => adminUsersTable.id, { onDelete: "cascade" }),
+  codeHash: text("code_hash").notNull().unique(),
+  usedAt: timestamp("used_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+});
+
+// ../../lib/db/src/schema/admin_audit_events.ts
+var adminAuditEventsTable = pgTable("admin_audit_events", {
+  id: serial("id").primaryKey(),
+  eventType: text("event_type").notNull(),
+  adminUserId: integer("admin_user_id").references(() => adminUsersTable.id, { onDelete: "set null" }),
+  email: text("email"),
+  ip: text("ip"),
+  userAgent: text("user_agent"),
+  requestId: text("request_id"),
+  success: boolean("success").notNull(),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+});
 
 // ../../lib/db/src/schema/crypto_payment_attempts.ts
 var cryptoPaymentAttemptsTable = pgTable(
@@ -66388,6 +66468,7 @@ var db = drizzle(pool, { schema: schema_exports });
 
 // src/routes/admin/auth.ts
 init_drizzle_orm();
+import { createCipheriv, createDecipheriv, createHash, createHmac, randomBytes, timingSafeEqual } from "crypto";
 
 // src/routes/admin/users.ts
 var import_express2 = __toESM(require_express2(), 1);
@@ -66404,9 +66485,16 @@ function firstString(value) {
 
 // src/routes/admin/users.ts
 var router2 = (0, import_express2.Router)();
-function requireAdmin(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+async function requireOwner(req, res) {
+  if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  const session = getSecureAdminSession(req);
+  if (!session?.email) return true;
+  const [user] = await db.select({ role: adminUsersTable.role, isActive: adminUsersTable.isActive, sessionVersion: adminUsersTable.sessionVersion }).from(adminUsersTable).where(eq(adminUsersTable.email, session.email)).limit(1);
+  if (!user?.isActive || user.role !== "owner" || user.sessionVersion !== session.sessionVersion) {
+    res.status(403).json({ error: "Owner access required" });
     return false;
   }
   return true;
@@ -66439,7 +66527,7 @@ function userToResponse(u) {
   };
 }
 router2.get("/admin/users", async (req, res) => {
-  if (!requireAdmin(req, res)) return;
+  if (!await requireOwner(req, res)) return;
   try {
     const users = await db.select().from(adminUsersTable).orderBy(desc(adminUsersTable.createdAt));
     res.json(users.map(userToResponse));
@@ -66449,7 +66537,7 @@ router2.get("/admin/users", async (req, res) => {
   }
 });
 router2.post("/admin/users", async (req, res) => {
-  if (!requireAdmin(req, res)) return;
+  if (!await requireOwner(req, res)) return;
   const { email: email3, name: name2, password, role } = req.body;
   if (!email3 || !name2 || !password) {
     res.status(400).json({ error: "email, name and password are required" });
@@ -66474,7 +66562,7 @@ router2.post("/admin/users", async (req, res) => {
   }
 });
 router2.patch("/admin/users/:id", async (req, res) => {
-  if (!requireAdmin(req, res)) return;
+  if (!await requireOwner(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -66482,6 +66570,7 @@ router2.patch("/admin/users/:id", async (req, res) => {
   }
   const { name: name2, role, isActive, password } = req.body;
   const updates = {};
+  let revokeSessions = false;
   if (name2 !== void 0) updates.name = name2;
   if (isActive !== void 0) updates.isActive = isActive;
   if (role !== void 0) {
@@ -66497,9 +66586,16 @@ router2.patch("/admin/users/:id", async (req, res) => {
       return;
     }
     updates.passwordHash = hashPassword(password);
+    revokeSessions = true;
+  }
+  if (isActive === false) {
+    revokeSessions = true;
   }
   try {
-    const [updated] = await db.update(adminUsersTable).set(updates).where(eq(adminUsersTable.id, id)).returning();
+    const [updated] = await db.update(adminUsersTable).set({
+      ...updates,
+      ...revokeSessions ? { sessionVersion: sql`${adminUsersTable.sessionVersion} + 1` } : {}
+    }).where(eq(adminUsersTable.id, id)).returning();
     if (!updated) {
       res.status(404).json({ error: "Admin user not found" });
       return;
@@ -66511,7 +66607,7 @@ router2.patch("/admin/users/:id", async (req, res) => {
   }
 });
 router2.delete("/admin/users/:id", async (req, res) => {
-  if (!requireAdmin(req, res)) return;
+  if (!await requireOwner(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -66530,9 +66626,6 @@ router2.delete("/admin/users/:id", async (req, res) => {
   }
 });
 var users_default = router2;
-
-// src/routes/admin/auth.ts
-import { createHmac, timingSafeEqual } from "crypto";
 
 // src/lib/wallidTestCheckout.ts
 import crypto3 from "crypto";
@@ -67127,34 +67220,38 @@ var router3 = (0, import_express3.Router)();
 var ADMIN_PASSWORD = requiredSecret("ADMIN_PASSWORD", "omniqure-admin-development-only");
 var SESSION_SECRET = requiredSecret("SESSION_SECRET", "omniqure-admin-session-development-only");
 var SESSION_COOKIE = "admin_session";
-var SESSION_VALUE = "authenticated";
 var SECURE_SESSION_COOKIE = "admin_secure_session";
 var COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1e3;
+var RECENT_AUTH_MS = 15 * 60 * 1e3;
 var MAX_ATTEMPTS = 5;
 var LOCKOUT_MS = 15 * 60 * 1e3;
 var ATTEMPT_WINDOW_MS = 30 * 60 * 1e3;
-function secureSessionValue(email3) {
+var MFA_CHALLENGE_MS = 5 * 60 * 1e3;
+function signPayload(payload) {
+  return createHmac("sha256", SESSION_SECRET).update(payload).digest("base64url");
+}
+function secureSessionValue(email3, sessionVersion = 0) {
   const expiresAt = Date.now() + COOKIE_MAX_AGE;
+  const authAt = Date.now();
   const encodedEmail = Buffer.from(email3 ?? "", "utf8").toString("base64url");
-  const payload = `admin:${expiresAt}:${encodedEmail}`;
-  const signature = createHmac("sha256", SESSION_SECRET).update(payload).digest("base64url");
-  return `${payload}:${signature}`;
+  const payload = `admin:${expiresAt}:${authAt}:${sessionVersion}:${encodedEmail}`;
+  return `${payload}:${signPayload(payload)}`;
 }
 function parseSecureAdminSession(req) {
   const value = req.cookies?.[SECURE_SESSION_COOKIE];
   if (typeof value !== "string") return null;
-  const [role, expires, encodedEmail, signature, ...extra] = value.split(":");
-  if (role !== "admin" || !/^\d+$/.test(expires) || encodedEmail === void 0 || !signature || extra.length > 0 || Number(expires) < Date.now()) {
+  const [role, expires, authAt, sessionVersion, encodedEmail, signature, ...extra] = value.split(":");
+  if (role !== "admin" || !/^\d+$/.test(expires) || !/^\d+$/.test(authAt) || !/^\d+$/.test(sessionVersion) || encodedEmail === void 0 || !signature || extra.length > 0 || Number(expires) < Date.now()) {
     return null;
   }
-  const payload = `${role}:${expires}:${encodedEmail}`;
-  const expected = createHmac("sha256", SESSION_SECRET).update(payload).digest("base64url");
+  const payload = `${role}:${expires}:${authAt}:${sessionVersion}:${encodedEmail}`;
+  const expected = signPayload(payload);
   if (signature.length !== expected.length || !timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) {
     return null;
   }
   try {
     const decodedEmail = Buffer.from(encodedEmail, "base64url").toString("utf8");
-    return { email: decodedEmail || null };
+    return { email: decodedEmail || null, authAt: Number(authAt), sessionVersion: Number(sessionVersion) };
   } catch {
     return null;
   }
@@ -67162,40 +67259,206 @@ function parseSecureAdminSession(req) {
 function hasSecureAdminSession(req) {
   return parseSecureAdminSession(req) !== null;
 }
-var attemptsByIp = /* @__PURE__ */ new Map();
-function getClientIp(req) {
-  const forwarded = req.headers["x-forwarded-for"];
-  if (typeof forwarded === "string") return forwarded.split(",")[0].trim();
-  return req.socket?.remoteAddress ?? "unknown";
+function isRecentSecureAdminSession(req) {
+  const session = parseSecureAdminSession(req);
+  return session !== null && Date.now() - session.authAt <= RECENT_AUTH_MS;
 }
-function getRecord(ip) {
-  const existing = attemptsByIp.get(ip);
-  if (!existing) return { count: 0, lockedUntil: null, lastAttemptAt: Date.now() };
-  const now = Date.now();
-  if (existing.lockedUntil && now > existing.lockedUntil) {
-    attemptsByIp.delete(ip);
-    return { count: 0, lockedUntil: null, lastAttemptAt: now };
+async function validateSecureAdminSession(req) {
+  const session = parseSecureAdminSession(req);
+  if (!session) return false;
+  if (!session.email) {
+    const [existingAdmin] = await db.select({ id: adminUsersTable.id }).from(adminUsersTable).limit(1);
+    return !existingAdmin;
   }
-  if (!existing.lockedUntil && now - existing.lastAttemptAt > ATTEMPT_WINDOW_MS) {
-    attemptsByIp.delete(ip);
-    return { count: 0, lockedUntil: null, lastAttemptAt: now };
+  const [user] = await db.select({ isActive: adminUsersTable.isActive, sessionVersion: adminUsersTable.sessionVersion }).from(adminUsersTable).where(eq(adminUsersTable.email, session.email)).limit(1);
+  return Boolean(user?.isActive && user.sessionVersion === session.sessionVersion);
+}
+function getSecureAdminSession(req) {
+  return parseSecureAdminSession(req);
+}
+function getClientIp(req) {
+  return req.ip || req.socket?.remoteAddress || "unknown";
+}
+function hashValue(value) {
+  return createHash("sha256").update(value).digest("hex");
+}
+function encryptionKey() {
+  return createHash("sha256").update(SESSION_SECRET).digest();
+}
+function encryptMfaSecret(secret) {
+  const iv = randomBytes(12);
+  const cipher = createCipheriv("aes-256-gcm", encryptionKey(), iv);
+  const encrypted = Buffer.concat([cipher.update(secret, "utf8"), cipher.final()]);
+  return `${iv.toString("base64url")}:${cipher.getAuthTag().toString("base64url")}:${encrypted.toString("base64url")}`;
+}
+function decryptMfaSecret(value) {
+  try {
+    const [ivValue, tagValue, encryptedValue] = value.split(":");
+    if (!ivValue || !tagValue || !encryptedValue) return null;
+    const decipher = createDecipheriv("aes-256-gcm", encryptionKey(), Buffer.from(ivValue, "base64url"));
+    decipher.setAuthTag(Buffer.from(tagValue, "base64url"));
+    return Buffer.concat([decipher.update(Buffer.from(encryptedValue, "base64url")), decipher.final()]).toString("utf8");
+  } catch {
+    return null;
   }
-  return existing;
+}
+var BASE32_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+function base32Encode(value) {
+  let bits = 0;
+  let buffer = 0;
+  let output = "";
+  for (const byte of value) {
+    buffer = buffer << 8 | byte;
+    bits += 8;
+    while (bits >= 5) {
+      output += BASE32_ALPHABET[buffer >>> bits - 5 & 31];
+      bits -= 5;
+    }
+  }
+  if (bits > 0) output += BASE32_ALPHABET[buffer << 5 - bits & 31];
+  return output;
+}
+function base32Decode(value) {
+  const normalized = value.toUpperCase().replace(/[\s=-]/g, "");
+  let bits = 0;
+  let buffer = 0;
+  const output = [];
+  for (const char2 of normalized) {
+    const index2 = BASE32_ALPHABET.indexOf(char2);
+    if (index2 < 0) return null;
+    buffer = buffer << 5 | index2;
+    bits += 5;
+    if (bits >= 8) {
+      output.push(buffer >>> bits - 8 & 255);
+      bits -= 8;
+    }
+  }
+  return Buffer.from(output);
+}
+function verifyTotp(secret, suppliedCode) {
+  const key = base32Decode(secret);
+  const code = suppliedCode.replace(/\s/g, "");
+  if (!key || !/^\d{6}$/.test(code)) return false;
+  const counter = Math.floor(Date.now() / 1e3 / 30);
+  for (const offset of [-1, 0, 1]) {
+    const counterBuffer = Buffer.alloc(8);
+    counterBuffer.writeBigInt64BE(BigInt(counter + offset));
+    const digest = createHmac("sha1", key).update(counterBuffer).digest();
+    const start = digest[digest.length - 1] & 15;
+    const value = (digest[start] & 127) << 24 | digest[start + 1] << 16 | digest[start + 2] << 8 | digest[start + 3];
+    const expected = String(value % 1e6).padStart(6, "0");
+    if (timingSafeEqual(Buffer.from(expected), Buffer.from(code))) return true;
+  }
+  return false;
+}
+function makeRecoveryCode() {
+  return randomBytes(5).toString("hex").toUpperCase();
+}
+async function recordAudit(req, eventType, success2, details = {}) {
+  try {
+    await db.insert(adminAuditEventsTable).values({
+      eventType,
+      adminUserId: details.adminUserId ?? null,
+      email: details.email ?? null,
+      ip: getClientIp(req),
+      userAgent: req.get("user-agent")?.slice(0, 500) ?? null,
+      requestId: String(req.id),
+      success: success2,
+      metadata: details.metadata ?? null
+    });
+  } catch (err) {
+    req.log.error({ err, eventType }, "Failed to write admin security audit event");
+  }
+}
+async function findLockout(ip) {
+  const [record2] = await db.select().from(adminLoginAttemptsTable).where(eq(adminLoginAttemptsTable.ip, ip)).limit(1);
+  if (!record2) return null;
+  const now = /* @__PURE__ */ new Date();
+  if (record2.lockedUntil && record2.lockedUntil > now) return record2;
+  if (!record2.lockedUntil && record2.lastAttemptAt.getTime() + ATTEMPT_WINDOW_MS > now.getTime()) return record2;
+  return null;
+}
+async function recordFailedAttempt(ip) {
+  const now = /* @__PURE__ */ new Date();
+  const windowStart = new Date(now.getTime() - ATTEMPT_WINDOW_MS);
+  const lockUntil = new Date(now.getTime() + LOCKOUT_MS);
+  const freshOrExpired = sql`(${adminLoginAttemptsTable.lastAttemptAt} < ${windowStart} OR (${adminLoginAttemptsTable.lockedUntil} IS NOT NULL AND ${adminLoginAttemptsTable.lockedUntil} < ${now}))`;
+  const nextCount = sql`CASE WHEN ${freshOrExpired} THEN 1 ELSE ${adminLoginAttemptsTable.failedAttempts} + 1 END`;
+  const [record2] = await db.insert(adminLoginAttemptsTable).values({ ip, failedAttempts: 1, lastAttemptAt: now }).onConflictDoUpdate({
+    target: adminLoginAttemptsTable.ip,
+    set: {
+      failedAttempts: nextCount,
+      lastAttemptAt: now,
+      lockedUntil: sql`CASE WHEN ${nextCount} >= ${MAX_ATTEMPTS} THEN ${lockUntil}::timestamptz ELSE NULL::timestamptz END`
+    }
+  }).returning({ count: adminLoginAttemptsTable.failedAttempts, lockedUntil: adminLoginAttemptsTable.lockedUntil });
+  return { count: record2?.count ?? MAX_ATTEMPTS, lockedUntil: record2?.lockedUntil ?? lockUntil };
+}
+async function clearFailedAttempts(ip) {
+  await db.delete(adminLoginAttemptsTable).where(eq(adminLoginAttemptsTable.ip, ip));
+}
+async function respondToFailedLogin(req, res, email3) {
+  const { count: count2, lockedUntil } = await recordFailedAttempt(getClientIp(req));
+  const locked = count2 >= MAX_ATTEMPTS;
+  await recordAudit(req, locked ? "admin_login_lockout" : "admin_login_failed", false, {
+    email: email3 || null,
+    metadata: { attempts: count2, locked }
+  });
+  if (locked) {
+    const until = lockedUntil ?? new Date(Date.now() + LOCKOUT_MS);
+    res.status(429).json({
+      error: "Too many failed attempts. Access temporarily locked.",
+      lockedUntil: until.getTime(),
+      retryAfterSeconds: Math.max(1, Math.ceil((until.getTime() - Date.now()) / 1e3))
+    });
+    return;
+  }
+  res.status(401).json({
+    error: "Invalid credentials",
+    attemptsRemaining: Math.max(0, MAX_ATTEMPTS - count2)
+  });
+}
+function challengeTokenValue(kind, userId) {
+  const expiresAt = new Date(Date.now() + MFA_CHALLENGE_MS);
+  const payload = `${kind}:${expiresAt.getTime()}:${userId}:${randomBytes(18).toString("base64url")}`;
+  return { token: `${payload}:${signPayload(payload)}`, expiresAt };
+}
+function parseChallengeToken(value) {
+  const [kind, expires, userId, nonce, signature, ...extra] = value.split(":");
+  if (kind !== "mfa" && kind !== "enroll" || !/^\d+$/.test(expires) || !/^\d+$/.test(userId) || !nonce || !signature || extra.length) return null;
+  if (Number(expires) < Date.now()) return null;
+  const payload = `${kind}:${expires}:${userId}:${nonce}`;
+  const expected = signPayload(payload);
+  if (signature.length !== expected.length || !timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) return null;
+  return { kind, userId: Number(userId), expiresAt: Number(expires) };
+}
+async function currentAdminUser(req) {
+  const session = parseSecureAdminSession(req);
+  if (!session?.email) return null;
+  const [user] = await db.select().from(adminUsersTable).where(eq(adminUsersTable.email, session.email)).limit(1);
+  return user && user.isActive && user.sessionVersion === session.sessionVersion ? user : null;
+}
+async function requireRecentSession(req, res) {
+  if (!await validateSecureAdminSession(req) || !isRecentSecureAdminSession(req)) {
+    res.status(401).json({ error: "Recent authentication required", requiresRecentAuth: true });
+    return false;
+  }
+  return true;
 }
 router3.post("/admin/auth/login", async (req, res) => {
   const ip = getClientIp(req);
   const [blocked] = await db.select({ ip: blockedIpsTable.ip }).from(blockedIpsTable).where(eq(blockedIpsTable.ip, ip)).limit(1);
   if (blocked) {
+    await recordAudit(req, "admin_login_blocked_ip", false);
     res.status(403).json({ error: "Access denied." });
     return;
   }
-  const record2 = getRecord(ip);
-  if (record2.lockedUntil && Date.now() < record2.lockedUntil) {
-    const retryAfterMs = record2.lockedUntil - Date.now();
+  const lockout = await findLockout(ip);
+  if (lockout?.lockedUntil && lockout.lockedUntil > /* @__PURE__ */ new Date()) {
     res.status(429).json({
-      error: "Too many failed attempts. Account temporarily locked.",
-      lockedUntil: record2.lockedUntil,
-      retryAfterSeconds: Math.ceil(retryAfterMs / 1e3)
+      error: "Too many failed attempts. Access temporarily locked.",
+      lockedUntil: lockout.lockedUntil.getTime(),
+      retryAfterSeconds: Math.max(1, Math.ceil((lockout.lockedUntil.getTime() - Date.now()) / 1e3))
     });
     return;
   }
@@ -67204,88 +67467,255 @@ router3.post("/admin/auth/login", async (req, res) => {
     res.status(400).json({ error: "Invalid request body" });
     return;
   }
-  const { password } = parsed.data;
-  const email3 = typeof req.body?.email === "string" ? req.body.email.toLowerCase().trim() : "";
-  let authed = false;
-  let sessionEmail = null;
-  if (email3) {
-    const [user] = await db.select().from(adminUsersTable).where(eq(adminUsersTable.email, email3)).limit(1);
-    if (user && user.isActive && verifyPassword(password, user.passwordHash)) {
-      authed = true;
-      sessionEmail = user.email;
-      await db.update(adminUsersTable).set({ lastLoginAt: /* @__PURE__ */ new Date() }).where(eq(adminUsersTable.id, user.id));
+  const { password, email: suppliedEmail, challengeToken, mfaCode, recoveryCode } = parsed.data;
+  const email3 = typeof suppliedEmail === "string" ? suppliedEmail.toLowerCase().trim() : "";
+  if (challengeToken) {
+    const challenge = parseChallengeToken(challengeToken);
+    if (!challenge) {
+      await respondToFailedLogin(req, res, email3);
+      return;
     }
-  } else if (password === ADMIN_PASSWORD) {
-    authed = true;
-  }
-  if (!authed) {
-    const newCount = record2.count + 1;
-    const remaining = MAX_ATTEMPTS - newCount;
-    const lockedUntil = remaining <= 0 ? Date.now() + LOCKOUT_MS : null;
-    attemptsByIp.set(ip, {
-      count: newCount,
-      lockedUntil,
-      lastAttemptAt: Date.now()
+    const challengeHash = hashValue(challengeToken);
+    const [storedChallenge] = await db.select().from(adminAuthChallengesTable).where(and(eq(adminAuthChallengesTable.tokenHash, challengeHash), isNull(adminAuthChallengesTable.usedAt), gt(adminAuthChallengesTable.expiresAt, /* @__PURE__ */ new Date()))).limit(1);
+    const [user2] = await db.select().from(adminUsersTable).where(eq(adminUsersTable.id, challenge.userId)).limit(1);
+    const enrollmentChallenge = challenge.kind === "enroll";
+    const challengeMatchesAccount = enrollmentChallenge ? Boolean(user2 && !user2.mfaEnabled && user2.pendingMfaSecretEncrypted) : Boolean(user2?.mfaEnabled && user2.mfaSecretEncrypted);
+    if (!storedChallenge || !user2 || !user2.isActive || !challengeMatchesAccount || email3 && email3 !== user2.email) {
+      await respondToFailedLogin(req, res, email3);
+      return;
+    }
+    let recoveryUsed = false;
+    let recoveryCodeId = null;
+    const challengeSecret = enrollmentChallenge ? user2.pendingMfaSecretEncrypted : user2.mfaSecretEncrypted;
+    let verified = typeof mfaCode === "string" && verifyTotp(
+      challengeSecret ? decryptMfaSecret(challengeSecret) ?? "" : "",
+      mfaCode
+    );
+    if (!enrollmentChallenge && !verified && typeof recoveryCode === "string" && /^[A-Fa-f0-9]{10}$/.test(recoveryCode.replace(/\s/g, ""))) {
+      const codeHash = hashValue(recoveryCode.replace(/\s/g, "").toUpperCase());
+      const [availableCode] = await db.select({ id: adminRecoveryCodesTable.id }).from(adminRecoveryCodesTable).where(and(eq(adminRecoveryCodesTable.adminUserId, user2.id), eq(adminRecoveryCodesTable.codeHash, codeHash), isNull(adminRecoveryCodesTable.usedAt))).limit(1);
+      verified = Boolean(availableCode);
+      recoveryUsed = verified;
+      recoveryCodeId = availableCode?.id ?? null;
+    }
+    if (!verified) {
+      await respondToFailedLogin(req, res, user2.email);
+      return;
+    }
+    const enrollmentRecoveryCodes = enrollmentChallenge ? Array.from({ length: 10 }, makeRecoveryCode) : [];
+    try {
+      await db.transaction(async (tx) => {
+        const [claimedChallenge] = await tx.update(adminAuthChallengesTable).set({ usedAt: /* @__PURE__ */ new Date() }).where(and(eq(adminAuthChallengesTable.id, storedChallenge.id), isNull(adminAuthChallengesTable.usedAt))).returning({ id: adminAuthChallengesTable.id });
+        if (!claimedChallenge) throw new Error("MFA challenge already used");
+        if (recoveryUsed) {
+          const [claimedCode] = await tx.update(adminRecoveryCodesTable).set({ usedAt: /* @__PURE__ */ new Date() }).where(and(eq(adminRecoveryCodesTable.id, recoveryCodeId), isNull(adminRecoveryCodesTable.usedAt))).returning({ id: adminRecoveryCodesTable.id });
+          if (!claimedCode) throw new Error("Recovery code already used");
+        }
+        if (enrollmentChallenge) {
+          await tx.insert(adminRecoveryCodesTable).values(enrollmentRecoveryCodes.map((codeValue) => ({
+            adminUserId: user2.id,
+            codeHash: hashValue(codeValue)
+          })));
+          await tx.update(adminUsersTable).set({
+            mfaSecretEncrypted: user2.pendingMfaSecretEncrypted,
+            pendingMfaSecretEncrypted: null,
+            mfaEnabled: true,
+            mfaEnrolledAt: /* @__PURE__ */ new Date(),
+            mfaLastUsedAt: /* @__PURE__ */ new Date(),
+            lastLoginAt: /* @__PURE__ */ new Date(),
+            sessionVersion: sql`${adminUsersTable.sessionVersion} + 1`
+          }).where(eq(adminUsersTable.id, user2.id));
+        } else {
+          await tx.update(adminUsersTable).set({ lastLoginAt: /* @__PURE__ */ new Date(), mfaLastUsedAt: /* @__PURE__ */ new Date() }).where(eq(adminUsersTable.id, user2.id));
+        }
+        await tx.delete(adminLoginAttemptsTable).where(eq(adminLoginAttemptsTable.ip, ip));
+        await tx.insert(adminAuditEventsTable).values({
+          eventType: enrollmentChallenge ? "admin_mfa_enabled" : recoveryUsed ? "admin_recovery_code_used" : "admin_mfa_login_success",
+          adminUserId: user2.id,
+          email: user2.email,
+          ip,
+          userAgent: req.get("user-agent")?.slice(0, 500) ?? null,
+          requestId: String(req.id),
+          success: true,
+          metadata: enrollmentChallenge ? { mandatoryEnrollment: true } : recoveryUsed ? { recoveryCodeUsed: true } : null
+        });
+      });
+    } catch {
+      await respondToFailedLogin(req, res, user2.email);
+      return;
+    }
+    const sessionVersion = user2.sessionVersion + (enrollmentChallenge ? 1 : 0);
+    res.cookie(SECURE_SESSION_COOKIE, secureSessionValue(user2.email, sessionVersion), {
+      httpOnly: true,
+      maxAge: COOKIE_MAX_AGE,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production"
     });
-    if (lockedUntil) {
-      res.status(429).json({
-        error: "Too many failed attempts. Account temporarily locked.",
-        lockedUntil,
-        retryAfterSeconds: Math.ceil(LOCKOUT_MS / 1e3)
-      });
-    } else {
-      res.status(401).json({
-        error: "Invalid password",
-        attemptsRemaining: remaining
-      });
-    }
+    res.clearCookie(SESSION_COOKIE);
+    res.status(200).json({
+      authenticated: true,
+      ...enrollmentChallenge ? { enrollmentCompleted: true, recoveryCodes: enrollmentRecoveryCodes } : {}
+    });
     return;
   }
-  attemptsByIp.delete(ip);
-  res.cookie(SESSION_COOKIE, SESSION_VALUE, {
+  let user = null;
+  if (email3) {
+    [user] = await db.select().from(adminUsersTable).where(eq(adminUsersTable.email, email3)).limit(1);
+  }
+  let bootstrapOwner = false;
+  if (!email3 && password === ADMIN_PASSWORD) {
+    const [existingAdmin] = await db.select({ id: adminUsersTable.id }).from(adminUsersTable).limit(1);
+    bootstrapOwner = !existingAdmin;
+  }
+  const authed = Boolean(user && user.isActive && verifyPassword(password, user.passwordHash) || bootstrapOwner);
+  if (!authed) {
+    await respondToFailedLogin(req, res, email3);
+    return;
+  }
+  if (user?.mfaEnabled) {
+    const { token, expiresAt } = challengeTokenValue("mfa", user.id);
+    await db.insert(adminAuthChallengesTable).values({
+      adminUserId: user.id,
+      tokenHash: hashValue(token),
+      expiresAt
+    });
+    await recordAudit(req, "admin_mfa_challenge_issued", true, { adminUserId: user.id, email: user.email });
+    res.status(200).json({ authenticated: false, mfaRequired: true, challengeToken: token });
+    return;
+  }
+  if (user) {
+    const secret = base32Encode(randomBytes(20));
+    const { token, expiresAt } = challengeTokenValue("enroll", user.id);
+    await db.transaction(async (tx) => {
+      await tx.update(adminUsersTable).set({ pendingMfaSecretEncrypted: encryptMfaSecret(secret) }).where(eq(adminUsersTable.id, user.id));
+      await tx.insert(adminAuthChallengesTable).values({
+        adminUserId: user.id,
+        tokenHash: hashValue(token),
+        expiresAt
+      });
+      await tx.insert(adminAuditEventsTable).values({
+        eventType: "admin_mfa_enrollment_required",
+        adminUserId: user.id,
+        email: user.email,
+        ip,
+        userAgent: req.get("user-agent")?.slice(0, 500) ?? null,
+        requestId: String(req.id),
+        success: true
+      });
+    });
+    const label = encodeURIComponent(`OmniQure Admin:${user.email}`);
+    res.status(200).json({
+      authenticated: false,
+      enrollmentRequired: true,
+      challengeToken: token,
+      secret,
+      otpauthUri: `otpauth://totp/${label}?secret=${secret}&issuer=OmniQure`
+    });
+    return;
+  }
+  await clearFailedAttempts(ip);
+  await recordAudit(req, "admin_bootstrap_login_success", true);
+  res.cookie(SECURE_SESSION_COOKIE, secureSessionValue(null, 0), {
     httpOnly: true,
     maxAge: COOKIE_MAX_AGE,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production"
   });
-  res.cookie(SECURE_SESSION_COOKIE, secureSessionValue(sessionEmail), {
-    httpOnly: true,
-    maxAge: COOKIE_MAX_AGE,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production"
-  });
+  res.clearCookie(SESSION_COOKIE);
   res.status(200).json({ authenticated: true });
 });
-router3.post("/admin/auth/logout", (_req, res) => {
+router3.post("/admin/auth/logout", async (req, res) => {
+  const session = parseSecureAdminSession(req);
+  if (session?.email && await validateSecureAdminSession(req)) {
+    await db.update(adminUsersTable).set({ sessionVersion: sql`${adminUsersTable.sessionVersion} + 1` }).where(eq(adminUsersTable.email, session.email));
+  }
+  await recordAudit(req, "admin_logout", true, { email: session?.email ?? null });
   res.clearCookie(SESSION_COOKIE);
   res.clearCookie(SECURE_SESSION_COOKIE);
   res.status(204).send();
 });
-router3.post("/admin/test-payments/session", (req, res) => {
-  if (!hasSecureAdminSession(req)) {
+router3.get("/admin/auth/mfa/status", async (req, res) => {
+  if (!await validateSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return;
   }
+  const user = await currentAdminUser(req);
+  res.json({ enabled: Boolean(user?.mfaEnabled), canEnroll: Boolean(user), email: user?.email ?? null });
+});
+router3.post("/admin/auth/mfa/setup", async (req, res) => {
+  if (!await requireRecentSession(req, res)) return;
+  const user = await currentAdminUser(req);
+  if (!user) {
+    res.status(403).json({ error: "Only an active admin user can enroll MFA." });
+    return;
+  }
+  if (user.mfaEnabled) {
+    res.status(409).json({ error: "MFA is already enabled." });
+    return;
+  }
+  const secret = base32Encode(randomBytes(20));
+  await db.update(adminUsersTable).set({ pendingMfaSecretEncrypted: encryptMfaSecret(secret) }).where(eq(adminUsersTable.id, user.id));
+  await recordAudit(req, "admin_mfa_setup_started", true, { adminUserId: user.id, email: user.email });
+  const label = encodeURIComponent(`OmniQure Admin:${user.email}`);
+  res.json({
+    secret,
+    otpauthUri: `otpauth://totp/${label}?secret=${secret}&issuer=OmniQure`
+  });
+});
+router3.post("/admin/auth/mfa/enable", async (req, res) => {
+  if (!await requireRecentSession(req, res)) return;
+  const user = await currentAdminUser(req);
+  const code = typeof req.body?.code === "string" ? req.body.code : "";
+  if (!user || !user.pendingMfaSecretEncrypted || !verifyTotp(decryptMfaSecret(user.pendingMfaSecretEncrypted) ?? "", code)) {
+    await recordAudit(req, "admin_mfa_enable_failed", false, { adminUserId: user?.id ?? null, email: user?.email ?? null });
+    res.status(400).json({ error: "The verification code is invalid." });
+    return;
+  }
+  const secret = user.pendingMfaSecretEncrypted;
+  const recoveryCodes = Array.from({ length: 10 }, makeRecoveryCode);
+  await db.transaction(async (tx) => {
+    await tx.delete(adminRecoveryCodesTable).where(eq(adminRecoveryCodesTable.adminUserId, user.id));
+    await tx.insert(adminRecoveryCodesTable).values(recoveryCodes.map((codeValue) => ({
+      adminUserId: user.id,
+      codeHash: hashValue(codeValue)
+    })));
+    await tx.update(adminUsersTable).set({
+      mfaSecretEncrypted: secret,
+      pendingMfaSecretEncrypted: null,
+      mfaEnabled: true,
+      mfaEnrolledAt: /* @__PURE__ */ new Date(),
+      sessionVersion: sql`${adminUsersTable.sessionVersion} + 1`
+    }).where(eq(adminUsersTable.id, user.id));
+    await tx.insert(adminAuditEventsTable).values({
+      eventType: "admin_mfa_enabled",
+      adminUserId: user.id,
+      email: user.email,
+      ip: getClientIp(req),
+      userAgent: req.get("user-agent")?.slice(0, 500) ?? null,
+      requestId: String(req.id),
+      success: true
+    });
+  });
+  res.cookie(SECURE_SESSION_COOKIE, secureSessionValue(user.email, user.sessionVersion + 1), {
+    httpOnly: true,
+    maxAge: COOKIE_MAX_AGE,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production"
+  });
+  res.json({ enabled: true, recoveryCodes });
+});
+router3.post("/admin/test-payments/session", async (req, res) => {
+  if (!await requireRecentSession(req, res)) return;
   const testCheckoutSecret = process.env.SESSION_SECRET;
   if (!testCheckoutSecret) {
     res.status(503).json({ error: "Wallid test checkout is unavailable because secure session signing is not configured." });
     return;
   }
-  const { token, expiresAt } = createWallidTestCheckoutToken(
-    testCheckoutSecret
-  );
-  res.status(201).json({
-    checkoutPath: `/cart?wallidTest=${encodeURIComponent(token)}`,
-    expiresAt,
-    amountMinor: 100,
-    currency: "GBP"
-  });
+  const { token, expiresAt } = createWallidTestCheckoutToken(testCheckoutSecret);
+  res.status(201).json({ checkoutPath: `/cart?wallidTest=${encodeURIComponent(token)}`, expiresAt, amountMinor: 100, currency: "GBP" });
 });
 router3.post("/admin/test-payments/crypto-session", async (req, res) => {
-  if (!hasSecureAdminSession(req)) {
-    res.status(401).json({ error: "Not authenticated" });
-    return;
-  }
+  if (!await requireRecentSession(req, res)) return;
   const testCheckoutSecret = process.env.SESSION_SECRET;
   if (!testCheckoutSecret) {
     res.status(503).json({ error: "Crypto test checkout is unavailable because secure session signing is not configured." });
@@ -67298,12 +67728,7 @@ router3.post("/admin/test-payments/crypto-session", async (req, res) => {
       return;
     }
     const { token, expiresAt } = createCryptoTestCheckoutToken(testCheckoutSecret);
-    res.status(201).json({
-      checkoutPath: `/cart?cryptoTest=${encodeURIComponent(token)}`,
-      expiresAt,
-      amountMinor: 100,
-      currency: "GBP"
-    });
+    res.status(201).json({ checkoutPath: `/cart?cryptoTest=${encodeURIComponent(token)}`, expiresAt, amountMinor: 100, currency: "GBP" });
   } catch (err) {
     req.log.error({ err }, "Failed to create crypto test checkout");
     res.status(503).json({ error: "Crypto test checkout is temporarily unavailable." });
@@ -67315,15 +67740,23 @@ router3.get("/admin/auth/me", async (req, res) => {
     res.status(401).json({ error: "Not authenticated" });
     return;
   }
-  const email3 = session.email;
-  if (typeof email3 === "string" && email3) {
-    const [user] = await db.select().from(adminUsersTable).where(eq(adminUsersTable.email, email3)).limit(1);
-    if (user && user.isActive) {
-      res.status(200).json({ authenticated: true, email: user.email, name: user.name, role: user.role });
+  if (session.email) {
+    const [user] = await db.select().from(adminUsersTable).where(eq(adminUsersTable.email, session.email)).limit(1);
+    if (user?.isActive && user.sessionVersion === session.sessionVersion) {
+      res.status(200).json({
+        authenticated: true,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        recentAuth: Date.now() - session.authAt <= RECENT_AUTH_MS,
+        mfaEnabled: user.mfaEnabled
+      });
       return;
     }
+    res.status(401).json({ error: "Admin account is no longer active" });
+    return;
   }
-  res.status(200).json({ authenticated: true, role: "owner", name: "Owner" });
+  res.status(200).json({ authenticated: true, role: "owner", name: "Owner", recentAuth: Date.now() - session.authAt <= RECENT_AUTH_MS });
 });
 var auth_default = router3;
 
@@ -67338,7 +67771,7 @@ var PAID_STATUS_SQL = sql.raw(
 var PAID_STATUS_SQL_O = sql.raw(
   `o.status IN ('payment_received', 'paid', 'processing', 'shipped', 'delivered')`
 );
-function requireAdmin2(req, res) {
+function requireAdmin(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -67350,7 +67783,7 @@ function parsePeriod(raw) {
   return [7, 30, 90, 365].includes(n) ? n : 30;
 }
 router4.get("/admin/dashboard", async (req, res) => {
-  if (!requireAdmin2(req, res)) return;
+  if (!requireAdmin(req, res)) return;
   try {
     const todayStart = /* @__PURE__ */ new Date();
     todayStart.setHours(0, 0, 0, 0);
@@ -67385,7 +67818,7 @@ router4.get("/admin/dashboard", async (req, res) => {
   }
 });
 router4.get("/admin/dashboard/revenue", async (req, res) => {
-  if (!requireAdmin2(req, res)) return;
+  if (!requireAdmin(req, res)) return;
   const period = parsePeriod(req.query.period);
   try {
     const rows = await db.execute(sql`
@@ -67406,7 +67839,7 @@ router4.get("/admin/dashboard/revenue", async (req, res) => {
   }
 });
 router4.get("/admin/dashboard/top-products", async (req, res) => {
-  if (!requireAdmin2(req, res)) return;
+  if (!requireAdmin(req, res)) return;
   try {
     const rows = await db.execute(sql`
       SELECT
@@ -67428,7 +67861,7 @@ router4.get("/admin/dashboard/top-products", async (req, res) => {
   }
 });
 router4.get("/admin/dashboard/new-customers", async (req, res) => {
-  if (!requireAdmin2(req, res)) return;
+  if (!requireAdmin(req, res)) return;
   const period = parsePeriod(req.query.period);
   try {
     const rows = await db.execute(sql`
@@ -67447,7 +67880,7 @@ router4.get("/admin/dashboard/new-customers", async (req, res) => {
   }
 });
 router4.get("/admin/dashboard/order-status", async (req, res) => {
-  if (!requireAdmin2(req, res)) return;
+  if (!requireAdmin(req, res)) return;
   try {
     const rows = await db.select({ status: ordersTable.status, count: count() }).from(ordersTable).groupBy(ordersTable.status).orderBy(ordersTable.status);
     res.status(200).json(rows.map((r) => ({ status: r.status, count: Number(r.count) })));
@@ -67457,7 +67890,7 @@ router4.get("/admin/dashboard/order-status", async (req, res) => {
   }
 });
 router4.get("/admin/dashboard/revenue-by-category", async (req, res) => {
-  if (!requireAdmin2(req, res)) return;
+  if (!requireAdmin(req, res)) return;
   try {
     const rows = await db.execute(sql`
       SELECT
@@ -73320,7 +73753,7 @@ function isAllowedAdminStatusTransition(current, next) {
 
 // src/routes/admin/orders.ts
 var router5 = (0, import_express5.Router)();
-function requireAdmin3(req, res) {
+function requireAdmin2(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -73370,7 +73803,7 @@ function toCsvRow(fields) {
   return fields.map(escapeCsv).join(",");
 }
 router5.get("/admin/orders/export", async (req, res) => {
-  if (!requireAdmin3(req, res)) return;
+  if (!requireAdmin2(req, res)) return;
   try {
     const status = typeof req.query.status === "string" ? req.query.status : void 0;
     const search = typeof req.query.search === "string" ? req.query.search : void 0;
@@ -73432,7 +73865,7 @@ router5.get("/admin/orders/export", async (req, res) => {
 });
 var VALID_STATUSES = ["pending", "awaiting_payment", "paid", "payment_received", "processing", "shipped", "delivered", "cancelled"];
 router5.post("/admin/orders/bulk-update", async (req, res) => {
-  if (!requireAdmin3(req, res)) return;
+  if (!requireAdmin2(req, res)) return;
   const { ids, status } = req.body;
   if (!Array.isArray(ids) || ids.length === 0 || ids.some((id) => typeof id !== "number") || typeof status !== "string" || !VALID_STATUSES.includes(status) || status === "shipped" || status === "delivered") {
     res.status(400).json({ error: "Invalid payload. Orders must be dispatched individually with tracking details." });
@@ -73450,7 +73883,7 @@ router5.post("/admin/orders/bulk-update", async (req, res) => {
   }
 });
 router5.get("/admin/orders", async (req, res) => {
-  if (!requireAdmin3(req, res)) return;
+  if (!requireAdmin2(req, res)) return;
   const parsed = ListAdminOrdersQueryParams.safeParse(req.query);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid query params" });
@@ -73484,7 +73917,7 @@ router5.get("/admin/orders", async (req, res) => {
   }
 });
 router5.get("/admin/orders/:id", async (req, res) => {
-  if (!requireAdmin3(req, res)) return;
+  if (!requireAdmin2(req, res)) return;
   const parsed = GetAdminOrderParams.safeParse({ id: Number(req.params.id) });
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid order ID" });
@@ -73520,7 +73953,7 @@ router5.get("/admin/orders/:id", async (req, res) => {
   }
 });
 router5.post("/admin/orders/:id/send-confirmation", async (req, res) => {
-  if (!requireAdmin3(req, res)) return;
+  if (!requireAdmin2(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid order ID" });
@@ -73561,7 +73994,7 @@ router5.post("/admin/orders/:id/send-confirmation", async (req, res) => {
   }
 });
 router5.post("/admin/orders/:id/send-delivery", async (req, res) => {
-  if (!requireAdmin3(req, res)) return;
+  if (!requireAdmin2(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid order ID" });
@@ -73602,7 +74035,7 @@ router5.post("/admin/orders/:id/send-delivery", async (req, res) => {
   }
 });
 router5.post("/admin/orders/:id/send-tracking", async (req, res) => {
-  if (!requireAdmin3(req, res)) return;
+  if (!requireAdmin2(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid order ID" });
@@ -73655,7 +74088,7 @@ router5.post("/admin/orders/:id/send-tracking", async (req, res) => {
   }
 });
 router5.post("/admin/orders/:id/dispatch", async (req, res) => {
-  if (!requireAdmin3(req, res)) return;
+  if (!requireAdmin2(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid order ID" });
@@ -73736,7 +74169,7 @@ router5.post("/admin/orders/:id/dispatch", async (req, res) => {
   }
 });
 router5.patch("/admin/orders/:id", async (req, res) => {
-  if (!requireAdmin3(req, res)) return;
+  if (!requireAdmin2(req, res)) return;
   const paramsParsed = UpdateAdminOrderParams.safeParse({ id: Number(req.params.id) });
   const bodyParsed = UpdateAdminOrderBody.safeParse(req.body);
   if (!paramsParsed.success || !bodyParsed.success) {
@@ -74028,7 +74461,7 @@ ${slipBodies.join("\n")}
 
 // src/routes/admin/fulfillment.ts
 var router6 = (0, import_express6.Router)();
-function requireAdmin4(req, res) {
+function requireAdmin3(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -74037,7 +74470,7 @@ function requireAdmin4(req, res) {
 }
 var READY_STATUSES = ["paid", "payment_received"];
 router6.get("/admin/fulfillment", async (req, res) => {
-  if (!requireAdmin4(req, res)) return;
+  if (!requireAdmin3(req, res)) return;
   const tab = firstString(req.query.tab) ?? "ready";
   const limit = Math.min(parseInt(firstString(req.query.limit) ?? "50", 10), 100);
   const offset = parseInt(firstString(req.query.offset) ?? "0", 10);
@@ -74100,7 +74533,7 @@ router6.get("/admin/fulfillment", async (req, res) => {
   }
 });
 router6.get("/admin/orders/:id/packing-slip", async (req, res) => {
-  if (!requireAdmin4(req, res)) return;
+  if (!requireAdmin3(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid order ID" });
@@ -74122,7 +74555,7 @@ router6.get("/admin/orders/:id/packing-slip", async (req, res) => {
   }
 });
 router6.post("/admin/fulfillment/packing-slips", async (req, res) => {
-  if (!requireAdmin4(req, res)) return;
+  if (!requireAdmin3(req, res)) return;
   const { ids } = req.body;
   if (!Array.isArray(ids) || ids.length === 0 || ids.some((id) => typeof id !== "number")) {
     res.status(400).json({ error: "ids must be a non-empty array of numbers" });
@@ -74154,7 +74587,7 @@ var fulfillment_default = router6;
 var import_express7 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router7 = (0, import_express7.Router)();
-function requireAdmin5(req, res) {
+function requireAdmin4(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -74189,7 +74622,7 @@ function toCsvRow2(fields) {
   return fields.map(escapeCsv2).join(",");
 }
 router7.get("/admin/customers/export", async (req, res) => {
-  if (!requireAdmin5(req, res)) return;
+  if (!requireAdmin4(req, res)) return;
   try {
     const search = typeof req.query.search === "string" ? req.query.search : void 0;
     const conditions = [];
@@ -74242,7 +74675,7 @@ router7.get("/admin/customers/export", async (req, res) => {
   }
 });
 router7.get("/admin/customers", async (req, res) => {
-  if (!requireAdmin5(req, res)) return;
+  if (!requireAdmin4(req, res)) return;
   const parsed = ListAdminCustomersQueryParams.safeParse(req.query);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid query params" });
@@ -74275,7 +74708,7 @@ router7.get("/admin/customers", async (req, res) => {
   }
 });
 router7.get("/admin/customers/:id", async (req, res) => {
-  if (!requireAdmin5(req, res)) return;
+  if (!requireAdmin4(req, res)) return;
   const parsed = GetAdminCustomerParams.safeParse({ id: Number(req.params.id) });
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid customer ID" });
@@ -74327,7 +74760,7 @@ init_drizzle_orm();
 // src/routes/stock-alerts.ts
 var import_express8 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-function requireAdmin6(req, res) {
+function requireAdmin5(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Unauthorized" });
     return false;
@@ -74375,7 +74808,7 @@ router8.delete("/products/:productId/stock-alert", async (req, res) => {
   }
 });
 router8.get("/admin/stock-alerts", async (req, res) => {
-  if (!requireAdmin6(req, res)) return;
+  if (!requireAdmin5(req, res)) return;
   try {
     const all = await db.select().from(stockAlertsTable);
     const byProduct = {};
@@ -74408,7 +74841,7 @@ router8.get("/admin/stock-alerts", async (req, res) => {
   }
 });
 router8.post("/admin/stock-alerts/notify/:productId", async (req, res) => {
-  if (!requireAdmin6(req, res)) return;
+  if (!requireAdmin5(req, res)) return;
   const productId = parseInt(req.params.productId, 10);
   if (isNaN(productId)) {
     res.status(400).json({ error: "Invalid product ID" });
@@ -74461,7 +74894,7 @@ var stock_alerts_default = router8;
 
 // src/routes/admin/products.ts
 var router9 = (0, import_express9.Router)();
-function requireAdmin7(req, res) {
+function requireAdmin6(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -74482,7 +74915,7 @@ function productToResponse(p) {
   };
 }
 router9.get("/admin/products", async (req, res) => {
-  if (!requireAdmin7(req, res)) return;
+  if (!requireAdmin6(req, res)) return;
   const parsed = ListAdminProductsQueryParams.safeParse(req.query);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid query params" });
@@ -74506,7 +74939,7 @@ router9.get("/admin/products", async (req, res) => {
   }
 });
 router9.patch("/admin/products/:id/inventory", async (req, res) => {
-  if (!requireAdmin7(req, res)) return;
+  if (!requireAdmin6(req, res)) return;
   const paramsParsed = UpdateProductInventoryParams.safeParse({ id: Number(req.params.id) });
   const bodyParsed = UpdateProductInventoryBody.safeParse(req.body);
   if (!paramsParsed.success || !bodyParsed.success) {
@@ -74544,7 +74977,7 @@ router9.patch("/admin/products/:id/inventory", async (req, res) => {
   }
 });
 router9.patch("/admin/products/:id/visibility", async (req, res) => {
-  if (!requireAdmin7(req, res)) return;
+  if (!requireAdmin6(req, res)) return;
   const paramsParsed = UpdateProductVisibilityParams.safeParse({ id: Number(req.params.id) });
   const bodyParsed = UpdateProductVisibilityBody.safeParse(req.body);
   if (!paramsParsed.success || !bodyParsed.success) {
@@ -74569,7 +75002,7 @@ var products_default = router9;
 var import_express10 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router10 = (0, import_express10.Router)();
-function requireAdmin8(req, res) {
+function requireAdmin7(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -74591,7 +75024,7 @@ function discountToResponse(d) {
   };
 }
 router10.get("/admin/discounts", async (req, res) => {
-  if (!requireAdmin8(req, res)) return;
+  if (!requireAdmin7(req, res)) return;
   try {
     const discounts = await db.select().from(discountCodesTable).orderBy(desc(discountCodesTable.createdAt));
     res.status(200).json(discounts.map(discountToResponse));
@@ -74601,7 +75034,7 @@ router10.get("/admin/discounts", async (req, res) => {
   }
 });
 router10.post("/admin/discounts", async (req, res) => {
-  if (!requireAdmin8(req, res)) return;
+  if (!requireAdmin7(req, res)) return;
   const parsed = CreateAdminDiscountBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid request body" });
@@ -74629,7 +75062,7 @@ router10.post("/admin/discounts", async (req, res) => {
   }
 });
 router10.patch("/admin/discounts/:id", async (req, res) => {
-  if (!requireAdmin8(req, res)) return;
+  if (!requireAdmin7(req, res)) return;
   const paramsParsed = UpdateAdminDiscountParams.safeParse({ id: Number(req.params.id) });
   const bodyParsed = UpdateAdminDiscountBody.safeParse(req.body);
   if (!paramsParsed.success || !bodyParsed.success) {
@@ -74655,7 +75088,7 @@ router10.patch("/admin/discounts/:id", async (req, res) => {
   }
 });
 router10.delete("/admin/discounts/:id", async (req, res) => {
-  if (!requireAdmin8(req, res)) return;
+  if (!requireAdmin7(req, res)) return;
   const parsed = DeleteAdminDiscountParams.safeParse({ id: Number(req.params.id) });
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid discount ID" });
@@ -75219,7 +75652,7 @@ async function retireRemovedProducts() {
 }
 
 // src/lib/catalogPriceSync.ts
-import { createHash, createHmac as createHmac2, timingSafeEqual as timingSafeEqual2 } from "node:crypto";
+import { createHash as createHash2, createHmac as createHmac2, timingSafeEqual as timingSafeEqual2 } from "node:crypto";
 var CatalogPriceInputError = class extends Error {
 };
 var MAX_ROWS = 1e3;
@@ -75299,7 +75732,7 @@ function priceSyncDiffDigest(changes) {
     productionPriceGbp,
     cataloguePriceGbp
   })).sort((a, b) => a.slug.localeCompare(b.slug));
-  return createHash("sha256").update(JSON.stringify(canonical)).digest("hex");
+  return createHash2("sha256").update(JSON.stringify(canonical)).digest("hex");
 }
 function createPriceSyncConfirmationToken(changes, secret, expiresAt) {
   const digest = priceSyncDiffDigest(changes);
@@ -75374,7 +75807,7 @@ function toPublicCatalogueImageUrl(imageUrl) {
 // src/routes/admin/catalog.ts
 var router11 = (0, import_express11.Router)();
 var PRICE_SYNC_CONFIRMATION_TTL_MS = 10 * 60 * 1e3;
-function requireAdmin9(req, res) {
+function requireAdmin8(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -75464,7 +75897,7 @@ async function ensureSeeded() {
   }
 }
 router11.get("/admin/catalog", async (req, res) => {
-  if (!requireAdmin9(req, res)) return;
+  if (!requireAdmin8(req, res)) return;
   try {
     await ensureSeeded();
     const search = isStr(req.query.search) ? req.query.search : void 0;
@@ -75484,7 +75917,7 @@ router11.get("/admin/catalog", async (req, res) => {
   }
 });
 router11.post("/admin/catalog/disable-without-janoshik-report", async (req, res) => {
-  if (!requireAdmin9(req, res)) return;
+  if (!requireAdmin8(req, res)) return;
   try {
     await ensureSeeded();
     const disabled = await db.update(productsCatalogTable).set({ isPublished: false }).where(and(
@@ -75506,7 +75939,7 @@ router11.post("/admin/catalog/disable-without-janoshik-report", async (req, res)
   }
 });
 router11.post("/admin/catalog/enable-all-peptides", async (req, res) => {
-  if (!requireAdmin9(req, res)) return;
+  if (!requireAdmin8(req, res)) return;
   try {
     await ensureSeeded();
     const enabled = await db.update(productsCatalogTable).set({ isPublished: true }).where(and(
@@ -75610,7 +76043,7 @@ router11.post("/admin/catalog/price-sync/apply", async (req, res) => {
   }
 });
 router11.get("/admin/catalog/:id", async (req, res) => {
-  if (!requireAdmin9(req, res)) return;
+  if (!requireAdmin8(req, res)) return;
   const id = Number(req.params.id);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid id" });
@@ -75634,7 +76067,7 @@ router11.get("/admin/catalog/:id", async (req, res) => {
   }
 });
 router11.post("/admin/catalog", async (req, res) => {
-  if (!requireAdmin9(req, res)) return;
+  if (!requireAdmin8(req, res)) return;
   const body = req.body;
   if (!isStr(body.slug) || !body.slug || !isStr(body.name) || !body.name || !isStr(body.category) || !body.category) {
     res.status(400).json({ error: "slug, name, and category are required strings" });
@@ -75682,7 +76115,7 @@ router11.post("/admin/catalog", async (req, res) => {
   }
 });
 router11.patch("/admin/catalog/:id", async (req, res) => {
-  if (!requireAdmin9(req, res)) return;
+  if (!requireAdmin8(req, res)) return;
   const id = Number(req.params.id);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid id" });
@@ -75739,7 +76172,7 @@ router11.patch("/admin/catalog/:id", async (req, res) => {
   }
 });
 router11.delete("/admin/catalog/:id", async (req, res) => {
-  if (!requireAdmin9(req, res)) return;
+  if (!requireAdmin8(req, res)) return;
   const id = Number(req.params.id);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid id" });
@@ -75849,7 +76282,7 @@ var catalog_default = router11;
 var import_express12 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router12 = (0, import_express12.Router)();
-function requireAdmin10(req, res) {
+function requireAdmin9(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -75873,7 +76306,7 @@ function returnToResponse(r) {
   };
 }
 router12.get("/admin/returns", async (req, res) => {
-  if (!requireAdmin10(req, res)) return;
+  if (!requireAdmin9(req, res)) return;
   const search = typeof req.query.search === "string" ? req.query.search : void 0;
   const status = typeof req.query.status === "string" ? req.query.status : void 0;
   const limit = Math.min(Number(req.query.limit) || 20, 100);
@@ -75902,7 +76335,7 @@ router12.get("/admin/returns", async (req, res) => {
   }
 });
 router12.get("/admin/orders/:id/returns", async (req, res) => {
-  if (!requireAdmin10(req, res)) return;
+  if (!requireAdmin9(req, res)) return;
   const orderId = Number(req.params.id);
   if (!Number.isFinite(orderId)) {
     res.status(400).json({ error: "Invalid order ID" });
@@ -75917,7 +76350,7 @@ router12.get("/admin/orders/:id/returns", async (req, res) => {
   }
 });
 router12.post("/admin/orders/:id/returns", async (req, res) => {
-  if (!requireAdmin10(req, res)) return;
+  if (!requireAdmin9(req, res)) return;
   const orderId = Number(req.params.id);
   if (!Number.isFinite(orderId)) {
     res.status(400).json({ error: "Invalid order ID" });
@@ -75949,7 +76382,7 @@ router12.post("/admin/orders/:id/returns", async (req, res) => {
   }
 });
 router12.patch("/admin/returns/:id", async (req, res) => {
-  if (!requireAdmin10(req, res)) return;
+  if (!requireAdmin9(req, res)) return;
   const returnId = Number(req.params.id);
   if (!Number.isFinite(returnId)) {
     res.status(400).json({ error: "Invalid return ID" });
@@ -75994,7 +76427,7 @@ var returns_default = router12;
 var import_express13 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router13 = (0, import_express13.Router)();
-function requireAdmin11(req, res) {
+function requireAdmin10(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -76016,7 +76449,7 @@ function rateToResponse(r) {
   };
 }
 router13.get("/admin/tax-rates", async (req, res) => {
-  if (!requireAdmin11(req, res)) return;
+  if (!requireAdmin10(req, res)) return;
   try {
     const rates = await db.select().from(taxRatesTable).orderBy(desc(taxRatesTable.createdAt));
     res.json(rates.map(rateToResponse));
@@ -76026,7 +76459,7 @@ router13.get("/admin/tax-rates", async (req, res) => {
   }
 });
 router13.post("/admin/tax-rates", async (req, res) => {
-  if (!requireAdmin11(req, res)) return;
+  if (!requireAdmin10(req, res)) return;
   const { name: name2, countryCode, countryName, region, rate, isInclusive } = req.body;
   if (!name2 || !countryCode || !countryName || rate == null) {
     res.status(400).json({ error: "name, countryCode, countryName and rate are required" });
@@ -76048,7 +76481,7 @@ router13.post("/admin/tax-rates", async (req, res) => {
   }
 });
 router13.patch("/admin/tax-rates/:id", async (req, res) => {
-  if (!requireAdmin11(req, res)) return;
+  if (!requireAdmin10(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -76076,7 +76509,7 @@ router13.patch("/admin/tax-rates/:id", async (req, res) => {
   }
 });
 router13.delete("/admin/tax-rates/:id", async (req, res) => {
-  if (!requireAdmin11(req, res)) return;
+  if (!requireAdmin10(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -76100,7 +76533,7 @@ var tax_default = router13;
 var import_express14 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router14 = (0, import_express14.Router)();
-function requireAdmin12(req, res) {
+function requireAdmin11(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -76132,7 +76565,7 @@ function rateToResponse2(r) {
   };
 }
 router14.get("/admin/shipping/zones", async (req, res) => {
-  if (!requireAdmin12(req, res)) return;
+  if (!requireAdmin11(req, res)) return;
   try {
     const zones = await db.select().from(shippingZonesTable).orderBy(desc(shippingZonesTable.createdAt));
     res.json(zones.map(zoneToResponse));
@@ -76142,7 +76575,7 @@ router14.get("/admin/shipping/zones", async (req, res) => {
   }
 });
 router14.post("/admin/shipping/zones", async (req, res) => {
-  if (!requireAdmin12(req, res)) return;
+  if (!requireAdmin11(req, res)) return;
   const { name: name2, description, countryCodes } = req.body;
   if (!name2 || !Array.isArray(countryCodes)) {
     res.status(400).json({ error: "name and countryCodes are required" });
@@ -76157,7 +76590,7 @@ router14.post("/admin/shipping/zones", async (req, res) => {
   }
 });
 router14.patch("/admin/shipping/zones/:id", async (req, res) => {
-  if (!requireAdmin12(req, res)) return;
+  if (!requireAdmin11(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -76182,7 +76615,7 @@ router14.patch("/admin/shipping/zones/:id", async (req, res) => {
   }
 });
 router14.delete("/admin/shipping/zones/:id", async (req, res) => {
-  if (!requireAdmin12(req, res)) return;
+  if (!requireAdmin11(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -76201,7 +76634,7 @@ router14.delete("/admin/shipping/zones/:id", async (req, res) => {
   }
 });
 router14.get("/admin/shipping/rates", async (req, res) => {
-  if (!requireAdmin12(req, res)) return;
+  if (!requireAdmin11(req, res)) return;
   try {
     const rates = await db.select().from(shippingRatesTable).orderBy(desc(shippingRatesTable.createdAt));
     res.json(rates.map(rateToResponse2));
@@ -76211,7 +76644,7 @@ router14.get("/admin/shipping/rates", async (req, res) => {
   }
 });
 router14.post("/admin/shipping/rates", async (req, res) => {
-  if (!requireAdmin12(req, res)) return;
+  if (!requireAdmin11(req, res)) return;
   const { zoneId, name: name2, carrier, priceGbp, freeAboveGbp, estimatedDaysMin, estimatedDaysMax } = req.body;
   if (!zoneId || !name2 || priceGbp == null) {
     res.status(400).json({ error: "zoneId, name and priceGbp are required" });
@@ -76234,7 +76667,7 @@ router14.post("/admin/shipping/rates", async (req, res) => {
   }
 });
 router14.patch("/admin/shipping/rates/:id", async (req, res) => {
-  if (!requireAdmin12(req, res)) return;
+  if (!requireAdmin11(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -76262,7 +76695,7 @@ router14.patch("/admin/shipping/rates/:id", async (req, res) => {
   }
 });
 router14.delete("/admin/shipping/rates/:id", async (req, res) => {
-  if (!requireAdmin12(req, res)) return;
+  if (!requireAdmin11(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -76286,7 +76719,7 @@ var shipping_default = router14;
 var import_express15 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router15 = (0, import_express15.Router)();
-function requireAdmin13(req, res) {
+function requireAdmin12(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -76308,7 +76741,7 @@ function refundToResponse(r) {
   };
 }
 router15.get("/admin/refunds", async (req, res) => {
-  if (!requireAdmin13(req, res)) return;
+  if (!requireAdmin12(req, res)) return;
   try {
     const refunds = await db.select().from(refundsLogTable).orderBy(desc(refundsLogTable.createdAt));
     res.json(refunds.map(refundToResponse));
@@ -76318,7 +76751,7 @@ router15.get("/admin/refunds", async (req, res) => {
   }
 });
 router15.get("/admin/orders/:id/refunds", async (req, res) => {
-  if (!requireAdmin13(req, res)) return;
+  if (!requireAdmin12(req, res)) return;
   const orderId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(orderId)) {
     res.status(400).json({ error: "Invalid order ID" });
@@ -76333,7 +76766,7 @@ router15.get("/admin/orders/:id/refunds", async (req, res) => {
   }
 });
 router15.post("/admin/orders/:id/refund", async (req, res) => {
-  if (!requireAdmin13(req, res)) return;
+  if (!requireAdmin12(req, res)) return;
   const orderId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(orderId)) {
     res.status(400).json({ error: "Invalid order ID" });
@@ -76406,7 +76839,7 @@ var refunds_default = router15;
 var import_express16 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router16 = (0, import_express16.Router)();
-function requireAdmin14(req, res) {
+function requireAdmin13(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -76414,7 +76847,7 @@ function requireAdmin14(req, res) {
   return true;
 }
 router16.get("/admin/inventory/audit-log", async (req, res) => {
-  if (!requireAdmin14(req, res)) return;
+  if (!requireAdmin13(req, res)) return;
   const productId = req.query.productId ? parseInt(String(req.query.productId), 10) : null;
   const changeType = typeof req.query.changeType === "string" ? req.query.changeType : null;
   const from = typeof req.query.from === "string" ? req.query.from : null;
@@ -76458,7 +76891,7 @@ var inventory_audit_default = router16;
 var import_express17 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router17 = (0, import_express17.Router)();
-function requireAdmin15(req, res) {
+function requireAdmin14(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -76477,7 +76910,7 @@ function toCsvRow3(values) {
   return values.map(escapeCsv3).join(",");
 }
 router17.get("/admin/export/customers.csv", async (req, res) => {
-  if (!requireAdmin15(req, res)) return;
+  if (!requireAdmin14(req, res)) return;
   try {
     const customers = await db.select().from(customersTable).orderBy(desc(customersTable.createdAt));
     const headers = ["ID", "First Name", "Last Name", "Email", "Phone", "Total Orders", "Total Spent (GBP)", "Created At"];
@@ -76502,7 +76935,7 @@ router17.get("/admin/export/customers.csv", async (req, res) => {
   }
 });
 router17.get("/admin/export/products.csv", async (req, res) => {
-  if (!requireAdmin15(req, res)) return;
+  if (!requireAdmin14(req, res)) return;
   try {
     const products = await db.select({
       productId: productsCatalogTable.id,
@@ -76549,7 +76982,7 @@ router17.get("/admin/export/products.csv", async (req, res) => {
   }
 });
 router17.get("/admin/export/refunds.csv", async (req, res) => {
-  if (!requireAdmin15(req, res)) return;
+  if (!requireAdmin14(req, res)) return;
   try {
     const refunds = await db.select().from(refundsLogTable).orderBy(desc(refundsLogTable.createdAt));
     const headers = ["ID", "Order Number", "Amount (GBP)", "Type", "Reason", "Notes", "Restore Inventory", "Created At"];
@@ -76574,7 +77007,7 @@ router17.get("/admin/export/refunds.csv", async (req, res) => {
   }
 });
 router17.get("/admin/export/inventory-audit.csv", async (req, res) => {
-  if (!requireAdmin15(req, res)) return;
+  if (!requireAdmin14(req, res)) return;
   try {
     const entries = await db.select().from(inventoryAuditLogTable).orderBy(desc(inventoryAuditLogTable.createdAt)).limit(5e3);
     const headers = ["ID", "Product ID", "Product Name", "Change Type", "Before", "After", "Change", "Reason", "Reference", "Date"];
@@ -76607,7 +77040,7 @@ var import_express18 = __toESM(require_express2(), 1);
 import crypto5 from "crypto";
 init_drizzle_orm();
 var router18 = (0, import_express18.Router)();
-function requireAdmin16(req, res) {
+function requireAdmin15(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -76626,7 +77059,7 @@ function webhookToResponse(w) {
   };
 }
 router18.get("/admin/webhooks", async (req, res) => {
-  if (!requireAdmin16(req, res)) return;
+  if (!requireAdmin15(req, res)) return;
   try {
     const webhooks = await db.select().from(webhooksTable).orderBy(desc(webhooksTable.createdAt));
     res.json(webhooks.map(webhookToResponse));
@@ -76636,7 +77069,7 @@ router18.get("/admin/webhooks", async (req, res) => {
   }
 });
 router18.post("/admin/webhooks", async (req, res) => {
-  if (!requireAdmin16(req, res)) return;
+  if (!requireAdmin15(req, res)) return;
   const { url: url2, events, description } = req.body;
   if (!url2 || !Array.isArray(events) || events.length === 0) {
     res.status(400).json({ error: "url and at least one event are required" });
@@ -76657,7 +77090,7 @@ router18.post("/admin/webhooks", async (req, res) => {
   }
 });
 router18.patch("/admin/webhooks/:id", async (req, res) => {
-  if (!requireAdmin16(req, res)) return;
+  if (!requireAdmin15(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -76682,7 +77115,7 @@ router18.patch("/admin/webhooks/:id", async (req, res) => {
   }
 });
 router18.delete("/admin/webhooks/:id", async (req, res) => {
-  if (!requireAdmin16(req, res)) return;
+  if (!requireAdmin15(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -76701,7 +77134,7 @@ router18.delete("/admin/webhooks/:id", async (req, res) => {
   }
 });
 router18.get("/admin/webhooks/:id/deliveries", async (req, res) => {
-  if (!requireAdmin16(req, res)) return;
+  if (!requireAdmin15(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -76728,7 +77161,7 @@ var webhooks_default = router18;
 var import_express19 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router19 = (0, import_express19.Router)();
-function requireAdmin17(req, res) {
+function requireAdmin16(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -76777,7 +77210,7 @@ async function getOrCreateSettings() {
   return created;
 }
 router19.get("/admin/settings", async (req, res) => {
-  if (!requireAdmin17(req, res)) return;
+  if (!requireAdmin16(req, res)) return;
   try {
     const settings = await getOrCreateSettings();
     res.json(settingsToResponse(settings));
@@ -76787,7 +77220,7 @@ router19.get("/admin/settings", async (req, res) => {
   }
 });
 router19.patch("/admin/settings", async (req, res) => {
-  if (!requireAdmin17(req, res)) return;
+  if (!requireAdmin16(req, res)) return;
   try {
     const current = await getOrCreateSettings();
     const body = req.body;
@@ -76834,7 +77267,7 @@ var PAID_STATUS_CLAUSE = sql.raw(
 var PAID_STATUS_CLAUSE_O = sql.raw(
   `o.status IN ('payment_received', 'paid', 'processing', 'shipped', 'delivered')`
 );
-function requireAdmin18(req, res) {
+function requireAdmin17(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -76852,7 +77285,7 @@ function parseRange(req) {
   return { from, to };
 }
 router20.get("/admin/reports/summary", async (req, res) => {
-  if (!requireAdmin18(req, res)) return;
+  if (!requireAdmin17(req, res)) return;
   const { from, to } = parseRange(req);
   try {
     const orderStats = await db.execute(sql`
@@ -76894,7 +77327,7 @@ router20.get("/admin/reports/summary", async (req, res) => {
   }
 });
 router20.get("/admin/reports/timeseries", async (req, res) => {
-  if (!requireAdmin18(req, res)) return;
+  if (!requireAdmin17(req, res)) return;
   const { from, to } = parseRange(req);
   try {
     const rows = await db.execute(sql`
@@ -76915,7 +77348,7 @@ router20.get("/admin/reports/timeseries", async (req, res) => {
   }
 });
 router20.get("/admin/reports/top-products", async (req, res) => {
-  if (!requireAdmin18(req, res)) return;
+  if (!requireAdmin17(req, res)) return;
   const { from, to } = parseRange(req);
   try {
     const rows = await db.execute(sql`
@@ -76939,7 +77372,7 @@ router20.get("/admin/reports/top-products", async (req, res) => {
   }
 });
 router20.get("/admin/reports/by-category", async (req, res) => {
-  if (!requireAdmin18(req, res)) return;
+  if (!requireAdmin17(req, res)) return;
   const { from, to } = parseRange(req);
   try {
     const rows = await db.execute(sql`
@@ -76967,7 +77400,7 @@ var reports_default = router20;
 var import_express21 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router21 = (0, import_express21.Router)();
-function requireAdmin19(req, res) {
+function requireAdmin18(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -76975,7 +77408,7 @@ function requireAdmin19(req, res) {
   return true;
 }
 router21.get("/admin/customers/:id/gdpr-export", async (req, res) => {
-  if (!requireAdmin19(req, res)) return;
+  if (!requireAdmin18(req, res)) return;
   const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -77048,7 +77481,7 @@ router21.get("/admin/customers/:id/gdpr-export", async (req, res) => {
   }
 });
 router21.delete("/admin/customers/:id/gdpr-erase", async (req, res) => {
-  if (!requireAdmin19(req, res)) return;
+  if (!requireAdmin18(req, res)) return;
   const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -77096,7 +77529,7 @@ var gdpr_default = router21;
 var import_express22 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router22 = (0, import_express22.Router)();
-function requireAdmin20(req, res) {
+function requireAdmin19(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -77125,7 +77558,7 @@ function postToResponse(p) {
   };
 }
 router22.get("/admin/blog/posts", async (req, res) => {
-  if (!requireAdmin20(req, res)) return;
+  if (!requireAdmin19(req, res)) return;
   const search = typeof req.query.search === "string" ? req.query.search : null;
   const status = typeof req.query.status === "string" ? req.query.status : null;
   const limit = Math.min(parseInt(String(req.query.limit ?? "50"), 10), 200);
@@ -77145,7 +77578,7 @@ router22.get("/admin/blog/posts", async (req, res) => {
   }
 });
 router22.post("/admin/blog/posts", async (req, res) => {
-  if (!requireAdmin20(req, res)) return;
+  if (!requireAdmin19(req, res)) return;
   const { title, excerpt, content, author, tags, status, featuredImageUrl, seoTitle, seoDescription } = req.body;
   if (!title) {
     res.status(400).json({ error: "title is required" });
@@ -77174,7 +77607,7 @@ router22.post("/admin/blog/posts", async (req, res) => {
   }
 });
 router22.patch("/admin/blog/posts/:id", async (req, res) => {
-  if (!requireAdmin20(req, res)) return;
+  if (!requireAdmin19(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -77207,7 +77640,7 @@ router22.patch("/admin/blog/posts/:id", async (req, res) => {
   }
 });
 router22.delete("/admin/blog/posts/:id", async (req, res) => {
-  if (!requireAdmin20(req, res)) return;
+  if (!requireAdmin19(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid ID" });
@@ -79327,7 +79760,7 @@ import crypto11 from "crypto";
 // ../../node_modules/.pnpm/bcryptjs@3.0.3/node_modules/bcryptjs/index.js
 import nodeCrypto from "crypto";
 var randomFallback = null;
-function randomBytes(len) {
+function randomBytes2(len) {
   try {
     return crypto.getRandomValues(new Uint8Array(len));
   } catch {
@@ -79359,7 +79792,7 @@ function genSaltSync(rounds, seed_length) {
   if (rounds < 10) salt.push("0");
   salt.push(rounds.toString());
   salt.push("$");
-  salt.push(base64_encode(randomBytes(BCRYPT_SALT_LEN), BCRYPT_SALT_LEN));
+  salt.push(base64_encode(randomBytes2(BCRYPT_SALT_LEN), BCRYPT_SALT_LEN));
   return salt.join("");
 }
 function genSalt(rounds, seed_length, callback) {
@@ -79447,29 +79880,29 @@ function compareSync(password, hash2) {
     hash2
   );
 }
-function compare(password, hashValue, callback, progressCallback) {
+function compare(password, hashValue2, callback, progressCallback) {
   function _async(callback2) {
-    if (typeof password !== "string" || typeof hashValue !== "string") {
+    if (typeof password !== "string" || typeof hashValue2 !== "string") {
       nextTick(
         callback2.bind(
           this,
           Error(
-            "Illegal arguments: " + typeof password + ", " + typeof hashValue
+            "Illegal arguments: " + typeof password + ", " + typeof hashValue2
           )
         )
       );
       return;
     }
-    if (hashValue.length !== 60) {
+    if (hashValue2.length !== 60) {
       nextTick(callback2.bind(this, null, false));
       return;
     }
     hash(
       password,
-      hashValue.substring(0, 29),
+      hashValue2.substring(0, 29),
       function(err, comp) {
         if (err) callback2(err);
-        else callback2(null, safeStringCompare(comp, hashValue));
+        else callback2(null, safeStringCompare(comp, hashValue2));
       },
       progressCallback
     );
@@ -81810,7 +82243,7 @@ var reviews_default = router27;
 // src/routes/admin/reviews.ts
 var import_express28 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-function requireAdmin21(req, res) {
+function requireAdmin20(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Unauthorized" });
     return false;
@@ -81819,7 +82252,7 @@ function requireAdmin21(req, res) {
 }
 var router28 = (0, import_express28.Router)();
 router28.get("/admin/reviews", async (req, res) => {
-  if (!requireAdmin21(req, res)) return;
+  if (!requireAdmin20(req, res)) return;
   try {
     const status = firstString(req.query.status);
     const search = firstString(req.query.search);
@@ -81842,7 +82275,7 @@ router28.get("/admin/reviews", async (req, res) => {
   }
 });
 router28.patch("/admin/reviews/:id", async (req, res) => {
-  if (!requireAdmin21(req, res)) return;
+  if (!requireAdmin20(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid review ID" });
@@ -81878,7 +82311,7 @@ router28.patch("/admin/reviews/:id", async (req, res) => {
   }
 });
 router28.delete("/admin/reviews/:id", async (req, res) => {
-  if (!requireAdmin21(req, res)) return;
+  if (!requireAdmin20(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid review ID" });
@@ -82218,7 +82651,7 @@ var cart_default = router32;
 var import_express33 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router33 = (0, import_express33.Router)();
-function requireAdmin22(req, res) {
+function requireAdmin21(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -82226,7 +82659,7 @@ function requireAdmin22(req, res) {
   return true;
 }
 router33.get("/admin/abandoned-carts", async (req, res) => {
-  if (!requireAdmin22(req, res)) return;
+  if (!requireAdmin21(req, res)) return;
   try {
     const carts = await db.select().from(abandonedCartsTable).where(isNull(abandonedCartsTable.convertedAt)).orderBy(desc(abandonedCartsTable.updatedAt));
     const rows = carts.map((c) => {
@@ -82379,7 +82812,7 @@ var alerts_default = router34;
 var import_express35 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router35 = (0, import_express35.Router)();
-function requireAdmin23(req, res) {
+function requireAdmin22(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -82393,7 +82826,7 @@ async function getOrCreateBalance(customerId) {
   return 0;
 }
 router35.get("/admin/customers/:id/credits", async (req, res) => {
-  if (!requireAdmin23(req, res)) return;
+  if (!requireAdmin22(req, res)) return;
   const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) {
     res.status(400).json({ error: "Invalid customer ID" });
@@ -82409,7 +82842,7 @@ router35.get("/admin/customers/:id/credits", async (req, res) => {
   }
 });
 router35.post("/admin/customers/:id/credits", async (req, res) => {
-  if (!requireAdmin23(req, res)) return;
+  if (!requireAdmin22(req, res)) return;
   const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) {
     res.status(400).json({ error: "Invalid customer ID" });
@@ -82452,7 +82885,7 @@ router35.post("/admin/customers/:id/credits", async (req, res) => {
   }
 });
 router35.get("/admin/credits", async (req, res) => {
-  if (!requireAdmin23(req, res)) return;
+  if (!requireAdmin22(req, res)) return;
   try {
     const rows = await db.select({
       customerId: customerCreditsTable.customerId,
@@ -82474,7 +82907,7 @@ var credits_default = router35;
 var import_express36 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router36 = (0, import_express36.Router)();
-function requireAdmin24(req, res) {
+function requireAdmin23(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -82482,7 +82915,7 @@ function requireAdmin24(req, res) {
   return true;
 }
 router36.get("/admin/fraud", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+  if (!requireAdmin23(req, res)) return;
   try {
     const minScore = Math.max(1, parseInt(String(req.query.minScore ?? "20"), 10) || 20);
     const reviewedParam = req.query.reviewed;
@@ -82542,7 +82975,7 @@ router36.get("/admin/fraud", async (req, res) => {
 router36.patch(
   "/admin/fraud/:id/review",
   async (req, res) => {
-    if (!requireAdmin24(req, res)) return;
+    if (!requireAdmin23(req, res)) return;
     try {
       const id = parseInt(firstString(req.params.id) ?? "", 10);
       if (!id) {
@@ -82567,7 +83000,7 @@ var fraud_default = router36;
 var import_express37 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router37 = (0, import_express37.Router)();
-function requireAdmin25(req, res) {
+function requireAdmin24(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -82575,7 +83008,7 @@ function requireAdmin25(req, res) {
   return true;
 }
 router37.get("/admin/blocked-ips", async (req, res) => {
-  if (!requireAdmin25(req, res)) return;
+  if (!requireAdmin24(req, res)) return;
   try {
     const rows = await db.select().from(blockedIpsTable).orderBy(blockedIpsTable.blockedAt);
     res.json(rows);
@@ -82584,7 +83017,7 @@ router37.get("/admin/blocked-ips", async (req, res) => {
   }
 });
 router37.post("/admin/blocked-ips", async (req, res) => {
-  if (!requireAdmin25(req, res)) return;
+  if (!requireAdmin24(req, res)) return;
   const { ip, reason } = req.body;
   if (!ip || typeof ip !== "string" || !ip.trim()) {
     res.status(400).json({ error: "ip is required" });
@@ -82603,7 +83036,7 @@ router37.post("/admin/blocked-ips", async (req, res) => {
   }
 });
 router37.delete("/admin/blocked-ips/:ip", async (req, res) => {
-  if (!requireAdmin25(req, res)) return;
+  if (!requireAdmin24(req, res)) return;
   const ip = decodeURIComponent(firstString(req.params.ip) ?? "");
   try {
     const deleted = await db.delete(blockedIpsTable).where(eq(blockedIpsTable.ip, ip)).returning();
@@ -82622,7 +83055,7 @@ var blockedIps_default = router37;
 var import_express38 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router38 = (0, import_express38.Router)();
-function requireAdmin26(req, res) {
+function requireAdmin25(req, res) {
   if (req.cookies?.admin_session !== "authenticated") {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -82630,7 +83063,7 @@ function requireAdmin26(req, res) {
   return true;
 }
 router38.get("/admin/email-logs", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+  if (!requireAdmin25(req, res)) return;
   try {
     const [logs, statsRows] = await Promise.all([
       db.select().from(emailLogsTable).orderBy(desc(emailLogsTable.createdAt)).limit(500),
@@ -83634,7 +84067,7 @@ var crypto_payments_default = router47;
 var import_express48 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router48 = (0, import_express48.Router)();
-function requireAdmin27(req, res) {
+function requireAdmin26(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -83660,7 +84093,7 @@ function auditToResponse(audit) {
   };
 }
 router48.get("/admin/crypto/audits", async (req, res) => {
-  if (!requireAdmin27(req, res)) return;
+  if (!requireAdmin26(req, res)) return;
   try {
     const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 200);
     const audits = await db.select().from(cryptoPaymentAuditsTable).orderBy(desc(cryptoPaymentAuditsTable.checkedAt)).limit(limit);
@@ -83680,7 +84113,7 @@ router48.get("/admin/crypto/audits", async (req, res) => {
   }
 });
 router48.get("/admin/crypto/audits/:id", async (req, res) => {
-  if (!requireAdmin27(req, res)) return;
+  if (!requireAdmin26(req, res)) return;
   const id = Number(req.params.id);
   if (!Number.isInteger(id)) {
     res.status(400).json({ error: "Invalid audit ID" });
@@ -83694,7 +84127,7 @@ router48.get("/admin/crypto/audits/:id", async (req, res) => {
   res.json(auditToResponse(audit));
 });
 router48.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
-  if (!requireAdmin27(req, res)) return;
+  if (!requireAdmin26(req, res)) return;
   const attemptId = Number(req.params.attemptId);
   if (!Number.isInteger(attemptId)) {
     res.status(400).json({ error: "Invalid payment attempt" });
@@ -83719,7 +84152,7 @@ router48.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
   }
 });
 router48.post("/admin/crypto/audits/check-batch", async (req, res) => {
-  if (!requireAdmin27(req, res)) return;
+  if (!requireAdmin26(req, res)) return;
   const attemptIds = Array.isArray(req.body?.attemptIds) ? req.body.attemptIds.filter((id) => Number.isInteger(id)).slice(0, 50) : [];
   if (attemptIds.length === 0) {
     res.status(400).json({ error: "Select one or more payment attempts to check." });
@@ -83741,7 +84174,7 @@ router48.post("/admin/crypto/audits/check-batch", async (req, res) => {
   }
 });
 router48.get("/admin/crypto/wallet-history", async (req, res) => {
-  if (!requireAdmin27(req, res)) return;
+  if (!requireAdmin26(req, res)) return;
   try {
     const attempts = await db.select({
       walletAddress: cryptoPaymentAttemptsTable.walletAddress,
@@ -83768,7 +84201,7 @@ var crypto_audits_default = router48;
 var import_express49 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router49 = (0, import_express49.Router)();
-function requireAdmin28(req, res) {
+function requireAdmin27(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -83776,7 +84209,7 @@ function requireAdmin28(req, res) {
   return true;
 }
 router49.get("/admin/public-traffic/events", async (req, res) => {
-  if (!requireAdmin28(req, res)) return;
+  if (!requireAdmin27(req, res)) return;
   const parsedLimit = Number(req.query.limit);
   const limit = Number.isInteger(parsedLimit) ? Math.min(Math.max(parsedLimit, 1), 200) : 50;
   try {
@@ -84086,11 +84519,16 @@ var router51 = (0, import_express51.Router)();
 router51.use(health_default);
 router51.use(publicTraffic_default2);
 router51.use(auth_default);
-router51.use("/admin", (req, res, next) => {
-  if (!hasSecureAdminSession(req)) {
+router51.use("/admin", async (req, res, next) => {
+  if (!await validateSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return;
   }
+  if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method) && !isRecentSecureAdminSession(req)) {
+    res.status(401).json({ error: "Recent authentication required", requiresRecentAuth: true });
+    return;
+  }
+  req.cookies.admin_session = "authenticated";
   next();
 });
 router51.use(dashboard_default);
@@ -84874,12 +85312,12 @@ For a research-grade peptide, a single dominant, well-resolved result indicates 
 
 | Purity | Interpretation |
 |---|---|
-| \u226598% | Research grade; suitable for most in vitro and in vivo applications |
+| \u226599% | OmniQure's independently verified purity standard |
 | 95\u201397% | Acceptable for many applications; some impurity burden |
 | 90\u201394% | Lower grade; impurity effects must be considered |
 | <90% | Not recommended for mechanistic research |
 
-OmniQure provides only \u226598% independently verified peptides. Available Janoshik reports can be reviewed on the relevant product pages.
+OmniQure's published independent results confirm \u226599% purity. Available Janoshik reports can be reviewed on the relevant product pages.
 
 ## What a Purity Result Cannot Tell You
 

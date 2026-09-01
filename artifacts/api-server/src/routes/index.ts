@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
 import healthRouter from "./health";
-import adminAuthRouter, { hasSecureAdminSession } from "./admin/auth";
+import adminAuthRouter, { isRecentSecureAdminSession, validateSecureAdminSession } from "./admin/auth";
 import adminDashboardRouter from "./admin/dashboard";
 import adminOrdersRouter from "./admin/orders";
 import adminFulfillmentRouter from "./admin/fulfillment";
@@ -58,11 +58,18 @@ router.use(publicTrafficRouter);
 router.use(adminAuthRouter);
 // Every remaining /admin endpoint must pass the signed, expiring session check.
 // Individual route-level checks remain as defense in depth during migration.
-router.use("/admin", (req, res, next) => {
-  if (!hasSecureAdminSession(req)) {
+router.use("/admin", async (req, res, next) => {
+  if (!(await validateSecureAdminSession(req))) {
     res.status(401).json({ error: "Not authenticated" });
     return;
   }
+  if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method) && !isRecentSecureAdminSession(req)) {
+    res.status(401).json({ error: "Recent authentication required", requiresRecentAuth: true });
+    return;
+  }
+  // Several older route-level checks still expect this server-side marker.
+  // It is set only after the signed session and active account are validated.
+  req.cookies.admin_session = "authenticated";
   next();
 });
 router.use(adminDashboardRouter);

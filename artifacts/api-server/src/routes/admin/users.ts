@@ -3,14 +3,26 @@ import type { Request, Response } from "express";
 import crypto from "crypto";
 import { db } from "@workspace/db";
 import { adminUsersTable, ADMIN_ROLES } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, sql } from "drizzle-orm";
 import { firstString } from "../../lib/query";
+import { getSecureAdminSession, hasSecureAdminSession } from "./auth";
 
 const router = Router();
 
-function requireAdmin(req: Request, res: Response): boolean {
-  if (req.cookies?.admin_session !== "authenticated") {
+async function requireOwner(req: Request, res: Response): Promise<boolean> {
+  if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  const session = getSecureAdminSession(req);
+  if (!session?.email) return true;
+  const [user] = await db
+    .select({ role: adminUsersTable.role, isActive: adminUsersTable.isActive, sessionVersion: adminUsersTable.sessionVersion })
+    .from(adminUsersTable)
+    .where(eq(adminUsersTable.email, session.email))
+    .limit(1);
+  if (!user?.isActive || user.role !== "owner" || user.sessionVersion !== session.sessionVersion) {
+    res.status(403).json({ error: "Owner access required" });
     return false;
   }
   return true;
@@ -48,7 +60,7 @@ function userToResponse(u: typeof adminUsersTable.$inferSelect) {
 }
 
 router.get("/admin/users", async (req: Request, res: Response): Promise<void> => {
-  if (!requireAdmin(req, res)) return;
+  if (!(await requireOwner(req, res))) return;
   try {
     const users = await db.select().from(adminUsersTable).orderBy(desc(adminUsersTable.createdAt));
     res.json(users.map(userToResponse));
@@ -59,7 +71,7 @@ router.get("/admin/users", async (req: Request, res: Response): Promise<void> =>
 });
 
 router.post("/admin/users", async (req: Request, res: Response): Promise<void> => {
-  if (!requireAdmin(req, res)) return;
+  if (!(await requireOwner(req, res))) return;
   const { email, name, password, role } = req.body as { email?: string; name?: string; password?: string; role?: string };
   if (!email || !name || !password) {
     res.status(400).json({ error: "email, name and password are required" });
@@ -88,11 +100,12 @@ router.post("/admin/users", async (req: Request, res: Response): Promise<void> =
 });
 
 router.patch("/admin/users/:id", async (req: Request, res: Response): Promise<void> => {
-  if (!requireAdmin(req, res)) return;
+  if (!(await requireOwner(req, res))) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   const { name, role, isActive, password } = req.body as Partial<{ name: string; role: string; isActive: boolean; password: string }>;
   const updates: Partial<typeof adminUsersTable.$inferInsert> = {};
+  let revokeSessions = false;
   if (name !== undefined) updates.name = name;
   if (isActive !== undefined) updates.isActive = isActive;
   if (role !== undefined) {
@@ -102,9 +115,20 @@ router.patch("/admin/users/:id", async (req: Request, res: Response): Promise<vo
   if (password !== undefined) {
     if (password.length < 8) { res.status(400).json({ error: "Password must be at least 8 characters" }); return; }
     updates.passwordHash = hashPassword(password);
+    revokeSessions = true;
+  }
+  if (isActive === false) {
+    revokeSessions = true;
   }
   try {
-    const [updated] = await db.update(adminUsersTable).set(updates).where(eq(adminUsersTable.id, id)).returning();
+    const [updated] = await db
+      .update(adminUsersTable)
+      .set({
+        ...updates,
+        ...(revokeSessions ? { sessionVersion: sql`${adminUsersTable.sessionVersion} + 1` } : {}),
+      })
+      .where(eq(adminUsersTable.id, id))
+      .returning();
     if (!updated) { res.status(404).json({ error: "Admin user not found" }); return; }
     res.json(userToResponse(updated));
   } catch (err) {
@@ -114,7 +138,7 @@ router.patch("/admin/users/:id", async (req: Request, res: Response): Promise<vo
 });
 
 router.delete("/admin/users/:id", async (req: Request, res: Response): Promise<void> => {
-  if (!requireAdmin(req, res)) return;
+  if (!(await requireOwner(req, res))) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   try {

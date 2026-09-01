@@ -15,10 +15,26 @@ export interface ApiError {
 
 export interface AdminLoginInput {
   password: string;
+  email?: string;
+  challengeToken?: string;
+  mfaCode?: string;
+  recoveryCode?: string;
 }
 
 export interface AdminSession {
   authenticated: boolean;
+  email?: string;
+  name?: string;
+  role?: string;
+  recentAuth?: boolean;
+  mfaEnabled?: boolean;
+  mfaRequired?: boolean;
+  enrollmentRequired?: boolean;
+  enrollmentCompleted?: boolean;
+  challengeToken?: string;
+  secret?: string;
+  otpauthUri?: string;
+  recoveryCodes?: string[];
 }
 
 export interface AdminWallidTestPaymentSession {

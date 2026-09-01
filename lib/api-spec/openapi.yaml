@@ -966,6 +966,15 @@ components:
       properties:
         password:
           type: string
+        email:
+          type: string
+          format: email
+        challengeToken:
+          type: string
+        mfaCode:
+          type: string
+        recoveryCode:
+          type: string
 
     AdminSession:
       type: object
@@ -973,6 +982,32 @@ components:
       properties:
         authenticated:
           type: boolean
+        email:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        recentAuth:
+          type: boolean
+        mfaEnabled:
+          type: boolean
+        mfaRequired:
+          type: boolean
+        enrollmentRequired:
+          type: boolean
+        enrollmentCompleted:
+          type: boolean
+        challengeToken:
+          type: string
+        secret:
+          type: string
+        otpauthUri:
+          type: string
+        recoveryCodes:
+          type: array
+          items:
+            type: string
 
     AdminWallidTestPaymentSession:
       type: object

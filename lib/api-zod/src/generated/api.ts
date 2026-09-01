@@ -19,10 +19,26 @@ export const HealthCheckResponse = zod.object({
  */
 export const AdminLoginBody = zod.object({
   password: zod.string(),
+  email: zod.string().email().optional(),
+  challengeToken: zod.string().optional(),
+  mfaCode: zod.string().optional(),
+  recoveryCode: zod.string().optional(),
 });
 
 export const AdminLoginResponse = zod.object({
   authenticated: zod.boolean(),
+  email: zod.string().optional(),
+  name: zod.string().optional(),
+  role: zod.string().optional(),
+  recentAuth: zod.boolean().optional(),
+  mfaEnabled: zod.boolean().optional(),
+  mfaRequired: zod.boolean().optional(),
+  enrollmentRequired: zod.boolean().optional(),
+  enrollmentCompleted: zod.boolean().optional(),
+  challengeToken: zod.string().optional(),
+  secret: zod.string().optional(),
+  otpauthUri: zod.string().optional(),
+  recoveryCodes: zod.array(zod.string()).optional(),
 });
 
 /**
@@ -30,6 +46,18 @@ export const AdminLoginResponse = zod.object({
  */
 export const AdminMeResponse = zod.object({
   authenticated: zod.boolean(),
+  email: zod.string().optional(),
+  name: zod.string().optional(),
+  role: zod.string().optional(),
+  recentAuth: zod.boolean().optional(),
+  mfaEnabled: zod.boolean().optional(),
+  mfaRequired: zod.boolean().optional(),
+  enrollmentRequired: zod.boolean().optional(),
+  enrollmentCompleted: zod.boolean().optional(),
+  challengeToken: zod.string().optional(),
+  secret: zod.string().optional(),
+  otpauthUri: zod.string().optional(),
+  recoveryCodes: zod.array(zod.string()).optional(),
 });
 
 /**

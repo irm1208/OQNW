@@ -21,27 +21,111 @@ export declare const HealthCheckResponse: zod.ZodObject<{
  */
 export declare const AdminLoginBody: zod.ZodObject<{
     password: zod.ZodString;
+    email: zod.ZodOptional<zod.ZodString>;
+    challengeToken: zod.ZodOptional<zod.ZodString>;
+    mfaCode: zod.ZodOptional<zod.ZodString>;
+    recoveryCode: zod.ZodOptional<zod.ZodString>;
 }, "strip", zod.ZodTypeAny, {
     password: string;
+    email?: string | undefined;
+    challengeToken?: string | undefined;
+    mfaCode?: string | undefined;
+    recoveryCode?: string | undefined;
 }, {
     password: string;
+    email?: string | undefined;
+    challengeToken?: string | undefined;
+    mfaCode?: string | undefined;
+    recoveryCode?: string | undefined;
 }>;
 export declare const AdminLoginResponse: zod.ZodObject<{
     authenticated: zod.ZodBoolean;
+    email: zod.ZodOptional<zod.ZodString>;
+    name: zod.ZodOptional<zod.ZodString>;
+    role: zod.ZodOptional<zod.ZodString>;
+    recentAuth: zod.ZodOptional<zod.ZodBoolean>;
+    mfaEnabled: zod.ZodOptional<zod.ZodBoolean>;
+    mfaRequired: zod.ZodOptional<zod.ZodBoolean>;
+    enrollmentRequired: zod.ZodOptional<zod.ZodBoolean>;
+    enrollmentCompleted: zod.ZodOptional<zod.ZodBoolean>;
+    challengeToken: zod.ZodOptional<zod.ZodString>;
+    secret: zod.ZodOptional<zod.ZodString>;
+    otpauthUri: zod.ZodOptional<zod.ZodString>;
+    recoveryCodes: zod.ZodOptional<zod.ZodArray<zod.ZodString, "many">>;
 }, "strip", zod.ZodTypeAny, {
     authenticated: boolean;
+    email?: string | undefined;
+    challengeToken?: string | undefined;
+    name?: string | undefined;
+    role?: string | undefined;
+    recentAuth?: boolean | undefined;
+    mfaEnabled?: boolean | undefined;
+    mfaRequired?: boolean | undefined;
+    enrollmentRequired?: boolean | undefined;
+    enrollmentCompleted?: boolean | undefined;
+    secret?: string | undefined;
+    otpauthUri?: string | undefined;
+    recoveryCodes?: string[] | undefined;
 }, {
     authenticated: boolean;
+    email?: string | undefined;
+    challengeToken?: string | undefined;
+    name?: string | undefined;
+    role?: string | undefined;
+    recentAuth?: boolean | undefined;
+    mfaEnabled?: boolean | undefined;
+    mfaRequired?: boolean | undefined;
+    enrollmentRequired?: boolean | undefined;
+    enrollmentCompleted?: boolean | undefined;
+    secret?: string | undefined;
+    otpauthUri?: string | undefined;
+    recoveryCodes?: string[] | undefined;
 }>;
 /**
  * @summary Check admin session
  */
 export declare const AdminMeResponse: zod.ZodObject<{
     authenticated: zod.ZodBoolean;
+    email: zod.ZodOptional<zod.ZodString>;
+    name: zod.ZodOptional<zod.ZodString>;
+    role: zod.ZodOptional<zod.ZodString>;
+    recentAuth: zod.ZodOptional<zod.ZodBoolean>;
+    mfaEnabled: zod.ZodOptional<zod.ZodBoolean>;
+    mfaRequired: zod.ZodOptional<zod.ZodBoolean>;
+    enrollmentRequired: zod.ZodOptional<zod.ZodBoolean>;
+    enrollmentCompleted: zod.ZodOptional<zod.ZodBoolean>;
+    challengeToken: zod.ZodOptional<zod.ZodString>;
+    secret: zod.ZodOptional<zod.ZodString>;
+    otpauthUri: zod.ZodOptional<zod.ZodString>;
+    recoveryCodes: zod.ZodOptional<zod.ZodArray<zod.ZodString, "many">>;
 }, "strip", zod.ZodTypeAny, {
     authenticated: boolean;
+    email?: string | undefined;
+    challengeToken?: string | undefined;
+    name?: string | undefined;
+    role?: string | undefined;
+    recentAuth?: boolean | undefined;
+    mfaEnabled?: boolean | undefined;
+    mfaRequired?: boolean | undefined;
+    enrollmentRequired?: boolean | undefined;
+    enrollmentCompleted?: boolean | undefined;
+    secret?: string | undefined;
+    otpauthUri?: string | undefined;
+    recoveryCodes?: string[] | undefined;
 }, {
     authenticated: boolean;
+    email?: string | undefined;
+    challengeToken?: string | undefined;
+    name?: string | undefined;
+    role?: string | undefined;
+    recentAuth?: boolean | undefined;
+    mfaEnabled?: boolean | undefined;
+    mfaRequired?: boolean | undefined;
+    enrollmentRequired?: boolean | undefined;
+    enrollmentCompleted?: boolean | undefined;
+    secret?: string | undefined;
+    otpauthUri?: string | undefined;
+    recoveryCodes?: string[] | undefined;
 }>;
 /**
  * @summary Get dashboard summary stats
@@ -952,10 +1036,10 @@ export declare const ListAdminCustomersResponse: zod.ZodObject<{
         lastSeenCountry: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         lastSeenIp: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     }, "strip", zod.ZodTypeAny, {
+        email: string;
         totalOrders: number;
         id: number;
         createdAt: Date;
-        email: string;
         firstName: string;
         lastName: string;
         totalSpendGbp: number;
@@ -965,10 +1049,10 @@ export declare const ListAdminCustomersResponse: zod.ZodObject<{
         lastSeenCountry?: string | null | undefined;
         lastSeenIp?: string | null | undefined;
     }, {
+        email: string;
         totalOrders: number;
         id: number;
         createdAt: Date;
-        email: string;
         firstName: string;
         lastName: string;
         totalSpendGbp: number;
@@ -982,10 +1066,10 @@ export declare const ListAdminCustomersResponse: zod.ZodObject<{
 }, "strip", zod.ZodTypeAny, {
     total: number;
     customers: {
+        email: string;
         totalOrders: number;
         id: number;
         createdAt: Date;
-        email: string;
         firstName: string;
         lastName: string;
         totalSpendGbp: number;
@@ -998,10 +1082,10 @@ export declare const ListAdminCustomersResponse: zod.ZodObject<{
 }, {
     total: number;
     customers: {
+        email: string;
         totalOrders: number;
         id: number;
         createdAt: Date;
-        email: string;
         firstName: string;
         lastName: string;
         totalSpendGbp: number;
@@ -1125,6 +1209,7 @@ export declare const GetAdminCustomerResponse: zod.ZodObject<{
         updatedAt?: Date | undefined;
     }>, "many">;
 }, "strip", zod.ZodTypeAny, {
+    email: string;
     totalOrders: number;
     orders: {
         status: string;
@@ -1157,7 +1242,6 @@ export declare const GetAdminCustomerResponse: zod.ZodObject<{
     }[];
     id: number;
     createdAt: Date;
-    email: string;
     firstName: string;
     lastName: string;
     totalSpendGbp: number;
@@ -1171,6 +1255,7 @@ export declare const GetAdminCustomerResponse: zod.ZodObject<{
     lastSeenCountry?: string | null | undefined;
     lastSeenIp?: string | null | undefined;
 }, {
+    email: string;
     totalOrders: number;
     orders: {
         status: string;
@@ -1203,7 +1288,6 @@ export declare const GetAdminCustomerResponse: zod.ZodObject<{
     }[];
     id: number;
     createdAt: Date;
-    email: string;
     firstName: string;
     lastName: string;
     totalSpendGbp: number;
@@ -1601,13 +1685,13 @@ export declare const ListCatalogProductsResponseItem: zod.ZodObject<{
     createdAt: zod.ZodDate;
     updatedAt: zod.ZodDate;
 }, "strip", zod.ZodTypeAny, {
+    name: string;
     category: string;
     id: number;
     createdAt: Date;
     updatedAt: Date;
     isPublished: boolean;
     slug: string;
-    name: string;
     hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
@@ -1628,13 +1712,13 @@ export declare const ListCatalogProductsResponseItem: zod.ZodObject<{
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
 }, {
+    name: string;
     category: string;
     id: number;
     createdAt: Date;
     updatedAt: Date;
     isPublished: boolean;
     slug: string;
-    name: string;
     hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
@@ -1683,13 +1767,13 @@ export declare const ListCatalogProductsResponse: zod.ZodArray<zod.ZodObject<{
     createdAt: zod.ZodDate;
     updatedAt: zod.ZodDate;
 }, "strip", zod.ZodTypeAny, {
+    name: string;
     category: string;
     id: number;
     createdAt: Date;
     updatedAt: Date;
     isPublished: boolean;
     slug: string;
-    name: string;
     hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
@@ -1710,13 +1794,13 @@ export declare const ListCatalogProductsResponse: zod.ZodArray<zod.ZodObject<{
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
 }, {
+    name: string;
     category: string;
     id: number;
     createdAt: Date;
     updatedAt: Date;
     isPublished: boolean;
     slug: string;
-    name: string;
     hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
@@ -1764,9 +1848,9 @@ export declare const CreateCatalogProductBody: zod.ZodObject<{
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
     sortOrder: zod.ZodOptional<zod.ZodNumber>;
 }, "strip", zod.ZodTypeAny, {
+    name: string;
     category: string;
     slug: string;
-    name: string;
     priceGbp?: number | undefined;
     isPublished?: boolean | undefined;
     shortDescription?: string | undefined;
@@ -1787,9 +1871,9 @@ export declare const CreateCatalogProductBody: zod.ZodObject<{
     isFeatured?: boolean | undefined;
     sortOrder?: number | undefined;
 }, {
+    name: string;
     category: string;
     slug: string;
-    name: string;
     priceGbp?: number | undefined;
     isPublished?: boolean | undefined;
     shortDescription?: string | undefined;
@@ -1820,27 +1904,27 @@ export declare const DisableCatalogProductsWithoutJanoshikReportResponse: zod.Zo
         slug: zod.ZodString;
         name: zod.ZodString;
     }, "strip", zod.ZodTypeAny, {
+        name: string;
         id: number;
         slug: string;
-        name: string;
     }, {
+        name: string;
         id: number;
         slug: string;
-        name: string;
     }>, "many">;
 }, "strip", zod.ZodTypeAny, {
     disabledCount: number;
     disabledProducts: {
+        name: string;
         id: number;
         slug: string;
-        name: string;
     }[];
 }, {
     disabledCount: number;
     disabledProducts: {
+        name: string;
         id: number;
         slug: string;
-        name: string;
     }[];
 }>;
 /**
@@ -1853,27 +1937,27 @@ export declare const EnableAllPeptideCatalogProductsResponse: zod.ZodObject<{
         slug: zod.ZodString;
         name: zod.ZodString;
     }, "strip", zod.ZodTypeAny, {
+        name: string;
         id: number;
         slug: string;
-        name: string;
     }, {
+        name: string;
         id: number;
         slug: string;
-        name: string;
     }>, "many">;
 }, "strip", zod.ZodTypeAny, {
     enabledCount: number;
     enabledProducts: {
+        name: string;
         id: number;
         slug: string;
-        name: string;
     }[];
 }, {
     enabledCount: number;
     enabledProducts: {
+        name: string;
         id: number;
         slug: string;
-        name: string;
     }[];
 }>;
 /**
@@ -1913,13 +1997,13 @@ export declare const PreviewCatalogPriceSyncResponse: zod.ZodObject<{
         productionPriceGbp: zod.ZodNullable<zod.ZodNumber>;
         cataloguePriceGbp: zod.ZodNullable<zod.ZodNumber>;
     }, "strip", zod.ZodTypeAny, {
-        slug: string;
         name: string;
+        slug: string;
         productionPriceGbp: number | null;
         cataloguePriceGbp: number | null;
     }, {
-        slug: string;
         name: string;
+        slug: string;
         productionPriceGbp: number | null;
         cataloguePriceGbp: number | null;
     }>, "many">;
@@ -1933,8 +2017,8 @@ export declare const PreviewCatalogPriceSyncResponse: zod.ZodObject<{
     matchedCount: number;
     unchangedCount: number;
     changes: {
-        slug: string;
         name: string;
+        slug: string;
         productionPriceGbp: number | null;
         cataloguePriceGbp: number | null;
     }[];
@@ -1948,8 +2032,8 @@ export declare const PreviewCatalogPriceSyncResponse: zod.ZodObject<{
     matchedCount: number;
     unchangedCount: number;
     changes: {
-        slug: string;
         name: string;
+        slug: string;
         productionPriceGbp: number | null;
         cataloguePriceGbp: number | null;
     }[];
@@ -1969,29 +2053,29 @@ export declare const ApplyCatalogPriceSyncBody: zod.ZodObject<{
         productionPriceGbp: zod.ZodNullable<zod.ZodNumber>;
         cataloguePriceGbp: zod.ZodNullable<zod.ZodNumber>;
     }, "strip", zod.ZodTypeAny, {
-        slug: string;
         name: string;
+        slug: string;
         productionPriceGbp: number | null;
         cataloguePriceGbp: number | null;
     }, {
-        slug: string;
         name: string;
+        slug: string;
         productionPriceGbp: number | null;
         cataloguePriceGbp: number | null;
     }>, "many">;
     confirmationToken: zod.ZodString;
 }, "strip", zod.ZodTypeAny, {
     changes: {
-        slug: string;
         name: string;
+        slug: string;
         productionPriceGbp: number | null;
         cataloguePriceGbp: number | null;
     }[];
     confirmationToken: string;
 }, {
     changes: {
-        slug: string;
         name: string;
+        slug: string;
         productionPriceGbp: number | null;
         cataloguePriceGbp: number | null;
     }[];
@@ -2045,13 +2129,13 @@ export declare const GetCatalogProductResponse: zod.ZodObject<{
     createdAt: zod.ZodDate;
     updatedAt: zod.ZodDate;
 }, "strip", zod.ZodTypeAny, {
+    name: string;
     category: string;
     id: number;
     createdAt: Date;
     updatedAt: Date;
     isPublished: boolean;
     slug: string;
-    name: string;
     hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
@@ -2072,13 +2156,13 @@ export declare const GetCatalogProductResponse: zod.ZodObject<{
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
 }, {
+    name: string;
     category: string;
     id: number;
     createdAt: Date;
     updatedAt: Date;
     isPublished: boolean;
     slug: string;
-    name: string;
     hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
@@ -2133,11 +2217,11 @@ export declare const UpdateCatalogProductBody: zod.ZodObject<{
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
     sortOrder: zod.ZodOptional<zod.ZodNumber>;
 }, "strip", zod.ZodTypeAny, {
+    name?: string | undefined;
     category?: string | undefined;
     priceGbp?: number | null | undefined;
     isPublished?: boolean | undefined;
     slug?: string | undefined;
-    name?: string | undefined;
     shortDescription?: string | null | undefined;
     description?: string | null | undefined;
     imageUrl?: string | null | undefined;
@@ -2156,11 +2240,11 @@ export declare const UpdateCatalogProductBody: zod.ZodObject<{
     isFeatured?: boolean | undefined;
     sortOrder?: number | undefined;
 }, {
+    name?: string | undefined;
     category?: string | undefined;
     priceGbp?: number | null | undefined;
     isPublished?: boolean | undefined;
     slug?: string | undefined;
-    name?: string | undefined;
     shortDescription?: string | null | undefined;
     description?: string | null | undefined;
     imageUrl?: string | null | undefined;
@@ -2207,13 +2291,13 @@ export declare const UpdateCatalogProductResponse: zod.ZodObject<{
     createdAt: zod.ZodDate;
     updatedAt: zod.ZodDate;
 }, "strip", zod.ZodTypeAny, {
+    name: string;
     category: string;
     id: number;
     createdAt: Date;
     updatedAt: Date;
     isPublished: boolean;
     slug: string;
-    name: string;
     hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
@@ -2234,13 +2318,13 @@ export declare const UpdateCatalogProductResponse: zod.ZodObject<{
     seoTitle?: string | null | undefined;
     seoDescription?: string | null | undefined;
 }, {
+    name: string;
     category: string;
     id: number;
     createdAt: Date;
     updatedAt: Date;
     isPublished: boolean;
     slug: string;
-    name: string;
     hasJanoshikReport: boolean;
     isFeatured: boolean;
     sortOrder: number;
@@ -2301,10 +2385,10 @@ export declare const ListPublicProductsResponseItem: zod.ZodObject<{
     seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
 }, "strip", zod.ZodTypeAny, {
+    name: string;
     category: string;
     id: number;
     slug: string;
-    name: string;
     priceGbp?: number | null | undefined;
     shortDescription?: string | null | undefined;
     description?: string | null | undefined;
@@ -2314,10 +2398,10 @@ export declare const ListPublicProductsResponseItem: zod.ZodObject<{
     seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
 }, {
+    name: string;
     category: string;
     id: number;
     slug: string;
-    name: string;
     priceGbp?: number | null | undefined;
     shortDescription?: string | null | undefined;
     description?: string | null | undefined;
@@ -2341,10 +2425,10 @@ export declare const ListPublicProductsResponse: zod.ZodArray<zod.ZodObject<{
     seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
 }, "strip", zod.ZodTypeAny, {
+    name: string;
     category: string;
     id: number;
     slug: string;
-    name: string;
     priceGbp?: number | null | undefined;
     shortDescription?: string | null | undefined;
     description?: string | null | undefined;
@@ -2354,10 +2438,10 @@ export declare const ListPublicProductsResponse: zod.ZodArray<zod.ZodObject<{
     seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
 }, {
+    name: string;
     category: string;
     id: number;
     slug: string;
-    name: string;
     priceGbp?: number | null | undefined;
     shortDescription?: string | null | undefined;
     description?: string | null | undefined;
@@ -2400,10 +2484,10 @@ export declare const GetPublicProductResponse: zod.ZodObject<{
     seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
 }, "strip", zod.ZodTypeAny, {
+    name: string;
     category: string;
     id: number;
     slug: string;
-    name: string;
     priceGbp?: number | null | undefined;
     shortDescription?: string | null | undefined;
     description?: string | null | undefined;
@@ -2422,10 +2506,10 @@ export declare const GetPublicProductResponse: zod.ZodObject<{
     seoDescription?: string | null | undefined;
     isFeatured?: boolean | undefined;
 }, {
+    name: string;
     category: string;
     id: number;
     slug: string;
-    name: string;
     priceGbp?: number | null | undefined;
     shortDescription?: string | null | undefined;
     description?: string | null | undefined;
