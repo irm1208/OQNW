@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
 import healthRouter from "./health";
-import adminAuthRouter from "./admin/auth";
+import adminAuthRouter, { hasSecureAdminSession } from "./admin/auth";
 import adminDashboardRouter from "./admin/dashboard";
 import adminOrdersRouter from "./admin/orders";
 import adminFulfillmentRouter from "./admin/fulfillment";
@@ -53,6 +53,15 @@ const router: IRouter = Router();
 
 router.use(healthRouter);
 router.use(adminAuthRouter);
+// Every remaining /admin endpoint must pass the signed, expiring session check.
+// Individual route-level checks remain as defense in depth during migration.
+router.use("/admin", (req, res, next) => {
+  if (!hasSecureAdminSession(req)) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+  next();
+});
 router.use(adminDashboardRouter);
 router.use(adminOrdersRouter);
 router.use(adminFulfillmentRouter);

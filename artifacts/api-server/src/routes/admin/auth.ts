@@ -16,7 +16,6 @@ const router = Router();
 const ADMIN_PASSWORD = requiredSecret("ADMIN_PASSWORD", "omniqure-admin-development-only");
 const SESSION_SECRET = requiredSecret("SESSION_SECRET", "omniqure-admin-session-development-only");
 const SESSION_COOKIE = "admin_session";
-const EMAIL_COOKIE = "admin_email";
 const SESSION_VALUE = "authenticated";
 const SECURE_SESSION_COOKIE = "admin_secure_session";
 const COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days
@@ -31,21 +30,48 @@ interface AttemptRecord {
   lastAttemptAt: number;
 }
 
-function secureSessionValue(): string {
+interface SecureAdminSession {
+  email: string | null;
+}
+
+function secureSessionValue(email: string | null): string {
   const expiresAt = Date.now() + COOKIE_MAX_AGE;
-  const payload = `admin:${expiresAt}`;
+  const encodedEmail = Buffer.from(email ?? "", "utf8").toString("base64url");
+  const payload = `admin:${expiresAt}:${encodedEmail}`;
   const signature = createHmac("sha256", SESSION_SECRET).update(payload).digest("base64url");
   return `${payload}:${signature}`;
 }
 
-export function hasSecureAdminSession(req: Request): boolean {
+function parseSecureAdminSession(req: Request): SecureAdminSession | null {
   const value = req.cookies?.[SECURE_SESSION_COOKIE];
-  if (typeof value !== "string") return false;
-  const [role, expires, signature] = value.split(":");
-  if (role !== "admin" || !/^\d+$/.test(expires) || !signature || Number(expires) < Date.now()) return false;
-  const payload = `${role}:${expires}`;
+  if (typeof value !== "string") return null;
+  const [role, expires, encodedEmail, signature, ...extra] = value.split(":");
+  if (
+    role !== "admin" ||
+    !/^\d+$/.test(expires) ||
+    encodedEmail === undefined ||
+    !signature ||
+    extra.length > 0 ||
+    Number(expires) < Date.now()
+  ) {
+    return null;
+  }
+  const payload = `${role}:${expires}:${encodedEmail}`;
   const expected = createHmac("sha256", SESSION_SECRET).update(payload).digest("base64url");
-  return signature.length === expected.length && timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
+  if (signature.length !== expected.length || !timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) {
+    return null;
+  }
+
+  try {
+    const decodedEmail = Buffer.from(encodedEmail, "base64url").toString("utf8");
+    return { email: decodedEmail || null };
+  } catch {
+    return null;
+  }
+}
+
+export function hasSecureAdminSession(req: Request): boolean {
+  return parseSecureAdminSession(req) !== null;
 }
 
 const attemptsByIp = new Map<string, AttemptRecord>();
@@ -164,29 +190,18 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
   });
-  res.cookie(SECURE_SESSION_COOKIE, secureSessionValue(), {
+  res.cookie(SECURE_SESSION_COOKIE, secureSessionValue(sessionEmail), {
     httpOnly: true,
     maxAge: COOKIE_MAX_AGE,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
   });
-  if (sessionEmail) {
-    res.cookie(EMAIL_COOKIE, sessionEmail, {
-      httpOnly: true,
-      maxAge: COOKIE_MAX_AGE,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-    });
-  } else {
-    res.clearCookie(EMAIL_COOKIE);
-  }
   res.status(200).json({ authenticated: true });
 });
 
 router.post("/admin/auth/logout", (_req: Request, res: Response): void => {
   res.clearCookie(SESSION_COOKIE);
   res.clearCookie(SECURE_SESSION_COOKIE);
-  res.clearCookie(EMAIL_COOKIE);
   res.status(204).send();
 });
 
@@ -246,12 +261,12 @@ router.post("/admin/test-payments/crypto-session", async (req: Request, res: Res
 });
 
 router.get("/admin/auth/me", async (req: Request, res: Response): Promise<void> => {
-  const session = req.cookies?.[SESSION_COOKIE];
-  if (session !== SESSION_VALUE) {
+  const session = parseSecureAdminSession(req);
+  if (!session) {
     res.status(401).json({ error: "Not authenticated" });
     return;
   }
-  const email = req.cookies?.[EMAIL_COOKIE];
+  const email = session.email;
   if (typeof email === "string" && email) {
     const [user] = await db
       .select()

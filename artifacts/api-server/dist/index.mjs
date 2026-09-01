@@ -67086,27 +67086,40 @@ var router3 = (0, import_express3.Router)();
 var ADMIN_PASSWORD = requiredSecret("ADMIN_PASSWORD", "omniqure-admin-development-only");
 var SESSION_SECRET = requiredSecret("SESSION_SECRET", "omniqure-admin-session-development-only");
 var SESSION_COOKIE = "admin_session";
-var EMAIL_COOKIE = "admin_email";
 var SESSION_VALUE = "authenticated";
 var SECURE_SESSION_COOKIE = "admin_secure_session";
 var COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1e3;
 var MAX_ATTEMPTS = 5;
 var LOCKOUT_MS = 15 * 60 * 1e3;
 var ATTEMPT_WINDOW_MS = 30 * 60 * 1e3;
-function secureSessionValue() {
+function secureSessionValue(email3) {
   const expiresAt = Date.now() + COOKIE_MAX_AGE;
-  const payload = `admin:${expiresAt}`;
+  const encodedEmail = Buffer.from(email3 ?? "", "utf8").toString("base64url");
+  const payload = `admin:${expiresAt}:${encodedEmail}`;
   const signature = createHmac("sha256", SESSION_SECRET).update(payload).digest("base64url");
   return `${payload}:${signature}`;
 }
-function hasSecureAdminSession(req) {
+function parseSecureAdminSession(req) {
   const value = req.cookies?.[SECURE_SESSION_COOKIE];
-  if (typeof value !== "string") return false;
-  const [role, expires, signature] = value.split(":");
-  if (role !== "admin" || !/^\d+$/.test(expires) || !signature || Number(expires) < Date.now()) return false;
-  const payload = `${role}:${expires}`;
+  if (typeof value !== "string") return null;
+  const [role, expires, encodedEmail, signature, ...extra] = value.split(":");
+  if (role !== "admin" || !/^\d+$/.test(expires) || encodedEmail === void 0 || !signature || extra.length > 0 || Number(expires) < Date.now()) {
+    return null;
+  }
+  const payload = `${role}:${expires}:${encodedEmail}`;
   const expected = createHmac("sha256", SESSION_SECRET).update(payload).digest("base64url");
-  return signature.length === expected.length && timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
+  if (signature.length !== expected.length || !timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) {
+    return null;
+  }
+  try {
+    const decodedEmail = Buffer.from(encodedEmail, "base64url").toString("utf8");
+    return { email: decodedEmail || null };
+  } catch {
+    return null;
+  }
+}
+function hasSecureAdminSession(req) {
+  return parseSecureAdminSession(req) !== null;
 }
 var attemptsByIp = /* @__PURE__ */ new Map();
 function getClientIp(req) {
@@ -67194,28 +67207,17 @@ router3.post("/admin/auth/login", async (req, res) => {
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production"
   });
-  res.cookie(SECURE_SESSION_COOKIE, secureSessionValue(), {
+  res.cookie(SECURE_SESSION_COOKIE, secureSessionValue(sessionEmail), {
     httpOnly: true,
     maxAge: COOKIE_MAX_AGE,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production"
   });
-  if (sessionEmail) {
-    res.cookie(EMAIL_COOKIE, sessionEmail, {
-      httpOnly: true,
-      maxAge: COOKIE_MAX_AGE,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production"
-    });
-  } else {
-    res.clearCookie(EMAIL_COOKIE);
-  }
   res.status(200).json({ authenticated: true });
 });
 router3.post("/admin/auth/logout", (_req, res) => {
   res.clearCookie(SESSION_COOKIE);
   res.clearCookie(SECURE_SESSION_COOKIE);
-  res.clearCookie(EMAIL_COOKIE);
   res.status(204).send();
 });
 router3.post("/admin/test-payments/session", (req, res) => {
@@ -67267,12 +67269,12 @@ router3.post("/admin/test-payments/crypto-session", async (req, res) => {
   }
 });
 router3.get("/admin/auth/me", async (req, res) => {
-  const session = req.cookies?.[SESSION_COOKIE];
-  if (session !== SESSION_VALUE) {
+  const session = parseSecureAdminSession(req);
+  if (!session) {
     res.status(401).json({ error: "Not authenticated" });
     return;
   }
-  const email3 = req.cookies?.[EMAIL_COOKIE];
+  const email3 = session.email;
   if (typeof email3 === "string" && email3) {
     const [user] = await db.select().from(adminUsersTable).where(eq(adminUsersTable.email, email3)).limit(1);
     if (user && user.isActive) {
@@ -83706,6 +83708,13 @@ var crypto_audits_default = router48;
 var router49 = (0, import_express49.Router)();
 router49.use(health_default);
 router49.use(auth_default);
+router49.use("/admin", (req, res, next) => {
+  if (!hasSecureAdminSession(req)) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+  next();
+});
 router49.use(dashboard_default);
 router49.use(orders_default);
 router49.use(fulfillment_default);
