@@ -9,7 +9,7 @@ import { firstString } from "../../lib/query";
 const router = Router();
 
 function requireAdmin(req: Request, res: Response): boolean {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }

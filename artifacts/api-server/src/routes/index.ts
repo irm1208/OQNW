@@ -49,6 +49,7 @@ import addressLookupRouter from "./address-lookup";
 import cryptoPaymentsRouter from "./crypto-payments";
 import adminCryptoAuditsRouter from "./admin/crypto-audits";
 import adminPublicTrafficRouter from "./admin/publicTraffic";
+import adminSecurityRouter from "./admin/security";
 import publicTrafficRouter from "./publicTraffic";
 
 const router: IRouter = Router();
@@ -67,9 +68,8 @@ router.use("/admin", async (req, res, next) => {
     res.status(401).json({ error: "Recent authentication required", requiresRecentAuth: true });
     return;
   }
-  // Several older route-level checks still expect this server-side marker.
-  // It is set only after the signed session and active account are validated.
-  req.cookies.admin_session = "authenticated";
+  // Preserve route-level defence in depth without trusting or mutating cookies.
+  res.locals.adminAuthenticated = true;
   next();
 });
 router.use(adminDashboardRouter);
@@ -110,6 +110,7 @@ router.use(adminCreditsRouter);
 router.use(adminFraudRouter);
 router.use(adminBlockedIpsRouter);
 router.use(adminPublicTrafficRouter);
+router.use(adminSecurityRouter);
 router.use(adminEmailLogsRouter);
 
 router.use(loyaltyRouter);

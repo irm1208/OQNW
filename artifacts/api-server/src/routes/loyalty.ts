@@ -28,7 +28,7 @@ function getCustomerId(req: Request): number | null {
 }
 
 function isAdmin(req: Request, res: Response): boolean {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Unauthorized" });
     return false;
   }

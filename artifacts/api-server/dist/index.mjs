@@ -20732,27 +20732,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router53;
+    module.exports = Router54;
     module.exports.Route = Route;
-    function Router53(options) {
-      if (!(this instanceof Router53)) {
-        return new Router53(options);
+    function Router54(options) {
+      if (!(this instanceof Router54)) {
+        return new Router54(options);
       }
       const opts = options || {};
-      function router53(req, res, next) {
-        router53.handle(req, res, next);
+      function router54(req, res, next) {
+        router54.handle(req, res, next);
       }
-      Object.setPrototypeOf(router53, this);
-      router53.caseSensitive = opts.caseSensitive;
-      router53.mergeParams = opts.mergeParams;
-      router53.params = {};
-      router53.strict = opts.strict;
-      router53.stack = [];
-      return router53;
+      Object.setPrototypeOf(router54, this);
+      router54.caseSensitive = opts.caseSensitive;
+      router54.mergeParams = opts.mergeParams;
+      router54.params = {};
+      router54.strict = opts.strict;
+      router54.stack = [];
+      return router54;
     }
-    Router53.prototype = function() {
+    Router54.prototype = function() {
     };
-    Router53.prototype.param = function param2(name2, fn) {
+    Router54.prototype.param = function param2(name2, fn) {
       if (!name2) {
         throw new TypeError("argument name is required");
       }
@@ -20772,7 +20772,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router53.prototype.handle = function handle(req, res, callback) {
+    Router54.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20899,7 +20899,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router53.prototype.use = function use(handler) {
+    Router54.prototype.use = function use(handler) {
       let offset = 0;
       let path2 = "/";
       if (typeof handler !== "function") {
@@ -20932,7 +20932,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router53.prototype.route = function route(path2) {
+    Router54.prototype.route = function route(path2) {
       const route2 = new Route(path2);
       const layer = new Layer(path2, {
         sensitive: this.caseSensitive,
@@ -20947,7 +20947,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router53.prototype[method] = function(path2) {
+      Router54.prototype[method] = function(path2) {
         const route = this.route(path2);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -21130,13 +21130,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router53 = require_router();
+    var Router54 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router53 = null;
+      var router54 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -21145,13 +21145,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router53 === null) {
-            router53 = new Router53({
+          if (router54 === null) {
+            router54 = new Router54({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router53;
+          return router54;
         }
       });
     };
@@ -21222,15 +21222,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router53 = this.router;
+      var router54 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router53.use(path2, fn2);
+          return router54.use(path2, fn2);
         }
         debug(".use app under %s", path2);
         fn2.mountpath = path2;
         fn2.parent = this;
-        router53.use(path2, function mounted_app(req, res, next) {
+        router54.use(path2, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -23851,7 +23851,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router53 = require_router();
+    var Router54 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module.exports = createApplication;
@@ -23873,8 +23873,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router53.Route;
-    exports.Router = Router53;
+    exports.Route = Router54.Route;
+    exports.Router = Router54;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -46217,13 +46217,13 @@ var require_dist5 = __commonJS({
 });
 
 // src/app.ts
-var import_express53 = __toESM(require_express2(), 1);
+var import_express54 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 var import_cookie_parser = __toESM(require_cookie_parser(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
 
 // src/routes/index.ts
-var import_express51 = __toESM(require_express2(), 1);
+var import_express52 = __toESM(require_express2(), 1);
 
 // src/routes/health.ts
 var import_express = __toESM(require_express2(), 1);
@@ -66801,7 +66801,16 @@ if (!process.env.DATABASE_URL) {
     "DATABASE_URL must be set. Did you forget to provision a database?"
   );
 }
-var pool = new Pool3({ connectionString: process.env.DATABASE_URL });
+function databaseConnectionString(value) {
+  const url2 = new URL(value);
+  const isPostgres = url2.protocol === "postgres:" || url2.protocol === "postgresql:";
+  const isLocal = url2.hostname === "localhost" || url2.hostname === "127.0.0.1";
+  if (isPostgres && !isLocal) {
+    url2.searchParams.set("sslmode", "verify-full");
+  }
+  return url2.toString();
+}
+var pool = new Pool3({ connectionString: databaseConnectionString(process.env.DATABASE_URL) });
 var db = drizzle(pool, { schema: schema_exports });
 
 // src/routes/admin/auth.ts
@@ -68110,7 +68119,7 @@ var PAID_STATUS_SQL_O = sql.raw(
   `o.status IN ('payment_received', 'paid', 'processing', 'shipped', 'delivered')`
 );
 function requireAdmin(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -74926,7 +74935,7 @@ var import_express7 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router7 = (0, import_express7.Router)();
 function requireAdmin4(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -75099,7 +75108,7 @@ init_drizzle_orm();
 var import_express8 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 function requireAdmin5(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Unauthorized" });
     return false;
   }
@@ -75233,7 +75242,7 @@ var stock_alerts_default = router8;
 // src/routes/admin/products.ts
 var router9 = (0, import_express9.Router)();
 function requireAdmin6(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -75341,7 +75350,7 @@ var import_express10 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router10 = (0, import_express10.Router)();
 function requireAdmin7(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -76146,7 +76155,7 @@ function toPublicCatalogueImageUrl(imageUrl) {
 var router11 = (0, import_express11.Router)();
 var PRICE_SYNC_CONFIRMATION_TTL_MS = 10 * 60 * 1e3;
 function requireAdmin8(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -76622,7 +76631,7 @@ var import_express12 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router12 = (0, import_express12.Router)();
 function requireAdmin9(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -76767,7 +76776,7 @@ var import_express13 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router13 = (0, import_express13.Router)();
 function requireAdmin10(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -76873,7 +76882,7 @@ var import_express14 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router14 = (0, import_express14.Router)();
 function requireAdmin11(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -77059,7 +77068,7 @@ var import_express15 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router15 = (0, import_express15.Router)();
 function requireAdmin12(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -77179,7 +77188,7 @@ var import_express16 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router16 = (0, import_express16.Router)();
 function requireAdmin13(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -77231,7 +77240,7 @@ var import_express17 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router17 = (0, import_express17.Router)();
 function requireAdmin14(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -77380,7 +77389,7 @@ import crypto5 from "crypto";
 init_drizzle_orm();
 var router18 = (0, import_express18.Router)();
 function requireAdmin15(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -77607,7 +77616,7 @@ var PAID_STATUS_CLAUSE_O = sql.raw(
   `o.status IN ('payment_received', 'paid', 'processing', 'shipped', 'delivered')`
 );
 function requireAdmin17(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -77740,7 +77749,7 @@ var import_express21 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router21 = (0, import_express21.Router)();
 function requireAdmin18(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -77869,7 +77878,7 @@ var import_express22 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router22 = (0, import_express22.Router)();
 function requireAdmin19(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -82585,7 +82594,7 @@ var reviews_default = router27;
 var import_express28 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 function requireAdmin20(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Unauthorized" });
     return false;
   }
@@ -82993,7 +83002,7 @@ var import_express33 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router33 = (0, import_express33.Router)();
 function requireAdmin21(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -83154,7 +83163,7 @@ var import_express35 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router35 = (0, import_express35.Router)();
 function requireAdmin22(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -83249,7 +83258,7 @@ var import_express36 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router36 = (0, import_express36.Router)();
 function requireAdmin23(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -83397,7 +83406,7 @@ var import_express38 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router38 = (0, import_express38.Router)();
 function requireAdmin25(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -83457,7 +83466,7 @@ function getCustomerId3(req) {
   return token ? verifyCustomerSession4(token) : null;
 }
 function isAdmin(req, res) {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Unauthorized" });
     return false;
   }
@@ -84567,8 +84576,61 @@ router49.get("/admin/public-traffic/events", async (req, res) => {
 });
 var publicTraffic_default = router49;
 
-// src/routes/publicTraffic.ts
+// src/routes/admin/security.ts
 var import_express50 = __toESM(require_express2(), 1);
+init_drizzle_orm();
+var router50 = (0, import_express50.Router)();
+router50.get("/admin/security/events", async (req, res) => {
+  if (!await requireOwner(req, res)) return;
+  const requestedLimit = Number.parseInt(firstString(req.query.limit) ?? "100", 10);
+  const limit = Number.isFinite(requestedLimit) ? Math.min(250, Math.max(1, requestedLimit)) : 100;
+  const eventType = firstString(req.query.eventType)?.trim();
+  const successValue = firstString(req.query.success);
+  const search = firstString(req.query.search)?.trim();
+  const conditions = [];
+  if (eventType && eventType !== "all") conditions.push(eq(adminAuditEventsTable.eventType, eventType));
+  if (successValue === "true" || successValue === "false") {
+    conditions.push(eq(adminAuditEventsTable.success, successValue === "true"));
+  }
+  if (search) {
+    const term = `%${search}%`;
+    conditions.push(or(
+      ilike(adminAuditEventsTable.email, term),
+      ilike(adminAuditEventsTable.ip, term),
+      ilike(adminAuditEventsTable.eventType, term)
+    ));
+  }
+  try {
+    const where = conditions.length ? and(...conditions) : void 0;
+    const [events, totalRows, typeRows] = await Promise.all([
+      db.select().from(adminAuditEventsTable).where(where).orderBy(desc(adminAuditEventsTable.createdAt)).limit(limit),
+      db.select({ count: sql`count(*)::int` }).from(adminAuditEventsTable).where(where),
+      db.select({ eventType: adminAuditEventsTable.eventType }).from(adminAuditEventsTable).groupBy(adminAuditEventsTable.eventType).orderBy(adminAuditEventsTable.eventType)
+    ]);
+    res.json({
+      total: totalRows[0]?.count ?? 0,
+      eventTypes: typeRows.map((row) => row.eventType),
+      events: events.map((event) => ({
+        id: event.id,
+        eventType: event.eventType,
+        email: event.email,
+        ip: event.ip,
+        userAgent: event.userAgent,
+        requestId: event.requestId,
+        success: event.success,
+        metadata: event.metadata,
+        createdAt: event.createdAt.toISOString()
+      }))
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to list admin security events");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+var security_default = router50;
+
+// src/routes/publicTraffic.ts
+var import_express51 = __toESM(require_express2(), 1);
 
 // src/lib/publicTrafficProtection.ts
 init_drizzle_orm();
@@ -84818,13 +84880,13 @@ async function publicTrafficProtection(req, res, next) {
 // src/routes/publicTraffic.ts
 import path from "node:path";
 import { existsSync } from "node:fs";
-var router50 = (0, import_express50.Router)();
+var router51 = (0, import_express51.Router)();
 var PUBLIC_ASSET_ROOT = [
   path.resolve(process.cwd(), "artifacts/omniqure/public"),
   path.resolve(process.cwd(), "../omniqure/public"),
   path.resolve(import.meta.dirname, "../../omniqure/public")
 ].find(existsSync);
-router50.get("/catalogue-assets/*assetPath", (req, res) => {
+router51.get("/catalogue-assets/*assetPath", (req, res) => {
   const rawAssetPath = req.params.assetPath;
   const assetPath = Array.isArray(rawAssetPath) ? rawAssetPath.join("/") : String(rawAssetPath ?? "");
   if (!PUBLIC_ASSET_ROOT || !assetPath || !/\.(?:avif|gif|jpe?g|png|svg|webp|ico)$/i.test(assetPath)) {
@@ -84836,7 +84898,7 @@ router50.get("/catalogue-assets/*assetPath", (req, res) => {
     if (err && !res.headersSent) res.status(404).json({ error: "Not found" });
   });
 });
-router50.get("/traffic/image", async (req, res) => {
+router51.get("/traffic/image", async (req, res) => {
   const remoteAddress = req.socket.remoteAddress;
   if (remoteAddress !== "127.0.0.1" && remoteAddress !== "::1" && remoteAddress !== "::ffff:127.0.0.1") {
     res.status(404).json({ error: "Not found" });
@@ -84853,14 +84915,14 @@ router50.get("/traffic/image", async (req, res) => {
   }
   res.status(204).send();
 });
-var publicTraffic_default2 = router50;
+var publicTraffic_default2 = router51;
 
 // src/routes/index.ts
-var router51 = (0, import_express51.Router)();
-router51.use(health_default);
-router51.use(publicTraffic_default2);
-router51.use(auth_default);
-router51.use("/admin", async (req, res, next) => {
+var router52 = (0, import_express52.Router)();
+router52.use(health_default);
+router52.use(publicTraffic_default2);
+router52.use(auth_default);
+router52.use("/admin", async (req, res, next) => {
   if (!await validateSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return;
@@ -84869,62 +84931,63 @@ router51.use("/admin", async (req, res, next) => {
     res.status(401).json({ error: "Recent authentication required", requiresRecentAuth: true });
     return;
   }
-  req.cookies.admin_session = "authenticated";
+  res.locals.adminAuthenticated = true;
   next();
 });
-router51.use(dashboard_default);
-router51.use(orders_default);
-router51.use(fulfillment_default);
-router51.use(customers_default);
-router51.use(products_default);
-router51.use(discounts_default);
-router51.use(catalog_default);
-router51.use(returns_default);
-router51.use(tax_default);
-router51.use(shipping_default);
-router51.use(refunds_default);
-router51.use(inventory_audit_default);
-router51.use(export_default);
-router51.use(webhooks_default);
-router51.use(settings_default);
-router51.use(users_default);
-router51.use(reports_default);
-router51.use(gdpr_default);
-router51.use(blog_default);
-router51.use(crypto_audits_default);
-router51.use(orders_default2);
-router51.use(crypto_payments_default);
-router51.use(discounts_default2);
-router51.use(auth_default2);
-router51.use(account_default);
-router51.use(reviews_default);
-router51.use(reviews_default2);
-router51.use(wishlist_default);
-router51.use(returns_default2);
-router51.use(products_default2);
-router51.use(cart_default);
-router51.use(stock_alerts_default);
-router51.use(abandonedCarts_default);
-router51.use(alerts_default);
-router51.use(credits_default);
-router51.use(fraud_default);
-router51.use(blockedIps_default);
-router51.use(publicTraffic_default);
-router51.use(emailLogs_default);
-router51.use(loyalty_default);
-router51.use(tax_default2);
-router51.use(shipping_default2);
-router51.use(blog_default2);
-router51.use(btcpay_webhook_default);
-router51.use(wallid_webhook_default);
-router51.use(contact_default);
-router51.use(address_lookup_default);
-var routes_default = router51;
+router52.use(dashboard_default);
+router52.use(orders_default);
+router52.use(fulfillment_default);
+router52.use(customers_default);
+router52.use(products_default);
+router52.use(discounts_default);
+router52.use(catalog_default);
+router52.use(returns_default);
+router52.use(tax_default);
+router52.use(shipping_default);
+router52.use(refunds_default);
+router52.use(inventory_audit_default);
+router52.use(export_default);
+router52.use(webhooks_default);
+router52.use(settings_default);
+router52.use(users_default);
+router52.use(reports_default);
+router52.use(gdpr_default);
+router52.use(blog_default);
+router52.use(crypto_audits_default);
+router52.use(orders_default2);
+router52.use(crypto_payments_default);
+router52.use(discounts_default2);
+router52.use(auth_default2);
+router52.use(account_default);
+router52.use(reviews_default);
+router52.use(reviews_default2);
+router52.use(wishlist_default);
+router52.use(returns_default2);
+router52.use(products_default2);
+router52.use(cart_default);
+router52.use(stock_alerts_default);
+router52.use(abandonedCarts_default);
+router52.use(alerts_default);
+router52.use(credits_default);
+router52.use(fraud_default);
+router52.use(blockedIps_default);
+router52.use(publicTraffic_default);
+router52.use(security_default);
+router52.use(emailLogs_default);
+router52.use(loyalty_default);
+router52.use(tax_default2);
+router52.use(shipping_default2);
+router52.use(blog_default2);
+router52.use(btcpay_webhook_default);
+router52.use(wallid_webhook_default);
+router52.use(contact_default);
+router52.use(address_lookup_default);
+var routes_default = router52;
 
 // src/routes/sitemap.ts
-var import_express52 = __toESM(require_express2(), 1);
+var import_express53 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router52 = (0, import_express52.Router)();
+var router53 = (0, import_express53.Router)();
 var SITE_URL2 = "https://omniqure.com";
 function publicImageUrl(imageUrl) {
   if (imageUrl.startsWith("http")) return imageUrl;
@@ -84957,7 +85020,7 @@ function isoDate(d) {
   const date6 = d instanceof Date ? d : new Date(d);
   return date6.toISOString().split("T")[0];
 }
-router52.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
+router53.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
   try {
     const [products, blogPosts] = await Promise.all([
       db.select({
@@ -85033,10 +85096,10 @@ router52.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
     res.status(500).send("<!-- sitemap generation error -->");
   }
 });
-var sitemap_default = router52;
+var sitemap_default = router53;
 
 // src/app.ts
-var app = (0, import_express53.default)();
+var app = (0, import_express54.default)();
 var trustedOrigins = allowedBrowserOrigins();
 var stateChangingMethods = /* @__PURE__ */ new Set(["POST", "PUT", "PATCH", "DELETE"]);
 var browserSessionCookies = ["customer_session", "admin_session", "admin_secure_session"];
@@ -85117,13 +85180,13 @@ app.use((req, res, next) => {
 });
 app.use(publicTrafficProtection);
 app.use(
-  import_express53.default.json({
+  import_express54.default.json({
     verify: (req, _res, buf) => {
       req.rawBody = buf;
     }
   })
 );
-app.use(import_express53.default.urlencoded({ extended: true }));
+app.use(import_express54.default.urlencoded({ extended: true }));
 app.get("/", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });

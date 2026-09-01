@@ -6,7 +6,7 @@ import { and, eq, isNull, isNotNull, sql } from "drizzle-orm";
 import { sendBackInStockEmail } from "../lib/email";
 
 function requireAdmin(req: Request, res: Response): boolean {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Unauthorized" });
     return false;
   }

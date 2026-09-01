@@ -59,6 +59,7 @@ const coreNavGroups: NavGroup[] = [
       { href: "/shipping",    label: "Shipping",       icon: Truck },
       { href: "/blocked-ips", label: "Blocked IPs",    icon: ShieldBan },
       { href: "/public-traffic", label: "Traffic Protection", icon: ShieldCheck },
+      { href: "/security-activity", label: "Security Activity", icon: ShieldCheck },
     ],
   },
 ];

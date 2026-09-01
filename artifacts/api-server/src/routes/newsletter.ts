@@ -14,7 +14,7 @@ const SITE_URL = process.env.SITE_URL ?? "https://omniqure.com";
 const UNSUB_SECRET = requiredSecret("SESSION_SECRET", "omniqure-unsubscribe-development-only");
 
 function isAdmin(req: Request, res: Response): boolean {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Unauthorized" });
     return false;
   }

@@ -10,7 +10,17 @@ if (!process.env.DATABASE_URL) {
   );
 }
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+function databaseConnectionString(value: string): string {
+  const url = new URL(value);
+  const isPostgres = url.protocol === "postgres:" || url.protocol === "postgresql:";
+  const isLocal = url.hostname === "localhost" || url.hostname === "127.0.0.1";
+  if (isPostgres && !isLocal) {
+    url.searchParams.set("sslmode", "verify-full");
+  }
+  return url.toString();
+}
+
+export const pool = new Pool({ connectionString: databaseConnectionString(process.env.DATABASE_URL) });
 export const db = drizzle(pool, { schema });
 
 export * from "./schema";

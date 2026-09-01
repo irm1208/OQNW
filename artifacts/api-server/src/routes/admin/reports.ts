@@ -15,7 +15,7 @@ const PAID_STATUS_CLAUSE_O = sql.raw(
 );
 
 function requireAdmin(req: Request, res: Response): boolean {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }

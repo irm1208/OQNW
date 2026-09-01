@@ -6,7 +6,7 @@ import { eq, desc, and, like, sql } from "drizzle-orm";
 import { firstString } from "../../lib/query";
 
 function requireAdmin(req: Request, res: Response): boolean {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Unauthorized" });
     return false;
   }

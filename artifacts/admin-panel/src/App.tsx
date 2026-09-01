@@ -29,6 +29,7 @@ import Users from "@/pages/Users";
 import Reports from "@/pages/Reports";
 import FulfillmentQueue from "@/pages/FulfillmentQueue";
 import CryptoPayments from "@/pages/CryptoPayments";
+import SecurityActivity from "@/pages/SecurityActivity";
 
 const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
@@ -177,6 +178,11 @@ function AppRoutes() {
       <Route path="/users">
         <AdminLayout>
           <Users />
+        </AdminLayout>
+      </Route>
+      <Route path="/security-activity">
+        <AdminLayout>
+          <SecurityActivity />
         </AdminLayout>
       </Route>
       <Route path="/">

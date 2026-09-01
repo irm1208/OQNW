@@ -9,7 +9,7 @@ import { getSecureAdminSession, hasSecureAdminSession } from "./auth";
 
 const router = Router();
 
-async function requireOwner(req: Request, res: Response): Promise<boolean> {
+export async function requireOwner(req: Request, res: Response): Promise<boolean> {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
