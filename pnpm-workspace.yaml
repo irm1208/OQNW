@@ -62,7 +62,7 @@ catalog:
   tailwind-merge: ^3.3.1
   tailwindcss: ^4.1.14
   tsx: ^4.21.0
-  vite: ^7.3.2
+  vite: ^7.3.5
   wouter: ^3.3.5
   zod: ^3.25.76
 
@@ -76,85 +76,125 @@ onlyBuiltDependencies:
 
 overrides:
   # replit uses linux-x64 only, we can exclude all other platforms
-  "esbuild>@esbuild/darwin-arm64": "-"
-  "esbuild>@esbuild/darwin-x64": "-"
-  "esbuild>@esbuild/freebsd-arm64": "-"
-  "esbuild>@esbuild/freebsd-x64": "-"
-  "esbuild>@esbuild/linux-arm": "-"
-  "esbuild>@esbuild/linux-arm64": "-"
-  "esbuild>@esbuild/linux-ia32": "-"
-  "esbuild>@esbuild/linux-loong64": "-"
-  "esbuild>@esbuild/linux-mips64el": "-"
-  "esbuild>@esbuild/linux-ppc64": "-"
-  "esbuild>@esbuild/linux-riscv64": "-"
-  "esbuild>@esbuild/linux-s390x": "-"
-  "esbuild>@esbuild/netbsd-arm64": "-"
-  "esbuild>@esbuild/netbsd-x64": "-"
-  "esbuild>@esbuild/openbsd-arm64": "-"
-  "esbuild>@esbuild/openbsd-x64": "-"
-  "esbuild>@esbuild/sunos-x64": "-"
-  "esbuild>@esbuild/win32-arm64": "-"
-  "esbuild>@esbuild/win32-ia32": "-"
-  "esbuild>@esbuild/win32-x64": "-"
-  "esbuild>@esbuild/aix-ppc64": '-'
-  "esbuild>@esbuild/android-arm": '-'
-  "esbuild>@esbuild/android-arm64": '-'
-  "esbuild>@esbuild/android-x64": '-'
-  "esbuild>@esbuild/openharmony-arm64": '-'
-  "lightningcss>lightningcss-android-arm64": "-"
-  "lightningcss>lightningcss-darwin-arm64": "-"
-  "lightningcss>lightningcss-darwin-x64": "-"
-  "lightningcss>lightningcss-freebsd-x64": "-"
-  "lightningcss>lightningcss-linux-arm-gnueabihf": "-"
-  "lightningcss>lightningcss-linux-arm64-gnu": "-"
-  "lightningcss>lightningcss-linux-arm64-musl": "-"
-  "lightningcss>lightningcss-linux-x64-musl": "-"
-  "lightningcss>lightningcss-win32-arm64-msvc": "-"
-  "lightningcss>lightningcss-win32-x64-msvc": "-"
-  "@tailwindcss/oxide>@tailwindcss/oxide-android-arm64": "-"
-  "@tailwindcss/oxide>@tailwindcss/oxide-darwin-arm64": "-"
-  "@tailwindcss/oxide>@tailwindcss/oxide-darwin-x64": "-"
-  "@tailwindcss/oxide>@tailwindcss/oxide-freebsd-x64": "-"
-  "@tailwindcss/oxide>@tailwindcss/oxide-linux-arm-gnueabihf": "-"
-  "@tailwindcss/oxide>@tailwindcss/oxide-linux-arm64-gnu": "-"
-  "@tailwindcss/oxide>@tailwindcss/oxide-linux-arm64-musl": "-"
-  "@tailwindcss/oxide>@tailwindcss/oxide-win32-arm64-msvc": "-"
-  "@tailwindcss/oxide>@tailwindcss/oxide-win32-x64-msvc": "-"
-  "@tailwindcss/oxide>@tailwindcss/oxide-linux-x64-musl": "-"
-  "rollup>@rollup/rollup-android-arm-eabi": "-"
-  "rollup>@rollup/rollup-android-arm64": "-"
-  "rollup>@rollup/rollup-darwin-arm64": "-"
-  "rollup>@rollup/rollup-darwin-x64": "-"
-  "rollup>@rollup/rollup-freebsd-arm64": "-"
-  "rollup>@rollup/rollup-freebsd-x64": "-"
-  "rollup>@rollup/rollup-linux-arm-gnueabihf": "-"
-  "rollup>@rollup/rollup-linux-arm-musleabihf": "-"
-  "rollup>@rollup/rollup-linux-arm64-gnu": "-"
-  "rollup>@rollup/rollup-linux-arm64-musl": "-"
-  "rollup>@rollup/rollup-linux-loong64-gnu": "-"
-  "rollup>@rollup/rollup-linux-loong64-musl": "-"
-  "rollup>@rollup/rollup-linux-ppc64-gnu": "-"
-  "rollup>@rollup/rollup-linux-ppc64-musl": "-"
-  "rollup>@rollup/rollup-linux-riscv64-gnu": "-"
-  "rollup>@rollup/rollup-linux-riscv64-musl": "-"
-  "rollup>@rollup/rollup-linux-s390x-gnu": "-"
-  "rollup>@rollup/rollup-linux-x64-musl": "-"
-  "rollup>@rollup/rollup-openbsd-x64": "-"
-  "rollup>@rollup/rollup-openharmony-arm64": "-"
-  "rollup>@rollup/rollup-win32-arm64-msvc": "-"
-  "rollup>@rollup/rollup-win32-ia32-msvc": "-"
-  "rollup>@rollup/rollup-win32-x64-gnu": "-"
-  "rollup>@rollup/rollup-win32-x64-msvc": "-"
-  "@expo/ngrok-bin>@expo/ngrok-bin-darwin-arm64": "-"
-  "@expo/ngrok-bin>@expo/ngrok-bin-darwin-x64": "-"
-  "@expo/ngrok-bin>@expo/ngrok-bin-freebsd-ia32": "-"
-  "@expo/ngrok-bin>@expo/ngrok-bin-freebsd-x64": "-"
-  "@expo/ngrok-bin>@expo/ngrok-bin-linux-arm64": "-"
-  "@expo/ngrok-bin>@expo/ngrok-bin-linux-arm": "-"
-  "@expo/ngrok-bin>@expo/ngrok-bin-linux-ia32": "-"
-  "@expo/ngrok-bin>@expo/ngrok-bin-sunos-x64": "-"
-  "@expo/ngrok-bin>@expo/ngrok-bin-win32-ia32": "-"
-  "@expo/ngrok-bin>@expo/ngrok-bin-win32-x64": "-"
-  # drizzle-kit uses esbuild internally on an older version that's vulnerable, this overrides it
-  "@esbuild-kit/esm-loader": "npm:tsx@^4.21.0"
-  esbuild: "0.27.3"
+  '@babel/core@<=7.29.0': '>=7.29.6'
+  '@esbuild-kit/esm-loader': npm:tsx@^4.21.0
+  '@expo/ngrok-bin>@expo/ngrok-bin-darwin-arm64': '-'
+  '@expo/ngrok-bin>@expo/ngrok-bin-darwin-x64': '-'
+  '@expo/ngrok-bin>@expo/ngrok-bin-freebsd-ia32': '-'
+  '@expo/ngrok-bin>@expo/ngrok-bin-freebsd-x64': '-'
+  '@expo/ngrok-bin>@expo/ngrok-bin-linux-arm': '-'
+  '@expo/ngrok-bin>@expo/ngrok-bin-linux-arm64': '-'
+  '@expo/ngrok-bin>@expo/ngrok-bin-linux-ia32': '-'
+  '@expo/ngrok-bin>@expo/ngrok-bin-sunos-x64': '-'
+  '@expo/ngrok-bin>@expo/ngrok-bin-win32-ia32': '-'
+  '@expo/ngrok-bin>@expo/ngrok-bin-win32-x64': '-'
+  '@tailwindcss/oxide>@tailwindcss/oxide-android-arm64': '-'
+  '@tailwindcss/oxide>@tailwindcss/oxide-darwin-arm64': '-'
+  '@tailwindcss/oxide>@tailwindcss/oxide-darwin-x64': '-'
+  '@tailwindcss/oxide>@tailwindcss/oxide-freebsd-x64': '-'
+  '@tailwindcss/oxide>@tailwindcss/oxide-linux-arm-gnueabihf': '-'
+  '@tailwindcss/oxide>@tailwindcss/oxide-linux-arm64-gnu': '-'
+  '@tailwindcss/oxide>@tailwindcss/oxide-linux-arm64-musl': '-'
+  '@tailwindcss/oxide>@tailwindcss/oxide-linux-x64-musl': '-'
+  '@tailwindcss/oxide>@tailwindcss/oxide-win32-arm64-msvc': '-'
+  '@tailwindcss/oxide>@tailwindcss/oxide-win32-x64-msvc': '-'
+  body-parser@>=2.0.0 <2.3.0: '>=2.3.0'
+  brace-expansion@>=2.0.0 <2.0.3: '>=2.0.3'
+  brace-expansion@>=2.0.0 <2.1.2: '>=2.1.2'
+  brace-expansion@>=2.0.0 <2.1.3: '>=2.1.3'
+  brace-expansion@>=2.0.0 <2.1.4: '>=2.1.4'
+  dompurify@<3.4.7: '>=3.4.7'
+  dompurify@<3.4.9: '>=3.4.9'
+  dompurify@<=3.4.10: '>=3.4.11'
+  dompurify@<=3.4.11: '>=3.4.12'
+  dompurify@<=3.4.12: '>=3.4.13'
+  dompurify@<=3.4.5: '>=3.4.6'
+  dompurify@<=3.4.6: '>=3.4.7'
+  dompurify@>=3.0.0 <=3.4.7: '>=3.4.8'
+  esbuild: 0.28.2
+  esbuild>@esbuild/aix-ppc64: '-'
+  esbuild>@esbuild/android-arm: '-'
+  esbuild>@esbuild/android-arm64: '-'
+  esbuild>@esbuild/android-x64: '-'
+  esbuild>@esbuild/darwin-arm64: '-'
+  esbuild>@esbuild/darwin-x64: '-'
+  esbuild>@esbuild/freebsd-arm64: '-'
+  esbuild>@esbuild/freebsd-x64: '-'
+  esbuild>@esbuild/linux-arm: '-'
+  esbuild>@esbuild/linux-arm64: '-'
+  esbuild>@esbuild/linux-ia32: '-'
+  esbuild>@esbuild/linux-loong64: '-'
+  esbuild>@esbuild/linux-mips64el: '-'
+  esbuild>@esbuild/linux-ppc64: '-'
+  esbuild>@esbuild/linux-riscv64: '-'
+  esbuild>@esbuild/linux-s390x: '-'
+  esbuild>@esbuild/netbsd-arm64: '-'
+  esbuild>@esbuild/netbsd-x64: '-'
+  esbuild>@esbuild/openbsd-arm64: '-'
+  esbuild>@esbuild/openbsd-x64: '-'
+  esbuild>@esbuild/openharmony-arm64: '-'
+  esbuild>@esbuild/sunos-x64: '-'
+  esbuild>@esbuild/win32-arm64: '-'
+  esbuild>@esbuild/win32-ia32: '-'
+  esbuild>@esbuild/win32-x64: '-'
+  esbuild@>=0.27.3 <0.28.1: '>=0.28.1'
+  fast-uri@>=3.0.0 <3.1.3: '>=3.1.3'
+  fast-uri@>=3.0.0 <3.1.5: '>=3.1.5'
+  fast-uri@>=3.0.0 <=3.1.0: '>=3.1.1'
+  fast-uri@>=3.0.0 <=3.1.1: '>=3.1.2'
+  fast-uri@>=3.0.0 <=3.1.3: '>=3.1.4'
+  js-yaml@>=4.0.0 <4.3.0: '>=4.3.0'
+  js-yaml@>=4.0.0 <4.3.1: '>=4.3.1'
+  js-yaml@>=4.0.0 <=4.1.1: '>=4.2.0'
+  lightningcss>lightningcss-android-arm64: '-'
+  lightningcss>lightningcss-darwin-arm64: '-'
+  lightningcss>lightningcss-darwin-x64: '-'
+  lightningcss>lightningcss-freebsd-x64: '-'
+  lightningcss>lightningcss-linux-arm-gnueabihf: '-'
+  lightningcss>lightningcss-linux-arm64-gnu: '-'
+  lightningcss>lightningcss-linux-arm64-musl: '-'
+  lightningcss>lightningcss-linux-x64-musl: '-'
+  lightningcss>lightningcss-win32-arm64-msvc: '-'
+  lightningcss>lightningcss-win32-x64-msvc: '-'
+  linkify-it@<=5.0.0: '>=5.0.1'
+  linkify-it@<=5.0.1: '>=5.0.2'
+  lodash@<=4.17.23: '>=4.18.0'
+  lodash@>=4.0.0 <=4.17.23: '>=4.18.0'
+  markdown-it@<=14.1.1: '>=14.2.0'
+  micromatch>picomatch: 4.0.7
+  nanoid@<3.3.16: '>=3.3.16'
+  nanoid@<3.3.18: '>=3.3.18'
+  path-to-regexp@>=8.0.0 <8.4.0: '>=8.4.0'
+  picomatch@<2.3.2: '>=2.3.2'
+  picomatch@>=4.0.0 <4.0.4: '>=4.0.4'
+  postcss@<8.5.10: '>=8.5.10'
+  postcss@<=8.5.11: '>=8.5.12'
+  postcss@<=8.5.17: '>=8.5.18'
+  postcss@<=8.5.22: '>=8.5.23'
+  qs@>=6.11.1 <=6.15.1: '>=6.15.2'
+  rollup>@rollup/rollup-android-arm-eabi: '-'
+  rollup>@rollup/rollup-android-arm64: '-'
+  rollup>@rollup/rollup-darwin-arm64: '-'
+  rollup>@rollup/rollup-darwin-x64: '-'
+  rollup>@rollup/rollup-freebsd-arm64: '-'
+  rollup>@rollup/rollup-freebsd-x64: '-'
+  rollup>@rollup/rollup-linux-arm-gnueabihf: '-'
+  rollup>@rollup/rollup-linux-arm-musleabihf: '-'
+  rollup>@rollup/rollup-linux-arm64-gnu: '-'
+  rollup>@rollup/rollup-linux-arm64-musl: '-'
+  rollup>@rollup/rollup-linux-loong64-gnu: '-'
+  rollup>@rollup/rollup-linux-loong64-musl: '-'
+  rollup>@rollup/rollup-linux-ppc64-gnu: '-'
+  rollup>@rollup/rollup-linux-ppc64-musl: '-'
+  rollup>@rollup/rollup-linux-riscv64-gnu: '-'
+  rollup>@rollup/rollup-linux-riscv64-musl: '-'
+  rollup>@rollup/rollup-linux-s390x-gnu: '-'
+  rollup>@rollup/rollup-linux-x64-musl: '-'
+  rollup>@rollup/rollup-openbsd-x64: '-'
+  rollup>@rollup/rollup-openharmony-arm64: '-'
+  rollup>@rollup/rollup-win32-arm64-msvc: '-'
+  rollup>@rollup/rollup-win32-ia32-msvc: '-'
+  rollup>@rollup/rollup-win32-x64-gnu: '-'
+  rollup>@rollup/rollup-win32-x64-msvc: '-'
+  vite@>=7.0.0 <=7.3.4: '>=7.3.5'
+  yaml@>=2.0.0 <2.8.3: '>=2.8.3'
