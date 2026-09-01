@@ -12,6 +12,7 @@
     "sync:production-prices": "pnpm --filter @workspace/scripts run sync:production-prices"
   },
   "private": true,
+  "packageManager": "pnpm@10.26.1",
   "devDependencies": {
     "typescript": "~5.9.2",
     "prettier": "^3.8.1"
