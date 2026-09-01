@@ -1,6 +1,7 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import crypto from "crypto";
+import { requiredSecret } from "../lib/securityConfig";
 import { db } from "@workspace/db";
 import { wishlistsTable } from "@workspace/db";
 import { eq, and } from "drizzle-orm";
@@ -8,10 +9,7 @@ import { firstString } from "../lib/query";
 
 const router = Router();
 
-const SESSION_SECRET =
-  process.env.SESSION_SECRET ??
-  process.env.ADMIN_PASSWORD ??
-  "omniqure-cust-session-fallback-secret";
+const SESSION_SECRET = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 const COOKIE_NAME = "customer_session";
 
 function getCustomerId(req: Request): number | null {

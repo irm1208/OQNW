@@ -65,6 +65,7 @@ import {
   wallidPaymentIdFromNotes,
 } from "../lib/wallidReconciliation";
 import { calculateShippingCostGbp } from "../lib/shipping";
+import { requiredSecret } from "../lib/securityConfig";
 
 const COUNTRY_NAME_TO_CODE: Record<string, string> = {
   "United States": "US", "United Kingdom": "GB", "Canada": "CA",
@@ -112,10 +113,7 @@ const FREE_BAC_WATER_SLUG = "bacteriostatic-water-10ml";
 
 const router = Router();
 
-const SESSION_SECRET =
-  process.env.SESSION_SECRET ??
-  process.env.ADMIN_PASSWORD ??
-  "omniqure-cust-session-fallback-secret";
+const SESSION_SECRET = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 const WALLID_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
 const CRYPTO_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
 const checkoutPaymentQuoteReplayGuard = new CheckoutPaymentQuoteReplayGuard();

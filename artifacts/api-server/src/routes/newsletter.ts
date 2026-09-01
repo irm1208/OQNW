@@ -1,6 +1,7 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import crypto from "crypto";
+import { requiredSecret } from "../lib/securityConfig";
 import { db } from "@workspace/db";
 import { newsletterSubscribersTable, ordersTable, orderItemsTable, emailLogsTable } from "@workspace/db";
 import { eq, and, gte, lte } from "drizzle-orm";
@@ -10,7 +11,7 @@ import { logger } from "../lib/logger";
 const router = Router();
 
 const SITE_URL = process.env.SITE_URL ?? "https://omniqure.com";
-const UNSUB_SECRET = process.env.ADMIN_PASSWORD ?? "omniqure-unsub-secret";
+const UNSUB_SECRET = requiredSecret("SESSION_SECRET", "omniqure-unsubscribe-development-only");
 
 function isAdmin(req: Request, res: Response): boolean {
   if (req.cookies?.admin_session !== "authenticated") {

@@ -1,16 +1,14 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import crypto from "crypto";
+import { requiredSecret } from "../lib/securityConfig";
 import { db } from "@workspace/db";
 import { abandonedCartsTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 
 const router = Router();
 
-const SESSION_SECRET =
-  process.env.SESSION_SECRET ??
-  process.env.ADMIN_PASSWORD ??
-  "omniqure-cust-session-fallback-secret";
+const SESSION_SECRET = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 
 function verifyCustomerSession(token: string): number | null {
   const dot = token.lastIndexOf(".");

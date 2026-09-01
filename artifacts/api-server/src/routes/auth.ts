@@ -7,13 +7,11 @@ import { customersTable, loyaltyTransactionsTable } from "@workspace/db";
 import { eq, sql } from "drizzle-orm";
 import { sendPasswordReset, sendAccountCreatedEmail } from "../lib/email";
 import { getClientIp, lookupCountry } from "../lib/geoip";
+import { requiredSecret } from "../lib/securityConfig";
 
 const router = Router();
 
-const SESSION_SECRET =
-  process.env.SESSION_SECRET ??
-  process.env.ADMIN_PASSWORD ??
-  "omniqure-cust-session-fallback-secret";
+const SESSION_SECRET = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 const COOKIE_NAME = "customer_session";
 const COOKIE_MAX_AGE = 30 * 24 * 60 * 60 * 1000;
 
@@ -94,6 +92,7 @@ router.post("/auth/register", async (req: Request, res: Response): Promise<void>
       res.cookie(COOKIE_NAME, token, {
         httpOnly: true,
         sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
         maxAge: COOKIE_MAX_AGE,
         path: "/",
       });
@@ -202,6 +201,7 @@ router.post("/auth/register", async (req: Request, res: Response): Promise<void>
     res.cookie(COOKIE_NAME, token, {
       httpOnly: true,
       sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
       maxAge: COOKIE_MAX_AGE,
       path: "/",
     });
@@ -272,6 +272,7 @@ router.post("/auth/login", async (req: Request, res: Response): Promise<void> =>
     res.cookie(COOKIE_NAME, token, {
       httpOnly: true,
       sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
       maxAge: COOKIE_MAX_AGE,
       path: "/",
     });

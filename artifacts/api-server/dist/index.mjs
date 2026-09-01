@@ -67051,9 +67051,40 @@ async function verifyCryptoPayment(route, txHash, expectedAmount) {
   }
 }
 
+// src/lib/securityConfig.ts
+var isProduction2 = process.env.NODE_ENV === "production";
+function requiredSecret(name2, developmentFallback) {
+  const configured = process.env[name2];
+  if (configured) return configured;
+  if (isProduction2) {
+    throw new Error(`${name2} must be configured in production`);
+  }
+  return developmentFallback;
+}
+function allowedBrowserOrigins() {
+  const configured = (process.env.CORS_ALLOWED_ORIGINS ?? "").split(",").map((origin) => origin.trim()).filter(Boolean);
+  const origins = /* @__PURE__ */ new Set([
+    "https://omniqure.com",
+    "https://www.omniqure.com",
+    ...configured
+  ]);
+  if (!isProduction2) {
+    origins.add("http://localhost:5000");
+    origins.add("http://localhost:8081");
+    origins.add("http://localhost:8082");
+    origins.add("http://127.0.0.1:5000");
+    origins.add("http://127.0.0.1:8081");
+    origins.add("http://127.0.0.1:8082");
+  }
+  const replitDevDomain = process.env.REPLIT_DEV_DOMAIN;
+  if (replitDevDomain) origins.add(`https://${replitDevDomain}`);
+  return origins;
+}
+
 // src/routes/admin/auth.ts
 var router3 = (0, import_express3.Router)();
-var ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "omniqure-admin-2024";
+var ADMIN_PASSWORD = requiredSecret("ADMIN_PASSWORD", "omniqure-admin-development-only");
+var SESSION_SECRET = requiredSecret("SESSION_SECRET", "omniqure-admin-session-development-only");
 var SESSION_COOKIE = "admin_session";
 var EMAIL_COOKIE = "admin_email";
 var SESSION_VALUE = "authenticated";
@@ -67065,7 +67096,7 @@ var ATTEMPT_WINDOW_MS = 30 * 60 * 1e3;
 function secureSessionValue() {
   const expiresAt = Date.now() + COOKIE_MAX_AGE;
   const payload = `admin:${expiresAt}`;
-  const signature = createHmac("sha256", process.env.SESSION_SECRET ?? ADMIN_PASSWORD).update(payload).digest("base64url");
+  const signature = createHmac("sha256", SESSION_SECRET).update(payload).digest("base64url");
   return `${payload}:${signature}`;
 }
 function hasSecureAdminSession(req) {
@@ -67074,7 +67105,7 @@ function hasSecureAdminSession(req) {
   const [role, expires, signature] = value.split(":");
   if (role !== "admin" || !/^\d+$/.test(expires) || !signature || Number(expires) < Date.now()) return false;
   const payload = `${role}:${expires}`;
-  const expected = createHmac("sha256", process.env.SESSION_SECRET ?? ADMIN_PASSWORD).update(payload).digest("base64url");
+  const expected = createHmac("sha256", SESSION_SECRET).update(payload).digest("base64url");
   return signature.length === expected.length && timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
 }
 var attemptsByIp = /* @__PURE__ */ new Map();
@@ -67160,7 +67191,8 @@ router3.post("/admin/auth/login", async (req, res) => {
   res.cookie(SESSION_COOKIE, SESSION_VALUE, {
     httpOnly: true,
     maxAge: COOKIE_MAX_AGE,
-    sameSite: "lax"
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production"
   });
   res.cookie(SECURE_SESSION_COOKIE, secureSessionValue(), {
     httpOnly: true,
@@ -67172,7 +67204,8 @@ router3.post("/admin/auth/login", async (req, res) => {
     res.cookie(EMAIL_COOKIE, sessionEmail, {
       httpOnly: true,
       maxAge: COOKIE_MAX_AGE,
-      sameSite: "lax"
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production"
     });
   } else {
     res.clearCookie(EMAIL_COOKIE);
@@ -78181,7 +78214,7 @@ var NON_SHIPPABLE_COUNTRY_CODES = /* @__PURE__ */ new Set([
 ]);
 var FREE_BAC_WATER_SLUG = "bacteriostatic-water-10ml";
 var router23 = (0, import_express23.Router)();
-var SESSION_SECRET = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
+var SESSION_SECRET2 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 var WALLID_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
 var CRYPTO_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
 var checkoutPaymentQuoteReplayGuard = new CheckoutPaymentQuoteReplayGuard();
@@ -78190,7 +78223,7 @@ function verifyCustomerSession(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto10.createHmac("sha256", SESSION_SECRET).update(payload).digest("hex");
+  const expected = crypto10.createHmac("sha256", SESSION_SECRET2).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -78479,7 +78512,7 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
         totalGbpMinor: Math.round(totalGbp * 100),
         checkoutFingerprint,
         customerId: loyaltySessionCustomerId
-      }, SESSION_SECRET);
+      }, SESSION_SECRET2);
       res.status(200).json({
         paymentQuoteToken: signedQuote.token,
         expiresAt: signedQuote.expiresAt,
@@ -78523,7 +78556,7 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
         });
         return;
       }
-      const quote = verifyCheckoutPaymentQuoteToken(paymentQuoteToken, SESSION_SECRET, {
+      const quote = verifyCheckoutPaymentQuoteToken(paymentQuoteToken, SESSION_SECRET2, {
         currency: selectedWallidCurrency,
         totalGbpMinor: Math.round(totalGbp * 100),
         checkoutFingerprint,
@@ -80955,12 +80988,12 @@ var bcryptjs_default = {
 // src/routes/auth.ts
 init_drizzle_orm();
 var router25 = (0, import_express25.Router)();
-var SESSION_SECRET2 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
+var SESSION_SECRET3 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 var COOKIE_NAME = "customer_session";
 var COOKIE_MAX_AGE2 = 30 * 24 * 60 * 60 * 1e3;
 function signToken(customerId) {
   const payload = String(customerId);
-  const sig = crypto11.createHmac("sha256", SESSION_SECRET2).update(payload).digest("hex");
+  const sig = crypto11.createHmac("sha256", SESSION_SECRET3).update(payload).digest("hex");
   return `${payload}.${sig}`;
 }
 function verifyToken(token) {
@@ -80968,7 +81001,7 @@ function verifyToken(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto11.createHmac("sha256", SESSION_SECRET2).update(payload).digest("hex");
+  const expected = crypto11.createHmac("sha256", SESSION_SECRET3).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -80996,6 +81029,7 @@ router25.post("/auth/register", async (req, res) => {
       res.cookie(COOKIE_NAME, token2, {
         httpOnly: true,
         sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
         maxAge: COOKIE_MAX_AGE2,
         path: "/"
       });
@@ -81081,6 +81115,7 @@ router25.post("/auth/register", async (req, res) => {
     res.cookie(COOKIE_NAME, token, {
       httpOnly: true,
       sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
       maxAge: COOKIE_MAX_AGE2,
       path: "/"
     });
@@ -81129,6 +81164,7 @@ router25.post("/auth/login", async (req, res) => {
     res.cookie(COOKIE_NAME, token, {
       httpOnly: true,
       sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
       maxAge: COOKIE_MAX_AGE2,
       path: "/"
     });
@@ -81269,14 +81305,14 @@ var import_express26 = __toESM(require_express2(), 1);
 import crypto12 from "crypto";
 init_drizzle_orm();
 var router26 = (0, import_express26.Router)();
-var SESSION_SECRET3 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
+var SESSION_SECRET4 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 var COOKIE_NAME2 = "customer_session";
 function verifyToken2(token) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto12.createHmac("sha256", SESSION_SECRET3).update(payload).digest("hex");
+  const expected = crypto12.createHmac("sha256", SESSION_SECRET4).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -81541,14 +81577,14 @@ var import_express27 = __toESM(require_express2(), 1);
 import crypto13 from "crypto";
 init_drizzle_orm();
 var router27 = (0, import_express27.Router)();
-var SESSION_SECRET4 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
+var SESSION_SECRET5 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 var COOKIE_NAME3 = "customer_session";
 function verifyCustomerSession2(token) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto13.createHmac("sha256", SESSION_SECRET4).update(payload).digest("hex");
+  const expected = crypto13.createHmac("sha256", SESSION_SECRET5).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -81805,7 +81841,7 @@ var import_express29 = __toESM(require_express2(), 1);
 import crypto14 from "crypto";
 init_drizzle_orm();
 var router29 = (0, import_express29.Router)();
-var SESSION_SECRET5 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
+var SESSION_SECRET6 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 var COOKIE_NAME4 = "customer_session";
 function getCustomerId(req) {
   const token = req.cookies?.[COOKIE_NAME4];
@@ -81814,7 +81850,7 @@ function getCustomerId(req) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto14.createHmac("sha256", SESSION_SECRET5).update(payload).digest("hex");
+  const expected = crypto14.createHmac("sha256", SESSION_SECRET6).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -81878,7 +81914,7 @@ var import_express30 = __toESM(require_express2(), 1);
 import crypto15 from "crypto";
 init_drizzle_orm();
 var router30 = (0, import_express30.Router)();
-var SESSION_SECRET6 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
+var SESSION_SECRET7 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 var COOKIE_NAME5 = "customer_session";
 function getCustomerId2(req) {
   const token = req.cookies?.[COOKIE_NAME5];
@@ -81887,7 +81923,7 @@ function getCustomerId2(req) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto15.createHmac("sha256", SESSION_SECRET6).update(payload).digest("hex");
+  const expected = crypto15.createHmac("sha256", SESSION_SECRET7).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -82047,13 +82083,13 @@ var import_express32 = __toESM(require_express2(), 1);
 import crypto16 from "crypto";
 init_drizzle_orm();
 var router32 = (0, import_express32.Router)();
-var SESSION_SECRET7 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
+var SESSION_SECRET8 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 function verifyCustomerSession3(token) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto16.createHmac("sha256", SESSION_SECRET7).update(payload).digest("hex");
+  const expected = crypto16.createHmac("sha256", SESSION_SECRET8).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -82569,13 +82605,13 @@ var import_express39 = __toESM(require_express2(), 1);
 import crypto17 from "crypto";
 init_drizzle_orm();
 var router39 = (0, import_express39.Router)();
-var SESSION_SECRET8 = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "omniqure-cust-session-fallback-secret";
+var SESSION_SECRET9 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 function verifyCustomerSession4(token) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto17.createHmac("sha256", SESSION_SECRET8).update(payload).digest("hex");
+  const expected = crypto17.createHmac("sha256", SESSION_SECRET9).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -83830,6 +83866,24 @@ var sitemap_default = router50;
 
 // src/app.ts
 var app = (0, import_express51.default)();
+var trustedOrigins = allowedBrowserOrigins();
+app.disable("x-powered-by");
+app.set("trust proxy", 1);
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  res.setHeader("Cross-Origin-Resource-Policy", "same-site");
+  res.setHeader("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'");
+  if (process.env.NODE_ENV === "production") {
+    res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+  }
+  if (req.path.startsWith("/api/admin") || req.path.startsWith("/api/account") || req.path.startsWith("/api/auth")) {
+    res.setHeader("Cache-Control", "no-store");
+  }
+  next();
+});
 app.use(
   (0, import_pino_http.default)({
     logger,
@@ -83849,7 +83903,16 @@ app.use(
     }
   })
 );
-app.use((0, import_cors.default)({ credentials: true, origin: true }));
+app.use((0, import_cors.default)({
+  credentials: true,
+  origin(origin, callback) {
+    if (!origin || trustedOrigins.has(origin)) {
+      callback(null, true);
+      return;
+    }
+    callback(new Error("CORS origin denied"));
+  }
+}));
 app.use((0, import_cookie_parser.default)());
 app.use(
   import_express51.default.json({
@@ -83864,6 +83927,18 @@ app.get("/", (_req, res) => {
 });
 app.use(sitemap_default);
 app.use("/api", routes_default);
+app.use((_req, res) => {
+  res.status(404).json({ error: "Not found" });
+});
+var errorHandler = (err, req, res, _next) => {
+  if (err instanceof Error && err.message === "CORS origin denied") {
+    res.status(403).json({ error: "Origin not allowed" });
+    return;
+  }
+  req.log?.error({ err }, "Unhandled request error");
+  res.status(500).json({ error: "Internal server error" });
+};
+app.use(errorHandler);
 var app_default = app;
 
 // src/lib/abandonedCartJob.ts
@@ -86932,4 +87007,3 @@ cookie-parser/index.js:
    * MIT Licensed
    *)
 */
-//# sourceMappingURL=index.mjs.map

@@ -9,10 +9,12 @@ import { createHmac, timingSafeEqual } from "crypto";
 import { createWallidTestCheckoutToken } from "../../lib/wallidTestCheckout";
 import { createCryptoTestCheckoutToken } from "../../lib/cryptoTestCheckout";
 import { getPublicCryptoPaymentOptions } from "../../lib/crypto-payments";
+import { requiredSecret } from "../../lib/securityConfig";
 
 const router = Router();
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "omniqure-admin-2024";
+const ADMIN_PASSWORD = requiredSecret("ADMIN_PASSWORD", "omniqure-admin-development-only");
+const SESSION_SECRET = requiredSecret("SESSION_SECRET", "omniqure-admin-session-development-only");
 const SESSION_COOKIE = "admin_session";
 const EMAIL_COOKIE = "admin_email";
 const SESSION_VALUE = "authenticated";
@@ -32,7 +34,7 @@ interface AttemptRecord {
 function secureSessionValue(): string {
   const expiresAt = Date.now() + COOKIE_MAX_AGE;
   const payload = `admin:${expiresAt}`;
-  const signature = createHmac("sha256", process.env.SESSION_SECRET ?? ADMIN_PASSWORD).update(payload).digest("base64url");
+  const signature = createHmac("sha256", SESSION_SECRET).update(payload).digest("base64url");
   return `${payload}:${signature}`;
 }
 
@@ -42,7 +44,7 @@ export function hasSecureAdminSession(req: Request): boolean {
   const [role, expires, signature] = value.split(":");
   if (role !== "admin" || !/^\d+$/.test(expires) || !signature || Number(expires) < Date.now()) return false;
   const payload = `${role}:${expires}`;
-  const expected = createHmac("sha256", process.env.SESSION_SECRET ?? ADMIN_PASSWORD).update(payload).digest("base64url");
+  const expected = createHmac("sha256", SESSION_SECRET).update(payload).digest("base64url");
   return signature.length === expected.length && timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
 }
 
@@ -160,6 +162,7 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
     httpOnly: true,
     maxAge: COOKIE_MAX_AGE,
     sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
   });
   res.cookie(SECURE_SESSION_COOKIE, secureSessionValue(), {
     httpOnly: true,
@@ -172,6 +175,7 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
       httpOnly: true,
       maxAge: COOKIE_MAX_AGE,
       sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
     });
   } else {
     res.clearCookie(EMAIL_COOKIE);
