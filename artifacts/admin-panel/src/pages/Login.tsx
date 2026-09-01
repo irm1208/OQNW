@@ -216,8 +216,8 @@ export default function Login() {
               ) : (
                 <>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Email <span className="text-muted-foreground font-normal">(blank only during first-admin setup)</span></label>
-                    <Input type="email" autoComplete="username" placeholder="admin@omniqure.com" value={email} onChange={(e) => setEmail(e.target.value)} className="h-11" autoFocus />
+                      <label className="text-sm font-medium">Email <span className="text-muted-foreground font-normal">(leave blank for first-admin setup)</span></label>
+                      <Input type="email" autoComplete="username" placeholder="Leave blank for first setup" value={email} onChange={(e) => setEmail(e.target.value)} className="h-11" autoFocus />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Password</label>
