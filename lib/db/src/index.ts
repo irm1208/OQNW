@@ -14,7 +14,8 @@ function databaseConnectionString(value: string): string {
   const url = new URL(value);
   const isPostgres = url.protocol === "postgres:" || url.protocol === "postgresql:";
   const isLocal = url.hostname === "localhost" || url.hostname === "127.0.0.1";
-  if (isPostgres && !isLocal) {
+  const hasExplicitSslMode = url.searchParams.has("sslmode");
+  if (isPostgres && !isLocal && !hasExplicitSslMode) {
     url.searchParams.set("sslmode", "verify-full");
   }
   return url.toString();

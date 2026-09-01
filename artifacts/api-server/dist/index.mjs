@@ -66807,7 +66807,8 @@ function databaseConnectionString(value) {
   const url2 = new URL(value);
   const isPostgres = url2.protocol === "postgres:" || url2.protocol === "postgresql:";
   const isLocal = url2.hostname === "localhost" || url2.hostname === "127.0.0.1";
-  if (isPostgres && !isLocal) {
+  const hasExplicitSslMode = url2.searchParams.has("sslmode");
+  if (isPostgres && !isLocal && !hasExplicitSslMode) {
     url2.searchParams.set("sslmode", "verify-full");
   }
   return url2.toString();
