@@ -25,3 +25,4 @@
 - [Protected assets in static web artifacts](protected-static-assets.md) — production static serving bypasses Vite middleware; route protected files through an API and omit duplicate build output.
 - [Admin session trust boundary](admin-session-trust.md) — never authorize from the legacy admin marker cookie; every admin endpoint must require the signed, expiring session.
 - [Pnpm audit override cleanup](pnpm-audit-overrides.md) — audit --fix can miss nested glob peers and rewrite workspace YAML; review overrides and the resolved graph before trusting a clean audit.
+- [Publishing preflight failures](publishing-preflight-failures.md) — an immediate Failed state with no new build record is a stuck platform preflight, not a code/build failure.
