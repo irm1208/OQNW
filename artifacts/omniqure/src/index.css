@@ -146,6 +146,30 @@ div[class*="replit-ui-theme-root"] {
   }
 }
 
+/* Best-effort storefront copy deterrent. Keep customer-facing form controls
+   selectable/editable so search, checkout, chat, and account flows work. */
+html.copy-protected,
+html.copy-protected * {
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none;
+}
+
+html.copy-protected img,
+html.copy-protected a {
+  -webkit-user-drag: none;
+}
+
+html.copy-protected input,
+html.copy-protected textarea,
+html.copy-protected select,
+html.copy-protected [contenteditable="true"],
+html.copy-protected [role="textbox"] {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+  -webkit-touch-callout: default;
+}
+
 /* ── KEYFRAME ANIMATIONS ─────────────────────────────── */
 
 @keyframes ticker-scroll {
