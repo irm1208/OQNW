@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { prefetchRoute } from "@/lib/prefetch";
 import { Link, useLocation } from "wouter";
-import { Search, User, ShoppingCart, Menu, X, ChevronDown, ArrowUpRight, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, BookMarked, GraduationCap, Thermometer, Layers } from "lucide-react";
+import { Search, User, ShoppingCart, Menu, X, ChevronDown, ArrowUpRight, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, BookMarked, GraduationCap, Thermometer, Activity, Layers } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
@@ -35,6 +35,7 @@ const BASE_NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "All Peptides", href: "/all-peptides" },
   { label: "Bac Water", href: "/bac-water" },
+  { label: "Independent Results", href: "/lab-reports" },
   { label: "Peptide Calculator", href: "/calculator" },
   { label: "Research & Education", href: "/protocols" },
 ];
@@ -42,6 +43,7 @@ const BASE_NAV_ITEMS = [
 const researchLinks = [
   { label: "Protocols", href: "/protocols", icon: FlaskConical, desc: "Research protocols & dosing guides" },
   { label: "Storage & Handling", href: "/storage-guide", icon: Thermometer, desc: "Lyophilised storage, reconstitution & stability" },
+  { label: "Research Results", href: "/research-results", icon: Activity, desc: "Before & after biomarker data from peer-reviewed studies" },
   { label: "Research Stacks", href: "/stacks", icon: Layers, desc: "Curated multi-peptide research stacks" },
   { label: "Glossary", href: "/glossary", icon: BookMarked, desc: "Scientific terminology & definitions" },
 ];
