@@ -54,3 +54,6 @@ jobs:
 
       - name: Check API contract drift
         run: pnpm run check:api-drift
+
+      - name: Run production workspace build
+        run: pnpm run build
