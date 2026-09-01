@@ -10,6 +10,8 @@ import { publicTrafficProtection } from "./lib/publicTrafficProtection";
 
 const app: Express = express();
 const trustedOrigins = allowedBrowserOrigins();
+const stateChangingMethods = new Set(["POST", "PUT", "PATCH", "DELETE"]);
+const browserSessionCookies = ["customer_session", "admin_session", "admin_secure_session"];
 
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
@@ -60,6 +62,41 @@ app.use(cors({
   },
 }));
 app.use(cookieParser());
+app.use((req, res, next) => {
+  if (!stateChangingMethods.has(req.method)) {
+    next();
+    return;
+  }
+
+  // CSRF matters when the browser will attach an authenticated cookie. Webhooks
+  // and public guest actions do not carry one and remain available to non-browser
+  // clients after their own signature or input validation.
+  const hasBrowserSession = browserSessionCookies.some((cookieName) => Boolean(req.cookies?.[cookieName]));
+  if (!hasBrowserSession) {
+    next();
+    return;
+  }
+
+  const originHeader = req.get("origin");
+  let requestOrigin = originHeader || null;
+  if (!requestOrigin) {
+    const referer = req.get("referer");
+    if (referer) {
+      try {
+        requestOrigin = new URL(referer).origin;
+      } catch {
+        requestOrigin = null;
+      }
+    }
+  }
+
+  if (!requestOrigin || !trustedOrigins.has(requestOrigin)) {
+    res.status(403).json({ error: "Request origin not allowed" });
+    return;
+  }
+
+  next();
+});
 app.use(publicTrafficProtection);
 // Attach the raw request buffer to `req` so webhook handlers can verify
 // HMAC signatures against the original bytes rather than re-serialised JSON.

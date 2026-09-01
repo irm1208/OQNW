@@ -23,3 +23,4 @@
 - [Route SEO across dev and production](vite-spa-seo-injection.md) — Vite middleware fixes dev/preview only; static web artifacts need build-emitted route HTML selected before the SPA fallback.
 - [OmniQure publish build](omniqure-publish-build.md) — build API, storefront, and admin; never mutate the managed database while constructing the deployment image.
 - [Protected assets in static web artifacts](protected-static-assets.md) — production static serving bypasses Vite middleware; route protected files through an API and omit duplicate build output.
+- [Admin session trust boundary](admin-session-trust.md) — never authorize from the legacy admin marker cookie; every admin endpoint must require the signed, expiring session.

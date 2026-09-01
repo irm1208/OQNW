@@ -84259,6 +84259,8 @@ var sitemap_default = router52;
 // src/app.ts
 var app = (0, import_express53.default)();
 var trustedOrigins = allowedBrowserOrigins();
+var stateChangingMethods = /* @__PURE__ */ new Set(["POST", "PUT", "PATCH", "DELETE"]);
+var browserSessionCookies = ["customer_session", "admin_session", "admin_secure_session"];
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
 app.use((req, res, next) => {
@@ -84306,6 +84308,34 @@ app.use((0, import_cors.default)({
   }
 }));
 app.use((0, import_cookie_parser.default)());
+app.use((req, res, next) => {
+  if (!stateChangingMethods.has(req.method)) {
+    next();
+    return;
+  }
+  const hasBrowserSession = browserSessionCookies.some((cookieName) => Boolean(req.cookies?.[cookieName]));
+  if (!hasBrowserSession) {
+    next();
+    return;
+  }
+  const originHeader = req.get("origin");
+  let requestOrigin = originHeader || null;
+  if (!requestOrigin) {
+    const referer = req.get("referer");
+    if (referer) {
+      try {
+        requestOrigin = new URL(referer).origin;
+      } catch {
+        requestOrigin = null;
+      }
+    }
+  }
+  if (!requestOrigin || !trustedOrigins.has(requestOrigin)) {
+    res.status(403).json({ error: "Request origin not allowed" });
+    return;
+  }
+  next();
+});
 app.use(publicTrafficProtection);
 app.use(
   import_express53.default.json({
