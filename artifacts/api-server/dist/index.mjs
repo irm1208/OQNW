@@ -50845,10 +50845,12 @@ var GetPublicProductResponse = objectType({
 
 // src/routes/health.ts
 var router = (0, import_express.Router)();
-router.get("/healthz", (_req, res) => {
+function respondHealthy(_req, res) {
   const data = HealthCheckResponse.parse({ status: "ok" });
   res.json(data);
-});
+}
+router.get("/", respondHealthy);
+router.get("/healthz", respondHealthy);
 var health_default = router;
 
 // src/routes/admin/auth.ts
