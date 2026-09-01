@@ -20,6 +20,10 @@ import {
   verifyPriceSyncConfirmationToken,
 } from "../../lib/catalogPriceSync";
 import { hasSecureAdminSession } from "./auth";
+import {
+  toCanonicalCatalogueImageUrl,
+  toPublicCatalogueImageUrl,
+} from "../../lib/catalogueAssetUrls";
 
 const router = Router();
 const PRICE_SYNC_CONFIRMATION_TTL_MS = 10 * 60 * 1000;
@@ -379,7 +383,7 @@ router.post("/admin/catalog", async (req: Request, res: Response): Promise<void>
         priceGbp: isNum(body.priceGbp) ? String(body.priceGbp) : null,
         shortDescription: strOrNull(body.shortDescription),
         description: strOrNull(body.description),
-        imageUrl: strOrNull(body.imageUrl),
+        imageUrl: toCanonicalCatalogueImageUrl(strOrNull(body.imageUrl)),
         purity: strOrNull(body.purity),
         alsoKnownAs: strOrNull(body.alsoKnownAs),
         molecularWeight: strOrNull(body.molecularWeight),
@@ -425,7 +429,7 @@ router.patch("/admin/catalog/:id", async (req: Request, res: Response): Promise<
   if (body.priceGbp !== undefined) updates.priceGbp = isNum(body.priceGbp) ? String(body.priceGbp) : null;
   if (body.shortDescription !== undefined) updates.shortDescription = strOrNull(body.shortDescription);
   if (body.description !== undefined) updates.description = strOrNull(body.description);
-  if (body.imageUrl !== undefined) updates.imageUrl = strOrNull(body.imageUrl);
+  if (body.imageUrl !== undefined) updates.imageUrl = toCanonicalCatalogueImageUrl(strOrNull(body.imageUrl));
   if (body.purity !== undefined) updates.purity = strOrNull(body.purity);
   if (body.alsoKnownAs !== undefined) updates.alsoKnownAs = strOrNull(body.alsoKnownAs);
   if (body.molecularWeight !== undefined) updates.molecularWeight = strOrNull(body.molecularWeight);
@@ -554,7 +558,7 @@ router.get("/products", async (req: Request, res: Response): Promise<void> => {
           priceGbp: p.priceGbp !== null ? Number(p.priceGbp) : null,
           shortDescription: p.shortDescription,
            description: p.description,
-          imageUrl: p.imageUrl,
+          imageUrl: toPublicCatalogueImageUrl(p.imageUrl),
           purity: p.purity,
           seoTitle: p.seoTitle ?? null,
           seoDescription: p.seoDescription ?? null,
@@ -593,7 +597,10 @@ router.get("/products/:slug", async (req: Request, res: Response): Promise<void>
       res.status(404).json({ error: "Product not found" });
       return;
     }
-    res.status(200).json(catalogToResponse(product.product));
+    res.status(200).json({
+      ...catalogToResponse(product.product),
+      imageUrl: toPublicCatalogueImageUrl(product.product.imageUrl),
+    });
   } catch (err) {
     req.log.error({ err }, "Failed to get public product");
     res.status(500).json({ error: "Internal server error" });

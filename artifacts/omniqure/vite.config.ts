@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { injectSeoIntoHtml, routeFromHtmlUrl, seoForApiRecord, seoForReferral } from "./src/seo/prerender";
 
@@ -136,6 +136,65 @@ function routeSeoPlugin() {
   };
 }
 
+function imageTrafficProtectionPlugin() {
+  type MiddlewareRequest = {
+    method?: string;
+    url?: string;
+    headers: Record<string, string | string[] | undefined>;
+  };
+  type MiddlewareResponse = {
+    statusCode: number;
+    setHeader: (name: string, value: string) => void;
+    end: (body?: string) => void;
+  };
+  type MiddlewareServer = {
+    middlewares: {
+      use: (handler: (
+        req: MiddlewareRequest,
+        res: MiddlewareResponse,
+        next: () => void,
+      ) => void | Promise<void>) => void;
+    };
+  };
+
+  function install(server: MiddlewareServer) {
+    server.middlewares.use(async (req, res, next) => {
+      if (req.method !== "GET" && req.method !== "HEAD") return next();
+      const imagePath = (req.url ?? "/").split("?")[0];
+      if (!/\.(?:avif|gif|jpe?g|png|svg|webp|ico)$/i.test(imagePath)) return next();
+
+      try {
+        const forwardedFor = req.headers["x-forwarded-for"];
+        const userAgent = req.headers["user-agent"];
+        const response = await fetch(`${seoApiBaseUrl}/api/traffic/image`, {
+          headers: {
+            "x-original-path": imagePath.slice(0, 300),
+            ...(typeof forwardedFor === "string" ? { "x-forwarded-for": forwardedFor } : {}),
+            ...(typeof userAgent === "string" ? { "user-agent": userAgent.slice(0, 300) } : {}),
+          },
+          signal: AbortSignal.timeout(1_500),
+        });
+
+        if (response.ok) return next();
+        res.statusCode = response.status;
+        const retryAfter = response.headers.get("retry-after");
+        if (retryAfter) res.setHeader("Retry-After", retryAfter);
+        res.setHeader("Content-Type", "text/plain; charset=utf-8");
+        res.end(req.method === "HEAD" ? undefined : "Too many public requests. Please retry shortly.");
+      } catch {
+        // An unavailable limiter must not make public images disappear.
+        next();
+      }
+    });
+  }
+
+  return {
+    name: "omniqure-image-traffic-protection",
+    configureServer: install,
+    configurePreviewServer: install,
+  };
+}
+
 function referralStaticBuildPlugin() {
   return {
     name: "omniqure-referral-static-build",
@@ -156,6 +215,21 @@ function referralStaticBuildPlugin() {
   };
 }
 
+function protectedCatalogueBuildPlugin() {
+  return {
+    name: "omniqure-protected-catalogue-assets",
+    apply: "build" as const,
+    async closeBundle() {
+      // Product images are served through /api/catalogue-assets in production,
+      // where the shared limiter runs. Do not leave a duplicate static bypass.
+      await rm(path.resolve(import.meta.dirname, "dist/public/products"), {
+        recursive: true,
+        force: true,
+      });
+    },
+  };
+}
+
 export default defineConfig({
   base: basePath,
   plugins: [
@@ -163,7 +237,9 @@ export default defineConfig({
     tailwindcss(),
     runtimeErrorOverlay(),
     routeSeoPlugin(),
+    imageTrafficProtectionPlugin(),
     referralStaticBuildPlugin(),
+    protectedCatalogueBuildPlugin(),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [

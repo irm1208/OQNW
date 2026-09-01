@@ -9,6 +9,7 @@ import { seedProductsCatalog } from "./lib/seed-catalog";
 import { retireRemovedProducts } from "./lib/retiredProducts";
 import { startCryptoReconciliationJob } from "./lib/cryptoReconciliationJob";
 import { startWallidReconciliationJob } from "./lib/wallidReconciliationJob";
+import { ensurePublicTrafficSchema } from "./lib/publicTrafficProtection";
 
 const rawPort = process.env["PORT"];
 
@@ -23,6 +24,8 @@ const port = Number(rawPort);
 if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
+
+await ensurePublicTrafficSchema();
 
 app.listen(port, (err) => {
   if (err) {

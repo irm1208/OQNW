@@ -27,3 +27,4 @@ export * from "./admin_users";
 export * from "./crypto_payment_attempts";
 export * from "./crypto_payment_audits";
 export * from "./admin_test_payment_claims";
+export * from "./public_traffic";

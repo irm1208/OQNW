@@ -11,10 +11,15 @@ type ProductsContextType = {
 };
 
 const ProductsContext = createContext<ProductsContextType>({
-  products: staticProducts,
+  products: staticProducts.map(withProtectedImage),
   productDetails: staticProductDetails,
   loading: true,
 });
+
+function withProtectedImage(product: Product): Product {
+  if (!product.image.startsWith("/") || product.image.startsWith("/api/")) return product;
+  return { ...product, image: `/api/catalogue-assets${product.image}` };
+}
 
 type ApiProduct = {
   id: number;
@@ -56,7 +61,7 @@ for (const p of staticProducts) {
 }
 
 export function ProductsProvider({ children }: { children: ReactNode }) {
-  const [products, setProducts] = useState<Product[]>(staticProducts);
+  const [products, setProducts] = useState<Product[]>(() => staticProducts.map(withProtectedImage));
   const [loading, setLoading] = useState(true);
   const isMountedRef = useRef(false);
   const latestRequestRef = useRef(0);

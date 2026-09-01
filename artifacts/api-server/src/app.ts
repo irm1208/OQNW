@@ -6,6 +6,7 @@ import router from "./routes";
 import sitemapRouter from "./routes/sitemap";
 import { logger } from "./lib/logger";
 import { allowedBrowserOrigins } from "./lib/securityConfig";
+import { publicTrafficProtection } from "./lib/publicTrafficProtection";
 
 const app: Express = express();
 const trustedOrigins = allowedBrowserOrigins();
@@ -59,6 +60,7 @@ app.use(cors({
   },
 }));
 app.use(cookieParser());
+app.use(publicTrafficProtection);
 // Attach the raw request buffer to `req` so webhook handlers can verify
 // HMAC signatures against the original bytes rather than re-serialised JSON.
 app.use(

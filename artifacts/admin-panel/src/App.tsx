@@ -22,6 +22,7 @@ import Blog from "@/pages/Blog";
 import Alerts from "@/pages/Alerts";
 import Fraud from "@/pages/Fraud";
 import BlockedIps from "@/pages/BlockedIps";
+import PublicTraffic from "@/pages/PublicTraffic";
 import Newsletter from "@/pages/Newsletter";
 import Settings from "@/pages/Settings";
 import Users from "@/pages/Users";
@@ -151,6 +152,11 @@ function AppRoutes() {
       <Route path="/blocked-ips">
         <AdminLayout>
           <BlockedIps />
+        </AdminLayout>
+      </Route>
+      <Route path="/public-traffic">
+        <AdminLayout>
+          <PublicTraffic />
         </AdminLayout>
       </Route>
       <Route path="/reports">

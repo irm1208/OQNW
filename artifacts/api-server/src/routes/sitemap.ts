@@ -9,6 +9,11 @@ const router = Router();
 
 const SITE_URL = "https://omniqure.com";
 
+function publicImageUrl(imageUrl: string): string {
+  if (imageUrl.startsWith("http")) return imageUrl;
+  return `${SITE_URL}/api/catalogue-assets${imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`}`;
+}
+
 // Static core pages — paths + crawl hints
 const STATIC_PAGES = [
   { path: "/",               changefreq: "weekly",  priority: "1.0" },
@@ -97,11 +102,7 @@ router.get(["/sitemap.xml", "/api/sitemap.xml"], async (req: Request, res: Respo
     lines.push("", "  <!-- Product pages -->");
 
     for (const p of products.filter((product) => product.inventoryPublished !== false)) {
-      const imgUrl = p.imageUrl
-        ? p.imageUrl.startsWith("http")
-          ? p.imageUrl
-          : `${SITE_URL}${p.imageUrl}`
-        : null;
+      const imgUrl = p.imageUrl ? publicImageUrl(p.imageUrl) : null;
 
       lines.push(`  <url>`);
       lines.push(`    <loc>${SITE_URL}/product/${xmlEsc(p.slug)}</loc>`);

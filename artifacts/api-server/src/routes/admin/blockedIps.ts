@@ -4,11 +4,12 @@ import { db } from "@workspace/db";
 import { blockedIpsTable } from "@workspace/db/schema";
 import { eq } from "drizzle-orm";
 import { firstString } from "../../lib/query";
+import { hasSecureAdminSession } from "./auth";
 
 const router = Router();
 
 function requireAdmin(req: Request, res: Response): boolean {
-  if (req.cookies?.admin_session !== "authenticated") {
+  if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }

@@ -48,10 +48,13 @@ import contactRouter from "./contact";
 import addressLookupRouter from "./address-lookup";
 import cryptoPaymentsRouter from "./crypto-payments";
 import adminCryptoAuditsRouter from "./admin/crypto-audits";
+import adminPublicTrafficRouter from "./admin/publicTraffic";
+import publicTrafficRouter from "./publicTraffic";
 
 const router: IRouter = Router();
 
 router.use(healthRouter);
+router.use(publicTrafficRouter);
 router.use(adminAuthRouter);
 // Every remaining /admin endpoint must pass the signed, expiring session check.
 // Individual route-level checks remain as defense in depth during migration.
@@ -99,6 +102,7 @@ router.use(adminAlertsRouter);
 router.use(adminCreditsRouter);
 router.use(adminFraudRouter);
 router.use(adminBlockedIpsRouter);
+router.use(adminPublicTrafficRouter);
 router.use(adminEmailLogsRouter);
 
 router.use(loyaltyRouter);

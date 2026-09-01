@@ -9,7 +9,8 @@
     "start": "node --enable-source-maps ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test:crypto-payments": "../../scripts/node_modules/.bin/tsx --test src/lib/cryptoPaymentPolicy.test.ts src/lib/cryptoRoutes.test.ts",
-    "test:seo": "../../scripts/node_modules/.bin/tsx --test src/routes/seo-publication.test.ts"
+    "test:seo": "../../scripts/node_modules/.bin/tsx --test src/routes/seo-publication.test.ts",
+    "test:traffic": "../../scripts/node_modules/.bin/tsx --test src/lib/publicTrafficProtection.test.ts"
   },
   "dependencies": {
     "@types/bcryptjs": "^3.0.0",
