@@ -2,7 +2,7 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import crypto from "crypto";
 import { db, orderItemsTable, ordersTable } from "@workspace/db";
-import { and, eq, ne } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { WALLID_WEBHOOK_SECRET } from "../lib/wallid";
 import { sendOrderConfirmation } from "../lib/email";
 import { logger } from "../lib/logger";
@@ -182,11 +182,17 @@ router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<v
         const settled = await db
           .update(ordersTable)
           .set({ status: "paid", updatedAt: new Date() })
-          .where(and(eq(ordersTable.id, order.id), ne(ordersTable.status, "paid")))
+          .where(and(
+            eq(ordersTable.id, order.id),
+            eq(ordersTable.status, "awaiting_payment"),
+          ))
           .returning({ id: ordersTable.id });
 
         if (settled.length === 0) {
-          logger.info({ orderNumber, event_id }, "Wallid webhook — order already paid, skipping");
+          logger.info(
+            { orderNumber, event_id, currentStatus: order.status },
+            "Wallid webhook — order is already settled or has advanced, skipping",
+          );
           continue;
         }
 

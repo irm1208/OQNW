@@ -28,6 +28,21 @@ import {
 const router = Router();
 const PRICE_SYNC_CONFIRMATION_TTL_MS = 10 * 60 * 1000;
 
+function strictRequestBody(
+  value: unknown,
+  allowedKeys: readonly string[],
+): Record<string, unknown> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new CatalogPriceInputError("Request body must be an object");
+  }
+  const body = value as Record<string, unknown>;
+  const unknown = Object.keys(body).filter((key) => !allowedKeys.includes(key));
+  if (unknown.length > 0) {
+    throw new CatalogPriceInputError(`Request contains unsupported fields: ${unknown.join(", ")}`);
+  }
+  return body;
+}
+
 function requireAdmin(req: Request, res: Response): boolean {
   if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
@@ -240,7 +255,8 @@ router.post("/admin/catalog/price-sync/preview", async (req: Request, res: Respo
   const secret = priceSyncSecret(res);
   if (!secret) return;
   try {
-    const sourcePrices = parseCataloguePrices((req.body as { prices?: unknown })?.prices);
+    const body = strictRequestBody(req.body, ["prices"]);
+    const sourcePrices = parseCataloguePrices(body.prices);
     const currentPrices = await db
       .select({
         slug: productsCatalogTable.slug,
@@ -285,9 +301,9 @@ router.post("/admin/catalog/price-sync/apply", async (req: Request, res: Respons
   const secret = priceSyncSecret(res);
   if (!secret) return;
   try {
-    const body = req.body as { changes?: unknown; confirmationToken?: unknown };
-    const changes = parseApprovedPriceChanges(body?.changes);
-    if (!verifyPriceSyncConfirmationToken(body?.confirmationToken, changes, secret)) {
+    const body = strictRequestBody(req.body, ["changes", "confirmationToken"]);
+    const changes = parseApprovedPriceChanges(body.changes);
+    if (!verifyPriceSyncConfirmationToken(body.confirmationToken, changes, secret)) {
       res.status(400).json({ error: "The confirmation token is invalid, expired, or does not match the reviewed price diff" });
       return;
     }

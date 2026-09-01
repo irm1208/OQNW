@@ -15,7 +15,8 @@
 - [Shared-wallet crypto payments](shared-wallet-crypto-payments.md) — direct crypto uses immutable route locks, post-lock transaction timing, and continued reconciliation to prevent replay and expiry loss.
 - [Durable test data IDs](durable-test-data-ids.md) — durable CodeExecution blocks may reject time and random helpers; use checked, fixed dev-only IDs for database-backed browser tests.
 - [Workspace TypeScript scratch runner](typescript-scratch-runner.md) — root and API packages lack `tsx`; run ad-hoc TypeScript assertions with `scripts/node_modules/.bin/tsx`.
-- [Checkout quote replay scaling](checkout-quote-replay-scaling.md) — the current one-time Pay by Bank quote guard is process-local; use a durable claim before scaling API workers.
+- [Checkout quote replay scaling](checkout-quote-replay-scaling.md) — Pay by Bank quotes use durable atomic claims; keep the claim before external session creation across all replicas.
+- [Payment event monotonicity](payment-event-monotonicity.md) — settlement/expiry webhooks may transition only awaiting payments; duplicates and late events must never regress fulfillment.
 - [Production catalogue price sync](production-catalogue-price-sync.md) — publishing does not copy development catalogue prices to production; update live prices via production admin or a reviewed slug-based sync.
 - [Catalogue retirements](catalogue-retirements.md) — retire discontinued SKUs by slug across active paths while preserving completed-order history.
 - [Wallid reconciliation ownership](wallid-reconciliation-ownership.md) — payment settlement must run server-side on a schedule; never depend on which customer or admin page is opened.

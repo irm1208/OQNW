@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
-  CheckoutPaymentQuoteReplayGuard,
   createCheckoutFingerprint,
   createCheckoutPaymentQuoteToken,
   verifyCheckoutPaymentQuoteToken,
 } from "./checkoutPaymentQuote";
+import { checkoutPaymentQuoteTokenDigest } from "./checkoutPaymentQuoteClaims";
 import { allocatePaymentLineAmounts } from "./payment-currency";
 
 const secret = "checkout-payment-quote-test-secret";
@@ -119,12 +119,10 @@ test("Wallid payment lines retain the exact final total after reductions and rou
   assert.deepEqual(allocatePaymentLineAmounts(finalEurMinor, [126]), [finalEurMinor]);
 });
 
-test("checkout quote replay guard allows one claim only until the quote expires", () => {
-  const guard = new CheckoutPaymentQuoteReplayGuard();
-  const now = 1_700_000_000_000;
-
-  assert.equal(guard.consume("signed-token", now + 1_000, now), true);
-  assert.equal(guard.consume("signed-token", now + 1_000, now), false);
-  assert.equal(guard.consume("expired-token", now, now), false);
-  assert.equal(guard.consume("new-token", now + 2_000, now + 1_001), true);
+test("checkout quote claims store only a stable non-reversible token digest", () => {
+  const first = checkoutPaymentQuoteTokenDigest("signed-token");
+  assert.match(first, /^[a-f0-9]{64}$/);
+  assert.equal(first, checkoutPaymentQuoteTokenDigest("signed-token"));
+  assert.notEqual(first, checkoutPaymentQuoteTokenDigest("different-token"));
+  assert.equal(first.includes("signed-token"), false);
 });

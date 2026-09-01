@@ -2,7 +2,7 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { ordersTable, orderItemsTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import {
   verifyBtcPayWebhookSignature,
   type BtcPayWebhookEvent,
@@ -47,10 +47,22 @@ router.post(
       const orderNumber = event.metadata?.orderId;
       if (orderNumber) {
         try {
-          await db
+          const settled = await db
             .update(ordersTable)
             .set({ status: "payment_received", updatedAt: new Date() })
-            .where(eq(ordersTable.orderNumber, orderNumber));
+            .where(and(
+              eq(ordersTable.orderNumber, orderNumber),
+              eq(ordersTable.status, "awaiting_payment"),
+            ))
+            .returning({ id: ordersTable.id });
+          if (settled.length === 0) {
+            logger.info(
+              { orderNumber, invoiceId: event.invoiceId },
+              "BTCPay settlement already applied or order has advanced — skipping",
+            );
+            res.status(200).json({ received: true });
+            return;
+          }
           logger.info({ orderNumber, invoiceId: event.invoiceId }, "Order marked paid via BTCPay webhook");
 
           // Send order confirmation email (fire-and-forget)
@@ -98,11 +110,26 @@ router.post(
     if (event.type === "InvoiceExpired") {
       const orderNumber = event.metadata?.orderId;
       if (orderNumber) {
-        db.update(ordersTable)
-          .set({ status: "cancelled", updatedAt: new Date() })
-          .where(eq(ordersTable.orderNumber, orderNumber))
-          .catch(() => {});
-        logger.info({ orderNumber }, "Order cancelled — BTCPay invoice expired");
+        try {
+          const cancelled = await db
+            .update(ordersTable)
+            .set({ status: "cancelled", updatedAt: new Date() })
+            .where(and(
+              eq(ordersTable.orderNumber, orderNumber),
+              eq(ordersTable.status, "awaiting_payment"),
+            ))
+            .returning({ id: ordersTable.id });
+          logger.info(
+            { orderNumber, changed: cancelled.length === 1 },
+            cancelled.length === 1
+              ? "Order cancelled — BTCPay invoice expired"
+              : "BTCPay expiry ignored — order already settled or advanced",
+          );
+        } catch (err) {
+          logger.error({ err, orderNumber }, "Failed to apply BTCPay invoice expiry");
+          res.status(500).json({ error: "DB update failed" });
+          return;
+        }
       }
     }
 

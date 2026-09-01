@@ -136,26 +136,3 @@ export function verifyCheckoutPaymentQuoteToken(
     return null;
   }
 }
-
-/**
- * Single-process replay guard for the short-lived signed checkout token. The
- * API workflow serves checkout requests from one Node process, so claiming a
- * token synchronously before creating the order prevents double-clicks and
- * concurrent retries from opening multiple Wallid payment sessions.
- */
-export class CheckoutPaymentQuoteReplayGuard {
-  private readonly consumed = new Map<string, number>();
-
-  consume(token: string, expiresAt: number, now = Date.now()): boolean {
-    for (const [tokenDigest, expiry] of this.consumed) {
-      if (expiry <= now) this.consumed.delete(tokenDigest);
-    }
-
-    if (expiresAt <= now) return false;
-    const tokenDigest = crypto.createHash("sha256").update(token).digest("hex");
-    if (this.consumed.has(tokenDigest)) return false;
-
-    this.consumed.set(tokenDigest, expiresAt);
-    return true;
-  }
-}

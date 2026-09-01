@@ -54768,6 +54768,7 @@ __export(schema_exports, {
   adminUsersTable: () => adminUsersTable,
   blockedIpsTable: () => blockedIpsTable,
   blogPostsTable: () => blogPostsTable,
+  checkoutPaymentQuoteClaimsTable: () => checkoutPaymentQuoteClaimsTable,
   cryptoPaymentAttemptsTable: () => cryptoPaymentAttemptsTable,
   cryptoPaymentAuditsTable: () => cryptoPaymentAuditsTable,
   customerCreditTransactionsTable: () => customerCreditTransactionsTable,
@@ -66796,6 +66797,19 @@ var publicTrafficEventsTable = pgTable(
   })
 );
 
+// ../../lib/db/src/schema/checkout_payment_quote_claims.ts
+var checkoutPaymentQuoteClaimsTable = pgTable(
+  "checkout_payment_quote_claims",
+  {
+    tokenDigest: varchar("token_digest", { length: 64 }).primaryKey(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    claimedAt: timestamp("claimed_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => ({
+    expiresAtIdx: index("checkout_payment_quote_claims_expires_at_idx").on(table.expiresAt)
+  })
+);
+
 // ../../lib/db/src/index.ts
 var { Pool: Pool3 } = esm_default;
 if (!process.env.DATABASE_URL) {
@@ -76007,6 +76021,14 @@ var CatalogPriceInputError = class extends Error {
 };
 var MAX_ROWS = 1e3;
 var MAX_PRICE_GBP = 9999999999e-2;
+var MAX_SLUG_LENGTH = 120;
+var MAX_NAME_LENGTH = 200;
+function assertExactKeys(value, allowed, label) {
+  const unknown2 = Object.keys(value).filter((key) => !allowed.includes(key));
+  if (unknown2.length > 0) {
+    throw new CatalogPriceInputError(`${label} contains unsupported fields: ${unknown2.join(", ")}`);
+  }
+}
 function normalizePrice(value, label) {
   if (value === null) return null;
   if (typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > MAX_PRICE_GBP || Math.abs(value * 100 - Math.round(value * 100)) > 1e-7) {
@@ -76015,10 +76037,24 @@ function normalizePrice(value, label) {
   return Number(value.toFixed(2));
 }
 function normalizeSlug(value, label) {
-  if (typeof value !== "string" || value.trim() === "") {
-    throw new CatalogPriceInputError(`${label} must be a non-empty string`);
+  if (typeof value !== "string") {
+    throw new CatalogPriceInputError(`${label} must be a valid catalogue slug`);
   }
-  return value.trim();
+  const slug = value.trim();
+  if (slug.length === 0 || slug.length > MAX_SLUG_LENGTH || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    throw new CatalogPriceInputError(`${label} must be a lowercase hyphenated catalogue slug`);
+  }
+  return slug;
+}
+function normalizeName(value, label) {
+  if (typeof value !== "string") {
+    throw new CatalogPriceInputError(`${label} must be a valid product name`);
+  }
+  const name2 = value.trim();
+  if (name2.length === 0 || name2.length > MAX_NAME_LENGTH || /[\u0000-\u001f\u007f]/.test(name2)) {
+    throw new CatalogPriceInputError(`${label} must be a valid product name`);
+  }
+  return name2;
 }
 function rejectDuplicateSlugs(rows) {
   const seen = /* @__PURE__ */ new Set();
@@ -76030,14 +76066,15 @@ function rejectDuplicateSlugs(rows) {
   }
 }
 function parseCataloguePrices(value) {
-  if (!Array.isArray(value) || value.length > MAX_ROWS) {
-    throw new CatalogPriceInputError(`prices must be an array containing at most ${MAX_ROWS} rows`);
+  if (!Array.isArray(value) || value.length === 0 || value.length > MAX_ROWS) {
+    throw new CatalogPriceInputError(`prices must contain between 1 and ${MAX_ROWS} rows`);
   }
   const rows = value.map((row, index2) => {
     if (!row || typeof row !== "object") {
       throw new CatalogPriceInputError(`prices[${index2}] must be an object`);
     }
     const candidate = row;
+    assertExactKeys(candidate, ["slug", "priceGbp"], `prices[${index2}]`);
     return {
       slug: normalizeSlug(candidate.slug, `prices[${index2}].slug`),
       priceGbp: normalizePrice(candidate.priceGbp, `prices[${index2}].priceGbp`)
@@ -76047,14 +76084,19 @@ function parseCataloguePrices(value) {
   return rows;
 }
 function parseApprovedPriceChanges(value) {
-  if (!Array.isArray(value) || value.length > MAX_ROWS) {
-    throw new CatalogPriceInputError(`changes must be an array containing at most ${MAX_ROWS} rows`);
+  if (!Array.isArray(value) || value.length === 0 || value.length > MAX_ROWS) {
+    throw new CatalogPriceInputError(`changes must contain between 1 and ${MAX_ROWS} rows`);
   }
   const rows = value.map((row, index2) => {
     if (!row || typeof row !== "object") {
       throw new CatalogPriceInputError(`changes[${index2}] must be an object`);
     }
     const candidate = row;
+    assertExactKeys(
+      candidate,
+      ["slug", "name", "productionPriceGbp", "cataloguePriceGbp"],
+      `changes[${index2}]`
+    );
     const productionPriceGbp = normalizePrice(
       candidate.productionPriceGbp,
       `changes[${index2}].productionPriceGbp`
@@ -76068,7 +76110,7 @@ function parseApprovedPriceChanges(value) {
     }
     return {
       slug: normalizeSlug(candidate.slug, `changes[${index2}].slug`),
-      name: normalizeSlug(candidate.name, `changes[${index2}].name`),
+      name: normalizeName(candidate.name, `changes[${index2}].name`),
       productionPriceGbp,
       cataloguePriceGbp
     };
@@ -76112,7 +76154,7 @@ function buildCatalogPricePreview(cataloguePrices, productionPrices) {
     const production = productionBySlug.get(source.slug);
     if (!production) continue;
     matchedCount += 1;
-    const productionPriceGbp = production.priceGbp === null ? null : Number(production.priceGbp);
+    const productionPriceGbp = production.priceGbp === null ? null : normalizePrice(Number(production.priceGbp), `stored price for ${production.slug}`);
     if (productionPriceGbp === source.priceGbp) {
       unchangedCount += 1;
       continue;
@@ -76157,6 +76199,17 @@ function toPublicCatalogueImageUrl(imageUrl) {
 // src/routes/admin/catalog.ts
 var router11 = (0, import_express11.Router)();
 var PRICE_SYNC_CONFIRMATION_TTL_MS = 10 * 60 * 1e3;
+function strictRequestBody(value, allowedKeys) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new CatalogPriceInputError("Request body must be an object");
+  }
+  const body = value;
+  const unknown2 = Object.keys(body).filter((key) => !allowedKeys.includes(key));
+  if (unknown2.length > 0) {
+    throw new CatalogPriceInputError(`Request contains unsupported fields: ${unknown2.join(", ")}`);
+  }
+  return body;
+}
 function requireAdmin8(req, res) {
   if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
@@ -76314,7 +76367,8 @@ router11.post("/admin/catalog/price-sync/preview", async (req, res) => {
   const secret = priceSyncSecret(res);
   if (!secret) return;
   try {
-    const sourcePrices = parseCataloguePrices(req.body?.prices);
+    const body = strictRequestBody(req.body, ["prices"]);
+    const sourcePrices = parseCataloguePrices(body.prices);
     const currentPrices = await db.select({
       slug: productsCatalogTable.slug,
       name: productsCatalogTable.name,
@@ -76352,9 +76406,9 @@ router11.post("/admin/catalog/price-sync/apply", async (req, res) => {
   const secret = priceSyncSecret(res);
   if (!secret) return;
   try {
-    const body = req.body;
-    const changes = parseApprovedPriceChanges(body?.changes);
-    if (!verifyPriceSyncConfirmationToken(body?.confirmationToken, changes, secret)) {
+    const body = strictRequestBody(req.body, ["changes", "confirmationToken"]);
+    const changes = parseApprovedPriceChanges(body.changes);
+    if (!verifyPriceSyncConfirmationToken(body.confirmationToken, changes, secret)) {
       res.status(400).json({ error: "The confirmation token is invalid, expired, or does not match the reviewed price diff" });
       return;
     }
@@ -77555,10 +77609,91 @@ function settingsToResponse(s) {
   };
 }
 async function getOrCreateSettings() {
-  const [existing] = await db.select().from(storeSettingsTable).limit(1);
-  if (existing) return existing;
-  const [created] = await db.insert(storeSettingsTable).values({}).returning();
-  return created;
+  return db.transaction(async (tx) => {
+    await tx.execute(sql`SELECT pg_advisory_xact_lock(731905241)`);
+    const [existing] = await tx.select().from(storeSettingsTable).orderBy(storeSettingsTable.id).limit(1);
+    if (existing) return existing;
+    const [created] = await tx.insert(storeSettingsTable).values({}).returning();
+    if (!created) throw new Error("Store settings could not be initialized");
+    return created;
+  });
+}
+function optionalText(value, label, maxLength) {
+  if (value === null) return null;
+  if (typeof value !== "string") throw new Error(`${label} must be text`);
+  const cleaned = value.trim();
+  if (!cleaned) return null;
+  if (cleaned.length > maxLength || /[\u0000-\u001f\u007f]/.test(cleaned)) {
+    throw new Error(`${label} is invalid or too long`);
+  }
+  return cleaned;
+}
+function requiredText(value, label, maxLength) {
+  const cleaned = optionalText(value, label, maxLength);
+  if (!cleaned) throw new Error(`${label} cannot be empty`);
+  return cleaned;
+}
+function parseSettingsUpdates(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new Error("Request body must be an object");
+  }
+  const body = value;
+  const keys = Object.keys(body);
+  const unknown2 = keys.filter((key) => !EDITABLE_FIELDS.includes(key));
+  if (unknown2.length > 0) throw new Error(`Unsupported settings: ${unknown2.join(", ")}`);
+  if (keys.length === 0) throw new Error("At least one setting is required");
+  const updates = {};
+  if ("storeName" in body) updates.storeName = requiredText(body.storeName, "Store name", 120);
+  if ("supportEmail" in body) {
+    updates.supportEmail = optionalText(body.supportEmail, "Support email", 254);
+    if (updates.supportEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(updates.supportEmail)) {
+      throw new Error("Support email must be a valid email address");
+    }
+  }
+  if ("supportPhone" in body) {
+    updates.supportPhone = optionalText(body.supportPhone, "Support phone", 40);
+    if (updates.supportPhone && !/^[+()0-9.\-\s]+$/.test(updates.supportPhone)) {
+      throw new Error("Support phone contains invalid characters");
+    }
+  }
+  if ("currency" in body) {
+    updates.currency = requiredText(body.currency, "Currency", 3).toUpperCase();
+    if (!/^[A-Z]{3}$/.test(updates.currency)) throw new Error("Currency must be a three-letter code");
+  }
+  if ("orderPrefix" in body) {
+    updates.orderPrefix = requiredText(body.orderPrefix, "Order prefix", 12).toUpperCase();
+    if (!/^[A-Z0-9-]+$/.test(updates.orderPrefix)) {
+      throw new Error("Order prefix may contain only letters, numbers, and hyphens");
+    }
+  }
+  const optionalFields = [
+    ["addressLine1", "Address line 1", 200],
+    ["addressLine2", "Address line 2", 200],
+    ["city", "City", 100],
+    ["postcode", "Postcode", 20],
+    ["country", "Country", 100],
+    ["announcementBanner", "Announcement banner", 500]
+  ];
+  for (const [field, label, maxLength] of optionalFields) {
+    if (field in body) updates[field] = optionalText(body[field], label, maxLength);
+  }
+  for (const field of ["maintenanceMode", "cryptoPaymentsEnabled"]) {
+    if (field in body) {
+      if (typeof body[field] !== "boolean") throw new Error(`${field} must be true or false`);
+      updates[field] = body[field];
+    }
+  }
+  if ("cryptoPaymentRoutes" in body) {
+    if (typeof body.cryptoPaymentRoutes !== "string" || body.cryptoPaymentRoutes.length > 2e4) {
+      throw new Error("Crypto payment routes must be valid JSON");
+    }
+    try {
+      updates.cryptoPaymentRoutes = serializeCryptoRoutes(JSON.parse(body.cryptoPaymentRoutes));
+    } catch {
+      throw new Error("Crypto payment routes must be valid JSON");
+    }
+  }
+  return updates;
 }
 router19.get("/admin/settings", async (req, res) => {
   if (!requireAdmin16(req, res)) return;
@@ -77574,32 +77709,18 @@ router19.patch("/admin/settings", async (req, res) => {
   if (!requireAdmin16(req, res)) return;
   try {
     const current = await getOrCreateSettings();
-    const body = req.body;
-    const updates = {};
-    for (const field of EDITABLE_FIELDS) {
-      if (body[field] !== void 0) updates[field] = body[field];
-    }
-    if (typeof updates.storeName === "string" && !updates.storeName.trim()) {
-      res.status(400).json({ error: "Store name cannot be empty" });
+    let updates;
+    try {
+      updates = parseSettingsUpdates(req.body);
+    } catch (err) {
+      res.status(400).json({ error: err instanceof Error ? err.message : "Invalid settings" });
       return;
-    }
-    if (updates.cryptoPaymentsEnabled !== void 0 && typeof updates.cryptoPaymentsEnabled !== "boolean") {
-      res.status(400).json({ error: "Crypto payment setting must be true or false" });
-      return;
-    }
-    if (updates.cryptoPaymentRoutes !== void 0) {
-      if (typeof updates.cryptoPaymentRoutes !== "string") {
-        res.status(400).json({ error: "Crypto payment routes must be valid JSON" });
-        return;
-      }
-      try {
-        updates.cryptoPaymentRoutes = serializeCryptoRoutes(JSON.parse(updates.cryptoPaymentRoutes));
-      } catch {
-        res.status(400).json({ error: "Crypto payment routes must be valid JSON" });
-        return;
-      }
     }
     const [updated] = await db.update(storeSettingsTable).set(updates).where(eq(storeSettingsTable.id, current.id)).returning();
+    if (!updated) {
+      res.status(409).json({ error: "Store settings changed concurrently; reload and try again" });
+      return;
+    }
     res.json(settingsToResponse(updated));
   } catch (err) {
     req.log.error({ err }, "Failed to update store settings");
@@ -78326,19 +78447,22 @@ function verifyCheckoutPaymentQuoteToken(token, secret, expected, now = Date.now
     return null;
   }
 }
-var CheckoutPaymentQuoteReplayGuard = class {
-  consumed = /* @__PURE__ */ new Map();
-  consume(token, expiresAt, now = Date.now()) {
-    for (const [tokenDigest2, expiry] of this.consumed) {
-      if (expiry <= now) this.consumed.delete(tokenDigest2);
-    }
-    if (expiresAt <= now) return false;
-    const tokenDigest = crypto7.createHash("sha256").update(token).digest("hex");
-    if (this.consumed.has(tokenDigest)) return false;
-    this.consumed.set(tokenDigest, expiresAt);
-    return true;
-  }
-};
+
+// src/lib/checkoutPaymentQuoteClaims.ts
+import { createHash as createHash3 } from "node:crypto";
+init_drizzle_orm();
+function checkoutPaymentQuoteTokenDigest(token) {
+  return createHash3("sha256").update(token).digest("hex");
+}
+async function claimCheckoutPaymentQuote(token, expiresAt, now = Date.now()) {
+  if (expiresAt <= now) return false;
+  await db.delete(checkoutPaymentQuoteClaimsTable).where(lt(checkoutPaymentQuoteClaimsTable.expiresAt, new Date(now)));
+  const inserted = await db.insert(checkoutPaymentQuoteClaimsTable).values({
+    tokenDigest: checkoutPaymentQuoteTokenDigest(token),
+    expiresAt: new Date(expiresAt)
+  }).onConflictDoNothing({ target: checkoutPaymentQuoteClaimsTable.tokenDigest }).returning({ tokenDigest: checkoutPaymentQuoteClaimsTable.tokenDigest });
+  return inserted.length === 1;
+}
 
 // src/lib/fraudScorer.ts
 var FREE_EMAIL_DOMAINS = /* @__PURE__ */ new Set([
@@ -79065,7 +79189,6 @@ var router23 = (0, import_express23.Router)();
 var SESSION_SECRET2 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 var WALLID_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
 var CRYPTO_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
-var checkoutPaymentQuoteReplayGuard = new CheckoutPaymentQuoteReplayGuard();
 function verifyCustomerSession(token) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
@@ -79417,7 +79540,7 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
         });
         return;
       }
-      if (!checkoutPaymentQuoteReplayGuard.consume(paymentQuoteToken, quote.expiresAt)) {
+      if (!await claimCheckoutPaymentQuote(paymentQuoteToken, quote.expiresAt)) {
         res.status(409).json({
           code: "PAYMENT_QUOTE_USED",
           error: "This payment total was already used. We\u2019ve refreshed it\u2014please review and place your order again."
@@ -83751,7 +83874,18 @@ router43.post(
       const orderNumber = event.metadata?.orderId;
       if (orderNumber) {
         try {
-          await db.update(ordersTable).set({ status: "payment_received", updatedAt: /* @__PURE__ */ new Date() }).where(eq(ordersTable.orderNumber, orderNumber));
+          const settled = await db.update(ordersTable).set({ status: "payment_received", updatedAt: /* @__PURE__ */ new Date() }).where(and(
+            eq(ordersTable.orderNumber, orderNumber),
+            eq(ordersTable.status, "awaiting_payment")
+          )).returning({ id: ordersTable.id });
+          if (settled.length === 0) {
+            logger.info(
+              { orderNumber, invoiceId: event.invoiceId },
+              "BTCPay settlement already applied or order has advanced \u2014 skipping"
+            );
+            res.status(200).json({ received: true });
+            return;
+          }
           logger.info({ orderNumber, invoiceId: event.invoiceId }, "Order marked paid via BTCPay webhook");
           const [order] = await db.select().from(ordersTable).where(eq(ordersTable.orderNumber, orderNumber)).limit(1);
           const items = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, order?.id ?? -1));
@@ -83788,9 +83922,20 @@ router43.post(
     if (event.type === "InvoiceExpired") {
       const orderNumber = event.metadata?.orderId;
       if (orderNumber) {
-        db.update(ordersTable).set({ status: "cancelled", updatedAt: /* @__PURE__ */ new Date() }).where(eq(ordersTable.orderNumber, orderNumber)).catch(() => {
-        });
-        logger.info({ orderNumber }, "Order cancelled \u2014 BTCPay invoice expired");
+        try {
+          const cancelled = await db.update(ordersTable).set({ status: "cancelled", updatedAt: /* @__PURE__ */ new Date() }).where(and(
+            eq(ordersTable.orderNumber, orderNumber),
+            eq(ordersTable.status, "awaiting_payment")
+          )).returning({ id: ordersTable.id });
+          logger.info(
+            { orderNumber, changed: cancelled.length === 1 },
+            cancelled.length === 1 ? "Order cancelled \u2014 BTCPay invoice expired" : "BTCPay expiry ignored \u2014 order already settled or advanced"
+          );
+        } catch (err) {
+          logger.error({ err, orderNumber }, "Failed to apply BTCPay invoice expiry");
+          res.status(500).json({ error: "DB update failed" });
+          return;
+        }
       }
     }
     res.status(200).json({ received: true });
@@ -83906,9 +84051,15 @@ router44.post("/wallid-webhook", async (req, res) => {
           res.status(400).json({ error: "Amount or currency mismatch" });
           return;
         }
-        const settled = await db.update(ordersTable).set({ status: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(and(eq(ordersTable.id, order.id), ne(ordersTable.status, "paid"))).returning({ id: ordersTable.id });
+        const settled = await db.update(ordersTable).set({ status: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(and(
+          eq(ordersTable.id, order.id),
+          eq(ordersTable.status, "awaiting_payment")
+        )).returning({ id: ordersTable.id });
         if (settled.length === 0) {
-          logger.info({ orderNumber, event_id }, "Wallid webhook \u2014 order already paid, skipping");
+          logger.info(
+            { orderNumber, event_id, currentStatus: order.status },
+            "Wallid webhook \u2014 order is already settled or has advanced, skipping"
+          );
           continue;
         }
         logger.info({ orderNumber, api_payment_id, event_id }, "Order marked paid via Wallid webhook");

@@ -32,6 +32,19 @@ export class CatalogPriceInputError extends Error {}
 
 const MAX_ROWS = 1_000;
 const MAX_PRICE_GBP = 99_999_999.99;
+const MAX_SLUG_LENGTH = 120;
+const MAX_NAME_LENGTH = 200;
+
+function assertExactKeys(
+  value: Record<string, unknown>,
+  allowed: readonly string[],
+  label: string,
+): void {
+  const unknown = Object.keys(value).filter((key) => !allowed.includes(key));
+  if (unknown.length > 0) {
+    throw new CatalogPriceInputError(`${label} contains unsupported fields: ${unknown.join(", ")}`);
+  }
+}
 
 function normalizePrice(value: unknown, label: string): number | null {
   if (value === null) return null;
@@ -48,10 +61,33 @@ function normalizePrice(value: unknown, label: string): number | null {
 }
 
 function normalizeSlug(value: unknown, label: string): string {
-  if (typeof value !== "string" || value.trim() === "") {
-    throw new CatalogPriceInputError(`${label} must be a non-empty string`);
+  if (typeof value !== "string") {
+    throw new CatalogPriceInputError(`${label} must be a valid catalogue slug`);
   }
-  return value.trim();
+  const slug = value.trim();
+  if (
+    slug.length === 0 ||
+    slug.length > MAX_SLUG_LENGTH ||
+    !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)
+  ) {
+    throw new CatalogPriceInputError(`${label} must be a lowercase hyphenated catalogue slug`);
+  }
+  return slug;
+}
+
+function normalizeName(value: unknown, label: string): string {
+  if (typeof value !== "string") {
+    throw new CatalogPriceInputError(`${label} must be a valid product name`);
+  }
+  const name = value.trim();
+  if (
+    name.length === 0 ||
+    name.length > MAX_NAME_LENGTH ||
+    /[\u0000-\u001f\u007f]/.test(name)
+  ) {
+    throw new CatalogPriceInputError(`${label} must be a valid product name`);
+  }
+  return name;
 }
 
 function rejectDuplicateSlugs(rows: Array<{ slug: string }>): void {
@@ -65,14 +101,15 @@ function rejectDuplicateSlugs(rows: Array<{ slug: string }>): void {
 }
 
 export function parseCataloguePrices(value: unknown): CatalogPrice[] {
-  if (!Array.isArray(value) || value.length > MAX_ROWS) {
-    throw new CatalogPriceInputError(`prices must be an array containing at most ${MAX_ROWS} rows`);
+  if (!Array.isArray(value) || value.length === 0 || value.length > MAX_ROWS) {
+    throw new CatalogPriceInputError(`prices must contain between 1 and ${MAX_ROWS} rows`);
   }
   const rows = value.map((row, index) => {
     if (!row || typeof row !== "object") {
       throw new CatalogPriceInputError(`prices[${index}] must be an object`);
     }
     const candidate = row as Record<string, unknown>;
+    assertExactKeys(candidate, ["slug", "priceGbp"], `prices[${index}]`);
     return {
       slug: normalizeSlug(candidate.slug, `prices[${index}].slug`),
       priceGbp: normalizePrice(candidate.priceGbp, `prices[${index}].priceGbp`),
@@ -83,14 +120,19 @@ export function parseCataloguePrices(value: unknown): CatalogPrice[] {
 }
 
 export function parseApprovedPriceChanges(value: unknown): CatalogPriceChange[] {
-  if (!Array.isArray(value) || value.length > MAX_ROWS) {
-    throw new CatalogPriceInputError(`changes must be an array containing at most ${MAX_ROWS} rows`);
+  if (!Array.isArray(value) || value.length === 0 || value.length > MAX_ROWS) {
+    throw new CatalogPriceInputError(`changes must contain between 1 and ${MAX_ROWS} rows`);
   }
   const rows = value.map((row, index) => {
     if (!row || typeof row !== "object") {
       throw new CatalogPriceInputError(`changes[${index}] must be an object`);
     }
     const candidate = row as Record<string, unknown>;
+    assertExactKeys(
+      candidate,
+      ["slug", "name", "productionPriceGbp", "cataloguePriceGbp"],
+      `changes[${index}]`,
+    );
     const productionPriceGbp = normalizePrice(
       candidate.productionPriceGbp,
       `changes[${index}].productionPriceGbp`,
@@ -104,7 +146,7 @@ export function parseApprovedPriceChanges(value: unknown): CatalogPriceChange[] 
     }
     return {
       slug: normalizeSlug(candidate.slug, `changes[${index}].slug`),
-      name: normalizeSlug(candidate.name, `changes[${index}].name`),
+      name: normalizeName(candidate.name, `changes[${index}].name`),
       productionPriceGbp,
       cataloguePriceGbp,
     };
@@ -168,7 +210,9 @@ export function buildCatalogPricePreview(
     const production = productionBySlug.get(source.slug);
     if (!production) continue;
     matchedCount += 1;
-    const productionPriceGbp = production.priceGbp === null ? null : Number(production.priceGbp);
+    const productionPriceGbp = production.priceGbp === null
+      ? null
+      : normalizePrice(Number(production.priceGbp), `stored price for ${production.slug}`);
     if (productionPriceGbp === source.priceGbp) {
       unchangedCount += 1;
       continue;

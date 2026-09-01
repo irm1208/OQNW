@@ -1,10 +1,10 @@
 ---
 name: Checkout quote replay scaling
-description: How single-use bank-payment quotes should evolve if the API scales beyond one process.
+description: The durable one-time claim rule for bank-payment quotes across API replicas.
 ---
 
-The current checkout quote replay guard and restricted Wallid test-session claim are intentionally process-local because the API runs as one Node process. If checkout is deployed across multiple API workers or instances, replace them with durable, atomic claims or an idempotency mechanism shared by all workers.
+Signed checkout quotes and restricted test sessions must be claimed with durable, atomic database uniqueness before an external payment session is created. Store only a one-way token digest and expire old claim records.
 
-**Why:** A memory-only guard prevents duplicate Wallid sessions and re-use of one-time test sessions only for requests served by the same process; separate workers would not share consumed-token state.
+**Why:** A memory-only guard cannot prevent concurrent requests handled by separate workers from creating duplicate payment sessions or orders.
 
-**How to apply:** Before increasing API worker or instance count, introduce a database-backed unique claim keyed by a quote nonce/digest or test-session ID (or use a gateway idempotency key) before creating the payment session.
+**How to apply:** Any new quoted payment method or test link must use the same shared claim boundary, with an indexed retention policy that never permits a still-valid token to be reused.

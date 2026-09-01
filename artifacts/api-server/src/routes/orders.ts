@@ -34,11 +34,11 @@ import {
   type WallidPaymentCurrency,
 } from "../lib/payment-currency";
 import {
-  CheckoutPaymentQuoteReplayGuard,
   createCheckoutFingerprint,
   createCheckoutPaymentQuoteToken,
   verifyCheckoutPaymentQuoteToken,
 } from "../lib/checkoutPaymentQuote";
+import { claimCheckoutPaymentQuote } from "../lib/checkoutPaymentQuoteClaims";
 import { prepareCryptoPayment } from "../lib/crypto-payments";
 import { assessFraud } from "../lib/fraudScorer";
 import { getClientIp, lookupIpData } from "../lib/geoip";
@@ -116,7 +116,6 @@ const router = Router();
 const SESSION_SECRET = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 const WALLID_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
 const CRYPTO_TEST_CHECKOUT_SECRET = process.env.SESSION_SECRET;
-const checkoutPaymentQuoteReplayGuard = new CheckoutPaymentQuoteReplayGuard();
 
 function verifyCustomerSession(token: string): number | null {
   const dot = token.lastIndexOf(".");
@@ -671,7 +670,7 @@ async function handleOrderRequest(
         });
         return;
       }
-      if (!checkoutPaymentQuoteReplayGuard.consume(paymentQuoteToken, quote.expiresAt)) {
+      if (!await claimCheckoutPaymentQuote(paymentQuoteToken, quote.expiresAt)) {
         res.status(409).json({
           code: "PAYMENT_QUOTE_USED",
           error: "This payment total was already used. We’ve refreshed it—please review and place your order again.",

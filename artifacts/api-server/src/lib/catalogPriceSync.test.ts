@@ -79,3 +79,25 @@ test("catalogue price input rejects duplicate slugs and sub-penny values", () =>
     CatalogPriceInputError,
   );
 });
+
+test("catalogue price input rejects empty, malformed, and over-posted rows", () => {
+  assert.throws(() => parseCataloguePrices([]), CatalogPriceInputError);
+  assert.throws(
+    () => parseCataloguePrices([{ slug: "../bpc-157", priceGbp: 20 }]),
+    CatalogPriceInputError,
+  );
+  assert.throws(
+    () => parseCataloguePrices([{ slug: "bpc-157", priceGbp: 20, isPublished: false }]),
+    CatalogPriceInputError,
+  );
+  assert.throws(() => parseApprovedPriceChanges([]), CatalogPriceInputError);
+  assert.throws(
+    () => parseApprovedPriceChanges([{
+      slug: "bpc-157",
+      name: "BPC-157\u0000",
+      productionPriceGbp: 20,
+      cataloguePriceGbp: 21,
+    }]),
+    CatalogPriceInputError,
+  );
+});
