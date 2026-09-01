@@ -5,12 +5,12 @@ import { db } from "@workspace/db";
 import { adminUsersTable, ADMIN_ROLES } from "@workspace/db";
 import { eq, desc, sql } from "drizzle-orm";
 import { firstString } from "../../lib/query";
-import { getSecureAdminSession, hasSecureAdminSession } from "./auth";
+import { getSecureAdminSession, validateSecureAdminSession } from "./auth";
 
 const router = Router();
 
 export async function requireOwner(req: Request, res: Response): Promise<boolean> {
-  if (!hasSecureAdminSession(req)) {
+  if (!(await validateSecureAdminSession(req))) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }

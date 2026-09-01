@@ -66850,7 +66850,7 @@ function firstString(value) {
 // src/routes/admin/users.ts
 var router2 = (0, import_express2.Router)();
 async function requireOwner(req, res) {
-  if (!hasSecureAdminSession(req)) {
+  if (!await validateSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
@@ -67631,8 +67631,8 @@ async function validateSecureAdminSession(req) {
   const session = parseSecureAdminSession(req);
   if (!session) return false;
   if (!session.email) {
-    const [existingAdmin] = await db.select({ id: adminUsersTable.id }).from(adminUsersTable).limit(1);
-    return !existingAdmin;
+    const [activeAdmin] = await db.select({ id: adminUsersTable.id }).from(adminUsersTable).where(eq(adminUsersTable.isActive, true)).limit(1);
+    return !activeAdmin;
   }
   const [user] = await db.select({ isActive: adminUsersTable.isActive, sessionVersion: adminUsersTable.sessionVersion }).from(adminUsersTable).where(eq(adminUsersTable.email, session.email)).limit(1);
   return Boolean(user?.isActive && user.sessionVersion === session.sessionVersion);
@@ -67928,8 +67928,8 @@ router3.post("/admin/auth/login", async (req, res) => {
   }
   let bootstrapOwner = false;
   if (!email3 && password === ADMIN_PASSWORD) {
-    const [existingAdmin] = await db.select({ id: adminUsersTable.id }).from(adminUsersTable).limit(1);
-    bootstrapOwner = !existingAdmin;
+    const [activeAdmin] = await db.select({ id: adminUsersTable.id }).from(adminUsersTable).where(eq(adminUsersTable.isActive, true)).limit(1);
+    bootstrapOwner = !activeAdmin;
   }
   const authed = Boolean(user && user.isActive && verifyPassword(password, user.passwordHash) || bootstrapOwner);
   if (!authed) {

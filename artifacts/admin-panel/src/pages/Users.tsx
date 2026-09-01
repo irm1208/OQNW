@@ -261,7 +261,7 @@ export default function Users() {
       <div className="rounded-xl border bg-amber-50 border-amber-200 p-4 flex items-start gap-3">
         <ShieldCheck className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
         <p className="text-sm text-amber-800">
-          The shared password only bootstraps the first admin account. Every individual admin must enroll an authenticator before their first session is created.
+          The shared password is available only during initial setup or when every admin account is disabled. Use it to restore owner access, then reactivate or create an individual admin and enrol MFA.
         </p>
       </div>
 
