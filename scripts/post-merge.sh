@@ -1,4 +1,5 @@
 #!/bin/bash
 set -e
-pnpm install --frozen-lockfile
+# Keep post-merge setup deterministic and non-interactive.
+pnpm install --frozen-lockfile --prefer-offline
 pnpm --filter db push
