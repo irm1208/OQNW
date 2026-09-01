@@ -44,7 +44,7 @@ const FAQS: FAQItem[] = [
   // PRODUCTS & PURITY
   {
     category: "products",
-    q: "What does '98%+ verified' mean?",
+    q: "What does '99%+ independently verified' mean?",
     a: "Each batch of our research peptides is tested to confirm that at least 99% of the sample is the target compound, with less than 1% consisting of related impurities, residual solvents, or degradation products. We publish the results on our Lab Results page so you can inspect the data directly.",
     tags: ["purity", "testing", "quality"],
   },
@@ -69,7 +69,7 @@ const FAQS: FAQItem[] = [
   {
     category: "products",
     q: "What are peptide blends? Are they less pure?",
-    a: "Peptide blends are pre-mixed vials containing two or more individual peptides lyophilised together — for example, the BPC-157 + TB-500 Blend or CJC-1295 + Ipamorelin. They are not less pure; each component is manufactured and tested to the same 98%+ standard before blending. Blends offer research convenience by eliminating the need to reconstitute and dose two separate vials in protocols where both compounds are used together.",
+    a: "Peptide blends are pre-mixed vials containing two or more individual peptides lyophilised together — for example, the BPC-157 + TB-500 Blend or CJC-1295 + Ipamorelin. They are not less pure; each component is manufactured and tested to the same 99%+ standard before blending. Blends offer research convenience by eliminating the need to reconstitute and dose two separate vials in protocols where both compounds are used together.",
     tags: ["blend", "stack", "combination", "purity"],
   },
   {

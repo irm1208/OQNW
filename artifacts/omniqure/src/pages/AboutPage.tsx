@@ -7,7 +7,7 @@ import {
 
 const STATS = [
   { value: "81+",   label: "Unique Peptide Compounds" },
-  { value: "98%+",  label: "Average verified purity" },
+  { value: "99%+",  label: "Independent result purity" },
   { value: "500+",  label: "Orders Fulfilled" },
 ];
 
@@ -207,7 +207,7 @@ export default function AboutPage() {
                 Quality you can verify,<br />not just trust.
               </h2>
               <p style={{ fontSize: 15, color: "#475569", lineHeight: 1.85, marginBottom: 18 }}>
-                In peptide research, the difference between 95% purity and 98%+ purity isn't just a number — it can materially affect experimental outcomes. Too many suppliers cite purity figures without providing the data to back them up.
+                In peptide research, the difference between 95% purity and 99%+ purity isn't just a number — it can materially affect experimental outcomes. Too many suppliers cite purity figures without providing the data to back them up.
               </p>
               <p style={{ fontSize: 15, color: "#475569", lineHeight: 1.85, marginBottom: 28 }}>
                 OmniQure publishes independent data for every compound in our catalogue. We invite our customers to scrutinise our results because transparency isn't a marketing strategy — it's the standard we hold ourselves to.

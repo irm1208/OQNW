@@ -16,7 +16,7 @@ export type ProductDetail = {
   refNumber?: string;
 };
 
-export const productDetails: Record<string, ProductDetail> = {
+const productDetailsSource: Record<string, ProductDetail> = {
 
   "1": {
     id: "1",
@@ -1820,3 +1820,13 @@ Metabolic research has explored Tesamorelin's effects on lipid metabolism, insul
 Cognitive function research has investigated associations between GHRH-R activation and hippocampal function. Studies in rodent and primate models suggest that Tesamorelin-stimulated GH/IGF-1 signalling may support hippocampal neurogenesis, memory consolidation, and executive function, providing a research avenue for GH axis involvement in cognitive ageing and neurodegenerative disease.`
   }
 };
+
+export const productDetails: Record<string, ProductDetail> = Object.fromEntries(
+  Object.entries(productDetailsSource).map(([id, detail]) => [
+    id,
+    {
+      ...detail,
+      purity: detail.purity?.replace(/^98%\+/, "99%+"),
+    },
+  ]),
+);

@@ -116,7 +116,7 @@ function makeProductSeo(product: ProductSeoRecord): SeoValues {
           }
         : {}),
       additionalProperty: [
-        { "@type": "PropertyValue", name: "Purity", value: product.purity || "98%+" },
+        { "@type": "PropertyValue", name: "Purity", value: product.purity || "99%+" },
         { "@type": "PropertyValue", name: "Research Use Only", value: "Yes" },
       ],
     },

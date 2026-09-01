@@ -2,7 +2,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 
 const messages = [
-  "🔬  98%+ Verified Purity — Guaranteed on Every Product",
+  "🔬  99%+ Independently Verified Purity — Every Published Result",
   "🎁  Refer a Friend — You Both Earn £25 Credit Each",
   "🚚  Free Standard Shipping — UK Mainland, Highlands & Northern Ireland",
   "💊  Bundle & Save — 3-4 Vials Unlock a Free 10ml Bac Water Ampule",

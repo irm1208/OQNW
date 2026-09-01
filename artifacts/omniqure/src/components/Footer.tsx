@@ -137,12 +137,12 @@ export default function Footer() {
                 </div>
               </div>
               <p className="hidden md:block" style={{ fontSize: "13px", color: "rgba(255,255,255,0.70)", lineHeight: "1.75", marginBottom: "16px" }}>
-                Research peptides manufactured to the highest standards of quality and purity. 98%+ verified purity guaranteed on every product.
+                Research peptides manufactured to the highest standards of quality and purity. 99%+ independently verified purity across every published result.
               </p>
 
               {/* Trust badges */}
               <div className="flex flex-wrap gap-2 mb-2 md:mb-5">
-                {["98%+", "Janoshik Verified", "Secure Checkout"].map(b => (
+                {["99%+", "Janoshik Verified", "Secure Checkout"].map(b => (
                   <span
                     key={b}
                     className="text-xs px-2.5 py-1 rounded-full inline-flex items-center gap-1"

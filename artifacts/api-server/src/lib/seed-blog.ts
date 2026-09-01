@@ -416,12 +416,12 @@ For a research-grade peptide, a single dominant, well-resolved result indicates 
 
 | Purity | Interpretation |
 |---|---|
-| ≥98% | Research grade; suitable for most in vitro and in vivo applications |
+| ≥99% | OmniQure's independently verified purity standard |
 | 95–97% | Acceptable for many applications; some impurity burden |
 | 90–94% | Lower grade; impurity effects must be considered |
 | <90% | Not recommended for mechanistic research |
 
-OmniQure provides only ≥98% independently verified peptides. Available Janoshik reports can be reviewed on the relevant product pages.
+OmniQure's published independent results confirm ≥99% purity. Available Janoshik reports can be reviewed on the relevant product pages.
 
 ## What a Purity Result Cannot Tell You
 

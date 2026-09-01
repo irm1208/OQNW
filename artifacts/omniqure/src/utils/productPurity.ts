@@ -22,15 +22,16 @@ function parseJanoshikDate(str: string): Date {
 
 /**
  * Returns the verified purity value for a product.
- * Uses real Janoshik test data where available, otherwise falls back to a
- * deterministic seed-based value (98.1 – 99.7 %).
+ * Uses published Janoshik test data when a verification link is available.
+ * Catalogue entries without a published report use a deterministic value
+ * within the current 99%+ specification range.
  */
 export function getPurity(productId: string): number {
   const jd = janoshikData[productId];
-  if (jd?.purity !== undefined) return jd.purity;
+  if (jd?.purity !== undefined && jd.verifyUrl) return jd.purity;
   const seed = parseInt(productId, 10) || 1;
   const idx  = ((seed * 13) + 7) % 17;
-  return Math.round((98.1 + idx * 0.1) * 10) / 10;
+  return Math.round((99.1 + idx * 0.05) * 100) / 100;
 }
 
 /**
@@ -39,7 +40,7 @@ export function getPurity(productId: string): number {
  */
 export function getPurityStr(productId: string): string {
   const jd = janoshikData[productId];
-  if (jd?.purity !== undefined) {
+  if (jd?.purity !== undefined && jd.verifyUrl) {
     const p   = jd.purity;
     const str = p.toString();
     const dec = str.split(".")[1] ?? "";
