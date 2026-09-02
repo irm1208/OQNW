@@ -125,7 +125,6 @@ export default function WallidReturn() {
             </p>
           )}
         </div>
-        <Branding />
       </PageShell>
     );
   }
@@ -185,7 +184,6 @@ export default function WallidReturn() {
             <Link href="/" style={secondaryBtn}>Continue Shopping</Link>
           </div>
         </div>
-        <Branding />
       </PageShell>
     );
   }
@@ -233,7 +231,6 @@ export default function WallidReturn() {
             <Link href="/" style={secondaryBtn}>Back to Homepage</Link>
           </div>
         </div>
-        <Branding />
       </PageShell>
     );
   }
@@ -275,7 +272,6 @@ export default function WallidReturn() {
             <Link href="/" style={secondaryBtn}>Back to Homepage</Link>
           </div>
         </div>
-        <Branding />
       </PageShell>
     );
   }
@@ -294,7 +290,6 @@ export default function WallidReturn() {
         </p>
         <Link href="/" style={secondaryBtn}>Back to Homepage</Link>
       </div>
-      <Branding />
     </PageShell>
   );
 }
@@ -320,14 +315,6 @@ function PageShell({ children, bg }: { children: React.ReactNode; bg: string }) 
         {children}
       </div>
     </div>
-  );
-}
-
-function Branding() {
-  return (
-    <p style={{ marginTop: 32, fontSize: "12px", color: "#94A3B8", textAlign: "center" }}>
-      Secure payment powered by <strong style={{ color: "#0D2565" }}>Wallid</strong> · OmniQure Peptide Research Institute
-    </p>
   );
 }
 
