@@ -2,7 +2,7 @@ kind = "web"
 previewPath = "/imtheonlyadmin/"
 title = "OmniQure Admin"
 version = "1.0.0"
-id = "artifact:v3:default-omniqure-admin"
+id = "artifacts/admin-panel"
 router = "path"
 
 [[integratedSkills]]
