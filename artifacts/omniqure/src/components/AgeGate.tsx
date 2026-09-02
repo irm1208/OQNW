@@ -32,8 +32,6 @@ export default function AgeGate() {
   const [shake, setShake] = useState(false);
 
   useEffect(() => {
-    // Skip age gate in development so the preview pane works without friction
-    if (import.meta.env.DEV) return;
     if (!hasVerified()) {
       setVisible(true);
       document.body.style.overflow = "hidden";
