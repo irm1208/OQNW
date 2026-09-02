@@ -264,7 +264,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
           )}
 
           {/* Qty + ATC */}
-          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <div className="quick-view-cta-row" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <div style={{
               display: "flex", alignItems: "center",
               border: "1.5px solid #E2E8F0", borderRadius: "10px", overflow: "hidden",
@@ -290,6 +290,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
             <button
               onClick={handleAddToCart}
               disabled={isOos}
+              className="quick-view-add-btn"
               style={{
                 flex: 1, height: "40px", borderRadius: "10px",
                 background: isOos ? "#E2E8F0" : added ? "#059669" : "#1240A0",
@@ -298,6 +299,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
                 cursor: isOos ? "not-allowed" : "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center", gap: "7px",
                 transition: "background 0.15s",
+                whiteSpace: "nowrap",
               }}
               onMouseEnter={e => { if (!isOos && !added) (e.currentTarget as HTMLButtonElement).style.background = "#1B5CB5"; }}
               onMouseLeave={e => { if (!isOos && !added) (e.currentTarget as HTMLButtonElement).style.background = "#1240A0"; }}

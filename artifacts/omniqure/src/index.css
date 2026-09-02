@@ -405,6 +405,11 @@ html.copy-protected [role="textbox"] {
   display: contents;
 }
 
+.quick-view-add-btn {
+  white-space: nowrap;
+  min-width: max-content;
+}
+
 .card-qty {
   display: flex;
   align-items: center;
@@ -826,6 +831,18 @@ html.copy-protected [role="textbox"] {
     justify-content: center;
   }
   .product-cta-row .product-cta-btn {
+    width: 100%;
+  }
+
+  .quick-view-cta-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .quick-view-cta-row > div:first-child {
+    width: 100%;
+    justify-content: center;
+  }
+  .quick-view-cta-row .quick-view-add-btn {
     width: 100%;
   }
 }
