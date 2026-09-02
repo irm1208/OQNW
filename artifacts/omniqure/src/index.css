@@ -402,11 +402,7 @@ html.copy-protected [role="textbox"] {
 }
 
 .product-cta-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1;
-  min-width: 0;
+  display: contents;
 }
 
 .card-qty {
@@ -818,6 +814,11 @@ html.copy-protected [role="textbox"] {
     align-items: stretch !important;
   }
   .product-cta-row .product-cta-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
     width: 100%;
   }
   .product-cta-row .product-cta-qty {
