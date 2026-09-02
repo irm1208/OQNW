@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
@@ -59,8 +59,11 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
     name: "items",
   });
 
-  const watchedItems = form.watch("items");
-  
+  const watchedItems = useWatch({
+    control: form.control,
+    name: "items",
+  });
+
   const totalAmount = useMemo(() => {
     return watchedItems.reduce((acc, item) => {
       const price = Number(item.priceGbp) || 0;
