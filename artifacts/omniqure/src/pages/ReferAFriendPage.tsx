@@ -4,7 +4,11 @@ import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
-import { REFERRAL_SHARE_DESCRIPTION, REFERRAL_SHARE_TITLE } from "@/seo/referral";
+import {
+  REFERRAL_SHARE_DESCRIPTION,
+  REFERRAL_SHARE_MESSAGE,
+  REFERRAL_SHARE_TITLE,
+} from "@/seo/referral";
 
 // Value of a single £25 referral credit reward, in each supported currency.
 const REFERRAL_CREDIT_VALUE: Record<CurrencyCode, string> = {
@@ -91,7 +95,8 @@ export default function ReferAFriendPage() {
     : "/register";
 
   function copyLink() {
-    void navigator.clipboard.writeText(referralLink);
+    const message = `${REFERRAL_SHARE_MESSAGE}\n\n${referralLink}`;
+    void navigator.clipboard.writeText(message);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }

@@ -343,7 +343,8 @@ export default function AccountPage() {
   function copyReferralLink() {
     if (!referral) return;
     const url = `${window.location.origin}${REFERRAL_LANDING_PATH}?ref=${encodeURIComponent(referral.referralCode)}`;
-    void navigator.clipboard.writeText(url);
+    const message = `${REFERRAL_SHARE_MESSAGE}\n\n${url}`;
+    void navigator.clipboard.writeText(message);
     setReferralCopied(true);
     setTimeout(() => setReferralCopied(false), 2500);
   }
@@ -357,8 +358,7 @@ export default function AccountPage() {
       try {
         await navigator.share({
           title: REFERRAL_SHARE_TITLE,
-          text: REFERRAL_SHARE_MESSAGE,
-          url,
+          text: message,
         });
         return;
       } catch (error) {
