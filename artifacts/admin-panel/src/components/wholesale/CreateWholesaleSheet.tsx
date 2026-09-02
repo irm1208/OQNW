@@ -22,11 +22,12 @@ import { toast } from "sonner";
 const itemSchema = z.object({
   productId: z.coerce.number().min(1, "Required"),
   quantity: z.coerce.number().min(1, "Min 1"),
-  priceGbp: z.union([z.string(), z.number()]).refine(v => v !== "", "Required").transform(v => Number(v)).pipe(z.number().positive("Enter a price above £0")),
+  priceGbp: z.union([z.string(), z.number()]).refine(v => v !== "", "Required").transform(v => Number(v)).pipe(z.number().positive("Enter a price above 0")),
 });
 
 const formSchema = z.object({
   referenceNumber: z.string().min(1, "Reference number is required"),
+  currency: z.enum(["GBP", "EUR"]),
   customerName: z.string().min(1, "Customer name is required"),
   customerEmail: z.string().email("Valid email is required"),
   customerEmailCc: z.string().optional().refine(val => !val || /^\S+@\S+\.\S+$/.test(val), "Invalid email"),
@@ -51,6 +52,7 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
     resolver: zodResolver(formSchema),
     defaultValues: {
       referenceNumber: "",
+      currency: "GBP",
       customerName: "",
       customerEmail: "",
       customerEmailCc: "",
@@ -71,8 +73,11 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
     const savedDraft = sessionStorage.getItem(WHOLESALE_DRAFT_KEY);
     if (!savedDraft) return;
     try {
-      const draft = JSON.parse(savedDraft) as FormValues;
-      form.reset(draft);
+      const draft = JSON.parse(savedDraft) as Partial<FormValues>;
+      form.reset({
+        ...draft,
+        currency: draft.currency === "EUR" ? "EUR" : "GBP",
+      } as FormValues);
       setShowNotes(Boolean(draft.notes));
       sessionStorage.removeItem(WHOLESALE_DRAFT_KEY);
       toast.info("Payment details restored. Select Create payment link to continue.");
@@ -85,6 +90,11 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
     control: form.control,
     name: "items",
   });
+  const currency = useWatch({
+    control: form.control,
+    name: "currency",
+  });
+  const currencySymbol = currency === "EUR" ? "€" : "£";
 
   const totalAmount = useMemo(() => {
     const totalPence = watchedItems.reduce((acc, item) => {
@@ -155,11 +165,33 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
                 )}
               />
 
+              <FormField
+                control={form.control}
+                name="currency"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold text-sm">Currency *</FormLabel>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger className="bg-background shadow-sm">
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="GBP">GBP — British pound (£)</SelectItem>
+                        <SelectItem value="EUR">EUR — Euro (€)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <div className="space-y-2">
-                <p className="font-semibold text-sm">Amount</p>
+                <p className="font-semibold text-sm">Amount ({currency})</p>
                 <div className="flex rounded-md border border-input overflow-hidden shadow-sm">
                   <div className="bg-muted px-4 py-2 text-muted-foreground border-r font-medium flex items-center justify-center">
-                    £
+                     {currencySymbol}
                   </div>
                    <Input
                      readOnly
@@ -273,7 +305,7 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
                               <FormItem>
                                 <FormControl>
                                   <div className="relative">
-                                    <div className="absolute left-2.5 top-2 text-muted-foreground text-sm font-medium">£</div>
+                                     <div className="absolute left-2.5 top-2 text-muted-foreground text-sm font-medium">{currencySymbol}</div>
                                     <Input type="number" step="0.01" min="0" placeholder="Price" {...inputField} className="bg-background text-sm h-9 pl-6 shadow-sm" />
                                   </div>
                                 </FormControl>

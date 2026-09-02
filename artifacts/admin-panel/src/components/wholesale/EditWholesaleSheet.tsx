@@ -161,7 +161,10 @@ export function EditWholesaleSheet({
                   <p className="text-muted-foreground">Total</p>
                   <p className="font-semibold">
                     {invoice
-                      ? new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(invoice.totalGbp)
+                       ? new Intl.NumberFormat("en-GB", {
+                           style: "currency",
+                           currency: invoice.currency ?? "GBP",
+                         }).format(invoice.totalGbp)
                       : "—"}
                   </p>
                 </div>

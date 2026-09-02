@@ -33,6 +33,7 @@ export interface WholesaleInvoice {
   customerEmail: string;
   customerEmailCc?: string | null;
   totalGbp: number;
+  currency?: "GBP" | "EUR";
   paymentUrl?: string;
   emailStatus?: string;
   paymentStatus?: string;

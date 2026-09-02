@@ -74,6 +74,7 @@ export interface WholesaleInvoiceEmailData extends OrderEmailData {
   referenceNumber: string;
   dueDate: string;
   paymentUrl: string;
+  currency: "GBP" | "EUR";
   customerEmailCc?: string | null;
   description?: string | null;
   invoiceNotes?: string | null;
@@ -81,6 +82,10 @@ export interface WholesaleInvoiceEmailData extends OrderEmailData {
 
 function formatGbp(amount: number): string {
   return `£${amount.toFixed(2)}`;
+}
+
+function formatMoney(amount: number, currency: "GBP" | "EUR"): string {
+  return `${currency === "EUR" ? "€" : "£"}${amount.toFixed(2)}`;
 }
 
 function escapeHtml(value: string): string {
@@ -175,10 +180,10 @@ function createWholesaleInvoicePdf(invoice: WholesaleInvoiceEmailData): Promise<
       doc.fillColor("#0f172a").fontSize(10).text(
         `${item.productName}  x ${item.quantity}`,
         { continued: true },
-      ).text(formatGbp(lineTotal), { align: "right" });
+      ).text(formatMoney(lineTotal, invoice.currency), { align: "right" });
     });
     doc.moveDown();
-    doc.fontSize(12).fillColor("#142767").text(`Total: ${formatGbp(invoice.totalGbp)}`, { align: "right" });
+    doc.fontSize(12).fillColor("#142767").text(`Total: ${formatMoney(invoice.totalGbp, invoice.currency)}`, { align: "right" });
     if (invoice.description) {
       doc.moveDown().fontSize(10).fillColor("#475569").text(invoice.description);
     }
@@ -198,7 +203,7 @@ export async function sendWholesaleInvoice(invoice: WholesaleInvoiceEmailData): 
     createWholesaleInvoicePdf(invoice),
     QRCode.toBuffer(invoice.paymentUrl, { type: "png", width: 360, margin: 2 }),
   ]);
-  const subject = `Wholesale invoice ${invoice.referenceNumber} — ${formatGbp(invoice.totalGbp)}`;
+  const subject = `Wholesale invoice ${invoice.referenceNumber} — ${formatMoney(invoice.totalGbp, invoice.currency)}`;
   const description = invoice.description ? `<p style="margin:0 0 20px;color:#475569;">${escapeHtml(invoice.description)}</p>` : "";
   const notes = invoice.invoiceNotes ? `<div style="margin-top:20px;padding:14px;background:#f8fafc;border-radius:6px;color:#475569;font-size:13px;">${escapeHtml(invoice.invoiceNotes)}</div>` : "";
   const body = `
@@ -210,8 +215,8 @@ export async function sendWholesaleInvoice(invoice: WholesaleInvoiceEmailData): 
       <p style="margin:4px 0 8px;font-size:20px;font-weight:700;color:#0f172a;">${escapeHtml(invoice.referenceNumber)}</p>
       <p style="margin:0;font-size:13px;color:#475569;">Due ${escapeHtml(invoice.dueDate)}</p>
     </div>
-    ${itemsTable(invoice.items)}
-    ${totalsBlock(invoice)}
+    ${itemsTable(invoice.items, invoice.currency)}
+    ${totalsBlock(invoice, invoice.currency)}
     <div style="margin-top:26px;text-align:center;">
       <a href="${paymentUrl}" style="display:inline-block;background:#142767;color:#fff;padding:14px 28px;border-radius:8px;text-decoration:none;font-size:15px;font-weight:700;">Pay by Bank</a>
       <p style="margin:18px 0 8px;font-size:12px;color:#64748b;">Or scan this QR code</p>
@@ -241,7 +246,7 @@ export async function sendWholesaleInvoice(invoice: WholesaleInvoiceEmailData): 
   }
 }
 
-function itemsTable(items: OrderItem[]): string {
+function itemsTable(items: OrderItem[], currency: "GBP" | "EUR" = "GBP"): string {
   const rows = items.map(item => `
     <tr>
       <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#1e293b;">
@@ -249,7 +254,7 @@ function itemsTable(items: OrderItem[]): string {
         <span style="display:block;font-size:12px;color:#94a3b8;">${item.productCategory}</span>
       </td>
       <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#64748b;text-align:center;">×${item.quantity}</td>
-      <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#1e293b;text-align:right;">${formatGbp(item.priceGbp * item.quantity)}</td>
+        <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#1e293b;text-align:right;">${formatMoney(item.priceGbp * item.quantity, currency)}</td>
     </tr>`).join("");
 
   return `
@@ -263,20 +268,20 @@ function itemsTable(items: OrderItem[]): string {
     </table>`;
 }
 
-function totalsBlock(order: OrderEmailData): string {
+function totalsBlock(order: OrderEmailData, currency: "GBP" | "EUR" = "GBP"): string {
   return `
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px;">
       <tr>
         <td style="font-size:13px;color:#64748b;padding:4px 0;">Subtotal</td>
-        <td style="font-size:13px;color:#64748b;text-align:right;">${formatGbp(order.subtotalGbp)}</td>
+        <td style="font-size:13px;color:#64748b;text-align:right;">${formatMoney(order.subtotalGbp, currency)}</td>
       </tr>
       <tr>
         <td style="font-size:13px;color:#64748b;padding:4px 0;">Shipping${order.shippingMethod ? ` (${order.shippingMethod})` : ""}</td>
-        <td style="font-size:13px;color:#64748b;text-align:right;">${formatGbp(order.shippingCostGbp)}</td>
+        <td style="font-size:13px;color:#64748b;text-align:right;">${formatMoney(order.shippingCostGbp, currency)}</td>
       </tr>
       <tr>
         <td style="font-size:15px;font-weight:700;color:#0f172a;padding:12px 0 4px;border-top:2px solid #e2e8f0;">Total</td>
-        <td style="font-size:15px;font-weight:700;color:#0f172a;text-align:right;padding:12px 0 4px;border-top:2px solid #e2e8f0;">${formatGbp(order.totalGbp)}</td>
+        <td style="font-size:15px;font-weight:700;color:#0f172a;text-align:right;padding:12px 0 4px;border-top:2px solid #e2e8f0;">${formatMoney(order.totalGbp, currency)}</td>
       </tr>
     </table>`;
 }

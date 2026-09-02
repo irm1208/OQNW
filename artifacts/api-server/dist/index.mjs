@@ -232827,6 +232827,9 @@ async function logEmail(opts) {
 function formatGbp(amount) {
   return `\xA3${amount.toFixed(2)}`;
 }
+function formatMoney(amount, currency) {
+  return `${currency === "EUR" ? "\u20AC" : "\xA3"}${amount.toFixed(2)}`;
+}
 function escapeHtml2(value) {
   return value.replace(
     /[&<>"']/g,
@@ -232912,10 +232915,10 @@ function createWholesaleInvoicePdf(invoice) {
       doc.fillColor("#0f172a").fontSize(10).text(
         `${item.productName}  x ${item.quantity}`,
         { continued: true }
-      ).text(formatGbp(lineTotal), { align: "right" });
+      ).text(formatMoney(lineTotal, invoice.currency), { align: "right" });
     });
     doc.moveDown();
-    doc.fontSize(12).fillColor("#142767").text(`Total: ${formatGbp(invoice.totalGbp)}`, { align: "right" });
+    doc.fontSize(12).fillColor("#142767").text(`Total: ${formatMoney(invoice.totalGbp, invoice.currency)}`, { align: "right" });
     if (invoice.description) {
       doc.moveDown().fontSize(10).fillColor("#475569").text(invoice.description);
     }
@@ -232931,7 +232934,7 @@ async function sendWholesaleInvoice(invoice) {
     createWholesaleInvoicePdf(invoice),
     import_qrcode.default.toBuffer(invoice.paymentUrl, { type: "png", width: 360, margin: 2 })
   ]);
-  const subject = `Wholesale invoice ${invoice.referenceNumber} \u2014 ${formatGbp(invoice.totalGbp)}`;
+  const subject = `Wholesale invoice ${invoice.referenceNumber} \u2014 ${formatMoney(invoice.totalGbp, invoice.currency)}`;
   const description = invoice.description ? `<p style="margin:0 0 20px;color:#475569;">${escapeHtml2(invoice.description)}</p>` : "";
   const notes = invoice.invoiceNotes ? `<div style="margin-top:20px;padding:14px;background:#f8fafc;border-radius:6px;color:#475569;font-size:13px;">${escapeHtml2(invoice.invoiceNotes)}</div>` : "";
   const body = `
@@ -232943,8 +232946,8 @@ async function sendWholesaleInvoice(invoice) {
       <p style="margin:4px 0 8px;font-size:20px;font-weight:700;color:#0f172a;">${escapeHtml2(invoice.referenceNumber)}</p>
       <p style="margin:0;font-size:13px;color:#475569;">Due ${escapeHtml2(invoice.dueDate)}</p>
     </div>
-    ${itemsTable(invoice.items)}
-    ${totalsBlock(invoice)}
+    ${itemsTable(invoice.items, invoice.currency)}
+    ${totalsBlock(invoice, invoice.currency)}
     <div style="margin-top:26px;text-align:center;">
       <a href="${paymentUrl}" style="display:inline-block;background:#142767;color:#fff;padding:14px 28px;border-radius:8px;text-decoration:none;font-size:15px;font-weight:700;">Pay by Bank</a>
       <p style="margin:18px 0 8px;font-size:12px;color:#64748b;">Or scan this QR code</p>
@@ -232972,7 +232975,7 @@ async function sendWholesaleInvoice(invoice) {
     throw err;
   }
 }
-function itemsTable(items) {
+function itemsTable(items, currency = "GBP") {
   const rows = items.map((item) => `
     <tr>
       <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#1e293b;">
@@ -232980,7 +232983,7 @@ function itemsTable(items) {
         <span style="display:block;font-size:12px;color:#94a3b8;">${item.productCategory}</span>
       </td>
       <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#64748b;text-align:center;">\xD7${item.quantity}</td>
-      <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#1e293b;text-align:right;">${formatGbp(item.priceGbp * item.quantity)}</td>
+        <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#1e293b;text-align:right;">${formatMoney(item.priceGbp * item.quantity, currency)}</td>
     </tr>`).join("");
   return `
     <table width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0;">
@@ -232992,20 +232995,20 @@ function itemsTable(items) {
       ${rows}
     </table>`;
 }
-function totalsBlock(order) {
+function totalsBlock(order, currency = "GBP") {
   return `
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px;">
       <tr>
         <td style="font-size:13px;color:#64748b;padding:4px 0;">Subtotal</td>
-        <td style="font-size:13px;color:#64748b;text-align:right;">${formatGbp(order.subtotalGbp)}</td>
+        <td style="font-size:13px;color:#64748b;text-align:right;">${formatMoney(order.subtotalGbp, currency)}</td>
       </tr>
       <tr>
         <td style="font-size:13px;color:#64748b;padding:4px 0;">Shipping${order.shippingMethod ? ` (${order.shippingMethod})` : ""}</td>
-        <td style="font-size:13px;color:#64748b;text-align:right;">${formatGbp(order.shippingCostGbp)}</td>
+        <td style="font-size:13px;color:#64748b;text-align:right;">${formatMoney(order.shippingCostGbp, currency)}</td>
       </tr>
       <tr>
         <td style="font-size:15px;font-weight:700;color:#0f172a;padding:12px 0 4px;border-top:2px solid #e2e8f0;">Total</td>
-        <td style="font-size:15px;font-weight:700;color:#0f172a;text-align:right;padding:12px 0 4px;border-top:2px solid #e2e8f0;">${formatGbp(order.totalGbp)}</td>
+        <td style="font-size:15px;font-weight:700;color:#0f172a;text-align:right;padding:12px 0 4px;border-top:2px solid #e2e8f0;">${formatMoney(order.totalGbp, currency)}</td>
       </tr>
     </table>`;
 }
@@ -244472,6 +244475,7 @@ function invoiceResponse(invoice, order) {
     status: order.status,
     customerName: order.customerName,
     customerEmail: order.customerEmail,
+    currency: order.paymentCurrency === "EUR" ? "EUR" : "GBP",
     customerEmailCc: invoice.customerEmailCc,
     dueDate: invoice.dueDate,
     description: invoice.description,
@@ -244492,6 +244496,7 @@ async function sendSavedInvoice(invoiceId) {
     referenceNumber: row.invoice.referenceNumber,
     dueDate: row.invoice.dueDate,
     paymentUrl: row.invoice.paymentUrl,
+    currency: row.order.paymentCurrency === "EUR" ? "EUR" : "GBP",
     customerEmailCc: row.invoice.customerEmailCc,
     description: row.invoice.description,
     invoiceNotes: row.invoice.invoiceNotes,
@@ -244530,9 +244535,10 @@ router51.post("/admin/wholesale", async (req, res) => {
   const customerName = text2(body.customerName, 160);
   const customerEmail = text2(body.customerEmail, 320)?.toLowerCase() ?? null;
   const customerEmailCc = text2(body.customerEmailCc, 320)?.toLowerCase() ?? null;
+  const currency = body.currency === void 0 || body.currency === null || body.currency === "GBP" ? "GBP" : body.currency === "EUR" ? "EUR" : null;
   const dueDate = text2(body.dueDate, 10);
   const rawItems = Array.isArray(body.items) ? body.items : [];
-  if (!referenceNumber || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(referenceNumber) || !customerName || !validEmail(customerEmail) || customerEmailCc && !validEmail(customerEmailCc) || !dueDate || !/^\d{4}-\d{2}-\d{2}$/.test(dueDate) || rawItems.length === 0 || rawItems.length > 100) {
+  if (!referenceNumber || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(referenceNumber) || !currency || !customerName || !validEmail(customerEmail) || customerEmailCc && !validEmail(customerEmailCc) || !dueDate || !/^\d{4}-\d{2}-\d{2}$/.test(dueDate) || rawItems.length === 0 || rawItems.length > 100) {
     res.status(400).json({ error: "Check the reference, customer, due date, and product lines" });
     return;
   }
@@ -244579,7 +244585,7 @@ router51.post("/admin/wholesale", async (req, res) => {
         const existing = existingItems[index2];
         return existing?.productId === item.productId && existing.quantity === item.quantity && Number(existing.priceGbp) === item.priceGbp;
       });
-      const sameRequest = saved.order.orderNumber === orderNumber && saved.order.customerEmail.toLowerCase() === customerEmail && saved.order.customerName === customerName && saved.order.paymentAmountMinor === amountMinor && saved.order.paymentCurrency === "GBP" && sameItems;
+      const sameRequest = saved.order.orderNumber === orderNumber && saved.order.customerEmail.toLowerCase() === customerEmail && saved.order.customerName === customerName && saved.order.paymentAmountMinor === amountMinor && (saved.order.paymentCurrency ?? "GBP") === currency && sameItems;
       if (!sameRequest) {
         res.status(409).json({ error: "That reference number belongs to a different wholesale payment" });
         return;
@@ -244621,7 +244627,7 @@ router51.post("/admin/wholesale", async (req, res) => {
           subtotalGbp: subtotal.toFixed(2),
           shippingCostGbp: shippingCost.toFixed(2),
           totalGbp: total.toFixed(2),
-          paymentCurrency: "GBP",
+          paymentCurrency: currency,
           paymentAmountMinor: amountMinor,
           shippingMethod: "Wholesale",
           notes: ["Wholesale Pay by Bank invoice", text2(body.notes, 2e3)].filter(Boolean).join("\n"),
@@ -244652,7 +244658,7 @@ router51.post("/admin/wholesale", async (req, res) => {
     const payment = await createWallidPayment({
       orderNumber,
       amountMinor,
-      currency: "GBP",
+      currency,
       customerEmail,
       customerId: `wholesale-${created.order.id}`,
       successUrl: `${SITE_URL2}/wallid-return?order=${encodeURIComponent(orderNumber)}&status=success`,

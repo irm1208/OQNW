@@ -33,8 +33,8 @@ export default function Wholesale() {
   });
   const [copiedId, setCopiedId] = useState<number | null>(null);
 
-  const formatCurrency = (val: number) =>
-    new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(val);
+  const formatCurrency = (val: number, currency: "GBP" | "EUR" = "GBP") =>
+    new Intl.NumberFormat("en-GB", { style: "currency", currency }).format(val);
 
   const getStatusColor = (s: string) => {
     switch (s?.toLowerCase()) {
@@ -128,7 +128,7 @@ export default function Wholesale() {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-muted-foreground">{inv.dueDate ? new Date(inv.dueDate).toLocaleDateString("en-GB") : "-"}</TableCell>
-                  <TableCell className="text-right font-semibold">{formatCurrency(inv.totalGbp)}</TableCell>
+                  <TableCell className="text-right font-semibold">{formatCurrency(inv.totalGbp, inv.currency)}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity focus-within:opacity-100">
                       {inv.paymentUrl && (

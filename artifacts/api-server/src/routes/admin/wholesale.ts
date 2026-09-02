@@ -15,6 +15,7 @@ const SITE_URL = process.env.SITE_URL ?? "https://omniqure.com";
 
 type CreateBody = {
   referenceNumber?: unknown;
+  currency?: unknown;
   customerName?: unknown;
   customerEmail?: unknown;
   customerEmailCc?: unknown;
@@ -70,6 +71,7 @@ function invoiceResponse(invoice: typeof wholesaleInvoicesTable.$inferSelect, or
     status: order.status,
     customerName: order.customerName,
     customerEmail: order.customerEmail,
+    currency: order.paymentCurrency === "EUR" ? "EUR" : "GBP",
     customerEmailCc: invoice.customerEmailCc,
     dueDate: invoice.dueDate,
     description: invoice.description,
@@ -96,6 +98,7 @@ async function sendSavedInvoice(invoiceId: number): Promise<void> {
     referenceNumber: row.invoice.referenceNumber,
     dueDate: row.invoice.dueDate,
     paymentUrl: row.invoice.paymentUrl,
+    currency: row.order.paymentCurrency === "EUR" ? "EUR" : "GBP",
     customerEmailCc: row.invoice.customerEmailCc,
     description: row.invoice.description,
     invoiceNotes: row.invoice.invoiceNotes,
@@ -141,10 +144,16 @@ router.post("/admin/wholesale", async (req: Request, res: Response): Promise<voi
   const customerName = text(body.customerName, 160);
   const customerEmail = text(body.customerEmail, 320)?.toLowerCase() ?? null;
   const customerEmailCc = text(body.customerEmailCc, 320)?.toLowerCase() ?? null;
+  const currency = body.currency === undefined || body.currency === null || body.currency === "GBP"
+    ? "GBP"
+    : body.currency === "EUR"
+      ? "EUR"
+      : null;
   const dueDate = text(body.dueDate, 10);
   const rawItems = Array.isArray(body.items) ? body.items : [];
   if (
     !referenceNumber || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(referenceNumber) ||
+    !currency ||
     !customerName || !validEmail(customerEmail) ||
     (customerEmailCc && !validEmail(customerEmailCc)) ||
     !dueDate || !/^\d{4}-\d{2}-\d{2}$/.test(dueDate) ||
@@ -225,7 +234,7 @@ router.post("/admin/wholesale", async (req: Request, res: Response): Promise<voi
         saved.order.customerEmail.toLowerCase() === customerEmail &&
         saved.order.customerName === customerName &&
         saved.order.paymentAmountMinor === amountMinor &&
-        saved.order.paymentCurrency === "GBP" &&
+        (saved.order.paymentCurrency ?? "GBP") === currency &&
         sameItems;
 
       if (!sameRequest) {
@@ -275,7 +284,7 @@ router.post("/admin/wholesale", async (req: Request, res: Response): Promise<voi
           subtotalGbp: subtotal.toFixed(2),
           shippingCostGbp: shippingCost.toFixed(2),
           totalGbp: total.toFixed(2),
-          paymentCurrency: "GBP",
+          paymentCurrency: currency,
           paymentAmountMinor: amountMinor,
           shippingMethod: "Wholesale",
           notes: ["Wholesale Pay by Bank invoice", text(body.notes, 2000)].filter(Boolean).join("\n"),
@@ -307,7 +316,7 @@ router.post("/admin/wholesale", async (req: Request, res: Response): Promise<voi
     const payment = await createWallidPayment({
       orderNumber,
       amountMinor,
-      currency: "GBP",
+      currency,
       customerEmail,
       customerId: `wholesale-${created.order.id}`,
       successUrl: `${SITE_URL}/wallid-return?order=${encodeURIComponent(orderNumber)}&status=success`,
