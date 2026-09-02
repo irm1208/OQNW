@@ -8,7 +8,7 @@
     "build": "node ./build.mjs",
     "start": "node --enable-source-maps ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test:admin-recovery": "../../scripts/node_modules/.bin/tsx --test src/routes/admin/auth-recovery.test.ts src/routes/admin/users-last-owner.test.ts",
+    "test:admin-recovery": "../../scripts/node_modules/.bin/tsx --test --test-concurrency=1 src/routes/admin/auth-recovery.test.ts src/routes/admin/users-last-owner.test.ts src/routes/admin/users-last-owner.postgres.test.ts",
     "test:crypto-payments": "../../scripts/node_modules/.bin/tsx --test src/lib/cryptoPaymentPolicy.test.ts src/lib/cryptoRoutes.test.ts",
     "test:seo": "../../scripts/node_modules/.bin/tsx --test src/routes/seo-publication.test.ts",
     "test:traffic": "../../scripts/node_modules/.bin/tsx --test src/lib/publicTrafficProtection.test.ts"
@@ -37,9 +37,11 @@
     "@types/express": "^5.0.6",
     "@types/node": "catalog:",
     "@types/pdfkit": "^0.17.4",
+    "@types/pg": "^8.18.0",
     "@types/qrcode": "^1.5.5",
     "esbuild": "^0.28.1",
     "esbuild-plugin-pino": "^2.3.3",
+    "pg": "^8.20.0",
     "pino-pretty": "^13",
     "thread-stream": "3.1.0"
   }

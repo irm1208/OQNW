@@ -8,7 +8,7 @@ import { firstString } from "../../lib/query";
 import { getSecureAdminSession, validateSecureAdminSession } from "./auth";
 
 const router = Router();
-const OWNER_MUTATION_LOCK_KEY = 1479362841;
+export const OWNER_MUTATION_LOCK_KEY = 1479362841;
 
 export class LastActiveOwnerError extends Error {
   constructor() {
