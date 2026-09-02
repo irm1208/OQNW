@@ -65,7 +65,16 @@ router.use("/admin", async (req, res, next) => {
     res.status(401).json({ error: "Not authenticated" });
     return;
   }
-  if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method) && !isRecentSecureAdminSession(req)) {
+  // Creating a manual wholesale payment is already protected by the signed
+  // admin session above. Do not interrupt an active admin session with a
+  // second login just because its recent-auth window has elapsed.
+  const isManualWholesaleCreation =
+    req.method === "POST" && req.path === "/wholesale";
+  if (
+    ["POST", "PUT", "PATCH", "DELETE"].includes(req.method) &&
+    !isManualWholesaleCreation &&
+    !isRecentSecureAdminSession(req)
+  ) {
     res.status(401).json({ error: "Recent authentication required", requiresRecentAuth: true });
     return;
   }
