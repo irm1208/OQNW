@@ -1,5 +1,5 @@
 kind = "web"
-previewPath = "/admin/"
+previewPath = "/imtheonlyadmin/"
 title = "OmniQure Admin"
 version = "1.0.0"
 id = "artifact:v3:default-omniqure-admin"
@@ -11,7 +11,7 @@ version = "1.0.0"
 
 [[services]]
 name = "web"
-paths = [ "/admin/" ]
+paths = [ "/imtheonlyadmin/" ]
 localPort = 8082
 
 [services.development]
@@ -28,4 +28,4 @@ to = "/index.html"
 
 [services.env]
 PORT = "8082"
-BASE_PATH = "/admin/"
+BASE_PATH = "/imtheonlyadmin/"
