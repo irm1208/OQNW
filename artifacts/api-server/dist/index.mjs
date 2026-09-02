@@ -67926,15 +67926,40 @@ router3.post("/admin/auth/login", async (req, res) => {
   if (email3) {
     [user] = await db.select().from(adminUsersTable).where(eq(adminUsersTable.email, email3)).limit(1);
   }
+  const activeAdmins = await db.select().from(adminUsersTable).where(eq(adminUsersTable.isActive, true)).limit(2);
+  const activeAdmin = activeAdmins[0];
   let bootstrapOwner = false;
   if (!email3 && password === ADMIN_PASSWORD) {
-    const [activeAdmin] = await db.select({ id: adminUsersTable.id }).from(adminUsersTable).where(eq(adminUsersTable.isActive, true)).limit(1);
     bootstrapOwner = !activeAdmin;
+    if (activeAdmins.length === 1 && activeAdmin.role === "owner" && !activeAdmin.mfaEnabled) {
+      user = activeAdmin;
+    }
   }
-  const authed = Boolean(user && user.isActive && verifyPassword(password, user.passwordHash) || bootstrapOwner);
+  const recoveringDisabledOwner = Boolean(
+    user && !user.isActive && user.role === "owner" && !activeAdmin && verifyPassword(password, user.passwordHash)
+  );
+  const authed = Boolean(
+    user && user.isActive && (verifyPassword(password, user.passwordHash) || !email3 && password === ADMIN_PASSWORD && user.role === "owner" && !user.mfaEnabled) || recoveringDisabledOwner || bootstrapOwner
+  );
   if (!authed) {
     await respondToFailedLogin(req, res, email3);
     return;
+  }
+  if (user && recoveringDisabledOwner) {
+    const [reactivated] = await db.update(adminUsersTable).set({
+      isActive: true,
+      sessionVersion: sql`${adminUsersTable.sessionVersion} + 1`
+    }).where(and(eq(adminUsersTable.id, user.id), eq(adminUsersTable.isActive, false))).returning();
+    if (!reactivated) {
+      await respondToFailedLogin(req, res, email3);
+      return;
+    }
+    user = reactivated;
+    await recordAudit(req, "admin_owner_reactivated", true, {
+      adminUserId: user.id,
+      email: user.email,
+      metadata: { reason: "no_active_admins" }
+    });
   }
   if (user?.mfaEnabled) {
     const { token, expiresAt } = challengeTokenValue("mfa", user.id);

@@ -261,7 +261,7 @@ export default function Users() {
       <div className="rounded-xl border bg-amber-50 border-amber-200 p-4 flex items-start gap-3">
         <ShieldCheck className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
         <p className="text-sm text-amber-800">
-          The shared password is available only during initial setup or when every admin account is disabled. Use it to restore owner access, then reactivate or create an individual admin and enrol MFA.
+          Shared recovery can claim the sole owner only until MFA is enrolled, or restore access when every admin is disabled. Once an active owner has MFA, individual credentials are always required.
         </p>
       </div>
 
