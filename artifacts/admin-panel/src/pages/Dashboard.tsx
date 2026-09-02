@@ -43,35 +43,35 @@ type Period = 7 | 30 | 90 | 365;
 const PERIOD_LABELS: Record<Period, string> = { 7: "7d", 30: "30d", 90: "90d", 365: "1y" };
 
 const STATUS_COLORS: Record<string, string> = {
-  pending: "#f59e0b",
-  processing: "#3b82f6",
-  shipped: "#8b5cf6",
-  delivered: "#10b981",
-  cancelled: "#ef4444",
-  returned: "#6b7280",
+  pending: "#d9970f",
+  processing: "#f4780c",
+  shipped: "#ffb266",
+  delivered: "#21a366",
+  cancelled: "#d94f45",
+  returned: "#8a7a66",
 };
 
 const CATEGORY_COLORS = [
-  "hsl(var(--primary))",
-  "#10b981",
-  "#f59e0b",
-  "#8b5cf6",
-  "#ef4444",
-  "#3b82f6",
-  "#ec4899",
-  "#14b8a6",
+  "#f4780c",
+  "#ffb266",
+  "#e2660a",
+  "#ffd9ad",
+  "#21a366",
+  "#d9970f",
+  "#ffe9d4",
+  "#8a7a66",
 ];
 
 function PeriodSelector({ value, onChange }: { value: Period; onChange: (p: Period) => void }) {
   return (
-    <div className="flex gap-1 bg-muted rounded-md p-1">
+    <div className="flex gap-1 bg-muted rounded-full p-1">
       {(Object.keys(PERIOD_LABELS) as unknown as Period[]).map((p) => (
         <button
           key={p}
           onClick={() => onChange(p)}
-          className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+          className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-colors ${
             value === p
-              ? "bg-background shadow-sm text-foreground"
+              ? "bg-primary text-primary-foreground shadow-sm"
               : "text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -175,16 +175,35 @@ export default function Dashboard() {
 
       {/* Stat Cards */}
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        {statCards.map((card) => (
-          <Card key={card.title}>
+        {statCards.map((card, i) => (
+          <Card
+            key={card.title}
+            className={
+              i === 0
+                ? "border-[1.5px] border-dashed border-primary bg-accent/60"
+                : undefined
+            }
+          >
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
-              <card.icon
-                className={`w-4 h-4 ${card.danger ? "text-destructive" : "text-muted-foreground"}`}
-              />
+              <CardTitle className="text-sm font-semibold text-muted-foreground">
+                {card.title}
+              </CardTitle>
+              <span
+                className={`grid h-8 w-8 place-items-center rounded-full ${
+                  card.danger
+                    ? "bg-destructive/10 text-destructive"
+                    : i === 0
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-accent text-primary"
+                }`}
+              >
+                <card.icon className="w-4 h-4" />
+              </span>
             </CardHeader>
             <CardContent>
-              <div className={`text-2xl font-bold ${card.danger ? "text-destructive" : ""}`}>
+              <div
+                className={`font-mono text-2xl font-bold ${card.danger ? "text-destructive" : ""}`}
+              >
                 {card.value}
               </div>
               {card.sub && <p className="text-xs text-muted-foreground mt-1">{card.sub}</p>}
@@ -345,7 +364,7 @@ export default function Dashboard() {
                   <Line
                     type="monotone"
                     dataKey="newCustomers"
-                    stroke="#10b981"
+                    stroke="#21a366"
                     strokeWidth={2}
                     dot={false}
                   />
@@ -416,14 +435,14 @@ export default function Dashboard() {
           <div className="divide-y">
             {(topProducts ?? []).map((product, i) => (
               <div key={product.productId} className="flex items-center py-3 gap-4">
-                <div className="w-7 h-7 rounded bg-muted flex items-center justify-center shrink-0">
-                  <span className="text-xs font-bold text-muted-foreground">{i + 1}</span>
+                <div className="w-7 h-7 rounded-full bg-accent flex items-center justify-center shrink-0">
+                  <span className="text-xs font-bold text-primary">{i + 1}</span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">{product.productName}</p>
                   <p className="text-xs text-muted-foreground">{product.totalSold} units sold</p>
                 </div>
-                <div className="text-sm font-semibold text-right">
+                <div className="font-mono text-sm font-semibold text-right">
                   {formatCurrency(product.totalRevenue)}
                 </div>
               </div>

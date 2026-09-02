@@ -1,4 +1,5 @@
 - [OmniQure artifact runtime](omniqure-ports.md) — platform artifact system runs each artifacts/* dir (storefront 8081→ext80, admin 8082, api 8080, mockup 8083); never add manual duplicate workflows; dev /api proxy → 8080
+- [Design-system entries in mockup sandbox](design-system-ds-entries.md) — DS packages mirror omniqure-ops; sandbox preview port is dynamic (getWorkflowStatus), not 8083; @source lives in the ds-entry stylesheet
 - [Catalog product ID schemes](catalog-id-schemes.md) — frontend string ids ≠ DB serial ids; match products by slug, not id, when removing/editing across frontend + DB
 - [Admin panel API routing](admin-panel-api-routing.md) — admin fetch() must use absolute /api/...; prefixing BASE_URL (/admin) hits vite not the API server → login "Connection error"
 - [OmniQure API spec drift check](omniqure-api-drift-check.md) — `pnpm run check:api-drift` verifies admin route response fields are declared in openapi.yaml; run it after touching any `xToResponse` mapper.

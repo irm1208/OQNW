@@ -190,10 +190,10 @@ function NavGroups({
                   key={item.href}
                   href={item.href}
                   onClick={onNavigate}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition-colors ${
                     isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                      ? "bg-primary text-primary-foreground shadow-[0_10px_24px_rgba(244,120,12,0.35)]"
+                      : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                   }`}
                 >
                   <item.icon className="w-4 h-4 shrink-0" />
@@ -240,10 +240,13 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="flex min-h-screen bg-muted/40">
+    <div className="flex min-h-screen bg-background">
       <aside className="w-64 flex-col bg-card border-r hidden lg:flex">
         <div className="h-14 flex items-center justify-between px-6 border-b">
-          <h1 className="font-bold text-lg text-primary tracking-tight">OmniQure Admin</h1>
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary text-base font-extrabold text-primary-foreground">O</span>
+            <h1 className="font-extrabold text-lg tracking-tight truncate">OmniQure</h1>
+          </div>
           <BellButton />
         </div>
         <nav className="flex-1 px-3 py-4 space-y-4 overflow-y-auto">

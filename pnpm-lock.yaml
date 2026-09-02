@@ -563,6 +563,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^5.0.4
         version: 5.1.4(vite@8.2.2(@types/node@25.3.5)(esbuild@0.28.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.9.0))
+      '@workspace/omniqure-ember':
+        specifier: workspace:*
+        version: link:../omniqure-ember
       '@workspace/omniqure-ops':
         specifier: workspace:*
         version: link:../omniqure-ops
@@ -828,6 +831,15 @@ importers:
       zod:
         specifier: 'catalog:'
         version: 3.25.76
+
+  artifacts/omniqure-ember:
+    devDependencies:
+      tailwindcss:
+        specifier: 'catalog:'
+        version: 4.2.1
+      tw-animate-css:
+        specifier: ^1.4.0
+        version: 1.4.0
 
   artifacts/omniqure-ops:
     devDependencies:

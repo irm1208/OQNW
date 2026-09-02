@@ -1,0 +1,8 @@
+body {
+  background: var(--em-shell);
+}
+
+button,
+a {
+  text-decoration: none;
+}

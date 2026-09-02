@@ -1,0 +1,207 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--em-background);
+  --color-foreground: var(--em-foreground);
+  --color-card: var(--em-card);
+  --color-card-foreground: var(--em-card-foreground);
+  --color-popover: var(--em-card);
+  --color-popover-foreground: var(--em-card-foreground);
+  --color-primary: var(--em-primary);
+  --color-primary-foreground: var(--em-primary-foreground);
+  --color-secondary: var(--em-secondary);
+  --color-secondary-foreground: var(--em-secondary-foreground);
+  --color-muted: var(--em-muted);
+  --color-muted-foreground: var(--em-muted-foreground);
+  --color-accent: var(--em-accent);
+  --color-accent-foreground: var(--em-accent-foreground);
+  --color-destructive: var(--em-danger);
+  --color-destructive-foreground: #ffffff;
+  --color-border: var(--em-border);
+  --color-input: var(--em-border);
+  --color-ring: var(--em-primary);
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --radius-sm: 0.625rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+}
+
+:root {
+  /* Warm canvas: parchment shell around a bright paper workspace */
+  --em-shell: #e6ddd2;
+  --em-background: #faf7f2;
+  --em-foreground: #241c14;
+  --em-card: #ffffff;
+  --em-card-foreground: #241c14;
+
+  /* Ember orange drives navigation, primary actions, and data emphasis */
+  --em-primary: #f4780c;
+  --em-primary-strong: #e2660a;
+  --em-primary-soft: #ffe9d4;
+  --em-primary-tint: #fff4e8;
+  --em-primary-foreground: #ffffff;
+
+  --em-secondary: #f6efe6;
+  --em-secondary-foreground: #4d3d2b;
+  --em-muted: #f4ede3;
+  --em-muted-foreground: #8a7a66;
+  --em-accent: #ffb266;
+  --em-accent-foreground: #4a2a05;
+
+  --em-success: #21a366;
+  --em-success-soft: #e3f6ec;
+  --em-warning: #d9970f;
+  --em-warning-soft: #fdf3d8;
+  --em-danger: #d94f45;
+  --em-danger-soft: #fde8e6;
+
+  --em-border: #efe4d5;
+  --em-border-strong: #e2d3bf;
+  --em-shadow: 0 14px 40px rgba(90, 62, 30, 0.08);
+  --em-shadow-float: 0 20px 55px rgba(90, 62, 30, 0.14);
+}
+
+* {
+  border-color: var(--em-border);
+}
+
+html,
+body {
+  min-width: 320px;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--em-background);
+  color: var(--em-foreground);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  text-rendering: optimizeLegibility;
+}
+
+button,
+a,
+input,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---- Shared primitives ---------------------------------------------- */
+
+/* Dotted-outline card on the paper surface (reference-style stat cards). */
+.em-panel {
+  background: var(--em-card);
+  border: 1px solid var(--em-border);
+  border-radius: 1rem;
+  box-shadow: var(--em-shadow);
+}
+
+.em-panel-raised {
+  background: var(--em-card);
+  border: 1px solid var(--em-border-strong);
+  border-radius: 1rem;
+  box-shadow: var(--em-shadow-float);
+}
+
+/* Highlighted hero stat: warm tint with a dashed ember outline. */
+.em-panel-hero {
+  background: var(--em-primary-tint);
+  border: 1.5px dashed var(--em-primary);
+  border-radius: 1rem;
+}
+
+.em-eyebrow {
+  color: var(--em-muted-foreground);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1rem;
+  text-transform: uppercase;
+}
+
+.em-mono {
+  font-family: "JetBrains Mono", monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Pill badges for deltas and statuses. Pair color with text, never alone. */
+.em-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 999px;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1rem;
+}
+
+.em-pill-up {
+  background: var(--em-success-soft);
+  color: var(--em-success);
+}
+
+.em-pill-down {
+  background: var(--em-danger-soft);
+  color: var(--em-danger);
+}
+
+.em-pill-warn {
+  background: var(--em-warning-soft);
+  color: var(--em-warning);
+}
+
+.em-pill-brand {
+  background: var(--em-primary-soft);
+  color: var(--em-primary-strong);
+}
+
+/* Active navigation item: solid ember pill with white text. */
+.em-nav-active {
+  background: var(--em-primary);
+  color: var(--em-primary-foreground);
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 24px rgba(244, 120, 12, 0.35);
+}
+
+.em-nav-item {
+  border-radius: 0.75rem;
+  color: var(--em-muted-foreground);
+}
+
+.em-nav-item:hover {
+  background: var(--em-secondary);
+  color: var(--em-foreground);
+}
+
+.em-focus-ring:focus-visible {
+  outline: 3px solid rgba(244, 120, 12, 0.45);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .em-interactive {
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      border-color 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .em-interactive:hover {
+    transform: translateY(-1px);
+  }
+}
