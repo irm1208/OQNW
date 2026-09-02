@@ -64,6 +64,7 @@ import {
   validateSuccessfulWallidPayment,
   wallidPaymentIdFromNotes,
 } from "../lib/wallidReconciliation";
+import { claimWallidSettlement } from "../lib/wallidSettlement";
 import { calculateShippingCostGbp } from "../lib/shipping";
 import { requiredSecret } from "../lib/securityConfig";
 
@@ -1411,16 +1412,9 @@ router.get("/orders/track", async (req: Request, res: Response): Promise<void> =
       );
 
       if (validation.ok) {
-        const settled = await db
-          .update(ordersTable)
-          .set({ status: "paid", updatedAt: new Date() })
-          .where(and(
-            eq(ordersTable.id, order.id),
-            eq(ordersTable.status, "awaiting_payment"),
-          ))
-          .returning({ status: ordersTable.status });
+        const settled = await claimWallidSettlement(order.id);
 
-        if (settled.length > 0) {
+        if (settled) {
           trackedStatus = "paid";
           settledByReconciliation = true;
           req.log.info(

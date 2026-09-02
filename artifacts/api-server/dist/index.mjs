@@ -238659,7 +238659,11 @@ async function claimCryptoTestCheckoutSession(sessionId, expiresAt, now = Date.n
 
 // src/lib/wallidReconciliation.ts
 function wallidPaymentIdFromNotes(notes) {
-  return notes?.match(/(?:^|;\s*)Wallid payment id:\s*([^;\s]+)/)?.[1] ?? null;
+  if (!notes) return null;
+  const matches = Array.from(
+    notes.matchAll(/(?:^|[;\r\n]\s*)Wallid payment id:\s*([^;\s]+)/g)
+  );
+  return matches.at(-1)?.[1] ?? null;
 }
 function validateSuccessfulWallidPayment(expected, actual) {
   if (!actual) return { ok: false, reason: "provider_unavailable" };
@@ -238677,6 +238681,20 @@ function validateSuccessfulWallidPayment(expected, actual) {
     return { ok: false, reason: "currency_mismatch" };
   }
   return { ok: true };
+}
+
+// src/lib/wallidSettlement.ts
+init_drizzle_orm();
+async function claimWallidSettlement(orderId) {
+  return db.transaction(async (tx) => {
+    const settled = await tx.update(ordersTable).set({ status: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(and(
+      eq(ordersTable.id, orderId),
+      eq(ordersTable.status, "awaiting_payment")
+    )).returning({ id: ordersTable.id });
+    if (settled.length === 0) return false;
+    await tx.update(wholesaleInvoicesTable).set({ paymentStatus: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(eq(wholesaleInvoicesTable.orderId, orderId));
+    return true;
+  });
 }
 
 // src/lib/shipping.ts
@@ -239741,11 +239759,8 @@ router23.get("/orders/track", async (req, res) => {
         providerStatus
       );
       if (validation.ok) {
-        const settled = await db.update(ordersTable).set({ status: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(and(
-          eq(ordersTable.id, order.id),
-          eq(ordersTable.status, "awaiting_payment")
-        )).returning({ status: ordersTable.status });
-        if (settled.length > 0) {
+        const settled = await claimWallidSettlement(order.id);
+        if (settled) {
           trackedStatus = "paid";
           settledByReconciliation = true;
           req.log.info(
@@ -243698,18 +243713,14 @@ router44.post("/wallid-webhook", async (req, res) => {
           res.status(400).json({ error: "Amount or currency mismatch" });
           return;
         }
-        const settled = await db.update(ordersTable).set({ status: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(and(
-          eq(ordersTable.id, order.id),
-          eq(ordersTable.status, "awaiting_payment")
-        )).returning({ id: ordersTable.id });
-        if (settled.length === 0) {
+        const settled = await claimWallidSettlement(order.id);
+        if (!settled) {
           logger.info(
             { orderNumber, event_id, currentStatus: order.status },
             "Wallid webhook \u2014 order is already settled or has advanced, skipping"
           );
           continue;
         }
-        await db.update(wholesaleInvoicesTable).set({ paymentStatus: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(eq(wholesaleInvoicesTable.orderId, order.id));
         logger.info({ orderNumber, api_payment_id, event_id }, "Order marked paid via Wallid webhook");
         try {
           const items = await db.select({
@@ -247994,12 +248005,8 @@ async function reconcilePendingWallidPayments() {
       }
       continue;
     }
-    const claimed = await db.update(ordersTable).set({ status: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(and(
-      eq(ordersTable.id, order.id),
-      eq(ordersTable.status, "awaiting_payment")
-    )).returning({ id: ordersTable.id });
-    if (claimed.length === 0) continue;
-    await db.update(wholesaleInvoicesTable).set({ paymentStatus: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(eq(wholesaleInvoicesTable.orderId, order.id));
+    const claimed = await claimWallidSettlement(order.id);
+    if (!claimed) continue;
     settled += 1;
     logger.info(
       { orderNumber: order.orderNumber, apiPaymentId },

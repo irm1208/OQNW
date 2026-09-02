@@ -1,11 +1,12 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import crypto from "crypto";
-import { db, orderItemsTable, ordersTable, wholesaleInvoicesTable } from "@workspace/db";
-import { and, eq } from "drizzle-orm";
+import { db, orderItemsTable, ordersTable } from "@workspace/db";
+import { eq } from "drizzle-orm";
 import { WALLID_WEBHOOK_SECRET } from "../lib/wallid";
 import { sendOrderConfirmation } from "../lib/email";
 import { logger } from "../lib/logger";
+import { claimWallidSettlement } from "../lib/wallidSettlement";
 
 const router = Router();
 
@@ -179,27 +180,15 @@ router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<v
 
         // Atomically claim the transition so concurrent duplicate deliveries
         // cannot both trigger confirmation side effects.
-        const settled = await db
-          .update(ordersTable)
-          .set({ status: "paid", updatedAt: new Date() })
-          .where(and(
-            eq(ordersTable.id, order.id),
-            eq(ordersTable.status, "awaiting_payment"),
-          ))
-          .returning({ id: ordersTable.id });
+        const settled = await claimWallidSettlement(order.id);
 
-        if (settled.length === 0) {
+        if (!settled) {
           logger.info(
             { orderNumber, event_id, currentStatus: order.status },
             "Wallid webhook — order is already settled or has advanced, skipping",
           );
           continue;
         }
-
-        await db
-          .update(wholesaleInvoicesTable)
-          .set({ paymentStatus: "paid", updatedAt: new Date() })
-          .where(eq(wholesaleInvoicesTable.orderId, order.id));
 
         logger.info({ orderNumber, api_payment_id, event_id }, "Order marked paid via Wallid webhook");
 

@@ -21,7 +21,11 @@ export type WallidPaymentValidation =
     };
 
 export function wallidPaymentIdFromNotes(notes: string | null | undefined): string | null {
-  return notes?.match(/(?:^|;\s*)Wallid payment id:\s*([^;\s]+)/)?.[1] ?? null;
+  if (!notes) return null;
+  const matches = Array.from(
+    notes.matchAll(/(?:^|[;\r\n]\s*)Wallid payment id:\s*([^;\s]+)/g),
+  );
+  return matches.at(-1)?.[1] ?? null;
 }
 
 export function validateSuccessfulWallidPayment(

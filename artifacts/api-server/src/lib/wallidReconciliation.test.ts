@@ -27,6 +27,18 @@ test("extracts the Wallid payment ID from order notes", () => {
     ),
     "payment-123",
   );
+  assert.equal(
+    wallidPaymentIdFromNotes(
+      "Wholesale Pay by Bank invoice\nWallid payment id: wholesale-payment-123",
+    ),
+    "wholesale-payment-123",
+  );
+  assert.equal(
+    wallidPaymentIdFromNotes(
+      "Wholesale Pay by Bank invoice\nWallid payment id: untrusted-note\nWallid payment id: stored-payment-123",
+    ),
+    "stored-payment-123",
+  );
   assert.equal(wallidPaymentIdFromNotes("Customer requested delivery note"), null);
 });
 

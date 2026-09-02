@@ -1,4 +1,4 @@
-import { db, orderItemsTable, ordersTable, wholesaleInvoicesTable } from "@workspace/db";
+import { db, orderItemsTable, ordersTable } from "@workspace/db";
 import { and, desc, eq, ilike } from "drizzle-orm";
 import { sendOrderConfirmation } from "./email";
 import { logger } from "./logger";
@@ -7,6 +7,7 @@ import {
   validateSuccessfulWallidPayment,
   wallidPaymentIdFromNotes,
 } from "./wallidReconciliation";
+import { claimWallidSettlement } from "./wallidSettlement";
 
 const INTERVAL_MS = 2 * 60 * 1000;
 const BATCH_SIZE = 100;
@@ -57,20 +58,8 @@ export async function reconcilePendingWallidPayments(): Promise<{
       continue;
     }
 
-    const claimed = await db
-      .update(ordersTable)
-      .set({ status: "paid", updatedAt: new Date() })
-      .where(and(
-        eq(ordersTable.id, order.id),
-        eq(ordersTable.status, "awaiting_payment"),
-      ))
-      .returning({ id: ordersTable.id });
-    if (claimed.length === 0) continue;
-
-    await db
-      .update(wholesaleInvoicesTable)
-      .set({ paymentStatus: "paid", updatedAt: new Date() })
-      .where(eq(wholesaleInvoicesTable.orderId, order.id));
+    const claimed = await claimWallidSettlement(order.id);
+    if (!claimed) continue;
 
     settled += 1;
     logger.info(
