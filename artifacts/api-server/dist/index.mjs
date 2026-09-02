@@ -20732,27 +20732,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router55;
+    module.exports = Router56;
     module.exports.Route = Route;
-    function Router55(options) {
-      if (!(this instanceof Router55)) {
-        return new Router55(options);
+    function Router56(options) {
+      if (!(this instanceof Router56)) {
+        return new Router56(options);
       }
       const opts = options || {};
-      function router55(req, res, next) {
-        router55.handle(req, res, next);
+      function router56(req, res, next) {
+        router56.handle(req, res, next);
       }
-      Object.setPrototypeOf(router55, this);
-      router55.caseSensitive = opts.caseSensitive;
-      router55.mergeParams = opts.mergeParams;
-      router55.params = {};
-      router55.strict = opts.strict;
-      router55.stack = [];
-      return router55;
+      Object.setPrototypeOf(router56, this);
+      router56.caseSensitive = opts.caseSensitive;
+      router56.mergeParams = opts.mergeParams;
+      router56.params = {};
+      router56.strict = opts.strict;
+      router56.stack = [];
+      return router56;
     }
-    Router55.prototype = function() {
+    Router56.prototype = function() {
     };
-    Router55.prototype.param = function param2(name2, fn) {
+    Router56.prototype.param = function param2(name2, fn) {
       if (!name2) {
         throw new TypeError("argument name is required");
       }
@@ -20772,7 +20772,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router55.prototype.handle = function handle(req, res, callback) {
+    Router56.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20899,7 +20899,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router55.prototype.use = function use(handler) {
+    Router56.prototype.use = function use(handler) {
       let offset = 0;
       let path3 = "/";
       if (typeof handler !== "function") {
@@ -20932,7 +20932,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router55.prototype.route = function route(path3) {
+    Router56.prototype.route = function route(path3) {
       const route2 = new Route(path3);
       const layer = new Layer(path3, {
         sensitive: this.caseSensitive,
@@ -20947,7 +20947,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router55.prototype[method] = function(path3) {
+      Router56.prototype[method] = function(path3) {
         const route = this.route(path3);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -21130,13 +21130,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router55 = require_router();
+    var Router56 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router55 = null;
+      var router56 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -21145,13 +21145,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router55 === null) {
-            router55 = new Router55({
+          if (router56 === null) {
+            router56 = new Router56({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router55;
+          return router56;
         }
       });
     };
@@ -21222,15 +21222,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router55 = this.router;
+      var router56 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router55.use(path3, fn2);
+          return router56.use(path3, fn2);
         }
         debug(".use app under %s", path3);
         fn2.mountpath = path3;
         fn2.parent = this;
-        router55.use(path3, function mounted_app(req, res, next) {
+        router56.use(path3, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -23851,7 +23851,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router55 = require_router();
+    var Router56 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module.exports = createApplication;
@@ -23873,8 +23873,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router55.Route;
-    exports.Router = Router55;
+    exports.Route = Router56.Route;
+    exports.Router = Router56;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -205653,13 +205653,13 @@ var require_lib7 = __commonJS({
 });
 
 // src/app.ts
-var import_express55 = __toESM(require_express2(), 1);
+var import_express56 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 var import_cookie_parser = __toESM(require_cookie_parser(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
 
 // src/routes/index.ts
-var import_express53 = __toESM(require_express2(), 1);
+var import_express54 = __toESM(require_express2(), 1);
 
 // src/routes/health.ts
 var import_express = __toESM(require_express2(), 1);
@@ -239827,9 +239827,9 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
                 db.update(ordersTable).set({ notes: sql`COALESCE(notes || '; ', '') || ${"REFERRAL_ABUSE: " + abuseReason}` }).where(eq(ordersTable.id, order.id)).catch(() => {
                 });
               } else {
-                const REFERRAL_REWARD_GBP = 25;
-                await db.update(customersTable).set({ referralCreditGbp: sql`LEAST(referral_credit_gbp + ${REFERRAL_REWARD_GBP}, ${REFERRAL_CREDIT_CAP_GBP})` }).where(eq(customersTable.id, referrer.id));
-                await db.update(customersTable).set({ referralCreditGbp: sql`LEAST(referral_credit_gbp + ${REFERRAL_REWARD_GBP}, ${REFERRAL_CREDIT_CAP_GBP})` }).where(eq(customersTable.id, customerId));
+                const REFERRAL_REWARD_GBP2 = 25;
+                await db.update(customersTable).set({ referralCreditGbp: sql`LEAST(referral_credit_gbp + ${REFERRAL_REWARD_GBP2}, ${REFERRAL_CREDIT_CAP_GBP})` }).where(eq(customersTable.id, referrer.id));
+                await db.update(customersTable).set({ referralCreditGbp: sql`LEAST(referral_credit_gbp + ${REFERRAL_REWARD_GBP2}, ${REFERRAL_CREDIT_CAP_GBP})` }).where(eq(customersTable.id, customerId));
                 await sendReferralReward({
                   referrerName: `${referrer.firstName} ${referrer.lastName}`,
                   referrerEmail: referrer.email,
@@ -243273,10 +243273,12 @@ router35.get("/admin/credits", async (req, res) => {
 });
 var credits_default = router35;
 
-// src/routes/admin/fraud.ts
+// src/routes/admin/referrals.ts
 var import_express36 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router36 = (0, import_express36.Router)();
+var REFERRAL_REWARD_GBP = 25;
+var VALID_STATUSES2 = /* @__PURE__ */ new Set(["all", "pending", "qualified", "flagged"]);
 function requireAdmin23(req, res) {
   if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
@@ -243284,8 +243286,137 @@ function requireAdmin23(req, res) {
   }
   return true;
 }
-router36.get("/admin/fraud", async (req, res) => {
+function asMoney(value) {
+  return Number.parseFloat(String(value ?? 0)) || 0;
+}
+router36.get("/admin/referrals", async (req, res) => {
   if (!requireAdmin23(req, res)) return;
+  const requestedStatus = typeof req.query.status === "string" ? req.query.status : "all";
+  const status = VALID_STATUSES2.has(requestedStatus) ? requestedStatus : "all";
+  const search = typeof req.query.search === "string" ? req.query.search.trim().toLowerCase() : "";
+  try {
+    const referredCustomers = await db.select({
+      id: customersTable.id,
+      email: customersTable.email,
+      firstName: customersTable.firstName,
+      lastName: customersTable.lastName,
+      referredBy: customersTable.referredBy,
+      referralCreditGbp: customersTable.referralCreditGbp,
+      referralAbuseFlag: customersTable.referralAbuseFlag,
+      totalOrders: customersTable.totalOrders,
+      totalSpendGbp: customersTable.totalSpendGbp,
+      createdAt: customersTable.createdAt
+    }).from(customersTable).where(isNotNull(customersTable.referredBy)).orderBy(desc(customersTable.createdAt));
+    const referredIds = referredCustomers.map((customer) => customer.id);
+    const referralCodes = [
+      ...new Set(
+        referredCustomers.map((customer) => customer.referredBy).filter((code) => Boolean(code))
+      )
+    ];
+    const referrers = referralCodes.length > 0 ? await db.select({
+      id: customersTable.id,
+      email: customersTable.email,
+      firstName: customersTable.firstName,
+      lastName: customersTable.lastName,
+      referralCode: customersTable.referralCode,
+      referralCreditGbp: customersTable.referralCreditGbp
+    }).from(customersTable).where(inArray(customersTable.referralCode, referralCodes)) : [];
+    const firstOrders = referredIds.length > 0 ? await db.select({
+      customerId: ordersTable.customerId,
+      orderNumber: ordersTable.orderNumber,
+      status: ordersTable.status,
+      createdAt: ordersTable.createdAt
+    }).from(ordersTable).where(inArray(ordersTable.customerId, referredIds)).orderBy(asc(ordersTable.createdAt)) : [];
+    const allCustomerBalances = await db.select({ referralCreditGbp: customersTable.referralCreditGbp }).from(customersTable);
+    const referrerByCode = new Map(
+      referrers.filter((referrer) => Boolean(referrer.referralCode)).map((referrer) => [referrer.referralCode, referrer])
+    );
+    const firstOrderByCustomerId = /* @__PURE__ */ new Map();
+    for (const order of firstOrders) {
+      if (order.customerId !== null && !firstOrderByCustomerId.has(order.customerId)) {
+        firstOrderByCustomerId.set(order.customerId, order);
+      }
+    }
+    const referrals = referredCustomers.map((customer) => {
+      const referrer = customer.referredBy ? referrerByCode.get(customer.referredBy) : void 0;
+      const firstOrder = firstOrderByCustomerId.get(customer.id);
+      const rowStatus = customer.referralAbuseFlag ? "flagged" : customer.totalOrders > 0 ? "qualified" : "pending";
+      return {
+        id: customer.id,
+        status: rowStatus,
+        referredCustomer: {
+          id: customer.id,
+          name: `${customer.firstName} ${customer.lastName}`.trim(),
+          email: customer.email,
+          joinedAt: customer.createdAt.toISOString(),
+          totalOrders: customer.totalOrders,
+          totalSpendGbp: asMoney(customer.totalSpendGbp),
+          referralCreditGbp: asMoney(customer.referralCreditGbp)
+        },
+        referrer: referrer ? {
+          id: referrer.id,
+          name: `${referrer.firstName} ${referrer.lastName}`.trim(),
+          email: referrer.email,
+          referralCode: referrer.referralCode,
+          referralCreditGbp: asMoney(referrer.referralCreditGbp)
+        } : null,
+        firstOrder: firstOrder ? {
+          orderNumber: firstOrder.orderNumber,
+          status: firstOrder.status,
+          createdAt: firstOrder.createdAt.toISOString()
+        } : null,
+        rewardGbp: rowStatus === "qualified" ? REFERRAL_REWARD_GBP : 0
+      };
+    }).filter((referral) => {
+      if (status !== "all" && referral.status !== status) return false;
+      if (!search) return true;
+      return [
+        referral.referredCustomer.name,
+        referral.referredCustomer.email,
+        referral.referrer?.name,
+        referral.referrer?.email,
+        referral.referrer?.referralCode
+      ].filter(Boolean).some((value) => String(value).toLowerCase().includes(search));
+    });
+    const allStatuses = referredCustomers.map(
+      (customer) => customer.referralAbuseFlag ? "flagged" : customer.totalOrders > 0 ? "qualified" : "pending"
+    );
+    res.json({
+      stats: {
+        total: allStatuses.length,
+        pending: allStatuses.filter((item) => item === "pending").length,
+        qualified: allStatuses.filter((item) => item === "qualified").length,
+        flagged: allStatuses.filter((item) => item === "flagged").length,
+        conversionRate: allStatuses.length > 0 ? Number(
+          (allStatuses.filter((item) => item === "qualified").length / allStatuses.length * 100).toFixed(1)
+        ) : 0,
+        outstandingCreditGbp: allCustomerBalances.reduce(
+          (total, customer) => total + asMoney(customer.referralCreditGbp),
+          0
+        )
+      },
+      referrals
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to list referrals");
+    res.status(500).json({ error: "Failed to list referrals" });
+  }
+});
+var referrals_default = router36;
+
+// src/routes/admin/fraud.ts
+var import_express37 = __toESM(require_express2(), 1);
+init_drizzle_orm();
+var router37 = (0, import_express37.Router)();
+function requireAdmin24(req, res) {
+  if (res.locals.adminAuthenticated !== true) {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+router37.get("/admin/fraud", async (req, res) => {
+  if (!requireAdmin24(req, res)) return;
   try {
     const minScore = Math.max(1, parseInt(String(req.query.minScore ?? "20"), 10) || 20);
     const reviewedParam = req.query.reviewed;
@@ -243342,10 +243473,10 @@ router36.get("/admin/fraud", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch fraud queue" });
   }
 });
-router36.patch(
+router37.patch(
   "/admin/fraud/:id/review",
   async (req, res) => {
-    if (!requireAdmin23(req, res)) return;
+    if (!requireAdmin24(req, res)) return;
     try {
       const id = parseInt(firstString(req.params.id) ?? "", 10);
       if (!id) {
@@ -243364,21 +243495,21 @@ router36.patch(
     }
   }
 );
-var fraud_default = router36;
+var fraud_default = router37;
 
 // src/routes/admin/blockedIps.ts
-var import_express37 = __toESM(require_express2(), 1);
+var import_express38 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router37 = (0, import_express37.Router)();
-function requireAdmin24(req, res) {
+var router38 = (0, import_express38.Router)();
+function requireAdmin25(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router37.get("/admin/blocked-ips", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router38.get("/admin/blocked-ips", async (req, res) => {
+  if (!requireAdmin25(req, res)) return;
   try {
     const rows = await db.select().from(blockedIpsTable).orderBy(blockedIpsTable.blockedAt);
     res.json(rows);
@@ -243386,8 +243517,8 @@ router37.get("/admin/blocked-ips", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch blocked IPs" });
   }
 });
-router37.post("/admin/blocked-ips", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router38.post("/admin/blocked-ips", async (req, res) => {
+  if (!requireAdmin25(req, res)) return;
   const { ip, reason } = req.body;
   if (!ip || typeof ip !== "string" || !ip.trim()) {
     res.status(400).json({ error: "ip is required" });
@@ -243405,8 +243536,8 @@ router37.post("/admin/blocked-ips", async (req, res) => {
     res.status(500).json({ error: "Failed to block IP" });
   }
 });
-router37.delete("/admin/blocked-ips/:ip", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router38.delete("/admin/blocked-ips/:ip", async (req, res) => {
+  if (!requireAdmin25(req, res)) return;
   const ip = decodeURIComponent(firstString(req.params.ip) ?? "");
   try {
     const deleted = await db.delete(blockedIpsTable).where(eq(blockedIpsTable.ip, ip)).returning();
@@ -243419,21 +243550,21 @@ router37.delete("/admin/blocked-ips/:ip", async (req, res) => {
     res.status(500).json({ error: "Failed to unblock IP" });
   }
 });
-var blockedIps_default = router37;
+var blockedIps_default = router38;
 
 // src/routes/admin/emailLogs.ts
-var import_express38 = __toESM(require_express2(), 1);
+var import_express39 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router38 = (0, import_express38.Router)();
-function requireAdmin25(req, res) {
+var router39 = (0, import_express39.Router)();
+function requireAdmin26(req, res) {
   if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router38.get("/admin/email-logs", async (req, res) => {
-  if (!requireAdmin25(req, res)) return;
+router39.get("/admin/email-logs", async (req, res) => {
+  if (!requireAdmin26(req, res)) return;
   try {
     const [logs, statsRows] = await Promise.all([
       db.select().from(emailLogsTable).orderBy(desc(emailLogsTable.createdAt)).limit(500),
@@ -243463,13 +243594,13 @@ router38.get("/admin/email-logs", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var emailLogs_default = router38;
+var emailLogs_default = router39;
 
 // src/routes/loyalty.ts
-var import_express39 = __toESM(require_express2(), 1);
+var import_express40 = __toESM(require_express2(), 1);
 import crypto17 from "crypto";
 init_drizzle_orm();
-var router39 = (0, import_express39.Router)();
+var router40 = (0, import_express40.Router)();
 var SESSION_SECRET9 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 function verifyCustomerSession4(token) {
   const dot = token.lastIndexOf(".");
@@ -243508,7 +243639,7 @@ function getTierInfo(lifetimeEarned) {
     progressPct: nextTier ? Math.min(100, Math.round((lifetimeEarned - tier.min) / (nextTier.min - tier.min) * 100)) : 100
   };
 }
-router39.get("/loyalty/balance", async (req, res) => {
+router40.get("/loyalty/balance", async (req, res) => {
   const customerId = getCustomerId3(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -243537,7 +243668,7 @@ router39.get("/loyalty/balance", async (req, res) => {
     }))
   });
 });
-router39.get("/admin/loyalty/overview", async (req, res) => {
+router40.get("/admin/loyalty/overview", async (req, res) => {
   if (!isAdmin(req, res)) return;
   const result = await db.execute(sql`
     SELECT
@@ -243565,7 +243696,7 @@ router39.get("/admin/loyalty/overview", async (req, res) => {
   `);
   res.json({ customers: result.rows, stats: stats.rows[0] ?? {} });
 });
-router39.post("/admin/loyalty/adjust", async (req, res) => {
+router40.post("/admin/loyalty/adjust", async (req, res) => {
   if (!isAdmin(req, res)) return;
   const { customerId, points, reason } = req.body;
   if (!customerId || typeof points !== "number" || !reason || typeof reason !== "string") {
@@ -243581,13 +243712,13 @@ router39.post("/admin/loyalty/adjust", async (req, res) => {
   logger.info({ customerId, points, reason }, "Admin loyalty adjustment");
   res.json({ success: true });
 });
-var loyalty_default = router39;
+var loyalty_default = router40;
 
 // src/routes/tax.ts
-var import_express40 = __toESM(require_express2(), 1);
+var import_express41 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router40 = (0, import_express40.Router)();
-router40.get("/tax/calculate", async (req, res) => {
+var router41 = (0, import_express41.Router)();
+router41.get("/tax/calculate", async (req, res) => {
   const countryCode = String(req.query.country ?? "").toUpperCase();
   const subtotal = parseFloat(String(req.query.subtotal ?? "0"));
   if (!countryCode) {
@@ -243619,13 +243750,13 @@ router40.get("/tax/calculate", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var tax_default2 = router40;
+var tax_default2 = router41;
 
 // src/routes/shipping.ts
-var import_express41 = __toESM(require_express2(), 1);
+var import_express42 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router41 = (0, import_express41.Router)();
-router41.get("/shipping/rates", async (req, res) => {
+var router42 = (0, import_express42.Router)();
+router42.get("/shipping/rates", async (req, res) => {
   const country = String(req.query.country ?? "").toUpperCase();
   const orderTotal = parseFloat(String(req.query.orderTotal ?? "0"));
   if (!country) {
@@ -243668,13 +243799,13 @@ router41.get("/shipping/rates", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var shipping_default2 = router41;
+var shipping_default2 = router42;
 
 // src/routes/blog.ts
-var import_express42 = __toESM(require_express2(), 1);
+var import_express43 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router42 = (0, import_express42.Router)();
-router42.get("/blog/posts", async (req, res) => {
+var router43 = (0, import_express43.Router)();
+router43.get("/blog/posts", async (req, res) => {
   const limit = Math.min(parseInt(String(req.query.limit ?? "12"), 10), 50);
   const offset = parseInt(String(req.query.offset ?? "0"), 10);
   try {
@@ -243708,7 +243839,7 @@ router42.get("/blog/posts", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router42.get("/blog/posts/:slug", async (req, res) => {
+router43.get("/blog/posts/:slug", async (req, res) => {
   const slug = firstString(req.params.slug);
   if (!slug) {
     res.status(400).json({ error: "Invalid slug" });
@@ -243739,13 +243870,13 @@ router42.get("/blog/posts/:slug", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var blog_default2 = router42;
+var blog_default2 = router43;
 
 // src/routes/btcpay-webhook.ts
-var import_express43 = __toESM(require_express2(), 1);
+var import_express44 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router43 = (0, import_express43.Router)();
-router43.post(
+var router44 = (0, import_express44.Router)();
+router44.post(
   "/btcpay-webhook",
   async (req, res) => {
     const signature = req.headers["btcpay-sig"] || req.headers["x-btcpay-signature"] || "";
@@ -243835,14 +243966,14 @@ router43.post(
     res.status(200).json({ received: true });
   }
 );
-var btcpay_webhook_default = router43;
+var btcpay_webhook_default = router44;
 
 // src/routes/wallid-webhook.ts
-var import_express44 = __toESM(require_express2(), 1);
+var import_express45 = __toESM(require_express2(), 1);
 import crypto18 from "crypto";
 init_drizzle_orm();
-var router44 = (0, import_express44.Router)();
-router44.post("/wallid-webhook", async (req, res) => {
+var router45 = (0, import_express45.Router)();
+router45.post("/wallid-webhook", async (req, res) => {
   if (!WALLID_WEBHOOK_SECRET) {
     logger.error("WALLID_WEBHOOK_SECRET is not configured \u2014 rejecting Wallid webhook request");
     res.status(400).json({ error: "Webhook secret not configured" });
@@ -244001,12 +244132,12 @@ router44.post("/wallid-webhook", async (req, res) => {
   }
   res.status(200).json({ received: true });
 });
-var wallid_webhook_default = router44;
+var wallid_webhook_default = router45;
 
 // src/routes/contact.ts
-var import_express45 = __toESM(require_express2(), 1);
-var router45 = (0, import_express45.Router)();
-router45.post("/contact", async (req, res) => {
+var import_express46 = __toESM(require_express2(), 1);
+var router46 = (0, import_express46.Router)();
+router46.post("/contact", async (req, res) => {
   const { name: name2, email: email3, subject, message } = req.body;
   if (typeof name2 !== "string" || !name2.trim()) {
     res.status(400).json({ error: "Name is required" });
@@ -244038,12 +244169,12 @@ router45.post("/contact", async (req, res) => {
     res.status(500).json({ error: "Failed to send your message. Please try again or email us directly." });
   }
 });
-var contact_default = router45;
+var contact_default = router46;
 
 // src/routes/address-lookup.ts
-var import_express46 = __toESM(require_express2(), 1);
-var router46 = (0, import_express46.Router)();
-router46.get("/address-lookup", async (req, res) => {
+var import_express47 = __toESM(require_express2(), 1);
+var router47 = (0, import_express47.Router)();
+router47.get("/address-lookup", async (req, res) => {
   const postcode = req.query["postcode"]?.trim();
   if (!postcode) {
     return res.status(400).json({ error: "postcode query param required" });
@@ -244074,7 +244205,7 @@ router46.get("/address-lookup", async (req, res) => {
     return res.status(500).json({ error: "Address lookup request failed" });
   }
 });
-router46.post("/address-verification", async (req, res) => {
+router47.post("/address-verification", async (req, res) => {
   const delivery = req.body;
   if (typeof delivery.address1 !== "string" || typeof delivery.city !== "string" || typeof delivery.postcode !== "string" || typeof delivery.country !== "string") {
     return res.status(400).json({ error: "A complete delivery address is required." });
@@ -244106,7 +244237,7 @@ router46.post("/address-verification", async (req, res) => {
     });
   }
 });
-router46.post("/address-suggestions", async (req, res) => {
+router47.post("/address-suggestions", async (req, res) => {
   const delivery = req.body;
   if (typeof delivery.address1 !== "string" || typeof delivery.postcode !== "string" || typeof delivery.country !== "string") {
     return res.status(400).json({ error: "A street address, postal code, and country are required." });
@@ -244139,12 +244270,12 @@ router46.post("/address-suggestions", async (req, res) => {
     });
   }
 });
-var address_lookup_default = router46;
+var address_lookup_default = router47;
 
 // src/routes/crypto-payments.ts
-var import_express47 = __toESM(require_express2(), 1);
+var import_express48 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router47 = (0, import_express47.Router)();
+var router48 = (0, import_express48.Router)();
 function hasPaymentAccess(order, token) {
   return typeof token === "string" && Boolean(order.cryptoPaymentAccessToken) && token.length >= 24 && token === order.cryptoPaymentAccessToken;
 }
@@ -244265,14 +244396,14 @@ async function recordCryptoPaymentVerification(order, attempt, txHash, applyOrde
   }
   return result;
 }
-router47.get("/crypto/payment-options", async (_req, res) => {
+router48.get("/crypto/payment-options", async (_req, res) => {
   try {
     res.json({ routes: await getPublicCryptoPaymentOptions() });
   } catch {
     res.status(503).json({ error: "Crypto payment options are temporarily unavailable" });
   }
 });
-router47.get("/orders/:ref/crypto-payment", async (req, res) => {
+router48.get("/orders/:ref/crypto-payment", async (req, res) => {
   res.setHeader("Cache-Control", "no-store");
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.query.token)) {
@@ -244302,7 +244433,7 @@ router47.get("/orders/:ref/crypto-payment", async (req, res) => {
     }
   });
 });
-router47.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
+router48.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -244339,7 +244470,7 @@ router47.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
   }).where(eq(ordersTable.id, order.id));
   res.json({ orderId: order.id, orderNumber: order.orderNumber, ...prepared.details, status: "rate_locked" });
 });
-router47.post("/orders/:ref/crypto-payment/check", async (req, res) => {
+router48.post("/orders/:ref/crypto-payment/check", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -244368,7 +244499,7 @@ router47.post("/orders/:ref/crypto-payment/check", async (req, res) => {
     confirmations: result.confirmations ?? null
   });
 });
-router47.post("/orders/:ref/pay", async (req, res) => {
+router48.post("/orders/:ref/pay", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -244456,13 +244587,13 @@ async function reconcilePendingCryptoPayments() {
   }
   return checked;
 }
-var crypto_payments_default = router47;
+var crypto_payments_default = router48;
 
 // src/routes/admin/crypto-audits.ts
-var import_express48 = __toESM(require_express2(), 1);
+var import_express49 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router48 = (0, import_express48.Router)();
-function requireAdmin26(req, res) {
+var router49 = (0, import_express49.Router)();
+function requireAdmin27(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -244487,8 +244618,8 @@ function auditToResponse(audit) {
     checkedAt: audit.checkedAt.toISOString()
   };
 }
-router48.get("/admin/crypto/audits", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+router49.get("/admin/crypto/audits", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   try {
     const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 200);
     const audits = await db.select().from(cryptoPaymentAuditsTable).orderBy(desc(cryptoPaymentAuditsTable.checkedAt)).limit(limit);
@@ -244507,8 +244638,8 @@ router48.get("/admin/crypto/audits", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router48.get("/admin/crypto/audits/:id", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+router49.get("/admin/crypto/audits/:id", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   const id = Number(req.params.id);
   if (!Number.isInteger(id)) {
     res.status(400).json({ error: "Invalid audit ID" });
@@ -244521,8 +244652,8 @@ router48.get("/admin/crypto/audits/:id", async (req, res) => {
   }
   res.json(auditToResponse(audit));
 });
-router48.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+router49.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   const attemptId = Number(req.params.attemptId);
   if (!Number.isInteger(attemptId)) {
     res.status(400).json({ error: "Invalid payment attempt" });
@@ -244546,8 +244677,8 @@ router48.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router48.post("/admin/crypto/audits/check-batch", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+router49.post("/admin/crypto/audits/check-batch", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   const attemptIds = Array.isArray(req.body?.attemptIds) ? req.body.attemptIds.filter((id) => Number.isInteger(id)).slice(0, 50) : [];
   if (attemptIds.length === 0) {
     res.status(400).json({ error: "Select one or more payment attempts to check." });
@@ -244568,8 +244699,8 @@ router48.post("/admin/crypto/audits/check-batch", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router48.get("/admin/crypto/wallet-history", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+router49.get("/admin/crypto/wallet-history", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   try {
     const attempts = await db.select({
       walletAddress: cryptoPaymentAttemptsTable.walletAddress,
@@ -244590,21 +244721,21 @@ router48.get("/admin/crypto/wallet-history", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var crypto_audits_default = router48;
+var crypto_audits_default = router49;
 
 // src/routes/admin/publicTraffic.ts
-var import_express49 = __toESM(require_express2(), 1);
+var import_express50 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router49 = (0, import_express49.Router)();
-function requireAdmin27(req, res) {
+var router50 = (0, import_express50.Router)();
+function requireAdmin28(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router49.get("/admin/public-traffic/events", async (req, res) => {
-  if (!requireAdmin27(req, res)) return;
+router50.get("/admin/public-traffic/events", async (req, res) => {
+  if (!requireAdmin28(req, res)) return;
   const parsedLimit = Number(req.query.limit);
   const limit = Number.isInteger(parsedLimit) ? Math.min(Math.max(parsedLimit, 1), 200) : 50;
   try {
@@ -244619,13 +244750,13 @@ router49.get("/admin/public-traffic/events", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch public traffic events" });
   }
 });
-var publicTraffic_default = router49;
+var publicTraffic_default = router50;
 
 // src/routes/admin/security.ts
-var import_express50 = __toESM(require_express2(), 1);
+var import_express51 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router50 = (0, import_express50.Router)();
-router50.get("/admin/security/events", async (req, res) => {
+var router51 = (0, import_express51.Router)();
+router51.get("/admin/security/events", async (req, res) => {
   if (!await requireOwner(req, res)) return;
   const requestedLimit = Number.parseInt(firstString(req.query.limit) ?? "100", 10);
   const limit = Number.isFinite(requestedLimit) ? Math.min(250, Math.max(1, requestedLimit)) : 100;
@@ -244672,12 +244803,12 @@ router50.get("/admin/security/events", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var security_default = router50;
+var security_default = router51;
 
 // src/routes/admin/wholesale.ts
-var import_express51 = __toESM(require_express2(), 1);
+var import_express52 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router51 = (0, import_express51.Router)();
+var router52 = (0, import_express52.Router)();
 var SITE_URL2 = process.env.SITE_URL ?? "https://omniqure.com";
 function text2(value, max2 = 500) {
   if (typeof value !== "string") return null;
@@ -244750,7 +244881,7 @@ async function sendSavedInvoice(invoiceId) {
     country: row.order.country
   });
 }
-router51.get("/admin/wholesale", async (_req, res) => {
+router52.get("/admin/wholesale", async (_req, res) => {
   try {
     const rows = await db.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).orderBy(desc(wholesaleInvoicesTable.createdAt)).limit(50);
     res.json({ invoices: rows.map(({ invoice, order }) => invoiceResponse(invoice, order)) });
@@ -244758,7 +244889,7 @@ router51.get("/admin/wholesale", async (_req, res) => {
     res.status(500).json({ error: "Failed to list wholesale invoices" });
   }
 });
-router51.post("/admin/wholesale", async (req, res) => {
+router52.post("/admin/wholesale", async (req, res) => {
   const body = req.body;
   const referenceNumber = text2(body.referenceNumber, 64);
   const customerName = text2(body.customerName, 160);
@@ -244940,7 +245071,7 @@ Wallid payment id: ${payment.apiPaymentId}`.trim()
     res.status(500).json({ error: "Failed to create wholesale invoice" });
   }
 });
-router51.post("/admin/wholesale/:id/resend", async (req, res) => {
+router52.post("/admin/wholesale/:id/resend", async (req, res) => {
   const id = Number(req.params.id);
   if (!Number.isInteger(id) || id <= 0) {
     res.status(400).json({ error: "Invalid invoice ID" });
@@ -244955,7 +245086,7 @@ router51.post("/admin/wholesale/:id/resend", async (req, res) => {
     res.status(502).json({ error: "Invoice email could not be sent" });
   }
 });
-router51.patch("/admin/wholesale/:id", async (req, res) => {
+router52.patch("/admin/wholesale/:id", async (req, res) => {
   const id = Number(req.params.id);
   if (!Number.isInteger(id) || id <= 0) {
     res.status(400).json({ error: "Invalid invoice ID" });
@@ -245030,10 +245161,10 @@ router51.patch("/admin/wholesale/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to update wholesale invoice" });
   }
 });
-var wholesale_default = router51;
+var wholesale_default = router52;
 
 // src/routes/publicTraffic.ts
-var import_express52 = __toESM(require_express2(), 1);
+var import_express53 = __toESM(require_express2(), 1);
 
 // src/lib/publicTrafficProtection.ts
 init_drizzle_orm();
@@ -245243,13 +245374,13 @@ async function publicTrafficProtection(req, res, next) {
 // src/routes/publicTraffic.ts
 import path2 from "node:path";
 import { existsSync } from "node:fs";
-var router52 = (0, import_express52.Router)();
+var router53 = (0, import_express53.Router)();
 var PUBLIC_ASSET_ROOT = [
   path2.resolve(process.cwd(), "artifacts/omniqure/public"),
   path2.resolve(process.cwd(), "../omniqure/public"),
   path2.resolve(import.meta.dirname, "../../omniqure/public")
 ].find(existsSync);
-router52.get("/catalogue-assets/*assetPath", (req, res) => {
+router53.get("/catalogue-assets/*assetPath", (req, res) => {
   const rawAssetPath = req.params.assetPath;
   const assetPath = Array.isArray(rawAssetPath) ? rawAssetPath.join("/") : String(rawAssetPath ?? "");
   if (!PUBLIC_ASSET_ROOT || !assetPath || !/\.(?:avif|gif|jpe?g|png|svg|webp|ico)$/i.test(assetPath)) {
@@ -245261,7 +245392,7 @@ router52.get("/catalogue-assets/*assetPath", (req, res) => {
     if (err && !res.headersSent) res.status(404).json({ error: "Not found" });
   });
 });
-router52.get("/traffic/image", async (req, res) => {
+router53.get("/traffic/image", async (req, res) => {
   const remoteAddress = req.socket.remoteAddress;
   if (remoteAddress !== "127.0.0.1" && remoteAddress !== "::1" && remoteAddress !== "::ffff:127.0.0.1") {
     res.status(404).json({ error: "Not found" });
@@ -245278,14 +245409,14 @@ router52.get("/traffic/image", async (req, res) => {
   }
   res.status(204).send();
 });
-var publicTraffic_default2 = router52;
+var publicTraffic_default2 = router53;
 
 // src/routes/index.ts
-var router53 = (0, import_express53.Router)();
-router53.use(health_default);
-router53.use(publicTraffic_default2);
-router53.use(auth_default);
-router53.use("/admin", async (req, res, next) => {
+var router54 = (0, import_express54.Router)();
+router54.use(health_default);
+router54.use(publicTraffic_default2);
+router54.use(auth_default);
+router54.use("/admin", async (req, res, next) => {
   if (!await validateSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return;
@@ -245298,61 +245429,62 @@ router53.use("/admin", async (req, res, next) => {
   res.locals.adminAuthenticated = true;
   next();
 });
-router53.use(dashboard_default);
-router53.use(orders_default);
-router53.use(fulfillment_default);
-router53.use(customers_default);
-router53.use(products_default);
-router53.use(discounts_default);
-router53.use(catalog_default);
-router53.use(returns_default);
-router53.use(tax_default);
-router53.use(shipping_default);
-router53.use(refunds_default);
-router53.use(inventory_audit_default);
-router53.use(export_default);
-router53.use(webhooks_default);
-router53.use(settings_default);
-router53.use(users_default);
-router53.use(reports_default);
-router53.use(gdpr_default);
-router53.use(blog_default);
-router53.use(crypto_audits_default);
-router53.use(orders_default2);
-router53.use(crypto_payments_default);
-router53.use(discounts_default2);
-router53.use(auth_default2);
-router53.use(account_default);
-router53.use(reviews_default);
-router53.use(reviews_default2);
-router53.use(wishlist_default);
-router53.use(returns_default2);
-router53.use(products_default2);
-router53.use(cart_default);
-router53.use(stock_alerts_default);
-router53.use(abandonedCarts_default);
-router53.use(alerts_default);
-router53.use(credits_default);
-router53.use(fraud_default);
-router53.use(blockedIps_default);
-router53.use(publicTraffic_default);
-router53.use(security_default);
-router53.use(wholesale_default);
-router53.use(emailLogs_default);
-router53.use(loyalty_default);
-router53.use(tax_default2);
-router53.use(shipping_default2);
-router53.use(blog_default2);
-router53.use(btcpay_webhook_default);
-router53.use(wallid_webhook_default);
-router53.use(contact_default);
-router53.use(address_lookup_default);
-var routes_default = router53;
+router54.use(dashboard_default);
+router54.use(orders_default);
+router54.use(fulfillment_default);
+router54.use(customers_default);
+router54.use(products_default);
+router54.use(discounts_default);
+router54.use(catalog_default);
+router54.use(returns_default);
+router54.use(tax_default);
+router54.use(shipping_default);
+router54.use(refunds_default);
+router54.use(inventory_audit_default);
+router54.use(export_default);
+router54.use(webhooks_default);
+router54.use(settings_default);
+router54.use(users_default);
+router54.use(reports_default);
+router54.use(gdpr_default);
+router54.use(blog_default);
+router54.use(crypto_audits_default);
+router54.use(orders_default2);
+router54.use(crypto_payments_default);
+router54.use(discounts_default2);
+router54.use(auth_default2);
+router54.use(account_default);
+router54.use(reviews_default);
+router54.use(reviews_default2);
+router54.use(wishlist_default);
+router54.use(returns_default2);
+router54.use(products_default2);
+router54.use(cart_default);
+router54.use(stock_alerts_default);
+router54.use(abandonedCarts_default);
+router54.use(alerts_default);
+router54.use(credits_default);
+router54.use(referrals_default);
+router54.use(fraud_default);
+router54.use(blockedIps_default);
+router54.use(publicTraffic_default);
+router54.use(security_default);
+router54.use(wholesale_default);
+router54.use(emailLogs_default);
+router54.use(loyalty_default);
+router54.use(tax_default2);
+router54.use(shipping_default2);
+router54.use(blog_default2);
+router54.use(btcpay_webhook_default);
+router54.use(wallid_webhook_default);
+router54.use(contact_default);
+router54.use(address_lookup_default);
+var routes_default = router54;
 
 // src/routes/sitemap.ts
-var import_express54 = __toESM(require_express2(), 1);
+var import_express55 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router54 = (0, import_express54.Router)();
+var router55 = (0, import_express55.Router)();
 var SITE_URL3 = "https://omniqure.com";
 function publicImageUrl(imageUrl) {
   if (imageUrl.startsWith("http")) return imageUrl;
@@ -245385,7 +245517,7 @@ function isoDate(d) {
   const date6 = d instanceof Date ? d : new Date(d);
   return date6.toISOString().split("T")[0];
 }
-router54.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
+router55.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
   try {
     const [products, blogPosts] = await Promise.all([
       db.select({
@@ -245461,10 +245593,10 @@ router54.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
     res.status(500).send("<!-- sitemap generation error -->");
   }
 });
-var sitemap_default = router54;
+var sitemap_default = router55;
 
 // src/app.ts
-var app = (0, import_express55.default)();
+var app = (0, import_express56.default)();
 var trustedOrigins = allowedBrowserOrigins();
 var stateChangingMethods = /* @__PURE__ */ new Set(["POST", "PUT", "PATCH", "DELETE"]);
 var browserSessionCookies = ["customer_session", "admin_session", "admin_secure_session"];
@@ -245545,13 +245677,13 @@ app.use((req, res, next) => {
 });
 app.use(publicTrafficProtection);
 app.use(
-  import_express55.default.json({
+  import_express56.default.json({
     verify: (req, _res, buf) => {
       req.rawBody = buf;
     }
   })
 );
-app.use(import_express55.default.urlencoded({ extended: true }));
+app.use(import_express56.default.urlencoded({ extended: true }));
 app.get("/", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });

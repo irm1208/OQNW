@@ -35,3 +35,4 @@
 - [Wallid payment item URLs](wallid-payment-item-urls.md) — create requests require absolute HTTP(S) item URLs; failed durable references must be resumable without duplicate insertion.
 - [Wholesale payment-link edits](wholesale-link-edits.md) — edit customer/invoice metadata only; an issued Wallid URL's reference, amount, and line items remain immutable.
 - [Refund confirmation accounting](refund-confirmation-accounting.md) — pending requests reserve balance, but only a confirmed Wallid reference changes totals, inventory, and customer messaging.
+- [Referral admin ledger boundary](referral-admin-ledger-boundary.md) — referral reporting may use current relationships/balances, but specific reward reversals require a durable event ledger first.
