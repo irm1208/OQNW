@@ -700,51 +700,53 @@ export default function ProductPage() {
                   </button>
                 </div>
 
-                <button
-                  onClick={handleAddToCart}
-                  disabled={product.stockLevel === 0}
-                  className="product-cta-btn flex-1 flex items-center justify-center gap-2 rounded-xl font-bold text-white transition-all hover:opacity-90"
-                  style={{
-                    background: product.stockLevel === 0
-                      ? "#CBD5E1"
-                      : added
-                      ? "linear-gradient(135deg, #059669 0%, #047857 100%)"
-                      : "linear-gradient(135deg, #1B5CB5 0%, #1240A0 100%)",
-                    height: "44px",
-                    fontSize: "14px",
-                    border: "none",
-                    cursor: product.stockLevel === 0 ? "not-allowed" : "pointer",
-                    transition: "background 0.25s",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  <ShoppingCart size={16} />
-                  {product.stockLevel === 0 ? "Sold Out" : added ? "✓ Added to Cart!" : "Add to Cart"}
-                </button>
+                <div className="product-cta-actions">
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={product.stockLevel === 0}
+                    className="product-cta-btn flex-1 flex items-center justify-center gap-2 rounded-xl font-bold text-white transition-all hover:opacity-90"
+                    style={{
+                      background: product.stockLevel === 0
+                        ? "#CBD5E1"
+                        : added
+                        ? "linear-gradient(135deg, #059669 0%, #047857 100%)"
+                        : "linear-gradient(135deg, #1B5CB5 0%, #1240A0 100%)",
+                      height: "44px",
+                      fontSize: "14px",
+                      border: "none",
+                      cursor: product.stockLevel === 0 ? "not-allowed" : "pointer",
+                      transition: "background 0.25s",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <ShoppingCart size={16} />
+                    {product.stockLevel === 0 ? "Sold Out" : added ? "✓ Added to Cart!" : "Add to Cart"}
+                  </button>
 
-                {/* Wishlist icon button */}
-                {(() => {
-                  const productIdInt = parseInt(String(product.id), 10);
-                  const saved = inWishlist(productIdInt);
-                  return (
-                    <button
-                      onClick={() => void toggleWishlist(productIdInt)}
-                      title={saved ? "Saved to Wishlist" : "Save to Wishlist"}
-                      className="flex items-center justify-center rounded-xl flex-shrink-0 transition-all"
-                      style={{
-                        width: "44px",
-                        height: "44px",
-                        cursor: "pointer",
-                        backgroundColor: saved ? "#FEF2F2" : "#F8FAFC",
-                        border: saved ? "1.5px solid #FECACA" : "1.5px solid #E2E8F0",
-                        color: saved ? "#DC2626" : "#94A3B8",
-                        transition: "all 0.15s",
-                      }}
-                    >
-                      <Heart size={18} style={{ fill: saved ? "#DC2626" : "none", transition: "fill 0.15s" }} />
-                    </button>
-                  );
-                })()}
+                  {/* Wishlist icon button */}
+                  {(() => {
+                    const productIdInt = parseInt(String(product.id), 10);
+                    const saved = inWishlist(productIdInt);
+                    return (
+                      <button
+                        onClick={() => void toggleWishlist(productIdInt)}
+                        title={saved ? "Saved to Wishlist" : "Save to Wishlist"}
+                        className="flex items-center justify-center rounded-xl flex-shrink-0 transition-all"
+                        style={{
+                          width: "44px",
+                          height: "44px",
+                          cursor: "pointer",
+                          backgroundColor: saved ? "#FEF2F2" : "#F8FAFC",
+                          border: saved ? "1.5px solid #FECACA" : "1.5px solid #E2E8F0",
+                          color: saved ? "#DC2626" : "#94A3B8",
+                          transition: "all 0.15s",
+                        }}
+                      >
+                        <Heart size={18} style={{ fill: saved ? "#DC2626" : "none", transition: "fill 0.15s" }} />
+                      </button>
+                    );
+                  })()}
+                </div>
               </div>
             </div>
 

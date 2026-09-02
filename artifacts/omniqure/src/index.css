@@ -401,6 +401,14 @@ html.copy-protected [role="textbox"] {
   min-width: max-content;
 }
 
+.product-cta-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
 .card-qty {
   display: flex;
   align-items: center;
@@ -802,11 +810,15 @@ html.copy-protected [role="textbox"] {
   .notify-btn-touch   { height: 44px !important; }
 }
 
-/* ── PRODUCT PAGE QTY + ADD-TO-CART — STACK ON TINY ─────── */
+/* ── PRODUCT PAGE QTY + ADD-TO-CART — STACK ON MOBILE ───── */
 
-@media (max-width: 420px) {
+@media (max-width: 768px) {
   .product-cta-row {
     flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .product-cta-row .product-cta-actions {
+    width: 100%;
   }
   .product-cta-row .product-cta-qty {
     width: 100%;
