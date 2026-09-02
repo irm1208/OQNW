@@ -1,4 +1,4 @@
-import { db, orderItemsTable, ordersTable } from "@workspace/db";
+import { db, orderItemsTable, ordersTable, wholesaleInvoicesTable } from "@workspace/db";
 import { and, desc, eq, ilike } from "drizzle-orm";
 import { sendOrderConfirmation } from "./email";
 import { logger } from "./logger";
@@ -66,6 +66,11 @@ export async function reconcilePendingWallidPayments(): Promise<{
       ))
       .returning({ id: ordersTable.id });
     if (claimed.length === 0) continue;
+
+    await db
+      .update(wholesaleInvoicesTable)
+      .set({ paymentStatus: "paid", updatedAt: new Date() })
+      .where(eq(wholesaleInvoicesTable.orderId, order.id));
 
     settled += 1;
     logger.info(

@@ -243709,6 +243709,7 @@ router44.post("/wallid-webhook", async (req, res) => {
           );
           continue;
         }
+        await db.update(wholesaleInvoicesTable).set({ paymentStatus: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(eq(wholesaleInvoicesTable.orderId, order.id));
         logger.info({ orderNumber, api_payment_id, event_id }, "Order marked paid via Wallid webhook");
         try {
           const items = await db.select({
@@ -247877,6 +247878,7 @@ async function reconcilePendingWallidPayments() {
       eq(ordersTable.status, "awaiting_payment")
     )).returning({ id: ordersTable.id });
     if (claimed.length === 0) continue;
+    await db.update(wholesaleInvoicesTable).set({ paymentStatus: "paid", updatedAt: /* @__PURE__ */ new Date() }).where(eq(wholesaleInvoicesTable.orderId, order.id));
     settled += 1;
     logger.info(
       { orderNumber: order.orderNumber, apiPaymentId },

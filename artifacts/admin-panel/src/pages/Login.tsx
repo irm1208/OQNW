@@ -27,6 +27,12 @@ type LoginResponse = {
 };
 
 export default function Login() {
+  const params = new URLSearchParams(window.location.search);
+  const isReauthentication = params.get("reauth") === "1";
+  const requestedReturnTo = params.get("returnTo");
+  const returnTo = requestedReturnTo?.startsWith("/") && !requestedReturnTo.startsWith("//")
+    ? requestedReturnTo
+    : "/dashboard";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [challengeToken, setChallengeToken] = useState<string | null>(null);
@@ -105,7 +111,7 @@ export default function Login() {
           return;
         }
         await queryClient.invalidateQueries({ queryKey: getAdminMeQueryKey() });
-        setLocation("/dashboard");
+        setLocation(returnTo);
         return;
       }
       if (res.status === 429 && data.lockedUntil) {
@@ -125,12 +131,12 @@ export default function Login() {
     } finally {
       setIsPending(false);
     }
-  }, [password, email, challengeToken, mfaCode, useRecoveryCode, isPending, isLocked, queryClient, setLocation]);
+  }, [password, email, challengeToken, mfaCode, useRecoveryCode, isPending, isLocked, queryClient, setLocation, returnTo]);
 
   if (checkingSession) {
     return <div className="min-h-screen flex items-center justify-center bg-background"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>;
   }
-  if (session?.authenticated && recoveryCodes.length === 0) {
+  if (session?.authenticated && recoveryCodes.length === 0 && !isReauthentication) {
     setLocation("/dashboard");
     return null;
   }
@@ -148,7 +154,7 @@ export default function Login() {
           </div>
           <CardTitle className="text-2xl font-bold tracking-tight">OmniQure Ops</CardTitle>
           <CardDescription>
-            {isLocked ? "Access temporarily suspended" : recoveryCodes.length > 0 ? "Two-step verification is active" : isEnrollmentStep ? "Set up required two-step verification" : isMfaStep ? "Complete two-step verification" : "Sign in to the admin console"}
+            {isLocked ? "Access temporarily suspended" : recoveryCodes.length > 0 ? "Two-step verification is active" : isEnrollmentStep ? "Set up required two-step verification" : isMfaStep ? "Complete two-step verification" : isReauthentication ? "Confirm your identity to create the payment link" : "Sign in to the admin console"}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

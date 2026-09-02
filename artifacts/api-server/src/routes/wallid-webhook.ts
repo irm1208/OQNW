@@ -1,7 +1,7 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import crypto from "crypto";
-import { db, orderItemsTable, ordersTable } from "@workspace/db";
+import { db, orderItemsTable, ordersTable, wholesaleInvoicesTable } from "@workspace/db";
 import { and, eq } from "drizzle-orm";
 import { WALLID_WEBHOOK_SECRET } from "../lib/wallid";
 import { sendOrderConfirmation } from "../lib/email";
@@ -195,6 +195,11 @@ router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<v
           );
           continue;
         }
+
+        await db
+          .update(wholesaleInvoicesTable)
+          .set({ paymentStatus: "paid", updatedAt: new Date() })
+          .where(eq(wholesaleInvoicesTable.orderId, order.id));
 
         logger.info({ orderNumber, api_payment_id, event_id }, "Order marked paid via Wallid webhook");
 

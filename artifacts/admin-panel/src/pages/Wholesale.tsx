@@ -3,14 +3,21 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Loader2, Plus, Copy, Send, CheckCircle2 } from "lucide-react";
-import { useWholesaleInvoices, useResendWholesaleInvoice } from "@/hooks/use-wholesale";
+import {
+  WHOLESALE_DRAFT_KEY,
+  WholesaleApiError,
+  useWholesaleInvoices,
+  useResendWholesaleInvoice,
+} from "@/hooks/use-wholesale";
 import { CreateWholesaleSheet } from "@/components/wholesale/CreateWholesaleSheet";
 import { toast } from "sonner";
 
 export default function Wholesale() {
   const { data, isLoading } = useWholesaleInvoices();
   const resend = useResendWholesaleInvoice();
-  const [sheetOpen, setSheetOpen] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(
+    () => sessionStorage.getItem(WHOLESALE_DRAFT_KEY) !== null,
+  );
   const [copiedId, setCopiedId] = useState<number | null>(null);
 
   const formatCurrency = (val: number) =>
@@ -35,7 +42,16 @@ export default function Wholesale() {
   const handleResend = (id: number) => {
     resend.mutate(id, {
       onSuccess: () => toast.success("Invoice resent successfully"),
-      onError: (err) => toast.error(err.message || "Failed to resend"),
+      onError: (err) => {
+        if (err instanceof WholesaleApiError && err.requiresRecentAuth) {
+          toast.info("Please confirm your identity, then resend the invoice");
+          window.location.assign(
+            `${import.meta.env.BASE_URL}login?reauth=1&returnTo=%2Fwholesale`,
+          );
+          return;
+        }
+        toast.error(err.message || "Failed to resend");
+      },
     });
   };
 

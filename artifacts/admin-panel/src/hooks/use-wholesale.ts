@@ -1,5 +1,19 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
+export const WHOLESALE_DRAFT_KEY = "omniqure:wholesale-payment-draft";
+
+export class WholesaleApiError extends Error {
+  status: number;
+  requiresRecentAuth: boolean;
+
+  constructor(message: string, status: number, requiresRecentAuth = false) {
+    super(message);
+    this.name = "WholesaleApiError";
+    this.status = status;
+    this.requiresRecentAuth = requiresRecentAuth;
+  }
+}
+
 export interface CatalogProduct {
   id: number;
   name: string;
@@ -41,7 +55,9 @@ export function useWholesaleInvoices() {
       const res = await fetch("/api/admin/wholesale", { credentials: "include" });
       if (!res.ok) throw new Error("Failed to fetch invoices");
       return res.json() as Promise<{ invoices: WholesaleInvoice[] }>;
-    }
+    },
+    refetchInterval: 30_000,
+    refetchOnWindowFocus: true,
   });
 }
 
@@ -56,8 +72,17 @@ export function useCreateWholesaleInvoice() {
         body: JSON.stringify(data),
       });
       if (!res.ok) {
-        const error = await res.json().catch(() => null) as { error?: string } | null;
-        throw new Error(error?.error || "Failed to create invoice");
+        const error = await res.json().catch(() => null) as {
+          error?: string;
+          requiresRecentAuth?: boolean;
+        } | null;
+        throw new WholesaleApiError(
+          error?.requiresRecentAuth
+            ? "Please confirm your identity before creating this payment link"
+            : error?.error || "Failed to create invoice",
+          res.status,
+          error?.requiresRecentAuth === true,
+        );
       }
       return res.json();
     },
@@ -76,8 +101,17 @@ export function useResendWholesaleInvoice() {
         credentials: "include"
       });
       if (!res.ok) {
-        const error = await res.json().catch(() => null) as { error?: string } | null;
-        throw new Error(error?.error || "Failed to resend invoice");
+        const error = await res.json().catch(() => null) as {
+          error?: string;
+          requiresRecentAuth?: boolean;
+        } | null;
+        throw new WholesaleApiError(
+          error?.requiresRecentAuth
+            ? "Please confirm your identity before resending this payment link"
+            : error?.error || "Failed to resend invoice",
+          res.status,
+          error?.requiresRecentAuth === true,
+        );
       }
       return res.json();
     },

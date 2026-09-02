@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
+import { useLocation } from "wouter";
 import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -10,7 +11,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, Trash2, Loader2, Info } from "lucide-react";
-import { useCatalog, useCreateWholesaleInvoice } from "@/hooks/use-wholesale";
+import {
+  WHOLESALE_DRAFT_KEY,
+  WholesaleApiError,
+  useCatalog,
+  useCreateWholesaleInvoice,
+} from "@/hooks/use-wholesale";
 import { toast } from "sonner";
 
 const itemSchema = z.object({
@@ -39,6 +45,7 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
   const { data: catalogData } = useCatalog();
   const createInvoice = useCreateWholesaleInvoice();
   const [showNotes, setShowNotes] = useState(false);
+  const [, setLocation] = useLocation();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -58,6 +65,21 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
     control: form.control,
     name: "items",
   });
+
+  useEffect(() => {
+    if (!open) return;
+    const savedDraft = sessionStorage.getItem(WHOLESALE_DRAFT_KEY);
+    if (!savedDraft) return;
+    try {
+      const draft = JSON.parse(savedDraft) as FormValues;
+      form.reset(draft);
+      setShowNotes(Boolean(draft.notes));
+      sessionStorage.removeItem(WHOLESALE_DRAFT_KEY);
+      toast.info("Payment details restored. Select Create payment link to continue.");
+    } catch {
+      sessionStorage.removeItem(WHOLESALE_DRAFT_KEY);
+    }
+  }, [form, open]);
 
   const watchedItems = useWatch({
     control: form.control,
@@ -81,12 +103,19 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
   const onSubmit = (data: FormValues) => {
     createInvoice.mutate(data, {
       onSuccess: (result: { warning?: string | null }) => {
+        sessionStorage.removeItem(WHOLESALE_DRAFT_KEY);
         result.warning ? toast.warning(result.warning) : toast.success("Payment link created and invoice sent");
         form.reset();
         setShowNotes(false);
         onOpenChange(false);
       },
       onError: (err) => {
+        if (err instanceof WholesaleApiError && err.requiresRecentAuth) {
+          sessionStorage.setItem(WHOLESALE_DRAFT_KEY, JSON.stringify(data));
+          toast.info("Please confirm your identity to create this payment link");
+          setLocation("/login?reauth=1&returnTo=%2Fwholesale");
+          return;
+        }
         toast.error(err.message || "Failed to create payment");
       }
     });
