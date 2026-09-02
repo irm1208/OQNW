@@ -84901,46 +84901,6 @@ var LIMITS = {
 var TEMPORARY_BLOCK_MS = 15 * 60 * 1e3;
 var MAX_PATH_LENGTH = 300;
 var MAX_USER_AGENT_LENGTH = 300;
-async function ensurePublicTrafficSchema() {
-  await db.execute(sql`
-    CREATE TABLE IF NOT EXISTS public_traffic_limits (
-      client_key text PRIMARY KEY,
-      ip text NOT NULL,
-      resource_kind text NOT NULL,
-      window_started_at timestamptz NOT NULL DEFAULT NOW(),
-      request_count integer NOT NULL DEFAULT 0,
-      behavior_started_at timestamptz NOT NULL DEFAULT NOW(),
-      recent_paths text[] NOT NULL DEFAULT ARRAY[]::text[],
-      last_path text NOT NULL,
-      last_user_agent text,
-      blocked_until timestamptz,
-      updated_at timestamptz NOT NULL DEFAULT NOW()
-    )
-  `);
-  await db.execute(sql`
-    CREATE TABLE IF NOT EXISTS public_traffic_events (
-      id serial PRIMARY KEY,
-      client_key text NOT NULL,
-      ip text NOT NULL,
-      resource_kind text NOT NULL,
-      path text NOT NULL,
-      user_agent text,
-      request_count integer NOT NULL,
-      unique_path_count integer NOT NULL,
-      action text NOT NULL,
-      reason text NOT NULL,
-      created_at timestamptz NOT NULL DEFAULT NOW()
-    )
-  `);
-  await db.execute(sql`
-    CREATE INDEX IF NOT EXISTS public_traffic_events_created_at_idx
-    ON public_traffic_events (created_at)
-  `);
-  await db.execute(sql`
-    CREATE INDEX IF NOT EXISTS public_traffic_events_ip_idx
-    ON public_traffic_events (ip)
-  `);
-}
 var SAFE_AGENT_PATTERN = /googlebot|google-inspectiontool|adsbot-google|bingbot|duckduckbot|applebot|yandex(bot)?|baiduspider|lighthouse|pagespeed|wave|axe-core|nvda|jaws|voiceover/i;
 var AUTOMATION_AGENT_PATTERN = /headless|phantom|selenium|playwright|puppeteer|scrapy|curl\/|wget\/|python-requests|axios\/|go-http-client|java\/|libwww-perl/i;
 function safeHeader(value, maxLength) {
@@ -88207,7 +88167,6 @@ var port = Number(rawPort);
 if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
-await ensurePublicTrafficSchema();
 app_default.listen(port, (err) => {
   if (err) {
     logger.error({ err }, "Error listening on port");

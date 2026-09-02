@@ -29,3 +29,4 @@
 - [Publishing preflight failures](publishing-preflight-failures.md) — an immediate Failed state with no new build record is a stuck platform preflight, not a code/build failure.
 - [Managed database SSL modes](managed-database-ssl-modes.md) — respect an explicit sslmode in DATABASE_URL; Replit’s local managed proxy may explicitly disable SSL.
 - [Artifact manifest IDs](artifact-manifest-id-stability.md) — preserve the registered artifact ID when changing routes; legacy template IDs can pass locally but block publishing preflight.
+- [Production startup schema ownership](production-startup-schema-ownership.md) — API readiness must not depend on runtime DDL; managed schema changes belong to Replit’s publish flow.
