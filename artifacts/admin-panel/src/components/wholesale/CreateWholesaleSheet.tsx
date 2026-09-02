@@ -65,11 +65,12 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
   });
 
   const totalAmount = useMemo(() => {
-    return watchedItems.reduce((acc, item) => {
-      const price = Number(item.priceGbp) || 0;
-      const qty = Number(item.quantity) || 0;
-      return acc + (price * qty);
+    const totalPence = watchedItems.reduce((acc, item) => {
+      const pricePence = Math.round((Number(item.priceGbp) || 0) * 100);
+      const quantity = Math.max(0, Math.trunc(Number(item.quantity) || 0));
+      return acc + (pricePence * quantity);
     }, 0);
+    return totalPence / 100;
   }, [watchedItems]);
 
   const handleProductSelect = (index: number, productId: string) => {
@@ -131,10 +132,11 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
                   <div className="bg-muted px-4 py-2 text-muted-foreground border-r font-medium flex items-center justify-center">
                     £
                   </div>
-                  <Input 
-                    disabled 
+                   <Input
+                     readOnly
+                     aria-label="Calculated line item total"
                     value={totalAmount.toFixed(2)} 
-                    className="border-0 rounded-none bg-background disabled:opacity-100 disabled:text-foreground font-medium focus-visible:ring-0 focus-visible:ring-offset-0" 
+                     className="border-0 rounded-none bg-background font-medium focus-visible:ring-0 focus-visible:ring-offset-0"
                   />
                 </div>
               </div>

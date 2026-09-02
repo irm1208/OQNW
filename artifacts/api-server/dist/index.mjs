@@ -244537,13 +244537,14 @@ router51.post("/admin/wholesale", async (req, res) => {
     return;
   }
   const productById = new Map(products.map((product) => [product.id, product]));
-  const shippingCost = Number(body.shippingCostGbp ?? 0);
-  if (!Number.isFinite(shippingCost) || shippingCost < 0 || shippingCost > 1e6) {
-    res.status(400).json({ error: "Shipping cost is invalid" });
+  const requestedShippingCost = Number(body.shippingCostGbp ?? 0);
+  if (!Number.isFinite(requestedShippingCost) || requestedShippingCost !== 0) {
+    res.status(400).json({ error: "The wholesale total is calculated from line items only" });
     return;
   }
   const subtotal = items.reduce((sum2, item) => sum2 + item.priceGbp * item.quantity, 0);
-  const total = Math.round((subtotal + shippingCost) * 100) / 100;
+  const shippingCost = 0;
+  const total = Math.round(subtotal * 100) / 100;
   const amountMinor = Math.round(total * 100);
   const orderNumber = `WS-${referenceNumber}`;
   try {
