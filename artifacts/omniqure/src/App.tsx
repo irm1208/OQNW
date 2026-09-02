@@ -16,7 +16,6 @@ import { CustomerAuthProvider } from "@/context/CustomerAuthContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 import JurisdictionWarning from "@/components/JurisdictionWarning";
 import AgeGate from "@/components/AgeGate";
-import MobileBottomBar from "@/components/MobileBottomBar";
 import CartPreviewPanel from "@/components/CartPreviewPanel";
 import SiteDisclaimer from "@/components/SiteDisclaimer";
 import { initPixels } from "@/lib/pixels";
@@ -269,7 +268,6 @@ function App() {
                 <Footer />
               </div>
               <CartPreviewPanel />
-              <MobileBottomBar />
               <ChatWidget />
               <AgeGate />
               </OverlayCoordinatorProvider>
