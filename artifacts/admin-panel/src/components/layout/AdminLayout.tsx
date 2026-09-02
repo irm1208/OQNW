@@ -7,7 +7,7 @@ import {
   RotateCcw, Star, ShoppingBag, Mail, Gift, BellRing,
   Truck, RefreshCcw, FileText, Bell, ShieldAlert,
   ChevronDown, ChevronRight, Settings2, ShieldBan, Send, BarChart3,
-  Settings, UserCog, ClipboardList, WalletCards, Menu, ShieldCheck,
+  Settings, UserCog, ClipboardList, WalletCards, Menu, ShieldCheck, Receipt,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -30,6 +30,7 @@ const coreNavGroups: NavGroup[] = [
     label: "Orders",
     items: [
       { href: "/orders",      label: "Orders",           icon: ShoppingCart },
+      { href: "/wholesale",   label: "Wholesale",        icon: Receipt },
       { href: "/fulfillment", label: "Fulfilment Queue", icon: ClipboardList },
       { href: "/fraud",       label: "Fraud Queue",      icon: ShieldAlert },
       { href: "/crypto-payments", label: "Crypto Audit", icon: WalletCards },

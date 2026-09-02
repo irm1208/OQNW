@@ -6,6 +6,7 @@ import Login from "@/pages/Login";
 import Dashboard from "@/pages/Dashboard";
 import Orders from "@/pages/Orders";
 import OrderDetail from "@/pages/OrderDetail";
+import Wholesale from "@/pages/Wholesale";
 import Customers from "@/pages/Customers";
 import CustomerDetail from "@/pages/CustomerDetail";
 import Products from "@/pages/Products";
@@ -73,6 +74,11 @@ function AppRoutes() {
       <Route path="/orders/:id">
         <AdminLayout>
           <OrderDetail />
+        </AdminLayout>
+      </Route>
+      <Route path="/wholesale">
+        <AdminLayout>
+          <Wholesale />
         </AdminLayout>
       </Route>
       <Route path="/fulfillment">

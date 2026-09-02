@@ -50,6 +50,7 @@ import cryptoPaymentsRouter from "./crypto-payments";
 import adminCryptoAuditsRouter from "./admin/crypto-audits";
 import adminPublicTrafficRouter from "./admin/publicTraffic";
 import adminSecurityRouter from "./admin/security";
+import adminWholesaleRouter from "./admin/wholesale";
 import publicTrafficRouter from "./publicTraffic";
 
 const router: IRouter = Router();
@@ -111,6 +112,7 @@ router.use(adminFraudRouter);
 router.use(adminBlockedIpsRouter);
 router.use(adminPublicTrafficRouter);
 router.use(adminSecurityRouter);
+router.use(adminWholesaleRouter);
 router.use(adminEmailLogsRouter);
 
 router.use(loyaltyRouter);

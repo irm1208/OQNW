@@ -1,4 +1,6 @@
 import { Resend } from "resend";
+import PDFDocument from "pdfkit";
+import QRCode from "qrcode";
 import { logger } from "./logger";
 import { db } from "@workspace/db";
 import { emailLogsTable } from "@workspace/db";
@@ -66,6 +68,15 @@ export interface OrderEmailData {
   city: string | null;
   postcode: string | null;
   country: string | null;
+}
+
+export interface WholesaleInvoiceEmailData extends OrderEmailData {
+  referenceNumber: string;
+  dueDate: string;
+  paymentUrl: string;
+  customerEmailCc?: string | null;
+  description?: string | null;
+  invoiceNotes?: string | null;
 }
 
 function formatGbp(amount: number): string {
@@ -139,6 +150,95 @@ function baseTemplate(title: string, body: string): string {
   </table>
 </body>
 </html>`;
+}
+
+function createWholesaleInvoicePdf(invoice: WholesaleInvoiceEmailData): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const doc = new PDFDocument({ size: "A4", margin: 48 });
+    const chunks: Buffer[] = [];
+    doc.on("data", (chunk) => chunks.push(Buffer.from(chunk)));
+    doc.on("end", () => resolve(Buffer.concat(chunks)));
+    doc.on("error", reject);
+
+    doc.fontSize(22).fillColor("#142767").text("OmniQure Wholesale Invoice");
+    doc.moveDown(0.5).fontSize(10).fillColor("#475569");
+    doc.text(`Reference: ${invoice.referenceNumber}`);
+    doc.text(`Order: ${invoice.orderNumber}`);
+    doc.text(`Due date: ${invoice.dueDate}`);
+    doc.moveDown();
+    doc.fontSize(12).fillColor("#0f172a").text(`Bill to: ${invoice.customerName}`);
+    doc.fontSize(10).fillColor("#475569").text(invoice.customerEmail);
+    doc.moveDown();
+
+    invoice.items.forEach((item) => {
+      const lineTotal = item.priceGbp * item.quantity;
+      doc.fillColor("#0f172a").fontSize(10).text(
+        `${item.productName}  x ${item.quantity}`,
+        { continued: true },
+      ).text(formatGbp(lineTotal), { align: "right" });
+    });
+    doc.moveDown();
+    doc.fontSize(12).fillColor("#142767").text(`Total: ${formatGbp(invoice.totalGbp)}`, { align: "right" });
+    if (invoice.description) {
+      doc.moveDown().fontSize(10).fillColor("#475569").text(invoice.description);
+    }
+    doc.moveDown().fontSize(9).fillColor("#64748b")
+      .text("Pay securely using the Pay by Bank link or QR code in the accompanying email.");
+    doc.moveDown().fontSize(8).fillColor("#713f12")
+      .text("All products are sold strictly for research purposes only. Not for human consumption.");
+    doc.end();
+  });
+}
+
+export async function sendWholesaleInvoice(invoice: WholesaleInvoiceEmailData): Promise<void> {
+  const paymentUrl = safeHttpsUrl(invoice.paymentUrl);
+  if (!paymentUrl) throw new Error("Wholesale invoice payment URL must be HTTPS");
+
+  const [pdf, qr] = await Promise.all([
+    createWholesaleInvoicePdf(invoice),
+    QRCode.toBuffer(invoice.paymentUrl, { type: "png", width: 360, margin: 2 }),
+  ]);
+  const subject = `Wholesale invoice ${invoice.referenceNumber} — ${formatGbp(invoice.totalGbp)}`;
+  const description = invoice.description ? `<p style="margin:0 0 20px;color:#475569;">${escapeHtml(invoice.description)}</p>` : "";
+  const notes = invoice.invoiceNotes ? `<div style="margin-top:20px;padding:14px;background:#f8fafc;border-radius:6px;color:#475569;font-size:13px;">${escapeHtml(invoice.invoiceNotes)}</div>` : "";
+  const body = `
+    <h2 style="margin:0 0 4px;font-size:22px;color:#0f172a;">Wholesale invoice</h2>
+    <p style="margin:0 0 20px;font-size:14px;color:#64748b;">Hi ${escapeHtml(invoice.customerName)}, your OmniQure Pay by Bank invoice is ready.</p>
+    ${description}
+    <div style="background:#f8fafc;border-radius:6px;padding:16px 20px;margin-bottom:24px;">
+      <p style="margin:0;font-size:12px;color:#94a3b8;font-weight:600;">REFERENCE</p>
+      <p style="margin:4px 0 8px;font-size:20px;font-weight:700;color:#0f172a;">${escapeHtml(invoice.referenceNumber)}</p>
+      <p style="margin:0;font-size:13px;color:#475569;">Due ${escapeHtml(invoice.dueDate)}</p>
+    </div>
+    ${itemsTable(invoice.items)}
+    ${totalsBlock(invoice)}
+    <div style="margin-top:26px;text-align:center;">
+      <a href="${paymentUrl}" style="display:inline-block;background:#142767;color:#fff;padding:14px 28px;border-radius:8px;text-decoration:none;font-size:15px;font-weight:700;">Pay by Bank</a>
+      <p style="margin:18px 0 8px;font-size:12px;color:#64748b;">Or scan this QR code</p>
+      <img src="cid:wallid-payment-qr" width="180" height="180" alt="Pay by Bank QR code" style="display:block;margin:0 auto;border:0;" />
+    </div>
+    ${notes}
+    <div style="margin-top:24px;padding:16px;background:#fefce8;border-radius:6px;border-left:4px solid #eab308;">
+      <p style="margin:0;font-size:13px;color:#713f12;">All products are sold strictly for research purposes only. Not for human consumption.</p>
+    </div>`;
+
+  try {
+    const result = await getResend().emails.send({
+      from: FROM_ADDRESS,
+      to: invoice.customerEmail,
+      ...(invoice.customerEmailCc ? { cc: invoice.customerEmailCc } : {}),
+      subject,
+      html: baseTemplate("Wholesale invoice", body),
+      attachments: [
+        { filename: `invoice-${invoice.referenceNumber}.pdf`, content: pdf },
+        { filename: `payment-qr-${invoice.referenceNumber}.png`, content: qr, contentId: "wallid-payment-qr" },
+      ],
+    });
+    await logEmail({ toEmail: invoice.customerEmail, subject, type: "wholesale_invoice", status: "sent", resendId: result.data?.id, orderNumber: invoice.orderNumber });
+  } catch (err) {
+    await logEmail({ toEmail: invoice.customerEmail, subject, type: "wholesale_invoice", status: "failed", orderNumber: invoice.orderNumber });
+    throw err;
+  }
 }
 
 function itemsTable(items: OrderItem[]): string {

@@ -31,3 +31,4 @@
 - [Managed database SSL modes](managed-database-ssl-modes.md) — respect an explicit sslmode in DATABASE_URL; Replit’s local managed proxy may explicitly disable SSL.
 - [Artifact manifest IDs](artifact-manifest-id-stability.md) — preserve the registered artifact ID when changing routes; legacy template IDs can pass locally but block publishing preflight.
 - [Production startup schema ownership](production-startup-schema-ownership.md) — API readiness must not depend on runtime DDL; managed schema changes belong to Replit’s publish flow.
+- [PDFKit in the API bundle](pdfkit-api-bundle.md) — bundled PDFKit/fontkit needs @swc/helpers declared directly or the API builds but fails at startup.
