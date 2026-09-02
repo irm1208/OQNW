@@ -176,6 +176,10 @@ function imageTrafficProtectionPlugin() {
         });
 
         if (response.ok) return next();
+        // Only an explicit limiter decision should block an image. A missing,
+        // unhealthy, or temporarily unavailable limiter endpoint must fail open
+        // so local image imports cannot crash the entire storefront.
+        if (response.status !== 403 && response.status !== 429) return next();
         res.statusCode = response.status;
         const retryAfter = response.headers.get("retry-after");
         if (retryAfter) res.setHeader("Retry-After", retryAfter);
