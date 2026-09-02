@@ -1,0 +1,8 @@
+@import "@workspace/omniqure-ops/styles.css";
+@source "./mockups";
+
+html,
+body,
+#root {
+  min-height: 100%;
+}

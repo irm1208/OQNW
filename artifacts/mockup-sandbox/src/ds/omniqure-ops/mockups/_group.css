@@ -1,0 +1,8 @@
+body {
+  background: var(--oq-background);
+}
+
+button,
+a {
+  text-decoration: none;
+}

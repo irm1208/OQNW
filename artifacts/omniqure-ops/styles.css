@@ -1,0 +1,144 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@source "./src";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--oq-background);
+  --color-foreground: var(--oq-foreground);
+  --color-card: var(--oq-card);
+  --color-card-foreground: var(--oq-card-foreground);
+  --color-popover: var(--oq-card);
+  --color-popover-foreground: var(--oq-card-foreground);
+  --color-primary: var(--oq-primary);
+  --color-primary-foreground: var(--oq-primary-foreground);
+  --color-secondary: var(--oq-secondary);
+  --color-secondary-foreground: var(--oq-secondary-foreground);
+  --color-muted: var(--oq-muted);
+  --color-muted-foreground: var(--oq-muted-foreground);
+  --color-accent: var(--oq-accent);
+  --color-accent-foreground: var(--oq-accent-foreground);
+  --color-destructive: var(--oq-danger);
+  --color-destructive-foreground: #ffffff;
+  --color-border: var(--oq-border);
+  --color-input: var(--oq-border);
+  --color-ring: var(--oq-primary);
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+}
+
+:root {
+  --oq-background: #edf3f9;
+  --oq-foreground: #0b1e36;
+  --oq-card: #ffffff;
+  --oq-card-foreground: #0b1e36;
+  --oq-primary: #1240a0;
+  --oq-primary-foreground: #ffffff;
+  --oq-secondary: #dfeaf5;
+  --oq-secondary-foreground: #153254;
+  --oq-muted: #e8f0f7;
+  --oq-muted-foreground: #5e7189;
+  --oq-accent: #13b8a6;
+  --oq-accent-foreground: #062c31;
+  --oq-danger: #d6475e;
+  --oq-warning: #dd9a2b;
+  --oq-success: #0e9f83;
+  --oq-border: #d5e1ec;
+  --oq-ink-deep: #07162b;
+  --oq-ink-soft: #294665;
+  --oq-sky: #65b7ee;
+  --oq-shadow: 0 18px 50px rgba(7, 22, 43, 0.08);
+  --oq-shadow-float: 0 22px 60px rgba(7, 22, 43, 0.16);
+}
+
+* {
+  border-color: var(--oq-border);
+}
+
+html,
+body {
+  min-width: 320px;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--oq-background);
+  color: var(--oq-foreground);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  text-rendering: optimizeLegibility;
+}
+
+button,
+a,
+input,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.oq-panel {
+  background: var(--oq-card);
+  border: 1px solid var(--oq-border);
+  border-radius: 1rem;
+  box-shadow: var(--oq-shadow);
+}
+
+.oq-panel-raised {
+  background: var(--oq-card);
+  border: 1px solid rgba(213, 225, 236, 0.9);
+  border-radius: 1rem;
+  box-shadow: var(--oq-shadow-float);
+}
+
+.oq-eyebrow {
+  color: var(--oq-muted-foreground);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1rem;
+  text-transform: uppercase;
+}
+
+.oq-mono {
+  font-family: "JetBrains Mono", monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.oq-grid-noise {
+  background-image:
+    linear-gradient(rgba(18, 64, 160, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(18, 64, 160, 0.045) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.oq-focus-ring:focus-visible {
+  outline: 3px solid rgba(19, 184, 166, 0.4);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .oq-interactive {
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      border-color 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .oq-interactive:hover {
+    transform: translateY(-1px);
+  }
+}
