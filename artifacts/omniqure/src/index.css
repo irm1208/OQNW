@@ -377,6 +377,7 @@ html.copy-protected [role="textbox"] {
 
 .card-cart-btn {
   width: 100%;
+  min-width: max-content;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -392,6 +393,12 @@ html.copy-protected [role="textbox"] {
   white-space: nowrap;
   padding: 0 8px;
   font-family: inherit;
+}
+
+.product-cta-btn,
+.wishlist-add-btn {
+  white-space: nowrap;
+  min-width: max-content;
 }
 
 .card-qty {

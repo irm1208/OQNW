@@ -157,12 +157,14 @@ export default function WishlistPage() {
                       <button
                         disabled={outOfStock}
                         onClick={() => addToCart(product, 1)}
-                        className="flex-1 flex items-center justify-center gap-1.5 rounded-xl text-xs font-semibold text-white transition-opacity hover:opacity-90"
+                        className="wishlist-add-btn flex-1 flex items-center justify-center gap-1.5 rounded-xl text-xs font-semibold text-white transition-opacity hover:opacity-90"
                         style={{
                           height: "36px",
                           backgroundColor: outOfStock ? "#94A3B8" : "#1B5CB5",
                           border: "none",
                           cursor: outOfStock ? "not-allowed" : "pointer",
+                          whiteSpace: "nowrap",
+                          minWidth: 0,
                         }}
                       >
                         <ShoppingCart size={13} />

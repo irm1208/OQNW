@@ -715,6 +715,7 @@ export default function ProductPage() {
                     border: "none",
                     cursor: product.stockLevel === 0 ? "not-allowed" : "pointer",
                     transition: "background 0.25s",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   <ShoppingCart size={16} />
