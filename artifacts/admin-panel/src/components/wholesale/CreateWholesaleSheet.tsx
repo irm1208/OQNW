@@ -123,7 +123,7 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
               />
 
               <div className="space-y-2">
-                <FormLabel className="font-semibold text-sm">Amount</FormLabel>
+                <p className="font-semibold text-sm">Amount</p>
                 <div className="flex rounded-md border border-input overflow-hidden shadow-sm">
                   <div className="bg-muted px-4 py-2 text-muted-foreground border-r font-medium flex items-center justify-center">
                     £
@@ -137,7 +137,7 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
               </div>
 
               <div className="space-y-2">
-                <FormLabel className="font-semibold text-sm">Bank account</FormLabel>
+                <p className="font-semibold text-sm">Bank account</p>
                 <Select disabled defaultValue="wallid">
                   <SelectTrigger className="bg-background shadow-sm">
                     <SelectValue />
@@ -150,7 +150,7 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
 
               <div className="space-y-3">
                 <div className="flex items-center gap-1.5">
-                  <FormLabel className="font-semibold text-sm">Payer account</FormLabel>
+                  <p className="font-semibold text-sm">Payer account</p>
                   <Info className="w-4 h-4 text-muted-foreground" />
                 </div>
                 <RadioGroup defaultValue="any" className="flex flex-col gap-3">
@@ -185,7 +185,7 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
 
               <div className="space-y-3 pt-1">
                 <div className="flex items-center justify-between">
-                  <FormLabel className="font-semibold text-sm">Line items *</FormLabel>
+                  <p className="font-semibold text-sm">Line items *</p>
                 </div>
                 <div className="space-y-3">
                   {fields.map((field, index) => (
@@ -339,7 +339,7 @@ export function CreateWholesaleSheet({ open, onOpenChange }: { open: boolean; on
               />
 
               <div className="space-y-2 pb-6">
-                <FormLabel className="font-semibold text-sm">Notes (optional)</FormLabel>
+                <p className="font-semibold text-sm">Notes (optional)</p>
                 {!showNotes ? (
                   <div>
                     <Button 
