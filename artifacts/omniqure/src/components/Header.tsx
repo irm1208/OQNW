@@ -1204,7 +1204,7 @@ export default function Header() {
                 <p style={{ margin: "0 8px 7px", color: "#94A3B8", fontSize: 10, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" }}>
                   More
                 </p>
-                {[...rightNavItems, ...(!customer ? [{ label: "Sign in", href: "/sign-in" }] : [])].map(item => (
+                {[...(!customer ? [{ label: "Sign in", href: "/sign-in" }] : []), ...rightNavItems].map(item => (
                   <Link
                     key={item.label}
                     href={item.href}
