@@ -39,6 +39,7 @@ const footerCategories = [
     title: "Company",
     href: "/about",
     links: [
+      { label: "Sign In",              href: "/sign-in",          mobileOnly: true },
       { label: "About Us",             href: "/about"            },
       { label: "Contact Us",          href: "/contact"          },
       { label: "Track Your Order",    href: "/track-order"      },
@@ -182,7 +183,7 @@ export default function Footer() {
                   </Link>
                   <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
                     {col.links.map(link => (
-                      <li key={link.label}>
+                      <li key={link.label} className={link.mobileOnly ? "md:hidden" : undefined}>
                         <Link
                           href={link.href}
                           style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.60)", textDecoration: "none", transition: "color 0.15s" }}
