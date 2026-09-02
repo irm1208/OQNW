@@ -28,7 +28,7 @@ type ReturnRecord = {
 const STATUS_OPTIONS = [
   { value: "requested", label: "Requested" },
   { value: "approved", label: "Approved" },
-  { value: "refunded", label: "Refunded" },
+  { value: "refunded", label: "Refunded — confirm from order", disabled: true },
   { value: "rejected", label: "Rejected" },
 ];
 
@@ -42,10 +42,11 @@ function getStatusColor(status: string) {
   }
 }
 
-async function apiFetch(url: string, options?: RequestInit) {
+async function apiFetch<T = unknown>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, { credentials: "include", ...options });
-  if (!res.ok) throw new Error("Request failed");
-  return res.json();
+  const payload = await res.json().catch(() => null) as (T & { error?: string }) | null;
+  if (!res.ok) throw new Error(payload?.error || "Request failed");
+  return payload as T;
 }
 
 export default function Returns() {
@@ -69,7 +70,7 @@ export default function Returns() {
 
   const { data, isLoading } = useQuery<{ returns: ReturnRecord[]; total: number }>({
     queryKey,
-    queryFn: () => apiFetch(`/api/admin/returns?${params}`),
+    queryFn: () => apiFetch<{ returns: ReturnRecord[]; total: number }>(`/api/admin/returns?${params}`),
   });
 
   function openEdit(r: ReturnRecord) {
@@ -95,8 +96,8 @@ export default function Returns() {
       toast.success("Return updated");
       setEditing(null);
       queryClient.invalidateQueries({ queryKey });
-    } catch {
-      toast.error("Failed to update return");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to update return");
     } finally {
       setSaving(false);
     }
@@ -235,14 +236,14 @@ export default function Returns() {
                   </SelectTrigger>
                   <SelectContent>
                     {STATUS_OPTIONS.map((o) => (
-                      <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+                      <SelectItem key={o.value} value={o.value} disabled={o.disabled}>{o.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Refund Amount (£)</label>
+                <label className="text-sm font-medium">Planned Refund Amount (£)</label>
                 <Input
                   type="number"
                   min="0"

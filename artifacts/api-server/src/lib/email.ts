@@ -1061,6 +1061,7 @@ export async function sendReturnStatusUpdate(opts: {
   orderNumber: string;
   status: "approved" | "rejected" | "refunded";
   refundAmountGbp?: number | null;
+  currency?: "GBP" | "EUR";
   adminNotes?: string | null;
 }): Promise<void> {
   const statusConfig = {
@@ -1086,17 +1087,18 @@ export async function sendReturnStatusUpdate(opts: {
       colour: "#6d28d9",
       bg: "#f5f3ff",
       border: "#a78bfa",
-      message: `Hi ${opts.customerName}, your refund for order <strong>${opts.orderNumber}</strong> has been processed and is on its way back to your original payment method. Please allow 3–5 business days for it to appear.`,
+      message: `Hi ${opts.customerName}, your refund for order <strong>${opts.orderNumber}</strong> has been processed and is on its way back to your original payment method. Wallid refunds normally arrive within around three minutes, although your bank's timing may vary.`,
     },
   };
 
   const cfg = statusConfig[opts.status];
   const subject = `${cfg.title} — ${opts.orderNumber}`;
 
+  const refundCurrency = opts.currency ?? "GBP";
   const refundBlock = opts.status === "refunded" && opts.refundAmountGbp != null
     ? `<div style="background:${cfg.bg};border-radius:6px;padding:16px 20px;margin:20px 0;border-left:4px solid ${cfg.border};">
          <p style="margin:0 0 4px;font-size:12px;color:${cfg.colour};font-weight:600;">REFUND AMOUNT</p>
-         <p style="margin:0;font-size:22px;font-weight:700;color:${cfg.colour};">${formatGbp(opts.refundAmountGbp)}</p>
+         <p style="margin:0;font-size:22px;font-weight:700;color:${cfg.colour};">${formatMoney(opts.refundAmountGbp, refundCurrency)}</p>
        </div>`
     : "";
 

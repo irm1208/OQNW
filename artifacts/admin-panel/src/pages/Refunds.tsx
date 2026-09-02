@@ -12,10 +12,14 @@ type RefundRow = {
   orderId: number;
   orderNumber: string;
   amountGbp: number;
+  currency: string;
   type: string;
+  status: "pending" | "confirmed" | "cancelled";
+  wallidRefundReference: string | null;
   reason: string;
   notes: string | null;
   restoreInventory: boolean;
+  confirmedAt: string | null;
   createdAt: string;
 };
 
@@ -37,21 +41,31 @@ export default function Refunds() {
     r.reason.toLowerCase().includes(search.toLowerCase())
   );
 
-  const totalRefunded = refunds.reduce((s, r) => s + r.amountGbp, 0);
-  const fullCount = refunds.filter(r => r.type === "full").length;
-  const partialCount = refunds.filter(r => r.type === "partial").length;
+  const confirmedRefunds = refunds.filter(r => r.status === "confirmed");
+  const totalRefundedGbp = confirmedRefunds
+    .filter(r => r.currency !== "EUR")
+    .reduce((sum, refund) => sum + refund.amountGbp, 0);
+  const totalRefundedEur = confirmedRefunds
+    .filter(r => r.currency === "EUR")
+    .reduce((sum, refund) => sum + refund.amountGbp, 0);
+  const fullCount = confirmedRefunds.filter(r => r.type === "full").length;
+  const partialCount = confirmedRefunds.filter(r => r.type === "partial").length;
+  const pendingCount = refunds.filter(r => r.status === "pending").length;
+  const formatMoney = (amount: number, currency: string) =>
+    new Intl.NumberFormat("en-GB", { style: "currency", currency: currency === "EUR" ? "EUR" : "GBP" }).format(amount);
 
   return (
     <div className="admin-page space-y-6">
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Refunds</h2>
-        <p className="text-sm text-muted-foreground mt-1">All refunds issued from order detail pages</p>
+        <p className="text-sm text-muted-foreground mt-1">Pending requests and confirmed Wallid refunds</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         <div className="rounded-xl border bg-card p-5">
           <p className="text-sm text-muted-foreground mb-1">Total Refunded</p>
-          <p className="text-3xl font-bold text-red-600">£{totalRefunded.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-red-600">{formatMoney(totalRefundedGbp, "GBP")}</p>
+          {totalRefundedEur > 0 && <p className="text-lg font-semibold text-red-600">{formatMoney(totalRefundedEur, "EUR")}</p>}
         </div>
         <div className="rounded-xl border bg-card p-5">
           <p className="text-sm text-muted-foreground mb-1">Full Refunds</p>
@@ -60,6 +74,10 @@ export default function Refunds() {
         <div className="rounded-xl border bg-card p-5">
           <p className="text-sm text-muted-foreground mb-1">Partial Refunds</p>
           <p className="text-3xl font-bold">{partialCount}</p>
+        </div>
+        <div className="rounded-xl border bg-card p-5">
+          <p className="text-sm text-muted-foreground mb-1">Pending Confirmation</p>
+          <p className="text-3xl font-bold text-amber-600">{pendingCount}</p>
         </div>
       </div>
 
@@ -86,6 +104,7 @@ export default function Refunds() {
                 <tr className="border-b">
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Order</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Amount</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Type</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Reason</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Inventory</th>
@@ -97,7 +116,23 @@ export default function Refunds() {
                 {filtered.map(r => (
                   <tr key={r.id} className="border-b last:border-0 hover:bg-muted/30">
                     <td className="px-4 py-3 font-mono font-medium">{r.orderNumber}</td>
-                    <td className="px-4 py-3 font-bold text-red-600">£{r.amountGbp.toFixed(2)}</td>
+                    <td className={`px-4 py-3 font-bold ${r.status === "confirmed" ? "text-red-600" : ""}`}>
+                      {formatMoney(r.amountGbp, r.currency)}
+                    </td>
+                    <td className="px-4 py-3">
+                      <Badge
+                        variant="outline"
+                        className={
+                          r.status === "confirmed"
+                            ? "text-green-700 border-green-200 bg-green-50"
+                            : r.status === "pending"
+                              ? "text-amber-700 border-amber-200 bg-amber-50"
+                              : "text-slate-600 border-slate-200 bg-slate-50"
+                        }
+                      >
+                        {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
+                      </Badge>
+                    </td>
                     <td className="px-4 py-3">
                       <Badge variant="outline" className={r.type === "full" ? "text-red-600 border-red-200 bg-red-50" : "text-orange-600 border-orange-200 bg-orange-50"}>
                         {r.type.charAt(0).toUpperCase() + r.type.slice(1)}
@@ -106,13 +141,16 @@ export default function Refunds() {
                     <td className="px-4 py-3 max-w-xs">
                       <p className="truncate">{r.reason}</p>
                       {r.notes && <p className="text-xs text-muted-foreground truncate">{r.notes}</p>}
+                      {r.wallidRefundReference && (
+                        <p className="text-xs font-mono text-muted-foreground truncate">Wallid: {r.wallidRefundReference}</p>
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       {r.restoreInventory
                         ? <Badge variant="outline" className="text-green-600 border-green-200 bg-green-50 text-xs">Restored</Badge>
                         : <span className="text-muted-foreground text-xs">No</span>}
                     </td>
-                    <td className="px-4 py-3 text-muted-foreground">{formatDate(r.createdAt)}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{formatDate(r.confirmedAt ?? r.createdAt)}</td>
                     <td className="px-4 py-3 text-right">
                       <Link href={`/orders/${r.orderId}`} className="inline-flex items-center gap-1 text-primary hover:underline text-xs">
                         View <ExternalLink className="w-3 h-3" />

@@ -133,6 +133,12 @@ router.patch("/admin/returns/:id", async (req: Request, res: Response): Promise<
   try {
     const [existing] = await db.select().from(returnsTable).where(eq(returnsTable.id, returnId));
     if (!existing) { res.status(404).json({ error: "Return not found" }); return; }
+    if (status === "refunded" && existing.status !== "refunded") {
+      res.status(409).json({
+        error: "Confirm the refund from the order's Refunds section after processing it in Wallid",
+      });
+      return;
+    }
 
     const updates: Partial<typeof returnsTable.$inferInsert> = { updatedAt: new Date() };
     if (status !== undefined) updates.status = status;
@@ -142,12 +148,12 @@ router.patch("/admin/returns/:id", async (req: Request, res: Response): Promise<
     const [updated] = await db.update(returnsTable).set(updates).where(eq(returnsTable.id, returnId)).returning();
 
     // Fire status-change email if status changed to a terminal state
-    if (status !== undefined && status !== existing.status && ["approved", "rejected", "refunded"].includes(status)) {
+    if (status !== undefined && status !== existing.status && ["approved", "rejected"].includes(status)) {
       sendReturnStatusUpdate({
         customerEmail: updated.customerEmail,
         customerName: updated.customerName,
         orderNumber: updated.orderNumber,
-        status: status as "approved" | "rejected" | "refunded",
+        status: status as "approved" | "rejected",
         refundAmountGbp: updated.refundAmountGbp !== null ? parseFloat(String(updated.refundAmountGbp)) : null,
         adminNotes: updated.adminNotes ?? null,
       }).catch(() => {});

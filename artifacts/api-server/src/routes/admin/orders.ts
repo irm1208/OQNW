@@ -40,6 +40,7 @@ function orderToResponse(o: typeof ordersTable.$inferSelect) {
     subtotalGbp: parseFloat(String(o.subtotalGbp)),
     shippingCostGbp: parseFloat(String(o.shippingCostGbp)),
     totalGbp: parseFloat(String(o.totalGbp)),
+    paymentCurrency: o.paymentCurrency ?? null,
     shippingMethod: o.shippingMethod ?? null,
     carrierName: o.carrierName ?? null,
     trackingNumber: o.trackingNumber ?? null,

@@ -34,3 +34,4 @@
 - [PDFKit in the API bundle](pdfkit-api-bundle.md) — bundled PDFKit/fontkit needs @swc/helpers declared directly or the API builds but fails at startup.
 - [Wallid payment item URLs](wallid-payment-item-urls.md) — create requests require absolute HTTP(S) item URLs; failed durable references must be resumable without duplicate insertion.
 - [Wholesale payment-link edits](wholesale-link-edits.md) — edit customer/invoice metadata only; an issued Wallid URL's reference, amount, and line items remain immutable.
+- [Refund confirmation accounting](refund-confirmation-accounting.md) — pending requests reserve balance, but only a confirmed Wallid reference changes totals, inventory, and customer messaging.

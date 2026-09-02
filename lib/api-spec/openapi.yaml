@@ -1160,6 +1160,8 @@ components:
           type: number
         totalGbp:
           type: number
+        paymentCurrency:
+          type: ["string", "null"]
         shippingMethod:
           type: ["string", "null"]
         carrierName:
@@ -1250,6 +1252,8 @@ components:
           type: number
         totalGbp:
           type: number
+        paymentCurrency:
+          type: ["string", "null"]
         shippingMethod:
           type: ["string", "null"]
         carrierName:
@@ -1936,7 +1940,9 @@ components:
         - orderId
         - orderNumber
         - amountGbp
+        - currency
         - type
+        - status
         - reason
         - restoreInventory
         - createdAt
@@ -1949,8 +1955,15 @@ components:
           type: string
         amountGbp:
           type: number
+        currency:
+          type: string
         type:
           type: string
+        status:
+          type: string
+          enum: [pending, confirmed, cancelled]
+        wallidRefundReference:
+          type: ["string", "null"]
         reason:
           type: string
         notes:
@@ -1961,6 +1974,9 @@ components:
           type: ["array", "null"]
           items:
             type: object
+        confirmedAt:
+          type: ["string", "null"]
+          format: date-time
         createdAt:
           type: string
           format: date-time

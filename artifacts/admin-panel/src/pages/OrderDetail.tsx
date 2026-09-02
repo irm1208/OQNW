@@ -29,6 +29,20 @@ type ReturnRecord = {
   createdAt: string;
 };
 
+type RefundRecord = {
+  id: number;
+  amountGbp: number;
+  currency: string;
+  type: string;
+  status: "pending" | "confirmed" | "cancelled";
+  wallidRefundReference: string | null;
+  reason: string;
+  notes: string | null;
+  restoreInventory: boolean;
+  confirmedAt: string | null;
+  createdAt: string;
+};
+
 function getReturnStatusColor(status: string) {
   switch (status) {
     case "refunded": return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400";
@@ -39,10 +53,11 @@ function getReturnStatusColor(status: string) {
   }
 }
 
-async function apiFetch(url: string, options?: RequestInit) {
+async function apiFetch<T = unknown>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, { credentials: "include", ...options });
-  if (!res.ok) throw new Error("Request failed");
-  return res.json();
+  const payload = await res.json().catch(() => null) as (T & { error?: string }) | null;
+  if (!res.ok) throw new Error(payload?.error || "Request failed");
+  return payload as T;
 }
 
 const FLAG_META: Record<string, { label: string; color: string }> = {
@@ -246,13 +261,15 @@ export default function OrderDetail() {
   const [refundAmount, setRefundAmount] = useState("");
   const [refundReason, setRefundReason] = useState("");
   const [refundNotes, setRefundNotes] = useState("");
-  const [restoreInventory, setRestoreInventory] = useState(false);
   const [submittingRefund, setSubmittingRefund] = useState(false);
+  const [confirmingRefund, setConfirmingRefund] = useState<RefundRecord | null>(null);
+  const [wallidRefundReference, setWallidRefundReference] = useState("");
+  const [submittingConfirmation, setSubmittingConfirmation] = useState(false);
 
   const refundsQueryKey = ["order-refunds", orderId];
-  const { data: refundsData } = useQuery<{ id: number; amountGbp: number; type: string; reason: string; notes: string | null; restoreInventory: boolean; createdAt: string }[]>({
+  const { data: refundsData } = useQuery<RefundRecord[]>({
     queryKey: refundsQueryKey,
-    queryFn: () => apiFetch(`/api/admin/orders/${orderId}/refunds`),
+    queryFn: () => apiFetch<RefundRecord[]>(`/api/admin/orders/${orderId}/refunds`),
     enabled: !!orderId,
   });
   const orderRefunds = refundsData ?? [];
@@ -269,28 +286,58 @@ export default function OrderDetail() {
           amountGbp: amt,
           reason: refundReason.trim(),
           notes: refundNotes.trim() || undefined,
-          restoreInventory,
         }),
       });
-      toast.success(`Refund of £${amt.toFixed(2)} issued`);
+      toast.success("Pending refund recorded. Process it in Wallid, then confirm it here.");
       setRefundOpen(false);
       setRefundAmount("");
       setRefundReason("");
       setRefundNotes("");
-      setRestoreInventory(false);
       queryClient.invalidateQueries({ queryKey: refundsQueryKey });
       queryClient.invalidateQueries({ queryKey: getGetAdminOrderQueryKey(orderId) });
-    } catch {
-      toast.error("Failed to issue refund");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to record refund");
     } finally {
       setSubmittingRefund(false);
+    }
+  }
+
+  async function handleConfirmRefund() {
+    if (!confirmingRefund || wallidRefundReference.trim().length < 4) return;
+    setSubmittingConfirmation(true);
+    try {
+      await apiFetch(`/api/admin/refunds/${confirmingRefund.id}/confirm`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ wallidRefundReference: wallidRefundReference.trim() }),
+      });
+      toast.success("Refund confirmed and customer notified");
+      setConfirmingRefund(null);
+      setWallidRefundReference("");
+      queryClient.invalidateQueries({ queryKey: refundsQueryKey });
+      queryClient.invalidateQueries({ queryKey: getGetAdminOrderQueryKey(orderId) });
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to confirm refund");
+    } finally {
+      setSubmittingConfirmation(false);
+    }
+  }
+
+  async function handleCancelRefund(refund: RefundRecord) {
+    if (!window.confirm("Cancel this pending refund request? No order totals will be changed.")) return;
+    try {
+      await apiFetch(`/api/admin/refunds/${refund.id}/cancel`, { method: "POST" });
+      toast.success("Pending refund cancelled");
+      queryClient.invalidateQueries({ queryKey: refundsQueryKey });
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to cancel refund");
     }
   }
 
   const returnsQueryKey = ["order-returns", orderId];
   const { data: returnsData } = useQuery<{ returns: ReturnRecord[] }>({
     queryKey: returnsQueryKey,
-    queryFn: () => apiFetch(`/api/admin/orders/${orderId}/returns`),
+    queryFn: () => apiFetch<{ returns: ReturnRecord[] }>(`/api/admin/orders/${orderId}/returns`),
     enabled: !!orderId,
   });
   const orderReturns = returnsData?.returns ?? [];
@@ -324,7 +371,17 @@ export default function OrderDetail() {
     setIsEditing(true);
   }
 
-  const formatCurrency = (val: number) => new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(val);
+  const orderPaymentCurrency = (order as (typeof order & { paymentCurrency?: string | null }) | undefined)?.paymentCurrency;
+  const orderCurrency = orderPaymentCurrency === "EUR" ? "EUR" : "GBP";
+  const formatCurrency = (val: number, currency = orderCurrency) =>
+    new Intl.NumberFormat("en-GB", { style: "currency", currency }).format(val);
+  const pendingRefundTotal = orderRefunds
+    .filter((refund) => refund.status === "pending")
+    .reduce((total, refund) => total + refund.amountGbp, 0);
+  const maxRefundable = Math.max(
+    0,
+    (order?.totalGbp ?? 0) - (order?.refundedAmountGbp ?? 0) - pendingRefundTotal,
+  );
 
   const getStatusColor = (status: string) => {
     switch(status?.toLowerCase()) {
@@ -712,14 +769,14 @@ export default function OrderDetail() {
                 <CardTitle className="text-lg flex items-center gap-2">
                   <DollarSign className="w-5 h-5 text-muted-foreground" /> Refunds
                 </CardTitle>
-                <Button size="sm" variant="outline" className="text-destructive border-destructive/30 hover:bg-destructive/10" onClick={() => setRefundOpen(true)}>
-                  <Plus className="w-4 h-4 mr-1" /> Issue Refund
+                <Button size="sm" variant="outline" className="text-destructive border-destructive/30 hover:bg-destructive/10" onClick={() => setRefundOpen(true)} disabled={maxRefundable <= 0}>
+                  <Plus className="w-4 h-4 mr-1" /> Record Refund
                 </Button>
               </div>
             </CardHeader>
             <CardContent className="pt-6">
               {orderRefunds.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No refunds issued for this order.</p>
+                <p className="text-sm text-muted-foreground">No refund requests for this order.</p>
               ) : (
                 <div className="space-y-3">
                   {orderRefunds.map((r) => (
@@ -727,14 +784,53 @@ export default function OrderDetail() {
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{r.reason}</p>
                         {r.notes && <p className="text-xs text-muted-foreground mt-0.5">{r.notes}</p>}
-                        <p className="text-xs text-muted-foreground mt-1">{new Date(r.createdAt).toLocaleDateString("en-GB")}</p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Requested {new Date(r.createdAt).toLocaleDateString("en-GB")}
+                          {r.confirmedAt ? ` · Confirmed ${new Date(r.confirmedAt).toLocaleDateString("en-GB")}` : ""}
+                        </p>
+                        {r.wallidRefundReference && (
+                          <p className="text-xs font-mono text-muted-foreground mt-1">
+                            Wallid: {r.wallidRefundReference}
+                          </p>
+                        )}
                       </div>
                       <div className="flex flex-col items-end gap-1 shrink-0">
-                        <span className="font-bold text-red-600">–£{r.amountGbp.toFixed(2)}</span>
+                        <span className={`font-bold ${r.status === "confirmed" ? "text-red-600" : "text-foreground"}`}>
+                          {formatCurrency(r.amountGbp, r.currency === "EUR" ? "EUR" : "GBP")}
+                        </span>
+                        <Badge
+                          variant="outline"
+                          className={
+                            r.status === "confirmed"
+                              ? "text-green-700 border-green-200 bg-green-50 text-xs"
+                              : r.status === "pending"
+                                ? "text-amber-700 border-amber-200 bg-amber-50 text-xs"
+                                : "text-slate-600 border-slate-200 bg-slate-50 text-xs"
+                          }
+                        >
+                          {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
+                        </Badge>
                         <Badge variant="outline" className={r.type === "full" ? "text-red-600 border-red-200 bg-red-50 text-xs" : "text-orange-600 border-orange-200 bg-orange-50 text-xs"}>
                           {r.type.charAt(0).toUpperCase() + r.type.slice(1)}
                         </Badge>
-                        {r.restoreInventory && <span className="text-xs text-green-600">Stock restored</span>}
+                        {r.status === "confirmed" && r.restoreInventory && <span className="text-xs text-green-600">Stock restored</span>}
+                        {r.status === "pending" && (
+                          <div className="flex gap-1 mt-1">
+                            <Button
+                              size="sm"
+                              className="h-7 px-2 text-xs"
+                              onClick={() => {
+                                setConfirmingRefund(r);
+                                setWallidRefundReference("");
+                              }}
+                            >
+                              Confirm
+                            </Button>
+                            <Button size="sm" variant="ghost" className="h-7 px-2 text-xs" onClick={() => handleCancelRefund(r)}>
+                              Cancel
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -802,10 +898,10 @@ export default function OrderDetail() {
         onDispatched={() => queryClient.invalidateQueries({ queryKey: getGetAdminOrderQueryKey(orderId) })}
       />
 
-      <Dialog open={refundOpen} onOpenChange={(open) => { setRefundOpen(open); if (!open) { setRefundAmount(""); setRefundReason(""); setRefundNotes(""); setRestoreInventory(false); } }}>
+      <Dialog open={refundOpen} onOpenChange={(open) => { setRefundOpen(open); if (!open) { setRefundAmount(""); setRefundReason(""); setRefundNotes(""); } }}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Issue Refund — {order.orderNumber}</DialogTitle>
+            <DialogTitle>Record Pending Refund — {order.orderNumber}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="rounded-lg bg-muted/50 p-3 text-sm space-y-1">
@@ -819,16 +915,26 @@ export default function OrderDetail() {
                   <span>–{formatCurrency(order.refundedAmountGbp ?? 0)}</span>
                 </div>
               )}
+              {pendingRefundTotal > 0 && (
+                <div className="flex justify-between text-amber-700">
+                  <span>Pending confirmation</span>
+                  <span>–{formatCurrency(pendingRefundTotal)}</span>
+                </div>
+              )}
               <div className="flex justify-between font-semibold border-t pt-1 mt-1">
                 <span>Max refundable</span>
-                <span>{formatCurrency(order.totalGbp - (order.refundedAmountGbp ?? 0))}</span>
+                <span>{formatCurrency(maxRefundable)}</span>
               </div>
             </div>
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+              This creates a pending record only. Process the refund in Wallid’s merchant portal, then return here and confirm it using Wallid’s refund reference.
+            </div>
             <div className="space-y-1">
-              <label className="text-sm font-medium">Refund Amount (£)</label>
+              <label className="text-sm font-medium">Refund Amount ({orderCurrency})</label>
               <Input
                 type="number"
                 min={0.01}
+                max={maxRefundable}
                 step={0.01}
                 placeholder="0.00"
                 value={refundAmount}
@@ -843,10 +949,9 @@ export default function OrderDetail() {
               <label className="text-sm font-medium">Internal Notes (optional)</label>
               <Textarea placeholder="Any additional notes for your records…" value={refundNotes} onChange={e => setRefundNotes(e.target.value)} rows={2} />
             </div>
-            <label className="flex items-center gap-2 text-sm cursor-pointer">
-              <input type="checkbox" checked={restoreInventory} onChange={e => setRestoreInventory(e.target.checked)} className="rounded" />
-              Restore stock levels for refunded items
-            </label>
+            <p className="text-xs text-muted-foreground">
+              Inventory is not changed from this form because no item quantities are selected.
+            </p>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setRefundOpen(false)}>Cancel</Button>
@@ -856,7 +961,58 @@ export default function OrderDetail() {
               disabled={submittingRefund || !refundAmount || !refundReason.trim() || parseFloat(refundAmount) <= 0}
             >
               {submittingRefund && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Issue Refund
+              Create Pending Refund
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={!!confirmingRefund}
+        onOpenChange={(open) => {
+          if (!open) {
+            setConfirmingRefund(null);
+            setWallidRefundReference("");
+          }
+        }}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Confirm Wallid Refund</DialogTitle>
+          </DialogHeader>
+          {confirmingRefund && (
+            <div className="space-y-4 py-2">
+              <div className="rounded-lg bg-muted/50 p-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Amount</span>
+                  <span className="font-semibold">
+                    {formatCurrency(
+                      confirmingRefund.amountGbp,
+                      confirmingRefund.currency === "EUR" ? "EUR" : "GBP",
+                    )}
+                  </span>
+                </div>
+                <p className="mt-2 text-muted-foreground">{confirmingRefund.reason}</p>
+              </div>
+              <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-900">
+                Confirm only after Wallid shows the refund as successfully sent. This action updates the order total and emails the customer.
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium">Wallid Refund Reference</label>
+                <Input
+                  autoFocus
+                  placeholder="Enter the reference shown by Wallid"
+                  value={wallidRefundReference}
+                  onChange={(event) => setWallidRefundReference(event.target.value)}
+                />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setConfirmingRefund(null)}>Cancel</Button>
+            <Button onClick={handleConfirmRefund} disabled={submittingConfirmation || wallidRefundReference.trim().length < 4}>
+              {submittingConfirmation && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              Confirm Completed Refund
             </Button>
           </DialogFooter>
         </DialogContent>
