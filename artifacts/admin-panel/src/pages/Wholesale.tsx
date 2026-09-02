@@ -2,14 +2,16 @@ import { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Loader2, Plus, Copy, Send, CheckCircle2 } from "lucide-react";
+import { Loader2, Plus, Copy, Send, CheckCircle2, Pencil } from "lucide-react";
 import {
+  WHOLESALE_EDIT_DRAFT_KEY,
   WHOLESALE_DRAFT_KEY,
   WholesaleApiError,
   useWholesaleInvoices,
   useResendWholesaleInvoice,
 } from "@/hooks/use-wholesale";
 import { CreateWholesaleSheet } from "@/components/wholesale/CreateWholesaleSheet";
+import { EditWholesaleSheet } from "@/components/wholesale/EditWholesaleSheet";
 import { toast } from "sonner";
 
 export default function Wholesale() {
@@ -18,6 +20,17 @@ export default function Wholesale() {
   const [sheetOpen, setSheetOpen] = useState(
     () => sessionStorage.getItem(WHOLESALE_DRAFT_KEY) !== null,
   );
+  const [editInvoiceId, setEditInvoiceId] = useState<number | null>(() => {
+    const savedDraft = sessionStorage.getItem(WHOLESALE_EDIT_DRAFT_KEY);
+    if (!savedDraft) return null;
+    try {
+      const draft = JSON.parse(savedDraft) as { invoiceId?: unknown };
+      return typeof draft.invoiceId === "number" ? draft.invoiceId : null;
+    } catch {
+      sessionStorage.removeItem(WHOLESALE_EDIT_DRAFT_KEY);
+      return null;
+    }
+  });
   const [copiedId, setCopiedId] = useState<number | null>(null);
 
   const formatCurrency = (val: number) =>
@@ -129,6 +142,17 @@ export default function Wholesale() {
                           Copy Link
                         </Button>
                       )}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 text-xs font-semibold shadow-sm"
+                        onClick={() => setEditInvoiceId(inv.id)}
+                        disabled={inv.paymentStatus === "paid"}
+                        title={inv.paymentStatus === "paid" ? "Paid invoices cannot be edited" : "Edit invoice details"}
+                      >
+                        <Pencil className="w-3.5 h-3.5 mr-1" />
+                        Edit
+                      </Button>
                       <Button 
                         variant="outline" 
                         size="sm" 
@@ -149,6 +173,13 @@ export default function Wholesale() {
       </div>
 
       <CreateWholesaleSheet open={sheetOpen} onOpenChange={setSheetOpen} />
+      <EditWholesaleSheet
+        invoice={invoices.find((invoice) => invoice.id === editInvoiceId) ?? null}
+        open={editInvoiceId !== null}
+        onOpenChange={(open) => {
+          if (!open) setEditInvoiceId(null);
+        }}
+      />
     </div>
   );
 }

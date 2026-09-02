@@ -32,6 +32,15 @@ type CreateBody = {
   items?: unknown;
 };
 
+type UpdateBody = {
+  customerName?: unknown;
+  customerEmail?: unknown;
+  customerEmailCc?: unknown;
+  dueDate?: unknown;
+  description?: unknown;
+  notes?: unknown;
+};
+
 function text(value: unknown, max = 500): string | null {
   if (typeof value !== "string") return null;
   const trimmed = value.trim();
@@ -64,6 +73,7 @@ function invoiceResponse(invoice: typeof wholesaleInvoicesTable.$inferSelect, or
     customerEmailCc: invoice.customerEmailCc,
     dueDate: invoice.dueDate,
     description: invoice.description,
+    invoiceNotes: invoice.invoiceNotes,
     totalGbp: Number(order.totalGbp),
     paymentUrl: invoice.paymentUrl,
     paymentStatus: invoice.paymentStatus,
@@ -366,6 +376,106 @@ router.post("/admin/wholesale/:id/resend", async (req: Request, res: Response): 
   } catch (err) {
     await db.update(wholesaleInvoicesTable).set({ emailStatus: "failed", emailLastError: err instanceof Error ? err.message.slice(0, 500) : "Email failed" }).where(eq(wholesaleInvoicesTable.id, id));
     res.status(502).json({ error: "Invoice email could not be sent" });
+  }
+});
+
+router.patch("/admin/wholesale/:id", async (req: Request, res: Response): Promise<void> => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) {
+    res.status(400).json({ error: "Invalid invoice ID" });
+    return;
+  }
+
+  const body = req.body as UpdateBody;
+  const customerName = text(body.customerName, 160);
+  const customerEmail = text(body.customerEmail, 320)?.toLowerCase() ?? null;
+  const rawCc = body.customerEmailCc;
+  const customerEmailCc = rawCc === null || rawCc === undefined
+    ? null
+    : text(rawCc, 320)?.toLowerCase() ?? null;
+  const dueDate = text(body.dueDate, 10);
+  const description = body.description === null || body.description === undefined
+    ? null
+    : text(body.description, 2000);
+  const invoiceNotes = body.notes === null || body.notes === undefined
+    ? null
+    : text(body.notes, 2000);
+
+  if (
+    !customerName ||
+    !validEmail(customerEmail) ||
+    (customerEmailCc && !validEmail(customerEmailCc)) ||
+    !dueDate ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(dueDate)
+  ) {
+    res.status(400).json({ error: "Check the customer, email, and due date" });
+    return;
+  }
+
+  try {
+    const [saved] = await db
+      .select({ invoice: wholesaleInvoicesTable, order: ordersTable })
+      .from(wholesaleInvoicesTable)
+      .innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id))
+      .where(eq(wholesaleInvoicesTable.id, id))
+      .limit(1);
+
+    if (!saved) {
+      res.status(404).json({ error: "Wholesale invoice not found" });
+      return;
+    }
+    if (saved.invoice.paymentStatus === "paid") {
+      res.status(409).json({ error: "Paid wholesale invoices cannot be edited" });
+      return;
+    }
+    if (saved.invoice.paymentStatus === "creating") {
+      res.status(409).json({ error: "This payment link is still being created. Try again in a moment." });
+      return;
+    }
+    if (!saved.invoice.paymentUrl) {
+      res.status(409).json({ error: "This invoice does not have a payment link yet" });
+      return;
+    }
+
+    const { order, invoice } = await db.transaction(async (tx) => {
+      const [updatedOrder] = await tx.update(ordersTable).set({
+        customerName,
+        customerEmail,
+      }).where(eq(ordersTable.id, saved.order.id)).returning();
+      const [updatedInvoice] = await tx.update(wholesaleInvoicesTable).set({
+        customerEmailCc,
+        dueDate,
+        description,
+        invoiceNotes,
+        emailStatus: "not_sent",
+        emailLastError: null,
+      }).where(eq(wholesaleInvoicesTable.id, id)).returning();
+      return { order: updatedOrder, invoice: updatedInvoice };
+    });
+
+    let warning: string | null = null;
+    try {
+      await sendSavedInvoice(invoice.id);
+      await db.update(wholesaleInvoicesTable).set({
+        emailStatus: "sent",
+        invoiceSentAt: new Date(),
+        emailLastError: null,
+      }).where(eq(wholesaleInvoicesTable.id, invoice.id));
+      invoice.emailStatus = "sent";
+      invoice.invoiceSentAt = new Date();
+    } catch (err) {
+      warning = "Payment link updated, but the invoice email could not be sent. You can resend it from this page.";
+      await db.update(wholesaleInvoicesTable).set({
+        emailStatus: "failed",
+        emailLastError: err instanceof Error ? err.message.slice(0, 500) : "Email failed",
+      }).where(eq(wholesaleInvoicesTable.id, invoice.id));
+      invoice.emailStatus = "failed";
+    }
+
+    res.json({ invoice: invoiceResponse(invoice, order), warning });
+  } catch (err) {
+    req.log.error({ err, invoiceId: id }, "Failed to update wholesale invoice");
+    res.status(500).json({ error: "Failed to update wholesale invoice" });
   }
 });
 
