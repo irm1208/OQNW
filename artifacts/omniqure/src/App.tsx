@@ -179,6 +179,16 @@ function PageFade({ children }: { children: React.ReactNode }) {
   );
 }
 
+function PeptideCalculatorRedirect() {
+  const [, navigate] = useLocation();
+
+  useEffect(() => {
+    navigate("/calculator", { replace: true });
+  }, [navigate]);
+
+  return null;
+}
+
 
 function Router() {
   return (
@@ -188,7 +198,7 @@ function Router() {
       <Route path="/product/:id" component={ProductPage} />
       <Route path="/stacks" component={StacksPage} />
       <Route path="/calculator" component={ReconstitutionCalculator} />
-      <Route path="/peptide-calculator">{() => { const [, nav] = useLocation(); useEffect(() => nav("/calculator", { replace: true }), []); return null; }}</Route>
+      <Route path="/peptide-calculator" component={PeptideCalculatorRedirect} />
       <Route path="/contact" component={ContactPage} />
       <Route path="/sign-in" component={SignIn} />
       <Route path="/forgot-password" component={ForgotPassword} />
