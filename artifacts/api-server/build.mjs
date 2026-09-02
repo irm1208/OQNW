@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { build as esbuild } from "esbuild";
 import esbuildPluginPino from "esbuild-plugin-pino";
-import { rm } from "node:fs/promises";
+import { cp, rm } from "node:fs/promises";
 
 // Plugins (e.g. 'esbuild-plugin-pino') may use `require` to resolve dependencies
 globalThis.require = createRequire(import.meta.url);
@@ -120,6 +120,11 @@ globalThis.__dirname = __bannerPath.dirname(globalThis.__filename);
     `,
     },
   });
+
+  // PDFKit loads standard-font AFM files from its runtime `js/data` directory.
+  // The API is bundled into dist, so copy those assets beside the bundle.
+  const pdfkitDataDir = path.resolve(path.dirname(require.resolve("pdfkit")), "data");
+  await cp(pdfkitDataDir, path.join(distDir, "data"), { recursive: true });
 }
 
 buildAll().catch((err) => {
