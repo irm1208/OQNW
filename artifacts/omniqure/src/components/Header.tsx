@@ -52,6 +52,8 @@ const researchLinks = [
 const rightNavItems = [
   { label: "About Us", href: "/about" },
   { label: "Contact Us", href: "/contact" },
+  { label: "Bundle & Save", href: "/bundle-and-save" },
+  { label: "Refer a Friend", href: "/refer-a-friend" },
 ];
 
 export default function Header() {
