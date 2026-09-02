@@ -3,11 +3,45 @@ import type { Request, Response } from "express";
 import crypto from "crypto";
 import { db } from "@workspace/db";
 import { adminUsersTable, ADMIN_ROLES } from "@workspace/db";
-import { eq, desc, sql } from "drizzle-orm";
+import { and, eq, desc, ne, sql } from "drizzle-orm";
 import { firstString } from "../../lib/query";
 import { getSecureAdminSession, validateSecureAdminSession } from "./auth";
 
 const router = Router();
+const OWNER_MUTATION_LOCK_KEY = 1479362841;
+
+export class LastActiveOwnerError extends Error {
+  constructor() {
+    super("The last active owner cannot be removed");
+    this.name = "LastActiveOwnerError";
+  }
+}
+
+export interface OwnerGuardUser {
+  role: string;
+  isActive: boolean;
+}
+
+export async function protectLastActiveOwner<T>(
+  lock: () => Promise<void>,
+  findTarget: () => Promise<OwnerGuardUser | null>,
+  hasOtherActiveOwner: () => Promise<boolean>,
+  removesOwner: (target: OwnerGuardUser) => boolean,
+  mutate: () => Promise<T>,
+): Promise<T | null> {
+  await lock();
+  const target = await findTarget();
+  if (!target) return null;
+  if (
+    target.role === "owner" &&
+    target.isActive &&
+    removesOwner(target) &&
+    !(await hasOtherActiveOwner())
+  ) {
+    throw new LastActiveOwnerError();
+  }
+  return mutate();
+}
 
 export async function requireOwner(req: Request, res: Response): Promise<boolean> {
   if (!(await validateSecureAdminSession(req))) {
@@ -121,17 +155,48 @@ router.patch("/admin/users/:id", async (req: Request, res: Response): Promise<vo
     revokeSessions = true;
   }
   try {
-    const [updated] = await db
-      .update(adminUsersTable)
-      .set({
-        ...updates,
-        ...(revokeSessions ? { sessionVersion: sql`${adminUsersTable.sessionVersion} + 1` } : {}),
-      })
-      .where(eq(adminUsersTable.id, id))
-      .returning();
+    const updated = await db.transaction(async (tx) => protectLastActiveOwner(
+      async () => { await tx.execute(sql`SELECT pg_advisory_xact_lock(${OWNER_MUTATION_LOCK_KEY})`); },
+      async () => {
+        const [target] = await tx
+          .select({ role: adminUsersTable.role, isActive: adminUsersTable.isActive })
+          .from(adminUsersTable)
+          .where(eq(adminUsersTable.id, id))
+          .limit(1);
+        return target ?? null;
+      },
+      async () => {
+        const [otherOwner] = await tx
+          .select({ id: adminUsersTable.id })
+          .from(adminUsersTable)
+          .where(and(
+            eq(adminUsersTable.role, "owner"),
+            eq(adminUsersTable.isActive, true),
+            ne(adminUsersTable.id, id),
+          ))
+          .limit(1);
+        return Boolean(otherOwner);
+      },
+      (target) => (role !== undefined && role !== "owner") || (isActive === false && target.isActive),
+      async () => {
+        const [result] = await tx
+          .update(adminUsersTable)
+          .set({
+            ...updates,
+            ...(revokeSessions ? { sessionVersion: sql`${adminUsersTable.sessionVersion} + 1` } : {}),
+          })
+          .where(eq(adminUsersTable.id, id))
+          .returning();
+        return result;
+      },
+    ));
     if (!updated) { res.status(404).json({ error: "Admin user not found" }); return; }
     res.json(userToResponse(updated));
   } catch (err) {
+    if (err instanceof LastActiveOwnerError) {
+      res.status(409).json({ error: err.message });
+      return;
+    }
     req.log.error({ err }, "Failed to update admin user");
     res.status(500).json({ error: "Internal server error" });
   }
@@ -142,10 +207,41 @@ router.delete("/admin/users/:id", async (req: Request, res: Response): Promise<v
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   try {
-    const [deleted] = await db.delete(adminUsersTable).where(eq(adminUsersTable.id, id)).returning();
+    const deleted = await db.transaction(async (tx) => protectLastActiveOwner(
+      async () => { await tx.execute(sql`SELECT pg_advisory_xact_lock(${OWNER_MUTATION_LOCK_KEY})`); },
+      async () => {
+        const [target] = await tx
+          .select({ role: adminUsersTable.role, isActive: adminUsersTable.isActive })
+          .from(adminUsersTable)
+          .where(eq(adminUsersTable.id, id))
+          .limit(1);
+        return target ?? null;
+      },
+      async () => {
+        const [otherOwner] = await tx
+          .select({ id: adminUsersTable.id })
+          .from(adminUsersTable)
+          .where(and(
+            eq(adminUsersTable.role, "owner"),
+            eq(adminUsersTable.isActive, true),
+            ne(adminUsersTable.id, id),
+          ))
+          .limit(1);
+        return Boolean(otherOwner);
+      },
+      () => true,
+      async () => {
+        const [result] = await tx.delete(adminUsersTable).where(eq(adminUsersTable.id, id)).returning();
+        return result;
+      },
+    ));
     if (!deleted) { res.status(404).json({ error: "Admin user not found" }); return; }
     res.status(204).send();
   } catch (err) {
+    if (err instanceof LastActiveOwnerError) {
+      res.status(409).json({ error: err.message });
+      return;
+    }
     req.log.error({ err }, "Failed to delete admin user");
     res.status(500).json({ error: "Internal server error" });
   }
