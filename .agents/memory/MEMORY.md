@@ -32,3 +32,4 @@
 - [Artifact manifest IDs](artifact-manifest-id-stability.md) — preserve the registered artifact ID when changing routes; legacy template IDs can pass locally but block publishing preflight.
 - [Production startup schema ownership](production-startup-schema-ownership.md) — API readiness must not depend on runtime DDL; managed schema changes belong to Replit’s publish flow.
 - [PDFKit in the API bundle](pdfkit-api-bundle.md) — bundled PDFKit/fontkit needs @swc/helpers declared directly or the API builds but fails at startup.
+- [Wallid payment item URLs](wallid-payment-item-urls.md) — create requests require absolute HTTP(S) item URLs; failed durable references must be resumable without duplicate insertion.

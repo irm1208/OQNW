@@ -42,6 +42,16 @@ function validEmail(value: string | null): value is string {
   return !!value && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+function absoluteHttpsUrl(value: string | null | undefined, fallbackPath: string): string {
+  try {
+    const url = new URL(value || fallbackPath, SITE_URL);
+    if (url.protocol === "https:") return url.toString();
+  } catch {
+    // Use the known site fallback below.
+  }
+  return new URL(fallbackPath, SITE_URL).toString();
+}
+
 function invoiceResponse(invoice: typeof wholesaleInvoicesTable.$inferSelect, order: typeof ordersTable.$inferSelect) {
   return {
     id: invoice.id,
@@ -174,49 +184,115 @@ router.post("/admin/wholesale", async (req: Request, res: Response): Promise<voi
   const orderNumber = `WS-${referenceNumber}`;
 
   try {
-    const created = await db.transaction(async (tx) => {
-      const [order] = await tx.insert(ordersTable).values({
-        orderNumber,
-        status: "pending",
-        customerEmail,
-        customerName,
-        phone: text(body.phone, 40),
-        address1: text(body.address1, 200),
-        address2: text(body.address2, 200),
-        city: text(body.city, 100),
-        county: text(body.county, 100),
-        postcode: text(body.postcode, 24),
-        country: text(body.country, 80) ?? "United Kingdom",
-        subtotalGbp: subtotal.toFixed(2),
-        shippingCostGbp: shippingCost.toFixed(2),
-        totalGbp: total.toFixed(2),
-        paymentCurrency: "GBP",
-        paymentAmountMinor: amountMinor,
-        shippingMethod: "Wholesale",
-        notes: ["Wholesale Pay by Bank invoice", text(body.notes, 2000)].filter(Boolean).join("\n"),
-        fraudFlags: ["bank_transfer_payment"],
-      }).returning();
-      await tx.insert(orderItemsTable).values(items.map((item) => {
-        const product = productById.get(item.productId)!;
-        return {
+    const [saved] = await db
+      .select({ invoice: wholesaleInvoicesTable, order: ordersTable })
+      .from(wholesaleInvoicesTable)
+      .innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id))
+      .where(eq(wholesaleInvoicesTable.referenceNumber, referenceNumber))
+      .limit(1);
+
+    let created: {
+      order: typeof ordersTable.$inferSelect;
+      invoice: typeof wholesaleInvoicesTable.$inferSelect;
+    };
+
+    if (saved) {
+      const savedItems = await db
+        .select()
+        .from(orderItemsTable)
+        .where(eq(orderItemsTable.orderId, saved.order.id));
+      const requestedItems = [...items].sort((a, b) => a.productId - b.productId);
+      const existingItems = [...savedItems].sort((a, b) => (a.productId ?? 0) - (b.productId ?? 0));
+      const sameItems = requestedItems.length === existingItems.length &&
+        requestedItems.every((item, index) => {
+          const existing = existingItems[index];
+          return existing?.productId === item.productId &&
+            existing.quantity === item.quantity &&
+            Number(existing.priceGbp) === item.priceGbp;
+        });
+      const sameRequest =
+        saved.order.orderNumber === orderNumber &&
+        saved.order.customerEmail.toLowerCase() === customerEmail &&
+        saved.order.customerName === customerName &&
+        saved.order.paymentAmountMinor === amountMinor &&
+        saved.order.paymentCurrency === "GBP" &&
+        sameItems;
+
+      if (!sameRequest) {
+        res.status(409).json({ error: "That reference number belongs to a different wholesale payment" });
+        return;
+      }
+      if (saved.invoice.paymentUrl && saved.invoice.apiPaymentId) {
+        res.status(200).json({
+          invoice: invoiceResponse(saved.invoice, saved.order),
+          warning: saved.invoice.emailStatus === "sent"
+            ? "This payment link already exists and has already been emailed."
+            : "This payment link already exists. Use Resend if the customer has not received it.",
+        });
+        return;
+      }
+      if (saved.invoice.paymentStatus === "creating") {
+        res.status(409).json({ error: "This payment link is already being created. Refresh the list in a moment." });
+        return;
+      }
+      const claimed = await db
+        .update(wholesaleInvoicesTable)
+        .set({ paymentStatus: "creating", emailLastError: null })
+        .where(and(
+          eq(wholesaleInvoicesTable.id, saved.invoice.id),
+          eq(wholesaleInvoicesTable.paymentStatus, "failed"),
+        ))
+        .returning();
+      if (claimed.length === 0) {
+        res.status(409).json({ error: "This payment link cannot be retried in its current state" });
+        return;
+      }
+      created = { order: saved.order, invoice: claimed[0] };
+    } else {
+      created = await db.transaction(async (tx) => {
+        const [order] = await tx.insert(ordersTable).values({
+          orderNumber,
+          status: "pending",
+          customerEmail,
+          customerName,
+          phone: text(body.phone, 40),
+          address1: text(body.address1, 200),
+          address2: text(body.address2, 200),
+          city: text(body.city, 100),
+          county: text(body.county, 100),
+          postcode: text(body.postcode, 24),
+          country: text(body.country, 80) ?? "United Kingdom",
+          subtotalGbp: subtotal.toFixed(2),
+          shippingCostGbp: shippingCost.toFixed(2),
+          totalGbp: total.toFixed(2),
+          paymentCurrency: "GBP",
+          paymentAmountMinor: amountMinor,
+          shippingMethod: "Wholesale",
+          notes: ["Wholesale Pay by Bank invoice", text(body.notes, 2000)].filter(Boolean).join("\n"),
+          fraudFlags: ["bank_transfer_payment"],
+        }).returning();
+        await tx.insert(orderItemsTable).values(items.map((item) => {
+          const product = productById.get(item.productId)!;
+          return {
+            orderId: order.id,
+            productId: product.id,
+            productName: product.name,
+            productCategory: product.category,
+            quantity: item.quantity,
+            priceGbp: item.priceGbp.toFixed(2),
+          };
+        }));
+        const [invoice] = await tx.insert(wholesaleInvoicesTable).values({
           orderId: order.id,
-          productId: product.id,
-          productName: product.name,
-          productCategory: product.category,
-          quantity: item.quantity,
-          priceGbp: item.priceGbp.toFixed(2),
-        };
-      }));
-      const [invoice] = await tx.insert(wholesaleInvoicesTable).values({
-        orderId: order.id,
-        referenceNumber,
-        customerEmailCc,
-        dueDate,
-        description: text(body.description, 2000),
-        invoiceNotes: text(body.notes, 2000),
-      }).returning();
-      return { order, invoice };
-    });
+          referenceNumber,
+          customerEmailCc,
+          dueDate,
+          description: text(body.description, 2000),
+          invoiceNotes: text(body.notes, 2000),
+        }).returning();
+        return { order, invoice };
+      });
+    }
 
     const payment = await createWallidPayment({
       orderNumber,
@@ -232,8 +308,8 @@ router.post("/admin/wholesale", async (req: Request, res: Response): Promise<voi
           name: `${product.name} x ${item.quantity}`,
           category: product.category,
           price_minor: Math.round(item.priceGbp * item.quantity * 100),
-          image_url: product.imageUrl ?? "",
-          product_url: `${SITE_URL}/product/${product.slug}`,
+          image_url: absoluteHttpsUrl(product.imageUrl, "/omniqure-email-header.png"),
+          product_url: absoluteHttpsUrl(`/product/${product.slug}`, "/"),
         };
       }),
     });
@@ -266,7 +342,8 @@ router.post("/admin/wholesale", async (req: Request, res: Response): Promise<voi
     }
     res.status(201).json({ invoice: invoiceResponse(invoice, order), warning });
   } catch (err) {
-    const code = (err as { code?: string }).code;
+    const code = (err as { code?: string; cause?: { code?: string } }).code ??
+      (err as { cause?: { code?: string } }).cause?.code;
     if (code === "23505") {
       res.status(409).json({ error: "That reference number has already been used" });
       return;
