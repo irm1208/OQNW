@@ -1,6 +1,9 @@
 import { Resend } from "resend";
 import PDFDocument from "pdfkit";
 import QRCode from "qrcode";
+import path from "node:path";
+import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 import { logger } from "./logger";
 import { db } from "@workspace/db";
 import { emailLogsTable } from "@workspace/db";
@@ -113,6 +116,18 @@ function safeHttpsUrl(value: string | null | undefined): string | null {
   }
 }
 
+const API_RUNTIME_DIR = path.dirname(fileURLToPath(import.meta.url));
+const PDF_LOGO_PATH = path.join(API_RUNTIME_DIR, "omniqure-email-header.png");
+const SOURCE_LOGO_PATH = path.resolve(API_RUNTIME_DIR, "../../../omniqure/public/omniqure-email-header.png");
+
+async function readPdfLogo(): Promise<Buffer> {
+  try {
+    return await readFile(PDF_LOGO_PATH);
+  } catch {
+    return await readFile(SOURCE_LOGO_PATH);
+  }
+}
+
 function baseTemplate(title: string, body: string): string {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -157,7 +172,10 @@ function baseTemplate(title: string, body: string): string {
 </html>`;
 }
 
-function createWholesaleInvoicePdf(invoice: WholesaleInvoiceEmailData): Promise<Buffer> {
+export async function createWholesaleInvoicePdf(invoice: WholesaleInvoiceEmailData): Promise<Buffer> {
+  const logo = await readPdfLogo();
+  const qr = await QRCode.toBuffer(invoice.paymentUrl, { type: "png", width: 260, margin: 1 });
+
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ size: "A4", margin: 48 });
     const chunks: Buffer[] = [];
@@ -165,32 +183,139 @@ function createWholesaleInvoicePdf(invoice: WholesaleInvoiceEmailData): Promise<
     doc.on("end", () => resolve(Buffer.concat(chunks)));
     doc.on("error", reject);
 
-    doc.fontSize(22).fillColor("#142767").text("OmniQure Wholesale Invoice");
-    doc.moveDown(0.5).fontSize(10).fillColor("#475569");
-    doc.text(`Reference: ${invoice.referenceNumber}`);
-    doc.text(`Order: ${invoice.orderNumber}`);
-    doc.text(`Due date: ${invoice.dueDate}`);
-    doc.moveDown();
-    doc.fontSize(12).fillColor("#0f172a").text(`Bill to: ${invoice.customerName}`);
-    doc.fontSize(10).fillColor("#475569").text(invoice.customerEmail);
-    doc.moveDown();
+    const pageWidth = doc.page.width;
+    const contentWidth = pageWidth - 96;
+    const left = 48;
+    const right = left + contentWidth;
+
+    // Match the email header: branded navy band with the OmniQure logo.
+    doc.save();
+    doc.rect(0, 0, pageWidth, 112).fill("#142767");
+    doc.image(logo, left, 24, { width: 210 });
+    doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(9)
+      .text("WHOLESALE INVOICE", left + 300, 48, { width: contentWidth - 300, align: "right", characterSpacing: 1.2 });
+    doc.restore();
+
+    let y = 146;
+    doc.fillColor("#0F172A").font("Helvetica-Bold").fontSize(23)
+      .text("Wholesale invoice", left, y);
+    y += 34;
+    doc.fillColor("#64748B").font("Helvetica").fontSize(10.5)
+      .text(`Hi ${invoice.customerName}, your OmniQure Pay by Bank invoice is ready.`, left, y);
+    y += 26;
+
+    if (invoice.description) {
+      doc.fillColor("#475569").fontSize(10)
+        .text(invoice.description, left, y, { width: contentWidth, lineGap: 3 });
+      y = doc.y + 16;
+    }
+
+    // Email-style reference card.
+    const referenceCardY = y;
+    doc.roundedRect(left, referenceCardY, contentWidth, 78, 7)
+      .fillAndStroke("#F8FAFC", "#E2E8F0");
+    doc.fillColor("#94A3B8").font("Helvetica-Bold").fontSize(8)
+      .text("REFERENCE", left + 20, referenceCardY + 15, { characterSpacing: 0.7 });
+    doc.fillColor("#0F172A").font("Helvetica-Bold").fontSize(20)
+      .text(invoice.referenceNumber, left + 20, referenceCardY + 31);
+    doc.fillColor("#475569").font("Helvetica").fontSize(10)
+      .text(`Order ${invoice.orderNumber}`, left + 230, referenceCardY + 23);
+    doc.text(`Due ${invoice.dueDate}`, left + 230, referenceCardY + 40);
+    y = referenceCardY + 102;
+
+    doc.fillColor("#94A3B8").font("Helvetica-Bold").fontSize(8)
+      .text("BILL TO", left, y, { characterSpacing: 0.7 });
+    y += 15;
+    doc.fillColor("#0F172A").font("Helvetica-Bold").fontSize(11)
+      .text(invoice.customerName, left, y);
+    y += 15;
+    doc.fillColor("#64748B").font("Helvetica").fontSize(9.5)
+      .text(invoice.customerEmail, left, y);
+    y += 28;
+
+    const tableRight = right;
+    const quantityX = right - 150;
+    const priceX = right - 100;
+    const drawTableHeader = () => {
+      doc.fillColor("#94A3B8").font("Helvetica-Bold").fontSize(8)
+        .text("ITEM", left, y, { characterSpacing: 0.7 })
+        .text("QTY", quantityX, y, { width: 45, align: "center", characterSpacing: 0.7 })
+        .text("PRICE", priceX, y, { width: 100, align: "right", characterSpacing: 0.7 });
+      y += 17;
+      doc.moveTo(left, y).lineTo(tableRight, y).lineWidth(1).strokeColor("#E2E8F0").stroke();
+      y += 10;
+    };
+    drawTableHeader();
 
     invoice.items.forEach((item) => {
+      if (y > 710) {
+        doc.addPage();
+        y = 58;
+        drawTableHeader();
+      }
       const lineTotal = item.priceGbp * item.quantity;
-      doc.fillColor("#0f172a").fontSize(10).text(
-        `${item.productName}  x ${item.quantity}`,
-        { continued: true },
-      ).text(formatMoney(lineTotal, invoice.currency), { align: "right" });
+      doc.fillColor("#1E293B").font("Helvetica").fontSize(10)
+        .text(item.productName, left, y, { width: quantityX - left - 12 });
+      doc.fillColor("#94A3B8").fontSize(8.5)
+        .text(item.productCategory, left, y + 14, { width: quantityX - left - 12 });
+      doc.fillColor("#475569").font("Helvetica").fontSize(9.5)
+        .text(`×${item.quantity}`, quantityX, y + 6, { width: 45, align: "center" });
+      doc.fillColor("#1E293B").font("Helvetica-Bold").fontSize(9.5)
+        .text(formatMoney(lineTotal, invoice.currency), priceX, y + 6, { width: 100, align: "right" });
+      y += 40;
+      doc.moveTo(left, y).lineTo(tableRight, y).lineWidth(0.7).strokeColor("#E2E8F0").stroke();
+      y += 12;
     });
-    doc.moveDown();
-    doc.fontSize(12).fillColor("#142767").text(`Total: ${formatMoney(invoice.totalGbp, invoice.currency)}`, { align: "right" });
-    if (invoice.description) {
-      doc.moveDown().fontSize(10).fillColor("#475569").text(invoice.description);
+
+    const totalsX = right - 205;
+    const totalRow = (label: string, value: string, bold = false) => {
+      doc.fillColor(bold ? "#0F172A" : "#64748B")
+        .font(bold ? "Helvetica-Bold" : "Helvetica")
+        .fontSize(bold ? 12 : 9.5)
+        .text(label, totalsX, y, { width: 95 })
+        .text(value, totalsX + 95, y, { width: 110, align: "right" });
+      y += bold ? 24 : 19;
+    };
+    totalRow("Subtotal", formatMoney(invoice.subtotalGbp, invoice.currency));
+    totalRow(`Shipping (${invoice.shippingMethod ?? "Wholesale"})`, formatMoney(invoice.shippingCostGbp, invoice.currency));
+    doc.moveTo(totalsX, y).lineTo(right, y).lineWidth(1.2).strokeColor("#CBD5E1").stroke();
+    y += 11;
+    totalRow("Total", formatMoney(invoice.totalGbp, invoice.currency), true);
+
+    y += 14;
+    if (y > 650) {
+      doc.addPage();
+      y = 58;
     }
-    doc.moveDown().fontSize(9).fillColor("#64748b")
-      .text("Pay securely using the Pay by Bank link or QR code in the accompanying email.");
-    doc.moveDown().fontSize(8).fillColor("#713f12")
-      .text("All products are sold strictly for research purposes only. Not for human consumption.");
+    const paymentBoxY = y;
+    const paymentBoxHeight = 124;
+    doc.roundedRect(left, paymentBoxY, contentWidth, paymentBoxHeight, 7)
+      .fillAndStroke("#EFF6FF", "#BFDBFE");
+    doc.fillColor("#1240A0").font("Helvetica-Bold").fontSize(9)
+      .text("PAY BY BANK", left + 18, paymentBoxY + 17, { characterSpacing: 0.7 });
+    doc.fillColor("#1E3A8A").font("Helvetica-Bold").fontSize(12)
+      .text(`Amount due: ${formatMoney(invoice.totalGbp, invoice.currency)}`, left + 18, paymentBoxY + 36);
+    doc.fillColor("#475569").font("Helvetica").fontSize(9.5)
+      .text("Scan the QR code to pay securely using your bank.", left + 18, paymentBoxY + 61, { width: 250 });
+    doc.fillColor("#64748B").fontSize(8.5)
+      .text("The payment link is unique to this invoice.", left + 18, paymentBoxY + 81, { width: 250 });
+    doc.image(qr, right - 104, paymentBoxY + 12, { width: 92, height: 92 });
+    y = paymentBoxY + paymentBoxHeight + 18;
+
+    if (invoice.invoiceNotes) {
+      doc.roundedRect(left, y, contentWidth, 52, 5).fill("#F8FAFC");
+      doc.fillColor("#475569").font("Helvetica").fontSize(9)
+        .text(invoice.invoiceNotes, left + 14, y + 14, { width: contentWidth - 28, lineGap: 2 });
+      y = doc.y + 18;
+    }
+
+    doc.moveTo(left, y).lineTo(right, y).lineWidth(0.7).strokeColor("#E2E8F0").stroke();
+    y += 14;
+    doc.fillColor("#713F12").font("Helvetica").fontSize(8.5)
+      .text("All products are sold strictly for research purposes only. Not for human consumption.", left, y, {
+        width: contentWidth,
+        align: "center",
+      });
     doc.end();
   });
 }

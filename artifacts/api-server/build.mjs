@@ -125,6 +125,10 @@ globalThis.__dirname = __bannerPath.dirname(globalThis.__filename);
   // The API is bundled into dist, so copy those assets beside the bundle.
   const pdfkitDataDir = path.resolve(path.dirname(require.resolve("pdfkit")), "data");
   await cp(pdfkitDataDir, path.join(distDir, "data"), { recursive: true });
+  await cp(
+    path.resolve(artifactDir, "../omniqure/public/omniqure-email-header.png"),
+    path.join(distDir, "omniqure-email-header.png"),
+  );
 }
 
 buildAll().catch((err) => {

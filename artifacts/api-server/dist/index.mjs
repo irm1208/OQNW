@@ -15246,11 +15246,11 @@ var require_mime_types = __commonJS({
       }
       return exts[0];
     }
-    function lookup(path2) {
-      if (!path2 || typeof path2 !== "string") {
+    function lookup(path3) {
+      if (!path3 || typeof path3 !== "string") {
         return false;
       }
-      var extension2 = extname("x." + path2).toLowerCase().slice(1);
+      var extension2 = extname("x." + path3).toLowerCase().slice(1);
       if (!extension2) {
         return false;
       }
@@ -18804,13 +18804,13 @@ var require_view = __commonJS({
   "../../node_modules/.pnpm/express@5.2.1/node_modules/express/lib/view.js"(exports, module) {
     "use strict";
     var debug = require_src()("express:view");
-    var path2 = __require("node:path");
+    var path3 = __require("node:path");
     var fs = __require("node:fs");
-    var dirname = path2.dirname;
-    var basename = path2.basename;
-    var extname = path2.extname;
-    var join = path2.join;
-    var resolve = path2.resolve;
+    var dirname = path3.dirname;
+    var basename = path3.basename;
+    var extname = path3.extname;
+    var join = path3.join;
+    var resolve = path3.resolve;
     module.exports = View2;
     function View2(name2, options) {
       var opts = options || {};
@@ -18839,17 +18839,17 @@ var require_view = __commonJS({
       this.path = this.lookup(fileName);
     }
     View2.prototype.lookup = function lookup(name2) {
-      var path3;
+      var path4;
       var roots = [].concat(this.root);
       debug('lookup "%s"', name2);
-      for (var i = 0; i < roots.length && !path3; i++) {
+      for (var i = 0; i < roots.length && !path4; i++) {
         var root = roots[i];
         var loc = resolve(root, name2);
         var dir = dirname(loc);
         var file2 = basename(loc);
-        path3 = this.resolve(dir, file2);
+        path4 = this.resolve(dir, file2);
       }
-      return path3;
+      return path4;
     };
     View2.prototype.render = function render2(options, callback) {
       var sync = true;
@@ -18871,21 +18871,21 @@ var require_view = __commonJS({
     };
     View2.prototype.resolve = function resolve2(dir, file2) {
       var ext = this.ext;
-      var path3 = join(dir, file2);
-      var stat = tryStat(path3);
+      var path4 = join(dir, file2);
+      var stat = tryStat(path4);
       if (stat && stat.isFile()) {
-        return path3;
+        return path4;
       }
-      path3 = join(dir, basename(file2, ext), "index" + ext);
-      stat = tryStat(path3);
+      path4 = join(dir, basename(file2, ext), "index" + ext);
+      stat = tryStat(path4);
       if (stat && stat.isFile()) {
-        return path3;
+        return path4;
       }
     };
-    function tryStat(path3) {
-      debug('stat "%s"', path3);
+    function tryStat(path4) {
+      debug('stat "%s"', path4);
       try {
-        return fs.statSync(path3);
+        return fs.statSync(path4);
       } catch (e) {
         return void 0;
       }
@@ -20125,15 +20125,15 @@ var require_dist2 = __commonJS({
       let index2 = 0;
       function consumeUntil(end) {
         const output = [];
-        let path2 = "";
+        let path3 = "";
         function writePath() {
-          if (!path2)
+          if (!path3)
             return;
           output.push({
             type: "text",
-            value: encodePath(path2)
+            value: encodePath(path3)
           });
-          path2 = "";
+          path3 = "";
         }
         while (index2 < chars.length) {
           const value = chars[index2++];
@@ -20145,7 +20145,7 @@ var require_dist2 = __commonJS({
             if (index2 === chars.length) {
               throw new PathError(`Unexpected end after \\ at index ${index2}`, str);
             }
-            path2 += chars[index2++];
+            path3 += chars[index2++];
             continue;
           }
           if (value === ":" || value === "*") {
@@ -20189,7 +20189,7 @@ var require_dist2 = __commonJS({
           if (value === "}" || value === "(" || value === ")" || value === "[" || value === "]" || value === "+" || value === "?" || value === "!") {
             throw new PathError(`Unexpected ${value} at index ${index2 - 1}`, str);
           }
-          path2 += value;
+          path3 += value;
         }
         if (end) {
           throw new PathError(`Unexpected end at index ${index2}, expected ${end}`, str);
@@ -20199,17 +20199,17 @@ var require_dist2 = __commonJS({
       }
       return new TokenData(consumeUntil(""), str);
     }
-    function compile(path2, options = {}) {
+    function compile(path3, options = {}) {
       const { encode = encodeURIComponent, delimiter = DEFAULT_DELIMITER } = options;
-      const data = typeof path2 === "object" ? path2 : parse3(path2, options);
+      const data = typeof path3 === "object" ? path3 : parse3(path3, options);
       const fn = tokensToFunction(data.tokens, delimiter, encode);
-      return function path3(params = {}) {
+      return function path4(params = {}) {
         const missing = [];
-        const path4 = fn(params, missing);
+        const path5 = fn(params, missing);
         if (missing.length) {
           throw new TypeError(`Missing parameters: ${missing.join(", ")}`);
         }
-        return path4;
+        return path5;
       };
     }
     function tokensToFunction(tokens, delimiter, encode) {
@@ -20271,9 +20271,9 @@ var require_dist2 = __commonJS({
         return encodeValue(value);
       };
     }
-    function match(path2, options = {}) {
+    function match(path3, options = {}) {
       const { decode = decodeURIComponent, delimiter = DEFAULT_DELIMITER } = options;
-      const { regexp, keys } = pathToRegexp(path2, options);
+      const { regexp, keys } = pathToRegexp(path3, options);
       const decoders = keys.map((key) => {
         if (decode === false)
           return NOOP_VALUE;
@@ -20285,7 +20285,7 @@ var require_dist2 = __commonJS({
         const m = regexp.exec(input);
         if (!m)
           return false;
-        const path3 = m[0];
+        const path4 = m[0];
         const params = /* @__PURE__ */ Object.create(null);
         for (let i = 1; i < m.length; i++) {
           if (m[i] === void 0)
@@ -20294,21 +20294,21 @@ var require_dist2 = __commonJS({
           const decoder = decoders[i - 1];
           params[key.name] = decoder(m[i]);
         }
-        return { path: path3, params };
+        return { path: path4, params };
       };
     }
-    function pathToRegexp(path2, options = {}) {
+    function pathToRegexp(path3, options = {}) {
       const { delimiter = DEFAULT_DELIMITER, end = true, sensitive = false, trailing = true } = options;
       const keys = [];
       let source = "";
       let combinations = 0;
-      function process2(path3) {
-        if (Array.isArray(path3)) {
-          for (const p of path3)
+      function process2(path4) {
+        if (Array.isArray(path4)) {
+          for (const p of path4)
             process2(p);
           return;
         }
-        const data = typeof path3 === "object" ? path3 : parse3(path3, options);
+        const data = typeof path4 === "object" ? path4 : parse3(path4, options);
         flatten(data.tokens, 0, [], (tokens) => {
           if (combinations >= 256) {
             throw new PathError("Too many path combinations", data.originalPath);
@@ -20319,7 +20319,7 @@ var require_dist2 = __commonJS({
           combinations++;
         });
       }
-      process2(path2);
+      process2(path3);
       let pattern = `^(?:${source})`;
       if (trailing)
         pattern += "(?:" + escape2(delimiter) + "$)?";
@@ -20459,18 +20459,18 @@ var require_layer = __commonJS({
     var TRAILING_SLASH_REGEXP = /\/+$/;
     var MATCHING_GROUP_REGEXP = /\((?:\?<(.*?)>)?(?!\?)/g;
     module.exports = Layer;
-    function Layer(path2, options, fn) {
+    function Layer(path3, options, fn) {
       if (!(this instanceof Layer)) {
-        return new Layer(path2, options, fn);
+        return new Layer(path3, options, fn);
       }
-      debug("new %o", path2);
+      debug("new %o", path3);
       const opts = options || {};
       this.handle = fn;
       this.keys = [];
       this.name = fn.name || "<anonymous>";
       this.params = void 0;
       this.path = void 0;
-      this.slash = path2 === "/" && opts.end === false;
+      this.slash = path3 === "/" && opts.end === false;
       function matcher(_path) {
         if (_path instanceof RegExp) {
           const keys = [];
@@ -20509,7 +20509,7 @@ var require_layer = __commonJS({
           decode: decodeParam
         });
       }
-      this.matchers = Array.isArray(path2) ? path2.map(matcher) : [matcher(path2)];
+      this.matchers = Array.isArray(path3) ? path3.map(matcher) : [matcher(path3)];
     }
     Layer.prototype.handleError = function handleError(error40, req, res, next) {
       const fn = this.handle;
@@ -20549,9 +20549,9 @@ var require_layer = __commonJS({
         next(err);
       }
     };
-    Layer.prototype.match = function match(path2) {
+    Layer.prototype.match = function match(path3) {
       let match2;
-      if (path2 != null) {
+      if (path3 != null) {
         if (this.slash) {
           this.params = {};
           this.path = "";
@@ -20559,7 +20559,7 @@ var require_layer = __commonJS({
         }
         let i = 0;
         while (!match2 && i < this.matchers.length) {
-          match2 = this.matchers[i](path2);
+          match2 = this.matchers[i](path3);
           i++;
         }
       }
@@ -20587,13 +20587,13 @@ var require_layer = __commonJS({
         throw err;
       }
     }
-    function loosen(path2) {
-      if (path2 instanceof RegExp || path2 === "/") {
-        return path2;
+    function loosen(path3) {
+      if (path3 instanceof RegExp || path3 === "/") {
+        return path3;
       }
-      return Array.isArray(path2) ? path2.map(function(p) {
+      return Array.isArray(path3) ? path3.map(function(p) {
         return loosen(p);
-      }) : String(path2).replace(TRAILING_SLASH_REGEXP, "");
+      }) : String(path3).replace(TRAILING_SLASH_REGEXP, "");
     }
   }
 });
@@ -20609,9 +20609,9 @@ var require_route = __commonJS({
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
     module.exports = Route;
-    function Route(path2) {
-      debug("new %o", path2);
-      this.path = path2;
+    function Route(path3) {
+      debug("new %o", path3);
+      this.path = path3;
       this.stack = [];
       this.methods = /* @__PURE__ */ Object.create(null);
     }
@@ -20819,8 +20819,8 @@ var require_router = __commonJS({
         if (++sync > 100) {
           return setImmediate(next, err);
         }
-        const path2 = getPathname(req);
-        if (path2 == null) {
+        const path3 = getPathname(req);
+        if (path3 == null) {
           return done(layerError);
         }
         let layer;
@@ -20828,7 +20828,7 @@ var require_router = __commonJS({
         let route;
         while (match !== true && idx < stack.length) {
           layer = stack[idx++];
-          match = matchLayer(layer, path2);
+          match = matchLayer(layer, path3);
           route = layer.route;
           if (typeof match !== "boolean") {
             layerError = layerError || match;
@@ -20866,18 +20866,18 @@ var require_router = __commonJS({
           } else if (route) {
             layer.handleRequest(req, res, next);
           } else {
-            trimPrefix(layer, layerError, layerPath, path2);
+            trimPrefix(layer, layerError, layerPath, path3);
           }
           sync = 0;
         });
       }
-      function trimPrefix(layer, layerError, layerPath, path2) {
+      function trimPrefix(layer, layerError, layerPath, path3) {
         if (layerPath.length !== 0) {
-          if (layerPath !== path2.substring(0, layerPath.length)) {
+          if (layerPath !== path3.substring(0, layerPath.length)) {
             next(layerError);
             return;
           }
-          const c = path2[layerPath.length];
+          const c = path3[layerPath.length];
           if (c && c !== "/") {
             next(layerError);
             return;
@@ -20901,7 +20901,7 @@ var require_router = __commonJS({
     };
     Router55.prototype.use = function use(handler) {
       let offset = 0;
-      let path2 = "/";
+      let path3 = "/";
       if (typeof handler !== "function") {
         let arg = handler;
         while (Array.isArray(arg) && arg.length !== 0) {
@@ -20909,7 +20909,7 @@ var require_router = __commonJS({
         }
         if (typeof arg !== "function") {
           offset = 1;
-          path2 = handler;
+          path3 = handler;
         }
       }
       const callbacks = flatten.call(slice.call(arguments, offset), Infinity);
@@ -20921,8 +20921,8 @@ var require_router = __commonJS({
         if (typeof fn !== "function") {
           throw new TypeError("argument handler must be a function");
         }
-        debug("use %o %s", path2, fn.name || "<anonymous>");
-        const layer = new Layer(path2, {
+        debug("use %o %s", path3, fn.name || "<anonymous>");
+        const layer = new Layer(path3, {
           sensitive: this.caseSensitive,
           strict: false,
           end: false
@@ -20932,9 +20932,9 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router55.prototype.route = function route(path2) {
-      const route2 = new Route(path2);
-      const layer = new Layer(path2, {
+    Router55.prototype.route = function route(path3) {
+      const route2 = new Route(path3);
+      const layer = new Layer(path3, {
         sensitive: this.caseSensitive,
         strict: this.strict,
         end: true
@@ -20947,8 +20947,8 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router55.prototype[method] = function(path2) {
-        const route = this.route(path2);
+      Router55.prototype[method] = function(path3) {
+        const route = this.route(path3);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
       };
@@ -20977,9 +20977,9 @@ var require_router = __commonJS({
       const fqdnIndex = url2.substring(0, pathLength).indexOf("://");
       return fqdnIndex !== -1 ? url2.substring(0, url2.indexOf("/", 3 + fqdnIndex)) : void 0;
     }
-    function matchLayer(layer, path2) {
+    function matchLayer(layer, path3) {
       try {
-        return layer.match(path2);
+        return layer.match(path3);
       } catch (err) {
         return err;
       }
@@ -21207,7 +21207,7 @@ var require_application = __commonJS({
     };
     app2.use = function use(fn) {
       var offset = 0;
-      var path2 = "/";
+      var path3 = "/";
       if (typeof fn !== "function") {
         var arg = fn;
         while (Array.isArray(arg) && arg.length !== 0) {
@@ -21215,7 +21215,7 @@ var require_application = __commonJS({
         }
         if (typeof arg !== "function") {
           offset = 1;
-          path2 = fn;
+          path3 = fn;
         }
       }
       var fns = flatten.call(slice.call(arguments, offset), Infinity);
@@ -21225,12 +21225,12 @@ var require_application = __commonJS({
       var router55 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router55.use(path2, fn2);
+          return router55.use(path3, fn2);
         }
-        debug(".use app under %s", path2);
-        fn2.mountpath = path2;
+        debug(".use app under %s", path3);
+        fn2.mountpath = path3;
         fn2.parent = this;
-        router55.use(path2, function mounted_app(req, res, next) {
+        router55.use(path3, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -21242,8 +21242,8 @@ var require_application = __commonJS({
       }, this);
       return this;
     };
-    app2.route = function route(path2) {
-      return this.router.route(path2);
+    app2.route = function route(path3) {
+      return this.router.route(path3);
     };
     app2.engine = function engine(ext, fn) {
       if (typeof fn !== "function") {
@@ -21286,7 +21286,7 @@ var require_application = __commonJS({
       }
       return this;
     };
-    app2.path = function path2() {
+    app2.path = function path3() {
       return this.parent ? this.parent.path() + this.mountpath : "";
     };
     app2.enabled = function enabled(setting) {
@@ -21302,17 +21302,17 @@ var require_application = __commonJS({
       return this.set(setting, false);
     };
     methods.forEach(function(method) {
-      app2[method] = function(path2) {
+      app2[method] = function(path3) {
         if (method === "get" && arguments.length === 1) {
-          return this.set(path2);
+          return this.set(path3);
         }
-        var route = this.route(path2);
+        var route = this.route(path3);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
       };
     });
-    app2.all = function all(path2) {
-      var route = this.route(path2);
+    app2.all = function all(path3) {
+      var route = this.route(path3);
       var args = slice.call(arguments, 1);
       for (var i = 0; i < methods.length; i++) {
         route[methods[i]].apply(route, args);
@@ -22316,7 +22316,7 @@ var require_request = __commonJS({
       var subdomains2 = !isIP(hostname2) ? hostname2.split(".").reverse() : [hostname2];
       return subdomains2.slice(offset);
     });
-    defineGetter(req, "path", function path2() {
+    defineGetter(req, "path", function path3() {
       return parse3(this).pathname;
     });
     defineGetter(req, "host", function host() {
@@ -22728,27 +22728,27 @@ var require_send = __commonJS({
     var ms = require_ms();
     var onFinished = require_on_finished();
     var parseRange2 = require_range_parser();
-    var path2 = __require("path");
+    var path3 = __require("path");
     var statuses = require_statuses();
     var Stream = __require("stream");
     var util2 = __require("util");
-    var extname = path2.extname;
-    var join = path2.join;
-    var normalize = path2.normalize;
-    var resolve = path2.resolve;
-    var sep = path2.sep;
+    var extname = path3.extname;
+    var join = path3.join;
+    var normalize = path3.normalize;
+    var resolve = path3.resolve;
+    var sep = path3.sep;
     var BYTES_RANGE_REGEXP = /^ *bytes=/;
     var MAX_MAXAGE = 60 * 60 * 24 * 365 * 1e3;
     var UP_PATH_REGEXP = /(?:^|[\\/])\.\.(?:[\\/]|$)/;
     module.exports = send;
-    function send(req, path3, options) {
-      return new SendStream(req, path3, options);
+    function send(req, path4, options) {
+      return new SendStream(req, path4, options);
     }
-    function SendStream(req, path3, options) {
+    function SendStream(req, path4, options) {
       Stream.call(this);
       var opts = options || {};
       this.options = opts;
-      this.path = path3;
+      this.path = path4;
       this.req = req;
       this._acceptRanges = opts.acceptRanges !== void 0 ? Boolean(opts.acceptRanges) : true;
       this._cacheControl = opts.cacheControl !== void 0 ? Boolean(opts.cacheControl) : true;
@@ -22862,10 +22862,10 @@ var require_send = __commonJS({
       var lastModified = this.res.getHeader("Last-Modified");
       return parseHttpDate(lastModified) <= parseHttpDate(ifRange);
     };
-    SendStream.prototype.redirect = function redirect(path3) {
+    SendStream.prototype.redirect = function redirect(path4) {
       var res = this.res;
       if (hasListeners(this, "directory")) {
-        this.emit("directory", res, path3);
+        this.emit("directory", res, path4);
         return;
       }
       if (this.hasTrailingSlash()) {
@@ -22885,38 +22885,38 @@ var require_send = __commonJS({
     SendStream.prototype.pipe = function pipe2(res) {
       var root = this._root;
       this.res = res;
-      var path3 = decode(this.path);
-      if (path3 === -1) {
+      var path4 = decode(this.path);
+      if (path4 === -1) {
         this.error(400);
         return res;
       }
-      if (~path3.indexOf("\0")) {
+      if (~path4.indexOf("\0")) {
         this.error(400);
         return res;
       }
       var parts;
       if (root !== null) {
-        if (path3) {
-          path3 = normalize("." + sep + path3);
+        if (path4) {
+          path4 = normalize("." + sep + path4);
         }
-        if (UP_PATH_REGEXP.test(path3)) {
-          debug('malicious path "%s"', path3);
+        if (UP_PATH_REGEXP.test(path4)) {
+          debug('malicious path "%s"', path4);
           this.error(403);
           return res;
         }
-        parts = path3.split(sep);
-        path3 = normalize(join(root, path3));
+        parts = path4.split(sep);
+        path4 = normalize(join(root, path4));
       } else {
-        if (UP_PATH_REGEXP.test(path3)) {
-          debug('malicious path "%s"', path3);
+        if (UP_PATH_REGEXP.test(path4)) {
+          debug('malicious path "%s"', path4);
           this.error(403);
           return res;
         }
-        parts = normalize(path3).split(sep);
-        path3 = resolve(path3);
+        parts = normalize(path4).split(sep);
+        path4 = resolve(path4);
       }
       if (containsDotFile(parts)) {
-        debug('%s dotfile "%s"', this._dotfiles, path3);
+        debug('%s dotfile "%s"', this._dotfiles, path4);
         switch (this._dotfiles) {
           case "allow":
             break;
@@ -22930,13 +22930,13 @@ var require_send = __commonJS({
         }
       }
       if (this._index.length && this.hasTrailingSlash()) {
-        this.sendIndex(path3);
+        this.sendIndex(path4);
         return res;
       }
-      this.sendFile(path3);
+      this.sendFile(path4);
       return res;
     };
-    SendStream.prototype.send = function send2(path3, stat) {
+    SendStream.prototype.send = function send2(path4, stat) {
       var len = stat.size;
       var options = this.options;
       var opts = {};
@@ -22948,9 +22948,9 @@ var require_send = __commonJS({
         this.headersAlreadySent();
         return;
       }
-      debug('pipe "%s"', path3);
-      this.setHeader(path3, stat);
-      this.type(path3);
+      debug('pipe "%s"', path4);
+      this.setHeader(path4, stat);
+      this.type(path4);
       if (this.isConditionalGET()) {
         if (this.isPreconditionFailure()) {
           this.error(412);
@@ -22999,28 +22999,28 @@ var require_send = __commonJS({
         res.end();
         return;
       }
-      this.stream(path3, opts);
+      this.stream(path4, opts);
     };
-    SendStream.prototype.sendFile = function sendFile(path3) {
+    SendStream.prototype.sendFile = function sendFile(path4) {
       var i = 0;
       var self2 = this;
-      debug('stat "%s"', path3);
-      fs.stat(path3, function onstat(err, stat) {
-        var pathEndsWithSep = path3[path3.length - 1] === sep;
-        if (err && err.code === "ENOENT" && !extname(path3) && !pathEndsWithSep) {
+      debug('stat "%s"', path4);
+      fs.stat(path4, function onstat(err, stat) {
+        var pathEndsWithSep = path4[path4.length - 1] === sep;
+        if (err && err.code === "ENOENT" && !extname(path4) && !pathEndsWithSep) {
           return next(err);
         }
         if (err) return self2.onStatError(err);
-        if (stat.isDirectory()) return self2.redirect(path3);
+        if (stat.isDirectory()) return self2.redirect(path4);
         if (pathEndsWithSep) return self2.error(404);
-        self2.emit("file", path3, stat);
-        self2.send(path3, stat);
+        self2.emit("file", path4, stat);
+        self2.send(path4, stat);
       });
       function next(err) {
         if (self2._extensions.length <= i) {
           return err ? self2.onStatError(err) : self2.error(404);
         }
-        var p = path3 + "." + self2._extensions[i++];
+        var p = path4 + "." + self2._extensions[i++];
         debug('stat "%s"', p);
         fs.stat(p, function(err2, stat) {
           if (err2) return next(err2);
@@ -23030,7 +23030,7 @@ var require_send = __commonJS({
         });
       }
     };
-    SendStream.prototype.sendIndex = function sendIndex(path3) {
+    SendStream.prototype.sendIndex = function sendIndex(path4) {
       var i = -1;
       var self2 = this;
       function next(err) {
@@ -23038,7 +23038,7 @@ var require_send = __commonJS({
           if (err) return self2.onStatError(err);
           return self2.error(404);
         }
-        var p = join(path3, self2._index[i]);
+        var p = join(path4, self2._index[i]);
         debug('stat "%s"', p);
         fs.stat(p, function(err2, stat) {
           if (err2) return next(err2);
@@ -23049,10 +23049,10 @@ var require_send = __commonJS({
       }
       next();
     };
-    SendStream.prototype.stream = function stream(path3, options) {
+    SendStream.prototype.stream = function stream(path4, options) {
       var self2 = this;
       var res = this.res;
-      var stream2 = fs.createReadStream(path3, options);
+      var stream2 = fs.createReadStream(path4, options);
       this.emit("stream", stream2);
       stream2.pipe(res);
       function cleanup() {
@@ -23067,17 +23067,17 @@ var require_send = __commonJS({
         self2.emit("end");
       });
     };
-    SendStream.prototype.type = function type(path3) {
+    SendStream.prototype.type = function type(path4) {
       var res = this.res;
       if (res.getHeader("Content-Type")) return;
-      var ext = extname(path3);
+      var ext = extname(path4);
       var type2 = mime.contentType(ext) || "application/octet-stream";
       debug("content-type %s", type2);
       res.setHeader("Content-Type", type2);
     };
-    SendStream.prototype.setHeader = function setHeader(path3, stat) {
+    SendStream.prototype.setHeader = function setHeader(path4, stat) {
       var res = this.res;
-      this.emit("headers", res, path3, stat);
+      this.emit("headers", res, path4, stat);
       if (this._acceptRanges && !res.getHeader("Accept-Ranges")) {
         debug("accept ranges");
         res.setHeader("Accept-Ranges", "bytes");
@@ -23135,9 +23135,9 @@ var require_send = __commonJS({
       }
       return err instanceof Error ? createError(status, err, { expose: false }) : createError(status, err);
     }
-    function decode(path3) {
+    function decode(path4) {
       try {
-        return decodeURIComponent(path3);
+        return decodeURIComponent(path4);
       } catch (err) {
         return -1;
       }
@@ -23281,7 +23281,7 @@ var require_response = __commonJS({
     var http = __require("node:http");
     var onFinished = require_on_finished();
     var mime = require_mime_types();
-    var path2 = __require("node:path");
+    var path3 = __require("node:path");
     var pathIsAbsolute = __require("node:path").isAbsolute;
     var statuses = require_statuses();
     var sign2 = require_cookie_signature().sign;
@@ -23290,8 +23290,8 @@ var require_response = __commonJS({
     var setCharset = require_utils3().setCharset;
     var cookie = require_cookie();
     var send = require_send();
-    var extname = path2.extname;
-    var resolve = path2.resolve;
+    var extname = path3.extname;
+    var resolve = path3.resolve;
     var vary = require_vary();
     var { Buffer: Buffer2 } = __require("node:buffer");
     var res = Object.create(http.ServerResponse.prototype);
@@ -23437,26 +23437,26 @@ var require_response = __commonJS({
       this.type("txt");
       return this.send(body);
     };
-    res.sendFile = function sendFile(path3, options, callback) {
+    res.sendFile = function sendFile(path4, options, callback) {
       var done = callback;
       var req = this.req;
       var res2 = this;
       var next = req.next;
       var opts = options || {};
-      if (!path3) {
+      if (!path4) {
         throw new TypeError("path argument is required to res.sendFile");
       }
-      if (typeof path3 !== "string") {
+      if (typeof path4 !== "string") {
         throw new TypeError("path must be a string to res.sendFile");
       }
       if (typeof options === "function") {
         done = options;
         opts = {};
       }
-      if (!opts.root && !pathIsAbsolute(path3)) {
+      if (!opts.root && !pathIsAbsolute(path4)) {
         throw new TypeError("path must be absolute or specify root to res.sendFile");
       }
-      var pathname = encodeURI(path3);
+      var pathname = encodeURI(path4);
       opts.etag = this.app.enabled("etag");
       var file2 = send(req, pathname, opts);
       sendfile(res2, file2, opts, function(err) {
@@ -23467,7 +23467,7 @@ var require_response = __commonJS({
         }
       });
     };
-    res.download = function download(path3, filename, options, callback) {
+    res.download = function download(path4, filename, options, callback) {
       var done = callback;
       var name2 = filename;
       var opts = options || null;
@@ -23484,7 +23484,7 @@ var require_response = __commonJS({
         opts = filename;
       }
       var headers = {
-        "Content-Disposition": contentDisposition(name2 || path3)
+        "Content-Disposition": contentDisposition(name2 || path4)
       };
       if (opts && opts.headers) {
         var keys = Object.keys(opts.headers);
@@ -23497,7 +23497,7 @@ var require_response = __commonJS({
       }
       opts = Object.create(opts);
       opts.headers = headers;
-      var fullPath = !opts.root ? resolve(path3) : path3;
+      var fullPath = !opts.root ? resolve(path4) : path4;
       return this.sendFile(fullPath, opts, done);
     };
     res.contentType = res.type = function contentType(type) {
@@ -23780,11 +23780,11 @@ var require_serve_static = __commonJS({
         }
         var forwardError = !fallthrough;
         var originalUrl = parseUrl.original(req);
-        var path2 = parseUrl(req).pathname;
-        if (path2 === "/" && originalUrl.pathname.substr(-1) !== "/") {
-          path2 = "";
+        var path3 = parseUrl(req).pathname;
+        if (path3 === "/" && originalUrl.pathname.substr(-1) !== "/") {
+          path3 = "";
         }
-        var stream = send(req, path2, opts);
+        var stream = send(req, path3, opts);
         stream.on("directory", onDirectory);
         if (setHeaders) {
           stream.on("headers", setHeaders);
@@ -24545,8 +24545,8 @@ var require_req = __commonJS({
       if (req.originalUrl) {
         _req.url = req.originalUrl;
       } else {
-        const path2 = req.path;
-        _req.url = typeof path2 === "string" ? path2 : req.url ? req.url.path || req.url : void 0;
+        const path3 = req.path;
+        _req.url = typeof path3 === "string" ? path3 : req.url ? req.url.path || req.url : void 0;
       }
       if (req.query) {
         _req.query = req.query;
@@ -24711,14 +24711,14 @@ var require_redact = __commonJS({
       }
       return obj;
     }
-    function parsePath(path2) {
+    function parsePath(path3) {
       const parts = [];
       let current = "";
       let inBrackets = false;
       let inQuotes = false;
       let quoteChar = "";
-      for (let i = 0; i < path2.length; i++) {
-        const char2 = path2[i];
+      for (let i = 0; i < path3.length; i++) {
+        const char2 = path3[i];
         if (!inBrackets && char2 === ".") {
           if (current) {
             parts.push(current);
@@ -24849,10 +24849,10 @@ var require_redact = __commonJS({
       return current;
     }
     function redactPaths(obj, paths, censor, remove = false) {
-      for (const path2 of paths) {
-        const parts = parsePath(path2);
+      for (const path3 of paths) {
+        const parts = parsePath(path3);
         if (parts.includes("*")) {
-          redactWildcardPath(obj, parts, censor, path2, remove);
+          redactWildcardPath(obj, parts, censor, path3, remove);
         } else {
           if (remove) {
             removeKey(obj, parts);
@@ -24937,8 +24937,8 @@ var require_redact = __commonJS({
           }
         } else {
           if (afterWildcard.includes("*")) {
-            const wrappedCensor = typeof censor === "function" ? (value, path2) => {
-              const fullPath = [...pathArray.slice(0, pathLength), ...path2];
+            const wrappedCensor = typeof censor === "function" ? (value, path3) => {
+              const fullPath = [...pathArray.slice(0, pathLength), ...path3];
               return censor(value, fullPath);
             } : censor;
             redactWildcardPath(current, afterWildcard, wrappedCensor, originalPath, remove);
@@ -24973,8 +24973,8 @@ var require_redact = __commonJS({
         return null;
       }
       const pathStructure = /* @__PURE__ */ new Map();
-      for (const path2 of pathsToClone) {
-        const parts = parsePath(path2);
+      for (const path3 of pathsToClone) {
+        const parts = parsePath(path3);
         let current = pathStructure;
         for (let i = 0; i < parts.length; i++) {
           const part = parts[i];
@@ -25026,24 +25026,24 @@ var require_redact = __commonJS({
       }
       return cloneSelectively(obj, pathStructure);
     }
-    function validatePath(path2) {
-      if (typeof path2 !== "string") {
+    function validatePath(path3) {
+      if (typeof path3 !== "string") {
         throw new Error("Paths must be (non-empty) strings");
       }
-      if (path2 === "") {
+      if (path3 === "") {
         throw new Error("Invalid redaction path ()");
       }
-      if (path2.includes("..")) {
-        throw new Error(`Invalid redaction path (${path2})`);
+      if (path3.includes("..")) {
+        throw new Error(`Invalid redaction path (${path3})`);
       }
-      if (path2.includes(",")) {
-        throw new Error(`Invalid redaction path (${path2})`);
+      if (path3.includes(",")) {
+        throw new Error(`Invalid redaction path (${path3})`);
       }
       let bracketCount = 0;
       let inQuotes = false;
       let quoteChar = "";
-      for (let i = 0; i < path2.length; i++) {
-        const char2 = path2[i];
+      for (let i = 0; i < path3.length; i++) {
+        const char2 = path3[i];
         if ((char2 === '"' || char2 === "'") && bracketCount > 0) {
           if (!inQuotes) {
             inQuotes = true;
@@ -25057,20 +25057,20 @@ var require_redact = __commonJS({
         } else if (char2 === "]" && !inQuotes) {
           bracketCount--;
           if (bracketCount < 0) {
-            throw new Error(`Invalid redaction path (${path2})`);
+            throw new Error(`Invalid redaction path (${path3})`);
           }
         }
       }
       if (bracketCount !== 0) {
-        throw new Error(`Invalid redaction path (${path2})`);
+        throw new Error(`Invalid redaction path (${path3})`);
       }
     }
     function validatePaths(paths) {
       if (!Array.isArray(paths)) {
         throw new TypeError("paths must be an array");
       }
-      for (const path2 of paths) {
-        validatePath(path2);
+      for (const path3 of paths) {
+        validatePath(path3);
       }
     }
     function slowRedact(options = {}) {
@@ -25238,8 +25238,8 @@ var require_redaction = __commonJS({
         if (shape[k] === null) {
           o[k] = (value) => topCensor(value, [k]);
         } else {
-          const wrappedCensor = typeof censor === "function" ? (value, path2) => {
-            return censor(value, [k, ...path2]);
+          const wrappedCensor = typeof censor === "function" ? (value, path3) => {
+            return censor(value, [k, ...path3]);
           } : censor;
           o[k] = Redact({
             paths: shape[k],
@@ -25460,7 +25460,7 @@ var require_sonic_boom = __commonJS({
     var fs = __require("fs");
     var EventEmitter = __require("events");
     var inherits = __require("util").inherits;
-    var path2 = __require("path");
+    var path3 = __require("path");
     var sleep = require_atomic_sleep();
     var assert2 = __require("assert");
     var BUSY_WRITE_TIMEOUT = 100;
@@ -25514,7 +25514,7 @@ var require_sonic_boom = __commonJS({
       const mode = sonic.mode;
       if (sonic.sync) {
         try {
-          if (sonic.mkdir) fs.mkdirSync(path2.dirname(file2), { recursive: true });
+          if (sonic.mkdir) fs.mkdirSync(path3.dirname(file2), { recursive: true });
           const fd = fs.openSync(file2, flags, mode);
           fileOpened(null, fd);
         } catch (err) {
@@ -25522,7 +25522,7 @@ var require_sonic_boom = __commonJS({
           throw err;
         }
       } else if (sonic.mkdir) {
-        fs.mkdir(path2.dirname(file2), { recursive: true }, (err) => {
+        fs.mkdir(path3.dirname(file2), { recursive: true }, (err) => {
           if (err) return fileOpened(err);
           fs.open(file2, flags, mode, fileOpened);
         });
@@ -28382,9 +28382,9 @@ var require_pino = __commonJS({
   "../../node_modules/.pnpm/pino@9.14.0/node_modules/pino/pino.js"(exports, module) {
     function pinoBundlerAbsolutePath(p) {
       try {
-        const path2 = __require("path");
+        const path3 = __require("path");
         const outputDir = "/home/runner/workspace/artifacts/api-server/dist";
-        return path2.resolve(outputDir, p.replace(/^\.\//, ""));
+        return path3.resolve(outputDir, p.replace(/^\.\//, ""));
       } catch (e) {
         const f = new Function("p", "return new URL(p, import.meta.url).pathname");
         return f(p);
@@ -32249,7 +32249,7 @@ var require_split2 = __commonJS({
 var require_helper = __commonJS({
   "../../node_modules/.pnpm/pgpass@1.0.5/node_modules/pgpass/lib/helper.js"(exports, module) {
     "use strict";
-    var path2 = __require("path");
+    var path3 = __require("path");
     var Stream = __require("stream").Stream;
     var split = require_split2();
     var util2 = __require("util");
@@ -32288,7 +32288,7 @@ var require_helper = __commonJS({
     };
     module.exports.getFileName = function(rawEnv) {
       var env = rawEnv || process.env;
-      var file2 = env.PGPASSFILE || (isWin ? path2.join(env.APPDATA || "./", "postgresql", "pgpass.conf") : path2.join(env.HOME || "./", ".pgpass"));
+      var file2 = env.PGPASSFILE || (isWin ? path3.join(env.APPDATA || "./", "postgresql", "pgpass.conf") : path3.join(env.HOME || "./", ".pgpass"));
       return file2;
     };
     module.exports.usePgPass = function(stats, fname) {
@@ -32420,7 +32420,7 @@ var require_helper = __commonJS({
 var require_lib4 = __commonJS({
   "../../node_modules/.pnpm/pgpass@1.0.5/node_modules/pgpass/lib/index.js"(exports, module) {
     "use strict";
-    var path2 = __require("path");
+    var path3 = __require("path");
     var fs = __require("fs");
     var helper = require_helper();
     module.exports = function(connInfo, cb) {
@@ -35385,7 +35385,7 @@ var init_alias = __esm({
 function mapResultRow(columns, row, joinsNotNullableMap) {
   const nullifyMap = {};
   const result = columns.reduce(
-    (result2, { path: path2, field }, columnIndex) => {
+    (result2, { path: path3, field }, columnIndex) => {
       let decoder;
       if (is(field, Column)) {
         decoder = field;
@@ -35397,8 +35397,8 @@ function mapResultRow(columns, row, joinsNotNullableMap) {
         decoder = field.sql.decoder;
       }
       let node = result2;
-      for (const [pathChunkIndex, pathChunk] of path2.entries()) {
-        if (pathChunkIndex < path2.length - 1) {
+      for (const [pathChunkIndex, pathChunk] of path3.entries()) {
+        if (pathChunkIndex < path3.length - 1) {
           if (!(pathChunk in node)) {
             node[pathChunk] = {};
           }
@@ -35406,8 +35406,8 @@ function mapResultRow(columns, row, joinsNotNullableMap) {
         } else {
           const rawValue = row[columnIndex];
           const value = node[pathChunk] = rawValue === null ? null : decoder.mapFromDriverValue(rawValue);
-          if (joinsNotNullableMap && is(field, Column) && path2.length === 2) {
-            const objectName = path2[0];
+          if (joinsNotNullableMap && is(field, Column) && path3.length === 2) {
+            const objectName = path3[0];
             if (!(objectName in nullifyMap)) {
               nullifyMap[objectName] = value === null ? getTableName(field.table) : false;
             } else if (typeof nullifyMap[objectName] === "string" && nullifyMap[objectName] !== getTableName(field.table)) {
@@ -38232,9 +38232,9 @@ var require_request2 = __commonJS({
       HttpMethod2["PATCH"] = "PATCH";
     })(HttpMethod = exports.HttpMethod || (exports.HttpMethod = {}));
     var SvixRequest = class {
-      constructor(method, path2) {
+      constructor(method, path3) {
         this.method = method;
-        this.path = path2;
+        this.path = path3;
         this.queryParams = {};
         this.headerParams = {};
       }
@@ -190205,16 +190205,16 @@ var require_main3 = __commonJS({
       * @return {Path}
       */
       mapPoints(fn) {
-        let path2 = new _$67ee4828d81adb28$export$2e2bcd8739ae039();
+        let path3 = new _$67ee4828d81adb28$export$2e2bcd8739ae039();
         for (let c of this.commands) {
           let args = [];
           for (let i = 0; i < c.args.length; i += 2) {
             let [x, y] = fn(c.args[i], c.args[i + 1]);
             args.push(x, y);
           }
-          path2[c.command](...args);
+          path3[c.command](...args);
         }
-        return path2;
+        return path3;
       }
       /**
       * Transforms the path by the given matrix.
@@ -190907,7 +190907,7 @@ var require_main3 = __commonJS({
       // Converts contours to a Path object that can be rendered
       _getPath() {
         let contours = this._getContours();
-        let path2 = new (0, $67ee4828d81adb28$export$2e2bcd8739ae039)();
+        let path3 = new (0, $67ee4828d81adb28$export$2e2bcd8739ae039)();
         for (let i = 0; i < contours.length; i++) {
           let contour = contours[i];
           let firstPt = contour[0];
@@ -190923,26 +190923,26 @@ var require_main3 = __commonJS({
               firstPt = new $f680320fa07ef53d$export$baf26146a414f24a(false, false, (firstPt.x + lastPt.x) / 2, (firstPt.y + lastPt.y) / 2);
             var curvePt = firstPt;
           }
-          path2.moveTo(firstPt.x, firstPt.y);
+          path3.moveTo(firstPt.x, firstPt.y);
           for (let j = start; j < contour.length; j++) {
             let pt = contour[j];
             let prevPt = j === 0 ? firstPt : contour[j - 1];
-            if (prevPt.onCurve && pt.onCurve) path2.lineTo(pt.x, pt.y);
+            if (prevPt.onCurve && pt.onCurve) path3.lineTo(pt.x, pt.y);
             else if (prevPt.onCurve && !pt.onCurve) var curvePt = pt;
             else if (!prevPt.onCurve && !pt.onCurve) {
               let midX = (prevPt.x + pt.x) / 2;
               let midY = (prevPt.y + pt.y) / 2;
-              path2.quadraticCurveTo(prevPt.x, prevPt.y, midX, midY);
+              path3.quadraticCurveTo(prevPt.x, prevPt.y, midX, midY);
               var curvePt = pt;
             } else if (!prevPt.onCurve && pt.onCurve) {
-              path2.quadraticCurveTo(curvePt.x, curvePt.y, pt.x, pt.y);
+              path3.quadraticCurveTo(curvePt.x, curvePt.y, pt.x, pt.y);
               var curvePt = null;
             } else throw new Error("Unknown TTF path state");
           }
-          if (curvePt) path2.quadraticCurveTo(curvePt.x, curvePt.y, firstPt.x, firstPt.y);
-          path2.closePath();
+          if (curvePt) path3.quadraticCurveTo(curvePt.x, curvePt.y, firstPt.x, firstPt.y);
+          path3.closePath();
         }
-        return path2;
+        return path3;
       }
       constructor(...args) {
         super(...args);
@@ -190965,7 +190965,7 @@ var require_main3 = __commonJS({
         let str = cff.topDict.CharStrings[this.id];
         let end = str.offset + str.length;
         stream.pos = str.offset;
-        let path2 = new (0, $67ee4828d81adb28$export$2e2bcd8739ae039)();
+        let path3 = new (0, $67ee4828d81adb28$export$2e2bcd8739ae039)();
         let stack = [];
         let trans = [];
         let width = null;
@@ -190993,8 +190993,8 @@ var require_main3 = __commonJS({
           return stack.length = 0;
         }
         function moveTo(x2, y2) {
-          if (open) path2.closePath();
-          path2.moveTo(x2, y2);
+          if (open) path3.closePath();
+          path3.moveTo(x2, y2);
           open = true;
         }
         let parse3 = function() {
@@ -191021,7 +191021,7 @@ var require_main3 = __commonJS({
                   while (stack.length >= 2) {
                     x += stack.shift();
                     y += stack.shift();
-                    path2.lineTo(x, y);
+                    path3.lineTo(x, y);
                   }
                   break;
                 case 6:
@@ -191030,7 +191030,7 @@ var require_main3 = __commonJS({
                   while (stack.length >= 1) {
                     if (phase) x += stack.shift();
                     else y += stack.shift();
-                    path2.lineTo(x, y);
+                    path3.lineTo(x, y);
                     phase = !phase;
                   }
                   break;
@@ -191042,7 +191042,7 @@ var require_main3 = __commonJS({
                     c2y = c1y + stack.shift();
                     x = c2x + stack.shift();
                     y = c2y + stack.shift();
-                    path2.bezierCurveTo(c1x, c1y, c2x, c2y, x, y);
+                    path3.bezierCurveTo(c1x, c1y, c2x, c2y, x, y);
                   }
                   break;
                 case 10:
@@ -191066,7 +191066,7 @@ var require_main3 = __commonJS({
                   if (cff.version >= 2) break;
                   if (stack.length > 0) checkWidth();
                   if (open) {
-                    path2.closePath();
+                    path3.closePath();
                     open = false;
                   }
                   break;
@@ -191114,17 +191114,17 @@ var require_main3 = __commonJS({
                     c2y = c1y + stack.shift();
                     x = c2x + stack.shift();
                     y = c2y + stack.shift();
-                    path2.bezierCurveTo(c1x, c1y, c2x, c2y, x, y);
+                    path3.bezierCurveTo(c1x, c1y, c2x, c2y, x, y);
                   }
                   x += stack.shift();
                   y += stack.shift();
-                  path2.lineTo(x, y);
+                  path3.lineTo(x, y);
                   break;
                 case 25:
                   while (stack.length >= 8) {
                     x += stack.shift();
                     y += stack.shift();
-                    path2.lineTo(x, y);
+                    path3.lineTo(x, y);
                   }
                   c1x = x + stack.shift();
                   c1y = y + stack.shift();
@@ -191132,7 +191132,7 @@ var require_main3 = __commonJS({
                   c2y = c1y + stack.shift();
                   x = c2x + stack.shift();
                   y = c2y + stack.shift();
-                  path2.bezierCurveTo(c1x, c1y, c2x, c2y, x, y);
+                  path3.bezierCurveTo(c1x, c1y, c2x, c2y, x, y);
                   break;
                 case 26:
                   if (stack.length % 2) x += stack.shift();
@@ -191143,7 +191143,7 @@ var require_main3 = __commonJS({
                     c2y = c1y + stack.shift();
                     x = c2x;
                     y = c2y + stack.shift();
-                    path2.bezierCurveTo(c1x, c1y, c2x, c2y, x, y);
+                    path3.bezierCurveTo(c1x, c1y, c2x, c2y, x, y);
                   }
                   break;
                 case 27:
@@ -191155,7 +191155,7 @@ var require_main3 = __commonJS({
                     c2y = c1y + stack.shift();
                     x = c2x + stack.shift();
                     y = c2y;
-                    path2.bezierCurveTo(c1x, c1y, c2x, c2y, x, y);
+                    path3.bezierCurveTo(c1x, c1y, c2x, c2y, x, y);
                   }
                   break;
                 case 28:
@@ -191194,7 +191194,7 @@ var require_main3 = __commonJS({
                       x = c2x + stack.shift();
                       y = c2y + (stack.length === 1 ? stack.shift() : 0);
                     }
-                    path2.bezierCurveTo(c1x, c1y, c2x, c2y, x, y);
+                    path3.bezierCurveTo(c1x, c1y, c2x, c2y, x, y);
                     phase = !phase;
                   }
                   break;
@@ -191320,8 +191320,8 @@ var require_main3 = __commonJS({
                       c6y = c5y;
                       x = c6x;
                       y = c6y;
-                      path2.bezierCurveTo(c1x, c1y, c2x, c2y, c3x, c3y);
-                      path2.bezierCurveTo(c4x, c4y, c5x, c5y, c6x, c6y);
+                      path3.bezierCurveTo(c1x, c1y, c2x, c2y, c3x, c3y);
+                      path3.bezierCurveTo(c4x, c4y, c5x, c5y, c6x, c6y);
                       break;
                     case 35:
                       pts = [];
@@ -191330,8 +191330,8 @@ var require_main3 = __commonJS({
                         y += stack.shift();
                         pts.push(x, y);
                       }
-                      path2.bezierCurveTo(...pts.slice(0, 6));
-                      path2.bezierCurveTo(...pts.slice(6));
+                      path3.bezierCurveTo(...pts.slice(0, 6));
+                      path3.bezierCurveTo(...pts.slice(6));
                       stack.shift();
                       break;
                     case 36:
@@ -191349,8 +191349,8 @@ var require_main3 = __commonJS({
                       c6y = c5y;
                       x = c6x;
                       y = c6y;
-                      path2.bezierCurveTo(c1x, c1y, c2x, c2y, c3x, c3y);
-                      path2.bezierCurveTo(c4x, c4y, c5x, c5y, c6x, c6y);
+                      path3.bezierCurveTo(c1x, c1y, c2x, c2y, c3x, c3y);
+                      path3.bezierCurveTo(c4x, c4y, c5x, c5y, c6x, c6y);
                       break;
                     case 37:
                       let startx = x;
@@ -191369,8 +191369,8 @@ var require_main3 = __commonJS({
                         y += stack.shift();
                       }
                       pts.push(x, y);
-                      path2.bezierCurveTo(...pts.slice(0, 6));
-                      path2.bezierCurveTo(...pts.slice(6));
+                      path3.bezierCurveTo(...pts.slice(0, 6));
+                      path3.bezierCurveTo(...pts.slice(6));
                       break;
                     default:
                       throw new Error(`Unknown op: 12 ${op}`);
@@ -191390,8 +191390,8 @@ var require_main3 = __commonJS({
           }
         };
         parse3();
-        if (open) path2.closePath();
-        return path2;
+        if (open) path3.closePath();
+        return path3;
       }
       constructor(...args) {
         super(...args);
@@ -191851,7 +191851,7 @@ var require_main3 = __commonJS({
       yPoints: new $elh9A$restructure.Array($2784eedf0b35a048$var$Point, 0)
     });
     var $2784eedf0b35a048$export$2e2bcd8739ae039 = class {
-      encodeSimple(path2, instructions = []) {
+      encodeSimple(path3, instructions = []) {
         let endPtsOfContours = [];
         let xPoints = [];
         let yPoints = [];
@@ -191859,14 +191859,14 @@ var require_main3 = __commonJS({
         let same = 0;
         let lastX = 0, lastY = 0, lastFlag = 0;
         let pointCount = 0;
-        for (let i = 0; i < path2.commands.length; i++) {
-          let c = path2.commands[i];
+        for (let i = 0; i < path3.commands.length; i++) {
+          let c = path3.commands[i];
           for (let j = 0; j < c.args.length; j += 2) {
             let x = c.args[j];
             let y = c.args[j + 1];
             let flag = 0;
             if (c.command === "quadraticCurveTo" && j === 2) {
-              let next = path2.commands[i + 1];
+              let next = path3.commands[i + 1];
               if (next && next.command === "quadraticCurveTo") {
                 let midX = (lastX + next.args[0]) / 2;
                 let midY = (lastY + next.args[1]) / 2;
@@ -191893,8 +191893,8 @@ var require_main3 = __commonJS({
           }
           if (c.command === "closePath") endPtsOfContours.push(pointCount - 1);
         }
-        if (path2.commands.length > 1 && path2.commands[path2.commands.length - 1].command !== "closePath") endPtsOfContours.push(pointCount - 1);
-        let bbox = path2.bbox;
+        if (path3.commands.length > 1 && path3.commands[path3.commands.length - 1].command !== "closePath") endPtsOfContours.push(pointCount - 1);
+        let bbox = path3.bbox;
         let glyf = {
           numberOfContours: endPtsOfContours.length,
           xMin: bbox.minX,
@@ -192001,7 +192001,7 @@ var require_main3 = __commonJS({
         for (let gid of this.glyphs) {
           this.charstrings.push(this.cff.getCharString(gid));
           let glyph = this.font.getGlyph(gid);
-          let path2 = glyph.path;
+          let path3 = glyph.path;
           for (let subr in glyph._usedGsubrs) gsubrs[subr] = true;
         }
         this.gsubrs = this.subsetSubrs(this.cff.globalSubrIndex, gsubrs);
@@ -192039,7 +192039,7 @@ var require_main3 = __commonJS({
           used_fds[fd] = true;
           topDict.FDSelect.fds.push(fd_select[fd]);
           let glyph = this.font.getGlyph(gid);
-          let path2 = glyph.path;
+          let path3 = glyph.path;
           for (let subr in glyph._usedSubrs) used_subrs[fd_select[fd]][subr] = true;
         }
         for (let i = 0; i < topDict.FDArray.length; i++) {
@@ -192056,7 +192056,7 @@ var require_main3 = __commonJS({
         let used_subrs = {};
         for (let gid of this.glyphs) {
           let glyph = this.font.getGlyph(gid);
-          let path2 = glyph.path;
+          let path3 = glyph.path;
           for (let subr in glyph._usedSubrs) used_subrs[subr] = true;
         }
         let privateDict = Object.assign({}, this.cff.topDict.Private);
@@ -194869,17 +194869,17 @@ var require_png_js = __commonJS({
     var fs__default = /* @__PURE__ */ _interopDefaultCompat(fs);
     var zlib__default = /* @__PURE__ */ _interopDefaultCompat(zlib);
     var PNG = class _PNG {
-      static decode(path2, fn) {
+      static decode(path3, fn) {
         {
-          return fs__default.default.readFile(path2, function(err, file2) {
+          return fs__default.default.readFile(path3, function(err, file2) {
             const png = new _PNG(file2);
             return png.decode((pixels) => fn(pixels));
           });
         }
       }
-      static load(path2) {
+      static load(path3) {
         {
-          const file2 = fs__default.default.readFileSync(path2);
+          const file2 = fs__default.default.readFileSync(path3);
           return new _PNG(file2);
         }
       }
@@ -196631,14 +196631,14 @@ var require_pdfkit = __commonJS({
       Z: 0,
       z: 0
     };
-    var parse3 = function(path2) {
+    var parse3 = function(path3) {
       let cmd;
       const ret = [];
       let args = [];
       let curArg = "";
       let foundDecimal = false;
       let params = 0;
-      for (let c of path2) {
+      for (let c of path3) {
         if (parameters[c] != null) {
           params = parameters[c];
           if (cmd) {
@@ -196936,8 +196936,8 @@ var require_pdfkit = __commonJS({
       return [a00 * x1 + a01 * y1, a10 * x1 + a11 * y1, a00 * x2 + a01 * y2, a10 * x2 + a11 * y2, a00 * x3 + a01 * y3, a10 * x3 + a11 * y3];
     };
     var SVGPath = class {
-      static apply(doc, path2) {
-        const commands = parse3(path2);
+      static apply(doc, path3) {
+        const commands = parse3(path3);
         apply(commands, doc);
       }
     };
@@ -197101,8 +197101,8 @@ var require_pdfkit = __commonJS({
         }
         return this.closePath();
       },
-      path(path2) {
-        SVGPath.apply(this, path2);
+      path(path3) {
+        SVGPath.apply(this, path3);
         return this;
       },
       _windingRule(rule) {
@@ -202660,10 +202660,10 @@ var require_segments = __commonJS({
       const segs = getSegmentsFromString(data, Utils.isKanjiModeEnabled());
       const nodes = buildNodes(segs);
       const graph = buildGraph(nodes, version4);
-      const path2 = dijkstra.find_path(graph.map, "start", "end");
+      const path3 = dijkstra.find_path(graph.map, "start", "end");
       const optimizedSegs = [];
-      for (let i = 1; i < path2.length - 1; i++) {
-        optimizedSegs.push(graph.table[path2[i]].node);
+      for (let i = 1; i < path3.length - 1; i++) {
+        optimizedSegs.push(graph.table[path3[i]].node);
       }
       return exports.fromArray(mergeSegments(optimizedSegs));
     };
@@ -205140,7 +205140,7 @@ var require_png2 = __commonJS({
       });
       png.pack();
     };
-    exports.renderToFile = function renderToFile(path2, qrData, options, cb) {
+    exports.renderToFile = function renderToFile(path3, qrData, options, cb) {
       if (typeof cb === "undefined") {
         cb = options;
         options = void 0;
@@ -205151,7 +205151,7 @@ var require_png2 = __commonJS({
         called = true;
         cb.apply(null, args);
       };
-      const stream = fs.createWriteStream(path2);
+      const stream = fs.createWriteStream(path3);
       stream.on("error", done);
       stream.on("close", done);
       exports.renderToFileStream(stream, qrData, options);
@@ -205213,14 +205213,14 @@ var require_utf8 = __commonJS({
       }
       return output;
     };
-    exports.renderToFile = function renderToFile(path2, qrData, options, cb) {
+    exports.renderToFile = function renderToFile(path3, qrData, options, cb) {
       if (typeof cb === "undefined") {
         cb = options;
         options = void 0;
       }
       const fs = __require("fs");
       const utf8 = exports.render(qrData, options);
-      fs.writeFile(path2, utf8, cb);
+      fs.writeFile(path3, utf8, cb);
     };
   }
 });
@@ -205341,7 +205341,7 @@ var require_svg_tag = __commonJS({
       return str;
     }
     function qrToPath(data, size, margin) {
-      let path2 = "";
+      let path3 = "";
       let moveBy = 0;
       let newRow = false;
       let lineLength = 0;
@@ -205352,19 +205352,19 @@ var require_svg_tag = __commonJS({
         if (data[i]) {
           lineLength++;
           if (!(i > 0 && col > 0 && data[i - 1])) {
-            path2 += newRow ? svgCmd("M", col + margin, 0.5 + row + margin) : svgCmd("m", moveBy, 0);
+            path3 += newRow ? svgCmd("M", col + margin, 0.5 + row + margin) : svgCmd("m", moveBy, 0);
             moveBy = 0;
             newRow = false;
           }
           if (!(col + 1 < size && data[i + 1])) {
-            path2 += svgCmd("h", lineLength);
+            path3 += svgCmd("h", lineLength);
             lineLength = 0;
           }
         } else {
           moveBy++;
         }
       }
-      return path2;
+      return path3;
     }
     exports.render = function render2(qrData, options, cb) {
       const opts = Utils.getOptions(options);
@@ -205372,10 +205372,10 @@ var require_svg_tag = __commonJS({
       const data = qrData.modules.data;
       const qrcodesize = size + opts.margin * 2;
       const bg = !opts.color.light.a ? "" : "<path " + getColorAttrib(opts.color.light, "fill") + ' d="M0 0h' + qrcodesize + "v" + qrcodesize + 'H0z"/>';
-      const path2 = "<path " + getColorAttrib(opts.color.dark, "stroke") + ' d="' + qrToPath(data, size, opts.margin) + '"/>';
+      const path3 = "<path " + getColorAttrib(opts.color.dark, "stroke") + ' d="' + qrToPath(data, size, opts.margin) + '"/>';
       const viewBox = 'viewBox="0 0 ' + qrcodesize + " " + qrcodesize + '"';
       const width = !opts.width ? "" : 'width="' + opts.width + '" height="' + opts.width + '" ';
-      const svgTag = '<svg xmlns="http://www.w3.org/2000/svg" ' + width + viewBox + ' shape-rendering="crispEdges">' + bg + path2 + "</svg>\n";
+      const svgTag = '<svg xmlns="http://www.w3.org/2000/svg" ' + width + viewBox + ' shape-rendering="crispEdges">' + bg + path3 + "</svg>\n";
       if (typeof cb === "function") {
         cb(null, svgTag);
       }
@@ -205389,7 +205389,7 @@ var require_svg = __commonJS({
   "../../node_modules/.pnpm/qrcode@1.5.4/node_modules/qrcode/lib/renderer/svg.js"(exports) {
     var svgTagRenderer = require_svg_tag();
     exports.render = svgTagRenderer.render;
-    exports.renderToFile = function renderToFile(path2, qrData, options, cb) {
+    exports.renderToFile = function renderToFile(path3, qrData, options, cb) {
       if (typeof cb === "undefined") {
         cb = options;
         options = void 0;
@@ -205397,7 +205397,7 @@ var require_svg = __commonJS({
       const fs = __require("fs");
       const svgTag = exports.render(qrData, options);
       const xmlStr = '<?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">' + svgTag;
-      fs.writeFile(path2, xmlStr, cb);
+      fs.writeFile(path3, xmlStr, cb);
     };
   }
 });
@@ -205555,8 +205555,8 @@ var require_server = __commonJS({
         cb
       };
     }
-    function getTypeFromFilename(path2) {
-      return path2.slice((path2.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase();
+    function getTypeFromFilename(path3) {
+      return path3.slice((path3.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase();
     }
     function getRendererFromType(type) {
       switch (type) {
@@ -205620,17 +205620,17 @@ var require_server = __commonJS({
       const renderer = getRendererFromType(params.opts.type);
       return render2(renderer.renderToBuffer, text3, params);
     };
-    exports.toFile = function toFile(path2, text3, opts, cb) {
-      if (typeof path2 !== "string" || !(typeof text3 === "string" || typeof text3 === "object")) {
+    exports.toFile = function toFile(path3, text3, opts, cb) {
+      if (typeof path3 !== "string" || !(typeof text3 === "string" || typeof text3 === "object")) {
         throw new Error("Invalid argument");
       }
       if (arguments.length < 3 && !canPromise()) {
         throw new Error("Too few arguments provided");
       }
       const params = checkParams(text3, opts, cb);
-      const type = params.opts.type || getTypeFromFilename(path2);
+      const type = params.opts.type || getTypeFromFilename(path3);
       const renderer = getRendererFromType(type);
-      const renderToFile = renderer.renderToFile.bind(null, path2);
+      const renderToFile = renderer.renderToFile.bind(null, path3);
       return render2(renderToFile, text3, params);
     };
     exports.toFileStream = function toFileStream(stream, text3, opts) {
@@ -206023,8 +206023,8 @@ function getErrorMap() {
 
 // ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/parseUtil.js
 var makeIssue = (params) => {
-  const { data, path: path2, errorMaps, issueData } = params;
-  const fullPath = [...path2, ...issueData.path || []];
+  const { data, path: path3, errorMaps, issueData } = params;
+  const fullPath = [...path3, ...issueData.path || []];
   const fullIssue = {
     ...issueData,
     path: fullPath
@@ -206139,11 +206139,11 @@ var errorUtil;
 
 // ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/types.js
 var ParseInputLazyPath = class {
-  constructor(parent, value, path2, key) {
+  constructor(parent, value, path3, key) {
     this._cachedPath = [];
     this.parent = parent;
     this.data = value;
-    this._path = path2;
+    this._path = path3;
     this._key = key;
   }
   get path() {
@@ -214894,10 +214894,10 @@ function assignProp(target, prop, value) {
     configurable: true
   });
 }
-function getElementAtPath(obj, path2) {
-  if (!path2)
+function getElementAtPath(obj, path3) {
+  if (!path3)
     return obj;
-  return path2.reduce((acc, key) => acc?.[key], obj);
+  return path3.reduce((acc, key) => acc?.[key], obj);
 }
 function promiseAllObject(promisesObj) {
   const keys = Object.keys(promisesObj);
@@ -215217,11 +215217,11 @@ function aborted(x, startIndex = 0) {
   }
   return false;
 }
-function prefixIssues(path2, issues) {
+function prefixIssues(path3, issues) {
   return issues.map((iss) => {
     var _a;
     (_a = iss).path ?? (_a.path = []);
-    iss.path.unshift(path2);
+    iss.path.unshift(path3);
     return iss;
   });
 }
@@ -215358,7 +215358,7 @@ function treeifyError(error40, _mapper) {
     return issue2.message;
   };
   const result = { errors: [] };
-  const processError = (error41, path2 = []) => {
+  const processError = (error41, path3 = []) => {
     var _a, _b;
     for (const issue2 of error41.issues) {
       if (issue2.code === "invalid_union" && issue2.errors.length) {
@@ -215368,7 +215368,7 @@ function treeifyError(error40, _mapper) {
       } else if (issue2.code === "invalid_element") {
         processError({ issues: issue2.issues }, issue2.path);
       } else {
-        const fullpath = [...path2, ...issue2.path];
+        const fullpath = [...path3, ...issue2.path];
         if (fullpath.length === 0) {
           result.errors.push(mapper(issue2));
           continue;
@@ -215398,9 +215398,9 @@ function treeifyError(error40, _mapper) {
   processError(error40);
   return result;
 }
-function toDotPath(path2) {
+function toDotPath(path3) {
   const segs = [];
-  for (const seg of path2) {
+  for (const seg of path3) {
     if (typeof seg === "number")
       segs.push(`[${seg}]`);
     else if (typeof seg === "symbol")
@@ -232682,9 +232682,9 @@ var Resend = class {
       "Content-Type": "application/json"
     });
   }
-  async fetchRequest(path2, options = {}) {
+  async fetchRequest(path3, options = {}) {
     try {
-      const response = await fetch(`${baseUrl}${path2}`, options);
+      const response = await fetch(`${baseUrl}${path3}`, options);
       if (!response.ok) try {
         const rawError = await response.text();
         return {
@@ -232738,7 +232738,7 @@ var Resend = class {
       };
     }
   }
-  async post(path2, entity, options = {}) {
+  async post(path3, entity, options = {}) {
     const headers = new Headers(this.headers);
     if (options.headers) for (const [key, value] of new Headers(options.headers).entries()) headers.set(key, value);
     if (options.idempotencyKey) headers.set("Idempotency-Key", options.idempotencyKey);
@@ -232748,9 +232748,9 @@ var Resend = class {
       ...options,
       headers
     };
-    return this.fetchRequest(path2, requestOptions);
+    return this.fetchRequest(path3, requestOptions);
   }
-  async get(path2, options = {}) {
+  async get(path3, options = {}) {
     const headers = new Headers(this.headers);
     if (options.headers) for (const [key, value] of new Headers(options.headers).entries()) headers.set(key, value);
     const requestOptions = {
@@ -232758,9 +232758,9 @@ var Resend = class {
       ...options,
       headers
     };
-    return this.fetchRequest(path2, requestOptions);
+    return this.fetchRequest(path3, requestOptions);
   }
-  async put(path2, entity, options = {}) {
+  async put(path3, entity, options = {}) {
     const headers = new Headers(this.headers);
     if (options.headers) for (const [key, value] of new Headers(options.headers).entries()) headers.set(key, value);
     const requestOptions = {
@@ -232769,9 +232769,9 @@ var Resend = class {
       ...options,
       headers
     };
-    return this.fetchRequest(path2, requestOptions);
+    return this.fetchRequest(path3, requestOptions);
   }
-  async patch(path2, entity, options = {}) {
+  async patch(path3, entity, options = {}) {
     const headers = new Headers(this.headers);
     if (options.headers) for (const [key, value] of new Headers(options.headers).entries()) headers.set(key, value);
     const requestOptions = {
@@ -232780,21 +232780,24 @@ var Resend = class {
       ...options,
       headers
     };
-    return this.fetchRequest(path2, requestOptions);
+    return this.fetchRequest(path3, requestOptions);
   }
-  async delete(path2, query) {
+  async delete(path3, query) {
     const requestOptions = {
       method: "DELETE",
       body: JSON.stringify(query),
       headers: this.headers
     };
-    return this.fetchRequest(path2, requestOptions);
+    return this.fetchRequest(path3, requestOptions);
   }
 };
 
 // src/lib/email.ts
 var import_pdfkit = __toESM(require_pdfkit(), 1);
 var import_qrcode = __toESM(require_lib7(), 1);
+import path from "node:path";
+import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 var _resend = null;
 function getResend() {
   if (!_resend) {
@@ -232851,6 +232854,16 @@ function safeHttpsUrl(value) {
     return null;
   }
 }
+var API_RUNTIME_DIR = path.dirname(fileURLToPath(import.meta.url));
+var PDF_LOGO_PATH = path.join(API_RUNTIME_DIR, "omniqure-email-header.png");
+var SOURCE_LOGO_PATH = path.resolve(API_RUNTIME_DIR, "../../../omniqure/public/omniqure-email-header.png");
+async function readPdfLogo() {
+  try {
+    return await readFile(PDF_LOGO_PATH);
+  } catch {
+    return await readFile(SOURCE_LOGO_PATH);
+  }
+}
 function baseTemplate(title, body) {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -232894,36 +232907,106 @@ function baseTemplate(title, body) {
 </body>
 </html>`;
 }
-function createWholesaleInvoicePdf(invoice) {
+async function createWholesaleInvoicePdf(invoice) {
+  const logo = await readPdfLogo();
+  const qr = await import_qrcode.default.toBuffer(invoice.paymentUrl, { type: "png", width: 260, margin: 1 });
   return new Promise((resolve, reject) => {
     const doc = new import_pdfkit.default({ size: "A4", margin: 48 });
     const chunks = [];
     doc.on("data", (chunk) => chunks.push(Buffer.from(chunk)));
     doc.on("end", () => resolve(Buffer.concat(chunks)));
     doc.on("error", reject);
-    doc.fontSize(22).fillColor("#142767").text("OmniQure Wholesale Invoice");
-    doc.moveDown(0.5).fontSize(10).fillColor("#475569");
-    doc.text(`Reference: ${invoice.referenceNumber}`);
-    doc.text(`Order: ${invoice.orderNumber}`);
-    doc.text(`Due date: ${invoice.dueDate}`);
-    doc.moveDown();
-    doc.fontSize(12).fillColor("#0f172a").text(`Bill to: ${invoice.customerName}`);
-    doc.fontSize(10).fillColor("#475569").text(invoice.customerEmail);
-    doc.moveDown();
-    invoice.items.forEach((item) => {
-      const lineTotal = item.priceGbp * item.quantity;
-      doc.fillColor("#0f172a").fontSize(10).text(
-        `${item.productName}  x ${item.quantity}`,
-        { continued: true }
-      ).text(formatMoney(lineTotal, invoice.currency), { align: "right" });
-    });
-    doc.moveDown();
-    doc.fontSize(12).fillColor("#142767").text(`Total: ${formatMoney(invoice.totalGbp, invoice.currency)}`, { align: "right" });
+    const pageWidth = doc.page.width;
+    const contentWidth = pageWidth - 96;
+    const left = 48;
+    const right = left + contentWidth;
+    doc.save();
+    doc.rect(0, 0, pageWidth, 112).fill("#142767");
+    doc.image(logo, left, 24, { width: 210 });
+    doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(9).text("WHOLESALE INVOICE", left + 300, 48, { width: contentWidth - 300, align: "right", characterSpacing: 1.2 });
+    doc.restore();
+    let y = 146;
+    doc.fillColor("#0F172A").font("Helvetica-Bold").fontSize(23).text("Wholesale invoice", left, y);
+    y += 34;
+    doc.fillColor("#64748B").font("Helvetica").fontSize(10.5).text(`Hi ${invoice.customerName}, your OmniQure Pay by Bank invoice is ready.`, left, y);
+    y += 26;
     if (invoice.description) {
-      doc.moveDown().fontSize(10).fillColor("#475569").text(invoice.description);
+      doc.fillColor("#475569").fontSize(10).text(invoice.description, left, y, { width: contentWidth, lineGap: 3 });
+      y = doc.y + 16;
     }
-    doc.moveDown().fontSize(9).fillColor("#64748b").text("Pay securely using the Pay by Bank link or QR code in the accompanying email.");
-    doc.moveDown().fontSize(8).fillColor("#713f12").text("All products are sold strictly for research purposes only. Not for human consumption.");
+    const referenceCardY = y;
+    doc.roundedRect(left, referenceCardY, contentWidth, 78, 7).fillAndStroke("#F8FAFC", "#E2E8F0");
+    doc.fillColor("#94A3B8").font("Helvetica-Bold").fontSize(8).text("REFERENCE", left + 20, referenceCardY + 15, { characterSpacing: 0.7 });
+    doc.fillColor("#0F172A").font("Helvetica-Bold").fontSize(20).text(invoice.referenceNumber, left + 20, referenceCardY + 31);
+    doc.fillColor("#475569").font("Helvetica").fontSize(10).text(`Order ${invoice.orderNumber}`, left + 230, referenceCardY + 23);
+    doc.text(`Due ${invoice.dueDate}`, left + 230, referenceCardY + 40);
+    y = referenceCardY + 102;
+    doc.fillColor("#94A3B8").font("Helvetica-Bold").fontSize(8).text("BILL TO", left, y, { characterSpacing: 0.7 });
+    y += 15;
+    doc.fillColor("#0F172A").font("Helvetica-Bold").fontSize(11).text(invoice.customerName, left, y);
+    y += 15;
+    doc.fillColor("#64748B").font("Helvetica").fontSize(9.5).text(invoice.customerEmail, left, y);
+    y += 28;
+    const tableRight = right;
+    const quantityX = right - 150;
+    const priceX = right - 100;
+    const drawTableHeader = () => {
+      doc.fillColor("#94A3B8").font("Helvetica-Bold").fontSize(8).text("ITEM", left, y, { characterSpacing: 0.7 }).text("QTY", quantityX, y, { width: 45, align: "center", characterSpacing: 0.7 }).text("PRICE", priceX, y, { width: 100, align: "right", characterSpacing: 0.7 });
+      y += 17;
+      doc.moveTo(left, y).lineTo(tableRight, y).lineWidth(1).strokeColor("#E2E8F0").stroke();
+      y += 10;
+    };
+    drawTableHeader();
+    invoice.items.forEach((item) => {
+      if (y > 710) {
+        doc.addPage();
+        y = 58;
+        drawTableHeader();
+      }
+      const lineTotal = item.priceGbp * item.quantity;
+      doc.fillColor("#1E293B").font("Helvetica").fontSize(10).text(item.productName, left, y, { width: quantityX - left - 12 });
+      doc.fillColor("#94A3B8").fontSize(8.5).text(item.productCategory, left, y + 14, { width: quantityX - left - 12 });
+      doc.fillColor("#475569").font("Helvetica").fontSize(9.5).text(`\xD7${item.quantity}`, quantityX, y + 6, { width: 45, align: "center" });
+      doc.fillColor("#1E293B").font("Helvetica-Bold").fontSize(9.5).text(formatMoney(lineTotal, invoice.currency), priceX, y + 6, { width: 100, align: "right" });
+      y += 40;
+      doc.moveTo(left, y).lineTo(tableRight, y).lineWidth(0.7).strokeColor("#E2E8F0").stroke();
+      y += 12;
+    });
+    const totalsX = right - 205;
+    const totalRow = (label, value, bold = false) => {
+      doc.fillColor(bold ? "#0F172A" : "#64748B").font(bold ? "Helvetica-Bold" : "Helvetica").fontSize(bold ? 12 : 9.5).text(label, totalsX, y, { width: 95 }).text(value, totalsX + 95, y, { width: 110, align: "right" });
+      y += bold ? 24 : 19;
+    };
+    totalRow("Subtotal", formatMoney(invoice.subtotalGbp, invoice.currency));
+    totalRow(`Shipping (${invoice.shippingMethod ?? "Wholesale"})`, formatMoney(invoice.shippingCostGbp, invoice.currency));
+    doc.moveTo(totalsX, y).lineTo(right, y).lineWidth(1.2).strokeColor("#CBD5E1").stroke();
+    y += 11;
+    totalRow("Total", formatMoney(invoice.totalGbp, invoice.currency), true);
+    y += 14;
+    if (y > 650) {
+      doc.addPage();
+      y = 58;
+    }
+    const paymentBoxY = y;
+    const paymentBoxHeight = 124;
+    doc.roundedRect(left, paymentBoxY, contentWidth, paymentBoxHeight, 7).fillAndStroke("#EFF6FF", "#BFDBFE");
+    doc.fillColor("#1240A0").font("Helvetica-Bold").fontSize(9).text("PAY BY BANK", left + 18, paymentBoxY + 17, { characterSpacing: 0.7 });
+    doc.fillColor("#1E3A8A").font("Helvetica-Bold").fontSize(12).text(`Amount due: ${formatMoney(invoice.totalGbp, invoice.currency)}`, left + 18, paymentBoxY + 36);
+    doc.fillColor("#475569").font("Helvetica").fontSize(9.5).text("Scan the QR code to pay securely using your bank.", left + 18, paymentBoxY + 61, { width: 250 });
+    doc.fillColor("#64748B").fontSize(8.5).text("The payment link is unique to this invoice.", left + 18, paymentBoxY + 81, { width: 250 });
+    doc.image(qr, right - 104, paymentBoxY + 12, { width: 92, height: 92 });
+    y = paymentBoxY + paymentBoxHeight + 18;
+    if (invoice.invoiceNotes) {
+      doc.roundedRect(left, y, contentWidth, 52, 5).fill("#F8FAFC");
+      doc.fillColor("#475569").font("Helvetica").fontSize(9).text(invoice.invoiceNotes, left + 14, y + 14, { width: contentWidth - 28, lineGap: 2 });
+      y = doc.y + 18;
+    }
+    doc.moveTo(left, y).lineTo(right, y).lineWidth(0.7).strokeColor("#E2E8F0").stroke();
+    y += 14;
+    doc.fillColor("#713F12").font("Helvetica").fontSize(8.5).text("All products are sold strictly for research purposes only. Not for human consumption.", left, y, {
+      width: contentWidth,
+      align: "center"
+    });
     doc.end();
   });
 }
@@ -244824,8 +244907,8 @@ var AUTOMATION_AGENT_PATTERN = /headless|phantom|selenium|playwright|puppeteer|s
 function safeHeader(value, maxLength) {
   return typeof value === "string" ? value.slice(0, maxLength) : "";
 }
-function resourceKindForPath(path2) {
-  const pathname = path2.split("?")[0];
+function resourceKindForPath(path3) {
+  const pathname = path3.split("?")[0];
   if (pathname === "/sitemap.xml" || pathname === "/api/sitemap.xml") return "sitemap";
   if (/^\/api\/catalogue-assets\/.+\.(?:avif|gif|jpe?g|png|svg|webp|ico)$/i.test(pathname)) return "image";
   if (/^\/api\/products(?:\/[^/]+)?(?:\/related)?$/.test(pathname)) return "catalogue";
@@ -244851,7 +244934,7 @@ async function isBlocked(ip) {
   const [blocked] = await db.select({ ip: blockedIpsTable.ip }).from(blockedIpsTable).where(eq(blockedIpsTable.ip, ip)).limit(1);
   return !!blocked;
 }
-async function recordTraffic(clientKey, ip, resourceKind, path2, userAgent2) {
+async function recordTraffic(clientKey, ip, resourceKind, path3, userAgent2) {
   const result = await db.execute(sql`
     INSERT INTO public_traffic_limits (
       client_key, ip, resource_kind, window_started_at, request_count,
@@ -244859,7 +244942,7 @@ async function recordTraffic(clientKey, ip, resourceKind, path2, userAgent2) {
     )
     VALUES (
       ${clientKey}, ${ip}, ${resourceKind}, NOW(), 1,
-      NOW(), ARRAY[${path2}]::text[], ${path2}, ${userAgent2 || null}, NOW()
+      NOW(), ARRAY[${path3}]::text[], ${path3}, ${userAgent2 || null}, NOW()
     )
     ON CONFLICT (client_key) DO UPDATE SET
       ip = EXCLUDED.ip,
@@ -244901,12 +244984,12 @@ async function recordTraffic(clientKey, ip, resourceKind, path2, userAgent2) {
     blockedUntil: row.blocked_until ? new Date(row.blocked_until) : null
   };
 }
-async function logTrafficEvent(clientKey, ip, resourceKind, path2, userAgent2, state, action, reason) {
+async function logTrafficEvent(clientKey, ip, resourceKind, path3, userAgent2, state, action, reason) {
   await db.insert(publicTrafficEventsTable).values({
     clientKey,
     ip,
     resourceKind,
-    path: path2,
+    path: path3,
     userAgent: userAgent2 || null,
     requestCount: state.requestCount,
     uniquePathCount: state.uniquePathCount,
@@ -244921,9 +245004,9 @@ async function applyTrafficDecision(req, resourceKind, pathOverride) {
   }
   const userAgent2 = safeHeader(req.headers["user-agent"], MAX_USER_AGENT_LENGTH);
   const knownSafeAgent = isKnownSafeAgent(userAgent2);
-  const path2 = safeHeader(pathOverride ?? req.path, MAX_PATH_LENGTH) || "/";
+  const path3 = safeHeader(pathOverride ?? req.path, MAX_PATH_LENGTH) || "/";
   const clientKey = `${ip}:${resourceKind}`;
-  const state = await recordTraffic(clientKey, ip, resourceKind, path2, userAgent2);
+  const state = await recordTraffic(clientKey, ip, resourceKind, path3, userAgent2);
   if (state.blockedUntil && state.blockedUntil.getTime() > Date.now()) {
     return {
       allowed: false,
@@ -244958,7 +245041,7 @@ async function applyTrafficDecision(req, resourceKind, pathOverride) {
     clientKey,
     ip,
     resourceKind,
-    path2,
+    path3,
     userAgent2,
     state,
     automated ? "temporary_block" : "throttled",
@@ -244972,9 +245055,9 @@ async function applyTrafficDecision(req, resourceKind, pathOverride) {
     state
   };
 }
-async function checkImageTraffic(req, path2) {
+async function checkImageTraffic(req, path3) {
   try {
-    return await applyTrafficDecision(req, "image", path2);
+    return await applyTrafficDecision(req, "image", path3);
   } catch (err) {
     req.log?.error({ err }, "Public image traffic protection failed open");
     return { allowed: true, status: 200 };
@@ -245012,13 +245095,13 @@ async function publicTrafficProtection(req, res, next) {
 }
 
 // src/routes/publicTraffic.ts
-import path from "node:path";
+import path2 from "node:path";
 import { existsSync } from "node:fs";
 var router52 = (0, import_express52.Router)();
 var PUBLIC_ASSET_ROOT = [
-  path.resolve(process.cwd(), "artifacts/omniqure/public"),
-  path.resolve(process.cwd(), "../omniqure/public"),
-  path.resolve(import.meta.dirname, "../../omniqure/public")
+  path2.resolve(process.cwd(), "artifacts/omniqure/public"),
+  path2.resolve(process.cwd(), "../omniqure/public"),
+  path2.resolve(import.meta.dirname, "../../omniqure/public")
 ].find(existsSync);
 router52.get("/catalogue-assets/*assetPath", (req, res) => {
   const rawAssetPath = req.params.assetPath;
@@ -245038,8 +245121,8 @@ router52.get("/traffic/image", async (req, res) => {
     res.status(404).json({ error: "Not found" });
     return;
   }
-  const path2 = typeof req.headers["x-original-path"] === "string" ? req.headers["x-original-path"] : "/";
-  const decision = await checkImageTraffic(req, path2);
+  const path3 = typeof req.headers["x-original-path"] === "string" ? req.headers["x-original-path"] : "/";
+  const decision = await checkImageTraffic(req, path3);
   if (!decision.allowed) {
     if (decision.retryAfterSeconds) res.setHeader("Retry-After", String(decision.retryAfterSeconds));
     res.status(decision.status).json({
