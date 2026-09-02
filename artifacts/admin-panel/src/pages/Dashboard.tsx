@@ -44,22 +44,22 @@ const PERIOD_LABELS: Record<Period, string> = { 7: "7d", 30: "30d", 90: "90d", 3
 
 const STATUS_COLORS: Record<string, string> = {
   pending: "#d9970f",
-  processing: "#f4780c",
-  shipped: "#ffb266",
+  processing: "#1b5cb5",
+  shipped: "#6a9bdc",
   delivered: "#21a366",
   cancelled: "#d94f45",
-  returned: "#8a7a66",
+  returned: "#64748b",
 };
 
 const CATEGORY_COLORS = [
-  "#f4780c",
-  "#ffb266",
-  "#e2660a",
-  "#ffd9ad",
+  "#1b5cb5",
+  "#6a9bdc",
+  "#0d2565",
+  "#a7c4f2",
   "#21a366",
   "#d9970f",
-  "#ffe9d4",
-  "#8a7a66",
+  "#dbe8fb",
+  "#64748b",
 ];
 
 function PeriodSelector({ value, onChange }: { value: Period; onChange: (p: Period) => void }) {

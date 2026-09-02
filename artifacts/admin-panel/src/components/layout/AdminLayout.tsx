@@ -192,7 +192,7 @@ function NavGroups({
                   onClick={onNavigate}
                   className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition-colors ${
                     isActive
-                      ? "bg-primary text-primary-foreground shadow-[0_10px_24px_rgba(244,120,12,0.35)]"
+                       ? "bg-primary text-primary-foreground shadow-[0_10px_24px_rgba(27,92,181,0.28)]"
                       : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                   }`}
                 >
