@@ -37,11 +37,34 @@ interface SecureAdminSession {
   sessionVersion: number;
 }
 
+export interface AdminRecoveryState {
+  role: string;
+  mfaEnabled: boolean;
+}
+
+export type SharedRecoveryDecision = "bootstrap" | "enroll-owner" | "denied";
+
+export function sharedRecoveryDecision(activeAdmins: readonly AdminRecoveryState[]): SharedRecoveryDecision {
+  if (activeAdmins.length === 0) return "bootstrap";
+  if (
+    activeAdmins.length === 1 &&
+    activeAdmins[0].role === "owner" &&
+    !activeAdmins[0].mfaEnabled
+  ) {
+    return "enroll-owner";
+  }
+  return "denied";
+}
+
+export function sharedOwnerSessionAllowed(activeAdmins: readonly AdminRecoveryState[]): boolean {
+  return activeAdmins.length === 0;
+}
+
 function signPayload(payload: string): string {
   return createHmac("sha256", SESSION_SECRET).update(payload).digest("base64url");
 }
 
-function secureSessionValue(email: string | null, sessionVersion = 0): string {
+export function createSecureAdminSessionValue(email: string | null, sessionVersion = 0): string {
   const expiresAt = Date.now() + COOKIE_MAX_AGE;
   const authAt = Date.now();
   const encodedEmail = Buffer.from(email ?? "", "utf8").toString("base64url");
@@ -92,12 +115,12 @@ export async function validateSecureAdminSession(req: Request): Promise<boolean>
   const session = parseSecureAdminSession(req);
   if (!session) return false;
   if (!session.email) {
-    const [activeAdmin] = await db
-      .select({ id: adminUsersTable.id })
+    const activeAdmins = await db
+      .select({ role: adminUsersTable.role, mfaEnabled: adminUsersTable.mfaEnabled })
       .from(adminUsersTable)
       .where(eq(adminUsersTable.isActive, true))
       .limit(1);
-    return !activeAdmin;
+    return sharedOwnerSessionAllowed(activeAdmins);
   }
   const [user] = await db
     .select({ isActive: adminUsersTable.isActive, sessionVersion: adminUsersTable.sessionVersion })
@@ -438,7 +461,7 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
       return;
     }
     const sessionVersion = user.sessionVersion + (enrollmentChallenge ? 1 : 0);
-    res.cookie(SECURE_SESSION_COOKIE, secureSessionValue(user.email, sessionVersion), {
+    res.cookie(SECURE_SESSION_COOKIE, createSecureAdminSessionValue(user.email, sessionVersion), {
       httpOnly: true, maxAge: COOKIE_MAX_AGE, sameSite: "lax", secure: process.env.NODE_ENV === "production",
     });
     res.clearCookie(SESSION_COOKIE);
@@ -461,12 +484,9 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
   const activeAdmin = activeAdmins[0];
   let bootstrapOwner = false;
   if (!email && password === ADMIN_PASSWORD) {
-    bootstrapOwner = !activeAdmin;
-    if (
-      activeAdmins.length === 1 &&
-      activeAdmin.role === "owner" &&
-      !activeAdmin.mfaEnabled
-    ) {
+    const recoveryDecision = sharedRecoveryDecision(activeAdmins);
+    bootstrapOwner = recoveryDecision === "bootstrap";
+    if (recoveryDecision === "enroll-owner") {
       user = activeAdmin;
     }
   }
@@ -556,7 +576,7 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
 
   await clearFailedAttempts(ip);
   await recordAudit(req, "admin_bootstrap_login_success", true);
-  res.cookie(SECURE_SESSION_COOKIE, secureSessionValue(null, 0), {
+  res.cookie(SECURE_SESSION_COOKIE, createSecureAdminSessionValue(null, 0), {
     httpOnly: true, maxAge: COOKIE_MAX_AGE, sameSite: "lax", secure: process.env.NODE_ENV === "production",
   });
   res.clearCookie(SESSION_COOKIE);
@@ -641,7 +661,7 @@ router.post("/admin/auth/mfa/enable", async (req: Request, res: Response): Promi
       success: true,
     });
   });
-  res.cookie(SECURE_SESSION_COOKIE, secureSessionValue(user.email, user.sessionVersion + 1), {
+  res.cookie(SECURE_SESSION_COOKIE, createSecureAdminSessionValue(user.email, user.sessionVersion + 1), {
     httpOnly: true, maxAge: COOKIE_MAX_AGE, sameSite: "lax", secure: process.env.NODE_ENV === "production",
   });
   res.json({ enabled: true, recoveryCodes });
@@ -681,7 +701,7 @@ router.post("/admin/test-payments/crypto-session", async (req: Request, res: Res
 
 router.get("/admin/auth/me", async (req: Request, res: Response): Promise<void> => {
   const session = parseSecureAdminSession(req);
-  if (!session) {
+  if (!session || !(await validateSecureAdminSession(req))) {
     res.status(401).json({ error: "Not authenticated" });
     return;
   }
