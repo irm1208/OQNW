@@ -1,5 +1,5 @@
 import { Router } from "express";
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { AdminLoginBody } from "@workspace/api-zod";
 import { db } from "@workspace/db";
 import {
@@ -128,6 +128,26 @@ export async function validateSecureAdminSession(req: Request): Promise<boolean>
     .where(eq(adminUsersTable.email, session.email))
     .limit(1);
   return Boolean(user?.isActive && user.sessionVersion === session.sessionVersion);
+}
+
+export async function enforceSecureAdminSession(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  if (!(await validateSecureAdminSession(req))) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+  if (
+    ["POST", "PUT", "PATCH", "DELETE"].includes(req.method) &&
+    !isRecentSecureAdminSession(req)
+  ) {
+    res.status(401).json({ error: "Recent authentication required", requiresRecentAuth: true });
+    return;
+  }
+  res.locals.adminAuthenticated = true;
+  next();
 }
 
 export function getSecureAdminSession(req: Request): SecureAdminSession | null {

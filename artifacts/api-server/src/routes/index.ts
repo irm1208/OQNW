@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
 import healthRouter from "./health";
-import adminAuthRouter, { isRecentSecureAdminSession, validateSecureAdminSession } from "./admin/auth";
+import adminAuthRouter, { enforceSecureAdminSession } from "./admin/auth";
 import adminDashboardRouter from "./admin/dashboard";
 import adminOrdersRouter from "./admin/orders";
 import adminFulfillmentRouter from "./admin/fulfillment";
@@ -61,28 +61,7 @@ router.use(publicTrafficRouter);
 router.use(adminAuthRouter);
 // Every remaining /admin endpoint must pass the signed, expiring session check.
 // Individual route-level checks remain as defense in depth during migration.
-router.use("/admin", async (req, res, next) => {
-  if (!(await validateSecureAdminSession(req))) {
-    res.status(401).json({ error: "Not authenticated" });
-    return;
-  }
-  // Creating a manual wholesale payment is already protected by the signed
-  // admin session above. Do not interrupt an active admin session with a
-  // second login just because its recent-auth window has elapsed.
-  const isManualWholesaleCreation =
-    req.method === "POST" && req.path === "/wholesale";
-  if (
-    ["POST", "PUT", "PATCH", "DELETE"].includes(req.method) &&
-    !isManualWholesaleCreation &&
-    !isRecentSecureAdminSession(req)
-  ) {
-    res.status(401).json({ error: "Recent authentication required", requiresRecentAuth: true });
-    return;
-  }
-  // Preserve route-level defence in depth without trusting or mutating cookies.
-  res.locals.adminAuthenticated = true;
-  next();
-});
+router.use("/admin", enforceSecureAdminSession);
 router.use(adminDashboardRouter);
 router.use(adminOrdersRouter);
 router.use(adminFulfillmentRouter);

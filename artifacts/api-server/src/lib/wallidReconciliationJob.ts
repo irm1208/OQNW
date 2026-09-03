@@ -1,4 +1,4 @@
-import { db, orderItemsTable, ordersTable } from "@workspace/db";
+import { db, orderItemsTable, ordersTable, wholesaleInvoicesTable } from "@workspace/db";
 import { and, desc, eq, ilike } from "drizzle-orm";
 import { sendOrderConfirmation } from "./email";
 import { logger } from "./logger";
@@ -14,10 +14,30 @@ const BATCH_SIZE = 100;
 
 let running = false;
 
+export type WallidReconciliationDependencies = {
+  checkPaymentStatus: typeof checkWallidPaymentStatus;
+  sendConfirmation: typeof sendOrderConfirmation;
+};
+
 export async function reconcilePendingWallidPayments(): Promise<{
   checked: number;
   settled: number;
 }> {
+  return reconcilePendingWallidPaymentsWith();
+}
+
+/**
+ * Kept separate from the scheduler so callers can test the provider and email
+ * boundaries without changing the production module cache.
+ */
+export async function reconcilePendingWallidPaymentsWith(
+  dependencies: Partial<WallidReconciliationDependencies> = {},
+): Promise<{
+  checked: number;
+  settled: number;
+}> {
+  const checkPaymentStatus = dependencies.checkPaymentStatus ?? checkWallidPaymentStatus;
+  const sendConfirmation = dependencies.sendConfirmation ?? sendOrderConfirmation;
   const pendingOrders = await db
     .select()
     .from(ordersTable)
@@ -36,9 +56,21 @@ export async function reconcilePendingWallidPayments(): Promise<{
 
     const apiPaymentId = wallidPaymentIdFromNotes(order.notes);
     if (!apiPaymentId) continue;
+    const [invoice] = await db
+      .select({ apiPaymentId: wholesaleInvoicesTable.apiPaymentId })
+      .from(wholesaleInvoicesTable)
+      .where(eq(wholesaleInvoicesTable.orderId, order.id))
+      .limit(1);
+    if (invoice && invoice.apiPaymentId !== apiPaymentId) {
+      logger.error(
+        { orderNumber: order.orderNumber, apiPaymentId, storedInvoicePaymentId: invoice.apiPaymentId },
+        "Wallid reconciliation — wholesale invoice payment ID mismatch",
+      );
+      continue;
+    }
     checked += 1;
 
-    const providerStatus = await checkWallidPaymentStatus(apiPaymentId);
+    const providerStatus = await checkPaymentStatus(apiPaymentId);
     const validation = validateSuccessfulWallidPayment(
       {
         apiPaymentId,
@@ -73,7 +105,7 @@ export async function reconcilePendingWallidPayments(): Promise<{
         .from(orderItemsTable)
         .where(eq(orderItemsTable.orderId, order.id));
 
-      await sendOrderConfirmation({
+      await sendConfirmation({
         orderNumber: order.orderNumber,
         customerName: order.customerName,
         customerEmail: order.customerEmail,

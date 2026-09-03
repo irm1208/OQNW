@@ -20,6 +20,7 @@ export const wholesaleInvoicesTable = pgTable("wholesale_invoices", {
   bankAccountLabel: text("bank_account_label").notNull().default("Wallid Business Account"),
   payerAccountType: text("payer_account_type").notNull().default("any"),
   paymentStatus: text("payment_status").notNull().default("creating"),
+  paymentLastError: text("payment_last_error"),
   apiPaymentId: text("api_payment_id"),
   paymentUrl: text("payment_url"),
   emailStatus: text("email_status").notNull().default("not_sent"),

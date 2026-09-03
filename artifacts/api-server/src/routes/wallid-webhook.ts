@@ -1,14 +1,12 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import crypto from "crypto";
-import { db, orderItemsTable, ordersTable } from "@workspace/db";
+import { db, orderItemsTable, ordersTable, wholesaleInvoicesTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { WALLID_WEBHOOK_SECRET } from "../lib/wallid";
 import { sendOrderConfirmation } from "../lib/email";
 import { logger } from "../lib/logger";
 import { claimWallidSettlement } from "../lib/wallidSettlement";
-
-const router = Router();
 
 interface RawRequest extends Request {
   rawBody?: Buffer;
@@ -29,6 +27,10 @@ interface WallidWebhookBody {
   events: WallidEvent[];
 }
 
+export type WallidWebhookDependencies = {
+  sendConfirmation: typeof sendOrderConfirmation;
+};
+
 /**
  * POST /wallid-webhook
  *
@@ -41,6 +43,12 @@ interface WallidWebhookBody {
  * Each SUCCESS event is validated against the stored Wallid api_payment_id and
  * expected GBP amount before the order is marked paid.
  */
+export function createWallidWebhookRouter(
+  dependencies: Partial<WallidWebhookDependencies> = {},
+): Router {
+  const router = Router();
+  const sendConfirmation = dependencies.sendConfirmation ?? sendOrderConfirmation;
+
 router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<void> => {
   // ── Require webhook secret — fail closed if not configured ────────────────
   if (!WALLID_WEBHOOK_SECRET) {
@@ -158,6 +166,21 @@ router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<v
           res.status(400).json({ error: "Payment ID mismatch" });
           return;
         }
+        // Wholesale invoices have a second durable copy of the provider ID.
+        // Do not let a stale or altered order note settle a different invoice.
+        const [invoice] = await db
+          .select({ apiPaymentId: wholesaleInvoicesTable.apiPaymentId })
+          .from(wholesaleInvoicesTable)
+          .where(eq(wholesaleInvoicesTable.orderId, order.id))
+          .limit(1);
+        if (invoice && invoice.apiPaymentId !== api_payment_id) {
+          logger.error(
+            { orderNumber, api_payment_id, storedInvoicePaymentId: invoice.apiPaymentId, event_id },
+            "Wallid webhook — wholesale invoice payment ID mismatch, rejecting event",
+          );
+          res.status(400).json({ error: "Payment ID mismatch" });
+          return;
+        }
 
         // Amount and currency must match the server-owned quote used to create
         // the Wallid session. Legacy GBP orders predate these columns, so keep
@@ -205,7 +228,7 @@ router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<v
             .from(orderItemsTable)
             .where(eq(orderItemsTable.orderId, order.id));
 
-          await sendOrderConfirmation({
+          await sendConfirmation({
             orderNumber: order.orderNumber,
             customerName: order.customerName,
             customerEmail: order.customerEmail,
@@ -248,4 +271,7 @@ router.post("/wallid-webhook", async (req: RawRequest, res: Response): Promise<v
   res.status(200).json({ received: true });
 });
 
-export default router;
+  return router;
+}
+
+export default createWallidWebhookRouter();

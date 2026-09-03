@@ -33,7 +33,7 @@
 - [Production startup schema ownership](production-startup-schema-ownership.md) — API readiness must not depend on runtime DDL; managed schema changes belong to Replit’s publish flow.
 - [PDFKit in the API bundle](pdfkit-api-bundle.md) — bundled PDFKit/fontkit needs @swc/helpers declared directly or the API builds but fails at startup.
 - [Wallid payment item URLs](wallid-payment-item-urls.md) — create requests require absolute HTTP(S) item URLs; failed durable references must be resumable without duplicate insertion.
-- [Wholesale payment-link edits](wholesale-link-edits.md) — edit customer/invoice metadata only; an issued Wallid URL's reference, amount, and line items remain immutable.
+- [Wholesale payment-link lifecycle](wholesale-link-edits.md) — issued Wallid financial fields stay immutable; persist provider success atomically and repair the same link after local failure.
 - [Refund confirmation accounting](refund-confirmation-accounting.md) — pending requests reserve balance, but only a confirmed Wallid reference changes totals, inventory, and customer messaging.
 - [Refund inventory reservations](refund-inventory-reservations.md) — key returns by immutable order-item row; pending and confirmed selections reserve quantity until cancellation or confirmation.
 - [Referral admin ledger boundary](referral-admin-ledger-boundary.md) — referral reporting may use current relationships/balances, but specific reward reversals require a durable event ledger first.

@@ -9,6 +9,7 @@
     "start": "node --enable-source-maps ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test:admin-recovery": "../../scripts/node_modules/.bin/tsx --test --test-concurrency=1 src/routes/admin/auth-recovery.test.ts src/routes/admin/users-last-owner.test.ts src/routes/admin/users-last-owner.postgres.test.ts",
+    "test:wholesale": "../../scripts/node_modules/.bin/tsx --test --test-concurrency=1 src/routes/admin/wholesale.postgres.test.ts",
     "test:crypto-payments": "../../scripts/node_modules/.bin/tsx --test src/lib/cryptoPaymentPolicy.test.ts src/lib/cryptoRoutes.test.ts",
     "test:seo": "../../scripts/node_modules/.bin/tsx --test src/routes/seo-publication.test.ts",
     "test:traffic": "../../scripts/node_modules/.bin/tsx --test src/lib/publicTrafficProtection.test.ts"

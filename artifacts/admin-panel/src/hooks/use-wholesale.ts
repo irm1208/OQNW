@@ -2,6 +2,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const WHOLESALE_DRAFT_KEY = "omniqure:wholesale-payment-draft";
 export const WHOLESALE_EDIT_DRAFT_KEY = "omniqure:wholesale-edit-draft";
+export const WHOLESALE_RETRY_DRAFT_KEY = "omniqure:wholesale-retry-draft";
+export const WHOLESALE_RESOLVE_DRAFT_KEY = "omniqure:wholesale-resolve-draft";
 
 export class WholesaleApiError extends Error {
   status: number;
@@ -37,6 +39,8 @@ export interface WholesaleInvoice {
   paymentUrl?: string;
   emailStatus?: string;
   paymentStatus?: string;
+  paymentLastError?: string | null;
+  paymentCreationStale?: boolean;
   dueDate?: string;
   description?: string | null;
   invoiceNotes?: string | null;
@@ -120,6 +124,64 @@ export function useResendWholesaleInvoice() {
         );
       }
       return res.json();
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin", "wholesale"] }),
+  });
+}
+
+export function useRetryWholesalePayment() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: number) => {
+      const res = await fetch(`/api/admin/wholesale/${id}/retry`, {
+        method: "POST",
+        credentials: "include",
+      });
+      if (!res.ok) {
+        const error = await res.json().catch(() => null) as {
+          error?: string;
+          requiresRecentAuth?: boolean;
+        } | null;
+        throw new WholesaleApiError(
+          error?.requiresRecentAuth
+            ? "Please confirm your identity before retrying this payment link"
+            : error?.error || "Failed to retry payment link",
+          res.status,
+          error?.requiresRecentAuth === true,
+        );
+      }
+      return res.json() as Promise<{ invoice: WholesaleInvoice; warning?: string | null }>;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin", "wholesale"] }),
+  });
+}
+
+export function useResolveWholesalePayment() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, apiPaymentId, paymentUrl }: {
+      id: number;
+      apiPaymentId: string;
+      paymentUrl: string;
+    }) => {
+      const res = await fetch(`/api/admin/wholesale/${id}/resolve`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ apiPaymentId, paymentUrl }),
+      });
+      if (!res.ok) {
+        const error = await res.json().catch(() => null) as {
+          error?: string;
+          requiresRecentAuth?: boolean;
+        } | null;
+        throw new WholesaleApiError(
+          error?.error || "Failed to attach the verified Wallid payment",
+          res.status,
+          error?.requiresRecentAuth === true,
+        );
+      }
+      return res.json() as Promise<{ invoice: WholesaleInvoice; warning?: string | null }>;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin", "wholesale"] }),
   });

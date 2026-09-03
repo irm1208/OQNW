@@ -172,6 +172,23 @@ export declare const wholesaleInvoicesTable: import("drizzle-orm/pg-core").PgTab
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
+        paymentLastError: import("drizzle-orm/pg-core").PgColumn<{
+            name: "payment_last_error";
+            tableName: "wholesale_invoices";
+            dataType: "string";
+            columnType: "PgText";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
         apiPaymentId: import("drizzle-orm/pg-core").PgColumn<{
             name: "api_payment_id";
             tableName: "wholesale_invoices";

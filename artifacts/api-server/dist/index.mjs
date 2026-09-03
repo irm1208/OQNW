@@ -20739,16 +20739,16 @@ var require_router = __commonJS({
         return new Router56(options);
       }
       const opts = options || {};
-      function router56(req, res, next) {
-        router56.handle(req, res, next);
+      function router54(req, res, next) {
+        router54.handle(req, res, next);
       }
-      Object.setPrototypeOf(router56, this);
-      router56.caseSensitive = opts.caseSensitive;
-      router56.mergeParams = opts.mergeParams;
-      router56.params = {};
-      router56.strict = opts.strict;
-      router56.stack = [];
-      return router56;
+      Object.setPrototypeOf(router54, this);
+      router54.caseSensitive = opts.caseSensitive;
+      router54.mergeParams = opts.mergeParams;
+      router54.params = {};
+      router54.strict = opts.strict;
+      router54.stack = [];
+      return router54;
     }
     Router56.prototype = function() {
     };
@@ -21136,7 +21136,7 @@ var require_application = __commonJS({
     var app2 = exports = module.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router56 = null;
+      var router54 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -21145,13 +21145,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router56 === null) {
-            router56 = new Router56({
+          if (router54 === null) {
+            router54 = new Router56({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router56;
+          return router54;
         }
       });
     };
@@ -21222,15 +21222,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router56 = this.router;
+      var router54 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router56.use(path3, fn2);
+          return router54.use(path3, fn2);
         }
         debug(".use app under %s", path3);
         fn2.mountpath = path3;
         fn2.parent = this;
-        router56.use(path3, function mounted_app(req, res, next) {
+        router54.use(path3, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -226265,6 +226265,7 @@ var wholesaleInvoicesTable = pgTable("wholesale_invoices", {
   bankAccountLabel: text("bank_account_label").notNull().default("Wallid Business Account"),
   payerAccountType: text("payer_account_type").notNull().default("any"),
   paymentStatus: text("payment_status").notNull().default("creating"),
+  paymentLastError: text("payment_last_error"),
   apiPaymentId: text("api_payment_id"),
   paymentUrl: text("payment_url"),
   emailStatus: text("email_status").notNull().default("not_sent"),
@@ -227219,6 +227220,18 @@ async function validateSecureAdminSession(req) {
   }
   const [user] = await db.select({ isActive: adminUsersTable.isActive, sessionVersion: adminUsersTable.sessionVersion }).from(adminUsersTable).where(eq(adminUsersTable.email, session.email)).limit(1);
   return Boolean(user?.isActive && user.sessionVersion === session.sessionVersion);
+}
+async function enforceSecureAdminSession(req, res, next) {
+  if (!await validateSecureAdminSession(req)) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+  if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method) && !isRecentSecureAdminSession(req)) {
+    res.status(401).json({ error: "Recent authentication required", requiresRecentAuth: true });
+    return;
+  }
+  res.locals.adminAuthenticated = true;
+  next();
 }
 function getSecureAdminSession(req) {
   return parseSecureAdminSession(req);
@@ -244328,172 +244341,185 @@ var btcpay_webhook_default = router44;
 var import_express45 = __toESM(require_express2(), 1);
 import crypto18 from "crypto";
 init_drizzle_orm();
-var router45 = (0, import_express45.Router)();
-router45.post("/wallid-webhook", async (req, res) => {
-  if (!WALLID_WEBHOOK_SECRET) {
-    logger.error("WALLID_WEBHOOK_SECRET is not configured \u2014 rejecting Wallid webhook request");
-    res.status(400).json({ error: "Webhook secret not configured" });
-    return;
-  }
-  const tsHeader = req.headers["x-webhook-timestamp"];
-  const sigHeader = req.headers["x-webhook-signature"];
-  if (!tsHeader || !sigHeader) {
-    logger.warn("Wallid webhook rejected \u2014 missing X-Webhook-Timestamp or X-Webhook-Signature");
-    res.status(400).json({ error: "Missing signature headers" });
-    return;
-  }
-  const ts = parseInt(tsHeader, 10);
-  if (!ts || Math.abs(Date.now() / 1e3 - ts) > 300) {
-    logger.warn({ tsHeader }, "Wallid webhook rejected \u2014 stale or invalid timestamp");
-    res.status(400).json({ error: "Stale timestamp" });
-    return;
-  }
-  const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(req.body));
-  const message = `${tsHeader}.${rawBody.toString()}`;
-  const expected = "sha256=" + crypto18.createHmac("sha256", WALLID_WEBHOOK_SECRET).update(message).digest("hex");
-  const received = sigHeader;
-  let sigValid = false;
-  try {
-    if (expected.length === received.length) {
-      sigValid = crypto18.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
+function createWallidWebhookRouter(dependencies = {}) {
+  const router54 = (0, import_express45.Router)();
+  const sendConfirmation = dependencies.sendConfirmation ?? sendOrderConfirmation;
+  router54.post("/wallid-webhook", async (req, res) => {
+    if (!WALLID_WEBHOOK_SECRET) {
+      logger.error("WALLID_WEBHOOK_SECRET is not configured \u2014 rejecting Wallid webhook request");
+      res.status(400).json({ error: "Webhook secret not configured" });
+      return;
     }
-  } catch {
-    sigValid = false;
-  }
-  if (!sigValid) {
-    logger.warn({ received }, "Wallid webhook rejected \u2014 signature mismatch");
-    res.status(400).json({ error: "Invalid signature" });
-    return;
-  }
-  let body;
-  try {
-    body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
-  } catch {
-    res.status(400).json({ error: "Invalid JSON" });
-    return;
-  }
-  const events = Array.isArray(body?.events) ? body.events : [];
-  logger.info({ eventCount: events.length }, "Wallid webhook received");
-  for (const event of events) {
-    const { order_id: orderNumber, status, api_payment_id, event_id, status_error } = event;
-    if (!orderNumber) {
-      logger.warn({ event }, "Wallid event missing order_id \u2014 skipping");
-      continue;
+    const tsHeader = req.headers["x-webhook-timestamp"];
+    const sigHeader = req.headers["x-webhook-signature"];
+    if (!tsHeader || !sigHeader) {
+      logger.warn("Wallid webhook rejected \u2014 missing X-Webhook-Timestamp or X-Webhook-Signature");
+      res.status(400).json({ error: "Missing signature headers" });
+      return;
     }
-    if (status === "SUCCESS") {
-      try {
-        const [order] = await db.select({
-          id: ordersTable.id,
-          status: ordersTable.status,
-          notes: ordersTable.notes,
-          totalGbp: ordersTable.totalGbp,
-          paymentCurrency: ordersTable.paymentCurrency,
-          paymentAmountMinor: ordersTable.paymentAmountMinor,
-          orderNumber: ordersTable.orderNumber,
-          customerName: ordersTable.customerName,
-          customerEmail: ordersTable.customerEmail,
-          subtotalGbp: ordersTable.subtotalGbp,
-          shippingCostGbp: ordersTable.shippingCostGbp,
-          shippingMethod: ordersTable.shippingMethod,
-          trackingNumber: ordersTable.trackingNumber,
-          address1: ordersTable.address1,
-          address2: ordersTable.address2,
-          city: ordersTable.city,
-          postcode: ordersTable.postcode,
-          country: ordersTable.country
-        }).from(ordersTable).where(eq(ordersTable.orderNumber, orderNumber)).limit(1);
-        if (!order) {
-          logger.error({ orderNumber, event_id }, "Wallid webhook SUCCESS \u2014 order not found");
-          continue;
-        }
-        const storedFragment = `Wallid payment id: ${api_payment_id}`;
-        if (!order.notes || !order.notes.includes(storedFragment)) {
-          logger.error(
-            { orderNumber, api_payment_id, event_id, notes: order.notes },
-            "Wallid webhook \u2014 api_payment_id mismatch, rejecting event"
-          );
-          res.status(400).json({ error: "Payment ID mismatch" });
-          return;
-        }
-        const expectedCurrency = order.paymentCurrency ?? "GBP";
-        const expectedAmountMinor = order.paymentAmountMinor ?? Math.round(parseFloat(String(order.totalGbp)) * 100);
-        if (event.amount !== expectedAmountMinor || event.currency !== expectedCurrency) {
-          logger.error(
-            {
-              orderNumber,
-              event_id,
-              expectedAmountMinor,
-              actualAmount: event.amount,
-              expectedCurrency,
-              actualCurrency: event.currency
-            },
-            "Wallid webhook \u2014 amount or currency mismatch, rejecting event"
-          );
-          res.status(400).json({ error: "Amount or currency mismatch" });
-          return;
-        }
-        const settled = await claimWallidSettlement(order.id);
-        if (!settled) {
-          logger.info(
-            { orderNumber, event_id, currentStatus: order.status },
-            "Wallid webhook \u2014 order is already settled or has advanced, skipping"
-          );
-          continue;
-        }
-        logger.info({ orderNumber, api_payment_id, event_id }, "Order marked paid via Wallid webhook");
-        try {
-          const items = await db.select({
-            productName: orderItemsTable.productName,
-            productCategory: orderItemsTable.productCategory,
-            quantity: orderItemsTable.quantity,
-            priceGbp: orderItemsTable.priceGbp
-          }).from(orderItemsTable).where(eq(orderItemsTable.orderId, order.id));
-          await sendOrderConfirmation({
-            orderNumber: order.orderNumber,
-            customerName: order.customerName,
-            customerEmail: order.customerEmail,
-            items: items.map((item) => ({
-              productName: item.productName,
-              productCategory: item.productCategory,
-              quantity: item.quantity,
-              priceGbp: parseFloat(String(item.priceGbp))
-            })),
-            subtotalGbp: parseFloat(String(order.subtotalGbp)),
-            shippingCostGbp: parseFloat(String(order.shippingCostGbp)),
-            totalGbp: parseFloat(String(order.totalGbp)),
-            shippingMethod: order.shippingMethod ?? null,
-            trackingNumber: order.trackingNumber ?? null,
-            address1: order.address1 ?? null,
-            address2: order.address2 ?? null,
-            city: order.city ?? null,
-            postcode: order.postcode ?? null,
-            country: order.country ?? null
-          });
-        } catch (emailErr) {
-          logger.error(
-            { emailErr, orderNumber },
-            "Failed to send order confirmation email after Wallid payment \u2014 order is still marked paid"
-          );
-        }
-      } catch (err) {
-        logger.error({ err, orderNumber, event_id }, "Failed to update order status from Wallid webhook");
-        res.status(500).json({ error: "DB update failed" });
-        return;
+    const ts = parseInt(tsHeader, 10);
+    if (!ts || Math.abs(Date.now() / 1e3 - ts) > 300) {
+      logger.warn({ tsHeader }, "Wallid webhook rejected \u2014 stale or invalid timestamp");
+      res.status(400).json({ error: "Stale timestamp" });
+      return;
+    }
+    const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(req.body));
+    const message = `${tsHeader}.${rawBody.toString()}`;
+    const expected = "sha256=" + crypto18.createHmac("sha256", WALLID_WEBHOOK_SECRET).update(message).digest("hex");
+    const received = sigHeader;
+    let sigValid = false;
+    try {
+      if (expected.length === received.length) {
+        sigValid = crypto18.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
       }
-    } else if (status === "FAILED" || status === "EXPIRED") {
-      logger.info({ orderNumber, status, status_error, event_id }, "Wallid payment not successful \u2014 no DB update");
-    } else {
-      logger.info({ orderNumber, status, event_id }, "Wallid webhook \u2014 intermediate status, no DB update");
+    } catch {
+      sigValid = false;
     }
-  }
-  res.status(200).json({ received: true });
-});
-var wallid_webhook_default = router45;
+    if (!sigValid) {
+      logger.warn({ received }, "Wallid webhook rejected \u2014 signature mismatch");
+      res.status(400).json({ error: "Invalid signature" });
+      return;
+    }
+    let body;
+    try {
+      body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+    } catch {
+      res.status(400).json({ error: "Invalid JSON" });
+      return;
+    }
+    const events = Array.isArray(body?.events) ? body.events : [];
+    logger.info({ eventCount: events.length }, "Wallid webhook received");
+    for (const event of events) {
+      const { order_id: orderNumber, status, api_payment_id, event_id, status_error } = event;
+      if (!orderNumber) {
+        logger.warn({ event }, "Wallid event missing order_id \u2014 skipping");
+        continue;
+      }
+      if (status === "SUCCESS") {
+        try {
+          const [order] = await db.select({
+            id: ordersTable.id,
+            status: ordersTable.status,
+            notes: ordersTable.notes,
+            totalGbp: ordersTable.totalGbp,
+            paymentCurrency: ordersTable.paymentCurrency,
+            paymentAmountMinor: ordersTable.paymentAmountMinor,
+            orderNumber: ordersTable.orderNumber,
+            customerName: ordersTable.customerName,
+            customerEmail: ordersTable.customerEmail,
+            subtotalGbp: ordersTable.subtotalGbp,
+            shippingCostGbp: ordersTable.shippingCostGbp,
+            shippingMethod: ordersTable.shippingMethod,
+            trackingNumber: ordersTable.trackingNumber,
+            address1: ordersTable.address1,
+            address2: ordersTable.address2,
+            city: ordersTable.city,
+            postcode: ordersTable.postcode,
+            country: ordersTable.country
+          }).from(ordersTable).where(eq(ordersTable.orderNumber, orderNumber)).limit(1);
+          if (!order) {
+            logger.error({ orderNumber, event_id }, "Wallid webhook SUCCESS \u2014 order not found");
+            continue;
+          }
+          const storedFragment = `Wallid payment id: ${api_payment_id}`;
+          if (!order.notes || !order.notes.includes(storedFragment)) {
+            logger.error(
+              { orderNumber, api_payment_id, event_id, notes: order.notes },
+              "Wallid webhook \u2014 api_payment_id mismatch, rejecting event"
+            );
+            res.status(400).json({ error: "Payment ID mismatch" });
+            return;
+          }
+          const [invoice] = await db.select({ apiPaymentId: wholesaleInvoicesTable.apiPaymentId }).from(wholesaleInvoicesTable).where(eq(wholesaleInvoicesTable.orderId, order.id)).limit(1);
+          if (invoice && invoice.apiPaymentId !== api_payment_id) {
+            logger.error(
+              { orderNumber, api_payment_id, storedInvoicePaymentId: invoice.apiPaymentId, event_id },
+              "Wallid webhook \u2014 wholesale invoice payment ID mismatch, rejecting event"
+            );
+            res.status(400).json({ error: "Payment ID mismatch" });
+            return;
+          }
+          const expectedCurrency = order.paymentCurrency ?? "GBP";
+          const expectedAmountMinor = order.paymentAmountMinor ?? Math.round(parseFloat(String(order.totalGbp)) * 100);
+          if (event.amount !== expectedAmountMinor || event.currency !== expectedCurrency) {
+            logger.error(
+              {
+                orderNumber,
+                event_id,
+                expectedAmountMinor,
+                actualAmount: event.amount,
+                expectedCurrency,
+                actualCurrency: event.currency
+              },
+              "Wallid webhook \u2014 amount or currency mismatch, rejecting event"
+            );
+            res.status(400).json({ error: "Amount or currency mismatch" });
+            return;
+          }
+          const settled = await claimWallidSettlement(order.id);
+          if (!settled) {
+            logger.info(
+              { orderNumber, event_id, currentStatus: order.status },
+              "Wallid webhook \u2014 order is already settled or has advanced, skipping"
+            );
+            continue;
+          }
+          logger.info({ orderNumber, api_payment_id, event_id }, "Order marked paid via Wallid webhook");
+          try {
+            const items = await db.select({
+              productName: orderItemsTable.productName,
+              productCategory: orderItemsTable.productCategory,
+              quantity: orderItemsTable.quantity,
+              priceGbp: orderItemsTable.priceGbp
+            }).from(orderItemsTable).where(eq(orderItemsTable.orderId, order.id));
+            await sendConfirmation({
+              orderNumber: order.orderNumber,
+              customerName: order.customerName,
+              customerEmail: order.customerEmail,
+              items: items.map((item) => ({
+                productName: item.productName,
+                productCategory: item.productCategory,
+                quantity: item.quantity,
+                priceGbp: parseFloat(String(item.priceGbp))
+              })),
+              subtotalGbp: parseFloat(String(order.subtotalGbp)),
+              shippingCostGbp: parseFloat(String(order.shippingCostGbp)),
+              totalGbp: parseFloat(String(order.totalGbp)),
+              shippingMethod: order.shippingMethod ?? null,
+              trackingNumber: order.trackingNumber ?? null,
+              address1: order.address1 ?? null,
+              address2: order.address2 ?? null,
+              city: order.city ?? null,
+              postcode: order.postcode ?? null,
+              country: order.country ?? null
+            });
+          } catch (emailErr) {
+            logger.error(
+              { emailErr, orderNumber },
+              "Failed to send order confirmation email after Wallid payment \u2014 order is still marked paid"
+            );
+          }
+        } catch (err) {
+          logger.error({ err, orderNumber, event_id }, "Failed to update order status from Wallid webhook");
+          res.status(500).json({ error: "DB update failed" });
+          return;
+        }
+      } else if (status === "FAILED" || status === "EXPIRED") {
+        logger.info({ orderNumber, status, status_error, event_id }, "Wallid payment not successful \u2014 no DB update");
+      } else {
+        logger.info({ orderNumber, status, event_id }, "Wallid webhook \u2014 intermediate status, no DB update");
+      }
+    }
+    res.status(200).json({ received: true });
+  });
+  return router54;
+}
+var wallid_webhook_default = createWallidWebhookRouter();
 
 // src/routes/contact.ts
 var import_express46 = __toESM(require_express2(), 1);
-var router46 = (0, import_express46.Router)();
-router46.post("/contact", async (req, res) => {
+var router45 = (0, import_express46.Router)();
+router45.post("/contact", async (req, res) => {
   const { name: name2, email: email3, subject, message } = req.body;
   if (typeof name2 !== "string" || !name2.trim()) {
     res.status(400).json({ error: "Name is required" });
@@ -244525,12 +244551,12 @@ router46.post("/contact", async (req, res) => {
     res.status(500).json({ error: "Failed to send your message. Please try again or email us directly." });
   }
 });
-var contact_default = router46;
+var contact_default = router45;
 
 // src/routes/address-lookup.ts
 var import_express47 = __toESM(require_express2(), 1);
-var router47 = (0, import_express47.Router)();
-router47.get("/address-lookup", async (req, res) => {
+var router46 = (0, import_express47.Router)();
+router46.get("/address-lookup", async (req, res) => {
   const postcode = req.query["postcode"]?.trim();
   if (!postcode) {
     return res.status(400).json({ error: "postcode query param required" });
@@ -244561,7 +244587,7 @@ router47.get("/address-lookup", async (req, res) => {
     return res.status(500).json({ error: "Address lookup request failed" });
   }
 });
-router47.post("/address-verification", async (req, res) => {
+router46.post("/address-verification", async (req, res) => {
   const delivery = req.body;
   if (typeof delivery.address1 !== "string" || typeof delivery.city !== "string" || typeof delivery.postcode !== "string" || typeof delivery.country !== "string") {
     return res.status(400).json({ error: "A complete delivery address is required." });
@@ -244593,7 +244619,7 @@ router47.post("/address-verification", async (req, res) => {
     });
   }
 });
-router47.post("/address-suggestions", async (req, res) => {
+router46.post("/address-suggestions", async (req, res) => {
   const delivery = req.body;
   if (typeof delivery.address1 !== "string" || typeof delivery.postcode !== "string" || typeof delivery.country !== "string") {
     return res.status(400).json({ error: "A street address, postal code, and country are required." });
@@ -244626,12 +244652,12 @@ router47.post("/address-suggestions", async (req, res) => {
     });
   }
 });
-var address_lookup_default = router47;
+var address_lookup_default = router46;
 
 // src/routes/crypto-payments.ts
 var import_express48 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router48 = (0, import_express48.Router)();
+var router47 = (0, import_express48.Router)();
 function hasPaymentAccess(order, token) {
   return typeof token === "string" && Boolean(order.cryptoPaymentAccessToken) && token.length >= 24 && token === order.cryptoPaymentAccessToken;
 }
@@ -244752,14 +244778,14 @@ async function recordCryptoPaymentVerification(order, attempt, txHash, applyOrde
   }
   return result;
 }
-router48.get("/crypto/payment-options", async (_req, res) => {
+router47.get("/crypto/payment-options", async (_req, res) => {
   try {
     res.json({ routes: await getPublicCryptoPaymentOptions() });
   } catch {
     res.status(503).json({ error: "Crypto payment options are temporarily unavailable" });
   }
 });
-router48.get("/orders/:ref/crypto-payment", async (req, res) => {
+router47.get("/orders/:ref/crypto-payment", async (req, res) => {
   res.setHeader("Cache-Control", "no-store");
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.query.token)) {
@@ -244789,7 +244815,7 @@ router48.get("/orders/:ref/crypto-payment", async (req, res) => {
     }
   });
 });
-router48.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
+router47.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -244826,7 +244852,7 @@ router48.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
   }).where(eq(ordersTable.id, order.id));
   res.json({ orderId: order.id, orderNumber: order.orderNumber, ...prepared.details, status: "rate_locked" });
 });
-router48.post("/orders/:ref/crypto-payment/check", async (req, res) => {
+router47.post("/orders/:ref/crypto-payment/check", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -244855,7 +244881,7 @@ router48.post("/orders/:ref/crypto-payment/check", async (req, res) => {
     confirmations: result.confirmations ?? null
   });
 });
-router48.post("/orders/:ref/pay", async (req, res) => {
+router47.post("/orders/:ref/pay", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -244943,12 +244969,12 @@ async function reconcilePendingCryptoPayments() {
   }
   return checked;
 }
-var crypto_payments_default = router48;
+var crypto_payments_default = router47;
 
 // src/routes/admin/crypto-audits.ts
 var import_express49 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router49 = (0, import_express49.Router)();
+var router48 = (0, import_express49.Router)();
 function requireAdmin27(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
@@ -244974,7 +245000,7 @@ function auditToResponse(audit) {
     checkedAt: audit.checkedAt.toISOString()
   };
 }
-router49.get("/admin/crypto/audits", async (req, res) => {
+router48.get("/admin/crypto/audits", async (req, res) => {
   if (!requireAdmin27(req, res)) return;
   try {
     const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 200);
@@ -244994,7 +245020,7 @@ router49.get("/admin/crypto/audits", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router49.get("/admin/crypto/audits/:id", async (req, res) => {
+router48.get("/admin/crypto/audits/:id", async (req, res) => {
   if (!requireAdmin27(req, res)) return;
   const id = Number(req.params.id);
   if (!Number.isInteger(id)) {
@@ -245008,7 +245034,7 @@ router49.get("/admin/crypto/audits/:id", async (req, res) => {
   }
   res.json(auditToResponse(audit));
 });
-router49.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
+router48.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
   if (!requireAdmin27(req, res)) return;
   const attemptId = Number(req.params.attemptId);
   if (!Number.isInteger(attemptId)) {
@@ -245033,7 +245059,7 @@ router49.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router49.post("/admin/crypto/audits/check-batch", async (req, res) => {
+router48.post("/admin/crypto/audits/check-batch", async (req, res) => {
   if (!requireAdmin27(req, res)) return;
   const attemptIds = Array.isArray(req.body?.attemptIds) ? req.body.attemptIds.filter((id) => Number.isInteger(id)).slice(0, 50) : [];
   if (attemptIds.length === 0) {
@@ -245055,7 +245081,7 @@ router49.post("/admin/crypto/audits/check-batch", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router49.get("/admin/crypto/wallet-history", async (req, res) => {
+router48.get("/admin/crypto/wallet-history", async (req, res) => {
   if (!requireAdmin27(req, res)) return;
   try {
     const attempts = await db.select({
@@ -245077,12 +245103,12 @@ router49.get("/admin/crypto/wallet-history", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var crypto_audits_default = router49;
+var crypto_audits_default = router48;
 
 // src/routes/admin/publicTraffic.ts
 var import_express50 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router50 = (0, import_express50.Router)();
+var router49 = (0, import_express50.Router)();
 function requireAdmin28(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
@@ -245090,7 +245116,7 @@ function requireAdmin28(req, res) {
   }
   return true;
 }
-router50.get("/admin/public-traffic/events", async (req, res) => {
+router49.get("/admin/public-traffic/events", async (req, res) => {
   if (!requireAdmin28(req, res)) return;
   const parsedLimit = Number(req.query.limit);
   const limit = Number.isInteger(parsedLimit) ? Math.min(Math.max(parsedLimit, 1), 200) : 50;
@@ -245106,13 +245132,13 @@ router50.get("/admin/public-traffic/events", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch public traffic events" });
   }
 });
-var publicTraffic_default = router50;
+var publicTraffic_default = router49;
 
 // src/routes/admin/security.ts
 var import_express51 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router51 = (0, import_express51.Router)();
-router51.get("/admin/security/events", async (req, res) => {
+var router50 = (0, import_express51.Router)();
+router50.get("/admin/security/events", async (req, res) => {
   if (!await requireOwner(req, res)) return;
   const requestedLimit = Number.parseInt(firstString(req.query.limit) ?? "100", 10);
   const limit = Number.isFinite(requestedLimit) ? Math.min(250, Math.max(1, requestedLimit)) : 100;
@@ -245159,13 +245185,14 @@ router51.get("/admin/security/events", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var security_default = router51;
+var security_default = router50;
 
 // src/routes/admin/wholesale.ts
 var import_express52 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router52 = (0, import_express52.Router)();
 var SITE_URL2 = process.env.SITE_URL ?? "https://omniqure.com";
+var WHOLESALE_PAYMENT_CREATION_LEASE_MS = 5 * 6e4;
+var UNKNOWN_PAYMENT_ERROR = "Wallid creation may have succeeded, but the result is unknown. Inspect the Wallid dashboard and manually attach the verified payment ID and URL; do not create another payment.";
 function text2(value, max2 = 500) {
   if (typeof value !== "string") return null;
   const trimmed = value.trim();
@@ -245181,6 +245208,21 @@ function absoluteHttpsUrl(value, fallbackPath) {
   } catch {
   }
   return new URL(fallbackPath, SITE_URL2).toString();
+}
+function verifiedWallidPaymentUrl(value) {
+  const candidate = text2(value, 2e3);
+  if (!candidate) return null;
+  try {
+    const url2 = new URL(candidate);
+    const hostname2 = url2.hostname.toLowerCase();
+    const isWallidHost = ["wallid.co", "wallid.io", "wallid.test"].some(
+      (domain2) => hostname2 === domain2 || hostname2.endsWith(`.${domain2}`)
+    );
+    if (url2.protocol !== "https:" || !isWallidHost || url2.username || url2.password) return null;
+    return url2.toString();
+  } catch {
+    return null;
+  }
 }
 function invoiceResponse(invoice, order) {
   return {
@@ -245199,325 +245241,620 @@ function invoiceResponse(invoice, order) {
     totalGbp: Number(order.totalGbp),
     paymentUrl: invoice.paymentUrl,
     paymentStatus: invoice.paymentStatus,
+    paymentLastError: invoice.paymentLastError,
+    paymentCreationStale: invoice.paymentStatus === "creating" && invoice.updatedAt.getTime() <= Date.now() - WHOLESALE_PAYMENT_CREATION_LEASE_MS,
     emailStatus: invoice.emailStatus,
     invoiceSentAt: invoice.invoiceSentAt?.toISOString() ?? null,
     createdAt: invoice.createdAt.toISOString()
   };
 }
-async function sendSavedInvoice(invoiceId) {
-  const [row] = await db.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).where(eq(wholesaleInvoicesTable.id, invoiceId)).limit(1);
-  if (!row?.invoice.paymentUrl) throw new Error("Payment link is not ready");
-  const items = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, row.order.id));
-  await sendWholesaleInvoice({
-    referenceNumber: row.invoice.referenceNumber,
-    dueDate: row.invoice.dueDate,
-    paymentUrl: row.invoice.paymentUrl,
-    currency: row.order.paymentCurrency === "EUR" ? "EUR" : "GBP",
-    customerEmailCc: row.invoice.customerEmailCc,
-    description: row.invoice.description,
-    invoiceNotes: row.invoice.invoiceNotes,
-    orderNumber: row.order.orderNumber,
-    customerName: row.order.customerName,
-    customerEmail: row.order.customerEmail,
-    items: items.map((item) => ({
-      productName: item.productName,
-      productCategory: item.productCategory,
-      quantity: item.quantity,
-      priceGbp: Number(item.priceGbp)
-    })),
-    subtotalGbp: Number(row.order.subtotalGbp),
-    shippingCostGbp: Number(row.order.shippingCostGbp),
-    totalGbp: Number(row.order.totalGbp),
-    shippingMethod: row.order.shippingMethod,
-    trackingNumber: row.order.trackingNumber,
-    address1: row.order.address1,
-    address2: row.order.address2,
-    city: row.order.city,
-    postcode: row.order.postcode,
-    country: row.order.country
+function createWholesaleRouter(dependencies = {}) {
+  const router54 = (0, import_express52.Router)();
+  const createPayment = dependencies.createPayment ?? createWallidPayment;
+  const sendInvoice = dependencies.sendInvoice ?? sendWholesaleInvoice;
+  async function sendSavedInvoice(invoiceId) {
+    const [row] = await db.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).where(eq(wholesaleInvoicesTable.id, invoiceId)).limit(1);
+    if (!row?.invoice.paymentUrl) throw new Error("Payment link is not ready");
+    const items = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, row.order.id));
+    await sendInvoice({
+      referenceNumber: row.invoice.referenceNumber,
+      dueDate: row.invoice.dueDate,
+      paymentUrl: row.invoice.paymentUrl,
+      currency: row.order.paymentCurrency === "EUR" ? "EUR" : "GBP",
+      customerEmailCc: row.invoice.customerEmailCc,
+      description: row.invoice.description,
+      invoiceNotes: row.invoice.invoiceNotes,
+      orderNumber: row.order.orderNumber,
+      customerName: row.order.customerName,
+      customerEmail: row.order.customerEmail,
+      items: items.map((item) => ({
+        productName: item.productName,
+        productCategory: item.productCategory,
+        quantity: item.quantity,
+        priceGbp: Number(item.priceGbp)
+      })),
+      subtotalGbp: Number(row.order.subtotalGbp),
+      shippingCostGbp: Number(row.order.shippingCostGbp),
+      totalGbp: Number(row.order.totalGbp),
+      shippingMethod: row.order.shippingMethod,
+      trackingNumber: row.order.trackingNumber,
+      address1: row.order.address1,
+      address2: row.order.address2,
+      city: row.order.city,
+      postcode: row.order.postcode,
+      country: row.order.country
+    });
+  }
+  router54.get("/admin/wholesale", async (_req, res) => {
+    try {
+      const rows = await db.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).orderBy(desc(wholesaleInvoicesTable.createdAt)).limit(50);
+      res.json({ invoices: rows.map(({ invoice, order }) => invoiceResponse(invoice, order)) });
+    } catch (err) {
+      res.status(500).json({ error: "Failed to list wholesale invoices" });
+    }
   });
-}
-router52.get("/admin/wholesale", async (_req, res) => {
-  try {
-    const rows = await db.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).orderBy(desc(wholesaleInvoicesTable.createdAt)).limit(50);
-    res.json({ invoices: rows.map(({ invoice, order }) => invoiceResponse(invoice, order)) });
-  } catch (err) {
-    res.status(500).json({ error: "Failed to list wholesale invoices" });
-  }
-});
-router52.post("/admin/wholesale", async (req, res) => {
-  const body = req.body;
-  const referenceNumber = text2(body.referenceNumber, 64);
-  const customerName = text2(body.customerName, 160);
-  const customerEmail = text2(body.customerEmail, 320)?.toLowerCase() ?? null;
-  const customerEmailCc = text2(body.customerEmailCc, 320)?.toLowerCase() ?? null;
-  const currency = body.currency === void 0 || body.currency === null || body.currency === "GBP" ? "GBP" : body.currency === "EUR" ? "EUR" : null;
-  const dueDate = text2(body.dueDate, 10);
-  const rawItems = Array.isArray(body.items) ? body.items : [];
-  if (!referenceNumber || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(referenceNumber) || !currency || !customerName || !validEmail(customerEmail) || customerEmailCc && !validEmail(customerEmailCc) || !dueDate || !/^\d{4}-\d{2}-\d{2}$/.test(dueDate) || rawItems.length === 0 || rawItems.length > 100) {
-    res.status(400).json({ error: "Check the reference, customer, due date, and product lines" });
-    return;
-  }
-  const items = rawItems.map((raw) => {
-    const value = raw;
-    return {
-      productId: Number(value.productId),
-      quantity: Number(value.quantity),
-      priceGbp: Number(value.priceGbp)
-    };
-  });
-  if (items.some((item) => !Number.isInteger(item.productId) || item.productId <= 0 || !Number.isInteger(item.quantity) || item.quantity <= 0 || item.quantity > 1e3 || !Number.isFinite(item.priceGbp) || item.priceGbp <= 0 || item.priceGbp > 1e6) || new Set(items.map((item) => item.productId)).size !== items.length) {
-    res.status(400).json({ error: "Each product must be unique with a valid quantity and price" });
-    return;
-  }
-  const productIds = items.map((item) => item.productId);
-  const products = await db.select().from(productsCatalogTable).where(and(
-    inArray(productsCatalogTable.id, productIds),
-    eq(productsCatalogTable.isPublished, true)
-  ));
-  if (products.length !== productIds.length) {
-    res.status(400).json({ error: "One or more catalogue products are unavailable" });
-    return;
-  }
-  const productById = new Map(products.map((product) => [product.id, product]));
-  const requestedShippingCost = Number(body.shippingCostGbp ?? 0);
-  if (!Number.isFinite(requestedShippingCost) || requestedShippingCost !== 0) {
-    res.status(400).json({ error: "The wholesale total is calculated from line items only" });
-    return;
-  }
-  const subtotal = items.reduce((sum2, item) => sum2 + item.priceGbp * item.quantity, 0);
-  const shippingCost = 0;
-  const total = Math.round(subtotal * 100) / 100;
-  const amountMinor = Math.round(total * 100);
-  const orderNumber = `WS-${referenceNumber}`;
-  try {
-    const [saved] = await db.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).where(eq(wholesaleInvoicesTable.referenceNumber, referenceNumber)).limit(1);
-    let created;
-    if (saved) {
-      const savedItems = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, saved.order.id));
-      const requestedItems = [...items].sort((a, b) => a.productId - b.productId);
-      const existingItems = [...savedItems].sort((a, b) => (a.productId ?? 0) - (b.productId ?? 0));
-      const sameItems = requestedItems.length === existingItems.length && requestedItems.every((item, index2) => {
-        const existing = existingItems[index2];
-        return existing?.productId === item.productId && existing.quantity === item.quantity && Number(existing.priceGbp) === item.priceGbp;
-      });
-      const sameRequest = saved.order.orderNumber === orderNumber && saved.order.customerEmail.toLowerCase() === customerEmail && saved.order.customerName === customerName && saved.order.paymentAmountMinor === amountMinor && (saved.order.paymentCurrency ?? "GBP") === currency && sameItems;
-      if (!sameRequest) {
-        res.status(409).json({ error: "That reference number belongs to a different wholesale payment" });
+  router54.post("/admin/wholesale", async (req, res) => {
+    const body = req.body;
+    const referenceNumber = text2(body.referenceNumber, 64);
+    const customerName = text2(body.customerName, 160);
+    const customerEmail = text2(body.customerEmail, 320)?.toLowerCase() ?? null;
+    const customerEmailCc = text2(body.customerEmailCc, 320)?.toLowerCase() ?? null;
+    const currency = body.currency === void 0 || body.currency === null || body.currency === "GBP" ? "GBP" : body.currency === "EUR" ? "EUR" : null;
+    const dueDate = text2(body.dueDate, 10);
+    const rawItems = Array.isArray(body.items) ? body.items : [];
+    if (!referenceNumber || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(referenceNumber) || !currency || !customerName || !validEmail(customerEmail) || customerEmailCc && !validEmail(customerEmailCc) || !dueDate || !/^\d{4}-\d{2}-\d{2}$/.test(dueDate) || rawItems.length === 0 || rawItems.length > 100) {
+      res.status(400).json({ error: "Check the reference, customer, due date, and product lines" });
+      return;
+    }
+    const items = rawItems.map((raw) => {
+      const value = raw;
+      return {
+        productId: Number(value.productId),
+        quantity: Number(value.quantity),
+        priceGbp: Number(value.priceGbp)
+      };
+    });
+    if (items.some((item) => !Number.isInteger(item.productId) || item.productId <= 0 || !Number.isInteger(item.quantity) || item.quantity <= 0 || item.quantity > 1e3 || !Number.isFinite(item.priceGbp) || item.priceGbp <= 0 || item.priceGbp > 1e6) || new Set(items.map((item) => item.productId)).size !== items.length) {
+      res.status(400).json({ error: "Each product must be unique with a valid quantity and price" });
+      return;
+    }
+    const productIds = items.map((item) => item.productId);
+    const products = await db.select().from(productsCatalogTable).where(and(
+      inArray(productsCatalogTable.id, productIds),
+      eq(productsCatalogTable.isPublished, true)
+    ));
+    if (products.length !== productIds.length) {
+      res.status(400).json({ error: "One or more catalogue products are unavailable" });
+      return;
+    }
+    const productById = new Map(products.map((product) => [product.id, product]));
+    const requestedShippingCost = Number(body.shippingCostGbp ?? 0);
+    if (!Number.isFinite(requestedShippingCost) || requestedShippingCost !== 0) {
+      res.status(400).json({ error: "The wholesale total is calculated from line items only" });
+      return;
+    }
+    const subtotal = items.reduce((sum2, item) => sum2 + item.priceGbp * item.quantity, 0);
+    const shippingCost = 0;
+    const total = Math.round(subtotal * 100) / 100;
+    const amountMinor = Math.round(total * 100);
+    const orderNumber = `WS-${referenceNumber}`;
+    try {
+      const [saved] = await db.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).where(eq(wholesaleInvoicesTable.referenceNumber, referenceNumber)).limit(1);
+      let created;
+      if (saved) {
+        const savedItems = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, saved.order.id));
+        const requestedItems = [...items].sort((a, b) => a.productId - b.productId);
+        const existingItems = [...savedItems].sort((a, b) => (a.productId ?? 0) - (b.productId ?? 0));
+        const sameItems = requestedItems.length === existingItems.length && requestedItems.every((item, index2) => {
+          const existing = existingItems[index2];
+          return existing?.productId === item.productId && existing.quantity === item.quantity && Number(existing.priceGbp) === item.priceGbp;
+        });
+        const sameRequest = saved.order.orderNumber === orderNumber && saved.order.customerEmail.toLowerCase() === customerEmail && saved.order.customerName === customerName && saved.order.paymentAmountMinor === amountMinor && (saved.order.paymentCurrency ?? "GBP") === currency && sameItems;
+        if (!sameRequest) {
+          res.status(409).json({ error: "That reference number belongs to a different wholesale payment" });
+          return;
+        }
+        if (saved.invoice.paymentUrl && saved.invoice.apiPaymentId) {
+          const canRepair = saved.order.status !== "paid" && saved.invoice.paymentStatus !== "paid";
+          if (canRepair && (saved.order.status === "pending" || saved.invoice.paymentStatus !== "ready")) {
+            await db.transaction(async (tx) => {
+              if (saved.order.status === "pending") {
+                const paymentNote = `Wallid payment id: ${saved.invoice.apiPaymentId}`;
+                await tx.update(ordersTable).set({
+                  status: "awaiting_payment",
+                  notes: saved.order.notes?.includes(paymentNote) ? saved.order.notes : `${saved.order.notes ?? ""}
+${paymentNote}`.trim(),
+                  updatedAt: /* @__PURE__ */ new Date()
+                }).where(and(
+                  eq(ordersTable.id, saved.order.id),
+                  ne(ordersTable.status, "paid")
+                ));
+              }
+              if (saved.invoice.paymentStatus !== "ready") {
+                await tx.update(wholesaleInvoicesTable).set({
+                  paymentStatus: "ready",
+                  paymentLastError: null,
+                  updatedAt: /* @__PURE__ */ new Date()
+                }).where(and(
+                  eq(wholesaleInvoicesTable.id, saved.invoice.id),
+                  ne(wholesaleInvoicesTable.paymentStatus, "paid")
+                ));
+              }
+            });
+          }
+          const [latest] = await db.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).where(eq(wholesaleInvoicesTable.id, saved.invoice.id)).limit(1);
+          const responseState = latest ?? saved;
+          res.status(200).json({
+            invoice: invoiceResponse(responseState.invoice, responseState.order),
+            warning: responseState.invoice.emailStatus === "sent" ? "This payment link already exists and has already been emailed." : "This payment link already exists. Use Resend if the customer has not received it."
+          });
+          return;
+        }
+        if (saved.invoice.apiPaymentId || saved.invoice.paymentUrl) {
+          res.status(409).json({ error: "This invoice has incomplete provider data and cannot safely create another payment link" });
+          return;
+        }
+        if (saved.invoice.paymentStatus === "creating") {
+          const leaseCutoff = new Date(Date.now() - WHOLESALE_PAYMENT_CREATION_LEASE_MS);
+          if (saved.invoice.updatedAt > leaseCutoff) {
+            res.status(409).json({ error: "This payment link is already being created. Refresh the list in a moment." });
+            return;
+          }
+          await db.update(wholesaleInvoicesTable).set({
+            paymentStatus: "unknown",
+            paymentLastError: UNKNOWN_PAYMENT_ERROR,
+            updatedAt: /* @__PURE__ */ new Date()
+          }).where(and(
+            eq(wholesaleInvoicesTable.id, saved.invoice.id),
+            eq(wholesaleInvoicesTable.paymentStatus, "creating")
+          ));
+          res.status(409).json({ error: UNKNOWN_PAYMENT_ERROR });
+          return;
+        }
+        res.status(409).json({
+          error: saved.invoice.paymentLastError || "This payment outcome cannot be retried safely. Inspect Wallid and use manual recovery."
+        });
+        return;
+      } else {
+        created = await db.transaction(async (tx) => {
+          const [order2] = await tx.insert(ordersTable).values({
+            orderNumber,
+            status: "pending",
+            customerEmail,
+            customerName,
+            phone: text2(body.phone, 40),
+            address1: text2(body.address1, 200),
+            address2: text2(body.address2, 200),
+            city: text2(body.city, 100),
+            county: text2(body.county, 100),
+            postcode: text2(body.postcode, 24),
+            country: text2(body.country, 80) ?? "United Kingdom",
+            subtotalGbp: subtotal.toFixed(2),
+            shippingCostGbp: shippingCost.toFixed(2),
+            totalGbp: total.toFixed(2),
+            paymentCurrency: currency,
+            paymentAmountMinor: amountMinor,
+            shippingMethod: "Wholesale",
+            notes: ["Wholesale Pay by Bank invoice", text2(body.notes, 2e3)].filter(Boolean).join("\n"),
+            fraudFlags: ["bank_transfer_payment"]
+          }).returning();
+          await tx.insert(orderItemsTable).values(items.map((item) => {
+            const product = productById.get(item.productId);
+            return {
+              orderId: order2.id,
+              productId: product.id,
+              productName: product.name,
+              productCategory: product.category,
+              quantity: item.quantity,
+              priceGbp: item.priceGbp.toFixed(2)
+            };
+          }));
+          const [invoice2] = await tx.insert(wholesaleInvoicesTable).values({
+            orderId: order2.id,
+            referenceNumber,
+            customerEmailCc,
+            dueDate,
+            description: text2(body.description, 2e3),
+            invoiceNotes: text2(body.notes, 2e3)
+          }).returning();
+          return { order: order2, invoice: invoice2 };
+        });
+      }
+      let payment = null;
+      try {
+        payment = await createPayment({
+          orderNumber,
+          amountMinor,
+          currency,
+          customerEmail,
+          customerId: `wholesale-${created.order.id}`,
+          successUrl: `${SITE_URL2}/wallid-return?order=${encodeURIComponent(orderNumber)}&status=success`,
+          failUrl: `${SITE_URL2}/wallid-return?order=${encodeURIComponent(orderNumber)}&status=failed`,
+          items: items.map((item) => {
+            const product = productById.get(item.productId);
+            return {
+              name: `${product.name} x ${item.quantity}`,
+              category: product.category,
+              price_minor: Math.round(item.priceGbp * item.quantity * 100),
+              image_url: absoluteHttpsUrl(product.imageUrl, "/omniqure-email-header.png"),
+              product_url: absoluteHttpsUrl(`/product/${product.slug}`, "/")
+            };
+          })
+        });
+      } catch (err) {
+        req.log.error({ err, orderId: created.order.id }, "Wallid payment creation outcome unknown");
+      }
+      if (!payment) {
+        await db.update(wholesaleInvoicesTable).set({
+          paymentStatus: "unknown",
+          paymentLastError: UNKNOWN_PAYMENT_ERROR,
+          updatedAt: /* @__PURE__ */ new Date()
+        }).where(eq(wholesaleInvoicesTable.id, created.invoice.id));
+        res.status(502).json({ error: UNKNOWN_PAYMENT_ERROR, orderId: created.order.id });
         return;
       }
-      if (saved.invoice.paymentUrl && saved.invoice.apiPaymentId) {
-        res.status(200).json({
-          invoice: invoiceResponse(saved.invoice, saved.order),
-          warning: saved.invoice.emailStatus === "sent" ? "This payment link already exists and has already been emailed." : "This payment link already exists. Use Resend if the customer has not received it."
+      let invoice;
+      let order;
+      try {
+        ({ invoice, order } = await db.transaction(async (tx) => {
+          const [savedInvoice] = await tx.update(wholesaleInvoicesTable).set({
+            paymentStatus: "ready",
+            apiPaymentId: payment.apiPaymentId,
+            paymentUrl: payment.paymentUrl,
+            paymentLastError: null,
+            updatedAt: /* @__PURE__ */ new Date()
+          }).where(eq(wholesaleInvoicesTable.id, created.invoice.id)).returning();
+          const [savedOrder] = await tx.update(ordersTable).set({
+            status: "awaiting_payment",
+            notes: `${created.order.notes ?? ""}
+Wallid payment id: ${payment.apiPaymentId}`.trim(),
+            updatedAt: /* @__PURE__ */ new Date()
+          }).where(eq(ordersTable.id, created.order.id)).returning();
+          return { invoice: savedInvoice, order: savedOrder };
+        }));
+      } catch (err) {
+        const message = err instanceof Error ? err.message.slice(0, 500) : "Local payment link persistence failed";
+        await db.update(wholesaleInvoicesTable).set({
+          paymentStatus: "failed",
+          paymentLastError: message,
+          apiPaymentId: payment.apiPaymentId,
+          paymentUrl: payment.paymentUrl,
+          updatedAt: /* @__PURE__ */ new Date()
+        }).where(eq(wholesaleInvoicesTable.id, created.invoice.id));
+        req.log.error({ err, orderId: created.order.id }, "Wallid link created but local readiness update failed");
+        res.status(502).json({
+          error: "Wallid created the payment link, but the order could not be made ready. Retry this invoice to repair it.",
+          orderId: created.order.id
         });
         return;
       }
+      let warning = null;
+      try {
+        await sendSavedInvoice(invoice.id);
+        await db.update(wholesaleInvoicesTable).set({ emailStatus: "sent", invoiceSentAt: /* @__PURE__ */ new Date(), emailLastError: null, updatedAt: /* @__PURE__ */ new Date() }).where(eq(wholesaleInvoicesTable.id, invoice.id));
+        invoice.emailStatus = "sent";
+        invoice.invoiceSentAt = /* @__PURE__ */ new Date();
+      } catch (err) {
+        warning = "Payment link created, but the invoice email could not be sent. You can resend it from this page.";
+        await db.update(wholesaleInvoicesTable).set({ emailStatus: "failed", emailLastError: err instanceof Error ? err.message.slice(0, 500) : "Email failed", updatedAt: /* @__PURE__ */ new Date() }).where(eq(wholesaleInvoicesTable.id, invoice.id));
+        invoice.emailStatus = "failed";
+      }
+      res.status(201).json({ invoice: invoiceResponse(invoice, order), warning });
+    } catch (err) {
+      const code = err.code ?? err.cause?.code;
+      if (code === "23505") {
+        res.status(409).json({ error: "That reference number has already been used" });
+        return;
+      }
+      req.log.error({ err }, "Failed to create wholesale invoice");
+      res.status(500).json({ error: "Failed to create wholesale invoice" });
+    }
+  });
+  router54.post("/admin/wholesale/:id/resolve", async (req, res) => {
+    const id = Number(req.params.id);
+    const body = req.body;
+    const apiPaymentId = text2(body.apiPaymentId, 500);
+    const paymentUrl = verifiedWallidPaymentUrl(body.paymentUrl);
+    if (!Number.isInteger(id) || id <= 0) {
+      res.status(400).json({ error: "Invalid invoice ID" });
+      return;
+    }
+    if (!apiPaymentId) {
+      res.status(400).json({ error: "Enter the Wallid API payment ID" });
+      return;
+    }
+    if (!paymentUrl) {
+      res.status(400).json({ error: "Enter a valid HTTPS Wallid payment URL" });
+      return;
+    }
+    try {
+      const { invoice, order } = await db.transaction(async (tx) => {
+        const [saved] = await tx.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).where(eq(wholesaleInvoicesTable.id, id)).limit(1).for("update");
+        if (!saved) throw new Error("NOT_FOUND");
+        if (saved.invoice.paymentStatus === "paid" || saved.order.status === "paid") {
+          throw new Error("PAID");
+        }
+        if (saved.invoice.apiPaymentId && saved.invoice.apiPaymentId !== apiPaymentId || saved.invoice.paymentUrl && saved.invoice.paymentUrl !== paymentUrl) {
+          throw new Error("DIFFERENT_PROVIDER_PAYMENT");
+        }
+        const [duplicate] = await tx.select({ id: wholesaleInvoicesTable.id }).from(wholesaleInvoicesTable).where(and(
+          eq(wholesaleInvoicesTable.apiPaymentId, apiPaymentId),
+          ne(wholesaleInvoicesTable.id, id)
+        )).limit(1);
+        if (duplicate) throw new Error("DUPLICATE_PROVIDER_ID");
+        const now = /* @__PURE__ */ new Date();
+        const paymentNote = `Wallid payment id: ${apiPaymentId}`;
+        const [readyInvoice] = await tx.update(wholesaleInvoicesTable).set({
+          apiPaymentId,
+          paymentUrl,
+          paymentStatus: "ready",
+          paymentLastError: null,
+          updatedAt: now
+        }).where(and(
+          eq(wholesaleInvoicesTable.id, id),
+          ne(wholesaleInvoicesTable.paymentStatus, "paid")
+        )).returning();
+        const [readyOrder] = await tx.update(ordersTable).set({
+          status: "awaiting_payment",
+          notes: saved.order.notes?.includes(paymentNote) ? saved.order.notes : `${saved.order.notes ?? ""}
+${paymentNote}`.trim(),
+          updatedAt: now
+        }).where(and(
+          eq(ordersTable.id, saved.order.id),
+          ne(ordersTable.status, "paid")
+        )).returning();
+        if (!readyInvoice || !readyOrder) throw new Error("PAID");
+        return { invoice: readyInvoice, order: readyOrder };
+      });
+      req.log.info({ invoiceId: id, orderId: order.id, apiPaymentId }, "Manually resolved wholesale Wallid payment");
+      let warning = null;
+      try {
+        await sendSavedInvoice(invoice.id);
+        const sentAt = /* @__PURE__ */ new Date();
+        await db.update(wholesaleInvoicesTable).set({
+          emailStatus: "sent",
+          invoiceSentAt: sentAt,
+          emailLastError: null,
+          updatedAt: sentAt
+        }).where(eq(wholesaleInvoicesTable.id, invoice.id));
+        invoice.emailStatus = "sent";
+        invoice.invoiceSentAt = sentAt;
+      } catch (err) {
+        warning = "Payment link was attached, but the invoice email could not be sent. You can resend it from this page.";
+        await db.update(wholesaleInvoicesTable).set({
+          emailStatus: "failed",
+          emailLastError: err instanceof Error ? err.message.slice(0, 500) : "Email failed",
+          updatedAt: /* @__PURE__ */ new Date()
+        }).where(eq(wholesaleInvoicesTable.id, invoice.id));
+        invoice.emailStatus = "failed";
+      }
+      res.json({ invoice: invoiceResponse(invoice, order), warning });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "";
+      const code = err.code ?? err.cause?.code;
+      if (message === "NOT_FOUND") {
+        res.status(404).json({ error: "Wholesale invoice not found" });
+      } else if (message === "PAID") {
+        res.status(409).json({ error: "Paid wholesale invoices cannot be manually resolved" });
+      } else if (message === "DIFFERENT_PROVIDER_PAYMENT") {
+        res.status(409).json({ error: "This invoice is already linked to a different Wallid payment" });
+      } else if (message === "DUPLICATE_PROVIDER_ID" || code === "23505") {
+        res.status(409).json({ error: "That Wallid API payment ID is already attached to another invoice" });
+      } else {
+        req.log.error({ err, invoiceId: id }, "Failed to manually resolve wholesale payment");
+        res.status(500).json({ error: "Failed to attach the verified Wallid payment" });
+      }
+    }
+  });
+  router54.post("/admin/wholesale/:id/retry", async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+      res.status(400).json({ error: "Invalid invoice ID" });
+      return;
+    }
+    try {
+      const [saved] = await db.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).where(eq(wholesaleInvoicesTable.id, id)).limit(1);
+      if (!saved) {
+        res.status(404).json({ error: "Wholesale invoice not found" });
+        return;
+      }
+      if (saved.invoice.paymentStatus === "paid" || saved.order.status === "paid") {
+        res.status(409).json({ error: "Paid wholesale invoices cannot be retried" });
+        return;
+      }
+      let invoice = saved.invoice;
+      let order = saved.order;
+      const hasProviderLink = Boolean(invoice.apiPaymentId && invoice.paymentUrl);
+      if (hasProviderLink) {
+        const paymentNote = `Wallid payment id: ${invoice.apiPaymentId}`;
+        try {
+          ({ invoice, order } = await db.transaction(async (tx) => {
+            const [readyInvoice] = await tx.update(wholesaleInvoicesTable).set({
+              paymentStatus: "ready",
+              paymentLastError: null,
+              updatedAt: /* @__PURE__ */ new Date()
+            }).where(and(
+              eq(wholesaleInvoicesTable.id, invoice.id),
+              ne(wholesaleInvoicesTable.paymentStatus, "paid")
+            )).returning();
+            const [readyOrder] = await tx.update(ordersTable).set({
+              status: "awaiting_payment",
+              notes: order.notes?.includes(paymentNote) ? order.notes : `${order.notes ?? ""}
+${paymentNote}`.trim(),
+              updatedAt: /* @__PURE__ */ new Date()
+            }).where(and(
+              eq(ordersTable.id, order.id),
+              ne(ordersTable.status, "paid")
+            )).returning();
+            if (!readyInvoice || !readyOrder) throw new Error("Paid wholesale invoices cannot be retried");
+            return { invoice: readyInvoice, order: readyOrder };
+          }));
+        } catch (err) {
+          if (err instanceof Error && err.message === "Paid wholesale invoices cannot be retried") {
+            res.status(409).json({ error: err.message });
+            return;
+          }
+          const message = err instanceof Error ? err.message.slice(0, 500) : "Local payment link repair failed";
+          await db.update(wholesaleInvoicesTable).set({
+            paymentStatus: "failed",
+            paymentLastError: message,
+            updatedAt: /* @__PURE__ */ new Date()
+          }).where(and(
+            eq(wholesaleInvoicesTable.id, invoice.id),
+            ne(wholesaleInvoicesTable.paymentStatus, "paid")
+          ));
+          req.log.error({ err, orderId: order.id }, "Failed to repair provider-known wholesale payment");
+          res.status(502).json({
+            error: "The existing Wallid payment link could not be made ready. Retry this invoice again."
+          });
+          return;
+        }
+      } else {
+        if (invoice.apiPaymentId || invoice.paymentUrl) {
+          res.status(409).json({ error: "This invoice has incomplete provider data and cannot safely create another payment link" });
+          return;
+        }
+        const leaseCutoff = new Date(Date.now() - WHOLESALE_PAYMENT_CREATION_LEASE_MS);
+        if (invoice.paymentStatus === "creating" && invoice.updatedAt > leaseCutoff) {
+          res.status(409).json({ error: "This payment link is already being created. Try again after five minutes." });
+          return;
+        }
+        if (invoice.paymentStatus === "creating") {
+          await db.update(wholesaleInvoicesTable).set({
+            paymentStatus: "unknown",
+            paymentLastError: UNKNOWN_PAYMENT_ERROR,
+            updatedAt: /* @__PURE__ */ new Date()
+          }).where(eq(wholesaleInvoicesTable.id, invoice.id));
+        }
+        res.status(409).json({
+          error: invoice.paymentStatus === "creating" ? UNKNOWN_PAYMENT_ERROR : invoice.paymentLastError || "This payment outcome cannot be retried safely. Inspect Wallid and use manual recovery."
+        });
+        return;
+      }
+      let warning = null;
+      try {
+        await sendSavedInvoice(invoice.id);
+        const sentAt = /* @__PURE__ */ new Date();
+        await db.update(wholesaleInvoicesTable).set({
+          emailStatus: "sent",
+          invoiceSentAt: sentAt,
+          emailLastError: null,
+          updatedAt: sentAt
+        }).where(eq(wholesaleInvoicesTable.id, invoice.id));
+        invoice.emailStatus = "sent";
+        invoice.invoiceSentAt = sentAt;
+      } catch (err) {
+        warning = "Payment link is ready, but the invoice email could not be sent. You can resend it from this page.";
+        await db.update(wholesaleInvoicesTable).set({
+          emailStatus: "failed",
+          emailLastError: err instanceof Error ? err.message.slice(0, 500) : "Email failed",
+          updatedAt: /* @__PURE__ */ new Date()
+        }).where(eq(wholesaleInvoicesTable.id, invoice.id));
+        invoice.emailStatus = "failed";
+      }
+      res.json({ invoice: invoiceResponse(invoice, order), warning });
+    } catch (err) {
+      req.log.error({ err, invoiceId: id }, "Failed to retry wholesale payment link");
+      res.status(500).json({ error: "Failed to retry wholesale payment link" });
+    }
+  });
+  router54.post("/admin/wholesale/:id/resend", async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+      res.status(400).json({ error: "Invalid invoice ID" });
+      return;
+    }
+    try {
+      await sendSavedInvoice(id);
+      await db.update(wholesaleInvoicesTable).set({ emailStatus: "sent", invoiceSentAt: /* @__PURE__ */ new Date(), emailLastError: null, updatedAt: /* @__PURE__ */ new Date() }).where(eq(wholesaleInvoicesTable.id, id));
+      res.json({ ok: true });
+    } catch (err) {
+      await db.update(wholesaleInvoicesTable).set({ emailStatus: "failed", emailLastError: err instanceof Error ? err.message.slice(0, 500) : "Email failed", updatedAt: /* @__PURE__ */ new Date() }).where(eq(wholesaleInvoicesTable.id, id));
+      res.status(502).json({ error: "Invoice email could not be sent" });
+    }
+  });
+  router54.patch("/admin/wholesale/:id", async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+      res.status(400).json({ error: "Invalid invoice ID" });
+      return;
+    }
+    const body = req.body;
+    const customerName = text2(body.customerName, 160);
+    const customerEmail = text2(body.customerEmail, 320)?.toLowerCase() ?? null;
+    const rawCc = body.customerEmailCc;
+    const customerEmailCc = rawCc === null || rawCc === void 0 ? null : text2(rawCc, 320)?.toLowerCase() ?? null;
+    const dueDate = text2(body.dueDate, 10);
+    const description = body.description === null || body.description === void 0 ? null : text2(body.description, 2e3);
+    const invoiceNotes = body.notes === null || body.notes === void 0 ? null : text2(body.notes, 2e3);
+    if (!customerName || !validEmail(customerEmail) || customerEmailCc && !validEmail(customerEmailCc) || !dueDate || !/^\d{4}-\d{2}-\d{2}$/.test(dueDate)) {
+      res.status(400).json({ error: "Check the customer, email, and due date" });
+      return;
+    }
+    try {
+      const [saved] = await db.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).where(eq(wholesaleInvoicesTable.id, id)).limit(1);
+      if (!saved) {
+        res.status(404).json({ error: "Wholesale invoice not found" });
+        return;
+      }
+      if (saved.invoice.paymentStatus === "paid") {
+        res.status(409).json({ error: "Paid wholesale invoices cannot be edited" });
+        return;
+      }
       if (saved.invoice.paymentStatus === "creating") {
-        res.status(409).json({ error: "This payment link is already being created. Refresh the list in a moment." });
+        res.status(409).json({ error: "This payment link is still being created. Try again in a moment." });
         return;
       }
-      const claimed = await db.update(wholesaleInvoicesTable).set({ paymentStatus: "creating", emailLastError: null }).where(and(
-        eq(wholesaleInvoicesTable.id, saved.invoice.id),
-        eq(wholesaleInvoicesTable.paymentStatus, "failed")
-      )).returning();
-      if (claimed.length === 0) {
-        res.status(409).json({ error: "This payment link cannot be retried in its current state" });
+      if (!saved.invoice.paymentUrl) {
+        res.status(409).json({ error: "This invoice does not have a payment link yet" });
         return;
       }
-      created = { order: saved.order, invoice: claimed[0] };
-    } else {
-      created = await db.transaction(async (tx) => {
-        const [order2] = await tx.insert(ordersTable).values({
-          orderNumber,
-          status: "pending",
-          customerEmail,
+      const { order, invoice } = await db.transaction(async (tx) => {
+        const [updatedOrder] = await tx.update(ordersTable).set({
           customerName,
-          phone: text2(body.phone, 40),
-          address1: text2(body.address1, 200),
-          address2: text2(body.address2, 200),
-          city: text2(body.city, 100),
-          county: text2(body.county, 100),
-          postcode: text2(body.postcode, 24),
-          country: text2(body.country, 80) ?? "United Kingdom",
-          subtotalGbp: subtotal.toFixed(2),
-          shippingCostGbp: shippingCost.toFixed(2),
-          totalGbp: total.toFixed(2),
-          paymentCurrency: currency,
-          paymentAmountMinor: amountMinor,
-          shippingMethod: "Wholesale",
-          notes: ["Wholesale Pay by Bank invoice", text2(body.notes, 2e3)].filter(Boolean).join("\n"),
-          fraudFlags: ["bank_transfer_payment"]
-        }).returning();
-        await tx.insert(orderItemsTable).values(items.map((item) => {
-          const product = productById.get(item.productId);
-          return {
-            orderId: order2.id,
-            productId: product.id,
-            productName: product.name,
-            productCategory: product.category,
-            quantity: item.quantity,
-            priceGbp: item.priceGbp.toFixed(2)
-          };
-        }));
-        const [invoice2] = await tx.insert(wholesaleInvoicesTable).values({
-          orderId: order2.id,
-          referenceNumber,
+          customerEmail,
+          updatedAt: /* @__PURE__ */ new Date()
+        }).where(eq(ordersTable.id, saved.order.id)).returning();
+        const [updatedInvoice] = await tx.update(wholesaleInvoicesTable).set({
           customerEmailCc,
           dueDate,
-          description: text2(body.description, 2e3),
-          invoiceNotes: text2(body.notes, 2e3)
-        }).returning();
-        return { order: order2, invoice: invoice2 };
+          description,
+          invoiceNotes,
+          emailStatus: "not_sent",
+          emailLastError: null,
+          updatedAt: /* @__PURE__ */ new Date()
+        }).where(eq(wholesaleInvoicesTable.id, id)).returning();
+        return { order: updatedOrder, invoice: updatedInvoice };
       });
-    }
-    const payment = await createWallidPayment({
-      orderNumber,
-      amountMinor,
-      currency,
-      customerEmail,
-      customerId: `wholesale-${created.order.id}`,
-      successUrl: `${SITE_URL2}/wallid-return?order=${encodeURIComponent(orderNumber)}&status=success`,
-      failUrl: `${SITE_URL2}/wallid-return?order=${encodeURIComponent(orderNumber)}&status=failed`,
-      items: items.map((item) => {
-        const product = productById.get(item.productId);
-        return {
-          name: `${product.name} x ${item.quantity}`,
-          category: product.category,
-          price_minor: Math.round(item.priceGbp * item.quantity * 100),
-          image_url: absoluteHttpsUrl(product.imageUrl, "/omniqure-email-header.png"),
-          product_url: absoluteHttpsUrl(`/product/${product.slug}`, "/")
-        };
-      })
-    });
-    if (!payment) {
-      await db.update(wholesaleInvoicesTable).set({ paymentStatus: "failed" }).where(eq(wholesaleInvoicesTable.id, created.invoice.id));
-      res.status(502).json({ error: "The order was saved, but Wallid could not create the payment link", orderId: created.order.id });
-      return;
-    }
-    const [invoice] = await db.update(wholesaleInvoicesTable).set({
-      paymentStatus: "ready",
-      apiPaymentId: payment.apiPaymentId,
-      paymentUrl: payment.paymentUrl
-    }).where(eq(wholesaleInvoicesTable.id, created.invoice.id)).returning();
-    const [order] = await db.update(ordersTable).set({
-      status: "awaiting_payment",
-      notes: `${created.order.notes ?? ""}
-Wallid payment id: ${payment.apiPaymentId}`.trim()
-    }).where(eq(ordersTable.id, created.order.id)).returning();
-    let warning = null;
-    try {
-      await sendSavedInvoice(invoice.id);
-      await db.update(wholesaleInvoicesTable).set({ emailStatus: "sent", invoiceSentAt: /* @__PURE__ */ new Date(), emailLastError: null }).where(eq(wholesaleInvoicesTable.id, invoice.id));
-      invoice.emailStatus = "sent";
-      invoice.invoiceSentAt = /* @__PURE__ */ new Date();
+      let warning = null;
+      try {
+        await sendSavedInvoice(invoice.id);
+        await db.update(wholesaleInvoicesTable).set({
+          emailStatus: "sent",
+          invoiceSentAt: /* @__PURE__ */ new Date(),
+          emailLastError: null,
+          updatedAt: /* @__PURE__ */ new Date()
+        }).where(eq(wholesaleInvoicesTable.id, invoice.id));
+        invoice.emailStatus = "sent";
+        invoice.invoiceSentAt = /* @__PURE__ */ new Date();
+      } catch (err) {
+        warning = "Payment link updated, but the invoice email could not be sent. You can resend it from this page.";
+        await db.update(wholesaleInvoicesTable).set({
+          emailStatus: "failed",
+          emailLastError: err instanceof Error ? err.message.slice(0, 500) : "Email failed",
+          updatedAt: /* @__PURE__ */ new Date()
+        }).where(eq(wholesaleInvoicesTable.id, invoice.id));
+        invoice.emailStatus = "failed";
+      }
+      res.json({ invoice: invoiceResponse(invoice, order), warning });
     } catch (err) {
-      warning = "Payment link created, but the invoice email could not be sent. You can resend it from this page.";
-      await db.update(wholesaleInvoicesTable).set({ emailStatus: "failed", emailLastError: err instanceof Error ? err.message.slice(0, 500) : "Email failed" }).where(eq(wholesaleInvoicesTable.id, invoice.id));
-      invoice.emailStatus = "failed";
+      req.log.error({ err, invoiceId: id }, "Failed to update wholesale invoice");
+      res.status(500).json({ error: "Failed to update wholesale invoice" });
     }
-    res.status(201).json({ invoice: invoiceResponse(invoice, order), warning });
-  } catch (err) {
-    const code = err.code ?? err.cause?.code;
-    if (code === "23505") {
-      res.status(409).json({ error: "That reference number has already been used" });
-      return;
-    }
-    req.log.error({ err }, "Failed to create wholesale invoice");
-    res.status(500).json({ error: "Failed to create wholesale invoice" });
-  }
-});
-router52.post("/admin/wholesale/:id/resend", async (req, res) => {
-  const id = Number(req.params.id);
-  if (!Number.isInteger(id) || id <= 0) {
-    res.status(400).json({ error: "Invalid invoice ID" });
-    return;
-  }
-  try {
-    await sendSavedInvoice(id);
-    await db.update(wholesaleInvoicesTable).set({ emailStatus: "sent", invoiceSentAt: /* @__PURE__ */ new Date(), emailLastError: null }).where(eq(wholesaleInvoicesTable.id, id));
-    res.json({ ok: true });
-  } catch (err) {
-    await db.update(wholesaleInvoicesTable).set({ emailStatus: "failed", emailLastError: err instanceof Error ? err.message.slice(0, 500) : "Email failed" }).where(eq(wholesaleInvoicesTable.id, id));
-    res.status(502).json({ error: "Invoice email could not be sent" });
-  }
-});
-router52.patch("/admin/wholesale/:id", async (req, res) => {
-  const id = Number(req.params.id);
-  if (!Number.isInteger(id) || id <= 0) {
-    res.status(400).json({ error: "Invalid invoice ID" });
-    return;
-  }
-  const body = req.body;
-  const customerName = text2(body.customerName, 160);
-  const customerEmail = text2(body.customerEmail, 320)?.toLowerCase() ?? null;
-  const rawCc = body.customerEmailCc;
-  const customerEmailCc = rawCc === null || rawCc === void 0 ? null : text2(rawCc, 320)?.toLowerCase() ?? null;
-  const dueDate = text2(body.dueDate, 10);
-  const description = body.description === null || body.description === void 0 ? null : text2(body.description, 2e3);
-  const invoiceNotes = body.notes === null || body.notes === void 0 ? null : text2(body.notes, 2e3);
-  if (!customerName || !validEmail(customerEmail) || customerEmailCc && !validEmail(customerEmailCc) || !dueDate || !/^\d{4}-\d{2}-\d{2}$/.test(dueDate)) {
-    res.status(400).json({ error: "Check the customer, email, and due date" });
-    return;
-  }
-  try {
-    const [saved] = await db.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).where(eq(wholesaleInvoicesTable.id, id)).limit(1);
-    if (!saved) {
-      res.status(404).json({ error: "Wholesale invoice not found" });
-      return;
-    }
-    if (saved.invoice.paymentStatus === "paid") {
-      res.status(409).json({ error: "Paid wholesale invoices cannot be edited" });
-      return;
-    }
-    if (saved.invoice.paymentStatus === "creating") {
-      res.status(409).json({ error: "This payment link is still being created. Try again in a moment." });
-      return;
-    }
-    if (!saved.invoice.paymentUrl) {
-      res.status(409).json({ error: "This invoice does not have a payment link yet" });
-      return;
-    }
-    const { order, invoice } = await db.transaction(async (tx) => {
-      const [updatedOrder] = await tx.update(ordersTable).set({
-        customerName,
-        customerEmail
-      }).where(eq(ordersTable.id, saved.order.id)).returning();
-      const [updatedInvoice] = await tx.update(wholesaleInvoicesTable).set({
-        customerEmailCc,
-        dueDate,
-        description,
-        invoiceNotes,
-        emailStatus: "not_sent",
-        emailLastError: null
-      }).where(eq(wholesaleInvoicesTable.id, id)).returning();
-      return { order: updatedOrder, invoice: updatedInvoice };
-    });
-    let warning = null;
-    try {
-      await sendSavedInvoice(invoice.id);
-      await db.update(wholesaleInvoicesTable).set({
-        emailStatus: "sent",
-        invoiceSentAt: /* @__PURE__ */ new Date(),
-        emailLastError: null
-      }).where(eq(wholesaleInvoicesTable.id, invoice.id));
-      invoice.emailStatus = "sent";
-      invoice.invoiceSentAt = /* @__PURE__ */ new Date();
-    } catch (err) {
-      warning = "Payment link updated, but the invoice email could not be sent. You can resend it from this page.";
-      await db.update(wholesaleInvoicesTable).set({
-        emailStatus: "failed",
-        emailLastError: err instanceof Error ? err.message.slice(0, 500) : "Email failed"
-      }).where(eq(wholesaleInvoicesTable.id, invoice.id));
-      invoice.emailStatus = "failed";
-    }
-    res.json({ invoice: invoiceResponse(invoice, order), warning });
-  } catch (err) {
-    req.log.error({ err, invoiceId: id }, "Failed to update wholesale invoice");
-    res.status(500).json({ error: "Failed to update wholesale invoice" });
-  }
-});
-var wholesale_default = router52;
+  });
+  return router54;
+}
+var wholesale_default = createWholesaleRouter();
 
 // src/routes/publicTraffic.ts
 var import_express53 = __toESM(require_express2(), 1);
@@ -245730,13 +246067,13 @@ async function publicTrafficProtection(req, res, next) {
 // src/routes/publicTraffic.ts
 import path2 from "node:path";
 import { existsSync } from "node:fs";
-var router53 = (0, import_express53.Router)();
+var router51 = (0, import_express53.Router)();
 var PUBLIC_ASSET_ROOT = [
   path2.resolve(process.cwd(), "artifacts/omniqure/public"),
   path2.resolve(process.cwd(), "../omniqure/public"),
   path2.resolve(import.meta.dirname, "../../omniqure/public")
 ].find(existsSync);
-router53.get("/catalogue-assets/*assetPath", (req, res) => {
+router51.get("/catalogue-assets/*assetPath", (req, res) => {
   const rawAssetPath = req.params.assetPath;
   const assetPath = Array.isArray(rawAssetPath) ? rawAssetPath.join("/") : String(rawAssetPath ?? "");
   if (!PUBLIC_ASSET_ROOT || !assetPath || !/\.(?:avif|gif|jpe?g|png|svg|webp|ico)$/i.test(assetPath)) {
@@ -245748,7 +246085,7 @@ router53.get("/catalogue-assets/*assetPath", (req, res) => {
     if (err && !res.headersSent) res.status(404).json({ error: "Not found" });
   });
 });
-router53.get("/traffic/image", async (req, res) => {
+router51.get("/traffic/image", async (req, res) => {
   const remoteAddress = req.socket.remoteAddress;
   if (remoteAddress !== "127.0.0.1" && remoteAddress !== "::1" && remoteAddress !== "::ffff:127.0.0.1") {
     res.status(404).json({ error: "Not found" });
@@ -245765,82 +246102,70 @@ router53.get("/traffic/image", async (req, res) => {
   }
   res.status(204).send();
 });
-var publicTraffic_default2 = router53;
+var publicTraffic_default2 = router51;
 
 // src/routes/index.ts
-var router54 = (0, import_express54.Router)();
-router54.use(health_default);
-router54.use(publicTraffic_default2);
-router54.use(auth_default);
-router54.use("/admin", async (req, res, next) => {
-  if (!await validateSecureAdminSession(req)) {
-    res.status(401).json({ error: "Not authenticated" });
-    return;
-  }
-  const isManualWholesaleCreation = req.method === "POST" && req.path === "/wholesale";
-  if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method) && !isManualWholesaleCreation && !isRecentSecureAdminSession(req)) {
-    res.status(401).json({ error: "Recent authentication required", requiresRecentAuth: true });
-    return;
-  }
-  res.locals.adminAuthenticated = true;
-  next();
-});
-router54.use(dashboard_default);
-router54.use(orders_default);
-router54.use(fulfillment_default);
-router54.use(customers_default);
-router54.use(products_default);
-router54.use(discounts_default);
-router54.use(catalog_default);
-router54.use(returns_default);
-router54.use(tax_default);
-router54.use(shipping_default);
-router54.use(refunds_default);
-router54.use(inventory_audit_default);
-router54.use(export_default);
-router54.use(webhooks_default);
-router54.use(settings_default);
-router54.use(users_default);
-router54.use(reports_default);
-router54.use(gdpr_default);
-router54.use(blog_default);
-router54.use(crypto_audits_default);
-router54.use(orders_default2);
-router54.use(crypto_payments_default);
-router54.use(discounts_default2);
-router54.use(auth_default2);
-router54.use(account_default);
-router54.use(reviews_default);
-router54.use(reviews_default2);
-router54.use(wishlist_default);
-router54.use(returns_default2);
-router54.use(products_default2);
-router54.use(cart_default);
-router54.use(stock_alerts_default);
-router54.use(abandonedCarts_default);
-router54.use(alerts_default);
-router54.use(credits_default);
-router54.use(referrals_default);
-router54.use(fraud_default);
-router54.use(blockedIps_default);
-router54.use(publicTraffic_default);
-router54.use(security_default);
-router54.use(wholesale_default);
-router54.use(emailLogs_default);
-router54.use(loyalty_default);
-router54.use(tax_default2);
-router54.use(shipping_default2);
-router54.use(blog_default2);
-router54.use(btcpay_webhook_default);
-router54.use(wallid_webhook_default);
-router54.use(contact_default);
-router54.use(address_lookup_default);
-var routes_default = router54;
+var router52 = (0, import_express54.Router)();
+router52.use(health_default);
+router52.use(publicTraffic_default2);
+router52.use(auth_default);
+router52.use("/admin", enforceSecureAdminSession);
+router52.use(dashboard_default);
+router52.use(orders_default);
+router52.use(fulfillment_default);
+router52.use(customers_default);
+router52.use(products_default);
+router52.use(discounts_default);
+router52.use(catalog_default);
+router52.use(returns_default);
+router52.use(tax_default);
+router52.use(shipping_default);
+router52.use(refunds_default);
+router52.use(inventory_audit_default);
+router52.use(export_default);
+router52.use(webhooks_default);
+router52.use(settings_default);
+router52.use(users_default);
+router52.use(reports_default);
+router52.use(gdpr_default);
+router52.use(blog_default);
+router52.use(crypto_audits_default);
+router52.use(orders_default2);
+router52.use(crypto_payments_default);
+router52.use(discounts_default2);
+router52.use(auth_default2);
+router52.use(account_default);
+router52.use(reviews_default);
+router52.use(reviews_default2);
+router52.use(wishlist_default);
+router52.use(returns_default2);
+router52.use(products_default2);
+router52.use(cart_default);
+router52.use(stock_alerts_default);
+router52.use(abandonedCarts_default);
+router52.use(alerts_default);
+router52.use(credits_default);
+router52.use(referrals_default);
+router52.use(fraud_default);
+router52.use(blockedIps_default);
+router52.use(publicTraffic_default);
+router52.use(security_default);
+router52.use(wholesale_default);
+router52.use(emailLogs_default);
+router52.use(loyalty_default);
+router52.use(tax_default2);
+router52.use(shipping_default2);
+router52.use(blog_default2);
+router52.use(btcpay_webhook_default);
+router52.use(wallid_webhook_default);
+router52.use(contact_default);
+router52.use(address_lookup_default);
+var routes_default = router52;
 
 // src/routes/sitemap.ts
 var import_express55 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router55 = (0, import_express55.Router)();
+var router53 = (0, import_express55.Router)();
 var SITE_URL3 = "https://omniqure.com";
 function publicImageUrl(imageUrl) {
   if (imageUrl.startsWith("http")) return imageUrl;
@@ -245873,7 +246198,7 @@ function isoDate(d) {
   const date6 = d instanceof Date ? d : new Date(d);
   return date6.toISOString().split("T")[0];
 }
-router55.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
+router53.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
   try {
     const [products, blogPosts] = await Promise.all([
       db.select({
@@ -245949,7 +246274,7 @@ router55.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
     res.status(500).send("<!-- sitemap generation error -->");
   }
 });
-var sitemap_default = router55;
+var sitemap_default = router53;
 
 // src/app.ts
 var app = (0, import_express56.default)();
@@ -248699,6 +249024,11 @@ var INTERVAL_MS4 = 2 * 60 * 1e3;
 var BATCH_SIZE = 100;
 var running = false;
 async function reconcilePendingWallidPayments() {
+  return reconcilePendingWallidPaymentsWith();
+}
+async function reconcilePendingWallidPaymentsWith(dependencies = {}) {
+  const checkPaymentStatus = dependencies.checkPaymentStatus ?? checkWallidPaymentStatus;
+  const sendConfirmation = dependencies.sendConfirmation ?? sendOrderConfirmation;
   const pendingOrders = await db.select().from(ordersTable).where(and(
     eq(ordersTable.status, "awaiting_payment"),
     ilike(ordersTable.notes, "%Wallid payment id:%")
@@ -248709,8 +249039,16 @@ async function reconcilePendingWallidPayments() {
     if (!order.paymentCurrency || order.paymentAmountMinor === null) continue;
     const apiPaymentId = wallidPaymentIdFromNotes(order.notes);
     if (!apiPaymentId) continue;
+    const [invoice] = await db.select({ apiPaymentId: wholesaleInvoicesTable.apiPaymentId }).from(wholesaleInvoicesTable).where(eq(wholesaleInvoicesTable.orderId, order.id)).limit(1);
+    if (invoice && invoice.apiPaymentId !== apiPaymentId) {
+      logger.error(
+        { orderNumber: order.orderNumber, apiPaymentId, storedInvoicePaymentId: invoice.apiPaymentId },
+        "Wallid reconciliation \u2014 wholesale invoice payment ID mismatch"
+      );
+      continue;
+    }
     checked += 1;
-    const providerStatus = await checkWallidPaymentStatus(apiPaymentId);
+    const providerStatus = await checkPaymentStatus(apiPaymentId);
     const validation = validateSuccessfulWallidPayment(
       {
         apiPaymentId,
@@ -248738,7 +249076,7 @@ async function reconcilePendingWallidPayments() {
     );
     try {
       const items = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, order.id));
-      await sendOrderConfirmation({
+      await sendConfirmation({
         orderNumber: order.orderNumber,
         customerName: order.customerName,
         customerEmail: order.customerEmail,
