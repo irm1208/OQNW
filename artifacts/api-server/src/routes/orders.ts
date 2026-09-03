@@ -438,9 +438,23 @@ async function handleOrderRequest(
         .where(eq(discountCodesTable.code, discountCode.trim().toUpperCase()))
         .limit(1);
 
+      let affiliateDiscountApproved = true;
+      if (discount?.affiliatePartnerId) {
+        const [affiliatePartner] = await db
+          .select({ id: affiliatePartnersTable.id })
+          .from(affiliatePartnersTable)
+          .where(and(
+            eq(affiliatePartnersTable.id, discount.affiliatePartnerId),
+            eq(affiliatePartnersTable.status, "approved"),
+          ))
+          .limit(1);
+        affiliateDiscountApproved = !!affiliatePartner;
+      }
+
       if (
         discount &&
         discount.isActive &&
+        affiliateDiscountApproved &&
         !(discount.expiresAt && discount.expiresAt < new Date()) &&
         !(discount.usageLimit !== null && discount.usageCount >= discount.usageLimit)
       ) {

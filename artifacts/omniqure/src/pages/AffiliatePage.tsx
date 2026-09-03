@@ -75,7 +75,7 @@ function AffiliateLanding({ program }: { program: any }) {
               How the affiliate programme works
             </h2>
             <p style={{ fontSize: 15, lineHeight: 1.6, color: "#64748B", margin: 0 }}>
-              Apply once, share your link, and track everything from your partner dashboard.
+              Apply once, wait for admin approval, then share your link and track everything from your partner dashboard.
             </p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 16 }}>
@@ -240,13 +240,13 @@ function AffiliatePending({ status }: { status: string }) {
         <>
           <Clock size={48} color="#94A3B8" style={{ margin: "0 auto 20px" }} />
           <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0F172A", marginBottom: 12 }}>Application Under Review</h2>
-          <p style={{ fontSize: 15, color: "#64748B" }}>We've received your application and our team is currently reviewing it. We'll be in touch soon via email.</p>
+           <p style={{ fontSize: 15, color: "#64748B" }}>We've received your application and our team is currently reviewing it. Your tracking link, discount code, payments, and rewards become available after admin approval.</p>
         </>
       ) : (
         <>
           <XCircle size={48} color="#EF4444" style={{ margin: "0 auto 20px" }} />
           <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0F172A", marginBottom: 12 }}>Application Declined</h2>
-          <p style={{ fontSize: 15, color: "#64748B" }}>Unfortunately, we cannot approve your affiliate application at this time.</p>
+          <p style={{ fontSize: 15, color: "#64748B" }}>Your affiliate access is not active. Tracking links, discount codes, payments, and rewards are available only after admin approval.</p>
         </>
       )}
     </div>

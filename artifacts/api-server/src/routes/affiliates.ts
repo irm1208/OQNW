@@ -221,6 +221,21 @@ router.get("/affiliates/me", async (req: Request, res: Response): Promise<void> 
       res.json({ partner: null, program: programResponse(settings, tiers) });
       return;
     }
+    if (partner.status !== "approved") {
+      res.setHeader("Cache-Control", "no-store");
+      res.json({
+        partner: {
+          id: partner.id,
+          name: partner.name,
+          email: partner.email,
+          status: partner.status,
+          approvedAt: iso(partner.approvedAt),
+          createdAt: partner.createdAt.toISOString(),
+        },
+        program: programResponse(settings, tiers),
+      });
+      return;
+    }
     const [commissions, rewards, eligibleProducts] = await Promise.all([
       db.select({
         id: affiliateCommissionsTable.id,
@@ -339,7 +354,7 @@ router.post("/affiliates/rewards/:id/claim", async (req: Request, res: Response)
   }
   try {
     const [[partner], [settings], [product]] = await Promise.all([
-      db.select({ id: affiliatePartnersTable.id }).from(affiliatePartnersTable)
+      db.select({ id: affiliatePartnersTable.id, status: affiliatePartnersTable.status }).from(affiliatePartnersTable)
         .where(eq(affiliatePartnersTable.customerId, customerId)).limit(1),
       db.select().from(affiliateProgramSettingsTable).where(eq(affiliateProgramSettingsTable.id, 1)).limit(1),
       db.select().from(productsCatalogTable).where(and(
@@ -348,7 +363,11 @@ router.post("/affiliates/rewards/:id/claim", async (req: Request, res: Response)
         ne(productsCatalogTable.category, "Accessories"),
       )).limit(1),
     ]);
-    if (!partner || !settings || !product || product.priceGbp === null || money(product.priceGbp) > money(settings.freeRewardValueCapGbp)) {
+    if (!partner || partner.status !== "approved" || !settings || !product || product.priceGbp === null || money(product.priceGbp) > money(settings.freeRewardValueCapGbp)) {
+      if (partner && partner.status !== "approved") {
+        res.status(403).json({ error: "Affiliate rewards are available only after admin approval" });
+        return;
+      }
       res.status(400).json({ error: "This product is not eligible for an affiliate reward" });
       return;
     }

@@ -239782,7 +239782,15 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
     let validatedDiscountAffiliatePartnerId = null;
     if (discountCode && typeof discountCode === "string" && discountCode.trim()) {
       const [discount] = await db.select().from(discountCodesTable).where(eq(discountCodesTable.code, discountCode.trim().toUpperCase())).limit(1);
-      if (discount && discount.isActive && !(discount.expiresAt && discount.expiresAt < /* @__PURE__ */ new Date()) && !(discount.usageLimit !== null && discount.usageCount >= discount.usageLimit)) {
+      let affiliateDiscountApproved = true;
+      if (discount?.affiliatePartnerId) {
+        const [affiliatePartner] = await db.select({ id: affiliatePartnersTable.id }).from(affiliatePartnersTable).where(and(
+          eq(affiliatePartnersTable.id, discount.affiliatePartnerId),
+          eq(affiliatePartnersTable.status, "approved")
+        )).limit(1);
+        affiliateDiscountApproved = !!affiliatePartner;
+      }
+      if (discount && discount.isActive && affiliateDiscountApproved && !(discount.expiresAt && discount.expiresAt < /* @__PURE__ */ new Date()) && !(discount.usageLimit !== null && discount.usageCount >= discount.usageLimit)) {
         const subtotal = cartItems.reduce((s, i) => s + i.priceGbp * i.quantity, 0);
         const minSpend = discount.minSpend ? parseFloat(String(discount.minSpend)) : null;
         if (minSpend === null || subtotal >= minSpend) {
@@ -243239,6 +243247,21 @@ router27.get("/affiliates/me", async (req, res) => {
       res.json({ partner: null, program: programResponse(settings, tiers) });
       return;
     }
+    if (partner.status !== "approved") {
+      res.setHeader("Cache-Control", "no-store");
+      res.json({
+        partner: {
+          id: partner.id,
+          name: partner.name,
+          email: partner.email,
+          status: partner.status,
+          approvedAt: iso(partner.approvedAt),
+          createdAt: partner.createdAt.toISOString()
+        },
+        program: programResponse(settings, tiers)
+      });
+      return;
+    }
     const [commissions, rewards, eligibleProducts] = await Promise.all([
       db.select({
         id: affiliateCommissionsTable.id,
@@ -243352,7 +243375,7 @@ router27.post("/affiliates/rewards/:id/claim", async (req, res) => {
   }
   try {
     const [[partner], [settings], [product]] = await Promise.all([
-      db.select({ id: affiliatePartnersTable.id }).from(affiliatePartnersTable).where(eq(affiliatePartnersTable.customerId, customerId)).limit(1),
+      db.select({ id: affiliatePartnersTable.id, status: affiliatePartnersTable.status }).from(affiliatePartnersTable).where(eq(affiliatePartnersTable.customerId, customerId)).limit(1),
       db.select().from(affiliateProgramSettingsTable).where(eq(affiliateProgramSettingsTable.id, 1)).limit(1),
       db.select().from(productsCatalogTable).where(and(
         eq(productsCatalogTable.slug, productSlug),
@@ -243360,7 +243383,11 @@ router27.post("/affiliates/rewards/:id/claim", async (req, res) => {
         ne(productsCatalogTable.category, "Accessories")
       )).limit(1)
     ]);
-    if (!partner || !settings || !product || product.priceGbp === null || money2(product.priceGbp) > money2(settings.freeRewardValueCapGbp)) {
+    if (!partner || partner.status !== "approved" || !settings || !product || product.priceGbp === null || money2(product.priceGbp) > money2(settings.freeRewardValueCapGbp)) {
+      if (partner && partner.status !== "approved") {
+        res.status(403).json({ error: "Affiliate rewards are available only after admin approval" });
+        return;
+      }
       res.status(400).json({ error: "This product is not eligible for an affiliate reward" });
       return;
     }
