@@ -628,6 +628,7 @@ export default function CartPage() {
   const [appliedDiscount, setAppliedDiscount] = useState<AppliedDiscount | null>(null);
   const [discountError, setDiscountError] = useState<string | null>(null);
   const [applyingDiscount, setApplyingDiscount] = useState(false);
+  const affiliateDiscountApplied = useRef(false);
 
   // Payment
   const [paymentMethod, setPaymentMethod] = useState<"crypto" | "wallid">("wallid");
@@ -996,6 +997,16 @@ export default function CartPage() {
     return () => window.clearTimeout(refreshTimer);
   }, [paymentQuote]);
 
+  const cartGBP = items.reduce((s, { product, quantity }) => s + (product.price ?? 0) * quantity, 0);
+
+  useEffect(() => {
+    if (affiliateDiscountApplied.current || appliedDiscount || cartGBP <= 0) return;
+    const savedCode = window.localStorage.getItem("omniqure:affiliate-discount")?.trim();
+    if (!savedCode) return;
+    affiliateDiscountApplied.current = true;
+    void applyDiscountCode(savedCode, false);
+  }, [appliedDiscount, cartGBP]);
+
   if (items.length === 0) {
     return (
       <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "60vh" }}>
@@ -1029,7 +1040,6 @@ export default function CartPage() {
     );
   }
 
-  const cartGBP = items.reduce((s, { product, quantity }) => s + (product.price ?? 0) * quantity, 0);
   const isUK = delivery.country === "United Kingdom";
   const selectedShipping = SHIPPING_OPTIONS.find(o => o.id === shipping)!;
   const shippingCost = selectedShipping.id === "standard"
@@ -1299,15 +1309,15 @@ export default function CartPage() {
     });
   }
 
-  async function applyDiscount() {
-    if (!discountInput.trim()) return;
+  async function applyDiscountCode(code: string, showError: boolean) {
+    if (!code.trim()) return;
     setApplyingDiscount(true);
-    setDiscountError(null);
+    if (showError) setDiscountError(null);
     try {
       const res = await fetch(apiUrl("discounts/validate"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: discountInput.trim(), cartTotal: cartGBP }),
+        body: JSON.stringify({ code: code.trim(), cartTotal: cartGBP }),
       });
       const data = await res.json() as { valid: boolean; error?: string; code?: string; type?: string; value?: number; discountAmount?: number };
       if (data.valid && data.code && data.discountAmount !== undefined) {
@@ -1315,14 +1325,19 @@ export default function CartPage() {
         setDiscountInput("");
         setDiscountError(null);
       } else {
-        setDiscountError(data.error ?? "Invalid discount code");
+        if (showError) setDiscountError(data.error ?? "Invalid discount code");
+        else window.localStorage.removeItem("omniqure:affiliate-discount");
         setAppliedDiscount(null);
       }
     } catch {
-      setDiscountError("Could not verify discount code. Please try again.");
+      if (showError) setDiscountError("Could not verify discount code. Please try again.");
     } finally {
       setApplyingDiscount(false);
     }
+  }
+
+  async function applyDiscount() {
+    await applyDiscountCode(discountInput, true);
   }
 
   async function placeOrder() {

@@ -19002,14 +19002,14 @@ var require_etag = __commonJS({
   "../../node_modules/.pnpm/etag@1.8.1/node_modules/etag/index.js"(exports, module) {
     "use strict";
     module.exports = etag;
-    var crypto19 = __require("crypto");
+    var crypto23 = __require("crypto");
     var Stats = __require("fs").Stats;
     var toString = Object.prototype.toString;
     function entitytag(entity) {
       if (entity.length === 0) {
         return '"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"';
       }
-      var hash2 = crypto19.createHash("sha1").update(entity, "utf8").digest("base64").substring(0, 27);
+      var hash2 = crypto23.createHash("sha1").update(entity, "utf8").digest("base64").substring(0, 27);
       var len = typeof entity === "string" ? Buffer.byteLength(entity, "utf8") : entity.length;
       return '"' + len.toString(16) + "-" + hash2 + '"';
     }
@@ -20732,27 +20732,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router56;
+    module.exports = Router58;
     module.exports.Route = Route;
-    function Router56(options) {
-      if (!(this instanceof Router56)) {
-        return new Router56(options);
+    function Router58(options) {
+      if (!(this instanceof Router58)) {
+        return new Router58(options);
       }
       const opts = options || {};
-      function router54(req, res, next) {
-        router54.handle(req, res, next);
+      function router56(req, res, next) {
+        router56.handle(req, res, next);
       }
-      Object.setPrototypeOf(router54, this);
-      router54.caseSensitive = opts.caseSensitive;
-      router54.mergeParams = opts.mergeParams;
-      router54.params = {};
-      router54.strict = opts.strict;
-      router54.stack = [];
-      return router54;
+      Object.setPrototypeOf(router56, this);
+      router56.caseSensitive = opts.caseSensitive;
+      router56.mergeParams = opts.mergeParams;
+      router56.params = {};
+      router56.strict = opts.strict;
+      router56.stack = [];
+      return router56;
     }
-    Router56.prototype = function() {
+    Router58.prototype = function() {
     };
-    Router56.prototype.param = function param2(name2, fn) {
+    Router58.prototype.param = function param2(name2, fn) {
       if (!name2) {
         throw new TypeError("argument name is required");
       }
@@ -20772,7 +20772,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router56.prototype.handle = function handle(req, res, callback) {
+    Router58.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20899,7 +20899,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router56.prototype.use = function use(handler) {
+    Router58.prototype.use = function use(handler) {
       let offset = 0;
       let path3 = "/";
       if (typeof handler !== "function") {
@@ -20932,7 +20932,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router56.prototype.route = function route(path3) {
+    Router58.prototype.route = function route(path3) {
       const route2 = new Route(path3);
       const layer = new Layer(path3, {
         sensitive: this.caseSensitive,
@@ -20947,7 +20947,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router56.prototype[method] = function(path3) {
+      Router58.prototype[method] = function(path3) {
         const route = this.route(path3);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -21130,13 +21130,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router56 = require_router();
+    var Router58 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router54 = null;
+      var router56 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -21145,13 +21145,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router54 === null) {
-            router54 = new Router56({
+          if (router56 === null) {
+            router56 = new Router58({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router54;
+          return router56;
         }
       });
     };
@@ -21222,15 +21222,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router54 = this.router;
+      var router56 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router54.use(path3, fn2);
+          return router56.use(path3, fn2);
         }
         debug(".use app under %s", path3);
         fn2.mountpath = path3;
         fn2.parent = this;
-        router54.use(path3, function mounted_app(req, res, next) {
+        router56.use(path3, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -22532,17 +22532,17 @@ var require_content_disposition = __commonJS({
 // ../../node_modules/.pnpm/cookie-signature@1.2.2/node_modules/cookie-signature/index.js
 var require_cookie_signature = __commonJS({
   "../../node_modules/.pnpm/cookie-signature@1.2.2/node_modules/cookie-signature/index.js"(exports) {
-    var crypto19 = __require("crypto");
+    var crypto23 = __require("crypto");
     exports.sign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Cookie value must be provided as a string.");
       if (null == secret) throw new TypeError("Secret key must be provided.");
-      return val + "." + crypto19.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
+      return val + "." + crypto23.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
     };
     exports.unsign = function(input, secret) {
       if ("string" != typeof input) throw new TypeError("Signed cookie string must be provided.");
       if (null == secret) throw new TypeError("Secret key must be provided.");
       var tentativeValue = input.slice(0, input.lastIndexOf(".")), expectedInput = exports.sign(tentativeValue, secret), expectedBuffer = Buffer.from(expectedInput), inputBuffer = Buffer.from(input);
-      return expectedBuffer.length === inputBuffer.length && crypto19.timingSafeEqual(expectedBuffer, inputBuffer) ? tentativeValue : false;
+      return expectedBuffer.length === inputBuffer.length && crypto23.timingSafeEqual(expectedBuffer, inputBuffer) ? tentativeValue : false;
     };
   }
 });
@@ -23851,7 +23851,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router56 = require_router();
+    var Router58 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module.exports = createApplication;
@@ -23873,8 +23873,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router56.Route;
-    exports.Router = Router56;
+    exports.Route = Router58.Route;
+    exports.Router = Router58;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -24172,11 +24172,11 @@ var require_lib3 = __commonJS({
 // ../../node_modules/.pnpm/cookie-signature@1.0.6/node_modules/cookie-signature/index.js
 var require_cookie_signature2 = __commonJS({
   "../../node_modules/.pnpm/cookie-signature@1.0.6/node_modules/cookie-signature/index.js"(exports) {
-    var crypto19 = __require("crypto");
+    var crypto23 = __require("crypto");
     exports.sign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Cookie value must be provided as a string.");
       if ("string" != typeof secret) throw new TypeError("Secret string must be provided.");
-      return val + "." + crypto19.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
+      return val + "." + crypto23.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
     };
     exports.unsign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Signed cookie string must be provided.");
@@ -24185,7 +24185,7 @@ var require_cookie_signature2 = __commonJS({
       return sha1(mac) == sha1(val) ? str : false;
     };
     function sha1(str) {
-      return crypto19.createHash("sha1").update(str).digest("hex");
+      return crypto23.createHash("sha1").update(str).digest("hex");
     }
   }
 });
@@ -24195,7 +24195,7 @@ var require_cookie_parser = __commonJS({
   "../../node_modules/.pnpm/cookie-parser@1.4.7/node_modules/cookie-parser/index.js"(exports, module) {
     "use strict";
     var cookie = require_cookie();
-    var signature = require_cookie_signature2();
+    var signature2 = require_cookie_signature2();
     module.exports = cookieParser2;
     module.exports.JSONCookie = JSONCookie;
     module.exports.JSONCookies = JSONCookies;
@@ -24255,7 +24255,7 @@ var require_cookie_parser = __commonJS({
       }
       var secrets = !secret || Array.isArray(secret) ? secret || [] : [secret];
       for (var i = 0; i < secrets.length; i++) {
-        var val = signature.unsign(str.slice(2), secrets[i]);
+        var val = signature2.unsign(str.slice(2), secrets[i]);
         if (val !== false) {
           return val;
         }
@@ -30221,7 +30221,7 @@ var require_cert_signatures = __commonJS({
 var require_sasl = __commonJS({
   "../../node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/crypto/sasl.js"(exports, module) {
     "use strict";
-    var crypto19 = require_utils5();
+    var crypto23 = require_utils5();
     var { signatureAlgorithmHashFromCertificate } = require_cert_signatures();
     function startSession(mechanisms, stream) {
       const candidates = ["SCRAM-SHA-256"];
@@ -30233,7 +30233,7 @@ var require_sasl = __commonJS({
       if (mechanism === "SCRAM-SHA-256-PLUS" && typeof stream.getPeerCertificate !== "function") {
         throw new Error("SASL: Mechanism SCRAM-SHA-256-PLUS requires a certificate");
       }
-      const clientNonce = crypto19.randomBytes(18).toString("base64");
+      const clientNonce = crypto23.randomBytes(18).toString("base64");
       const gs2Header = mechanism === "SCRAM-SHA-256-PLUS" ? "p=tls-server-end-point" : stream ? "y" : "n";
       return {
         mechanism,
@@ -30268,20 +30268,20 @@ var require_sasl = __commonJS({
         const peerCert = stream.getPeerCertificate().raw;
         let hashName = signatureAlgorithmHashFromCertificate(peerCert);
         if (hashName === "MD5" || hashName === "SHA-1") hashName = "SHA-256";
-        const certHash = await crypto19.hashByName(hashName, peerCert);
+        const certHash = await crypto23.hashByName(hashName, peerCert);
         const bindingData = Buffer.concat([Buffer.from("p=tls-server-end-point,,"), Buffer.from(certHash)]);
         channelBinding = bindingData.toString("base64");
       }
       const clientFinalMessageWithoutProof = "c=" + channelBinding + ",r=" + sv.nonce;
       const authMessage = clientFirstMessageBare + "," + serverFirstMessage + "," + clientFinalMessageWithoutProof;
       const saltBytes = Buffer.from(sv.salt, "base64");
-      const saltedPassword = await crypto19.deriveKey(password, saltBytes, sv.iteration);
-      const clientKey = await crypto19.hmacSha256(saltedPassword, "Client Key");
-      const storedKey = await crypto19.sha256(clientKey);
-      const clientSignature = await crypto19.hmacSha256(storedKey, authMessage);
+      const saltedPassword = await crypto23.deriveKey(password, saltBytes, sv.iteration);
+      const clientKey = await crypto23.hmacSha256(saltedPassword, "Client Key");
+      const storedKey = await crypto23.sha256(clientKey);
+      const clientSignature = await crypto23.hmacSha256(storedKey, authMessage);
       const clientProof = xorBuffers(Buffer.from(clientKey), Buffer.from(clientSignature)).toString("base64");
-      const serverKey = await crypto19.hmacSha256(saltedPassword, "Server Key");
-      const serverSignatureBytes = await crypto19.hmacSha256(serverKey, authMessage);
+      const serverKey = await crypto23.hmacSha256(saltedPassword, "Server Key");
+      const serverSignatureBytes = await crypto23.hmacSha256(serverKey, authMessage);
       session.message = "SASLResponse";
       session.serverSignature = Buffer.from(serverSignatureBytes).toString("base64");
       session.response = clientFinalMessageWithoutProof + ",p=" + clientProof;
@@ -32449,7 +32449,7 @@ var require_client = __commonJS({
     var Query2 = require_query();
     var defaults2 = require_defaults();
     var Connection2 = require_connection();
-    var crypto19 = require_utils5();
+    var crypto23 = require_utils5();
     var activeQueryDeprecationNotice = nodeUtils.deprecate(
       () => {
       },
@@ -32684,7 +32684,7 @@ var require_client = __commonJS({
       _handleAuthMD5Password(msg) {
         this._getPassword(async () => {
           try {
-            const hashedPassword = await crypto19.postgresMd5PasswordHash(this.user, this.password, msg.salt);
+            const hashedPassword = await crypto23.postgresMd5PasswordHash(this.user, this.password, msg.salt);
             this.connection.password(hashedPassword);
           } catch (e) {
             this.emit("error", e);
@@ -45884,11 +45884,11 @@ var require_dist4 = __commonJS({
         const passedSignatures = msgSignature.split(" ");
         const encoder = new globalThis.TextEncoder();
         for (const versionedSignature of passedSignatures) {
-          const [version4, signature] = versionedSignature.split(",");
+          const [version4, signature2] = versionedSignature.split(",");
           if (version4 !== "v1") {
             continue;
           }
-          if ((0, timing_safe_equal_1.timingSafeEqual)(encoder.encode(signature), encoder.encode(expectedSignature))) {
+          if ((0, timing_safe_equal_1.timingSafeEqual)(encoder.encode(signature2), encoder.encode(expectedSignature))) {
             return JSON.parse(payload.toString());
           }
         }
@@ -46229,39 +46229,39 @@ var require_core = __commonJS({
       }
     })(exports, function() {
       var CryptoJS = CryptoJS || (function(Math2, undefined2) {
-        var crypto19;
+        var crypto23;
         if (typeof window !== "undefined" && window.crypto) {
-          crypto19 = window.crypto;
+          crypto23 = window.crypto;
         }
         if (typeof self !== "undefined" && self.crypto) {
-          crypto19 = self.crypto;
+          crypto23 = self.crypto;
         }
         if (typeof globalThis !== "undefined" && globalThis.crypto) {
-          crypto19 = globalThis.crypto;
+          crypto23 = globalThis.crypto;
         }
-        if (!crypto19 && typeof window !== "undefined" && window.msCrypto) {
-          crypto19 = window.msCrypto;
+        if (!crypto23 && typeof window !== "undefined" && window.msCrypto) {
+          crypto23 = window.msCrypto;
         }
-        if (!crypto19 && typeof global !== "undefined" && global.crypto) {
-          crypto19 = global.crypto;
+        if (!crypto23 && typeof global !== "undefined" && global.crypto) {
+          crypto23 = global.crypto;
         }
-        if (!crypto19 && typeof __require === "function") {
+        if (!crypto23 && typeof __require === "function") {
           try {
-            crypto19 = __require("crypto");
+            crypto23 = __require("crypto");
           } catch (err) {
           }
         }
         var cryptoSecureRandomInt = function() {
-          if (crypto19) {
-            if (typeof crypto19.getRandomValues === "function") {
+          if (crypto23) {
+            if (typeof crypto23.getRandomValues === "function") {
               try {
-                return crypto19.getRandomValues(new Uint32Array(1))[0];
+                return crypto23.getRandomValues(new Uint32Array(1))[0];
               } catch (err) {
               }
             }
-            if (typeof crypto19.randomBytes === "function") {
+            if (typeof crypto23.randomBytes === "function") {
               try {
-                return crypto19.randomBytes(4).readInt32LE();
+                return crypto23.randomBytes(4).readInt32LE();
               } catch (err) {
               }
             }
@@ -203457,9 +203457,9 @@ var require_parser2 = __commonJS({
       this.read(constants.PNG_SIGNATURE.length, this._parseSignature.bind(this));
     };
     Parser.prototype._parseSignature = function(data) {
-      let signature = constants.PNG_SIGNATURE;
-      for (let i = 0; i < signature.length; i++) {
-        if (data[i] !== signature[i]) {
+      let signature2 = constants.PNG_SIGNATURE;
+      for (let i = 0; i < signature2.length; i++) {
+        if (data[i] !== signature2[i]) {
           this.error(new Error("Invalid file signature"));
           return;
         }
@@ -205653,13 +205653,13 @@ var require_lib7 = __commonJS({
 });
 
 // src/app.ts
-var import_express56 = __toESM(require_express2(), 1);
+var import_express58 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 var import_cookie_parser = __toESM(require_cookie_parser(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
 
 // src/routes/index.ts
-var import_express54 = __toESM(require_express2(), 1);
+var import_express56 = __toESM(require_express2(), 1);
 
 // src/routes/health.ts
 var import_express = __toESM(require_express2(), 1);
@@ -214202,6 +214202,12 @@ __export(schema_exports, {
   adminRecoveryCodesTable: () => adminRecoveryCodesTable,
   adminTestPaymentClaimsTable: () => adminTestPaymentClaimsTable,
   adminUsersTable: () => adminUsersTable,
+  affiliateCommissionsTable: () => affiliateCommissionsTable,
+  affiliateOrderAttributionsTable: () => affiliateOrderAttributionsTable,
+  affiliatePartnersTable: () => affiliatePartnersTable,
+  affiliateProgramSettingsTable: () => affiliateProgramSettingsTable,
+  affiliateRewardCreditsTable: () => affiliateRewardCreditsTable,
+  affiliateTiersTable: () => affiliateTiersTable,
   blockedIpsTable: () => blockedIpsTable,
   blogPostsTable: () => blogPostsTable,
   checkoutPaymentQuoteClaimsTable: () => checkoutPaymentQuoteClaimsTable,
@@ -225473,11 +225479,11 @@ function numberColumnToSchema(column, z, coerce2) {
   let unsigned = column.getSQLType().includes("unsigned");
   let min2;
   let max2;
-  let integer3 = false;
+  let integer4 = false;
   if (isColumnType(column, ["MySqlTinyInt", "SingleStoreTinyInt"])) {
     min2 = unsigned ? 0 : CONSTANTS.INT8_MIN;
     max2 = unsigned ? CONSTANTS.INT8_UNSIGNED_MAX : CONSTANTS.INT8_MAX;
-    integer3 = true;
+    integer4 = true;
   } else if (isColumnType(column, [
     "PgSmallInt",
     "PgSmallSerial",
@@ -225486,7 +225492,7 @@ function numberColumnToSchema(column, z, coerce2) {
   ])) {
     min2 = unsigned ? 0 : CONSTANTS.INT16_MIN;
     max2 = unsigned ? CONSTANTS.INT16_UNSIGNED_MAX : CONSTANTS.INT16_MAX;
-    integer3 = true;
+    integer4 = true;
   } else if (isColumnType(column, [
     "PgReal",
     "MySqlFloat",
@@ -225496,7 +225502,7 @@ function numberColumnToSchema(column, z, coerce2) {
   ])) {
     min2 = unsigned ? 0 : CONSTANTS.INT24_MIN;
     max2 = unsigned ? CONSTANTS.INT24_UNSIGNED_MAX : CONSTANTS.INT24_MAX;
-    integer3 = isColumnType(column, ["MySqlMediumInt", "SingleStoreMediumInt"]);
+    integer4 = isColumnType(column, ["MySqlMediumInt", "SingleStoreMediumInt"]);
   } else if (isColumnType(column, [
     "PgInteger",
     "PgSerial",
@@ -225505,7 +225511,7 @@ function numberColumnToSchema(column, z, coerce2) {
   ])) {
     min2 = unsigned ? 0 : CONSTANTS.INT32_MIN;
     max2 = unsigned ? CONSTANTS.INT32_UNSIGNED_MAX : CONSTANTS.INT32_MAX;
-    integer3 = true;
+    integer4 = true;
   } else if (isColumnType(column, [
     "PgDoublePrecision",
     "MySqlReal",
@@ -225528,16 +225534,16 @@ function numberColumnToSchema(column, z, coerce2) {
     unsigned = unsigned || isColumnType(column, ["MySqlSerial", "SingleStoreSerial"]);
     min2 = unsigned ? 0 : Number.MIN_SAFE_INTEGER;
     max2 = Number.MAX_SAFE_INTEGER;
-    integer3 = true;
+    integer4 = true;
   } else if (isColumnType(column, ["MySqlYear", "SingleStoreYear"])) {
     min2 = 1901;
     max2 = 2155;
-    integer3 = true;
+    integer4 = true;
   } else {
     min2 = Number.MIN_SAFE_INTEGER;
     max2 = Number.MAX_SAFE_INTEGER;
   }
-  let schema = coerce2 === true || coerce2?.number ? integer3 ? z.coerce.number() : z.coerce.number().int() : integer3 ? z.int() : z.number();
+  let schema = coerce2 === true || coerce2?.number ? integer4 ? z.coerce.number() : z.coerce.number().int() : integer4 ? z.int() : z.number();
   schema = schema.gte(min2).lte(max2);
   return schema;
 }
@@ -225762,10 +225768,121 @@ var insertProductInventorySchema = createInsertSchema(productsInventoryTable).om
   updatedAt: true
 });
 
+// ../../lib/db/src/schema/affiliate_program.ts
+var affiliateProgramSettingsTable = pgTable("affiliate_program_settings", {
+  id: integer("id").primaryKey().default(1),
+  attributionWindowDays: integer("attribution_window_days").notNull().default(30),
+  reviewHoldDays: integer("review_hold_days").notNull().default(30),
+  customerDiscountPercent: numeric("customer_discount_percent", { precision: 5, scale: 2 }).notNull().default("10"),
+  freeRewardThresholdGbp: numeric("free_reward_threshold_gbp", { precision: 10, scale: 2 }).notNull().default("1000"),
+  freeRewardValueCapGbp: numeric("free_reward_value_cap_gbp", { precision: 10, scale: 2 }).notNull().default("50"),
+  maxFreeRewardsPerPeriod: integer("max_free_rewards_per_period").notNull().default(1),
+  payoutThresholdGbp: numeric("payout_threshold_gbp", { precision: 10, scale: 2 }).notNull().default("50"),
+  tierWindowDays: integer("tier_window_days").notNull().default(90),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
+});
+var affiliateTiersTable = pgTable("affiliate_tiers", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  minimumSalesGbp: numeric("minimum_sales_gbp", { precision: 10, scale: 2 }).notNull().default("0"),
+  commissionRatePercent: numeric("commission_rate_percent", { precision: 5, scale: 2 }).notNull(),
+  rewardCreditGbp: numeric("reward_credit_gbp", { precision: 10, scale: 2 }).notNull().default("0"),
+  isActive: boolean("is_active").notNull().default(true),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
+}, (table) => [
+  index("affiliate_tiers_active_order_idx").on(table.isActive, table.sortOrder)
+]);
+var affiliatePartnersTable = pgTable("affiliate_partners", {
+  id: serial("id").primaryKey(),
+  customerId: integer("customer_id").references(() => customersTable.id, { onDelete: "set null" }),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  trackingCode: text("tracking_code").notNull().unique(),
+  discountCode: text("discount_code").notNull().unique(),
+  discountPercent: numeric("discount_percent", { precision: 5, scale: 2 }).notNull().default("10"),
+  status: text("status").notNull().default("pending"),
+  // pending | approved | rejected | suspended
+  channelUrl: text("channel_url"),
+  audienceDescription: text("audience_description"),
+  promotionPlan: text("promotion_plan"),
+  notes: text("notes"),
+  approvedAt: timestamp("approved_at", { withTimezone: true }),
+  suspendedAt: timestamp("suspended_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
+}, (table) => [
+  uniqueIndex("affiliate_partners_email_unique").on(table.email),
+  index("affiliate_partners_status_created_idx").on(table.status, table.createdAt)
+]);
+var affiliateOrderAttributionsTable = pgTable("affiliate_order_attributions", {
+  id: serial("id").primaryKey(),
+  orderId: integer("order_id").notNull().references(() => ordersTable.id, { onDelete: "restrict" }),
+  partnerId: integer("partner_id").notNull().references(() => affiliatePartnersTable.id, { onDelete: "restrict" }),
+  customerId: integer("customer_id").references(() => customersTable.id, { onDelete: "set null" }),
+  trackingCodeSnapshot: text("tracking_code_snapshot").notNull(),
+  discountCodeSnapshot: text("discount_code_snapshot"),
+  source: text("source").notNull(),
+  // tracking_link | discount_code
+  clickedAt: timestamp("clicked_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+}, (table) => [
+  uniqueIndex("affiliate_order_attributions_order_unique").on(table.orderId),
+  index("affiliate_order_attributions_partner_created_idx").on(table.partnerId, table.createdAt)
+]);
+var affiliateCommissionsTable = pgTable("affiliate_commissions", {
+  id: serial("id").primaryKey(),
+  partnerId: integer("partner_id").notNull().references(() => affiliatePartnersTable.id, { onDelete: "restrict" }),
+  orderId: integer("order_id").references(() => ordersTable.id, { onDelete: "restrict" }),
+  eligibleSalesGbp: numeric("eligible_sales_gbp", { precision: 10, scale: 2 }).notNull(),
+  commissionRatePercent: numeric("commission_rate_percent", { precision: 5, scale: 2 }).notNull(),
+  amountGbp: numeric("amount_gbp", { precision: 10, scale: 2 }).notNull(),
+  status: text("status").notNull().default("pending"),
+  // pending | approved | held | voided | paid
+  statusReason: text("status_reason"),
+  periodKey: text("period_key"),
+  approvedAt: timestamp("approved_at", { withTimezone: true }),
+  heldAt: timestamp("held_at", { withTimezone: true }),
+  voidedAt: timestamp("voided_at", { withTimezone: true }),
+  paidAt: timestamp("paid_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
+}, (table) => [
+  uniqueIndex("affiliate_commissions_partner_order_unique").on(table.partnerId, table.orderId),
+  index("affiliate_commissions_partner_status_idx").on(table.partnerId, table.status, table.createdAt),
+  index("affiliate_commissions_status_created_idx").on(table.status, table.createdAt)
+]);
+var affiliateRewardCreditsTable = pgTable("affiliate_reward_credits", {
+  id: serial("id").primaryKey(),
+  partnerId: integer("partner_id").notNull().references(() => affiliatePartnersTable.id, { onDelete: "restrict" }),
+  commissionId: integer("commission_id").references(() => affiliateCommissionsTable.id, { onDelete: "restrict" }),
+  qualifyingSalesGbp: numeric("qualifying_sales_gbp", { precision: 10, scale: 2 }).notNull(),
+  creditValueGbp: numeric("credit_value_gbp", { precision: 10, scale: 2 }).notNull(),
+  status: text("status").notNull().default("pending"),
+  // pending | available | claimed | fulfilled | voided
+  productSlug: text("product_slug"),
+  claimedProductName: text("claimed_product_name"),
+  statusReason: text("status_reason"),
+  lastAdminActor: text("last_admin_actor"),
+  availableAt: timestamp("available_at", { withTimezone: true }),
+  claimedAt: timestamp("claimed_at", { withTimezone: true }),
+  fulfilledAt: timestamp("fulfilled_at", { withTimezone: true }),
+  voidedAt: timestamp("voided_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
+}, (table) => [
+  index("affiliate_rewards_partner_status_idx").on(table.partnerId, table.status, table.createdAt),
+  index("affiliate_rewards_commission_idx").on(table.commissionId),
+  index("affiliate_rewards_status_created_idx").on(table.status, table.createdAt)
+]);
+
 // ../../lib/db/src/schema/discount_codes.ts
 var discountCodesTable = pgTable("discount_codes", {
   id: serial("id").primaryKey(),
   code: text("code").notNull().unique(),
+  affiliatePartnerId: integer("affiliate_partner_id").references(() => affiliatePartnersTable.id, { onDelete: "set null" }),
   type: text("type").notNull(),
   // "percentage" | "fixed"
   value: numeric("value", { precision: 10, scale: 2 }).notNull(),
@@ -226576,9 +226693,9 @@ function createWallidTestCheckoutToken(secret, now = Date.now()) {
     expiresAt: now + TEST_CHECKOUT_TTL_MS
   };
   const encodedPayload = Buffer.from(JSON.stringify(payload)).toString("base64url");
-  const signature = crypto3.createHmac("sha256", secret).update(encodedPayload).digest("base64url");
+  const signature2 = crypto3.createHmac("sha256", secret).update(encodedPayload).digest("base64url");
   return {
-    token: `${encodedPayload}.${signature}`,
+    token: `${encodedPayload}.${signature2}`,
     expiresAt: new Date(payload.expiresAt).toISOString()
   };
 }
@@ -226624,9 +226741,9 @@ function createCryptoTestCheckoutToken(secret, now = Date.now()) {
     expiresAt: now + TEST_CHECKOUT_TTL_MS2
   };
   const encodedPayload = Buffer.from(JSON.stringify(payload)).toString("base64url");
-  const signature = crypto4.createHmac("sha256", secret).update(encodedPayload).digest("base64url");
+  const signature2 = crypto4.createHmac("sha256", secret).update(encodedPayload).digest("base64url");
   return {
-    token: `${encodedPayload}.${signature}`,
+    token: `${encodedPayload}.${signature2}`,
     expiresAt: new Date(payload.expiresAt).toISOString()
   };
 }
@@ -227188,13 +227305,13 @@ function createSecureAdminSessionValue(email3, sessionVersion = 0) {
 function parseSecureAdminSession(req) {
   const value = req.cookies?.[SECURE_SESSION_COOKIE];
   if (typeof value !== "string") return null;
-  const [role, expires, authAt, sessionVersion, encodedEmail, signature, ...extra] = value.split(":");
-  if (role !== "admin" || !/^\d+$/.test(expires) || !/^\d+$/.test(authAt) || !/^\d+$/.test(sessionVersion) || encodedEmail === void 0 || !signature || extra.length > 0 || Number(expires) < Date.now()) {
+  const [role, expires, authAt, sessionVersion, encodedEmail, signature2, ...extra] = value.split(":");
+  if (role !== "admin" || !/^\d+$/.test(expires) || !/^\d+$/.test(authAt) || !/^\d+$/.test(sessionVersion) || encodedEmail === void 0 || !signature2 || extra.length > 0 || Number(expires) < Date.now()) {
     return null;
   }
   const payload = `${role}:${expires}:${authAt}:${sessionVersion}:${encodedEmail}`;
   const expected = signPayload(payload);
-  if (signature.length !== expected.length || !timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) {
+  if (signature2.length !== expected.length || !timingSafeEqual(Buffer.from(signature2), Buffer.from(expected))) {
     return null;
   }
   try {
@@ -227384,12 +227501,12 @@ function challengeTokenValue(kind, userId) {
   return { token: `${payload}:${signPayload(payload)}`, expiresAt };
 }
 function parseChallengeToken(value) {
-  const [kind, expires, userId, nonce, signature, ...extra] = value.split(":");
-  if (kind !== "mfa" && kind !== "enroll" || !/^\d+$/.test(expires) || !/^\d+$/.test(userId) || !nonce || !signature || extra.length) return null;
+  const [kind, expires, userId, nonce, signature2, ...extra] = value.split(":");
+  if (kind !== "mfa" && kind !== "enroll" || !/^\d+$/.test(expires) || !/^\d+$/.test(userId) || !nonce || !signature2 || extra.length) return null;
   if (Number(expires) < Date.now()) return null;
   const payload = `${kind}:${expires}:${userId}:${nonce}`;
   const expected = signPayload(payload);
-  if (signature.length !== expected.length || !timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) return null;
+  if (signature2.length !== expected.length || !timingSafeEqual(Buffer.from(signature2), Buffer.from(expected))) return null;
   return { kind, userId: Number(userId), expiresAt: Number(expires) };
 }
 async function currentAdminUser(req) {
@@ -235978,20 +236095,20 @@ function priceSyncDiffDigest(changes) {
 function createPriceSyncConfirmationToken(changes, secret, expiresAt) {
   const digest = priceSyncDiffDigest(changes);
   const payload = `catalog-price-sync:${expiresAt}:${digest}`;
-  const signature = createHmac2("sha256", secret).update(payload).digest("base64url");
-  return `${expiresAt}.${digest}.${signature}`;
+  const signature2 = createHmac2("sha256", secret).update(payload).digest("base64url");
+  return `${expiresAt}.${digest}.${signature2}`;
 }
 function verifyPriceSyncConfirmationToken(token, changes, secret, now = Date.now()) {
   if (typeof token !== "string") return false;
-  const [expires, digest, signature] = token.split(".");
-  if (!/^\d+$/.test(expires) || !/^[a-f0-9]{64}$/.test(digest) || !signature) return false;
+  const [expires, digest, signature2] = token.split(".");
+  if (!/^\d+$/.test(expires) || !/^[a-f0-9]{64}$/.test(digest) || !signature2) return false;
   const expiresAt = Number(expires);
   if (!Number.isSafeInteger(expiresAt) || expiresAt < now) return false;
   const expectedDigest = priceSyncDiffDigest(changes);
   if (digest !== expectedDigest) return false;
   const payload = `catalog-price-sync:${expiresAt}:${digest}`;
   const expected = createHmac2("sha256", secret).update(payload).digest("base64url");
-  return signature.length === expected.length && timingSafeEqual2(Buffer.from(signature), Buffer.from(expected));
+  return signature2.length === expected.length && timingSafeEqual2(Buffer.from(signature2), Buffer.from(expected));
 }
 function buildCatalogPricePreview(cataloguePrices, productionPrices) {
   const sourceBySlug = new Map(cataloguePrices.map((row) => [row.slug, row]));
@@ -238305,7 +238422,7 @@ var blog_default = router22;
 
 // src/routes/orders.ts
 var import_express23 = __toESM(require_express2(), 1);
-import crypto10 from "crypto";
+import crypto11 from "crypto";
 init_drizzle_orm();
 
 // src/lib/btcpay.ts
@@ -238586,9 +238703,9 @@ function createCheckoutPaymentQuoteToken(quote, secret, now = Date.now()) {
     expiresAt: now + QUOTE_TTL_MS
   };
   const encodedPayload = Buffer.from(JSON.stringify(payload)).toString("base64url");
-  const signature = crypto7.createHmac("sha256", secret).update(encodedPayload).digest("base64url");
+  const signature2 = crypto7.createHmac("sha256", secret).update(encodedPayload).digest("base64url");
   return {
-    token: `${encodedPayload}.${signature}`,
+    token: `${encodedPayload}.${signature2}`,
     expiresAt: new Date(payload.expiresAt).toISOString()
   };
 }
@@ -239160,8 +239277,8 @@ function createAddressVerificationProof(canonical) {
     expiresAt: Date.now() + VERIFICATION_TTL_MS
   };
   const encoded = encodedJson(payload);
-  const signature = sign(encoded);
-  if (!signature) {
+  const signature2 = sign(encoded);
+  if (!signature2) {
     throw new AddressVerificationError(
       "Address confirmation is temporarily unavailable. Please try again later.",
       503,
@@ -239169,7 +239286,7 @@ function createAddressVerificationProof(canonical) {
     );
   }
   return {
-    token: `${encoded}.${signature}`,
+    token: `${encoded}.${signature2}`,
     expiresAt: new Date(payload.expiresAt).toISOString()
   };
 }
@@ -239177,12 +239294,12 @@ function verifyAddressVerificationProof(token, submittedAddress) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return { valid: false, reason: "Address verification is missing." };
   const encoded = token.slice(0, dot);
-  const signature = token.slice(dot + 1);
+  const signature2 = token.slice(dot + 1);
   const expectedSignature = sign(encoded);
   if (!expectedSignature) {
     return { valid: false, reason: "Address confirmation is temporarily unavailable. Please try again." };
   }
-  if (!safeSignatureMatches(signature, expectedSignature)) {
+  if (!safeSignatureMatches(signature2, expectedSignature)) {
     return { valid: false, reason: "Address verification is invalid. Please verify again." };
   }
   try {
@@ -239294,6 +239411,97 @@ function calculateShippingCostGbp(shippingMethod, _subtotalGbp, country) {
   return shipping.priceGbp;
 }
 
+// src/lib/affiliateProgram.ts
+var money = (value) => Math.round((value + Number.EPSILON) * 100) / 100;
+function affiliateTierProgress(tiers, rollingSalesGbp) {
+  const sales = Math.max(0, money(rollingSalesGbp));
+  const active = tiers.filter((tier) => tier.isActive).slice().sort((a, b) => a.minimumSalesGbp - b.minimumSalesGbp || a.id - b.id);
+  const currentTier = active.filter((tier) => tier.minimumSalesGbp <= sales).at(-1) ?? null;
+  const nextTier = active.find((tier) => tier.minimumSalesGbp > sales) ?? null;
+  if (!currentTier) {
+    return {
+      currentTier: null,
+      nextTier,
+      rollingSalesGbp: sales,
+      salesToNextTierGbp: nextTier ? money(nextTier.minimumSalesGbp - sales) : 0,
+      progressPercent: 0
+    };
+  }
+  if (!nextTier) {
+    return {
+      currentTier,
+      nextTier: null,
+      rollingSalesGbp: sales,
+      salesToNextTierGbp: 0,
+      progressPercent: 100
+    };
+  }
+  const range = nextTier.minimumSalesGbp - currentTier.minimumSalesGbp;
+  const progressPercent = range <= 0 ? 100 : Math.min(100, Math.max(0, Math.round((sales - currentTier.minimumSalesGbp) / range * 100)));
+  return {
+    currentTier,
+    nextTier,
+    rollingSalesGbp: sales,
+    salesToNextTierGbp: money(nextTier.minimumSalesGbp - sales),
+    progressPercent
+  };
+}
+function calculateAffiliateCommission(eligibleSalesGbp, commissionRatePercent) {
+  if (!Number.isFinite(eligibleSalesGbp) || eligibleSalesGbp < 0) throw new Error("Eligible sales must be 0 or greater");
+  if (!Number.isFinite(commissionRatePercent) || commissionRatePercent < 0 || commissionRatePercent > 100) {
+    throw new Error("Commission rate must be between 0 and 100");
+  }
+  return money(eligibleSalesGbp * commissionRatePercent / 100);
+}
+function calculateAffiliateEligibleSales(input) {
+  return Math.max(0, money(
+    input.subtotalGbp - input.bundleDiscountGbp - input.discountAmountGbp - input.loyaltyDiscountGbp - input.creditDiscountGbp
+  ));
+}
+function newlyEarnedRewardCredits(previousSettledSalesGbp, settledSalesGbp, thresholdGbp, maximumCredits) {
+  if (thresholdGbp <= 0 || maximumCredits <= 0) return 0;
+  const previousMilestones = Math.floor(Math.max(0, previousSettledSalesGbp) / thresholdGbp);
+  const currentMilestones = Math.floor(Math.max(0, settledSalesGbp) / thresholdGbp);
+  return Math.min(maximumCredits, Math.max(0, currentMilestones - previousMilestones));
+}
+
+// src/lib/affiliateAttribution.ts
+import crypto10 from "crypto";
+var AFFILIATE_ATTRIBUTION_COOKIE = "affiliate_attribution";
+var SECRET = requiredSecret("SESSION_SECRET", "omniqure-affiliate-development-only");
+function signature(payload) {
+  return crypto10.createHmac("sha256", SECRET).update(payload).digest("base64url");
+}
+function createAffiliateAttributionToken(partnerId, trackingCode, clickedAt = /* @__PURE__ */ new Date()) {
+  const payload = Buffer.from(JSON.stringify({
+    partnerId,
+    trackingCode,
+    clickedAt: clickedAt.toISOString()
+  })).toString("base64url");
+  return `${payload}.${signature(payload)}`;
+}
+function verifyAffiliateAttributionToken(token) {
+  if (!token) return null;
+  const dot = token.lastIndexOf(".");
+  if (dot <= 0) return null;
+  const payload = token.slice(0, dot);
+  const supplied = token.slice(dot + 1);
+  const expected = signature(payload);
+  const suppliedBuffer = Buffer.from(supplied);
+  const expectedBuffer = Buffer.from(expected);
+  if (suppliedBuffer.length !== expectedBuffer.length || !crypto10.timingSafeEqual(suppliedBuffer, expectedBuffer)) return null;
+  try {
+    const parsed = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
+    const partnerId = Number(parsed.partnerId);
+    const trackingCode = typeof parsed.trackingCode === "string" ? parsed.trackingCode : "";
+    const clickedAt = typeof parsed.clickedAt === "string" ? new Date(parsed.clickedAt) : /* @__PURE__ */ new Date(NaN);
+    if (!Number.isInteger(partnerId) || partnerId < 1 || !trackingCode || Number.isNaN(clickedAt.getTime())) return null;
+    return { partnerId, trackingCode, clickedAt };
+  } catch {
+    return null;
+  }
+}
+
 // src/routes/orders.ts
 var COUNTRY_NAME_TO_CODE2 = {
   "United States": "US",
@@ -239400,7 +239608,7 @@ function verifyCustomerSession(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto10.createHmac("sha256", SESSION_SECRET2).update(payload).digest("hex");
+  const expected = crypto11.createHmac("sha256", SESSION_SECRET2).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -239570,6 +239778,7 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
     }
     let discountAmount = 0;
     let validatedDiscountCode = null;
+    let validatedDiscountAffiliatePartnerId = null;
     if (discountCode && typeof discountCode === "string" && discountCode.trim()) {
       const [discount] = await db.select().from(discountCodesTable).where(eq(discountCodesTable.code, discountCode.trim().toUpperCase())).limit(1);
       if (discount && discount.isActive && !(discount.expiresAt && discount.expiresAt < /* @__PURE__ */ new Date()) && !(discount.usageLimit !== null && discount.usageCount >= discount.usageLimit)) {
@@ -239583,6 +239792,7 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
             discountAmount = Math.min(value, subtotal);
           }
           validatedDiscountCode = discount.code;
+          validatedDiscountAffiliatePartnerId = discount.affiliatePartnerId;
         }
       }
     }
@@ -239818,7 +240028,7 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
         });
         return;
       }
-      cryptoPaymentAccessToken = crypto10.randomBytes(24).toString("base64url");
+      cryptoPaymentAccessToken = crypto11.randomBytes(24).toString("base64url");
     }
     const sessionToken = req.cookies?.customer_session;
     const sessionCustomerId = sessionToken ? verifyCustomerSession(sessionToken) : null;
@@ -239874,6 +240084,65 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
       shippingCountryCode,
       isProxy: ipData.isProxy
     });
+    const affiliateToken = verifyAffiliateAttributionToken(
+      req.cookies?.[AFFILIATE_ATTRIBUTION_COOKIE]
+    );
+    let affiliateCandidate = null;
+    const [affiliateSettings] = await db.select().from(affiliateProgramSettingsTable).where(eq(affiliateProgramSettingsTable.id, 1)).limit(1);
+    if (affiliateSettings) {
+      const attributionCutoff = new Date(Date.now() - affiliateSettings.attributionWindowDays * 24 * 60 * 60 * 1e3);
+      const candidatePartnerId = affiliateToken && affiliateToken.clickedAt >= attributionCutoff ? affiliateToken.partnerId : validatedDiscountAffiliatePartnerId;
+      const source = affiliateToken && affiliateToken.clickedAt >= attributionCutoff ? "tracking_link" : "discount_code";
+      if (candidatePartnerId) {
+        const [partner] = await db.select().from(affiliatePartnersTable).where(and(
+          eq(affiliatePartnersTable.id, candidatePartnerId),
+          eq(affiliatePartnersTable.status, "approved")
+        )).limit(1);
+        if (partner && (!customerId || partner.customerId !== customerId)) {
+          const tierCutoff = new Date(Date.now() - affiliateSettings.tierWindowDays * 24 * 60 * 60 * 1e3);
+          const [settledRows, tierRows] = await Promise.all([
+            db.select({
+              settledSalesGbp: sql`coalesce(sum(${affiliateCommissionsTable.eligibleSalesGbp}), 0)`
+            }).from(affiliateCommissionsTable).where(and(
+              eq(affiliateCommissionsTable.partnerId, partner.id),
+              inArray(affiliateCommissionsTable.status, ["approved", "paid"]),
+              gte(affiliateCommissionsTable.createdAt, tierCutoff)
+            )),
+            db.select().from(affiliateTiersTable).where(eq(affiliateTiersTable.isActive, true)).orderBy(asc(affiliateTiersTable.minimumSalesGbp), asc(affiliateTiersTable.id))
+          ]);
+          const tierRules = tierRows.map((tier2) => ({
+            id: tier2.id,
+            name: tier2.name,
+            slug: tier2.slug,
+            minimumSalesGbp: Number(tier2.minimumSalesGbp),
+            commissionRatePercent: Number(tier2.commissionRatePercent),
+            rewardCreditGbp: Number(tier2.rewardCreditGbp),
+            isActive: tier2.isActive
+          }));
+          const tier = affiliateTierProgress(tierRules, Number(settledRows[0]?.settledSalesGbp ?? 0)).currentTier;
+          const commissionRatePercent = tier?.commissionRatePercent ?? 0;
+          const eligibleSalesGbp = calculateAffiliateEligibleSales({
+            subtotalGbp,
+            bundleDiscountGbp,
+            discountAmountGbp: discountAmount,
+            loyaltyDiscountGbp,
+            creditDiscountGbp: freePeptideDeductGbp
+          });
+          if (commissionRatePercent > 0 && eligibleSalesGbp > 0) {
+            affiliateCandidate = {
+              partnerId: partner.id,
+              trackingCode: partner.trackingCode,
+              discountCode: partner.discountCode,
+              clickedAt: source === "tracking_link" ? affiliateToken?.clickedAt ?? null : null,
+              source,
+              eligibleSalesGbp,
+              commissionRatePercent,
+              commissionAmountGbp: calculateAffiliateCommission(eligibleSalesGbp, commissionRatePercent)
+            };
+          }
+        }
+      }
+    }
     let referralCandidate = null;
     if (customerId && isFirstOrder) {
       const [referred] = await db.select({ referredBy: customersTable.referredBy }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
@@ -240012,6 +240281,28 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
           now
         })).onConflictDoNothing();
         if (referralCandidate.held) await tx.update(customersTable).set({ referralAbuseFlag: true }).where(eq(customersTable.id, customerId));
+      }
+      if (affiliateCandidate) {
+        await tx.insert(affiliateOrderAttributionsTable).values({
+          orderId: insertedOrder.id,
+          partnerId: affiliateCandidate.partnerId,
+          customerId,
+          trackingCodeSnapshot: affiliateCandidate.trackingCode,
+          discountCodeSnapshot: validatedDiscountCode,
+          source: affiliateCandidate.source,
+          clickedAt: affiliateCandidate.clickedAt
+        }).onConflictDoNothing();
+        await tx.insert(affiliateCommissionsTable).values({
+          partnerId: affiliateCandidate.partnerId,
+          orderId: insertedOrder.id,
+          eligibleSalesGbp: affiliateCandidate.eligibleSalesGbp.toFixed(2),
+          commissionRatePercent: affiliateCandidate.commissionRatePercent.toFixed(2),
+          amountGbp: affiliateCandidate.commissionAmountGbp.toFixed(2),
+          status: fraudScore >= 60 ? "held" : "pending",
+          statusReason: fraudScore >= 60 ? "Order held for fraud review" : null,
+          heldAt: fraudScore >= 60 ? /* @__PURE__ */ new Date() : null,
+          periodKey: (/* @__PURE__ */ new Date()).toISOString().slice(0, 7)
+        }).onConflictDoNothing();
       }
       return [insertedOrder];
     });
@@ -240420,7 +240711,7 @@ var discounts_default2 = router24;
 
 // src/routes/auth.ts
 var import_express25 = __toESM(require_express2(), 1);
-import crypto11 from "crypto";
+import crypto12 from "crypto";
 
 // ../../node_modules/.pnpm/bcryptjs@3.0.3/node_modules/bcryptjs/index.js
 import nodeCrypto from "crypto";
@@ -242153,7 +242444,7 @@ var COOKIE_NAME = "customer_session";
 var COOKIE_MAX_AGE2 = 30 * 24 * 60 * 60 * 1e3;
 function signToken(customerId) {
   const payload = String(customerId);
-  const sig = crypto11.createHmac("sha256", SESSION_SECRET3).update(payload).digest("hex");
+  const sig = crypto12.createHmac("sha256", SESSION_SECRET3).update(payload).digest("hex");
   return `${payload}.${sig}`;
 }
 function verifyToken(token) {
@@ -242161,7 +242452,7 @@ function verifyToken(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto11.createHmac("sha256", SESSION_SECRET3).update(payload).digest("hex");
+  const expected = crypto12.createHmac("sha256", SESSION_SECRET3).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -242285,7 +242576,7 @@ router25.post("/auth/register", async (req, res) => {
       firstName: customer2.firstName,
       lastName: customer2.lastName
     });
-    const verificationToken = crypto11.randomBytes(32).toString("hex");
+    const verificationToken = crypto12.randomBytes(32).toString("hex");
     const verificationExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1e3);
     await db.update(customersTable).set({ verificationToken, verificationTokenExpiresAt: verificationExpiresAt }).where(eq(customersTable.id, customer2.id)).catch(() => {
     });
@@ -242360,7 +242651,7 @@ router25.post("/auth/forgot-password", async (req, res) => {
   try {
     const [customer2] = await db.select().from(customersTable).where(eq(customersTable.email, email3.toLowerCase())).limit(1);
     if (customer2 && customer2.passwordHash) {
-      const token = crypto11.randomBytes(32).toString("hex");
+      const token = crypto12.randomBytes(32).toString("hex");
       const expiresAt = new Date(Date.now() + 60 * 60 * 1e3);
       await db.update(customersTable).set({ resetToken: token, resetTokenExpiresAt: expiresAt }).where(eq(customersTable.id, customer2.id));
       const siteUrl = (process.env.SITE_URL || (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "https://omniqure.com")).replace(/\/$/, "");
@@ -242462,7 +242753,7 @@ var auth_default2 = router25;
 
 // src/routes/account.ts
 var import_express26 = __toESM(require_express2(), 1);
-import crypto12 from "crypto";
+import crypto13 from "crypto";
 init_drizzle_orm();
 var router26 = (0, import_express26.Router)();
 var SESSION_SECRET4 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
@@ -242472,7 +242763,7 @@ function verifyToken2(token) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto12.createHmac("sha256", SESSION_SECRET4).update(payload).digest("hex");
+  const expected = crypto13.createHmac("sha256", SESSION_SECRET4).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -242732,24 +243023,387 @@ router26.post("/account/password", async (req, res) => {
 });
 var account_default = router26;
 
-// src/routes/reviews.ts
+// src/routes/affiliates.ts
 var import_express27 = __toESM(require_express2(), 1);
-import crypto13 from "crypto";
 init_drizzle_orm();
-var router27 = (0, import_express27.Router)();
+import crypto15 from "crypto";
+
+// src/lib/customerSession.ts
+import crypto14 from "crypto";
 var SESSION_SECRET5 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
+var CUSTOMER_COOKIE = "customer_session";
+function verifyCustomerSessionToken(token) {
+  if (!token) return null;
+  const dot = token.lastIndexOf(".");
+  if (dot <= 0) return null;
+  const payload = token.slice(0, dot);
+  const supplied = token.slice(dot + 1);
+  const expected = crypto14.createHmac("sha256", SESSION_SECRET5).update(payload).digest("hex");
+  const suppliedBuffer = Buffer.from(supplied);
+  const expectedBuffer = Buffer.from(expected);
+  if (suppliedBuffer.length !== expectedBuffer.length || !crypto14.timingSafeEqual(suppliedBuffer, expectedBuffer)) return null;
+  const customerId = Number.parseInt(payload, 10);
+  return Number.isInteger(customerId) && customerId > 0 ? customerId : null;
+}
+function requireCustomerSession(req, res) {
+  const customerId = verifyCustomerSessionToken(req.cookies?.[CUSTOMER_COOKIE]);
+  if (customerId) return customerId;
+  res.clearCookie(CUSTOMER_COOKIE, { path: "/" });
+  res.status(401).json({ error: "Please sign in to continue" });
+  return null;
+}
+
+// src/routes/affiliates.ts
+var router27 = (0, import_express27.Router)();
+var money2 = (value) => Math.round(Number(value ?? 0) * 100) / 100;
+var iso = (value) => value?.toISOString() ?? null;
+async function ensureAffiliateDefaults() {
+  await db.insert(affiliateProgramSettingsTable).values({ id: 1 }).onConflictDoNothing();
+  await db.insert(affiliateTiersTable).values([
+    { name: "Starter", slug: "starter", minimumSalesGbp: "0", commissionRatePercent: "5", rewardCreditGbp: "0", sortOrder: 0 },
+    { name: "Growth", slug: "growth", minimumSalesGbp: "1000", commissionRatePercent: "8", rewardCreditGbp: "50", sortOrder: 1 },
+    { name: "Elite", slug: "elite", minimumSalesGbp: "2500", commissionRatePercent: "10", rewardCreditGbp: "75", sortOrder: 2 }
+  ]).onConflictDoNothing();
+}
+async function uniquePartnerCodes(name2) {
+  const prefix = name2.replace(/[^a-z0-9]/gi, "").slice(0, 6).toUpperCase() || "PARTNER";
+  for (let attempt = 0; attempt < 10; attempt += 1) {
+    const suffix = crypto15.randomBytes(3).toString("hex").toUpperCase();
+    const trackingCode = `${prefix}-${suffix}`;
+    const discountCode = `${prefix}${suffix.slice(0, 4)}`;
+    const [existing] = await db.select({ id: affiliatePartnersTable.id }).from(affiliatePartnersTable).where(or(
+      eq(affiliatePartnersTable.trackingCode, trackingCode),
+      eq(affiliatePartnersTable.discountCode, discountCode)
+    )).limit(1);
+    if (!existing) return { trackingCode, discountCode };
+  }
+  throw new Error("Could not generate unique affiliate codes");
+}
+function programResponse(settings, tiers) {
+  return {
+    attributionWindowDays: settings.attributionWindowDays,
+    reviewHoldDays: settings.reviewHoldDays,
+    customerDiscountPercent: money2(settings.customerDiscountPercent),
+    freeRewardThresholdGbp: money2(settings.freeRewardThresholdGbp),
+    freeRewardValueCapGbp: money2(settings.freeRewardValueCapGbp),
+    payoutThresholdGbp: money2(settings.payoutThresholdGbp),
+    tierWindowDays: settings.tierWindowDays,
+    tiers: tiers.map((tier) => ({
+      id: tier.id,
+      name: tier.name,
+      slug: tier.slug,
+      minimumSalesGbp: money2(tier.minimumSalesGbp),
+      commissionRatePercent: money2(tier.commissionRatePercent),
+      rewardCreditGbp: money2(tier.rewardCreditGbp)
+    }))
+  };
+}
+router27.get("/affiliates/program", async (req, res) => {
+  try {
+    await ensureAffiliateDefaults();
+    const [settingsRows, tiers] = await Promise.all([
+      db.select().from(affiliateProgramSettingsTable).where(eq(affiliateProgramSettingsTable.id, 1)).limit(1),
+      db.select().from(affiliateTiersTable).where(eq(affiliateTiersTable.isActive, true)).orderBy(asc(affiliateTiersTable.minimumSalesGbp), asc(affiliateTiersTable.id))
+    ]);
+    if (!settingsRows[0]) throw new Error("Affiliate settings missing");
+    res.setHeader("Cache-Control", "public, max-age=300");
+    res.json({ program: programResponse(settingsRows[0], tiers) });
+  } catch (err) {
+    req.log.error({ err }, "Failed to load public affiliate program");
+    res.status(500).json({ error: "Unable to load the affiliate program" });
+  }
+});
+router27.post("/affiliates/attribution", async (req, res) => {
+  const trackingCode = typeof req.body?.trackingCode === "string" ? req.body.trackingCode.trim().toUpperCase() : "";
+  if (!trackingCode || trackingCode.length > 64) {
+    res.status(400).json({ error: "A valid affiliate tracking code is required" });
+    return;
+  }
+  try {
+    await ensureAffiliateDefaults();
+    const [[partner], [settings]] = await Promise.all([
+      db.select().from(affiliatePartnersTable).where(and(
+        eq(affiliatePartnersTable.trackingCode, trackingCode),
+        eq(affiliatePartnersTable.status, "approved")
+      )).limit(1),
+      db.select().from(affiliateProgramSettingsTable).where(eq(affiliateProgramSettingsTable.id, 1)).limit(1)
+    ]);
+    if (!partner || !settings) {
+      res.status(404).json({ error: "Affiliate link is not active" });
+      return;
+    }
+    const clickedAt = /* @__PURE__ */ new Date();
+    res.cookie(
+      AFFILIATE_ATTRIBUTION_COOKIE,
+      createAffiliateAttributionToken(partner.id, partner.trackingCode, clickedAt),
+      {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: settings.attributionWindowDays * 24 * 60 * 60 * 1e3,
+        path: "/"
+      }
+    );
+    res.json({
+      attributed: true,
+      discountCode: partner.discountCode,
+      discountPercent: money2(partner.discountPercent),
+      expiresAt: new Date(clickedAt.getTime() + settings.attributionWindowDays * 24 * 60 * 60 * 1e3).toISOString()
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to capture affiliate attribution");
+    res.status(500).json({ error: "Unable to save affiliate attribution" });
+  }
+});
+router27.post("/affiliates/apply", async (req, res) => {
+  const customerId = requireCustomerSession(req, res);
+  if (!customerId) return;
+  const channelUrl = typeof req.body?.channelUrl === "string" ? req.body.channelUrl.trim() : "";
+  const audienceDescription = typeof req.body?.audienceDescription === "string" ? req.body.audienceDescription.trim() : "";
+  const promotionPlan = typeof req.body?.promotionPlan === "string" ? req.body.promotionPlan.trim() : "";
+  if (channelUrl.length > 300 || audienceDescription.length < 20 || audienceDescription.length > 1e3 || promotionPlan.length < 20 || promotionPlan.length > 1500) {
+    res.status(400).json({ error: "Please describe your audience and promotion plan in at least 20 characters" });
+    return;
+  }
+  try {
+    const [customer2] = await db.select().from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
+    if (!customer2) {
+      res.status(401).json({ error: "Customer account not found" });
+      return;
+    }
+    const [existing] = await db.select().from(affiliatePartnersTable).where(or(
+      eq(affiliatePartnersTable.customerId, customerId),
+      eq(affiliatePartnersTable.email, customer2.email.toLowerCase())
+    )).limit(1);
+    if (existing) {
+      if (existing.customerId !== null && existing.customerId !== customerId) {
+        res.status(409).json({ error: "An affiliate application already exists for this email" });
+        return;
+      }
+      const [partner2] = await db.update(affiliatePartnersTable).set({
+        customerId,
+        channelUrl: channelUrl || null,
+        audienceDescription,
+        promotionPlan,
+        updatedAt: /* @__PURE__ */ new Date()
+      }).where(eq(affiliatePartnersTable.id, existing.id)).returning();
+      res.json({ partner: { id: partner2.id, status: partner2.status } });
+      return;
+    }
+    await ensureAffiliateDefaults();
+    const [settings] = await db.select().from(affiliateProgramSettingsTable).where(eq(affiliateProgramSettingsTable.id, 1)).limit(1);
+    if (!settings) throw new Error("Affiliate settings missing");
+    const name2 = `${customer2.firstName} ${customer2.lastName}`.trim();
+    const codes = await uniquePartnerCodes(name2);
+    const [partner] = await db.transaction(async (tx) => {
+      const [created] = await tx.insert(affiliatePartnersTable).values({
+        customerId,
+        name: name2,
+        email: customer2.email.toLowerCase(),
+        trackingCode: codes.trackingCode,
+        discountCode: codes.discountCode,
+        discountPercent: settings.customerDiscountPercent,
+        status: "pending",
+        channelUrl: channelUrl || null,
+        audienceDescription,
+        promotionPlan
+      }).returning();
+      await tx.insert(discountCodesTable).values({
+        code: codes.discountCode,
+        affiliatePartnerId: created.id,
+        type: "percentage",
+        value: settings.customerDiscountPercent,
+        isActive: false
+      });
+      return [created];
+    });
+    res.status(201).json({ partner: { id: partner.id, status: partner.status } });
+  } catch (err) {
+    req.log.error({ err }, "Failed to submit affiliate application");
+    res.status(500).json({ error: "Unable to submit your affiliate application" });
+  }
+});
+router27.get("/affiliates/me", async (req, res) => {
+  const customerId = requireCustomerSession(req, res);
+  if (!customerId) return;
+  try {
+    await ensureAffiliateDefaults();
+    const [[settings], tiers, [partner]] = await Promise.all([
+      db.select().from(affiliateProgramSettingsTable).where(eq(affiliateProgramSettingsTable.id, 1)).limit(1),
+      db.select().from(affiliateTiersTable).where(eq(affiliateTiersTable.isActive, true)).orderBy(asc(affiliateTiersTable.minimumSalesGbp), asc(affiliateTiersTable.id)),
+      db.select().from(affiliatePartnersTable).where(eq(affiliatePartnersTable.customerId, customerId)).limit(1)
+    ]);
+    if (!settings) throw new Error("Affiliate settings missing");
+    if (!partner) {
+      res.json({ partner: null, program: programResponse(settings, tiers) });
+      return;
+    }
+    const [commissions, rewards, eligibleProducts] = await Promise.all([
+      db.select({
+        id: affiliateCommissionsTable.id,
+        orderId: affiliateCommissionsTable.orderId,
+        eligibleSalesGbp: affiliateCommissionsTable.eligibleSalesGbp,
+        commissionRatePercent: affiliateCommissionsTable.commissionRatePercent,
+        amountGbp: affiliateCommissionsTable.amountGbp,
+        status: affiliateCommissionsTable.status,
+        statusReason: affiliateCommissionsTable.statusReason,
+        createdAt: affiliateCommissionsTable.createdAt,
+        paidAt: affiliateCommissionsTable.paidAt
+      }).from(affiliateCommissionsTable).where(eq(affiliateCommissionsTable.partnerId, partner.id)).orderBy(desc(affiliateCommissionsTable.createdAt)).limit(100),
+      db.select().from(affiliateRewardCreditsTable).where(eq(affiliateRewardCreditsTable.partnerId, partner.id)).orderBy(desc(affiliateRewardCreditsTable.createdAt)).limit(100),
+      db.select({
+        slug: productsCatalogTable.slug,
+        name: productsCatalogTable.name,
+        priceGbp: productsCatalogTable.priceGbp
+      }).from(productsCatalogTable).where(and(
+        eq(productsCatalogTable.isPublished, true),
+        ne(productsCatalogTable.category, "Accessories"),
+        sql`${productsCatalogTable.priceGbp} IS NOT NULL`,
+        sql`${productsCatalogTable.priceGbp} <= ${settings.freeRewardValueCapGbp}`
+      )).orderBy(asc(productsCatalogTable.name))
+    ]);
+    const totals = commissions.reduce((acc, row) => {
+      const amount = money2(row.amountGbp);
+      if (row.status === "paid") acc.paid += amount;
+      else if (row.status === "approved") acc.approved += amount;
+      else if (row.status === "pending" || row.status === "held") acc.pending += amount;
+      return acc;
+    }, { pending: 0, approved: 0, paid: 0 });
+    const tierCutoff = new Date(Date.now() - settings.tierWindowDays * 24 * 60 * 60 * 1e3);
+    const rollingSalesGbp = commissions.filter((row) => ["approved", "paid"].includes(row.status) && row.createdAt >= tierCutoff).reduce((total, row) => total + money2(row.eligibleSalesGbp), 0);
+    const tierRules = tiers.map((tier) => ({
+      id: tier.id,
+      name: tier.name,
+      slug: tier.slug,
+      minimumSalesGbp: money2(tier.minimumSalesGbp),
+      commissionRatePercent: money2(tier.commissionRatePercent),
+      rewardCreditGbp: money2(tier.rewardCreditGbp),
+      isActive: tier.isActive
+    }));
+    res.setHeader("Cache-Control", "no-store");
+    res.json({
+      partner: {
+        id: partner.id,
+        name: partner.name,
+        email: partner.email,
+        status: partner.status,
+        trackingCode: partner.trackingCode,
+        discountCode: partner.discountCode,
+        discountPercent: money2(partner.discountPercent),
+        channelUrl: partner.channelUrl,
+        audienceDescription: partner.audienceDescription,
+        promotionPlan: partner.promotionPlan,
+        approvedAt: iso(partner.approvedAt),
+        createdAt: partner.createdAt.toISOString(),
+        trackingPath: `/?aff=${encodeURIComponent(partner.trackingCode)}`
+      },
+      totals: {
+        pendingGbp: money2(totals.pending),
+        approvedGbp: money2(totals.approved),
+        paidGbp: money2(totals.paid),
+        availableRewards: rewards.filter((reward) => reward.status === "available").length
+      },
+      tierProgress: affiliateTierProgress(tierRules, rollingSalesGbp),
+      commissions: commissions.map((row) => ({
+        id: row.id,
+        orderId: row.orderId,
+        eligibleSalesGbp: money2(row.eligibleSalesGbp),
+        commissionRatePercent: money2(row.commissionRatePercent),
+        amountGbp: money2(row.amountGbp),
+        status: row.status,
+        statusReason: row.statusReason,
+        createdAt: row.createdAt.toISOString(),
+        paidAt: iso(row.paidAt)
+      })),
+      rewards: rewards.map((row) => ({
+        id: row.id,
+        qualifyingSalesGbp: money2(row.qualifyingSalesGbp),
+        creditValueGbp: money2(row.creditValueGbp),
+        status: row.status,
+        productSlug: row.productSlug,
+        claimedProductName: row.claimedProductName,
+        statusReason: row.statusReason,
+        availableAt: iso(row.availableAt),
+        claimedAt: iso(row.claimedAt),
+        fulfilledAt: iso(row.fulfilledAt),
+        createdAt: row.createdAt.toISOString()
+      })),
+      eligibleProducts: eligibleProducts.map((product) => ({
+        slug: product.slug,
+        name: product.name,
+        priceGbp: money2(product.priceGbp)
+      })),
+      program: programResponse(settings, tiers)
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to load affiliate dashboard");
+    res.status(500).json({ error: "Unable to load your affiliate dashboard" });
+  }
+});
+router27.post("/affiliates/rewards/:id/claim", async (req, res) => {
+  const customerId = requireCustomerSession(req, res);
+  if (!customerId) return;
+  const rewardId = Number.parseInt(Array.isArray(req.params.id) ? req.params.id[0] ?? "" : req.params.id, 10);
+  const productSlug = typeof req.body?.productSlug === "string" ? req.body.productSlug.trim() : "";
+  if (!Number.isInteger(rewardId) || rewardId < 1 || !productSlug) {
+    res.status(400).json({ error: "Choose a valid reward and product" });
+    return;
+  }
+  try {
+    const [[partner], [settings], [product]] = await Promise.all([
+      db.select({ id: affiliatePartnersTable.id }).from(affiliatePartnersTable).where(eq(affiliatePartnersTable.customerId, customerId)).limit(1),
+      db.select().from(affiliateProgramSettingsTable).where(eq(affiliateProgramSettingsTable.id, 1)).limit(1),
+      db.select().from(productsCatalogTable).where(and(
+        eq(productsCatalogTable.slug, productSlug),
+        eq(productsCatalogTable.isPublished, true),
+        ne(productsCatalogTable.category, "Accessories")
+      )).limit(1)
+    ]);
+    if (!partner || !settings || !product || product.priceGbp === null || money2(product.priceGbp) > money2(settings.freeRewardValueCapGbp)) {
+      res.status(400).json({ error: "This product is not eligible for an affiliate reward" });
+      return;
+    }
+    const [claimed] = await db.update(affiliateRewardCreditsTable).set({
+      status: "claimed",
+      productSlug: product.slug,
+      claimedProductName: product.name,
+      claimedAt: /* @__PURE__ */ new Date(),
+      updatedAt: /* @__PURE__ */ new Date()
+    }).where(and(
+      eq(affiliateRewardCreditsTable.id, rewardId),
+      eq(affiliateRewardCreditsTable.partnerId, partner.id),
+      eq(affiliateRewardCreditsTable.status, "available")
+    )).returning({ id: affiliateRewardCreditsTable.id });
+    if (!claimed) {
+      res.status(409).json({ error: "This reward is no longer available" });
+      return;
+    }
+    res.json({ claimed: true, rewardId: claimed.id, productName: product.name });
+  } catch (err) {
+    req.log.error({ err }, "Failed to claim affiliate reward");
+    res.status(500).json({ error: "Unable to claim this reward" });
+  }
+});
+var affiliates_default = router27;
+
+// src/routes/reviews.ts
+var import_express28 = __toESM(require_express2(), 1);
+import crypto16 from "crypto";
+init_drizzle_orm();
+var router28 = (0, import_express28.Router)();
+var SESSION_SECRET6 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 var COOKIE_NAME3 = "customer_session";
 function verifyCustomerSession2(token) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto13.createHmac("sha256", SESSION_SECRET5).update(payload).digest("hex");
+  const expected = crypto16.createHmac("sha256", SESSION_SECRET6).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
 }
-router27.get("/products/:productId/reviews", async (req, res) => {
+router28.get("/products/:productId/reviews", async (req, res) => {
   const productId = parseInt(firstString(req.params.productId) ?? "", 10);
   if (isNaN(productId)) {
     res.status(400).json({ error: "Invalid product ID" });
@@ -242840,7 +243494,7 @@ router27.get("/products/:productId/reviews", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router27.post("/products/:productId/reviews", async (req, res) => {
+router28.post("/products/:productId/reviews", async (req, res) => {
   const productId = parseInt(firstString(req.params.productId) ?? "", 10);
   if (isNaN(productId)) {
     res.status(400).json({ error: "Invalid product ID" });
@@ -242903,10 +243557,10 @@ router27.post("/products/:productId/reviews", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var reviews_default = router27;
+var reviews_default = router28;
 
 // src/routes/admin/reviews.ts
-var import_express28 = __toESM(require_express2(), 1);
+var import_express29 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 function requireAdmin20(req, res) {
   if (res.locals.adminAuthenticated !== true) {
@@ -242915,8 +243569,8 @@ function requireAdmin20(req, res) {
   }
   return true;
 }
-var router28 = (0, import_express28.Router)();
-router28.get("/admin/reviews", async (req, res) => {
+var router29 = (0, import_express29.Router)();
+router29.get("/admin/reviews", async (req, res) => {
   if (!requireAdmin20(req, res)) return;
   try {
     const status = firstString(req.query.status);
@@ -242939,7 +243593,7 @@ router28.get("/admin/reviews", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router28.patch("/admin/reviews/:id", async (req, res) => {
+router29.patch("/admin/reviews/:id", async (req, res) => {
   if (!requireAdmin20(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
@@ -242975,7 +243629,7 @@ router28.patch("/admin/reviews/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router28.delete("/admin/reviews/:id", async (req, res) => {
+router29.delete("/admin/reviews/:id", async (req, res) => {
   if (!requireAdmin20(req, res)) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) {
@@ -242994,14 +243648,14 @@ router28.delete("/admin/reviews/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var reviews_default2 = router28;
+var reviews_default2 = router29;
 
 // src/routes/wishlist.ts
-var import_express29 = __toESM(require_express2(), 1);
-import crypto14 from "crypto";
+var import_express30 = __toESM(require_express2(), 1);
+import crypto17 from "crypto";
 init_drizzle_orm();
-var router29 = (0, import_express29.Router)();
-var SESSION_SECRET6 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
+var router30 = (0, import_express30.Router)();
+var SESSION_SECRET7 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 var COOKIE_NAME4 = "customer_session";
 function getCustomerId(req) {
   const token = req.cookies?.[COOKIE_NAME4];
@@ -243010,12 +243664,12 @@ function getCustomerId(req) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto14.createHmac("sha256", SESSION_SECRET6).update(payload).digest("hex");
+  const expected = crypto17.createHmac("sha256", SESSION_SECRET7).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
 }
-router29.get("/wishlist", async (req, res) => {
+router30.get("/wishlist", async (req, res) => {
   const customerId = getCustomerId(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -243029,7 +243683,7 @@ router29.get("/wishlist", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router29.post("/wishlist/:productId", async (req, res) => {
+router30.post("/wishlist/:productId", async (req, res) => {
   const customerId = getCustomerId(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -243048,7 +243702,7 @@ router29.post("/wishlist/:productId", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router29.delete("/wishlist/:productId", async (req, res) => {
+router30.delete("/wishlist/:productId", async (req, res) => {
   const customerId = getCustomerId(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -243067,14 +243721,14 @@ router29.delete("/wishlist/:productId", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var wishlist_default = router29;
+var wishlist_default = router30;
 
 // src/routes/returns.ts
-var import_express30 = __toESM(require_express2(), 1);
-import crypto15 from "crypto";
+var import_express31 = __toESM(require_express2(), 1);
+import crypto18 from "crypto";
 init_drizzle_orm();
-var router30 = (0, import_express30.Router)();
-var SESSION_SECRET7 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
+var router31 = (0, import_express31.Router)();
+var SESSION_SECRET8 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 var COOKIE_NAME5 = "customer_session";
 function getCustomerId2(req) {
   const token = req.cookies?.[COOKIE_NAME5];
@@ -243083,14 +243737,14 @@ function getCustomerId2(req) {
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto15.createHmac("sha256", SESSION_SECRET7).update(payload).digest("hex");
+  const expected = crypto18.createHmac("sha256", SESSION_SECRET8).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
 }
 var RETURNABLE_STATUSES = ["shipped", "delivered"];
 var ACTIVE_RETURN_STATUSES = ["requested", "approved"];
-router30.get("/returns", async (req, res) => {
+router31.get("/returns", async (req, res) => {
   const customerId = getCustomerId2(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -243103,8 +243757,8 @@ router30.get("/returns", async (req, res) => {
       return;
     }
     const orderIds = customerOrders.map((o) => o.id);
-    const { inArray: inArray2 } = await Promise.resolve().then(() => (init_drizzle_orm(), drizzle_orm_exports));
-    const returns = await db.select().from(returnsTable).where(inArray2(returnsTable.orderId, orderIds)).orderBy(desc(returnsTable.createdAt));
+    const { inArray: inArray3 } = await Promise.resolve().then(() => (init_drizzle_orm(), drizzle_orm_exports));
+    const returns = await db.select().from(returnsTable).where(inArray3(returnsTable.orderId, orderIds)).orderBy(desc(returnsTable.createdAt));
     res.json({
       returns: returns.map((r) => ({
         id: r.id,
@@ -243123,7 +243777,7 @@ router30.get("/returns", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router30.post("/returns", async (req, res) => {
+router31.post("/returns", async (req, res) => {
   const customerId = getCustomerId2(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -243178,13 +243832,13 @@ router30.post("/returns", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var returns_default2 = router30;
+var returns_default2 = router31;
 
 // src/routes/products.ts
-var import_express31 = __toESM(require_express2(), 1);
+var import_express32 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router31 = (0, import_express31.Router)();
-router31.get("/products/:productId/related", async (req, res) => {
+var router32 = (0, import_express32.Router)();
+router32.get("/products/:productId/related", async (req, res) => {
   const productId = parseInt(firstString(req.params.productId) ?? "", 10);
   if (isNaN(productId) || productId <= 0) {
     res.status(400).json({ error: "Invalid product ID" });
@@ -243236,25 +243890,25 @@ router31.get("/products/:productId/related", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var products_default2 = router31;
+var products_default2 = router32;
 
 // src/routes/cart.ts
-var import_express32 = __toESM(require_express2(), 1);
-import crypto16 from "crypto";
+var import_express33 = __toESM(require_express2(), 1);
+import crypto19 from "crypto";
 init_drizzle_orm();
-var router32 = (0, import_express32.Router)();
-var SESSION_SECRET8 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
+var router33 = (0, import_express33.Router)();
+var SESSION_SECRET9 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 function verifyCustomerSession3(token) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto16.createHmac("sha256", SESSION_SECRET8).update(payload).digest("hex");
+  const expected = crypto19.createHmac("sha256", SESSION_SECRET9).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
 }
-router32.post("/cart/save", async (req, res) => {
+router33.post("/cart/save", async (req, res) => {
   const token = req.cookies?.customer_session;
   if (!token) {
     res.status(401).json({ error: "Not authenticated" });
@@ -243296,7 +243950,7 @@ router32.post("/cart/save", async (req, res) => {
   });
   res.json({ ok: true });
 });
-router32.delete("/cart/save", async (req, res) => {
+router33.delete("/cart/save", async (req, res) => {
   const token = req.cookies?.customer_session;
   if (!token) {
     res.json({ ok: true });
@@ -243310,12 +243964,12 @@ router32.delete("/cart/save", async (req, res) => {
   await db.update(abandonedCartsTable).set({ convertedAt: /* @__PURE__ */ new Date() }).where(eq(abandonedCartsTable.customerId, customerId));
   res.json({ ok: true });
 });
-var cart_default = router32;
+var cart_default = router33;
 
 // src/routes/admin/abandonedCarts.ts
-var import_express33 = __toESM(require_express2(), 1);
+var import_express34 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router33 = (0, import_express33.Router)();
+var router34 = (0, import_express34.Router)();
 function requireAdmin21(req, res) {
   if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
@@ -243323,7 +243977,7 @@ function requireAdmin21(req, res) {
   }
   return true;
 }
-router33.get("/admin/abandoned-carts", async (req, res) => {
+router34.get("/admin/abandoned-carts", async (req, res) => {
   if (!requireAdmin21(req, res)) return;
   try {
     const carts = await db.select().from(abandonedCartsTable).where(isNull(abandonedCartsTable.convertedAt)).orderBy(desc(abandonedCartsTable.updatedAt));
@@ -243355,13 +244009,13 @@ router33.get("/admin/abandoned-carts", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var abandonedCarts_default = router33;
+var abandonedCarts_default = router34;
 
 // src/routes/admin/alerts.ts
-var import_express34 = __toESM(require_express2(), 1);
+var import_express35 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router34 = (0, import_express34.Router)();
-router34.get("/admin/alerts", async (req, res) => {
+var router35 = (0, import_express35.Router)();
+router35.get("/admin/alerts", async (req, res) => {
   try {
     const alerts = [];
     const [pendingOrders, pendingReturns, lowStockItems, abandonedCarts, fraudOrders] = await Promise.all([
@@ -243471,12 +244125,12 @@ router34.get("/admin/alerts", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch alerts" });
   }
 });
-var alerts_default = router34;
+var alerts_default = router35;
 
 // src/routes/admin/credits.ts
-var import_express35 = __toESM(require_express2(), 1);
+var import_express36 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router35 = (0, import_express35.Router)();
+var router36 = (0, import_express36.Router)();
 function requireAdmin22(req, res) {
   if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
@@ -243490,7 +244144,7 @@ async function getOrCreateBalance(customerId) {
   await db.insert(customerCreditsTable).values({ customerId, balancePence: 0 });
   return 0;
 }
-router35.get("/admin/customers/:id/credits", async (req, res) => {
+router36.get("/admin/customers/:id/credits", async (req, res) => {
   if (!requireAdmin22(req, res)) return;
   const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) {
@@ -243506,7 +244160,7 @@ router35.get("/admin/customers/:id/credits", async (req, res) => {
     res.status(500).json({ error: "Failed to get customer credits" });
   }
 });
-router35.post("/admin/customers/:id/credits", async (req, res) => {
+router36.post("/admin/customers/:id/credits", async (req, res) => {
   if (!requireAdmin22(req, res)) return;
   const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) {
@@ -243549,7 +244203,7 @@ router35.post("/admin/customers/:id/credits", async (req, res) => {
     res.status(500).json({ error: "Failed to adjust credits" });
   }
 });
-router35.get("/admin/credits", async (req, res) => {
+router36.get("/admin/credits", async (req, res) => {
   if (!requireAdmin22(req, res)) return;
   try {
     const rows = await db.select({
@@ -243566,21 +244220,21 @@ router35.get("/admin/credits", async (req, res) => {
     res.status(500).json({ error: "Failed to list credits" });
   }
 });
-var credits_default = router35;
+var credits_default = router36;
 
 // src/routes/admin/referrals.ts
-var import_express36 = __toESM(require_express2(), 1);
+var import_express37 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router36 = (0, import_express36.Router)();
+var router37 = (0, import_express37.Router)();
 var STATUSES = /* @__PURE__ */ new Set(["all", "pending", "earned", "redeemed", "held", "voided", "legacy", "untracked"]);
 var CAP = 50;
-var money = (v) => Number.parseFloat(String(v ?? 0)) || 0;
+var money3 = (v) => Number.parseFloat(String(v ?? 0)) || 0;
 var customer = (c) => c ? {
   id: c.id,
   name: `${c.firstName} ${c.lastName}`.trim(),
   email: c.email,
   referralCode: c.referralCode,
-  referralCreditGbp: money(c.referralCreditGbp)
+  referralCreditGbp: money3(c.referralCreditGbp)
 } : null;
 function requireAdmin23(req, res) {
   if (!hasSecureAdminSession(req)) {
@@ -243589,7 +244243,7 @@ function requireAdmin23(req, res) {
   }
   return true;
 }
-router36.get("/admin/referrals", async (req, res) => {
+router37.get("/admin/referrals", async (req, res) => {
   if (!requireAdmin23(req, res)) return;
   const status = typeof req.query.status === "string" && STATUSES.has(req.query.status) ? req.query.status : "all";
   const search = typeof req.query.search === "string" ? req.query.search.trim().toLowerCase() : "";
@@ -243611,8 +244265,8 @@ router36.get("/admin/referrals", async (req, res) => {
         id: r.id,
         status: r.status,
         beneficiaryRole: r.beneficiaryRole,
-        amountGbp: money(r.amountGbp),
-        remainingAmountGbp: money(r.remainingAmountGbp),
+        amountGbp: money3(r.amountGbp),
+        remainingAmountGbp: money3(r.remainingAmountGbp),
         historical: r.historical,
         statusReason: r.statusReason,
         lastAdminActor: r.lastAdminActor,
@@ -243646,7 +244300,7 @@ router36.get("/admin/referrals", async (req, res) => {
       qualifyingOrder: r.qualifyingOrderId ? orderMap.get(r.qualifyingOrderId) ?? null : null,
       redemptions: (redemptionsByReward.get(r.id) ?? []).map((redemption) => ({
         id: redemption.id,
-        amountGbp: money(redemption.amountGbp),
+        amountGbp: money3(redemption.amountGbp),
         createdAt: redemption.createdAt.toISOString(),
         order: orderMap.get(redemption.orderId) ?? null
       }))
@@ -243679,7 +244333,7 @@ router36.get("/admin/referrals", async (req, res) => {
       voided: byStatus("voided"),
       legacy: byStatus("legacy"),
       untracked: untracked.length,
-      outstandingCreditGbp: customers.reduce((sum2, c) => sum2 + money(c.referralCreditGbp), 0)
+      outstandingCreditGbp: customers.reduce((sum2, c) => sum2 + money3(c.referralCreditGbp), 0)
     }, referrals: all });
   } catch (err) {
     req.log.error({ err }, "Failed to list referral ledger");
@@ -243693,7 +244347,7 @@ var RewardError = class extends Error {
   }
   code;
 };
-router36.post("/admin/referrals/:id/:action", async (req, res) => {
+router37.post("/admin/referrals/:id/:action", async (req, res) => {
   if (!await requireOwner(req, res)) return;
   const id = Number.parseInt(firstString(req.params.id) ?? "", 10);
   const action = firstString(req.params.action);
@@ -243724,7 +244378,7 @@ router36.post("/admin/referrals/:id/:action", async (req, res) => {
       if (!current.beneficiaryCustomerId) throw new RewardError(409, "Reward has no beneficiary");
       const [owner] = await tx.select().from(customersTable).where(eq(customersTable.id, current.beneficiaryCustomerId)).limit(1);
       if (!owner) throw new RewardError(409, "Reward beneficiary no longer exists");
-      const remaining = money(current.remainingAmountGbp);
+      const remaining = money3(current.remainingAmountGbp);
       let next;
       let delta = 0;
       if (action === "hold") {
@@ -243740,7 +244394,7 @@ router36.post("/admin/referrals/:id/:action", async (req, res) => {
         const [order] = current.qualifyingOrderId ? await tx.select({ status: ordersTable.status }).from(ordersTable).where(eq(ordersTable.id, current.qualifyingOrderId)).limit(1) : [];
         const decision = releaseStatus(
           order?.status === "shipped" || order?.status === "delivered",
-          money(owner.referralCreditGbp),
+          money3(owner.referralCreditGbp),
           remaining
         );
         next = decision.status;
@@ -243761,7 +244415,7 @@ router36.post("/admin/referrals/:id/:action", async (req, res) => {
       await tx.insert(adminAuditEventsTable).values({ eventType: `referral_reward_${action}`, adminUserId: actorUser?.id ?? null, email: session?.email ?? null, ip: getClientIp2(req), userAgent: req.get("user-agent")?.slice(0, 500) ?? null, requestId: String(req.id), success: true, metadata: { rewardId: id, previousStatus: current.status, status: next, reason, balanceDeltaGbp: delta } });
       return updated;
     });
-    res.json({ reward: { ...reward, amountGbp: money(reward.amountGbp), remainingAmountGbp: money(reward.remainingAmountGbp) } });
+    res.json({ reward: { ...reward, amountGbp: money3(reward.amountGbp), remainingAmountGbp: money3(reward.remainingAmountGbp) } });
   } catch (err) {
     if (err instanceof RewardError) {
       res.status(err.code).json({ error: err.message });
@@ -243771,21 +244425,762 @@ router36.post("/admin/referrals/:id/:action", async (req, res) => {
     res.status(500).json({ error: "Failed to update referral reward" });
   }
 });
-var referrals_default = router36;
+var referrals_default = router37;
+
+// src/routes/admin/affiliates.ts
+var import_express38 = __toESM(require_express2(), 1);
+import crypto20 from "crypto";
+init_drizzle_orm();
+var router38 = (0, import_express38.Router)();
+var money4 = (value) => Number.parseFloat(String(value ?? 0)) || 0;
+var integer3 = (value) => Number.parseInt(String(value ?? ""), 10);
+var PARTNER_STATUSES = /* @__PURE__ */ new Set(["pending", "approved", "rejected", "suspended"]);
+var COMMISSION_STATUSES = /* @__PURE__ */ new Set(["all", "pending", "approved", "held", "voided", "paid"]);
+var REWARD_STATUSES = /* @__PURE__ */ new Set(["all", "pending", "available", "claimed", "fulfilled", "voided"]);
+var DEFAULT_TIERS = [
+  { name: "Starter", slug: "starter", minimumSalesGbp: "0", commissionRatePercent: "5", rewardCreditGbp: "0", sortOrder: 0 },
+  { name: "Growth", slug: "growth", minimumSalesGbp: "1000", commissionRatePercent: "8", rewardCreditGbp: "50", sortOrder: 1 },
+  { name: "Elite", slug: "elite", minimumSalesGbp: "2500", commissionRatePercent: "10", rewardCreditGbp: "75", sortOrder: 2 }
+];
+function requireAdmin24(req, res) {
+  if (!hasSecureAdminSession(req)) {
+    res.status(401).json({ error: "Not authenticated" });
+    return false;
+  }
+  return true;
+}
+function iso2(value) {
+  return value ? value.toISOString() : null;
+}
+function settingsToResponse2(settings) {
+  return {
+    id: settings.id,
+    attributionWindowDays: settings.attributionWindowDays,
+    reviewHoldDays: settings.reviewHoldDays,
+    customerDiscountPercent: money4(settings.customerDiscountPercent),
+    freeRewardThresholdGbp: money4(settings.freeRewardThresholdGbp),
+    freeRewardValueCapGbp: money4(settings.freeRewardValueCapGbp),
+    maxFreeRewardsPerPeriod: settings.maxFreeRewardsPerPeriod,
+    payoutThresholdGbp: money4(settings.payoutThresholdGbp),
+    tierWindowDays: settings.tierWindowDays,
+    updatedAt: settings.updatedAt.toISOString()
+  };
+}
+function tierToResponse(tier) {
+  return {
+    id: tier.id,
+    name: tier.name,
+    slug: tier.slug,
+    minimumSalesGbp: money4(tier.minimumSalesGbp),
+    commissionRatePercent: money4(tier.commissionRatePercent),
+    rewardCreditGbp: money4(tier.rewardCreditGbp),
+    isActive: tier.isActive,
+    sortOrder: tier.sortOrder,
+    createdAt: tier.createdAt.toISOString(),
+    updatedAt: tier.updatedAt.toISOString()
+  };
+}
+async function ensureDefaults() {
+  await db.insert(affiliateProgramSettingsTable).values({ id: 1 }).onConflictDoNothing();
+  for (const tier of DEFAULT_TIERS) {
+    await db.insert(affiliateTiersTable).values(tier).onConflictDoNothing({ target: affiliateTiersTable.slug });
+  }
+}
+async function writeAudit(req, eventType, metadata) {
+  const session = getSecureAdminSession(req);
+  await db.insert(adminAuditEventsTable).values({
+    eventType,
+    email: session?.email ?? null,
+    ip: getClientIp2(req),
+    userAgent: req.get("user-agent")?.slice(0, 500) ?? null,
+    requestId: String(req.id),
+    success: true,
+    metadata
+  });
+}
+function generateCode(name2, prefix) {
+  const normalized = name2.replace(/[^a-z0-9]+/gi, "").slice(0, 10).toUpperCase() || "PARTNER";
+  return `${prefix}${normalized}${crypto20.randomBytes(3).toString("hex").toUpperCase()}`;
+}
+async function uniqueCodes(name2) {
+  for (let attempt = 0; attempt < 10; attempt += 1) {
+    const trackingCode = generateCode(name2, "OQ-");
+    const discountCode = generateCode(name2, "OQ-");
+    const [existingPartner, existingDiscount] = await Promise.all([
+      db.select({ id: affiliatePartnersTable.id }).from(affiliatePartnersTable).where(
+        or(eq(affiliatePartnersTable.trackingCode, trackingCode), eq(affiliatePartnersTable.discountCode, discountCode))
+      ).limit(1),
+      db.select({ id: discountCodesTable.id }).from(discountCodesTable).where(eq(discountCodesTable.code, discountCode)).limit(1)
+    ]);
+    if (!existingPartner.length && !existingDiscount.length) return { trackingCode, discountCode };
+  }
+  throw new Error("Could not generate unique affiliate codes");
+}
+function parsePercent(value, label) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed < 0 || parsed > 100) throw new Error(`${label} must be between 0 and 100`);
+  return Math.round(parsed * 100) / 100;
+}
+function parseMoney(value, label, allowZero = true) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || (allowZero ? parsed < 0 : parsed <= 0)) throw new Error(`${label} must be ${allowZero ? "0 or greater" : "greater than 0"}`);
+  return Math.round(parsed * 100) / 100;
+}
+function partnerToResponse(partner, customer2) {
+  return {
+    id: partner.id,
+    customerId: partner.customerId,
+    name: partner.name,
+    email: partner.email,
+    trackingCode: partner.trackingCode,
+    discountCode: partner.discountCode,
+    discountPercent: money4(partner.discountPercent),
+    status: partner.status,
+    channelUrl: partner.channelUrl,
+    audienceDescription: partner.audienceDescription,
+    promotionPlan: partner.promotionPlan,
+    notes: partner.notes,
+    approvedAt: iso2(partner.approvedAt),
+    suspendedAt: iso2(partner.suspendedAt),
+    createdAt: partner.createdAt.toISOString(),
+    updatedAt: partner.updatedAt.toISOString(),
+    customer: customer2 ? {
+      id: customer2.id,
+      name: `${customer2.firstName} ${customer2.lastName}`.trim(),
+      email: customer2.email
+    } : null
+  };
+}
+router38.get("/admin/affiliates/overview", async (req, res) => {
+  if (!requireAdmin24(req, res)) return;
+  try {
+    await ensureDefaults();
+    const [settings, tiers, partnerStats, commissionStats, rewardStats] = await Promise.all([
+      db.select().from(affiliateProgramSettingsTable).where(eq(affiliateProgramSettingsTable.id, 1)).limit(1),
+      db.select().from(affiliateTiersTable).orderBy(asc(affiliateTiersTable.sortOrder), asc(affiliateTiersTable.id)),
+      db.select({ status: affiliatePartnersTable.status, count: sql`count(*)` }).from(affiliatePartnersTable).groupBy(affiliatePartnersTable.status),
+      db.select({ status: affiliateCommissionsTable.status, amountGbp: sql`coalesce(sum(${affiliateCommissionsTable.amountGbp}), 0)`, count: sql`count(*)` }).from(affiliateCommissionsTable).groupBy(affiliateCommissionsTable.status),
+      db.select({ status: affiliateRewardCreditsTable.status, amountGbp: sql`coalesce(sum(${affiliateRewardCreditsTable.creditValueGbp}), 0)`, count: sql`count(*)` }).from(affiliateRewardCreditsTable).groupBy(affiliateRewardCreditsTable.status)
+    ]);
+    if (!settings[0]) {
+      res.status(500).json({ error: "Affiliate settings could not be initialized" });
+      return;
+    }
+    const partnerCounts = Object.fromEntries(partnerStats.map((row) => [row.status, Number(row.count)]));
+    const commissionTotals = Object.fromEntries(commissionStats.map((row) => [row.status, { count: Number(row.count), amountGbp: money4(row.amountGbp) }]));
+    const rewardTotals = Object.fromEntries(rewardStats.map((row) => [row.status, { count: Number(row.count), amountGbp: money4(row.amountGbp) }]));
+    res.setHeader("Cache-Control", "no-store");
+    const totalPartners = Object.values(partnerCounts).reduce((sum2, value) => sum2 + value, 0);
+    res.json({
+      settings: settingsToResponse2(settings[0]),
+      tiers: tiers.map(tierToResponse),
+      stats: {
+        totalPartners,
+        activePartners: partnerCounts.approved ?? 0,
+        pendingCommissionsGbp: commissionTotals.pending?.amountGbp ?? 0,
+        approvedCommissionsGbp: commissionTotals.approved?.amountGbp ?? 0,
+        paidCommissionsGbp: commissionTotals.paid?.amountGbp ?? 0,
+        pendingRewards: rewardTotals.pending?.count ?? 0,
+        availableRewards: rewardTotals.available?.count ?? 0,
+        claimedRewards: rewardTotals.claimed?.count ?? 0,
+        fulfilledRewards: rewardTotals.fulfilled?.count ?? 0,
+        partners: {
+          total: totalPartners,
+          pending: partnerCounts.pending ?? 0,
+          approved: partnerCounts.approved ?? 0,
+          suspended: partnerCounts.suspended ?? 0
+        },
+        commissions: commissionTotals,
+        rewards: rewardTotals
+      }
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to load affiliate overview");
+    res.status(500).json({ error: "Failed to load affiliate overview" });
+  }
+});
+router38.patch("/admin/affiliates/settings", async (req, res) => {
+  if (!requireAdmin24(req, res)) return;
+  const body = req.body;
+  try {
+    const updates = {};
+    if (body.attributionWindowDays !== void 0) {
+      const value = integer3(body.attributionWindowDays);
+      if (!Number.isInteger(value) || value < 1 || value > 365) throw new Error("Attribution window must be between 1 and 365 days");
+      updates.attributionWindowDays = value;
+    }
+    if (body.reviewHoldDays !== void 0) {
+      const value = integer3(body.reviewHoldDays);
+      if (!Number.isInteger(value) || value < 0 || value > 180) throw new Error("Review hold must be between 0 and 180 days");
+      updates.reviewHoldDays = value;
+    }
+    if (body.customerDiscountPercent !== void 0) updates.customerDiscountPercent = String(parsePercent(body.customerDiscountPercent, "Customer discount"));
+    if (body.freeRewardThresholdGbp !== void 0) updates.freeRewardThresholdGbp = String(parseMoney(body.freeRewardThresholdGbp, "Free reward threshold", false));
+    if (body.freeRewardValueCapGbp !== void 0) updates.freeRewardValueCapGbp = String(parseMoney(body.freeRewardValueCapGbp, "Free reward cap", false));
+    if (body.maxFreeRewardsPerPeriod !== void 0) {
+      const value = integer3(body.maxFreeRewardsPerPeriod);
+      if (!Number.isInteger(value) || value < 1 || value > 20) throw new Error("Maximum free rewards must be between 1 and 20");
+      updates.maxFreeRewardsPerPeriod = value;
+    }
+    if (body.payoutThresholdGbp !== void 0) updates.payoutThresholdGbp = String(parseMoney(body.payoutThresholdGbp, "Payout threshold", false));
+    if (body.tierWindowDays !== void 0) {
+      const value = integer3(body.tierWindowDays);
+      if (!Number.isInteger(value) || value < 30 || value > 365) throw new Error("Tier window must be between 30 and 365 days");
+      updates.tierWindowDays = value;
+    }
+    if (!Object.keys(updates).length) {
+      res.status(400).json({ error: "At least one setting is required" });
+      return;
+    }
+    await ensureDefaults();
+    const [updated] = await db.update(affiliateProgramSettingsTable).set(updates).where(eq(affiliateProgramSettingsTable.id, 1)).returning();
+    await writeAudit(req, "affiliate_settings_updated", { fields: Object.keys(updates) });
+    res.json({ settings: updated ? settingsToResponse2(updated) : null });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Invalid affiliate settings";
+    if (message.includes("must be") || message.includes("required")) {
+      res.status(400).json({ error: message });
+      return;
+    }
+    req.log.error({ err }, "Failed to update affiliate settings");
+    res.status(500).json({ error: "Failed to update affiliate settings" });
+  }
+});
+router38.post("/admin/affiliates/tiers", async (req, res) => {
+  if (!requireAdmin24(req, res)) return;
+  const body = req.body;
+  if (typeof body.name !== "string" || body.name.trim().length < 2 || typeof body.slug !== "string" || !/^[a-z0-9-]{2,30}$/.test(body.slug)) {
+    res.status(400).json({ error: "Name and a lowercase slug are required" });
+    return;
+  }
+  try {
+    const [created] = await db.insert(affiliateTiersTable).values({
+      name: body.name.trim(),
+      slug: body.slug,
+      minimumSalesGbp: String(parseMoney(body.minimumSalesGbp, "Minimum sales")),
+      commissionRatePercent: String(parsePercent(body.commissionRatePercent, "Commission rate")),
+      rewardCreditGbp: String(parseMoney(body.rewardCreditGbp ?? 0, "Reward credit")),
+      isActive: body.isActive !== false,
+      sortOrder: Number.isInteger(body.sortOrder) ? Number(body.sortOrder) : 0
+    }).returning();
+    await writeAudit(req, "affiliate_tier_created", { tierId: created.id, slug: created.slug });
+    res.status(201).json({ tier: tierToResponse(created) });
+  } catch (err) {
+    if (err?.code === "23505") {
+      res.status(409).json({ error: "A tier with that slug already exists" });
+      return;
+    }
+    req.log.error({ err }, "Failed to create affiliate tier");
+    res.status(500).json({ error: "Failed to create affiliate tier" });
+  }
+});
+router38.patch("/admin/affiliates/tiers/:id", async (req, res) => {
+  if (!requireAdmin24(req, res)) return;
+  const id = integer3(firstString(req.params.id));
+  if (!Number.isInteger(id)) {
+    res.status(400).json({ error: "Invalid tier ID" });
+    return;
+  }
+  const body = req.body;
+  try {
+    const updates = {};
+    if (body.name !== void 0) {
+      if (typeof body.name !== "string" || body.name.trim().length < 2) throw new Error("Tier name is required");
+      updates.name = body.name.trim();
+    }
+    if (body.slug !== void 0) {
+      if (typeof body.slug !== "string" || !/^[a-z0-9-]{2,30}$/.test(body.slug)) throw new Error("Tier slug must be lowercase letters, numbers, or hyphens");
+      updates.slug = body.slug;
+    }
+    if (body.minimumSalesGbp !== void 0) updates.minimumSalesGbp = String(parseMoney(body.minimumSalesGbp, "Minimum sales"));
+    if (body.commissionRatePercent !== void 0) updates.commissionRatePercent = String(parsePercent(body.commissionRatePercent, "Commission rate"));
+    if (body.rewardCreditGbp !== void 0) updates.rewardCreditGbp = String(parseMoney(body.rewardCreditGbp, "Reward credit"));
+    if (body.isActive !== void 0) {
+      if (typeof body.isActive !== "boolean") throw new Error("Active status must be boolean");
+      updates.isActive = body.isActive;
+    }
+    if (body.sortOrder !== void 0) {
+      const value = integer3(body.sortOrder);
+      if (!Number.isInteger(value) || value < 0) throw new Error("Sort order must be a non-negative integer");
+      updates.sortOrder = value;
+    }
+    if (!Object.keys(updates).length) {
+      res.status(400).json({ error: "No tier changes supplied" });
+      return;
+    }
+    const [updated] = await db.update(affiliateTiersTable).set(updates).where(eq(affiliateTiersTable.id, id)).returning();
+    if (!updated) {
+      res.status(404).json({ error: "Tier not found" });
+      return;
+    }
+    await writeAudit(req, "affiliate_tier_updated", { tierId: id, fields: Object.keys(updates) });
+    res.json({ tier: tierToResponse(updated) });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Invalid affiliate tier";
+    if (message.includes("required") || message.includes("must be") || message.includes("No tier")) {
+      res.status(400).json({ error: message });
+      return;
+    }
+    if (err?.code === "23505") {
+      res.status(409).json({ error: "A tier with that slug already exists" });
+      return;
+    }
+    req.log.error({ err }, "Failed to update affiliate tier");
+    res.status(500).json({ error: "Failed to update affiliate tier" });
+  }
+});
+router38.get("/admin/affiliates/partners", async (req, res) => {
+  if (!requireAdmin24(req, res)) return;
+  const requestedStatus = typeof req.query.status === "string" ? req.query.status : "all";
+  const status = PARTNER_STATUSES.has(requestedStatus) ? requestedStatus : "all";
+  const search = typeof req.query.search === "string" ? req.query.search.trim() : "";
+  try {
+    await ensureDefaults();
+    const conditions = [];
+    if (status !== "all") conditions.push(eq(affiliatePartnersTable.status, status));
+    if (search) conditions.push(or(
+      ilike(affiliatePartnersTable.name, `%${search}%`),
+      ilike(affiliatePartnersTable.email, `%${search}%`),
+      ilike(affiliatePartnersTable.trackingCode, `%${search}%`)
+    ));
+    const [settingsRows, tierRows, rows] = await Promise.all([
+      db.select().from(affiliateProgramSettingsTable).where(eq(affiliateProgramSettingsTable.id, 1)).limit(1),
+      db.select().from(affiliateTiersTable).where(eq(affiliateTiersTable.isActive, true)).orderBy(asc(affiliateTiersTable.minimumSalesGbp)),
+      db.select({ partner: affiliatePartnersTable, customer: customersTable }).from(affiliatePartnersTable).leftJoin(customersTable, eq(affiliatePartnersTable.customerId, customersTable.id)).where(conditions.length ? and(...conditions) : void 0).orderBy(desc(affiliatePartnersTable.createdAt)).limit(200)
+    ]);
+    const settings = settingsRows[0];
+    const cutoff = new Date(Date.now() - (settings?.tierWindowDays ?? 90) * 24 * 60 * 60 * 1e3);
+    const salesRows = await db.select({
+      partnerId: affiliateCommissionsTable.partnerId,
+      settledSalesGbp: sql`coalesce(sum(${affiliateCommissionsTable.eligibleSalesGbp}), 0)`
+    }).from(affiliateCommissionsTable).where(and(
+      inArray(affiliateCommissionsTable.status, ["approved", "paid"]),
+      gte(affiliateCommissionsTable.createdAt, cutoff)
+    )).groupBy(affiliateCommissionsTable.partnerId);
+    const salesByPartner = new Map(salesRows.map((row) => [row.partnerId, money4(row.settledSalesGbp)]));
+    const tierRules = tierRows.map((tier) => ({
+      id: tier.id,
+      name: tier.name,
+      slug: tier.slug,
+      minimumSalesGbp: money4(tier.minimumSalesGbp),
+      commissionRatePercent: money4(tier.commissionRatePercent),
+      rewardCreditGbp: money4(tier.rewardCreditGbp),
+      isActive: tier.isActive
+    }));
+    res.json({ partners: rows.map((row) => ({
+      ...partnerToResponse(row.partner, row.customer),
+      tierProgress: affiliateTierProgress(tierRules, salesByPartner.get(row.partner.id) ?? 0)
+    })) });
+  } catch (err) {
+    req.log.error({ err }, "Failed to list affiliate partners");
+    res.status(500).json({ error: "Failed to list affiliate partners" });
+  }
+});
+router38.post("/admin/affiliates/partners", async (req, res) => {
+  if (!requireAdmin24(req, res)) return;
+  const body = req.body;
+  if (typeof body.name !== "string" || body.name.trim().length < 2 || typeof body.email !== "string" || !body.email.includes("@")) {
+    res.status(400).json({ error: "A valid name and email are required" });
+    return;
+  }
+  const name2 = body.name.trim();
+  const email3 = body.email.trim().toLowerCase();
+  try {
+    const existing = await db.select({ id: affiliatePartnersTable.id }).from(affiliatePartnersTable).where(eq(affiliatePartnersTable.email, email3)).limit(1);
+    if (existing.length) {
+      res.status(409).json({ error: "An affiliate already exists for that email" });
+      return;
+    }
+    const discountPercent = parsePercent(body.discountPercent ?? 10, "Discount percent");
+    const customerId = body.customerId === void 0 || body.customerId === null || body.customerId === "" ? null : integer3(body.customerId);
+    if (customerId !== null && !Number.isInteger(customerId)) throw new Error("Customer ID must be a number");
+    const codes = await uniqueCodes(name2);
+    const created = await db.transaction(async (tx) => {
+      if (customerId !== null) {
+        const [customer3] = await tx.select({ id: customersTable.id }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
+        if (!customer3) throw new Error("Customer not found");
+      }
+      const [partner] = await tx.insert(affiliatePartnersTable).values({
+        customerId,
+        name: name2,
+        email: email3,
+        trackingCode: codes.trackingCode,
+        discountCode: codes.discountCode,
+        discountPercent: String(discountPercent),
+        status: "pending",
+        channelUrl: typeof body.channelUrl === "string" ? body.channelUrl.trim().slice(0, 300) || null : null,
+        audienceDescription: typeof body.audienceDescription === "string" ? body.audienceDescription.trim().slice(0, 1e3) || null : null,
+        promotionPlan: typeof body.promotionPlan === "string" ? body.promotionPlan.trim().slice(0, 1500) || null : null,
+        notes: typeof body.notes === "string" ? body.notes.trim().slice(0, 1e3) || null : null
+      }).returning();
+      await tx.insert(discountCodesTable).values({
+        code: codes.discountCode,
+        type: "percentage",
+        value: String(discountPercent),
+        affiliatePartnerId: partner.id,
+        isActive: false
+      });
+      const [customer2] = customerId !== null ? await tx.select().from(customersTable).where(eq(customersTable.id, customerId)).limit(1) : [];
+      return { partner, customer: customer2 };
+    });
+    await writeAudit(req, "affiliate_partner_created", { partnerId: created.partner.id, status: created.partner.status });
+    res.status(201).json({ partner: partnerToResponse(created.partner, created.customer) });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "";
+    if (message === "Customer not found" || message.includes("must be") || message.includes("Could not generate")) {
+      res.status(400).json({ error: message });
+      return;
+    }
+    if (err?.code === "23505") {
+      res.status(409).json({ error: "Affiliate or discount code already exists" });
+      return;
+    }
+    req.log.error({ err }, "Failed to create affiliate partner");
+    res.status(500).json({ error: "Failed to create affiliate partner" });
+  }
+});
+router38.patch("/admin/affiliates/partners/:id", async (req, res) => {
+  if (!requireAdmin24(req, res)) return;
+  const id = integer3(firstString(req.params.id));
+  if (!Number.isInteger(id)) {
+    res.status(400).json({ error: "Invalid partner ID" });
+    return;
+  }
+  const body = req.body;
+  try {
+    const current = await db.select().from(affiliatePartnersTable).where(eq(affiliatePartnersTable.id, id)).limit(1);
+    if (!current[0]) {
+      res.status(404).json({ error: "Affiliate partner not found" });
+      return;
+    }
+    const updates = {};
+    if (body.name !== void 0) {
+      if (typeof body.name !== "string" || body.name.trim().length < 2) throw new Error("Partner name is required");
+      updates.name = body.name.trim();
+    }
+    if (body.email !== void 0) {
+      if (typeof body.email !== "string" || !body.email.includes("@")) throw new Error("A valid partner email is required");
+      updates.email = body.email.trim().toLowerCase();
+    }
+    if (body.discountPercent !== void 0) updates.discountPercent = String(parsePercent(body.discountPercent, "Discount percent"));
+    if (body.channelUrl !== void 0) updates.channelUrl = typeof body.channelUrl === "string" ? body.channelUrl.trim().slice(0, 300) || null : null;
+    if (body.audienceDescription !== void 0) updates.audienceDescription = typeof body.audienceDescription === "string" ? body.audienceDescription.trim().slice(0, 1e3) || null : null;
+    if (body.promotionPlan !== void 0) updates.promotionPlan = typeof body.promotionPlan === "string" ? body.promotionPlan.trim().slice(0, 1500) || null : null;
+    if (body.notes !== void 0) updates.notes = typeof body.notes === "string" ? body.notes.trim().slice(0, 1e3) || null : null;
+    const nextStatus = body.status;
+    if (nextStatus !== void 0) {
+      if (typeof nextStatus !== "string" || !PARTNER_STATUSES.has(nextStatus)) throw new Error("Invalid partner status");
+      updates.status = nextStatus;
+      updates.approvedAt = nextStatus === "approved" ? /* @__PURE__ */ new Date() : current[0].approvedAt;
+      updates.suspendedAt = nextStatus === "suspended" ? /* @__PURE__ */ new Date() : nextStatus === "approved" ? null : current[0].suspendedAt;
+    }
+    if (!Object.keys(updates).length) {
+      res.status(400).json({ error: "No partner changes supplied" });
+      return;
+    }
+    const updated = await db.transaction(async (tx) => {
+      const [partner] = await tx.update(affiliatePartnersTable).set(updates).where(eq(affiliatePartnersTable.id, id)).returning();
+      if (!partner) throw new Error("Affiliate partner not found");
+      if (updates.status !== void 0 || updates.discountPercent !== void 0) {
+        await tx.update(discountCodesTable).set({
+          ...updates.discountPercent !== void 0 ? { value: String(updates.discountPercent) } : {},
+          ...updates.status !== void 0 ? { isActive: updates.status === "approved" } : {}
+        }).where(eq(discountCodesTable.affiliatePartnerId, id));
+      }
+      const [customer2] = partner.customerId !== null ? await tx.select().from(customersTable).where(eq(customersTable.id, partner.customerId)).limit(1) : [];
+      return { partner, customer: customer2 };
+    });
+    await writeAudit(req, "affiliate_partner_updated", { partnerId: id, fields: Object.keys(updates), status: updated.partner.status });
+    res.json({ partner: partnerToResponse(updated.partner, updated.customer) });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "";
+    if (message.includes("required") || message.includes("Invalid") || message.includes("No partner")) {
+      res.status(400).json({ error: message });
+      return;
+    }
+    if (err?.code === "23505") {
+      res.status(409).json({ error: "That email is already used by another affiliate" });
+      return;
+    }
+    req.log.error({ err }, "Failed to update affiliate partner");
+    res.status(500).json({ error: "Failed to update affiliate partner" });
+  }
+});
+router38.get("/admin/affiliates/commissions", async (req, res) => {
+  if (!requireAdmin24(req, res)) return;
+  const requestedStatus = typeof req.query.status === "string" ? req.query.status : "all";
+  const status = COMMISSION_STATUSES.has(requestedStatus) ? requestedStatus : "all";
+  try {
+    const rows = await db.select({
+      commission: affiliateCommissionsTable,
+      partner: affiliatePartnersTable,
+      order: { orderNumber: ordersTable.orderNumber, status: ordersTable.status }
+    }).from(affiliateCommissionsTable).innerJoin(affiliatePartnersTable, eq(affiliateCommissionsTable.partnerId, affiliatePartnersTable.id)).leftJoin(ordersTable, eq(affiliateCommissionsTable.orderId, ordersTable.id)).where(status === "all" ? void 0 : eq(affiliateCommissionsTable.status, status)).orderBy(desc(affiliateCommissionsTable.createdAt)).limit(200);
+    res.json({ commissions: rows.map((row) => ({
+      id: row.commission.id,
+      partnerId: row.commission.partnerId,
+      partnerName: row.partner.name,
+      partnerEmail: row.partner.email,
+      orderId: row.commission.orderId,
+      orderNumber: row.order?.orderNumber ?? null,
+      orderStatus: row.order?.status ?? null,
+      eligibleSalesGbp: money4(row.commission.eligibleSalesGbp),
+      commissionRatePercent: money4(row.commission.commissionRatePercent),
+      amountGbp: money4(row.commission.amountGbp),
+      status: row.commission.status,
+      statusReason: row.commission.statusReason,
+      periodKey: row.commission.periodKey,
+      approvedAt: iso2(row.commission.approvedAt),
+      heldAt: iso2(row.commission.heldAt),
+      voidedAt: iso2(row.commission.voidedAt),
+      paidAt: iso2(row.commission.paidAt),
+      createdAt: row.commission.createdAt.toISOString(),
+      dates: {
+        createdAt: row.commission.createdAt.toISOString(),
+        approvedAt: iso2(row.commission.approvedAt),
+        heldAt: iso2(row.commission.heldAt),
+        voidedAt: iso2(row.commission.voidedAt),
+        paidAt: iso2(row.commission.paidAt)
+      }
+    })) });
+  } catch (err) {
+    req.log.error({ err }, "Failed to list affiliate commissions");
+    res.status(500).json({ error: "Failed to list affiliate commissions" });
+  }
+});
+router38.post("/admin/affiliates/commissions/:id/:action", async (req, res) => {
+  if (!requireAdmin24(req, res)) return;
+  const id = integer3(firstString(req.params.id));
+  const action = firstString(req.params.action);
+  if (!Number.isInteger(id) || !action || !["approve", "hold", "void", "paid"].includes(action)) {
+    res.status(400).json({ error: "Invalid commission action" });
+    return;
+  }
+  const reason = typeof req.body?.reason === "string" ? req.body.reason.trim().slice(0, 500) : "";
+  if (!reason) {
+    res.status(400).json({ error: "A reason is required" });
+    return;
+  }
+  try {
+    const updated = await db.transaction(async (tx) => {
+      const [current] = await tx.select().from(affiliateCommissionsTable).where(eq(affiliateCommissionsTable.id, id)).limit(1);
+      if (!current) throw new Error("Commission not found");
+      const nextStatus = action === "approve" ? "approved" : action === "paid" ? "paid" : action;
+      const allowed = action === "approve" ? ["pending", "held"].includes(current.status) : action === "hold" ? ["pending", "approved"].includes(current.status) : action === "paid" ? current.status === "approved" : !["voided", "paid"].includes(current.status);
+      if (!allowed) throw new Error(`Cannot ${action} a ${current.status} commission`);
+      const now = /* @__PURE__ */ new Date();
+      const session = getSecureAdminSession(req);
+      const [result] = await tx.update(affiliateCommissionsTable).set({
+        status: nextStatus,
+        statusReason: reason,
+        approvedAt: action === "approve" ? now : current.approvedAt,
+        heldAt: action === "hold" ? now : action === "approve" ? null : current.heldAt,
+        voidedAt: action === "void" ? now : current.voidedAt,
+        paidAt: action === "paid" ? now : current.paidAt,
+        updatedAt: now
+      }).where(eq(affiliateCommissionsTable.id, id)).returning();
+      if (action === "approve") {
+        const [settingsRows, tiers] = await Promise.all([
+          tx.select().from(affiliateProgramSettingsTable).where(eq(affiliateProgramSettingsTable.id, 1)).limit(1),
+          tx.select().from(affiliateTiersTable).where(eq(affiliateTiersTable.isActive, true)).orderBy(asc(affiliateTiersTable.minimumSalesGbp), asc(affiliateTiersTable.id))
+        ]);
+        const settings = settingsRows[0];
+        if (settings) {
+          const periodCutoff = new Date(now.getTime() - settings.tierWindowDays * 24 * 60 * 60 * 1e3);
+          const [salesRows, existingRewards] = await Promise.all([
+            tx.select({
+              settledSalesGbp: sql`coalesce(sum(${affiliateCommissionsTable.eligibleSalesGbp}), 0)`
+            }).from(affiliateCommissionsTable).where(and(
+              eq(affiliateCommissionsTable.partnerId, current.partnerId),
+              inArray(affiliateCommissionsTable.status, ["approved", "paid"]),
+              gte(affiliateCommissionsTable.createdAt, periodCutoff)
+            )),
+            tx.select({ id: affiliateRewardCreditsTable.id }).from(affiliateRewardCreditsTable).where(and(
+              eq(affiliateRewardCreditsTable.partnerId, current.partnerId),
+              gte(affiliateRewardCreditsTable.createdAt, periodCutoff),
+              sql`${affiliateRewardCreditsTable.status} <> 'voided'`
+            ))
+          ]);
+          const settledSales = money4(salesRows[0]?.settledSalesGbp);
+          const previousSettledSales = Math.max(0, settledSales - money4(current.eligibleSalesGbp));
+          const remainingRewardCapacity = Math.max(0, settings.maxFreeRewardsPerPeriod - existingRewards.length);
+          const rewardsEarned = newlyEarnedRewardCredits(
+            previousSettledSales,
+            settledSales,
+            money4(settings.freeRewardThresholdGbp),
+            remainingRewardCapacity
+          );
+          const tierRules = tiers.map((tier) => ({
+            id: tier.id,
+            name: tier.name,
+            slug: tier.slug,
+            minimumSalesGbp: money4(tier.minimumSalesGbp),
+            commissionRatePercent: money4(tier.commissionRatePercent),
+            rewardCreditGbp: money4(tier.rewardCreditGbp),
+            isActive: tier.isActive
+          }));
+          const currentTier = affiliateTierProgress(tierRules, settledSales).currentTier;
+          const creditValueGbp = Math.min(
+            money4(settings.freeRewardValueCapGbp),
+            currentTier?.rewardCreditGbp || money4(settings.freeRewardValueCapGbp)
+          );
+          if (rewardsEarned > 0 && creditValueGbp > 0) {
+            const firstMilestone = Math.floor(previousSettledSales / money4(settings.freeRewardThresholdGbp)) + 1;
+            await tx.insert(affiliateRewardCreditsTable).values(
+              Array.from({ length: rewardsEarned }, (_, index2) => ({
+                partnerId: current.partnerId,
+                commissionId: current.id,
+                qualifyingSalesGbp: ((firstMilestone + index2) * money4(settings.freeRewardThresholdGbp)).toFixed(2),
+                creditValueGbp: creditValueGbp.toFixed(2),
+                status: "pending"
+              }))
+            );
+          }
+        }
+      } else if (action === "hold" || action === "void") {
+        await tx.update(affiliateRewardCreditsTable).set({
+          status: action === "void" ? "voided" : "pending",
+          statusReason: `Commission ${action}: ${reason}`,
+          voidedAt: action === "void" ? now : null,
+          updatedAt: now
+        }).where(and(
+          eq(affiliateRewardCreditsTable.commissionId, current.id),
+          inArray(affiliateRewardCreditsTable.status, ["pending", "available"])
+        ));
+      }
+      await tx.insert(adminAuditEventsTable).values({
+        eventType: `affiliate_commission_${action}`,
+        email: session?.email ?? null,
+        ip: getClientIp2(req),
+        userAgent: req.get("user-agent")?.slice(0, 500) ?? null,
+        requestId: String(req.id),
+        success: true,
+        metadata: { commissionId: id, previousStatus: current.status, status: nextStatus, reason }
+      });
+      return result;
+    });
+    res.json({ commission: { ...updated, amountGbp: money4(updated.amountGbp), eligibleSalesGbp: money4(updated.eligibleSalesGbp), commissionRatePercent: money4(updated.commissionRatePercent) } });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "";
+    if (message === "Commission not found") {
+      res.status(404).json({ error: message });
+      return;
+    }
+    if (message.startsWith("Cannot")) {
+      res.status(409).json({ error: message });
+      return;
+    }
+    req.log.error({ err, id, action }, "Failed to update affiliate commission");
+    res.status(500).json({ error: "Failed to update affiliate commission" });
+  }
+});
+router38.get("/admin/affiliates/rewards", async (req, res) => {
+  if (!requireAdmin24(req, res)) return;
+  const requestedStatus = typeof req.query.status === "string" ? req.query.status : "all";
+  const status = REWARD_STATUSES.has(requestedStatus) ? requestedStatus : "all";
+  try {
+    const rows = await db.select({ reward: affiliateRewardCreditsTable, partner: affiliatePartnersTable }).from(affiliateRewardCreditsTable).innerJoin(affiliatePartnersTable, eq(affiliateRewardCreditsTable.partnerId, affiliatePartnersTable.id)).where(status === "all" ? void 0 : eq(affiliateRewardCreditsTable.status, status)).orderBy(desc(affiliateRewardCreditsTable.createdAt)).limit(200);
+    res.json({ rewards: rows.map((row) => ({
+      id: row.reward.id,
+      partnerId: row.reward.partnerId,
+      partnerName: row.partner.name,
+      partnerEmail: row.partner.email,
+      qualifyingSalesGbp: money4(row.reward.qualifyingSalesGbp),
+      creditValueGbp: money4(row.reward.creditValueGbp),
+      status: row.reward.status,
+      productSlug: row.reward.productSlug,
+      claimedProductName: row.reward.claimedProductName,
+      statusReason: row.reward.statusReason,
+      lastAdminActor: row.reward.lastAdminActor,
+      availableAt: iso2(row.reward.availableAt),
+      claimedAt: iso2(row.reward.claimedAt),
+      fulfilledAt: iso2(row.reward.fulfilledAt),
+      voidedAt: iso2(row.reward.voidedAt),
+      createdAt: row.reward.createdAt.toISOString(),
+      dates: {
+        createdAt: row.reward.createdAt.toISOString(),
+        approvedAt: iso2(row.reward.availableAt),
+        claimedAt: iso2(row.reward.claimedAt),
+        fulfilledAt: iso2(row.reward.fulfilledAt),
+        voidedAt: iso2(row.reward.voidedAt)
+      }
+    })) });
+  } catch (err) {
+    req.log.error({ err }, "Failed to list affiliate rewards");
+    res.status(500).json({ error: "Failed to list affiliate rewards" });
+  }
+});
+router38.post("/admin/affiliates/rewards/:id/:action", async (req, res) => {
+  if (!requireAdmin24(req, res)) return;
+  const id = integer3(firstString(req.params.id));
+  const action = firstString(req.params.action);
+  if (!Number.isInteger(id) || !action || !["approve", "fulfill", "void"].includes(action)) {
+    res.status(400).json({ error: "Invalid reward action" });
+    return;
+  }
+  const reason = typeof req.body?.reason === "string" ? req.body.reason.trim().slice(0, 500) : "";
+  if (!reason) {
+    res.status(400).json({ error: "A reason is required" });
+    return;
+  }
+  try {
+    const updated = await db.transaction(async (tx) => {
+      const [current] = await tx.select().from(affiliateRewardCreditsTable).where(eq(affiliateRewardCreditsTable.id, id)).limit(1);
+      if (!current) throw new Error("Reward not found");
+      const allowed = action === "approve" ? current.status === "pending" : action === "fulfill" ? ["available", "claimed"].includes(current.status) : !["voided", "fulfilled"].includes(current.status);
+      if (!allowed) throw new Error(`Cannot ${action} a ${current.status} reward`);
+      const now = /* @__PURE__ */ new Date();
+      const session = getSecureAdminSession(req);
+      const [result] = await tx.update(affiliateRewardCreditsTable).set({
+        status: action === "approve" ? "available" : action === "fulfill" ? "fulfilled" : "voided",
+        statusReason: reason,
+        lastAdminActor: session?.email ?? null,
+        availableAt: action === "approve" ? now : current.availableAt,
+        fulfilledAt: action === "fulfill" ? now : current.fulfilledAt,
+        voidedAt: action === "void" ? now : current.voidedAt,
+        updatedAt: now
+      }).where(eq(affiliateRewardCreditsTable.id, id)).returning();
+      await tx.insert(adminAuditEventsTable).values({
+        eventType: `affiliate_reward_${action}`,
+        email: session?.email ?? null,
+        ip: getClientIp2(req),
+        userAgent: req.get("user-agent")?.slice(0, 500) ?? null,
+        requestId: String(req.id),
+        success: true,
+        metadata: { rewardId: id, previousStatus: current.status, status: result.status, reason }
+      });
+      return result;
+    });
+    res.json({ reward: { ...updated, qualifyingSalesGbp: money4(updated.qualifyingSalesGbp), creditValueGbp: money4(updated.creditValueGbp) } });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "";
+    if (message === "Reward not found") {
+      res.status(404).json({ error: message });
+      return;
+    }
+    if (message.startsWith("Cannot")) {
+      res.status(409).json({ error: message });
+      return;
+    }
+    req.log.error({ err, id, action }, "Failed to update affiliate reward");
+    res.status(500).json({ error: "Failed to update affiliate reward" });
+  }
+});
+var affiliates_default2 = router38;
 
 // src/routes/admin/fraud.ts
-var import_express37 = __toESM(require_express2(), 1);
+var import_express39 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router37 = (0, import_express37.Router)();
-function requireAdmin24(req, res) {
+var router39 = (0, import_express39.Router)();
+function requireAdmin25(req, res) {
   if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router37.get("/admin/fraud", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router39.get("/admin/fraud", async (req, res) => {
+  if (!requireAdmin25(req, res)) return;
   try {
     const minScore = Math.max(1, parseInt(String(req.query.minScore ?? "20"), 10) || 20);
     const reviewedParam = req.query.reviewed;
@@ -243842,10 +245237,10 @@ router37.get("/admin/fraud", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch fraud queue" });
   }
 });
-router37.patch(
+router39.patch(
   "/admin/fraud/:id/review",
   async (req, res) => {
-    if (!requireAdmin24(req, res)) return;
+    if (!requireAdmin25(req, res)) return;
     try {
       const id = parseInt(firstString(req.params.id) ?? "", 10);
       if (!id) {
@@ -243864,21 +245259,21 @@ router37.patch(
     }
   }
 );
-var fraud_default = router37;
+var fraud_default = router39;
 
 // src/routes/admin/blockedIps.ts
-var import_express38 = __toESM(require_express2(), 1);
+var import_express40 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router38 = (0, import_express38.Router)();
-function requireAdmin25(req, res) {
+var router40 = (0, import_express40.Router)();
+function requireAdmin26(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router38.get("/admin/blocked-ips", async (req, res) => {
-  if (!requireAdmin25(req, res)) return;
+router40.get("/admin/blocked-ips", async (req, res) => {
+  if (!requireAdmin26(req, res)) return;
   try {
     const rows = await db.select().from(blockedIpsTable).orderBy(blockedIpsTable.blockedAt);
     res.json(rows);
@@ -243886,8 +245281,8 @@ router38.get("/admin/blocked-ips", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch blocked IPs" });
   }
 });
-router38.post("/admin/blocked-ips", async (req, res) => {
-  if (!requireAdmin25(req, res)) return;
+router40.post("/admin/blocked-ips", async (req, res) => {
+  if (!requireAdmin26(req, res)) return;
   const { ip, reason } = req.body;
   if (!ip || typeof ip !== "string" || !ip.trim()) {
     res.status(400).json({ error: "ip is required" });
@@ -243905,8 +245300,8 @@ router38.post("/admin/blocked-ips", async (req, res) => {
     res.status(500).json({ error: "Failed to block IP" });
   }
 });
-router38.delete("/admin/blocked-ips/:ip", async (req, res) => {
-  if (!requireAdmin25(req, res)) return;
+router40.delete("/admin/blocked-ips/:ip", async (req, res) => {
+  if (!requireAdmin26(req, res)) return;
   const ip = decodeURIComponent(firstString(req.params.ip) ?? "");
   try {
     const deleted = await db.delete(blockedIpsTable).where(eq(blockedIpsTable.ip, ip)).returning();
@@ -243919,21 +245314,21 @@ router38.delete("/admin/blocked-ips/:ip", async (req, res) => {
     res.status(500).json({ error: "Failed to unblock IP" });
   }
 });
-var blockedIps_default = router38;
+var blockedIps_default = router40;
 
 // src/routes/admin/emailLogs.ts
-var import_express39 = __toESM(require_express2(), 1);
+var import_express41 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router39 = (0, import_express39.Router)();
-function requireAdmin26(req, res) {
+var router41 = (0, import_express41.Router)();
+function requireAdmin27(req, res) {
   if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router39.get("/admin/email-logs", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+router41.get("/admin/email-logs", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   try {
     const [logs, statsRows] = await Promise.all([
       db.select().from(emailLogsTable).orderBy(desc(emailLogsTable.createdAt)).limit(500),
@@ -243963,20 +245358,20 @@ router39.get("/admin/email-logs", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var emailLogs_default = router39;
+var emailLogs_default = router41;
 
 // src/routes/loyalty.ts
-var import_express40 = __toESM(require_express2(), 1);
-import crypto17 from "crypto";
+var import_express42 = __toESM(require_express2(), 1);
+import crypto21 from "crypto";
 init_drizzle_orm();
-var router40 = (0, import_express40.Router)();
-var SESSION_SECRET9 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
+var router42 = (0, import_express42.Router)();
+var SESSION_SECRET10 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 function verifyCustomerSession4(token) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto17.createHmac("sha256", SESSION_SECRET9).update(payload).digest("hex");
+  const expected = crypto21.createHmac("sha256", SESSION_SECRET10).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
@@ -244008,7 +245403,7 @@ function getTierInfo(lifetimeEarned) {
     progressPct: nextTier ? Math.min(100, Math.round((lifetimeEarned - tier.min) / (nextTier.min - tier.min) * 100)) : 100
   };
 }
-router40.get("/loyalty/balance", async (req, res) => {
+router42.get("/loyalty/balance", async (req, res) => {
   const customerId = getCustomerId3(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -244037,7 +245432,7 @@ router40.get("/loyalty/balance", async (req, res) => {
     }))
   });
 });
-router40.get("/admin/loyalty/overview", async (req, res) => {
+router42.get("/admin/loyalty/overview", async (req, res) => {
   if (!isAdmin(req, res)) return;
   const result = await db.execute(sql`
     SELECT
@@ -244065,7 +245460,7 @@ router40.get("/admin/loyalty/overview", async (req, res) => {
   `);
   res.json({ customers: result.rows, stats: stats.rows[0] ?? {} });
 });
-router40.post("/admin/loyalty/adjust", async (req, res) => {
+router42.post("/admin/loyalty/adjust", async (req, res) => {
   if (!isAdmin(req, res)) return;
   const { customerId, points, reason } = req.body;
   if (!customerId || typeof points !== "number" || !reason || typeof reason !== "string") {
@@ -244081,13 +245476,13 @@ router40.post("/admin/loyalty/adjust", async (req, res) => {
   logger.info({ customerId, points, reason }, "Admin loyalty adjustment");
   res.json({ success: true });
 });
-var loyalty_default = router40;
+var loyalty_default = router42;
 
 // src/routes/tax.ts
-var import_express41 = __toESM(require_express2(), 1);
+var import_express43 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router41 = (0, import_express41.Router)();
-router41.get("/tax/calculate", async (req, res) => {
+var router43 = (0, import_express43.Router)();
+router43.get("/tax/calculate", async (req, res) => {
   const countryCode = String(req.query.country ?? "").toUpperCase();
   const subtotal = parseFloat(String(req.query.subtotal ?? "0"));
   if (!countryCode) {
@@ -244119,13 +245514,13 @@ router41.get("/tax/calculate", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var tax_default2 = router41;
+var tax_default2 = router43;
 
 // src/routes/shipping.ts
-var import_express42 = __toESM(require_express2(), 1);
+var import_express44 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router42 = (0, import_express42.Router)();
-router42.get("/shipping/rates", async (req, res) => {
+var router44 = (0, import_express44.Router)();
+router44.get("/shipping/rates", async (req, res) => {
   const country = String(req.query.country ?? "").toUpperCase();
   const orderTotal = parseFloat(String(req.query.orderTotal ?? "0"));
   if (!country) {
@@ -244168,13 +245563,13 @@ router42.get("/shipping/rates", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var shipping_default2 = router42;
+var shipping_default2 = router44;
 
 // src/routes/blog.ts
-var import_express43 = __toESM(require_express2(), 1);
+var import_express45 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router43 = (0, import_express43.Router)();
-router43.get("/blog/posts", async (req, res) => {
+var router45 = (0, import_express45.Router)();
+router45.get("/blog/posts", async (req, res) => {
   const limit = Math.min(parseInt(String(req.query.limit ?? "12"), 10), 50);
   const offset = parseInt(String(req.query.offset ?? "0"), 10);
   try {
@@ -244208,7 +245603,7 @@ router43.get("/blog/posts", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router43.get("/blog/posts/:slug", async (req, res) => {
+router45.get("/blog/posts/:slug", async (req, res) => {
   const slug = firstString(req.params.slug);
   if (!slug) {
     res.status(400).json({ error: "Invalid slug" });
@@ -244239,18 +245634,18 @@ router43.get("/blog/posts/:slug", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var blog_default2 = router43;
+var blog_default2 = router45;
 
 // src/routes/btcpay-webhook.ts
-var import_express44 = __toESM(require_express2(), 1);
+var import_express46 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router44 = (0, import_express44.Router)();
-router44.post(
+var router46 = (0, import_express46.Router)();
+router46.post(
   "/btcpay-webhook",
   async (req, res) => {
-    const signature = req.headers["btcpay-sig"] || req.headers["x-btcpay-signature"] || "";
+    const signature2 = req.headers["btcpay-sig"] || req.headers["x-btcpay-signature"] || "";
     const rawBody = typeof req.body === "string" ? req.body : JSON.stringify(req.body);
-    if (!verifyBtcPayWebhookSignature(rawBody, signature)) {
+    if (!verifyBtcPayWebhookSignature(rawBody, signature2)) {
       logger.warn("BTCPay webhook signature mismatch \u2014 rejected");
       res.status(401).json({ error: "Invalid signature" });
       return;
@@ -244335,16 +245730,16 @@ router44.post(
     res.status(200).json({ received: true });
   }
 );
-var btcpay_webhook_default = router44;
+var btcpay_webhook_default = router46;
 
 // src/routes/wallid-webhook.ts
-var import_express45 = __toESM(require_express2(), 1);
-import crypto18 from "crypto";
+var import_express47 = __toESM(require_express2(), 1);
+import crypto22 from "crypto";
 init_drizzle_orm();
 function createWallidWebhookRouter(dependencies = {}) {
-  const router54 = (0, import_express45.Router)();
+  const router56 = (0, import_express47.Router)();
   const sendConfirmation = dependencies.sendConfirmation ?? sendOrderConfirmation;
-  router54.post("/wallid-webhook", async (req, res) => {
+  router56.post("/wallid-webhook", async (req, res) => {
     if (!WALLID_WEBHOOK_SECRET) {
       logger.error("WALLID_WEBHOOK_SECRET is not configured \u2014 rejecting Wallid webhook request");
       res.status(400).json({ error: "Webhook secret not configured" });
@@ -244365,12 +245760,12 @@ function createWallidWebhookRouter(dependencies = {}) {
     }
     const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(req.body));
     const message = `${tsHeader}.${rawBody.toString()}`;
-    const expected = "sha256=" + crypto18.createHmac("sha256", WALLID_WEBHOOK_SECRET).update(message).digest("hex");
+    const expected = "sha256=" + crypto22.createHmac("sha256", WALLID_WEBHOOK_SECRET).update(message).digest("hex");
     const received = sigHeader;
     let sigValid = false;
     try {
       if (expected.length === received.length) {
-        sigValid = crypto18.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
+        sigValid = crypto22.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
       }
     } catch {
       sigValid = false;
@@ -244512,14 +245907,14 @@ function createWallidWebhookRouter(dependencies = {}) {
     }
     res.status(200).json({ received: true });
   });
-  return router54;
+  return router56;
 }
 var wallid_webhook_default = createWallidWebhookRouter();
 
 // src/routes/contact.ts
-var import_express46 = __toESM(require_express2(), 1);
-var router45 = (0, import_express46.Router)();
-router45.post("/contact", async (req, res) => {
+var import_express48 = __toESM(require_express2(), 1);
+var router47 = (0, import_express48.Router)();
+router47.post("/contact", async (req, res) => {
   const { name: name2, email: email3, subject, message } = req.body;
   if (typeof name2 !== "string" || !name2.trim()) {
     res.status(400).json({ error: "Name is required" });
@@ -244551,12 +245946,12 @@ router45.post("/contact", async (req, res) => {
     res.status(500).json({ error: "Failed to send your message. Please try again or email us directly." });
   }
 });
-var contact_default = router45;
+var contact_default = router47;
 
 // src/routes/address-lookup.ts
-var import_express47 = __toESM(require_express2(), 1);
-var router46 = (0, import_express47.Router)();
-router46.get("/address-lookup", async (req, res) => {
+var import_express49 = __toESM(require_express2(), 1);
+var router48 = (0, import_express49.Router)();
+router48.get("/address-lookup", async (req, res) => {
   const postcode = req.query["postcode"]?.trim();
   if (!postcode) {
     return res.status(400).json({ error: "postcode query param required" });
@@ -244587,7 +245982,7 @@ router46.get("/address-lookup", async (req, res) => {
     return res.status(500).json({ error: "Address lookup request failed" });
   }
 });
-router46.post("/address-verification", async (req, res) => {
+router48.post("/address-verification", async (req, res) => {
   const delivery = req.body;
   if (typeof delivery.address1 !== "string" || typeof delivery.city !== "string" || typeof delivery.postcode !== "string" || typeof delivery.country !== "string") {
     return res.status(400).json({ error: "A complete delivery address is required." });
@@ -244619,7 +246014,7 @@ router46.post("/address-verification", async (req, res) => {
     });
   }
 });
-router46.post("/address-suggestions", async (req, res) => {
+router48.post("/address-suggestions", async (req, res) => {
   const delivery = req.body;
   if (typeof delivery.address1 !== "string" || typeof delivery.postcode !== "string" || typeof delivery.country !== "string") {
     return res.status(400).json({ error: "A street address, postal code, and country are required." });
@@ -244652,12 +246047,12 @@ router46.post("/address-suggestions", async (req, res) => {
     });
   }
 });
-var address_lookup_default = router46;
+var address_lookup_default = router48;
 
 // src/routes/crypto-payments.ts
-var import_express48 = __toESM(require_express2(), 1);
+var import_express50 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router47 = (0, import_express48.Router)();
+var router49 = (0, import_express50.Router)();
 function hasPaymentAccess(order, token) {
   return typeof token === "string" && Boolean(order.cryptoPaymentAccessToken) && token.length >= 24 && token === order.cryptoPaymentAccessToken;
 }
@@ -244778,14 +246173,14 @@ async function recordCryptoPaymentVerification(order, attempt, txHash, applyOrde
   }
   return result;
 }
-router47.get("/crypto/payment-options", async (_req, res) => {
+router49.get("/crypto/payment-options", async (_req, res) => {
   try {
     res.json({ routes: await getPublicCryptoPaymentOptions() });
   } catch {
     res.status(503).json({ error: "Crypto payment options are temporarily unavailable" });
   }
 });
-router47.get("/orders/:ref/crypto-payment", async (req, res) => {
+router49.get("/orders/:ref/crypto-payment", async (req, res) => {
   res.setHeader("Cache-Control", "no-store");
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.query.token)) {
@@ -244815,7 +246210,7 @@ router47.get("/orders/:ref/crypto-payment", async (req, res) => {
     }
   });
 });
-router47.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
+router49.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -244852,7 +246247,7 @@ router47.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
   }).where(eq(ordersTable.id, order.id));
   res.json({ orderId: order.id, orderNumber: order.orderNumber, ...prepared.details, status: "rate_locked" });
 });
-router47.post("/orders/:ref/crypto-payment/check", async (req, res) => {
+router49.post("/orders/:ref/crypto-payment/check", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -244881,7 +246276,7 @@ router47.post("/orders/:ref/crypto-payment/check", async (req, res) => {
     confirmations: result.confirmations ?? null
   });
 });
-router47.post("/orders/:ref/pay", async (req, res) => {
+router49.post("/orders/:ref/pay", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -244969,13 +246364,13 @@ async function reconcilePendingCryptoPayments() {
   }
   return checked;
 }
-var crypto_payments_default = router47;
+var crypto_payments_default = router49;
 
 // src/routes/admin/crypto-audits.ts
-var import_express49 = __toESM(require_express2(), 1);
+var import_express51 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router48 = (0, import_express49.Router)();
-function requireAdmin27(req, res) {
+var router50 = (0, import_express51.Router)();
+function requireAdmin28(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -245000,8 +246395,8 @@ function auditToResponse(audit) {
     checkedAt: audit.checkedAt.toISOString()
   };
 }
-router48.get("/admin/crypto/audits", async (req, res) => {
-  if (!requireAdmin27(req, res)) return;
+router50.get("/admin/crypto/audits", async (req, res) => {
+  if (!requireAdmin28(req, res)) return;
   try {
     const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 200);
     const audits = await db.select().from(cryptoPaymentAuditsTable).orderBy(desc(cryptoPaymentAuditsTable.checkedAt)).limit(limit);
@@ -245020,8 +246415,8 @@ router48.get("/admin/crypto/audits", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router48.get("/admin/crypto/audits/:id", async (req, res) => {
-  if (!requireAdmin27(req, res)) return;
+router50.get("/admin/crypto/audits/:id", async (req, res) => {
+  if (!requireAdmin28(req, res)) return;
   const id = Number(req.params.id);
   if (!Number.isInteger(id)) {
     res.status(400).json({ error: "Invalid audit ID" });
@@ -245034,8 +246429,8 @@ router48.get("/admin/crypto/audits/:id", async (req, res) => {
   }
   res.json(auditToResponse(audit));
 });
-router48.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
-  if (!requireAdmin27(req, res)) return;
+router50.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
+  if (!requireAdmin28(req, res)) return;
   const attemptId = Number(req.params.attemptId);
   if (!Number.isInteger(attemptId)) {
     res.status(400).json({ error: "Invalid payment attempt" });
@@ -245059,8 +246454,8 @@ router48.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router48.post("/admin/crypto/audits/check-batch", async (req, res) => {
-  if (!requireAdmin27(req, res)) return;
+router50.post("/admin/crypto/audits/check-batch", async (req, res) => {
+  if (!requireAdmin28(req, res)) return;
   const attemptIds = Array.isArray(req.body?.attemptIds) ? req.body.attemptIds.filter((id) => Number.isInteger(id)).slice(0, 50) : [];
   if (attemptIds.length === 0) {
     res.status(400).json({ error: "Select one or more payment attempts to check." });
@@ -245081,8 +246476,8 @@ router48.post("/admin/crypto/audits/check-batch", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router48.get("/admin/crypto/wallet-history", async (req, res) => {
-  if (!requireAdmin27(req, res)) return;
+router50.get("/admin/crypto/wallet-history", async (req, res) => {
+  if (!requireAdmin28(req, res)) return;
   try {
     const attempts = await db.select({
       walletAddress: cryptoPaymentAttemptsTable.walletAddress,
@@ -245103,21 +246498,21 @@ router48.get("/admin/crypto/wallet-history", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var crypto_audits_default = router48;
+var crypto_audits_default = router50;
 
 // src/routes/admin/publicTraffic.ts
-var import_express50 = __toESM(require_express2(), 1);
+var import_express52 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router49 = (0, import_express50.Router)();
-function requireAdmin28(req, res) {
+var router51 = (0, import_express52.Router)();
+function requireAdmin29(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router49.get("/admin/public-traffic/events", async (req, res) => {
-  if (!requireAdmin28(req, res)) return;
+router51.get("/admin/public-traffic/events", async (req, res) => {
+  if (!requireAdmin29(req, res)) return;
   const parsedLimit = Number(req.query.limit);
   const limit = Number.isInteger(parsedLimit) ? Math.min(Math.max(parsedLimit, 1), 200) : 50;
   try {
@@ -245132,13 +246527,13 @@ router49.get("/admin/public-traffic/events", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch public traffic events" });
   }
 });
-var publicTraffic_default = router49;
+var publicTraffic_default = router51;
 
 // src/routes/admin/security.ts
-var import_express51 = __toESM(require_express2(), 1);
+var import_express53 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router50 = (0, import_express51.Router)();
-router50.get("/admin/security/events", async (req, res) => {
+var router52 = (0, import_express53.Router)();
+router52.get("/admin/security/events", async (req, res) => {
   if (!await requireOwner(req, res)) return;
   const requestedLimit = Number.parseInt(firstString(req.query.limit) ?? "100", 10);
   const limit = Number.isFinite(requestedLimit) ? Math.min(250, Math.max(1, requestedLimit)) : 100;
@@ -245185,10 +246580,10 @@ router50.get("/admin/security/events", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var security_default = router50;
+var security_default = router52;
 
 // src/routes/admin/wholesale.ts
-var import_express52 = __toESM(require_express2(), 1);
+var import_express54 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var SITE_URL2 = process.env.SITE_URL ?? "https://omniqure.com";
 var WHOLESALE_PAYMENT_CREATION_LEASE_MS = 5 * 6e4;
@@ -245249,7 +246644,7 @@ function invoiceResponse(invoice, order) {
   };
 }
 function createWholesaleRouter(dependencies = {}) {
-  const router54 = (0, import_express52.Router)();
+  const router56 = (0, import_express54.Router)();
   const createPayment = dependencies.createPayment ?? createWallidPayment;
   const sendInvoice = dependencies.sendInvoice ?? sendWholesaleInvoice;
   async function sendSavedInvoice(invoiceId) {
@@ -245285,7 +246680,7 @@ function createWholesaleRouter(dependencies = {}) {
       country: row.order.country
     });
   }
-  router54.get("/admin/wholesale", async (_req, res) => {
+  router56.get("/admin/wholesale", async (_req, res) => {
     try {
       const rows = await db.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).orderBy(desc(wholesaleInvoicesTable.createdAt)).limit(50);
       res.json({ invoices: rows.map(({ invoice, order }) => invoiceResponse(invoice, order)) });
@@ -245293,7 +246688,7 @@ function createWholesaleRouter(dependencies = {}) {
       res.status(500).json({ error: "Failed to list wholesale invoices" });
     }
   });
-  router54.post("/admin/wholesale", async (req, res) => {
+  router56.post("/admin/wholesale", async (req, res) => {
     const body = req.body;
     const referenceNumber = text2(body.referenceNumber, 64);
     const customerName = text2(body.customerName, 160);
@@ -245550,7 +246945,7 @@ Wallid payment id: ${payment.apiPaymentId}`.trim(),
       res.status(500).json({ error: "Failed to create wholesale invoice" });
     }
   });
-  router54.post("/admin/wholesale/:id/resolve", async (req, res) => {
+  router56.post("/admin/wholesale/:id/resolve", async (req, res) => {
     const id = Number(req.params.id);
     const body = req.body;
     const apiPaymentId = text2(body.apiPaymentId, 500);
@@ -245646,7 +247041,7 @@ ${paymentNote}`.trim(),
       }
     }
   });
-  router54.post("/admin/wholesale/:id/retry", async (req, res) => {
+  router56.post("/admin/wholesale/:id/retry", async (req, res) => {
     const id = Number(req.params.id);
     if (!Number.isInteger(id) || id <= 0) {
       res.status(400).json({ error: "Invalid invoice ID" });
@@ -245758,7 +247153,7 @@ ${paymentNote}`.trim(),
       res.status(500).json({ error: "Failed to retry wholesale payment link" });
     }
   });
-  router54.post("/admin/wholesale/:id/resend", async (req, res) => {
+  router56.post("/admin/wholesale/:id/resend", async (req, res) => {
     const id = Number(req.params.id);
     if (!Number.isInteger(id) || id <= 0) {
       res.status(400).json({ error: "Invalid invoice ID" });
@@ -245773,7 +247168,7 @@ ${paymentNote}`.trim(),
       res.status(502).json({ error: "Invoice email could not be sent" });
     }
   });
-  router54.patch("/admin/wholesale/:id", async (req, res) => {
+  router56.patch("/admin/wholesale/:id", async (req, res) => {
     const id = Number(req.params.id);
     if (!Number.isInteger(id) || id <= 0) {
       res.status(400).json({ error: "Invalid invoice ID" });
@@ -245852,12 +247247,12 @@ ${paymentNote}`.trim(),
       res.status(500).json({ error: "Failed to update wholesale invoice" });
     }
   });
-  return router54;
+  return router56;
 }
 var wholesale_default = createWholesaleRouter();
 
 // src/routes/publicTraffic.ts
-var import_express53 = __toESM(require_express2(), 1);
+var import_express55 = __toESM(require_express2(), 1);
 
 // src/lib/publicTrafficProtection.ts
 init_drizzle_orm();
@@ -246067,13 +247462,13 @@ async function publicTrafficProtection(req, res, next) {
 // src/routes/publicTraffic.ts
 import path2 from "node:path";
 import { existsSync } from "node:fs";
-var router51 = (0, import_express53.Router)();
+var router53 = (0, import_express55.Router)();
 var PUBLIC_ASSET_ROOT = [
   path2.resolve(process.cwd(), "artifacts/omniqure/public"),
   path2.resolve(process.cwd(), "../omniqure/public"),
   path2.resolve(import.meta.dirname, "../../omniqure/public")
 ].find(existsSync);
-router51.get("/catalogue-assets/*assetPath", (req, res) => {
+router53.get("/catalogue-assets/*assetPath", (req, res) => {
   const rawAssetPath = req.params.assetPath;
   const assetPath = Array.isArray(rawAssetPath) ? rawAssetPath.join("/") : String(rawAssetPath ?? "");
   if (!PUBLIC_ASSET_ROOT || !assetPath || !/\.(?:avif|gif|jpe?g|png|svg|webp|ico)$/i.test(assetPath)) {
@@ -246085,7 +247480,7 @@ router51.get("/catalogue-assets/*assetPath", (req, res) => {
     if (err && !res.headersSent) res.status(404).json({ error: "Not found" });
   });
 });
-router51.get("/traffic/image", async (req, res) => {
+router53.get("/traffic/image", async (req, res) => {
   const remoteAddress = req.socket.remoteAddress;
   if (remoteAddress !== "127.0.0.1" && remoteAddress !== "::1" && remoteAddress !== "::ffff:127.0.0.1") {
     res.status(404).json({ error: "Not found" });
@@ -246102,70 +247497,72 @@ router51.get("/traffic/image", async (req, res) => {
   }
   res.status(204).send();
 });
-var publicTraffic_default2 = router51;
+var publicTraffic_default2 = router53;
 
 // src/routes/index.ts
-var router52 = (0, import_express54.Router)();
-router52.use(health_default);
-router52.use(publicTraffic_default2);
-router52.use(auth_default);
-router52.use("/admin", enforceSecureAdminSession);
-router52.use(dashboard_default);
-router52.use(orders_default);
-router52.use(fulfillment_default);
-router52.use(customers_default);
-router52.use(products_default);
-router52.use(discounts_default);
-router52.use(catalog_default);
-router52.use(returns_default);
-router52.use(tax_default);
-router52.use(shipping_default);
-router52.use(refunds_default);
-router52.use(inventory_audit_default);
-router52.use(export_default);
-router52.use(webhooks_default);
-router52.use(settings_default);
-router52.use(users_default);
-router52.use(reports_default);
-router52.use(gdpr_default);
-router52.use(blog_default);
-router52.use(crypto_audits_default);
-router52.use(orders_default2);
-router52.use(crypto_payments_default);
-router52.use(discounts_default2);
-router52.use(auth_default2);
-router52.use(account_default);
-router52.use(reviews_default);
-router52.use(reviews_default2);
-router52.use(wishlist_default);
-router52.use(returns_default2);
-router52.use(products_default2);
-router52.use(cart_default);
-router52.use(stock_alerts_default);
-router52.use(abandonedCarts_default);
-router52.use(alerts_default);
-router52.use(credits_default);
-router52.use(referrals_default);
-router52.use(fraud_default);
-router52.use(blockedIps_default);
-router52.use(publicTraffic_default);
-router52.use(security_default);
-router52.use(wholesale_default);
-router52.use(emailLogs_default);
-router52.use(loyalty_default);
-router52.use(tax_default2);
-router52.use(shipping_default2);
-router52.use(blog_default2);
-router52.use(btcpay_webhook_default);
-router52.use(wallid_webhook_default);
-router52.use(contact_default);
-router52.use(address_lookup_default);
-var routes_default = router52;
+var router54 = (0, import_express56.Router)();
+router54.use(health_default);
+router54.use(publicTraffic_default2);
+router54.use(auth_default);
+router54.use("/admin", enforceSecureAdminSession);
+router54.use(dashboard_default);
+router54.use(orders_default);
+router54.use(fulfillment_default);
+router54.use(customers_default);
+router54.use(products_default);
+router54.use(discounts_default);
+router54.use(catalog_default);
+router54.use(returns_default);
+router54.use(tax_default);
+router54.use(shipping_default);
+router54.use(refunds_default);
+router54.use(inventory_audit_default);
+router54.use(export_default);
+router54.use(webhooks_default);
+router54.use(settings_default);
+router54.use(users_default);
+router54.use(reports_default);
+router54.use(gdpr_default);
+router54.use(blog_default);
+router54.use(crypto_audits_default);
+router54.use(orders_default2);
+router54.use(crypto_payments_default);
+router54.use(discounts_default2);
+router54.use(auth_default2);
+router54.use(account_default);
+router54.use(affiliates_default);
+router54.use(reviews_default);
+router54.use(reviews_default2);
+router54.use(wishlist_default);
+router54.use(returns_default2);
+router54.use(products_default2);
+router54.use(cart_default);
+router54.use(stock_alerts_default);
+router54.use(abandonedCarts_default);
+router54.use(alerts_default);
+router54.use(credits_default);
+router54.use(referrals_default);
+router54.use(affiliates_default2);
+router54.use(fraud_default);
+router54.use(blockedIps_default);
+router54.use(publicTraffic_default);
+router54.use(security_default);
+router54.use(wholesale_default);
+router54.use(emailLogs_default);
+router54.use(loyalty_default);
+router54.use(tax_default2);
+router54.use(shipping_default2);
+router54.use(blog_default2);
+router54.use(btcpay_webhook_default);
+router54.use(wallid_webhook_default);
+router54.use(contact_default);
+router54.use(address_lookup_default);
+var routes_default = router54;
 
 // src/routes/sitemap.ts
-var import_express55 = __toESM(require_express2(), 1);
+var import_express57 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router53 = (0, import_express55.Router)();
+var router55 = (0, import_express57.Router)();
 var SITE_URL3 = "https://omniqure.com";
 function publicImageUrl(imageUrl) {
   if (imageUrl.startsWith("http")) return imageUrl;
@@ -246198,7 +247595,7 @@ function isoDate(d) {
   const date6 = d instanceof Date ? d : new Date(d);
   return date6.toISOString().split("T")[0];
 }
-router53.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
+router55.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
   try {
     const [products, blogPosts] = await Promise.all([
       db.select({
@@ -246274,10 +247671,10 @@ router53.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
     res.status(500).send("<!-- sitemap generation error -->");
   }
 });
-var sitemap_default = router53;
+var sitemap_default = router55;
 
 // src/app.ts
-var app = (0, import_express56.default)();
+var app = (0, import_express58.default)();
 var trustedOrigins = allowedBrowserOrigins();
 var stateChangingMethods = /* @__PURE__ */ new Set(["POST", "PUT", "PATCH", "DELETE"]);
 var browserSessionCookies = ["customer_session", "admin_session", "admin_secure_session"];
@@ -246358,13 +247755,13 @@ app.use((req, res, next) => {
 });
 app.use(publicTrafficProtection);
 app.use(
-  import_express56.default.json({
+  import_express58.default.json({
     verify: (req, _res, buf) => {
       req.rawBody = buf;
     }
   })
 );
-app.use(import_express56.default.urlencoded({ extended: true }));
+app.use(import_express58.default.urlencoded({ extended: true }));
 app.get("/", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });

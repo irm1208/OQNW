@@ -37,6 +37,23 @@ export declare const discountCodesTable: import("drizzle-orm/pg-core").PgTableWi
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
+        affiliatePartnerId: import("drizzle-orm/pg-core").PgColumn<{
+            name: "affiliate_partner_id";
+            tableName: "discount_codes";
+            dataType: "number";
+            columnType: "PgInteger";
+            data: number;
+            driverParam: string | number;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
         type: import("drizzle-orm/pg-core").PgColumn<{
             name: "type";
             tableName: "discount_codes";
@@ -177,13 +194,14 @@ export declare const discountCodesTable: import("drizzle-orm/pg-core").PgTableWi
     dialect: "pg";
 }>;
 export declare const insertDiscountCodeSchema: z.ZodObject<{
+    isActive: z.ZodOptional<z.ZodBoolean>;
     code: z.ZodString;
+    affiliatePartnerId: z.ZodOptional<z.ZodNullable<z.ZodInt>>;
     type: z.ZodString;
     value: z.ZodString;
     minSpend: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     usageLimit: z.ZodOptional<z.ZodNullable<z.ZodInt>>;
     expiresAt: z.ZodOptional<z.ZodNullable<z.ZodDate>>;
-    isActive: z.ZodOptional<z.ZodBoolean>;
 }, {
     out: {};
     in: {};

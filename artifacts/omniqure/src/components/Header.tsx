@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { prefetchRoute } from "@/lib/prefetch";
 import { Link, useLocation } from "wouter";
-import { Search, User, ShoppingCart, Menu, X, ChevronDown, ArrowUpRight, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, BookMarked, GraduationCap, Thermometer, Activity, Layers } from "lucide-react";
+import { Search, User, Users, ShoppingCart, Menu, X, ChevronDown, ArrowUpRight, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, BookMarked, GraduationCap, Thermometer, Activity, Layers } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
@@ -52,8 +52,12 @@ const researchLinks = [
 const rightNavItems = [
   { label: "About Us", href: "/about" },
   { label: "Contact Us", href: "/contact" },
-  { label: "Bundle & Save", href: "/bundle-and-save" },
-  { label: "Refer a Friend", href: "/refer-a-friend" },
+];
+
+const offerNavItems = [
+  { label: "Bundle & Save", href: "/bundle-and-save", icon: Package, desc: "Save more with curated bundles" },
+  { label: "Refer a Friend", href: "/refer-a-friend", icon: Heart, desc: "Share OmniQure and earn rewards" },
+  { label: "Affiliate Programme", href: "/affiliate", icon: Users, desc: "Earn monetary payments on eligible sales" },
 ];
 
 export default function Header() {
@@ -107,6 +111,11 @@ export default function Header() {
   const popularTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [researchOpen, setResearchOpen] = useState(false);
   const researchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [offersOpen, setOffersOpen] = useState(false);
+  const [mobileOffersOpen, setMobileOffersOpen] = useState(false);
+  const offersTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const offersButtonRef = useRef<HTMLButtonElement | null>(null);
+  const offersLinkRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const [location, navigate] = useLocation();
 
   const openAllPeptides = useCallback(() => {
@@ -141,6 +150,16 @@ export default function Header() {
 
   const closeResearch = useCallback(() => {
     researchTimer.current = setTimeout(() => setResearchOpen(false), 120);
+  }, []);
+
+  const openOffers = useCallback(() => {
+    if (offersTimer.current) clearTimeout(offersTimer.current);
+    setOffersOpen(true);
+    offerNavItems.forEach(item => prefetchRoute(item.href));
+  }, []);
+
+  const closeOffers = useCallback(() => {
+    offersTimer.current = setTimeout(() => setOffersOpen(false), 120);
   }, []);
   const { totalItems } = useCart();
   const { currency, setCurrency, formatPrice } = useCurrency();
@@ -201,7 +220,22 @@ export default function Header() {
     setUserMenuOpen(false);
     setMobileMenuOpen(false);
     setMobileResearchOpen(false);
+    setOffersOpen(false);
+    setMobileOffersOpen(false);
   }, [location]);
+
+  const offersActive = offerNavItems.some(item => location === item.href || location.startsWith(item.href + "/"));
+
+  function handleOffersKeyDown(event: React.KeyboardEvent<HTMLButtonElement>) {
+    if (event.key === "Escape") {
+      setOffersOpen(false);
+      offersButtonRef.current?.focus();
+    } else if (event.key === "ArrowDown") {
+      event.preventDefault();
+      openOffers();
+      requestAnimationFrame(() => offersLinkRefs.current[0]?.focus());
+    }
+  }
 
   // Keep the page from scrolling behind the mobile/tablet drawer and support Escape.
   useEffect(() => {
@@ -626,6 +660,21 @@ export default function Header() {
                         My Account
                       </Link>
                       <Link
+                        href="/affiliate"
+                        onClick={() => setUserMenuOpen(false)}
+                        style={{
+                          display: "flex", alignItems: "center", gap: "10px",
+                          padding: "9px 10px", borderRadius: "8px",
+                          color: "#374151", textDecoration: "none",
+                          fontSize: "13px", fontWeight: 500,
+                        }}
+                        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC")}
+                        onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
+                      >
+                        <Users size={15} style={{ color: "#64748B" }} />
+                        Partner Dashboard
+                      </Link>
+                      <Link
                         href="/track-order"
                         onClick={() => setUserMenuOpen(false)}
                         style={{
@@ -1028,18 +1077,138 @@ export default function Header() {
                 </Link>
               );
             })}
+          <div
+            style={{ position: "relative" }}
+            onMouseEnter={openOffers}
+            onMouseLeave={closeOffers}
+          >
+            <button
+              ref={offersButtonRef}
+              type="button"
+              className="px-4 py-3 text-sm whitespace-nowrap inline-flex items-center gap-1 transition-colors"
+              style={{
+                color: offersActive ? "#1B5CB5" : "#64748B",
+                fontWeight: offersActive ? 600 : 500,
+                border: "none",
+                borderBottom: offersActive ? "2px solid #1B5CB5" : "2px solid transparent",
+                background: "none",
+                cursor: "pointer",
+                marginBottom: "-1px",
+              }}
+              aria-haspopup="true"
+              aria-expanded={offersOpen}
+              aria-controls="header-incentive-offers-menu"
+              onClick={() => {
+                if (offersOpen) setOffersOpen(false);
+                else openOffers();
+              }}
+              onKeyDown={handleOffersKeyDown}
+            >
+              Incentive Offers
+              <ChevronDown size={13} style={{ opacity: 0.5, transition: "transform 0.2s", transform: offersOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
+            </button>
+
+            {offersOpen && (
+              <div
+                id="header-incentive-offers-menu"
+                onMouseEnter={openOffers}
+                onMouseLeave={closeOffers}
+                style={{
+                  position: "absolute", top: "100%", left: 0,
+                  backgroundColor: "#fff",
+                  border: "1.5px solid #E8EDF5",
+                  borderRadius: "16px",
+                  boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
+                  zIndex: 400,
+                  minWidth: "310px",
+                  padding: "16px",
+                  marginTop: "2px",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", paddingBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
+                  <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "#EEF4FF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <ArrowUpRight size={15} style={{ color: "#1240A0" }} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A", margin: 0 }}>Incentive Offers</p>
+                    <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>Ways to save, share & earn</p>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                  {offerNavItems.map((item, index) => {
+                    const Icon = item.icon;
+                    const active = location === item.href || location.startsWith(item.href + "/");
+                    return (
+                      <Link
+                        key={item.href}
+                        ref={element => { offersLinkRefs.current[index] = element; }}
+                        href={item.href}
+                        aria-current={active ? "page" : undefined}
+                        onClick={() => setOffersOpen(false)}
+                        onKeyDown={event => {
+                          if (event.key === "Escape") {
+                            event.preventDefault();
+                            setOffersOpen(false);
+                            offersButtonRef.current?.focus();
+                          } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                            event.preventDefault();
+                            const direction = event.key === "ArrowDown" ? 1 : -1;
+                            const nextIndex = (index + direction + offerNavItems.length) % offerNavItems.length;
+                            offersLinkRefs.current[nextIndex]?.focus();
+                          }
+                        }}
+                        style={{
+                          display: "flex", alignItems: "center", gap: "12px",
+                          padding: "10px", borderRadius: "10px",
+                          textDecoration: "none",
+                          backgroundColor: active ? "#EEF4FF" : "transparent",
+                          transition: "background-color 0.12s",
+                        }}
+                        onMouseEnter={event => { if (!active) event.currentTarget.style.backgroundColor = "#F8FAFC"; }}
+                        onMouseLeave={event => { if (!active) event.currentTarget.style.backgroundColor = "transparent"; }}
+                      >
+                        <div style={{
+                          width: "34px", height: "34px", borderRadius: "8px", flexShrink: 0,
+                          backgroundColor: active ? "#DBEAFE" : "#F1F5F9",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                        }}>
+                          <Icon size={16} style={{ color: active ? "#1240A0" : "#64748B" }} />
+                        </div>
+                        <div style={{ minWidth: 0 }}>
+                          <p style={{ fontSize: "13px", fontWeight: 600, color: active ? "#1240A0" : "#1E293B", margin: "0 0 1px" }}>{item.label}</p>
+                          <p style={{ fontSize: "11.5px", color: "#94A3B8", margin: 0 }}>{item.desc}</p>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
           </div>
           <div className="flex items-center">
             {rightNavItems.map((item) => (
+              (() => {
+                const active = location === item.href || location.startsWith(item.href + "/");
+                return (
               <Link
                 key={item.label}
                 href={item.href}
                 className="px-4 py-3 text-sm whitespace-nowrap transition-colors"
-                style={{ color: "#64748B", textDecoration: "none", fontWeight: 500 }}
+                style={{
+                  color: active ? "#1B5CB5" : "#64748B",
+                  textDecoration: "none",
+                  fontWeight: active ? 600 : 500,
+                  borderBottom: active ? "2px solid #1B5CB5" : "2px solid transparent",
+                  marginBottom: "-1px",
+                }}
                 onMouseEnter={() => prefetchRoute(item.href)}
               >
                 {item.label}
               </Link>
+                );
+              })()
             ))}
           </div>
         </div>
@@ -1200,6 +1369,59 @@ export default function Header() {
                 )}
               </div>
 
+              <div style={{ marginTop: 6, borderTop: "1px solid #E5EDFA", borderBottom: "1px solid #E5EDFA", background: mobileOffersOpen ? "#F8FBFF" : "#fff" }}>
+                <button
+                  type="button"
+                  onClick={() => setMobileOffersOpen(open => !open)}
+                  aria-expanded={mobileOffersOpen}
+                  aria-controls="mobile-incentive-offers-menu"
+                  style={{
+                    width: "100%", minHeight: 52, padding: "0 12px", display: "flex", alignItems: "center", gap: 10,
+                    border: "none", background: mobileOffersOpen ? "#F8FAFC" : "#fff",
+                    color: offersActive ? "#1240A0" : "#475569", cursor: "pointer", textAlign: "left",
+                    fontSize: 14, fontWeight: offersActive ? 800 : 600,
+                  }}
+                >
+                  <span style={{ width: 30, height: 30, borderRadius: 9, background: "linear-gradient(135deg, #DBEAFE 0%, #EEF4FF 100%)", color: "#1240A0", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <ArrowUpRight size={15} />
+                  </span>
+                  <span style={{ flex: 1 }}>
+                    <span style={{ display: "block" }}>Incentive Offers</span>
+                    <span style={{ display: "block", marginTop: 2, color: "#94A3B8", fontSize: 11, fontWeight: 500 }}>Save, share &amp; earn</span>
+                  </span>
+                  <ChevronDown size={17} style={{ color: "#94A3B8", transform: mobileOffersOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
+                </button>
+
+                {mobileOffersOpen && (
+                  <div id="mobile-incentive-offers-menu" style={{ padding: "0 12px 10px", background: "#F8FAFC" }}>
+                    {offerNavItems.map(item => {
+                      const Icon = item.icon;
+                      const active = location === item.href || location.startsWith(item.href + "/");
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          aria-current={active ? "page" : undefined}
+                          className="flex items-center gap-3 rounded-xl px-3 py-2.5"
+                          style={{
+                            color: active ? "#1240A0" : "#475569",
+                            background: active ? "#EEF4FF" : "transparent",
+                            textDecoration: "none",
+                          }}
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          <Icon size={17} style={{ color: active ? "#1240A0" : "#64748B", flexShrink: 0 }} />
+                          <span style={{ minWidth: 0 }}>
+                            <span style={{ display: "block", fontSize: 14, fontWeight: 700 }}>{item.label}</span>
+                            <span style={{ display: "block", marginTop: 2, color: "#94A3B8", fontSize: 11.5, lineHeight: 1.35 }}>{item.desc}</span>
+                          </span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
               <div style={{ padding: "12px 12px 8px" }}>
                 <p style={{ margin: "0 8px 7px", color: "#94A3B8", fontSize: 10, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" }}>
                   More
@@ -1228,6 +1450,15 @@ export default function Header() {
                   >
                     <User size={17} style={{ marginRight: 10 }} />
                     My Account
+                  </Link>
+                  <Link
+                    href="/affiliate"
+                    className="flex items-center rounded-xl px-3"
+                    style={{ minHeight: 46, color: "#1240A0", textDecoration: "none", fontSize: 14, fontWeight: 700 }}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Users size={17} style={{ marginRight: 10 }} />
+                    Partner Dashboard
                   </Link>
                   <button
                     onClick={() => { setMobileMenuOpen(false); void handleSignOut(); }}

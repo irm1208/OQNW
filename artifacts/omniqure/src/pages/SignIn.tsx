@@ -10,10 +10,13 @@ export default function SignIn() {
   const { signIn } = useCustomerAuth();
   const search = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : new URLSearchParams();
   const returnToAccount = search.get("returnTo") === "account";
+  const requestedReturnTo = search.get("returnTo");
   const orderNumber = search.get("order");
   const destination = returnToAccount
     ? `/account${orderNumber ? `?order=${encodeURIComponent(orderNumber)}` : ""}`
-    : "/";
+    : requestedReturnTo?.startsWith("/") && !requestedReturnTo.startsWith("//")
+      ? requestedReturnTo
+      : "/";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);

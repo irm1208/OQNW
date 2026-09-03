@@ -21,6 +21,7 @@ import SiteDisclaimer from "@/components/SiteDisclaimer";
 import { initPixels } from "@/lib/pixels";
 import { usePageTracking } from "@/hooks/usePageTracking";
 import { idlePrefetch, prefetchRoute } from "@/lib/prefetch";
+import AffiliateAttributionCapture from "@/components/AffiliateAttributionCapture";
 
 // Lazy-loaded pages — each becomes its own JS chunk, loaded only when visited
 const HomePage             = lazy(() => import("@/pages/HomePage"));
@@ -50,6 +51,7 @@ const LabReportsPage       = lazy(() => import("@/pages/LabReportsPage"));
 const BacWaterPage         = lazy(() => import("@/pages/BacWaterPage"));
 const AboutPage            = lazy(() => import("@/pages/AboutPage"));
 const ReferAFriendPage     = lazy(() => import("@/pages/ReferAFriendPage"));
+const AffiliatePage        = lazy(() => import("@/pages/AffiliatePage"));
 const BundleAndSavePage    = lazy(() => import("@/pages/BundleAndSavePage"));
 const StorageGuidePage     = lazy(() => import("@/pages/StorageGuidePage"));
 const ResearchResultsPage  = lazy(() => import("@/pages/ResearchResultsPage"));
@@ -92,6 +94,7 @@ function IdlePrefetcher() {
       "/checkout",
       "/about",
       "/shipping",
+      "/affiliate",
     ]);
   }, []);
   return null;
@@ -222,6 +225,7 @@ function Router() {
       <Route path="/privacy" component={PrivacyPage} />
       <Route path="/about" component={AboutPage} />
       <Route path="/refer-a-friend" component={ReferAFriendPage} />
+      <Route path="/affiliate" component={AffiliatePage} />
       <Route path="/bundle-and-save" component={BundleAndSavePage} />
       <Route path="/storage-guide" component={StorageGuidePage} />
       <Route path="/research-results" component={ResearchResultsPage} />
@@ -252,6 +256,7 @@ function App() {
               <NavProgress />
               <ScrollToTop />
               <PixelTracker />
+              <AffiliateAttributionCapture />
               <IdlePrefetcher />
               <GlobalPrefetch />
               <CookieConsent />

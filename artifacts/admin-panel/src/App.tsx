@@ -32,6 +32,7 @@ import FulfillmentQueue from "@/pages/FulfillmentQueue";
 import CryptoPayments from "@/pages/CryptoPayments";
 import SecurityActivity from "@/pages/SecurityActivity";
 import Referrals from "@/pages/Referrals";
+import Affiliates from "@/pages/Affiliates";
 
 const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
@@ -105,6 +106,11 @@ function AppRoutes() {
       <Route path="/referrals">
         <AdminLayout>
           <Referrals />
+        </AdminLayout>
+      </Route>
+      <Route path="/affiliates">
+        <AdminLayout>
+          <Affiliates />
         </AdminLayout>
       </Route>
       <Route path="/products">

@@ -14,6 +14,11 @@ import {
   inventoryAuditLogTable,
   referralRewardsTable,
   referralRedemptionAllocationsTable,
+  affiliateCommissionsTable,
+  affiliateOrderAttributionsTable,
+  affiliatePartnersTable,
+  affiliateProgramSettingsTable,
+  affiliateTiersTable,
 } from "@workspace/db";
 import { eq, sql, inArray, notInArray, and, gte, count, asc } from "drizzle-orm";
 import {
@@ -70,6 +75,13 @@ import {
 import { claimWallidSettlement } from "../lib/wallidSettlement";
 import { calculateShippingCostGbp } from "../lib/shipping";
 import { requiredSecret } from "../lib/securityConfig";
+import {
+  affiliateTierProgress,
+  calculateAffiliateCommission,
+  calculateAffiliateEligibleSales,
+  type AffiliateTierRule,
+} from "../lib/affiliateProgram";
+import { AFFILIATE_ATTRIBUTION_COOKIE, verifyAffiliateAttributionToken } from "../lib/affiliateAttribution";
 
 const COUNTRY_NAME_TO_CODE: Record<string, string> = {
   "United States": "US", "United Kingdom": "GB", "Canada": "CA",
@@ -417,6 +429,7 @@ async function handleOrderRequest(
     // Validate discount code if provided
     let discountAmount = 0;
     let validatedDiscountCode: string | null = null;
+    let validatedDiscountAffiliatePartnerId: number | null = null;
 
     if (discountCode && typeof discountCode === "string" && discountCode.trim()) {
       const [discount] = await db
@@ -441,6 +454,7 @@ async function handleOrderRequest(
             discountAmount = Math.min(value, subtotal);
           }
           validatedDiscountCode = discount.code;
+          validatedDiscountAffiliatePartnerId = discount.affiliatePartnerId;
         }
       }
     }
@@ -869,6 +883,80 @@ async function handleOrderRequest(
       shippingCountryCode,
       isProxy: ipData.isProxy,
     });
+    const affiliateToken = verifyAffiliateAttributionToken(
+      req.cookies?.[AFFILIATE_ATTRIBUTION_COOKIE] as string | undefined,
+    );
+    let affiliateCandidate: {
+      partnerId: number;
+      trackingCode: string;
+      discountCode: string;
+      clickedAt: Date | null;
+      source: "tracking_link" | "discount_code";
+      eligibleSalesGbp: number;
+      commissionRatePercent: number;
+      commissionAmountGbp: number;
+    } | null = null;
+    const [affiliateSettings] = await db.select().from(affiliateProgramSettingsTable)
+      .where(eq(affiliateProgramSettingsTable.id, 1)).limit(1);
+    if (affiliateSettings) {
+      const attributionCutoff = new Date(Date.now() - affiliateSettings.attributionWindowDays * 24 * 60 * 60 * 1000);
+      const candidatePartnerId = affiliateToken && affiliateToken.clickedAt >= attributionCutoff
+        ? affiliateToken.partnerId
+        : validatedDiscountAffiliatePartnerId;
+      const source = affiliateToken && affiliateToken.clickedAt >= attributionCutoff
+        ? "tracking_link" as const
+        : "discount_code" as const;
+      if (candidatePartnerId) {
+        const [partner] = await db.select().from(affiliatePartnersTable).where(and(
+          eq(affiliatePartnersTable.id, candidatePartnerId),
+          eq(affiliatePartnersTable.status, "approved"),
+        )).limit(1);
+        if (partner && (!customerId || partner.customerId !== customerId)) {
+          const tierCutoff = new Date(Date.now() - affiliateSettings.tierWindowDays * 24 * 60 * 60 * 1000);
+          const [settledRows, tierRows] = await Promise.all([
+            db.select({
+              settledSalesGbp: sql<string>`coalesce(sum(${affiliateCommissionsTable.eligibleSalesGbp}), 0)`,
+            }).from(affiliateCommissionsTable).where(and(
+              eq(affiliateCommissionsTable.partnerId, partner.id),
+              inArray(affiliateCommissionsTable.status, ["approved", "paid"]),
+              gte(affiliateCommissionsTable.createdAt, tierCutoff),
+            )),
+            db.select().from(affiliateTiersTable).where(eq(affiliateTiersTable.isActive, true))
+              .orderBy(asc(affiliateTiersTable.minimumSalesGbp), asc(affiliateTiersTable.id)),
+          ]);
+          const tierRules: AffiliateTierRule[] = tierRows.map(tier => ({
+            id: tier.id,
+            name: tier.name,
+            slug: tier.slug,
+            minimumSalesGbp: Number(tier.minimumSalesGbp),
+            commissionRatePercent: Number(tier.commissionRatePercent),
+            rewardCreditGbp: Number(tier.rewardCreditGbp),
+            isActive: tier.isActive,
+          }));
+          const tier = affiliateTierProgress(tierRules, Number(settledRows[0]?.settledSalesGbp ?? 0)).currentTier;
+          const commissionRatePercent = tier?.commissionRatePercent ?? 0;
+          const eligibleSalesGbp = calculateAffiliateEligibleSales({
+            subtotalGbp,
+            bundleDiscountGbp,
+            discountAmountGbp: discountAmount,
+            loyaltyDiscountGbp,
+            creditDiscountGbp: freePeptideDeductGbp,
+          });
+          if (commissionRatePercent > 0 && eligibleSalesGbp > 0) {
+            affiliateCandidate = {
+              partnerId: partner.id,
+              trackingCode: partner.trackingCode,
+              discountCode: partner.discountCode,
+              clickedAt: source === "tracking_link" ? affiliateToken?.clickedAt ?? null : null,
+              source,
+              eligibleSalesGbp,
+              commissionRatePercent,
+              commissionAmountGbp: calculateAffiliateCommission(eligibleSalesGbp, commissionRatePercent),
+            };
+          }
+        }
+      }
+    }
     // Resolve referral qualification before persisting the order so the order,
     // its immutable reward events, and any redemption share one transaction.
     let referralCandidate: { referrerId: number; held: boolean; reason: string } | null = null;
@@ -1020,6 +1108,28 @@ async function handleOrderRequest(
           now,
         })).onConflictDoNothing();
         if (referralCandidate.held) await tx.update(customersTable).set({ referralAbuseFlag: true }).where(eq(customersTable.id, customerId));
+      }
+      if (affiliateCandidate) {
+        await tx.insert(affiliateOrderAttributionsTable).values({
+          orderId: insertedOrder.id,
+          partnerId: affiliateCandidate.partnerId,
+          customerId,
+          trackingCodeSnapshot: affiliateCandidate.trackingCode,
+          discountCodeSnapshot: validatedDiscountCode,
+          source: affiliateCandidate.source,
+          clickedAt: affiliateCandidate.clickedAt,
+        }).onConflictDoNothing();
+        await tx.insert(affiliateCommissionsTable).values({
+          partnerId: affiliateCandidate.partnerId,
+          orderId: insertedOrder.id,
+          eligibleSalesGbp: affiliateCandidate.eligibleSalesGbp.toFixed(2),
+          commissionRatePercent: affiliateCandidate.commissionRatePercent.toFixed(2),
+          amountGbp: affiliateCandidate.commissionAmountGbp.toFixed(2),
+          status: fraudScore >= 60 ? "held" : "pending",
+          statusReason: fraudScore >= 60 ? "Order held for fraud review" : null,
+          heldAt: fraudScore >= 60 ? new Date() : null,
+          periodKey: new Date().toISOString().slice(0, 7),
+        }).onConflictDoNothing();
       }
       return [insertedOrder];
     });

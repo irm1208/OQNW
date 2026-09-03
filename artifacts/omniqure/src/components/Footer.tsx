@@ -51,6 +51,7 @@ const footerCategories = [
       { label: "Bundle & Save",       href: "/bundle-and-save"  },
       { label: "All Peptides",        href: "/all-peptides"     },
       { label: "Refer a Friend",      href: "/refer-a-friend"   },
+      { label: "Affiliate Programme", href: "/affiliate"        },
     ],
   },
 ];

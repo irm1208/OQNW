@@ -37,3 +37,4 @@
 - [Refund confirmation accounting](refund-confirmation-accounting.md) — pending requests reserve balance, but only a confirmed Wallid reference changes totals, inventory, and customer messaging.
 - [Refund inventory reservations](refund-inventory-reservations.md) — key returns by immutable order-item row; pending and confirmed selections reserve quantity until cancellation or confirmation.
 - [Referral admin ledger boundary](referral-admin-ledger-boundary.md) — referral reporting may use current relationships/balances, but specific reward reversals require a durable event ledger first.
+- [Affiliate attribution trust boundary](affiliate-attribution-trust-boundary.md) — checkout attribution comes only from signed click state or an approved linked code, never a client-supplied partner ID.

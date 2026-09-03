@@ -35,3 +35,4 @@ export * from "./public_traffic";
 export * from "./checkout_payment_quote_claims";
 export * from "./wholesale_invoices";
 export * from "./referral_rewards";
+export * from "./affiliate_program";

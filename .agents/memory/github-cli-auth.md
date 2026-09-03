@@ -7,4 +7,4 @@ The Replit GitHub connection can read and write repositories through its secure 
 
 **Why:** A connected GitHub account can still leave `git fetch`, `git pull`, and `git push` unauthenticated in the Repl shell.
 
-**How to apply:** For repository repairs, use the connected GitHub API when appropriate. For ongoing shell Git commands, the user must authenticate Git separately through their preferred secure Git/SSH setup; never ask them to paste a token into chat.
+**How to apply:** For repository repairs, use the connected GitHub API when appropriate. For ongoing shell Git commands, the user must authenticate Git separately through their preferred secure Git/SSH setup; never ask them to paste a token into chat. Full-repository pushes with many or multi-megabyte blobs may exceed the connector API bridge; use the Git pane's native pack transfer instead of reconstructing those pushes through REST calls.

@@ -9,10 +9,12 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
+import { affiliatePartnersTable } from "./affiliate_program";
 
 export const discountCodesTable = pgTable("discount_codes", {
   id: serial("id").primaryKey(),
   code: text("code").notNull().unique(),
+  affiliatePartnerId: integer("affiliate_partner_id").references(() => affiliatePartnersTable.id, { onDelete: "set null" }),
   type: text("type").notNull(), // "percentage" | "fixed"
   value: numeric("value", { precision: 10, scale: 2 }).notNull(),
   minSpend: numeric("min_spend", { precision: 10, scale: 2 }),
