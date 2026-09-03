@@ -238542,6 +238542,7 @@ async function createWallidPayment(opts) {
     fail_url: opts.failUrl,
     customer_email: opts.customerEmail,
     ...opts.customerId && { customer_id: opts.customerId },
+    ...opts.expiresAt && { expires_at: opts.expiresAt },
     locale: "en",
     country: "GB",
     items: opts.items
@@ -246733,6 +246734,11 @@ function createWholesaleRouter(dependencies = {}) {
     const total = Math.round(subtotal * 100) / 100;
     const amountMinor = Math.round(total * 100);
     const orderNumber = `WS-${referenceNumber}`;
+    const paymentExpiresAt = /* @__PURE__ */ new Date(`${dueDate}T23:59:59.999Z`);
+    if (!Number.isFinite(paymentExpiresAt.getTime()) || paymentExpiresAt.getTime() <= Date.now()) {
+      res.status(400).json({ error: "The due date must be in the future" });
+      return;
+    }
     try {
       const [saved] = await db.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).where(eq(wholesaleInvoicesTable.referenceNumber, referenceNumber)).limit(1);
       let created;
@@ -246865,6 +246871,7 @@ ${paymentNote}`.trim(),
           customerId: `wholesale-${created.order.id}`,
           successUrl: `${SITE_URL2}/wallid-return?order=${encodeURIComponent(orderNumber)}&status=success`,
           failUrl: `${SITE_URL2}/wallid-return?order=${encodeURIComponent(orderNumber)}&status=failed`,
+          expiresAt: paymentExpiresAt.toISOString(),
           items: items.map((item) => {
             const product = productById.get(item.productId);
             return {

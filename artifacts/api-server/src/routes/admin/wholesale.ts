@@ -244,6 +244,11 @@ router.post("/admin/wholesale", async (req: Request, res: Response): Promise<voi
   const total = Math.round(subtotal * 100) / 100;
   const amountMinor = Math.round(total * 100);
   const orderNumber = `WS-${referenceNumber}`;
+  const paymentExpiresAt = new Date(`${dueDate}T23:59:59.999Z`);
+  if (!Number.isFinite(paymentExpiresAt.getTime()) || paymentExpiresAt.getTime() <= Date.now()) {
+    res.status(400).json({ error: "The due date must be in the future" });
+    return;
+  }
 
   try {
     const [saved] = await db
@@ -409,6 +414,7 @@ router.post("/admin/wholesale", async (req: Request, res: Response): Promise<voi
         customerId: `wholesale-${created.order.id}`,
         successUrl: `${SITE_URL}/wallid-return?order=${encodeURIComponent(orderNumber)}&status=success`,
         failUrl: `${SITE_URL}/wallid-return?order=${encodeURIComponent(orderNumber)}&status=failed`,
+        expiresAt: paymentExpiresAt.toISOString(),
         items: items.map((item) => {
           const product = productById.get(item.productId)!;
           return {

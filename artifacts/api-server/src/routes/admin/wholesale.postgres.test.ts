@@ -84,12 +84,14 @@ test("wholesale creation and Wallid settlement are durable and idempotent", asyn
   const invoiceEmails: string[] = [];
   const confirmations: string[] = [];
   const providerCreates = new Map<string, number>();
+  const providerExpiry = new Map<string, string | undefined>();
   let emailFails = false;
   globalThis.fetch = async (input, init) => {
     const target = String(input);
     if (target.endsWith("/create")) {
-      const request = JSON.parse(String(init?.body)) as { order_id: string };
+      const request = JSON.parse(String(init?.body)) as { order_id: string; expires_at?: string };
       providerCreates.set(request.order_id, (providerCreates.get(request.order_id) ?? 0) + 1);
+      providerExpiry.set(request.order_id, request.expires_at);
       if (request.order_id.includes("PROVIDERFAIL")) return new Response("failed", { status: 500 });
       if (request.order_id.includes("NETWORKFAIL")) throw new Error("simulated network failure");
       return Response.json({ api_payment_id: `pay-${request.order_id}`, payment_link: `https://pay.wallid.test/${request.order_id}` });
@@ -135,6 +137,7 @@ test("wholesale creation and Wallid settlement are durable and idempotent", asyn
   assert.equal(good.status, 201);
   const goodJson = await good.json() as { invoice: { id: number; orderId: number; paymentUrl: string; }; warning: null };
   assert.equal(goodJson.warning, null);
+  assert.equal(providerExpiry.get("WS-GOOD"), "2030-01-01T23:59:59.999Z");
   const [goodInvoice] = await db.select().from(wholesaleInvoicesTable).where(eq(wholesaleInvoicesTable.id, goodJson.invoice.id));
   const [goodOrder] = await db.select().from(ordersTable).where(eq(ordersTable.id, goodJson.invoice.orderId));
   assert.equal(goodInvoice.paymentUrl, "https://pay.wallid.test/WS-GOOD"); assert.equal(goodInvoice.apiPaymentId, "pay-WS-GOOD"); assert.match(goodOrder.notes ?? "", /pay-WS-GOOD/); assert.deepEqual(invoiceEmails, [goodInvoice.paymentUrl]);

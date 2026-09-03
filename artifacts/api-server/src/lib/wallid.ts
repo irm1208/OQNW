@@ -53,6 +53,7 @@ export async function createWallidPayment(opts: {
   customerId?:    string;
   successUrl:     string;
   failUrl:        string;
+  expiresAt?:     string;
   items:          WallidItem[];
 }): Promise<WallidPayment | null> {
   if (!isWallidConfigured()) {
@@ -68,6 +69,7 @@ export async function createWallidPayment(opts: {
     fail_url:       opts.failUrl,
     customer_email: opts.customerEmail,
     ...(opts.customerId && { customer_id: opts.customerId }),
+    ...(opts.expiresAt && { expires_at: opts.expiresAt }),
     locale:         "en",
     country:        "GB",
     items:          opts.items,

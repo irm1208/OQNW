@@ -20,3 +20,9 @@ When a create attempt has no stored provider ID or URL after an interruption or 
 **Why:** Wallid documents unique merchant order IDs but does not document idempotent create replay or lookup by merchant order. Reissuing an ambiguous attempt can create a second payable link.
 
 **How to apply:** Automatic repair is allowed only when both provider identifiers are already durable. Provider-unknown attempts need explicit manual reconciliation against the Wallid dashboard.
+
+Wholesale payment creation must always send an explicit Wallid expiry aligned with the invoice due date.
+
+**Why:** Wallid otherwise defaults hosted payment links to 15 minutes, so a valid emailed invoice can show the provider's generic “already rejected” message when opened later.
+
+**How to apply:** Keep ordinary interactive checkout sessions short-lived, but set `expires_at` for wholesale links to the end of the validated future due date.
