@@ -1,192 +1,167 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
-import { db } from "@workspace/db";
-import { customersTable, ordersTable } from "@workspace/db";
-import { asc, desc, inArray, isNotNull } from "drizzle-orm";
+import {
+  db,
+  adminAuditEventsTable,
+  adminUsersTable,
+  customersTable,
+  ordersTable,
+  referralRedemptionAllocationsTable,
+  referralRewardsTable,
+} from "@workspace/db";
+import { and, asc, desc, eq, inArray, isNotNull, sql } from "drizzle-orm";
+import { firstString } from "../../lib/query";
+import { getSecureAdminSession, hasSecureAdminSession } from "./auth";
+import { requireOwner } from "./users";
+import { getClientIp } from "../../lib/geoip";
+import { releaseStatus } from "../../lib/referralLedger";
 
 const router = Router();
+const STATUSES = new Set(["all", "pending", "earned", "redeemed", "held", "voided", "legacy", "untracked"]);
+const CAP = 50;
+const money = (v: unknown) => Number.parseFloat(String(v ?? 0)) || 0;
+const customer = (c: typeof customersTable.$inferSelect | undefined) => c ? {
+  id: c.id, name: `${c.firstName} ${c.lastName}`.trim(), email: c.email,
+  referralCode: c.referralCode, referralCreditGbp: money(c.referralCreditGbp),
+} : null;
 
-const REFERRAL_REWARD_GBP = 25;
-const VALID_STATUSES = new Set(["all", "pending", "qualified", "flagged"]);
-
-function requireAdmin(req: Request, res: Response): boolean {
-  if (res.locals.adminAuthenticated !== true) {
-    res.status(401).json({ error: "Not authenticated" });
-    return false;
-  }
+function requireAdmin(req: Request, res: Response) {
+  if (!hasSecureAdminSession(req)) { res.status(401).json({ error: "Not authenticated" }); return false; }
   return true;
-}
-
-function asMoney(value: unknown): number {
-  return Number.parseFloat(String(value ?? 0)) || 0;
 }
 
 router.get("/admin/referrals", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-
-  const requestedStatus = typeof req.query.status === "string" ? req.query.status : "all";
-  const status = VALID_STATUSES.has(requestedStatus) ? requestedStatus : "all";
+  const status = typeof req.query.status === "string" && STATUSES.has(req.query.status) ? req.query.status : "all";
   const search = typeof req.query.search === "string" ? req.query.search.trim().toLowerCase() : "";
-
   try {
-    const referredCustomers = await db
-      .select({
-        id: customersTable.id,
-        email: customersTable.email,
-        firstName: customersTable.firstName,
-        lastName: customersTable.lastName,
-        referredBy: customersTable.referredBy,
-        referralCreditGbp: customersTable.referralCreditGbp,
-        referralAbuseFlag: customersTable.referralAbuseFlag,
-        totalOrders: customersTable.totalOrders,
-        totalSpendGbp: customersTable.totalSpendGbp,
-        createdAt: customersTable.createdAt,
-      })
-      .from(customersTable)
-      .where(isNotNull(customersTable.referredBy))
-      .orderBy(desc(customersTable.createdAt));
-
-    const referredIds = referredCustomers.map((customer) => customer.id);
-    const referralCodes = [
-      ...new Set(
-        referredCustomers
-          .map((customer) => customer.referredBy)
-          .filter((code): code is string => Boolean(code)),
-      ),
-    ];
-
-    const referrers =
-      referralCodes.length > 0
-        ? await db
-            .select({
-              id: customersTable.id,
-              email: customersTable.email,
-              firstName: customersTable.firstName,
-              lastName: customersTable.lastName,
-              referralCode: customersTable.referralCode,
-              referralCreditGbp: customersTable.referralCreditGbp,
-            })
-            .from(customersTable)
-            .where(inArray(customersTable.referralCode, referralCodes))
-        : [];
-    const firstOrders =
-      referredIds.length > 0
-        ? await db
-            .select({
-              customerId: ordersTable.customerId,
-              orderNumber: ordersTable.orderNumber,
-              status: ordersTable.status,
-              createdAt: ordersTable.createdAt,
-            })
-            .from(ordersTable)
-            .where(inArray(ordersTable.customerId, referredIds))
-            .orderBy(asc(ordersTable.createdAt))
-        : [];
-    const allCustomerBalances = await db
-      .select({ referralCreditGbp: customersTable.referralCreditGbp })
-      .from(customersTable);
-
-    const referrerByCode = new Map(
-      referrers
-        .filter((referrer) => Boolean(referrer.referralCode))
-        .map((referrer) => [referrer.referralCode!, referrer]),
-    );
-    const firstOrderByCustomerId = new Map<number, (typeof firstOrders)[number]>();
-    for (const order of firstOrders) {
-      if (order.customerId !== null && !firstOrderByCustomerId.has(order.customerId)) {
-        firstOrderByCustomerId.set(order.customerId, order);
-      }
-    }
-
-    const referrals = referredCustomers
-      .map((customer) => {
-        const referrer = customer.referredBy ? referrerByCode.get(customer.referredBy) : undefined;
-        const firstOrder = firstOrderByCustomerId.get(customer.id);
-        const rowStatus = customer.referralAbuseFlag
-          ? "flagged"
-          : customer.totalOrders > 0
-            ? "qualified"
-            : "pending";
-
-        return {
-          id: customer.id,
-          status: rowStatus,
-          referredCustomer: {
-            id: customer.id,
-            name: `${customer.firstName} ${customer.lastName}`.trim(),
-            email: customer.email,
-            joinedAt: customer.createdAt.toISOString(),
-            totalOrders: customer.totalOrders,
-            totalSpendGbp: asMoney(customer.totalSpendGbp),
-            referralCreditGbp: asMoney(customer.referralCreditGbp),
-          },
-          referrer: referrer
-            ? {
-                id: referrer.id,
-                name: `${referrer.firstName} ${referrer.lastName}`.trim(),
-                email: referrer.email,
-                referralCode: referrer.referralCode,
-                referralCreditGbp: asMoney(referrer.referralCreditGbp),
-              }
-            : null,
-          firstOrder: firstOrder
-            ? {
-                orderNumber: firstOrder.orderNumber,
-                status: firstOrder.status,
-                createdAt: firstOrder.createdAt.toISOString(),
-              }
-            : null,
-          rewardGbp: rowStatus === "qualified" ? REFERRAL_REWARD_GBP : 0,
-        };
-      })
-      .filter((referral) => {
-        if (status !== "all" && referral.status !== status) return false;
-        if (!search) return true;
-        return [
-          referral.referredCustomer.name,
-          referral.referredCustomer.email,
-          referral.referrer?.name,
-          referral.referrer?.email,
-          referral.referrer?.referralCode,
-        ]
-          .filter(Boolean)
-          .some((value) => String(value).toLowerCase().includes(search));
-      });
-
-    const allStatuses = referredCustomers.map((customer) =>
-      customer.referralAbuseFlag
-        ? "flagged"
-        : customer.totalOrders > 0
-          ? "qualified"
-          : "pending",
-    );
-
-    res.json({
-      stats: {
-        total: allStatuses.length,
-        pending: allStatuses.filter((item) => item === "pending").length,
-        qualified: allStatuses.filter((item) => item === "qualified").length,
-        flagged: allStatuses.filter((item) => item === "flagged").length,
-        conversionRate:
-          allStatuses.length > 0
-            ? Number(
-                (
-                  (allStatuses.filter((item) => item === "qualified").length / allStatuses.length) *
-                  100
-                ).toFixed(1),
-              )
-            : 0,
-        outstandingCreditGbp: allCustomerBalances.reduce(
-          (total, customer) => total + asMoney(customer.referralCreditGbp),
-          0,
-        ),
-      },
-      referrals,
+    const [rewards, redemptions, customers, relationships] = await Promise.all([
+      db.select().from(referralRewardsTable).orderBy(desc(referralRewardsTable.createdAt)),
+      db.select().from(referralRedemptionAllocationsTable).orderBy(asc(referralRedemptionAllocationsTable.createdAt)),
+      db.select().from(customersTable),
+      db.select().from(customersTable).where(isNotNull(customersTable.referredBy)).orderBy(desc(customersTable.createdAt)),
+    ]);
+    const customerById = new Map(customers.map(c => [c.id, c]));
+    const codeMap = new Map(customers.filter(c => c.referralCode).map(c => [c.referralCode!, c]));
+    const rows = rewards.map(r => {
+      const beneficiary = customer(customerById.get(r.beneficiaryCustomerId ?? -1));
+      const referred = customer(customerById.get(r.referredCustomerId ?? -1));
+      const referrer = customer(customerById.get(r.referrerCustomerId ?? -1));
+      const qualifyingOrder = r.qualifyingOrderId ? undefined : null;
+      return {
+        id: r.id, status: r.status, beneficiaryRole: r.beneficiaryRole,
+        amountGbp: money(r.amountGbp), remainingAmountGbp: money(r.remainingAmountGbp),
+        historical: r.historical, statusReason: r.statusReason, lastAdminActor: r.lastAdminActor,
+        createdAt: r.createdAt.toISOString(), updatedAt: r.updatedAt.toISOString(),
+        beneficiary, referredCustomer: referred, referrer, qualifyingOrderId: r.qualifyingOrderId,
+        referrerCustomerId: r.referrerCustomerId,
+        earnedAt: r.earnedAt?.toISOString() ?? null, heldAt: r.heldAt?.toISOString() ?? null,
+        voidedAt: r.voidedAt?.toISOString() ?? null, redeemedAt: r.redeemedAt?.toISOString() ?? null,
+        qualifyingOrder,
+      };
     });
-  } catch (err) {
-    req.log.error({ err }, "Failed to list referrals");
-    res.status(500).json({ error: "Failed to list referrals" });
-  }
+    const orderIds = [...new Set([
+      ...rows.map(r => r.qualifyingOrderId),
+      ...redemptions.map(r => r.orderId),
+    ].filter((id): id is number => id !== null))];
+    const orderMap = new Map(orderIds.length ? (await db.select({ id: ordersTable.id, orderNumber: ordersTable.orderNumber, status: ordersTable.status, createdAt: ordersTable.createdAt }).from(ordersTable).where(inArray(ordersTable.id, orderIds))).map(o => [o.id, o]) : []);
+    const redemptionsByReward = new Map<number, typeof redemptions>();
+    for (const redemption of redemptions) {
+      const existing = redemptionsByReward.get(redemption.rewardId) ?? [];
+      existing.push(redemption);
+      redemptionsByReward.set(redemption.rewardId, existing);
+    }
+    const ledgerRows = rows.map(r => ({
+      ...r,
+      qualifyingOrder: r.qualifyingOrderId ? orderMap.get(r.qualifyingOrderId) ?? null : null,
+      redemptions: (redemptionsByReward.get(r.id) ?? []).map((redemption) => ({
+        id: redemption.id,
+        amountGbp: money(redemption.amountGbp),
+        createdAt: redemption.createdAt.toISOString(),
+        order: orderMap.get(redemption.orderId) ?? null,
+      })),
+    }));
+    // Relationships without a ledger event remain visible, but are explicitly not rewards.
+    const untracked = relationships.filter(c => !ledgerRows.some(r => r.referredCustomer?.id === c.id)).map(c => ({
+      id: `untracked-${c.id}`, status: "untracked", beneficiaryRole: null, amountGbp: 0, remainingAmountGbp: 0,
+      historical: false, statusReason: c.referralAbuseFlag ? "Customer is flagged for referral review" : "No ledger event has been created",
+      lastAdminActor: null, createdAt: c.createdAt.toISOString(), updatedAt: c.updatedAt.toISOString(),
+      beneficiary: null, referredCustomer: customer(c), qualifyingOrderId: null, qualifyingOrder: null,
+      referrer: customer(codeMap.get(c.referredBy ?? "")),
+    }));
+    const all = [...ledgerRows, ...untracked].filter(r => (status === "all" || r.status === status) &&
+      (!search || [r.beneficiary?.name, r.beneficiary?.email, r.referredCustomer?.name, r.referredCustomer?.email, r.statusReason].some(v => v?.toLowerCase().includes(search))));
+    const byStatus = (s: string) => ledgerRows.filter(r => r.status === s).length;
+    res.json({ stats: {
+      total: ledgerRows.length, pending: byStatus("pending"), earned: byStatus("earned"), held: byStatus("held"),
+      redeemed: byStatus("redeemed"), voided: byStatus("voided"), legacy: byStatus("legacy"), untracked: untracked.length,
+      outstandingCreditGbp: customers.reduce((sum, c) => sum + money(c.referralCreditGbp), 0),
+    }, referrals: all });
+  } catch (err) { req.log.error({ err }, "Failed to list referral ledger"); res.status(500).json({ error: "Failed to list referrals" }); }
 });
 
+class RewardError extends Error { constructor(public code: number, message: string) { super(message); } }
+router.post("/admin/referrals/:id/:action", async (req: Request, res: Response): Promise<void> => {
+  if (!(await requireOwner(req, res))) return;
+  const id = Number.parseInt(firstString(req.params.id) ?? "", 10);
+  const action = firstString(req.params.action);
+  const reason = typeof req.body?.reason === "string" ? req.body.reason.trim() : "";
+  if (!Number.isInteger(id) || !["hold", "release", "void"].includes(action ?? "") || !reason) {
+    res.status(400).json({ error: "A valid reward action and non-empty reason are required" }); return;
+  }
+  const session = getSecureAdminSession(req);
+  const actor = session?.email ?? "shared-admin";
+  const [actorUser] = session?.email ? await db.select({ id: adminUsersTable.id }).from(adminUsersTable).where(eq(adminUsersTable.email, session.email)).limit(1) : [];
+  try {
+    const [lookup] = await db.select({ beneficiaryCustomerId: referralRewardsTable.beneficiaryCustomerId }).from(referralRewardsTable).where(eq(referralRewardsTable.id, id)).limit(1);
+    if (!lookup) { res.status(404).json({ error: "Reward not found" }); return; }
+    if (!lookup.beneficiaryCustomerId) { res.status(409).json({ error: "Reward has no beneficiary" }); return; }
+    const reward = await db.transaction(async tx => {
+      // Global order: customer rows first, then reward rows.
+      await tx.execute(sql`SELECT id FROM customers WHERE id = ${lookup.beneficiaryCustomerId} FOR UPDATE`);
+      await tx.execute(sql`SELECT id FROM referral_rewards WHERE id = ${id} FOR UPDATE`);
+      const [current] = await tx.select().from(referralRewardsTable).where(eq(referralRewardsTable.id, id)).limit(1);
+      if (!current) throw new RewardError(404, "Reward not found");
+      if (current.historical) throw new RewardError(409, "Historical balance records cannot be administratively changed");
+      if (!current.beneficiaryCustomerId) throw new RewardError(409, "Reward has no beneficiary");
+      const [owner] = await tx.select().from(customersTable).where(eq(customersTable.id, current.beneficiaryCustomerId)).limit(1);
+      if (!owner) throw new RewardError(409, "Reward beneficiary no longer exists");
+      const remaining = money(current.remainingAmountGbp);
+      let next: "pending" | "earned" | "held" | "voided";
+      let delta = 0;
+      if (action === "hold") {
+        if (!["pending", "earned"].includes(current.status)) throw new RewardError(409, "Only pending or earned rewards can be held");
+        next = "held"; delta = current.status === "earned" ? -remaining : 0;
+      } else if (action === "void") {
+        if (["voided", "redeemed"].includes(current.status)) throw new RewardError(409, "This reward can no longer be voided");
+        next = "voided"; delta = current.status === "earned" ? -remaining : 0;
+      } else {
+        if (current.status !== "held") throw new RewardError(409, "Only held rewards can be released");
+        const [order] = current.qualifyingOrderId ? await tx.select({ status: ordersTable.status }).from(ordersTable).where(eq(ordersTable.id, current.qualifyingOrderId)).limit(1) : [];
+        const decision = releaseStatus(
+          order?.status === "shipped" || order?.status === "delivered",
+          money(owner.referralCreditGbp),
+          remaining,
+        );
+        next = decision.status;
+        delta = decision.balanceDelta;
+        if (decision.exceedsCap) throw new RewardError(409, `Release would exceed the £${CAP} referral credit cap`);
+      }
+      const now = new Date();
+      const [updated] = await tx.update(referralRewardsTable).set({
+        status: next, statusReason: reason, lastAdminActor: actor, updatedAt: now,
+        heldAt: action === "hold" ? now : action === "release" ? null : current.heldAt,
+        voidedAt: action === "void" ? now : current.voidedAt,
+        earnedAt: action === "release" && next === "earned" ? now : current.earnedAt,
+      }).where(eq(referralRewardsTable.id, id)).returning();
+      if (delta) await tx.update(customersTable).set({ referralCreditGbp: sql`${customersTable.referralCreditGbp} + ${delta}` }).where(eq(customersTable.id, owner.id));
+      await tx.insert(adminAuditEventsTable).values({ eventType: `referral_reward_${action}`, adminUserId: actorUser?.id ?? null, email: session?.email ?? null, ip: getClientIp(req), userAgent: req.get("user-agent")?.slice(0, 500) ?? null, requestId: String(req.id), success: true, metadata: { rewardId: id, previousStatus: current.status, status: next, reason, balanceDeltaGbp: delta } });
+      return updated;
+    });
+    res.json({ reward: { ...reward, amountGbp: money(reward.amountGbp), remainingAmountGbp: money(reward.remainingAmountGbp) } });
+  } catch (err) {
+    if (err instanceof RewardError) { res.status(err.code).json({ error: err.message }); return; }
+    req.log.error({ err, id, action }, "Failed to update referral reward"); res.status(500).json({ error: "Failed to update referral reward" });
+  }
+});
 export default router;

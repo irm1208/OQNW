@@ -214228,6 +214228,8 @@ __export(schema_exports, {
   productsInventoryTable: () => productsInventoryTable,
   publicTrafficEventsTable: () => publicTrafficEventsTable,
   publicTrafficLimitsTable: () => publicTrafficLimitsTable,
+  referralRedemptionAllocationsTable: () => referralRedemptionAllocationsTable,
+  referralRewardsTable: () => referralRewardsTable,
   refundsLogTable: () => refundsLogTable,
   returnsTable: () => returnsTable,
   shippingRatesTable: () => shippingRatesTable,
@@ -226276,6 +226278,45 @@ var wholesaleInvoicesTable = pgTable("wholesale_invoices", {
   uniqueIndex("wholesale_invoices_api_payment_id_unique").on(table.apiPaymentId)
 ]);
 
+// ../../lib/db/src/schema/referral_rewards.ts
+var referralRewardsTable = pgTable("referral_rewards", {
+  id: serial("id").primaryKey(),
+  beneficiaryCustomerId: integer("beneficiary_customer_id").references(() => customersTable.id, { onDelete: "restrict" }),
+  referrerCustomerId: integer("referrer_customer_id").references(() => customersTable.id, { onDelete: "restrict" }),
+  referredCustomerId: integer("referred_customer_id").references(() => customersTable.id, { onDelete: "restrict" }),
+  qualifyingOrderId: integer("qualifying_order_id").references(() => ordersTable.id, { onDelete: "restrict" }),
+  beneficiaryRole: text("beneficiary_role").notNull(),
+  // referrer | referred | historical
+  status: text("status").notNull().default("pending"),
+  // pending | earned | redeemed | held | voided | legacy
+  amountGbp: numeric("amount_gbp", { precision: 10, scale: 2 }).notNull(),
+  remainingAmountGbp: numeric("remaining_amount_gbp", { precision: 10, scale: 2 }).notNull(),
+  statusReason: text("status_reason"),
+  historical: boolean("historical").notNull().default(false),
+  lastAdminActor: text("last_admin_actor"),
+  earnedAt: timestamp("earned_at", { withTimezone: true }),
+  heldAt: timestamp("held_at", { withTimezone: true }),
+  voidedAt: timestamp("voided_at", { withTimezone: true }),
+  redeemedAt: timestamp("redeemed_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
+}, (table) => [
+  uniqueIndex("referral_rewards_issuance_unique").on(table.qualifyingOrderId, table.beneficiaryCustomerId, table.beneficiaryRole),
+  index("referral_rewards_beneficiary_status_idx").on(table.beneficiaryCustomerId, table.status, table.createdAt),
+  index("referral_rewards_referred_customer_idx").on(table.referredCustomerId)
+]);
+var referralRedemptionAllocationsTable = pgTable("referral_redemption_allocations", {
+  id: serial("id").primaryKey(),
+  rewardId: integer("reward_id").notNull().references(() => referralRewardsTable.id, { onDelete: "restrict" }),
+  orderId: integer("order_id").notNull().references(() => ordersTable.id, { onDelete: "restrict" }),
+  customerId: integer("customer_id").notNull().references(() => customersTable.id, { onDelete: "restrict" }),
+  amountGbp: numeric("amount_gbp", { precision: 10, scale: 2 }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+}, (table) => [
+  uniqueIndex("referral_redemption_reward_order_unique").on(table.rewardId, table.orderId),
+  index("referral_redemption_order_idx").on(table.orderId)
+]);
+
 // ../../lib/db/src/index.ts
 var { Pool: Pool3 } = esm_default;
 if (!process.env.DATABASE_URL) {
@@ -233774,6 +233815,22 @@ async function sendReferralReward(data) {
     await logEmail({ toEmail: data.referrerEmail, subject, type: "referral_reward", status: "failed" });
   }
 }
+async function sendReferralRewardRecipient(data) {
+  if (data.role === "referrer") {
+    return sendReferralReward({ referrerName: data.recipientName, referrerEmail: data.recipientEmail, refereeName: data.counterpartName });
+  }
+  const subject = "You've earned \xA325 referral credit";
+  const body = `<h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#0f172a;">You've earned \xA325 credit!</h2>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Hi ${data.recipientName}, your first referred order has now shipped. \xA325 credit has been added to your account and can be redeemed at checkout on your next order.</p>
+    <div style="background:#f0fdf4;border-radius:8px;padding:20px 24px;border-left:4px solid #22c55e;"><p style="margin:0;font-size:28px;font-weight:800;color:#15803d;">+\xA325 Credit</p></div>`;
+  try {
+    const result = await getResend().emails.send({ from: FROM_ADDRESS, to: data.recipientEmail, subject, html: baseTemplate("Referral Reward", body) });
+    await logEmail({ toEmail: data.recipientEmail, subject, type: "referral_reward", status: "sent", resendId: result.data?.id });
+  } catch (err) {
+    logger.error({ err }, "Failed to send referred customer reward email");
+    await logEmail({ toEmail: data.recipientEmail, subject, type: "referral_reward", status: "failed" });
+  }
+}
 async function sendWelcomeEmail(data) {
   const subject = `Welcome to OmniQure, ${data.customerName.split(" ")[0]}!`;
   const body = `
@@ -234203,18 +234260,48 @@ router5.post("/admin/orders/:id/dispatch", async (req, res) => {
     return;
   }
   try {
-    const [updated] = await db.update(ordersTable).set({
-      status: "shipped",
-      carrierName: dispatch.value.carrierName,
-      trackingNumber: dispatch.value.trackingNumber,
-      trackingUrl: dispatch.value.trackingUrl,
-      dispatchedAt: /* @__PURE__ */ new Date(),
-      updatedAt: /* @__PURE__ */ new Date()
-    }).where(and(
-      eq(ordersTable.id, id),
-      inArray(ordersTable.status, [...DISPATCHABLE_ORDER_STATUSES]),
-      isNull(ordersTable.dispatchedAt)
-    )).returning();
+    const earnedRewardNotifications = [];
+    const updated = await db.transaction(async (tx) => {
+      await tx.execute(sql`SELECT id FROM orders WHERE id = ${id} FOR UPDATE`);
+      const [dispatched] = await tx.update(ordersTable).set({
+        status: "shipped",
+        carrierName: dispatch.value.carrierName,
+        trackingNumber: dispatch.value.trackingNumber,
+        trackingUrl: dispatch.value.trackingUrl,
+        dispatchedAt: /* @__PURE__ */ new Date(),
+        updatedAt: /* @__PURE__ */ new Date()
+      }).where(and(
+        eq(ordersTable.id, id),
+        inArray(ordersTable.status, [...DISPATCHABLE_ORDER_STATUSES]),
+        isNull(ordersTable.dispatchedAt)
+      )).returning();
+      if (!dispatched) return null;
+      const rewards = await tx.select().from(referralRewardsTable).where(eq(referralRewardsTable.qualifyingOrderId, id)).orderBy(referralRewardsTable.id);
+      const beneficiaryIds = [...new Set(rewards.map((r) => r.beneficiaryCustomerId).filter((id2) => id2 !== null))].sort((a, b) => a - b);
+      for (const beneficiaryId of beneficiaryIds) await tx.execute(sql`SELECT id FROM customers WHERE id = ${beneficiaryId} FOR UPDATE`);
+      await tx.execute(sql`SELECT id FROM referral_rewards WHERE qualifying_order_id = ${id} ORDER BY id FOR UPDATE`);
+      const lockedRewards = await tx.select().from(referralRewardsTable).where(and(eq(referralRewardsTable.qualifyingOrderId, id), eq(referralRewardsTable.status, "pending"))).orderBy(referralRewardsTable.id);
+      for (const reward of lockedRewards) {
+        if (!reward.beneficiaryCustomerId) continue;
+        const [beneficiary] = await tx.select({ credit: customersTable.referralCreditGbp }).from(customersTable).where(eq(customersTable.id, reward.beneficiaryCustomerId)).limit(1);
+        const remaining = Number(reward.remainingAmountGbp);
+        if (Number(beneficiary?.credit ?? 0) + remaining > 50) {
+          await tx.update(referralRewardsTable).set({
+            status: "held",
+            statusReason: "Release at dispatch would exceed the \xA350 referral credit cap",
+            heldAt: /* @__PURE__ */ new Date(),
+            updatedAt: /* @__PURE__ */ new Date()
+          }).where(and(eq(referralRewardsTable.id, reward.id), eq(referralRewardsTable.status, "pending")));
+        } else {
+          await tx.update(referralRewardsTable).set({ status: "earned", earnedAt: /* @__PURE__ */ new Date(), updatedAt: /* @__PURE__ */ new Date() }).where(and(eq(referralRewardsTable.id, reward.id), eq(referralRewardsTable.status, "pending")));
+          await tx.update(customersTable).set({ referralCreditGbp: sql`${customersTable.referralCreditGbp} + ${remaining}` }).where(eq(customersTable.id, reward.beneficiaryCustomerId));
+          if ((reward.beneficiaryRole === "referrer" || reward.beneficiaryRole === "referred") && reward.referrerCustomerId && reward.referredCustomerId) {
+            earnedRewardNotifications.push({ beneficiaryCustomerId: reward.beneficiaryCustomerId, role: reward.beneficiaryRole, referrerCustomerId: reward.referrerCustomerId, referredCustomerId: reward.referredCustomerId });
+          }
+        }
+      }
+      return dispatched;
+    });
     if (!updated) {
       const [current] = await db.select({ status: ordersTable.status }).from(ordersTable).where(eq(ordersTable.id, id)).limit(1);
       if (!current) {
@@ -234225,6 +234312,16 @@ router5.post("/admin/orders/:id/dispatch", async (req, res) => {
         res.status(409).json({ error: "This order is not ready to dispatch" });
       }
       return;
+    }
+    for (const notification of earnedRewardNotifications) {
+      try {
+        const [recipient] = await db.select().from(customersTable).where(eq(customersTable.id, notification.beneficiaryCustomerId)).limit(1);
+        const counterpartId = notification.role === "referrer" ? notification.referredCustomerId : notification.referrerCustomerId;
+        const [counterpart] = await db.select().from(customersTable).where(eq(customersTable.id, counterpartId)).limit(1);
+        if (recipient && counterpart) await sendReferralRewardRecipient({ recipientName: `${recipient.firstName} ${recipient.lastName}`, recipientEmail: recipient.email, role: notification.role, counterpartName: `${counterpart.firstName} ${counterpart.lastName}` });
+      } catch (emailError) {
+        req.log.error({ emailError, orderId: id }, "Referral reward email failed after dispatch");
+      }
     }
     const items = await db.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, updated.id));
     let emailSent = true;
@@ -234818,18 +234915,18 @@ router7.get("/admin/customers/:id", async (req, res) => {
     return;
   }
   try {
-    const [customer] = await db.select().from(customersTable).where(eq(customersTable.id, parsed.data.id));
-    if (!customer) {
+    const [customer2] = await db.select().from(customersTable).where(eq(customersTable.id, parsed.data.id));
+    if (!customer2) {
       res.status(404).json({ error: "Customer not found" });
       return;
     }
-    const orders = await db.select().from(ordersTable).where(eq(ordersTable.customerId, customer.id)).orderBy(desc(ordersTable.createdAt));
+    const orders = await db.select().from(ordersTable).where(eq(ordersTable.customerId, customer2.id)).orderBy(desc(ordersTable.createdAt));
     res.status(200).json({
-      ...customerToResponse(customer),
-      address1: customer.address1 ?? null,
-      address2: customer.address2 ?? null,
-      county: customer.county ?? null,
-      postcode: customer.postcode ?? null,
+      ...customerToResponse(customer2),
+      address1: customer2.address1 ?? null,
+      address2: customer2.address2 ?? null,
+      county: customer2.county ?? null,
+      postcode: customer2.postcode ?? null,
       orders: orders.map((o) => ({
         id: o.id,
         orderNumber: o.orderNumber,
@@ -237792,8 +237889,8 @@ router21.get("/admin/customers/:id/gdpr-export", async (req, res) => {
     return;
   }
   try {
-    const [customer] = await db.select().from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
-    if (!customer) {
+    const [customer2] = await db.select().from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
+    if (!customer2) {
       res.status(404).json({ error: "Customer not found" });
       return;
     }
@@ -237801,7 +237898,7 @@ router21.get("/admin/customers/:id/gdpr-export", async (req, res) => {
       db.select().from(ordersTable).where(eq(ordersTable.customerId, customerId)).orderBy(desc(ordersTable.createdAt)),
       db.select().from(productReviewsTable).where(eq(productReviewsTable.customerId, customerId)),
       db.select().from(loyaltyTransactionsTable).where(eq(loyaltyTransactionsTable.customerId, customerId)),
-      db.select().from(stockAlertsTable).where(eq(stockAlertsTable.customerEmail, customer.email)),
+      db.select().from(stockAlertsTable).where(eq(stockAlertsTable.customerEmail, customer2.email)),
       db.select().from(subscriptionsTable).where(eq(subscriptionsTable.customerId, customerId))
     ]);
     const orderIds = orders.map((o) => o.id);
@@ -237815,20 +237912,20 @@ router21.get("/admin/customers/:id/gdpr-export", async (req, res) => {
     const exportData = {
       exportedAt: (/* @__PURE__ */ new Date()).toISOString(),
       customer: {
-        id: customer.id,
-        email: customer.email,
-        firstName: customer.firstName,
-        lastName: customer.lastName,
-        phone: customer.phone,
-        address1: customer.address1,
-        address2: customer.address2,
-        city: customer.city,
-        county: customer.county,
-        postcode: customer.postcode,
-        country: customer.country,
-        totalOrders: customer.totalOrders,
-        totalSpentGbp: parseFloat(String(customer.totalSpendGbp ?? 0)),
-        createdAt: customer.createdAt
+        id: customer2.id,
+        email: customer2.email,
+        firstName: customer2.firstName,
+        lastName: customer2.lastName,
+        phone: customer2.phone,
+        address1: customer2.address1,
+        address2: customer2.address2,
+        city: customer2.city,
+        county: customer2.county,
+        postcode: customer2.postcode,
+        country: customer2.country,
+        totalOrders: customer2.totalOrders,
+        totalSpentGbp: parseFloat(String(customer2.totalSpendGbp ?? 0)),
+        createdAt: customer2.createdAt
       },
       orders: orders.map((o) => ({
         orderNumber: o.orderNumber,
@@ -237865,8 +237962,8 @@ router21.delete("/admin/customers/:id/gdpr-erase", async (req, res) => {
     return;
   }
   try {
-    const [customer] = await db.select({ id: customersTable.id, email: customersTable.email }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
-    if (!customer) {
+    const [customer2] = await db.select({ id: customersTable.id, email: customersTable.email }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
+    if (!customer2) {
       res.status(404).json({ error: "Customer not found" });
       return;
     }
@@ -237885,14 +237982,14 @@ router21.delete("/admin/customers/:id/gdpr-erase", async (req, res) => {
     await Promise.all([
       db.delete(wishlistsTable).where(eq(wishlistsTable.customerId, customerId)),
       db.delete(loyaltyTransactionsTable).where(eq(loyaltyTransactionsTable.customerId, customerId)),
-      db.delete(stockAlertsTable).where(eq(stockAlertsTable.customerEmail, customer.email)),
+      db.delete(stockAlertsTable).where(eq(stockAlertsTable.customerEmail, customer2.email)),
       db.delete(subscriptionsTable).where(eq(subscriptionsTable.customerId, customerId))
     ]);
     await db.delete(customersTable).where(eq(customersTable.id, customerId));
     res.json({
       erased: true,
       customerId,
-      originalEmail: customer.email,
+      originalEmail: customer2.email,
       message: "Customer personal data erased and orders anonymised"
     });
   } catch (err) {
@@ -238444,6 +238541,49 @@ function assessFraud(input) {
     flags.push("free_email_provider");
   }
   return { score: Math.min(score, 100), flags };
+}
+
+// src/lib/referralLedger.ts
+function buildReferralRewardDrafts(input) {
+  const shared = {
+    referrerCustomerId: input.referrerCustomerId,
+    referredCustomerId: input.referredCustomerId,
+    qualifyingOrderId: input.qualifyingOrderId,
+    status: input.held ? "held" : "pending",
+    amountGbp: "25.00",
+    remainingAmountGbp: "25.00",
+    statusReason: input.held ? input.reason : null,
+    heldAt: input.held ? input.now : null
+  };
+  return [
+    {
+      ...shared,
+      beneficiaryCustomerId: input.referrerCustomerId,
+      beneficiaryRole: "referrer"
+    },
+    {
+      ...shared,
+      beneficiaryCustomerId: input.referredCustomerId,
+      beneficiaryRole: "referred"
+    }
+  ];
+}
+function allocateReferralCredit(rewards, requested) {
+  let outstanding = Math.round(requested * 100) / 100;
+  const allocations = [];
+  for (const reward of rewards) {
+    if (outstanding <= 0) break;
+    const amount = Math.min(reward.remaining, outstanding);
+    if (amount <= 0) continue;
+    const remaining = Math.round((reward.remaining - amount) * 100) / 100;
+    allocations.push({ rewardId: reward.id, amount, remaining, redeemed: remaining === 0 });
+    outstanding = Math.round((outstanding - amount) * 100) / 100;
+  }
+  return { allocations, insufficient: outstanding > 0, outstanding };
+}
+function releaseStatus(orderShipped, balance, remaining) {
+  const status = orderShipped ? "earned" : "pending";
+  return { status, balanceDelta: status === "earned" ? remaining : 0, exceedsCap: status === "earned" && balance + remaining > 50 };
 }
 
 // src/lib/geoip.ts
@@ -239518,38 +239658,12 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
       const [sessionCustomer] = await db.select().from(customersTable).where(eq(customersTable.id, sessionCustomerId)).limit(1);
       if (sessionCustomer) {
         customerId = sessionCustomer.id;
-        await db.update(customersTable).set({
-          totalOrders: sessionCustomer.totalOrders + 1,
-          totalSpendGbp: String(
-            (parseFloat(String(sessionCustomer.totalSpendGbp)) + totalGbp).toFixed(2)
-          ),
-          phone: d.phone ?? sessionCustomer.phone,
-          address1: d.address1,
-          address2: d.address2 ?? sessionCustomer.address2,
-          city: d.city,
-          county: d.county ?? sessionCustomer.county,
-          postcode: d.postcode,
-          country: d.country
-        }).where(eq(customersTable.id, sessionCustomer.id));
       }
     }
     if (!customerId) {
       const [existingCustomer] = await db.select().from(customersTable).where(eq(customersTable.email, d.email.toLowerCase())).limit(1);
       if (existingCustomer) {
         customerId = existingCustomer.id;
-        await db.update(customersTable).set({
-          totalOrders: existingCustomer.totalOrders + 1,
-          totalSpendGbp: String(
-            (parseFloat(String(existingCustomer.totalSpendGbp)) + totalGbp).toFixed(2)
-          ),
-          phone: d.phone ?? existingCustomer.phone,
-          address1: d.address1,
-          address2: d.address2 ?? existingCustomer.address2,
-          city: d.city,
-          county: d.county ?? existingCustomer.county,
-          postcode: d.postcode,
-          country: d.country
-        }).where(eq(customersTable.id, existingCustomer.id));
       } else {
         const [newCustomer] = await db.insert(customersTable).values({
           email: d.email.toLowerCase(),
@@ -239562,8 +239676,8 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
           county: d.county ?? null,
           postcode: d.postcode,
           country: d.country,
-          totalOrders: 1,
-          totalSpendGbp: String(totalGbp.toFixed(2))
+          totalOrders: 0,
+          totalSpendGbp: "0.00"
         }).returning();
         customerId = newCustomer.id;
       }
@@ -239572,7 +239686,7 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
     const [recentOrderResult] = await db.select({ cnt: count() }).from(ordersTable).where(and(eq(ordersTable.customerEmail, d.email.toLowerCase()), gte(ordersTable.createdAt, oneHourAgo)));
     const recentOrdersLastHour = recentOrderResult?.cnt ?? 0;
     const [customerOrderResult] = customerId ? await db.select({ totalOrders: customersTable.totalOrders, createdAt: customersTable.createdAt }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1) : [{ totalOrders: 0, createdAt: null }];
-    const isFirstOrder = (customerOrderResult?.totalOrders ?? 0) <= 1;
+    let isFirstOrder = (customerOrderResult?.totalOrders ?? 0) === 0;
     const isNewAccount = customerOrderResult?.createdAt ? Date.now() - new Date(customerOrderResult.createdAt).getTime() < 10 * 60 * 1e3 : false;
     const clientIp = getClientIp2(req);
     const ipData = clientIp ? await lookupIpData(clientIp).catch(() => ({ countryCode: null, isProxy: false })) : { countryCode: null, isProxy: false };
@@ -239591,51 +239705,147 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
       shippingCountryCode,
       isProxy: ipData.isProxy
     });
-    const [order] = await db.insert(ordersTable).values({
-      orderNumber,
-      customerEmail: d.email.toLowerCase(),
-      customerName,
-      customerId,
-      phone: d.phone ?? null,
-      address1: d.address1,
-      address2: d.address2 ?? null,
-      city: d.city,
-      county: d.county ?? null,
-      postcode: d.postcode,
-      country: d.country,
-      subtotalGbp: String(subtotalGbp.toFixed(2)),
-      bundleDiscountGbp: String(bundleDiscountGbp.toFixed(2)),
-      shippingCostGbp: String(shippingCostGbp.toFixed(2)),
-      totalGbp: String(totalGbp.toFixed(2)),
-      paymentCurrency: wallidPaymentCurrency,
-      paymentAmountMinor: wallidPaymentAmountMinor,
-      shippingMethod,
-      status: ["bank_transfer", "bitcoin", "wallid", "crypto"].includes(paymentMethodStr) ? "awaiting_payment" : "pending",
-      ...cryptoPayment && {
-        cryptoPaymentStatus: "rate_locked",
-        cryptoCurrency: cryptoPayment.details.currency,
-        cryptoNetwork: cryptoPayment.details.network,
-        cryptoWalletAddress: cryptoPayment.details.walletAddress,
-        cryptoRouteSnapshot: cryptoPayment.route,
-        cryptoExpectedAmount: cryptoPayment.details.expectedAmount,
-        cryptoRateUsd: String(cryptoPayment.details.rateUsd),
-        cryptoRateLockedAt: /* @__PURE__ */ new Date(),
-        cryptoRateExpiresAt: new Date(cryptoPayment.details.rateExpiresAt),
-        cryptoPaymentAccessToken
-      },
-      notes: [
-        `Payment method: ${paymentMethodStr}`,
-        bundleDiscountGbp > 0 ? `Bundle & Save: ${bundleFreeLabel} (-\xA3${bundleDiscountGbp.toFixed(2)})` : null,
-        validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-\xA3${discountAmount.toFixed(2)})` : null,
-        loyaltyPointsToDeduct > 0 ? `Loyalty: ${loyaltyPointsToDeduct} pts redeemed (-\xA3${loyaltyDiscountGbp.toFixed(2)})` : null,
-        wallidTestCheckout ? `WALLID \xA31 TEST CHECKOUT: normal total \xA3${standardTotalGbp.toFixed(2)}, test adjustment -\xA3${testPaymentAdjustmentGbp.toFixed(2)}` : null,
-        cryptoTestCheckout ? `CRYPTO \xA31 TEST CHECKOUT: normal total \xA3${standardTotalGbp.toFixed(2)}, test adjustment -\xA3${testPaymentAdjustmentGbp.toFixed(2)}` : null,
-        wallidApiPaymentId ? `Wallid payment id: ${wallidApiPaymentId}` : null,
-        cryptoPayment ? `Crypto route: ${cryptoPayment.details.currency} on ${cryptoPayment.details.network}` : null
-      ].filter(Boolean).join("; ") || null,
-      fraudScore,
-      fraudFlags
-    }).returning();
+    let referralCandidate = null;
+    if (customerId && isFirstOrder) {
+      const [referred] = await db.select({ referredBy: customersTable.referredBy }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
+      if (referred?.referredBy) {
+        const [referrer] = await db.select().from(customersTable).where(eq(customersTable.referralCode, referred.referredBy)).limit(1);
+        if (referrer) {
+          let reason = "";
+          if (ipData.isProxy) reason = "VPN/proxy IP detected on referred customer";
+          else if (clientIp && (referrer.knownIps ?? (referrer.lastSeenIp ? [referrer.lastSeenIp] : [])).includes(clientIp)) reason = "Referred customer IP matches referrer's known IPs";
+          else if (referrer.postcode && d.postcode && referrer.postcode.trim().replace(/\s+/g, "").toUpperCase() === d.postcode.trim().replace(/\s+/g, "").toUpperCase()) reason = "Referred customer billing postcode matches referrer's postcode";
+          else if (referrer.lastName.trim().toUpperCase() === d.lastName.trim().toUpperCase() && referrer.firstName.trim().slice(0, 3).toUpperCase() === d.firstName.trim().slice(0, 3).toUpperCase()) reason = "Referred customer name too similar to referrer's name";
+          else if (Number(referrer.referralCreditGbp) >= REFERRAL_CREDIT_CAP_GBP) reason = `Referrer has reached the maximum pending reward limit (\xA3${REFERRAL_CREDIT_CAP_GBP} credit)`;
+          if (!reason && clientIp) {
+            const [conflict] = await db.select({ id: customersTable.id }).from(customersTable).where(and(sql`${clientIp} = ANY(COALESCE(${customersTable.knownIps}, ARRAY[]::text[]))`, sql`${customersTable.id} != ${customerId}`)).limit(1);
+            if (conflict) reason = "Referred customer IP already seen on another account";
+          }
+          referralCandidate = { referrerId: referrer.id, held: Boolean(reason), reason };
+        }
+      }
+    }
+    const [order] = await db.transaction(async (tx) => {
+      let lockedIsFirstOrder = false;
+      if (customerId) {
+        await tx.execute(sql`SELECT id FROM customers WHERE id = ${customerId} FOR UPDATE`);
+        const [lockedCustomer] = await tx.select().from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
+        if (!lockedCustomer) throw new Error("CHECKOUT_CUSTOMER_MISSING");
+        lockedIsFirstOrder = lockedCustomer.totalOrders === 0;
+        isFirstOrder = lockedIsFirstOrder;
+      }
+      const [insertedOrder] = await tx.insert(ordersTable).values({
+        orderNumber,
+        customerEmail: d.email.toLowerCase(),
+        customerName,
+        customerId,
+        phone: d.phone ?? null,
+        address1: d.address1,
+        address2: d.address2 ?? null,
+        city: d.city,
+        county: d.county ?? null,
+        postcode: d.postcode,
+        country: d.country,
+        subtotalGbp: String(subtotalGbp.toFixed(2)),
+        bundleDiscountGbp: String(bundleDiscountGbp.toFixed(2)),
+        shippingCostGbp: String(shippingCostGbp.toFixed(2)),
+        totalGbp: String(totalGbp.toFixed(2)),
+        paymentCurrency: wallidPaymentCurrency,
+        paymentAmountMinor: wallidPaymentAmountMinor,
+        shippingMethod,
+        status: ["bank_transfer", "bitcoin", "wallid", "crypto"].includes(paymentMethodStr) ? "awaiting_payment" : "pending",
+        ...cryptoPayment && {
+          cryptoPaymentStatus: "rate_locked",
+          cryptoCurrency: cryptoPayment.details.currency,
+          cryptoNetwork: cryptoPayment.details.network,
+          cryptoWalletAddress: cryptoPayment.details.walletAddress,
+          cryptoRouteSnapshot: cryptoPayment.route,
+          cryptoExpectedAmount: cryptoPayment.details.expectedAmount,
+          cryptoRateUsd: String(cryptoPayment.details.rateUsd),
+          cryptoRateLockedAt: /* @__PURE__ */ new Date(),
+          cryptoRateExpiresAt: new Date(cryptoPayment.details.rateExpiresAt),
+          cryptoPaymentAccessToken
+        },
+        notes: [
+          `Payment method: ${paymentMethodStr}`,
+          bundleDiscountGbp > 0 ? `Bundle & Save: ${bundleFreeLabel} (-\xA3${bundleDiscountGbp.toFixed(2)})` : null,
+          validatedDiscountCode ? `Discount: ${validatedDiscountCode} (-\xA3${discountAmount.toFixed(2)})` : null,
+          loyaltyPointsToDeduct > 0 ? `Loyalty: ${loyaltyPointsToDeduct} pts redeemed (-\xA3${loyaltyDiscountGbp.toFixed(2)})` : null,
+          wallidTestCheckout ? `WALLID \xA31 TEST CHECKOUT: normal total \xA3${standardTotalGbp.toFixed(2)}, test adjustment -\xA3${testPaymentAdjustmentGbp.toFixed(2)}` : null,
+          cryptoTestCheckout ? `CRYPTO \xA31 TEST CHECKOUT: normal total \xA3${standardTotalGbp.toFixed(2)}, test adjustment -\xA3${testPaymentAdjustmentGbp.toFixed(2)}` : null,
+          wallidApiPaymentId ? `Wallid payment id: ${wallidApiPaymentId}` : null,
+          cryptoPayment ? `Crypto route: ${cryptoPayment.details.currency} on ${cryptoPayment.details.network}` : null,
+          referralCandidate?.held ? `REFERRAL_ABUSE: ${referralCandidate.reason}` : null
+        ].filter(Boolean).join("; ") || null,
+        fraudScore,
+        fraudFlags
+      }).returning();
+      if (customerId) {
+        await tx.update(customersTable).set({
+          totalOrders: sql`${customersTable.totalOrders} + 1`,
+          totalSpendGbp: sql`${customersTable.totalSpendGbp} + ${totalGbp}`,
+          phone: d.phone ?? void 0,
+          address1: d.address1,
+          address2: d.address2 ?? void 0,
+          city: d.city,
+          county: d.county ?? void 0,
+          postcode: d.postcode,
+          country: d.country
+        }).where(eq(customersTable.id, customerId));
+      }
+      const redemptionCustomerId = customerId ?? sessionCustomerId;
+      if (freePeptideCreditUsed && redemptionCustomerId) {
+        await tx.execute(sql`SELECT id FROM customers WHERE id = ${redemptionCustomerId} FOR UPDATE`);
+        await tx.execute(sql`SELECT id FROM referral_rewards WHERE beneficiary_customer_id = ${redemptionCustomerId} FOR UPDATE`);
+        const [lockedCustomer] = await tx.select({ credit: customersTable.referralCreditGbp }).from(customersTable).where(eq(customersTable.id, redemptionCustomerId)).limit(1);
+        const rewards = await tx.select().from(referralRewardsTable).where(and(
+          eq(referralRewardsTable.beneficiaryCustomerId, redemptionCustomerId),
+          inArray(referralRewardsTable.status, ["earned", "legacy"])
+        )).orderBy(asc(referralRewardsTable.createdAt), asc(referralRewardsTable.id));
+        const available = Number(lockedCustomer?.credit ?? 0);
+        if (available + 1e-5 < referralCreditRedeemedGbp) {
+          throw new Error("REFERRAL_CREDIT_CHANGED");
+        }
+        const allocation = allocateReferralCredit(
+          rewards.map((reward) => ({ id: reward.id, remaining: Number(reward.remainingAmountGbp) })),
+          referralCreditRedeemedGbp
+        );
+        if (allocation.insufficient) throw new Error("REFERRAL_LEDGER_INSUFFICIENT");
+        const rewardById = new Map(rewards.map((reward) => [reward.id, reward]));
+        for (const allocated of allocation.allocations) {
+          const reward = rewardById.get(allocated.rewardId);
+          if (!reward) throw new Error("REFERRAL_LEDGER_INSUFFICIENT");
+          await tx.insert(referralRedemptionAllocationsTable).values({
+            rewardId: reward.id,
+            orderId: insertedOrder.id,
+            customerId: redemptionCustomerId,
+            amountGbp: allocated.amount.toFixed(2)
+          });
+          await tx.update(referralRewardsTable).set({
+            remainingAmountGbp: allocated.remaining.toFixed(2),
+            status: allocated.redeemed ? "redeemed" : reward.status,
+            redeemedAt: allocated.redeemed ? /* @__PURE__ */ new Date() : reward.redeemedAt,
+            updatedAt: /* @__PURE__ */ new Date()
+          }).where(eq(referralRewardsTable.id, reward.id));
+        }
+        await tx.update(customersTable).set({
+          referralCreditGbp: sql`GREATEST(${customersTable.referralCreditGbp} - ${referralCreditRedeemedGbp}, 0)`
+        }).where(eq(customersTable.id, redemptionCustomerId));
+      }
+      if (referralCandidate && customerId && lockedIsFirstOrder) {
+        const now = /* @__PURE__ */ new Date();
+        await tx.insert(referralRewardsTable).values(buildReferralRewardDrafts({
+          qualifyingOrderId: insertedOrder.id,
+          referrerCustomerId: referralCandidate.referrerId,
+          referredCustomerId: customerId,
+          held: referralCandidate.held,
+          reason: referralCandidate.reason,
+          now
+        })).onConflictDoNothing();
+        if (referralCandidate.held) await tx.update(customersTable).set({ referralAbuseFlag: true }).where(eq(customersTable.id, customerId));
+      }
+      return [insertedOrder];
+    });
     const orderItemRows = [];
     for (const item of cartItems) {
       const productId = dbProductId2(item);
@@ -239703,10 +239913,6 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
         }).catch(() => {
         });
       }
-      if (freePeptideCreditUsed) {
-        db.update(customersTable).set({ referralCreditGbp: sql`GREATEST(referral_credit_gbp - ${referralCreditRedeemedGbp}, 0)` }).where(eq(customersTable.id, loyaltyCustomerId)).catch(() => {
-        });
-      }
     }
     if (validatedDiscountCode) {
       await db.update(discountCodesTable).set({ usageCount: sql`${discountCodesTable.usageCount} + 1` }).where(eq(discountCodesTable.code, validatedDiscountCode));
@@ -239754,93 +239960,9 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
       db.update(abandonedCartsTable).set({ convertedAt: /* @__PURE__ */ new Date() }).where(eq(abandonedCartsTable.customerId, customerId)).catch(() => {
       });
     }
-    if (customerId) {
-      (async () => {
-        try {
-          const [cust] = await db.select({ totalOrders: customersTable.totalOrders, referredBy: customersTable.referredBy }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
-          if (cust?.totalOrders === 1) {
-            sendWelcomeEmail({ customerName, customerEmail: d.email.toLowerCase() }).catch(() => {
-            });
-          }
-          if (cust?.totalOrders === 1 && cust.referredBy) {
-            const [referrer] = await db.select({
-              id: customersTable.id,
-              email: customersTable.email,
-              firstName: customersTable.firstName,
-              lastName: customersTable.lastName,
-              postcode: customersTable.postcode,
-              address1: customersTable.address1,
-              lastSeenIp: customersTable.lastSeenIp,
-              knownIps: customersTable.knownIps,
-              referralCreditGbp: customersTable.referralCreditGbp
-            }).from(customersTable).where(eq(customersTable.referralCode, cust.referredBy)).limit(1);
-            if (referrer) {
-              let abuseDetected = false;
-              let abuseReason = "";
-              if (ipData.isProxy) {
-                abuseDetected = true;
-                abuseReason = "VPN/proxy IP detected on referred customer";
-              }
-              if (!abuseDetected && clientIp) {
-                const referrerKnownIps = referrer.knownIps ?? (referrer.lastSeenIp ? [referrer.lastSeenIp] : []);
-                if (referrerKnownIps.includes(clientIp)) {
-                  abuseDetected = true;
-                  abuseReason = "Referred customer IP matches referrer's known IPs";
-                }
-              }
-              if (!abuseDetected && clientIp) {
-                const [anyIpConflict] = await db.select({ id: customersTable.id }).from(customersTable).where(
-                  and(
-                    sql`${clientIp} = ANY(COALESCE(${customersTable.knownIps}, ARRAY[]::text[]))`,
-                    sql`${customersTable.id} != ${customerId}`
-                  )
-                ).limit(1);
-                if (anyIpConflict) {
-                  abuseDetected = true;
-                  abuseReason = "Referred customer IP already seen on another account";
-                }
-              }
-              if (!abuseDetected && referrer.postcode && d.postcode) {
-                const normalize = (s) => s.trim().toUpperCase().replace(/\s+/g, "");
-                if (normalize(referrer.postcode) === normalize(d.postcode)) {
-                  abuseDetected = true;
-                  abuseReason = "Referred customer billing postcode matches referrer's postcode";
-                }
-              }
-              if (!abuseDetected) {
-                const refFirstName = d.firstName.trim().slice(0, 3).toUpperCase();
-                const refLastName = d.lastName.trim().toUpperCase();
-                const rFirstName = referrer.firstName.trim().slice(0, 3).toUpperCase();
-                const rLastName = referrer.lastName.trim().toUpperCase();
-                if (rLastName === refLastName && rFirstName === refFirstName) {
-                  abuseDetected = true;
-                  abuseReason = "Referred customer name too similar to referrer's name";
-                }
-              }
-              if (!abuseDetected && Number(referrer.referralCreditGbp) >= REFERRAL_CREDIT_CAP_GBP) {
-                abuseDetected = true;
-                abuseReason = `Referrer has reached the maximum pending reward limit (\xA3${REFERRAL_CREDIT_CAP_GBP} credit)`;
-              }
-              if (abuseDetected) {
-                db.update(customersTable).set({ referralAbuseFlag: true }).where(eq(customersTable.id, customerId)).catch(() => {
-                });
-                db.update(ordersTable).set({ notes: sql`COALESCE(notes || '; ', '') || ${"REFERRAL_ABUSE: " + abuseReason}` }).where(eq(ordersTable.id, order.id)).catch(() => {
-                });
-              } else {
-                const REFERRAL_REWARD_GBP2 = 25;
-                await db.update(customersTable).set({ referralCreditGbp: sql`LEAST(referral_credit_gbp + ${REFERRAL_REWARD_GBP2}, ${REFERRAL_CREDIT_CAP_GBP})` }).where(eq(customersTable.id, referrer.id));
-                await db.update(customersTable).set({ referralCreditGbp: sql`LEAST(referral_credit_gbp + ${REFERRAL_REWARD_GBP2}, ${REFERRAL_CREDIT_CAP_GBP})` }).where(eq(customersTable.id, customerId));
-                await sendReferralReward({
-                  referrerName: `${referrer.firstName} ${referrer.lastName}`,
-                  referrerEmail: referrer.email,
-                  refereeName: customerName
-                });
-              }
-            }
-          }
-        } catch {
-        }
-      })();
+    if (customerId && isFirstOrder) {
+      sendWelcomeEmail({ customerName, customerEmail: d.email.toLowerCase() }).catch(() => {
+      });
     }
     const emailItems = cartItems.map((i) => ({
       productName: i.productName,
@@ -239952,6 +240074,10 @@ async function handleOrderRequest(req, res, isCheckoutQuoteRequest) {
       ...wallidPaymentUrl && { wallidPaymentUrl }
     });
   } catch (err) {
+    if (err instanceof Error && (err.message === "REFERRAL_CREDIT_CHANGED" || err.message === "REFERRAL_LEDGER_INSUFFICIENT")) {
+      res.status(409).json({ error: "Referral credit changed while you were checking out. Please refresh your quote and try again." });
+      return;
+    }
     req.log.error({ err }, "Failed to create order");
     res.status(500).json({ error: "Internal server error" });
   }
@@ -241947,7 +242073,7 @@ router25.post("/auth/register", async (req, res) => {
         refBy = null;
       }
     }
-    const [customer] = await db.insert(customersTable).values({
+    const [customer2] = await db.insert(customersTable).values({
       email: email3.toLowerCase(),
       firstName: firstName.trim(),
       lastName: lastName.trim(),
@@ -241957,12 +242083,12 @@ router25.post("/auth/register", async (req, res) => {
       referredBy: refBy
     }).returning();
     db.insert(loyaltyTransactionsTable).values({
-      customerId: customer.id,
+      customerId: customer2.id,
       type: "earned",
       points: 50,
       description: "Welcome bonus: account created"
     }).catch((err) => req.log.error({ err }, "Failed to award welcome bonus points"));
-    const generatedCode = `${firstName.trim().slice(0, 3).toUpperCase()}${String(customer.id).padStart(4, "0")}`;
+    const generatedCode = `${firstName.trim().slice(0, 3).toUpperCase()}${String(customer2.id).padStart(4, "0")}`;
     const ipReg = getClientIp2(req);
     lookupCountry(ipReg ?? "").then((cc) => {
       db.update(customersTable).set({
@@ -241970,13 +242096,13 @@ router25.post("/auth/register", async (req, res) => {
         ...ipReg ? { lastSeenIp: ipReg } : {},
         ...cc ? { lastSeenCountry: cc } : {},
         ...ipReg ? { knownIps: sql`(SELECT array_agg(DISTINCT x) FROM unnest(array_append(COALESCE(known_ips, ARRAY[]::text[]), ${ipReg}::text)) AS x)` } : {}
-      }).where(eq(customersTable.id, customer.id)).catch(() => {
+      }).where(eq(customersTable.id, customer2.id)).catch(() => {
       });
     }).catch(() => {
-      db.update(customersTable).set({ referralCode: generatedCode }).where(eq(customersTable.id, customer.id)).catch(() => {
+      db.update(customersTable).set({ referralCode: generatedCode }).where(eq(customersTable.id, customer2.id)).catch(() => {
       });
     });
-    const token = signToken(customer.id);
+    const token = signToken(customer2.id);
     res.cookie(COOKIE_NAME, token, {
       httpOnly: true,
       sameSite: "lax",
@@ -241985,21 +242111,21 @@ router25.post("/auth/register", async (req, res) => {
       path: "/"
     });
     res.status(201).json({
-      id: customer.id,
-      email: customer.email,
-      firstName: customer.firstName,
-      lastName: customer.lastName
+      id: customer2.id,
+      email: customer2.email,
+      firstName: customer2.firstName,
+      lastName: customer2.lastName
     });
     const verificationToken = crypto11.randomBytes(32).toString("hex");
     const verificationExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1e3);
-    await db.update(customersTable).set({ verificationToken, verificationTokenExpiresAt: verificationExpiresAt }).where(eq(customersTable.id, customer.id)).catch(() => {
+    await db.update(customersTable).set({ verificationToken, verificationTokenExpiresAt: verificationExpiresAt }).where(eq(customersTable.id, customer2.id)).catch(() => {
     });
     const siteUrl = (process.env.SITE_URL || (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "https://omniqure.com")).replace(/\/$/, "");
     const verifyUrl = `${siteUrl}/verify-email?token=${verificationToken}`;
-    const referralCode = `${firstName.trim().slice(0, 3).toUpperCase()}${String(customer.id).padStart(4, "0")}`;
+    const referralCode = `${firstName.trim().slice(0, 3).toUpperCase()}${String(customer2.id).padStart(4, "0")}`;
     sendAccountCreatedEmail({
-      customerName: `${customer.firstName} ${customer.lastName}`,
-      customerEmail: customer.email,
+      customerName: `${customer2.firstName} ${customer2.lastName}`,
+      customerEmail: customer2.email,
       referralCode,
       verifyUrl
     }).catch((err) => req.log.error({ err }, "Failed to send account created email"));
@@ -242015,17 +242141,17 @@ router25.post("/auth/login", async (req, res) => {
     return;
   }
   try {
-    const [customer] = await db.select().from(customersTable).where(eq(customersTable.email, email3.toLowerCase())).limit(1);
-    if (!customer || !customer.passwordHash) {
+    const [customer2] = await db.select().from(customersTable).where(eq(customersTable.email, email3.toLowerCase())).limit(1);
+    if (!customer2 || !customer2.passwordHash) {
       res.status(401).json({ error: "Invalid email or password" });
       return;
     }
-    const match = await bcryptjs_default.compare(password, customer.passwordHash);
+    const match = await bcryptjs_default.compare(password, customer2.passwordHash);
     if (!match) {
       res.status(401).json({ error: "Invalid email or password" });
       return;
     }
-    const token = signToken(customer.id);
+    const token = signToken(customer2.id);
     res.cookie(COOKIE_NAME, token, {
       httpOnly: true,
       sameSite: "lax",
@@ -242040,16 +242166,16 @@ router25.post("/auth/login", async (req, res) => {
           lastSeenIp: ipLogin,
           ...cc ? { lastSeenCountry: cc } : {},
           knownIps: sql`(SELECT array_agg(DISTINCT x) FROM unnest(array_append(COALESCE(known_ips, ARRAY[]::text[]), ${ipLogin}::text)) AS x)`
-        }).where(eq(customersTable.id, customer.id)).catch(() => {
+        }).where(eq(customersTable.id, customer2.id)).catch(() => {
         });
       }).catch(() => {
       });
     }
     res.status(200).json({
-      id: customer.id,
-      email: customer.email,
-      firstName: customer.firstName,
-      lastName: customer.lastName
+      id: customer2.id,
+      email: customer2.email,
+      firstName: customer2.firstName,
+      lastName: customer2.lastName
     });
   } catch (err) {
     req.log.error({ err }, "Failed to sign in customer");
@@ -242063,20 +242189,20 @@ router25.post("/auth/forgot-password", async (req, res) => {
     return;
   }
   try {
-    const [customer] = await db.select().from(customersTable).where(eq(customersTable.email, email3.toLowerCase())).limit(1);
-    if (customer && customer.passwordHash) {
+    const [customer2] = await db.select().from(customersTable).where(eq(customersTable.email, email3.toLowerCase())).limit(1);
+    if (customer2 && customer2.passwordHash) {
       const token = crypto11.randomBytes(32).toString("hex");
       const expiresAt = new Date(Date.now() + 60 * 60 * 1e3);
-      await db.update(customersTable).set({ resetToken: token, resetTokenExpiresAt: expiresAt }).where(eq(customersTable.id, customer.id));
+      await db.update(customersTable).set({ resetToken: token, resetTokenExpiresAt: expiresAt }).where(eq(customersTable.id, customer2.id));
       const siteUrl = (process.env.SITE_URL || (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "https://omniqure.com")).replace(/\/$/, "");
       const resetUrl = `${siteUrl}/reset-password?token=${token}`;
       sendPasswordReset({
-        customerEmail: customer.email,
-        customerName: `${customer.firstName} ${customer.lastName}`,
+        customerEmail: customer2.email,
+        customerName: `${customer2.firstName} ${customer2.lastName}`,
         resetUrl
       }).catch(() => {
       });
-      req.log.info({ customerId: customer.id }, "Password reset token issued");
+      req.log.info({ customerId: customer2.id }, "Password reset token issued");
     }
     res.status(200).json({ ok: true });
   } catch (err) {
@@ -242095,14 +242221,14 @@ router25.post("/auth/reset-password", async (req, res) => {
     return;
   }
   try {
-    const [customer] = await db.select().from(customersTable).where(eq(customersTable.resetToken, token.trim())).limit(1);
-    if (!customer || !customer.resetTokenExpiresAt || customer.resetTokenExpiresAt < /* @__PURE__ */ new Date()) {
+    const [customer2] = await db.select().from(customersTable).where(eq(customersTable.resetToken, token.trim())).limit(1);
+    if (!customer2 || !customer2.resetTokenExpiresAt || customer2.resetTokenExpiresAt < /* @__PURE__ */ new Date()) {
       res.status(400).json({ error: "This reset link is invalid or has expired. Please request a new one." });
       return;
     }
     const passwordHash = await bcryptjs_default.hash(password, 12);
-    await db.update(customersTable).set({ passwordHash, resetToken: null, resetTokenExpiresAt: null }).where(eq(customersTable.id, customer.id));
-    req.log.info({ customerId: customer.id }, "Password reset successfully");
+    await db.update(customersTable).set({ passwordHash, resetToken: null, resetTokenExpiresAt: null }).where(eq(customersTable.id, customer2.id));
+    req.log.info({ customerId: customer2.id }, "Password reset successfully");
     res.status(200).json({ ok: true });
   } catch (err) {
     req.log.error({ err }, "Failed to reset password");
@@ -242116,13 +242242,13 @@ router25.post("/auth/verify-email", async (req, res) => {
     return;
   }
   try {
-    const [customer] = await db.select({ id: customersTable.id, verificationTokenExpiresAt: customersTable.verificationTokenExpiresAt }).from(customersTable).where(eq(customersTable.verificationToken, token.trim())).limit(1);
-    if (!customer || !customer.verificationTokenExpiresAt || customer.verificationTokenExpiresAt < /* @__PURE__ */ new Date()) {
+    const [customer2] = await db.select({ id: customersTable.id, verificationTokenExpiresAt: customersTable.verificationTokenExpiresAt }).from(customersTable).where(eq(customersTable.verificationToken, token.trim())).limit(1);
+    if (!customer2 || !customer2.verificationTokenExpiresAt || customer2.verificationTokenExpiresAt < /* @__PURE__ */ new Date()) {
       res.status(400).json({ error: "This verification link is invalid or has expired." });
       return;
     }
-    await db.update(customersTable).set({ emailVerified: true, verificationToken: null, verificationTokenExpiresAt: null }).where(eq(customersTable.id, customer.id));
-    req.log.info({ customerId: customer.id }, "Email verified");
+    await db.update(customersTable).set({ emailVerified: true, verificationToken: null, verificationTokenExpiresAt: null }).where(eq(customersTable.id, customer2.id));
+    req.log.info({ customerId: customer2.id }, "Email verified");
     res.status(200).json({ ok: true });
   } catch (err) {
     req.log.error({ err }, "Failed to verify email");
@@ -242146,18 +242272,18 @@ router25.get("/auth/me", async (req, res) => {
     return;
   }
   try {
-    const [customer] = await db.select({
+    const [customer2] = await db.select({
       id: customersTable.id,
       email: customersTable.email,
       firstName: customersTable.firstName,
       lastName: customersTable.lastName
     }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
-    if (!customer) {
+    if (!customer2) {
       res.clearCookie(COOKIE_NAME, { path: "/" });
       res.status(401).json({ error: "Customer not found" });
       return;
     }
-    res.status(200).json(customer);
+    res.status(200).json(customer2);
   } catch (err) {
     req.log.error({ err }, "Failed to get customer session");
     res.status(500).json({ error: "Internal server error" });
@@ -242200,7 +242326,7 @@ router26.get("/account/me", async (req, res) => {
   const customerId = requireCustomer(req, res);
   if (!customerId) return;
   try {
-    const [customer] = await db.select({
+    const [customer2] = await db.select({
       id: customersTable.id,
       email: customersTable.email,
       firstName: customersTable.firstName,
@@ -242209,19 +242335,19 @@ router26.get("/account/me", async (req, res) => {
       totalSpendGbp: customersTable.totalSpendGbp,
       createdAt: customersTable.createdAt
     }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
-    if (!customer) {
+    if (!customer2) {
       res.clearCookie(COOKIE_NAME2, { path: "/" });
       res.status(401).json({ error: "Customer not found" });
       return;
     }
     res.status(200).json({
-      id: customer.id,
-      email: customer.email,
-      firstName: customer.firstName,
-      lastName: customer.lastName,
-      totalOrders: customer.totalOrders,
-      totalSpendGbp: parseFloat(String(customer.totalSpendGbp)),
-      memberSince: customer.createdAt.toISOString()
+      id: customer2.id,
+      email: customer2.email,
+      firstName: customer2.firstName,
+      lastName: customer2.lastName,
+      totalOrders: customer2.totalOrders,
+      totalSpendGbp: parseFloat(String(customer2.totalSpendGbp)),
+      memberSince: customer2.createdAt.toISOString()
     });
   } catch (err) {
     req.log.error({ err }, "Failed to get account profile");
@@ -242367,25 +242493,25 @@ router26.get("/account/referral", async (req, res) => {
   const customerId = requireCustomer(req, res);
   if (!customerId) return;
   try {
-    const [customer] = await db.select({
+    const [customer2] = await db.select({
       referralCode: customersTable.referralCode,
       firstName: customersTable.firstName,
       referralCreditGbp: customersTable.referralCreditGbp
     }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
-    if (!customer) {
+    if (!customer2) {
       res.status(401).json({ error: "Customer not found" });
       return;
     }
-    let referralCode = customer.referralCode;
+    let referralCode = customer2.referralCode;
     if (!referralCode) {
-      referralCode = `${customer.firstName.slice(0, 3).toUpperCase()}${String(customerId).padStart(4, "0")}`;
+      referralCode = `${customer2.firstName.slice(0, 3).toUpperCase()}${String(customerId).padStart(4, "0")}`;
       await db.update(customersTable).set({ referralCode }).where(eq(customersTable.id, customerId));
     }
     const referredCount = await db.select({ n: count() }).from(customersTable).where(eq(customersTable.referredBy, referralCode));
     res.json({
       referralCode,
       referralCount: referredCount[0]?.n ?? 0,
-      referralCreditGbp: Number(customer.referralCreditGbp ?? 0)
+      referralCreditGbp: Number(customer2.referralCreditGbp ?? 0)
     });
   } catch (err) {
     req.log.error({ err }, "Failed to get referral info");
@@ -242417,12 +242543,12 @@ router26.post("/account/password", async (req, res) => {
     return;
   }
   try {
-    const [customer] = await db.select({ passwordHash: customersTable.passwordHash }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
-    if (!customer || !customer.passwordHash) {
+    const [customer2] = await db.select({ passwordHash: customersTable.passwordHash }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
+    if (!customer2 || !customer2.passwordHash) {
       res.status(400).json({ error: "No password set on this account" });
       return;
     }
-    const match = await bcryptjs_default.compare(currentPassword, customer.passwordHash);
+    const match = await bcryptjs_default.compare(currentPassword, customer2.passwordHash);
     if (!match) {
       res.status(401).json({ error: "Current password is incorrect" });
       return;
@@ -242587,8 +242713,8 @@ router27.post("/products/:productId/reviews", async (req, res) => {
       res.status(409).json({ error: "You have already reviewed this product" });
       return;
     }
-    const [customer] = await db.select({ firstName: customersTable.firstName, lastName: customersTable.lastName }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
-    const customerName = customer ? `${customer.firstName} ${customer.lastName.charAt(0)}.` : "Verified Researcher";
+    const [customer2] = await db.select({ firstName: customersTable.firstName, lastName: customersTable.lastName }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
+    const customerName = customer2 ? `${customer2.firstName} ${customer2.lastName.charAt(0)}.` : "Verified Researcher";
     const [review] = await db.insert(productReviewsTable).values({
       productId,
       customerId,
@@ -243228,8 +243354,8 @@ router35.post("/admin/customers/:id/credits", async (req, res) => {
     return;
   }
   try {
-    const [customer] = await db.select({ id: customersTable.id }).from(customersTable).where(eq(customersTable.id, customerId));
-    if (!customer) {
+    const [customer2] = await db.select({ id: customersTable.id }).from(customersTable).where(eq(customersTable.id, customerId));
+    if (!customer2) {
       res.status(404).json({ error: "Customer not found" });
       return;
     }
@@ -243277,129 +243403,203 @@ var credits_default = router35;
 var import_express36 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router36 = (0, import_express36.Router)();
-var REFERRAL_REWARD_GBP = 25;
-var VALID_STATUSES2 = /* @__PURE__ */ new Set(["all", "pending", "qualified", "flagged"]);
+var STATUSES = /* @__PURE__ */ new Set(["all", "pending", "earned", "redeemed", "held", "voided", "legacy", "untracked"]);
+var CAP = 50;
+var money = (v) => Number.parseFloat(String(v ?? 0)) || 0;
+var customer = (c) => c ? {
+  id: c.id,
+  name: `${c.firstName} ${c.lastName}`.trim(),
+  email: c.email,
+  referralCode: c.referralCode,
+  referralCreditGbp: money(c.referralCreditGbp)
+} : null;
 function requireAdmin23(req, res) {
-  if (res.locals.adminAuthenticated !== true) {
+  if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-function asMoney(value) {
-  return Number.parseFloat(String(value ?? 0)) || 0;
-}
 router36.get("/admin/referrals", async (req, res) => {
   if (!requireAdmin23(req, res)) return;
-  const requestedStatus = typeof req.query.status === "string" ? req.query.status : "all";
-  const status = VALID_STATUSES2.has(requestedStatus) ? requestedStatus : "all";
+  const status = typeof req.query.status === "string" && STATUSES.has(req.query.status) ? req.query.status : "all";
   const search = typeof req.query.search === "string" ? req.query.search.trim().toLowerCase() : "";
   try {
-    const referredCustomers = await db.select({
-      id: customersTable.id,
-      email: customersTable.email,
-      firstName: customersTable.firstName,
-      lastName: customersTable.lastName,
-      referredBy: customersTable.referredBy,
-      referralCreditGbp: customersTable.referralCreditGbp,
-      referralAbuseFlag: customersTable.referralAbuseFlag,
-      totalOrders: customersTable.totalOrders,
-      totalSpendGbp: customersTable.totalSpendGbp,
-      createdAt: customersTable.createdAt
-    }).from(customersTable).where(isNotNull(customersTable.referredBy)).orderBy(desc(customersTable.createdAt));
-    const referredIds = referredCustomers.map((customer) => customer.id);
-    const referralCodes = [
-      ...new Set(
-        referredCustomers.map((customer) => customer.referredBy).filter((code) => Boolean(code))
-      )
-    ];
-    const referrers = referralCodes.length > 0 ? await db.select({
-      id: customersTable.id,
-      email: customersTable.email,
-      firstName: customersTable.firstName,
-      lastName: customersTable.lastName,
-      referralCode: customersTable.referralCode,
-      referralCreditGbp: customersTable.referralCreditGbp
-    }).from(customersTable).where(inArray(customersTable.referralCode, referralCodes)) : [];
-    const firstOrders = referredIds.length > 0 ? await db.select({
-      customerId: ordersTable.customerId,
-      orderNumber: ordersTable.orderNumber,
-      status: ordersTable.status,
-      createdAt: ordersTable.createdAt
-    }).from(ordersTable).where(inArray(ordersTable.customerId, referredIds)).orderBy(asc(ordersTable.createdAt)) : [];
-    const allCustomerBalances = await db.select({ referralCreditGbp: customersTable.referralCreditGbp }).from(customersTable);
-    const referrerByCode = new Map(
-      referrers.filter((referrer) => Boolean(referrer.referralCode)).map((referrer) => [referrer.referralCode, referrer])
-    );
-    const firstOrderByCustomerId = /* @__PURE__ */ new Map();
-    for (const order of firstOrders) {
-      if (order.customerId !== null && !firstOrderByCustomerId.has(order.customerId)) {
-        firstOrderByCustomerId.set(order.customerId, order);
-      }
-    }
-    const referrals = referredCustomers.map((customer) => {
-      const referrer = customer.referredBy ? referrerByCode.get(customer.referredBy) : void 0;
-      const firstOrder = firstOrderByCustomerId.get(customer.id);
-      const rowStatus = customer.referralAbuseFlag ? "flagged" : customer.totalOrders > 0 ? "qualified" : "pending";
+    const [rewards, redemptions, customers, relationships] = await Promise.all([
+      db.select().from(referralRewardsTable).orderBy(desc(referralRewardsTable.createdAt)),
+      db.select().from(referralRedemptionAllocationsTable).orderBy(asc(referralRedemptionAllocationsTable.createdAt)),
+      db.select().from(customersTable),
+      db.select().from(customersTable).where(isNotNull(customersTable.referredBy)).orderBy(desc(customersTable.createdAt))
+    ]);
+    const customerById = new Map(customers.map((c) => [c.id, c]));
+    const codeMap = new Map(customers.filter((c) => c.referralCode).map((c) => [c.referralCode, c]));
+    const rows = rewards.map((r) => {
+      const beneficiary = customer(customerById.get(r.beneficiaryCustomerId ?? -1));
+      const referred = customer(customerById.get(r.referredCustomerId ?? -1));
+      const referrer = customer(customerById.get(r.referrerCustomerId ?? -1));
+      const qualifyingOrder = r.qualifyingOrderId ? void 0 : null;
       return {
-        id: customer.id,
-        status: rowStatus,
-        referredCustomer: {
-          id: customer.id,
-          name: `${customer.firstName} ${customer.lastName}`.trim(),
-          email: customer.email,
-          joinedAt: customer.createdAt.toISOString(),
-          totalOrders: customer.totalOrders,
-          totalSpendGbp: asMoney(customer.totalSpendGbp),
-          referralCreditGbp: asMoney(customer.referralCreditGbp)
-        },
-        referrer: referrer ? {
-          id: referrer.id,
-          name: `${referrer.firstName} ${referrer.lastName}`.trim(),
-          email: referrer.email,
-          referralCode: referrer.referralCode,
-          referralCreditGbp: asMoney(referrer.referralCreditGbp)
-        } : null,
-        firstOrder: firstOrder ? {
-          orderNumber: firstOrder.orderNumber,
-          status: firstOrder.status,
-          createdAt: firstOrder.createdAt.toISOString()
-        } : null,
-        rewardGbp: rowStatus === "qualified" ? REFERRAL_REWARD_GBP : 0
+        id: r.id,
+        status: r.status,
+        beneficiaryRole: r.beneficiaryRole,
+        amountGbp: money(r.amountGbp),
+        remainingAmountGbp: money(r.remainingAmountGbp),
+        historical: r.historical,
+        statusReason: r.statusReason,
+        lastAdminActor: r.lastAdminActor,
+        createdAt: r.createdAt.toISOString(),
+        updatedAt: r.updatedAt.toISOString(),
+        beneficiary,
+        referredCustomer: referred,
+        referrer,
+        qualifyingOrderId: r.qualifyingOrderId,
+        referrerCustomerId: r.referrerCustomerId,
+        earnedAt: r.earnedAt?.toISOString() ?? null,
+        heldAt: r.heldAt?.toISOString() ?? null,
+        voidedAt: r.voidedAt?.toISOString() ?? null,
+        redeemedAt: r.redeemedAt?.toISOString() ?? null,
+        qualifyingOrder
       };
-    }).filter((referral) => {
-      if (status !== "all" && referral.status !== status) return false;
-      if (!search) return true;
-      return [
-        referral.referredCustomer.name,
-        referral.referredCustomer.email,
-        referral.referrer?.name,
-        referral.referrer?.email,
-        referral.referrer?.referralCode
-      ].filter(Boolean).some((value) => String(value).toLowerCase().includes(search));
     });
-    const allStatuses = referredCustomers.map(
-      (customer) => customer.referralAbuseFlag ? "flagged" : customer.totalOrders > 0 ? "qualified" : "pending"
-    );
-    res.json({
-      stats: {
-        total: allStatuses.length,
-        pending: allStatuses.filter((item) => item === "pending").length,
-        qualified: allStatuses.filter((item) => item === "qualified").length,
-        flagged: allStatuses.filter((item) => item === "flagged").length,
-        conversionRate: allStatuses.length > 0 ? Number(
-          (allStatuses.filter((item) => item === "qualified").length / allStatuses.length * 100).toFixed(1)
-        ) : 0,
-        outstandingCreditGbp: allCustomerBalances.reduce(
-          (total, customer) => total + asMoney(customer.referralCreditGbp),
-          0
-        )
-      },
-      referrals
-    });
+    const orderIds = [...new Set([
+      ...rows.map((r) => r.qualifyingOrderId),
+      ...redemptions.map((r) => r.orderId)
+    ].filter((id) => id !== null))];
+    const orderMap = new Map(orderIds.length ? (await db.select({ id: ordersTable.id, orderNumber: ordersTable.orderNumber, status: ordersTable.status, createdAt: ordersTable.createdAt }).from(ordersTable).where(inArray(ordersTable.id, orderIds))).map((o) => [o.id, o]) : []);
+    const redemptionsByReward = /* @__PURE__ */ new Map();
+    for (const redemption of redemptions) {
+      const existing = redemptionsByReward.get(redemption.rewardId) ?? [];
+      existing.push(redemption);
+      redemptionsByReward.set(redemption.rewardId, existing);
+    }
+    const ledgerRows = rows.map((r) => ({
+      ...r,
+      qualifyingOrder: r.qualifyingOrderId ? orderMap.get(r.qualifyingOrderId) ?? null : null,
+      redemptions: (redemptionsByReward.get(r.id) ?? []).map((redemption) => ({
+        id: redemption.id,
+        amountGbp: money(redemption.amountGbp),
+        createdAt: redemption.createdAt.toISOString(),
+        order: orderMap.get(redemption.orderId) ?? null
+      }))
+    }));
+    const untracked = relationships.filter((c) => !ledgerRows.some((r) => r.referredCustomer?.id === c.id)).map((c) => ({
+      id: `untracked-${c.id}`,
+      status: "untracked",
+      beneficiaryRole: null,
+      amountGbp: 0,
+      remainingAmountGbp: 0,
+      historical: false,
+      statusReason: c.referralAbuseFlag ? "Customer is flagged for referral review" : "No ledger event has been created",
+      lastAdminActor: null,
+      createdAt: c.createdAt.toISOString(),
+      updatedAt: c.updatedAt.toISOString(),
+      beneficiary: null,
+      referredCustomer: customer(c),
+      qualifyingOrderId: null,
+      qualifyingOrder: null,
+      referrer: customer(codeMap.get(c.referredBy ?? ""))
+    }));
+    const all = [...ledgerRows, ...untracked].filter((r) => (status === "all" || r.status === status) && (!search || [r.beneficiary?.name, r.beneficiary?.email, r.referredCustomer?.name, r.referredCustomer?.email, r.statusReason].some((v) => v?.toLowerCase().includes(search))));
+    const byStatus = (s) => ledgerRows.filter((r) => r.status === s).length;
+    res.json({ stats: {
+      total: ledgerRows.length,
+      pending: byStatus("pending"),
+      earned: byStatus("earned"),
+      held: byStatus("held"),
+      redeemed: byStatus("redeemed"),
+      voided: byStatus("voided"),
+      legacy: byStatus("legacy"),
+      untracked: untracked.length,
+      outstandingCreditGbp: customers.reduce((sum2, c) => sum2 + money(c.referralCreditGbp), 0)
+    }, referrals: all });
   } catch (err) {
-    req.log.error({ err }, "Failed to list referrals");
+    req.log.error({ err }, "Failed to list referral ledger");
     res.status(500).json({ error: "Failed to list referrals" });
+  }
+});
+var RewardError = class extends Error {
+  constructor(code, message) {
+    super(message);
+    this.code = code;
+  }
+  code;
+};
+router36.post("/admin/referrals/:id/:action", async (req, res) => {
+  if (!await requireOwner(req, res)) return;
+  const id = Number.parseInt(firstString(req.params.id) ?? "", 10);
+  const action = firstString(req.params.action);
+  const reason = typeof req.body?.reason === "string" ? req.body.reason.trim() : "";
+  if (!Number.isInteger(id) || !["hold", "release", "void"].includes(action ?? "") || !reason) {
+    res.status(400).json({ error: "A valid reward action and non-empty reason are required" });
+    return;
+  }
+  const session = getSecureAdminSession(req);
+  const actor = session?.email ?? "shared-admin";
+  const [actorUser] = session?.email ? await db.select({ id: adminUsersTable.id }).from(adminUsersTable).where(eq(adminUsersTable.email, session.email)).limit(1) : [];
+  try {
+    const [lookup] = await db.select({ beneficiaryCustomerId: referralRewardsTable.beneficiaryCustomerId }).from(referralRewardsTable).where(eq(referralRewardsTable.id, id)).limit(1);
+    if (!lookup) {
+      res.status(404).json({ error: "Reward not found" });
+      return;
+    }
+    if (!lookup.beneficiaryCustomerId) {
+      res.status(409).json({ error: "Reward has no beneficiary" });
+      return;
+    }
+    const reward = await db.transaction(async (tx) => {
+      await tx.execute(sql`SELECT id FROM customers WHERE id = ${lookup.beneficiaryCustomerId} FOR UPDATE`);
+      await tx.execute(sql`SELECT id FROM referral_rewards WHERE id = ${id} FOR UPDATE`);
+      const [current] = await tx.select().from(referralRewardsTable).where(eq(referralRewardsTable.id, id)).limit(1);
+      if (!current) throw new RewardError(404, "Reward not found");
+      if (current.historical) throw new RewardError(409, "Historical balance records cannot be administratively changed");
+      if (!current.beneficiaryCustomerId) throw new RewardError(409, "Reward has no beneficiary");
+      const [owner] = await tx.select().from(customersTable).where(eq(customersTable.id, current.beneficiaryCustomerId)).limit(1);
+      if (!owner) throw new RewardError(409, "Reward beneficiary no longer exists");
+      const remaining = money(current.remainingAmountGbp);
+      let next;
+      let delta = 0;
+      if (action === "hold") {
+        if (!["pending", "earned"].includes(current.status)) throw new RewardError(409, "Only pending or earned rewards can be held");
+        next = "held";
+        delta = current.status === "earned" ? -remaining : 0;
+      } else if (action === "void") {
+        if (["voided", "redeemed"].includes(current.status)) throw new RewardError(409, "This reward can no longer be voided");
+        next = "voided";
+        delta = current.status === "earned" ? -remaining : 0;
+      } else {
+        if (current.status !== "held") throw new RewardError(409, "Only held rewards can be released");
+        const [order] = current.qualifyingOrderId ? await tx.select({ status: ordersTable.status }).from(ordersTable).where(eq(ordersTable.id, current.qualifyingOrderId)).limit(1) : [];
+        const decision = releaseStatus(
+          order?.status === "shipped" || order?.status === "delivered",
+          money(owner.referralCreditGbp),
+          remaining
+        );
+        next = decision.status;
+        delta = decision.balanceDelta;
+        if (decision.exceedsCap) throw new RewardError(409, `Release would exceed the \xA3${CAP} referral credit cap`);
+      }
+      const now = /* @__PURE__ */ new Date();
+      const [updated] = await tx.update(referralRewardsTable).set({
+        status: next,
+        statusReason: reason,
+        lastAdminActor: actor,
+        updatedAt: now,
+        heldAt: action === "hold" ? now : action === "release" ? null : current.heldAt,
+        voidedAt: action === "void" ? now : current.voidedAt,
+        earnedAt: action === "release" && next === "earned" ? now : current.earnedAt
+      }).where(eq(referralRewardsTable.id, id)).returning();
+      if (delta) await tx.update(customersTable).set({ referralCreditGbp: sql`${customersTable.referralCreditGbp} + ${delta}` }).where(eq(customersTable.id, owner.id));
+      await tx.insert(adminAuditEventsTable).values({ eventType: `referral_reward_${action}`, adminUserId: actorUser?.id ?? null, email: session?.email ?? null, ip: getClientIp2(req), userAgent: req.get("user-agent")?.slice(0, 500) ?? null, requestId: String(req.id), success: true, metadata: { rewardId: id, previousStatus: current.status, status: next, reason, balanceDeltaGbp: delta } });
+      return updated;
+    });
+    res.json({ reward: { ...reward, amountGbp: money(reward.amountGbp), remainingAmountGbp: money(reward.remainingAmountGbp) } });
+  } catch (err) {
+    if (err instanceof RewardError) {
+      res.status(err.code).json({ error: err.message });
+      return;
+    }
+    req.log.error({ err, id, action }, "Failed to update referral reward");
+    res.status(500).json({ error: "Failed to update referral reward" });
   }
 });
 var referrals_default = router36;

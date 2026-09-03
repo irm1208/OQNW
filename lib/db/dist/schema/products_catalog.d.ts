@@ -432,10 +432,11 @@ export declare const productsCatalogTable: import("drizzle-orm/pg-core").PgTable
     dialect: "pg";
 }>;
 export declare const insertProductCatalogSchema: z.ZodObject<{
-    slug: z.ZodString;
     name: z.ZodString;
-    category: z.ZodString;
     priceGbp: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    isPublished: z.ZodOptional<z.ZodBoolean>;
+    slug: z.ZodString;
+    category: z.ZodString;
     shortDescription: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     description: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     imageUrl: z.ZodOptional<z.ZodNullable<z.ZodString>>;
@@ -451,7 +452,6 @@ export declare const insertProductCatalogSchema: z.ZodObject<{
     halfLife: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     seoTitle: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     seoDescription: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-    isPublished: z.ZodOptional<z.ZodBoolean>;
     isFeatured: z.ZodOptional<z.ZodBoolean>;
     sortOrder: z.ZodOptional<z.ZodInt>;
 }, {

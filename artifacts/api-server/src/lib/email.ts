@@ -1439,6 +1439,24 @@ export async function sendReferralReward(data: {
   }
 }
 
+/** Shipment-time notification for either side of a qualified referral. */
+export async function sendReferralRewardRecipient(data: { recipientName: string; recipientEmail: string; role: "referrer" | "referred"; counterpartName: string }): Promise<void> {
+  if (data.role === "referrer") {
+    return sendReferralReward({ referrerName: data.recipientName, referrerEmail: data.recipientEmail, refereeName: data.counterpartName });
+  }
+  const subject = "You've earned £25 referral credit";
+  const body = `<h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#0f172a;">You've earned £25 credit!</h2>
+    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Hi ${data.recipientName}, your first referred order has now shipped. £25 credit has been added to your account and can be redeemed at checkout on your next order.</p>
+    <div style="background:#f0fdf4;border-radius:8px;padding:20px 24px;border-left:4px solid #22c55e;"><p style="margin:0;font-size:28px;font-weight:800;color:#15803d;">+£25 Credit</p></div>`;
+  try {
+    const result = await getResend().emails.send({ from: FROM_ADDRESS, to: data.recipientEmail, subject, html: baseTemplate("Referral Reward", body) });
+    await logEmail({ toEmail: data.recipientEmail, subject, type: "referral_reward", status: "sent", resendId: result.data?.id });
+  } catch (err) {
+    logger.error({ err }, "Failed to send referred customer reward email");
+    await logEmail({ toEmail: data.recipientEmail, subject, type: "referral_reward", status: "failed" });
+  }
+}
+
 export interface WelcomeEmailData {
   customerName: string;
   customerEmail: string;

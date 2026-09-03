@@ -1,322 +1,54 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { customFetch } from "@workspace/api-client-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { 
-  Loader2, Search, Share2, AlertTriangle, CheckCircle2, 
-  Clock, Eye, AlertCircle
-} from "lucide-react";
+import { AlertCircle, Loader2, Search, Share2 } from "lucide-react";
+import { toast } from "sonner";
 
-type ReferralStatus = 'pending' | 'qualified' | 'flagged';
+type Person = { id: number; name: string; email: string } | null;
+type Reward = { id: number | string; status: string; beneficiaryRole: string | null; amountGbp: number; remainingAmountGbp: number; historical: boolean; statusReason: string | null; lastAdminActor: string | null; createdAt: string; earnedAt?: string | null; heldAt?: string | null; voidedAt?: string | null; redeemedAt?: string | null; beneficiary: Person; referredCustomer: Person; referrer?: Person; qualifyingOrder: { orderNumber: string; status: string } | null; redemptions?: { id: number; amountGbp: number; createdAt: string; order: { orderNumber: string; status: string } | null }[] };
+type Response = { stats: Record<string, number>; referrals: Reward[] };
+const tabs = ["all", "pending", "earned", "held", "redeemed", "voided", "legacy", "untracked"];
+const pounds = (v: number) => new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(v);
 
-interface CustomerLink {
-  id: number;
-  name: string;
-  email: string;
-  joinedAt?: string;
-  totalOrders?: number;
-  totalSpendGbp?: number;
-  referralCode?: string;
-  referralCreditGbp?: number;
+async function changeReward(id: number, action: string, reason: string) {
+  const response = await fetch(`/api/admin/referrals/${id}/${action}`, { method: "POST", credentials: "include", headers: { "content-type": "application/json" }, body: JSON.stringify({ reason }) });
+  const payload = await response.json().catch(() => null) as { error?: string };
+  if (!response.ok) throw new Error(payload?.error ?? "Could not update reward");
 }
-
-interface FirstOrder {
-  orderNumber: string;
-  status: string;
-  createdAt: string;
-}
-
-interface Referral {
-  id: number;
-  status: ReferralStatus;
-  referredCustomer: CustomerLink;
-  referrer: CustomerLink | null;
-  firstOrder: FirstOrder | null;
-  rewardGbp: number;
-}
-
-interface ReferralStats {
-  total: number;
-  pending: number;
-  qualified: number;
-  flagged: number;
-  conversionRate: number;
-  outstandingCreditGbp: number;
-}
-
-interface ReferralsResponse {
-  stats: ReferralStats;
-  referrals: Referral[];
-}
-
-const STATUS_TABS = [
-  { key: "all", label: "All Referrals" },
-  { key: "pending", label: "Pending" },
-  { key: "qualified", label: "Qualified" },
-  { key: "flagged", label: "Flagged" },
-];
 
 export default function Referrals() {
-  const [activeTab, setActiveTab] = useState("all");
+  const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-
-  useEffect(() => {
-    const timer = setTimeout(() => setDebouncedSearch(search), 300);
-    return () => clearTimeout(timer);
-  }, [search]);
-
-  const queryKey = ["referrals", activeTab, debouncedSearch];
-
-  const { data, isLoading, isError, refetch, isFetching } = useQuery<ReferralsResponse>({
-    queryKey,
-    queryFn: () => {
-      const params = new URLSearchParams();
-      if (activeTab !== "all") params.set("status", activeTab);
-      if (debouncedSearch) params.set("search", debouncedSearch);
-      return customFetch<ReferralsResponse>(`/api/admin/referrals?${params.toString()}`);
-    },
-    staleTime: 30_000,
-  });
-
-  const stats = data?.stats;
-  const referrals = data?.referrals ?? [];
-
-  const formatCurrency = (val: number) => 
-    new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(val);
-
-  const formatPercent = (val: number) => 
-    new Intl.NumberFormat("en-GB", { style: "percent", maximumFractionDigits: 1 }).format(val / 100);
-
-  return (
-    <div className="admin-page space-y-6">
-      <div className="flex items-center gap-3">
-        <Share2 className="w-6 h-6 text-primary" />
-        <h2 className="text-2xl font-bold tracking-tight">Referrals</h2>
-      </div>
-
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="pt-5 pb-4">
-            <p className="text-2xl font-bold">{stats?.total ?? "—"}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">Total Referrals</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-5 pb-4">
-            <p className="text-2xl font-bold text-green-600">
-              {stats?.conversionRate !== undefined ? formatPercent(stats.conversionRate) : "—"}
-            </p>
-            <p className="text-xs text-muted-foreground mt-0.5">Conversion Rate</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-5 pb-4">
-            <p className="text-2xl font-bold text-primary">
-              {stats?.outstandingCreditGbp !== undefined ? formatCurrency(stats.outstandingCreditGbp) : "—"}
-            </p>
-            <p className="text-xs text-muted-foreground mt-0.5">Outstanding Credit</p>
-          </CardContent>
-        </Card>
-        <Card className={stats?.flagged && stats.flagged > 0 ? "border-red-200" : ""}>
-          <CardContent className="pt-5 pb-4">
-            <p className={`text-2xl font-bold ${stats?.flagged && stats.flagged > 0 ? "text-red-600" : "text-muted-foreground"}`}>
-              {stats?.flagged ?? "—"}
-            </p>
-            <p className="text-xs text-muted-foreground mt-0.5">Flagged for Review</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="bg-muted/30 border border-muted-border rounded-lg p-4 text-sm flex flex-col md:flex-row gap-4 md:gap-8 shadow-sm">
-        <div className="flex items-start gap-2">
-          <Clock className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
-          <div className="leading-snug">
-            <span className="font-semibold block">Pending</span>
-            <span className="text-muted-foreground text-xs">Registered but no first order.</span>
-          </div>
-        </div>
-        <div className="flex items-start gap-2">
-          <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
-          <div className="leading-snug">
-            <span className="font-semibold block">Qualified</span>
-            <span className="text-muted-foreground text-xs">First order recorded and checks passed.</span>
-          </div>
-        </div>
-        <div className="flex items-start gap-2">
-          <AlertTriangle className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
-          <div className="leading-snug">
-            <span className="font-semibold block">Flagged</span>
-            <span className="text-muted-foreground text-xs">Automated referral abuse review required.</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col sm:flex-row gap-4 justify-between border-b pb-4 sm:pb-0">
-        <div className="flex gap-1 overflow-x-auto pb-1 sm:pb-0 hide-scrollbar">
-          {STATUS_TABS.map(tab => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap sm:-mb-[1px] ${
-                activeTab === tab.key
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30"
-              }`}
-            >
-              {tab.label}
-              {tab.key === "flagged" && stats?.flagged ? (
-                <span className="ml-2 inline-flex items-center justify-center bg-red-100 text-red-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full ring-1 ring-inset ring-red-200">
-                  {stats.flagged}
-                </span>
-              ) : null}
-            </button>
-          ))}
-        </div>
-        <div className="relative w-full sm:w-72 sm:mb-2 shrink-0">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search by name, email or code..."
-            className="pl-9 h-9"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-      </div>
-
-      <div className="border rounded-md bg-card overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[45%]">Referred Customer</TableHead>
-              <TableHead className="w-[45%]">Referred By</TableHead>
-              <TableHead className="text-center w-[10%]">Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={3} className="h-32 text-center">
-                  <Loader2 className="w-6 h-6 animate-spin text-primary mx-auto" />
-                </TableCell>
-              </TableRow>
-            ) : isError ? (
-              <TableRow>
-                <TableCell colSpan={3} className="h-32 text-center">
-                  <div className="flex flex-col items-center gap-2 text-red-500">
-                    <AlertCircle className="w-8 h-8" />
-                    <p className="text-sm font-medium">Failed to load referrals</p>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      disabled={isFetching}
-                      onClick={() => void refetch()}
-                    >
-                      {isFetching && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                      Try again
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ) : referrals.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={3} className="h-32 text-center">
-                  <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                    <Share2 className="w-8 h-8 opacity-20" />
-                    <p className="text-sm">No referrals found matching your criteria</p>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ) : (
-              referrals.map(ref => (
-                <TableRow key={ref.id} className="group hover:bg-muted/30">
-                  <TableCell>
-                    <div className="flex flex-col gap-0.5">
-                      <Link href={`/customers/${ref.referredCustomer.id}`} className="font-semibold text-primary hover:underline flex items-center gap-1.5 w-max">
-                        {ref.referredCustomer.name}
-                        <Eye className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </Link>
-                      <span className="text-xs text-muted-foreground">{ref.referredCustomer.email}</span>
-                      
-                      <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs">
-                        {ref.firstOrder && (
-                          <div className="flex items-center gap-1 text-xs bg-muted/40 border px-1.5 py-0.5 rounded">
-                            <span className="font-medium text-foreground">1st Order: {ref.firstOrder.orderNumber}</span>
-                            <span className="text-muted-foreground">({ref.firstOrder.status})</span>
-                            <span className="text-muted-foreground border-l pl-1 ml-0.5">
-                              {new Date(ref.firstOrder.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
-                            </span>
-                          </div>
-                        )}
-                        {ref.referredCustomer.totalSpendGbp !== undefined && ref.referredCustomer.totalSpendGbp > 0 && (
-                          <span className="text-muted-foreground">
-                            LTV: <span className="font-medium text-foreground">{formatCurrency(ref.referredCustomer.totalSpendGbp)}</span>
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </TableCell>
-                  
-                  <TableCell>
-                    {ref.referrer ? (
-                      <div className="flex flex-col gap-0.5">
-                        <Link href={`/customers/${ref.referrer.id}`} className="font-semibold text-primary hover:underline flex items-center gap-1.5 w-max">
-                          {ref.referrer.name}
-                          <Eye className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </Link>
-                        <span className="text-xs text-muted-foreground">{ref.referrer.email}</span>
-                        <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs">
-                          {ref.referrer.referralCode && (
-                            <Badge variant="outline" className="text-[10px] uppercase font-mono tracking-wider bg-muted/50">
-                              {ref.referrer.referralCode}
-                            </Badge>
-                          )}
-                          {ref.status === "qualified" ? (
-                            <span className="text-muted-foreground">
-                              Qualified reward: <span className="font-medium text-foreground">{formatCurrency(ref.rewardGbp)}</span>
-                            </span>
-                          ) : ref.status === "flagged" ? (
-                            <span className="font-medium text-red-600">Reward held for review</span>
-                          ) : (
-                            <span className="text-muted-foreground">Awaiting first order</span>
-                          )}
-                        </div>
-                      </div>
-                    ) : (
-                      <span className="text-sm text-muted-foreground italic">Unknown Referrer</span>
-                    )}
-                  </TableCell>
-
-                  <TableCell className="text-center">
-                    {ref.status === 'qualified' ? (
-                      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 px-2 py-0.5">
-                        <CheckCircle2 className="w-3 h-3 mr-1.5" />
-                        Qualified
-                      </Badge>
-                    ) : ref.status === 'flagged' ? (
-                      <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 px-2 py-0.5">
-                        <AlertTriangle className="w-3 h-3 mr-1.5" />
-                        Flagged
-                      </Badge>
-                    ) : (
-                      <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200 px-2 py-0.5">
-                        <Clock className="w-3 h-3 mr-1.5" />
-                        Pending
-                      </Badge>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
+  const [term, setTerm] = useState("");
+  const [editing, setEditing] = useState<{ id: number; action: string } | null>(null);
+  const [reason, setReason] = useState("");
+  const client = useQueryClient();
+  useEffect(() => { const timer = setTimeout(() => setTerm(search), 300); return () => clearTimeout(timer); }, [search]);
+  const query = useQuery<Response>({ queryKey: ["referrals", status, term], queryFn: () => customFetch(`/api/admin/referrals?${new URLSearchParams({ status, ...(term ? { search: term } : {}) })}`), staleTime: 30_000 });
+  const mutation = useMutation({ mutationFn: ({ id, action, reason }: { id: number; action: string; reason: string }) => changeReward(id, action, reason), onSuccess: () => { toast.success("Referral reward updated"); setEditing(null); setReason(""); void client.invalidateQueries({ queryKey: ["referrals"] }); }, onError: (e: Error) => toast.error(e.message) });
+  const rows = query.data?.referrals ?? [];
+  return <div className="admin-page space-y-6">
+    <div className="flex items-center gap-3"><Share2 className="h-6 w-6 text-primary" /><div><h2 className="text-2xl font-bold">Referral rewards</h2><p className="text-sm text-muted-foreground">Ledger records become earned when the qualifying order ships.</p></div></div>
+    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      {[["Ledger rewards", "total"], ["Earned", "earned"], ["Held", "held"], ["Compatibility balance", "outstandingCreditGbp"]].map(([label, key]) => <Card key={key}><CardContent className="py-4"><p className="text-2xl font-bold">{key === "outstandingCreditGbp" ? pounds(query.data?.stats[key] ?? 0) : query.data?.stats[key] ?? "—"}</p><p className="text-xs text-muted-foreground">{label}</p></CardContent></Card>)}
     </div>
-  );
+    <div className="rounded-lg border bg-muted/20 p-3 text-xs text-muted-foreground">Historical buckets preserve pre-ledger balances and are redeemable, but cannot be edited. Untracked relationships deliberately have no manufactured reward.</div>
+    <div className="flex flex-col justify-between gap-3 border-b sm:flex-row"><div className="flex gap-1 overflow-x-auto">{tabs.map(tab => <Button key={tab} variant="ghost" onClick={() => setStatus(tab)} className={status === tab ? "border-b-2 border-primary rounded-none" : ""}>{tab[0].toUpperCase() + tab.slice(1)}</Button>)}</div><div className="relative w-full sm:w-72"><Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" /><Input className="pl-9" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search customer or reason" /></div></div>
+    <div className="overflow-x-auto rounded-md border bg-card"><Table><TableHeader><TableRow><TableHead>Beneficiary / role</TableHead><TableHead>Reward</TableHead><TableHead>Qualifying order</TableHead><TableHead>Status</TableHead><TableHead>Reason / audit</TableHead><TableHead>Controls</TableHead></TableRow></TableHeader><TableBody>
+      {query.isLoading ? <TableRow><TableCell colSpan={6} className="h-28 text-center"><Loader2 className="mx-auto animate-spin" /></TableCell></TableRow> : query.isError ? <TableRow><TableCell colSpan={6} className="h-28 text-center text-destructive"><AlertCircle className="mx-auto mb-2" />Could not load referral ledger</TableCell></TableRow> : rows.length === 0 ? <TableRow><TableCell colSpan={6} className="h-28 text-center text-muted-foreground">No referral records match this filter.</TableCell></TableRow> : rows.map(row => <TableRow key={row.id}>
+        <TableCell>{row.beneficiary ? <Link className="font-medium text-primary hover:underline" href={`/customers/${row.beneficiary.id}`}>{row.beneficiary.name}</Link> : <span className="text-muted-foreground">No beneficiary</span>}<div className="text-xs text-muted-foreground">{row.beneficiary?.email} {row.beneficiaryRole && `· ${row.beneficiaryRole}`}</div>{row.referrer && <div className="text-xs">Referrer: <Link className="text-primary hover:underline" href={`/customers/${row.referrer.id}`}>{row.referrer.name}</Link></div>}{row.referredCustomer && <div className="text-xs">Referred: <Link className="text-primary hover:underline" href={`/customers/${row.referredCustomer.id}`}>{row.referredCustomer.name}</Link></div>}</TableCell>
+        <TableCell>{pounds(row.amountGbp)}<div className="text-xs text-muted-foreground">Remaining {pounds(row.remainingAmountGbp)}{row.historical ? " · historical" : ""}</div>{row.redemptions?.map(redemption => <div key={redemption.id} className="mt-1 text-xs text-muted-foreground">Used {pounds(redemption.amountGbp)}{redemption.order ? ` on ${redemption.order.orderNumber}` : ""} · {new Date(redemption.createdAt).toLocaleDateString("en-GB")}</div>)}</TableCell>
+        <TableCell>{row.qualifyingOrder ? <><span className="font-mono text-xs">{row.qualifyingOrder.orderNumber}</span><div className="text-xs text-muted-foreground">{row.qualifyingOrder.status}</div></> : "—"}<div className="text-xs text-muted-foreground">{new Date(row.createdAt).toLocaleDateString("en-GB")}</div></TableCell>
+        <TableCell><Badge variant="outline">{row.status}</Badge></TableCell><TableCell className="max-w-52 text-xs">{row.statusReason ?? "—"}{row.lastAdminActor && <div className="mt-1 text-muted-foreground">by {row.lastAdminActor}</div>}<div className="mt-1 text-muted-foreground">{row.earnedAt && `Earned ${new Date(row.earnedAt).toLocaleDateString("en-GB")}`}{row.heldAt && ` Held ${new Date(row.heldAt).toLocaleDateString("en-GB")}`}{row.voidedAt && ` Voided ${new Date(row.voidedAt).toLocaleDateString("en-GB")}`}{row.redeemedAt && ` Redeemed ${new Date(row.redeemedAt).toLocaleDateString("en-GB")}`}</div></TableCell>
+        <TableCell>{typeof row.id === "number" && !row.historical && row.status === "held" ? <Button size="sm" variant="outline" onClick={() => setEditing({ id: row.id as number, action: "release" })}>Release</Button> : typeof row.id === "number" && !row.historical && ["pending", "earned"].includes(row.status) ? <div className="flex gap-1"><Button size="sm" variant="outline" onClick={() => setEditing({ id: row.id as number, action: "hold" })}>Hold</Button><Button size="sm" variant="destructive" onClick={() => setEditing({ id: row.id as number, action: "void" })}>Void</Button></div> : "—"}</TableCell>
+      </TableRow>)}</TableBody></Table></div>
+    {editing && <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4"><div className="w-full max-w-md space-y-4 rounded-lg border bg-background p-5 shadow-xl"><h3 className="font-semibold">Confirm {editing.action} reward</h3><p className="text-sm text-muted-foreground">This action is recorded in the referral ledger and audit log. A reason is required.</p><Textarea autoFocus value={reason} onChange={e => setReason(e.target.value)} placeholder="Reason for this action" /><div className="flex justify-end gap-2"><Button variant="outline" onClick={() => { setEditing(null); setReason(""); }}>Cancel</Button><Button disabled={!reason.trim() || mutation.isPending} variant={editing.action === "void" ? "destructive" : "default"} onClick={() => mutation.mutate({ ...editing, reason })}>{mutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Confirm {editing.action}</Button></div></div></div>}
+  </div>;
 }

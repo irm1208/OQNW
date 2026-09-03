@@ -1,15 +1,15 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
-import { ordersTable, orderItemsTable } from "@workspace/db";
+import { ordersTable, orderItemsTable, customersTable, referralRewardsTable } from "@workspace/db";
 import {
   ListAdminOrdersQueryParams,
   GetAdminOrderParams,
   UpdateAdminOrderParams,
   UpdateAdminOrderBody,
 } from "@workspace/api-zod";
-import { eq, ilike, and, desc, count, or, inArray, isNull, isNotNull, notInArray } from "drizzle-orm";
-import { sendOrderConfirmation, sendShippingNotification, sendDeliveryConfirmation } from "../../lib/email";
+import { eq, ilike, and, desc, count, or, inArray, isNull, isNotNull, notInArray, sql } from "drizzle-orm";
+import { sendOrderConfirmation, sendShippingNotification, sendDeliveryConfirmation, sendReferralRewardRecipient } from "../../lib/email";
 import { firstString } from "../../lib/query";
 import {
   DISPATCHABLE_ORDER_STATUSES,
@@ -391,8 +391,10 @@ router.post("/admin/orders/:id/dispatch", async (req: Request, res: Response): P
   }
 
   try {
-    const [updated] = await db
-      .update(ordersTable)
+    const earnedRewardNotifications: { beneficiaryCustomerId: number; role: "referrer" | "referred"; referrerCustomerId: number; referredCustomerId: number }[] = [];
+    const updated = await db.transaction(async (tx) => {
+      await tx.execute(sql`SELECT id FROM orders WHERE id = ${id} FOR UPDATE`);
+      const [dispatched] = await tx.update(ordersTable)
       .set({
         status: "shipped",
         carrierName: dispatch.value.carrierName,
@@ -407,6 +409,41 @@ router.post("/admin/orders/:id/dispatch", async (req: Request, res: Response): P
         isNull(ordersTable.dispatchedAt),
       ))
       .returning();
+      if (!dispatched) return null;
+      const rewards = await tx.select().from(referralRewardsTable)
+        .where(eq(referralRewardsTable.qualifyingOrderId, id))
+        .orderBy(referralRewardsTable.id);
+      const beneficiaryIds = [...new Set(rewards.map(r => r.beneficiaryCustomerId).filter((id): id is number => id !== null))].sort((a, b) => a - b);
+      for (const beneficiaryId of beneficiaryIds) await tx.execute(sql`SELECT id FROM customers WHERE id = ${beneficiaryId} FOR UPDATE`);
+      // Re-read with row locks after customer locks; an admin action which won
+      // the race is therefore never overwritten by shipment processing.
+      await tx.execute(sql`SELECT id FROM referral_rewards WHERE qualifying_order_id = ${id} ORDER BY id FOR UPDATE`);
+      const lockedRewards = await tx.select().from(referralRewardsTable)
+        .where(and(eq(referralRewardsTable.qualifyingOrderId, id), eq(referralRewardsTable.status, "pending")))
+        .orderBy(referralRewardsTable.id);
+      for (const reward of lockedRewards) {
+        if (!reward.beneficiaryCustomerId) continue;
+        const [beneficiary] = await tx.select({ credit: customersTable.referralCreditGbp })
+          .from(customersTable).where(eq(customersTable.id, reward.beneficiaryCustomerId)).limit(1);
+        const remaining = Number(reward.remainingAmountGbp);
+        // Pending reward is not credit until dispatch. If the cap was reached in
+        // the meantime retain it for review instead of silently truncating £25.
+        if (Number(beneficiary?.credit ?? 0) + remaining > 50) {
+          await tx.update(referralRewardsTable).set({
+            status: "held", statusReason: "Release at dispatch would exceed the £50 referral credit cap", heldAt: new Date(), updatedAt: new Date(),
+          }).where(and(eq(referralRewardsTable.id, reward.id), eq(referralRewardsTable.status, "pending")));
+        } else {
+          await tx.update(referralRewardsTable).set({ status: "earned", earnedAt: new Date(), updatedAt: new Date() })
+            .where(and(eq(referralRewardsTable.id, reward.id), eq(referralRewardsTable.status, "pending")));
+          await tx.update(customersTable).set({ referralCreditGbp: sql`${customersTable.referralCreditGbp} + ${remaining}` })
+            .where(eq(customersTable.id, reward.beneficiaryCustomerId));
+          if ((reward.beneficiaryRole === "referrer" || reward.beneficiaryRole === "referred") && reward.referrerCustomerId && reward.referredCustomerId) {
+            earnedRewardNotifications.push({ beneficiaryCustomerId: reward.beneficiaryCustomerId, role: reward.beneficiaryRole, referrerCustomerId: reward.referrerCustomerId, referredCustomerId: reward.referredCustomerId });
+          }
+        }
+      }
+      return dispatched;
+    });
 
     if (!updated) {
       const [current] = await db
@@ -422,6 +459,14 @@ router.post("/admin/orders/:id/dispatch", async (req: Request, res: Response): P
         res.status(409).json({ error: "This order is not ready to dispatch" });
       }
       return;
+    }
+    for (const notification of earnedRewardNotifications) {
+      try {
+        const [recipient] = await db.select().from(customersTable).where(eq(customersTable.id, notification.beneficiaryCustomerId)).limit(1);
+        const counterpartId = notification.role === "referrer" ? notification.referredCustomerId : notification.referrerCustomerId;
+        const [counterpart] = await db.select().from(customersTable).where(eq(customersTable.id, counterpartId)).limit(1);
+        if (recipient && counterpart) await sendReferralRewardRecipient({ recipientName: `${recipient.firstName} ${recipient.lastName}`, recipientEmail: recipient.email, role: notification.role, counterpartName: `${counterpart.firstName} ${counterpart.lastName}` });
+      } catch (emailError) { req.log.error({ emailError, orderId: id }, "Referral reward email failed after dispatch"); }
     }
 
     const items = await db

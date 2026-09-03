@@ -12,8 +12,10 @@ import {
   abandonedCartsTable,
   loyaltyTransactionsTable,
   inventoryAuditLogTable,
+  referralRewardsTable,
+  referralRedemptionAllocationsTable,
 } from "@workspace/db";
-import { eq, sql, inArray, notInArray, and, gte, count } from "drizzle-orm";
+import { eq, sql, inArray, notInArray, and, gte, count, asc } from "drizzle-orm";
 import {
   sendOrderConfirmation,
   sendBankTransferInstructions,
@@ -41,6 +43,7 @@ import {
 import { claimCheckoutPaymentQuote } from "../lib/checkoutPaymentQuoteClaims";
 import { prepareCryptoPayment } from "../lib/crypto-payments";
 import { assessFraud } from "../lib/fraudScorer";
+import { allocateReferralCredit, buildReferralRewardDrafts } from "../lib/referralLedger";
 import { getClientIp, lookupIpData } from "../lib/geoip";
 import { dispatchWebhook } from "../lib/webhookDispatcher";
 import { RETIRED_PRODUCT_SLUGS } from "../lib/retiredProducts";
@@ -791,22 +794,6 @@ async function handleOrderRequest(
 
       if (sessionCustomer) {
         customerId = sessionCustomer.id;
-        await db
-          .update(customersTable)
-          .set({
-            totalOrders: sessionCustomer.totalOrders + 1,
-            totalSpendGbp: String(
-              (parseFloat(String(sessionCustomer.totalSpendGbp)) + totalGbp).toFixed(2)
-            ),
-            phone: d.phone ?? sessionCustomer.phone,
-            address1: d.address1,
-            address2: d.address2 ?? sessionCustomer.address2,
-            city: d.city,
-            county: d.county ?? sessionCustomer.county,
-            postcode: d.postcode,
-            country: d.country,
-          })
-          .where(eq(customersTable.id, sessionCustomer.id));
       }
     }
 
@@ -820,22 +807,6 @@ async function handleOrderRequest(
 
       if (existingCustomer) {
         customerId = existingCustomer.id;
-        await db
-          .update(customersTable)
-          .set({
-            totalOrders: existingCustomer.totalOrders + 1,
-            totalSpendGbp: String(
-              (parseFloat(String(existingCustomer.totalSpendGbp)) + totalGbp).toFixed(2)
-            ),
-            phone: d.phone ?? existingCustomer.phone,
-            address1: d.address1,
-            address2: d.address2 ?? existingCustomer.address2,
-            city: d.city,
-            county: d.county ?? existingCustomer.county,
-            postcode: d.postcode,
-            country: d.country,
-          })
-          .where(eq(customersTable.id, existingCustomer.id));
       } else {
         const [newCustomer] = await db
           .insert(customersTable)
@@ -850,8 +821,8 @@ async function handleOrderRequest(
             county: d.county ?? null,
             postcode: d.postcode,
             country: d.country,
-            totalOrders: 1,
-            totalSpendGbp: String(totalGbp.toFixed(2)),
+            totalOrders: 0,
+            totalSpendGbp: "0.00",
           })
           .returning();
         customerId = newCustomer.id;
@@ -873,7 +844,7 @@ async function handleOrderRequest(
           .where(eq(customersTable.id, customerId))
           .limit(1)
       : [{ totalOrders: 0, createdAt: null as Date | null }];
-    const isFirstOrder = (customerOrderResult?.totalOrders ?? 0) <= 1;
+    let isFirstOrder = (customerOrderResult?.totalOrders ?? 0) === 0;
     const isNewAccount = customerOrderResult?.createdAt
       ? Date.now() - new Date(customerOrderResult.createdAt).getTime() < 10 * 60 * 1000
       : false;
@@ -898,10 +869,45 @@ async function handleOrderRequest(
       shippingCountryCode,
       isProxy: ipData.isProxy,
     });
+    // Resolve referral qualification before persisting the order so the order,
+    // its immutable reward events, and any redemption share one transaction.
+    let referralCandidate: { referrerId: number; held: boolean; reason: string } | null = null;
+    if (customerId && isFirstOrder) {
+      const [referred] = await db.select({ referredBy: customersTable.referredBy })
+        .from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
+      if (referred?.referredBy) {
+        const [referrer] = await db.select().from(customersTable)
+          .where(eq(customersTable.referralCode, referred.referredBy)).limit(1);
+        if (referrer) {
+          let reason = "";
+          if (ipData.isProxy) reason = "VPN/proxy IP detected on referred customer";
+          else if (clientIp && (referrer.knownIps ?? (referrer.lastSeenIp ? [referrer.lastSeenIp] : [])).includes(clientIp)) reason = "Referred customer IP matches referrer's known IPs";
+          else if (referrer.postcode && d.postcode && referrer.postcode.trim().replace(/\s+/g, "").toUpperCase() === d.postcode.trim().replace(/\s+/g, "").toUpperCase()) reason = "Referred customer billing postcode matches referrer's postcode";
+          else if (referrer.lastName.trim().toUpperCase() === d.lastName.trim().toUpperCase() && referrer.firstName.trim().slice(0, 3).toUpperCase() === d.firstName.trim().slice(0, 3).toUpperCase()) reason = "Referred customer name too similar to referrer's name";
+          else if (Number(referrer.referralCreditGbp) >= REFERRAL_CREDIT_CAP_GBP) reason = `Referrer has reached the maximum pending reward limit (£${REFERRAL_CREDIT_CAP_GBP} credit)`;
+          if (!reason && clientIp) {
+            const [conflict] = await db.select({ id: customersTable.id }).from(customersTable)
+              .where(and(sql`${clientIp} = ANY(COALESCE(${customersTable.knownIps}, ARRAY[]::text[]))`, sql`${customersTable.id} != ${customerId}`)).limit(1);
+            if (conflict) reason = "Referred customer IP already seen on another account";
+          }
+          referralCandidate = { referrerId: referrer.id, held: Boolean(reason), reason };
+        }
+      }
+    }
 
     // Insert order
-    const [order] = await db
-      .insert(ordersTable)
+    const [order] = await db.transaction(async (tx) => {
+      // Customer is always locked before any reward rows. This makes the
+      // first-order decision authoritative under concurrent checkouts.
+      let lockedIsFirstOrder = false;
+      if (customerId) {
+        await tx.execute(sql`SELECT id FROM customers WHERE id = ${customerId} FOR UPDATE`);
+        const [lockedCustomer] = await tx.select().from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
+        if (!lockedCustomer) throw new Error("CHECKOUT_CUSTOMER_MISSING");
+        lockedIsFirstOrder = lockedCustomer.totalOrders === 0;
+        isFirstOrder = lockedIsFirstOrder;
+      }
+      const [insertedOrder] = await tx.insert(ordersTable)
       .values({
         orderNumber,
         customerEmail: d.email.toLowerCase(),
@@ -943,11 +949,80 @@ async function handleOrderRequest(
           cryptoTestCheckout ? `CRYPTO £1 TEST CHECKOUT: normal total £${standardTotalGbp.toFixed(2)}, test adjustment -£${testPaymentAdjustmentGbp.toFixed(2)}` : null,
           wallidApiPaymentId ? `Wallid payment id: ${wallidApiPaymentId}` : null,
           cryptoPayment ? `Crypto route: ${cryptoPayment.details.currency} on ${cryptoPayment.details.network}` : null,
+          referralCandidate?.held ? `REFERRAL_ABUSE: ${referralCandidate.reason}` : null,
         ].filter(Boolean).join("; ") || null,
         fraudScore,
         fraudFlags,
       })
       .returning();
+
+      if (customerId) {
+        await tx.update(customersTable).set({
+          totalOrders: sql`${customersTable.totalOrders} + 1`,
+          totalSpendGbp: sql`${customersTable.totalSpendGbp} + ${totalGbp}`,
+          phone: d.phone ?? undefined,
+          address1: d.address1, address2: d.address2 ?? undefined, city: d.city,
+          county: d.county ?? undefined, postcode: d.postcode, country: d.country,
+        }).where(eq(customersTable.id, customerId));
+      }
+
+      // Lock the compatibility balance and the actual ledger buckets together.
+      // A quote is advisory only: checkout must fail rather than spend credit
+      // which another checkout used after it was quoted.
+      const redemptionCustomerId = customerId ?? sessionCustomerId;
+      if (freePeptideCreditUsed && redemptionCustomerId) {
+        await tx.execute(sql`SELECT id FROM customers WHERE id = ${redemptionCustomerId} FOR UPDATE`);
+        await tx.execute(sql`SELECT id FROM referral_rewards WHERE beneficiary_customer_id = ${redemptionCustomerId} FOR UPDATE`);
+        const [lockedCustomer] = await tx.select({ credit: customersTable.referralCreditGbp })
+          .from(customersTable).where(eq(customersTable.id, redemptionCustomerId)).limit(1);
+        const rewards = await tx.select().from(referralRewardsTable)
+          .where(and(eq(referralRewardsTable.beneficiaryCustomerId, redemptionCustomerId),
+            inArray(referralRewardsTable.status, ["earned", "legacy"])))
+          .orderBy(asc(referralRewardsTable.createdAt), asc(referralRewardsTable.id));
+        const available = Number(lockedCustomer?.credit ?? 0);
+        if (available + 0.00001 < referralCreditRedeemedGbp) {
+          throw new Error("REFERRAL_CREDIT_CHANGED");
+        }
+        const allocation = allocateReferralCredit(
+          rewards.map((reward) => ({ id: reward.id, remaining: Number(reward.remainingAmountGbp) })),
+          referralCreditRedeemedGbp,
+        );
+        if (allocation.insufficient) throw new Error("REFERRAL_LEDGER_INSUFFICIENT");
+        const rewardById = new Map(rewards.map((reward) => [reward.id, reward]));
+        for (const allocated of allocation.allocations) {
+          const reward = rewardById.get(allocated.rewardId);
+          if (!reward) throw new Error("REFERRAL_LEDGER_INSUFFICIENT");
+          await tx.insert(referralRedemptionAllocationsTable).values({
+            rewardId: reward.id,
+            orderId: insertedOrder.id,
+            customerId: redemptionCustomerId,
+            amountGbp: allocated.amount.toFixed(2),
+          });
+          await tx.update(referralRewardsTable).set({
+            remainingAmountGbp: allocated.remaining.toFixed(2),
+            status: allocated.redeemed ? "redeemed" : reward.status,
+            redeemedAt: allocated.redeemed ? new Date() : reward.redeemedAt,
+            updatedAt: new Date(),
+          }).where(eq(referralRewardsTable.id, reward.id));
+        }
+        await tx.update(customersTable).set({
+          referralCreditGbp: sql`GREATEST(${customersTable.referralCreditGbp} - ${referralCreditRedeemedGbp}, 0)`,
+        }).where(eq(customersTable.id, redemptionCustomerId));
+      }
+      if (referralCandidate && customerId && lockedIsFirstOrder) {
+        const now = new Date();
+        await tx.insert(referralRewardsTable).values(buildReferralRewardDrafts({
+          qualifyingOrderId: insertedOrder.id,
+          referrerCustomerId: referralCandidate.referrerId,
+          referredCustomerId: customerId,
+          held: referralCandidate.held,
+          reason: referralCandidate.reason,
+          now,
+        })).onConflictDoNothing();
+        if (referralCandidate.held) await tx.update(customersTable).set({ referralAbuseFlag: true }).where(eq(customersTable.id, customerId));
+      }
+      return [insertedOrder];
+    });
 
     // Insert order items — split a cart line into paid/free rows when some (but not all)
     // of its units were selected as the tier's cheapest-free units, so order records clearly
@@ -1029,12 +1104,6 @@ async function handleOrderRequest(
           description: `${loyaltyPointsToDeduct} pts redeemed on order ${orderNumber} (−£${loyaltyDiscountGbp.toFixed(2)})`,
         }).catch(() => {});
       }
-      if (freePeptideCreditUsed) {
-        db.update(customersTable)
-          .set({ referralCreditGbp: sql`GREATEST(referral_credit_gbp - ${referralCreditRedeemedGbp}, 0)` })
-          .where(eq(customersTable.id, loyaltyCustomerId))
-          .catch(() => {});
-      }
     }
 
     // Increment discount code usage
@@ -1104,135 +1173,8 @@ async function handleOrderRequest(
         .catch(() => {});
     }
 
-    // Referral reward: if this is the referred customer's first order, reward the referrer
-    if (customerId) {
-      (async () => {
-        try {
-          const [cust] = await db
-            .select({ totalOrders: customersTable.totalOrders, referredBy: customersTable.referredBy })
-            .from(customersTable)
-            .where(eq(customersTable.id, customerId!))
-            .limit(1);
-          if (cust?.totalOrders === 1) {
-            sendWelcomeEmail({ customerName, customerEmail: d.email.toLowerCase() }).catch(() => {});
-          }
-          if (cust?.totalOrders === 1 && cust.referredBy) {
-            const [referrer] = await db
-              .select({
-                id: customersTable.id,
-                email: customersTable.email,
-                firstName: customersTable.firstName,
-                lastName: customersTable.lastName,
-                postcode: customersTable.postcode,
-                address1: customersTable.address1,
-                lastSeenIp: customersTable.lastSeenIp,
-                knownIps: customersTable.knownIps,
-                referralCreditGbp: customersTable.referralCreditGbp,
-              })
-              .from(customersTable)
-              .where(eq(customersTable.referralCode, cust.referredBy))
-              .limit(1);
-            if (referrer) {
-              // Abuse checks — block reward if any of the following are true:
-              // 1. New customer is using a VPN / proxy / hosting IP (can mask identity)
-              // 2. New customer's IP matches any IP ever seen on the referrer's account
-              // 3. New customer's IP matches any IP ever seen on any other existing customer
-              // 4. Referred customer's billing postcode matches the referrer's postcode
-              // 5. Referred customer's last name matches the referrer's last name AND first 3 chars of first name match
-              // 6. Referrer already has the max £50 unredeemed referral credit balance
-              let abuseDetected = false;
-              let abuseReason = "";
-
-              if (ipData.isProxy) {
-                abuseDetected = true;
-                abuseReason = "VPN/proxy IP detected on referred customer";
-              }
-
-              if (!abuseDetected && clientIp) {
-                const referrerKnownIps: string[] = referrer.knownIps ?? (referrer.lastSeenIp ? [referrer.lastSeenIp] : []);
-                if (referrerKnownIps.includes(clientIp)) {
-                  abuseDetected = true;
-                  abuseReason = "Referred customer IP matches referrer's known IPs";
-                }
-              }
-
-              if (!abuseDetected && clientIp) {
-                const [anyIpConflict] = await db
-                  .select({ id: customersTable.id })
-                  .from(customersTable)
-                  .where(
-                    and(
-                      sql`${clientIp} = ANY(COALESCE(${customersTable.knownIps}, ARRAY[]::text[]))`,
-                      sql`${customersTable.id} != ${customerId}`
-                    )
-                  )
-                  .limit(1);
-                if (anyIpConflict) {
-                  abuseDetected = true;
-                  abuseReason = "Referred customer IP already seen on another account";
-                }
-              }
-
-              if (!abuseDetected && referrer.postcode && d.postcode) {
-                // Same billing postcode — strong signal of same person / household self-referral
-                const normalize = (s: string) => s.trim().toUpperCase().replace(/\s+/g, "");
-                if (normalize(referrer.postcode) === normalize(d.postcode)) {
-                  abuseDetected = true;
-                  abuseReason = "Referred customer billing postcode matches referrer's postcode";
-                }
-              }
-
-              if (!abuseDetected) {
-                // Name similarity: same last name + first 3 chars of first name match
-                const refFirstName = d.firstName.trim().slice(0, 3).toUpperCase();
-                const refLastName = d.lastName.trim().toUpperCase();
-                const rFirstName = referrer.firstName.trim().slice(0, 3).toUpperCase();
-                const rLastName = referrer.lastName.trim().toUpperCase();
-                if (rLastName === refLastName && rFirstName === refFirstName) {
-                  abuseDetected = true;
-                  abuseReason = "Referred customer name too similar to referrer's name";
-                }
-              }
-
-              if (!abuseDetected && Number(referrer.referralCreditGbp) >= REFERRAL_CREDIT_CAP_GBP) {
-                // Hard cap: referrer already has the max £50 unredeemed credit — farming detected
-                abuseDetected = true;
-                abuseReason = `Referrer has reached the maximum pending reward limit (£${REFERRAL_CREDIT_CAP_GBP} credit)`;
-              }
-
-              if (abuseDetected) {
-                // Flag the referred customer's account for admin review
-                db.update(customersTable)
-                  .set({ referralAbuseFlag: true })
-                  .where(eq(customersTable.id, customerId!))
-                  .catch(() => {});
-                // Append abuse reason to this order's notes
-                db.update(ordersTable)
-                  .set({ notes: sql`COALESCE(notes || '; ', '') || ${'REFERRAL_ABUSE: ' + abuseReason}` })
-                  .where(eq(ordersTable.id, order.id))
-                  .catch(() => {});
-              } else {
-                const REFERRAL_REWARD_GBP = 25;
-                // Both sides earn £25 credit, redeemable on their next order — capped at
-                // £50 unredeemed balance each.
-                await db
-                  .update(customersTable)
-                  .set({ referralCreditGbp: sql`LEAST(referral_credit_gbp + ${REFERRAL_REWARD_GBP}, ${REFERRAL_CREDIT_CAP_GBP})` })
-                  .where(eq(customersTable.id, referrer.id));
-                await db
-                  .update(customersTable)
-                  .set({ referralCreditGbp: sql`LEAST(referral_credit_gbp + ${REFERRAL_REWARD_GBP}, ${REFERRAL_CREDIT_CAP_GBP})` })
-                  .where(eq(customersTable.id, customerId!));
-                await sendReferralReward({
-                  referrerName: `${referrer.firstName} ${referrer.lastName}`,
-                  referrerEmail: referrer.email,
-                  refereeName: customerName,
-                });
-              }
-            }
-          }
-        } catch {}
-      })();
+    if (customerId && isFirstOrder) {
+      sendWelcomeEmail({ customerName, customerEmail: d.email.toLowerCase() }).catch(() => {});
     }
 
     const emailItems = cartItems.map(i => ({
@@ -1357,6 +1299,10 @@ async function handleOrderRequest(
       ...(wallidPaymentUrl && { wallidPaymentUrl }),
     });
   } catch (err) {
+    if (err instanceof Error && (err.message === "REFERRAL_CREDIT_CHANGED" || err.message === "REFERRAL_LEDGER_INSUFFICIENT")) {
+      res.status(409).json({ error: "Referral credit changed while you were checking out. Please refresh your quote and try again." });
+      return;
+    }
     req.log.error({ err }, "Failed to create order");
     res.status(500).json({ error: "Internal server error" });
   }

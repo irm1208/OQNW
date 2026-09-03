@@ -3,8 +3,8 @@ name: Referral admin ledger boundary
 description: Safety boundary between evidence-based referral reporting and reward lifecycle mutations.
 ---
 
-Referral administration may report referral relationships, first-order qualification, aggregate balances, and abuse flags from current customer and order records. Do not expose controls that claim to void, reverse, or redeem a specific reward until individual reward events are durably recorded.
+Referral administration may mutate specific rewards only when individual reward events and redemption allocations are durably recorded. Lock affected customer rows in ascending ID order before reward rows, and decide first-order eligibility while holding the customer lock.
 
-**Why:** Current referral credit is an aggregate customer balance. It cannot prove which individual reward remains available or has already been redeemed, so reversing a guessed reward could remove legitimate credit.
+**Why:** The compatibility balance alone cannot prove which reward remains available. Inconsistent lock ordering lets checkout, dispatch, and administrator actions deadlock or overwrite each other; an unlocked first-order check can issue duplicate rewards.
 
-**How to apply:** Keep current referral management read-only. Before adding reward hold, void, or reversal actions, introduce an atomic referral ledger linked to both customers and the qualifying order, with explicit lifecycle states and administrator audit data.
+**How to apply:** Keep order creation, balance changes, ledger transitions, and redemption allocations atomic. At dispatch, lock every beneficiary for the qualifying order before its reward rows, then re-read status and use conditional transitions.
