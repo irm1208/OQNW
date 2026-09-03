@@ -237008,6 +237008,81 @@ function remainingRefundableMinor(orderTotalMinor, confirmedMinor, pendingMinor)
 function classifyConfirmedRefund(orderTotalMinor, confirmedBeforeMinor, refundMinor) {
   return confirmedBeforeMinor + refundMinor >= orderTotalMinor ? "full" : "partial";
 }
+function normalizeRefundSelection(value) {
+  if (!Array.isArray(value)) return null;
+  const seen = /* @__PURE__ */ new Set();
+  const result = [];
+  for (const entry of value) {
+    if (!entry || typeof entry !== "object") return null;
+    const { orderItemId, quantity } = entry;
+    if (!Number.isInteger(orderItemId) || !Number.isInteger(quantity) || Number(quantity) <= 0 || seen.has(Number(orderItemId))) return null;
+    seen.add(Number(orderItemId));
+    result.push({ orderItemId: Number(orderItemId), quantity: Number(quantity) });
+  }
+  return result;
+}
+function parseStoredItems(value) {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+function resolveStoredRefundItems(lines, lineItemsJson) {
+  const entries = parseStoredItems(lineItemsJson);
+  if (!entries) return { items: [], conflict: true };
+  const eligible = lines.filter((line2) => line2.productId > 0);
+  const quantities = /* @__PURE__ */ new Map();
+  for (const entry of entries) {
+    if (!entry || typeof entry !== "object") return { items: [], conflict: true };
+    const item = entry;
+    if (!Number.isInteger(item.quantity) || Number(item.quantity) <= 0 || !Number.isInteger(item.productId) || Number(item.productId) <= 0) {
+      return { items: [], conflict: true };
+    }
+    let line2;
+    if (Number.isInteger(item.orderItemId)) {
+      line2 = eligible.find((candidate) => candidate.id === Number(item.orderItemId));
+      if (!line2 || line2.productId !== Number(item.productId)) return { items: [], conflict: true };
+    } else {
+      const candidates = eligible.filter((candidate) => candidate.productId === Number(item.productId));
+      if (candidates.length !== 1) return { items: [], conflict: true };
+      line2 = candidates[0];
+    }
+    quantities.set(line2.id, (quantities.get(line2.id) ?? 0) + Number(item.quantity));
+  }
+  return {
+    items: [...quantities.entries()].map(([orderItemId, quantity]) => {
+      const line2 = eligible.find((candidate) => candidate.id === orderItemId);
+      return {
+        orderItemId,
+        productId: line2.productId,
+        productName: line2.productName,
+        quantity
+      };
+    }),
+    conflict: false
+  };
+}
+function reservedRefundQuantities(lines, refunds) {
+  const quantities = /* @__PURE__ */ new Map();
+  const eligible = lines.filter((line2) => line2.productId > 0);
+  let conflict = false;
+  for (const refund of refunds) {
+    if (refund.status !== "pending" && refund.status !== "confirmed") continue;
+    if (!refund.restoreInventory) continue;
+    const resolved = resolveStoredRefundItems(lines, refund.lineItemsJson);
+    if (resolved.conflict) {
+      conflict = true;
+      continue;
+    }
+    for (const item of resolved.items) {
+      quantities.set(item.orderItemId, (quantities.get(item.orderItemId) ?? 0) + item.quantity);
+    }
+  }
+  return { quantities, conflict };
+}
 
 // src/routes/admin/refunds.ts
 var router15 = (0, import_express15.Router)();
@@ -237031,7 +237106,7 @@ function refundToResponse(r) {
     reason: r.reason,
     notes: r.notes ?? null,
     restoreInventory: r.restoreInventory,
-    lineItems: r.lineItemsJson ? JSON.parse(r.lineItemsJson) : null,
+    lineItems: safeLineItems(r.lineItemsJson),
     confirmedAt: r.confirmedAt?.toISOString() ?? null,
     createdAt: r.createdAt.toISOString()
   };
@@ -237068,10 +237143,15 @@ router15.post("/admin/orders/:id/refund", async (req, res) => {
     res.status(400).json({ error: "Invalid order ID" });
     return;
   }
-  const { amountGbp, reason, notes, restoreInventory, lineItems } = req.body;
+  const { amountGbp, reason, notes, lineItems } = req.body;
   const requestedMinor = moneyToMinor(amountGbp);
   if (!requestedMinor || typeof reason !== "string" || !reason.trim()) {
     res.status(400).json({ error: "amountGbp and reason are required" });
+    return;
+  }
+  const selection = normalizeRefundSelection(lineItems);
+  if (!selection) {
+    res.status(400).json({ error: "lineItems must be an array of unique { orderItemId, quantity } selections" });
     return;
   }
   try {
@@ -237082,6 +237162,25 @@ router15.post("/admin/orders/:id/refund", async (req, res) => {
       if (!wallidPaymentIdFromNotes(order.notes)) {
         throw new RefundRequestError(400, "This order does not have a Wallid payment reference");
       }
+      await tx.execute(sql`SELECT id FROM refunds_log WHERE order_id = ${orderId} FOR UPDATE`);
+      await tx.execute(sql`SELECT id FROM order_items WHERE order_id = ${orderId} FOR UPDATE`);
+      const lines = await tx.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, orderId));
+      const activeRefunds = await tx.select({
+        status: refundsLogTable.status,
+        restoreInventory: refundsLogTable.restoreInventory,
+        lineItemsJson: refundsLogTable.lineItemsJson
+      }).from(refundsLogTable).where(eq(refundsLogTable.orderId, orderId));
+      const reservations = reservedRefundQuantities(lines, activeRefunds);
+      if (selection.length > 0 && reservations.conflict) {
+        throw new RefundRequestError(409, "Historical refund inventory data requires manual review");
+      }
+      const canonical = selection.map((selected) => {
+        const line2 = lines.find((candidate) => candidate.id === selected.orderItemId);
+        if (!line2 || line2.productId <= 0) throw new RefundRequestError(400, "Selected item is not a stock-restorable order line");
+        const available = line2.quantity - (reservations.quantities.get(line2.id) ?? 0);
+        if (selected.quantity > available) throw new RefundRequestError(400, "Selected quantity exceeds the quantity available to restore");
+        return { orderItemId: line2.id, productId: line2.productId, productName: line2.productName, quantity: selected.quantity };
+      });
       const [pending] = await tx.select({ total: sql`COALESCE(SUM(${refundsLogTable.amountGbp}), 0)` }).from(refundsLogTable).where(and(eq(refundsLogTable.orderId, orderId), eq(refundsLogTable.status, "pending")));
       const orderTotalMinor = moneyToMinor(order.totalGbp) ?? 0;
       const confirmedMinor = Math.round(Number(order.refundedAmountGbp) * 100);
@@ -237105,8 +237204,8 @@ router15.post("/admin/orders/:id/refund", async (req, res) => {
         status: "pending",
         reason: reason.trim(),
         notes: typeof notes === "string" && notes.trim() ? notes.trim() : null,
-        restoreInventory: restoreInventory ?? false,
-        lineItemsJson: lineItems ? JSON.stringify(lineItems) : null
+        restoreInventory: canonical.length > 0,
+        lineItemsJson: canonical.length ? JSON.stringify(canonical) : null
       }).returning();
       return created;
     });
@@ -237133,8 +237232,14 @@ router15.post("/admin/refunds/:id/confirm", async (req, res) => {
     return;
   }
   try {
+    const [refundLookup] = await db.select({ orderId: refundsLogTable.orderId }).from(refundsLogTable).where(eq(refundsLogTable.id, refundId)).limit(1);
+    if (!refundLookup) {
+      res.status(404).json({ error: "Refund not found" });
+      return;
+    }
     const result = await db.transaction(async (tx) => {
-      await tx.execute(sql`SELECT id FROM refunds_log WHERE id = ${refundId} FOR UPDATE`);
+      await tx.execute(sql`SELECT id FROM orders WHERE id = ${refundLookup.orderId} FOR UPDATE`);
+      await tx.execute(sql`SELECT id FROM refunds_log WHERE order_id = ${refundLookup.orderId} ORDER BY id FOR UPDATE`);
       const [refund] = await tx.select().from(refundsLogTable).where(eq(refundsLogTable.id, refundId)).limit(1);
       if (!refund) throw new RefundRequestError(404, "Refund not found");
       if (refund.status === "confirmed") {
@@ -237146,9 +237251,31 @@ router15.post("/admin/refunds/:id/confirm", async (req, res) => {
       if (refund.status !== "pending") {
         throw new RefundRequestError(409, "Only pending refunds can be confirmed");
       }
-      await tx.execute(sql`SELECT id FROM orders WHERE id = ${refund.orderId} FOR UPDATE`);
       const [order] = await tx.select().from(ordersTable).where(eq(ordersTable.id, refund.orderId)).limit(1);
       if (!order) throw new RefundRequestError(404, "Order not found");
+      await tx.execute(sql`SELECT id FROM order_items WHERE order_id = ${refund.orderId} ORDER BY id FOR UPDATE`);
+      const lines = await tx.select().from(orderItemsTable).where(eq(orderItemsTable.orderId, refund.orderId));
+      let currentItems = [];
+      if (refund.restoreInventory) {
+        const otherConfirmed = await tx.select({
+          status: refundsLogTable.status,
+          restoreInventory: refundsLogTable.restoreInventory,
+          lineItemsJson: refundsLogTable.lineItemsJson
+        }).from(refundsLogTable).where(and(eq(refundsLogTable.orderId, refund.orderId), eq(refundsLogTable.status, "confirmed")));
+        const current = resolveStoredRefundItems(lines, refund.lineItemsJson);
+        if (current.conflict || current.items.length === 0) {
+          throw new RefundRequestError(409, "Refund inventory selection is invalid");
+        }
+        const prior = reservedRefundQuantities(lines, otherConfirmed);
+        if (prior.conflict) throw new RefundRequestError(409, "Historical refund inventory data requires manual review");
+        for (const item of current.items) {
+          const line2 = lines.find((candidate) => candidate.id === item.orderItemId);
+          if (!line2 || item.quantity + (prior.quantities.get(item.orderItemId) ?? 0) > line2.quantity) {
+            throw new RefundRequestError(409, "Refund inventory selection would exceed the purchased quantity");
+          }
+        }
+        currentItems = current.items;
+      }
       const orderTotalMinor = moneyToMinor(order.totalGbp) ?? 0;
       const confirmedBeforeMinor = Math.round(Number(order.refundedAmountGbp) * 100);
       const refundMinor = moneyToMinor(refund.amountGbp) ?? 0;
@@ -237167,21 +237294,27 @@ router15.post("/admin/refunds/:id/confirm", async (req, res) => {
         refundedAmountGbp: minorToMoney(confirmedBeforeMinor + refundMinor),
         refundStatus: refundType
       }).where(eq(ordersTable.id, refund.orderId));
-      const lineItems = refund.lineItemsJson ? JSON.parse(refund.lineItemsJson) : [];
-      if (refund.restoreInventory && lineItems.length > 0) {
-        for (const item of lineItems) {
+      if (refund.restoreInventory && currentItems.length > 0) {
+        const productIds = [...new Set(currentItems.map((item) => item.productId))].sort((a, b) => a - b);
+        for (const productId of productIds) {
+          await tx.execute(sql`SELECT product_id FROM products_inventory WHERE product_id = ${productId} FOR UPDATE`);
+        }
+        for (const item of currentItems) {
           const [before] = await tx.select({ stockLevel: productsInventoryTable.stockLevel }).from(productsInventoryTable).where(eq(productsInventoryTable.productId, item.productId)).limit(1);
           const quantityBefore = before?.stockLevel ?? 0;
-          await tx.update(productsInventoryTable).set({ stockLevel: sql`${productsInventoryTable.stockLevel} + ${item.quantity}` }).where(eq(productsInventoryTable.productId, item.productId));
+          const [updatedInventory] = await tx.update(productsInventoryTable).set({ stockLevel: sql`${productsInventoryTable.stockLevel} + ${item.quantity}` }).where(eq(productsInventoryTable.productId, item.productId)).returning({ stockLevel: productsInventoryTable.stockLevel });
+          if (!updatedInventory) {
+            throw new RefundRequestError(409, `Inventory record is missing for ${item.productName}`);
+          }
           await tx.insert(inventoryAuditLogTable).values({
             productId: item.productId,
             productName: item.productName,
             changeType: "refund_restore",
             quantityBefore,
-            quantityAfter: quantityBefore + item.quantity,
+            quantityAfter: updatedInventory.stockLevel,
             quantityChange: item.quantity,
-            reason: `Stock restored after confirmed refund on order ${order.orderNumber}`,
-            referenceId: order.orderNumber,
+            reason: `Stock restored after confirmed refund #${refund.id} on order ${order.orderNumber}`,
+            referenceId: `${order.orderNumber}:refund:${refund.id}`,
             referenceType: "refund"
           });
         }
@@ -237240,6 +237373,29 @@ var RefundRequestError = class extends Error {
   }
   status;
 };
+function safeLineItems(value) {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value);
+    if (!Array.isArray(parsed)) return null;
+    const items = [];
+    for (const raw of parsed) {
+      if (!raw || typeof raw !== "object") return null;
+      const item = raw;
+      if (Number.isInteger(item.orderItemId) && Number.isInteger(item.productId) && typeof item.productName === "string" && Number.isInteger(item.quantity)) {
+        items.push({
+          orderItemId: Number(item.orderItemId),
+          productId: Number(item.productId),
+          productName: item.productName,
+          quantity: Number(item.quantity)
+        });
+      } else return null;
+    }
+    return items;
+  } catch {
+    return null;
+  }
+}
 var refunds_default = router15;
 
 // src/routes/admin/inventory-audit.ts

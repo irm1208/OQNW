@@ -39,6 +39,7 @@ type RefundRecord = {
   reason: string;
   notes: string | null;
   restoreInventory: boolean;
+  lineItems: { orderItemId: number; productId: number; productName: string; quantity: number }[] | null;
   confirmedAt: string | null;
   createdAt: string;
 };
@@ -262,6 +263,7 @@ export default function OrderDetail() {
   const [refundReason, setRefundReason] = useState("");
   const [refundNotes, setRefundNotes] = useState("");
   const [submittingRefund, setSubmittingRefund] = useState(false);
+  const [refundQuantities, setRefundQuantities] = useState<Record<number, number>>({});
   const [confirmingRefund, setConfirmingRefund] = useState<RefundRecord | null>(null);
   const [wallidRefundReference, setWallidRefundReference] = useState("");
   const [submittingConfirmation, setSubmittingConfirmation] = useState(false);
@@ -273,6 +275,21 @@ export default function OrderDetail() {
     enabled: !!orderId,
   });
   const orderRefunds = refundsData ?? [];
+  const reservedByOrderItem = orderRefunds
+    .filter((refund) => refund.status === "pending" || refund.status === "confirmed")
+    .reduce<Record<number, number>>((reserved, refund) => {
+      for (const item of refund.lineItems ?? []) {
+        if (Number.isInteger(item.orderItemId) && Number.isInteger(item.quantity) && item.quantity > 0) {
+          reserved[item.orderItemId] = (reserved[item.orderItemId] ?? 0) + item.quantity;
+        }
+      }
+      return reserved;
+    }, {});
+  const refundStockLines = (order?.items ?? []).filter((item) => item.productId > 0);
+  const refundHasInvalidQuantity = refundStockLines.some((item) => {
+    const selected = refundQuantities[item.id] ?? 0;
+    return !Number.isInteger(selected) || selected < 0 || selected > Math.max(0, item.quantity - (reservedByOrderItem[item.id] ?? 0));
+  });
 
   async function handleIssueRefund() {
     const amt = parseFloat(refundAmount);
@@ -286,6 +303,9 @@ export default function OrderDetail() {
           amountGbp: amt,
           reason: refundReason.trim(),
           notes: refundNotes.trim() || undefined,
+          lineItems: Object.entries(refundQuantities)
+            .filter(([, quantity]) => quantity > 0)
+            .map(([orderItemId, quantity]) => ({ orderItemId: Number(orderItemId), quantity })),
         }),
       });
       toast.success("Pending refund recorded. Process it in Wallid, then confirm it here.");
@@ -293,6 +313,7 @@ export default function OrderDetail() {
       setRefundAmount("");
       setRefundReason("");
       setRefundNotes("");
+      setRefundQuantities({});
       queryClient.invalidateQueries({ queryKey: refundsQueryKey });
       queryClient.invalidateQueries({ queryKey: getGetAdminOrderQueryKey(orderId) });
     } catch (error) {
@@ -793,6 +814,11 @@ export default function OrderDetail() {
                             Wallid: {r.wallidRefundReference}
                           </p>
                         )}
+                         {(r.lineItems?.length ?? 0) > 0 && (
+                           <p className="text-xs text-muted-foreground mt-1">
+                             Restore on confirmation: {r.lineItems!.map((item) => `${item.productName} × ${item.quantity}`).join(", ")}
+                           </p>
+                         )}
                       </div>
                       <div className="flex flex-col items-end gap-1 shrink-0">
                         <span className={`font-bold ${r.status === "confirmed" ? "text-red-600" : "text-foreground"}`}>
@@ -898,8 +924,8 @@ export default function OrderDetail() {
         onDispatched={() => queryClient.invalidateQueries({ queryKey: getGetAdminOrderQueryKey(orderId) })}
       />
 
-      <Dialog open={refundOpen} onOpenChange={(open) => { setRefundOpen(open); if (!open) { setRefundAmount(""); setRefundReason(""); setRefundNotes(""); } }}>
-        <DialogContent className="sm:max-w-md">
+      <Dialog open={refundOpen} onOpenChange={(open) => { setRefundOpen(open); if (!open) { setRefundAmount(""); setRefundReason(""); setRefundNotes(""); setRefundQuantities({}); } }}>
+        <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>Record Pending Refund — {order.orderNumber}</DialogTitle>
           </DialogHeader>
@@ -949,16 +975,43 @@ export default function OrderDetail() {
               <label className="text-sm font-medium">Internal Notes (optional)</label>
               <Textarea placeholder="Any additional notes for your records…" value={refundNotes} onChange={e => setRefundNotes(e.target.value)} rows={2} />
             </div>
-            <p className="text-xs text-muted-foreground">
-              Inventory is not changed from this form because no item quantities are selected.
-            </p>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Items to restore after Wallid confirmation</label>
+              <p className="text-xs text-muted-foreground">Set quantities to zero for a payment-only refund. Inventory is never restored until confirmation.</p>
+              {(order.items ?? []).map((item) => {
+                const reserved = reservedByOrderItem[item.id] ?? 0;
+                const available = Math.max(0, item.quantity - reserved);
+                if (item.productId <= 0) {
+                  return <p key={item.id} className="rounded border p-2 text-xs text-muted-foreground">{item.productName} × {item.quantity} — not restockable</p>;
+                }
+                return (
+                  <div key={item.id} className="grid grid-cols-[1fr_auto] gap-3 rounded border p-2 items-center">
+                    <div className="text-sm">
+                      <p className="font-medium">{item.productName}</p>
+                      <p className="text-xs text-muted-foreground">Purchased: {item.quantity} · Reserved/restored: {reserved} · Available: {available}</p>
+                    </div>
+                    <Input
+                      data-testid={`input-refund-quantity-${item.id}`}
+                      className="w-20"
+                      type="number"
+                      min={0}
+                      max={available}
+                      step={1}
+                      value={refundQuantities[item.id] ?? 0}
+                      onChange={(event) => setRefundQuantities((old) => ({ ...old, [item.id]: event.target.value === "" ? 0 : Number(event.target.value) }))}
+                      aria-label={`Restore quantity for ${item.productName}`}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setRefundOpen(false)}>Cancel</Button>
             <Button
               variant="destructive"
               onClick={handleIssueRefund}
-              disabled={submittingRefund || !refundAmount || !refundReason.trim() || parseFloat(refundAmount) <= 0}
+               disabled={submittingRefund || !refundAmount || !refundReason.trim() || parseFloat(refundAmount) <= 0 || refundHasInvalidQuantity}
             >
               {submittingRefund && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               Create Pending Refund
@@ -993,9 +1046,12 @@ export default function OrderDetail() {
                   </span>
                 </div>
                 <p className="mt-2 text-muted-foreground">{confirmingRefund.reason}</p>
+                {(confirmingRefund.lineItems?.length ?? 0) > 0 && (
+                  <p className="mt-2 text-muted-foreground">Items selected for restoration: {confirmingRefund.lineItems!.map((item) => `${item.productName} × ${item.quantity}`).join(", ")}</p>
+                )}
               </div>
               <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-900">
-                Confirm only after Wallid shows the refund as successfully sent. This action updates the order total and emails the customer.
+                Confirm only after Wallid shows the refund as successfully sent. This action updates the order total and emails the customer.{(confirmingRefund.lineItems?.length ?? 0) > 0 ? " The selected items above will be restored to inventory only after confirmation." : ""}
               </div>
               <div className="space-y-1">
                 <label className="text-sm font-medium">Wallid Refund Reference</label>
