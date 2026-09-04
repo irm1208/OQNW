@@ -218,10 +218,10 @@ export default function Orders() {
       )}
 
       <div className="border rounded-md bg-card">
-        <Table>
+        <Table className="table-fixed sm:table-auto">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[44px]">
+              <TableHead className="hidden w-[44px] sm:table-cell">
                 <Checkbox
                   checked={allPageSelected}
                   data-state={somePageSelected && !allPageSelected ? "indeterminate" : undefined}
@@ -229,12 +229,12 @@ export default function Orders() {
                   aria-label="Select all on this page"
                 />
               </TableHead>
-              <TableHead>Order #</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Customer</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Total</TableHead>
-              <TableHead className="w-[80px]"></TableHead>
+              <TableHead className="w-[52%] sm:w-auto">Order</TableHead>
+              <TableHead className="hidden sm:table-cell">Date</TableHead>
+              <TableHead className="hidden sm:table-cell">Customer</TableHead>
+              <TableHead className="w-[34%] sm:w-auto">Status</TableHead>
+              <TableHead className="hidden text-right sm:table-cell">Total</TableHead>
+              <TableHead className="w-[44px] sm:w-[80px]"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -258,29 +258,37 @@ export default function Orders() {
                   onClick={() => toggleOne(order.id)}
                   style={{ cursor: "pointer" }}
                 >
-                  <TableCell onClick={(e) => e.stopPropagation()}>
+                  <TableCell className="hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
                     <Checkbox
                       checked={selectedIds.has(order.id)}
                       onCheckedChange={() => toggleOne(order.id)}
                       aria-label={`Select order ${order.orderNumber}`}
                     />
                   </TableCell>
-                  <TableCell className="font-medium">
-                    <div className="flex items-center gap-2">
-                      {order.orderNumber}
+                  <TableCell className="min-w-0 font-medium">
+                    <div className="flex min-w-0 items-center gap-1.5">
+                      <span className="truncate" title={order.orderNumber}>{order.orderNumber}</span>
                       {notifiedOrderIds.has(order.id) && <AdminNotificationBadge type="order" itemId={order.id} />}
                     </div>
+                    <div className="mt-1 space-y-0.5 text-[10px] leading-4 font-normal text-muted-foreground sm:hidden">
+                      <div className="truncate">{order.customerName}</div>
+                      <div className="flex items-center gap-1.5">
+                        <span>{new Date(order.createdAt).toLocaleDateString("en-GB")}</span>
+                        <span aria-hidden="true">·</span>
+                        <span className="font-semibold text-foreground">{formatCurrency(order.totalGbp)}</span>
+                      </div>
+                    </div>
                   </TableCell>
-                  <TableCell>{new Date(order.createdAt).toLocaleDateString("en-GB")}</TableCell>
-                  <TableCell>
+                  <TableCell className="hidden sm:table-cell">{new Date(order.createdAt).toLocaleDateString("en-GB")}</TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     <div className="flex flex-col">
                       <span>{order.customerName}</span>
                       <span className="text-xs text-muted-foreground">{order.customerEmail}</span>
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="min-w-0">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <Badge variant="outline" className={getStatusColor(order.status)}>
+                      <Badge variant="outline" className={`max-w-full truncate px-1.5 text-[10px] sm:px-2.5 sm:text-xs ${getStatusColor(order.status)}`}>
                         {STATUS_LABELS[order.status] ?? (order.status.charAt(0).toUpperCase() + order.status.slice(1))}
                       </Badge>
                       {(order.fraudScore ?? 0) >= 25 && !(order as any).fraudReviewed && (
@@ -299,9 +307,9 @@ export default function Orders() {
                       )}
                     </div>
                   </TableCell>
-                  <TableCell className="text-right font-medium">{formatCurrency(order.totalGbp)}</TableCell>
-                  <TableCell onClick={(e) => e.stopPropagation()}>
-                    <Button variant="ghost" size="icon" asChild>
+                  <TableCell className="hidden text-right font-medium sm:table-cell">{formatCurrency(order.totalGbp)}</TableCell>
+                  <TableCell className="px-1 sm:px-2" onClick={(e) => e.stopPropagation()}>
+                    <Button variant="ghost" size="icon" className="h-9 w-9" asChild>
                       <Link href={`/orders/${order.id}`}>
                         <Eye className="w-4 h-4" />
                       </Link>
