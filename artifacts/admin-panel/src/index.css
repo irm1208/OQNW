@@ -306,16 +306,16 @@
       grid-column: 1 / -1;
     }
 
-    .admin-page [class*="min-w-"] {
+    [data-admin-content] [class*="min-w-"] {
       min-width: 0 !important;
     }
 
-    .admin-page [class*="max-w-"],
-    .admin-page [class*="w-["] {
+    [data-admin-content] [class*="max-w-"],
+    [data-admin-content] [class*="w-["] {
       max-width: 100% !important;
     }
 
-    .admin-page :is([role="tablist"], .overflow-x-auto, .overflow-auto) {
+    [data-admin-content] :is([role="tablist"], .overflow-x-auto, .overflow-auto) {
       max-width: 100%;
     }
 
@@ -391,7 +391,7 @@
       gap: 1rem;
     }
 
-    .admin-page table :is(th, td) {
+    [data-admin-content] table :is(th, td) {
       padding-top: 0.5rem !important;
       padding-bottom: 0.5rem !important;
       padding-left: 0.625rem !important;
@@ -402,7 +402,7 @@
       overflow-wrap: normal;
     }
 
-    .admin-page table {
+    [data-admin-content] table {
       width: 100% !important;
       min-width: 100% !important;
       max-width: 100% !important;
@@ -411,26 +411,38 @@
 
     /* Keep mobile tables readable without forcing the page sideways.
        Page-specific responsive tables can override these visibility rules. */
-    .admin-page table:not(.mobile-orders-table) :is(th, td):nth-child(n + 4):not(:last-child) {
+    [data-admin-content] table:not(.mobile-orders-table) :is(th, td):nth-child(n + 4):not(:last-child) {
       display: none;
     }
 
-    .admin-page table :is(th, td):last-child {
+    [data-admin-content] table :is(th, td):last-child {
       width: 2.75rem !important;
     }
 
-    .admin-page table td > * {
+    [data-admin-content] .admin-users-table :is(th, td):first-child {
+      width: auto !important;
+    }
+
+    [data-admin-content] .admin-users-table :is(th, td):nth-child(3) {
+      width: 5.5rem !important;
+    }
+
+    [data-admin-content] .admin-users-table :is(th, td):last-child {
+      width: 5rem !important;
+    }
+
+    [data-admin-content] table td > * {
       max-width: 100%;
       min-width: 0;
     }
 
-    .admin-page table :is(code, pre, a, span, p) {
+    [data-admin-content] table :is(code, pre, a, span, p) {
       overflow-wrap: break-word;
       word-break: normal;
     }
 
-    .admin-page table code,
-    .admin-page table pre {
+    [data-admin-content] table code,
+    [data-admin-content] table pre {
       white-space: pre-wrap;
       word-break: break-all;
     }

@@ -275,15 +275,15 @@ export default function Users() {
             <Button className="mt-4" onClick={openCreate}><Plus className="w-4 h-4 mr-2" /> Add First Admin</Button>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <div className="overflow-hidden sm:overflow-x-auto">
+            <table className="admin-users-table w-full text-sm">
               <thead>
                 <tr className="border-b">
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Name</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Email</th>
+                  <th className="hidden text-left px-4 py-3 font-medium text-muted-foreground sm:table-cell">Email</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Role</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Last Login</th>
+                  <th className="hidden text-left px-4 py-3 font-medium text-muted-foreground sm:table-cell">Status</th>
+                  <th className="hidden text-left px-4 py-3 font-medium text-muted-foreground sm:table-cell">Last Login</th>
                   <th className="text-right px-4 py-3 font-medium text-muted-foreground">Actions</th>
                 </tr>
               </thead>
@@ -291,8 +291,8 @@ export default function Users() {
                 {users.map(u => (
                   <tr key={u.id} className="border-b last:border-0 hover:bg-muted/30">
                     <td className="px-4 py-3 font-medium">{u.name}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{u.email}</td>
-                    <td className="px-4 py-3">
+                    <td className="hidden px-4 py-3 text-muted-foreground sm:table-cell">{u.email}</td>
+                    <td className="hidden px-4 py-3 sm:table-cell">
                       <Badge variant="outline" className={ROLE_STYLE[u.role]}>{u.role}</Badge>
                     </td>
                     <td className="px-4 py-3">
@@ -302,7 +302,7 @@ export default function Users() {
                           : <><XCircle className="w-4 h-4 text-muted-foreground" /><span className="text-muted-foreground text-xs">Disabled</span></>}
                       </button>
                     </td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground">{u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleString() : "Never"}</td>
+                    <td className="hidden px-4 py-3 text-xs text-muted-foreground sm:table-cell">{u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleString() : "Never"}</td>
                     <td className="px-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(u)}>
