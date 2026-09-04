@@ -26,10 +26,9 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  Legend,
+  CartesianGrid,
 } from "recharts";
 import {
-  Loader2,
   TrendingUp,
   Package,
   Users,
@@ -40,44 +39,105 @@ import {
 
 type Period = 7 | 30 | 90 | 365;
 
-const PERIOD_LABELS: Record<Period, string> = { 7: "7d", 30: "30d", 90: "90d", 365: "1y" };
+const PERIOD_LABELS: Record<Period, string> = { 7: "7D", 30: "30D", 90: "90D", 365: "1Y" };
 
 const STATUS_COLORS: Record<string, string> = {
-  pending: "#d9970f",
-  processing: "#1b5cb5",
-  shipped: "#6a9bdc",
-  delivered: "#21a366",
-  cancelled: "#d94f45",
-  returned: "#64748b",
+  pending: "hsl(43, 86%, 45%)",
+  processing: "hsl(var(--primary))",
+  shipped: "hsl(214, 58%, 62%)",
+  delivered: "hsl(152, 66%, 38%)",
+  cancelled: "hsl(var(--destructive))",
+  returned: "hsl(var(--muted-foreground))",
 };
 
 const CATEGORY_COLORS = [
-  "#1b5cb5",
-  "#6a9bdc",
-  "#0d2565",
-  "#a7c4f2",
-  "#21a366",
-  "#d9970f",
-  "#dbe8fb",
-  "#64748b",
+  "hsl(var(--primary))",
+  "hsl(214, 58%, 62%)",
+  "hsl(223, 77%, 22%)",
+  "hsl(214, 75%, 82%)",
+  "hsl(152, 66%, 38%)",
+  "hsl(43, 86%, 45%)",
+  "hsl(216, 100%, 92%)",
+  "hsl(var(--muted-foreground))",
 ];
 
 function PeriodSelector({ value, onChange }: { value: Period; onChange: (p: Period) => void }) {
   return (
-    <div className="flex gap-1 bg-muted rounded-full p-1">
+    <div className="inline-flex items-center rounded-lg border border-border bg-muted/20 p-1 shadow-sm">
       {(Object.keys(PERIOD_LABELS) as unknown as Period[]).map((p) => (
         <button
           key={p}
           onClick={() => onChange(p)}
-          className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-colors ${
-            value === p
-              ? "bg-primary text-primary-foreground shadow-sm"
-              : "text-muted-foreground hover:text-foreground"
+          className={`relative px-4 py-1.5 text-xs font-bold tracking-wide rounded-md transition-all duration-200 ${
+            value == p
+              ? "text-foreground shadow-sm bg-background border border-border/50"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted/60 border border-transparent"
           }`}
         >
           {PERIOD_LABELS[p]}
         </button>
       ))}
+    </div>
+  );
+}
+
+const CustomTooltip = ({ active, payload, label, prefix = "", suffix = "", isDateLabel = false }: any) => {
+  if (active && payload && payload.length) {
+    const displayLabel = isDateLabel && label
+      ? new Date(label).toLocaleDateString("en-GB", { month: "short", day: "numeric", year: "numeric" })
+      : label;
+
+    return (
+      <div className="bg-card/95 backdrop-blur-md border border-border/50 rounded-lg shadow-xl p-3 text-sm animate-in fade-in zoom-in-95 duration-200">
+        {displayLabel && (
+          <div className="text-muted-foreground mb-2 font-bold text-[10px] uppercase tracking-wider">
+            {displayLabel}
+          </div>
+        )}
+        <div className="space-y-1.5">
+          {payload.map((entry: any, index: number) => (
+            <div key={index} className="flex items-center gap-2">
+              <div
+                className="w-2.5 h-2.5 rounded-full shadow-sm"
+                style={{ backgroundColor: entry.color || entry.payload?.fill }}
+              />
+              <span className="text-muted-foreground font-medium capitalize">{entry.name}:</span>
+              <span className="font-bold text-foreground ml-auto pl-4">
+                {prefix}{typeof entry.value === 'number' ? entry.value.toLocaleString('en-GB') : entry.value}{suffix}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
+
+function DashboardSkeleton() {
+  return (
+    <div className="admin-page space-y-6 animate-pulse">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <div className="space-y-2">
+          <div className="h-8 w-40 bg-muted rounded-lg"></div>
+          <div className="h-4 w-64 bg-muted/50 rounded-lg"></div>
+        </div>
+        <div className="h-10 w-48 bg-muted rounded-lg"></div>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className="h-[120px] bg-card rounded-xl border border-border/50"></div>
+        ))}
+      </div>
+      <div className="grid gap-6 md:grid-cols-12">
+        <div className="h-[360px] md:col-span-8 bg-card rounded-xl border border-border/50"></div>
+        <div className="h-[360px] md:col-span-4 bg-card rounded-xl border border-border/50"></div>
+      </div>
+      <div className="grid gap-6 md:grid-cols-12">
+        <div className="h-[320px] md:col-span-4 bg-card rounded-xl border border-border/50"></div>
+        <div className="h-[320px] md:col-span-4 bg-card rounded-xl border border-border/50"></div>
+        <div className="h-[320px] md:col-span-4 bg-card rounded-xl border border-border/50"></div>
+      </div>
     </div>
   );
 }
@@ -117,11 +177,7 @@ export default function Dashboard() {
     statsLoading || chartLoading || productsLoading || customersLoading || statusLoading || categoryLoading;
 
   if (isLoading) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   if (!stats) return null;
@@ -132,102 +188,103 @@ export default function Dashboard() {
       value: formatCurrency(stats.revenueToday),
       icon: TrendingUp,
       sub: `${stats.ordersToday} order${stats.ordersToday !== 1 ? "s" : ""} today`,
+      primary: true,
     },
     {
       title: "Total Revenue",
       value: formatCurrency(stats.totalRevenue),
       icon: CreditCard,
-      sub: null,
     },
     {
       title: "Total Orders",
       value: stats.totalOrders.toLocaleString(),
       icon: ShoppingCart,
-      sub: null,
     },
     {
       title: "Customers",
       value: stats.totalCustomers.toLocaleString(),
       icon: Users,
-      sub: null,
     },
     {
       title: "Avg Order Value",
       value: formatCurrency(stats.avgOrderValue),
       icon: Package,
-      sub: null,
     },
     {
       title: "Low Stock Alerts",
       value: stats.lowStockCount.toString(),
       icon: AlertCircle,
-      sub: null,
       danger: stats.lowStockCount > 0,
     },
   ];
 
+  const totalOrdersStatus = orderStatus?.reduce((acc, curr) => acc + curr.count, 0) || 0;
+
   return (
     <div className="admin-page space-y-6">
-      <div className="page-header flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h2 className="text-2xl font-bold tracking-tight">Overview</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">Overview</h2>
+          <p className="text-sm text-muted-foreground mt-1">Monitor your store's performance and operations.</p>
+        </div>
         <PeriodSelector value={period} onChange={setPeriod} />
       </div>
 
       {/* Stat Cards */}
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        {statCards.map((card, i) => (
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        {statCards.map((card) => (
           <Card
             key={card.title}
-            className={
-              i === 0
-                ? "border-[1.5px] border-dashed border-primary bg-accent/60"
-                : undefined
-            }
+            className={`relative overflow-hidden group hover:border-primary/30 transition-all duration-300 ${
+              card.primary ? "border-primary/20 bg-primary/[0.02]" : "border-border/50"
+            }`}
           >
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-semibold text-muted-foreground">
-                {card.title}
-              </CardTitle>
-              <span
-                className={`grid h-8 w-8 place-items-center rounded-full ${
-                  card.danger
-                    ? "bg-destructive/10 text-destructive"
-                    : i === 0
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-accent text-primary"
-                }`}
-              >
-                <card.icon className="w-4 h-4" />
-              </span>
-            </CardHeader>
-            <CardContent>
-              <div
-                className={`font-mono text-2xl font-bold ${card.danger ? "text-destructive" : ""}`}
-              >
-                {card.value}
+            <CardContent className="p-5 flex flex-col justify-between h-full">
+              <div className="flex justify-between items-start mb-4">
+                <div className="space-y-1">
+                  <p className="text-[11px] font-semibold text-muted-foreground tracking-widest uppercase">
+                    {card.title}
+                  </p>
+                  <div className={`text-2xl font-bold tracking-tight ${card.danger ? "text-destructive" : "text-foreground"}`}>
+                    {card.value}
+                  </div>
+                </div>
+                <div className={`p-2.5 rounded-xl shadow-sm border ${
+                  card.danger ? "bg-destructive/10 text-destructive border-destructive/20" :
+                  card.primary ? "bg-primary/10 text-primary border-primary/20" :
+                  "bg-muted/50 text-muted-foreground border-border/50 group-hover:bg-primary/5 group-hover:text-primary group-hover:border-primary/20"
+                } transition-colors duration-300`}>
+                  <card.icon className="w-4 h-4" strokeWidth={2.5} />
+                </div>
               </div>
-              {card.sub && <p className="text-xs text-muted-foreground mt-1">{card.sub}</p>}
+              <div className="text-xs text-muted-foreground font-medium">
+                {card.sub || <span className="opacity-0">-</span>}
+              </div>
             </CardContent>
+            <div className={`absolute bottom-0 left-0 h-0.5 w-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left ${
+              card.danger ? "bg-destructive" : "bg-primary"
+            }`} />
           </Card>
         ))}
       </div>
 
       {/* Revenue + Order Status */}
-      <div className="grid gap-6 md:grid-cols-7">
-        <Card className="md:col-span-5">
-          <CardHeader>
-            <CardTitle>Revenue</CardTitle>
+      <div className="grid gap-6 md:grid-cols-12">
+        <Card className="md:col-span-8 border-border/50 shadow-sm flex flex-col">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base font-semibold text-foreground tracking-tight">Revenue Overview</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="h-[260px]">
+          <CardContent className="flex-1">
+            <div className="h-[280px] w-full mt-2">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={revenueData ?? []} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <AreaChart data={revenueData ?? []} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                      <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity={0.25} />
+                      <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity={0.01} />
                     </linearGradient>
                   </defs>
+                  <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="hsl(var(--border))" opacity={0.5} />
                   <XAxis
                     dataKey="date"
                     tickFormatter={fmtDate}
@@ -235,6 +292,8 @@ export default function Dashboard() {
                     fontSize={11}
                     tickLine={false}
                     axisLine={false}
+                    dy={10}
+                    minTickGap={20}
                   />
                   <YAxis
                     tickFormatter={formatShort}
@@ -242,29 +301,18 @@ export default function Dashboard() {
                     fontSize={11}
                     tickLine={false}
                     axisLine={false}
+                    dx={-10}
                   />
-                  <Tooltip
-                    formatter={(value: number) => [formatCurrency(value), "Revenue"]}
-                    labelFormatter={(label) =>
-                      new Date(label as string).toLocaleDateString("en-GB", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                      })
-                    }
-                    contentStyle={{
-                      backgroundColor: "hsl(var(--card))",
-                      border: "1px solid hsl(var(--border))",
-                      borderRadius: "8px",
-                    }}
-                  />
+                  <Tooltip content={<CustomTooltip prefix="£" isDateLabel />} cursor={{ stroke: 'hsl(var(--muted-foreground))', strokeWidth: 1, strokeDasharray: '4 4' }} />
                   <Area
                     type="monotone"
                     dataKey="revenue"
+                    name="Revenue"
                     stroke="hsl(var(--primary))"
-                    strokeWidth={2}
+                    strokeWidth={3}
                     fillOpacity={1}
                     fill="url(#colorRev)"
+                    activeDot={{ r: 6, strokeWidth: 0, fill: "hsl(var(--primary))" }}
                   />
                 </AreaChart>
               </ResponsiveContainer>
@@ -272,12 +320,12 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Order Status</CardTitle>
+        <Card className="md:col-span-4 border-border/50 shadow-sm flex flex-col">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base font-semibold text-foreground tracking-tight">Order Status</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="h-[200px]">
+          <CardContent className="flex-1 flex flex-col">
+            <div className="relative h-[200px] w-full mb-6 mt-2">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -286,37 +334,37 @@ export default function Dashboard() {
                     nameKey="status"
                     cx="50%"
                     cy="50%"
-                    innerRadius={50}
-                    outerRadius={80}
-                    paddingAngle={2}
+                    innerRadius={65}
+                    outerRadius={85}
+                    paddingAngle={4}
+                    stroke="none"
                   >
                     {(orderStatus ?? []).map((entry) => (
                       <Cell
                         key={entry.status}
-                        fill={STATUS_COLORS[entry.status] ?? "#94a3b8"}
+                        fill={STATUS_COLORS[entry.status] ?? "hsl(var(--muted-foreground))"}
                       />
                     ))}
                   </Pie>
-                  <Tooltip
-                    formatter={(val: number, name: string) => [val, name]}
-                    contentStyle={{
-                      backgroundColor: "hsl(var(--card))",
-                      border: "1px solid hsl(var(--border))",
-                      borderRadius: "8px",
-                    }}
-                  />
+                  <Tooltip content={<CustomTooltip />} />
                 </PieChart>
               </ResponsiveContainer>
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span className="text-3xl font-bold tracking-tight text-foreground">{totalOrdersStatus}</span>
+                <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider mt-1">Orders</span>
+              </div>
             </div>
-            <div className="flex flex-wrap gap-x-3 gap-y-1 mt-2">
+            <div className="grid grid-cols-1 gap-2 mt-auto">
               {(orderStatus ?? []).map((s) => (
-                <div key={s.status} className="flex items-center gap-1 text-xs">
-                  <span
-                    className="w-2 h-2 rounded-full inline-block"
-                    style={{ background: STATUS_COLORS[s.status] ?? "#94a3b8" }}
-                  />
-                  <span className="text-muted-foreground capitalize">{s.status}</span>
-                  <span className="font-medium">{s.count}</span>
+                <div key={s.status} className="flex min-w-0 items-center justify-between gap-3 text-sm group">
+                  <div className="flex min-w-0 items-center gap-2">
+                    <span
+                      className="w-2.5 h-2.5 rounded-full inline-block shadow-sm group-hover:scale-125 transition-transform"
+                      style={{ background: STATUS_COLORS[s.status] ?? "hsl(var(--muted-foreground))" }}
+                    />
+                    <span className="truncate text-muted-foreground capitalize font-medium">{s.status.replaceAll("_", " ")}</span>
+                  </div>
+                  <span className="font-bold text-foreground">{s.count}</span>
                 </div>
               ))}
             </div>
@@ -324,19 +372,20 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      {/* New Customers + Revenue by Category */}
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>New Customers</CardTitle>
+      {/* New Customers + Revenue by Category + Top Products */}
+      <div className="grid gap-6 md:grid-cols-12">
+        <Card className="md:col-span-4 border-border/50 shadow-sm flex flex-col">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base font-semibold text-foreground tracking-tight">New Customers</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="h-[220px]">
+          <CardContent className="flex-1">
+            <div className="h-[240px] w-full mt-2">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={newCustomers ?? []}
-                  margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                  margin={{ top: 10, right: 0, left: -20, bottom: 0 }}
                 >
+                  <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="hsl(var(--border))" opacity={0.5} />
                   <XAxis
                     dataKey="date"
                     tickFormatter={fmtDate}
@@ -344,6 +393,8 @@ export default function Dashboard() {
                     fontSize={11}
                     tickLine={false}
                     axisLine={false}
+                    dy={10}
+                    minTickGap={20}
                   />
                   <YAxis
                     allowDecimals={false}
@@ -351,22 +402,17 @@ export default function Dashboard() {
                     fontSize={11}
                     tickLine={false}
                     axisLine={false}
+                    dx={-10}
                   />
-                  <Tooltip
-                    formatter={(val: number) => [val, "New Customers"]}
-                    labelFormatter={fmtDate}
-                    contentStyle={{
-                      backgroundColor: "hsl(var(--card))",
-                      border: "1px solid hsl(var(--border))",
-                      borderRadius: "8px",
-                    }}
-                  />
+                  <Tooltip content={<CustomTooltip isDateLabel />} cursor={{ stroke: 'hsl(var(--muted-foreground))', strokeWidth: 1, strokeDasharray: '4 4' }} />
                   <Line
                     type="monotone"
                     dataKey="newCustomers"
-                    stroke="#21a366"
-                    strokeWidth={2}
+                    name="Customers"
+                    stroke="hsl(152, 66%, 38%)"
+                    strokeWidth={3}
                     dot={false}
+                    activeDot={{ r: 6, strokeWidth: 0, fill: "hsl(152, 66%, 38%)" }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -374,17 +420,17 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Revenue by Category</CardTitle>
+        <Card className="md:col-span-4 border-border/50 shadow-sm flex flex-col">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base font-semibold text-foreground tracking-tight">Revenue by Category</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="h-[220px]">
+          <CardContent className="flex-1">
+            <div className="h-[240px] w-full mt-2">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={revenueByCategory ?? []}
                   layout="vertical"
-                  margin={{ top: 0, right: 16, left: 0, bottom: 0 }}
+                  margin={{ top: 0, right: 0, left: -20, bottom: 0 }}
                 >
                   <XAxis
                     type="number"
@@ -393,6 +439,7 @@ export default function Dashboard() {
                     fontSize={11}
                     tickLine={false}
                     axisLine={false}
+                    dx={-10}
                   />
                   <YAxis
                     type="category"
@@ -406,15 +453,8 @@ export default function Dashboard() {
                       v.length > 14 ? v.slice(0, 13) + "…" : v
                     }
                   />
-                  <Tooltip
-                    formatter={(val: number) => [formatCurrency(val), "Revenue"]}
-                    contentStyle={{
-                      backgroundColor: "hsl(var(--card))",
-                      border: "1px solid hsl(var(--border))",
-                      borderRadius: "8px",
-                    }}
-                  />
-                  <Bar dataKey="revenue" radius={[0, 4, 4, 0]}>
+                  <Tooltip content={<CustomTooltip prefix="£" />} cursor={{ fill: 'hsl(var(--muted))', opacity: 0.4 }} />
+                  <Bar dataKey="revenue" name="Revenue" radius={[0, 4, 4, 0]} barSize={16}>
                     {(revenueByCategory ?? []).map((_, i) => (
                       <Cell key={i} fill={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />
                     ))}
@@ -424,35 +464,44 @@ export default function Dashboard() {
             </div>
           </CardContent>
         </Card>
-      </div>
 
-      {/* Top Products */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Top Products</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="divide-y">
-            {(topProducts ?? []).map((product, i) => (
-              <div key={product.productId} className="flex items-center py-3 gap-4">
-                <div className="w-7 h-7 rounded-full bg-accent flex items-center justify-center shrink-0">
-                  <span className="text-xs font-bold text-primary">{i + 1}</span>
+        <Card className="md:col-span-4 border-border/50 shadow-sm flex flex-col">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base font-semibold text-foreground tracking-tight">Top Products</CardTitle>
+          </CardHeader>
+          <CardContent className="flex-1">
+            <div className="space-y-3 mt-2">
+              {(topProducts ?? []).slice(0, 5).map((product, i) => (
+                <div key={product.productId} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors group">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 font-bold text-[11px] shadow-sm ${
+                    i === 0 ? "bg-amber-100 text-amber-700 border border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800" :
+                    i === 1 ? "bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700" :
+                    i === 2 ? "bg-orange-100 text-orange-800 border border-orange-200 dark:bg-orange-900/30 dark:text-orange-400 dark:border-orange-800" :
+                    "bg-muted text-muted-foreground border border-border/50"
+                  }`}>
+                    {i + 1}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold truncate text-foreground group-hover:text-primary transition-colors">{product.productName}</p>
+                    <p className="text-[11px] font-medium text-muted-foreground mt-0.5">{product.totalSold} units sold</p>
+                  </div>
+                  <div className="font-mono text-sm font-bold tracking-tight text-foreground">
+                    {formatCurrency(product.totalRevenue)}
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{product.productName}</p>
-                  <p className="text-xs text-muted-foreground">{product.totalSold} units sold</p>
+              ))}
+              {(topProducts ?? []).length === 0 && (
+                <div className="flex flex-col items-center justify-center h-[200px] text-muted-foreground space-y-3">
+                  <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
+                    <Package className="w-6 h-6 opacity-40" />
+                  </div>
+                  <p className="text-sm font-medium">No products sold yet</p>
                 </div>
-                <div className="font-mono text-sm font-semibold text-right">
-                  {formatCurrency(product.totalRevenue)}
-                </div>
-              </div>
-            ))}
-            {(topProducts ?? []).length === 0 && (
-              <p className="text-sm text-muted-foreground text-center py-8">No product data yet</p>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
