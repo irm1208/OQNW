@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { Link, useLocation, Redirect } from "wouter";
 import { getAdminMeQueryKey, useAdminLogout, useAdminMe } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -135,9 +135,7 @@ function BellButton() {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const criticalCount = (alerts ?? []).filter(
-    (a) => a.severity === "danger" || a.severity === "warning",
-  ).length;
+  const notificationCount = alerts?.length ?? 0;
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -158,9 +156,9 @@ function BellButton() {
         className="relative"
       >
         <Bell className="w-5 h-5" />
-        {criticalCount > 0 && (
+        {notificationCount > 0 && (
           <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center px-1">
-            {criticalCount > 99 ? "99+" : criticalCount}
+            {notificationCount > 99 ? "99+" : notificationCount}
           </span>
         )}
       </Button>
@@ -178,6 +176,25 @@ function NavGroups({
   location: string;
   onNavigate?: () => void;
 }) {
+  const { data: alerts } = useAlerts();
+  const notificationCounts = useMemo(() => {
+    const counts: Record<string, number> = {
+      "/alerts": alerts?.length ?? 0,
+    };
+    const hrefByType: Record<AdminAlert["type"], string> = {
+      order: "/orders",
+      return: "/returns",
+      stock: "/stock-alerts",
+      cart: "/abandoned-carts",
+      fraud: "/fraud",
+    };
+    for (const alert of alerts ?? []) {
+      const href = hrefByType[alert.type];
+      counts[href] = (counts[href] ?? 0) + 1;
+    }
+    return counts;
+  }, [alerts]);
+
   return (
     <>
       {groups.map((group) => (
@@ -188,6 +205,7 @@ function NavGroups({
           <div className="space-y-0.5">
             {group.items.map((item) => {
               const isActive = location.startsWith(item.href);
+              const notificationCount = notificationCounts[item.href] ?? 0;
               return (
                 <Link
                   key={item.href}
@@ -200,7 +218,15 @@ function NavGroups({
                   }`}
                 >
                   <item.icon className="w-4 h-4 shrink-0" />
-                  {item.label}
+                   <span className="min-w-0 flex-1 truncate">{item.label}</span>
+                   {notificationCount > 0 && (
+                     <span
+                       aria-label={`${notificationCount} notification${notificationCount === 1 ? "" : "s"}`}
+                       className="min-w-[18px] h-[18px] rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center px-1"
+                     >
+                       {notificationCount > 99 ? "99+" : notificationCount}
+                     </span>
+                   )}
                 </Link>
               );
             })}
