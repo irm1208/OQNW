@@ -9,6 +9,7 @@ import { seedProductsCatalog } from "./lib/seed-catalog";
 import { retireRemovedProducts } from "./lib/retiredProducts";
 import { startCryptoReconciliationJob } from "./lib/cryptoReconciliationJob";
 import { startWallidReconciliationJob } from "./lib/wallidReconciliationJob";
+import { startAdminAlertReadCleanupJob } from "./lib/adminAlertReadCleanupJob";
 
 const rawPort = process.env["PORT"];
 
@@ -35,6 +36,7 @@ app.listen(port, (err) => {
   startReviewRequestJob();
   startCryptoReconciliationJob();
   startWallidReconciliationJob();
+  startAdminAlertReadCleanupJob();
   // Seed catalog first (reviews depend on published products existing)
   seedProductsCatalog()
     .then(async (r) => {

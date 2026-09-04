@@ -1,4 +1,12 @@
-import { pgTable, serial, integer, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  serial,
+  integer,
+  text,
+  timestamp,
+  uniqueIndex,
+  index,
+} from "drizzle-orm/pg-core";
 import { adminUsersTable } from "./admin_users";
 
 export const adminAlertReadsTable = pgTable("admin_alert_reads", {
@@ -13,6 +21,7 @@ export const adminAlertReadsTable = pgTable("admin_alert_reads", {
     table.alertId,
     table.alertCreatedAt,
   ),
+  index("admin_alert_reads_cleanup_idx").on(table.readAt, table.id),
 ]);
 
 export type AdminAlertRead = typeof adminAlertReadsTable.$inferSelect;
