@@ -214196,6 +214196,7 @@ var schema_exports = {};
 __export(schema_exports, {
   ADMIN_ROLES: () => ADMIN_ROLES,
   abandonedCartsTable: () => abandonedCartsTable,
+  adminAlertReadsTable: () => adminAlertReadsTable,
   adminAuditEventsTable: () => adminAuditEventsTable,
   adminAuthChallengesTable: () => adminAuthChallengesTable,
   adminLoginAttemptsTable: () => adminLoginAttemptsTable,
@@ -226270,6 +226271,21 @@ var adminAuditEventsTable = pgTable("admin_audit_events", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
 });
 
+// ../../lib/db/src/schema/admin_alert_reads.ts
+var adminAlertReadsTable = pgTable("admin_alert_reads", {
+  id: serial("id").primaryKey(),
+  adminUserId: integer("admin_user_id").notNull().references(() => adminUsersTable.id, { onDelete: "cascade" }),
+  alertId: text("alert_id").notNull(),
+  alertCreatedAt: timestamp("alert_created_at", { withTimezone: true }).notNull(),
+  readAt: timestamp("read_at", { withTimezone: true }).notNull().defaultNow()
+}, (table) => [
+  uniqueIndex("admin_alert_reads_user_alert_event_idx").on(
+    table.adminUserId,
+    table.alertId,
+    table.alertCreatedAt
+  )
+]);
+
 // ../../lib/db/src/schema/crypto_payment_attempts.ts
 var cryptoPaymentAttemptsTable = pgTable(
   "crypto_payment_attempts",
@@ -227346,11 +227362,12 @@ async function enforceSecureAdminSession(req, res, next) {
     res.status(401).json({ error: "Not authenticated" });
     return;
   }
-  if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method) && !isRecentSecureAdminSession(req)) {
+  if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method) && !(req.method === "POST" && /^\/alerts\/[^/]+\/read$/.test(req.path)) && !isRecentSecureAdminSession(req)) {
     res.status(401).json({ error: "Recent authentication required", requiresRecentAuth: true });
     return;
   }
   res.locals.adminAuthenticated = true;
+  res.locals.adminEmail = parseSecureAdminSession(req)?.email ?? null;
   next();
 }
 function getSecureAdminSession(req) {
@@ -244072,6 +244089,12 @@ var abandonedCarts_default = router34;
 var import_express35 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router35 = (0, import_express35.Router)();
+async function getCurrentAdminId(res) {
+  const email3 = typeof res.locals.adminEmail === "string" ? res.locals.adminEmail : null;
+  if (!email3) return null;
+  const [admin] = await db.select({ id: adminUsersTable.id }).from(adminUsersTable).where(and(eq(adminUsersTable.email, email3), eq(adminUsersTable.isActive, true))).limit(1);
+  return admin?.id ?? null;
+}
 router35.get("/admin/alerts", async (req, res) => {
   try {
     const alerts = [];
@@ -244173,14 +244196,44 @@ router35.get("/admin/alerts", async (req, res) => {
         createdAt: fo.createdAt?.toISOString() ?? (/* @__PURE__ */ new Date()).toISOString()
       });
     }
-    alerts.sort(
+    const adminUserId = await getCurrentAdminId(res);
+    const readEvents = adminUserId ? await db.select({
+      alertId: adminAlertReadsTable.alertId,
+      alertCreatedAt: adminAlertReadsTable.alertCreatedAt
+    }).from(adminAlertReadsTable).where(eq(adminAlertReadsTable.adminUserId, adminUserId)) : [];
+    const readKeys = new Set(readEvents.map((event) => `${event.alertId}:${event.alertCreatedAt.toISOString()}`));
+    const alertsWithReadState = alerts.map((alert) => ({
+      ...alert,
+      isRead: readKeys.has(`${alert.id}:${alert.createdAt}`)
+    }));
+    alertsWithReadState.sort(
       (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
-    res.json(alerts);
+    res.json(alertsWithReadState);
   } catch (err) {
     req.log.error({ err }, "Failed to fetch admin alerts");
     res.status(500).json({ error: "Failed to fetch alerts" });
   }
+});
+router35.post("/admin/alerts/:id/read", async (req, res) => {
+  const adminUserId = await getCurrentAdminId(res);
+  if (!adminUserId) {
+    res.status(403).json({ error: "A named admin account is required to save notification state" });
+    return;
+  }
+  const alertId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const createdAtValue = typeof req.body?.createdAt === "string" ? req.body.createdAt : "";
+  const alertCreatedAt = new Date(createdAtValue);
+  if (!alertId || Number.isNaN(alertCreatedAt.getTime())) {
+    res.status(400).json({ error: "A valid notification event is required" });
+    return;
+  }
+  await db.insert(adminAlertReadsTable).values({
+    adminUserId,
+    alertId,
+    alertCreatedAt
+  }).onConflictDoNothing();
+  res.status(204).send();
 });
 var alerts_default = router35;
 

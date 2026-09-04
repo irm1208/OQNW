@@ -149,12 +149,14 @@ export async function enforceSecureAdminSession(
   }
   if (
     ["POST", "PUT", "PATCH", "DELETE"].includes(req.method) &&
+    !(req.method === "POST" && /^\/alerts\/[^/]+\/read$/.test(req.path)) &&
     !isRecentSecureAdminSession(req)
   ) {
     res.status(401).json({ error: "Recent authentication required", requiresRecentAuth: true });
     return;
   }
   res.locals.adminAuthenticated = true;
+  res.locals.adminEmail = parseSecureAdminSession(req)?.email ?? null;
   next();
 }
 

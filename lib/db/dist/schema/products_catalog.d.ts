@@ -436,6 +436,7 @@ export declare const insertProductCatalogSchema: z.ZodObject<{
     priceGbp: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     isPublished: z.ZodOptional<z.ZodBoolean>;
     slug: z.ZodString;
+    sortOrder: z.ZodOptional<z.ZodInt>;
     category: z.ZodString;
     shortDescription: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     description: z.ZodOptional<z.ZodNullable<z.ZodString>>;
@@ -453,7 +454,6 @@ export declare const insertProductCatalogSchema: z.ZodObject<{
     seoTitle: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     seoDescription: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     isFeatured: z.ZodOptional<z.ZodBoolean>;
-    sortOrder: z.ZodOptional<z.ZodInt>;
 }, {
     out: {};
     in: {};

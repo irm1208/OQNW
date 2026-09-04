@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Loader2, Search, Eye, Download, X, ShieldAlert } from "lucide-react";
 import { toast } from "sonner";
 import { useAlertIds } from "@/hooks/useAlerts";
+import { AdminNotificationBadge } from "@/components/AdminNotificationBadge";
 
 async function downloadCsv(url: string, filename: string) {
   const res = await fetch(url, { credentials: "include" });
@@ -267,7 +268,7 @@ export default function Orders() {
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
                       {order.orderNumber}
-                      {notifiedOrderIds.has(order.id) && <Badge className="bg-red-500 hover:bg-red-500 text-white">New</Badge>}
+                      {notifiedOrderIds.has(order.id) && <AdminNotificationBadge type="order" itemId={order.id} />}
                     </div>
                   </TableCell>
                   <TableCell>{new Date(order.createdAt).toLocaleDateString("en-GB")}</TableCell>

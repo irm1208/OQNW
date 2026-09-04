@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, ShoppingCart, Mail, MailCheck, ChevronDown, ChevronRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useAlertIds } from "@/hooks/useAlerts";
+import { AdminNotificationBadge } from "@/components/AdminNotificationBadge";
 
 function api(path: string) { return `/api${path}`; }
 function apiFetch(url: string) {
@@ -130,7 +131,7 @@ export default function AbandonedCarts() {
                     <TableCell>
                       <div className="font-medium text-sm flex items-center gap-2">
                         {cart.customerName}
-                        {notifiedCartIds.has(cart.id) && <Badge className="bg-red-500 hover:bg-red-500 text-white">New</Badge>}
+                        {notifiedCartIds.has(cart.id) && <AdminNotificationBadge type="cart" itemId={cart.id} />}
                       </div>
                       <div className="text-xs text-muted-foreground">{cart.customerEmail}</div>
                     </TableCell>

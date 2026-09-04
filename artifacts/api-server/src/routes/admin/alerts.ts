@@ -6,8 +6,10 @@ import {
   returnsTable,
   productsInventoryTable,
   abandonedCartsTable,
+  adminAlertReadsTable,
+  adminUsersTable,
 } from "@workspace/db/schema";
-import { eq, lte, isNull, gt, gte, and, desc } from "drizzle-orm";
+import { eq, lte, isNull, gte, and, desc } from "drizzle-orm";
 
 const router = Router();
 
@@ -22,6 +24,18 @@ export interface AdminAlert {
   message: string;
   link: string;
   createdAt: string;
+  isRead?: boolean;
+}
+
+async function getCurrentAdminId(res: Response): Promise<number | null> {
+  const email = typeof res.locals.adminEmail === "string" ? res.locals.adminEmail : null;
+  if (!email) return null;
+  const [admin] = await db
+    .select({ id: adminUsersTable.id })
+    .from(adminUsersTable)
+    .where(and(eq(adminUsersTable.email, email), eq(adminUsersTable.isActive, true)))
+    .limit(1);
+  return admin?.id ?? null;
 }
 
 router.get("/admin/alerts", async (req: Request, res: Response): Promise<void> => {
@@ -157,16 +171,53 @@ router.get("/admin/alerts", async (req: Request, res: Response): Promise<void> =
       });
     }
 
-    alerts.sort(
+    const adminUserId = await getCurrentAdminId(res);
+    const readEvents = adminUserId
+      ? await db
+          .select({
+            alertId: adminAlertReadsTable.alertId,
+            alertCreatedAt: adminAlertReadsTable.alertCreatedAt,
+          })
+          .from(adminAlertReadsTable)
+          .where(eq(adminAlertReadsTable.adminUserId, adminUserId))
+      : [];
+    const readKeys = new Set(readEvents.map((event) => `${event.alertId}:${event.alertCreatedAt.toISOString()}`));
+    const alertsWithReadState = alerts.map((alert) => ({
+      ...alert,
+      isRead: readKeys.has(`${alert.id}:${alert.createdAt}`),
+    }));
+
+    alertsWithReadState.sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
 
-    res.json(alerts);
+    res.json(alertsWithReadState);
   } catch (err) {
     req.log.error({ err }, "Failed to fetch admin alerts");
     res.status(500).json({ error: "Failed to fetch alerts" });
   }
+});
+
+router.post("/admin/alerts/:id/read", async (req: Request, res: Response): Promise<void> => {
+  const adminUserId = await getCurrentAdminId(res);
+  if (!adminUserId) {
+    res.status(403).json({ error: "A named admin account is required to save notification state" });
+    return;
+  }
+  const alertId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const createdAtValue = typeof req.body?.createdAt === "string" ? req.body.createdAt : "";
+  const alertCreatedAt = new Date(createdAtValue);
+  if (!alertId || Number.isNaN(alertCreatedAt.getTime())) {
+    res.status(400).json({ error: "A valid notification event is required" });
+    return;
+  }
+  await db.insert(adminAlertReadsTable).values({
+    adminUserId,
+    alertId,
+    alertCreatedAt,
+  }).onConflictDoNothing();
+  res.status(204).send();
 });
 
 export default router;

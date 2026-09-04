@@ -28,6 +28,7 @@ export * from "./admin_login_attempts";
 export * from "./admin_auth_challenges";
 export * from "./admin_recovery_codes";
 export * from "./admin_audit_events";
+export * from "./admin_alert_reads";
 export * from "./crypto_payment_attempts";
 export * from "./crypto_payment_audits";
 export * from "./admin_test_payment_claims";

@@ -11,6 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Loader2, ShieldAlert, ShieldCheck, Shield, Eye, CheckCircle2, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { useAlertIds } from "@/hooks/useAlerts";
+import { AdminNotificationBadge } from "@/components/AdminNotificationBadge";
 
 const FLAG_META: Record<string, { label: string; color: string }> = {
   vpn_proxy_detected:          { label: "VPN / Proxy",        color: "bg-red-100 text-red-700 border-red-200" },
@@ -265,7 +266,7 @@ export default function Fraud() {
                       <Link href={`/orders/${order.id}`} className="hover:underline text-primary">
                         {order.orderNumber}
                       </Link>
-                      {notifiedFraudOrderIds.has(order.id) && <Badge className="bg-red-500 hover:bg-red-500 text-white">New</Badge>}
+                      {notifiedFraudOrderIds.has(order.id) && <AdminNotificationBadge type="fraud" itemId={order.id} />}
                     </div>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground whitespace-nowrap">

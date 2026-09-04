@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Search, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { useAlertIds } from "@/hooks/useAlerts";
+import { AdminNotificationBadge } from "@/components/AdminNotificationBadge";
 
 type ReturnRecord = {
   id: number;
@@ -172,7 +173,7 @@ export default function Returns() {
                     <Link href={`/orders/${r.orderId}`} className="font-medium text-primary hover:underline flex items-center gap-1">
                       {r.orderNumber}
                       <ExternalLink className="w-3 h-3" />
-                      {notifiedReturnIds.has(r.id) && <Badge className="ml-1 bg-red-500 hover:bg-red-500 text-white">New</Badge>}
+                      {notifiedReturnIds.has(r.id) && <AdminNotificationBadge type="return" itemId={r.id} />}
                     </Link>
                   </TableCell>
                   <TableCell>

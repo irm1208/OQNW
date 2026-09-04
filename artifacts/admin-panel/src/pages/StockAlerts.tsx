@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useAlerts } from "@/hooks/useAlerts";
+import { AdminNotificationBadge } from "@/components/AdminNotificationBadge";
 
 function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
 
@@ -97,9 +98,13 @@ export default function StockAlerts() {
           </div>
           <div className="flex flex-wrap gap-2">
             {stockNotifications.map((alert) => (
-              <Badge key={alert.id} className="bg-red-500 hover:bg-red-500 text-white">
+              <AdminNotificationBadge
+                key={`${alert.id}:${alert.createdAt}`}
+                type="stock"
+                itemId={Number(alert.id.slice("stock-".length))}
+              >
                 New · {alert.message}
-              </Badge>
+              </AdminNotificationBadge>
             ))}
           </div>
         </div>
@@ -165,7 +170,12 @@ export default function StockAlerts() {
                           <div className="flex items-center gap-2">
                             <Package className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                             <span className="font-medium text-foreground">{product.productName}</span>
-                             {lowStockProductNames.has(product.productName) && <Badge className="bg-red-500 hover:bg-red-500 text-white">New</Badge>}
+                             {lowStockProductNames.has(product.productName) && (() => {
+                               const alert = stockNotifications.find((item) => item.message.startsWith(`${product.productName} —`));
+                               return alert
+                                 ? <AdminNotificationBadge type="stock" itemId={Number(alert.id.slice("stock-".length))} />
+                                 : null;
+                             })()}
                           </div>
                         </td>
                         <td className="px-4 py-3">

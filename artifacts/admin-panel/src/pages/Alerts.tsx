@@ -1,4 +1,4 @@
-import { useAlerts, type AdminAlert } from "@/hooks/useAlerts";
+import { useAlerts, useMarkAlertRead, type AdminAlert } from "@/hooks/useAlerts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, ShoppingCart, RotateCcw, Package, ShoppingBag, CheckCircle2, ShieldAlert } from "lucide-react";
@@ -22,13 +22,16 @@ const SEVERITY_BADGE: Record<AdminAlert["severity"], string> = {
 };
 
 function AlertRow({ alert }: { alert: AdminAlert }) {
+  const markRead = useMarkAlertRead();
   const cfg = TYPE_CONFIG[alert.type];
   const Icon = cfg.icon;
   const timeAgo = formatTimeAgo(alert.createdAt);
 
   return (
-    <Link href={alert.link}>
-      <div className="flex items-start gap-4 px-4 py-3 hover:bg-muted/50 transition-colors cursor-pointer border-b last:border-b-0">
+    <Link href={alert.link} onClick={() => {
+      if (!alert.isRead) markRead.mutate(alert);
+    }}>
+      <div className={`flex items-start gap-4 px-4 py-3 hover:bg-muted/50 transition-colors cursor-pointer border-b last:border-b-0 ${alert.isRead ? "opacity-55" : ""}`}>
         <div className={`mt-0.5 ${cfg.color}`}>
           <Icon className="w-4 h-4" />
         </div>
@@ -38,6 +41,7 @@ function AlertRow({ alert }: { alert: AdminAlert }) {
             <Badge variant={SEVERITY_BADGE[alert.severity] as "destructive" | "secondary" | "outline"}>
               {alert.severity}
             </Badge>
+            {!alert.isRead && <Badge className="bg-red-500 hover:bg-red-500 text-white">New</Badge>}
           </div>
           <p className="text-sm text-muted-foreground truncate">{alert.message}</p>
         </div>
@@ -94,7 +98,7 @@ export default function Alerts() {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0 mt-3">
-            {grouped.danger.map((a) => <AlertRow key={a.id} alert={a} />)}
+            {grouped.danger.map((a) => <AlertRow key={`${a.id}:${a.createdAt}`} alert={a} />)}
           </CardContent>
         </Card>
       )}
@@ -108,7 +112,7 @@ export default function Alerts() {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0 mt-3">
-            {grouped.warning.map((a) => <AlertRow key={a.id} alert={a} />)}
+            {grouped.warning.map((a) => <AlertRow key={`${a.id}:${a.createdAt}`} alert={a} />)}
           </CardContent>
         </Card>
       )}
@@ -122,7 +126,7 @@ export default function Alerts() {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0 mt-3">
-            {grouped.info.map((a) => <AlertRow key={a.id} alert={a} />)}
+            {grouped.info.map((a) => <AlertRow key={`${a.id}:${a.createdAt}`} alert={a} />)}
           </CardContent>
         </Card>
       )}

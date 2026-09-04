@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { useAlerts, type AdminAlert } from "@/hooks/useAlerts";
+import { useAlerts, useMarkAlertRead, type AdminAlert } from "@/hooks/useAlerts";
 import { Link as WLink } from "wouter";
 
 type NavItem = { href: string; label: string; icon: React.ElementType };
@@ -99,6 +99,7 @@ const SEVERITY_DOT: Record<AdminAlert["severity"], string> = {
 
 function AlertsDropdown({ onClose }: { onClose: () => void }) {
   const { data: alerts } = useAlerts();
+  const markRead = useMarkAlertRead();
   const recent = (alerts ?? []).slice(0, 8);
 
   return (
@@ -114,11 +115,14 @@ function AlertsDropdown({ onClose }: { onClose: () => void }) {
       ) : (
         <div className="divide-y max-h-72 overflow-y-auto">
           {recent.map((alert) => (
-            <WLink key={alert.id} href={alert.link} onClick={onClose}>
+            <WLink key={`${alert.id}:${alert.createdAt}`} href={alert.link} onClick={() => {
+              if (!alert.isRead) markRead.mutate(alert);
+              onClose();
+            }}>
               <div className="flex items-start gap-3 px-4 py-3 hover:bg-muted/50 transition-colors cursor-pointer">
                 <span className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${SEVERITY_DOT[alert.severity]}`} />
                 <div className="min-w-0">
-                  <p className="text-xs font-semibold">{alert.title}</p>
+                  <p className={`text-xs font-semibold ${alert.isRead ? "text-muted-foreground" : ""}`}>{alert.title}</p>
                   <p className="text-xs text-muted-foreground truncate">{alert.message}</p>
                 </div>
               </div>
@@ -135,7 +139,7 @@ function BellButton() {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const notificationCount = alerts?.length ?? 0;
+  const notificationCount = (alerts ?? []).filter((alert) => !alert.isRead).length;
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -179,7 +183,7 @@ function NavGroups({
   const { data: alerts } = useAlerts();
   const notificationCounts = useMemo(() => {
     const counts: Record<string, number> = {
-      "/alerts": alerts?.length ?? 0,
+      "/alerts": (alerts ?? []).filter((alert) => !alert.isRead).length,
     };
     const hrefByType: Record<AdminAlert["type"], string> = {
       order: "/orders",
@@ -188,7 +192,7 @@ function NavGroups({
       cart: "/abandoned-carts",
       fraud: "/fraud",
     };
-    for (const alert of alerts ?? []) {
+    for (const alert of (alerts ?? []).filter((item) => !item.isRead)) {
       const href = hrefByType[alert.type];
       counts[href] = (counts[href] ?? 0) + 1;
     }
