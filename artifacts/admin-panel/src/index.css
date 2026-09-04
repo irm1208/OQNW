@@ -211,6 +211,14 @@
 
   .admin-page {
     min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .admin-page > *,
+  .admin-page :is(.grid, .flex, [class*="grid-cols"]) {
+    min-width: 0;
   }
 
   .admin-page .page-actions {

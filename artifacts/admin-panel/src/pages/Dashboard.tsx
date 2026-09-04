@@ -124,7 +124,7 @@ function DashboardSkeleton() {
         </div>
         <div className="h-10 w-48 bg-muted rounded-lg"></div>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-6">
         {[...Array(6)].map((_, i) => (
           <div key={i} className="h-[120px] bg-card rounded-xl border border-border/50"></div>
         ))}
@@ -231,33 +231,33 @@ export default function Dashboard() {
       </div>
 
       {/* Stat Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-6">
         {statCards.map((card) => (
           <Card
             key={card.title}
-            className={`relative overflow-hidden group hover:border-primary/30 transition-all duration-300 ${
+            className={`relative min-w-0 overflow-hidden group hover:border-primary/30 transition-all duration-300 ${
               card.primary ? "border-primary/20 bg-primary/[0.02]" : "border-border/50"
             }`}
           >
-            <CardContent className="p-5 flex flex-col justify-between h-full">
-              <div className="flex justify-between items-start mb-4">
-                <div className="space-y-1">
-                  <p className="text-[11px] font-semibold text-muted-foreground tracking-widest uppercase">
+            <CardContent className="flex h-full min-h-[122px] flex-col justify-between p-3 sm:min-h-0 sm:p-5">
+              <div className="flex min-w-0 items-start justify-between gap-1.5 mb-3 sm:gap-3 sm:mb-4">
+                <div className="min-w-0 space-y-1">
+                  <p className="text-[9px] leading-4 font-semibold text-muted-foreground tracking-[0.12em] uppercase sm:text-[11px] sm:tracking-widest">
                     {card.title}
                   </p>
-                  <div className={`text-2xl font-bold tracking-tight ${card.danger ? "text-destructive" : "text-foreground"}`}>
+                  <div className={`text-lg font-bold tracking-tight sm:text-2xl ${card.danger ? "text-destructive" : "text-foreground"}`}>
                     {card.value}
                   </div>
                 </div>
-                <div className={`p-2.5 rounded-xl shadow-sm border ${
+                <div className={`shrink-0 p-1.5 sm:p-2.5 rounded-lg sm:rounded-xl shadow-sm border ${
                   card.danger ? "bg-destructive/10 text-destructive border-destructive/20" :
                   card.primary ? "bg-primary/10 text-primary border-primary/20" :
                   "bg-muted/50 text-muted-foreground border-border/50 group-hover:bg-primary/5 group-hover:text-primary group-hover:border-primary/20"
                 } transition-colors duration-300`}>
-                  <card.icon className="w-4 h-4" strokeWidth={2.5} />
+                  <card.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={2.5} />
                 </div>
               </div>
-              <div className="text-xs text-muted-foreground font-medium">
+              <div className="text-[10px] leading-4 text-muted-foreground font-medium sm:text-xs">
                 {card.sub || <span className="opacity-0">-</span>}
               </div>
             </CardContent>
@@ -270,12 +270,12 @@ export default function Dashboard() {
 
       {/* Revenue + Order Status */}
       <div className="grid gap-6 md:grid-cols-12">
-        <Card className="md:col-span-8 border-border/50 shadow-sm flex flex-col">
+        <Card className="min-w-0 overflow-hidden md:col-span-8 border-border/50 shadow-sm flex flex-col">
           <CardHeader className="pb-2">
             <CardTitle className="text-base font-semibold text-foreground tracking-tight">Revenue Overview</CardTitle>
           </CardHeader>
-          <CardContent className="flex-1">
-            <div className="h-[280px] w-full mt-2">
+          <CardContent className="min-w-0 flex-1 px-3 sm:px-6">
+            <div className="h-[240px] min-w-0 w-full mt-2 sm:h-[280px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={revenueData ?? []} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
                   <defs>
@@ -320,7 +320,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="md:col-span-4 border-border/50 shadow-sm flex flex-col">
+        <Card className="min-w-0 overflow-hidden md:col-span-4 border-border/50 shadow-sm flex flex-col">
           <CardHeader className="pb-2">
             <CardTitle className="text-base font-semibold text-foreground tracking-tight">Order Status</CardTitle>
           </CardHeader>
