@@ -4,6 +4,7 @@ import { Bell, BellRing, CheckCircle2, Clock, Package, Send } from "lucide-react
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { useAlerts } from "@/hooks/useAlerts";
 
 function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
 
@@ -33,6 +34,12 @@ function formatDate(iso: string | null) {
 
 export default function StockAlerts() {
   const { toast } = useToast();
+  const { data: adminAlerts } = useAlerts();
+  const stockNotifications = (adminAlerts ?? []).filter((alert) => alert.type === "stock");
+  const lowStockProductNames = new Set(
+    stockNotifications
+      .map((alert) => alert.message.split(" — ")[0]),
+  );
   const queryClient = useQueryClient();
   const [notifying, setNotifying] = useState<number | null>(null);
 
@@ -81,6 +88,22 @@ export default function StockAlerts() {
           Customers waiting to be notified when out-of-stock products return.
         </p>
       </div>
+
+      {stockNotifications.length > 0 && (
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4">
+          <div className="flex items-center gap-2 text-red-800 font-semibold text-sm mb-2">
+            <BellRing className="w-4 h-4" />
+            Needs attention
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {stockNotifications.map((alert) => (
+              <Badge key={alert.id} className="bg-red-500 hover:bg-red-500 text-white">
+                New · {alert.message}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
@@ -142,6 +165,7 @@ export default function StockAlerts() {
                           <div className="flex items-center gap-2">
                             <Package className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                             <span className="font-medium text-foreground">{product.productName}</span>
+                             {lowStockProductNames.has(product.productName) && <Badge className="bg-red-500 hover:bg-red-500 text-white">New</Badge>}
                           </div>
                         </td>
                         <td className="px-4 py-3">

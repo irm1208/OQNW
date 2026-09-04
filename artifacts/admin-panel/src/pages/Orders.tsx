@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2, Search, Eye, Download, X, ShieldAlert } from "lucide-react";
 import { toast } from "sonner";
+import { useAlertIds } from "@/hooks/useAlerts";
 
 async function downloadCsv(url: string, filename: string) {
   const res = await fetch(url, { credentials: "include" });
@@ -36,6 +37,7 @@ const STATUS_OPTIONS = [
 const STATUS_LABELS: Record<string, string> = Object.fromEntries(STATUS_OPTIONS.map((o) => [o.value, o.label]));
 
 export default function Orders() {
+  const notifiedOrderIds = useAlertIds("order");
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<string>("all");
   const [page, setPage] = useState(1);
@@ -262,7 +264,12 @@ export default function Orders() {
                       aria-label={`Select order ${order.orderNumber}`}
                     />
                   </TableCell>
-                  <TableCell className="font-medium">{order.orderNumber}</TableCell>
+                  <TableCell className="font-medium">
+                    <div className="flex items-center gap-2">
+                      {order.orderNumber}
+                      {notifiedOrderIds.has(order.id) && <Badge className="bg-red-500 hover:bg-red-500 text-white">New</Badge>}
+                    </div>
+                  </TableCell>
                   <TableCell>{new Date(order.createdAt).toLocaleDateString("en-GB")}</TableCell>
                   <TableCell>
                     <div className="flex flex-col">

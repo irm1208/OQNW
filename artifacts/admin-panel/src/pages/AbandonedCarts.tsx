@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Loader2, ShoppingCart, Mail, MailCheck, ChevronDown, ChevronRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { useAlertIds } from "@/hooks/useAlerts";
 
 function api(path: string) { return `/api${path}`; }
 function apiFetch(url: string) {
@@ -41,6 +42,7 @@ interface Stats { total: number; totalAbandonedValue: number; emailsSent: number
 interface ApiResponse { carts: AbandonedCart[]; stats: Stats; }
 
 export default function AbandonedCarts() {
+  const notifiedCartIds = useAlertIds("cart");
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
 
   const { data, isLoading, error } = useQuery<ApiResponse>({
@@ -126,7 +128,10 @@ export default function AbandonedCarts() {
                         : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
                     </TableCell>
                     <TableCell>
-                      <div className="font-medium text-sm">{cart.customerName}</div>
+                      <div className="font-medium text-sm flex items-center gap-2">
+                        {cart.customerName}
+                        {notifiedCartIds.has(cart.id) && <Badge className="bg-red-500 hover:bg-red-500 text-white">New</Badge>}
+                      </div>
                       <div className="text-xs text-muted-foreground">{cart.customerEmail}</div>
                     </TableCell>
                     <TableCell className="text-sm">{cart.itemCount} item{cart.itemCount !== 1 ? "s" : ""}</TableCell>

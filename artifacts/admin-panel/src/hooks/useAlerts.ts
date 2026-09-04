@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { customFetch } from "@workspace/api-client-react";
 
@@ -21,4 +22,14 @@ export function useAlerts() {
     refetchInterval: 60_000,
     staleTime: 30_000,
   });
+}
+
+export function useAlertIds(type: AdminAlert["type"]) {
+  const { data: alerts } = useAlerts();
+  return useMemo(() => new Set(
+    (alerts ?? [])
+      .filter((alert) => alert.type === type)
+      .map((alert) => Number(alert.id.slice(type.length + 1)))
+      .filter(Number.isInteger),
+  ), [alerts, type]);
 }

@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Search, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
+import { useAlertIds } from "@/hooks/useAlerts";
 
 type ReturnRecord = {
   id: number;
@@ -50,6 +51,7 @@ async function apiFetch<T = unknown>(url: string, options?: RequestInit): Promis
 }
 
 export default function Returns() {
+  const notifiedReturnIds = useAlertIds("return");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [page, setPage] = useState(1);
@@ -170,6 +172,7 @@ export default function Returns() {
                     <Link href={`/orders/${r.orderId}`} className="font-medium text-primary hover:underline flex items-center gap-1">
                       {r.orderNumber}
                       <ExternalLink className="w-3 h-3" />
+                      {notifiedReturnIds.has(r.id) && <Badge className="ml-1 bg-red-500 hover:bg-red-500 text-white">New</Badge>}
                     </Link>
                   </TableCell>
                   <TableCell>

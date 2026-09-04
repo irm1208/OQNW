@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Loader2, ShieldAlert, ShieldCheck, Shield, Eye, CheckCircle2, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
+import { useAlertIds } from "@/hooks/useAlerts";
 
 const FLAG_META: Record<string, { label: string; color: string }> = {
   vpn_proxy_detected:          { label: "VPN / Proxy",        color: "bg-red-100 text-red-700 border-red-200" },
@@ -100,6 +101,7 @@ const TABS = [
 ];
 
 export default function Fraud() {
+  const notifiedFraudOrderIds = useAlertIds("fraud");
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState("unreviewed");
   const [reviewingOrder, setReviewingOrder] = useState<FraudOrder | null>(null);
@@ -259,9 +261,12 @@ export default function Fraud() {
                   className={order.fraudReviewed ? "opacity-60" : ""}
                 >
                   <TableCell className="font-medium">
-                    <Link href={`/orders/${order.id}`} className="hover:underline text-primary">
-                      {order.orderNumber}
-                    </Link>
+                    <div className="flex items-center gap-2">
+                      <Link href={`/orders/${order.id}`} className="hover:underline text-primary">
+                        {order.orderNumber}
+                      </Link>
+                      {notifiedFraudOrderIds.has(order.id) && <Badge className="bg-red-500 hover:bg-red-500 text-white">New</Badge>}
+                    </div>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
                     {new Date(order.createdAt).toLocaleDateString("en", {
