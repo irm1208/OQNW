@@ -77,6 +77,36 @@ function PixelTracker() {
   return null;
 }
 
+function LiveVisitorHeartbeat() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    let visitorId = sessionStorage.getItem("omniqure-live-visitor");
+    if (!visitorId) {
+      visitorId = crypto.randomUUID();
+      sessionStorage.setItem("omniqure-live-visitor", visitorId);
+    }
+    const sendHeartbeat = () => {
+      if (document.visibilityState !== "visible") return;
+      void fetch("/api/traffic/heartbeat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ visitorId, path: window.location.pathname }),
+        keepalive: true,
+      });
+    };
+    sendHeartbeat();
+    const interval = window.setInterval(sendHeartbeat, 30_000);
+    document.addEventListener("visibilitychange", sendHeartbeat);
+    return () => {
+      window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", sendHeartbeat);
+    };
+  }, [location]);
+
+  return null;
+}
+
 function IdlePrefetcher() {
   useEffect(() => {
     // Kick off background chunk downloads after the first paint settles.
@@ -256,6 +286,7 @@ function App() {
               <NavProgress />
               <ScrollToTop />
               <PixelTracker />
+               <LiveVisitorHeartbeat />
               <AffiliateAttributionCapture />
               <IdlePrefetcher />
               <GlobalPrefetch />

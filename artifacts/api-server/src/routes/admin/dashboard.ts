@@ -1,7 +1,7 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
-import { ordersTable, customersTable } from "@workspace/db";
+import { ordersTable, customersTable, websiteLiveVisitorsTable } from "@workspace/db";
 import { sql, count, sum, avg, gte, inArray, and } from "drizzle-orm";
 
 const router = Router();
@@ -74,6 +74,12 @@ router.get("/admin/dashboard", async (req: Request, res: Response): Promise<void
       .from(ordersTable)
       .where(gte(ordersTable.createdAt, todayStart));
 
+    const liveCutoff = new Date(Date.now() - 2 * 60 * 1000);
+    const [liveVisitorsRow] = await db
+      .select({ total: count() })
+      .from(websiteLiveVisitorsTable)
+      .where(gte(websiteLiveVisitorsTable.lastSeenAt, liveCutoff));
+
     const getCount = (status: string) =>
       statusCounts.find((s) => s.status === status)?.cnt ?? 0;
 
@@ -88,6 +94,7 @@ router.get("/admin/dashboard", async (req: Request, res: Response): Promise<void
       lowStockCount: Number(lowStockRow?.cnt ?? 0),
       revenueToday: parseFloat(String(revenueTodayRow?.total ?? "0")),
       ordersToday: Number(ordersTodayRow?.total ?? 0),
+      liveVisitors: Number(liveVisitorsRow?.total ?? 0),
     });
   } catch (err) {
     req.log.error({ err }, "Failed to fetch dashboard stats");

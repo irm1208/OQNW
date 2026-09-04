@@ -74,6 +74,7 @@ export const GetAdminDashboardResponse = zod.object({
   revenueToday: zod.number(),
   ordersToday: zod.number(),
   avgOrderValue: zod.number(),
+  liveVisitors: zod.number(),
 });
 
 /**
@@ -169,6 +170,7 @@ export const ListAdminOrdersResponse = zod.object({
       subtotalGbp: zod.number().optional(),
       shippingCostGbp: zod.number().optional(),
       totalGbp: zod.number(),
+      paymentCurrency: zod.string().nullish(),
       shippingMethod: zod.string().nullish(),
       carrierName: zod.string().nullish(),
       trackingNumber: zod.string().nullish(),
@@ -209,6 +211,7 @@ export const GetAdminOrderResponse = zod.object({
   subtotalGbp: zod.number().optional(),
   shippingCostGbp: zod.number().optional(),
   totalGbp: zod.number(),
+  paymentCurrency: zod.string().nullish(),
   shippingMethod: zod.string().nullish(),
   carrierName: zod.string().nullish(),
   trackingNumber: zod.string().nullish(),
@@ -267,6 +270,7 @@ export const UpdateAdminOrderResponse = zod.object({
   subtotalGbp: zod.number().optional(),
   shippingCostGbp: zod.number().optional(),
   totalGbp: zod.number(),
+  paymentCurrency: zod.string().nullish(),
   shippingMethod: zod.string().nullish(),
   carrierName: zod.string().nullish(),
   trackingNumber: zod.string().nullish(),
@@ -326,6 +330,7 @@ export const DispatchAdminOrderResponse = zod.object({
     subtotalGbp: zod.number().optional(),
     shippingCostGbp: zod.number().optional(),
     totalGbp: zod.number(),
+    paymentCurrency: zod.string().nullish(),
     shippingMethod: zod.string().nullish(),
     carrierName: zod.string().nullish(),
     trackingNumber: zod.string().nullish(),
@@ -450,6 +455,7 @@ export const GetAdminCustomerResponse = zod.object({
       subtotalGbp: zod.number().optional(),
       shippingCostGbp: zod.number().optional(),
       totalGbp: zod.number(),
+      paymentCurrency: zod.string().nullish(),
       shippingMethod: zod.string().nullish(),
       carrierName: zod.string().nullish(),
       trackingNumber: zod.string().nullish(),

@@ -40,3 +40,4 @@
 - [Affiliate attribution trust boundary](affiliate-attribution-trust-boundary.md) — checkout attribution comes only from signed click state or an approved linked code, never a client-supplied partner ID.
 - [Publish schema diff starts from development](publish-schema-dev-source.md) — schema files alone do not create a production diff; first verify the managed development database received the schema.
 - [Admin alert read receipts](admin-alert-read-receipts.md) — key per-admin read state by alert ID plus event timestamp, so a later recurrence becomes unread again.
+- [Live visitor counting](live-visitor-counting.md) — dashboard “live” means anonymous visible browser tabs heartbeating within two minutes, not requests, IPs, or authenticated users.

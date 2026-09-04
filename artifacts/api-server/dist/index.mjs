@@ -209601,7 +209601,8 @@ var GetAdminDashboardResponse = objectType({
   lowStockCount: numberType(),
   revenueToday: numberType(),
   ordersToday: numberType(),
-  avgOrderValue: numberType()
+  avgOrderValue: numberType(),
+  liveVisitors: numberType()
 });
 var getRevenueChartQueryPeriodDefault = 30;
 var GetRevenueChartQueryParams = objectType({
@@ -209664,6 +209665,7 @@ var ListAdminOrdersResponse = objectType({
       subtotalGbp: numberType().optional(),
       shippingCostGbp: numberType().optional(),
       totalGbp: numberType(),
+      paymentCurrency: stringType().nullish(),
       shippingMethod: stringType().nullish(),
       carrierName: stringType().nullish(),
       trackingNumber: stringType().nullish(),
@@ -209699,6 +209701,7 @@ var GetAdminOrderResponse = objectType({
   subtotalGbp: numberType().optional(),
   shippingCostGbp: numberType().optional(),
   totalGbp: numberType(),
+  paymentCurrency: stringType().nullish(),
   shippingMethod: stringType().nullish(),
   carrierName: stringType().nullish(),
   trackingNumber: stringType().nullish(),
@@ -209751,6 +209754,7 @@ var UpdateAdminOrderResponse = objectType({
   subtotalGbp: numberType().optional(),
   shippingCostGbp: numberType().optional(),
   totalGbp: numberType(),
+  paymentCurrency: stringType().nullish(),
   shippingMethod: stringType().nullish(),
   carrierName: stringType().nullish(),
   trackingNumber: stringType().nullish(),
@@ -209793,6 +209797,7 @@ var DispatchAdminOrderResponse = objectType({
     subtotalGbp: numberType().optional(),
     shippingCostGbp: numberType().optional(),
     totalGbp: numberType(),
+    paymentCurrency: stringType().nullish(),
     shippingMethod: stringType().nullish(),
     carrierName: stringType().nullish(),
     trackingNumber: stringType().nullish(),
@@ -209897,6 +209902,7 @@ var GetAdminCustomerResponse = objectType({
       subtotalGbp: numberType().optional(),
       shippingCostGbp: numberType().optional(),
       totalGbp: numberType(),
+      paymentCurrency: stringType().nullish(),
       shippingMethod: stringType().nullish(),
       carrierName: stringType().nullish(),
       trackingNumber: stringType().nullish(),
@@ -214247,6 +214253,7 @@ __export(schema_exports, {
   taxRatesTable: () => taxRatesTable,
   webhookDeliveriesTable: () => webhookDeliveriesTable,
   webhooksTable: () => webhooksTable,
+  websiteLiveVisitorsTable: () => websiteLiveVisitorsTable,
   wholesaleInvoicesTable: () => wholesaleInvoicesTable,
   wishlistsTable: () => wishlistsTable
 });
@@ -226374,6 +226381,15 @@ var publicTrafficEventsTable = pgTable(
   })
 );
 
+// ../../lib/db/src/schema/website_live_visitors.ts
+var websiteLiveVisitorsTable = pgTable("website_live_visitors", {
+  visitorId: text("visitor_id").primaryKey(),
+  path: text("path").notNull(),
+  lastSeenAt: timestamp("last_seen_at", { withTimezone: true }).notNull().defaultNow()
+}, (table) => [
+  index("website_live_visitors_last_seen_at_idx").on(table.lastSeenAt)
+]);
+
 // ../../lib/db/src/schema/checkout_payment_quote_claims.ts
 var checkoutPaymentQuoteClaimsTable = pgTable(
   "checkout_payment_quote_claims",
@@ -227949,6 +227965,8 @@ router4.get("/admin/dashboard", async (req, res) => {
     const lowStockRow = lowStockResult.rows[0];
     const [revenueTodayRow] = await db.select({ total: sum(ordersTable.totalGbp) }).from(ordersTable).where(and(gte(ordersTable.createdAt, todayStart), inArray(ordersTable.status, PAID_STATUSES)));
     const [ordersTodayRow] = await db.select({ total: count() }).from(ordersTable).where(gte(ordersTable.createdAt, todayStart));
+    const liveCutoff = new Date(Date.now() - 2 * 60 * 1e3);
+    const [liveVisitorsRow] = await db.select({ total: count() }).from(websiteLiveVisitorsTable).where(gte(websiteLiveVisitorsTable.lastSeenAt, liveCutoff));
     const getCount = (status) => statusCounts.find((s) => s.status === status)?.cnt ?? 0;
     res.status(200).json({
       totalRevenue: parseFloat(String(totalRevenueRow?.total ?? "0")),
@@ -227960,7 +227978,8 @@ router4.get("/admin/dashboard", async (req, res) => {
       shippedOrders: Number(getCount("shipped")),
       lowStockCount: Number(lowStockRow?.cnt ?? 0),
       revenueToday: parseFloat(String(revenueTodayRow?.total ?? "0")),
-      ordersToday: Number(ordersTodayRow?.total ?? 0)
+      ordersToday: Number(ordersTodayRow?.total ?? 0),
+      liveVisitors: Number(liveVisitorsRow?.total ?? 0)
     });
   } catch (err) {
     req.log.error({ err }, "Failed to fetch dashboard stats");
@@ -247604,6 +247623,23 @@ var PUBLIC_ASSET_ROOT = [
   path2.resolve(process.cwd(), "../omniqure/public"),
   path2.resolve(import.meta.dirname, "../../omniqure/public")
 ].find(existsSync);
+router53.post("/traffic/heartbeat", async (req, res) => {
+  const visitorId = typeof req.body?.visitorId === "string" ? req.body.visitorId.trim() : "";
+  const pagePath = typeof req.body?.path === "string" ? req.body.path.slice(0, 500) : "/";
+  if (!/^[a-zA-Z0-9-]{16,64}$/.test(visitorId)) {
+    res.status(400).json({ error: "Invalid visitor session" });
+    return;
+  }
+  await db.insert(websiteLiveVisitorsTable).values({
+    visitorId,
+    path: pagePath || "/",
+    lastSeenAt: /* @__PURE__ */ new Date()
+  }).onConflictDoUpdate({
+    target: websiteLiveVisitorsTable.visitorId,
+    set: { path: pagePath || "/", lastSeenAt: /* @__PURE__ */ new Date() }
+  });
+  res.status(204).send();
+});
 router53.get("/catalogue-assets/*assetPath", (req, res) => {
   const rawAssetPath = req.params.assetPath;
   const assetPath = Array.isArray(rawAssetPath) ? rawAssetPath.join("/") : String(rawAssetPath ?? "");

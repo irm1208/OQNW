@@ -1,6 +1,8 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { checkImageTraffic } from "../lib/publicTrafficProtection";
+import { db } from "@workspace/db";
+import { websiteLiveVisitorsTable } from "@workspace/db/schema";
 import path from "node:path";
 import { existsSync } from "node:fs";
 
@@ -10,6 +12,24 @@ const PUBLIC_ASSET_ROOT = [
   path.resolve(process.cwd(), "../omniqure/public"),
   path.resolve(import.meta.dirname, "../../omniqure/public"),
 ].find(existsSync);
+
+router.post("/traffic/heartbeat", async (req: Request, res: Response): Promise<void> => {
+  const visitorId = typeof req.body?.visitorId === "string" ? req.body.visitorId.trim() : "";
+  const pagePath = typeof req.body?.path === "string" ? req.body.path.slice(0, 500) : "/";
+  if (!/^[a-zA-Z0-9-]{16,64}$/.test(visitorId)) {
+    res.status(400).json({ error: "Invalid visitor session" });
+    return;
+  }
+  await db.insert(websiteLiveVisitorsTable).values({
+    visitorId,
+    path: pagePath || "/",
+    lastSeenAt: new Date(),
+  }).onConflictDoUpdate({
+    target: websiteLiveVisitorsTable.visitorId,
+    set: { path: pagePath || "/", lastSeenAt: new Date() },
+  });
+  res.status(204).send();
+});
 
 router.get("/catalogue-assets/*assetPath", (req: Request, res: Response): void => {
   const rawAssetPath = req.params.assetPath;

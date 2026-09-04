@@ -33,6 +33,7 @@ export * from "./crypto_payment_attempts";
 export * from "./crypto_payment_audits";
 export * from "./admin_test_payment_claims";
 export * from "./public_traffic";
+export * from "./website_live_visitors";
 export * from "./checkout_payment_quote_claims";
 export * from "./wholesale_invoices";
 export * from "./referral_rewards";

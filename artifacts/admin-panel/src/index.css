@@ -213,7 +213,7 @@
     min-width: 0;
     width: 100%;
     max-width: 100%;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
   }
 
   .admin-page > *,

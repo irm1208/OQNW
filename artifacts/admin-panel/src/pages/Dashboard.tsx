@@ -35,6 +35,7 @@ import {
   ShoppingCart,
   AlertCircle,
   CreditCard,
+  Radio,
 } from "lucide-react";
 
 type Period = 7 | 30 | 90 | 365;
@@ -146,7 +147,7 @@ export default function Dashboard() {
   const [period, setPeriod] = useState<Period>(30);
 
   const { data: stats, isLoading: statsLoading } = useGetAdminDashboard({
-    query: { queryKey: getGetAdminDashboardQueryKey() },
+    query: { queryKey: getGetAdminDashboardQueryKey(), refetchInterval: 15_000 },
   });
   const { data: revenueData, isLoading: chartLoading } = useGetRevenueChart(
     { period },
@@ -224,7 +225,13 @@ export default function Dashboard() {
     <div className="admin-page space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-foreground">Overview</h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">Overview</h2>
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+              <Radio className="h-3.5 w-3.5 animate-pulse" />
+              {stats.liveVisitors} live
+            </div>
+          </div>
           <p className="text-sm text-muted-foreground mt-1">Monitor your store's performance and operations.</p>
         </div>
         <PeriodSelector value={period} onChange={setPeriod} />
@@ -240,16 +247,16 @@ export default function Dashboard() {
             }`}
           >
             <CardContent className="flex h-full min-h-[122px] flex-col justify-between p-3 sm:min-h-0 sm:p-5">
-              <div className="flex min-w-0 items-start justify-between gap-1.5 mb-3 sm:gap-3 sm:mb-4">
+              <div className="min-w-0 mb-3 sm:mb-4">
                 <div className="min-w-0 space-y-1">
-                  <p className="text-[9px] leading-4 font-semibold text-muted-foreground tracking-[0.12em] uppercase sm:text-[11px] sm:tracking-widest">
+                  <p className="pr-8 text-[9px] leading-4 font-semibold text-muted-foreground tracking-[0.08em] uppercase [overflow-wrap:normal] sm:pr-10 sm:text-[9px]">
                     {card.title}
                   </p>
                   <div className={`text-lg font-bold tracking-tight sm:text-2xl ${card.danger ? "text-destructive" : "text-foreground"}`}>
                     {card.value}
                   </div>
                 </div>
-                <div className={`shrink-0 p-1.5 sm:p-2.5 rounded-lg sm:rounded-xl shadow-sm border ${
+                <div className={`absolute right-3 top-3 shrink-0 p-1.5 sm:right-4 sm:top-4 sm:p-2 rounded-lg sm:rounded-xl shadow-sm border ${
                   card.danger ? "bg-destructive/10 text-destructive border-destructive/20" :
                   card.primary ? "bg-primary/10 text-primary border-primary/20" :
                   "bg-muted/50 text-muted-foreground border-border/50 group-hover:bg-primary/5 group-hover:text-primary group-hover:border-primary/20"

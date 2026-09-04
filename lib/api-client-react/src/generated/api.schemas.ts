@@ -62,6 +62,7 @@ export interface DashboardStats {
   revenueToday: number;
   ordersToday: number;
   avgOrderValue: number;
+  liveVisitors: number;
 }
 
 export interface RevenueDataPoint {
@@ -104,6 +105,8 @@ export interface Order {
   subtotalGbp?: number;
   shippingCostGbp?: number;
   totalGbp: number;
+  /** @nullable */
+  paymentCurrency?: string | null;
   /** @nullable */
   shippingMethod?: string | null;
   /** @nullable */
@@ -156,6 +159,8 @@ export interface OrderDetail {
   subtotalGbp?: number;
   shippingCostGbp?: number;
   totalGbp: number;
+  /** @nullable */
+  paymentCurrency?: string | null;
   /** @nullable */
   shippingMethod?: string | null;
   /** @nullable */
@@ -566,6 +571,14 @@ export interface PublicProduct {
   isFeatured?: boolean;
 }
 
+export type RefundStatus = (typeof RefundStatus)[keyof typeof RefundStatus];
+
+export const RefundStatus = {
+  pending: "pending",
+  confirmed: "confirmed",
+  cancelled: "cancelled",
+} as const;
+
 export type RefundLineItemsItem = { [key: string]: unknown };
 
 export interface Refund {
@@ -573,13 +586,19 @@ export interface Refund {
   orderId: number;
   orderNumber: string;
   amountGbp: number;
+  currency: string;
   type: string;
+  status: RefundStatus;
+  /** @nullable */
+  wallidRefundReference?: string | null;
   reason: string;
   /** @nullable */
   notes?: string | null;
   restoreInventory: boolean;
   /** @nullable */
   lineItems?: RefundLineItemsItem[] | null;
+  /** @nullable */
+  confirmedAt?: string | null;
   createdAt: string;
 }
 

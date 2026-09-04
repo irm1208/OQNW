@@ -56,6 +56,7 @@ export interface DashboardStats {
     revenueToday: number;
     ordersToday: number;
     avgOrderValue: number;
+    liveVisitors: number;
 }
 export interface RevenueDataPoint {
     date: string;
@@ -92,6 +93,8 @@ export interface Order {
     subtotalGbp?: number;
     shippingCostGbp?: number;
     totalGbp: number;
+    /** @nullable */
+    paymentCurrency?: string | null;
     /** @nullable */
     shippingMethod?: string | null;
     /** @nullable */
@@ -142,6 +145,8 @@ export interface OrderDetail {
     subtotalGbp?: number;
     shippingCostGbp?: number;
     totalGbp: number;
+    /** @nullable */
+    paymentCurrency?: string | null;
     /** @nullable */
     shippingMethod?: string | null;
     /** @nullable */
@@ -520,6 +525,12 @@ export interface PublicProduct {
     seoDescription?: string | null;
     isFeatured?: boolean;
 }
+export type RefundStatus = (typeof RefundStatus)[keyof typeof RefundStatus];
+export declare const RefundStatus: {
+    readonly pending: "pending";
+    readonly confirmed: "confirmed";
+    readonly cancelled: "cancelled";
+};
 export type RefundLineItemsItem = {
     [key: string]: unknown;
 };
@@ -528,13 +539,19 @@ export interface Refund {
     orderId: number;
     orderNumber: string;
     amountGbp: number;
+    currency: string;
     type: string;
+    status: RefundStatus;
+    /** @nullable */
+    wallidRefundReference?: string | null;
     reason: string;
     /** @nullable */
     notes?: string | null;
     restoreInventory: boolean;
     /** @nullable */
     lineItems?: RefundLineItemsItem[] | null;
+    /** @nullable */
+    confirmedAt?: string | null;
     createdAt: string;
 }
 export interface FraudQueueOrder {

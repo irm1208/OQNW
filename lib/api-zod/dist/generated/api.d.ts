@@ -141,6 +141,7 @@ export declare const GetAdminDashboardResponse: zod.ZodObject<{
     revenueToday: zod.ZodNumber;
     ordersToday: zod.ZodNumber;
     avgOrderValue: zod.ZodNumber;
+    liveVisitors: zod.ZodNumber;
 }, "strip", zod.ZodTypeAny, {
     totalRevenue: number;
     totalOrders: number;
@@ -152,6 +153,7 @@ export declare const GetAdminDashboardResponse: zod.ZodObject<{
     revenueToday: number;
     ordersToday: number;
     avgOrderValue: number;
+    liveVisitors: number;
 }, {
     totalRevenue: number;
     totalOrders: number;
@@ -163,6 +165,7 @@ export declare const GetAdminDashboardResponse: zod.ZodObject<{
     revenueToday: number;
     ordersToday: number;
     avgOrderValue: number;
+    liveVisitors: number;
 }>;
 /**
  * @summary Get daily revenue for the specified period
@@ -349,6 +352,7 @@ export declare const ListAdminOrdersResponse: zod.ZodObject<{
         subtotalGbp: zod.ZodOptional<zod.ZodNumber>;
         shippingCostGbp: zod.ZodOptional<zod.ZodNumber>;
         totalGbp: zod.ZodNumber;
+        paymentCurrency: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         shippingMethod: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         carrierName: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         trackingNumber: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
@@ -378,6 +382,7 @@ export declare const ListAdminOrdersResponse: zod.ZodObject<{
         customerId?: number | null | undefined;
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
+        paymentCurrency?: string | null | undefined;
         shippingMethod?: string | null | undefined;
         carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
@@ -406,6 +411,7 @@ export declare const ListAdminOrdersResponse: zod.ZodObject<{
         customerId?: number | null | undefined;
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
+        paymentCurrency?: string | null | undefined;
         shippingMethod?: string | null | undefined;
         carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
@@ -437,6 +443,7 @@ export declare const ListAdminOrdersResponse: zod.ZodObject<{
         customerId?: number | null | undefined;
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
+        paymentCurrency?: string | null | undefined;
         shippingMethod?: string | null | undefined;
         carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
@@ -468,6 +475,7 @@ export declare const ListAdminOrdersResponse: zod.ZodObject<{
         customerId?: number | null | undefined;
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
+        paymentCurrency?: string | null | undefined;
         shippingMethod?: string | null | undefined;
         carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
@@ -508,6 +516,7 @@ export declare const GetAdminOrderResponse: zod.ZodObject<{
     subtotalGbp: zod.ZodOptional<zod.ZodNumber>;
     shippingCostGbp: zod.ZodOptional<zod.ZodNumber>;
     totalGbp: zod.ZodNumber;
+    paymentCurrency: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     shippingMethod: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     carrierName: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     trackingNumber: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
@@ -573,6 +582,7 @@ export declare const GetAdminOrderResponse: zod.ZodObject<{
     customerId?: number | null | undefined;
     subtotalGbp?: number | undefined;
     shippingCostGbp?: number | undefined;
+    paymentCurrency?: string | null | undefined;
     shippingMethod?: string | null | undefined;
     carrierName?: string | null | undefined;
     trackingNumber?: string | null | undefined;
@@ -612,6 +622,7 @@ export declare const GetAdminOrderResponse: zod.ZodObject<{
     customerId?: number | null | undefined;
     subtotalGbp?: number | undefined;
     shippingCostGbp?: number | undefined;
+    paymentCurrency?: string | null | undefined;
     shippingMethod?: string | null | undefined;
     carrierName?: string | null | undefined;
     trackingNumber?: string | null | undefined;
@@ -671,6 +682,7 @@ export declare const UpdateAdminOrderResponse: zod.ZodObject<{
     subtotalGbp: zod.ZodOptional<zod.ZodNumber>;
     shippingCostGbp: zod.ZodOptional<zod.ZodNumber>;
     totalGbp: zod.ZodNumber;
+    paymentCurrency: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     shippingMethod: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     carrierName: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     trackingNumber: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
@@ -700,6 +712,7 @@ export declare const UpdateAdminOrderResponse: zod.ZodObject<{
     customerId?: number | null | undefined;
     subtotalGbp?: number | undefined;
     shippingCostGbp?: number | undefined;
+    paymentCurrency?: string | null | undefined;
     shippingMethod?: string | null | undefined;
     carrierName?: string | null | undefined;
     trackingNumber?: string | null | undefined;
@@ -728,6 +741,7 @@ export declare const UpdateAdminOrderResponse: zod.ZodObject<{
     customerId?: number | null | undefined;
     subtotalGbp?: number | undefined;
     shippingCostGbp?: number | undefined;
+    paymentCurrency?: string | null | undefined;
     shippingMethod?: string | null | undefined;
     carrierName?: string | null | undefined;
     trackingNumber?: string | null | undefined;
@@ -784,6 +798,7 @@ export declare const DispatchAdminOrderResponse: zod.ZodObject<{
         subtotalGbp: zod.ZodOptional<zod.ZodNumber>;
         shippingCostGbp: zod.ZodOptional<zod.ZodNumber>;
         totalGbp: zod.ZodNumber;
+        paymentCurrency: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         shippingMethod: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         carrierName: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         trackingNumber: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
@@ -813,6 +828,7 @@ export declare const DispatchAdminOrderResponse: zod.ZodObject<{
         customerId?: number | null | undefined;
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
+        paymentCurrency?: string | null | undefined;
         shippingMethod?: string | null | undefined;
         carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
@@ -841,6 +857,7 @@ export declare const DispatchAdminOrderResponse: zod.ZodObject<{
         customerId?: number | null | undefined;
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
+        paymentCurrency?: string | null | undefined;
         shippingMethod?: string | null | undefined;
         carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
@@ -873,6 +890,7 @@ export declare const DispatchAdminOrderResponse: zod.ZodObject<{
         customerId?: number | null | undefined;
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
+        paymentCurrency?: string | null | undefined;
         shippingMethod?: string | null | undefined;
         carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
@@ -905,6 +923,7 @@ export declare const DispatchAdminOrderResponse: zod.ZodObject<{
         customerId?: number | null | undefined;
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
+        paymentCurrency?: string | null | undefined;
         shippingMethod?: string | null | undefined;
         carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
@@ -983,11 +1002,11 @@ export declare const TrackPublicOrderResponse: zod.ZodObject<{
         quantity: number;
     }[];
     itemCount: number;
+    paymentCurrency?: string | null | undefined;
     shippingMethod?: string | null | undefined;
     carrierName?: string | null | undefined;
     trackingNumber?: string | null | undefined;
     trackingUrl?: string | null | undefined;
-    paymentCurrency?: string | null | undefined;
     paymentAmountMinor?: number | null | undefined;
 }, {
     status: string;
@@ -998,11 +1017,11 @@ export declare const TrackPublicOrderResponse: zod.ZodObject<{
         quantity: number;
     }[];
     itemCount: number;
+    paymentCurrency?: string | null | undefined;
     shippingMethod?: string | null | undefined;
     carrierName?: string | null | undefined;
     trackingNumber?: string | null | undefined;
     trackingUrl?: string | null | undefined;
-    paymentCurrency?: string | null | undefined;
     paymentAmountMinor?: number | null | undefined;
 }>;
 /**
@@ -1133,6 +1152,7 @@ export declare const GetAdminCustomerResponse: zod.ZodObject<{
         subtotalGbp: zod.ZodOptional<zod.ZodNumber>;
         shippingCostGbp: zod.ZodOptional<zod.ZodNumber>;
         totalGbp: zod.ZodNumber;
+        paymentCurrency: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         shippingMethod: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         carrierName: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
         trackingNumber: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
@@ -1162,6 +1182,7 @@ export declare const GetAdminCustomerResponse: zod.ZodObject<{
         customerId?: number | null | undefined;
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
+        paymentCurrency?: string | null | undefined;
         shippingMethod?: string | null | undefined;
         carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
@@ -1190,6 +1211,7 @@ export declare const GetAdminCustomerResponse: zod.ZodObject<{
         customerId?: number | null | undefined;
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
+        paymentCurrency?: string | null | undefined;
         shippingMethod?: string | null | undefined;
         carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
@@ -1222,6 +1244,7 @@ export declare const GetAdminCustomerResponse: zod.ZodObject<{
         customerId?: number | null | undefined;
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
+        paymentCurrency?: string | null | undefined;
         shippingMethod?: string | null | undefined;
         carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
@@ -1268,6 +1291,7 @@ export declare const GetAdminCustomerResponse: zod.ZodObject<{
         customerId?: number | null | undefined;
         subtotalGbp?: number | undefined;
         shippingCostGbp?: number | undefined;
+        paymentCurrency?: string | null | undefined;
         shippingMethod?: string | null | undefined;
         carrierName?: string | null | undefined;
         trackingNumber?: string | null | undefined;
