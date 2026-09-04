@@ -11,6 +11,7 @@ import { popularProductSlugs } from "@/data/popularPeptides";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { getPurityStr } from "@/utils/productPurity";
+import { useAffiliateMe } from "@/hooks/useAffiliate";
 
 const POPULAR_SEARCHES = [
   "BPC-157", "TB-500", "Epithalon", "Ipamorelin",
@@ -164,6 +165,8 @@ export default function Header() {
   const { totalItems } = useCart();
   const { currency, setCurrency, formatPrice } = useCurrency();
   const { customer, loadingAuth, signOut } = useCustomerAuth();
+  const { data: affiliateProfile } = useAffiliateMe(customer?.id);
+  const isApprovedAffiliate = affiliateProfile?.partner?.status === "approved";
   const { count: wishlistCount } = useWishlist();
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -659,21 +662,23 @@ export default function Header() {
                         <Package size={15} style={{ color: "#64748B" }} />
                         My Account
                       </Link>
-                      <Link
-                        href="/affiliate"
-                        onClick={() => setUserMenuOpen(false)}
-                        style={{
-                          display: "flex", alignItems: "center", gap: "10px",
-                          padding: "9px 10px", borderRadius: "8px",
-                          color: "#374151", textDecoration: "none",
-                          fontSize: "13px", fontWeight: 500,
-                        }}
-                        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC")}
-                        onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
-                      >
-                        <Users size={15} style={{ color: "#64748B" }} />
-                        Partner Dashboard
-                      </Link>
+                      {isApprovedAffiliate && (
+                        <Link
+                          href="/affiliate"
+                          onClick={() => setUserMenuOpen(false)}
+                          style={{
+                            display: "flex", alignItems: "center", gap: "10px",
+                            padding: "9px 10px", borderRadius: "8px",
+                            color: "#374151", textDecoration: "none",
+                            fontSize: "13px", fontWeight: 500,
+                          }}
+                          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC")}
+                          onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
+                        >
+                          <Users size={15} style={{ color: "#64748B" }} />
+                          Partner Dashboard
+                        </Link>
+                      )}
                       <Link
                         href="/track-order"
                         onClick={() => setUserMenuOpen(false)}
@@ -1451,15 +1456,17 @@ export default function Header() {
                     <User size={17} style={{ marginRight: 10 }} />
                     My Account
                   </Link>
-                  <Link
-                    href="/affiliate"
-                    className="flex items-center rounded-xl px-3"
-                    style={{ minHeight: 46, color: "#1240A0", textDecoration: "none", fontSize: 14, fontWeight: 700 }}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <Users size={17} style={{ marginRight: 10 }} />
-                    Partner Dashboard
-                  </Link>
+                  {isApprovedAffiliate && (
+                    <Link
+                      href="/affiliate"
+                      className="flex items-center rounded-xl px-3"
+                      style={{ minHeight: 46, color: "#1240A0", textDecoration: "none", fontSize: 14, fontWeight: 700 }}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Users size={17} style={{ marginRight: 10 }} />
+                      Partner Dashboard
+                    </Link>
+                  )}
                   <button
                     onClick={() => { setMobileMenuOpen(false); void handleSignOut(); }}
                     className="flex items-center w-full rounded-xl px-3"

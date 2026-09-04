@@ -527,7 +527,7 @@ export default function AffiliatePage() {
 
   const { customer, loadingAuth } = useCustomerAuth();
   const { data: program, isLoading: loadingProgram, error: programError } = useAffiliateProgram();
-  const { data: me, isLoading: loadingMe, error: profileError } = useAffiliateMe(!!customer);
+  const { data: me, isLoading: loadingMe, error: profileError } = useAffiliateMe(customer?.id);
   const applyMutation = useApplyAffiliate();
   const { toast } = useToast();
 

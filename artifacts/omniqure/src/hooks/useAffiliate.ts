@@ -16,9 +16,9 @@ export function useAffiliateProgram() {
   });
 }
 
-export function useAffiliateMe(enabled = true) {
+export function useAffiliateMe(customerId?: number) {
   return useQuery({
-    queryKey: ["affiliate-me"],
+    queryKey: ["affiliate-me", customerId],
     queryFn: async () => {
       const res = await fetch(apiUrl("affiliates/me"), { credentials: "include" });
       if (!res.ok) {
@@ -27,7 +27,7 @@ export function useAffiliateMe(enabled = true) {
       }
       return res.json();
     },
-    enabled
+    enabled: typeof customerId === "number"
   });
 }
 
