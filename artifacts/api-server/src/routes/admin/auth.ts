@@ -31,6 +31,14 @@ const LOCKOUT_MS = 15 * 60 * 1000;
 const ATTEMPT_WINDOW_MS = 30 * 60 * 1000;
 const MFA_CHALLENGE_MS = 5 * 60 * 1000;
 
+function developmentAdminAccessEnabled(): boolean {
+  return (
+    process.env.NODE_ENV !== "production" &&
+    Boolean(process.env.REPL_ID) &&
+    !process.env.REPLIT_DEPLOYMENT
+  );
+}
+
 interface SecureAdminSession {
   email: string | null;
   authAt: number;
@@ -598,6 +606,40 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
   await recordAudit(req, "admin_bootstrap_login_success", true);
   res.cookie(SECURE_SESSION_COOKIE, createSecureAdminSessionValue(null, 0), {
     httpOnly: true, maxAge: COOKIE_MAX_AGE, sameSite: "lax", secure: process.env.NODE_ENV === "production",
+  });
+  res.clearCookie(SESSION_COOKIE);
+  res.status(200).json({ authenticated: true });
+});
+
+router.post("/admin/auth/development-login", async (req: Request, res: Response): Promise<void> => {
+  if (!developmentAdminAccessEnabled()) {
+    res.status(404).json({ error: "Not found" });
+    return;
+  }
+
+  const [owner] = await db
+    .select()
+    .from(adminUsersTable)
+    .where(and(
+      eq(adminUsersTable.isActive, true),
+      eq(adminUsersTable.role, "owner"),
+    ))
+    .limit(1);
+
+  if (!owner) {
+    res.status(409).json({ error: "Create an active owner account before using development access." });
+    return;
+  }
+
+  await recordAudit(req, "admin_development_login", true, {
+    adminUserId: owner.id,
+    email: owner.email,
+  });
+  res.cookie(SECURE_SESSION_COOKIE, createSecureAdminSessionValue(owner.email, owner.sessionVersion), {
+    httpOnly: true,
+    maxAge: COOKIE_MAX_AGE,
+    sameSite: "lax",
+    secure: false,
   });
   res.clearCookie(SESSION_COOKIE);
   res.status(200).json({ authenticated: true });

@@ -227282,6 +227282,9 @@ var MAX_ATTEMPTS = 5;
 var LOCKOUT_MS = 15 * 60 * 1e3;
 var ATTEMPT_WINDOW_MS = 30 * 60 * 1e3;
 var MFA_CHALLENGE_MS = 5 * 60 * 1e3;
+function developmentAdminAccessEnabled() {
+  return process.env.NODE_ENV !== "production" && Boolean(process.env.REPL_ID) && !process.env.REPLIT_DEPLOYMENT;
+}
 function sharedRecoveryDecision(activeAdmins) {
   if (activeAdmins.length === 0) return "bootstrap";
   if (activeAdmins.length === 1 && activeAdmins[0].role === "owner" && !activeAdmins[0].mfaEnabled) {
@@ -227723,6 +227726,32 @@ router3.post("/admin/auth/login", async (req, res) => {
     maxAge: COOKIE_MAX_AGE,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production"
+  });
+  res.clearCookie(SESSION_COOKIE);
+  res.status(200).json({ authenticated: true });
+});
+router3.post("/admin/auth/development-login", async (req, res) => {
+  if (!developmentAdminAccessEnabled()) {
+    res.status(404).json({ error: "Not found" });
+    return;
+  }
+  const [owner] = await db.select().from(adminUsersTable).where(and(
+    eq(adminUsersTable.isActive, true),
+    eq(adminUsersTable.role, "owner")
+  )).limit(1);
+  if (!owner) {
+    res.status(409).json({ error: "Create an active owner account before using development access." });
+    return;
+  }
+  await recordAudit(req, "admin_development_login", true, {
+    adminUserId: owner.id,
+    email: owner.email
+  });
+  res.cookie(SECURE_SESSION_COOKIE, createSecureAdminSessionValue(owner.email, owner.sessionVersion), {
+    httpOnly: true,
+    maxAge: COOKIE_MAX_AGE,
+    sameSite: "lax",
+    secure: false
   });
   res.clearCookie(SESSION_COOKIE);
   res.status(200).json({ authenticated: true });

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { getAdminMeQueryKey, useAdminMe } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -50,6 +50,46 @@ export default function Login() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const { data: session, isLoading: checkingSession } = useAdminMe();
   const isLocked = lockedUntil !== null && countdown > 0;
+  const developmentLoginAttempted = useRef(false);
+
+  useEffect(() => {
+    if (
+      !import.meta.env.DEV ||
+      checkingSession ||
+      session?.authenticated ||
+      isReauthentication ||
+      developmentLoginAttempted.current
+    ) {
+      return;
+    }
+
+    developmentLoginAttempted.current = true;
+    setIsPending(true);
+    setErrorMsg(null);
+    void fetch("/api/admin/auth/development-login", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({})) as LoginResponse;
+          throw new Error(data.error || "Development access is unavailable");
+        }
+        await queryClient.invalidateQueries({ queryKey: getAdminMeQueryKey() });
+        setLocation(returnTo);
+      })
+      .catch((error: unknown) => {
+        setErrorMsg(error instanceof Error ? error.message : "Development access is unavailable");
+      })
+      .finally(() => setIsPending(false));
+  }, [
+    checkingSession,
+    session?.authenticated,
+    isReauthentication,
+    queryClient,
+    setLocation,
+    returnTo,
+  ]);
 
   useEffect(() => {
     if (!lockedUntil) return;
