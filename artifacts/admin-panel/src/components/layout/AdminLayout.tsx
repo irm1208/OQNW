@@ -39,9 +39,9 @@ const coreNavGroups: NavGroup[] = [
     ],
   },
   {
-    label: "Customers",
+    label: "Website Users",
     items: [
-      { href: "/customers", label: "Customers", icon: Users },
+      { href: "/customers", label: "Registered Users", icon: Users },
       { href: "/referrals", label: "Referrals", icon: Share2 },
       { href: "/affiliates", label: "Affiliates", icon: Network },
     ],

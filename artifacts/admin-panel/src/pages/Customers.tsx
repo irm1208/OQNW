@@ -33,6 +33,11 @@ export default function Customers() {
   });
 
   const formatCurrency = (val: number) => new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(val);
+  const formatJoinedDate = (value: string) => new Intl.DateTimeFormat("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(value));
 
   function countryFlag(cc: string) {
     return cc.toUpperCase().replace(/\p{L}/gu, (c) => String.fromCodePoint(c.charCodeAt(0) + 127397));
@@ -61,8 +66,8 @@ export default function Customers() {
       if (search) params.set("search", search);
       const qs = params.toString();
       const today = new Date().toISOString().slice(0, 10);
-      await downloadCsv(`/api/admin/export/customers.csv`, `customers-${today}.csv`);
-      toast.success("Customers exported");
+      await downloadCsv(`/api/admin/customers/export${qs ? `?${qs}` : ""}`, `registered-users-${today}.csv`);
+      toast.success("Registered users exported");
     } catch {
       toast.error("Export failed");
     } finally {
@@ -73,7 +78,12 @@ export default function Customers() {
   return (
     <div className="admin-page space-y-6">
       <div className="page-header flex flex-col sm:flex-row justify-between gap-4">
-        <h2 className="text-2xl font-bold tracking-tight">Customers</h2>
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Registered Users</h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            {data ? `${data.total.toLocaleString()} website account${data.total === 1 ? "" : "s"}` : "Website accounts"}
+          </p>
+        </div>
         <div className="page-actions">
           <Button variant="outline" size="sm" onClick={handleExport} disabled={exporting}>
             {exporting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
@@ -87,7 +97,7 @@ export default function Customers() {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search customers..."
+            placeholder="Search registered users..."
             className="pl-9"
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
@@ -101,6 +111,7 @@ export default function Customers() {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
+              <TableHead>Joined</TableHead>
               <TableHead>Location</TableHead>
               <TableHead className="text-right">Orders</TableHead>
               <TableHead className="text-right">Total Spend</TableHead>
@@ -110,14 +121,14 @@ export default function Customers() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center">
+                <TableCell colSpan={7} className="h-24 text-center">
                   <Loader2 className="w-6 h-6 animate-spin text-primary mx-auto" />
                 </TableCell>
               </TableRow>
             ) : data?.customers?.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
-                  No customers found.
+                <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
+                  No registered users found.
                 </TableCell>
               </TableRow>
             ) : (
@@ -125,6 +136,7 @@ export default function Customers() {
                 <TableRow key={customer.id}>
                   <TableCell className="font-medium">{customer.firstName} {customer.lastName}</TableCell>
                   <TableCell className="text-muted-foreground">{customer.email}</TableCell>
+                   <TableCell className="text-muted-foreground whitespace-nowrap">{formatJoinedDate(customer.createdAt)}</TableCell>
                   <TableCell>{locationCell(customer as { city?: string | null; country?: string | null; lastSeenCountry?: string | null })}</TableCell>
                   <TableCell className="text-right">{customer.totalOrders}</TableCell>
                   <TableCell className="text-right font-medium">{formatCurrency(customer.totalSpendGbp)}</TableCell>
