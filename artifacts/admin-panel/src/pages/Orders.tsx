@@ -218,7 +218,7 @@ export default function Orders() {
       )}
 
       <div className="border rounded-md bg-card">
-        <Table className="table-fixed sm:table-auto">
+        <Table className="mobile-orders-table table-fixed sm:table-auto">
           <TableHeader>
             <TableRow>
               <TableHead className="hidden w-[44px] sm:table-cell">

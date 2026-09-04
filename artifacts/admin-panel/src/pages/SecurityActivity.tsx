@@ -138,7 +138,7 @@ export default function SecurityActivity() {
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">Outcome</th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">Administrator</th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">IP address</th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Browser</th>
+                  <th className="hidden px-4 py-3 text-left font-medium text-muted-foreground sm:table-cell">Browser</th>
                 </tr>
               </thead>
               <tbody>
@@ -154,7 +154,7 @@ export default function SecurityActivity() {
                     </td>
                     <td className="px-4 py-3">{event.email ?? "Shared owner access"}</td>
                     <td className="px-4 py-3 font-mono text-xs">{event.ip ?? "—"}</td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground max-w-xs truncate" title={event.userAgent ?? undefined}>
+                    <td className="hidden px-4 py-3 text-xs text-muted-foreground max-w-xs truncate sm:table-cell" title={event.userAgent ?? undefined}>
                       {event.userAgent ?? "—"}
                     </td>
                   </tr>

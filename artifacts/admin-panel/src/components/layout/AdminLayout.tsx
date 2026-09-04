@@ -103,7 +103,7 @@ function AlertsDropdown({ onClose }: { onClose: () => void }) {
   const recent = (alerts ?? []).slice(0, 8);
 
   return (
-    <div className="absolute right-0 top-10 z-50 w-80 bg-card border rounded-xl shadow-xl overflow-hidden">
+    <div className="absolute right-0 top-10 z-50 w-[min(calc(100vw-1.5rem),20rem)] max-w-[calc(100vw-1.5rem)] bg-card border rounded-xl shadow-xl overflow-hidden">
       <div className="flex items-center justify-between px-4 py-3 border-b">
         <span className="font-semibold text-sm">Alerts</span>
         <WLink href="/alerts" onClick={onClose} className="text-xs text-primary hover:underline">
