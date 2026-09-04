@@ -6,11 +6,15 @@ import type { AddressInfo } from "node:net";
 import test from "node:test";
 import pg from "pg";
 import { eq } from "drizzle-orm";
+import { createAffiliateAttributionToken } from "../lib/affiliateAttribution";
 
 const { Pool } = pg;
 
-test("affiliate approval gates dashboard, rewards, and checkout discounts", async (t) => {
+test("affiliate approval gates dashboard, rewards, discounts, and signed checkout attribution", async (t) => {
   assert.ok(process.env.DATABASE_URL, "DATABASE_URL is required");
+  // This integration test creates real orders but must never send real email.
+  process.env.RESEND_API_KEY = "";
+  process.env.LOG_LEVEL = "silent";
 
   const originalDatabaseUrl = process.env.DATABASE_URL;
   const schema = `affiliate_gate_${randomUUID().replaceAll("-", "")}`;
@@ -34,8 +38,10 @@ test("affiliate approval gates dashboard, rewards, and checkout discounts", asyn
   const baseTables = [
     "admin_users",
     "admin_audit_events",
+    "email_logs",
     "customers",
     "orders",
+    "order_items",
     "products_catalog",
     "products_inventory",
     "discount_codes",
@@ -80,8 +86,9 @@ test("affiliate approval gates dashboard, rewards, and checkout discounts", asyn
     migrationClient.release();
   }
 
-  const [{ db, pool, affiliatePartnersTable, affiliateRewardCreditsTable, customersTable,
-    discountCodesTable, productsCatalogTable, adminUsersTable }, { default: app }, auth] = await Promise.all([
+  const [{ db, pool, affiliatePartnersTable, affiliateRewardCreditsTable, affiliateOrderAttributionsTable,
+    affiliateCommissionsTable, customersTable, ordersTable, discountCodesTable, productsCatalogTable,
+    adminUsersTable }, { default: app }, auth] = await Promise.all([
     import("@workspace/db"),
     import("../app"),
     import("./admin/auth"),
@@ -123,6 +130,7 @@ test("affiliate approval gates dashboard, rewards, and checkout discounts", asyn
   ]).returning({
     id: affiliatePartnersTable.id,
     email: affiliatePartnersTable.email,
+    trackingCode: affiliatePartnersTable.trackingCode,
     discountCode: affiliatePartnersTable.discountCode,
   });
 
@@ -227,6 +235,44 @@ test("affiliate approval gates dashboard, rewards, and checkout discounts", asyn
       paymentCurrency: "GBP",
     }),
   });
+  const checkout = (attributionToken: string, email: string) => fetch(`${base}/orders`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      cookie: `affiliate_attribution=${attributionToken}`,
+      origin: "http://127.0.0.1:5000",
+    },
+    body: JSON.stringify({
+      delivery: {
+        email,
+        firstName: "Checkout",
+        lastName: "Shopper",
+        address1: "1 Test Street",
+        city: "London",
+        postcode: "SW1A 1AA",
+        country: "United Kingdom",
+      },
+      shippingMethod: "Standard",
+      items: [{
+        productId: 99999,
+        productSlug: "approval-test-peptide",
+        productName: "Client-supplied name",
+        productCategory: "Peptides",
+        quantity: 1,
+        priceGbp: 999,
+      }],
+      paymentMethod: "bank_transfer",
+    }),
+  });
+  const checkoutWithToken = async (partner: { id: number; trackingCode: string }, email: string) => {
+    const response = await checkout(createAffiliateAttributionToken(
+      partner.id,
+      partner.trackingCode,
+      new Date(),
+    ), email);
+    assert.equal(response.status, 201);
+    return (await response.json()) as { orderNumber: string };
+  };
 
   const restrictedStatuses = ["pending", "rejected", "suspended"] as const;
   for (const status of restrictedStatuses) {
@@ -255,6 +301,11 @@ test("affiliate approval gates dashboard, rewards, and checkout discounts", asyn
       0,
       `${status} partner discount must be rejected even when its discount row is active`,
     );
+  }
+
+  for (const status of restrictedStatuses) {
+    const partner = partners.find((candidate) => candidate.email === `${status}@example.invalid`)!;
+    await checkoutWithToken(partner, `${status}-checkout@example.invalid`);
   }
 
   const pendingPartner = partners.find((partner) => partner.email === "pending@example.invalid")!;
@@ -286,6 +337,70 @@ test("affiliate approval gates dashboard, rewards, and checkout discounts", asyn
   assert.equal(approvedQuoteResponse.status, 200);
   const approvedQuote = await approvedQuoteResponse.json() as { discountAmountGbp: number };
   assert.equal(approvedQuote.discountAmountGbp, 2.5);
+
+  const approvedOrder = await checkoutWithToken(pendingPartner, "approved-checkout@example.invalid");
+  const [approvedOrderRow] = await db.select({ id: ordersTable.id })
+    .from(ordersTable)
+    .where(eq(ordersTable.orderNumber, approvedOrder.orderNumber))
+    .limit(1);
+  assert.ok(approvedOrderRow);
+
+  const [approvedAttribution] = await db.select({
+    orderNumber: ordersTable.orderNumber,
+    partnerId: affiliateOrderAttributionsTable.partnerId,
+    trackingCode: affiliateOrderAttributionsTable.trackingCodeSnapshot,
+    source: affiliateOrderAttributionsTable.source,
+  }).from(affiliateOrderAttributionsTable)
+    .innerJoin(ordersTable, eq(ordersTable.id, affiliateOrderAttributionsTable.orderId))
+    .where(eq(affiliateOrderAttributionsTable.orderId, approvedOrderRow.id));
+  assert.deepEqual(approvedAttribution, {
+    orderNumber: approvedOrder.orderNumber,
+    partnerId: pendingPartner.id,
+    trackingCode: "PENDING-TRACK",
+    source: "tracking_link",
+  });
+
+  const [approvedCommission] = await db.select({
+    orderNumber: ordersTable.orderNumber,
+    partnerId: affiliateCommissionsTable.partnerId,
+  }).from(affiliateCommissionsTable)
+    .innerJoin(ordersTable, eq(ordersTable.id, affiliateCommissionsTable.orderId))
+    .where(eq(affiliateCommissionsTable.orderId, approvedOrderRow.id));
+  assert.deepEqual(approvedCommission, {
+    orderNumber: approvedOrder.orderNumber,
+    partnerId: pendingPartner.id,
+  });
+
+  const tamperedToken = createAffiliateAttributionToken(
+    pendingPartner.id,
+    pendingPartner.trackingCode,
+    new Date(),
+  );
+  const tamperedOrder = await checkout(
+    `${tamperedToken.slice(0, -1)}${tamperedToken.endsWith("a") ? "b" : "a"}`,
+    "tampered-checkout@example.invalid",
+  );
+  assert.equal(tamperedOrder.status, 201);
+
+  const attributionRows = await db.select({
+    orderNumber: ordersTable.orderNumber,
+    partnerId: affiliateOrderAttributionsTable.partnerId,
+  }).from(affiliateOrderAttributionsTable)
+    .innerJoin(ordersTable, eq(ordersTable.id, affiliateOrderAttributionsTable.orderId));
+  assert.deepEqual(attributionRows, [{
+    orderNumber: approvedOrder.orderNumber,
+    partnerId: pendingPartner.id,
+  }]);
+
+  const commissionRows = await db.select({
+    orderNumber: ordersTable.orderNumber,
+    partnerId: affiliateCommissionsTable.partnerId,
+  }).from(affiliateCommissionsTable)
+    .innerJoin(ordersTable, eq(ordersTable.id, affiliateCommissionsTable.orderId));
+  assert.deepEqual(commissionRows, [{
+    orderNumber: approvedOrder.orderNumber,
+    partnerId: pendingPartner.id,
+  }]);
 
   const suspendResponse = await updatePartner(pendingPartner.id, "suspended");
   assert.equal(suspendResponse.status, 200);

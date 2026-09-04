@@ -914,18 +914,27 @@ async function handleOrderRequest(
       .where(eq(affiliateProgramSettingsTable.id, 1)).limit(1);
     if (affiliateSettings) {
       const attributionCutoff = new Date(Date.now() - affiliateSettings.attributionWindowDays * 24 * 60 * 60 * 1000);
-      const candidatePartnerId = affiliateToken && affiliateToken.clickedAt >= attributionCutoff
-        ? affiliateToken.partnerId
-        : validatedDiscountAffiliatePartnerId;
-      const source = affiliateToken && affiliateToken.clickedAt >= attributionCutoff
-        ? "tracking_link" as const
-        : "discount_code" as const;
-      if (candidatePartnerId) {
-        const [partner] = await db.select().from(affiliatePartnersTable).where(and(
-          eq(affiliatePartnersTable.id, candidatePartnerId),
+      const freshAffiliateToken = affiliateToken && affiliateToken.clickedAt >= attributionCutoff
+        ? affiliateToken
+        : null;
+      let source: "tracking_link" | "discount_code" | null = null;
+      let partner: typeof affiliatePartnersTable.$inferSelect | undefined;
+      if (freshAffiliateToken) {
+        [partner] = await db.select().from(affiliatePartnersTable).where(and(
+          eq(affiliatePartnersTable.id, freshAffiliateToken.partnerId),
+          eq(affiliatePartnersTable.trackingCode, freshAffiliateToken.trackingCode),
           eq(affiliatePartnersTable.status, "approved"),
         )).limit(1);
-        if (partner && (!customerId || partner.customerId !== customerId)) {
+        if (partner) source = "tracking_link";
+      }
+      if (!partner && validatedDiscountAffiliatePartnerId) {
+        [partner] = await db.select().from(affiliatePartnersTable).where(and(
+          eq(affiliatePartnersTable.id, validatedDiscountAffiliatePartnerId),
+          eq(affiliatePartnersTable.status, "approved"),
+        )).limit(1);
+        if (partner) source = "discount_code";
+      }
+      if (partner && source && (!customerId || partner.customerId !== customerId)) {
           const tierCutoff = new Date(Date.now() - affiliateSettings.tierWindowDays * 24 * 60 * 60 * 1000);
           const [settledRows, tierRows] = await Promise.all([
             db.select({
@@ -961,14 +970,13 @@ async function handleOrderRequest(
               partnerId: partner.id,
               trackingCode: partner.trackingCode,
               discountCode: partner.discountCode,
-              clickedAt: source === "tracking_link" ? affiliateToken?.clickedAt ?? null : null,
+              clickedAt: source === "tracking_link" ? freshAffiliateToken?.clickedAt ?? null : null,
               source,
               eligibleSalesGbp,
               commissionRatePercent,
               commissionAmountGbp: calculateAffiliateCommission(eligibleSalesGbp, commissionRatePercent),
             };
           }
-        }
       }
     }
     // Resolve referral qualification before persisting the order so the order,
@@ -1124,26 +1132,38 @@ async function handleOrderRequest(
         if (referralCandidate.held) await tx.update(customersTable).set({ referralAbuseFlag: true }).where(eq(customersTable.id, customerId));
       }
       if (affiliateCandidate) {
-        await tx.insert(affiliateOrderAttributionsTable).values({
-          orderId: insertedOrder.id,
-          partnerId: affiliateCandidate.partnerId,
-          customerId,
-          trackingCodeSnapshot: affiliateCandidate.trackingCode,
-          discountCodeSnapshot: validatedDiscountCode,
-          source: affiliateCandidate.source,
-          clickedAt: affiliateCandidate.clickedAt,
-        }).onConflictDoNothing();
-        await tx.insert(affiliateCommissionsTable).values({
-          partnerId: affiliateCandidate.partnerId,
-          orderId: insertedOrder.id,
-          eligibleSalesGbp: affiliateCandidate.eligibleSalesGbp.toFixed(2),
-          commissionRatePercent: affiliateCandidate.commissionRatePercent.toFixed(2),
-          amountGbp: affiliateCandidate.commissionAmountGbp.toFixed(2),
-          status: fraudScore >= 60 ? "held" : "pending",
-          statusReason: fraudScore >= 60 ? "Order held for fraud review" : null,
-          heldAt: fraudScore >= 60 ? new Date() : null,
-          periodKey: new Date().toISOString().slice(0, 7),
-        }).onConflictDoNothing();
+        // Re-check approval while holding the partner row lock immediately
+        // before writing immutable attribution. This closes the race where an
+        // admin suspends a partner after the pre-transaction resolver ran.
+        const approvedAffiliateRows = await tx.execute(sql`
+          SELECT id
+          FROM affiliate_partners
+          WHERE id = ${affiliateCandidate.partnerId}
+            AND status = 'approved'
+          FOR UPDATE
+        `);
+        if (approvedAffiliateRows.rows.length > 0) {
+          await tx.insert(affiliateOrderAttributionsTable).values({
+            orderId: insertedOrder.id,
+            partnerId: affiliateCandidate.partnerId,
+            customerId,
+            trackingCodeSnapshot: affiliateCandidate.trackingCode,
+            discountCodeSnapshot: validatedDiscountCode,
+            source: affiliateCandidate.source,
+            clickedAt: affiliateCandidate.clickedAt,
+          }).onConflictDoNothing();
+          await tx.insert(affiliateCommissionsTable).values({
+            partnerId: affiliateCandidate.partnerId,
+            orderId: insertedOrder.id,
+            eligibleSalesGbp: affiliateCandidate.eligibleSalesGbp.toFixed(2),
+            commissionRatePercent: affiliateCandidate.commissionRatePercent.toFixed(2),
+            amountGbp: affiliateCandidate.commissionAmountGbp.toFixed(2),
+            status: fraudScore >= 60 ? "held" : "pending",
+            statusReason: fraudScore >= 60 ? "Order held for fraud review" : null,
+            heldAt: fraudScore >= 60 ? new Date() : null,
+            periodKey: new Date().toISOString().slice(0, 7),
+          }).onConflictDoNothing();
+        }
       }
       return [insertedOrder];
     });
