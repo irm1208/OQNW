@@ -64,12 +64,12 @@ const CATEGORY_COLORS = [
 
 function PeriodSelector({ value, onChange }: { value: Period; onChange: (p: Period) => void }) {
   return (
-    <div className="inline-flex items-center rounded-lg border border-border bg-muted/20 p-1 shadow-sm">
+    <div className="inline-flex max-w-full items-center rounded-lg border border-border bg-muted/20 p-1 shadow-sm">
       {(Object.keys(PERIOD_LABELS) as unknown as Period[]).map((p) => (
         <button
           key={p}
           onClick={() => onChange(p)}
-          className={`relative px-4 py-1.5 text-xs font-bold tracking-wide rounded-md transition-all duration-200 ${
+          className={`relative min-w-0 flex-1 px-2.5 py-1.5 text-xs font-bold tracking-wide rounded-md transition-all duration-200 sm:flex-none sm:px-4 ${
             value == p
               ? "text-foreground shadow-sm bg-background border border-border/50"
               : "text-muted-foreground hover:text-foreground hover:bg-muted/60 border border-transparent"
@@ -234,7 +234,9 @@ export default function Dashboard() {
           </div>
           <p className="text-sm text-muted-foreground mt-1">Monitor your store's performance and operations.</p>
         </div>
-        <PeriodSelector value={period} onChange={setPeriod} />
+        <div className="max-w-full">
+          <PeriodSelector value={period} onChange={setPeriod} />
+        </div>
       </div>
 
       {/* Stat Cards */}
@@ -381,12 +383,12 @@ export default function Dashboard() {
 
       {/* New Customers + Revenue by Category + Top Products */}
       <div className="grid gap-6 md:grid-cols-12">
-        <Card className="md:col-span-4 border-border/50 shadow-sm flex flex-col">
+        <Card className="min-w-0 overflow-hidden md:col-span-4 border-border/50 shadow-sm flex flex-col">
           <CardHeader className="pb-2">
             <CardTitle className="text-base font-semibold text-foreground tracking-tight">New Customers</CardTitle>
           </CardHeader>
-          <CardContent className="flex-1">
-            <div className="h-[240px] w-full mt-2">
+          <CardContent className="min-w-0 flex-1">
+            <div className="h-[240px] min-w-0 w-full mt-2">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={newCustomers ?? []}
@@ -427,12 +429,12 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="md:col-span-4 border-border/50 shadow-sm flex flex-col">
+        <Card className="min-w-0 overflow-hidden md:col-span-4 border-border/50 shadow-sm flex flex-col">
           <CardHeader className="pb-2">
             <CardTitle className="text-base font-semibold text-foreground tracking-tight">Revenue by Category</CardTitle>
           </CardHeader>
-          <CardContent className="flex-1">
-            <div className="h-[240px] w-full mt-2">
+          <CardContent className="min-w-0 flex-1">
+            <div className="h-[240px] min-w-0 w-full mt-2">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={revenueByCategory ?? []}
@@ -472,11 +474,11 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="md:col-span-4 border-border/50 shadow-sm flex flex-col">
+        <Card className="min-w-0 overflow-hidden md:col-span-4 border-border/50 shadow-sm flex flex-col">
           <CardHeader className="pb-2">
             <CardTitle className="text-base font-semibold text-foreground tracking-tight">Top Products</CardTitle>
           </CardHeader>
-          <CardContent className="flex-1">
+          <CardContent className="min-w-0 flex-1">
             <div className="space-y-3 mt-2">
               {(topProducts ?? []).slice(0, 5).map((product, i) => (
                 <div key={product.productId} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors group">
@@ -492,7 +494,7 @@ export default function Dashboard() {
                     <p className="text-sm font-semibold truncate text-foreground group-hover:text-primary transition-colors">{product.productName}</p>
                     <p className="text-[11px] font-medium text-muted-foreground mt-0.5">{product.totalSold} units sold</p>
                   </div>
-                  <div className="font-mono text-sm font-bold tracking-tight text-foreground">
+                  <div className="shrink-0 font-mono text-sm font-bold tracking-tight text-foreground">
                     {formatCurrency(product.totalRevenue)}
                   </div>
                 </div>

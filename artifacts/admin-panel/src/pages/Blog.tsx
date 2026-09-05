@@ -154,7 +154,7 @@ export default function Blog() {
         </div>
       </div>
 
-      <div className="rounded-xl border bg-card">
+      <div className="min-w-0 overflow-hidden rounded-xl border bg-card">
           <div className="page-filters p-4 border-b flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1 max-w-sm">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -181,12 +181,12 @@ export default function Blog() {
             <Button className="mt-4" onClick={openCreate}><Plus className="w-4 h-4 mr-2" /> Write First Post</Button>
           </div>
         ) : (
-          <div className="divide-y">
+          <div className="min-w-0 divide-y">
             {posts.map(p => (
-              <div key={p.id} className="flex items-start gap-4 p-5 hover:bg-muted/30">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <p className="font-semibold truncate">{p.title}</p>
+              <div key={p.id} className="flex w-full min-w-0 max-w-full flex-col gap-3 p-4 hover:bg-muted/30 sm:flex-row sm:items-start sm:gap-4 sm:p-5">
+                <div className="w-full min-w-0 flex-1">
+                  <div className="flex min-w-0 items-center gap-2 mb-1">
+                    <p className="min-w-0 flex-1 font-semibold truncate">{p.title}</p>
                     <Badge variant="outline" className={p.status === "published"
                       ? "text-green-600 border-green-200 bg-green-50 text-xs shrink-0"
                       : "text-orange-500 border-orange-200 bg-orange-50 text-xs shrink-0"}>
@@ -194,7 +194,7 @@ export default function Blog() {
                     </Badge>
                   </div>
                   {p.excerpt && <p className="text-sm text-muted-foreground line-clamp-2">{p.excerpt}</p>}
-                  <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+                  <div className="flex min-w-0 flex-wrap items-center gap-3 mt-2 text-xs text-muted-foreground">
                     <span>{p.author}</span>
                     {p.publishedAt && <span>Published {new Date(p.publishedAt).toLocaleDateString("en-GB")}</span>}
                     {(p.tags ?? []).length > 0 && (
@@ -207,10 +207,10 @@ export default function Blog() {
                     onClick={() => toggleStatus.mutate({ id: p.id, status: p.status === "published" ? "draft" : "published" })}>
                     {p.status === "published" ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </Button>
-                  <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(p)}>
+                  <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={`Edit ${p.title}`} onClick={() => openEdit(p)}>
                     <Pencil className="w-4 h-4" />
                   </Button>
-                  <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => remove.mutate(p.id)}>
+                  <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" aria-label={`Delete ${p.title}`} onClick={() => remove.mutate(p.id)}>
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -47,53 +47,58 @@
   --font-serif: var(--app-font-serif);
   --font-mono: var(--app-font-mono);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 4px);
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
 :root {
-  /* Polished, Calm OmniQure Blue Palette */
-  --background: 210 40% 98%;
+  /* Crisp, Dense, Shopify-esque Calm Blue Palette */
+  --background: 210 20% 98%; /* App background: Very light clean gray/slate */
   --foreground: 222 47% 11%;
-  
+
   --card: 0 0% 100%;
   --card-foreground: 222 47% 11%;
-  --card-border: 214 32% 91%;
-  
+  --card-border: 214 20% 90%;
+
   --popover: 0 0% 100%;
   --popover-foreground: 222 47% 11%;
-  --popover-border: 214 32% 91%;
-  
-  --primary: 217 91% 60%;
+  --popover-border: 214 20% 90%;
+
+  --primary: 215 90% 50%; /* Deep reliable professional blue */
   --primary-foreground: 0 0% 100%;
-  
-  --secondary: 210 40% 96.1%;
+
+  --secondary: 210 20% 96%;
   --secondary-foreground: 222 47% 11%;
-  
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222 47% 11%;
-  
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
 
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 217 91% 60%;
+  --muted: 210 20% 96%;
+  --muted-foreground: 215 16% 45%;
 
-  --sidebar: 0 0% 100%;
+  --accent: 210 20% 96%;
+  --accent-foreground: 215 90% 50%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 214 20% 90%;
+  --input: 214 20% 86%;
+  --ring: 215 90% 50%;
+
+  --sidebar: 210 20% 98%;
   --sidebar-foreground: 222 47% 11%;
-  --sidebar-border: 214.3 31.8% 91.4%;
-  --sidebar-primary: 217 91% 60%;
+  --sidebar-border: 214 20% 90%;
+  --sidebar-primary: 215 90% 50%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 210 40% 96.1%;
-  --sidebar-accent-foreground: 222 47% 11%;
+  --sidebar-accent: 210 24% 94%;
+  --sidebar-accent-foreground: 215 90% 50%;
 
-  --app-font-sans: 'Plus Jakarta Sans', sans-serif;
+  --app-font-sans: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --app-font-mono: 'JetBrains Mono', monospace;
   --radius: 0.5rem;
 }
@@ -101,33 +106,33 @@
 .dark {
   --background: 222 47% 11%;
   --foreground: 210 40% 98%;
-  
+
   --card: 222 47% 11%;
   --card-foreground: 210 40% 98%;
   --card-border: 217 32% 17%;
-  
+
   --popover: 222 47% 11%;
   --popover-foreground: 210 40% 98%;
   --popover-border: 217 32% 17%;
-  
+
   --primary: 217 91% 60%;
   --primary-foreground: 0 0% 100%;
-  
+
   --secondary: 217 32% 17%;
   --secondary-foreground: 210 40% 98%;
-  
+
   --muted: 217 32% 17%;
-  --muted-foreground: 215 20.2% 65.1%;
-  
+  --muted-foreground: 215 20% 65%;
+
   --accent: 217 32% 17%;
   --accent-foreground: 210 40% 98%;
-  
+
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 210 40% 98%;
 
   --border: 217 32% 17%;
-  --input: 217 32% 17%;
-  --ring: 224 71.4% 4.1%;
+  --input: 217 32% 24%;
+  --ring: 217 91% 60%;
 
   --sidebar: 222 47% 11%;
   --sidebar-foreground: 210 40% 98%;
@@ -149,6 +154,23 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold tracking-tight;
   }
+
+  /* Polish focus states globally */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background transition-shadow duration-200;
+  }
+
+  /* Refined scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/30 transition-colors;
+  }
 }
 
 @layer utilities {
@@ -165,21 +187,29 @@
     width: 100%;
     max-width: 100%;
     overflow-wrap: break-word;
+    @apply flex flex-col gap-5;
   }
 
   .admin-page .page-header {
-    align-items: flex-start;
+    @apply flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2;
   }
 
   .admin-page .page-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
+    @apply flex flex-wrap items-center gap-2;
   }
 
   .admin-page .page-filters {
     min-width: 0;
+  }
+
+  /* Shared design system for standard cards */
+  .admin-card {
+    @apply bg-card border shadow-sm rounded-lg overflow-hidden;
+  }
+
+  /* Refined, dense tables container */
+  .admin-table-container {
+    @apply bg-card border shadow-sm rounded-lg overflow-hidden;
   }
 
   /* Responsive fixes for mobile layout */

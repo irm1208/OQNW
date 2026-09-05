@@ -302,7 +302,7 @@ export default function Orders() {
                   <TableCell className="text-right font-medium" data-label="Total">{formatCurrency(order.totalGbp)}</TableCell>
                   <TableCell className="px-1 sm:px-2" onClick={(e) => e.stopPropagation()} data-label="Actions">
                     <Button variant="ghost" size="icon" className="h-9 w-9" asChild>
-                      <Link href={`/orders/${order.id}`}>
+                      <Link href={`/orders/${order.id}`} aria-label={`View order ${order.id}`}>
                         <Eye className="w-4 h-4" />
                       </Link>
                     </Button>

@@ -151,6 +151,7 @@ function BellButton() {
       <Button
         variant="ghost"
         size="icon"
+        aria-label="Notifications"
         onClick={() => setOpen((o) => !o)}
         className="relative"
       >
@@ -198,7 +199,7 @@ function NavGroups({
     <>
       {groups.map((group) => (
         <div key={group.label}>
-          <p className="px-3 mb-1.5 text-[11px] font-semibold text-muted-foreground">
+          <p className="px-2.5 mb-1.5 mt-4 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
             {group.label}
           </p>
           <div className="space-y-0.5">
@@ -211,18 +212,18 @@ function NavGroups({
                   href={item.href}
                   onClick={onNavigate}
                   onPointerDown={onNavigate}
-                  className={`relative flex min-h-9 items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                  className={`relative flex min-h-10 md:min-h-8 items-center gap-3 md:gap-2.5 rounded-md px-3 md:px-2.5 py-2 md:py-1.5 text-sm md:text-[13px] font-medium transition-colors ${
                     isActive
-                        ? "bg-primary/10 text-primary"
-                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        ? "bg-black/5 dark:bg-white/10 text-foreground font-semibold"
+                       : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground"
                   }`}
                 >
-                  <item.icon className="w-4 h-4 shrink-0" />
+                  <item.icon className={`w-4 h-4 shrink-0 ${isActive ? "text-foreground" : "text-muted-foreground"}`} />
                    <span className="min-w-0 flex-1 truncate">{item.label}</span>
                    {notificationCount > 0 && (
                      <span
                        aria-label={`${notificationCount} notification${notificationCount === 1 ? "" : "s"}`}
-                       className="min-w-[18px] h-[18px] rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center px-1"
+                       className="min-w-[18px] h-[18px] rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center px-1"
                      >
                        {notificationCount > 99 ? "99+" : notificationCount}
                      </span>
@@ -270,28 +271,28 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-background">
-      <aside className="w-60 flex-col bg-card border-r hidden lg:flex">
-        <div className="h-14 flex items-center justify-between px-6 border-b">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary text-base font-extrabold text-primary-foreground">O</span>
-            <h1 className="font-extrabold text-lg tracking-tight truncate">OmniQure</h1>
+      <aside className="w-[240px] flex-col bg-sidebar border-r border-border hidden lg:flex">
+        <div className="h-[52px] flex items-center justify-between px-4 border-b border-border">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md bg-primary text-sm font-bold text-primary-foreground shadow-sm">O</span>
+            <h1 className="font-semibold text-[15px] tracking-tight truncate">OmniQure</h1>
           </div>
           <BellButton />
         </div>
-        <nav className="flex-1 px-3 py-4 space-y-5 overflow-y-auto">
+        <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
            <NavGroups groups={coreNavGroups} location={location} />
 
           <div className="border-t pt-3">
             <button
               onClick={() => setAdvancedOpen(o => !o)}
-              className="w-full flex min-h-10 items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              className="w-full flex min-h-10 md:min-h-8 items-center gap-3 md:gap-2.5 rounded-md px-3 md:px-2.5 py-2 md:py-1.5 text-sm md:text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
               aria-expanded={advancedOpen}
             >
-              <Settings2 className="w-3 h-3 shrink-0" />
+              <Settings2 className="w-4 h-4 shrink-0" />
               <span className="flex-1 text-left">Specialist tools</span>
               {advancedOpen
-                ? <ChevronDown className="w-3 h-3 shrink-0" />
-                : <ChevronRight className="w-3 h-3 shrink-0" />}
+                ? <ChevronDown className="w-3.5 h-3.5 shrink-0" />
+                : <ChevronRight className="w-3.5 h-3.5 shrink-0" />}
             </button>
             {advancedOpen && (
               <div className="mt-3 space-y-4">
@@ -349,7 +350,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                <div className="border-t pt-3">
                  <button
                    onClick={() => setAdvancedOpen(o => !o)}
-                    className="w-full min-h-11 flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    className="w-full flex min-h-10 md:min-h-8 items-center gap-3 md:gap-2.5 rounded-md px-3 md:px-2.5 py-2 md:py-1.5 text-sm md:text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
                    aria-expanded={advancedOpen}
                  >
                    <Settings2 className="w-4 h-4 shrink-0" />

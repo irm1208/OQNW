@@ -41,3 +41,5 @@
 - [Publish schema diff starts from development](publish-schema-dev-source.md) — schema files alone do not create a production diff; first verify the managed development database received the schema.
 - [Admin alert read receipts](admin-alert-read-receipts.md) — key per-admin read state by alert ID plus event timestamp, so a later recurrence becomes unread again.
 - [Live visitor counting](live-visitor-counting.md) — dashboard “live” means anonymous visible browser tabs heartbeating within two minutes, not requests, IPs, or authenticated users.
+- [Playwright on the Replit Nix runtime](playwright-nix-runtime.md) — downloaded Chromium needs explicit GUI libraries; run long multi-viewport admin sweeps sequentially to avoid preview exhaustion.
+- [Tailwind v4 custom class composition](tailwind-v4-custom-class-composition.md) — `@apply` accepts utilities, not project-defined component classes; repeat utilities or use shared selectors.

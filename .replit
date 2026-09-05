@@ -64,6 +64,14 @@ args = "Storefront"
 task = "workflow.run"
 args = "dependency-audit"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "admin-mobile"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "admin-desktop"
+
 [[workflows.workflow]]
 name = "Storefront"
 author = "agent"
@@ -83,6 +91,28 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "pnpm run check:security"
+
+[workflows.workflow.metadata]
+isValidation = true
+
+[[workflows.workflow]]
+name = "admin-mobile"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pnpm run test:admin-mobile"
+
+[workflows.workflow.metadata]
+isValidation = true
+
+[[workflows.workflow]]
+name = "admin-desktop"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pnpm run test:admin-desktop"
 
 [workflows.workflow.metadata]
 isValidation = true
@@ -130,6 +160,7 @@ externalPort = 3000
 
 [nix]
 channel = "stable-25_05"
+packages = ["glib", "nss", "nspr", "atk", "cups", "dbus", "expat", "libdrm", "mesa", "pango", "cairo", "xorg.libX11", "xorg.libXcomposite", "xorg.libXdamage", "xorg.libXext", "xorg.libXfixes", "xorg.libXrandr", "xorg.libxcb", "libxkbcommon", "alsa-lib", "libgbm"]
 
 [userenv]
 

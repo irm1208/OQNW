@@ -86,12 +86,12 @@ function CreditsPanel({ customerId }: { customerId: number }) {
   const balance = data?.balancePence ?? 0;
 
   return (
-    <Card>
-      <CardHeader className="pb-4 border-b flex flex-row items-center justify-between space-y-0">
+    <Card className="min-w-0 overflow-hidden">
+      <CardHeader className="flex flex-col items-start gap-3 border-b pb-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
         <CardTitle className="text-lg flex items-center gap-2">
           <CreditCard className="w-5 h-5 text-primary" /> Store Credits
         </CardTitle>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button size="sm" variant="outline" onClick={() => { setMode("debit"); setAdjustOpen(true); }}>
             <Minus className="w-3.5 h-3.5 mr-1" /> Deduct
           </Button>
@@ -263,7 +263,7 @@ export default function CustomerDetail() {
   }
 
   return (
-    <div className="admin-page space-y-6 max-w-5xl mx-auto">
+    <div className="admin-page mx-auto min-w-0 max-w-5xl space-y-6">
       <div className="page-header flex items-center gap-3 sm:gap-4 flex-wrap">
         <Button variant="outline" size="icon" asChild>
           <Link href="/customers"><ArrowLeft className="w-4 h-4" /></Link>
@@ -282,8 +282,8 @@ export default function CustomerDetail() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="space-y-6">
+      <div className="grid min-w-0 grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="min-w-0 space-y-6">
           <Card>
             <CardHeader className="pb-4 border-b">
               <CardTitle className="text-lg">Contact Info</CardTitle>
@@ -339,7 +339,7 @@ export default function CustomerDetail() {
           </Card>
         </div>
 
-        <div className="md:col-span-2 space-y-6">
+        <div className="min-w-0 space-y-6 md:col-span-2">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Card>
               <CardContent className="p-6 flex items-center gap-4">
@@ -402,7 +402,7 @@ export default function CustomerDetail() {
                         <TableCell className="text-right font-medium" data-label="Total">{formatCurrency(order.totalGbp)}</TableCell>
                         <TableCell data-label="Actions">
                           <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
-                            <Link href={`/orders/${order.id}`}>
+                            <Link href={`/orders/${order.id}`} aria-label={`View order ${order.id}`}>
                               <Eye className="w-4 h-4" />
                             </Link>
                           </Button>

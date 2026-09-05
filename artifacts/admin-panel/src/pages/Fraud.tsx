@@ -208,7 +208,7 @@ export default function Fraud() {
         </Card>
       </div>
 
-      <div className="flex gap-1 border-b">
+      <div className="flex flex-wrap gap-1 border-b">
         {TABS.map(tab => (
           <button
             key={tab.key}
@@ -309,7 +309,7 @@ export default function Fraud() {
                         className="h-8 w-8"
                         asChild
                       >
-                        <Link href={`/orders/${order.id}`}>
+                        <Link href={`/orders/${order.id}`} aria-label={`View order ${order.id}`}>
                           <Eye className="w-4 h-4" />
                         </Link>
                       </Button>

@@ -305,10 +305,10 @@ export default function Users() {
                     <td className="px-4 py-3 text-xs text-muted-foreground" data-label="Last Login">{u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleString() : "Never"}</td>
                     <td className="px-4 py-3 text-right" data-label="Actions">
                       <div className="flex items-center justify-end gap-1">
-                        <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(u)}>
+                        <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={`Edit ${u.name}`} onClick={() => openEdit(u)}>
                           <Pencil className="w-4 h-4" />
                         </Button>
-                        <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => remove.mutate(u.id)}>
+                        <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" aria-label={`Delete ${u.name}`} onClick={() => remove.mutate(u.id)}>
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>

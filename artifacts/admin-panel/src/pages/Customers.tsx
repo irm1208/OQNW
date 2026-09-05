@@ -142,7 +142,7 @@ export default function Customers() {
                   <TableCell className="text-right font-medium" data-label="Total Spend">{formatCurrency(customer.totalSpendGbp)}</TableCell>
                   <TableCell data-label="Actions">
                     <Button variant="ghost" size="icon" asChild>
-                      <Link href={`/customers/${customer.id}`}>
+                      <Link href={`/customers/${customer.id}`} aria-label={`View customer ${customer.id}`}>
                         <Eye className="w-4 h-4" />
                       </Link>
                     </Button>

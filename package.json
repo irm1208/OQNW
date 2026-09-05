@@ -10,6 +10,8 @@
     "check:api-drift": "pnpm --filter @workspace/scripts run check:api-drift",
     "check:pnpm-version": "node scripts/check-pnpm-version.mjs",
     "test:pnpm-version": "node --test scripts/check-pnpm-version.test.mjs",
+    "test:admin-mobile": "playwright test --config tests/admin-mobile/playwright.config.ts",
+    "test:admin-desktop": "playwright test --config tests/admin-desktop/playwright.config.ts",
     "test:wholesale": "pnpm --filter @workspace/api-server run test:wholesale",
     "check:security": "pnpm run check:pnpm-version && pnpm audit --audit-level high && pnpm audit --prod --audit-level high",
     "sync:production-prices": "pnpm --filter @workspace/scripts run sync:production-prices"
@@ -17,6 +19,7 @@
   "private": true,
   "packageManager": "pnpm@10.26.1",
   "devDependencies": {
+    "@playwright/test": "^1.55.0",
     "typescript": "~5.9.2",
     "prettier": "^3.8.1"
   }
