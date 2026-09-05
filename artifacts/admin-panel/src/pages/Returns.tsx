@@ -169,34 +169,34 @@ export default function Returns() {
             ) : (
               returns.map((r) => (
                 <TableRow key={r.id}>
-                  <TableCell>
+                  <TableCell data-label="Order">
                     <Link href={`/orders/${r.orderId}`} className="font-medium text-primary hover:underline flex items-center gap-1">
                       {r.orderNumber}
                       <ExternalLink className="w-3 h-3" />
                       {notifiedReturnIds.has(r.id) && <AdminNotificationBadge type="return" itemId={r.id} />}
                     </Link>
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Customer">
                     <div className="flex flex-col">
                       <span className="font-medium">{r.customerName}</span>
                       <span className="text-xs text-muted-foreground">{r.customerEmail}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="max-w-[200px] truncate text-sm text-muted-foreground">
+                  <TableCell className="max-w-[200px] truncate text-sm text-muted-foreground" data-label="Reason">
                     {r.reason}
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Status">
                     <Badge variant="outline" className={getStatusColor(r.status)}>
                       {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-right font-medium">
+                  <TableCell className="text-right font-medium" data-label="Refund">
                     {r.refundAmountGbp !== null ? formatCurrency(r.refundAmountGbp) : "—"}
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
+                  <TableCell className="text-sm text-muted-foreground" data-label="Date">
                     {new Date(r.createdAt).toLocaleDateString("en-GB")}
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Actions">
                     <Button variant="outline" size="sm" onClick={() => openEdit(r)}>
                       Manage
                     </Button>

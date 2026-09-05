@@ -118,7 +118,7 @@ const CustomTooltip = ({ active, payload, label, prefix = "", suffix = "", isDat
 function DashboardSkeleton() {
   return (
     <div className="admin-page space-y-6 animate-pulse">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div className="page-header flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div className="space-y-2">
           <div className="h-8 w-40 bg-muted rounded-lg"></div>
           <div className="h-4 w-64 bg-muted/50 rounded-lg"></div>
@@ -223,7 +223,7 @@ export default function Dashboard() {
 
   return (
     <div className="admin-page space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
+      <div className="page-header flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
         <div>
           <div className="flex items-center gap-3">
             <h2 className="text-2xl font-bold tracking-tight text-foreground">Overview</h2>

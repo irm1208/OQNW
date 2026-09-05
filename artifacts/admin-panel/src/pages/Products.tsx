@@ -20,7 +20,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -471,19 +471,19 @@ function CatalogTab() {
             ) : (
               products?.map(product => (
                 <TableRow key={product.id}>
-                  <TableCell>
+                  <TableCell data-label="Image">
                     {product.imageUrl ? (
                       <img src={product.imageUrl} alt={product.name} className="w-9 h-9 rounded object-cover border bg-muted" />
                     ) : (
                       <div className="w-9 h-9 rounded border bg-muted flex items-center justify-center text-xs text-muted-foreground">—</div>
                     )}
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Product">
                     <div className="font-medium text-sm">{product.name}</div>
                     <div className="text-xs text-muted-foreground font-mono">{product.slug}</div>
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{product.category}</TableCell>
-                  <TableCell>
+                  <TableCell className="text-sm text-muted-foreground" data-label="Category">{product.category}</TableCell>
+                  <TableCell data-label="Price">
                     <div className="relative w-28">
                       <span className="absolute left-2 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">£</span>
                       <Input
@@ -502,14 +502,14 @@ function CatalogTab() {
                       />
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Janoshik">
                     {product.hasJanoshikReport ? (
                       <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">Verified</Badge>
                     ) : (
                       <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200">Missing</Badge>
                     )}
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Status">
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleTogglePublished(product)}
@@ -532,7 +532,7 @@ function CatalogTab() {
                       )}
                     </div>
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right" data-label="Actions">
                     <div className="flex items-center justify-end gap-1">
                       <Button
                         variant="ghost"
@@ -611,6 +611,9 @@ function CatalogTab() {
         <DialogContent className="max-w-3xl max-h-[90vh] flex flex-col">
           <DialogHeader>
             <DialogTitle>{editingProduct ? `Edit: ${editingProduct.name}` : "Add New Product"}</DialogTitle>
+            <DialogDescription>
+              {editingProduct ? "Update the storefront details, pricing, evidence, and search information for this product." : "Add a product with its storefront details, pricing, evidence, and search information."}
+            </DialogDescription>
           </DialogHeader>
           <ScrollArea className="flex-1 pr-4">
             <div className="space-y-5 pb-2">
@@ -941,7 +944,7 @@ function InventoryTab() {
             ) : (
               products?.map(product => (
                 <TableRow key={product.id}>
-                  <TableCell className="font-medium">
+                  <TableCell className="font-medium" data-label="Product">
                     <div className="flex items-center gap-3">
                       {product.productImage ? (
                         <img src={product.productImage} alt={product.productName} className="w-8 h-8 rounded object-cover border bg-muted" />
@@ -951,8 +954,8 @@ function InventoryTab() {
                       {product.productName}
                     </div>
                   </TableCell>
-                  <TableCell className="text-muted-foreground">{product.productCategory}</TableCell>
-                  <TableCell>
+                  <TableCell className="text-muted-foreground" data-label="Category">{product.productCategory}</TableCell>
+                  <TableCell data-label="Stock Level">
                     <Input
                       type="number"
                       defaultValue={product.stockLevel}
@@ -961,7 +964,7 @@ function InventoryTab() {
                       onKeyDown={e => e.key === "Enter" && e.currentTarget.blur()}
                     />
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Status">
                     {product.stockLevel <= 0 ? (
                       <Badge variant="destructive" className="bg-red-100 text-red-800 border-0 hover:bg-red-100">Out of Stock</Badge>
                     ) : product.stockLevel <= product.lowStockThreshold ? (
@@ -972,7 +975,7 @@ function InventoryTab() {
                       <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">In Stock</Badge>
                     )}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right" data-label="Published">
                     <div className="flex justify-end">
                       <Switch
                         checked={product.isPublished}

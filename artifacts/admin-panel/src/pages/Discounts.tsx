@@ -164,25 +164,25 @@ export default function Discounts() {
             ) : (
               discounts?.map((discount) => (
                 <TableRow key={discount.id} className={!discount.isActive ? "opacity-60" : ""}>
-                  <TableCell className="font-mono font-medium">{discount.code}</TableCell>
-                  <TableCell>
+                  <TableCell className="font-mono font-medium" data-label="Code">{discount.code}</TableCell>
+                  <TableCell data-label="Value">
                     <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20">
                       {discount.type === 'percentage' ? `${discount.value}% OFF` : `${formatCurrency(discount.value)} OFF`}
                     </Badge>
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Usage">
                     {discount.usageCount} {discount.usageLimit ? `/ ${discount.usageLimit}` : 'used'}
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
+                  <TableCell className="text-sm text-muted-foreground" data-label="Conditions">
                     {discount.minSpend ? `Min. spend ${formatCurrency(discount.minSpend)}` : 'None'}
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Status">
                     <Switch 
                       checked={discount.isActive}
                       onCheckedChange={(c) => handleToggleActive(discount, c)}
                     />
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right" data-label="Actions">
                     <div className="flex justify-end gap-2">
                       <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => openEditDialog(discount)}>
                         <Edit2 className="w-4 h-4" />

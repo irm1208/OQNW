@@ -208,15 +208,15 @@ export default function Wholesale() {
             ) : (
               invoices.map((inv) => (
                 <TableRow key={inv.id} className="group transition-colors hover:bg-muted/20">
-                  <TableCell className="font-medium text-foreground">{inv.referenceNumber}</TableCell>
-                  <TableCell className="text-muted-foreground">{new Date(inv.createdAt).toLocaleDateString("en-GB")}</TableCell>
-                  <TableCell>
+                  <TableCell className="font-medium text-foreground" data-label="Reference #">{inv.referenceNumber}</TableCell>
+                  <TableCell className="text-muted-foreground" data-label="Date">{new Date(inv.createdAt).toLocaleDateString("en-GB")}</TableCell>
+                  <TableCell data-label="Customer">
                     <div className="flex flex-col">
                       <span className="font-medium text-foreground">{inv.customerName}</span>
                       <span className="text-xs text-muted-foreground">{inv.customerEmail}</span>
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Status">
                     <div className="flex min-w-40 flex-col items-start gap-1.5">
                       <Badge variant="outline" className={`font-medium ${getStatusColor(inv.status)}`}>
                         {inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}
@@ -231,9 +231,9 @@ export default function Wholesale() {
                       )}
                     </div>
                   </TableCell>
-                  <TableCell className="text-muted-foreground">{inv.dueDate ? new Date(inv.dueDate).toLocaleDateString("en-GB") : "-"}</TableCell>
-                  <TableCell className="text-right font-semibold">{formatCurrency(inv.totalGbp, inv.currency)}</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-muted-foreground" data-label="Due Date">{inv.dueDate ? new Date(inv.dueDate).toLocaleDateString("en-GB") : "-"}</TableCell>
+                  <TableCell className="text-right font-semibold" data-label="Total">{formatCurrency(inv.totalGbp, inv.currency)}</TableCell>
+                  <TableCell className="text-right" data-label="Actions">
                     <div className="flex flex-wrap items-center justify-end gap-2">
                       {inv.paymentUrl && inv.status !== "paid" && inv.paymentStatus !== "paid" && (
                         <Button 

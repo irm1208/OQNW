@@ -146,14 +146,14 @@ export default function BlockedIps() {
             <tbody>
               {data.map((row) => (
                 <tr key={row.id} className="border-b last:border-0 hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3 font-mono font-medium text-red-600">{row.ip}</td>
-                  <td className="px-4 py-3 text-muted-foreground">
+                  <td className="px-4 py-3 font-mono font-medium text-red-600" data-label="IP Address">{row.ip}</td>
+                  <td className="px-4 py-3 text-muted-foreground" data-label="Reason">
                     {row.reason
                       ? <Badge variant="secondary" className="font-normal">{row.reason}</Badge>
                       : <span className="text-xs text-muted-foreground/50">—</span>}
                   </td>
-                  <td className="px-4 py-3 text-muted-foreground text-xs">{formatDate(row.blockedAt)}</td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-4 py-3 text-muted-foreground text-xs" data-label="Blocked">{formatDate(row.blockedAt)}</td>
+                  <td className="px-4 py-3 text-right" data-label="Actions">
                     <Button
                       variant="ghost"
                       size="icon"

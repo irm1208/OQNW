@@ -156,7 +156,7 @@ export default function StockAlerts() {
                     <tr className="border-b bg-muted/40">
                       <th className="text-left px-4 py-3 font-semibold text-muted-foreground">Product</th>
                       <th className="text-left px-4 py-3 font-semibold text-muted-foreground">Waiting</th>
-                      <th className="text-left px-4 py-3 font-semibold text-muted-foreground hidden sm:table-cell">Last Sign-up</th>
+                      <th className="text-left px-4 py-3 font-semibold text-muted-foreground">Last Sign-up</th>
                       <th className="text-right px-4 py-3 font-semibold text-muted-foreground">Action</th>
                     </tr>
                   </thead>
@@ -166,7 +166,7 @@ export default function StockAlerts() {
                         key={product.productId}
                         className={`${i < withWaitlist.length - 1 ? "border-b" : ""} hover:bg-muted/20 transition-colors`}
                       >
-                        <td className="px-4 py-3">
+                        <td className="px-4 py-3" data-label="Product">
                           <div className="flex items-center gap-2">
                             <Package className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                             <span className="font-medium text-foreground">{product.productName}</span>
@@ -178,18 +178,18 @@ export default function StockAlerts() {
                              })()}
                           </div>
                         </td>
-                        <td className="px-4 py-3">
+                        <td className="px-4 py-3" data-label="Waiting">
                           <Badge variant="secondary" className="bg-amber-100 text-amber-700 border-amber-200">
                             {product.pendingCount} subscriber{product.pendingCount !== 1 ? "s" : ""}
                           </Badge>
                         </td>
-                        <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">
+                        <td className="px-4 py-3 text-muted-foreground" data-label="Last Sign-up">
                           <div className="flex items-center gap-1.5">
                             <Clock className="w-3.5 h-3.5" />
                             {formatDate(product.lastSignupAt)}
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-right">
+                        <td className="px-4 py-3 text-right" data-label="Action">
                           <Button
                             size="sm"
                             onClick={() => notify.mutate(product.productId)}
@@ -222,8 +222,7 @@ export default function StockAlerts() {
                     <tr className="border-b bg-muted/40">
                       <th className="text-left px-4 py-3 font-semibold text-muted-foreground">Product</th>
                       <th className="text-left px-4 py-3 font-semibold text-muted-foreground">Total Notified</th>
-                      <th className="text-left px-4 py-3 font-semibold text-muted-foreground hidden sm:table-cell">Last Sign-up</th>
-                      <th className="px-4 py-3" />
+                      <th className="text-left px-4 py-3 font-semibold text-muted-foreground">Last Sign-up</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -232,22 +231,21 @@ export default function StockAlerts() {
                         key={product.productId}
                         className={`${i < alreadyNotified.length - 1 ? "border-b" : ""} opacity-70`}
                       >
-                        <td className="px-4 py-3">
+                        <td className="px-4 py-3" data-label="Product">
                           <div className="flex items-center gap-2">
                             <Package className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                             <span className="font-medium text-foreground">{product.productName}</span>
                           </div>
                         </td>
-                        <td className="px-4 py-3">
+                        <td className="px-4 py-3" data-label="Total Notified">
                           <Badge variant="secondary" className="bg-green-100 text-green-700 border-green-200">
                             <CheckCircle2 className="w-3 h-3 mr-1" />
                             {product.totalCount} notified
                           </Badge>
                         </td>
-                        <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">
+                        <td className="px-4 py-3 text-muted-foreground" data-label="Last Sign-up">
                           {formatDate(product.lastSignupAt)}
                         </td>
-                        <td className="px-4 py-3" />
                       </tr>
                     ))}
                   </tbody>

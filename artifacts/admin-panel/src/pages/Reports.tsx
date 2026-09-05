@@ -155,9 +155,9 @@ export default function Reports() {
               <tbody>
                 {products.map(p => (
                   <tr key={p.productId} className="border-b last:border-0">
-                    <td className="px-4 py-2">{p.productName}</td>
-                    <td className="px-4 py-2 text-right">{p.unitsSold}</td>
-                    <td className="px-4 py-2 text-right font-medium">{gbp(p.revenue)}</td>
+                    <td className="px-4 py-2" data-label="Product">{p.productName}</td>
+                    <td className="px-4 py-2 text-right" data-label="Units">{p.unitsSold}</td>
+                    <td className="px-4 py-2 text-right font-medium" data-label="Revenue">{gbp(p.revenue)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -189,9 +189,9 @@ export default function Reports() {
               <tbody>
                 {categories.map((c, i) => (
                   <tr key={i} className="border-b last:border-0">
-                    <td className="px-4 py-2">{c.category ?? "Uncategorised"}</td>
-                    <td className="px-4 py-2 text-right">{c.unitsSold}</td>
-                    <td className="px-4 py-2 text-right font-medium">{gbp(c.revenue)}</td>
+                    <td className="px-4 py-2" data-label="Category">{c.category ?? "Uncategorised"}</td>
+                    <td className="px-4 py-2 text-right" data-label="Units">{c.unitsSold}</td>
+                    <td className="px-4 py-2 text-right font-medium" data-label="Revenue">{gbp(c.revenue)}</td>
                   </tr>
                 ))}
               </tbody>

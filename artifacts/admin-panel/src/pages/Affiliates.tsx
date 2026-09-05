@@ -380,15 +380,15 @@ function TiersTab() {
             ) : (
               tiers.map(tier => (
                 <TableRow key={tier.id}>
-                  <TableCell>{tier.sortOrder}</TableCell>
-                  <TableCell className="font-medium">{tier.name}<br/><span className="text-xs text-muted-foreground font-mono">{tier.slug}</span></TableCell>
-                  <TableCell>{pounds(tier.minimumSalesGbp)}</TableCell>
-                  <TableCell>{tier.commissionRatePercent}%</TableCell>
-                  <TableCell>{tier.rewardCreditGbp > 0 ? pounds(tier.rewardCreditGbp) : "—"}</TableCell>
-                  <TableCell>
+                  <TableCell data-label="Order">{tier.sortOrder}</TableCell>
+                  <TableCell className="font-medium" data-label="Tier Name">{tier.name}<br/><span className="text-xs text-muted-foreground font-mono">{tier.slug}</span></TableCell>
+                  <TableCell data-label="Min. Sales (£)">{pounds(tier.minimumSalesGbp)}</TableCell>
+                  <TableCell data-label="Commission (%)">{tier.commissionRatePercent}%</TableCell>
+                  <TableCell data-label="Reward Credit (£)">{tier.rewardCreditGbp > 0 ? pounds(tier.rewardCreditGbp) : "—"}</TableCell>
+                  <TableCell data-label="Status">
                     <Badge variant={tier.isActive ? "default" : "secondary"}>{tier.isActive ? "Active" : "Inactive"}</Badge>
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right" data-label="Actions">
                     <Button variant="ghost" size="sm" onClick={() => openDialog(tier)}>Edit</Button>
                   </TableCell>
                 </TableRow>
@@ -514,7 +514,7 @@ function PartnersTab() {
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
-        <div className="flex gap-1 overflow-x-auto pb-2 sm:pb-0">
+        <div className="flex flex-wrap gap-1 pb-2 sm:pb-0">
           {PARTNER_STATUSES.map(s => (
             <Button key={s} variant="ghost" size="sm" onClick={() => setStatus(s)} className={status === s ? "bg-muted font-bold" : ""}>
               {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -551,21 +551,21 @@ function PartnersTab() {
             ) : (
               partners.map(p => (
                 <TableRow key={p.id}>
-                  <TableCell>
+                  <TableCell data-label="Partner">
                     <div className="font-medium">{p.name}</div>
                     <div className="text-xs text-muted-foreground">{p.email}</div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Customer Link">
                     {p.customer ? (
                       <Link href={`/customers/${p.customer.id}`} className="text-primary hover:underline text-sm font-medium">{p.customer.name}</Link>
                     ) : <span className="text-muted-foreground text-xs">Unlinked</span>}
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Codes & Discount">
                     <div className="text-xs font-mono">Tracking: {p.trackingCode || "—"}</div>
                     <div className="text-xs font-mono mt-0.5">Discount: {p.discountCode || "—"}</div>
                     <div className="text-xs text-muted-foreground mt-1">{p.discountPercent}% OFF</div>
                   </TableCell>
-                  <TableCell className="min-w-40">
+                  <TableCell className="min-w-40" data-label="Tier Progress">
                     <div className="flex items-center justify-between gap-2 text-xs">
                       <span className="font-semibold">{p.tierProgress.currentTier?.name ?? "Not placed"}</span>
                       <span className="text-muted-foreground">{pounds(p.tierProgress.rollingSalesGbp)}</span>
@@ -579,16 +579,16 @@ function PartnersTab() {
                         : "Top tier reached"}
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Status">
                     <Badge variant={p.status === "approved" ? "default" : p.status === "pending" ? "outline" : "secondary"}>
                       {p.status}
                     </Badge>
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Joined">
                     <div className="text-sm">{new Date(p.createdAt).toLocaleDateString('en-GB')}</div>
                     {p.approvedAt && <div className="text-xs text-muted-foreground">Approved {new Date(p.approvedAt).toLocaleDateString('en-GB')}</div>}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right" data-label="Actions">
                     <Button variant="ghost" size="sm" onClick={() => openDialog(p)}>Edit</Button>
                   </TableCell>
                 </TableRow>
@@ -716,7 +716,7 @@ function CommissionsTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex gap-1 overflow-x-auto pb-2 border-b">
+      <div className="flex flex-wrap gap-1 pb-2 border-b">
         {COMMISSION_STATUSES.map(s => (
           <Button key={s} variant="ghost" size="sm" onClick={() => setStatus(s)} className={status === s ? "border-b-2 border-primary rounded-none font-bold" : ""}>
             {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -745,31 +745,31 @@ function CommissionsTab() {
             ) : (
               commissions.map(c => (
                 <TableRow key={c.id}>
-                  <TableCell>
+                  <TableCell data-label="Partner">
                     <div className="font-medium">{c.partnerName}</div>
                     <div className="text-xs text-muted-foreground">{c.partnerEmail}</div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Order">
                     <div className="font-mono text-sm">{c.orderNumber}</div>
                     <div className="text-xs text-muted-foreground">{c.orderStatus}</div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Sales & Rate">
                     <div className="text-sm">{pounds(c.eligibleSalesGbp)}</div>
                     <div className="text-xs text-muted-foreground">{c.commissionRatePercent}% rate</div>
                   </TableCell>
-                  <TableCell className="font-semibold text-primary">{pounds(c.amountGbp)}</TableCell>
-                  <TableCell>
+                  <TableCell className="font-semibold text-primary" data-label="Commission">{pounds(c.amountGbp)}</TableCell>
+                  <TableCell data-label="Status">
                     <Badge variant={c.status === "paid" ? "default" : c.status === "approved" ? "outline" : "secondary"}>
                       {c.status}
                     </Badge>
                     {c.statusReason && <div className="text-xs text-muted-foreground mt-1 max-w-[150px] truncate" title={c.statusReason}>{c.statusReason}</div>}
                   </TableCell>
-                  <TableCell className="text-xs text-muted-foreground">
+                  <TableCell className="text-xs text-muted-foreground" data-label="Timeline">
                     <div>Created: {new Date(c.dates.createdAt).toLocaleDateString('en-GB')}</div>
                     {c.dates.approvedAt && <div>Approved: {new Date(c.dates.approvedAt).toLocaleDateString('en-GB')}</div>}
                     {c.dates.paidAt && <div className="text-primary font-medium">Paid: {new Date(c.dates.paidAt).toLocaleDateString('en-GB')}</div>}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right" data-label="Actions">
                     <div className="flex justify-end gap-1">
                       {c.status === "pending" && (
                         <>
@@ -863,7 +863,7 @@ function RewardsTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex gap-1 overflow-x-auto pb-2 border-b">
+      <div className="flex flex-wrap gap-1 pb-2 border-b">
         {REWARD_STATUSES.map(s => (
           <Button key={s} variant="ghost" size="sm" onClick={() => setStatus(s)} className={status === s ? "border-b-2 border-primary rounded-none font-bold" : ""}>
             {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -891,15 +891,15 @@ function RewardsTab() {
             ) : (
               rewards.map(r => (
                 <TableRow key={r.id}>
-                  <TableCell>
+                  <TableCell data-label="Partner">
                     <div className="font-medium">{r.partnerName}</div>
                     <div className="text-xs text-muted-foreground">{r.partnerEmail}</div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Qualifying Context">
                     <div className="text-sm">Volume: {pounds(r.qualifyingSalesGbp)}</div>
                     <div className="text-xs text-muted-foreground">Credit Cap: {pounds(r.creditValueGbp)}</div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Reward Info">
                     {r.claimedProductName ? (
                       <div className="text-sm font-medium text-primary">{r.claimedProductName}</div>
                     ) : (
@@ -907,19 +907,19 @@ function RewardsTab() {
                     )}
                     {r.productSlug && <div className="text-xs font-mono text-muted-foreground">{r.productSlug}</div>}
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Status">
                     <Badge variant={r.status === "fulfilled" ? "default" : r.status === "available" || r.status === "claimed" ? "outline" : "secondary"}>
                       {r.status}
                     </Badge>
                     {r.statusReason && <div className="text-xs text-muted-foreground mt-1 max-w-[150px] truncate" title={r.statusReason}>{r.statusReason}</div>}
                   </TableCell>
-                  <TableCell className="text-xs text-muted-foreground">
+                  <TableCell className="text-xs text-muted-foreground" data-label="Timeline">
                     <div>Created: {new Date(r.dates.createdAt).toLocaleDateString('en-GB')}</div>
                     {r.dates.approvedAt && <div>Approved: {new Date(r.dates.approvedAt).toLocaleDateString('en-GB')}</div>}
                     {r.dates.claimedAt && <div className="text-primary font-medium">Claimed: {new Date(r.dates.claimedAt).toLocaleDateString('en-GB')}</div>}
                     {r.dates.fulfilledAt && <div>Fulfilled: {new Date(r.dates.fulfilledAt).toLocaleDateString('en-GB')}</div>}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right" data-label="Actions">
                     <div className="flex justify-end gap-1">
                       {r.status === "pending" && (
                         <>

@@ -19,58 +19,42 @@ type NavGroup = { label: string; items: NavItem[] };
 
 const coreNavGroups: NavGroup[] = [
   {
-    label: "Overview",
+    label: "Main",
     items: [
       { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-      { href: "/reports",   label: "Reports",   icon: BarChart3 },
-      { href: "/alerts",    label: "Alerts",    icon: Bell },
-    ],
-  },
-  {
-    label: "Orders",
-    items: [
-      { href: "/orders",      label: "Orders",           icon: ShoppingCart },
-      { href: "/wholesale",   label: "Wholesale",        icon: Receipt },
-      { href: "/fulfillment", label: "Fulfilment Queue", icon: ClipboardList },
-      { href: "/fraud",       label: "Fraud Queue",      icon: ShieldAlert },
-      { href: "/crypto-payments", label: "Crypto Audit", icon: WalletCards },
-      { href: "/returns",     label: "Returns",          icon: RotateCcw },
-      { href: "/refunds",     label: "Refunds",          icon: RefreshCcw },
-    ],
-  },
-  {
-    label: "Website Users",
-    items: [
+      { href: "/orders", label: "Orders", icon: ShoppingCart },
+      { href: "/products", label: "Products", icon: Package },
       { href: "/customers", label: "Registered Users", icon: Users },
-      { href: "/referrals", label: "Referrals", icon: Share2 },
-      { href: "/affiliates", label: "Affiliates", icon: Network },
+      { href: "/reports", label: "Reports", icon: BarChart3 },
+      { href: "/alerts", label: "Alerts", icon: Bell },
     ],
   },
   {
-    label: "Products",
+    label: "Operations",
     items: [
-      { href: "/products",     label: "Products",     icon: Package },
-      { href: "/discounts",    label: "Discounts",    icon: Tags },
-      { href: "/stock-alerts", label: "Stock Alerts", icon: BellRing },
+      { href: "/fulfillment", label: "Fulfilment", icon: ClipboardList },
+      { href: "/returns", label: "Returns", icon: RotateCcw },
+      { href: "/affiliates", label: "Affiliates", icon: Network },
+      { href: "/discounts", label: "Discounts", icon: Tags },
     ],
   },
   {
     label: "Settings",
     items: [
-      { href: "/settings",    label: "Store Settings", icon: Settings },
-      { href: "/users",       label: "Admin Users",    icon: UserCog },
-      { href: "/shipping",    label: "Shipping",       icon: Truck },
-      { href: "/blocked-ips", label: "Blocked IPs",    icon: ShieldBan },
-      { href: "/public-traffic", label: "Traffic Protection", icon: ShieldCheck },
-      { href: "/security-activity", label: "Security Activity", icon: ShieldCheck },
+      { href: "/settings", label: "Store Settings", icon: Settings },
+      { href: "/users", label: "Admin Users", icon: UserCog },
     ],
   },
 ];
 
 const advancedNavGroups: NavGroup[] = [
   {
-    label: "Orders",
+    label: "Sales",
     items: [
+      { href: "/wholesale", label: "Wholesale", icon: Receipt },
+      { href: "/fraud", label: "Fraud Queue", icon: ShieldAlert },
+      { href: "/crypto-payments", label: "Crypto Audit", icon: WalletCards },
+      { href: "/refunds", label: "Refunds", icon: RefreshCcw },
       { href: "/abandoned-carts", label: "Abandoned Carts", icon: ShoppingBag },
     ],
   },
@@ -79,14 +63,25 @@ const advancedNavGroups: NavGroup[] = [
     items: [
       { href: "/reviews",       label: "Reviews",       icon: Star },
       { href: "/loyalty",       label: "Loyalty",       icon: Gift },
+      { href: "/referrals", label: "Referrals", icon: Share2 },
     ],
   },
   {
-    label: "Content",
+    label: "Storefront",
     items: [
+      { href: "/stock-alerts", label: "Stock Alerts", icon: BellRing },
+      { href: "/shipping", label: "Shipping", icon: Truck },
       { href: "/blog",       label: "Blog",       icon: FileText },
       { href: "/email-log",  label: "Email Log",  icon: Mail },
       { href: "/newsletter", label: "Newsletter", icon: Send },
+    ],
+  },
+  {
+    label: "Security",
+    items: [
+      { href: "/blocked-ips", label: "Blocked IPs", icon: ShieldBan },
+      { href: "/public-traffic", label: "Traffic Protection", icon: ShieldCheck },
+      { href: "/security-activity", label: "Security Activity", icon: ShieldCheck },
     ],
   },
 ];
@@ -203,7 +198,7 @@ function NavGroups({
     <>
       {groups.map((group) => (
         <div key={group.label}>
-          <p className="px-3 mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground/60">
+          <p className="px-3 mb-1.5 text-[11px] font-semibold text-muted-foreground">
             {group.label}
           </p>
           <div className="space-y-0.5">
@@ -215,10 +210,11 @@ function NavGroups({
                   key={item.href}
                   href={item.href}
                   onClick={onNavigate}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition-colors ${
+                  onPointerDown={onNavigate}
+                  className={`relative flex min-h-9 items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                     isActive
-                       ? "bg-primary text-primary-foreground shadow-[0_10px_24px_rgba(27,92,181,0.28)]"
-                      : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                        ? "bg-primary/10 text-primary"
+                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   }`}
                 >
                   <item.icon className="w-4 h-4 shrink-0" />
@@ -274,7 +270,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-background">
-      <aside className="w-64 flex-col bg-card border-r hidden lg:flex">
+      <aside className="w-60 flex-col bg-card border-r hidden lg:flex">
         <div className="h-14 flex items-center justify-between px-6 border-b">
           <div className="flex items-center gap-2 min-w-0">
             <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary text-base font-extrabold text-primary-foreground">O</span>
@@ -282,16 +278,17 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           </div>
           <BellButton />
         </div>
-        <nav className="flex-1 px-3 py-4 space-y-4 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 space-y-5 overflow-y-auto">
            <NavGroups groups={coreNavGroups} location={location} />
 
           <div className="border-t pt-3">
             <button
               onClick={() => setAdvancedOpen(o => !o)}
-              className="w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold uppercase tracking-widest text-muted-foreground/60 hover:text-muted-foreground hover:bg-muted/50 transition-colors"
+              className="w-full flex min-h-10 items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              aria-expanded={advancedOpen}
             >
               <Settings2 className="w-3 h-3 shrink-0" />
-              <span className="flex-1 text-left">Advanced</span>
+              <span className="flex-1 text-left">Specialist tools</span>
               {advancedOpen
                 ? <ChevronDown className="w-3 h-3 shrink-0" />
                 : <ChevronRight className="w-3 h-3 shrink-0" />}
@@ -330,7 +327,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           </div>
         </header>
         <div data-admin-content className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto overflow-x-hidden">
-          <div className="admin-page">{children}</div>
+          <div className="admin-page mx-auto w-full max-w-[1440px]">{children}</div>
         </div>
       </main>
 
@@ -352,11 +349,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                <div className="border-t pt-3">
                  <button
                    onClick={() => setAdvancedOpen(o => !o)}
-                   className="w-full min-h-11 flex items-center gap-2 px-3 py-2 rounded-md text-xs font-semibold uppercase tracking-widest text-muted-foreground/70 hover:text-muted-foreground hover:bg-muted/50 transition-colors"
+                    className="w-full min-h-11 flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                    aria-expanded={advancedOpen}
                  >
                    <Settings2 className="w-4 h-4 shrink-0" />
-                   <span className="flex-1 text-left">Advanced</span>
+                    <span className="flex-1 text-left">Specialist tools</span>
                    {advancedOpen
                      ? <ChevronDown className="w-4 h-4 shrink-0" />
                      : <ChevronRight className="w-4 h-4 shrink-0" />}

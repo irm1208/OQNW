@@ -106,26 +106,26 @@ export default function PublicTraffic() {
               <tbody>
                 {data.map((event) => (
                   <tr key={event.id} className="border-b last:border-0 hover:bg-muted/30">
-                    <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">
+                    <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap" data-label="When">
                       {formatDate(event.createdAt)}
                     </td>
-                    <td className="px-4 py-3 font-mono font-medium">{event.ip}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 font-mono font-medium" data-label="IP address">{event.ip}</td>
+                    <td className="px-4 py-3" data-label="Resource">
                       <Badge variant="secondary">{event.resourceKind}</Badge>
                       <p className="text-xs text-muted-foreground max-w-[260px] truncate mt-1" title={event.path}>
                         {event.path}
                       </p>
                     </td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">
+                    <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap" data-label="Activity">
                       {event.requestCount} requests · {event.uniquePathCount} paths
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3" data-label="Action">
                       <Badge variant={event.action === "temporary_block" ? "destructive" : "outline"}>
                         {event.action === "temporary_block" ? "Temporary block" : "Throttled"}
                       </Badge>
                       <p className="text-xs text-muted-foreground mt-1">{event.reason.replaceAll("_", " ")}</p>
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-4 py-3 text-right" data-label="Actions">
                       <Button
                         variant="outline"
                         size="sm"

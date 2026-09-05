@@ -115,11 +115,11 @@ export default function Refunds() {
               <tbody>
                 {filtered.map(r => (
                   <tr key={r.id} className="border-b last:border-0 hover:bg-muted/30">
-                    <td className="px-4 py-3 font-mono font-medium">{r.orderNumber}</td>
-                    <td className={`px-4 py-3 font-bold ${r.status === "confirmed" ? "text-red-600" : ""}`}>
+                    <td className="px-4 py-3 font-mono font-medium" data-label="Order">{r.orderNumber}</td>
+                    <td className={`px-4 py-3 font-bold ${r.status === "confirmed" ? "text-red-600" : ""}`} data-label="Amount">
                       {formatMoney(r.amountGbp, r.currency)}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3" data-label="Status">
                       <Badge
                         variant="outline"
                         className={
@@ -133,25 +133,25 @@ export default function Refunds() {
                         {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
                       </Badge>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3" data-label="Type">
                       <Badge variant="outline" className={r.type === "full" ? "text-red-600 border-red-200 bg-red-50" : "text-orange-600 border-orange-200 bg-orange-50"}>
                         {r.type.charAt(0).toUpperCase() + r.type.slice(1)}
                       </Badge>
                     </td>
-                    <td className="px-4 py-3 max-w-xs">
+                    <td className="px-4 py-3 max-w-xs" data-label="Reason">
                       <p className="truncate">{r.reason}</p>
                       {r.notes && <p className="text-xs text-muted-foreground truncate">{r.notes}</p>}
                       {r.wallidRefundReference && (
                         <p className="text-xs font-mono text-muted-foreground truncate">Wallid: {r.wallidRefundReference}</p>
                       )}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3" data-label="Inventory">
                       {r.restoreInventory
                         ? <Badge variant="outline" className="text-green-600 border-green-200 bg-green-50 text-xs">Restored</Badge>
                         : <span className="text-muted-foreground text-xs">No</span>}
                     </td>
-                    <td className="px-4 py-3 text-muted-foreground">{formatDate(r.confirmedAt ?? r.createdAt)}</td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-4 py-3 text-muted-foreground" data-label="Date">{formatDate(r.confirmedAt ?? r.createdAt)}</td>
+                    <td className="px-4 py-3 text-right" data-label="Order">
                       <Link href={`/orders/${r.orderId}`} className="inline-flex items-center gap-1 text-primary hover:underline text-xs">
                         View <ExternalLink className="w-3 h-3" />
                       </Link>

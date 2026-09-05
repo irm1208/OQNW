@@ -4,6 +4,7 @@ import { Gift, Star, TrendingUp, Users, Award, ChevronDown, ChevronUp, Plus, Min
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 
 function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
@@ -175,11 +176,11 @@ export default function Loyalty() {
                   const tier = getTier(c.lifetimeEarned);
                   return (
                     <tr key={c.id} className="hover:bg-muted/30 transition-colors">
-                      <td className="px-4 py-3 font-medium">{c.firstName} {c.lastName}</td>
-                      <td className="px-4 py-3 text-muted-foreground">{c.email}</td>
-                      <td className="px-4 py-3 font-bold tabular-nums">{c.balance.toLocaleString()}</td>
-                      <td className="px-4 py-3 text-muted-foreground tabular-nums">{c.lifetimeEarned.toLocaleString()}</td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 font-medium" data-label="Customer">{c.firstName} {c.lastName}</td>
+                      <td className="px-4 py-3 text-muted-foreground" data-label="Email">{c.email}</td>
+                      <td className="px-4 py-3 font-bold tabular-nums" data-label="Balance">{c.balance.toLocaleString()}</td>
+                      <td className="px-4 py-3 text-muted-foreground tabular-nums" data-label="Lifetime Earned">{c.lifetimeEarned.toLocaleString()}</td>
+                      <td className="px-4 py-3" data-label="Tier">
                         <span
                           className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold"
                           style={{ backgroundColor: tier.bg, color: tier.color }}
@@ -187,10 +188,10 @@ export default function Loyalty() {
                           {tier.name}
                         </span>
                       </td>
-                      <td className="px-4 py-3 font-medium text-green-700">
+                      <td className="px-4 py-3 font-medium text-green-700" data-label="GBP Value">
                         £{(c.balance / 100).toFixed(2)}
                       </td>
-                      <td className="px-4 py-3 text-right">
+                      <td className="px-4 py-3 text-right" data-label="Actions">
                         <Button
                           size="sm"
                           variant="outline"
@@ -208,20 +209,16 @@ export default function Loyalty() {
         )}
       </div>
 
-      {/* Adjust modal */}
-      {adjustModal && (
-        <div
-          className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
-          onClick={e => { if (e.target === e.currentTarget) setAdjustModal(null); }}
-        >
-          <div className="bg-card rounded-2xl shadow-2xl w-full max-w-md max-h-[calc(100dvh-2rem)] overflow-y-auto">
-            <div className="px-6 py-5 border-b">
-              <h3 className="font-bold text-lg">Adjust Points</h3>
-              <p className="text-sm text-muted-foreground mt-0.5">
+      <Dialog open={!!adjustModal} onOpenChange={open => { if (!open) setAdjustModal(null); }}>
+        {adjustModal && (
+          <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Adjust Points</DialogTitle>
+              <DialogDescription>
                 {adjustModal.firstName} {adjustModal.lastName} · Current balance: <strong>{adjustModal.balance}</strong> pts
-              </p>
-            </div>
-            <div className="p-4 sm:p-6 space-y-4">
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
               <div className="space-y-1.5">
                 <Label>Points adjustment</Label>
                 <div className="flex gap-2">
@@ -262,15 +259,15 @@ export default function Loyalty() {
                 />
               </div>
             </div>
-            <div className="px-6 pb-6 flex gap-3">
+            <DialogFooter className="gap-3 sm:gap-2">
               <Button variant="outline" className="flex-1" onClick={() => setAdjustModal(null)}>Cancel</Button>
               <Button className="flex-1" onClick={handleAdjustSubmit} disabled={adjust.isPending}>
                 {adjust.isPending ? "Saving…" : "Apply Adjustment"}
               </Button>
-            </div>
-          </div>
-        </div>
-      )}
+            </DialogFooter>
+          </DialogContent>
+        )}
+      </Dialog>
     </div>
   );
 }

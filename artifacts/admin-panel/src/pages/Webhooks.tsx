@@ -169,23 +169,23 @@ export default function Webhooks() {
               <tbody>
                 {webhooks.map(w => (
                   <tr key={w.id} className="border-b last:border-0 hover:bg-muted/30">
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3" data-label="Endpoint URL">
                       <p className="font-mono text-xs break-all max-w-xs">{w.url}</p>
                       {w.description && <p className="text-xs text-muted-foreground mt-0.5">{w.description}</p>}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3" data-label="Events">
                       <div className="flex flex-wrap gap-1">
                         {w.events.map(e => <Badge key={e} variant="outline" className="text-xs">{e}</Badge>)}
                       </div>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3" data-label="Status">
                       <button onClick={() => toggleActive.mutate({ id: w.id, isActive: !w.isActive })} className="flex items-center gap-1.5">
                         {w.isActive
                           ? <><CheckCircle2 className="w-4 h-4 text-green-500" /><span className="text-green-600 text-xs font-medium">Active</span></>
                           : <><XCircle className="w-4 h-4 text-muted-foreground" /><span className="text-muted-foreground text-xs">Inactive</span></>}
                       </button>
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-4 py-3 text-right" data-label="Actions">
                       <div className="flex items-center justify-end gap-1">
                         <Button size="icon" variant="ghost" className="h-8 w-8" title="Delivery log" onClick={() => setDeliveriesFor(w)}>
                           <Activity className="w-4 h-4" />
@@ -284,14 +284,14 @@ export default function Webhooks() {
                 <tbody>
                   {deliveries.map(d => (
                     <tr key={d.id} className="border-b last:border-0">
-                      <td className="px-2 py-2 font-mono text-xs">{d.eventType}</td>
-                      <td className="px-2 py-2">
+                      <td className="px-2 py-2 font-mono text-xs" data-label="Event">{d.eventType}</td>
+                      <td className="px-2 py-2" data-label="Status">
                         <Badge variant="outline" className={d.status === "success" ? "text-green-600 border-green-200 bg-green-50" : "text-red-600 border-red-200 bg-red-50"}>
                           {d.status}
                         </Badge>
                       </td>
-                      <td className="px-2 py-2 font-mono text-xs">{d.responseCode ?? "—"}</td>
-                      <td className="px-2 py-2 text-xs text-muted-foreground">{new Date(d.attemptedAt).toLocaleString()}</td>
+                      <td className="px-2 py-2 font-mono text-xs" data-label="Code">{d.responseCode ?? "—"}</td>
+                      <td className="px-2 py-2 text-xs text-muted-foreground" data-label="When">{new Date(d.attemptedAt).toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>

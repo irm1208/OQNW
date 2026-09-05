@@ -711,12 +711,12 @@ export default function Shipping() {
                         <tbody>
                           {zoneRates.map(r => (
                             <tr key={r.id} className="border-b last:border-0 hover:bg-muted/20">
-                              <td className="px-5 py-3 font-medium">{r.name}</td>
-                              <td className="px-4 py-3 text-muted-foreground">{r.carrier}</td>
-                              <td className="px-4 py-3 font-mono">${r.priceGbp.toFixed(2)}</td>
-                              <td className="px-4 py-3">{r.freeAboveGbp != null ? `$${r.freeAboveGbp.toFixed(2)}+` : <span className="text-muted-foreground">—</span>}</td>
-                              <td className="px-4 py-3 text-muted-foreground">{r.estimatedDaysMin}–{r.estimatedDaysMax} days</td>
-                              <td className="px-4 py-3 text-right">
+                              <td className="px-5 py-3 font-medium" data-label="Method">{r.name}</td>
+                              <td className="px-4 py-3 text-muted-foreground" data-label="Carrier">{r.carrier}</td>
+                              <td className="px-4 py-3 font-mono" data-label="Price">${r.priceGbp.toFixed(2)}</td>
+                              <td className="px-4 py-3" data-label="Free Above">{r.freeAboveGbp != null ? `$${r.freeAboveGbp.toFixed(2)}+` : <span className="text-muted-foreground">—</span>}</td>
+                              <td className="px-4 py-3 text-muted-foreground" data-label="Lead Time">{r.estimatedDaysMin}–{r.estimatedDaysMax} days</td>
+                              <td className="px-4 py-3 text-right" data-label="Actions">
                                 <div className="flex items-center justify-end gap-1">
                                   <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => openEditRate(r)}>
                                     <Pencil className="w-3.5 h-3.5" />

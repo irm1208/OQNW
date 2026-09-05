@@ -392,15 +392,15 @@ export default function CustomerDetail() {
                   ) : (
                     customer.orders.map((order) => (
                       <TableRow key={order.id}>
-                        <TableCell className="font-medium">{order.orderNumber}</TableCell>
-                        <TableCell>{new Date(order.createdAt).toLocaleDateString("en-GB")}</TableCell>
-                        <TableCell>
+                        <TableCell className="font-medium" data-label="Order #">{order.orderNumber}</TableCell>
+                        <TableCell data-label="Date">{new Date(order.createdAt).toLocaleDateString("en-GB")}</TableCell>
+                        <TableCell data-label="Status">
                           <Badge variant="outline" className={`${getStatusColor(order.status)} px-2 py-0.5 text-xs font-normal border-0`}>
                             {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-right font-medium">{formatCurrency(order.totalGbp)}</TableCell>
-                        <TableCell>
+                        <TableCell className="text-right font-medium" data-label="Total">{formatCurrency(order.totalGbp)}</TableCell>
+                        <TableCell data-label="Actions">
                           <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
                             <Link href={`/orders/${order.id}`}>
                               <Eye className="w-4 h-4" />

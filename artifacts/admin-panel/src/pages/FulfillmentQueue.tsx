@@ -204,13 +204,13 @@ function OrderCard({
                 <tbody className="divide-y">
                   {order.items.map(item => (
                     <tr key={item.id}>
-                      <td className="px-3 py-2">
+                      <td className="px-3 py-2" data-label="Product">
                         <span className="font-medium">{item.productName}</span>
                         {item.productCategory && (
                           <span className="text-muted-foreground ml-1">— {item.productCategory}</span>
                         )}
                       </td>
-                      <td className="px-3 py-2 text-right font-mono font-semibold">{item.quantity}</td>
+                      <td className="px-3 py-2 text-right font-mono font-semibold" data-label="Qty">{item.quantity}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -345,7 +345,7 @@ export default function FulfillmentQueue() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b overflow-x-auto">
+      <div className="flex flex-wrap gap-1 border-b">
         {(["ready", "processing", "shipped"] as Tab[]).map(t => (
           <button
             key={t}

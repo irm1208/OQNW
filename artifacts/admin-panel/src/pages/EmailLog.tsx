@@ -154,22 +154,22 @@ export default function EmailLog() {
                 const typeCfg = TYPE_LABELS[log.type] ?? { label: log.type, color: "text-slate-700 border-slate-200 bg-slate-50" };
                 return (
                   <TableRow key={log.id}>
-                    <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
+                    <TableCell className="text-xs text-muted-foreground whitespace-nowrap" data-label="Date / Time">
                       {formatDateTime(log.createdAt)}
                     </TableCell>
-                    <TableCell>
+                    <TableCell data-label="Type">
                       <Badge variant="outline" className={`text-xs gap-1 ${typeCfg.color}`}>
                         {typeCfg.label}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-sm">{log.toEmail}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground max-w-xs truncate">
+                    <TableCell className="text-sm" data-label="Recipient">{log.toEmail}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground max-w-xs truncate" data-label="Subject">
                       {log.subject}
                     </TableCell>
-                    <TableCell className="text-sm font-mono text-muted-foreground">
+                    <TableCell className="text-sm font-mono text-muted-foreground" data-label="Order">
                       {log.orderNumber ?? "—"}
                     </TableCell>
-                    <TableCell>
+                    <TableCell data-label="Status">
                       {log.status === "failed" ? (
                         <Badge variant="outline" className="gap-1 text-red-700 border-red-200 bg-red-50">
                           <XCircle className="w-3 h-3" /> Failed

@@ -123,22 +123,22 @@ export default function AbandonedCarts() {
                     className="cursor-pointer"
                     onClick={() => toggleExpand(cart.id)}
                   >
-                    <TableCell className="pr-0">
+                    <TableCell className="pr-0" data-label="Details">
                       {expanded.has(cart.id)
                         ? <ChevronDown className="w-4 h-4 text-muted-foreground" />
                         : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
                     </TableCell>
-                    <TableCell>
+                    <TableCell data-label="Customer">
                       <div className="font-medium text-sm flex items-center gap-2">
                         {cart.customerName}
                         {notifiedCartIds.has(cart.id) && <AdminNotificationBadge type="cart" itemId={cart.id} />}
                       </div>
                       <div className="text-xs text-muted-foreground">{cart.customerEmail}</div>
                     </TableCell>
-                    <TableCell className="text-sm">{cart.itemCount} item{cart.itemCount !== 1 ? "s" : ""}</TableCell>
-                    <TableCell className="font-medium text-sm">{formatGbp(cart.totalValue)}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground">{timeAgo(cart.updatedAt)}</TableCell>
-                    <TableCell>
+                    <TableCell className="text-sm" data-label="Items">{cart.itemCount} item{cart.itemCount !== 1 ? "s" : ""}</TableCell>
+                    <TableCell className="font-medium text-sm" data-label="Value">{formatGbp(cart.totalValue)}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground" data-label="Last Seen">{timeAgo(cart.updatedAt)}</TableCell>
+                    <TableCell data-label="Email">
                       {cart.emailSentAt ? (
                         <Badge variant="outline" className="text-green-700 border-green-200 bg-green-50 gap-1">
                           <MailCheck className="w-3 h-3" /> Sent
@@ -152,8 +152,7 @@ export default function AbandonedCarts() {
                   </TableRow>
                   {expanded.has(cart.id) && (
                     <TableRow key={`${cart.id}-detail`} className="bg-muted/30 hover:bg-muted/30">
-                      <TableCell />
-                      <TableCell colSpan={5} className="pb-4">
+                      <TableCell colSpan={6} className="pb-4" data-label="Cart details">
                         <table className="w-full text-sm">
                           <thead>
                             <tr className="text-xs text-muted-foreground">
@@ -165,9 +164,9 @@ export default function AbandonedCarts() {
                           <tbody>
                             {cart.items.map((item, i) => (
                               <tr key={i} className="border-t border-border/40">
-                                <td className="py-1.5 text-sm">{item.productName}</td>
-                                <td className="py-1.5 text-center text-muted-foreground">×{item.quantity}</td>
-                                <td className="py-1.5 text-right font-medium">{formatGbp(item.priceGbp * item.quantity)}</td>
+                                <td className="py-1.5 text-sm" data-label="Product">{item.productName}</td>
+                                <td className="py-1.5 text-center text-muted-foreground" data-label="Quantity">×{item.quantity}</td>
+                                <td className="py-1.5 text-right font-medium" data-label="Line total">{formatGbp(item.priceGbp * item.quantity)}</td>
                               </tr>
                             ))}
                           </tbody>

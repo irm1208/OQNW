@@ -123,15 +123,15 @@ export default function Newsletter() {
               <tbody>
                 {subscribers.map(s => (
                   <tr key={s.id} className="border-b last:border-0 hover:bg-muted/30">
-                    <td className="px-4 py-3 font-medium">{s.email}</td>
-                    <td className="px-4 py-3">{s.firstName ?? "—"}</td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground">{s.source ?? "—"}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 font-medium" data-label="Email">{s.email}</td>
+                    <td className="px-4 py-3" data-label="Name">{s.firstName ?? "—"}</td>
+                    <td className="px-4 py-3 text-xs text-muted-foreground" data-label="Source">{s.source ?? "—"}</td>
+                    <td className="px-4 py-3" data-label="Status">
                       {s.isActive
                         ? <span className="flex items-center gap-1.5 text-green-600 text-xs font-medium"><CheckCircle2 className="w-4 h-4" /> Active</span>
                         : <span className="flex items-center gap-1.5 text-muted-foreground text-xs"><XCircle className="w-4 h-4" /> Unsubscribed</span>}
                     </td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground">{new Date(s.subscribedAt).toLocaleDateString()}</td>
+                    <td className="px-4 py-3 text-xs text-muted-foreground" data-label="Subscribed">{new Date(s.subscribedAt).toLocaleDateString()}</td>
                   </tr>
                 ))}
               </tbody>

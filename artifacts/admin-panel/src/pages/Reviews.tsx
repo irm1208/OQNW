@@ -148,26 +148,26 @@ export default function Reviews() {
             ) : (
               reviews.map((r) => (
                 <TableRow key={r.id}>
-                  <TableCell className="font-medium">{r.customerName}</TableCell>
-                  <TableCell className="text-muted-foreground text-sm">#{r.productId}</TableCell>
-                  <TableCell>
+                  <TableCell className="font-medium" data-label="Customer">{r.customerName}</TableCell>
+                  <TableCell className="text-muted-foreground text-sm" data-label="Product ID">#{r.productId}</TableCell>
+                  <TableCell data-label="Rating">
                     <StarDisplay rating={r.rating} />
                   </TableCell>
-                  <TableCell className="max-w-[280px]">
+                  <TableCell className="max-w-[280px]" data-label="Review">
                     <p className="font-medium text-sm truncate">{r.title}</p>
                     <p className="text-xs text-muted-foreground truncate">{r.body}</p>
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Status">
                     {r.isApproved ? (
                       <Badge variant="outline" className="bg-green-100 text-green-800 border-0">Approved</Badge>
                     ) : (
                       <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-0">Pending</Badge>
                     )}
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
+                  <TableCell className="text-sm text-muted-foreground" data-label="Date">
                     {new Date(r.createdAt).toLocaleDateString("en-GB")}
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Actions">
                     <div className="flex items-center gap-1 justify-end">
                       {r.isApproved ? (
                         <Button

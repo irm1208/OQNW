@@ -138,21 +138,21 @@ export default function CryptoPayments() {
               <TableRow><TableCell colSpan={6} className="h-28 text-center text-muted-foreground">No crypto payment evidence recorded yet.</TableCell></TableRow>
             ) : audits.map((audit) => (
               <TableRow key={audit.id}>
-                <TableCell>
+                <TableCell data-label="Order">
                   <p className="font-semibold text-sm">{audit.orderNumber ?? `Order ${audit.orderId}`}</p>
                   <p className="text-xs text-muted-foreground">{audit.customerEmail}</p>
                 </TableCell>
-                <TableCell className="text-sm">{audit.currency} · {audit.network}</TableCell>
-                <TableCell>
+                <TableCell className="text-sm" data-label="Route">{audit.currency} · {audit.network}</TableCell>
+                <TableCell data-label="Expected / received">
                   <p className="text-sm">{audit.expectedAmount} {audit.currency}</p>
                   <p className="text-xs text-muted-foreground">{audit.observedAmount ? `${audit.observedAmount} received` : "Not detected"}</p>
                 </TableCell>
-                <TableCell>
+                <TableCell data-label="Result">
                   <Badge className={RESULT_STYLE[audit.result] ?? "bg-slate-100 text-slate-800"}>{audit.result.replace("_", " ")}</Badge>
                   <p className="text-xs text-muted-foreground mt-1 max-w-[220px]">{audit.reason}</p>
                 </TableCell>
-                <TableCell className="font-mono text-xs max-w-[180px] truncate" title={audit.txHash}>{audit.txHash}</TableCell>
-                <TableCell>
+                <TableCell className="font-mono text-xs max-w-[180px] truncate" title={audit.txHash} data-label="Transaction">{audit.txHash}</TableCell>
+                <TableCell data-label="Actions">
                   {audit.attemptId && <Button size="sm" variant="outline" onClick={() => void refresh([audit.attemptId!])}><CheckCircle2 className="w-3.5 h-3.5 mr-1" />Check</Button>}
                 </TableCell>
               </TableRow>

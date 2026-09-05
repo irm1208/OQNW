@@ -134,13 +134,13 @@ export default function Customers() {
             ) : (
               data?.customers?.map((customer) => (
                 <TableRow key={customer.id}>
-                  <TableCell className="font-medium">{customer.firstName} {customer.lastName}</TableCell>
-                  <TableCell className="text-muted-foreground">{customer.email}</TableCell>
-                   <TableCell className="text-muted-foreground whitespace-nowrap">{formatJoinedDate(customer.createdAt)}</TableCell>
-                  <TableCell>{locationCell(customer as { city?: string | null; country?: string | null; lastSeenCountry?: string | null })}</TableCell>
-                  <TableCell className="text-right">{customer.totalOrders}</TableCell>
-                  <TableCell className="text-right font-medium">{formatCurrency(customer.totalSpendGbp)}</TableCell>
-                  <TableCell>
+                  <TableCell className="font-medium" data-label="Name">{customer.firstName} {customer.lastName}</TableCell>
+                  <TableCell className="text-muted-foreground" data-label="Email">{customer.email}</TableCell>
+                   <TableCell className="text-muted-foreground whitespace-nowrap" data-label="Joined">{formatJoinedDate(customer.createdAt)}</TableCell>
+                  <TableCell data-label="Location">{locationCell(customer as { city?: string | null; country?: string | null; lastSeenCountry?: string | null })}</TableCell>
+                  <TableCell className="text-right" data-label="Orders">{customer.totalOrders}</TableCell>
+                  <TableCell className="text-right font-medium" data-label="Total Spend">{formatCurrency(customer.totalSpendGbp)}</TableCell>
+                  <TableCell data-label="Actions">
                     <Button variant="ghost" size="icon" asChild>
                       <Link href={`/customers/${customer.id}`}>
                         <Eye className="w-4 h-4" />

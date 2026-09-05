@@ -138,23 +138,23 @@ export default function SecurityActivity() {
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">Outcome</th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">Administrator</th>
                   <th className="px-4 py-3 text-left font-medium text-muted-foreground">IP address</th>
-                  <th className="hidden px-4 py-3 text-left font-medium text-muted-foreground sm:table-cell">Browser</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Browser</th>
                 </tr>
               </thead>
               <tbody>
                 {query.data.events.map((event) => (
                   <tr key={event.id} className="border-b last:border-0 hover:bg-muted/30 align-top">
-                    <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">{formatDate(event.createdAt)}</td>
-                    <td className="px-4 py-3 font-medium">{eventLabel(event.eventType)}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 whitespace-nowrap text-muted-foreground" data-label="When">{formatDate(event.createdAt)}</td>
+                    <td className="px-4 py-3 font-medium" data-label="Event">{eventLabel(event.eventType)}</td>
+                    <td className="px-4 py-3" data-label="Outcome">
                       <Badge variant="outline" className={event.success ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-red-200 bg-red-50 text-red-700"}>
                         {event.success ? <CheckCircle2 className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
                         {event.success ? "Success" : "Failed"}
                       </Badge>
                     </td>
-                    <td className="px-4 py-3">{event.email ?? "Shared owner access"}</td>
-                    <td className="px-4 py-3 font-mono text-xs">{event.ip ?? "—"}</td>
-                    <td className="hidden px-4 py-3 text-xs text-muted-foreground max-w-xs truncate sm:table-cell" title={event.userAgent ?? undefined}>
+                    <td className="px-4 py-3" data-label="Administrator">{event.email ?? "Shared owner access"}</td>
+                    <td className="px-4 py-3 font-mono text-xs" data-label="IP address">{event.ip ?? "—"}</td>
+                    <td className="px-4 py-3 text-xs text-muted-foreground max-w-xs truncate" title={event.userAgent ?? undefined} data-label="Browser">
                       {event.userAgent ?? "—"}
                     </td>
                   </tr>

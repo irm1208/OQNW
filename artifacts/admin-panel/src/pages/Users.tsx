@@ -4,7 +4,7 @@ import { Plus, Pencil, Trash2, Users as UsersIcon, ShieldCheck, CheckCircle2, XC
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 
 function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
@@ -280,30 +280,30 @@ export default function Users() {
               <thead>
                 <tr className="border-b">
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Name</th>
-                  <th className="hidden text-left px-4 py-3 font-medium text-muted-foreground sm:table-cell">Email</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Email</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Role</th>
-                  <th className="hidden text-left px-4 py-3 font-medium text-muted-foreground sm:table-cell">Status</th>
-                  <th className="hidden text-left px-4 py-3 font-medium text-muted-foreground sm:table-cell">Last Login</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Last Login</th>
                   <th className="text-right px-4 py-3 font-medium text-muted-foreground">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map(u => (
                   <tr key={u.id} className="border-b last:border-0 hover:bg-muted/30">
-                    <td className="px-4 py-3 font-medium">{u.name}</td>
-                    <td className="hidden px-4 py-3 text-muted-foreground sm:table-cell">{u.email}</td>
-                    <td className="hidden px-4 py-3 sm:table-cell">
+                    <td className="px-4 py-3 font-medium" data-label="Name">{u.name}</td>
+                    <td className="px-4 py-3 text-muted-foreground" data-label="Email">{u.email}</td>
+                    <td className="px-4 py-3" data-label="Role">
                       <Badge variant="outline" className={ROLE_STYLE[u.role]}>{u.role}</Badge>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3" data-label="Status">
                       <button onClick={() => toggleActive.mutate({ id: u.id, isActive: !u.isActive })} className="flex items-center gap-1.5">
                         {u.isActive
                           ? <><CheckCircle2 className="w-4 h-4 text-green-500" /><span className="text-green-600 text-xs font-medium">Active</span></>
                           : <><XCircle className="w-4 h-4 text-muted-foreground" /><span className="text-muted-foreground text-xs">Disabled</span></>}
                       </button>
                     </td>
-                    <td className="hidden px-4 py-3 text-xs text-muted-foreground sm:table-cell">{u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleString() : "Never"}</td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-4 py-3 text-xs text-muted-foreground" data-label="Last Login">{u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleString() : "Never"}</td>
+                    <td className="px-4 py-3 text-right" data-label="Actions">
                       <div className="flex items-center justify-end gap-1">
                         <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(u)}>
                           <Pencil className="w-4 h-4" />
@@ -325,6 +325,9 @@ export default function Users() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>{editing ? "Edit Admin" : "Add Admin"}</DialogTitle>
+            <DialogDescription>
+              {editing ? "Update this administrator's name, role, or password." : "Create an administrator account and assign its access level."}
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="space-y-1">

@@ -261,7 +261,7 @@ export default function Fraud() {
                   key={order.id}
                   className={order.fraudReviewed ? "opacity-60" : ""}
                 >
-                  <TableCell className="font-medium">
+                  <TableCell className="font-medium" data-label="Order">
                     <div className="flex items-center gap-2">
                       <Link href={`/orders/${order.id}`} className="hover:underline text-primary">
                         {order.orderNumber}
@@ -269,28 +269,28 @@ export default function Fraud() {
                       {notifiedFraudOrderIds.has(order.id) && <AdminNotificationBadge type="fraud" itemId={order.id} />}
                     </div>
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
+                  <TableCell className="text-sm text-muted-foreground whitespace-nowrap" data-label="Date">
                     {new Date(order.createdAt).toLocaleDateString("en", {
                       day: "numeric", month: "short", year: "numeric",
                     })}
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Customer">
                     <div className="flex flex-col">
                       <span className="text-sm font-medium">{order.customerName}</span>
                       <span className="text-xs text-muted-foreground">{order.customerEmail}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="text-sm">{order.country ?? "—"}</TableCell>
-                  <TableCell className="text-right font-medium">
+                  <TableCell className="text-sm" data-label="Country">{order.country ?? "—"}</TableCell>
+                  <TableCell className="text-right font-medium" data-label="Amount">
                     £{order.totalGbp.toFixed(2)}
                   </TableCell>
-                  <TableCell className="text-center">
+                  <TableCell className="text-center" data-label="Score">
                     <ScoreBadge score={order.fraudScore} />
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Risk Flags">
                     <FlagChips flags={order.fraudFlags} />
                   </TableCell>
-                  <TableCell className="text-center">
+                  <TableCell className="text-center" data-label="Status">
                     {order.fraudReviewed ? (
                       <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-xs">
                         <CheckCircle2 className="w-3 h-3 mr-1" /> Reviewed
@@ -301,7 +301,7 @@ export default function Fraud() {
                       </Badge>
                     )}
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Actions">
                     <div className="flex gap-1 justify-end">
                       <Button
                         variant="ghost"

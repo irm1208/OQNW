@@ -149,31 +149,31 @@ export default function InventoryAudit() {
                   const Icon = cfg.icon;
                   return (
                     <tr key={e.id} className="border-b last:border-0 hover:bg-muted/30">
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3" data-label="Product">
                         <p className="font-medium">{e.productName}</p>
                         <p className="text-xs text-muted-foreground">ID: {e.productId}</p>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3" data-label="Type">
                         <Badge variant="outline" className={`text-xs ${cfg.color}`}>
                           <Icon className="w-3 h-3 mr-1" />
                           {cfg.label}
                         </Badge>
                       </td>
-                      <td className="px-4 py-3 font-mono font-semibold">
+                      <td className="px-4 py-3 font-mono font-semibold" data-label="Change">
                         <span className={e.quantityChange < 0 ? "text-red-600" : "text-green-600"}>
                           {e.quantityChange > 0 ? "+" : ""}{e.quantityChange}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-muted-foreground">
+                      <td className="px-4 py-3 text-muted-foreground" data-label="Stock">
                         {e.quantityBefore} → {e.quantityAfter}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3" data-label="Reference">
                         {e.referenceId ? (
                           <span className="font-mono text-xs">{e.referenceId}</span>
                         ) : <span className="text-muted-foreground">—</span>}
                         {e.reason && <p className="text-xs text-muted-foreground truncate max-w-xs">{e.reason}</p>}
                       </td>
-                      <td className="px-4 py-3 text-muted-foreground text-xs whitespace-nowrap">
+                      <td className="px-4 py-3 text-muted-foreground text-xs whitespace-nowrap" data-label="Date">
                         {new Date(e.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}
                       </td>
                     </tr>

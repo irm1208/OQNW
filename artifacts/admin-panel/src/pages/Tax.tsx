@@ -151,8 +151,8 @@ export default function Tax() {
               <tbody>
                 {rates.map(r => (
                   <tr key={r.id} className="border-b last:border-0 hover:bg-muted/30">
-                    <td className="px-4 py-3 font-medium">{r.name}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 font-medium" data-label="Name">{r.name}</td>
+                    <td className="px-4 py-3" data-label="Country">
                       <div className="flex items-center gap-2">
                         <Globe className="w-3.5 h-3.5 text-muted-foreground" />
                         <span>{r.countryName}</span>
@@ -160,13 +160,13 @@ export default function Tax() {
                       </div>
                       {r.region && <p className="text-xs text-muted-foreground mt-0.5">{r.region}</p>}
                     </td>
-                    <td className="px-4 py-3 font-mono font-medium">{r.rate}%</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 font-mono font-medium" data-label="Rate">{r.rate}%</td>
+                    <td className="px-4 py-3" data-label="Type">
                       <Badge variant="outline" className={r.isInclusive ? "text-blue-600 border-blue-200 bg-blue-50" : "text-orange-600 border-orange-200 bg-orange-50"}>
                         {r.isInclusive ? "Inclusive" : "Exclusive"}
                       </Badge>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3" data-label="Status">
                       <button
                         onClick={() => toggleActive.mutate({ id: r.id, isActive: !r.isActive })}
                         className="flex items-center gap-1.5"
@@ -176,7 +176,7 @@ export default function Tax() {
                           : <><XCircle className="w-4 h-4 text-muted-foreground" /><span className="text-muted-foreground text-xs">Inactive</span></>}
                       </button>
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-4 py-3 text-right" data-label="Actions">
                       <div className="flex items-center justify-end gap-1">
                         <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(r)}>
                           <Pencil className="w-4 h-4" />
