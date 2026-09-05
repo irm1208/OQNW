@@ -38,4 +38,5 @@ export * from "./checkout_payment_quote_claims";
 export * from "./wholesale_invoices";
 export * from "./referral_rewards";
 export * from "./affiliate_program";
+export * from "./app_data_patches";
 //# sourceMappingURL=index.d.ts.map

@@ -10,6 +10,7 @@ import { retireRemovedProducts } from "./lib/retiredProducts";
 import { startCryptoReconciliationJob } from "./lib/cryptoReconciliationJob";
 import { startWallidReconciliationJob } from "./lib/wallidReconciliationJob";
 import { startAdminAlertReadCleanupJob } from "./lib/adminAlertReadCleanupJob";
+import { applyInventoryStockSnapshot } from "./lib/apply-inventory-stock-snapshot";
 
 const rawPort = process.env["PORT"];
 
@@ -42,6 +43,10 @@ app.listen(port, (err) => {
     .then(async (r) => {
       if (r.seeded) logger.info({ count: r.count }, "Products catalog seeded");
       else logger.info({ reason: r.reason }, "Products catalog seed skipped");
+      const stockPatch = await applyInventoryStockSnapshot();
+      if (stockPatch.applied) {
+        logger.info({ count: stockPatch.updated }, "Inventory stock snapshot applied");
+      }
       const retiredCount = await retireRemovedProducts();
       if (retiredCount > 0) logger.info({ retiredCount }, "Removed products retired");
       return seedReviews();
