@@ -28,7 +28,7 @@ function AlertRow({ alert }: { alert: AdminAlert }) {
   const timeAgo = formatTimeAgo(alert.createdAt);
 
   return (
-    <Link href={alert.link} onClick={() => {
+    <Link data-admin-mobile-record href={alert.link} onClick={() => {
       if (!alert.isRead) markRead.mutate(alert);
     }}>
       <div className={`flex items-start gap-4 px-4 py-3 hover:bg-muted/50 transition-colors cursor-pointer border-b last:border-b-0 ${alert.isRead ? "opacity-55" : ""}`}>

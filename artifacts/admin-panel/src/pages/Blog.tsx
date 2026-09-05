@@ -183,7 +183,7 @@ export default function Blog() {
         ) : (
           <div className="min-w-0 divide-y">
             {posts.map(p => (
-              <div key={p.id} className="flex w-full min-w-0 max-w-full flex-col gap-3 p-4 hover:bg-muted/30 sm:flex-row sm:items-start sm:gap-4 sm:p-5">
+              <div data-admin-mobile-record key={p.id} className="flex w-full min-w-0 max-w-full flex-col gap-3 p-4 hover:bg-muted/30 sm:flex-row sm:items-start sm:gap-4 sm:p-5">
                 <div className="w-full min-w-0 flex-1">
                   <div className="flex min-w-0 items-center gap-2 mb-1">
                     <p className="min-w-0 flex-1 font-semibold truncate">{p.title}</p>
@@ -203,7 +203,7 @@ export default function Blog() {
                   </div>
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
-                  <Button size="icon" variant="ghost" className="h-8 w-8" title={p.status === "published" ? "Unpublish" : "Publish"}
+                  <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={`${p.status === "published" ? "Unpublish" : "Publish"} ${p.title}`}
                     onClick={() => toggleStatus.mutate({ id: p.id, status: p.status === "published" ? "draft" : "published" })}>
                     {p.status === "published" ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </Button>

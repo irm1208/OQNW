@@ -78,7 +78,7 @@ export default function Credits() {
           ) : (
             <div className="divide-y">
               {filtered.map((row) => (
-                <Link key={row.customerId} href={`/customers/${row.customerId}`}>
+                <Link data-admin-mobile-record key={row.customerId} href={`/customers/${row.customerId}`}>
                   <div className="flex items-center justify-between px-6 py-4 hover:bg-muted/40 transition-colors cursor-pointer">
                     <div>
                       <p className="text-sm font-medium">{row.firstName} {row.lastName}</p>

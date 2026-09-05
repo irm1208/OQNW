@@ -30,8 +30,10 @@ async function expectNoHorizontalOverflow(locator: Locator, description: string)
 }
 
 async function expectMobileRecordsAreUsable(page: Page, route: string) {
-  const records = page.locator(".admin-page tbody tr:visible");
-  const cells = records.locator("td:visible:not([colspan])");
+  const tableRecords = page.locator(".admin-page tbody tr:visible");
+  const markedRecords = page.locator("[data-admin-mobile-record]:visible");
+  const records = tableRecords.or(markedRecords);
+  const cells = tableRecords.locator("td:visible:not([colspan])");
 
   if (await cells.count()) {
     const missingLabels = await cells.evaluateAll((elements) =>
@@ -43,16 +45,37 @@ async function expectMobileRecordsAreUsable(page: Page, route: string) {
     expect(missingLabels, `${route} mobile table cells must retain meaningful labels`).toEqual([]);
   }
 
+  const interactiveSelector = [
+    "button",
+    "a[href]",
+    "input",
+    "select",
+    "textarea",
+    '[role="button"]',
+    '[role="link"]',
+    '[role="checkbox"]',
+    '[role="switch"]',
+  ].join(", ");
   const unnamedActions = await records
-    .locator("button:visible, a[href]:visible, input:visible, select:visible")
+    .locator(`:scope:is(${interactiveSelector}):visible, ${interactiveSelector.split(", ").map((selector) => `${selector}:visible`).join(", ")}`)
     .evaluateAll((elements) =>
       elements.flatMap((element, index) => {
         const node = element as HTMLElement;
+        const labelledBy = node.getAttribute("aria-labelledby")
+          ?.split(/\s+/)
+          .map((id) => document.getElementById(id)?.textContent)
+          .join(" ");
+        const associatedLabel = "labels" in node
+          ? [...(node as HTMLInputElement).labels ?? []].map((label) => label.textContent).join(" ")
+          : undefined;
         const name = [
           node.getAttribute("aria-label"),
+          labelledBy,
+          associatedLabel,
           node.getAttribute("title"),
           node.textContent,
           node.getAttribute("placeholder"),
+          node.getAttribute("alt"),
         ].find((value) => value?.trim());
         return name ? [] : [{ index, html: node.outerHTML.slice(0, 180) }];
       }),
@@ -61,6 +84,7 @@ async function expectMobileRecordsAreUsable(page: Page, route: string) {
 
   await expectNoHorizontalOverflow(page.locator("html, body, #root, [data-admin-content], .admin-page"), `${route} document`);
   await expectNoHorizontalOverflow(records, `${route} records`);
+  await expectNoHorizontalOverflow(markedRecords, `${route} marked mobile records`);
 }
 
 async function visitAndCheck(page: Page, route: string) {

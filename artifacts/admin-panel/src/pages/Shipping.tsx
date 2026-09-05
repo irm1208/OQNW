@@ -621,14 +621,18 @@ export default function Shipping() {
             const zoneRates = rates.filter(r => r.zoneId === zone.id);
             const expanded = expandedZones.has(zone.id);
             return (
-              <div key={zone.id} className={`rounded-xl border bg-card transition-opacity ${!zone.isActive ? "opacity-60" : ""}`}>
-                <div
-                   className="flex flex-col sm:flex-row sm:items-center gap-3 px-4 sm:px-5 py-4 cursor-pointer hover:bg-muted/30"
-                  onClick={() => toggleZoneExpanded(zone.id)}
-                >
-                  {expanded ? <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" /> : <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />}
-                  <Globe className="w-4 h-4 text-muted-foreground shrink-0" />
-                   <div className="flex-1 min-w-0 w-full">
+              <div data-admin-mobile-record key={zone.id} className={`rounded-xl border bg-card transition-opacity ${!zone.isActive ? "opacity-60" : ""}`}>
+                 <div className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:px-5">
+                   <button
+                     type="button"
+                     className="flex min-w-0 flex-1 items-start gap-3 text-left hover:text-foreground"
+                     aria-label={`${expanded ? "Collapse" : "Expand"} ${zone.name} shipping zone`}
+                     aria-expanded={expanded}
+                     onClick={() => toggleZoneExpanded(zone.id)}
+                   >
+                     {expanded ? <ChevronDown className="mt-1 w-4 h-4 text-muted-foreground shrink-0" /> : <ChevronRight className="mt-1 w-4 h-4 text-muted-foreground shrink-0" />}
+                     <Globe className="mt-1 w-4 h-4 text-muted-foreground shrink-0" />
+                    <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <p className="font-semibold">{zone.name}</p>
                       {!zone.isActive && (
@@ -636,28 +640,29 @@ export default function Shipping() {
                       )}
                     </div>
                     {zone.description && <p className="text-xs text-muted-foreground">{zone.description}</p>}
-                  </div>
+                     <div className="mt-2 flex w-full flex-wrap gap-1">
+                       {zone.countryCodes.slice(0, 8).map(cc => {
+                         const c = countryInfo(cc);
+                         return (
+                           <span key={cc} title={c.name} className="inline-flex items-center gap-1 px-1.5 py-0 rounded border text-xs bg-background">
+                             <span>{c.flag}</span>
+                             <span className="text-muted-foreground">{cc}</span>
+                           </span>
+                         );
+                       })}
+                       {zone.countryCodes.length > 8 && (
+                         <Badge variant="outline" className="text-xs px-1.5 py-0">+{zone.countryCodes.length - 8}</Badge>
+                       )}
+                       {zone.countryCodes.length === 0 && (
+                         <span className="text-xs text-muted-foreground italic">No countries</span>
+                       )}
+                     </div>
+                   </div>
+                   </button>
 
-                   <div className="flex flex-wrap gap-1 w-full sm:w-auto sm:max-w-[280px] justify-start sm:justify-end">
-                    {zone.countryCodes.slice(0, 8).map(cc => {
-                      const c = countryInfo(cc);
-                      return (
-                        <span key={cc} title={c.name} className="inline-flex items-center gap-1 px-1.5 py-0 rounded border text-xs bg-background">
-                          <span>{c.flag}</span>
-                          <span className="text-muted-foreground">{cc}</span>
-                        </span>
-                      );
-                    })}
-                    {zone.countryCodes.length > 8 && (
-                      <Badge variant="outline" className="text-xs px-1.5 py-0">+{zone.countryCodes.length - 8}</Badge>
-                    )}
-                    {zone.countryCodes.length === 0 && (
-                      <span className="text-xs text-muted-foreground italic">No countries</span>
-                    )}
-                  </div>
-
-                   <div className="flex flex-wrap items-center gap-1 shrink-0 self-end sm:self-auto sm:ml-2" onClick={e => e.stopPropagation()}>
+                    <div className="flex flex-wrap items-center gap-1 shrink-0 self-end sm:self-auto sm:ml-2">
                     <Switch
+                       aria-label={`${zone.isActive ? "Disable" : "Enable"} ${zone.name} shipping zone`}
                       checked={zone.isActive}
                       onCheckedChange={(v) => toggleZoneActive.mutate({ id: zone.id, isActive: v })}
                       className="scale-90"
@@ -665,10 +670,10 @@ export default function Shipping() {
                     <Button size="sm" variant="outline" className="h-7 text-xs px-2" onClick={() => openCreateRate(zone.id)}>
                       <Plus className="w-3 h-3 mr-1" /> Rate
                     </Button>
-                    <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEditZone(zone)}>
+                    <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={`Edit ${zone.name} shipping zone`} onClick={() => openEditZone(zone)}>
                       <Pencil className="w-4 h-4" />
                     </Button>
-                    <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => deleteZone.mutate(zone.id)}>
+                    <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" aria-label={`Delete ${zone.name} shipping zone`} onClick={() => deleteZone.mutate(zone.id)}>
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
