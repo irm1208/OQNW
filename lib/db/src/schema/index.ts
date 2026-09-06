@@ -39,3 +39,4 @@ export * from "./wholesale_invoices";
 export * from "./referral_rewards";
 export * from "./affiliate_program";
 export * from "./app_data_patches";
+export * from "./database_backup_runs";

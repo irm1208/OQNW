@@ -11,6 +11,7 @@ import { startCryptoReconciliationJob } from "./lib/cryptoReconciliationJob";
 import { startWallidReconciliationJob } from "./lib/wallidReconciliationJob";
 import { startAdminAlertReadCleanupJob } from "./lib/adminAlertReadCleanupJob";
 import { applyInventoryStockSnapshot } from "./lib/apply-inventory-stock-snapshot";
+import { startDatabaseBackupJob } from "./lib/databaseBackupJob";
 
 const rawPort = process.env["PORT"];
 
@@ -38,6 +39,7 @@ app.listen(port, (err) => {
   startCryptoReconciliationJob();
   startWallidReconciliationJob();
   startAdminAlertReadCleanupJob();
+  startDatabaseBackupJob();
   // Seed catalog first (reviews depend on published products existing)
   seedProductsCatalog()
     .then(async (r) => {
