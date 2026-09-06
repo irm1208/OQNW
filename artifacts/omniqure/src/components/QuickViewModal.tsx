@@ -246,7 +246,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
               fontSize: "11px", fontWeight: 700, color: "#B45309",
               background: "#FFFBEB", border: "1px solid #FDE68A",
               padding: "4px 10px", borderRadius: "6px", alignSelf: "flex-start",
-            }}>⚡ Only {variant.stockLevel} left</span>
+            }}>⚡ Low stock</span>
           ) : null}
 
           {/* Price */}

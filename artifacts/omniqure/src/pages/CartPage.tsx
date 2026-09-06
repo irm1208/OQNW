@@ -2249,7 +2249,7 @@ export default function CartPage() {
             <div style={{ marginBottom: 12, padding: "10px 12px", background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 6, fontSize: "13px", color: "#DC2626" }}>
               {stockErrors.map(e => (
                 <p key={e.productName} style={{ margin: "0 0 4px" }}>
-                  {e.productName}: only {e.available} in stock (you requested {e.requested})
+                  {e.productName}: low stock. Reduce the requested quantity.
                 </p>
               ))}
             </div>

@@ -154,7 +154,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               padding: "4px 10px", borderRadius: "8px",
               display: "flex", alignItems: "center", gap: "4px",
             }}>
-              <AlertTriangle size={10} /> {stockLevel} left
+              <AlertTriangle size={10} /> Low stock
             </div>
           )}
 
@@ -230,7 +230,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 padding: "2px 7px", borderRadius: "5px",
                 display: "inline-flex", alignItems: "center", gap: "3px",
               }}>
-                ⚡ Only {stockLevel} left
+                ⚡ Low stock
               </span>
             ) : (
               <span style={{

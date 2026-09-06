@@ -570,7 +570,7 @@ export default function ProductPage() {
                     className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
                     style={{ backgroundColor: "#FFFBEB", color: "#D97706", border: "1px solid #FDE68A" }}
                   >
-                    ⚡ Only {product.stockLevel} left
+                    ⚡ Low stock
                   </span>
                 ) : (
                   <span

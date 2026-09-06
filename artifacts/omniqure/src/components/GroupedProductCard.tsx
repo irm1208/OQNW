@@ -243,7 +243,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
               padding: "2px 7px", borderRadius: "5px",
               display: "inline-flex", alignItems: "center", gap: "3px",
             }}>
-              ⚡ Only {selectedVariant.stockLevel} left
+              ⚡ Low stock
             </span>
           ) : (
             <span style={{

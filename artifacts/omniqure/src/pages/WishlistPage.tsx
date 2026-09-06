@@ -149,7 +149,7 @@ export default function WishlistPage() {
                       {outOfStock
                         ? "Out of Stock"
                         : product.stockLevel !== undefined && product.stockLevel <= 10
-                        ? `Low Stock (${product.stockLevel} left)`
+                        ? "Low stock"
                         : "In Stock"}
                     </p>
 

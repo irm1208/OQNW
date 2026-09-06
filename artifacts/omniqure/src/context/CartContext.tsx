@@ -215,7 +215,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         if (item?.product.stockLevel !== undefined && qty > item.product.stockLevel) {
           toast({
             title: "Only limited stock is available",
-            description: `Only ${item.product.stockLevel} of ${item.product.name} remain in stock.`,
+            description: `${item.product.name} has low stock. Reduce the requested quantity.`,
           });
           return prev;
         }
