@@ -65,6 +65,7 @@ const advancedNavGroups: NavGroup[] = [
   {
     label: "Customers",
     items: [
+      { href: "/customer-segments", label: "Segments", icon: Users },
       { href: "/reviews",       label: "Reviews",       icon: Star },
       { href: "/loyalty",       label: "Loyalty",       icon: Gift },
       { href: "/credits",       label: "Credits",       icon: WalletCards },

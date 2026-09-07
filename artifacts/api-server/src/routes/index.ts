@@ -40,6 +40,7 @@ import adminAffiliatesRouter from "./admin/affiliates";
 import adminFraudRouter from "./admin/fraud";
 import adminBlockedIpsRouter from "./admin/blockedIps";
 import adminEmailLogsRouter from "./admin/emailLogs";
+import adminCustomerSegmentsRouter from "./admin/customerSegments";
 
 import loyaltyRouter from "./loyalty";
 import taxRouter from "./tax";
@@ -108,6 +109,7 @@ router.use(adminPublicTrafficRouter);
 router.use(adminSecurityRouter);
 router.use(adminWholesaleRouter);
 router.use(adminEmailLogsRouter);
+router.use(adminCustomerSegmentsRouter);
 
 router.use(loyaltyRouter);
 router.use(taxRouter);

@@ -492,6 +492,126 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiError"
 
+  /admin/customer-segments:
+    get:
+      operationId: listAdminCustomerSegments
+      tags: [admin-customers]
+      summary: List active dynamic customer segments with live match counts
+      responses:
+        "200":
+          description: Active customer segments
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerSegmentList"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+    post:
+      operationId: createAdminCustomerSegment
+      tags: [admin-customers]
+      summary: Create a dynamic customer segment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerSegmentInput"
+      responses:
+        "201":
+          description: Created customer segment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerSegmentResponse"
+        "400":
+          description: Invalid segment rules
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+  /admin/customer-segments/{id}:
+    get:
+      operationId: getAdminCustomerSegment
+      tags: [admin-customers]
+      summary: Get a segment and paginated live matching members
+      parameters:
+        - $ref: "#/components/parameters/CustomerSegmentId"
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 200, default: 50 }
+        - name: offset
+          in: query
+          schema: { type: integer, minimum: 0, default: 0 }
+      responses:
+        "200":
+          description: Segment detail and matching members
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerSegmentDetail"
+        "400":
+          description: Invalid identifier or pagination
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "404":
+          description: Segment not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+    patch:
+      operationId: updateAdminCustomerSegment
+      tags: [admin-customers]
+      summary: Update a dynamic customer segment
+      parameters:
+        - $ref: "#/components/parameters/CustomerSegmentId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerSegmentPatch"
+      responses:
+        "200":
+          description: Updated customer segment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerSegmentResponse"
+        "400":
+          description: Invalid segment rules
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "404":
+          description: Segment not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+    delete:
+      operationId: archiveAdminCustomerSegment
+      tags: [admin-customers]
+      summary: Archive a customer segment
+      parameters:
+        - $ref: "#/components/parameters/CustomerSegmentId"
+      responses:
+        "204":
+          description: Archived
+        "404":
+          description: Segment not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
   # ── PRODUCTS / INVENTORY ──────────────────────────────────────────────────
   /admin/products:
     get:
@@ -944,6 +1064,12 @@ paths:
                 $ref: "#/components/schemas/ApiError"
 
 components:
+  parameters:
+    CustomerSegmentId:
+      name: id
+      in: path
+      required: true
+      schema: { type: integer, minimum: 1 }
   schemas:
     HealthStatus:
       type: object
@@ -1504,6 +1630,103 @@ components:
             $ref: "#/components/schemas/Customer"
         total:
           type: integer
+
+    CustomerSegmentCondition:
+      oneOf:
+        - type: object
+          additionalProperties: false
+          required: [field, operator, value]
+          properties:
+            field: { type: string, enum: [total_orders, total_spend_gbp, days_since_last_order, account_age_days] }
+            operator: { type: string, enum: [gte, lte] }
+            value: { type: number, minimum: 0, maximum: 1000000000 }
+        - type: object
+          additionalProperties: false
+          required: [field, operator, value]
+          properties:
+            field: { type: string, enum: [marketing_status] }
+            operator: { type: string, enum: [equals] }
+            value: { type: string, enum: [subscribed, unsubscribed] }
+        - type: object
+          additionalProperties: false
+          required: [field, operator, value]
+          properties:
+            field: { type: string, enum: [has_abandoned_cart, has_wholesale_order, is_referred, is_affiliate] }
+            operator: { type: string, enum: [equals] }
+            value: { type: boolean }
+    CustomerSegmentRules:
+      type: object
+      additionalProperties: false
+      required: [matchMode, conditions]
+      properties:
+        matchMode: { type: string, enum: [all] }
+        conditions:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items: { $ref: "#/components/schemas/CustomerSegmentCondition" }
+    CustomerSegmentInput:
+      type: object
+      additionalProperties: false
+      required: [name, rules]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 120 }
+        description: { type: ["string", "null"], maxLength: 2000 }
+        rules: { $ref: "#/components/schemas/CustomerSegmentRules" }
+        isActive: { type: boolean }
+    CustomerSegmentPatch:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        name: { type: string, minLength: 1, maxLength: 120 }
+        description: { type: ["string", "null"], maxLength: 2000 }
+        rules: { $ref: "#/components/schemas/CustomerSegmentRules" }
+        isActive: { type: boolean }
+    CustomerSegment:
+      type: object
+      required: [id, name, description, rules, isActive, createdAt, updatedAt]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        description: { type: ["string", "null"] }
+        rules: { $ref: "#/components/schemas/CustomerSegmentRules" }
+        isActive: { type: boolean }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+        matchCount: { type: integer }
+    CustomerSegmentResponse:
+      type: object
+      required: [segment]
+      properties:
+        segment: { $ref: "#/components/schemas/CustomerSegment" }
+    CustomerSegmentList:
+      type: object
+      required: [segments]
+      properties:
+        segments:
+          type: array
+          items: { $ref: "#/components/schemas/CustomerSegment" }
+    CustomerSegmentMember:
+      type: object
+      required: [id, name, email, orderCount, totalSpendGbp, lastOrderAt, marketingStatus]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        email: { type: string }
+        orderCount: { type: integer }
+        totalSpendGbp: { type: number }
+        lastOrderAt: { type: ["string", "null"], format: date-time }
+        marketingStatus: { type: string, enum: [subscribed, unsubscribed] }
+    CustomerSegmentDetail:
+      type: object
+      required: [segment, members, total]
+      properties:
+        segment: { $ref: "#/components/schemas/CustomerSegment" }
+        members:
+          type: array
+          items: { $ref: "#/components/schemas/CustomerSegmentMember" }
+        total: { type: integer }
 
     # ── PRODUCTS ─────────────────────────────────────────────────────────────
     AdminProduct:

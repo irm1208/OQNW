@@ -14,7 +14,8 @@
     "test:crypto-payments": "../../scripts/node_modules/.bin/tsx --test src/lib/cryptoPaymentPolicy.test.ts src/lib/cryptoRoutes.test.ts",
     "test:seo": "../../scripts/node_modules/.bin/tsx --test src/routes/seo-publication.test.ts",
     "test:traffic": "../../scripts/node_modules/.bin/tsx --test src/lib/publicTrafficProtection.test.ts",
-    "test:admin-alert-cleanup": "../../scripts/node_modules/.bin/tsx --test --test-concurrency=1 src/lib/adminAlertReadCleanupJob.postgres.test.ts"
+    "test:admin-alert-cleanup": "../../scripts/node_modules/.bin/tsx --test --test-concurrency=1 src/lib/adminAlertReadCleanupJob.postgres.test.ts",
+    "test:customer-segments": "../../scripts/node_modules/.bin/tsx --test src/lib/customerSegments.test.ts"
   },
   "dependencies": {
     "@replit/connectors-sdk": "^0.4.3",

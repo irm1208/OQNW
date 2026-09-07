@@ -46,3 +46,4 @@
 - [Playwright on the Replit Nix runtime](playwright-nix-runtime.md) — downloaded Chromium needs explicit GUI libraries; run long multi-viewport admin sweeps sequentially to avoid preview exhaustion.
 - [Production Vite checks](production-vite-checks.md) — the workspace shell may export NODE_ENV=development; production-build checks must override it explicitly.
 - [Tailwind v4 custom class composition](tailwind-v4-custom-class-composition.md) — `@apply` accepts utilities, not project-defined component classes; repeat utilities or use shared selectors.
+- [Orval and Zod isolation](orval-zod-isolation.md) — current Orval emits Zod v4 validators; isolate v4 in api-zod while app/database packages remain on the v3 catalog.

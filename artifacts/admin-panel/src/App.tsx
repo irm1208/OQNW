@@ -33,6 +33,8 @@ import CryptoPayments from "@/pages/CryptoPayments";
 import SecurityActivity from "@/pages/SecurityActivity";
 import Referrals from "@/pages/Referrals";
 import Affiliates from "@/pages/Affiliates";
+import CustomerSegments from "@/pages/CustomerSegments";
+import CustomerSegmentDetail from "@/pages/CustomerSegmentDetail";
 import Tax from "@/pages/Tax";
 import Webhooks from "@/pages/Webhooks";
 import Credits from "@/pages/Credits";
@@ -105,6 +107,16 @@ function AppRoutes() {
       <Route path="/customers/:id">
         <AdminLayout>
           <CustomerDetail />
+        </AdminLayout>
+      </Route>
+      <Route path="/customer-segments">
+        <AdminLayout>
+          <CustomerSegments />
+        </AdminLayout>
+      </Route>
+      <Route path="/customer-segments/:id">
+        <AdminLayout>
+          <CustomerSegmentDetail />
         </AdminLayout>
       </Route>
       <Route path="/referrals">
