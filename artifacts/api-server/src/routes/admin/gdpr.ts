@@ -13,6 +13,8 @@ import {
 } from "@workspace/db";
 import { eq, desc, inArray } from "drizzle-orm";
 import { firstString } from "../../lib/query";
+import { recordStrictAdminAudit, requireRecentAdminSession } from "./auth";
+import { requireOwner } from "./users";
 
 const router = Router();
 
@@ -100,37 +102,43 @@ router.get("/admin/customers/:id/gdpr-export", async (req: Request, res: Respons
 });
 
 router.delete("/admin/customers/:id/gdpr-erase", async (req: Request, res: Response): Promise<void> => {
-  if (!requireAdmin(req, res)) return;
+  if (!(await requireOwner(req, res))) return;
+  if (!(await requireRecentAdminSession(req, res))) return;
   const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) { res.status(400).json({ error: "Invalid ID" }); return; }
 
   try {
-    const [customer] = await db.select({ id: customersTable.id, email: customersTable.email })
-      .from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
+    const customer = await db.transaction(async (tx) => {
+      const [target] = await tx.select({ id: customersTable.id, email: customersTable.email })
+        .from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
+      if (!target) return null;
+
+      const anonymisedEmail = `erased-${customerId}@gdpr.deleted`;
+      const anonymisedName = "Erased User";
+      await tx.update(ordersTable).set({
+        customerEmail: anonymisedEmail,
+        customerName: anonymisedName,
+        phone: null,
+        address1: "ERASED",
+        address2: null,
+        city: "ERASED",
+        county: null,
+        postcode: "ERASED",
+      }).where(eq(ordersTable.customerId, customerId));
+
+      await Promise.all([
+        tx.delete(wishlistsTable).where(eq(wishlistsTable.customerId, customerId)),
+        tx.delete(loyaltyTransactionsTable).where(eq(loyaltyTransactionsTable.customerId, customerId)),
+        tx.delete(stockAlertsTable).where(eq(stockAlertsTable.customerEmail, target.email)),
+        tx.delete(subscriptionsTable).where(eq(subscriptionsTable.customerId, customerId)),
+      ]);
+      await tx.delete(customersTable).where(eq(customersTable.id, customerId));
+      await recordStrictAdminAudit(tx, req, "customer_gdpr_erased", true, {
+        metadata: { targetCustomerId: target.id, targetCustomerEmail: target.email },
+      });
+      return target;
+    });
     if (!customer) { res.status(404).json({ error: "Customer not found" }); return; }
-
-    const anonymisedEmail = `erased-${customerId}@gdpr.deleted`;
-    const anonymisedName = "Erased User";
-
-    await db.update(ordersTable).set({
-      customerEmail: anonymisedEmail,
-      customerName: anonymisedName,
-      phone: null,
-      address1: "ERASED",
-      address2: null,
-      city: "ERASED",
-      county: null,
-      postcode: "ERASED",
-    }).where(eq(ordersTable.customerId, customerId));
-
-    await Promise.all([
-      db.delete(wishlistsTable).where(eq(wishlistsTable.customerId, customerId)),
-      db.delete(loyaltyTransactionsTable).where(eq(loyaltyTransactionsTable.customerId, customerId)),
-      db.delete(stockAlertsTable).where(eq(stockAlertsTable.customerEmail, customer.email)),
-      db.delete(subscriptionsTable).where(eq(subscriptionsTable.customerId, customerId)),
-    ]);
-
-    await db.delete(customersTable).where(eq(customersTable.id, customerId));
 
     res.json({
       erased: true,

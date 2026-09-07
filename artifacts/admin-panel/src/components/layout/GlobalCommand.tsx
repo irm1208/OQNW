@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useLocation } from "wouter";
-import { Search, ShoppingCart, Users, Package, Network, Clock, Loader2, LayoutDashboard } from "lucide-react";
+import { Search, ShoppingCart, Users, Package, Network, Clock, Loader2, LayoutDashboard, ClipboardList } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchJson } from "@/lib/utils";
 import {
@@ -157,7 +157,7 @@ export function GlobalCommand({ open, onOpenChange }: { open: boolean, onOpenCha
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="overflow-hidden p-0 shadow-lg max-w-2xl sm:rounded-xl">
         <DialogTitle className="sr-only">Global Search</DialogTitle>
-        <DialogDescription className="sr-only">Search for orders, customers, products, and partners.</DialogDescription>
+        <DialogDescription className="sr-only">Search for orders, customers, products, and partners, or navigate to an admin section.</DialogDescription>
         <Command 
           shouldFilter={false} 
           className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5 flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground"
@@ -308,6 +308,10 @@ export function GlobalCommand({ open, onOpenChange }: { open: boolean, onOpenCha
                   <CommandItem value="nav-customers" onSelect={() => handleNavigation("/customers")}>
                     <Users className="w-4 h-4 mr-2 text-muted-foreground" />
                     <span>Customers</span>
+                  </CommandItem>
+                  <CommandItem value="nav-audit-history" onSelect={() => handleNavigation("/audit-history")}>
+                    <ClipboardList className="w-4 h-4 mr-2 text-muted-foreground" />
+                    <span>Audit History</span>
                   </CommandItem>
                 </CommandGroup>
               </>

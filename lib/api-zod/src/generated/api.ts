@@ -1267,3 +1267,42 @@ export const GetPublicProductResponse = zod.object({
   "seoDescription": zod.string().nullish(),
   "isFeatured": zod.boolean().optional()
 })
+
+
+/**
+ * Owner-only, paginated audit history for administrator authentication and account-management activity.
+ * @summary List administrator audit history
+ */
+export const listAdminAuditHistoryQueryLimitDefault = 100;
+export const listAdminAuditHistoryQueryLimitMax = 250;
+
+export const listAdminAuditHistoryQueryOffsetDefault = 0;
+export const listAdminAuditHistoryQueryOffsetMin = 0;
+
+
+
+export const ListAdminAuditHistoryQueryParams = zod.object({
+  "limit": zod.coerce.number().int().min(1).max(listAdminAuditHistoryQueryLimitMax).default(listAdminAuditHistoryQueryLimitDefault),
+  "offset": zod.coerce.number().int().min(listAdminAuditHistoryQueryOffsetMin).default(listAdminAuditHistoryQueryOffsetDefault),
+  "eventType": zod.coerce.string().optional(),
+  "success": zod.coerce.boolean().optional(),
+  "search": zod.coerce.string().optional()
+})
+
+export const ListAdminAuditHistoryResponse = zod.object({
+  "total": zod.int(),
+  "limit": zod.int(),
+  "offset": zod.int(),
+  "eventTypes": zod.array(zod.string()),
+  "events": zod.array(zod.object({
+  "id": zod.int(),
+  "eventType": zod.string(),
+  "email": zod.string().nullish(),
+  "ip": zod.string().nullish(),
+  "userAgent": zod.string().nullish(),
+  "requestId": zod.string().nullish(),
+  "success": zod.boolean(),
+  "metadata": zod.record(zod.string(), zod.unknown()).nullish(),
+  "createdAt": zod.coerce.date()
+}))
+})

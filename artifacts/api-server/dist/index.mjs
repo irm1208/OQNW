@@ -34703,10 +34703,10 @@ var init_subquery = __esm({
     init_entity();
     Subquery = class {
       static [entityKind] = "Subquery";
-      constructor(sql5, fields, alias, isWith = false, usedTables = []) {
+      constructor(sql4, fields, alias, isWith = false, usedTables = []) {
         this._ = {
           brand: "Subquery",
-          sql: sql5,
+          sql: sql4,
           selectedFields: fields,
           alias,
           isWith,
@@ -181534,15 +181534,15 @@ var require_main3 = __commonJS({
     ];
     $51a9f4feb3a3b2b1$var$NameTable.process = function(stream) {
       var records = {};
-      for (let record2 of this.records) {
-        let language = (0, $e2613b812f052cbe$export$2092376fd002e13)[record2.platformID][record2.languageID];
-        if (language == null && this.langTags != null && record2.languageID >= 32768) language = this.langTags[record2.languageID - 32768].tag;
-        if (language == null) language = record2.platformID + "-" + record2.languageID;
-        let key = record2.nameID >= 256 ? "fontFeatures" : $51a9f4feb3a3b2b1$var$NAMES[record2.nameID] || record2.nameID;
+      for (let record3 of this.records) {
+        let language = (0, $e2613b812f052cbe$export$2092376fd002e13)[record3.platformID][record3.languageID];
+        if (language == null && this.langTags != null && record3.languageID >= 32768) language = this.langTags[record3.languageID - 32768].tag;
+        if (language == null) language = record3.platformID + "-" + record3.languageID;
+        let key = record3.nameID >= 256 ? "fontFeatures" : $51a9f4feb3a3b2b1$var$NAMES[record3.nameID] || record3.nameID;
         if (records[key] == null) records[key] = {};
         let obj = records[key];
-        if (record2.nameID >= 256) obj = obj[record2.nameID] || (obj[record2.nameID] = {});
-        if (typeof record2.string === "string" || typeof obj[language] !== "string") obj[language] = record2.string;
+        if (record3.nameID >= 256) obj = obj[record3.nameID] || (obj[record3.nameID] = {});
+        if (typeof record3.string === "string" || typeof obj[language] !== "string") obj[language] = record3.string;
       }
       this.records = records;
     };
@@ -188219,9 +188219,9 @@ var require_main3 = __commonJS({
         if (changed) {
           this.features = {};
           if (this.language) for (let featureIndex of this.language.featureIndexes) {
-            let record2 = this.table.featureList[featureIndex];
+            let record3 = this.table.featureList[featureIndex];
             let substituteFeature = this.substituteFeatureForVariations(featureIndex);
-            this.features[record2.tag] = substituteFeature || record2.feature;
+            this.features[record3.tag] = substituteFeature || record3.feature;
           }
         }
         return this.scriptTag;
@@ -188245,8 +188245,8 @@ var require_main3 = __commonJS({
       }
       substituteFeatureForVariations(featureIndex) {
         if (this.variationsIndex === -1) return null;
-        let record2 = this.table.featureVariations.featureVariationRecords[this.variationsIndex];
-        let substitutions = record2.featureTableSubstitution.substitutions;
+        let record3 = this.table.featureVariations.featureVariationRecords[this.variationsIndex];
+        let substitutions = record3.featureTableSubstitution.substitutions;
         for (let substitution of substitutions) {
           if (substitution.featureIndex === featureIndex) return substitution.alternateFeatureTable;
         }
@@ -192186,9 +192186,9 @@ var require_main3 = __commonJS({
       * @return {string}
       */
       getName(key, lang = this.defaultLanguage || $59aa4ed98453e1d4$export$42940898df819940) {
-        let record2 = this.name && this.name.records[key];
-        if (record2)
-          return record2[lang] || record2[this.defaultLanguage] || record2[$59aa4ed98453e1d4$export$42940898df819940] || record2["en"] || record2[Object.keys(record2)[0]] || null;
+        let record3 = this.name && this.name.records[key];
+        if (record3)
+          return record3[lang] || record3[this.defaultLanguage] || record3[$59aa4ed98453e1d4$export$42940898df819940] || record3["en"] || record3[Object.keys(record3)[0]] || null;
         return null;
       }
       /**
@@ -208803,6 +208803,161 @@ function handleIntersectionResults(result, left, right) {
   result.value = merged.data;
   return result;
 }
+var $ZodRecord = /* @__PURE__ */ $constructor("$ZodRecord", (inst, def) => {
+  $ZodType.init(inst, def);
+  const memo2 = globalConfig.memoizer;
+  memo2?.attach(inst);
+  inst._zod.parse = (payload, ctx) => {
+    const input = payload.value;
+    if (!isPlainObject(input)) {
+      payload.issues.push({
+        expected: "record",
+        code: "invalid_type",
+        input,
+        inst
+      });
+      return payload;
+    }
+    const proms = [];
+    const values = def.keyType._zod.values;
+    if (values && !def.partial) {
+      payload.value = memo2 ? memo2.alloc(inst, payload, {}, ctx) : {};
+      const recordKeys = /* @__PURE__ */ new Set();
+      for (const key of values) {
+        if (typeof key === "string" || typeof key === "number" || typeof key === "symbol") {
+          recordKeys.add(typeof key === "number" ? key.toString() : key);
+          if (key === "__proto__")
+            continue;
+          const keyResult = def.keyType._zod.run({ value: key, issues: [] }, ctx);
+          if (keyResult instanceof Promise) {
+            throw new Error("Async schemas not supported in object keys currently");
+          }
+          if (keyResult.issues.length) {
+            payload.issues.push({
+              code: "invalid_key",
+              origin: "record",
+              issues: keyResult.issues.map((iss) => finalizeIssue(iss, ctx, config())),
+              input: key,
+              path: [key],
+              inst
+            });
+            continue;
+          }
+          const outKey = keyResult.value;
+          if (outKey === "__proto__")
+            continue;
+          const result = def.valueType._zod.run({ value: input[key], issues: [] }, ctx);
+          if (result instanceof Promise) {
+            proms.push(result.then((result2) => {
+              if (result2.issues.length) {
+                payload.issues.push(...prefixIssues(key, result2.issues));
+              }
+              payload.value[outKey] = result2.value;
+            }));
+          } else {
+            if (result.issues.length) {
+              payload.issues.push(...prefixIssues(key, result.issues));
+            }
+            payload.value[outKey] = result.value;
+          }
+        }
+      }
+      let unrecognized;
+      for (const key in input) {
+        if (!recordKeys.has(key)) {
+          if (def.mode === "loose") {
+            if (key === "__proto__")
+              continue;
+            payload.value[key] = input[key];
+          } else {
+            unrecognized = unrecognized ?? [];
+            unrecognized.push(key);
+          }
+        }
+      }
+      if (unrecognized && unrecognized.length > 0) {
+        payload.issues.push({
+          code: "unrecognized_keys",
+          input,
+          inst,
+          keys: unrecognized,
+          continue: true
+        });
+      }
+    } else {
+      payload.value = memo2 ? memo2.alloc(inst, payload, {}, ctx) : {};
+      let unrecognized;
+      for (const key of Reflect.ownKeys(input)) {
+        if (key === "__proto__")
+          continue;
+        if (!Object.prototype.propertyIsEnumerable.call(input, key))
+          continue;
+        let keyResult = def.keyType._zod.run({ value: key, issues: [] }, ctx);
+        if (keyResult instanceof Promise) {
+          throw new Error("Async schemas not supported in object keys currently");
+        }
+        const checkNumericKey = typeof key === "string" && number.test(key) && keyResult.issues.length;
+        if (checkNumericKey) {
+          const retryResult = def.keyType._zod.run({ value: Number(key), issues: [] }, ctx);
+          if (retryResult instanceof Promise) {
+            throw new Error("Async schemas not supported in object keys currently");
+          }
+          if (retryResult.issues.length === 0) {
+            keyResult = retryResult;
+          }
+        }
+        if (keyResult.issues.length) {
+          if (def.mode === "loose") {
+            payload.value[key] = input[key];
+          } else if (values) {
+            unrecognized = unrecognized ?? [];
+            unrecognized.push(key);
+          } else {
+            payload.issues.push({
+              code: "invalid_key",
+              origin: "record",
+              issues: keyResult.issues.map((iss) => finalizeIssue(iss, ctx, config())),
+              input: key,
+              path: [key],
+              inst
+            });
+          }
+          continue;
+        }
+        const outKey = keyResult.value;
+        if (outKey === "__proto__")
+          continue;
+        const result = def.valueType._zod.run({ value: input[key], issues: [] }, ctx);
+        if (result instanceof Promise) {
+          proms.push(result.then((result2) => {
+            if (result2.issues.length) {
+              payload.issues.push(...prefixIssues(key, result2.issues));
+            }
+            payload.value[outKey] = result2.value;
+          }));
+        } else {
+          if (result.issues.length) {
+            payload.issues.push(...prefixIssues(key, result.issues));
+          }
+          payload.value[outKey] = result.value;
+        }
+      }
+      if (unrecognized && unrecognized.length > 0) {
+        payload.issues.push({
+          code: "unrecognized_keys",
+          input,
+          inst,
+          keys: unrecognized,
+          continue: true
+        });
+      }
+    }
+    if (proms.length) {
+      return Promise.all(proms).then(() => payload);
+    }
+    return payload;
+  };
+});
 var $ZodEnum = /* @__PURE__ */ $constructor("$ZodEnum", (inst, def) => {
   $ZodType.init(inst, def);
   const values = getEnumValues(def.entries);
@@ -210847,6 +211002,113 @@ var intersectionProcessor = (schema, ctx, json3, params) => {
   json3.allOf = allOf;
   ctx.intersections.push(allOf);
 };
+function stringifyKeyNames(bySchema, json3, visited) {
+  if (json3.$ref) {
+    if (visited.has(json3))
+      return json3;
+    visited.add(json3);
+    const def = bySchema.get(json3)?.def;
+    if (!def)
+      return json3;
+    const inlined = stringifyKeyNames(bySchema, def, visited);
+    return inlined === def ? json3 : inlined;
+  }
+  for (const keyword of ["anyOf", "oneOf"]) {
+    const branches = json3[keyword];
+    if (!Array.isArray(branches))
+      continue;
+    const mapped = branches.map((branch) => stringifyKeyNames(bySchema, branch, visited));
+    if (mapped.some((branch, i) => branch !== branches[i]))
+      json3 = { ...json3, [keyword]: mapped };
+  }
+  const types3 = Array.isArray(json3.type) ? json3.type : [json3.type];
+  const numericType = !types3.includes("string") && types3.some((t) => t === "number" || t === "integer");
+  const values = json3.enum ?? (json3.const !== void 0 ? [json3.const] : void 0);
+  if (!numericType && !values?.some((v) => typeof v === "number"))
+    return json3;
+  const { minimum, maximum, exclusiveMinimum, exclusiveMaximum, multipleOf, format, id, ...rest } = json3;
+  if (rest.enum)
+    rest.enum = rest.enum.map((v) => typeof v === "number" ? String(v) : v);
+  else if (typeof rest.const === "number")
+    rest.const = String(rest.const);
+  if (!numericType)
+    return rest;
+  rest.type = "string";
+  if (!values)
+    rest.pattern = (types3.includes("number") ? number : integer).source;
+  return rest;
+}
+var pendingRecords = /* @__PURE__ */ new WeakMap();
+function rewriteKeyNames(ctx) {
+  const bySchema = /* @__PURE__ */ new Map();
+  for (const entry of ctx.seen.values()) {
+    if (entry.def && !bySchema.has(entry.schema))
+      bySchema.set(entry.schema, entry);
+  }
+  const rewrites = /* @__PURE__ */ new Map();
+  for (const record3 of pendingRecords.get(ctx) ?? []) {
+    const seen = ctx.seen.get(record3);
+    const names = (seen?.def ?? seen?.schema)?.propertyNames;
+    if (!names || names === true || rewrites.has(names))
+      continue;
+    const rewritten = stringifyKeyNames(bySchema, names, /* @__PURE__ */ new Set());
+    if (rewritten !== names)
+      rewrites.set(names, rewritten);
+  }
+  if (!rewrites.size)
+    return;
+  for (const entry of ctx.seen.values()) {
+    for (const carrier of [entry.schema, entry.def]) {
+      const rewritten = carrier && rewrites.get(carrier.propertyNames);
+      if (rewritten)
+        carrier.propertyNames = rewritten;
+    }
+  }
+}
+var recordProcessor = (schema, ctx, _json, params) => {
+  const json3 = _json;
+  const def = schema._zod.def;
+  json3.type = "object";
+  const keyType = def.keyType;
+  const keyBag = keyType._zod.bag;
+  const patterns = keyBag?.patterns;
+  if (def.mode === "loose" && patterns && patterns.size > 0) {
+    const valueSchema = process2(def.valueType, ctx, {
+      ...params,
+      path: [...params.path, "patternProperties", "*"]
+    });
+    json3.patternProperties = {};
+    for (const pattern of patterns) {
+      assignProp(json3.patternProperties, pattern.source, valueSchema);
+    }
+  } else {
+    if (ctx.target === "draft-07" || ctx.target === "draft-2020-12") {
+      json3.propertyNames = process2(def.keyType, ctx, {
+        ...params,
+        path: [...params.path, "propertyNames"]
+      });
+      let pending = pendingRecords.get(ctx);
+      if (!pending) {
+        pending = [];
+        pendingRecords.set(ctx, pending);
+        ctx.deferred.push(() => rewriteKeyNames(ctx));
+      }
+      pending.push(schema);
+    }
+    json3.additionalProperties = process2(def.valueType, ctx, {
+      ...params,
+      path: [...params.path, "additionalProperties"]
+    });
+  }
+  const keyValues = keyType._zod.values;
+  const omittableOnInput = ctx.io === "input" && inputOptin(def.valueType) !== void 0;
+  if (keyValues && !def.partial && !omittableOnInput) {
+    const validKeyValues = [...keyValues].filter((v) => typeof v === "string" || typeof v === "number");
+    if (validKeyValues.length > 0) {
+      json3.required = validKeyValues.map(String);
+    }
+  }
+};
 var nullableProcessor = (schema, ctx, json3, params) => {
   const def = schema._zod.def;
   const inner = process2(def.innerType, ctx, params);
@@ -211673,6 +211935,30 @@ function intersection(left, right) {
     type: "intersection",
     left,
     right
+  });
+}
+var ZodRecord = /* @__PURE__ */ $constructor("ZodRecord", (inst, def) => {
+  _ensureDefaultMemoizer();
+  $ZodRecord.init(inst, def);
+  ZodType.init(inst, def);
+  inst._zod.processJSONSchema = (ctx, json3, params) => recordProcessor(inst, ctx, json3, params);
+  inst.keyType = def.keyType;
+  inst.valueType = def.valueType;
+});
+function record(keyType, valueType, params) {
+  if (!valueType || !valueType._zod) {
+    return new ZodRecord({
+      type: "record",
+      keyType: string2(),
+      valueType: keyType,
+      ...util_exports.normalizeParams(valueType)
+    });
+  }
+  return new ZodRecord({
+    type: "record",
+    keyType,
+    valueType,
+    ...util_exports.normalizeParams(params)
   });
 }
 var ZodEnum = /* @__PURE__ */ $constructor("ZodEnum", (inst, def) => {
@@ -212894,6 +213180,34 @@ var GetPublicProductResponse = object({
   "seoTitle": string2().nullish(),
   "seoDescription": string2().nullish(),
   "isFeatured": boolean2().optional()
+});
+var listAdminAuditHistoryQueryLimitDefault = 100;
+var listAdminAuditHistoryQueryLimitMax = 250;
+var listAdminAuditHistoryQueryOffsetDefault = 0;
+var listAdminAuditHistoryQueryOffsetMin = 0;
+var ListAdminAuditHistoryQueryParams = object({
+  "limit": coerce_exports.number().int().min(1).max(listAdminAuditHistoryQueryLimitMax).default(listAdminAuditHistoryQueryLimitDefault),
+  "offset": coerce_exports.number().int().min(listAdminAuditHistoryQueryOffsetMin).default(listAdminAuditHistoryQueryOffsetDefault),
+  "eventType": coerce_exports.string().optional(),
+  "success": coerce_exports.boolean().optional(),
+  "search": coerce_exports.string().optional()
+});
+var ListAdminAuditHistoryResponse = object({
+  "total": int(),
+  "limit": int(),
+  "offset": int(),
+  "eventTypes": array(string2()),
+  "events": array(object({
+    "id": int(),
+    "eventType": string2(),
+    "email": string2().nullish(),
+    "ip": string2().nullish(),
+    "userAgent": string2().nullish(),
+    "requestId": string2().nullish(),
+    "success": boolean2(),
+    "metadata": record(string2(), unknown()).nullish(),
+    "createdAt": coerce_exports.date()
+  }))
 });
 
 // src/routes/health.ts
@@ -216011,10 +216325,10 @@ var PgRelationalQuery = class extends QueryPromise {
 init_entity();
 init_query_promise();
 var PgRaw = class extends QueryPromise {
-  constructor(execute, sql5, query, mapBatchResult) {
+  constructor(execute, sql4, query, mapBatchResult) {
     super();
     this.execute = execute;
-    this.sql = sql5;
+    this.sql = sql4;
     this.query = query;
     this.mapBatchResult = mapBatchResult;
   }
@@ -216339,8 +216653,8 @@ var NoopCache = class extends Cache {
   async onMutate(_params) {
   }
 };
-async function hashQuery(sql5, params) {
-  const dataToHash = `${sql5}-${JSON.stringify(params)}`;
+async function hashQuery(sql4, params) {
+  const dataToHash = `${sql4}-${JSON.stringify(params)}`;
   const encoder = new TextEncoder();
   const data = encoder.encode(dataToHash);
   const hashBuffer = await crypto.subtle.digest("SHA-256", data);
@@ -216932,7 +217246,7 @@ __export(external_exports, {
   ZodPromise: () => ZodPromise,
   ZodReadonly: () => ZodReadonly2,
   ZodRealError: () => ZodRealError2,
-  ZodRecord: () => ZodRecord,
+  ZodRecord: () => ZodRecord2,
   ZodSet: () => ZodSet,
   ZodString: () => ZodString2,
   ZodStringFormat: () => ZodStringFormat2,
@@ -217042,7 +217356,7 @@ __export(external_exports, {
   promise: () => promise,
   property: () => _property2,
   readonly: () => readonly2,
-  record: () => record,
+  record: () => record2,
   refine: () => refine2,
   regex: () => _regex2,
   regexes: () => regexes_exports2,
@@ -227571,14 +227885,14 @@ function tuple(items, _paramsOrRest, _params) {
     ...util_exports2.normalizeParams(params)
   });
 }
-var ZodRecord = /* @__PURE__ */ $constructor2("ZodRecord", (inst, def) => {
+var ZodRecord2 = /* @__PURE__ */ $constructor2("ZodRecord", (inst, def) => {
   $ZodRecord2.init(inst, def);
   ZodType2.init(inst, def);
   inst.keyType = def.keyType;
   inst.valueType = def.valueType;
 });
-function record(keyType, valueType, params) {
-  return new ZodRecord({
+function record2(keyType, valueType, params) {
+  return new ZodRecord2({
     type: "record",
     keyType,
     valueType,
@@ -227586,7 +227900,7 @@ function record(keyType, valueType, params) {
   });
 }
 function partialRecord(keyType, valueType, params) {
-  return new ZodRecord({
+  return new ZodRecord2({
     type: "record",
     keyType: union3([keyType, never2()]),
     valueType,
@@ -227952,7 +228266,7 @@ var stringbool = (...args) => _stringbool2({
 }, ...args);
 function json2(params) {
   const jsonSchema2 = lazy(() => {
-    return union3([string5(params), number5(), boolean6(), _null5(), array2(jsonSchema2), record(string5(), jsonSchema2)]);
+    return union3([string5(params), number5(), boolean6(), _null5(), array2(jsonSchema2), record2(string5(), jsonSchema2)]);
   });
   return jsonSchema2;
 }
@@ -229240,7 +229554,13 @@ router2.post("/admin/users", async (req, res) => {
       res.status(409).json({ error: "An admin with that email already exists" });
       return;
     }
-    const [created] = await db.insert(adminUsersTable).values({ email: email5.toLowerCase(), name: name2, passwordHash: hashPassword(password), role: finalRole }).returning();
+    const created = await db.transaction(async (tx) => {
+      const [result] = await tx.insert(adminUsersTable).values({ email: email5.toLowerCase(), name: name2, passwordHash: hashPassword(password), role: finalRole }).returning();
+      await recordStrictAdminAudit(tx, req, "admin_user_created", true, {
+        metadata: { targetAdminUserId: result.id, targetEmail: result.email, targetRole: result.role }
+      });
+      return result;
+    });
     res.status(201).json(userToResponse(created));
   } catch (err) {
     req.log.error({ err }, "Failed to create admin user");
@@ -229278,31 +229598,46 @@ router2.patch("/admin/users/:id", async (req, res) => {
     revokeSessions = true;
   }
   try {
-    const updated = await db.transaction(async (tx) => protectLastActiveOwner(
-      async () => {
-        await tx.execute(sql`SELECT pg_advisory_xact_lock(${OWNER_MUTATION_LOCK_KEY})`);
-      },
-      async () => {
-        const [target] = await tx.select({ role: adminUsersTable.role, isActive: adminUsersTable.isActive }).from(adminUsersTable).where(eq(adminUsersTable.id, id)).limit(1);
-        return target ?? null;
-      },
-      async () => {
-        const [otherOwner] = await tx.select({ id: adminUsersTable.id }).from(adminUsersTable).where(and(
-          eq(adminUsersTable.role, "owner"),
-          eq(adminUsersTable.isActive, true),
-          ne(adminUsersTable.id, id)
-        )).limit(1);
-        return Boolean(otherOwner);
-      },
-      (target) => role !== void 0 && role !== "owner" || isActive === false && target.isActive,
-      async () => {
-        const [result] = await tx.update(adminUsersTable).set({
-          ...updates,
-          ...revokeSessions ? { sessionVersion: sql`${adminUsersTable.sessionVersion} + 1` } : {}
-        }).where(eq(adminUsersTable.id, id)).returning();
-        return result;
+    const updated = await db.transaction(async (tx) => {
+      const result = await protectLastActiveOwner(
+        async () => {
+          await tx.execute(sql`SELECT pg_advisory_xact_lock(${OWNER_MUTATION_LOCK_KEY})`);
+        },
+        async () => {
+          const [target] = await tx.select({ role: adminUsersTable.role, isActive: adminUsersTable.isActive }).from(adminUsersTable).where(eq(adminUsersTable.id, id)).limit(1);
+          return target ?? null;
+        },
+        async () => {
+          const [otherOwner] = await tx.select({ id: adminUsersTable.id }).from(adminUsersTable).where(and(
+            eq(adminUsersTable.role, "owner"),
+            eq(adminUsersTable.isActive, true),
+            ne(adminUsersTable.id, id)
+          )).limit(1);
+          return Boolean(otherOwner);
+        },
+        (target) => role !== void 0 && role !== "owner" || isActive === false && target.isActive,
+        async () => {
+          const [result2] = await tx.update(adminUsersTable).set({
+            ...updates,
+            ...revokeSessions ? { sessionVersion: sql`${adminUsersTable.sessionVersion} + 1` } : {}
+          }).where(eq(adminUsersTable.id, id)).returning();
+          return result2;
+        }
+      );
+      if (result) {
+        await recordStrictAdminAudit(tx, req, "admin_user_updated", true, {
+          metadata: {
+            targetAdminUserId: result.id,
+            targetEmail: result.email,
+            targetRole: result.role,
+            fields: Object.keys(updates).filter((field) => field !== "passwordHash"),
+            passwordChanged: password !== void 0,
+            sessionsRevoked: revokeSessions
+          }
+        });
       }
-    ));
+      return result;
+    });
     if (!updated) {
       res.status(404).json({ error: "Admin user not found" });
       return;
@@ -229324,8 +229659,46 @@ router2.delete("/admin/users/:id", async (req, res) => {
     res.status(400).json({ error: "Invalid ID" });
     return;
   }
-  res.status(405).json({ error: "Admin users are retained for audit history; deactivate the account instead" });
-  return;
+  try {
+    const deleted = await db.transaction(async (tx) => protectLastActiveOwner(
+      async () => {
+        await tx.execute(sql`SELECT pg_advisory_xact_lock(${OWNER_MUTATION_LOCK_KEY})`);
+      },
+      async () => {
+        const [target] = await tx.select({ role: adminUsersTable.role, isActive: adminUsersTable.isActive }).from(adminUsersTable).where(eq(adminUsersTable.id, id)).limit(1);
+        return target ?? null;
+      },
+      async () => {
+        const [otherOwner] = await tx.select({ id: adminUsersTable.id }).from(adminUsersTable).where(and(
+          eq(adminUsersTable.role, "owner"),
+          eq(adminUsersTable.isActive, true),
+          ne(adminUsersTable.id, id)
+        )).limit(1);
+        return Boolean(otherOwner);
+      },
+      () => true,
+      async () => {
+        const [result] = await tx.delete(adminUsersTable).where(eq(adminUsersTable.id, id)).returning();
+        return result;
+      }
+    ));
+    if (!deleted) {
+      res.status(404).json({ error: "Admin user not found" });
+      return;
+    }
+    await recordAdminAudit(req, "admin_user_deleted", true, {
+      email: getSecureAdminSession(req)?.email ?? null,
+      metadata: { targetAdminUserId: deleted.id, targetEmail: deleted.email }
+    });
+    res.status(204).send();
+  } catch (err) {
+    if (err instanceof LastActiveOwnerError) {
+      res.status(409).json({ error: err.message });
+      return;
+    }
+    req.log.error({ err }, "Failed to delete admin user");
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 var users_default = router2;
 
@@ -230082,7 +230455,7 @@ function verifyTotp(secret, suppliedCode) {
 function makeRecoveryCode() {
   return randomBytes(5).toString("hex").toUpperCase();
 }
-async function recordAudit(req, eventType, success2, details = {}) {
+async function recordAdminAudit(req, eventType, success2, details = {}) {
   try {
     await db.insert(adminAuditEventsTable).values({
       eventType,
@@ -230098,12 +230471,35 @@ async function recordAudit(req, eventType, success2, details = {}) {
     req.log.error({ err, eventType }, "Failed to write admin security audit event");
   }
 }
+function strictAdminAuditValues(req, actor, eventType, success2, details = {}) {
+  return {
+    eventType,
+    adminUserId: actor.id,
+    email: actor.email,
+    ip: getClientIp(req),
+    userAgent: req.get("user-agent")?.slice(0, 500) ?? null,
+    requestId: String(req.id),
+    success: success2,
+    metadata: details.metadata ?? null
+  };
+}
+async function auditActor(tx, req) {
+  const session = parseSecureAdminSession(req);
+  if (!session?.email) return { id: null, email: null };
+  const [actor] = await tx.select({ id: adminUsersTable.id, email: adminUsersTable.email }).from(adminUsersTable).where(eq(adminUsersTable.email, session.email)).limit(1);
+  if (!actor) throw new Error("Authenticated admin actor is no longer available");
+  return actor;
+}
+async function recordStrictAdminAudit(tx, req, eventType, success2, details = {}) {
+  const actor = await auditActor(tx, req);
+  await tx.insert(adminAuditEventsTable).values(strictAdminAuditValues(req, actor, eventType, success2, details));
+}
 async function findLockout(ip) {
-  const [record2] = await db.select().from(adminLoginAttemptsTable).where(eq(adminLoginAttemptsTable.ip, ip)).limit(1);
-  if (!record2) return null;
+  const [record3] = await db.select().from(adminLoginAttemptsTable).where(eq(adminLoginAttemptsTable.ip, ip)).limit(1);
+  if (!record3) return null;
   const now = /* @__PURE__ */ new Date();
-  if (record2.lockedUntil && record2.lockedUntil > now) return record2;
-  if (!record2.lockedUntil && record2.lastAttemptAt.getTime() + ATTEMPT_WINDOW_MS > now.getTime()) return record2;
+  if (record3.lockedUntil && record3.lockedUntil > now) return record3;
+  if (!record3.lockedUntil && record3.lastAttemptAt.getTime() + ATTEMPT_WINDOW_MS > now.getTime()) return record3;
   return null;
 }
 async function recordFailedAttempt(ip) {
@@ -230112,7 +230508,7 @@ async function recordFailedAttempt(ip) {
   const lockUntil = new Date(now.getTime() + LOCKOUT_MS);
   const freshOrExpired = sql`(${adminLoginAttemptsTable.lastAttemptAt} < ${windowStart} OR (${adminLoginAttemptsTable.lockedUntil} IS NOT NULL AND ${adminLoginAttemptsTable.lockedUntil} < ${now}))`;
   const nextCount = sql`CASE WHEN ${freshOrExpired} THEN 1 ELSE ${adminLoginAttemptsTable.failedAttempts} + 1 END`;
-  const [record2] = await db.insert(adminLoginAttemptsTable).values({ ip, failedAttempts: 1, lastAttemptAt: now }).onConflictDoUpdate({
+  const [record3] = await db.insert(adminLoginAttemptsTable).values({ ip, failedAttempts: 1, lastAttemptAt: now }).onConflictDoUpdate({
     target: adminLoginAttemptsTable.ip,
     set: {
       failedAttempts: nextCount,
@@ -230120,7 +230516,7 @@ async function recordFailedAttempt(ip) {
       lockedUntil: sql`CASE WHEN ${nextCount} >= ${MAX_ATTEMPTS} THEN ${lockUntil}::timestamptz ELSE NULL::timestamptz END`
     }
   }).returning({ count: adminLoginAttemptsTable.failedAttempts, lockedUntil: adminLoginAttemptsTable.lockedUntil });
-  return { count: record2?.count ?? MAX_ATTEMPTS, lockedUntil: record2?.lockedUntil ?? lockUntil };
+  return { count: record3?.count ?? MAX_ATTEMPTS, lockedUntil: record3?.lockedUntil ?? lockUntil };
 }
 async function clearFailedAttempts(ip) {
   await db.delete(adminLoginAttemptsTable).where(eq(adminLoginAttemptsTable.ip, ip));
@@ -230128,7 +230524,7 @@ async function clearFailedAttempts(ip) {
 async function respondToFailedLogin(req, res, email5) {
   const { count: count2, lockedUntil } = await recordFailedAttempt(getClientIp(req));
   const locked = count2 >= MAX_ATTEMPTS;
-  await recordAudit(req, locked ? "admin_login_lockout" : "admin_login_failed", false, {
+  await recordAdminAudit(req, locked ? "admin_login_lockout" : "admin_login_failed", false, {
     email: email5 || null,
     metadata: { attempts: count2, locked }
   });
@@ -230166,7 +230562,51 @@ async function currentAdminUser(req) {
   const [user] = await db.select().from(adminUsersTable).where(eq(adminUsersTable.email, session.email)).limit(1);
   return user && user.isActive && user.sessionVersion === session.sessionVersion ? user : null;
 }
-async function requireRecentSession(req, res) {
+async function getAdminRole(req) {
+  if (!await validateSecureAdminSession(req)) return null;
+  const session = parseSecureAdminSession(req);
+  if (!session?.email) return "owner";
+  const [user] = await db.select({ role: adminUsersTable.role }).from(adminUsersTable).where(eq(adminUsersTable.email, session.email)).limit(1);
+  return user && (user.role === "owner" || user.role === "manager" || user.role === "viewer") ? user.role : null;
+}
+var OWNER_ONLY_ADMIN_PATHS = [
+  /^\/users(?:\/|$)/,
+  /^\/settings(?:\/|$)/,
+  /^\/security(?:\/|$)/,
+  /^\/blocked-ips(?:\/|$)/,
+  /^\/public-traffic(?:\/|$)/,
+  /^\/webhooks(?:\/|$)/,
+  /^\/shipping(?:\/|$)/,
+  /^\/tax(?:\/|$)/,
+  /^\/test-payments(?:\/|$)/,
+  /^\/customers\/[^/]+\/gdpr-erase$/
+];
+function isReadOnlyMethod(method) {
+  return method === "GET" || method === "HEAD" || method === "OPTIONS";
+}
+function adminRoleAllowsRequest(role, path4, method) {
+  if (role === "owner") return true;
+  if (role === "viewer") return isReadOnlyMethod(method);
+  return !OWNER_ONLY_ADMIN_PATHS.some((ownerOnlyPath) => ownerOnlyPath.test(path4));
+}
+async function enforceAdminAuthorization(req, res, next) {
+  const role = await getAdminRole(req);
+  if (!role) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+  if (!adminRoleAllowsRequest(role, req.path, req.method) && role === "viewer") {
+    res.status(403).json({ error: "Viewer access is read-only" });
+    return;
+  }
+  if (!adminRoleAllowsRequest(role, req.path, req.method)) {
+    res.status(403).json({ error: "Owner access required" });
+    return;
+  }
+  res.locals.adminRole = role;
+  next();
+}
+async function requireRecentAdminSession(req, res) {
   if (!await validateSecureAdminSession(req) || !isRecentSecureAdminSession(req)) {
     res.status(401).json({ error: "Recent authentication required", requiresRecentAuth: true });
     return false;
@@ -230177,7 +230617,7 @@ router3.post("/admin/auth/login", async (req, res) => {
   const ip = getClientIp(req);
   const [blocked] = await db.select({ ip: blockedIpsTable.ip }).from(blockedIpsTable).where(eq(blockedIpsTable.ip, ip)).limit(1);
   if (blocked) {
-    await recordAudit(req, "admin_login_blocked_ip", false);
+    await recordAdminAudit(req, "admin_login_blocked_ip", false);
     res.status(403).json({ error: "Access denied." });
     return;
   }
@@ -230320,7 +230760,7 @@ router3.post("/admin/auth/login", async (req, res) => {
       return;
     }
     user = reactivated;
-    await recordAudit(req, "admin_owner_reactivated", true, {
+    await recordAdminAudit(req, "admin_owner_reactivated", true, {
       adminUserId: user.id,
       email: user.email,
       metadata: { reason: "no_active_admins" }
@@ -230333,7 +230773,7 @@ router3.post("/admin/auth/login", async (req, res) => {
       tokenHash: hashValue(token),
       expiresAt
     });
-    await recordAudit(req, "admin_mfa_challenge_issued", true, { adminUserId: user.id, email: user.email });
+    await recordAdminAudit(req, "admin_mfa_challenge_issued", true, { adminUserId: user.id, email: user.email });
     res.status(200).json({ authenticated: false, mfaRequired: true, challengeToken: token });
     return;
   }
@@ -230368,7 +230808,7 @@ router3.post("/admin/auth/login", async (req, res) => {
     return;
   }
   await clearFailedAttempts(ip);
-  await recordAudit(req, "admin_bootstrap_login_success", true);
+  await recordAdminAudit(req, "admin_bootstrap_login_success", true);
   res.cookie(SECURE_SESSION_COOKIE, createSecureAdminSessionValue(null, 0), {
     httpOnly: true,
     maxAge: COOKIE_MAX_AGE,
@@ -230391,7 +230831,7 @@ router3.post("/admin/auth/development-login", async (req, res) => {
     res.status(409).json({ error: "Create an active owner account before using development access." });
     return;
   }
-  await recordAudit(req, "admin_development_login", true, {
+  await recordAdminAudit(req, "admin_development_login", true, {
     adminUserId: owner.id,
     email: owner.email
   });
@@ -230409,7 +230849,7 @@ router3.post("/admin/auth/logout", async (req, res) => {
   if (session?.email && await validateSecureAdminSession(req)) {
     await db.update(adminUsersTable).set({ sessionVersion: sql`${adminUsersTable.sessionVersion} + 1` }).where(eq(adminUsersTable.email, session.email));
   }
-  await recordAudit(req, "admin_logout", true, { email: session?.email ?? null });
+  await recordAdminAudit(req, "admin_logout", true, { email: session?.email ?? null });
   res.clearCookie(SESSION_COOKIE);
   res.clearCookie(SECURE_SESSION_COOKIE);
   res.status(204).send();
@@ -230423,7 +230863,7 @@ router3.get("/admin/auth/mfa/status", async (req, res) => {
   res.json({ enabled: Boolean(user?.mfaEnabled), canEnroll: Boolean(user), email: user?.email ?? null });
 });
 router3.post("/admin/auth/mfa/setup", async (req, res) => {
-  if (!await requireRecentSession(req, res)) return;
+  if (!await requireRecentAdminSession(req, res)) return;
   const user = await currentAdminUser(req);
   if (!user) {
     res.status(403).json({ error: "Only an active admin user can enroll MFA." });
@@ -230435,7 +230875,7 @@ router3.post("/admin/auth/mfa/setup", async (req, res) => {
   }
   const secret = base32Encode(randomBytes(20));
   await db.update(adminUsersTable).set({ pendingMfaSecretEncrypted: encryptMfaSecret(secret) }).where(eq(adminUsersTable.id, user.id));
-  await recordAudit(req, "admin_mfa_setup_started", true, { adminUserId: user.id, email: user.email });
+  await recordAdminAudit(req, "admin_mfa_setup_started", true, { adminUserId: user.id, email: user.email });
   const label = encodeURIComponent(`OmniQure Admin:${user.email}`);
   res.json({
     secret,
@@ -230443,11 +230883,11 @@ router3.post("/admin/auth/mfa/setup", async (req, res) => {
   });
 });
 router3.post("/admin/auth/mfa/enable", async (req, res) => {
-  if (!await requireRecentSession(req, res)) return;
+  if (!await requireRecentAdminSession(req, res)) return;
   const user = await currentAdminUser(req);
   const code = typeof req.body?.code === "string" ? req.body.code : "";
   if (!user || !user.pendingMfaSecretEncrypted || !verifyTotp(decryptMfaSecret(user.pendingMfaSecretEncrypted) ?? "", code)) {
-    await recordAudit(req, "admin_mfa_enable_failed", false, { adminUserId: user?.id ?? null, email: user?.email ?? null });
+    await recordAdminAudit(req, "admin_mfa_enable_failed", false, { adminUserId: user?.id ?? null, email: user?.email ?? null });
     res.status(400).json({ error: "The verification code is invalid." });
     return;
   }
@@ -230485,7 +230925,11 @@ router3.post("/admin/auth/mfa/enable", async (req, res) => {
   res.json({ enabled: true, recoveryCodes });
 });
 router3.post("/admin/test-payments/session", async (req, res) => {
-  if (!await requireRecentSession(req, res)) return;
+  if (!await requireRecentAdminSession(req, res)) return;
+  if (await getAdminRole(req) !== "owner") {
+    res.status(403).json({ error: "Owner access required" });
+    return;
+  }
   const testCheckoutSecret = process.env.SESSION_SECRET;
   if (!testCheckoutSecret) {
     res.status(503).json({ error: "Wallid test checkout is unavailable because secure session signing is not configured." });
@@ -230495,7 +230939,11 @@ router3.post("/admin/test-payments/session", async (req, res) => {
   res.status(201).json({ checkoutPath: `/cart?wallidTest=${encodeURIComponent(token)}`, expiresAt, amountMinor: 100, currency: "GBP" });
 });
 router3.post("/admin/test-payments/crypto-session", async (req, res) => {
-  if (!await requireRecentSession(req, res)) return;
+  if (!await requireRecentAdminSession(req, res)) return;
+  if (await getAdminRole(req) !== "owner") {
+    res.status(403).json({ error: "Owner access required" });
+    return;
+  }
   const testCheckoutSecret = process.env.SESSION_SECRET;
   if (!testCheckoutSecret) {
     res.status(503).json({ error: "Crypto test checkout is unavailable because secure session signing is not configured." });
@@ -241052,37 +241500,45 @@ router21.get("/admin/customers/:id/gdpr-export", async (req, res) => {
   }
 });
 router21.delete("/admin/customers/:id/gdpr-erase", async (req, res) => {
-  if (!requireAdmin18(req, res)) return;
+  if (!await requireOwner(req, res)) return;
+  if (!await requireRecentAdminSession(req, res)) return;
   const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) {
     res.status(400).json({ error: "Invalid ID" });
     return;
   }
   try {
-    const [customer2] = await db.select({ id: customersTable.id, email: customersTable.email }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
+    const customer2 = await db.transaction(async (tx) => {
+      const [target] = await tx.select({ id: customersTable.id, email: customersTable.email }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
+      if (!target) return null;
+      const anonymisedEmail = `erased-${customerId}@gdpr.deleted`;
+      const anonymisedName = "Erased User";
+      await tx.update(ordersTable).set({
+        customerEmail: anonymisedEmail,
+        customerName: anonymisedName,
+        phone: null,
+        address1: "ERASED",
+        address2: null,
+        city: "ERASED",
+        county: null,
+        postcode: "ERASED"
+      }).where(eq(ordersTable.customerId, customerId));
+      await Promise.all([
+        tx.delete(wishlistsTable).where(eq(wishlistsTable.customerId, customerId)),
+        tx.delete(loyaltyTransactionsTable).where(eq(loyaltyTransactionsTable.customerId, customerId)),
+        tx.delete(stockAlertsTable).where(eq(stockAlertsTable.customerEmail, target.email)),
+        tx.delete(subscriptionsTable).where(eq(subscriptionsTable.customerId, customerId))
+      ]);
+      await tx.delete(customersTable).where(eq(customersTable.id, customerId));
+      await recordStrictAdminAudit(tx, req, "customer_gdpr_erased", true, {
+        metadata: { targetCustomerId: target.id, targetCustomerEmail: target.email }
+      });
+      return target;
+    });
     if (!customer2) {
       res.status(404).json({ error: "Customer not found" });
       return;
     }
-    const anonymisedEmail = `erased-${customerId}@gdpr.deleted`;
-    const anonymisedName = "Erased User";
-    await db.update(ordersTable).set({
-      customerEmail: anonymisedEmail,
-      customerName: anonymisedName,
-      phone: null,
-      address1: "ERASED",
-      address2: null,
-      city: "ERASED",
-      county: null,
-      postcode: "ERASED"
-    }).where(eq(ordersTable.customerId, customerId));
-    await Promise.all([
-      db.delete(wishlistsTable).where(eq(wishlistsTable.customerId, customerId)),
-      db.delete(loyaltyTransactionsTable).where(eq(loyaltyTransactionsTable.customerId, customerId)),
-      db.delete(stockAlertsTable).where(eq(stockAlertsTable.customerEmail, customer2.email)),
-      db.delete(subscriptionsTable).where(eq(subscriptionsTable.customerId, customerId))
-    ]);
-    await db.delete(customersTable).where(eq(customersTable.id, customerId));
     res.json({
       erased: true,
       customerId,
@@ -249731,10 +250187,12 @@ var publicTraffic_default = router52;
 var import_express54 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router53 = (0, import_express54.Router)();
-router53.get("/admin/security/events", async (req, res) => {
+router53.get(["/admin/security/events", "/admin/audit-history"], async (req, res) => {
   if (!await requireOwner(req, res)) return;
   const requestedLimit = Number.parseInt(firstString(req.query.limit) ?? "100", 10);
   const limit = Number.isFinite(requestedLimit) ? Math.min(250, Math.max(1, requestedLimit)) : 100;
+  const requestedOffset = Number.parseInt(firstString(req.query.offset) ?? "0", 10);
+  const offset = Number.isFinite(requestedOffset) ? Math.max(0, requestedOffset) : 0;
   const eventType = firstString(req.query.eventType)?.trim();
   const successValue = firstString(req.query.success);
   const search = firstString(req.query.search)?.trim();
@@ -249754,12 +250212,14 @@ router53.get("/admin/security/events", async (req, res) => {
   try {
     const where = conditions.length ? and(...conditions) : void 0;
     const [events, totalRows, typeRows] = await Promise.all([
-      db.select().from(adminAuditEventsTable).where(where).orderBy(desc(adminAuditEventsTable.createdAt)).limit(limit),
+      db.select().from(adminAuditEventsTable).where(where).orderBy(desc(adminAuditEventsTable.createdAt)).limit(limit).offset(offset),
       db.select({ count: sql`count(*)::int` }).from(adminAuditEventsTable).where(where),
       db.select({ eventType: adminAuditEventsTable.eventType }).from(adminAuditEventsTable).groupBy(adminAuditEventsTable.eventType).orderBy(adminAuditEventsTable.eventType)
     ]);
     res.json({
       total: totalRows[0]?.count ?? 0,
+      limit,
+      offset,
       eventTypes: typeRows.map((row) => row.eventType),
       events: events.map((event) => ({
         id: event.id,
@@ -250726,6 +251186,7 @@ router55.use(health_default);
 router55.use(publicTraffic_default2);
 router55.use(auth_default);
 router55.use("/admin", enforceSecureAdminSession);
+router55.use("/admin", enforceAdminAuthorization);
 router55.use(dashboard_default);
 router55.use(orders_default);
 router55.use(fulfillment_default);

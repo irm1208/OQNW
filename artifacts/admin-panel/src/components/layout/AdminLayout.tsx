@@ -73,6 +73,7 @@ const navigation: NavItem[] = [
       { href: "/blocked-ips", label: "Blocked IPs" },
       { href: "/public-traffic", label: "Traffic Protection" },
       { href: "/security-activity", label: "Security Activity" },
+      { href: "/audit-history", label: "Audit History" },
     ]
   },
   {

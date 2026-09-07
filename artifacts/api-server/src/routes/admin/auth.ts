@@ -17,6 +17,7 @@ import { createWallidTestCheckoutToken } from "../../lib/wallidTestCheckout";
 import { createCryptoTestCheckoutToken } from "../../lib/cryptoTestCheckout";
 import { getPublicCryptoPaymentOptions } from "../../lib/crypto-payments";
 import { requiredSecret } from "../../lib/securityConfig";
+import type { AdminRole } from "@workspace/db";
 
 const router = Router();
 
@@ -255,7 +256,7 @@ function makeRecoveryCode(): string {
   return randomBytes(5).toString("hex").toUpperCase();
 }
 
-async function recordAudit(
+export async function recordAdminAudit(
   req: Request,
   eventType: string,
   success: boolean,
@@ -275,6 +276,57 @@ async function recordAudit(
   } catch (err) {
     req.log.error({ err, eventType }, "Failed to write admin security audit event");
   }
+}
+
+type AuditTransaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
+type AdminAuditDetails = { metadata?: Record<string, unknown> };
+type AdminAuditActor = { id: number | null; email: string | null };
+
+export function strictAdminAuditValues(
+  req: Request,
+  actor: AdminAuditActor,
+  eventType: string,
+  success: boolean,
+  details: AdminAuditDetails = {},
+) {
+  return {
+    eventType,
+    adminUserId: actor.id,
+    email: actor.email,
+    ip: getClientIp(req),
+    userAgent: req.get("user-agent")?.slice(0, 500) ?? null,
+    requestId: String(req.id),
+    success,
+    metadata: details.metadata ?? null,
+  };
+}
+
+async function auditActor(tx: AuditTransaction, req: Request): Promise<AdminAuditActor> {
+  const session = parseSecureAdminSession(req);
+  if (!session?.email) return { id: null, email: null };
+  const [actor] = await tx
+    .select({ id: adminUsersTable.id, email: adminUsersTable.email })
+    .from(adminUsersTable)
+    .where(eq(adminUsersTable.email, session.email))
+    .limit(1);
+  if (!actor) throw new Error("Authenticated admin actor is no longer available");
+  return actor;
+}
+
+/**
+ * Writes a security-sensitive audit event on the caller's transaction.
+ * Unlike recordAdminAudit, errors intentionally propagate so the protected
+ * mutation and its audit record commit or roll back together.
+ */
+export async function recordStrictAdminAudit(
+  tx: AuditTransaction,
+  req: Request,
+  eventType: string,
+  success: boolean,
+  details: AdminAuditDetails = {},
+): Promise<void> {
+  const actor = await auditActor(tx, req);
+  await tx.insert(adminAuditEventsTable).values(strictAdminAuditValues(req, actor, eventType, success, details));
 }
 
 async function findLockout(ip: string) {
@@ -318,7 +370,7 @@ async function clearFailedAttempts(ip: string): Promise<void> {
 async function respondToFailedLogin(req: Request, res: Response, email: string): Promise<void> {
   const { count, lockedUntil } = await recordFailedAttempt(getClientIp(req));
   const locked = count >= MAX_ATTEMPTS;
-  await recordAudit(req, locked ? "admin_login_lockout" : "admin_login_failed", false, {
+  await recordAdminAudit(req, locked ? "admin_login_lockout" : "admin_login_failed", false, {
     email: email || null,
     metadata: { attempts: count, locked },
   });
@@ -360,7 +412,71 @@ async function currentAdminUser(req: Request) {
   return user && user.isActive && user.sessionVersion === session.sessionVersion ? user : null;
 }
 
-async function requireRecentSession(req: Request, res: Response): Promise<boolean> {
+/**
+ * Resolves the effective role from the signed session, rather than trusting a
+ * client-provided claim. The no-email recovery session is intentionally an
+ * owner session while the shared-owner bootstrap is available.
+ */
+export async function getAdminRole(req: Request): Promise<AdminRole | null> {
+  if (!(await validateSecureAdminSession(req))) return null;
+  const session = parseSecureAdminSession(req);
+  if (!session?.email) return "owner";
+  const [user] = await db
+    .select({ role: adminUsersTable.role })
+    .from(adminUsersTable)
+    .where(eq(adminUsersTable.email, session.email))
+    .limit(1);
+  return user && (user.role === "owner" || user.role === "manager" || user.role === "viewer")
+    ? user.role
+    : null;
+}
+
+const OWNER_ONLY_ADMIN_PATHS = [
+  /^\/users(?:\/|$)/,
+  /^\/settings(?:\/|$)/,
+  /^\/security(?:\/|$)/,
+  /^\/blocked-ips(?:\/|$)/,
+  /^\/public-traffic(?:\/|$)/,
+  /^\/webhooks(?:\/|$)/,
+  /^\/shipping(?:\/|$)/,
+  /^\/tax(?:\/|$)/,
+  /^\/test-payments(?:\/|$)/,
+  /^\/customers\/[^/]+\/gdpr-erase$/,
+];
+
+function isReadOnlyMethod(method: string): boolean {
+  return method === "GET" || method === "HEAD" || method === "OPTIONS";
+}
+
+export function adminRoleAllowsRequest(role: AdminRole, path: string, method: string): boolean {
+  if (role === "owner") return true;
+  if (role === "viewer") return isReadOnlyMethod(method);
+  return !OWNER_ONLY_ADMIN_PATHS.some((ownerOnlyPath) => ownerOnlyPath.test(path));
+}
+
+/**
+ * Global policy for every non-auth /admin route. Route checks can remain as
+ * defense-in-depth, but must not be relied on for role enforcement.
+ */
+export async function enforceAdminAuthorization(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const role = await getAdminRole(req);
+  if (!role) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+  if (!adminRoleAllowsRequest(role, req.path, req.method) && role === "viewer") {
+    res.status(403).json({ error: "Viewer access is read-only" });
+    return;
+  }
+  if (!adminRoleAllowsRequest(role, req.path, req.method)) {
+    res.status(403).json({ error: "Owner access required" });
+    return;
+  }
+  res.locals.adminRole = role;
+  next();
+}
+
+export async function requireRecentAdminSession(req: Request, res: Response): Promise<boolean> {
   if (!(await validateSecureAdminSession(req)) || !isRecentSecureAdminSession(req)) {
     res.status(401).json({ error: "Recent authentication required", requiresRecentAuth: true });
     return false;
@@ -372,7 +488,7 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
   const ip = getClientIp(req);
   const [blocked] = await db.select({ ip: blockedIpsTable.ip }).from(blockedIpsTable).where(eq(blockedIpsTable.ip, ip)).limit(1);
   if (blocked) {
-    await recordAudit(req, "admin_login_blocked_ip", false);
+    await recordAdminAudit(req, "admin_login_blocked_ip", false);
     res.status(403).json({ error: "Access denied." });
     return;
   }
@@ -554,7 +670,7 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
       return;
     }
     user = reactivated;
-    await recordAudit(req, "admin_owner_reactivated", true, {
+    await recordAdminAudit(req, "admin_owner_reactivated", true, {
       adminUserId: user.id,
       email: user.email,
       metadata: { reason: "no_active_admins" },
@@ -568,7 +684,7 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
       tokenHash: hashValue(token),
       expiresAt,
     });
-    await recordAudit(req, "admin_mfa_challenge_issued", true, { adminUserId: user.id, email: user.email });
+    await recordAdminAudit(req, "admin_mfa_challenge_issued", true, { adminUserId: user.id, email: user.email });
     res.status(200).json({ authenticated: false, mfaRequired: true, challengeToken: token });
     return;
   }
@@ -605,7 +721,7 @@ router.post("/admin/auth/login", async (req: Request, res: Response): Promise<vo
   }
 
   await clearFailedAttempts(ip);
-  await recordAudit(req, "admin_bootstrap_login_success", true);
+  await recordAdminAudit(req, "admin_bootstrap_login_success", true);
   res.cookie(SECURE_SESSION_COOKIE, createSecureAdminSessionValue(null, 0), {
     httpOnly: true, maxAge: COOKIE_MAX_AGE, sameSite: "lax", secure: process.env.NODE_ENV === "production",
   });
@@ -633,7 +749,7 @@ router.post("/admin/auth/development-login", async (req: Request, res: Response)
     return;
   }
 
-  await recordAudit(req, "admin_development_login", true, {
+  await recordAdminAudit(req, "admin_development_login", true, {
     adminUserId: owner.id,
     email: owner.email,
   });
@@ -655,7 +771,7 @@ router.post("/admin/auth/logout", async (req: Request, res: Response): Promise<v
       .set({ sessionVersion: sql`${adminUsersTable.sessionVersion} + 1` })
       .where(eq(adminUsersTable.email, session.email));
   }
-  await recordAudit(req, "admin_logout", true, { email: session?.email ?? null });
+  await recordAdminAudit(req, "admin_logout", true, { email: session?.email ?? null });
   res.clearCookie(SESSION_COOKIE);
   res.clearCookie(SECURE_SESSION_COOKIE);
   res.status(204).send();
@@ -671,7 +787,7 @@ router.get("/admin/auth/mfa/status", async (req: Request, res: Response): Promis
 });
 
 router.post("/admin/auth/mfa/setup", async (req: Request, res: Response): Promise<void> => {
-  if (!(await requireRecentSession(req, res))) return;
+  if (!(await requireRecentAdminSession(req, res))) return;
   const user = await currentAdminUser(req);
   if (!user) {
     res.status(403).json({ error: "Only an active admin user can enroll MFA." });
@@ -683,7 +799,7 @@ router.post("/admin/auth/mfa/setup", async (req: Request, res: Response): Promis
   }
   const secret = base32Encode(randomBytes(20));
   await db.update(adminUsersTable).set({ pendingMfaSecretEncrypted: encryptMfaSecret(secret) }).where(eq(adminUsersTable.id, user.id));
-  await recordAudit(req, "admin_mfa_setup_started", true, { adminUserId: user.id, email: user.email });
+  await recordAdminAudit(req, "admin_mfa_setup_started", true, { adminUserId: user.id, email: user.email });
   const label = encodeURIComponent(`OmniQure Admin:${user.email}`);
   res.json({
     secret,
@@ -692,11 +808,11 @@ router.post("/admin/auth/mfa/setup", async (req: Request, res: Response): Promis
 });
 
 router.post("/admin/auth/mfa/enable", async (req: Request, res: Response): Promise<void> => {
-  if (!(await requireRecentSession(req, res))) return;
+  if (!(await requireRecentAdminSession(req, res))) return;
   const user = await currentAdminUser(req);
   const code = typeof req.body?.code === "string" ? req.body.code : "";
   if (!user || !user.pendingMfaSecretEncrypted || !verifyTotp(decryptMfaSecret(user.pendingMfaSecretEncrypted) ?? "", code)) {
-    await recordAudit(req, "admin_mfa_enable_failed", false, { adminUserId: user?.id ?? null, email: user?.email ?? null });
+    await recordAdminAudit(req, "admin_mfa_enable_failed", false, { adminUserId: user?.id ?? null, email: user?.email ?? null });
     res.status(400).json({ error: "The verification code is invalid." });
     return;
   }
@@ -732,7 +848,11 @@ router.post("/admin/auth/mfa/enable", async (req: Request, res: Response): Promi
 });
 
 router.post("/admin/test-payments/session", async (req: Request, res: Response): Promise<void> => {
-  if (!(await requireRecentSession(req, res))) return;
+  if (!(await requireRecentAdminSession(req, res))) return;
+  if ((await getAdminRole(req)) !== "owner") {
+    res.status(403).json({ error: "Owner access required" });
+    return;
+  }
   const testCheckoutSecret = process.env.SESSION_SECRET;
   if (!testCheckoutSecret) {
     res.status(503).json({ error: "Wallid test checkout is unavailable because secure session signing is not configured." });
@@ -743,7 +863,11 @@ router.post("/admin/test-payments/session", async (req: Request, res: Response):
 });
 
 router.post("/admin/test-payments/crypto-session", async (req: Request, res: Response): Promise<void> => {
-  if (!(await requireRecentSession(req, res))) return;
+  if (!(await requireRecentAdminSession(req, res))) return;
+  if ((await getAdminRole(req)) !== "owner") {
+    res.status(403).json({ error: "Owner access required" });
+    return;
+  }
   const testCheckoutSecret = process.env.SESSION_SECRET;
   if (!testCheckoutSecret) {
     res.status(503).json({ error: "Crypto test checkout is unavailable because secure session signing is not configured." });

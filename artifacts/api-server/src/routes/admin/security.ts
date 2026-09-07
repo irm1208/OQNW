@@ -8,11 +8,13 @@ import { requireOwner } from "./users";
 
 const router = Router();
 
-router.get("/admin/security/events", async (req: Request, res: Response): Promise<void> => {
+router.get(["/admin/security/events", "/admin/audit-history"], async (req: Request, res: Response): Promise<void> => {
   if (!(await requireOwner(req, res))) return;
 
   const requestedLimit = Number.parseInt(firstString(req.query.limit) ?? "100", 10);
   const limit = Number.isFinite(requestedLimit) ? Math.min(250, Math.max(1, requestedLimit)) : 100;
+  const requestedOffset = Number.parseInt(firstString(req.query.offset) ?? "0", 10);
+  const offset = Number.isFinite(requestedOffset) ? Math.max(0, requestedOffset) : 0;
   const eventType = firstString(req.query.eventType)?.trim();
   const successValue = firstString(req.query.success);
   const search = firstString(req.query.search)?.trim();
@@ -39,7 +41,8 @@ router.get("/admin/security/events", async (req: Request, res: Response): Promis
         .from(adminAuditEventsTable)
         .where(where)
         .orderBy(desc(adminAuditEventsTable.createdAt))
-        .limit(limit),
+        .limit(limit)
+        .offset(offset),
       db
         .select({ count: sql<number>`count(*)::int` })
         .from(adminAuditEventsTable)
@@ -53,6 +56,8 @@ router.get("/admin/security/events", async (req: Request, res: Response): Promis
 
     res.json({
       total: totalRows[0]?.count ?? 0,
+      limit,
+      offset,
       eventTypes: typeRows.map((row) => row.eventType),
       events: events.map((event) => ({
         id: event.id,

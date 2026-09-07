@@ -20,6 +20,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AdminAuditHistory,
   AdminCryptoTestPaymentSession,
   AdminLoginInput,
   AdminProduct,
@@ -54,6 +55,7 @@ import type {
   GetRevenueChartParams,
   HealthStatus,
   InventoryUpdate,
+  ListAdminAuditHistoryParams,
   ListAdminCustomersParams,
   ListAdminOrdersParams,
   ListAdminProductsParams,
@@ -396,8 +398,7 @@ export function useAdminMe<TData = Awaited<ReturnType<typeof adminMe>>, TError =
 
   return withQueryKey(query, queryOptions.queryKey);
 }
-
-
+// End of generated API client.
 
 
 
@@ -622,6 +623,7 @@ export function useGetAdminDashboard<TData = Awaited<ReturnType<typeof getAdminD
   return withQueryKey(query, queryOptions.queryKey);
 }
 
+export {};
 
 
 
@@ -3486,3 +3488,88 @@ export function useGetPublicProduct<TData = Awaited<ReturnType<typeof getPublicP
 
   return withQueryKey(query, queryOptions.queryKey);
 }
+
+
+
+
+
+
+
+export const getListAdminAuditHistoryUrl = (params?: ListAdminAuditHistoryParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/admin/audit-history?${stringifiedParams}` : `/api/admin/audit-history`
+}
+
+/**
+ * Owner-only, paginated audit history for administrator authentication and account-management activity.
+ * @summary List administrator audit history
+ */
+export const listAdminAuditHistory = async (params?: ListAdminAuditHistoryParams, options?: Parameters<typeof customFetch>[1]): Promise<AdminAuditHistory> => {
+
+  return customFetch<AdminAuditHistory>(getListAdminAuditHistoryUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListAdminAuditHistoryQueryKey = (params?: ListAdminAuditHistoryParams,) => {
+    return [
+    `/api/admin/audit-history`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListAdminAuditHistoryQueryOptions = <TData = Awaited<ReturnType<typeof listAdminAuditHistory>>, TError = ErrorType<ApiError>>(params?: ListAdminAuditHistoryParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listAdminAuditHistory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListAdminAuditHistoryQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listAdminAuditHistory>>> = ({ signal }) => listAdminAuditHistory(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listAdminAuditHistory>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListAdminAuditHistoryQueryResult = NonNullable<Awaited<ReturnType<typeof listAdminAuditHistory>>>
+export type ListAdminAuditHistoryQueryError = ErrorType<ApiError>
+
+
+/**
+ * @summary List administrator audit history
+ */
+
+export function useListAdminAuditHistory<TData = Awaited<ReturnType<typeof listAdminAuditHistory>>, TError = ErrorType<ApiError>>(
+ params?: ListAdminAuditHistoryParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listAdminAuditHistory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListAdminAuditHistoryQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+} // useListAdminAuditHistory

@@ -1,5 +1,5 @@
 import type { QueryKey, UseMutationOptions, UseMutationResult, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
-import type { AdminCryptoTestPaymentSession, AdminLoginInput, AdminProduct, AdminSession, AdminWallidTestPaymentSession, ApiError, CatalogPriceSyncApplyRequest, CatalogPriceSyncApplyResponse, CatalogPriceSyncPreview, CatalogPriceSyncPreviewRequest, CatalogProduct, CatalogProductInput, CatalogProductPatch, CategoryRevenue, CustomerDetail, CustomerList, CustomerSegmentDetail, CustomerSegmentInput, CustomerSegmentList, CustomerSegmentPatch, CustomerSegmentResponse, DashboardStats, DisableCatalogProductsWithoutJanoshikReportResponse, DiscountCode, DiscountCodeInput, DiscountCodePatch, DispatchOrderInput, DispatchOrderResponse, EnableAllPeptideCatalogProductsResponse, GetAdminCustomerSegmentParams, GetNewCustomersChartParams, GetRevenueChartParams, HealthStatus, InventoryUpdate, ListAdminCustomersParams, ListAdminOrdersParams, ListAdminProductsParams, ListCatalogProductsParams, ListPublicProductsParams, NewCustomerDataPoint, NotificationResult, Order, OrderDetail, OrderList, OrderStatusCount, OrderUpdate, PublicOrderTracking, PublicProduct, PublicProductDetail, RevenueDataPoint, TopProduct, TrackPublicOrderParams, VisibilityUpdate } from './api.schemas';
+import type { AdminAuditHistory, AdminCryptoTestPaymentSession, AdminLoginInput, AdminProduct, AdminSession, AdminWallidTestPaymentSession, ApiError, CatalogPriceSyncApplyRequest, CatalogPriceSyncApplyResponse, CatalogPriceSyncPreview, CatalogPriceSyncPreviewRequest, CatalogProduct, CatalogProductInput, CatalogProductPatch, CategoryRevenue, CustomerDetail, CustomerList, CustomerSegmentDetail, CustomerSegmentInput, CustomerSegmentList, CustomerSegmentPatch, CustomerSegmentResponse, DashboardStats, DisableCatalogProductsWithoutJanoshikReportResponse, DiscountCode, DiscountCodeInput, DiscountCodePatch, DispatchOrderInput, DispatchOrderResponse, EnableAllPeptideCatalogProductsResponse, GetAdminCustomerSegmentParams, GetNewCustomersChartParams, GetRevenueChartParams, HealthStatus, InventoryUpdate, ListAdminAuditHistoryParams, ListAdminCustomersParams, ListAdminOrdersParams, ListAdminProductsParams, ListCatalogProductsParams, ListPublicProductsParams, NewCustomerDataPoint, NotificationResult, Order, OrderDetail, OrderList, OrderStatusCount, OrderUpdate, PublicOrderTracking, PublicProduct, PublicProductDetail, RevenueDataPoint, TopProduct, TrackPublicOrderParams, VisibilityUpdate } from './api.schemas';
 import { customFetch } from '../custom-fetch';
 import type { ErrorType, BodyType } from '../custom-fetch';
 type AwaitedInput<T> = PromiseLike<T> | T;
@@ -973,6 +973,30 @@ export type GetPublicProductQueryError = ErrorType<ApiError>;
  */
 export declare function useGetPublicProduct<TData = Awaited<ReturnType<typeof getPublicProduct>>, TError = ErrorType<ApiError>>(slug: string, options?: {
     query?: UseQueryOptions<Awaited<ReturnType<typeof getPublicProduct>>, TError, TData>;
+    request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+};
+export declare const getListAdminAuditHistoryUrl: (params?: ListAdminAuditHistoryParams) => string;
+/**
+ * Owner-only, paginated audit history for administrator authentication and account-management activity.
+ * @summary List administrator audit history
+ */
+export declare const listAdminAuditHistory: (params?: ListAdminAuditHistoryParams, options?: Parameters<typeof customFetch>[1]) => Promise<AdminAuditHistory>;
+export declare const getListAdminAuditHistoryQueryKey: (params?: ListAdminAuditHistoryParams) => readonly ["/api/admin/audit-history", ...ListAdminAuditHistoryParams[]];
+export declare const getListAdminAuditHistoryQueryOptions: <TData = Awaited<ReturnType<typeof listAdminAuditHistory>>, TError = ErrorType<ApiError>>(params?: ListAdminAuditHistoryParams, options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<typeof listAdminAuditHistory>>, TError, TData>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseQueryOptions<Awaited<ReturnType<typeof listAdminAuditHistory>>, TError, TData> & {
+    queryKey: QueryKey;
+};
+export type ListAdminAuditHistoryQueryResult = NonNullable<Awaited<ReturnType<typeof listAdminAuditHistory>>>;
+export type ListAdminAuditHistoryQueryError = ErrorType<ApiError>;
+/**
+ * @summary List administrator audit history
+ */
+export declare function useListAdminAuditHistory<TData = Awaited<ReturnType<typeof listAdminAuditHistory>>, TError = ErrorType<ApiError>>(params?: ListAdminAuditHistoryParams, options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<typeof listAdminAuditHistory>>, TError, TData>;
     request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

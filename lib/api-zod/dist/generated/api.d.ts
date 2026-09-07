@@ -1316,4 +1316,36 @@ export declare const GetPublicProductResponse: zod.ZodObject<{
     seoDescription: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     isFeatured: zod.ZodOptional<zod.ZodBoolean>;
 }, zod.z.core.$strip>;
+/**
+ * Owner-only, paginated audit history for administrator authentication and account-management activity.
+ * @summary List administrator audit history
+ */
+export declare const listAdminAuditHistoryQueryLimitDefault = 100;
+export declare const listAdminAuditHistoryQueryLimitMax = 250;
+export declare const listAdminAuditHistoryQueryOffsetDefault = 0;
+export declare const listAdminAuditHistoryQueryOffsetMin = 0;
+export declare const ListAdminAuditHistoryQueryParams: zod.ZodObject<{
+    limit: zod.ZodDefault<zod.z.ZodCoercedNumber<unknown>>;
+    offset: zod.ZodDefault<zod.z.ZodCoercedNumber<unknown>>;
+    eventType: zod.ZodOptional<zod.z.ZodCoercedString<unknown>>;
+    success: zod.ZodOptional<zod.z.ZodCoercedBoolean<unknown>>;
+    search: zod.ZodOptional<zod.z.ZodCoercedString<unknown>>;
+}, zod.z.core.$strip>;
+export declare const ListAdminAuditHistoryResponse: zod.ZodObject<{
+    total: zod.ZodInt;
+    limit: zod.ZodInt;
+    offset: zod.ZodInt;
+    eventTypes: zod.ZodArray<zod.ZodString>;
+    events: zod.ZodArray<zod.ZodObject<{
+        id: zod.ZodInt;
+        eventType: zod.ZodString;
+        email: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        ip: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        userAgent: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        requestId: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+        success: zod.ZodBoolean;
+        metadata: zod.ZodOptional<zod.ZodNullable<zod.ZodRecord<zod.ZodString, zod.ZodUnknown>>>;
+        createdAt: zod.z.ZodCoercedDate<unknown>;
+    }, zod.z.core.$strip>>;
+}, zod.z.core.$strip>;
 //# sourceMappingURL=api.d.ts.map

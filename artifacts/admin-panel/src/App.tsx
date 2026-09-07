@@ -39,6 +39,7 @@ import Tax from "@/pages/Tax";
 import Webhooks from "@/pages/Webhooks";
 import Credits from "@/pages/Credits";
 import InventoryAudit from "@/pages/InventoryAudit";
+import AuditHistory from "@/pages/AuditHistory";
 
 const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
@@ -232,6 +233,11 @@ function AppRoutes() {
       <Route path="/security-activity">
         <AdminLayout>
           <SecurityActivity />
+        </AdminLayout>
+      </Route>
+      <Route path="/audit-history">
+        <AdminLayout>
+          <AuditHistory />
         </AdminLayout>
       </Route>
       <Route path="/inventory-audit">

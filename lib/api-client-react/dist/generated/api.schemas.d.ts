@@ -45,6 +45,35 @@ export interface AdminCryptoTestPaymentSession {
     amountMinor: 100;
     currency: 'GBP';
 }
+/**
+ * @nullable
+ */
+export type AdminAuditEventMetadata = {
+    [key: string]: unknown;
+} | null;
+export interface AdminAuditEvent {
+    id: number;
+    eventType: string;
+    /** @nullable */
+    email?: string | null;
+    /** @nullable */
+    ip?: string | null;
+    /** @nullable */
+    userAgent?: string | null;
+    /** @nullable */
+    requestId?: string | null;
+    success: boolean;
+    /** @nullable */
+    metadata?: AdminAuditEventMetadata;
+    createdAt: string;
+}
+export interface AdminAuditHistory {
+    total: number;
+    limit: number;
+    offset: number;
+    eventTypes: string[];
+    events: AdminAuditEvent[];
+}
 export interface DashboardStats {
     totalRevenue: number;
     totalOrders: number;
@@ -776,5 +805,19 @@ export type ListPublicProductsParams = {
     category?: string;
     search?: string;
     featured?: boolean;
+};
+export type ListAdminAuditHistoryParams = {
+    /**
+     * @minimum 1
+     * @maximum 250
+     */
+    limit?: number;
+    /**
+     * @minimum 0
+     */
+    offset?: number;
+    eventType?: string;
+    success?: boolean;
+    search?: string;
 };
 //# sourceMappingURL=api.schemas.d.ts.map
