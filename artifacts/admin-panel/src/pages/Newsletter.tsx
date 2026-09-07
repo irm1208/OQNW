@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Mail, Send, RefreshCw, CheckCircle2, XCircle } from "lucide-react";
+import { Mail, Send, RefreshCw, CheckCircle2, XCircle, Pencil, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -30,6 +30,9 @@ export default function Newsletter() {
   const [broadcastOpen, setBroadcastOpen] = useState(false);
   const [subject, setSubject] = useState("");
   const [htmlBody, setHtmlBody] = useState("");
+  const [editingSubscriber, setEditingSubscriber] = useState<Subscriber | null>(null);
+  const [subscriberName, setSubscriberName] = useState("");
+  const [confirmStatus, setConfirmStatus] = useState<Subscriber | null>(null);
 
   const { data, isLoading } = useQuery<SubscribersResponse>({
     queryKey: ["newsletter-subscribers"],
@@ -64,6 +67,29 @@ export default function Newsletter() {
     },
     onSuccess: (r) => toast({ title: `Reorder reminders: ${r.sent} sent`, description: r.message ?? (r.skipped ? `${r.skipped} skipped` : undefined) }),
     onError: () => toast({ title: "Failed to send reminders", variant: "destructive" }),
+  });
+
+  const updateSubscriber = useMutation({
+    mutationFn: async ({ subscriber, changes }: { subscriber: Subscriber; changes: Partial<Pick<Subscriber, "isActive" | "firstName">> }) => {
+      const res = await fetch(api(`admin/newsletter/subscribers/${subscriber.id}`), {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(changes),
+      });
+      if (!res.ok) {
+        const message = await res.json().then((body: { error?: string }) => body.error).catch(() => null);
+        throw new Error(message ?? "Failed to update subscriber");
+      }
+      return res.json() as Promise<Subscriber>;
+    },
+    onSuccess: async (_, variables) => {
+      await queryClient.invalidateQueries({ queryKey: ["newsletter-subscribers"] });
+      toast({ title: variables.changes.isActive === false ? "Subscriber suppressed" : variables.changes.isActive === true ? "Subscriber re-subscribed" : "Subscriber updated" });
+      setEditingSubscriber(null);
+      setConfirmStatus(null);
+    },
+    onError: (error: Error) => toast({ title: error.message, variant: "destructive" }),
   });
 
   const subscribers = data?.subscribers ?? [];
@@ -118,6 +144,7 @@ export default function Newsletter() {
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Source</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Subscribed</th>
+                   <th className="text-right px-4 py-3 font-medium text-muted-foreground">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -132,6 +159,16 @@ export default function Newsletter() {
                         : <span className="flex items-center gap-1.5 text-muted-foreground text-xs"><XCircle className="w-4 h-4" /> Unsubscribed</span>}
                     </td>
                     <td className="px-4 py-3 text-xs text-muted-foreground" data-label="Subscribed">{new Date(s.subscribedAt).toLocaleDateString()}</td>
+                    <td className="px-4 py-3 text-right">
+                      <div className="inline-flex gap-1">
+                        <Button variant="ghost" size="icon" aria-label={`Edit ${s.email}`} onClick={() => { setEditingSubscriber(s); setSubscriberName(s.firstName ?? ""); }}>
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                        <Button variant={s.isActive ? "outline" : "ghost"} size="sm" onClick={() => setConfirmStatus(s)} disabled={updateSubscriber.isPending}>
+                          {s.isActive ? "Suppress" : "Re-subscribe"}
+                        </Button>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -165,6 +202,43 @@ export default function Newsletter() {
             <Button variant="outline" onClick={() => setBroadcastOpen(false)}>Cancel</Button>
             <Button onClick={() => broadcast.mutate()} disabled={broadcast.isPending || !subject.trim() || !htmlBody.trim()}>
               {broadcast.isPending ? "Sending…" : `Send to ${data?.active ?? 0}`}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!editingSubscriber} onOpenChange={(open) => { if (!open) setEditingSubscriber(null); }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader><DialogTitle>Edit subscriber</DialogTitle></DialogHeader>
+          <div className="space-y-3 py-2">
+            <p className="text-sm text-muted-foreground">{editingSubscriber?.email}</p>
+            <div className="space-y-1">
+              <label className="text-sm font-medium" htmlFor="subscriber-first-name">First name</label>
+              <Input id="subscriber-first-name" value={subscriberName} onChange={event => setSubscriberName(event.target.value)} />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditingSubscriber(null)} disabled={updateSubscriber.isPending}>Cancel</Button>
+            <Button disabled={!editingSubscriber || updateSubscriber.isPending} onClick={() => editingSubscriber && updateSubscriber.mutate({ subscriber: editingSubscriber, changes: { firstName: subscriberName } })}>
+              {updateSubscriber.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />} Save
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!confirmStatus} onOpenChange={(open) => { if (!open) setConfirmStatus(null); }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader><DialogTitle>{confirmStatus?.isActive ? "Suppress subscriber?" : "Re-subscribe recipient?"}</DialogTitle></DialogHeader>
+          <p className="py-2 text-sm text-muted-foreground">
+            {confirmStatus?.isActive
+              ? <>This records an unsubscribe for <strong>{confirmStatus.email}</strong> and immediately excludes them from broadcasts. The consent record is retained and is not deleted.</>
+              : <>This restores newsletter consent for <strong>{confirmStatus?.email}</strong>. Only continue if consent has been confirmed.</>}
+          </p>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setConfirmStatus(null)} disabled={updateSubscriber.isPending}>Cancel</Button>
+            <Button variant={confirmStatus?.isActive ? "destructive" : "default"} disabled={!confirmStatus || updateSubscriber.isPending} onClick={() => confirmStatus && updateSubscriber.mutate({ subscriber: confirmStatus, changes: { isActive: !confirmStatus.isActive } })}>
+              {updateSubscriber.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              {confirmStatus?.isActive ? "Suppress" : "Confirm consent"}
             </Button>
           </DialogFooter>
         </DialogContent>

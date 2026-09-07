@@ -32,6 +32,7 @@ const STATUS_OPTIONS = [
   { value: "approved", label: "Approved" },
   { value: "refunded", label: "Refunded — confirm from order", disabled: true },
   { value: "rejected", label: "Rejected" },
+  { value: "cancelled", label: "Cancelled" },
 ];
 
 function getStatusColor(status: string) {
@@ -40,6 +41,7 @@ function getStatusColor(status: string) {
     case "approved": return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400";
     case "requested": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400";
     case "rejected": return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400";
+    case "cancelled": return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300";
     default: return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300";
   }
 }
@@ -85,6 +87,10 @@ export default function Returns() {
 
   async function handleSave() {
     if (!editing) return;
+    if (editStatus === "cancelled" && editing.status !== "cancelled" &&
+      !window.confirm("Cancel this return? Its request and refund history will be retained.")) {
+      return;
+    }
     setSaving(true);
     try {
       await apiFetch(`/api/admin/returns/${editing.id}`, {

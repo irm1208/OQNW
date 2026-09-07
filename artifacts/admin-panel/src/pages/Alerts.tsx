@@ -73,6 +73,9 @@ export default function Alerts() {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold tracking-tight">Alerts</h2>
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+        Read-only alerts: these are system-derived operational history and cannot be edited or deleted.
+      </div>
 
       {isLoading && (
         <div className="flex h-40 items-center justify-center">

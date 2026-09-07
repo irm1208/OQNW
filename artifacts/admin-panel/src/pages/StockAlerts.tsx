@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Bell, BellRing, CheckCircle2, Clock, Package, Send } from "lucide-react";
+import { Bell, BellRing, CheckCircle2, Clock, Package, Send, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
@@ -75,6 +75,23 @@ export default function StockAlerts() {
       toast({ title: "Error", description: "Failed to send notifications.", variant: "destructive" });
     },
   });
+  const dismiss = useMutation({
+    mutationFn: async (productId: number) => {
+      const response = await fetch(api(`admin/stock-alerts/dismiss/${productId}`), { method: "POST", credentials: "include" });
+      if (!response.ok) throw new Error("Failed");
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["stock-alerts"] });
+      toast({ title: "Waitlist dismissed", description: "Subscriber records were retained and will not receive an email." });
+    },
+    onError: () => toast({ title: "Error", description: "Failed to dismiss waitlist.", variant: "destructive" }),
+  });
+
+  function dismissWaitlist(product: ProductRow) {
+    if (window.confirm(`Dismiss ${product.pendingCount} pending alert${product.pendingCount === 1 ? "" : "s"} for ${product.productName}? Records will be retained.`)) {
+      dismiss.mutate(product.productId);
+    }
+  }
 
   const stats = data?.stats;
   const products = data?.products ?? [];
@@ -190,15 +207,15 @@ export default function StockAlerts() {
                           </div>
                         </td>
                         <td className="px-4 py-3 text-right" data-label="Action">
-                          <Button
-                            size="sm"
-                            onClick={() => notify.mutate(product.productId)}
-                            disabled={notifying === product.productId}
-                            className="gap-1.5"
-                          >
-                            <Send className="w-3.5 h-3.5" />
-                            {notifying === product.productId ? "Sending…" : `Notify ${product.pendingCount}`}
-                          </Button>
+                          <div className="flex justify-end gap-2">
+                            <Button size="sm" onClick={() => notify.mutate(product.productId)} disabled={notifying === product.productId} className="gap-1.5">
+                              <Send className="w-3.5 h-3.5" />
+                              {notifying === product.productId ? "Sending…" : `Notify ${product.pendingCount}`}
+                            </Button>
+                            <Button size="sm" variant="ghost" data-testid={`button-dismiss-stock-alerts-${product.productId}`} onClick={() => dismissWaitlist(product)} disabled={dismiss.isPending}>
+                              <XCircle className="w-3.5 h-3.5 mr-1" /> Dismiss
+                            </Button>
+                          </div>
                         </td>
                       </tr>
                     ))}

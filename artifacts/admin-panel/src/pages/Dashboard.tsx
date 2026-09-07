@@ -238,6 +238,9 @@ export default function Dashboard() {
           <PeriodSelector value={period} onChange={setPeriod} />
         </div>
       </div>
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+        Read-only metrics: these values are system-derived operational history and cannot be edited or deleted.
+      </div>
 
       {/* Stat Cards */}
       <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-6">

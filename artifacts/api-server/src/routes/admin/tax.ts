@@ -105,11 +105,11 @@ router.delete("/admin/tax-rates/:id", async (req: Request, res: Response): Promi
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   try {
-    const [deleted] = await db.delete(taxRatesTable).where(eq(taxRatesTable.id, id)).returning();
-    if (!deleted) { res.status(404).json({ error: "Tax rate not found" }); return; }
-    res.status(204).send();
+    const [archived] = await db.update(taxRatesTable).set({ isActive: false }).where(eq(taxRatesTable.id, id)).returning();
+    if (!archived) { res.status(404).json({ error: "Tax rate not found" }); return; }
+    res.json(rateToResponse(archived));
   } catch (err) {
-    req.log.error({ err }, "Failed to delete tax rate");
+    req.log.error({ err }, "Failed to archive tax rate");
     res.status(500).json({ error: "Internal server error" });
   }
 });

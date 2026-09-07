@@ -81,6 +81,9 @@ export default function Reports() {
           <Button onClick={() => setApplied({ from, to })}>Apply</Button>
         </div>
       </div>
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+        Read-only report metrics: analytics are derived from recorded activity and cannot be edited or deleted.
+      </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
         <div className="rounded-xl border bg-card p-5">

@@ -180,6 +180,9 @@ export default function Fraud() {
         <ShieldAlert className="w-6 h-6 text-red-500" />
         <h2 className="text-2xl font-bold tracking-tight">Fraud Queue</h2>
       </div>
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+        Fraud signals and order records are immutable and cannot be edited or deleted. Review decisions are recorded separately for audit.
+      </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, ShoppingCart, Mail, MailCheck, ChevronDown, ChevronRight } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { Loader2, ShoppingCart, Mail, MailCheck, ChevronDown, ChevronRight, Archive } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
 import { useAlertIds } from "@/hooks/useAlerts";
 import { AdminNotificationBadge } from "@/components/AdminNotificationBadge";
 
@@ -45,6 +46,7 @@ interface ApiResponse { carts: AbandonedCart[]; stats: Stats; }
 export default function AbandonedCarts() {
   const notifiedCartIds = useAlertIds("cart");
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
+  const queryClient = useQueryClient();
 
   const { data, isLoading, error } = useQuery<ApiResponse>({
     queryKey: ["admin-abandoned-carts"],
@@ -60,6 +62,17 @@ export default function AbandonedCarts() {
       return next;
     });
   };
+  const archive = useMutation({
+    mutationFn: async (id: number) => {
+      const response = await fetch(api(`/admin/abandoned-carts/${id}/archive`), { method: "POST", credentials: "include" });
+      if (!response.ok) throw new Error("Failed to archive cart");
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin-abandoned-carts"] }),
+  });
+
+  function archiveCart(id: number) {
+    if (window.confirm("Archive this abandoned cart? Its recovery and customer history will be retained.")) archive.mutate(id);
+  }
 
   if (isLoading) {
     return (
@@ -113,6 +126,7 @@ export default function AbandonedCarts() {
                 <TableHead>Value</TableHead>
                 <TableHead>Last Seen</TableHead>
                 <TableHead>Email</TableHead>
+                <TableHead className="text-right">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -149,10 +163,21 @@ export default function AbandonedCarts() {
                         </Badge>
                       )}
                     </TableCell>
+                    <TableCell className="text-right" data-label="Action" onClick={(event) => event.stopPropagation()}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        data-testid={`button-archive-cart-${cart.id}`}
+                        disabled={archive.isPending}
+                        onClick={() => archiveCart(cart.id)}
+                      >
+                        <Archive className="w-3.5 h-3.5 mr-1" /> Archive
+                      </Button>
+                    </TableCell>
                   </TableRow>
                   {expanded.has(cart.id) && (
                     <TableRow key={`${cart.id}-detail`} className="bg-muted/30 hover:bg-muted/30">
-                      <TableCell colSpan={6} className="pb-4" data-label="Cart details">
+                       <TableCell colSpan={7} className="pb-4" data-label="Cart details">
                         <table className="w-full text-sm">
                           <thead>
                             <tr className="text-xs text-muted-foreground">

@@ -34,6 +34,7 @@ const coreNavGroups: NavGroup[] = [
     items: [
       { href: "/fulfillment", label: "Fulfilment", icon: ClipboardList },
       { href: "/returns", label: "Returns", icon: RotateCcw },
+      { href: "/inventory-audit", label: "Inventory Audit", icon: ClipboardList },
       { href: "/affiliates", label: "Affiliates", icon: Network },
       { href: "/discounts", label: "Discounts", icon: Tags },
     ],
@@ -43,6 +44,8 @@ const coreNavGroups: NavGroup[] = [
     items: [
       { href: "/settings", label: "Store Settings", icon: Settings },
       { href: "/users", label: "Admin Users", icon: UserCog },
+      { href: "/tax", label: "Tax Rates", icon: Receipt },
+      { href: "/webhooks", label: "Webhooks", icon: Send },
     ],
   },
 ];
@@ -63,6 +66,7 @@ const advancedNavGroups: NavGroup[] = [
     items: [
       { href: "/reviews",       label: "Reviews",       icon: Star },
       { href: "/loyalty",       label: "Loyalty",       icon: Gift },
+      { href: "/credits",       label: "Credits",       icon: WalletCards },
       { href: "/referrals", label: "Referrals", icon: Share2 },
     ],
   },

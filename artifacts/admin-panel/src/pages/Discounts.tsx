@@ -3,8 +3,7 @@ import {
   useListAdminDiscounts, 
   getListAdminDiscountsQueryKey,
   useCreateAdminDiscount,
-  useUpdateAdminDiscount,
-  useDeleteAdminDiscount
+  useUpdateAdminDiscount
 } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -18,7 +17,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Plus, Trash2, Edit2 } from "lucide-react";
+import { Loader2, Plus, Archive, Edit2 } from "lucide-react";
 import { toast } from "sonner";
 import type { DiscountCode } from "@workspace/api-client-react";
 
@@ -41,7 +40,6 @@ export default function Discounts() {
 
   const createDiscount = useCreateAdminDiscount();
   const updateDiscount = useUpdateAdminDiscount();
-  const deleteDiscount = useDeleteAdminDiscount();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -101,6 +99,7 @@ export default function Discounts() {
   };
 
   const handleToggleActive = (discount: DiscountCode, isActive: boolean) => {
+    if (!isActive && !confirm(`Deactivate ${discount.code}? It will no longer be available at checkout.`)) return;
     updateDiscount.mutate({ id: discount.id, data: { isActive } }, {
       onSuccess: () => {
         toast.success(`Discount ${discount.code} ${isActive ? 'activated' : 'deactivated'}`);
@@ -110,15 +109,14 @@ export default function Discounts() {
     });
   };
 
-  const handleDelete = (id: number) => {
-    if (!confirm("Are you sure you want to delete this discount code?")) return;
-    
-    deleteDiscount.mutate({ id }, {
+  const handleArchive = (discount: DiscountCode) => {
+    if (!confirm(`Archive ${discount.code}? It will be deactivated and retained for historical orders.`)) return;
+    updateDiscount.mutate({ id: discount.id, data: { isActive: false } }, {
       onSuccess: () => {
-        toast.success("Discount deleted");
+        toast.success("Discount archived");
         queryClient.invalidateQueries({ queryKey: getListAdminDiscountsQueryKey() });
       },
-      onError: () => toast.error("Failed to delete discount")
+      onError: () => toast.error("Failed to archive discount")
     });
   };
 
@@ -187,8 +185,8 @@ export default function Discounts() {
                       <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => openEditDialog(discount)}>
                         <Edit2 className="w-4 h-4" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive opacity-70 hover:opacity-100" onClick={() => handleDelete(discount.id)}>
-                        <Trash2 className="w-4 h-4" />
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" aria-label={`Archive ${discount.code}`} title="Archive (deactivate)" disabled={!discount.isActive || updateDiscount.isPending} onClick={() => handleArchive(discount)}>
+                        <Archive className="w-4 h-4" />
                       </Button>
                     </div>
                   </TableCell>

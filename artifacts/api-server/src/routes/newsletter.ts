@@ -120,6 +120,50 @@ router.get("/admin/newsletter/subscribers", async (req: Request, res: Response):
   }
 });
 
+// Consent is retained as an unsubscribe timestamp; subscribers are never
+// hard-deleted by this admin surface so suppression history remains intact.
+router.patch("/admin/newsletter/subscribers/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!isAdmin(req, res)) return;
+  const id = Number(req.params.id);
+  const body = req.body as { isActive?: unknown; firstName?: unknown };
+  if (!Number.isInteger(id) || id < 1 || !body || typeof body !== "object") {
+    res.status(400).json({ error: "Invalid request" });
+    return;
+  }
+  if (body.isActive !== undefined && typeof body.isActive !== "boolean") {
+    res.status(400).json({ error: "isActive must be a boolean" });
+    return;
+  }
+  if (body.firstName !== undefined && (typeof body.firstName !== "string" || body.firstName.length > 100)) {
+    res.status(400).json({ error: "firstName must be a string of 100 characters or fewer" });
+    return;
+  }
+  if (body.isActive === undefined && body.firstName === undefined) {
+    res.status(400).json({ error: "No subscriber changes supplied" });
+    return;
+  }
+  try {
+    const updates: Partial<typeof newsletterSubscribersTable.$inferInsert> = {};
+    if (body.firstName !== undefined) updates.firstName = body.firstName.trim() || null;
+    if (body.isActive !== undefined) {
+      updates.isActive = body.isActive;
+      updates.unsubscribedAt = body.isActive ? null : new Date();
+    }
+    const [updated] = await db.update(newsletterSubscribersTable).set(updates)
+      .where(eq(newsletterSubscribersTable.id, id)).returning();
+    if (!updated) { res.status(404).json({ error: "Subscriber not found" }); return; }
+    res.json({
+      id: updated.id, email: updated.email, firstName: updated.firstName,
+      isActive: updated.isActive, source: updated.source,
+      subscribedAt: updated.subscribedAt.toISOString(),
+      unsubscribedAt: updated.unsubscribedAt?.toISOString() ?? null,
+    });
+  } catch (err) {
+    logger.error({ err }, "Failed to update newsletter subscriber");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // POST /admin/newsletter/broadcast
 router.post("/admin/newsletter/broadcast", async (req: Request, res: Response): Promise<void> => {
   if (!isAdmin(req, res)) return;

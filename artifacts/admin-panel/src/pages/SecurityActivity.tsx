@@ -77,6 +77,9 @@ export default function SecurityActivity() {
           Owner-only record of administrator sign-ins, lockouts, MFA activity, and session changes.
         </p>
       </div>
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+        This is an immutable security audit record. Events cannot be edited or deleted.
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-xl border bg-card p-5">

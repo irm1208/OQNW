@@ -33,6 +33,10 @@ import CryptoPayments from "@/pages/CryptoPayments";
 import SecurityActivity from "@/pages/SecurityActivity";
 import Referrals from "@/pages/Referrals";
 import Affiliates from "@/pages/Affiliates";
+import Tax from "@/pages/Tax";
+import Webhooks from "@/pages/Webhooks";
+import Credits from "@/pages/Credits";
+import InventoryAudit from "@/pages/InventoryAudit";
 
 const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
@@ -148,6 +152,11 @@ function AppRoutes() {
           <Loyalty />
         </AdminLayout>
       </Route>
+      <Route path="/credits">
+        <AdminLayout>
+          <Credits />
+        </AdminLayout>
+      </Route>
       <Route path="/stock-alerts">
         <AdminLayout>
           <StockAlerts />
@@ -156,6 +165,16 @@ function AppRoutes() {
       <Route path="/shipping">
         <AdminLayout>
           <Shipping />
+        </AdminLayout>
+      </Route>
+      <Route path="/tax">
+        <AdminLayout>
+          <Tax />
+        </AdminLayout>
+      </Route>
+      <Route path="/webhooks">
+        <AdminLayout>
+          <Webhooks />
         </AdminLayout>
       </Route>
       <Route path="/refunds">
@@ -201,6 +220,11 @@ function AppRoutes() {
       <Route path="/security-activity">
         <AdminLayout>
           <SecurityActivity />
+        </AdminLayout>
+      </Route>
+      <Route path="/inventory-audit">
+        <AdminLayout>
+          <InventoryAudit />
         </AdminLayout>
       </Route>
       <Route path="/">

@@ -34703,10 +34703,10 @@ var init_subquery = __esm({
     init_entity();
     Subquery = class {
       static [entityKind] = "Subquery";
-      constructor(sql5, fields, alias, isWith = false, usedTables = []) {
+      constructor(sql4, fields, alias, isWith = false, usedTables = []) {
         this._ = {
           brand: "Subquery",
-          sql: sql5,
+          sql: sql4,
           selectedFields: fields,
           alias,
           isWith,
@@ -213763,10 +213763,10 @@ var PgRelationalQuery = class extends QueryPromise {
 init_entity();
 init_query_promise();
 var PgRaw = class extends QueryPromise {
-  constructor(execute, sql5, query, mapBatchResult) {
+  constructor(execute, sql4, query, mapBatchResult) {
     super();
     this.execute = execute;
-    this.sql = sql5;
+    this.sql = sql4;
     this.query = query;
     this.mapBatchResult = mapBatchResult;
   }
@@ -214091,8 +214091,8 @@ var NoopCache = class extends Cache {
   async onMutate(_params) {
   }
 };
-async function hashQuery(sql5, params) {
-  const dataToHash = `${sql5}-${JSON.stringify(params)}`;
+async function hashQuery(sql4, params) {
+  const dataToHash = `${sql4}-${JSON.stringify(params)}`;
   const encoder = new TextEncoder();
   const data = encoder.encode(dataToHash);
   const hashBuffer = await crypto.subtle.digest("SHA-256", data);
@@ -226360,7 +226360,8 @@ var abandonedCartsTable = pgTable("abandoned_carts", {
   itemsJson: text("items_json").notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   emailSentAt: timestamp("email_sent_at", { withTimezone: true }),
-  convertedAt: timestamp("converted_at", { withTimezone: true })
+  convertedAt: timestamp("converted_at", { withTimezone: true }),
+  archivedAt: timestamp("archived_at", { withTimezone: true })
 });
 
 // ../../lib/db/src/schema/stock_alerts.ts
@@ -226371,7 +226372,8 @@ var stockAlertsTable = pgTable("stock_alerts", {
   customerEmail: text("customer_email").notNull(),
   customerName: text("customer_name"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  notifiedAt: timestamp("notified_at", { withTimezone: true })
+  notifiedAt: timestamp("notified_at", { withTimezone: true }),
+  dismissedAt: timestamp("dismissed_at", { withTimezone: true })
 });
 
 // ../../lib/db/src/schema/subscriptions.ts
@@ -227062,42 +227064,8 @@ router2.delete("/admin/users/:id", async (req, res) => {
     res.status(400).json({ error: "Invalid ID" });
     return;
   }
-  try {
-    const deleted = await db.transaction(async (tx) => protectLastActiveOwner(
-      async () => {
-        await tx.execute(sql`SELECT pg_advisory_xact_lock(${OWNER_MUTATION_LOCK_KEY})`);
-      },
-      async () => {
-        const [target] = await tx.select({ role: adminUsersTable.role, isActive: adminUsersTable.isActive }).from(adminUsersTable).where(eq(adminUsersTable.id, id)).limit(1);
-        return target ?? null;
-      },
-      async () => {
-        const [otherOwner] = await tx.select({ id: adminUsersTable.id }).from(adminUsersTable).where(and(
-          eq(adminUsersTable.role, "owner"),
-          eq(adminUsersTable.isActive, true),
-          ne(adminUsersTable.id, id)
-        )).limit(1);
-        return Boolean(otherOwner);
-      },
-      () => true,
-      async () => {
-        const [result] = await tx.delete(adminUsersTable).where(eq(adminUsersTable.id, id)).returning();
-        return result;
-      }
-    ));
-    if (!deleted) {
-      res.status(404).json({ error: "Admin user not found" });
-      return;
-    }
-    res.status(204).send();
-  } catch (err) {
-    if (err instanceof LastActiveOwnerError) {
-      res.status(409).json({ error: err.message });
-      return;
-    }
-    req.log.error({ err }, "Failed to delete admin user");
-    res.status(500).json({ error: "Internal server error" });
-  }
+  res.status(405).json({ error: "Admin users are retained for audit history; deactivate the account instead" });
+  return;
 });
 var users_default = router2;
 
@@ -234487,9 +234455,17 @@ function validateDispatchDetails(input) {
 }
 function isAllowedAdminStatusTransition(current, next) {
   if (current === next) return true;
-  if (current === "shipped") return next === "delivered";
-  if (current === "delivered") return false;
-  return next !== "shipped" && next !== "delivered";
+  const transitions = {
+    pending: ["awaiting_payment", "payment_received", "cancelled"],
+    awaiting_payment: ["payment_received", "cancelled"],
+    paid: ["processing", "cancelled"],
+    payment_received: ["processing", "cancelled"],
+    processing: ["cancelled"],
+    shipped: ["delivered"],
+    delivered: [],
+    cancelled: []
+  };
+  return transitions[current]?.includes(next) ?? false;
 }
 
 // src/routes/admin/orders.ts
@@ -234614,6 +234590,15 @@ router5.post("/admin/orders/bulk-update", async (req, res) => {
     return;
   }
   try {
+    const selected = await db.select({ id: ordersTable.id, status: ordersTable.status }).from(ordersTable).where(inArray(ordersTable.id, ids));
+    if (selected.length !== new Set(ids).size) {
+      res.status(404).json({ error: "One or more orders were not found" });
+      return;
+    }
+    if (selected.some((order) => !isAllowedAdminStatusTransition(order.status, status))) {
+      res.status(409).json({ error: "One or more orders cannot make this status transition" });
+      return;
+    }
     const updated = await db.update(ordersTable).set({ status, updatedAt: /* @__PURE__ */ new Date() }).where(and(
       inArray(ordersTable.id, ids),
       notInArray(ordersTable.status, [...DISPATCHED_ORDER_STATUSES])
@@ -235533,6 +235518,57 @@ router7.get("/admin/customers/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+router7.patch("/admin/customers/:id", async (req, res) => {
+  if (!requireAdmin4(req, res)) return;
+  const parsed = GetAdminCustomerParams.safeParse({ id: Number(req.params.id) });
+  if (!parsed.success) {
+    res.status(400).json({ error: "Invalid customer ID" });
+    return;
+  }
+  const body = req.body;
+  const allowed = ["firstName", "lastName", "email", "phone", "address1", "address2", "city", "county", "postcode", "country"];
+  if (!body || typeof body !== "object" || Array.isArray(body) || Object.keys(body).some((key) => !allowed.includes(key))) {
+    res.status(400).json({ error: "Only profile and contact fields can be updated" });
+    return;
+  }
+  const updates = {};
+  for (const key of allowed) {
+    if (body[key] === void 0) continue;
+    if (typeof body[key] !== "string") {
+      res.status(400).json({ error: `${key} must be a string` });
+      return;
+    }
+    const value = body[key].trim();
+    if ((key === "firstName" || key === "lastName" || key === "email") && !value) {
+      res.status(400).json({ error: `${key} cannot be blank` });
+      return;
+    }
+    if (key === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      res.status(400).json({ error: "email must be valid" });
+      return;
+    }
+    updates[key] = ["phone", "address1", "address2", "city", "county", "postcode", "country"].includes(key) ? value || null : key === "email" ? value.toLowerCase() : value;
+  }
+  if (Object.keys(updates).length === 0) {
+    res.status(400).json({ error: "No profile changes supplied" });
+    return;
+  }
+  try {
+    const [updated] = await db.update(customersTable).set(updates).where(eq(customersTable.id, parsed.data.id)).returning();
+    if (!updated) {
+      res.status(404).json({ error: "Customer not found" });
+      return;
+    }
+    res.json(customerToResponse(updated));
+  } catch (err) {
+    if (err.code === "23505") {
+      res.status(409).json({ error: "That email address is already in use" });
+      return;
+    }
+    req.log.error({ err }, "Failed to update customer profile");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 var customers_default = router7;
 
 // src/routes/admin/products.ts
@@ -235605,13 +235641,13 @@ router8.get("/admin/stock-alerts", async (req, res) => {
         };
       }
       byProduct[row.productId].totalCount++;
-      if (!row.notifiedAt) byProduct[row.productId].pendingCount++;
+      if (!row.notifiedAt && !row.dismissedAt) byProduct[row.productId].pendingCount++;
       const rowDate = row.createdAt?.toISOString() ?? null;
       if (rowDate && (!byProduct[row.productId].lastSignupAt || rowDate > byProduct[row.productId].lastSignupAt)) {
         byProduct[row.productId].lastSignupAt = rowDate;
       }
     }
-    const totalPending = all.filter((r) => !r.notifiedAt).length;
+    const totalPending = all.filter((r) => !r.notifiedAt && !r.dismissedAt).length;
     const totalNotified = all.filter((r) => !!r.notifiedAt).length;
     res.json({
       stats: { totalPending, totalNotified, productsWithWaitlist: Object.values(byProduct).filter((p) => p.pendingCount > 0).length },
@@ -235630,7 +235666,7 @@ router8.post("/admin/stock-alerts/notify/:productId", async (req, res) => {
     return;
   }
   try {
-    const pending = await db.select().from(stockAlertsTable).where(and(eq(stockAlertsTable.productId, productId), isNull(stockAlertsTable.notifiedAt)));
+    const pending = await db.select().from(stockAlertsTable).where(and(eq(stockAlertsTable.productId, productId), isNull(stockAlertsTable.notifiedAt), isNull(stockAlertsTable.dismissedAt)));
     if (pending.length === 0) {
       res.json({ sent: 0 });
       return;
@@ -235650,6 +235686,40 @@ router8.post("/admin/stock-alerts/notify/:productId", async (req, res) => {
     res.json({ sent });
   } catch (err) {
     req.log.error({ err }, "Failed to send stock alerts");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+router8.post("/admin/stock-alerts/:id/dismiss", async (req, res) => {
+  if (!requireAdmin5(req, res)) return;
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid alert ID" });
+    return;
+  }
+  try {
+    const [dismissed] = await db.update(stockAlertsTable).set({ dismissedAt: /* @__PURE__ */ new Date() }).where(and(eq(stockAlertsTable.id, id), isNull(stockAlertsTable.notifiedAt), isNull(stockAlertsTable.dismissedAt))).returning({ id: stockAlertsTable.id });
+    if (!dismissed) {
+      res.status(409).json({ error: "Only pending alerts can be dismissed" });
+      return;
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to dismiss stock alert");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+router8.post("/admin/stock-alerts/dismiss/:productId", async (req, res) => {
+  if (!requireAdmin5(req, res)) return;
+  const productId = parseInt(req.params.productId, 10);
+  if (isNaN(productId)) {
+    res.status(400).json({ error: "Invalid product ID" });
+    return;
+  }
+  try {
+    const dismissed = await db.update(stockAlertsTable).set({ dismissedAt: /* @__PURE__ */ new Date() }).where(and(eq(stockAlertsTable.productId, productId), isNull(stockAlertsTable.notifiedAt), isNull(stockAlertsTable.dismissedAt))).returning({ id: stockAlertsTable.id });
+    res.json({ dismissed: dismissed.length });
+  } catch (err) {
+    req.log.error({ err }, "Failed to dismiss stock alerts");
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -235845,20 +235915,22 @@ router10.post("/admin/discounts", async (req, res) => {
 });
 router10.patch("/admin/discounts/:id", async (req, res) => {
   if (!requireAdmin7(req, res)) return;
-  const paramsParsed = UpdateAdminDiscountParams.safeParse({ id: Number(req.params.id) });
-  const bodyParsed = UpdateAdminDiscountBody.safeParse(req.body);
-  if (!paramsParsed.success || !bodyParsed.success) {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id < 1) {
     res.status(400).json({ error: "Invalid request" });
     return;
   }
   try {
     const updates = {};
-    const { isActive, usageLimit, expiresAt, minSpend } = bodyParsed.data;
+    const { code, type, value, isActive, usageLimit, expiresAt, minSpend } = req.body;
+    if (code !== void 0) updates.code = code.toUpperCase();
+    if (type !== void 0) updates.type = type;
+    if (value !== void 0) updates.value = String(value);
     if (isActive !== void 0) updates.isActive = isActive;
     if (usageLimit !== void 0) updates.usageLimit = usageLimit;
     if (expiresAt !== void 0) updates.expiresAt = new Date(expiresAt);
     if (minSpend !== void 0) updates.minSpend = String(minSpend);
-    const [updated] = await db.update(discountCodesTable).set(updates).where(eq(discountCodesTable.id, paramsParsed.data.id)).returning();
+    const [updated] = await db.update(discountCodesTable).set(updates).where(eq(discountCodesTable.id, id)).returning();
     if (!updated) {
       res.status(404).json({ error: "Discount not found" });
       return;
@@ -235877,14 +235949,14 @@ router10.delete("/admin/discounts/:id", async (req, res) => {
     return;
   }
   try {
-    const [deleted] = await db.delete(discountCodesTable).where(eq(discountCodesTable.id, parsed.data.id)).returning();
-    if (!deleted) {
+    const [archived] = await db.update(discountCodesTable).set({ isActive: false }).where(eq(discountCodesTable.id, parsed.data.id)).returning();
+    if (!archived) {
       res.status(404).json({ error: "Discount not found" });
       return;
     }
-    res.status(204).send();
+    res.status(200).json(discountToResponse(archived));
   } catch (err) {
-    req.log.error({ err }, "Failed to delete discount");
+    req.log.error({ err }, "Failed to archive discount");
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -237002,19 +237074,21 @@ router11.delete("/admin/catalog/:id", async (req, res) => {
     return;
   }
   try {
-    const [existing] = await db.select({ slug: productsCatalogTable.slug }).from(productsCatalogTable).where(eq(productsCatalogTable.id, id));
+    const [existing] = await db.select().from(productsCatalogTable).where(eq(productsCatalogTable.id, id));
     if (!existing || isRetiredProductSlug(existing.slug)) {
       res.status(404).json({ error: "Product not found" });
       return;
     }
-    const [deleted] = await db.delete(productsCatalogTable).where(eq(productsCatalogTable.id, id)).returning({ id: productsCatalogTable.id });
-    if (!deleted) {
+    const [retired] = await db.update(productsCatalogTable).set({ isPublished: false, isFeatured: false }).where(eq(productsCatalogTable.id, id)).returning();
+    if (!retired) {
       res.status(404).json({ error: "Product not found" });
       return;
     }
-    res.status(204).send();
+    await syncInventoryProduct(retired);
+    await db.update(productsInventoryTable).set({ isPublished: false }).where(eq(productsInventoryTable.productId, retired.id));
+    res.status(200).json(catalogToResponse(retired));
   } catch (err) {
-    req.log.error({ err }, "Failed to delete catalog product");
+    req.log.error({ err }, "Failed to retire catalog product");
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -237112,7 +237186,14 @@ function requireAdmin9(req, res) {
   }
   return true;
 }
-var VALID_RETURN_STATUSES = ["requested", "approved", "refunded", "rejected"];
+var VALID_RETURN_STATUSES = ["requested", "approved", "refunded", "rejected", "cancelled"];
+var RETURN_TRANSITIONS = {
+  requested: ["approved", "rejected", "cancelled"],
+  approved: ["rejected", "cancelled"],
+  rejected: [],
+  cancelled: [],
+  refunded: []
+};
 function returnToResponse(r) {
   return {
     id: r.id,
@@ -237226,6 +237307,10 @@ router12.patch("/admin/returns/:id", async (req, res) => {
       res.status(409).json({
         error: "Confirm the refund from the order's Refunds section after processing it in Wallid"
       });
+      return;
+    }
+    if (status !== void 0 && status !== existing.status && !RETURN_TRANSITIONS[existing.status]?.includes(status)) {
+      res.status(409).json({ error: `Return status cannot move from ${existing.status} to ${status}` });
       return;
     }
     const updates = { updatedAt: /* @__PURE__ */ new Date() };
@@ -237345,14 +237430,14 @@ router13.delete("/admin/tax-rates/:id", async (req, res) => {
     return;
   }
   try {
-    const [deleted] = await db.delete(taxRatesTable).where(eq(taxRatesTable.id, id)).returning();
-    if (!deleted) {
+    const [archived] = await db.update(taxRatesTable).set({ isActive: false }).where(eq(taxRatesTable.id, id)).returning();
+    if (!archived) {
       res.status(404).json({ error: "Tax rate not found" });
       return;
     }
-    res.status(204).send();
+    res.json(rateToResponse(archived));
   } catch (err) {
-    req.log.error({ err }, "Failed to delete tax rate");
+    req.log.error({ err }, "Failed to archive tax rate");
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -237451,14 +237536,14 @@ router14.delete("/admin/shipping/zones/:id", async (req, res) => {
     return;
   }
   try {
-    const [deleted] = await db.delete(shippingZonesTable).where(eq(shippingZonesTable.id, id)).returning();
-    if (!deleted) {
+    const [archived] = await db.update(shippingZonesTable).set({ isActive: false }).where(eq(shippingZonesTable.id, id)).returning();
+    if (!archived) {
       res.status(404).json({ error: "Zone not found" });
       return;
     }
-    res.status(204).send();
+    res.json(zoneToResponse(archived));
   } catch (err) {
-    req.log.error({ err }, "Failed to delete shipping zone");
+    req.log.error({ err }, "Failed to archive shipping zone");
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -237531,14 +237616,14 @@ router14.delete("/admin/shipping/rates/:id", async (req, res) => {
     return;
   }
   try {
-    const [deleted] = await db.delete(shippingRatesTable).where(eq(shippingRatesTable.id, id)).returning();
-    if (!deleted) {
+    const [archived] = await db.update(shippingRatesTable).set({ isActive: false }).where(eq(shippingRatesTable.id, id)).returning();
+    if (!archived) {
       res.status(404).json({ error: "Rate not found" });
       return;
     }
-    res.status(204).send();
+    res.json(rateToResponse2(archived));
   } catch (err) {
-    req.log.error({ err }, "Failed to delete shipping rate");
+    req.log.error({ err }, "Failed to archive shipping rate");
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -238267,6 +238352,20 @@ router18.delete("/admin/webhooks/:id", async (req, res) => {
     return;
   }
   try {
+    const [webhook] = await db.select().from(webhooksTable).where(eq(webhooksTable.id, id)).limit(1);
+    if (!webhook) {
+      res.status(404).json({ error: "Webhook not found" });
+      return;
+    }
+    if (webhook.isActive) {
+      res.status(409).json({ error: "Disable the webhook before deleting it" });
+      return;
+    }
+    const [delivery] = await db.select({ id: webhookDeliveriesTable.id }).from(webhookDeliveriesTable).where(eq(webhookDeliveriesTable.webhookId, id)).limit(1);
+    if (delivery) {
+      res.status(409).json({ error: "Webhook has delivery logs and is retained for audit history" });
+      return;
+    }
     const [deleted] = await db.delete(webhooksTable).where(eq(webhooksTable.id, id)).returning();
     if (!deleted) {
       res.status(404).json({ error: "Webhook not found" });
@@ -238859,11 +238958,17 @@ router22.delete("/admin/blog/posts/:id", async (req, res) => {
     return;
   }
   try {
-    const [deleted] = await db.delete(blogPostsTable).where(eq(blogPostsTable.id, id)).returning();
-    if (!deleted) {
+    const [post] = await db.select().from(blogPostsTable).where(eq(blogPostsTable.id, id)).limit(1);
+    if (!post) {
       res.status(404).json({ error: "Post not found" });
       return;
     }
+    if (post.status === "published") {
+      const [archived] = await db.update(blogPostsTable).set({ status: "draft" }).where(eq(blogPostsTable.id, id)).returning();
+      res.json(postToResponse(archived));
+      return;
+    }
+    await db.delete(blogPostsTable).where(eq(blogPostsTable.id, id));
     res.status(204).send();
   } catch (err) {
     req.log.error({ err }, "Failed to delete blog post");
@@ -244135,7 +244240,20 @@ router29.delete("/admin/reviews/:id", async (req, res) => {
     res.status(400).json({ error: "Invalid review ID" });
     return;
   }
+  if (req.body?.confirmSpamDeletion !== true) {
+    res.status(400).json({ error: "Permanent deletion requires explicit spam confirmation" });
+    return;
+  }
   try {
+    const [review] = await db.select({ isApproved: productReviewsTable.isApproved }).from(productReviewsTable).where(eq(productReviewsTable.id, id)).limit(1);
+    if (!review) {
+      res.status(404).json({ error: "Review not found" });
+      return;
+    }
+    if (review.isApproved) {
+      res.status(409).json({ error: "Hide an approved review before permanently deleting confirmed spam" });
+      return;
+    }
     const [deleted] = await db.delete(productReviewsTable).where(eq(productReviewsTable.id, id)).returning({ id: productReviewsTable.id });
     if (!deleted) {
       res.status(404).json({ error: "Review not found" });
@@ -244479,7 +244597,7 @@ function requireAdmin21(req, res) {
 router34.get("/admin/abandoned-carts", async (req, res) => {
   if (!requireAdmin21(req, res)) return;
   try {
-    const carts = await db.select().from(abandonedCartsTable).where(isNull(abandonedCartsTable.convertedAt)).orderBy(desc(abandonedCartsTable.updatedAt));
+    const carts = await db.select().from(abandonedCartsTable).where(and(isNull(abandonedCartsTable.convertedAt), isNull(abandonedCartsTable.archivedAt))).orderBy(desc(abandonedCartsTable.updatedAt));
     const rows = carts.map((c) => {
       let items = [];
       try {
@@ -244505,6 +244623,25 @@ router34.get("/admin/abandoned-carts", async (req, res) => {
     res.json({ carts: rows, stats: { total: rows.length, totalAbandonedValue, emailsSent, pendingEmail } });
   } catch (err) {
     req.log.error({ err }, "Failed to list abandoned carts");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+router34.post("/admin/abandoned-carts/:id/archive", async (req, res) => {
+  if (!requireAdmin21(req, res)) return;
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id < 1) {
+    res.status(400).json({ error: "Invalid cart ID" });
+    return;
+  }
+  try {
+    const [archived] = await db.update(abandonedCartsTable).set({ archivedAt: /* @__PURE__ */ new Date() }).where(and(eq(abandonedCartsTable.id, id), isNull(abandonedCartsTable.convertedAt), isNull(abandonedCartsTable.archivedAt))).returning({ id: abandonedCartsTable.id });
+    if (!archived) {
+      res.status(409).json({ error: "Cart is already converted or archived" });
+      return;
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to archive abandoned cart");
     res.status(500).json({ error: "Internal server error" });
   }
 });

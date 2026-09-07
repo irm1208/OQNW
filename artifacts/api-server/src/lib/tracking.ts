@@ -60,7 +60,17 @@ export function validateDispatchDetails(input: unknown): DispatchValidationResul
 
 export function isAllowedAdminStatusTransition(current: string, next: string): boolean {
   if (current === next) return true;
-  if (current === "shipped") return next === "delivered";
-  if (current === "delivered") return false;
-  return next !== "shipped" && next !== "delivered";
+  // Shipment is deliberately excluded: it must use the dispatch endpoint so
+  // carrier, tracking, and dispatched-at history are always captured.
+  const transitions: Record<string, readonly string[]> = {
+    pending: ["awaiting_payment", "payment_received", "cancelled"],
+    awaiting_payment: ["payment_received", "cancelled"],
+    paid: ["processing", "cancelled"],
+    payment_received: ["processing", "cancelled"],
+    processing: ["cancelled"],
+    shipped: ["delivered"],
+    delivered: [],
+    cancelled: [],
+  };
+  return transitions[current]?.includes(next) ?? false;
 }

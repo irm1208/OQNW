@@ -275,10 +275,11 @@ function CatalogTab() {
     if (!deleteTarget) return;
     try {
       await deleteProduct.mutateAsync({ id: deleteTarget.id });
-      toast.success("Product deleted");
+      toast.success("Product retired and hidden from the storefront");
       await invalidate();
+      notifyStorefrontCatalogUpdated();
     } catch {
-      toast.error("Failed to delete product");
+      toast.error("Failed to retire product");
     } finally {
       setDeleteTarget(null);
     }
@@ -546,7 +547,7 @@ function CatalogTab() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        aria-label={`Delete ${product.name}`}
+                        aria-label={`Retire ${product.name}`}
                         className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
                         onClick={() => setDeleteTarget(product)}
                       >
@@ -831,22 +832,25 @@ function CatalogTab() {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirm */}
+      {/* Retirement confirmation */}
       <AlertDialog open={!!deleteTarget} onOpenChange={open => { if (!open) setDeleteTarget(null); }}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete product?</AlertDialogTitle>
+            <AlertDialogTitle>Retire product?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete <strong>{deleteTarget?.name}</strong>. This action cannot be undone.
+              This hides <strong>{deleteTarget?.name}</strong> from the storefront and removes it from featured
+              placement. Historical order references are retained; you can restore visibility later.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={deleteProduct.isPending}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
+              disabled={deleteProduct.isPending}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Delete
+              {deleteProduct.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              Retire Product
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

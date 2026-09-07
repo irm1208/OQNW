@@ -191,6 +191,11 @@ function OverviewTab() {
   });
 
   const handleSave = () => {
+    const values = Object.values(form);
+    if (values.some((value) => typeof value !== "number" || !Number.isFinite(value) || value < 0)) {
+      toast.error("Settings must contain valid non-negative numbers");
+      return;
+    }
     mutation.mutate(form);
   };
 
@@ -206,6 +211,9 @@ function OverviewTab() {
 
   return (
     <div className="space-y-6">
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+        Financial commission and reward records are immutable. Use the recorded status actions below; records are never deleted.
+      </div>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <Card>
           <CardContent className="py-4">
@@ -342,6 +350,18 @@ function TiersTab() {
   };
 
   const handleSave = () => {
+    if (!editingTier.name?.trim() || !editingTier.slug?.trim()) {
+      toast.error("Tier name and internal slug are required");
+      return;
+    }
+    const numericFields = ["minimumSalesGbp", "commissionRatePercent", "rewardCreditGbp", "sortOrder"] as const;
+    if (numericFields.some((field) => {
+      const value = editingTier[field];
+      return typeof value !== "number" || !Number.isFinite(value) || value < 0;
+    })) {
+      toast.error("Tier values must be valid non-negative numbers");
+      return;
+    }
     mutation.mutate(editingTier);
   };
 
@@ -506,6 +526,18 @@ function PartnersTab() {
   };
 
   const handleSave = () => {
+    if (!editingPartner.name?.trim() || !editingPartner.email?.trim()) {
+      toast.error("Partner name and email are required");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(editingPartner.email)) {
+      toast.error("Enter a valid partner email address");
+      return;
+    }
+    if (typeof editingPartner.discountPercent !== "number" || !Number.isFinite(editingPartner.discountPercent) || editingPartner.discountPercent < 0 || editingPartner.discountPercent > 100) {
+      toast.error("Discount must be between 0% and 100%");
+      return;
+    }
     mutation.mutate(editingPartner);
   };
 
@@ -513,6 +545,9 @@ function PartnersTab() {
 
   return (
     <div className="space-y-4">
+      <div className="rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
+        Partner profiles may be edited or deactivated through their status. Historical commissions and rewards remain permanently recorded.
+      </div>
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <div className="flex flex-wrap gap-1 pb-2 sm:pb-0">
           {PARTNER_STATUSES.map(s => (

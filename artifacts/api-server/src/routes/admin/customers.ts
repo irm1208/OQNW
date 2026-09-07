@@ -197,4 +197,58 @@ router.get("/admin/customers/:id", async (req: Request, res: Response): Promise<
   }
 });
 
+// Customer purchase and payment records are intentionally never edited here.
+// This endpoint is limited to current profile/contact data.
+router.patch("/admin/customers/:id", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const parsed = GetAdminCustomerParams.safeParse({ id: Number(req.params.id) });
+  if (!parsed.success) {
+    res.status(400).json({ error: "Invalid customer ID" });
+    return;
+  }
+
+  const body = req.body as Record<string, unknown>;
+  const allowed = ["firstName", "lastName", "email", "phone", "address1", "address2", "city", "county", "postcode", "country"];
+  if (!body || typeof body !== "object" || Array.isArray(body) || Object.keys(body).some(key => !allowed.includes(key))) {
+    res.status(400).json({ error: "Only profile and contact fields can be updated" });
+    return;
+  }
+  const updates: Partial<typeof customersTable.$inferInsert> = {};
+  for (const key of allowed) {
+    if (body[key] === undefined) continue;
+    if (typeof body[key] !== "string") {
+      res.status(400).json({ error: `${key} must be a string` });
+      return;
+    }
+    const value = body[key].trim();
+    if ((key === "firstName" || key === "lastName" || key === "email") && !value) {
+      res.status(400).json({ error: `${key} cannot be blank` });
+      return;
+    }
+    if (key === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      res.status(400).json({ error: "email must be valid" });
+      return;
+    }
+    (updates as Record<string, unknown>)[key] = ["phone", "address1", "address2", "city", "county", "postcode", "country"].includes(key)
+      ? value || null
+      : key === "email" ? value.toLowerCase() : value;
+  }
+  if (Object.keys(updates).length === 0) {
+    res.status(400).json({ error: "No profile changes supplied" });
+    return;
+  }
+  try {
+    const [updated] = await db.update(customersTable).set(updates).where(eq(customersTable.id, parsed.data.id)).returning();
+    if (!updated) { res.status(404).json({ error: "Customer not found" }); return; }
+    res.json(customerToResponse(updated));
+  } catch (err: unknown) {
+    if ((err as { code?: string }).code === "23505") {
+      res.status(409).json({ error: "That email address is already in use" });
+      return;
+    }
+    req.log.error({ err }, "Failed to update customer profile");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 export default router;

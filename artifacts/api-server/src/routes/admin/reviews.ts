@@ -116,8 +116,24 @@ router.delete("/admin/reviews/:id", async (req: Request, res: Response): Promise
     res.status(400).json({ error: "Invalid review ID" });
     return;
   }
+  if (req.body?.confirmSpamDeletion !== true) {
+    res.status(400).json({ error: "Permanent deletion requires explicit spam confirmation" });
+    return;
+  }
 
   try {
+    const [review] = await db.select({ isApproved: productReviewsTable.isApproved })
+      .from(productReviewsTable)
+      .where(eq(productReviewsTable.id, id))
+      .limit(1);
+    if (!review) {
+      res.status(404).json({ error: "Review not found" });
+      return;
+    }
+    if (review.isApproved) {
+      res.status(409).json({ error: "Hide an approved review before permanently deleting confirmed spam" });
+      return;
+    }
     const [deleted] = await db
       .delete(productReviewsTable)
       .where(eq(productReviewsTable.id, id))

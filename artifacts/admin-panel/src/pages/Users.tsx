@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Pencil, Trash2, Users as UsersIcon, ShieldCheck, CheckCircle2, XCircle, Copy, KeyRound } from "lucide-react";
+import { Plus, Pencil, Users as UsersIcon, ShieldCheck, CheckCircle2, XCircle, Copy, KeyRound, UserX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -126,18 +126,6 @@ export default function Users() {
     onError: (e: Error) => toast({ title: e.message || "Save failed", variant: "destructive" }),
   });
 
-  const remove = useMutation({
-    mutationFn: async (id: number) => {
-      const res = await fetch(api(`admin/users/${id}`), { method: "DELETE", credentials: "include" });
-      if (!res.ok) throw new Error("Failed");
-    },
-    onSuccess: () => {
-      toast({ title: "Admin removed" });
-      void queryClient.invalidateQueries({ queryKey: ["admin-users"] });
-    },
-    onError: () => toast({ title: "Delete failed", variant: "destructive" }),
-  });
-
   const toggleActive = useMutation({
     mutationFn: async ({ id, isActive }: { id: number; isActive: boolean }) => {
       const res = await fetch(api(`admin/users/${id}`), {
@@ -165,6 +153,23 @@ export default function Users() {
 
   function handleSubmit() {
     save.mutate(editing ? { ...form, id: editing.id } : form);
+  }
+  function deactivateUser(user: AdminUser) {
+    const activeOwners = users.filter(candidate => candidate.role === "owner" && candidate.isActive);
+    if (user.role === "owner" && user.isActive && activeOwners.length === 1) {
+      toast({ title: "The last active owner cannot be deactivated", variant: "destructive" });
+      return;
+    }
+    if (confirm(`Deactivate ${user.name}? They will no longer be able to sign in.`)) {
+      toggleActive.mutate({ id: user.id, isActive: false });
+    }
+  }
+  function setUserActive(user: AdminUser, isActive: boolean) {
+    if (!isActive) {
+      deactivateUser(user);
+      return;
+    }
+    toggleActive.mutate({ id: user.id, isActive: true });
   }
 
   return (
@@ -296,7 +301,7 @@ export default function Users() {
                       <Badge variant="outline" className={ROLE_STYLE[u.role]}>{u.role}</Badge>
                     </td>
                     <td className="px-4 py-3" data-label="Status">
-                      <button onClick={() => toggleActive.mutate({ id: u.id, isActive: !u.isActive })} className="flex items-center gap-1.5">
+                      <button onClick={() => setUserActive(u, !u.isActive)} className="flex items-center gap-1.5">
                         {u.isActive
                           ? <><CheckCircle2 className="w-4 h-4 text-green-500" /><span className="text-green-600 text-xs font-medium">Active</span></>
                           : <><XCircle className="w-4 h-4 text-muted-foreground" /><span className="text-muted-foreground text-xs">Disabled</span></>}
@@ -308,8 +313,8 @@ export default function Users() {
                         <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={`Edit ${u.name}`} onClick={() => openEdit(u)}>
                           <Pencil className="w-4 h-4" />
                         </Button>
-                        <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" aria-label={`Delete ${u.name}`} onClick={() => remove.mutate(u.id)}>
-                          <Trash2 className="w-4 h-4" />
+                        <Button size="icon" variant="ghost" className="h-8 w-8 text-muted-foreground" aria-label={`Deactivate ${u.name}`} title="Deactivate admin" disabled={!u.isActive || toggleActive.isPending} onClick={() => deactivateUser(u)}>
+                          <UserX className="w-4 h-4" />
                         </Button>
                       </div>
                     </td>

@@ -4,8 +4,6 @@ import { db } from "@workspace/db";
 import { discountCodesTable } from "@workspace/db";
 import {
   CreateAdminDiscountBody,
-  UpdateAdminDiscountParams,
-  UpdateAdminDiscountBody,
   DeleteAdminDiscountParams,
 } from "@workspace/api-zod";
 import { eq, desc } from "drizzle-orm";
@@ -86,15 +84,20 @@ router.post("/admin/discounts", async (req: Request, res: Response): Promise<voi
 
 router.patch("/admin/discounts/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
-  const paramsParsed = UpdateAdminDiscountParams.safeParse({ id: Number(req.params.id) });
-  const bodyParsed = UpdateAdminDiscountBody.safeParse(req.body);
-  if (!paramsParsed.success || !bodyParsed.success) {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id < 1) {
     res.status(400).json({ error: "Invalid request" });
     return;
   }
   try {
     const updates: Partial<typeof discountCodesTable.$inferInsert> = {};
-    const { isActive, usageLimit, expiresAt, minSpend } = bodyParsed.data;
+    const { code, type, value, isActive, usageLimit, expiresAt, minSpend } = req.body as Partial<{
+      code: string; type: string; value: number; isActive: boolean; usageLimit: number;
+      expiresAt: string; minSpend: number;
+    }>;
+    if (code !== undefined) updates.code = code.toUpperCase();
+    if (type !== undefined) updates.type = type;
+    if (value !== undefined) updates.value = String(value);
     if (isActive !== undefined) updates.isActive = isActive;
     if (usageLimit !== undefined) updates.usageLimit = usageLimit;
     if (expiresAt !== undefined) updates.expiresAt = new Date(expiresAt);
@@ -103,7 +106,7 @@ router.patch("/admin/discounts/:id", async (req: Request, res: Response): Promis
     const [updated] = await db
       .update(discountCodesTable)
       .set(updates)
-      .where(eq(discountCodesTable.id, paramsParsed.data.id))
+      .where(eq(discountCodesTable.id, id))
       .returning();
 
     if (!updated) {
@@ -125,17 +128,18 @@ router.delete("/admin/discounts/:id", async (req: Request, res: Response): Promi
     return;
   }
   try {
-    const [deleted] = await db
-      .delete(discountCodesTable)
+    const [archived] = await db
+      .update(discountCodesTable)
+      .set({ isActive: false })
       .where(eq(discountCodesTable.id, parsed.data.id))
       .returning();
-    if (!deleted) {
+    if (!archived) {
       res.status(404).json({ error: "Discount not found" });
       return;
     }
-    res.status(204).send();
+    res.status(200).json(discountToResponse(archived));
   } catch (err) {
-    req.log.error({ err }, "Failed to delete discount");
+    req.log.error({ err }, "Failed to archive discount");
     res.status(500).json({ error: "Internal server error" });
   }
 });

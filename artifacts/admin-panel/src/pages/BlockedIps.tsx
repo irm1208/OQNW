@@ -159,7 +159,11 @@ export default function BlockedIps() {
                       size="icon"
                       className="w-8 h-8 text-muted-foreground hover:text-red-600"
                       disabled={removeMutation.isPending}
-                      onClick={() => removeMutation.mutate(row.ip)}
+                      aria-label={`Remove block for ${row.ip}`}
+                      title="Remove IP block"
+                      onClick={() => {
+                        if (confirm(`Remove the block for ${row.ip}? This IP will be able to sign in again.`)) removeMutation.mutate(row.ip);
+                      }}
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>

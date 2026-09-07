@@ -15,6 +15,7 @@ export const abandonedCartsTable = pgTable("abandoned_carts", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   emailSentAt: timestamp("email_sent_at", { withTimezone: true }),
   convertedAt: timestamp("converted_at", { withTimezone: true }),
+  archivedAt: timestamp("archived_at", { withTimezone: true }),
 });
 
 export type AbandonedCart = typeof abandonedCartsTable.$inferSelect;

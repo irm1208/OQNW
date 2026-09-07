@@ -155,6 +155,18 @@ router.post("/admin/orders/bulk-update", async (req: Request, res: Response): Pr
     return;
   }
   try {
+    const selected = await db
+      .select({ id: ordersTable.id, status: ordersTable.status })
+      .from(ordersTable)
+      .where(inArray(ordersTable.id, ids as number[]));
+    if (selected.length !== new Set(ids as number[]).size) {
+      res.status(404).json({ error: "One or more orders were not found" });
+      return;
+    }
+    if (selected.some((order) => !isAllowedAdminStatusTransition(order.status, status))) {
+      res.status(409).json({ error: "One or more orders cannot make this status transition" });
+      return;
+    }
     const updated = await db
       .update(ordersTable)
       .set({ status: status as typeof ordersTable.$inferSelect["status"], updatedAt: new Date() })

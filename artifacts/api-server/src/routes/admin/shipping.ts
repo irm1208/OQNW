@@ -100,11 +100,11 @@ router.delete("/admin/shipping/zones/:id", async (req: Request, res: Response): 
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   try {
-    const [deleted] = await db.delete(shippingZonesTable).where(eq(shippingZonesTable.id, id)).returning();
-    if (!deleted) { res.status(404).json({ error: "Zone not found" }); return; }
-    res.status(204).send();
+    const [archived] = await db.update(shippingZonesTable).set({ isActive: false }).where(eq(shippingZonesTable.id, id)).returning();
+    if (!archived) { res.status(404).json({ error: "Zone not found" }); return; }
+    res.json(zoneToResponse(archived));
   } catch (err) {
-    req.log.error({ err }, "Failed to delete shipping zone");
+    req.log.error({ err }, "Failed to archive shipping zone");
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -181,11 +181,11 @@ router.delete("/admin/shipping/rates/:id", async (req: Request, res: Response): 
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   try {
-    const [deleted] = await db.delete(shippingRatesTable).where(eq(shippingRatesTable.id, id)).returning();
-    if (!deleted) { res.status(404).json({ error: "Rate not found" }); return; }
-    res.status(204).send();
+    const [archived] = await db.update(shippingRatesTable).set({ isActive: false }).where(eq(shippingRatesTable.id, id)).returning();
+    if (!archived) { res.status(404).json({ error: "Rate not found" }); return; }
+    res.json(rateToResponse(archived));
   } catch (err) {
-    req.log.error({ err }, "Failed to delete shipping rate");
+    req.log.error({ err }, "Failed to archive shipping rate");
     res.status(500).json({ error: "Internal server error" });
   }
 });

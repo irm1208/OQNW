@@ -94,6 +94,9 @@ export default function CryptoPayments() {
           </Button>
         </div>
       </div>
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+        On-chain evidence, transaction hashes, expected amounts, and provider references are immutable. Rechecks only refresh verification evidence and never change settlement or order payment status.
+      </div>
 
       <section className="rounded-xl border bg-card p-4 sm:p-5">
         <div className="flex items-center gap-2 mb-4">

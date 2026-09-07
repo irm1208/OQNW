@@ -496,13 +496,15 @@ router.patch("/admin/catalog/:id", async (req: Request, res: Response): Promise<
 });
 
 // DELETE /api/admin/catalog/:id
+// Catalogue entries can be referenced by historical order items, so deletion is
+// deliberately implemented as a retirement operation rather than a row delete.
 router.delete("/admin/catalog/:id", async (req: Request, res: Response): Promise<void> => {
   if (!requireAdmin(req, res)) return;
   const id = Number(req.params.id);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
   try {
     const [existing] = await db
-      .select({ slug: productsCatalogTable.slug })
+      .select()
       .from(productsCatalogTable)
       .where(eq(productsCatalogTable.id, id));
     if (!existing || isRetiredProductSlug(existing.slug)) {
@@ -510,14 +512,19 @@ router.delete("/admin/catalog/:id", async (req: Request, res: Response): Promise
       return;
     }
 
-    const [deleted] = await db
-      .delete(productsCatalogTable)
+    const [retired] = await db
+      .update(productsCatalogTable)
+      .set({ isPublished: false, isFeatured: false })
       .where(eq(productsCatalogTable.id, id))
-      .returning({ id: productsCatalogTable.id });
-    if (!deleted) { res.status(404).json({ error: "Product not found" }); return; }
-    res.status(204).send();
+      .returning();
+    if (!retired) { res.status(404).json({ error: "Product not found" }); return; }
+    await syncInventoryProduct(retired);
+    await db.update(productsInventoryTable)
+      .set({ isPublished: false })
+      .where(eq(productsInventoryTable.productId, retired.id));
+    res.status(200).json(catalogToResponse(retired));
   } catch (err) {
-    req.log.error({ err }, "Failed to delete catalog product");
+    req.log.error({ err }, "Failed to retire catalog product");
     res.status(500).json({ error: "Internal server error" });
   }
 });

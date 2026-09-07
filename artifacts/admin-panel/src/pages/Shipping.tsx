@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  Plus, Pencil, Trash2, Truck, Globe, ChevronDown, ChevronRight,
+  Plus, Pencil, Archive, Truck, Globe, ChevronDown, ChevronRight,
   CheckCircle2, XCircle, Search, X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -449,19 +449,6 @@ export default function Shipping() {
     onError: () => toast({ title: "Update failed", variant: "destructive" }),
   });
 
-  const deleteZone = useMutation({
-    mutationFn: async (id: number) => {
-      const res = await fetch(api(`admin/shipping/zones/${id}`), { method: "DELETE", credentials: "include" });
-      if (!res.ok) throw new Error("Failed");
-    },
-    onSuccess: () => {
-      toast({ title: "Zone deleted" });
-      void queryClient.invalidateQueries({ queryKey: ["shipping-zones"] });
-      void queryClient.invalidateQueries({ queryKey: ["shipping-rates"] });
-    },
-    onError: () => toast({ title: "Delete failed", variant: "destructive" }),
-  });
-
   const saveRate = useMutation({
     mutationFn: async (v: typeof rateForm & { id?: number }) => {
       const url = v.id ? api(`admin/shipping/rates/${v.id}`) : api("admin/shipping/rates");
@@ -486,18 +473,6 @@ export default function Shipping() {
       setRateOpen(false);
     },
     onError: () => toast({ title: "Save failed", variant: "destructive" }),
-  });
-
-  const deleteRate = useMutation({
-    mutationFn: async (id: number) => {
-      const res = await fetch(api(`admin/shipping/rates/${id}`), { method: "DELETE", credentials: "include" });
-      if (!res.ok) throw new Error("Failed");
-    },
-    onSuccess: () => {
-      toast({ title: "Rate deleted" });
-      void queryClient.invalidateQueries({ queryKey: ["shipping-rates"] });
-    },
-    onError: () => toast({ title: "Delete failed", variant: "destructive" }),
   });
 
   const createPresetZones = useMutation({
@@ -554,6 +529,21 @@ export default function Shipping() {
       estimatedDaysMin: String(r.estimatedDaysMin), estimatedDaysMax: String(r.estimatedDaysMax),
     });
     setRateOpen(true);
+  }
+  function setZoneActive(zone: ShippingZone, isActive: boolean) {
+    if (!isActive && !confirm(`Archive ${zone.name}? The zone and its historical rates will be retained but unavailable at checkout.`)) return;
+    toggleZoneActive.mutate({ id: zone.id, isActive });
+  }
+  function setRateActive(rate: ShippingRate, isActive: boolean) {
+    if (!isActive && !confirm(`Archive ${rate.name}? It will be retained for historical orders but unavailable at checkout.`)) return;
+    const res = fetch(api(`admin/shipping/rates/${rate.id}`), {
+      method: "PATCH", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ isActive }),
+    });
+    void res.then(response => {
+      if (!response.ok) throw new Error("Failed");
+      toast({ title: isActive ? "Rate activated" : "Rate archived" });
+      return queryClient.invalidateQueries({ queryKey: ["shipping-rates"] });
+    }).catch(() => toast({ title: "Update failed", variant: "destructive" }));
   }
 
   const totalCountries = new Set(zones.flatMap(z => z.countryCodes)).size;
@@ -664,7 +654,7 @@ export default function Shipping() {
                     <Switch
                        aria-label={`${zone.isActive ? "Disable" : "Enable"} ${zone.name} shipping zone`}
                       checked={zone.isActive}
-                      onCheckedChange={(v) => toggleZoneActive.mutate({ id: zone.id, isActive: v })}
+                       onCheckedChange={(v) => setZoneActive(zone, v)}
                       className="scale-90"
                     />
                     <Button size="sm" variant="outline" className="h-7 text-xs px-2" onClick={() => openCreateRate(zone.id)}>
@@ -673,8 +663,8 @@ export default function Shipping() {
                     <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={`Edit ${zone.name} shipping zone`} onClick={() => openEditZone(zone)}>
                       <Pencil className="w-4 h-4" />
                     </Button>
-                    <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" aria-label={`Delete ${zone.name} shipping zone`} onClick={() => deleteZone.mutate(zone.id)}>
-                      <Trash2 className="w-4 h-4" />
+                     <Button size="icon" variant="ghost" className="h-8 w-8 text-muted-foreground" aria-label={`Archive ${zone.name} shipping zone`} title="Archive (deactivate)" disabled={!zone.isActive || toggleZoneActive.isPending} onClick={() => setZoneActive(zone, false)}>
+                       <Archive className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
@@ -726,8 +716,8 @@ export default function Shipping() {
                                   <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => openEditRate(r)}>
                                     <Pencil className="w-3.5 h-3.5" />
                                   </Button>
-                                  <Button size="icon" variant="ghost" className="h-7 w-7 text-destructive hover:text-destructive" onClick={() => deleteRate.mutate(r.id)}>
-                                    <Trash2 className="w-3.5 h-3.5" />
+                                   <Button size="icon" variant="ghost" className="h-7 w-7 text-muted-foreground" aria-label={`Archive ${r.name} shipping rate`} title="Archive (deactivate)" disabled={!r.isActive} onClick={() => setRateActive(r, false)}>
+                                     <Archive className="w-3.5 h-3.5" />
                                   </Button>
                                 </div>
                               </td>

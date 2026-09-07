@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Pencil, Trash2, Receipt, CheckCircle2, XCircle, Globe } from "lucide-react";
+import { Plus, Pencil, Archive, Receipt, CheckCircle2, XCircle, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -56,18 +56,6 @@ export default function Tax() {
     onError: () => toast({ title: "Save failed", variant: "destructive" }),
   });
 
-  const remove = useMutation({
-    mutationFn: async (id: number) => {
-      const res = await fetch(api(`admin/tax-rates/${id}`), { method: "DELETE", credentials: "include" });
-      if (!res.ok) throw new Error("Failed");
-    },
-    onSuccess: () => {
-      toast({ title: "Tax rate deleted" });
-      void queryClient.invalidateQueries({ queryKey: ["tax-rates"] });
-    },
-    onError: () => toast({ title: "Delete failed", variant: "destructive" }),
-  });
-
   const toggleActive = useMutation({
     mutationFn: async ({ id, isActive }: { id: number; isActive: boolean }) => {
       const res = await fetch(api(`admin/tax-rates/${id}`), {
@@ -95,6 +83,15 @@ export default function Tax() {
 
   function handleSubmit() {
     save.mutate(editing ? { ...form, id: editing.id } : form);
+  }
+  function archiveRate(rate: TaxRate) {
+    if (confirm(`Archive ${rate.name}? It will be deactivated and retained for historical orders.`)) {
+      toggleActive.mutate({ id: rate.id, isActive: false });
+    }
+  }
+  function setRateActive(rate: TaxRate, isActive: boolean) {
+    if (!isActive && !confirm(`Deactivate ${rate.name}? It will no longer apply at checkout.`)) return;
+    toggleActive.mutate({ id: rate.id, isActive });
   }
 
   const activeCount = rates.filter(r => r.isActive).length;
@@ -168,7 +165,7 @@ export default function Tax() {
                     </td>
                     <td className="px-4 py-3" data-label="Status">
                       <button
-                        onClick={() => toggleActive.mutate({ id: r.id, isActive: !r.isActive })}
+                        onClick={() => setRateActive(r, !r.isActive)}
                         className="flex items-center gap-1.5"
                       >
                         {r.isActive
@@ -181,8 +178,8 @@ export default function Tax() {
                         <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(r)}>
                           <Pencil className="w-4 h-4" />
                         </Button>
-                        <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => remove.mutate(r.id)}>
-                          <Trash2 className="w-4 h-4" />
+                        <Button size="icon" variant="ghost" className="h-8 w-8 text-muted-foreground" aria-label={`Archive ${r.name}`} title="Archive (deactivate)" disabled={!r.isActive || toggleActive.isPending} onClick={() => archiveRate(r)}>
+                          <Archive className="w-4 h-4" />
                         </Button>
                       </div>
                     </td>

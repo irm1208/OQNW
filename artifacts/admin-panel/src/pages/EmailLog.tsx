@@ -86,6 +86,9 @@ export default function EmailLog() {
           </button>
         </div>
       </div>
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+        Read-only email history: delivery records are retained for audit and cannot be edited or deleted.
+      </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">

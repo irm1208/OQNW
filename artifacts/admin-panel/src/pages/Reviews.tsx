@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Loader2, Search, Star, Trash2, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -47,6 +48,7 @@ export default function Reviews() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [page, setPage] = useState(1);
+  const [spamReview, setSpamReview] = useState<Review | null>(null);
   const limit = 25;
 
   const queryKey = ["admin-reviews", { search, statusFilter, page }];
@@ -77,9 +79,14 @@ export default function Reviews() {
 
   const remove = useMutation({
     mutationFn: (id: number) =>
-      apiFetch(api(`/admin/reviews/${id}`), { method: "DELETE" }),
+      apiFetch(api(`/admin/reviews/${id}`), {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirmSpamDeletion: true }),
+      }),
     onSuccess: () => {
-      toast.success("Review deleted");
+      toast.success("Spam review permanently deleted");
+      setSpamReview(null);
       void queryClient.invalidateQueries({ queryKey: ["admin-reviews"] });
     },
     onError: () => toast.error("Failed to delete review"),
@@ -174,7 +181,7 @@ export default function Reviews() {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 text-yellow-600 hover:text-yellow-700"
-                          title="Unapprove"
+                          title="Hide review"
                           onClick={() => approve.mutate({ id: r.id, isApproved: false })}
                         >
                           <XCircle className="w-4 h-4" />
@@ -194,8 +201,9 @@ export default function Reviews() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-destructive hover:text-destructive"
-                        title="Delete"
-                        onClick={() => remove.mutate(r.id)}
+                        title="Permanently delete confirmed spam"
+                        data-testid={`button-delete-spam-review-${r.id}`}
+                        onClick={() => setSpamReview(r)}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -219,6 +227,27 @@ export default function Reviews() {
           </div>
         </div>
       )}
+      <Dialog open={!!spamReview} onOpenChange={(open) => !open && setSpamReview(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Permanently delete spam review?</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-muted-foreground">
+            Prefer hiding a review when possible. This permanently removes the review and is only appropriate for clear spam.
+          </p>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setSpamReview(null)}>Keep review</Button>
+            <Button
+              variant="destructive"
+              disabled={remove.isPending}
+              onClick={() => spamReview && remove.mutate(spamReview.id)}
+            >
+              {remove.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              Delete confirmed spam
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

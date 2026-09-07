@@ -8,6 +8,7 @@ export const stockAlertsTable = pgTable("stock_alerts", {
   customerName: text("customer_name"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   notifiedAt: timestamp("notified_at", { withTimezone: true }),
+  dismissedAt: timestamp("dismissed_at", { withTimezone: true }),
 });
 
 export type StockAlert = typeof stockAlertsTable.$inferSelect;

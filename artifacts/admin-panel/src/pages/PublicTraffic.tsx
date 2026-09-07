@@ -75,6 +75,9 @@ export default function PublicTraffic() {
           Search crawlers and ordinary browsing are allowed through.
         </p>
       </div>
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+        Read-only traffic history: these system-derived protection events cannot be edited or deleted.
+      </div>
 
       {isLoading ? (
         <div className="flex items-center justify-center py-16">

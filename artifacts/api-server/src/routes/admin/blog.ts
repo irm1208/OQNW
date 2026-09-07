@@ -132,8 +132,14 @@ router.delete("/admin/blog/posts/:id", async (req: Request, res: Response): Prom
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   try {
-    const [deleted] = await db.delete(blogPostsTable).where(eq(blogPostsTable.id, id)).returning();
-    if (!deleted) { res.status(404).json({ error: "Post not found" }); return; }
+    const [post] = await db.select().from(blogPostsTable).where(eq(blogPostsTable.id, id)).limit(1);
+    if (!post) { res.status(404).json({ error: "Post not found" }); return; }
+    if (post.status === "published") {
+      const [archived] = await db.update(blogPostsTable).set({ status: "draft" }).where(eq(blogPostsTable.id, id)).returning();
+      res.json(postToResponse(archived));
+      return;
+    }
+    await db.delete(blogPostsTable).where(eq(blogPostsTable.id, id));
     res.status(204).send();
   } catch (err) {
     req.log.error({ err }, "Failed to delete blog post");

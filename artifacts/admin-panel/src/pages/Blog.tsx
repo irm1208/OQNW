@@ -124,6 +124,16 @@ export default function Blog() {
     setOpen(true);
   }
 
+  function confirmRemove(post: Post) {
+    if (post.status === "published") {
+      if (confirm(`Archive "${post.title}"? This will unpublish it and retain it as a draft.`)) {
+        toggleStatus.mutate({ id: post.id, status: "draft" });
+      }
+      return;
+    }
+    if (confirm(`Delete draft "${post.title}"? This cannot be undone.`)) remove.mutate(post.id);
+  }
+
   const published = posts.filter(p => p.status === "published").length;
   const drafts = posts.filter(p => p.status === "draft").length;
 
@@ -210,7 +220,7 @@ export default function Blog() {
                   <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={`Edit ${p.title}`} onClick={() => openEdit(p)}>
                     <Pencil className="w-4 h-4" />
                   </Button>
-                  <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" aria-label={`Delete ${p.title}`} onClick={() => remove.mutate(p.id)}>
+                  <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" aria-label={`${p.status === "published" ? "Archive" : "Delete"} ${p.title}`} title={p.status === "published" ? "Archive and unpublish" : "Delete draft"} disabled={remove.isPending || toggleStatus.isPending} onClick={() => confirmRemove(p)}>
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>

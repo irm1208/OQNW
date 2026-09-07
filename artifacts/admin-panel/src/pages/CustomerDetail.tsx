@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Loader2, ArrowLeft, Mail, Phone, MapPin, Calendar, ShoppingBag, Eye, Download, Trash2, AlertTriangle, CreditCard, Plus, Minus, Globe } from "lucide-react";
+import { Loader2, ArrowLeft, Mail, Phone, MapPin, Calendar, ShoppingBag, Eye, Download, Trash2, AlertTriangle, CreditCard, Plus, Minus, Globe, Pencil } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 function api(path: string) { return `/api/${path}`.replace(/\/+/g, "/"); }
@@ -197,8 +197,11 @@ export default function CustomerDetail() {
   const customerId = parseInt(id || "0", 10);
   const { toast } = useToast();
   const [eraseOpen, setEraseOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const [erasing, setErasing] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [profile, setProfile] = useState<Record<string, string>>({});
+  const queryClient = useQueryClient();
   
   const { data: customer, isLoading } = useGetAdminCustomer(customerId, {
     query: { 
@@ -206,6 +209,41 @@ export default function CustomerDetail() {
       queryKey: getGetAdminCustomerQueryKey(customerId) 
     }
   });
+
+  const updateProfile = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(api(`admin/customers/${customerId}`), {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(profile),
+      });
+      if (!res.ok) {
+        const message = await res.json().then((body: { error?: string }) => body.error).catch(() => null);
+        throw new Error(message ?? "Failed to update customer profile");
+      }
+      return res.json();
+    },
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: getGetAdminCustomerQueryKey(customerId) }),
+        queryClient.invalidateQueries({ queryKey: ["/api/admin/customers"] }),
+      ]);
+      toast({ title: "Customer profile updated" });
+      setEditOpen(false);
+    },
+    onError: (error: Error) => toast({ title: error.message, variant: "destructive" }),
+  });
+
+  function openProfileEditor() {
+    if (!customer) return;
+    setProfile({
+      firstName: customer.firstName, lastName: customer.lastName, email: customer.email,
+      phone: customer.phone ?? "", address1: customer.address1 ?? "", address2: customer.address2 ?? "",
+      city: customer.city ?? "", county: customer.county ?? "", postcode: customer.postcode ?? "", country: customer.country ?? "",
+    });
+    setEditOpen(true);
+  }
 
   async function handleGdprExport() {
     setExporting(true);
@@ -274,6 +312,10 @@ export default function CustomerDetail() {
           <Button variant="outline" size="sm" onClick={handleGdprExport} disabled={exporting}>
             {exporting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
             GDPR Export
+          </Button>
+          <Button variant="outline" size="sm" onClick={openProfileEditor}>
+            <Pencil className="w-4 h-4 mr-2" />
+            Edit Profile
           </Button>
           <Button variant="destructive" size="sm" onClick={() => setEraseOpen(true)}>
             <Trash2 className="w-4 h-4 mr-2" />
@@ -433,6 +475,31 @@ export default function CustomerDetail() {
             <Button variant="destructive" onClick={handleGdprErase} disabled={erasing}>
               {erasing ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Trash2 className="w-4 h-4 mr-2" />}
               Permanently Erase
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
+          <DialogHeader><DialogTitle>Edit customer profile</DialogTitle></DialogHeader>
+          <p className="text-sm text-muted-foreground">Only profile and contact data can be changed. Orders, payments, and credit history are never modified.</p>
+          <div className="grid grid-cols-1 gap-4 py-2 sm:grid-cols-2">
+            {[
+              ["firstName", "First name"], ["lastName", "Last name"], ["email", "Email"],
+              ["phone", "Phone"], ["address1", "Address line 1"], ["address2", "Address line 2"],
+              ["city", "City"], ["county", "County"], ["postcode", "Postcode"], ["country", "Country"],
+            ].map(([field, label]) => (
+              <div key={field} className="space-y-1.5">
+                <Label htmlFor={`customer-${field}`}>{label}{["firstName", "lastName", "email"].includes(field) ? " *" : ""}</Label>
+                <Input id={`customer-${field}`} value={profile[field] ?? ""} onChange={event => setProfile(current => ({ ...current, [field]: event.target.value }))} />
+              </div>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditOpen(false)} disabled={updateProfile.isPending}>Cancel</Button>
+            <Button onClick={() => updateProfile.mutate()} disabled={updateProfile.isPending}>
+              {updateProfile.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />} Save Profile
             </Button>
           </DialogFooter>
         </DialogContent>

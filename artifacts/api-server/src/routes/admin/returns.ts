@@ -15,7 +15,14 @@ function requireAdmin(req: Request, res: Response): boolean {
   return true;
 }
 
-const VALID_RETURN_STATUSES = ["requested", "approved", "refunded", "rejected"];
+const VALID_RETURN_STATUSES = ["requested", "approved", "refunded", "rejected", "cancelled"];
+const RETURN_TRANSITIONS: Record<string, readonly string[]> = {
+  requested: ["approved", "rejected", "cancelled"],
+  approved: ["rejected", "cancelled"],
+  rejected: [],
+  cancelled: [],
+  refunded: [],
+};
 
 function returnToResponse(r: typeof returnsTable.$inferSelect) {
   return {
@@ -137,6 +144,10 @@ router.patch("/admin/returns/:id", async (req: Request, res: Response): Promise<
       res.status(409).json({
         error: "Confirm the refund from the order's Refunds section after processing it in Wallid",
       });
+      return;
+    }
+    if (status !== undefined && status !== existing.status && !RETURN_TRANSITIONS[existing.status]?.includes(status)) {
+      res.status(409).json({ error: `Return status cannot move from ${existing.status} to ${status}` });
       return;
     }
 

@@ -90,8 +90,9 @@ export default function Loyalty() {
 
   function handleAdjustSubmit() {
     if (!adjustModal) return;
-    const pts = parseInt(adjustPoints);
-    if (isNaN(pts) || pts === 0) { toast({ title: "Enter a non-zero point value", variant: "destructive" }); return; }
+    const pts = Number(adjustPoints);
+    if (!Number.isInteger(pts) || pts === 0) { toast({ title: "Enter a non-zero whole point value", variant: "destructive" }); return; }
+    if (pts < 0 && adjustModal.balance + pts < 0) { toast({ title: "Adjustment cannot make the balance negative", variant: "destructive" }); return; }
     if (!adjustReason.trim()) { toast({ title: "Reason is required", variant: "destructive" }); return; }
     adjust.mutate({ customerId: adjustModal.id, points: pts, reason: adjustReason.trim() });
   }
@@ -109,6 +110,9 @@ export default function Loyalty() {
         <p className="text-muted-foreground text-sm mt-1">
           1 point per £1 spent · 100 points = £1 reward · Tiers: Bronze (0+), Silver (500+), Gold (2000+)
         </p>
+      </div>
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+        Point history is an immutable ledger. Use a reasoned compensating adjustment only; earned and redeemed transactions are never edited or deleted.
       </div>
 
       {/* Stats */}
@@ -213,9 +217,9 @@ export default function Loyalty() {
         {adjustModal && (
           <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>Adjust Points</DialogTitle>
+              <DialogTitle>Confirm point adjustment</DialogTitle>
               <DialogDescription>
-                {adjustModal.firstName} {adjustModal.lastName} · Current balance: <strong>{adjustModal.balance}</strong> pts
+                This creates an immutable compensating entry for {adjustModal.firstName} {adjustModal.lastName}. Current balance: <strong>{adjustModal.balance}</strong> pts
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
@@ -262,7 +266,7 @@ export default function Loyalty() {
             <DialogFooter className="gap-3 sm:gap-2">
               <Button variant="outline" className="flex-1" onClick={() => setAdjustModal(null)}>Cancel</Button>
               <Button className="flex-1" onClick={handleAdjustSubmit} disabled={adjust.isPending}>
-                {adjust.isPending ? "Saving…" : "Apply Adjustment"}
+                {adjust.isPending ? "Saving…" : "Confirm Adjustment"}
               </Button>
             </DialogFooter>
           </DialogContent>

@@ -90,6 +90,11 @@ router.delete("/admin/webhooks/:id", async (req: Request, res: Response): Promis
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
   try {
+    const [webhook] = await db.select().from(webhooksTable).where(eq(webhooksTable.id, id)).limit(1);
+    if (!webhook) { res.status(404).json({ error: "Webhook not found" }); return; }
+    if (webhook.isActive) { res.status(409).json({ error: "Disable the webhook before deleting it" }); return; }
+    const [delivery] = await db.select({ id: webhookDeliveriesTable.id }).from(webhookDeliveriesTable).where(eq(webhookDeliveriesTable.webhookId, id)).limit(1);
+    if (delivery) { res.status(409).json({ error: "Webhook has delivery logs and is retained for audit history" }); return; }
     const [deleted] = await db.delete(webhooksTable).where(eq(webhooksTable.id, id)).returning();
     if (!deleted) { res.status(404).json({ error: "Webhook not found" }); return; }
     res.status(204).send();

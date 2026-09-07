@@ -116,6 +116,21 @@ export default function Webhooks() {
   function handleSubmit() {
     save.mutate(editing ? { ...form, id: editing.id } : form);
   }
+  function removeWebhook(webhook: Webhook) {
+    if (webhook.isActive) {
+      if (confirm(`Disable ${webhook.url}? Disabled webhooks stop receiving events while their delivery log is retained.`)) {
+        toggleActive.mutate({ id: webhook.id, isActive: false });
+      }
+      return;
+    }
+    if (confirm(`Delete disabled webhook ${webhook.url}? Webhooks with delivery logs are retained for audit history instead.`)) {
+      remove.mutate(webhook.id);
+    }
+  }
+  function setWebhookActive(webhook: Webhook, isActive: boolean) {
+    if (!isActive && !confirm(`Disable ${webhook.url}? It will stop receiving new events.`)) return;
+    toggleActive.mutate({ id: webhook.id, isActive });
+  }
 
   const activeCount = webhooks.filter(w => w.isActive).length;
 
@@ -179,7 +194,7 @@ export default function Webhooks() {
                       </div>
                     </td>
                     <td className="px-4 py-3" data-label="Status">
-                      <button onClick={() => toggleActive.mutate({ id: w.id, isActive: !w.isActive })} className="flex items-center gap-1.5">
+                      <button onClick={() => setWebhookActive(w, !w.isActive)} className="flex items-center gap-1.5">
                         {w.isActive
                           ? <><CheckCircle2 className="w-4 h-4 text-green-500" /><span className="text-green-600 text-xs font-medium">Active</span></>
                           : <><XCircle className="w-4 h-4 text-muted-foreground" /><span className="text-muted-foreground text-xs">Inactive</span></>}
@@ -193,7 +208,7 @@ export default function Webhooks() {
                         <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(w)}>
                           <Pencil className="w-4 h-4" />
                         </Button>
-                        <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => remove.mutate(w.id)}>
+                        <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" aria-label={`${w.isActive ? "Disable" : "Delete"} ${w.url}`} title={w.isActive ? "Disable before deleting" : "Delete disabled webhook"} disabled={remove.isPending || toggleActive.isPending} onClick={() => removeWebhook(w)}>
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>

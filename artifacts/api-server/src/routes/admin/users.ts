@@ -206,6 +206,9 @@ router.delete("/admin/users/:id", async (req: Request, res: Response): Promise<v
   if (!(await requireOwner(req, res))) return;
   const id = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid ID" }); return; }
+  res.status(405).json({ error: "Admin users are retained for audit history; deactivate the account instead" });
+  return;
+  /*
   try {
     const deleted = await db.transaction(async (tx) => protectLastActiveOwner(
       async () => { await tx.execute(sql`SELECT pg_advisory_xact_lock(${OWNER_MUTATION_LOCK_KEY})`); },
@@ -245,6 +248,7 @@ router.delete("/admin/users/:id", async (req: Request, res: Response): Promise<v
     req.log.error({ err }, "Failed to delete admin user");
     res.status(500).json({ error: "Internal server error" });
   }
+  */
 });
 
 export default router;

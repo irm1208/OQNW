@@ -178,6 +178,9 @@ export default function Wholesale() {
           </Button>
         </div>
       </div>
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+        Invoice totals, currency, payment links, and provider references are immutable. Before settlement, only the invoice’s non-financial contact and note metadata may be edited; payment repair requires verified provider details.
+      </div>
 
       <div className="border rounded-xl bg-card shadow-sm overflow-hidden">
         <Table>

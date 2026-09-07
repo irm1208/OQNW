@@ -79,7 +79,7 @@ export default function InventoryAudit() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Inventory Audit Log</h2>
-          <p className="text-sm text-muted-foreground mt-1">Complete history of every stock change</p>
+          <p className="text-sm text-muted-foreground mt-1">Complete immutable history of every stock change. Entries cannot be edited or deleted.</p>
         </div>
         <Button variant="outline" onClick={handleExport} disabled={exporting}>
           <Download className="w-4 h-4 mr-2" />

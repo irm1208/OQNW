@@ -427,6 +427,20 @@ export default function OrderDetail() {
   };
 
   const isBankTransfer = (order?.fraudFlags ?? []).includes("bank_transfer_payment");
+  const allowedStatusChanges: Record<string, string[]> = {
+    pending: ["awaiting_payment", "payment_received", "cancelled"],
+    awaiting_payment: ["payment_received", "cancelled"],
+    paid: ["processing", "cancelled"],
+    payment_received: ["processing", "cancelled"],
+    processing: ["shipped", "cancelled"],
+    shipped: ["delivered"],
+    delivered: [],
+    cancelled: [],
+  };
+  const currentOrderStatus = order?.status ?? "";
+  const selectableStatuses = currentOrderStatus
+    ? [currentOrderStatus, ...(allowedStatusChanges[currentOrderStatus] ?? [])]
+    : [];
 
   const handleConfirmBankTransfer = () => {
     updateOrder.mutate({ id: orderId, data: { status: "payment_received" } }, {
@@ -440,6 +454,9 @@ export default function OrderDetail() {
 
   const handleStatusChange = (newStatus: string) => {
     if (!order) return;
+    if (newStatus === "cancelled" && !window.confirm("Cancel this order? This preserves its payment, refund, inventory, and audit history.")) {
+      return;
+    }
     if (newStatus === "shipped") {
       setDispatchOpen(true);
       return;
@@ -634,14 +651,11 @@ export default function OrderDetail() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="awaiting_payment">Awaiting Payment</SelectItem>
-                      <SelectItem value="paid">Paid</SelectItem>
-                      <SelectItem value="payment_received">Payment Received</SelectItem>
-                      <SelectItem value="processing">Processing</SelectItem>
-                      <SelectItem value="shipped">Shipped</SelectItem>
-                      <SelectItem value="delivered">Delivered</SelectItem>
-                      <SelectItem value="cancelled">Cancelled</SelectItem>
+                      {selectableStatuses.map((value) => (
+                        <SelectItem key={value} value={value}>
+                          {STATUS_LABELS[value] ?? value}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>

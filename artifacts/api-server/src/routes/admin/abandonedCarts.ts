@@ -2,7 +2,7 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "@workspace/db";
 import { abandonedCartsTable } from "@workspace/db";
-import { isNull, desc, sql } from "drizzle-orm";
+import { and, eq, isNull, desc } from "drizzle-orm";
 
 const router = Router();
 
@@ -21,7 +21,7 @@ router.get("/admin/abandoned-carts", async (req: Request, res: Response): Promis
     const carts = await db
       .select()
       .from(abandonedCartsTable)
-      .where(isNull(abandonedCartsTable.convertedAt))
+      .where(and(isNull(abandonedCartsTable.convertedAt), isNull(abandonedCartsTable.archivedAt)))
       .orderBy(desc(abandonedCartsTable.updatedAt));
 
     interface CartItem {
@@ -53,6 +53,24 @@ router.get("/admin/abandoned-carts", async (req: Request, res: Response): Promis
     res.json({ carts: rows, stats: { total: rows.length, totalAbandonedValue, emailsSent, pendingEmail } });
   } catch (err) {
     req.log.error({ err }, "Failed to list abandoned carts");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Archive retains the recovery history while removing an obsolete cart from the queue.
+router.post("/admin/abandoned-carts/:id/archive", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id < 1) { res.status(400).json({ error: "Invalid cart ID" }); return; }
+  try {
+    const [archived] = await db.update(abandonedCartsTable)
+      .set({ archivedAt: new Date() })
+      .where(and(eq(abandonedCartsTable.id, id), isNull(abandonedCartsTable.convertedAt), isNull(abandonedCartsTable.archivedAt)))
+      .returning({ id: abandonedCartsTable.id });
+    if (!archived) { res.status(409).json({ error: "Cart is already converted or archived" }); return; }
+    res.json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to archive abandoned cart");
     res.status(500).json({ error: "Internal server error" });
   }
 });

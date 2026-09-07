@@ -95,14 +95,14 @@ router.get("/admin/stock-alerts", async (req: Request, res: Response): Promise<v
         };
       }
       byProduct[row.productId].totalCount++;
-      if (!row.notifiedAt) byProduct[row.productId].pendingCount++;
+      if (!row.notifiedAt && !row.dismissedAt) byProduct[row.productId].pendingCount++;
       const rowDate = row.createdAt?.toISOString() ?? null;
       if (rowDate && (!byProduct[row.productId].lastSignupAt || rowDate > byProduct[row.productId].lastSignupAt!)) {
         byProduct[row.productId].lastSignupAt = rowDate;
       }
     }
 
-    const totalPending = all.filter(r => !r.notifiedAt).length;
+    const totalPending = all.filter(r => !r.notifiedAt && !r.dismissedAt).length;
     const totalNotified = all.filter(r => !!r.notifiedAt).length;
 
     res.json({
@@ -124,7 +124,7 @@ router.post("/admin/stock-alerts/notify/:productId", async (req: Request, res: R
     const pending = await db
       .select()
       .from(stockAlertsTable)
-      .where(and(eq(stockAlertsTable.productId, productId), isNull(stockAlertsTable.notifiedAt)));
+      .where(and(eq(stockAlertsTable.productId, productId), isNull(stockAlertsTable.notifiedAt), isNull(stockAlertsTable.dismissedAt)));
 
     if (pending.length === 0) { res.json({ sent: 0 }); return; }
 
@@ -144,6 +144,40 @@ router.post("/admin/stock-alerts/notify/:productId", async (req: Request, res: R
     res.json({ sent });
   } catch (err) {
     req.log.error({ err }, "Failed to send stock alerts");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Dismiss keeps a customer's subscription record for audit purposes without emailing it.
+router.post("/admin/stock-alerts/:id/dismiss", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = parseInt(req.params.id as string, 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid alert ID" }); return; }
+  try {
+    const [dismissed] = await db.update(stockAlertsTable)
+      .set({ dismissedAt: new Date() })
+      .where(and(eq(stockAlertsTable.id, id), isNull(stockAlertsTable.notifiedAt), isNull(stockAlertsTable.dismissedAt)))
+      .returning({ id: stockAlertsTable.id });
+    if (!dismissed) { res.status(409).json({ error: "Only pending alerts can be dismissed" }); return; }
+    res.json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to dismiss stock alert");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/admin/stock-alerts/dismiss/:productId", async (req: Request, res: Response): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const productId = parseInt(req.params.productId as string, 10);
+  if (isNaN(productId)) { res.status(400).json({ error: "Invalid product ID" }); return; }
+  try {
+    const dismissed = await db.update(stockAlertsTable)
+      .set({ dismissedAt: new Date() })
+      .where(and(eq(stockAlertsTable.productId, productId), isNull(stockAlertsTable.notifiedAt), isNull(stockAlertsTable.dismissedAt)))
+      .returning({ id: stockAlertsTable.id });
+    res.json({ dismissed: dismissed.length });
+  } catch (err) {
+    req.log.error({ err }, "Failed to dismiss stock alerts");
     res.status(500).json({ error: "Internal server error" });
   }
 });
