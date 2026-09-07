@@ -7,12 +7,13 @@ import {
   RotateCcw, Star, ShoppingBag, Mail, Gift, BellRing,
   Truck, RefreshCcw, FileText, Bell, ShieldAlert,
   ChevronDown, ChevronRight, Settings2, ShieldBan, Send, BarChart3,
-  Settings, UserCog, ClipboardList, WalletCards, Menu, ShieldCheck, Receipt, Share2, Network
+  Settings, UserCog, ClipboardList, WalletCards, Menu, ShieldCheck, Receipt, Share2, Network, Search
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useAlerts, useMarkAlertRead, type AdminAlert } from "@/hooks/useAlerts";
 import { Link as WLink } from "wouter";
+import { GlobalCommand } from "./GlobalCommand";
 
 type NavItem = { href: string; label: string; icon: React.ElementType };
 type NavGroup = { label: string; items: NavItem[] };
@@ -249,6 +250,18 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setCommandOpen((open) => !open);
+      }
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
 
   if (isLoading) {
     return (
@@ -281,7 +294,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md bg-primary text-sm font-bold text-primary-foreground shadow-sm">O</span>
             <h1 className="font-semibold text-[15px] tracking-tight truncate">OmniQure</h1>
           </div>
-          <BellButton />
         </div>
         <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
            <NavGroups groups={coreNavGroups} location={location} />
@@ -314,19 +326,41 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
        <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header className="min-h-12 sm:min-h-14 flex items-center justify-between gap-3 px-3 sm:px-6 bg-card border-b lg:hidden">
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Open admin navigation"
-            onClick={() => setMobileNavOpen(true)}
-          >
-            <Menu className="w-5 h-5" />
-          </Button>
-          <h1 className="font-bold text-base sm:text-lg text-primary truncate flex-1">OmniQure Admin</h1>
-          <div className="flex items-center gap-1">
+        <header className="min-h-12 sm:min-h-14 flex items-center justify-between gap-3 px-3 sm:px-6 bg-card border-b">
+          <div className="flex items-center gap-3 lg:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Open admin navigation"
+              onClick={() => setMobileNavOpen(true)}
+            >
+              <Menu className="w-5 h-5" />
+            </Button>
+            <h1 className="font-bold text-base sm:text-lg text-primary truncate">OmniQure Admin</h1>
+          </div>
+
+          <div className="hidden lg:flex flex-1 items-center max-w-md ml-4">
+            <Button
+              variant="outline"
+              onClick={() => setCommandOpen(true)}
+              className="relative w-full justify-start text-sm text-muted-foreground bg-muted/50 hover:bg-muted"
+            >
+              <Search className="mr-2 h-4 w-4" />
+              <span>Search orders, customers, products...</span>
+              <kbd className="pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border bg-background px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+                <span className="text-xs">⌘</span>K
+              </kbd>
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-1 ml-auto">
+            <div className="lg:hidden">
+              <Button variant="ghost" size="icon" onClick={() => setCommandOpen(true)} aria-label="Search">
+                <Search className="w-5 h-5" />
+              </Button>
+            </div>
             <BellButton />
-            <Button variant="ghost" size="icon" aria-label="Log out" onClick={handleLogout}>
+            <Button variant="ghost" size="icon" aria-label="Log out" onClick={handleLogout} className="hidden lg:flex">
               <LogOut className="w-5 h-5" />
             </Button>
           </div>
@@ -335,6 +369,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           <div className="admin-page mx-auto w-full max-w-[1440px]">{children}</div>
         </div>
       </main>
+
+      <GlobalCommand open={commandOpen} onOpenChange={setCommandOpen} />
 
        <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
          <SheetContent
