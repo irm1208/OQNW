@@ -4,10 +4,8 @@ import { getAdminMeQueryKey, useAdminLogout, useAdminMe } from "@workspace/api-c
 import { useQueryClient } from "@tanstack/react-query";
 import {
   LayoutDashboard, ShoppingCart, Users, Package, Tags, LogOut, Loader2,
-  RotateCcw, Star, ShoppingBag, Mail, Gift, BellRing,
-  Truck, RefreshCcw, FileText, Bell, ShieldAlert,
-  ChevronDown, ChevronRight, Settings2, ShieldBan, Send, BarChart3,
-  Settings, UserCog, ClipboardList, WalletCards, Menu, ShieldCheck, Receipt, Share2, Network, Search
+  RotateCcw, Bell, ShieldAlert, ChevronDown, ChevronRight, BarChart3,
+  Settings, ClipboardList, Menu, Search
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -15,81 +13,78 @@ import { useAlerts, useMarkAlertRead, type AdminAlert } from "@/hooks/useAlerts"
 import { Link as WLink } from "wouter";
 import { GlobalCommand } from "./GlobalCommand";
 
-type NavItem = { href: string; label: string; icon: React.ElementType };
-type NavGroup = { label: string; items: NavItem[] };
+type NavLink = { href: string; label: string; icon?: React.ElementType; isGroup?: false };
+type NavGroup = { label: string; icon: React.ElementType; items: Omit<NavLink, "icon" | "isGroup">[]; isGroup: true };
+type NavItem = NavLink | NavGroup;
 
-const coreNavGroups: NavGroup[] = [
+const navigation: NavItem[] = [
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, isGroup: false },
   {
-    label: "Main",
+    label: "Orders", icon: ShoppingCart, isGroup: true,
     items: [
-      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-      { href: "/orders", label: "Orders", icon: ShoppingCart },
-      { href: "/products", label: "Products", icon: Package },
-      { href: "/customers", label: "Registered Users", icon: Users },
-      { href: "/reports", label: "Reports", icon: BarChart3 },
-      { href: "/alerts", label: "Alerts", icon: Bell },
-    ],
+      { href: "/orders", label: "Orders" },
+      { href: "/refunds", label: "Refunds" },
+      { href: "/crypto-payments", label: "Crypto Audit" },
+      { href: "/wholesale", label: "Wholesale" },
+    ]
   },
   {
-    label: "Operations",
+    label: "Products & Inventory", icon: Package, isGroup: true,
     items: [
-      { href: "/fulfillment", label: "Fulfilment", icon: ClipboardList },
-      { href: "/returns", label: "Returns", icon: RotateCcw },
-      { href: "/inventory-audit", label: "Inventory Audit", icon: ClipboardList },
-      { href: "/affiliates", label: "Affiliates", icon: Network },
-      { href: "/discounts", label: "Discounts", icon: Tags },
-    ],
+      { href: "/products", label: "Products" },
+      { href: "/stock-alerts", label: "Stock Alerts" },
+      { href: "/inventory-audit", label: "Inventory Audit" },
+    ]
   },
   {
-    label: "Settings",
+    label: "Customers", icon: Users, isGroup: true,
     items: [
-      { href: "/settings", label: "Store Settings", icon: Settings },
-      { href: "/users", label: "Admin Users", icon: UserCog },
-      { href: "/tax", label: "Tax Rates", icon: Receipt },
-      { href: "/webhooks", label: "Webhooks", icon: Send },
-    ],
+      { href: "/customers", label: "Customers" },
+      { href: "/customer-segments", label: "Segments" },
+      { href: "/loyalty", label: "Loyalty" },
+      { href: "/credits", label: "Credits" },
+      { href: "/referrals", label: "Referrals" },
+      { href: "/affiliates", label: "Affiliates" },
+    ]
   },
-];
-
-const advancedNavGroups: NavGroup[] = [
+  { href: "/fulfillment", label: "Fulfilment", icon: ClipboardList, isGroup: false },
   {
-    label: "Sales",
+    label: "Returns", icon: RotateCcw, isGroup: true,
     items: [
-      { href: "/wholesale", label: "Wholesale", icon: Receipt },
-      { href: "/fraud", label: "Fraud Queue", icon: ShieldAlert },
-      { href: "/crypto-payments", label: "Crypto Audit", icon: WalletCards },
-      { href: "/refunds", label: "Refunds", icon: RefreshCcw },
-      { href: "/abandoned-carts", label: "Abandoned Carts", icon: ShoppingBag },
-    ],
+      { href: "/returns", label: "Returns" },
+      { href: "/reviews", label: "Reviews" },
+    ]
   },
   {
-    label: "Customers",
+    label: "Marketing", icon: Tags, isGroup: true,
     items: [
-      { href: "/customer-segments", label: "Segments", icon: Users },
-      { href: "/reviews",       label: "Reviews",       icon: Star },
-      { href: "/loyalty",       label: "Loyalty",       icon: Gift },
-      { href: "/credits",       label: "Credits",       icon: WalletCards },
-      { href: "/referrals", label: "Referrals", icon: Share2 },
-    ],
+      { href: "/discounts", label: "Discounts" },
+      { href: "/newsletter", label: "Newsletter" },
+      { href: "/blog", label: "Blog" },
+      { href: "/abandoned-carts", label: "Abandoned Carts" },
+      { href: "/email-log", label: "Email Log" },
+    ]
+  },
+  { href: "/reports", label: "Reports", icon: BarChart3, isGroup: false },
+  {
+    label: "Risk & Security", icon: ShieldAlert, isGroup: true,
+    items: [
+      { href: "/fraud", label: "Fraud Queue" },
+      { href: "/blocked-ips", label: "Blocked IPs" },
+      { href: "/public-traffic", label: "Traffic Protection" },
+      { href: "/security-activity", label: "Security Activity" },
+    ]
   },
   {
-    label: "Storefront",
+    label: "Settings", icon: Settings, isGroup: true,
     items: [
-      { href: "/stock-alerts", label: "Stock Alerts", icon: BellRing },
-      { href: "/shipping", label: "Shipping", icon: Truck },
-      { href: "/blog",       label: "Blog",       icon: FileText },
-      { href: "/email-log",  label: "Email Log",  icon: Mail },
-      { href: "/newsletter", label: "Newsletter", icon: Send },
-    ],
-  },
-  {
-    label: "Security",
-    items: [
-      { href: "/blocked-ips", label: "Blocked IPs", icon: ShieldBan },
-      { href: "/public-traffic", label: "Traffic Protection", icon: ShieldCheck },
-      { href: "/security-activity", label: "Security Activity", icon: ShieldCheck },
-    ],
-  },
+      { href: "/settings", label: "Store Settings" },
+      { href: "/shipping", label: "Shipping" },
+      { href: "/tax", label: "Tax Rates" },
+      { href: "/webhooks", label: "Webhooks" },
+      { href: "/users", label: "Admin Users" },
+    ]
+  }
 ];
 
 const SEVERITY_DOT: Record<AdminAlert["severity"], string> = {
@@ -173,12 +168,10 @@ function BellButton() {
   );
 }
 
-function NavGroups({
-  groups,
+function NavigationMenu({
   location,
   onNavigate,
 }: {
-  groups: NavGroup[];
   location: string;
   onNavigate?: () => void;
 }) {
@@ -201,46 +194,146 @@ function NavGroups({
     return counts;
   }, [alerts]);
 
+  const [expanded, setExpanded] = useState<Record<string, boolean>>(() => {
+    try {
+      const stored = sessionStorage.getItem("omniqure:admin:nav:expanded");
+      const parsed = stored ? JSON.parse(stored) : {};
+
+      const autoExpanded = { ...parsed };
+      navigation.forEach((item) => {
+        if (item.isGroup) {
+          const hasActiveChild = item.items.some((child) => location === child.href || location.startsWith(`${child.href}/`));
+          if (hasActiveChild) {
+            autoExpanded[item.label] = true;
+          }
+        }
+      });
+      return autoExpanded;
+    } catch {
+      return {};
+    }
+  });
+
+  useEffect(() => {
+    const activeGroup = navigation.find(
+      (item): item is NavGroup =>
+        item.isGroup === true &&
+        item.items.some(
+          (child) => location === child.href || location.startsWith(`${child.href}/`),
+        ),
+    );
+    if (!activeGroup) return;
+
+    setExpanded((current) => {
+      if (current[activeGroup.label]) return current;
+      const next = { ...current, [activeGroup.label]: true };
+      try {
+        sessionStorage.setItem("omniqure:admin:nav:expanded", JSON.stringify(next));
+      } catch {
+        // Navigation still works when session storage is unavailable.
+      }
+      return next;
+    });
+  }, [location]);
+
+  const toggleGroup = (label: string) => {
+    const next = { ...expanded, [label]: !expanded[label] };
+    setExpanded(next);
+    try {
+      sessionStorage.setItem("omniqure:admin:nav:expanded", JSON.stringify(next));
+    } catch {}
+  };
+
   return (
-    <>
-      {groups.map((group) => (
-        <div key={group.label}>
-          <p className="px-2.5 mb-1.5 mt-4 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
-            {group.label}
-          </p>
-          <div className="space-y-0.5">
-            {group.items.map((item) => {
-              const isActive = location.startsWith(item.href);
-              const notificationCount = notificationCounts[item.href] ?? 0;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={onNavigate}
-                  onPointerDown={onNavigate}
-                  className={`relative flex min-h-10 md:min-h-8 items-center gap-3 md:gap-2.5 rounded-md px-3 md:px-2.5 py-2 md:py-1.5 text-sm md:text-[13px] font-medium transition-colors ${
-                    isActive
-                        ? "bg-black/5 dark:bg-white/10 text-foreground font-semibold"
-                       : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground"
-                  }`}
-                >
-                  <item.icon className={`w-4 h-4 shrink-0 ${isActive ? "text-foreground" : "text-muted-foreground"}`} />
-                   <span className="min-w-0 flex-1 truncate">{item.label}</span>
-                   {notificationCount > 0 && (
-                     <span
-                       aria-label={`${notificationCount} notification${notificationCount === 1 ? "" : "s"}`}
-                       className="min-w-[18px] h-[18px] rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center px-1"
-                     >
-                       {notificationCount > 99 ? "99+" : notificationCount}
-                     </span>
-                   )}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      ))}
-    </>
+    <div className="space-y-1">
+      {navigation.map((item) => {
+        if (item.isGroup) {
+          const hasActiveChild = item.items.some(child => location === child.href || location.startsWith(`${child.href}/`));
+          const isExpanded = expanded[item.label] || false;
+
+          return (
+            <div key={item.label} className="space-y-0.5">
+              <button
+                onClick={() => toggleGroup(item.label)}
+                aria-expanded={isExpanded}
+                className={`w-full flex min-h-10 md:min-h-8 items-center gap-3 md:gap-2.5 rounded-md px-3 md:px-2.5 py-2 md:py-1.5 text-sm md:text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
+                  hasActiveChild
+                    ? "bg-black/5 dark:bg-white/10 text-foreground font-semibold"
+                    : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground"
+                }`}
+              >
+                <item.icon className={`w-4 h-4 shrink-0 ${hasActiveChild ? "text-foreground" : "text-muted-foreground"}`} />
+                <span className="flex-1 text-left truncate">{item.label}</span>
+                {isExpanded ? (
+                  <ChevronDown className="w-3.5 h-3.5 shrink-0" />
+                ) : (
+                  <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+                )}
+              </button>
+
+              {isExpanded && (
+                <div className="space-y-0.5 mt-0.5 ml-2 border-l border-border pl-2">
+                  {item.items.map((child) => {
+                    const isActive = location === child.href || location.startsWith(`${child.href}/`);
+                    const notificationCount = notificationCounts[child.href] ?? 0;
+
+                    return (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        onClick={onNavigate}
+                        className={`relative flex min-h-10 md:min-h-8 items-center gap-3 md:gap-2.5 rounded-md px-3 md:px-2.5 py-2 md:py-1.5 text-sm md:text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
+                          isActive
+                            ? "text-foreground font-semibold bg-black/5 dark:bg-white/10"
+                            : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground"
+                        }`}
+                      >
+                        <span className="min-w-0 flex-1 truncate">{child.label}</span>
+                        {notificationCount > 0 && (
+                          <span
+                            aria-label={`${notificationCount} notification${notificationCount === 1 ? "" : "s"}`}
+                            className="min-w-[18px] h-[18px] rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center px-1"
+                          >
+                            {notificationCount > 99 ? "99+" : notificationCount}
+                          </span>
+                        )}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        }
+
+        const isActive = location === item.href || location.startsWith(`${item.href}/`);
+        const notificationCount = notificationCounts[item.href] ?? 0;
+
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            onClick={onNavigate}
+            className={`relative flex min-h-10 md:min-h-8 items-center gap-3 md:gap-2.5 rounded-md px-3 md:px-2.5 py-2 md:py-1.5 text-sm md:text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
+              isActive
+                ? "bg-black/5 dark:bg-white/10 text-foreground font-semibold"
+                : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground"
+            }`}
+          >
+            {item.icon && <item.icon className={`w-4 h-4 shrink-0 ${isActive ? "text-foreground" : "text-muted-foreground"}`} />}
+            <span className="min-w-0 flex-1 truncate">{item.label}</span>
+            {notificationCount > 0 && (
+              <span
+                aria-label={`${notificationCount} notification${notificationCount === 1 ? "" : "s"}`}
+                className="min-w-[18px] h-[18px] rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center px-1"
+              >
+                {notificationCount > 99 ? "99+" : notificationCount}
+              </span>
+            )}
+          </Link>
+        );
+      })}
+    </div>
   );
 }
 
@@ -249,7 +342,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const { data: session, isLoading } = useAdminMe();
   const logout = useAdminLogout();
   const queryClient = useQueryClient();
-  const [advancedOpen, setAdvancedOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
 
@@ -296,27 +388,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             <h1 className="font-semibold text-[15px] tracking-tight truncate">OmniQure</h1>
           </div>
         </div>
-        <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
-           <NavGroups groups={coreNavGroups} location={location} />
-
-          <div className="border-t pt-3">
-            <button
-              onClick={() => setAdvancedOpen(o => !o)}
-              className="w-full flex min-h-10 md:min-h-8 items-center gap-3 md:gap-2.5 rounded-md px-3 md:px-2.5 py-2 md:py-1.5 text-sm md:text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-              aria-expanded={advancedOpen}
-            >
-              <Settings2 className="w-4 h-4 shrink-0" />
-              <span className="flex-1 text-left">Specialist tools</span>
-              {advancedOpen
-                ? <ChevronDown className="w-3.5 h-3.5 shrink-0" />
-                : <ChevronRight className="w-3.5 h-3.5 shrink-0" />}
-            </button>
-            {advancedOpen && (
-              <div className="mt-3 space-y-4">
-                <NavGroups groups={advancedNavGroups} location={location} />
-              </div>
-            )}
-          </div>
+        <nav className="flex-1 px-3 py-2 overflow-y-auto">
+           <NavigationMenu location={location} />
         </nav>
         <div className="p-4 border-t">
           <Button variant="ghost" className="w-full justify-start text-muted-foreground" onClick={handleLogout}>
@@ -386,26 +459,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
              <div className="h-14 shrink-0 flex items-center px-5 border-b">
                <h1 className="font-bold text-lg text-primary tracking-tight">OmniQure Admin</h1>
              </div>
-             <nav className="flex-1 px-3 py-4 space-y-4 overflow-y-auto">
-               <NavGroups groups={coreNavGroups} location={location} onNavigate={() => setMobileNavOpen(false)} />
-               <div className="border-t pt-3">
-                 <button
-                   onClick={() => setAdvancedOpen(o => !o)}
-                    className="w-full flex min-h-10 md:min-h-8 items-center gap-3 md:gap-2.5 rounded-md px-3 md:px-2.5 py-2 md:py-1.5 text-sm md:text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-                   aria-expanded={advancedOpen}
-                 >
-                   <Settings2 className="w-4 h-4 shrink-0" />
-                    <span className="flex-1 text-left">Specialist tools</span>
-                   {advancedOpen
-                     ? <ChevronDown className="w-4 h-4 shrink-0" />
-                     : <ChevronRight className="w-4 h-4 shrink-0" />}
-                 </button>
-                 {advancedOpen && (
-                   <div className="mt-3 space-y-4">
-                     <NavGroups groups={advancedNavGroups} location={location} onNavigate={() => setMobileNavOpen(false)} />
-                   </div>
-                 )}
-               </div>
+             <nav className="flex-1 px-3 py-4 overflow-y-auto">
+               <NavigationMenu location={location} onNavigate={() => setMobileNavOpen(false)} />
              </nav>
              <div className="p-4 border-t">
                <Button variant="ghost" className="w-full min-h-11 justify-start text-muted-foreground" onClick={handleLogout}>
