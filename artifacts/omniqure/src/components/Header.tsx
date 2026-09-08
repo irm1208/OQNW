@@ -10,7 +10,6 @@ import { groupProducts } from "@/data/groupedProducts";
 import { popularProductSlugs } from "@/data/popularPeptides";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
-import { getPurityStr } from "@/utils/productPurity";
 import { useAffiliateMe } from "@/hooks/useAffiliate";
 
 const POPULAR_SEARCHES = [
@@ -436,7 +435,7 @@ export default function Header() {
                       <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                         <span style={{ fontSize: "11px", color: "#64748B" }}>{p.category}</span>
                         <span style={{ fontSize: "10px", color: "#059669", fontWeight: 700, backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0", borderRadius: "5px", padding: "1px 5px" }}>
-                          {getPurityStr(p.id)}
+                          {p.purity ?? "Purity not specified"}
                         </span>
                       </div>
                     </div>

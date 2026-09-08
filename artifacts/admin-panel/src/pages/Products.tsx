@@ -59,6 +59,24 @@ function notifyStorefrontCatalogUpdated() {
   window.localStorage.setItem("omniqure:catalog-updated", String(Date.now()));
 }
 
+const PRICE_DRAFTS_STORAGE_KEY = "omniqure:admin-price-drafts";
+
+function loadSavedPriceDrafts(): Record<number, string> {
+  try {
+    const value = window.sessionStorage.getItem(PRICE_DRAFTS_STORAGE_KEY);
+    if (!value) return {};
+    const parsed = JSON.parse(value) as Record<string, unknown>;
+    return Object.fromEntries(
+      Object.entries(parsed)
+        .filter(([, draft]) => typeof draft === "string")
+        .map(([id, draft]) => [Number(id), draft as string])
+        .filter(([id]) => Number.isInteger(id)),
+    );
+  } catch {
+    return {};
+  }
+}
+
 type ProductFormData = {
   name: string;
   slug: string;
@@ -156,7 +174,7 @@ function CatalogTab() {
   const [form, setForm] = useState<ProductFormData>(emptyForm());
   const [saving, setSaving] = useState(false);
   const [savingPrices, setSavingPrices] = useState(false);
-  const [priceDrafts, setPriceDrafts] = useState<Record<number, string>>({});
+  const [priceDrafts, setPriceDrafts] = useState<Record<number, string>>(loadSavedPriceDrafts);
 
   const queryParams = {
     ...(search ? { search } : {}),
@@ -226,22 +244,22 @@ function CatalogTab() {
       name: form.name,
       slug: form.slug,
       category: form.category,
-      priceGbp: form.priceGbp ? Number(form.priceGbp) : undefined,
-      shortDescription: form.shortDescription || undefined,
-      description: form.description || undefined,
-      imageUrl: form.imageUrl || undefined,
-      purity: form.purity || undefined,
-      alsoKnownAs: form.alsoKnownAs || undefined,
-      molecularWeight: form.molecularWeight || undefined,
-      casNumber: form.casNumber || undefined,
-      formula: form.formula || undefined,
-      sequence: form.sequence || undefined,
-      storage: form.storage || undefined,
-      appearance: form.appearance || undefined,
-      solubility: form.solubility || undefined,
-      halfLife: form.halfLife || undefined,
-      seoTitle: form.seoTitle.trim() || undefined,
-      seoDescription: form.seoDescription.trim() || undefined,
+      priceGbp: form.priceGbp ? Number(form.priceGbp) : null,
+      shortDescription: form.shortDescription.trim() || null,
+      description: form.description.trim() || null,
+      imageUrl: form.imageUrl.trim() || null,
+      purity: form.purity.trim() || null,
+      alsoKnownAs: form.alsoKnownAs.trim() || null,
+      molecularWeight: form.molecularWeight.trim() || null,
+      casNumber: form.casNumber.trim() || null,
+      formula: form.formula.trim() || null,
+      sequence: form.sequence.trim() || null,
+      storage: form.storage.trim() || null,
+      appearance: form.appearance.trim() || null,
+      solubility: form.solubility.trim() || null,
+      halfLife: form.halfLife.trim() || null,
+      seoTitle: form.seoTitle.trim() || null,
+      seoDescription: form.seoDescription.trim() || null,
       isPublished: form.isPublished,
       isFeatured: form.isFeatured,
     };
@@ -258,7 +276,31 @@ function CatalogTab() {
         });
         toast.success("Product updated");
       } else {
-        await createProduct.mutateAsync({ data: payload });
+        await createProduct.mutateAsync({
+          data: {
+            name: form.name,
+            slug: form.slug,
+            category: form.category,
+            priceGbp: form.priceGbp ? Number(form.priceGbp) : undefined,
+            shortDescription: form.shortDescription.trim() || undefined,
+            description: form.description.trim() || undefined,
+            imageUrl: form.imageUrl.trim() || undefined,
+            purity: form.purity.trim() || undefined,
+            alsoKnownAs: form.alsoKnownAs.trim() || undefined,
+            molecularWeight: form.molecularWeight.trim() || undefined,
+            casNumber: form.casNumber.trim() || undefined,
+            formula: form.formula.trim() || undefined,
+            sequence: form.sequence.trim() || undefined,
+            storage: form.storage.trim() || undefined,
+            appearance: form.appearance.trim() || undefined,
+            solubility: form.solubility.trim() || undefined,
+            halfLife: form.halfLife.trim() || undefined,
+            seoTitle: form.seoTitle.trim() || undefined,
+            seoDescription: form.seoDescription.trim() || undefined,
+            isPublished: form.isPublished,
+            isFeatured: form.isFeatured,
+          },
+        });
         toast.success("Product created");
       }
       await invalidate();
@@ -350,6 +392,7 @@ function CatalogTab() {
       return;
     }
 
+    window.sessionStorage.setItem(PRICE_DRAFTS_STORAGE_KEY, JSON.stringify(priceDrafts));
     setSavingPrices(true);
     try {
       await Promise.all(
@@ -363,6 +406,7 @@ function CatalogTab() {
       );
       await invalidate();
       notifyStorefrontCatalogUpdated();
+      window.sessionStorage.removeItem(PRICE_DRAFTS_STORAGE_KEY);
       toast.success(`Saved ${changedPriceProducts.length} peptide price${changedPriceProducts.length === 1 ? "" : "s"}`);
     } catch {
       toast.error("Failed to save one or more prices");

@@ -8,9 +8,8 @@ import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { Heart } from "lucide-react";
-import { getPurityStr } from "@/utils/productPurity";
-import { productDetails } from "@/data/productDetails";
 import { janoshikDataBySlug } from "@/data/janoshikData";
+import { useProducts } from "@/context/ProductsContext";
 
 interface QuickViewModalProps {
   group: GroupedProduct;
@@ -23,17 +22,18 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
   const { addToCart } = useCart();
   const { formatPrice } = useCurrency();
   const { toggle: toggleWishlist, has: inWishlist } = useWishlist();
+  const { productDetails } = useProducts();
 
   const [selectedIdx, setSelectedIdx] = useState(initialIdx);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
 
   const variant = group.variants[selectedIdx];
-  const productIdInt = parseInt(String(variant?.id ?? group.variants[0]?.id), 10);
-  const purityStr = getPurityStr(variant.id);
+  const productIdInt = Number.parseInt(String(variant.id), 10);
+  const purityStr = variant.purity ?? "Not specified";
   const janoshikReport = janoshikDataBySlug[variant.slug];
-  const detail = productDetails[variant.slug] ?? productDetails[String(productIdInt)];
-  const description = detail?.description ?? "";
+  const detail = productDetails[variant.slug];
+  const description = variant.description ?? "";
   const shortDesc = description.length > 200 ? description.slice(0, 200).trimEnd() + "…" : description;
 
   const handleAddToCart = useCallback(() => {

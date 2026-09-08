@@ -199,6 +199,13 @@ export class ApiError<T = unknown> extends Error {
   }
 }
 
+type ApiErrorHandler = (error: ApiError<unknown>) => void;
+let _apiErrorHandler: ApiErrorHandler | null = null;
+
+export function setApiErrorHandler(handler: ApiErrorHandler | null): void {
+  _apiErrorHandler = handler;
+}
+
 export class ResponseParseError extends Error {
   readonly name = "ResponseParseError";
   readonly status: number;
@@ -364,7 +371,9 @@ export async function customFetch<T = unknown>(
 
   if (!response.ok) {
     const errorData = await parseErrorBody(response, method);
-    throw new ApiError(response, errorData, requestInfo);
+    const error = new ApiError(response, errorData, requestInfo);
+    _apiErrorHandler?.(error);
+    throw error;
   }
 
   return (await parseSuccessBody(response, responseType, requestInfo)) as T;

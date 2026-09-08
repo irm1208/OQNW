@@ -194,7 +194,7 @@ export default function Login() {
           </div>
           <CardTitle className="text-2xl font-bold tracking-tight">OmniQure Ops</CardTitle>
           <CardDescription>
-            {isLocked ? "Access temporarily suspended" : recoveryCodes.length > 0 ? "Two-step verification is active" : isEnrollmentStep ? "Set up required two-step verification" : isMfaStep ? "Complete two-step verification" : isReauthentication ? "Confirm your identity to create the payment link" : "Sign in to the admin console"}
+            {isLocked ? "Access temporarily suspended" : recoveryCodes.length > 0 ? "Two-step verification is active" : isEnrollmentStep ? "Set up required two-step verification" : isMfaStep ? "Complete two-step verification" : isReauthentication ? "Confirm your identity to continue" : "Sign in to the admin console"}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

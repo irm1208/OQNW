@@ -26,7 +26,19 @@ app.use((req, res, next) => {
   if (process.env.NODE_ENV === "production") {
     res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
   }
-  if (req.path.startsWith("/api/admin") || req.path.startsWith("/api/account") || req.path.startsWith("/api/auth")) {
+  const mutablePublicGet = req.method === "GET" && (
+    req.path.startsWith("/api/products") ||
+    req.path.startsWith("/api/blog") ||
+    req.path.startsWith("/api/store-settings") ||
+    req.path.startsWith("/api/shipping") ||
+    req.path.startsWith("/api/tax")
+  );
+  if (
+    mutablePublicGet ||
+    req.path.startsWith("/api/admin") ||
+    req.path.startsWith("/api/account") ||
+    req.path.startsWith("/api/auth")
+  ) {
     res.setHeader("Cache-Control", "no-store");
   }
   next();

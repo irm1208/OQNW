@@ -9,7 +9,7 @@ import { resolveBacWaterProducts } from "@/data/bacWaterProducts";
 import JanoshikReportModal from "@/components/JanoshikReportModal";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
-import { getPurity, getPurityStr, getLotNumber } from "@/utils/productPurity";
+import { getLotNumber } from "@/utils/productPurity";
 import { useRecentlyViewed } from "@/context/RecentlyViewedContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import ProductInfoAccordion from "@/components/ProductInfoAccordion";
@@ -17,6 +17,7 @@ import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useSEO, SITE_URL } from "@/hooks/useSEO";
 import { getProductSeoMetadata, getPublicProductPath } from "@workspace/api-client-react";
+import ReviewsCarousel, { type ReviewItem } from "@/components/ReviewsCarousel";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -29,9 +30,12 @@ function parseBaseName(name: string): { base: string; strength: string } {
   return { base: name, strength: "" };
 }
 
-type ReviewSummary = {
-  avgRating: number | null;
-  totalCount: number;
+type ReviewData = {
+  reviews: ReviewItem[];
+  summary: {
+    avgRating: number | null;
+    totalCount: number;
+  };
 };
 
 const VOLUME_TIERS = [
@@ -152,30 +156,41 @@ export default function ProductPage() {
   const { customer } = useCustomerAuth();
   const { formatPrice } = useCurrency();
   const { toggle: toggleWishlist, has: inWishlist } = useWishlist();
-  const [reviewSummary, setReviewSummary] = useState<ReviewSummary | null>(null);
+  const [reviewData, setReviewData] = useState<ReviewData | null>(null);
 
   useEffect(() => {
     if (!product) {
-      setReviewSummary(null);
+      setReviewData(null);
       return;
     }
 
     let cancelled = false;
-    setReviewSummary(null);
-    fetch(apiUrl(`products/${product.id}/reviews`), { credentials: "include" })
-      .then((response) => {
-        if (!response.ok) throw new Error("Failed to load review summary");
-        return response.json() as Promise<{ summary?: ReviewSummary }>;
+    setReviewData(null);
+    const refreshReviewSummary = () => {
+      if (document.visibilityState !== "visible") return;
+      void fetch(apiUrl(`products/${product.id}/reviews`), {
+        credentials: "include",
+        cache: "no-store",
       })
-      .then((data) => {
-        if (!cancelled) setReviewSummary(data.summary ?? null);
-      })
-      .catch(() => {
-        if (!cancelled) setReviewSummary(null);
-      });
+        .then((response) => {
+          if (!response.ok) throw new Error("Failed to load review summary");
+          return response.json() as Promise<ReviewData>;
+        })
+        .then((data) => {
+          if (!cancelled) setReviewData(data);
+        })
+        .catch(() => {
+          if (!cancelled) setReviewData(null);
+        });
+    };
+    refreshReviewSummary();
+    const interval = window.setInterval(refreshReviewSummary, 15_000);
+    window.addEventListener("focus", refreshReviewSummary);
 
     return () => {
       cancelled = true;
+      window.clearInterval(interval);
+      window.removeEventListener("focus", refreshReviewSummary);
     };
   }, [product?.id]);
 
@@ -209,13 +224,13 @@ export default function ProductPage() {
        currency: "GBP",
       productId: product.slug,
       category: product.category,
-      purity: getPurityStr(product.id),
+      purity: product.purity ?? "",
       availability: seoAvailability as "InStock" | "OutOfStock" | "LimitedAvailability",
        aggregateRating:
-         reviewSummary?.avgRating !== null && reviewSummary?.avgRating !== undefined
+         reviewData?.summary.avgRating !== null && reviewData?.summary.avgRating !== undefined
            ? {
-               ratingValue: reviewSummary.avgRating,
-               reviewCount: reviewSummary.totalCount,
+               ratingValue: reviewData.summary.avgRating,
+               reviewCount: reviewData.summary.totalCount,
              }
            : null,
     } : null,
@@ -427,9 +442,9 @@ export default function ProductPage() {
               {/* Purity bar */}
               <div className="px-4 py-3 flex items-center gap-2.5" style={{ borderBottom: "1px solid #F1F5F9" }}>
                 <span className="text-xs font-bold" style={{ color: "#1B5CB5" }}>PURITY</span>
-                <span className="text-xs font-semibold" style={{ color: "#0F172A" }}>{getPurityStr(product.id)}</span>
+                <span className="text-xs font-semibold" style={{ color: "#0F172A" }}>{product.purity ?? "Not specified"}</span>
                 <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "#E2E8F0" }}>
-                  <div className="h-full rounded-full" style={{ width: `${getPurity(product.id)}%`, background: "linear-gradient(90deg, #1B5CB5, #2563EB)" }} />
+                  <div className="h-full rounded-full" style={{ width: `${Math.max(0, Math.min(100, Number.parseFloat(product.purity ?? "0") || 0))}%`, background: "linear-gradient(90deg, #1B5CB5, #2563EB)" }} />
                 </div>
               </div>
 
@@ -451,7 +466,7 @@ export default function ProductPage() {
               {/* Quality badges */}
               <div className="grid grid-cols-2 gap-px" style={{ backgroundColor: "#E8EDF5" }}>
                 {[
-                  { icon: <Shield size={11} />, text: `${getPurityStr(product.id)} verified purity` },
+                  { icon: <Shield size={11} />, text: product.purity ? `${product.purity} verified purity` : "Purity not specified" },
                   { icon: <Package size={11} />, text: "Lab Certified" },
                   { icon: <FlaskConical size={11} />, text: "Lab Tested" },
                   { icon: <Thermometer size={11} />, text: "Lyophilized" },
@@ -583,8 +598,17 @@ export default function ProductPage() {
               </div>
             </div>
 
+            {product.description && (
+              <p
+                className="mb-4 max-w-3xl"
+                style={{ color: "#475569", fontSize: "15px", lineHeight: 1.7 }}
+              >
+                {product.description}
+              </p>
+            )}
+
             {/* Purity / Form / Composition / Storage */}
-            <ProductInfoAccordion detail={detail} productId={String(product.id)} />
+            <ProductInfoAccordion detail={detail} />
 
             {/* Strength switcher */}
             {strengthVariants.length > 1 && (
@@ -1009,6 +1033,25 @@ export default function ProductPage() {
           </div>
         </div>
 
+        {reviewData && reviewData.reviews.length > 0 && (
+          <section
+            className="rounded-2xl p-5 md:p-7 mb-8"
+            style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5" }}
+          >
+            <div className="flex items-end justify-between gap-4 mb-5">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#1B5CB5" }}>
+                  Verified customer feedback
+                </p>
+                <h2 className="text-xl font-bold" style={{ color: "#0F172A" }}>Customer Reviews</h2>
+              </div>
+              <p className="text-sm font-semibold" style={{ color: "#475569" }}>
+                {reviewData.summary.avgRating?.toFixed(1)} / 5 · {reviewData.summary.totalCount} review{reviewData.summary.totalCount === 1 ? "" : "s"}
+              </p>
+            </div>
+            <ReviewsCarousel reviews={reviewData.reviews} />
+          </section>
+        )}
 
         {/* Recently Viewed */}
         <RecentlyViewed excludeId={product.id} />

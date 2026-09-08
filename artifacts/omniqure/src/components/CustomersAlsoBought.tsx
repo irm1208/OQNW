@@ -6,7 +6,6 @@ import { isHiddenCategory } from "@/data/products";
 import { useProducts } from "@/context/ProductsContext";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
-import { getPurityStr } from "@/utils/productPurity";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -110,7 +109,7 @@ function AlsoBoughtCard({ product }: { product: Product }) {
             className="absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full"
             style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0", fontSize: "9.5px" }}
           >
-            {getPurityStr(product.id)}
+            {product.purity ?? "Purity not specified"}
           </span>
         </div>
         <div className="flex flex-col flex-1 px-3 pt-2.5 pb-3">

@@ -1,25 +1,14 @@
 import type { ProductDetail } from "@/data/productDetails";
-import { getPurityStr } from "@/utils/productPurity";
-
 export default function ProductInfoAccordion({
   detail,
-  productId,
 }: {
   detail: ProductDetail;
-  productId: string;
 }) {
-  const purity = getPurityStr(productId);
-
   const items = [
-    { label: "Purity", value: `≥${purity}` },
-    { label: "Form", value: detail.appearance ?? "Lyophilised powder" },
+    ...(detail.purity ? [{ label: "Purity", value: detail.purity }] : []),
+    ...(detail.appearance ? [{ label: "Form", value: detail.appearance }] : []),
     ...(detail.alsoKnownAs ? [{ label: "Composition", value: detail.alsoKnownAs }] : []),
-    {
-      label: "Storage",
-      value:
-        detail.storage ??
-        "Store lyophilised powder at 2–8°C. Once reconstituted for in-vitro use, refrigerate and use within 30–45 days. Do not freeze.",
-    },
+    ...(detail.storage ? [{ label: "Storage", value: detail.storage }] : []),
   ];
 
   return (

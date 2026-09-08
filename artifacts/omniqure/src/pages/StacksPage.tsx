@@ -7,7 +7,6 @@ import { type Product } from "@/data/products";
 import { useProducts } from "@/context/ProductsContext";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
-import { getPurityStr } from "@/utils/productPurity";
 import { parseName } from "@/data/groupedProducts";
 
 const DIFFICULTY_COLORS = {
@@ -105,7 +104,7 @@ function StackProductRow({ sp, index }: { sp: StackProductItem; index: number })
               className="text-xs px-2 py-0.5 rounded-full font-bold"
               style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}
             >
-              {getPurityStr(selected.id)}
+              {selected.purity ?? "Purity not specified"}
             </span>
             <span
               className="text-xs px-2 py-0.5 rounded-full font-medium"

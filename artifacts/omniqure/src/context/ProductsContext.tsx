@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import type { Product } from "@/data/products";
-import { products as staticProducts } from "@/data/products";
 import type { ProductDetail } from "@/data/productDetails";
+import { products as staticProducts } from "@/data/products";
 import { productDetails as staticProductDetails } from "@/data/productDetails";
 
 type ProductsContextType = {
@@ -11,8 +11,8 @@ type ProductsContextType = {
 };
 
 const ProductsContext = createContext<ProductsContextType>({
-  products: staticProducts.map(withProtectedImage),
-  productDetails: staticProductDetails,
+  products: [],
+  productDetails: {},
   loading: true,
 });
 
@@ -31,6 +31,15 @@ type ApiProduct = {
   shortDescription: string | null;
   description?: string | null;
   purity: string | null;
+  alsoKnownAs: string | null;
+  molecularWeight: string | null;
+  casNumber: string | null;
+  formula: string | null;
+  sequence: string | null;
+  storage: string | null;
+  appearance: string | null;
+  solubility: string | null;
+  halfLife: string | null;
   isFeatured: boolean;
   stockLevel: number | null;
   seoTitle?: string | null;
@@ -43,9 +52,9 @@ function toProduct(p: ApiProduct): Product {
     name: p.name,
     slug: p.slug,
     price: p.priceGbp,
-    image: p.imageUrl ?? `/products/${p.id}.jpg`,
+    image: p.imageUrl ?? "",
     category: p.category,
-    description: p.description ?? null,
+    description: p.shortDescription ?? p.description ?? null,
     purity: p.purity ?? null,
     stockLevel: p.stockLevel ?? undefined,
     seoTitle: p.seoTitle ?? null,
@@ -53,15 +62,40 @@ function toProduct(p: ApiProduct): Product {
   };
 }
 
-// Build a slug-keyed productDetails map so lookups work regardless of DB id shifts
-const slugProductDetails: Record<string, ProductDetail> = {};
+// Keep only detail fields that do not have an admin/database equivalent.
+const staticSupplementalDetails: Record<string, Pick<ProductDetail, "longDescription" | "researchAreas" | "refNumber">> = {};
 for (const p of staticProducts) {
   const detail = staticProductDetails[p.id];
-  if (detail) slugProductDetails[p.slug] = detail;
+  if (detail) {
+    staticSupplementalDetails[p.slug] = {
+      longDescription: detail.longDescription,
+      researchAreas: detail.researchAreas,
+      refNumber: detail.refNumber,
+    };
+  }
+}
+
+function toProductDetail(p: ApiProduct): ProductDetail {
+  return {
+    ...staticSupplementalDetails[p.slug],
+    id: String(p.id),
+    description: p.description ?? "",
+    sequence: p.sequence ?? undefined,
+    molecularWeight: p.molecularWeight ?? undefined,
+    casNumber: p.casNumber ?? undefined,
+    formula: p.formula ?? undefined,
+    purity: p.purity ?? undefined,
+    storage: p.storage ?? undefined,
+    appearance: p.appearance ?? undefined,
+    solubility: p.solubility ?? undefined,
+    halfLife: p.halfLife ?? undefined,
+    alsoKnownAs: p.alsoKnownAs ?? undefined,
+  };
 }
 
 export function ProductsProvider({ children }: { children: ReactNode }) {
-  const [products, setProducts] = useState<Product[]>(() => staticProducts.map(withProtectedImage));
+  const [products, setProducts] = useState<Product[]>([]);
+  const [productDetails, setProductDetails] = useState<Record<string, ProductDetail>>({});
   const [loading, setLoading] = useState(true);
   const isMountedRef = useRef(false);
   const latestRequestRef = useRef(0);
@@ -73,11 +107,20 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
     try {
       const response = await fetch("/api/products", { cache: "no-store" });
       const data = response.ok ? await response.json() as ApiProduct[] : null;
-      if (!isMountedRef.current || requestId !== latestRequestRef.current || !data || !Array.isArray(data)) return;
+      if (!isMountedRef.current || requestId !== latestRequestRef.current) return;
+      if (!data || !Array.isArray(data)) {
+        setProducts([]);
+        setProductDetails({});
+        return;
+      }
       // API is the source of truth — disabled products must not be re-added from the static list.
       setProducts(data.map(toProduct));
+      setProductDetails(Object.fromEntries(data.map(product => [product.slug, toProductDetail(product)])));
     } catch {
-      // Preserve the last successfully loaded catalog if a background refresh fails.
+      if (isMountedRef.current && requestId === latestRequestRef.current) {
+        setProducts([]);
+        setProductDetails({});
+      }
     } finally {
       if (showLoading && isMountedRef.current && requestId === latestRequestRef.current) {
         setLoading(false);
@@ -111,7 +154,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
   }, [refreshProducts]);
 
   return (
-    <ProductsContext.Provider value={{ products, productDetails: slugProductDetails, loading }}>
+    <ProductsContext.Provider value={{ products, productDetails, loading }}>
       {children}
     </ProductsContext.Provider>
   );

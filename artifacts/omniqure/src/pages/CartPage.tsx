@@ -8,7 +8,6 @@ import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { type Product, isHiddenCategory } from "@/data/products";
-import { getPurityStr } from "@/utils/productPurity";
 import { useProducts } from "@/context/ProductsContext";
 import BacWaterUpsell from "@/components/BacWaterUpsell";
 import {
@@ -456,7 +455,7 @@ function CartUpsellCard({ product }: { product: Product }) {
         <div className="flex-1 min-w-0">
           <p className="font-semibold truncate" style={{ fontSize: "12px", color: "#0F172A", lineHeight: 1.3 }}>{product.name}</p>
           <div className="flex items-center gap-1.5 mt-0.5">
-            <span style={{ fontSize: "10px", color: "#059669", fontWeight: 600 }}>{getPurityStr(product.id)}</span>
+            <span style={{ fontSize: "10px", color: "#059669", fontWeight: 600 }}>{product.purity ?? "Purity not specified"}</span>
             {product.price != null && (
               <span style={{ fontSize: "12px", fontWeight: 700, color: "#1240A0" }}>{formatPrice(product.price)}</span>
             )}

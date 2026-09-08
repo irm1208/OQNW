@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSEO } from "@/hooks/useSEO";
+import { useProducts } from "@/context/ProductsContext";
 import { BarChart2, Atom, ExternalLink, Search, CheckCircle2, ShieldCheck, FlaskConical } from "lucide-react";
 import JanoshikReportModal from "@/components/JanoshikReportModal";
 
@@ -436,26 +437,15 @@ export default function LabReportsPage() {
   });
 
   const [search, setSearch] = useState("");
-  const [publishedSlugs, setPublishedSlugs] = useState<Set<string> | null>(null);
+  const { products, loading: productsLoading } = useProducts();
   const [modalReport, setModalReport] = useState<Report | null>(null);
 
-  // Fetch published products to know which to show
-  useEffect(() => {
-    fetch("/api/products")
-      .then(r => r.json())
-      .then((products: { slug: string }[]) => {
-        setPublishedSlugs(new Set(products.map(p => p.slug)));
-      })
-      .catch(() => {
-        // On error, show all reports (fail open) — null means "still loading / show all"
-        setPublishedSlugs(null);
-      });
-  }, []);
+  const publishedSlugs = new Set(products.map(product => product.slug));
 
-  // A report is visible if its product is published (or it has no linked slug, or data not yet loaded)
+  // Linked reports are visible only when their database-backed product is public.
   const visibleReports = REPORTS.filter(r => {
-    if (publishedSlugs === null) return true; // still loading — show all
     if (r.productSlugs.length === 0) return true; // no slug mapping — always show
+    if (productsLoading) return false;
     return r.productSlugs.some(slug => publishedSlugs.has(slug));
   });
 

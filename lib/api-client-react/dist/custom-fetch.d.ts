@@ -38,6 +38,8 @@ export declare class ApiError<T = unknown> extends Error {
         url: string;
     });
 }
+type ApiErrorHandler = (error: ApiError<unknown>) => void;
+export declare function setApiErrorHandler(handler: ApiErrorHandler | null): void;
 export declare class ResponseParseError extends Error {
     readonly name = "ResponseParseError";
     readonly status: number;
@@ -54,4 +56,5 @@ export declare class ResponseParseError extends Error {
     });
 }
 export declare function customFetch<T = unknown>(input: RequestInfo | URL, options?: CustomFetchOptions): Promise<T>;
+export {};
 //# sourceMappingURL=custom-fetch.d.ts.map
