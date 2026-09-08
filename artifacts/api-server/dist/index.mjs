@@ -239504,10 +239504,9 @@ router11.get("/admin/catalog", async (req, res) => {
     const search = isStr(req.query.search) ? req.query.search : void 0;
     const category = isStr(req.query.category) ? req.query.category : void 0;
     const published = req.query.published;
-    const conditions = [
-      eq(productsCatalogTable.isPublished, true),
-      notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS])
-    ];
+    const conditions = [notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS])];
+    if (published === "true") conditions.push(eq(productsCatalogTable.isPublished, true));
+    if (published === "false") conditions.push(eq(productsCatalogTable.isPublished, false));
     if (search) conditions.push(ilike(productsCatalogTable.name, `%${search}%`));
     if (category) conditions.push(eq(productsCatalogTable.category, category));
     const products = await db.select().from(productsCatalogTable).where(and(...conditions)).orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
@@ -239808,6 +239807,7 @@ router11.get("/products", async (req, res) => {
     const featured = req.query.featured;
     const conditions = [
       eq(productsCatalogTable.isPublished, true),
+      eq(productsInventoryTable.isPublished, true),
       notInArray(productsCatalogTable.slug, [...RETIRED_PRODUCT_SLUGS])
     ];
     if (category) conditions.push(eq(productsCatalogTable.category, category));
@@ -239823,6 +239823,15 @@ router11.get("/products", async (req, res) => {
       description: productsCatalogTable.description,
       imageUrl: productsCatalogTable.imageUrl,
       purity: productsCatalogTable.purity,
+      alsoKnownAs: productsCatalogTable.alsoKnownAs,
+      molecularWeight: productsCatalogTable.molecularWeight,
+      casNumber: productsCatalogTable.casNumber,
+      formula: productsCatalogTable.formula,
+      sequence: productsCatalogTable.sequence,
+      storage: productsCatalogTable.storage,
+      appearance: productsCatalogTable.appearance,
+      solubility: productsCatalogTable.solubility,
+      halfLife: productsCatalogTable.halfLife,
       seoTitle: productsCatalogTable.seoTitle,
       seoDescription: productsCatalogTable.seoDescription,
       isFeatured: productsCatalogTable.isFeatured,
@@ -239831,7 +239840,7 @@ router11.get("/products", async (req, res) => {
     }).from(productsCatalogTable).leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id)).where(and(...conditions)).orderBy(productsCatalogTable.sortOrder, productsCatalogTable.name);
     res.set("Cache-Control", "no-store");
     res.status(200).json(
-      products.filter((p) => p.inventoryPublished !== false).map((p) => ({
+      products.map((p) => ({
         id: p.id,
         slug: p.slug,
         name: p.name,
@@ -239841,6 +239850,15 @@ router11.get("/products", async (req, res) => {
         description: p.description,
         imageUrl: toPublicCatalogueImageUrl(p.imageUrl),
         purity: p.purity,
+        alsoKnownAs: p.alsoKnownAs,
+        molecularWeight: p.molecularWeight,
+        casNumber: p.casNumber,
+        formula: p.formula,
+        sequence: p.sequence,
+        storage: p.storage,
+        appearance: p.appearance,
+        solubility: p.solubility,
+        halfLife: p.halfLife,
         seoTitle: p.seoTitle ?? null,
         seoDescription: p.seoDescription ?? null,
         isFeatured: p.isFeatured,
@@ -239865,10 +239883,11 @@ router11.get("/products/:slug", async (req, res) => {
     }).from(productsCatalogTable).leftJoin(productsInventoryTable, eq(productsInventoryTable.productId, productsCatalogTable.id)).where(
       and(
         eq(productsCatalogTable.slug, slug),
-        eq(productsCatalogTable.isPublished, true)
+        eq(productsCatalogTable.isPublished, true),
+        eq(productsInventoryTable.isPublished, true)
       )
     );
-    if (!product || product.inventoryPublished === false) {
+    if (!product) {
       res.status(404).json({ error: "Product not found" });
       return;
     }
@@ -251373,7 +251392,8 @@ app.use((req, res, next) => {
   if (process.env.NODE_ENV === "production") {
     res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
   }
-  if (req.path.startsWith("/api/admin") || req.path.startsWith("/api/account") || req.path.startsWith("/api/auth")) {
+  const mutablePublicGet = req.method === "GET" && (req.path.startsWith("/api/products") || req.path.startsWith("/api/blog") || req.path.startsWith("/api/store-settings") || req.path.startsWith("/api/shipping") || req.path.startsWith("/api/tax"));
+  if (mutablePublicGet || req.path.startsWith("/api/admin") || req.path.startsWith("/api/account") || req.path.startsWith("/api/auth")) {
     res.setHeader("Cache-Control", "no-store");
   }
   next();
