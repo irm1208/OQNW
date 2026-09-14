@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -59,7 +59,7 @@ export function EditWholesaleSheet({
   const updateInvoice = useUpdateWholesaleInvoice();
   const [, setLocation] = useLocation();
   const form = useForm<EditValues>({
-    resolver: zodResolver(editSchema),
+    resolver: zodResolver(editSchema as never) as Resolver<EditValues>,
     defaultValues: {
       customerName: "",
       customerEmail: "",

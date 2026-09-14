@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -63,7 +63,7 @@ const FIELD_LABELS: Record<string, string> = {
 
 export function SegmentFormDialog({ open, onOpenChange, initialData, onSubmit, isSubmitting }: SegmentFormDialogProps) {
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema as never) as Resolver<FormValues>,
     defaultValues: {
       name: "",
       description: "",

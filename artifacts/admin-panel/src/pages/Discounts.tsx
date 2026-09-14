@@ -6,7 +6,7 @@ import {
   useUpdateAdminDiscount
 } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -28,6 +28,7 @@ const formSchema = z.object({
   minSpend: z.coerce.number().nonnegative().optional().or(z.literal("")),
   usageLimit: z.coerce.number().positive().optional().or(z.literal("")),
 });
+type FormValues = z.infer<typeof formSchema>;
 
 export default function Discounts() {
   const queryClient = useQueryClient();
@@ -41,8 +42,8 @@ export default function Discounts() {
   const createDiscount = useCreateAdminDiscount();
   const updateDiscount = useUpdateAdminDiscount();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema as never) as Resolver<FormValues>,
     defaultValues: {
       code: "",
       type: "percentage",
