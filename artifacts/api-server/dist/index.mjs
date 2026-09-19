@@ -239380,7 +239380,7 @@ function buildCatalogPricePreview(cataloguePrices, productionPrices) {
 
 // src/lib/catalogueAssetUrls.ts
 var PROTECTED_PREFIX = "/api/catalogue-assets";
-var CATALOGUE_ASSET_VERSION = "2026-09-20-cards";
+var CATALOGUE_ASSET_VERSION = "2026-09-20-card-dimensions";
 function toCanonicalCatalogueImageUrl(imageUrl) {
   if (!imageUrl) return imageUrl;
   let canonical = imageUrl;
