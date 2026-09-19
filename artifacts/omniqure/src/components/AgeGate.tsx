@@ -98,9 +98,9 @@ export default function AgeGate() {
               <img
                 src="/omniqure-wordmark.png"
                 alt="OmniQure"
-                style={{ height: "78px", width: "auto", display: "block" }}
+                style={{ width: "300px", maxWidth: "78vw", height: "auto", display: "block" }}
               />
-              <span style={{ display: "block", marginLeft: "33%", width: "61%", textAlign: "center", color: "rgba(255,255,255,0.82)", fontSize: "9px", fontWeight: 700, letterSpacing: "0.18em", overflow: "hidden", marginTop: "3px" }}>
+              <span style={{ display: "block", width: "100%", textAlign: "center", color: "rgba(255,255,255,0.82)", fontSize: "9px", fontWeight: 700, letterSpacing: "0.18em", overflow: "hidden", marginTop: "7px" }}>
                 PEPTIDE RESEARCH INSTITUTE
               </span>
             </div>

@@ -237745,6 +237745,7 @@ var import_express6 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 
 // src/lib/packingSlip.ts
+var SITE_URL2 = process.env.SITE_URL ?? "https://omniqure.com";
 function esc3(s) {
   if (s === null || s === void 0) return "";
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -237791,8 +237792,7 @@ function generatePackingSlipHtml(order, items) {
 
   /* \u2500\u2500 Header \u2500\u2500 */
   .header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 16px; border-bottom: 2px solid #111; margin-bottom: 20px; }
-  .brand  { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
-  .brand span { color: #4f7c6a; }
+  .brand-logo { display: block; width: 190px; height: auto; }
   .slip-title { text-align: right; }
   .slip-title h1 { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
   .slip-title p  { font-size: 11px; color: #555; margin-top: 3px; }
@@ -237843,7 +237843,7 @@ function generatePackingSlipHtml(order, items) {
 <div class="slip">
 
   <div class="header">
-    <div class="brand">Omni<span>Qure</span></div>
+    <img class="brand-logo" src="${SITE_URL2}/omniqure-wordmark-blue.png" alt="OmniQure">
     <div class="slip-title">
       <h1>Packing Slip</h1>
       <p>Printed ${fmtDate(/* @__PURE__ */ new Date())}</p>
@@ -250262,7 +250262,7 @@ var security_default = router53;
 // src/routes/admin/wholesale.ts
 var import_express55 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var SITE_URL2 = process.env.SITE_URL ?? "https://omniqure.com";
+var SITE_URL3 = process.env.SITE_URL ?? "https://omniqure.com";
 var WHOLESALE_PAYMENT_CREATION_LEASE_MS = 5 * 6e4;
 var UNKNOWN_PAYMENT_ERROR = "Wallid creation may have succeeded, but the result is unknown. Inspect the Wallid dashboard and manually attach the verified payment ID and URL; do not create another payment.";
 function text2(value, max2 = 500) {
@@ -250275,11 +250275,11 @@ function validEmail(value) {
 }
 function absoluteHttpsUrl(value, fallbackPath) {
   try {
-    const url3 = new URL(value || fallbackPath, SITE_URL2);
+    const url3 = new URL(value || fallbackPath, SITE_URL3);
     if (url3.protocol === "https:") return url3.toString();
   } catch {
   }
-  return new URL(fallbackPath, SITE_URL2).toString();
+  return new URL(fallbackPath, SITE_URL3).toString();
 }
 function verifiedWallidPaymentUrl(value) {
   const candidate = text2(value, 2e3);
@@ -250545,8 +250545,8 @@ ${paymentNote}`.trim(),
           currency,
           customerEmail,
           customerId: `wholesale-${created.order.id}`,
-          successUrl: `${SITE_URL2}/wallid-return?order=${encodeURIComponent(orderNumber)}&status=success`,
-          failUrl: `${SITE_URL2}/wallid-return?order=${encodeURIComponent(orderNumber)}&status=failed`,
+          successUrl: `${SITE_URL3}/wallid-return?order=${encodeURIComponent(orderNumber)}&status=success`,
+          failUrl: `${SITE_URL3}/wallid-return?order=${encodeURIComponent(orderNumber)}&status=failed`,
           expiresAt: paymentExpiresAt.toISOString(),
           items: items.map((item) => {
             const product = productById.get(item.productId);
@@ -251265,10 +251265,10 @@ var routes_default = router55;
 var import_express58 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router56 = (0, import_express58.Router)();
-var SITE_URL3 = "https://omniqure.com";
+var SITE_URL4 = "https://omniqure.com";
 function publicImageUrl(imageUrl) {
   if (imageUrl.startsWith("http")) return imageUrl;
-  return `${SITE_URL3}/api/catalogue-assets${imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`}`;
+  return `${SITE_URL4}/api/catalogue-assets${imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`}`;
 }
 var STATIC_PAGES = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
@@ -251327,7 +251327,7 @@ router56.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
     for (const page of STATIC_PAGES) {
       lines.push(
         `  <url>`,
-        `    <loc>${SITE_URL3}${page.path}</loc>`,
+        `    <loc>${SITE_URL4}${page.path}</loc>`,
         `    <changefreq>${page.changefreq}</changefreq>`,
         `    <priority>${page.priority}</priority>`,
         `    <lastmod>${today}</lastmod>`,
@@ -251338,7 +251338,7 @@ router56.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
     for (const p of products.filter((product) => product.inventoryPublished !== false)) {
       const imgUrl = p.imageUrl ? publicImageUrl(p.imageUrl) : null;
       lines.push(`  <url>`);
-      lines.push(`    <loc>${SITE_URL3}/product/${xmlEsc(p.slug)}</loc>`);
+      lines.push(`    <loc>${SITE_URL4}/product/${xmlEsc(p.slug)}</loc>`);
       lines.push(`    <changefreq>weekly</changefreq>`);
       lines.push(`    <priority>0.85</priority>`);
       lines.push(`    <lastmod>${isoDate(p.updatedAt)}</lastmod>`);
@@ -251357,7 +251357,7 @@ router56.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
       const lastmod = isoDate(post.updatedAt ?? post.publishedAt);
       lines.push(
         `  <url>`,
-        `    <loc>${SITE_URL3}/blog/${xmlEsc(post.slug)}</loc>`,
+        `    <loc>${SITE_URL4}/blog/${xmlEsc(post.slug)}</loc>`,
         `    <changefreq>monthly</changefreq>`,
         `    <priority>0.6</priority>`,
         `    <lastmod>${lastmod}</lastmod>`,
@@ -251486,7 +251486,7 @@ var app_default = app;
 
 // src/lib/abandonedCartJob.ts
 init_drizzle_orm();
-var SITE_URL4 = process.env.SITE_URL ?? "https://omniqure.com";
+var SITE_URL5 = process.env.SITE_URL ?? "https://omniqure.com";
 var INTERVAL_MS = 15 * 60 * 1e3;
 var ABANDON_AFTER_MS = 60 * 60 * 1e3;
 var MAX_AGE_MS = 48 * 60 * 60 * 1e3;
@@ -251521,7 +251521,7 @@ async function runCheck() {
         customerName: cart.customerName,
         customerEmail: cart.customerEmail,
         items: emailItems,
-        cartUrl: `${SITE_URL4}/cart`
+        cartUrl: `${SITE_URL5}/cart`
       });
       await db.update(abandonedCartsTable).set({ emailSentAt: /* @__PURE__ */ new Date() }).where(eq(abandonedCartsTable.customerId, cart.customerId));
     }

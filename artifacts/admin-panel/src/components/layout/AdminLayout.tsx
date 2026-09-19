@@ -385,8 +385,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       <aside className="w-[240px] flex-col bg-sidebar border-r border-border hidden lg:flex">
         <div className="h-[52px] flex items-center justify-between px-4 border-b border-border">
           <div className="flex items-center gap-2.5 min-w-0">
-            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md bg-primary text-sm font-bold text-primary-foreground shadow-sm">O</span>
-            <h1 className="font-semibold text-[15px] tracking-tight truncate">OmniQure</h1>
+            <img
+              src={`${import.meta.env.BASE_URL}omniqure-wordmark.png`}
+              alt="OmniQure"
+              className="h-auto w-[150px]"
+            />
+            <span className="sr-only">OmniQure Admin</span>
           </div>
         </div>
         <nav className="flex-1 px-3 py-2 overflow-y-auto">
@@ -411,7 +415,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             >
               <Menu className="w-5 h-5" />
             </Button>
-            <h1 className="font-bold text-base sm:text-lg text-primary truncate">OmniQure Admin</h1>
+            <img
+              src={`${import.meta.env.BASE_URL}omniqure-wordmark.png`}
+              alt="OmniQure Admin"
+              className="h-auto w-[128px] sm:w-[150px]"
+            />
           </div>
 
           <div className="hidden lg:flex flex-1 items-center max-w-md ml-4">
@@ -458,7 +466,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
            </SheetHeader>
            <div className="flex h-full flex-col">
              <div className="h-14 shrink-0 flex items-center px-5 border-b">
-               <h1 className="font-bold text-lg text-primary tracking-tight">OmniQure Admin</h1>
+                <img
+                  src={`${import.meta.env.BASE_URL}omniqure-wordmark.png`}
+                  alt="OmniQure Admin"
+                  className="h-auto w-[160px]"
+                />
              </div>
              <nav className="flex-1 px-3 py-4 overflow-y-auto">
                <NavigationMenu location={location} onNavigate={() => setMobileNavOpen(false)} />

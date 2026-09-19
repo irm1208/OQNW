@@ -376,8 +376,8 @@ export default function Header() {
                 <img
                   src="/omniqure-wordmark.png"
                   alt="OmniQure"
-                  className="h-8 sm:h-[52px]"
-                  style={{ width: "auto", maxWidth: "none", display: "block" }}
+                  className="w-[145px] sm:w-[230px]"
+                  style={{ height: "auto", display: "block" }}
                 />
                 <span className="hidden sm:block" style={{ display: "block", width: "230px", textAlign: "right", color: "#E8A93E", fontSize: "8px", fontWeight: 900, letterSpacing: "0.18em", whiteSpace: "nowrap", overflow: "hidden", marginTop: "2px" }}>
                   PEPTIDE RESEARCH INSTITUTE

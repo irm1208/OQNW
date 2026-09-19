@@ -189,10 +189,15 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-muted/40 p-4">
       <Card className="w-full max-w-md shadow-lg border-primary/10">
         <CardHeader className="space-y-2 text-center pb-6">
+          <img
+            src={`${import.meta.env.BASE_URL}omniqure-wordmark.png`}
+            alt="OmniQure"
+            className="mx-auto mb-3 h-auto w-[220px] max-w-full"
+          />
           <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2 ${isLocked ? "bg-red-100" : "bg-primary/10"}`}>
             {isLocked ? <ShieldAlert className="w-6 h-6 text-red-600" /> : recoveryCodes.length > 0 ? <ShieldCheck className="w-6 h-6 text-primary" /> : isMfaStep ? <KeyRound className="w-6 h-6 text-primary" /> : <Lock className="w-6 h-6 text-primary" />}
           </div>
-          <CardTitle className="text-2xl font-bold tracking-tight">OmniQure Ops</CardTitle>
+          <CardTitle className="text-2xl font-bold tracking-tight">Admin Console</CardTitle>
           <CardDescription>
             {isLocked ? "Access temporarily suspended" : recoveryCodes.length > 0 ? "Two-step verification is active" : isEnrollmentStep ? "Set up required two-step verification" : isMfaStep ? "Complete two-step verification" : isReauthentication ? "Confirm your identity to continue" : "Sign in to the admin console"}
           </CardDescription>
