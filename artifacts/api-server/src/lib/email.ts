@@ -23,7 +23,7 @@ function getResend(): Resend {
 const FROM_ADDRESS = process.env.EMAIL_FROM ?? "OmniQure <orders@omniqure.com>";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? null;
 const SITE_URL = process.env.SITE_URL ?? "https://omniqure.com";
-const LOGO_URL = `${SITE_URL}/omniqure-email-header.png`;
+const LOGO_URL = `${SITE_URL}/omniqure-email-header.png?v=4`;
 
 async function logEmail(opts: {
   toEmail: string;
@@ -704,7 +704,7 @@ export function generateReceiptHtml(order: OrderEmailData, dateStr?: string): st
 
   <!-- Header -->
   <div style="background:linear-gradient(90deg,#0D2565 0%,#1240A0 40%,#1B5CB5 75%,#1E68CC 100%);padding:22px 36px;display:flex;align-items:center;justify-content:space-between;">
-    <img src="${SITE_URL}/omniqure-logo-full.png" alt="OmniQure" style="height:56px;width:auto;display:block;" />
+    <img src="${SITE_URL}/omniqure-logo-full.png?v=4" alt="OmniQure" style="height:56px;width:auto;display:block;" />
     <div style="text-align:right;flex-shrink:0;margin-left:24px;">
       <div style="font-size:10.5px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">Receipt</div>
       <div style="font-size:18px;font-weight:800;color:#fff;margin-top:3px;letter-spacing:0.04em;">${order.orderNumber}</div>

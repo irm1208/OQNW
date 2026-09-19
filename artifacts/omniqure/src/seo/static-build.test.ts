@@ -16,7 +16,7 @@ test("the production build serves referral metadata from the referral landing do
   assert.doesNotMatch(mainHtml, /data-seo="referral"/);
   assert.match(referralHtml, /property="og:title" content="Join OmniQure — Get 10% Off Your First Order/);
   assert.match(referralHtml, /property="og:description" content="[^"]*10% off[^"]*£25 credit/);
-  assert.match(referralHtml, /property="og:image" content="https:\/\/omniqure\.com\/opengraph\.jpg"/);
+  assert.match(referralHtml, /property="og:image" content="https:\/\/omniqure\.com\/opengraph\.jpg\?v=4"/);
   assert.match(referralHtml, /name="twitter:card" content="summary_large_image"/);
   assert.match(referralHtml, /rel="canonical" href="https:\/\/omniqure\.com\/refer-a-friend"/);
   assert.match(referralHtml, /data-seo="referral">.*"@type":"WebPage"/);

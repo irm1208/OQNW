@@ -18,7 +18,7 @@ export default function Logo() {
         }}
       >
         <img
-          src="/omniqure-wordmark.png"
+          src="/omniqure-wordmark.png?v=4"
           alt="OmniQure"
           style={{ display: "block", width: "190px", height: "auto" }}
         />

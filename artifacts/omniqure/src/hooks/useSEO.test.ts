@@ -81,7 +81,7 @@ test("configured article metadata emits a canonical Open Graph URL and falls bac
   assert.deepEqual(resolveSeoMetadata({}), {
     title: DEFAULT_TITLE,
     description: DEFAULT_DESCRIPTION,
-    image: `${SITE_URL}/opengraph.jpg`,
+    image: `${SITE_URL}/opengraph.jpg?v=4`,
     canonicalHref: null,
   });
 });

@@ -9,7 +9,7 @@ import {
 export { SITE_NAME, SITE_URL };
 export const DEFAULT_TITLE = DEFAULT_SITE_TITLE;
 export const DEFAULT_DESCRIPTION = DEFAULT_SITE_DESCRIPTION;
-const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph.jpg`;
+const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph.jpg?v=4`;
 
 function upsertMeta(attr: "name" | "property", key: string, content: string) {
   let el = document.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);

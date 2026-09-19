@@ -85,7 +85,7 @@ function makeProductSeo(product: ProductSeoRecord): SeoValues {
     seoDescription: product.seoDescription,
   });
   const canonical = `${SITE_URL}/product/${encodeURIComponent(product.slug)}`;
-  const image = absoluteUrl(product.imageUrl, `${SITE_URL}/opengraph.jpg`);
+  const image = absoluteUrl(product.imageUrl, `${SITE_URL}/opengraph.jpg?v=4`);
 
   return {
     title: `${seo.title} | ${SITE_NAME}`,
@@ -146,7 +146,7 @@ function makeBlogSeo(post: BlogSeoRecord): SeoValues {
     seoDescription: post.seoDescription,
   });
   const canonical = `${SITE_URL}/blog/${encodeURIComponent(post.slug)}`;
-  const image = absoluteUrl(post.featuredImageUrl, `${SITE_URL}/opengraph.jpg`);
+  const image = absoluteUrl(post.featuredImageUrl, `${SITE_URL}/opengraph.jpg?v=4`);
 
   return {
     title: `${seo.title} | ${SITE_NAME}`,
@@ -181,7 +181,7 @@ function makeBlogSeo(post: BlogSeoRecord): SeoValues {
 
 function makeReferralSeo(): SeoValues {
   const canonical = `${SITE_URL}${REFERRAL_LANDING_PATH}`;
-  const image = `${SITE_URL}/opengraph.jpg`;
+  const image = `${SITE_URL}/opengraph.jpg?v=4`;
 
   return {
     title: `${REFERRAL_SHARE_TITLE} | ${SITE_NAME}`,

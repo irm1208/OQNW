@@ -74,7 +74,7 @@ test("referral links receive a branded social preview without exposing the refer
   assert.match(html, /property="og:title" content="Join OmniQure — Get 10% Off Your First Order \| OmniQure Peptide Research Institute"/);
   assert.match(html, /property="og:description" content="You've been invited to join OmniQure\. Create your research account to unlock 10% off your first order, and you and your friend can each earn £25 credit when the order ships\."/);
   assert.match(html, /name="twitter:card" content="summary_large_image"/);
-  assert.match(html, /name="twitter:image" content="https:\/\/omniqure\.com\/opengraph\.jpg"/);
+  assert.match(html, /name="twitter:image" content="https:\/\/omniqure\.com\/opengraph\.jpg\?v=4"/);
   assert.match(html, /rel="canonical" href="https:\/\/omniqure\.com\/refer-a-friend"/);
   assert.match(html, /data-seo="referral">.*"@type":"WebPage"/);
   assert.doesNotMatch(html, /ABC123/);
