@@ -1,4 +1,5 @@
 const PROTECTED_PREFIX = "/api/catalogue-assets";
+const CATALOGUE_ASSET_VERSION = "2026-09-20-cards";
 
 export function toCanonicalCatalogueImageUrl(imageUrl: string | null): string | null {
   if (!imageUrl) return imageUrl;
@@ -12,5 +13,7 @@ export function toCanonicalCatalogueImageUrl(imageUrl: string | null): string | 
 export function toPublicCatalogueImageUrl(imageUrl: string | null): string | null {
   if (!imageUrl || /^https?:\/\//i.test(imageUrl)) return imageUrl;
   const canonical = toCanonicalCatalogueImageUrl(imageUrl);
-  return canonical ? `${PROTECTED_PREFIX}${canonical}` : canonical;
+  if (!canonical) return canonical;
+  const separator = canonical.includes("?") ? "&" : "?";
+  return `${PROTECTED_PREFIX}${canonical}${separator}v=${CATALOGUE_ASSET_VERSION}`;
 }

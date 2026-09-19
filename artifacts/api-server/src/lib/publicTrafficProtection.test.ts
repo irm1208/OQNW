@@ -53,7 +53,7 @@ test("admin image round trips stay canonical and public URLs are prefixed once",
   );
   assert.equal(
     toPublicCatalogueImageUrl("/api/catalogue-assets/products/1.jpg"),
-    "/api/catalogue-assets/products/1.jpg",
+    "/api/catalogue-assets/products/1.jpg?v=2026-09-20-cards",
   );
 });
 

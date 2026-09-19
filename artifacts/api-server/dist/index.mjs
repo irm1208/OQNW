@@ -239380,6 +239380,7 @@ function buildCatalogPricePreview(cataloguePrices, productionPrices) {
 
 // src/lib/catalogueAssetUrls.ts
 var PROTECTED_PREFIX = "/api/catalogue-assets";
+var CATALOGUE_ASSET_VERSION = "2026-09-20-cards";
 function toCanonicalCatalogueImageUrl(imageUrl) {
   if (!imageUrl) return imageUrl;
   let canonical = imageUrl;
@@ -239391,7 +239392,9 @@ function toCanonicalCatalogueImageUrl(imageUrl) {
 function toPublicCatalogueImageUrl(imageUrl) {
   if (!imageUrl || /^https?:\/\//i.test(imageUrl)) return imageUrl;
   const canonical = toCanonicalCatalogueImageUrl(imageUrl);
-  return canonical ? `${PROTECTED_PREFIX}${canonical}` : canonical;
+  if (!canonical) return canonical;
+  const separator = canonical.includes("?") ? "&" : "?";
+  return `${PROTECTED_PREFIX}${canonical}${separator}v=${CATALOGUE_ASSET_VERSION}`;
 }
 
 // src/routes/admin/catalog.ts
