@@ -379,9 +379,6 @@ export default function Header() {
                   className="w-[145px] sm:w-[230px]"
                   style={{ height: "auto", display: "block" }}
                 />
-                <span className="hidden sm:block" style={{ display: "block", width: "230px", textAlign: "right", color: "#E8A93E", fontSize: "8px", fontWeight: 900, letterSpacing: "0.18em", whiteSpace: "nowrap", overflow: "hidden", marginTop: "2px" }}>
-                  PEPTIDE RESEARCH INSTITUTE
-                </span>
               </div>
             </div>
           </Link>

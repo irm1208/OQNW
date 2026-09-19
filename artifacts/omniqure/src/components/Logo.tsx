@@ -22,20 +22,6 @@ export default function Logo() {
           alt="OmniQure"
           style={{ display: "block", width: "190px", height: "auto" }}
         />
-        <div
-          style={{
-            fontFamily: "'Arimo', Arial, sans-serif",
-            fontSize: "7.5px",
-            fontWeight: 600,
-            color: "#E8A93E",
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            marginTop: "6px",
-            whiteSpace: "nowrap",
-          }}
-        >
-          Peptide Research Institute
-        </div>
       </div>
     </Link>
   );

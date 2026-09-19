@@ -236184,7 +236184,7 @@ function baseTemplate(title, body) {
           <tr>
             <td style="background:linear-gradient(90deg,#142767 0%,#183077 100%);padding:24px 32px;">
               <a href="${SITE_URL}" style="display:inline-block;text-decoration:none;">
-                <img src="${LOGO_URL}" alt="OmniQure Peptide Research Institute" width="235" style="display:block;width:235px;max-width:100%;height:auto;border:0;" />
+                <img src="${LOGO_URL}" alt="OmniQure" width="235" style="display:block;width:235px;max-width:100%;height:auto;border:0;" />
               </a>
             </td>
           </tr>

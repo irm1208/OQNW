@@ -100,9 +100,6 @@ export default function AgeGate() {
                 alt="OmniQure"
                 style={{ width: "300px", maxWidth: "78vw", height: "auto", display: "block" }}
               />
-              <span style={{ display: "block", width: "100%", textAlign: "center", color: "rgba(255,255,255,0.82)", fontSize: "9px", fontWeight: 700, letterSpacing: "0.18em", overflow: "hidden", marginTop: "7px" }}>
-                PEPTIDE RESEARCH INSTITUTE
-              </span>
             </div>
           </div>
 
