@@ -25,6 +25,7 @@
 - [Route SEO across dev and production](vite-spa-seo-injection.md) — Vite middleware fixes dev/preview only; static web artifacts need build-emitted route HTML selected before the SPA fallback.
 - [OmniQure publish build](omniqure-publish-build.md) — build API, storefront, and admin; never mutate the managed database while constructing the deployment image.
 - [Protected assets in static web artifacts](protected-static-assets.md) — production static serving bypasses Vite middleware; route protected files through an API and omit duplicate build output.
+- [Vite imported-image protection](vite-imported-image-protection.md) — image traffic middleware must bypass Vite `?import` module requests or lazy pages can fail before rendering.
 - [Admin session trust boundary](admin-session-trust.md) — never authorize from the legacy admin marker cookie; every admin endpoint must require the signed, expiring session.
 - [Pnpm audit override cleanup](pnpm-audit-overrides.md) — audit --fix can miss nested glob peers and rewrite workspace YAML; review overrides and the resolved graph before trusting a clean audit.
 - [Publishing preflight failures](publishing-preflight-failures.md) — an immediate Failed state with no new build record is a stuck platform preflight, not a code/build failure.

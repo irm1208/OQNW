@@ -160,7 +160,12 @@ function imageTrafficProtectionPlugin() {
   function install(server: MiddlewareServer) {
     server.middlewares.use(async (req, res, next) => {
       if (req.method !== "GET" && req.method !== "HEAD") return next();
-      const imagePath = (req.url ?? "/").split("?")[0];
+      const requestUrl = req.url ?? "/";
+      // Vite serves imported image modules with ?import. These requests are
+      // part of the JavaScript module graph, not public image downloads; a
+      // limiter response here makes lazy-loaded pages fail to import.
+      if (/[?&]import(?:[=&]|$)/.test(requestUrl)) return next();
+      const imagePath = requestUrl.split("?")[0];
       if (!/\.(?:avif|gif|jpe?g|png|svg|webp|ico)$/i.test(imagePath)) return next();
 
       try {
