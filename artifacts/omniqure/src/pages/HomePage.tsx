@@ -12,7 +12,6 @@ import { useProducts } from "@/context/ProductsContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
-import referAFriendHeroImg from "@assets/download_1783727474544.png";
 import bundleAndSaveHeroImg from "@assets/new_hero_1783533143502.jpeg";
 import heroContentImg from "@assets/ChatGPT_Image_Sep_20,_2026,_10_22_02_PM_1789939338219.png";
 
@@ -283,7 +282,7 @@ function HeroReferralSlide() {
       }}
     >
       <img
-        src={referAFriendHeroImg}
+        src="/hero-referral-second.png"
         alt="Refer a friend and earn £25 credit each, up to £50"
         style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />
