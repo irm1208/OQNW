@@ -236198,7 +236198,7 @@ function baseTemplate(title, body) {
           <tr>
             <td style="background:#f8fafc;padding:20px 32px;border-top:1px solid #e2e8f0;">
               <p style="margin:0;color:#94a3b8;font-size:12px;text-align:center;">
-                OmniQure Peptide Research Institute &bull; For research purposes only<br/>
+                OmniQure &bull; For research purposes only<br/>
                 <a href="${SITE_URL}" style="color:#94a3b8;">omniqure.com</a>
               </p>
             </td>
@@ -236534,7 +236534,7 @@ async function sendAccountCreatedEmail(opts) {
   const body = `
     <h2 style="margin:0 0 6px;font-size:22px;color:#0f172a;">Your account is ready</h2>
     <p style="margin:0 0 24px;font-size:14px;color:#64748b;">
-      Hi ${firstName}, welcome to OmniQure Peptide Research Institute.
+      Hi ${firstName}, welcome to OmniQure.
       Your account has been created and you're ready to start exploring our catalogue.
     </p>
 

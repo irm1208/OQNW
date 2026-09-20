@@ -3,6 +3,7 @@ import type { Product } from "@/data/products";
 import type { ProductDetail } from "@/data/productDetails";
 import { products as staticProducts } from "@/data/products";
 import { productDetails as staticProductDetails } from "@/data/productDetails";
+import catalogueImageOverrides from "@/data/catalogueImageOverrides.json";
 
 type ProductsContextType = {
   products: Product[];
@@ -46,18 +47,8 @@ type ApiProduct = {
   seoDescription?: string | null;
 };
 
-const CATALOGUE_IMAGE_OVERRIDES: Record<string, string> = {
-  "5-amino-1q-50mg": "/products/83-card.png",
-  "glow-blend-70mg": "/products/22-card.png",
-  "klow-blend-80mg": "/products/35-card.png",
-  "ghk-cu-50mg": "/products/17-card.png",
-  "ghk-cu-100mg": "/products/18-card.png",
-  "nad-plus-500mg": "/products/nad-plus-500mg.png",
-  "nad-plus-1000mg": "/products/nad-plus-1000mg.png",
-};
-
 function toProduct(p: ApiProduct): Product {
-  const image = CATALOGUE_IMAGE_OVERRIDES[p.slug] ?? p.imageUrl ?? "";
+  const image = catalogueImageOverrides[p.slug as keyof typeof catalogueImageOverrides] ?? p.imageUrl ?? "";
   return {
     id: String(p.id),
     name: p.name,

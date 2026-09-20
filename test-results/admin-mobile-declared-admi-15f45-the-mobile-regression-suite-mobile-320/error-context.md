@@ -157,24 +157,24 @@ Error: expect(received).toEqual(expected) // deep equality
               - generic [ref=e193]:
                 - generic [ref=e194]: HealingPepti…
                 - generic [ref=e196]: Accessories
-          - generic [ref=e205]:
-            - generic [ref=e206]: Top Products
-            - generic [ref=e209]:
-              - generic [ref=e210]:
-                - generic [ref=e211]: "1"
-                - generic [ref=e212]:
-                  - paragraph [ref=e213]: BPC-157 10mg
-                  - paragraph [ref=e214]: 1 units sold
-                - generic [ref=e215]: £110.00
-              - generic [ref=e216]:
-                - generic [ref=e217]: "2"
-                - generic [ref=e218]:
-                  - paragraph [ref=e219]: Bacteriostatic Water 10ml
-                  - paragraph [ref=e220]: 1 units sold
-                - generic [ref=e221]: £8.99
+          - generic [ref=e198]:
+            - generic [ref=e199]: Top Products
+            - generic [ref=e202]:
+              - generic [ref=e203]:
+                - generic [ref=e204]: "1"
+                - generic [ref=e205]:
+                  - paragraph [ref=e206]: BPC-157 10mg
+                  - paragraph [ref=e207]: 1 units sold
+                - generic [ref=e208]: £110.00
+              - generic [ref=e209]:
+                - generic [ref=e210]: "2"
+                - generic [ref=e211]:
+                  - paragraph [ref=e212]: Bacteriostatic Water 10ml
+                  - paragraph [ref=e213]: 1 units sold
+                - generic [ref=e214]: £8.99
     - region "Notifications (F8)":
       - list
-  - generic [ref=e222]: Healing Pepti…
+  - generic [ref=e215]: Healing Pepti…
 ```
 
 # Test source

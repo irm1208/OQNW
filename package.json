@@ -8,6 +8,7 @@
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
     "check:api-drift": "pnpm --filter @workspace/scripts run check:api-drift",
+    "check:catalogue-images": "pnpm --filter @workspace/scripts run check:catalogue-images",
     "check:pnpm-version": "node scripts/check-pnpm-version.mjs",
     "test:pnpm-version": "node --test scripts/check-pnpm-version.test.mjs",
     "test:admin-mobile": "ADMIN_MOBILE_PUBLISHED=1 playwright test --config tests/admin-mobile/playwright.config.ts",

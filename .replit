@@ -72,6 +72,10 @@ args = "admin-mobile"
 task = "workflow.run"
 args = "admin-desktop"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "catalogue-images"
+
 [[workflows.workflow]]
 name = "Storefront"
 author = "agent"
@@ -113,6 +117,17 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "pnpm run test:admin-desktop"
+
+[workflows.workflow.metadata]
+isValidation = true
+
+[[workflows.workflow]]
+name = "catalogue-images"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pnpm run check:catalogue-images"
 
 [workflows.workflow.metadata]
 isValidation = true
