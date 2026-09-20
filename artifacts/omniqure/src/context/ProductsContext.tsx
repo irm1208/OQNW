@@ -52,6 +52,8 @@ const CATALOGUE_IMAGE_OVERRIDES: Record<string, string> = {
   "klow-blend-80mg": "/products/35-card.png",
   "ghk-cu-50mg": "/products/17-card.png",
   "ghk-cu-100mg": "/products/18-card.png",
+  "nad-plus-500mg": "/products/nad-plus-500mg.png",
+  "nad-plus-1000mg": "/products/nad-plus-1000mg.png",
 };
 
 function toProduct(p: ApiProduct): Product {
