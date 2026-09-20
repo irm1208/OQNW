@@ -55,7 +55,7 @@ const RESEARCH_AREAS = [
     title: "Weight & Metabolic Research",
     peptides: "AOD-9604",
     desc: "GLP-1 receptor agonist research — investigated for appetite signalling, adipogenesis pathways, and lipid metabolism models.",
-    img: "https://cehs.usu.edu/khs/images/labs/banners/body-composition-lab.jpg",
+    img: "/research-weight-metabolic.jpg?v=1",
     accent: "#34D399",
   },
   {
