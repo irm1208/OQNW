@@ -3,6 +3,7 @@ import type { Product } from "@/data/products";
 import type { ProductDetail } from "@/data/productDetails";
 import { products as staticProducts } from "@/data/products";
 import { productDetails as staticProductDetails } from "@/data/productDetails";
+import fiveAmino1qProductCardImg from "@assets/ChatGPT_Image_Sep_20,_2026,_10_27_17_PM_1789939708756.png";
 
 type ProductsContextType = {
   products: Product[];
@@ -46,13 +47,17 @@ type ApiProduct = {
   seoDescription?: string | null;
 };
 
+const CATALOGUE_IMAGE_OVERRIDES: Record<string, string> = {
+  "5-amino-1q-50mg": fiveAmino1qProductCardImg,
+};
+
 function toProduct(p: ApiProduct): Product {
   return {
     id: String(p.id),
     name: p.name,
     slug: p.slug,
     price: p.priceGbp,
-    image: p.imageUrl ?? "",
+    image: CATALOGUE_IMAGE_OVERRIDES[p.slug] ?? p.imageUrl ?? "",
     category: p.category,
     description: p.shortDescription ?? p.description ?? null,
     purity: p.purity ?? null,
