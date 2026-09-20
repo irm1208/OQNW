@@ -370,17 +370,12 @@ export default function Header() {
           </button>
 
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 order-1" style={{ textDecoration: "none" }}>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
-              <div style={{ display: "inline-block" }}>
-                <img
-                  src="/omniqure-wordmark.png?v=4"
-                  alt="OmniQure"
-                  className="w-[145px] sm:w-[230px]"
-                  style={{ height: "auto", display: "block" }}
-                />
-              </div>
-            </div>
+          <Link href="/" className="header-logo-wrapper order-1" style={{ textDecoration: "none" }}>
+            <img
+              src="/omniqure-wordmark.png?v=4"
+              alt="OmniQure"
+              className="header-logo"
+            />
           </Link>
 
           {/* Search */}

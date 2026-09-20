@@ -146,6 +146,29 @@ div[class*="replit-ui-theme-root"] {
   }
 }
 
+.header-logo {
+  display: block;
+  width: 310px;
+  height: auto;
+  max-height: 52px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 20, 70, 0.22));
+}
+
+.header-logo-wrapper {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 10px 0;
+}
+
+@media (max-width: 768px) {
+  .header-logo {
+    width: 190px;
+    max-height: 38px;
+  }
+}
+
 /* Best-effort storefront copy deterrent. Keep customer-facing form controls
    selectable/editable so search, checkout, chat, and account flows work. */
 html.copy-protected,
