@@ -1,5 +1,3 @@
-import fiveAmino1qProductCardImg from "@assets/ChatGPT_Image_Sep_20,_2026,_10_27_17_PM_1789939708756.png";
-
 export type Product = {
   id: string;
   name: string;
@@ -40,12 +38,12 @@ export const products: Product[] = [
   { id: "14", name: "DSIP 10mg",                             slug: "dsip-10mg",                            price: 100, image: "/products/14.jpg", category: "Research Peptides" },
   { id: "15", name: "Epithalon 10mg",                        slug: "epithalon-10mg",                       price: 75,  image: "/products/15.jpg", category: "Longevity Peptides" },
   { id: "16", name: "Epithalon 40mg",                        slug: "epithalon-40mg",                       price: 220, image: "/products/16.jpg", category: "Longevity Peptides" },
-  { id: "17", name: "GHK-Cu 50mg",                           slug: "ghk-cu-50mg",                          price: 85,  image: "/products/17.jpg", category: "Skin & Repair" },
-  { id: "18", name: "GHK-Cu 100mg",                          slug: "ghk-cu-100mg",                         price: 145, image: "/products/18.jpg", category: "Skin & Repair" },
+  { id: "17", name: "GHK-Cu 50mg",                           slug: "ghk-cu-50mg",                          price: 85,  image: "/products/17-card.png", category: "Skin & Repair" },
+  { id: "18", name: "GHK-Cu 100mg",                          slug: "ghk-cu-100mg",                         price: 145, image: "/products/18-card.png", category: "Skin & Repair" },
   { id: "19", name: "GHRP-2 5mg",                            slug: "ghrp-2-5mg",                           price: 55,  image: "/products/19.jpg", category: "Growth Peptides" },
   { id: "20", name: "GHRP-2 10mg",                           slug: "ghrp-2-10mg",                          price: 90,  image: "/products/20.jpg", category: "Growth Peptides" },
   { id: "21", name: "GHRP-6 5mg",                            slug: "ghrp-6-5mg",                           price: 55,  image: "/products/21.jpg", category: "Growth Peptides" },
-  { id: "22", name: "GLOW BLEND 70mg",                       slug: "glow-blend-70mg",                      price: 175, image: "/products/22.jpg", category: "Peptide Blends" },
+  { id: "22", name: "GLOW BLEND 70mg",                       slug: "glow-blend-70mg",                      price: 175, image: "/products/22-card.png", category: "Peptide Blends" },
   { id: "23", name: "Gonadorelin 2mg",                       slug: "gonadorelin-2mg",                      price: 65,  image: "/products/23.jpg", category: "Hormonal Peptides" },
   { id: "26", name: "Somatropin 10 IU",                      slug: "somatropin-10iu",                      price: null, image: "/products/26.jpg", category: "Growth Hormone" },
   { id: "27", name: "Somatropin 15 IU",                      slug: "somatropin-15iu",                      price: null, image: "/products/27.jpg", category: "Growth Hormone" },
@@ -57,7 +55,7 @@ export const products: Product[] = [
   { id: "32", name: "Ipamorelin 10mg",                       slug: "ipamorelin-10mg",                      price: 110, image: "/products/32.jpg", category: "Growth Peptides" },
   { id: "33", name: "Kisspeptin-10 5mg",                     slug: "kisspeptin-10-5mg",                    price: 85,  image: "/products/33.jpg", category: "Hormonal Peptides" },
   { id: "34", name: "Kisspeptin-10 10mg",                    slug: "kisspeptin-10-10mg",                   price: 140, image: "/products/34.jpg", category: "Hormonal Peptides" },
-  { id: "35", name: "KLOW BLEND 80mg",                       slug: "klow-blend-80mg",                      price: 195, image: "/products/35.jpg", category: "Peptide Blends" },
+  { id: "35", name: "KLOW BLEND 80mg",                       slug: "klow-blend-80mg",                      price: 195, image: "/products/35-card.png", category: "Peptide Blends" },
   { id: "37", name: "KPV 10mg",                              slug: "kpv-10mg",                             price: 80,  image: "/products/37.jpg", category: "Anti-Inflammatory" },
   { id: "38", name: "LL-37 5mg",                             slug: "ll-37-5mg",                            price: 115, image: "/products/38.jpg", category: "Immune Support" },
   { id: "39", name: "Melanotan 1 10mg",                      slug: "melanotan-1-10mg",                     price: 85,  image: "/products/39.jpg", category: "Research Peptides" },
@@ -100,7 +98,7 @@ export const products: Product[] = [
   { id: "80", name: "Tirzepatide 60mg",                      slug: "tirzepatide-60mg",                     price: 665, image: "/products/80.jpg", category: "Weight Management" },
   { id: "81", name: "VIP 10mg",                              slug: "vip-10mg",                             price: 110, image: "/products/81.jpg", category: "Research Peptides" },
   { id: "82", name: "Tesamorelin 20mg",                      slug: "tesamorelin-20mg",                     price: 240, image: "/products/82.jpg", category: "Growth Hormone" },
-  { id: "83", name: "5-Amino-1Q 50mg",                       slug: "5-amino-1q-50mg",                      price: 95,  image: fiveAmino1qProductCardImg,          category: "Cellular Health" },
+  { id: "83", name: "5-Amino-1Q 50mg",                       slug: "5-amino-1q-50mg",                      price: 95,  image: "/products/83-card.png", category: "Cellular Health" },
   { id: "84", name: "ARA-290 16mg",                          slug: "ara-290-16mg",                         price: 120, image: "/products/84.jpg", category: "Research Peptides" },
   { id: "85", name: "CJC-1295 No DAC + Ipamorelin 5mg",     slug: "cjc-1295-no-dac-ipamorelin-5mg",       price: 95,  image: "/products/85.jpg", category: "Growth Hormone" },
 ].map((product) => ({

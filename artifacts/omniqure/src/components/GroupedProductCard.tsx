@@ -158,7 +158,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           />
         </button>
         <img
-          src={group.image}
+          src={selectedVariant.image}
           alt={group.baseName}
           style={{
             width: "100%", height: "100%", objectFit: "contain", padding: "16px",
