@@ -573,6 +573,84 @@ Reproductive research uses gonadorelin to study hypothalamic-pituitary-gonadal (
 Research in male models investigates the role of pulsatile LH stimulation in testosterone production, testicular function, and spermatogenesis. In female models, gonadorelin is used to study follicular development, ovulation induction, and luteal phase support. The peptide serves as an important research tool for understanding reproductive endocrinology and developing fertility-related interventions.`
   },
 
+  "26": {
+    id: "26",
+    refNumber: "12-225-HG",
+    casNumber: "12629-01-5",
+    formula: "C₉₉₀H₁₅₂₉N₂₆₃O₂₉₉S₇",
+    molecularWeight: "22,125 g/mol",
+    purity: "99% HPLC",
+    alsoKnownAs: "Human Growth Hormone, HGH, Recombinant Human Growth Hormone",
+    storage: "Store lyophilized peptide at -20°C.",
+    appearance: "White lyophilized powder",
+    solubility: "Soluble in sterile water",
+    researchAreas: ["Growth Hormone Research", "Endocrine Research", "Metabolic Research", "Tissue Growth Research"],
+    description: `Somatropin is recombinant human growth hormone studied in laboratory models of growth hormone signalling, IGF-1 regulation, metabolism, and tissue growth.`,
+    longDescription: `What is Somatropin?
+
+Somatropin is recombinant human growth hormone (HGH), a peptide hormone used as a research tool for studying the growth hormone axis and somatotroph biology. It is structurally equivalent to endogenous human growth hormone and is investigated in controlled laboratory models of growth hormone signalling.
+
+Somatropin Research
+
+Research applications include investigation of GH receptor signalling, IGF-1 regulation, protein and lipid metabolism, tissue growth, and endocrine feedback mechanisms. The 10 IU presentation provides a defined research quantity for laboratory protocols.
+
+For research use only. Not for human or veterinary use.`
+  },
+
+  "27": {
+    id: "27",
+    refNumber: "12-225-HG",
+    casNumber: "12629-01-5",
+    formula: "C₉₉₀H₁₅₂₉N₂₆₃O₂₉₉S₇",
+    molecularWeight: "22,125 g/mol",
+    purity: "99% HPLC",
+    alsoKnownAs: "Human Growth Hormone, HGH, Recombinant Human Growth Hormone",
+    storage: "Store lyophilized peptide at -20°C.",
+    appearance: "White lyophilized powder",
+    solubility: "Soluble in sterile water",
+    researchAreas: ["Growth Hormone Research", "Endocrine Research", "Metabolic Research", "Tissue Growth Research"],
+    description: `Somatropin is recombinant human growth hormone studied in laboratory models of growth hormone signalling, IGF-1 regulation, metabolism, and tissue growth.`,
+    longDescription: `Somatropin is recombinant human growth hormone studied for growth hormone receptor signalling, IGF-1 regulation, metabolism, tissue growth, and endocrine feedback. The 15 IU presentation provides a defined research quantity for laboratory protocols.
+
+For research use only. Not for human or veterinary use.`
+  },
+
+  "28": {
+    id: "28",
+    refNumber: "12-225-HG",
+    casNumber: "12629-01-5",
+    formula: "C₉₉₀H₁₅₂₉N₂₆₃O₂₉₉S₇",
+    molecularWeight: "22,125 g/mol",
+    purity: "99% HPLC",
+    alsoKnownAs: "Human Growth Hormone, HGH, Recombinant Human Growth Hormone",
+    storage: "Store lyophilized peptide at -20°C.",
+    appearance: "White lyophilized powder",
+    solubility: "Soluble in sterile water",
+    researchAreas: ["Growth Hormone Research", "Endocrine Research", "Metabolic Research", "Tissue Growth Research"],
+    description: `Somatropin is recombinant human growth hormone studied in laboratory models of growth hormone signalling, IGF-1 regulation, metabolism, and tissue growth.`,
+    longDescription: `Somatropin is recombinant human growth hormone studied for growth hormone receptor signalling, IGF-1 regulation, metabolism, tissue growth, and endocrine feedback. The 24 IU presentation provides a defined research quantity for laboratory protocols.
+
+For research use only. Not for human or veterinary use.`
+  },
+
+  "29": {
+    id: "29",
+    refNumber: "12-225-HG",
+    casNumber: "12629-01-5",
+    formula: "C₉₉₀H₁₅₂₉N₂₆₃O₂₉₉S₇",
+    molecularWeight: "22,125 g/mol",
+    purity: "99% HPLC",
+    alsoKnownAs: "Human Growth Hormone, HGH, Recombinant Human Growth Hormone",
+    storage: "Store lyophilized peptide at -20°C.",
+    appearance: "White lyophilized powder",
+    solubility: "Soluble in sterile water",
+    researchAreas: ["Growth Hormone Research", "Endocrine Research", "Metabolic Research", "Tissue Growth Research"],
+    description: `Somatropin is recombinant human growth hormone studied in laboratory models of growth hormone signalling, IGF-1 regulation, metabolism, and tissue growth.`,
+    longDescription: `Somatropin is recombinant human growth hormone studied for growth hormone receptor signalling, IGF-1 regulation, metabolism, tissue growth, and endocrine feedback. The 36 IU presentation provides a defined research quantity for laboratory protocols.
+
+For research use only. Not for human or veterinary use.`
+  },
+
   "25": {
     id: "25",
     refNumber: "560-05-HX",
