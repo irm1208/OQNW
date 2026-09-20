@@ -1,5 +1,5 @@
 const PROTECTED_PREFIX = "/api/catalogue-assets";
-const CATALOGUE_ASSET_VERSION = "2026-09-20-catalogue-complete";
+const CATALOGUE_ASSET_VERSION = "2026-09-20-catalogue-glow-klow";
 
 export function toCanonicalCatalogueImageUrl(imageUrl: string | null): string | null {
   if (!imageUrl) return imageUrl;
