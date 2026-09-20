@@ -1,6 +1,6 @@
-export const SITE_NAME = "OmniQure Peptide Research Institute";
+export const SITE_NAME = "OmniQure";
 export const SITE_URL = "https://omniqure.com";
-export const DEFAULT_SITE_TITLE = "OmniQure Peptide Research Institute — Verified Research Peptides";
+export const DEFAULT_SITE_TITLE = "OmniQure — Verified Research Peptides";
 export const DEFAULT_SITE_DESCRIPTION =
   "Buy high-purity research peptides verified to 98%+. BPC-157, TB-500, Ipamorelin, CJC-1295, Epithalon and 100+ peptides. Worldwide shipping. For research use only.";
 

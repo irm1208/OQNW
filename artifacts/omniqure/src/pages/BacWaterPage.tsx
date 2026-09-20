@@ -252,7 +252,7 @@ export default function BacWaterPage() {
         <p className="text-center mt-8" style={{ fontSize: "11.5px", color: "#94A3B8", lineHeight: 1.7 }}>
           <strong style={{ color: "#64748B" }}>Research Use Only.</strong>{" "}
           This product is intended solely for laboratory and research purposes. Not for human or veterinary use.
-          OmniQure Peptide Research Institute accepts no liability for misuse of this product.
+          OmniQure accepts no liability for misuse of this product.
         </p>
       </div>
     </div>

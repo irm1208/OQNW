@@ -90,7 +90,7 @@ const VALUES = [
 
 export default function AboutPage() {
   useSEO({
-    title: "About OmniQure — Peptide Research Institute",
+    title: "About OmniQure — Verified Research Peptides",
     description: "Learn about OmniQure's mission to supply verified research peptides with full transparency. Founded by researchers. Trusted by institutions worldwide.",
     canonicalPath: "/about",
   });
@@ -118,7 +118,7 @@ export default function AboutPage() {
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
             <div style={{ width: 32, height: 1, background: "linear-gradient(90deg, #60A5FA, #93C5FD)" }} />
             <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.28em", color: "#93C5FD", margin: 0 }}>
-              Peptide Research Institute
+              OmniQure
             </p>
           </div>
 

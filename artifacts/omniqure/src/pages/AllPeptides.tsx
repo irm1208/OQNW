@@ -16,15 +16,15 @@ const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   "Healing Peptides": "Research healing peptides including BPC-157, TB-500 and more. Independent results confirm 99%+ purity.",
   "Weight Management": "Research weight management peptides.",
   "Longevity Peptides": "Research longevity peptides including Epithalon, Selank, Semax and more. Independent results confirm 99%+ purity.",
-  "Cellular Health": "Research cellular health peptides with independent results confirming 99%+ purity from OmniQure Peptide Research Institute.",
+  "Cellular Health": "Research cellular health peptides with independent results confirming 99%+ purity from OmniQure.",
   "Nootropics": "Research nootropic peptides for cognitive research with independent results confirming 99%+ purity from OmniQure.",
-  "Immune Support": "Research immune support peptides with independent results confirming 99%+ purity from OmniQure Peptide Research Institute.",
+  "Immune Support": "Research immune support peptides with independent results confirming 99%+ purity from OmniQure.",
   "Research Peptides": "Specialist research peptides for laboratory use with independent results confirming 99%+ purity from OmniQure.",
-  "Peptide Blends": "Research peptide blends and stacks with independent results confirming 99%+ purity from OmniQure Peptide Research Institute.",
+  "Peptide Blends": "Research peptide blends and stacks with independent results confirming 99%+ purity from OmniQure.",
   "Skin & Repair": "Research skin and repair peptides including GHK-Cu and more, with independent results confirming 99%+ purity from OmniQure.",
   "Hormonal Peptides": "Research hormonal peptides including Gonadorelin and more. Independent results confirm 99%+ purity.",
   "Growth Hormone": "Research growth hormone peptides with independent results confirming 99%+ purity from OmniQure.",
-  "Anti-Inflammatory": "Research anti-inflammatory peptides with independent results confirming 99%+ purity from OmniQure Peptide Research Institute.",
+  "Anti-Inflammatory": "Research anti-inflammatory peptides with independent results confirming 99%+ purity from OmniQure.",
   "Cognitive Peptides": "Research cognitive peptides for neuroscience research with independent results confirming 99%+ purity from OmniQure.",
 };
 
@@ -41,8 +41,8 @@ export default function AllPeptides() {
     ? selectedCategory
     : "All Research Peptides";
   const seoDesc = searchQuery.trim()
-    ? `Showing research peptides matching "${searchQuery.trim()}" — independent results confirm 99%+ purity from OmniQure Peptide Research Institute.`
-    : CATEGORY_DESCRIPTIONS[selectedCategory] ?? "Browse 100+ verified research peptides from OmniQure Peptide Research Institute. BPC-157, TB-500, Ipamorelin and more.";
+    ? `Showing research peptides matching "${searchQuery.trim()}" — independent results confirm 99%+ purity from OmniQure.`
+    : CATEGORY_DESCRIPTIONS[selectedCategory] ?? "Browse 100+ verified research peptides from OmniQure. BPC-157, TB-500, Ipamorelin and more.";
   useSEO({ title: seoTitle, description: seoDesc, canonicalPath: "/all-peptides" });
 
   useEffect(() => {

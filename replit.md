@@ -1,6 +1,6 @@
 # OmniQure
 
-Research-grade peptide e-commerce site for OmniQure Peptide Research Institute, featuring independently verified peptides and published Janoshik reports where available.
+Research-grade peptide e-commerce site for OmniQure, featuring independently verified peptides and published Janoshik reports where available.
 
 ## Run & Operate
 

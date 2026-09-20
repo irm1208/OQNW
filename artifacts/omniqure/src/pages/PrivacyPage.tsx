@@ -3,7 +3,7 @@ import { Lock, ChevronRight } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
 
 const LAST_UPDATED = "1 May 2025";
-const COMPANY = "OmniQure Peptide Research Institute";
+const COMPANY = "OmniQure";
 const COMPANY_SHORT = "OmniQure";
 const EMAIL_PRIVACY = "support@omniqure.com";
 const EMAIL_GENERAL = "support@omniqure.com";
@@ -48,7 +48,7 @@ const toc = [
 export default function PrivacyPage() {
   useSEO({
     title: "Privacy Policy",
-    description: "OmniQure Peptide Research Institute privacy policy — how we collect, use, and protect your personal data in accordance with UK GDPR.",
+    description: "OmniQure privacy policy — how we collect, use, and protect your personal data in accordance with UK GDPR.",
     canonicalPath: "/privacy",
   });
   return (

@@ -3,7 +3,7 @@ import { Shield, ChevronRight } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
 
 const LAST_UPDATED = "1 May 2025";
-const COMPANY = "OmniQure Peptide Research Institute";
+const COMPANY = "OmniQure";
 const COMPANY_SHORT = "OmniQure";
 const EMAIL = "support@omniqure.com";
 
@@ -55,7 +55,7 @@ const toc = [
 export default function TermsPage() {
   useSEO({
     title: "Terms & Conditions",
-    description: "Terms and conditions for purchasing research peptides from OmniQure Peptide Research Institute. All products are for in-vitro research use only.",
+    description: "Terms and conditions for purchasing research peptides from OmniQure. All products are for in-vitro research use only.",
     canonicalPath: "/terms",
   });
   return (

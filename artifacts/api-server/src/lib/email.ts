@@ -159,7 +159,7 @@ function baseTemplate(title: string, body: string): string {
           <tr>
             <td style="background:#f8fafc;padding:20px 32px;border-top:1px solid #e2e8f0;">
               <p style="margin:0;color:#94a3b8;font-size:12px;text-align:center;">
-                OmniQure Peptide Research Institute &bull; For research purposes only<br/>
+                OmniQure &bull; For research purposes only<br/>
                 <a href="${SITE_URL}" style="color:#94a3b8;">omniqure.com</a>
               </p>
             </td>
@@ -786,7 +786,7 @@ export function generateReceiptHtml(order: OrderEmailData, dateStr?: string): st
 
   <!-- Footer -->
   <div style="background:#F8FAFC;border-top:1px solid #E2E8F0;padding:18px 36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-    <div style="font-size:11.5px;color:#94A3B8;">OmniQure Peptide Research Institute &bull; <a href="${SITE_URL}" style="color:#94A3B8;text-decoration:none;">omniqure.com</a></div>
+    <div style="font-size:11.5px;color:#94A3B8;">OmniQure &bull; <a href="${SITE_URL}" style="color:#94A3B8;text-decoration:none;">omniqure.com</a></div>
     <button class="no-print" onclick="window.print()" style="font-size:12px;font-weight:700;padding:8px 18px;border-radius:8px;border:1.5px solid #CBD5E1;background:#fff;color:#475569;cursor:pointer;display:flex;align-items:center;gap:6px;">
       ↓ &nbsp;Download / Print
     </button>
@@ -808,7 +808,7 @@ export async function sendAccountCreatedEmail(opts: {
   const body = `
     <h2 style="margin:0 0 6px;font-size:22px;color:#0f172a;">Your account is ready</h2>
     <p style="margin:0 0 24px;font-size:14px;color:#64748b;">
-      Hi ${firstName}, welcome to OmniQure Peptide Research Institute.
+      Hi ${firstName}, welcome to OmniQure.
       Your account has been created and you're ready to start exploring our catalogue.
     </p>
 

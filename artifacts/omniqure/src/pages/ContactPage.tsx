@@ -22,7 +22,7 @@ const SUBJECTS = [
 export default function ContactPage() {
   useSEO({
     title: "Contact Us",
-    description: "Get in touch with the OmniQure Peptide Research Institute team. Questions about orders, peptide specifications, Janoshik reports, or reconstitution — we're here to help.",
+    description: "Get in touch with the OmniQure team. Questions about orders, peptide specifications, Janoshik reports, or reconstitution — we're here to help.",
     canonicalPath: "/contact",
   });
   const [name, setName] = useState("");

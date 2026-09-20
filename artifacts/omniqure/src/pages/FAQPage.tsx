@@ -75,7 +75,7 @@ const FAQS: FAQItem[] = [
   {
     category: "products",
     q: "Are your products for human consumption?",
-    a: "No. All products sold by OmniQure Peptide Research Institute are strictly for in-vitro and preclinical research purposes only. They are not intended for human or veterinary administration, and are not classified as medicines, food supplements, or health products. By purchasing, you confirm the products are for laboratory research use only.",
+    a: "No. All products sold by OmniQure are strictly for in-vitro and preclinical research purposes only. They are not intended for human or veterinary administration, and are not classified as medicines, food supplements, or health products. By purchasing, you confirm the products are for laboratory research use only.",
     tags: ["human use", "research only", "disclaimer"],
   },
   {

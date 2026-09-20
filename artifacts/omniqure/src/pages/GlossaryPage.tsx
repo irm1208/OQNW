@@ -408,7 +408,7 @@ const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 export default function GlossaryPage() {
   useSEO({
     title: "Peptide Research Glossary",
-    description: "Comprehensive A–Z glossary of peptide research terminology — amino acids, pharmacokinetics, purity testing, half-life, GHRH, GLP-1, receptors, reconstitution, and more. OmniQure Peptide Research Institute.",
+    description: "Comprehensive A–Z glossary of peptide research terminology — amino acids, pharmacokinetics, purity testing, half-life, GHRH, GLP-1, receptors, reconstitution, and more. OmniQure.",
     canonicalPath: "/glossary",
   });
 

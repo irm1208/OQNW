@@ -546,7 +546,7 @@ function CartUpsells() {
 }
 
 export default function CartPage() {
-  useSEO({ title: "Cart & Checkout", description: "Review your research peptide cart and complete checkout in one step. OmniQure Peptide Research Institute.", canonicalPath: "/cart" });
+  useSEO({ title: "Cart & Checkout", description: "Review your research peptide cart and complete checkout in one step. OmniQure.", canonicalPath: "/cart" });
   const [, navigate] = useLocation();
   const wallidTestTokenFromUrl = new URLSearchParams(window.location.search).get("wallidTest")?.trim() || null;
   const cryptoTestTokenFromUrl = new URLSearchParams(window.location.search).get("cryptoTest")?.trim() || null;

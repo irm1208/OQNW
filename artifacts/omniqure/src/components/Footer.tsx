@@ -273,7 +273,7 @@ export default function Footer() {
           </div>
 
           <div className="text-center mt-3 md:mt-5" style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>
-            © {new Date().getFullYear()} OmniQure Peptide Research Institute — All Rights Reserved · For Laboratory Research Use Only
+            © {new Date().getFullYear()} OmniQure — All Rights Reserved · For Laboratory Research Use Only
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@ import { useSEO } from "@/hooks/useSEO";
 import { useCurrency } from "@/context/CurrencyContext";
 
 export default function WishlistPage() {
-  useSEO({ title: "My Wishlist", description: "Your saved research peptides from OmniQure Peptide Research Institute.", canonicalPath: "/wishlist" });
+  useSEO({ title: "My Wishlist", description: "Your saved research peptides from OmniQure.", canonicalPath: "/wishlist" });
   const { wishlistIds, toggle } = useWishlist();
   const { products } = useProducts();
   const { addToCart } = useCart();
