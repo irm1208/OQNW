@@ -54,6 +54,15 @@ router.get("/traffic/image", async (req: Request, res: Response): Promise<void> 
     return;
   }
 
+  // Vite's development server probes this endpoint before serving every
+  // local image. Applying the durable public-image limiter to that loopback
+  // probe can block the entire development preview after automated checks,
+  // even though production static serving does not use this route.
+  if (process.env.NODE_ENV !== "production") {
+    res.status(204).send();
+    return;
+  }
+
   const path = typeof req.headers["x-original-path"] === "string"
     ? req.headers["x-original-path"]
     : "/";

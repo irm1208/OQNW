@@ -251194,6 +251194,10 @@ router54.get("/traffic/image", async (req, res) => {
     res.status(404).json({ error: "Not found" });
     return;
   }
+  if (process.env.NODE_ENV !== "production") {
+    res.status(204).send();
+    return;
+  }
   const path4 = typeof req.headers["x-original-path"] === "string" ? req.headers["x-original-path"] : "/";
   const decision = await checkImageTraffic(req, path4);
   if (!decision.allowed) {
