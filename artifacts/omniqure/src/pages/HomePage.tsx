@@ -13,7 +13,7 @@ import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
 import bundleAndSaveHeroImg from "@assets/new_hero_1783533143502.jpeg";
-import heroContentImg from "@assets/ChatGPT_Image_Sep_20,_2026,_10_22_02_PM_1789939338219.png";
+import heroContentImg from "@assets/ChatGPT_Image_Sep_20,_2026,_11_16_25_PM_1789942609763.png";
 
 // Value of a single £25 referral credit reward, in each supported currency.
 const REFERRAL_CREDIT_VALUE: Record<CurrencyCode, string> = {
@@ -244,7 +244,7 @@ function HeroContentSlide() {
       style={{
         position: "relative",
         overflow: "hidden",
-        background: "linear-gradient(to bottom, #AAC8F5, #9DADD7)",
+        background: "linear-gradient(to bottom, #ABC7F4, #9EAED8)",
         minHeight: "unset",
         display: "flex",
         alignItems: "flex-end",
