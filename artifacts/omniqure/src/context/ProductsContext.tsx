@@ -16,9 +16,9 @@ const ProductsContext = createContext<ProductsContextType>({
   loading: true,
 });
 
-function withProtectedImage(product: Product): Product {
-  if (!product.image.startsWith("/") || product.image.startsWith("/api/")) return product;
-  return { ...product, image: `/api/catalogue-assets${product.image}` };
+function withProtectedImage(image: string): string {
+  if (!image.startsWith("/") || image.startsWith("/api/")) return image;
+  return `/api/catalogue-assets${image}`;
 }
 
 type ApiProduct = {
@@ -57,12 +57,13 @@ const CATALOGUE_IMAGE_OVERRIDES: Record<string, string> = {
 };
 
 function toProduct(p: ApiProduct): Product {
+  const image = CATALOGUE_IMAGE_OVERRIDES[p.slug] ?? p.imageUrl ?? "";
   return {
     id: String(p.id),
     name: p.name,
     slug: p.slug,
     price: p.priceGbp,
-    image: CATALOGUE_IMAGE_OVERRIDES[p.slug] ?? p.imageUrl ?? "",
+    image: withProtectedImage(image),
     category: p.category,
     description: p.shortDescription ?? p.description ?? null,
     purity: p.purity ?? null,
