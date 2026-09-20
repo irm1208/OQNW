@@ -529,12 +529,10 @@ html.copy-protected [role="textbox"] {
 }
 
 /* ── HOME HERO RESPONSIVE ────────────────────────────────── */
-/* All hero/marketing slide assets share the exact same native pixel
-   dimensions (6336x2688), rendered with object-fit: contain so they're
-   never cropped. The carousel box uses that exact ratio at every
-   breakpoint so the image fills the box edge-to-edge with zero letterbox
-   gap, on mobile included. Keep this in sync with the inline aspectRatio
-   on .hero-carousel in HomePage.tsx if it ever changes. */
+/* Hero/marketing slide assets are ultra-wide and rendered with object-fit:
+   contain so they're never cropped. The carousel box uses the established
+   near-21:9 ratio at every breakpoint; each slide supplies its own matching
+   edge-color background for the small ratio differences between assets. */
 
 .hero-carousel {
   aspect-ratio: 6336 / 2688 !important;

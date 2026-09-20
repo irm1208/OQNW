@@ -14,6 +14,7 @@ import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
 import referAFriendHeroImg from "@assets/download_1783727474544.png";
 import bundleAndSaveHeroImg from "@assets/new_hero_1783533143502.jpeg";
+import heroContentImg from "@assets/ChatGPT_Image_Sep_20,_2026,_05_12_26_PM_1789920834260.png";
 
 // Value of a single £25 referral credit reward, in each supported currency.
 const REFERRAL_CREDIT_VALUE: Record<CurrencyCode, string> = {
@@ -244,20 +245,18 @@ function HeroContentSlide() {
       style={{
         position: "relative",
         overflow: "hidden",
-        background: "linear-gradient(to bottom, #A7C6E7, #91AED1)",
+        background: "linear-gradient(to bottom, #AAC8F5, #9DADD7)",
         minHeight: "unset",
         display: "flex",
         alignItems: "flex-end",
         height: "100%",
       }}
     >
-      {/* Background photo — object-fit: contain so the full ultra-wide (21:9)
-          image is always visible and never gets cropped/zoomed on narrower,
-          taller carousel boxes (e.g. mobile), matching the other slides. */}
+      {/* Full artwork — object-fit: contain keeps the complete ultra-wide image
+          visible and avoids cropping the product labels on narrower screens. */}
       <img
-        src="/hero-vials-2.webp"
-        alt=""
-        aria-hidden="true"
+        src={heroContentImg}
+        alt="OmniQure research peptide collection featuring labelled peptide vials and molecular structures"
         style={{
           position: "absolute",
           inset: 0,
@@ -267,31 +266,6 @@ function HeroContentSlide() {
           objectPosition: "center",
         }}
       />
-
-      {/* Bottom fade so text remains readable against the light product image */}
-      <div style={{
-        position: "absolute",
-        inset: 0,
-        background: "linear-gradient(to bottom, rgba(2,11,30,0.0) 0%, rgba(2,11,30,0.0) 35%, rgba(2,11,30,0.45) 60%, rgba(2,11,30,0.60) 100%)",
-        pointerEvents: "none",
-      }} />
-      {/* Left-to-right overlay — full dark on mobile, fades right on desktop */}
-      <div className="hero-overlay-lr" style={{
-        position: "absolute",
-        inset: 0,
-        pointerEvents: "none",
-      }} />
-      {/* Subtle blue glow behind the logo (top-left) */}
-      <div style={{
-        position: "absolute",
-        top: "-80px",
-        left: "-80px",
-        width: "800px",
-        height: "560px",
-        background: "radial-gradient(ellipse at 35% 38%, rgba(40,120,255,0.18) 0%, rgba(20,80,230,0.10) 30%, rgba(10,50,180,0.04) 55%, rgba(0,0,0,0.0) 75%)",
-        pointerEvents: "none",
-        mixBlendMode: "screen",
-      }} />
 
     </section>
   );
