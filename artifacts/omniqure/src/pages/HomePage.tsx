@@ -323,7 +323,7 @@ function HeroBundleElectricSlide() {
       }}
     >
       <img
-        src="/hero-bundle-save.webp"
+        src="/hero-bundle-save-third.png"
         alt="Bundle and Save — buy 3-4 peptides and get a free 10ml BAC water ampule, 5-9 get 1 free peptide, 10+ get 2 free peptides"
         style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />
