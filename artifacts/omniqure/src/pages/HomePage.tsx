@@ -13,7 +13,7 @@ import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
 import bundleAndSaveHeroImg from "@assets/new_hero_1783533143502.jpeg";
-import heroContentImg from "@assets/ChatGPT_Image_Sep_20,_2026,_11_16_25_PM_1789942609763.png";
+import heroContentImg from "@assets/ChatGPT_Image_Sep_21,_2026,_10_49_54_PM_1790027431923.png";
 
 // Value of a single £25 referral credit reward, in each supported currency.
 const REFERRAL_CREDIT_VALUE: Record<CurrencyCode, string> = {
