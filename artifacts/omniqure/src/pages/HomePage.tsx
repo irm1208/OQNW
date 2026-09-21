@@ -14,6 +14,7 @@ import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
 import bundleAndSaveHeroImg from "@assets/new_hero_1783533143502.jpeg";
 import heroContentImg from "@assets/ChatGPT_Image_Sep_21,_2026,_10_49_54_PM_1790027431923.png";
+import heroReferralImg from "@assets/ChatGPT_Image_Sep_21,_2026,_10_58_56_PM_1790027985531.png";
 
 // Value of a single £25 referral credit reward, in each supported currency.
 const REFERRAL_CREDIT_VALUE: Record<CurrencyCode, string> = {
@@ -282,7 +283,7 @@ function HeroReferralSlide() {
       }}
     >
       <img
-        src="/hero-referral-second.png"
+        src={heroReferralImg}
         alt="Refer a friend and earn £25 credit each, up to £50"
         style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />
