@@ -138,3 +138,17 @@ mtime_ms = 1790005294645
 storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:72159070-0bd7-448d-aaa8-655b3ff0e5ea/b6d14ba9-a61a-40fe-9d54-9b85ece096f7/913ad8f6-3bca-4fbb-96e0-a3ccd64c67d4"
 storage_version_token = "1790005296122971"
 content_type = "text/html"
+
+[[outputs]]
+id = "OUFDTrT_n5xVFP82M3zsD"
+uri = "file://previews/omniqure-logo-header-example.png"
+type = "image"
+title = "OmniQure logo header preview"
+description = "Rendered desktop and mobile website header examples using the supplied OmniQure logo artwork."
+logical_id = "a4c64104-ea1a-4bb7-913e-09ad07a2df63"
+content_hash = "sha256:52fc4aaa24dc751c0efe383020e2479b50626bc7b3ae53e9d4c958b8b47086eb"
+size = 645373
+mtime_ms = 1790005427397
+storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:72159070-0bd7-448d-aaa8-655b3ff0e5ea/a4c64104-ea1a-4bb7-913e-09ad07a2df63/9166656b-93c0-4e4e-8f41-8a63fbb88cb9"
+storage_version_token = "1790005432000900"
+content_type = "image/png"
