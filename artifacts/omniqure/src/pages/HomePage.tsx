@@ -330,6 +330,26 @@ function HeroBundleElectricSlide() {
   );
 }
 
+function HeroAffiliateSlide() {
+  return (
+    <Link
+      href="/affiliate"
+      style={{
+        display: "block",
+        width: "100%",
+        height: "100%",
+        background: "#EAF4FF",
+      }}
+    >
+      <img
+        src="/hero-affiliate.png"
+        alt="Grow with OmniQure affiliate programme — earn commission, offer audience discounts, and unlock product rewards"
+        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+      />
+    </Link>
+  );
+}
+
 const HERO_AUTOPLAY_MS = 6500;
 
 function HeroCarousel() {
@@ -337,6 +357,7 @@ function HeroCarousel() {
     { key: "content", render: () => <HeroContentSlide /> },
     { key: "referral", render: () => <HeroReferralSlide /> },
     { key: "bundle-electric", render: () => <HeroBundleElectricSlide /> },
+    { key: "affiliate", render: () => <HeroAffiliateSlide /> },
   ];
   const [idx, setIdx] = useState(0);
 
