@@ -45,7 +45,7 @@ Call log:
                 - generic:
                   - generic:
                     - heading [level=2]: Overview
-                    - generic: 2 live
+                    - generic: 0 live
                   - paragraph: Monitor your store's performance and operations.
                 - generic:
                   - generic:
