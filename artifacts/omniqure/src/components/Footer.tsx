@@ -1,6 +1,9 @@
 import { Link } from "wouter";
 import { FlaskConical, Mail, MapPin } from "lucide-react";
 
+const BRAND_STRIP_GRADIENT =
+  "linear-gradient(90deg, #132563 0%, #183A80 45%, #2053A0 72%, #2F5AAF 100%)";
+
 const footerCategories = [
   {
     title: "Purchase Peptides",
@@ -115,7 +118,7 @@ export default function Footer() {
 
 
       {/* Main footer body */}
-      <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", color: "#94A3B8" }}>
+      <div style={{ background: BRAND_STRIP_GRADIENT, color: "#94A3B8" }}>
         <div className="max-w-[1280px] mx-auto px-4 pt-2 md:pt-12 pb-4 md:pb-8">
 
           {/* Top row */}

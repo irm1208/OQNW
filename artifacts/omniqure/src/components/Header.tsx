@@ -60,6 +60,9 @@ const offerNavItems = [
   { label: "Affiliate Programme", href: "/affiliate", icon: Users, desc: "Earn monetary payments on eligible sales" },
 ];
 
+const BRAND_STRIP_GRADIENT =
+  "linear-gradient(90deg, #132563 0%, #183A80 45%, #2053A0 72%, #2F5AAF 100%)";
+
 export default function Header() {
   const { products: allProducts } = useProducts();
   const products = useMemo(() => allProducts.filter((p) => !isHiddenCategory(p.category)), [allProducts]);
@@ -347,8 +350,8 @@ export default function Header() {
       {/* Top bar */}
       <div style={{
         background: scrolled
-          ? "rgba(18,64,160,0.97)"
-          : "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
+          ? "linear-gradient(90deg, rgba(19,37,99,0.98) 0%, rgba(24,58,128,0.98) 45%, rgba(32,83,160,0.98) 72%, rgba(47,90,175,0.98) 100%)"
+          : BRAND_STRIP_GRADIENT,
         backdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
         WebkitBackdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
         boxShadow: scrolled ? "0 4px 32px rgba(8,28,80,0.35)" : "0 2px 16px rgba(8,28,80,0.25)",
