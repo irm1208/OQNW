@@ -33,9 +33,9 @@ function highlightMatch(text: string, query: string) {
 
 const BASE_NAV_ITEMS = [
   { label: "Home", href: "/" },
-  { label: "All Peptides", href: "/all-peptides" },
+  { label: "Shop Peptides", href: "/all-peptides" },
   { label: "Bac Water", href: "/bac-water" },
-  { label: "Independent Results", href: "/lab-reports" },
+  { label: "Lab Results", href: "/lab-reports" },
   { label: "Peptide Calculator", href: "/calculator" },
   { label: "Research & Education", href: "/protocols" },
 ];
@@ -68,7 +68,7 @@ export default function Header() {
     if (!nadPublished) return BASE_NAV_ITEMS;
     return [
       BASE_NAV_ITEMS[0], // Home
-      BASE_NAV_ITEMS[1], // All Peptides
+      BASE_NAV_ITEMS[1], // Shop Peptides
       { label: "NAD+", href: "/product/nad-plus-500mg" },
       ...BASE_NAV_ITEMS.slice(2),
     ];
@@ -787,7 +787,7 @@ export default function Header() {
           <div className="flex items-center">
             {navItems.map((item) => {
               const active = location === item.href || (item.href === "/all-peptides" && location.startsWith("/all-peptides"));
-              if (item.label === "All Peptides") {
+              if (item.label === "Shop Peptides") {
                 return (
                   <div
                     key={item.label}
@@ -829,7 +829,7 @@ export default function Header() {
                         {/* Header row */}
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px", paddingBottom: "8px", borderBottom: "1px solid #F1F5F9" }}>
                           <p style={{ fontSize: "11px", fontWeight: 800, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>
-                            All Peptides
+                            Shop Peptides
                           </p>
                           <Link
                             href="/all-peptides"
@@ -869,7 +869,7 @@ export default function Header() {
                             onClick={() => setAllPeptidesOpen(false)}
                             style={{ fontSize: "13px", fontWeight: 600, color: "#1B5CB5", textDecoration: "none" }}
                           >
-                            Browse All Peptides →
+                            Browse Peptides →
                           </Link>
                         </div>
                       </div>
