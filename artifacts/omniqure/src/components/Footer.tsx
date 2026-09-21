@@ -1,9 +1,6 @@
 import { Link } from "wouter";
 import { FlaskConical, Mail, MapPin } from "lucide-react";
 
-const BRAND_STRIP_GRADIENT =
-  "linear-gradient(90deg, #01266F 0%, #003D9E 32%, #005FCF 60%, #0087EE 80%, #01C3FD 100%)";
-
 const footerCategories = [
   {
     title: "Purchase Peptides",
@@ -118,7 +115,7 @@ export default function Footer() {
 
 
       {/* Main footer body */}
-      <div style={{ background: BRAND_STRIP_GRADIENT, color: "#94A3B8" }}>
+      <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", color: "#94A3B8" }}>
         <div className="max-w-[1280px] mx-auto px-4 pt-2 md:pt-12 pb-4 md:pb-8">
 
           {/* Top row */}
@@ -130,10 +127,10 @@ export default function Footer() {
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
                   <div style={{ display: "inline-block" }}>
                     <img
-                      src="/omniqure-wordmark.png?v=6"
+                      src="/omniqure-wordmark.png?v=4"
                       alt="OmniQure"
-                      className="w-[150px] h-[23px] md:w-[230px] md:h-[35px]"
-                      style={{ objectFit: "cover", objectPosition: "center", display: "block" }}
+                      className="w-[150px] md:w-[230px]"
+                      style={{ height: "auto", display: "block" }}
                     />
                   </div>
                 </div>

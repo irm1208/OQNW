@@ -62,7 +62,7 @@ export function generatePackingSlipHtml(order: Order, items: Item[]): string {
 
   /* ── Header ── */
   .header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 16px; border-bottom: 2px solid #111; margin-bottom: 20px; }
-  .brand-logo { display: block; width: 190px; height: 29px; object-fit: cover; object-position: center; }
+  .brand-logo { display: block; width: 190px; height: auto; }
   .slip-title { text-align: right; }
   .slip-title h1 { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
   .slip-title p  { font-size: 11px; color: #555; margin-top: 3px; }
@@ -113,7 +113,7 @@ export function generatePackingSlipHtml(order: Order, items: Item[]): string {
 <div class="slip">
 
   <div class="header">
-    <img class="brand-logo" src="${SITE_URL}/omniqure-wordmark-blue.png?v=5" alt="OmniQure">
+    <img class="brand-logo" src="${SITE_URL}/omniqure-wordmark-blue.png?v=4" alt="OmniQure">
     <div class="slip-title">
       <h1>Packing Slip</h1>
       <p>Printed ${fmtDate(new Date())}</p>

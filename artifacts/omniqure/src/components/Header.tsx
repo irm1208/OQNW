@@ -60,9 +60,6 @@ const offerNavItems = [
   { label: "Affiliate Programme", href: "/affiliate", icon: Users, desc: "Earn monetary payments on eligible sales" },
 ];
 
-const BRAND_STRIP_GRADIENT =
-  "linear-gradient(90deg, #01266F 0%, #003D9E 32%, #005FCF 60%, #0087EE 80%, #01C3FD 100%)";
-
 export default function Header() {
   const { products: allProducts } = useProducts();
   const products = useMemo(() => allProducts.filter((p) => !isHiddenCategory(p.category)), [allProducts]);
@@ -349,7 +346,9 @@ export default function Header() {
     <header style={{ fontFamily: "'Arimo', Arial, sans-serif", transition: "filter 0.3s ease" }} className="sticky top-0 z-50">
       {/* Top bar */}
       <div style={{
-        background: BRAND_STRIP_GRADIENT,
+        background: scrolled
+          ? "rgba(18,64,160,0.97)"
+          : "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
         backdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
         WebkitBackdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
         boxShadow: scrolled ? "0 4px 32px rgba(8,28,80,0.35)" : "0 2px 16px rgba(8,28,80,0.25)",
@@ -373,7 +372,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="header-logo-wrapper order-1" style={{ textDecoration: "none" }}>
             <img
-              src="/omniqure-wordmark.png?v=6"
+              src="/omniqure-wordmark.png?v=4"
               alt="OmniQure"
               className="header-logo"
             />

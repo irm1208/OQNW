@@ -190,9 +190,9 @@ export default function Login() {
       <Card className="w-full max-w-md shadow-lg border-primary/10">
         <CardHeader className="space-y-2 text-center pb-6">
           <img
-            src={`${import.meta.env.BASE_URL}omniqure-wordmark.png?v=5`}
+            src={`${import.meta.env.BASE_URL}omniqure-wordmark.png?v=4`}
             alt="OmniQure"
-            className="mx-auto mb-3 h-[34px] w-[220px] max-w-full object-cover object-center"
+            className="mx-auto mb-3 h-auto w-[220px] max-w-full"
           />
           <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2 ${isLocked ? "bg-red-100" : "bg-primary/10"}`}>
             {isLocked ? <ShieldAlert className="w-6 h-6 text-red-600" /> : recoveryCodes.length > 0 ? <ShieldCheck className="w-6 h-6 text-primary" /> : isMfaStep ? <KeyRound className="w-6 h-6 text-primary" /> : <Lock className="w-6 h-6 text-primary" />}

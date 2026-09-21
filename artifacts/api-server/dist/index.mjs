@@ -236115,7 +236115,7 @@ function getResend() {
 var FROM_ADDRESS = process.env.EMAIL_FROM ?? "OmniQure <orders@omniqure.com>";
 var ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? null;
 var SITE_URL = process.env.SITE_URL ?? "https://omniqure.com";
-var LOGO_URL = `${SITE_URL}/omniqure-email-header.png?v=5`;
+var LOGO_URL = `${SITE_URL}/omniqure-email-header.png?v=4`;
 async function logEmail(opts) {
   try {
     await db.insert(emailLogsTable).values({
@@ -236184,7 +236184,7 @@ function baseTemplate(title, body) {
           <tr>
             <td style="background:linear-gradient(90deg,#142767 0%,#183077 100%);padding:24px 32px;">
               <a href="${SITE_URL}" style="display:inline-block;text-decoration:none;">
-                <img src="${LOGO_URL}" alt="OmniQure" width="235" height="36" style="display:block;width:235px;max-width:100%;height:36px;object-fit:cover;object-position:center;border:0;" />
+                <img src="${LOGO_URL}" alt="OmniQure" width="235" style="display:block;width:235px;max-width:100%;height:auto;border:0;" />
               </a>
             </td>
           </tr>
@@ -237792,7 +237792,7 @@ function generatePackingSlipHtml(order, items) {
 
   /* \u2500\u2500 Header \u2500\u2500 */
   .header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 16px; border-bottom: 2px solid #111; margin-bottom: 20px; }
-  .brand-logo { display: block; width: 190px; height: 29px; object-fit: cover; object-position: center; }
+  .brand-logo { display: block; width: 190px; height: auto; }
   .slip-title { text-align: right; }
   .slip-title h1 { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
   .slip-title p  { font-size: 11px; color: #555; margin-top: 3px; }
@@ -237843,7 +237843,7 @@ function generatePackingSlipHtml(order, items) {
 <div class="slip">
 
   <div class="header">
-    <img class="brand-logo" src="${SITE_URL2}/omniqure-wordmark-blue.png?v=5" alt="OmniQure">
+    <img class="brand-logo" src="${SITE_URL2}/omniqure-wordmark-blue.png?v=4" alt="OmniQure">
     <div class="slip-title">
       <h1>Packing Slip</h1>
       <p>Printed ${fmtDate(/* @__PURE__ */ new Date())}</p>
@@ -250568,7 +250568,7 @@ ${paymentNote}`.trim(),
               name: `${product.name} x ${item.quantity}`,
               category: product.category,
               price_minor: Math.round(item.priceGbp * item.quantity * 100),
-              image_url: absoluteHttpsUrl(product.imageUrl, "/omniqure-email-header.png?v=5"),
+              image_url: absoluteHttpsUrl(product.imageUrl, "/omniqure-email-header.png?v=4"),
               product_url: absoluteHttpsUrl(`/product/${product.slug}`, "/")
             };
           })

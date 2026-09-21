@@ -18,9 +18,9 @@ export default function Logo() {
         }}
       >
         <img
-          src="/omniqure-wordmark.png?v=6"
+          src="/omniqure-wordmark.png?v=4"
           alt="OmniQure"
-          style={{ display: "block", width: "190px", height: "29px", objectFit: "cover", objectPosition: "center" }}
+          style={{ display: "block", width: "190px", height: "auto" }}
         />
       </div>
     </Link>

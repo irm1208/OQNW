@@ -23,7 +23,7 @@ function getResend(): Resend {
 const FROM_ADDRESS = process.env.EMAIL_FROM ?? "OmniQure <orders@omniqure.com>";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? null;
 const SITE_URL = process.env.SITE_URL ?? "https://omniqure.com";
-const LOGO_URL = `${SITE_URL}/omniqure-email-header.png?v=5`;
+const LOGO_URL = `${SITE_URL}/omniqure-email-header.png?v=4`;
 
 async function logEmail(opts: {
   toEmail: string;
@@ -145,7 +145,7 @@ function baseTemplate(title: string, body: string): string {
           <tr>
             <td style="background:linear-gradient(90deg,#142767 0%,#183077 100%);padding:24px 32px;">
               <a href="${SITE_URL}" style="display:inline-block;text-decoration:none;">
-                <img src="${LOGO_URL}" alt="OmniQure" width="235" height="36" style="display:block;width:235px;max-width:100%;height:36px;object-fit:cover;object-position:center;border:0;" />
+                <img src="${LOGO_URL}" alt="OmniQure" width="235" style="display:block;width:235px;max-width:100%;height:auto;border:0;" />
               </a>
             </td>
           </tr>
