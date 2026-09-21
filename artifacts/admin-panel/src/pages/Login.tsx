@@ -190,7 +190,7 @@ export default function Login() {
       <Card className="w-full max-w-md shadow-lg border-primary/10">
         <CardHeader className="space-y-2 text-center pb-6">
           <img
-            src={`${import.meta.env.BASE_URL}omniqure-wordmark.png?v=4`}
+            src={`${import.meta.env.BASE_URL}omniqure-wordmark.png?v=5`}
             alt="OmniQure"
             className="mx-auto mb-3 h-auto w-[220px] max-w-full"
           />

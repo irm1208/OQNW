@@ -421,7 +421,7 @@ router.post("/admin/wholesale", async (req: Request, res: Response): Promise<voi
             name: `${product.name} x ${item.quantity}`,
             category: product.category,
             price_minor: Math.round(item.priceGbp * item.quantity * 100),
-            image_url: absoluteHttpsUrl(product.imageUrl, "/omniqure-email-header.png?v=4"),
+            image_url: absoluteHttpsUrl(product.imageUrl, "/omniqure-email-header.png?v=5"),
             product_url: absoluteHttpsUrl(`/product/${product.slug}`, "/"),
           };
         }),

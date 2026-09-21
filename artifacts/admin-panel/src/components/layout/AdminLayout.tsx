@@ -386,7 +386,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         <div className="h-[52px] flex items-center justify-between px-4 border-b border-border">
           <div className="flex items-center gap-2.5 min-w-0">
             <img
-              src={`${import.meta.env.BASE_URL}omniqure-wordmark.png?v=4`}
+              src={`${import.meta.env.BASE_URL}omniqure-wordmark.png?v=5`}
               alt="OmniQure"
               className="h-auto w-[150px]"
             />
@@ -416,7 +416,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               <Menu className="w-5 h-5" />
             </Button>
             <img
-              src={`${import.meta.env.BASE_URL}omniqure-wordmark.png?v=4`}
+              src={`${import.meta.env.BASE_URL}omniqure-wordmark.png?v=5`}
               alt="OmniQure Admin"
               className="h-auto w-[128px] sm:w-[150px]"
             />
@@ -467,7 +467,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
            <div className="flex h-full flex-col">
              <div className="h-14 shrink-0 flex items-center px-5 border-b">
                 <img
-                  src={`${import.meta.env.BASE_URL}omniqure-wordmark.png?v=4`}
+                  src={`${import.meta.env.BASE_URL}omniqure-wordmark.png?v=5`}
                   alt="OmniQure Admin"
                   className="h-auto w-[160px]"
                 />

@@ -113,7 +113,7 @@ export function generatePackingSlipHtml(order: Order, items: Item[]): string {
 <div class="slip">
 
   <div class="header">
-    <img class="brand-logo" src="${SITE_URL}/omniqure-wordmark-blue.png?v=4" alt="OmniQure">
+    <img class="brand-logo" src="${SITE_URL}/omniqure-wordmark-blue.png?v=5" alt="OmniQure">
     <div class="slip-title">
       <h1>Packing Slip</h1>
       <p>Printed ${fmtDate(new Date())}</p>

@@ -236115,7 +236115,7 @@ function getResend() {
 var FROM_ADDRESS = process.env.EMAIL_FROM ?? "OmniQure <orders@omniqure.com>";
 var ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? null;
 var SITE_URL = process.env.SITE_URL ?? "https://omniqure.com";
-var LOGO_URL = `${SITE_URL}/omniqure-email-header.png?v=4`;
+var LOGO_URL = `${SITE_URL}/omniqure-email-header.png?v=5`;
 async function logEmail(opts) {
   try {
     await db.insert(emailLogsTable).values({
@@ -237843,7 +237843,7 @@ function generatePackingSlipHtml(order, items) {
 <div class="slip">
 
   <div class="header">
-    <img class="brand-logo" src="${SITE_URL2}/omniqure-wordmark-blue.png?v=4" alt="OmniQure">
+    <img class="brand-logo" src="${SITE_URL2}/omniqure-wordmark-blue.png?v=5" alt="OmniQure">
     <div class="slip-title">
       <h1>Packing Slip</h1>
       <p>Printed ${fmtDate(/* @__PURE__ */ new Date())}</p>
@@ -250568,7 +250568,7 @@ ${paymentNote}`.trim(),
               name: `${product.name} x ${item.quantity}`,
               category: product.category,
               price_minor: Math.round(item.priceGbp * item.quantity * 100),
-              image_url: absoluteHttpsUrl(product.imageUrl, "/omniqure-email-header.png?v=4"),
+              image_url: absoluteHttpsUrl(product.imageUrl, "/omniqure-email-header.png?v=5"),
               product_url: absoluteHttpsUrl(`/product/${product.slug}`, "/")
             };
           })
