@@ -1100,7 +1100,7 @@ export default function Header() {
               }}
               onKeyDown={handleOffersKeyDown}
             >
-              Incentive Offers
+              Offers & Rewards
               <ChevronDown size={13} style={{ opacity: 0.5, transition: "transform 0.2s", transform: offersOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
             </button>
 
@@ -1126,7 +1126,7 @@ export default function Header() {
                     <ArrowUpRight size={15} style={{ color: "#1240A0" }} />
                   </div>
                   <div>
-                    <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A", margin: 0 }}>Incentive Offers</p>
+                    <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A", margin: 0 }}>Offers &amp; Rewards</p>
                     <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>Ways to save, share & earn</p>
                   </div>
                 </div>
@@ -1382,7 +1382,7 @@ export default function Header() {
                     <ArrowUpRight size={15} />
                   </span>
                   <span style={{ flex: 1 }}>
-                    <span style={{ display: "block" }}>Incentive Offers</span>
+                    <span style={{ display: "block" }}>Offers &amp; Rewards</span>
                     <span style={{ display: "block", marginTop: 2, color: "#94A3B8", fontSize: 11, fontWeight: 500 }}>Save, share &amp; earn</span>
                   </span>
                   <ChevronDown size={17} style={{ color: "#94A3B8", transform: mobileOffersOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
