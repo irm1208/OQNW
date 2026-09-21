@@ -236184,7 +236184,7 @@ function baseTemplate(title, body) {
           <tr>
             <td style="background:linear-gradient(90deg,#142767 0%,#183077 100%);padding:24px 32px;">
               <a href="${SITE_URL}" style="display:inline-block;text-decoration:none;">
-                <img src="${LOGO_URL}" alt="OmniQure" width="235" style="display:block;width:235px;max-width:100%;height:auto;border:0;" />
+                <img src="${LOGO_URL}" alt="OmniQure" width="235" height="36" style="display:block;width:235px;max-width:100%;height:36px;object-fit:cover;object-position:center;border:0;" />
               </a>
             </td>
           </tr>
@@ -237792,7 +237792,7 @@ function generatePackingSlipHtml(order, items) {
 
   /* \u2500\u2500 Header \u2500\u2500 */
   .header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 16px; border-bottom: 2px solid #111; margin-bottom: 20px; }
-  .brand-logo { display: block; width: 190px; height: auto; }
+  .brand-logo { display: block; width: 190px; height: 29px; object-fit: cover; object-position: center; }
   .slip-title { text-align: right; }
   .slip-title h1 { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
   .slip-title p  { font-size: 11px; color: #555; margin-top: 3px; }

@@ -388,7 +388,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             <img
               src={`${import.meta.env.BASE_URL}omniqure-wordmark.png?v=5`}
               alt="OmniQure"
-              className="h-auto w-[150px]"
+              className="h-[23px] w-[150px] object-cover object-center"
             />
             <span className="sr-only">OmniQure Admin</span>
           </div>
@@ -418,7 +418,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             <img
               src={`${import.meta.env.BASE_URL}omniqure-wordmark.png?v=5`}
               alt="OmniQure Admin"
-              className="h-auto w-[128px] sm:w-[150px]"
+              className="h-[20px] w-[128px] object-cover object-center sm:h-[23px] sm:w-[150px]"
             />
           </div>
 
@@ -469,7 +469,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 <img
                   src={`${import.meta.env.BASE_URL}omniqure-wordmark.png?v=5`}
                   alt="OmniQure Admin"
-                  className="h-auto w-[160px]"
+                   className="h-[25px] w-[160px] object-cover object-center"
                 />
              </div>
              <nav className="flex-1 px-3 py-4 overflow-y-auto">

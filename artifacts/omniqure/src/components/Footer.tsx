@@ -129,8 +129,8 @@ export default function Footer() {
                     <img
                       src="/omniqure-wordmark.png?v=5"
                       alt="OmniQure"
-                      className="w-[150px] md:w-[230px]"
-                      style={{ height: "auto", display: "block" }}
+                      className="w-[150px] h-[23px] md:w-[230px] md:h-[35px]"
+                      style={{ objectFit: "cover", objectPosition: "center", display: "block" }}
                     />
                   </div>
                 </div>

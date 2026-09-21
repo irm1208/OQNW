@@ -192,7 +192,7 @@ export default function Login() {
           <img
             src={`${import.meta.env.BASE_URL}omniqure-wordmark.png?v=5`}
             alt="OmniQure"
-            className="mx-auto mb-3 h-auto w-[220px] max-w-full"
+            className="mx-auto mb-3 h-[34px] w-[220px] max-w-full object-cover object-center"
           />
           <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2 ${isLocked ? "bg-red-100" : "bg-primary/10"}`}>
             {isLocked ? <ShieldAlert className="w-6 h-6 text-red-600" /> : recoveryCodes.length > 0 ? <ShieldCheck className="w-6 h-6 text-primary" /> : isMfaStep ? <KeyRound className="w-6 h-6 text-primary" /> : <Lock className="w-6 h-6 text-primary" />}

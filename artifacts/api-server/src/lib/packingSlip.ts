@@ -62,7 +62,7 @@ export function generatePackingSlipHtml(order: Order, items: Item[]): string {
 
   /* ── Header ── */
   .header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 16px; border-bottom: 2px solid #111; margin-bottom: 20px; }
-  .brand-logo { display: block; width: 190px; height: auto; }
+  .brand-logo { display: block; width: 190px; height: 29px; object-fit: cover; object-position: center; }
   .slip-title { text-align: right; }
   .slip-title h1 { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
   .slip-title p  { font-size: 11px; color: #555; margin-top: 3px; }

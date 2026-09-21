@@ -20,7 +20,7 @@ export default function Logo() {
         <img
           src="/omniqure-wordmark.png?v=5"
           alt="OmniQure"
-          style={{ display: "block", width: "190px", height: "auto" }}
+          style={{ display: "block", width: "190px", height: "29px", objectFit: "cover", objectPosition: "center" }}
         />
       </div>
     </Link>
