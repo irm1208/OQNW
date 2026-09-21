@@ -145,7 +145,8 @@ const REPORTS: Report[] = [
     url: "https://verify.janoshik.com/tests/208602-CJC1295_No_DAC_Ipamorelin_Blend_1010_OmniQure_UM1G6NTFHJCB",
     verifyKey: "UM1G6NTFHJCB", image: "/janoshik/208602.png",
     isBlend: true,
-    purity: 116.1, purityCalculated: true, actualMass: 23.21,
+    // 23.21mg confirmed against a 20mg labelled blend; cap calculated purity at 100%.
+    purity: 100, purityCalculated: true, actualMass: 23.21,
     productSlugs: ["cjc-1295-no-dac-ipamorelin-5mg"],
   },
   {
@@ -157,7 +158,8 @@ const REPORTS: Report[] = [
     url: "https://verify.janoshik.com/tests/208601-BPC157_TB500_TB4_Blend_1010_OmniQure_3N3R5JF1157F",
     verifyKey: "3N3R5JF1157F", image: "/janoshik/208601.png",
     isBlend: true,
-    purity: 117.2, purityCalculated: true, actualMass: 23.44,
+    // 23.44mg confirmed against a 20mg labelled blend; cap calculated purity at 100%.
+    purity: 100, purityCalculated: true, actualMass: 23.44,
     productSlugs: ["bpc-157-tb-500-blend-10mg", "bpc-157-tb-500-blend-20mg"],
   },
   {
