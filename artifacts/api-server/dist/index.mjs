@@ -239385,7 +239385,7 @@ function buildCatalogPricePreview(cataloguePrices, productionPrices) {
 
 // src/lib/catalogueAssetUrls.ts
 var PROTECTED_PREFIX = "/api/catalogue-assets";
-var CATALOGUE_ASSET_VERSION = "2026-09-20-catalogue-final-cards";
+var CATALOGUE_ASSET_VERSION = "2026-09-21-bac-water-10ml";
 function toCanonicalCatalogueImageUrl(imageUrl) {
   if (!imageUrl) return imageUrl;
   let canonical = imageUrl;
