@@ -38,6 +38,7 @@ interface Report {
   url: string;
   isBlend?: boolean;
   purity?: number;
+  purityCalculated?: boolean;
   /** When a report contains multiple tested vials, display all reported values. */
   purityLabel?: string;
   /** For blends: confirmed mass per component (mg) shown in place of purity */
@@ -144,7 +145,7 @@ const REPORTS: Report[] = [
     url: "https://verify.janoshik.com/tests/208602-CJC1295_No_DAC_Ipamorelin_Blend_1010_OmniQure_UM1G6NTFHJCB",
     verifyKey: "UM1G6NTFHJCB", image: "/janoshik/208602.png",
     isBlend: true,
-    actualMass: 23.21,
+    purity: 116.1, purityCalculated: true, actualMass: 23.21,
     productSlugs: ["cjc-1295-no-dac-ipamorelin-5mg"],
   },
   {
@@ -156,7 +157,7 @@ const REPORTS: Report[] = [
     url: "https://verify.janoshik.com/tests/208601-BPC157_TB500_TB4_Blend_1010_OmniQure_3N3R5JF1157F",
     verifyKey: "3N3R5JF1157F", image: "/janoshik/208601.png",
     isBlend: true,
-    actualMass: 23.44,
+    purity: 117.2, purityCalculated: true, actualMass: 23.44,
     productSlugs: ["bpc-157-tb-500-blend-10mg", "bpc-157-tb-500-blend-20mg"],
   },
   {
@@ -217,7 +218,7 @@ const REPORTS: Report[] = [
     id: "nad-plus-1000mg-234990",
     name: "NAD+",
     amount: "1000mg",
-    testNumber: "234990", actualMass: 993.81,
+    testNumber: "234990", purity: 99.4, purityCalculated: true, actualMass: 993.81,
     methods: ["ID + amount"],
     url: "https://verify.janoshik.com/tests/234990-NAD_1000mg_OmniQure_52TERHWRSPJZ",
     verifyKey: "52TERHWRSPJZ", image: "/janoshik/234990.png", certificatePdf: "/janoshik/234990.pdf",
@@ -230,6 +231,7 @@ const REPORTS: Report[] = [
     testNumber: "234991",
     methods: ["3-component analysis"],
     isBlend: true,
+    purity: 43.9, purityCalculated: true,
     actualMassLabel: "BPC 12.58 · TB4 11.59 · KPV 10.96",
     massUnit: "mg each",
     massLabel: "Component masses",
@@ -369,7 +371,7 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
                    <span style={{ flexShrink: 0, fontSize: "12px", fontWeight: 700, color: unitColor }}>%</span>
                 </div>
                  <p style={{ margin: "2px 0 0", fontSize: "9px", lineHeight: 1.2, color: "#64748B", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", whiteSpace: "normal" }}>
-                  Purity
+                  {report.purityCalculated ? "Calculated from vial mass" : "Purity"}
                 </p>
               </>
             ) : (
