@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { FlaskConical, Mail, MapPin } from "lucide-react";
 
 const BRAND_STRIP_GRADIENT =
-  "linear-gradient(90deg, #10235F 0%, #0D3D91 36%, #0B65C6 68%, #1593E8 100%)";
+  "linear-gradient(90deg, #01266F 0%, #003D9E 32%, #005FCF 60%, #0087EE 80%, #01C3FD 100%)";
 
 const footerCategories = [
   {
