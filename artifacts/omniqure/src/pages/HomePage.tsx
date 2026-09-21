@@ -240,34 +240,39 @@ const pillars = [
 /* ── Hero Carousel ─────────────────────────────────────── */
 function HeroContentSlide() {
   return (
-    <section
-      className="hero-section"
-      style={{
-        position: "relative",
-        overflow: "hidden",
-        background: "linear-gradient(to bottom, #ABC7F4, #9EAED8)",
-        minHeight: "unset",
-        display: "flex",
-        alignItems: "flex-end",
-        height: "100%",
-      }}
+    <Link
+      href="/all-peptides"
+      style={{ display: "block", width: "100%", height: "100%" }}
     >
-      {/* Full artwork — object-fit: contain keeps the complete ultra-wide image
-          visible and avoids cropping the product labels on narrower screens. */}
-      <img
-        src={heroContentImg}
-        alt="OmniQure research peptide collection featuring labelled peptide vials and molecular structures"
+      <section
+        className="hero-section"
         style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
+          position: "relative",
+          overflow: "hidden",
+          background: "linear-gradient(to bottom, #ABC7F4, #9EAED8)",
+          minHeight: "unset",
+          display: "flex",
+          alignItems: "flex-end",
           height: "100%",
-          objectFit: "contain",
-          objectPosition: "center",
         }}
-      />
+      >
+        {/* Full artwork — object-fit: contain keeps the complete ultra-wide image
+            visible and avoids cropping the product labels on narrower screens. */}
+        <img
+          src={heroContentImg}
+          alt="OmniQure research peptide collection featuring labelled peptide vials and molecular structures"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            objectPosition: "center",
+          }}
+        />
 
-    </section>
+      </section>
+    </Link>
   );
 }
 
