@@ -105,10 +105,11 @@ title = "Microscope botanical aesthetic"
 [[outputs]]
 id = "GEBWte6Ed3WqZx-SwIIQL"
 uri = "file://email-preview.html"
-type = "text"
+type = "html"
 title = "Order Confirmation Email"
 description = "Preview of the customer order confirmation email sent via Resend"
 logical_id = "1ba2d5b4-4377-4621-a91c-056ce4cacef3"
+content_type = "text/html"
 
 [[outputs]]
 id = "YCx36kZ8Iqz8sX4x4SjEP"
@@ -123,3 +124,17 @@ mtime_ms = 1787762448817
 storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:72159070-0bd7-448d-aaa8-655b3ff0e5ea/68cd707a-c90a-46e2-b331-6f7dfb27f94d/43189394-b2e6-460e-bcc0-64bc02a6f2d5"
 storage_version_token = "1787762456022150"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "3dbIaHdFQrSwUuD9CTSCr"
+uri = "file://previews/omniqure-logo-header-example.html"
+type = "html"
+title = "OmniQure logo website header preview"
+description = "A self-contained visual example showing the supplied artwork in desktop and mobile OmniQure navigation headers, plus the original artwork and sizing recommendation."
+logical_id = "b6d14ba9-a61a-40fe-9d54-9b85ece096f7"
+content_hash = "sha256:e90d6beea52fe0341334886567841812f93b167fda3a04202f2744b33739dd1f"
+size = 10285517
+mtime_ms = 1790005294645
+storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:72159070-0bd7-448d-aaa8-655b3ff0e5ea/b6d14ba9-a61a-40fe-9d54-9b85ece096f7/913ad8f6-3bca-4fbb-96e0-a3ccd64c67d4"
+storage_version_token = "1790005296122971"
+content_type = "text/html"
