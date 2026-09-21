@@ -130,7 +130,7 @@ export default function Footer() {
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
                   <div style={{ display: "inline-block" }}>
                     <img
-                      src="/omniqure-wordmark.png?v=5"
+                      src="/omniqure-wordmark.png?v=6"
                       alt="OmniQure"
                       className="w-[150px] h-[23px] md:w-[230px] md:h-[35px]"
                       style={{ objectFit: "cover", objectPosition: "center", display: "block" }}

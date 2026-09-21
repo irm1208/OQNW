@@ -373,7 +373,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="header-logo-wrapper order-1" style={{ textDecoration: "none" }}>
             <img
-              src="/omniqure-wordmark.png?v=5"
+              src="/omniqure-wordmark.png?v=6"
               alt="OmniQure"
               className="header-logo"
             />
