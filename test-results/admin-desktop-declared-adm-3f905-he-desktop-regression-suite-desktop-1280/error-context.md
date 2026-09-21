@@ -97,7 +97,7 @@ Error: expect(received).toEqual(expected) // deep equality
             - generic [ref=e103]:
               - generic [ref=e104]:
                 - heading "Overview" [level=2] [ref=e105]
-                - generic [ref=e106]: 1 live
+                - generic [ref=e106]: 0 live
               - paragraph [ref=e113]: Monitor your store's performance and operations.
             - generic [ref=e115]:
               - button "7D" [ref=e116]
