@@ -61,7 +61,7 @@ const offerNavItems = [
 ];
 
 const BRAND_STRIP_GRADIENT =
-  "linear-gradient(90deg, #132563 0%, #183A80 45%, #2053A0 72%, #2F5AAF 100%)";
+  "linear-gradient(90deg, #10235F 0%, #0D3D91 36%, #0B65C6 68%, #1593E8 100%)";
 
 export default function Header() {
   const { products: allProducts } = useProducts();
@@ -349,9 +349,7 @@ export default function Header() {
     <header style={{ fontFamily: "'Arimo', Arial, sans-serif", transition: "filter 0.3s ease" }} className="sticky top-0 z-50">
       {/* Top bar */}
       <div style={{
-        background: scrolled
-          ? "linear-gradient(90deg, rgba(19,37,99,0.98) 0%, rgba(24,58,128,0.98) 45%, rgba(32,83,160,0.98) 72%, rgba(47,90,175,0.98) 100%)"
-          : BRAND_STRIP_GRADIENT,
+        background: BRAND_STRIP_GRADIENT,
         backdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
         WebkitBackdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
         boxShadow: scrolled ? "0 4px 32px rgba(8,28,80,0.35)" : "0 2px 16px rgba(8,28,80,0.25)",
