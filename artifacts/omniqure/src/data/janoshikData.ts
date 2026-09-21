@@ -24,6 +24,8 @@ export interface JanoshikResult {
   verifyUrl?: string;
   /** Path to the report image served from /janoshik/<taskNumber>.png */
   image?: string;
+  /** Downloadable certificate PDF served from /janoshik/<taskNumber>.pdf */
+  certificatePdf?: string;
 }
 
 export const janoshikData: Record<string, JanoshikResult> = {
@@ -182,6 +184,14 @@ export const janoshikData: Record<string, JanoshikResult> = {
 
   // ── CJC-1295 No DAC + Ipamorelin Blend ───────────────────────────────────
   "85": { actualMass: 22.85, lot: "C/I1010-0613",           received: "30 Jun 2026", analysis: "01 Jul 2026" },
+
+  // ── Newly published September 2026 reports ───────────────────────────────
+  "report-234989": { purity: 99.851, actualMass: 10.94, lot: "KIS090Q", received: "15 Sep 2026", analysis: "15 Sep 2026", taskNumber: "234989", verifyKey: "IIBBDYNKAP1Z", verifyUrl: "https://verify.janoshik.com/tests/234989-Kisspeptin_10mg_OmniQure_IIBBDYNKAP1Z", image: "/janoshik/234989.png", certificatePdf: "/janoshik/234989.pdf" },
+  "report-234990": { actualMass: 993.81, lot: "NDO90Q", received: "15 Sep 2026", analysis: "15 Sep 2026", taskNumber: "234990", verifyKey: "52TERHWRSPJZ", verifyUrl: "https://verify.janoshik.com/tests/234990-NAD_1000mg_OmniQure_52TERHWRSPJZ", image: "/janoshik/234990.png", certificatePdf: "/janoshik/234990.pdf" },
+  "report-234991": { actualMass: 35.13, lot: "KLO90Q", received: "15 Sep 2026", analysis: "15 Sep 2026", taskNumber: "234991", verifyKey: "PZ1MU4KS2U4J", verifyUrl: "https://verify.janoshik.com/tests/234991-KLOW_OmniQure_PZ1MU4KS2U4J", image: "/janoshik/234991.png", certificatePdf: "/janoshik/234991.pdf" },
+  "report-234992": { purity: 99.700, actualMass: 12.00, lot: "TA090Q", received: "15 Sep 2026", analysis: "15 Sep 2026", taskNumber: "234992", verifyKey: "B4Y47TDR6YCG", verifyUrl: "https://verify.janoshik.com/tests/234992-Thymosin_Alpha1_10mg_OmniQure_B4Y47TDR6YCG", image: "/janoshik/234992.png", certificatePdf: "/janoshik/234992.pdf" },
+  "report-234993": { purity: 99.221, actualMass: 11.08, lot: "MT090Q", received: "15 Sep 2026", analysis: "15 Sep 2026", taskNumber: "234993", verifyKey: "2KFAVDKNHLKG", verifyUrl: "https://verify.janoshik.com/tests/234993-MOTSC_10mg_OmniQure_2KFAVDKNHLKG", image: "/janoshik/234993.png", certificatePdf: "/janoshik/234993.pdf" },
+  "report-235090": { purity: 99.798, actualMass: 10.32, lot: "MT1090Q", received: "15 Sep 2026", analysis: "15 Sep 2026", taskNumber: "235090", verifyKey: "AUEJK7GU6QXH", verifyUrl: "https://verify.janoshik.com/tests/235090-Melanotan_1_10mg_OmniQure_AUEJK7GU6QXH", image: "/janoshik/235090.png", certificatePdf: "/janoshik/235090.pdf" },
 };
 
 /**
@@ -206,4 +216,10 @@ export const janoshikDataBySlug: Record<string, JanoshikResult> = {
   "tirzepatide-30mg": janoshikData["78"],
   "cagrilintide-10mg": janoshikData["10"],
   "retatrutide-40mg": janoshikData["59"],
+  "kisspeptin-10-10mg": janoshikData["report-234989"],
+  "nad-plus-1000mg": janoshikData["report-234990"],
+  "klow-blend-80mg": janoshikData["report-234991"],
+  "thymosin-alpha-1-10mg": janoshikData["report-234992"],
+  "mots-c-10mg": janoshikData["report-234993"],
+  "melanotan-1-10mg": janoshikData["report-235090"],
 };

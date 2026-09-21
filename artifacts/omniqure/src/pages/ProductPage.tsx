@@ -354,6 +354,7 @@ export default function ProductPage() {
             verifyKey={jd.verifyKey ?? ""}
             verifyUrl={jd.verifyUrl}
             image={jd.image}
+            certificatePdf={jd.certificatePdf}
             productName={product.name}
             onClose={() => setShowJanoshikModal(false)}
           />
@@ -527,6 +528,22 @@ export default function ProductPage() {
                         >
                           Quick View
                         </button>
+                        {jd.certificatePdf && (
+                          <a
+                            href={jd.certificatePdf}
+                            download
+                            style={{
+                              display: "inline-flex", alignItems: "center", gap: "4px",
+                              fontSize: "11px", fontWeight: 700,
+                              padding: "5px 10px", borderRadius: "6px",
+                              background: "#fff", color: "#0D2565",
+                              border: "1.5px solid #BFDBFE", textDecoration: "none",
+                              letterSpacing: "0.01em",
+                            }}
+                          >
+                            PDF <Download size={11} />
+                          </a>
+                        )}
                         <a
                           href={jd.verifyUrl}
                           target="_blank"

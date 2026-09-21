@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { X, ExternalLink } from "lucide-react";
+import { Download, X, ExternalLink } from "lucide-react";
 
 interface JanoshikReportModalProps {
   taskNumber: string;
   verifyKey: string;
   verifyUrl: string;
   image: string;
+  certificatePdf?: string;
   productName: string;
   onClose: () => void;
 }
@@ -16,6 +17,7 @@ export default function JanoshikReportModal({
   verifyKey,
   verifyUrl,
   image,
+  certificatePdf,
   productName,
   onClose,
 }: JanoshikReportModalProps) {
@@ -104,18 +106,33 @@ export default function JanoshikReportModal({
           <span style={{ fontSize: "11px", color: "#6B7280" }}>
             Verify key: <span style={{ fontFamily: "monospace", color: "#374151" }}>{verifyKey}</span>
           </span>
-          <a
-            href={verifyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "flex", alignItems: "center", gap: "6px",
-              fontSize: "12px", fontWeight: 600, color: "#1240A0",
-              textDecoration: "none",
-            }}
-          >
-            Verify on janoshik.com <ExternalLink size={13} />
-          </a>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "12px", flexWrap: "wrap" }}>
+            {certificatePdf && (
+              <a
+                href={certificatePdf}
+                download
+                style={{
+                  display: "flex", alignItems: "center", gap: "5px",
+                  fontSize: "12px", fontWeight: 600, color: "#1240A0",
+                  textDecoration: "none",
+                }}
+              >
+                Download PDF <Download size={13} />
+              </a>
+            )}
+            <a
+              href={verifyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "flex", alignItems: "center", gap: "6px",
+                fontSize: "12px", fontWeight: 600, color: "#1240A0",
+                textDecoration: "none",
+              }}
+            >
+              Verify on janoshik.com <ExternalLink size={13} />
+            </a>
+          </div>
         </div>
       </div>
     </div>,

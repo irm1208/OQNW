@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSEO } from "@/hooks/useSEO";
 import { useProducts } from "@/context/ProductsContext";
-import { BarChart2, Atom, ExternalLink, Search, CheckCircle2, ShieldCheck, FlaskConical } from "lucide-react";
+import { BarChart2, Atom, Download, ExternalLink, Search, CheckCircle2, ShieldCheck, FlaskConical } from "lucide-react";
 import JanoshikReportModal from "@/components/JanoshikReportModal";
 
 // ─── Janoshik logo components ─────────────────────────────────────────────────
@@ -44,8 +44,11 @@ interface Report {
   actualMass?: number;
   /** When a report contains multiple tested vials, display all reported values. */
   actualMassLabel?: string;
+  massUnit?: string;
+  massLabel?: string;
   verifyKey: string;
   image: string;
+  certificatePdf?: string;
   /** Slugs of the matching product(s) in the catalogue. Report is hidden if
    *  none of these slugs are currently published. Empty array = always show. */
   productSlugs: string[];
@@ -190,6 +193,80 @@ const REPORTS: Report[] = [
     verifyKey: "XY2IAQ58G5EY", image: "/janoshik/203231.png",
     productSlugs: ["retatrutide-40mg"],
   },
+  {
+    id: "pt141-10mg-234988",
+    name: "PT-141",
+    amount: "10mg",
+    testNumber: "234988", purity: 99.691, actualMass: 10.75,
+    methods: ["Independent analysis"],
+    url: "https://verify.janoshik.com/tests/234988-PT141_10mg_OmniQure_KZTYNULXZ15U",
+    verifyKey: "KZTYNULXZ15U", image: "/janoshik/234988.png", certificatePdf: "/janoshik/234988.pdf",
+    productSlugs: [],
+  },
+  {
+    id: "kisspeptin-10mg-234989",
+    name: "Kisspeptin-10",
+    amount: "10mg",
+    testNumber: "234989", purity: 99.851, actualMass: 10.94,
+    methods: ["Independent analysis"],
+    url: "https://verify.janoshik.com/tests/234989-Kisspeptin_10mg_OmniQure_IIBBDYNKAP1Z",
+    verifyKey: "IIBBDYNKAP1Z", image: "/janoshik/234989.png", certificatePdf: "/janoshik/234989.pdf",
+    productSlugs: ["kisspeptin-10-10mg"],
+  },
+  {
+    id: "nad-plus-1000mg-234990",
+    name: "NAD+",
+    amount: "1000mg",
+    testNumber: "234990", actualMass: 993.81,
+    methods: ["ID + amount"],
+    url: "https://verify.janoshik.com/tests/234990-NAD_1000mg_OmniQure_52TERHWRSPJZ",
+    verifyKey: "52TERHWRSPJZ", image: "/janoshik/234990.png", certificatePdf: "/janoshik/234990.pdf",
+    productSlugs: ["nad-plus-1000mg"],
+  },
+  {
+    id: "klow-blend-234991",
+    name: "KLOW BLEND",
+    amount: "80mg",
+    testNumber: "234991",
+    methods: ["3-component analysis"],
+    isBlend: true,
+    actualMassLabel: "BPC 12.58 · TB4 11.59 · KPV 10.96",
+    massUnit: "mg each",
+    massLabel: "Component masses",
+    url: "https://verify.janoshik.com/tests/234991-KLOW_OmniQure_PZ1MU4KS2U4J",
+    verifyKey: "PZ1MU4KS2U4J", image: "/janoshik/234991.png", certificatePdf: "/janoshik/234991.pdf",
+    productSlugs: ["klow-blend-80mg"],
+  },
+  {
+    id: "thymosin-alpha-1-234992",
+    name: "Thymosin Alpha-1",
+    amount: "10mg",
+    testNumber: "234992", purity: 99.700, actualMass: 12.00,
+    methods: ["Independent analysis"],
+    url: "https://verify.janoshik.com/tests/234992-Thymosin_Alpha1_10mg_OmniQure_B4Y47TDR6YCG",
+    verifyKey: "B4Y47TDR6YCG", image: "/janoshik/234992.png", certificatePdf: "/janoshik/234992.pdf",
+    productSlugs: ["thymosin-alpha-1-10mg"],
+  },
+  {
+    id: "mots-c-10mg-234993",
+    name: "MOTS-C",
+    amount: "10mg",
+    testNumber: "234993", purity: 99.221, actualMass: 11.08,
+    methods: ["Independent analysis"],
+    url: "https://verify.janoshik.com/tests/234993-MOTSC_10mg_OmniQure_2KFAVDKNHLKG",
+    verifyKey: "2KFAVDKNHLKG", image: "/janoshik/234993.png", certificatePdf: "/janoshik/234993.pdf",
+    productSlugs: ["mots-c-10mg"],
+  },
+  {
+    id: "melanotan-1-10mg-235090",
+    name: "Melanotan 1",
+    amount: "10mg",
+    testNumber: "235090", purity: 99.798, actualMass: 10.32,
+    methods: ["Independent analysis"],
+    url: "https://verify.janoshik.com/tests/235090-Melanotan_1_10mg_OmniQure_AUEJK7GU6QXH",
+    verifyKey: "AUEJK7GU6QXH", image: "/janoshik/235090.png", certificatePdf: "/janoshik/235090.pdf",
+    productSlugs: ["melanotan-1-10mg"],
+  },
 ];
 
 // ─── Card ─────────────────────────────────────────────────────────────────────
@@ -258,7 +335,7 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
               </p>
             )}
           </div>
-          <span style={{
+                  <span style={{
             flexShrink: 0, display: "inline-flex", alignItems: "center", gap: "4px",
             fontSize: "9.5px", fontWeight: 800, padding: "3px 9px", borderRadius: "20px",
             background: "#ECFDF5", color: "#059669",
@@ -316,10 +393,10 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
                    <span style={{ minWidth: 0, fontSize: report.actualMassLabel ? "15px" : "26px", fontWeight: 900, color: massColor, lineHeight: 1.15, letterSpacing: report.actualMassLabel ? "-0.02em" : "-0.03em", whiteSpace: report.actualMassLabel ? "normal" : "nowrap", overflowWrap: "break-word" }}>
                     {massDisplay}
                   </span>
-                   <span style={{ flexShrink: 0, fontSize: "11px", fontWeight: 700, color: unitColor }}>mg</span>
+                   <span style={{ flexShrink: 0, fontSize: "11px", fontWeight: 700, color: unitColor }}>{report.massUnit ?? "mg"}</span>
                 </div>
                  <p style={{ margin: "2px 0 0", fontSize: "9px", lineHeight: 1.2, color: "#64748B", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", whiteSpace: "normal" }}>
-                  Mass confirmed
+                  {report.massLabel ?? "Mass confirmed"}
                 </p>
               </>
             ) : (
@@ -334,23 +411,20 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
         </div>
 
         {/* Method pills */}
-        <div style={{ display: "flex", gap: "6px" }}>
-          <span style={{
+        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+          {report.methods.map((method) => (
+            <span key={method} style={{
             display: "inline-flex", alignItems: "center", gap: "4px",
             fontSize: "10px", fontWeight: 700, padding: "3px 10px", borderRadius: "6px",
-            background: "#EFF6FF", color: "#1240A0",
-            border: "1px solid #BFDBFE", letterSpacing: "0.04em",
+            background: method === "ESI-MS" ? "#F5F3FF" : "#EFF6FF",
+            color: method === "ESI-MS" ? "#5B21B6" : "#1240A0",
+            border: method === "ESI-MS" ? "1px solid #DDD6FE" : "1px solid #BFDBFE",
+            letterSpacing: "0.04em",
           }}>
-            <BarChart2 size={9} /> HPLC
+            {method === "HPLC" ? <BarChart2 size={9} /> : method === "ESI-MS" ? <Atom size={9} /> : <FlaskConical size={9} />}
+            {method}
           </span>
-          <span style={{
-            display: "inline-flex", alignItems: "center", gap: "4px",
-            fontSize: "10px", fontWeight: 700, padding: "3px 10px", borderRadius: "6px",
-            background: "#F5F3FF", color: "#5B21B6",
-            border: "1px solid #DDD6FE", letterSpacing: "0.04em",
-          }}>
-            <Atom size={9} /> ESI-MS
-          </span>
+          ))}
           <span style={{
             fontSize: "10px", fontWeight: 600, padding: "3px 10px", borderRadius: "6px",
             background: "#F8FAFC", color: "#64748B",
@@ -371,7 +445,7 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
         <span style={{ background: "#E8F0F8", borderRadius: "30px", padding: "4px 12px", display: "inline-flex", alignItems: "center" }}>
           <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "15px", width: "auto", display: "block" }} />
         </span>
-        <div style={{ display: "flex", gap: "6px" }}>
+        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", justifyContent: "flex-end" }}>
           {/* Quick View */}
           <button
             onClick={onQuickView}
@@ -397,6 +471,23 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
           >
             Quick View
           </button>
+          {report.certificatePdf && (
+            <a
+              href={report.certificatePdf}
+              download
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "4px",
+                fontSize: "11px", fontWeight: 700,
+                padding: "5px 10px", borderRadius: "6px",
+                background: "#fff", color: isBlend ? "#5b21b6" : navy,
+                border: `1.5px solid ${isBlend ? "#DDD6FE" : "#BFDBFE"}`,
+                textDecoration: "none",
+                letterSpacing: "0.01em",
+              }}
+            >
+              PDF <Download size={11} />
+            </a>
+          )}
           {/* View on Janoshik */}
           <a
             href={report.url}
@@ -586,6 +677,7 @@ export default function LabReportsPage() {
           verifyKey={modalReport.verifyKey}
           verifyUrl={modalReport.url}
           image={modalReport.image}
+          certificatePdf={modalReport.certificatePdf}
           productName={modalReport.name}
           onClose={() => setModalReport(null)}
         />

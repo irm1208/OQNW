@@ -239197,7 +239197,13 @@ var JANOSHIK_REPORTED_PRODUCT_SLUGS = [
   "bpc-157-tb-500-blend-20mg",
   "tirzepatide-30mg",
   "cagrilintide-10mg",
-  "retatrutide-40mg"
+  "retatrutide-40mg",
+  "kisspeptin-10-10mg",
+  "nad-plus-1000mg",
+  "klow-blend-80mg",
+  "thymosin-alpha-1-10mg",
+  "mots-c-10mg",
+  "melanotan-1-10mg"
 ];
 var janoshikReportedProductSlugs = new Set(JANOSHIK_REPORTED_PRODUCT_SLUGS);
 function hasJanoshikReport(slug) {

@@ -20,6 +20,12 @@ export const JANOSHIK_REPORTED_PRODUCT_SLUGS = [
   "tirzepatide-30mg",
   "cagrilintide-10mg",
   "retatrutide-40mg",
+  "kisspeptin-10-10mg",
+  "nad-plus-1000mg",
+  "klow-blend-80mg",
+  "thymosin-alpha-1-10mg",
+  "mots-c-10mg",
+  "melanotan-1-10mg",
 ] as const;
 
 const janoshikReportedProductSlugs = new Set<string>(JANOSHIK_REPORTED_PRODUCT_SLUGS);
