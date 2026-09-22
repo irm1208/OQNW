@@ -169,6 +169,40 @@ div[class*="replit-ui-theme-root"] {
   }
 }
 
+@media (max-width: 639px) {
+  .header-inner {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  .header-menu-toggle {
+    padding: 0 !important;
+  }
+
+  .header-logo {
+    width: 170px;
+    max-height: 34px;
+  }
+
+  .header-logo-wrapper {
+    padding: 4px 0;
+  }
+
+  .header-action-group {
+    gap: 4px !important;
+  }
+
+  .header-currency-btn {
+    padding: 3px 6px !important;
+  }
+
+  .header-icon-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+  }
+}
+
 /* Best-effort storefront copy deterrent. Keep customer-facing form controls
    selectable/editable so search, checkout, chat, and account flows work. */
 html.copy-protected,

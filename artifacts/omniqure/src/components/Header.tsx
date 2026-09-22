@@ -355,11 +355,11 @@ export default function Header() {
         transition: "background 0.3s ease, box-shadow 0.3s ease",
         position: "relative", zIndex: 2,
       }}>
-        <div className="max-w-[1280px] mx-auto px-2 sm:px-4 py-1 sm:py-3 flex flex-wrap items-center gap-x-1.5 sm:gap-x-4 gap-y-1 sm:gap-y-2">
+        <div className="header-inner max-w-[1280px] mx-auto px-2 sm:px-4 py-1 sm:py-3 flex flex-wrap items-center gap-x-1.5 sm:gap-x-4 gap-y-1 sm:gap-y-2">
 
           {/* Hamburger — mobile only, left side */}
           <button
-            className="lg:hidden p-1 order-0 flex-shrink-0 flex flex-col items-center"
+            className="header-menu-toggle lg:hidden p-1 order-0 flex-shrink-0 flex flex-col items-center"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             style={{ color: "rgba(255,255,255,0.85)", background: "none", border: "none", cursor: "pointer" }}
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
@@ -516,13 +516,13 @@ export default function Header() {
           </div>
 
           {/* Right group */}
-          <div className="order-2 sm:order-3 ml-auto flex items-center gap-1.5 sm:gap-4 flex-shrink-0">
+          <div className="header-action-group order-2 sm:order-3 ml-auto flex items-center gap-1.5 sm:gap-4 flex-shrink-0">
 
             {/* Currency selector */}
             <div ref={currencyRef} style={{ position: "relative", flexShrink: 0 }}>
               <button
                 onClick={() => setCurrencyOpen(o => !o)}
-                className="flex flex-col items-center sm:flex-row sm:gap-1"
+                className="header-currency-btn flex flex-col items-center sm:flex-row sm:gap-1"
                 style={{
                   padding: "4px 8px", borderRadius: "8px",
                   border: "1.5px solid rgba(255,255,255,0.25)",
