@@ -14,8 +14,10 @@ import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
 import bundleElectricHeroImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_56_59_PM_1790107098667.png";
 import heroContentImg from "@assets/ChatGPT_Image_Sep_22,_2026,_07_46_36_PM_(1)_1790102815644.png";
+import heroReferralImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_19_30_PM_1790104797805.png";
 import heroAffiliateImg from "@assets/ChatGPT_Image_Sep_22,_2026,_10_41_11_PM_1790113277868.png";
 import heroMobileContentImg from "@assets/ChatGPT_Image_Sep_22,_2026,_07_46_37_PM_(2)_1790102815645.png";
+import heroMobileReferralImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_19_37_PM_1790104797805.png";
 import heroMobileBundleImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_58_12_PM_1790107107804.png";
 import heroMobileAffiliateImg from "@assets/ChatGPT_Image_Sep_22,_2026,_10_58_38_PM_1790114325435.png";
 
@@ -90,6 +92,26 @@ function HeroContentSlide() {
   );
 }
 
+function HeroReferralSlide() {
+  return (
+    <Link
+      href="/refer-a-friend"
+      style={{
+        display: "block",
+        width: "100%",
+        height: "100%",
+        background: "linear-gradient(to bottom, #E8EFF7, #F3F7FC)",
+      }}
+    >
+      <ResponsiveHeroImage
+        desktopSrc={heroReferralImg}
+        mobileSrc={heroMobileReferralImg}
+        alt="Refer a friend and earn £25 credit each, up to £50"
+      />
+    </Link>
+  );
+}
+
 function HeroBundleElectricSlide() {
   return (
     <Link
@@ -135,6 +157,7 @@ const HERO_AUTOPLAY_MS = 6500;
 function HeroCarousel() {
   const slides = [
     { key: "content", render: () => <HeroContentSlide /> },
+    { key: "referral", render: () => <HeroReferralSlide /> },
     { key: "bundle-electric", render: () => <HeroBundleElectricSlide /> },
     { key: "affiliate", render: () => <HeroAffiliateSlide /> },
   ];
