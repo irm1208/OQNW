@@ -627,6 +627,13 @@ html.copy-protected [role="textbox"] {
   .hero-slide-image {
     object-fit: cover !important;
   }
+
+  /* Research cards reveal their details on tap. Give the open card enough
+     height for the description instead of clipping it into the next row. */
+  .research-card.research-card--expanded {
+    height: 360px !important;
+    z-index: 3;
+  }
 }
 
 /* Dots row: keep tight to the bottom edge but never collide with the CTA

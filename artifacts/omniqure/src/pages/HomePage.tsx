@@ -112,10 +112,12 @@ function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured
   img: string; accent: string; featured?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const isOpen = hovered || expanded;
   const cardHeight = featured ? "100%" : 220;
   return (
     <div
-      className={featured ? "" : "research-card"}
+      className={featured ? "" : `research-card${expanded ? " research-card--expanded" : ""}`}
       style={{
         position: "relative", overflow: "hidden",
         height: featured ? "100%" : cardHeight,
@@ -124,6 +126,16 @@ function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => setExpanded(value => !value)}
+      onKeyDown={event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          setExpanded(value => !value);
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-expanded={expanded}
     >
       {/* Photo */}
       <img
@@ -131,8 +143,8 @@ function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured
         style={{
           position: "absolute", inset: 0, width: "100%", height: "100%",
           objectFit: "cover",
-          filter: `saturate(${hovered ? 0.55 : 0.35}) brightness(${hovered ? 0.7 : 0.55})`,
-          transform: hovered ? "scale(1.05)" : "scale(1)",
+          filter: `saturate(${isOpen ? 0.55 : 0.35}) brightness(${isOpen ? 0.7 : 0.55})`,
+          transform: isOpen ? "scale(1.05)" : "scale(1)",
           transition: "transform 0.7s ease, filter 0.5s ease",
         }}
       />
@@ -144,7 +156,7 @@ function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured
       {/* Left accent bar — slides in on hover */}
       <div style={{
         position: "absolute", left: 0, top: 0,
-        width: 3, height: hovered ? "100%" : 0,
+        width: 3, height: isOpen ? "100%" : 0,
         background: `linear-gradient(180deg, ${accent}, ${accent}66)`,
         transition: "height 0.45s cubic-bezier(0.16,1,0.3,1)",
       }} />
@@ -159,8 +171,8 @@ function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured
           border: `1px solid ${accent}55`,
           padding: "3px 10px",
           backdropFilter: "blur(4px)",
-          opacity: hovered ? 1 : 0,
-          transform: hovered ? "translateY(0)" : "translateY(-6px)",
+          opacity: isOpen ? 1 : 0,
+          transform: isOpen ? "translateY(0)" : "translateY(-6px)",
           transition: "opacity 0.3s, transform 0.35s",
         }}>{tag}</span>
       </div>
@@ -174,7 +186,7 @@ function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured
           display: "block", fontSize: 9, fontWeight: 700,
           color: accent, letterSpacing: "0.3em", textTransform: "uppercase",
           marginBottom: 8,
-          opacity: hovered ? 0.9 : 0.55,
+          opacity: isOpen ? 0.9 : 0.55,
           transition: "opacity 0.3s",
         }}>{n}</span>
 
@@ -186,7 +198,7 @@ function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured
 
         {/* Peptides + desc — slide up on hover */}
         <div style={{
-          maxHeight: hovered ? 120 : 0,
+          maxHeight: isOpen ? 180 : 0,
           overflow: "hidden",
           transition: "max-height 0.45s cubic-bezier(0.16,1,0.3,1)",
         }}>
