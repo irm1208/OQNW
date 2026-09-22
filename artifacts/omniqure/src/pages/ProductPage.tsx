@@ -323,21 +323,6 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* Research Use Only Disclaimer */}
-      <div className="max-w-[1280px] mx-auto px-3 md:px-4 pt-4 md:pt-6">
-        <div
-          className="rounded-xl p-4"
-          style={{ backgroundColor: "#FFF8F0", border: "1px solid #FED7AA" }}
-        >
-          <p className="text-xs font-bold mb-1.5 uppercase tracking-wide" style={{ color: "#C2410C" }}>
-            ⚠ Research Use Only Disclaimer
-          </p>
-          <p className="text-xs leading-relaxed" style={{ color: "#7C2D12" }}>
-            The product described on this page is intended for in-vitro laboratory research use only. It is not a drug and has not been approved by the FDA or any other regulatory body. It is not intended to diagnose, treat, cure, or prevent any disease or condition. Only qualified researchers should purchase this product. You must be at least 18 years of age to purchase.
-          </p>
-        </div>
-      </div>
-
       <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-4 md:py-8">
         {/* Main product section */}
         <div className="flex flex-col md:flex-row gap-5 md:gap-6 lg:gap-8 mb-8 md:mb-10">
@@ -998,6 +983,21 @@ export default function ProductPage() {
 
         {/* Recently Viewed */}
         <RecentlyViewed excludeId={product.id} />
+
+        {/* Research Use Only Disclaimer */}
+        <div className="pt-2 pb-2 md:pt-4 md:pb-4">
+          <div
+            className="rounded-xl p-4"
+            style={{ backgroundColor: "#FFF8F0", border: "1px solid #FED7AA" }}
+          >
+            <p className="text-xs font-bold mb-1.5 uppercase tracking-wide" style={{ color: "#C2410C" }}>
+              ⚠ Research Use Only Disclaimer
+            </p>
+            <p className="text-xs leading-relaxed" style={{ color: "#7C2D12" }}>
+              The product described on this page is intended for in-vitro laboratory research use only. It is not a drug and has not been approved by the FDA or any other regulatory body. It is not intended to diagnose, treat, cure, or prevent any disease or condition. Only qualified researchers should purchase this product. You must be at least 18 years of age to purchase.
+            </p>
+          </div>
+        </div>
       </div>
 
 
