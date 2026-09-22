@@ -17,10 +17,10 @@ import bundleElectricHeroImg from "@assets/ChatGPT_Image_Sep_22,_2026,_01_15_23_
 import heroContentImg from "@assets/ChatGPT_Image_Sep_22,_2026,_12_54_44_PM_1790078104530.png";
 import heroReferralImg from "@assets/ChatGPT_Image_Sep_22,_2026,_01_03_20_PM_1790078610365.png";
 import heroAffiliateImg from "@assets/ChatGPT_Image_Sep_22,_2026,_01_38_02_PM_1790080697936.png";
-import heroMobileContentImg from "@assets/01_advancing_peptide_research_1440x1800_1790094333223.jpg";
-import heroMobileReferralImg from "@assets/02_refer_a_friend_1440x1800_1790094333224.jpg";
-import heroMobileBundleImg from "@assets/03_bundle_and_save_1440x1800_1790094333224.jpg";
-import heroMobileAffiliateImg from "@assets/04_grow_with_omniqure_1440x1800_1790094333224.jpg";
+import heroMobileContentImg from "@assets/ChatGPT_Image_Sep_22,_2026,_05_52_18_PM_(1)_1790095969258.png";
+import heroMobileReferralImg from "@assets/ChatGPT_Image_Sep_22,_2026,_05_52_19_PM_(2)_1790095969259.png";
+import heroMobileBundleImg from "@assets/ChatGPT_Image_Sep_22,_2026,_05_52_19_PM_(3)_1790095969259.png";
+import heroMobileAffiliateImg from "@assets/ChatGPT_Image_Sep_22,_2026,_05_52_20_PM_(4)_1790095969259.png";
 
 // Value of a single £25 referral credit reward, in each supported currency.
 const REFERRAL_CREDIT_VALUE: Record<CurrencyCode, string> = {
