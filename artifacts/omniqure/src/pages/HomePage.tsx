@@ -17,6 +17,10 @@ import bundleElectricHeroImg from "@assets/ChatGPT_Image_Sep_22,_2026,_01_15_23_
 import heroContentImg from "@assets/ChatGPT_Image_Sep_22,_2026,_12_54_44_PM_1790078104530.png";
 import heroReferralImg from "@assets/ChatGPT_Image_Sep_22,_2026,_01_03_20_PM_1790078610365.png";
 import heroAffiliateImg from "@assets/ChatGPT_Image_Sep_22,_2026,_01_38_02_PM_1790080697936.png";
+import heroMobileReferralImg from "@assets/Omniqure_1_1080x1350_1790082428454.png";
+import heroMobileBundleImg from "@assets/Omniqure_2_1080x1350_1790082428454.png";
+import heroMobileAffiliateImg from "@assets/Omniqure_3_1080x1350_1790082428454.png";
+import heroMobileContentImg from "@assets/Omniqure_4_1080x1350_1790082428454.png";
 
 // Value of a single £25 referral credit reward, in each supported currency.
 const REFERRAL_CREDIT_VALUE: Record<CurrencyCode, string> = {
@@ -240,6 +244,25 @@ const pillars = [
 ];
 
 /* ── Hero Carousel ─────────────────────────────────────── */
+function ResponsiveHeroImage({
+  desktopSrc,
+  mobileSrc,
+  alt,
+  className = "",
+}: {
+  desktopSrc: string;
+  mobileSrc: string;
+  alt: string;
+  className?: string;
+}) {
+  return (
+    <picture className={`hero-slide-picture ${className}`.trim()}>
+      <source media="(max-width: 767px)" srcSet={mobileSrc} />
+      <img className="hero-slide-image" src={desktopSrc} alt={alt} />
+    </picture>
+  );
+}
+
 function HeroContentSlide() {
   return (
     <Link
@@ -258,20 +281,11 @@ function HeroContentSlide() {
           height: "100%",
         }}
       >
-        {/* Full artwork — object-fit: contain keeps the complete ultra-wide image
-            visible and avoids cropping the product labels on narrower screens. */}
-        <img
-          className="hero-slide-image"
-          src={heroContentImg}
+        <ResponsiveHeroImage
+          desktopSrc={heroContentImg}
+          mobileSrc={heroMobileContentImg}
           alt="OmniQure research peptide collection featuring labelled peptide vials and molecular structures"
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "contain",
-            objectPosition: "center",
-          }}
+          className="hero-content-picture"
         />
 
       </section>
@@ -290,11 +304,10 @@ function HeroReferralSlide() {
         background: "linear-gradient(to bottom, #E8EFF7, #F3F7FC)",
       }}
     >
-      <img
-        className="hero-slide-image"
-        src={heroReferralImg}
+      <ResponsiveHeroImage
+        desktopSrc={heroReferralImg}
+        mobileSrc={heroMobileReferralImg}
         alt="Refer a friend and earn £25 credit each, up to £50"
-        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />
     </Link>
   );
@@ -311,11 +324,10 @@ function HeroBundleSlide() {
         background: "linear-gradient(to bottom, #DBDFEB, #EAECF6)",
       }}
     >
-      <img
-        className="hero-slide-image"
-        src={bundleAndSaveHeroImg}
+      <ResponsiveHeroImage
+        desktopSrc={bundleAndSaveHeroImg}
+        mobileSrc={heroMobileBundleImg}
         alt="Bundle and Save exclusive offers — free 10ml BAC water ampule on 3-4 peptides, 1 peptide free on 5-9 peptides, 2 peptides free on 10+ peptides"
-        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />
     </Link>
   );
@@ -332,11 +344,10 @@ function HeroBundleElectricSlide() {
         background: "#e8f0f8",
       }}
     >
-      <img
-        className="hero-slide-image"
-        src={bundleElectricHeroImg}
+      <ResponsiveHeroImage
+        desktopSrc={bundleElectricHeroImg}
+        mobileSrc={heroMobileBundleImg}
         alt="Bundle and Save — buy 3-4 peptides and get a free 10ml BAC water ampule, 5-9 get 1 free peptide, 10+ get 2 free peptides"
-        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />
     </Link>
   );
@@ -353,11 +364,10 @@ function HeroAffiliateSlide() {
         background: "#EAF4FF",
       }}
     >
-      <img
-        className="hero-slide-image"
-        src={heroAffiliateImg}
+      <ResponsiveHeroImage
+        desktopSrc={heroAffiliateImg}
+        mobileSrc={heroMobileAffiliateImg}
         alt="Grow with OmniQure affiliate programme — earn commission, offer audience discounts, and unlock product rewards"
-        style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />
     </Link>
   );
