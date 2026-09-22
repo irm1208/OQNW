@@ -481,7 +481,7 @@ html.copy-protected [role="textbox"] {
   .product-card-grid {
     grid-template-columns: minmax(0, 1fr) !important;
     column-gap: 0 !important;
-    row-gap: 28px !important;
+    row-gap: 16px !important;
   }
 
   .card-product-img {
@@ -489,7 +489,17 @@ html.copy-protected [role="textbox"] {
   }
 
   .card-product-img img {
-    padding: 8px !important;
+    padding: 0 !important;
+    object-fit: cover !important;
+    object-position: center 42% !important;
+  }
+
+  .card-info {
+    flex: 0 0 auto !important;
+  }
+
+  .card-info .mt-auto {
+    margin-top: 0 !important;
   }
 }
 
