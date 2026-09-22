@@ -12,14 +12,14 @@ import { useProducts } from "@/context/ProductsContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
-import bundleAndSaveHeroImg from "@assets/new_hero_1783533143502.jpeg";
-import bundleElectricHeroImg from "@assets/ChatGPT_Image_Sep_22,_2026,_01_15_23_PM_1790079338125.png";
+import bundleAndSaveHeroImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_56_59_PM_1790107098667.png";
+import bundleElectricHeroImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_56_59_PM_1790107098667.png";
 import heroContentImg from "@assets/ChatGPT_Image_Sep_22,_2026,_07_46_36_PM_(1)_1790102815644.png";
 import heroReferralImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_19_30_PM_1790104797805.png";
 import heroAffiliateImg from "@assets/ChatGPT_Image_Sep_22,_2026,_01_38_02_PM_1790080697936.png";
 import heroMobileContentImg from "@assets/ChatGPT_Image_Sep_22,_2026,_07_46_37_PM_(2)_1790102815645.png";
 import heroMobileReferralImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_19_37_PM_1790104797805.png";
-import heroMobileBundleImg from "@assets/ChatGPT_Image_Sep_22,_2026,_05_52_19_PM_(3)_1790095969259.png";
+import heroMobileBundleImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_58_12_PM_1790107107804.png";
 import heroMobileAffiliateImg from "@assets/ChatGPT_Image_Sep_22,_2026,_05_52_20_PM_(4)_1790095969259.png";
 
 // Value of a single £25 referral credit reward, in each supported currency.
