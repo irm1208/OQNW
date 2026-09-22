@@ -55,52 +55,52 @@ expect(received).toEqual(expected) // deep equality
 # Page snapshot
 
 ```yaml
-- generic [ref=f18e2]:
-  - main [ref=f18e4]:
-    - generic [ref=f18e5]:
-      - generic [ref=f18e6]:
-        - button "Open admin navigation" [ref=f18e7]
-        - img "OmniQure Admin" [ref=f18e8]
-      - generic [ref=f18e9]:
-        - button "Search" [ref=f18e11]
-        - button "Notifications" [ref=f18e13]:
-          - generic [ref=f18e14]: "17"
-    - generic [ref=f18e17]:
-      - generic [ref=f18e18]:
-        - heading "Back-in-Stock Alerts" [level=1] [ref=f18e19]
-        - paragraph [ref=f18e20]: Customers waiting to be notified when out-of-stock products return.
-      - generic [ref=f18e21]:
-        - generic [ref=f18e22]: Needs attention
-        - generic [ref=f18e28]:
-          - button "New · Tirzepatide 10mg — 10 units remaining" [ref=f18e29] [cursor=pointer]
-          - button "New · TB-500 5mg — 10 units remaining" [ref=f18e30] [cursor=pointer]
-          - button "New · SS-31 10mg — 10 units remaining" [ref=f18e31] [cursor=pointer]
-          - button "New · Semax + Selank Blend 20mg — 1 unit remaining" [ref=f18e32] [cursor=pointer]
-          - button "New · Retatrutide 60mg — 5 units remaining" [ref=f18e33] [cursor=pointer]
-          - button "New · Retatrutide 50mg — 10 units remaining" [ref=f18e34] [cursor=pointer]
-          - button "New · Retatrutide 20mg — 5 units remaining" [ref=f18e35] [cursor=pointer]
-          - button "New · N-Acetyl Semax Amidate 10mg — 9 units remaining" [ref=f18e36] [cursor=pointer]
-          - button "New · N-Acetyl Selank Amidate 10mg — 9 units remaining" [ref=f18e37] [cursor=pointer]
-          - button "New · Melanotan 2 10mg — 10 units remaining" [ref=f18e38] [cursor=pointer]
-          - button "New · LL-37 5mg — 7 units remaining" [ref=f18e39] [cursor=pointer]
-          - button "New · Kisspeptin-10 5mg — 10 units remaining" [ref=f18e40] [cursor=pointer]
-          - button "New · GHK-Cu 50mg — 7 units remaining" [ref=f18e41] [cursor=pointer]
-          - button "New · Epithalon 10mg — 5 units remaining" [ref=f18e42] [cursor=pointer]
-          - button "New · DSIP 10mg — 7 units remaining" [ref=f18e43] [cursor=pointer]
-          - button "New · BPC-157 + TB-500 Blend 20mg — 4 units remaining" [ref=f18e44] [cursor=pointer]
-      - generic [ref=f18e45]:
-        - generic [ref=f18e53]:
-          - paragraph [ref=f18e54]: "0"
-          - paragraph [ref=f18e55]: Pending Notifications
-        - generic [ref=f18e62]:
-          - paragraph [ref=f18e63]: "0"
-          - paragraph [ref=f18e64]: Products with Waitlists
-        - generic [ref=f18e70]:
-          - paragraph [ref=f18e71]: "0"
-          - paragraph [ref=f18e72]: Already Notified
-      - generic [ref=f18e73]:
-        - paragraph [ref=f18e77]: No stock alert requests yet
-        - paragraph [ref=f18e78]: When customers sign up for back-in-stock notifications on product pages, they will appear here.
+- generic [ref=f19e2]:
+  - main [ref=f19e4]:
+    - generic [ref=f19e5]:
+      - generic [ref=f19e6]:
+        - button "Open admin navigation" [ref=f19e7]
+        - img "OmniQure Admin" [ref=f19e8]
+      - generic [ref=f19e9]:
+        - button "Search" [ref=f19e11]
+        - button "Notifications" [ref=f19e13]:
+          - generic [ref=f19e14]: "17"
+    - generic [ref=f19e17]:
+      - generic [ref=f19e18]:
+        - heading "Back-in-Stock Alerts" [level=1] [ref=f19e19]
+        - paragraph [ref=f19e20]: Customers waiting to be notified when out-of-stock products return.
+      - generic [ref=f19e21]:
+        - generic [ref=f19e22]: Needs attention
+        - generic [ref=f19e28]:
+          - button "New · Tirzepatide 10mg — 10 units remaining" [ref=f19e29] [cursor=pointer]
+          - button "New · TB-500 5mg — 10 units remaining" [ref=f19e30] [cursor=pointer]
+          - button "New · SS-31 10mg — 10 units remaining" [ref=f19e31] [cursor=pointer]
+          - button "New · Semax + Selank Blend 20mg — 1 unit remaining" [ref=f19e32] [cursor=pointer]
+          - button "New · Retatrutide 60mg — 5 units remaining" [ref=f19e33] [cursor=pointer]
+          - button "New · Retatrutide 50mg — 10 units remaining" [ref=f19e34] [cursor=pointer]
+          - button "New · Retatrutide 20mg — 5 units remaining" [ref=f19e35] [cursor=pointer]
+          - button "New · N-Acetyl Semax Amidate 10mg — 9 units remaining" [ref=f19e36] [cursor=pointer]
+          - button "New · N-Acetyl Selank Amidate 10mg — 9 units remaining" [ref=f19e37] [cursor=pointer]
+          - button "New · Melanotan 2 10mg — 10 units remaining" [ref=f19e38] [cursor=pointer]
+          - button "New · LL-37 5mg — 7 units remaining" [ref=f19e39] [cursor=pointer]
+          - button "New · Kisspeptin-10 5mg — 10 units remaining" [ref=f19e40] [cursor=pointer]
+          - button "New · GHK-Cu 50mg — 7 units remaining" [ref=f19e41] [cursor=pointer]
+          - button "New · Epithalon 10mg — 5 units remaining" [ref=f19e42] [cursor=pointer]
+          - button "New · DSIP 10mg — 7 units remaining" [ref=f19e43] [cursor=pointer]
+          - button "New · BPC-157 + TB-500 Blend 20mg — 4 units remaining" [ref=f19e44] [cursor=pointer]
+      - generic [ref=f19e45]:
+        - generic [ref=f19e53]:
+          - paragraph [ref=f19e54]: "0"
+          - paragraph [ref=f19e55]: Pending Notifications
+        - generic [ref=f19e62]:
+          - paragraph [ref=f19e63]: "0"
+          - paragraph [ref=f19e64]: Products with Waitlists
+        - generic [ref=f19e70]:
+          - paragraph [ref=f19e71]: "0"
+          - paragraph [ref=f19e72]: Already Notified
+      - generic [ref=f19e73]:
+        - paragraph [ref=f19e77]: No stock alert requests yet
+        - paragraph [ref=f19e78]: When customers sign up for back-in-stock notifications on product pages, they will appear here.
   - region "Notifications (F8)":
     - list
 ```

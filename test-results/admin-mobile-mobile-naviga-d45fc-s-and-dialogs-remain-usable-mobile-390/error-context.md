@@ -45,7 +45,7 @@ Call log:
                 - generic:
                   - generic:
                     - heading [level=2]: Overview
-                    - generic: 1 live
+                    - generic: 0 live
                   - paragraph: Monitor your store's performance and operations.
                 - generic:
                   - generic:
@@ -124,17 +124,14 @@ Call log:
                       - generic:
                         - generic:
                           - img:
-                            - generic:
-                              - generic:
-                                - generic: 23 Aug
-                                - generic: 28 Aug
+                            - generic: 28 Aug
                             - generic:
                               - generic:
                                 - generic: "0"
+                                - generic: "1"
                                 - generic: "2"
+                                - generic: "3"
                                 - generic: "4"
-                                - generic: "6"
-                                - generic: "8"
                 - generic:
                   - generic: Revenue by Category
                   - generic:

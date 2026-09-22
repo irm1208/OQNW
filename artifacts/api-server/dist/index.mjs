@@ -19002,14 +19002,14 @@ var require_etag = __commonJS({
   "../../node_modules/.pnpm/etag@1.8.1/node_modules/etag/index.js"(exports, module) {
     "use strict";
     module.exports = etag;
-    var crypto23 = __require("crypto");
+    var crypto22 = __require("crypto");
     var Stats = __require("fs").Stats;
     var toString = Object.prototype.toString;
     function entitytag(entity) {
       if (entity.length === 0) {
         return '"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"';
       }
-      var hash2 = crypto23.createHash("sha1").update(entity, "utf8").digest("base64").substring(0, 27);
+      var hash2 = crypto22.createHash("sha1").update(entity, "utf8").digest("base64").substring(0, 27);
       var len = typeof entity === "string" ? Buffer.byteLength(entity, "utf8") : entity.length;
       return '"' + len.toString(16) + "-" + hash2 + '"';
     }
@@ -20732,27 +20732,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router59;
+    module.exports = Router57;
     module.exports.Route = Route;
-    function Router59(options) {
-      if (!(this instanceof Router59)) {
-        return new Router59(options);
+    function Router57(options) {
+      if (!(this instanceof Router57)) {
+        return new Router57(options);
       }
       const opts = options || {};
-      function router57(req, res, next) {
-        router57.handle(req, res, next);
+      function router55(req, res, next) {
+        router55.handle(req, res, next);
       }
-      Object.setPrototypeOf(router57, this);
-      router57.caseSensitive = opts.caseSensitive;
-      router57.mergeParams = opts.mergeParams;
-      router57.params = {};
-      router57.strict = opts.strict;
-      router57.stack = [];
-      return router57;
+      Object.setPrototypeOf(router55, this);
+      router55.caseSensitive = opts.caseSensitive;
+      router55.mergeParams = opts.mergeParams;
+      router55.params = {};
+      router55.strict = opts.strict;
+      router55.stack = [];
+      return router55;
     }
-    Router59.prototype = function() {
+    Router57.prototype = function() {
     };
-    Router59.prototype.param = function param2(name2, fn) {
+    Router57.prototype.param = function param2(name2, fn) {
       if (!name2) {
         throw new TypeError("argument name is required");
       }
@@ -20772,7 +20772,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router59.prototype.handle = function handle(req, res, callback) {
+    Router57.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20899,7 +20899,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router59.prototype.use = function use(handler) {
+    Router57.prototype.use = function use(handler) {
       let offset = 0;
       let path4 = "/";
       if (typeof handler !== "function") {
@@ -20932,7 +20932,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router59.prototype.route = function route(path4) {
+    Router57.prototype.route = function route(path4) {
       const route2 = new Route(path4);
       const layer = new Layer(path4, {
         sensitive: this.caseSensitive,
@@ -20947,7 +20947,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router59.prototype[method] = function(path4) {
+      Router57.prototype[method] = function(path4) {
         const route = this.route(path4);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -21130,13 +21130,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router59 = require_router();
+    var Router57 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router57 = null;
+      var router55 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -21145,13 +21145,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router57 === null) {
-            router57 = new Router59({
+          if (router55 === null) {
+            router55 = new Router57({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router57;
+          return router55;
         }
       });
     };
@@ -21222,15 +21222,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router57 = this.router;
+      var router55 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router57.use(path4, fn2);
+          return router55.use(path4, fn2);
         }
         debug(".use app under %s", path4);
         fn2.mountpath = path4;
         fn2.parent = this;
-        router57.use(path4, function mounted_app(req, res, next) {
+        router55.use(path4, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -22532,17 +22532,17 @@ var require_content_disposition = __commonJS({
 // ../../node_modules/.pnpm/cookie-signature@1.2.2/node_modules/cookie-signature/index.js
 var require_cookie_signature = __commonJS({
   "../../node_modules/.pnpm/cookie-signature@1.2.2/node_modules/cookie-signature/index.js"(exports) {
-    var crypto23 = __require("crypto");
+    var crypto22 = __require("crypto");
     exports.sign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Cookie value must be provided as a string.");
       if (null == secret) throw new TypeError("Secret key must be provided.");
-      return val + "." + crypto23.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
+      return val + "." + crypto22.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
     };
     exports.unsign = function(input, secret) {
       if ("string" != typeof input) throw new TypeError("Signed cookie string must be provided.");
       if (null == secret) throw new TypeError("Secret key must be provided.");
       var tentativeValue = input.slice(0, input.lastIndexOf(".")), expectedInput = exports.sign(tentativeValue, secret), expectedBuffer = Buffer.from(expectedInput), inputBuffer = Buffer.from(input);
-      return expectedBuffer.length === inputBuffer.length && crypto23.timingSafeEqual(expectedBuffer, inputBuffer) ? tentativeValue : false;
+      return expectedBuffer.length === inputBuffer.length && crypto22.timingSafeEqual(expectedBuffer, inputBuffer) ? tentativeValue : false;
     };
   }
 });
@@ -23851,7 +23851,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router59 = require_router();
+    var Router57 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module.exports = createApplication;
@@ -23873,8 +23873,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router59.Route;
-    exports.Router = Router59;
+    exports.Route = Router57.Route;
+    exports.Router = Router57;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -24172,11 +24172,11 @@ var require_lib3 = __commonJS({
 // ../../node_modules/.pnpm/cookie-signature@1.0.6/node_modules/cookie-signature/index.js
 var require_cookie_signature2 = __commonJS({
   "../../node_modules/.pnpm/cookie-signature@1.0.6/node_modules/cookie-signature/index.js"(exports) {
-    var crypto23 = __require("crypto");
+    var crypto22 = __require("crypto");
     exports.sign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Cookie value must be provided as a string.");
       if ("string" != typeof secret) throw new TypeError("Secret string must be provided.");
-      return val + "." + crypto23.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
+      return val + "." + crypto22.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
     };
     exports.unsign = function(val, secret) {
       if ("string" != typeof val) throw new TypeError("Signed cookie string must be provided.");
@@ -24185,7 +24185,7 @@ var require_cookie_signature2 = __commonJS({
       return sha1(mac2) == sha1(val) ? str : false;
     };
     function sha1(str) {
-      return crypto23.createHash("sha1").update(str).digest("hex");
+      return crypto22.createHash("sha1").update(str).digest("hex");
     }
   }
 });
@@ -30221,7 +30221,7 @@ var require_cert_signatures = __commonJS({
 var require_sasl = __commonJS({
   "../../node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/crypto/sasl.js"(exports, module) {
     "use strict";
-    var crypto23 = require_utils5();
+    var crypto22 = require_utils5();
     var { signatureAlgorithmHashFromCertificate } = require_cert_signatures();
     function startSession(mechanisms, stream) {
       const candidates = ["SCRAM-SHA-256"];
@@ -30233,7 +30233,7 @@ var require_sasl = __commonJS({
       if (mechanism === "SCRAM-SHA-256-PLUS" && typeof stream.getPeerCertificate !== "function") {
         throw new Error("SASL: Mechanism SCRAM-SHA-256-PLUS requires a certificate");
       }
-      const clientNonce = crypto23.randomBytes(18).toString("base64");
+      const clientNonce = crypto22.randomBytes(18).toString("base64");
       const gs2Header = mechanism === "SCRAM-SHA-256-PLUS" ? "p=tls-server-end-point" : stream ? "y" : "n";
       return {
         mechanism,
@@ -30268,20 +30268,20 @@ var require_sasl = __commonJS({
         const peerCert = stream.getPeerCertificate().raw;
         let hashName = signatureAlgorithmHashFromCertificate(peerCert);
         if (hashName === "MD5" || hashName === "SHA-1") hashName = "SHA-256";
-        const certHash = await crypto23.hashByName(hashName, peerCert);
+        const certHash = await crypto22.hashByName(hashName, peerCert);
         const bindingData = Buffer.concat([Buffer.from("p=tls-server-end-point,,"), Buffer.from(certHash)]);
         channelBinding = bindingData.toString("base64");
       }
       const clientFinalMessageWithoutProof = "c=" + channelBinding + ",r=" + sv.nonce;
       const authMessage = clientFirstMessageBare + "," + serverFirstMessage + "," + clientFinalMessageWithoutProof;
       const saltBytes = Buffer.from(sv.salt, "base64");
-      const saltedPassword = await crypto23.deriveKey(password, saltBytes, sv.iteration);
-      const clientKey = await crypto23.hmacSha256(saltedPassword, "Client Key");
-      const storedKey = await crypto23.sha256(clientKey);
-      const clientSignature = await crypto23.hmacSha256(storedKey, authMessage);
+      const saltedPassword = await crypto22.deriveKey(password, saltBytes, sv.iteration);
+      const clientKey = await crypto22.hmacSha256(saltedPassword, "Client Key");
+      const storedKey = await crypto22.sha256(clientKey);
+      const clientSignature = await crypto22.hmacSha256(storedKey, authMessage);
       const clientProof = xorBuffers(Buffer.from(clientKey), Buffer.from(clientSignature)).toString("base64");
-      const serverKey = await crypto23.hmacSha256(saltedPassword, "Server Key");
-      const serverSignatureBytes = await crypto23.hmacSha256(serverKey, authMessage);
+      const serverKey = await crypto22.hmacSha256(saltedPassword, "Server Key");
+      const serverSignatureBytes = await crypto22.hmacSha256(serverKey, authMessage);
       session.message = "SASLResponse";
       session.serverSignature = Buffer.from(serverSignatureBytes).toString("base64");
       session.response = clientFinalMessageWithoutProof + ",p=" + clientProof;
@@ -32449,7 +32449,7 @@ var require_client = __commonJS({
     var Query2 = require_query();
     var defaults2 = require_defaults();
     var Connection2 = require_connection();
-    var crypto23 = require_utils5();
+    var crypto22 = require_utils5();
     var activeQueryDeprecationNotice = nodeUtils.deprecate(
       () => {
       },
@@ -32684,7 +32684,7 @@ var require_client = __commonJS({
       _handleAuthMD5Password(msg) {
         this._getPassword(async () => {
           try {
-            const hashedPassword = await crypto23.postgresMd5PasswordHash(this.user, this.password, msg.salt);
+            const hashedPassword = await crypto22.postgresMd5PasswordHash(this.user, this.password, msg.salt);
             this.connection.password(hashedPassword);
           } catch (e) {
             this.emit("error", e);
@@ -34296,9 +34296,6 @@ var init_tracing_utils = __esm({
 });
 
 // ../../node_modules/.pnpm/drizzle-orm@0.45.2_@types+pg@8.18.0_pg@8.20.0/node_modules/drizzle-orm/pg-core/unique-constraint.js
-function unique(name2) {
-  return new UniqueOnConstraintBuilder(name2);
-}
 function uniqueKeyName(table, columns) {
   return `${table[TableName]}_${columns.join("_")}_unique`;
 }
@@ -34703,10 +34700,10 @@ var init_subquery = __esm({
     init_entity();
     Subquery = class {
       static [entityKind] = "Subquery";
-      constructor(sql4, fields, alias, isWith = false, usedTables = []) {
+      constructor(sql3, fields, alias, isWith = false, usedTables = []) {
         this._ = {
           brand: "Subquery",
-          sql: sql4,
+          sql: sql3,
           selectedFields: fields,
           alias,
           isWith,
@@ -46229,39 +46226,39 @@ var require_core = __commonJS({
       }
     })(exports, function() {
       var CryptoJS = CryptoJS || (function(Math2, undefined2) {
-        var crypto23;
+        var crypto22;
         if (typeof window !== "undefined" && window.crypto) {
-          crypto23 = window.crypto;
+          crypto22 = window.crypto;
         }
         if (typeof self !== "undefined" && self.crypto) {
-          crypto23 = self.crypto;
+          crypto22 = self.crypto;
         }
         if (typeof globalThis !== "undefined" && globalThis.crypto) {
-          crypto23 = globalThis.crypto;
+          crypto22 = globalThis.crypto;
         }
-        if (!crypto23 && typeof window !== "undefined" && window.msCrypto) {
-          crypto23 = window.msCrypto;
+        if (!crypto22 && typeof window !== "undefined" && window.msCrypto) {
+          crypto22 = window.msCrypto;
         }
-        if (!crypto23 && typeof global !== "undefined" && global.crypto) {
-          crypto23 = global.crypto;
+        if (!crypto22 && typeof global !== "undefined" && global.crypto) {
+          crypto22 = global.crypto;
         }
-        if (!crypto23 && typeof __require === "function") {
+        if (!crypto22 && typeof __require === "function") {
           try {
-            crypto23 = __require("crypto");
+            crypto22 = __require("crypto");
           } catch (err) {
           }
         }
         var cryptoSecureRandomInt = function() {
-          if (crypto23) {
-            if (typeof crypto23.getRandomValues === "function") {
+          if (crypto22) {
+            if (typeof crypto22.getRandomValues === "function") {
               try {
-                return crypto23.getRandomValues(new Uint32Array(1))[0];
+                return crypto22.getRandomValues(new Uint32Array(1))[0];
               } catch (err) {
               }
             }
-            if (typeof crypto23.randomBytes === "function") {
+            if (typeof crypto22.randomBytes === "function") {
               try {
-                return crypto23.randomBytes(4).readInt32LE();
+                return crypto22.randomBytes(4).readInt32LE();
               } catch (err) {
               }
             }
@@ -206016,13 +206013,13 @@ var require_connectors_sdk = __commonJS({
 });
 
 // src/app.ts
-var import_express59 = __toESM(require_express2(), 1);
+var import_express57 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 var import_cookie_parser = __toESM(require_cookie_parser(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
 
 // src/routes/index.ts
-var import_express57 = __toESM(require_express2(), 1);
+var import_express55 = __toESM(require_express2(), 1);
 
 // src/routes/health.ts
 var import_express = __toESM(require_express2(), 1);
@@ -213339,8 +213336,8 @@ init_table();
 init_sql();
 init_entity();
 var IndexBuilderOn = class {
-  constructor(unique2, name2) {
-    this.unique = unique2;
+  constructor(unique, name2) {
+    this.unique = unique;
     this.name = name2;
   }
   static [entityKind] = "PgIndexBuilderOn";
@@ -213409,11 +213406,11 @@ var IndexBuilder = class {
   static [entityKind] = "PgIndexBuilder";
   /** @internal */
   config;
-  constructor(columns, unique2, only, name2, method = "btree") {
+  constructor(columns, unique, only, name2, method = "btree") {
     this.config = {
       name: name2,
       columns,
-      unique: unique2,
+      unique,
       only,
       method
     };
@@ -216325,10 +216322,10 @@ var PgRelationalQuery = class extends QueryPromise {
 init_entity();
 init_query_promise();
 var PgRaw = class extends QueryPromise {
-  constructor(execute, sql4, query, mapBatchResult) {
+  constructor(execute, sql3, query, mapBatchResult) {
     super();
     this.execute = execute;
-    this.sql = sql4;
+    this.sql = sql3;
     this.query = query;
     this.mapBatchResult = mapBatchResult;
   }
@@ -216653,8 +216650,8 @@ var NoopCache = class extends Cache {
   async onMutate(_params) {
   }
 };
-async function hashQuery(sql4, params) {
-  const dataToHash = `${sql4}-${JSON.stringify(params)}`;
+async function hashQuery(sql3, params) {
+  const dataToHash = `${sql3}-${JSON.stringify(params)}`;
   const encoder = new TextEncoder();
   const data = encoder.encode(dataToHash);
   const hashBuffer = await crypto.subtle.digest("SHA-256", data);
@@ -217164,7 +217161,6 @@ __export(schema_exports, {
   newsletterSubscribersTable: () => newsletterSubscribersTable,
   orderItemsTable: () => orderItemsTable,
   ordersTable: () => ordersTable,
-  productReviewsTable: () => productReviewsTable,
   productsCatalogTable: () => productsCatalogTable,
   productsInventoryTable: () => productsInventoryTable,
   publicTrafficEventsTable: () => publicTrafficEventsTable,
@@ -228625,8 +228621,7 @@ var ordersTable = pgTable("orders", {
   fraudReviewed: boolean4("fraud_reviewed").notNull().default(false),
   fraudReviewNote: text("fraud_review_note"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date()),
-  reviewRequestSentAt: timestamp("review_request_sent_at", { withTimezone: true })
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
 });
 var insertOrderSchema = createInsertSchema(ordersTable).omit({
   id: true,
@@ -228883,28 +228878,6 @@ var returnsTable = pgTable("returns", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow()
 });
-
-// ../../lib/db/src/schema/product_reviews.ts
-var productReviewsTable = pgTable(
-  "product_reviews",
-  {
-    id: serial("id").primaryKey(),
-    productId: integer2("product_id").notNull(),
-    customerId: integer2("customer_id").notNull(),
-    customerName: text("customer_name").notNull(),
-    rating: integer2("rating").notNull(),
-    title: text("title").notNull(),
-    body: text("body").notNull(),
-    isApproved: boolean4("is_approved").notNull().default(false),
-    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
-  },
-  (table) => ({
-    uniqueReview: unique("product_reviews_customer_product_unique").on(
-      table.productId,
-      table.customerId
-    )
-  })
-);
 
 // ../../lib/db/src/schema/wishlists.ts
 var wishlistsTable = pgTable("wishlists", {
@@ -237001,44 +236974,6 @@ async function sendBackInStockEmail(data) {
     await logEmail({ toEmail: data.customerEmail, subject, type: "back_in_stock", status: "failed" });
   }
 }
-async function sendReviewRequestEmail(data) {
-  const siteUrl = SITE_URL;
-  const subject = `${data.customerName.split(" ")[0]}, how was your order ${data.orderNumber}?`;
-  const rows = data.items.map((item) => `
-    <tr>
-      <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#1e293b;">${item.productName}</td>
-      <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;text-align:right;">
-        <a href="${siteUrl}/product/${item.productId}#reviews" style="display:inline-block;background:#f1f5f9;color:#1e293b;padding:5px 14px;border-radius:20px;text-decoration:none;font-size:12px;font-weight:600;border:1px solid #e2e8f0;">Leave a Review</a>
-      </td>
-    </tr>`).join("");
-  const body = `
-    <h2 style="margin:0 0 8px;font-size:22px;color:#0f172a;">How did it go?</h2>
-    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Hi ${data.customerName.split(" ")[0]}, it's been a week since your order <strong>${data.orderNumber}</strong> was delivered. We'd love to hear how your research went.</p>
-
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
-      <tr>
-        <th style="text-align:left;font-size:12px;color:#94a3b8;font-weight:600;padding-bottom:8px;border-bottom:2px solid #e2e8f0;">PRODUCT</th>
-        <th style="text-align:right;font-size:12px;color:#94a3b8;font-weight:600;padding-bottom:8px;border-bottom:2px solid #e2e8f0;"></th>
-      </tr>
-      ${rows}
-    </table>
-
-    <p style="margin:0;font-size:12px;color:#94a3b8;">Your reviews help other researchers make informed decisions. Thank you for your support.</p>
-  `;
-  try {
-    const result = await getResend().emails.send({
-      from: FROM_ADDRESS,
-      to: data.customerEmail,
-      subject,
-      html: baseTemplate("Share Your Research Experience", body)
-    });
-    logger.info({ email: data.customerEmail, orderNumber: data.orderNumber }, "Review request email sent");
-    await logEmail({ toEmail: data.customerEmail, subject, type: "review_request", status: "sent", resendId: result.data?.id, orderNumber: data.orderNumber });
-  } catch (err) {
-    logger.error({ err }, "Failed to send review request email");
-    await logEmail({ toEmail: data.customerEmail, subject, type: "review_request", status: "failed", orderNumber: data.orderNumber });
-  }
-}
 async function sendReferralReward(data) {
   const subject = `You've earned \xA325 credit \u2014 ${data.refereeName} just ordered!`;
   const body = `
@@ -238855,333 +238790,6 @@ async function seedProductsCatalog() {
   }
 }
 
-// src/lib/seed-reviews.ts
-init_drizzle_orm();
-var REVIEWER_NAMES = [
-  "James T.",
-  "Sarah M.",
-  "David K.",
-  "Emma R.",
-  "Michael B.",
-  "Laura H.",
-  "Tom W.",
-  "Rachel S.",
-  "Chris N.",
-  "Olivia P.",
-  "Andrew F.",
-  "Jessica L.",
-  "Ryan O.",
-  "Natalie C.",
-  "Ben A.",
-  "Sophia G.",
-  "Luke D.",
-  "Hannah V.",
-  "Mark E.",
-  "Claire J.",
-  "Daniel Y.",
-  "Amy Z.",
-  "Sam Q.",
-  "Zoe X.",
-  "Patrick U.",
-  "Fiona I.",
-  "George C.",
-  "Alice B.",
-  "Harry M.",
-  "Mia W.",
-  "Joshua T.",
-  "Eleanor K.",
-  "Aaron S.",
-  "Isla R.",
-  "Jake F.",
-  "Chloe P.",
-  "Liam N.",
-  "Grace H.",
-  "Owen D.",
-  "Amber L.",
-  "Ethan V.",
-  "Lily A.",
-  "Connor G.",
-  "Phoebe E.",
-  "Rory J.",
-  "Evelyn Q.",
-  "Sean Z.",
-  "Imogen Y.",
-  "Callum X.",
-  "Ruby U.",
-  "Aidan W.",
-  "Freya T.",
-  "Declan S.",
-  "Poppy R.",
-  "Finn Q.",
-  "Harriet P.",
-  "Niall O.",
-  "Daisy N.",
-  "Ruairidh M.",
-  "Willow L.",
-  "Tristan K.",
-  "Penelope J.",
-  "Kieran I.",
-  "Scarlett H.",
-  "Alistair G.",
-  "Matilda F.",
-  "Reuben E.",
-  "Arabella D.",
-  "Cormac C.",
-  "Violet B.",
-  "Barnaby A.",
-  "Cordelia Z.",
-  "Magnus Y.",
-  "Celestine X.",
-  "Leander W.",
-  "Persephone V.",
-  "Stellan U.",
-  "Rosalind T.",
-  "Emrys S.",
-  "Calliope R."
-];
-var TEMPLATES_BY_CATEGORY = {
-  "Healing Peptides": [
-    { rating: 5, title: "Outstanding purity, dissolved perfectly", body: "Ordered for in-vitro tissue repair research. purity data matches exactly what was stated. Dissolved cleanly in sterile water with no particulates. Very impressed." },
-    { rating: 5, title: "Excellent for musculoskeletal studies", body: "Used in our lab's tendon repair model. Purity verified independently at 98.7% \u2014 well within spec. Will be reordering." },
-    { rating: 4, title: "Very good quality material", body: "Product quality is excellent. The lyophilised cake was intact and reconstituted perfectly. Content itself is top tier \u2014 very clean profile on our in-house testing." },
-    { rating: 5, title: "Best source I've found for this compound", body: "Tried three other suppliers before this one. This is the only one that provided the full lab report, not just a purity number. The data integrity here is on another level." },
-    { rating: 5, title: "Independent verification confirmed purity", body: "Ran our own testing \u2014 results came within 0.4% of stated purity. That level of consistency is rare in this space. Repeat customer from here on." },
-    { rating: 4, title: "Solid research grade material", body: "Good product for gastrointestinal research protocols. Reconstitution was smooth and aliquots have remained stable at -20\xB0C for 8 weeks so far." },
-    { rating: 5, title: "Consistently high quality batch to batch", body: "On my fourth order now and each batch shows consistent purity. That reproducibility matters enormously for research. Will keep ordering." },
-    { rating: 4, title: "Good value for the quality", body: "Pricing is fair for the documentation provided. full lab report included, which is increasingly rare. Minor note only that the website checkout could be smoother." },
-    { rating: 5, title: "Arrived in perfect condition", body: "Shipped with appropriate cold packaging \u2014 arrived perfectly. Lyophilised cake was pristine. Reconstituted to a clear solution with no visible aggregation." },
-    { rating: 5, title: "Excellent for gastrointestinal research", body: "Clean material with no visible particulates on reconstitution. Our cytoprotection assay gave results consistent with published literature. Very satisfied." },
-    { rating: 4, title: "Great purity, clean dissolution", body: "Dissolved easily in sterile saline. No clouding or aggregation. Our tissue repair model results are replicable batch to batch. Good supplier." },
-    { rating: 5, title: "Top quality for regenerative research", body: "Used in multiple wound healing models. Purity is consistently above 98.5% on our verification. The lyophilised powder reconstitutes quickly and cleanly." }
-  ],
-  "Growth Peptides": [
-    { rating: 5, title: "Impressive purity documentation", body: "Ordered for GH secretagogue receptor binding studies. full lab report provided with peak analysis. The data quality here is what separates this supplier from competitors." },
-    { rating: 4, title: "Good product for GH axis research", body: "Peptide dissolved readily in sterile water and showed expected activity in our cell-based assay. Documentation complete. Product arrived in good condition." },
-    { rating: 5, title: "Reliable and well documented", body: "Fourth order this year. Every batch has come with fresh lot-specific documentation. Purity has been above 99% every time \u2014 impressive consistency." },
-    { rating: 5, title: "Excellent for pulsatile GH research", body: "Used in rat pituitary cell studies. Very clean material \u2014 no degradation peaks visible in testing. Highly recommended." },
-    { rating: 5, title: "Cleanest GHRP I've sourced in two years", body: "Tried several vendors for this compound. This batch is notably cleaner. The purity profile has minimal secondary peaks. Our in-vitro GH release assay confirms bioactivity." },
-    { rating: 4, title: "Well within spec", body: "Independent verification put purity at 98.9%. Reconstitution clean. Lyophilised cake was intact on arrival and dissolved without issue." },
-    { rating: 5, title: "Great for IGF-1 pathway studies", body: "Used alongside IGF-1 LR3 for downstream signalling research. Both compounds excellent. Consistent lot-to-lot quality is what keeps me coming back." },
-    { rating: 4, title: "Solid product, will reorder", body: "Good purity, complete documentation, reasonable pricing. Nothing to complain about on the product side. Product itself is great." },
-    { rating: 5, title: "Research grade \u2014 genuinely", body: "I've been burned by substandard material before. The documentation here is the real deal \u2014 our own testing results were independently verifiable." },
-    { rating: 4, title: "Clean material for secretagogue studies", body: "Purity is where it should be for serious research use. The lyophilised form is stable and dissolves well. Good batch." },
-    { rating: 5, title: "Excellent for pituitary studies", body: "Used for rat pituitary cell work. Compound purity is excellent and our GH secretion assay results are clean and reproducible. Very happy." },
-    { rating: 5, title: "Consistent batch quality", body: "Third order of this compound. Each batch has come with consistent purity data and clean analytical profiles. That reproducibility is critical for longitudinal work." }
-  ],
-  "Weight Management": [
-    { rating: 5, title: "Excellent purity for metabolic research", body: "Ordered for GLP-1 receptor pharmacology studies. independent testing confirmed purity within spec. Reconstitution clean with no particulates." },
-    { rating: 5, title: "Top tier GLP-1/GIP agonist material", body: "Running receptor binding assays with this compound. Activity correlates well with published Ki values. Analytical documentation is excellent." },
-    { rating: 4, title: "Great quality product", body: "Purity checks out and dissolution is straightforward in the supplied buffer. Aliquots have been stable at -80\xB0C for our metabolic model." },
-    { rating: 5, title: "Best source for this compound class", body: "Tried two other suppliers. This material is considerably cleaner based on our in-house testing. The data is accurate and detailed." },
-    { rating: 5, title: "Consistent batch quality", body: "Second order of this compound. Purity numbers are very close to the previous batch \u2014 good quality control. Essential for longitudinal research protocols." },
-    { rating: 4, title: "Well documented and clean", body: "full lab report provided. No degradation peaks. Performing exactly as expected in our long-term obesity model." },
-    { rating: 5, title: "Excellent for adiposity research", body: "Used in our metabolic syndrome study. Compound purity and activity are both exceptional. More detail than any other supplier I've used at this price point." },
-    { rating: 4, title: "Reliable supplier for this compound class", body: "Have now ordered three different GLP-1 related peptides. All three have been excellent. Packaging is solid for international orders." },
-    { rating: 5, title: "detailed purity data included \u2014 valuable", body: "A detailed lab report provided with each lot is something most suppliers don't bother with. For pharmacology research, that level of detail is invaluable." },
-    { rating: 4, title: "Good purity, clean dissolution", body: "Reconstituted cleanly in PBS. No visible particulates. Our receptor binding assay gave clean results consistent with published literature." },
-    { rating: 5, title: "Excellent for GIP/GLP research", body: "Running dual receptor studies. Compound is clean and well-characterised. Results in our cell-based assay are highly reproducible. Very satisfied." },
-    { rating: 5, title: "High purity verified independently", body: "We Ran independent testing in-house and got 98.7% \u2014 consistent with what was stated. That accuracy is rare. Will continue ordering." }
-  ],
-  "Nootropics": [
-    { rating: 5, title: "Excellent purity for CNS research", body: "Ordered for BDNF pathway studies. independent testing shows a very clean profile. Reconstituted cleanly in sterile saline." },
-    { rating: 4, title: "Good anxiolytic peptide, solid documentation", body: "Used in rodent anxiety models. Compound performs as expected based on literature. Documentation is solid and product arrived in excellent condition." },
-    { rating: 5, title: "Best source I've found for nootropic peptides", body: "Tried several other suppliers. Products here consistently come with better documentation and higher verified purity. Worth the price point." },
-    { rating: 5, title: "Impressive analytical documentation", body: "The documentation includes independent testing retention time, purity %, and area under curve. That level of detail is what research requires." },
-    { rating: 5, title: "Reliable for neuropeptide research", body: "Running long-term cognitive studies and need consistent material. This supplier has been reliable batch to batch. The lot numbers tie to individual analytical data." },
-    { rating: 4, title: "Well within spec", body: "in-house testing matched the stated value within acceptable limits. Clean dissolution, no visible aggregation. Good value for documentation provided." },
-    { rating: 5, title: "Excellent for TREK-1 channel research", body: "Compound is clean and dissolved perfectly. Patch-clamp recordings show expected pharmacological profile. Happy with purity and activity." },
-    { rating: 5, title: "Ideal for cognitive research protocols", body: "Clean material, verified purity, and detailed analytical documentation. Everything we need for a well-controlled study. Will reorder." },
-    { rating: 4, title: "Good batch, replicable results", body: "Third order of this compound. Results in our cognition model are consistent batch to batch. That's what you need when running longitudinal work." }
-  ],
-  "Longevity Peptides": [
-    { rating: 5, title: "Exceptional purity for telomere research", body: "Ordered for telomerase activity assays. Purity 99.2% by in-house testing \u2014 matches stated value exactly. This is what research-grade means." },
-    { rating: 5, title: "Detailed documentation \u2014 very impressive", body: "Documentation includes a full lab report with peak analysis. No other supplier I've used provides this level of detail as standard." },
-    { rating: 4, title: "Good quality, well packaged", body: "Arrived well packaged. Lyophilised cake intact. Reconstitution smooth. Product is excellent \u2014 very pleased." },
-    { rating: 5, title: "Consistently high quality", body: "Third order this year. Each batch shows purity consistently above 99%. For longitudinal research that reproducibility is critical. Outstanding." },
-    { rating: 5, title: "Perfect for pineal peptide research", body: "Purity and purity documentation are exactly what we need for antioxidant and longevity pathway studies. Clean material, well documented." },
-    { rating: 4, title: "Solid choice for this compound class", body: "Detailed purity documentation as standard for a tetrapeptide is reassuring. Purity also within spec. Good supplier for longevity research." },
-    { rating: 5, title: "Excellent for life extension research", body: "Using in our ageing biology study. Compound performance in cell-based assays matches literature values. Documentation is comprehensive and accurate." },
-    { rating: 5, title: "Very clean material", body: "Reconstituted cleanly with no aggregation. Stable in aliquots at -80\xB0C. Results in our senescence model are consistent with expected pharmacology." }
-  ],
-  "Skin & Repair": [
-    { rating: 5, title: "Excellent GHK-Cu \u2014 characteristic colour present", body: "The characteristic blue colour of lyophilised GHK-Cu was present \u2014 a good first indicator. independent testing confirmed 99.1% purity. Dissolved cleanly in sterile water." },
-    { rating: 5, title: "Outstanding for collagen research", body: "Using in fibroblast cell culture studies. Activity in our collagen synthesis assay is exactly as literature predicts. Documentation is exemplary." },
-    { rating: 4, title: "High quality copper peptide", body: "Good dissolution and expected colour profile. independent testing matches what was stated. Solid product for skin biology research." },
-    { rating: 5, title: "Excellent for wound healing research", body: "One of the cleaner copper peptide preparations I've used. Colour is uniform and dissolution is clean with no aggregates. Very pleased." },
-    { rating: 4, title: "Very good product, comprehensive data", body: "full lab report provided with peak analysis. Purity is on-spec. In vitro wound model is performing well." },
-    { rating: 5, title: "Consistent and reliable", body: "Second order of GHK-Cu. Batch quality is consistent with the first \u2014 purity 99%+, clean dissolution, detailed lot data." },
-    { rating: 5, title: "Excellent for dermal biology studies", body: "Using in our fibroblast migration assay. Compound purity is verified and results are consistent with published literature. Will keep ordering." },
-    { rating: 4, title: "Clean blue powder, good dissolution", body: "The characteristic colour was present and the compound dissolved cleanly. Our keratinocyte assay results are in line with expected pharmacology." }
-  ],
-  "Hormonal Peptides": [
-    { rating: 5, title: "Excellent purity for reproductive research", body: "Ordered for GnRH receptor studies. Full purity documentation provided. Purity confirmed independently. Clean material." },
-    { rating: 4, title: "Good quality hormonal peptide", body: "Purity is within spec based on our independent testing analysis. Reconstitution was clean in sterile water. Documentation more comprehensive than most suppliers." },
-    { rating: 5, title: "Reliable for neuroendocrine research", body: "Using for pituitary LH/FSH stimulation studies. Compound purity and activity are both excellent. Detailed purity documentation is a real differentiator." },
-    { rating: 5, title: "Best supplier for this compound class", body: "After trying three other vendors, this one offers the most comprehensive documentation and most consistent purity. Invaluable for research." },
-    { rating: 4, title: "Well documented and clean", body: "purity profile is clean with minimal secondary peaks. Good quality material." },
-    { rating: 5, title: "Excellent for KISS1 pathway research", body: "Running hypothalamic GnRH studies. Kisspeptin-10 is consistently clean batch to batch. Detailed lot-specific purity data is exactly what we need." },
-    { rating: 5, title: "Very high purity", body: "In-house verification confirmed 99%+ purity \u2014 consistent with stated value. Clean dissolution and stable in aliquots. Excellent." }
-  ],
-  "Research Peptides": [
-    { rating: 5, title: "Comprehensive documentation \u2014 exactly what research requires", body: "The full lab report provides everything needed for publication-quality provenance. Compound quality matches. Excellent." },
-    { rating: 4, title: "Good product, solid supplier", body: "Purity is within stated spec. Reconstitution clean and straightforward. Documentation more comprehensive than any other supplier at this price point." },
-    { rating: 5, title: "Excellent for receptor pharmacology", body: "Using in binding assay studies. Compound purity directly affects assay signal-to-noise. Clean, reproducible results here. Highly recommended." },
-    { rating: 5, title: "Best source for research peptides in the UK", body: "Fast UK dispatch, comprehensive documentation, verified purity. This is what every research peptide supplier should aspire to." },
-    { rating: 4, title: "Reliable and well priced", body: "Good value for the level of analytical documentation provided. Compound performs as expected in our assays." },
-    { rating: 5, title: "Purity verified independently", body: "Ran independent testing in-house \u2014 got 98.8%, versus 99.1% stated. That variance is well within measurement error and shows the data is accurate. Will reorder." },
-    { rating: 5, title: "Excellent for in vitro studies", body: "Clean material, thorough documentation, and reliable supply. Consistent batch quality is a real bonus for longitudinal research." },
-    { rating: 4, title: "Clean profile, good batch", body: "No degradation peaks in testing. Reconstituted cleanly with no visible aggregates. Assay results were reproducible. Good supplier." },
-    { rating: 5, title: "Ideal for pharmacology research", body: "The level of analytical data provided here is what you need for serious research use. Compound quality is also excellent. Recommended." }
-  ],
-  "Cellular Health": [
-    { rating: 5, title: "Excellent for mitochondrial research", body: "Ordered for mitochondrial membrane potential assays. Purity and documentation are both excellent \u2014 independent testing shows a very clean profile." },
-    { rating: 5, title: "Outstanding for metabolic studies", body: "The lot-specific documentation is exactly what our ethics board requires for provenance. Compound quality also excellent." },
-    { rating: 4, title: "Good quality mitochondrial peptide", body: "Purity matches stated value. Reconstitution clean in aqueous buffer. Aliquots stable at -80\xB0C. Solid product." },
-    { rating: 5, title: "Best source for this compound class", body: "Compared three suppliers for purity and documentation. This is clearly the best option \u2014 full lab reports included as standard is rare and valuable." },
-    { rating: 5, title: "Reliable for NAD+ pathway research", body: "Using in SIRT1/SIRT3 activity assays. Material purity is excellent and consistent batch to batch. Supports our internal quality standards." },
-    { rating: 4, title: "Solid choice for cellular biology research", body: "Clean material, good documentation, reasonable pricing. Cell viability assays are performing well with this batch." },
-    { rating: 5, title: "Verified purity across multiple batches", body: "Four separate orders, four clean purity profiles, four accurate data sheets. Lot-to-lot consistency makes this my go-to supplier for this compound." },
-    { rating: 5, title: "Excellent for mitophagy studies", body: "Compound is clean and well characterised. Results in our mitochondrial function assay are consistent with published literature. Very pleased." },
-    { rating: 4, title: "Good stability, clean reconstitution", body: "Lyophilised powder reconstitutes quickly in water. Stable over several weeks at -20\xB0C. Purity is on-spec. Good choice for cellular research." }
-  ],
-  "Anti-Inflammatory": [
-    { rating: 5, title: "Excellent for inflammatory pathway research", body: "Used in NF-\u03BAB signalling studies. Purity and documentation are first rate. Clean reconstitution in PBS." },
-    { rating: 4, title: "Good anti-inflammatory peptide", body: "purity data accurate based on our verification. Compound dissolves cleanly and performs as expected in our inflammation assay." },
-    { rating: 5, title: "Cleanest batch I've sourced for this compound", body: "Tried two other suppliers. This batch is demonstrably cleaner \u2014 our independent testing shows a much cleaner profile. Detailed documentation also stands out." },
-    { rating: 5, title: "Excellent for gut biology research", body: "Using in intestinal epithelial cell studies. Compound quality is exceptional and consistent. Detailed purity documentation as standard is a huge differentiator." },
-    { rating: 4, title: "Solid cytokine modulation research material", body: "Good purity and clean documentation. TNF-\u03B1 and IL-6 assays are running well with this material." },
-    { rating: 5, title: "High purity, clean dissolution", body: "Dissolved readily in sterile PBS. No cloudiness or aggregation. Our NF-\u03BAB reporter assay gave clean results. Excellent." },
-    { rating: 4, title: "Good value for this compound class", body: "Purity is within spec and the analytical data is provided. Results in our inflammation model are reproducible. Happy with this." }
-  ],
-  "Immune Support": [
-    { rating: 5, title: "Excellent for immunomodulation research", body: "Ordered for T-cell activation studies. Purity confirmed at 99%+ by in-house testing. One of the best documented peptides I've sourced." },
-    { rating: 4, title: "Good immunological research peptide", body: "Clean material with comprehensive documentation. Activity in our NK cell assay is consistent with published data." },
-    { rating: 5, title: "Reliable for antimicrobial research", body: "Using LL-37 in pathogen studies. Compound purity is excellent and activity against our test organisms is as expected from literature." },
-    { rating: 5, title: "Excellent purity verified independently", body: "Three other suppliers could not match this purity level. Batch came at 99.1% by our independent testing, consistent with stated value." },
-    { rating: 4, title: "Excellent for thymic peptide research", body: "Thymosin Alpha-1 purity is above spec. Documentation includes a full lab report as expected. An excellent product and supplier." },
-    { rating: 5, title: "Consistently good batches", body: "Three orders of Thymosin Alpha-1 over six months. Each lot has been above 99% purity with consistent purity documentation. Outstanding quality control." },
-    { rating: 5, title: "Best peptide for innate immunity research", body: "Clean material, comprehensive documentation, and good batch stability. Our macrophage activation assay results are highly reproducible." },
-    { rating: 4, title: "Solid product for immunology work", body: "Purity is within spec and the compound is stable in our standard storage conditions. Documentation is thorough. Good supplier." }
-  ],
-  "Peptide Blends": [
-    { rating: 5, title: "Excellent blend, comprehensive documentation", body: "Each component is documented separately with individual independent testing traces \u2014 exactly the level of detail you need for a blend." },
-    { rating: 4, title: "Good synergistic research blend", body: "Blend composition matches what's stated. Both peptides dissolve cleanly together. Documentation is comprehensive. Product quality is excellent." },
-    { rating: 5, title: "Excellent blend for tissue repair research", body: "Using in our tissue repair model. Having both components documented individually in the data sheet is invaluable. Activity is exactly as literature predicts." },
-    { rating: 5, title: "Excellent for combined pathway studies", body: "Individual component documentation makes this suitable for our quality-assured research environment. Both peptides confirmed independently." },
-    { rating: 4, title: "Clean dissolution, good activity", body: "Both components dissolved together without aggregation. Activity in our GH secretion assay is as expected. Good value for a well-documented blend." },
-    { rating: 5, title: "Perfect for synergistic receptor research", body: "Running dual pathway studies and needed both compounds documented separately. That's provided as standard here. Compound quality is excellent." },
-    { rating: 5, title: "Clean, well-characterised blend", body: "Both components verified independently. The blend reconstitutes cleanly and our assay results are consistent with published literature. Very pleased." },
-    { rating: 4, title: "Good blend quality", body: "Both components at stated purity. Dissolution clean and rapid. Our in vitro model is performing well with this batch. Will reorder." }
-  ],
-  "Growth Hormone": [
-    { rating: 5, title: "Excellent for GH axis research", body: "Purity documentation includes a full lab report \u2014 everything needed for research provenance. Compound reconstitutes cleanly and performs well in our bioassay." },
-    { rating: 4, title: "Good quality recombinant peptide", body: "Purity is within spec based on our verification. Documentation comprehensive. Performs as expected in our STAT5 phosphorylation assay." },
-    { rating: 5, title: "Best HGH source for research use", body: "Analytical data accompanying this compound is the most comprehensive I've seen from any supplier. full lab reports included. Compound activity is excellent." },
-    { rating: 5, title: "Consistent and well documented", body: "Second order of this compound. Batch quality is very consistent \u2014 same purity range, same documentation detail. Consistency is essential for our studies." },
-    { rating: 4, title: "Comprehensive documentation for GHRH research", body: "All analytical data required is included. JAK2/STAT5 assay is performing as expected. Good supplier for GH-related research compounds." },
-    { rating: 5, title: "Reliable lot-to-lot quality", body: "Using Tesamorelin for pituitary axis studies. Three orders in \u2014 all above 99% purity, all with the same comprehensive documentation." },
-    { rating: 5, title: "Very high purity, clean reconstitution", body: "Lyophilised cake was pristine on arrival. Reconstituted quickly and completely. Our receptor binding assay confirms expected pharmacological activity." },
-    { rating: 4, title: "Good choice for GH secretion studies", body: "Purity is within spec and the compound performs predictably in our in vitro assay. Documentation is thorough. Good supplier." }
-  ],
-  "Cognitive Peptides": [
-    { rating: 5, title: "Excellent for neurotrophic research", body: "Using P21 in our neurogenesis model. Compound purity is exceptional and activity in our CNTF receptor assay matches published data." },
-    { rating: 4, title: "Good CNTF-derived peptide", body: "Purity verified in-house \u2014 matches the stated value. Reconstitution clean in PBS. Neurite outgrowth assay is showing the expected response." },
-    { rating: 5, title: "Excellent for antidepressant research", body: "Running TREK-1 channel studies with PE-22-28. Compound purity is excellent and patch-clamp data shows the expected pharmacological profile." },
-    { rating: 5, title: "Best source for these research compounds", body: "Detailed lab report with each lot, and accurate lot data. For cognitive peptide research this level of documentation is invaluable." },
-    { rating: 4, title: "Well within spec for neuroscience research", body: "Data is accurate based on our verification. Compound performs as expected. Good documentation is what makes this suitable for ethics-approved protocols." },
-    { rating: 5, title: "Excellent for neurotrophin studies", body: "Clean material and well-characterised analytically. Our BDNF assay results are consistent with published literature. Very pleased with quality." },
-    { rating: 4, title: "Good purity, stable aliquots", body: "Dissolved cleanly in sterile water and remained stable in aliquots at -80\xB0C for four weeks. Purity on-spec. Good choice for cognitive research." }
-  ]
-};
-var DEFAULT_TEMPLATES = [
-  { rating: 5, title: "Excellent quality and documentation", body: "Purity confirmed by in-house testing \u2014 matches the stated value exactly. Reconstitution was clean with no visible particulates. Detailed documentation as standard is a real differentiator." },
-  { rating: 5, title: "Best research peptide supplier I've used", body: "Third order. Consistent purity batch to batch, comprehensive documentation, and reliable supply. Earned a long-term customer." },
-  { rating: 4, title: "Good product, comprehensive data", body: "Purity within spec, full purity documentation provided. Compound dissolved cleanly and performed as expected in our assay." },
-  { rating: 5, title: "Excellent for in vitro research", body: "Clean material, thorough analytical documentation, and reliable supply. Has set the standard for what a research peptide supplier should look like." },
-  { rating: 4, title: "Reliable and well documented", body: "Good purity, detailed lot-specific data. Our research protocols require this level of documentation and it delivers consistently." },
-  { rating: 5, title: "Independently verified purity", body: "Ran our own testing analysis and got 98.9% \u2014 consistent with the 99.1% stated. That accuracy in documentation is rare and appreciated." },
-  { rating: 4, title: "Solid choice for research use", body: "All the analytical data you need is provided. Compound quality is good and consistent across orders. Good supplier for research-grade material." },
-  { rating: 5, title: "Very high purity, clean reconstitution", body: "Lyophilised cake was intact on arrival. Dissolved rapidly and completely in sterile water. No visible aggregation. Excellent batch." },
-  { rating: 4, title: "Good product, stable storage", body: "Aliquots have remained stable at -20\xB0C for six weeks. Purity is within spec. Results in our assay are reproducible. Will reorder." }
-];
-function seededRandom(seed) {
-  const x = Math.sin(seed + 1.7) * 1e4;
-  return x - Math.floor(x);
-}
-function seededInt(seed, min2, max2) {
-  return Math.floor(seededRandom(seed) * (max2 - min2 + 1)) + min2;
-}
-function pickTemplate(productId, reviewIdx, category) {
-  const pool2 = TEMPLATES_BY_CATEGORY[category] ?? DEFAULT_TEMPLATES;
-  const idx = seededInt(productId * 97 + reviewIdx * 37, 0, pool2.length - 1);
-  return pool2[idx];
-}
-function pickName(productId, reviewIdx) {
-  const idx = seededInt(productId * 53 + reviewIdx * 19, 0, REVIEWER_NAMES.length - 1);
-  return REVIEWER_NAMES[idx];
-}
-function randomDate(productId, reviewIdx) {
-  const now = /* @__PURE__ */ new Date();
-  const daysAgo = seededInt(productId * 23 + reviewIdx * 11, 3, 365);
-  const d = new Date(now);
-  d.setDate(d.getDate() - daysAgo);
-  return d;
-}
-function getPopularityRange(name2) {
-  const n = name2.toLowerCase();
-  if (n.includes("bpc-157") || n.includes("tb-500") || n.includes("tirzepatide") || n.includes("retatrutide") || n.includes("ipamorelin") || n.includes("cjc-1295") || n.includes("melanotan 2") || n.includes("sermorelin") || n.includes("tesamorelin") || n.includes("ghrp-2") || n.includes("ghrp-6") || n.includes("selank") || n.includes("semax") || n.includes("thymosin alpha") || n.includes("ghk-cu") || n.includes("epithalon")) {
-    return { min: 1, max: 1 };
-  }
-  if (n.includes("aod-9604") || n.includes("hexarelin") || n.includes("kisspeptin") || n.includes("oxytocin") || n.includes("gonadorelin") || n.includes("igf-1") || n.includes("mots-c") || n.includes("kpv") || n.includes("ll-37") || n.includes("nad+") || n.includes("cagrilintide") || n.includes("melanotan 1") || n.includes("5-amino") || n.includes("blend") || n.includes("n-acetyl")) {
-    return { min: 1, max: 1 };
-  }
-  return { min: 0, max: 0 };
-}
-async function seedReviews() {
-  try {
-    const products = await db.select({ id: productsCatalogTable.id, name: productsCatalogTable.name, category: productsCatalogTable.category }).from(productsCatalogTable).where(eq(productsCatalogTable.isPublished, true));
-    if (products.length === 0) {
-      return { seeded: false, reason: "no published products found" };
-    }
-    const existingRows = await db.select({ productId: productReviewsTable.productId }).from(productReviewsTable).where(eq(productReviewsTable.isApproved, true));
-    const coveredProductIds = new Set(existingRows.map((r) => r.productId));
-    const rows = [];
-    products.forEach((product, productIdx) => {
-      if (coveredProductIds.has(product.id)) return;
-      const { min: min2, max: max2 } = getPopularityRange(product.name ?? "");
-      const numReviews = seededInt(product.id * 41 + productIdx * 7, min2, max2);
-      const category = product.category ?? "Research Peptides";
-      for (let r = 0; r < numReviews; r++) {
-        const template = pickTemplate(product.id, r, category);
-        const customerName = pickName(product.id, r);
-        const createdAt = randomDate(product.id, r);
-        const customerId = 90001 + productIdx * 20 + r;
-        rows.push({
-          productId: product.id,
-          customerId,
-          customerName,
-          rating: template.rating,
-          title: template.title,
-          body: template.body,
-          isApproved: true,
-          createdAt
-        });
-      }
-    });
-    if (rows.length === 0) {
-      return { seeded: false, reason: "all products already have reviews" };
-    }
-    const BATCH = 100;
-    for (let i = 0; i < rows.length; i += BATCH) {
-      await db.insert(productReviewsTable).values(rows.slice(i, i + BATCH)).onConflictDoNothing();
-    }
-    return { seeded: true, count: rows.length };
-  } catch (err) {
-    console.error("Failed to seed reviews:", err);
-    return { seeded: false, reason: String(err) };
-  }
-}
-
 // src/lib/janoshikReports.ts
 var JANOSHIK_REPORTED_PRODUCT_SLUGS = [
   "bpc-157-10mg",
@@ -239507,7 +239115,6 @@ async function ensureSeeded() {
   if (!seeded) {
     await seedProductsCatalog();
     await retireRemovedProducts();
-    await seedReviews();
     seeded = true;
   }
 }
@@ -241472,9 +241079,8 @@ router21.get("/admin/customers/:id/gdpr-export", async (req, res) => {
       res.status(404).json({ error: "Customer not found" });
       return;
     }
-    const [orders, reviews, loyalty, alerts, subs] = await Promise.all([
+    const [orders, loyalty, alerts, subs] = await Promise.all([
       db.select().from(ordersTable).where(eq(ordersTable.customerId, customerId)).orderBy(desc(ordersTable.createdAt)),
-      db.select().from(productReviewsTable).where(eq(productReviewsTable.customerId, customerId)),
       db.select().from(loyaltyTransactionsTable).where(eq(loyaltyTransactionsTable.customerId, customerId)),
       db.select().from(stockAlertsTable).where(eq(stockAlertsTable.customerEmail, customer2.email)),
       db.select().from(subscriptionsTable).where(eq(subscriptionsTable.customerId, customerId))
@@ -241518,7 +241124,6 @@ router21.get("/admin/customers/:id/gdpr-export", async (req, res) => {
           priceGbp: parseFloat(String(i.priceGbp))
         }))
       })),
-      reviews: reviews.map((r) => ({ productId: r.productId, rating: r.rating, title: r.title, body: r.body, createdAt: r.createdAt })),
       loyaltyTransactions: loyalty.map((t) => ({ points: t.points, reason: t.description, createdAt: t.createdAt })),
       stockAlerts: alerts.map((a) => ({ productId: a.productId, productName: a.productName, createdAt: a.createdAt })),
       subscriptions: subs.map((s) => ({ items: s.itemsJson, status: s.status, createdAt: s.createdAt }))
@@ -246739,14 +246344,16 @@ router27.post("/affiliates/rewards/:id/claim", async (req, res) => {
 });
 var affiliates_default = router27;
 
-// src/routes/reviews.ts
+// src/routes/wishlist.ts
 var import_express28 = __toESM(require_express2(), 1);
 import crypto16 from "crypto";
 init_drizzle_orm();
 var router28 = (0, import_express28.Router)();
 var SESSION_SECRET6 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
 var COOKIE_NAME3 = "customer_session";
-function verifyCustomerSession2(token) {
+function getCustomerId(req) {
+  const token = req.cookies?.[COOKIE_NAME3];
+  if (!token) return null;
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
@@ -246756,286 +246363,7 @@ function verifyCustomerSession2(token) {
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
 }
-router28.get("/products/:productId/reviews", async (req, res) => {
-  const productId = parseInt(firstString(req.params.productId) ?? "", 10);
-  if (isNaN(productId)) {
-    res.status(400).json({ error: "Invalid product ID" });
-    return;
-  }
-  try {
-    const reviews = await db.select({
-      id: productReviewsTable.id,
-      customerId: productReviewsTable.customerId,
-      customerName: productReviewsTable.customerName,
-      rating: productReviewsTable.rating,
-      title: productReviewsTable.title,
-      body: productReviewsTable.body,
-      createdAt: productReviewsTable.createdAt
-    }).from(productReviewsTable).where(
-      and(
-        eq(productReviewsTable.productId, productId),
-        eq(productReviewsTable.isApproved, true)
-      )
-    ).orderBy(desc(productReviewsTable.createdAt));
-    const [summary] = await db.select({
-      avgRating: avg(productReviewsTable.rating),
-      totalCount: count(productReviewsTable.id)
-    }).from(productReviewsTable).where(
-      and(
-        eq(productReviewsTable.productId, productId),
-        eq(productReviewsTable.isApproved, true)
-      )
-    );
-    const breakdown = await db.select({
-      rating: productReviewsTable.rating,
-      cnt: count(productReviewsTable.id)
-    }).from(productReviewsTable).where(
-      and(
-        eq(productReviewsTable.productId, productId),
-        eq(productReviewsTable.isApproved, true)
-      )
-    ).groupBy(productReviewsTable.rating);
-    let myReview = null;
-    const token = req.cookies?.[COOKIE_NAME3];
-    if (token) {
-      const customerId = verifyCustomerSession2(token);
-      if (customerId) {
-        const [existing] = await db.select({
-          id: productReviewsTable.id,
-          rating: productReviewsTable.rating,
-          title: productReviewsTable.title,
-          body: productReviewsTable.body,
-          isApproved: productReviewsTable.isApproved
-        }).from(productReviewsTable).where(
-          and(
-            eq(productReviewsTable.productId, productId),
-            eq(productReviewsTable.customerId, customerId)
-          )
-        ).limit(1);
-        if (existing) myReview = existing;
-      }
-    }
-    let hasPurchased = false;
-    if (token) {
-      const customerId = verifyCustomerSession2(token);
-      if (customerId) {
-        const [purchase] = await db.select({ id: orderItemsTable.id }).from(orderItemsTable).innerJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id)).where(
-          and(
-            eq(ordersTable.customerId, customerId),
-            eq(orderItemsTable.productId, productId)
-          )
-        ).limit(1);
-        hasPurchased = !!purchase;
-      }
-    }
-    const breakdownMap = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-    for (const row of breakdown) {
-      breakdownMap[row.rating] = Number(row.cnt);
-    }
-    res.status(200).json({
-      reviews,
-      summary: {
-        avgRating: summary?.avgRating ? parseFloat(Number(summary.avgRating).toFixed(1)) : null,
-        totalCount: Number(summary?.totalCount ?? 0),
-        breakdown: breakdownMap
-      },
-      myReview,
-      hasPurchased
-    });
-  } catch (err) {
-    req.log.error({ err }, "Failed to fetch reviews");
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-router28.post("/products/:productId/reviews", async (req, res) => {
-  const productId = parseInt(firstString(req.params.productId) ?? "", 10);
-  if (isNaN(productId)) {
-    res.status(400).json({ error: "Invalid product ID" });
-    return;
-  }
-  const token = req.cookies?.[COOKIE_NAME3];
-  if (!token) {
-    res.status(401).json({ error: "Not authenticated" });
-    return;
-  }
-  const customerId = verifyCustomerSession2(token);
-  if (!customerId) {
-    res.status(401).json({ error: "Invalid session" });
-    return;
-  }
-  const { rating, title, body } = req.body;
-  if (typeof rating !== "number" || rating < 1 || rating > 5 || !Number.isInteger(rating) || typeof title !== "string" || !title.trim() || title.trim().length > 120 || typeof body !== "string" || !body.trim() || body.trim().length > 2e3) {
-    res.status(400).json({ error: "Invalid review data" });
-    return;
-  }
-  try {
-    const [purchase] = await db.select({ id: orderItemsTable.id }).from(orderItemsTable).innerJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id)).where(
-      and(
-        eq(ordersTable.customerId, customerId),
-        eq(orderItemsTable.productId, productId)
-      )
-    ).limit(1);
-    if (!purchase) {
-      res.status(403).json({ error: "You must purchase this product before leaving a review" });
-      return;
-    }
-    const [existing] = await db.select({ id: productReviewsTable.id }).from(productReviewsTable).where(
-      and(
-        eq(productReviewsTable.productId, productId),
-        eq(productReviewsTable.customerId, customerId)
-      )
-    ).limit(1);
-    if (existing) {
-      res.status(409).json({ error: "You have already reviewed this product" });
-      return;
-    }
-    const [customer2] = await db.select({ firstName: customersTable.firstName, lastName: customersTable.lastName }).from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
-    const customerName = customer2 ? `${customer2.firstName} ${customer2.lastName.charAt(0)}.` : "Verified Researcher";
-    const [review] = await db.insert(productReviewsTable).values({
-      productId,
-      customerId,
-      customerName,
-      rating,
-      title: title.trim(),
-      body: body.trim(),
-      isApproved: false
-    }).returning();
-    req.log.info({ reviewId: review.id, productId, customerId }, "Review submitted");
-    res.status(201).json({
-      id: review.id,
-      message: "Review submitted and pending approval"
-    });
-  } catch (err) {
-    req.log.error({ err }, "Failed to submit review");
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-var reviews_default = router28;
-
-// src/routes/admin/reviews.ts
-var import_express29 = __toESM(require_express2(), 1);
-init_drizzle_orm();
-function requireAdmin20(req, res) {
-  if (res.locals.adminAuthenticated !== true) {
-    res.status(401).json({ error: "Unauthorized" });
-    return false;
-  }
-  return true;
-}
-var router29 = (0, import_express29.Router)();
-router29.get("/admin/reviews", async (req, res) => {
-  if (!requireAdmin20(req, res)) return;
-  try {
-    const status = firstString(req.query.status);
-    const search = firstString(req.query.search);
-    const page = firstString(req.query.page) ?? "1";
-    const limit = firstString(req.query.limit) ?? "25";
-    const pageNum = Math.max(1, parseInt(page, 10) || 1);
-    const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10) || 25));
-    const offset = (pageNum - 1) * limitNum;
-    const conditions = [];
-    if (status === "pending") conditions.push(eq(productReviewsTable.isApproved, false));
-    if (status === "approved") conditions.push(eq(productReviewsTable.isApproved, true));
-    if (search) conditions.push(like(productReviewsTable.customerName, `%${search}%`));
-    const whereClause = conditions.length > 0 ? and(...conditions) : void 0;
-    const reviews = await db.select().from(productReviewsTable).where(whereClause).orderBy(desc(productReviewsTable.createdAt)).limit(limitNum).offset(offset);
-    const [{ total }] = await db.select({ total: sql`COUNT(*)::int` }).from(productReviewsTable).where(whereClause);
-    res.status(200).json({ reviews, total, page: pageNum, limit: limitNum });
-  } catch (err) {
-    req.log.error({ err }, "Failed to fetch reviews");
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-router29.patch("/admin/reviews/:id", async (req, res) => {
-  if (!requireAdmin20(req, res)) return;
-  const id = parseInt(firstString(req.params.id) ?? "", 10);
-  if (isNaN(id)) {
-    res.status(400).json({ error: "Invalid review ID" });
-    return;
-  }
-  const { isApproved } = req.body;
-  if (typeof isApproved !== "boolean") {
-    res.status(400).json({ error: "isApproved must be a boolean" });
-    return;
-  }
-  try {
-    const [existing] = await db.select({ isApproved: productReviewsTable.isApproved, customerId: productReviewsTable.customerId, id: productReviewsTable.id }).from(productReviewsTable).where(eq(productReviewsTable.id, id)).limit(1);
-    if (!existing) {
-      res.status(404).json({ error: "Review not found" });
-      return;
-    }
-    const [updated] = await db.update(productReviewsTable).set({ isApproved }).where(eq(productReviewsTable.id, id)).returning();
-    if (isApproved && !existing.isApproved && existing.customerId) {
-      const [alreadyAwarded] = await db.select({ id: loyaltyTransactionsTable.id }).from(loyaltyTransactionsTable).where(eq(loyaltyTransactionsTable.description, `Bonus: review #${existing.id} approved`)).limit(1);
-      if (!alreadyAwarded) {
-        await db.insert(loyaltyTransactionsTable).values({
-          customerId: existing.customerId,
-          type: "earned",
-          points: 50,
-          description: `Bonus: review #${existing.id} approved`
-        }).catch((err) => req.log.error({ err }, "Failed to award review bonus points"));
-      }
-    }
-    res.status(200).json(updated);
-  } catch (err) {
-    req.log.error({ err }, "Failed to update review");
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-router29.delete("/admin/reviews/:id", async (req, res) => {
-  if (!requireAdmin20(req, res)) return;
-  const id = parseInt(firstString(req.params.id) ?? "", 10);
-  if (isNaN(id)) {
-    res.status(400).json({ error: "Invalid review ID" });
-    return;
-  }
-  if (req.body?.confirmSpamDeletion !== true) {
-    res.status(400).json({ error: "Permanent deletion requires explicit spam confirmation" });
-    return;
-  }
-  try {
-    const [review] = await db.select({ isApproved: productReviewsTable.isApproved }).from(productReviewsTable).where(eq(productReviewsTable.id, id)).limit(1);
-    if (!review) {
-      res.status(404).json({ error: "Review not found" });
-      return;
-    }
-    if (review.isApproved) {
-      res.status(409).json({ error: "Hide an approved review before permanently deleting confirmed spam" });
-      return;
-    }
-    const [deleted] = await db.delete(productReviewsTable).where(eq(productReviewsTable.id, id)).returning({ id: productReviewsTable.id });
-    if (!deleted) {
-      res.status(404).json({ error: "Review not found" });
-      return;
-    }
-    res.status(200).json({ ok: true });
-  } catch (err) {
-    req.log.error({ err }, "Failed to delete review");
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-var reviews_default2 = router29;
-
-// src/routes/wishlist.ts
-var import_express30 = __toESM(require_express2(), 1);
-import crypto17 from "crypto";
-init_drizzle_orm();
-var router30 = (0, import_express30.Router)();
-var SESSION_SECRET7 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
-var COOKIE_NAME4 = "customer_session";
-function getCustomerId(req) {
-  const token = req.cookies?.[COOKIE_NAME4];
-  if (!token) return null;
-  const dot = token.lastIndexOf(".");
-  if (dot === -1) return null;
-  const payload = token.slice(0, dot);
-  const sig = token.slice(dot + 1);
-  const expected = crypto17.createHmac("sha256", SESSION_SECRET7).update(payload).digest("hex");
-  if (sig !== expected) return null;
-  const id = parseInt(payload, 10);
-  return isNaN(id) ? null : id;
-}
-router30.get("/wishlist", async (req, res) => {
+router28.get("/wishlist", async (req, res) => {
   const customerId = getCustomerId(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -247049,7 +246377,7 @@ router30.get("/wishlist", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router30.post("/wishlist/:productId", async (req, res) => {
+router28.post("/wishlist/:productId", async (req, res) => {
   const customerId = getCustomerId(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -247068,7 +246396,7 @@ router30.post("/wishlist/:productId", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router30.delete("/wishlist/:productId", async (req, res) => {
+router28.delete("/wishlist/:productId", async (req, res) => {
   const customerId = getCustomerId(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -247087,30 +246415,30 @@ router30.delete("/wishlist/:productId", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var wishlist_default = router30;
+var wishlist_default = router28;
 
 // src/routes/returns.ts
-var import_express31 = __toESM(require_express2(), 1);
-import crypto18 from "crypto";
+var import_express29 = __toESM(require_express2(), 1);
+import crypto17 from "crypto";
 init_drizzle_orm();
-var router31 = (0, import_express31.Router)();
-var SESSION_SECRET8 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
-var COOKIE_NAME5 = "customer_session";
+var router29 = (0, import_express29.Router)();
+var SESSION_SECRET7 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
+var COOKIE_NAME4 = "customer_session";
 function getCustomerId2(req) {
-  const token = req.cookies?.[COOKIE_NAME5];
+  const token = req.cookies?.[COOKIE_NAME4];
   if (!token) return null;
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto18.createHmac("sha256", SESSION_SECRET8).update(payload).digest("hex");
+  const expected = crypto17.createHmac("sha256", SESSION_SECRET7).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
 }
 var RETURNABLE_STATUSES = ["shipped", "delivered"];
 var ACTIVE_RETURN_STATUSES = ["requested", "approved"];
-router31.get("/returns", async (req, res) => {
+router29.get("/returns", async (req, res) => {
   const customerId = getCustomerId2(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -247143,7 +246471,7 @@ router31.get("/returns", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router31.post("/returns", async (req, res) => {
+router29.post("/returns", async (req, res) => {
   const customerId = getCustomerId2(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -247198,13 +246526,13 @@ router31.post("/returns", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var returns_default2 = router31;
+var returns_default2 = router29;
 
 // src/routes/products.ts
-var import_express32 = __toESM(require_express2(), 1);
+var import_express30 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router32 = (0, import_express32.Router)();
-router32.get("/products/:productId/related", async (req, res) => {
+var router30 = (0, import_express30.Router)();
+router30.get("/products/:productId/related", async (req, res) => {
   const productId = parseInt(firstString(req.params.productId) ?? "", 10);
   if (isNaN(productId) || productId <= 0) {
     res.status(400).json({ error: "Invalid product ID" });
@@ -247256,31 +246584,31 @@ router32.get("/products/:productId/related", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var products_default2 = router32;
+var products_default2 = router30;
 
 // src/routes/cart.ts
-var import_express33 = __toESM(require_express2(), 1);
-import crypto19 from "crypto";
+var import_express31 = __toESM(require_express2(), 1);
+import crypto18 from "crypto";
 init_drizzle_orm();
-var router33 = (0, import_express33.Router)();
-var SESSION_SECRET9 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
-function verifyCustomerSession3(token) {
+var router31 = (0, import_express31.Router)();
+var SESSION_SECRET8 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
+function verifyCustomerSession2(token) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto19.createHmac("sha256", SESSION_SECRET9).update(payload).digest("hex");
+  const expected = crypto18.createHmac("sha256", SESSION_SECRET8).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
 }
-router33.post("/cart/save", async (req, res) => {
+router31.post("/cart/save", async (req, res) => {
   const token = req.cookies?.customer_session;
   if (!token) {
     res.status(401).json({ error: "Not authenticated" });
     return;
   }
-  const customerId = verifyCustomerSession3(token);
+  const customerId = verifyCustomerSession2(token);
   if (!customerId) {
     res.status(401).json({ error: "Invalid session" });
     return;
@@ -247316,13 +246644,13 @@ router33.post("/cart/save", async (req, res) => {
   });
   res.json({ ok: true });
 });
-router33.delete("/cart/save", async (req, res) => {
+router31.delete("/cart/save", async (req, res) => {
   const token = req.cookies?.customer_session;
   if (!token) {
     res.json({ ok: true });
     return;
   }
-  const customerId = verifyCustomerSession3(token);
+  const customerId = verifyCustomerSession2(token);
   if (!customerId) {
     res.json({ ok: true });
     return;
@@ -247330,21 +246658,21 @@ router33.delete("/cart/save", async (req, res) => {
   await db.update(abandonedCartsTable).set({ convertedAt: /* @__PURE__ */ new Date() }).where(eq(abandonedCartsTable.customerId, customerId));
   res.json({ ok: true });
 });
-var cart_default = router33;
+var cart_default = router31;
 
 // src/routes/admin/abandonedCarts.ts
-var import_express34 = __toESM(require_express2(), 1);
+var import_express32 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router34 = (0, import_express34.Router)();
-function requireAdmin21(req, res) {
+var router32 = (0, import_express32.Router)();
+function requireAdmin20(req, res) {
   if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router34.get("/admin/abandoned-carts", async (req, res) => {
-  if (!requireAdmin21(req, res)) return;
+router32.get("/admin/abandoned-carts", async (req, res) => {
+  if (!requireAdmin20(req, res)) return;
   try {
     const carts = await db.select().from(abandonedCartsTable).where(and(isNull(abandonedCartsTable.convertedAt), isNull(abandonedCartsTable.archivedAt))).orderBy(desc(abandonedCartsTable.updatedAt));
     const rows = carts.map((c) => {
@@ -247375,8 +246703,8 @@ router34.get("/admin/abandoned-carts", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router34.post("/admin/abandoned-carts/:id/archive", async (req, res) => {
-  if (!requireAdmin21(req, res)) return;
+router32.post("/admin/abandoned-carts/:id/archive", async (req, res) => {
+  if (!requireAdmin20(req, res)) return;
   const id = Number(req.params.id);
   if (!Number.isInteger(id) || id < 1) {
     res.status(400).json({ error: "Invalid cart ID" });
@@ -247394,19 +246722,19 @@ router34.post("/admin/abandoned-carts/:id/archive", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var abandonedCarts_default = router34;
+var abandonedCarts_default = router32;
 
 // src/routes/admin/alerts.ts
-var import_express35 = __toESM(require_express2(), 1);
+var import_express33 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router35 = (0, import_express35.Router)();
+var router33 = (0, import_express33.Router)();
 async function getCurrentAdminId(res) {
   const email5 = typeof res.locals.adminEmail === "string" ? res.locals.adminEmail : null;
   if (!email5) return null;
   const [admin] = await db.select({ id: adminUsersTable.id }).from(adminUsersTable).where(and(eq(adminUsersTable.email, email5), eq(adminUsersTable.isActive, true))).limit(1);
   return admin?.id ?? null;
 }
-router35.get("/admin/alerts", async (req, res) => {
+router33.get("/admin/alerts", async (req, res) => {
   try {
     const alerts = [];
     const [pendingOrders, pendingReturns, lowStockItems, abandonedCarts, fraudOrders] = await Promise.all([
@@ -247526,7 +246854,7 @@ router35.get("/admin/alerts", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch alerts" });
   }
 });
-router35.post("/admin/alerts/:id/read", async (req, res) => {
+router33.post("/admin/alerts/:id/read", async (req, res) => {
   const adminUserId = await getCurrentAdminId(res);
   if (!adminUserId) {
     res.status(403).json({ error: "A named admin account is required to save notification state" });
@@ -247546,13 +246874,13 @@ router35.post("/admin/alerts/:id/read", async (req, res) => {
   }).onConflictDoNothing();
   res.status(204).send();
 });
-var alerts_default = router35;
+var alerts_default = router33;
 
 // src/routes/admin/credits.ts
-var import_express36 = __toESM(require_express2(), 1);
+var import_express34 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router36 = (0, import_express36.Router)();
-function requireAdmin22(req, res) {
+var router34 = (0, import_express34.Router)();
+function requireAdmin21(req, res) {
   if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -247565,8 +246893,8 @@ async function getOrCreateBalance(customerId) {
   await db.insert(customerCreditsTable).values({ customerId, balancePence: 0 });
   return 0;
 }
-router36.get("/admin/customers/:id/credits", async (req, res) => {
-  if (!requireAdmin22(req, res)) return;
+router34.get("/admin/customers/:id/credits", async (req, res) => {
+  if (!requireAdmin21(req, res)) return;
   const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) {
     res.status(400).json({ error: "Invalid customer ID" });
@@ -247581,8 +246909,8 @@ router36.get("/admin/customers/:id/credits", async (req, res) => {
     res.status(500).json({ error: "Failed to get customer credits" });
   }
 });
-router36.post("/admin/customers/:id/credits", async (req, res) => {
-  if (!requireAdmin22(req, res)) return;
+router34.post("/admin/customers/:id/credits", async (req, res) => {
+  if (!requireAdmin21(req, res)) return;
   const customerId = parseInt(firstString(req.params.id) ?? "", 10);
   if (isNaN(customerId)) {
     res.status(400).json({ error: "Invalid customer ID" });
@@ -247624,8 +246952,8 @@ router36.post("/admin/customers/:id/credits", async (req, res) => {
     res.status(500).json({ error: "Failed to adjust credits" });
   }
 });
-router36.get("/admin/credits", async (req, res) => {
-  if (!requireAdmin22(req, res)) return;
+router34.get("/admin/credits", async (req, res) => {
+  if (!requireAdmin21(req, res)) return;
   try {
     const rows = await db.select({
       customerId: customerCreditsTable.customerId,
@@ -247641,12 +246969,12 @@ router36.get("/admin/credits", async (req, res) => {
     res.status(500).json({ error: "Failed to list credits" });
   }
 });
-var credits_default = router36;
+var credits_default = router34;
 
 // src/routes/admin/referrals.ts
-var import_express37 = __toESM(require_express2(), 1);
+var import_express35 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router37 = (0, import_express37.Router)();
+var router35 = (0, import_express35.Router)();
 var STATUSES = /* @__PURE__ */ new Set(["all", "pending", "earned", "redeemed", "held", "voided", "legacy", "untracked"]);
 var CAP = 50;
 var money3 = (v) => Number.parseFloat(String(v ?? 0)) || 0;
@@ -247657,15 +246985,15 @@ var customer = (c) => c ? {
   referralCode: c.referralCode,
   referralCreditGbp: money3(c.referralCreditGbp)
 } : null;
-function requireAdmin23(req, res) {
+function requireAdmin22(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router37.get("/admin/referrals", async (req, res) => {
-  if (!requireAdmin23(req, res)) return;
+router35.get("/admin/referrals", async (req, res) => {
+  if (!requireAdmin22(req, res)) return;
   const status = typeof req.query.status === "string" && STATUSES.has(req.query.status) ? req.query.status : "all";
   const search = typeof req.query.search === "string" ? req.query.search.trim().toLowerCase() : "";
   try {
@@ -247768,7 +247096,7 @@ var RewardError = class extends Error {
   }
   code;
 };
-router37.post("/admin/referrals/:id/:action", async (req, res) => {
+router35.post("/admin/referrals/:id/:action", async (req, res) => {
   if (!await requireOwner(req, res)) return;
   const id = Number.parseInt(firstString(req.params.id) ?? "", 10);
   const action = firstString(req.params.action);
@@ -247846,13 +247174,13 @@ router37.post("/admin/referrals/:id/:action", async (req, res) => {
     res.status(500).json({ error: "Failed to update referral reward" });
   }
 });
-var referrals_default = router37;
+var referrals_default = router35;
 
 // src/routes/admin/affiliates.ts
-var import_express38 = __toESM(require_express2(), 1);
-import crypto20 from "crypto";
+var import_express36 = __toESM(require_express2(), 1);
+import crypto19 from "crypto";
 init_drizzle_orm();
-var router38 = (0, import_express38.Router)();
+var router36 = (0, import_express36.Router)();
 var money4 = (value) => Number.parseFloat(String(value ?? 0)) || 0;
 var integer4 = (value) => Number.parseInt(String(value ?? ""), 10);
 var PARTNER_STATUSES = /* @__PURE__ */ new Set(["pending", "approved", "rejected", "suspended"]);
@@ -247863,7 +247191,7 @@ var DEFAULT_TIERS = [
   { name: "Growth", slug: "growth", minimumSalesGbp: "1000", commissionRatePercent: "8", rewardCreditGbp: "50", sortOrder: 1 },
   { name: "Elite", slug: "elite", minimumSalesGbp: "2500", commissionRatePercent: "10", rewardCreditGbp: "75", sortOrder: 2 }
 ];
-function requireAdmin24(req, res) {
+function requireAdmin23(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -247921,7 +247249,7 @@ async function writeAudit(req, eventType, metadata) {
 }
 function generateCode(name2, prefix) {
   const normalized = name2.replace(/[^a-z0-9]+/gi, "").slice(0, 10).toUpperCase() || "PARTNER";
-  return `${prefix}${normalized}${crypto20.randomBytes(3).toString("hex").toUpperCase()}`;
+  return `${prefix}${normalized}${crypto19.randomBytes(3).toString("hex").toUpperCase()}`;
 }
 async function uniqueCodes(name2) {
   for (let attempt = 0; attempt < 10; attempt += 1) {
@@ -247972,8 +247300,8 @@ function partnerToResponse(partner, customer2) {
     } : null
   };
 }
-router38.get("/admin/affiliates/overview", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router36.get("/admin/affiliates/overview", async (req, res) => {
+  if (!requireAdmin23(req, res)) return;
   try {
     await ensureDefaults();
     const [settings, tiers, partnerStats, commissionStats, rewardStats] = await Promise.all([
@@ -248020,8 +247348,8 @@ router38.get("/admin/affiliates/overview", async (req, res) => {
     res.status(500).json({ error: "Failed to load affiliate overview" });
   }
 });
-router38.patch("/admin/affiliates/settings", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router36.patch("/admin/affiliates/settings", async (req, res) => {
+  if (!requireAdmin23(req, res)) return;
   const body = req.body;
   try {
     const updates = {};
@@ -248067,8 +247395,8 @@ router38.patch("/admin/affiliates/settings", async (req, res) => {
     res.status(500).json({ error: "Failed to update affiliate settings" });
   }
 });
-router38.post("/admin/affiliates/tiers", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router36.post("/admin/affiliates/tiers", async (req, res) => {
+  if (!requireAdmin23(req, res)) return;
   const body = req.body;
   if (typeof body.name !== "string" || body.name.trim().length < 2 || typeof body.slug !== "string" || !/^[a-z0-9-]{2,30}$/.test(body.slug)) {
     res.status(400).json({ error: "Name and a lowercase slug are required" });
@@ -248095,8 +247423,8 @@ router38.post("/admin/affiliates/tiers", async (req, res) => {
     res.status(500).json({ error: "Failed to create affiliate tier" });
   }
 });
-router38.patch("/admin/affiliates/tiers/:id", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router36.patch("/admin/affiliates/tiers/:id", async (req, res) => {
+  if (!requireAdmin23(req, res)) return;
   const id = integer4(firstString(req.params.id));
   if (!Number.isInteger(id)) {
     res.status(400).json({ error: "Invalid tier ID" });
@@ -248150,8 +247478,8 @@ router38.patch("/admin/affiliates/tiers/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to update affiliate tier" });
   }
 });
-router38.get("/admin/affiliates/partners", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router36.get("/admin/affiliates/partners", async (req, res) => {
+  if (!requireAdmin23(req, res)) return;
   const requestedStatus = typeof req.query.status === "string" ? req.query.status : "all";
   const status = PARTNER_STATUSES.has(requestedStatus) ? requestedStatus : "all";
   const search = typeof req.query.search === "string" ? req.query.search.trim() : "";
@@ -248197,8 +247525,8 @@ router38.get("/admin/affiliates/partners", async (req, res) => {
     res.status(500).json({ error: "Failed to list affiliate partners" });
   }
 });
-router38.post("/admin/affiliates/partners", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router36.post("/admin/affiliates/partners", async (req, res) => {
+  if (!requireAdmin23(req, res)) return;
   const body = req.body;
   if (typeof body.name !== "string" || body.name.trim().length < 2 || typeof body.email !== "string" || !body.email.includes("@")) {
     res.status(400).json({ error: "A valid name and email are required" });
@@ -248260,8 +247588,8 @@ router38.post("/admin/affiliates/partners", async (req, res) => {
     res.status(500).json({ error: "Failed to create affiliate partner" });
   }
 });
-router38.patch("/admin/affiliates/partners/:id", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router36.patch("/admin/affiliates/partners/:id", async (req, res) => {
+  if (!requireAdmin23(req, res)) return;
   const id = integer4(firstString(req.params.id));
   if (!Number.isInteger(id)) {
     res.status(400).json({ error: "Invalid partner ID" });
@@ -248327,8 +247655,8 @@ router38.patch("/admin/affiliates/partners/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to update affiliate partner" });
   }
 });
-router38.get("/admin/affiliates/commissions", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router36.get("/admin/affiliates/commissions", async (req, res) => {
+  if (!requireAdmin23(req, res)) return;
   const requestedStatus = typeof req.query.status === "string" ? req.query.status : "all";
   const status = COMMISSION_STATUSES.has(requestedStatus) ? requestedStatus : "all";
   try {
@@ -248369,8 +247697,8 @@ router38.get("/admin/affiliates/commissions", async (req, res) => {
     res.status(500).json({ error: "Failed to list affiliate commissions" });
   }
 });
-router38.post("/admin/affiliates/commissions/:id/:action", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router36.post("/admin/affiliates/commissions/:id/:action", async (req, res) => {
+  if (!requireAdmin23(req, res)) return;
   const id = integer4(firstString(req.params.id));
   const action = firstString(req.params.action);
   if (!Number.isInteger(id) || !action || !["approve", "hold", "void", "paid"].includes(action)) {
@@ -248495,8 +247823,8 @@ router38.post("/admin/affiliates/commissions/:id/:action", async (req, res) => {
     res.status(500).json({ error: "Failed to update affiliate commission" });
   }
 });
-router38.get("/admin/affiliates/rewards", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router36.get("/admin/affiliates/rewards", async (req, res) => {
+  if (!requireAdmin23(req, res)) return;
   const requestedStatus = typeof req.query.status === "string" ? req.query.status : "all";
   const status = REWARD_STATUSES.has(requestedStatus) ? requestedStatus : "all";
   try {
@@ -248531,8 +247859,8 @@ router38.get("/admin/affiliates/rewards", async (req, res) => {
     res.status(500).json({ error: "Failed to list affiliate rewards" });
   }
 });
-router38.post("/admin/affiliates/rewards/:id/:action", async (req, res) => {
-  if (!requireAdmin24(req, res)) return;
+router36.post("/admin/affiliates/rewards/:id/:action", async (req, res) => {
+  if (!requireAdmin23(req, res)) return;
   const id = integer4(firstString(req.params.id));
   const action = firstString(req.params.action);
   if (!Number.isInteger(id) || !action || !["approve", "fulfill", "void"].includes(action)) {
@@ -248587,21 +247915,21 @@ router38.post("/admin/affiliates/rewards/:id/:action", async (req, res) => {
     res.status(500).json({ error: "Failed to update affiliate reward" });
   }
 });
-var affiliates_default2 = router38;
+var affiliates_default2 = router36;
 
 // src/routes/admin/fraud.ts
-var import_express39 = __toESM(require_express2(), 1);
+var import_express37 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router39 = (0, import_express39.Router)();
-function requireAdmin25(req, res) {
+var router37 = (0, import_express37.Router)();
+function requireAdmin24(req, res) {
   if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router39.get("/admin/fraud", async (req, res) => {
-  if (!requireAdmin25(req, res)) return;
+router37.get("/admin/fraud", async (req, res) => {
+  if (!requireAdmin24(req, res)) return;
   try {
     const minScore = Math.max(1, parseInt(String(req.query.minScore ?? "20"), 10) || 20);
     const reviewedParam = req.query.reviewed;
@@ -248658,10 +247986,10 @@ router39.get("/admin/fraud", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch fraud queue" });
   }
 });
-router39.patch(
+router37.patch(
   "/admin/fraud/:id/review",
   async (req, res) => {
-    if (!requireAdmin25(req, res)) return;
+    if (!requireAdmin24(req, res)) return;
     try {
       const id = parseInt(firstString(req.params.id) ?? "", 10);
       if (!id) {
@@ -248680,21 +248008,21 @@ router39.patch(
     }
   }
 );
-var fraud_default = router39;
+var fraud_default = router37;
 
 // src/routes/admin/blockedIps.ts
-var import_express40 = __toESM(require_express2(), 1);
+var import_express38 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router40 = (0, import_express40.Router)();
-function requireAdmin26(req, res) {
+var router38 = (0, import_express38.Router)();
+function requireAdmin25(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router40.get("/admin/blocked-ips", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+router38.get("/admin/blocked-ips", async (req, res) => {
+  if (!requireAdmin25(req, res)) return;
   try {
     const rows = await db.select().from(blockedIpsTable).orderBy(blockedIpsTable.blockedAt);
     res.json(rows);
@@ -248702,8 +248030,8 @@ router40.get("/admin/blocked-ips", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch blocked IPs" });
   }
 });
-router40.post("/admin/blocked-ips", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+router38.post("/admin/blocked-ips", async (req, res) => {
+  if (!requireAdmin25(req, res)) return;
   const { ip, reason } = req.body;
   if (!ip || typeof ip !== "string" || !ip.trim()) {
     res.status(400).json({ error: "ip is required" });
@@ -248721,8 +248049,8 @@ router40.post("/admin/blocked-ips", async (req, res) => {
     res.status(500).json({ error: "Failed to block IP" });
   }
 });
-router40.delete("/admin/blocked-ips/:ip", async (req, res) => {
-  if (!requireAdmin26(req, res)) return;
+router38.delete("/admin/blocked-ips/:ip", async (req, res) => {
+  if (!requireAdmin25(req, res)) return;
   const ip = decodeURIComponent(firstString(req.params.ip) ?? "");
   try {
     const deleted = await db.delete(blockedIpsTable).where(eq(blockedIpsTable.ip, ip)).returning();
@@ -248735,21 +248063,21 @@ router40.delete("/admin/blocked-ips/:ip", async (req, res) => {
     res.status(500).json({ error: "Failed to unblock IP" });
   }
 });
-var blockedIps_default = router40;
+var blockedIps_default = router38;
 
 // src/routes/admin/emailLogs.ts
-var import_express41 = __toESM(require_express2(), 1);
+var import_express39 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router41 = (0, import_express41.Router)();
-function requireAdmin27(req, res) {
+var router39 = (0, import_express39.Router)();
+function requireAdmin26(req, res) {
   if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router41.get("/admin/email-logs", async (req, res) => {
-  if (!requireAdmin27(req, res)) return;
+router39.get("/admin/email-logs", async (req, res) => {
+  if (!requireAdmin26(req, res)) return;
   try {
     const [logs, statsRows] = await Promise.all([
       db.select().from(emailLogsTable).orderBy(desc(emailLogsTable.createdAt)).limit(500),
@@ -248779,10 +248107,10 @@ router41.get("/admin/email-logs", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var emailLogs_default = router41;
+var emailLogs_default = router39;
 
 // src/routes/admin/customerSegments.ts
-var import_express42 = __toESM(require_express2(), 1);
+var import_express40 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 
 // src/lib/customerSegments.ts
@@ -248892,8 +248220,8 @@ function customerSegmentCountQuery(rules2) {
 }
 
 // src/routes/admin/customerSegments.ts
-var router42 = (0, import_express42.Router)();
-function requireAdmin28(req, res) {
+var router40 = (0, import_express40.Router)();
+function requireAdmin27(req, res) {
   if (res.locals.adminAuthenticated !== true) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -248933,8 +248261,8 @@ function pagination(req) {
   const offset = req.query.offset === void 0 ? 0 : Number(req.query.offset);
   return Number.isInteger(limit) && limit >= 1 && limit <= 200 && Number.isInteger(offset) && offset >= 0 ? { limit, offset } : null;
 }
-router42.get("/admin/customer-segments", async (req, res) => {
-  if (!requireAdmin28(req, res)) return;
+router40.get("/admin/customer-segments", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   try {
     const segments = await db.select().from(customerSegmentsTable).where(eq(customerSegmentsTable.isActive, true)).orderBy(desc(customerSegmentsTable.createdAt));
     const result = await Promise.all(segments.map(async (segment) => {
@@ -248948,8 +248276,8 @@ router42.get("/admin/customer-segments", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router42.post("/admin/customer-segments", async (req, res) => {
-  if (!requireAdmin28(req, res)) return;
+router40.post("/admin/customer-segments", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   const parsed = createCustomerSegmentSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid customer segment" });
@@ -248968,8 +248296,8 @@ router42.post("/admin/customer-segments", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router42.get("/admin/customer-segments/:id", async (req, res) => {
-  if (!requireAdmin28(req, res)) return;
+router40.get("/admin/customer-segments/:id", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   const id = idFromRequest(req);
   const page = pagination(req);
   if (!id || !page) {
@@ -249000,8 +248328,8 @@ router42.get("/admin/customer-segments/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router42.patch("/admin/customer-segments/:id", async (req, res) => {
-  if (!requireAdmin28(req, res)) return;
+router40.patch("/admin/customer-segments/:id", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   const id = idFromRequest(req);
   const parsed = patchCustomerSegmentSchema.safeParse(req.body);
   if (!id || !parsed.success) {
@@ -249025,8 +248353,8 @@ router42.patch("/admin/customer-segments/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router42.delete("/admin/customer-segments/:id", async (req, res) => {
-  if (!requireAdmin28(req, res)) return;
+router40.delete("/admin/customer-segments/:id", async (req, res) => {
+  if (!requireAdmin27(req, res)) return;
   const id = idFromRequest(req);
   if (!id) {
     res.status(400).json({ error: "Invalid segment ID" });
@@ -249045,27 +248373,27 @@ router42.delete("/admin/customer-segments/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var customerSegments_default = router42;
+var customerSegments_default = router40;
 
 // src/routes/loyalty.ts
-var import_express43 = __toESM(require_express2(), 1);
-import crypto21 from "crypto";
+var import_express41 = __toESM(require_express2(), 1);
+import crypto20 from "crypto";
 init_drizzle_orm();
-var router43 = (0, import_express43.Router)();
-var SESSION_SECRET10 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
-function verifyCustomerSession4(token) {
+var router41 = (0, import_express41.Router)();
+var SESSION_SECRET9 = requiredSecret("SESSION_SECRET", "omniqure-cust-session-development-only");
+function verifyCustomerSession3(token) {
   const dot = token.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
-  const expected = crypto21.createHmac("sha256", SESSION_SECRET10).update(payload).digest("hex");
+  const expected = crypto20.createHmac("sha256", SESSION_SECRET9).update(payload).digest("hex");
   if (sig !== expected) return null;
   const id = parseInt(payload, 10);
   return isNaN(id) ? null : id;
 }
 function getCustomerId3(req) {
   const token = req.cookies?.customer_session;
-  return token ? verifyCustomerSession4(token) : null;
+  return token ? verifyCustomerSession3(token) : null;
 }
 function isAdmin(req, res) {
   if (res.locals.adminAuthenticated !== true) {
@@ -249090,7 +248418,7 @@ function getTierInfo(lifetimeEarned) {
     progressPct: nextTier ? Math.min(100, Math.round((lifetimeEarned - tier.min) / (nextTier.min - tier.min) * 100)) : 100
   };
 }
-router43.get("/loyalty/balance", async (req, res) => {
+router41.get("/loyalty/balance", async (req, res) => {
   const customerId = getCustomerId3(req);
   if (!customerId) {
     res.status(401).json({ error: "Not authenticated" });
@@ -249119,7 +248447,7 @@ router43.get("/loyalty/balance", async (req, res) => {
     }))
   });
 });
-router43.get("/admin/loyalty/overview", async (req, res) => {
+router41.get("/admin/loyalty/overview", async (req, res) => {
   if (!isAdmin(req, res)) return;
   const result = await db.execute(sql`
     SELECT
@@ -249147,7 +248475,7 @@ router43.get("/admin/loyalty/overview", async (req, res) => {
   `);
   res.json({ customers: result.rows, stats: stats.rows[0] ?? {} });
 });
-router43.post("/admin/loyalty/adjust", async (req, res) => {
+router41.post("/admin/loyalty/adjust", async (req, res) => {
   if (!isAdmin(req, res)) return;
   const { customerId, points, reason } = req.body;
   if (!customerId || typeof points !== "number" || !reason || typeof reason !== "string") {
@@ -249163,13 +248491,13 @@ router43.post("/admin/loyalty/adjust", async (req, res) => {
   logger.info({ customerId, points, reason }, "Admin loyalty adjustment");
   res.json({ success: true });
 });
-var loyalty_default = router43;
+var loyalty_default = router41;
 
 // src/routes/tax.ts
-var import_express44 = __toESM(require_express2(), 1);
+var import_express42 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router44 = (0, import_express44.Router)();
-router44.get("/tax/calculate", async (req, res) => {
+var router42 = (0, import_express42.Router)();
+router42.get("/tax/calculate", async (req, res) => {
   const countryCode = String(req.query.country ?? "").toUpperCase();
   const subtotal = parseFloat(String(req.query.subtotal ?? "0"));
   if (!countryCode) {
@@ -249201,13 +248529,13 @@ router44.get("/tax/calculate", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var tax_default2 = router44;
+var tax_default2 = router42;
 
 // src/routes/shipping.ts
-var import_express45 = __toESM(require_express2(), 1);
+var import_express43 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router45 = (0, import_express45.Router)();
-router45.get("/shipping/rates", async (req, res) => {
+var router43 = (0, import_express43.Router)();
+router43.get("/shipping/rates", async (req, res) => {
   const country = String(req.query.country ?? "").toUpperCase();
   const orderTotal = parseFloat(String(req.query.orderTotal ?? "0"));
   if (!country) {
@@ -249250,13 +248578,13 @@ router45.get("/shipping/rates", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var shipping_default2 = router45;
+var shipping_default2 = router43;
 
 // src/routes/blog.ts
-var import_express46 = __toESM(require_express2(), 1);
+var import_express44 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router46 = (0, import_express46.Router)();
-router46.get("/blog/posts", async (req, res) => {
+var router44 = (0, import_express44.Router)();
+router44.get("/blog/posts", async (req, res) => {
   const limit = Math.min(parseInt(String(req.query.limit ?? "12"), 10), 50);
   const offset = parseInt(String(req.query.offset ?? "0"), 10);
   try {
@@ -249290,7 +248618,7 @@ router46.get("/blog/posts", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router46.get("/blog/posts/:slug", async (req, res) => {
+router44.get("/blog/posts/:slug", async (req, res) => {
   const slug = firstString(req.params.slug);
   if (!slug) {
     res.status(400).json({ error: "Invalid slug" });
@@ -249321,13 +248649,13 @@ router46.get("/blog/posts/:slug", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var blog_default2 = router46;
+var blog_default2 = router44;
 
 // src/routes/btcpay-webhook.ts
-var import_express47 = __toESM(require_express2(), 1);
+var import_express45 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router47 = (0, import_express47.Router)();
-router47.post(
+var router45 = (0, import_express45.Router)();
+router45.post(
   "/btcpay-webhook",
   async (req, res) => {
     const signature2 = req.headers["btcpay-sig"] || req.headers["x-btcpay-signature"] || "";
@@ -249417,16 +248745,16 @@ router47.post(
     res.status(200).json({ received: true });
   }
 );
-var btcpay_webhook_default = router47;
+var btcpay_webhook_default = router45;
 
 // src/routes/wallid-webhook.ts
-var import_express48 = __toESM(require_express2(), 1);
-import crypto22 from "crypto";
+var import_express46 = __toESM(require_express2(), 1);
+import crypto21 from "crypto";
 init_drizzle_orm();
 function createWallidWebhookRouter(dependencies = {}) {
-  const router57 = (0, import_express48.Router)();
+  const router55 = (0, import_express46.Router)();
   const sendConfirmation = dependencies.sendConfirmation ?? sendOrderConfirmation;
-  router57.post("/wallid-webhook", async (req, res) => {
+  router55.post("/wallid-webhook", async (req, res) => {
     if (!WALLID_WEBHOOK_SECRET) {
       logger.error("WALLID_WEBHOOK_SECRET is not configured \u2014 rejecting Wallid webhook request");
       res.status(400).json({ error: "Webhook secret not configured" });
@@ -249447,12 +248775,12 @@ function createWallidWebhookRouter(dependencies = {}) {
     }
     const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(req.body));
     const message = `${tsHeader}.${rawBody.toString()}`;
-    const expected = "sha256=" + crypto22.createHmac("sha256", WALLID_WEBHOOK_SECRET).update(message).digest("hex");
+    const expected = "sha256=" + crypto21.createHmac("sha256", WALLID_WEBHOOK_SECRET).update(message).digest("hex");
     const received = sigHeader;
     let sigValid = false;
     try {
       if (expected.length === received.length) {
-        sigValid = crypto22.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
+        sigValid = crypto21.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
       }
     } catch {
       sigValid = false;
@@ -249594,14 +248922,14 @@ function createWallidWebhookRouter(dependencies = {}) {
     }
     res.status(200).json({ received: true });
   });
-  return router57;
+  return router55;
 }
 var wallid_webhook_default = createWallidWebhookRouter();
 
 // src/routes/contact.ts
-var import_express49 = __toESM(require_express2(), 1);
-var router48 = (0, import_express49.Router)();
-router48.post("/contact", async (req, res) => {
+var import_express47 = __toESM(require_express2(), 1);
+var router46 = (0, import_express47.Router)();
+router46.post("/contact", async (req, res) => {
   const { name: name2, email: email5, subject, message } = req.body;
   if (typeof name2 !== "string" || !name2.trim()) {
     res.status(400).json({ error: "Name is required" });
@@ -249633,12 +248961,12 @@ router48.post("/contact", async (req, res) => {
     res.status(500).json({ error: "Failed to send your message. Please try again or email us directly." });
   }
 });
-var contact_default = router48;
+var contact_default = router46;
 
 // src/routes/address-lookup.ts
-var import_express50 = __toESM(require_express2(), 1);
-var router49 = (0, import_express50.Router)();
-router49.get("/address-lookup", async (req, res) => {
+var import_express48 = __toESM(require_express2(), 1);
+var router47 = (0, import_express48.Router)();
+router47.get("/address-lookup", async (req, res) => {
   const postcode = req.query["postcode"]?.trim();
   if (!postcode) {
     return res.status(400).json({ error: "postcode query param required" });
@@ -249669,7 +248997,7 @@ router49.get("/address-lookup", async (req, res) => {
     return res.status(500).json({ error: "Address lookup request failed" });
   }
 });
-router49.post("/address-verification", async (req, res) => {
+router47.post("/address-verification", async (req, res) => {
   const delivery = req.body;
   if (typeof delivery.address1 !== "string" || typeof delivery.city !== "string" || typeof delivery.postcode !== "string" || typeof delivery.country !== "string") {
     return res.status(400).json({ error: "A complete delivery address is required." });
@@ -249701,7 +249029,7 @@ router49.post("/address-verification", async (req, res) => {
     });
   }
 });
-router49.post("/address-suggestions", async (req, res) => {
+router47.post("/address-suggestions", async (req, res) => {
   const delivery = req.body;
   if (typeof delivery.address1 !== "string" || typeof delivery.postcode !== "string" || typeof delivery.country !== "string") {
     return res.status(400).json({ error: "A street address, postal code, and country are required." });
@@ -249734,12 +249062,12 @@ router49.post("/address-suggestions", async (req, res) => {
     });
   }
 });
-var address_lookup_default = router49;
+var address_lookup_default = router47;
 
 // src/routes/crypto-payments.ts
-var import_express51 = __toESM(require_express2(), 1);
+var import_express49 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router50 = (0, import_express51.Router)();
+var router48 = (0, import_express49.Router)();
 function hasPaymentAccess(order, token) {
   return typeof token === "string" && Boolean(order.cryptoPaymentAccessToken) && token.length >= 24 && token === order.cryptoPaymentAccessToken;
 }
@@ -249860,14 +249188,14 @@ async function recordCryptoPaymentVerification(order, attempt, txHash, applyOrde
   }
   return result;
 }
-router50.get("/crypto/payment-options", async (_req, res) => {
+router48.get("/crypto/payment-options", async (_req, res) => {
   try {
     res.json({ routes: await getPublicCryptoPaymentOptions() });
   } catch {
     res.status(503).json({ error: "Crypto payment options are temporarily unavailable" });
   }
 });
-router50.get("/orders/:ref/crypto-payment", async (req, res) => {
+router48.get("/orders/:ref/crypto-payment", async (req, res) => {
   res.setHeader("Cache-Control", "no-store");
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.query.token)) {
@@ -249897,7 +249225,7 @@ router50.get("/orders/:ref/crypto-payment", async (req, res) => {
     }
   });
 });
-router50.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
+router48.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -249934,7 +249262,7 @@ router50.post("/orders/:ref/lock-usdt-rate", async (req, res) => {
   }).where(eq(ordersTable.id, order.id));
   res.json({ orderId: order.id, orderNumber: order.orderNumber, ...prepared.details, status: "rate_locked" });
 });
-router50.post("/orders/:ref/crypto-payment/check", async (req, res) => {
+router48.post("/orders/:ref/crypto-payment/check", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -249963,7 +249291,7 @@ router50.post("/orders/:ref/crypto-payment/check", async (req, res) => {
     confirmations: result.confirmations ?? null
   });
 });
-router50.post("/orders/:ref/pay", async (req, res) => {
+router48.post("/orders/:ref/pay", async (req, res) => {
   const order = await getOrder(requestParam(req.params.ref));
   if (!order || !hasPaymentAccess(order, req.body?.paymentToken)) {
     res.status(404).json({ error: "Payment not found" });
@@ -250051,13 +249379,13 @@ async function reconcilePendingCryptoPayments() {
   }
   return checked;
 }
-var crypto_payments_default = router50;
+var crypto_payments_default = router48;
 
 // src/routes/admin/crypto-audits.ts
-var import_express52 = __toESM(require_express2(), 1);
+var import_express50 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router51 = (0, import_express52.Router)();
-function requireAdmin29(req, res) {
+var router49 = (0, import_express50.Router)();
+function requireAdmin28(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
@@ -250082,8 +249410,8 @@ function auditToResponse(audit) {
     checkedAt: audit.checkedAt.toISOString()
   };
 }
-router51.get("/admin/crypto/audits", async (req, res) => {
-  if (!requireAdmin29(req, res)) return;
+router49.get("/admin/crypto/audits", async (req, res) => {
+  if (!requireAdmin28(req, res)) return;
   try {
     const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 200);
     const audits = await db.select().from(cryptoPaymentAuditsTable).orderBy(desc(cryptoPaymentAuditsTable.checkedAt)).limit(limit);
@@ -250102,8 +249430,8 @@ router51.get("/admin/crypto/audits", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router51.get("/admin/crypto/audits/:id", async (req, res) => {
-  if (!requireAdmin29(req, res)) return;
+router49.get("/admin/crypto/audits/:id", async (req, res) => {
+  if (!requireAdmin28(req, res)) return;
   const id = Number(req.params.id);
   if (!Number.isInteger(id)) {
     res.status(400).json({ error: "Invalid audit ID" });
@@ -250116,8 +249444,8 @@ router51.get("/admin/crypto/audits/:id", async (req, res) => {
   }
   res.json(auditToResponse(audit));
 });
-router51.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
-  if (!requireAdmin29(req, res)) return;
+router49.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
+  if (!requireAdmin28(req, res)) return;
   const attemptId = Number(req.params.attemptId);
   if (!Number.isInteger(attemptId)) {
     res.status(400).json({ error: "Invalid payment attempt" });
@@ -250141,8 +249469,8 @@ router51.post("/admin/crypto/audits/:attemptId/check", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router51.post("/admin/crypto/audits/check-batch", async (req, res) => {
-  if (!requireAdmin29(req, res)) return;
+router49.post("/admin/crypto/audits/check-batch", async (req, res) => {
+  if (!requireAdmin28(req, res)) return;
   const attemptIds = Array.isArray(req.body?.attemptIds) ? req.body.attemptIds.filter((id) => Number.isInteger(id)).slice(0, 50) : [];
   if (attemptIds.length === 0) {
     res.status(400).json({ error: "Select one or more payment attempts to check." });
@@ -250163,8 +249491,8 @@ router51.post("/admin/crypto/audits/check-batch", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router51.get("/admin/crypto/wallet-history", async (req, res) => {
-  if (!requireAdmin29(req, res)) return;
+router49.get("/admin/crypto/wallet-history", async (req, res) => {
+  if (!requireAdmin28(req, res)) return;
   try {
     const attempts = await db.select({
       walletAddress: cryptoPaymentAttemptsTable.walletAddress,
@@ -250185,21 +249513,21 @@ router51.get("/admin/crypto/wallet-history", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var crypto_audits_default = router51;
+var crypto_audits_default = router49;
 
 // src/routes/admin/publicTraffic.ts
-var import_express53 = __toESM(require_express2(), 1);
+var import_express51 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router52 = (0, import_express53.Router)();
-function requireAdmin30(req, res) {
+var router50 = (0, import_express51.Router)();
+function requireAdmin29(req, res) {
   if (!hasSecureAdminSession(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return false;
   }
   return true;
 }
-router52.get("/admin/public-traffic/events", async (req, res) => {
-  if (!requireAdmin30(req, res)) return;
+router50.get("/admin/public-traffic/events", async (req, res) => {
+  if (!requireAdmin29(req, res)) return;
   const parsedLimit = Number(req.query.limit);
   const limit = Number.isInteger(parsedLimit) ? Math.min(Math.max(parsedLimit, 1), 200) : 50;
   try {
@@ -250214,13 +249542,13 @@ router52.get("/admin/public-traffic/events", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch public traffic events" });
   }
 });
-var publicTraffic_default = router52;
+var publicTraffic_default = router50;
 
 // src/routes/admin/security.ts
-var import_express54 = __toESM(require_express2(), 1);
+var import_express52 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router53 = (0, import_express54.Router)();
-router53.get(["/admin/security/events", "/admin/audit-history"], async (req, res) => {
+var router51 = (0, import_express52.Router)();
+router51.get(["/admin/security/events", "/admin/audit-history"], async (req, res) => {
   if (!await requireOwner(req, res)) return;
   const requestedLimit = Number.parseInt(firstString(req.query.limit) ?? "100", 10);
   const limit = Number.isFinite(requestedLimit) ? Math.min(250, Math.max(1, requestedLimit)) : 100;
@@ -250271,10 +249599,10 @@ router53.get(["/admin/security/events", "/admin/audit-history"], async (req, res
     res.status(500).json({ error: "Internal server error" });
   }
 });
-var security_default = router53;
+var security_default = router51;
 
 // src/routes/admin/wholesale.ts
-var import_express55 = __toESM(require_express2(), 1);
+var import_express53 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var SITE_URL3 = process.env.SITE_URL ?? "https://omniqure.com";
 var WHOLESALE_PAYMENT_CREATION_LEASE_MS = 5 * 6e4;
@@ -250335,7 +249663,7 @@ function invoiceResponse(invoice, order) {
   };
 }
 function createWholesaleRouter(dependencies = {}) {
-  const router57 = (0, import_express55.Router)();
+  const router55 = (0, import_express53.Router)();
   const createPayment = dependencies.createPayment ?? createWallidPayment;
   const sendInvoice = dependencies.sendInvoice ?? sendWholesaleInvoice;
   async function sendSavedInvoice(invoiceId) {
@@ -250371,7 +249699,7 @@ function createWholesaleRouter(dependencies = {}) {
       country: row.order.country
     });
   }
-  router57.get("/admin/wholesale", async (_req, res) => {
+  router55.get("/admin/wholesale", async (_req, res) => {
     try {
       const rows = await db.select({ invoice: wholesaleInvoicesTable, order: ordersTable }).from(wholesaleInvoicesTable).innerJoin(ordersTable, eq(wholesaleInvoicesTable.orderId, ordersTable.id)).orderBy(desc(wholesaleInvoicesTable.createdAt)).limit(50);
       res.json({ invoices: rows.map(({ invoice, order }) => invoiceResponse(invoice, order)) });
@@ -250379,7 +249707,7 @@ function createWholesaleRouter(dependencies = {}) {
       res.status(500).json({ error: "Failed to list wholesale invoices" });
     }
   });
-  router57.post("/admin/wholesale", async (req, res) => {
+  router55.post("/admin/wholesale", async (req, res) => {
     const body = req.body;
     const referenceNumber = text2(body.referenceNumber, 64);
     const customerName = text2(body.customerName, 160);
@@ -250642,7 +249970,7 @@ Wallid payment id: ${payment.apiPaymentId}`.trim(),
       res.status(500).json({ error: "Failed to create wholesale invoice" });
     }
   });
-  router57.post("/admin/wholesale/:id/resolve", async (req, res) => {
+  router55.post("/admin/wholesale/:id/resolve", async (req, res) => {
     const id = Number(req.params.id);
     const body = req.body;
     const apiPaymentId = text2(body.apiPaymentId, 500);
@@ -250738,7 +250066,7 @@ ${paymentNote}`.trim(),
       }
     }
   });
-  router57.post("/admin/wholesale/:id/retry", async (req, res) => {
+  router55.post("/admin/wholesale/:id/retry", async (req, res) => {
     const id = Number(req.params.id);
     if (!Number.isInteger(id) || id <= 0) {
       res.status(400).json({ error: "Invalid invoice ID" });
@@ -250850,7 +250178,7 @@ ${paymentNote}`.trim(),
       res.status(500).json({ error: "Failed to retry wholesale payment link" });
     }
   });
-  router57.post("/admin/wholesale/:id/resend", async (req, res) => {
+  router55.post("/admin/wholesale/:id/resend", async (req, res) => {
     const id = Number(req.params.id);
     if (!Number.isInteger(id) || id <= 0) {
       res.status(400).json({ error: "Invalid invoice ID" });
@@ -250865,7 +250193,7 @@ ${paymentNote}`.trim(),
       res.status(502).json({ error: "Invoice email could not be sent" });
     }
   });
-  router57.patch("/admin/wholesale/:id", async (req, res) => {
+  router55.patch("/admin/wholesale/:id", async (req, res) => {
     const id = Number(req.params.id);
     if (!Number.isInteger(id) || id <= 0) {
       res.status(400).json({ error: "Invalid invoice ID" });
@@ -250944,12 +250272,12 @@ ${paymentNote}`.trim(),
       res.status(500).json({ error: "Failed to update wholesale invoice" });
     }
   });
-  return router57;
+  return router55;
 }
 var wholesale_default = createWholesaleRouter();
 
 // src/routes/publicTraffic.ts
-var import_express56 = __toESM(require_express2(), 1);
+var import_express54 = __toESM(require_express2(), 1);
 
 // src/lib/publicTrafficProtection.ts
 init_drizzle_orm();
@@ -250957,7 +250285,6 @@ init_drizzle_orm();
 var LIMITS = {
   catalogue: { requestsPerMinute: 90, uniquePaths: 80 },
   blog: { requestsPerMinute: 45, uniquePaths: 40 },
-  reviews: { requestsPerMinute: 60, uniquePaths: 50 },
   image: { requestsPerMinute: 180, uniquePaths: 160 },
   sitemap: { requestsPerMinute: 12, uniquePaths: 4 }
 };
@@ -250975,7 +250302,6 @@ function resourceKindForPath(path4) {
   if (/^\/api\/catalogue-assets\/.+\.(?:avif|gif|jpe?g|png|svg|webp|ico)$/i.test(pathname)) return "image";
   if (/^\/api\/products(?:\/[^/]+)?(?:\/related)?$/.test(pathname)) return "catalogue";
   if (/^\/api\/blog\/posts(?:\/[^/]+)?$/.test(pathname)) return "blog";
-  if (/^\/api\/products\/[^/]+\/reviews$/.test(pathname)) return "reviews";
   if (/\.(?:avif|gif|jpe?g|png|svg|webp|ico)$/i.test(pathname)) return "image";
   return null;
 }
@@ -251159,13 +250485,13 @@ async function publicTrafficProtection(req, res, next) {
 // src/routes/publicTraffic.ts
 import path2 from "node:path";
 import { existsSync } from "node:fs";
-var router54 = (0, import_express56.Router)();
+var router52 = (0, import_express54.Router)();
 var PUBLIC_ASSET_ROOT = [
   path2.resolve(process.cwd(), "artifacts/omniqure/public"),
   path2.resolve(process.cwd(), "../omniqure/public"),
   path2.resolve(import.meta.dirname, "../../omniqure/public")
 ].find(existsSync);
-router54.post("/traffic/heartbeat", async (req, res) => {
+router52.post("/traffic/heartbeat", async (req, res) => {
   const visitorId = typeof req.body?.visitorId === "string" ? req.body.visitorId.trim() : "";
   const pagePath = typeof req.body?.path === "string" ? req.body.path.slice(0, 500) : "/";
   if (!/^[a-zA-Z0-9-]{16,64}$/.test(visitorId)) {
@@ -251182,7 +250508,7 @@ router54.post("/traffic/heartbeat", async (req, res) => {
   });
   res.status(204).send();
 });
-router54.get("/catalogue-assets/*assetPath", (req, res) => {
+router52.get("/catalogue-assets/*assetPath", (req, res) => {
   const rawAssetPath = req.params.assetPath;
   const assetPath = Array.isArray(rawAssetPath) ? rawAssetPath.join("/") : String(rawAssetPath ?? "");
   if (!PUBLIC_ASSET_ROOT || !assetPath || !/\.(?:avif|gif|jpe?g|png|svg|webp|ico)$/i.test(assetPath)) {
@@ -251194,7 +250520,7 @@ router54.get("/catalogue-assets/*assetPath", (req, res) => {
     if (err && !res.headersSent) res.status(404).json({ error: "Not found" });
   });
 });
-router54.get("/traffic/image", async (req, res) => {
+router52.get("/traffic/image", async (req, res) => {
   const remoteAddress = req.socket.remoteAddress;
   if (remoteAddress !== "127.0.0.1" && remoteAddress !== "::1" && remoteAddress !== "::ffff:127.0.0.1") {
     res.status(404).json({ error: "Not found" });
@@ -251215,74 +250541,72 @@ router54.get("/traffic/image", async (req, res) => {
   }
   res.status(204).send();
 });
-var publicTraffic_default2 = router54;
+var publicTraffic_default2 = router52;
 
 // src/routes/index.ts
-var router55 = (0, import_express57.Router)();
-router55.use(health_default);
-router55.use(publicTraffic_default2);
-router55.use(auth_default);
-router55.use("/admin", enforceSecureAdminSession);
-router55.use("/admin", enforceAdminAuthorization);
-router55.use(dashboard_default);
-router55.use(orders_default);
-router55.use(fulfillment_default);
-router55.use(customers_default);
-router55.use(products_default);
-router55.use(discounts_default);
-router55.use(catalog_default);
-router55.use(returns_default);
-router55.use(tax_default);
-router55.use(shipping_default);
-router55.use(refunds_default);
-router55.use(inventory_audit_default);
-router55.use(export_default);
-router55.use(webhooks_default);
-router55.use(settings_default);
-router55.use(users_default);
-router55.use(reports_default);
-router55.use(gdpr_default);
-router55.use(blog_default);
-router55.use(crypto_audits_default);
-router55.use(orders_default2);
-router55.use(crypto_payments_default);
-router55.use(discounts_default2);
-router55.use(auth_default2);
-router55.use(account_default);
-router55.use(affiliates_default);
-router55.use(reviews_default);
-router55.use(reviews_default2);
-router55.use(wishlist_default);
-router55.use(returns_default2);
-router55.use(products_default2);
-router55.use(cart_default);
-router55.use(stock_alerts_default);
-router55.use(abandonedCarts_default);
-router55.use(alerts_default);
-router55.use(credits_default);
-router55.use(referrals_default);
-router55.use(affiliates_default2);
-router55.use(fraud_default);
-router55.use(blockedIps_default);
-router55.use(publicTraffic_default);
-router55.use(security_default);
-router55.use(wholesale_default);
-router55.use(emailLogs_default);
-router55.use(customerSegments_default);
-router55.use(loyalty_default);
-router55.use(tax_default2);
-router55.use(shipping_default2);
-router55.use(blog_default2);
-router55.use(btcpay_webhook_default);
-router55.use(wallid_webhook_default);
-router55.use(contact_default);
-router55.use(address_lookup_default);
-var routes_default = router55;
+var router53 = (0, import_express55.Router)();
+router53.use(health_default);
+router53.use(publicTraffic_default2);
+router53.use(auth_default);
+router53.use("/admin", enforceSecureAdminSession);
+router53.use("/admin", enforceAdminAuthorization);
+router53.use(dashboard_default);
+router53.use(orders_default);
+router53.use(fulfillment_default);
+router53.use(customers_default);
+router53.use(products_default);
+router53.use(discounts_default);
+router53.use(catalog_default);
+router53.use(returns_default);
+router53.use(tax_default);
+router53.use(shipping_default);
+router53.use(refunds_default);
+router53.use(inventory_audit_default);
+router53.use(export_default);
+router53.use(webhooks_default);
+router53.use(settings_default);
+router53.use(users_default);
+router53.use(reports_default);
+router53.use(gdpr_default);
+router53.use(blog_default);
+router53.use(crypto_audits_default);
+router53.use(orders_default2);
+router53.use(crypto_payments_default);
+router53.use(discounts_default2);
+router53.use(auth_default2);
+router53.use(account_default);
+router53.use(affiliates_default);
+router53.use(wishlist_default);
+router53.use(returns_default2);
+router53.use(products_default2);
+router53.use(cart_default);
+router53.use(stock_alerts_default);
+router53.use(abandonedCarts_default);
+router53.use(alerts_default);
+router53.use(credits_default);
+router53.use(referrals_default);
+router53.use(affiliates_default2);
+router53.use(fraud_default);
+router53.use(blockedIps_default);
+router53.use(publicTraffic_default);
+router53.use(security_default);
+router53.use(wholesale_default);
+router53.use(emailLogs_default);
+router53.use(customerSegments_default);
+router53.use(loyalty_default);
+router53.use(tax_default2);
+router53.use(shipping_default2);
+router53.use(blog_default2);
+router53.use(btcpay_webhook_default);
+router53.use(wallid_webhook_default);
+router53.use(contact_default);
+router53.use(address_lookup_default);
+var routes_default = router53;
 
 // src/routes/sitemap.ts
-var import_express58 = __toESM(require_express2(), 1);
+var import_express56 = __toESM(require_express2(), 1);
 init_drizzle_orm();
-var router56 = (0, import_express58.Router)();
+var router54 = (0, import_express56.Router)();
 var SITE_URL4 = "https://omniqure.com";
 function publicImageUrl(imageUrl) {
   if (imageUrl.startsWith("http")) return imageUrl;
@@ -251315,7 +250639,7 @@ function isoDate(d) {
   const date8 = d instanceof Date ? d : new Date(d);
   return date8.toISOString().split("T")[0];
 }
-router56.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
+router54.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
   try {
     const [products, blogPosts] = await Promise.all([
       db.select({
@@ -251391,10 +250715,10 @@ router56.get(["/sitemap.xml", "/api/sitemap.xml"], async (req, res) => {
     res.status(500).send("<!-- sitemap generation error -->");
   }
 });
-var sitemap_default = router56;
+var sitemap_default = router54;
 
 // src/app.ts
-var app = (0, import_express59.default)();
+var app = (0, import_express57.default)();
 var trustedOrigins = allowedBrowserOrigins();
 var stateChangingMethods = /* @__PURE__ */ new Set(["POST", "PUT", "PATCH", "DELETE"]);
 var browserSessionCookies = ["customer_session", "admin_session", "admin_secure_session"];
@@ -251476,13 +250800,13 @@ app.use((req, res, next) => {
 });
 app.use(publicTrafficProtection);
 app.use(
-  import_express59.default.json({
+  import_express57.default.json({
     verify: (req, _res, buf) => {
       req.rawBody = buf;
     }
   })
 );
-app.use(import_express59.default.urlencoded({ extended: true }));
+app.use(import_express57.default.urlencoded({ extended: true }));
 app.get("/", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });
@@ -251553,47 +250877,6 @@ function startAbandonedCartJob() {
   setInterval(() => {
     void runCheck();
   }, INTERVAL_MS);
-}
-
-// src/lib/reviewRequestJob.ts
-init_drizzle_orm();
-var INTERVAL_MS2 = 60 * 60 * 1e3;
-var DELAY_AFTER_MS = 7 * 24 * 60 * 60 * 1e3;
-async function runCheck2() {
-  try {
-    const cutoff = new Date(Date.now() - DELAY_AFTER_MS);
-    const orders = await db.select().from(ordersTable).where(
-      and(
-        eq(ordersTable.status, "delivered"),
-        isNull(ordersTable.reviewRequestSentAt),
-        lte(ordersTable.updatedAt, cutoff)
-      )
-    );
-    logger.info({ count: orders.length }, "Review request job check");
-    for (const order of orders) {
-      const items = await db.select({ productId: orderItemsTable.productId, productName: orderItemsTable.productName }).from(orderItemsTable).where(eq(orderItemsTable.orderId, order.id));
-      if (items.length === 0) continue;
-      await sendReviewRequestEmail({
-        customerEmail: order.customerEmail,
-        customerName: order.customerName,
-        orderNumber: order.orderNumber,
-        items: items.map((i) => ({
-          productId: i.productId ?? 0,
-          productName: i.productName
-        }))
-      });
-      await db.update(ordersTable).set({ reviewRequestSentAt: /* @__PURE__ */ new Date() }).where(eq(ordersTable.id, order.id));
-    }
-  } catch (err) {
-    logger.error({ err }, "Review request job error");
-  }
-}
-function startReviewRequestJob() {
-  logger.info("Review request job started");
-  void runCheck2();
-  setInterval(() => {
-    void runCheck2();
-  }, INTERVAL_MS2);
 }
 
 // src/lib/seed-blog.ts
@@ -254119,8 +253402,8 @@ async function seedBlogPeptides() {
 }
 
 // src/lib/cryptoReconciliationJob.ts
-var INTERVAL_MS3 = 5 * 60 * 1e3;
-async function runCheck3() {
+var INTERVAL_MS2 = 5 * 60 * 1e3;
+async function runCheck2() {
   try {
     const checked = await reconcilePendingCryptoPayments();
     if (checked > 0) logger.info({ checked }, "Crypto payment reconciliation completed");
@@ -254130,15 +253413,15 @@ async function runCheck3() {
 }
 function startCryptoReconciliationJob() {
   logger.info("Crypto payment reconciliation job started");
-  void runCheck3();
+  void runCheck2();
   setInterval(() => {
-    void runCheck3();
-  }, INTERVAL_MS3);
+    void runCheck2();
+  }, INTERVAL_MS2);
 }
 
 // src/lib/wallidReconciliationJob.ts
 init_drizzle_orm();
-var INTERVAL_MS4 = 2 * 60 * 1e3;
+var INTERVAL_MS3 = 2 * 60 * 1e3;
 var BATCH_SIZE = 100;
 var running = false;
 async function reconcilePendingWallidPayments() {
@@ -254224,7 +253507,7 @@ async function reconcilePendingWallidPaymentsWith(dependencies = {}) {
   }
   return { checked, settled };
 }
-async function runCheck4() {
+async function runCheck3() {
   if (running) return;
   running = true;
   try {
@@ -254240,10 +253523,10 @@ async function runCheck4() {
 }
 function startWallidReconciliationJob() {
   logger.info("Wallid payment reconciliation job started");
-  void runCheck4();
+  void runCheck3();
   setInterval(() => {
-    void runCheck4();
-  }, INTERVAL_MS4);
+    void runCheck3();
+  }, INTERVAL_MS3);
 }
 
 // src/lib/adminAlertReadCleanupJob.ts
@@ -254804,7 +254087,6 @@ app_default.listen(port, (err) => {
   }
   logger.info({ port }, "Server listening");
   startAbandonedCartJob();
-  startReviewRequestJob();
   startCryptoReconciliationJob();
   startWallidReconciliationJob();
   startAdminAlertReadCleanupJob();
@@ -254818,11 +254100,7 @@ app_default.listen(port, (err) => {
     }
     const retiredCount = await retireRemovedProducts();
     if (retiredCount > 0) logger.info({ retiredCount }, "Removed products retired");
-    return seedReviews();
-  }).then((r) => {
-    if (r.seeded) logger.info({ count: r.count }, "Reviews seeded");
-    else logger.info({ reason: r.reason }, "Reviews seed skipped");
-  }).catch((err2) => logger.error({ err: err2 }, "Catalog/reviews seed failed"));
+  }).catch((err2) => logger.error({ err: err2 }, "Catalog seed failed"));
   seedBlog().catch((err2) => logger.error({ err: err2 }, "Blog seed failed"));
   seedBlogPeptides().catch((err2) => logger.error({ err: err2 }, "Blog peptides seed failed"));
 });
