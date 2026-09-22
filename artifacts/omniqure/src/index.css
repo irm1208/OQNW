@@ -479,8 +479,8 @@ html.copy-protected [role="textbox"] {
 /* Card image height on very small screens */
 @media (max-width: 479px) {
   .product-card-grid {
-    grid-template-columns: minmax(0, 1fr) !important;
-    column-gap: 0 !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    column-gap: 8px !important;
     row-gap: 16px !important;
   }
 
@@ -497,6 +497,7 @@ html.copy-protected [role="textbox"] {
 
   .card-info {
     flex: 0 0 auto !important;
+    min-width: 0;
   }
 
   .card-info .mt-auto {
