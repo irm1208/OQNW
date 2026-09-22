@@ -452,13 +452,13 @@ export default function ProductPage() {
 
               {/* Product image — scales with screen */}
               <div
-                className="flex items-center justify-center"
+                className="product-detail-image-panel flex items-center justify-center"
                 style={{ height: "clamp(200px, 40vw, 380px)", padding: "8px", backgroundColor: "#fff", position: "relative" }}
               >
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="object-contain"
+                  className="product-detail-image object-contain"
                   style={{ width: "100%", height: "100%" }}
                   onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = "0.2"; }}
                 />

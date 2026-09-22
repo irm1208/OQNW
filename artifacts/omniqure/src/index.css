@@ -503,6 +503,23 @@ html.copy-protected [role="textbox"] {
   }
 }
 
+/* Product detail artwork — preserve the portrait catalogue-card ratio on
+   narrow screens so the embedded product text is readable instead of being
+   letterboxed inside the old 200px image slot. */
+@media (max-width: 640px) {
+  .product-detail-image-panel {
+    height: auto !important;
+    aspect-ratio: 1122 / 1472;
+    padding: 0 !important;
+  }
+
+  .product-detail-image {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
+}
+
 /* Touch targets */
 @media (max-width: 768px) {
   button, a {
