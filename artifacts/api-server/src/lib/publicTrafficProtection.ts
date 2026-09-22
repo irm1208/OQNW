@@ -4,7 +4,7 @@ import { blockedIpsTable, publicTrafficEventsTable } from "@workspace/db/schema"
 import { eq } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 
-export type PublicResourceKind = "catalogue" | "blog" | "reviews" | "image" | "sitemap";
+export type PublicResourceKind = "catalogue" | "blog" | "image" | "sitemap";
 
 type TrafficState = {
   requestCount: number;
@@ -23,7 +23,6 @@ type TrafficDecision = {
 const LIMITS: Record<PublicResourceKind, { requestsPerMinute: number; uniquePaths: number }> = {
   catalogue: { requestsPerMinute: 90, uniquePaths: 80 },
   blog: { requestsPerMinute: 45, uniquePaths: 40 },
-  reviews: { requestsPerMinute: 60, uniquePaths: 50 },
   image: { requestsPerMinute: 180, uniquePaths: 160 },
   sitemap: { requestsPerMinute: 12, uniquePaths: 4 },
 };
@@ -50,7 +49,6 @@ export function resourceKindForPath(path: string): PublicResourceKind | null {
   if (/^\/api\/catalogue-assets\/.+\.(?:avif|gif|jpe?g|png|svg|webp|ico)$/i.test(pathname)) return "image";
   if (/^\/api\/products(?:\/[^/]+)?(?:\/related)?$/.test(pathname)) return "catalogue";
   if (/^\/api\/blog\/posts(?:\/[^/]+)?$/.test(pathname)) return "blog";
-  if (/^\/api\/products\/[^/]+\/reviews$/.test(pathname)) return "reviews";
   if (/\.(?:avif|gif|jpe?g|png|svg|webp|ico)$/i.test(pathname)) return "image";
   return null;
 }

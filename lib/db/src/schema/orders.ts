@@ -63,7 +63,6 @@ export const ordersTable = pgTable("orders", {
   fraudReviewNote: text("fraud_review_note"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
-  reviewRequestSentAt: timestamp("review_request_sent_at", { withTimezone: true }),
 });
 
 export const insertOrderSchema = createInsertSchema(ordersTable).omit({

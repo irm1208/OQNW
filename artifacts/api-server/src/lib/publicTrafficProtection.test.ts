@@ -15,7 +15,6 @@ test("classifies only public extraction routes", () => {
   assert.equal(resourceKindForPath("/api/products"), "catalogue");
   assert.equal(resourceKindForPath("/api/products/bpc-157-5mg"), "catalogue");
   assert.equal(resourceKindForPath("/api/products/3/related"), "catalogue");
-  assert.equal(resourceKindForPath("/api/products/3/reviews"), "reviews");
   assert.equal(resourceKindForPath("/api/blog/posts?limit=12"), "blog");
   assert.equal(resourceKindForPath("/api/blog/posts/purity-testing"), "blog");
   assert.equal(resourceKindForPath("/sitemap.xml"), "sitemap");
@@ -53,7 +52,7 @@ test("admin image round trips stay canonical and public URLs are prefixed once",
   );
   assert.equal(
     toPublicCatalogueImageUrl("/api/catalogue-assets/products/1.jpg"),
-    "/api/catalogue-assets/products/1.jpg?v=2026-09-20-catalogue-final-cards",
+    "/api/catalogue-assets/products/1.jpg?v=2026-09-21-bac-water-10ml",
   );
 });
 

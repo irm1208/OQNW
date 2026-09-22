@@ -27,7 +27,6 @@ const TYPE_LABELS: Record<string, { label: string; color: string }> = {
   low_stock:         { label: "Low Stock",           color: "text-red-700 border-red-200 bg-red-50" },
   abandoned_cart:    { label: "Abandoned Cart",      color: "text-yellow-700 border-yellow-200 bg-yellow-50" },
   back_in_stock:     { label: "Back in Stock",       color: "text-teal-700 border-teal-200 bg-teal-50" },
-  review_request:    { label: "Review Request",      color: "text-slate-700 border-slate-200 bg-slate-50" },
   referral_reward:   { label: "Referral Reward",     color: "text-pink-700 border-pink-200 bg-pink-50" },
 };
 

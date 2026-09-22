@@ -6,7 +6,6 @@ import {
   ordersTable,
   orderItemsTable,
   wishlistsTable,
-  productReviewsTable,
   loyaltyTransactionsTable,
   stockAlertsTable,
   subscriptionsTable,
@@ -35,9 +34,8 @@ router.get("/admin/customers/:id/gdpr-export", async (req: Request, res: Respons
     const [customer] = await db.select().from(customersTable).where(eq(customersTable.id, customerId)).limit(1);
     if (!customer) { res.status(404).json({ error: "Customer not found" }); return; }
 
-    const [orders, reviews, loyalty, alerts, subs] = await Promise.all([
+    const [orders, loyalty, alerts, subs] = await Promise.all([
       db.select().from(ordersTable).where(eq(ordersTable.customerId, customerId)).orderBy(desc(ordersTable.createdAt)),
-      db.select().from(productReviewsTable).where(eq(productReviewsTable.customerId, customerId)),
       db.select().from(loyaltyTransactionsTable).where(eq(loyaltyTransactionsTable.customerId, customerId)),
       db.select().from(stockAlertsTable).where(eq(stockAlertsTable.customerEmail, customer.email)),
       db.select().from(subscriptionsTable).where(eq(subscriptionsTable.customerId, customerId)),
@@ -85,7 +83,6 @@ router.get("/admin/customers/:id/gdpr-export", async (req: Request, res: Respons
           priceGbp: parseFloat(String(i.priceGbp)),
         })),
       })),
-      reviews: reviews.map(r => ({ productId: r.productId, rating: r.rating, title: r.title, body: r.body, createdAt: r.createdAt })),
       loyaltyTransactions: loyalty.map(t => ({ points: t.points, reason: t.description, createdAt: t.createdAt })),
       stockAlerts: alerts.map(a => ({ productId: a.productId, productName: a.productName, createdAt: a.createdAt })),
       subscriptions: subs.map(s => ({ items: s.itemsJson, status: s.status, createdAt: s.createdAt })),

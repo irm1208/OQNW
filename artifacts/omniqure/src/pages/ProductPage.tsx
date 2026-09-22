@@ -17,7 +17,6 @@ import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useSEO, SITE_URL } from "@/hooks/useSEO";
 import { getProductSeoMetadata, getPublicProductPath } from "@workspace/api-client-react";
-import ReviewsCarousel, { type ReviewItem } from "@/components/ReviewsCarousel";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -29,14 +28,6 @@ function parseBaseName(name: string): { base: string; strength: string } {
   if (match) return { base: match[1].trim(), strength: match[2].trim() };
   return { base: name, strength: "" };
 }
-
-type ReviewData = {
-  reviews: ReviewItem[];
-  summary: {
-    avgRating: number | null;
-    totalCount: number;
-  };
-};
 
 const VOLUME_TIERS = [
   { min: 3,  range: "3–4", label: "Free 10ml BAC water ampule" },
@@ -156,44 +147,6 @@ export default function ProductPage() {
   const { customer } = useCustomerAuth();
   const { formatPrice } = useCurrency();
   const { toggle: toggleWishlist, has: inWishlist } = useWishlist();
-  const [reviewData, setReviewData] = useState<ReviewData | null>(null);
-
-  useEffect(() => {
-    if (!product) {
-      setReviewData(null);
-      return;
-    }
-
-    let cancelled = false;
-    setReviewData(null);
-    const refreshReviewSummary = () => {
-      if (document.visibilityState !== "visible") return;
-      void fetch(apiUrl(`products/${product.id}/reviews`), {
-        credentials: "include",
-        cache: "no-store",
-      })
-        .then((response) => {
-          if (!response.ok) throw new Error("Failed to load review summary");
-          return response.json() as Promise<ReviewData>;
-        })
-        .then((data) => {
-          if (!cancelled) setReviewData(data);
-        })
-        .catch(() => {
-          if (!cancelled) setReviewData(null);
-        });
-    };
-    refreshReviewSummary();
-    const interval = window.setInterval(refreshReviewSummary, 15_000);
-    window.addEventListener("focus", refreshReviewSummary);
-
-    return () => {
-      cancelled = true;
-      window.clearInterval(interval);
-      window.removeEventListener("focus", refreshReviewSummary);
-    };
-  }, [product?.id]);
-
   // SEO — computed unconditionally (before any early return)
   const seoMetadata = getProductSeoMetadata({
     name: product?.name,
@@ -226,13 +179,6 @@ export default function ProductPage() {
       category: product.category,
       purity: product.purity ?? "",
       availability: seoAvailability as "InStock" | "OutOfStock" | "LimitedAvailability",
-       aggregateRating:
-         reviewData?.summary.avgRating !== null && reviewData?.summary.avgRating !== undefined
-           ? {
-               ratingValue: reviewData.summary.avgRating,
-               reviewCount: reviewData.summary.totalCount,
-             }
-           : null,
     } : null,
     breadcrumbs: product ? [
       { name: "Home", path: "/" },
@@ -1049,26 +995,6 @@ export default function ProductPage() {
             </div>
           </div>
         </div>
-
-        {reviewData && reviewData.reviews.length > 0 && (
-          <section
-            className="rounded-2xl p-5 md:p-7 mb-8"
-            style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5" }}
-          >
-            <div className="flex items-end justify-between gap-4 mb-5">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#1B5CB5" }}>
-                  Verified customer feedback
-                </p>
-                <h2 className="text-xl font-bold" style={{ color: "#0F172A" }}>Customer Reviews</h2>
-              </div>
-              <p className="text-sm font-semibold" style={{ color: "#475569" }}>
-                {reviewData.summary.avgRating?.toFixed(1)} / 5 · {reviewData.summary.totalCount} review{reviewData.summary.totalCount === 1 ? "" : "s"}
-              </p>
-            </div>
-            <ReviewsCarousel reviews={reviewData.reviews} />
-          </section>
-        )}
 
         {/* Recently Viewed */}
         <RecentlyViewed excludeId={product.id} />

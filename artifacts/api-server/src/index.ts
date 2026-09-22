@@ -1,8 +1,6 @@
 import app from "./app";
 import { logger } from "./lib/logger";
 import { startAbandonedCartJob } from "./lib/abandonedCartJob";
-import { startReviewRequestJob } from "./lib/reviewRequestJob";
-import { seedReviews } from "./lib/seed-reviews";
 import { seedBlog } from "./lib/seed-blog";
 import { seedBlogPeptides } from "./lib/seed-blog-peptides";
 import { seedProductsCatalog } from "./lib/seed-catalog";
@@ -35,12 +33,11 @@ app.listen(port, (err) => {
 
   logger.info({ port }, "Server listening");
   startAbandonedCartJob();
-  startReviewRequestJob();
   startCryptoReconciliationJob();
   startWallidReconciliationJob();
   startAdminAlertReadCleanupJob();
   startDatabaseBackupJob();
-  // Seed catalog first (reviews depend on published products existing)
+  // Seed catalog before applying dependent startup data.
   seedProductsCatalog()
     .then(async (r) => {
       if (r.seeded) logger.info({ count: r.count }, "Products catalog seeded");
@@ -51,13 +48,8 @@ app.listen(port, (err) => {
       }
       const retiredCount = await retireRemovedProducts();
       if (retiredCount > 0) logger.info({ retiredCount }, "Removed products retired");
-      return seedReviews();
     })
-    .then((r) => {
-      if (r.seeded) logger.info({ count: r.count }, "Reviews seeded");
-      else logger.info({ reason: r.reason }, "Reviews seed skipped");
-    })
-    .catch((err) => logger.error({ err }, "Catalog/reviews seed failed"));
+    .catch((err) => logger.error({ err }, "Catalog seed failed"));
   seedBlog().catch((err) => logger.error({ err }, "Blog seed failed"));
   seedBlogPeptides().catch((err) => logger.error({ err }, "Blog peptides seed failed"));
 });

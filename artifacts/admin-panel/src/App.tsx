@@ -12,7 +12,6 @@ import CustomerDetail from "@/pages/CustomerDetail";
 import Products from "@/pages/Products";
 import Discounts from "@/pages/Discounts";
 import Returns from "@/pages/Returns";
-import Reviews from "@/pages/Reviews";
 import AbandonedCarts from "@/pages/AbandonedCarts";
 import EmailLog from "@/pages/EmailLog";
 import Loyalty from "@/pages/Loyalty";
@@ -143,11 +142,6 @@ function AppRoutes() {
       <Route path="/returns">
         <AdminLayout>
           <Returns />
-        </AdminLayout>
-      </Route>
-      <Route path="/reviews">
-        <AdminLayout>
-          <Reviews />
         </AdminLayout>
       </Route>
       <Route path="/abandoned-carts">

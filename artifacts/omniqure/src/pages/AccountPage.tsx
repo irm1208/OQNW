@@ -6,7 +6,7 @@ import {
   ShoppingBag, Clock, Eye, EyeOff, CheckCircle2,
   AlertCircle, Truck, Zap, FlaskConical, Heart, RotateCcw, X,
   Users, Copy, CheckCheck, Share2,
-  Repeat, Award, Gift, TrendingUp, Star, ExternalLink,
+  Repeat, Award, Gift, TrendingUp, ExternalLink,
 } from "lucide-react";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -1219,7 +1219,6 @@ export default function AccountPage() {
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px" }}>
                         {[
                           { icon: <ShoppingBag size={16} style={{ color: "#1B5CB5" }} />, title: "Make a purchase", desc: "1 pt for every £1 you spend", bg: "#EFF6FF" },
-                          { icon: <Star size={16} style={{ color: "#F59E0B" }} />, title: "Leave a review", desc: "+50 pts once it's approved", bg: "#FFFBEB" },
                           { icon: <Gift size={16} style={{ color: "#059669" }} />, title: "Create an account", desc: "+50 pts welcome bonus", bg: "#F0FDF4" },
                           { icon: <Users size={16} style={{ color: "#7C3AED" }} />, title: "Refer a friend", desc: "You and your friend both earn £25 credit each", bg: "#F5F3FF" },
                         ].map((w) => (

@@ -1346,59 +1346,6 @@ export async function sendBackInStockEmail(data: BackInStockEmailData): Promise<
   }
 }
 
-export interface ReviewRequestItem {
-  productId: number;
-  productName: string;
-}
-
-export interface ReviewRequestEmailData {
-  customerEmail: string;
-  customerName: string;
-  orderNumber: string;
-  items: ReviewRequestItem[];
-}
-
-export async function sendReviewRequestEmail(data: ReviewRequestEmailData): Promise<void> {
-  const siteUrl = SITE_URL;
-  const subject = `${data.customerName.split(" ")[0]}, how was your order ${data.orderNumber}?`;
-  const rows = data.items.map(item => `
-    <tr>
-      <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#1e293b;">${item.productName}</td>
-      <td style="padding:10px 0;border-bottom:1px solid #f1f5f9;text-align:right;">
-        <a href="${siteUrl}/product/${item.productId}#reviews" style="display:inline-block;background:#f1f5f9;color:#1e293b;padding:5px 14px;border-radius:20px;text-decoration:none;font-size:12px;font-weight:600;border:1px solid #e2e8f0;">Leave a Review</a>
-      </td>
-    </tr>`).join("");
-
-  const body = `
-    <h2 style="margin:0 0 8px;font-size:22px;color:#0f172a;">How did it go?</h2>
-    <p style="margin:0 0 24px;font-size:14px;color:#64748b;">Hi ${data.customerName.split(" ")[0]}, it's been a week since your order <strong>${data.orderNumber}</strong> was delivered. We'd love to hear how your research went.</p>
-
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
-      <tr>
-        <th style="text-align:left;font-size:12px;color:#94a3b8;font-weight:600;padding-bottom:8px;border-bottom:2px solid #e2e8f0;">PRODUCT</th>
-        <th style="text-align:right;font-size:12px;color:#94a3b8;font-weight:600;padding-bottom:8px;border-bottom:2px solid #e2e8f0;"></th>
-      </tr>
-      ${rows}
-    </table>
-
-    <p style="margin:0;font-size:12px;color:#94a3b8;">Your reviews help other researchers make informed decisions. Thank you for your support.</p>
-  `;
-
-  try {
-    const result = await getResend().emails.send({
-      from: FROM_ADDRESS,
-      to: data.customerEmail,
-      subject,
-      html: baseTemplate("Share Your Research Experience", body),
-    });
-    logger.info({ email: data.customerEmail, orderNumber: data.orderNumber }, "Review request email sent");
-    await logEmail({ toEmail: data.customerEmail, subject, type: "review_request", status: "sent", resendId: result.data?.id, orderNumber: data.orderNumber });
-  } catch (err) {
-    logger.error({ err }, "Failed to send review request email");
-    await logEmail({ toEmail: data.customerEmail, subject, type: "review_request", status: "failed", orderNumber: data.orderNumber });
-  }
-}
-
 export async function sendReferralReward(data: {
   referrerName: string;
   referrerEmail: string;

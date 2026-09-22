@@ -52,7 +52,6 @@ const navigation: NavItem[] = [
     label: "Returns", icon: RotateCcw, isGroup: true,
     items: [
       { href: "/returns", label: "Returns" },
-      { href: "/reviews", label: "Reviews" },
     ]
   },
   {

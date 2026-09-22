@@ -230,7 +230,6 @@ html.copy-protected [role="textbox"] {
   to   { opacity: 1; }
 }
 
-
 @keyframes shimmer {
   0%   { background-position: -200% center; }
   100% { background-position: 200% center; }
@@ -982,53 +981,6 @@ body.has-cart-preview-bar main {
   padding-bottom: 64px;
 }
 
-/* ── TESTIMONIALS CAROUSEL MOBILE ──────────────────────────── */
-
-@media (max-width: 640px) {
-  .testimonial-nav-btn {
-    display: none !important;
-  }
-
-  /* Section padding */
-  .home-section-testimonials {
-    padding-top: 32px !important;
-    padding-bottom: 32px !important;
-  }
-
-  /* Header block — tighter gap and smaller sub-text */
-  .testimonial-section-header {
-    margin-bottom: 20px !important;
-  }
-  .testimonial-section-header h2 {
-    font-size: 20px !important;
-    margin-bottom: 6px !important;
-  }
-  .testimonial-section-header p {
-    font-size: 12px !important;
-  }
-  .testimonial-section-header .flex.justify-center {
-    margin-bottom: 10px !important;
-  }
-
-  /* Card itself */
-  .testimonial-card {
-    padding: 14px !important;
-    border-radius: 12px !important;
-  }
-
-  /* Rating / stats bar at the bottom */
-  .testimonial-rating-bar {
-    margin-top: 24px !important;
-    padding: 16px 20px !important;
-    gap: 20px !important;
-    border-radius: 12px !important;
-  }
-  .testimonial-rating-bar span[style*="font-size: 56px"],
-  .testimonial-rating-bar span[style*="fontSize: 56px"] {
-    font-size: 36px !important;
-  }
-}
-
 /* ── HOME SECTION PADDING — MOBILE ─────────────────────────── */
 
 @media (max-width: 640px) {
@@ -1051,13 +1003,6 @@ body.has-cart-preview-bar main {
   }
   .home-section-why h2 {
     font-size: 24px !important;
-  }
-  .home-section-testimonials {
-    padding-top: 52px !important;
-    padding-bottom: 52px !important;
-  }
-  .home-section-testimonials .text-center.mb-14 {
-    margin-bottom: 32px !important;
   }
 }
 
@@ -1127,14 +1072,6 @@ body.has-cart-preview-bar main {
   }
 }
 
-/* ── TESTIMONIAL RATING BAR STATS — TIGHTER ON SMALL ─────────── */
-
-@media (max-width: 420px) {
-  .rating-bar-stat p:first-child {
-    font-size: 20px !important;
-  }
-}
-
 /* ── ROUND 2: FURTHER MOBILE DENSITY PASS ────────────────────── */
 
 /* Featured Peptides grid — row gaps were 80/96/112px, far too tall on
@@ -1143,14 +1080,6 @@ body.has-cart-preview-bar main {
   .featured-grid {
     row-gap: 28px !important;
     column-gap: 12px !important;
-  }
-}
-
-/* Plain white spacer before testimonials — was a fixed 32px on every
-   viewport; shrink it on mobile since sections around it already tightened. */
-@media (max-width: 640px) {
-  .home-spacer-32 {
-    height: 16px !important;
   }
 }
 

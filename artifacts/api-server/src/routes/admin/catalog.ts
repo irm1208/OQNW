@@ -4,7 +4,6 @@ import { db } from "@workspace/db";
 import { productsCatalogTable, productsInventoryTable } from "@workspace/db";
 import { eq, ilike, and, ne, notInArray, isNull } from "drizzle-orm";
 import { seedProductsCatalog } from "../../lib/seed-catalog";
-import { seedReviews } from "../../lib/seed-reviews";
 import { hasJanoshikReport, JANOSHIK_REPORTED_PRODUCT_SLUGS } from "../../lib/janoshikReports";
 import {
   isRetiredProductSlug,
@@ -157,7 +156,6 @@ async function ensureSeeded() {
   if (!seeded) {
     await seedProductsCatalog();
     await retireRemovedProducts();
-    await seedReviews();
     seeded = true;
   }
 }

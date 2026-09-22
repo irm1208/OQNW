@@ -100,12 +100,12 @@ const initialTasks: Task[] = [
   },
   {
     id: 4,
-    title: "Approve 3 customer reviews",
-    detail: "New since yesterday afternoon",
-    context: "Customers / Reviews",
+    title: "Resolve 3 stock alerts",
+    detail: "Low-stock items need attention",
+    context: "Catalogue / Stock Alerts",
     age: "1 hr",
     tone: "blue",
-    icon: Users,
+    icon: Package,
   },
 ];
 
