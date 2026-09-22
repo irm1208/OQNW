@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import {
@@ -12,13 +12,10 @@ import { useProducts } from "@/context/ProductsContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
-import bundleAndSaveHeroImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_56_59_PM_1790107098667.png";
 import bundleElectricHeroImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_56_59_PM_1790107098667.png";
 import heroContentImg from "@assets/ChatGPT_Image_Sep_22,_2026,_07_46_36_PM_(1)_1790102815644.png";
-import heroReferralImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_19_30_PM_1790104797805.png";
 import heroAffiliateImg from "@assets/ChatGPT_Image_Sep_22,_2026,_10_41_11_PM_1790113277868.png";
 import heroMobileContentImg from "@assets/ChatGPT_Image_Sep_22,_2026,_07_46_37_PM_(2)_1790102815645.png";
-import heroMobileReferralImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_19_37_PM_1790104797805.png";
 import heroMobileBundleImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_58_12_PM_1790107107804.png";
 import heroMobileAffiliateImg from "@assets/ChatGPT_Image_Sep_22,_2026,_10_58_38_PM_1790114325435.png";
 
@@ -40,204 +37,8 @@ const REFERRAL_CREDIT_CAP: Record<CurrencyCode, string> = {
   CZK: "Kč1,450", HUF: "Ft22,000", AED: "د.إ240",
 };
 
-const RESEARCH_AREAS = [
-  {
-    n: "01", tag: "Recovery",
-    title: "Tissue Repair & Recovery",
-    peptides: "BPC-157 · TB-500",
-    desc: "Studied for roles in accelerating tissue remodelling, tendon healing, and cellular repair cascades in controlled laboratory models.",
-    img: "https://infomeddnews.com/wp-content/uploads/2022/05/Physiotherapy-696x464.jpg",
-    accent: "#60A5FA",
-  },
-  {
-    n: "02", tag: "Cognitive",
-    title: "Brain & Cognitive Health",
-    peptides: "Semax · Selank · P21",
-    desc: "Investigated for neuroprotective mechanisms, BDNF upregulation, and synaptic plasticity in neurological research settings.",
-    img: "https://media.istockphoto.com/id/97506007/photo/mri-scan-of-brain.jpg?s=612x612&w=0&k=20&c=C5ttWq3Fu7I93zx5jOkHlAZ1ILuHslWWRzNMTToOKHA=",
-    accent: "#93C5FD",
-  },
-  {
-    n: "03", tag: "Metabolic",
-    title: "Weight & Metabolic Research",
-    peptides: "AOD-9604",
-    desc: "GLP-1 receptor agonist research — investigated for appetite signalling, adipogenesis pathways, and lipid metabolism models.",
-    img: "/research-weight-metabolic.jpg?v=1",
-    accent: "#34D399",
-  },
-  {
-    n: "04", tag: "Skin",
-    title: "Skin & Collagen Biology",
-    peptides: "GHK-Cu",
-    desc: "Researched for collagen synthesis stimulation, oxidative stress modulation, and dermal fibroblast activity in skin biology studies.",
-    img: "https://media.gettyimages.com/id/1024433198/photo/close-up-marco-shots-of-body-parts.jpg?s=612x612&w=0&k=20&c=zy5-5uHIAp7-9ZxrG998qhxv0CLC-cjAISGFb_BfrFQ=",
-    accent: "#38BDF8",
-  },
-  {
-    n: "05", tag: "Hormonal",
-    title: "Growth Hormone Axis",
-    peptides: "CJC-1295 · Ipamorelin · GHRP-6",
-    desc: "Investigated for GHRH receptor binding, pulsatile GH secretion mimicry, and downstream IGF-1 pathway research.",
-    img: "https://kin.uncg.edu/wp-content/uploads/2023/10/Exercise-and-Endocrinology-Lab-1024x576.jpg",
-    accent: "#3B82F6",
-  },
-  {
-    n: "06", tag: "Immune",
-    title: "Immune Regulation",
-    peptides: "Thymosin α-1 · KPV · LL-37",
-    desc: "Studied for T-cell maturation pathways, cytokine modulation, and innate immune response interactions in controlled models.",
-    img: "https://media.istockphoto.com/id/641212596/photo/white-blood-cells.jpg?s=612x612&w=0&k=20&c=H4jXuqjqaQdYKc1HjvNNbtVFRj9SdBYQWNe_pPmQtoY=",
-    accent: "#93C5FD",
-  },
-  {
-    n: "07", tag: "Longevity",
-    title: "Longevity & Anti-Ageing",
-    peptides: "Epithalon · SS-31 · MOTS-C",
-    desc: "Investigated for telomerase activation, mitochondrial protection, and cellular senescence pathways in longevity research.",
-    img: "https://images.presentationgo.com/2025/04/dna-strand-break-3d.jpg",
-    accent: "#6EE7B7",
-  },
-  {
-    n: "08", tag: "Cardiovascular",
-    title: "Cardiovascular Research",
-    peptides: "BPC-157 · TB-500 · VIP",
-    desc: "Studied for angiogenesis pathway interactions, cardiac cell protection mechanisms, and vascular tone regulation in laboratory models.",
-    img: "https://media.istockphoto.com/id/1266227507/photo/human-heart-with-blood-vessels.jpg?s=612x612&w=0&k=20&c=sj63aWFsM6Z6Qovl5jUcQoOR4qG6otKN5hFCi0n9JGY=",
-    accent: "#1B5CB5",
-  },
-];
-
-function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured = false }: {
-  n: string; tag: string; title: string; peptides: string; desc: string;
-  img: string; accent: string; featured?: boolean;
-}) {
-  const [hovered, setHovered] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const isOpen = hovered || expanded;
-  const cardHeight = featured ? "100%" : 220;
-  return (
-    <div
-      className={featured ? "" : `research-card${expanded ? " research-card--expanded" : ""}`}
-      style={{
-        position: "relative", overflow: "hidden",
-        height: featured ? "100%" : cardHeight,
-        minHeight: featured ? 400 : undefined,
-        background: "#071A4A", cursor: "default",
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onClick={() => setExpanded(value => !value)}
-      onKeyDown={event => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          setExpanded(value => !value);
-        }
-      }}
-      role="button"
-      tabIndex={0}
-      aria-expanded={expanded}
-    >
-      {/* Photo */}
-      <img
-        src={img} alt={title}
-        style={{
-          position: "absolute", inset: 0, width: "100%", height: "100%",
-          objectFit: "cover",
-          filter: `saturate(${isOpen ? 0.55 : 0.35}) brightness(${isOpen ? 0.7 : 0.55})`,
-          transform: isOpen ? "scale(1.05)" : "scale(1)",
-          transition: "transform 0.7s ease, filter 0.5s ease",
-        }}
-      />
-      {/* Gradient overlay — stronger at bottom */}
-      <div style={{
-        position: "absolute", inset: 0,
-        background: "linear-gradient(0deg, rgba(4,10,20,0.96) 0%, rgba(4,10,20,0.55) 45%, rgba(4,10,20,0.15) 100%)",
-      }} />
-      {/* Left accent bar — slides in on hover */}
-      <div style={{
-        position: "absolute", left: 0, top: 0,
-        width: 3, height: isOpen ? "100%" : 0,
-        background: `linear-gradient(180deg, ${accent}, ${accent}66)`,
-        transition: "height 0.45s cubic-bezier(0.16,1,0.3,1)",
-      }} />
-
-      {/* Bottom content */}
-      <div style={{
-        position: "absolute", bottom: 0, left: 0, right: 0,
-        padding: featured ? "28px 32px" : "22px 24px",
-      }}>
-        <span style={{
-          display: "block", fontSize: 9, fontWeight: 700,
-          color: accent, letterSpacing: "0.3em", textTransform: "uppercase",
-          marginBottom: 8,
-          opacity: isOpen ? 0.9 : 0.55,
-          transition: "opacity 0.3s",
-        }}>{n}</span>
-
-        <h3 style={{
-          fontSize: featured ? 22 : 17, fontWeight: 800,
-          color: "#FFFFFF", lineHeight: 1.2, margin: "0 0 0 0",
-          letterSpacing: "-0.02em",
-        }}>{title}</h3>
-
-        {/* Peptides + desc — slide up on hover */}
-        <div style={{
-          maxHeight: isOpen ? 180 : 0,
-          overflow: "hidden",
-          transition: "max-height 0.45s cubic-bezier(0.16,1,0.3,1)",
-        }}>
-          <p style={{
-            fontSize: 11.5, color: "rgba(255,255,255,0.60)", lineHeight: 1.65,
-            margin: "10px 0 8px",
-          }}>{desc}</p>
-          <p style={{
-            fontSize: 10, fontWeight: 600, letterSpacing: "0.08em",
-            color: accent, margin: 0,
-          }}>{peptides}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
 const featuredIds = ["4", "7", "18", "37", "40", "62", "64", "72", "82", "85"];
 
-
-const pillars = [
-  {
-    num: "01",
-    icon: <FlaskConical size={24} />,
-    title: "Verified Purity",
-    body: "Every published independent result confirms 99%+ purity.",
-    color: "#1B5CB5",
-    bg: "#EEF4FF",
-  },
-  {
-    num: "02",
-    icon: <Award size={24} />,
-    title: "Independent Reports",
-    body: "Certificates of Analysis available for every product.",
-    color: "#059669",
-    bg: "#ECFDF5",
-  },
-  {
-    num: "03",
-    icon: <Shield size={24} />,
-    title: "Research Grade Only",
-    body: "All peptides manufactured under strict research-grade conditions for in-vitro research applications only.",
-    color: "#7C3AED",
-    bg: "#F5F3FF",
-  },
-  {
-    num: "04",
-    icon: <Truck size={24} />,
-    title: "Fast UK Dispatch",
-    body: "Orders placed before noon are dispatched same day in discreet, secure packaging to preserve integrity every step.",
-    color: "#0E7490",
-    bg: "#ECFEFF",
-  },
-];
 
 /* ── Hero Carousel ─────────────────────────────────────── */
 function ResponsiveHeroImage({
@@ -289,46 +90,6 @@ function HeroContentSlide() {
   );
 }
 
-function HeroReferralSlide() {
-  return (
-    <Link
-      href="/refer-a-friend"
-      style={{
-        display: "block",
-        width: "100%",
-        height: "100%",
-        background: "linear-gradient(to bottom, #E8EFF7, #F3F7FC)",
-      }}
-    >
-      <ResponsiveHeroImage
-        desktopSrc={heroReferralImg}
-        mobileSrc={heroMobileReferralImg}
-        alt="Refer a friend and earn £25 credit each, up to £50"
-      />
-    </Link>
-  );
-}
-
-function HeroBundleSlide() {
-  return (
-    <Link
-      href="/bundle-and-save"
-      style={{
-        display: "block",
-        width: "100%",
-        height: "100%",
-        background: "linear-gradient(to bottom, #DBDFEB, #EAECF6)",
-      }}
-    >
-      <ResponsiveHeroImage
-        desktopSrc={bundleAndSaveHeroImg}
-        mobileSrc={heroMobileBundleImg}
-        alt="Bundle and Save exclusive offers — free 10ml BAC water ampule on 3-4 peptides, 1 peptide free on 5-9 peptides, 2 peptides free on 10+ peptides"
-      />
-    </Link>
-  );
-}
-
 function HeroBundleElectricSlide() {
   return (
     <Link
@@ -374,7 +135,6 @@ const HERO_AUTOPLAY_MS = 6500;
 function HeroCarousel() {
   const slides = [
     { key: "content", render: () => <HeroContentSlide /> },
-    { key: "referral", render: () => <HeroReferralSlide /> },
     { key: "bundle-electric", render: () => <HeroBundleElectricSlide /> },
     { key: "affiliate", render: () => <HeroAffiliateSlide /> },
   ];
@@ -431,40 +191,6 @@ function HeroCarousel() {
         ))}
       </div>
     </div>
-  );
-}
-
-/* ── Molecule decoration SVG ─────────────────────────── */
-function MoleculeSVG() {
-  return (
-    <svg viewBox="0 0 340 340" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%" }}>
-      {/* Connecting lines */}
-      <line x1="170" y1="170" x2="80"  y2="90"  stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" />
-      <line x1="170" y1="170" x2="260" y2="90"  stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" />
-      <line x1="170" y1="170" x2="80"  y2="260" stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" />
-      <line x1="170" y1="170" x2="260" y2="260" stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" />
-      <line x1="80"  y1="90"  x2="260" y2="90"  stroke="rgba(255,255,255,0.1)"  strokeWidth="1" />
-      <line x1="80"  y1="260" x2="260" y2="260" stroke="rgba(255,255,255,0.1)"  strokeWidth="1" />
-      <line x1="170" y1="170" x2="170" y2="50"  stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
-      <line x1="170" y1="170" x2="170" y2="290" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
-      <line x1="170" y1="170" x2="50"  y2="170" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
-      <line x1="170" y1="170" x2="290" y2="170" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
-
-      {/* Outer nodes */}
-      <circle cx="80"  cy="90"  r="14" fill="rgba(147,197,253,0.22)" stroke="rgba(147,197,253,0.5)" strokeWidth="1.5" />
-      <circle cx="260" cy="90"  r="10" fill="rgba(165,243,252,0.18)" stroke="rgba(165,243,252,0.45)" strokeWidth="1.5" />
-      <circle cx="80"  cy="260" r="10" fill="rgba(165,243,252,0.18)" stroke="rgba(165,243,252,0.45)" strokeWidth="1.5" />
-      <circle cx="260" cy="260" r="14" fill="rgba(147,197,253,0.22)" stroke="rgba(147,197,253,0.5)" strokeWidth="1.5" />
-      <circle cx="170" cy="50"  r="8"  fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)"  strokeWidth="1.5" />
-      <circle cx="170" cy="290" r="8"  fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)"  strokeWidth="1.5" />
-      <circle cx="50"  cy="170" r="8"  fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)"  strokeWidth="1.5" />
-      <circle cx="290" cy="170" r="8"  fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)"  strokeWidth="1.5" />
-
-      {/* Center node */}
-      <circle cx="170" cy="170" r="28" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.25)" strokeWidth="2" />
-      <circle cx="170" cy="170" r="16" fill="rgba(147,197,253,0.3)"  stroke="rgba(147,197,253,0.7)"  strokeWidth="2" />
-      <circle cx="170" cy="170" r="6"  fill="rgba(255,255,255,0.9)" />
-    </svg>
   );
 }
 
@@ -639,153 +365,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── RESEARCH AREAS ────────────────────────────────────── */}
-      <section style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", borderTop: "3px solid #34D399" }}>
-        {/* ── Header strip ── */}
-        <div className="research-header" style={{ padding: "64px 0 48px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-          <div className="max-w-[1280px] mx-auto px-4 lg:px-8" style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
-            {/* Left */}
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
-                <div style={{ width: 32, height: 1, background: "linear-gradient(90deg, #60A5FA, #93C5FD)" }} />
-                <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.28em", color: "#93C5FD", margin: 0, opacity: 0.7 }}>Research Applications</p>
-              </div>
-              <h2 style={{ fontSize: "clamp(32px, 4.5vw, 56px)", fontWeight: 900, lineHeight: 1.04, letterSpacing: "-0.03em", color: "#FFFFFF", margin: 0 }}>
-                What peptides<br />
-                <span style={{ background: "linear-gradient(90deg, #60A5FA, #93C5FD)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                  are used for.
-                </span>
-              </h2>
-            </div>
-            {/* Right */}
-            <div style={{ maxWidth: 380 }}>
-              <p style={{ fontSize: 14.5, color: "rgba(255,255,255,0.60)", lineHeight: 1.78, marginBottom: 24 }}>
-                Each category below represents an active area of peptide investigation — from cellular repair mechanisms to longevity pathways. Hover any card to see which specific compounds are under study.
-              </p>
-              <Link
-                href="/all-peptides"
-                style={{
-                  display: "inline-flex", alignItems: "center", gap: 8,
-                  fontSize: 12, fontWeight: 700, textTransform: "uppercase",
-                  letterSpacing: "0.16em", color: "#93C5FD", textDecoration: "none",
-                }}
-              >
-                Browse All Compounds <ArrowRight size={14} />
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* ── Uniform 4×2 grid ── */}
-        <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: 1, background: "rgba(255,255,255,0.06)" }}>
-          {RESEARCH_AREAS.map(area => (
-            <ResearchAreaCard key={area.n} {...area} />
-          ))}
-        </div>
-
-        {/* ── Bottom CTA strip ── */}
-        <div className="research-cta-strip" style={{ padding: "28px 32px", borderTop: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
-          <div className="max-w-[1280px] mx-auto w-full" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", margin: 0, letterSpacing: "0.02em" }}>
-              All research applications listed for <strong style={{ color: "rgba(255,255,255,0.6)" }}>in-vitro laboratory use only</strong> — not for human consumption.
-            </p>
-            <Link
-              href="/all-peptides"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                background: "rgba(59,130,246,0.12)", border: "1px solid rgba(59,130,246,0.3)",
-                color: "#93C5FD", padding: "10px 22px", borderRadius: 8,
-                fontSize: 12, fontWeight: 700, textTransform: "uppercase",
-                letterSpacing: "0.14em", textDecoration: "none",
-              }}
-            >
-              Shop All 81 Peptides <ArrowRight size={13} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── WHY OMNIQURE ──────────────────────────────────────── */}
-      <section className="home-section-why home-section-pillars" style={{ backgroundColor: "#F7FAFF", padding: "68px 0", borderTop: "1px solid #E2E8F0" }}>
-        <div className="max-w-[1280px] mx-auto px-4">
-          <div className="home-section-pillars-header text-center mb-12">
-            <div className="inline-flex items-center gap-2 mb-2">
-              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #7C3AED, #A78BFA)", borderRadius: "2px" }} />
-              <p className="font-bold uppercase tracking-widest" style={{ fontSize: "11px", color: "#7C3AED", letterSpacing: "0.1em" }}>
-                OUR COMMITMENT
-              </p>
-              <div style={{ width: "16px", height: "3px", background: "linear-gradient(90deg, #A78BFA, #7C3AED)", borderRadius: "2px" }} />
-            </div>
-            <h2 className="font-bold" style={{ fontSize: "30px", color: "#0F172A", letterSpacing: "-0.02em" }}>
-              Why Choose OmniQure?
-            </h2>
-            <p style={{ fontSize: "15px", color: "#64748B", maxWidth: "520px", margin: "8px auto 0", lineHeight: 1.7 }}>
-              Every peptide we supply meets the highest standards in research-grade manufacturing, analytical verification, and quality-assured dispatch.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-7">
-            {pillars.map((p, i) => (
-              <div
-                key={i}
-                className="rounded-2xl relative overflow-hidden"
-                style={{
-                  backgroundColor: "#fff",
-                  border: "1.5px solid #E8EDF5",
-                  padding: "0",
-                  boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
-                  transition: "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
-                }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-                  (e.currentTarget as HTMLElement).style.boxShadow = `0 16px 40px ${p.color}18`;
-                  (e.currentTarget as HTMLElement).style.borderColor = p.color + "44";
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                  (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(15,23,42,0.04)";
-                  (e.currentTarget as HTMLElement).style.borderColor = "#E8EDF5";
-                }}
-              >
-                {/* Gradient top accent */}
-                <div style={{ height: "3px", background: `linear-gradient(90deg, ${p.color}, ${p.color}66)`, borderRadius: "12px 12px 0 0" }} />
-                <div style={{ padding: "26px 22px 22px" }}>
-                  {/* Number accent */}
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "18px",
-                      right: "18px",
-                      fontSize: "42px",
-                      fontWeight: 900,
-                      color: "#F1F5F9",
-                      lineHeight: 1,
-                      letterSpacing: "-0.04em",
-                      userSelect: "none",
-                    }}
-                  >
-                    {p.num}
-                  </span>
-
-                  <div
-                    className="flex items-center justify-center rounded-xl mb-4"
-                    style={{ width: "50px", height: "50px", backgroundColor: p.bg, color: p.color }}
-                  >
-                    {p.icon}
-                  </div>
-                  <h3 className="font-bold mb-2" style={{ fontSize: "15px", color: "#0F172A" }}>
-                    {p.title}
-                  </h3>
-                  <p style={{ fontSize: "13px", color: "#64748B", lineHeight: 1.65 }}>{p.body}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── REFER A FRIEND ────────────────────────────────────── */}
-      <div className="home-spacer-32" style={{ height: 32, background: "#fff" }} />
       <section className="home-section-refer py-8 md:py-[68px]" style={{
         background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
         position: "relative",
@@ -956,10 +536,6 @@ export default function HomePage() {
                 a: "All OmniQure peptides are HPLC-verified to ≥99% purity. Available independent testing results are published as Janoshik reports on the relevant product pages.",
               },
               {
-                q: "Do products have independent verification reports?",
-                a: "Available Janoshik reports include independent test results confirming product quality. They are published directly on the relevant product pages and are accessible before and after purchase — no physical paperwork is included with shipments.",
-              },
-              {
                 q: "Are these products approved for human use?",
                 a: "No. All OmniQure peptides are strictly for in-vitro research purposes only. They are not approved for human or veterinary use, are not medicines, and must not be administered to humans or animals. By purchasing, you confirm you are a qualified researcher using them solely for laboratory research.",
               },
@@ -972,16 +548,8 @@ export default function HomePage() {
                 a: "We accept pay by bank and cryptocurrency. Account credit, including referral credit, can also be applied to any order. Card payments are not currently supported.",
               },
               {
-                q: "How does the referral credit programme work?",
-                a: "When a friend signs up using your unique referral link and places their first order, you both receive £25 account credit once their order ships. There is no limit on the number of referrals you can make, and credit never expires. You can redeem it on any future order (up to your unredeemed balance cap).",
-              },
-              {
                 q: "What is your returns and refund policy?",
                 a: "Due to the nature of research chemicals, we cannot accept returns on opened or used products. If you receive a damaged or incorrect item, please contact our support team within 48 hours of delivery with photos and your order number — we will resolve it promptly.",
-              },
-              {
-                q: "Do you ship internationally?",
-                a: "Yes. We ship to most countries worldwide. International customers are responsible for ensuring compliance with local import regulations regarding research chemicals. Customs duties and taxes, if applicable, are the responsibility of the recipient.",
               },
             ] as { q: string; a: string }[]).map((item, i) => {
               const isOpen = faqOpenIdx === i;
