@@ -261,6 +261,7 @@ function HeroContentSlide() {
         {/* Full artwork — object-fit: contain keeps the complete ultra-wide image
             visible and avoids cropping the product labels on narrower screens. */}
         <img
+          className="hero-slide-image"
           src={heroContentImg}
           alt="OmniQure research peptide collection featuring labelled peptide vials and molecular structures"
           style={{
@@ -290,6 +291,7 @@ function HeroReferralSlide() {
       }}
     >
       <img
+        className="hero-slide-image"
         src={heroReferralImg}
         alt="Refer a friend and earn £25 credit each, up to £50"
         style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
@@ -310,6 +312,7 @@ function HeroBundleSlide() {
       }}
     >
       <img
+        className="hero-slide-image"
         src={bundleAndSaveHeroImg}
         alt="Bundle and Save exclusive offers — free 10ml BAC water ampule on 3-4 peptides, 1 peptide free on 5-9 peptides, 2 peptides free on 10+ peptides"
         style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
@@ -330,6 +333,7 @@ function HeroBundleElectricSlide() {
       }}
     >
       <img
+        className="hero-slide-image"
         src={bundleElectricHeroImg}
         alt="Bundle and Save — buy 3-4 peptides and get a free 10ml BAC water ampule, 5-9 get 1 free peptide, 10+ get 2 free peptides"
         style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
@@ -350,6 +354,7 @@ function HeroAffiliateSlide() {
       }}
     >
       <img
+        className="hero-slide-image"
         src={heroAffiliateImg}
         alt="Grow with OmniQure affiliate programme — earn commission, offer audience discounts, and unlock product rewards"
         style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}

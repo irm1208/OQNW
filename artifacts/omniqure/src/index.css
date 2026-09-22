@@ -552,14 +552,24 @@ html.copy-protected [role="textbox"] {
 }
 
 /* ── HOME HERO RESPONSIVE ────────────────────────────────── */
-/* Hero/marketing slide assets are ultra-wide and rendered with object-fit:
-   contain so they're never cropped. The carousel box uses the established
-   near-21:9 ratio at every breakpoint; each slide supplies its own matching
-   edge-color background for the small ratio differences between assets. */
+/* Hero/marketing slide assets are ultra-wide. Desktop keeps the complete
+   banner visible; mobile uses a taller frame and a controlled crop so the
+   artwork stays readable at phone width. */
 
 .hero-carousel {
   aspect-ratio: 6336 / 2688 !important;
   min-height: 0 !important;
+}
+
+@media (max-width: 767px) {
+  .hero-carousel {
+    aspect-ratio: 16 / 9 !important;
+  }
+
+  .hero-slide-image {
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
 }
 
 /* Dots row: keep tight to the bottom edge but never collide with the CTA
