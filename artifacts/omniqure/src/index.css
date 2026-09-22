@@ -485,13 +485,14 @@ html.copy-protected [role="textbox"] {
   }
 
   .card-product-img {
-    height: 300px !important;
+    height: auto !important;
+    aspect-ratio: 4 / 5;
   }
 
   .card-product-img img {
     padding: 0 !important;
-    object-fit: cover !important;
-    object-position: center 42% !important;
+    object-fit: contain !important;
+    object-position: center center !important;
   }
 
   .card-info {
