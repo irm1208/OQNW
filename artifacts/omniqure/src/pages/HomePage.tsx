@@ -161,22 +161,6 @@ function ResearchAreaCard({ n, tag, title, peptides, desc, img, accent, featured
         transition: "height 0.45s cubic-bezier(0.16,1,0.3,1)",
       }} />
 
-      {/* Top: tag chip */}
-      <div style={{ position: "absolute", top: 18, left: 18, zIndex: 2 }}>
-        <span style={{
-          display: "inline-block", fontSize: 9, fontWeight: 700,
-          letterSpacing: "0.2em", textTransform: "uppercase",
-          color: "#FFFFFF",
-          background: `${accent}33`,
-          border: `1px solid ${accent}55`,
-          padding: "3px 10px",
-          backdropFilter: "blur(4px)",
-          opacity: isOpen ? 1 : 0,
-          transform: isOpen ? "translateY(0)" : "translateY(-6px)",
-          transition: "opacity 0.3s, transform 0.35s",
-        }}>{tag}</span>
-      </div>
-
       {/* Bottom content */}
       <div style={{
         position: "absolute", bottom: 0, left: 0, right: 0,
