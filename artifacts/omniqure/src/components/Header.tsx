@@ -300,7 +300,7 @@ export default function Header() {
   }
 
   const SearchBar = (
-    <div className="relative flex items-center">
+    <div className="header-search-control relative flex items-center">
       <input
         ref={inputRef}
         type="search"
@@ -327,7 +327,7 @@ export default function Header() {
         autoComplete="off"
       />
       <button
-        className="absolute right-0 h-8 w-9 sm:h-10 sm:w-11 flex items-center justify-center"
+        className="header-search-submit absolute right-0 h-8 w-9 sm:h-10 sm:w-11 flex items-center justify-center"
         style={{ color: "rgba(255,255,255,0.6)" }}
         onClick={() => {
           if (q) {
@@ -337,6 +337,7 @@ export default function Header() {
           }
         }}
       >
+        <span className="header-search-submit-label">Search</span>
         <Search size={16} />
       </button>
     </div>
@@ -345,7 +346,7 @@ export default function Header() {
   return (
     <header style={{ fontFamily: "'Arimo', Arial, sans-serif", transition: "filter 0.3s ease" }} className="sticky top-0 z-50">
       {/* Top bar */}
-      <div style={{
+      <div className="header-topbar" style={{
         background: scrolled
           ? "rgba(18,64,160,0.97)"
           : "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
@@ -355,7 +356,7 @@ export default function Header() {
         transition: "background 0.3s ease, box-shadow 0.3s ease",
         position: "relative", zIndex: 2,
       }}>
-        <div className="header-inner max-w-[1280px] mx-auto px-2 sm:px-4 py-1 sm:py-3 flex flex-wrap items-center gap-x-1.5 sm:gap-x-4 gap-y-1 sm:gap-y-2">
+          <div className="header-inner max-w-[1280px] mx-auto px-2 sm:px-4 py-1 sm:py-3 flex flex-wrap items-center gap-x-1.5 sm:gap-x-4 gap-y-1 sm:gap-y-2">
 
           {/* Hamburger — mobile only, left side */}
           <button
@@ -366,7 +367,7 @@ export default function Header() {
             aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-            <span className="sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Menu</span>
+            <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Menu</span>
           </button>
 
           {/* Logo */}
@@ -380,7 +381,7 @@ export default function Header() {
 
           {/* Search */}
           <div
-            className="order-3 sm:order-2 w-full sm:w-auto sm:flex-1 sm:max-w-[520px]"
+            className="header-search order-3 sm:order-2 w-full sm:w-auto sm:flex-1 sm:max-w-[520px]"
             ref={containerRef}
             style={{ position: "relative" }}
           >
@@ -522,7 +523,7 @@ export default function Header() {
             <div ref={currencyRef} style={{ position: "relative", flexShrink: 0 }}>
               <button
                 onClick={() => setCurrencyOpen(o => !o)}
-                className="header-currency-btn flex flex-col items-center sm:flex-row sm:gap-1"
+                className="header-currency-btn header-utility-button flex flex-col items-center sm:flex-row sm:gap-1"
                 style={{
                   padding: "4px 8px", borderRadius: "8px",
                   border: "1.5px solid rgba(255,255,255,0.25)",
@@ -530,8 +531,9 @@ export default function Header() {
                   cursor: "pointer", color: "#fff",
                 }}
               >
-                <span style={{ fontSize: "15px" }}>{currency.flag}</span>
-                <span className="sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Currency</span>
+                <span className="header-currency-flag" style={{ fontSize: "15px" }}>{currency.flag}</span>
+                <span className="header-currency-code-mobile" style={{ display: "none", fontSize: "10px", fontWeight: 700, letterSpacing: "0.05em" }}>{currency.code}</span>
+                <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Currency</span>
                 <span className="hidden sm:inline" style={{ fontSize: "13px", fontWeight: 600 }}>{currency.code}</span>
                 <span className="hidden sm:inline"><ChevronDown size={13} style={{ color: "rgba(255,255,255,0.6)" }} /></span>
               </button>
@@ -598,9 +600,9 @@ export default function Header() {
             {/* User: sign-in or logged-in menu */}
             {!loadingAuth && customer ? (
               <div ref={userMenuRef} style={{ position: "relative", flexShrink: 0 }}>
-                <button
+                  <button
                   onClick={() => setUserMenuOpen(o => !o)}
-                  className="flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-medium transition-colors"
+                    className="header-utility-button flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-medium transition-colors"
                   style={{
                     background: "none", border: "none", cursor: "pointer",
                     color: "rgba(255,255,255,0.9)", padding: 0,
@@ -613,7 +615,7 @@ export default function Header() {
                   }}>
                     <User size={14} color="#fff" />
                   </div>
-                  <span className="sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Account</span>
+                  <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Account</span>
                   <span className="hidden sm:inline" style={{ fontSize: "13px", fontWeight: 600, maxWidth: "100px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {customer.firstName}
                   </span>
@@ -714,7 +716,7 @@ export default function Header() {
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#ffffff"}
               >
                 <User size={18} />
-                <span className="sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Sign in</span>
+                <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Sign in</span>
                 <span className="hidden sm:inline">{loadingAuth ? "" : "Register / Sign in"}</span>
               </Link>
             )}
@@ -742,7 +744,7 @@ export default function Header() {
                   </span>
                 )}
               </span>
-              <span className="sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Wishlist</span>
+              <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Wishlist</span>
               <span className="hidden sm:inline">Wishlist</span>
             </Link>
 
@@ -769,7 +771,7 @@ export default function Header() {
                   </span>
                 )}
               </span>
-              <span className="sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Cart</span>
+              <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Cart</span>
               <span className="hidden sm:inline">My Cart</span>
             </Link>
 

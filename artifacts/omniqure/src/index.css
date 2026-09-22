@@ -170,36 +170,180 @@ div[class*="replit-ui-theme-root"] {
 }
 
 @media (max-width: 639px) {
+  .header-topbar {
+    background: #092348 !important;
+    box-shadow: 0 8px 26px rgba(9, 35, 72, 0.2) !important;
+  }
+
   .header-inner {
-    padding-left: 6px !important;
-    padding-right: 6px !important;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "menu logo actions"
+      "search search search";
+    align-items: center;
+    column-gap: 9px !important;
+    row-gap: 0 !important;
+    padding: 11px 13px 13px !important;
   }
 
   .header-menu-toggle {
+    grid-area: menu;
+    display: inline-flex !important;
+    width: 35px;
+    min-width: 35px;
+    gap: 3px;
     padding: 0 !important;
   }
 
-  .header-logo {
-    width: 170px;
-    max-height: 34px;
+  .header-logo-wrapper {
+    grid-area: logo;
+    min-width: 0;
+    padding: 2px 0 !important;
   }
 
-  .header-logo-wrapper {
-    padding: 4px 0;
+  .header-logo {
+    width: min(154px, 100%);
+    max-height: 31px;
+    filter: brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.16));
+  }
+
+  .header-search {
+    grid-area: search;
+    min-width: 0;
+    margin-top: 12px;
+    padding-top: 11px;
+    border-top: 1px solid rgba(205, 231, 244, 0.18);
   }
 
   .header-action-group {
+    grid-area: actions;
+    margin-left: 0 !important;
     gap: 4px !important;
   }
 
-  .header-currency-btn {
-    padding: 3px 6px !important;
+  .header-utility-button,
+  .header-icon-btn {
+    min-width: 34px !important;
+    width: auto !important;
+    height: 38px !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    padding: 4px 5px 3px !important;
+    border: 1px solid rgba(205, 231, 244, 0.26) !important;
+    border-radius: 7px !important;
+    background: transparent !important;
+    color: #f3f8fc !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    text-decoration: none;
   }
 
-  .header-icon-btn {
-    width: 34px;
-    height: 34px;
-    border-radius: 9px;
+  .header-utility-button:hover,
+  .header-utility-button:focus-visible,
+  .header-icon-btn:hover,
+  .header-icon-btn:focus-visible {
+    background: rgba(83, 212, 202, 0.13) !important;
+    border-color: rgba(83, 212, 202, 0.75) !important;
+    outline: none;
+  }
+
+  .header-utility-button > div {
+    width: 18px !important;
+    height: 18px !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  .header-currency-btn {
+    padding: 4px 5px 3px !important;
+  }
+
+  .header-currency-flag {
+    display: none !important;
+  }
+
+  .header-currency-code-mobile {
+    display: inline !important;
+  }
+
+  .header-mobile-label {
+    color: #c8d9e8 !important;
+    font-size: 8px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em;
+    line-height: 1 !important;
+  }
+
+  .header-search-control {
+    display: flex !important;
+    height: 39px !important;
+    align-items: center;
+    gap: 8px;
+    padding: 0 5px 0 12px;
+    border: 1px solid rgba(205, 231, 244, 0.34);
+    border-radius: 8px;
+    background: #173d70;
+    color: #acd0e2;
+  }
+
+  .header-search-control:focus-within {
+    border-color: #53d4ca;
+    background: #1c477e;
+    box-shadow: 0 0 0 3px rgba(83, 212, 202, 0.12);
+  }
+
+  .header-search-control input {
+    min-width: 0;
+    flex: 1;
+    width: auto !important;
+    height: 100% !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #f3f8fc !important;
+    font-size: 12px !important;
+  }
+
+  .header-search-control input::placeholder {
+    color: #a9c3d5;
+  }
+
+  .header-search-submit {
+    position: static !important;
+    display: inline-flex !important;
+    width: auto !important;
+    height: 29px !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px !important;
+    border: 0 !important;
+    border-radius: 6px;
+    background: #53d4ca !important;
+    color: #092348 !important;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+  }
+
+  .header-search-submit-label {
+    display: inline;
+  }
+
+  .header-search-submit svg {
+    display: none;
+  }
+}
+
+.header-search-submit-label {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .header-search-submit-label {
+    display: inline;
   }
 }
 
