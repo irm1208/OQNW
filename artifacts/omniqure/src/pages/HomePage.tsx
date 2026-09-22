@@ -13,6 +13,7 @@ import RecentlyViewed from "@/components/RecentlyViewed";
 import { useCurrency } from "@/context/CurrencyContext";
 import type { CurrencyCode } from "@/context/CurrencyContext";
 import bundleAndSaveHeroImg from "@assets/new_hero_1783533143502.jpeg";
+import bundleElectricHeroImg from "@assets/ChatGPT_Image_Sep_22,_2026,_10_13_24_AM_1790068413071.png";
 import heroContentImg from "@assets/ChatGPT_Image_Sep_21,_2026,_11_39_37_PM_1790030393140.png";
 import heroReferralImg from "@assets/ChatGPT_Image_Sep_21,_2026,_11_47_29_PM_1790030873198.png";
 
@@ -328,7 +329,7 @@ function HeroBundleElectricSlide() {
       }}
     >
       <img
-        src="/hero-bundle-save-third.png"
+        src={bundleElectricHeroImg}
         alt="Bundle and Save — buy 3-4 peptides and get a free 10ml BAC water ampule, 5-9 get 1 free peptide, 10+ get 2 free peptides"
         style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
       />
