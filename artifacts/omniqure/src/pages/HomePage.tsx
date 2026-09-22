@@ -20,7 +20,7 @@ import heroAffiliateImg from "@assets/ChatGPT_Image_Sep_22,_2026,_10_41_11_PM_17
 import heroMobileContentImg from "@assets/ChatGPT_Image_Sep_22,_2026,_07_46_37_PM_(2)_1790102815645.png";
 import heroMobileReferralImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_19_37_PM_1790104797805.png";
 import heroMobileBundleImg from "@assets/ChatGPT_Image_Sep_22,_2026,_08_58_12_PM_1790107107804.png";
-import heroMobileAffiliateImg from "@assets/ChatGPT_Image_Sep_22,_2026,_10_41_05_PM_1790113281081.png";
+import heroMobileAffiliateImg from "@assets/ChatGPT_Image_Sep_22,_2026,_10_58_38_PM_1790114325435.png";
 
 // Value of a single £25 referral credit reward, in each supported currency.
 const REFERRAL_CREDIT_VALUE: Record<CurrencyCode, string> = {
