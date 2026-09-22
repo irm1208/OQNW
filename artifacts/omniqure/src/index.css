@@ -478,7 +478,19 @@ html.copy-protected [role="textbox"] {
 
 /* Card image height on very small screens */
 @media (max-width: 479px) {
-  .card-product-img { height: 155px !important; }
+  .product-card-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    column-gap: 0 !important;
+    row-gap: 28px !important;
+  }
+
+  .card-product-img {
+    height: 300px !important;
+  }
+
+  .card-product-img img {
+    padding: 8px !important;
+  }
 }
 
 /* Touch targets */
