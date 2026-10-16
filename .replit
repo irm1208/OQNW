@@ -1,4 +1,4 @@
-modules = ["nodejs-20", "web", "python-3.12"]
+modules = ["nodejs-20", "web", "python-3.12", "postgresql-16"]
 
 [deployment]
 router = "application"
@@ -58,35 +58,15 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Storefront"
+args = "artifacts/api-server: API Server"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "dependency-audit"
+args = "artifacts/omniqure: web"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "admin-mobile"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "admin-desktop"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "catalogue-images"
-
-[[workflows.workflow]]
-name = "Storefront"
-author = "agent"
-
-[workflows.workflow.metadata]
-outputType = "webview"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "PORT=5000 BASE_PATH=/ API_PORT=8080 pnpm --filter @workspace/omniqure run dev"
-waitForPort = 5000
+args = "artifacts/admin-panel: web"
 
 [[workflows.workflow]]
 name = "dependency-audit"
@@ -150,16 +130,12 @@ localPort = 3002
 externalPort = 4200
 
 [[ports]]
-localPort = 5000
-externalPort = 80
-
-[[ports]]
 localPort = 8080
 externalPort = 8080
 
 [[ports]]
 localPort = 8081
-externalPort = 8081
+externalPort = 80
 
 [[ports]]
 localPort = 8082

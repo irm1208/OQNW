@@ -4,8 +4,11 @@ Research-grade peptide e-commerce site for OmniQure, featuring independently ver
 
 ## Run & Operate
 
-- The **Storefront** workflow starts the API Server (port 8080) first, waits for `/api/healthz`, then starts the storefront (port 5000, main preview). Restart it after server-side code changes.
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
+- Use **Run → Project** to start the existing artifact workflows: API Server (8080), storefront (8081, main preview), and admin panel (8082, `/imtheonlyadmin/`). Do not add a second storefront or API workflow.
+- `pnpm install --frozen-lockfile` — install all workspace dependencies with pnpm 10.26.1.
+- On a fresh development database, run `pnpm --filter @workspace/db run push` once before starting the API. The existing API startup scripts populate catalogue and blog content; imported source code does not include historical customer/order data.
+- Restart `artifacts/api-server: API Server` after server-side changes. Frontend artifact workflows use Vite hot reload.
+- Individual commands require the same environment as their artifact manifests: API `PORT=8080 pnpm --filter @workspace/api-server run dev`; storefront `PORT=8081 BASE_PATH=/ pnpm --filter @workspace/omniqure run dev`; admin `PORT=8082 BASE_PATH=/imtheonlyadmin/ pnpm --filter @workspace/admin-panel run dev`.
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
@@ -13,11 +16,13 @@ Research-grade peptide e-commerce site for OmniQure, featuring independently ver
 - `pnpm run check:api-drift` — verify admin order/customer/refund/fraud response fields match `lib/api-spec/openapi.yaml` (also runs as part of `pnpm run build`)
 - Required env: `DATABASE_URL` — Postgres connection string
 - Required secret: `SESSION_SECRET` — random server-only key used to sign checkout address-confirmation proofs. Address confirmation and ordering fail closed if it is missing.
+- Admin access: set `ADMIN_PASSWORD` in Secrets, restart the API, then leave email blank on the admin sign-in screen for initial owner setup. An empty imported database has no owner account, so automatic development login correctly refuses access until an active owner exists. Do not rely on the source-code development password for a shared workspace.
+- Optional external services: `RESEND_API_KEY` enables email delivery; the existing Wallid payment provider requires `WALLID_API_KEY_ID`, `WALLID_API_KEY_SECRET`, and its webhook configuration. Without these, the local storefront can be browsed, but live emails and bank payments are not configured.
 - Address lookup: checkout uses the public Nominatim/OpenStreetMap API server-side with a PostgreSQL-coordinated 1 request/second limit across API replicas and an 8-second upstream timeout. Checkout asks for country, then postcode/ZIP, then the first address line; after those fields are complete (or just country and street where postal codes are optional), it automatically offers a small list of matching international addresses. Customers can select a match to fill the rest of the address or enter it manually if no match is found. This is not keystroke-by-keystroke autocomplete. No API key is required; `NOMINATIM_USER_AGENT` is an optional non-secret environment variable for a contact-identifying request header.
 
 ## Stack
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
+- pnpm workspaces, Node.js 20 (configured Replit module), TypeScript 5.9
 - API: Express 5
 - DB: PostgreSQL + Drizzle ORM
 - Validation: Zod (`zod/v4`), `drizzle-zod`
