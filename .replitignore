@@ -3,3 +3,8 @@
 
 # No need to store the pnpm store twice.
 .local
+
+# Local browser downloads and generated browser-test output are not app assets.
+.cache
+test-results
+screenshots

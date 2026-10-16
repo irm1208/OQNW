@@ -14,6 +14,7 @@ Research-grade peptide e-commerce site for OmniQure, featuring independently ver
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 - `pnpm run check:api-drift` — verify admin order/customer/refund/fraud response fields match `lib/api-spec/openapi.yaml` (also runs as part of `pnpm run build`)
+- Browser tests require `pnpm exec playwright install chromium` after a fresh import. Existing admin suites use development login and therefore require an active owner account first; do not weaken auth to make tests pass against an empty database. Run these checks separately, not as part of the Run button.
 - Required env: `DATABASE_URL` — Postgres connection string
 - Required secret: `SESSION_SECRET` — random server-only key used to sign checkout address-confirmation proofs. Address confirmation and ordering fail closed if it is missing.
 - Admin access: set `ADMIN_PASSWORD` in Secrets, restart the API, then leave email blank on the admin sign-in screen for initial owner setup. An empty imported database has no owner account, so automatic development login correctly refuses access until an active owner exists. Do not rely on the source-code development password for a shared workspace.
