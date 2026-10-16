@@ -4,15 +4,25 @@
   "description": "High-purity research peptides verified to 98%+. For research use only.",
   "start_url": "/",
   "display": "browser",
-  "theme_color": "#1240A0",
-  "background_color": "#F5F8FC",
+  "theme_color": "#0A2472",
+  "background_color": "#F2F0EB",
   "lang": "en-GB",
   "icons": [
     {
-      "src": "/omniqure-logo.png",
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/maskable-icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     }
   ]
 }

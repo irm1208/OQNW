@@ -15,7 +15,7 @@ function parseName(name: string): { baseName: string; strength: string } {
   return { baseName: name, strength: "" };
 }
 
-const BLUE = { color: "#1B5CB5", bg: "#EEF4FF", gradient: "linear-gradient(90deg, #1240A0, #2563EB)" };
+const BLUE = { color: "#4E68C2", bg: "#E8F2DE", gradient: "linear-gradient(90deg, #4E68C2, #4E68C2)" };
 
 const CATEGORY_COLORS: Record<string, { color: string; bg: string; gradient: string }> = {
   "Growth Peptides":    BLUE,
@@ -49,7 +49,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
   const { formatPrice } = useCurrency();
 
-  const cat = CATEGORY_COLORS[product.category] ?? { color: "#1B5CB5", bg: "#EEF4FF", gradient: "linear-gradient(90deg, #1B5CB5, #2563EB)" };
+  const cat = CATEGORY_COLORS[product.category] ?? { color: "#4E68C2", bg: "#E8F2DE", gradient: "linear-gradient(90deg, #4E68C2, #4E68C2)" };
 
   const stockLevel = product.stockLevel;
   const isOutOfStock = stockLevel !== undefined && stockLevel === 0;
@@ -74,7 +74,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div
         className="product-card flex flex-col bg-white rounded-2xl overflow-hidden cursor-pointer h-full"
         style={{
-          border: "1.5px solid #E8EDF5",
+          border: "1.5px solid #D3D8E2",
           boxShadow: "0 2px 12px rgba(15,23,42,0.06)",
           opacity: isOutOfStock ? 0.75 : 1,
         }}
@@ -83,7 +83,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 48px ${cat.color}1A, 0 4px 16px rgba(15,23,42,0.06)`;
         }}
         onMouseLeave={e => {
-          (e.currentTarget as HTMLElement).style.borderColor = "#E8EDF5";
+          (e.currentTarget as HTMLElement).style.borderColor = "#D3D8E2";
           (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(15,23,42,0.06)";
         }}
       >
@@ -195,7 +195,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             {product.category}
           </span>
 
-          <p className="card-name" style={{ fontSize: "20px", fontWeight: 800, color: "#0F172A", lineHeight: 1.25, marginBottom: "4px" }}>
+          <p className="card-name" style={{ fontSize: "20px", fontWeight: 800, color: "#22252C", lineHeight: 1.25, marginBottom: "4px" }}>
             {baseName}
           </p>
           {strength && (
@@ -206,7 +206,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
           {product.price != null && (
             <div className="flex items-baseline gap-1.5" style={{ marginBottom: "6px" }}>
-              <p className="card-price" style={{ fontSize: "21px", fontWeight: 800, color: "#0F172A", lineHeight: 1 }}>
+              <p className="card-price" style={{ fontSize: "21px", fontWeight: 800, color: "#22252C", lineHeight: 1 }}>
                 {formatPrice(product.price)}
               </p>
             </div>
@@ -300,12 +300,12 @@ export default function ProductCard({ product }: ProductCardProps) {
                 disabled={isOutOfStock}
                 className="card-cart-btn"
                 style={{
-                  backgroundColor: isOutOfStock ? "#94A3B8" : added ? "#059669" : "#1240A0",
+                  backgroundColor: isOutOfStock ? "#94A3B8" : added ? "#059669" : "#4E68C2",
                   color: "#fff",
                   cursor: isOutOfStock ? "not-allowed" : "pointer",
                 }}
-                onMouseEnter={e => { if (!added && !isOutOfStock) (e.currentTarget as HTMLElement).style.backgroundColor = "#1B5CB5"; }}
-                onMouseLeave={e => { if (!added && !isOutOfStock) (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0"; }}
+                onMouseEnter={e => { if (!added && !isOutOfStock) (e.currentTarget as HTMLElement).style.backgroundColor = "#4E68C2"; }}
+                onMouseLeave={e => { if (!added && !isOutOfStock) (e.currentTarget as HTMLElement).style.backgroundColor = "#4E68C2"; }}
               >
                 {isOutOfStock
                   ? "Out of Stock"

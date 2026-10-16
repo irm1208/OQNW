@@ -1,5 +1,5 @@
-import { Link } from "wouter";
-import { Lock, ChevronRight } from "lucide-react";
+import { Lock, Check } from "lucide-react";
+import PageHero from "@/components/PageHero";
 import { useSEO } from "@/hooks/useSEO";
 
 const LAST_UPDATED = "1 May 2025";
@@ -19,10 +19,10 @@ function Section({ id, number, title, children }: SectionProps) {
   return (
     <section id={id} className="mb-10">
       <div className="flex items-baseline gap-3 mb-3">
-        <span className="font-bold flex-shrink-0" style={{ fontSize: "13px", color: "#1B5CB5", minWidth: "24px" }}>{number}.</span>
-        <h2 className="font-bold" style={{ fontSize: "18px", color: "#0F172A" }}>{title}</h2>
+        <span className="font-medium flex-shrink-0" style={{ fontSize: "13px", color: "var(--cobalt)", minWidth: "24px" }}>{number}.</span>
+        <h2 className="font-semibold" style={{ fontSize: "18px", letterSpacing: "-0.01em", color: "var(--ink)" }}>{title}</h2>
       </div>
-      <div className="pl-9 space-y-3 text-sm leading-relaxed" style={{ color: "#374151", lineHeight: "1.85" }}>
+      <div className="pl-9 space-y-3 text-sm leading-relaxed" style={{ color: "var(--graphite)", lineHeight: "1.85" }}>
         {children}
       </div>
     </section>
@@ -52,33 +52,14 @@ export default function PrivacyPage() {
     canonicalPath: "/privacy",
   });
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
-      {/* Hero */}
-      <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", padding: "40px 0 32px", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-        <div className="max-w-[1280px] mx-auto px-4">
-          <div className="flex items-center gap-2 text-xs mb-3" style={{ color: "rgba(255,255,255,0.5)" }}>
-            <Link href="/" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Home</Link>
-            <ChevronRight size={12} />
-            <span style={{ color: "rgba(255,255,255,0.8)" }}>Privacy Policy</span>
-          </div>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="rounded-xl flex items-center justify-center" style={{ width: "40px", height: "40px", backgroundColor: "rgba(255,255,255,0.12)" }}>
-              <Lock size={20} style={{ color: "#93C5FD" }} />
-            </div>
-            <h1 className="font-bold text-white" style={{ fontSize: "clamp(22px, 4vw, 32px)" }}>
-              Privacy Policy
-            </h1>
-          </div>
-          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)" }}>
-            Last updated: {LAST_UPDATED} · {COMPANY}
-          </p>
-        </div>
-      </div>
+    <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", backgroundColor: "#fff", minHeight: "100vh" }}>
+      <PageHero crumbs={[{ label: "Privacy Policy" }]} eyebrow="Legal" icon={Lock} title="Privacy Policy">
+        <p>Last updated: {LAST_UPDATED} · {COMPANY}</p>
+      </PageHero>
 
       {/* GDPR badge */}
-      <div style={{ backgroundColor: "#fff", borderBottom: "1px solid #E8EDF5" }}>
-        <div className="max-w-[1280px] mx-auto px-4 py-4 flex flex-wrap gap-3">
+      <div style={{ backgroundColor: "#fff", borderBottom: "1px solid rgba(11,18,32,0.09)" }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 py-4 flex flex-wrap gap-2">
           {[
             "UK GDPR Compliant",
             "Data Protection Act 2018",
@@ -88,30 +69,30 @@ export default function PrivacyPage() {
           ].map((badge) => (
             <span
               key={badge}
-              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
-              style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}
+              className="flex items-center gap-1.5 rounded-full px-3 py-1"
+              style={{ fontSize: "12px", fontWeight: 500, color: "var(--graphite)", border: "1px solid rgba(11,18,32,0.09)", backgroundColor: "#fff" }}
             >
-              <span>✓</span> {badge}
+              <Check size={12} aria-hidden="true" style={{ color: "var(--cobalt)" }} /> {badge}
             </span>
           ))}
         </div>
       </div>
 
-      <div className="max-w-[1280px] mx-auto px-4 py-10">
+      <div className="max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 py-10">
         <div className="flex gap-10">
           {/* TOC */}
           <aside className="hidden lg:block" style={{ width: "220px", flexShrink: 0 }}>
             <div className="sticky top-24">
-              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#94A3B8" }}>Contents</p>
+              <p className="uppercase mb-3" style={{ fontSize: 10, fontWeight: 500, letterSpacing: "0.18em", color: "var(--graphite)" }}>Contents</p>
               <nav className="space-y-1">
                 {toc.map((item, i) => (
                   <a
                     key={item.id}
                     href={`#${item.id}`}
-                    className="flex items-center gap-2 text-xs py-1 transition-colors hover:text-blue-600"
-                    style={{ color: "#64748B", textDecoration: "none" }}
+                    className="flex items-center gap-2 text-xs py-1 transition-colors hover:text-[var(--ink)]"
+                    style={{ color: "var(--graphite)", textDecoration: "none" }}
                   >
-                    <span style={{ color: "#BFDBFE", fontSize: "11px", fontWeight: 700, minWidth: "18px" }}>{i + 1}.</span>
+                    <span style={{ color: "rgba(74,85,104,0.45)", fontSize: "11px", fontWeight: 500, minWidth: "18px" }}>{i + 1}.</span>
                     {item.label}
                   </a>
                 ))}
@@ -122,22 +103,22 @@ export default function PrivacyPage() {
           {/* Content */}
           <div className="flex-1 min-w-0">
             <div
-              className="rounded-2xl p-6 md:p-8 mb-6"
-              style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 16px rgba(15,23,42,0.05)" }}
+              className="p-6 md:p-8 mb-6"
+              style={{ backgroundColor: "#fff", border: "1px solid rgba(11,18,32,0.09)", borderRadius: 16 }}
             >
-              <p className="text-sm leading-relaxed mb-3" style={{ color: "#475569", lineHeight: "1.85" }}>
+              <p className="text-sm leading-relaxed mb-3" style={{ color: "var(--graphite)", lineHeight: "1.85" }}>
                 This Privacy Policy explains how {COMPANY} ("we", "us", "our") collects, uses, stores, and protects your personal data when you visit our website or purchase from us.
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: "#475569" }}>
+              <p className="text-sm leading-relaxed" style={{ color: "var(--graphite)" }}>
                 We are committed to protecting your privacy and handling your data in a transparent and lawful manner in accordance with applicable data protection regulations. Please read this policy carefully.
               </p>
             </div>
 
             <Section id="who-we-are" number="1" title="Who We Are">
               <p>{COMPANY} (trading as "{COMPANY_SHORT}") is the data controller responsible for your personal data.</p>
-              <div className="rounded-xl p-4" style={{ backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}>
+              <div className="rounded-xl p-4" style={{ backgroundColor: "#F2F0EB", border: "1px solid rgba(11,18,32,0.09)" }}>
                 <p><strong>Data Controller:</strong> {COMPANY}</p>
-                <p><strong>Privacy contact:</strong> <a href={`mailto:${EMAIL_PRIVACY}`} style={{ color: "#1B5CB5" }}>{EMAIL_PRIVACY}</a></p>
+                <p><strong>Privacy contact:</strong> <a href={`mailto:${EMAIL_PRIVACY}`} style={{ color: "var(--cobalt)" }}>{EMAIL_PRIVACY}</a></p>
               </div>
             </Section>
 
@@ -166,12 +147,12 @@ export default function PrivacyPage() {
                     items: ["Email marketing preferences and opt-in status", "Click and open rates on marketing emails (where consented)"],
                   },
                 ].map((group) => (
-                  <div key={group.category} className="rounded-xl p-4" style={{ backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5" }}>
-                    <p className="font-semibold text-xs mb-2" style={{ color: "#1240A0" }}>{group.category}</p>
+                  <div key={group.category} className="rounded-xl p-4" style={{ backgroundColor: "#F2F0EB", border: "1px solid rgba(11,18,32,0.09)" }}>
+                    <p className="font-semibold text-xs mb-2" style={{ color: "var(--ink)" }}>{group.category}</p>
                     <ul className="space-y-0.5">
                       {group.items.map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-xs" style={{ color: "#475569" }}>
-                          <span style={{ color: "#BFDBFE", flexShrink: 0 }}>—</span>
+                        <li key={item} className="flex items-start gap-2 text-xs" style={{ color: "var(--graphite)" }}>
+                          <span style={{ color: "rgba(74,85,104,0.45)", flexShrink: 0 }}>—</span>
                           {item}
                         </li>
                       ))}
@@ -183,12 +164,12 @@ export default function PrivacyPage() {
             </Section>
 
             <Section id="how-we-use" number="3" title="How We Use Your Data">
-              <div className="overflow-x-auto rounded-xl" style={{ border: "1px solid #E8EDF5" }}>
+              <div className="overflow-x-auto rounded-xl" style={{ border: "1px solid rgba(11,18,32,0.09)" }}>
                 <table className="w-full text-xs">
                   <thead>
-                    <tr style={{ backgroundColor: "#F8FAFC", borderBottom: "1px solid #E8EDF5" }}>
+                    <tr style={{ backgroundColor: "#F2F0EB", borderBottom: "1px solid rgba(11,18,32,0.09)" }}>
                       {["Purpose", "Data Used", "Legal Basis"].map((h) => (
-                        <th key={h} className="px-4 py-3 text-left font-bold uppercase tracking-wide" style={{ color: "#64748B" }}>{h}</th>
+                        <th key={h} className="px-4 py-3 text-left font-medium uppercase" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--graphite)" }}>{h}</th>
                       ))}
                     </tr>
                   </thead>
@@ -204,9 +185,9 @@ export default function PrivacyPage() {
                       ["Detect and prevent fraud", "Identity, Order, Technical data", "Legitimate interests / Legal obligation"],
                       ["Verify purchaser eligibility (18+, researcher status)", "Identity, Order data", "Legal obligation / Legitimate interests"],
                     ].map((row, i) => (
-                      <tr key={row[0]} style={{ borderBottom: i < 8 ? "1px solid #F1F5F9" : "none" }}>
+                      <tr key={row[0]} style={{ borderBottom: i < 8 ? "1px solid rgba(11,18,32,0.06)" : "none" }}>
                         {row.map((cell, j) => (
-                          <td key={j} className="px-4 py-3" style={{ color: j === 2 ? "#1B5CB5" : "#475569", fontWeight: j === 2 ? 600 : 400 }}>{cell}</td>
+                          <td key={j} className="px-4 py-3" style={{ color: j === 2 ? "var(--ink)" : "var(--graphite)", fontWeight: j === 2 ? 500 : 400 }}>{cell}</td>
                         ))}
                       </tr>
                     ))}
@@ -225,8 +206,8 @@ export default function PrivacyPage() {
                   { basis: "Consent", desc: "Marketing emails and optional cookies. You may withdraw consent at any time." },
                 ].map((item) => (
                   <li key={item.basis} className="flex items-start gap-2">
-                    <span style={{ color: "#1B5CB5", flexShrink: 0 }}>—</span>
-                    <span><strong style={{ color: "#0F172A" }}>{item.basis}:</strong> {item.desc}</span>
+                    <span style={{ color: "rgba(74,85,104,0.45)", flexShrink: 0 }}>—</span>
+                    <span><strong style={{ color: "var(--ink)" }}>{item.basis}:</strong> {item.desc}</span>
                   </li>
                 ))}
               </ul>
@@ -244,8 +225,8 @@ export default function PrivacyPage() {
                   { party: "Legal and regulatory authorities", desc: "Where required by law, court order, or regulatory request, we may disclose data to HMRC, law enforcement, or other authorities." },
                 ].map((item) => (
                   <li key={item.party} className="flex items-start gap-2">
-                    <span style={{ color: "#1B5CB5", flexShrink: 0 }}>—</span>
-                    <span><strong style={{ color: "#0F172A" }}>{item.party}:</strong> {item.desc}</span>
+                    <span style={{ color: "rgba(74,85,104,0.45)", flexShrink: 0 }}>—</span>
+                    <span><strong style={{ color: "var(--ink)" }}>{item.party}:</strong> {item.desc}</span>
                   </li>
                 ))}
               </ul>
@@ -254,12 +235,12 @@ export default function PrivacyPage() {
 
             <Section id="cookies" number="6" title="Cookies & Tracking Technologies">
               <p>We use cookies and similar technologies to operate our website, remember your preferences (such as currency selection), and understand how visitors use our site. Cookies we use include:</p>
-              <div className="overflow-x-auto rounded-xl" style={{ border: "1px solid #E8EDF5" }}>
+              <div className="overflow-x-auto rounded-xl" style={{ border: "1px solid rgba(11,18,32,0.09)" }}>
                 <table className="w-full text-xs">
                   <thead>
-                    <tr style={{ backgroundColor: "#F8FAFC", borderBottom: "1px solid #E8EDF5" }}>
+                    <tr style={{ backgroundColor: "#F2F0EB", borderBottom: "1px solid rgba(11,18,32,0.09)" }}>
                       {["Type", "Purpose", "Basis"].map((h) => (
-                        <th key={h} className="px-4 py-3 text-left font-bold uppercase tracking-wide" style={{ color: "#64748B" }}>{h}</th>
+                        <th key={h} className="px-4 py-3 text-left font-medium uppercase" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--graphite)" }}>{h}</th>
                       ))}
                     </tr>
                   </thead>
@@ -270,10 +251,10 @@ export default function PrivacyPage() {
                       ["Analytics", "Aggregated visitor statistics to improve our website (IP anonymised).", "Consent"],
                       ["Marketing", "Retargeting and conversion tracking (only with explicit consent).", "Consent"],
                     ].map((row, i) => (
-                      <tr key={row[0]} style={{ borderBottom: i < 3 ? "1px solid #F1F5F9" : "none" }}>
-                        <td className="px-4 py-3 font-semibold" style={{ color: "#0F172A" }}>{row[0]}</td>
-                        <td className="px-4 py-3" style={{ color: "#475569" }}>{row[1]}</td>
-                        <td className="px-4 py-3 font-semibold" style={{ color: row[2] === "Strictly necessary" ? "#059669" : row[2] === "Consent" ? "#1B5CB5" : "#B45309" }}>{row[2]}</td>
+                      <tr key={row[0]} style={{ borderBottom: i < 3 ? "1px solid rgba(11,18,32,0.06)" : "none" }}>
+                        <td className="px-4 py-3 font-semibold" style={{ color: "var(--ink)" }}>{row[0]}</td>
+                        <td className="px-4 py-3" style={{ color: "var(--graphite)" }}>{row[1]}</td>
+                        <td className="px-4 py-3 font-medium" style={{ color: "var(--ink)" }}>{row[2]}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -293,8 +274,8 @@ export default function PrivacyPage() {
                   { type: "Technical and usage logs", period: "12 months" },
                 ].map((item) => (
                   <li key={item.type} className="flex items-start gap-2">
-                    <span style={{ color: "#1B5CB5", flexShrink: 0 }}>—</span>
-                    <span><strong style={{ color: "#0F172A" }}>{item.type}:</strong> {item.period}</span>
+                    <span style={{ color: "rgba(74,85,104,0.45)", flexShrink: 0 }}>—</span>
+                    <span><strong style={{ color: "var(--ink)" }}>{item.type}:</strong> {item.period}</span>
                   </li>
                 ))}
               </ul>
@@ -314,13 +295,13 @@ export default function PrivacyPage() {
                   { right: "Right to withdraw consent", desc: "Withdraw consent for marketing or non-essential cookies at any time without affecting prior processing." },
                   { right: "Rights re: automated decisions", desc: "Not be subject to solely automated decisions with significant legal effect." },
                 ].map((item) => (
-                  <div key={item.right} className="rounded-xl p-3" style={{ backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5" }}>
-                    <p className="font-semibold text-xs mb-1" style={{ color: "#1240A0" }}>{item.right}</p>
-                    <p className="text-xs" style={{ color: "#64748B" }}>{item.desc}</p>
+                  <div key={item.right} className="rounded-xl p-3" style={{ backgroundColor: "#fff", border: "1px solid rgba(11,18,32,0.09)" }}>
+                    <p className="font-semibold text-xs mb-1" style={{ color: "var(--ink)" }}>{item.right}</p>
+                    <p className="text-xs" style={{ color: "var(--graphite)" }}>{item.desc}</p>
                   </div>
                 ))}
               </div>
-              <p>To exercise any of these rights, contact us at <a href={`mailto:${EMAIL_PRIVACY}`} style={{ color: "#1B5CB5" }}>{EMAIL_PRIVACY}</a>. We will respond within 30 days. We may need to verify your identity before processing your request.</p>
+              <p>To exercise any of these rights, contact us at <a href={`mailto:${EMAIL_PRIVACY}`} style={{ color: "var(--cobalt)" }}>{EMAIL_PRIVACY}</a>. We will respond within 30 days. We may need to verify your identity before processing your request.</p>
             </Section>
 
             <Section id="security" number="9" title="Security">
@@ -334,7 +315,7 @@ export default function PrivacyPage() {
                   "Regular security assessments and software updates",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2">
-                    <span style={{ color: "#059669", flexShrink: 0 }}>✓</span>
+                    <span style={{ color: "var(--cobalt)", flexShrink: 0 }}>✓</span>
                     {item}
                   </li>
                 ))}
@@ -351,7 +332,7 @@ export default function PrivacyPage() {
                   "The UK International Data Transfer Addendum (IDTA) where applicable.",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2">
-                    <span style={{ color: "#1B5CB5", flexShrink: 0 }}>—</span>
+                    <span style={{ color: "rgba(74,85,104,0.45)", flexShrink: 0 }}>—</span>
                     {item}
                   </li>
                 ))}
@@ -359,7 +340,7 @@ export default function PrivacyPage() {
             </Section>
 
             <Section id="children" number="11" title="Children's Privacy">
-              <p>Our website and products are not intended for individuals under the age of 18. We do not knowingly collect personal data from minors. If you believe we have inadvertently collected data from a person under 18, please contact us immediately at <a href={`mailto:${EMAIL_PRIVACY}`} style={{ color: "#1B5CB5" }}>{EMAIL_PRIVACY}</a> and we will delete it promptly.</p>
+              <p>Our website and products are not intended for individuals under the age of 18. We do not knowingly collect personal data from minors. If you believe we have inadvertently collected data from a person under 18, please contact us immediately at <a href={`mailto:${EMAIL_PRIVACY}`} style={{ color: "var(--cobalt)" }}>{EMAIL_PRIVACY}</a> and we will delete it promptly.</p>
             </Section>
 
             <Section id="changes" number="12" title="Changes to This Privacy Policy">
@@ -368,17 +349,17 @@ export default function PrivacyPage() {
             </Section>
 
             <Section id="contact" number="13" title="Contact & Complaints">
-              <div className="rounded-xl p-4 mb-4" style={{ backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}>
-                <p className="font-semibold mb-2" style={{ color: "#1240A0" }}>{COMPANY} — Data Controller</p>
-                <p><strong>Privacy enquiries:</strong> <a href={`mailto:${EMAIL_PRIVACY}`} style={{ color: "#1B5CB5" }}>{EMAIL_PRIVACY}</a></p>
-                <p><strong>General enquiries:</strong> <a href={`mailto:${EMAIL_GENERAL}`} style={{ color: "#1B5CB5" }}>{EMAIL_GENERAL}</a></p>
+              <div className="rounded-xl p-4 mb-4" style={{ backgroundColor: "#F2F0EB", border: "1px solid rgba(11,18,32,0.09)" }}>
+                <p className="font-semibold mb-2" style={{ color: "var(--ink)" }}>{COMPANY} — Data Controller</p>
+                <p><strong>Privacy enquiries:</strong> <a href={`mailto:${EMAIL_PRIVACY}`} style={{ color: "var(--cobalt)" }}>{EMAIL_PRIVACY}</a></p>
+                <p><strong>General enquiries:</strong> <a href={`mailto:${EMAIL_GENERAL}`} style={{ color: "var(--cobalt)" }}>{EMAIL_GENERAL}</a></p>
               </div>
               <p>If you are unhappy with how we have handled your personal data and we have been unable to resolve your concern, you have the right to lodge a complaint with the <strong>Information Commissioner's Office (ICO)</strong>:</p>
-              <div className="rounded-xl p-4" style={{ backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5" }}>
-                <p className="font-semibold text-xs mb-1" style={{ color: "#0F172A" }}>Information Commissioner's Office (ICO)</p>
-                <p className="text-xs" style={{ color: "#475569" }}>Website: <a href="https://ico.org.uk" target="_blank" rel="noopener noreferrer" style={{ color: "#1B5CB5" }}>ico.org.uk</a></p>
-                <p className="text-xs" style={{ color: "#475569" }}>Helpline: 0303 123 1113</p>
-                <p className="text-xs" style={{ color: "#475569" }}>Address: Wycliffe House, Water Lane, Wilmslow, Cheshire, SK9 5AF</p>
+              <div className="rounded-xl p-4" style={{ backgroundColor: "#F2F0EB", border: "1px solid rgba(11,18,32,0.09)" }}>
+                <p className="font-semibold text-xs mb-1" style={{ color: "var(--ink)" }}>Information Commissioner's Office (ICO)</p>
+                <p className="text-xs" style={{ color: "var(--graphite)" }}>Website: <a href="https://ico.org.uk" target="_blank" rel="noopener noreferrer" style={{ color: "var(--cobalt)" }}>ico.org.uk</a></p>
+                <p className="text-xs" style={{ color: "var(--graphite)" }}>Helpline: 0303 123 1113</p>
+                <p className="text-xs" style={{ color: "var(--graphite)" }}>Address: Wycliffe House, Water Lane, Wilmslow, Cheshire, SK9 5AF</p>
               </div>
             </Section>
           </div>

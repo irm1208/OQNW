@@ -9,13 +9,13 @@ export default function FreeShippingBar() {
     <div style={{
       borderRadius: "14px",
       padding: "14px 16px",
-      background: "linear-gradient(135deg,#EEF4FF 0%,#E8F0FF 100%)",
-      border: "1.5px solid #BFDBFE",
+      background: "linear-gradient(135deg,#E8F2DE 0%,#E8F0FF 100%)",
+      border: "1.5px solid #C8DDB4",
       marginBottom: "4px",
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <Truck size={15} style={{ color: "#1240A0", flexShrink: 0 }} />
-        <span style={{ fontSize: "13px", fontWeight: 700, color: "#1240A0" }}>
+        <Truck size={15} style={{ color: "#4E68C2", flexShrink: 0 }} />
+        <span style={{ fontSize: "13px", fontWeight: 700, color: "#4E68C2" }}>
           Free standard tracked shipping to UK Mainland, Scotland Highlands &amp; Northern Ireland
         </span>
       </div>

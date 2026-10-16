@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import { useProducts } from "@/context/ProductsContext";
-import { BarChart2, Atom, Download, ExternalLink, Search, CheckCircle2, ShieldCheck, FlaskConical } from "lucide-react";
+import { BarChart2, Atom, Download, ExternalLink, Search, CheckCircle2, ShieldCheck, FlaskConical, AlertTriangle } from "lucide-react";
 import JanoshikReportModal from "@/components/JanoshikReportModal";
+import PageHero from "@/components/PageHero";
 
 // ─── Janoshik logo components ─────────────────────────────────────────────────
 
@@ -279,75 +281,68 @@ const REPORTS: Report[] = [
 
 // ─── Card ─────────────────────────────────────────────────────────────────────
 
-function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () => void }) {
+const CARD_BORDER = "rgba(11,18,32,0.09)";
+
+function ReportCard({
+  report,
+  productHref,
+  onQuickView,
+}: {
+  report: Report;
+  /** Catalogue page for the product this report certifies, when published. */
+  productHref?: string;
+  onQuickView: () => void;
+}) {
   const isBlend = !!report.isBlend;
   const hasPurity = report.purityLabel !== undefined || report.purity !== undefined;
   const purityDisplay = report.purityLabel ?? report.purity?.toFixed(1);
   const hasMass = report.actualMassLabel !== undefined || report.actualMass !== undefined;
   const massDisplay = report.actualMassLabel ?? report.actualMass?.toFixed(2);
 
-  // Site palette
-  const navy      = "#0D2565";
-  const blue      = "#1B5CB5";
-  const blueLight = "#EFF6FF";
-  const border    = "#D1DDF5";
-  const topBar    = isBlend
-    ? "linear-gradient(90deg, #4f46e5, #7c3aed)"
-    : "linear-gradient(90deg, #0D2565, #1B5CB5)";
-  const spotBg    = isBlend ? "#F5F3FF" : blueLight;
-  const spotBdr   = isBlend ? "#DDD6FE" : "#BFDBFE";
-  const numColor  = isBlend ? "#5b21b6" : navy;
-  const unitColor = isBlend ? "#7c3aed" : blue;
-  const massColor = isBlend ? "#6d28d9" : "#1240A0";
+  const secondaryBtn: React.CSSProperties = {
+    display: "inline-flex", alignItems: "center", gap: "4px",
+    fontSize: "11px", fontWeight: 500,
+    padding: "5px 12px", borderRadius: "999px",
+    background: "#fff", color: "var(--ink)",
+    border: "1px solid var(--hairline)",
+    cursor: "pointer", textDecoration: "none",
+    transition: "background 0.15s",
+  };
 
   return (
     <div
       style={{
         background: "#fff",
-        borderRadius: "16px",
+        borderRadius: 16,
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
-        border: `1.5px solid ${border}`,
-        boxShadow: "0 2px 10px rgba(13,37,101,0.07)",
-        transition: "transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease",
+        border: `1px solid ${CARD_BORDER}`,
+        transition: "border-color 0.18s ease",
       }}
-      onMouseOver={e => {
-        (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)";
-        (e.currentTarget as HTMLDivElement).style.boxShadow = isBlend
-          ? "0 12px 32px rgba(91,33,182,0.14), 0 0 0 1.5px #c4b5fd"
-          : "0 12px 32px rgba(13,37,101,0.14), 0 0 0 1.5px #93C5FD";
-        (e.currentTarget as HTMLDivElement).style.borderColor = isBlend ? "#c4b5fd" : "#93C5FD";
-      }}
-      onMouseOut={e => {
-        (e.currentTarget as HTMLDivElement).style.transform = "none";
-        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 10px rgba(13,37,101,0.07)";
-        (e.currentTarget as HTMLDivElement).style.borderColor = border;
-      }}
+      onMouseOver={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(11,18,32,0.2)"; }}
+      onMouseOut={e => { (e.currentTarget as HTMLDivElement).style.borderColor = CARD_BORDER; }}
     >
-      {/* Accent bar */}
-      <div style={{ height: "4px", background: topBar, flexShrink: 0 }} />
-
       {/* Body */}
       <div style={{ padding: "18px 18px 14px", flex: 1 }}>
 
         {/* Name row */}
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "8px", marginBottom: "14px" }}>
           <div>
-            <p style={{ margin: 0, fontSize: "15px", fontWeight: 900, color: navy, lineHeight: 1.25, letterSpacing: "-0.01em" }}>
+            <p style={{ margin: 0, fontSize: "15px", fontWeight: 600, color: "var(--ink)", lineHeight: 1.25, letterSpacing: "-0.01em" }}>
               {report.name}
             </p>
             {report.amount !== "—" && (
-              <p style={{ margin: "3px 0 0", fontSize: "12px", color: "#64748B", fontWeight: 600 }}>
+              <p style={{ margin: "3px 0 0", fontSize: "12px", color: "var(--graphite)", fontWeight: 500 }}>
                 {report.amount}
               </p>
             )}
           </div>
-                  <span style={{
+          <span style={{
             flexShrink: 0, display: "inline-flex", alignItems: "center", gap: "4px",
-            fontSize: "9.5px", fontWeight: 800, padding: "3px 9px", borderRadius: "20px",
-            background: "#ECFDF5", color: "#059669",
-            border: "1px solid #6EE7B7", letterSpacing: "0.06em",
+            fontSize: "9.5px", fontWeight: 600, padding: "3px 9px", borderRadius: "999px",
+            background: "#ECFDF5", color: "#047857",
+            letterSpacing: "0.08em",
             whiteSpace: "nowrap",
           }}>
             <CheckCircle2 size={9} /> VERIFIED
@@ -356,34 +351,34 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
 
         {/* Results spotlight — purity + mass */}
         <div style={{
-          background: spotBg,
-          border: `1px solid ${spotBdr}`,
-          borderRadius: "10px",
+          background: "#F2F0EB",
+          border: "1px solid var(--hairline)",
+          borderRadius: "12px",
           padding: "11px 14px",
           marginBottom: "12px",
           display: "grid",
-           // Let long multi-result labels shrink inside each column.
-           gridTemplateColumns: "minmax(0, 1fr) 1px minmax(0, 1fr)",
+          // Let long multi-result labels shrink inside each column.
+          gridTemplateColumns: "minmax(0, 1fr) 1px minmax(0, 1fr)",
           alignItems: "center",
         }}>
           {/* Purity */}
-           <div style={{ minWidth: 0, paddingRight: "12px" }}>
+          <div style={{ minWidth: 0, paddingRight: "12px" }}>
             {hasPurity ? (
               <>
-                 <div style={{ display: "flex", alignItems: "baseline", gap: "2px", minWidth: 0 }}>
-                   <span style={{ minWidth: 0, fontSize: report.purityLabel ? "15px" : "26px", fontWeight: 900, color: numColor, lineHeight: 1.15, letterSpacing: report.purityLabel ? "-0.02em" : "-0.03em", whiteSpace: report.purityLabel ? "normal" : "nowrap", overflowWrap: "break-word" }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "2px", minWidth: 0 }}>
+                  <span style={{ minWidth: 0, fontSize: report.purityLabel ? "15px" : "26px", fontWeight: 600, color: "var(--ink)", lineHeight: 1.15, letterSpacing: "-0.02em", whiteSpace: report.purityLabel ? "normal" : "nowrap", overflowWrap: "break-word" }}>
                     {purityDisplay}
                   </span>
-                   <span style={{ flexShrink: 0, fontSize: "12px", fontWeight: 700, color: unitColor }}>%</span>
+                  <span style={{ flexShrink: 0, fontSize: "12px", fontWeight: 500, color: "var(--graphite)" }}>%</span>
                 </div>
-                 <p style={{ margin: "2px 0 0", fontSize: "9px", lineHeight: 1.2, color: "#64748B", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", whiteSpace: "normal" }}>
+                <p style={{ margin: "2px 0 0", fontSize: "9px", lineHeight: 1.2, color: "var(--graphite)", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", whiteSpace: "normal" }}>
                   {report.purityCalculated ? "Calculated from vial mass" : "Purity"}
                 </p>
               </>
             ) : (
               <>
-                <span style={{ fontSize: "20px", fontWeight: 900, color: "#CBD5E1", lineHeight: 1 }}>—</span>
-                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "#94A3B8", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                <span style={{ fontSize: "20px", fontWeight: 600, color: "rgba(74,85,104,0.35)", lineHeight: 1 }}>—</span>
+                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "var(--graphite)", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" }}>
                   Purity
                 </p>
               </>
@@ -391,26 +386,26 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
           </div>
 
           {/* Divider */}
-          <div style={{ background: spotBdr, alignSelf: "stretch" }} />
+          <div style={{ background: "var(--hairline)", alignSelf: "stretch" }} />
 
           {/* Mass */}
-           <div style={{ minWidth: 0, paddingLeft: "12px" }}>
+          <div style={{ minWidth: 0, paddingLeft: "12px" }}>
             {hasMass ? (
               <>
-                 <div style={{ display: "flex", alignItems: "baseline", gap: "2px", minWidth: 0 }}>
-                   <span style={{ minWidth: 0, fontSize: report.actualMassLabel ? "15px" : "26px", fontWeight: 900, color: massColor, lineHeight: 1.15, letterSpacing: report.actualMassLabel ? "-0.02em" : "-0.03em", whiteSpace: report.actualMassLabel ? "normal" : "nowrap", overflowWrap: "break-word" }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "2px", minWidth: 0 }}>
+                  <span style={{ minWidth: 0, fontSize: report.actualMassLabel ? "15px" : "26px", fontWeight: 600, color: "var(--ink)", lineHeight: 1.15, letterSpacing: "-0.02em", whiteSpace: report.actualMassLabel ? "normal" : "nowrap", overflowWrap: "break-word" }}>
                     {massDisplay}
                   </span>
-                   <span style={{ flexShrink: 0, fontSize: "11px", fontWeight: 700, color: unitColor }}>{report.massUnit ?? "mg"}</span>
+                  <span style={{ flexShrink: 0, fontSize: "11px", fontWeight: 500, color: "var(--graphite)" }}>{report.massUnit ?? "mg"}</span>
                 </div>
-                 <p style={{ margin: "2px 0 0", fontSize: "9px", lineHeight: 1.2, color: "#64748B", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", whiteSpace: "normal" }}>
+                <p style={{ margin: "2px 0 0", fontSize: "9px", lineHeight: 1.2, color: "var(--graphite)", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", whiteSpace: "normal" }}>
                   {report.massLabel ?? "Mass confirmed"}
                 </p>
               </>
             ) : (
               <>
-                <span style={{ fontSize: "20px", fontWeight: 900, color: "#CBD5E1", lineHeight: 1 }}>—</span>
-                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "#94A3B8", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                <span style={{ fontSize: "20px", fontWeight: 600, color: "rgba(74,85,104,0.35)", lineHeight: 1 }}>—</span>
+                <p style={{ margin: "2px 0 0", fontSize: "9px", color: "var(--graphite)", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" }}>
                   Mass confirmed
                 </p>
               </>
@@ -422,21 +417,28 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
         <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
           {report.methods.map((method) => (
             <span key={method} style={{
-            display: "inline-flex", alignItems: "center", gap: "4px",
-            fontSize: "10px", fontWeight: 700, padding: "3px 10px", borderRadius: "6px",
-            background: method === "ESI-MS" ? "#F5F3FF" : "#EFF6FF",
-            color: method === "ESI-MS" ? "#5B21B6" : "#1240A0",
-            border: method === "ESI-MS" ? "1px solid #DDD6FE" : "1px solid #BFDBFE",
-            letterSpacing: "0.04em",
-          }}>
-            {method === "HPLC" ? <BarChart2 size={9} /> : method === "ESI-MS" ? <Atom size={9} /> : <FlaskConical size={9} />}
-            {method}
-          </span>
+              display: "inline-flex", alignItems: "center", gap: "4px",
+              fontSize: "10px", fontWeight: 600, padding: "3px 10px", borderRadius: "999px",
+              background: method === "ESI-MS" ? "#F5F3FF" : "#EEF3FC",
+              color: method === "ESI-MS" ? "#6D28D9" : "var(--cobalt)",
+              letterSpacing: "0.04em",
+            }}>
+              {method === "HPLC" ? <BarChart2 size={9} /> : method === "ESI-MS" ? <Atom size={9} /> : <FlaskConical size={9} />}
+              {method}
+            </span>
           ))}
+          {isBlend && (
+            <span style={{
+              fontSize: "10px", fontWeight: 600, padding: "3px 10px", borderRadius: "999px",
+              background: "#F5F3FF", color: "#6D28D9", letterSpacing: "0.04em",
+            }}>
+              Blend
+            </span>
+          )}
           <span style={{
-            fontSize: "10px", fontWeight: 600, padding: "3px 10px", borderRadius: "6px",
-            background: "#F8FAFC", color: "#64748B",
-            border: "1px solid #E2E8F0",
+            fontSize: "10px", fontWeight: 500, padding: "3px 10px", borderRadius: "999px",
+            background: "#fff", color: "var(--graphite)",
+            border: "1px solid var(--hairline)",
           }}>
             #{report.testNumber}
           </span>
@@ -446,55 +448,44 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
       {/* Footer */}
       <div style={{
         padding: "10px 18px 14px",
-        borderTop: `1px solid ${border}`,
-        background: "#F8FAFD",
+        borderTop: "1px solid var(--hairline)",
+        background: "#F2F0EB",
         display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px",
       }}>
-        <span style={{ background: "#E8F0F8", borderRadius: "30px", padding: "4px 12px", display: "inline-flex", alignItems: "center" }}>
+        <span style={{ background: "#fff", border: "1px solid var(--hairline)", borderRadius: "999px", padding: "4px 12px", display: "inline-flex", alignItems: "center" }}>
           <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "15px", width: "auto", display: "block" }} />
         </span>
         <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", justifyContent: "flex-end" }}>
           {/* Quick View */}
           <button
             onClick={onQuickView}
-            style={{
-              display: "inline-flex", alignItems: "center", gap: "4px",
-              fontSize: "11px", fontWeight: 700,
-              padding: "5px 10px", borderRadius: "6px",
-              background: "#fff",
-              color: isBlend ? "#5b21b6" : navy,
-              border: `1.5px solid ${isBlend ? "#DDD6FE" : "#BFDBFE"}`,
-              cursor: "pointer",
-              transition: "background 0.15s, border-color 0.15s",
-              letterSpacing: "0.01em",
-            }}
-            onMouseOver={e => {
-              (e.currentTarget as HTMLButtonElement).style.background = isBlend ? "#F5F3FF" : "#EFF6FF";
-              (e.currentTarget as HTMLButtonElement).style.borderColor = isBlend ? "#c4b5fd" : "#93c5fd";
-            }}
-            onMouseOut={e => {
-              (e.currentTarget as HTMLButtonElement).style.background = "#fff";
-              (e.currentTarget as HTMLButtonElement).style.borderColor = isBlend ? "#DDD6FE" : "#BFDBFE";
-            }}
+            style={secondaryBtn}
+            onMouseOver={e => { (e.currentTarget as HTMLButtonElement).style.background = "#F2F0EB"; }}
+            onMouseOut={e => { (e.currentTarget as HTMLButtonElement).style.background = "#fff"; }}
           >
             Quick View
           </button>
           {report.certificatePdf && (
-            <a
-              href={report.certificatePdf}
-              download
-              style={{
-                display: "inline-flex", alignItems: "center", gap: "4px",
-                fontSize: "11px", fontWeight: 700,
-                padding: "5px 10px", borderRadius: "6px",
-                background: "#fff", color: isBlend ? "#5b21b6" : navy,
-                border: `1.5px solid ${isBlend ? "#DDD6FE" : "#BFDBFE"}`,
-                textDecoration: "none",
-                letterSpacing: "0.01em",
-              }}
-            >
+            <a href={report.certificatePdf} download style={secondaryBtn}>
               PDF <Download size={11} />
             </a>
+          )}
+          {/* View Product */}
+          {productHref && (
+            <Link
+              href={productHref}
+              style={{
+                ...secondaryBtn,
+                background: "var(--cobalt)",
+                color: "#fff",
+                border: "1px solid var(--cobalt)",
+                transition: "opacity 0.15s",
+              }}
+              onMouseOver={e => (e.currentTarget.style.opacity = "0.85")}
+              onMouseOut={e => (e.currentTarget.style.opacity = "1")}
+            >
+              View Product
+            </Link>
           )}
           {/* View on Janoshik */}
           <a
@@ -502,17 +493,11 @@ function ReportCard({ report, onQuickView }: { report: Report; onQuickView: () =
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              display: "inline-flex", alignItems: "center", gap: "4px",
-              fontSize: "11px", fontWeight: 700,
-              padding: "5px 10px", borderRadius: "6px",
-              background: topBar,
+              ...secondaryBtn,
+              background: "var(--ink)",
               color: "#fff",
-              textDecoration: "none",
-              boxShadow: isBlend
-                ? "0 2px 10px rgba(91,33,182,0.25)"
-                : "0 2px 10px rgba(13,37,101,0.22)",
+              border: "1px solid var(--ink)",
               transition: "opacity 0.15s",
-              letterSpacing: "0.01em",
             }}
             onMouseOver={e => (e.currentTarget.style.opacity = "0.85")}
             onMouseOut={e => (e.currentTarget.style.opacity = "1")}
@@ -539,6 +524,13 @@ export default function LabReportsPage() {
   const { products, loading: productsLoading } = useProducts();
   const [modalReport, setModalReport] = useState<Report | null>(null);
 
+  // Map catalogue slug -> product id so a report can link to what it certifies.
+  const productIdBySlug = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const product of products) map.set(product.slug, product.id);
+    return map;
+  }, [products]);
+
   const publishedSlugs = new Set(products.map(product => product.slug));
 
   // Linked reports are visible only when their database-backed product is public.
@@ -548,82 +540,95 @@ export default function LabReportsPage() {
     return r.productSlugs.some(slug => publishedSlugs.has(slug));
   });
 
-  const filtered = search
-    ? visibleReports.filter(r => r.name.toLowerCase().includes(search.toLowerCase()))
+  const query = search.trim().toLowerCase();
+  const filtered = query
+    ? visibleReports.filter(r =>
+        r.name.toLowerCase().includes(query) ||
+        r.testNumber.toLowerCase().includes(query) ||
+        r.methods.some(m => m.toLowerCase().includes(query)),
+      )
     : visibleReports;
 
+  /** Catalogue link for a report, preferring a slug that is currently published. */
+  const hrefFor = (report: Report) => {
+    const slug = report.productSlugs.find(s => publishedSlugs.has(s)) ?? report.productSlugs[0];
+    const id = slug ? productIdBySlug.get(slug) : undefined;
+    return id ? `/product/${id}` : undefined;
+  };
+
   return (
-    <div style={{ minHeight: "100vh", background: "#F5F8FC", fontFamily: "'Arimo', Arial, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#fff" }}>
 
-      {/* Hero */}
-      <div style={{
-        background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
-        padding: "40px 24px 36px",
-        position: "relative",
-        overflow: "hidden",
-      }}>
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)",
-          backgroundSize: "28px 28px",
-          pointerEvents: "none",
-        }} />
-        <div style={{ maxWidth: "960px", margin: "0 auto" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "14px", background: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.22)", padding: "8px 10px 8px 18px", borderRadius: "50px", marginBottom: "20px", backdropFilter: "blur(6px)" }}>
-            <ShieldCheck size={14} color="#6EE7B7" />
-            <span style={{ fontSize: "12px", fontWeight: 700, color: "#6EE7B7", letterSpacing: "0.08em" }}>INDEPENDENTLY TESTED BY</span>
-            <span style={{
-              background: "#E8F0F8",
-              borderRadius: "40px",
-              padding: "7px 18px",
-              display: "inline-flex",
-              alignItems: "center",
-              boxShadow: "0 2px 14px rgba(0,0,0,0.22)",
-            }}>
-              <JanoshikLogo height={26} />
-            </span>
-          </div>
-          <h1 style={{ margin: "0 0 10px", fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em" }}>
-            Independent Results
-          </h1>
-          <p style={{ margin: "0 0 28px", fontSize: "14px", color: "#BFDBFE", lineHeight: 1.7, maxWidth: "580px" }}>
-            Every report below is hosted on Janoshik's own verification platform — an independent third-party analytical laboratory. Click "View Report" to see the raw purity, mass spec data, and chromatogram directly on their site.
-          </p>
-
-          {/* Stats strip */}
+      <PageHero
+        crumbs={[{ label: "Lab Reports" }]}
+        eyebrow="Independent Results"
+        icon={ShieldCheck}
+        title="Independent Results"
+        aside={
           <div style={{ display: "flex", gap: "32px", flexWrap: "wrap", alignItems: "flex-end" }}>
             {[
-              { value: `${visibleReports.length}`, label: "verified reports" },
-              { value: "HPLC + ESI-MS", label: "testing methods" },
+              { value: `${visibleReports.length}`, label: "Verified reports" },
+              { value: "HPLC + ESI-MS", label: "Testing methods" },
             ].map(s => (
               <div key={s.label}>
-                <p style={{ margin: 0, fontSize: "18px", fontWeight: 900, color: "#fff" }}>{s.value}</p>
-                <p style={{ margin: 0, fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>{s.label}</p>
+                <p style={{ margin: 0, fontSize: "28px", fontWeight: 600, color: "var(--ink)", lineHeight: 1, letterSpacing: "-0.02em" }}>{s.value}</p>
+                <p style={{ margin: "6px 0 0", fontSize: "10px", color: "var(--graphite)", textTransform: "uppercase", letterSpacing: "0.14em" }}>{s.label}</p>
               </div>
             ))}
             <div>
-              <span style={{ background: "rgba(255,255,255,0.95)", borderRadius: "6px", padding: "3px 8px", display: "inline-flex", alignItems: "center" }}>
-                <JanoshikLogo height={18} />
+              <span style={{ display: "inline-flex", alignItems: "center", height: "28px" }}>
+                <JanoshikLogo height={22} />
               </span>
-              <p style={{ margin: "3px 0 0", fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>independent lab</p>
+              <p style={{ margin: "6px 0 0", fontSize: "10px", color: "var(--graphite)", textTransform: "uppercase", letterSpacing: "0.14em" }}>Independent lab</p>
             </div>
           </div>
+        }
+      >
+        <div style={{ display: "inline-flex", alignItems: "center", gap: "10px", background: "#fff", border: "1px solid var(--hairline)", padding: "6px 8px 6px 14px", borderRadius: "999px", marginBottom: "14px" }}>
+          <ShieldCheck size={13} color="#059669" aria-hidden="true" />
+          <span style={{ fontSize: "10.5px", fontWeight: 600, color: "var(--ink)", letterSpacing: "0.1em" }}>INDEPENDENTLY TESTED BY</span>
+          <span style={{ background: "#F2F0EB", borderRadius: "999px", padding: "4px 12px", display: "inline-flex", alignItems: "center" }}>
+            <JanoshikLogo height={20} />
+          </span>
         </div>
-      </div>
+        <p style={{ margin: 0 }}>
+          Every report below is hosted on Janoshik's own verification platform — an independent third-party analytical laboratory. Click "View Report" to see the raw purity, mass spec data, and chromatogram directly on their site.
+        </p>
+
+        {/* Search */}
+        <div style={{ position: "relative", maxWidth: "420px", marginTop: "20px" }}>
+          <Search size={14} aria-hidden="true" style={{ position: "absolute", left: "16px", top: "50%", transform: "translateY(-50%)", color: "var(--graphite)", pointerEvents: "none" }} />
+          <input
+            type="text"
+            aria-label="Search lab reports"
+            placeholder="Search by peptide, test number, or method…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{
+              width: "100%", height: "44px",
+              paddingLeft: "40px", paddingRight: "16px",
+              borderRadius: "999px", border: "1px solid var(--hairline)",
+              outline: "none", fontSize: "13.5px",
+              background: "#fff", color: "var(--ink)",
+              boxSizing: "border-box",
+            }}
+          />
+        </div>
+      </PageHero>
 
       {/* How it works strip */}
-      <div style={{ background: "#fff", borderBottom: "1px solid #E8EDF5" }}>
-        <div style={{ maxWidth: "960px", margin: "0 auto", padding: "18px 24px", display: "flex", gap: "32px", flexWrap: "wrap", alignItems: "center" }}>
+      <div style={{ background: "#fff", borderBottom: "1px solid var(--hairline)" }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12" style={{ paddingTop: "20px", paddingBottom: "20px", display: "flex", gap: "32px", flexWrap: "wrap", alignItems: "center" }}>
           {[
-            { icon: <FlaskConical size={15} color="#1B5CB5" />, title: "HPLC Analysis", desc: "Reverse-phase chromatography confirms purity by peak area at 214 nm UV." },
-            { icon: <Atom size={15} color="#7C3AED" />, title: "ESI-MS", desc: "Electrospray ionisation mass spectrometry verifies the molecular identity." },
+            { icon: <FlaskConical size={15} color="var(--cobalt)" />, title: "HPLC Analysis", desc: "Reverse-phase chromatography confirms purity by peak area at 214 nm UV." },
+            { icon: <Atom size={15} color="var(--cobalt)" />, title: "ESI-MS", desc: "Electrospray ionisation mass spectrometry verifies the molecular identity." },
             { icon: <JanoshikLogo height={18} />, title: "Independent lab", desc: "Reports are hosted and signed by Janoshik Analytical — not by OmniQure." },
           ].map(item => (
             <div key={item.title} style={{ display: "flex", alignItems: "flex-start", gap: "10px", flex: "1 1 220px" }}>
               <span style={{ flexShrink: 0, marginTop: "1px" }}>{item.icon}</span>
               <div>
-                <p style={{ margin: 0, fontSize: "12.5px", fontWeight: 700, color: "#0D2565" }}>{item.title}</p>
-                <p style={{ margin: 0, fontSize: "11.5px", color: "#64748B", lineHeight: 1.5 }}>{item.desc}</p>
+                <p style={{ margin: 0, fontSize: "13px", fontWeight: 600, color: "var(--ink)", letterSpacing: "-0.01em" }}>{item.title}</p>
+                <p style={{ margin: "2px 0 0", fontSize: "12px", color: "var(--graphite)", lineHeight: 1.5 }}>{item.desc}</p>
               </div>
             </div>
           ))}
@@ -631,51 +636,46 @@ export default function LabReportsPage() {
       </div>
 
       {/* Content */}
-      <div style={{ maxWidth: "960px", margin: "0 auto", padding: "28px 24px 64px" }}>
-
-        {/* Search */}
-        <div style={{ position: "relative", maxWidth: "420px", marginBottom: "24px" }}>
-          <Search size={14} style={{ position: "absolute", left: "13px", top: "50%", transform: "translateY(-50%)", color: "#94A3B8", pointerEvents: "none" }} />
-          <input
-            type="text"
-            placeholder="Search peptide…"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            style={{
-              width: "100%", height: "42px",
-              paddingLeft: "38px", paddingRight: "14px",
-              borderRadius: "10px", border: "1.5px solid #E2E8F0",
-              outline: "none", fontSize: "13.5px",
-              background: "#fff", color: "#0F172A",
-              fontFamily: "'Arimo', Arial, sans-serif",
-              boxSizing: "border-box",
-            }}
-          />
-        </div>
+      <div className="max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12" style={{ paddingTop: "32px", paddingBottom: "64px" }}>
 
         {/* Count */}
-        <p style={{ margin: "0 0 16px", fontSize: "11.5px", color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 700 }}>
+        <p style={{ margin: "0 0 16px", fontSize: "10.5px", color: "var(--graphite)", textTransform: "uppercase", letterSpacing: "0.14em", fontWeight: 500 }}>
           {filtered.length} report{filtered.length !== 1 ? "s" : ""}
         </p>
 
         {/* Grid */}
         {filtered.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "64px 20px", color: "#94A3B8" }}>
-            <FlaskConical size={36} color="#E2E8F0" style={{ marginBottom: "12px" }} />
-            <p style={{ fontSize: "15px", fontWeight: 600, color: "#475569", margin: "0 0 6px" }}>No reports match</p>
+          <div style={{ textAlign: "center", padding: "64px 20px", color: "var(--graphite)" }}>
+            <FlaskConical size={36} color="var(--graphite)" style={{ marginBottom: "12px", opacity: 0.35, display: "inline-block" }} />
+            <p style={{ fontSize: "15px", fontWeight: 600, color: "var(--ink)", margin: "0 0 6px" }}>No reports match</p>
             <p style={{ fontSize: "13px", margin: 0 }}>Try a different search term.</p>
           </div>
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "14px" }}>
-            {filtered.map(r => <ReportCard key={r.id} report={r} onQuickView={() => setModalReport(r)} />)}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "16px" }}>
+            {filtered.map(r => (
+              <ReportCard
+                key={r.id}
+                report={r}
+                productHref={hrefFor(r)}
+                onQuickView={() => setModalReport(r)}
+              />
+            ))}
           </div>
         )}
 
         {/* Disclaimer */}
-        <p style={{ marginTop: "48px", textAlign: "center", fontSize: "11px", color: "#94A3B8", lineHeight: 1.7, maxWidth: "560px", margin: "48px auto 0" }}>
-          All products are sold strictly for in-vitro research purposes only. Not approved for human or veterinary use.
-          Lab reports are independently issued by Janoshik Analytical and can be verified at verify.janoshik.com.
-        </p>
+        <div style={{
+          margin: "48px auto 0", maxWidth: "720px", padding: "14px 18px",
+          background: "#F2F0EB", border: "1px solid var(--hairline)", borderRadius: "12px",
+          display: "flex", gap: "10px", alignItems: "flex-start",
+        }}>
+          <AlertTriangle size={14} color="#D97706" style={{ flexShrink: 0, marginTop: "2px" }} aria-hidden="true" />
+          <p style={{ margin: 0, fontSize: "12px", color: "var(--graphite)", lineHeight: 1.7 }}>
+            <strong style={{ color: "var(--ink)", fontWeight: 600 }}>Research use only.</strong>{" "}
+            All products are sold strictly for in-vitro research purposes only. Not approved for human or veterinary use.
+            Lab reports are independently issued by Janoshik Analytical and can be verified at verify.janoshik.com.
+          </p>
+        </div>
       </div>
 
       {/* Janoshik report modal */}

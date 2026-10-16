@@ -22,18 +22,17 @@ export default function SiteDisclaimer() {
   return (
     <div
       style={{
-        background: "#ffffff",
-        padding: "16px 16px",
-        fontFamily: "'Arimo', Arial, sans-serif",
+        background: "rgba(239,244,252,0.3)",
+        borderBottom: "1px solid var(--hairline)",
+        fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif",
       }}
     >
       <div
-        className="max-w-[860px] mx-auto rounded-2xl"
-        style={{
-          background: "linear-gradient(135deg, #0D2565 0%, #0F2E6B 50%, #0D2565 100%)",
-          border: "1.5px solid rgba(232,169,62,0.20)",
-          overflow: "hidden",
-        }}
+        className="w-full max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 pb-10 lg:pb-14"
+      >
+      <div
+        className="max-w-3xl rounded-xl bg-white"
+        style={{ border: "1px solid var(--hairline)", overflow: "hidden" }}
       >
         {/* Header — always visible, click to toggle */}
         <button
@@ -43,7 +42,7 @@ export default function SiteDisclaimer() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: collapsed ? "14px 32px" : "28px 32px 0 32px",
+            padding: collapsed ? "14px 24px" : "20px 24px 0 24px",
             background: "transparent",
             border: "none",
             cursor: "pointer",
@@ -53,10 +52,10 @@ export default function SiteDisclaimer() {
         >
           <p
             style={{
-              fontSize: "11px",
-              fontWeight: 700,
+              fontSize: "10px",
+              fontWeight: 500,
               letterSpacing: "0.18em",
-              color: "#E8A93E",
+              color: "#4A5672",
               textTransform: "uppercase",
               margin: 0,
             }}
@@ -65,8 +64,8 @@ export default function SiteDisclaimer() {
           </p>
           <span
             style={{
-              color: "rgba(232,169,62,0.65)",
-              fontSize: "13px",
+              color: "var(--graphite)",
+              fontSize: "10px",
               flexShrink: 0,
               transition: "transform 0.2s",
               transform: collapsed ? "rotate(0deg)" : "rotate(180deg)",
@@ -80,9 +79,9 @@ export default function SiteDisclaimer() {
 
         {/* Body — hidden when collapsed */}
         {!collapsed && (
-          <div style={{ padding: "18px 32px 28px" }}>
+          <div style={{ padding: "14px 24px 20px" }}>
             {/* Intro */}
-            <p style={{ fontSize: "13.5px", color: "#E8A93E", lineHeight: 1.75, marginBottom: "18px" }}>
+            <p style={{ fontSize: "12.5px", color: "rgba(74,85,104,0.8)", lineHeight: 1.9, marginBottom: "12px" }}>
               OmniQure sells research-grade peptides for lab use only. Ordering means you've read and agree to the terms below.
             </p>
 
@@ -109,8 +108,8 @@ export default function SiteDisclaimer() {
                 body: "Returns are limited given the nature of these materials — see our Terms & Conditions for details on damaged, faulty or quality issues.",
               },
             ].map(({ label, body }) => (
-              <p key={label} style={{ fontSize: "13.5px", color: "#E8A93E", lineHeight: 1.75, marginBottom: "14px" }}>
-                <strong style={{ color: "#E8A93E", fontWeight: 700 }}>{label}</strong>{" "}
+              <p key={label} style={{ fontSize: "12.5px", color: "rgba(74,85,104,0.8)", lineHeight: 1.9, marginBottom: "10px" }}>
+                <strong style={{ color: "#1D2948", fontWeight: 600 }}>{label}</strong>{" "}
                 {body}
               </p>
             ))}
@@ -118,8 +117,8 @@ export default function SiteDisclaimer() {
             {/* Closing */}
             <p
               style={{
-                fontSize: "12.5px",
-                color: "rgba(232,169,62,0.65)",
+                fontSize: "11.5px",
+                color: "var(--graphite)",
                 fontStyle: "italic",
                 marginTop: "6px",
                 lineHeight: 1.6,
@@ -129,6 +128,7 @@ export default function SiteDisclaimer() {
             </p>
           </div>
         )}
+      </div>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { Link } from "wouter";
-import { Shield, ChevronRight } from "lucide-react";
+import { Shield, AlertTriangle } from "lucide-react";
+import PageHero from "@/components/PageHero";
 import { useSEO } from "@/hooks/useSEO";
 
 const LAST_UPDATED = "1 May 2025";
@@ -19,16 +20,16 @@ function Section({ id, number, title, children }: SectionProps) {
     <section id={id} className="mb-10">
       <div className="flex items-baseline gap-3 mb-3">
         <span
-          className="font-bold flex-shrink-0"
-          style={{ fontSize: "13px", color: "#1B5CB5", minWidth: "24px" }}
+          className="font-medium flex-shrink-0"
+          style={{ fontSize: "13px", color: "var(--cobalt)", minWidth: "24px" }}
         >
           {number}.
         </span>
-        <h2 className="font-bold" style={{ fontSize: "18px", color: "#0F172A" }}>
+        <h2 className="font-semibold" style={{ fontSize: "18px", letterSpacing: "-0.01em", color: "var(--ink)" }}>
           {title}
         </h2>
       </div>
-      <div className="pl-9 space-y-3 text-sm leading-relaxed" style={{ color: "#374151", lineHeight: "1.85" }}>
+      <div className="pl-9 space-y-3 text-sm leading-relaxed" style={{ color: "var(--graphite)", lineHeight: "1.85" }}>
         {children}
       </div>
     </section>
@@ -59,55 +60,36 @@ export default function TermsPage() {
     canonicalPath: "/terms",
   });
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
-      {/* Hero */}
-      <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", padding: "40px 0 32px", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-        <div className="max-w-[1280px] mx-auto px-4">
-          <div className="flex items-center gap-2 text-xs mb-3" style={{ color: "rgba(255,255,255,0.5)" }}>
-            <Link href="/" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Home</Link>
-            <ChevronRight size={12} />
-            <span style={{ color: "rgba(255,255,255,0.8)" }}>Terms & Conditions</span>
-          </div>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="rounded-xl flex items-center justify-center" style={{ width: "40px", height: "40px", backgroundColor: "rgba(255,255,255,0.12)" }}>
-              <Shield size={20} style={{ color: "#93C5FD" }} />
-            </div>
-            <h1 className="font-bold text-white" style={{ fontSize: "clamp(22px, 4vw, 32px)" }}>
-              Terms & Conditions
-            </h1>
-          </div>
-          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)" }}>
-            Last updated: {LAST_UPDATED} · {COMPANY}
-          </p>
-        </div>
-      </div>
+    <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", backgroundColor: "#fff", minHeight: "100vh" }}>
+      <PageHero crumbs={[{ label: "Terms & Conditions" }]} eyebrow="Legal" icon={Shield} title="Terms & Conditions">
+        <p>Last updated: {LAST_UPDATED} · {COMPANY}</p>
+      </PageHero>
 
       {/* RUO Banner */}
-      <div style={{ backgroundColor: "#FEF2F2", borderBottom: "1px solid #FECACA" }}>
-        <div className="max-w-[1280px] mx-auto px-4 py-3 flex items-start gap-2">
-          <span style={{ fontSize: "15px", flexShrink: 0 }}>⚠️</span>
-          <p className="text-xs leading-relaxed font-medium" style={{ color: "#B91C1C" }}>
+      <div style={{ backgroundColor: "#F2F0EB", borderBottom: "1px solid rgba(11,18,32,0.09)" }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 py-3 flex items-start gap-2">
+          <AlertTriangle size={14} aria-hidden="true" className="mt-0.5" style={{ color: "#D97706", flexShrink: 0 }} />
+          <p className="text-xs leading-relaxed" style={{ color: "var(--graphite)" }}>
             <strong>Important:</strong> All products sold by {COMPANY_SHORT} are strictly for in-vitro laboratory research use only. They are not medicines, drugs, food supplements, or approved for human or veterinary use. By purchasing, you confirm you are 18 or over and a qualified researcher.
           </p>
         </div>
       </div>
 
-      <div className="max-w-[1280px] mx-auto px-4 py-10">
+      <div className="max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 py-10">
         <div className="flex gap-10">
           {/* Table of Contents — desktop sticky */}
           <aside className="hidden lg:block" style={{ width: "220px", flexShrink: 0 }}>
             <div className="sticky top-24">
-              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#94A3B8" }}>Contents</p>
+              <p className="uppercase mb-3" style={{ fontSize: 10, fontWeight: 500, letterSpacing: "0.18em", color: "var(--graphite)" }}>Contents</p>
               <nav className="space-y-1">
                 {toc.map((item, i) => (
                   <a
                     key={item.id}
                     href={`#${item.id}`}
-                    className="flex items-center gap-2 text-xs py-1 transition-colors hover:text-blue-600"
-                    style={{ color: "#64748B", textDecoration: "none" }}
+                    className="flex items-center gap-2 text-xs py-1 transition-colors hover:text-[var(--ink)]"
+                    style={{ color: "var(--graphite)", textDecoration: "none" }}
                   >
-                    <span style={{ color: "#BFDBFE", fontSize: "11px", fontWeight: 700, minWidth: "18px" }}>{i + 1}.</span>
+                    <span style={{ color: "rgba(74,85,104,0.45)", fontSize: "11px", fontWeight: 500, minWidth: "18px" }}>{i + 1}.</span>
                     {item.label}
                   </a>
                 ))}
@@ -118,13 +100,13 @@ export default function TermsPage() {
           {/* Content */}
           <div className="flex-1 min-w-0">
             <div
-              className="rounded-2xl p-6 md:p-8 mb-6"
-              style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 16px rgba(15,23,42,0.05)" }}
+              className="p-6 md:p-8 mb-6"
+              style={{ backgroundColor: "#fff", border: "1px solid rgba(11,18,32,0.09)", borderRadius: 16 }}
             >
-              <p className="text-sm leading-relaxed mb-4" style={{ color: "#475569", lineHeight: "1.85" }}>
+              <p className="text-sm leading-relaxed mb-4" style={{ color: "var(--graphite)", lineHeight: "1.85" }}>
                 These Terms and Conditions ("Terms") govern your use of the {COMPANY} website and your purchase of products from us. Please read them carefully before placing an order. By accessing our website or placing an order, you agree to be bound by these Terms.
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: "#475569" }}>
+              <p className="text-sm leading-relaxed" style={{ color: "var(--graphite)" }}>
                 These Terms constitute a legally binding agreement between you and {COMPANY} (trading as "{COMPANY_SHORT}").
               </p>
             </div>
@@ -135,9 +117,9 @@ export default function TermsPage() {
             </Section>
 
             <Section id="ruo" number="2" title="Research Use Only — Critical Notice">
-              <div className="rounded-xl p-4" style={{ backgroundColor: "#FEF2F2", border: "1px solid #FECACA" }}>
-                <p className="font-bold mb-2" style={{ color: "#B91C1C" }}>All products are sold strictly for in-vitro laboratory research use only.</p>
-                <ul className="space-y-1.5 text-sm" style={{ color: "#7F1D1D" }}>
+              <div className="rounded-xl p-4" style={{ backgroundColor: "#F2F0EB", border: "1px solid rgba(11,18,32,0.09)" }}>
+                <p className="font-semibold mb-2 flex items-start gap-1.5" style={{ color: "var(--ink)" }}><AlertTriangle size={14} aria-hidden="true" className="mt-1" style={{ color: "#D97706", flexShrink: 0 }} />All products are sold strictly for in-vitro laboratory research use only.</p>
+                <ul className="space-y-1.5 text-sm" style={{ color: "var(--graphite)" }}>
                   {[
                     "Products are NOT approved by the FDA, MHRA, EMA, or any other regulatory authority for human or veterinary use.",
                     "Products are NOT intended to diagnose, treat, cure, or prevent any disease or medical condition.",
@@ -166,7 +148,7 @@ export default function TermsPage() {
                   "Not be located in a jurisdiction where the purchase or possession of these products is prohibited.",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2">
-                    <span style={{ flexShrink: 0, color: "#1B5CB5" }}>—</span>
+                    <span style={{ flexShrink: 0, color: "rgba(74,85,104,0.45)" }}>—</span>
                     {item}
                   </li>
                 ))}
@@ -195,7 +177,7 @@ export default function TermsPage() {
             </Section>
 
             <Section id="shipping" number="7" title="Shipping & Delivery">
-              <p>Please refer to our full <Link href="/shipping" style={{ color: "#1B5CB5", textDecoration: "none", fontWeight: 600 }}>Shipping Policy</Link> for complete information on delivery timescales, carriers, packaging, and international shipping.</p>
+              <p>Please refer to our full <Link href="/shipping" style={{ color: "var(--cobalt)", textDecoration: "none", fontWeight: 600 }}>Shipping Policy</Link> for complete information on delivery timescales, carriers, packaging, and international shipping.</p>
               <p>Risk of loss and title for products passes to you upon dispatch. {COMPANY_SHORT} is not responsible for delays, losses, or damages arising from carrier handling once products have left our facility.</p>
               <p>It is your responsibility to ensure that importation of research chemicals is permitted in your jurisdiction. We accept no liability for products seized, delayed, or destroyed by customs authorities.</p>
             </Section>
@@ -210,12 +192,12 @@ export default function TermsPage() {
                   "Missing from your order;",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2">
-                    <span style={{ flexShrink: 0, color: "#1B5CB5" }}>—</span>
+                    <span style={{ flexShrink: 0, color: "rgba(74,85,104,0.45)" }}>—</span>
                     {item}
                   </li>
                 ))}
               </ul>
-              <p>Please contact us at <a href={`mailto:${EMAIL}`} style={{ color: "#1B5CB5" }}>{EMAIL}</a> within 48 hours of receipt with photographic evidence. We will investigate and, where appropriate, offer a replacement or refund at our discretion.</p>
+              <p>Please contact us at <a href={`mailto:${EMAIL}`} style={{ color: "var(--cobalt)" }}>{EMAIL}</a> within 48 hours of receipt with photographic evidence. We will investigate and, where appropriate, offer a replacement or refund at our discretion.</p>
               <p>Refunds, where approved, will be issued to the original payment method within 5–10 business days.</p>
             </Section>
 
@@ -231,7 +213,7 @@ export default function TermsPage() {
                   "Any reliance on information provided on this website for purposes other than legitimate research.",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2">
-                    <span style={{ flexShrink: 0, color: "#1B5CB5" }}>—</span>
+                    <span style={{ flexShrink: 0, color: "rgba(74,85,104,0.45)" }}>—</span>
                     {item}
                   </li>
                 ))}
@@ -245,7 +227,7 @@ export default function TermsPage() {
             </Section>
 
             <Section id="privacy" number="11" title="Privacy & Data Protection">
-              <p>Your use of this website and our processing of your personal data are governed by our <Link href="/privacy" style={{ color: "#1B5CB5", textDecoration: "none", fontWeight: 600 }}>Privacy Policy</Link>, which forms part of these Terms.</p>
+              <p>Your use of this website and our processing of your personal data are governed by our <Link href="/privacy" style={{ color: "var(--cobalt)", textDecoration: "none", fontWeight: 600 }}>Privacy Policy</Link>, which forms part of these Terms.</p>
               <p>We comply with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018. By using this website, you consent to the processing of your personal data as described in our Privacy Policy.</p>
             </Section>
 
@@ -268,7 +250,7 @@ export default function TermsPage() {
             <Section id="governing" number="13" title="Governing Law & Disputes">
               <p>These Terms and any dispute or claim arising out of or in connection with them shall be governed by and construed in accordance with the laws of England and Wales.</p>
               <p>Any disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales. If you are a consumer based in another jurisdiction, this does not affect any mandatory consumer rights you may have under local law.</p>
-              <p>We aim to resolve any complaints or disputes informally and in good faith. If you have a complaint, please contact us first at <a href={`mailto:${EMAIL}`} style={{ color: "#1B5CB5" }}>{EMAIL}</a>.</p>
+              <p>We aim to resolve any complaints or disputes informally and in good faith. If you have a complaint, please contact us first at <a href={`mailto:${EMAIL}`} style={{ color: "var(--cobalt)" }}>{EMAIL}</a>.</p>
             </Section>
 
             <Section id="changes" number="14" title="Changes to These Terms">
@@ -277,10 +259,10 @@ export default function TermsPage() {
             </Section>
 
             <Section id="contact" number="15" title="Contact Us">
-              <div className="rounded-xl p-4" style={{ backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}>
-                <p className="font-semibold mb-2" style={{ color: "#1240A0" }}>{COMPANY}</p>
-                <p><strong>Legal enquiries:</strong> <a href={`mailto:${EMAIL}`} style={{ color: "#1B5CB5" }}>{EMAIL}</a></p>
-                <p><strong>General enquiries:</strong> <a href="mailto:support@omniqure.com" style={{ color: "#1B5CB5" }}>support@omniqure.com</a></p>
+              <div className="rounded-xl p-4" style={{ backgroundColor: "#F2F0EB", border: "1px solid rgba(11,18,32,0.09)" }}>
+                <p className="font-semibold mb-2" style={{ color: "var(--ink)" }}>{COMPANY}</p>
+                <p><strong>Legal enquiries:</strong> <a href={`mailto:${EMAIL}`} style={{ color: "var(--cobalt)" }}>{EMAIL}</a></p>
+                <p><strong>General enquiries:</strong> <a href="mailto:support@omniqure.com" style={{ color: "var(--cobalt)" }}>support@omniqure.com</a></p>
               </div>
             </Section>
           </div>

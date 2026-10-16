@@ -17,7 +17,7 @@ export default function ProductInfoAccordion({
       {detail.description && (
         <div
           style={{
-            borderLeft: "4px solid #1B5CB5",
+            borderLeft: "4px solid #4E68C2",
             backgroundColor: "#F0F5FF",
             padding: "14px 16px",
             borderRadius: "0 8px 8px 0",
@@ -34,9 +34,9 @@ export default function ProductInfoAccordion({
       <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "18px" }}>
         {items.map(({ label, value }) => (
           <div key={label} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-            <span style={{ color: "#1B5CB5", fontWeight: 700, fontSize: "15px", flexShrink: 0, lineHeight: 1.5 }}>✓</span>
+            <span style={{ color: "#4E68C2", fontWeight: 700, fontSize: "15px", flexShrink: 0, lineHeight: 1.5 }}>✓</span>
             <p style={{ fontSize: "13.5px", color: "#374151", lineHeight: 1.65, margin: 0 }}>
-              <strong style={{ color: "#0F172A" }}>{label}:</strong> {value}
+              <strong style={{ color: "#22252C" }}>{label}:</strong> {value}
             </p>
           </div>
         ))}
@@ -54,7 +54,7 @@ export default function ProductInfoAccordion({
           backgroundColor: "#F8FAFC",
         }}
       >
-        <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#1B5CB5", flexShrink: 0 }} />
+        <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#4E68C2", flexShrink: 0 }} />
         <p style={{ fontSize: "10.5px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#334155", margin: 0 }}>
           For Research Use Only — Not For Human Consumption
         </p>

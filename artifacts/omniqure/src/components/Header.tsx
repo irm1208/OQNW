@@ -25,7 +25,7 @@ function highlightMatch(text: string, query: string) {
   return (
     <span>
       {text.slice(0, idx)}
-      <strong style={{ color: "#1240A0" }}>{text.slice(idx, idx + query.length)}</strong>
+      <strong style={{ color: "#4E68C2" }}>{text.slice(idx, idx + query.length)}</strong>
       {text.slice(idx + query.length)}
     </span>
   );
@@ -39,6 +39,13 @@ const BASE_NAV_ITEMS = [
   { label: "Peptide Calculator", href: "/calculator" },
   { label: "Research & Education", href: "/protocols" },
 ];
+
+const DESKTOP_LABELS: Record<string, string> = {
+  "Shop Peptides": "All Peptides",
+  "Peptide Calculator": "Calculator",
+  "Research & Education": "Research",
+  "Lab Results": "Lab Results",
+};
 
 const researchLinks = [
   { label: "Protocols", href: "/protocols", icon: FlaskConical, desc: "Research protocols & dosing guides" },
@@ -163,6 +170,13 @@ export default function Header() {
   }, []);
   const { totalItems } = useCart();
   const { currency, setCurrency, formatPrice } = useCurrency();
+  const [isDesktop, setIsDesktop] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches);
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => setIsDesktop(mql.matches);
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
   const { customer, loadingAuth, signOut } = useCustomerAuth();
   const { data: affiliateProfile } = useAffiliateMe(customer?.id);
   const isApprovedAffiliate = affiliateProfile?.partner?.status === "approved";
@@ -304,31 +318,34 @@ export default function Header() {
       <input
         ref={inputRef}
         type="search"
-        placeholder="Search peptides, categories..."
+        placeholder={isDesktop ? "Search" : "Search peptides…"}
         value={searchQuery}
         onChange={(e) => { setSearchQuery(e.target.value); setOpen(true); }}
         onFocus={(e) => {
-          e.currentTarget.style.borderColor = "rgba(255,255,255,0.6)";
-          e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.18)";
+          e.currentTarget.style.borderColor = "var(--cobalt)";
+          e.currentTarget.style.backgroundColor = "#FFFFFF";
           if (searchQuery.trim().length >= 1) setOpen(true);
         }}
         onBlur={(e) => {
-          e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
-          e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.12)";
+          e.currentTarget.style.borderColor = "var(--hairline)";
+          e.currentTarget.style.backgroundColor = "rgba(229,239,255,0.4)";
         }}
         onKeyDown={handleKeyDown}
         className="w-full h-8 sm:h-10 pl-3 pr-9 sm:pl-4 sm:pr-11 text-sm outline-none transition-all"
         style={{
-          backgroundColor: "rgba(255,255,255,0.12)",
-          color: "#fff",
-          border: "1.5px solid rgba(255,255,255,0.2)",
-          borderRadius: open && results.length > 0 ? "10px 10px 0 0" : "10px",
+          backgroundColor: "rgba(229,239,255,0.4)",
+          color: "var(--ink)",
+          border: "1px solid var(--hairline)",
+          borderRadius: open && results.length > 0 ? "20px 20px 0 0" : "999px",
+          fontSize: "13px",
         }}
         autoComplete="off"
       />
       <button
+        type="button"
+        aria-label="Search peptides"
         className="header-search-submit absolute right-0 h-8 w-9 sm:h-10 sm:w-11 flex items-center justify-center"
-        style={{ color: "rgba(255,255,255,0.6)" }}
+        style={{ color: "var(--graphite)" }}
         onClick={() => {
           if (q) {
             navigate(`/all-peptides?search=${encodeURIComponent(searchQuery.trim())}`);
@@ -344,15 +361,14 @@ export default function Header() {
   );
 
   return (
-    <header style={{ fontFamily: "'Arimo', Arial, sans-serif", transition: "filter 0.3s ease" }} className="sticky top-0 z-50">
+    <header style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", transition: "filter 0.3s ease" }} className="sticky top-0 z-50">
       {/* Top bar */}
       <div className="header-topbar" style={{
-        background: scrolled
-          ? "rgba(18,64,160,0.97)"
-          : "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
-        backdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(18px) saturate(180%)" : "none",
-        boxShadow: scrolled ? "0 4px 32px rgba(8,28,80,0.35)" : "0 2px 16px rgba(8,28,80,0.25)",
+        background: scrolled ? "rgba(255,255,255,0.92)" : "rgba(255,255,255,0.8)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderBottom: "1px solid var(--hairline)",
+        boxShadow: scrolled ? "0 1px 12px rgba(4,11,34,0.06)" : "none",
         transition: "background 0.3s ease, box-shadow 0.3s ease",
         position: "relative", zIndex: 2,
       }}>
@@ -362,12 +378,12 @@ export default function Header() {
           <button
             className="header-menu-toggle lg:hidden p-1 order-0 flex-shrink-0 flex flex-col items-center"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{ color: "rgba(255,255,255,0.85)", background: "none", border: "none", cursor: "pointer" }}
+            style={{ color: "var(--ink)", background: "none", border: "none", cursor: "pointer" }}
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-            <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Menu</span>
+            <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "var(--graphite)" }}>Menu</span>
           </button>
 
           {/* Logo */}
@@ -379,9 +395,436 @@ export default function Header() {
             />
           </Link>
 
+          {/* Desktop nav — inline in the single header row */}
+          <span className="header-nav-divider hidden lg:block order-2" aria-hidden="true" />
+          <nav className="header-desktop-nav hidden lg:flex order-2 items-center" aria-label="Main">
+            {navItems.map((item) => {
+              const active = location === item.href || (item.href === "/all-peptides" && location.startsWith("/all-peptides"));
+              if (item.label === "Shop Peptides") {
+                return (
+                  <div
+                    key={item.label}
+                    style={{ position: "relative" }}
+                    onMouseEnter={openAllPeptides}
+                    onMouseLeave={closeAllPeptides}
+                  >
+                    <Link
+                      href={item.href}
+                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#E8F2DE]/50 hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
+                      style={{
+                        borderRadius: "6px", backgroundColor: active ? "rgba(229,239,255,0.6)" : undefined,
+                        color: active ? "var(--ink)" : undefined,
+                        fontWeight: active ? 600 : 500,
+                        textDecoration: "none", marginBottom: "-1px",
+                      }}
+                    >
+                      {DESKTOP_LABELS[item.label] ?? item.label}
+                      <ChevronDown size={13} style={{ opacity: 0.5, transition: "transform 0.2s", transform: allPeptidesOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
+                    </Link>
+
+                    {/* Dropdown mega-menu */}
+                    {allPeptidesOpen && (
+                      <div
+                        onMouseEnter={openAllPeptides}
+                        onMouseLeave={closeAllPeptides}
+                        style={{
+                          position: "absolute", top: "100%", left: 0,
+                          backgroundColor: "#fff",
+                          border: "1.5px solid #D3D8E2",
+                          borderRadius: "16px",
+                          boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
+                          zIndex: 400,
+                          minWidth: "520px",
+                          padding: "16px",
+                          marginTop: "2px",
+                        }}
+                      >
+                        {/* Header row */}
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px", paddingBottom: "8px", borderBottom: "1px solid #F1F5F9" }}>
+                          <p style={{ fontSize: "11px", fontWeight: 800, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>
+                            Shop Peptides
+                          </p>
+                          <Link
+                            href="/all-peptides"
+                            onClick={() => setAllPeptidesOpen(false)}
+                            style={{ fontSize: "12px", fontWeight: 600, color: "#4E68C2", textDecoration: "none" }}
+                          >
+                            View all →
+                          </Link>
+                        </div>
+
+                        {/* Peptide name list */}
+                        <div style={{ maxHeight: "320px", overflowY: "auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1px" }}>
+                          {peptideGroups.filter(g => g.baseName !== "NAD+").map((group) => (
+                            <Link
+                              key={group.baseName}
+                              href={`/product/${group.variants[0].id}`}
+                              onClick={() => setAllPeptidesOpen(false)}
+                              style={{
+                                display: "block",
+                                padding: "6px 8px", borderRadius: "8px",
+                                textDecoration: "none", color: "#374151",
+                                fontSize: "12.5px", fontWeight: 500,
+                                whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                              }}
+                              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F0F5FF")}
+                              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
+                            >
+                              {group.baseName}
+                            </Link>
+                          ))}
+                        </div>
+
+                        {/* Footer */}
+                        <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #F1F5F9", textAlign: "center" }}>
+                          <Link
+                            href="/all-peptides"
+                            onClick={() => setAllPeptidesOpen(false)}
+                            style={{ fontSize: "13px", fontWeight: 600, color: "#4E68C2", textDecoration: "none" }}
+                          >
+                            Browse Peptides →
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+              if (item.label === "Popular Peptides") {
+                return (
+                  <div
+                    key={item.label}
+                    style={{ position: "relative" }}
+                    onMouseEnter={openPopular}
+                    onMouseLeave={closePopular}
+                  >
+                    <Link
+                      href={item.href}
+                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#E8F2DE]/50 hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
+                      style={{
+                        borderRadius: "6px", backgroundColor: active ? "rgba(229,239,255,0.6)" : undefined,
+                        color: active ? "var(--ink)" : undefined,
+                        fontWeight: active ? 600 : 500,
+                        textDecoration: "none", marginBottom: "-1px",
+                      }}
+                    >
+                      {DESKTOP_LABELS[item.label] ?? item.label}
+                      <ChevronDown size={13} style={{ opacity: 0.5, transition: "transform 0.2s", transform: popularOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
+                    </Link>
+
+                    {popularOpen && (
+                      <div
+                        onMouseEnter={openPopular}
+                        onMouseLeave={closePopular}
+                        style={{
+                          position: "absolute", top: "100%", left: 0,
+                          backgroundColor: "#fff",
+                          border: "1.5px solid #D3D8E2",
+                          borderRadius: "16px",
+                          boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
+                          zIndex: 400,
+                          minWidth: "380px",
+                          padding: "16px",
+                          marginTop: "2px",
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px", paddingBottom: "8px", borderBottom: "1px solid #F1F5F9" }}>
+                          <p style={{ fontSize: "11px", fontWeight: 800, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>
+                            Popular Peptides
+                          </p>
+                          <Link
+                            href="/popular-peptides"
+                            onClick={() => setPopularOpen(false)}
+                            style={{ fontSize: "12px", fontWeight: 600, color: "#4E68C2", textDecoration: "none" }}
+                          >
+                            View all →
+                          </Link>
+                        </div>
+
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1px" }}>
+                          {popularGroups.map((g) => (
+                            <Link
+                              key={g.baseName}
+                              href={`/product/${g.id}`}
+                              onClick={() => setPopularOpen(false)}
+                              style={{
+                                display: "block",
+                                padding: "6px 8px", borderRadius: "8px",
+                                textDecoration: "none", color: "#374151",
+                                fontSize: "12.5px", fontWeight: 500,
+                                whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                              }}
+                              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F0F5FF")}
+                              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
+                            >
+                              {g.baseName}
+                            </Link>
+                          ))}
+                        </div>
+
+                        <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #F1F5F9", textAlign: "center" }}>
+                          <Link
+                            href="/popular-peptides"
+                            onClick={() => setPopularOpen(false)}
+                            style={{ fontSize: "13px", fontWeight: 600, color: "#4E68C2", textDecoration: "none" }}
+                          >
+                            Browse All Popular Peptides →
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              if (item.label === "Research & Education") {
+                const researchActive = researchLinks.some(l => location === l.href || location.startsWith(l.href + "/"));
+                return (
+                  <div
+                    key={item.label}
+                    style={{ position: "relative" }}
+                    onMouseEnter={openResearch}
+                    onMouseLeave={closeResearch}
+                  >
+                    <button
+                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#E8F2DE]/50 hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
+                      style={{
+                        color: researchActive ? "var(--ink)" : undefined,
+                        fontWeight: researchActive ? 600 : 500,
+                        marginBottom: "-1px", background: "none", outline: "none",
+                        borderLeft: "none", borderRight: "none", borderTop: "none",
+                        borderRadius: "6px", backgroundColor: researchActive ? "rgba(229,239,255,0.6)" : undefined,
+                        cursor: "pointer",
+                      }}
+                      onClick={() => setResearchOpen(o => !o)}
+                    >
+                      <GraduationCap className="hidden" size={14} style={{ opacity: 0.7, marginRight: "2px" }} />
+                      {DESKTOP_LABELS[item.label] ?? item.label}
+                      <ChevronDown size={13} style={{ opacity: 0.5, transition: "transform 0.2s", transform: researchOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
+                    </button>
+
+                    {researchOpen && (
+                      <div
+                        onMouseEnter={openResearch}
+                        onMouseLeave={closeResearch}
+                        style={{
+                          position: "absolute", top: "100%", left: 0,
+                          backgroundColor: "#fff",
+                          border: "1.5px solid #D3D8E2",
+                          borderRadius: "16px",
+                          boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
+                          zIndex: 400,
+                          minWidth: "380px",
+                          padding: "16px",
+                          marginTop: "2px",
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", paddingBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
+                          <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "#E8F2DE", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                            <GraduationCap size={15} style={{ color: "#4E68C2" }} />
+                          </div>
+                          <div>
+                            <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C", margin: 0 }}>Research & Education</p>
+                            <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>Tools, data & learning resources</p>
+                          </div>
+                        </div>
+
+                        <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                          {researchLinks.map(link => {
+                            const Icon = link.icon;
+                            const isActive = location === link.href;
+                            return (
+                              <Link
+                                key={link.href}
+                                href={link.href}
+                                onClick={() => setResearchOpen(false)}
+                                style={{
+                                  display: "flex", alignItems: "center", gap: "12px",
+                                  padding: "10px 10px", borderRadius: "10px",
+                                  textDecoration: "none",
+                                  backgroundColor: isActive ? "#E8F2DE" : "transparent",
+                                  transition: "background-color 0.12s",
+                                }}
+                                onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC"; }}
+                                onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
+                              >
+                                <div style={{
+                                  width: "34px", height: "34px", borderRadius: "8px", flexShrink: 0,
+                                  backgroundColor: isActive ? "#E8F2DE" : "#F1F5F9",
+                                  display: "flex", alignItems: "center", justifyContent: "center",
+                                }}>
+                                  <Icon size={16} style={{ color: isActive ? "#4E68C2" : "#64748B" }} />
+                                </div>
+                                <div style={{ minWidth: 0 }}>
+                                  <p style={{ fontSize: "13px", fontWeight: 600, color: isActive ? "#4E68C2" : "#1E293B", margin: "0 0 1px" }}>{link.label}</p>
+                                  <p style={{ fontSize: "11.5px", color: "#94A3B8", margin: 0 }}>{link.desc}</p>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  data-active={active ? "true" : undefined}
+                  className={`${item.href === "/" ? "header-nav-home " : ""}${item.href === "/bac-water" || item.label === "NAD+" ? "header-nav-extra " : ""}px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#E8F2DE]/50 hover:text-[#22252C] inline-block transition-colors`}
+                  style={{
+                    borderRadius: "6px", backgroundColor: active ? "rgba(229,239,255,0.6)" : undefined,
+                    color: active ? "var(--ink)" : undefined,
+                    fontWeight: active ? 600 : 500,
+                    textDecoration: "none", marginBottom: "-1px",
+                  }}
+                  onMouseEnter={() => prefetchRoute(item.href)}
+                >
+                  {DESKTOP_LABELS[item.label] ?? item.label}
+                </Link>
+              );
+            })}
+          <div
+            style={{ position: "relative" }}
+            onMouseEnter={openOffers}
+            onMouseLeave={closeOffers}
+          >
+            <button
+              ref={offersButtonRef}
+              type="button"
+              className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#E8F2DE]/50 hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
+              style={{
+                color: offersActive ? "var(--ink)" : undefined,
+                fontWeight: offersActive ? 600 : 500,
+                border: "none",
+                borderRadius: "6px",
+                backgroundColor: offersActive ? "rgba(229,239,255,0.6)" : undefined,
+                cursor: "pointer",
+                marginBottom: "-1px",
+              }}
+              aria-haspopup="true"
+              aria-expanded={offersOpen}
+              aria-controls="header-incentive-offers-menu"
+              onClick={() => {
+                if (offersOpen) setOffersOpen(false);
+                else openOffers();
+              }}
+              onKeyDown={handleOffersKeyDown}
+            >
+              Offers
+              <ChevronDown size={13} style={{ opacity: 0.5, transition: "transform 0.2s", transform: offersOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
+            </button>
+
+            {offersOpen && (
+              <div
+                id="header-incentive-offers-menu"
+                onMouseEnter={openOffers}
+                onMouseLeave={closeOffers}
+                style={{
+                  position: "absolute", top: "100%", left: 0,
+                  backgroundColor: "#fff",
+                  border: "1.5px solid #D3D8E2",
+                  borderRadius: "16px",
+                  boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
+                  zIndex: 400,
+                  minWidth: "310px",
+                  padding: "16px",
+                  marginTop: "2px",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", paddingBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
+                  <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "#E8F2DE", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <ArrowUpRight size={15} style={{ color: "#4E68C2" }} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C", margin: 0 }}>Offers &amp; Rewards</p>
+                    <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>Ways to save, share & earn</p>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                  {offerNavItems.map((item, index) => {
+                    const Icon = item.icon;
+                    const active = location === item.href || location.startsWith(item.href + "/");
+                    return (
+                      <Link
+                        key={item.href}
+                        ref={element => { offersLinkRefs.current[index] = element; }}
+                        href={item.href}
+                        aria-current={active ? "page" : undefined}
+                        onClick={() => setOffersOpen(false)}
+                        onKeyDown={event => {
+                          if (event.key === "Escape") {
+                            event.preventDefault();
+                            setOffersOpen(false);
+                            offersButtonRef.current?.focus();
+                          } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                            event.preventDefault();
+                            const direction = event.key === "ArrowDown" ? 1 : -1;
+                            const nextIndex = (index + direction + offerNavItems.length) % offerNavItems.length;
+                            offersLinkRefs.current[nextIndex]?.focus();
+                          }
+                        }}
+                        style={{
+                          display: "flex", alignItems: "center", gap: "12px",
+                          padding: "10px", borderRadius: "10px",
+                          textDecoration: "none",
+                          backgroundColor: active ? "#E8F2DE" : "transparent",
+                          transition: "background-color 0.12s",
+                        }}
+                        onMouseEnter={event => { if (!active) event.currentTarget.style.backgroundColor = "#F8FAFC"; }}
+                        onMouseLeave={event => { if (!active) event.currentTarget.style.backgroundColor = "transparent"; }}
+                      >
+                        <div style={{
+                          width: "34px", height: "34px", borderRadius: "8px", flexShrink: 0,
+                          backgroundColor: active ? "#E8F2DE" : "#F1F5F9",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                        }}>
+                          <Icon size={16} style={{ color: active ? "#4E68C2" : "#64748B" }} />
+                        </div>
+                        <div style={{ minWidth: 0 }}>
+                          <p style={{ fontSize: "13px", fontWeight: 600, color: active ? "#4E68C2" : "#1E293B", margin: "0 0 1px" }}>{item.label}</p>
+                          <p style={{ fontSize: "11.5px", color: "#94A3B8", margin: 0 }}>{item.desc}</p>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+          </nav>
+          <div className="header-secondary-nav hidden 2xl:flex order-3 items-center">
+            {rightNavItems.map((item) => (
+              (() => {
+                const active = location === item.href || location.startsWith(item.href + "/");
+                return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#E8F2DE]/50 hover:text-[#22252C] transition-colors"
+                style={{
+                  color: active ? "var(--ink)" : undefined,
+                  textDecoration: "none",
+                  fontWeight: active ? 600 : 500,
+                  borderRadius: "6px", backgroundColor: active ? "rgba(229,239,255,0.6)" : undefined,
+                  marginBottom: "-1px",
+                }}
+                onMouseEnter={() => prefetchRoute(item.href)}
+              >
+                {item.label}
+              </Link>
+                );
+              })()
+            ))}
+          </div>
+
           {/* Search */}
           <div
-            className="header-search order-3 sm:order-2 w-full sm:w-auto sm:flex-1 sm:max-w-[520px]"
+            className="header-search order-3 sm:order-2 lg:order-4 lg:ml-auto w-full sm:w-auto sm:flex-1 sm:max-w-[520px] lg:flex-none lg:w-[170px] lg:focus-within:w-[320px] lg:transition-[width] lg:duration-200"
             ref={containerRef}
             style={{ position: "relative" }}
           >
@@ -392,9 +835,9 @@ export default function Header() {
               <div style={{
                 position: "absolute", top: "100%", left: 0, right: 0,
                 backgroundColor: "#fff",
-                border: "1.5px solid #1B5CB5", borderTop: "none",
-                borderRadius: "0 0 14px 14px",
-                boxShadow: "0 12px 32px rgba(18,64,160,0.15)", zIndex: 600, overflow: "hidden",
+                border: "1px solid var(--hairline)", borderTop: "none",
+                borderRadius: "0 0 16px 16px",
+                boxShadow: "0 12px 32px rgba(59, 98, 171,0.15)", zIndex: 600, overflow: "hidden",
               }}>
                 {results.map((p, i) => (
                   <button
@@ -405,7 +848,7 @@ export default function Header() {
                       display: "flex", alignItems: "center", gap: "11px",
                       width: "100%", padding: "10px 14px", textAlign: "left",
                       border: "none", cursor: "pointer",
-                      backgroundColor: i === highlighted ? "#EEF4FF" : "#fff",
+                      backgroundColor: i === highlighted ? "#E8F2DE" : "#fff",
                       borderBottom: i < results.length - 1 ? "1px solid #F1F5F9" : "none",
                       transition: "background-color 0.1s",
                     }}
@@ -422,7 +865,7 @@ export default function Header() {
                       />
                     </div>
                     <div style={{ minWidth: 0, flex: 1 }}>
-                      <p style={{ fontSize: "13px", fontWeight: 600, color: "#0F172A", margin: "0 0 2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      <p style={{ fontSize: "13px", fontWeight: 600, color: "#22252C", margin: "0 0 2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                         {highlightMatch(p.name, searchQuery.trim())}
                       </p>
                       <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
@@ -433,7 +876,7 @@ export default function Header() {
                       </div>
                     </div>
                     {p.price != null && (
-                      <span style={{ fontSize: "13px", fontWeight: 800, color: "#1240A0", flexShrink: 0 }}>
+                      <span style={{ fontSize: "13px", fontWeight: 800, color: "#4E68C2", flexShrink: 0 }}>
                         {formatPrice(p.price)}
                       </span>
                     )}
@@ -444,9 +887,9 @@ export default function Header() {
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
                     width: "100%", padding: "10px 14px",
-                    fontSize: "12px", fontWeight: 700, color: "#1B5CB5",
+                    fontSize: "12px", fontWeight: 700, color: "#4E68C2",
                     backgroundColor: "#F0F5FF", border: "none",
-                    borderTop: "1px solid #E8EDF5", cursor: "pointer",
+                    borderTop: "1px solid #D3D8E2", cursor: "pointer",
                   }}
                 >
                   <Search size={12} />
@@ -459,8 +902,8 @@ export default function Header() {
             {open && q.length === 0 && (
               <div style={{
                 position: "absolute", top: "100%", left: 0, right: 0,
-                backgroundColor: "#fff", border: "1.5px solid #1B5CB5", borderTop: "none",
-                borderRadius: "0 0 14px 14px", boxShadow: "0 12px 32px rgba(18,64,160,0.15)",
+                backgroundColor: "#fff", border: "1px solid var(--hairline)", borderTop: "none",
+                borderRadius: "0 0 16px 16px", boxShadow: "0 12px 32px rgba(59, 98, 171,0.15)",
                 zIndex: 600, padding: "12px 14px",
               }}>
                 <p style={{ fontSize: "10.5px", fontWeight: 700, color: "#94A3B8", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "8px" }}>
@@ -476,18 +919,18 @@ export default function Header() {
                         setOpen(false);
                       }}
                       style={{
-                        fontSize: "12px", fontWeight: 600, color: "#1240A0",
-                        backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE",
+                        fontSize: "12px", fontWeight: 600, color: "#4E68C2",
+                        backgroundColor: "#E8F2DE", border: "1px solid #C8DDB4",
                         borderRadius: "8px", padding: "4px 11px", cursor: "pointer",
                         transition: "all 0.15s",
                       }}
                       onMouseEnter={e => {
-                        (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0";
+                        (e.currentTarget as HTMLElement).style.backgroundColor = "#4E68C2";
                         (e.currentTarget as HTMLElement).style.color = "#fff";
                       }}
                       onMouseLeave={e => {
-                        (e.currentTarget as HTMLElement).style.backgroundColor = "#EEF4FF";
-                        (e.currentTarget as HTMLElement).style.color = "#1240A0";
+                        (e.currentTarget as HTMLElement).style.backgroundColor = "#E8F2DE";
+                        (e.currentTarget as HTMLElement).style.color = "#4E68C2";
                       }}
                     >
                       {term}
@@ -501,14 +944,14 @@ export default function Header() {
             {open && q.length >= 1 && results.length === 0 && (
               <div style={{
                 position: "absolute", top: "100%", left: 0, right: 0,
-                backgroundColor: "#fff", border: "1.5px solid #1B5CB5", borderTop: "none",
-                borderRadius: "0 0 14px 14px", boxShadow: "0 12px 32px rgba(18,64,160,0.15)",
+                backgroundColor: "#fff", border: "1px solid var(--hairline)", borderTop: "none",
+                borderRadius: "0 0 16px 16px", boxShadow: "0 12px 32px rgba(59, 98, 171,0.15)",
                 zIndex: 600, padding: "16px 14px", textAlign: "center",
               }}>
                 <p style={{ fontSize: "13px", color: "#64748B", margin: "0 0 8px" }}>No peptides found for &ldquo;{searchQuery.trim()}&rdquo;</p>
                 <button
                   onMouseDown={() => { navigate("/all-peptides"); setOpen(false); setSearchQuery(""); }}
-                  style={{ fontSize: "12px", fontWeight: 600, color: "#1B5CB5", background: "none", border: "none", cursor: "pointer" }}
+                  style={{ fontSize: "12px", fontWeight: 600, color: "#4E68C2", background: "none", border: "none", cursor: "pointer" }}
                 >
                   Browse all 81 peptides →
                 </button>
@@ -517,25 +960,25 @@ export default function Header() {
           </div>
 
           {/* Right group */}
-          <div className="header-action-group order-2 sm:order-3 ml-auto flex items-center gap-1.5 sm:gap-4 flex-shrink-0">
+          <div className="header-action-group order-2 sm:order-3 lg:order-5 ml-auto lg:ml-0 flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
 
             {/* Currency selector */}
-            <div ref={currencyRef} style={{ position: "relative", flexShrink: 0 }}>
+            <div ref={currencyRef} className="header-currency-wrap" style={{ position: "relative", flexShrink: 0 }}>
               <button
                 onClick={() => setCurrencyOpen(o => !o)}
                 className="header-currency-btn header-utility-button flex flex-col items-center sm:flex-row sm:gap-1"
                 style={{
-                  padding: "4px 8px", borderRadius: "8px",
-                  border: "1.5px solid rgba(255,255,255,0.25)",
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                  cursor: "pointer", color: "#fff",
+                  height: "36px", padding: "0 12px", borderRadius: "999px",
+                  border: "1px solid var(--hairline)",
+                  backgroundColor: "transparent",
+                  cursor: "pointer", color: "var(--graphite)",
                 }}
               >
                 <span className="header-currency-flag" style={{ fontSize: "15px" }}>{currency.flag}</span>
                 <span className="header-currency-code-mobile" style={{ display: "none", fontSize: "10px", fontWeight: 700, letterSpacing: "0.05em" }}>{currency.code}</span>
-                <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Currency</span>
-                <span className="hidden sm:inline" style={{ fontSize: "13px", fontWeight: 600 }}>{currency.code}</span>
-                <span className="hidden sm:inline"><ChevronDown size={13} style={{ color: "rgba(255,255,255,0.6)" }} /></span>
+                <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "var(--graphite)" }}>Currency</span>
+                <span className="hidden sm:inline" style={{ fontSize: "13px", fontWeight: 500 }}>{currency.code}</span>
+                <span className="hidden sm:inline"><ChevronDown size={13} style={{ color: "var(--graphite)", opacity: 0.6 }} /></span>
               </button>
 
               {currencyOpen && (
@@ -577,17 +1020,17 @@ export default function Header() {
                             display: "flex", alignItems: "center", gap: "10px",
                             width: "100%", padding: "7px 10px", borderRadius: "8px",
                             border: "none", cursor: "pointer",
-                            backgroundColor: c.code === currency.code ? "#EEF4FF" : "transparent",
+                            backgroundColor: c.code === currency.code ? "#E8F2DE" : "transparent",
                             textAlign: "left", transition: "background-color 0.1s",
                           }}
                           onMouseEnter={e => { if (c.code !== currency.code) (e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC"; }}
                           onMouseLeave={e => { if (c.code !== currency.code) (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
                         >
                           <span style={{ fontSize: "15px", flexShrink: 0 }}>{c.flag}</span>
-                          <span style={{ fontSize: "12.5px", fontWeight: 700, color: c.code === currency.code ? "#1240A0" : "#0F172A", minWidth: "34px" }}>{c.code}</span>
+                          <span style={{ fontSize: "12.5px", fontWeight: 700, color: c.code === currency.code ? "#4E68C2" : "#22252C", minWidth: "34px" }}>{c.code}</span>
                           <span style={{ fontSize: "12px", color: "#64748B", flex: 1 }}>{c.label}</span>
                           {c.code === currency.code && (
-                            <span style={{ color: "#1B5CB5", fontSize: "13px", flexShrink: 0 }}>✓</span>
+                            <span style={{ color: "#4E68C2", fontSize: "13px", flexShrink: 0 }}>✓</span>
                           )}
                         </button>
                       ))}
@@ -599,27 +1042,27 @@ export default function Header() {
 
             {/* User: sign-in or logged-in menu */}
             {!loadingAuth && customer ? (
-              <div ref={userMenuRef} style={{ position: "relative", flexShrink: 0 }}>
+              <div ref={userMenuRef} className="header-user-wrap" style={{ position: "relative", flexShrink: 0 }}>
                   <button
                   onClick={() => setUserMenuOpen(o => !o)}
                     className="header-utility-button flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-medium transition-colors"
                   style={{
                     background: "none", border: "none", cursor: "pointer",
-                    color: "rgba(255,255,255,0.9)", padding: 0,
+                    color: "var(--graphite)", padding: 0,
                   }}
                 >
                   <div style={{
                     width: "28px", height: "28px", borderRadius: "50%",
-                    background: "rgba(255,255,255,0.2)", border: "1.5px solid rgba(255,255,255,0.35)",
+                    background: "var(--ice)", border: "1px solid var(--hairline)",
                     display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
                   }}>
-                    <User size={14} color="#fff" />
+                    <User size={14} color="var(--cobalt)" />
                   </div>
-                  <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Account</span>
+                  <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "var(--graphite)" }}>Account</span>
                   <span className="hidden sm:inline" style={{ fontSize: "13px", fontWeight: 600, maxWidth: "100px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {customer.firstName}
                   </span>
-                  <ChevronDown size={12} style={{ color: "rgba(255,255,255,0.6)" }} className="hidden sm:block" />
+                  <ChevronDown size={12} style={{ color: "var(--graphite)", opacity: 0.6 }} className="hidden sm:block" />
                 </button>
 
                 {userMenuOpen && (
@@ -631,7 +1074,7 @@ export default function Header() {
                   }}>
                     {/* User info */}
                     <div style={{ padding: "14px 16px", borderBottom: "1px solid #F1F5F9" }}>
-                      <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A", marginBottom: "2px" }}>
+                      <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C", marginBottom: "2px" }}>
                         {customer.firstName} {customer.lastName}
                       </p>
                       <p style={{ fontSize: "12px", color: "#94A3B8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
@@ -710,69 +1153,70 @@ export default function Header() {
             ) : (
               <Link
                 href="/sign-in"
-                className="header-icon-btn flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-bold transition-colors"
-                style={{ color: "#ffffff", textDecoration: "none" }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#E2E8F0"; prefetchRoute("/sign-in"); }}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#ffffff"}
+                className="header-signin header-icon-btn flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-bold transition-colors"
+                style={{ color: "var(--graphite)", textDecoration: "none", height: "36px", padding: "0 14px", borderRadius: "999px", border: "1px solid var(--hairline)", fontWeight: 500, fontSize: "13px", backgroundColor: "transparent" }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--ink)"; (e.currentTarget as HTMLElement).style.backgroundColor = "var(--ice)"; prefetchRoute("/sign-in"); }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--graphite)"; (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
               >
-                <User size={18} />
-                <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Sign in</span>
-                <span className="hidden sm:inline">{loadingAuth ? "" : "Register / Sign in"}</span>
+                <User size={16} />
+                <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "var(--graphite)" }}>Sign in</span>
+                <span className="hidden sm:inline">{loadingAuth ? "" : "Sign In"}</span>
               </Link>
             )}
 
             {/* Wishlist */}
             <Link
               href="/wishlist"
-              className="header-icon-btn flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-bold transition-colors relative"
-              style={{ color: "#ffffff", textDecoration: "none" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#E2E8F0"; prefetchRoute("/wishlist"); }}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#ffffff"}
+              aria-label="Wishlist"
+              className="header-wishlist header-icon-btn flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-bold transition-colors relative"
+              style={{ color: "var(--graphite)", textDecoration: "none", height: "36px", padding: "0 14px", borderRadius: "999px", border: "1px solid var(--hairline)", fontWeight: 500, fontSize: "13px", backgroundColor: "transparent" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--ink)"; (e.currentTarget as HTMLElement).style.backgroundColor = "var(--ice)"; prefetchRoute("/wishlist"); }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--graphite)"; (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
             >
               <span className="relative">
-                <Heart size={18} />
+                <Heart size={16} />
                 {wishlistCount > 0 && (
                   <span
                     className="absolute flex items-center justify-center font-bold text-white rounded-full"
                     style={{
                       top: "-7px", right: "-8px",
                       minWidth: "16px", height: "16px",
-                      backgroundColor: "#DC2626", fontSize: "9px", padding: "0 3px", lineHeight: 1,
+                      backgroundColor: "var(--cobalt)", fontSize: "9px", padding: "0 3px", lineHeight: 1,
                     }}
                   >
                     {wishlistCount > 99 ? "99+" : wishlistCount}
                   </span>
                 )}
               </span>
-              <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Wishlist</span>
-              <span className="hidden sm:inline">Wishlist</span>
+              <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "var(--graphite)" }}>Wishlist</span>
+              <span className="header-wishlist-label hidden sm:inline">Wishlist</span>
             </Link>
 
             {/* Cart */}
             <Link
               href="/cart"
-              className="header-icon-btn flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-bold transition-colors relative"
-              style={{ color: "#ffffff", textDecoration: "none" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#E2E8F0"; prefetchRoute("/cart"); }}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#ffffff"}
+              className="header-cart header-icon-btn flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-bold transition-colors relative"
+              style={{ color: "var(--graphite)", textDecoration: "none", height: "36px", padding: "0 14px", borderRadius: "999px", border: "1px solid var(--hairline)", fontWeight: 500, fontSize: "13px", backgroundColor: "transparent" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--ink)"; (e.currentTarget as HTMLElement).style.backgroundColor = "var(--ice)"; prefetchRoute("/cart"); }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--graphite)"; (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
             >
               <span className="relative">
-                <ShoppingCart size={18} />
+                <ShoppingCart size={16} />
                 {totalItems > 0 && (
                   <span
                     className="absolute flex items-center justify-center font-bold text-white rounded-full"
                     style={{
                       top: "-7px", right: "-8px",
                       minWidth: "16px", height: "16px",
-                      backgroundColor: "#EF4444", fontSize: "9px", padding: "0 3px", lineHeight: 1,
+                      backgroundColor: "var(--cobalt)", fontSize: "9px", padding: "0 3px", lineHeight: 1,
                     }}
                   >
                     {totalItems > 99 ? "99+" : totalItems}
                   </span>
                 )}
               </span>
-              <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "rgba(255,255,255,0.85)" }}>Cart</span>
-              <span className="hidden sm:inline">My Cart</span>
+              <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "var(--graphite)" }}>Cart</span>
+              <span className="hidden sm:inline">Cart</span>
             </Link>
 
           </div>
@@ -780,437 +1224,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Main nav — tablet and above */}
-      <nav
-        className="bg-white hidden lg:block"
-        style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.06)", borderTop: "1px solid #F8FAFC", position: "relative", zIndex: 1 }}
-      >
-        <div className="max-w-[1280px] mx-auto px-4 flex items-center justify-between">
-          <div className="flex items-center">
-            {navItems.map((item) => {
-              const active = location === item.href || (item.href === "/all-peptides" && location.startsWith("/all-peptides"));
-              if (item.label === "Shop Peptides") {
-                return (
-                  <div
-                    key={item.label}
-                    style={{ position: "relative" }}
-                    onMouseEnter={openAllPeptides}
-                    onMouseLeave={closeAllPeptides}
-                  >
-                    <Link
-                      href={item.href}
-                      className="px-4 py-3 text-sm whitespace-nowrap inline-flex items-center gap-1 transition-colors"
-                      style={{
-                        borderBottom: active ? "2px solid #1B5CB5" : "2px solid transparent",
-                        color: active ? "#1B5CB5" : "#475569",
-                        fontWeight: active ? 600 : 500,
-                        textDecoration: "none", marginBottom: "-1px",
-                      }}
-                    >
-                      {item.label}
-                      <ChevronDown size={13} style={{ opacity: 0.5, transition: "transform 0.2s", transform: allPeptidesOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
-                    </Link>
-
-                    {/* Dropdown mega-menu */}
-                    {allPeptidesOpen && (
-                      <div
-                        onMouseEnter={openAllPeptides}
-                        onMouseLeave={closeAllPeptides}
-                        style={{
-                          position: "absolute", top: "100%", left: 0,
-                          backgroundColor: "#fff",
-                          border: "1.5px solid #E8EDF5",
-                          borderRadius: "16px",
-                          boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
-                          zIndex: 400,
-                          minWidth: "520px",
-                          padding: "16px",
-                          marginTop: "2px",
-                        }}
-                      >
-                        {/* Header row */}
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px", paddingBottom: "8px", borderBottom: "1px solid #F1F5F9" }}>
-                          <p style={{ fontSize: "11px", fontWeight: 800, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>
-                            Shop Peptides
-                          </p>
-                          <Link
-                            href="/all-peptides"
-                            onClick={() => setAllPeptidesOpen(false)}
-                            style={{ fontSize: "12px", fontWeight: 600, color: "#1B5CB5", textDecoration: "none" }}
-                          >
-                            View all →
-                          </Link>
-                        </div>
-
-                        {/* Peptide name list */}
-                        <div style={{ maxHeight: "320px", overflowY: "auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1px" }}>
-                          {peptideGroups.filter(g => g.baseName !== "NAD+").map((group) => (
-                            <Link
-                              key={group.baseName}
-                              href={`/product/${group.variants[0].id}`}
-                              onClick={() => setAllPeptidesOpen(false)}
-                              style={{
-                                display: "block",
-                                padding: "6px 8px", borderRadius: "8px",
-                                textDecoration: "none", color: "#374151",
-                                fontSize: "12.5px", fontWeight: 500,
-                                whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-                              }}
-                              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F0F5FF")}
-                              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
-                            >
-                              {group.baseName}
-                            </Link>
-                          ))}
-                        </div>
-
-                        {/* Footer */}
-                        <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #F1F5F9", textAlign: "center" }}>
-                          <Link
-                            href="/all-peptides"
-                            onClick={() => setAllPeptidesOpen(false)}
-                            style={{ fontSize: "13px", fontWeight: 600, color: "#1B5CB5", textDecoration: "none" }}
-                          >
-                            Browse Peptides →
-                          </Link>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-              if (item.label === "Popular Peptides") {
-                return (
-                  <div
-                    key={item.label}
-                    style={{ position: "relative" }}
-                    onMouseEnter={openPopular}
-                    onMouseLeave={closePopular}
-                  >
-                    <Link
-                      href={item.href}
-                      className="px-4 py-3 text-sm whitespace-nowrap inline-flex items-center gap-1 transition-colors"
-                      style={{
-                        borderBottom: active ? "2px solid #1B5CB5" : "2px solid transparent",
-                        color: active ? "#1B5CB5" : "#475569",
-                        fontWeight: active ? 600 : 500,
-                        textDecoration: "none", marginBottom: "-1px",
-                      }}
-                    >
-                      {item.label}
-                      <ChevronDown size={13} style={{ opacity: 0.5, transition: "transform 0.2s", transform: popularOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
-                    </Link>
-
-                    {popularOpen && (
-                      <div
-                        onMouseEnter={openPopular}
-                        onMouseLeave={closePopular}
-                        style={{
-                          position: "absolute", top: "100%", left: 0,
-                          backgroundColor: "#fff",
-                          border: "1.5px solid #E8EDF5",
-                          borderRadius: "16px",
-                          boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
-                          zIndex: 400,
-                          minWidth: "380px",
-                          padding: "16px",
-                          marginTop: "2px",
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px", paddingBottom: "8px", borderBottom: "1px solid #F1F5F9" }}>
-                          <p style={{ fontSize: "11px", fontWeight: 800, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>
-                            Popular Peptides
-                          </p>
-                          <Link
-                            href="/popular-peptides"
-                            onClick={() => setPopularOpen(false)}
-                            style={{ fontSize: "12px", fontWeight: 600, color: "#1B5CB5", textDecoration: "none" }}
-                          >
-                            View all →
-                          </Link>
-                        </div>
-
-                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1px" }}>
-                          {popularGroups.map((g) => (
-                            <Link
-                              key={g.baseName}
-                              href={`/product/${g.id}`}
-                              onClick={() => setPopularOpen(false)}
-                              style={{
-                                display: "block",
-                                padding: "6px 8px", borderRadius: "8px",
-                                textDecoration: "none", color: "#374151",
-                                fontSize: "12.5px", fontWeight: 500,
-                                whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-                              }}
-                              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F0F5FF")}
-                              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
-                            >
-                              {g.baseName}
-                            </Link>
-                          ))}
-                        </div>
-
-                        <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #F1F5F9", textAlign: "center" }}>
-                          <Link
-                            href="/popular-peptides"
-                            onClick={() => setPopularOpen(false)}
-                            style={{ fontSize: "13px", fontWeight: 600, color: "#1B5CB5", textDecoration: "none" }}
-                          >
-                            Browse All Popular Peptides →
-                          </Link>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-
-              if (item.label === "Research & Education") {
-                const researchActive = researchLinks.some(l => location === l.href || location.startsWith(l.href + "/"));
-                return (
-                  <div
-                    key={item.label}
-                    style={{ position: "relative" }}
-                    onMouseEnter={openResearch}
-                    onMouseLeave={closeResearch}
-                  >
-                    <button
-                      className="px-4 py-3 text-sm whitespace-nowrap inline-flex items-center gap-1 transition-colors"
-                      style={{
-                        color: researchActive ? "#1B5CB5" : "#475569",
-                        fontWeight: researchActive ? 600 : 500,
-                        marginBottom: "-1px", background: "none", outline: "none",
-                        borderLeft: "none", borderRight: "none", borderTop: "none",
-                        borderBottom: researchActive ? "2px solid #1B5CB5" : "2px solid transparent",
-                        cursor: "pointer", padding: "12px 16px",
-                      }}
-                      onClick={() => setResearchOpen(o => !o)}
-                    >
-                      <GraduationCap size={14} style={{ opacity: 0.7, marginRight: "2px" }} />
-                      {item.label}
-                      <ChevronDown size={13} style={{ opacity: 0.5, transition: "transform 0.2s", transform: researchOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
-                    </button>
-
-                    {researchOpen && (
-                      <div
-                        onMouseEnter={openResearch}
-                        onMouseLeave={closeResearch}
-                        style={{
-                          position: "absolute", top: "100%", left: 0,
-                          backgroundColor: "#fff",
-                          border: "1.5px solid #E8EDF5",
-                          borderRadius: "16px",
-                          boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
-                          zIndex: 400,
-                          minWidth: "380px",
-                          padding: "16px",
-                          marginTop: "2px",
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", paddingBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
-                          <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "#EEF4FF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                            <GraduationCap size={15} style={{ color: "#1240A0" }} />
-                          </div>
-                          <div>
-                            <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A", margin: 0 }}>Research & Education</p>
-                            <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>Tools, data & learning resources</p>
-                          </div>
-                        </div>
-
-                        <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-                          {researchLinks.map(link => {
-                            const Icon = link.icon;
-                            const isActive = location === link.href;
-                            return (
-                              <Link
-                                key={link.href}
-                                href={link.href}
-                                onClick={() => setResearchOpen(false)}
-                                style={{
-                                  display: "flex", alignItems: "center", gap: "12px",
-                                  padding: "10px 10px", borderRadius: "10px",
-                                  textDecoration: "none",
-                                  backgroundColor: isActive ? "#EEF4FF" : "transparent",
-                                  transition: "background-color 0.12s",
-                                }}
-                                onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC"; }}
-                                onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
-                              >
-                                <div style={{
-                                  width: "34px", height: "34px", borderRadius: "8px", flexShrink: 0,
-                                  backgroundColor: isActive ? "#DBEAFE" : "#F1F5F9",
-                                  display: "flex", alignItems: "center", justifyContent: "center",
-                                }}>
-                                  <Icon size={16} style={{ color: isActive ? "#1240A0" : "#64748B" }} />
-                                </div>
-                                <div style={{ minWidth: 0 }}>
-                                  <p style={{ fontSize: "13px", fontWeight: 600, color: isActive ? "#1240A0" : "#1E293B", margin: "0 0 1px" }}>{link.label}</p>
-                                  <p style={{ fontSize: "11.5px", color: "#94A3B8", margin: 0 }}>{link.desc}</p>
-                                </div>
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-
-              return (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="px-4 py-3 text-sm whitespace-nowrap inline-block transition-colors"
-                  style={{
-                    borderBottom: active ? "2px solid #1B5CB5" : "2px solid transparent",
-                    color: active ? "#1B5CB5" : "#475569",
-                    fontWeight: active ? 600 : 500,
-                    textDecoration: "none", marginBottom: "-1px",
-                  }}
-                  onMouseEnter={() => prefetchRoute(item.href)}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-          <div
-            style={{ position: "relative" }}
-            onMouseEnter={openOffers}
-            onMouseLeave={closeOffers}
-          >
-            <button
-              ref={offersButtonRef}
-              type="button"
-              className="px-4 py-3 text-sm whitespace-nowrap inline-flex items-center gap-1 transition-colors"
-              style={{
-                color: offersActive ? "#1B5CB5" : "#64748B",
-                fontWeight: offersActive ? 600 : 500,
-                border: "none",
-                borderBottom: offersActive ? "2px solid #1B5CB5" : "2px solid transparent",
-                background: "none",
-                cursor: "pointer",
-                marginBottom: "-1px",
-              }}
-              aria-haspopup="true"
-              aria-expanded={offersOpen}
-              aria-controls="header-incentive-offers-menu"
-              onClick={() => {
-                if (offersOpen) setOffersOpen(false);
-                else openOffers();
-              }}
-              onKeyDown={handleOffersKeyDown}
-            >
-              Offers & Rewards
-              <ChevronDown size={13} style={{ opacity: 0.5, transition: "transform 0.2s", transform: offersOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
-            </button>
-
-            {offersOpen && (
-              <div
-                id="header-incentive-offers-menu"
-                onMouseEnter={openOffers}
-                onMouseLeave={closeOffers}
-                style={{
-                  position: "absolute", top: "100%", left: 0,
-                  backgroundColor: "#fff",
-                  border: "1.5px solid #E8EDF5",
-                  borderRadius: "16px",
-                  boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
-                  zIndex: 400,
-                  minWidth: "310px",
-                  padding: "16px",
-                  marginTop: "2px",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", paddingBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
-                  <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "#EEF4FF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <ArrowUpRight size={15} style={{ color: "#1240A0" }} />
-                  </div>
-                  <div>
-                    <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A", margin: 0 }}>Offers &amp; Rewards</p>
-                    <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>Ways to save, share & earn</p>
-                  </div>
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-                  {offerNavItems.map((item, index) => {
-                    const Icon = item.icon;
-                    const active = location === item.href || location.startsWith(item.href + "/");
-                    return (
-                      <Link
-                        key={item.href}
-                        ref={element => { offersLinkRefs.current[index] = element; }}
-                        href={item.href}
-                        aria-current={active ? "page" : undefined}
-                        onClick={() => setOffersOpen(false)}
-                        onKeyDown={event => {
-                          if (event.key === "Escape") {
-                            event.preventDefault();
-                            setOffersOpen(false);
-                            offersButtonRef.current?.focus();
-                          } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-                            event.preventDefault();
-                            const direction = event.key === "ArrowDown" ? 1 : -1;
-                            const nextIndex = (index + direction + offerNavItems.length) % offerNavItems.length;
-                            offersLinkRefs.current[nextIndex]?.focus();
-                          }
-                        }}
-                        style={{
-                          display: "flex", alignItems: "center", gap: "12px",
-                          padding: "10px", borderRadius: "10px",
-                          textDecoration: "none",
-                          backgroundColor: active ? "#EEF4FF" : "transparent",
-                          transition: "background-color 0.12s",
-                        }}
-                        onMouseEnter={event => { if (!active) event.currentTarget.style.backgroundColor = "#F8FAFC"; }}
-                        onMouseLeave={event => { if (!active) event.currentTarget.style.backgroundColor = "transparent"; }}
-                      >
-                        <div style={{
-                          width: "34px", height: "34px", borderRadius: "8px", flexShrink: 0,
-                          backgroundColor: active ? "#DBEAFE" : "#F1F5F9",
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                        }}>
-                          <Icon size={16} style={{ color: active ? "#1240A0" : "#64748B" }} />
-                        </div>
-                        <div style={{ minWidth: 0 }}>
-                          <p style={{ fontSize: "13px", fontWeight: 600, color: active ? "#1240A0" : "#1E293B", margin: "0 0 1px" }}>{item.label}</p>
-                          <p style={{ fontSize: "11.5px", color: "#94A3B8", margin: 0 }}>{item.desc}</p>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-          </div>
-          <div className="flex items-center">
-            {rightNavItems.map((item) => (
-              (() => {
-                const active = location === item.href || location.startsWith(item.href + "/");
-                return (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="px-4 py-3 text-sm whitespace-nowrap transition-colors"
-                style={{
-                  color: active ? "#1B5CB5" : "#64748B",
-                  textDecoration: "none",
-                  fontWeight: active ? 600 : 500,
-                  borderBottom: active ? "2px solid #1B5CB5" : "2px solid transparent",
-                  marginBottom: "-1px",
-                }}
-                onMouseEnter={() => prefetchRoute(item.href)}
-              >
-                {item.label}
-              </Link>
-                );
-              })()
-            ))}
-          </div>
-        </div>
-      </nav>
 
 
       {/* Mobile and tablet navigation drawer */}
@@ -1239,33 +1252,21 @@ export default function Header() {
                 paddingTop: "max(16px, env(safe-area-inset-top))",
                 position: "relative",
                 overflow: "hidden",
-                background: "linear-gradient(135deg, #0F2F91 0%, #1240A0 48%, #1F72D1 100%)",
+                background: "#fff",
+                borderBottom: "1px solid var(--hairline)",
               }}
             >
-              <span aria-hidden="true" style={{ position: "absolute", width: 180, height: 180, borderRadius: "50%", right: -86, top: -112, background: "rgba(255,255,255,0.12)" }} />
-              <span aria-hidden="true" style={{ position: "absolute", width: 92, height: 92, borderRadius: "50%", right: 50, bottom: -66, border: "1px solid rgba(255,255,255,0.18)" }} />
-              <div style={{ position: "relative", zIndex: 1 }}>
-                <p style={{ margin: 0, color: "rgba(255,255,255,0.72)", fontSize: "10px", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase" }}>
-                  OmniQure
-                </p>
-                <p style={{ margin: "4px 0 0", color: "#fff", fontSize: "20px", lineHeight: 1.15, fontWeight: 800, letterSpacing: "-0.02em" }}>
-                  Explore the site
-                </p>
-                <p style={{ margin: "6px 0 0", color: "rgba(255,255,255,0.76)", fontSize: "12px" }}>
-                  Research-grade tools, made clear.
-                </p>
-              </div>
+              <img src="/omniqure-wordmark.png?v=4" alt="OmniQure" className="header-logo" style={{ width: 130, maxHeight: 30 }} />
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Close navigation menu"
                 style={{
-                  width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: "center",
-                  position: "relative", zIndex: 1, borderRadius: 12,
-                  border: "1px solid rgba(255,255,255,0.3)", background: "rgba(255,255,255,0.14)",
-                  color: "#fff", cursor: "pointer", backdropFilter: "blur(8px)",
+                  width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center",
+                  borderRadius: 999, border: "1px solid #E5E7EB", background: "#fff",
+                  color: "#374151", cursor: "pointer",
                 }}
               >
-                <X size={20} />
+                <X size={18} />
               </button>
             </div>
 
@@ -1276,24 +1277,22 @@ export default function Header() {
                 style={{
                   display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
                   margin: "16px 16px 8px", padding: "15px 16px", borderRadius: 16,
-                  color: "#fff", textDecoration: "none", overflow: "hidden", position: "relative",
-                  background: "linear-gradient(120deg, #1240A0 0%, #1B5CB5 62%, #2F80D8 100%)",
-                  boxShadow: "0 10px 22px rgba(18,64,160,0.2)",
+                  color: "var(--ink)", textDecoration: "none", overflow: "hidden", position: "relative",
+                  background: "#F3F4F6", border: "1px solid #E5E7EB",
                 }}
               >
-                <span aria-hidden="true" style={{ position: "absolute", width: 110, height: 110, borderRadius: "50%", right: -45, top: -58, background: "rgba(255,255,255,0.12)" }} />
-                <span style={{ position: "relative", zIndex: 1 }}>
-                  <span style={{ display: "block", marginBottom: 5, color: "rgba(255,255,255,0.7)", fontSize: 9.5, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase" }}>
+                                <span style={{ position: "relative", zIndex: 1 }}>
+                  <span style={{ display: "block", marginBottom: 5, color: "#6B7280", fontSize: 9.5, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase" }}>
                     Featured
                   </span>
                   <span style={{ display: "block", fontSize: 15, fontWeight: 800, lineHeight: 1.15 }}>
                     Browse the collection
                   </span>
-                  <span style={{ display: "block", marginTop: 4, color: "rgba(255,255,255,0.76)", fontSize: 11.5 }}>
+                  <span style={{ display: "block", marginTop: 4, color: "#6B7280", fontSize: 11.5 }}>
                     Explore peptides for your research.
                   </span>
                 </span>
-                <span style={{ position: "relative", zIndex: 1, width: 32, height: 32, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 10, background: "rgba(255,255,255,0.16)" }}>
+                <span style={{ position: "relative", zIndex: 1, width: 32, height: 32, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 999, background: "#fff", border: "1px solid #E5E7EB" }}>
                   <ArrowUpRight size={18} />
                 </span>
               </Link>
@@ -1310,15 +1309,15 @@ export default function Header() {
                       href={item.href}
                       className="flex items-center justify-between rounded-xl px-3 transition-colors"
                       style={{
-                        minHeight: 48, color: location === item.href ? "#1240A0" : "#334155",
-                        background: location === item.href ? "linear-gradient(90deg, #EEF4FF 0%, #F7FAFF 100%)" : "transparent",
-                        borderLeft: location === item.href ? "3px solid #1B5CB5" : "3px solid transparent",
+                        minHeight: 48, color: location === item.href ? "#4E68C2" : "#334155",
+                        background: location === item.href ? "linear-gradient(90deg, #E8F2DE 0%, #F7FAFF 100%)" : "transparent",
+                        borderLeft: location === item.href ? "3px solid #4E68C2" : "3px solid transparent",
                         textDecoration: "none", fontSize: 15, fontWeight: location === item.href ? 700 : 600,
                       }}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.label}
-                      <ChevronDown size={15} style={{ transform: "rotate(-90deg)", color: location === item.href ? "#1B5CB5" : "#CBD5E1" }} />
+                      <ChevronDown size={15} style={{ transform: "rotate(-90deg)", color: location === item.href ? "#4E68C2" : "#CBD5E1" }} />
                     </Link>
                   ))}
               </div>
@@ -1333,7 +1332,7 @@ export default function Header() {
                     color: "#475569", cursor: "pointer", textAlign: "left",
                   }}
                 >
-                  <span style={{ width: 34, height: 34, borderRadius: 11, background: "linear-gradient(135deg, #DBEAFE 0%, #EEF4FF 100%)", color: "#1240A0", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 0 0 1px rgba(18,64,160,0.06)" }}>
+                  <span style={{ width: 34, height: 34, borderRadius: 11, background: "var(--ice)", color: "var(--cobalt)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 0 0 1px rgba(59, 98, 171,0.06)" }}>
                     <GraduationCap size={16} />
                   </span>
                   <span style={{ flex: 1 }}>
@@ -1376,11 +1375,11 @@ export default function Header() {
                   style={{
                     width: "100%", minHeight: 52, padding: "0 12px", display: "flex", alignItems: "center", gap: 10,
                     border: "none", background: mobileOffersOpen ? "#F8FAFC" : "#fff",
-                    color: offersActive ? "#1240A0" : "#475569", cursor: "pointer", textAlign: "left",
+                    color: offersActive ? "#4E68C2" : "#475569", cursor: "pointer", textAlign: "left",
                     fontSize: 14, fontWeight: offersActive ? 800 : 600,
                   }}
                 >
-                  <span style={{ width: 30, height: 30, borderRadius: 9, background: "linear-gradient(135deg, #DBEAFE 0%, #EEF4FF 100%)", color: "#1240A0", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ width: 30, height: 30, borderRadius: 9, background: "var(--ice)", color: "var(--cobalt)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <ArrowUpRight size={15} />
                   </span>
                   <span style={{ flex: 1 }}>
@@ -1402,13 +1401,13 @@ export default function Header() {
                           aria-current={active ? "page" : undefined}
                           className="flex items-center gap-3 rounded-xl px-3 py-2.5"
                           style={{
-                            color: active ? "#1240A0" : "#475569",
-                            background: active ? "#EEF4FF" : "transparent",
+                            color: active ? "var(--ink)" : undefined,
+                            background: active ? "#E8F2DE" : "transparent",
                             textDecoration: "none",
                           }}
                           onClick={() => setMobileMenuOpen(false)}
                         >
-                          <Icon size={17} style={{ color: active ? "#1240A0" : "#64748B", flexShrink: 0 }} />
+                          <Icon size={17} style={{ color: active ? "var(--ink)" : undefined, flexShrink: 0 }} />
                           <span style={{ minWidth: 0 }}>
                             <span style={{ display: "block", fontSize: 14, fontWeight: 700 }}>{item.label}</span>
                             <span style={{ display: "block", marginTop: 2, color: "#94A3B8", fontSize: 11.5, lineHeight: 1.35 }}>{item.desc}</span>
@@ -1424,7 +1423,7 @@ export default function Header() {
                 <p style={{ margin: "0 8px 7px", color: "#94A3B8", fontSize: 10, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" }}>
                   More
                 </p>
-                {[...(!customer ? [{ label: "Sign in", href: "/sign-in" }] : []), ...rightNavItems].map(item => (
+                {[...(!customer ? [{ label: "Sign in", href: "/sign-in" }] : []), { label: wishlistCount > 0 ? `Wishlist (${wishlistCount})` : "Wishlist", href: "/wishlist" }, ...rightNavItems].map(item => (
                   <Link
                     key={item.label}
                     href={item.href}
@@ -1436,14 +1435,26 @@ export default function Header() {
                     <ChevronDown size={15} style={{ transform: "rotate(-90deg)", color: "#CBD5E1" }} />
                   </Link>
                 ))}
+                <label className="flex items-center justify-between rounded-xl px-3" style={{ minHeight: 46, color: "#475569", fontSize: 14, fontWeight: 600 }}>
+                  Currency
+                  <select
+                    value={currency.code}
+                    onChange={(e) => setCurrency(e.target.value as CurrencyCode)}
+                    style={{ border: "1px solid var(--hairline)", borderRadius: 999, padding: "6px 10px", fontSize: 13, color: "var(--ink)", background: "#fff" }}
+                  >
+                    {CURRENCIES.map((c) => (
+                      <option key={c.code} value={c.code}>{c.code} · {c.label}</option>
+                    ))}
+                  </select>
+                </label>
               </div>
 
               {customer && (
-                <div style={{ margin: "4px 12px 20px", padding: "10px", borderRadius: 14, background: "#F0F5FF", border: "1px solid #DBEAFE" }}>
+                <div style={{ margin: "4px 12px 20px", padding: "10px", borderRadius: 14, background: "#F0F5FF", border: "1px solid #E8F2DE" }}>
                   <Link
                     href="/account"
                     className="flex items-center rounded-xl px-3"
-                    style={{ minHeight: 46, color: "#1240A0", textDecoration: "none", fontSize: 14, fontWeight: 700 }}
+                    style={{ minHeight: 46, color: "#4E68C2", textDecoration: "none", fontSize: 14, fontWeight: 700 }}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <User size={17} style={{ marginRight: 10 }} />
@@ -1453,7 +1464,7 @@ export default function Header() {
                     <Link
                       href="/affiliate"
                       className="flex items-center rounded-xl px-3"
-                      style={{ minHeight: 46, color: "#1240A0", textDecoration: "none", fontSize: 14, fontWeight: 700 }}
+                      style={{ minHeight: 46, color: "#4E68C2", textDecoration: "none", fontSize: 14, fontWeight: 700 }}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       <Users size={17} style={{ marginRight: 10 }} />

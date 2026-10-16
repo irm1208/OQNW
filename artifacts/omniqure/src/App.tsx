@@ -160,7 +160,7 @@ function NavProgress() {
         zIndex: 99999,
         height: 3,
         width: `${pct}%`,
-        background: "linear-gradient(90deg, #2563EB, #60A5FA)",
+        background: "linear-gradient(90deg, #4E68C2, #6B94D0)",
         transition: pct === 0 ? "none" : "width 0.4s cubic-bezier(.4,0,.2,1), opacity 0.3s ease",
         opacity: visible ? 1 : 0,
         borderRadius: "0 2px 2px 0",

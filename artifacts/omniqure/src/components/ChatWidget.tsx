@@ -261,12 +261,12 @@ export default function ChatWidget() {
             boxShadow: "0 8px 40px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.10)",
             zIndex: 9999,
             overflow: "hidden",
-            fontFamily: "'Arimo', Arial, sans-serif",
+            fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif",
           }}
         >
           <div
             style={{
-              background: "linear-gradient(90deg, #0D2565 0%, #1240A0 60%, #1B5CB5 100%)",
+              background: "linear-gradient(90deg, #22252C 0%, #4E68C2 60%, #4E68C2 100%)",
               padding: "14px 16px",
               display: "flex",
               alignItems: "center",
@@ -324,7 +324,7 @@ export default function ChatWidget() {
                   style={{
                     maxWidth: "85%",
                     background: m.role === "user"
-                      ? "linear-gradient(135deg, #1240A0, #1B5CB5)"
+                      ? "linear-gradient(135deg, #4E68C2, #4E68C2)"
                       : "#fff",
                     color: m.role === "user" ? "#fff" : "#1a1a2e",
                     borderRadius: m.role === "user"
@@ -361,7 +361,7 @@ export default function ChatWidget() {
                         width: 7,
                         height: 7,
                         borderRadius: "50%",
-                        background: "#1240A0",
+                        background: "#4E68C2",
                         display: "inline-block",
                         opacity: 0.4,
                         animation: `bounce 1.2s ease-in-out ${i * 0.2}s infinite`,
@@ -410,7 +410,7 @@ export default function ChatWidget() {
                 height: 36,
                 borderRadius: "10px",
                 background: input.trim()
-                  ? "linear-gradient(135deg, #1240A0, #1B5CB5)"
+                  ? "linear-gradient(135deg, #4E68C2, #4E68C2)"
                   : "#E8EAF0",
                 border: "none",
                 cursor: input.trim() ? "pointer" : "default",
@@ -437,13 +437,13 @@ export default function ChatWidget() {
             width: "58px",
             height: "58px",
             borderRadius: "50%",
-            background: "linear-gradient(135deg, #0D2565 0%, #1B5CB5 100%)",
+            background: "linear-gradient(135deg, #22252C 0%, #4E68C2 100%)",
             border: "none",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            boxShadow: "0 4px 20px rgba(18,64,160,0.45), 0 2px 6px rgba(0,0,0,0.15)",
+            boxShadow: "0 4px 20px rgba(59, 98, 171,0.45), 0 2px 6px rgba(0,0,0,0.15)",
             zIndex: 9999,
             opacity: entered ? 1 : 0,
             transform: entered ? "scale(1) translateY(0)" : "scale(0.6) translateY(12px)",
@@ -451,11 +451,11 @@ export default function ChatWidget() {
           }}
           onMouseEnter={(e) => {
             (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.08)";
-            (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 6px 28px rgba(18,64,160,0.55), 0 2px 8px rgba(0,0,0,0.18)";
+            (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 6px 28px rgba(59, 98, 171,0.55), 0 2px 8px rgba(0,0,0,0.18)";
           }}
           onMouseLeave={(e) => {
             (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
-            (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 20px rgba(18,64,160,0.45), 0 2px 6px rgba(0,0,0,0.15)";
+            (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 20px rgba(59, 98, 171,0.45), 0 2px 6px rgba(0,0,0,0.15)";
           }}
           title="Research Assistant"
         >

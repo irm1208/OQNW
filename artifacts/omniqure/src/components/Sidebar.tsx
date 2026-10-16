@@ -48,9 +48,9 @@ export default function Sidebar({ selectedCategory, onCategoryChange }: SidebarP
               onClick={() => onCategoryChange(category)}
               className="w-full text-left px-2.5 py-2 rounded-lg transition-all"
               style={{
-                backgroundColor: isActive ? "#EEF4FF" : "transparent",
-                borderLeft: `3px solid ${isActive ? "#1B5CB5" : "transparent"}`,
-                color: isActive ? "#1B5CB5" : "#374151",
+                backgroundColor: isActive ? "#E8F2DE" : "transparent",
+                borderLeft: `3px solid ${isActive ? "#4E68C2" : "transparent"}`,
+                color: isActive ? "#4E68C2" : "#374151",
                 fontSize: "11px",
                 fontWeight: 700,
                 letterSpacing: "0.06em",
@@ -59,14 +59,14 @@ export default function Sidebar({ selectedCategory, onCategoryChange }: SidebarP
             >
               {category}
             </button>
-            <ul className="ml-5 pl-3 mt-1" style={{ borderLeft: "1px solid #E8EDF5" }}>
+            <ul className="ml-5 pl-3 mt-1" style={{ borderLeft: "1px solid #D3D8E2" }}>
               {items.map((p) => (
                 <li key={p.id}>
                   <Link
                     href={`/product/${p.id}`}
                     className="block py-0.5 leading-snug transition-colors"
                     style={{ fontSize: "12px", color: "#64748B" }}
-                    onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#1B5CB5"}
+                    onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#4E68C2"}
                     onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
                   >
                     {p.name}

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https: wss:; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
@@ -38,26 +38,26 @@
     <meta name="twitter:image:alt" content="OmniQure" />
 
     <!-- PWA / Mobile platforms -->
-    <meta name="theme-color" content="#1240A0" />
+    <meta name="theme-color" content="#0A2472" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="OmniQure" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- Microsoft / Windows tiles -->
-    <meta name="msapplication-TileColor" content="#1240A0" />
-    <meta name="msapplication-TileImage" content="/omniqure-logo.png" />
+    <meta name="msapplication-TileColor" content="#0A2472" />
+    <meta name="msapplication-TileImage" content="/android-chrome-512x512.png" />
     <meta name="msapplication-config" content="none" />
 
     <!-- PWA manifest -->
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=7" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png?v=7" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=7" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=7" />
+    <!-- Favicon (from brand kit) -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 
     <!-- JSON-LD: Organization + WebSite (always present, page-level overrides added by useSEO hook) -->
     <script type="application/ld+json" data-seo="organization">
@@ -105,10 +105,9 @@
     <!-- Preload LCP hero image -->
     <link rel="preload" as="image" href="/hero-vials-2.webp" fetchpriority="high" />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts (OmniQure brand kit) -->
+    <link rel="stylesheet" href="/fonts/poppins.css">
+    <link rel="stylesheet" href="/fonts/ibm-plex-mono.css">
   </head>
   <body>
     <div id="root"></div>

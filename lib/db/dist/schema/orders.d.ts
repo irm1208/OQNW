@@ -898,23 +898,6 @@ export declare const ordersTable: import("drizzle-orm/pg-core").PgTableWithColum
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        reviewRequestSentAt: import("drizzle-orm/pg-core").PgColumn<{
-            name: "review_request_sent_at";
-            tableName: "orders";
-            dataType: "date";
-            columnType: "PgTimestamp";
-            data: Date;
-            driverParam: string;
-            notNull: false;
-            hasDefault: false;
-            isPrimaryKey: false;
-            isAutoincrement: false;
-            hasRuntimeDefault: false;
-            enumValues: undefined;
-            baseColumn: never;
-            identity: undefined;
-            generated: undefined;
-        }, {}, {}>;
     };
     dialect: "pg";
 }>;
@@ -967,7 +950,6 @@ export declare const insertOrderSchema: z.ZodObject<{
     fraudFlags: z.ZodOptional<z.ZodArray<z.ZodString>>;
     fraudReviewed: z.ZodOptional<z.ZodBoolean>;
     fraudReviewNote: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-    reviewRequestSentAt: z.ZodOptional<z.ZodNullable<z.ZodDate>>;
 }, {
     out: {};
     in: {};

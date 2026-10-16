@@ -26,11 +26,11 @@ export default function RecentlyViewed({ excludeId }: RecentlyViewedProps) {
       <div className="flex items-center gap-2.5 mb-4">
         <div
           className="flex items-center justify-center rounded-lg"
-          style={{ width: "30px", height: "30px", backgroundColor: "#EEF4FF" }}
+          style={{ width: "30px", height: "30px", backgroundColor: "#E8F2DE" }}
         >
-          <Clock size={15} style={{ color: "#1B5CB5" }} />
+          <Clock size={15} style={{ color: "#4E68C2" }} />
         </div>
-        <h2 className="font-bold" style={{ fontSize: "18px", color: "#0F172A" }}>
+        <h2 className="font-bold" style={{ fontSize: "18px", color: "#22252C" }}>
           Recently Viewed
         </h2>
       </div>
@@ -49,18 +49,18 @@ export default function RecentlyViewed({ excludeId }: RecentlyViewedProps) {
               className="rounded-2xl overflow-hidden bg-white flex flex-col transition-all duration-200 cursor-pointer"
               style={{
                 width: "148px",
-                border: "1.5px solid #E8EDF5",
+                border: "1.5px solid #D3D8E2",
                 boxShadow: "0 1px 6px rgba(15,23,42,0.05)",
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLDivElement;
                 el.style.borderColor = "#93B8F0";
-                el.style.boxShadow = "0 8px 24px rgba(27,92,181,0.10)";
+                el.style.boxShadow = "0 8px 24px rgba(59, 98, 171,0.10)";
                 el.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLDivElement;
-                el.style.borderColor = "#E8EDF5";
+                el.style.borderColor = "#D3D8E2";
                 el.style.boxShadow = "0 1px 6px rgba(15,23,42,0.05)";
                 el.style.transform = "translateY(0)";
               }}
@@ -84,12 +84,12 @@ export default function RecentlyViewed({ excludeId }: RecentlyViewedProps) {
               <div className="px-3 py-2.5">
                 <p
                   className="font-semibold leading-snug mb-1"
-                  style={{ fontSize: "11.5px", color: "#0F172A", lineHeight: 1.3 }}
+                  style={{ fontSize: "11.5px", color: "#22252C", lineHeight: 1.3 }}
                 >
                   {product.name}
                 </p>
                 {product.price != null && (
-                  <p className="font-bold" style={{ fontSize: "13px", color: "#1B5CB5" }}>
+                  <p className="font-bold" style={{ fontSize: "13px", color: "#4E68C2" }}>
                     {formatPrice(product.price)}
                   </p>
                 )}

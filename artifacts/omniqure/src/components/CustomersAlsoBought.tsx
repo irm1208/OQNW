@@ -81,16 +81,16 @@ function AlsoBoughtCard({ product }: { product: Product }) {
     <Link href={`/product/${product.id}`} style={{ textDecoration: "none" }}>
       <div
         className="rounded-2xl overflow-hidden bg-white flex flex-col h-full cursor-pointer transition-all duration-200"
-        style={{ border: "1.5px solid #E8EDF5", boxShadow: "0 2px 10px rgba(15,23,42,0.05)" }}
+        style={{ border: "1.5px solid #D3D8E2", boxShadow: "0 2px 10px rgba(15,23,42,0.05)" }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLDivElement;
           el.style.borderColor = "#93B8F0";
-          el.style.boxShadow = "0 8px 24px rgba(27,92,181,0.10)";
+          el.style.boxShadow = "0 8px 24px rgba(59, 98, 171,0.10)";
           el.style.transform = "translateY(-2px)";
         }}
         onMouseLeave={(e) => {
           const el = e.currentTarget as HTMLDivElement;
-          el.style.borderColor = "#E8EDF5";
+          el.style.borderColor = "#D3D8E2";
           el.style.boxShadow = "0 2px 10px rgba(15,23,42,0.05)";
           el.style.transform = "translateY(0)";
         }}
@@ -115,19 +115,19 @@ function AlsoBoughtCard({ product }: { product: Product }) {
         <div className="flex flex-col flex-1 px-3 pt-2.5 pb-3">
           <span
             className="text-xs font-bold mb-1 uppercase tracking-wide"
-            style={{ color: "#1B5CB5", fontSize: "9px", letterSpacing: "0.06em" }}
+            style={{ color: "#4E68C2", fontSize: "9px", letterSpacing: "0.06em" }}
           >
             {product.category}
           </span>
           <p
             className="font-semibold leading-snug flex-1 mb-2"
-            style={{ fontSize: "12.5px", color: "#0F172A", lineHeight: 1.35 }}
+            style={{ fontSize: "12.5px", color: "#22252C", lineHeight: 1.35 }}
           >
             {product.name}
           </p>
           <div className="flex items-center justify-between gap-2">
             {product.price != null && (
-              <p className="font-bold" style={{ fontSize: "15px", color: "#1240A0" }}>
+              <p className="font-bold" style={{ fontSize: "15px", color: "#4E68C2" }}>
                 {formatPrice(product.price)}
               </p>
             )}
@@ -135,7 +135,7 @@ function AlsoBoughtCard({ product }: { product: Product }) {
               onClick={handleAdd}
               className="flex items-center gap-1 font-semibold rounded-xl transition-all"
               style={{
-                backgroundColor: added ? "#059669" : "#1240A0",
+                backgroundColor: added ? "#059669" : "#4E68C2",
                 color: "#fff",
                 border: "none",
                 cursor: "pointer",
@@ -145,8 +145,8 @@ function AlsoBoughtCard({ product }: { product: Product }) {
                 flexShrink: 0,
                 transition: "background-color 0.2s",
               }}
-              onMouseEnter={(e) => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1B5CB5"; }}
-              onMouseLeave={(e) => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0"; }}
+              onMouseEnter={(e) => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#4E68C2"; }}
+              onMouseLeave={(e) => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#4E68C2"; }}
             >
               {added ? <><CheckCircle2 size={11} /> Added!</> : <><ShoppingCart size={11} /> Add</>}
             </button>
@@ -202,11 +202,11 @@ export default function CustomersAlsoBought({ product }: CustomersAlsoBoughtProp
       <div className="flex items-center gap-2.5 mb-4">
         <div
           className="flex items-center justify-center rounded-lg"
-          style={{ width: "30px", height: "30px", backgroundColor: "#EEF4FF" }}
+          style={{ width: "30px", height: "30px", backgroundColor: "#E8F2DE" }}
         >
-          <Users size={15} style={{ color: "#1B5CB5" }} />
+          <Users size={15} style={{ color: "#4E68C2" }} />
         </div>
-        <h2 className="font-bold" style={{ fontSize: "18px", color: "#0F172A" }}>
+        <h2 className="font-bold" style={{ fontSize: "18px", color: "#22252C" }}>
           Customers Also Bought
         </h2>
       </div>

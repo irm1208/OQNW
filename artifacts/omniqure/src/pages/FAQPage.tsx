@@ -1,8 +1,9 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
+import PageHero from "@/components/PageHero";
 import {
-  HelpCircle, Search, X, ChevronDown, ChevronUp,
+  HelpCircle, Search, X, Plus, ArrowRight,
   FlaskConical, Package, Truck, Banknote, Shield,
   Thermometer, Droplets, BookOpen, MessageCircle
 } from "lucide-react";
@@ -23,7 +24,7 @@ type FAQItem = {
 
 const CATEGORIES: FAQCategory[] = [
   { id: "all",      label: "All Questions",   icon: <HelpCircle size={14} />,  color: "#475569" },
-  { id: "products", label: "Products & Purity", icon: <FlaskConical size={14} />, color: "#1B5CB5" },
+  { id: "products", label: "Products & Purity", icon: <FlaskConical size={14} />, color: "#4E68C2" },
   { id: "research", label: "Research & Usage", icon: <BookOpen size={14} />,   color: "#059669" },
   { id: "storage",  label: "Storage & Handling", icon: <Thermometer size={14} />, color: "#7C3AED" },
   { id: "ordering", label: "Ordering & Payment", icon: <Banknote size={14} />, color: "#D97706" },
@@ -32,7 +33,7 @@ const CATEGORIES: FAQCategory[] = [
 ];
 
 const CAT_COLOR: Record<string, string> = {
-  products: "#1B5CB5",
+  products: "#4E68C2",
   research: "#059669",
   storage:  "#7C3AED",
   ordering: "#D97706",
@@ -282,58 +283,32 @@ const FAQS: FAQItem[] = [
   },
 ];
 
-function AccordionItem({ item, isOpen, onToggle }: {
+function AccordionItem({ item, isOpen, onToggle, id }: {
   item: FAQItem;
   isOpen: boolean;
   onToggle: () => void;
+  id: number;
 }) {
-  const catColor = CAT_COLOR[item.category] ?? "#475569";
   return (
-    <div style={{
-      background: "#fff",
-      border: `1px solid ${isOpen ? catColor + "40" : "#E2E8F0"}`,
-      borderRadius: "10px",
-      overflow: "hidden",
-      transition: "border-color 0.2s, box-shadow 0.2s",
-      boxShadow: isOpen ? `0 2px 12px ${catColor}18` : "0 1px 3px rgba(0,0,0,0.04)",
-    }}>
-      <button
-        onClick={onToggle}
-        style={{
-          width: "100%", textAlign: "left", padding: "16px 18px",
-          background: isOpen ? catColor + "08" : "transparent",
-          border: "none", cursor: "pointer",
-          display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px",
-          transition: "background 0.15s",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "flex-start", gap: "10px", flex: 1 }}>
-          <div style={{
-            width: "20px", height: "20px", borderRadius: "50%",
-            background: isOpen ? catColor : catColor + "20",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            flexShrink: 0, marginTop: "1px", transition: "background 0.15s",
-          }}>
-            <HelpCircle size={11} color={isOpen ? "#fff" : catColor} />
-          </div>
-          <span style={{ fontSize: "14px", fontWeight: 700, color: "#0D2565", lineHeight: "1.45", letterSpacing: "-0.01em" }}>
-            {item.q}
+    <div className="border-b" style={{ borderColor: "var(--hairline)" }}>
+      <h3 className="m-0">
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-expanded={isOpen}
+          aria-controls={`faq-a-${id}`}
+          className="flex w-full items-start justify-between gap-6 py-5 text-left transition-colors hover:text-[var(--cobalt)]"
+          style={{ color: "var(--ink)" }}
+        >
+          <span className="text-[15px] font-semibold leading-snug tracking-tight">{item.q}</span>
+          <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border transition-transform" style={{ borderColor: "var(--hairline)", transform: isOpen ? "rotate(45deg)" : "none", color: isOpen ? "var(--cobalt)" : "var(--graphite)" }}>
+            <Plus size={13} aria-hidden="true" />
           </span>
-        </div>
-        <div style={{ flexShrink: 0, marginTop: "2px" }}>
-          {isOpen
-            ? <ChevronUp size={16} color={catColor} />
-            : <ChevronDown size={16} color="#94A3B8" />}
-        </div>
-      </button>
+        </button>
+      </h3>
       {isOpen && (
-        <div style={{
-          padding: "0 18px 18px 48px",
-          borderTop: `1px solid ${catColor}20`,
-        }}>
-          <p style={{ fontSize: "13px", color: "#374151", margin: "14px 0 0", lineHeight: "1.7" }}>
-            {item.a}
-          </p>
+        <div id={`faq-a-${id}`} className="pb-5 pr-12 text-[14px] leading-[1.75]" style={{ color: "var(--graphite)" }}>
+          {item.a}
         </div>
       )}
     </div>
@@ -392,209 +367,124 @@ export default function FAQPage() {
     return counts;
   }, []);
 
+  const toggle = (i: number) => setOpenId(openId === i ? null : i);
+  const reset = () => { setSearch(""); setActiveCategory("all"); setOpenId(null); };
+  const groups = activeCategory === "all" && !search
+    ? CATEGORIES.filter((c) => c.id !== "all").map((c) => ({ cat: c, items: FAQS.filter((f) => f.category === c.id) })).filter((g) => g.items.length)
+    : [{ cat: null, items: filtered }];
+
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
-
-      {/* Hero */}
-      <div style={{
-        background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
-        padding: "52px 20px 48px", position: "relative", overflow: "hidden",
-      }}>
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-        <div style={{ maxWidth: "700px", margin: "0 auto", textAlign: "center", position: "relative" }}>
-          <div style={{
-            display: "inline-flex", alignItems: "center", gap: "8px",
-            background: "rgba(255,255,255,0.12)", borderRadius: "20px",
-            padding: "6px 16px", marginBottom: "18px",
-          }}>
-            <HelpCircle size={13} color="rgba(255,255,255,0.85)" />
-            <span style={{ fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.85)", letterSpacing: "0.06em" }}>HELP CENTRE</span>
-          </div>
-          <h1 style={{ fontSize: "clamp(28px, 5vw, 42px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.03em", margin: "0 0 12px" }}>
-            Frequently Asked Questions
-          </h1>
-          <p style={{ fontSize: "clamp(13px, 2vw, 16px)", color: "rgba(255,255,255,0.75)", marginTop: 0, marginBottom: "28px", lineHeight: 1.6 }}>
-            Everything you need to know about our research peptides, ordering, storage, and shipping.
-          </p>
-
-          {/* Search */}
-          <div style={{ position: "relative", maxWidth: "460px", marginLeft: "auto", marginRight: "auto" }}>
-            <Search size={15} style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", color: "#94A3B8" }} />
+    <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", background: "#fff" }}>
+      <PageHero
+        crumbs={[{ label: "FAQ" }]}
+        eyebrow="Help centre"
+        title="Questions, answered."
+        aside={
+          <div className="relative w-full lg:w-[380px]">
+            <Search size={16} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2" style={{ color: "var(--graphite)" }} aria-hidden="true" />
             <input
-              type="text"
+              type="search"
+              aria-label="Search questions"
               placeholder="Search questions…"
               value={search}
-              onChange={e => { setSearch(e.target.value); setOpenId(null); }}
-              style={{
-                width: "100%", padding: "11px 40px 11px 40px",
-                borderRadius: "8px", border: "1px solid rgba(255,255,255,0.2)",
-                background: "rgba(255,255,255,0.95)", fontSize: "13px",
-                outline: "none", boxSizing: "border-box", color: "#1E293B",
-              }}
+              onChange={(e) => { setSearch(e.target.value); setOpenId(null); }}
+              className="w-full rounded-full border bg-white py-3 pl-11 pr-10 text-[14px] outline-none transition-colors focus:border-[var(--cobalt)]"
+              style={{ borderColor: "var(--hairline)", color: "var(--ink)" }}
             />
             {search && (
-              <button onClick={() => { setSearch(""); setOpenId(null); }}
-                style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#94A3B8", padding: "2px" }}>
-                <X size={13} />
+              <button type="button" aria-label="Clear search" onClick={() => { setSearch(""); setOpenId(null); }} className="absolute right-3 top-1/2 -translate-y-1/2 p-1" style={{ color: "var(--graphite)" }}>
+                <X size={14} aria-hidden="true" />
               </button>
             )}
           </div>
-        </div>
-      </div>
+        }
+      >
+        Everything you need to know about our research peptides, independent testing, storage, ordering and shipping.
+      </PageHero>
 
-      {/* Category pill tabs */}
-      <div style={{ background: "#fff", borderBottom: "1px solid #E2E8F0", padding: "0 20px", overflowX: "auto" }}>
-        <div style={{ maxWidth: "960px", marginLeft: "auto", marginRight: "auto", display: "flex", gap: "2px" }}>
-          {CATEGORIES.map(cat => {
-            const active = activeCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => { setActiveCategory(cat.id); setOpenId(null); }}
-                style={{
-                  display: "flex", alignItems: "center", gap: "6px",
-                  padding: "14px 16px", border: "none", cursor: "pointer",
-                  background: "transparent", whiteSpace: "nowrap",
-                  fontSize: "12px", fontWeight: active ? 700 : 500,
-                  color: active ? cat.color : "#64748B",
-                  borderBottom: active ? `2px solid ${cat.color}` : "2px solid transparent",
-                  transition: "all 0.15s",
-                }}
-              >
-                <span style={{ color: active ? cat.color : "#94A3B8" }}>{cat.icon}</span>
-                {cat.label}
-                <span style={{
-                  background: active ? cat.color + "18" : "#F1F5F9",
-                  color: active ? cat.color : "#94A3B8",
-                  fontSize: "10px", fontWeight: 700, padding: "1px 6px", borderRadius: "10px",
-                }}>{categoryCounts[cat.id] ?? 0}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Content */}
-      <div style={{ maxWidth: "960px", marginLeft: "auto", marginRight: "auto", padding: "32px 20px 60px" }}>
-
-        {filtered.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "60px 20px" }}>
-            <HelpCircle size={40} color="#CBD5E1" style={{ marginBottom: "12px" }} />
-            <div style={{ fontSize: "16px", fontWeight: 700, color: "#475569", marginBottom: "6px" }}>No questions found</div>
-            <div style={{ fontSize: "13px", color: "#94A3B8", marginBottom: "16px" }}>Try a different search term or category</div>
-            <button onClick={() => { setSearch(""); setActiveCategory("all"); }}
-              style={{ padding: "8px 18px", background: "#1B5CB5", color: "#fff", border: "none", borderRadius: "6px", fontSize: "13px", fontWeight: 600, cursor: "pointer" }}>
-              Show all questions
-            </button>
-          </div>
-        ) : (
-          <>
-            {/* Results count */}
-            <div style={{ fontSize: "12px", color: "#94A3B8", marginBottom: "20px" }}>
-              {search
-                ? <><strong style={{ color: "#374151" }}>{filtered.length}</strong> result{filtered.length !== 1 ? "s" : ""} for "<strong style={{ color: "#1B5CB5" }}>{search}</strong>"</>
-                : <><strong style={{ color: "#374151" }}>{filtered.length}</strong> question{filtered.length !== 1 ? "s" : ""}</>
-              }
-              {(search || activeCategory !== "all") && (
-                <button onClick={() => { setSearch(""); setActiveCategory("all"); setOpenId(null); }}
-                  style={{ marginLeft: "10px", background: "none", border: "none", cursor: "pointer", color: "#64748B", fontSize: "12px", textDecoration: "underline" }}>
-                  Clear
-                </button>
-              )}
-            </div>
-
-            {/* Grouped by category when showing all, flat list otherwise */}
-            {activeCategory === "all" && !search ? (
-              CATEGORIES.filter(c => c.id !== "all").map(cat => {
-                const items = FAQS.filter(f => f.category === cat.id);
-                if (!items.length) return null;
+      <section className="w-full max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 py-10 lg:py-14">
+        <div className="grid gap-10 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-16">
+          <nav aria-label="FAQ categories" className="min-w-0 lg:sticky lg:top-24 lg:self-start">
+            <p className="mb-3 hidden uppercase lg:block" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--graphite)" }}>Categories</p>
+            <div className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:gap-0.5 lg:overflow-visible">
+              {CATEGORIES.map((cat) => {
+                const active = activeCategory === cat.id;
                 return (
-                  <div key={cat.id} style={{ marginBottom: "36px" }}>
-                    <div style={{
-                      display: "flex", alignItems: "center", gap: "8px",
-                      marginBottom: "14px", paddingBottom: "10px",
-                      borderBottom: "2px solid " + cat.color + "30",
-                    }}>
-                      <div style={{ color: cat.color }}>{cat.icon}</div>
-                      <h2 style={{ fontSize: "15px", fontWeight: 800, color: "#0D2565", margin: 0, letterSpacing: "-0.01em" }}>{cat.label}</h2>
-                      <span style={{ background: cat.color + "15", color: cat.color, fontSize: "10px", fontWeight: 700, padding: "1px 7px", borderRadius: "10px" }}>
-                        {items.length}
-                      </span>
-                    </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                      {items.map((item, idx) => {
-                        const globalIdx = FAQS.indexOf(item);
-                        return (
-                          <AccordionItem
-                            key={globalIdx}
-                            item={item}
-                            isOpen={openId === globalIdx}
-                            onToggle={() => setOpenId(openId === globalIdx ? null : globalIdx)}
-                          />
-                        );
-                      })}
-                    </div>
-                  </div>
+                  <button
+                    key={cat.id}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => { setActiveCategory(cat.id); setOpenId(null); }}
+                    className="flex shrink-0 items-center justify-between gap-3 whitespace-nowrap rounded-full border px-4 py-2 text-[13px] transition-colors lg:rounded-lg lg:border-0 lg:px-3"
+                    style={active
+                      ? { background: "var(--ink)", borderColor: "var(--ink)", color: "#fff", fontWeight: 600 }
+                      : { borderColor: "var(--hairline)", color: "var(--graphite)" }}
+                  >
+                    {cat.label}
+                    <span className="text-[11px] tabular-nums" style={{ opacity: 0.6 }}>{categoryCounts[cat.id] ?? 0}</span>
+                  </button>
                 );
-              })
-            ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                {filtered.map((item) => {
-                  const globalIdx = FAQS.indexOf(item);
-                  return (
-                    <AccordionItem
-                      key={globalIdx}
-                      item={item}
-                      isOpen={openId === globalIdx}
-                      onToggle={() => setOpenId(openId === globalIdx ? null : globalIdx)}
-                    />
-                  );
-                })}
-              </div>
-            )}
-          </>
-        )}
+              })}
+            </div>
+          </nav>
 
-        {/* Still have questions CTA */}
-        <div style={{
-          marginTop: "48px",
-          background: "linear-gradient(135deg, #0D2565 0%, #1B5CB5 100%)",
-          borderRadius: "14px", padding: "32px 32px",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          flexWrap: "wrap", gap: "20px",
-        }}>
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "14px" }}>
-            <div style={{
-              width: "44px", height: "44px", borderRadius: "10px",
-              background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-            }}>
-              <MessageCircle size={22} color="#fff" />
-            </div>
-            <div>
-              <div style={{ fontSize: "17px", fontWeight: 800, color: "#fff", marginBottom: "4px" }}>Still have a question?</div>
-              <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.75)", lineHeight: 1.5 }}>
-                Our research support team is available via live chat or contact form. We respond within 1–2 business days.
+          <div>
+            <p className="mb-2 text-[12px]" style={{ color: "var(--graphite)" }} aria-live="polite">
+              {search ? <>{filtered.length} result{filtered.length !== 1 ? "s" : ""} for “{search}”</> : <>{filtered.length} question{filtered.length !== 1 ? "s" : ""}</>}
+              {(search || activeCategory !== "all") && (
+                <button type="button" onClick={reset} className="ml-3 underline underline-offset-2 hover:text-[var(--ink)]">Clear</button>
+              )}
+            </p>
+
+            {filtered.length === 0 ? (
+              <div className="rounded-2xl border px-6 py-14 text-center" style={{ borderColor: "var(--hairline)" }}>
+                <HelpCircle size={36} className="mx-auto mb-3" style={{ color: "rgba(74,85,104,0.35)" }} aria-hidden="true" />
+                <p className="text-[16px] font-semibold" style={{ color: "var(--ink)" }}>No questions found</p>
+                <p className="mt-1 text-[13px]" style={{ color: "var(--graphite)" }}>Try a different search term or category.</p>
+                <button type="button" onClick={reset} className="mt-5 rounded-full px-5 py-2.5 text-[13px] font-semibold text-white" style={{ background: "var(--ink)" }}>
+                  Show all questions
+                </button>
+              </div>
+            ) : (
+              groups.map(({ cat, items }) => (
+                <div key={cat?.id ?? "results"} className="mb-10 last:mb-0">
+                  {cat && (
+                    <h2 className="mb-1 mt-6 flex items-center gap-2 border-b pb-3 uppercase first:mt-0" style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", color: "var(--cobalt)", borderColor: "var(--hairline)" }}>
+                      {cat.label}
+                    </h2>
+                  )}
+                  {items.map((item) => {
+                    const i = FAQS.indexOf(item);
+                    return <AccordionItem key={i} id={i} item={item} isOpen={openId === i} onToggle={() => toggle(i)} />;
+                  })}
+                </div>
+              ))
+            )}
+
+            <div className="mt-14 flex flex-col gap-6 rounded-2xl border p-7 sm:flex-row sm:items-center sm:justify-between sm:p-8" style={{ borderColor: "rgba(59, 98, 171,0.15)", background: "#E3EEFC" }}>
+              <div className="flex items-start gap-4">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white" style={{ color: "var(--cobalt)" }}>
+                  <MessageCircle size={20} aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-[17px] font-bold tracking-tight" style={{ color: "var(--ink)" }}>Still have a question?</p>
+                  <p className="mt-1 text-[13.5px] leading-relaxed" style={{ color: "var(--graphite)" }}>
+                    Our research desk is available via live chat or the contact form. We respond within one business day.
+                  </p>
+                </div>
+              </div>
+              <div className="flex shrink-0 flex-wrap gap-2.5">
+                <Link href="/contact" className="inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[13.5px] font-semibold text-white transition-opacity hover:opacity-90" style={{ background: "var(--ink)" }}>
+                  Contact us <ArrowRight size={14} aria-hidden="true" />
+                </Link>
+                <Link href="/protocols" className="inline-flex items-center rounded-full border bg-white px-5 py-2.5 text-[13.5px] font-semibold transition-colors hover:bg-[#F4F6FA]" style={{ borderColor: "var(--hairline)", color: "var(--ink)" }}>
+                  Protocols
+                </Link>
               </div>
             </div>
-          </div>
-          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-            <Link href="/contact">
-              <button style={{
-                padding: "10px 22px", background: "#fff", color: "#1B5CB5",
-                border: "none", borderRadius: "8px", fontSize: "13px", fontWeight: 700,
-                cursor: "pointer", whiteSpace: "nowrap",
-              }}>Contact Us</button>
-            </Link>
-            <Link href="/protocols">
-              <button style={{
-                padding: "10px 22px", background: "rgba(255,255,255,0.15)", color: "#fff",
-                border: "1px solid rgba(255,255,255,0.3)", borderRadius: "8px", fontSize: "13px", fontWeight: 600,
-                cursor: "pointer", whiteSpace: "nowrap",
-              }}>Protocols Reference</button>
-            </Link>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

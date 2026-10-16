@@ -2,10 +2,11 @@ import { useState } from "react";
 import { X } from "lucide-react";
 
 const messages = [
-  "🔬  99%+ Independently Verified Purity — Every Published Result",
-  "🎁  Refer a Friend — You Both Earn £25 Credit Each",
-  "🚚  Free Standard Shipping — UK Mainland, Highlands & Northern Ireland",
-  "🏷️  Bundle & Save — 3-4 Vials Unlock a Free 10ml Bac Water Ampule",
+  "99%+ independently verified purity",
+  "Refer a friend — you both earn £25 credit",
+  "Free standard UK shipping",
+  "Bundle & save — free 10ml bac water with 3+ vials",
+  "Same-day dispatch, Mon–Fri",
 ];
 
 export default function AnnouncementBar({ suppressed = false }: { suppressed?: boolean }) {
@@ -15,67 +16,27 @@ export default function AnnouncementBar({ suppressed = false }: { suppressed?: b
   const doubled = [...messages, ...messages];
 
   return (
-    <div
-      className="relative overflow-hidden"
-      style={{
-        background: "linear-gradient(90deg, #1847C2 0%, #2058D8 30%, #2B6FF5 55%, #2058D8 80%, #1847C2 100%)",
-        height: "36px",
-      }}
-    >
-      {/* Shimmer overlay */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%)",
-          backgroundSize: "200% 100%",
-          animation: "shimmer 3s linear infinite",
-          pointerEvents: "none",
-          zIndex: 1,
-        }}
-      />
-
-      {/* Scrolling ticker */}
-      <div className="flex items-center h-full overflow-hidden" style={{ zIndex: 2, position: "relative" }}>
+    <div className="relative overflow-hidden select-none" style={{ backgroundColor: "var(--cobalt)", color: "#fff" }}>
+      <div className="flex h-9 items-center overflow-hidden">
         <div
-          className="animate-ticker flex-shrink-0 flex items-center"
-          style={{ whiteSpace: "nowrap" }}
+          className="animate-ticker flex w-max shrink-0 items-center whitespace-nowrap"
+          style={{ fontSize: "11.5px", fontWeight: 500, letterSpacing: "0.025em" }}
+          aria-hidden="true"
         >
           {doubled.map((msg, i) => (
-            <span
-              key={i}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                fontSize: "11.5px",
-                fontWeight: 600,
-                color: "#E2E8F0",
-                letterSpacing: "0.025em",
-                paddingRight: "0",
-              }}
-            >
-              {msg}
-              <span
-                style={{
-                  display: "inline-block",
-                  width: "1px",
-                  height: "12px",
-                  backgroundColor: "rgba(255,255,255,0.2)",
-                  margin: "0 32px",
-                  verticalAlign: "middle",
-                }}
-              />
+            <span key={i} className="flex items-center">
+              <span>{msg}</span>
+              <span className="mx-6 h-1 w-1 rounded-full" style={{ backgroundColor: "rgba(255,255,255,0.45)" }} />
             </span>
           ))}
         </div>
+        <span className="sr-only">{messages.join(". ")}</span>
       </div>
-
-      {/* Close */}
       <button
         onClick={() => setVisible(false)}
-        className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all hover:bg-white/10"
-        style={{ width: "22px", height: "22px", opacity: 0.6, zIndex: 3, border: "none", background: "none", cursor: "pointer", color: "#fff" }}
-        aria-label="Close"
+        className="absolute right-3 top-1/2 z-10 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full transition-colors"
+        style={{ color: "rgba(255,255,255,0.7)", backgroundColor: "var(--cobalt)", border: "none", cursor: "pointer" }}
+        aria-label="Dismiss announcement"
       >
         <X size={13} />
       </button>

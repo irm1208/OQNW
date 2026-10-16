@@ -3,7 +3,7 @@ import type { Product } from "@/data/products";
 import type { ProductDetail } from "@/data/productDetails";
 import { products as staticProducts } from "@/data/products";
 import { productDetails as staticProductDetails } from "@/data/productDetails";
-import catalogueImageOverrides from "@/data/catalogueImageOverrides.json";
+import { getCatalogueCardImage } from "@/lib/catalogueImages";
 
 type ProductsContextType = {
   products: Product[];
@@ -48,13 +48,15 @@ type ApiProduct = {
 };
 
 function toProduct(p: ApiProduct): Product {
-  const image = catalogueImageOverrides[p.slug as keyof typeof catalogueImageOverrides] ?? p.imageUrl ?? "";
+  const sourceImage = withProtectedImage(p.imageUrl ?? "");
+  const image = getCatalogueCardImage(p.slug, p.imageUrl);
   return {
     id: String(p.id),
     name: p.name,
     slug: p.slug,
     price: p.priceGbp,
     image: withProtectedImage(image),
+    sourceImage,
     category: p.category,
     description: p.shortDescription ?? p.description ?? null,
     purity: p.purity ?? null,

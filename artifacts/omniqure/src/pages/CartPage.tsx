@@ -10,9 +10,12 @@ import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { type Product, isHiddenCategory } from "@/data/products";
 import { useProducts } from "@/context/ProductsContext";
 import BacWaterUpsell from "@/components/BacWaterUpsell";
+import PageHero from "@/components/PageHero";
+import CatalogueCard from "@/components/CatalogueCard";
+import { groupProducts } from "@/data/groupedProducts";
 import {
   Trash2, Plus, Minus, ShoppingCart, ChevronRight, Sparkles, CheckCircle2,
-  Lock, Shield, Truck,
+  Lock, Shield, Truck, AlertTriangle, Clock,
 } from "lucide-react";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
@@ -371,20 +374,20 @@ const POSTCODE_RULES: Record<string, { pattern: RegExp; message: string }> = {
 
 const THEME = {
   cardBg: "#ffffff" as const,
-  cardBorder: "1px solid #E8EDF5" as const,
+  cardBorder: "1px solid rgba(11,18,32,0.09)" as const,
   inputBg: "#ffffff" as const,
-  inputBorder: "#E2E8F0" as const,
-  text: "#0F172A" as const,
-  textMuted: "#64748B" as const,
+  inputBorder: "rgba(11,18,32,0.12)" as const,
+  text: "#1D2948" as const,
+  textMuted: "#4A5672" as const,
   textSub: "#475569" as const,
   divider: "1px solid #F1F5F9" as const,
-  cta: "#1B5CB5" as const,
-  ctaHover: "#1240A0" as const,
+  cta: "#4E68C2" as const,
+  ctaHover: "#4E68C2" as const,
 };
 
 const input: React.CSSProperties = {
-  width: "100%", height: "44px", padding: "0 12px",
-  border: `1px solid ${THEME.inputBorder}`, borderRadius: "4px",
+  width: "100%", height: "46px", padding: "0 14px",
+  border: `1px solid ${THEME.inputBorder}`, borderRadius: "10px",
   fontSize: "14px", color: THEME.text, outline: "none",
   fontFamily: "inherit", background: THEME.inputBg,
   boxSizing: "border-box",
@@ -393,15 +396,13 @@ const input: React.CSSProperties = {
 const inputError: React.CSSProperties = { ...input, borderColor: "#ef4444" };
 
 const label: React.CSSProperties = {
-  display: "block", fontSize: "11px", fontWeight: 700,
-  color: THEME.textMuted, letterSpacing: "0.07em", textTransform: "uppercase",
-  marginBottom: "5px",
+  display: "block", fontSize: "12.5px", fontWeight: 500,
+  color: THEME.textMuted, marginBottom: "6px",
 };
 
 const sectionTitle: React.CSSProperties = {
-  fontSize: "13px", fontWeight: 800, color: THEME.text,
-  letterSpacing: "0.08em", textTransform: "uppercase",
-  margin: "0 0 16px",
+  fontSize: "18px", fontWeight: 600, color: THEME.text,
+  letterSpacing: "-0.01em", margin: "0 0 18px",
 };
 
 const errText: React.CSSProperties = {
@@ -431,13 +432,13 @@ function CartUpsellCard({ product }: { product: Product }) {
     <Link href={`/product/${product.id}`} style={{ textDecoration: "none" }}>
       <div
         className="rounded-xl bg-white flex items-center gap-3 px-3 py-2.5 cursor-pointer transition-all duration-200"
-        style={{ border: "1.5px solid #E8EDF5", boxShadow: "0 1px 4px rgba(15,23,42,0.04)" }}
+        style={{ border: "1.5px solid #D3D8E2", boxShadow: "0 1px 4px rgba(15,23,42,0.04)" }}
         onMouseEnter={(e) => {
           (e.currentTarget as HTMLDivElement).style.borderColor = "#93B8F0";
-          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 14px rgba(27,92,181,0.09)";
+          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 14px rgba(59, 98, 171,0.09)";
         }}
         onMouseLeave={(e) => {
-          (e.currentTarget as HTMLDivElement).style.borderColor = "#E8EDF5";
+          (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(11,18,32,0.09)";
           (e.currentTarget as HTMLDivElement).style.boxShadow = "0 1px 4px rgba(15,23,42,0.04)";
         }}
       >
@@ -453,11 +454,11 @@ function CartUpsellCard({ product }: { product: Product }) {
           />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="font-semibold truncate" style={{ fontSize: "12px", color: "#0F172A", lineHeight: 1.3 }}>{product.name}</p>
+          <p className="font-semibold truncate" style={{ fontSize: "12px", color: "#22252C", lineHeight: 1.3 }}>{product.name}</p>
           <div className="flex items-center gap-1.5 mt-0.5">
             <span style={{ fontSize: "10px", color: "#059669", fontWeight: 600 }}>{product.purity ?? "Purity not specified"}</span>
             {product.price != null && (
-              <span style={{ fontSize: "12px", fontWeight: 700, color: "#1240A0" }}>{formatPrice(product.price)}</span>
+              <span style={{ fontSize: "12px", fontWeight: 700, color: "#4E68C2" }}>{formatPrice(product.price)}</span>
             )}
           </div>
         </div>
@@ -470,13 +471,13 @@ function CartUpsellCard({ product }: { product: Product }) {
             onClick={handleAdd}
             className="flex items-center gap-1 font-semibold rounded-lg flex-shrink-0 transition-all"
             style={{
-              backgroundColor: added ? "#059669" : "#1240A0",
+              backgroundColor: added ? "#059669" : "#4E68C2",
               color: "#fff", border: "none", cursor: "pointer",
               fontSize: "11px", padding: "5px 10px", height: "28px",
               transition: "background-color 0.2s",
             }}
-            onMouseEnter={(e) => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1B5CB5"; }}
-            onMouseLeave={(e) => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0"; }}
+            onMouseEnter={(e) => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#4E68C2"; }}
+            onMouseLeave={(e) => { if (!added) (e.currentTarget as HTMLElement).style.backgroundColor = "#4E68C2"; }}
           >
             {added ? <><CheckCircle2 size={11} /> Added</> : <><ShoppingCart size={11} /> Add</>}
           </button>
@@ -533,8 +534,8 @@ function CartUpsells() {
   return (
     <div className="mt-6">
       <div className="flex items-center gap-2 mb-3">
-        <Sparkles size={14} style={{ color: "#1B5CB5" }} />
-        <p className="font-bold" style={{ fontSize: "13px", color: "#0F172A" }}>Frequently bought with your cart</p>
+        <Sparkles size={14} style={{ color: "#4E68C2" }} />
+        <p className="font-bold" style={{ fontSize: "13px", color: "#22252C" }}>Frequently bought with your cart</p>
       </div>
       <div className="space-y-2">
         {suggestions.map((p) => (
@@ -708,6 +709,7 @@ export default function CartPage() {
   const timerExpired = timeLeft <= 0;
   const timerUrgent = timeLeft <= 120;
   const timerWarning = timeLeft <= 300 && timeLeft > 120;
+  const timerCalm = !timerUrgent && !timerWarning;
 
   // Postcode — auto-fill city/county on blur via postcodes.io
   const [postcodeLoading, setPostcodeLoading] = useState(false);
@@ -813,9 +815,9 @@ export default function CartPage() {
               key={opt.id}
               style={{
                 display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 16px",
-                border: `1px solid ${active ? "#1240A0" : "#E8EDF5"}`,
+                border: `1px solid ${active ? "#4E68C2" : "rgba(11,18,32,0.09)"}`,
                 borderRadius: 6, cursor: "pointer",
-                background: active ? "#EEF4FF" : THEME.cardBg,
+                background: active ? "#E8F2DE" : THEME.cardBg,
                 transition: "border-color 0.15s, background 0.15s",
               }}
             >
@@ -1007,34 +1009,35 @@ export default function CartPage() {
   }, [appliedDiscount, cartGBP]);
 
   if (items.length === 0) {
+    const suggestions = groupProducts(liveProducts.filter((p) => !isHiddenCategory(p.category))).slice(0, 4);
     return (
-      <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "60vh" }}>
-        <div className="max-w-[700px] mx-auto px-4 py-20 text-center">
-          <div
-            className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
-            style={{ backgroundColor: "#EEF4FF" }}
-          >
-            <ShoppingCart size={36} style={{ color: "#1B5CB5" }} />
-          </div>
-          <h1 className="font-bold mb-3" style={{ fontSize: "24px", color: "#0F172A" }}>
-            Your cart is empty
-          </h1>
-          <p className="mb-8" style={{ fontSize: "14px", color: "#64748B" }}>
-            Browse our catalogue of 81 research-grade peptides.
-          </p>
+      <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", background: "#fff" }}>
+        <PageHero crumbs={[{ label: "Cart" }]} eyebrow="Your cart" title="Your cart is empty.">
+          Browse our catalogue of 81 research-grade peptides, each independently verified with a published Janoshik report.
+        </PageHero>
+        <section className="w-full max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 py-10 lg:py-14">
           {isAdminTestCheckout && (
-            <p style={{ color: "#9A3412", background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 6, fontSize: "13px", fontWeight: 600, lineHeight: 1.5, margin: "0 auto 20px", maxWidth: 520, padding: "10px 14px" }}>
+            <p className="mb-6 max-w-xl rounded-lg border px-3.5 py-2.5 text-[13px] font-semibold" style={{ color: "#9A3412", background: "#FFF7ED", borderColor: "#FED7AA" }}>
               Your £1 {isCryptoTestCheckout ? "crypto" : "Wallid"} test session stays active in this browser tab while you add a product, then return to your cart.
             </p>
           )}
-          <Link
-            href="/all-peptides"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-opacity hover:opacity-90"
-            style={{ backgroundColor: "#1B5CB5", color: "#fff", textDecoration: "none" }}
-          >
-            Browse All Peptides <ChevronRight size={16} />
-          </Link>
-        </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/all-peptides" className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[14.5px] font-semibold text-white transition-opacity hover:opacity-90" style={{ background: "var(--ink)" }}>
+              Browse all peptides <ChevronRight size={16} aria-hidden="true" />
+            </Link>
+            <Link href="/bundle-and-save" className="inline-flex items-center rounded-full border px-6 py-3.5 text-[14px] font-semibold transition-colors hover:bg-[#F4F6FA]" style={{ borderColor: "var(--hairline)", color: "var(--ink)" }}>
+              Bundle &amp; save
+            </Link>
+          </div>
+          {suggestions.length > 0 && (
+            <div className="mt-14">
+              <p className="mb-5 uppercase" style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", color: "var(--cobalt)" }}>Popular with researchers</p>
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
+                {suggestions.map((g) => <CatalogueCard key={g.baseName} group={g} />)}
+              </div>
+            </div>
+          )}
+        </section>
       </div>
     );
   }
@@ -1515,7 +1518,7 @@ export default function CartPage() {
     errors[key] ? inputError : input;
 
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", backgroundColor: "#F2F0EB", minHeight: "100vh" }}>
       {isWallidTestCheckout && (
         <div style={{
           background: wallidTestStatus === "invalid" ? "#FEF2F2" : "#FFF7ED",
@@ -1534,9 +1537,9 @@ export default function CartPage() {
         <div
           data-testid="status-crypto-test-checkout"
           style={{
-            background: cryptoTestStatus === "invalid" ? "#FEF2F2" : "#EFF6FF",
-            borderBottom: `1px solid ${cryptoTestStatus === "invalid" ? "#FECACA" : "#BFDBFE"}`,
-            color: cryptoTestStatus === "invalid" ? "#B91C1C" : "#1E40AF",
+            background: cryptoTestStatus === "invalid" ? "#FEF2F2" : "#E8F2DE",
+            borderBottom: `1px solid ${cryptoTestStatus === "invalid" ? "#FECACA" : "#C8DDB4"}`,
+            color: cryptoTestStatus === "invalid" ? "#B91C1C" : "#3D55A8",
             padding: "10px 16px", textAlign: "center", fontSize: "13px", fontWeight: 700,
           }}
         >
@@ -1555,11 +1558,11 @@ export default function CartPage() {
           background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center",
         }}>
           <div style={{
-            background: "#fff", border: "1px solid #E8EDF5", borderRadius: 12, padding: "32px 28px", textAlign: "center",
+            background: "#fff", border: "1px solid #D3D8E2", borderRadius: 12, padding: "32px 28px", textAlign: "center",
             maxWidth: 400, width: "90%", boxShadow: "0 20px 60px rgba(15,23,42,0.2)",
           }}>
             <div style={{ fontSize: 48, marginBottom: 12 }}>⏱</div>
-            <p style={{ fontSize: "20px", fontWeight: 800, color: "#0F172A", marginBottom: 8 }}>Session Expired</p>
+            <p style={{ fontSize: "20px", fontWeight: 800, color: "#22252C", marginBottom: 8 }}>Session Expired</p>
             <p style={{ fontSize: "14px", color: "#64748B", marginBottom: 24, lineHeight: 1.5 }}>
               Your checkout session has timed out for security. Your cart is still saved.
             </p>
@@ -1578,27 +1581,27 @@ export default function CartPage() {
       )}
 
       {/* ── Research warning ── */}
-      <div style={{ backgroundColor: "#FFFBEB", borderBottom: "1px solid #FDE68A" }}>
-        <div className="max-w-[1280px] mx-auto px-4 py-2.5 flex items-start gap-2">
-          <span style={{ fontSize: "14px", flexShrink: 0 }}>⚠️</span>
-          <p className="text-xs leading-relaxed" style={{ color: "#92400E" }}>
-            <strong>Research Use Only:</strong> All products are for in-vitro laboratory research. Not for human or veterinary use. Must be 18+ to purchase.
+      <div style={{ backgroundColor: "#F2F0EB", borderBottom: "1px solid rgba(11,18,32,0.09)" }}>
+        <div className="max-w-[1280px] mx-auto px-6 py-2.5 flex items-center gap-2">
+          <AlertTriangle size={14} style={{ color: "#B45309", flexShrink: 0 }} />
+          <p className="text-xs leading-relaxed" style={{ color: "#4A5672" }}>
+            <strong style={{ color: "#1D2948" }}>Research use only.</strong> All products are for in-vitro laboratory research. Not for human or veterinary use. Must be 18+ to purchase.
           </p>
         </div>
       </div>
 
       {/* ── Header bar ── */}
-      <div style={{ borderBottom: "1px solid #E8EDF5", backgroundColor: "#fff" }}>
-        <div className="checkout-breadcrumb-bar max-w-[1280px] mx-auto px-4" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 }}>
-          <h1 className="font-bold" style={{ fontSize: "16px", color: "#0F172A" }}>
+      <div style={{ borderBottom: "1px solid rgba(11,18,32,0.09)", backgroundColor: "#fff" }}>
+        <div className="checkout-breadcrumb-bar max-w-[1280px] mx-auto px-6" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 76 }}>
+          <h1 style={{ fontSize: "26px", fontWeight: 600, letterSpacing: "-0.02em", color: "#1D2948" }}>
             My Cart
-            <span className="ml-2 font-normal" style={{ fontSize: "13px", color: "#94A3B8" }}>
+            <span className="ml-2 font-normal" style={{ fontSize: "14px", letterSpacing: 0, color: "#8A94A6" }}>
               ({totalItems} {totalItems === 1 ? "item" : "items"})
             </span>
           </h1>
-          <div className="checkout-step-label" style={{ display: "flex", alignItems: "center", gap: "6px", color: "#64748B", fontSize: "12px" }}>
-            <Lock size={13} />
-            <span style={{ fontWeight: 600, letterSpacing: "0.04em" }}>SECURE CHECKOUT</span>
+          <div className="checkout-step-label" style={{ display: "flex", alignItems: "center", gap: "6px", color: "#4A5672", fontSize: "10px" }}>
+            <Lock size={12} />
+            <span style={{ fontWeight: 500, letterSpacing: "0.18em", textTransform: "uppercase" }}>Secure checkout</span>
           </div>
         </div>
       </div>
@@ -1609,10 +1612,10 @@ export default function CartPage() {
           ? "linear-gradient(90deg, #7F1D1D 0%, #DC2626 50%, #7F1D1D 100%)"
           : timerWarning
           ? "linear-gradient(90deg, #78350F 0%, #D97706 50%, #78350F 100%)"
-          : "linear-gradient(90deg, #1240A0 0%, #1B5CB5 50%, #1240A0 100%)",
-        borderBottom: `2px solid ${timerUrgent ? "#EF4444" : timerWarning ? "#F59E0B" : "#3B82F6"}`,
+          : "#FFFFFF",
+        borderBottom: `${timerCalm ? 1 : 2}px solid ${timerUrgent ? "#EF4444" : timerWarning ? "#F59E0B" : "rgba(11,18,32,0.09)"}`,
         transition: "background 0.8s, border-color 0.8s",
-        padding: "12px 24px",
+        padding: timerCalm ? "10px 24px" : "12px 24px",
         textAlign: "center",
         position: "relative",
         overflow: "hidden",
@@ -1620,38 +1623,39 @@ export default function CartPage() {
         <div style={{
           position: "absolute", inset: 0,
           background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%)",
-          animation: "shimmer 2.4s linear infinite",
+          animation: timerCalm ? "none" : "shimmer 2.4s linear infinite",
           pointerEvents: "none",
         }} />
         <div className="checkout-timer-inner">
           <div className="checkout-timer-clock" style={{
             width: 34, height: 34, borderRadius: "50%",
-            background: "rgba(255,255,255,0.15)",
-            border: "1.5px solid rgba(255,255,255,0.3)",
+            background: timerCalm ? "#FFF6F2" : "rgba(255,255,255,0.15)",
+            border: timerCalm ? "1px solid rgba(11,18,32,0.09)" : "1.5px solid rgba(255,255,255,0.3)",
+            color: timerCalm ? "#4E68C2" : "#fff",
             display: "flex", alignItems: "center", justifyContent: "center",
             fontSize: "16px", flexShrink: 0,
             animation: timerUrgent ? "pulse 0.9s ease-in-out infinite" : "none",
-          }}>⏱</div>
+          }}><Clock size={16} /></div>
           <div className="checkout-timer-message" style={{ textAlign: "left" }}>
-            <p style={{ margin: 0, fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.75)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+            <p style={{ margin: 0, fontSize: "11px", fontWeight: 600, color: timerCalm ? "#1D2948" : "rgba(255,255,255,0.75)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
               {timerUrgent ? "⚠️ Hurry — time is almost up!" : "Your items are reserved"}
             </p>
-            <p style={{ margin: 0, fontSize: "12px", color: "rgba(255,255,255,0.85)", fontWeight: 400, marginTop: "1px" }}>
+            <p style={{ margin: 0, fontSize: "12px", color: timerCalm ? "#4A5672" : "rgba(255,255,255,0.85)", fontWeight: 400, marginTop: "1px" }}>
               Complete checkout to secure your order
             </p>
           </div>
-          <div className="checkout-timer-divider" style={{ width: 1, height: 36, background: "rgba(255,255,255,0.25)", flexShrink: 0 }} />
+          <div className="checkout-timer-divider" style={{ width: 1, height: 36, background: timerCalm ? "rgba(11,18,32,0.09)" : "rgba(255,255,255,0.25)", flexShrink: 0 }} />
           <div style={{ textAlign: "center" }}>
             <div className="checkout-timer-countdown" style={{
               fontVariantNumeric: "tabular-nums",
-              fontSize: "32px", fontWeight: 900,
-              color: "#fff", lineHeight: 1,
+              fontSize: timerCalm ? "24px" : "32px", fontWeight: timerCalm ? 600 : 900,
+              color: timerCalm ? "#1D2948" : "#fff", lineHeight: 1,
               letterSpacing: "0.04em",
-              textShadow: timerUrgent ? "0 0 20px rgba(255,100,100,0.6)" : "0 0 16px rgba(255,255,255,0.25)",
+              textShadow: timerCalm ? "none" : timerUrgent ? "0 0 20px rgba(255,100,100,0.6)" : "0 0 16px rgba(255,255,255,0.25)",
             }}>
               {timerMins}<span style={{ opacity: 0.6, margin: "0 1px" }}>:</span>{timerSecs}
             </div>
-            <p className="checkout-timer-label" style={{ margin: 0, fontSize: "10px", fontWeight: 700, color: "rgba(255,255,255,0.6)", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: "2px" }}>
+            <p className="checkout-timer-label" style={{ margin: 0, fontSize: "10px", fontWeight: 700, color: timerCalm ? "#8A94A6" : "rgba(255,255,255,0.6)", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: "2px" }}>
               remaining
             </p>
           </div>
@@ -1680,7 +1684,7 @@ export default function CartPage() {
                 data-field="email"
                 value={delivery.email} onChange={setD("email")} type="email"
                 placeholder="your@email.com" style={inp("email")}
-                onFocus={e => { if (!errors.email) e.currentTarget.style.borderColor = "#1240A0"; }}
+                onFocus={e => { if (!errors.email) e.currentTarget.style.borderColor = "#4E68C2"; }}
                 onBlur={e => { e.currentTarget.style.borderColor = errors.email ? "#ef4444" : THEME.inputBorder; }}
               />
               {errors.email && <p style={errText}>{errors.email}</p>}
@@ -1705,7 +1709,7 @@ export default function CartPage() {
                       cursor: "pointer",
                       textAlign: "left",
                     }}
-                    onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
+                    onFocus={e => { e.currentTarget.style.borderColor = "#4E68C2"; }}
                     onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }}
                   >
                     <span>
@@ -1753,7 +1757,7 @@ export default function CartPage() {
                             width: "100%",
                             border: "none",
                             borderRadius: 4,
-                            background: phoneCountryCode === option.code ? "#EEF4FF" : "#fff",
+                            background: phoneCountryCode === option.code ? "#E8F2DE" : "#fff",
                             color: THEME.text,
                             padding: "8px 7px",
                             fontSize: "11px",
@@ -1774,7 +1778,7 @@ export default function CartPage() {
                   data-field="phone"
                   value={delivery.phone} onChange={setD("phone")} type="tel"
                   placeholder="Local number" style={input}
-                  onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
+                  onFocus={e => { e.currentTarget.style.borderColor = "#4E68C2"; }}
                   onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }}
                 />
               </div>
@@ -1804,14 +1808,14 @@ export default function CartPage() {
             <div>
               <label style={label}>First Name *</label>
               <input data-field="firstName" value={delivery.firstName} onChange={setD("firstName")} placeholder="First Name" style={inp("firstName")}
-                onFocus={e => { if (!errors.firstName) e.currentTarget.style.borderColor = "#1240A0"; }}
+                onFocus={e => { if (!errors.firstName) e.currentTarget.style.borderColor = "#4E68C2"; }}
                 onBlur={e => { e.currentTarget.style.borderColor = errors.firstName ? "#ef4444" : THEME.inputBorder; }} />
               {errors.firstName && <p style={errText}>{errors.firstName}</p>}
             </div>
             <div>
               <label style={label}>Last Name *</label>
               <input data-field="lastName" value={delivery.lastName} onChange={setD("lastName")} placeholder="Last Name" style={inp("lastName")}
-                onFocus={e => { if (!errors.lastName) e.currentTarget.style.borderColor = "#1240A0"; }}
+                onFocus={e => { if (!errors.lastName) e.currentTarget.style.borderColor = "#4E68C2"; }}
                 onBlur={e => { e.currentTarget.style.borderColor = errors.lastName ? "#ef4444" : THEME.inputBorder; }} />
               {errors.lastName && <p style={errText}>{errors.lastName}</p>}
             </div>
@@ -1829,7 +1833,7 @@ export default function CartPage() {
                 void findAddressMatches({ country: e.target.value });
               }}
                 style={{ ...inp("country"), height: 44, appearance: "none", cursor: "pointer" }}
-                onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
+                onFocus={e => { e.currentTarget.style.borderColor = "#4E68C2"; }}
                 onBlur={e => { e.currentTarget.style.borderColor = errors.country ? "#ef4444" : THEME.inputBorder; }}>
                 {COUNTRIES.map(c => <option key={c}>{c}</option>)}
               </select>
@@ -1852,7 +1856,7 @@ export default function CartPage() {
                   }, 420);
                 }}
                 placeholder={postcodeLabel} style={inp("postcode")}
-                onFocus={e => { if (!errors.postcode) e.currentTarget.style.borderColor = "#1240A0"; }}
+                onFocus={e => { if (!errors.postcode) e.currentTarget.style.borderColor = "#4E68C2"; }}
                 onBlur={e => {
                   e.currentTarget.style.borderColor = errors.postcode ? "#ef4444" : THEME.inputBorder;
                   void onPostcodeBlur(e.currentTarget.value, delivery.country);
@@ -1879,7 +1883,7 @@ export default function CartPage() {
                 }}
                 placeholder="Street address"
                 style={inp("address1")}
-                onFocus={e => { if (!errors.address1) e.currentTarget.style.borderColor = "#1240A0"; }}
+                onFocus={e => { if (!errors.address1) e.currentTarget.style.borderColor = "#4E68C2"; }}
                 onBlur={e => { e.currentTarget.style.borderColor = errors.address1 ? "#ef4444" : THEME.inputBorder; }}
               />
 
@@ -1965,7 +1969,7 @@ export default function CartPage() {
               <div style={{ marginBottom: 12 }}>
                 <label style={label}>Apt, Suite, Etc. (Optional)</label>
                 <input value={delivery.address2} onChange={setD("address2")} placeholder="Apartment, suite, etc." style={input}
-                  onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
+                  onFocus={e => { e.currentTarget.style.borderColor = "#4E68C2"; }}
                   onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }} />
               </div>
 
@@ -1973,7 +1977,7 @@ export default function CartPage() {
                 <div>
                   <label style={label}>City *</label>
                   <input data-field="city" value={delivery.city} onChange={setD("city")} placeholder="City" style={inp("city")}
-                    onFocus={e => { if (!errors.city) e.currentTarget.style.borderColor = "#1240A0"; }}
+                    onFocus={e => { if (!errors.city) e.currentTarget.style.borderColor = "#4E68C2"; }}
                     onBlur={e => { e.currentTarget.style.borderColor = errors.city ? "#ef4444" : THEME.inputBorder; }} />
                   {errors.city && <p style={errText}>{errors.city}</p>}
                 </div>
@@ -1982,7 +1986,7 @@ export default function CartPage() {
                   <input value={delivery.county} onChange={setD("county")}
                     placeholder={usesStateProvince ? (delivery.country === "Canada" ? "Province" : "State") : "County / Region"}
                     style={input}
-                    onFocus={e => { e.currentTarget.style.borderColor = "#1240A0"; }}
+                    onFocus={e => { e.currentTarget.style.borderColor = "#4E68C2"; }}
                     onBlur={e => { e.currentTarget.style.borderColor = THEME.inputBorder; }} />
                 </div>
               </div>
@@ -2011,9 +2015,9 @@ export default function CartPage() {
                 <div
                   onClick={() => setPaymentMethod("wallid")}
                   style={{
-                    border: `2px solid ${active ? "#1240A0" : "#D8E4FF"}`,
+                    border: `2px solid ${active ? "#4E68C2" : "rgba(11,18,32,0.12)"}`,
                     borderRadius: 10, overflow: "hidden", cursor: "pointer",
-                    background: active ? "#EEF4FF" : "#F4F7FF",
+                    background: active ? "#E8F2DE" : "#F4F7FF",
                     transition: "border-color 0.15s",
                   }}
                 >
@@ -2021,11 +2025,11 @@ export default function CartPage() {
                   <div style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "16px 16px 0" }}>
                     <input
                       type="radio" checked={active} onChange={() => setPaymentMethod("wallid")}
-                      style={{ accentColor: "#1240A0", width: 18, height: 18, flexShrink: 0, marginTop: 2, cursor: "pointer" }}
+                      style={{ accentColor: "#4E68C2", width: 18, height: 18, flexShrink: 0, marginTop: 2, cursor: "pointer" }}
                     />
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: "16px", fontWeight: 800, color: "#0F172A" }}>Pay by Bank</span>
+                        <span style={{ fontSize: "16px", fontWeight: 800, color: "#22252C" }}>Pay by Bank</span>
                         <span style={{
                           fontSize: "10px", fontWeight: 800, letterSpacing: "0.07em",
                           background: "#059669", color: "#fff",
@@ -2066,8 +2070,8 @@ export default function CartPage() {
                               }}
                               style={{
                                 flex: 1, padding: "9px 10px", borderRadius: 7, cursor: "pointer",
-                                border: `1.5px solid ${selected ? "#1240A0" : "#D8E4FF"}`,
-                                background: selected ? "#1240A0" : "#fff",
+                                border: `1.5px solid ${selected ? "#4E68C2" : "rgba(11,18,32,0.12)"}`,
+                                background: selected ? "#4E68C2" : "#fff",
                                 color: selected ? "#fff" : "#334155",
                                 fontSize: "13px", fontWeight: 800,
                               }}
@@ -2081,7 +2085,7 @@ export default function CartPage() {
                         {paymentQuoteLoading ? (
                           "Confirming your exact payment total…"
                         ) : displayedPaymentTotal !== null && bankPaymentQuote ? (
-                          <>You&apos;ll pay <strong style={{ color: "#0F172A" }}>
+                          <>You&apos;ll pay <strong style={{ color: "#22252C" }}>
                             {bankPaymentQuote.paymentCurrency === "EUR" ? "€" : "£"}
                             {displayedPaymentTotal.toFixed(2)} {bankPaymentQuote.paymentCurrency}
                           </strong>. This secured total is the exact amount sent to your bank.</>
@@ -2101,7 +2105,7 @@ export default function CartPage() {
                       {BANK_SVGS.map(b => (
                         <div key={b.name} title={b.name} style={{
                           width: 40, height: 40, borderRadius: 8,
-                          background: "#fff", border: "1px solid #E8EDF5",
+                          background: "#fff", border: "1px solid #D3D8E2",
                           display: "flex", alignItems: "center", justifyContent: "center",
                           flexShrink: 0, overflow: "hidden",
                           boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
@@ -2127,7 +2131,7 @@ export default function CartPage() {
                         <div key={step} style={{ display: "flex", alignItems: "center", gap: 10 }}>
                           <span style={{
                             width: 24, height: 24, borderRadius: "50%",
-                            background: "#1240A0", color: "#fff",
+                            background: "#4E68C2", color: "#fff",
                             display: "flex", alignItems: "center", justifyContent: "center",
                             fontSize: "11px", fontWeight: 800, flexShrink: 0,
                           }}>{i + 1}</span>
@@ -2146,7 +2150,7 @@ export default function CartPage() {
               return (
                 <div
                   onClick={() => setPaymentMethod("crypto")}
-                  style={{ border: `1px solid ${active ? "#1240A0" : "#E8EDF5"}`, borderRadius: 6, cursor: "pointer", background: active ? "#EEF4FF" : THEME.cardBg }}
+                  style={{ border: `1px solid ${active ? "#4E68C2" : "rgba(11,18,32,0.09)"}`, borderRadius: 6, cursor: "pointer", background: active ? "#E8F2DE" : THEME.cardBg }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
                     <input type="radio" checked={active} onChange={() => setPaymentMethod("crypto")}
@@ -2317,9 +2321,9 @@ export default function CartPage() {
 
         {/* ── RIGHT COLUMN — SINGLE ORDER SUMMARY ── */}
         <div className="checkout-sidebar" style={{ width: 360, flexShrink: 0, position: "sticky", top: 24 }}>
-          <div style={{ border: THEME.cardBorder, borderRadius: 8, background: "#fff", overflow: "hidden", boxShadow: "0 4px 24px rgba(15,23,42,0.06)" }}>
-            <div style={{ padding: "14px 20px", background: "linear-gradient(90deg, #1240A0 0%, #1B5CB5 100%)" }}>
-              <p style={{ fontSize: "13px", fontWeight: 800, color: "#fff", letterSpacing: "0.08em", textTransform: "uppercase", margin: 0 }}>
+          <div style={{ border: THEME.cardBorder, borderRadius: 16, background: "#fff", overflow: "hidden" }}>
+            <div style={{ padding: "18px 20px 14px", borderBottom: THEME.cardBorder }}>
+              <p style={{ fontSize: "17px", fontWeight: 600, color: "#1D2948", letterSpacing: "-0.01em", margin: 0 }}>
                 Order Summary
               </p>
             </div>
@@ -2330,7 +2334,7 @@ export default function CartPage() {
                 return (
                   <div key={String(product.id)} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14 }}>
                     <div style={{ position: "relative", flexShrink: 0 }}>
-                      <div style={{ width: 56, height: 56, borderRadius: 6, border: "1px solid #E8EDF5", overflow: "hidden", background: "#F8FAFC" }}>
+                      <div style={{ width: 56, height: 56, borderRadius: 6, border: "1px solid #D3D8E2", overflow: "hidden", background: "#F8FAFC" }}>
                         {product.image ? (
                           <img src={product.image} alt={product.name}
                             style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -2363,7 +2367,7 @@ export default function CartPage() {
                           >
                             <Minus size={11} />
                           </button>
-                          <div style={{ width: 28, height: 26, display: "flex", alignItems: "center", justifyContent: "center", borderLeft: "1.5px solid #E2E8F0", borderRight: "1.5px solid #E2E8F0", color: "#0F172A", fontSize: "12px", fontWeight: 700 }}>
+                          <div style={{ width: 28, height: 26, display: "flex", alignItems: "center", justifyContent: "center", borderLeft: "1.5px solid #E2E8F0", borderRight: "1.5px solid #E2E8F0", color: "#22252C", fontSize: "12px", fontWeight: 700 }}>
                             {quantity}
                           </div>
                           <button
@@ -2394,7 +2398,7 @@ export default function CartPage() {
               })}
               {bundleFreeBacWater && (
                 <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 14 }}>
-                  <div style={{ width: 56, height: 56, borderRadius: 6, border: "1px solid #E8EDF5", background: "#DCFCE7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", flexShrink: 0 }}>💧</div>
+                  <div style={{ width: 56, height: 56, borderRadius: 6, border: "1px solid #D3D8E2", background: "#DCFCE7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", flexShrink: 0 }}>💧</div>
                   <div style={{ flex: 1 }}>
                     <p style={{ fontSize: "13px", fontWeight: 600, color: THEME.text, margin: 0 }}>Bacteriostatic Water 10ml Ampule</p>
                     <p style={{ fontSize: "11px", color: "#059669", margin: "2px 0 0", fontWeight: 600 }}>Free (Bundle & Save)</p>
@@ -2410,18 +2414,18 @@ export default function CartPage() {
                 <div
                   className="rounded-xl p-3"
                   style={{
-                    backgroundColor: hasFreebie ? "#F0FDF4" : "#EEF4FF",
-                    border: `1px solid ${hasFreebie ? "#BBF7D0" : "#BFDBFE"}`,
+                    backgroundColor: hasFreebie ? "#F0FDF4" : "#E8F2DE",
+                    border: `1px solid ${hasFreebie ? "#BBF7D0" : "#C8DDB4"}`,
                   }}
                 >
                   {peptideQty < 3 ? (
                     <>
-                      <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#1240A0", marginBottom: "6px" }}>
+                      <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#4E68C2", marginBottom: "6px" }}>
                         Bundle & Save — add {3 - peptideQty} more {3 - peptideQty === 1 ? "peptide" : "peptides"} for a free 10ml BAC water ampule
                       </p>
                       <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
-                        <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#DBEAFE", overflow: "hidden" }}>
-                          <div style={{ height: "100%", width: `${(peptideQty / 3) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #1B5CB5, #2563EB)", transition: "width 0.3s" }} />
+                        <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#E8F2DE", overflow: "hidden" }}>
+                          <div style={{ height: "100%", width: `${(peptideQty / 3) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #4E68C2, #4E68C2)", transition: "width 0.3s" }} />
                         </div>
                         <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{peptideQty}/3</span>
                       </div>
@@ -2492,12 +2496,12 @@ export default function CartPage() {
                     />
                     <button type="button" onClick={applyDiscount} disabled={applyingDiscount || !discountInput.trim()}
                       style={{
-                        padding: "0 16px", height: 40, borderRadius: 4,
-                        background: THEME.cta, color: "#fff",
-                        border: "none", fontSize: "13px", fontWeight: 700,
-                        cursor: "pointer", letterSpacing: "0.05em", flexShrink: 0,
+                        padding: "0 18px", height: 40, borderRadius: 999,
+                        background: "#1D2948", color: "#fff",
+                        border: "none", fontSize: "13px", fontWeight: 600,
+                        cursor: "pointer", flexShrink: 0,
                         opacity: (applyingDiscount || !discountInput.trim()) ? 0.5 : 1,
-                      }}>APPLY</button>
+                      }}>Apply</button>
                   </div>
                   {discountError && <p style={{ ...errText, marginTop: 4 }}>{discountError}</p>}
                 </div>
@@ -2560,7 +2564,6 @@ export default function CartPage() {
           .checkout-layout { flex-direction: column !important; align-items: stretch !important; padding: 12px !important; gap: 16px !important; }
           .checkout-layout > * { width: 100% !important; max-width: 100% !important; }
           .checkout-sidebar { width: 100% !important; position: static !important; order: -1 !important; }
-          .checkout-breadcrumb-bar { height: 40px !important; }
           .checkout-timer-banner { padding: 8px 12px !important; }
           .checkout-timer-clock { width: 26px !important; height: 26px !important; font-size: 12px !important; }
           .checkout-timer-divider { display: none !important; }

@@ -5,6 +5,12 @@ import { useProducts } from "@/context/ProductsContext";
 import { useCart } from "@/context/CartContext";
 import { useSEO } from "@/hooks/useSEO";
 import { useCurrency } from "@/context/CurrencyContext";
+import PageHero from "@/components/PageHero";
+
+const INK = "#1D2948";
+const GRAPHITE = "#4A5672";
+const COBALT = "#4E68C2";
+const HAIR = "1px solid rgba(11,18,32,0.09)";
 
 export default function WishlistPage() {
   useSEO({ title: "My Wishlist", description: "Your saved research peptides from OmniQure.", canonicalPath: "/wishlist" });
@@ -16,55 +22,48 @@ export default function WishlistPage() {
   const saved = products.filter((p) => wishlistIds.has(parseInt(String(p.id), 10)));
 
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "60vh" }}>
+    <div style={{ backgroundColor: "#fff", minHeight: "60vh" }}>
 
-      {/* Page header */}
-      <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", padding: "36px 0 30px", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", top: "-60px", right: "10%", width: "280px", height: "280px", borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)", pointerEvents: "none" }} />
-        <div className="max-w-[1280px] mx-auto px-3 md:px-4" style={{ position: "relative", zIndex: 1 }}>
-          <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.14em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", marginBottom: "8px" }}>
-            OmniQure · My Account
-          </p>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "9px" }}>
-            <Heart size={20} style={{ color: "#F87171", fill: "#F87171", flexShrink: 0 }} />
-            <h1 style={{ fontSize: "clamp(22px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.1, margin: 0 }}>
-              My Wishlist
-              {saved.length > 0 && (
-                <span style={{ marginLeft: "10px", fontSize: "16px", fontWeight: 500, color: "rgba(255,255,255,0.45)" }}>
-                  ({saved.length} item{saved.length !== 1 ? "s" : ""})
-                </span>
-              )}
-            </h1>
-          </div>
-          <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", lineHeight: 1.65 }}>
-            Your saved research peptides from OmniQure.
-          </p>
-        </div>
-      </div>
+      <PageHero
+        crumbs={[{ label: "My Account", href: "/account" }, { label: "Wishlist" }]}
+        eyebrow="My Account"
+        icon={Heart}
+        title={
+          <>
+            My Wishlist
+            {saved.length > 0 && (
+              <span style={{ marginLeft: "12px", fontSize: "16px", fontWeight: 500, letterSpacing: 0, color: "var(--graphite)" }}>
+                ({saved.length} item{saved.length !== 1 ? "s" : ""})
+              </span>
+            )}
+          </>
+        }
+      >
+        Your saved research peptides from OmniQure.
+      </PageHero>
 
-      <div className="max-w-[1280px] mx-auto px-4 py-8 md:py-10">
+      <div className="w-full max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 py-10 lg:py-14">
 
         {saved.length === 0 ? (
           /* Empty state */
           <div
             className="flex flex-col items-center justify-center py-20 rounded-2xl"
-            style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}
+            style={{ backgroundColor: "#F2F0EB", border: HAIR, borderRadius: 16 }}
           >
             <div
-              className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
-              style={{ backgroundColor: "#FEF2F2" }}
+              className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
+              style={{ backgroundColor: "#FFF6F2" }}
             >
-              <Heart size={28} style={{ color: "#FECACA" }} />
+              <Heart size={18} style={{ color: COBALT }} aria-hidden="true" />
             </div>
-            <h2 className="text-lg font-semibold mb-2" style={{ color: "#0F172A" }}>Your wishlist is empty</h2>
-            <p className="text-sm mb-6" style={{ color: "#64748B" }}>
+            <h2 className="text-lg mb-2" style={{ color: INK, fontWeight: 600, letterSpacing: "-0.01em" }}>Your wishlist is empty</h2>
+            <p className="text-sm mb-6 px-6 text-center" style={{ color: GRAPHITE }}>
               Save items you're interested in by clicking the heart on any product page.
             </p>
             <Link
               href="/all-peptides"
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: "#1B5CB5", textDecoration: "none" }}
+              className="inline-flex items-center gap-2 h-11 px-6 rounded-full text-[14px] font-medium text-white transition-opacity hover:opacity-90"
+              style={{ backgroundColor: INK, textDecoration: "none" }}
             >
               <Package size={15} />
               Browse All Peptides
@@ -82,8 +81,8 @@ export default function WishlistPage() {
                   className="rounded-2xl overflow-hidden flex flex-col"
                   style={{
                     backgroundColor: "#fff",
-                    border: "1px solid #E8EDF5",
-                    boxShadow: "0 2px 12px rgba(15,23,42,0.06)",
+                    border: HAIR,
+                    borderRadius: 16,
                     position: "relative",
                   }}
                 >
@@ -94,19 +93,19 @@ export default function WishlistPage() {
                     style={{
                       position: "absolute", top: "10px", right: "10px", zIndex: 10,
                       width: "30px", height: "30px", borderRadius: "50%",
-                      backgroundColor: "rgba(255,255,255,0.92)", border: "1px solid #E2E8F0",
+                      backgroundColor: "#fff", border: HAIR,
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      cursor: "pointer", boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+                      cursor: "pointer",
                     }}
                   >
-                    <X size={14} style={{ color: "#94A3B8" }} />
+                    <X size={14} style={{ color: GRAPHITE }} />
                   </button>
 
                   {/* Product image */}
                   <Link href={`/product/${product.id}`} style={{ textDecoration: "none", display: "block" }}>
                     <div
                       className="flex items-center justify-center"
-                      style={{ height: "180px", backgroundColor: "#F8FAFC", padding: "12px" }}
+                      style={{ height: "180px", backgroundColor: "#F2F0EB", padding: "12px" }}
                     >
                       <img
                         src={product.image}
@@ -119,19 +118,19 @@ export default function WishlistPage() {
 
                   {/* Info */}
                   <div className="p-4 flex flex-col flex-1 gap-2">
-                    <p className="text-xs font-medium" style={{ color: "#94A3B8" }}>{product.category}</p>
+                    <p className="uppercase" style={{ fontSize: 10.5, fontWeight: 500, letterSpacing: "0.1em", color: GRAPHITE }}>{product.category}</p>
                     <Link href={`/product/${product.id}`} style={{ textDecoration: "none" }}>
                       <p
-                        className="text-sm font-semibold leading-snug"
-                        style={{ color: "#0F172A" }}
-                        onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#1B5CB5")}
-                        onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#0F172A")}
+                        className="text-sm leading-snug"
+                        style={{ color: INK, fontWeight: 600 }}
+                        onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = COBALT)}
+                        onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = INK)}
                       >
                         {product.name}
                       </p>
                     </Link>
 
-                    <p className="text-base font-bold" style={{ color: "#1240A0" }}>
+                    <p className="text-base" style={{ color: INK, fontWeight: 600 }}>
                       {product.price != null ? formatPrice(product.price) : "—"}
                     </p>
 
@@ -157,10 +156,10 @@ export default function WishlistPage() {
                       <button
                         disabled={outOfStock}
                         onClick={() => addToCart(product, 1)}
-                        className="wishlist-add-btn flex-1 flex items-center justify-center gap-1.5 rounded-xl text-xs font-semibold text-white transition-opacity hover:opacity-90"
+                        className="wishlist-add-btn flex-1 flex items-center justify-center gap-1.5 rounded-full text-xs font-medium text-white transition-opacity hover:opacity-90"
                         style={{
                           height: "36px",
-                          backgroundColor: outOfStock ? "#94A3B8" : "#1B5CB5",
+                          backgroundColor: outOfStock ? "#A0AEC0" : INK,
                           border: "none",
                           cursor: outOfStock ? "not-allowed" : "pointer",
                           whiteSpace: "nowrap",
@@ -172,11 +171,11 @@ export default function WishlistPage() {
                       </button>
                       <Link
                         href={`/product/${product.id}`}
-                        className="flex items-center justify-center rounded-xl text-xs font-semibold transition-colors"
+                        className="flex items-center justify-center rounded-full text-xs font-medium transition-colors hover:bg-[#F2F0EB]"
                         style={{
                           width: "36px", height: "36px", flexShrink: 0,
-                          backgroundColor: "#F1F5F9", border: "1px solid #E2E8F0",
-                          color: "#475569", textDecoration: "none",
+                          backgroundColor: "#fff", border: HAIR,
+                          color: INK, textDecoration: "none",
                         }}
                         title="View product"
                       >

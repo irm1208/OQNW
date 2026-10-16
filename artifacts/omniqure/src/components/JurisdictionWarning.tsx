@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useId } from "react";
 import { X, AlertTriangle, Info, ShieldAlert } from "lucide-react";
 import { useCurrency } from "@/context/CurrencyContext";
 import { Link } from "wouter";
@@ -161,32 +161,17 @@ const SEVERITY_STYLES: Record<Severity, {
     btnText: "#fff",
   },
   info: {
-    bg: "#EEF4FF",
-    border: "#BFDBFE",
-    icon: "#1D4ED8",
-    iconBg: "#DBEAFE",
-    bar: "#1D4ED8",
+    bg: "#E8F2DE",
+    border: "#C8DDB4",
+    icon: "#3D55A8",
+    iconBg: "#E8F2DE",
+    bar: "#3D55A8",
     headlineColor: "#1E3A8A",
-    bodyColor: "#1E40AF",
-    btnBg: "#1D4ED8",
+    bodyColor: "#3D55A8",
+    btnBg: "#3D55A8",
     btnText: "#fff",
   },
 };
-
-function SeverityIcon({ severity, size = 18 }: { severity: Severity; size?: number }) {
-  const s = SEVERITY_STYLES[severity];
-  const Icon = severity === "critical" ? ShieldAlert
-    : severity === "info" ? Info
-    : AlertTriangle;
-  return (
-    <div
-      className="flex items-center justify-center rounded-full flex-shrink-0"
-      style={{ width: 36, height: 36, backgroundColor: s.iconBg }}
-    >
-      <Icon size={size} style={{ color: s.icon }} />
-    </div>
-  );
-}
 
 // ─── Dismiss key helpers ──────────────────────────────────────────────────────
 
@@ -213,79 +198,65 @@ function setDismissed(country: string) {
 
 function Banner({ rule, onDismiss }: { rule: JurisdictionRule; onDismiss: () => void }) {
   const [acked, setAcked] = useState(!rule.requireAck);
+  const [expanded, setExpanded] = useState(false);
+  const bodyId = useId();
   const s = SEVERITY_STYLES[rule.severity];
+  const Icon = rule.severity === "critical" ? ShieldAlert : rule.severity === "info" ? Info : AlertTriangle;
 
   return (
     <div
       role="alert"
-      style={{
-        backgroundColor: s.bg,
-        borderBottom: `1px solid ${s.border}`,
-        borderLeft: `4px solid ${s.bar}`,
-        position: "relative",
-      }}
+      className="border-b"
+      style={{ backgroundColor: rule.severity === "info" ? "#F2F0EB" : s.bg, borderColor: rule.severity === "info" ? "#E8ECF2" : s.border }}
     >
-      <div className="max-w-[1280px] mx-auto px-4 py-4">
-        <div className="flex gap-3">
-          <SeverityIcon severity={rule.severity} />
-
-          <div className="flex-1 min-w-0">
-            {/* Headline row */}
-            <div className="flex items-start justify-between gap-2 flex-wrap mb-1.5">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span style={{ fontSize: "15px" }}>{rule.flag}</span>
-                <p className="font-bold text-sm" style={{ color: s.headlineColor }}>
-                  {rule.headline}
-                </p>
-              </div>
-              {/* Close — only shown once acked */}
-              {acked && (
-                <button
-                  onClick={onDismiss}
-                  title="Dismiss"
-                  className="flex-shrink-0 rounded-full p-1 transition-opacity hover:opacity-70"
-                  style={{ color: s.icon }}
-                >
-                  <X size={16} />
-                </button>
-              )}
-            </div>
-
-            {/* Body */}
-            <p className="text-xs leading-relaxed mb-3" style={{ color: s.bodyColor, lineHeight: "1.7" }}>
-              {rule.body}
-            </p>
-
-            {/* Actions */}
-            <div className="flex flex-wrap items-center gap-2">
-              {rule.requireAck && !acked ? (
-                <button
-                  onClick={() => setAcked(true)}
-                  className="text-xs font-bold px-4 py-2 rounded-lg transition-opacity hover:opacity-90 active:scale-95"
-                  style={{ backgroundColor: s.btnBg, color: s.btnText }}
-                >
-                  I understand — continue to site
-                </button>
-              ) : (
-                <button
-                  onClick={onDismiss}
-                  className="text-xs font-semibold px-4 py-2 rounded-lg transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: s.btnBg, color: s.btnText }}
-                >
-                  Acknowledge & continue
-                </button>
-              )}
-              {rule.learnMoreHref && (
-                <Link
-                  href={rule.learnMoreHref}
-                  className="text-xs font-semibold underline underline-offset-2"
-                  style={{ color: s.icon }}
-                >
-                  Read full terms
-                </Link>
-              )}
-            </div>
-          </div>
+      <div className="mx-auto flex max-w-[1312px] items-start gap-3 px-4 py-2.5 sm:px-6 lg:px-8">
+        <Icon size={15} className="mt-[3px] shrink-0" style={{ color: s.icon }} />
+        <div className="min-w-0 flex-1">
+          <p id={bodyId} className={expanded ? "" : "line-clamp-2 sm:line-clamp-none"} style={{ fontSize: 12.5, lineHeight: 1.55, color: rule.severity === "info" ? "#475569" : s.bodyColor }}>
+            <span className="font-semibold" style={{ color: rule.severity === "info" ? "#1D2948" : s.headlineColor }}>{rule.headline}.</span>{" "}
+            {rule.body}{" "}
+            {rule.learnMoreHref && (
+              <Link href={rule.learnMoreHref} className="font-medium underline underline-offset-2" style={{ color: s.icon }}>
+                Read full terms
+              </Link>
+            )}
+          </p>
+          {!expanded && (
+            <button
+              type="button"
+              onClick={() => setExpanded(true)}
+              aria-expanded={false}
+              aria-controls={bodyId}
+              className="mt-0.5 font-medium underline underline-offset-2 sm:hidden"
+              style={{ fontSize: 12, color: s.icon }}
+            >
+              More
+            </button>
+          )}
+        </div>
+        <div className="flex shrink-0 items-center gap-2">
+          {rule.requireAck && !acked ? (
+            <button
+              onClick={() => setAcked(true)}
+              className="rounded-full px-3 py-1 font-semibold transition-opacity hover:opacity-90"
+              style={{ fontSize: 12, backgroundColor: s.btnBg, color: s.btnText }}
+            >
+              I understand
+            </button>
+          ) : (
+            <button
+              onClick={onDismiss}
+              className="hidden rounded-full border px-3 py-1 font-medium transition-colors hover:bg-white sm:inline-flex"
+              style={{ fontSize: 12, borderColor: "#D6DCE5", color: "#1D2948" }}
+            >
+              Acknowledge
+            </button>
+          )}
+          {acked && (
+            <button onClick={onDismiss} aria-label="Dismiss notice" className="rounded-full p-1 hover:opacity-70" style={{ color: "#64748B" }}>
+              <X size={15} />
+            </button>
+          )}
         </div>
       </div>
     </div>

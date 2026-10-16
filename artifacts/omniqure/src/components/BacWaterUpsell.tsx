@@ -40,7 +40,7 @@ export default function BacWaterUpsell({ compact = false }: { compact?: boolean 
             className="relative rounded-2xl"
             style={{
               background: "linear-gradient(180deg, #FBFDFF 0%, #F3F8FF 100%)",
-              border: `1.5px solid ${added ? "#60A5FA" : "#DCE9FB"}`,
+              border: `1.5px solid ${added ? "#6B94D0" : "#DCE9FB"}`,
               boxShadow: "0 2px 10px rgba(15,23,42,0.05)",
               padding: compact ? "10px 16px" : "12px 18px",
             }}
@@ -51,8 +51,8 @@ export default function BacWaterUpsell({ compact = false }: { compact?: boolean 
                 style={{
                   top: "-11px", left: "50%", transform: "translateX(-50%)",
                   fontSize: "10px", letterSpacing: "0.08em",
-                  color: "#1B5CB5", background: "#fff",
-                  border: "1px solid #BFDBFE", borderRadius: "999px",
+                  color: "#4E68C2", background: "#fff",
+                  border: "1px solid #C8DDB4", borderRadius: "999px",
                   padding: "3px 12px", whiteSpace: "nowrap",
                 }}
               >
@@ -71,8 +71,8 @@ export default function BacWaterUpsell({ compact = false }: { compact?: boolean 
                 className="flex items-center justify-center flex-shrink-0 rounded-lg"
                 style={{
                   width: "22px", height: "22px",
-                  border: `2px solid ${added ? "#1B5CB5" : "#CBD5E1"}`,
-                  background: added ? "#1B5CB5" : "#fff",
+                  border: `2px solid ${added ? "#4E68C2" : "#CBD5E1"}`,
+                  background: added ? "#4E68C2" : "#fff",
                   transition: "background 0.15s, border-color 0.15s",
                 }}
               >
@@ -84,8 +84,8 @@ export default function BacWaterUpsell({ compact = false }: { compact?: boolean 
                 className="flex items-center justify-center flex-shrink-0 rounded-xl"
                 style={{
                   width: "40px", height: "40px",
-                  background: "linear-gradient(145deg, #60A5FA 0%, #1B5CB5 100%)",
-                  boxShadow: "0 3px 8px rgba(27,92,181,0.25)",
+                  background: "linear-gradient(145deg, #6B94D0 0%, #4E68C2 100%)",
+                  boxShadow: "0 3px 8px rgba(59, 98, 171,0.25)",
                 }}
               >
                 <Droplets size={18} color="#fff" strokeWidth={2.2} />
@@ -93,7 +93,7 @@ export default function BacWaterUpsell({ compact = false }: { compact?: boolean 
 
               {/* Copy */}
               <span className="flex-1 min-w-0">
-                <span className="block font-bold" style={{ fontSize: "13.5px", color: "#0F172A", lineHeight: 1.35 }}>
+                <span className="block font-bold" style={{ fontSize: "13.5px", color: "#22252C", lineHeight: 1.35 }}>
                   Add Bacteriostatic Water {bw.label}
                 </span>
                 <span className="block truncate" style={{ fontSize: "11.5px", color: "#3B6FC4", marginTop: "1px" }}>
@@ -108,7 +108,7 @@ export default function BacWaterUpsell({ compact = false }: { compact?: boolean 
                   fontSize: "12.5px",
                   padding: "8px 16px",
                   color: "#fff",
-                  background: added ? "#059669" : "#1B5CB5",
+                  background: added ? "#059669" : "#4E68C2",
                   transition: "background 0.15s",
                 }}
               >

@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
-import { ShoppingCart, CheckCircle2, ChevronDown, ChevronUp, FlaskConical, Clock, Zap, AlertTriangle, Users, BookOpen } from "lucide-react";
+import { ShoppingCart, CheckCircle2, ChevronDown, ChevronUp, FlaskConical, Clock, Zap, AlertTriangle, Users, BookOpen, Layers, HeartPulse, TrendingUp, Brain, Hourglass, Shield, Scale, Sparkles, type LucideIcon } from "lucide-react";
+
+const STACK_ICONS: Record<string, LucideIcon> = { "🩹": HeartPulse, "📈": TrendingUp, "🧠": Brain, "⏳": Hourglass, "🛡️": Shield, "⚖️": Scale, "✨": Sparkles };
+import PageHero from "@/components/PageHero";
 import { researchStacks, type ResearchStack } from "@/data/stacks";
 import { type Product } from "@/data/products";
 import { useProducts } from "@/context/ProductsContext";
@@ -11,7 +14,7 @@ import { parseName } from "@/data/groupedProducts";
 
 const DIFFICULTY_COLORS = {
   Beginner:     { bg: "#ECFDF5", color: "#059669", border: "#A7F3D0" },
-  Intermediate: { bg: "#EEF4FF", color: "#1B5CB5", border: "#BFDBFE" },
+  Intermediate: { bg: "#E8F2DE", color: "#4E68C2", border: "#C8DDB4" },
   Advanced:     { bg: "#FFF7ED", color: "#C2410C", border: "#FED7AA" },
 };
 
@@ -48,13 +51,13 @@ function StackProductRow({ sp, index }: { sp: StackProductItem; index: number })
   return (
     <div
       className="rounded-xl"
-      style={{ backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5", padding: "12px" }}
+      style={{ backgroundColor: "#F2F0EB", border: "1px solid var(--hairline)", padding: "12px" }}
     >
       <div className="flex gap-3 items-start">
         {/* Thumbnail */}
         <div
           className="rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center"
-          style={{ width: "60px", height: "60px", background: "linear-gradient(145deg, #EBF2FF, #F4F8FF)" }}
+          style={{ width: "60px", height: "60px", background: "#fff", border: "1px solid var(--hairline)" }}
         >
           <img
             src={selected.image}
@@ -68,47 +71,47 @@ function StackProductRow({ sp, index }: { sp: StackProductItem; index: number })
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2 mb-0.5">
             <div>
-              <span className="text-xs font-bold mr-2" style={{ color: "#94A3B8" }}>#{index + 1}</span>
+              <span className="text-xs font-semibold mr-2" style={{ color: "var(--graphite)", opacity: 0.6 }}>#{index + 1}</span>
               <Link
                 href={`/product/${selected.id}`}
-                className="font-bold hover:underline"
-                style={{ fontSize: "13px", color: "#0F172A", textDecoration: "none" }}
+                className="font-semibold hover:underline"
+                style={{ fontSize: "13px", color: "var(--ink)", textDecoration: "none", letterSpacing: "-0.01em" }}
               >
                 {baseName}
               </Link>
             </div>
             {selected.price != null && (
-              <span className="font-bold flex-shrink-0" style={{ fontSize: "14px", color: "#1240A0" }}>
+              <span className="font-semibold flex-shrink-0" style={{ fontSize: "14px", color: "var(--ink)" }}>
                 {formatPrice(selected.price)}
               </span>
             )}
           </div>
 
-          <p className="text-xs font-semibold mb-1" style={{ color: "#1B5CB5" }}>{sp.role}</p>
+          <p className="text-xs font-medium mb-1" style={{ color: "var(--cobalt)" }}>{sp.role}</p>
 
           <div className="flex flex-wrap gap-3 mb-1">
-            <span className="text-xs" style={{ color: "#64748B" }}>
-              <strong style={{ color: "#475569" }}>Dose:</strong> {sp.suggestedDose}
+            <span className="text-xs" style={{ color: "var(--graphite)" }}>
+              <strong style={{ color: "var(--ink)", fontWeight: 600 }}>Dose:</strong> {sp.suggestedDose}
             </span>
-            <span className="text-xs" style={{ color: "#64748B" }}>
-              <strong style={{ color: "#475569" }}>Freq:</strong> {sp.frequency}
+            <span className="text-xs" style={{ color: "var(--graphite)" }}>
+              <strong style={{ color: "var(--ink)", fontWeight: 600 }}>Freq:</strong> {sp.frequency}
             </span>
           </div>
 
           {sp.notes && (
-            <p className="text-xs mb-1" style={{ color: "#94A3B8", lineHeight: 1.5 }}>{sp.notes}</p>
+            <p className="text-xs mb-1" style={{ color: "var(--graphite)", opacity: 0.8, lineHeight: 1.5 }}>{sp.notes}</p>
           )}
 
           <div className="flex items-center gap-1.5">
             <span
-              className="text-xs px-2 py-0.5 rounded-full font-bold"
-              style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}
+              className="text-xs px-2 py-0.5 rounded-full font-medium"
+              style={{ backgroundColor: "#ECFDF5", color: "#047857" }}
             >
               {selected.purity ?? "Purity not specified"}
             </span>
             <span
               className="text-xs px-2 py-0.5 rounded-full font-medium"
-              style={{ backgroundColor: "#EEF4FF", color: "#1B5CB5", border: "1px solid #BFDBFE" }}
+              style={{ backgroundColor: "#EEF3FC", color: "var(--cobalt)" }}
             >
               {selected.category}
             </span>
@@ -128,11 +131,11 @@ function StackProductRow({ sp, index }: { sp: StackProductItem; index: number })
                   key={v.id}
                   onClick={() => setSelectedIdx(i)}
                   style={{
-                    fontSize: "11px", fontWeight: 700,
-                    padding: "3px 9px", borderRadius: "6px",
-                    border: `1.5px solid ${active ? "#1240A0" : "#E2E8F0"}`,
-                    backgroundColor: active ? "#1240A0" : "#F8FAFC",
-                    color: active ? "#fff" : "#64748B",
+                    fontSize: "11px", fontWeight: 600,
+                    padding: "3px 10px", borderRadius: "999px",
+                    border: `1px solid ${active ? "var(--ink)" : "var(--hairline)"}`,
+                    backgroundColor: active ? "var(--ink)" : "#fff",
+                    color: active ? "#fff" : "var(--graphite)",
                     cursor: "pointer", transition: "all 0.15s",
                   }}
                 >
@@ -146,9 +149,9 @@ function StackProductRow({ sp, index }: { sp: StackProductItem; index: number })
           onClick={handleAdd}
           style={{
             display: "flex", alignItems: "center", gap: "5px",
-            fontSize: "12px", fontWeight: 700,
-            padding: "5px 12px", borderRadius: "8px",
-            backgroundColor: added ? "#059669" : "#1240A0",
+            fontSize: "12px", fontWeight: 600,
+            padding: "6px 14px", borderRadius: "999px",
+            backgroundColor: added ? "#059669" : "var(--ink)",
             color: "#fff", border: "none", cursor: "pointer",
             transition: "background-color 0.2s", flexShrink: 0,
           }}
@@ -183,62 +186,69 @@ function StackCard({ stack }: { stack: ResearchStack }) {
   return (
     <div
       className="rounded-2xl overflow-hidden bg-white"
-      style={{ border: "1.5px solid #E8EDF5", boxShadow: "0 4px 24px rgba(15,23,42,0.06)" }}
+      style={{ border: "1px solid rgba(11,18,32,0.09)", borderRadius: 16 }}
     >
       {/* Header band */}
       <div
         className="px-5 py-4 flex items-start justify-between gap-4"
-        style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)" }}
+        style={{ background: "#F2F0EB", borderBottom: "1px solid var(--hairline)" }}
       >
         <div className="flex items-center gap-3 min-w-0">
-          <span style={{ fontSize: "26px", flexShrink: 0 }}>{stack.icon}</span>
+          {(() => {
+            const StackIcon = STACK_ICONS[stack.icon] ?? FlaskConical;
+            return (
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={{ background: "#FFF6F2", color: "var(--cobalt)" }} aria-hidden="true">
+                <StackIcon size={18} />
+              </span>
+            );
+          })()}
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap mb-0.5">
               <span
                 className="text-xs font-bold px-2 py-0.5 rounded-full"
-                style={{ backgroundColor: stack.badgeColor, color: "#fff", fontSize: "10px" }}
+                style={{ backgroundColor: stack.badgeColor + "14", color: stack.badgeColor, fontSize: "10px" }}
               >
                 {stack.badge}
               </span>
               <span
                 className="text-xs font-bold px-2 py-0.5 rounded-full"
-                style={{ backgroundColor: diff.bg, color: diff.color, border: `1px solid ${diff.border}`, fontSize: "10px" }}
+                style={{ backgroundColor: diff.bg, color: diff.color, fontSize: "10px" }}
               >
                 {stack.difficulty}
               </span>
             </div>
-            <h3 className="font-bold text-white leading-tight" style={{ fontSize: "17px" }}>
+            <h3 className="leading-tight" style={{ fontSize: "17px", fontWeight: 600, letterSpacing: "-0.01em", color: "var(--ink)" }}>
               {stack.name}
             </h3>
           </div>
         </div>
         <div className="text-right flex-shrink-0">
-          <p className="text-xs font-medium" style={{ color: "rgba(255,255,255,0.55)" }}>Stack total</p>
-          <p className="font-bold text-white" style={{ fontSize: "18px" }}>{formatPrice(totalPrice)}</p>
+          <p className="uppercase" style={{ fontSize: "10px", letterSpacing: "0.12em", color: "var(--graphite)" }}>Stack total</p>
+          <p style={{ fontSize: "18px", fontWeight: 600, color: "var(--ink)", letterSpacing: "-0.01em" }}>{formatPrice(totalPrice)}</p>
         </div>
       </div>
 
       <div className="px-5 pt-4 pb-5">
         {/* Tagline */}
-        <p className="font-semibold mb-2" style={{ fontSize: "13.5px", color: "#1240A0" }}>
+        <p className="font-semibold mb-2" style={{ fontSize: "13.5px", color: "var(--ink)" }}>
           {stack.tagline}
         </p>
-        <p className="leading-relaxed mb-4" style={{ fontSize: "13px", color: "#475569", lineHeight: "1.75" }}>
+        <p className="leading-relaxed mb-4" style={{ fontSize: "13px", color: "var(--graphite)", lineHeight: "1.75" }}>
           {stack.description}
         </p>
 
         {/* Meta row */}
         <div className="flex flex-wrap gap-3 mb-4">
-          <span className="flex items-center gap-1.5 text-xs font-medium" style={{ color: "#64748B" }}>
-            <Clock size={12} style={{ color: "#1B5CB5" }} />
+          <span className="flex items-center gap-1.5 text-xs font-medium" style={{ color: "var(--graphite)" }}>
+            <Clock size={12} style={{ color: "var(--cobalt)" }} />
             Cycle: {stack.cycleLength}
           </span>
-          <span className="flex items-center gap-1.5 text-xs font-medium" style={{ color: "#64748B" }}>
-            <FlaskConical size={12} style={{ color: "#1B5CB5" }} />
+          <span className="flex items-center gap-1.5 text-xs font-medium" style={{ color: "var(--graphite)" }}>
+            <FlaskConical size={12} style={{ color: "var(--cobalt)" }} />
             {stack.products.length} compounds
           </span>
-          <span className="flex items-center gap-1.5 text-xs font-medium" style={{ color: "#64748B" }}>
-            <Zap size={12} style={{ color: "#1B5CB5" }} />
+          <span className="flex items-center gap-1.5 text-xs font-medium" style={{ color: "var(--graphite)" }}>
+            <Zap size={12} style={{ color: "var(--cobalt)" }} />
             {stack.difficulty} protocol
           </span>
         </div>
@@ -249,7 +259,7 @@ function StackCard({ stack }: { stack: ResearchStack }) {
             <span
               key={area}
               className="text-xs px-2.5 py-0.5 rounded-full font-medium"
-              style={{ backgroundColor: "#EEF4FF", color: "#1B5CB5", border: "1px solid #BFDBFE" }}
+              style={{ backgroundColor: "#EEF3FC", color: "var(--cobalt)" }}
             >
               {area}
             </span>
@@ -266,12 +276,10 @@ function StackCard({ stack }: { stack: ResearchStack }) {
         {/* Add All to Cart CTA */}
         <button
           onClick={handleAddAll}
-          className="w-full flex items-center justify-center gap-2 font-bold rounded-xl transition-all mb-4"
+          className="w-full flex items-center justify-center gap-2 font-semibold rounded-full transition-all mb-4"
           style={{
             height: "48px",
-            background: addedAll
-              ? "linear-gradient(135deg, #059669 0%, #047857 100%)"
-              : "linear-gradient(135deg, #1B5CB5 0%, #1240A0 100%)",
+            background: addedAll ? "#059669" : "var(--ink)",
             color: "#fff",
             border: "none",
             cursor: "pointer",
@@ -289,11 +297,11 @@ function StackCard({ stack }: { stack: ResearchStack }) {
         {/* Expandable detail */}
         <button
           onClick={() => setExpanded((e) => !e)}
-          className="w-full flex items-center justify-between text-sm font-semibold rounded-xl px-4 py-3 transition-colors"
+          className="w-full flex items-center justify-between text-sm font-medium rounded-full px-5 py-3 transition-colors"
           style={{
-            backgroundColor: expanded ? "#EEF4FF" : "#F8FAFC",
-            border: "1px solid #E8EDF5",
-            color: "#1B5CB5",
+            backgroundColor: expanded ? "#F2F0EB" : "#fff",
+            border: "1px solid var(--hairline)",
+            color: "var(--ink)",
             cursor: "pointer",
           }}
         >
@@ -309,12 +317,12 @@ function StackCard({ stack }: { stack: ResearchStack }) {
             {/* Rationale */}
             <div
               className="rounded-xl p-4"
-              style={{ backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5" }}
+              style={{ backgroundColor: "#F2F0EB", border: "1px solid var(--hairline)" }}
             >
-              <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#1B5CB5" }}>
+              <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "var(--cobalt)" }}>
                 Research Rationale
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: "#374151", lineHeight: "1.75" }}>
+              <p className="text-sm leading-relaxed" style={{ color: "var(--graphite)", lineHeight: "1.75" }}>
                 {stack.rationale}
               </p>
             </div>
@@ -322,12 +330,12 @@ function StackCard({ stack }: { stack: ResearchStack }) {
             {/* Synergy */}
             <div
               className="rounded-xl p-4"
-              style={{ backgroundColor: "#F0F5FF", border: "1px solid #BFDBFE" }}
+              style={{ backgroundColor: "#F2F0EB", border: "1px solid var(--hairline)" }}
             >
-              <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#1240A0" }}>
+              <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "var(--cobalt)" }}>
                 Synergy Mechanism
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: "#1E3A6E", lineHeight: "1.75" }}>
+              <p className="text-sm leading-relaxed" style={{ color: "var(--graphite)", lineHeight: "1.75" }}>
                 {stack.synergy}
               </p>
             </div>
@@ -335,14 +343,14 @@ function StackCard({ stack }: { stack: ResearchStack }) {
             {/* Warnings */}
             <div
               className="rounded-xl p-4"
-              style={{ backgroundColor: "#FFFBEB", border: "1px solid #FDE68A" }}
+              style={{ backgroundColor: "#F2F0EB", border: "1px solid var(--hairline)" }}
             >
-              <p className="text-xs font-bold uppercase tracking-wider mb-2 flex items-center gap-1.5" style={{ color: "#B45309" }}>
-                <AlertTriangle size={12} /> Research Notices
+              <p className="text-xs font-semibold uppercase tracking-wider mb-2 flex items-center gap-1.5" style={{ color: "var(--ink)" }}>
+                <AlertTriangle size={12} style={{ color: "#D97706" }} /> Research Notices
               </p>
               <ul className="space-y-1">
                 {stack.warnings.map((w, i) => (
-                  <li key={i} className="text-xs flex items-start gap-2" style={{ color: "#92400E" }}>
+                  <li key={i} className="text-xs flex items-start gap-2" style={{ color: "var(--graphite)" }}>
                     <span style={{ flexShrink: 0 }}>•</span>
                     {w}
                   </li>
@@ -371,99 +379,86 @@ export default function StacksPage() {
     : researchStacks.filter((s) => s.difficulty === activeFilter);
 
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
-      {/* Hero */}
-      <div
-        style={{
-          background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)",
-            backgroundSize: "28px 28px",
-            pointerEvents: "none",
-          }}
-        />
-        <div className="max-w-[1280px] mx-auto px-4 py-14 md:py-20 relative">
-          <div className="flex items-center gap-2 mb-4">
-            <span
-              className="text-xs font-bold px-3 py-1 rounded-full"
-              style={{ backgroundColor: "rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.85)", border: "1px solid rgba(255,255,255,0.2)" }}
-            >
-              Research Protocols
-            </span>
-          </div>
-          <h1 className="font-bold text-white mb-4" style={{ fontSize: "clamp(26px, 4vw, 40px)", lineHeight: 1.15 }}>
-            Research Stacks &<br />Protocol Guides
-          </h1>
-          <p className="max-w-[600px] mb-6" style={{ fontSize: "15px", color: "rgba(255,255,255,0.7)", lineHeight: "1.75" }}>
-            Curated multi-peptide research combinations with mechanistic rationale, suggested dosing parameters, and synergy explanations drawn from preclinical literature.
-          </p>
-          <div className="flex flex-wrap gap-4">
+    <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
+      <PageHero
+        crumbs={[{ label: "Research Stacks" }]}
+        eyebrow="Research Protocols"
+        icon={Layers}
+        title={<>Research Stacks &amp; Protocol Guides</>}
+        aside={
+          <div className="flex gap-8">
             {[
-              { icon: <FlaskConical size={14} />, label: `${researchStacks.length} curated protocols` },
-              { icon: <BookOpen size={14} />, label: "Research-backed rationale" },
-              { icon: <Users size={14} />, label: "Add full stack to cart" },
+              { val: researchStacks.length, label: "Curated protocols" },
+              { val: researchStacks.filter((s) => s.difficulty === "Beginner").length, label: "Beginner" },
+              { val: researchStacks.filter((s) => s.difficulty === "Advanced").length, label: "Advanced" },
             ].map((item) => (
-              <div
-                key={item.label}
-                className="flex items-center gap-2 text-sm font-medium"
-                style={{ color: "rgba(255,255,255,0.75)" }}
-              >
-                <span style={{ color: "#93C5FD" }}>{item.icon}</span>
-                {item.label}
+              <div key={item.label}>
+                <div style={{ fontSize: 28, fontWeight: 600, lineHeight: 1, letterSpacing: "-0.02em", color: "var(--ink)" }}>{item.val}</div>
+                <div className="uppercase mt-1.5" style={{ fontSize: 10, letterSpacing: "0.14em", color: "var(--graphite)" }}>{item.label}</div>
               </div>
             ))}
           </div>
+        }
+      >
+        <p style={{ margin: 0 }}>
+          Curated multi-peptide research combinations with mechanistic rationale, suggested dosing parameters, and synergy explanations drawn from preclinical literature.
+        </p>
+        <div className="flex flex-wrap gap-x-5 gap-y-2 mt-4">
+          {[
+            { icon: <FlaskConical size={13} />, label: `${researchStacks.length} curated protocols` },
+            { icon: <BookOpen size={13} />, label: "Research-backed rationale" },
+            { icon: <Users size={13} />, label: "Add full stack to cart" },
+          ].map((item) => (
+            <div key={item.label} className="flex items-center gap-1.5" style={{ fontSize: 13, color: "var(--graphite)" }}>
+              <span style={{ color: "var(--cobalt)" }}>{item.icon}</span>
+              {item.label}
+            </div>
+          ))}
         </div>
-      </div>
+      </PageHero>
 
-      {/* RUO Warning */}
-      <div style={{ backgroundColor: "#FFFBEB", borderBottom: "1px solid #FDE68A" }}>
-        <div className="max-w-[1280px] mx-auto px-4 py-2.5 flex items-start gap-2">
-          <span style={{ fontSize: "14px", flexShrink: 0, marginTop: "1px" }}>⚠️</span>
-          <p className="text-xs leading-relaxed" style={{ color: "#92400E" }}>
-            <strong>Research Chemical Only:</strong> All compounds listed are for in-vitro laboratory research only. Dosing figures are drawn from published preclinical literature and are not recommendations for human use. Must be 18+ and a qualified researcher to purchase.
+      {/* RUO notice */}
+      <div className="max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 pt-8">
+        <div
+          className="flex items-start gap-2.5 px-4 py-3"
+          style={{ backgroundColor: "#F2F0EB", border: "1px solid var(--hairline)", borderRadius: 12 }}
+        >
+          <AlertTriangle size={14} style={{ color: "#D97706", flexShrink: 0, marginTop: 2 }} aria-hidden="true" />
+          <p className="text-xs leading-relaxed" style={{ color: "var(--graphite)", margin: 0 }}>
+            <strong style={{ color: "var(--ink)", fontWeight: 600 }}>Research Chemical Only:</strong> All compounds listed are for in-vitro laboratory research only. Dosing figures are drawn from published preclinical literature and are not recommendations for human use. Must be 18+ and a qualified researcher to purchase.
           </p>
         </div>
       </div>
 
-      <div className="max-w-[1280px] mx-auto px-4 py-8 md:py-12">
+      <div className="max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 py-8 md:py-10">
         {/* Filter bar */}
         <div className="flex items-center gap-2 mb-8 flex-wrap">
-          <span className="text-sm font-semibold mr-1" style={{ color: "#64748B" }}>Filter by level:</span>
+          <span className="text-sm font-medium mr-1" style={{ color: "var(--graphite)" }}>Filter by level:</span>
           {filters.map((f) => {
             const active = activeFilter === f;
             return (
               <button
                 key={f}
                 onClick={() => setActiveFilter(f)}
-                className="text-sm font-semibold px-4 py-1.5 rounded-full transition-all"
+                aria-pressed={active}
+                className="text-sm font-medium px-4 py-1.5 rounded-full transition-all"
                 style={{
-                  backgroundColor: active ? "#1240A0" : "#fff",
-                  color: active ? "#fff" : "#475569",
-                  border: active ? "1.5px solid #1240A0" : "1.5px solid #E2E8F0",
+                  backgroundColor: active ? "var(--ink)" : "#fff",
+                  color: active ? "#fff" : "var(--graphite)",
+                  border: `1px solid ${active ? "var(--ink)" : "var(--hairline)"}`,
                   cursor: "pointer",
                 }}
               >
                 {f}
                 {f !== "All" && (
-                  <span
-                    className="ml-1.5 text-xs"
-                    style={{ opacity: 0.7 }}
-                  >
+                  <span className="ml-1.5 text-xs" style={{ opacity: 0.7 }}>
                     ({researchStacks.filter((s) => s.difficulty === f).length})
                   </span>
                 )}
               </button>
             );
           })}
-          <span className="ml-auto text-sm" style={{ color: "#94A3B8" }}>
+          <span className="ml-auto text-sm" style={{ color: "var(--graphite)" }}>
             {filtered.length} protocol{filtered.length !== 1 ? "s" : ""}
           </span>
         </div>
@@ -477,15 +472,18 @@ export default function StacksPage() {
 
         {/* Bottom disclaimer */}
         <div
-          className="rounded-2xl p-5 mt-10"
-          style={{ backgroundColor: "#FFF8F0", border: "1px solid #FED7AA" }}
+          className="p-5 mt-10 flex items-start gap-3"
+          style={{ backgroundColor: "#F2F0EB", border: "1px solid var(--hairline)", borderRadius: 16 }}
         >
-          <p className="text-xs font-bold mb-1.5 uppercase tracking-wide" style={{ color: "#C2410C" }}>
-            ⚠ Research Use Only — Important Notice
-          </p>
-          <p className="text-xs leading-relaxed" style={{ color: "#7C2D12" }}>
-            All protocol guides and dosing parameters on this page are compiled from published preclinical research literature for educational and informational purposes only. They do not constitute medical advice, clinical recommendations, or protocols for human use. All compounds are intended strictly for in-vitro laboratory research by qualified researchers. OmniQure products have not been approved by the FDA or any regulatory authority for human use.
-          </p>
+          <AlertTriangle size={15} style={{ color: "#D97706", flexShrink: 0, marginTop: 2 }} aria-hidden="true" />
+          <div>
+            <p className="text-xs mb-1.5 uppercase tracking-wide" style={{ color: "var(--ink)", fontWeight: 600 }}>
+              Research Use Only — Important Notice
+            </p>
+            <p className="text-xs leading-relaxed" style={{ color: "var(--graphite)", margin: 0 }}>
+              All protocol guides and dosing parameters on this page are compiled from published preclinical research literature for educational and informational purposes only. They do not constitute medical advice, clinical recommendations, or protocols for human use. All compounds are intended strictly for in-vitro laboratory research by qualified researchers. OmniQure products have not been approved by the FDA or any regulatory authority for human use.
+            </p>
+          </div>
         </div>
       </div>
     </div>

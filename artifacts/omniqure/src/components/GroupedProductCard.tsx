@@ -8,8 +8,9 @@ import { useCurrency } from "@/context/CurrencyContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { sellingFastSlugs, hotBuySlugs } from "@/data/popularPeptides";
 import QuickViewModal from "@/components/QuickViewModal";
+import { getCatalogueVialImage } from "@/lib/catalogueImages";
 
-const BLUE = { color: "#1B5CB5", bg: "#EEF4FF", gradient: "linear-gradient(90deg, #1240A0, #2563EB)" };
+const BLUE = { color: "#4E68C2", bg: "#E8F2DE", gradient: "linear-gradient(90deg, #4E68C2, #4E68C2)" };
 
 const CATEGORY_COLORS: Record<string, { color: string; bg: string; gradient: string }> = {
   "Growth Peptides":    BLUE,
@@ -158,7 +159,12 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           />
         </button>
         <img
-          src={selectedVariant.image}
+          src={getCatalogueVialImage(selectedVariant.id, selectedVariant.slug, selectedVariant.image, selectedVariant.sourceImage)}
+          onError={(e) => {
+            if (selectedVariant.image && e.currentTarget.src !== selectedVariant.image) {
+              e.currentTarget.src = selectedVariant.image;
+            }
+          }}
           alt={group.baseName}
           style={{
             width: "100%", height: "100%", objectFit: "contain", padding: "16px",
@@ -214,7 +220,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           style={{
             fontSize: "18px", fontWeight: 800, lineHeight: 1.2, marginBottom: "5px",
             cursor: "pointer", transition: "opacity 0.15s",
-            background: "linear-gradient(120deg, #0D2565 0%, #1B5CB5 60%, #2563EB 100%)",
+            background: "linear-gradient(120deg, #22252C 0%, #4E68C2 60%, #4E68C2 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -351,12 +357,12 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
                 disabled={isSoldOut}
               className="card-cart-btn"
               style={{
-                backgroundColor: isSoldOut ? "#E2E8F0" : added ? "#059669" : "#1240A0",
+                backgroundColor: isSoldOut ? "#E2E8F0" : added ? "#059669" : "#4E68C2",
                 color: isSoldOut ? "#94A3B8" : "#fff",
                 cursor: isSoldOut ? "not-allowed" : "pointer",
               }}
-              onMouseEnter={e => { if (!isSoldOut && !added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1B5CB5"; }}
-              onMouseLeave={e => { if (!isSoldOut && !added) (e.currentTarget as HTMLElement).style.backgroundColor = "#1240A0"; }}
+              onMouseEnter={e => { if (!isSoldOut && !added) (e.currentTarget as HTMLElement).style.backgroundColor = "#4E68C2"; }}
+              onMouseLeave={e => { if (!isSoldOut && !added) (e.currentTarget as HTMLElement).style.backgroundColor = "#4E68C2"; }}
             >
               {added
                 ? <><CheckCircle2 size={14} /> Added!</>

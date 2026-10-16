@@ -122,7 +122,7 @@ export default function CartPreviewPanel() {
         {/* Header */}
         <div
           style={{
-            background: "linear-gradient(90deg, #0a1d4f 0%, #0D2565 100%)",
+            background: "linear-gradient(90deg, #0a1d4f 0%, #22252C 100%)",
             padding: "14px 16px",
             display: "flex",
             alignItems: "center",
@@ -131,7 +131,7 @@ export default function CartPreviewPanel() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <ShoppingCart size={15} style={{ color: "#93C5FD" }} />
+            <ShoppingCart size={15} style={{ color: "#B4D89C" }} />
             <span
               style={{
                 fontSize: "13px",
@@ -147,7 +147,7 @@ export default function CartPreviewPanel() {
               style={{
                 fontSize: "10px",
                 fontWeight: 900,
-                color: "#0D2565",
+                color: "#22252C",
                 backgroundColor: "#34D399",
                 borderRadius: "10px",
                 padding: "1px 7px",
@@ -203,7 +203,7 @@ export default function CartPreviewPanel() {
                     width: 48,
                     height: 48,
                     borderRadius: 6,
-                    border: "1px solid #E8EDF5",
+                    border: "1px solid #D3D8E2",
                     overflow: "hidden",
                     background: "#F8FAFC",
                     flexShrink: 0,
@@ -224,7 +224,7 @@ export default function CartPreviewPanel() {
                         position: "absolute",
                         top: -5,
                         right: -5,
-                        background: "#0D2565",
+                        background: "#22252C",
                         color: "#fff",
                         fontSize: "9px",
                         fontWeight: 800,
@@ -244,7 +244,7 @@ export default function CartPreviewPanel() {
                     style={{
                       fontSize: "12.5px",
                       fontWeight: 600,
-                      color: "#0F172A",
+                      color: "#22252C",
                       margin: 0,
                       lineHeight: 1.35,
                     }}
@@ -270,7 +270,7 @@ export default function CartPreviewPanel() {
                     fontSize: "13px",
                     fontWeight: 700,
                     flexShrink: 0,
-                    color: freeUnits > 0 ? "#059669" : "#0F172A",
+                    color: freeUnits > 0 ? "#059669" : "#22252C",
                   }}
                 >
                   £{linePrice.toFixed(2)}
@@ -340,7 +340,7 @@ export default function CartPreviewPanel() {
             >
               <span style={{ fontSize: "11.5px", color: "#64748B" }}>
                 Add{" "}
-                <strong style={{ color: "#0D2565" }}>
+                <strong style={{ color: "#22252C" }}>
                   {next.min - peptideQty}
                 </strong>{" "}
                 more for{" "}
@@ -411,7 +411,7 @@ export default function CartPreviewPanel() {
               style={{
                 fontSize: "12.5px",
                 fontWeight: 600,
-                color: hasFreebie ? "#94A3B8" : "#0F172A",
+                color: hasFreebie ? "#94A3B8" : "#22252C",
                 textDecoration: hasFreebie ? "line-through" : "none",
               }}
             >
@@ -427,7 +427,7 @@ export default function CartPreviewPanel() {
               }}
             >
               <span
-                style={{ fontSize: "13px", fontWeight: 800, color: "#0F172A" }}
+                style={{ fontSize: "13px", fontWeight: 800, color: "#22252C" }}
               >
                 Total
               </span>

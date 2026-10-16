@@ -101,7 +101,7 @@ type AccountProfile = {
 
 const STATUS_CONFIG: Record<string, { label: string; bg: string; color: string; border: string }> = {
   pending:    { label: "Pending",    bg: "#FFFBEB", color: "#B45309", border: "#FDE68A" },
-  processing: { label: "Processing", bg: "#EFF6FF", color: "#1D4ED8", border: "#BFDBFE" },
+  processing: { label: "Processing", bg: "#E8F2DE", color: "#3D55A8", border: "#C8DDB4" },
   shipped:    { label: "Shipped",    bg: "#F0FDF4", color: "#15803D", border: "#BBF7D0" },
   delivered:  { label: "Delivered",  bg: "#F0FDF4", color: "#15803D", border: "#BBF7D0" },
   cancelled:  { label: "Cancelled",  bg: "#FEF2F2", color: "#B91C1C", border: "#FECACA" },
@@ -375,7 +375,7 @@ export default function AccountPage() {
 
   if (loadingAuth || !customer) {
     return (
-      <div style={{ fontFamily: "'Arimo', Arial, sans-serif", minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ textAlign: "center", color: "#64748B" }}>
           <FlaskConical size={28} style={{ margin: "0 auto 12px", opacity: 0.4 }} />
           <p style={{ fontSize: "14px" }}>Loading your account…</p>
@@ -393,8 +393,8 @@ export default function AccountPage() {
       <div style={{ backgroundColor: "#fff", borderRadius: "20px", boxShadow: "0 20px 60px rgba(0,0,0,0.2)", width: "100%", maxWidth: "480px", overflow: "hidden" }}>
         <div style={{ padding: "20px 24px 16px", borderBottom: "1px solid #F1F5F9", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <RotateCcw size={18} style={{ color: "#1B5CB5" }} />
-            <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#0F172A", margin: 0 }}>Request a Return</h3>
+            <RotateCcw size={18} style={{ color: "#4E68C2" }} />
+            <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#22252C", margin: 0 }}>Request a Return</h3>
           </div>
           <button
             onClick={() => { setReturnModal(null); setReturnReason(""); setReturnError(null); }}
@@ -406,7 +406,7 @@ export default function AccountPage() {
         <form onSubmit={(e) => void handleRequestReturn(e)} style={{ padding: "20px 24px 24px", display: "flex", flexDirection: "column", gap: "14px" }}>
           <div style={{ padding: "10px 14px", borderRadius: "8px", backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
             <p style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 600, marginBottom: "2px" }}>ORDER</p>
-            <p style={{ fontSize: "14px", fontWeight: 700, color: "#0F172A", margin: 0 }}>{returnModal}</p>
+            <p style={{ fontSize: "14px", fontWeight: 700, color: "#22252C", margin: 0 }}>{returnModal}</p>
           </div>
           <div>
             <label style={{ fontSize: "13px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "6px" }}>
@@ -419,9 +419,9 @@ export default function AccountPage() {
               rows={4}
               style={{
                 width: "100%", padding: "10px 12px", borderRadius: "10px",
-                border: "1.5px solid #E2E8F0", fontSize: "14px", color: "#0F172A",
+                border: "1.5px solid #E2E8F0", fontSize: "14px", color: "#22252C",
                 resize: "vertical", outline: "none", boxSizing: "border-box",
-                fontFamily: "'Arimo', Arial, sans-serif",
+                fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif",
               }}
             />
             <p style={{ fontSize: "11.5px", color: "#94A3B8", margin: "4px 0 0" }}>Minimum 10 characters</p>
@@ -442,7 +442,7 @@ export default function AccountPage() {
             disabled={submittingReturn || returnReason.trim().length < 10}
             style={{
               height: "44px", borderRadius: "10px", border: "none", cursor: submittingReturn || returnReason.trim().length < 10 ? "not-allowed" : "pointer",
-              background: submittingReturn || returnReason.trim().length < 10 ? "#CBD5E1" : "linear-gradient(90deg, #0D2565, #1B5CB5)",
+              background: submittingReturn || returnReason.trim().length < 10 ? "#CBD5E1" : "linear-gradient(90deg, #22252C, #4E68C2)",
               color: "#fff", fontSize: "14px", fontWeight: 700, transition: "opacity 0.15s",
             }}
           >
@@ -456,10 +456,10 @@ export default function AccountPage() {
   const displayProfile = profile ?? { ...customer, totalOrders: 0, totalSpendGbp: 0, memberSince: new Date().toISOString() };
 
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "70vh" }}>
+    <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", backgroundColor: "#F2F0EB", minHeight: "70vh" }}>
 
       {/* Hero banner */}
-      <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 50%, #1B5CB5 100%)", padding: "32px 0" }}>
+      <div style={{ background: "linear-gradient(90deg, #22252C 0%, #4E68C2 50%, #4E68C2 100%)", padding: "32px 0" }}>
         <div className="max-w-[1200px] mx-auto px-4">
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
@@ -543,7 +543,7 @@ export default function AccountPage() {
 
           {/* Sidebar */}
           <div className="account-sidebar">
-            <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", overflow: "hidden" }}>
+            <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #D3D8E2", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", overflow: "hidden" }}>
               {[
                 { key: "orders",        label: "My Orders",       icon: <Package size={16} /> },
                 { key: "referral",      label: "Refer a Friend",  icon: <Users size={16} /> },
@@ -557,11 +557,11 @@ export default function AccountPage() {
                   style={{
                     display: "flex", alignItems: "center", gap: "10px",
                     width: "100%", padding: "13px 16px", border: "none",
-                    backgroundColor: activeTab === item.key ? "#EEF4FF" : "#fff",
-                    color: activeTab === item.key ? "#1240A0" : "#475569",
+                    backgroundColor: activeTab === item.key ? "#E8F2DE" : "#fff",
+                    color: activeTab === item.key ? "#4E68C2" : "#475569",
                     fontSize: "14px", fontWeight: activeTab === item.key ? 700 : 500,
                     cursor: "pointer", textAlign: "left",
-                    borderLeft: activeTab === item.key ? "3px solid #1B5CB5" : "3px solid transparent",
+                    borderLeft: activeTab === item.key ? "3px solid #4E68C2" : "3px solid transparent",
                     transition: "all 0.15s",
                   }}
                 >
@@ -609,8 +609,8 @@ export default function AccountPage() {
             {activeTab === "orders" && (
               <div>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
-                  <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A" }}>Order History</h2>
-                  <Link href="/all-peptides" style={{ fontSize: "13px", color: "#1B5CB5", fontWeight: 600, textDecoration: "none" }}>
+                  <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#22252C" }}>Order History</h2>
+                  <Link href="/all-peptides" style={{ fontSize: "13px", color: "#4E68C2", fontWeight: 600, textDecoration: "none" }}>
                     Shop again →
                   </Link>
                 </div>
@@ -621,9 +621,9 @@ export default function AccountPage() {
                     <p style={{ fontSize: "14px" }}>Loading orders…</p>
                   </div>
                 ) : orders.length === 0 ? (
-                  <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", padding: "60px 24px", textAlign: "center" }}>
+                  <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", padding: "60px 24px", textAlign: "center" }}>
                     <ShoppingBag size={36} style={{ margin: "0 auto 16px", color: "#CBD5E1" }} />
-                    <p style={{ fontSize: "16px", fontWeight: 700, color: "#0F172A", marginBottom: "8px" }}>No orders yet</p>
+                    <p style={{ fontSize: "16px", fontWeight: 700, color: "#22252C", marginBottom: "8px" }}>No orders yet</p>
                     <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>
                       When you place an order, it will appear here.
                     </p>
@@ -631,7 +631,7 @@ export default function AccountPage() {
                       href="/all-peptides"
                       style={{
                         display: "inline-block", padding: "10px 24px", borderRadius: "10px",
-                        background: "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                        background: "linear-gradient(90deg, #22252C, #4E68C2)",
                         color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none",
                       }}
                     >
@@ -651,7 +651,7 @@ export default function AccountPage() {
                           style={{
                             backgroundColor: "#fff",
                             borderRadius: "16px",
-                            border: "1px solid #E8EDF5",
+                            border: "1px solid #D3D8E2",
                             boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
                             overflow: "hidden",
                           }}
@@ -667,7 +667,7 @@ export default function AccountPage() {
                           >
                             <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "14px", flexWrap: "wrap" }}>
                               <div>
-                                <p style={{ fontSize: "14px", fontWeight: 800, color: "#0F172A", marginBottom: "1px" }}>
+                                <p style={{ fontSize: "14px", fontWeight: 800, color: "#22252C", marginBottom: "1px" }}>
                                   {order.orderNumber}
                                 </p>
                                 <p style={{ fontSize: "12px", color: "#94A3B8" }}>{formatDate(order.createdAt)}</p>
@@ -678,7 +678,7 @@ export default function AccountPage() {
                               </p>
                             </div>
                             <div style={{ display: "flex", alignItems: "center", gap: "16px", flexShrink: 0 }}>
-                              <p style={{ fontSize: "15px", fontWeight: 700, color: "#0F172A" }}>
+                              <p style={{ fontSize: "15px", fontWeight: 700, color: "#22252C" }}>
                                 {formatPrice(order.totalGbp)}
                               </p>
                               <ChevronRight
@@ -707,7 +707,7 @@ export default function AccountPage() {
                                 ];
                                 const order_idx = ["pending","processing","shipped","delivered"].indexOf(order.status);
                                 return (
-                                  <div style={{ marginBottom: "20px", padding: "14px 16px", borderRadius: "12px", backgroundColor: isCancelled ? "#FEF2F2" : "#F8FAFC", border: `1px solid ${isCancelled ? "#FECACA" : "#E8EDF5"}` }}>
+                                  <div style={{ marginBottom: "20px", padding: "14px 16px", borderRadius: "12px", backgroundColor: isCancelled ? "#FEF2F2" : "#F8FAFC", border: `1px solid ${isCancelled ? "#FECACA" : "#D3D8E2"}` }}>
                                     {isCancelled ? (
                                       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                                         <div style={{ width: "28px", height: "28px", borderRadius: "50%", backgroundColor: "#FEF2F2", border: "2px solid #FECACA", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -726,7 +726,7 @@ export default function AccountPage() {
                                         <div style={{ position: "absolute", top: "14px", left: "14px", right: "14px", height: "2px", backgroundColor: "#E2E8F0", zIndex: 0 }} />
                                         <div style={{
                                           position: "absolute", top: "14px", left: "14px", height: "2px", zIndex: 1,
-                                          backgroundColor: "#1B5CB5",
+                                          backgroundColor: "#4E68C2",
                                           width: order_idx <= 0 ? "0%" : order_idx === 1 ? "33%" : order_idx === 2 ? "66%" : "100%",
                                           transition: "width 0.4s ease",
                                         }} />
@@ -739,20 +739,20 @@ export default function AccountPage() {
                                               <div key={step.key} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", flex: 1 }}>
                                                 <div style={{
                                                   width: "28px", height: "28px", borderRadius: "50%",
-                                                  border: `2px solid ${done ? "#1B5CB5" : current ? "#1B5CB5" : "#CBD5E1"}`,
-                                                  backgroundColor: done ? "#1B5CB5" : current ? "#EEF4FF" : "#fff",
+                                                  border: `2px solid ${done ? "#4E68C2" : current ? "#4E68C2" : "#CBD5E1"}`,
+                                                  backgroundColor: done ? "#4E68C2" : current ? "#E8F2DE" : "#fff",
                                                   display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-                                                  boxShadow: current ? "0 0 0 3px rgba(27,92,181,0.15)" : "none",
+                                                  boxShadow: current ? "0 0 0 3px rgba(59, 98, 171,0.15)" : "none",
                                                   transition: "all 0.2s",
                                                 }}>
                                                   {done
                                                     ? <CheckCircle2 size={13} style={{ color: "#fff" }} />
-                                                    : <span style={{ color: current ? "#1B5CB5" : "#CBD5E1" }}>{step.icon}</span>
+                                                    : <span style={{ color: current ? "#4E68C2" : "#CBD5E1" }}>{step.icon}</span>
                                                   }
                                                 </div>
                                                 <p style={{
                                                   fontSize: "10px", fontWeight: current ? 800 : done ? 600 : 500, margin: 0,
-                                                  color: done ? "#1B5CB5" : current ? "#0D2565" : "#94A3B8",
+                                                  color: done ? "#4E68C2" : current ? "#22252C" : "#94A3B8",
                                                   textAlign: "center", whiteSpace: "nowrap",
                                                 }}>
                                                   {step.label}
@@ -818,10 +818,10 @@ export default function AccountPage() {
                                     }}
                                   >
                                     <div>
-                                      <p style={{ fontSize: "13px", fontWeight: 600, color: "#0F172A" }}>{item.productName}</p>
+                                      <p style={{ fontSize: "13px", fontWeight: 600, color: "#22252C" }}>{item.productName}</p>
                                       <p style={{ fontSize: "11px", color: "#94A3B8" }}>{item.productCategory} · Qty {item.quantity}</p>
                                     </div>
-                                    <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A" }}>
+                                    <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C" }}>
                                       £{(item.priceGbp * item.quantity).toFixed(2)}
                                     </p>
                                   </div>
@@ -856,7 +856,7 @@ export default function AccountPage() {
                                   style={{
                                     display: "inline-flex", alignItems: "center", gap: "6px",
                                     padding: "8px 16px", borderRadius: "8px",
-                                    background: "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                                    background: "linear-gradient(90deg, #22252C, #4E68C2)",
                                     color: "#fff", fontWeight: 600, fontSize: "13px", textDecoration: "none",
                                   }}
                                 >
@@ -870,7 +870,7 @@ export default function AccountPage() {
                                     padding: "8px 14px", borderRadius: "8px",
                                     backgroundColor: reorderedKey === order.orderNumber ? "#F0FDF4" : "#F0F5FF",
                                     border: reorderedKey === order.orderNumber ? "1px solid #BBF7D0" : "1px solid #C7D7F7",
-                                    color: reorderedKey === order.orderNumber ? "#15803D" : "#1240A0",
+                                    color: reorderedKey === order.orderNumber ? "#15803D" : "#4E68C2",
                                     fontWeight: 600, fontSize: "13px", cursor: "pointer",
                                   }}
                                 >
@@ -921,22 +921,22 @@ export default function AccountPage() {
             {/* ── REFERRAL TAB ── */}
             {activeTab === "referral" && (
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A", margin: 0 }}>Refer a Friend</h2>
+                <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#22252C", margin: 0 }}>Refer a Friend</h2>
 
                 {/* How it works */}
-                <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
-                  <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A", marginBottom: "16px" }}>How it works</h3>
+                <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
+                  <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#22252C", marginBottom: "16px" }}>How it works</h3>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
                     {[
                       { step: "1", title: "Share your link", desc: "Send your unique referral link to colleagues and fellow researchers." },
                       { step: "2", title: "Friend places first order", desc: "They get 10% off their first order automatically — no code needed. Bundle & Save free items apply too: 3-4 vials for a free 10ml BAC water ampule, 5-9 for a free peptide, 10+ for 2 free peptides (one reward per order, no stacking)." },
                       { step: "3", title: "Both claim £25 credit", desc: "As soon as their order ships, you both get £25 credit added to your accounts — redeemable on your next order (up to £50 unredeemed balance each)." },
                     ].map((s) => (
-                      <div key={s.step} style={{ textAlign: "center", padding: "16px 12px", borderRadius: "12px", backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5" }}>
-                        <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px", fontSize: "14px", fontWeight: 800, color: "#fff" }}>
+                      <div key={s.step} style={{ textAlign: "center", padding: "16px 12px", borderRadius: "12px", backgroundColor: "#F8FAFC", border: "1px solid #D3D8E2" }}>
+                        <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "linear-gradient(90deg, #22252C, #4E68C2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px", fontSize: "14px", fontWeight: 800, color: "#fff" }}>
                           {s.step}
                         </div>
-                        <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A", marginBottom: "4px" }}>{s.title}</p>
+                        <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C", marginBottom: "4px" }}>{s.title}</p>
                         <p style={{ fontSize: "12px", color: "#64748B", lineHeight: 1.5, margin: 0 }}>{s.desc}</p>
                       </div>
                     ))}
@@ -958,8 +958,8 @@ export default function AccountPage() {
 
                 {/* Referral link */}
                 {referral && (
-                  <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
-                    <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A", marginBottom: "4px" }}>Your referral link</h3>
+                  <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
+                    <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#22252C", marginBottom: "4px" }}>Your referral link</h3>
                     <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "16px" }}>Share this link — when a friend places their first order using it, you both get £25 credit added to your accounts (up to £50 unredeemed balance each). Credit is applied automatically at checkout on your next order.</p>
 
                     <div style={{ display: "flex", gap: "8px", marginBottom: "16px", flexWrap: "wrap" }}>
@@ -973,7 +973,7 @@ export default function AccountPage() {
                         style={{
                           display: "inline-flex", alignItems: "center", gap: "6px",
                           padding: "0 18px", height: "44px", borderRadius: "10px", border: "none",
-                          background: referralCopied ? "linear-gradient(90deg, #16A34A, #15803D)" : "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                          background: referralCopied ? "linear-gradient(90deg, #16A34A, #15803D)" : "linear-gradient(90deg, #22252C, #4E68C2)",
                           color: "#fff", fontWeight: 700, fontSize: "13px", cursor: "pointer", whiteSpace: "nowrap",
                           transition: "background 0.2s",
                         }}
@@ -986,7 +986,7 @@ export default function AccountPage() {
                           display: "inline-flex", alignItems: "center", gap: "6px",
                           padding: "0 18px", height: "44px", borderRadius: "10px",
                           border: "1.5px solid #C7D7F7", background: "#F0F5FF",
-                          color: "#1240A0", fontWeight: 700, fontSize: "13px",
+                          color: "#4E68C2", fontWeight: 700, fontSize: "13px",
                           cursor: "pointer", whiteSpace: "nowrap",
                         }}
                       >
@@ -995,8 +995,8 @@ export default function AccountPage() {
                     </div>
 
                     <div style={{ display: "flex", gap: "12px" }}>
-                      <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5", textAlign: "center" }}>
-                        <p style={{ fontSize: "22px", fontWeight: 800, color: "#0F172A", margin: "0 0 2px" }}>{referral.referralCount}</p>
+                      <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#F8FAFC", border: "1px solid #D3D8E2", textAlign: "center" }}>
+                        <p style={{ fontSize: "22px", fontWeight: 800, color: "#22252C", margin: "0 0 2px" }}>{referral.referralCount}</p>
                         <p style={{ fontSize: "12px", color: "#64748B", margin: 0 }}>Friends referred</p>
                       </div>
                       <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0", textAlign: "center" }}>
@@ -1004,7 +1004,7 @@ export default function AccountPage() {
                         <p style={{ fontSize: "12px", color: "#16A34A", margin: 0 }}>Credit available</p>
                       </div>
                       <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#F0F5FF", border: "1px solid #C7D7F7", textAlign: "center" }}>
-                        <p style={{ fontSize: "13px", fontWeight: 800, color: "#1240A0", margin: "0 0 2px", fontFamily: "monospace", letterSpacing: "0.05em" }}>{referral.referralCode}</p>
+                        <p style={{ fontSize: "13px", fontWeight: 800, color: "#4E68C2", margin: "0 0 2px", fontFamily: "monospace", letterSpacing: "0.05em" }}>{referral.referralCode}</p>
                         <p style={{ fontSize: "12px", color: "#64748B", margin: 0 }}>Your code</p>
                       </div>
                     </div>
@@ -1019,13 +1019,13 @@ export default function AccountPage() {
               return (
                 <div>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
-                    <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A" }}>Wishlist</h2>
+                    <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#22252C" }}>Wishlist</h2>
                     <span style={{ fontSize: "13px", color: "#64748B" }}>{wishlistIds.size} saved item{wishlistIds.size !== 1 ? "s" : ""}</span>
                   </div>
                   {wishlistProducts.length === 0 ? (
-                    <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", padding: "60px 24px", textAlign: "center" }}>
+                    <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", padding: "60px 24px", textAlign: "center" }}>
                       <Heart size={36} style={{ margin: "0 auto 16px", color: "#CBD5E1" }} />
-                      <p style={{ fontSize: "16px", fontWeight: 700, color: "#0F172A", marginBottom: "8px" }}>No saved items yet</p>
+                      <p style={{ fontSize: "16px", fontWeight: 700, color: "#22252C", marginBottom: "8px" }}>No saved items yet</p>
                       <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>
                         Hit the heart icon on any product to save it here.
                       </p>
@@ -1033,7 +1033,7 @@ export default function AccountPage() {
                         href="/all-peptides"
                         style={{
                           display: "inline-block", padding: "10px 24px", borderRadius: "10px",
-                          background: "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                          background: "linear-gradient(90deg, #22252C, #4E68C2)",
                           color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none",
                         }}
                       >
@@ -1049,7 +1049,7 @@ export default function AccountPage() {
                             key={product.id}
                             style={{
                               backgroundColor: "#fff", borderRadius: "16px",
-                              border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
+                              border: "1px solid #D3D8E2", boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
                               overflow: "hidden", position: "relative",
                             }}
                           >
@@ -1076,12 +1076,12 @@ export default function AccountPage() {
                                 />
                               </div>
                               <div style={{ padding: "12px" }}>
-                                <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A", marginBottom: "4px", lineHeight: 1.3 }}>
+                                <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C", marginBottom: "4px", lineHeight: 1.3 }}>
                                   {product.name}
                                 </p>
                                 <p style={{ fontSize: "12px", color: "#64748B", marginBottom: "6px" }}>{product.category}</p>
                                 {product.price != null && (
-                                  <p style={{ fontSize: "13px", fontWeight: 800, color: "#1240A0" }}>
+                                  <p style={{ fontSize: "13px", fontWeight: 800, color: "#4E68C2" }}>
                                     {formatPrice(product.price)}
                                   </p>
                                 )}
@@ -1101,7 +1101,7 @@ export default function AccountPage() {
             {activeTab === "loyalty" && (
               <div>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
-                  <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A" }}>Loyalty Rewards</h2>
+                  <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#22252C" }}>Loyalty Rewards</h2>
                 </div>
 
                 {loadingLoyalty ? (
@@ -1110,13 +1110,13 @@ export default function AccountPage() {
                     <p style={{ fontSize: "14px" }}>Loading your points…</p>
                   </div>
                 ) : !loyalty ? (
-                  <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", padding: "60px 24px", textAlign: "center" }}>
+                  <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", padding: "60px 24px", textAlign: "center" }}>
                     <Gift size={36} style={{ margin: "0 auto 16px", color: "#CBD5E1" }} />
-                    <p style={{ fontSize: "16px", fontWeight: 700, color: "#0F172A", marginBottom: "8px" }}>No points yet</p>
+                    <p style={{ fontSize: "16px", fontWeight: 700, color: "#22252C", marginBottom: "8px" }}>No points yet</p>
                     <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>
                       Place your first order to start earning loyalty points.
                     </p>
-                    <Link href="/all-peptides" style={{ display: "inline-block", padding: "10px 24px", borderRadius: "10px", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none" }}>
+                    <Link href="/all-peptides" style={{ display: "inline-block", padding: "10px 24px", borderRadius: "10px", background: "linear-gradient(90deg, #22252C, #4E68C2)", color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none" }}>
                       Browse peptides
                     </Link>
                   </div>
@@ -1124,8 +1124,8 @@ export default function AccountPage() {
                   <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
                     {/* Balance card */}
-                    <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", overflow: "hidden" }}>
-                      <div style={{ background: "linear-gradient(135deg, #0D2565 0%, #1B5CB5 100%)", padding: "28px 24px" }}>
+                    <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", overflow: "hidden" }}>
+                      <div style={{ background: "linear-gradient(135deg, #22252C 0%, #4E68C2 100%)", padding: "28px 24px" }}>
                         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
                           <div>
                             <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px" }}>
@@ -1178,17 +1178,17 @@ export default function AccountPage() {
                       {/* How it works */}
                       <div style={{ padding: "18px 24px", borderBottom: "1px solid #F1F5F9", display: "flex", gap: "20px", flexWrap: "wrap" }}>
                         {[
-                          { icon: <TrendingUp size={15} style={{ color: "#1B5CB5" }} />, label: "Earn", value: "1 pt per £1 spent" },
+                          { icon: <TrendingUp size={15} style={{ color: "#4E68C2" }} />, label: "Earn", value: "1 pt per £1 spent" },
                           { icon: <Award size={15} style={{ color: "#F59E0B" }} />, label: "Redeem", value: "100 pts = £1 off" },
                           { icon: <Gift size={15} style={{ color: "#059669" }} />, label: "Use at checkout", value: "Applied automatically" },
                         ].map(item => (
                           <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                            <div style={{ width: "32px", height: "32px", borderRadius: "8px", backgroundColor: "#F8FAFC", border: "1px solid #E8EDF5", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                            <div style={{ width: "32px", height: "32px", borderRadius: "8px", backgroundColor: "#F8FAFC", border: "1px solid #D3D8E2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                               {item.icon}
                             </div>
                             <div>
                               <p style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "1px" }}>{item.label}</p>
-                              <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A" }}>{item.value}</p>
+                              <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C" }}>{item.value}</p>
                             </div>
                           </div>
                         ))}
@@ -1204,7 +1204,7 @@ export default function AccountPage() {
                           <div key={t.name} style={{
                             flex: 1, padding: "10px 12px", borderRadius: "10px",
                             backgroundColor: loyalty.tier === t.name ? t.bg : "#F8FAFC",
-                            border: `1.5px solid ${loyalty.tier === t.name ? t.color : "#E8EDF5"}`,
+                            border: `1.5px solid ${loyalty.tier === t.name ? t.color : "#D3D8E2"}`,
                           }}>
                             <p style={{ fontSize: "13px", fontWeight: 800, color: t.color, marginBottom: "2px" }}>{t.name}</p>
                             <p style={{ fontSize: "11px", color: "#94A3B8" }}>{t.pts} pts</p>
@@ -1214,11 +1214,11 @@ export default function AccountPage() {
                     </div>
 
                     {/* Ways to earn */}
-                    <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #E8EDF5", padding: "20px 24px" }}>
-                      <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A", marginBottom: "14px" }}>Ways to earn points</h3>
+                    <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #D3D8E2", padding: "20px 24px" }}>
+                      <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#22252C", marginBottom: "14px" }}>Ways to earn points</h3>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px" }}>
                         {[
-                          { icon: <ShoppingBag size={16} style={{ color: "#1B5CB5" }} />, title: "Make a purchase", desc: "1 pt for every £1 you spend", bg: "#EFF6FF" },
+                          { icon: <ShoppingBag size={16} style={{ color: "#4E68C2" }} />, title: "Make a purchase", desc: "1 pt for every £1 you spend", bg: "#E8F2DE" },
                           { icon: <Gift size={16} style={{ color: "#059669" }} />, title: "Create an account", desc: "+50 pts welcome bonus", bg: "#F0FDF4" },
                           { icon: <Users size={16} style={{ color: "#7C3AED" }} />, title: "Refer a friend", desc: "You and your friend both earn £25 credit each", bg: "#F5F3FF" },
                         ].map((w) => (
@@ -1227,7 +1227,7 @@ export default function AccountPage() {
                               {w.icon}
                             </div>
                             <div>
-                              <p style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A", margin: "0 0 2px" }}>{w.title}</p>
+                              <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C", margin: "0 0 2px" }}>{w.title}</p>
                               <p style={{ fontSize: "11.5px", color: "#64748B", margin: 0, lineHeight: 1.3 }}>{w.desc}</p>
                             </div>
                           </div>
@@ -1247,7 +1247,7 @@ export default function AccountPage() {
                             <p style={{ fontSize: "12px", color: "#B45309", margin: 0 }}>Points are applied automatically at checkout</p>
                           </div>
                         </div>
-                        <Link href="/all-peptides" style={{ display: "inline-block", padding: "10px 20px", borderRadius: "10px", background: "linear-gradient(90deg, #0D2565, #1B5CB5)", color: "#fff", fontWeight: 700, fontSize: "13px", textDecoration: "none", whiteSpace: "nowrap" }}>
+                        <Link href="/all-peptides" style={{ display: "inline-block", padding: "10px 20px", borderRadius: "10px", background: "linear-gradient(90deg, #22252C, #4E68C2)", color: "#fff", fontWeight: 700, fontSize: "13px", textDecoration: "none", whiteSpace: "nowrap" }}>
                           Shop now →
                         </Link>
                       </div>
@@ -1255,9 +1255,9 @@ export default function AccountPage() {
 
                     {/* Transaction history */}
                     {loyalty.transactions.length > 0 && (
-                      <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #E8EDF5", overflow: "hidden" }}>
+                      <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #D3D8E2", overflow: "hidden" }}>
                         <div style={{ padding: "16px 20px", borderBottom: "1px solid #F1F5F9" }}>
-                          <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0F172A", margin: 0 }}>Points History</h3>
+                          <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#22252C", margin: 0 }}>Points History</h3>
                         </div>
                         <div>
                           {loyalty.transactions.map(tx => {
@@ -1265,14 +1265,14 @@ export default function AccountPage() {
                             const typeConfig: Record<string, { label: string; bg: string; color: string }> = {
                               earned:   { label: "Earned",   bg: "#F0FDF4", color: "#16A34A" },
                               redeemed: { label: "Redeemed", bg: "#FFF7ED", color: "#C2410C" },
-                              adjusted: { label: "Adjusted", bg: "#EFF6FF", color: "#1D4ED8" },
+                              adjusted: { label: "Adjusted", bg: "#E8F2DE", color: "#3D55A8" },
                               expired:  { label: "Expired",  bg: "#F1F5F9", color: "#64748B" },
                             };
                             const cfg = typeConfig[tx.type] ?? typeConfig.adjusted;
                             return (
                               <div key={tx.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px", borderBottom: "1px solid #F8FAFC", gap: "12px" }}>
                                 <div style={{ flex: 1, minWidth: 0 }}>
-                                  <p style={{ fontSize: "13px", fontWeight: 600, color: "#0F172A", margin: "0 0 2px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                                  <p style={{ fontSize: "13px", fontWeight: 600, color: "#22252C", margin: "0 0 2px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                                     {tx.description}
                                   </p>
                                   <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>{formatDate(tx.createdAt)}</p>
@@ -1298,8 +1298,8 @@ export default function AccountPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
 
                 {/* Update name */}
-                <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
-                  <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#0F172A", marginBottom: "4px" }}>Personal information</h3>
+                <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
+                  <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#22252C", marginBottom: "4px" }}>Personal information</h3>
                   <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>Update your name as it appears on orders.</p>
 
                   <form onSubmit={handleSaveProfile} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
@@ -1315,10 +1315,10 @@ export default function AccountPage() {
                             style={{
                               width: "100%", height: "42px", padding: "0 12px",
                               borderRadius: "10px", border: "1.5px solid #E2E8F0",
-                              fontSize: "14px", color: "#0F172A", outline: "none",
+                              fontSize: "14px", color: "#22252C", outline: "none",
                               backgroundColor: "#F8FAFC", boxSizing: "border-box",
                             }}
-                            onFocus={(e) => (e.currentTarget.style.borderColor = "#1B5CB5")}
+                            onFocus={(e) => (e.currentTarget.style.borderColor = "#4E68C2")}
                             onBlur={(e) => (e.currentTarget.style.borderColor = "#E2E8F0")}
                           />
                         </div>
@@ -1359,7 +1359,7 @@ export default function AccountPage() {
                         disabled={savingProfile}
                         style={{
                           height: "42px", padding: "0 24px", borderRadius: "10px", border: "none",
-                          background: savingProfile ? "#93C5FD" : "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                          background: savingProfile ? "#B4D89C" : "linear-gradient(90deg, #22252C, #4E68C2)",
                           color: "#fff", fontSize: "14px", fontWeight: 700, cursor: savingProfile ? "not-allowed" : "pointer",
                         }}
                       >
@@ -1370,8 +1370,8 @@ export default function AccountPage() {
                 </div>
 
                 {/* Change password */}
-                <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
-                  <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#0F172A", marginBottom: "4px" }}>Change password</h3>
+                <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
+                  <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#22252C", marginBottom: "4px" }}>Change password</h3>
                   <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>Choose a strong password of at least 8 characters.</p>
 
                   <form onSubmit={handleChangePassword} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
@@ -1390,10 +1390,10 @@ export default function AccountPage() {
                             style={{
                               width: "100%", height: "42px", padding: "0 42px 0 12px",
                               borderRadius: "10px", border: "1.5px solid #E2E8F0",
-                              fontSize: "14px", color: "#0F172A", outline: "none",
+                              fontSize: "14px", color: "#22252C", outline: "none",
                               backgroundColor: "#F8FAFC", boxSizing: "border-box",
                             }}
-                            onFocus={(e) => (e.currentTarget.style.borderColor = "#1B5CB5")}
+                            onFocus={(e) => (e.currentTarget.style.borderColor = "#4E68C2")}
                             onBlur={(e) => (e.currentTarget.style.borderColor = "#E2E8F0")}
                           />
                           <button
@@ -1426,7 +1426,7 @@ export default function AccountPage() {
                         disabled={savingPw}
                         style={{
                           height: "42px", padding: "0 24px", borderRadius: "10px", border: "none",
-                          background: savingPw ? "#93C5FD" : "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                          background: savingPw ? "#B4D89C" : "linear-gradient(90deg, #22252C, #4E68C2)",
                           color: "#fff", fontSize: "14px", fontWeight: 700, cursor: savingPw ? "not-allowed" : "pointer",
                         }}
                       >

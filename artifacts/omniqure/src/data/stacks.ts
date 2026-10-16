@@ -69,7 +69,7 @@ export const researchStacks: ResearchStack[] = [
     description:
       "CJC-1295 (No DAC) is a GHRH analogue that stimulates the pituitary's natural GH pulse, while Ipamorelin is a selective GHS (Growth Hormone Secretagogue) that amplifies that pulse without significantly affecting cortisol or prolactin. Their combination is the most studied protocol in GH secretagogue research.",
     badge: "Research Favourite",
-    badgeColor: "#1B5CB5",
+    badgeColor: "#4E68C2",
     icon: "📈",
     difficulty: "Intermediate",
     cycleLength: "12–16 weeks",

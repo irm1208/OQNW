@@ -1,0 +1,38 @@
+{
+  "brand": "OmniQure",
+  "source": "https://ukpeptides.com/",
+  "hero": [
+    "hero-desktop.webp",
+    "hero-mobile.webp"
+  ],
+  "kit": "kit.webp",
+  "products": [
+    "products/bpc-157-tb-500.webp",
+    "products/bpc-157.webp",
+    "products/cjc-ipamorelin.webp",
+    "products/ghk-cu.webp",
+    "products/glow.webp",
+    "products/glp-3.webp",
+    "products/klow.webp",
+    "products/tb500.webp"
+  ],
+  "nasal": [
+    "nasal/bpc-157-tb-500.webp",
+    "nasal/bpc-157.webp",
+    "nasal/dsip.webp",
+    "nasal/glow.webp",
+    "nasal/kisspeptin.webp",
+    "nasal/melanotan-ii.webp",
+    "nasal/nad-500.webp",
+    "nasal/nasal-tanners.webp",
+    "nasal/oxytocin.webp",
+    "nasal/pt-141.webp",
+    "nasal/selank.webp",
+    "nasal/semax.webp"
+  ],
+  "articles": [
+    "articles/glp1.webp",
+    "articles/peptide-bonds.webp",
+    "articles/storage.webp"
+  ]
+}

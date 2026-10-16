@@ -1,7 +1,8 @@
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef } from "react";
 import { Link } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import { BookOpen, Search, X, ExternalLink, Tag } from "lucide-react";
+import PageHero from "@/components/PageHero";
 
 type GlossaryEntry = {
   term: string;
@@ -12,11 +13,11 @@ type GlossaryEntry = {
 };
 
 const CATEGORY_META: Record<string, { label: string; color: string; bg: string }> = {
-  chemistry:      { label: "Chemistry",      color: "#1B5CB5", bg: "#EFF6FF" },
+  chemistry:      { label: "Chemistry",      color: "#4E68C2", bg: "#E8F2DE" },
   pharmacology:   { label: "Pharmacology",   color: "#7C3AED", bg: "#F5F3FF" },
   pathway:        { label: "Pathway",        color: "#059669", bg: "#ECFDF5" },
   research:       { label: "Research",       color: "#D97706", bg: "#FFFBEB" },
-  administration: { label: "Administration", color: "#0891B2", bg: "#F0F9FF" },
+  administration: { label: "Administration", color: "#0891B2", bg: "#FFF6F2" },
   peptide:        { label: "Peptide Class",  color: "#DC2626", bg: "#FEF2F2" },
 };
 
@@ -453,96 +454,91 @@ export default function GlossaryPage() {
     return c;
   }, []);
 
+  const secondaryBtn: React.CSSProperties = {
+    padding: "9px 20px", background: "#fff", color: "var(--ink)",
+    border: "1px solid var(--hairline)", borderRadius: "999px",
+    fontSize: "12px", fontWeight: 500, cursor: "pointer",
+  };
+
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
 
-      {/* Hero */}
-      <div style={{
-        background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
-        padding: "52px 20px 48px", position: "relative", overflow: "hidden",
-      }}>
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-        <div style={{ maxWidth: "700px", margin: "0 auto", textAlign: "center", position: "relative" }}>
-          <div style={{
-            display: "inline-flex", alignItems: "center", gap: "8px",
-            background: "rgba(255,255,255,0.12)", borderRadius: "20px",
-            padding: "6px 16px", marginBottom: "18px",
-          }}>
-            <BookOpen size={13} color="rgba(255,255,255,0.85)" />
-            <span style={{ fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.85)", letterSpacing: "0.06em" }}>RESEARCH GLOSSARY</span>
-          </div>
-          <h1 style={{ fontSize: "clamp(28px, 5vw, 42px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.03em", margin: "0 0 12px" }}>
-            Peptide Research Terminology
-          </h1>
-          <p style={{ fontSize: "clamp(13px, 2vw, 16px)", color: "rgba(255,255,255,0.75)", marginTop: 0, marginBottom: "28px", lineHeight: 1.6 }}>
-            A comprehensive A–Z reference of chemistry, pharmacology, and research terms used across peptide science.
-          </p>
-
-          {/* Search */}
-          <div style={{ position: "relative", maxWidth: "460px", marginLeft: "auto", marginRight: "auto" }}>
-            <Search size={15} style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", color: "#94A3B8" }} />
-            <input
-              type="text"
-              placeholder="Search terms or definitions…"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              style={{
-                width: "100%", padding: "11px 40px 11px 40px",
-                borderRadius: "8px", border: "1px solid rgba(255,255,255,0.2)",
-                background: "rgba(255,255,255,0.95)", fontSize: "13px",
-                outline: "none", boxSizing: "border-box", color: "#1E293B",
-              }}
-            />
-            {search && (
-              <button onClick={() => setSearch("")}
-                style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#94A3B8" }}>
-                <X size={13} />
-              </button>
-            )}
-          </div>
-
-          {/* Stats */}
-          <div style={{ marginTop: "20px", display: "flex", justifyContent: "center", gap: "24px", flexWrap: "wrap" }}>
+      <PageHero
+        crumbs={[{ label: "Glossary" }]}
+        eyebrow="Research Glossary"
+        icon={BookOpen}
+        title="Peptide Research Terminology"
+        aside={
+          <div style={{ display: "flex", gap: "32px", flexWrap: "wrap" }}>
             {[
               { val: GLOSSARY.length, label: "Terms" },
               { val: Object.keys(CATEGORY_META).length, label: "Categories" },
               { val: availableLetters.size, label: "Letters" },
             ].map(({ val, label }) => (
-              <div key={label} style={{ textAlign: "center" }}>
-                <div style={{ fontSize: "20px", fontWeight: 900, color: "#fff" }}>{val}</div>
-                <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.6)", marginTop: "1px" }}>{label}</div>
+              <div key={label}>
+                <div style={{ fontSize: "28px", fontWeight: 600, color: "var(--ink)", lineHeight: 1, letterSpacing: "-0.02em" }}>{val}</div>
+                <div style={{ fontSize: "10px", color: "var(--graphite)", marginTop: "6px", textTransform: "uppercase", letterSpacing: "0.14em" }}>{label}</div>
               </div>
             ))}
           </div>
+        }
+      >
+        <p style={{ margin: 0 }}>
+          A comprehensive A–Z reference of chemistry, pharmacology, and research terms used across peptide science.
+        </p>
+
+        {/* Search */}
+        <div style={{ position: "relative", maxWidth: "460px", marginTop: "20px" }}>
+          <Search size={15} aria-hidden="true" style={{ position: "absolute", left: "16px", top: "50%", transform: "translateY(-50%)", color: "var(--graphite)" }} />
+          <input
+            type="text"
+            aria-label="Search glossary"
+            placeholder="Search terms or definitions…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{
+              width: "100%", height: "44px", padding: "0 40px 0 42px",
+              borderRadius: "999px", border: "1px solid var(--hairline)",
+              background: "#fff", fontSize: "13px",
+              outline: "none", boxSizing: "border-box", color: "var(--ink)",
+            }}
+          />
+          {search && (
+            <button onClick={() => setSearch("")} aria-label="Clear search"
+              style={{ position: "absolute", right: "14px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "var(--graphite)", display: "flex" }}>
+              <X size={13} />
+            </button>
+          )}
         </div>
-      </div>
+      </PageHero>
 
       {/* Category filter bar */}
-      <div style={{ background: "#fff", borderBottom: "1px solid #E2E8F0", padding: "0 20px", overflowX: "auto" }}>
-        <div style={{ maxWidth: "1080px", marginLeft: "auto", marginRight: "auto", display: "flex", gap: "2px" }}>
+      <div style={{ background: "#fff", borderBottom: "1px solid var(--hairline)", overflowX: "auto" }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12" style={{ display: "flex", gap: "2px" }}>
           {categoryKeys.map(key => {
-            const meta = key === "all" ? { label: "All Terms", color: "#475569", bg: "#F1F5F9" } : CATEGORY_META[key];
+            const meta = key === "all" ? { label: "All Terms", color: "var(--ink)", bg: "#F2F0EB" } : CATEGORY_META[key];
             const active = activeCategory === key;
             return (
               <button
                 key={key}
                 onClick={() => { setActiveCategory(key); setSearch(""); }}
+                aria-pressed={active}
                 style={{
                   display: "flex", alignItems: "center", gap: "5px",
                   padding: "13px 14px", border: "none", cursor: "pointer",
                   background: "transparent", whiteSpace: "nowrap",
-                  fontSize: "12px", fontWeight: active ? 700 : 500,
-                  color: active ? meta.color : "#64748B",
-                  borderBottom: active ? `2px solid ${meta.color}` : "2px solid transparent",
+                  fontSize: "12px", fontWeight: active ? 600 : 500,
+                  color: active ? "var(--ink)" : "var(--graphite)",
+                  borderBottom: active ? "2px solid var(--ink)" : "2px solid transparent",
                   transition: "all 0.12s",
                 }}
               >
-                <Tag size={11} style={{ color: active ? meta.color : "#94A3B8" }} />
+                <Tag size={11} style={{ color: active ? meta.color : "var(--graphite)", opacity: active ? 1 : 0.6 }} />
                 {meta.label}
                 <span style={{
-                  background: active ? meta.color + "18" : "#F1F5F9",
-                  color: active ? meta.color : "#94A3B8",
-                  fontSize: "9px", fontWeight: 700, padding: "1px 5px", borderRadius: "8px",
+                  background: "#F2F0EB",
+                  color: "var(--graphite)",
+                  fontSize: "9px", fontWeight: 600, padding: "1px 6px", borderRadius: "999px",
                 }}>{categoryCounts[key] ?? 0}</span>
               </button>
             );
@@ -550,11 +546,11 @@ export default function GlossaryPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: "1080px", marginLeft: "auto", marginRight: "auto", padding: "28px 16px 60px", display: "flex", gap: "28px", alignItems: "flex-start" }}>
+      <div className="max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12" style={{ paddingTop: "32px", paddingBottom: "64px", display: "flex", gap: "28px", alignItems: "flex-start" }}>
 
         {/* A-Z sidebar */}
         {!search && (
-          <div style={{ width: "44px", flexShrink: 0, position: "sticky", top: "20px" }}>
+          <nav aria-label="Jump to letter" style={{ width: "40px", flexShrink: 0, position: "sticky", top: "20px" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
               {ALPHABET.map(letter => {
                 const available = availableLetters.has(letter);
@@ -564,41 +560,41 @@ export default function GlossaryPage() {
                     onClick={() => available && scrollTo(letter)}
                     disabled={!available}
                     style={{
-                      width: "36px", height: "28px", border: "none", borderRadius: "5px",
-                      fontSize: "12px", fontWeight: available ? 700 : 400,
-                      background: available ? "#EFF6FF" : "transparent",
-                      color: available ? "#1B5CB5" : "#CBD5E1",
+                      width: "32px", height: "26px", border: "none", borderRadius: "999px",
+                      fontSize: "12px", fontWeight: available ? 600 : 400,
+                      background: "transparent",
+                      color: available ? "var(--ink)" : "rgba(74,85,104,0.3)",
                       cursor: available ? "pointer" : "default",
                       transition: "all 0.1s",
                     }}
-                    onMouseOver={e => { if (available) e.currentTarget.style.background = "#1B5CB5"; e.currentTarget.style.color = available ? "#fff" : "#CBD5E1"; }}
-                    onMouseOut={e => { if (available) e.currentTarget.style.background = "#EFF6FF"; e.currentTarget.style.color = available ? "#1B5CB5" : "#CBD5E1"; }}
+                    onMouseOver={e => { if (available) e.currentTarget.style.background = "#F2F0EB"; }}
+                    onMouseOut={e => { e.currentTarget.style.background = "transparent"; }}
                   >{letter}</button>
                 );
               })}
             </div>
-          </div>
+          </nav>
         )}
 
         {/* Main glossary */}
         <div style={{ flex: 1, minWidth: 0 }}>
           {filtered.length === 0 ? (
             <div style={{ textAlign: "center", padding: "60px 20px" }}>
-              <BookOpen size={40} color="#CBD5E1" style={{ marginBottom: "12px" }} />
-              <div style={{ fontSize: "16px", fontWeight: 700, color: "#475569", marginBottom: "6px" }}>No terms found</div>
-              <div style={{ fontSize: "13px", color: "#94A3B8", marginBottom: "16px" }}>Try a different search term</div>
+              <BookOpen size={40} color="var(--graphite)" style={{ marginBottom: "12px", opacity: 0.35, display: "inline-block" }} />
+              <div style={{ fontSize: "16px", fontWeight: 600, color: "var(--ink)", marginBottom: "6px" }}>No terms found</div>
+              <div style={{ fontSize: "13px", color: "var(--graphite)", marginBottom: "16px" }}>Try a different search term</div>
               <button onClick={() => { setSearch(""); setActiveCategory("all"); }}
-                style={{ padding: "8px 18px", background: "#1B5CB5", color: "#fff", border: "none", borderRadius: "6px", fontSize: "13px", fontWeight: 600, cursor: "pointer" }}>
+                style={{ padding: "9px 20px", background: "var(--ink)", color: "#fff", border: "none", borderRadius: "999px", fontSize: "13px", fontWeight: 500, cursor: "pointer" }}>
                 Show all terms
               </button>
             </div>
           ) : (
             <>
               {/* Results info */}
-              <div style={{ fontSize: "12px", color: "#94A3B8", marginBottom: "20px" }}>
+              <div style={{ fontSize: "12px", color: "var(--graphite)", marginBottom: "20px" }}>
                 {search
-                  ? <><strong style={{ color: "#374151" }}>{filtered.length}</strong> term{filtered.length !== 1 ? "s" : ""} matching "<strong style={{ color: "#1B5CB5" }}>{search}</strong>"</>
-                  : <><strong style={{ color: "#374151" }}>{filtered.length}</strong> term{filtered.length !== 1 ? "s" : ""} in this glossary</>
+                  ? <><strong style={{ color: "var(--ink)", fontWeight: 600 }}>{filtered.length}</strong> term{filtered.length !== 1 ? "s" : ""} matching "<strong style={{ color: "var(--ink)", fontWeight: 600 }}>{search}</strong>"</>
+                  : <><strong style={{ color: "var(--ink)", fontWeight: 600 }}>{filtered.length}</strong> term{filtered.length !== 1 ? "s" : ""} in this glossary</>
                 }
               </div>
 
@@ -610,17 +606,9 @@ export default function GlossaryPage() {
                   style={{ marginBottom: "36px", scrollMarginTop: "20px" }}
                 >
                   {/* Letter heading */}
-                  <div style={{
-                    display: "flex", alignItems: "center", gap: "12px",
-                    marginBottom: "14px",
-                  }}>
-                    <div style={{
-                      width: "36px", height: "36px", borderRadius: "8px",
-                      background: "linear-gradient(135deg, #1B5CB5 0%, #0D2565 100%)",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: "18px", fontWeight: 900, color: "#fff", flexShrink: 0,
-                    }}>{letter}</div>
-                    <div style={{ height: "1px", flex: 1, background: "#E2E8F0" }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "14px" }}>
+                    <h2 style={{ fontSize: "22px", fontWeight: 600, color: "var(--ink)", letterSpacing: "-0.02em", margin: 0, lineHeight: 1, minWidth: "20px" }}>{letter}</h2>
+                    <div style={{ height: "1px", flex: 1, background: "var(--hairline)" }} />
                   </div>
 
                   {/* Entries */}
@@ -631,20 +619,19 @@ export default function GlossaryPage() {
                         <div
                           key={entry.term}
                           style={{
-                            background: "#fff", border: "1px solid #E2E8F0",
-                            borderRadius: "10px", padding: "16px 18px",
-                            borderLeft: `3px solid ${cat.color}`,
+                            background: "#fff", border: "1px solid rgba(11,18,32,0.09)",
+                            borderRadius: 16, padding: "18px 20px",
                           }}
                         >
                           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", marginBottom: "8px" }}>
                             <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-                              <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0D2565", margin: 0, letterSpacing: "-0.01em" }}>
+                              <h3 style={{ fontSize: "15px", fontWeight: 600, color: "var(--ink)", margin: 0, letterSpacing: "-0.01em" }}>
                                 {entry.term}
                               </h3>
                               <span style={{
                                 background: cat.bg, color: cat.color,
-                                fontSize: "9px", fontWeight: 700, padding: "2px 7px",
-                                borderRadius: "10px", letterSpacing: "0.04em",
+                                fontSize: "9px", fontWeight: 600, padding: "2px 8px",
+                                borderRadius: "999px", letterSpacing: "0.06em",
                                 whiteSpace: "nowrap",
                               }}>{cat.label.toUpperCase()}</span>
                             </div>
@@ -652,7 +639,7 @@ export default function GlossaryPage() {
                               <Link href={entry.seeAlso.href}>
                                 <span style={{
                                   display: "inline-flex", alignItems: "center", gap: "4px",
-                                  fontSize: "11px", color: "#1B5CB5", fontWeight: 600,
+                                  fontSize: "11px", color: "var(--cobalt)", fontWeight: 500,
                                   cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0,
                                 }}>
                                   {entry.seeAlso.label} <ExternalLink size={10} />
@@ -661,25 +648,25 @@ export default function GlossaryPage() {
                             )}
                           </div>
 
-                          <p style={{ fontSize: "13px", color: "#374151", margin: "0 0 10px", lineHeight: "1.7" }}>
+                          <p style={{ fontSize: "13px", color: "var(--graphite)", margin: "0 0 10px", lineHeight: "1.7" }}>
                             {entry.definition}
                           </p>
 
                           {entry.related && entry.related.length > 0 && (
                             <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
-                              <span style={{ fontSize: "10px", fontWeight: 700, color: "#94A3B8", letterSpacing: "0.04em" }}>SEE ALSO:</span>
+                              <span style={{ fontSize: "10px", fontWeight: 600, color: "var(--graphite)", letterSpacing: "0.1em" }}>SEE ALSO:</span>
                               {entry.related.map(rel => (
                                 <span
                                   key={rel}
                                   onClick={() => setSearch(rel)}
                                   style={{
-                                    background: "#F1F5F9", color: "#475569",
-                                    fontSize: "10px", fontWeight: 600, padding: "2px 8px",
-                                    borderRadius: "4px", cursor: "pointer",
+                                    background: "#fff", color: "var(--graphite)", border: "1px solid var(--hairline)",
+                                    fontSize: "10px", fontWeight: 500, padding: "2px 9px",
+                                    borderRadius: "999px", cursor: "pointer",
                                     transition: "all 0.1s",
                                   }}
-                                  onMouseOver={e => { e.currentTarget.style.background = "#EFF6FF"; e.currentTarget.style.color = "#1B5CB5"; }}
-                                  onMouseOut={e => { e.currentTarget.style.background = "#F1F5F9"; e.currentTarget.style.color = "#475569"; }}
+                                  onMouseOver={e => { e.currentTarget.style.background = "#F2F0EB"; e.currentTarget.style.color = "var(--ink)"; }}
+                                  onMouseOut={e => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.color = "var(--graphite)"; }}
                                 >{rel}</span>
                               ))}
                             </div>
@@ -696,28 +683,28 @@ export default function GlossaryPage() {
           {/* CTA footer */}
           <div style={{
             marginTop: "40px",
-            background: "linear-gradient(135deg, #0D2565 0%, #1B5CB5 100%)",
-            borderRadius: "14px", padding: "28px 28px",
+            background: "#F2F0EB", border: "1px solid var(--hairline)",
+            borderRadius: 16, padding: "28px",
             display: "flex", alignItems: "center", justifyContent: "space-between",
             flexWrap: "wrap", gap: "18px",
           }}>
             <div>
-              <div style={{ fontSize: "16px", fontWeight: 800, color: "#fff", marginBottom: "4px" }}>Ready to explore the research?</div>
-              <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.75)" }}>Browse protocols, stacks, and product data</div>
+              <div style={{ fontSize: "17px", fontWeight: 600, color: "var(--ink)", letterSpacing: "-0.01em", marginBottom: "4px" }}>Ready to explore the research?</div>
+              <div style={{ fontSize: "13px", color: "var(--graphite)" }}>Browse protocols, stacks, and product data</div>
             </div>
             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
               <Link href="/protocols">
-                <button style={{ padding: "9px 20px", background: "#fff", color: "#1B5CB5", border: "none", borderRadius: "7px", fontSize: "12px", fontWeight: 700, cursor: "pointer" }}>
+                <button style={{ ...secondaryBtn, background: "var(--ink)", color: "#fff", border: "1px solid var(--ink)" }}>
                   Protocols Reference
                 </button>
               </Link>
               <Link href="/stacks">
-                <button style={{ padding: "9px 20px", background: "rgba(255,255,255,0.15)", color: "#fff", border: "1px solid rgba(255,255,255,0.3)", borderRadius: "7px", fontSize: "12px", fontWeight: 600, cursor: "pointer" }}>
+                <button style={secondaryBtn}>
                   Research Stacks
                 </button>
               </Link>
               <Link href="/faq">
-                <button style={{ padding: "9px 20px", background: "rgba(255,255,255,0.15)", color: "#fff", border: "1px solid rgba(255,255,255,0.3)", borderRadius: "7px", fontSize: "12px", fontWeight: 600, cursor: "pointer" }}>
+                <button style={secondaryBtn}>
                   FAQ
                 </button>
               </Link>

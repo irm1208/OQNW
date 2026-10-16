@@ -13,10 +13,10 @@ import { FlaskConical, Users, Clock, BookOpen, TrendingUp, TrendingDown, Minus, 
 const OUTCOME_COLORS: Record<string, { bg: string; text: string; border: string }> = {
   "Healing & Recovery": { bg: "#ECFDF5", text: "#059669", border: "#6EE7B7" },
   "Body Composition":   { bg: "#F5F3FF", text: "#7C3AED", border: "#C4B5FD" },
-  "Cognitive":          { bg: "#EFF6FF", text: "#1D4ED8", border: "#93C5FD" },
+  "Cognitive":          { bg: "#E8F2DE", text: "#3D55A8", border: "#B4D89C" },
   "Longevity":          { bg: "#FFF7ED", text: "#B45309", border: "#FCD34D" },
   "Hormonal":           { bg: "#FDF2F8", text: "#DB2777", border: "#F9A8D4" },
-  "Metabolic":          { bg: "#F0F9FF", text: "#0369A1", border: "#7DD3FC" },
+  "Metabolic":          { bg: "#FFF6F2", text: "#0369A1", border: "#7DD3FC" },
 };
 
 function pct(m: Metric): number {
@@ -102,7 +102,7 @@ function CaseCard({ c }: { c: ResearchCase }) {
       border: "1px solid #E2E8F0",
       borderRadius: "14px",
       overflow: "hidden",
-      boxShadow: expanded ? "0 6px 28px rgba(27,92,181,0.10)" : "0 1px 4px rgba(0,0,0,0.04)",
+      boxShadow: expanded ? "0 6px 28px rgba(59, 98, 171,0.10)" : "0 1px 4px rgba(0,0,0,0.04)",
       transition: "box-shadow 0.2s",
     }}>
       <div style={{ padding: "18px 20px 16px" }}>
@@ -120,10 +120,10 @@ function CaseCard({ c }: { c: ResearchCase }) {
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "12px" }}>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: "11px", fontWeight: 700, color: "#1B5CB5", marginBottom: "3px", letterSpacing: "0.04em" }}>
+            <div style={{ fontSize: "11px", fontWeight: 700, color: "#4E68C2", marginBottom: "3px", letterSpacing: "0.04em" }}>
               {c.peptide}
             </div>
-            <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#0D2565", margin: "0 0 6px", lineHeight: 1.3 }}>
+            <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#22252C", margin: "0 0 6px", lineHeight: 1.3 }}>
               {c.title}
             </h3>
             <p style={{ fontSize: "12px", color: "#64748B", margin: "0", lineHeight: 1.6, display: expanded ? "block" : "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: expanded ? "visible" : "hidden" }}>
@@ -165,7 +165,7 @@ function CaseCard({ c }: { c: ResearchCase }) {
             <Link href={`/product/${c.productSlug}`} style={{ textDecoration: "none" }}>
               <div style={{
                 display: "inline-flex", alignItems: "center", gap: "6px",
-                background: "#1B5CB5", color: "#fff",
+                background: "#4E68C2", color: "#fff",
                 fontSize: "12px", fontWeight: 700,
                 padding: "7px 14px", borderRadius: "8px",
                 cursor: "pointer",
@@ -220,26 +220,26 @@ export default function ResearchResultsPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#F8FAFC" }}>
-      <div style={{ background: "linear-gradient(135deg, #0D2565 0%, #1B5CB5 100%)", padding: "56px 24px 48px" }}>
+      <div style={{ background: "linear-gradient(135deg, #22252C 0%, #4E68C2 100%)", padding: "56px 24px 48px" }}>
         <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: "7px",
             background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)",
             padding: "5px 14px", borderRadius: "20px", marginBottom: "18px",
           }}>
-            <FlaskConical size={13} color="#93C5FD" />
-            <span style={{ fontSize: "12px", fontWeight: 700, color: "#93C5FD", letterSpacing: "0.06em" }}>
+            <FlaskConical size={13} color="#B4D89C" />
+            <span style={{ fontSize: "12px", fontWeight: 700, color: "#B4D89C", letterSpacing: "0.06em" }}>
               PEER-REVIEWED RESEARCH DATA
             </span>
           </div>
           <h1 style={{
             fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 900, color: "#fff",
             margin: "0 0 14px", letterSpacing: "-0.02em", lineHeight: 1.15,
-            fontFamily: "'Arimo', Arial, sans-serif",
+            fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif",
           }}>
             Before & After Research Results
           </h1>
-          <p style={{ fontSize: "15px", color: "#BFDBFE", maxWidth: "600px", margin: "0 auto 24px", lineHeight: 1.7 }}>
+          <p style={{ fontSize: "15px", color: "#C8DDB4", maxWidth: "600px", margin: "0 auto 24px", lineHeight: 1.7 }}>
             Quantitative biomarker data from published studies featuring the peptides available in our catalogue. Each case reports baseline and post-protocol measurements with the source reference.
           </p>
 
@@ -284,10 +284,10 @@ export default function ResearchResultsPage() {
                   display: "inline-flex", alignItems: "center", gap: "5px",
                   padding: "6px 14px", borderRadius: "20px", cursor: "pointer",
                   border: isActive
-                    ? `1.5px solid ${colors?.text ?? "#1B5CB5"}`
+                    ? `1.5px solid ${colors?.text ?? "#4E68C2"}`
                     : "1.5px solid #E2E8F0",
-                  background: isActive ? (colors?.bg ?? "#EFF6FF") : "#fff",
-                  color: isActive ? (colors?.text ?? "#1B5CB5") : "#64748B",
+                  background: isActive ? (colors?.bg ?? "#E8F2DE") : "#fff",
+                  color: isActive ? (colors?.text ?? "#4E68C2") : "#64748B",
                   fontSize: "12px", fontWeight: isActive ? 700 : 500,
                   transition: "all 0.15s",
                 }}
@@ -295,7 +295,7 @@ export default function ResearchResultsPage() {
                 {type}
                 <span style={{
                   fontSize: "10px", fontWeight: 700,
-                  background: isActive ? (colors?.text ?? "#1B5CB5") : "#F1F5F9",
+                  background: isActive ? (colors?.text ?? "#4E68C2") : "#F1F5F9",
                   color: isActive ? "#fff" : "#94A3B8",
                   padding: "0px 6px", borderRadius: "10px",
                 }}>{counts[type] ?? 0}</span>
@@ -318,12 +318,12 @@ export default function ResearchResultsPage() {
 
         <div style={{
           marginTop: "48px", padding: "28px 32px",
-          background: "linear-gradient(135deg, #EFF6FF 0%, #F0F9FF 100%)",
-          border: "1px solid #BFDBFE", borderRadius: "16px",
+          background: "linear-gradient(135deg, #E8F2DE 0%, #FFF6F2 100%)",
+          border: "1px solid #C8DDB4", borderRadius: "16px",
           display: "flex", flexWrap: "wrap", gap: "20px", alignItems: "center", justifyContent: "space-between",
         }}>
           <div>
-            <h3 style={{ fontSize: "17px", fontWeight: 800, color: "#0D2565", margin: "0 0 6px" }}>
+            <h3 style={{ fontSize: "17px", fontWeight: 800, color: "#22252C", margin: "0 0 6px" }}>
               Explore the underlying protocols
             </h3>
             <p style={{ fontSize: "13px", color: "#475569", margin: 0, lineHeight: 1.6 }}>
@@ -334,7 +334,7 @@ export default function ResearchResultsPage() {
             <Link href="/protocols" style={{ textDecoration: "none" }}>
               <div style={{
                 display: "inline-flex", alignItems: "center", gap: "6px",
-                background: "#1B5CB5", color: "#fff",
+                background: "#4E68C2", color: "#fff",
                 fontSize: "13px", fontWeight: 700,
                 padding: "9px 18px", borderRadius: "9px", cursor: "pointer",
               }}>
@@ -344,8 +344,8 @@ export default function ResearchResultsPage() {
             <Link href="/lab-reports" style={{ textDecoration: "none" }}>
               <div style={{
                 display: "inline-flex", alignItems: "center", gap: "6px",
-                background: "#fff", color: "#1B5CB5",
-                border: "1.5px solid #BFDBFE",
+                background: "#fff", color: "#4E68C2",
+                border: "1.5px solid #C8DDB4",
                 fontSize: "13px", fontWeight: 700,
                 padding: "9px 18px", borderRadius: "9px", cursor: "pointer",
               }}>

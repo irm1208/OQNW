@@ -64,9 +64,9 @@ export default function ResetPassword() {
   return (
     <div
       style={{
-        fontFamily: "'Arimo', Arial, sans-serif",
+        fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif",
         minHeight: "calc(100vh - 120px)",
-        background: "linear-gradient(135deg, #F0F5FF 0%, #F7FAFF 50%, #EEF4FF 100%)",
+        background: "#F2F0EB",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -79,12 +79,12 @@ export default function ResetPassword() {
           <div style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             width: "52px", height: "52px", borderRadius: "14px",
-            background: "linear-gradient(135deg, #0D2565, #1B5CB5)",
+            background: "#1D2948",
             marginBottom: "16px",
           }}>
             <FlaskConical size={24} color="#fff" />
           </div>
-          <h1 style={{ fontSize: "26px", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.025em", marginBottom: "6px" }}>
+          <h1 style={{ fontSize: "26px", fontWeight: 800, color: "#22252C", letterSpacing: "-0.025em", marginBottom: "6px" }}>
             Set a new password
           </h1>
           <p style={{ fontSize: "14px", color: "#64748B" }}>
@@ -95,27 +95,27 @@ export default function ResetPassword() {
         <div style={{
           backgroundColor: "#fff",
           borderRadius: "20px",
-          border: "1.5px solid #E8EDF5",
+          border: "1.5px solid #D3D8E2",
           boxShadow: "0 8px 48px rgba(15,23,42,0.09)",
           padding: "36px 32px",
         }}>
           {success ? (
             <div style={{ textAlign: "center" }}>
               <CheckCircle2 size={40} style={{ color: "#059669", margin: "0 auto 16px" }} />
-              <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A", marginBottom: "10px" }}>
+              <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#22252C", marginBottom: "10px" }}>
                 Password updated
               </h2>
               <p style={{ fontSize: "14px", color: "#64748B", lineHeight: 1.6, marginBottom: "24px" }}>
                 Your password has been changed successfully. Redirecting you to sign in…
               </p>
-              <Link href="/sign-in" style={{ fontSize: "14px", color: "#1B5CB5", fontWeight: 600, textDecoration: "none" }}>
+              <Link href="/sign-in" style={{ fontSize: "14px", color: "#4E68C2", fontWeight: 600, textDecoration: "none" }}>
                 Sign in now →
               </Link>
             </div>
           ) : !token && error ? (
             <div style={{ textAlign: "center" }}>
               <XCircle size={40} style={{ color: "#DC2626", margin: "0 auto 16px" }} />
-              <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#0F172A", marginBottom: "10px" }}>
+              <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#22252C", marginBottom: "10px" }}>
                 Invalid reset link
               </h2>
               <p style={{ fontSize: "14px", color: "#64748B", lineHeight: 1.6, marginBottom: "24px" }}>
@@ -125,7 +125,7 @@ export default function ResetPassword() {
                 href="/forgot-password"
                 style={{
                   display: "inline-block", padding: "10px 24px", borderRadius: "10px",
-                  background: "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                  background: "#1D2948",
                   color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none",
                 }}
               >
@@ -156,11 +156,11 @@ export default function ResetPassword() {
                       style={{
                         width: "100%", height: "44px", paddingLeft: "38px", paddingRight: "42px",
                         borderRadius: "10px", border: "1.5px solid #E2E8F0",
-                        fontSize: "14px", color: "#0F172A", outline: "none",
+                        fontSize: "14px", color: "#22252C", outline: "none",
                         backgroundColor: "#F8FAFC", boxSizing: "border-box",
                         transition: "border-color 0.15s",
                       }}
-                      onFocus={e => (e.currentTarget.style.borderColor = "#1B5CB5")}
+                      onFocus={e => (e.currentTarget.style.borderColor = "#4E68C2")}
                       onBlur={e => (e.currentTarget.style.borderColor = "#E2E8F0")}
                     />
                     <button
@@ -189,7 +189,7 @@ export default function ResetPassword() {
                 disabled={loading || !token}
                 style={{
                   width: "100%", height: "46px", borderRadius: "10px", border: "none",
-                  background: loading ? "#93C5FD" : "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                  background: loading ? "#4A5672" : "#1D2948",
                   color: "#fff", fontSize: "15px", fontWeight: 700,
                   cursor: loading ? "not-allowed" : "pointer",
                   transition: "opacity 0.2s",

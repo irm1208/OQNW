@@ -109,11 +109,11 @@ export default function WallidReturn() {
   // ── Verifying / polling ───────────────────────────────────────────────────
   if (verifyState === "verifying") {
     return (
-      <PageShell bg="linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)">
+      <PageShell bg="linear-gradient(135deg, #FFF6F2 0%, #E0F2FE 100%)">
         <div style={{ textAlign: "center" }}>
           <Loader2 size={56} style={{ color: "#0369A1", animation: "spin 1s linear infinite" }} />
           <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#0F172A", margin: "20px 0 8px" }}>
+          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#22252C", margin: "20px 0 8px" }}>
             Confirming your payment…
           </h1>
           <p style={{ fontSize: "14px", color: "#64748B", lineHeight: 1.6 }}>
@@ -121,7 +121,7 @@ export default function WallidReturn() {
           </p>
           {orderNumber && (
             <p style={{ fontSize: "13px", color: "#94A3B8", marginTop: 12 }}>
-              Order reference: <strong style={{ color: "#0F172A" }}>{orderNumber}</strong>
+              Order reference: <strong style={{ color: "#22252C" }}>{orderNumber}</strong>
             </p>
           )}
         </div>
@@ -135,7 +135,7 @@ export default function WallidReturn() {
       <PageShell bg="linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%)">
         <div style={{ textAlign: "center" }}>
           <CheckCircle size={64} style={{ color: "#059669" }} />
-          <h1 style={{ fontSize: "24px", fontWeight: 900, color: "#0F172A", margin: "16px 0 8px" }}>
+          <h1 style={{ fontSize: "24px", fontWeight: 900, color: "#22252C", margin: "16px 0 8px" }}>
             Payment Confirmed!
           </h1>
           {firstName && (
@@ -153,7 +153,7 @@ export default function WallidReturn() {
               borderRadius: 10, padding: "14px 20px", marginBottom: 28,
             }}>
               <p style={{ fontSize: "12px", color: "#059669", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", margin: 0 }}>Order Reference</p>
-              <p style={{ fontSize: "18px", fontWeight: 900, color: "#0F172A", margin: "4px 0 0", letterSpacing: "0.04em" }}>{orderNumber}</p>
+              <p style={{ fontSize: "18px", fontWeight: 900, color: "#22252C", margin: "4px 0 0", letterSpacing: "0.04em" }}>{orderNumber}</p>
               {payment && (
                 <p style={{ fontSize: "13px", color: "#64748B", margin: "4px 0 0" }}>
                   {formatPaymentAmount(payment.amountMinor, payment.currency)}
@@ -194,7 +194,7 @@ export default function WallidReturn() {
       <PageShell bg="linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)">
         <div style={{ textAlign: "center" }}>
           <Clock size={56} style={{ color: "#D97706" }} />
-          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#0F172A", margin: "16px 0 8px" }}>
+          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#22252C", margin: "16px 0 8px" }}>
             Payment Processing
           </h1>
           <p style={{ fontSize: "15px", color: "#64748B", marginBottom: 24, lineHeight: 1.6 }}>
@@ -207,7 +207,7 @@ export default function WallidReturn() {
               borderRadius: 10, padding: "14px 20px", marginBottom: 24,
             }}>
               <p style={{ fontSize: "12px", color: "#D97706", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", margin: 0 }}>Order Reference</p>
-              <p style={{ fontSize: "17px", fontWeight: 900, color: "#0F172A", margin: "4px 0 0" }}>{orderNumber}</p>
+              <p style={{ fontSize: "17px", fontWeight: 900, color: "#22252C", margin: "4px 0 0" }}>{orderNumber}</p>
             </div>
           )}
           <p style={{ fontSize: "13px", color: "#94A3B8", marginBottom: 28, lineHeight: 1.6 }}>
@@ -241,7 +241,7 @@ export default function WallidReturn() {
       <PageShell bg="linear-gradient(135deg, #FFF1F2 0%, #FFF5F5 100%)">
         <div style={{ textAlign: "center" }}>
           <XCircle size={64} style={{ color: "#EF4444" }} />
-          <h1 style={{ fontSize: "24px", fontWeight: 900, color: "#0F172A", margin: "16px 0 8px" }}>
+          <h1 style={{ fontSize: "24px", fontWeight: 900, color: "#22252C", margin: "16px 0 8px" }}>
             Payment Unsuccessful
           </h1>
           <p style={{ fontSize: "15px", color: "#64748B", marginBottom: 24, lineHeight: 1.6 }}>
@@ -253,7 +253,7 @@ export default function WallidReturn() {
               borderRadius: 10, padding: "12px 20px", marginBottom: 28,
             }}>
               <p style={{ fontSize: "12px", color: "#EF4444", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", margin: 0 }}>Order Reference</p>
-              <p style={{ fontSize: "16px", fontWeight: 800, color: "#0F172A", margin: "4px 0 0" }}>{orderNumber}</p>
+              <p style={{ fontSize: "16px", fontWeight: 800, color: "#22252C", margin: "4px 0 0" }}>{orderNumber}</p>
             </div>
           )}
           <p style={{ fontSize: "13px", color: "#94A3B8", marginBottom: 28 }}>
@@ -262,7 +262,7 @@ export default function WallidReturn() {
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <Link href="/cart" style={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-              background: "linear-gradient(90deg, #0a1d4f, #1240A0)",
+              background: "linear-gradient(90deg, #0a1d4f, #4E68C2)",
               color: "#fff", textDecoration: "none",
               borderRadius: 10, padding: "13px 20px",
               fontSize: "14px", fontWeight: 800,
@@ -281,12 +281,12 @@ export default function WallidReturn() {
     <PageShell bg="linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)">
       <div style={{ textAlign: "center" }}>
         <XCircle size={56} style={{ color: "#94A3B8" }} />
-        <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#0F172A", margin: "16px 0 8px" }}>
+        <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#22252C", margin: "16px 0 8px" }}>
           Something went wrong
         </h1>
         <p style={{ fontSize: "14px", color: "#64748B", marginBottom: 28, lineHeight: 1.6 }}>
           We couldn't verify your payment status. If you believe your payment went through, please check your email or{" "}
-          <Link href="/track-order" style={{ color: "#1240A0" }}>track your order</Link>.
+          <Link href="/track-order" style={{ color: "#4E68C2" }}>track your order</Link>.
         </p>
         <Link href="/" style={secondaryBtn}>Back to Homepage</Link>
       </div>
@@ -302,7 +302,7 @@ function PageShell({ children, bg }: { children: React.ReactNode; bg: string }) 
       minHeight: "100vh",
       background: bg,
       display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-      padding: "40px 20px", fontFamily: "'Arimo', Arial, sans-serif",
+      padding: "40px 20px", fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif",
     }}>
       <div style={{
         background: "#fff",
@@ -321,7 +321,7 @@ function PageShell({ children, bg }: { children: React.ReactNode; bg: string }) 
 const secondaryBtn: React.CSSProperties = {
   display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
   background: "#F8FAFC", border: "1px solid #E2E8F0",
-  color: "#0F172A", textDecoration: "none",
+  color: "#22252C", textDecoration: "none",
   borderRadius: 10, padding: "13px 20px",
   fontSize: "14px", fontWeight: 700,
 };

@@ -1,7 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { useLocation, Link } from "wouter";
-import Sidebar from "@/components/Sidebar";
-import GroupedProductCard from "@/components/GroupedProductCard";
+import { Search } from "lucide-react";
+import CatalogueCard from "@/components/CatalogueCard";
+import { Container, Eyebrow, SectionTitle } from "@/components/home/HomeSections";
 import { groupProducts } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
 import { isHiddenCategory } from "@/data/products";
@@ -10,6 +11,13 @@ import { useSEO } from "@/hooks/useSEO";
 
 
 type SortOption = "name" | "price-low" | "price-high" | "bestsellers";
+
+const CATEGORY_ORDER = [
+  "Growth Peptides", "Healing Peptides", "Longevity Peptides", "Cellular Health",
+  "Nootropics", "Immune Support", "Research Peptides", "Peptide Blends",
+  "Skin & Repair", "Hormonal Peptides", "Growth Hormone", "Anti-Inflammatory",
+  "Cognitive Peptides",
+];
 
 const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   "Growth Peptides": "Research growth peptides including CJC-1295, GHRP-2, Ipamorelin and more. Independent results confirm 99%+ purity.",
@@ -100,255 +108,126 @@ export default function AllPeptides() {
     window.history.pushState(null, "", window.location.pathname + params);
   };
 
+  const categories = useMemo(() => {
+    const seen = new Set<string>();
+    for (const p of products) {
+      if (p.category && !isHiddenCategory(p.category) && !isBacWaterProduct(p)) seen.add(p.category);
+    }
+    return ["All Peptides", ...CATEGORY_ORDER.filter(c => seen.has(c))];
+  }, [products]);
+
+  const clearSearch = () => {
+    setSearchQuery("");
+    window.history.pushState(null, "", window.location.pathname);
+  };
+
+  const heading = searchQuery.trim()
+    ? `Search: “${searchQuery.trim()}”`
+    : selectedCategory === "All Peptides" ? "The full catalogue." : `${selectedCategory}.`;
+
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
-
-      {/* Premium page header */}
-      <div style={{
-        background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
-        padding: "36px 0 30px",
-        position: "relative",
-        overflow: "hidden",
-      }}>
-        {/* Dot grid */}
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)",
-          backgroundSize: "28px 28px", pointerEvents: "none",
-        }} />
-        {/* Glow */}
-        <div style={{
-          position: "absolute", top: "-60px", right: "10%",
-          width: "280px", height: "280px", borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }} />
-        <div className="max-w-[1280px] mx-auto px-3 md:px-4" style={{ position: "relative", zIndex: 1 }}>
-          <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.14em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", marginBottom: "8px" }}>
-            OmniQure · Research Catalogue
-          </p>
-          <h1 style={{ fontSize: "clamp(22px, 4vw, 34px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: "9px" }}>
-            {searchQuery.trim()
-              ? `Search: "${searchQuery.trim()}"`
-              : selectedCategory === "All Peptides" ? "All Research Peptides" : selectedCategory}
-          </h1>
-          <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", maxWidth: "540px", lineHeight: 1.65, marginBottom: "16px" }}>
-            {searchQuery.trim()
-              ? `Showing results for "${searchQuery.trim()}" — independent results confirm 99%+ purity.`
-              : selectedCategory === "All Peptides"
-              ? "81 verified compounds — each independently verified."
-              : `Precision peptides for ${selectedCategory.toLowerCase()} research, with published independent results confirming 99%+ purity.`}
-          </p>
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "16px" }}>
-            {["99%+ Verified Purity", "Janoshik Verified", "Lyophilized"].map(t => (
-              <span key={t} style={{
-                fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.6)",
-                backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)",
-                padding: "4px 12px", borderRadius: "20px",
-              }}>
-                ✓ {t}
-              </span>
-            ))}
-          </div>
-          {/* Search bar */}
-          <div style={{ position: "relative", maxWidth: "480px" }}>
-            <svg style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "rgba(255,255,255,0.4)" }} width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            </svg>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => {
-                setSearchQuery(e.target.value);
-                const params = e.target.value.trim() ? `?search=${encodeURIComponent(e.target.value.trim())}` : "";
-                window.history.replaceState(null, "", window.location.pathname + params);
-              }}
-              placeholder="Search peptides, e.g. BPC-157, Ipamorelin…"
-              style={{
-                width: "100%", padding: "10px 40px 10px 40px",
-                borderRadius: "10px", border: "1px solid rgba(255,255,255,0.18)",
-                backgroundColor: "rgba(255,255,255,0.08)", color: "#fff",
-                fontSize: "13.5px", outline: "none",
-                fontFamily: "'Arimo', Arial, sans-serif",
-              }}
-            />
-            {searchQuery && (
-              <button
-                onClick={() => { setSearchQuery(""); window.history.replaceState(null, "", window.location.pathname); }}
-                style={{
-                  position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)",
-                  background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.5)",
-                  padding: "4px", display: "flex", alignItems: "center",
-                }}
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Bundle & Save banner */}
-      <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", borderBottom: "1px solid rgba(255,255,255,0.08)", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: "-30px", right: "18%", width: "180px", height: "80px", borderRadius: "50%", background: "radial-gradient(circle, rgba(52,211,153,0.16) 0%, transparent 70%)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)", backgroundSize: "22px 22px", pointerEvents: "none" }} />
-        <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-3" style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "10px", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
-              <div style={{ backgroundColor: "#34D399", borderRadius: "5px", padding: "2px 8px" }}>
-                <span style={{ fontSize: "9.5px", fontWeight: 900, letterSpacing: "0.1em", color: "#022c22", textTransform: "uppercase" }}>Bundle & Save</span>
-              </div>
-              <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>Buy more, get rewards — 3-4 vials unlock a free 10ml BAC water ampule</span>
-            </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", alignItems: "center" }}>
-              {[
-                { label: "3-4 vials", freebie: "Free 10ml BAC Water Ampule",  bg: "rgba(96,165,250,0.15)",  border: "rgba(96,165,250,0.4)",  color: "#93C5FD" },
-                { label: "5-9 vials", freebie: "1 Peptide Free",  bg: "rgba(52,211,153,0.15)",  border: "rgba(52,211,153,0.4)",  color: "#6EE7B7" },
-                { label: "10+ vials", freebie: "2 Peptides Free", bg: "rgba(248,113,113,0.18)", border: "rgba(248,113,113,0.45)", color: "#FCA5A5" },
-              ].map(t => (
-                <div key={t.label} style={{ display: "flex", alignItems: "center", gap: "5px", backgroundColor: t.bg, border: `1px solid ${t.border}`, borderRadius: "7px", padding: "4px 10px" }}>
-                  <span style={{ fontSize: "10.5px", color: "rgba(255,255,255,0.5)", fontWeight: 600 }}>{t.label}</span>
-                  <span style={{ fontSize: "11.5px", fontWeight: 900, color: t.color, lineHeight: 1 }}>{t.freebie}</span>
-                </div>
-              ))}
-              <Link href="/all-peptides" style={{ fontSize: "11.5px", fontWeight: 800, color: "#022c22", backgroundColor: "#34D399", padding: "5px 15px", borderRadius: "7px", textDecoration: "none", whiteSpace: "nowrap", boxShadow: "0 0 12px rgba(52,211,153,0.3)" }}>
-                Build Bundle →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile category scroll strip — hidden on md+ where sidebar shows */}
-      <div className="md:hidden overflow-x-auto scrollbar-none border-b border-slate-200 bg-white sticky top-0 z-10">
-        <div className="flex gap-2 px-3 py-2.5 w-max">
-          {["All Peptides", "Growth Peptides", "Healing Peptides",
-            "Longevity Peptides", "Cellular Health", "Nootropics", "Immune Support",
-            "Research Peptides", "Peptide Blends", "Skin & Repair",
-            "Hormonal Peptides", "Growth Hormone", "Anti-Inflammatory", "Cognitive Peptides",
-          ].map(cat => (
-            <button
-              key={cat}
-              onClick={() => handleCategoryChange(cat)}
-              style={{
-                fontSize: "12px",
-                fontWeight: 700,
-                whiteSpace: "nowrap",
-                padding: "6px 14px",
-                borderRadius: "20px",
-                border: selectedCategory === cat ? "2px solid #1B5CB5" : "1.5px solid #E2E8F0",
-                backgroundColor: selectedCategory === cat ? "#EEF4FF" : "#F8FAFC",
-                color: selectedCategory === cat ? "#1240A0" : "#64748B",
-                cursor: "pointer",
-                transition: "all 0.15s",
-                flexShrink: 0,
-              }}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Main content */}
-      <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-4 md:py-6">
-
-        <div className="flex gap-6">
-          {/* Sidebar — tablet and above */}
-          <div className="hidden md:block flex-shrink-0">
-            <div
-              className="flex items-center gap-2 px-3 py-2.5 rounded-t-xl mb-3"
-              style={{ backgroundColor: "#1B5CB5", color: "#fff" }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
-              </svg>
-              <span className="font-semibold" style={{ fontSize: "13px" }}>Product List</span>
-            </div>
-            <Sidebar selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
-          </div>
-
-          {/* Products */}
-          <div className="flex-1 min-w-0">
-            <div className="mb-4">
-              <h1 className="font-bold" style={{ fontSize: "20px", color: "#0F172A" }}>
+    <div className="bg-white">
+      {/* Page header */}
+      <section className="border-b" style={{ borderColor: "var(--hairline)", background: "#F8F9FB" }}>
+        <Container className="pt-8 pb-10 lg:pt-10 lg:pb-12">
+          <nav aria-label="Breadcrumb" className="mb-6 uppercase" style={{ fontSize: 10.5, letterSpacing: "0.12em", color: "rgba(75,85,105,0.6)" }}>
+            <Link href="/" className="hover:text-[var(--ink)]">Home</Link>
+            <span className="mx-1.5">/</span>
+            <span style={{ color: "var(--ink)" }}>Catalogue</span>
+          </nav>
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <Eyebrow>Research peptides</Eyebrow>
+              <SectionTitle size="clamp(32px, 4.4vw, 56px)">{heading}</SectionTitle>
+              <p className="mt-4 max-w-[440px]" style={{ fontSize: 14.5, lineHeight: 1.55, color: "var(--graphite)" }}>
                 {searchQuery.trim()
-                  ? `Search results for "${searchQuery.trim()}"`
-                  : selectedCategory === "All Peptides" ? "All Peptides" : selectedCategory}
-              </h1>
-              <p className="hidden sm:block" style={{ fontSize: "13px", color: "#64748B", marginTop: "3px" }}>
-                {searchQuery.trim()
-                  ? <span>
-                      Showing {groupedProducts.length} result{groupedProducts.length !== 1 ? "s" : ""}
-                      {" · "}
-                      <button
-                        onClick={() => { setSearchQuery(""); window.history.pushState(null, "", window.location.pathname); }}
-                        style={{ background: "none", border: "none", color: "#1B5CB5", cursor: "pointer", fontSize: "13px", fontWeight: 600, padding: 0 }}
-                      >
-                        Clear search
-                      </button>
-                    </span>
-                  : "Research peptides available direct from our online catalogue."}
+                  ? `Showing results for “${searchQuery.trim()}”. Independent results confirm 99%+ purity.`
+                  : CATEGORY_DESCRIPTIONS[selectedCategory] ?? "Verified research compounds, 99%+ purity, each independently lab-tested."}
               </p>
             </div>
+            <div className="relative w-full lg:w-[300px]">
+              <Search size={15} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: "rgba(75,85,105,0.55)" }} />
+              <input
+                type="search"
+                aria-label="Search peptides"
+                value={searchQuery}
+                onChange={e => {
+                  setSearchQuery(e.target.value);
+                  const params = e.target.value.trim() ? `?search=${encodeURIComponent(e.target.value.trim())}` : "";
+                  window.history.replaceState(null, "", window.location.pathname + params);
+                }}
+                placeholder="Search peptide or code…"
+                className="w-full rounded-[10px] border bg-white py-2.5 pl-10 pr-3 outline-none focus:border-[var(--cobalt)]"
+                style={{ borderColor: "var(--hairline)", fontSize: 13.5, color: "var(--ink)" }}
+              />
+            </div>
+          </div>
+        </Container>
+      </section>
 
-            {/* Count + Sort */}
-            <div className="flex items-center justify-between mb-4">
-              <span
-                className="px-3 py-1 rounded-full font-medium"
-                style={{ fontSize: "12px", color: "#475569", backgroundColor: "#EEF4FF", border: "1px solid #BFDBFE" }}
-              >
-                {groupedProducts.length} Products
-              </span>
-              <div className="flex items-center gap-1.5">
-                <span className="hidden sm:inline" style={{ fontSize: "12px", color: "#94A3B8" }}>Sort by</span>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as SortOption)}
-                  className="outline-none"
+      {/* Toolbar: category chips, result count, sort */}
+      <section className="sticky top-0 z-10 border-b bg-white/95 backdrop-blur" style={{ borderColor: "var(--hairline)" }}>
+        <Container className="flex items-center gap-4 py-3">
+          <div className="flex min-w-0 flex-1 gap-1.5 overflow-x-auto scrollbar-none" role="tablist" aria-label="Filter by category">
+            {categories.map(cat => {
+              const active = !searchQuery.trim() && selectedCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => { if (searchQuery) setSearchQuery(""); handleCategoryChange(cat); }}
+                  className="shrink-0 whitespace-nowrap rounded-full border px-3 py-1.5 transition-colors"
                   style={{
-                    fontSize: "12px",
-                    color: "#374151",
-                    border: "1px solid #E2E8F0",
-                    borderRadius: "8px",
-                    padding: "4px 8px",
-                    backgroundColor: "#fff",
-                    cursor: "pointer",
+                    fontSize: 12, fontWeight: 500,
+                    borderColor: active ? "var(--ink)" : "var(--hairline)",
+                    background: active ? "var(--ink)" : "#fff",
+                    color: active ? "#fff" : "var(--graphite)",
                   }}
                 >
-                  <option value="name">Product Name</option>
-                  <option value="price-low">Price (Low–High)</option>
-                  <option value="price-high">Price (High–Low)</option>
-                  <option value="bestsellers">Best Sellers</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Responsive grid: 2 cols mobile, 3 tablet, 4 desktop */}
-            <div className="product-card-grid grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-20 sm:gap-x-12 sm:gap-y-24 lg:gap-x-14 lg:gap-y-28">
-              {groupedProducts.map((group) => (
-                <GroupedProductCard key={group.baseName} group={group} />
-              ))}
-            </div>
-
-            {groupedProducts.length === 0 && (
-              <div className="text-center py-20" style={{ color: "#94A3B8" }}>
-                {searchQuery.trim()
-                  ? <>
-                      <p className="mb-2">No products found for "{searchQuery.trim()}".</p>
-                      <button
-                        onClick={() => { setSearchQuery(""); window.history.pushState(null, "", window.location.pathname); }}
-                        style={{ background: "none", border: "none", color: "#1B5CB5", cursor: "pointer", fontSize: "14px", fontWeight: 600 }}
-                      >
-                        Clear search
-                      </button>
-                    </>
-                  : "No products found in this category."}
-              </div>
-            )}
+                  {cat}
+                </button>
+              );
+            })}
           </div>
-        </div>
-      </div>
+          <span className="hidden shrink-0 sm:inline" style={{ fontSize: 12, color: "rgba(75,85,105,0.7)" }}>
+            {groupedProducts.length} result{groupedProducts.length !== 1 ? "s" : ""}
+          </span>
+          <select
+            aria-label="Sort products"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as SortOption)}
+            className="shrink-0 cursor-pointer rounded-[8px] border bg-white px-2.5 py-1.5 outline-none"
+            style={{ borderColor: "var(--hairline)", fontSize: 12.5, color: "var(--ink)" }}
+          >
+            <option value="name">Featured</option>
+            <option value="price-low">Price: low to high</option>
+            <option value="price-high">Price: high to low</option>
+          </select>
+        </Container>
+      </section>
+
+      {/* Grid */}
+      <section>
+        <Container className="py-10 lg:py-14">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {groupedProducts.map(group => (
+              <CatalogueCard key={group.baseName} group={group} />
+            ))}
+          </div>
+
+          {groupedProducts.length === 0 && (
+            <div className="py-20 text-center" style={{ fontSize: 14, color: "var(--graphite)" }}>
+              {searchQuery.trim() ? (
+                <>
+                  <p className="mb-2">No products found for “{searchQuery.trim()}”.</p>
+                  <button onClick={clearSearch} className="font-semibold" style={{ color: "var(--cobalt)" }}>Clear search</button>
+                </>
+              ) : "No products found in this category."}
+            </div>
+          )}
+        </Container>
+      </section>
     </div>
   );
 }

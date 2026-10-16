@@ -1,15 +1,13 @@
-import { useState, useMemo } from "react";
-import { FlaskConical, ChevronDown, ChevronUp } from "lucide-react";
+import { useState } from "react";
+import { Link } from "wouter";
+import { FlaskConical, ChevronDown, Calculator, ArrowRight, Droplets, AlertTriangle } from "lucide-react";
+import PageHero from "@/components/PageHero";
 import { useSEO } from "@/hooks/useSEO";
 
 function round(n: number, d: number) {
   return Math.round(n * 10 ** d) / 10 ** d;
 }
 
-const VIAL_PRESETS = [2, 5, 10, 20, 50];
-const WATER_PRESETS = [1, 2, 3, 5];
-const DOSE_PRESETS_MCG = [100, 250, 500, 1000];
-const DOSE_PRESETS_MG = [0.1, 0.25, 0.5, 1, 2];
 
 function SyringeSVG({ iuValue }: { iuValue: number }) {
   const MAX = 100;
@@ -63,17 +61,17 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
           width={8}
           height={bh + 2}
           rx={3}
-          fill="#1B5CB5"
+          fill="#4E68C2"
           opacity={0.85}
         />
       )}
 
       {/* Barrel background */}
-      <rect x={bx} y={by} width={bw} height={bh} rx={4} fill="#EEF4FF" stroke="#BFDBFE" strokeWidth={1.5} />
+      <rect x={bx} y={by} width={bw} height={bh} rx={4} fill="#E8F2DE" stroke="#C8DDB4" strokeWidth={1.5} />
 
       {/* Fluid fill — from stopper to needle end */}
       {fillW > 0 && !overflowing && (
-        <rect x={fillStartX} y={by + 1} width={fillW} height={bh - 2} fill="rgba(27,92,181,0.18)" />
+        <rect x={fillStartX} y={by + 1} width={fillW} height={bh - 2} fill="rgba(59, 98, 171,0.18)" />
       )}
       {overflowing && (
         <rect x={bx} y={by + 1} width={bw} height={bh - 2} fill="rgba(220,38,38,0.12)" />
@@ -95,7 +93,7 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
               fontSize="8.5"
               fill="#64748B"
               fontWeight="600"
-              fontFamily="Arimo, Arial, sans-serif"
+              fontFamily="Inter, Arial, sans-serif"
             >
               {iu}
             </text>
@@ -120,16 +118,16 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
           <line
             x1={indicatorX} y1={by + bh + 2}
             x2={indicatorX} y2={H - 12}
-            stroke="#1B5CB5" strokeWidth={1.5} strokeDasharray="3,2"
+            stroke="#4E68C2" strokeWidth={1.5} strokeDasharray="3,2"
           />
           <text
             x={Math.min(indicatorX, bx + bw - 2)}
             y={H - 2}
             textAnchor={pct < 0.15 ? "end" : "middle"}
             fontSize="9.5"
-            fill="#1B5CB5"
+            fill="#4E68C2"
             fontWeight="700"
-            fontFamily="Arimo, Arial, sans-serif"
+            fontFamily="Inter, Arial, sans-serif"
           >
             ← draw to {round(iuValue, 1)} units
           </text>
@@ -137,7 +135,7 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
       )}
 
       {overflowing && (
-        <text x={bx + bw / 2} y={H - 2} textAnchor="middle" fontSize="9" fill="#DC2626" fontWeight="700" fontFamily="Arimo, Arial, sans-serif">
+        <text x={bx + bw / 2} y={H - 2} textAnchor="middle" fontSize="9" fill="#DC2626" fontWeight="700" fontFamily="Inter, Arial, sans-serif">
           &gt;100 units — split across multiple aliquots
         </text>
       )}
@@ -145,106 +143,50 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
   );
 }
 
-function Chip({
-  label,
-  active,
-  onClick,
-}: {
-  label: string;
-  active: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        padding: "4px 12px",
-        borderRadius: "999px",
-        fontSize: "12px",
-        fontWeight: 600,
-        cursor: "pointer",
-        border: `1.5px solid ${active ? "#1B5CB5" : "#E2E8F0"}`,
-        backgroundColor: active ? "#EEF4FF" : "#F8FAFC",
-        color: active ? "#1B5CB5" : "#64748B",
-        transition: "all 0.15s",
-      }}
-    >
-      {label}
-    </button>
-  );
-}
+const inputCls = "w-full rounded-lg border px-3 py-2.5 text-[15px] outline-none transition-colors focus:border-[var(--cobalt)]";
+const inputStyle = { borderColor: "var(--hairline)", background: "#fff", color: "var(--ink)" } as const;
 
-function Field({
-  label,
-  unit,
-  value,
-  onChange,
-  presets,
-  onPreset,
-  activePreset,
-}: {
-  label: string;
-  unit: string;
-  value: string;
-  onChange: (v: string) => void;
-  presets: number[];
-  onPreset: (v: number) => void;
-  activePreset: number | null;
-}) {
+function UnitToggle<T extends string>({ options, value, onChange }: { options: readonly T[]; value: T; onChange: (v: T) => void }) {
   return (
-    <div>
-      <label
-        style={{
-          display: "block",
-          fontSize: "11px",
-          fontWeight: 700,
-          textTransform: "uppercase",
-          letterSpacing: "0.08em",
-          color: "#94A3B8",
-          marginBottom: "8px",
-        }}
-      >
-        {label}
-      </label>
-      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
-        <input
-          type="number"
-          min="0"
-          step="any"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          style={{
-            flex: 1,
-            padding: "12px 14px",
-            fontSize: "20px",
-            fontWeight: 700,
-            color: "#0F172A",
-            border: "2px solid #E2E8F0",
-            borderRadius: "12px",
-            outline: "none",
-            backgroundColor: "#fff",
-            fontFamily: "'Arimo', Arial, sans-serif",
-          }}
-          onFocus={(e) => (e.currentTarget.style.borderColor = "#1B5CB5")}
-          onBlur={(e) => (e.currentTarget.style.borderColor = "#E2E8F0")}
-        />
-        <span style={{ fontSize: "15px", fontWeight: 700, color: "#64748B", minWidth: "36px" }}>
-          {unit}
-        </span>
-      </div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-        {presets.map((v) => (
-          <Chip
-            key={v}
-            label={`${v}${unit}`}
-            active={activePreset === v}
-            onClick={() => onPreset(v)}
-          />
-        ))}
-      </div>
+    <div className="flex gap-1" role="group">
+      {options.map((u) => (
+        <button
+          key={u}
+          type="button"
+          aria-pressed={value === u}
+          onClick={() => onChange(u)}
+          className="px-2.5 py-2.5 text-[13px] font-semibold rounded-lg border transition-colors"
+          style={value === u
+            ? { background: "var(--ink)", color: "#fff", borderColor: "var(--ink)" }
+            : { background: "#fff", color: "var(--graphite)", borderColor: "var(--hairline)" }}
+        >
+          {u}
+        </button>
+      ))}
     </div>
   );
 }
+
+function ResultRow({ label, value, sub, big = false }: { label: string; value: string; sub?: string; big?: boolean }) {
+  return (
+    <div className={`flex items-baseline justify-between gap-3 ${big ? "" : "border-t pt-3"}`} style={big ? undefined : { borderColor: "var(--hairline)" }}>
+      <span style={{ fontSize: big ? 13 : 12.5, color: "var(--graphite)" }}>{label}</span>
+      <span className="text-right">
+        <span className="font-bold tabular-nums leading-none" style={{ fontSize: big ? 26 : 15, color: big ? "var(--cobalt)" : "var(--ink)" }}>{value}</span>
+        {sub && <span className="ml-1.5" style={{ fontSize: 12, color: "var(--graphite)" }}>{sub}</span>}
+      </span>
+    </div>
+  );
+}
+
+const CALC_FAQ = [
+  { q: "How do you calculate peptide reconstitution?", a: "Divide the peptide amount in the vial by the volume of bacteriostatic water added to get the concentration. Then divide your target amount by that concentration to get the volume to draw. For example, 5 mg in 2 mL gives 2.5 mg/mL, so a 250 mcg measurement is 0.1 mL, or 10 units on a U-100 syringe." },
+  { q: "How much bacteriostatic water should I add to a peptide vial?", a: "There is no single correct amount. More water makes each drawn unit contain less peptide, which makes small amounts easier to measure precisely. 1 to 3 mL is common for 5 to 10 mg vials. Enter different volumes above to compare." },
+  { q: "What is a unit on an insulin syringe?", a: "A standard U-100 insulin syringe has 100 units per millilitre, so 1 unit = 0.01 mL and 10 units = 0.1 mL. The calculator converts every result into units for you." },
+  { q: "How many doses are in one vial?", a: "Divide the total amount in the vial by your target amount per draw. The calculator shows this as measurements per vial." },
+  { q: "What is bacteriostatic water?", a: "Bacteriostatic water is sterile water containing 0.9% benzyl alcohol, which inhibits bacterial growth so a vial can be accessed multiple times during a research protocol." },
+  { q: "Is this peptide calculator free?", a: "Yes. The calculator is completely free and runs instantly in your browser. Nothing you enter is stored or sent anywhere." },
+];
 
 export default function ReconstitutionCalculator() {
   useSEO({
@@ -252,13 +194,14 @@ export default function ReconstitutionCalculator() {
     description: "Free peptide reconstitution calculator — enter your peptide mass (mg) and desired concentration to calculate exactly how much BAC water to add. Supports µg/ml and IU dosing.",
     canonicalPath: "/calculator",
   });
-  const [peptideMg, setPeptideMg] = useState("10");
+  const [peptideAmt, setPeptideAmt] = useState("5");
+  const [peptideUnit, setPeptideUnit] = useState<"mg" | "mcg">("mg");
   const [waterMl, setWaterMl] = useState("2");
   const [doseValue, setDoseValue] = useState("250");
   const [doseUnit, setDoseUnit] = useState<"mcg" | "mg">("mcg");
-  const [guideOpen, setGuideOpen] = useState(false);
 
-  const pNum = parseFloat(peptideMg) || 0;
+  const pRaw = parseFloat(peptideAmt) || 0;
+  const pNum = peptideUnit === "mcg" ? pRaw / 1000 : pRaw;
   const wNum = parseFloat(waterMl) || 0;
   const dNum = parseFloat(doseValue) || 0;
 
@@ -267,451 +210,148 @@ export default function ReconstitutionCalculator() {
 
   const concentrationMcgMl = pNum && wNum ? (pNum * 1000) / wNum : 0;
   const volumeMl = concentrationMcgMl && doseMcgNorm ? doseMcgNorm / concentrationMcgMl : 0;
-  const volumeUl = volumeMl * 1000;
   const insulinIU = volumeMl * 100;
-  const totalDoses = doseMcgNorm && pNum ? (pNum * 1000) / doseMcgNorm : 0;
+  const totalDoses = doseMcgNorm && pNum ? Math.floor((pNum * 1000) / doseMcgNorm) : 0;
 
   const ready = concentrationMcgMl > 0 && doseMcgNorm > 0;
 
-  const DOSE_PRESETS = doseUnit === "mcg" ? DOSE_PRESETS_MCG : DOSE_PRESETS_MG;
-
-  const activeVial = useMemo(
-    () => (VIAL_PRESETS.includes(parseFloat(peptideMg)) ? parseFloat(peptideMg) : null),
-    [peptideMg]
-  );
-  const activeWater = useMemo(
-    () => (WATER_PRESETS.includes(parseFloat(waterMl)) ? parseFloat(waterMl) : null),
-    [waterMl]
-  );
-  const activeDose = useMemo(
-    () => (DOSE_PRESETS.includes(parseFloat(doseValue)) ? parseFloat(doseValue) : null),
-    [doseValue, DOSE_PRESETS]
-  );
+  const card = "rounded-2xl border p-5 sm:p-6";
+  const labelText = "mb-1.5 block text-[12.5px] font-semibold";
 
   return (
-    <div
-      style={{
-        fontFamily: "'Arimo', Arial, sans-serif",
-        backgroundColor: "#F5F8FC",
-        minHeight: "80vh",
-        paddingBottom: "60px",
-      }}
-    >
-      {/* Header */}
-      <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", color: "#fff", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-        <div style={{ maxWidth: "560px", margin: "0 auto", padding: "40px 20px 36px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px" }}>
-            <div
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "12px",
-                backgroundColor: "rgba(255,255,255,0.15)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <FlaskConical size={20} />
-            </div>
-            <h1 style={{ fontSize: "22px", fontWeight: 700, margin: 0 }}>
-              Peptide Calculator
-            </h1>
+    <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", background: "#fff", minHeight: "80vh" }}>
+      <PageHero crumbs={[{ label: "Calculator" }]} eyebrow="Free research tool" icon={Calculator} title="Peptide Reconstitution Calculator">
+        Enter your vial size, the bacteriostatic water you're adding and your target amount to get the exact concentration, the volume to draw and the reading in insulin-syringe units. For laboratory research use only.
+      </PageHero>
+
+      <section className="w-full max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 py-10 lg:py-12">
+        <div className="grid gap-5 lg:grid-cols-2">
+          <div className={card} style={{ borderColor: "var(--hairline)", background: "#fff" }}>
+            <h2 className="mb-4 flex items-center gap-2 text-[15px] font-bold" style={{ color: "var(--ink)" }}>
+              <FlaskConical size={16} style={{ color: "var(--cobalt)" }} aria-hidden="true" /> Your vial
+            </h2>
+            <label className="block">
+              <span className={labelText} style={{ color: "var(--ink)" }}>Peptide in the vial</span>
+              <div className="flex gap-2">
+                <input type="number" min="0" step="any" inputMode="decimal" value={peptideAmt} onChange={(e) => setPeptideAmt(e.target.value)} className={inputCls} style={inputStyle} />
+                <UnitToggle<"mg" | "mcg"> options={["mg", "mcg"]} value={peptideUnit} onChange={setPeptideUnit} />
+              </div>
+            </label>
+            <label className="mt-4 block">
+              <span className={labelText} style={{ color: "var(--ink)" }}>Bacteriostatic water added</span>
+              <div className="relative">
+                <input type="number" min="0" step="any" inputMode="decimal" value={waterMl} onChange={(e) => setWaterMl(e.target.value)} className={inputCls} style={inputStyle} />
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[13px] font-semibold" style={{ color: "var(--graphite)" }}>mL</span>
+              </div>
+              <span className="mt-1 block text-[11.5px]" style={{ color: "var(--graphite)" }}>More water = lower concentration = finer measurement.</span>
+            </label>
+            <label className="mt-4 block">
+              <span className={labelText} style={{ color: "var(--ink)" }}>Target amount per draw</span>
+              <div className="flex gap-2">
+                <input type="number" min="0" step="any" inputMode="decimal" value={doseValue} onChange={(e) => setDoseValue(e.target.value)} className={inputCls} style={inputStyle} />
+                <UnitToggle
+                  options={["mcg", "mg"] as const}
+                  value={doseUnit}
+                  onChange={(u) => { if (u !== doseUnit) { setDoseValue(String(round(u === "mg" ? dNum / 1000 : dNum * 1000, 4))); setDoseUnit(u); } }}
+                />
+              </div>
+            </label>
           </div>
-          <p style={{ fontSize: "14px", opacity: 0.8, margin: 0, lineHeight: 1.5 }}>
-            Enter the vial size, reconstitution volume, and target dose to calculate the draw volume for your research preparation.
-          </p>
+
+          <div className={card} style={{ borderColor: "var(--hairline)", background: "linear-gradient(135deg, rgba(244,246,250,0.6), #fff)" }} aria-live="polite">
+            <h2 className="mb-4 flex items-center gap-2 text-[15px] font-bold" style={{ color: "var(--ink)" }}>
+              <Calculator size={16} style={{ color: "var(--cobalt)" }} aria-hidden="true" /> Draw this much
+            </h2>
+            {ready ? (
+              <div className="space-y-3">
+                <ResultRow big label="Volume to draw" value={`${round(volumeMl, 3)} mL`} sub={`= ${round(insulinIU, 1)} units`} />
+                <div className="rounded-xl border p-3" style={{ borderColor: "var(--hairline)", background: "#fff" }}>
+                  <SyringeSVG iuValue={insulinIU} />
+                  <p className="mt-1 text-center text-[11px]" style={{ color: "var(--graphite)" }}>
+                    Fill to <b style={{ color: "var(--ink)" }}>{round(insulinIU, 1)} units</b> on a U-100 insulin syringe
+                  </p>
+                </div>
+                <ResultRow label="Concentration" value={`${round(concentrationMcgMl / 1000, 3)} mg/mL`} sub={`= ${round(concentrationMcgMl, 1).toLocaleString()} mcg/mL`} />
+                <ResultRow label="Measurements per vial" value={String(totalDoses)} sub="draws" />
+              </div>
+            ) : (
+              <p className="rounded-xl border border-dashed p-6 text-center text-[13px]" style={{ borderColor: "var(--hairline)", color: "var(--graphite)" }}>
+                Fill in all three fields to see your result.
+              </p>
+            )}
+            <p className="mt-5 flex items-start gap-1.5 border-t pt-4 text-[11px] leading-relaxed" style={{ borderColor: "var(--hairline)", color: "var(--graphite)" }}>
+              <AlertTriangle size={14} className="mt-px shrink-0" aria-hidden="true" />
+              For laboratory research and measurement only. Not medical advice, and not for human or veterinary use. Always verify calculations independently.
+            </p>
+          </div>
         </div>
-      </div>
 
-      <div style={{ maxWidth: "560px", margin: "0 auto", padding: "24px 16px 0" }}>
+      </section>
 
-        {/* Main calculator card */}
-        <div
-          style={{
-            backgroundColor: "#fff",
-            borderRadius: "20px",
-            border: "1px solid #E8EDF5",
-            boxShadow: "0 8px 32px rgba(15,23,42,0.08)",
-            overflow: "hidden",
-          }}
-        >
-          <div style={{ padding: "28px 28px 0" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
-
-              <Field
-                label="Peptide vial size"
-                unit="mg"
-                value={peptideMg}
-                onChange={setPeptideMg}
-                presets={VIAL_PRESETS}
-                onPreset={(v) => setPeptideMg(String(v))}
-                activePreset={activeVial}
-              />
-
-              <Field
-                label="Bacteriostatic water to add"
-                unit="mL"
-                value={waterMl}
-                onChange={setWaterMl}
-                presets={WATER_PRESETS}
-                onPreset={(v) => setWaterMl(String(v))}
-                activePreset={activeWater}
-              />
-
-              {/* Concentration result inline */}
-              {concentrationMcgMl > 0 && (
-                <div
-                  style={{
-                    backgroundColor: "#EEF4FF",
-                    borderRadius: "12px",
-                    padding: "14px 18px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    border: "1px solid #BFDBFE",
-                  }}
-                >
-                  <span style={{ fontSize: "13px", fontWeight: 600, color: "#475569" }}>
-                    Concentration
-                  </span>
-                  <span style={{ fontSize: "20px", fontWeight: 700, color: "#1B5CB5" }}>
-                    {round(concentrationMcgMl, 1).toLocaleString()} mcg/mL
-                  </span>
+      <section className="border-t" style={{ borderColor: "var(--hairline)", background: "rgba(244,246,250,0.15)" }}>
+        <div className="w-full max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 py-10 lg:py-14">
+          <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr]">
+            <div>
+              <h2 className="text-[22px] font-bold tracking-tight" style={{ color: "var(--ink)" }}>How the peptide calculator works</h2>
+              <div className="mt-4 space-y-4 text-[14px] leading-[1.75]" style={{ color: "var(--graphite)" }}>
+                <p>
+                  Reconstitution is simply mixing a lyophilised (freeze-dried) peptide with a liquid so it can be measured accurately. The maths is two short steps:
+                </p>
+                <div className="rounded-xl border bg-white p-4" style={{ borderColor: "var(--hairline)" }}>
+                  <p className="text-[13px] font-semibold" style={{ color: "var(--ink)" }}>1 · Concentration</p>
+                  <p className="mt-1 text-[13px]">
+                    Peptide amount ÷ water volume. Example: 5 mg ÷ 2 mL = <b style={{ color: "var(--ink)" }}>2.5 mg/mL</b> (2,500 mcg/mL).
+                  </p>
+                  <p className="mt-3 text-[13px] font-semibold" style={{ color: "var(--ink)" }}>2 · Volume to draw</p>
+                  <p className="mt-1 text-[13px]">
+                    Target amount ÷ concentration. Example: 250 mcg ÷ 2,500 mcg/mL = <b style={{ color: "var(--ink)" }}>0.1 mL</b> = <b style={{ color: "var(--ink)" }}>10 units</b> on a U-100 syringe.
+                  </p>
                 </div>
-              )}
+                <p>
+                  A <b style={{ color: "var(--ink)" }}>U-100 insulin syringe</b> has 100 units per millilitre, so 1 unit = 0.01 mL. The calculator converts your draw volume into units automatically so you can measure to the exact graduation. Adding more bacteriostatic water lowers the concentration, which makes each unit represent a smaller amount and improves precision.
+                </p>
+              </div>
 
-              {/* Divider */}
-              <div style={{ height: "1px", backgroundColor: "#F1F5F9", margin: "0 -28px" }} />
-
-              {/* Dose field with mcg/mg toggle */}
-              <div>
-                <label
-                  style={{
-                    display: "block",
-                    fontSize: "11px",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.08em",
-                    color: "#94A3B8",
-                    marginBottom: "8px",
-                  }}
-                >
-                  Target dose per aliquot
-                </label>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
-                  <input
-                    type="number"
-                    min="0"
-                    step="any"
-                    value={doseValue}
-                    onChange={(e) => setDoseValue(e.target.value)}
-                    style={{
-                      flex: 1,
-                      padding: "12px 14px",
-                      fontSize: "20px",
-                      fontWeight: 700,
-                      color: "#0F172A",
-                      border: "2px solid #E2E8F0",
-                      borderRadius: "12px",
-                      outline: "none",
-                      backgroundColor: "#fff",
-                      fontFamily: "'Arimo', Arial, sans-serif",
-                    }}
-                    onFocus={(e) => (e.currentTarget.style.borderColor = "#1B5CB5")}
-                    onBlur={(e) => (e.currentTarget.style.borderColor = "#E2E8F0")}
-                  />
-                  {/* Unit toggle */}
-                  <div
-                    style={{
-                      display: "flex",
-                      borderRadius: "10px",
-                      border: "2px solid #E2E8F0",
-                      overflow: "hidden",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {(["mcg", "mg"] as const).map((u) => (
-                      <button
-                        key={u}
-                        onClick={() => {
-                          setDoseUnit(u);
-                          setDoseValue(u === "mcg" ? "250" : "0.25");
-                        }}
-                        style={{
-                          padding: "10px 14px",
-                          fontSize: "13px",
-                          fontWeight: 700,
-                          cursor: "pointer",
-                          border: "none",
-                          backgroundColor: doseUnit === u ? "#1B5CB5" : "#fff",
-                          color: doseUnit === u ? "#fff" : "#64748B",
-                          transition: "all 0.15s",
-                          fontFamily: "'Arimo', Arial, sans-serif",
-                        }}
-                      >
-                        {u}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                  {DOSE_PRESETS.map((v) => (
-                    <Chip
-                      key={v}
-                      label={`${v}${doseUnit}`}
-                      active={activeDose === v}
-                      onClick={() => setDoseValue(String(v))}
-                    />
-                  ))}
-                </div>
+              <h2 className="mt-10 text-[22px] font-bold tracking-tight" style={{ color: "var(--ink)" }}>Frequently asked questions</h2>
+              <div className="mt-4 divide-y rounded-2xl border bg-white" style={{ borderColor: "var(--hairline)" }}>
+                {CALC_FAQ.map((f) => (
+                  <details key={f.q} className="group px-5 py-4" style={{ borderColor: "var(--hairline)" }}>
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[14px] font-semibold [&::-webkit-details-marker]:hidden" style={{ color: "var(--ink)" }}>
+                      {f.q}
+                      <ChevronDown size={16} className="shrink-0 transition-transform group-open:rotate-180" style={{ color: "var(--graphite)" }} aria-hidden="true" />
+                    </summary>
+                    <p className="mt-2.5 text-[13.5px] leading-relaxed" style={{ color: "var(--graphite)" }}>{f.a}</p>
+                  </details>
+                ))}
               </div>
             </div>
-          </div>
 
-          {/* Result banner */}
-          <div
-            style={{
-              margin: "28px",
-              borderRadius: "16px",
-              background: ready
-                ? "linear-gradient(135deg, #1240A0 0%, #1B5CB5 100%)"
-                : "#F8FAFC",
-              border: ready ? "none" : "2px dashed #E2E8F0",
-              padding: "24px",
-              textAlign: "center",
-              transition: "all 0.2s",
-            }}
-          >
-            {ready ? (
-              <>
-                <p
-                  style={{
-                    fontSize: "11px",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    color: "rgba(255,255,255,0.7)",
-                    margin: "0 0 6px",
-                  }}
-                >
-                  Draw up this amount
-                </p>
-                <p
-                  style={{
-                    fontSize: "52px",
-                    fontWeight: 700,
-                    color: "#fff",
-                    lineHeight: 1,
-                    margin: "0 0 4px",
-                  }}
-                >
-                  {round(insulinIU, 1)} <span style={{ fontSize: "24px" }}>units</span>
-                </p>
-                <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.75)", margin: "8px 0 0" }}>
-                  {round(volumeMl, 4)} mL &nbsp;·&nbsp; {round(volumeUl, 2)} μL
-                </p>
-                <div
-                  style={{
-                    marginTop: "16px",
-                    paddingTop: "16px",
-                    borderTop: "1px solid rgba(255,255,255,0.2)",
-                    fontSize: "13px",
-                    color: "rgba(255,255,255,0.75)",
-                  }}
-                >
-                  {round(totalDoses, 1)} total doses per vial
+            <aside className="space-y-4">
+              <div className="rounded-2xl border bg-white p-5" style={{ borderColor: "var(--hairline)" }}>
+                <h3 className="flex items-center gap-2 text-[14px] font-bold" style={{ color: "var(--ink)" }}>
+                  <Droplets size={16} style={{ color: "var(--cobalt)" }} aria-hidden="true" /> You'll also need
+                </h3>
+                <p className="mt-1.5 text-[12.5px]" style={{ color: "var(--graphite)" }}>Bacteriostatic water to reconstitute your vial.</p>
+                <Link href="/bac-water" className="mt-3 inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-[13px] font-semibold text-white transition-opacity hover:opacity-90" style={{ background: "var(--ink)" }}>
+                  Bacteriostatic water <ArrowRight size={14} aria-hidden="true" />
+                </Link>
+              </div>
+              {[
+                { t: "Reconstitution guide", d: "Step-by-step method and storage protocol.", l: "Read the guide", h: "/storage-guide" },
+                { t: "Browse peptides", d: "99%+ HPLC-verified, COA per batch, same-day dispatch.", l: "All peptides", h: "/all-peptides" },
+              ].map((c) => (
+                <div key={c.t} className="rounded-2xl border bg-white p-5" style={{ borderColor: "var(--hairline)" }}>
+                  <h3 className="text-[14px] font-bold" style={{ color: "var(--ink)" }}>{c.t}</h3>
+                  <p className="mt-1.5 text-[12.5px]" style={{ color: "var(--graphite)" }}>{c.d}</p>
+                  <Link href={c.h} className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold transition-colors hover:text-[var(--ink)]" style={{ color: "var(--cobalt)" }}>
+                    {c.l} <ArrowRight size={14} aria-hidden="true" />
+                  </Link>
                 </div>
-              </>
-            ) : (
-              <p style={{ color: "#94A3B8", fontSize: "14px", margin: 0 }}>
-                Fill in all three fields to see your result
-              </p>
-            )}
+              ))}
+            </aside>
           </div>
         </div>
-
-        {/* Syringe visual */}
-        {ready && (
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "16px",
-              border: "1px solid #E8EDF5",
-              boxShadow: "0 2px 12px rgba(15,23,42,0.05)",
-              padding: "20px 20px 14px",
-              marginTop: "12px",
-            }}
-          >
-            <p
-              style={{
-                fontSize: "10px",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "#94A3B8",
-                margin: "0 0 14px",
-              }}
-            >
-              Insulin syringe — draw to this line
-            </p>
-            <SyringeSVG iuValue={insulinIU} />
-          </div>
-        )}
-
-        {/* Quick reference table */}
-        {concentrationMcgMl > 0 && (
-          <div
-            style={{
-              marginTop: "16px",
-              backgroundColor: "#fff",
-              borderRadius: "16px",
-              border: "1px solid #E8EDF5",
-              overflow: "hidden",
-              boxShadow: "0 2px 12px rgba(15,23,42,0.05)",
-            }}
-          >
-            <div
-              style={{
-                padding: "12px 20px",
-                borderBottom: "1px solid #F1F5F9",
-                backgroundColor: "#FAFBFF",
-              }}
-            >
-              <p style={{ fontSize: "12px", fontWeight: 700, color: "#64748B", margin: 0, textTransform: "uppercase", letterSpacing: "0.06em" }}>
-                Dose reference — {round(concentrationMcgMl, 1).toLocaleString()} mcg/mL
-              </p>
-            </div>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr style={{ backgroundColor: "#F8FAFC" }}>
-                  {["Dose", "mL", "μL", "Units (insulin syringe)"].map((h) => (
-                    <th
-                      key={h}
-                      style={{
-                        padding: "8px 16px",
-                        fontSize: "11px",
-                        fontWeight: 700,
-                        color: "#94A3B8",
-                        textAlign: h === "Dose" ? "left" : "right",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.05em",
-                        borderBottom: "1px solid #F1F5F9",
-                      }}
-                    >
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {[100, 250, 500, 750, 1000, 2000].map((dose, idx) => {
-                  const ml = dose / concentrationMcgMl;
-                  const ul = ml * 1000;
-                  const iu = ml * 100;
-                  const isActive = doseMcgNorm === dose;
-                  return (
-                    <tr
-                      key={dose}
-                      style={{
-                        backgroundColor: isActive ? "#EEF4FF" : idx % 2 === 0 ? "#fff" : "#FAFBFF",
-                        borderBottom: "1px solid #F1F5F9",
-                      }}
-                    >
-                      <td
-                        style={{
-                          padding: "10px 16px",
-                          fontSize: "13px",
-                          fontWeight: isActive ? 700 : 500,
-                          color: isActive ? "#1B5CB5" : "#0F172A",
-                        }}
-                      >
-                        {dose} mcg{isActive ? " ←" : ""}
-                      </td>
-                      <td style={{ padding: "10px 16px", fontSize: "13px", textAlign: "right", color: "#475569", fontWeight: isActive ? 700 : 400 }}>
-                        {round(ml, 4)}
-                      </td>
-                      <td style={{ padding: "10px 16px", fontSize: "13px", textAlign: "right", color: "#475569", fontWeight: isActive ? 700 : 400 }}>
-                        {round(ul, 2)}
-                      </td>
-                      <td style={{ padding: "10px 16px", fontSize: "13px", textAlign: "right", color: isActive ? "#1B5CB5" : "#475569", fontWeight: isActive ? 700 : 400 }}>
-                        {round(iu, 2)}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {/* How-to guide */}
-        <div
-          style={{
-            marginTop: "16px",
-            backgroundColor: "#fff",
-            borderRadius: "16px",
-            border: "1px solid #E8EDF5",
-            overflow: "hidden",
-            boxShadow: "0 2px 12px rgba(15,23,42,0.05)",
-          }}
-        >
-          <button
-            onClick={() => setGuideOpen((o) => !o)}
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "16px 20px",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              fontFamily: "'Arimo', Arial, sans-serif",
-            }}
-          >
-            <span style={{ fontSize: "13px", fontWeight: 700, color: "#0F172A" }}>
-              How to reconstitute a peptide
-            </span>
-            {guideOpen ? (
-              <ChevronUp size={16} style={{ color: "#64748B" }} />
-            ) : (
-              <ChevronDown size={16} style={{ color: "#64748B" }} />
-            )}
-          </button>
-          {guideOpen && (
-            <div style={{ padding: "0 20px 20px", borderTop: "1px solid #F1F5F9" }}>
-              <ol style={{ margin: "16px 0 0", paddingLeft: "20px", display: "flex", flexDirection: "column", gap: "12px" }}>
-                {[
-                  "Let the vial warm to room temperature for 15–20 minutes.",
-                  "Draw the calculated BAC water volume into a sterile syringe.",
-                  "Insert the needle and slowly introduce water down the vial wall — don't aim at the powder.",
-                  "Gently swirl (don't shake) until the powder fully dissolves.",
-                  "Store reconstituted peptide at 2–8°C and use within 28 days.",
-                ].map((step, i) => (
-                  <li key={i} style={{ fontSize: "13px", color: "#475569", lineHeight: 1.6 }}>
-                    {step}
-                  </li>
-                ))}
-              </ol>
-            </div>
-          )}
-        </div>
-
-        <p
-          style={{
-            marginTop: "24px",
-            fontSize: "11px",
-            color: "#CBD5E1",
-            textAlign: "center",
-            lineHeight: 1.6,
-          }}
-        >
-          For in-vitro laboratory research use only. Not for human or veterinary use.
-        </p>
-      </div>
+      </section>
     </div>
   );
 }
-

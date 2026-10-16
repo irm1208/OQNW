@@ -48,9 +48,9 @@ type CryptoPaymentCheck = Pick<CryptoPayment, "status" | "reason" | "observedAmo
 const META: Record<CryptoPayment["currency"], { name: string; symbol: string; color: string; background: string; text: string }> = {
   BTC: { name: "Bitcoin", symbol: "₿", color: "#F59E0B", background: "#FFFBEB", text: "#92400E" },
   ETH: { name: "Ethereum", symbol: "Ξ", color: "#6366F1", background: "#EEF2FF", text: "#3730A3" },
-  SOL: { name: "Solana", symbol: "◎", color: "#0EA5E9", background: "#F0F9FF", text: "#075985" },
+  SOL: { name: "Solana", symbol: "◎", color: "#0EA5E9", background: "#FFF6F2", text: "#075985" },
   USDT: { name: "Tether", symbol: "₮", color: "#059669", background: "#ECFDF5", text: "#065F46" },
-  USDC: { name: "USD Coin", symbol: "◎", color: "#2563EB", background: "#EFF6FF", text: "#1E40AF" },
+  USDC: { name: "USD Coin", symbol: "◎", color: "#4E68C2", background: "#E8F2DE", text: "#3D55A8" },
 };
 
 function networkLabel(network: string): string {
@@ -291,17 +291,17 @@ export default function OrderConfirmation() {
   };
 
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", background: "#F5F8FC", minHeight: "70vh", padding: "48px 16px" }}>
+    <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", background: "#F2F0EB", minHeight: "70vh", padding: "48px 16px" }}>
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 28 }}>
           <div style={{ width: 76, height: 76, borderRadius: "50%", background: "linear-gradient(135deg, #059669, #34D399)", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: "0 12px 40px rgba(5,150,105,.25)" }}>
             <CheckCircle2 size={38} color="#fff" />
           </div>
-          <h1 style={{ fontSize: 28, fontWeight: 900, color: "#0F172A", margin: "18px 0 8px" }}>
+          <h1 style={{ fontSize: 28, fontWeight: 900, color: "#22252C", margin: "18px 0 8px" }}>
             {isCrypto ? `Order placed — ${cryptoPayment ? statusLabel(cryptoPayment.status).toLowerCase() : "loading payment"}` : "Order received"}
           </h1>
           <p style={{ fontSize: 15, color: "#64748B", margin: 0, lineHeight: 1.55 }}>
-            Thank you, <strong style={{ color: "#0F172A" }}>{name}</strong>. {isCrypto ? "Your order is reserved while we verify payment on-chain." : "We’ll email you with the next steps for your order."}
+            Thank you, <strong style={{ color: "#22252C" }}>{name}</strong>. {isCrypto ? "Your order is reserved while we verify payment on-chain." : "We’ll email you with the next steps for your order."}
           </p>
         </div>
 
@@ -318,7 +318,7 @@ export default function OrderConfirmation() {
                 </div>
 
                 {cryptoPayment.status !== "rate_locked" && (
-                  <div role="status" aria-live="polite" style={{ marginBottom: 14, padding: "12px 14px", borderRadius: 10, background: cryptoPayment.status === "confirmed" ? "#ECFDF5" : cryptoPayment.status === "pending" ? "#EFF6FF" : "#FFF7ED", color: cryptoPayment.status === "confirmed" ? "#047857" : cryptoPayment.status === "pending" ? "#1D4ED8" : "#9A3412", fontSize: 13, lineHeight: 1.5 }}>
+                  <div role="status" aria-live="polite" style={{ marginBottom: 14, padding: "12px 14px", borderRadius: 10, background: cryptoPayment.status === "confirmed" ? "#ECFDF5" : cryptoPayment.status === "pending" ? "#E8F2DE" : "#FFF7ED", color: cryptoPayment.status === "confirmed" ? "#047857" : cryptoPayment.status === "pending" ? "#3D55A8" : "#9A3412", fontSize: 13, lineHeight: 1.5 }}>
                     <strong>{statusLabel(cryptoPayment.status)}.</strong> {cryptoPayment.reason ?? "Checking the submitted transaction."}
                   </div>
                 )}
@@ -333,7 +333,7 @@ export default function OrderConfirmation() {
                       <QRCodeSVG value={qrValue} size={106} level="M" includeMargin />
                       <div>
                         <p style={{ fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 800, color: "#64748B", margin: "0 0 4px" }}>Exact amount to send</p>
-                        <p style={{ fontSize: 23, fontWeight: 900, color: "#0F172A", margin: 0 }}>{displayedExpectedAmount} <span style={{ fontSize: 14 }}>{cryptoPayment.currency}</span></p>
+                        <p style={{ fontSize: 23, fontWeight: 900, color: "#22252C", margin: 0 }}>{displayedExpectedAmount} <span style={{ fontSize: 14 }}>{cryptoPayment.currency}</span></p>
                         <p style={{ fontSize: 12, color: rateExpired ? "#B91C1C" : "#475569", margin: "5px 0 0" }}>
                           {rateExpired
                             ? "The one-hour rate lock has ended."
@@ -345,8 +345,8 @@ export default function OrderConfirmation() {
                     </div>
                     <div style={{ background: "#fff", borderRadius: 12, padding: 16, border: "1px solid rgba(15,23,42,.1)", marginTop: 12 }}>
                       <p style={{ fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 800, color: "#64748B", margin: "0 0 6px" }}>Receiving wallet · {networkLabel(cryptoPayment.network)}</p>
-                      <p style={{ fontFamily: "monospace", fontSize: 12.5, fontWeight: 700, color: "#0F172A", wordBreak: "break-all", lineHeight: 1.5, margin: 0 }}>{cryptoPayment.walletAddress}</p>
-                      <button type="button" onClick={() => void copyValue(cryptoPayment.walletAddress, "wallet")} style={{ marginTop: 10, border: 0, background: "#EEF4FF", color: "#1240A0", borderRadius: 7, padding: "7px 10px", fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+                      <p style={{ fontFamily: "monospace", fontSize: 12.5, fontWeight: 700, color: "#22252C", wordBreak: "break-all", lineHeight: 1.5, margin: 0 }}>{cryptoPayment.walletAddress}</p>
+                      <button type="button" onClick={() => void copyValue(cryptoPayment.walletAddress, "wallet")} style={{ marginTop: 10, border: 0, background: "#E8F2DE", color: "#4E68C2", borderRadius: 7, padding: "7px 10px", fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
                         <Copy size={13} style={{ verticalAlign: "text-bottom", marginRight: 5 }} />{copiedValue === "wallet" ? "Copied" : "Copy address"}
                       </button>
                     </div>
@@ -360,12 +360,12 @@ export default function OrderConfirmation() {
                       <div>
                         <p style={{ margin: 0, fontSize: 11, color: "#64748B", fontWeight: 700 }}>TRANSACTION HASH</p>
                         <div style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 4, flexWrap: "wrap" }}>
-                          <code style={{ color: "#0F172A", fontSize: 12.5, fontWeight: 700, wordBreak: "break-all" }}>{cryptoPayment.txHash}</code>
-                          <button type="button" onClick={() => void copyValue(cryptoPayment.txHash!, "transaction")} aria-label="Copy transaction hash" style={{ border: 0, background: "#EEF4FF", color: "#1240A0", borderRadius: 6, padding: "5px 7px", cursor: "pointer", fontSize: 11, fontWeight: 800 }}>
+                          <code style={{ color: "#22252C", fontSize: 12.5, fontWeight: 700, wordBreak: "break-all" }}>{cryptoPayment.txHash}</code>
+                          <button type="button" onClick={() => void copyValue(cryptoPayment.txHash!, "transaction")} aria-label="Copy transaction hash" style={{ border: 0, background: "#E8F2DE", color: "#4E68C2", borderRadius: 6, padding: "5px 7px", cursor: "pointer", fontSize: 11, fontWeight: 800 }}>
                             <Copy size={12} style={{ verticalAlign: "text-bottom", marginRight: 3 }} />{copiedValue === "transaction" ? "Copied" : "Copy"}
                           </button>
                           {explorerUrl(cryptoPayment.network, cryptoPayment.txHash) && (
-                            <a href={explorerUrl(cryptoPayment.network, cryptoPayment.txHash)!} target="_blank" rel="noreferrer" style={{ color: "#1240A0", fontWeight: 800, fontSize: 11.5, textDecoration: "none" }}>
+                            <a href={explorerUrl(cryptoPayment.network, cryptoPayment.txHash)!} target="_blank" rel="noreferrer" style={{ color: "#4E68C2", fontWeight: 800, fontSize: 11.5, textDecoration: "none" }}>
                               View on explorer <ExternalLink size={12} style={{ verticalAlign: "text-bottom" }} />
                             </a>
                           )}
@@ -380,13 +380,13 @@ export default function OrderConfirmation() {
                         ].map((item) => (
                           <div key={item.label}>
                             <p style={{ margin: 0, fontSize: 10, color: "#94A3B8", fontWeight: 800, textTransform: "uppercase" }}>{item.label}</p>
-                            <p style={{ margin: "3px 0 0", color: "#0F172A", fontSize: 12.5, fontWeight: 700, lineHeight: 1.4 }}>{item.value}</p>
+                            <p style={{ margin: "3px 0 0", color: "#22252C", fontSize: 12.5, fontWeight: 700, lineHeight: 1.4 }}>{item.value}</p>
                           </div>
                         ))}
                       </div>
                       <div>
                         <p style={{ margin: 0, fontSize: 11, color: "#64748B", fontWeight: 700 }}>RECEIVING WALLET</p>
-                        <code style={{ display: "block", marginTop: 4, color: "#0F172A", fontSize: 11.5, wordBreak: "break-all" }}>{cryptoPayment.walletAddress}</code>
+                        <code style={{ display: "block", marginTop: 4, color: "#22252C", fontSize: 11.5, wordBreak: "break-all" }}>{cryptoPayment.walletAddress}</code>
                       </div>
                     </div>
                   </section>
@@ -413,7 +413,7 @@ export default function OrderConfirmation() {
                       </button>
                     </div>
                     {rateExpired && (
-                      <button type="button" onClick={() => void refreshRate()} disabled={submitting} style={{ width: "100%", marginTop: 10, border: "1px solid #1240A0", background: "#fff", color: "#1240A0", padding: 11, borderRadius: 9, fontWeight: 800, cursor: submitting ? "wait" : "pointer", opacity: submitting ? .6 : 1 }}>
+                      <button type="button" onClick={() => void refreshRate()} disabled={submitting} style={{ width: "100%", marginTop: 10, border: "1px solid #4E68C2", background: "#fff", color: "#4E68C2", padding: 11, borderRadius: 9, fontWeight: 800, cursor: submitting ? "wait" : "pointer", opacity: submitting ? .6 : 1 }}>
                         <RefreshCw size={15} style={{ verticalAlign: "text-bottom", marginRight: 7 }} />{submitting ? "Refreshing…" : "I have not paid — refresh rate"}
                       </button>
                     )}
@@ -429,8 +429,8 @@ export default function OrderConfirmation() {
           </section>
         )}
 
-        <section style={{ background: "#fff", borderRadius: 16, border: "1px solid #E8EDF5", overflow: "hidden", boxShadow: "0 8px 35px rgba(15,23,42,.06)" }}>
-          <div style={{ background: "linear-gradient(90deg, #0D2565, #1B5CB5)", padding: "18px 22px", color: "#fff" }}>
+        <section style={{ background: "#fff", borderRadius: 16, border: "1px solid #D3D8E2", overflow: "hidden", boxShadow: "0 8px 35px rgba(15,23,42,.06)" }}>
+          <div style={{ background: "linear-gradient(90deg, #22252C, #4E68C2)", padding: "18px 22px", color: "#fff" }}>
             <p style={{ fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", margin: 0, opacity: .7 }}>Order reference</p>
             <p style={{ fontSize: 20, fontWeight: 900, letterSpacing: ".05em", margin: "3px 0 0" }}>{displayedOrder}</p>
           </div>
@@ -442,16 +442,16 @@ export default function OrderConfirmation() {
               { icon: <ShieldCheck size={16} />, label: "Order status", value: isCrypto && cryptoPayment ? statusLabel(cryptoPayment.status) : "Received" },
             ].map((item) => (
               <div key={item.label} style={{ display: "flex", gap: 9 }}>
-                <span style={{ color: "#1B5CB5" }}>{item.icon}</span>
+                <span style={{ color: "#4E68C2" }}>{item.icon}</span>
                 <div>
                   <p style={{ fontSize: 10, color: "#94A3B8", textTransform: "uppercase", fontWeight: 800, margin: 0 }}>{item.label}</p>
-                  <p style={{ fontSize: 13, fontWeight: 800, color: "#0F172A", margin: "3px 0 0" }}>{item.value}</p>
+                  <p style={{ fontSize: 13, fontWeight: 800, color: "#22252C", margin: "3px 0 0" }}>{item.value}</p>
                 </div>
               </div>
             ))}
           </div>
           {orderSummary?.items.length ? (
-            <div style={{ borderTop: "1px solid #E8EDF5", padding: "16px 20px 20px" }}>
+            <div style={{ borderTop: "1px solid #D3D8E2", padding: "16px 20px 20px" }}>
               <p style={{ margin: "0 0 10px", color: "#64748B", fontSize: 11, fontWeight: 800, letterSpacing: ".08em", textTransform: "uppercase" }}>Items in this order</p>
               {orderSummary.items.map((item, index) => (
                 <div key={`${item.productName}-${index}`} style={{ display: "flex", justifyContent: "space-between", gap: 12, fontSize: 13, color: "#334155", padding: "4px 0" }}>
@@ -465,7 +465,7 @@ export default function OrderConfirmation() {
         <PostOrderAccountPrompt orderNumber={displayedOrder} />
 
         <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
-          <button type="button" onClick={() => navigate("/all-peptides")} style={{ ...actionButton, border: 0, background: "#1240A0", color: "#fff" }}>
+          <button type="button" onClick={() => navigate("/all-peptides")} style={{ ...actionButton, border: 0, background: "#4E68C2", color: "#fff" }}>
             Continue shopping <ArrowRight size={15} style={{ verticalAlign: "text-bottom", marginLeft: 5 }} />
           </button>
           <button type="button" onClick={() => navigate(`/track-order?number=${encodeURIComponent(displayedOrder)}`)} style={{ ...actionButton, flex: "0 0 auto", border: "1px solid #CBD5E1", background: "#fff", color: "#334155", padding: "13px 16px" }}>

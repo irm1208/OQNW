@@ -21,7 +21,7 @@ const CATEGORY_META: Record<string, { icon: React.ReactNode; description: string
   "Growth Peptides": {
     icon: <Zap size={15} />,
     description: "Growth hormone secretagogues and IGF-1 modulators at the forefront of GH-axis research.",
-    accent: "#1B5CB5",
+    accent: "#4E68C2",
   },
   "Weight Management": {
     icon: <Scale size={15} />,
@@ -118,10 +118,10 @@ export default function PopularPeptides() {
   const totalShown = filtered.reduce((n, g) => n + g.items.length, 0);
 
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", backgroundColor: "#F2F0EB", minHeight: "100vh" }}>
       {/* Hero */}
       <div style={{
-        background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
+        background: "linear-gradient(90deg, #22252C 0%, #4E68C2 40%, #4E68C2 75%, #3B6CE6 100%)",
         padding: "36px 0 30px",
         position: "relative",
         overflow: "hidden",
@@ -162,7 +162,7 @@ export default function PopularPeptides() {
       </div>
 
       {/* Bundle & Save banner */}
-      <div style={{ background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)", borderBottom: "1px solid rgba(255,255,255,0.08)", position: "relative", overflow: "hidden" }}>
+      <div style={{ background: "linear-gradient(90deg, #22252C 0%, #4E68C2 40%, #4E68C2 75%, #3B6CE6 100%)", borderBottom: "1px solid rgba(255,255,255,0.08)", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "-30px", right: "18%", width: "180px", height: "80px", borderRadius: "50%", background: "radial-gradient(circle, rgba(52,211,153,0.16) 0%, transparent 70%)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)", backgroundSize: "22px 22px", pointerEvents: "none" }} />
         <div className="max-w-[1280px] mx-auto px-4 py-3" style={{ position: "relative", zIndex: 1 }}>
@@ -175,7 +175,7 @@ export default function PopularPeptides() {
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", alignItems: "center" }}>
               {[
-                { label: "3-4 vials", freebie: "Free 10ml BAC Water Ampule",  bg: "rgba(96,165,250,0.15)",  border: "rgba(96,165,250,0.4)",  color: "#93C5FD" },
+                { label: "3-4 vials", freebie: "Free 10ml BAC Water Ampule",  bg: "rgba(96,165,250,0.15)",  border: "rgba(96,165,250,0.4)",  color: "#B4D89C" },
                 { label: "5-9 vials", freebie: "1 Peptide Free",  bg: "rgba(52,211,153,0.15)",  border: "rgba(52,211,153,0.4)",  color: "#6EE7B7" },
                 { label: "10+ vials", freebie: "2 Peptides Free", bg: "rgba(248,113,113,0.18)", border: "rgba(248,113,113,0.45)", color: "#FCA5A5" },
               ].map(t => (
@@ -200,9 +200,9 @@ export default function PopularPeptides() {
             onClick={() => setActiveCategory("All")}
             className="text-sm font-semibold px-4 py-1.5 rounded-full transition-all"
             style={{
-              backgroundColor: activeCategory === "All" ? "#1240A0" : "#fff",
+              backgroundColor: activeCategory === "All" ? "#4E68C2" : "#fff",
               color: activeCategory === "All" ? "#fff" : "#475569",
-              border: activeCategory === "All" ? "1.5px solid #1240A0" : "1.5px solid #E2E8F0",
+              border: activeCategory === "All" ? "1.5px solid #4E68C2" : "1.5px solid #E2E8F0",
               cursor: "pointer",
             }}
           >
@@ -218,9 +218,9 @@ export default function PopularPeptides() {
                 onClick={() => setActiveCategory(active ? "All" : cat)}
                 className="flex items-center gap-1.5 text-sm font-semibold px-3.5 py-1.5 rounded-full transition-all"
                 style={{
-                  backgroundColor: active ? (meta?.accent ?? "#1B5CB5") : "#fff",
+                  backgroundColor: active ? (meta?.accent ?? "#4E68C2") : "#fff",
                   color: active ? "#fff" : "#475569",
-                  border: active ? `1.5px solid ${meta?.accent ?? "#1B5CB5"}` : "1.5px solid #E2E8F0",
+                  border: active ? `1.5px solid ${meta?.accent ?? "#4E68C2"}` : "1.5px solid #E2E8F0",
                   cursor: "pointer",
                 }}
               >
@@ -241,7 +241,7 @@ export default function PopularPeptides() {
             <button
               onClick={() => setActiveCategory("All")}
               className="flex items-center gap-1 text-xs font-semibold hover:underline"
-              style={{ background: "none", border: "none", cursor: "pointer", color: "#1B5CB5" }}
+              style={{ background: "none", border: "none", cursor: "pointer", color: "#4E68C2" }}
             >
               View all categories <ChevronRight size={12} />
             </button>
@@ -257,7 +257,7 @@ export default function PopularPeptides() {
                 {/* Section header */}
                 <div
                   className="flex items-center justify-between mb-5 pb-3"
-                  style={{ borderBottom: `2px solid ${meta?.accent ?? "#1B5CB5"}22` }}
+                  style={{ borderBottom: `2px solid ${meta?.accent ?? "#4E68C2"}22` }}
                 >
                   <div className="flex items-center gap-3">
                     <div
@@ -265,8 +265,8 @@ export default function PopularPeptides() {
                       style={{
                         width: "36px",
                         height: "36px",
-                        backgroundColor: `${meta?.accent ?? "#1B5CB5"}15`,
-                        color: meta?.accent ?? "#1B5CB5",
+                        backgroundColor: `${meta?.accent ?? "#4E68C2"}15`,
+                        color: meta?.accent ?? "#4E68C2",
                         flexShrink: 0,
                       }}
                     >
@@ -274,15 +274,15 @@ export default function PopularPeptides() {
                     </div>
                     <div>
                       <div className="flex items-center gap-2.5">
-                        <h2 className="font-bold" style={{ fontSize: "18px", color: "#0F172A" }}>
+                        <h2 className="font-bold" style={{ fontSize: "18px", color: "#22252C" }}>
                           {group.category}
                         </h2>
                         <span
                           className="text-xs font-bold px-2 py-0.5 rounded-full"
                           style={{
-                            backgroundColor: `${meta?.accent ?? "#1B5CB5"}15`,
-                            color: meta?.accent ?? "#1B5CB5",
-                            border: `1px solid ${meta?.accent ?? "#1B5CB5"}30`,
+                            backgroundColor: `${meta?.accent ?? "#4E68C2"}15`,
+                            color: meta?.accent ?? "#4E68C2",
+                            border: `1px solid ${meta?.accent ?? "#4E68C2"}30`,
                           }}
                         >
                           {group.items.length} compound{group.items.length !== 1 ? "s" : ""}
@@ -298,7 +298,7 @@ export default function PopularPeptides() {
                   <button
                     onClick={() => navigate(`/all-peptides?category=${encodeURIComponent(group.category)}`)}
                     className="hidden sm:flex items-center gap-1 text-xs font-semibold hover:underline flex-shrink-0"
-                    style={{ background: "none", border: "none", cursor: "pointer", color: meta?.accent ?? "#1B5CB5" }}
+                    style={{ background: "none", border: "none", cursor: "pointer", color: meta?.accent ?? "#4E68C2" }}
                   >
                     Browse all {group.category} <ChevronRight size={12} />
                   </button>

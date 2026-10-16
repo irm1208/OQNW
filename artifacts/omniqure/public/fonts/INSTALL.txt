@@ -1,0 +1,22 @@
+Fonts for the omniqure label
+============================
+The editable label file (..._editable-text.ai) uses:
+  IBM Plex Mono  Regular                    (purity, CAS, formula, M.W., lot, expiry, storage)
+  Poppins        SemiBold, Medium, Regular, Light   (name, dose, logo lockup text, research-use lines)
+
+Both are free and open source (SIL Open Font License, see OFL.txt in each folder).
+You don't need them to open or print ..._outlined.ai - that file has no live text.
+
+INSTALL ON MAC
+  1. Quit Illustrator.
+  2. Double-click each .ttf file and click "Install Font" (opens Font Book).
+     Or select all the .ttf files, right-click > Open With > Font Book > Install.
+  3. Reopen Illustrator and open ..._editable-text.ai.
+
+INSTALL ON WINDOWS
+  1. Quit Illustrator.
+  2. Select all the .ttf files, right-click > Install (or "Install for all users").
+  3. Reopen Illustrator and open ..._editable-text.ai.
+
+If Illustrator still shows a "Missing Fonts" box, choose Find Fonts and replace
+IBMPlexMono-Regular / Poppins-... with the newly installed fonts of the same name.

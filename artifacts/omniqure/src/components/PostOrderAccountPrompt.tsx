@@ -42,11 +42,11 @@ export default function PostOrderAccountPrompt({ orderNumber }: { orderNumber: s
   return (
     <section style={{ background: "#F8FAFF", border: "1px solid #C7D7F7", borderRadius: 16, padding: "20px", marginTop: 20 }}>
       <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-        <div style={{ width: 38, height: 38, borderRadius: 10, background: "#E0EAFF", color: "#1240A0", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+        <div style={{ width: 38, height: 38, borderRadius: 10, background: "#E0EAFF", color: "#4E68C2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
           <UserRoundPlus size={19} />
         </div>
         <div>
-          <p style={{ margin: 0, color: "#0F172A", fontSize: 15, fontWeight: 900 }}>Save this order to an account?</p>
+          <p style={{ margin: 0, color: "#22252C", fontSize: 15, fontWeight: 900 }}>Save this order to an account?</p>
           <p style={{ margin: "4px 0 0", color: "#475569", fontSize: 13, lineHeight: 1.55 }}>
             Create a password to view this order and future purchases in one place.
           </p>
@@ -55,13 +55,13 @@ export default function PostOrderAccountPrompt({ orderNumber }: { orderNumber: s
       <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 15 }}>
         <Link
           href={`/register?${query}`}
-          style={{ borderRadius: 9, background: "#1240A0", color: "#fff", padding: "10px 14px", textDecoration: "none", fontWeight: 800, fontSize: 13 }}
+          style={{ borderRadius: 9, background: "#4E68C2", color: "#fff", padding: "10px 14px", textDecoration: "none", fontWeight: 800, fontSize: 13 }}
         >
           Create an account <ArrowRight size={14} style={{ verticalAlign: "text-bottom", marginLeft: 3 }} />
         </Link>
         <span style={{ color: "#64748B", fontSize: 12.5 }}>
           Already have an account?{" "}
-          <Link href={`/sign-in?${query}`} style={{ color: "#1240A0", fontWeight: 800, textDecoration: "none" }}>Sign in</Link>
+          <Link href={`/sign-in?${query}`} style={{ color: "#4E68C2", fontWeight: 800, textDecoration: "none" }}>Sign in</Link>
         </span>
       </div>
     </section>

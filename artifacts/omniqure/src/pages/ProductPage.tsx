@@ -3,20 +3,25 @@ import { trackViewContent } from "@/lib/pixels";
 import { Link, useParams, useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
 import { isHiddenCategory } from "@/data/products";
-import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, Truck, Minus, Plus, ChevronRight, Download, Loader2, Heart, Droplets, Gift, Sparkles, ExternalLink } from "lucide-react";
+import { ShoppingCart, Package, Thermometer, FlaskConical, Shield, ShieldCheck, Truck, Minus, Plus, ChevronRight, Heart, Droplets, Gift, Sparkles, Check, ArrowUpRight, AlertTriangle } from "lucide-react";
+import CatalogueCard from "@/components/CatalogueCard";
+import { Container, Eyebrow, SectionTitle } from "@/components/home/HomeSections";
+import { groupProducts } from "@/data/groupedProducts";
+import { studioImageForProduct, studioFallback, STUDIO_BG } from "@/lib/studioImage";
 import { janoshikDataBySlug } from "@/data/janoshikData";
 import { resolveBacWaterProducts } from "@/data/bacWaterProducts";
 import JanoshikReportModal from "@/components/JanoshikReportModal";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getLotNumber } from "@/utils/productPurity";
+import { BUNDLE_FREE_BAC_THRESHOLD, BUNDLE_FREE_ONE_THRESHOLD, BUNDLE_FREE_TWO_THRESHOLD } from "@/context/CartContext";
 import { useRecentlyViewed } from "@/context/RecentlyViewedContext";
 import RecentlyViewed from "@/components/RecentlyViewed";
-import ProductInfoAccordion from "@/components/ProductInfoAccordion";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useSEO, SITE_URL } from "@/hooks/useSEO";
 import { getProductSeoMetadata, getPublicProductPath } from "@workspace/api-client-react";
+import { getVialImage, versionVialAsset } from "@/lib/catalogueImages";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 function apiUrl(path: string) {
@@ -37,95 +42,54 @@ const VOLUME_TIERS = [
 
 function VolumePricingTable({
   totalCartItems,
-  formatPrice,
 }: {
   totalCartItems: number;
-  formatPrice: (n: number) => string;
+  formatPrice?: (n: number) => string;
 }) {
   const nextTier = VOLUME_TIERS.find(t => totalCartItems < t.min);
   const toNext = nextTier ? nextTier.min - totalCartItems : 0;
   const activeTier = [...VOLUME_TIERS].reverse().find(t => totalCartItems >= t.min);
 
   return (
-    <div
-      className="rounded-2xl mb-4 overflow-hidden"
-      style={{ border: "1px solid #DBEAFE", backgroundColor: "#F0F7FF" }}
-    >
-      {/* Header */}
-      <div
-        className="flex items-center justify-between px-4 py-2.5"
-        style={{ backgroundColor: "#EBF4FF", borderBottom: "1px solid #DBEAFE" }}
-      >
-        <span className="text-xs font-bold uppercase tracking-wider" style={{ color: "#1240A0" }}>
-          Bundle & Save
-        </span>
-        {activeTier ? (
-          <span
-            className="text-xs font-bold px-2.5 py-0.5 rounded-full"
-            style={{ backgroundColor: "#1240A0", color: "#fff" }}
-          >
-            {activeTier.label} active
-          </span>
-        ) : (
-          <span className="text-xs" style={{ color: "#64748B" }}>
-            Applies to your whole cart
-          </span>
-        )}
-      </div>
-
-      {/* Tier grid */}
-      <div className="grid grid-cols-3" style={{ borderTop: "1px solid #DBEAFE" }}>
+    <div>
+      <p className="mb-3 uppercase" style={{ fontSize: 10.5, letterSpacing: "0.14em", color: "var(--graphite)" }}>
+        Bundle &amp; save <span className="normal-case tracking-normal opacity-70">· applies to your whole cart</span>
+      </p>
+      <div className="grid grid-cols-3 gap-2.5">
         {VOLUME_TIERS.map((tier) => {
           const isActive = activeTier?.min === tier.min;
-          const isPast   = !!activeTier && activeTier.min > tier.min;
+          const isBest = tier.min === 10;
           return (
             <div
               key={tier.min}
-              className="flex flex-col items-center py-3 px-1 text-center"
+              className="relative flex flex-col items-center rounded-[12px] border px-2 py-3 text-center transition-colors"
               style={{
-                backgroundColor: isActive ? "#1240A0" : isPast ? "#E0EDFF" : "transparent",
-                borderRight: "1px solid #DBEAFE",
-                transition: "background-color 0.2s",
+                borderColor: isActive ? "var(--cobalt)" : "var(--hairline)",
+                borderWidth: isActive ? 2 : 1,
+                background: isActive ? "#F5F8FF" : "#fff",
               }}
             >
-              <span
-                className="text-xs font-bold mb-0.5"
-                style={{ color: isActive ? "#fff" : isPast ? "#1B5CB5" : "#64748B" }}
-              >
-                {tier.range} items
-              </span>
-              <span
-                className="font-extrabold"
-                style={{ fontSize: "14px", color: isActive ? "#fff" : isPast ? "#1B5CB5" : "#1240A0" }}
-              >
-                {tier.label}
-              </span>
+              {isBest && (
+                <span className="absolute -top-2 rounded-full px-2 py-0.5 uppercase" style={{ fontSize: 8.5, letterSpacing: "0.08em", fontWeight: 600, background: "var(--cobalt)", color: "#fff" }}>
+                  Best value
+                </span>
+              )}
+              <span style={{ fontSize: 12.5, fontWeight: 500, color: "var(--ink)" }}>{tier.range} vials</span>
+              <span className="mt-1" style={{ fontSize: 12, color: "#16A34A", lineHeight: 1.3 }}>{tier.label}</span>
             </div>
           );
         })}
       </div>
-
-      {/* Progress nudge */}
       {toNext > 0 && (
-        <div
-          className="px-4 py-2 text-xs flex items-center gap-1.5"
-          style={{ borderTop: "1px solid #DBEAFE", color: "#1B5CB5" }}
-        >
-          <Gift size={12} />
-          <span>
-            Add <strong>{toNext} more item{toNext > 1 ? "s" : ""}</strong> to your cart for{" "}
-            <strong>{nextTier!.label}</strong>
-          </span>
-        </div>
+        <p className="mt-2.5 flex items-center gap-1.5" style={{ fontSize: 12, color: "var(--graphite)" }}>
+          <Gift size={12} style={{ color: "var(--cobalt)" }} />
+          Add <strong style={{ color: "var(--ink)" }}>{toNext} more item{toNext > 1 ? "s" : ""}</strong> to your cart for <strong style={{ color: "var(--ink)" }}>{nextTier!.label.toLowerCase()}</strong>
+        </p>
       )}
       {toNext === 0 && activeTier?.min === 10 && (
-        <div
-          className="px-4 py-2 text-xs flex items-center gap-1.5"
-          style={{ borderTop: "1px solid #DBEAFE", color: "#059669" }}
-        >
-          <Sparkles size={12} />
-          <span><strong>Maximum tier unlocked</strong> — 2 peptides free with your order</span>
-        </div>
+        <p className="mt-2.5 flex items-center gap-1.5" style={{ fontSize: 12, color: "#16A34A" }}>
+          <Sparkles size={12} /> Maximum tier unlocked: 2 peptides free with your order
+        </p>
       )}
     </div>
   );
@@ -142,6 +106,7 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [showJanoshikModal, setShowJanoshikModal] = useState(false);
+  const [imageIdx, setImageIdx] = useState(0);
   const { addToCart, totalItems, peptideQty } = useCart();
   const { trackView } = useRecentlyViewed();
   const { customer } = useCustomerAuth();
@@ -202,6 +167,7 @@ export default function ProductPage() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
+    setImageIdx(0);
   }, [params.id]);
 
   useEffect(() => {
@@ -260,8 +226,8 @@ export default function ProductPage() {
   if (!product) {
     return (
       <div className="max-w-[1280px] mx-auto px-4 py-20 text-center">
-        <h1 className="text-2xl font-bold mb-4" style={{ color: "#0F172A" }}>Product Not Found</h1>
-        <Link href="/all-peptides" className="hover:underline" style={{ color: "#1B5CB5" }}>
+        <h1 className="text-2xl font-bold mb-4" style={{ color: "#22252C" }}>Product Not Found</h1>
+        <Link href="/all-peptides" className="hover:underline" style={{ color: "#4E68C2" }}>
           ← Back to All Peptides
         </Link>
       </div>
@@ -284,723 +250,530 @@ export default function ProductPage() {
         })
     : [];
 
-  const relatedProducts = products
-    .filter((p) => p.category === product.category && p.id !== product.id && parseBaseName(p.name).base !== currentBase)
-    .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
-    .slice(0, 4);
+  const jd = janoshikDataBySlug[product.slug];
+  const hasReport = !!(jd?.taskNumber && jd.verifyUrl && jd.image);
+  // Supplied vial renders take priority. Legacy numbered product images also
+  // have a studio vial render, while the original URL remains the card image.
+  const cardImage = product.image;
+  const legacySourceImage = product.sourceImage ?? product.image;
+  const legacyVialImage = versionVialAsset(studioImageForProduct(product.id, legacySourceImage)) ?? legacySourceImage;
+  const vialImage = getVialImage(product.slug) ?? (
+    legacyVialImage !== legacySourceImage ? legacyVialImage : undefined
+  );
+  const primaryImage = vialImage ?? cardImage;
+  const gallery = [
+    { src: primaryImage, fallback: cardImage, alt: `${product.name} research vial` },
+    ...(primaryImage !== cardImage ? [{ src: cardImage, fallback: product.image, alt: `${product.name} label` }] : []),
+    ...(hasReport ? [{ src: jd!.image!, fallback: jd!.image!, alt: `${product.name} lab report` }] : []),
+  ];
+  const activeImage = gallery[Math.min(imageIdx, gallery.length - 1)];
+  const aliases = (detail.alsoKnownAs ?? "").split(",").map(s => s.trim()).filter(Boolean).slice(0, 3);
+  const relatedGroups = groupProducts(
+    products.filter(p => p.category === product.category && parseBaseName(p.name).base !== currentBase && !isHiddenCategory(p.category)),
+  ).slice(0, 4);
+  const specRows: [string, string | undefined, boolean?][] = [
+    ["Compound", currentBase],
+    ["Full name", aliases[0]],
+    ["Sequence", detail.sequence],
+    ["Molecular weight", detail.molecularWeight],
+    ["Molecular formula", detail.formula],
+    ["CAS number", detail.casNumber],
+    ["Purity (HPLC)", product.purity ?? detail.purity],
+    ...(hasReport && jd?.taskNumber ? [["Tested", `${jd.analysis} · #${jd.taskNumber}`, true] as [string, string, boolean]] : []),
+    ["Form", detail.appearance],
+    ["Solubility", detail.solubility],
+    ["Storage", detail.storage],
+  ];
+  const specs = specRows.filter((r): r is [string, string, boolean?] => !!r[1]);
+  const soldOut = product.stockLevel === 0;
+  const lowStock = !soldOut && product.stockLevel !== undefined && product.stockLevel <= 10;
+  const productIdInt = parseInt(String(product.id), 10);
+  const saved = inWishlist(productIdInt);
+  const hair = { borderColor: "var(--hairline)" } as const;
 
   return (
-    <div style={{ fontFamily: "'Arimo', Arial, sans-serif", backgroundColor: "#F5F8FC" }}>
-      {/* Janoshik Report Modal */}
-      {showJanoshikModal && (() => {
-        const jd = janoshikDataBySlug[product.slug];
-        return jd?.image && jd?.verifyUrl ? (
-          <JanoshikReportModal
-            taskNumber={jd.taskNumber ?? ""}
-            verifyKey={jd.verifyKey ?? ""}
-            verifyUrl={jd.verifyUrl}
-            image={jd.image}
-            certificatePdf={jd.certificatePdf}
-            productName={product.name}
-            onClose={() => setShowJanoshikModal(false)}
-          />
-        ) : null;
-      })()}
-
+    <div className="bg-white">
+      {showJanoshikModal && hasReport && (
+        <JanoshikReportModal
+          taskNumber={jd!.taskNumber ?? ""}
+          verifyKey={jd!.verifyKey ?? ""}
+          verifyUrl={jd!.verifyUrl!}
+          image={jd!.image!}
+          certificatePdf={jd!.certificatePdf}
+          productName={product.name}
+          onClose={() => setShowJanoshikModal(false)}
+        />
+      )}
 
       {/* Breadcrumb */}
-      <div className="bg-white" style={{ borderBottom: "1px solid #E8EDF5" }}>
-        <div className="max-w-[1280px] mx-auto px-4 py-2.5 flex items-center gap-1.5 text-xs" style={{ color: "#94A3B8" }}>
-          <Link href="/" className="hover:text-blue-600 transition-colors" style={{ color: "#1B5CB5", textDecoration: "none" }}>Home</Link>
-          <ChevronRight size={12} />
-          <Link href="/all-peptides" className="hover:text-blue-600 transition-colors" style={{ color: "#1B5CB5", textDecoration: "none" }}>All Peptides</Link>
-          <ChevronRight size={12} />
-          <Link href={`/all-peptides?category=${encodeURIComponent(product.category)}`} className="hover:text-blue-600 transition-colors" style={{ color: "#1B5CB5", textDecoration: "none" }}>
-            {product.category}
-          </Link>
-          <ChevronRight size={12} />
-          <span style={{ color: "#475569" }}>{product.name}</span>
-        </div>
+      <div className="border-b" style={hair}>
+        <Container className="flex items-center gap-1.5 py-3" >
+          <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1.5" style={{ fontSize: 12.5, color: "var(--graphite)" }}>
+            <Link href="/" className="hover:text-[var(--ink)]">Home</Link>
+            <ChevronRight size={12} className="opacity-50" />
+            <Link href="/all-peptides" className="hover:text-[var(--ink)]">Catalogue</Link>
+            <ChevronRight size={12} className="opacity-50" />
+            <span style={{ color: "var(--ink)" }}>{product.name}</span>
+          </nav>
+        </Container>
       </div>
 
-      <div className="max-w-[1280px] mx-auto px-3 md:px-4 py-4 md:py-8">
-        {/* Main product section */}
-        <div className="flex flex-col md:flex-row gap-5 md:gap-6 lg:gap-8 mb-8 md:mb-10">
-          {/* Left: Product card panel */}
-          <div className="md:w-[400px] lg:w-[460px] flex-shrink-0">
-            <div
-              className="rounded-2xl overflow-hidden"
-              style={{ backgroundColor: "#fff", boxShadow: "0 4px 24px rgba(15,23,42,0.08)", border: "1px solid #E8EDF5" }}
-            >
-              {/* Label header */}
-              <div
-                className="flex items-center justify-between px-4 py-3"
-                style={{ background: "linear-gradient(90deg, #1240A0 0%, #1B5CB5 100%)", color: "#fff" }}
-              >
-                <span className="font-bold tracking-widest text-xs" style={{ letterSpacing: "0.14em" }}>OMNIQURE</span>
-                {detail.refNumber && (
-                  <span className="text-xs opacity-75">REF {detail.refNumber}</span>
-                )}
-              </div>
-
-              {/* Product name on label */}
-              <div className="px-4 pt-3 pb-2.5" style={{ borderBottom: "1px solid #F1F5F9" }}>
-                <p className="font-bold leading-tight" style={{ fontSize: "17px", color: "#0F172A" }}>
-                  {product.name}
-                </p>
-              </div>
-
-              {/* Specs */}
-              {(detail.casNumber || detail.formula || detail.molecularWeight) && (
-                <div className="px-4 py-2.5 space-y-1" style={{ borderBottom: "1px solid #F1F5F9", backgroundColor: "#FAFBFF" }}>
-                  {detail.casNumber && (
-                    <p className="text-xs" style={{ color: "#64748B" }}>
-                      <span className="font-semibold text-slate-500">CAS:</span> {detail.casNumber}
-                    </p>
-                  )}
-                  {detail.formula && (
-                    <p className="text-xs" style={{ color: "#64748B" }}>
-                      <span className="font-semibold text-slate-500">Formula:</span> {detail.formula}
-                    </p>
-                  )}
-                  {detail.molecularWeight && (
-                    <p className="text-xs" style={{ color: "#64748B" }}>
-                      <span className="font-semibold text-slate-500">M.W.:</span> {detail.molecularWeight}
-                    </p>
-                  )}
-                </div>
+      {/* Main product section */}
+      <section>
+        <Container className="grid gap-10 py-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 lg:py-16">
+          {/* Gallery */}
+          <div className="md:sticky md:top-24 md:self-start">
+            <div className="relative aspect-square overflow-hidden rounded-[18px]" style={{ background: STUDIO_BG }}>
+              <img
+                key={activeImage.src}
+                src={activeImage.src}
+                onError={studioFallback(activeImage.fallback)}
+                alt={activeImage.alt}
+                className={`h-full w-full ${imageIdx === 0 ? "object-cover" : "object-contain p-6 bg-white"}`}
+              />
+              {(product.purity ?? detail.purity) && (
+                <button
+                  type="button"
+                  onClick={() => hasReport && setShowJanoshikModal(true)}
+                  className="absolute left-3 top-3 rounded-[8px] bg-white/90 px-2.5 py-1.5 text-left backdrop-blur"
+                  style={{ cursor: hasReport ? "pointer" : "default" }}
+                >
+                  <span className="block uppercase" style={{ fontSize: 8.5, letterSpacing: "0.12em", color: "var(--graphite)" }}>
+                    HPLC purity{hasReport ? " · view COA" : " (mfr spec)"}
+                  </span>
+                  <span className="block font-semibold" style={{ fontSize: 12.5, color: "var(--ink)" }}>{product.purity ?? detail.purity}</span>
+                </button>
               )}
-
-              {/* Purity bar */}
-              <div className="px-4 py-3 flex items-center gap-2.5" style={{ borderBottom: "1px solid #F1F5F9" }}>
-                <span className="text-xs font-bold" style={{ color: "#1B5CB5" }}>PURITY</span>
-                <span className="text-xs font-semibold" style={{ color: "#0F172A" }}>{product.purity ?? "Not specified"}</span>
-                <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "#E2E8F0" }}>
-                  <div className="h-full rounded-full" style={{ width: `${Math.max(0, Math.min(100, Number.parseFloat(product.purity ?? "0") || 0))}%`, background: "linear-gradient(90deg, #1B5CB5, #2563EB)" }} />
-                </div>
-              </div>
-
-
-              {/* Product image — scales with screen */}
-              <div
-                className="product-detail-image-panel flex items-center justify-center"
-                style={{ height: "clamp(200px, 40vw, 380px)", padding: "8px", backgroundColor: "#fff", position: "relative" }}
-              >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="product-detail-image object-contain"
-                  style={{ width: "100%", height: "100%" }}
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = "0.2"; }}
-                />
-              </div>
-
-              {/* Quality badges */}
-              <div className="grid grid-cols-2 gap-px" style={{ backgroundColor: "#E8EDF5" }}>
-                {[
-                  { icon: <Shield size={11} />, text: product.purity ? `${product.purity} verified purity` : "Purity not specified" },
-                  { icon: <Package size={11} />, text: "Lab Certified" },
-                  { icon: <FlaskConical size={11} />, text: "Lab Tested" },
-                  { icon: <Thermometer size={11} />, text: "Lyophilized" },
-                ].map((b) => (
-                  <div
-                    key={b.text}
-                    className="flex items-center gap-1.5 px-3 py-2 text-xs"
-                    style={{ backgroundColor: "#fff", color: "#475569" }}
+            </div>
+            {gallery.length > 1 && (
+              <div className="mt-4 flex gap-3">
+                {gallery.map((g, i) => (
+                  <button
+                    key={g.src}
+                    type="button"
+                    onClick={() => setImageIdx(i)}
+                    aria-label={`Show image ${i + 1}`}
+                    aria-pressed={i === imageIdx}
+                    className="h-14 w-14 overflow-hidden rounded-[8px] border-2 transition-colors"
+                    style={{ borderColor: i === imageIdx ? "var(--ink)" : "transparent", background: STUDIO_BG }}
                   >
-                    <span style={{ color: "#1B5CB5" }}>{b.icon}</span>
-                    {b.text}
-                  </div>
+                    <img src={g.src} onError={studioFallback(g.fallback)} alt="" className="h-full w-full object-cover" />
+                  </button>
                 ))}
               </div>
-
-              {/* Independent Lab Report — only show a published Janoshik report */}
-              {(() => {
-                const jd = janoshikDataBySlug[product.slug];
-                if (!jd?.taskNumber || !jd.verifyUrl || !jd.image) return null;
-
-                return (
-                  <div
-                    className="flex items-center justify-between gap-3 px-4 py-3"
-                    style={{ backgroundColor: "#F0F5FF", borderTop: "1px solid #BFDBFE" }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="rounded-xl flex items-center justify-center flex-shrink-0"
-                        style={{ width: "40px", height: "40px", backgroundColor: "#1B5CB5" }}
-                      >
-                        <Download size={16} color="#fff" />
-                      </div>
-                      <div>
-                        <p className="font-bold text-sm" style={{ color: "#1240A0" }}>Independent Lab Report</p>
-                        <p className="text-xs" style={{ color: "#3B82F6" }}>Verified by Janoshik Analytical</p>
-                      </div>
-                    </div>
-                    <div style={{ display: "flex", gap: "6px", flexShrink: 0 }}>
-                        <button
-                          onClick={() => setShowJanoshikModal(true)}
-                          style={{
-                            display: "inline-flex", alignItems: "center", gap: "4px",
-                            fontSize: "11px", fontWeight: 700,
-                            padding: "5px 10px", borderRadius: "6px",
-                            background: "#fff", color: "#0D2565",
-                            border: "1.5px solid #BFDBFE",
-                            cursor: "pointer", letterSpacing: "0.01em",
-                            transition: "background 0.15s, border-color 0.15s",
-                          }}
-                          onMouseOver={e => {
-                            (e.currentTarget as HTMLButtonElement).style.background = "#EFF6FF";
-                            (e.currentTarget as HTMLButtonElement).style.borderColor = "#93C5FD";
-                          }}
-                          onMouseOut={e => {
-                            (e.currentTarget as HTMLButtonElement).style.background = "#fff";
-                            (e.currentTarget as HTMLButtonElement).style.borderColor = "#BFDBFE";
-                          }}
-                        >
-                          Quick View
-                        </button>
-                        {jd.certificatePdf && (
-                          <a
-                            href={jd.certificatePdf}
-                            download
-                            style={{
-                              display: "inline-flex", alignItems: "center", gap: "4px",
-                              fontSize: "11px", fontWeight: 700,
-                              padding: "5px 10px", borderRadius: "6px",
-                              background: "#fff", color: "#0D2565",
-                              border: "1.5px solid #BFDBFE", textDecoration: "none",
-                              letterSpacing: "0.01em",
-                            }}
-                          >
-                            PDF <Download size={11} />
-                          </a>
-                        )}
-                        <a
-                          href={jd.verifyUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            display: "inline-flex", alignItems: "center", gap: "4px",
-                            fontSize: "11px", fontWeight: 700,
-                            padding: "5px 10px", borderRadius: "6px",
-                            background: "linear-gradient(90deg, #0D2565, #1B5CB5)",
-                            color: "#fff", textDecoration: "none",
-                            boxShadow: "0 2px 10px rgba(13,37,101,0.22)",
-                            letterSpacing: "0.01em",
-                            transition: "opacity 0.15s",
-                          }}
-                          onMouseOver={e => (e.currentTarget.style.opacity = "0.85")}
-                          onMouseOut={e => (e.currentTarget.style.opacity = "1")}
-                        >
-                          Janoshik <ExternalLink size={11} />
-                        </a>
-                    </div>
-                  </div>
-                );
-              })()}
-            </div>
-
+            )}
           </div>
 
-          {/* Right: Info panel */}
-          <div className="flex-1">
-            {/* Category chip */}
-            <Link
-              href={`/?category=${encodeURIComponent(product.category)}`}
-              className="inline-block text-xs px-3 py-1 rounded-full mb-3 font-medium transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "#EEF4FF", color: "#1B5CB5", border: "1px solid #BFDBFE", textDecoration: "none" }}
-            >
-              {product.category}
-            </Link>
-
-            {/* Title + live badges row */}
-            <div className="flex items-start justify-between gap-3 mb-2">
-              <div>
-                <h1 className="product-h1 font-bold leading-tight mb-1.5" style={{ fontSize: "28px", color: "#0F172A" }}>
-                  {product.name}
-                </h1>
+          {/* Info panel */}
+          <div className="min-w-0">
+            <Eyebrow>{product.category}</Eyebrow>
+            <h1 className="product-h1 font-bold" style={{ fontSize: "clamp(32px, 4vw, 48px)", lineHeight: 1, letterSpacing: "-0.03em", color: "var(--ink)" }}>
+              {currentBase}
+            </h1>
+            {aliases.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {aliases.map(a => (
+                  <span key={a} className="rounded-full border px-3 py-1" style={{ ...hair, fontSize: 12, color: "var(--graphite)" }}>{a}</span>
+                ))}
               </div>
-              <div className="flex flex-col items-end gap-1.5 flex-shrink-0 pt-1">
-                {product.stockLevel === 0 ? (
-                  <span
-                    className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
-                    style={{ backgroundColor: "#FEF2F2", color: "#DC2626", border: "1px solid #FECACA" }}
-                  >
-                    ✗ Sold Out
-                  </span>
-                ) : product.stockLevel !== undefined && product.stockLevel <= 10 ? (
-                  <span
-                    className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
-                    style={{ backgroundColor: "#FFFBEB", color: "#D97706", border: "1px solid #FDE68A" }}
-                  >
-                    ⚡ Low stock
-                  </span>
-                ) : (
-                  <span
-                    className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full"
-                    style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0" }}
-                  >
-                    ✓ In Stock
-                  </span>
-                )}
-              </div>
-            </div>
+            )}
+            <p className="mt-4 flex items-center gap-1.5 font-medium" style={{ fontSize: 13, color: soldOut ? "#DC2626" : lowStock ? "#D97706" : "#16A34A" }}>
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: "currentColor" }} />
+              {soldOut ? "Sold out" : lowStock ? "Low stock" : "In stock"}
+            </p>
+            <p className="mt-4" style={{ fontSize: 15, lineHeight: 1.6, color: "var(--graphite)" }}>
+              Laboratory research material for analytical / in-vitro research use only.
+            </p>
 
-            {product.description && (
-              <p
-                className="mb-4 max-w-3xl"
-                style={{ color: "#475569", fontSize: "15px", lineHeight: 1.7 }}
-              >
-                {product.description}
-              </p>
+            <ul className="mt-6 space-y-3 border-t pt-5" style={hair}>
+              {[
+                { icon: <Truck size={16} />, text: "Same-day dispatch, Mon–Fri" },
+                { icon: <FlaskConical size={16} />, text: hasReport && jd?.purity ? `${jd.purity.toFixed(2)}% HPLC purity, independently verified` : "Independently lab-tested, 99%+ HPLC purity" },
+                { icon: <Shield size={16} />, text: "Discreet, tracked delivery" },
+              ].map(r => (
+                <li key={r.text} className="flex items-center gap-3" style={{ fontSize: 14, color: "var(--ink)" }}>
+                  <span style={{ color: "var(--graphite)" }}>{r.icon}</span>{r.text}
+                </li>
+              ))}
+            </ul>
+
+            {currentStrength && (
+              <div className="mt-6 border-t pt-5" style={hair}>
+                <p className="font-semibold" style={{ fontSize: 18, color: "var(--ink)" }}>{currentStrength}</p>
+                <p className="mt-0.5 uppercase" style={{ fontSize: 10.5, letterSpacing: "0.12em", color: "var(--graphite)" }}>Per vial</p>
+              </div>
             )}
 
-            {/* Purity / Form / Composition / Storage */}
-            <ProductInfoAccordion detail={detail} />
-
-            {/* Strength switcher */}
             {strengthVariants.length > 1 && (
-              <div
-                className="rounded-2xl p-4 mb-5"
-                style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}
-              >
-                <p className="text-xs font-bold mb-3 uppercase tracking-wider" style={{ color: "#94A3B8" }}>
-                  Select Strength
-                </p>
-                <div style={{ position: "relative" }}>
-                  <select
-                    value={product.id}
-                    onChange={(e) => {
-                      if (e.target.value !== product.id) navigate(`/product/${e.target.value}`);
-                    }}
-                    aria-label="Select strength"
-                    style={{
-                      width: "100%",
-                      appearance: "none",
-                      WebkitAppearance: "none",
-                      MozAppearance: "none",
-                      padding: "13px 44px 13px 16px",
-                      borderRadius: "12px",
-                      border: "1.5px solid #D6E0F0",
-                      backgroundColor: "#F8FAFC",
-                      color: "#0F172A",
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      fontFamily: "inherit",
-                      cursor: "pointer",
-                      outline: "none",
-                      transition: "border-color 0.15s, box-shadow 0.15s",
-                    }}
-                    onFocus={(e) => {
-                      e.currentTarget.style.borderColor = "#1B5CB5";
-                      e.currentTarget.style.boxShadow = "0 0 0 3px rgba(27,92,181,0.12)";
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.borderColor = "#D6E0F0";
-                      e.currentTarget.style.boxShadow = "none";
-                    }}
-                  >
-                    {strengthVariants.map((v) => {
-                      const { strength } = parseBaseName(v.name);
-                      return (
-                        <option key={v.id} value={v.id}>
-                          {strength}{v.price != null ? ` — ${formatPrice(v.price)}` : ""}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <ChevronRight
-                    size={18}
-                    style={{
-                      position: "absolute",
-                      right: "14px",
-                      top: "50%",
-                      transform: "translateY(-50%) rotate(90deg)",
-                      color: "#64748B",
-                      pointerEvents: "none",
-                    }}
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Price */}
-            {product.price != null && (
-              <div className="mb-4">
-                <p style={{ fontSize: "28px", fontWeight: 800, color: "#1240A0", lineHeight: 1 }}>
-                  {formatPrice(product.price)}
-                </p>
-                <p style={{ fontSize: "11.5px", color: "#94A3B8", marginTop: "4px" }}>
-                  Prices shown are indicative. Checkout in your selected currency.
-                </p>
-              </div>
-            )}
-
-            {/* Bundle & Save — buy more, save more (free-item tiers) */}
-            <VolumePricingTable totalCartItems={peptideQty} formatPrice={formatPrice} />
-
-            {/* Quantity + CTA */}
-            <div
-              className="rounded-2xl p-5 mb-5"
-              style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}
-            >
-              <p className="text-xs font-bold mb-3 uppercase tracking-wider" style={{ color: "#94A3B8" }}>Quantity</p>
-              <div className="product-cta-row flex items-center gap-3">
-                <div
-                  className="product-cta-qty flex items-center rounded-xl overflow-hidden"
-                  style={{ border: "1.5px solid #E2E8F0" }}
-                >
-                  <button
-                    onClick={decreaseQty}
-                    className="flex items-center justify-center hover:bg-slate-50 transition-colors"
-                    style={{ width: "40px", height: "44px", color: "#475569" }}
-                  >
-                    <Minus size={14} />
-                  </button>
-                  <div
-                    className="flex items-center justify-center font-bold"
-                    style={{ width: "48px", height: "44px", borderLeft: "1.5px solid #E2E8F0", borderRight: "1.5px solid #E2E8F0", color: "#0F172A", fontSize: "15px" }}
-                  >
-                    {quantity}
-                  </div>
-                  <button
-                    onClick={increaseQty}
-                    className="flex items-center justify-center hover:bg-slate-50 transition-colors"
-                    style={{ width: "40px", height: "44px", color: "#475569" }}
-                  >
-                    <Plus size={14} />
-                  </button>
-                </div>
-
-                <div className="product-cta-actions">
-                  <button
-                    onClick={handleAddToCart}
-                    disabled={product.stockLevel === 0}
-                    className="product-cta-btn flex-1 flex items-center justify-center gap-2 rounded-xl font-bold text-white transition-all hover:opacity-90"
-                    style={{
-                      background: product.stockLevel === 0
-                        ? "#CBD5E1"
-                        : added
-                        ? "linear-gradient(135deg, #059669 0%, #047857 100%)"
-                        : "linear-gradient(135deg, #1B5CB5 0%, #1240A0 100%)",
-                      height: "44px",
-                      fontSize: "14px",
-                      border: "none",
-                      cursor: product.stockLevel === 0 ? "not-allowed" : "pointer",
-                      transition: "background 0.25s",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    <ShoppingCart size={16} />
-                    {product.stockLevel === 0 ? "Sold Out" : added ? "✓ Added to Cart!" : "Add to Cart"}
-                  </button>
-
-                  {/* Wishlist icon button */}
-                  {(() => {
-                    const productIdInt = parseInt(String(product.id), 10);
-                    const saved = inWishlist(productIdInt);
+              <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t pt-5" style={hair}>
+                <span className="font-medium" style={{ fontSize: 14, color: "var(--ink)" }}>Dosage</span>
+                <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Select strength">
+                  {strengthVariants.map(v => {
+                    const active = v.id === product.id;
                     return (
                       <button
-                        onClick={() => void toggleWishlist(productIdInt)}
-                        title={saved ? "Saved to Wishlist" : "Save to Wishlist"}
-                        className="flex items-center justify-center rounded-xl flex-shrink-0 transition-all"
+                        key={v.id}
+                        role="radio"
+                        aria-checked={active}
+                        onClick={() => { if (!active) navigate(`/product/${v.id}`); }}
+                        className="rounded-[10px] border px-3.5 py-2 font-semibold transition-colors"
                         style={{
-                          width: "44px",
-                          height: "44px",
-                          cursor: "pointer",
-                          backgroundColor: saved ? "#FEF2F2" : "#F8FAFC",
-                          border: saved ? "1.5px solid #FECACA" : "1.5px solid #E2E8F0",
-                          color: saved ? "#DC2626" : "#94A3B8",
-                          transition: "all 0.15s",
+                          fontSize: 13,
+                          borderColor: active ? "var(--ink)" : "var(--hairline)",
+                          background: active ? "var(--ink)" : "#fff",
+                          color: active ? "#fff" : "var(--ink)",
                         }}
                       >
-                        <Heart size={18} style={{ fill: saved ? "#DC2626" : "none", transition: "fill 0.15s" }} />
+                        {parseBaseName(v.name).strength}
                       </button>
                     );
-                  })()}
+                  })}
                 </div>
+              </div>
+            )}
+
+            {/* Quantity + price */}
+            <div className="mt-5 flex items-center justify-between gap-4 border-t pt-5" style={hair}>
+              <span className="font-medium" style={{ fontSize: 14, color: "var(--graphite)" }}>Quantity</span>
+              <div className="flex items-center gap-4">
+                <div className="product-cta-qty flex items-center rounded-full border" style={hair}>
+                  <button onClick={decreaseQty} aria-label="Decrease quantity" className="flex h-9 w-9 items-center justify-center" style={{ color: "var(--graphite)" }}><Minus size={13} /></button>
+                  <span className="w-6 text-center font-medium" style={{ fontSize: 14, color: "var(--ink)" }} aria-live="polite">{quantity}</span>
+                  <button onClick={increaseQty} aria-label="Increase quantity" className="flex h-9 w-9 items-center justify-center" style={{ color: "var(--graphite)" }}><Plus size={13} /></button>
+                </div>
+                {product.price != null && (
+                  <span className="font-semibold" style={{ fontSize: 28, letterSpacing: "-0.02em", color: "var(--ink)" }}>
+                    {formatPrice(product.price * quantity)}
+                  </span>
+                )}
               </div>
             </div>
 
+            <div className="mt-5">
+              <VolumePricingTable totalCartItems={peptideQty} formatPrice={formatPrice} />
+            </div>
 
-            {/* ── Bac Water Add-on ──────────────────────────────── */}
-            {product.stockLevel !== 0 && selectedBacWater && (
-              <div
-                className="rounded-2xl mb-3"
-                style={{
-                  position: "relative",
-                  overflow: "visible",
-                  marginTop: "14px",
-                  border: bacWaterEnabled ? "1.5px solid #38BDF8" : "1.5px solid #BAE6FD",
-                  background: bacWaterEnabled
-                    ? "linear-gradient(135deg, #E0F2FE 0%, #F0F9FF 60%)"
-                    : "linear-gradient(135deg, #F5FBFF 0%, #FFFFFF 70%)",
-                  boxShadow: bacWaterEnabled
-                    ? "0 8px 24px rgba(14,165,233,0.18)"
-                    : "0 2px 10px rgba(14,165,233,0.07)",
-                  transition: "border-color 0.2s, box-shadow 0.2s, background 0.2s",
-                }}
-              >
-                {/* decorative droplet glow */}
-                <span style={{
-                  position: "absolute", top: "-36px", right: "-24px",
-                  width: "120px", height: "120px", borderRadius: "50%",
-                  background: "radial-gradient(circle, rgba(56,189,248,0.22), transparent 70%)",
-                  pointerEvents: "none",
-                }} />
-
-                {/* Recommended ribbon */}
-                <span style={{
-                  position: "absolute", top: -11, left: "50%", transform: "translateX(-50%)",
-                  fontSize: 9.5, fontWeight: 800, letterSpacing: "0.06em",
-                  textTransform: "uppercase", color: "#0369A1", whiteSpace: "nowrap",
-                  background: "#fff", border: "1px solid #BAE6FD",
-                  borderRadius: 9999, padding: "3px 9px",
-                  boxShadow: "0 1px 4px rgba(14,165,233,0.15)",
-                }}>
-                  Recommended
-                </span>
-
-                {/* Header row */}
+            {/* Bac water add-on */}
+            {!soldOut && selectedBacWater && (
+              <div className="mt-4 rounded-[14px] border" style={{ borderColor: bacWaterEnabled ? "var(--cobalt)" : "var(--hairline)" }}>
                 <button
-                  onClick={() => setBacWaterEnabled((v) => !v)}
-                  style={{
-                    width: "100%", display: "flex", alignItems: "center",
-                    gap: 12, padding: "14px 16px",
-                    background: "none", border: "none", cursor: "pointer", textAlign: "left",
-                    position: "relative",
-                  }}
+                  type="button"
+                  onClick={() => setBacWaterEnabled(v => !v)}
+                  aria-pressed={bacWaterEnabled}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-left"
                 >
-                  {/* Checkbox */}
                   <span
-                    style={{
-                      width: 22, height: 22, borderRadius: 7, flexShrink: 0,
-                      border: bacWaterEnabled ? "2px solid #0EA5E9" : "2px solid #CBD5E1",
-                      backgroundColor: bacWaterEnabled ? "#0EA5E9" : "#fff",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      transition: "border-color 0.15s, background-color 0.15s",
-                    }}
+                    className="flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] border-2"
+                    style={{ borderColor: bacWaterEnabled ? "var(--cobalt)" : "#CBD5E1", background: bacWaterEnabled ? "var(--cobalt)" : "#fff" }}
                   >
-                    {bacWaterEnabled && (
-                      <svg width="12" height="9" viewBox="0 0 11 8" fill="none">
-                        <path d="M1 4L4 7L10 1" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    )}
+                    {bacWaterEnabled && <svg width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                   </span>
-
-                  {/* Droplet icon badge */}
-                  <span style={{
-                    width: 38, height: 38, borderRadius: 11, flexShrink: 0,
-                    background: "linear-gradient(135deg, #0EA5E9, #38BDF8)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    boxShadow: "0 4px 12px rgba(14,165,233,0.35)",
-                  }}>
-                    <Droplets size={19} color="#fff" strokeWidth={2.2} />
+                  <Droplets size={17} style={{ color: "var(--cobalt)" }} />
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-medium" style={{ fontSize: 14, color: "var(--ink)" }}>Add bacteriostatic water</span>
+                    <span className="block" style={{ fontSize: 12, color: "var(--graphite)" }}>For reconstituting your peptide</span>
                   </span>
-
-                  <div style={{ flex: 1, minWidth: 0, paddingRight: 70 }}>
-                    <p style={{ fontSize: 14, fontWeight: 800, color: "#0F172A", margin: 0, lineHeight: 1.2 }}>
-                      Add Bacteriostatic Water
-                    </p>
-                    <p style={{ fontSize: 11.5, color: "#0369A1", margin: 0, marginTop: 2, fontWeight: 500 }}>
-                      Essential for reconstituting your peptide
-                    </p>
-                  </div>
-
-                  <span style={{
-                    fontSize: 14, fontWeight: 800, color: "#fff", flexShrink: 0,
-                    background: "linear-gradient(135deg, #0EA5E9, #0284C7)",
-                    borderRadius: 9999, padding: "5px 12px",
-                    boxShadow: "0 2px 8px rgba(14,165,233,0.3)",
-                  }}>
-                    +{formatPrice(selectedBacWater.price)}
-                  </span>
+                  <span className="font-semibold" style={{ fontSize: 14, color: "var(--ink)" }}>+{formatPrice(selectedBacWater.price)}</span>
                 </button>
-
-                {/* Size picker — shown when enabled */}
-                {bacWaterEnabled && (
-                  <div
-                    style={{
-                      borderTop: "1px solid #BAE6FD",
-                      padding: "12px 16px 14px",
-                      position: "relative",
-                    }}
-                  >
-                    <label style={{
-                      display: "block",
-                      fontSize: 10,
-                      fontWeight: 700,
-                      color: "#0369A1",
-                      letterSpacing: "0.04em",
-                      textTransform: "uppercase",
-                      marginBottom: 5,
-                    }}>
-                      Select Bac Water Size
-                    </label>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 8 }}>
-                      {bacWaterOptions.map((opt, idx) => {
-                        const isSelected = idx === bacWaterSizeIdx;
-                        const isBest = idx === bacWaterOptions.length - 1;
-                        return (
-                          <button
-                            key={opt.id}
-                            type="button"
-                            onClick={() => setBacWaterSizeIdx(idx)}
-                            aria-pressed={isSelected}
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              alignItems: "flex-start",
-                              gap: 3,
-                              padding: "10px 12px",
-                              borderRadius: 10,
-                              border: isSelected ? "2px solid #0EA5E9" : "1px solid #BAE6FD",
-                              backgroundColor: isSelected ? "#E0F2FE" : "#fff",
-                              color: "#0369A1",
-                              fontSize: 13,
-                              fontWeight: 800,
-                              fontFamily: "inherit",
-                              cursor: "pointer",
-                              textAlign: "left",
-                              boxShadow: isSelected ? "0 2px 8px rgba(14,165,233,0.12)" : "none",
-                              transition: "border-color 0.15s, background-color 0.15s, box-shadow 0.15s",
-                            }}
-                          >
-                            <span>{opt.label}</span>
-                            <span style={{ fontSize: 11, color: "#64748B", fontWeight: 600 }}>
-                              {formatPrice(opt.price)}{isBest ? " · Best value" : ""}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
+                {bacWaterEnabled && bacWaterOptions.length > 1 && (
+                  <div className="grid grid-cols-2 gap-2 border-t px-4 py-3" style={hair}>
+                    {bacWaterOptions.map((opt, idx) => {
+                      const sel = idx === bacWaterSizeIdx;
+                      return (
+                        <button
+                          key={opt.id}
+                          type="button"
+                          onClick={() => setBacWaterSizeIdx(idx)}
+                          aria-pressed={sel}
+                          className="rounded-[10px] border px-3 py-2 text-left"
+                          style={{ borderColor: sel ? "var(--ink)" : "var(--hairline)" }}
+                        >
+                          <span className="block font-semibold" style={{ fontSize: 13, color: "var(--ink)" }}>{opt.label}</span>
+                          <span className="block" style={{ fontSize: 11.5, color: "var(--graphite)" }}>{formatPrice(opt.price)}</span>
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
               </div>
             )}
 
-            {/* Back-in-stock notify form */}
-            {product.stockLevel === 0 && (
-              <div
-                className="rounded-2xl p-4 mb-3"
-                style={{ backgroundColor: "#FFF8F8", border: "1px solid #FECACA" }}
+            <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-1 border-t pt-5" style={hair}>
+              {[
+                hasReport && jd?.purity ? `${jd.purity.toFixed(2)}% HPLC verified` : `${product.purity ?? detail.purity ?? "99%+"} HPLC verified`,
+                hasReport ? "COA included" : "Lab tested",
+                "Discreet, tracked delivery"
+              ].map(t => (
+                <li key={t} className="flex items-center gap-1.5" style={{ fontSize: 12.5, color: "var(--graphite)" }}>
+                  <Check size={13} style={{ color: "#16A34A" }} />{t}
+                </li>
+              ))}
+            </ul>
+
+            {/* CTA row */}
+            <div className="product-cta-row mt-4 flex gap-3">
+              {hasReport && (
+                <button
+                  type="button"
+                  onClick={() => setShowJanoshikModal(true)}
+                  className="flex h-[54px] shrink-0 items-center gap-2 rounded-full border px-5 font-semibold hover:bg-[#F8F9FB]"
+                  style={{ ...hair, fontSize: 14, color: "var(--ink)" }}
+                >
+                  <ShieldCheck size={16} style={{ color: "var(--cobalt)" }} /> View COA
+                </button>
+              )}
+              <button
+                onClick={handleAddToCart}
+                disabled={soldOut}
+                className="product-cta-btn flex h-[54px] flex-1 items-center justify-center gap-2 rounded-full font-semibold text-white transition-colors"
+                style={{
+                  fontSize: 15,
+                  background: soldOut ? "#D1D5DB" : added ? "#16A34A" : "var(--ink)",
+                  color: soldOut ? "#6B7280" : "#fff",
+                  cursor: soldOut ? "not-allowed" : "pointer",
+                }}
               >
+                <ShoppingCart size={16} />
+                {soldOut ? "Sold out" : added ? "Added to cart" : "Add to cart"}
+              </button>
+              <button
+                onClick={() => void toggleWishlist(productIdInt)}
+                aria-label={saved ? "Remove from wishlist" : "Save to wishlist"}
+                aria-pressed={saved}
+                className="flex h-[54px] w-[54px] shrink-0 items-center justify-center rounded-full border"
+                style={{ borderColor: saved ? "#FECACA" : "var(--hairline)", color: saved ? "#DC2626" : "var(--graphite)" }}
+              >
+                <Heart size={18} style={{ fill: saved ? "#DC2626" : "none" }} />
+              </button>
+            </div>
+
+            {/* Back-in-stock alert */}
+            {soldOut && (
+              <div className="mt-4 rounded-[14px] border p-4" style={hair}>
                 {notifySuccess ? (
-                  <div className="flex items-center gap-2">
-                    <span style={{ color: "#059669", fontSize: "18px" }}>✓</span>
-                    <div>
-                      <p className="text-sm font-semibold" style={{ color: "#0F172A" }}>We'll let you know</p>
-                      <p className="text-xs" style={{ color: "#64748B" }}>We'll email you as soon as {product.name} is back in stock.</p>
-                    </div>
-                  </div>
+                  <p style={{ fontSize: 13.5, color: "var(--ink)" }}>We'll email you as soon as {product.name} is back in stock.</p>
                 ) : (
                   <>
-                    <p className="text-xs font-bold mb-2 uppercase tracking-wider" style={{ color: "#94A3B8" }}>Notify Me When Back in Stock</p>
+                    <p className="mb-2 uppercase" style={{ fontSize: 10.5, letterSpacing: "0.12em", color: "var(--graphite)" }}>Notify me when back in stock</p>
                     <form onSubmit={(e) => { void handleNotifyMe(e); }} className="flex gap-2">
                       <input
                         type="email"
                         required
-                        placeholder={customer ? customer.email : "your@email.com"}
+                        aria-label="Email address"
+                        placeholder={customer ? customer.email : "you@email.com"}
                         value={notifyEmail || (customer ? customer.email : "")}
                         onChange={(e) => setNotifyEmail(e.target.value)}
-                        className="notify-input-touch flex-1 rounded-lg px-3 text-sm"
-                        style={{ height: "38px", border: "1.5px solid #E2E8F0", outline: "none", color: "#0F172A" }}
+                        className="notify-input-touch h-10 flex-1 rounded-[10px] border px-3 outline-none focus:border-[var(--cobalt)]"
+                        style={{ ...hair, fontSize: 14, color: "var(--ink)" }}
                       />
-                      <button
-                        type="submit"
-                        disabled={notifySubmitting}
-                        className="notify-btn-touch rounded-lg px-4 text-sm font-semibold text-white"
-                        style={{ height: "38px", background: "#0F172A", border: "none", cursor: notifySubmitting ? "wait" : "pointer", flexShrink: 0 }}
-                      >
-                        {notifySubmitting ? "..." : "Notify Me"}
+                      <button type="submit" disabled={notifySubmitting} className="notify-btn-touch h-10 rounded-[10px] px-4 font-semibold text-white" style={{ fontSize: 13.5, background: "var(--ink)" }}>
+                        {notifySubmitting ? "…" : "Notify me"}
                       </button>
                     </form>
-                    {notifyError && <p className="text-xs mt-1.5" style={{ color: "#DC2626" }}>{notifyError}</p>}
+                    {notifyError && <p className="mt-1.5" style={{ fontSize: 12, color: "#DC2626" }}>{notifyError}</p>}
                   </>
                 )}
               </div>
             )}
 
-
-          </div>
-        </div>
-
-        {/* Description */}
-        <div
-          className="rounded-2xl overflow-hidden mb-6"
-          style={{ backgroundColor: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}
-        >
-          <div style={{ borderBottom: "1px solid #F1F5F9", padding: "14px 24px" }}>
-            <span className="text-sm font-semibold" style={{ color: "#1B5CB5" }}>Description</span>
-          </div>
-          <div className="p-6">
-            <div style={{ maxWidth: "860px" }}>
-              <p className="leading-relaxed mb-5" style={{ fontSize: "14px", color: "#374151", lineHeight: "1.8" }}>
-                {detail.description}
-              </p>
-
-              {detail.longDescription && (
-                <div className="mb-5 leading-relaxed" style={{ fontSize: "14px", color: "#374151", lineHeight: "1.8" }}>
-                  {detail.longDescription.split("\n\n").map((para, i) => {
-                    const isHeader = para.length < 100 && !para.endsWith(".");
-                    return isHeader ? (
-                      <p key={i} className="mb-2 mt-5 first:mt-0" style={{ fontWeight: 700, color: "#0F172A", fontSize: "15px" }}>
-                        {para}
-                      </p>
-                    ) : (
-                      <p key={i} className="mb-4">{para}</p>
-                    );
-                  })}
+            {/* Guarantees */}
+            <div className="mt-6 grid grid-cols-2 border-t" style={hair}>
+              {[
+                { icon: <ShieldCheck size={16} />, t: "99%+ purity", s: "independently verified" },
+                { icon: <Truck size={16} />, t: "Same-day dispatch", s: "Mon–Fri" },
+                { icon: <Package size={16} />, t: "Discreet packaging", s: "plain & unmarked" },
+                { icon: <Thermometer size={16} />, t: "Lyophilised", s: "stable for storage" },
+              ].map((g, i) => (
+                <div key={g.t} className={`flex items-center gap-3 py-3 ${i % 2 ? "pl-4 border-l" : "pr-4"} ${i > 1 ? "border-t" : ""}`} style={hair}>
+                  <span style={{ color: "var(--cobalt)" }}>{g.icon}</span>
+                  <span>
+                    <span className="block font-semibold" style={{ fontSize: 13, color: "var(--ink)" }}>{g.t}</span>
+                    <span className="block" style={{ fontSize: 11.5, color: "var(--graphite)" }}>{g.s}</span>
+                  </span>
                 </div>
-              )}
-
-              {detail.sequence && (
-                <div className="mb-5">
-                  <h3 className="font-bold mb-2" style={{ fontSize: "14px", color: "#0F172A" }}>Peptide Sequence</h3>
-                  <div
-                    className="p-4 rounded-xl font-mono text-xs break-all"
-                    style={{ backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0", color: "#374151", lineHeight: "1.7" }}
-                  >
-                    {detail.sequence}
-                  </div>
-                </div>
-              )}
-
-              <div
-                className="p-4 rounded-xl mt-4"
-                style={{ backgroundColor: "#FFFBEB", border: "1px solid #FDE68A" }}
-              >
-                <p className="text-xs font-bold mb-1 uppercase tracking-wide" style={{ color: "#B45309" }}>
-                  Educational Information Only
-                </p>
-                <p className="text-xs leading-relaxed" style={{ color: "#92400E" }}>
-                  All articles and product information are for informational and educational purposes only. Products are furnished for in-vitro studies only. These products are not medicines or drugs and have not been approved by the FDA. Bodily introduction into humans or animals is strictly forbidden by law.
-                </p>
-              </div>
+              ))}
             </div>
           </div>
-        </div>
+        </Container>
+      </section>
 
-        {/* Recently Viewed */}
-        <RecentlyViewed excludeId={product.id} />
+      {/* Specifications */}
+      {specs.length > 0 && (
+        <section className="border-t" style={{ ...hair, background: "rgba(78,104,194,0.08)", borderLeft: "4px solid #4E68C2" }}>
+          <Container className="grid gap-10 py-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-16 lg:py-20">
+            <div>
+              <Eyebrow>Analytical data</Eyebrow>
+              <SectionTitle>Specifications,<br /><span style={{ color: "var(--cobalt)" }}>verified.</span></SectionTitle>
+              <p className="mt-4 max-w-[320px]" style={{ fontSize: 14, lineHeight: 1.6, color: "var(--graphite)" }}>
+                Specifications for this compound, independently verified before release.
+              </p>
+            </div>
+            <div>
+              <dl className="overflow-hidden rounded-[14px] border bg-white" style={hair}>
+                {specs.map(([k, v, emphasis], i) => (
+                  <div
+                    key={k}
+                    className="grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 px-5 py-3.5"
+                    style={{
+                      borderTop: i > 0 ? "1px solid var(--hairline)" : undefined,
+                      background: emphasis ? "rgba(78,104,194,0.06)" : undefined,
+                      boxShadow: emphasis ? "inset 3px 0 0 var(--cobalt)" : undefined,
+                    }}
+                  >
+                    <dt className="uppercase" style={{ fontSize: 10.5, letterSpacing: "0.12em", color: emphasis ? "var(--cobalt)" : "var(--graphite)", fontWeight: emphasis ? 600 : undefined }}>{k}</dt>
+                    <dd className="break-words" style={{ fontSize: 14, color: "var(--ink)", fontWeight: emphasis ? 600 : undefined }}>{v}</dd>
+                  </div>
+                ))}
+              </dl>
+              {hasReport && (
+                <button
+                  type="button"
+                  onClick={() => setShowJanoshikModal(true)}
+                  className="mt-4 inline-flex items-center gap-1.5 font-medium hover:text-[var(--cobalt)]"
+                  style={{ fontSize: 12.5, color: "var(--graphite)", background: "none", border: 0, padding: 0, cursor: "pointer" }}
+                >
+                  <ShieldCheck size={13} style={{ color: "var(--cobalt)" }} />
+                  View the full lab report
+                </button>
+              )}
+            </div>
+          </Container>
+        </section>
+      )}
 
-        {/* Research Use Only Disclaimer */}
-        <div className="pt-2 pb-2 md:pt-4 md:pb-4">
-          <div
-            className="rounded-xl p-4"
-            style={{ backgroundColor: "#FFF8F0", border: "1px solid #FED7AA" }}
-          >
-            <p className="text-xs font-bold mb-1.5 uppercase tracking-wide" style={{ color: "#C2410C" }}>
-              ⚠ Research Use Only Disclaimer
+      {/* About this peptide */}
+      <section className="border-t" style={hair}>
+        <Container className="grid gap-10 py-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-16 lg:py-20">
+          <div>
+            <Eyebrow>About this peptide</Eyebrow>
+            <SectionTitle>{currentBase}</SectionTitle>
+            <p className="mt-2 font-medium" style={{ fontSize: 14, color: "var(--cobalt)" }}>Laboratory research material</p>
+            <div className="mt-6 max-w-[640px]" style={{ fontSize: 15, lineHeight: 1.75, color: "var(--graphite)" }}>
+              {detail.description && <p className="mb-5">{detail.description}</p>}
+              {detail.longDescription?.split("\n\n").map((para, i) => {
+                const isHeader = para.length < 100 && !para.endsWith(".");
+                return isHeader ? (
+                  <h3 key={i} className="mb-2 mt-7 font-semibold" style={{ fontSize: 16, color: "var(--ink)" }}>{para}</h3>
+                ) : (
+                  <p key={i} className="mb-4">{para}</p>
+                );
+              })}
+            </div>
+            <div className="mt-6 max-w-[640px] rounded-[14px] border bg-white p-5" style={{ ...hair, fontSize: 12.5, lineHeight: 1.65, color: "var(--graphite)" }}>
+              Educational information only. Products are furnished for in-vitro studies only. They are not medicines or drugs and have not been approved by the FDA. Bodily introduction into humans or animals is strictly forbidden by law.
+            </div>
+          </div>
+          <figure className="self-start overflow-hidden rounded-[18px] border bg-white lg:sticky lg:top-24" style={hair}>
+            <div className="aspect-[4/5] overflow-hidden" style={{ background: STUDIO_BG }}>
+              <img src={vialImage ?? cardImage} onError={studioFallback(cardImage)} alt={`${product.name} lyophilised vial`} loading="lazy" className="h-full w-full object-cover scale-[1.12]" />
+            </div>
+            <figcaption className="border-t px-4 py-3" style={hair}>
+              <span className="block uppercase" style={{ fontSize: 9.5, letterSpacing: "0.12em", color: "var(--graphite)" }}>Research vial</span>
+              <span className="block font-medium" style={{ fontSize: 13, color: "var(--ink)" }}>{product.name} lyophilised vial</span>
+            </figcaption>
+          </figure>
+        </Container>
+      </section>
+
+      {/* Related */}
+      {relatedGroups.length > 0 && (
+        <section className="border-t" style={hair}>
+          <Container className="py-12 lg:py-20">
+            <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <Eyebrow>Related</Eyebrow>
+                <SectionTitle>Related research materials.</SectionTitle>
+              </div>
+              <Link href={`/all-peptides?category=${encodeURIComponent(product.category)}`} className="inline-flex items-center gap-1.5 font-medium hover:text-[var(--cobalt)]" style={{ fontSize: 14, color: "var(--ink)" }}>
+                Full catalogue <ArrowUpRight size={15} />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {relatedGroups.map(g => <CatalogueCard key={g.baseName} group={g} />)}
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {/* Kit builder */}
+      <section className="border-t" style={{ ...hair, background: "rgba(78,104,194,0.08)", borderLeft: "4px solid #4E68C2" }}>
+        <Container className="flex flex-wrap items-center justify-between gap-6 py-10">
+          <div className="flex items-start gap-4">
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white" style={{ border: "1px solid var(--hairline)", color: "var(--cobalt)" }}>
+              <Gift size={20} aria-hidden="true" />
+            </span>
+            <div>
+              <Eyebrow>Bundle &amp; save</Eyebrow>
+              <p className="font-bold tracking-tight" style={{ fontSize: 24, color: "var(--ink)", letterSpacing: "-0.015em" }}>
+                Build your own kit.
+              </p>
+              <p className="mt-1.5 max-w-[560px]" style={{ fontSize: 14, lineHeight: 1.6, color: "var(--graphite)" }}>
+                Add {BUNDLE_FREE_BAC_THRESHOLD} or more peptides and free items apply automatically at checkout. {BUNDLE_FREE_ONE_THRESHOLD} unlocks a free peptide, {BUNDLE_FREE_TWO_THRESHOLD} unlock two.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2.5">
+            <Link href="/all-peptides" className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[14px] font-semibold text-white transition-opacity hover:opacity-90" style={{ background: "var(--ink)" }}>
+              Start building <ArrowUpRight size={15} aria-hidden="true" />
+            </Link>
+            <Link href="/bundle-and-save" className="inline-flex items-center rounded-full border bg-white px-5 py-3 text-[14px] font-medium transition-colors hover:bg-[#F4F6FA]" style={{ borderColor: "var(--hairline)", color: "var(--ink)" }}>
+              Browse catalogue
+            </Link>
+          </div>
+        </Container>
+      </section>
+
+      {/* Research literature */}
+      <section className="border-t" style={hair}>
+        <Container className="grid gap-10 py-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-16 lg:py-20">
+          <div>
+            <Eyebrow>External databases</Eyebrow>
+            <SectionTitle>Research<br /><span style={{ color: "var(--cobalt)" }}>literature.</span></SectionTitle>
+            <p className="mt-4 max-w-[320px]" style={{ fontSize: 14, lineHeight: 1.6, color: "var(--graphite)" }}>
+              {currentBase} is indexed in public chemical and biomedical databases. Search those sources directly for primary literature and compound records.
             </p>
-            <p className="text-xs leading-relaxed" style={{ color: "#7C2D12" }}>
+          </div>
+          <div>
+            <div className="rounded-[14px] border" style={hair}>
+              {[
+                { label: "PubChem", desc: "Chemical structure, identifiers and properties", href: `https://pubchem.ncbi.nlm.nih.gov/#query=${encodeURIComponent(currentBase)}` },
+                { label: "PubMed", desc: "Peer-reviewed research mentioning this compound", href: `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(currentBase)}` },
+                ...(detail.casNumber ? [{ label: "CAS number", desc: `${detail.casNumber} — search this registry number`, href: `https://pubchem.ncbi.nlm.nih.gov/#query=${encodeURIComponent(detail.casNumber)}` }] : []),
+              ].map((l, i, arr) => (
+                <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center justify-between gap-4 px-5 py-4 transition-colors hover:bg-[#F2F0EB]"
+                  style={{ borderBottom: i < arr.length - 1 ? "1px solid var(--hairline)" : undefined }}>
+                  <span>
+                    <span className="block font-semibold" style={{ fontSize: 14.5, color: "var(--ink)" }}>{l.label}</span>
+                    <span className="block" style={{ fontSize: 12.5, color: "var(--graphite)" }}>{l.desc}</span>
+                  </span>
+                  <ArrowUpRight size={16} className="shrink-0" style={{ color: "var(--cobalt)" }} aria-hidden="true" />
+                </a>
+              ))}
+            </div>
+            <p className="mt-4" style={{ fontSize: 11.5, lineHeight: 1.6, color: "var(--graphite)" }}>
+              External database links are provided for research convenience only. OmniQure does not control and is not responsible for third-party content.
+            </p>
+          </div>
+        </Container>
+      </section>
+
+      <Container className="pb-4">
+        <RecentlyViewed excludeId={product.id} />
+      </Container>
+
+      {/* Research notice */}
+      <section className="border-t" style={{ borderColor: "#F5D0C5", background: "#FDF6F4" }}>
+        <Container className="flex gap-3 py-8">
+          <AlertTriangle size={18} className="mt-0.5 shrink-0" style={{ color: "#C2410C" }} />
+          <div className="max-w-[760px]" style={{ fontSize: 12.5, lineHeight: 1.65, color: "#9A3412" }}>
+            <p className="mb-1.5 font-semibold" style={{ fontSize: 13 }}>Research use only</p>
+            <p>
               The product described on this page is intended for in-vitro laboratory research use only. It is not a drug and has not been approved by the FDA or any other regulatory body. It is not intended to diagnose, treat, cure, or prevent any disease or condition. Only qualified researchers should purchase this product. You must be at least 18 years of age to purchase.
             </p>
           </div>
-        </div>
-      </div>
-
-
+        </Container>
+      </section>
     </div>
   );
 }

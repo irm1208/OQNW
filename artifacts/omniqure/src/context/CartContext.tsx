@@ -105,6 +105,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   )?.price ?? 0;
 
   useEffect(() => {
+    // Products start empty until /api/products resolves; reconciling against
+    // an empty catalogue would wipe the persisted cart on every reload.
+    if (products.length === 0) return;
     setItems(previous => {
       const next = previous.flatMap(item => {
         const latestProduct = products.find(product => product.id === item.product.id);

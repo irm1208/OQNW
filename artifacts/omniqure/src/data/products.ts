@@ -4,6 +4,8 @@ export type Product = {
   slug: string;
   price: number | null;
   image: string;
+  /** Original catalogue source used to resolve legacy studio vial renders. */
+  sourceImage?: string;
   category: string;
   description?: string | null;
   purity?: string | null;

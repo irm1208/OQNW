@@ -1,0 +1,9 @@
+/* IBM Plex Mono font family from OmniQure brand kit */
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('./IBM%20Plex%20Mono/IBMPlexMono-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

@@ -78,15 +78,15 @@ export default function BacWaterPage() {
           <div>
             {/* Badge */}
             <div className="inline-flex items-center gap-1.5 mb-4" style={{
-              backgroundColor: "#EFF6FF", border: "1px solid #BFDBFE",
+              backgroundColor: "#E8F2DE", border: "1px solid #C8DDB4",
               borderRadius: "6px", padding: "4px 12px",
             }}>
-              <span style={{ fontSize: "10px", fontWeight: 800, color: "#1D4ED8", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+              <span style={{ fontSize: "10px", fontWeight: 800, color: "#3D55A8", letterSpacing: "0.08em", textTransform: "uppercase" }}>
                 Research Accessory
               </span>
             </div>
 
-            <h1 style={{ fontSize: "clamp(26px,4vw,38px)", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: "6px" }}>
+            <h1 style={{ fontSize: "clamp(26px,4vw,38px)", fontWeight: 900, color: "#22252C", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: "6px" }}>
               {selected.name}
             </h1>
 
@@ -114,9 +114,9 @@ export default function BacWaterPage() {
                     width: "100%",
                     padding: "11px 38px 11px 14px",
                     borderRadius: "10px",
-                    border: "2px solid #1240A0",
-                    backgroundColor: "#EFF6FF",
-                    color: "#1240A0",
+                    border: "2px solid #4E68C2",
+                    backgroundColor: "#E8F2DE",
+                    color: "#4E68C2",
                     fontSize: "15px",
                     fontWeight: 800,
                     fontFamily: "inherit",
@@ -125,7 +125,7 @@ export default function BacWaterPage() {
                     MozAppearance: "none",
                     cursor: "pointer",
                     outline: "none",
-                    boxShadow: "0 2px 8px rgba(18,64,160,0.12)",
+                    boxShadow: "0 2px 8px rgba(59, 98, 171,0.12)",
                   }}
                 >
                   {sizes.map((s) => (
@@ -136,7 +136,7 @@ export default function BacWaterPage() {
                 </select>
                 <svg
                   width="14" height="14" viewBox="0 0 24 24"
-                  fill="none" stroke="#1240A0" strokeWidth="2.5"
+                  fill="none" stroke="#4E68C2" strokeWidth="2.5"
                   style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}
                 >
                   <polyline points="6 9 12 15 18 9" />
@@ -146,7 +146,7 @@ export default function BacWaterPage() {
 
             {/* Price */}
             <div style={{ marginBottom: "24px" }}>
-              <span style={{ fontSize: "36px", fontWeight: 900, color: "#0D2565", lineHeight: 1 }}>
+              <span style={{ fontSize: "36px", fontWeight: 900, color: "#22252C", lineHeight: 1 }}>
                 £{selected.price.toFixed(2)}
               </span>
                <span style={{ fontSize: "13px", color: "#94A3B8", marginLeft: "8px" }}>per {selected.unit}</span>
@@ -166,7 +166,7 @@ export default function BacWaterPage() {
                 >
                   <Minus size={14} />
                 </button>
-                <span style={{ minWidth: "32px", textAlign: "center", fontSize: "15px", fontWeight: 700, color: "#0F172A" }}>
+                <span style={{ minWidth: "32px", textAlign: "center", fontSize: "15px", fontWeight: 700, color: "#22252C" }}>
                   {qty}
                 </span>
                 <button
@@ -183,7 +183,7 @@ export default function BacWaterPage() {
                 style={{
                   flex: 1,
                   display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-                  background: "linear-gradient(90deg, #0D2565 0%, #1240A0 100%)",
+                  background: "linear-gradient(90deg, #22252C 0%, #4E68C2 100%)",
                   color: "#fff", border: "none", borderRadius: "10px",
                   padding: "14px 24px", fontSize: "15px", fontWeight: 700, cursor: "pointer",
                   boxShadow: "0 4px 16px rgba(13,37,101,0.3)",
@@ -201,13 +201,13 @@ export default function BacWaterPage() {
                   key={label}
                   style={{
                     display: "flex", alignItems: "flex-start", gap: "10px",
-                    backgroundColor: "#fff", border: "1px solid #E8EDF5",
+                    backgroundColor: "#fff", border: "1px solid #D3D8E2",
                     borderRadius: "10px", padding: "12px 14px",
                   }}
                 >
-                  <Icon size={16} style={{ color: "#1240A0", marginTop: "2px", flexShrink: 0 }} />
+                  <Icon size={16} style={{ color: "#4E68C2", marginTop: "2px", flexShrink: 0 }} />
                   <div>
-                    <p style={{ fontSize: "12px", fontWeight: 700, color: "#0F172A" }}>{label}</p>
+                    <p style={{ fontSize: "12px", fontWeight: 700, color: "#22252C" }}>{label}</p>
                     <p style={{ fontSize: "11px", color: "#64748B", marginTop: "1px" }}>{detail}</p>
                   </div>
                 </div>
@@ -220,7 +220,7 @@ export default function BacWaterPage() {
         <div
           className="mt-14 rounded-2xl"
           style={{
-            background: "linear-gradient(90deg, #0D2565 0%, #1240A0 40%, #1B5CB5 75%, #1E68CC 100%)",
+            background: "linear-gradient(90deg, #22252C 0%, #4E68C2 40%, #4E68C2 75%, #3B6CE6 100%)",
             padding: "36px 40px",
             display: "flex", flexWrap: "wrap", gap: "32px", alignItems: "center", justifyContent: "space-between",
           }}

@@ -10,6 +10,7 @@ import { useWishlist } from "@/context/WishlistContext";
 import { Heart } from "lucide-react";
 import { janoshikDataBySlug } from "@/data/janoshikData";
 import { useProducts } from "@/context/ProductsContext";
+import { getCatalogueVialImage } from "@/lib/catalogueImages";
 
 interface QuickViewModalProps {
   group: GroupedProduct;
@@ -68,7 +69,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
         position: "fixed", inset: 0, zIndex: 1200,
         background: "rgba(5,15,40,0.72)", backdropFilter: "blur(4px)",
         display: "flex", alignItems: "center", justifyContent: "center",
-        padding: "16px", fontFamily: "'Arimo', Arial, sans-serif",
+        padding: "16px", fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif",
       }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
@@ -112,7 +113,12 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
           </div>
 
           <img
-            src={group.image}
+            src={getCatalogueVialImage(variant.id, variant.slug, variant.image, variant.sourceImage)}
+            onError={(e) => {
+              if (variant.image && e.currentTarget.src !== variant.image) {
+                e.currentTarget.src = variant.image;
+              }
+            }}
             alt={group.baseName}
             style={{ maxWidth: "100%", maxHeight: "240px", objectFit: "contain" }}
           />
@@ -120,7 +126,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
           {janoshikReport?.taskNumber && janoshikReport.verifyUrl && janoshikReport.image && (
             <div style={{
               marginTop: "16px", padding: "7px 14px", borderRadius: "10px",
-              background: "#F0F7FF", border: "1.5px solid #1240A0",
+              background: "#F0F7FF", border: "1.5px solid #4E68C2",
               display: "flex", alignItems: "center", gap: "8px",
             }}>
               <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "18px", width: "auto", borderRadius: "3px", display: "block" }} />
@@ -136,7 +142,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
           {/* Category + wishlist row */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span style={{
-              fontSize: "10px", fontWeight: 700, color: "#1B5CB5", background: "#EEF4FF",
+              fontSize: "10px", fontWeight: 700, color: "#4E68C2", background: "#E8F2DE",
               padding: "3px 9px", borderRadius: "5px", letterSpacing: "0.05em", textTransform: "uppercase",
             }}>
               {group.category}
@@ -163,7 +169,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
           <div>
             <h2 style={{
               margin: 0, fontSize: "22px", fontWeight: 900, lineHeight: 1.15,
-              background: "linear-gradient(120deg, #0D2565 0%, #1B5CB5 60%, #2563EB 100%)",
+              background: "linear-gradient(120deg, #22252C 0%, #4E68C2 60%, #4E68C2 100%)",
               WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
             }}>
               {group.baseName}
@@ -186,7 +192,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
           <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
             {[
               { label: "Purity", value: purityStr, color: "#059669", bg: "#ECFDF5", border: "#A7F3D0" },
-              ...(detail?.molecularWeight ? [{ label: "M.W.", value: detail.molecularWeight, color: "#1240A0", bg: "#EEF4FF", border: "#BFDBFE" }] : []),
+              ...(detail?.molecularWeight ? [{ label: "M.W.", value: detail.molecularWeight, color: "#4E68C2", bg: "#E8F2DE", border: "#C8DDB4" }] : []),
               ...(detail?.casNumber ? [{ label: "CAS", value: detail.casNumber, color: "#374151", bg: "#F8FAFC", border: "#E2E8F0" }] : []),
             ].map(s => (
               <div key={s.label} style={{
@@ -214,9 +220,9 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
                       onClick={() => setSelectedIdx(i)}
                       style={{
                         padding: "6px 14px", borderRadius: "9px", fontSize: "12.5px", fontWeight: 700,
-                        border: active ? "2px solid #1240A0" : "1.5px solid #E2E8F0",
-                        background: active ? "#EEF4FF" : "#F8FAFC",
-                        color: active ? "#1240A0" : "#374151",
+                        border: active ? "2px solid #4E68C2" : "1.5px solid #E2E8F0",
+                        background: active ? "#E8F2DE" : "#F8FAFC",
+                        color: active ? "#4E68C2" : "#374151",
                         cursor: "pointer", transition: "all 0.12s",
                         display: "flex", flexDirection: "column", alignItems: "center", gap: "1px",
                       }}
@@ -271,7 +277,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
             }}>
               {(["−", qty, "+"] as const).map((v, i) => (
                 i === 1
-                  ? <span key="qty" style={{ minWidth: "34px", textAlign: "center", fontSize: "14px", fontWeight: 800, color: "#0F172A" }}>{qty}</span>
+                  ? <span key="qty" style={{ minWidth: "34px", textAlign: "center", fontSize: "14px", fontWeight: 800, color: "#22252C" }}>{qty}</span>
                   : <button
                       key={i}
                       onClick={() => setQty(q => i === 0 ? Math.max(1, q - 1) : q + 1)}
@@ -281,7 +287,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
                         fontSize: "18px", color: "#64748B", display: "flex", alignItems: "center", justifyContent: "center",
                         transition: "background 0.12s",
                       }}
-                      onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.background = "#EEF4FF"}
+                      onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.background = "#E8F2DE"}
                       onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.background = "#F8FAFC"}
                     >{v}</button>
               ))}
@@ -293,7 +299,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
               className="quick-view-add-btn"
               style={{
                 flex: 1, height: "40px", borderRadius: "10px",
-                background: isOos ? "#E2E8F0" : added ? "#059669" : "#1240A0",
+                background: isOos ? "#E2E8F0" : added ? "#059669" : "#4E68C2",
                 color: isOos ? "#94A3B8" : "#fff",
                 border: "none", fontSize: "13.5px", fontWeight: 800,
                 cursor: isOos ? "not-allowed" : "pointer",
@@ -301,8 +307,8 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
                 transition: "background 0.15s",
                 whiteSpace: "nowrap",
               }}
-              onMouseEnter={e => { if (!isOos && !added) (e.currentTarget as HTMLButtonElement).style.background = "#1B5CB5"; }}
-              onMouseLeave={e => { if (!isOos && !added) (e.currentTarget as HTMLButtonElement).style.background = "#1240A0"; }}
+              onMouseEnter={e => { if (!isOos && !added) (e.currentTarget as HTMLButtonElement).style.background = "#4E68C2"; }}
+              onMouseLeave={e => { if (!isOos && !added) (e.currentTarget as HTMLButtonElement).style.background = "#4E68C2"; }}
             >
               {added
                 ? <><CheckCircle2 size={15} /> Added to Cart!</>
@@ -319,7 +325,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
             style={{
               background: "none", border: "none", cursor: "pointer", padding: 0,
               display: "flex", alignItems: "center", gap: "5px",
-              fontSize: "12.5px", fontWeight: 700, color: "#1240A0", alignSelf: "flex-start",
+              fontSize: "12.5px", fontWeight: 700, color: "#4E68C2", alignSelf: "flex-start",
               textDecoration: "underline", textUnderlineOffset: "3px",
             }}
           >

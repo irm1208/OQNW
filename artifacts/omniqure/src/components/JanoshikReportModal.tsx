@@ -113,7 +113,7 @@ export default function JanoshikReportModal({
                 download
                 style={{
                   display: "flex", alignItems: "center", gap: "5px",
-                  fontSize: "12px", fontWeight: 600, color: "#1240A0",
+                  fontSize: "12px", fontWeight: 600, color: "#4E68C2",
                   textDecoration: "none",
                 }}
               >
@@ -126,7 +126,7 @@ export default function JanoshikReportModal({
               rel="noopener noreferrer"
               style={{
                 display: "flex", alignItems: "center", gap: "6px",
-                fontSize: "12px", fontWeight: 600, color: "#1240A0",
+                fontSize: "12px", fontWeight: 600, color: "#4E68C2",
                 textDecoration: "none",
               }}
             >

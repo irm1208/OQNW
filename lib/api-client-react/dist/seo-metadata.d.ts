@@ -1,6 +1,6 @@
-export declare const SITE_NAME = "OmniQure Peptide Research Institute";
+export declare const SITE_NAME = "OmniQure";
 export declare const SITE_URL = "https://omniqure.com";
-export declare const DEFAULT_SITE_TITLE = "OmniQure Peptide Research Institute \u2014 Verified Research Peptides";
+export declare const DEFAULT_SITE_TITLE = "OmniQure \u2014 Verified Research Peptides";
 export declare const DEFAULT_SITE_DESCRIPTION = "Buy high-purity research peptides verified to 98%+. BPC-157, TB-500, Ipamorelin, CJC-1295, Epithalon and 100+ peptides. Worldwide shipping. For research use only.";
 type ResolvedMetadata = {
     title: string;

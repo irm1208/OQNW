@@ -154,6 +154,7 @@ export declare function useGetAdminDashboard<TData = Awaited<ReturnType<typeof g
 }): UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
 };
+export {};
 export declare const getGetRevenueChartUrl: (params?: GetRevenueChartParams) => string;
 /**
  * @summary Get daily revenue for the specified period
@@ -1001,5 +1002,4 @@ export declare function useListAdminAuditHistory<TData = Awaited<ReturnType<type
 }): UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
 };
-export {};
 //# sourceMappingURL=api.d.ts.map

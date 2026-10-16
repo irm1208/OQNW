@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { Shield, X, Cookie } from "lucide-react";
 import { initPixels } from "@/lib/pixels";
 import { useOverlayCoordinator } from "@/context/OverlayCoordinatorContext";
 
@@ -55,72 +54,51 @@ export function CookieConsent() {
 
   if (!visible) return null;
 
-  return (
-    <div ref={barRef} style={{
-      position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 9999,
-      background: "linear-gradient(135deg, #0D1F4E, #1240A0)",
-      borderTop: "1px solid rgba(255,255,255,0.12)",
-      boxShadow: "0 -8px 40px rgba(15,23,42,0.3)",
-      padding: "16px 20px",
-    }}>
-      <div style={{ maxWidth: "1280px", margin: "0 auto", display: "flex", gap: "20px", alignItems: "center", flexWrap: "wrap" }}>
-        <div style={{ display: "flex", gap: "12px", alignItems: "flex-start", flex: 1, minWidth: "240px" }}>
-          <div style={{
-            width: "36px", height: "36px", borderRadius: "10px",
-            background: "rgba(255,255,255,0.12)", flexShrink: 0,
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <Cookie size={18} color="rgba(255,255,255,0.85)" />
-          </div>
-          <div>
-            <p style={{ margin: "0 0 2px", fontSize: "13.5px", fontWeight: 700, color: "#fff", fontFamily: "'Arimo', Arial, sans-serif" }}>
-              We use cookies to improve your experience
-            </p>
-            <p style={{ margin: 0, fontSize: "12px", color: "rgba(255,255,255,0.65)", lineHeight: 1.5, fontFamily: "'Arimo', Arial, sans-serif" }}>
-              We use analytics and marketing cookies to personalise content and ads, and to analyse site traffic. These include Meta (Facebook &amp; Instagram) and TikTok pixels. You can accept all or decline non-essential cookies. See our{" "}
-              <a href="/privacy" style={{ color: "rgba(255,255,255,0.85)", textDecoration: "underline" }}>Privacy Policy</a>.
-            </p>
-          </div>
-        </div>
+  const font = "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif";
 
-        <div style={{ display: "flex", gap: "10px", alignItems: "center", flexShrink: 0 }}>
+  return (
+    <div
+      ref={barRef}
+      role="region"
+      aria-label="Cookie consent"
+      style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 9999, padding: "0 16px 16px", pointerEvents: "none" }}
+    >
+      <div
+        style={{
+          pointerEvents: "auto",
+          maxWidth: "900px", margin: "0 auto",
+          background: "#1D2948", color: "#fff",
+          borderRadius: "16px",
+          boxShadow: "0 20px 50px -12px rgba(11,18,32,0.45)",
+          padding: "18px 24px",
+          display: "flex", gap: "16px 24px", alignItems: "center", flexWrap: "wrap",
+          fontFamily: font,
+        }}
+      >
+        <p style={{ margin: 0, flex: "1 1 320px", fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.8)" }}>
+          We use analytics and marketing cookies, including Meta (Facebook &amp; Instagram) and TikTok pixels, to analyse traffic and improve the site. See our{" "}
+          <a href="/privacy" style={{ color: "#fff", textDecoration: "underline", textUnderlineOffset: "2px" }}>privacy policy</a>.
+        </p>
+        <div style={{ display: "flex", gap: "8px", alignItems: "center", flexShrink: 0 }}>
           <button
             onClick={decline}
             style={{
-              height: "38px", padding: "0 18px", borderRadius: "9px",
-              border: "1.5px solid rgba(255,255,255,0.25)", background: "transparent",
-              color: "rgba(255,255,255,0.8)", fontSize: "12.5px", fontWeight: 600,
-              cursor: "pointer", fontFamily: "'Arimo', Arial, sans-serif",
-              transition: "border-color 0.15s",
+              height: "40px", padding: "0 18px", borderRadius: "10px",
+              border: "1px solid rgba(255,255,255,0.2)", background: "transparent",
+              color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: font,
             }}
           >
-            Decline Non-Essential
+            Reject non-essential
           </button>
           <button
             onClick={accept}
             style={{
-              height: "38px", padding: "0 20px", borderRadius: "9px",
-              border: "none", background: "#fff",
-              color: "#1240A0", fontSize: "12.5px", fontWeight: 800,
-              cursor: "pointer", fontFamily: "'Arimo', Arial, sans-serif",
-              display: "flex", alignItems: "center", gap: "6px",
-              boxShadow: "0 2px 12px rgba(0,0,0,0.2)",
+              height: "40px", padding: "0 20px", borderRadius: "10px",
+              border: "none", background: "#3D55A8",
+              color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: font,
             }}
           >
-            <Shield size={13} />
-            Accept All Cookies
-          </button>
-          <button
-            onClick={decline}
-            aria-label="Close"
-            style={{
-              width: "34px", height: "34px", borderRadius: "8px",
-              border: "1.5px solid rgba(255,255,255,0.2)", background: "transparent",
-              color: "rgba(255,255,255,0.5)", cursor: "pointer",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}
-          >
-            <X size={15} />
+            Accept
           </button>
         </div>
       </div>

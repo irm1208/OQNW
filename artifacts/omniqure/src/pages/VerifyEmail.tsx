@@ -34,8 +34,8 @@ export default function VerifyEmail() {
 
   return (
     <div style={{
-      fontFamily: "'Arimo', Arial, sans-serif",
-      backgroundColor: "#F5F8FC",
+      fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif",
+      backgroundColor: "#F2F0EB",
       minHeight: "70vh",
       display: "flex",
       alignItems: "center",
@@ -46,8 +46,8 @@ export default function VerifyEmail() {
 
         {status === "loading" && (
           <>
-            <Loader2 size={48} color="#1B5CB5" style={{ margin: "0 auto 20px", animation: "spin 1s linear infinite" }} />
-            <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#0F172A", marginBottom: "8px" }}>
+            <Loader2 size={48} color="#4E68C2" style={{ margin: "0 auto 20px", animation: "spin 1s linear infinite" }} />
+            <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#22252C", marginBottom: "8px" }}>
               Verifying your email…
             </h1>
             <p style={{ color: "#64748B", fontSize: "15px" }}>Just a moment.</p>
@@ -65,7 +65,7 @@ export default function VerifyEmail() {
             }}>
               <CheckCircle2 size={40} color="#fff" strokeWidth={2.5} />
             </div>
-            <h1 style={{ fontSize: "26px", fontWeight: 900, color: "#0F172A", letterSpacing: "-0.02em", marginBottom: "10px" }}>
+            <h1 style={{ fontSize: "26px", fontWeight: 900, color: "#22252C", letterSpacing: "-0.02em", marginBottom: "10px" }}>
               Email verified!
             </h1>
             <p style={{ fontSize: "15px", color: "#64748B", lineHeight: 1.6, marginBottom: "28px" }}>
@@ -76,7 +76,7 @@ export default function VerifyEmail() {
               style={{
                 display: "inline-flex", alignItems: "center", gap: "8px",
                 height: "48px", paddingLeft: "28px", paddingRight: "28px",
-                borderRadius: "12px", background: "linear-gradient(90deg, #0D2565, #1B5CB5)",
+                borderRadius: "12px", background: "linear-gradient(90deg, #22252C, #4E68C2)",
                 color: "#fff", fontWeight: 700, fontSize: "15px", textDecoration: "none",
               }}
             >
@@ -96,7 +96,7 @@ export default function VerifyEmail() {
             }}>
               <XCircle size={40} color="#fff" strokeWidth={2.5} />
             </div>
-            <h1 style={{ fontSize: "24px", fontWeight: 900, color: "#0F172A", marginBottom: "10px" }}>
+            <h1 style={{ fontSize: "24px", fontWeight: 900, color: "#22252C", marginBottom: "10px" }}>
               Verification failed
             </h1>
             <p style={{ fontSize: "14px", color: "#64748B", lineHeight: 1.65, marginBottom: "28px" }}>
