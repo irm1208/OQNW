@@ -18,6 +18,7 @@ import JurisdictionWarning from "@/components/JurisdictionWarning";
 import AgeGate from "@/components/AgeGate";
 import CartPreviewPanel from "@/components/CartPreviewPanel";
 import SiteDisclaimer from "@/components/SiteDisclaimer";
+import StickyCartBar from "@/components/StickyCartBar";
 import { initPixels } from "@/lib/pixels";
 import { usePageTracking } from "@/hooks/usePageTracking";
 import { idlePrefetch, prefetchRoute } from "@/lib/prefetch";
@@ -266,12 +267,24 @@ function Router() {
   );
 }
 
-function App() {
-  // When a jurisdiction compliance banner is active for the visitor's country,
-  // it takes priority over the marketing announcement bar — showing both at
-  // once stacks two full-width bars back to back for no added value.
+function HeaderStack() {
+  // The jurisdiction notice outranks the marketing bar. On the homepage the
+  // conversion band occupies that slot, so the notice is only suppressed
+  // above the fold there; it still shows on every other route.
+  const [location] = useLocation();
   const [jurisdictionActive, setJurisdictionActive] = useState(false);
+  const isHome = location === "/";
 
+  return (
+    <>
+      <AnnouncementBar suppressed={jurisdictionActive} />
+      <Header />
+      {!isHome && <JurisdictionWarning onActiveChange={setJurisdictionActive} />}
+    </>
+  );
+}
+
+function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -292,9 +305,7 @@ function App() {
               <GlobalPrefetch />
               <CookieConsent />
               <div className="min-h-screen bg-white flex flex-col">
-                <AnnouncementBar suppressed={jurisdictionActive} />
-                <Header />
-                <JurisdictionWarning onActiveChange={setJurisdictionActive} />
+                <HeaderStack />
                 <PageFade>
                   <Suspense fallback={null}>
                     <Router />
@@ -304,6 +315,7 @@ function App() {
                 <Footer />
               </div>
               <CartPreviewPanel />
+              <StickyCartBar />
               <ChatWidget />
               <AgeGate />
               </OverlayCoordinatorProvider>

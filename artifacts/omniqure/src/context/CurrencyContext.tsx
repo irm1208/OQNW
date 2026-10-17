@@ -134,7 +134,7 @@ function getInitialCurrency(): CurrencyCode {
     const stored = localStorage.getItem(STORAGE_KEY) as CurrencyCode | null;
     if (stored && CURRENCIES.find(c => c.code === stored)) return stored;
   } catch {}
-  return "USD";
+  return "GBP";
 }
 
 function getInitialCountry(): string | null {
