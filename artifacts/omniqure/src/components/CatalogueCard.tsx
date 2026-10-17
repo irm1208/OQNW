@@ -1,16 +1,29 @@
 import { Link } from "wouter";
+import { Plus } from "lucide-react";
 import type { GroupedProduct } from "@/data/groupedProducts";
 import { useCurrency } from "@/context/CurrencyContext";
 import { studioFallback, STUDIO_BG } from "@/lib/studioImage";
+import { useCart } from "@/context/CartContext";
 
 /* Flat catalogue tile: 4:5 image, name, category, purity, "From" price. */
 export default function CatalogueCard({ group }: { group: GroupedProduct }) {
   const { formatPrice } = useCurrency();
+  const { addToCart } = useCart();
   const first = group.variants[0];
   const prices = group.variants.map(v => v.price).filter((p): p is number => p != null);
   const fromPrice = prices.length ? Math.min(...prices) : null;
   const soldOut = group.variants.every(v => v.stockLevel === 0);
   const purity = group.variants.find(v => v.purity)?.purity;
+  const singleVariant = group.variants.length === 1;
+  const inStock = first && (first.stockLevel ?? 0) > 0;
+
+  const handleQuickAdd = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (first && inStock) {
+      addToCart(first, 1);
+    }
+  };
 
   return (
     <Link
@@ -28,10 +41,24 @@ export default function CatalogueCard({ group }: { group: GroupedProduct }) {
           height={1254}
           className="h-full w-full object-cover scale-[1.08] sm:scale-100 group-hover:scale-[1.05] transition-transform duration-700 ease-out"
         />
-        {soldOut && (
+        {soldOut ? (
           <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em]" style={{ color: "var(--graphite)" }}>
             Sold out
           </span>
+        ) : first && first.stockLevel != null && first.stockLevel > 0 && first.stockLevel <= 10 ? (
+          <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em]" style={{ color: "var(--cobalt)" }}>
+            {first.stockLevel} left
+          </span>
+        ) : null}
+        {!soldOut && singleVariant && inStock && (
+          <button
+            onClick={handleQuickAdd}
+            aria-label="Add to cart"
+            className="absolute bottom-3 right-3 flex h-11 w-11 items-center justify-center rounded-full transition-all hover:scale-110 active:scale-95"
+            style={{ background: "var(--cobalt)", color: "white", boxShadow: "0 4px 14px rgba(59,98,171,0.35)" }}
+          >
+            <Plus size={18} strokeWidth={2.5} />
+          </button>
         )}
       </div>
       <div className="p-3 sm:p-4">

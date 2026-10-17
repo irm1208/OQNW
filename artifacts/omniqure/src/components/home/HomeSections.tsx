@@ -56,6 +56,22 @@ export function WhySection() {
           <h2 className="font-bold leading-tight" style={{ fontSize: "clamp(24px, 3vw, 40px)", letterSpacing: "-0.025em", color: "var(--ink)" }}>
             Six reasons researchers stay with us.
           </h2>
+          <div className="mx-auto mt-6 flex max-w-[560px] items-stretch justify-center gap-3 sm:gap-6">
+            {[
+              { value: "135", label: "compounds" },
+              { value: "99%+", label: "HPLC purity" },
+              { value: "Same day", label: "dispatch" },
+            ].map((stat) => (
+              <div key={stat.label} className="flex-1 border-l first:border-l-0 px-2 sm:px-4" style={{ borderColor: "var(--hairline)" }}>
+                <p className="font-bold tabular-nums" style={{ fontSize: "clamp(20px, 3.2vw, 30px)", lineHeight: 1.05, letterSpacing: "-0.03em", color: "var(--ink)" }}>
+                  {stat.value}
+                </p>
+                <p className="mt-1 uppercase" style={{ fontSize: 10, letterSpacing: "0.12em", color: "var(--graphite)" }}>
+                  {stat.label}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
         <div className="sm:hidden grid grid-cols-2 gap-3">
           {WHY.map(({ icon: Icon, title, short }) => (
@@ -133,7 +149,7 @@ export function BundleBanner({ image }: { image?: string }) {
       <div className="relative flex flex-col lg:flex-row lg:min-h-[560px]">
         {image && (
           <div className="relative w-full lg:w-1/2 order-1 lg:order-2 overflow-hidden h-[60vw] min-h-[260px] max-h-[420px] lg:h-auto lg:max-h-none">
-            <img src={image} alt="Research peptide kit with five vials" width={1400} height={1050} loading="lazy" className="absolute inset-0 h-full w-full object-cover object-center" />
+            <img src={image} alt="Research peptide kit with five vials" width={1400} height={1050} loading="lazy" className="absolute inset-0 h-full w-full object-cover object-right" />
             <div className="absolute inset-y-0 left-0 w-40 hidden lg:block" style={{ background: `linear-gradient(to right, ${tint}, transparent)` }} />
             <div className="absolute inset-x-0 bottom-0 h-28 lg:hidden" style={{ background: `linear-gradient(to top, ${tint}, transparent)` }} />
           </div>
@@ -506,8 +522,8 @@ export function ReviewsSection() {
           </a>
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {REVIEWS.map(review => (
-            <article key={review.quote} className="rounded-xl border bg-white p-5" style={hairline}>
+          {REVIEWS.map((review, i) => (
+            <article key={review.quote} className={`rounded-xl border bg-white p-5 ${i >= 2 ? 'hidden md:block' : ''}`} style={hairline}>
               <div role="img" className="flex items-center gap-0.5" aria-label="Rated 5 out of 5 stars">
                 {Array.from({ length: 5 }, (_, i) => <Star key={i} size={13} fill="#00B67A" color="#00B67A" strokeWidth={1.5} />)}
               </div>

@@ -3,10 +3,10 @@ import { X } from "lucide-react";
 
 const messages = [
   "99%+ independently verified purity",
-  "Refer a friend — you both earn £25 credit",
   "Free standard UK shipping",
   "Bundle & save — free 10ml bac water with 3+ vials",
   "Same-day dispatch, Mon–Fri",
+  "135 research peptides in stock",
 ];
 
 export default function AnnouncementBar({ suppressed = false }: { suppressed?: boolean }) {

@@ -433,16 +433,16 @@ export default function ProductPage() {
             )}
 
             {/* Quantity + price */}
-            <div className="mt-5 flex items-center justify-between gap-4 border-t pt-5" style={hair}>
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-3 border-t pt-5" style={hair}>
               <span className="font-medium" style={{ fontSize: 14, color: "var(--graphite)" }}>Quantity</span>
-              <div className="flex items-center gap-4">
+              <div className="flex min-w-0 flex-wrap items-center justify-end gap-x-4 gap-y-2">
                 <div className="product-cta-qty flex items-center rounded-full border" style={hair}>
                   <button onClick={decreaseQty} aria-label="Decrease quantity" className="flex h-9 w-9 items-center justify-center" style={{ color: "var(--graphite)" }}><Minus size={13} /></button>
                   <span className="w-6 text-center font-medium" style={{ fontSize: 14, color: "var(--ink)" }} aria-live="polite">{quantity}</span>
                   <button onClick={increaseQty} aria-label="Increase quantity" className="flex h-9 w-9 items-center justify-center" style={{ color: "var(--graphite)" }}><Plus size={13} /></button>
                 </div>
                 {product.price != null && (
-                  <span className="font-semibold" style={{ fontSize: 28, letterSpacing: "-0.02em", color: "var(--ink)" }}>
+                  <span className="font-semibold tabular-nums" style={{ fontSize: "clamp(22px, 7vw, 28px)", letterSpacing: "-0.02em", color: "var(--ink)" }}>
                     {formatPrice(product.price * quantity)}
                   </span>
                 )}
