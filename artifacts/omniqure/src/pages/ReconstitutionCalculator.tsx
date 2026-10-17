@@ -146,7 +146,7 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
 const inputCls = "w-full rounded-lg border px-3 py-2.5 text-[15px] outline-none transition-colors focus:border-[var(--cobalt)]";
 const inputStyle = { borderColor: "var(--hairline)", background: "#fff", color: "var(--ink)" } as const;
 
-function UnitToggle<T extends string>({ options, value, onChange }: { options: readonly T[]; value: T; onChange: (v: T) => void }) {
+function UnitToggle({ options, value, onChange }: { options: readonly ("mg" | "mcg")[]; value: "mg" | "mcg"; onChange: (v: "mg" | "mcg") => void }) {
   return (
     <div className="flex gap-1" role="group">
       {options.map((u) => (
@@ -234,7 +234,7 @@ export default function ReconstitutionCalculator() {
               <span className={labelText} style={{ color: "var(--ink)" }}>Peptide in the vial</span>
               <div className="flex gap-2">
                 <input type="number" min="0" step="any" inputMode="decimal" value={peptideAmt} onChange={(e) => setPeptideAmt(e.target.value)} className={inputCls} style={inputStyle} />
-                <UnitToggle<"mg" | "mcg"> options={["mg", "mcg"]} value={peptideUnit} onChange={setPeptideUnit} />
+                <UnitToggle options={["mg", "mcg"] as const} value={peptideUnit} onChange={setPeptideUnit} />
               </div>
             </label>
             <label className="mt-4 block">
