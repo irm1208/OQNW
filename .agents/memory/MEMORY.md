@@ -10,6 +10,7 @@
 - [Marketing copy is scattered widely](marketing-copy-scattered-widely.md) — a promo mechanic's tier numbers/text repeat across 10+ files (hero, strips, FAQ, T&Cs, chat bot, announcement bar); grep the whole app for the old value, not just the obvious pages.
 - [Orphaned features can be backend-coupled](orphaned-feature-backend-coupling.md) — a feature with no frontend UI can still be live-wired into shared endpoints (e.g. checkout); grep the whole backend before deleting, not just its own route file.
 - [GitHub connector and terminal Git](github-cli-auth.md) — GitHub OAuth API access does not automatically authenticate shell `git` commands.
+- [Replit Git mutation safeguard](replit-git-safeguard.md) — when workspace Git writes are blocked by the safety guard, rerun only the specific intended command with its required opt-in prefix.
 - [GitHub large repository imports](github-large-imports.md) — stage first; archive redirects and high-parallel file retrieval can require rate-limit-aware retries.
 - [Switching git origin to a different GitHub repo](git-origin-switch.md) — changing origin to an unrelated repo causes diverged history; fix with git commit-tree to bridge the two lineages.
 - [Nominatim checkout matching](nominatim-checkout-matching.md) — public OSM mapping confirms a mapped address, not carrier deliverability; preserve its limits and disclosure.
