@@ -62,95 +62,109 @@ export default function AgeGate() {
     <div
       className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
       style={{
-        background: "rgba(5, 15, 45, 0.97)",
-        backdropFilter: "blur(8px)",
-        WebkitBackdropFilter: "blur(8px)",
+        background: "linear-gradient(135deg, #0A1628 0%, #1E3A5F 100%)",
       }}
     >
-      {/* Radial glow */}
+      {/* Subtle grid pattern */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none opacity-[0.03]"
         style={{
-          background:
-            "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(59, 98, 171,0.22) 0%, transparent 70%)",
+          backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 1px, #fff 1px, #fff 2px),
+                            repeating-linear-gradient(90deg, transparent, transparent 1px, #fff 1px, #fff 2px)`,
+          backgroundSize: "24px 24px",
         }}
       />
 
       {/* Card */}
       <div
-        className="relative w-full max-w-[440px] rounded-3xl overflow-hidden"
+        className="relative w-full max-w-[480px] rounded-2xl overflow-hidden"
         style={{
           background: "#fff",
-          boxShadow:
-            "0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06)",
+          boxShadow: "0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)",
         }}
       >
         {/* Header */}
-        <div
-          className="px-8 pt-8 pb-7 text-center"
-          style={{
-            background: "linear-gradient(160deg, #071A4A 0%, #4E68C2 100%)",
-          }}
-        >
-          {/* OmniQure logo */}
-          <div className="flex justify-center mb-5">
-            <div>
-              <img
-                src="/omniqure-wordmark.png?v=4"
-                alt="OmniQure"
-                style={{ width: "300px", maxWidth: "78vw", height: "auto", display: "block" }}
-              />
-            </div>
+        <div className="px-8 pt-10 pb-8 text-center border-b" style={{ borderColor: "#E8ECF1" }}>
+          {/* Logo */}
+          <div className="flex justify-center mb-6">
+            <img
+              src="/omniqure-wordmark.png?v=4"
+              alt="OmniQure"
+              style={{ width: "280px", maxWidth: "75vw", height: "auto", display: "block", opacity: 0.92 }}
+            />
           </div>
 
           {/* 18+ badge */}
-          <div className="flex justify-center mb-3">
+          <div
+            className="inline-flex items-center justify-center mb-4"
+            style={{
+              width: "88px",
+              height: "88px",
+              borderRadius: "50%",
+              background: "linear-gradient(135deg, #2F4F8F 0%, #4E68C2 100%)",
+              boxShadow: "0 8px 24px rgba(47, 79, 140, 0.25), inset 0 1px 0 rgba(255,255,255,0.2)",
+            }}
+          >
             <span
               className="font-black"
               style={{
-                fontSize: "56px",
+                fontSize: "42px",
                 lineHeight: 1,
                 color: "#fff",
-                letterSpacing: "-3px",
-                textShadow: "0 2px 24px rgba(147,197,253,0.45)",
+                letterSpacing: "-2px",
               }}
             >
               18+
             </span>
           </div>
 
-          <h1 className="font-bold text-white" style={{ fontSize: "19px" }}>
-            Age Verification
+          <h1
+            className="font-bold mb-2"
+            style={{
+              fontSize: "22px",
+              color: "var(--ink)",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            Age Verification Required
           </h1>
+          <p
+            className="leading-relaxed"
+            style={{
+              fontSize: "13.5px",
+              color: "var(--graphite)",
+              maxWidth: "380px",
+              margin: "0 auto",
+            }}
+          >
+            You must be 18 years or older to access this site
+          </p>
         </div>
 
-        {/* RUO pill — overlaps the header */}
+        {/* RUO notice */}
         <div
-          className="mx-6 -mt-3 rounded-xl px-4 py-2.5 flex items-center gap-2.5"
+          className="mx-6 mt-6 rounded-xl px-4 py-3 flex items-start gap-3"
           style={{
-            background: "#FEF2F2",
-            border: "1px solid #FECACA",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+            background: "#FEF8F2",
+            border: "1px solid #FDE4CC",
           }}
         >
-          <AlertTriangle size={15} style={{ color: "#DC2626", flexShrink: 0 }} />
-          <p className="text-xs font-medium leading-relaxed" style={{ color: "#991B1B" }}>
-            Products are <strong>not</strong> approved for human or veterinary
-            use. For in-vitro research only.
+          <AlertTriangle size={16} style={{ color: "#D97706", flexShrink: 0, marginTop: "1px" }} />
+          <p className="text-xs leading-relaxed" style={{ color: "#78350F" }}>
+            <strong className="font-semibold">Research use only.</strong> Products are not approved for human or veterinary use. For in-vitro laboratory research purposes only.
           </p>
         </div>
 
         {/* Checkbox */}
-        <div className="px-6 pt-5 pb-2">
+        <div className="px-6 pt-5 pb-3">
           <label
-            className="flex items-start gap-3 cursor-pointer rounded-xl p-3.5"
+            className="flex items-start gap-3.5 cursor-pointer rounded-xl p-4 border-2 transition-all"
             style={{
-              background: checked18 ? "#E8F2DE" : "#F8FAFC",
-              border: `1.5px solid ${checked18 ? "#C8DDB4" : "#E2E8F0"}`,
-              transition: "background 0.15s, border-color 0.15s",
+              background: checked18 ? "#F0F4FF" : "#FAFBFC",
+              borderColor: checked18 ? "#4E68C2" : "#E2E8F0",
             }}
           >
-            <div className="relative flex-shrink-0 mt-0.5">
+            <div className="relative flex-shrink-0 mt-[2px]">
               <input
                 type="checkbox"
                 checked={checked18}
@@ -158,19 +172,19 @@ export default function AgeGate() {
                 className="sr-only"
               />
               <div
-                className="w-5 h-5 rounded-md flex items-center justify-center"
+                className="w-[22px] h-[22px] rounded-md flex items-center justify-center transition-all"
                 style={{
                   background: checked18 ? "#4E68C2" : "#fff",
                   border: `2px solid ${checked18 ? "#4E68C2" : "#CBD5E1"}`,
-                  transition: "all 0.15s",
+                  boxShadow: checked18 ? "0 2px 8px rgba(78, 104, 194, 0.3)" : "none",
                 }}
               >
                 {checked18 && (
-                  <svg width="11" height="8" viewBox="0 0 11 8" fill="none">
+                  <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
                     <path
-                      d="M1 4L4 7L10 1"
+                      d="M1 4.5L4.5 8L11 1.5"
                       stroke="white"
-                      strokeWidth="2"
+                      strokeWidth="2.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
@@ -178,56 +192,40 @@ export default function AgeGate() {
                 )}
               </div>
             </div>
-            <span className="text-sm leading-relaxed" style={{ color: "#22252C" }}>
-              <strong>I confirm I am 18 years of age or older.</strong>
+            <span className="leading-relaxed" style={{ fontSize: "14.5px", color: "var(--ink)" }}>
+              I confirm I am <strong className="font-semibold">18 years of age or older</strong>
             </span>
           </label>
         </div>
 
-        {/* Validation hint */}
-        <div
-          className="mx-6 mb-4 mt-2 text-center text-xs"
-          style={{
-            color: "#94A3B8",
-            minHeight: "16px",
-            opacity: checked18 ? 0 : 1,
-            transition: "opacity 0.2s",
-          }}
-        >
-          Please confirm you are 18 or older to continue.
-        </div>
-
         {/* Buttons */}
-        <div className="px-6 pb-5 space-y-3">
+        <div className="px-6 pb-6 pt-2 space-y-2.5">
           <button
             onClick={handleEnter}
-            className={`w-full font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 ${shake ? "animate-bounce" : ""}`}
+            disabled={!checked18}
+            className={`w-full font-semibold py-4 rounded-xl flex items-center justify-center gap-2.5 transition-all ${
+              shake ? "animate-bounce" : ""
+            }`}
             style={{
-              background: checked18
-                ? "linear-gradient(135deg, #22252C, #4E68C2)"
-                : "#CBD5E1",
+              background: checked18 ? "var(--cobalt)" : "#E2E8F0",
               color: checked18 ? "#fff" : "#94A3B8",
               cursor: checked18 ? "pointer" : "not-allowed",
               fontSize: "15px",
-              boxShadow: checked18
-                ? "0 4px 20px rgba(59, 98, 171,0.35)"
-                : "none",
-              transition: "all 0.2s ease",
+              boxShadow: checked18 ? "0 4px 16px rgba(59, 98, 171, 0.3)" : "none",
             }}
           >
-            {checked18 && <ShieldCheck size={18} />}
+            {checked18 && <ShieldCheck size={19} strokeWidth={2.2} />}
             Enter Site
           </button>
 
           <button
             onClick={handleExit}
-            className="w-full font-medium py-3 rounded-xl hover:bg-slate-50"
+            className="w-full font-medium py-3.5 rounded-xl transition-colors hover:bg-slate-50"
             style={{
               background: "transparent",
               color: "#64748B",
               fontSize: "14px",
               border: "1.5px solid #E2E8F0",
-              transition: "background 0.15s",
             }}
           >
             I am under 18 — Leave
@@ -236,14 +234,15 @@ export default function AgeGate() {
 
         {/* Footer */}
         <div
-          className="px-6 pb-6 text-center text-xs leading-relaxed"
-          style={{ color: "#94A3B8" }}
+          className="px-6 pb-6 text-center leading-relaxed border-t pt-5"
+          style={{ fontSize: "11.5px", color: "#94A3B8", borderColor: "#F1F3F5" }}
         >
           By entering you agree to our{" "}
           <a
             href="/terms"
             onClick={e => e.stopPropagation()}
-            style={{ color: "#4E68C2", textDecoration: "underline" }}
+            className="font-medium"
+            style={{ color: "var(--cobalt)", textDecoration: "underline", textUnderlineOffset: "2px" }}
           >
             Terms & Conditions
           </a>{" "}
@@ -251,11 +250,12 @@ export default function AgeGate() {
           <a
             href="/privacy"
             onClick={e => e.stopPropagation()}
-            style={{ color: "#4E68C2", textDecoration: "underline" }}
+            className="font-medium"
+            style={{ color: "var(--cobalt)", textDecoration: "underline", textUnderlineOffset: "2px" }}
           >
             Privacy Policy
           </a>
-          . Stored in your browser for this device only.
+          . Verification stored locally in your browser.
         </div>
       </div>
     </div>

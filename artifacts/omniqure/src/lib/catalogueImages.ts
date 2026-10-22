@@ -6,7 +6,7 @@ type ImageMap = Record<string, string>;
 
 const cardOverrides = catalogueImageOverrides as ImageMap;
 const vialOverrides = catalogueVialImageOverrides as ImageMap;
-const VIAL_ASSET_VERSION = "2026-10-16";
+const VIAL_ASSET_VERSION = "2026-10-21-single-vials";
 
 export function versionVialAsset(image?: string): string | undefined {
   if (!image) return undefined;
