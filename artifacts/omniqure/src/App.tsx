@@ -5,7 +5,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import AnnouncementBar from "@/components/AnnouncementBar";
 import { CookieConsent } from "@/components/CookieConsent";
 import { OverlayCoordinatorProvider } from "@/context/OverlayCoordinatorContext";
 import { CartProvider } from "@/context/CartContext";
@@ -268,18 +267,15 @@ function Router() {
 }
 
 function HeaderStack() {
-  // The jurisdiction notice outranks the marketing bar. On the homepage the
-  // conversion band occupies that slot, so the notice is only suppressed
-  // above the fold there; it still shows on every other route.
+  // On the homepage the conversion band occupies the slot under the header,
+  // so the jurisdiction notice shows on every other route.
   const [location] = useLocation();
-  const [jurisdictionActive, setJurisdictionActive] = useState(false);
   const isHome = location === "/";
 
   return (
     <>
-      <AnnouncementBar suppressed={jurisdictionActive} />
       <Header />
-      {!isHome && <JurisdictionWarning onActiveChange={setJurisdictionActive} />}
+      {!isHome && <JurisdictionWarning />}
     </>
   );
 }

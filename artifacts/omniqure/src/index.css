@@ -2850,3 +2850,34 @@ body.has-cart-preview-bar main {
   .header-brand .header-inner { padding: 12px 20px 17px !important; }
   .header-brand .header-cart.header-icon-btn { border-color: #fff !important; }
 }
+
+/* Taller brand bar on every device */
+@media (min-width: 1024px) {
+  .header-brand .header-inner { min-height: 72px; padding-top: 6px; padding-bottom: 18px; }
+}
+@media (max-width: 1023px) {
+  .header-brand .header-inner { padding: 16px 20px 20px !important; }
+  .header-brand .header-logo { width: 140px !important; max-height: 32px !important; }
+
+  /* Phone/tablet search: a quiet field on navy that turns white when in use */
+  .header-brand .header-search-control {
+    height: 46px !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+  .header-brand .header-search-control input,
+  .header-brand .header-search-control input:focus {
+    background: transparent !important;
+    border: 0 !important;
+    color: #fff !important;
+  }
+  .header-brand .header-search-control input::placeholder { color: var(--oq-dusty-blue); }
+  .header-brand .header-search-control .header-search-submit { color: var(--oq-dusty-blue) !important; }
+  .header-brand .header-search-control:focus-within {
+    border-color: #fff !important;
+    background: #fff !important;
+  }
+  .header-brand .header-search-control:focus-within input { color: var(--oq-graphite) !important; }
+  .header-brand .header-search-control:focus-within input::placeholder { color: var(--oq-slate); }
+  .header-brand .header-search-control:focus-within .header-search-submit { color: var(--oq-slate) !important; }
+}
