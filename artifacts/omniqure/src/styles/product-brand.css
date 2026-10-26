@@ -816,6 +816,23 @@
 .product-page .kit-chip:hover { border-color: rgba(255, 255, 255, 0.36); color: #fff; }
 .product-page .kit-chip[aria-selected="true"] { border-color: #F2F0EB; background: #F2F0EB; color: var(--oq-matte-navy); }
 
+/* Product FAQ: the About accordion inside a white sheet on the chalk section */
+.product-page .product-faq {
+  max-width: none;
+  margin-top: 0;
+  padding: 0 22px;
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  background: #fff;
+}
+.product-page .product-faq .about-section:last-child { border-bottom: 0; }
+.product-page .product-faq .about-section__title { font-size: 15.5px; }
+.product-page .product-faq .about-section__body { font-size: 14px; }
+@media (max-width: 639px) {
+  .product-page .product-faq { padding: 0 14px; }
+  .product-page .product-faq .about-section__title { font-size: 14.5px; }
+}
+
 /* ── RELATED ─────────────────────────────────────────────────────────────── */
 .product-page .related-grid {
   display: grid;

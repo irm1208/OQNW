@@ -5,6 +5,7 @@ import { Link, useParams, useLocation } from "wouter";
 import { useProducts } from "@/context/ProductsContext";
 import { isHiddenCategory, type Product } from "@/data/products";
 import { ShoppingCart, ShieldCheck, Minus, Plus, ChevronRight, ChevronDown, Droplets, Check, ArrowUpRight } from "lucide-react";
+import { FAQS } from "@/data/faqs";
 import CatalogueCard from "@/components/CatalogueCard";
 import { Container, SectionTitle } from "@/components/home/HomeSections";
 import { groupProducts } from "@/data/groupedProducts";
@@ -24,6 +25,20 @@ import { getVialImage, versionVialAsset } from "@/lib/catalogueImages";
 import { rangeColourForCategory, tint } from "@/lib/rangeColour";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
+
+// The objections a shopper weighs before ordering, answered from the site FAQ
+// so the two never drift apart.
+const PRODUCT_FAQ_QUESTIONS = [
+  "Are your peptides tested for purity?",
+  "What does '99%+ independently verified' mean?",
+  "How should I store lyophilised peptides?",
+  "How long can I store a reconstituted peptide solution?",
+  "Is standard UK shipping free?",
+  "How long does shipping take?",
+];
+const PRODUCT_FAQS = PRODUCT_FAQ_QUESTIONS
+  .map((q) => FAQS.find((f) => f.q === q))
+  .filter((f): f is NonNullable<typeof f> => !!f);
 function apiUrl(path: string) {
   return `${BASE_URL}api/${path}`.replace(/\/+/g, "/").replace(/^\/\//, "/");
 }
@@ -335,6 +350,10 @@ export default function ProductPage() {
                 onError={studioFallback(activeImage.fallback)}
                 alt={activeImage.alt}
                 className={`product-gallery-img h-full w-full ${imageIdx === 0 ? "object-cover" : "object-contain p-5 bg-white"}`}
+                width={1800}
+                height={1800}
+                decoding="async"
+                fetchPriority={imageIdx === 0 ? "high" : "auto"}
               />
             </div>
             {gallery.length > 1 && (
@@ -349,7 +368,7 @@ export default function ProductPage() {
                     className="h-11 w-11 overflow-hidden rounded-[7px] border-2 transition-colors sm:h-12 sm:w-12"
                     style={{ borderColor: i === imageIdx ? "#1D2948" : "transparent", background: STUDIO_BG }}
                   >
-                    <img src={g.src} onError={studioFallback(g.fallback)} alt="" className="h-full w-full object-cover" />
+                    <img src={g.src} onError={studioFallback(g.fallback)} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -520,7 +539,7 @@ export default function ProductPage() {
                 {[
                   hasReport ? "COA included" : "Lab tested",
                   "Same-day dispatch, Mon–Fri",
-                  "Discreet, tracked delivery",
+                  "Free, discreet UK tracked delivery",
                 ].map(t => (
                   <li key={t}>
                     <Check size={13} style={{ color: "#15803D" }} />{t}
@@ -682,6 +701,38 @@ export default function ProductPage() {
           </figure>
         </Container>
       </section>
+
+      {/* Before you order — the questions shoppers ask most, answered from the site FAQ */}
+      {PRODUCT_FAQS.length > 0 && (
+        <section className="p-section" style={{ background: "var(--oq-chalk)" }}>
+          <Container className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-16">
+            <div>
+              <p className="product-eyebrow">Before you order</p>
+              <SectionTitle size="clamp(24px, 3vw, 34px)">Common<br /><span className="accent-ink">questions.</span></SectionTitle>
+              <p className="p-intro">
+                Purity, storage and delivery, answered. The full list is on the FAQ page.
+              </p>
+              <Link href="/faq" className="cta-secondary mt-5 inline-flex items-center gap-1.5 rounded-full px-4 py-2.5">
+                All questions <ArrowUpRight size={14} className="accent-ink" />
+              </Link>
+            </div>
+            <div className="about-sections product-faq">
+              {PRODUCT_FAQS.map((f, i) => (
+                <details key={f.q} className="about-section" open={i === 0}>
+                  <summary>
+                    <span className="about-section__num">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="about-section__title">{f.q}</span>
+                    <ChevronDown size={18} className="about-section__chev" aria-hidden="true" />
+                  </summary>
+                  <div className="prose about-section__body">
+                    <p>{f.a}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
 
       {/* Kit builder — pick and add products without leaving the page */}
       <section className="kit-section">
