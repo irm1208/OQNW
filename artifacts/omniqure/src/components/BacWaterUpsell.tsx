@@ -1,5 +1,4 @@
 import { useCart } from "@/context/CartContext";
-import { useCurrency } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
 import { resolveBacWaterProducts, type BacWaterProductOption } from "@/data/bacWaterProducts";
 import { Droplets, Check } from "lucide-react";
@@ -11,7 +10,6 @@ import { Droplets, Check } from "lucide-react";
  */
 export default function BacWaterUpsell({ compact = false }: { compact?: boolean }) {
   const { items, peptideQty, bundleFreeBacWater, addToCart, removeFromCart } = useCart();
-  const { formatPrice } = useCurrency();
   const { products } = useProducts();
   const bacWaterOptions = resolveBacWaterProducts(products);
 
@@ -30,92 +28,29 @@ export default function BacWaterUpsell({ compact = false }: { compact?: boolean 
     }
   }
 
+  // Checkout totals are in GBP, so the add-on prices are too.
   return (
-    <div className="flex flex-col" style={{ gap: compact ? "8px" : "10px" }}>
-      {bacWaterOptions.map((bw, i) => {
+    <div className="bac-upsell" style={{ gap: compact ? 6 : 8 }}>
+      <p className="bac-upsell__title">
+        <Droplets size={14} aria-hidden="true" /> Add bacteriostatic water
+        <span>For reconstituting your peptides</span>
+      </p>
+      {bacWaterOptions.map((bw) => {
         const added = items.some((item) => item.product.slug === bw.slug);
         return (
-          <div
+          <button
             key={bw.id}
-            className="relative rounded-2xl"
-            style={{
-              background: "linear-gradient(180deg, #FBFDFF 0%, #F3F8FF 100%)",
-              border: `1.5px solid ${added ? "#6B94D0" : "#DCE9FB"}`,
-              boxShadow: "0 2px 10px rgba(15,23,42,0.05)",
-              padding: compact ? "10px 16px" : "12px 18px",
-            }}
+            type="button"
+            onClick={() => toggle(bw, added)}
+            aria-pressed={added}
+            className="bac-upsell__row"
           >
-            {i === 0 && (
-              <span
-                className="absolute font-bold"
-                style={{
-                  top: "-11px", left: "50%", transform: "translateX(-50%)",
-                  fontSize: "10px", letterSpacing: "0.08em",
-                  color: "#4E68C2", background: "#fff",
-                  border: "1px solid #C8DDB4", borderRadius: "999px",
-                  padding: "3px 12px", whiteSpace: "nowrap",
-                }}
-              >
-                RECOMMENDED
-              </span>
-            )}
-
-            <button
-              type="button"
-              onClick={() => toggle(bw, added)}
-              className="w-full flex items-center gap-3 text-left"
-              style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
-            >
-              {/* Checkbox */}
-              <span
-                className="flex items-center justify-center flex-shrink-0 rounded-lg"
-                style={{
-                  width: "22px", height: "22px",
-                  border: `2px solid ${added ? "#4E68C2" : "#CBD5E1"}`,
-                  background: added ? "#4E68C2" : "#fff",
-                  transition: "background 0.15s, border-color 0.15s",
-                }}
-              >
-                {added && <Check size={13} color="#fff" strokeWidth={3} />}
-              </span>
-
-              {/* Icon avatar */}
-              <span
-                className="flex items-center justify-center flex-shrink-0 rounded-xl"
-                style={{
-                  width: "40px", height: "40px",
-                  background: "linear-gradient(145deg, #6B94D0 0%, #4E68C2 100%)",
-                  boxShadow: "0 3px 8px rgba(59, 98, 171,0.25)",
-                }}
-              >
-                <Droplets size={18} color="#fff" strokeWidth={2.2} />
-              </span>
-
-              {/* Copy */}
-              <span className="flex-1 min-w-0">
-                <span className="block font-bold" style={{ fontSize: "13.5px", color: "#22252C", lineHeight: 1.35 }}>
-                  Add Bacteriostatic Water {bw.label}
-                </span>
-                <span className="block truncate" style={{ fontSize: "11.5px", color: "#3B6FC4", marginTop: "1px" }}>
-                  Essential for reconstituting your peptide
-                </span>
-              </span>
-
-              {/* Price pill */}
-              <span
-                className="flex-shrink-0 font-bold rounded-full"
-                style={{
-                  fontSize: "12.5px",
-                  padding: "8px 16px",
-                  color: "#fff",
-                  background: added ? "#059669" : "#4E68C2",
-                  transition: "background 0.15s",
-                }}
-              >
-                {added ? "Added" : `+${formatPrice(bw.price)}`}
-              </span>
-            </button>
-          </div>
+            <span className="bac-upsell__check" aria-hidden="true">
+              {added && <Check size={12} color="#fff" strokeWidth={3} />}
+            </span>
+            <span className="bac-upsell__name">{bw.label}</span>
+            <span className="bac-upsell__price">{added ? "Added" : `+£${bw.price.toFixed(2)}`}</span>
+          </button>
         );
       })}
     </div>

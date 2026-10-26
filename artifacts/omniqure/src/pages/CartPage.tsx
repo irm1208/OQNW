@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
+import { getCatalogueVialImage } from "@/lib/catalogueImages";
+import { STUDIO_BG } from "@/lib/studioImage";
 import { Link, useLocation } from "wouter";
 import { useSEO } from "@/hooks/useSEO";
 import { trackInitiateCheckout } from "@/lib/pixels";
@@ -15,7 +18,7 @@ import CatalogueCard from "@/components/CatalogueCard";
 import { groupProducts } from "@/data/groupedProducts";
 import {
   Trash2, Plus, Minus, ShoppingCart, ChevronRight, Sparkles, CheckCircle2,
-  Lock, Shield, Truck, AlertTriangle, Clock,
+  Lock, Shield, Truck, AlertTriangle, Clock, Check, Droplets,
 } from "lucide-react";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
@@ -381,13 +384,13 @@ const THEME = {
   textMuted: "#4A5672" as const,
   textSub: "#475569" as const,
   divider: "1px solid #F1F5F9" as const,
-  cta: "#4E68C2" as const,
-  ctaHover: "#4E68C2" as const,
+  cta: "#1D2948" as const,
+  ctaHover: "#0A2472" as const,
 };
 
 const input: React.CSSProperties = {
   width: "100%", height: "46px", padding: "0 14px",
-  border: `1px solid ${THEME.inputBorder}`, borderRadius: "10px",
+  border: `1px solid ${THEME.inputBorder}`, borderRadius: "6px",
   fontSize: "14px", color: THEME.text, outline: "none",
   fontFamily: "inherit", background: THEME.inputBg,
   boxSizing: "border-box",
@@ -817,7 +820,7 @@ export default function CartPage() {
                 display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 16px",
                 border: `1px solid ${active ? "#4E68C2" : "rgba(11,18,32,0.09)"}`,
                 borderRadius: 6, cursor: "pointer",
-                background: active ? "#E8F2DE" : THEME.cardBg,
+                background: active ? "rgba(78,104,194,0.06)" : THEME.cardBg,
                 transition: "border-color 0.15s, background 0.15s",
               }}
             >
@@ -1517,6 +1520,12 @@ export default function CartPage() {
   const inp = (key: string): React.CSSProperties =>
     errors[key] ? inputError : input;
 
+  // One label for every "Place order" button: the exact amount the shopper pays.
+  const payTotalLabel = bankPaymentQuote
+    ? `${bankPaymentQuote.paymentCurrency === "EUR" ? "€" : "£"}${(bankPaymentQuote.paymentAmountMinor / 100).toFixed(2)}`
+    : `£${checkoutTotalGbp.toFixed(2)}`;
+  const ctaDisabled = placing || !bankPaymentReady;
+
   return (
     <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", backgroundColor: "#F2F0EB", minHeight: "100vh" }}>
       {isWallidTestCheckout && (
@@ -1757,7 +1766,7 @@ export default function CartPage() {
                             width: "100%",
                             border: "none",
                             borderRadius: 4,
-                            background: phoneCountryCode === option.code ? "#E8F2DE" : "#fff",
+                            background: phoneCountryCode === option.code ? "rgba(78,104,194,0.06)" : "#fff",
                             color: THEME.text,
                             padding: "8px 7px",
                             fontSize: "11px",
@@ -2015,9 +2024,9 @@ export default function CartPage() {
                 <div
                   onClick={() => setPaymentMethod("wallid")}
                   style={{
-                    border: `2px solid ${active ? "#4E68C2" : "rgba(11,18,32,0.12)"}`,
-                    borderRadius: 10, overflow: "hidden", cursor: "pointer",
-                    background: active ? "#E8F2DE" : "#F4F7FF",
+                    border: `${active ? 2 : 1}px solid ${active ? "#4E68C2" : "rgba(11,18,32,0.12)"}`,
+                    borderRadius: 6, overflow: "hidden", cursor: "pointer",
+                    background: active ? "rgba(78,104,194,0.06)" : "#fff",
                     transition: "border-color 0.15s",
                   }}
                 >
@@ -2029,14 +2038,14 @@ export default function CartPage() {
                     />
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: "16px", fontWeight: 800, color: "#22252C" }}>Pay by Bank</span>
+                        <span style={{ fontSize: "16px", fontWeight: 600, color: "#22252C" }}>Pay by Bank</span>
                         <span style={{
-                          fontSize: "10px", fontWeight: 800, letterSpacing: "0.07em",
-                          background: "#059669", color: "#fff",
-                          padding: "3px 9px", borderRadius: 100,
-                        }}>RECOMMENDED · FASTEST</span>
+                          fontSize: "10px", fontWeight: 600, letterSpacing: "0.06em",
+                          border: "1.5px solid #1D2948", color: "#1D2948",
+                          padding: "1px 7px", borderRadius: 4, textTransform: "uppercase",
+                        }}>Recommended · fastest</span>
                       </div>
-                      <p style={{ fontSize: "13px", fontWeight: 700, color: "#1E293B", margin: "6px 0 0", lineHeight: 1.4 }}>
+                      <p style={{ fontSize: "13px", fontWeight: 500, color: "#4A5672", margin: "6px 0 0", lineHeight: 1.4 }}>
                         Tap your bank, approve in your banking app — done in seconds.
                       </p>
                     </div>
@@ -2070,10 +2079,10 @@ export default function CartPage() {
                               }}
                               style={{
                                 flex: 1, padding: "9px 10px", borderRadius: 7, cursor: "pointer",
-                                border: `1.5px solid ${selected ? "#4E68C2" : "rgba(11,18,32,0.12)"}`,
-                                background: selected ? "#4E68C2" : "#fff",
+                                border: `1.5px solid ${selected ? "#1D2948" : "rgba(11,18,32,0.12)"}`,
+                                background: selected ? "#1D2948" : "#fff",
                                 color: selected ? "#fff" : "#334155",
-                                fontSize: "13px", fontWeight: 800,
+                                fontSize: "13px", fontWeight: 600,
                               }}
                             >
                               {option.label}
@@ -2131,9 +2140,9 @@ export default function CartPage() {
                         <div key={step} style={{ display: "flex", alignItems: "center", gap: 10 }}>
                           <span style={{
                             width: 24, height: 24, borderRadius: "50%",
-                            background: "#4E68C2", color: "#fff",
+                            border: "1.5px solid #1D2948", color: "#1D2948",
                             display: "flex", alignItems: "center", justifyContent: "center",
-                            fontSize: "11px", fontWeight: 800, flexShrink: 0,
+                            fontSize: "11px", fontWeight: 600, flexShrink: 0,
                           }}>{i + 1}</span>
                           <span style={{ fontSize: "13px", color: "#334155", fontWeight: 500 }}>{step}</span>
                         </div>
@@ -2150,7 +2159,7 @@ export default function CartPage() {
               return (
                 <div
                   onClick={() => setPaymentMethod("crypto")}
-                  style={{ border: `1px solid ${active ? "#4E68C2" : "rgba(11,18,32,0.09)"}`, borderRadius: 6, cursor: "pointer", background: active ? "#E8F2DE" : THEME.cardBg }}
+                  style={{ border: `1px solid ${active ? "#4E68C2" : "rgba(11,18,32,0.09)"}`, borderRadius: 6, cursor: "pointer", background: active ? "rgba(78,104,194,0.06)" : THEME.cardBg }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
                     <input type="radio" checked={active} onChange={() => setPaymentMethod("crypto")}
@@ -2263,11 +2272,10 @@ export default function CartPage() {
             onClick={placeOrder}
             disabled={placing || !bankPaymentReady}
             style={{
-              width: "100%", height: 52, borderRadius: 4,
-              background: placing || !bankPaymentReady ? THEME.ctaHover : THEME.cta,
+              width: "100%", height: 54, borderRadius: 999,
+              background: placing || !bankPaymentReady ? "#4A5672" : THEME.cta,
               color: "#fff", border: "none",
-              fontSize: "13px", fontWeight: 800,
-              letterSpacing: "0.1em", textTransform: "uppercase",
+              fontSize: "15px", fontWeight: 600,
               cursor: placing || !bankPaymentReady ? "not-allowed" : "pointer",
               display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
               transition: "background 0.15s",
@@ -2287,27 +2295,20 @@ export default function CartPage() {
               </>
             ) : (
               <>
-                <Lock size={14} />
-                Place Order
+                <Lock size={15} />
+                Place order · {payTotalLabel}
               </>
             )}
           </button>
 
-          <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 14 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "11px", color: THEME.textMuted, fontWeight: 600, letterSpacing: "0.05em" }}>
-              <Shield size={13} /> SECURE CHECKOUT
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "11px", color: THEME.textMuted, fontWeight: 600, letterSpacing: "0.05em" }}>
-              <Truck size={13} /> FAST SHIPPING
-            </div>
-          </div>
+          <ul className="checkout-trust">
+            <li><Shield size={13} /> Secure encrypted checkout</li>
+            <li><Truck size={13} /> Free UK tracked delivery</li>
+            <li><Clock size={13} /> Same-day dispatch, Mon–Fri</li>
+          </ul>
 
-          <Link
-            href="/all-peptides"
-            className="w-full rounded-xl font-semibold flex items-center justify-center gap-2 transition-opacity hover:opacity-80"
-            style={{ height: "40px", backgroundColor: "#F1F5F9", color: "#475569", textDecoration: "none", fontSize: "13px", marginTop: 14, display: "flex" }}
-          >
-            Continue Shopping
+          <Link href="/all-peptides" className="checkout-continue">
+            ← Continue shopping
           </Link>
 
           {/* Upsells below Place Order — mobile only */}
@@ -2320,8 +2321,8 @@ export default function CartPage() {
         </div>
 
         {/* ── RIGHT COLUMN — SINGLE ORDER SUMMARY ── */}
-        <div className="checkout-sidebar" style={{ width: 360, flexShrink: 0, position: "sticky", top: 24 }}>
-          <div style={{ border: THEME.cardBorder, borderRadius: 16, background: "#fff", overflow: "hidden" }}>
+        <div className="checkout-sidebar" style={{ width: 360, flexShrink: 0, position: "sticky", top: 88 }}>
+          <div style={{ border: THEME.cardBorder, borderRadius: 6, background: "#fff", overflow: "hidden" }}>
             <div style={{ padding: "18px 20px 14px", borderBottom: THEME.cardBorder }}>
               <p style={{ fontSize: "17px", fontWeight: 600, color: "#1D2948", letterSpacing: "-0.01em", margin: 0 }}>
                 Order Summary
@@ -2334,18 +2335,18 @@ export default function CartPage() {
                 return (
                   <div key={String(product.id)} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14 }}>
                     <div style={{ position: "relative", flexShrink: 0 }}>
-                      <div style={{ width: 56, height: 56, borderRadius: 6, border: "1px solid #D3D8E2", overflow: "hidden", background: "#F8FAFC" }}>
+                      <div style={{ width: 56, height: 56, borderRadius: 4, border: "1px solid #D3D8E2", overflow: "hidden", background: STUDIO_BG }}>
                         {product.image ? (
-                          <img src={product.image} alt={product.name}
-                            style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                          <img src={getCatalogueVialImage(product.id, product.slug, product.image, product.sourceImage)} alt={product.name}
+                            style={{ width: "100%", height: "100%", objectFit: "cover", transform: "scale(1.3)" }} />
                         ) : (
                           <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", color: "#94A3B8" }}>IMG</div>
                         )}
                       </div>
                       <div style={{
                         position: "absolute", top: -6, right: -6,
-                        width: 20, height: 20, borderRadius: "50%",
-                        background: THEME.cta, color: "#fff",
+                        minWidth: 20, height: 20, padding: "0 5px", borderRadius: 999,
+                        background: "#1D2948", color: "#fff",
                         display: "flex", alignItems: "center", justifyContent: "center",
                         fontSize: "11px", fontWeight: 700,
                       }}>{quantity}</div>
@@ -2398,75 +2399,45 @@ export default function CartPage() {
               })}
               {bundleFreeBacWater && (
                 <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 14 }}>
-                  <div style={{ width: 56, height: 56, borderRadius: 6, border: "1px solid #D3D8E2", background: "#DCFCE7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", flexShrink: 0 }}>💧</div>
+                  <div style={{ width: 56, height: 56, borderRadius: 4, border: "1px dashed #8D9BB8", background: "#F2F0EB", color: "#4E68C2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Droplets size={20} /></div>
                   <div style={{ flex: 1 }}>
                     <p style={{ fontSize: "13px", fontWeight: 600, color: THEME.text, margin: 0 }}>Bacteriostatic Water 10ml Ampule</p>
                     <p style={{ fontSize: "11px", color: "#059669", margin: "2px 0 0", fontWeight: 600 }}>Free (Bundle & Save)</p>
                   </div>
-                  <div style={{ fontSize: "14px", fontWeight: 700, color: "#059669", flexShrink: 0 }}>£0.00</div>
+                  <div style={{ fontSize: "14px", fontWeight: 600, color: "#15803D", flexShrink: 0 }}>Free</div>
                 </div>
               )}
             </div>
 
-            {/* Bundle & Save progress nudge */}
-            {peptideQty < 10 && (
-              <div style={{ padding: "0 20px 16px" }}>
-                <div
-                  className="rounded-xl p-3"
-                  style={{
-                    backgroundColor: hasFreebie ? "#F0FDF4" : "#E8F2DE",
-                    border: `1px solid ${hasFreebie ? "#BBF7D0" : "#C8DDB4"}`,
-                  }}
-                >
-                  {peptideQty < 3 ? (
+            {/* Bundle & Save progress nudge: one Chalk strip and a Cornflower
+                bar, as in the cart preview. */}
+            {(() => {
+              const next = [
+                { min: 3, label: "a free 10ml BAC water ampule" },
+                { min: 5, label: "1 peptide free" },
+                { min: 10, label: "2 peptides free" },
+              ].find(t => peptideQty < t.min);
+              const reached = bundleFreeItemsCount >= 2 ? "2 peptides free applied"
+                : bundleFreeItemsCount === 1 ? "1 peptide free applied"
+                : peptideQty >= 3 ? "Free BAC water unlocked" : null;
+              return (
+                <div className="checkout-bundle">
+                  {reached && <p className="checkout-bundle__done"><Check size={13} /> {reached}</p>}
+                  {next ? (
                     <>
-                      <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#4E68C2", marginBottom: "6px" }}>
-                        Bundle & Save — add {3 - peptideQty} more {3 - peptideQty === 1 ? "peptide" : "peptides"} for a free 10ml BAC water ampule
-                      </p>
-                      <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
-                        <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#E8F2DE", overflow: "hidden" }}>
-                          <div style={{ height: "100%", width: `${(peptideQty / 3) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #4E68C2, #4E68C2)", transition: "width 0.3s" }} />
-                        </div>
-                        <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{peptideQty}/3</span>
+                      <div className="checkout-bundle__row">
+                        <span>Add <strong>{next.min - peptideQty} more</strong> for <strong>{next.label}</strong></span>
+                        <span className="checkout-bundle__count">{peptideQty}/{next.min}</span>
                       </div>
-                      <p style={{ fontSize: "10.5px", color: "#475569", marginTop: "5px" }}>3-4 = free 10ml BAC water ampule · 5-9 = 1 peptide free · 10+ = 2 peptides free</p>
-                    </>
-                  ) : bundleFreeItemsCount === 0 ? (
-                    <>
-                      <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669", marginBottom: "6px" }}>
-                        ✓ Free 10ml BAC water ampule unlocked — add {5 - peptideQty} more for 1 peptide free
-                      </p>
-                      <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
-                        <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#BBF7D0", overflow: "hidden" }}>
-                          <div style={{ height: "100%", width: `${((peptideQty - 3) / 2) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #059669, #16A34A)", transition: "width 0.3s" }} />
-                        </div>
-                        <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{peptideQty}/5</span>
-                      </div>
-                        <p style={{ fontSize: "10.5px", color: "#475569", marginTop: "5px" }}>3-4 = free 10ml BAC water ampule · 5-9 = 1 peptide free · 10+ = 2 peptides free</p>
+                      <div className="checkout-bundle__bar"><span style={{ width: `${Math.min(100, (peptideQty / next.min) * 100)}%` }} /></div>
                     </>
                   ) : (
-                    <>
-                      <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669", marginBottom: "6px" }}>
-                        ✓ 1 peptide free applied — add {10 - peptideQty} more for 2 peptides free
-                      </p>
-                      <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
-                        <div style={{ flex: 1, height: "4px", borderRadius: "4px", backgroundColor: "#BBF7D0", overflow: "hidden" }}>
-                          <div style={{ height: "100%", width: `${((peptideQty - 5) / 5) * 100}%`, borderRadius: "4px", background: "linear-gradient(90deg, #059669, #16A34A)", transition: "width 0.3s" }} />
-                        </div>
-                        <span style={{ fontSize: "10px", color: "#475569", flexShrink: 0 }}>{peptideQty}/10</span>
-                      </div>
-                    </>
+                    <p className="checkout-bundle__row">Top bundle tier reached.</p>
                   )}
+                  <p className="checkout-bundle__tiers">3+ vials: free BAC water · 5+: 1 peptide free · 10+: 2 peptides free</p>
                 </div>
-                {bundleFreeItemsCount >= 2 && (
-                  <div className="rounded-xl p-3 mt-2" style={{ backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0" }}>
-                    <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#059669" }}>
-                      ✓ 2 peptides free applied — maximum bundle tier active!
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
+              );
+            })()}
 
             <hr style={{ margin: 0, border: "none", borderTop: THEME.divider }} />
 
@@ -2529,24 +2500,42 @@ export default function CartPage() {
               ].map(([k, v]) => (
                 <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
                   <span style={{ fontSize: "13px", color: THEME.textMuted }}>{k}</span>
-                  <span style={{ fontSize: "13px", color: v?.startsWith("−") || v === "FREE" ? "#059669" : THEME.text, fontWeight: 500 }}>{v}</span>
+                  <span style={{ fontSize: "13px", color: v?.startsWith("−") || v === "FREE" ? "#15803D" : THEME.text, fontWeight: 500, fontVariantNumeric: "tabular-nums" }}>{v === "FREE" ? "Free" : v}</span>
                 </div>
               ))}
               <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12, paddingTop: 12, borderTop: THEME.divider }}>
-                <span style={{ fontSize: "16px", fontWeight: 800, color: THEME.text }}>
+                <span style={{ fontSize: "16px", fontWeight: 600, color: THEME.text }}>
                   {bankPaymentQuote ? "Pay by Bank total" : "Total"}
                 </span>
-                <span style={{ fontSize: "20px", fontWeight: 800, color: THEME.text }}>
+                <span style={{ fontSize: "20px", fontWeight: 600, color: THEME.text, fontVariantNumeric: "tabular-nums" }}>
                   {bankPaymentQuote
                     ? `${bankPaymentQuote.paymentCurrency === "EUR" ? "€" : "£"}${(bankPaymentQuote.paymentAmountMinor / 100).toFixed(2)} ${bankPaymentQuote.paymentCurrency}`
                     : `£${checkoutTotalGbp.toFixed(2)}`}
                 </span>
               </div>
+              {/* Desktop: the order can be placed from the summary, which stays in
+                  view. Validation scrolls to anything still missing. */}
+              <button type="button" onClick={placeOrder} disabled={ctaDisabled} className="checkout-summary-cta">
+                <Lock size={14} /> {ctaDisabled ? (placing ? "Processing…" : "Confirming total…") : `Place order · ${payTotalLabel}`}
+              </button>
             </div>
 
           </div>
         </div>
       </div>
+
+      {items.length > 0 && createPortal(
+        <div className="checkout-mobile-bar">
+          <div>
+            <span className="checkout-mobile-bar__label">Total</span>
+            <span className="checkout-mobile-bar__total">{payTotalLabel}</span>
+          </div>
+          <button type="button" onClick={placeOrder} disabled={ctaDisabled}>
+            <Lock size={14} /> {ctaDisabled ? (placing ? "Processing…" : "Confirming…") : "Place order"}
+          </button>
+        </div>,
+        document.body,
+      )}
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }

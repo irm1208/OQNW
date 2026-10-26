@@ -1,19 +1,25 @@
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { ShoppingCart, ArrowRight } from "lucide-react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useEffect, useState } from "react";
 
 export default function StickyCartBar() {
   const { items, totalItems, subtotal } = useCart();
   const { formatPrice } = useCurrency();
   const [isVisible, setIsVisible] = useState(false);
+  // Product pages render their own sticky buy bar, so this cart bar would
+  // otherwise stack on top of it.
+  const [location] = useLocation();
+  const onProductPage = location.startsWith("/product/");
+  // The cart page has its own total and Place order bar.
+  const onCartPage = location === "/cart" || location.startsWith("/checkout");
 
   useEffect(() => {
     setIsVisible(totalItems > 0);
   }, [totalItems]);
 
-  if (!isVisible) return null;
+  if (!isVisible || onProductPage || onCartPage) return null;
 
   return (
     <div className="fixed inset-x-4 bottom-4 z-40 md:hidden">
