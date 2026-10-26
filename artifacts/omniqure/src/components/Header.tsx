@@ -1063,6 +1063,7 @@ export default function Header() {
             {/* Cart */}
             <Link
               href="/cart"
+              aria-label={totalItems > 0 ? `Cart, ${totalItems} item${totalItems === 1 ? "" : "s"}` : "Cart"}
               className="header-cart header-icon-btn flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-bold transition-colors relative"
               style={{ color: "var(--graphite)", textDecoration: "none", height: "36px", padding: "0 14px", borderRadius: "999px", border: "1px solid var(--hairline)", fontWeight: 500, fontSize: "13px", backgroundColor: "transparent" }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--ink)"; (e.currentTarget as HTMLElement).style.backgroundColor = "var(--ice)"; prefetchRoute("/cart"); }}
