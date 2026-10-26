@@ -2324,6 +2324,14 @@ body.has-cart-preview-bar main {
   .checkout-summary-body[data-open="false"] { display: none; }
 }
 
+/* Brand pin stripe: the six range colours in equal bands, as on the vial caps */
+.pinstripe {
+  height: 3px;
+  background: linear-gradient(90deg,
+    var(--oq-clay) 0 16.66%, var(--oq-sage) 16.66% 33.33%, var(--oq-sand) 33.33% 50%,
+    var(--oq-lavender) 50% 66.66%, var(--oq-rose) 66.66% 83.33%, var(--oq-teal-grey) 83.33% 100%);
+}
+
 /* ── NAVIGATION ───────────────────────────────────────────────────────────────
    Calm and clinical: white surfaces, hairline rules, square corners and clear
    hierarchy (one size for destinations, a smaller one for descriptions).
@@ -2445,7 +2453,7 @@ body.has-cart-preview-bar main {
 .ilist__desc { display: block; margin-top: 3px; font-size: 13px; line-height: 1.45; color: var(--oq-slate); }
 
 /* Bundle tiers as a specification table */
-.bspec__table { margin: 12px 0 0; border-top: 1px solid var(--oq-graphite); }
+.bspec__table { margin: 12px 0 0; border-top: 2px solid var(--oq-matte-navy); }
 .bspec__row {
   display: grid;
   grid-template-columns: 84px minmax(0, 1fr);
@@ -2469,7 +2477,7 @@ body.has-cart-preview-bar main {
   left: 0;
   right: 0;
   z-index: 1;
-  border-top: 2px solid var(--oq-matte-navy);
+  border-top: 4px solid var(--oq-matte-navy);
   border-bottom: 1px solid var(--oq-mist);
   background: #fff;
   box-shadow: 0 20px 30px -24px rgba(29, 41, 72, 0.35);
@@ -2485,7 +2493,7 @@ body.has-cart-preview-bar main {
 .mega__ranges ol { margin: 12px 0 0; padding: 0; list-style: none; }
 .mega__more { margin: 10px 0 0 12px; }
 .mega__products { min-width: 0; padding: 0 32px; }
-.mega__head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid var(--oq-graphite); }
+.mega__head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 2px solid var(--oq-matte-navy); }
 .mega__marker { width: 2px; height: 12px; }
 .mega__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; }
 .mega__foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 16px; }
@@ -2506,26 +2514,46 @@ body.has-cart-preview-bar main {
   left: 50%;
   z-index: 400;
   margin-top: 4px;
-  padding: 18px 22px 20px;
+  padding: 0 22px 20px;
   border: 1px solid var(--oq-mist);
-  border-top: 2px solid var(--oq-matte-navy);
+  border-top: 4px solid var(--oq-matte-navy);
   background: #fff;
   box-shadow: 0 20px 30px -24px rgba(29, 41, 72, 0.4);
   transform: translateX(-50%);
 }
+.nav-drop__stripe { margin: 0 -22px 18px; }
 .nav-drop__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding-bottom: 8px;
-  border-bottom: 1px solid var(--oq-graphite);
+  border-bottom: 2px solid var(--oq-matte-navy);
 }
 .nav-drop--research { width: 620px; }
 .nav-drop--offers { width: 400px; }
 .nav-drop__tiers { margin-top: 16px; }
 
 /* ── Phone and tablet menu ── */
+.mnav-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--oq-matte-navy);
+}
+.mnav-head__logo { display: block; width: 122px; height: auto; }
+.mnav-head__close {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
 /* First screen: few destinations, large type, generous spacing */
 .mnav { padding: 8px 20px 28px; }
 .mnav__primary { margin: 0; padding: 0; list-style: none; }
@@ -2548,7 +2576,7 @@ body.has-cart-preview-bar main {
   text-decoration: none;
   cursor: pointer;
 }
-.mnav__item svg { color: var(--oq-dusty-blue); }
+.mnav__item svg { color: var(--oq-matte-navy); }
 .mnav__item:active { color: var(--oq-matte-navy); }
 .mnav__note {
   display: flex;
@@ -2557,21 +2585,21 @@ body.has-cart-preview-bar main {
   gap: 4px 8px;
   margin-top: 20px;
   padding: 14px 16px;
-  border: 1px solid var(--oq-mist);
-  border-left: 2px solid var(--oq-matte-navy);
+  background: var(--oq-matte-navy);
+  box-shadow: inset 0 -3px 0 var(--oq-dusty-blue);
   font-size: 14px;
   font-weight: 500;
-  color: var(--oq-graphite);
+  color: #fff;
   text-decoration: none;
 }
-.mnav__note svg { margin-left: auto; color: var(--oq-slate); }
+.mnav__note svg { margin-left: auto; color: var(--oq-dusty-blue); }
 .mnav__note-label {
   flex-basis: 100%;
   font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
   font-size: 10.5px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--oq-slate);
+  color: var(--oq-dusty-blue);
 }
 .mnav__secondary { margin: 24px 0 0; padding: 0; list-style: none; }
 .mnav__secondary a {
@@ -2636,14 +2664,24 @@ body.has-cart-preview-bar main {
   cursor: pointer;
 }
 .mnav-panel__title {
+  position: relative;
   margin: 4px 0 12px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid var(--oq-matte-navy);
+  padding-bottom: 15px;
   font-size: 24px;
   font-weight: 600;
   letter-spacing: -0.015em;
   color: var(--oq-graphite);
 }
+.mnav-panel__title::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    var(--oq-clay) 0 16.66%, var(--oq-sage) 16.66% 33.33%, var(--oq-sand) 33.33% 50%,
+    var(--oq-lavender) 50% 66.66%, var(--oq-rose) 66.66% 83.33%, var(--oq-teal-grey) 83.33% 100%);
+}
+.mnav-row__title { color: var(--oq-matte-navy); }
 .mnav-list { margin: 0; padding: 0; list-style: none; }
 .mnav-list--after { margin-top: 16px; }
 .mnav-row {
@@ -2662,7 +2700,7 @@ body.has-cart-preview-bar main {
 .mnav-row__desc { display: block; margin-top: 2px; font-size: 13px; line-height: 1.4; color: var(--oq-slate); }
 .mnav-row--lead .mnav-row__title { color: var(--oq-matte-navy); }
 
-.dshop__label { margin: 22px 0 4px; padding-bottom: 8px; border-bottom: 1px solid var(--oq-graphite); }
+.dshop__label { margin: 22px 0 4px; padding-bottom: 8px; border-bottom: 2px solid var(--oq-matte-navy); }
 .dshop__rows .prow { padding-left: 0; padding-right: 0; }
 .dshop__ranges { margin: 0; padding: 0; list-style: none; }
 .dshop__ranges .mrange { min-height: 48px; padding-left: 10px; border-bottom: 1px solid var(--oq-mist); }

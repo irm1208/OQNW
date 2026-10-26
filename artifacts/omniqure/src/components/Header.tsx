@@ -557,6 +557,7 @@ export default function Header() {
 
                     {researchOpen && (
                       <div className="nav-drop nav-drop--research" onMouseEnter={openResearch} onMouseLeave={closeResearch}>
+                <div className="pinstripe nav-drop__stripe" aria-hidden="true" />
                         <div className="nav-drop__head">
                           <p className="nav-label">Research &amp; data</p>
                           <Link href="/faq" onClick={() => setResearchOpen(false)} className="nav-link">
@@ -626,6 +627,7 @@ export default function Header() {
                 onMouseEnter={openOffers}
                 onMouseLeave={closeOffers}
               >
+                <div className="pinstripe nav-drop__stripe" aria-hidden="true" />
                 <div className="nav-drop__head">
                   <p className="nav-label">Offers</p>
                 </div>
@@ -1135,29 +1137,14 @@ export default function Header() {
             className="absolute left-0 top-0 bottom-0 flex flex-col bg-white shadow-2xl"
             style={{ width: "min(90vw, 420px)" }}
           >
-            <div
-              className="flex items-center justify-between px-5 py-4"
-              style={{
-                paddingTop: "max(16px, env(safe-area-inset-top))",
-                position: "relative",
-                overflow: "hidden",
-                background: "#fff",
-                borderBottom: "1px solid var(--hairline)",
-              }}
-            >
-              <img src="/omniqure-wordmark.png?v=4" alt="OmniQure" className="header-logo" style={{ width: 130, maxHeight: 30 }} />
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                aria-label="Close navigation menu"
-                style={{
-                  width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center",
-                  borderRadius: 999, border: "1px solid #E5E7EB", background: "#fff",
-                  color: "#374151", cursor: "pointer",
-                }}
-              >
+            {/* Navy band with the white wordmark, then the range pin stripe */}
+            <div className="mnav-head" style={{ paddingTop: "max(16px, env(safe-area-inset-top))" }}>
+              <img src="/omniqure-wordmark-white.svg" alt="OmniQure" className="mnav-head__logo" />
+              <button onClick={() => setMobileMenuOpen(false)} aria-label="Close navigation menu" className="mnav-head__close">
                 <X size={18} />
               </button>
             </div>
+            <div className="pinstripe" aria-hidden="true" />
 
             <div ref={drawerScrollRef} className="flex-1 overflow-y-auto" style={{ overscrollBehavior: "contain" }}>
               {drawerPanel === null ? (
