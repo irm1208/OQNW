@@ -2214,24 +2214,31 @@ body.has-cart-preview-bar main {
   body:has(.checkout-mobile-bar) footer { padding-bottom: 76px; }
 }
 
-/* BAC water add-on in the order summary */
-.bac-upsell { display: flex; flex-direction: column; }
+/* BAC water add-on in the order summary: a Matte Navy block, like the
+   summary header, so the add-on reads as part of the brand panel. */
+.bac-upsell {
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  border-radius: 6px;
+  background: var(--oq-matte-navy);
+}
 .bac-upsell__title {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 2px 6px;
-  margin: 0 0 2px;
+  margin: 0 0 4px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--oq-graphite);
+  color: #fff;
 }
-.bac-upsell__title svg { color: var(--oq-cornflower); }
+.bac-upsell__title svg { color: var(--oq-dusty-blue); }
 .bac-upsell__title span {
   flex-basis: 100%;
   font-size: 11.5px;
   font-weight: 400;
-  color: var(--oq-slate);
+  color: var(--oq-dusty-blue);
 }
 .bac-upsell__row {
   display: flex;
@@ -2240,32 +2247,32 @@ body.has-cart-preview-bar main {
   width: 100%;
   min-height: 44px;
   padding: 8px 12px;
-  border: 1px solid var(--oq-mist);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 6px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.06);
   text-align: left;
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
 }
-.bac-upsell__row:hover { border-color: var(--oq-dusty-blue); }
-.bac-upsell__row[aria-pressed="true"] { border-color: var(--oq-cornflower); background: #fff; }
+.bac-upsell__row:hover { border-color: rgba(255, 255, 255, 0.4); }
+.bac-upsell__row[aria-pressed="true"] { border-color: var(--oq-cornflower); background: rgba(78, 104, 194, 0.25); }
 .bac-upsell__check {
   display: grid;
   flex: none;
   place-items: center;
   width: 18px;
   height: 18px;
-  border: 2px solid #CBD5E1;
+  border: 2px solid rgba(255, 255, 255, 0.55);
   border-radius: 4px;
-  background: #fff;
+  background: transparent;
 }
 .bac-upsell__row[aria-pressed="true"] .bac-upsell__check { border-color: var(--oq-cornflower); background: var(--oq-cornflower); }
-.bac-upsell__name { flex: 1; min-width: 0; font-size: 13px; font-weight: 500; color: var(--oq-graphite); }
+.bac-upsell__name { flex: 1; min-width: 0; font-size: 13px; font-weight: 500; color: #fff; }
 .bac-upsell__price {
   flex: none;
   font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
   font-size: 12.5px;
-  color: var(--oq-matte-navy);
+  color: #fff;
 }
 
 /* Order summary heading: a Matte Navy band (as on the product purchase card)
