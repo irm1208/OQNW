@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { prefetchRoute } from "@/lib/prefetch";
 import { Link, useLocation } from "wouter";
-import { Search, User, Users, ShoppingCart, Menu, X, ChevronDown, ArrowUpRight, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, BookMarked, GraduationCap, Thermometer, Activity, Layers } from "lucide-react";
+import { Search, User, Users, ShoppingCart, Menu, X, ChevronDown, ChevronRight, ArrowUpRight, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, BookMarked, GraduationCap, Thermometer, Activity, Layers, Calculator, Droplets, Gift, BookOpen, HelpCircle, Mail, Info } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
@@ -57,6 +57,18 @@ const researchLinks = [
 ];
 
 
+// The phone/tablet menu's research hub: every research and education page.
+const researchHubLinks = [
+  { label: "Lab reports", href: "/lab-reports", icon: ShieldCheck, desc: "Janoshik COA for every batch" },
+  { label: "Calculator", href: "/calculator", icon: Calculator, desc: "Reconstitution and dosing maths" },
+  { label: "Protocols", href: "/protocols", icon: FlaskConical, desc: "Research protocols and guides" },
+  { label: "Research results", href: "/research-results", icon: Activity, desc: "Biomarker data from studies" },
+  { label: "Research stacks", href: "/stacks", icon: Layers, desc: "Curated multi-peptide stacks" },
+  { label: "Storage", href: "/storage-guide", icon: Thermometer, desc: "Storage, reconstitution, stability" },
+  { label: "Glossary", href: "/glossary", icon: BookMarked, desc: "Scientific terms explained" },
+  { label: "Research notes", href: "/blog", icon: BookOpen, desc: "Articles on each compound" },
+];
+
 const rightNavItems = [
   { label: "About Us", href: "/about" },
   { label: "Contact Us", href: "/contact" },
@@ -107,7 +119,6 @@ export default function Header() {
   }, [products]);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileResearchOpen, setMobileResearchOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(-1);
   const [currencyOpen, setCurrencyOpen] = useState(false);
@@ -120,7 +131,6 @@ export default function Header() {
   const [researchOpen, setResearchOpen] = useState(false);
   const researchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [offersOpen, setOffersOpen] = useState(false);
-  const [mobileOffersOpen, setMobileOffersOpen] = useState(false);
   const offersTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const offersButtonRef = useRef<HTMLButtonElement | null>(null);
   const offersLinkRefs = useRef<Array<HTMLAnchorElement | null>>([]);
@@ -236,9 +246,7 @@ export default function Header() {
   useEffect(() => {
     setUserMenuOpen(false);
     setMobileMenuOpen(false);
-    setMobileResearchOpen(false);
     setOffersOpen(false);
-    setMobileOffersOpen(false);
   }, [location]);
 
   const offersActive = offerNavItems.some(item => location === item.href || location.startsWith(item.href + "/"));
@@ -1220,157 +1228,134 @@ export default function Header() {
             <div className="flex-1 overflow-y-auto" style={{ overscrollBehavior: "contain" }}>
               <DrawerShop groups={peptideGroups} formatPrice={formatPrice} onNavigate={() => setMobileMenuOpen(false)} />
 
-              <div style={{ padding: "8px 12px 8px" }}>
-                <p style={{ margin: "0 8px 7px", color: "#94A3B8", fontSize: 10, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" }}>
-                  Main menu
-                </p>
-                {navItems
-                  .filter(item => item.label !== "Research & Education")
-                  .map(item => (
-                    <Link
-                      key={item.label}
-                      href={item.href}
-                      className="flex items-center justify-between rounded-xl px-3 transition-colors"
-                      style={{
-                        minHeight: 48, color: location === item.href ? "#4E68C2" : "#334155",
-                        background: location === item.href ? "rgba(78,104,194,0.07)" : "transparent",
-                        borderLeft: location === item.href ? "3px solid #4E68C2" : "3px solid transparent",
-                        textDecoration: "none", fontSize: 15, fontWeight: location === item.href ? 700 : 600,
-                      }}
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {item.label}
-                      <ChevronDown size={15} style={{ transform: "rotate(-90deg)", color: location === item.href ? "#4E68C2" : "#CBD5E1" }} />
-                    </Link>
-                  ))}
-              </div>
-
-              <div style={{ marginTop: 6, borderTop: "1px solid #E5EDFA", borderBottom: "1px solid #E5EDFA", background: mobileResearchOpen ? "#F8FBFF" : "#fff" }}>
-                <button
-                  onClick={() => setMobileResearchOpen(open => !open)}
-                  aria-expanded={mobileResearchOpen}
-                  style={{
-                    width: "100%", minHeight: 60, padding: "0 20px", display: "flex", alignItems: "center", gap: 10,
-                    border: "none", background: mobileResearchOpen ? "#F8FAFC" : "#fff",
-                    color: "#475569", cursor: "pointer", textAlign: "left",
-                  }}
-                >
-                  <span style={{ width: 34, height: 34, borderRadius: 11, background: "rgba(78,104,194,0.08)", color: "var(--cobalt)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 0 0 1px rgba(59, 98, 171,0.06)" }}>
-                    <GraduationCap size={16} />
-                  </span>
-                  <span style={{ flex: 1 }}>
-                    <span style={{ display: "block", fontSize: 14, fontWeight: 800 }}>Research &amp; Education</span>
-                    <span style={{ display: "block", marginTop: 2, color: "#94A3B8", fontSize: 11 }}>Guides, data &amp; research tools</span>
-                  </span>
-                  <ChevronDown size={17} style={{ color: "#94A3B8", transform: mobileResearchOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
-                </button>
-
-                {mobileResearchOpen && (
-                  <div style={{ padding: "0 12px 10px", background: "#F8FAFC" }}>
-                    {researchLinks.map(link => {
-                      const Icon = link.icon;
-                      return (
-                        <Link
-                          key={link.href}
-                          href={link.href}
-                          className="flex items-center gap-3 rounded-xl px-3 py-2.5"
-                          style={{ color: "#475569", textDecoration: "none" }}
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          <Icon size={17} style={{ color: "#64748B", flexShrink: 0 }} />
-                          <span style={{ minWidth: 0 }}>
-                            <span style={{ display: "block", fontSize: 14, fontWeight: 700 }}>{link.label}</span>
-                            <span style={{ display: "block", marginTop: 2, color: "#94A3B8", fontSize: 11.5, lineHeight: 1.35 }}>{link.desc}</span>
+              {/* Shop */}
+              <section className="drawer-sec">
+                <p className="mega__label drawer-sec__label">Shop</p>
+                <ul className="drawer-list">
+                  {[
+                    { label: "All peptides", href: "/all-peptides", icon: Package, desc: "Every compound, by range" },
+                    ...(navItems.some(i => i.label === "NAD+") ? [{ label: "NAD+", href: "/product/nad-plus-500mg", icon: Activity, desc: "Redox coenzyme, 500mg" }] : []),
+                    { label: "Bac water", href: "/bac-water", icon: Droplets, desc: "Bacteriostatic water for reconstitution" },
+                    { label: "Bundle & save", href: "/bundle-and-save", icon: Gift, desc: "Free items from 3 vials" },
+                  ].map(item => {
+                    const Icon = item.icon;
+                    const active = location === item.href || (item.href === "/all-peptides" && location.startsWith("/all-peptides"));
+                    return (
+                      <li key={item.href}>
+                        <Link href={item.href} className="drawer-row" data-active={active} aria-current={active ? "page" : undefined} onClick={() => setMobileMenuOpen(false)}>
+                          <span className="drawer-row__icon"><Icon size={17} /></span>
+                          <span className="drawer-row__text">
+                            <span className="drawer-row__title">{item.label}</span>
+                            <span className="drawer-row__desc">{item.desc}</span>
                           </span>
+                          <ChevronRight size={16} className="drawer-row__chev" />
                         </Link>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
 
-              <div style={{ marginTop: 6, borderTop: "1px solid #E5EDFA", borderBottom: "1px solid #E5EDFA", background: mobileOffersOpen ? "#F8FBFF" : "#fff" }}>
-                <button
-                  type="button"
-                  onClick={() => setMobileOffersOpen(open => !open)}
-                  aria-expanded={mobileOffersOpen}
-                  aria-controls="mobile-incentive-offers-menu"
-                  style={{
-                    width: "100%", minHeight: 52, padding: "0 12px", display: "flex", alignItems: "center", gap: 10,
-                    border: "none", background: mobileOffersOpen ? "#F8FAFC" : "#fff",
-                    color: offersActive ? "#4E68C2" : "#475569", cursor: "pointer", textAlign: "left",
-                    fontSize: 14, fontWeight: offersActive ? 800 : 600,
-                  }}
-                >
-                  <span style={{ width: 30, height: 30, borderRadius: 9, background: "rgba(78,104,194,0.08)", color: "var(--cobalt)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <ArrowUpRight size={15} />
+              {/* Research hub */}
+              <section className="drawer-sec drawer-research">
+                <div className="drawer-research__head">
+                  <span className="drawer-research__badge"><GraduationCap size={16} /></span>
+                  <span>
+                    <span className="drawer-research__title">Research hub</span>
+                    <span className="drawer-research__sub">Data, tools and guides for your work</span>
                   </span>
-                  <span style={{ flex: 1 }}>
-                    <span style={{ display: "block" }}>Offers &amp; Rewards</span>
-                    <span style={{ display: "block", marginTop: 2, color: "#94A3B8", fontSize: 11, fontWeight: 500 }}>Save, share &amp; earn</span>
+                </div>
+                <ul className="drawer-research__grid">
+                  {researchHubLinks.map(link => {
+                    const Icon = link.icon;
+                    const active = location === link.href || location.startsWith(link.href + "/");
+                    return (
+                      <li key={link.href}>
+                        <Link href={link.href} className="drawer-tile" data-active={active} aria-current={active ? "page" : undefined} onClick={() => setMobileMenuOpen(false)}>
+                          <Icon size={18} className="drawer-tile__icon" />
+                          <span className="drawer-tile__title">{link.label}</span>
+                          <span className="drawer-tile__desc">{link.desc}</span>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <Link href="/faq" className="drawer-row drawer-row--plain" onClick={() => setMobileMenuOpen(false)}>
+                  <span className="drawer-row__icon"><HelpCircle size={17} /></span>
+                  <span className="drawer-row__text">
+                    <span className="drawer-row__title">FAQ</span>
+                    <span className="drawer-row__desc">Purity, storage, shipping and payment</span>
                   </span>
-                  <ChevronDown size={17} style={{ color: "#94A3B8", transform: mobileOffersOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
-                </button>
+                  <ChevronRight size={16} className="drawer-row__chev" />
+                </Link>
+              </section>
 
-                {mobileOffersOpen && (
-                  <div id="mobile-incentive-offers-menu" style={{ padding: "0 12px 10px", background: "#F8FAFC" }}>
-                    {offerNavItems.map(item => {
-                      const Icon = item.icon;
-                      const active = location === item.href || location.startsWith(item.href + "/");
-                      return (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          aria-current={active ? "page" : undefined}
-                          className="flex items-center gap-3 rounded-xl px-3 py-2.5"
-                          style={{
-                            color: active ? "var(--ink)" : undefined,
-                            background: active ? "rgba(78,104,194,0.08)" : "transparent",
-                            textDecoration: "none",
-                          }}
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          <Icon size={17} style={{ color: active ? "var(--ink)" : undefined, flexShrink: 0 }} />
-                          <span style={{ minWidth: 0 }}>
-                            <span style={{ display: "block", fontSize: 14, fontWeight: 700 }}>{item.label}</span>
-                            <span style={{ display: "block", marginTop: 2, color: "#94A3B8", fontSize: 11.5, lineHeight: 1.35 }}>{item.desc}</span>
+              {/* Offers */}
+              <section className="drawer-sec">
+                <p className="mega__label drawer-sec__label">Offers</p>
+                <Link href="/bundle-and-save" className="drawer-offer" onClick={() => setMobileMenuOpen(false)}>
+                  <span className="drawer-offer__stripe" />
+                  <span className="drawer-offer__body">
+                    <span className="drawer-offer__eyebrow">Bundle &amp; save</span>
+                    <span className="drawer-offer__title">Free BAC water with 3+ vials</span>
+                    <span className="drawer-offer__text">1 peptide free at 5 vials, 2 free at 10.</span>
+                  </span>
+                  <ArrowUpRight size={18} className="drawer-offer__arrow" />
+                </Link>
+                <ul className="drawer-list">
+                  {offerNavItems.filter(item => item.href !== "/bundle-and-save").map(item => {
+                    const Icon = item.icon;
+                    return (
+                      <li key={item.href}>
+                        <Link href={item.href} className="drawer-row" onClick={() => setMobileMenuOpen(false)}>
+                          <span className="drawer-row__icon"><Icon size={17} /></span>
+                          <span className="drawer-row__text">
+                            <span className="drawer-row__title">{item.label}</span>
+                            <span className="drawer-row__desc">{item.desc}</span>
                           </span>
+                          <ChevronRight size={16} className="drawer-row__chev" />
                         </Link>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
 
-              <div style={{ padding: "12px 12px 8px" }}>
-                <p style={{ margin: "0 8px 7px", color: "#94A3B8", fontSize: 10, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" }}>
-                  More
-                </p>
-                {[...(!customer ? [{ label: "Sign in", href: "/sign-in" }] : []), { label: wishlistCount > 0 ? `Wishlist (${wishlistCount})` : "Wishlist", href: "/wishlist" }, ...rightNavItems].map(item => (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    className="flex items-center justify-between rounded-xl px-3"
-                    style={{ minHeight: 46, color: "#475569", textDecoration: "none", fontSize: 14, fontWeight: 600 }}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {item.label}
-                    <ChevronDown size={15} style={{ transform: "rotate(-90deg)", color: "#CBD5E1" }} />
-                  </Link>
-                ))}
-                <label className="flex items-center justify-between rounded-xl px-3" style={{ minHeight: 46, color: "#475569", fontSize: 14, fontWeight: 600 }}>
-                  Currency
+              {/* Account and more */}
+              <section className="drawer-sec drawer-sec--last">
+                <p className="mega__label drawer-sec__label">Account &amp; help</p>
+                <ul className="drawer-list drawer-list--compact">
+                  {[
+                    ...(!customer ? [{ label: "Sign in", href: "/sign-in", icon: User }] : []),
+                    { label: wishlistCount > 0 ? `Wishlist (${wishlistCount})` : "Wishlist", href: "/wishlist", icon: Heart },
+                    { label: "About us", href: "/about", icon: Info },
+                    { label: "Contact us", href: "/contact", icon: Mail },
+                  ].map(item => {
+                    const Icon = item.icon;
+                    return (
+                      <li key={item.href}>
+                        <Link href={item.href} className="drawer-row drawer-row--compact" onClick={() => setMobileMenuOpen(false)}>
+                          <span className="drawer-row__icon"><Icon size={16} /></span>
+                          <span className="drawer-row__title">{item.label}</span>
+                          <ChevronRight size={16} className="drawer-row__chev" />
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <label className="drawer-currency">
+                  <span className="drawer-row__icon"><Globe size={16} /></span>
+                  <span className="drawer-row__title">Currency</span>
                   <select
                     value={currency.code}
                     onChange={(e) => setCurrency(e.target.value as CurrencyCode)}
-                    style={{ border: "1px solid var(--hairline)", borderRadius: 999, padding: "6px 10px", fontSize: 13, color: "var(--ink)", background: "#fff" }}
                   >
                     {CURRENCIES.map((c) => (
                       <option key={c.code} value={c.code}>{c.code} · {c.label}</option>
                     ))}
                   </select>
                 </label>
-              </div>
+              </section>
 
               {customer && (
                 <div style={{ margin: "4px 12px 20px", padding: "10px", borderRadius: 14, background: "#F0F5FF", border: "1px solid rgba(78,104,194,0.15)" }}>

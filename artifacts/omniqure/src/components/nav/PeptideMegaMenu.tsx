@@ -161,7 +161,7 @@ export function DrawerShop({ groups, formatPrice, onNavigate }: {
       </div>
       <p className="mega__label drawer-shop__label">Shop by range</p>
       <ul className="drawer-shop__ranges">
-        {ranges.slice(1).map((r) => (
+        {ranges.slice(1, 9).map((r) => (
           <li key={r.name}>
             <Link href={`/all-peptides?category=${encodeURIComponent(r.name)}`} onClick={onNavigate} className="drawer-shop__range">
               <span className="mega__dot" style={{ background: r.colour }} />
@@ -170,6 +170,11 @@ export function DrawerShop({ groups, formatPrice, onNavigate }: {
             </Link>
           </li>
         ))}
+        <li>
+          <Link href="/all-peptides" onClick={onNavigate} className="drawer-shop__range drawer-shop__range--all">
+            All ranges <ArrowRight size={13} aria-hidden="true" />
+          </Link>
+        </li>
       </ul>
     </div>
   );
