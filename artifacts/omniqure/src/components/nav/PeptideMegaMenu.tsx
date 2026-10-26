@@ -47,7 +47,8 @@ export function useRanges(groups: GroupedProduct[]): Range[] {
     const ranges = [...byCategory.entries()]
       .map(([name, list]) => ({ name, colour: rangeColourForCategory(name), groups: list }))
       .sort((a, b) => b.groups.length - a.groups.length || a.name.localeCompare(b.name));
-    return [{ name: POPULAR, colour: "var(--oq-matte-navy)", groups: popular }, ...ranges];
+    // Dusty Blue reads on both the navy ranges column and white.
+    return [{ name: POPULAR, colour: "var(--oq-dusty-blue)", groups: popular }, ...ranges];
   }, [groups]);
 }
 
@@ -185,6 +186,7 @@ export default function PeptideMegaMenu({ groups, formatPrice, onNavigate, onMou
     <div className="mega" role="region" aria-label="Shop peptides" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <div className="mega__inner">
         <nav className="mega__ranges" aria-label="Product ranges">
+          <div className="pinstripe mega__ranges-stripe" aria-hidden="true" />
           <p className="nav-label">Ranges</p>
           <ol>
             {ranges.slice(0, 9).map((r) => (

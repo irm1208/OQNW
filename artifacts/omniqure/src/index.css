@@ -3002,3 +3002,25 @@ body.has-cart-preview-bar main {
   color: #fff !important;
   box-shadow: 0 0 0 2px var(--oq-matte-navy);
 }
+
+/* Mega menu ranges: a full-height Matte Navy column with the pin stripe */
+.mega__ranges {
+  margin: -28px 0 -30px;
+  padding: 0 14px 28px;
+  border-right: 0 !important;
+  background: var(--oq-matte-navy);
+}
+.mega__ranges-stripe { margin: 0 -14px 22px; }
+.mega__ranges .nav-label { padding-left: 12px; color: var(--oq-dusty-blue); }
+.mega__ranges .mrange { color: #fff; }
+.mega__ranges .mrange__count { color: var(--oq-dusty-blue); }
+.mega__ranges .mrange:hover,
+.mega__ranges .mrange[data-active="true"] {
+  border-left-color: var(--row-range);
+  background: rgba(255, 255, 255, 0.08);
+}
+.mega__ranges .mrange[data-active="true"] .mrange__name { color: #fff; }
+.mega__ranges .mega__more { color: #fff; }
+@media (max-width: 1279px) {
+  .mega__ranges { margin: -24px 0 -26px; padding-bottom: 24px; }
+}
