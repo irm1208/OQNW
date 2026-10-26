@@ -182,7 +182,6 @@ export default function PeptideMegaMenu({ groups, formatPrice, onNavigate, onMou
 
   return (
     <div className="mega" role="region" aria-label="Shop peptides" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-      <div className="pinstripe" aria-hidden="true" />
       <div className="mega__inner">
         <nav className="mega__ranges" aria-label="Product ranges">
           <p className="nav-label">Ranges</p>

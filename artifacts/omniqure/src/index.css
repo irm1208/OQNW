@@ -2477,7 +2477,6 @@ body.has-cart-preview-bar main {
   left: 0;
   right: 0;
   z-index: 1;
-  border-top: 4px solid var(--oq-matte-navy);
   border-bottom: 1px solid var(--oq-mist);
   background: #fff;
   box-shadow: 0 20px 30px -24px rgba(29, 41, 72, 0.35);
@@ -2768,3 +2767,86 @@ body.has-cart-preview-bar main {
 .qadd:active { background: var(--oq-royal-navy); }
 .qadd[data-added="true"] { background: #15803D; }
 .qadd:disabled { background: var(--oq-mist); color: var(--oq-slate); cursor: not-allowed; }
+
+/* ── HEADER BRAND BAND ───────────────────────────────────────────────────────
+   Matte Navy bar with the white wordmark and the range pin stripe at its
+   foot. Inline hover handlers in Header.tsx set light-theme colours, so the
+   on-navy colours here use !important. */
+.header-brand { border-bottom: 0 !important; }
+.header-brand__stripe { position: absolute; inset: auto 0 0; }
+.header-brand .header-inner { padding-bottom: 15px; }
+@media (max-width: 639px) { .header-brand .header-inner { padding-bottom: 9px; } }
+.header-brand .header-nav-divider { background: rgba(255, 255, 255, 0.2) !important; }
+
+/* Menu links */
+.header-brand .header-desktop-nav > div > a,
+.header-brand .header-desktop-nav > div > button,
+.header-brand .header-desktop-nav > a {
+  color: rgba(255, 255, 255, 0.82) !important;
+  background: transparent !important;
+  font-weight: 500 !important;
+  border-radius: 0 !important;
+  box-shadow: inset 0 -2px 0 transparent;
+}
+.header-brand .header-desktop-nav > div > a:hover,
+.header-brand .header-desktop-nav > div > button:hover,
+.header-brand .header-desktop-nav > a:hover,
+.header-brand .header-desktop-nav > div > button[aria-expanded="true"],
+.header-brand .header-desktop-nav > a[data-active="true"] {
+  color: #fff !important;
+  box-shadow: inset 0 -2px 0 var(--oq-dusty-blue);
+}
+
+/* Hamburger and small labels on phones */
+.header-brand .header-menu-toggle { color: #fff !important; }
+.header-brand .header-mobile-label { color: var(--oq-dusty-blue) !important; }
+
+/* Utility buttons: currency, sign in, account, wishlist */
+.header-brand .header-currency-btn,
+.header-brand .header-utility-button,
+.header-brand .header-signin,
+.header-brand .header-wishlist {
+  color: rgba(255, 255, 255, 0.82) !important;
+  background: transparent !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+}
+.header-brand .header-currency-btn:hover,
+.header-brand .header-utility-button:hover,
+.header-brand .header-signin:hover,
+.header-brand .header-wishlist:hover {
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Cart: the one solid control, white on navy */
+.header-brand .header-cart {
+  color: var(--oq-matte-navy) !important;
+  background: #fff !important;
+  border-color: #fff !important;
+  font-weight: 600 !important;
+}
+.header-brand .header-cart:hover { background: #E9ECF2 !important; }
+.header-brand .header-cart .header-mobile-label { color: var(--oq-matte-navy) !important; }
+
+/* Search */
+.header-brand .header-search input {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  color: #fff !important;
+}
+.header-brand .header-search input::placeholder { color: var(--oq-dusty-blue); }
+.header-brand .header-search input:focus {
+  background: #fff !important;
+  border-color: #fff !important;
+  color: var(--oq-graphite) !important;
+}
+.header-brand .header-search-submit { color: var(--oq-dusty-blue) !important; }
+.header-brand .header-search:focus-within .header-search-submit { color: var(--oq-slate) !important; }
+/* Win over the light-header rules: the logo filter and the tablet/phone
+   background reset. */
+.header-brand .header-logo { filter: none !important; }
+.header-topbar.header-brand { background: var(--oq-matte-navy) !important; }
+@media (max-width: 1023px) {
+  .header-brand .header-inner { padding: 12px 20px 17px !important; }
+  .header-brand .header-cart.header-icon-btn { border-color: #fff !important; }
+}

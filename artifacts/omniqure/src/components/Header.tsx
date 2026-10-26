@@ -380,15 +380,14 @@ export default function Header() {
   return (
     <header style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", transition: "filter 0.3s ease" }} className="sticky top-0 z-50">
       {/* Top bar */}
-      <div className="header-topbar" style={{
-        background: scrolled ? "rgba(255,255,255,0.92)" : "rgba(255,255,255,0.8)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
-        borderBottom: "1px solid var(--hairline)",
-        boxShadow: scrolled ? "0 1px 12px rgba(4,11,34,0.06)" : "none",
-        transition: "background 0.3s ease, box-shadow 0.3s ease",
+      {/* Matte Navy brand band; the range pin stripe runs along its foot */}
+      <div className="header-topbar header-brand" style={{
+        background: "var(--oq-matte-navy)",
+        boxShadow: scrolled ? "0 6px 18px -10px rgba(4,11,34,0.45)" : "none",
+        transition: "box-shadow 0.3s ease",
         position: "relative", zIndex: 2,
       }}>
+          <div className="pinstripe header-brand__stripe" aria-hidden="true" />
           <div className="header-inner max-w-[1280px] mx-auto px-2 sm:px-4 py-1 sm:py-3 flex flex-wrap items-center gap-x-1.5 sm:gap-x-4 gap-y-1 sm:gap-y-2">
 
           {/* Hamburger — mobile only, left side */}
@@ -406,7 +405,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="header-logo-wrapper order-1" style={{ textDecoration: "none" }}>
             <img
-              src="/omniqure-wordmark.png?v=4"
+              src="/omniqure-wordmark-white.svg"
               alt="OmniQure"
               className="header-logo"
             />
