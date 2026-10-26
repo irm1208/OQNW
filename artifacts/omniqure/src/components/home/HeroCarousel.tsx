@@ -123,7 +123,7 @@ export default function HeroCarousel() {
                     width={2400}
                     height={1000}
                     fetchPriority={index === 0 ? "high" : "auto"}
-                    className="block aspect-[4/5] w-full object-cover [@media(max-height:700px)]:aspect-[16/13] sm:aspect-[12/5] lg:aspect-[8/3]"
+                    className="block aspect-[4/5] w-full object-cover sm:aspect-[12/5] lg:aspect-[8/3]"
                     draggable={false}
                   />
                 </picture>

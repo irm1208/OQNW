@@ -10,10 +10,7 @@ import { STUDIO_BG } from "@/lib/studioImage";
 /* Shared editorial primitives, modelled on a clean lab-catalogue aesthetic */
 export function Eyebrow({ children, center = false }: { children: ReactNode; center?: boolean }) {
   return (
-    <p
-      className={`uppercase ${center ? "text-center" : ""}`}
-      style={{ fontSize: 11, fontWeight: 500, lineHeight: 1, letterSpacing: "0.12em", color: "var(--cobalt)", margin: "0 0 12px" }}
-    >
+    <p className={`home-eyebrow ${center ? "home-eyebrow--center" : ""}`}>
       {children}
     </p>
   );
@@ -49,7 +46,7 @@ const WHY = [
 
 export function WhySection() {
   return (
-    <section className={sectionBase} style={{ ...hairline, background: "rgba(239,244,252,0.25)" }}>
+    <section className={sectionBase} style={{ ...hairline, background: "#F7F8FA" }}>
       <Container>
         <div className="text-center mb-8 sm:mb-10">
           <Eyebrow center>Why OmniQure</Eyebrow>
@@ -75,8 +72,8 @@ export function WhySection() {
         </div>
         <div className="sm:hidden grid grid-cols-2 gap-3">
           {WHY.map(({ icon: Icon, title, short }) => (
-            <div key={title} className="flex flex-col gap-3 rounded-2xl border bg-white p-4" style={hairline}>
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl shrink-0" style={{ background: "var(--ice)", color: "var(--cobalt)" }}>
+            <div key={title} className="flex flex-col gap-3 rounded-[6px] border bg-white p-4" style={hairline}>
+              <span className="home-icon">
                 <Icon size={16} strokeWidth={1.8} />
               </span>
               <div>
@@ -88,11 +85,11 @@ export function WhySection() {
         </div>
         <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
           {WHY.map(({ icon: Icon, title, body }, i) => (
-            <div key={title} className="relative bg-white rounded-xl border p-6 transition-all hover:shadow-sm hover:border-[rgba(47, 79, 140,0.3)]" style={hairline}>
-              <span className="absolute top-5 right-5 tabular-nums" style={{ fontSize: 10, letterSpacing: "0.1em", color: "rgba(47, 79, 140,0.5)" }}>
+            <div key={title} className="relative bg-white rounded-[6px] border p-6 transition-colors hover:border-[var(--oq-dusty-blue)]" style={hairline}>
+              <span className="absolute top-5 right-5 tabular-nums" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: "var(--oq-dusty-blue)" }}>
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <span className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-lg" style={{ background: "var(--ice)", color: "var(--cobalt)", boxShadow: "0 0 0 1px rgba(47, 79, 140,0.15)" }}>
+              <span className="home-icon home-icon--lg mb-4">
                 <Icon size={18} strokeWidth={1.8} />
               </span>
               <p className="font-semibold" style={{ fontSize: 15, color: "var(--ink)" }}>{title}</p>
@@ -101,14 +98,8 @@ export function WhySection() {
           ))}
         </div>
         <div className="mt-8 flex justify-center">
-          <Link
-            href="/bundle-and-save"
-            className="inline-flex items-center gap-3 rounded-xl px-7 py-3 font-semibold text-white transition-colors bg-[var(--ink)] hover:bg-[var(--cobalt)]"
-            style={{ fontSize: 15 }}
-          >
-            Build your own bundle
-            <span className="rounded-full px-2.5 py-1 leading-none font-semibold" style={{ fontSize: 11, background: "var(--cobalt)" }}>Free peptides</span>
-            <ArrowRight size={16} />
+          <Link href="/all-peptides" className="home-btn home-btn--navy">
+            Browse the catalogue <ArrowRight size={16} />
           </Link>
         </div>
       </Container>
@@ -143,56 +134,36 @@ const TIERS = [
 ];
 
 export function BundleBanner({ image }: { image?: string }) {
-  const tint = "oklch(0.96 0.012 240)";
   return (
-    <section className="relative overflow-hidden border-b" style={{ ...hairline, background: tint }}>
-      <div className="relative flex flex-col lg:flex-row lg:min-h-[560px]">
-        {image && (
-          <div className="relative w-full lg:w-1/2 order-1 lg:order-2 overflow-hidden h-[60vw] min-h-[260px] max-h-[420px] lg:h-auto lg:max-h-none">
-            <img src={image} alt="Research peptide kit with five vials" width={1400} height={1050} loading="lazy" className="absolute inset-0 h-full w-full object-cover object-right" />
-            <div className="absolute inset-y-0 left-0 w-40 hidden lg:block" style={{ background: `linear-gradient(to right, ${tint}, transparent)` }} />
-            <div className="absolute inset-x-0 bottom-0 h-28 lg:hidden" style={{ background: `linear-gradient(to top, ${tint}, transparent)` }} />
-          </div>
-        )}
-        <div className="relative z-10 w-full lg:w-1/2 order-2 lg:order-1 flex items-center px-5 sm:px-10 pt-8 pb-12 lg:py-20 lg:pl-[max(2.5rem,calc((100vw_-_1280px)_/_2_+_2.5rem))] lg:pr-16">
-          <span aria-hidden="true" className="pointer-events-none select-none absolute right-4 bottom-4 lg:right-10 lg:bottom-8 font-bold leading-none" style={{ fontSize: "clamp(120px, 20vw, 220px)", color: "rgba(4,11,34,0.04)" }}>
-            FREE
-          </span>
-          <div className="relative w-full max-w-[460px]">
-            <div className="flex items-center gap-2.5 mb-8">
-              <span className="h-px w-8" style={{ background: "var(--cobalt)" }} />
-              <span className="font-mono uppercase" style={{ fontSize: 10, letterSpacing: "0.22em", color: "var(--graphite)" }}>Bundle builder</span>
-            </div>
-            <h2 className="font-bold" style={{ fontSize: "clamp(44px, 5.5vw, 76px)", lineHeight: 0.92, letterSpacing: "-0.03em", color: "var(--ink)" }}>
-              Build your<br /><span style={{ color: "var(--cobalt)" }}>own bundle.</span>
-            </h2>
-            <p className="mt-5 max-w-[340px]" style={{ fontSize: 14, lineHeight: 1.85, color: "var(--graphite)" }}>
-              Mix any compounds across the catalogue. Free items are added to your cart automatically as you reach each tier.
-            </p>
-            <div className="mt-9 grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {TIERS.map((t, i) => (
-                <div
-                  key={t.qty}
-                  className="flex sm:block items-center justify-between rounded-2xl border px-4 py-4 shadow-sm"
-                  style={i === TIERS.length - 1
-                    ? { borderColor: "rgba(59, 98, 171,0.2)", background: "rgba(59, 98, 171,0.08)" }
-                    : { borderColor: "var(--hairline)", background: "#fff" }}
-                >
-                  <p className="font-bold leading-tight" style={{ fontSize: 15, color: i === TIERS.length - 1 ? "var(--cobalt)" : "var(--ink)" }}>{t.reward}</p>
-                  <p className="mt-1.5 leading-snug" style={{ fontSize: 11, color: "var(--graphite)" }}>{t.qty}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-8 flex items-center gap-4">
-              <Link href="/bundle-and-save" className="inline-flex items-center gap-2.5 rounded-xl px-7 py-4 font-bold text-white transition-colors bg-[var(--ink)] hover:bg-[var(--cobalt)]" style={{ fontSize: 14 }}>
-                Start building <ArrowRight size={16} />
-              </Link>
-              <Link href="/all-peptides" className="font-medium transition-colors text-[var(--graphite)] hover:text-[var(--ink)]" style={{ fontSize: 13.5 }}>
-                Browse catalogue →
-              </Link>
-            </div>
+    <section className="home-bundle" aria-labelledby="home-bundle-title">
+      <div className="pinstripe" aria-hidden="true" />
+      <div className="home-bundle__inner">
+        <div className="home-bundle__copy">
+          <p className="home-eyebrow home-eyebrow--dark">Bundle &amp; save</p>
+          <h2 id="home-bundle-title" className="home-bundle__title">Build your own bundle.</h2>
+          <p className="home-bundle__lead">
+            Mix any compounds across the catalogue. Free items are added to your cart automatically as you reach each tier.
+          </p>
+          <dl className="home-bundle__tiers">
+            {TIERS.map((t) => (
+              <div key={t.qty}>
+                <dt>{t.qty}</dt>
+                <dd>{t.reward}</dd>
+              </div>
+            ))}
+          </dl>
+          <div className="home-bundle__actions">
+            <Link href="/bundle-and-save" className="home-btn home-btn--light">
+              Start building <ArrowRight size={16} />
+            </Link>
+            <Link href="/all-peptides" className="home-btn home-btn--ghost">Browse catalogue</Link>
           </div>
         </div>
+        {image && (
+          <div className="home-bundle__media">
+            <img src={image} alt="OmniQure bundle box holding eight research vials" width={2400} height={1000} loading="lazy" />
+          </div>
+        )}
       </div>
     </section>
   );
@@ -503,7 +474,7 @@ const REVIEWS = [
 
 export function ReviewsSection() {
   return (
-    <section className={sectionBase} style={{ ...hairline, background: "rgba(239,244,252,0.35)" }}>
+    <section className={sectionBase} style={{ ...hairline, background: "#fff" }}>
       <Container>
         <div className="flex flex-wrap items-end justify-between gap-5 mb-10 lg:mb-12">
           <div>
@@ -523,7 +494,7 @@ export function ReviewsSection() {
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {REVIEWS.map((review, i) => (
-            <article key={review.quote} className={`rounded-xl border bg-white p-5 ${i >= 2 ? 'hidden md:block' : ''}`} style={hairline}>
+            <article key={review.quote} className={`rounded-[6px] border bg-white p-5 ${i >= 2 ? 'hidden md:block' : ''}`} style={hairline}>
               <div role="img" className="flex items-center gap-0.5" aria-label="Rated 5 out of 5 stars">
                 {Array.from({ length: 5 }, (_, i) => <Star key={i} size={13} fill="#00B67A" color="#00B67A" strokeWidth={1.5} />)}
               </div>

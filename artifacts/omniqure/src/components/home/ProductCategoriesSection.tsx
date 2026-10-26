@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { ArrowRight, BadgeCheck, FlaskConical, Truck } from "lucide-react";
-import { Container } from "./HomeSections";
+import { Container, Eyebrow } from "./HomeSections";
+import { rangeColourForCategory } from "@/lib/rangeColour";
 
 type Category = { title: string; subtitle: string; category: string; image: string };
 
@@ -9,10 +10,11 @@ const catalogueHref = (category: string) => `/all-peptides?category=${encodeURIC
 /* Transparent vial cutouts generated from the studio renders. */
 const cutout = (name: string) => `/reference/categories/${name}.webp`;
 
-const FEATURED: (Category & { bg: string })[] = [
-  { title: "Healing Peptides", subtitle: "BPC-157, TB-500 & fragments", category: "Healing Peptides", image: cutout("healing"), bg: "radial-gradient(120% 120% at 75% 40%, #4FA37E 0%, #2E7A5B 45%, #1C5A42 100%)" },
-  { title: "Growth Peptides", subtitle: "Ipamorelin, CJC-1295 & more", category: "Growth Peptides", image: cutout("growth"), bg: "radial-gradient(120% 120% at 75% 40%, #D29C74 0%, #A86F4C 45%, #7E4F34 100%)" },
-  { title: "Cellular Health", subtitle: "NAD+, MOTS-C & SS-31", category: "Cellular Health", image: cutout("cellular"), bg: "radial-gradient(120% 120% at 75% 40%, #8DBBEA 0%, #4F88C9 45%, #2D5E9E 100%)" },
+// Each card is Matte Navy, lit by its range colour (the vial cap colour).
+const FEATURED: Category[] = [
+  { title: "Healing Peptides", subtitle: "BPC-157, TB-500 & fragments", category: "Healing Peptides", image: cutout("healing") },
+  { title: "Growth Peptides", subtitle: "Ipamorelin, CJC-1295 & more", category: "Growth Peptides", image: cutout("growth") },
+  { title: "Cellular Health", subtitle: "NAD+, MOTS-C & SS-31", category: "Cellular Health", image: cutout("cellular") },
 ];
 
 const MORE: Category[] = [
@@ -46,7 +48,8 @@ export default function ProductCategoriesSection() {
       <Container>
         <div className="mb-8 lg:mb-12 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
           <div>
-            <h2 className="font-bold" style={{ fontSize: "clamp(32px, 4.4vw, 60px)", lineHeight: 1.02, letterSpacing: "-0.03em", color: "var(--ink)" }}>
+            <Eyebrow>Shop by range</Eyebrow>
+            <h2 className="font-bold" style={{ fontSize: "clamp(28px, 3.4vw, 44px)", lineHeight: 1.05, letterSpacing: "-0.025em", color: "var(--ink)" }}>
               Research peptides,<br />organised by pathway
             </h2>
             <p className="mt-4" style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "var(--graphite)" }}>
@@ -68,8 +71,8 @@ export default function ProductCategoriesSection() {
             <Link
               key={card.title}
               href={catalogueHref(card.category)}
-              className="group relative flex min-h-[240px] lg:min-h-[290px] flex-col justify-between overflow-hidden rounded-[22px] p-6 lg:p-8 text-white shadow-sm transition-shadow hover:shadow-lg"
-              style={{ background: card.bg }}
+              className="home-range group relative flex min-h-[240px] lg:min-h-[290px] flex-col justify-between overflow-hidden p-6 lg:p-8 text-white"
+              style={{ "--range": rangeColourForCategory(card.category) } as React.CSSProperties}
             >
               <div className="relative z-10 max-w-[58%]">
                 <h3 className="font-semibold" style={{ fontSize: "clamp(22px, 2vw, 28px)", lineHeight: 1.15, letterSpacing: "-0.02em" }}>{card.title}</h3>
@@ -95,8 +98,8 @@ export default function ProductCategoriesSection() {
             <Link
               key={card.title}
               href={catalogueHref(card.category)}
-              className="group flex items-center gap-3 rounded-[18px] border bg-white p-4 pl-5 shadow-[0_2px_10px_rgba(4,11,34,0.05)] transition-shadow hover:shadow-md"
-              style={{ borderColor: "var(--hairline)" }}
+              className="home-range-mini group flex items-center gap-3 border bg-white p-4 pl-5"
+              style={{ borderColor: "var(--hairline)", "--range": rangeColourForCategory(card.category) } as React.CSSProperties}
             >
               <div className="min-w-0 flex-1">
                 <h3 className="font-semibold leading-snug" style={{ fontSize: 16.5, color: "var(--ink)", letterSpacing: "-0.01em" }}>{card.title}</h3>

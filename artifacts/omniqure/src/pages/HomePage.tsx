@@ -1,5 +1,5 @@
 import { useSEO } from "@/hooks/useSEO";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, FlaskConical, Truck, ShieldCheck, Clock } from "lucide-react";
 import { Link } from "wouter";
 import CatalogueCard from "@/components/CatalogueCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
@@ -8,10 +8,9 @@ import RecentlyViewed from "@/components/RecentlyViewed";
 import HeroCarousel from "@/components/home/HeroCarousel";
 import FeaturedRangeSection from "@/components/home/FeaturedRangeSection";
 import ProductCategoriesSection from "@/components/home/ProductCategoriesSection";
-import TrustBadges from "@/components/TrustBadges";
 import {
   WhySection, BestSellersSection, BundleBanner, ProcessSection, QualitySection,
-  FaqSection, ResearchNotice, ReviewsSection,
+  FaqSection, ReviewsSection,
 } from "@/components/home/HomeSections";
 const HOME_FAQ: { q: string; a: string }[] = [
               {
@@ -47,44 +46,43 @@ function HeroSection() {
 }
 
 
-/* Conversion band: the first purchase-intent actions, kept above the fold on every viewport. */
-function AboveFoldCTA() {
+/* Brand band under the hero: the pin stripe, the promise, the two first
+   actions and four proof points. One block instead of a CTA strip plus a
+   separate badge row. */
+const PROOF = [
+  { icon: FlaskConical, label: "99%+ HPLC purity" },
+  { icon: ShieldCheck, label: "Janoshik lab reports" },
+  { icon: Clock, label: "Same-day dispatch" },
+  { icon: Truck, label: "Free UK tracked delivery" },
+];
+
+function BrandBand() {
   return (
-    <section className="border-b bg-white" style={{ borderColor: "var(--hairline)" }}>
-      <div className="mx-auto w-full max-w-[1280px] px-5 py-2 md:px-8 sm:py-5 xl:px-12">
-        <div className="flex flex-col items-stretch justify-between gap-2 sm:flex-row sm:items-center sm:gap-6">
-          <div className="hidden text-center sm:block sm:text-left">
-            <p className="font-bold leading-tight" style={{ fontSize: "clamp(15px, 2.2vw, 20px)", letterSpacing: "-0.015em", color: "var(--ink)" }}>
-              Research-grade peptides, ready to ship
-            </p>
-            <p className="mt-1" style={{ fontSize: "clamp(12px, 1.5vw, 14px)", color: "var(--graphite)" }}>
-              135 compounds · Published lab reports · Free tracked UK delivery
-            </p>
-          </div>
-          <div className="flex w-full flex-row items-stretch gap-2 sm:w-auto sm:items-center sm:gap-3">
-            <Link
-              href="/all-peptides"
-              className="inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl px-3.5 py-2 font-bold text-white transition-transform hover:scale-[1.02] active:scale-[0.98] sm:flex-none sm:gap-2 sm:px-7 sm:py-3"
-              style={{ fontSize: "clamp(13px, 3vw, 15px)", background: "var(--cobalt)", boxShadow: "0 2px 10px rgba(59,98,171,0.25)" }}
-            >
-              Shop peptides <ArrowRight size={15} />
-            </Link>
-            <Link
-              href="/bundle-and-save"
-              className="inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl border-2 px-3.5 py-2 font-semibold transition-colors hover:bg-[var(--ice)] sm:flex-none sm:gap-2 sm:px-7 sm:py-3"
-              style={{ fontSize: "clamp(12.5px, 2.8vw, 14px)", color: "var(--ink)", borderColor: "var(--ink)" }}
-            >
-              Build a bundle
-            </Link>
-          </div>
+    <section className="home-band" aria-label="Why order from OmniQure">
+      <div className="pinstripe" aria-hidden="true" />
+      <div className="home-band__inner">
+        <div className="home-band__lead">
+          <p className="home-band__title">Research-grade peptides, ready to ship</p>
+          <p className="home-band__sub">135 compounds, each with a published lab report.</p>
         </div>
+        <div className="home-band__actions">
+          <Link href="/all-peptides" className="home-btn home-btn--light">
+            Shop peptides <ArrowRight size={16} aria-hidden="true" />
+          </Link>
+          <Link href="/bundle-and-save" className="home-btn home-btn--ghost">Build a bundle</Link>
+        </div>
+        <ul className="home-band__proof">
+          {PROOF.map(({ icon: Icon, label }) => (
+            <li key={label}><Icon size={16} aria-hidden="true" />{label}</li>
+          ))}
+        </ul>
       </div>
     </section>
   );
 }
 
 export default function HomePage() {
-  const { products } = useProducts();
+  const { products, loading } = useProducts();
   useSEO({
     title: "Verified Research Peptides",
     description: "Buy high-purity research peptides with independent results confirming 99%+ purity. BPC-157, TB-500, Ipamorelin, Epithalon and 100+ peptides. Worldwide shipping from OmniQure.",
@@ -106,41 +104,42 @@ export default function HomePage() {
   return (
     <div className="reference-home" style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif" }}>
 
-      {/* Campaigns use separate desktop and mobile compositions. */}
+      {/* 1. Hero campaigns: separate desktop and mobile compositions */}
       <HeroSection />
 
-      <AboveFoldCTA />
+      {/* 2. Promise, first actions and proof */}
+      <BrandBand />
 
-      <TrustBadges />
-
-      {/* Products first: best sellers sit directly below the fold so buyers see
-          priced, purchasable vials before any brand storytelling. */}
+      {/* 3. Products first: priced, purchasable vials before any storytelling */}
       <BestSellersSection>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 lg:gap-4">
-            {featuredGroups.slice(0, 8).map(group => (
-              <CatalogueCard key={group.baseName} group={group} />
-            ))}
-          </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-5">
+          {featuredGroups.slice(0, 8).map(group => (
+            <CatalogueCard key={group.baseName} group={group} />
+          ))}
+          {/* Hold the grid's space while the catalogue loads, so the page below doesn't jump */}
+          {loading && featuredGroups.length === 0 && Array.from({ length: 8 }, (_, i) => (
+            <div key={i} className="home-card-skeleton" aria-hidden="true">
+              <div className="aspect-[4/5]" />
+              <div className="h-[118px]" />
+            </div>
+          ))}
+        </div>
       </BestSellersSection>
 
-      <BundleBanner image="/hero/eight-vials-desktop.webp" />
-
+      {/* 4. Browse by range */}
       <ProductCategoriesSection />
 
-      <WhySection />
+      {/* 5. The bundle offer, once the range is known */}
+      <BundleBanner image="/hero/eight-vials-desktop.webp" />
 
+      {/* 6. Proof: why us, then what customers say */}
+      <WhySection />
       <ReviewsSection />
 
+      {/* 7. Remaining questions */}
       <FaqSection items={HOME_FAQ} />
 
-      <ResearchNotice />
-
-      {/* ── RECENTLY VIEWED ───────────────────────────────────── */}
       <RecentlyViewed />
-
-
-
     </div>
   );
 }
