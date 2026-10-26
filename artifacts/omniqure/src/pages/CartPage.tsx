@@ -712,7 +712,6 @@ export default function CartPage() {
   const timerExpired = timeLeft <= 0;
   const timerUrgent = timeLeft <= 120;
   const timerWarning = timeLeft <= 300 && timeLeft > 120;
-  const timerCalm = !timerUrgent && !timerWarning;
 
   // Postcode — auto-fill city/county on blur via postcodes.io
   const [postcodeLoading, setPostcodeLoading] = useState(false);
@@ -1617,14 +1616,10 @@ export default function CartPage() {
 
       {/* ── Timer banner ── */}
       <div className="checkout-timer-banner" style={{
-        background: timerUrgent
-          ? "linear-gradient(90deg, #7F1D1D 0%, #DC2626 50%, #7F1D1D 100%)"
-          : timerWarning
-          ? "linear-gradient(90deg, #78350F 0%, #D97706 50%, #78350F 100%)"
-          : "#FFFFFF",
-        borderBottom: `${timerCalm ? 1 : 2}px solid ${timerUrgent ? "#EF4444" : timerWarning ? "#F59E0B" : "rgba(11,18,32,0.09)"}`,
-        transition: "background 0.8s, border-color 0.8s",
-        padding: timerCalm ? "10px 24px" : "12px 24px",
+        // Stays white; only the countdown changes colour as time runs short.
+        background: "#FFFFFF",
+        borderBottom: "1px solid rgba(11,18,32,0.09)",
+        padding: "10px 24px",
         textAlign: "center",
         position: "relative",
         overflow: "hidden",
@@ -1632,39 +1627,38 @@ export default function CartPage() {
         <div style={{
           position: "absolute", inset: 0,
           background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%)",
-          animation: timerCalm ? "none" : "shimmer 2.4s linear infinite",
+          animation: "none",
           pointerEvents: "none",
         }} />
         <div className="checkout-timer-inner">
           <div className="checkout-timer-clock" style={{
             width: 34, height: 34, borderRadius: "50%",
-            background: timerCalm ? "#fff" : "rgba(255,255,255,0.15)",
-            border: timerCalm ? "1px solid rgba(11,18,32,0.09)" : "1.5px solid rgba(255,255,255,0.3)",
-            color: timerCalm ? "#4E68C2" : "#fff",
+            background: "#fff",
+            border: "1px solid rgba(11,18,32,0.09)",
+            color: timerUrgent ? "#B91C1C" : timerWarning ? "#B45309" : "#4E68C2",
             display: "flex", alignItems: "center", justifyContent: "center",
             fontSize: "16px", flexShrink: 0,
-            animation: timerUrgent ? "pulse 0.9s ease-in-out infinite" : "none",
+            animation: "none",
           }}><Clock size={16} /></div>
           <div className="checkout-timer-message" style={{ textAlign: "left" }}>
-            <p style={{ margin: 0, fontSize: "11px", fontWeight: 600, color: timerCalm ? "#1D2948" : "rgba(255,255,255,0.75)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              {timerUrgent ? "⚠️ Hurry — time is almost up!" : "Your items are reserved"}
+            <p style={{ margin: 0, fontSize: "11px", fontWeight: 600, color: timerUrgent ? "#B91C1C" : "#1D2948", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+              {timerUrgent ? "Time is almost up" : "Your items are reserved"}
             </p>
-            <p style={{ margin: 0, fontSize: "12px", color: timerCalm ? "#4A5672" : "rgba(255,255,255,0.85)", fontWeight: 400, marginTop: "1px" }}>
+            <p style={{ margin: 0, fontSize: "12px", color: "#4A5672", fontWeight: 400, marginTop: "1px" }}>
               Complete checkout to secure your order
             </p>
           </div>
-          <div className="checkout-timer-divider" style={{ width: 1, height: 36, background: timerCalm ? "rgba(11,18,32,0.09)" : "rgba(255,255,255,0.25)", flexShrink: 0 }} />
+          <div className="checkout-timer-divider" style={{ width: 1, height: 36, background: "rgba(11,18,32,0.09)", flexShrink: 0 }} />
           <div style={{ textAlign: "center" }}>
             <div className="checkout-timer-countdown" style={{
               fontVariantNumeric: "tabular-nums",
-              fontSize: timerCalm ? "24px" : "32px", fontWeight: timerCalm ? 600 : 900,
-              color: timerCalm ? "#1D2948" : "#fff", lineHeight: 1,
+              fontSize: "24px", fontWeight: 600,
+              color: timerUrgent ? "#B91C1C" : timerWarning ? "#B45309" : "#1D2948", lineHeight: 1,
               letterSpacing: "0.04em",
-              textShadow: timerCalm ? "none" : timerUrgent ? "0 0 20px rgba(255,100,100,0.6)" : "0 0 16px rgba(255,255,255,0.25)",
             }}>
               {timerMins}<span style={{ opacity: 0.6, margin: "0 1px" }}>:</span>{timerSecs}
             </div>
-            <p className="checkout-timer-label" style={{ margin: 0, fontSize: "10px", fontWeight: 700, color: timerCalm ? "#8A94A6" : "rgba(255,255,255,0.6)", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: "2px" }}>
+            <p className="checkout-timer-label" style={{ margin: 0, fontSize: "10px", fontWeight: 600, color: "#8A94A6", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: "2px" }}>
               remaining
             </p>
           </div>
