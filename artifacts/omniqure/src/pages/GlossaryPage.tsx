@@ -364,8 +364,8 @@ const GLOSSARY: GlossaryEntry[] = [
   {
     term: "Sirtuin (SIRT)",
     category: "pathway",
-    definition: "A family of NAD+-dependent protein deacetylases (SIRT1–SIRT7) that regulate diverse biological processes including gene expression, metabolism, DNA repair, apoptosis, and ageing. Sirtuins are activated by elevated NAD+ levels and are a primary target of longevity research. Compounds that increase cellular NAD+ (such as NAD+ and 5-Amino-1Q) are studied for their potential to activate sirtuins and promote metabolic and longevity-related benefits.",
-    related: ["NAD+", "5-Amino-1Q", "AMPK", "Longevity"],
+    definition: "A family of NAD+-dependent protein deacetylases (SIRT1–SIRT7) that regulate diverse biological processes including gene expression, metabolism, DNA repair, apoptosis, and ageing. Sirtuins are activated by elevated NAD+ levels and are a primary target of longevity research. Compounds that increase cellular NAD+ (such as NAD+ and 5-Amino-1MQ) are studied for their potential to activate sirtuins and promote metabolic and longevity-related benefits.",
+    related: ["NAD+", "5-Amino-1MQ", "AMPK", "Longevity"],
   },
   {
     term: "Subcutaneous (SC)",

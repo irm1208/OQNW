@@ -761,7 +761,36 @@ html.copy-protected [role="textbox"] {
 /* ── PRODUCT PAGE MOBILE ───────────────────────────────────── */
 
 @media (max-width: 640px) {
-  .product-h1 { font-size: 22px !important; }
+
+  /* Tighter product page spacing on mobile */
+  .product-page-container .grid {
+    gap: 1rem !important;
+  }
+
+  .product-page-section {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  /* Reduce button heights on mobile for density */
+  .product-cta-btn,
+  .product-cta-row button {
+    height: 46px !important;
+  }
+
+  /* Tighter guarantee grid */
+  .product-guarantees-grid > div {
+    padding-top: 0.625rem !important;
+    padding-bottom: 0.625rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Reduce section padding on tablet */
+  .product-page-section {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
 }
 
 /* ── CARD INFO — COMPACT ON MOBILE ────────────────────────── */
@@ -1772,3 +1801,66 @@ body.has-cart-preview-bar main {
   .checkout-breadcrumb-bar { padding: 16px 16px !important; }
   .checkout-breadcrumb-bar h1 { font-size: 22px !important; }
 }
+
+/* Product page gallery on narrow screens. The supplied vial renders are square
+   (1800x1800) with the vial centred inside them, so the frame stays square and
+   full width: the vial reads at a useful size and the sticky buy bar covers
+   conversion on phones. */
+@media (max-width: 639px) {
+  .product-gallery-media {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    max-height: none;
+  }
+}
+
+/* The buy panel keeps one DOM order at every breakpoint — strength, dosage,
+   price, add to cart, reassurance, add-ons, then the cart-wide promotion — so
+   the variant choice is always made before the item is added. */
+
+/* Between 640px and 767px the gallery is still in a single column, so an
+   uncapped square frame balloons to ~700px before snapping down at md. Cap and
+   centre it so the tablet band doesn't zoom the vial to an absurd size. */
+@media (min-width: 640px) and (max-width: 767px) {
+  .product-gallery-col {
+    width: 100%;
+    max-width: 460px;
+    margin-inline: auto;
+  }
+  .product-gallery-thumbs { justify-content: center; }
+}
+
+@media (max-width: 768px) {
+  /* Keep the buy row horizontal up to tablet width so Add to cart and the
+     wishlist control stay on one line. */
+  .product-cta-row.product-info-cta {
+    flex-direction: row !important;
+    align-items: stretch !important;
+  }
+  .product-info-cta .product-cta-btn {
+    width: auto !important;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 374px) {
+  /* Very small phones: a slightly shorter frame keeps the title near the fold.
+     Height is capped only here, where the width is already the narrowest. */
+  .product-gallery-media { aspect-ratio: 1 / 1; }
+}
+
+@media (max-width: 639px) {
+  /* Alias chips scroll sideways on one line instead of wrapping to two rows,
+     which would push the buy button below the fold. */
+  .product-alias-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .product-alias-row::-webkit-scrollbar { display: none; }
+  .product-alias-row > span { flex: 0 0 auto; }
+}
+

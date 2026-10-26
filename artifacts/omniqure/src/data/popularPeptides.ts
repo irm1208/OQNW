@@ -48,7 +48,7 @@ export const hotBuySlugs = new Set([
   "retatrutide-10mg",             // Retatrutide 10mg — newest triple agonist
   "epithalon-10mg",               // Epithalon 10mg — longevity research
   "mots-c-10mg",                  // MOTS-C 10mg — mitochondrial health
-  "5-amino-1q-50mg",              // 5-Amino-1Q 50mg — NAD+ research
+  "5-amino-1q-50mg",              // 5-Amino-1MQ 50mg — NAD+ research
   "ss-31-10mg",                   // SS-31 10mg — mitochondria-targeted
   "n-acetyl-semax-amidate-10mg",  // N-Acetyl Semax Amidate 10mg — nootropic
   "ghk-cu-50mg",                  // GHK-Cu 50mg — skin & repair research

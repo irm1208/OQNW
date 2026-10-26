@@ -57,7 +57,7 @@ const BundleAndSavePage    = lazy(() => import("@/pages/BundleAndSavePage"));
 const StorageGuidePage     = lazy(() => import("@/pages/StorageGuidePage"));
 const ResearchResultsPage  = lazy(() => import("@/pages/ResearchResultsPage"));
 const ContactPage          = lazy(() => import("@/pages/ContactPage"));
-const ChatWidget            = lazy(() => import("@/components/ChatWidget"));
+// ChatWidget is hidden for now; restore the lazy import and <ChatWidget /> below to bring it back.
 const BlogIndexPage        = lazy(() => import("@/pages/BlogIndexPage"));
 const BlogPostPage         = lazy(() => import("@/pages/BlogPostPage"));
 const NotFound             = lazy(() => import("@/pages/not-found"));
@@ -316,7 +316,6 @@ function App() {
               </div>
               <CartPreviewPanel />
               <StickyCartBar />
-              <ChatWidget />
               <AgeGate />
               </OverlayCoordinatorProvider>
             </WouterRouter>
