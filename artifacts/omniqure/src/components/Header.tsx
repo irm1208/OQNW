@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { prefetchRoute } from "@/lib/prefetch";
 import { Link, useLocation } from "wouter";
-import { Search, User, Users, ShoppingCart, Menu, X, ChevronDown, ChevronRight, ArrowUpRight, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, BookMarked, GraduationCap, Thermometer, Activity, Layers, Calculator, Droplets, Gift, BookOpen, HelpCircle, Mail, Info } from "lucide-react";
+import { Search, User, Users, ShoppingCart, Menu, X, ChevronDown, ChevronRight, ChevronLeft, ArrowUpRight, Package, LogOut, Heart, ShieldCheck, FlaskConical, Globe, Truck, BookMarked, GraduationCap, Thermometer, Activity, Layers, Calculator, Droplets, Gift, BookOpen, HelpCircle, Mail, Info } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency, CURRENCIES, type CurrencyCode } from "@/context/CurrencyContext";
 import { useProducts } from "@/context/ProductsContext";
@@ -119,6 +119,14 @@ export default function Header() {
   }, [products]);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // Phone/tablet menu: the first screen, or one of its sub-panels.
+  const [drawerPanel, setDrawerPanel] = useState<null | "shop" | "research" | "offers">(null);
+  const drawerScrollRef = useRef<HTMLDivElement>(null);
+  const openDrawerPanel = (panel: typeof drawerPanel) => {
+    setDrawerPanel(panel);
+    drawerScrollRef.current?.scrollTo({ top: 0 });
+  };
+  useEffect(() => { if (!mobileMenuOpen) setDrawerPanel(null); }, [mobileMenuOpen]);
   const [open, setOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(-1);
   const [currencyOpen, setCurrencyOpen] = useState(false);
@@ -646,7 +654,6 @@ export default function Header() {
                           }}
                           className="ilist__row"
                         >
-                          <span className="ilist__idx">{String(index + 1).padStart(2, "0")}</span>
                           <span className="ilist__text">
                             <span className="ilist__title">{item.label}</span>
                             <span className="ilist__desc">{item.desc}</span>
@@ -1152,110 +1159,128 @@ export default function Header() {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto" style={{ overscrollBehavior: "contain" }}>
-              <DrawerShop groups={peptideGroups} formatPrice={formatPrice} onNavigate={() => setMobileMenuOpen(false)} />
+            <div ref={drawerScrollRef} className="flex-1 overflow-y-auto" style={{ overscrollBehavior: "contain" }}>
+              {drawerPanel === null ? (
+                <div className="mnav">
+                  {/* Main destinations: one large, scannable list */}
+                  <ul className="mnav__primary">
+                    <li>
+                      <button type="button" className="mnav__item" onClick={() => openDrawerPanel("shop")}>
+                        Shop peptides <ChevronRight size={20} aria-hidden="true" />
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" className="mnav__item" onClick={() => openDrawerPanel("research")}>
+                        Research <ChevronRight size={20} aria-hidden="true" />
+                      </button>
+                    </li>
+                    <li>
+                      <Link href="/lab-reports" className="mnav__item" onClick={() => setMobileMenuOpen(false)}>Lab reports</Link>
+                    </li>
+                    <li>
+                      <Link href="/calculator" className="mnav__item" onClick={() => setMobileMenuOpen(false)}>Calculator</Link>
+                    </li>
+                    <li>
+                      <button type="button" className="mnav__item" onClick={() => openDrawerPanel("offers")}>
+                        Offers <ChevronRight size={20} aria-hidden="true" />
+                      </button>
+                    </li>
+                  </ul>
 
-              {/* Shop */}
-              <section className="drawer-sec">
-                <p className="nav-label drawer-sec__label">Shop</p>
-                <IndexList
-                  location={location}
-                  onNavigate={() => setMobileMenuOpen(false)}
-                  items={[
-                    { label: "All peptides", href: "/all-peptides", desc: "Every compound, by range" },
-                    ...(navItems.some(i => i.label === "NAD+") ? [{ label: "NAD+", href: "/product/nad-plus-500mg", desc: "Redox coenzyme, 500mg" }] : []),
-                    { label: "Bac water", href: "/bac-water", desc: "Bacteriostatic water for reconstitution" },
-                  ]}
-                />
-              </section>
-
-              {/* Research and data */}
-              <section className="drawer-sec">
-                <div className="nav-drop__head drawer-sec__head">
-                  <p className="nav-label">Research &amp; data</p>
-                  <Link href="/faq" onClick={() => setMobileMenuOpen(false)} className="nav-link">
-                    FAQ <ArrowUpRight size={13} />
+                  <Link href="/bundle-and-save" className="mnav__note" onClick={() => setMobileMenuOpen(false)}>
+                    <span className="mnav__note-label">Bundle &amp; save</span>
+                    Free 10ml BAC water with 3+ vials
+                    <ArrowUpRight size={15} aria-hidden="true" />
                   </Link>
-                </div>
-                <IndexList items={researchHubLinks} location={location} onNavigate={() => setMobileMenuOpen(false)} />
-              </section>
 
-              {/* Offers */}
-              <section className="drawer-sec">
-                <BundleSpec onNavigate={() => setMobileMenuOpen(false)} />
-                <IndexList
-                  location={location}
-                  onNavigate={() => setMobileMenuOpen(false)}
-                  items={offerNavItems.filter(item => item.href !== "/bundle-and-save").map(({ label, href, desc }) => ({ label, href, desc }))}
-                />
-              </section>
-
-              {/* Account and more */}
-              <section className="drawer-sec drawer-sec--last">
-                <p className="nav-label drawer-sec__label">Account &amp; help</p>
-                <ul className="drawer-list drawer-list--compact">
-                  {[
-                    ...(!customer ? [{ label: "Sign in", href: "/sign-in", icon: User }] : []),
-                    { label: wishlistCount > 0 ? `Wishlist (${wishlistCount})` : "Wishlist", href: "/wishlist", icon: Heart },
-                    { label: "About us", href: "/about", icon: Info },
-                    { label: "Contact us", href: "/contact", icon: Mail },
-                  ].map(item => {
-                    const Icon = item.icon;
-                    return (
+                  <ul className="mnav__secondary">
+                    {[
+                      { label: "About us", href: "/about" },
+                      { label: "Contact us", href: "/contact" },
+                      { label: "FAQ", href: "/faq" },
+                    ].map(item => (
                       <li key={item.href}>
-                        <Link href={item.href} className="drawer-row drawer-row--compact" onClick={() => setMobileMenuOpen(false)}>
-                          <Icon size={16} className="drawer-row__glyph" />
-                          <span className="drawer-row__title">{item.label}</span>
-                          <ChevronRight size={15} className="drawer-row__chev" />
-                        </Link>
+                        <Link href={item.href} onClick={() => setMobileMenuOpen(false)}>{item.label}</Link>
                       </li>
-                    );
-                  })}
-                </ul>
-                <label className="drawer-currency">
-                  <Globe size={16} className="drawer-row__glyph" />
-                  <span className="drawer-row__title">Currency</span>
-                  <select
-                    value={currency.code}
-                    onChange={(e) => setCurrency(e.target.value as CurrencyCode)}
-                  >
-                    {CURRENCIES.map((c) => (
-                      <option key={c.code} value={c.code}>{c.code} · {c.label}</option>
                     ))}
-                  </select>
-                </label>
-              </section>
+                  </ul>
 
-              {customer && (
-                <div style={{ margin: "4px 12px 20px", padding: "10px", borderRadius: 14, background: "#F0F5FF", border: "1px solid rgba(78,104,194,0.15)" }}>
-                  <Link
-                    href="/account"
-                    className="flex items-center rounded-xl px-3"
-                    style={{ minHeight: 46, color: "#4E68C2", textDecoration: "none", fontSize: 14, fontWeight: 700 }}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <User size={17} style={{ marginRight: 10 }} />
-                    My Account
-                  </Link>
-                  {isApprovedAffiliate && (
-                    <Link
-                      href="/affiliate"
-                      className="flex items-center rounded-xl px-3"
-                      style={{ minHeight: 46, color: "#4E68C2", textDecoration: "none", fontSize: 14, fontWeight: 700 }}
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      <Users size={17} style={{ marginRight: 10 }} />
-                      Partner Dashboard
+                  <div className="mnav__account">
+                    {customer ? (
+                      <>
+                        <Link href="/account" onClick={() => setMobileMenuOpen(false)}><User size={16} /> My account</Link>
+                        {isApprovedAffiliate && (
+                          <Link href="/affiliate" onClick={() => setMobileMenuOpen(false)}><Users size={16} /> Partner dashboard</Link>
+                        )}
+                      </>
+                    ) : (
+                      <Link href="/sign-in" onClick={() => setMobileMenuOpen(false)}><User size={16} /> Sign in</Link>
+                    )}
+                    <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)}>
+                      <Heart size={16} /> Wishlist{wishlistCount > 0 ? ` (${wishlistCount})` : ""}
                     </Link>
-                  )}
-                  <button
-                    onClick={() => { setMobileMenuOpen(false); void handleSignOut(); }}
-                    className="flex items-center w-full rounded-xl px-3"
-                    style={{ minHeight: 46, color: "#DC2626", background: "transparent", border: "none", cursor: "pointer", fontSize: 14, fontWeight: 700, textAlign: "left" }}
-                  >
-                    <LogOut size={17} style={{ marginRight: 10 }} />
-                    Sign out
+                    <label className="mnav__currency">
+                      <Globe size={16} /> Currency
+                      <select value={currency.code} onChange={(e) => setCurrency(e.target.value as CurrencyCode)}>
+                        {CURRENCIES.map((c) => (
+                          <option key={c.code} value={c.code}>{c.code}</option>
+                        ))}
+                      </select>
+                    </label>
+                    {customer && (
+                      <button type="button" className="mnav__signout" onClick={() => { setMobileMenuOpen(false); void handleSignOut(); }}>
+                        <LogOut size={16} /> Sign out
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="mnav-panel">
+                  <button type="button" className="mnav-panel__back" onClick={() => openDrawerPanel(null)}>
+                    <ChevronLeft size={18} aria-hidden="true" /> Menu
                   </button>
+                  <h2 className="mnav-panel__title">
+                    {drawerPanel === "shop" ? "Shop peptides" : drawerPanel === "research" ? "Research" : "Offers"}
+                  </h2>
+
+                  {drawerPanel === "shop" && (
+                    <DrawerShop groups={peptideGroups} formatPrice={formatPrice} onNavigate={() => setMobileMenuOpen(false)} />
+                  )}
+
+                  {drawerPanel === "research" && (
+                    <ul className="mnav-list">
+                      {[...researchHubLinks, { label: "FAQ", href: "/faq", desc: "Purity, storage, shipping and payment" }].map(link => (
+                        <li key={link.href}>
+                          <Link href={link.href} className="mnav-row" onClick={() => setMobileMenuOpen(false)}>
+                            <span>
+                              <span className="mnav-row__title">{link.label}</span>
+                              <span className="mnav-row__desc">{link.desc}</span>
+                            </span>
+                            <ChevronRight size={16} aria-hidden="true" />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {drawerPanel === "offers" && (
+                    <>
+                      <BundleSpec onNavigate={() => setMobileMenuOpen(false)} />
+                      <ul className="mnav-list mnav-list--after">
+                        {offerNavItems.filter(item => item.href !== "/bundle-and-save").map(item => (
+                          <li key={item.href}>
+                            <Link href={item.href} className="mnav-row" onClick={() => setMobileMenuOpen(false)}>
+                              <span>
+                                <span className="mnav-row__title">{item.label}</span>
+                                <span className="mnav-row__desc">{item.desc}</span>
+                              </span>
+                              <ChevronRight size={16} aria-hidden="true" />
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
                 </div>
               )}
             </div>

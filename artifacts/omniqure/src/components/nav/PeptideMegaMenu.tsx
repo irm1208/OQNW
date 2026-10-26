@@ -7,9 +7,9 @@ import { rangeColourForCategory } from "@/lib/rangeColour";
 import { STUDIO_BG } from "@/lib/studioImage";
 
 /*
- * Navigation parts in a clinical register: the look of the vial label and the
- * specification sheet. Hairline rules, square corners, numbered index rows in
- * IBM Plex Mono, Matte Navy only as a thin top rule, and range colours only as
+ * Navigation parts in the register of the vial label and specification sheet:
+ * white surfaces, hairline rules, square corners, IBM Plex Mono only for data
+ * (strengths, prices, tiers). Matte Navy as a thin top rule; range colours as
  * fine markers.
  */
 
@@ -32,8 +32,6 @@ function strengths(group: GroupedProduct): string {
   const list = [...new Set(group.variants.map((v) => parseName(v.name).strength).filter(Boolean))];
   return list.slice(0, 4).join(" · ");
 }
-
-const idx = (i: number) => String(i + 1).padStart(2, "0");
 
 /** Ranges ordered by size, led by the curated "most ordered" list. */
 export function useRanges(groups: GroupedProduct[]): Range[] {
@@ -71,16 +69,16 @@ function ProductRow({ group, formatPrice, onNavigate }: {
         {/* Rows only mount while a menu is open, so load at once. */}
         <img src={group.image || group.cardImage} alt="" decoding="async" />
       </span>
+      {/* Name on its own line so it isn't clipped; strengths and price beneath */}
       <span className="prow__text">
         <span className="prow__name">{group.baseName}</span>
-        <span className="prow__meta">{strengths(group) || group.category}</span>
-      </span>
-      {price != null && (
-        <span className="prow__price">
-          {group.variants.length > 1 && <span className="prow__from">from</span>}
-          {formatPrice(price)}
+        <span className="prow__line">
+          <span className="prow__meta">{strengths(group) || group.category}</span>
+          {price != null && (
+            <span className="prow__price">{group.variants.length > 1 ? "from " : ""}{formatPrice(price)}</span>
+          )}
         </span>
-      )}
+      </span>
     </Link>
   );
 }
@@ -106,7 +104,7 @@ export function BundleSpec({ onNavigate }: { onNavigate: () => void }) {
   );
 }
 
-/** Numbered index list: 01 Title / description, separated by hairlines. */
+/** Title-and-description link list, separated by hairlines. */
 export function IndexList({ items, onNavigate, location, columns = 1 }: {
   items: { label: string; href: string; desc: string }[];
   onNavigate: () => void;
@@ -115,12 +113,11 @@ export function IndexList({ items, onNavigate, location, columns = 1 }: {
 }) {
   return (
     <ol className={`ilist${columns === 2 ? " ilist--2" : ""}`}>
-      {items.map((item, i) => {
+      {items.map((item) => {
         const active = location === item.href || location.startsWith(item.href + "/");
         return (
           <li key={item.href}>
             <Link href={item.href} onClick={onNavigate} className="ilist__row" data-active={active} aria-current={active ? "page" : undefined}>
-              <span className="ilist__idx">{idx(i)}</span>
               <span className="ilist__text">
                 <span className="ilist__title">{item.label}</span>
                 <span className="ilist__desc">{item.desc}</span>
@@ -147,7 +144,7 @@ export default function PeptideMegaMenu({ groups, formatPrice, onNavigate, onMou
   const ranges = useRanges(groups);
   const [active, setActive] = useState(POPULAR);
   const current = ranges.find((r) => r.name === active) ?? ranges[0];
-  const shown = current?.groups.slice(0, 12) ?? [];
+  const shown = current?.groups.slice(0, 8) ?? [];
   const rangeHref = (name: string) => name === POPULAR ? "/popular-peptides" : `/all-peptides?category=${encodeURIComponent(name)}`;
 
   return (
@@ -156,7 +153,7 @@ export default function PeptideMegaMenu({ groups, formatPrice, onNavigate, onMou
         <nav className="mega__ranges" aria-label="Product ranges">
           <p className="nav-label">Ranges</p>
           <ol>
-            {ranges.map((r, i) => (
+            {ranges.slice(0, 9).map((r) => (
               <li key={r.name}>
                 <Link
                   href={rangeHref(r.name)}
@@ -167,20 +164,24 @@ export default function PeptideMegaMenu({ groups, formatPrice, onNavigate, onMou
                   data-active={r.name === current?.name}
                   style={{ "--row-range": r.colour } as React.CSSProperties}
                 >
-                  <span className="mrange__idx">{idx(i)}</span>
                   <span className="mrange__name">{r.name}</span>
                   <span className="mrange__count">{r.groups.length}</span>
                 </Link>
               </li>
             ))}
           </ol>
+          {ranges.length > 9 && (
+            <Link href="/all-peptides" onClick={onNavigate} className="nav-link mega__more">
+              All {ranges.length - 1} ranges <ArrowRight size={13} aria-hidden="true" />
+            </Link>
+          )}
         </nav>
 
         <div className="mega__products">
           <div className="mega__head">
             <p className="nav-label">
               <span className="mega__marker" style={{ background: current?.colour }} />
-              {current?.name} · {current?.groups.length} compounds
+              {current?.name}
             </p>
             <Link href={rangeHref(current?.name ?? "")} onClick={onNavigate} className="nav-link">
               View range <ArrowRight size={13} aria-hidden="true" />
@@ -207,28 +208,33 @@ export default function PeptideMegaMenu({ groups, formatPrice, onNavigate, onMou
   );
 }
 
-/** Phone and tablet drawer: most-ordered products as rows, then the range index. */
+/** Phone and tablet "Shop peptides" panel: catalogue link, four most-ordered
+    products, then the ranges. */
 export function DrawerShop({ groups, formatPrice, onNavigate }: {
   groups: GroupedProduct[];
   formatPrice: (n: number) => string;
   onNavigate: () => void;
 }) {
   const ranges = useRanges(groups);
-  const popular = ranges[0]?.groups.slice(0, 5) ?? [];
+  const popular = ranges[0]?.groups.slice(0, 4) ?? [];
   return (
     <div className="dshop">
-      <div className="dshop__head">
-        <p className="nav-label">Most ordered</p>
-        <Link href="/all-peptides" onClick={onNavigate} className="nav-link">
-          Full catalogue <ArrowRight size={13} aria-hidden="true" />
-        </Link>
-      </div>
+      <Link href="/all-peptides" onClick={onNavigate} className="mnav-row mnav-row--lead">
+        <span>
+          <span className="mnav-row__title">All peptides</span>
+          <span className="mnav-row__desc">{groups.length} compounds, independently tested</span>
+        </span>
+        <ArrowRight size={16} aria-hidden="true" />
+      </Link>
+
+      <p className="nav-label dshop__label">Most ordered</p>
       <div className="dshop__rows">
         {popular.map((g) => <ProductRow key={g.baseName} group={g} formatPrice={formatPrice} onNavigate={onNavigate} />)}
       </div>
-      <p className="nav-label dshop__label">Ranges</p>
-      <ol className="dshop__ranges">
-        {ranges.slice(1).map((r, i) => (
+
+      <p className="nav-label dshop__label">By range</p>
+      <ul className="dshop__ranges">
+        {ranges.slice(1).map((r) => (
           <li key={r.name}>
             <Link
               href={`/all-peptides?category=${encodeURIComponent(r.name)}`}
@@ -236,13 +242,12 @@ export function DrawerShop({ groups, formatPrice, onNavigate }: {
               className="mrange"
               style={{ "--row-range": r.colour } as React.CSSProperties}
             >
-              <span className="mrange__idx">{idx(i)}</span>
               <span className="mrange__name">{r.name}</span>
               <span className="mrange__count">{r.groups.length}</span>
             </Link>
           </li>
         ))}
-      </ol>
+      </ul>
     </div>
   );
 }
