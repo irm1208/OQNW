@@ -11,7 +11,7 @@ import { popularProductSlugs } from "@/data/popularPeptides";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useAffiliateMe } from "@/hooks/useAffiliate";
-import PeptideMegaMenu, { DrawerShop, IndexList, BundleSpec, BUNDLE_TIERS } from "@/components/nav/PeptideMegaMenu";
+import PeptideMegaMenu, { DrawerShop, DrawerPopular, IndexList, BundleSpec, BUNDLE_TIERS } from "@/components/nav/PeptideMegaMenu";
 
 const POPULAR_SEARCHES = [
   "BPC-157", "TB-500", "Epithalon", "Ipamorelin",
@@ -1174,6 +1174,8 @@ export default function Header() {
                     </li>
                   </ul>
 
+                  <DrawerPopular groups={peptideGroups} formatPrice={formatPrice} onNavigate={() => setMobileMenuOpen(false)} />
+
                   <Link href="/bundle-and-save" className="mnav__note" onClick={() => setMobileMenuOpen(false)}>
                     <span className="mnav__note-label">Bundle &amp; save</span>
                     Free 10ml BAC water with 3+ vials
@@ -1192,28 +1194,44 @@ export default function Header() {
                     ))}
                   </ul>
 
+                  {/* Account: a navy panel so sign-in stands out */}
                   <div className="mnav__account">
                     {customer ? (
                       <>
-                        <Link href="/account" onClick={() => setMobileMenuOpen(false)}><User size={16} /> My account</Link>
+                        <p className="mnav__account-hello">Signed in{customer.firstName ? ` as ${customer.firstName}` : ""}</p>
+                        <Link href="/account" className="mnav__account-cta" onClick={() => setMobileMenuOpen(false)}>
+                          <User size={16} /> My account
+                        </Link>
                         {isApprovedAffiliate && (
-                          <Link href="/affiliate" onClick={() => setMobileMenuOpen(false)}><Users size={16} /> Partner dashboard</Link>
+                          <Link href="/affiliate" className="mnav__account-link" onClick={() => setMobileMenuOpen(false)}>
+                            <Users size={16} /> Partner dashboard
+                          </Link>
                         )}
                       </>
                     ) : (
-                      <Link href="/sign-in" onClick={() => setMobileMenuOpen(false)}><User size={16} /> Sign in</Link>
+                      <>
+                        <p className="mnav__account-hello">Track orders, reorder and earn rewards.</p>
+                        <Link href="/sign-in" className="mnav__account-cta" onClick={() => setMobileMenuOpen(false)}>
+                          <User size={16} /> Sign in
+                        </Link>
+                        <Link href="/sign-up" className="mnav__account-link mnav__account-link--center" onClick={() => setMobileMenuOpen(false)}>
+                          New here? Create an account
+                        </Link>
+                      </>
                     )}
-                    <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)}>
-                      <Heart size={16} /> Wishlist{wishlistCount > 0 ? ` (${wishlistCount})` : ""}
-                    </Link>
-                    <label className="mnav__currency">
-                      <Globe size={16} /> Currency
-                      <select value={currency.code} onChange={(e) => setCurrency(e.target.value as CurrencyCode)}>
-                        {CURRENCIES.map((c) => (
-                          <option key={c.code} value={c.code}>{c.code}</option>
-                        ))}
-                      </select>
-                    </label>
+                    <div className="mnav__account-row">
+                      <Link href="/wishlist" className="mnav__account-link" onClick={() => setMobileMenuOpen(false)}>
+                        <Heart size={16} /> Wishlist{wishlistCount > 0 ? ` (${wishlistCount})` : ""}
+                      </Link>
+                      <label className="mnav__currency">
+                        <Globe size={16} /> <span className="sr-only">Currency</span>
+                        <select value={currency.code} onChange={(e) => setCurrency(e.target.value as CurrencyCode)} aria-label="Currency">
+                          {CURRENCIES.map((c) => (
+                            <option key={c.code} value={c.code}>{c.code}</option>
+                          ))}
+                        </select>
+                      </label>
+                    </div>
                     {customer && (
                       <button type="button" className="mnav__signout" onClick={() => { setMobileMenuOpen(false); void handleSignOut(); }}>
                         <LogOut size={16} /> Sign out

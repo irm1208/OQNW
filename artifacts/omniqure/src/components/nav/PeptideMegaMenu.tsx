@@ -209,6 +209,27 @@ export default function PeptideMegaMenu({ groups, formatPrice, onNavigate, onMou
   );
 }
 
+/** Phone menu first screen: the most-ordered peptides as rows. */
+export function DrawerPopular({ groups, formatPrice, onNavigate }: {
+  groups: GroupedProduct[];
+  formatPrice: (n: number) => string;
+  onNavigate: () => void;
+}) {
+  const ranges = useRanges(groups);
+  const popular = ranges[0]?.groups.slice(0, 5) ?? [];
+  return (
+    <div className="dpop">
+      <div className="dpop__head">
+        <p className="nav-label">Popular peptides</p>
+        <Link href="/all-peptides" onClick={onNavigate} className="nav-link">
+          All {groups.length} <ArrowRight size={13} aria-hidden="true" />
+        </Link>
+      </div>
+      {popular.map((g) => <ProductRow key={g.baseName} group={g} formatPrice={formatPrice} onNavigate={onNavigate} />)}
+    </div>
+  );
+}
+
 /** Phone and tablet "Shop peptides" panel: catalogue link, four most-ordered
     products, then the ranges. */
 export function DrawerShop({ groups, formatPrice, onNavigate }: {
