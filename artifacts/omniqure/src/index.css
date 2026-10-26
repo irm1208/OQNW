@@ -2881,3 +2881,46 @@ body.has-cart-preview-bar main {
   .header-brand .header-search-control:focus-within input::placeholder { color: var(--oq-slate); }
   .header-brand .header-search-control:focus-within .header-search-submit { color: var(--oq-slate) !important; }
 }
+
+/* Cart: Cornflower pill (the brand button colour) with a white count badge */
+.header-brand .header-cart,
+.header-brand .header-cart.header-icon-btn {
+  background: var(--oq-cornflower) !important;
+  border-color: var(--oq-cornflower) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+.header-brand .header-cart:hover,
+.header-brand .header-cart.header-icon-btn:hover { background: #5C76CF !important; border-color: #5C76CF !important; }
+.header-brand .header-cart .header-mobile-label { color: #fff !important; font-weight: 600 !important; }
+.header-brand .header-cart span.absolute {
+  background: #fff !important;
+  color: var(--oq-matte-navy) !important;
+  box-shadow: 0 0 0 2px var(--oq-cornflower);
+}
+
+/* Phone/tablet: a real Search button at the right of the field */
+@media (max-width: 1023px) {
+  .header-brand .header-cart .header-mobile-label { display: inline !important; }
+  .header-brand .header-search-control {
+    flex-direction: row !important;
+    padding: 0 4px 0 16px !important;
+  }
+  .header-brand .header-search-control .header-search-submit {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    height: 38px !important;
+    padding: 0 16px !important;
+    border-radius: 999px;
+    background: #fff !important;
+    color: var(--oq-matte-navy) !important;
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  .header-brand .header-search-control .header-search-submit-label { display: inline !important; }
+  .header-brand .header-search-control:focus-within .header-search-submit {
+    background: var(--oq-cornflower) !important;
+    color: #fff !important;
+  }
+}

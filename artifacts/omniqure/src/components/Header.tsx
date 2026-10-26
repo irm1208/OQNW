@@ -368,6 +368,9 @@ export default function Header() {
             navigate(`/all-peptides?search=${encodeURIComponent(searchQuery.trim())}`);
             setOpen(false);
             inputRef.current?.blur();
+          } else {
+            // Empty field: put the cursor in it rather than doing nothing.
+            inputRef.current?.focus();
           }
         }}
       >
