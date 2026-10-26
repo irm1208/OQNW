@@ -548,64 +548,36 @@ export default function Header() {
                     </button>
 
                     {researchOpen && (
-                      <div
-                        onMouseEnter={openResearch}
-                        onMouseLeave={closeResearch}
-                        style={{
-                          position: "absolute", top: "100%", left: 0,
-                          backgroundColor: "#fff",
-                          border: "1px solid #D3D8E2",
-                          borderRadius: "8px",
-                          boxShadow: "0 18px 40px -20px rgba(29,41,72,0.35)",
-                          zIndex: 400,
-                          minWidth: "380px",
-                          padding: "16px",
-                          marginTop: "2px",
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", paddingBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
-                          <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "rgba(78,104,194,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                            <GraduationCap size={15} style={{ color: "#4E68C2" }} />
-                          </div>
-                          <div>
-                            <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C", margin: 0 }}>Research & Education</p>
-                            <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>Tools, data & learning resources</p>
-                          </div>
+                      <div className="nav-drop nav-drop--research" onMouseEnter={openResearch} onMouseLeave={closeResearch}>
+                        <div className="nav-drop__band">
+                          <span className="drawer-research__badge"><GraduationCap size={16} /></span>
+                          <span>
+                            <span className="drawer-research__title">Research hub</span>
+                            <span className="drawer-research__sub">Data, tools and guides for your work</span>
+                          </span>
                         </div>
-
-                        <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-                          {researchLinks.map(link => {
+                        <ul className="nav-drop__grid">
+                          {researchHubLinks.map(link => {
                             const Icon = link.icon;
-                            const isActive = location === link.href;
+                            const isActive = location === link.href || location.startsWith(link.href + "/");
                             return (
-                              <Link
-                                key={link.href}
-                                href={link.href}
-                                onClick={() => setResearchOpen(false)}
-                                style={{
-                                  display: "flex", alignItems: "center", gap: "12px",
-                                  padding: "10px 10px", borderRadius: "10px",
-                                  textDecoration: "none",
-                                  backgroundColor: isActive ? "rgba(78,104,194,0.08)" : "transparent",
-                                  transition: "background-color 0.12s",
-                                }}
-                                onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC"; }}
-                                onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
-                              >
-                                <div style={{
-                                  width: "34px", height: "34px", borderRadius: "8px", flexShrink: 0,
-                                  backgroundColor: isActive ? "rgba(78,104,194,0.08)" : "#F1F5F9",
-                                  display: "flex", alignItems: "center", justifyContent: "center",
-                                }}>
-                                  <Icon size={16} style={{ color: isActive ? "#4E68C2" : "#64748B" }} />
-                                </div>
-                                <div style={{ minWidth: 0 }}>
-                                  <p style={{ fontSize: "13px", fontWeight: 600, color: isActive ? "#4E68C2" : "#1E293B", margin: "0 0 1px" }}>{link.label}</p>
-                                  <p style={{ fontSize: "11.5px", color: "#94A3B8", margin: 0 }}>{link.desc}</p>
-                                </div>
-                              </Link>
+                              <li key={link.href}>
+                                <Link href={link.href} className="drawer-tile" data-active={isActive} aria-current={isActive ? "page" : undefined} onClick={() => setResearchOpen(false)}>
+                                  <Icon size={18} className="drawer-tile__icon" />
+                                  <span className="drawer-tile__title">{link.label}</span>
+                                  <span className="drawer-tile__desc">{link.desc}</span>
+                                </Link>
+                              </li>
                             );
                           })}
+                        </ul>
+                        <div className="nav-drop__foot">
+                          <Link href="/faq" onClick={() => setResearchOpen(false)} className="mega__all">
+                            <HelpCircle size={14} /> Questions? Read the FAQ
+                          </Link>
+                          <Link href="/protocols" onClick={() => setResearchOpen(false)} className="mega__all">
+                            All protocols <ArrowUpRight size={14} />
+                          </Link>
                         </div>
                       </div>
                     )}
@@ -665,34 +637,27 @@ export default function Header() {
             {offersOpen && (
               <div
                 id="header-incentive-offers-menu"
+                className="nav-drop nav-drop--offers"
                 onMouseEnter={openOffers}
                 onMouseLeave={closeOffers}
-                style={{
-                  position: "absolute", top: "100%", left: 0,
-                  backgroundColor: "#fff",
-                  border: "1px solid #D3D8E2",
-                  borderRadius: "8px",
-                  boxShadow: "0 18px 40px -20px rgba(29,41,72,0.35)",
-                  zIndex: 400,
-                  minWidth: "310px",
-                  padding: "16px",
-                  marginTop: "2px",
-                }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", paddingBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
-                  <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "rgba(78,104,194,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <ArrowUpRight size={15} style={{ color: "#4E68C2" }} />
-                  </div>
-                  <div>
-                    <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C", margin: 0 }}>Offers &amp; Rewards</p>
-                    <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>Ways to save, share & earn</p>
-                  </div>
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-                  {offerNavItems.map((item, index) => {
-                    const Icon = item.icon;
-                    const active = location === item.href || location.startsWith(item.href + "/");
+                {offerNavItems.map((item, index) => {
+                  const Icon = item.icon;
+                  const active = location === item.href || location.startsWith(item.href + "/");
+                  const keyNav = (event: React.KeyboardEvent<HTMLAnchorElement>) => {
+                    if (event.key === "Escape") {
+                      event.preventDefault();
+                      setOffersOpen(false);
+                      offersButtonRef.current?.focus();
+                    } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                      event.preventDefault();
+                      const direction = event.key === "ArrowDown" ? 1 : -1;
+                      const nextIndex = (index + direction + offerNavItems.length) % offerNavItems.length;
+                      offersLinkRefs.current[nextIndex]?.focus();
+                    }
+                  };
+                  // The bundle offer leads as a navy card; the rest are rows.
+                  if (item.href === "/bundle-and-save") {
                     return (
                       <Link
                         key={item.href}
@@ -700,43 +665,39 @@ export default function Header() {
                         href={item.href}
                         aria-current={active ? "page" : undefined}
                         onClick={() => setOffersOpen(false)}
-                        onKeyDown={event => {
-                          if (event.key === "Escape") {
-                            event.preventDefault();
-                            setOffersOpen(false);
-                            offersButtonRef.current?.focus();
-                          } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-                            event.preventDefault();
-                            const direction = event.key === "ArrowDown" ? 1 : -1;
-                            const nextIndex = (index + direction + offerNavItems.length) % offerNavItems.length;
-                            offersLinkRefs.current[nextIndex]?.focus();
-                          }
-                        }}
-                        style={{
-                          display: "flex", alignItems: "center", gap: "12px",
-                          padding: "10px", borderRadius: "10px",
-                          textDecoration: "none",
-                          backgroundColor: active ? "rgba(78,104,194,0.08)" : "transparent",
-                          transition: "background-color 0.12s",
-                        }}
-                        onMouseEnter={event => { if (!active) event.currentTarget.style.backgroundColor = "#F8FAFC"; }}
-                        onMouseLeave={event => { if (!active) event.currentTarget.style.backgroundColor = "transparent"; }}
+                        onKeyDown={keyNav}
+                        className="drawer-offer nav-drop__offer"
                       >
-                        <div style={{
-                          width: "34px", height: "34px", borderRadius: "8px", flexShrink: 0,
-                          backgroundColor: active ? "rgba(78,104,194,0.08)" : "#F1F5F9",
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                        }}>
-                          <Icon size={16} style={{ color: active ? "#4E68C2" : "#64748B" }} />
-                        </div>
-                        <div style={{ minWidth: 0 }}>
-                          <p style={{ fontSize: "13px", fontWeight: 600, color: active ? "#4E68C2" : "#1E293B", margin: "0 0 1px" }}>{item.label}</p>
-                          <p style={{ fontSize: "11.5px", color: "#94A3B8", margin: 0 }}>{item.desc}</p>
-                        </div>
+                        <span className="drawer-offer__stripe" />
+                        <span className="drawer-offer__body">
+                          <span className="drawer-offer__eyebrow">Bundle &amp; save</span>
+                          <span className="drawer-offer__title">Free BAC water with 3+ vials</span>
+                          <span className="drawer-offer__text">1 peptide free at 5 vials, 2 free at 10. Applied at checkout.</span>
+                        </span>
+                        <ArrowUpRight size={18} className="drawer-offer__arrow" />
                       </Link>
                     );
-                  })}
-                </div>
+                  }
+                  return (
+                    <Link
+                      key={item.href}
+                      ref={element => { offersLinkRefs.current[index] = element; }}
+                      href={item.href}
+                      aria-current={active ? "page" : undefined}
+                      onClick={() => setOffersOpen(false)}
+                      onKeyDown={keyNav}
+                      className="drawer-row"
+                      data-active={active}
+                    >
+                      <span className="drawer-row__icon"><Icon size={17} /></span>
+                      <span className="drawer-row__text">
+                        <span className="drawer-row__title">{item.label}</span>
+                        <span className="drawer-row__desc">{item.desc}</span>
+                      </span>
+                      <ChevronRight size={16} className="drawer-row__chev" />
+                    </Link>
+                  );
+                })}
               </div>
             )}
           </div>

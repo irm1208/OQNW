@@ -1623,7 +1623,10 @@ body.has-cart-preview-bar main {
     font-size: 13.5px !important;
     padding: 6px 13px !important;
   }
-  .header-desktop-nav svg { display: none; }
+  /* Hide the chevrons on the top-level links only, not icons inside dropdowns. */
+  .header-desktop-nav > div > a > svg,
+  .header-desktop-nav > div > button > svg,
+  .header-desktop-nav > a > svg { display: none; }
   .header-action-group { display: contents !important; }
   .header-currency-wrap { order: 6; margin-left: auto; }
   .header-signin, .header-user-wrap { order: 7; }
@@ -2677,3 +2680,60 @@ body.has-cart-preview-bar main {
   font-size: 13px;
   color: var(--oq-graphite);
 }
+
+/* ── NAVIGATION: DESKTOP RESEARCH AND OFFERS DROPDOWNS ────────────────────────
+   Same parts as the phone menu (navy band, tiles, rows, navy offer card), as
+   a card centred under its trigger so it stays on screen at 1024px. */
+.nav-drop {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 400;
+  margin-top: 4px;
+  overflow: hidden;
+  border: 1px solid var(--oq-mist);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 24px 40px -24px rgba(29, 41, 72, 0.4);
+  transform: translateX(-50%);
+  animation: nav-drop-in 0.14s ease-out;
+}
+@keyframes nav-drop-in { from { opacity: 0; translate: 0 -4px; } to { opacity: 1; translate: 0 0; } }
+@media (prefers-reduced-motion: reduce) { .nav-drop { animation: none; } }
+
+.nav-drop--research { width: 640px; background: #F7F8FA; }
+.nav-drop__band {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 4px solid var(--oq-dusty-blue);
+  background: var(--oq-matte-navy);
+  color: #fff;
+}
+.nav-drop__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 16px;
+  list-style: none;
+}
+.nav-drop__grid .drawer-tile { min-height: 104px; }
+.nav-drop__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 16px 14px;
+}
+.nav-drop__foot .mega__all { margin: 0; }
+
+.nav-drop--offers {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 380px;
+  padding: 12px;
+}
+.nav-drop__offer { margin-bottom: 4px; }
+.nav-drop--offers .drawer-row { min-height: 60px; }
