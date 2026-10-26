@@ -2944,3 +2944,31 @@ body.has-cart-preview-bar main {
   .header-brand .header-inner[data-search-open="false"] .header-search { display: none !important; }
   .header-brand .header-inner[data-search-open="false"] { padding-bottom: 15px !important; }
 }
+
+/* Header hover on navy: keep the band, lighten the outline only */
+.header-brand .header-action-group .header-signin:hover,
+.header-brand .header-action-group .header-utility-button:hover,
+.header-brand .header-action-group .header-currency-btn:hover,
+.header-brand .header-action-group .header-icon-btn:not(.header-cart):hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  color: #fff !important;
+}
+
+/* Bundle & save: Matte Navy panel with the range pin stripe */
+.bspec {
+  overflow: hidden;
+  padding: 0 18px 16px;
+  background: var(--oq-matte-navy);
+  color: #fff;
+}
+.bspec > .pinstripe { margin: 0 -18px 14px; }
+.bspec .nav-label { color: var(--oq-dusty-blue); }
+.bspec .bspec__table { border-top: 1px solid rgba(255, 255, 255, 0.35); }
+.bspec .bspec__row { border-bottom-color: rgba(255, 255, 255, 0.14); }
+.bspec .bspec__row dt { color: var(--oq-dusty-blue); }
+.bspec .bspec__row dd { color: #fff; }
+.bspec .bspec__note { color: #C6CDDB; }
+.bspec .nav-link { color: #fff; }
+.nav-drop__tiers { margin: 14px -22px -20px; }
+.mnav-panel .bspec { margin-top: 18px; }

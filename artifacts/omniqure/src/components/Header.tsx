@@ -11,7 +11,7 @@ import { popularProductSlugs } from "@/data/popularPeptides";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useAffiliateMe } from "@/hooks/useAffiliate";
-import PeptideMegaMenu, { DrawerShop, DrawerPopular, IndexList, BundleSpec, BUNDLE_TIERS } from "@/components/nav/PeptideMegaMenu";
+import PeptideMegaMenu, { DrawerShop, DrawerPopular, IndexList, BundleSpec } from "@/components/nav/PeptideMegaMenu";
 
 const POPULAR_SEARCHES = [
   "BPC-157", "TB-500", "Epithalon", "Ipamorelin",
@@ -671,14 +671,9 @@ export default function Header() {
                     );
                   })}
                 </ol>
-                <dl className="bspec__table nav-drop__tiers">
-                  {BUNDLE_TIERS.map(t => (
-                    <div key={t.qty} className="bspec__row">
-                      <dt>{t.qty}</dt>
-                      <dd>{t.reward}</dd>
-                    </div>
-                  ))}
-                </dl>
+                <div className="nav-drop__tiers">
+                  <BundleSpec onNavigate={() => setOffersOpen(false)} />
+                </div>
               </div>
             )}
           </div>
@@ -1064,34 +1059,6 @@ export default function Header() {
                 <span className="hidden sm:inline">{loadingAuth ? "" : "Sign In"}</span>
               </Link>
             )}
-
-            {/* Wishlist */}
-            <Link
-              href="/wishlist"
-              aria-label="Wishlist"
-              className="header-wishlist header-icon-btn flex flex-col items-center sm:flex-row sm:gap-1.5 text-sm font-bold transition-colors relative"
-              style={{ color: "var(--graphite)", textDecoration: "none", height: "36px", padding: "0 14px", borderRadius: "999px", border: "1px solid var(--hairline)", fontWeight: 500, fontSize: "13px", backgroundColor: "transparent" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--ink)"; (e.currentTarget as HTMLElement).style.backgroundColor = "var(--ice)"; prefetchRoute("/wishlist"); }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--graphite)"; (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
-            >
-              <span className="relative">
-                <Heart size={16} />
-                {wishlistCount > 0 && (
-                  <span
-                    className="absolute flex items-center justify-center font-bold text-white rounded-full"
-                    style={{
-                      top: "-7px", right: "-8px",
-                      minWidth: "16px", height: "16px",
-                      backgroundColor: "var(--cobalt)", fontSize: "9px", padding: "0 3px", lineHeight: 1,
-                    }}
-                  >
-                    {wishlistCount > 99 ? "99+" : wishlistCount}
-                  </span>
-                )}
-              </span>
-              <span className="header-mobile-label sm:hidden" style={{ fontSize: "9px", fontWeight: 500, lineHeight: 1, color: "var(--graphite)" }}>Wishlist</span>
-              <span className="header-wishlist-label hidden sm:inline">Wishlist</span>
-            </Link>
 
             {/* Cart */}
             <Link

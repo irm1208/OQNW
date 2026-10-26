@@ -116,10 +116,11 @@ function QuickAdd({ group }: { group: GroupedProduct }) {
   );
 }
 
-/** Bundle tiers as a specification table. */
+/** Bundle tiers as a specification table on a Matte Navy panel with the range pin stripe. */
 export function BundleSpec({ onNavigate }: { onNavigate: () => void }) {
   return (
     <div className="bspec">
+      <div className="pinstripe" aria-hidden="true" />
       <p className="nav-label">Bundle &amp; save</p>
       <dl className="bspec__table">
         {BUNDLE_TIERS.map((t) => (
