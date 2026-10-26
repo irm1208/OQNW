@@ -11,6 +11,7 @@ import { popularProductSlugs } from "@/data/popularPeptides";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useAffiliateMe } from "@/hooks/useAffiliate";
+import PeptideMegaMenu, { DrawerShop } from "@/components/nav/PeptideMegaMenu";
 
 const POPULAR_SEARCHES = [
   "BPC-157", "TB-500", "Epithalon", "Ipamorelin",
@@ -410,7 +411,7 @@ export default function Header() {
                   >
                     <Link
                       href={item.href}
-                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#E8F2DE]/50 hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
+                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#EEF1F8] hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
                       style={{
                         borderRadius: "6px", backgroundColor: active ? "rgba(229,239,255,0.6)" : undefined,
                         color: active ? "var(--ink)" : undefined,
@@ -422,71 +423,6 @@ export default function Header() {
                       <ChevronDown size={13} style={{ opacity: 0.5, transition: "transform 0.2s", transform: allPeptidesOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
                     </Link>
 
-                    {/* Dropdown mega-menu */}
-                    {allPeptidesOpen && (
-                      <div
-                        onMouseEnter={openAllPeptides}
-                        onMouseLeave={closeAllPeptides}
-                        style={{
-                          position: "absolute", top: "100%", left: 0,
-                          backgroundColor: "#fff",
-                          border: "1.5px solid #D3D8E2",
-                          borderRadius: "16px",
-                          boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
-                          zIndex: 400,
-                          minWidth: "520px",
-                          padding: "16px",
-                          marginTop: "2px",
-                        }}
-                      >
-                        {/* Header row */}
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px", paddingBottom: "8px", borderBottom: "1px solid #F1F5F9" }}>
-                          <p style={{ fontSize: "11px", fontWeight: 800, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>
-                            Shop Peptides
-                          </p>
-                          <Link
-                            href="/all-peptides"
-                            onClick={() => setAllPeptidesOpen(false)}
-                            style={{ fontSize: "12px", fontWeight: 600, color: "#4E68C2", textDecoration: "none" }}
-                          >
-                            View all →
-                          </Link>
-                        </div>
-
-                        {/* Peptide name list */}
-                        <div style={{ maxHeight: "320px", overflowY: "auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1px" }}>
-                          {peptideGroups.filter(g => g.baseName !== "NAD+").map((group) => (
-                            <Link
-                              key={group.baseName}
-                              href={`/product/${group.variants[0].id}`}
-                              onClick={() => setAllPeptidesOpen(false)}
-                              style={{
-                                display: "block",
-                                padding: "6px 8px", borderRadius: "8px",
-                                textDecoration: "none", color: "#374151",
-                                fontSize: "12.5px", fontWeight: 500,
-                                whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-                              }}
-                              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F0F5FF")}
-                              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
-                            >
-                              {group.baseName}
-                            </Link>
-                          ))}
-                        </div>
-
-                        {/* Footer */}
-                        <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #F1F5F9", textAlign: "center" }}>
-                          <Link
-                            href="/all-peptides"
-                            onClick={() => setAllPeptidesOpen(false)}
-                            style={{ fontSize: "13px", fontWeight: 600, color: "#4E68C2", textDecoration: "none" }}
-                          >
-                            Browse Peptides →
-                          </Link>
-                        </div>
-                      </div>
-                    )}
                   </div>
                 );
               }
@@ -500,7 +436,7 @@ export default function Header() {
                   >
                     <Link
                       href={item.href}
-                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#E8F2DE]/50 hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
+                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#EEF1F8] hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
                       style={{
                         borderRadius: "6px", backgroundColor: active ? "rgba(229,239,255,0.6)" : undefined,
                         color: active ? "var(--ink)" : undefined,
@@ -519,9 +455,9 @@ export default function Header() {
                         style={{
                           position: "absolute", top: "100%", left: 0,
                           backgroundColor: "#fff",
-                          border: "1.5px solid #D3D8E2",
-                          borderRadius: "16px",
-                          boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
+                          border: "1px solid #D3D8E2",
+                          borderRadius: "8px",
+                          boxShadow: "0 18px 40px -20px rgba(29,41,72,0.35)",
                           zIndex: 400,
                           minWidth: "380px",
                           padding: "16px",
@@ -587,7 +523,7 @@ export default function Header() {
                     onMouseLeave={closeResearch}
                   >
                     <button
-                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#E8F2DE]/50 hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
+                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#EEF1F8] hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
                       style={{
                         color: researchActive ? "var(--ink)" : undefined,
                         fontWeight: researchActive ? 600 : 500,
@@ -610,9 +546,9 @@ export default function Header() {
                         style={{
                           position: "absolute", top: "100%", left: 0,
                           backgroundColor: "#fff",
-                          border: "1.5px solid #D3D8E2",
-                          borderRadius: "16px",
-                          boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
+                          border: "1px solid #D3D8E2",
+                          borderRadius: "8px",
+                          boxShadow: "0 18px 40px -20px rgba(29,41,72,0.35)",
                           zIndex: 400,
                           minWidth: "380px",
                           padding: "16px",
@@ -620,7 +556,7 @@ export default function Header() {
                         }}
                       >
                         <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", paddingBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
-                          <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "#E8F2DE", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                          <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "rgba(78,104,194,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                             <GraduationCap size={15} style={{ color: "#4E68C2" }} />
                           </div>
                           <div>
@@ -642,7 +578,7 @@ export default function Header() {
                                   display: "flex", alignItems: "center", gap: "12px",
                                   padding: "10px 10px", borderRadius: "10px",
                                   textDecoration: "none",
-                                  backgroundColor: isActive ? "#E8F2DE" : "transparent",
+                                  backgroundColor: isActive ? "rgba(78,104,194,0.08)" : "transparent",
                                   transition: "background-color 0.12s",
                                 }}
                                 onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC"; }}
@@ -650,7 +586,7 @@ export default function Header() {
                               >
                                 <div style={{
                                   width: "34px", height: "34px", borderRadius: "8px", flexShrink: 0,
-                                  backgroundColor: isActive ? "#E8F2DE" : "#F1F5F9",
+                                  backgroundColor: isActive ? "rgba(78,104,194,0.08)" : "#F1F5F9",
                                   display: "flex", alignItems: "center", justifyContent: "center",
                                 }}>
                                   <Icon size={16} style={{ color: isActive ? "#4E68C2" : "#64748B" }} />
@@ -674,7 +610,7 @@ export default function Header() {
                   key={item.label}
                   href={item.href}
                   data-active={active ? "true" : undefined}
-                  className={`${item.href === "/" ? "header-nav-home " : ""}${item.href === "/bac-water" || item.label === "NAD+" ? "header-nav-extra " : ""}px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#E8F2DE]/50 hover:text-[#22252C] inline-block transition-colors`}
+                  className={`${item.href === "/" ? "header-nav-home " : ""}${item.href === "/bac-water" || item.label === "NAD+" ? "header-nav-extra " : ""}px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#EEF1F8] hover:text-[#22252C] inline-block transition-colors`}
                   style={{
                     borderRadius: "6px", backgroundColor: active ? "rgba(229,239,255,0.6)" : undefined,
                     color: active ? "var(--ink)" : undefined,
@@ -695,7 +631,7 @@ export default function Header() {
             <button
               ref={offersButtonRef}
               type="button"
-              className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#E8F2DE]/50 hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
+              className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#EEF1F8] hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
               style={{
                 color: offersActive ? "var(--ink)" : undefined,
                 fontWeight: offersActive ? 600 : 500,
@@ -726,9 +662,9 @@ export default function Header() {
                 style={{
                   position: "absolute", top: "100%", left: 0,
                   backgroundColor: "#fff",
-                  border: "1.5px solid #D3D8E2",
-                  borderRadius: "16px",
-                  boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
+                  border: "1px solid #D3D8E2",
+                  borderRadius: "8px",
+                  boxShadow: "0 18px 40px -20px rgba(29,41,72,0.35)",
                   zIndex: 400,
                   minWidth: "310px",
                   padding: "16px",
@@ -736,7 +672,7 @@ export default function Header() {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", paddingBottom: "10px", borderBottom: "1px solid #F1F5F9" }}>
-                  <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "#E8F2DE", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "rgba(78,104,194,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <ArrowUpRight size={15} style={{ color: "#4E68C2" }} />
                   </div>
                   <div>
@@ -772,7 +708,7 @@ export default function Header() {
                           display: "flex", alignItems: "center", gap: "12px",
                           padding: "10px", borderRadius: "10px",
                           textDecoration: "none",
-                          backgroundColor: active ? "#E8F2DE" : "transparent",
+                          backgroundColor: active ? "rgba(78,104,194,0.08)" : "transparent",
                           transition: "background-color 0.12s",
                         }}
                         onMouseEnter={event => { if (!active) event.currentTarget.style.backgroundColor = "#F8FAFC"; }}
@@ -780,7 +716,7 @@ export default function Header() {
                       >
                         <div style={{
                           width: "34px", height: "34px", borderRadius: "8px", flexShrink: 0,
-                          backgroundColor: active ? "#E8F2DE" : "#F1F5F9",
+                          backgroundColor: active ? "rgba(78,104,194,0.08)" : "#F1F5F9",
                           display: "flex", alignItems: "center", justifyContent: "center",
                         }}>
                           <Icon size={16} style={{ color: active ? "#4E68C2" : "#64748B" }} />
@@ -805,7 +741,7 @@ export default function Header() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#E8F2DE]/50 hover:text-[#22252C] transition-colors"
+                className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#EEF1F8] hover:text-[#22252C] transition-colors"
                 style={{
                   color: active ? "var(--ink)" : undefined,
                   textDecoration: "none",
@@ -848,7 +784,7 @@ export default function Header() {
                       display: "flex", alignItems: "center", gap: "11px",
                       width: "100%", padding: "10px 14px", textAlign: "left",
                       border: "none", cursor: "pointer",
-                      backgroundColor: i === highlighted ? "#E8F2DE" : "#fff",
+                      backgroundColor: i === highlighted ? "rgba(78,104,194,0.08)" : "#fff",
                       borderBottom: i < results.length - 1 ? "1px solid #F1F5F9" : "none",
                       transition: "background-color 0.1s",
                     }}
@@ -920,7 +856,7 @@ export default function Header() {
                       }}
                       style={{
                         fontSize: "12px", fontWeight: 600, color: "#4E68C2",
-                        backgroundColor: "#E8F2DE", border: "1px solid #C8DDB4",
+                        backgroundColor: "rgba(78,104,194,0.08)", border: "1px solid #C8DDB4",
                         borderRadius: "8px", padding: "4px 11px", cursor: "pointer",
                         transition: "all 0.15s",
                       }}
@@ -929,7 +865,7 @@ export default function Header() {
                         (e.currentTarget as HTMLElement).style.color = "#fff";
                       }}
                       onMouseLeave={e => {
-                        (e.currentTarget as HTMLElement).style.backgroundColor = "#E8F2DE";
+                        (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(78,104,194,0.08)";
                         (e.currentTarget as HTMLElement).style.color = "#4E68C2";
                       }}
                     >
@@ -1020,7 +956,7 @@ export default function Header() {
                             display: "flex", alignItems: "center", gap: "10px",
                             width: "100%", padding: "7px 10px", borderRadius: "8px",
                             border: "none", cursor: "pointer",
-                            backgroundColor: c.code === currency.code ? "#E8F2DE" : "transparent",
+                            backgroundColor: c.code === currency.code ? "rgba(78,104,194,0.08)" : "transparent",
                             textAlign: "left", transition: "background-color 0.1s",
                           }}
                           onMouseEnter={e => { if (c.code !== currency.code) (e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC"; }}
@@ -1053,7 +989,7 @@ export default function Header() {
                 >
                   <div style={{
                     width: "28px", height: "28px", borderRadius: "50%",
-                    background: "var(--ice)", border: "1px solid var(--hairline)",
+                    background: "rgba(78,104,194,0.08)", border: "1px solid var(--hairline)",
                     display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
                   }}>
                     <User size={14} color="var(--cobalt)" />
@@ -1226,6 +1162,17 @@ export default function Header() {
 
 
 
+      {/* Desktop mega menu: full width under the header bar */}
+      {allPeptidesOpen && isDesktop && (
+        <PeptideMegaMenu
+          groups={peptideGroups}
+          formatPrice={formatPrice}
+          onNavigate={() => setAllPeptidesOpen(false)}
+          onMouseEnter={openAllPeptides}
+          onMouseLeave={closeAllPeptides}
+        />
+      )}
+
       {/* Mobile and tablet navigation drawer */}
       {mobileMenuOpen && (
         <div
@@ -1271,31 +1218,7 @@ export default function Header() {
             </div>
 
             <div className="flex-1 overflow-y-auto" style={{ overscrollBehavior: "contain" }}>
-              <Link
-                href="/all-peptides"
-                onClick={() => setMobileMenuOpen(false)}
-                style={{
-                  display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
-                  margin: "16px 16px 8px", padding: "15px 16px", borderRadius: 16,
-                  color: "var(--ink)", textDecoration: "none", overflow: "hidden", position: "relative",
-                  background: "#F3F4F6", border: "1px solid #E5E7EB",
-                }}
-              >
-                                <span style={{ position: "relative", zIndex: 1 }}>
-                  <span style={{ display: "block", marginBottom: 5, color: "#6B7280", fontSize: 9.5, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase" }}>
-                    Featured
-                  </span>
-                  <span style={{ display: "block", fontSize: 15, fontWeight: 800, lineHeight: 1.15 }}>
-                    Browse the collection
-                  </span>
-                  <span style={{ display: "block", marginTop: 4, color: "#6B7280", fontSize: 11.5 }}>
-                    Explore peptides for your research.
-                  </span>
-                </span>
-                <span style={{ position: "relative", zIndex: 1, width: 32, height: 32, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 999, background: "#fff", border: "1px solid #E5E7EB" }}>
-                  <ArrowUpRight size={18} />
-                </span>
-              </Link>
+              <DrawerShop groups={peptideGroups} formatPrice={formatPrice} onNavigate={() => setMobileMenuOpen(false)} />
 
               <div style={{ padding: "8px 12px 8px" }}>
                 <p style={{ margin: "0 8px 7px", color: "#94A3B8", fontSize: 10, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" }}>
@@ -1310,7 +1233,7 @@ export default function Header() {
                       className="flex items-center justify-between rounded-xl px-3 transition-colors"
                       style={{
                         minHeight: 48, color: location === item.href ? "#4E68C2" : "#334155",
-                        background: location === item.href ? "linear-gradient(90deg, #E8F2DE 0%, #F7FAFF 100%)" : "transparent",
+                        background: location === item.href ? "rgba(78,104,194,0.07)" : "transparent",
                         borderLeft: location === item.href ? "3px solid #4E68C2" : "3px solid transparent",
                         textDecoration: "none", fontSize: 15, fontWeight: location === item.href ? 700 : 600,
                       }}
@@ -1332,7 +1255,7 @@ export default function Header() {
                     color: "#475569", cursor: "pointer", textAlign: "left",
                   }}
                 >
-                  <span style={{ width: 34, height: 34, borderRadius: 11, background: "var(--ice)", color: "var(--cobalt)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 0 0 1px rgba(59, 98, 171,0.06)" }}>
+                  <span style={{ width: 34, height: 34, borderRadius: 11, background: "rgba(78,104,194,0.08)", color: "var(--cobalt)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 0 0 1px rgba(59, 98, 171,0.06)" }}>
                     <GraduationCap size={16} />
                   </span>
                   <span style={{ flex: 1 }}>
@@ -1379,7 +1302,7 @@ export default function Header() {
                     fontSize: 14, fontWeight: offersActive ? 800 : 600,
                   }}
                 >
-                  <span style={{ width: 30, height: 30, borderRadius: 9, background: "var(--ice)", color: "var(--cobalt)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ width: 30, height: 30, borderRadius: 9, background: "rgba(78,104,194,0.08)", color: "var(--cobalt)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <ArrowUpRight size={15} />
                   </span>
                   <span style={{ flex: 1 }}>
@@ -1402,7 +1325,7 @@ export default function Header() {
                           className="flex items-center gap-3 rounded-xl px-3 py-2.5"
                           style={{
                             color: active ? "var(--ink)" : undefined,
-                            background: active ? "#E8F2DE" : "transparent",
+                            background: active ? "rgba(78,104,194,0.08)" : "transparent",
                             textDecoration: "none",
                           }}
                           onClick={() => setMobileMenuOpen(false)}
@@ -1450,7 +1373,7 @@ export default function Header() {
               </div>
 
               {customer && (
-                <div style={{ margin: "4px 12px 20px", padding: "10px", borderRadius: 14, background: "#F0F5FF", border: "1px solid #E8F2DE" }}>
+                <div style={{ margin: "4px 12px 20px", padding: "10px", borderRadius: 14, background: "#F0F5FF", border: "1px solid rgba(78,104,194,0.15)" }}>
                   <Link
                     href="/account"
                     className="flex items-center rounded-xl px-3"
