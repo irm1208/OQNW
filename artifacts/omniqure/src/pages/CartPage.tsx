@@ -820,7 +820,7 @@ export default function CartPage() {
                 display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 16px",
                 border: `1px solid ${active ? "#4E68C2" : "rgba(11,18,32,0.09)"}`,
                 borderRadius: 6, cursor: "pointer",
-                background: active ? "rgba(78,104,194,0.06)" : THEME.cardBg,
+                background: active ? "#fff" : THEME.cardBg,
                 transition: "border-color 0.15s, background 0.15s",
               }}
             >
@@ -1527,7 +1527,7 @@ export default function CartPage() {
   const ctaDisabled = placing || !bankPaymentReady;
 
   return (
-    <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", backgroundColor: "#F2F0EB", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", backgroundColor: "#fff", minHeight: "100vh" }}>
       {isWallidTestCheckout && (
         <div style={{
           background: wallidTestStatus === "invalid" ? "#FEF2F2" : "#FFF7ED",
@@ -1590,7 +1590,7 @@ export default function CartPage() {
       )}
 
       {/* ── Research warning ── */}
-      <div style={{ backgroundColor: "#F2F0EB", borderBottom: "1px solid rgba(11,18,32,0.09)" }}>
+      <div style={{ backgroundColor: "#fff", borderBottom: "1px solid rgba(11,18,32,0.09)" }}>
         <div className="max-w-[1280px] mx-auto px-6 py-2.5 flex items-center gap-2">
           <AlertTriangle size={14} style={{ color: "#B45309", flexShrink: 0 }} />
           <p className="text-xs leading-relaxed" style={{ color: "#4A5672" }}>
@@ -1638,7 +1638,7 @@ export default function CartPage() {
         <div className="checkout-timer-inner">
           <div className="checkout-timer-clock" style={{
             width: 34, height: 34, borderRadius: "50%",
-            background: timerCalm ? "#FFF6F2" : "rgba(255,255,255,0.15)",
+            background: timerCalm ? "#fff" : "rgba(255,255,255,0.15)",
             border: timerCalm ? "1px solid rgba(11,18,32,0.09)" : "1.5px solid rgba(255,255,255,0.3)",
             color: timerCalm ? "#4E68C2" : "#fff",
             display: "flex", alignItems: "center", justifyContent: "center",
@@ -1766,7 +1766,7 @@ export default function CartPage() {
                             width: "100%",
                             border: "none",
                             borderRadius: 4,
-                            background: phoneCountryCode === option.code ? "rgba(78,104,194,0.06)" : "#fff",
+                            background: phoneCountryCode === option.code ? "#fff" : "#fff",
                             color: THEME.text,
                             padding: "8px 7px",
                             fontSize: "11px",
@@ -2026,7 +2026,7 @@ export default function CartPage() {
                   style={{
                     border: `${active ? 2 : 1}px solid ${active ? "#4E68C2" : "rgba(11,18,32,0.12)"}`,
                     borderRadius: 6, overflow: "hidden", cursor: "pointer",
-                    background: active ? "rgba(78,104,194,0.06)" : "#fff",
+                    background: "#fff",
                     transition: "border-color 0.15s",
                   }}
                 >
@@ -2159,7 +2159,7 @@ export default function CartPage() {
               return (
                 <div
                   onClick={() => setPaymentMethod("crypto")}
-                  style={{ border: `1px solid ${active ? "#4E68C2" : "rgba(11,18,32,0.09)"}`, borderRadius: 6, cursor: "pointer", background: active ? "rgba(78,104,194,0.06)" : THEME.cardBg }}
+                  style={{ border: `1px solid ${active ? "#4E68C2" : "rgba(11,18,32,0.09)"}`, borderRadius: 6, cursor: "pointer", background: active ? "#fff" : THEME.cardBg }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px" }}>
                     <input type="radio" checked={active} onChange={() => setPaymentMethod("crypto")}
@@ -2399,7 +2399,7 @@ export default function CartPage() {
               })}
               {bundleFreeBacWater && (
                 <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 14 }}>
-                  <div style={{ width: 56, height: 56, borderRadius: 4, border: "1px dashed #8D9BB8", background: "#F2F0EB", color: "#4E68C2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Droplets size={20} /></div>
+                  <div style={{ width: 56, height: 56, borderRadius: 4, border: "1px dashed #8D9BB8", background: "#fff", color: "#4E68C2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Droplets size={20} /></div>
                   <div style={{ flex: 1 }}>
                     <p style={{ fontSize: "13px", fontWeight: 600, color: THEME.text, margin: 0 }}>Bacteriostatic Water 10ml Ampule</p>
                     <p style={{ fontSize: "11px", color: "#059669", margin: "2px 0 0", fontWeight: 600 }}>Free (Bundle & Save)</p>
