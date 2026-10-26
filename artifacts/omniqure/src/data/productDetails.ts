@@ -1766,19 +1766,19 @@ Circadian rhythm research investigates VIP's role in the suprachiasmatic nucleus
     purity: "98%+",
     alsoKnownAs: "5-Amino-1MQ, 5-Amino-1-methylquinolinium",
     storage: "Store at room temperature (15–25°C) away from light and moisture. No refrigeration required.",
-    appearance: "White to off-white crystalline powder",
+    appearance: "Reddish-orange crystalline powder",
     solubility: "Soluble in water and DMSO",
     researchAreas: ["Metabolic Research", "Adipogenesis Research", "NAD⁺ Metabolism", "Cellular Health", "Obesity Research"],
-    description: `5-Amino-1Q 50mg (5-Amino-1MQ) is a selective, cell-permeable inhibitor of nicotinamide N-methyltransferase (NNMT), a methyltransferase enzyme implicated in adipogenesis, metabolic dysregulation, and NAD⁺ depletion. Investigated for its role in reducing fat mass, improving metabolic markers, and restoring cellular energy homeostasis.`,
-    longDescription: `What is 5-Amino-1Q (5-Amino-1MQ)?
+    description: `5-Amino-1MQ 50mg (5-Amino-1-methylquinolinium) is a selective, cell-permeable inhibitor of nicotinamide N-methyltransferase (NNMT), a methyltransferase enzyme implicated in adipogenesis, metabolic dysregulation, and NAD⁺ depletion. Investigated for its role in reducing fat mass, improving metabolic markers, and restoring cellular energy homeostasis.`,
+    longDescription: `What is 5-Amino-1MQ?
 
 5-Amino-1MQ (5-Amino-1-methylquinolinium) is a small-molecule, cell-permeable inhibitor of nicotinamide N-methyltransferase (NNMT), an enzyme that catalyses the methylation of nicotinamide (vitamin B3) using S-adenosylmethionine (SAM) as a methyl donor. NNMT is highly expressed in white adipose tissue and has emerged as a key regulator of adipogenesis, metabolic homeostasis, and one-carbon metabolism. By selectively inhibiting NNMT, 5-Amino-1MQ elevates intracellular NAD⁺ precursor availability and shifts the methyl donor balance, with downstream effects on fat cell differentiation and energy expenditure.
 
-5-Amino-1Q Structure
+5-Amino-1MQ Structure
 
 5-Amino-1MQ has the molecular formula C₇H₉N₃O and a molecular weight of 151.17 g/mol. The compound features a quinolinium core with an amino group at the 5-position and a methyl group at the N-1 nitrogen, providing selective binding to the NNMT active site. Its compact structure enables efficient cell membrane penetration without requiring a carrier.
 
-5-Amino-1Q Research
+5-Amino-1MQ Research
 
 Adipogenesis research has established NNMT as a key mediator of white adipocyte differentiation. Studies in adipose tissue models have shown that NNMT inhibition with 5-Amino-1MQ reduces the differentiation of pre-adipocytes into mature fat cells, suppresses lipid accumulation, and alters the expression of pro-adipogenic transcription factors including PPARγ and C/EBPα. These findings position NNMT inhibition as a research avenue for studying adipose tissue biology and obesity mechanisms.
 

@@ -1,0 +1,201 @@
+/* ── PRODUCT PAGE — LAYOUT & SPACING SCALE ───────────────────────────────────
+   A deliberate rhythm so the page breathes without becoming airy. One scale is
+   used everywhere: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 72.
+   Sections: 44px on phones, 56px tablet, 72px desktop.
+   Buy-box groups: 24px apart, with 16px inside a group. */
+
+.product-page {
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 48px;
+  --s8: 72px;
+  --section-y: 44px;
+  color: var(--oq-graphite);
+}
+
+@media (min-width: 768px) { .product-page { --section-y: 56px; } }
+@media (min-width: 1024px) { .product-page { --section-y: 72px; } }
+
+/* A section is a labelled block with one consistent vertical rhythm. */
+.product-page .p-section {
+  padding-top: var(--section-y);
+  padding-bottom: var(--section-y);
+  border-top: 1px solid var(--hairline);
+}
+.product-page .p-section--flush { border-top: 0; }
+
+/* Section heading block: eyebrow, title, optional intro. */
+.product-page .p-head { max-width: 520px; }
+.product-page .p-head .p-title {
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.022em;
+  color: var(--oq-matte-navy);
+  margin: 0;
+}
+.product-page .p-intro,
+.product-page .p-head .p-intro {
+  margin: var(--s3) 0 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--oq-slate);
+  max-width: 44ch;
+}
+
+/* ── Buy box ──────────────────────────────────────────────────────────────── */
+.product-page .buy-head { display: flex; flex-direction: column; }
+
+.product-page .buy-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s4);
+}
+
+.product-page .buy-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s3);
+  margin-top: var(--s3);
+}
+
+.product-page .buy-group {
+  margin-top: var(--s5);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--hairline);
+}
+.product-page .buy-group--tight { margin-top: var(--s4); padding-top: var(--s4); }
+
+/* Price + quantity share one row and one baseline. */
+.product-page .buy-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s4);
+  margin-top: var(--s5);
+}
+
+.product-page .buy-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+  margin: var(--s4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.product-page .buy-trust li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--oq-slate);
+}
+
+/* ── At-a-glance facts strip ──────────────────────────────────────────────── */
+.product-page .facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+.product-page .fact {
+  padding: var(--s4) 0;
+}
+.product-page .fact:nth-child(even) {
+  padding-left: var(--s4);
+  border-left: 1px solid var(--hairline);
+}
+.product-page .fact:nth-child(n + 3) {
+  border-top: 1px solid var(--hairline);
+}
+.product-page .fact dt {
+  font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  font-size: 9px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--oq-slate);
+}
+.product-page .fact dd {
+  margin: 4px 0 0;
+  font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  font-size: 13px;
+  color: var(--oq-matte-navy);
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 768px) {
+  .product-page .facts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .product-page .fact:nth-child(n + 3) { border-top: 0; }
+  .product-page .fact + .fact { padding-left: var(--s5); border-left: 1px solid var(--hairline); }
+}
+
+/* ── Specs table ──────────────────────────────────────────────────────────── */
+.product-page .spec-sheet {
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+.product-page .spec-sheet .spec-row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: var(--s5);
+  padding: 13px 18px;
+}
+.product-page .spec-sheet .spec-row + .spec-row { border-top: 1px solid var(--hairline); }
+
+/* ── Long-form prose ──────────────────────────────────────────────────────── */
+.product-page .prose {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--oq-slate);
+  max-width: 66ch;
+}
+.product-page .prose p { margin: 0 0 1.15em; }
+.product-page .prose h3 {
+  margin: 1.9em 0 0.6em;
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--oq-matte-navy);
+}
+.product-page .prose h3::before {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 3px;
+  margin-bottom: 10px;
+  border-radius: 2px;
+  background: var(--range);
+}
+.product-page .prose > :first-child { margin-top: 0; }
+.product-page .prose .prose-lead {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--oq-matte-navy);
+}
+.product-page .prose-note {
+  max-width: 66ch;
+  margin: var(--s6) 0 0;
+  padding: var(--s3) var(--s4);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  background: #fff;
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--oq-slate);
+}
+
+@media (max-width: 639px) {
+  .product-page .prose { font-size: 14.5px; line-height: 1.7; }
+  .product-page .prose .prose-lead { font-size: 16px; }
+  .product-page .spec-sheet .spec-row { gap: var(--s3); padding: 11px 14px; }
+}

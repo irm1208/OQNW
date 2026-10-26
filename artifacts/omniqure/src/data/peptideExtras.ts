@@ -956,7 +956,7 @@ export const peptideExtras: Record<string, PeptideExtras> = {
     ],
   },
 
-  "5-Amino-1Q": {
+  "5-Amino-1MQ": {
     uses: [
       "NAD+ precursor and NAMPT activator research",
       "Metabolic enhancement and cellular energy studies",

@@ -34,7 +34,7 @@ const stockSnapshot = [
   ["N-Acetyl Selank Amidate 10mg", 9],
   ["N-Acetyl Epithalon Amidate 5mg", 19],
   ["Semax + Selank Blend 20mg", 1],
-  ["5-Amino-1Q 50mg", 85],
+  ["5-Amino-1MQ 50mg", 85],
   ["Retatrutide 10mg", 20],
   ["Retatrutide 20mg", 5],
   ["Retatrutide 30mg", 23],
