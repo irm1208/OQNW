@@ -702,18 +702,6 @@ export default function CartPage() {
   const [referralCreditGbp, setReferralCreditGbp] = useState(0);
   const [redeemFreePeptide, setRedeemFreePeptide] = useState(false);
 
-  // 15-minute checkout timer — starts once there's something to check out
-  const [timeLeft, setTimeLeft] = useState(15 * 60);
-  useEffect(() => {
-    if (timeLeft <= 0 || items.length === 0) return;
-    const id = setInterval(() => setTimeLeft(t => t - 1), 1000);
-    return () => clearInterval(id);
-  }, [timeLeft, items.length]);
-  const timerMins = String(Math.floor(timeLeft / 60)).padStart(2, "0");
-  const timerSecs = String(timeLeft % 60).padStart(2, "0");
-  const timerExpired = timeLeft <= 0;
-  const timerUrgent = timeLeft <= 120;
-  const timerWarning = timeLeft <= 300 && timeLeft > 120;
 
   // Postcode — auto-fill city/county on blur via postcodes.io
   const [postcodeLoading, setPostcodeLoading] = useState(false);
@@ -1561,34 +1549,6 @@ export default function CartPage() {
         </div>
       )}
 
-      {/* ── Session expired overlay ── */}
-      {timerExpired && (
-        <div style={{
-          position: "fixed", inset: 0, zIndex: 1000,
-          background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center",
-        }}>
-          <div style={{
-            background: "#fff", border: "1px solid #D3D8E2", borderRadius: 12, padding: "32px 28px", textAlign: "center",
-            maxWidth: 400, width: "90%", boxShadow: "0 20px 60px rgba(15,23,42,0.2)",
-          }}>
-            <div style={{ fontSize: 48, marginBottom: 12 }}>⏱</div>
-            <p style={{ fontSize: "20px", fontWeight: 800, color: "#22252C", marginBottom: 8 }}>Session Expired</p>
-            <p style={{ fontSize: "14px", color: "#64748B", marginBottom: 24, lineHeight: 1.5 }}>
-              Your checkout session has timed out for security. Your cart is still saved.
-            </p>
-            <button
-              type="button"
-              onClick={() => setTimeLeft(15 * 60)}
-              style={{
-                width: "100%", padding: "14px", borderRadius: 6, border: "none",
-                background: THEME.cta, color: "#fff", fontSize: "15px", fontWeight: 700, cursor: "pointer",
-              }}
-            >
-              Restart Checkout
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* ── Research warning ── */}
       <div style={{ backgroundColor: "#fff", borderBottom: "1px solid rgba(11,18,32,0.09)" }}>
@@ -1612,57 +1572,6 @@ export default function CartPage() {
           <div className="checkout-step-label" style={{ display: "flex", alignItems: "center", gap: "6px", color: "#4A5672", fontSize: "10px" }}>
             <Lock size={12} />
             <span style={{ fontWeight: 500, letterSpacing: "0.18em", textTransform: "uppercase" }}>Secure checkout</span>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Timer banner ── */}
-      <div className="checkout-timer-banner" style={{
-        // Stays white; only the countdown changes colour as time runs short.
-        background: "#FFFFFF",
-        borderBottom: "1px solid rgba(11,18,32,0.09)",
-        padding: "10px 24px",
-        textAlign: "center",
-        position: "relative",
-        overflow: "hidden",
-      }}>
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%)",
-          animation: "none",
-          pointerEvents: "none",
-        }} />
-        <div className="checkout-timer-inner">
-          <div className="checkout-timer-clock" style={{
-            width: 34, height: 34, borderRadius: "50%",
-            background: "#fff",
-            border: "1px solid rgba(11,18,32,0.09)",
-            color: timerUrgent ? "#B91C1C" : timerWarning ? "#B45309" : "#4E68C2",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "16px", flexShrink: 0,
-            animation: "none",
-          }}><Clock size={16} /></div>
-          <div className="checkout-timer-message" style={{ textAlign: "left" }}>
-            <p style={{ margin: 0, fontSize: "11px", fontWeight: 600, color: timerUrgent ? "#B91C1C" : "#1D2948", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              {timerUrgent ? "Time is almost up" : "Your items are reserved"}
-            </p>
-            <p style={{ margin: 0, fontSize: "12px", color: "#4A5672", fontWeight: 400, marginTop: "1px" }}>
-              Complete checkout to secure your order
-            </p>
-          </div>
-          <div className="checkout-timer-divider" style={{ width: 1, height: 36, background: "rgba(11,18,32,0.09)", flexShrink: 0 }} />
-          <div style={{ textAlign: "center" }}>
-            <div className="checkout-timer-countdown" style={{
-              fontVariantNumeric: "tabular-nums",
-              fontSize: "24px", fontWeight: 600,
-              color: timerUrgent ? "#B91C1C" : timerWarning ? "#B45309" : "#1D2948", lineHeight: 1,
-              letterSpacing: "0.04em",
-            }}>
-              {timerMins}<span style={{ opacity: 0.6, margin: "0 1px" }}>:</span>{timerSecs}
-            </div>
-            <p className="checkout-timer-label" style={{ margin: 0, fontSize: "10px", fontWeight: 600, color: "#8A94A6", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: "2px" }}>
-              remaining
-            </p>
           </div>
         </div>
       </div>
@@ -2550,7 +2459,6 @@ export default function CartPage() {
         @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
-        .checkout-timer-inner { display: flex; align-items: center; gap: 12px; justify-content: center; }
         .form-grid-2 { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 10px; }
         .form-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
         .form-grid-2 > *, .form-grid-3 > * { min-width: 0; }
@@ -2571,13 +2479,6 @@ export default function CartPage() {
           .checkout-layout { flex-direction: column !important; align-items: stretch !important; padding: 12px !important; gap: 16px !important; }
           .checkout-layout > * { width: 100% !important; max-width: 100% !important; }
           .checkout-sidebar { width: 100% !important; position: static !important; order: -1 !important; }
-          .checkout-timer-banner { padding: 8px 12px !important; }
-          .checkout-timer-clock { width: 26px !important; height: 26px !important; font-size: 12px !important; }
-          .checkout-timer-divider { display: none !important; }
-          .checkout-timer-countdown { font-size: 22px !important; }
-          .checkout-timer-label { font-size: 9px !important; }
-          .checkout-timer-message p:first-child { font-size: 10px !important; }
-          .checkout-timer-message p:last-child { font-size: 11px !important; }
           .form-grid-3 { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
           /* 44px tap targets; 16px text stops iOS zooming into fields */
           input[type="text"], input[type="email"], input[type="tel"], input[type="search"], select {
