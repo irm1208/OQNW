@@ -2749,3 +2749,22 @@ body.has-cart-preview-bar main {
 .dshop__rows .prow { padding-left: 0; padding-right: 0; }
 .dshop__ranges { margin: 0; padding: 0; list-style: none; }
 .dshop__ranges .mrange { min-height: 48px; padding-left: 10px; border-bottom: 1px solid var(--oq-mist); }
+
+/* Quick add on popular peptide rows (phone menu) */
+.prow-wrap { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--oq-mist); }
+.prow-wrap .prow { flex: 1; min-width: 0; border-bottom: 0; }
+.qadd {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: var(--oq-matte-navy);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.qadd:active { background: var(--oq-royal-navy); }
+.qadd[data-added="true"] { background: #15803D; }
+.qadd:disabled { background: var(--oq-mist); color: var(--oq-slate); cursor: not-allowed; }

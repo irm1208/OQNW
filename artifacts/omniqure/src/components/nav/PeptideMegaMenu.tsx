@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check, Plus } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 import { parseName, type GroupedProduct } from "@/data/groupedProducts";
 import { popularProductSlugs } from "@/data/popularPeptides";
 import { rangeColourForCategory } from "@/lib/rangeColour";
@@ -51,14 +52,15 @@ export function useRanges(groups: GroupedProduct[]): Range[] {
 }
 
 /** One product as a data row: vial thumbnail, name, strengths, price. */
-function ProductRow({ group, formatPrice, onNavigate }: {
+function ProductRow({ group, formatPrice, onNavigate, quickAdd = false }: {
   group: GroupedProduct;
   formatPrice: (n: number) => string;
   onNavigate: () => void;
+  quickAdd?: boolean;
 }) {
   const price = lowestPrice(group);
   const first = group.variants[0];
-  return (
+  const link = (
     <Link
       href={`/product/${first.slug || first.id}`}
       onClick={onNavigate}
@@ -80,6 +82,37 @@ function ProductRow({ group, formatPrice, onNavigate }: {
         </span>
       </span>
     </Link>
+  );
+  if (!quickAdd) return link;
+  return (
+    <div className="prow-wrap">
+      {link}
+      <QuickAdd group={group} />
+    </div>
+  );
+}
+
+/** Adds the lowest-priced strength to the cart; ticks briefly on success. */
+function QuickAdd({ group }: { group: GroupedProduct }) {
+  const { addToCart } = useCart();
+  const [added, setAdded] = useState(false);
+  const variant = group.variants[0];
+  const soldOut = !variant || variant.stockLevel === 0;
+  return (
+    <button
+      type="button"
+      className="qadd"
+      data-added={added}
+      disabled={soldOut}
+      aria-label={soldOut ? `${group.baseName} is sold out` : `Add ${variant.name} to cart`}
+      onClick={() => {
+        addToCart(variant, 1);
+        setAdded(true);
+        window.setTimeout(() => setAdded(false), 1400);
+      }}
+    >
+      {added ? <Check size={16} strokeWidth={2.5} /> : <Plus size={16} strokeWidth={2.5} />}
+    </button>
   );
 }
 
@@ -225,7 +258,7 @@ export function DrawerPopular({ groups, formatPrice, onNavigate }: {
           All {groups.length} <ArrowRight size={13} aria-hidden="true" />
         </Link>
       </div>
-      {popular.map((g) => <ProductRow key={g.baseName} group={g} formatPrice={formatPrice} onNavigate={onNavigate} />)}
+      {popular.map((g) => <ProductRow key={g.baseName} group={g} formatPrice={formatPrice} onNavigate={onNavigate} quickAdd />)}
     </div>
   );
 }
