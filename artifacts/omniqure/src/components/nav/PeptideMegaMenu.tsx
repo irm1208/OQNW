@@ -1,21 +1,41 @@
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
-import { ArrowRight, ArrowUpRight, Gift } from "lucide-react";
-import type { GroupedProduct } from "@/data/groupedProducts";
+import { ArrowRight } from "lucide-react";
+import { parseName, type GroupedProduct } from "@/data/groupedProducts";
 import { popularProductSlugs } from "@/data/popularPeptides";
 import { rangeColourForCategory } from "@/lib/rangeColour";
 import { STUDIO_BG } from "@/lib/studioImage";
 
+/*
+ * Navigation parts in a clinical register: the look of the vial label and the
+ * specification sheet. Hairline rules, square corners, numbered index rows in
+ * IBM Plex Mono, Matte Navy only as a thin top rule, and range colours only as
+ * fine markers.
+ */
+
 type Range = { name: string; colour: string; groups: GroupedProduct[] };
 
-const POPULAR = "Popular";
+const POPULAR = "Most ordered";
+
+export const BUNDLE_TIERS = [
+  { qty: "3+ vials", reward: "Free 10ml BAC water" },
+  { qty: "5+ vials", reward: "1 peptide free" },
+  { qty: "10+ vials", reward: "2 peptides free" },
+];
 
 function lowestPrice(group: GroupedProduct): number | null {
   const prices = group.variants.map((v) => v.price).filter((p): p is number => p != null);
   return prices.length ? Math.min(...prices) : null;
 }
 
-/** Ranges ordered by size, plus a "Popular" range built from the curated list. */
+function strengths(group: GroupedProduct): string {
+  const list = [...new Set(group.variants.map((v) => parseName(v.name).strength).filter(Boolean))];
+  return list.slice(0, 4).join(" · ");
+}
+
+const idx = (i: number) => String(i + 1).padStart(2, "0");
+
+/** Ranges ordered by size, led by the curated "most ordered" list. */
 export function useRanges(groups: GroupedProduct[]): Range[] {
   return useMemo(() => {
     const byCategory = new Map<string, GroupedProduct[]>();
@@ -28,16 +48,15 @@ export function useRanges(groups: GroupedProduct[]): Range[] {
     const ranges = [...byCategory.entries()]
       .map(([name, list]) => ({ name, colour: rangeColourForCategory(name), groups: list }))
       .sort((a, b) => b.groups.length - a.groups.length || a.name.localeCompare(b.name));
-    return [{ name: POPULAR, colour: "var(--oq-cornflower)", groups: popular }, ...ranges];
+    return [{ name: POPULAR, colour: "var(--oq-matte-navy)", groups: popular }, ...ranges];
   }, [groups]);
 }
 
-/** A vial tile: studio image, name, from-price and a range-colour rule. */
-export function VialTile({ group, formatPrice, onNavigate, size = "md" }: {
+/** One product as a data row: vial thumbnail, name, strengths, price. */
+function ProductRow({ group, formatPrice, onNavigate }: {
   group: GroupedProduct;
   formatPrice: (n: number) => string;
   onNavigate: () => void;
-  size?: "sm" | "md";
 }) {
   const price = lowestPrice(group);
   const first = group.variants[0];
@@ -45,26 +64,78 @@ export function VialTile({ group, formatPrice, onNavigate, size = "md" }: {
     <Link
       href={`/product/${first.slug || first.id}`}
       onClick={onNavigate}
-      className={`vial-tile vial-tile--${size}`}
-      style={{ "--tile-range": rangeColourForCategory(group.category) } as React.CSSProperties}
+      className="prow"
+      style={{ "--row-range": rangeColourForCategory(group.category) } as React.CSSProperties}
     >
-      <span className="vial-tile__media" style={{ background: STUDIO_BG }}>
-        {/* Tiles only mount while a menu is open, so load at once. */}
+      <span className="prow__thumb" style={{ background: STUDIO_BG }}>
+        {/* Rows only mount while a menu is open, so load at once. */}
         <img src={group.image || group.cardImage} alt="" decoding="async" />
       </span>
-      <span className="vial-tile__name">{group.baseName}</span>
+      <span className="prow__text">
+        <span className="prow__name">{group.baseName}</span>
+        <span className="prow__meta">{strengths(group) || group.category}</span>
+      </span>
       {price != null && (
-        <span className="vial-tile__price">
-          {group.variants.length > 1 ? "From " : ""}{formatPrice(price)}
+        <span className="prow__price">
+          {group.variants.length > 1 && <span className="prow__from">from</span>}
+          {formatPrice(price)}
         </span>
       )}
     </Link>
   );
 }
 
+/** Bundle tiers as a specification table. */
+export function BundleSpec({ onNavigate }: { onNavigate: () => void }) {
+  return (
+    <div className="bspec">
+      <p className="nav-label">Bundle &amp; save</p>
+      <dl className="bspec__table">
+        {BUNDLE_TIERS.map((t) => (
+          <div key={t.qty} className="bspec__row">
+            <dt>{t.qty}</dt>
+            <dd>{t.reward}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="bspec__note">Applied automatically at checkout. Mix any compounds.</p>
+      <Link href="/bundle-and-save" onClick={onNavigate} className="nav-link">
+        Build a bundle <ArrowRight size={13} aria-hidden="true" />
+      </Link>
+    </div>
+  );
+}
+
+/** Numbered index list: 01 Title / description, separated by hairlines. */
+export function IndexList({ items, onNavigate, location, columns = 1 }: {
+  items: { label: string; href: string; desc: string }[];
+  onNavigate: () => void;
+  location: string;
+  columns?: 1 | 2;
+}) {
+  return (
+    <ol className={`ilist${columns === 2 ? " ilist--2" : ""}`}>
+      {items.map((item, i) => {
+        const active = location === item.href || location.startsWith(item.href + "/");
+        return (
+          <li key={item.href}>
+            <Link href={item.href} onClick={onNavigate} className="ilist__row" data-active={active} aria-current={active ? "page" : undefined}>
+              <span className="ilist__idx">{idx(i)}</span>
+              <span className="ilist__text">
+                <span className="ilist__title">{item.label}</span>
+                <span className="ilist__desc">{item.desc}</span>
+              </span>
+            </Link>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
 /**
- * Desktop "All Peptides" mega menu: product ranges on the left, the chosen
- * range's vials as image tiles in the middle, and the bundle offer on the right.
+ * Desktop "All Peptides" mega menu: an index of ranges, the chosen range's
+ * products as data rows, and the bundle tiers as a specification table.
  */
 export default function PeptideMegaMenu({ groups, formatPrice, onNavigate, onMouseEnter, onMouseLeave }: {
   groups: GroupedProduct[];
@@ -76,106 +147,102 @@ export default function PeptideMegaMenu({ groups, formatPrice, onNavigate, onMou
   const ranges = useRanges(groups);
   const [active, setActive] = useState(POPULAR);
   const current = ranges.find((r) => r.name === active) ?? ranges[0];
-  const shown = current?.groups.slice(0, 10) ?? [];
+  const shown = current?.groups.slice(0, 12) ?? [];
+  const rangeHref = (name: string) => name === POPULAR ? "/popular-peptides" : `/all-peptides?category=${encodeURIComponent(name)}`;
 
   return (
     <div className="mega" role="region" aria-label="Shop peptides" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <div className="mega__inner">
         <nav className="mega__ranges" aria-label="Product ranges">
-          <p className="mega__label">Shop by range</p>
-          <ul>
-            {ranges.map((r) => (
+          <p className="nav-label">Ranges</p>
+          <ol>
+            {ranges.map((r, i) => (
               <li key={r.name}>
                 <Link
-                  href={r.name === POPULAR ? "/popular-peptides" : `/all-peptides?category=${encodeURIComponent(r.name)}`}
+                  href={rangeHref(r.name)}
                   onClick={onNavigate}
                   onMouseEnter={() => setActive(r.name)}
                   onFocus={() => setActive(r.name)}
-                  className="mega__range"
+                  className="mrange"
                   data-active={r.name === current?.name}
+                  style={{ "--row-range": r.colour } as React.CSSProperties}
                 >
-                  <span className="mega__dot" style={{ background: r.colour }} />
-                  <span className="mega__range-name">{r.name}</span>
-                  <span className="mega__count">{r.groups.length}</span>
+                  <span className="mrange__idx">{idx(i)}</span>
+                  <span className="mrange__name">{r.name}</span>
+                  <span className="mrange__count">{r.groups.length}</span>
                 </Link>
               </li>
             ))}
-          </ul>
-          <Link href="/all-peptides" onClick={onNavigate} className="mega__all">
-            All peptides <ArrowRight size={14} aria-hidden="true" />
-          </Link>
+          </ol>
         </nav>
 
         <div className="mega__products">
-          <div className="mega__products-head">
-            <p className="mega__title">
-              <span className="mega__dot" style={{ background: current?.colour }} />
-              {current?.name}
+          <div className="mega__head">
+            <p className="nav-label">
+              <span className="mega__marker" style={{ background: current?.colour }} />
+              {current?.name} · {current?.groups.length} compounds
             </p>
-            <Link
-              href={current?.name === POPULAR ? "/popular-peptides" : `/all-peptides?category=${encodeURIComponent(current?.name ?? "")}`}
-              onClick={onNavigate}
-              className="mega__view"
-            >
-              View all {current?.groups.length} <ArrowUpRight size={13} aria-hidden="true" />
+            <Link href={rangeHref(current?.name ?? "")} onClick={onNavigate} className="nav-link">
+              View range <ArrowRight size={13} aria-hidden="true" />
             </Link>
           </div>
           <div className="mega__grid">
-            {shown.map((g) => <VialTile key={g.baseName} group={g} formatPrice={formatPrice} onNavigate={onNavigate} />)}
+            {shown.map((g) => <ProductRow key={g.baseName} group={g} formatPrice={formatPrice} onNavigate={onNavigate} />)}
+          </div>
+          <div className="mega__foot">
+            <Link href="/all-peptides" onClick={onNavigate} className="nav-link">
+              Full catalogue <ArrowRight size={13} aria-hidden="true" />
+            </Link>
+            <Link href="/lab-reports" onClick={onNavigate} className="nav-link nav-link--quiet">
+              Independent lab reports for every batch
+            </Link>
           </div>
         </div>
 
-        <Link href="/bundle-and-save" onClick={onNavigate} className="mega__promo">
-          <span className="mega__promo-stripe" />
-          <span className="mega__promo-body">
-            <Gift size={18} aria-hidden="true" />
-            <span className="mega__promo-eyebrow">Bundle &amp; save</span>
-            <span className="mega__promo-title">Build your own bundle.</span>
-            <span className="mega__promo-text">Free 10ml BAC water with 3+ vials. 1 peptide free at 5, 2 free at 10.</span>
-            <span className="mega__promo-cta">Start building <ArrowRight size={14} aria-hidden="true" /></span>
-          </span>
-        </Link>
+        <aside className="mega__aside">
+          <BundleSpec onNavigate={onNavigate} />
+        </aside>
       </div>
     </div>
   );
 }
 
-/** Phone and tablet drawer: popular vials as a swipe row, then range chips. */
+/** Phone and tablet drawer: most-ordered products as rows, then the range index. */
 export function DrawerShop({ groups, formatPrice, onNavigate }: {
   groups: GroupedProduct[];
   formatPrice: (n: number) => string;
   onNavigate: () => void;
 }) {
   const ranges = useRanges(groups);
-  const popular = ranges[0]?.groups.slice(0, 10) ?? [];
+  const popular = ranges[0]?.groups.slice(0, 5) ?? [];
   return (
-    <div className="drawer-shop">
-      <div className="drawer-shop__head">
-        <p className="mega__label">Popular peptides</p>
-        <Link href="/all-peptides" onClick={onNavigate} className="mega__view">
-          View all <ArrowUpRight size={13} aria-hidden="true" />
+    <div className="dshop">
+      <div className="dshop__head">
+        <p className="nav-label">Most ordered</p>
+        <Link href="/all-peptides" onClick={onNavigate} className="nav-link">
+          Full catalogue <ArrowRight size={13} aria-hidden="true" />
         </Link>
       </div>
-      <div className="drawer-shop__row">
-        {popular.map((g) => <VialTile key={g.baseName} group={g} formatPrice={formatPrice} onNavigate={onNavigate} size="sm" />)}
+      <div className="dshop__rows">
+        {popular.map((g) => <ProductRow key={g.baseName} group={g} formatPrice={formatPrice} onNavigate={onNavigate} />)}
       </div>
-      <p className="mega__label drawer-shop__label">Shop by range</p>
-      <ul className="drawer-shop__ranges">
-        {ranges.slice(1, 9).map((r) => (
+      <p className="nav-label dshop__label">Ranges</p>
+      <ol className="dshop__ranges">
+        {ranges.slice(1).map((r, i) => (
           <li key={r.name}>
-            <Link href={`/all-peptides?category=${encodeURIComponent(r.name)}`} onClick={onNavigate} className="drawer-shop__range">
-              <span className="mega__dot" style={{ background: r.colour }} />
-              <span className="drawer-shop__range-name">{r.name}</span>
-              <span className="mega__count">{r.groups.length}</span>
+            <Link
+              href={`/all-peptides?category=${encodeURIComponent(r.name)}`}
+              onClick={onNavigate}
+              className="mrange"
+              style={{ "--row-range": r.colour } as React.CSSProperties}
+            >
+              <span className="mrange__idx">{idx(i)}</span>
+              <span className="mrange__name">{r.name}</span>
+              <span className="mrange__count">{r.groups.length}</span>
             </Link>
           </li>
         ))}
-        <li>
-          <Link href="/all-peptides" onClick={onNavigate} className="drawer-shop__range drawer-shop__range--all">
-            All ranges <ArrowRight size={13} aria-hidden="true" />
-          </Link>
-        </li>
-      </ul>
+      </ol>
     </div>
   );
 }

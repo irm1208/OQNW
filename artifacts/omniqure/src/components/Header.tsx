@@ -11,7 +11,7 @@ import { popularProductSlugs } from "@/data/popularPeptides";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useAffiliateMe } from "@/hooks/useAffiliate";
-import PeptideMegaMenu, { DrawerShop } from "@/components/nav/PeptideMegaMenu";
+import PeptideMegaMenu, { DrawerShop, IndexList, BundleSpec, BUNDLE_TIERS } from "@/components/nav/PeptideMegaMenu";
 
 const POPULAR_SEARCHES = [
   "BPC-157", "TB-500", "Epithalon", "Ipamorelin",
@@ -549,36 +549,13 @@ export default function Header() {
 
                     {researchOpen && (
                       <div className="nav-drop nav-drop--research" onMouseEnter={openResearch} onMouseLeave={closeResearch}>
-                        <div className="nav-drop__band">
-                          <span className="drawer-research__badge"><GraduationCap size={16} /></span>
-                          <span>
-                            <span className="drawer-research__title">Research hub</span>
-                            <span className="drawer-research__sub">Data, tools and guides for your work</span>
-                          </span>
-                        </div>
-                        <ul className="nav-drop__grid">
-                          {researchHubLinks.map(link => {
-                            const Icon = link.icon;
-                            const isActive = location === link.href || location.startsWith(link.href + "/");
-                            return (
-                              <li key={link.href}>
-                                <Link href={link.href} className="drawer-tile" data-active={isActive} aria-current={isActive ? "page" : undefined} onClick={() => setResearchOpen(false)}>
-                                  <Icon size={18} className="drawer-tile__icon" />
-                                  <span className="drawer-tile__title">{link.label}</span>
-                                  <span className="drawer-tile__desc">{link.desc}</span>
-                                </Link>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                        <div className="nav-drop__foot">
-                          <Link href="/faq" onClick={() => setResearchOpen(false)} className="mega__all">
-                            <HelpCircle size={14} /> Questions? Read the FAQ
-                          </Link>
-                          <Link href="/protocols" onClick={() => setResearchOpen(false)} className="mega__all">
-                            All protocols <ArrowUpRight size={14} />
+                        <div className="nav-drop__head">
+                          <p className="nav-label">Research &amp; data</p>
+                          <Link href="/faq" onClick={() => setResearchOpen(false)} className="nav-link">
+                            FAQ <ArrowUpRight size={13} />
                           </Link>
                         </div>
+                        <IndexList items={researchHubLinks} columns={2} location={location} onNavigate={() => setResearchOpen(false)} />
                       </div>
                     )}
                   </div>
@@ -641,63 +618,52 @@ export default function Header() {
                 onMouseEnter={openOffers}
                 onMouseLeave={closeOffers}
               >
-                {offerNavItems.map((item, index) => {
-                  const Icon = item.icon;
-                  const active = location === item.href || location.startsWith(item.href + "/");
-                  const keyNav = (event: React.KeyboardEvent<HTMLAnchorElement>) => {
-                    if (event.key === "Escape") {
-                      event.preventDefault();
-                      setOffersOpen(false);
-                      offersButtonRef.current?.focus();
-                    } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-                      event.preventDefault();
-                      const direction = event.key === "ArrowDown" ? 1 : -1;
-                      const nextIndex = (index + direction + offerNavItems.length) % offerNavItems.length;
-                      offersLinkRefs.current[nextIndex]?.focus();
-                    }
-                  };
-                  // The bundle offer leads as a navy card; the rest are rows.
-                  if (item.href === "/bundle-and-save") {
+                <div className="nav-drop__head">
+                  <p className="nav-label">Offers</p>
+                </div>
+                <ol className="ilist">
+                  {offerNavItems.map((item, index) => {
+                    const active = location === item.href || location.startsWith(item.href + "/");
                     return (
-                      <Link
-                        key={item.href}
-                        ref={element => { offersLinkRefs.current[index] = element; }}
-                        href={item.href}
-                        aria-current={active ? "page" : undefined}
-                        onClick={() => setOffersOpen(false)}
-                        onKeyDown={keyNav}
-                        className="drawer-offer nav-drop__offer"
-                      >
-                        <span className="drawer-offer__stripe" />
-                        <span className="drawer-offer__body">
-                          <span className="drawer-offer__eyebrow">Bundle &amp; save</span>
-                          <span className="drawer-offer__title">Free BAC water with 3+ vials</span>
-                          <span className="drawer-offer__text">1 peptide free at 5 vials, 2 free at 10. Applied at checkout.</span>
-                        </span>
-                        <ArrowUpRight size={18} className="drawer-offer__arrow" />
-                      </Link>
+                      <li key={item.href}>
+                        <Link
+                          ref={element => { offersLinkRefs.current[index] = element; }}
+                          href={item.href}
+                          aria-current={active ? "page" : undefined}
+                          data-active={active}
+                          onClick={() => setOffersOpen(false)}
+                          onKeyDown={event => {
+                            if (event.key === "Escape") {
+                              event.preventDefault();
+                              setOffersOpen(false);
+                              offersButtonRef.current?.focus();
+                            } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                              event.preventDefault();
+                              const direction = event.key === "ArrowDown" ? 1 : -1;
+                              const nextIndex = (index + direction + offerNavItems.length) % offerNavItems.length;
+                              offersLinkRefs.current[nextIndex]?.focus();
+                            }
+                          }}
+                          className="ilist__row"
+                        >
+                          <span className="ilist__idx">{String(index + 1).padStart(2, "0")}</span>
+                          <span className="ilist__text">
+                            <span className="ilist__title">{item.label}</span>
+                            <span className="ilist__desc">{item.desc}</span>
+                          </span>
+                        </Link>
+                      </li>
                     );
-                  }
-                  return (
-                    <Link
-                      key={item.href}
-                      ref={element => { offersLinkRefs.current[index] = element; }}
-                      href={item.href}
-                      aria-current={active ? "page" : undefined}
-                      onClick={() => setOffersOpen(false)}
-                      onKeyDown={keyNav}
-                      className="drawer-row"
-                      data-active={active}
-                    >
-                      <span className="drawer-row__icon"><Icon size={17} /></span>
-                      <span className="drawer-row__text">
-                        <span className="drawer-row__title">{item.label}</span>
-                        <span className="drawer-row__desc">{item.desc}</span>
-                      </span>
-                      <ChevronRight size={16} className="drawer-row__chev" />
-                    </Link>
-                  );
-                })}
+                  })}
+                </ol>
+                <dl className="bspec__table nav-drop__tiers">
+                  {BUNDLE_TIERS.map(t => (
+                    <div key={t.qty} className="bspec__row">
+                      <dt>{t.qty}</dt>
+                      <dd>{t.reward}</dd>
+                    </div>
+                  ))}
+                </dl>
               </div>
             )}
           </div>
@@ -1191,100 +1157,42 @@ export default function Header() {
 
               {/* Shop */}
               <section className="drawer-sec">
-                <p className="mega__label drawer-sec__label">Shop</p>
-                <ul className="drawer-list">
-                  {[
-                    { label: "All peptides", href: "/all-peptides", icon: Package, desc: "Every compound, by range" },
-                    ...(navItems.some(i => i.label === "NAD+") ? [{ label: "NAD+", href: "/product/nad-plus-500mg", icon: Activity, desc: "Redox coenzyme, 500mg" }] : []),
-                    { label: "Bac water", href: "/bac-water", icon: Droplets, desc: "Bacteriostatic water for reconstitution" },
-                    { label: "Bundle & save", href: "/bundle-and-save", icon: Gift, desc: "Free items from 3 vials" },
-                  ].map(item => {
-                    const Icon = item.icon;
-                    const active = location === item.href || (item.href === "/all-peptides" && location.startsWith("/all-peptides"));
-                    return (
-                      <li key={item.href}>
-                        <Link href={item.href} className="drawer-row" data-active={active} aria-current={active ? "page" : undefined} onClick={() => setMobileMenuOpen(false)}>
-                          <span className="drawer-row__icon"><Icon size={17} /></span>
-                          <span className="drawer-row__text">
-                            <span className="drawer-row__title">{item.label}</span>
-                            <span className="drawer-row__desc">{item.desc}</span>
-                          </span>
-                          <ChevronRight size={16} className="drawer-row__chev" />
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <p className="nav-label drawer-sec__label">Shop</p>
+                <IndexList
+                  location={location}
+                  onNavigate={() => setMobileMenuOpen(false)}
+                  items={[
+                    { label: "All peptides", href: "/all-peptides", desc: "Every compound, by range" },
+                    ...(navItems.some(i => i.label === "NAD+") ? [{ label: "NAD+", href: "/product/nad-plus-500mg", desc: "Redox coenzyme, 500mg" }] : []),
+                    { label: "Bac water", href: "/bac-water", desc: "Bacteriostatic water for reconstitution" },
+                  ]}
+                />
               </section>
 
-              {/* Research hub */}
-              <section className="drawer-sec drawer-research">
-                <div className="drawer-research__head">
-                  <span className="drawer-research__badge"><GraduationCap size={16} /></span>
-                  <span>
-                    <span className="drawer-research__title">Research hub</span>
-                    <span className="drawer-research__sub">Data, tools and guides for your work</span>
-                  </span>
+              {/* Research and data */}
+              <section className="drawer-sec">
+                <div className="nav-drop__head drawer-sec__head">
+                  <p className="nav-label">Research &amp; data</p>
+                  <Link href="/faq" onClick={() => setMobileMenuOpen(false)} className="nav-link">
+                    FAQ <ArrowUpRight size={13} />
+                  </Link>
                 </div>
-                <ul className="drawer-research__grid">
-                  {researchHubLinks.map(link => {
-                    const Icon = link.icon;
-                    const active = location === link.href || location.startsWith(link.href + "/");
-                    return (
-                      <li key={link.href}>
-                        <Link href={link.href} className="drawer-tile" data-active={active} aria-current={active ? "page" : undefined} onClick={() => setMobileMenuOpen(false)}>
-                          <Icon size={18} className="drawer-tile__icon" />
-                          <span className="drawer-tile__title">{link.label}</span>
-                          <span className="drawer-tile__desc">{link.desc}</span>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-                <Link href="/faq" className="drawer-row drawer-row--plain" onClick={() => setMobileMenuOpen(false)}>
-                  <span className="drawer-row__icon"><HelpCircle size={17} /></span>
-                  <span className="drawer-row__text">
-                    <span className="drawer-row__title">FAQ</span>
-                    <span className="drawer-row__desc">Purity, storage, shipping and payment</span>
-                  </span>
-                  <ChevronRight size={16} className="drawer-row__chev" />
-                </Link>
+                <IndexList items={researchHubLinks} location={location} onNavigate={() => setMobileMenuOpen(false)} />
               </section>
 
               {/* Offers */}
               <section className="drawer-sec">
-                <p className="mega__label drawer-sec__label">Offers</p>
-                <Link href="/bundle-and-save" className="drawer-offer" onClick={() => setMobileMenuOpen(false)}>
-                  <span className="drawer-offer__stripe" />
-                  <span className="drawer-offer__body">
-                    <span className="drawer-offer__eyebrow">Bundle &amp; save</span>
-                    <span className="drawer-offer__title">Free BAC water with 3+ vials</span>
-                    <span className="drawer-offer__text">1 peptide free at 5 vials, 2 free at 10.</span>
-                  </span>
-                  <ArrowUpRight size={18} className="drawer-offer__arrow" />
-                </Link>
-                <ul className="drawer-list">
-                  {offerNavItems.filter(item => item.href !== "/bundle-and-save").map(item => {
-                    const Icon = item.icon;
-                    return (
-                      <li key={item.href}>
-                        <Link href={item.href} className="drawer-row" onClick={() => setMobileMenuOpen(false)}>
-                          <span className="drawer-row__icon"><Icon size={17} /></span>
-                          <span className="drawer-row__text">
-                            <span className="drawer-row__title">{item.label}</span>
-                            <span className="drawer-row__desc">{item.desc}</span>
-                          </span>
-                          <ChevronRight size={16} className="drawer-row__chev" />
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <BundleSpec onNavigate={() => setMobileMenuOpen(false)} />
+                <IndexList
+                  location={location}
+                  onNavigate={() => setMobileMenuOpen(false)}
+                  items={offerNavItems.filter(item => item.href !== "/bundle-and-save").map(({ label, href, desc }) => ({ label, href, desc }))}
+                />
               </section>
 
               {/* Account and more */}
               <section className="drawer-sec drawer-sec--last">
-                <p className="mega__label drawer-sec__label">Account &amp; help</p>
+                <p className="nav-label drawer-sec__label">Account &amp; help</p>
                 <ul className="drawer-list drawer-list--compact">
                   {[
                     ...(!customer ? [{ label: "Sign in", href: "/sign-in", icon: User }] : []),
@@ -1296,16 +1204,16 @@ export default function Header() {
                     return (
                       <li key={item.href}>
                         <Link href={item.href} className="drawer-row drawer-row--compact" onClick={() => setMobileMenuOpen(false)}>
-                          <span className="drawer-row__icon"><Icon size={16} /></span>
+                          <Icon size={16} className="drawer-row__glyph" />
                           <span className="drawer-row__title">{item.label}</span>
-                          <ChevronRight size={16} className="drawer-row__chev" />
+                          <ChevronRight size={15} className="drawer-row__chev" />
                         </Link>
                       </li>
                     );
                   })}
                 </ul>
                 <label className="drawer-currency">
-                  <span className="drawer-row__icon"><Globe size={16} /></span>
+                  <Globe size={16} className="drawer-row__glyph" />
                   <span className="drawer-row__title">Currency</span>
                   <select
                     value={currency.code}
