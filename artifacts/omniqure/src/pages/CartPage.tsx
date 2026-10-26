@@ -18,7 +18,7 @@ import CatalogueCard from "@/components/CatalogueCard";
 import { groupProducts } from "@/data/groupedProducts";
 import {
   Trash2, Plus, Minus, ShoppingCart, ChevronRight, Sparkles, CheckCircle2,
-  Lock, Shield, Truck, AlertTriangle, Clock, Check, Droplets,
+  Lock, Shield, Truck, AlertTriangle, Clock, Check, Droplets, ChevronDown,
 } from "lucide-react";
 
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
@@ -602,6 +602,8 @@ export default function CartPage() {
   const [shipping, setShipping] = useState("standard");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [placing, setPlacing] = useState(false);
+  // Phones: the order summary starts collapsed to one row so the form leads.
+  const [summaryOpen, setSummaryOpen] = useState(false);
   const [placeError, setPlaceError] = useState<string | null>(null);
   const [stockErrors, setStockErrors] = useState<{ productName: string; available: number; requested: number }[]>([]);
   const [confirmed, setConfirmed] = useState(false);
@@ -1680,7 +1682,7 @@ export default function CartPage() {
 
           {/* CONTACT INFORMATION */}
           <p style={sectionTitle}>Contact Information</p>
-          <div className="form-grid-2" style={{ marginBottom: 12 }}>
+          <div className="form-grid-2 form-grid-contact" style={{ marginBottom: 12 }}>
             <div>
               <label style={label}>Email *</label>
               <input
@@ -2317,11 +2319,22 @@ export default function CartPage() {
         {/* ── RIGHT COLUMN — SINGLE ORDER SUMMARY ── */}
         <div className="checkout-sidebar" style={{ width: 360, flexShrink: 0, position: "sticky", top: 88 }}>
           <div style={{ border: THEME.cardBorder, borderRadius: 6, background: "#fff", overflow: "hidden" }}>
-            <div style={{ padding: "18px 20px 14px", borderBottom: THEME.cardBorder }}>
-              <p style={{ fontSize: "17px", fontWeight: 600, color: "#1D2948", letterSpacing: "-0.01em", margin: 0 }}>
-                Order Summary
-              </p>
-            </div>
+            {/* Heading on desktop and tablet; a show/hide toggle with the total on phones */}
+            <button
+              type="button"
+              className="checkout-summary-toggle"
+              aria-expanded={summaryOpen}
+              aria-controls="checkout-summary-body"
+              onClick={() => setSummaryOpen(open => !open)}
+            >
+              <span className="checkout-summary-toggle__title">Order Summary</span>
+              <span className="checkout-summary-toggle__hint">
+                {summaryOpen ? "Hide" : "Show"} · {totalItems} {totalItems === 1 ? "item" : "items"}
+              </span>
+              <span className="checkout-summary-toggle__total">{payTotalLabel}</span>
+              <ChevronDown size={16} className="checkout-summary-toggle__chev" aria-hidden="true" />
+            </button>
+            <div id="checkout-summary-body" className="checkout-summary-body" data-open={summaryOpen}>
             <div style={{ padding: "16px 20px 0" }}>
               {items.map(({ product, quantity }) => {
                 const price = product.price ?? 0;
@@ -2513,6 +2526,7 @@ export default function CartPage() {
                 <Lock size={14} /> {ctaDisabled ? (placing ? "Processing…" : "Confirming total…") : `Place order · ${payTotalLabel}`}
               </button>
             </div>
+            </div>
 
           </div>
         </div>
@@ -2542,8 +2556,18 @@ export default function CartPage() {
         .form-grid-2 > *, .form-grid-3 > * { min-width: 0; }
         .form-grid-2 input, .form-grid-2 select, .form-grid-3 input, .form-grid-3 select { min-width: 0; width: 100%; }
         .checkout-layout > * { min-width: 0; }
+        /* Email and phone side by side only where the form column is wide */
+        @media (max-width: 1023px) {
+          .form-grid-contact { grid-template-columns: minmax(0,1fr); gap: 12px; }
+        }
 
-        @media (max-width: 900px) {
+        /* Tablet: keep two columns with a narrower summary */
+        @media (min-width: 768px) and (max-width: 1023px) {
+          .checkout-layout { padding: 20px !important; gap: 20px !important; }
+          .checkout-sidebar { width: 300px !important; }
+        }
+
+        @media (max-width: 767px) {
           .checkout-layout { flex-direction: column !important; align-items: stretch !important; padding: 12px !important; gap: 16px !important; }
           .checkout-layout > * { width: 100% !important; max-width: 100% !important; }
           .checkout-sidebar { width: 100% !important; position: static !important; order: -1 !important; }
@@ -2555,12 +2579,12 @@ export default function CartPage() {
           .checkout-timer-message p:first-child { font-size: 10px !important; }
           .checkout-timer-message p:last-child { font-size: 11px !important; }
           .form-grid-3 { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+          /* 44px tap targets; 16px text stops iOS zooming into fields */
           input[type="text"], input[type="email"], input[type="tel"], input[type="search"], select {
-            height: 40px !important;
+            height: 44px !important;
+            font-size: 16px !important;
           }
-          .checkout-layout hr { margin: 14px 0 !important; }
-          .shipping-options-form { display: none !important; }
-          .shipping-options-summary { display: block !important; }
+          .checkout-layout hr { margin: 18px 0 !important; }
           .upsells-top { display: none !important; }
           .upsells-bottom { display: block !important; }
         }
