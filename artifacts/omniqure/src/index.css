@@ -2924,3 +2924,23 @@ body.has-cart-preview-bar main {
     color: #fff !important;
   }
 }
+
+/* Phone/tablet search: hidden behind a header button until opened */
+.header-search-toggle { display: none; }
+@media (max-width: 1023px) {
+  .header-brand .header-search-toggle {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+  }
+  .header-brand .header-search-toggle[aria-expanded="true"] { background: #fff; border-color: #fff; color: var(--oq-matte-navy); }
+  .header-brand .header-inner[data-search-open="false"] .header-search { display: none !important; }
+  .header-brand .header-inner[data-search-open="false"] { padding-bottom: 15px !important; }
+}

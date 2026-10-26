@@ -119,6 +119,8 @@ export default function Header() {
   }, [products]);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // Phones and tablets: the search row stays hidden until the search button is pressed.
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   // Phone/tablet menu: the first screen, or one of its sub-panels.
   const [drawerPanel, setDrawerPanel] = useState<null | "shop" | "research" | "offers">(null);
   const drawerScrollRef = useRef<HTMLDivElement>(null);
@@ -254,6 +256,7 @@ export default function Header() {
   useEffect(() => {
     setUserMenuOpen(false);
     setMobileMenuOpen(false);
+    setMobileSearchOpen(false);
     setOffersOpen(false);
   }, [location]);
 
@@ -286,6 +289,7 @@ export default function Header() {
   }, [mobileMenuOpen]);
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Escape" && !isDesktop) setMobileSearchOpen(false);
     if (!open || results.length === 0) {
       if (e.key === "Enter" && q) {
         navigate(`/all-peptides?search=${encodeURIComponent(searchQuery.trim())}`);
@@ -391,7 +395,7 @@ export default function Header() {
         position: "relative", zIndex: 2,
       }}>
           <div className="pinstripe header-brand__stripe" aria-hidden="true" />
-          <div className="header-inner max-w-[1280px] mx-auto px-2 sm:px-4 py-1 sm:py-3 flex flex-wrap items-center gap-x-1.5 sm:gap-x-4 gap-y-1 sm:gap-y-2">
+          <div data-search-open={mobileSearchOpen} className="header-inner max-w-[1280px] mx-auto px-2 sm:px-4 py-1 sm:py-3 flex flex-wrap items-center gap-x-1.5 sm:gap-x-4 gap-y-1 sm:gap-y-2">
 
           {/* Hamburger — mobile only, left side */}
           <button
@@ -843,6 +847,21 @@ export default function Header() {
 
           {/* Right group */}
           <div className="header-action-group order-2 sm:order-3 lg:order-5 ml-auto lg:ml-0 flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+            {/* Phones and tablets: opens the hidden search row */}
+            <button
+              type="button"
+              className="header-search-toggle lg:hidden"
+              aria-label={mobileSearchOpen ? "Close search" : "Search peptides"}
+              aria-expanded={mobileSearchOpen}
+              onClick={() => {
+                const next = !mobileSearchOpen;
+                setMobileSearchOpen(next);
+                if (next) requestAnimationFrame(() => inputRef.current?.focus());
+                else { setOpen(false); setSearchQuery(""); inputRef.current?.blur(); }
+              }}
+            >
+              {mobileSearchOpen ? <X size={18} /> : <Search size={18} />}
+            </button>
 
             {/* Currency selector */}
             <div ref={currencyRef} className="header-currency-wrap" style={{ position: "relative", flexShrink: 0 }}>
