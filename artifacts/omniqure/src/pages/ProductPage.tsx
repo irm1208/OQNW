@@ -63,7 +63,7 @@ function Formula({ value }: { value: string }) {
 }
 
 export default function ProductPage() {
-  const { products, productDetails } = useProducts();
+  const { products, productDetails, loading: productsLoading } = useProducts();
   const params = useParams<{ id: string }>();
   const [, navigate] = useLocation();
   const rawProduct = products.find((p) => p.id === params.id || p.slug === params.id);
@@ -148,7 +148,10 @@ export default function ProductPage() {
     const onScroll = () => {
       const node = ctaRef.current;
       if (!node) return;
-      setShowStickyCta(node.getBoundingClientRect().bottom < 0);
+      // Off-screen in either direction: scrolled past, or not yet reached on
+      // a phone's first screen.
+      const r = node.getBoundingClientRect();
+      setShowStickyCta(r.bottom < 0 || r.top > window.innerHeight);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -157,7 +160,7 @@ export default function ProductPage() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [product?.slug]);
+  }, [product?.slug, productsLoading]);
 
   const handleNotifyMe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -207,6 +210,20 @@ export default function ProductPage() {
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
+
+  // While the catalogue loads, hold the hero's space so the page doesn't jump
+  // (and the footer doesn't flash into view) when the product arrives.
+  if (!product && productsLoading) {
+    return (
+      <div className="product-page bg-white" aria-busy="true" aria-label="Loading product">
+        <div className="border-b" style={{ borderColor: "var(--hairline)", height: 41 }} />
+        <Container className="grid min-h-[calc(100vh-40px)] gap-6 py-6 md:grid-cols-2 md:gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] md:py-10 lg:gap-14 lg:py-12">
+          <div className="product-skeleton aspect-square rounded-[14px]" />
+          <div className="product-skeleton h-[560px] rounded-[4px]" />
+        </Container>
+      </div>
+    );
+  }
 
   if (!product) {
     return (

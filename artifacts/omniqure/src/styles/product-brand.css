@@ -833,6 +833,24 @@
   .product-page .product-faq .about-section__title { font-size: 14.5px; }
 }
 
+/* Loading placeholder for the hero */
+.product-page .product-skeleton {
+  background: linear-gradient(90deg, #F1F2F5 0%, #F7F8FA 50%, #F1F2F5 100%);
+  background-size: 200% 100%;
+  animation: product-skeleton 1.4s ease-in-out infinite;
+}
+@keyframes product-skeleton { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@media (prefers-reduced-motion: reduce) { .product-page .product-skeleton { animation: none; } }
+
+/* Comfortable tap targets for the buying controls */
+.product-page .dosage-chip { min-height: 36px; }
+.product-page .bundle-card__toggle { min-height: 40px; }
+@media (max-width: 767px) {
+  .product-page .dosage-chip { min-height: 44px; min-width: 56px; }
+  .product-page .qty-stepper { height: 44px; }
+  .product-page .qty-stepper button { width: 44px; }
+}
+
 /* ── RELATED ─────────────────────────────────────────────────────────────── */
 .product-page .related-grid {
   display: grid;

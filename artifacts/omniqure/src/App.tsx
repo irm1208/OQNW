@@ -307,7 +307,9 @@ function App() {
               <div className="min-h-screen bg-white flex flex-col">
                 <HeaderStack />
                 <PageFade>
-                  <Suspense fallback={null}>
+                  {/* Hold a screen of space while a page's code loads, so the
+                      footer doesn't flash into view and then jump away. */}
+                  <Suspense fallback={<div style={{ minHeight: "100vh" }} aria-busy="true" />}>
                     <Router />
                   </Suspense>
                 </PageFade>
