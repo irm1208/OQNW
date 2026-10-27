@@ -4,6 +4,21 @@ import type { LucideIcon } from "lucide-react";
 
 type Crumb = { label: string; href?: string };
 
+/** A Sunburst page header: `key` names /sunburst/hdr-<key> in three sizes
+    (1920x640, 1200x400 and a 900x1125 phone composition). */
+export type HeroImage = { key: string; alt: string };
+
+export function HeroPicture({ image, className = "" }: { image: HeroImage; className?: string }) {
+  const base = `/sunburst/${image.key}`;
+  return (
+    <picture className={className}>
+      <source media="(max-width: 639px)" srcSet={`${base}-mobile.webp`} width={900} height={1125} />
+      <source media="(max-width: 1279px)" srcSet={`${base}-md.webp`} width={1200} height={400} />
+      <img src={`${base}.webp`} alt={image.alt} width={1920} height={640} decoding="async" fetchPriority="high" />
+    </picture>
+  );
+}
+
 export default function PageHero({
   crumbs,
   eyebrow,
@@ -12,6 +27,7 @@ export default function PageHero({
   children,
   aside,
   center = false,
+  image,
 }: {
   crumbs?: Crumb[];
   eyebrow?: string;
@@ -20,6 +36,7 @@ export default function PageHero({
   children?: ReactNode;
   aside?: ReactNode;
   center?: boolean;
+  image?: HeroImage;
 }) {
   const trail = crumbs ?? [];
   return (
@@ -44,7 +61,7 @@ export default function PageHero({
             ))}
           </nav>
         )}
-        <div className={aside ? "grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end" : ""}>
+        <div className={image ? "page-hero--image" : aside ? "grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end" : ""}>
           <div>
             {eyebrow && (
               <p className={`uppercase mb-3 flex items-center gap-1.5 ${center ? "justify-center" : ""}`} style={{ fontSize: 11, fontWeight: 500, lineHeight: 1, letterSpacing: "0.12em", color: "var(--cobalt)" }}>
@@ -60,8 +77,10 @@ export default function PageHero({
                 {children}
               </div>
             )}
+            {/* With a photograph, the aside stays in the text column */}
+            {image && aside && <div className="mt-6">{aside}</div>}
           </div>
-          {aside}
+          {image ? <div className="page-hero__media"><HeroPicture image={image} /></div> : aside}
         </div>
       </div>
     </section>

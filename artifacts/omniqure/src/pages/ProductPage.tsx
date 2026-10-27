@@ -11,6 +11,7 @@ import { Container, SectionTitle } from "@/components/home/HomeSections";
 import { groupProducts } from "@/data/groupedProducts";
 import { studioImageForProduct, studioFallback, STUDIO_BG } from "@/lib/studioImage";
 import { janoshikDataBySlug } from "@/data/janoshikData";
+import sunburstCards from "@/data/sunburstCards.json";
 import { resolveBacWaterProducts } from "@/data/bacWaterProducts";
 import JanoshikReportModal from "@/components/JanoshikReportModal";
 import { useCart } from "@/context/CartContext";
@@ -263,8 +264,11 @@ export default function ProductPage() {
     legacyVialImage !== legacySourceImage ? legacyVialImage : undefined
   );
   const primaryImage = vialImage ?? cardImage;
+  // Sunburst studio shot of the vial with its product card, where one exists.
+  const sunburstCard = (sunburstCards as Record<string, string>)[product.slug];
   const gallery = [
     { src: primaryImage, fallback: cardImage, alt: `${product.name} research vial` },
+    ...(sunburstCard ? [{ src: sunburstCard, fallback: cardImage, alt: `${product.name} vial with its product card` }] : []),
     ...(primaryImage !== cardImage ? [{ src: cardImage, fallback: product.image, alt: `${product.name} label` }] : []),
     ...(hasReport ? [{ src: jd!.image!, fallback: jd!.image!, alt: `${product.name} lab report` }] : []),
   ];

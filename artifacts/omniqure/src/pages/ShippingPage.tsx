@@ -59,7 +59,7 @@ export default function ShippingPage() {
   });
   return (
     <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", backgroundColor: "#fff", minHeight: "100vh" }}>
-      <PageHero crumbs={[{ label: "Shipping Policy" }]} eyebrow="Delivery" icon={Truck} title="Shipping Policy">
+      <PageHero image={{ key: "hdr-shipping", alt: "OmniQure bundle box ready to ship" }} crumbs={[{ label: "Shipping Policy" }]} eyebrow="Delivery" icon={Truck} title="Shipping Policy">
         <p>Last updated: {LAST_UPDATED} · {COMPANY_SHORT}</p>
       </PageHero>
 

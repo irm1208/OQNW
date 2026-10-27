@@ -380,7 +380,7 @@ export default function StacksPage() {
 
   return (
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
-      <PageHero
+      <PageHero image={{ key: "hdr-bundles", alt: "OmniQure build-your-own-bundle box with eight vials" }}
         crumbs={[{ label: "Research Stacks" }]}
         eyebrow="Research Protocols"
         icon={Layers}

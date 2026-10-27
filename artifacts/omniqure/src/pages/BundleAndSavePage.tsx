@@ -79,7 +79,7 @@ export default function BundleAndSavePage() {
 
   return (
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
-      <PageHero
+      <PageHero image={{ key: "hdr-bundles", alt: "OmniQure build-your-own-bundle box with eight vials" }}
         crumbs={[{ label: "Bundle & Save" }]}
         eyebrow="Volume discounts"
         icon={Percent}

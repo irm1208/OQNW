@@ -513,7 +513,7 @@ export default function ProtocolsPage() {
   return (
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
 
-      <PageHero
+      <PageHero image={{ key: "hdr-research", alt: "OmniQure Epitalon research vial" }}
         crumbs={[{ label: "Protocols" }]}
         eyebrow="Research Protocols"
         icon={BookOpen}

@@ -463,7 +463,7 @@ export default function GlossaryPage() {
   return (
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
 
-      <PageHero
+      <PageHero image={{ key: "hdr-research", alt: "OmniQure Epitalon research vial" }}
         crumbs={[{ label: "Glossary" }]}
         eyebrow="Research Glossary"
         icon={BookOpen}

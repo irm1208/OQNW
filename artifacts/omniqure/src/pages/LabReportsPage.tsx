@@ -559,7 +559,7 @@ export default function LabReportsPage() {
   return (
     <div style={{ minHeight: "100vh", background: "#fff" }}>
 
-      <PageHero
+      <PageHero image={{ key: "hdr-lab-reports", alt: "OmniQure BPC-157 and GHK-Cu vials" }}
         crumbs={[{ label: "Lab Reports" }]}
         eyebrow="Independent Results"
         icon={ShieldCheck}

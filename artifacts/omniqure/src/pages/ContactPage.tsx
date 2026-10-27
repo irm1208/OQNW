@@ -84,7 +84,7 @@ export default function ContactPage() {
 
   return (
     <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", background: "#fff" }}>
-      <PageHero crumbs={[{ label: "Contact" }]} eyebrow="Get in touch" title="Research desk.">
+      <PageHero image={{ key: "hdr-contact", alt: "OmniQure vial beside a thank-you card" }} crumbs={[{ label: "Contact" }]} eyebrow="Get in touch" title="Research desk.">
         Questions about compounds, orders, Janoshik reports, wholesale pricing or institutional accounts. We respond within one business day.
       </PageHero>
 

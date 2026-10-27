@@ -220,7 +220,7 @@ export default function ReconstitutionCalculator() {
 
   return (
     <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", background: "#fff", minHeight: "80vh" }}>
-      <PageHero crumbs={[{ label: "Calculator" }]} eyebrow="Free research tool" icon={Calculator} title="Peptide Reconstitution Calculator">
+      <PageHero image={{ key: "hdr-storage", alt: "OmniQure BPC-157 vial beside bacteriostatic water" }} crumbs={[{ label: "Calculator" }]} eyebrow="Free research tool" icon={Calculator} title="Peptide Reconstitution Calculator">
         Enter your vial size, the bacteriostatic water you're adding and your target amount to get the exact concentration, the volume to draw and the reading in insulin-syringe units. For laboratory research use only.
       </PageHero>
 

@@ -172,7 +172,7 @@ export default function ReferAFriendPage() {
 
   return (
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
-      <PageHero
+      <PageHero image={{ key: "hdr-partners", alt: "OmniQure GHK-Cu and BPC-157 vials with a thank-you card" }}
         crumbs={[{ label: "Refer a Friend" }]}
         eyebrow="Referral programme"
         icon={Users}

@@ -27,7 +27,7 @@ const card = { background: "#fff", borderRadius: 16, border: HAIR } as const;
 function AffiliateLanding({ program }: { program: any }) {
   return (
     <div>
-      <PageHero
+      <PageHero image={{ key: "hdr-partners", alt: "OmniQure GHK-Cu and BPC-157 vials with a thank-you card" }}
         crumbs={[{ label: "Affiliate Programme" }]}
         eyebrow="Partner programme"
         icon={Users}

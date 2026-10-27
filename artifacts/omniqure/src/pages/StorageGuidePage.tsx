@@ -108,7 +108,7 @@ export default function StorageGuidePage() {
   return (
     <div className="min-h-screen bg-white">
 
-      <PageHero crumbs={[{ label: "Storage & Handling Guide" }]} eyebrow="Research Guide" icon={Thermometer} title="Peptide Storage & Handling Guide">
+      <PageHero image={{ key: "hdr-storage", alt: "OmniQure BPC-157 vial beside bacteriostatic water" }} crumbs={[{ label: "Storage & Handling Guide" }]} eyebrow="Research Guide" icon={Thermometer} title="Peptide Storage & Handling Guide">
         <p>
           Maintaining peptide integrity from receipt through reconstitution. Reference-grade protocols for lyophilised storage, cold-chain handling, and solution stability.
         </p>

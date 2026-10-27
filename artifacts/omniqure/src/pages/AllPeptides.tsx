@@ -3,6 +3,7 @@ import { useLocation, Link } from "wouter";
 import { Search } from "lucide-react";
 import CatalogueCard from "@/components/CatalogueCard";
 import { Container, Eyebrow, SectionTitle } from "@/components/home/HomeSections";
+import { HeroPicture } from "@/components/PageHero";
 import { groupProducts } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
 import { isHiddenCategory } from "@/data/products";
@@ -121,6 +122,10 @@ export default function AllPeptides() {
     window.history.pushState(null, "", window.location.pathname);
   };
 
+  // Sunburst category header, when one range is in view.
+  const categoryImage = !searchQuery.trim() && selectedCategory !== "All Peptides"
+    ? { key: `cat-hdr-${selectedCategory.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`, alt: `${selectedCategory} research vials` }
+    : null;
   const heading = searchQuery.trim()
     ? `Search: “${searchQuery.trim()}”`
     : selectedCategory === "All Peptides" ? "The full catalogue." : `${selectedCategory}.`;
@@ -135,6 +140,7 @@ export default function AllPeptides() {
             <span className="mx-1.5">/</span>
             <span style={{ color: "var(--ink)" }}>Catalogue</span>
           </nav>
+          {categoryImage && <HeroPicture key={categoryImage.key} image={categoryImage} className="cat-banner" />}
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <Eyebrow>Research peptides</Eyebrow>
