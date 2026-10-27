@@ -21,7 +21,7 @@ export default function BlogIndexPage() {
     <div className="bg-slate-50 min-h-screen py-16 md:py-24">
       <div className="container max-w-5xl mx-auto px-4 md:px-6">
         <header className="mb-16 text-center md:text-left">
-          <HeroPicture image={{ key: "hdr-notes", alt: "OmniQure NAD+ and MOTS-c research vials" }} className="cat-banner" />
+          <HeroPicture image={{ key: "hdr-blog", alt: "Six OmniQure research vials" }} className="cat-banner" />
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">
             Research & Education
           </h1>

@@ -7,10 +7,10 @@ type Category = { title: string; subtitle: string; category: string; image: stri
 
 const catalogueHref = (category: string) => `/all-peptides?category=${encodeURIComponent(category)}`;
 
-/* Sunburst studio category photographs (4:5, vials centred). Each has a
-   960px and a 480px export; the browser picks by rendered width. */
-const photo = (name: string) => `/sunburst/cat-${name}.webp`;
-const photoSet = (name: string) => `/sunburst/cat-${name}-sm.webp 480w, /sunburst/cat-${name}.webp 960w`;
+/* Sunburst family photographs for each range (the catalogue banners use the
+   separate per-category headers, so nothing repeats). 960px and 480px exports. */
+const photo = (name: string) => `/sunburst/range-${name}.webp`;
+const photoSet = (name: string) => `/sunburst/range-${name}-sm.webp 480w, /sunburst/range-${name}.webp 960w`;
 
 // Each card is Matte Navy, lit by its range colour (the vial cap colour).
 const FEATURED: Category[] = [
@@ -92,7 +92,7 @@ export default function ProductCategoriesSection() {
               style={{ "--range": rangeColourForCategory(card.category) } as React.CSSProperties}
             >
               <span className="range-mini__media">
-                <img src={`/sunburst/cat-${card.image}-sm.webp`} alt="" loading="lazy" width={480} height={600} />
+                <img src={`/sunburst/range-${card.image}-sm.webp`} alt="" loading="lazy" width={480} height={600} />
               </span>
               <span className="min-w-0 flex-1">
                 <span className="range-mini__title">{card.title}</span>

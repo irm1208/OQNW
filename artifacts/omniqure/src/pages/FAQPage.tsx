@@ -129,7 +129,7 @@ export default function FAQPage() {
 
   return (
     <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", background: "#fff" }}>
-      <PageHero image={{ key: "hdr-contact", alt: "OmniQure vial beside a thank-you card" }}
+      <PageHero image={{ key: "hdr-faq", alt: "OmniQure insert card: four quick checks on arrival", fit: "center" }}
         crumbs={[{ label: "FAQ" }]}
         eyebrow="Help centre"
         title="Questions, answered."

@@ -81,7 +81,7 @@ export default function AboutPage() {
             <div className="lg:col-span-5">
               <div className="relative">
                 <div className="overflow-hidden rounded-[26px] border bg-white p-1.5" style={{ borderColor: "rgba(255,255,255,0.6)", boxShadow: "0 25px 50px -12px rgba(11,18,32,0.18)" }}>
-                  <img src="/sunburst/hdr-about-mobile.webp" alt="OmniQure build-your-own-bundle box holding eight research vials" className="block h-auto w-full rounded-[20px]" width={900} height={1125} />
+                  <img src="/sunburst/hdr-about2-mobile.webp" alt="The OmniQure range: research pen kit, cartons and vials" className="block h-auto w-full rounded-[20px]" width={900} height={1125} />
                 </div>
                 <div className="absolute -left-3 bottom-5 inline-flex items-center gap-2 rounded-2xl px-3.5 py-2.5 backdrop-blur" style={{ background: "rgba(255,255,255,0.9)", boxShadow: "0 8px 24px rgba(11,18,32,0.10)" }}>
                   <ShieldCheck size={16} style={{ color: "var(--cobalt)" }} aria-hidden="true" />

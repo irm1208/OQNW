@@ -136,7 +136,7 @@ export default function HomePage() {
       <ProductCategoriesSection />
 
       {/* 7. The offer */}
-      <BundleBanner image="/hero/sb-bundle-stack-wide.webp" />
+      <BundleBanner image="/sunburst/sb-bundle-box-wide.webp" />
 
       {/* 8. The people behind it */}
       <MissionSection />

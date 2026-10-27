@@ -6,12 +6,14 @@ type Crumb = { label: string; href?: string };
 
 /** A Sunburst page header: `key` names /sunburst/hdr-<key> in three sizes
     (1920x640, 1200x400 and a 900x1125 phone composition). */
-export type HeroImage = { key: string; alt: string };
+/** `fit: "center"` for packaging and card photographs, whose subject is
+    centred; the default suits the 3:1 headers with the product on the left. */
+export type HeroImage = { key: string; alt: string; fit?: "left" | "center" };
 
 export function HeroPicture({ image, className = "" }: { image: HeroImage; className?: string }) {
   const base = `/sunburst/${image.key}`;
   return (
-    <picture className={className}>
+    <picture className={className} data-fit={image.fit ?? "left"}>
       <source media="(max-width: 639px)" srcSet={`${base}-mobile.webp`} width={900} height={1125} />
       <source media="(max-width: 1279px)" srcSet={`${base}-md.webp`} width={1200} height={400} />
       <img src={`${base}.webp`} alt={image.alt} width={1920} height={640} decoding="async" fetchPriority="high" />

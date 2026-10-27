@@ -24,7 +24,7 @@ export default function WishlistPage() {
   return (
     <div style={{ backgroundColor: "#fff", minHeight: "60vh" }}>
 
-      <PageHero image={{ key: "hdr-account", alt: "OmniQure thank-you card" }}
+      <PageHero image={{ key: "hdr-wishlist", alt: "Six OmniQure research vials" }}
         crumbs={[{ label: "My Account", href: "/account" }, { label: "Wishlist" }]}
         eyebrow="My Account"
         icon={Heart}

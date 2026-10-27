@@ -3483,3 +3483,7 @@ body.has-cart-preview-bar main {
 .cat-banner { display: block; margin-bottom: 24px; overflow: hidden; border: 1px solid var(--oq-mist); background: #F2F0EB; }
 .cat-banner img { display: block; width: 100%; aspect-ratio: 3 / 1; object-fit: cover; object-position: 0% 50%; }
 @media (max-width: 639px) { .cat-banner img { aspect-ratio: 4 / 3; object-position: 50% 50%; } }
+
+/* Centred compositions (packaging, insert cards): show them whole */
+.page-hero__media picture[data-fit="center"] img { object-position: 50% 50%; }
+@media (min-width: 1024px) { .page-hero__media picture[data-fit="center"] img { aspect-ratio: 4 / 3; } }

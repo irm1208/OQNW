@@ -496,10 +496,10 @@ export function MissionSection() {
       <Container className="mission">
         <div className="mission__media">
           <img
-            src="/sunburst/why-delivery.webp"
-            srcSet="/sunburst/why-delivery-sm.webp 480w, /sunburst/why-delivery.webp 960w"
+            src="/sunburst/mission.webp"
+            srcSet="/sunburst/mission-sm.webp 480w, /sunburst/mission.webp 960w"
             sizes="(min-width: 1024px) 40vw, 100vw"
-            alt="An OmniQure BPC-157 vial beside a thank-you card"
+            alt="OmniQure Epitalon and Retatrutide research sets with BAC water"
             loading="lazy"
             width={960}
             height={1200}
@@ -526,9 +526,9 @@ export function MissionSection() {
 
 /* ── Why OmniQure: three photographs, then six checkable points ─────────── */
 const WHY_PHOTO = [
-  { image: "why-lab", title: "Tested", body: "HPLC and mass-spec from an independent lab, published as a Janoshik report on the product page.", href: "/lab-reports", cta: "See lab reports" },
+  { image: "why-tested", title: "Tested", body: "HPLC and mass-spec from an independent lab, published as a Janoshik report on the product page.", href: "/lab-reports", cta: "See lab reports" },
   { image: "pack-kit", title: "Documented", body: "Lot, expiry, purity and storage on every vial and kit, with a QR code to its product page.", href: "/storage-guide", cta: "Storage guide" },
-  { image: "why-storage", title: "Delivered", body: "Lyophilised, sealed and packed discreetly; same-day dispatch before 12:00, tracked and free across the UK.", href: "/shipping", cta: "Delivery details" },
+  { image: "why-delivered", title: "Delivered", body: "Lyophilised, sealed and packed discreetly; same-day dispatch before 12:00, tracked and free across the UK.", href: "/shipping", cta: "Delivery details" },
 ];
 
 export function WhySection() {
