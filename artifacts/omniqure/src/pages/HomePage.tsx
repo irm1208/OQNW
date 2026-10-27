@@ -9,8 +9,8 @@ import HeroCarousel from "@/components/home/HeroCarousel";
 import FeaturedRangeSection from "@/components/home/FeaturedRangeSection";
 import ProductCategoriesSection from "@/components/home/ProductCategoriesSection";
 import {
-  WhySection, BestSellersSection, BundleBanner, ProcessSection, QualitySection,
-  FaqSection, ReviewsSection, MissionSection,
+  WhySection, BestSellersSection, BundleBanner, QualitySection,
+  FaqSection, ReviewsSection, MissionSection, HowItWorksSection, ClosingCtaSection,
 } from "@/components/home/HomeSections";
 const HOME_FAQ: { q: string; a: string }[] = [
               {
@@ -107,10 +107,10 @@ export default function HomePage() {
       {/* 1. Hero campaigns: separate desktop and mobile compositions */}
       <HeroSection />
 
-      {/* 2. Promise, first actions and proof */}
+      {/* 2. Trust line under the hero */}
       <BrandBand />
 
-      {/* 3. Products first: priced, purchasable vials before any storytelling */}
+      {/* 3. Products first */}
       <BestSellersSection>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-5">
           {featuredGroups.slice(0, 8).map(group => (
@@ -126,21 +126,29 @@ export default function HomePage() {
         </div>
       </BestSellersSection>
 
-      {/* 4. Who we are: the human reason to trust the products above */}
-      <MissionSection />
+      {/* 4. Brand pillars: tested, documented, delivered */}
+      <WhySection />
 
-      {/* 5. Browse by range */}
+      {/* 5. How it works */}
+      <HowItWorksSection />
+
+      {/* 6. Shop by range */}
       <ProductCategoriesSection />
 
-      {/* 6. The bundle offer, once the range is known */}
+      {/* 7. The offer */}
       <BundleBanner image="/hero/sb-bundle-stack-wide.webp" />
 
-      {/* 7. Proof: why us, then what customers say */}
-      <WhySection />
+      {/* 8. The people behind it */}
+      <MissionSection />
+
+      {/* 9. Social proof */}
       <ReviewsSection />
 
-      {/* 8. Remaining questions */}
+      {/* 10. Questions */}
       <FaqSection items={HOME_FAQ} />
+
+      {/* 11. Closing call to action */}
+      <ClosingCtaSection />
 
       <RecentlyViewed />
     </div>

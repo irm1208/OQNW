@@ -203,33 +203,51 @@ export function QualitySection() {
 }
 
 /* ── 4. Process: three connected steps ─────────────────────────── */
+/* ── How it works: four steps from order to verified vial ───────────────── */
 const STEPS = [
-  { title: "Independently tested", body: "Batches are sent to Janoshik for HPLC and mass-spec analysis. Reports are published on product pages." },
-  { title: "Sealed and labelled", body: "Each compound is lyophilised, sealed in an individually labelled vial and packed discreetly." },
-  { title: "Same-day dispatch", body: "Order before 12:00 and it ships the same working day with free tracked UK delivery." },
+  { title: "Choose your compounds", body: "135 peptides across repair, growth, metabolic, cognitive and longevity ranges. Mix freely." },
+  { title: "We test and document", body: "Each batch goes to Janoshik for HPLC and mass-spec. The report is published before the batch is sold." },
+  { title: "Dispatched the same day", body: "Order before 12:00 on a working day and it ships that day, tracked and free across the UK." },
+  { title: "Verify it yourself", body: "Scan the QR on the vial or open the product page to check the lot against its lab report." },
 ];
 
-export function ProcessSection() {
+export function HowItWorksSection() {
   return (
-    <section className="border-b bg-white" style={hairline}>
-      <Container className="py-14 lg:py-24">
-        <div className="text-center mb-12 lg:mb-16">
-          <Eyebrow center>Process</Eyebrow>
-          <h2 className="font-semibold leading-none" style={{ fontSize: "clamp(26px, 3vw, 44px)", letterSpacing: "-0.025em", color: "var(--ink)" }}>From synthesis to your lab.</h2>
+    <section className={`${sectionBase} bg-white`} style={hairline}>
+      <Container>
+        <div className="mb-8 lg:mb-10 max-w-[640px]">
+          <Eyebrow>How it works</Eyebrow>
+          <SectionTitle size="clamp(26px, 3vw, 40px)">From order to verified vial.</SectionTitle>
         </div>
-        <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-0">
-          <div className="hidden lg:block absolute top-[22px] left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] h-px" style={{ background: "rgba(47, 79, 140,0.2)" }} />
+        <ol className="steps">
           {STEPS.map((st, i) => (
-            <div key={st.title} className="relative flex flex-col lg:items-center lg:text-center lg:px-8">
-              <div className="flex items-center gap-4 lg:flex-col mb-4 lg:mb-5">
-                <div className="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white" style={{ border: "2px solid rgba(47, 79, 140,0.2)" }}>
-                  <span className="font-semibold tabular-nums" style={{ fontSize: 11, color: "var(--cobalt)" }}>{String(i + 1).padStart(2, "0")}</span>
-                </div>
-                <h3 className="font-semibold" style={{ fontSize: 16, letterSpacing: "-0.025em", color: "var(--ink)" }}>{st.title}</h3>
-              </div>
-              <p style={{ fontSize: 13.5, lineHeight: 1.8, color: "var(--graphite)" }}>{st.body}</p>
-            </div>
+            <li key={st.title} className="steps__item">
+              <span className="steps__num">{String(i + 1).padStart(2, "0")}</span>
+              <span className="steps__title">{st.title}</span>
+              <span className="steps__body">{st.body}</span>
+            </li>
           ))}
+        </ol>
+      </Container>
+    </section>
+  );
+}
+
+/* ── Closing call to action ─────────────────────────────────────────────── */
+export function ClosingCtaSection() {
+  return (
+    <section className="closing" aria-labelledby="closing-title">
+      <div className="pinstripe" aria-hidden="true" />
+      <Container className="closing__inner">
+        <div>
+          <p className="home-eyebrow home-eyebrow--dark">Ready when you are</p>
+          <h2 id="closing-title" className="closing__title">Verified research peptides, shipped today.</h2>
+          <p className="closing__sub">Order before 12:00 for same-day dispatch. Free tracked UK delivery, lab report with every batch.</p>
+        </div>
+        <div className="closing__actions">
+          <Link href="/all-peptides" className="home-btn home-btn--light">Shop peptides <ArrowRight size={16} /></Link>
+          <Link href="/bundle-and-save" className="home-btn home-btn--ghost">Build a bundle</Link>
+          <p className="closing__ruo">For research use only · Not for human or veterinary use</p>
         </div>
       </Container>
     </section>
@@ -508,18 +526,9 @@ export function MissionSection() {
 
 /* ── Why OmniQure: three photographs, then six checkable points ─────────── */
 const WHY_PHOTO = [
-  { image: "why-lab", title: "Every batch tested", body: "HPLC and mass-spec from an independent lab, published as a Janoshik report on the product page.", href: "/lab-reports", cta: "See lab reports" },
-  { image: "pack-kit", title: "Labelled for the lab", body: "Lot, expiry, purity and storage on every vial and kit, with a QR code to its product page.", href: "/storage-guide", cta: "Storage guide" },
-  { image: "why-storage", title: "Sealed and lyophilised", body: "Freeze-dried and sealed in individually labelled vials, so compounds stay stable in transit.", href: "/storage-guide", cta: "Handling" },
-];
-
-const SELLING_POINTS = [
-  { stat: "99%+", label: "HPLC purity", body: "Independently tested before it ships." },
-  { stat: "1 click", label: "to the COA", body: "Janoshik report and verify link on each product." },
-  { stat: "12:00", label: "same-day cut-off", body: "Order before noon on a working day; ships tracked." },
-  { stat: "£0", label: "UK delivery", body: "Mainland UK, the Highlands and Northern Ireland." },
-  { stat: "2 free", label: "peptides at 10 vials", body: "Free BAC water from 3 vials, a peptide free at 5." },
-  { stat: "135", label: "compounds", body: "Repair, growth, metabolic, cognitive and longevity." },
+  { image: "why-lab", title: "Tested", body: "HPLC and mass-spec from an independent lab, published as a Janoshik report on the product page.", href: "/lab-reports", cta: "See lab reports" },
+  { image: "pack-kit", title: "Documented", body: "Lot, expiry, purity and storage on every vial and kit, with a QR code to its product page.", href: "/storage-guide", cta: "Storage guide" },
+  { image: "why-storage", title: "Delivered", body: "Lyophilised, sealed and packed discreetly; same-day dispatch before 12:00, tracked and free across the UK.", href: "/shipping", cta: "Delivery details" },
 ];
 
 export function WhySection() {
@@ -527,8 +536,11 @@ export function WhySection() {
     <section className={sectionBase} style={{ ...hairline, background: "#fff" }}>
       <Container>
         <div className="mb-8 max-w-[640px]">
-          <Eyebrow>Why OmniQure</Eyebrow>
-          <SectionTitle size="clamp(26px, 3vw, 40px)">Six things you can check before you buy.</SectionTitle>
+          <Eyebrow>The OmniQure standard</Eyebrow>
+          <SectionTitle size="clamp(26px, 3vw, 40px)">Tested. Documented. Delivered.</SectionTitle>
+          <p className="mt-4" style={{ fontSize: 15, lineHeight: 1.65, color: "var(--graphite)" }}>
+            Three things we do with every batch, and the page where you can check each one.
+          </p>
         </div>
         <div className="grid gap-4 md:grid-cols-3 lg:gap-5">
           {WHY_PHOTO.map((item) => (
@@ -552,17 +564,6 @@ export function WhySection() {
             </Link>
           ))}
         </div>
-        <ul className="sell__grid sell__grid--light">
-          {SELLING_POINTS.map((p) => (
-            <li key={p.label}>
-              <span className="sell__item">
-                <span className="sell__stat">{p.stat}</span>
-                <span className="sell__label">{p.label}</span>
-                <span className="sell__body">{p.body}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
       </Container>
     </section>
   );
