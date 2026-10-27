@@ -161,7 +161,10 @@ export function BundleBanner({ image }: { image?: string }) {
         </div>
         {image && (
           <div className="home-bundle__media">
-            <img src={image} alt="OmniQure bundle box holding eight research vials" width={2400} height={1000} loading="lazy" />
+            <picture>
+              <source media="(max-width: 767px)" srcSet={image.replace("-wide", "-mobile")} width={1080} height={1350} />
+              <img src={image} alt="OmniQure build-your-own-bundle box holding eight research vials" width={1600} height={800} loading="lazy" />
+            </picture>
           </div>
         )}
       </div>

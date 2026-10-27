@@ -1,32 +1,68 @@
 import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { Link } from "wouter";
 
-const SLIDES = [
+/*
+ * Sunburst studio heroes. Each slide has its own desktop (16:9), tablet (4:3)
+ * and phone (4:5) composition. On desktop the copy sits in the empty right
+ * half of the photograph; on tablets and phones the frames are tight around
+ * the products, so the copy sits in a caption directly beneath the image
+ * instead of covering them.
+ *
+ * Copy: one benefit-led headline, one specific supporting line, one action.
+ */
+type Slide = {
+  image: string;
+  eyebrow: string;
+  title: string;
+  body: string;
+  cta: { label: string; href: string };
+  /** Desktop copy colour: light text on the navy wall, dark on chalk. */
+  tone: "light" | "dark";
+  /** Desktop copy: vertical position, and where it starts (% of the page width). */
+  place: "upper" | "middle";
+  copyStart: number;
+  /** "inset": on desktop the photo is scaled down to the left and fades into its
+      own background, for compositions with no empty right half. */
+  fit?: "inset";
+  alt: string;
+};
+
+const SLIDES: Slide[] = [
   {
-    image: "eight-vials",
-    title: "Eight vials, chosen by you",
-    description: "Build your own bundle. Pick any eight compounds from the range and get them together in one box. For research use only.",
-    href: "/bundle-and-save",
+    image: "sb-range",
+    eyebrow: "Independently tested",
+    title: "Purity you can check.",
+    body: "99%+ HPLC purity, with the Janoshik lab report for every batch one click from the product.",
+    cta: { label: "Shop peptides", href: "/all-peptides" },
+    tone: "light",
+    place: "upper",
+    copyStart: 64,
+    alt: "OmniQure BPC-157, Ipamorelin, GHK-Cu and Epitalon research vials on a stone surface",
   },
   {
-    image: "families",
-    title: "135 compounds, six families",
-    description: "Each family has its own colour, on the cap, the label and the box. For research use only.",
-    href: "/all-peptides",
+    image: "sb-bundle",
+    eyebrow: "Bundle & save",
+    title: "Eight vials, your choice.",
+    body: "Mix any compounds. Free BAC water from 3 vials, a free peptide at 5 and two at 10.",
+    cta: { label: "Build a bundle", href: "/bundle-and-save" },
+    tone: "dark",
+    place: "middle",
+    copyStart: 64,
+    fit: "inset",
+    alt: "OmniQure build-your-own-bundle box holding eight research vials",
   },
   {
-    image: "four-compounds",
-    title: "Four compounds, one spray format",
-    description: "Semax, Selank, Oxytocin and PT-141, 10 mg in 15 ml. For research use only.",
-    href: "/all-peptides",
-  },
-  {
-    image: "research-peps",
-    title: "Research peptides, clearly labelled",
-    description: "Every vial carries its lot, expiry date, storage information and a QR code. For research use only.",
-    href: "/all-peptides",
+    image: "sb-retatrutide",
+    eyebrow: "Retatrutide",
+    title: "Six strengths, one standard.",
+    body: "10mg to 60mg, lyophilised and labelled with lot, CAS and storage, each backed by a lab report.",
+    cta: { label: "Shop Retatrutide", href: "/product/retatrutide-40mg" },
+    tone: "dark",
+    place: "middle",
+    copyStart: 54,
+    alt: "OmniQure Retatrutide 40mg carton and vial",
   },
 ];
 
@@ -112,22 +148,38 @@ export default function HeroCarousel() {
               aria-roledescription="slide"
               aria-label={`${index + 1} of ${SLIDES.length}: ${slide.title}`}
               aria-hidden={selected !== index}
-              className="min-w-0 shrink-0 grow-0 basis-full"
+              className="hero-slide min-w-0 shrink-0 grow-0 basis-full"
+              data-tone={slide.tone}
+              data-place={slide.place}
+              data-fit={slide.fit}
+              style={{ "--copy-start": `${slide.copyStart}%` } as React.CSSProperties}
             >
-              <Link href={slide.href} tabIndex={selected === index ? 0 : -1} className="block focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[var(--cobalt)]">
+              <div className="hero-slide__media">
                 <picture>
-                  <source media="(max-width: 767px)" srcSet={`/hero/${slide.image}-mobile.webp`} width={1080} height={1350} />
+                  <source media="(max-width: 639px)" srcSet={`/hero/${slide.image}-mobile.webp`} width={1080} height={1350} />
+                  <source media="(max-width: 1023px)" srcSet={`/hero/${slide.image}-tablet.webp`} width={1600} height={1200} />
                   <img
                     src={`/hero/${slide.image}-desktop.webp`}
-                    alt={`${slide.title}. ${slide.description}`}
-                    width={2400}
-                    height={1000}
+                    alt={slide.alt}
+                    width={1920}
+                    height={1080}
                     fetchPriority={index === 0 ? "high" : "auto"}
-                    className="block aspect-[4/5] w-full object-cover sm:aspect-[12/5] lg:aspect-[8/3]"
+                    loading={index === 0 ? "eager" : "lazy"}
                     draggable={false}
                   />
                 </picture>
-              </Link>
+              </div>
+              <div className="hero-slide__copy">
+                <div className="hero-slide__copy-inner">
+                  <p className="hero-slide__eyebrow">{slide.eyebrow}</p>
+                  <h2 className="hero-slide__title">{slide.title}</h2>
+                  <p className="hero-slide__body">{slide.body}</p>
+                  <Link href={slide.cta.href} tabIndex={selected === index ? 0 : -1} className="hero-slide__cta">
+                    {slide.cta.label} <ArrowRight size={16} aria-hidden="true" />
+                  </Link>
+                  <p className="hero-slide__ruo">For research use only · Not for human or veterinary use</p>
+                </div>
+              </div>
             </div>
           ))}
         </div>

@@ -130,7 +130,7 @@ export default function HomePage() {
       <ProductCategoriesSection />
 
       {/* 5. The bundle offer, once the range is known */}
-      <BundleBanner image="/hero/eight-vials-desktop.webp" />
+      <BundleBanner image="/hero/sb-bundle-stack-wide.webp" />
 
       {/* 6. Proof: why us, then what customers say */}
       <WhySection />
