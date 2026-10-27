@@ -1,7 +1,7 @@
 import { useRef, useState, type ReactNode } from "react";
 import { Link } from "wouter";
 import {
-  FlaskConical, Truck, PackageCheck, Boxes, BadgePercent, Zap,
+  Boxes, BadgePercent, Zap,
   ArrowRight, ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight, Building2, Star,
 } from "lucide-react";
 import { useBlogPosts } from "@/hooks/useBlog";
@@ -35,10 +35,14 @@ const sectionBase = "border-b py-12 lg:py-20";
 const hairline = { borderColor: "var(--hairline)" } as const;
 
 /* ── 1. Why OmniQure: six numbered value cards ─────────────────── */
+// The first three lead with Sunburst studio photographs; the rest are a compact list.
+const WHY_PHOTO = [
+  { image: "why-lab", title: "99%+ purity, every batch", body: "HPLC and mass-spec results from an independent laboratory, published as Janoshik reports on product pages.", href: "/lab-reports", cta: "See lab reports" },
+  { image: "why-storage", title: "Sealed, labelled vials", body: "Every compound is lyophilised and sealed in an individually labelled vial to keep it stable in transit.", href: "/storage-guide", cta: "Storage guide" },
+  { image: "why-delivery", title: "Free tracked UK delivery", body: "Free tracked shipping across mainland UK, the Highlands and Northern Ireland, in discreet protective packaging.", href: "/shipping", cta: "Delivery details" },
+];
+
 const WHY = [
-  { icon: FlaskConical, title: "99%+ purity, every batch", short: "HPLC verified", body: "HPLC and mass-spec results from an independent laboratory, published as Janoshik reports on product pages." },
-  { icon: Truck, title: "Free tracked UK delivery", short: "Tracked & discreet", body: "Free tracked shipping across mainland UK, the Highlands and Northern Ireland, in discreet protective packaging." },
-  { icon: PackageCheck, title: "Sealed, labelled vials", short: "Lyophilised", body: "Every compound is lyophilised and sealed in an individually labelled vial to preserve stability in transit." },
   { icon: Boxes, title: "Broad catalogue", short: "Full research range", body: "BPC-157, TB-500, growth-axis, longevity and nootropic compounds, plus bacteriostatic water and supplies." },
   { icon: BadgePercent, title: "Bundle & save", short: "Free peptides", body: "Order 3 or more vials and free items are added automatically, up to two free peptides on 10+ vial orders." },
   { icon: Zap, title: "Same-day dispatch", short: "Before 12:00", body: "Order before 12:00 and your package ships the same working day, tracked from dispatch to delivery." },
@@ -70,33 +74,39 @@ export function WhySection() {
             ))}
           </div>
         </div>
-        <div className="sm:hidden grid grid-cols-2 gap-3">
-          {WHY.map(({ icon: Icon, title, short }) => (
-            <div key={title} className="flex flex-col gap-3 rounded-[6px] border bg-white p-4" style={hairline}>
-              <span className="home-icon">
-                <Icon size={16} strokeWidth={1.8} />
+        <div className="grid gap-4 md:grid-cols-3 lg:gap-5">
+          {WHY_PHOTO.map((item) => (
+            <Link key={item.title} href={item.href} className="why-card group">
+              <span className="why-card__media">
+                <img
+                  src={`/sunburst/${item.image}.webp`}
+                  srcSet={`/sunburst/${item.image}-sm.webp 480w, /sunburst/${item.image}.webp 960w`}
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                  alt=""
+                  loading="lazy"
+                  width={960}
+                  height={1200}
+                />
               </span>
-              <div>
-                <p className="font-semibold leading-snug" style={{ fontSize: 12, color: "var(--ink)" }}>{title}</p>
-                <p className="mt-1 leading-snug" style={{ fontSize: 11, color: "var(--graphite)" }}>{short}</p>
-              </div>
-            </div>
+              <span className="why-card__body">
+                <span className="why-card__title">{item.title}</span>
+                <span className="why-card__text">{item.body}</span>
+                <span className="why-card__cta">{item.cta} <ArrowRight size={14} aria-hidden="true" /></span>
+              </span>
+            </Link>
           ))}
         </div>
-        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
-          {WHY.map(({ icon: Icon, title, body }, i) => (
-            <div key={title} className="relative bg-white rounded-[6px] border p-6 transition-colors hover:border-[var(--oq-dusty-blue)]" style={hairline}>
-              <span className="absolute top-5 right-5 tabular-nums" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: "var(--oq-dusty-blue)" }}>
-                {String(i + 1).padStart(2, "0")}
+        <ul className="why-list">
+          {WHY.map(({ icon: Icon, title, body }) => (
+            <li key={title}>
+              <span className="home-icon"><Icon size={16} strokeWidth={1.8} /></span>
+              <span>
+                <span className="why-list__title">{title}</span>
+                <span className="why-list__text">{body}</span>
               </span>
-              <span className="home-icon home-icon--lg mb-4">
-                <Icon size={18} strokeWidth={1.8} />
-              </span>
-              <p className="font-semibold" style={{ fontSize: 15, color: "var(--ink)" }}>{title}</p>
-              <p className="mt-1.5 leading-relaxed" style={{ fontSize: 13, color: "var(--graphite)" }}>{body}</p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
         <div className="mt-8 flex justify-center">
           <Link href="/all-peptides" className="home-btn home-btn--navy">
             Browse the catalogue <ArrowRight size={16} />

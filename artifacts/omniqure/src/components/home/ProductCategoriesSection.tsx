@@ -7,21 +7,23 @@ type Category = { title: string; subtitle: string; category: string; image: stri
 
 const catalogueHref = (category: string) => `/all-peptides?category=${encodeURIComponent(category)}`;
 
-/* Transparent vial cutouts generated from the studio renders. */
-const cutout = (name: string) => `/reference/categories/${name}.webp`;
+/* Sunburst studio category photographs (4:5, vials centred). Each has a
+   960px and a 480px export; the browser picks by rendered width. */
+const photo = (name: string) => `/sunburst/cat-${name}.webp`;
+const photoSet = (name: string) => `/sunburst/cat-${name}-sm.webp 480w, /sunburst/cat-${name}.webp 960w`;
 
 // Each card is Matte Navy, lit by its range colour (the vial cap colour).
 const FEATURED: Category[] = [
-  { title: "Healing Peptides", subtitle: "BPC-157, TB-500 & fragments", category: "Healing Peptides", image: cutout("healing") },
-  { title: "Growth Peptides", subtitle: "Ipamorelin, CJC-1295 & more", category: "Growth Peptides", image: cutout("growth") },
-  { title: "Cellular Health", subtitle: "NAD+, MOTS-C & SS-31", category: "Cellular Health", image: cutout("cellular") },
+  { title: "Healing Peptides", subtitle: "BPC-157, TB-500 & fragments", category: "Healing Peptides", image: "healing" },
+  { title: "Growth Peptides", subtitle: "Ipamorelin, CJC-1295 & more", category: "Growth Peptides", image: "growth" },
+  { title: "Cellular Health", subtitle: "NAD+, MOTS-C & SS-31", category: "Cellular Health", image: "cellular" },
 ];
 
 const MORE: Category[] = [
-  { title: "Nootropics", subtitle: "Semax & Selank", category: "Nootropics", image: cutout("nootropics") },
-  { title: "Immune Support", subtitle: "Thymosin Alpha-1 & LL-37", category: "Immune Support", image: cutout("immune") },
-  { title: "Skin & Repair", subtitle: "GHK-Cu copper peptide", category: "Skin & Repair", image: cutout("skin") },
-  { title: "Peptide Blends", subtitle: "Multi-compound vials", category: "Peptide Blends", image: cutout("blends") },
+  { title: "Nootropics", subtitle: "Semax & Selank", category: "Nootropics", image: "nootropics" },
+  { title: "Immune Support", subtitle: "Thymosin Alpha-1 & LL-37", category: "Immune Support", image: "immune" },
+  { title: "Skin & Repair", subtitle: "GHK-Cu copper peptide", category: "Skin & Repair", image: "skin" },
+  { title: "Peptide Blends", subtitle: "Multi-compound vials", category: "Peptide Blends", image: "blends" },
 ];
 
 const POINTS = [
@@ -66,29 +68,30 @@ export default function ProductCategoriesSection() {
           </ul>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-3 lg:gap-5">
           {FEATURED.map(card => (
             <Link
               key={card.title}
               href={catalogueHref(card.category)}
-              className="home-range group relative flex min-h-[240px] lg:min-h-[290px] flex-col justify-between overflow-hidden p-6 lg:p-8 text-white"
+              className="range-card group"
               style={{ "--range": rangeColourForCategory(card.category) } as React.CSSProperties}
             >
-              <div className="relative z-10 max-w-[58%]">
-                <h3 className="font-semibold" style={{ fontSize: "clamp(22px, 2vw, 28px)", lineHeight: 1.15, letterSpacing: "-0.02em" }}>{card.title}</h3>
-                <p className="mt-1.5" style={{ fontSize: 14, color: "rgba(255,255,255,0.85)" }}>{card.subtitle}</p>
-              </div>
-              <span className="relative z-10 inline-flex items-center gap-3 font-semibold uppercase" style={{ fontSize: 12.5, letterSpacing: "0.16em" }}>
-                Learn more <ArrowCircle light />
+              <span className="range-card__media">
+                <img
+                  src={photo(card.image)}
+                  srcSet={photoSet(card.image)}
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                  alt=""
+                  loading="lazy"
+                  width={960}
+                  height={1200}
+                />
               </span>
-              <img
-                src={card.image}
-                alt=""
-                loading="lazy"
-                width={376}
-                height={817}
-                className="pointer-events-none absolute right-[7%] top-[24%] h-[96%] w-auto drop-shadow-[0_18px_30px_rgba(0,0,0,0.28)] transition-transform duration-700 group-hover:-translate-y-1.5"
-              />
+              <span className="range-card__body">
+                <span className="range-card__title">{card.title}</span>
+                <span className="range-card__sub">{card.subtitle}</span>
+                <span className="range-card__cta">Shop the range <ArrowCircle light /></span>
+              </span>
             </Link>
           ))}
         </div>
@@ -98,21 +101,16 @@ export default function ProductCategoriesSection() {
             <Link
               key={card.title}
               href={catalogueHref(card.category)}
-              className="home-range-mini group flex items-center gap-3 border bg-white p-4 pl-5"
-              style={{ borderColor: "var(--hairline)", "--range": rangeColourForCategory(card.category) } as React.CSSProperties}
+              className="range-mini group"
+              style={{ "--range": rangeColourForCategory(card.category) } as React.CSSProperties}
             >
-              <div className="min-w-0 flex-1">
-                <h3 className="font-semibold leading-snug" style={{ fontSize: 16.5, color: "var(--ink)", letterSpacing: "-0.01em" }}>{card.title}</h3>
-                <p className="mt-1 leading-snug" style={{ fontSize: 13, color: "var(--graphite)" }}>{card.subtitle}</p>
-              </div>
-              <img
-                src={card.image}
-                alt=""
-                loading="lazy"
-                width={376}
-                height={817}
-                className="h-[92px] w-auto shrink-0 drop-shadow-[0_6px_10px_rgba(4,11,34,0.12)] transition-transform group-hover:-translate-y-0.5"
-              />
+              <span className="range-mini__media">
+                <img src={`/sunburst/cat-${card.image}-sm.webp`} alt="" loading="lazy" width={480} height={600} />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="range-mini__title">{card.title}</span>
+                <span className="range-mini__sub">{card.subtitle}</span>
+              </span>
               <span style={{ color: "var(--ink)" }}><ArrowCircle /></span>
             </Link>
           ))}

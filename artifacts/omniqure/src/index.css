@@ -3300,3 +3300,110 @@ body.has-cart-preview-bar main {
   .hero-slide[data-tone="light"] .hero-slide__cta { background: #fff; color: var(--oq-matte-navy); }
   .hero-slide[data-tone="light"] .hero-slide__cta:hover { background: #E9ECF2; }
 }
+
+/* ── HOME: SUNBURST PHOTO CARDS ───────────────────────────────────────────────
+   Studio photograph on top, copy beneath. Range cards carry a navy caption
+   with their range colour; why-cards stay white. Square corners throughout. */
+.range-card,
+.why-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--oq-mist);
+  background: #fff;
+  text-decoration: none;
+  transition: border-color 0.2s;
+}
+.range-card__media,
+.why-card__media { display: block; overflow: hidden; background: #F0ECE7; aspect-ratio: 1 / 1; }
+.range-card__media img,
+.why-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 56%;
+  transition: transform 0.6s ease;
+}
+.range-card:hover .range-card__media img,
+.why-card:hover .why-card__media img { transform: scale(1.04); }
+@media (prefers-reduced-motion: reduce) {
+  .range-card:hover .range-card__media img,
+  .why-card:hover .why-card__media img { transform: none; }
+}
+
+.range-card { border: 0; background: var(--oq-matte-navy); }
+.range-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 22px 22px;
+  box-shadow: inset 0 4px 0 var(--range);
+  color: #fff;
+}
+.range-card__title { font-size: clamp(20px, 1.8vw, 24px); font-weight: 600; letter-spacing: -0.015em; }
+.range-card__sub { font-size: 14px; color: #C6CDDB; }
+.range-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.range-mini {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px 10px 10px;
+  border: 1px solid var(--oq-mist);
+  border-left: 3px solid var(--range);
+  background: #fff;
+  text-decoration: none;
+  transition: border-color 0.18s;
+}
+.range-mini:hover { border-color: var(--oq-dusty-blue); border-left-color: var(--range); }
+.range-mini__media { flex: none; width: 76px; height: 76px; overflow: hidden; background: #F0ECE7; }
+.range-mini__media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 56%; }
+.range-mini__title { display: block; font-size: 16px; font-weight: 600; color: var(--oq-graphite); }
+.range-mini__sub { display: block; margin-top: 2px; font-size: 13px; line-height: 1.35; color: var(--oq-slate); }
+
+.why-card:hover { border-color: var(--oq-dusty-blue); }
+.why-card__body { display: flex; flex: 1; flex-direction: column; gap: 6px; padding: 18px 20px 20px; }
+.why-card__title { font-size: 17px; font-weight: 600; color: var(--oq-graphite); }
+.why-card__text { font-size: 13.5px; line-height: 1.6; color: var(--oq-slate); }
+.why-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--oq-matte-navy);
+}
+.why-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 28px;
+  margin: 24px 0 0;
+  padding: 20px 0 0;
+  border-top: 1px solid var(--oq-mist);
+  list-style: none;
+}
+.why-list li { display: flex; gap: 12px; }
+.why-list__title { display: block; font-size: 14.5px; font-weight: 600; color: var(--oq-graphite); }
+.why-list__text { display: block; margin-top: 2px; font-size: 13px; line-height: 1.55; color: var(--oq-slate); }
+@media (max-width: 1023px) and (min-width: 768px) {
+  .range-card__body { padding: 16px 16px 18px; }
+}
+@media (max-width: 767px) {
+  .why-list { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+}
+@media (max-width: 767px) {
+  .range-card__media { aspect-ratio: 5 / 4; }
+  .range-card__media img { object-position: 50% 52%; }
+}
