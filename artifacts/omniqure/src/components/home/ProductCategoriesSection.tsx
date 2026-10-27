@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { ArrowRight, BadgeCheck, FlaskConical, Truck } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Container, Eyebrow } from "./HomeSections";
 import { rangeColourForCategory } from "@/lib/rangeColour";
 
@@ -26,11 +26,6 @@ const MORE: Category[] = [
   { title: "Peptide Blends", subtitle: "Multi-compound vials", category: "Peptide Blends", image: "blends" },
 ];
 
-const POINTS = [
-  { icon: FlaskConical, text: "For in-vitro research use only" },
-  { icon: Truck, text: "Free tracked UK delivery" },
-  { icon: BadgeCheck, text: "99%+ HPLC purity, independently tested" },
-];
 
 function ArrowCircle({ light = false }: { light?: boolean }) {
   return (
@@ -58,14 +53,6 @@ export default function ProductCategoriesSection() {
               Browse the catalogue by research area.
             </p>
           </div>
-          <ul className="flex flex-col gap-3 lg:pt-3">
-            {POINTS.map(({ icon: Icon, text }) => (
-              <li key={text} className="flex items-center gap-2.5" style={{ fontSize: 14, color: "var(--graphite)" }}>
-                <Icon size={16} strokeWidth={1.8} style={{ color: "var(--ink)" }} aria-hidden="true" />
-                {text}
-              </li>
-            ))}
-          </ul>
         </div>
 
         <div className="grid gap-4 md:grid-cols-3 lg:gap-5">

@@ -10,7 +10,7 @@ import FeaturedRangeSection from "@/components/home/FeaturedRangeSection";
 import ProductCategoriesSection from "@/components/home/ProductCategoriesSection";
 import {
   WhySection, BestSellersSection, BundleBanner, ProcessSection, QualitySection,
-  FaqSection, ReviewsSection, SpotlightSection, PackagingSection, SellingPointsSection,
+  FaqSection, ReviewsSection, MissionSection,
 } from "@/components/home/HomeSections";
 const HOME_FAQ: { q: string; a: string }[] = [
               {
@@ -126,26 +126,20 @@ export default function HomePage() {
         </div>
       </BestSellersSection>
 
-      {/* 4. The product itself: Sunburst vial-and-card shots */}
-      {/* Selling points: specific, checkable reasons to order */}
-      <SellingPointsSection />
-
-      <SpotlightSection />
+      {/* 4. Who we are: the human reason to trust the products above */}
+      <MissionSection />
 
       {/* 5. Browse by range */}
       <ProductCategoriesSection />
 
-      {/* 5. The bundle offer, once the range is known */}
+      {/* 6. The bundle offer, once the range is known */}
       <BundleBanner image="/hero/sb-bundle-stack-wide.webp" />
 
-      {/* Packaging */}
-      <PackagingSection />
-
-      {/* 6. Proof: why us, then what customers say */}
+      {/* 7. Proof: why us, then what customers say */}
       <WhySection />
       <ReviewsSection />
 
-      {/* 7. Remaining questions */}
+      {/* 8. Remaining questions */}
       <FaqSection items={HOME_FAQ} />
 
       <RecentlyViewed />

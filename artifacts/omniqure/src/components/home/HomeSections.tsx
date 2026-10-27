@@ -1,7 +1,6 @@
 import { useRef, useState, type ReactNode } from "react";
 import { Link } from "wouter";
 import {
-  Boxes, BadgePercent, Zap,
   ArrowRight, ArrowUpRight, ChevronDown, ChevronLeft, ChevronRight, Building2, Star,
 } from "lucide-react";
 import { useBlogPosts } from "@/hooks/useBlog";
@@ -35,88 +34,6 @@ const sectionBase = "border-b py-12 lg:py-20";
 const hairline = { borderColor: "var(--hairline)" } as const;
 
 /* ── 1. Why OmniQure: six numbered value cards ─────────────────── */
-// The first three lead with Sunburst studio photographs; the rest are a compact list.
-const WHY_PHOTO = [
-  { image: "why-lab", title: "99%+ purity, every batch", body: "HPLC and mass-spec results from an independent laboratory, published as Janoshik reports on product pages.", href: "/lab-reports", cta: "See lab reports" },
-  { image: "why-storage", title: "Sealed, labelled vials", body: "Every compound is lyophilised and sealed in an individually labelled vial to keep it stable in transit.", href: "/storage-guide", cta: "Storage guide" },
-  { image: "why-delivery", title: "Free tracked UK delivery", body: "Free tracked shipping across mainland UK, the Highlands and Northern Ireland, in discreet protective packaging.", href: "/shipping", cta: "Delivery details" },
-];
-
-const WHY = [
-  { icon: Boxes, title: "Broad catalogue", short: "Full research range", body: "BPC-157, TB-500, growth-axis, longevity and nootropic compounds, plus bacteriostatic water and supplies." },
-  { icon: BadgePercent, title: "Bundle & save", short: "Free peptides", body: "Order 3 or more vials and free items are added automatically, up to two free peptides on 10+ vial orders." },
-  { icon: Zap, title: "Same-day dispatch", short: "Before 12:00", body: "Order before 12:00 and your package ships the same working day, tracked from dispatch to delivery." },
-];
-
-export function WhySection() {
-  return (
-    <section className={sectionBase} style={{ ...hairline, background: "#F7F8FA" }}>
-      <Container>
-        <div className="text-center mb-8 sm:mb-10">
-          <Eyebrow center>Why OmniQure</Eyebrow>
-          <h2 className="font-bold leading-tight" style={{ fontSize: "clamp(24px, 3vw, 40px)", letterSpacing: "-0.025em", color: "var(--ink)" }}>
-            Six reasons researchers stay with us.
-          </h2>
-          <div className="mx-auto mt-6 flex max-w-[560px] items-stretch justify-center gap-3 sm:gap-6">
-            {[
-              { value: "135", label: "compounds" },
-              { value: "99%+", label: "HPLC purity" },
-              { value: "Same day", label: "dispatch" },
-            ].map((stat) => (
-              <div key={stat.label} className="flex-1 border-l first:border-l-0 px-2 sm:px-4" style={{ borderColor: "var(--hairline)" }}>
-                <p className="font-bold tabular-nums" style={{ fontSize: "clamp(20px, 3.2vw, 30px)", lineHeight: 1.05, letterSpacing: "-0.03em", color: "var(--ink)" }}>
-                  {stat.value}
-                </p>
-                <p className="mt-1 uppercase" style={{ fontSize: 10, letterSpacing: "0.12em", color: "var(--graphite)" }}>
-                  {stat.label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="grid gap-4 md:grid-cols-3 lg:gap-5">
-          {WHY_PHOTO.map((item) => (
-            <Link key={item.title} href={item.href} className="why-card group">
-              <span className="why-card__media">
-                <img
-                  src={`/sunburst/${item.image}.webp`}
-                  srcSet={`/sunburst/${item.image}-sm.webp 480w, /sunburst/${item.image}.webp 960w`}
-                  sizes="(min-width: 768px) 33vw, 100vw"
-                  alt=""
-                  loading="lazy"
-                  width={960}
-                  height={1200}
-                />
-              </span>
-              <span className="why-card__body">
-                <span className="why-card__title">{item.title}</span>
-                <span className="why-card__text">{item.body}</span>
-                <span className="why-card__cta">{item.cta} <ArrowRight size={14} aria-hidden="true" /></span>
-              </span>
-            </Link>
-          ))}
-        </div>
-        <ul className="why-list">
-          {WHY.map(({ icon: Icon, title, body }) => (
-            <li key={title}>
-              <span className="home-icon"><Icon size={16} strokeWidth={1.8} /></span>
-              <span>
-                <span className="why-list__title">{title}</span>
-                <span className="why-list__text">{body}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
-        <div className="mt-8 flex justify-center">
-          <Link href="/all-peptides" className="home-btn home-btn--navy">
-            Browse the catalogue <ArrowRight size={16} />
-          </Link>
-        </div>
-      </Container>
-    </section>
-  );
-}
-
 /* ── 2. Best sellers header (grid supplied by caller) ─────────── */
 export function BestSellersSection({ children }: { children: ReactNode }) {
   return (
@@ -547,126 +464,102 @@ export function ResearchNotice() {
   );
 }
 
-/* ── Product spotlight: Sunburst "vial and card" shots of four core compounds ── */
-const SPOTLIGHT = [
-  { image: "prod-bpc", name: "BPC-157", detail: "Body Protection Compound · 10mg", href: "/product/bpc-157-10mg" },
-  { image: "prod-ghk", name: "GHK-Cu", detail: "Copper peptide · 50mg", href: "/product/ghk-cu-50mg" },
-  { image: "prod-reta", name: "Retatrutide", detail: "GIP/GLP-1/glucagon agonist · 10mg", href: "/product/retatrutide-10mg" },
-  { image: "prod-epitalon", name: "Epitalon", detail: "Pineal tetrapeptide · 10mg", href: "/product/epithalon-10mg" },
+/* ── Mission: who we are and what we promise (copy from the About page) ── */
+const PROMISES = [
+  "Publish every Janoshik report, with no selective disclosure",
+  "Retest any batch that falls below our purity threshold",
+  "Never overstate claims beyond peer-reviewed data",
+  "Answer support queries within 1–2 business days",
 ];
 
-export function SpotlightSection() {
+export function MissionSection() {
   return (
-    <section className={`${sectionBase} bg-white`} style={hairline}>
-      <Container>
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <Eyebrow>Every vial, documented</Eyebrow>
-            <SectionTitle size="clamp(26px, 3vw, 40px)">The label tells you everything.</SectionTitle>
-            <p className="mt-4 max-w-[52ch]" style={{ fontSize: 15, lineHeight: 1.65, color: "var(--graphite)" }}>
-              CAS number, formula, molecular weight, purity and lot on every vial, with a matching product card.
-            </p>
-          </div>
-          <Link href="/all-peptides" className="inline-flex items-center gap-1.5 font-semibold" style={{ fontSize: 13.5, color: "var(--ink)" }}>
-            Full catalogue <ArrowUpRight size={14} />
-          </Link>
+    <section className={sectionBase} style={{ ...hairline, background: "var(--oq-chalk)" }}>
+      <Container className="mission">
+        <div className="mission__media">
+          <img
+            src="/sunburst/why-delivery.webp"
+            srcSet="/sunburst/why-delivery-sm.webp 480w, /sunburst/why-delivery.webp 960w"
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            alt="An OmniQure BPC-157 vial beside a thank-you card"
+            loading="lazy"
+            width={960}
+            height={1200}
+          />
         </div>
-        <div className="spot-grid">
-          {SPOTLIGHT.map((item) => (
-            <Link key={item.name} href={item.href} className="spot-card group">
-              <span className="spot-card__media">
-                <img
-                  src={`/sunburst/${item.image}.webp`}
-                  srcSet={`/sunburst/${item.image}-sm.webp 400w, /sunburst/${item.image}.webp 800w`}
-                  sizes="(min-width: 1024px) 25vw, 50vw"
-                  alt={`${item.name} vial with its product card`}
-                  loading="lazy"
-                  width={800}
-                  height={800}
-                />
-              </span>
-              <span className="spot-card__name">{item.name}</span>
-              <span className="spot-card__detail">{item.detail}</span>
-            </Link>
-          ))}
+        <div className="mission__copy">
+          <Eyebrow>Why we exist</Eyebrow>
+          <h2 className="mission__title">Built by researchers who couldn't find a supplier they trusted.</h2>
+          <p className="mission__lead">
+            We kept being sold a purity number and a price, with nothing to back it up. So we started OmniQure on one belief: a supplier should be as rigorous about its documentation as you are about your own work.
+          </p>
+          <p className="mission__label">Our promises</p>
+          <ul className="mission__promises">
+            {PROMISES.map((t) => <li key={t}>{t}</li>)}
+          </ul>
+          <Link href="/about" className="home-btn home-btn--navy mission__cta">
+            Our story <ArrowRight size={16} />
+          </Link>
         </div>
       </Container>
     </section>
   );
 }
 
-/* ── Packaging: Sunburst Packaging Studio shots ─────────────────────────── */
-const PACKS = [
-  { image: "pack-bpc-box", title: "Five-vial boxes", body: "Magnetic boxes in Matte Navy, or in the range colour for single-family orders." },
-  { image: "pack-ghk-box", title: "Range colour, inside and out", body: "The box matches the cap and the label stripe, so each family is easy to find on the shelf." },
-  { image: "pack-kit", title: "Lot, expiry and storage on the lid", body: "Every kit carries its lot, expiry, purity and storage, plus a QR code to the product page." },
+/* ── Why OmniQure: three photographs, then six checkable points ─────────── */
+const WHY_PHOTO = [
+  { image: "why-lab", title: "Every batch tested", body: "HPLC and mass-spec from an independent lab, published as a Janoshik report on the product page.", href: "/lab-reports", cta: "See lab reports" },
+  { image: "pack-kit", title: "Labelled for the lab", body: "Lot, expiry, purity and storage on every vial and kit, with a QR code to its product page.", href: "/storage-guide", cta: "Storage guide" },
+  { image: "why-storage", title: "Sealed and lyophilised", body: "Freeze-dried and sealed in individually labelled vials, so compounds stay stable in transit.", href: "/storage-guide", cta: "Handling" },
 ];
 
-export function PackagingSection() {
+const SELLING_POINTS = [
+  { stat: "99%+", label: "HPLC purity", body: "Independently tested before it ships." },
+  { stat: "1 click", label: "to the COA", body: "Janoshik report and verify link on each product." },
+  { stat: "12:00", label: "same-day cut-off", body: "Order before noon on a working day; ships tracked." },
+  { stat: "£0", label: "UK delivery", body: "Mainland UK, the Highlands and Northern Ireland." },
+  { stat: "2 free", label: "peptides at 10 vials", body: "Free BAC water from 3 vials, a peptide free at 5." },
+  { stat: "135", label: "compounds", body: "Repair, growth, metabolic, cognitive and longevity." },
+];
+
+export function WhySection() {
   return (
     <section className={sectionBase} style={{ ...hairline, background: "#fff" }}>
       <Container>
         <div className="mb-8 max-w-[640px]">
-          <Eyebrow>Packaging</Eyebrow>
-          <SectionTitle size="clamp(26px, 3vw, 40px)">Packed for the lab, not the shelf.</SectionTitle>
-          <p className="mt-4" style={{ fontSize: 15, lineHeight: 1.65, color: "var(--graphite)" }}>
-            Sealed, labelled and protected in transit. Matte boards, no gloss, nothing you don't need.
-          </p>
+          <Eyebrow>Why OmniQure</Eyebrow>
+          <SectionTitle size="clamp(26px, 3vw, 40px)">Six things you can check before you buy.</SectionTitle>
         </div>
-        <div className="pack-grid">
-          {PACKS.map((item) => (
-            <figure key={item.image} className="pack-card">
-              <span className="pack-card__media">
+        <div className="grid gap-4 md:grid-cols-3 lg:gap-5">
+          {WHY_PHOTO.map((item) => (
+            <Link key={item.title} href={item.href} className="why-card group">
+              <span className="why-card__media">
                 <img
                   src={`/sunburst/${item.image}.webp`}
-                  srcSet={`/sunburst/${item.image}-sm.webp 500w, /sunburst/${item.image}.webp 1000w`}
+                  srcSet={`/sunburst/${item.image}-sm.webp 480w, /sunburst/${item.image}.webp 960w`}
                   sizes="(min-width: 768px) 33vw, 100vw"
                   alt=""
                   loading="lazy"
-                  width={1000}
-                  height={1000}
+                  width={960}
+                  height={960}
                 />
               </span>
-              <figcaption>
-                <span className="pack-card__title">{item.title}</span>
-                <span className="pack-card__body">{item.body}</span>
-              </figcaption>
-            </figure>
+              <span className="why-card__body">
+                <span className="why-card__title">{item.title}</span>
+                <span className="why-card__text">{item.body}</span>
+                <span className="why-card__cta">{item.cta} <ArrowRight size={14} aria-hidden="true" /></span>
+              </span>
+            </Link>
           ))}
         </div>
-      </Container>
-    </section>
-  );
-}
-
-/* ── Selling points: six specific, checkable reasons to order ─────────────── */
-const SELLING_POINTS = [
-  { stat: "99%+", label: "HPLC purity", body: "Every batch is tested by an independent laboratory before it ships.", href: "/lab-reports", cta: "Lab reports" },
-  { stat: "1 click", label: "to the COA", body: "The Janoshik report for each batch sits on its product page, with a verify link.", href: "/lab-reports", cta: "How to verify" },
-  { stat: "12:00", label: "same-day cut-off", body: "Order before noon on a working day and it ships the same day, tracked.", href: "/shipping", cta: "Delivery" },
-  { stat: "£0", label: "UK delivery", body: "Free tracked shipping across mainland UK, the Highlands and Northern Ireland.", href: "/shipping", cta: "Delivery" },
-  { stat: "2 free", label: "peptides at 10 vials", body: "Free BAC water from 3 vials and a free peptide at 5. Applied at checkout.", href: "/bundle-and-save", cta: "Bundle & save" },
-  { stat: "135", label: "compounds", body: "Repair, growth, metabolic, cognitive and longevity ranges, plus BAC water.", href: "/all-peptides", cta: "Catalogue" },
-];
-
-export function SellingPointsSection() {
-  return (
-    <section className="sell" aria-labelledby="sell-title">
-      <div className="pinstripe" aria-hidden="true" />
-      <Container className="sell__inner">
-        <div className="sell__head">
-          <p className="home-eyebrow home-eyebrow--dark">Why order here</p>
-          <h2 id="sell-title" className="sell__title">Six things you can check before you buy.</h2>
-        </div>
-        <ul className="sell__grid">
+        <ul className="sell__grid sell__grid--light">
           {SELLING_POINTS.map((p) => (
             <li key={p.label}>
-              <Link href={p.href} className="sell__item">
+              <span className="sell__item">
                 <span className="sell__stat">{p.stat}</span>
                 <span className="sell__label">{p.label}</span>
                 <span className="sell__body">{p.body}</span>
-                <span className="sell__cta">{p.cta} <ArrowRight size={13} aria-hidden="true" /></span>
-              </Link>
+              </span>
             </li>
           ))}
         </ul>
