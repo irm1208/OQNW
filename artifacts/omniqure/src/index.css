@@ -3447,3 +3447,44 @@ body.has-cart-preview-bar main {
   .spot-card__detail { font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) { .spot-card:hover .spot-card__media img { transform: none; } }
+
+/* Selling points: navy band, six stat-led points */
+.sell { background: var(--oq-matte-navy); color: #fff; }
+.sell__inner { padding-top: 56px; padding-bottom: 60px; }
+.sell__head { max-width: 640px; margin-bottom: 32px; }
+.sell__title { margin: 0; font-size: clamp(26px, 3vw, 40px); font-weight: 700; line-height: 1.08; letter-spacing: -0.025em; }
+.sell__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+.sell__grid li { border-bottom: 1px solid rgba(255, 255, 255, 0.16); }
+.sell__grid li:not(:nth-child(3n + 1)) { border-left: 1px solid rgba(255, 255, 255, 0.16); }
+.sell__item { display: flex; flex-direction: column; height: 100%; padding: 26px 24px 24px; color: #fff; text-decoration: none; transition: background 0.18s; }
+.sell__item:hover { background: rgba(255, 255, 255, 0.05); }
+.sell__stat { font-size: clamp(32px, 3.2vw, 44px); font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
+.sell__label {
+  margin-top: 8px;
+  font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--oq-dusty-blue);
+}
+.sell__body { margin-top: 12px; font-size: 14px; line-height: 1.6; color: #C6CDDB; }
+.sell__cta { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 14px; font-size: 13px; font-weight: 600; }
+@media (max-width: 1023px) {
+  .sell__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sell__grid li:not(:nth-child(3n + 1)) { border-left: 0; }
+  .sell__grid li:nth-child(even) { border-left: 1px solid rgba(255, 255, 255, 0.16); }
+}
+@media (max-width: 639px) {
+  .sell__inner { padding-top: 40px; padding-bottom: 44px; }
+  .sell__item { padding: 18px 14px 18px 0; }
+  .sell__grid li:nth-child(even) .sell__item { padding-left: 14px; padding-right: 0; }
+  .sell__body { font-size: 13px; }
+  .sell__cta { display: none; }
+}

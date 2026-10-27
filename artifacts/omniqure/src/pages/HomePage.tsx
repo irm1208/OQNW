@@ -10,7 +10,7 @@ import FeaturedRangeSection from "@/components/home/FeaturedRangeSection";
 import ProductCategoriesSection from "@/components/home/ProductCategoriesSection";
 import {
   WhySection, BestSellersSection, BundleBanner, ProcessSection, QualitySection,
-  FaqSection, ReviewsSection, SpotlightSection, PackagingSection,
+  FaqSection, ReviewsSection, SpotlightSection, PackagingSection, SellingPointsSection,
 } from "@/components/home/HomeSections";
 const HOME_FAQ: { q: string; a: string }[] = [
               {
@@ -127,6 +127,9 @@ export default function HomePage() {
       </BestSellersSection>
 
       {/* 4. The product itself: Sunburst vial-and-card shots */}
+      {/* Selling points: specific, checkable reasons to order */}
+      <SellingPointsSection />
+
       <SpotlightSection />
 
       {/* 5. Browse by range */}

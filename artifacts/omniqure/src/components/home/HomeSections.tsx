@@ -638,3 +638,39 @@ export function PackagingSection() {
     </section>
   );
 }
+
+/* ── Selling points: six specific, checkable reasons to order ─────────────── */
+const SELLING_POINTS = [
+  { stat: "99%+", label: "HPLC purity", body: "Every batch is tested by an independent laboratory before it ships.", href: "/lab-reports", cta: "Lab reports" },
+  { stat: "1 click", label: "to the COA", body: "The Janoshik report for each batch sits on its product page, with a verify link.", href: "/lab-reports", cta: "How to verify" },
+  { stat: "12:00", label: "same-day cut-off", body: "Order before noon on a working day and it ships the same day, tracked.", href: "/shipping", cta: "Delivery" },
+  { stat: "£0", label: "UK delivery", body: "Free tracked shipping across mainland UK, the Highlands and Northern Ireland.", href: "/shipping", cta: "Delivery" },
+  { stat: "2 free", label: "peptides at 10 vials", body: "Free BAC water from 3 vials and a free peptide at 5. Applied at checkout.", href: "/bundle-and-save", cta: "Bundle & save" },
+  { stat: "135", label: "compounds", body: "Repair, growth, metabolic, cognitive and longevity ranges, plus BAC water.", href: "/all-peptides", cta: "Catalogue" },
+];
+
+export function SellingPointsSection() {
+  return (
+    <section className="sell" aria-labelledby="sell-title">
+      <div className="pinstripe" aria-hidden="true" />
+      <Container className="sell__inner">
+        <div className="sell__head">
+          <p className="home-eyebrow home-eyebrow--dark">Why order here</p>
+          <h2 id="sell-title" className="sell__title">Six things you can check before you buy.</h2>
+        </div>
+        <ul className="sell__grid">
+          {SELLING_POINTS.map((p) => (
+            <li key={p.label}>
+              <Link href={p.href} className="sell__item">
+                <span className="sell__stat">{p.stat}</span>
+                <span className="sell__label">{p.label}</span>
+                <span className="sell__body">{p.body}</span>
+                <span className="sell__cta">{p.cta} <ArrowRight size={13} aria-hidden="true" /></span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Container>
+    </section>
+  );
+}
