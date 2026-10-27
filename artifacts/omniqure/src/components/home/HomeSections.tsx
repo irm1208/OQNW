@@ -546,3 +546,95 @@ export function ResearchNotice() {
     </section>
   );
 }
+
+/* ── Product spotlight: Sunburst "vial and card" shots of four core compounds ── */
+const SPOTLIGHT = [
+  { image: "prod-bpc", name: "BPC-157", detail: "Body Protection Compound · 10mg", href: "/product/bpc-157-10mg" },
+  { image: "prod-ghk", name: "GHK-Cu", detail: "Copper peptide · 50mg", href: "/product/ghk-cu-50mg" },
+  { image: "prod-reta", name: "Retatrutide", detail: "GIP/GLP-1/glucagon agonist · 10mg", href: "/product/retatrutide-10mg" },
+  { image: "prod-epitalon", name: "Epitalon", detail: "Pineal tetrapeptide · 10mg", href: "/product/epithalon-10mg" },
+];
+
+export function SpotlightSection() {
+  return (
+    <section className={`${sectionBase} bg-white`} style={hairline}>
+      <Container>
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <Eyebrow>Every vial, documented</Eyebrow>
+            <SectionTitle size="clamp(26px, 3vw, 40px)">The label tells you everything.</SectionTitle>
+            <p className="mt-4 max-w-[52ch]" style={{ fontSize: 15, lineHeight: 1.65, color: "var(--graphite)" }}>
+              CAS number, formula, molecular weight, purity and lot on every vial, with a matching product card.
+            </p>
+          </div>
+          <Link href="/all-peptides" className="inline-flex items-center gap-1.5 font-semibold" style={{ fontSize: 13.5, color: "var(--ink)" }}>
+            Full catalogue <ArrowUpRight size={14} />
+          </Link>
+        </div>
+        <div className="spot-grid">
+          {SPOTLIGHT.map((item) => (
+            <Link key={item.name} href={item.href} className="spot-card group">
+              <span className="spot-card__media">
+                <img
+                  src={`/sunburst/${item.image}.webp`}
+                  srcSet={`/sunburst/${item.image}-sm.webp 400w, /sunburst/${item.image}.webp 800w`}
+                  sizes="(min-width: 1024px) 25vw, 50vw"
+                  alt={`${item.name} vial with its product card`}
+                  loading="lazy"
+                  width={800}
+                  height={800}
+                />
+              </span>
+              <span className="spot-card__name">{item.name}</span>
+              <span className="spot-card__detail">{item.detail}</span>
+            </Link>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+/* ── Packaging: Sunburst Packaging Studio shots ─────────────────────────── */
+const PACKS = [
+  { image: "pack-bpc-box", title: "Five-vial boxes", body: "Magnetic boxes in Matte Navy, or in the range colour for single-family orders." },
+  { image: "pack-ghk-box", title: "Range colour, inside and out", body: "The box matches the cap and the label stripe, so each family is easy to find on the shelf." },
+  { image: "pack-kit", title: "Lot, expiry and storage on the lid", body: "Every kit carries its lot, expiry, purity and storage, plus a QR code to the product page." },
+];
+
+export function PackagingSection() {
+  return (
+    <section className={sectionBase} style={{ ...hairline, background: "#fff" }}>
+      <Container>
+        <div className="mb-8 max-w-[640px]">
+          <Eyebrow>Packaging</Eyebrow>
+          <SectionTitle size="clamp(26px, 3vw, 40px)">Packed for the lab, not the shelf.</SectionTitle>
+          <p className="mt-4" style={{ fontSize: 15, lineHeight: 1.65, color: "var(--graphite)" }}>
+            Sealed, labelled and protected in transit. Matte boards, no gloss, nothing you don't need.
+          </p>
+        </div>
+        <div className="pack-grid">
+          {PACKS.map((item) => (
+            <figure key={item.image} className="pack-card">
+              <span className="pack-card__media">
+                <img
+                  src={`/sunburst/${item.image}.webp`}
+                  srcSet={`/sunburst/${item.image}-sm.webp 500w, /sunburst/${item.image}.webp 1000w`}
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                  alt=""
+                  loading="lazy"
+                  width={1000}
+                  height={1000}
+                />
+              </span>
+              <figcaption>
+                <span className="pack-card__title">{item.title}</span>
+                <span className="pack-card__body">{item.body}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}

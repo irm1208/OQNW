@@ -3407,3 +3407,43 @@ body.has-cart-preview-bar main {
   .range-card__media { aspect-ratio: 5 / 4; }
   .range-card__media img { object-position: 50% 52%; }
 }
+
+/* Product spotlight and packaging (Sunburst) */
+.spot-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.spot-card { display: block; text-decoration: none; color: var(--oq-graphite); }
+.spot-card__media { display: block; overflow: hidden; aspect-ratio: 1 / 1; border: 1px solid var(--oq-mist); background: #F2F0EB; }
+.spot-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.spot-card:hover .spot-card__media img { transform: scale(1.04); }
+.spot-card__name { display: block; margin-top: 12px; font-size: 16px; font-weight: 600; }
+.spot-card:hover .spot-card__name { color: var(--oq-matte-navy); text-decoration: underline; text-underline-offset: 3px; }
+.spot-card__detail { display: block; margin-top: 2px; font-size: 13px; color: var(--oq-slate); }
+
+.pack-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.pack-card { margin: 0; }
+.pack-card__media { display: block; overflow: hidden; aspect-ratio: 1 / 1; background: #F2F0EB; }
+.pack-card__media img { width: 100%; height: 100%; object-fit: cover; }
+.pack-card figcaption { padding: 14px 2px 0; border-top: 3px solid var(--oq-matte-navy); margin-top: 0; }
+.pack-card__title { display: block; font-size: 16px; font-weight: 600; color: var(--oq-graphite); }
+.pack-card__body { display: block; margin-top: 4px; font-size: 13.5px; line-height: 1.55; color: var(--oq-slate); }
+
+@media (max-width: 1023px) {
+  .spot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+}
+@media (max-width: 767px) {
+  .pack-grid {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 82%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin: 0 -20px;
+    padding: 0 20px 4px;
+    scroll-padding-inline: 20px;
+    scrollbar-width: none;
+  }
+  .pack-grid::-webkit-scrollbar { display: none; }
+  .pack-card { scroll-snap-align: start; }
+  .spot-card__name { font-size: 15px; }
+  .spot-card__detail { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .spot-card:hover .spot-card__media img { transform: none; } }
