@@ -3547,7 +3547,7 @@ body.has-cart-preview-bar main {
 .ccard__name:hover { color: var(--cobalt); }
 .ccard__meta { display: flex; align-items: center; gap: 6px; min-width: 0; margin: 3px 0 0; font-size: 11.5px; color: var(--oq-slate); }
 .ccard__range { width: 8px; height: 8px; flex-shrink: 0; border-radius: 2px; background: var(--range); }
-.ccard__purity { margin: 4px 0 0; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; color: var(--oq-label-blue); }
+.ccard__purity { margin: 5px 0 0; font-size: 12px; font-weight: 600; letter-spacing: -0.005em; color: var(--oq-label-blue); }
 .ccard__buy { display: flex; flex-direction: column; gap: 8px; margin-top: auto; padding-top: 10px; }
 .ccard__strength { width: 100%; height: 36px; padding: 0 10px; border: 1px solid var(--oq-mist); border-radius: 4px; background: #fff; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12.5px; color: var(--oq-graphite); }
 select.ccard__strength { appearance: none; padding-right: 28px; cursor: pointer; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234A5672' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; }
@@ -3589,7 +3589,7 @@ select.ccard__strength:focus-visible { outline: 2px solid var(--cobalt); outline
 .phead__stock::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .phead__stock[data-state="low"] { color: #B45309; }
 .phead__stock[data-state="out"] { color: #B91C1C; }
-.phead__purity { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; color: var(--oq-label-blue); }
+.phead__purity { font-size: 12px; font-weight: 600; color: var(--oq-label-blue); }
 
 /* ── Product page: sticky product header ──────────────────────────────── */
 .psticky { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; border-top: 1px solid var(--oq-mist); background: rgba(255,255,255,.97); backdrop-filter: blur(8px); padding-bottom: env(safe-area-inset-bottom); font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif; animation: psticky-up .22s cubic-bezier(.22,1,.36,1); }
@@ -3602,7 +3602,7 @@ select.ccard__strength:focus-visible { outline: 2px solid var(--cobalt); outline
 .psticky__meta { display: flex; align-items: baseline; gap: 8px; }
 .psticky__price { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--oq-matte-navy); }
 .psticky__qty, .psticky__purity { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; color: var(--oq-slate); }
-.psticky__purity { display: none; color: var(--oq-label-blue); }
+.psticky__purity { display: none; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--oq-label-blue); }
 .psticky__coa { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; gap: 5px; width: 44px; height: 44px; border: 1px solid var(--oq-mist); border-radius: 999px; background: #fff; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; font-weight: 500; color: var(--oq-label-blue); }
 .psticky__coa span { display: none; }
 .psticky__coa:hover { border-color: var(--oq-label-blue); background: #F3F5FB; }
