@@ -336,6 +336,12 @@ export default function ProductPage() {
   const hair = { borderColor: "var(--hairline)" } as const;
   // Brand range colour for this product family (see lib/rangeColour.ts).
   const rangeColour = rangeColourForCategory(product.category);
+  const purity = product.purity ?? detail.purity;
+  // COA: the Janoshik report where published, otherwise the verified specifications.
+  const openCoa = () => {
+    if (hasReport) setShowJanoshikModal(true);
+    else document.getElementById("specifications")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <div
@@ -370,8 +376,23 @@ export default function ProductPage() {
       {/* Main product section */}
       <section>
         <Container className="grid gap-6 py-6 md:grid-cols-2 md:gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] md:py-10 lg:gap-14 lg:py-12">
+          {/* Phone header: name, price and stock before the photograph.
+              The h1 lives in the purchase card, so this copy is hidden from
+              assistive tech. */}
+          <div className="phead md:hidden" aria-hidden="true">
+            <p className="phead__cat">{product.category}</p>
+            <p className="phead__name">{currentBase}{currentStrength ? <span className="phead__strength"> {currentStrength}</span> : null}</p>
+            <div className="phead__row">
+              {product.price != null && <span className="phead__price">{formatPrice(product.price)}</span>}
+              <span className="phead__stock" data-state={soldOut ? "out" : lowStock ? "low" : "in"}>
+                {soldOut ? "Sold out" : lowStock ? "Low stock" : "In stock"}
+              </span>
+              {purity && <span className="phead__purity">{purity} HPLC</span>}
+            </div>
+          </div>
+
           {/* Gallery */}
-          <div className="product-gallery-col md:sticky md:top-20 md:self-start">
+          <div className="product-gallery-col md:sticky md:top-[156px] md:self-start">
             <div className="product-gallery-media relative aspect-square overflow-hidden rounded-[14px]" style={{ background: STUDIO_BG }}>
               <img
                 key={activeImage.src}
@@ -506,11 +527,12 @@ export default function ProductPage() {
                     <ShoppingCart size={15} />
                     {soldOut ? "Sold out" : added ? "Added to cart" : "Add to cart"}
                   </button>
-                  {hasReport && (
+                  {(hasReport || specs.length > 0) && (
                     <button
                       type="button"
-                      onClick={() => setShowJanoshikModal(true)}
+                      onClick={openCoa}
                       className="cta-secondary flex h-12 shrink-0 items-center gap-1.5 rounded-full px-4"
+                      aria-label={hasReport ? `View the Janoshik certificate of analysis for ${product.name}` : `View the analytical data for ${product.name}`}
                     >
                       <ShieldCheck size={15} className="accent-ink" /> View COA
                     </button>
@@ -616,28 +638,32 @@ export default function ProductPage() {
         </Container>
       </section>
 
-      {/* Sticky buy bar — phones only, appears once the inline CTA scrolls away.
-          Portalled to <body> because the page-fade wrapper keeps a transform,
-          which would otherwise contain position: fixed. */}
-      {showStickyCta && !soldOut && createPortal(
-        <div
-          className="fixed inset-x-0 bottom-0 z-40 border-t bg-white/95 py-2.5 pl-4 backdrop-blur md:hidden"
-          style={{ borderColor: "var(--hairline)", paddingRight: 16, paddingBottom: "calc(10px + env(safe-area-inset-bottom))" }}
-        >
-          <div className="flex items-center gap-3">
-            <div className="min-w-0 flex-1 leading-tight">
-              <span className="block truncate" style={{ fontSize: 12.5, color: "var(--ink)" }}>{product.name}</span>
-              <span className="block font-semibold tabular-nums" style={{ fontSize: 15, color: "var(--ink)" }}>
-                {product.price != null ? formatPrice(product.price * quantity) : ""}
+      {/* Sticky product header: once the inline buy button scrolls away it
+          docks under the site header on tablet and desktop, and at the
+          bottom of the screen on phones. Portalled to <body> because the
+          page-fade wrapper keeps a transform, which would otherwise contain
+          position: fixed. */}
+      {showStickyCta && createPortal(
+        <div className="psticky" role="region" aria-label={`${product.name} quick buy`}>
+          <div className="psticky__inner">
+            <span className="psticky__thumb" style={{ background: STUDIO_BG }}>
+              <img src={primaryImage} onError={studioFallback(cardImage)} alt="" />
+            </span>
+            <div className="psticky__text">
+              <span className="psticky__name">{product.name}</span>
+              <span className="psticky__meta">
+                <span className="psticky__price">{product.price != null ? formatPrice(product.price * quantity) : ""}</span>
+                {quantity > 1 && <span className="psticky__qty">{quantity} vials</span>}
+                {purity && <span className="psticky__purity">{purity} HPLC</span>}
               </span>
             </div>
-            <button
-              onClick={handleAddToCart}
-              className="flex h-11 shrink-0 items-center gap-2 rounded-full px-5 font-semibold text-white"
-              style={{ fontSize: 14, background: added ? "#16A34A" : "var(--oq-matte-navy)" }}
-            >
-              <ShoppingCart size={15} />
-              {added ? "Added" : "Add to cart"}
+            {(hasReport || specs.length > 0) && (
+              <button type="button" onClick={openCoa} className="psticky__coa" aria-label={hasReport ? `View the Janoshik certificate of analysis for ${product.name}` : `View the analytical data for ${product.name}`}>
+                <ShieldCheck size={15} aria-hidden="true" /> <span>COA</span>
+              </button>
+            )}
+            <button type="button" onClick={handleAddToCart} disabled={soldOut} className="psticky__add" data-added={added}>
+              {soldOut ? "Sold out" : added ? <><Check size={15} strokeWidth={2.5} aria-hidden="true" /> Added</> : <><ShoppingCart size={15} aria-hidden="true" /> Add to cart</>}
             </button>
           </div>
         </div>,
@@ -646,7 +672,7 @@ export default function ProductPage() {
 
       {/* Specifications — navy section, sheet styled as the vial label */}
       {specs.length > 0 && (
-        <section id="specifications" className="p-section spec-section" style={{ scrollMarginTop: 80 }}>
+        <section id="specifications" className="p-section spec-section" style={{ scrollMarginTop: 150 }}>
           <Container className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-16">
             <div>
               <p className="product-eyebrow product-eyebrow--dark">Analytical data</p>
