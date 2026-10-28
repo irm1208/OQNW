@@ -3550,11 +3550,8 @@ select.ccard__strength { appearance: none; padding-right: 28px; cursor: pointer;
 select.ccard__strength:hover { border-color: #AEB7C8; }
 select.ccard__strength:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 1px; }
 .ccard__strength--fixed { display: flex; align-items: center; background: #F8F9FB; color: var(--oq-slate); }
-.ccard__price-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
 .ccard__price { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; color: var(--oq-matte-navy); }
-.ccard__coa { display: inline-flex; flex-shrink: 0; align-items: center; gap: 4px; height: 30px; padding: 0 9px; border: 1px solid var(--oq-mist); border-radius: 999px; background: #fff; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; font-weight: 500; letter-spacing: .04em; color: var(--oq-label-blue); transition: border-color .15s, background .15s; }
-.ccard__coa:hover { border-color: var(--oq-label-blue); background: #F3F5FB; }
-.ccard__coa:focus-visible, .ccard__add:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+.ccard__add:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
 .ccard__add { display: inline-flex; align-items: center; justify-content: center; gap: 7px; width: 100%; height: 42px; border-radius: 999px; background: var(--oq-matte-navy); font-size: 13.5px; font-weight: 600; color: #fff; transition: background .15s, transform .1s; }
 .ccard__add:hover:not(:disabled) { background: var(--oq-royal-navy, #0A2472); }
 .ccard__add:active:not(:disabled) { transform: scale(.98); }
@@ -3569,7 +3566,6 @@ select.ccard__strength:focus-visible { outline: 2px solid var(--cobalt); outline
 }
 @media (max-width: 380px) {
   .ccard__body { padding: 10px; }
-  .ccard__coa { padding: 0 7px; }
   .ccard__price { font-size: 15px; }
 }
 

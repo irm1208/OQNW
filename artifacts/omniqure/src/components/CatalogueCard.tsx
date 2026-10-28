@@ -1,17 +1,15 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { Check, ShieldCheck, ShoppingCart } from "lucide-react";
+import { Check, ShoppingCart } from "lucide-react";
 import { parseName, type GroupedProduct } from "@/data/groupedProducts";
-import { janoshikDataBySlug } from "@/data/janoshikData";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useCart } from "@/context/CartContext";
 import { studioFallback, STUDIO_BG } from "@/lib/studioImage";
 import { rangeColourForCategory } from "@/lib/rangeColour";
-import JanoshikReportModal from "@/components/JanoshikReportModal";
 
 /*
- * Catalogue tile: vial image and name link to the product; strength, price,
- * COA and Add to cart work from the grid. Controls sit outside the links so
+ * Catalogue tile: vial image and name link to the product; strength, price
+ * and Add to cart work from the grid. Controls sit outside the links so
  * each one is its own focus stop.
  */
 export default function CatalogueCard({ group }: { group: GroupedProduct }) {
@@ -21,15 +19,12 @@ export default function CatalogueCard({ group }: { group: GroupedProduct }) {
     () => (group.variants.find(v => (v.stockLevel ?? 1) > 0) ?? group.variants[0]).id,
   );
   const [added, setAdded] = useState(false);
-  const [reportOpen, setReportOpen] = useState(false);
 
   const variant = group.variants.find(v => v.id === variantId) ?? group.variants[0];
   const href = `/product/${variant.slug || variant.id}`;
   const soldOut = variant.stockLevel === 0;
   const lowStock = variant.stockLevel != null && variant.stockLevel > 0 && variant.stockLevel <= 10;
   const purity = variant.purity ?? group.variants.find(v => v.purity)?.purity;
-  const report = janoshikDataBySlug[variant.slug];
-  const hasReport = !!(report?.taskNumber && report.verifyUrl && report.image);
   const strengthOf = (name: string) => parseName(name).strength;
 
   const add = () => {
@@ -83,18 +78,7 @@ export default function CatalogueCard({ group }: { group: GroupedProduct }) {
             <span className="ccard__strength ccard__strength--fixed">{strengthOf(variant.name) || "Single vial"}</span>
           )}
 
-          <div className="ccard__price-row">
-            <span className="ccard__price">{variant.price != null ? formatPrice(variant.price) : "See options"}</span>
-            {hasReport ? (
-              <button type="button" className="ccard__coa" onClick={() => setReportOpen(true)} aria-label={`View certificate of analysis for ${variant.name}`}>
-                <ShieldCheck size={13} aria-hidden="true" /> COA
-              </button>
-            ) : (
-              <Link href={`${href}#specifications`} className="ccard__coa" aria-label={`Batch analysis for ${variant.name}`}>
-                <ShieldCheck size={13} aria-hidden="true" /> COA
-              </Link>
-            )}
-          </div>
+          <span className="ccard__price">{variant.price != null ? formatPrice(variant.price) : "See options"}</span>
 
           <button
             type="button"
@@ -108,18 +92,6 @@ export default function CatalogueCard({ group }: { group: GroupedProduct }) {
           </button>
         </div>
       </div>
-
-      {reportOpen && hasReport && (
-        <JanoshikReportModal
-          taskNumber={report!.taskNumber ?? ""}
-          verifyKey={report!.verifyKey ?? ""}
-          verifyUrl={report!.verifyUrl!}
-          image={report!.image!}
-          certificatePdf={report!.certificatePdf}
-          productName={variant.name}
-          onClose={() => setReportOpen(false)}
-        />
-      )}
     </article>
   );
 }
