@@ -1,6 +1,5 @@
 import { useSEO } from "@/hooks/useSEO";
-import { ArrowRight, FlaskConical, Truck, ShieldCheck, Clock } from "lucide-react";
-import { Link } from "wouter";
+import { FlaskConical, Truck, ShieldCheck, Clock } from "lucide-react";
 import CatalogueCard from "@/components/CatalogueCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
@@ -60,29 +59,17 @@ function BrandBand() {
   return (
     <section className="home-band" aria-label="Why order from OmniQure">
       <div className="pinstripe" aria-hidden="true" />
-      <div className="home-band__inner">
-        <div className="home-band__lead">
-          <p className="home-band__title">Research-grade peptides, ready to ship</p>
-          <p className="home-band__sub">135 compounds, each with a published lab report.</p>
-        </div>
-        <div className="home-band__actions">
-          <Link href="/all-peptides" className="home-btn home-btn--light">
-            Shop peptides <ArrowRight size={16} aria-hidden="true" />
-          </Link>
-          <Link href="/bundle-and-save" className="home-btn home-btn--ghost">Build a bundle</Link>
-        </div>
-        <ul className="home-band__proof">
-          {PROOF.map(({ icon: Icon, label, detail }) => (
-            <li key={label}>
-              <span className="home-band__icon"><Icon size={17} aria-hidden="true" /></span>
-              <span className="home-band__point">
-                <span className="home-band__point-title">{label}</span>
-                <span className="home-band__point-detail">{detail}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul className="home-band__proof">
+        {PROOF.map(({ icon: Icon, label, detail }) => (
+          <li key={label}>
+            <Icon size={18} strokeWidth={1.75} aria-hidden="true" />
+            <span className="home-band__point">
+              <span className="home-band__point-title">{label}</span>
+              <span className="home-band__point-detail">{detail}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
