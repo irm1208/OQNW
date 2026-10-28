@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { useLocation, Link } from "wouter";
-import { FileText, Search, ShieldCheck, Truck } from "lucide-react";
+import { FileBadge, Search, TestTubes, Timer } from "lucide-react";
 import CatalogueCard from "@/components/CatalogueCard";
 import { Container } from "@/components/home/HomeSections";
 import { rangeColourForCategory } from "@/lib/rangeColour";
@@ -171,9 +171,9 @@ export default function AllPeptides() {
               />
             </div>
             <ul className="cat-hero__proof">
-              <li><ShieldCheck size={14} aria-hidden="true" /> 99%+ HPLC purity</li>
-              <li><FileText size={14} aria-hidden="true" /> COA for every batch</li>
-              <li><Truck size={14} aria-hidden="true" /> Same-day dispatch</li>
+              <li><TestTubes size={14} aria-hidden="true" /> 99%+ HPLC purity</li>
+              <li><FileBadge size={14} aria-hidden="true" /> COA for every batch</li>
+              <li><Timer size={14} aria-hidden="true" /> Same-day dispatch</li>
             </ul>
           </div>
           {/* Full catalogue: the Range Navy studio shot (3:2, its wall matches

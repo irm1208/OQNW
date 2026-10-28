@@ -1,5 +1,5 @@
 import { useSEO } from "@/hooks/useSEO";
-import { FlaskConical, Truck, ShieldCheck, Clock } from "lucide-react";
+import { FileBadge, TestTubes, Timer, Truck } from "lucide-react";
 import CatalogueCard from "@/components/CatalogueCard";
 import { groupProducts, parseName } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
@@ -49,9 +49,9 @@ function HeroSection() {
    actions and four proof points. One block instead of a CTA strip plus a
    separate badge row. */
 const PROOF = [
-  { icon: FlaskConical, label: "99%+ purity", detail: "HPLC tested, every batch" },
-  { icon: ShieldCheck, label: "Lab reports", detail: "Published by Janoshik" },
-  { icon: Clock, label: "Same-day dispatch", detail: "Order by 12:00, Mon–Fri" },
+  { icon: TestTubes, label: "99%+ purity", detail: "HPLC tested, every batch" },
+  { icon: FileBadge, label: "Lab reports", detail: "Published by Janoshik" },
+  { icon: Timer, label: "Same-day dispatch", detail: "Order by 12:00, Mon–Fri" },
   { icon: Truck, label: "Free UK delivery", detail: "Tracked and discreet" },
 ];
 
