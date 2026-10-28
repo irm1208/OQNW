@@ -3497,31 +3497,37 @@ body.has-cart-preview-bar main {
 
 /* ── Catalogue header ─────────────────────────────────────────────────── */
 .catalogue-page, .ccard { font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif; }
-.cat-hero { --range: var(--oq-dusty-blue); background: #F8F9FB; border-bottom: 1px solid var(--oq-mist); }
-.cat-hero__inner { display: grid; gap: 16px; padding-top: 16px; padding-bottom: 20px; }
-.cat-hero__media { display: block; order: -1; overflow: hidden; border: 1px solid var(--oq-mist); background: #F2F0EB; }
-.cat-hero__media img { display: block; width: 100%; height: 100%; aspect-ratio: 2 / 1; object-fit: cover; object-position: 0% 50%; }
-@media (min-width: 768px) { .cat-hero__media img { aspect-ratio: 16 / 9; } }
-.cat-hero__crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 12px; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--oq-slate); }
-.cat-hero__crumbs a:hover { color: var(--oq-matte-navy); }
-.cat-hero__crumbs [aria-current] { color: var(--oq-matte-navy); }
-.cat-hero__title { position: relative; margin: 0; padding-left: 14px; font-size: clamp(26px, 2.6vw, 36px); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; color: var(--oq-matte-navy); }
-.cat-hero__title::before { content: ""; position: absolute; left: 0; top: 0.18em; bottom: 0.14em; width: 4px; background: var(--range); }
-.cat-hero__lead { max-width: 52ch; margin: 10px 0 0; font-size: 14.5px; line-height: 1.6; color: var(--oq-slate); }
-.cat-hero__search { position: relative; max-width: 420px; margin-top: 18px; }
-.cat-hero__search svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--oq-slate); pointer-events: none; }
-.cat-hero__search input { width: 100%; height: 46px; padding: 0 14px 0 40px; border: 1px solid var(--oq-mist); border-radius: 6px; background: #fff; font-size: 16px; color: var(--oq-graphite); outline: none; }
-.cat-hero__search input:focus { border-color: var(--cobalt); box-shadow: 0 0 0 3px rgba(78, 104, 194, 0.15); }
-.cat-hero__proof { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 16px 0 0; padding: 0; list-style: none; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--oq-slate); }
-.cat-hero__proof li { display: inline-flex; align-items: center; gap: 6px; }
-.cat-hero__proof svg { color: var(--oq-label-blue); }
+/* Matte Navy band; the Range Navy photograph's wall continues it. */
+.cat-hero { --range: var(--oq-dusty-blue); position: relative; overflow: hidden; background: var(--oq-matte-navy); color: #fff; }
+.cat-hero__inner { display: grid; gap: 18px; padding-top: 20px; padding-bottom: 24px; }
+.cat-hero__media { display: block; order: -1; overflow: hidden; border-radius: 6px; background: #162642; }
+.cat-hero__media img { display: block; width: 100%; height: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: 50% 50%; }
+.cat-hero__media[data-shot="range"] { background: #F2F0EB; }
+.cat-hero__media[data-shot="range"] img { object-position: 0% 50%; }
+.cat-hero__crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 14px; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--oq-dusty-blue); }
+.cat-hero__crumbs a:hover, .cat-hero__crumbs [aria-current] { color: #fff; }
+.cat-hero__title { position: relative; margin: 0; padding-left: 16px; font-size: clamp(28px, 3vw, 42px); font-weight: 700; line-height: 1.08; letter-spacing: -0.025em; color: #fff; }
+.cat-hero__title::before { content: ""; position: absolute; left: 0; top: 0.16em; bottom: 0.12em; width: 4px; border-radius: 1px; background: var(--range); }
+.cat-hero__lead { max-width: 50ch; margin: 12px 0 0; font-size: 15px; line-height: 1.6; color: #C6CDDB; }
+.cat-hero__search { position: relative; max-width: 440px; margin-top: 22px; }
+.cat-hero__search svg { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--oq-slate); pointer-events: none; }
+.cat-hero__search input { width: 100%; height: 48px; padding: 0 16px 0 42px; border: 1px solid transparent; border-radius: 999px; background: #fff; font-size: 16px; color: var(--oq-graphite); outline: none; }
+.cat-hero__search input::placeholder { color: #7C869C; }
+.cat-hero__search input:focus { border-color: var(--cobalt); box-shadow: 0 0 0 3px rgba(141, 155, 184, 0.45); }
+.cat-hero__proof { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 18px 0 0; padding: 0; list-style: none; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #D3D8E2; }
+.cat-hero__proof li { display: inline-flex; align-items: center; gap: 7px; }
+.cat-hero__proof svg { color: var(--oq-dusty-blue); }
+@media (max-width: 767px) {
+  /* Phones: a shorter band so the first products stay close */
+  .cat-hero__media[data-shot="range"] img { aspect-ratio: 2 / 1; }
+}
 @media (min-width: 768px) {
-  .cat-hero__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); align-items: center; gap: 32px; padding-top: 28px; padding-bottom: 28px; }
+  .cat-hero__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr); align-items: center; gap: 32px; padding-top: 32px; padding-bottom: 32px; }
   .cat-hero__media { order: 0; }
   .cat-hero__search input { font-size: 14px; }
 }
 @media (min-width: 1024px) {
-  .cat-hero__inner { gap: 48px; padding-top: 36px; padding-bottom: 36px; }
+  .cat-hero__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; padding-top: 40px; padding-bottom: 40px; }
 }
 
 /* The filter bar sticks beneath the site header, not under it */

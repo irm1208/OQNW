@@ -176,9 +176,17 @@ export default function AllPeptides() {
               <li><Truck size={14} aria-hidden="true" /> Same-day dispatch</li>
             </ul>
           </div>
-          <picture className="cat-hero__media" key={headerKey}>
-            <source media="(max-width: 1279px)" srcSet={`/sunburst/${headerKey}-md.webp`} width={1200} height={400} />
-            <img src={`/sunburst/${headerKey}.webp`} alt={`${selectedCategory === "All Peptides" ? "OmniQure" : selectedCategory} research vials`} width={1920} height={640} fetchPriority="high" />
+          {/* Full catalogue: the Range Navy studio shot (3:2, its wall matches
+              the header). A range: that range's own 3:1 photograph. */}
+          <picture className="cat-hero__media" key={headerKey} data-shot={headerKey === "hdr-catalogue" ? "navy" : "range"}>
+            <source media="(max-width: 1279px)" srcSet={`/sunburst/${headerKey}-md.webp`} />
+            <img
+              src={`/sunburst/${headerKey}.webp`}
+              alt={selectedCategory === "All Peptides" || searchQuery.trim() ? "OmniQure BPC-157, Ipamorelin, GHK-Cu and Epitalon research vials" : `${selectedCategory} research vials`}
+              width={headerKey === "hdr-catalogue" ? 1440 : 1920}
+              height={headerKey === "hdr-catalogue" ? 960 : 640}
+              fetchPriority="high"
+            />
           </picture>
         </Container>
       </section>
