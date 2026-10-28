@@ -46,10 +46,10 @@ export default function ProductCategoriesSection() {
         <div className="mb-8 lg:mb-12 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
           <div>
             <Eyebrow>Shop by range</Eyebrow>
-            <h2 className="font-bold" style={{ fontSize: "clamp(28px, 3.4vw, 44px)", lineHeight: 1.05, letterSpacing: "-0.025em", color: "var(--ink)" }}>
+            <h2 className="font-bold" style={{ fontSize: "var(--home-h2)", lineHeight: "var(--home-h2-lh)", letterSpacing: "var(--home-h2-ls)", color: "var(--ink)" }}>
               Research peptides,<br />organised by pathway
             </h2>
-            <p className="mt-4" style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: "var(--graphite)" }}>
+            <p className="mt-3" style={{ fontSize: "var(--home-lead)", color: "var(--graphite)" }}>
               Browse the catalogue by research area.
             </p>
           </div>

@@ -15,11 +15,11 @@ export function Eyebrow({ children, center = false }: { children: ReactNode; cen
   );
 }
 
-export function SectionTitle({ children, center = false, size = "clamp(24px, 3vw, 40px)" }: { children: ReactNode; center?: boolean; size?: string }) {
+export function SectionTitle({ children, center = false, size = "var(--home-h2)" }: { children: ReactNode; center?: boolean; size?: string }) {
   return (
     <h2
       className={`font-bold ${center ? "text-center mx-auto" : ""}`}
-      style={{ fontSize: size, lineHeight: 0.93, letterSpacing: "-0.025em", color: "var(--ink)", margin: 0 }}
+      style={{ fontSize: size, lineHeight: "var(--home-h2-lh)", letterSpacing: "var(--home-h2-ls)", color: "var(--ink)", margin: 0 }}
     >
       {children}
     </h2>
@@ -42,7 +42,7 @@ export function BestSellersSection({ children }: { children: ReactNode }) {
         <div className="flex items-end justify-between gap-4 mb-10">
           <div>
             <Eyebrow>Best sellers</Eyebrow>
-            <SectionTitle size="clamp(30px, 4vw, 52px)">Most ordered<br />peptides.</SectionTitle>
+            <SectionTitle>Most ordered peptides.</SectionTitle>
           </div>
           <Link href="/all-peptides" className="hidden sm:inline-flex items-center gap-1.5 font-medium hover:text-[var(--cobalt)] transition-colors" style={{ fontSize: 13, color: "var(--graphite)" }}>
             Full catalogue <ArrowUpRight size={15} />
@@ -128,7 +128,7 @@ export function NasalSpraysSection() {
         <div className="flex items-end justify-between gap-3 mb-6">
           <div>
             <Eyebrow>New · intranasal format</Eyebrow>
-            <SectionTitle size="clamp(24px, 2.6vw, 34px)">Research nasal sprays</SectionTitle>
+            <SectionTitle>Research nasal sprays</SectionTitle>
           </div>
           <div className="flex items-center gap-2.5 shrink-0">
             <Link href="/all-peptides" className="inline-flex items-center gap-1.5 font-medium text-[var(--cobalt)]" style={{ fontSize: 13 }}>
@@ -181,7 +181,7 @@ export function QualitySection() {
       <Container className="py-14 lg:py-20">
         <div className="mb-8">
           <Eyebrow>Why researchers choose us</Eyebrow>
-          <h2 className="font-bold" style={{ fontSize: "clamp(26px, 3vw, 44px)", lineHeight: 0.93, letterSpacing: "-0.025em", color: "var(--ink)", margin: 0 }}>
+          <h2 className="font-bold" style={{ fontSize: "var(--home-h2)", lineHeight: "var(--home-h2-lh)", letterSpacing: "var(--home-h2-ls)", color: "var(--ink)", margin: 0 }}>
             Lab-tested quality,<br className="hidden sm:block" /> shipped the same day.
           </h2>
         </div>
@@ -217,7 +217,7 @@ export function HowItWorksSection() {
       <Container>
         <div className="mb-8 lg:mb-10 max-w-[640px]">
           <Eyebrow>How it works</Eyebrow>
-          <SectionTitle size="clamp(26px, 3vw, 40px)">From order to verified vial.</SectionTitle>
+          <SectionTitle>From order to verified vial.</SectionTitle>
         </div>
         <ol className="steps">
           {STEPS.map((st, i) => (
@@ -263,7 +263,7 @@ export function InstitutionalSection() {
           <div className="grid lg:grid-cols-2">
             <div className="p-8 sm:p-10 lg:p-12">
               <p className="uppercase mb-6" style={{ fontSize: 11, letterSpacing: "0.2em", color: "var(--graphite)" }}>Wholesale, contract research &amp; custom synthesis</p>
-              <h2 className="font-bold" style={{ fontSize: "clamp(24px, 2.8vw, 44px)", lineHeight: 0.93, letterSpacing: "-0.025em", color: "var(--ink)" }}>
+              <h2 className="font-bold" style={{ fontSize: "var(--home-h2)", lineHeight: "var(--home-h2-lh)", letterSpacing: "var(--home-h2-ls)", color: "var(--ink)" }}>
                 Wholesale, contract research &amp; custom synthesis.
               </h2>
               <p className="mt-5" style={{ fontSize: 14, lineHeight: 1.85, color: "var(--graphite)" }}>
@@ -383,7 +383,7 @@ export function FromTheLabSection() {
         <div className="flex flex-wrap items-end justify-between gap-6 mb-10 lg:mb-12">
           <div>
             <Eyebrow>From the lab</Eyebrow>
-            <SectionTitle size="clamp(26px, 2.3vw, 32px)">Research notes &amp; guides</SectionTitle>
+            <SectionTitle>Research notes &amp; guides</SectionTitle>
           </div>
           <Link href="/blog" className="inline-flex items-center gap-1.5 font-medium hover:text-[var(--cobalt)]" style={{ fontSize: 14, color: "var(--ink)" }}>
             All articles <ArrowUpRight size={15} />
@@ -427,7 +427,7 @@ export function ReviewsSection() {
         <div className="flex flex-wrap items-end justify-between gap-5 mb-10 lg:mb-12">
           <div>
             <Eyebrow>Verified customer reviews</Eyebrow>
-            <SectionTitle size="clamp(26px, 3vw, 44px)">What researchers say about us.</SectionTitle>
+            <SectionTitle>What researchers say about us.</SectionTitle>
             <div className="mt-4 flex items-center gap-3">
               <span role="img" className="flex items-center gap-0.5" aria-label="Rated 4.9 out of 5 stars">
                 {Array.from({ length: 5 }, (_, i) => <Star key={i} size={14} fill="#00B67A" color="#00B67A" strokeWidth={1.5} />)}
@@ -537,7 +537,7 @@ export function WhySection() {
       <Container>
         <div className="mb-8 max-w-[640px]">
           <Eyebrow>The OmniQure standard</Eyebrow>
-          <SectionTitle size="clamp(26px, 3vw, 40px)">Tested. Documented. Delivered.</SectionTitle>
+          <SectionTitle>Tested. Documented. Delivered.</SectionTitle>
           <p className="mt-4" style={{ fontSize: 15, lineHeight: 1.65, color: "var(--graphite)" }}>
             Three things we do with every batch, and the page where you can check each one.
           </p>
