@@ -1,9 +1,9 @@
 import { useState, useMemo, useEffect } from "react";
 import { useLocation, Link } from "wouter";
-import { Search } from "lucide-react";
+import { FileText, Search, ShieldCheck, Truck } from "lucide-react";
 import CatalogueCard from "@/components/CatalogueCard";
-import { Container, Eyebrow, SectionTitle } from "@/components/home/HomeSections";
-import { HeroPicture } from "@/components/PageHero";
+import { Container } from "@/components/home/HomeSections";
+import { rangeColourForCategory } from "@/lib/rangeColour";
 import { groupProducts } from "@/data/groupedProducts";
 import { useProducts } from "@/context/ProductsContext";
 import { isHiddenCategory } from "@/data/products";
@@ -122,37 +122,42 @@ export default function AllPeptides() {
     window.history.pushState(null, "", window.location.pathname);
   };
 
-  // Sunburst category header, when one range is in view.
-  const categoryImage = !searchQuery.trim() && selectedCategory !== "All Peptides"
-    ? { key: `cat-hdr-${selectedCategory.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`, alt: `${selectedCategory} research vials` }
-    : null;
+  // Sunburst header: the range's own photograph, or the six families for the full catalogue.
+  const headerKey = !searchQuery.trim() && selectedCategory !== "All Peptides"
+    ? `cat-hdr-${selectedCategory.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`
+    : "hdr-catalogue";
   const heading = searchQuery.trim()
     ? `Search: “${searchQuery.trim()}”`
-    : selectedCategory === "All Peptides" ? "The full catalogue." : `${selectedCategory}.`;
+    : selectedCategory === "All Peptides" ? "Research peptides" : selectedCategory;
+  const rangeColour = selectedCategory !== "All Peptides" && !searchQuery.trim() ? rangeColourForCategory(selectedCategory) : undefined;
 
   return (
-    <div className="bg-white">
+    <div className="catalogue-page bg-white">
       {/* Page header */}
-      <section className="border-b" style={{ borderColor: "var(--hairline)", background: "#F8F9FB" }}>
-        <Container className="pt-8 pb-10 lg:pt-10 lg:pb-12">
-          <nav aria-label="Breadcrumb" className="mb-6 uppercase" style={{ fontSize: 10.5, letterSpacing: "0.12em", color: "rgba(75,85,105,0.6)" }}>
-            <Link href="/" className="hover:text-[var(--ink)]">Home</Link>
-            <span className="mx-1.5">/</span>
-            <span style={{ color: "var(--ink)" }}>Catalogue</span>
-          </nav>
-          {categoryImage && <HeroPicture key={categoryImage.key} image={categoryImage} className="cat-banner" />}
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <Eyebrow>Research peptides</Eyebrow>
-              <SectionTitle size="clamp(32px, 4.4vw, 56px)">{heading}</SectionTitle>
-              <p className="mt-4 max-w-[440px]" style={{ fontSize: 14.5, lineHeight: 1.55, color: "var(--graphite)" }}>
-                {searchQuery.trim()
-                  ? `Showing results for “${searchQuery.trim()}”. Independent results confirm 99%+ purity.`
-                  : CATEGORY_DESCRIPTIONS[selectedCategory] ?? "Verified research compounds, 99%+ purity, each independently lab-tested."}
-              </p>
-            </div>
-            <div className="relative w-full lg:w-[300px]">
-              <Search size={15} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: "rgba(75,85,105,0.55)" }} />
+      <section className="cat-hero" style={rangeColour ? { "--range": rangeColour } as React.CSSProperties : undefined}>
+        <Container className="cat-hero__inner">
+          <div className="cat-hero__text">
+            <nav aria-label="Breadcrumb" className="cat-hero__crumbs">
+              <Link href="/">Home</Link>
+              <span aria-hidden="true">/</span>
+              {selectedCategory !== "All Peptides" && !searchQuery.trim() ? (
+                <>
+                  <Link href="/all-peptides" onClick={() => handleCategoryChange("All Peptides")}>Catalogue</Link>
+                  <span aria-hidden="true">/</span>
+                  <span aria-current="page">{selectedCategory}</span>
+                </>
+              ) : (
+                <span aria-current="page">Catalogue</span>
+              )}
+            </nav>
+            <h1 className="cat-hero__title">{heading}</h1>
+            <p className="cat-hero__lead">
+              {searchQuery.trim()
+                ? `${groupedProducts.length} compound${groupedProducts.length !== 1 ? "s" : ""} matching “${searchQuery.trim()}”.`
+                : CATEGORY_DESCRIPTIONS[selectedCategory] ?? "Every compound independently tested by Janoshik, with the certificate of analysis on each product."}
+            </p>
+            <div className="cat-hero__search">
+              <Search size={15} aria-hidden="true" />
               <input
                 type="search"
                 aria-label="Search peptides"
@@ -163,16 +168,23 @@ export default function AllPeptides() {
                   window.history.replaceState(null, "", window.location.pathname + params);
                 }}
                 placeholder="Search peptide or code…"
-                className="w-full rounded-[10px] border bg-white py-2.5 pl-10 pr-3 outline-none focus:border-[var(--cobalt)]"
-                style={{ borderColor: "var(--hairline)", fontSize: 13.5, color: "var(--ink)" }}
               />
             </div>
+            <ul className="cat-hero__proof">
+              <li><ShieldCheck size={14} aria-hidden="true" /> 99%+ HPLC purity</li>
+              <li><FileText size={14} aria-hidden="true" /> COA for every batch</li>
+              <li><Truck size={14} aria-hidden="true" /> Same-day dispatch</li>
+            </ul>
           </div>
+          <picture className="cat-hero__media" key={headerKey}>
+            <source media="(max-width: 1279px)" srcSet={`/sunburst/${headerKey}-md.webp`} width={1200} height={400} />
+            <img src={`/sunburst/${headerKey}.webp`} alt={`${selectedCategory === "All Peptides" ? "OmniQure" : selectedCategory} research vials`} width={1920} height={640} fetchPriority="high" />
+          </picture>
         </Container>
       </section>
 
       {/* Toolbar: category chips, result count, sort */}
-      <section className="sticky top-0 z-10 border-b bg-white/95 backdrop-blur" style={{ borderColor: "var(--hairline)" }}>
+      <section className="cat-toolbar sticky z-10 border-b bg-white/95 backdrop-blur" style={{ borderColor: "var(--hairline)" }}>
         <Container className="flex items-center gap-4 py-3">
           <div className="flex min-w-0 flex-1 gap-1.5 overflow-x-auto scrollbar-none" role="tablist" aria-label="Filter by category">
             {categories.map(cat => {
@@ -215,8 +227,8 @@ export default function AllPeptides() {
 
       {/* Grid */}
       <section>
-        <Container className="py-10 lg:py-14">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <Container className="py-6 sm:py-8 lg:py-12">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
             {groupedProducts.map(group => (
               <CatalogueCard key={group.baseName} group={group} />
             ))}

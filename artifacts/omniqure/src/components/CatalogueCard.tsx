@@ -1,90 +1,125 @@
+import { useState } from "react";
 import { Link } from "wouter";
-import { Plus } from "lucide-react";
-import type { GroupedProduct } from "@/data/groupedProducts";
+import { Check, ShieldCheck, ShoppingCart } from "lucide-react";
+import { parseName, type GroupedProduct } from "@/data/groupedProducts";
+import { janoshikDataBySlug } from "@/data/janoshikData";
 import { useCurrency } from "@/context/CurrencyContext";
-import { studioFallback, STUDIO_BG } from "@/lib/studioImage";
 import { useCart } from "@/context/CartContext";
+import { studioFallback, STUDIO_BG } from "@/lib/studioImage";
+import { rangeColourForCategory } from "@/lib/rangeColour";
+import JanoshikReportModal from "@/components/JanoshikReportModal";
 
-/* Flat catalogue tile: 4:5 image, name, category, purity, "From" price. */
+/*
+ * Catalogue tile: vial image and name link to the product; strength, price,
+ * COA and Add to cart work from the grid. Controls sit outside the links so
+ * each one is its own focus stop.
+ */
 export default function CatalogueCard({ group }: { group: GroupedProduct }) {
   const { formatPrice } = useCurrency();
   const { addToCart } = useCart();
-  const first = group.variants[0];
-  const prices = group.variants.map(v => v.price).filter((p): p is number => p != null);
-  const fromPrice = prices.length ? Math.min(...prices) : null;
-  const soldOut = group.variants.every(v => v.stockLevel === 0);
-  const purity = group.variants.find(v => v.purity)?.purity;
-  const singleVariant = group.variants.length === 1;
-  const inStock = first && (first.stockLevel ?? 0) > 0;
+  const [variantId, setVariantId] = useState(
+    () => (group.variants.find(v => (v.stockLevel ?? 1) > 0) ?? group.variants[0]).id,
+  );
+  const [added, setAdded] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
 
-  const handleQuickAdd = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (first && inStock) {
-      addToCart(first, 1);
-    }
+  const variant = group.variants.find(v => v.id === variantId) ?? group.variants[0];
+  const href = `/product/${variant.slug || variant.id}`;
+  const soldOut = variant.stockLevel === 0;
+  const lowStock = variant.stockLevel != null && variant.stockLevel > 0 && variant.stockLevel <= 10;
+  const purity = variant.purity ?? group.variants.find(v => v.purity)?.purity;
+  const report = janoshikDataBySlug[variant.slug];
+  const hasReport = !!(report?.taskNumber && report.verifyUrl && report.image);
+  const strengthOf = (name: string) => parseName(name).strength;
+
+  const add = () => {
+    if (soldOut) return;
+    addToCart(variant, 1);
+    setAdded(true);
+    window.setTimeout(() => setAdded(false), 1600);
   };
 
   return (
-    <Link
-      href={`/product/${first.slug || first.id}`}
-      className="group flex flex-col overflow-hidden rounded-[14px] border bg-white hover:shadow-md transition-shadow"
-      style={{ borderColor: "var(--hairline)" }}
-    >
-      <div className="relative aspect-[4/5] overflow-hidden" style={{ background: STUDIO_BG }}>
+    <article className="ccard" style={{ "--range": rangeColourForCategory(group.category) } as React.CSSProperties}>
+      <Link href={href} className="ccard__media" style={{ background: STUDIO_BG }} tabIndex={-1} aria-hidden="true">
         <img
           src={group.image}
           onError={studioFallback(group.cardImage || group.image)}
-          alt={`${group.baseName} research peptide vial`}
+          alt=""
           loading="lazy"
           width={1254}
           height={1254}
-          className="h-full w-full object-cover scale-[1.08] sm:scale-100 group-hover:scale-[1.05] transition-transform duration-700 ease-out"
         />
         {soldOut ? (
-          <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em]" style={{ color: "var(--graphite)" }}>
-            Sold out
-          </span>
-        ) : first && first.stockLevel != null && first.stockLevel > 0 && first.stockLevel <= 10 ? (
-          <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em]" style={{ color: "var(--cobalt)" }}>
-            {first.stockLevel} left
-          </span>
+          <span className="ccard__badge">Sold out</span>
+        ) : lowStock ? (
+          <span className="ccard__badge ccard__badge--low">{variant.stockLevel} left</span>
         ) : null}
-        {!soldOut && singleVariant && inStock && (
-          <button
-            onClick={handleQuickAdd}
-            aria-label="Add to cart"
-            className="absolute bottom-3 right-3 flex h-11 w-11 items-center justify-center rounded-full transition-all hover:scale-110 active:scale-95"
-            style={{ background: "var(--cobalt)", color: "white", boxShadow: "0 4px 14px rgba(59,98,171,0.35)" }}
-          >
-            <Plus size={18} strokeWidth={2.5} />
-          </button>
-        )}
-      </div>
-      <div className="p-3 sm:p-4">
-        <p className="font-semibold text-[13px] sm:text-[16px] leading-snug" style={{ color: "var(--ink)", letterSpacing: "-0.025em" }}>
-          {group.baseName}
+      </Link>
+
+      <div className="ccard__body">
+        <Link href={href} className="ccard__name">{group.baseName}</Link>
+        <p className="ccard__meta">
+          <span className="ccard__range" aria-hidden="true" />
+          <span className="truncate">{group.category}</span>
         </p>
-        <p className="mt-0.5 text-[11px] sm:text-[12px] truncate" style={{ color: "var(--graphite)" }}>
-          {group.category}
-        </p>
-        <p className="mt-1.5 min-h-[15px] text-[10.5px] font-semibold" style={{ color: "var(--cobalt)" }}>
-          {purity ? `${purity} HPLC purity` : " "}
-        </p>
-        <div className="mt-2.5 flex items-end justify-between gap-1.5">
-          {fromPrice != null ? (
-            <div className="leading-none">
-              <span className="mb-1 block text-[8.5px] font-medium uppercase tracking-[0.08em]" style={{ color: "var(--graphite)" }}>From</span>
-              <span className="font-bold text-[15px] sm:text-[17px] tabular-nums" style={{ color: "var(--ink)" }}>{formatPrice(fromPrice)}</span>
-            </div>
+        {purity && <p className="ccard__purity">{purity} HPLC purity</p>}
+
+        <div className="ccard__buy">
+          {group.variants.length > 1 ? (
+            <select
+              className="ccard__strength"
+              value={variantId}
+              onChange={e => setVariantId(e.target.value)}
+              aria-label={`${group.baseName} strength`}
+            >
+              {group.variants.map(v => (
+                <option key={v.id} value={v.id} disabled={v.stockLevel === 0}>
+                  {strengthOf(v.name) || v.name}{v.stockLevel === 0 ? " (sold out)" : ""}
+                </option>
+              ))}
+            </select>
           ) : (
-            <span className="text-[12px] font-medium" style={{ color: "var(--graphite)" }}>See options</span>
+            <span className="ccard__strength ccard__strength--fixed">{strengthOf(variant.name) || "Single vial"}</span>
           )}
-          <span className="shrink-0 text-[11px] sm:text-[11.5px] font-medium transition-colors text-[var(--graphite)] group-hover:text-[var(--cobalt)]">
-            View →
-          </span>
+
+          <div className="ccard__price-row">
+            <span className="ccard__price">{variant.price != null ? formatPrice(variant.price) : "See options"}</span>
+            {hasReport ? (
+              <button type="button" className="ccard__coa" onClick={() => setReportOpen(true)} aria-label={`View certificate of analysis for ${variant.name}`}>
+                <ShieldCheck size={13} aria-hidden="true" /> COA
+              </button>
+            ) : (
+              <Link href={`${href}#specifications`} className="ccard__coa" aria-label={`Batch analysis for ${variant.name}`}>
+                <ShieldCheck size={13} aria-hidden="true" /> COA
+              </Link>
+            )}
+          </div>
+
+          <button
+            type="button"
+            className="ccard__add"
+            data-added={added}
+            disabled={soldOut}
+            onClick={add}
+            aria-label={soldOut ? `${variant.name} is sold out` : `Add ${variant.name} to cart`}
+          >
+            {soldOut ? "Sold out" : added ? <><Check size={15} strokeWidth={2.5} aria-hidden="true" /> Added</> : <><ShoppingCart size={15} aria-hidden="true" /> Add to cart</>}
+          </button>
         </div>
       </div>
-    </Link>
+
+      {reportOpen && hasReport && (
+        <JanoshikReportModal
+          taskNumber={report!.taskNumber ?? ""}
+          verifyKey={report!.verifyKey ?? ""}
+          verifyUrl={report!.verifyUrl!}
+          image={report!.image!}
+          certificatePdf={report!.certificatePdf}
+          productName={variant.name}
+          onClose={() => setReportOpen(false)}
+        />
+      )}
+    </article>
   );
 }

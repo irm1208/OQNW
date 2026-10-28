@@ -139,6 +139,14 @@ export default function ProductPage() {
     setImageIdx(0);
   }, [params.id]);
 
+  // Catalogue "COA" links land on the batch data: /product/<slug>#specifications
+  useEffect(() => {
+    if (!product || !window.location.hash) return;
+    const id = window.location.hash.slice(1);
+    const timer = window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" }), 150);
+    return () => window.clearTimeout(timer);
+  }, [product?.id]);
+
   useEffect(() => {
     if (product) trackView(product.id);
   }, [product?.id]);
@@ -638,7 +646,7 @@ export default function ProductPage() {
 
       {/* Specifications — navy section, sheet styled as the vial label */}
       {specs.length > 0 && (
-        <section className="p-section spec-section">
+        <section id="specifications" className="p-section spec-section" style={{ scrollMarginTop: 80 }}>
           <Container className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-16">
             <div>
               <p className="product-eyebrow product-eyebrow--dark">Analytical data</p>
