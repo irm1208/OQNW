@@ -135,7 +135,10 @@ export default function ProductPage() {
   const [notifyError, setNotifyError] = useState<string | null>(null);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
+    // Switching strength keeps the reader where they are.
+    if (!(window.history.state as { keepScroll?: boolean } | null)?.keepScroll) {
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
     setImageIdx(0);
   }, [params.id]);
 
@@ -466,7 +469,7 @@ export default function ProductPage() {
                               type="button"
                               role="radio"
                               aria-checked={active}
-                              onClick={() => { if (!active) navigate(`/product/${v.id}`); }}
+                              onClick={() => { if (!active) navigate(`/product/${v.slug || v.id}`, { replace: true, state: { keepScroll: true } }); }}
                               className="dosage-chip"
                             >
                               {parseBaseName(v.name).strength}

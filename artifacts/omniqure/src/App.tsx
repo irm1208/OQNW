@@ -63,9 +63,14 @@ const NotFound             = lazy(() => import("@/pages/not-found"));
 
 const queryClient = new QueryClient();
 
+/** In-place navigations (e.g. switching a product's strength) pass
+    `state: { keepScroll: true }`: no scroll reset and no progress bar. */
+export const isInPlaceNavigation = () => !!(window.history.state as { keepScroll?: boolean } | null)?.keepScroll;
+
 function ScrollToTop() {
   const [location] = useLocation();
   useEffect(() => {
+    if (isInPlaceNavigation()) return;
     window.scrollTo(0, 0);
   }, [location]);
   return null;
@@ -138,6 +143,7 @@ function NavProgress() {
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => {
+    if (isInPlaceNavigation()) return;
     timers.current.forEach(clearTimeout);
     timers.current = [];
     setVisible(true);
