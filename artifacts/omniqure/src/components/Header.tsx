@@ -390,7 +390,6 @@ export default function Header() {
       {/* Matte Navy brand band; the range pin stripe runs along its foot */}
       <div className="header-topbar header-brand" style={{
         background: "var(--oq-matte-navy)",
-        boxShadow: scrolled ? "0 6px 18px -10px rgba(4,11,34,0.45)" : "none",
         transition: "box-shadow 0.3s ease",
         position: "relative", zIndex: 2,
       }}>
@@ -433,7 +432,7 @@ export default function Header() {
                   >
                     <Link
                       href={item.href}
-                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#EEF1F8] hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
+                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4A5672] hover:bg-[#EDF0F9] hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
                       style={{
                         borderRadius: "6px", backgroundColor: active ? "rgba(229,239,255,0.6)" : undefined,
                         color: active ? "var(--ink)" : undefined,
@@ -458,7 +457,7 @@ export default function Header() {
                   >
                     <Link
                       href={item.href}
-                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#EEF1F8] hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
+                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4A5672] hover:bg-[#EDF0F9] hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
                       style={{
                         borderRadius: "6px", backgroundColor: active ? "rgba(229,239,255,0.6)" : undefined,
                         color: active ? "var(--ink)" : undefined,
@@ -486,8 +485,8 @@ export default function Header() {
                           marginTop: "2px",
                         }}
                       >
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px", paddingBottom: "8px", borderBottom: "1px solid #F1F5F9" }}>
-                          <p style={{ fontSize: "11px", fontWeight: 800, color: "#94A3B8", textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px", paddingBottom: "8px", borderBottom: "1px solid #F4F5F8" }}>
+                          <p style={{ fontSize: "11px", fontWeight: 800, color: "#8D9BB8", textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>
                             Popular Peptides
                           </p>
                           <Link
@@ -508,11 +507,11 @@ export default function Header() {
                               style={{
                                 display: "block",
                                 padding: "6px 8px", borderRadius: "8px",
-                                textDecoration: "none", color: "#374151",
+                                textDecoration: "none", color: "#22252C",
                                 fontSize: "12.5px", fontWeight: 500,
                                 whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
                               }}
-                              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F0F5FF")}
+                              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#EDF0F9")}
                               onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
                             >
                               {g.baseName}
@@ -520,7 +519,7 @@ export default function Header() {
                           ))}
                         </div>
 
-                        <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #F1F5F9", textAlign: "center" }}>
+                        <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #F4F5F8", textAlign: "center" }}>
                           <Link
                             href="/popular-peptides"
                             onClick={() => setPopularOpen(false)}
@@ -545,7 +544,7 @@ export default function Header() {
                     onMouseLeave={closeResearch}
                   >
                     <button
-                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#EEF1F8] hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
+                      className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4A5672] hover:bg-[#EDF0F9] hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
                       style={{
                         color: researchActive ? "var(--ink)" : undefined,
                         fontWeight: researchActive ? 600 : 500,
@@ -582,7 +581,7 @@ export default function Header() {
                   key={item.label}
                   href={item.href}
                   data-active={active ? "true" : undefined}
-                  className={`${item.href === "/" ? "header-nav-home " : ""}${item.href === "/bac-water" || item.label === "NAD+" ? "header-nav-extra " : ""}px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#EEF1F8] hover:text-[#22252C] inline-block transition-colors`}
+                  className={`${item.href === "/" ? "header-nav-home " : ""}${item.href === "/bac-water" || item.label === "NAD+" ? "header-nav-extra " : ""}px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4A5672] hover:bg-[#EDF0F9] hover:text-[#22252C] inline-block transition-colors`}
                   style={{
                     borderRadius: "6px", backgroundColor: active ? "rgba(229,239,255,0.6)" : undefined,
                     color: active ? "var(--ink)" : undefined,
@@ -603,7 +602,7 @@ export default function Header() {
             <button
               ref={offersButtonRef}
               type="button"
-              className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#EEF1F8] hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
+              className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4A5672] hover:bg-[#EDF0F9] hover:text-[#22252C] inline-flex items-center gap-1 transition-colors"
               style={{
                 color: offersActive ? "var(--ink)" : undefined,
                 fontWeight: offersActive ? 600 : 500,
@@ -686,7 +685,7 @@ export default function Header() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4B5569] hover:bg-[#EEF1F8] hover:text-[#22252C] transition-colors"
+                className="px-3 py-2 my-1.5 text-[13px] whitespace-nowrap text-[#4A5672] hover:bg-[#EDF0F9] hover:text-[#22252C] transition-colors"
                 style={{
                   color: active ? "var(--ink)" : undefined,
                   textDecoration: "none",
@@ -718,7 +717,7 @@ export default function Header() {
                 backgroundColor: "#fff",
                 border: "1px solid var(--hairline)", borderTop: "none",
                 borderRadius: "0 0 16px 16px",
-                boxShadow: "0 12px 32px rgba(59, 98, 171,0.15)", zIndex: 600, overflow: "hidden",
+                boxShadow: "0 12px 32px rgba(29, 41, 72, 0.12)", zIndex: 600, overflow: "hidden",
               }}>
                 {results.map((p, i) => (
                   <button
@@ -730,14 +729,14 @@ export default function Header() {
                       width: "100%", padding: "10px 14px", textAlign: "left",
                       border: "none", cursor: "pointer",
                       backgroundColor: i === highlighted ? "rgba(78,104,194,0.08)" : "#fff",
-                      borderBottom: i < results.length - 1 ? "1px solid #F1F5F9" : "none",
+                      borderBottom: i < results.length - 1 ? "1px solid #F4F5F8" : "none",
                       transition: "background-color 0.1s",
                     }}
                   >
                     <div style={{
                       width: "42px", height: "42px", borderRadius: "8px", flexShrink: 0,
-                      background: "linear-gradient(145deg,#F4F8FF,#EBF2FF)",
-                      border: "1px solid #E2E8F0", display: "flex", alignItems: "center", justifyContent: "center",
+                      background: "#EDF0F9",
+                      border: "1px solid #D3D8E2", display: "flex", alignItems: "center", justifyContent: "center",
                       overflow: "hidden",
                     }}>
                       <img src={p.image} alt={p.name}
@@ -750,8 +749,8 @@ export default function Header() {
                         {highlightMatch(p.name, searchQuery.trim())}
                       </p>
                       <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                        <span style={{ fontSize: "11px", color: "#64748B" }}>{p.category}</span>
-                        <span style={{ fontSize: "10px", color: "#059669", fontWeight: 700, backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0", borderRadius: "5px", padding: "1px 5px" }}>
+                        <span style={{ fontSize: "11px", color: "#4A5672" }}>{p.category}</span>
+                        <span style={{ fontSize: "10px", color: "#4F6B52", fontWeight: 700, backgroundColor: "#EFF2EF", border: "1px solid #94A895", borderRadius: "5px", padding: "1px 5px" }}>
                           {p.purity ?? "Purity not specified"}
                         </span>
                       </div>
@@ -769,7 +768,7 @@ export default function Header() {
                     display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
                     width: "100%", padding: "10px 14px",
                     fontSize: "12px", fontWeight: 700, color: "#4E68C2",
-                    backgroundColor: "#F0F5FF", border: "none",
+                    backgroundColor: "#EDF0F9", border: "none",
                     borderTop: "1px solid #D3D8E2", cursor: "pointer",
                   }}
                 >
@@ -784,10 +783,10 @@ export default function Header() {
               <div style={{
                 position: "absolute", top: "100%", left: 0, right: 0,
                 backgroundColor: "#fff", border: "1px solid var(--hairline)", borderTop: "none",
-                borderRadius: "0 0 16px 16px", boxShadow: "0 12px 32px rgba(59, 98, 171,0.15)",
+                borderRadius: "0 0 16px 16px", boxShadow: "0 12px 32px rgba(29, 41, 72, 0.12)",
                 zIndex: 600, padding: "12px 14px",
               }}>
-                <p style={{ fontSize: "10.5px", fontWeight: 700, color: "#94A3B8", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "8px" }}>
+                <p style={{ fontSize: "10.5px", fontWeight: 700, color: "#8D9BB8", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "8px" }}>
                   Popular searches
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
@@ -801,7 +800,7 @@ export default function Header() {
                       }}
                       style={{
                         fontSize: "12px", fontWeight: 600, color: "#4E68C2",
-                        backgroundColor: "rgba(78,104,194,0.08)", border: "1px solid #C8DDB4",
+                        backgroundColor: "rgba(78,104,194,0.08)", border: "1px solid #94A895",
                         borderRadius: "8px", padding: "4px 11px", cursor: "pointer",
                         transition: "all 0.15s",
                       }}
@@ -826,10 +825,10 @@ export default function Header() {
               <div style={{
                 position: "absolute", top: "100%", left: 0, right: 0,
                 backgroundColor: "#fff", border: "1px solid var(--hairline)", borderTop: "none",
-                borderRadius: "0 0 16px 16px", boxShadow: "0 12px 32px rgba(59, 98, 171,0.15)",
+                borderRadius: "0 0 16px 16px", boxShadow: "0 12px 32px rgba(29, 41, 72, 0.12)",
                 zIndex: 600, padding: "16px 14px", textAlign: "center",
               }}>
-                <p style={{ fontSize: "13px", color: "#64748B", margin: "0 0 8px" }}>No peptides found for &ldquo;{searchQuery.trim()}&rdquo;</p>
+                <p style={{ fontSize: "13px", color: "#4A5672", margin: "0 0 8px" }}>No peptides found for &ldquo;{searchQuery.trim()}&rdquo;</p>
                 <button
                   onMouseDown={() => { navigate("/all-peptides"); setOpen(false); setSearchQuery(""); }}
                   style={{ fontSize: "12px", fontWeight: 600, color: "#4E68C2", background: "none", border: "none", cursor: "pointer" }}
@@ -880,15 +879,15 @@ export default function Header() {
               {currencyOpen && (
                 <div style={{
                   position: "absolute", top: "calc(100% + 6px)", right: 0,
-                  backgroundColor: "#fff", border: "1.5px solid #E2E8F0", borderRadius: "14px",
+                  backgroundColor: "#fff", border: "1.5px solid #D3D8E2", borderRadius: "14px",
                   boxShadow: "0 12px 32px rgba(0,0,0,0.14)", zIndex: 300,
                   minWidth: "220px", maxHeight: "360px", overflowY: "auto", overflowX: "hidden",
-                  padding: "6px", scrollbarWidth: "thin", scrollbarColor: "#CBD5E1 transparent",
+                  padding: "6px", scrollbarWidth: "thin", scrollbarColor: "#D3D8E2 transparent",
                 }}>
                   <div style={{
                     margin: "2px 4px 8px", padding: "10px 10px", borderRadius: "8px",
-                    backgroundColor: "#FFF7ED", border: "1px solid #FED7AA",
-                    fontSize: "11px", color: "#92400E", lineHeight: 1.45, textAlign: "center",
+                    backgroundColor: "#F8F4EF", border: "1px solid #CDB894",
+                    fontSize: "11px", color: "#85683A", lineHeight: 1.45, textAlign: "center",
                   }}>
                     Prices shown for reference only.<br />
                     <strong>Payments accepted in GBP &amp; EUR only</strong><br />
@@ -903,7 +902,7 @@ export default function Header() {
                   ].map(group => (
                     <div key={group.label}>
                       <p style={{
-                        fontSize: "10px", fontWeight: 700, color: "#94A3B8",
+                        fontSize: "10px", fontWeight: 700, color: "#8D9BB8",
                         textTransform: "uppercase", letterSpacing: "0.08em", padding: "6px 10px 3px",
                       }}>
                         {group.label}
@@ -919,12 +918,12 @@ export default function Header() {
                             backgroundColor: c.code === currency.code ? "rgba(78,104,194,0.08)" : "transparent",
                             textAlign: "left", transition: "background-color 0.1s",
                           }}
-                          onMouseEnter={e => { if (c.code !== currency.code) (e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC"; }}
+                          onMouseEnter={e => { if (c.code !== currency.code) (e.currentTarget as HTMLElement).style.backgroundColor = "#F4F5F8"; }}
                           onMouseLeave={e => { if (c.code !== currency.code) (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
                         >
                           <span style={{ fontSize: "15px", flexShrink: 0 }}>{c.flag}</span>
                           <span style={{ fontSize: "12.5px", fontWeight: 700, color: c.code === currency.code ? "#4E68C2" : "#22252C", minWidth: "34px" }}>{c.code}</span>
-                          <span style={{ fontSize: "12px", color: "#64748B", flex: 1 }}>{c.label}</span>
+                          <span style={{ fontSize: "12px", color: "#4A5672", flex: 1 }}>{c.label}</span>
                           {c.code === currency.code && (
                             <span style={{ color: "#4E68C2", fontSize: "13px", flexShrink: 0 }}>✓</span>
                           )}
@@ -964,16 +963,16 @@ export default function Header() {
                 {userMenuOpen && (
                   <div style={{
                     position: "absolute", top: "calc(100% + 8px)", right: 0,
-                    backgroundColor: "#fff", border: "1.5px solid #E2E8F0", borderRadius: "14px",
+                    backgroundColor: "#fff", border: "1.5px solid #D3D8E2", borderRadius: "14px",
                     boxShadow: "0 12px 32px rgba(0,0,0,0.14)", zIndex: 300,
                     minWidth: "200px", overflow: "hidden",
                   }}>
                     {/* User info */}
-                    <div style={{ padding: "14px 16px", borderBottom: "1px solid #F1F5F9" }}>
+                    <div style={{ padding: "14px 16px", borderBottom: "1px solid #F4F5F8" }}>
                       <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C", marginBottom: "2px" }}>
                         {customer.firstName} {customer.lastName}
                       </p>
-                      <p style={{ fontSize: "12px", color: "#94A3B8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      <p style={{ fontSize: "12px", color: "#8D9BB8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                         {customer.email}
                       </p>
                     </div>
@@ -985,13 +984,13 @@ export default function Header() {
                         style={{
                           display: "flex", alignItems: "center", gap: "10px",
                           padding: "9px 10px", borderRadius: "8px",
-                          color: "#374151", textDecoration: "none",
+                          color: "#22252C", textDecoration: "none",
                           fontSize: "13px", fontWeight: 500,
                         }}
-                        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC")}
+                        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F4F5F8")}
                         onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
                       >
-                        <Package size={15} style={{ color: "#64748B" }} />
+                        <Package size={15} style={{ color: "#4A5672" }} />
                         My Account
                       </Link>
                       {isApprovedAffiliate && (
@@ -1001,13 +1000,13 @@ export default function Header() {
                           style={{
                             display: "flex", alignItems: "center", gap: "10px",
                             padding: "9px 10px", borderRadius: "8px",
-                            color: "#374151", textDecoration: "none",
+                            color: "#22252C", textDecoration: "none",
                             fontSize: "13px", fontWeight: 500,
                           }}
-                          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC")}
+                          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F4F5F8")}
                           onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
                         >
-                          <Users size={15} style={{ color: "#64748B" }} />
+                          <Users size={15} style={{ color: "#4A5672" }} />
                           Partner Dashboard
                         </Link>
                       )}
@@ -1017,26 +1016,26 @@ export default function Header() {
                         style={{
                           display: "flex", alignItems: "center", gap: "10px",
                           padding: "9px 10px", borderRadius: "8px",
-                          color: "#374151", textDecoration: "none",
+                          color: "#22252C", textDecoration: "none",
                           fontSize: "13px", fontWeight: 500,
                         }}
-                        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F8FAFC")}
+                        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F4F5F8")}
                         onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
                       >
-                        <ShoppingCart size={15} style={{ color: "#64748B" }} />
+                        <ShoppingCart size={15} style={{ color: "#4A5672" }} />
                         Track Order
                       </Link>
                     </div>
-                    <div style={{ borderTop: "1px solid #F1F5F9", padding: "6px" }}>
+                    <div style={{ borderTop: "1px solid #F4F5F8", padding: "6px" }}>
                       <button
                         onClick={handleSignOut}
                         style={{
                           display: "flex", alignItems: "center", gap: "10px",
                           width: "100%", padding: "9px 10px", borderRadius: "8px",
                           border: "none", backgroundColor: "transparent", cursor: "pointer",
-                          color: "#DC2626", fontSize: "13px", fontWeight: 500, textAlign: "left",
+                          color: "#9C4A44", fontSize: "13px", fontWeight: 500, textAlign: "left",
                         }}
-                        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#FEF2F2")}
+                        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "#F8F2F3")}
                         onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")}
                       >
                         <LogOut size={15} />

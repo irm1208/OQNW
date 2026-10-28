@@ -210,7 +210,7 @@ export default function ReferAFriendPage() {
             const Icon = card.icon;
             return (
               <div key={card.label} style={{ background: "#fff", borderRadius: 16, padding: "24px", border: HAIR }}>
-                <span className="mb-5 flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#FFF6F2", color: COBALT }}>
+                <span className="mb-5 flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#F8F4EF", color: COBALT }}>
                   <Icon size={18} aria-hidden="true" />
                 </span>
                 <p className="uppercase" style={{ fontSize: 11, fontWeight: 500, color: GRAPHITE, letterSpacing: "0.1em", margin: "0 0 6px" }}>
@@ -238,7 +238,7 @@ export default function ReferAFriendPage() {
             return (
               <div key={s.step} style={{ borderRadius: 16, padding: "24px", background: "#fff", border: HAIR }}>
                 <div className="mb-5 flex items-center justify-between">
-                  <span className="flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#FFF6F2", color: COBALT }}>
+                  <span className="flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#F8F4EF", color: COBALT }}>
                     <Icon size={18} aria-hidden="true" />
                   </span>
                   <span style={{ fontFamily: "var(--app-font-mono)", fontSize: 12, color: GRAPHITE, letterSpacing: "0.04em" }}>
@@ -297,7 +297,7 @@ export default function ReferAFriendPage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PERKS.map(p => (
             <div key={p.label} className="flex flex-col gap-2" style={{ borderRadius: 16, padding: "22px", background: "#fff", border: HAIR }}>
-              <span className="mb-2 flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#FFF6F2", color: COBALT }}>
+              <span className="mb-2 flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#F8F4EF", color: COBALT }}>
                 {p.icon}
               </span>
               <p style={{ fontSize: 15, fontWeight: 600, color: INK, letterSpacing: "-0.01em", margin: 0 }}>{p.label}</p>
@@ -359,7 +359,7 @@ export default function ReferAFriendPage() {
       <section className={`${CONTAINER} py-12 lg:py-14`}>
         <div style={{ borderRadius: 16, border: HAIR, padding: "24px 28px", background: "#fff" }}>
           <h3 className="flex items-center gap-2.5" style={{ fontSize: 15, fontWeight: 600, color: INK, letterSpacing: "-0.01em", margin: "0 0 16px" }}>
-            <span className="flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#FFF6F2", color: COBALT }}>
+            <span className="flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#F8F4EF", color: COBALT }}>
               <FileText size={18} aria-hidden="true" />
             </span>
             Programme Terms &amp; Conditions

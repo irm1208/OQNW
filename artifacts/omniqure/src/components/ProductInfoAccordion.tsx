@@ -18,13 +18,13 @@ export default function ProductInfoAccordion({
         <div
           style={{
             borderLeft: "4px solid #4E68C2",
-            backgroundColor: "#F0F5FF",
+            backgroundColor: "#EDF0F9",
             padding: "14px 16px",
             borderRadius: "0 8px 8px 0",
             marginBottom: "18px",
           }}
         >
-          <p style={{ fontSize: "14px", color: "#1e3a5f", lineHeight: 1.75, margin: 0 }}>
+          <p style={{ fontSize: "14px", color: "#1D2948", lineHeight: 1.75, margin: 0 }}>
             {detail.description}
           </p>
         </div>
@@ -35,7 +35,7 @@ export default function ProductInfoAccordion({
         {items.map(({ label, value }) => (
           <div key={label} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
             <span style={{ color: "#4E68C2", fontWeight: 700, fontSize: "15px", flexShrink: 0, lineHeight: 1.5 }}>✓</span>
-            <p style={{ fontSize: "13.5px", color: "#374151", lineHeight: 1.65, margin: 0 }}>
+            <p style={{ fontSize: "13.5px", color: "#22252C", lineHeight: 1.65, margin: 0 }}>
               <strong style={{ color: "#22252C" }}>{label}:</strong> {value}
             </p>
           </div>
@@ -48,14 +48,14 @@ export default function ProductInfoAccordion({
           display: "flex",
           alignItems: "center",
           gap: "8px",
-          border: "1px solid #CBD5E1",
+          border: "1px solid #D3D8E2",
           borderRadius: "8px",
           padding: "10px 14px",
-          backgroundColor: "#F8FAFC",
+          backgroundColor: "#F4F5F8",
         }}
       >
         <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#4E68C2", flexShrink: 0 }} />
-        <p style={{ fontSize: "10.5px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#334155", margin: 0 }}>
+        <p style={{ fontSize: "10.5px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#22252C", margin: 0 }}>
           For Research Use Only — Not For Human Consumption
         </p>
       </div>

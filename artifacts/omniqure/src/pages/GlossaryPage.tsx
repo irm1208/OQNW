@@ -13,12 +13,12 @@ type GlossaryEntry = {
 };
 
 const CATEGORY_META: Record<string, { label: string; color: string; bg: string }> = {
-  chemistry:      { label: "Chemistry",      color: "#4E68C2", bg: "#E8F2DE" },
-  pharmacology:   { label: "Pharmacology",   color: "#7C3AED", bg: "#F5F3FF" },
-  pathway:        { label: "Pathway",        color: "#059669", bg: "#ECFDF5" },
-  research:       { label: "Research",       color: "#D97706", bg: "#FFFBEB" },
-  administration: { label: "Administration", color: "#0891B2", bg: "#FFF6F2" },
-  peptide:        { label: "Peptide Class",  color: "#DC2626", bg: "#FEF2F2" },
+  chemistry:      { label: "Chemistry",      color: "#4E68C2", bg: "#EFF2EF" },
+  pharmacology:   { label: "Pharmacology",   color: "#5E5690", bg: "#F1F0F7" },
+  pathway:        { label: "Pathway",        color: "#4F6B52", bg: "#EFF2EF" },
+  research:       { label: "Research",       color: "#85683A", bg: "#F8F4EF" },
+  administration: { label: "Administration", color: "#4C7376", bg: "#F8F4EF" },
+  peptide:        { label: "Peptide Class",  color: "#9C4A44", bg: "#F8F2F3" },
 };
 
 const GLOSSARY: GlossaryEntry[] = [

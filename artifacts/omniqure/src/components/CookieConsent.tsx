@@ -94,7 +94,7 @@ export function CookieConsent() {
             onClick={accept}
             style={{
               height: "40px", padding: "0 20px", borderRadius: "10px",
-              border: "none", background: "#3D55A8",
+              border: "none", background: "#0A2472",
               color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: font,
             }}
           >

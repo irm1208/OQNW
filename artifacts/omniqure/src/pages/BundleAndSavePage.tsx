@@ -124,7 +124,7 @@ export default function BundleAndSavePage() {
                       borderRadius: 9999, padding: "3px 9px",
                       ...(highlighted
                         ? { background: COBALT, color: "#fff" }
-                        : { background: "#FFF6F2", color: COBALT }),
+                        : { background: "#F8F4EF", color: COBALT }),
                     }}
                   >
                     {tier.badge}
@@ -149,7 +149,7 @@ export default function BundleAndSavePage() {
 
         {/* Referred customer note */}
         <div className="mt-5 flex items-start gap-4" style={{ borderRadius: 16, padding: "20px 22px", background: "#F2F0EB", border: HAIR }}>
-          <span className="flex shrink-0 items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#FFF6F2", color: COBALT }}>
+          <span className="flex shrink-0 items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#F8F4EF", color: COBALT }}>
             <Lightbulb size={18} aria-hidden="true" />
           </span>
           <div>
@@ -176,7 +176,7 @@ export default function BundleAndSavePage() {
               return (
                 <div key={s.title} style={{ background: "#fff", borderRadius: 16, padding: "24px", border: HAIR }}>
                   <div className="mb-5 flex items-center justify-between">
-                    <span className="flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#FFF6F2", color: COBALT }}>
+                    <span className="flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#F8F4EF", color: COBALT }}>
                       <Icon size={18} aria-hidden="true" />
                     </span>
                     <span style={{ fontFamily: "var(--app-font-mono)", fontSize: 12, color: GRAPHITE, letterSpacing: "0.04em" }}>
@@ -214,7 +214,7 @@ export default function BundleAndSavePage() {
                   </div>
                   <span
                     className="whitespace-nowrap"
-                    style={{ fontSize: 13, fontWeight: 500, color: COBALT, background: "#FFF6F2", borderRadius: 9999, padding: "5px 12px" }}
+                    style={{ fontSize: 13, fontWeight: 500, color: COBALT, background: "#F8F4EF", borderRadius: 9999, padding: "5px 12px" }}
                   >
                     {ex.saving === null ? "Loading price…" : `Worth £${ex.saving.toFixed(2)}`}
                   </span>

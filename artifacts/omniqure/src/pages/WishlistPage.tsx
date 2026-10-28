@@ -52,7 +52,7 @@ export default function WishlistPage() {
           >
             <div
               className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-              style={{ backgroundColor: "#FFF6F2" }}
+              style={{ backgroundColor: "#F8F4EF" }}
             >
               <Heart size={18} style={{ color: COBALT }} aria-hidden="true" />
             </div>
@@ -139,10 +139,10 @@ export default function WishlistPage() {
                       className="text-xs font-medium"
                       style={{
                         color: outOfStock
-                          ? "#DC2626"
+                          ? "#9C4A44"
                           : product.stockLevel !== undefined && product.stockLevel <= 10
-                          ? "#D97706"
-                          : "#059669",
+                          ? "#85683A"
+                          : "#4F6B52",
                       }}
                     >
                       {outOfStock
@@ -159,7 +159,7 @@ export default function WishlistPage() {
                         className="wishlist-add-btn flex-1 flex items-center justify-center gap-1.5 rounded-full text-xs font-medium text-white transition-opacity hover:opacity-90"
                         style={{
                           height: "36px",
-                          backgroundColor: outOfStock ? "#A0AEC0" : INK,
+                          backgroundColor: outOfStock ? "#8D9BB8" : INK,
                           border: "none",
                           cursor: outOfStock ? "not-allowed" : "pointer",
                           whiteSpace: "nowrap",

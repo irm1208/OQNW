@@ -13,8 +13,8 @@ export default function PostOrderAccountPrompt({ orderNumber }: { orderNumber: s
     return (
       <section
         style={{
-          background: "#ECFDF5",
-          border: "1px solid #A7F3D0",
+          background: "#EFF2EF",
+          border: "1px solid #94A895",
           borderRadius: 16,
           padding: "18px 20px",
           marginTop: 20,
@@ -24,14 +24,14 @@ export default function PostOrderAccountPrompt({ orderNumber }: { orderNumber: s
           flexWrap: "wrap",
         }}
       >
-        <CheckCircle2 size={22} style={{ color: "#059669", flexShrink: 0 }} />
+        <CheckCircle2 size={22} style={{ color: "#4F6B52", flexShrink: 0 }} />
         <div style={{ flex: 1, minWidth: 220 }}>
-          <p style={{ margin: 0, color: "#065F46", fontSize: 14, fontWeight: 800 }}>This order is saved to your account.</p>
-          <p style={{ margin: "3px 0 0", color: "#047857", fontSize: 12.5, lineHeight: 1.5 }}>View its status and order history whenever you need it.</p>
+          <p style={{ margin: 0, color: "#4F6B52", fontSize: 14, fontWeight: 800 }}>This order is saved to your account.</p>
+          <p style={{ margin: "3px 0 0", color: "#4F6B52", fontSize: 12.5, lineHeight: 1.5 }}>View its status and order history whenever you need it.</p>
         </div>
         <Link
           href={accountHref}
-          style={{ color: "#065F46", fontWeight: 800, fontSize: 13, textDecoration: "none", whiteSpace: "nowrap" }}
+          style={{ color: "#4F6B52", fontWeight: 800, fontSize: 13, textDecoration: "none", whiteSpace: "nowrap" }}
         >
           View my account <ArrowRight size={14} style={{ verticalAlign: "text-bottom" }} />
         </Link>
@@ -40,14 +40,14 @@ export default function PostOrderAccountPrompt({ orderNumber }: { orderNumber: s
   }
 
   return (
-    <section style={{ background: "#F8FAFF", border: "1px solid #C7D7F7", borderRadius: 16, padding: "20px", marginTop: 20 }}>
+    <section style={{ background: "#EDF0F9", border: "1px solid #D3D8E2", borderRadius: 16, padding: "20px", marginTop: 20 }}>
       <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-        <div style={{ width: 38, height: 38, borderRadius: 10, background: "#E0EAFF", color: "#4E68C2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+        <div style={{ width: 38, height: 38, borderRadius: 10, background: "#EDF0F9", color: "#4E68C2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
           <UserRoundPlus size={19} />
         </div>
         <div>
           <p style={{ margin: 0, color: "#22252C", fontSize: 15, fontWeight: 900 }}>Save this order to an account?</p>
-          <p style={{ margin: "4px 0 0", color: "#475569", fontSize: 13, lineHeight: 1.55 }}>
+          <p style={{ margin: "4px 0 0", color: "#4A5672", fontSize: 13, lineHeight: 1.55 }}>
             Create a password to view this order and future purchases in one place.
           </p>
         </div>
@@ -59,7 +59,7 @@ export default function PostOrderAccountPrompt({ orderNumber }: { orderNumber: s
         >
           Create an account <ArrowRight size={14} style={{ verticalAlign: "text-bottom", marginLeft: 3 }} />
         </Link>
-        <span style={{ color: "#64748B", fontSize: 12.5 }}>
+        <span style={{ color: "#4A5672", fontSize: 12.5 }}>
           Already have an account?{" "}
           <Link href={`/sign-in?${query}`} style={{ color: "#4E68C2", fontWeight: 800, textDecoration: "none" }}>Sign in</Link>
         </span>

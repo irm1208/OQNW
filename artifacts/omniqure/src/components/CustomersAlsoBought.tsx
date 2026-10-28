@@ -81,23 +81,23 @@ function AlsoBoughtCard({ product }: { product: Product }) {
     <Link href={`/product/${product.id}`} style={{ textDecoration: "none" }}>
       <div
         className="rounded-2xl overflow-hidden bg-white flex flex-col h-full cursor-pointer transition-all duration-200"
-        style={{ border: "1.5px solid #D3D8E2", boxShadow: "0 2px 10px rgba(15,23,42,0.05)" }}
+        style={{ border: "1.5px solid #D3D8E2", boxShadow: "none" }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLDivElement;
-          el.style.borderColor = "#93B8F0";
-          el.style.boxShadow = "0 8px 24px rgba(59, 98, 171,0.10)";
+          el.style.borderColor = "#8D9BB8";
+          el.style.boxShadow = "none";
           el.style.transform = "translateY(-2px)";
         }}
         onMouseLeave={(e) => {
           const el = e.currentTarget as HTMLDivElement;
           el.style.borderColor = "#D3D8E2";
-          el.style.boxShadow = "0 2px 10px rgba(15,23,42,0.05)";
+          el.style.boxShadow = "none";
           el.style.transform = "translateY(0)";
         }}
       >
         <div
           className="flex items-center justify-center relative"
-          style={{ height: "130px", background: "linear-gradient(145deg, #F4F8FF 0%, #EBF2FF 100%)" }}
+          style={{ height: "130px", background: "#EDF0F9" }}
         >
           <img
             src={product.image}
@@ -107,7 +107,7 @@ function AlsoBoughtCard({ product }: { product: Product }) {
           />
           <span
             className="absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full"
-            style={{ backgroundColor: "#ECFDF5", color: "#059669", border: "1px solid #A7F3D0", fontSize: "9.5px" }}
+            style={{ backgroundColor: "#EFF2EF", color: "#4F6B52", border: "1px solid #94A895", fontSize: "9.5px" }}
           >
             {product.purity ?? "Purity not specified"}
           </span>
@@ -135,7 +135,7 @@ function AlsoBoughtCard({ product }: { product: Product }) {
               onClick={handleAdd}
               className="flex items-center gap-1 font-semibold rounded-xl transition-all"
               style={{
-                backgroundColor: added ? "#059669" : "#4E68C2",
+                backgroundColor: added ? "#4F6B52" : "#4E68C2",
                 color: "#fff",
                 border: "none",
                 cursor: "pointer",
@@ -202,7 +202,7 @@ export default function CustomersAlsoBought({ product }: CustomersAlsoBoughtProp
       <div className="flex items-center gap-2.5 mb-4">
         <div
           className="flex items-center justify-center rounded-lg"
-          style={{ width: "30px", height: "30px", backgroundColor: "#E8F2DE" }}
+          style={{ width: "30px", height: "30px", backgroundColor: "#EFF2EF" }}
         >
           <Users size={15} style={{ color: "#4E68C2" }} />
         </div>

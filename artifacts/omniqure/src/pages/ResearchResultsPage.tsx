@@ -11,12 +11,12 @@ const visibleResearchCases = researchCases.filter(c => !isHiddenCategory(c.categ
 import { FlaskConical, Users, Clock, BookOpen, TrendingUp, TrendingDown, Minus, ArrowRight, AlertTriangle, ChevronDown, ChevronUp } from "lucide-react";
 
 const OUTCOME_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  "Healing & Recovery": { bg: "#ECFDF5", text: "#059669", border: "#6EE7B7" },
-  "Body Composition":   { bg: "#F5F3FF", text: "#7C3AED", border: "#C4B5FD" },
-  "Cognitive":          { bg: "#E8F2DE", text: "#3D55A8", border: "#B4D89C" },
-  "Longevity":          { bg: "#FFF7ED", text: "#B45309", border: "#FCD34D" },
-  "Hormonal":           { bg: "#FDF2F8", text: "#DB2777", border: "#F9A8D4" },
-  "Metabolic":          { bg: "#FFF6F2", text: "#0369A1", border: "#7DD3FC" },
+  "Healing & Recovery": { bg: "#EFF2EF", text: "#4F6B52", border: "#94A895" },
+  "Body Composition":   { bg: "#F1F0F7", text: "#5E5690", border: "#9F96C2" },
+  "Cognitive":          { bg: "#EFF2EF", text: "#0A2472", border: "#94A895" },
+  "Longevity":          { bg: "#F8F4EF", text: "#85683A", border: "#CDB894" },
+  "Hormonal":           { bg: "#F8F2F3", text: "#9C4A44", border: "#C9939A" },
+  "Metabolic":          { bg: "#F8F4EF", text: "#4C7376", border: "#7FA3A6" },
 };
 
 function pct(m: Metric): number {
@@ -45,22 +45,22 @@ function MetricBar({ m }: { m: Metric }) {
     ? Math.min((m.after / Math.max(m.before, m.after, 0.001)) * 100, 100)
     : Math.min((m.after / Math.max(m.before, 0.001)) * 100, 100);
 
-  const goodColor = "#059669";
-  const barColor = isGood ? goodColor : "#94A3B8";
+  const goodColor = "#4F6B52";
+  const barColor = isGood ? goodColor : "#8D9BB8";
   const Icon = m.after > m.before ? TrendingUp : m.after < m.before ? TrendingDown : Minus;
-  const iconColor = isGood ? goodColor : "#94A3B8";
+  const iconColor = isGood ? goodColor : "#8D9BB8";
 
   return (
     <div style={{ marginBottom: "14px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "5px" }}>
-        <span style={{ fontSize: "12px", fontWeight: 600, color: "#374151" }}>{m.label}</span>
+        <span style={{ fontSize: "12px", fontWeight: 600, color: "#22252C" }}>{m.label}</span>
         <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
           <Icon size={12} color={iconColor} />
           {improved > 0 && (
             <span style={{
               fontSize: "11px", fontWeight: 700,
-              color: isGood ? goodColor : "#94A3B8",
-              background: isGood ? "#ECFDF5" : "#F1F5F9",
+              color: isGood ? goodColor : "#8D9BB8",
+              background: isGood ? "#EFF2EF" : "#F4F5F8",
               padding: "1px 6px", borderRadius: "10px",
             }}>
               {improved}% {m.higherIsBetter ? (m.after > m.before ? "↑" : "↓") : (m.after < m.before ? "↓" : "↑")}
@@ -70,21 +70,21 @@ function MetricBar({ m }: { m: Metric }) {
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px" }}>
         <div>
-          <div style={{ fontSize: "10px", color: "#94A3B8", marginBottom: "3px", fontWeight: 600, letterSpacing: "0.04em" }}>BEFORE</div>
-          <div style={{ background: "#F1F5F9", borderRadius: "4px", height: "8px", overflow: "hidden" }}>
-            <div style={{ width: `${beforeW}%`, height: "100%", background: "#CBD5E1", borderRadius: "4px" }} />
+          <div style={{ fontSize: "10px", color: "#8D9BB8", marginBottom: "3px", fontWeight: 600, letterSpacing: "0.04em" }}>BEFORE</div>
+          <div style={{ background: "#F4F5F8", borderRadius: "4px", height: "8px", overflow: "hidden" }}>
+            <div style={{ width: `${beforeW}%`, height: "100%", background: "#D3D8E2", borderRadius: "4px" }} />
           </div>
-          <div style={{ fontSize: "11px", color: "#475569", fontWeight: 700, marginTop: "3px" }}>
-            {m.before} <span style={{ fontWeight: 400, color: "#94A3B8" }}>{m.unit}</span>
+          <div style={{ fontSize: "11px", color: "#4A5672", fontWeight: 700, marginTop: "3px" }}>
+            {m.before} <span style={{ fontWeight: 400, color: "#8D9BB8" }}>{m.unit}</span>
           </div>
         </div>
         <div>
-          <div style={{ fontSize: "10px", color: isGood ? goodColor : "#94A3B8", marginBottom: "3px", fontWeight: 600, letterSpacing: "0.04em" }}>AFTER</div>
-          <div style={{ background: isGood ? "#ECFDF5" : "#F1F5F9", borderRadius: "4px", height: "8px", overflow: "hidden" }}>
+          <div style={{ fontSize: "10px", color: isGood ? goodColor : "#8D9BB8", marginBottom: "3px", fontWeight: 600, letterSpacing: "0.04em" }}>AFTER</div>
+          <div style={{ background: isGood ? "#EFF2EF" : "#F4F5F8", borderRadius: "4px", height: "8px", overflow: "hidden" }}>
             <div style={{ width: `${afterW}%`, height: "100%", background: barColor, borderRadius: "4px" }} />
           </div>
-          <div style={{ fontSize: "11px", color: isGood ? "#064E3B" : "#475569", fontWeight: 700, marginTop: "3px" }}>
-            {m.after} <span style={{ fontWeight: 400, color: "#94A3B8" }}>{m.unit}</span>
+          <div style={{ fontSize: "11px", color: isGood ? "#4F6B52" : "#4A5672", fontWeight: 700, marginTop: "3px" }}>
+            {m.after} <span style={{ fontWeight: 400, color: "#8D9BB8" }}>{m.unit}</span>
           </div>
         </div>
       </div>
@@ -99,10 +99,10 @@ function CaseCard({ c }: { c: ResearchCase }) {
   return (
     <div style={{
       background: "#fff",
-      border: "1px solid #E2E8F0",
+      border: "1px solid #D3D8E2",
       borderRadius: "14px",
       overflow: "hidden",
-      boxShadow: expanded ? "0 6px 28px rgba(59, 98, 171,0.10)" : "0 1px 4px rgba(0,0,0,0.04)",
+      boxShadow: "none",
       transition: "box-shadow 0.2s",
     }}>
       <div style={{ padding: "18px 20px 16px" }}>
@@ -114,7 +114,7 @@ function CaseCard({ c }: { c: ResearchCase }) {
           }}>{c.outcomeType}</span>
           <span style={{
             fontSize: "10px", fontWeight: 600, padding: "2px 9px", borderRadius: "20px",
-            background: "#F1F5F9", color: "#475569",
+            background: "#F4F5F8", color: "#4A5672",
           }}>{c.category}</span>
         </div>
 
@@ -126,7 +126,7 @@ function CaseCard({ c }: { c: ResearchCase }) {
             <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#22252C", margin: "0 0 6px", lineHeight: 1.3 }}>
               {c.title}
             </h3>
-            <p style={{ fontSize: "12px", color: "#64748B", margin: "0", lineHeight: 1.6, display: expanded ? "block" : "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: expanded ? "visible" : "hidden" }}>
+            <p style={{ fontSize: "12px", color: "#4A5672", margin: "0", lineHeight: 1.6, display: expanded ? "block" : "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: expanded ? "visible" : "hidden" }}>
               {c.summary}
             </p>
           </div>
@@ -134,28 +134,28 @@ function CaseCard({ c }: { c: ResearchCase }) {
 
         <div style={{ display: "flex", gap: "16px", marginTop: "12px", flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-            <Clock size={11} color="#94A3B8" />
-            <span style={{ fontSize: "11px", color: "#64748B" }}>{c.duration}</span>
+            <Clock size={11} color="#8D9BB8" />
+            <span style={{ fontSize: "11px", color: "#4A5672" }}>{c.duration}</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-            <Users size={11} color="#94A3B8" />
-            <span style={{ fontSize: "11px", color: "#64748B" }}>n={c.n.toLocaleString()}</span>
+            <Users size={11} color="#8D9BB8" />
+            <span style={{ fontSize: "11px", color: "#4A5672" }}>n={c.n.toLocaleString()}</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-            <FlaskConical size={11} color="#94A3B8" />
-            <span style={{ fontSize: "11px", color: "#64748B" }}>{c.protocol}</span>
+            <FlaskConical size={11} color="#8D9BB8" />
+            <span style={{ fontSize: "11px", color: "#4A5672" }}>{c.protocol}</span>
           </div>
         </div>
       </div>
 
       {expanded && (
-        <div style={{ borderTop: "1px solid #F1F5F9", padding: "16px 20px" }}>
+        <div style={{ borderTop: "1px solid #F4F5F8", padding: "16px 20px" }}>
           {c.metrics.map((m, i) => <MetricBar key={i} m={m} />)}
 
-          <div style={{ background: "#F8FAFC", borderRadius: "8px", padding: "10px 12px", marginTop: "8px" }}>
+          <div style={{ background: "#F4F5F8", borderRadius: "8px", padding: "10px 12px", marginTop: "8px" }}>
             <div style={{ display: "flex", alignItems: "flex-start", gap: "6px" }}>
-              <BookOpen size={12} color="#94A3B8" style={{ marginTop: "1px", flexShrink: 0 }} />
-              <span style={{ fontSize: "11px", color: "#64748B", fontStyle: "italic", lineHeight: 1.5 }}>
+              <BookOpen size={12} color="#8D9BB8" style={{ marginTop: "1px", flexShrink: 0 }} />
+              <span style={{ fontSize: "11px", color: "#4A5672", fontStyle: "italic", lineHeight: 1.5 }}>
                 {c.source}
               </span>
             </div>
@@ -182,8 +182,8 @@ function CaseCard({ c }: { c: ResearchCase }) {
         style={{
           display: "flex", alignItems: "center", justifyContent: "center", gap: "5px",
           width: "100%", padding: "10px",
-          background: "#F8FAFC", border: "none", borderTop: "1px solid #F1F5F9",
-          cursor: "pointer", color: "#64748B", fontSize: "12px", fontWeight: 600,
+          background: "#F4F5F8", border: "none", borderTop: "1px solid #F4F5F8",
+          cursor: "pointer", color: "#4A5672", fontSize: "12px", fontWeight: 600,
         }}
       >
         {expanded ? <><ChevronUp size={13} /> Hide Results</> : <><ChevronDown size={13} /> View Results & Metrics</>}
@@ -219,16 +219,16 @@ export default function ResearchResultsPage() {
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F8FAFC" }}>
-      <div style={{ background: "linear-gradient(135deg, #22252C 0%, #4E68C2 100%)", padding: "56px 24px 48px" }}>
+    <div style={{ minHeight: "100vh", background: "#F4F5F8" }}>
+      <div style={{ background: "#1D2948", padding: "56px 24px 48px" }}>
         <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: "7px",
             background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)",
             padding: "5px 14px", borderRadius: "20px", marginBottom: "18px",
           }}>
-            <FlaskConical size={13} color="#B4D89C" />
-            <span style={{ fontSize: "12px", fontWeight: 700, color: "#B4D89C", letterSpacing: "0.06em" }}>
+            <FlaskConical size={13} color="#94A895" />
+            <span style={{ fontSize: "12px", fontWeight: 700, color: "#94A895", letterSpacing: "0.06em" }}>
               PEER-REVIEWED RESEARCH DATA
             </span>
           </div>
@@ -239,7 +239,7 @@ export default function ResearchResultsPage() {
           }}>
             Before & After Research Results
           </h1>
-          <p style={{ fontSize: "15px", color: "#C8DDB4", maxWidth: "600px", margin: "0 auto 24px", lineHeight: 1.7 }}>
+          <p style={{ fontSize: "15px", color: "#94A895", maxWidth: "600px", margin: "0 auto 24px", lineHeight: 1.7 }}>
             Quantitative biomarker data from published studies featuring the peptides available in our catalogue. Each case reports baseline and post-protocol measurements with the source reference.
           </p>
 
@@ -262,12 +262,12 @@ export default function ResearchResultsPage() {
 
       <div style={{ maxWidth: "980px", margin: "0 auto", padding: "0 24px 80px" }}>
         <div style={{
-          background: "#fff7ed", border: "1px solid #FED7AA", borderRadius: "10px",
+          background: "#F8F4EF", border: "1px solid #CDB894", borderRadius: "10px",
           padding: "12px 16px", margin: "24px 0",
           display: "flex", alignItems: "flex-start", gap: "10px",
         }}>
-          <AlertTriangle size={15} color="#B45309" style={{ marginTop: "1px", flexShrink: 0 }} />
-          <p style={{ margin: 0, fontSize: "12px", color: "#92400E", lineHeight: 1.6 }}>
+          <AlertTriangle size={15} color="#85683A" style={{ marginTop: "1px", flexShrink: 0 }} />
+          <p style={{ margin: 0, fontSize: "12px", color: "#85683A", lineHeight: 1.6 }}>
             <strong>For Research Purposes Only.</strong> The data below is sourced from peer-reviewed literature and refers to laboratory or clinical research contexts. It does not constitute medical advice. OmniQure peptides are sold strictly for in-vitro and preclinical research use.
           </p>
         </div>
@@ -285,9 +285,9 @@ export default function ResearchResultsPage() {
                   padding: "6px 14px", borderRadius: "20px", cursor: "pointer",
                   border: isActive
                     ? `1.5px solid ${colors?.text ?? "#4E68C2"}`
-                    : "1.5px solid #E2E8F0",
-                  background: isActive ? (colors?.bg ?? "#E8F2DE") : "#fff",
-                  color: isActive ? (colors?.text ?? "#4E68C2") : "#64748B",
+                    : "1.5px solid #D3D8E2",
+                  background: isActive ? (colors?.bg ?? "#EFF2EF") : "#fff",
+                  color: isActive ? (colors?.text ?? "#4E68C2") : "#4A5672",
                   fontSize: "12px", fontWeight: isActive ? 700 : 500,
                   transition: "all 0.15s",
                 }}
@@ -295,8 +295,8 @@ export default function ResearchResultsPage() {
                 {type}
                 <span style={{
                   fontSize: "10px", fontWeight: 700,
-                  background: isActive ? (colors?.text ?? "#4E68C2") : "#F1F5F9",
-                  color: isActive ? "#fff" : "#94A3B8",
+                  background: isActive ? (colors?.text ?? "#4E68C2") : "#F4F5F8",
+                  color: isActive ? "#fff" : "#8D9BB8",
                   padding: "0px 6px", borderRadius: "10px",
                 }}>{counts[type] ?? 0}</span>
               </button>
@@ -305,9 +305,9 @@ export default function ResearchResultsPage() {
         </div>
 
         {filtered.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "60px 24px", color: "#94A3B8" }}>
-            <FlaskConical size={36} color="#E2E8F0" style={{ marginBottom: "14px" }} />
-            <p style={{ fontSize: "15px", fontWeight: 600, color: "#475569", margin: "0 0 6px" }}>No results found</p>
+          <div style={{ textAlign: "center", padding: "60px 24px", color: "#8D9BB8" }}>
+            <FlaskConical size={36} color="#D3D8E2" style={{ marginBottom: "14px" }} />
+            <p style={{ fontSize: "15px", fontWeight: 600, color: "#4A5672", margin: "0 0 6px" }}>No results found</p>
             <p style={{ fontSize: "13px", margin: 0 }}>Try a different category or search term.</p>
           </div>
         ) : (
@@ -318,15 +318,15 @@ export default function ResearchResultsPage() {
 
         <div style={{
           marginTop: "48px", padding: "28px 32px",
-          background: "linear-gradient(135deg, #E8F2DE 0%, #FFF6F2 100%)",
-          border: "1px solid #C8DDB4", borderRadius: "16px",
+          background: "#F4F5F8",
+          border: "1px solid #94A895", borderRadius: "16px",
           display: "flex", flexWrap: "wrap", gap: "20px", alignItems: "center", justifyContent: "space-between",
         }}>
           <div>
             <h3 style={{ fontSize: "17px", fontWeight: 800, color: "#22252C", margin: "0 0 6px" }}>
               Explore the underlying protocols
             </h3>
-            <p style={{ fontSize: "13px", color: "#475569", margin: 0, lineHeight: 1.6 }}>
+            <p style={{ fontSize: "13px", color: "#4A5672", margin: 0, lineHeight: 1.6 }}>
               Every study above references a specific dosing structure. See the full protocol guides, storage requirements, and stack recommendations.
             </p>
           </div>
@@ -345,7 +345,7 @@ export default function ResearchResultsPage() {
               <div style={{
                 display: "inline-flex", alignItems: "center", gap: "6px",
                 background: "#fff", color: "#4E68C2",
-                border: "1.5px solid #C8DDB4",
+                border: "1.5px solid #94A895",
                 fontSize: "13px", fontWeight: 700,
                 padding: "9px 18px", borderRadius: "9px", cursor: "pointer",
               }}>

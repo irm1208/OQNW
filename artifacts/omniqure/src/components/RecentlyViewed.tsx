@@ -26,7 +26,7 @@ export default function RecentlyViewed({ excludeId }: RecentlyViewedProps) {
       <div className="flex items-center gap-2.5 mb-4">
         <div
           className="flex items-center justify-center rounded-lg"
-          style={{ width: "30px", height: "30px", backgroundColor: "#E8F2DE" }}
+          style={{ width: "30px", height: "30px", backgroundColor: "#EFF2EF" }}
         >
           <Clock size={15} style={{ color: "#4E68C2" }} />
         </div>
@@ -37,7 +37,7 @@ export default function RecentlyViewed({ excludeId }: RecentlyViewedProps) {
 
       <div
         className="flex gap-3 overflow-x-auto pb-2"
-        style={{ scrollbarWidth: "thin", scrollbarColor: "#CBD5E1 transparent" }}
+        style={{ scrollbarWidth: "thin", scrollbarColor: "#D3D8E2 transparent" }}
       >
         {recentProducts.map((product) => (
           <Link
@@ -50,18 +50,18 @@ export default function RecentlyViewed({ excludeId }: RecentlyViewedProps) {
               style={{
                 width: "148px",
                 border: "1.5px solid #D3D8E2",
-                boxShadow: "0 1px 6px rgba(15,23,42,0.05)",
+                boxShadow: "none",
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLDivElement;
-                el.style.borderColor = "#93B8F0";
-                el.style.boxShadow = "0 8px 24px rgba(59, 98, 171,0.10)";
+                el.style.borderColor = "#8D9BB8";
+                el.style.boxShadow = "none";
                 el.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLDivElement;
                 el.style.borderColor = "#D3D8E2";
-                el.style.boxShadow = "0 1px 6px rgba(15,23,42,0.05)";
+                el.style.boxShadow = "none";
                 el.style.transform = "translateY(0)";
               }}
             >
@@ -69,7 +69,7 @@ export default function RecentlyViewed({ excludeId }: RecentlyViewedProps) {
                 className="flex items-center justify-center"
                 style={{
                   height: "100px",
-                  background: "linear-gradient(145deg, #F4F8FF 0%, #EBF2FF 100%)",
+                  background: "#EDF0F9",
                 }}
               >
                 <img

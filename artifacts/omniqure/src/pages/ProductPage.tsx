@@ -457,7 +457,7 @@ export default function ProductPage() {
                 <div className="buy-meta">
                   <span
                     className="stock-pill"
-                    style={{ color: soldOut ? "#FCA5A5" : lowStock ? "#FCD34D" : "#86EFAC" }}
+                    style={{ color: soldOut ? "#C9939A" : lowStock ? "#CDB894" : "#94A895" }}
                   >
                     <span className="h-1.5 w-1.5 rounded-full" style={{ background: "currentColor" }} />
                     {soldOut ? "Sold out" : lowStock ? "Low stock" : "In stock"}
@@ -543,7 +543,7 @@ export default function ProductPage() {
                     onClick={handleAddToCart}
                     disabled={soldOut}
                     className="product-cta-btn cta-primary flex h-12 flex-1 items-center justify-center gap-2 rounded-full transition-colors"
-                    style={{ background: soldOut ? undefined : added ? "#15803D" : undefined }}
+                    style={{ background: soldOut ? undefined : added ? "#4F6B52" : undefined }}
                   >
                     <ShoppingCart size={15} />
                     {soldOut ? "Sold out" : added ? "Added to cart" : "Add to cart"}
@@ -572,7 +572,7 @@ export default function ProductPage() {
                     >
                       <span
                         className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[5px] border-2"
-                        style={{ borderColor: bacWaterEnabled ? "var(--oq-label-blue)" : "#CBD5E1", background: bacWaterEnabled ? "var(--oq-label-blue)" : "#fff" }}
+                        style={{ borderColor: bacWaterEnabled ? "var(--oq-label-blue)" : "#D3D8E2", background: bacWaterEnabled ? "var(--oq-label-blue)" : "#fff" }}
                       >
                         {bacWaterEnabled && <svg width="10" height="7" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                       </span>
@@ -614,7 +614,7 @@ export default function ProductPage() {
                   "Free, discreet UK tracked delivery",
                 ].map(t => (
                   <li key={t}>
-                    <Check size={13} style={{ color: "#15803D" }} />{t}
+                    <Check size={13} style={{ color: "#4F6B52" }} />{t}
                   </li>
                 ))}
               </ul>
@@ -649,7 +649,7 @@ export default function ProductPage() {
                         {notifySubmitting ? "…" : "Notify me"}
                       </button>
                     </form>
-                    {notifyError && <p className="mt-1" style={{ fontSize: 11.5, color: "#DC2626" }}>{notifyError}</p>}
+                    {notifyError && <p className="mt-1" style={{ fontSize: 11.5, color: "#9C4A44" }}>{notifyError}</p>}
                   </>
                 )}
               </div>

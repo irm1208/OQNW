@@ -62,10 +62,10 @@ type ReturnInfo = {
 };
 
 const RETURN_STATUS_CONFIG: Record<string, { label: string; bg: string; color: string; border: string }> = {
-  requested: { label: "Return Requested", bg: "#FFF7ED", color: "#C2410C", border: "#FED7AA" },
-  approved:  { label: "Return Approved",  bg: "#F0FDF4", color: "#15803D", border: "#BBF7D0" },
-  rejected:  { label: "Return Rejected",  bg: "#FEF2F2", color: "#B91C1C", border: "#FECACA" },
-  refunded:  { label: "Refunded",         bg: "#F5F3FF", color: "#6D28D9", border: "#DDD6FE" },
+  requested: { label: "Return Requested", bg: "#F8F4EF", color: "#85683A", border: "#CDB894" },
+  approved:  { label: "Return Approved",  bg: "#EFF2EF", color: "#4F6B52", border: "#94A895" },
+  rejected:  { label: "Return Rejected",  bg: "#F8F2F3", color: "#9C4A44", border: "#C9939A" },
+  refunded:  { label: "Refunded",         bg: "#F1F0F7", color: "#5E5690", border: "#9F96C2" },
 };
 
 type LoyaltyTx = {
@@ -100,16 +100,16 @@ type AccountProfile = {
 };
 
 const STATUS_CONFIG: Record<string, { label: string; bg: string; color: string; border: string }> = {
-  pending:    { label: "Pending",    bg: "#FFFBEB", color: "#B45309", border: "#FDE68A" },
-  processing: { label: "Processing", bg: "#E8F2DE", color: "#3D55A8", border: "#C8DDB4" },
-  shipped:    { label: "Shipped",    bg: "#F0FDF4", color: "#15803D", border: "#BBF7D0" },
-  delivered:  { label: "Delivered",  bg: "#F0FDF4", color: "#15803D", border: "#BBF7D0" },
-  cancelled:  { label: "Cancelled",  bg: "#FEF2F2", color: "#B91C1C", border: "#FECACA" },
-  refunded:   { label: "Refunded",   bg: "#F5F3FF", color: "#6D28D9", border: "#DDD6FE" },
+  pending:    { label: "Pending",    bg: "#F8F4EF", color: "#85683A", border: "#CDB894" },
+  processing: { label: "Processing", bg: "#EFF2EF", color: "#0A2472", border: "#94A895" },
+  shipped:    { label: "Shipped",    bg: "#EFF2EF", color: "#4F6B52", border: "#94A895" },
+  delivered:  { label: "Delivered",  bg: "#EFF2EF", color: "#4F6B52", border: "#94A895" },
+  cancelled:  { label: "Cancelled",  bg: "#F8F2F3", color: "#9C4A44", border: "#C9939A" },
+  refunded:   { label: "Refunded",   bg: "#F1F0F7", color: "#5E5690", border: "#9F96C2" },
 };
 
 function StatusBadge({ status }: { status: string }) {
-  const cfg = STATUS_CONFIG[status] ?? { label: status, bg: "#F1F5F9", color: "#475569", border: "#E2E8F0" };
+  const cfg = STATUS_CONFIG[status] ?? { label: status, bg: "#F4F5F8", color: "#4A5672", border: "#D3D8E2" };
   return (
     <span
       className="inline-flex items-center text-xs font-bold px-2.5 py-0.5 rounded-full"
@@ -376,7 +376,7 @@ export default function AccountPage() {
   if (loadingAuth || !customer) {
     return (
       <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ textAlign: "center", color: "#64748B" }}>
+        <div style={{ textAlign: "center", color: "#4A5672" }}>
           <FlaskConical size={28} style={{ margin: "0 auto 12px", opacity: 0.4 }} />
           <p style={{ fontSize: "14px" }}>Loading your account…</p>
         </div>
@@ -391,26 +391,26 @@ export default function AccountPage() {
       onClick={(e) => { if (e.target === e.currentTarget) { setReturnModal(null); setReturnReason(""); setReturnError(null); } }}
     >
       <div style={{ backgroundColor: "#fff", borderRadius: "20px", boxShadow: "0 20px 60px rgba(0,0,0,0.2)", width: "100%", maxWidth: "480px", overflow: "hidden" }}>
-        <div style={{ padding: "20px 24px 16px", borderBottom: "1px solid #F1F5F9", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ padding: "20px 24px 16px", borderBottom: "1px solid #F4F5F8", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <RotateCcw size={18} style={{ color: "#4E68C2" }} />
             <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#22252C", margin: 0 }}>Request a Return</h3>
           </div>
           <button
             onClick={() => { setReturnModal(null); setReturnReason(""); setReturnError(null); }}
-            style={{ background: "none", border: "none", cursor: "pointer", color: "#94A3B8", padding: "4px" }}
+            style={{ background: "none", border: "none", cursor: "pointer", color: "#8D9BB8", padding: "4px" }}
           >
             <X size={18} />
           </button>
         </div>
         <form onSubmit={(e) => void handleRequestReturn(e)} style={{ padding: "20px 24px 24px", display: "flex", flexDirection: "column", gap: "14px" }}>
-          <div style={{ padding: "10px 14px", borderRadius: "8px", backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
-            <p style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 600, marginBottom: "2px" }}>ORDER</p>
+          <div style={{ padding: "10px 14px", borderRadius: "8px", backgroundColor: "#F4F5F8", border: "1px solid #D3D8E2" }}>
+            <p style={{ fontSize: "11px", color: "#8D9BB8", fontWeight: 600, marginBottom: "2px" }}>ORDER</p>
             <p style={{ fontSize: "14px", fontWeight: 700, color: "#22252C", margin: 0 }}>{returnModal}</p>
           </div>
           <div>
-            <label style={{ fontSize: "13px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "6px" }}>
-              Reason for return <span style={{ color: "#94A3B8", fontWeight: 400 }}>(required)</span>
+            <label style={{ fontSize: "13px", fontWeight: 600, color: "#22252C", display: "block", marginBottom: "6px" }}>
+              Reason for return <span style={{ color: "#8D9BB8", fontWeight: 400 }}>(required)</span>
             </label>
             <textarea
               value={returnReason}
@@ -419,21 +419,21 @@ export default function AccountPage() {
               rows={4}
               style={{
                 width: "100%", padding: "10px 12px", borderRadius: "10px",
-                border: "1.5px solid #E2E8F0", fontSize: "14px", color: "#22252C",
+                border: "1.5px solid #D3D8E2", fontSize: "14px", color: "#22252C",
                 resize: "vertical", outline: "none", boxSizing: "border-box",
                 fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif",
               }}
             />
-            <p style={{ fontSize: "11.5px", color: "#94A3B8", margin: "4px 0 0" }}>Minimum 10 characters</p>
+            <p style={{ fontSize: "11.5px", color: "#8D9BB8", margin: "4px 0 0" }}>Minimum 10 characters</p>
           </div>
           {returnError && (
-            <div style={{ padding: "10px 12px", borderRadius: "8px", backgroundColor: "#FEF2F2", border: "1px solid #FECACA", display: "flex", alignItems: "center", gap: "8px" }}>
-              <AlertCircle size={14} style={{ color: "#DC2626", flexShrink: 0 }} />
-              <p style={{ fontSize: "13px", color: "#B91C1C", margin: 0 }}>{returnError}</p>
+            <div style={{ padding: "10px 12px", borderRadius: "8px", backgroundColor: "#F8F2F3", border: "1px solid #C9939A", display: "flex", alignItems: "center", gap: "8px" }}>
+              <AlertCircle size={14} style={{ color: "#9C4A44", flexShrink: 0 }} />
+              <p style={{ fontSize: "13px", color: "#9C4A44", margin: 0 }}>{returnError}</p>
             </div>
           )}
-          <div style={{ padding: "12px 14px", borderRadius: "8px", backgroundColor: "#FFFBEB", border: "1px solid #FDE68A" }}>
-            <p style={{ fontSize: "12px", color: "#92400E", margin: 0, lineHeight: 1.5 }}>
+          <div style={{ padding: "12px 14px", borderRadius: "8px", backgroundColor: "#F8F4EF", border: "1px solid #CDB894" }}>
+            <p style={{ fontSize: "12px", color: "#85683A", margin: 0, lineHeight: 1.5 }}>
               Our team will review your request within 2–3 business days. You'll receive an email once a decision has been made.
             </p>
           </div>
@@ -442,7 +442,7 @@ export default function AccountPage() {
             disabled={submittingReturn || returnReason.trim().length < 10}
             style={{
               height: "44px", borderRadius: "10px", border: "none", cursor: submittingReturn || returnReason.trim().length < 10 ? "not-allowed" : "pointer",
-              background: submittingReturn || returnReason.trim().length < 10 ? "#CBD5E1" : "linear-gradient(90deg, #22252C, #4E68C2)",
+              background: submittingReturn || returnReason.trim().length < 10 ? "#D3D8E2" : "#1D2948",
               color: "#fff", fontSize: "14px", fontWeight: 700, transition: "opacity 0.15s",
             }}
           >
@@ -459,7 +459,7 @@ export default function AccountPage() {
     <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", backgroundColor: "#F2F0EB", minHeight: "70vh" }}>
 
       {/* Hero banner */}
-      <div style={{ background: "linear-gradient(90deg, #22252C 0%, #4E68C2 50%, #4E68C2 100%)", padding: "32px 0" }}>
+      <div style={{ background: "#1D2948", padding: "32px 0" }}>
         <div className="max-w-[1200px] mx-auto px-4">
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
@@ -543,7 +543,7 @@ export default function AccountPage() {
 
           {/* Sidebar */}
           <div className="account-sidebar">
-            <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #D3D8E2", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", overflow: "hidden" }}>
+            <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #D3D8E2", boxShadow: "none", overflow: "hidden" }}>
               {[
                 { key: "orders",        label: "My Orders",       icon: <Package size={16} /> },
                 { key: "referral",      label: "Refer a Friend",  icon: <Users size={16} /> },
@@ -557,8 +557,8 @@ export default function AccountPage() {
                   style={{
                     display: "flex", alignItems: "center", gap: "10px",
                     width: "100%", padding: "13px 16px", border: "none",
-                    backgroundColor: activeTab === item.key ? "#E8F2DE" : "#fff",
-                    color: activeTab === item.key ? "#4E68C2" : "#475569",
+                    backgroundColor: activeTab === item.key ? "#EFF2EF" : "#fff",
+                    color: activeTab === item.key ? "#4E68C2" : "#4A5672",
                     fontSize: "14px", fontWeight: activeTab === item.key ? 700 : 500,
                     cursor: "pointer", textAlign: "left",
                     borderLeft: activeTab === item.key ? "3px solid #4E68C2" : "3px solid transparent",
@@ -570,10 +570,10 @@ export default function AccountPage() {
                 </button>
               ))}
 
-              <div style={{ borderTop: "1px solid #F1F5F9" }}>
+              <div style={{ borderTop: "1px solid #F4F5F8" }}>
                 <Link
                   href="/track-order"
-                  style={{ display: "flex", alignItems: "center", gap: "10px", padding: "13px 16px", color: "#475569", textDecoration: "none", fontSize: "14px", fontWeight: 500, borderLeft: "3px solid transparent" }}
+                  style={{ display: "flex", alignItems: "center", gap: "10px", padding: "13px 16px", color: "#4A5672", textDecoration: "none", fontSize: "14px", fontWeight: 500, borderLeft: "3px solid transparent" }}
                 >
                   <Truck size={16} />
                   Track Order
@@ -583,7 +583,7 @@ export default function AccountPage() {
                   style={{
                     display: "flex", alignItems: "center", gap: "10px",
                     width: "100%", padding: "13px 16px", border: "none",
-                    backgroundColor: "#fff", color: "#DC2626",
+                    backgroundColor: "#fff", color: "#9C4A44",
                     fontSize: "14px", fontWeight: 500, cursor: "pointer",
                     textAlign: "left", borderLeft: "3px solid transparent",
                   }}
@@ -595,8 +595,8 @@ export default function AccountPage() {
             </div>
 
             {/* RUO notice */}
-            <div style={{ marginTop: "16px", padding: "12px 14px", borderRadius: "12px", backgroundColor: "#FFFBEB", border: "1px solid #FDE68A" }}>
-              <p style={{ fontSize: "11px", color: "#92400E", lineHeight: 1.6, margin: 0 }}>
+            <div style={{ marginTop: "16px", padding: "12px 14px", borderRadius: "12px", backgroundColor: "#F8F4EF", border: "1px solid #CDB894" }}>
+              <p style={{ fontSize: "11px", color: "#85683A", lineHeight: 1.6, margin: 0 }}>
                 <strong>Research Use Only.</strong> OmniQure products are for qualified researchers only. Not for human or veterinary use.
               </p>
             </div>
@@ -616,22 +616,22 @@ export default function AccountPage() {
                 </div>
 
                 {loadingOrders ? (
-                  <div style={{ textAlign: "center", padding: "60px 0", color: "#94A3B8" }}>
+                  <div style={{ textAlign: "center", padding: "60px 0", color: "#8D9BB8" }}>
                     <Package size={32} style={{ margin: "0 auto 12px", opacity: 0.4 }} />
                     <p style={{ fontSize: "14px" }}>Loading orders…</p>
                   </div>
                 ) : orders.length === 0 ? (
                   <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", padding: "60px 24px", textAlign: "center" }}>
-                    <ShoppingBag size={36} style={{ margin: "0 auto 16px", color: "#CBD5E1" }} />
+                    <ShoppingBag size={36} style={{ margin: "0 auto 16px", color: "#D3D8E2" }} />
                     <p style={{ fontSize: "16px", fontWeight: 700, color: "#22252C", marginBottom: "8px" }}>No orders yet</p>
-                    <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>
+                    <p style={{ fontSize: "13px", color: "#4A5672", marginBottom: "20px" }}>
                       When you place an order, it will appear here.
                     </p>
                     <Link
                       href="/all-peptides"
                       style={{
                         display: "inline-block", padding: "10px 24px", borderRadius: "10px",
-                        background: "linear-gradient(90deg, #22252C, #4E68C2)",
+                        background: "#1D2948",
                         color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none",
                       }}
                     >
@@ -652,7 +652,7 @@ export default function AccountPage() {
                             backgroundColor: "#fff",
                             borderRadius: "16px",
                             border: "1px solid #D3D8E2",
-                            boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
+                            boxShadow: "none",
                             overflow: "hidden",
                           }}
                         >
@@ -670,10 +670,10 @@ export default function AccountPage() {
                                 <p style={{ fontSize: "14px", fontWeight: 800, color: "#22252C", marginBottom: "1px" }}>
                                   {order.orderNumber}
                                 </p>
-                                <p style={{ fontSize: "12px", color: "#94A3B8" }}>{formatDate(order.createdAt)}</p>
+                                <p style={{ fontSize: "12px", color: "#8D9BB8" }}>{formatDate(order.createdAt)}</p>
                               </div>
                               <StatusBadge status={order.status} />
-                              <p style={{ fontSize: "13px", color: "#64748B" }}>
+                              <p style={{ fontSize: "13px", color: "#4A5672" }}>
                                 {itemCount} item{itemCount !== 1 ? "s" : ""}
                               </p>
                             </div>
@@ -684,7 +684,7 @@ export default function AccountPage() {
                               <ChevronRight
                                 size={16}
                                 style={{
-                                  color: "#94A3B8",
+                                  color: "#8D9BB8",
                                   transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)",
                                   transition: "transform 0.2s",
                                 }}
@@ -694,7 +694,7 @@ export default function AccountPage() {
 
                           {/* Expanded details */}
                           {isExpanded && (
-                            <div style={{ borderTop: "1px solid #F1F5F9", padding: "16px 20px" }}>
+                            <div style={{ borderTop: "1px solid #F4F5F8", padding: "16px 20px" }}>
 
                               {/* Status timeline */}
                               {(() => {
@@ -707,23 +707,23 @@ export default function AccountPage() {
                                 ];
                                 const order_idx = ["pending","processing","shipped","delivered"].indexOf(order.status);
                                 return (
-                                  <div style={{ marginBottom: "20px", padding: "14px 16px", borderRadius: "12px", backgroundColor: isCancelled ? "#FEF2F2" : "#F8FAFC", border: `1px solid ${isCancelled ? "#FECACA" : "#D3D8E2"}` }}>
+                                  <div style={{ marginBottom: "20px", padding: "14px 16px", borderRadius: "12px", backgroundColor: isCancelled ? "#F8F2F3" : "#F4F5F8", border: `1px solid ${isCancelled ? "#C9939A" : "#D3D8E2"}` }}>
                                     {isCancelled ? (
                                       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                        <div style={{ width: "28px", height: "28px", borderRadius: "50%", backgroundColor: "#FEF2F2", border: "2px solid #FECACA", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                                          <X size={13} style={{ color: "#DC2626" }} />
+                                        <div style={{ width: "28px", height: "28px", borderRadius: "50%", backgroundColor: "#F8F2F3", border: "2px solid #C9939A", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                                          <X size={13} style={{ color: "#9C4A44" }} />
                                         </div>
                                         <div>
-                                          <p style={{ fontSize: "13px", fontWeight: 700, color: "#B91C1C", margin: 0 }}>
+                                          <p style={{ fontSize: "13px", fontWeight: 700, color: "#9C4A44", margin: 0 }}>
                                             {order.status === "refunded" ? "Order Refunded" : "Order Cancelled"}
                                           </p>
-                                          <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>This order is no longer active</p>
+                                          <p style={{ fontSize: "11px", color: "#8D9BB8", margin: 0 }}>This order is no longer active</p>
                                         </div>
                                       </div>
                                     ) : (
                                       <div style={{ position: "relative" }}>
                                         {/* connector line */}
-                                        <div style={{ position: "absolute", top: "14px", left: "14px", right: "14px", height: "2px", backgroundColor: "#E2E8F0", zIndex: 0 }} />
+                                        <div style={{ position: "absolute", top: "14px", left: "14px", right: "14px", height: "2px", backgroundColor: "#D3D8E2", zIndex: 0 }} />
                                         <div style={{
                                           position: "absolute", top: "14px", left: "14px", height: "2px", zIndex: 1,
                                           backgroundColor: "#4E68C2",
@@ -739,20 +739,20 @@ export default function AccountPage() {
                                               <div key={step.key} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", flex: 1 }}>
                                                 <div style={{
                                                   width: "28px", height: "28px", borderRadius: "50%",
-                                                  border: `2px solid ${done ? "#4E68C2" : current ? "#4E68C2" : "#CBD5E1"}`,
-                                                  backgroundColor: done ? "#4E68C2" : current ? "#E8F2DE" : "#fff",
+                                                  border: `2px solid ${done ? "#4E68C2" : current ? "#4E68C2" : "#D3D8E2"}`,
+                                                  backgroundColor: done ? "#4E68C2" : current ? "#EFF2EF" : "#fff",
                                                   display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-                                                  boxShadow: current ? "0 0 0 3px rgba(59, 98, 171,0.15)" : "none",
+                                                  boxShadow: current ? "0 0 0 3px rgba(78, 104, 194,0.15)" : "none",
                                                   transition: "all 0.2s",
                                                 }}>
                                                   {done
                                                     ? <CheckCircle2 size={13} style={{ color: "#fff" }} />
-                                                    : <span style={{ color: current ? "#4E68C2" : "#CBD5E1" }}>{step.icon}</span>
+                                                    : <span style={{ color: current ? "#4E68C2" : "#D3D8E2" }}>{step.icon}</span>
                                                   }
                                                 </div>
                                                 <p style={{
                                                   fontSize: "10px", fontWeight: current ? 800 : done ? 600 : 500, margin: 0,
-                                                  color: done ? "#4E68C2" : current ? "#22252C" : "#94A3B8",
+                                                  color: done ? "#4E68C2" : current ? "#22252C" : "#8D9BB8",
                                                   textAlign: "center", whiteSpace: "nowrap",
                                                 }}>
                                                   {step.label}
@@ -771,25 +771,25 @@ export default function AccountPage() {
                               {isDispatched && (
                                 <div
                                   data-testid={`panel-dispatch-tracking-${order.orderNumber}`}
-                                  style={{ marginBottom: "18px", padding: "16px", borderRadius: "12px", background: "linear-gradient(135deg, #F0FDF4, #F0F7FF)", border: "1px solid #BBF7D0" }}
+                                  style={{ marginBottom: "18px", padding: "16px", borderRadius: "12px", background: "#F4F5F8", border: "1px solid #94A895" }}
                                 >
                                   <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-                                    <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "#DCFCE7", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                                      <Truck size={14} style={{ color: "#15803D" }} />
+                                    <div style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "#EFF2EF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                                      <Truck size={14} style={{ color: "#4F6B52" }} />
                                     </div>
                                     <div>
-                                      <p style={{ fontSize: "13px", fontWeight: 800, color: "#14532D", margin: 0 }}>Dispatch tracking</p>
-                                      <p style={{ fontSize: "11px", color: "#4B7A5B", margin: 0 }}>Your shipment details</p>
+                                      <p style={{ fontSize: "13px", fontWeight: 800, color: "#4F6B52", margin: 0 }}>Dispatch tracking</p>
+                                      <p style={{ fontSize: "11px", color: "#4F6B52", margin: 0 }}>Your shipment details</p>
                                     </div>
                                   </div>
                                   <div className="form-grid-2" style={{ gap: "12px" }}>
                                     <div>
-                                      <p style={{ fontSize: "10px", color: "#4B7A5B", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "3px" }}>Logistics company</p>
-                                      <p data-testid={`text-carrier-${order.orderNumber}`} style={{ fontSize: "13px", fontWeight: 700, color: "#14532D", margin: 0 }}>{order.carrierName ?? "Details coming soon"}</p>
+                                      <p style={{ fontSize: "10px", color: "#4F6B52", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "3px" }}>Logistics company</p>
+                                      <p data-testid={`text-carrier-${order.orderNumber}`} style={{ fontSize: "13px", fontWeight: 700, color: "#4F6B52", margin: 0 }}>{order.carrierName ?? "Details coming soon"}</p>
                                     </div>
                                     <div>
-                                      <p style={{ fontSize: "10px", color: "#4B7A5B", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "3px" }}>Tracking number</p>
-                                      <p data-testid={`text-tracking-number-${order.orderNumber}`} style={{ fontSize: "13px", fontWeight: 700, color: "#14532D", margin: 0, overflowWrap: "anywhere" }}>{order.trackingNumber ?? "Awaiting carrier reference"}</p>
+                                      <p style={{ fontSize: "10px", color: "#4F6B52", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "3px" }}>Tracking number</p>
+                                      <p data-testid={`text-tracking-number-${order.orderNumber}`} style={{ fontSize: "13px", fontWeight: 700, color: "#4F6B52", margin: 0, overflowWrap: "anywhere" }}>{order.trackingNumber ?? "Awaiting carrier reference"}</p>
                                     </div>
                                   </div>
                                   {trackingUrl && (
@@ -798,7 +798,7 @@ export default function AccountPage() {
                                       href={trackingUrl}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      style={{ display: "inline-flex", alignItems: "center", gap: "6px", marginTop: "14px", padding: "8px 12px", borderRadius: "8px", backgroundColor: "#15803D", color: "#fff", fontSize: "12px", fontWeight: 700, textDecoration: "none" }}
+                                      style={{ display: "inline-flex", alignItems: "center", gap: "6px", marginTop: "14px", padding: "8px 12px", borderRadius: "8px", backgroundColor: "#4F6B52", color: "#fff", fontSize: "12px", fontWeight: 700, textDecoration: "none" }}
                                     >
                                       Track package <ExternalLink size={13} />
                                     </a>
@@ -814,12 +814,12 @@ export default function AccountPage() {
                                     style={{
                                       display: "flex", alignItems: "center", justifyContent: "space-between",
                                       padding: "8px 0",
-                                      borderBottom: i < order.items.length - 1 ? "1px solid #F8FAFC" : "none",
+                                      borderBottom: i < order.items.length - 1 ? "1px solid #F4F5F8" : "none",
                                     }}
                                   >
                                     <div>
                                       <p style={{ fontSize: "13px", fontWeight: 600, color: "#22252C" }}>{item.productName}</p>
-                                      <p style={{ fontSize: "11px", color: "#94A3B8" }}>{item.productCategory} · Qty {item.quantity}</p>
+                                      <p style={{ fontSize: "11px", color: "#8D9BB8" }}>{item.productCategory} · Qty {item.quantity}</p>
                                     </div>
                                     <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C" }}>
                                       £{(item.priceGbp * item.quantity).toFixed(2)}
@@ -832,7 +832,7 @@ export default function AccountPage() {
                               {(() => {
                                 const ret = returns.get(order.orderNumber);
                                 if (!ret) return null;
-                                const rcfg = RETURN_STATUS_CONFIG[ret.status] ?? { label: ret.status, bg: "#F1F5F9", color: "#475569", border: "#E2E8F0" };
+                                const rcfg = RETURN_STATUS_CONFIG[ret.status] ?? { label: ret.status, bg: "#F4F5F8", color: "#4A5672", border: "#D3D8E2" };
                                 return (
                                   <div style={{ marginBottom: "12px", padding: "10px 14px", borderRadius: "8px", backgroundColor: rcfg.bg, border: `1px solid ${rcfg.border}`, display: "flex", alignItems: "flex-start", gap: "10px" }}>
                                     <RotateCcw size={14} style={{ color: rcfg.color, marginTop: "2px", flexShrink: 0 }} />
@@ -856,7 +856,7 @@ export default function AccountPage() {
                                   style={{
                                     display: "inline-flex", alignItems: "center", gap: "6px",
                                     padding: "8px 16px", borderRadius: "8px",
-                                    background: "linear-gradient(90deg, #22252C, #4E68C2)",
+                                    background: "#1D2948",
                                     color: "#fff", fontWeight: 600, fontSize: "13px", textDecoration: "none",
                                   }}
                                 >
@@ -868,9 +868,9 @@ export default function AccountPage() {
                                   style={{
                                     display: "inline-flex", alignItems: "center", gap: "6px",
                                     padding: "8px 14px", borderRadius: "8px",
-                                    backgroundColor: reorderedKey === order.orderNumber ? "#F0FDF4" : "#F0F5FF",
-                                    border: reorderedKey === order.orderNumber ? "1px solid #BBF7D0" : "1px solid #C7D7F7",
-                                    color: reorderedKey === order.orderNumber ? "#15803D" : "#4E68C2",
+                                    backgroundColor: reorderedKey === order.orderNumber ? "#EFF2EF" : "#EDF0F9",
+                                    border: reorderedKey === order.orderNumber ? "1px solid #94A895" : "1px solid #D3D8E2",
+                                    color: reorderedKey === order.orderNumber ? "#4F6B52" : "#4E68C2",
                                     fontWeight: 600, fontSize: "13px", cursor: "pointer",
                                   }}
                                 >
@@ -880,9 +880,9 @@ export default function AccountPage() {
                                   }
                                 </button>
                                 {order.shippingMethod && (
-                                  <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "8px 14px", borderRadius: "8px", backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0" }}>
-                                    <Truck size={13} style={{ color: "#64748B" }} />
-                                    <span style={{ fontSize: "13px", color: "#64748B", fontWeight: 500 }}>{order.shippingMethod}</span>
+                                  <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "8px 14px", borderRadius: "8px", backgroundColor: "#F4F5F8", border: "1px solid #D3D8E2" }}>
+                                    <Truck size={13} style={{ color: "#4A5672" }} />
+                                    <span style={{ fontSize: "13px", color: "#4A5672", fontWeight: 500 }}>{order.shippingMethod}</span>
                                   </div>
                                 )}
                                 {/* Request Return button — only for shipped/delivered with no active return */}
@@ -898,8 +898,8 @@ export default function AccountPage() {
                                       style={{
                                         display: "inline-flex", alignItems: "center", gap: "6px",
                                         padding: "8px 14px", borderRadius: "8px",
-                                        backgroundColor: "#FFF7ED", border: "1px solid #FED7AA",
-                                        color: "#C2410C", fontWeight: 600, fontSize: "13px", cursor: "pointer",
+                                        backgroundColor: "#F8F4EF", border: "1px solid #CDB894",
+                                        color: "#85683A", fontWeight: 600, fontSize: "13px", cursor: "pointer",
                                       }}
                                     >
                                       <RotateCcw size={13} />
@@ -924,7 +924,7 @@ export default function AccountPage() {
                 <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#22252C", margin: 0 }}>Refer a Friend</h2>
 
                 {/* How it works */}
-                <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
+                <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "none", padding: "24px 28px" }}>
                   <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#22252C", marginBottom: "16px" }}>How it works</h3>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
                     {[
@@ -932,12 +932,12 @@ export default function AccountPage() {
                       { step: "2", title: "Friend places first order", desc: "They get 10% off their first order automatically — no code needed. Bundle & Save free items apply too: 3-4 vials for a free 10ml BAC water ampule, 5-9 for a free peptide, 10+ for 2 free peptides (one reward per order, no stacking)." },
                       { step: "3", title: "Both claim £25 credit", desc: "As soon as their order ships, you both get £25 credit added to your accounts — redeemable on your next order (up to £50 unredeemed balance each)." },
                     ].map((s) => (
-                      <div key={s.step} style={{ textAlign: "center", padding: "16px 12px", borderRadius: "12px", backgroundColor: "#F8FAFC", border: "1px solid #D3D8E2" }}>
-                        <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "linear-gradient(90deg, #22252C, #4E68C2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px", fontSize: "14px", fontWeight: 800, color: "#fff" }}>
+                      <div key={s.step} style={{ textAlign: "center", padding: "16px 12px", borderRadius: "12px", backgroundColor: "#F4F5F8", border: "1px solid #D3D8E2" }}>
+                        <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#1D2948", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px", fontSize: "14px", fontWeight: 800, color: "#fff" }}>
                           {s.step}
                         </div>
                         <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C", marginBottom: "4px" }}>{s.title}</p>
-                        <p style={{ fontSize: "12px", color: "#64748B", lineHeight: 1.5, margin: 0 }}>{s.desc}</p>
+                        <p style={{ fontSize: "12px", color: "#4A5672", lineHeight: 1.5, margin: 0 }}>{s.desc}</p>
                       </div>
                     ))}
                   </div>
@@ -946,25 +946,25 @@ export default function AccountPage() {
                 {/* Anti-abuse notice */}
                 <div style={{
                   borderRadius: "12px", padding: "14px 18px",
-                  background: "linear-gradient(135deg, #FFFBEB, #FEF3C7)",
-                  border: "1.5px solid #FDE68A",
+                  background: "#F8F4EF",
+                  border: "1.5px solid #CDB894",
                   display: "flex", gap: "12px", alignItems: "flex-start",
                 }}>
                   <span style={{ fontSize: "18px", flexShrink: 0, lineHeight: 1 }}>⚠️</span>
-                  <p style={{ fontSize: "12.5px", color: "#78350F", lineHeight: 1.65, margin: 0 }}>
+                  <p style={{ fontSize: "12.5px", color: "#85683A", lineHeight: 1.65, margin: 0 }}>
                     <strong>Misuse policy:</strong> Self-referral and fake-account creation are strictly prohibited. Referred accounts are verified against existing accounts using email, billing address, payment method, IP address, and device signals. Any abuse will result in permanent account termination and reward forfeiture.
                   </p>
                 </div>
 
                 {/* Referral link */}
                 {referral && (
-                  <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
+                  <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "none", padding: "24px 28px" }}>
                     <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#22252C", marginBottom: "4px" }}>Your referral link</h3>
-                    <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "16px" }}>Share this link — when a friend places their first order using it, you both get £25 credit added to your accounts (up to £50 unredeemed balance each). Credit is applied automatically at checkout on your next order.</p>
+                    <p style={{ fontSize: "13px", color: "#4A5672", marginBottom: "16px" }}>Share this link — when a friend places their first order using it, you both get £25 credit added to your accounts (up to £50 unredeemed balance each). Credit is applied automatically at checkout on your next order.</p>
 
                     <div style={{ display: "flex", gap: "8px", marginBottom: "16px", flexWrap: "wrap" }}>
-                      <div style={{ flex: 1, height: "44px", padding: "0 14px", borderRadius: "10px", border: "1.5px solid #E2E8F0", backgroundColor: "#F8FAFC", display: "flex", alignItems: "center", overflow: "hidden" }}>
-                        <span style={{ fontSize: "13px", color: "#64748B", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      <div style={{ flex: 1, height: "44px", padding: "0 14px", borderRadius: "10px", border: "1.5px solid #D3D8E2", backgroundColor: "#F4F5F8", display: "flex", alignItems: "center", overflow: "hidden" }}>
+                        <span style={{ fontSize: "13px", color: "#4A5672", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                           {`${window.location.origin}${REFERRAL_LANDING_PATH}?ref=${encodeURIComponent(referral.referralCode)}`}
                         </span>
                       </div>
@@ -973,7 +973,7 @@ export default function AccountPage() {
                         style={{
                           display: "inline-flex", alignItems: "center", gap: "6px",
                           padding: "0 18px", height: "44px", borderRadius: "10px", border: "none",
-                          background: referralCopied ? "linear-gradient(90deg, #16A34A, #15803D)" : "linear-gradient(90deg, #22252C, #4E68C2)",
+                          background: referralCopied ? "#4F6B52" : "#1D2948",
                           color: "#fff", fontWeight: 700, fontSize: "13px", cursor: "pointer", whiteSpace: "nowrap",
                           transition: "background 0.2s",
                         }}
@@ -985,7 +985,7 @@ export default function AccountPage() {
                         style={{
                           display: "inline-flex", alignItems: "center", gap: "6px",
                           padding: "0 18px", height: "44px", borderRadius: "10px",
-                          border: "1.5px solid #C7D7F7", background: "#F0F5FF",
+                          border: "1.5px solid #D3D8E2", background: "#EDF0F9",
                           color: "#4E68C2", fontWeight: 700, fontSize: "13px",
                           cursor: "pointer", whiteSpace: "nowrap",
                         }}
@@ -995,17 +995,17 @@ export default function AccountPage() {
                     </div>
 
                     <div style={{ display: "flex", gap: "12px" }}>
-                      <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#F8FAFC", border: "1px solid #D3D8E2", textAlign: "center" }}>
+                      <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#F4F5F8", border: "1px solid #D3D8E2", textAlign: "center" }}>
                         <p style={{ fontSize: "22px", fontWeight: 800, color: "#22252C", margin: "0 0 2px" }}>{referral.referralCount}</p>
-                        <p style={{ fontSize: "12px", color: "#64748B", margin: 0 }}>Friends referred</p>
+                        <p style={{ fontSize: "12px", color: "#4A5672", margin: 0 }}>Friends referred</p>
                       </div>
-                      <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0", textAlign: "center" }}>
-                        <p style={{ fontSize: "22px", fontWeight: 800, color: "#15803D", margin: "0 0 2px" }}>£{referral.referralCreditGbp.toFixed(2)}</p>
-                        <p style={{ fontSize: "12px", color: "#16A34A", margin: 0 }}>Credit available</p>
+                      <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#EFF2EF", border: "1px solid #94A895", textAlign: "center" }}>
+                        <p style={{ fontSize: "22px", fontWeight: 800, color: "#4F6B52", margin: "0 0 2px" }}>£{referral.referralCreditGbp.toFixed(2)}</p>
+                        <p style={{ fontSize: "12px", color: "#4F6B52", margin: 0 }}>Credit available</p>
                       </div>
-                      <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#F0F5FF", border: "1px solid #C7D7F7", textAlign: "center" }}>
+                      <div style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", backgroundColor: "#EDF0F9", border: "1px solid #D3D8E2", textAlign: "center" }}>
                         <p style={{ fontSize: "13px", fontWeight: 800, color: "#4E68C2", margin: "0 0 2px", fontFamily: "monospace", letterSpacing: "0.05em" }}>{referral.referralCode}</p>
-                        <p style={{ fontSize: "12px", color: "#64748B", margin: 0 }}>Your code</p>
+                        <p style={{ fontSize: "12px", color: "#4A5672", margin: 0 }}>Your code</p>
                       </div>
                     </div>
                   </div>
@@ -1020,20 +1020,20 @@ export default function AccountPage() {
                 <div>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
                     <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#22252C" }}>Wishlist</h2>
-                    <span style={{ fontSize: "13px", color: "#64748B" }}>{wishlistIds.size} saved item{wishlistIds.size !== 1 ? "s" : ""}</span>
+                    <span style={{ fontSize: "13px", color: "#4A5672" }}>{wishlistIds.size} saved item{wishlistIds.size !== 1 ? "s" : ""}</span>
                   </div>
                   {wishlistProducts.length === 0 ? (
                     <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", padding: "60px 24px", textAlign: "center" }}>
-                      <Heart size={36} style={{ margin: "0 auto 16px", color: "#CBD5E1" }} />
+                      <Heart size={36} style={{ margin: "0 auto 16px", color: "#D3D8E2" }} />
                       <p style={{ fontSize: "16px", fontWeight: 700, color: "#22252C", marginBottom: "8px" }}>No saved items yet</p>
-                      <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>
+                      <p style={{ fontSize: "13px", color: "#4A5672", marginBottom: "20px" }}>
                         Hit the heart icon on any product to save it here.
                       </p>
                       <Link
                         href="/all-peptides"
                         style={{
                           display: "inline-block", padding: "10px 24px", borderRadius: "10px",
-                          background: "linear-gradient(90deg, #22252C, #4E68C2)",
+                          background: "#1D2948",
                           color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none",
                         }}
                       >
@@ -1049,7 +1049,7 @@ export default function AccountPage() {
                             key={product.id}
                             style={{
                               backgroundColor: "#fff", borderRadius: "16px",
-                              border: "1px solid #D3D8E2", boxShadow: "0 2px 12px rgba(15,23,42,0.04)",
+                              border: "1px solid #D3D8E2", boxShadow: "none",
                               overflow: "hidden", position: "relative",
                             }}
                           >
@@ -1059,15 +1059,15 @@ export default function AccountPage() {
                               style={{
                                 position: "absolute", top: "8px", right: "8px", zIndex: 10,
                                 width: "28px", height: "28px", borderRadius: "50%",
-                                backgroundColor: "#FEF2F2", border: "1.5px solid #FECACA",
+                                backgroundColor: "#F8F2F3", border: "1.5px solid #C9939A",
                                 display: "flex", alignItems: "center", justifyContent: "center",
                                 cursor: "pointer",
                               }}
                             >
-                              <Heart size={13} style={{ color: "#DC2626", fill: "#DC2626" }} />
+                              <Heart size={13} style={{ color: "#9C4A44", fill: "#9C4A44" }} />
                             </button>
                             <Link href={`/product/${product.id}`} style={{ textDecoration: "none", display: "block" }}>
-                              <div style={{ height: "100px", backgroundColor: "#F0F5FF", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                              <div style={{ height: "100px", backgroundColor: "#EDF0F9", display: "flex", alignItems: "center", justifyContent: "center" }}>
                                 <img
                                   src={product.image ?? "/products/default.jpg"}
                                   alt={product.name}
@@ -1079,7 +1079,7 @@ export default function AccountPage() {
                                 <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C", marginBottom: "4px", lineHeight: 1.3 }}>
                                   {product.name}
                                 </p>
-                                <p style={{ fontSize: "12px", color: "#64748B", marginBottom: "6px" }}>{product.category}</p>
+                                <p style={{ fontSize: "12px", color: "#4A5672", marginBottom: "6px" }}>{product.category}</p>
                                 {product.price != null && (
                                   <p style={{ fontSize: "13px", fontWeight: 800, color: "#4E68C2" }}>
                                     {formatPrice(product.price)}
@@ -1105,18 +1105,18 @@ export default function AccountPage() {
                 </div>
 
                 {loadingLoyalty ? (
-                  <div style={{ textAlign: "center", padding: "60px 0", color: "#94A3B8" }}>
+                  <div style={{ textAlign: "center", padding: "60px 0", color: "#8D9BB8" }}>
                     <Award size={32} style={{ margin: "0 auto 12px", opacity: 0.4 }} />
                     <p style={{ fontSize: "14px" }}>Loading your points…</p>
                   </div>
                 ) : !loyalty ? (
                   <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", padding: "60px 24px", textAlign: "center" }}>
-                    <Gift size={36} style={{ margin: "0 auto 16px", color: "#CBD5E1" }} />
+                    <Gift size={36} style={{ margin: "0 auto 16px", color: "#D3D8E2" }} />
                     <p style={{ fontSize: "16px", fontWeight: 700, color: "#22252C", marginBottom: "8px" }}>No points yet</p>
-                    <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>
+                    <p style={{ fontSize: "13px", color: "#4A5672", marginBottom: "20px" }}>
                       Place your first order to start earning loyalty points.
                     </p>
-                    <Link href="/all-peptides" style={{ display: "inline-block", padding: "10px 24px", borderRadius: "10px", background: "linear-gradient(90deg, #22252C, #4E68C2)", color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none" }}>
+                    <Link href="/all-peptides" style={{ display: "inline-block", padding: "10px 24px", borderRadius: "10px", background: "#1D2948", color: "#fff", fontWeight: 700, fontSize: "14px", textDecoration: "none" }}>
                       Browse peptides
                     </Link>
                   </div>
@@ -1124,8 +1124,8 @@ export default function AccountPage() {
                   <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
                     {/* Balance card */}
-                    <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", overflow: "hidden" }}>
-                      <div style={{ background: "linear-gradient(135deg, #22252C 0%, #4E68C2 100%)", padding: "28px 24px" }}>
+                    <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "none", overflow: "hidden" }}>
+                      <div style={{ background: "#1D2948", padding: "28px 24px" }}>
                         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
                           <div>
                             <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px" }}>
@@ -1164,7 +1164,7 @@ export default function AccountPage() {
                               <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)" }}>{loyalty.progressPct}%</span>
                             </div>
                             <div style={{ height: "6px", borderRadius: "3px", backgroundColor: "rgba(255,255,255,0.2)", overflow: "hidden" }}>
-                              <div style={{ height: "100%", borderRadius: "3px", width: `${loyalty.progressPct}%`, backgroundColor: "#F59E0B", transition: "width 0.5s ease" }} />
+                              <div style={{ height: "100%", borderRadius: "3px", width: `${loyalty.progressPct}%`, backgroundColor: "#85683A", transition: "width 0.5s ease" }} />
                             </div>
                           </div>
                         )}
@@ -1176,18 +1176,18 @@ export default function AccountPage() {
                       </div>
 
                       {/* How it works */}
-                      <div style={{ padding: "18px 24px", borderBottom: "1px solid #F1F5F9", display: "flex", gap: "20px", flexWrap: "wrap" }}>
+                      <div style={{ padding: "18px 24px", borderBottom: "1px solid #F4F5F8", display: "flex", gap: "20px", flexWrap: "wrap" }}>
                         {[
                           { icon: <TrendingUp size={15} style={{ color: "#4E68C2" }} />, label: "Earn", value: "1 pt per £1 spent" },
-                          { icon: <Award size={15} style={{ color: "#F59E0B" }} />, label: "Redeem", value: "100 pts = £1 off" },
-                          { icon: <Gift size={15} style={{ color: "#059669" }} />, label: "Use at checkout", value: "Applied automatically" },
+                          { icon: <Award size={15} style={{ color: "#85683A" }} />, label: "Redeem", value: "100 pts = £1 off" },
+                          { icon: <Gift size={15} style={{ color: "#4F6B52" }} />, label: "Use at checkout", value: "Applied automatically" },
                         ].map(item => (
                           <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                            <div style={{ width: "32px", height: "32px", borderRadius: "8px", backgroundColor: "#F8FAFC", border: "1px solid #D3D8E2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                            <div style={{ width: "32px", height: "32px", borderRadius: "8px", backgroundColor: "#F4F5F8", border: "1px solid #D3D8E2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                               {item.icon}
                             </div>
                             <div>
-                              <p style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "1px" }}>{item.label}</p>
+                              <p style={{ fontSize: "11px", color: "#8D9BB8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "1px" }}>{item.label}</p>
                               <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C" }}>{item.value}</p>
                             </div>
                           </div>
@@ -1198,16 +1198,16 @@ export default function AccountPage() {
                       <div style={{ padding: "14px 24px", display: "flex", gap: "12px" }}>
                         {[
                           { name: "Bronze", pts: "0–499", color: "#CD7F32", bg: "#FEF3C7" },
-                          { name: "Silver", pts: "500–1999", color: "#9CA3AF", bg: "#F3F4F6" },
-                          { name: "Gold",   pts: "2000+",   color: "#F59E0B", bg: "#FFFBEB" },
+                          { name: "Silver", pts: "500–1999", color: "#8D9BB8", bg: "#F4F5F8" },
+                          { name: "Gold",   pts: "2000+",   color: "#85683A", bg: "#F8F4EF" },
                         ].map(t => (
                           <div key={t.name} style={{
                             flex: 1, padding: "10px 12px", borderRadius: "10px",
-                            backgroundColor: loyalty.tier === t.name ? t.bg : "#F8FAFC",
+                            backgroundColor: loyalty.tier === t.name ? t.bg : "#F4F5F8",
                             border: `1.5px solid ${loyalty.tier === t.name ? t.color : "#D3D8E2"}`,
                           }}>
                             <p style={{ fontSize: "13px", fontWeight: 800, color: t.color, marginBottom: "2px" }}>{t.name}</p>
-                            <p style={{ fontSize: "11px", color: "#94A3B8" }}>{t.pts} pts</p>
+                            <p style={{ fontSize: "11px", color: "#8D9BB8" }}>{t.pts} pts</p>
                           </div>
                         ))}
                       </div>
@@ -1218,17 +1218,17 @@ export default function AccountPage() {
                       <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#22252C", marginBottom: "14px" }}>Ways to earn points</h3>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px" }}>
                         {[
-                          { icon: <ShoppingBag size={16} style={{ color: "#4E68C2" }} />, title: "Make a purchase", desc: "1 pt for every £1 you spend", bg: "#E8F2DE" },
-                          { icon: <Gift size={16} style={{ color: "#059669" }} />, title: "Create an account", desc: "+50 pts welcome bonus", bg: "#F0FDF4" },
-                          { icon: <Users size={16} style={{ color: "#7C3AED" }} />, title: "Refer a friend", desc: "You and your friend both earn £25 credit each", bg: "#F5F3FF" },
+                          { icon: <ShoppingBag size={16} style={{ color: "#4E68C2" }} />, title: "Make a purchase", desc: "1 pt for every £1 you spend", bg: "#EFF2EF" },
+                          { icon: <Gift size={16} style={{ color: "#4F6B52" }} />, title: "Create an account", desc: "+50 pts welcome bonus", bg: "#EFF2EF" },
+                          { icon: <Users size={16} style={{ color: "#5E5690" }} />, title: "Refer a friend", desc: "You and your friend both earn £25 credit each", bg: "#F1F0F7" },
                         ].map((w) => (
                           <div key={w.title} style={{ display: "flex", gap: "10px", padding: "12px", borderRadius: "12px", backgroundColor: w.bg }}>
-                            <div style={{ width: "30px", height: "30px", borderRadius: "8px", backgroundColor: "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 1px 4px rgba(15,23,42,0.08)" }}>
+                            <div style={{ width: "30px", height: "30px", borderRadius: "8px", backgroundColor: "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "none" }}>
                               {w.icon}
                             </div>
                             <div>
                               <p style={{ fontSize: "13px", fontWeight: 700, color: "#22252C", margin: "0 0 2px" }}>{w.title}</p>
-                              <p style={{ fontSize: "11.5px", color: "#64748B", margin: 0, lineHeight: 1.3 }}>{w.desc}</p>
+                              <p style={{ fontSize: "11.5px", color: "#4A5672", margin: 0, lineHeight: 1.3 }}>{w.desc}</p>
                             </div>
                           </div>
                         ))}
@@ -1237,17 +1237,17 @@ export default function AccountPage() {
 
                     {/* CTA */}
                     {loyalty.balance >= 100 && (
-                      <div style={{ backgroundColor: "#FFFBEB", borderRadius: "14px", border: "1.5px solid #FDE68A", padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
+                      <div style={{ backgroundColor: "#F8F4EF", borderRadius: "14px", border: "1.5px solid #CDB894", padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                          <Award size={20} style={{ color: "#F59E0B", flexShrink: 0 }} />
+                          <Award size={20} style={{ color: "#85683A", flexShrink: 0 }} />
                           <div>
-                            <p style={{ fontSize: "14px", fontWeight: 700, color: "#92400E", margin: 0 }}>
+                            <p style={{ fontSize: "14px", fontWeight: 700, color: "#85683A", margin: 0 }}>
                               You can redeem {loyalty.balance} pts for £{loyalty.gbpValue.toFixed(2)} off
                             </p>
-                            <p style={{ fontSize: "12px", color: "#B45309", margin: 0 }}>Points are applied automatically at checkout</p>
+                            <p style={{ fontSize: "12px", color: "#85683A", margin: 0 }}>Points are applied automatically at checkout</p>
                           </div>
                         </div>
-                        <Link href="/all-peptides" style={{ display: "inline-block", padding: "10px 20px", borderRadius: "10px", background: "linear-gradient(90deg, #22252C, #4E68C2)", color: "#fff", fontWeight: 700, fontSize: "13px", textDecoration: "none", whiteSpace: "nowrap" }}>
+                        <Link href="/all-peptides" style={{ display: "inline-block", padding: "10px 20px", borderRadius: "10px", background: "#1D2948", color: "#fff", fontWeight: 700, fontSize: "13px", textDecoration: "none", whiteSpace: "nowrap" }}>
                           Shop now →
                         </Link>
                       </div>
@@ -1256,30 +1256,30 @@ export default function AccountPage() {
                     {/* Transaction history */}
                     {loyalty.transactions.length > 0 && (
                       <div style={{ backgroundColor: "#fff", borderRadius: "16px", border: "1px solid #D3D8E2", overflow: "hidden" }}>
-                        <div style={{ padding: "16px 20px", borderBottom: "1px solid #F1F5F9" }}>
+                        <div style={{ padding: "16px 20px", borderBottom: "1px solid #F4F5F8" }}>
                           <h3 style={{ fontSize: "15px", fontWeight: 800, color: "#22252C", margin: 0 }}>Points History</h3>
                         </div>
                         <div>
                           {loyalty.transactions.map(tx => {
                             const isPositive = tx.points > 0;
                             const typeConfig: Record<string, { label: string; bg: string; color: string }> = {
-                              earned:   { label: "Earned",   bg: "#F0FDF4", color: "#16A34A" },
-                              redeemed: { label: "Redeemed", bg: "#FFF7ED", color: "#C2410C" },
-                              adjusted: { label: "Adjusted", bg: "#E8F2DE", color: "#3D55A8" },
-                              expired:  { label: "Expired",  bg: "#F1F5F9", color: "#64748B" },
+                              earned:   { label: "Earned",   bg: "#EFF2EF", color: "#4F6B52" },
+                              redeemed: { label: "Redeemed", bg: "#F8F4EF", color: "#85683A" },
+                              adjusted: { label: "Adjusted", bg: "#EFF2EF", color: "#0A2472" },
+                              expired:  { label: "Expired",  bg: "#F4F5F8", color: "#4A5672" },
                             };
                             const cfg = typeConfig[tx.type] ?? typeConfig.adjusted;
                             return (
-                              <div key={tx.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px", borderBottom: "1px solid #F8FAFC", gap: "12px" }}>
+                              <div key={tx.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px", borderBottom: "1px solid #F4F5F8", gap: "12px" }}>
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                   <p style={{ fontSize: "13px", fontWeight: 600, color: "#22252C", margin: "0 0 2px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                                     {tx.description}
                                   </p>
-                                  <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>{formatDate(tx.createdAt)}</p>
+                                  <p style={{ fontSize: "11px", color: "#8D9BB8", margin: 0 }}>{formatDate(tx.createdAt)}</p>
                                 </div>
                                 <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
                                   <span style={{ fontSize: "11px", fontWeight: 600, padding: "2px 8px", borderRadius: "20px", backgroundColor: cfg.bg, color: cfg.color }}>{cfg.label}</span>
-                                  <span style={{ fontSize: "14px", fontWeight: 800, color: isPositive ? "#16A34A" : "#DC2626", minWidth: "60px", textAlign: "right" }}>
+                                  <span style={{ fontSize: "14px", fontWeight: 800, color: isPositive ? "#4F6B52" : "#9C4A44", minWidth: "60px", textAlign: "right" }}>
                                     {isPositive ? "+" : ""}{tx.points}
                                   </span>
                                 </div>
@@ -1298,15 +1298,15 @@ export default function AccountPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
 
                 {/* Update name */}
-                <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
+                <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "none", padding: "24px 28px" }}>
                   <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#22252C", marginBottom: "4px" }}>Personal information</h3>
-                  <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>Update your name as it appears on orders.</p>
+                  <p style={{ fontSize: "13px", color: "#4A5672", marginBottom: "20px" }}>Update your name as it appears on orders.</p>
 
                   <form onSubmit={handleSaveProfile} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                     <div className="form-grid-2">
                       {(["firstName", "lastName"] as const).map((field) => (
                         <div key={field}>
-                          <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>
+                          <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#22252C", display: "block", marginBottom: "5px" }}>
                             {field === "firstName" ? "First name" : "Last name"}
                           </label>
                           <input
@@ -1314,42 +1314,42 @@ export default function AccountPage() {
                             onChange={(e) => setProfileForm((p) => ({ ...p, [field]: e.target.value }))}
                             style={{
                               width: "100%", height: "42px", padding: "0 12px",
-                              borderRadius: "10px", border: "1.5px solid #E2E8F0",
+                              borderRadius: "10px", border: "1.5px solid #D3D8E2",
                               fontSize: "14px", color: "#22252C", outline: "none",
-                              backgroundColor: "#F8FAFC", boxSizing: "border-box",
+                              backgroundColor: "#F4F5F8", boxSizing: "border-box",
                             }}
                             onFocus={(e) => (e.currentTarget.style.borderColor = "#4E68C2")}
-                            onBlur={(e) => (e.currentTarget.style.borderColor = "#E2E8F0")}
+                            onBlur={(e) => (e.currentTarget.style.borderColor = "#D3D8E2")}
                           />
                         </div>
                       ))}
                     </div>
 
                     <div>
-                      <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>Email address</label>
+                      <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#22252C", display: "block", marginBottom: "5px" }}>Email address</label>
                       <input
                         value={displayProfile.email}
                         readOnly
                         style={{
                           width: "100%", height: "42px", padding: "0 12px",
-                          borderRadius: "10px", border: "1.5px solid #E2E8F0",
-                          fontSize: "14px", color: "#94A3B8", outline: "none",
-                          backgroundColor: "#F1F5F9", boxSizing: "border-box", cursor: "not-allowed",
+                          borderRadius: "10px", border: "1.5px solid #D3D8E2",
+                          fontSize: "14px", color: "#8D9BB8", outline: "none",
+                          backgroundColor: "#F4F5F8", boxSizing: "border-box", cursor: "not-allowed",
                         }}
                       />
-                      <p style={{ fontSize: "11.5px", color: "#94A3B8", marginTop: "4px" }}>Email address cannot be changed here.</p>
+                      <p style={{ fontSize: "11.5px", color: "#8D9BB8", marginTop: "4px" }}>Email address cannot be changed here.</p>
                     </div>
 
                     {profileError && (
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 14px", borderRadius: "8px", backgroundColor: "#FEF2F2", border: "1px solid #FECACA" }}>
-                        <AlertCircle size={14} style={{ color: "#DC2626", flexShrink: 0 }} />
-                        <p style={{ fontSize: "13px", color: "#DC2626", margin: 0 }}>{profileError}</p>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 14px", borderRadius: "8px", backgroundColor: "#F8F2F3", border: "1px solid #C9939A" }}>
+                        <AlertCircle size={14} style={{ color: "#9C4A44", flexShrink: 0 }} />
+                        <p style={{ fontSize: "13px", color: "#9C4A44", margin: 0 }}>{profileError}</p>
                       </div>
                     )}
                     {profileSuccess && (
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 14px", borderRadius: "8px", backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0" }}>
-                        <CheckCircle2 size={14} style={{ color: "#16A34A", flexShrink: 0 }} />
-                        <p style={{ fontSize: "13px", color: "#15803D", margin: 0 }}>Profile updated successfully.</p>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 14px", borderRadius: "8px", backgroundColor: "#EFF2EF", border: "1px solid #94A895" }}>
+                        <CheckCircle2 size={14} style={{ color: "#4F6B52", flexShrink: 0 }} />
+                        <p style={{ fontSize: "13px", color: "#4F6B52", margin: 0 }}>Profile updated successfully.</p>
                       </div>
                     )}
 
@@ -1359,7 +1359,7 @@ export default function AccountPage() {
                         disabled={savingProfile}
                         style={{
                           height: "42px", padding: "0 24px", borderRadius: "10px", border: "none",
-                          background: savingProfile ? "#B4D89C" : "linear-gradient(90deg, #22252C, #4E68C2)",
+                          background: savingProfile ? "#94A895" : "#1D2948",
                           color: "#fff", fontSize: "14px", fontWeight: 700, cursor: savingProfile ? "not-allowed" : "pointer",
                         }}
                       >
@@ -1370,9 +1370,9 @@ export default function AccountPage() {
                 </div>
 
                 {/* Change password */}
-                <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "0 2px 12px rgba(15,23,42,0.05)", padding: "24px 28px" }}>
+                <div style={{ backgroundColor: "#fff", borderRadius: "20px", border: "1px solid #D3D8E2", boxShadow: "none", padding: "24px 28px" }}>
                   <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#22252C", marginBottom: "4px" }}>Change password</h3>
-                  <p style={{ fontSize: "13px", color: "#64748B", marginBottom: "20px" }}>Choose a strong password of at least 8 characters.</p>
+                  <p style={{ fontSize: "13px", color: "#4A5672", marginBottom: "20px" }}>Choose a strong password of at least 8 characters.</p>
 
                   <form onSubmit={handleChangePassword} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                     {[
@@ -1381,7 +1381,7 @@ export default function AccountPage() {
                       { field: "confirm" as const, label: "Confirm new password", show: showNext, toggle: () => setShowNext((s) => !s) },
                     ].map(({ field, label, show, toggle }) => (
                       <div key={field}>
-                        <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "5px" }}>{label}</label>
+                        <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#22252C", display: "block", marginBottom: "5px" }}>{label}</label>
                         <div style={{ position: "relative" }}>
                           <input
                             type={show ? "text" : "password"}
@@ -1389,17 +1389,17 @@ export default function AccountPage() {
                             onChange={(e) => setPwForm((p) => ({ ...p, [field]: e.target.value }))}
                             style={{
                               width: "100%", height: "42px", padding: "0 42px 0 12px",
-                              borderRadius: "10px", border: "1.5px solid #E2E8F0",
+                              borderRadius: "10px", border: "1.5px solid #D3D8E2",
                               fontSize: "14px", color: "#22252C", outline: "none",
-                              backgroundColor: "#F8FAFC", boxSizing: "border-box",
+                              backgroundColor: "#F4F5F8", boxSizing: "border-box",
                             }}
                             onFocus={(e) => (e.currentTarget.style.borderColor = "#4E68C2")}
-                            onBlur={(e) => (e.currentTarget.style.borderColor = "#E2E8F0")}
+                            onBlur={(e) => (e.currentTarget.style.borderColor = "#D3D8E2")}
                           />
                           <button
                             type="button"
                             onClick={toggle}
-                            style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#94A3B8", padding: 0, display: "flex" }}
+                            style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#8D9BB8", padding: 0, display: "flex" }}
                           >
                             {show ? <EyeOff size={15} /> : <Eye size={15} />}
                           </button>
@@ -1408,15 +1408,15 @@ export default function AccountPage() {
                     ))}
 
                     {pwError && (
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 14px", borderRadius: "8px", backgroundColor: "#FEF2F2", border: "1px solid #FECACA" }}>
-                        <AlertCircle size={14} style={{ color: "#DC2626", flexShrink: 0 }} />
-                        <p style={{ fontSize: "13px", color: "#DC2626", margin: 0 }}>{pwError}</p>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 14px", borderRadius: "8px", backgroundColor: "#F8F2F3", border: "1px solid #C9939A" }}>
+                        <AlertCircle size={14} style={{ color: "#9C4A44", flexShrink: 0 }} />
+                        <p style={{ fontSize: "13px", color: "#9C4A44", margin: 0 }}>{pwError}</p>
                       </div>
                     )}
                     {pwSuccess && (
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 14px", borderRadius: "8px", backgroundColor: "#F0FDF4", border: "1px solid #BBF7D0" }}>
-                        <CheckCircle2 size={14} style={{ color: "#16A34A", flexShrink: 0 }} />
-                        <p style={{ fontSize: "13px", color: "#15803D", margin: 0 }}>Password changed successfully.</p>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 14px", borderRadius: "8px", backgroundColor: "#EFF2EF", border: "1px solid #94A895" }}>
+                        <CheckCircle2 size={14} style={{ color: "#4F6B52", flexShrink: 0 }} />
+                        <p style={{ fontSize: "13px", color: "#4F6B52", margin: 0 }}>Password changed successfully.</p>
                       </div>
                     )}
 
@@ -1426,7 +1426,7 @@ export default function AccountPage() {
                         disabled={savingPw}
                         style={{
                           height: "42px", padding: "0 24px", borderRadius: "10px", border: "none",
-                          background: savingPw ? "#B4D89C" : "linear-gradient(90deg, #22252C, #4E68C2)",
+                          background: savingPw ? "#94A895" : "#1D2948",
                           color: "#fff", fontSize: "14px", fontWeight: 700, cursor: savingPw ? "not-allowed" : "pointer",
                         }}
                       >
@@ -1440,8 +1440,8 @@ export default function AccountPage() {
             )}
 
             {/* RUO notice — shown in content area on mobile only */}
-            <div className="account-ruo-mobile" style={{ marginTop: "24px", padding: "12px 14px", borderRadius: "12px", backgroundColor: "#FFFBEB", border: "1px solid #FDE68A" }}>
-              <p style={{ fontSize: "11px", color: "#92400E", lineHeight: 1.6, margin: 0 }}>
+            <div className="account-ruo-mobile" style={{ marginTop: "24px", padding: "12px 14px", borderRadius: "12px", backgroundColor: "#F8F4EF", border: "1px solid #CDB894" }}>
+              <p style={{ fontSize: "11px", color: "#85683A", lineHeight: 1.6, margin: 0 }}>
                 <strong>Research Use Only.</strong> OmniQure products are for qualified researchers only. Not for human or veterinary use.
               </p>
             </div>

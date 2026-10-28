@@ -15,7 +15,7 @@ function parseName(name: string): { baseName: string; strength: string } {
   return { baseName: name, strength: "" };
 }
 
-const BLUE = { color: "#4E68C2", bg: "#E8F2DE", gradient: "linear-gradient(90deg, #4E68C2, #4E68C2)" };
+const BLUE = { color: "#4E68C2", bg: "#EFF2EF", gradient: "#4E68C2" };
 
 const CATEGORY_COLORS: Record<string, { color: string; bg: string; gradient: string }> = {
   "Growth Peptides":    BLUE,
@@ -49,7 +49,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
   const { formatPrice } = useCurrency();
 
-  const cat = CATEGORY_COLORS[product.category] ?? { color: "#4E68C2", bg: "#E8F2DE", gradient: "linear-gradient(90deg, #4E68C2, #4E68C2)" };
+  const cat = CATEGORY_COLORS[product.category] ?? { color: "#4E68C2", bg: "#EFF2EF", gradient: "#4E68C2" };
 
   const stockLevel = product.stockLevel;
   const isOutOfStock = stockLevel !== undefined && stockLevel === 0;
@@ -88,12 +88,12 @@ export default function ProductCard({ product }: ProductCardProps) {
         }}
       >
         {/* Category accent bar */}
-        <div style={{ height: "3px", background: isOutOfStock ? "#CBD5E1" : cat.gradient, flexShrink: 0 }} />
+        <div style={{ height: "3px", background: isOutOfStock ? "#D3D8E2" : cat.gradient, flexShrink: 0 }} />
 
         {/* Image area */}
         <div
           className="card-product-img relative w-full overflow-hidden"
-          style={{ background: `linear-gradient(160deg, #F8FAFE 0%, ${cat.bg} 100%)`, position: "relative" }}
+          style={{ background: `linear-gradient(160deg, #EDF0F9 0%, ${cat.bg} 100%)`, position: "relative" }}
           onMouseEnter={() => setImgHovered(true)}
           onMouseLeave={() => setImgHovered(false)}
         >
@@ -112,7 +112,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {isSellingFast && (
             <div style={{
               position: "absolute", top: "10px", left: "10px", zIndex: 2,
-              background: "linear-gradient(90deg, #DC2626, #F97316)",
+              background: "#9C4A44",
               color: "#fff", fontSize: "10px", fontWeight: 800, letterSpacing: "0.05em",
               padding: "4px 9px", borderRadius: "8px",
               display: "flex", alignItems: "center", gap: "4px",
@@ -124,7 +124,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {isHotBuy && (
             <div style={{
               position: "absolute", top: "10px", left: "10px", zIndex: 2,
-              background: "linear-gradient(90deg, #B45309, #D97706)",
+              background: "#85683A",
               color: "#fff", fontSize: "10px", fontWeight: 800, letterSpacing: "0.05em",
               padding: "4px 9px", borderRadius: "8px",
               display: "flex", alignItems: "center", gap: "4px",
@@ -138,7 +138,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {isOutOfStock && (
             <div style={{
               position: "absolute", top: "10px", right: "10px",
-              backgroundColor: "#EF4444", color: "#fff",
+              backgroundColor: "#9C4A44", color: "#fff",
               fontSize: "10.5px", fontWeight: 800, letterSpacing: "0.06em",
               padding: "4px 10px", borderRadius: "8px",
               textTransform: "uppercase",
@@ -149,7 +149,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {isLowStock && (
             <div style={{
               position: "absolute", top: "10px", right: "10px",
-              backgroundColor: "#F97316", color: "#fff",
+              backgroundColor: "#85683A", color: "#fff",
               fontSize: "10.5px", fontWeight: 800, letterSpacing: "0.06em",
               padding: "4px 10px", borderRadius: "8px",
               display: "flex", alignItems: "center", gap: "4px",
@@ -216,8 +216,8 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div style={{ marginBottom: "4px" }}>
             {isOutOfStock ? (
               <span style={{
-                fontSize: "10px", fontWeight: 700, color: "#DC2626",
-                backgroundColor: "#FEF2F2", border: "1px solid #FECACA",
+                fontSize: "10px", fontWeight: 700, color: "#9C4A44",
+                backgroundColor: "#F8F2F3", border: "1px solid #C9939A",
                 padding: "2px 7px", borderRadius: "5px",
                 display: "inline-flex", alignItems: "center", gap: "3px",
               }}>
@@ -225,8 +225,8 @@ export default function ProductCard({ product }: ProductCardProps) {
               </span>
             ) : isLowStock ? (
               <span style={{
-                fontSize: "10px", fontWeight: 700, color: "#B45309",
-                backgroundColor: "#FFFBEB", border: "1px solid #FDE68A",
+                fontSize: "10px", fontWeight: 700, color: "#85683A",
+                backgroundColor: "#F8F4EF", border: "1px solid #CDB894",
                 padding: "2px 7px", borderRadius: "5px",
                 display: "inline-flex", alignItems: "center", gap: "3px",
               }}>
@@ -234,8 +234,8 @@ export default function ProductCard({ product }: ProductCardProps) {
               </span>
             ) : (
               <span style={{
-                fontSize: "10px", fontWeight: 700, color: "#059669",
-                backgroundColor: "#ECFDF5", border: "1px solid #A7F3D0",
+                fontSize: "10px", fontWeight: 700, color: "#4F6B52",
+                backgroundColor: "#EFF2EF", border: "1px solid #94A895",
                 padding: "2px 7px", borderRadius: "5px",
                 display: "inline-flex", alignItems: "center", gap: "3px",
               }}>
@@ -274,7 +274,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               <div
                 className="card-qty"
                 style={{
-                  backgroundColor: isOutOfStock ? "#F1F5F9" : "#F8FAFC",
+                  backgroundColor: isOutOfStock ? "#F4F5F8" : "#F4F5F8",
                   opacity: isOutOfStock ? 0.5 : 1,
                 }}
               >
@@ -283,7 +283,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                   disabled={isOutOfStock}
                   style={{ cursor: isOutOfStock ? "not-allowed" : "pointer" }}
                   onMouseEnter={e => { if (!isOutOfStock) (e.currentTarget as HTMLElement).style.color = cat.color; }}
-                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#4A5672"}
                 >−</button>
                 <span>{qty}</span>
                 <button
@@ -291,7 +291,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                   disabled={isOutOfStock}
                   style={{ cursor: isOutOfStock ? "not-allowed" : "pointer" }}
                   onMouseEnter={e => { if (!isOutOfStock) (e.currentTarget as HTMLElement).style.color = cat.color; }}
-                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#4A5672"}
                 >+</button>
               </div>
 
@@ -300,7 +300,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 disabled={isOutOfStock}
                 className="card-cart-btn"
                 style={{
-                  backgroundColor: isOutOfStock ? "#94A3B8" : added ? "#059669" : "#4E68C2",
+                  backgroundColor: isOutOfStock ? "#8D9BB8" : added ? "#4F6B52" : "#4E68C2",
                   color: "#fff",
                   cursor: isOutOfStock ? "not-allowed" : "pointer",
                 }}

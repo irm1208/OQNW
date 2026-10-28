@@ -174,7 +174,7 @@ export default function ShippingPage() {
 
           <Section id="customs" number="5" title="Customs, Duties & Import Regulations" icon={<AlertTriangle size={15} />}>
             <div className="rounded-xl p-4 mb-3" style={{ backgroundColor: "#F2F0EB", border: "1px solid rgba(11,18,32,0.09)" }}>
-              <p className="font-semibold mb-1 flex items-center gap-1.5" style={{ color: "var(--ink)" }}><AlertTriangle size={14} aria-hidden="true" style={{ color: "#D97706" }} />Your responsibility</p>
+              <p className="font-semibold mb-1 flex items-center gap-1.5" style={{ color: "var(--ink)" }}><AlertTriangle size={14} aria-hidden="true" style={{ color: "#85683A" }} />Your responsibility</p>
               <p className="text-xs" style={{ color: "var(--graphite)" }}>It is your sole responsibility to ensure that the importation of research chemicals is legal in your country. {COMPANY_SHORT} accepts no liability for orders seized, delayed, or destroyed by customs authorities.</p>
             </div>
             <p>International orders may be subject to customs duties, import taxes, and handling fees levied by the destination country. These charges are entirely the buyer's responsibility and are not included in our shipping prices.</p>

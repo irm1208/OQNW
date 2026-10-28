@@ -10,7 +10,7 @@ import { sellingFastSlugs, hotBuySlugs } from "@/data/popularPeptides";
 import QuickViewModal from "@/components/QuickViewModal";
 import { getCatalogueVialImage } from "@/lib/catalogueImages";
 
-const BLUE = { color: "#4E68C2", bg: "#E8F2DE", gradient: "linear-gradient(90deg, #4E68C2, #4E68C2)" };
+const BLUE = { color: "#4E68C2", bg: "#EFF2EF", gradient: "#4E68C2" };
 
 const CATEGORY_COLORS: Record<string, { color: string; bg: string; gradient: string }> = {
   "Growth Peptides":    BLUE,
@@ -87,12 +87,12 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
       style={{ border: "none", transition: "border-color 0.2s, box-shadow 0.2s" }}
     >
       {/* Accent bar */}
-      <div style={{ height: "3px", background: isSoldOut ? "#CBD5E1" : cat.gradient, flexShrink: 0 }} />
+      <div style={{ height: "3px", background: isSoldOut ? "#D3D8E2" : cat.gradient, flexShrink: 0 }} />
 
       {/* Image — clickable to product page */}
       <div
         className="card-product-img relative w-full overflow-hidden"
-        style={{ background: `linear-gradient(160deg, #F8FAFE 0%, ${cat.bg} 100%)`, cursor: "pointer", flexShrink: 0 }}
+        style={{ background: `linear-gradient(160deg, #EDF0F9 0%, ${cat.bg} 100%)`, cursor: "pointer", flexShrink: 0 }}
         onClick={goToProduct}
         onMouseEnter={() => setImgHovered(true)}
         onMouseLeave={() => setImgHovered(false)}
@@ -101,7 +101,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {isSellingFast && (
           <div style={{
             position: "absolute", top: "10px", left: "10px", zIndex: 10,
-            background: "linear-gradient(90deg, #DC2626, #F97316)",
+            background: "#9C4A44",
             color: "#fff", fontSize: "10px", fontWeight: 800, letterSpacing: "0.05em",
             padding: "4px 9px", borderRadius: "8px",
             display: "flex", alignItems: "center", gap: "4px",
@@ -114,7 +114,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {isHotBuy && (
           <div style={{
             position: "absolute", top: "10px", left: "10px", zIndex: 10,
-            background: "linear-gradient(90deg, #B45309, #D97706)",
+            background: "#85683A",
             color: "#fff", fontSize: "10px", fontWeight: 800, letterSpacing: "0.05em",
             padding: "4px 9px", borderRadius: "8px",
             display: "flex", alignItems: "center", gap: "4px",
@@ -128,7 +128,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {isSoldOut && (
           <div style={{
             position: "absolute", top: "10px", left: "10px", zIndex: 10,
-            backgroundColor: "#DC2626", color: "#fff",
+            backgroundColor: "#9C4A44", color: "#fff",
             fontSize: "10px", fontWeight: 800, letterSpacing: "0.06em",
             padding: "4px 9px", borderRadius: "8px", textTransform: "uppercase",
           }}>
@@ -143,8 +143,8 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           style={{
             position: "absolute", top: "8px", right: "8px", zIndex: 10,
             width: "30px", height: "30px", borderRadius: "50%",
-            backgroundColor: inWishlist(productIdInt) ? "#FEF2F2" : "rgba(255,255,255,0.85)",
-            border: inWishlist(productIdInt) ? "1.5px solid #FECACA" : "1.5px solid #E2E8F0",
+            backgroundColor: inWishlist(productIdInt) ? "#F8F2F3" : "rgba(255,255,255,0.85)",
+            border: inWishlist(productIdInt) ? "1.5px solid #C9939A" : "1.5px solid #D3D8E2",
             display: "flex", alignItems: "center", justifyContent: "center",
             cursor: "pointer", transition: "all 0.15s", boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
           }}
@@ -152,8 +152,8 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           <Heart
             size={14}
             style={{
-              color: inWishlist(productIdInt) ? "#DC2626" : "#94A3B8",
-              fill: inWishlist(productIdInt) ? "#DC2626" : "none",
+              color: inWishlist(productIdInt) ? "#9C4A44" : "#8D9BB8",
+              fill: inWishlist(productIdInt) ? "#9C4A44" : "none",
               transition: "all 0.15s",
             }}
           />
@@ -220,7 +220,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
           style={{
             fontSize: "18px", fontWeight: 800, lineHeight: 1.2, marginBottom: "5px",
             cursor: "pointer", transition: "opacity 0.15s",
-            background: "linear-gradient(120deg, #22252C 0%, #4E68C2 60%, #4E68C2 100%)",
+            background: "#1D2948",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -235,8 +235,8 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         <div style={{ marginBottom: "4px" }}>
           {selectedVariant.stockLevel === 0 ? (
             <span style={{
-              fontSize: "10px", fontWeight: 700, color: "#DC2626",
-              backgroundColor: "#FEF2F2", border: "1px solid #FECACA",
+              fontSize: "10px", fontWeight: 700, color: "#9C4A44",
+              backgroundColor: "#F8F2F3", border: "1px solid #C9939A",
               padding: "2px 7px", borderRadius: "5px",
               display: "inline-flex", alignItems: "center", gap: "3px",
             }}>
@@ -244,8 +244,8 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
             </span>
           ) : selectedVariant.stockLevel !== undefined && selectedVariant.stockLevel <= 10 ? (
             <span style={{
-              fontSize: "10px", fontWeight: 700, color: "#B45309",
-              backgroundColor: "#FFFBEB", border: "1px solid #FDE68A",
+              fontSize: "10px", fontWeight: 700, color: "#85683A",
+              backgroundColor: "#F8F4EF", border: "1px solid #CDB894",
               padding: "2px 7px", borderRadius: "5px",
               display: "inline-flex", alignItems: "center", gap: "3px",
             }}>
@@ -253,8 +253,8 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
             </span>
           ) : (
             <span style={{
-              fontSize: "10px", fontWeight: 700, color: "#059669",
-              backgroundColor: "#ECFDF5", border: "1px solid #A7F3D0",
+              fontSize: "10px", fontWeight: 700, color: "#4F6B52",
+              backgroundColor: "#EFF2EF", border: "1px solid #94A895",
               padding: "2px 7px", borderRadius: "5px",
               display: "inline-flex", alignItems: "center", gap: "3px",
             }}>
@@ -266,11 +266,11 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
         {/* Price */}
         {selectedVariant.price != null && (
           <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "4px" }}>
-            <span className="card-price" style={{ fontSize: "17px", fontWeight: 800, color: "#059669", lineHeight: 1 }}>
+            <span className="card-price" style={{ fontSize: "17px", fontWeight: 800, color: "#4F6B52", lineHeight: 1 }}>
               {formatPrice(selectedVariant.price)}
             </span>
             {group.variants.length > 1 && selectedIdx !== 0 && group.variants[0].price != null && (
-              <span style={{ fontSize: "10px", color: "#94A3B8" }}>
+              <span style={{ fontSize: "10px", color: "#8D9BB8" }}>
                 from {formatPrice(group.variants[0].price)}
               </span>
             )}
@@ -284,7 +284,7 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
               display: "block",
               fontSize: "10px",
               fontWeight: 700,
-              color: "#64748B",
+              color: "#4A5672",
               letterSpacing: "0.04em",
               textTransform: "uppercase",
               marginBottom: "3px",
@@ -341,14 +341,14 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
                 onClick={e => { stopProp(e); setQty(q => Math.max(1, q - 1)); }}
                 disabled={isSoldOut}
                 onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = cat.color}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#4A5672"}
               >−</button>
               <span>{qty}</span>
               <button
                 onClick={e => { stopProp(e); if (!isSoldOut) setQty(q => q + 1); }}
                 disabled={isSoldOut}
                 onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = cat.color}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#64748B"}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "#4A5672"}
               >+</button>
             </div>
 
@@ -357,8 +357,8 @@ export default function GroupedProductCard({ group }: GroupedProductCardProps) {
                 disabled={isSoldOut}
               className="card-cart-btn"
               style={{
-                backgroundColor: isSoldOut ? "#E2E8F0" : added ? "#059669" : "#4E68C2",
-                color: isSoldOut ? "#94A3B8" : "#fff",
+                backgroundColor: isSoldOut ? "#D3D8E2" : added ? "#4F6B52" : "#4E68C2",
+                color: isSoldOut ? "#8D9BB8" : "#fff",
                 cursor: isSoldOut ? "not-allowed" : "pointer",
               }}
               onMouseEnter={e => { if (!isSoldOut && !added) (e.currentTarget as HTMLElement).style.backgroundColor = "#4E68C2"; }}

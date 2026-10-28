@@ -382,8 +382,8 @@ const THEME = {
   inputBorder: "rgba(11,18,32,0.12)" as const,
   text: "#1D2948" as const,
   textMuted: "#4A5672" as const,
-  textSub: "#475569" as const,
-  divider: "1px solid #F1F5F9" as const,
+  textSub: "#4A5672" as const,
+  divider: "1px solid #F4F5F8" as const,
   cta: "#1D2948" as const,
   ctaHover: "#0A2472" as const,
 };
@@ -396,7 +396,7 @@ const input: React.CSSProperties = {
   boxSizing: "border-box",
 };
 
-const inputError: React.CSSProperties = { ...input, borderColor: "#ef4444" };
+const inputError: React.CSSProperties = { ...input, borderColor: "#9C4A44" };
 
 const label: React.CSSProperties = {
   display: "block", fontSize: "12.5px", fontWeight: 500,
@@ -409,7 +409,7 @@ const sectionTitle: React.CSSProperties = {
 };
 
 const errText: React.CSSProperties = {
-  fontSize: "11px", color: "#DC2626", marginTop: "3px",
+  fontSize: "11px", color: "#9C4A44", marginTop: "3px",
 };
 
 const divider: React.CSSProperties = {
@@ -435,19 +435,19 @@ function CartUpsellCard({ product }: { product: Product }) {
     <Link href={`/product/${product.id}`} style={{ textDecoration: "none" }}>
       <div
         className="rounded-xl bg-white flex items-center gap-3 px-3 py-2.5 cursor-pointer transition-all duration-200"
-        style={{ border: "1.5px solid #D3D8E2", boxShadow: "0 1px 4px rgba(15,23,42,0.04)" }}
+        style={{ border: "1.5px solid #D3D8E2", boxShadow: "none" }}
         onMouseEnter={(e) => {
-          (e.currentTarget as HTMLDivElement).style.borderColor = "#93B8F0";
-          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 14px rgba(59, 98, 171,0.09)";
+          (e.currentTarget as HTMLDivElement).style.borderColor = "#8D9BB8";
+          (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
         }}
         onMouseLeave={(e) => {
           (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(11,18,32,0.09)";
-          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 1px 4px rgba(15,23,42,0.04)";
+          (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
         }}
       >
         <div
           className="rounded-lg flex items-center justify-center flex-shrink-0"
-          style={{ width: "48px", height: "48px", background: "linear-gradient(145deg, #F4F8FF 0%, #EBF2FF 100%)", border: "1px solid #E2E8F0" }}
+          style={{ width: "48px", height: "48px", background: "#EDF0F9", border: "1px solid #D3D8E2" }}
         >
           <img
             src={product.image}
@@ -459,14 +459,14 @@ function CartUpsellCard({ product }: { product: Product }) {
         <div className="flex-1 min-w-0">
           <p className="font-semibold truncate" style={{ fontSize: "12px", color: "#22252C", lineHeight: 1.3 }}>{product.name}</p>
           <div className="flex items-center gap-1.5 mt-0.5">
-            <span style={{ fontSize: "10px", color: "#059669", fontWeight: 600 }}>{product.purity ?? "Purity not specified"}</span>
+            <span style={{ fontSize: "10px", color: "#4F6B52", fontWeight: 600 }}>{product.purity ?? "Purity not specified"}</span>
             {product.price != null && (
               <span style={{ fontSize: "12px", fontWeight: 700, color: "#4E68C2" }}>{formatPrice(product.price)}</span>
             )}
           </div>
         </div>
         {alreadyInCart ? (
-          <span className="flex items-center gap-1 text-xs font-semibold flex-shrink-0" style={{ color: "#059669" }}>
+          <span className="flex items-center gap-1 text-xs font-semibold flex-shrink-0" style={{ color: "#4F6B52" }}>
             <CheckCircle2 size={13} /> In cart
           </span>
         ) : (
@@ -474,7 +474,7 @@ function CartUpsellCard({ product }: { product: Product }) {
             onClick={handleAdd}
             className="flex items-center gap-1 font-semibold rounded-lg flex-shrink-0 transition-all"
             style={{
-              backgroundColor: added ? "#059669" : "#4E68C2",
+              backgroundColor: added ? "#4F6B52" : "#4E68C2",
               color: "#fff", border: "none", cursor: "pointer",
               fontSize: "11px", padding: "5px 10px", height: "28px",
               transition: "background-color 0.2s",
@@ -822,7 +822,7 @@ export default function CartPage() {
                   height: 18,
                   marginTop: 2,
                   flexShrink: 0,
-                  border: `2px solid ${active ? THEME.cta : "#94A3B8"}`,
+                  border: `2px solid ${active ? THEME.cta : "#8D9BB8"}`,
                   borderRadius: "50%",
                   backgroundColor: "#fff",
                   boxShadow: active ? `inset 0 0 0 4px ${THEME.cta}` : "none",
@@ -833,7 +833,7 @@ export default function CartPage() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "14px", fontWeight: 600, color: THEME.text }}>{opt.displayLabel}</span>
                   <span style={{ fontSize: "14px", fontWeight: 700, color: THEME.text, flexShrink: 0, marginLeft: 12 }}>
-                    {isFree ? <span style={{ color: "#059669" }}>FREE</span> : `£${cost.toFixed(2)}`}
+                    {isFree ? <span style={{ color: "#4F6B52" }}>FREE</span> : `£${cost.toFixed(2)}`}
                   </span>
                 </div>
                 {opt.note && (
@@ -1009,7 +1009,7 @@ export default function CartPage() {
         </PageHero>
         <section className="w-full max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 py-10 lg:py-14">
           {isAdminTestCheckout && (
-            <p className="mb-6 max-w-xl rounded-lg border px-3.5 py-2.5 text-[13px] font-semibold" style={{ color: "#9A3412", background: "#FFF7ED", borderColor: "#FED7AA" }}>
+            <p className="mb-6 max-w-xl rounded-lg border px-3.5 py-2.5 text-[13px] font-semibold" style={{ color: "#85683A", background: "#F8F4EF", borderColor: "#CDB894" }}>
               Your £1 {isCryptoTestCheckout ? "crypto" : "Wallid"} test session stays active in this browser tab while you add a product, then return to your cart.
             </p>
           )}
@@ -1017,7 +1017,7 @@ export default function CartPage() {
             <Link href="/all-peptides" className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[14.5px] font-semibold text-white transition-opacity hover:opacity-90" style={{ background: "var(--ink)" }}>
               Browse all peptides <ChevronRight size={16} aria-hidden="true" />
             </Link>
-            <Link href="/bundle-and-save" className="inline-flex items-center rounded-full border px-6 py-3.5 text-[14px] font-semibold transition-colors hover:bg-[#F4F6FA]" style={{ borderColor: "var(--hairline)", color: "var(--ink)" }}>
+            <Link href="/bundle-and-save" className="inline-flex items-center rounded-full border px-6 py-3.5 text-[14px] font-semibold transition-colors hover:bg-[#F4F5F8]" style={{ borderColor: "var(--hairline)", color: "var(--ink)" }}>
               Bundle &amp; save
             </Link>
           </div>
@@ -1519,9 +1519,9 @@ export default function CartPage() {
     <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", backgroundColor: "#fff", minHeight: "100vh" }}>
       {isWallidTestCheckout && (
         <div style={{
-          background: wallidTestStatus === "invalid" ? "#FEF2F2" : "#FFF7ED",
-          borderBottom: `1px solid ${wallidTestStatus === "invalid" ? "#FECACA" : "#FED7AA"}`,
-          color: wallidTestStatus === "invalid" ? "#B91C1C" : "#9A3412",
+          background: wallidTestStatus === "invalid" ? "#F8F2F3" : "#F8F4EF",
+          borderBottom: `1px solid ${wallidTestStatus === "invalid" ? "#C9939A" : "#CDB894"}`,
+          color: wallidTestStatus === "invalid" ? "#9C4A44" : "#85683A",
           padding: "10px 16px", textAlign: "center", fontSize: "13px", fontWeight: 700,
         }}>
           {wallidTestStatus === "invalid"
@@ -1535,9 +1535,9 @@ export default function CartPage() {
         <div
           data-testid="status-crypto-test-checkout"
           style={{
-            background: cryptoTestStatus === "invalid" ? "#FEF2F2" : "#E8F2DE",
-            borderBottom: `1px solid ${cryptoTestStatus === "invalid" ? "#FECACA" : "#C8DDB4"}`,
-            color: cryptoTestStatus === "invalid" ? "#B91C1C" : "#3D55A8",
+            background: cryptoTestStatus === "invalid" ? "#F8F2F3" : "#EFF2EF",
+            borderBottom: `1px solid ${cryptoTestStatus === "invalid" ? "#C9939A" : "#94A895"}`,
+            color: cryptoTestStatus === "invalid" ? "#9C4A44" : "#0A2472",
             padding: "10px 16px", textAlign: "center", fontSize: "13px", fontWeight: 700,
           }}
         >
@@ -1553,7 +1553,7 @@ export default function CartPage() {
       {/* ── Research warning ── */}
       <div style={{ backgroundColor: "#fff", borderBottom: "1px solid rgba(11,18,32,0.09)" }}>
         <div className="max-w-[1280px] mx-auto px-6 py-2.5 flex items-center gap-2">
-          <AlertTriangle size={14} style={{ color: "#B45309", flexShrink: 0 }} />
+          <AlertTriangle size={14} style={{ color: "#85683A", flexShrink: 0 }} />
           <p className="text-xs leading-relaxed" style={{ color: "#4A5672" }}>
             <strong style={{ color: "#1D2948" }}>Research use only.</strong> All products are for in-vitro laboratory research. Not for human or veterinary use. Must be 18+ to purchase.
           </p>
@@ -1565,7 +1565,7 @@ export default function CartPage() {
         <div className="checkout-breadcrumb-bar max-w-[1280px] mx-auto px-6" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 76 }}>
           <h1 style={{ fontSize: "26px", fontWeight: 600, letterSpacing: "-0.02em", color: "#1D2948" }}>
             My Cart
-            <span className="ml-2 font-normal" style={{ fontSize: "14px", letterSpacing: 0, color: "#8A94A6" }}>
+            <span className="ml-2 font-normal" style={{ fontSize: "14px", letterSpacing: 0, color: "#4A5672" }}>
               ({totalItems} {totalItems === 1 ? "item" : "items"})
             </span>
           </h1>
@@ -1599,7 +1599,7 @@ export default function CartPage() {
                 value={delivery.email} onChange={setD("email")} type="email"
                 placeholder="your@email.com" style={inp("email")}
                 onFocus={e => { if (!errors.email) e.currentTarget.style.borderColor = "#4E68C2"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = errors.email ? "#ef4444" : THEME.inputBorder; }}
+                onBlur={e => { e.currentTarget.style.borderColor = errors.email ? "#9C4A44" : THEME.inputBorder; }}
               />
               {errors.email && <p style={errText}>{errors.email}</p>}
             </div>
@@ -1723,14 +1723,14 @@ export default function CartPage() {
               <label style={label}>First Name *</label>
               <input data-field="firstName" value={delivery.firstName} onChange={setD("firstName")} placeholder="First Name" style={inp("firstName")}
                 onFocus={e => { if (!errors.firstName) e.currentTarget.style.borderColor = "#4E68C2"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = errors.firstName ? "#ef4444" : THEME.inputBorder; }} />
+                onBlur={e => { e.currentTarget.style.borderColor = errors.firstName ? "#9C4A44" : THEME.inputBorder; }} />
               {errors.firstName && <p style={errText}>{errors.firstName}</p>}
             </div>
             <div>
               <label style={label}>Last Name *</label>
               <input data-field="lastName" value={delivery.lastName} onChange={setD("lastName")} placeholder="Last Name" style={inp("lastName")}
                 onFocus={e => { if (!errors.lastName) e.currentTarget.style.borderColor = "#4E68C2"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = errors.lastName ? "#ef4444" : THEME.inputBorder; }} />
+                onBlur={e => { e.currentTarget.style.borderColor = errors.lastName ? "#9C4A44" : THEME.inputBorder; }} />
               {errors.lastName && <p style={errText}>{errors.lastName}</p>}
             </div>
           </div>
@@ -1748,7 +1748,7 @@ export default function CartPage() {
               }}
                 style={{ ...inp("country"), height: 44, appearance: "none", cursor: "pointer" }}
                 onFocus={e => { e.currentTarget.style.borderColor = "#4E68C2"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = errors.country ? "#ef4444" : THEME.inputBorder; }}>
+                onBlur={e => { e.currentTarget.style.borderColor = errors.country ? "#9C4A44" : THEME.inputBorder; }}>
                 {COUNTRIES.map(c => <option key={c}>{c}</option>)}
               </select>
               {errors.country && <p style={errText}>{errors.country}</p>}
@@ -1772,7 +1772,7 @@ export default function CartPage() {
                 placeholder={postcodeLabel} style={inp("postcode")}
                 onFocus={e => { if (!errors.postcode) e.currentTarget.style.borderColor = "#4E68C2"; }}
                 onBlur={e => {
-                  e.currentTarget.style.borderColor = errors.postcode ? "#ef4444" : THEME.inputBorder;
+                  e.currentTarget.style.borderColor = errors.postcode ? "#9C4A44" : THEME.inputBorder;
                   void onPostcodeBlur(e.currentTarget.value, delivery.country);
                 }} />
               {postcodeLoading && <p style={{ fontSize: "12px", color: THEME.textMuted, marginTop: 4 }}>Looking up postcode…</p>}
@@ -1798,7 +1798,7 @@ export default function CartPage() {
                 placeholder="Street address"
                 style={inp("address1")}
                 onFocus={e => { if (!errors.address1) e.currentTarget.style.borderColor = "#4E68C2"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = errors.address1 ? "#ef4444" : THEME.inputBorder; }}
+                onBlur={e => { e.currentTarget.style.borderColor = errors.address1 ? "#9C4A44" : THEME.inputBorder; }}
               />
 
               {/* ── Inline autocomplete dropdown ── */}
@@ -1813,9 +1813,9 @@ export default function CartPage() {
                     right: 0,
                     zIndex: 60,
                     background: "#fff",
-                    border: "1px solid #E2E8F0",
+                    border: "1px solid #D3D8E2",
                     borderRadius: 10,
-                    boxShadow: "0 6px 24px rgba(15, 23, 42, 0.11)",
+                    boxShadow: "none",
                     overflow: "hidden",
                   }}
                 >
@@ -1837,12 +1837,12 @@ export default function CartPage() {
                             width: "100%",
                             textAlign: "left",
                             border: "none",
-                            borderBottom: idx < addressSuggestions.length - 1 ? "1px solid #F1F5F9" : "none",
+                            borderBottom: idx < addressSuggestions.length - 1 ? "1px solid #F4F5F8" : "none",
                             background: "#fff",
                             cursor: "pointer",
                             padding: "11px 16px",
                           }}
-                          onMouseEnter={e => { e.currentTarget.style.background = "#F8FAFC"; }}
+                          onMouseEnter={e => { e.currentTarget.style.background = "#F4F5F8"; }}
                           onMouseLeave={e => { e.currentTarget.style.background = "#fff"; }}
                         >
                           <p style={{ margin: 0, fontSize: "14px", fontWeight: 700, color: THEME.text, lineHeight: 1.35 }}>
@@ -1853,7 +1853,7 @@ export default function CartPage() {
                           </p>
                         </button>
                       ))}
-                      <div style={{ padding: "6px 16px", borderTop: "1px solid #F1F5F9", background: "#F8FAFC" }}>
+                      <div style={{ padding: "6px 16px", borderTop: "1px solid #F4F5F8", background: "#F4F5F8" }}>
                         <p style={{ margin: 0, fontSize: "11px", color: THEME.textMuted }}>
                           © OpenStreetMap contributors
                         </p>
@@ -1892,7 +1892,7 @@ export default function CartPage() {
                   <label style={label}>City *</label>
                   <input data-field="city" value={delivery.city} onChange={setD("city")} placeholder="City" style={inp("city")}
                     onFocus={e => { if (!errors.city) e.currentTarget.style.borderColor = "#4E68C2"; }}
-                    onBlur={e => { e.currentTarget.style.borderColor = errors.city ? "#ef4444" : THEME.inputBorder; }} />
+                    onBlur={e => { e.currentTarget.style.borderColor = errors.city ? "#9C4A44" : THEME.inputBorder; }} />
                   {errors.city && <p style={errText}>{errors.city}</p>}
                 </div>
                 <div>
@@ -1960,7 +1960,7 @@ export default function CartPage() {
                   <div style={{ padding: "14px 16px 16px 46px" }}>
                     {/* Payment currency */}
                     <div style={{ marginBottom: 14 }}>
-                      <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.1em", color: "#64748B", margin: "0 0 8px", textTransform: "uppercase" }}>
+                      <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.1em", color: "#4A5672", margin: "0 0 8px", textTransform: "uppercase" }}>
                         Pay in
                       </p>
                       <div role="radiogroup" aria-label="Pay by Bank currency" style={{ display: "flex", gap: 8 }}>
@@ -1986,7 +1986,7 @@ export default function CartPage() {
                                 flex: 1, padding: "9px 10px", borderRadius: 7, cursor: "pointer",
                                 border: `1.5px solid ${selected ? "#1D2948" : "rgba(11,18,32,0.12)"}`,
                                 background: selected ? "#1D2948" : "#fff",
-                                color: selected ? "#fff" : "#334155",
+                                color: selected ? "#fff" : "#22252C",
                                 fontSize: "13px", fontWeight: 600,
                               }}
                             >
@@ -1995,7 +1995,7 @@ export default function CartPage() {
                           );
                         })}
                       </div>
-                      <p style={{ fontSize: "12px", color: paymentQuoteError ? "#B91C1C" : "#475569", margin: "8px 0 0", lineHeight: 1.45 }}>
+                      <p style={{ fontSize: "12px", color: paymentQuoteError ? "#9C4A44" : "#4A5672", margin: "8px 0 0", lineHeight: 1.45 }}>
                         {paymentQuoteLoading ? (
                           "Confirming your exact payment total…"
                         ) : displayedPaymentTotal !== null && bankPaymentQuote ? (
@@ -2010,7 +2010,7 @@ export default function CartPage() {
                     </div>
 
                     {/* Trust line */}
-                    <p style={{ fontSize: "12px", color: "#64748B", margin: "0 0 12px", lineHeight: 1.5 }}>
+                    <p style={{ fontSize: "12px", color: "#4A5672", margin: "0 0 12px", lineHeight: 1.5 }}>
                       Pay by Card / Bank Transfer via Wallid
                     </p>
 
@@ -2022,7 +2022,7 @@ export default function CartPage() {
                           background: "#fff", border: "1px solid #D3D8E2",
                           display: "flex", alignItems: "center", justifyContent: "center",
                           flexShrink: 0, overflow: "hidden",
-                          boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+                          boxShadow: "none",
                         }}>
                           {"imgSrc" in b ? (
                             <img src={b.imgSrc} alt={b.name} style={{ width: 26, height: 26, objectFit: "contain" }} />
@@ -2033,11 +2033,11 @@ export default function CartPage() {
                           )}
                         </div>
                       ))}
-                      <span style={{ fontSize: "13px", fontWeight: 600, color: "#64748B", marginLeft: 2 }}>+more</span>
+                      <span style={{ fontSize: "13px", fontWeight: 600, color: "#4A5672", marginLeft: 2 }}>+more</span>
                     </div>
 
                     {/* How it works */}
-                    <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.1em", color: "#64748B", margin: "0 0 10px", textTransform: "uppercase" }}>
+                    <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.1em", color: "#4A5672", margin: "0 0 10px", textTransform: "uppercase" }}>
                       How it works
                     </p>
                     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -2049,7 +2049,7 @@ export default function CartPage() {
                             display: "flex", alignItems: "center", justifyContent: "center",
                             fontSize: "11px", fontWeight: 600, flexShrink: 0,
                           }}>{i + 1}</span>
-                          <span style={{ fontSize: "13px", color: "#334155", fontWeight: 500 }}>{step}</span>
+                          <span style={{ fontSize: "13px", color: "#22252C", fontWeight: 500 }}>{step}</span>
                         </div>
                       ))}
                     </div>
@@ -2075,7 +2075,7 @@ export default function CartPage() {
                     </div>
                   </div>
                   {active && (
-                    <div style={{ borderTop: "1px solid #F1F5F9", padding: "14px 16px" }}>
+                    <div style={{ borderTop: "1px solid #F4F5F8", padding: "14px 16px" }}>
                       <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                         {cryptoRoutes.map(route => {
                           const meta = CRYPTO_META[route.currency];
@@ -2085,8 +2085,8 @@ export default function CartPage() {
                             style={{
                               display: "inline-flex", alignItems: "center", gap: 6,
                               padding: "6px 12px", borderRadius: 100, border: "1px solid",
-                              borderColor: selected ? THEME.cta : "#E2E8F0",
-                              background: selected ? THEME.cta : "#F8FAFC",
+                              borderColor: selected ? THEME.cta : "#D3D8E2",
+                              background: selected ? THEME.cta : "#F4F5F8",
                               color: selected ? "#fff" : THEME.textSub,
                               fontSize: "13px", fontWeight: 600, cursor: "pointer",
                             }}>
@@ -2158,12 +2158,12 @@ export default function CartPage() {
           {errors.confirmed && <p style={{ ...errText, marginBottom: 12 }}>{errors.confirmed}</p>}
 
           {placeError && (
-            <div style={{ marginBottom: 12, padding: "10px 12px", background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 6, fontSize: "13px", color: "#DC2626" }}>
+            <div style={{ marginBottom: 12, padding: "10px 12px", background: "#F8F2F3", border: "1px solid #C9939A", borderRadius: 6, fontSize: "13px", color: "#9C4A44" }}>
               {placeError}
             </div>
           )}
           {stockErrors.length > 0 && (
-            <div style={{ marginBottom: 12, padding: "10px 12px", background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 6, fontSize: "13px", color: "#DC2626" }}>
+            <div style={{ marginBottom: 12, padding: "10px 12px", background: "#F8F2F3", border: "1px solid #C9939A", borderRadius: 6, fontSize: "13px", color: "#9C4A44" }}>
               {stockErrors.map(e => (
                 <p key={e.productName} style={{ margin: "0 0 4px" }}>
                   {e.productName}: low stock. Reduce the requested quantity.
@@ -2256,7 +2256,7 @@ export default function CartPage() {
                           <img src={getCatalogueVialImage(product.id, product.slug, product.image, product.sourceImage)} alt={product.name}
                             style={{ width: "100%", height: "100%", objectFit: "cover", transform: "scale(1.3)" }} />
                         ) : (
-                          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", color: "#94A3B8" }}>IMG</div>
+                          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", color: "#8D9BB8" }}>IMG</div>
                         )}
                       </div>
                       <div style={{
@@ -2270,27 +2270,27 @@ export default function CartPage() {
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p style={{ fontSize: "13px", fontWeight: 600, color: THEME.text, margin: 0 }}>{product.name}</p>
                       {freeQty > 0 && (
-                        <p style={{ fontSize: "11px", color: "#059669", margin: "2px 0 0", fontWeight: 600 }}>
+                        <p style={{ fontSize: "11px", color: "#4F6B52", margin: "2px 0 0", fontWeight: 600 }}>
                           {freeQty} free (Bundle & Save)
                         </p>
                       )}
                       <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6 }}>
-                        <div style={{ display: "flex", alignItems: "center", border: "1.5px solid #E2E8F0", borderRadius: 8, overflow: "hidden" }}>
+                        <div style={{ display: "flex", alignItems: "center", border: "1.5px solid #D3D8E2", borderRadius: 8, overflow: "hidden" }}>
                           <button
                             onClick={() => updateQuantity(product.id, quantity - 1)}
-                            className="hover:bg-slate-50 transition-colors"
-                            style={{ width: 26, height: 26, display: "flex", alignItems: "center", justifyContent: "center", color: "#475569", background: "none", border: "none", cursor: "pointer" }}
+                            className="hover:bg-[#F4F5F8] transition-colors"
+                            style={{ width: 26, height: 26, display: "flex", alignItems: "center", justifyContent: "center", color: "#4A5672", background: "none", border: "none", cursor: "pointer" }}
                             aria-label="Decrease quantity"
                           >
                             <Minus size={11} />
                           </button>
-                          <div style={{ width: 28, height: 26, display: "flex", alignItems: "center", justifyContent: "center", borderLeft: "1.5px solid #E2E8F0", borderRight: "1.5px solid #E2E8F0", color: "#22252C", fontSize: "12px", fontWeight: 700 }}>
+                          <div style={{ width: 28, height: 26, display: "flex", alignItems: "center", justifyContent: "center", borderLeft: "1.5px solid #D3D8E2", borderRight: "1.5px solid #D3D8E2", color: "#22252C", fontSize: "12px", fontWeight: 700 }}>
                             {quantity}
                           </div>
                           <button
                             onClick={() => updateQuantity(product.id, quantity + 1)}
-                            className="hover:bg-slate-50 transition-colors"
-                            style={{ width: 26, height: 26, display: "flex", alignItems: "center", justifyContent: "center", color: "#475569", background: "none", border: "none", cursor: "pointer" }}
+                            className="hover:bg-[#F4F5F8] transition-colors"
+                            style={{ width: 26, height: 26, display: "flex", alignItems: "center", justifyContent: "center", color: "#4A5672", background: "none", border: "none", cursor: "pointer" }}
                             aria-label="Increase quantity"
                           >
                             <Plus size={11} />
@@ -2298,8 +2298,8 @@ export default function CartPage() {
                         </div>
                         <button
                           onClick={() => removeFromCart(product.id)}
-                          className="hover:bg-red-50 transition-colors"
-                          style={{ width: 26, height: 26, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 8, color: "#EF4444", border: "1.5px solid #FEE2E2", background: "none", cursor: "pointer" }}
+                          className="hover:bg-[#F8F2F3] transition-colors"
+                          style={{ width: 26, height: 26, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 8, color: "#9C4A44", border: "1.5px solid #F8F2F3", background: "none", cursor: "pointer" }}
                           title="Remove"
                           aria-label="Remove item"
                         >
@@ -2318,9 +2318,9 @@ export default function CartPage() {
                   <div style={{ width: 56, height: 56, borderRadius: 4, border: "1px dashed #8D9BB8", background: "#fff", color: "#4E68C2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Droplets size={20} /></div>
                   <div style={{ flex: 1 }}>
                     <p style={{ fontSize: "13px", fontWeight: 600, color: THEME.text, margin: 0 }}>Bacteriostatic Water 10ml Ampule</p>
-                    <p style={{ fontSize: "11px", color: "#059669", margin: "2px 0 0", fontWeight: 600 }}>Free (Bundle & Save)</p>
+                    <p style={{ fontSize: "11px", color: "#4F6B52", margin: "2px 0 0", fontWeight: 600 }}>Free (Bundle & Save)</p>
                   </div>
-                  <div style={{ fontSize: "14px", fontWeight: 600, color: "#15803D", flexShrink: 0 }}>Free</div>
+                  <div style={{ fontSize: "14px", fontWeight: 600, color: "#4F6B52", flexShrink: 0 }}>Free</div>
                 </div>
               )}
             </div>
@@ -2365,12 +2365,12 @@ export default function CartPage() {
             {/* Discount code */}
             <div style={{ padding: "16px 20px" }}>
               {appliedDiscount ? (
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 12px", background: "#ECFDF5", border: "1px solid #A7F3D0", borderRadius: 6 }}>
-                  <span style={{ fontSize: "13px", color: "#065F46", fontWeight: 700 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 12px", background: "#EFF2EF", border: "1px solid #94A895", borderRadius: 6 }}>
+                  <span style={{ fontSize: "13px", color: "#4F6B52", fontWeight: 700 }}>
                     {appliedDiscount.code} — −£{appliedDiscount.discountAmount.toFixed(2)}
                   </span>
                   <button type="button" onClick={() => { setAppliedDiscount(null); setDiscountError(null); setDiscountInput(""); }}
-                    style={{ background: "none", border: "none", color: "#065F46", cursor: "pointer", fontSize: "13px", fontWeight: 700 }}>✕</button>
+                    style={{ background: "none", border: "none", color: "#4F6B52", cursor: "pointer", fontSize: "13px", fontWeight: 700 }}>✕</button>
                 </div>
               ) : (
                 <div>
@@ -2416,7 +2416,7 @@ export default function CartPage() {
               ].map(([k, v]) => (
                 <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
                   <span style={{ fontSize: "13px", color: THEME.textMuted }}>{k}</span>
-                  <span style={{ fontSize: "13px", color: v?.startsWith("−") || v === "FREE" ? "#15803D" : THEME.text, fontWeight: 500, fontVariantNumeric: "tabular-nums" }}>{v === "FREE" ? "Free" : v}</span>
+                  <span style={{ fontSize: "13px", color: v?.startsWith("−") || v === "FREE" ? "#4F6B52" : THEME.text, fontWeight: 500, fontVariantNumeric: "tabular-nums" }}>{v === "FREE" ? "Free" : v}</span>
                 </div>
               ))}
               <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12, paddingTop: 12, borderTop: THEME.divider }}>

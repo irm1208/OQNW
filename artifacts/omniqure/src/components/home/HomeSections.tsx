@@ -432,7 +432,7 @@ export function ReviewsSection() {
               <span role="img" className="flex items-center gap-0.5" aria-label="Rated 4.9 out of 5 stars">
                 {Array.from({ length: 5 }, (_, i) => <Star key={i} size={14} fill="#00B67A" color="#00B67A" strokeWidth={1.5} />)}
               </span>
-              <span className="font-semibold" style={{ fontSize: 13, color: "#007A56" }}>Trustpilot</span>
+              <span className="font-semibold" style={{ fontSize: 13, color: "#4F6B52" }}>Trustpilot</span>
               <span style={{ fontSize: 12, color: "var(--graphite)" }}>4.9 out of 5</span>
             </div>
           </div>

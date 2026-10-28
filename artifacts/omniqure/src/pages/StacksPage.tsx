@@ -13,9 +13,9 @@ import { useCurrency } from "@/context/CurrencyContext";
 import { parseName } from "@/data/groupedProducts";
 
 const DIFFICULTY_COLORS = {
-  Beginner:     { bg: "#ECFDF5", color: "#059669", border: "#A7F3D0" },
-  Intermediate: { bg: "#E8F2DE", color: "#4E68C2", border: "#C8DDB4" },
-  Advanced:     { bg: "#FFF7ED", color: "#C2410C", border: "#FED7AA" },
+  Beginner:     { bg: "#EFF2EF", color: "#4F6B52", border: "#94A895" },
+  Intermediate: { bg: "#EFF2EF", color: "#4E68C2", border: "#94A895" },
+  Advanced:     { bg: "#F8F4EF", color: "#85683A", border: "#CDB894" },
 };
 
 type StackProductItem = {
@@ -105,13 +105,13 @@ function StackProductRow({ sp, index }: { sp: StackProductItem; index: number })
           <div className="flex items-center gap-1.5">
             <span
               className="text-xs px-2 py-0.5 rounded-full font-medium"
-              style={{ backgroundColor: "#ECFDF5", color: "#047857" }}
+              style={{ backgroundColor: "#EFF2EF", color: "#4F6B52" }}
             >
               {selected.purity ?? "Purity not specified"}
             </span>
             <span
               className="text-xs px-2 py-0.5 rounded-full font-medium"
-              style={{ backgroundColor: "#EEF3FC", color: "var(--cobalt)" }}
+              style={{ backgroundColor: "#EDF0F9", color: "var(--cobalt)" }}
             >
               {selected.category}
             </span>
@@ -151,7 +151,7 @@ function StackProductRow({ sp, index }: { sp: StackProductItem; index: number })
             display: "flex", alignItems: "center", gap: "5px",
             fontSize: "12px", fontWeight: 600,
             padding: "6px 14px", borderRadius: "999px",
-            backgroundColor: added ? "#059669" : "var(--ink)",
+            backgroundColor: added ? "#4F6B52" : "var(--ink)",
             color: "#fff", border: "none", cursor: "pointer",
             transition: "background-color 0.2s", flexShrink: 0,
           }}
@@ -197,7 +197,7 @@ function StackCard({ stack }: { stack: ResearchStack }) {
           {(() => {
             const StackIcon = STACK_ICONS[stack.icon] ?? FlaskConical;
             return (
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={{ background: "#FFF6F2", color: "var(--cobalt)" }} aria-hidden="true">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={{ background: "#F8F4EF", color: "var(--cobalt)" }} aria-hidden="true">
                 <StackIcon size={18} />
               </span>
             );
@@ -259,7 +259,7 @@ function StackCard({ stack }: { stack: ResearchStack }) {
             <span
               key={area}
               className="text-xs px-2.5 py-0.5 rounded-full font-medium"
-              style={{ backgroundColor: "#EEF3FC", color: "var(--cobalt)" }}
+              style={{ backgroundColor: "#EDF0F9", color: "var(--cobalt)" }}
             >
               {area}
             </span>
@@ -279,7 +279,7 @@ function StackCard({ stack }: { stack: ResearchStack }) {
           className="w-full flex items-center justify-center gap-2 font-semibold rounded-full transition-all mb-4"
           style={{
             height: "48px",
-            background: addedAll ? "#059669" : "var(--ink)",
+            background: addedAll ? "#4F6B52" : "var(--ink)",
             color: "#fff",
             border: "none",
             cursor: "pointer",
@@ -346,7 +346,7 @@ function StackCard({ stack }: { stack: ResearchStack }) {
               style={{ backgroundColor: "#F2F0EB", border: "1px solid var(--hairline)" }}
             >
               <p className="text-xs font-semibold uppercase tracking-wider mb-2 flex items-center gap-1.5" style={{ color: "var(--ink)" }}>
-                <AlertTriangle size={12} style={{ color: "#D97706" }} /> Research Notices
+                <AlertTriangle size={12} style={{ color: "#85683A" }} /> Research Notices
               </p>
               <ul className="space-y-1">
                 {stack.warnings.map((w, i) => (
@@ -423,7 +423,7 @@ export default function StacksPage() {
           className="flex items-start gap-2.5 px-4 py-3"
           style={{ backgroundColor: "#F2F0EB", border: "1px solid var(--hairline)", borderRadius: 12 }}
         >
-          <AlertTriangle size={14} style={{ color: "#D97706", flexShrink: 0, marginTop: 2 }} aria-hidden="true" />
+          <AlertTriangle size={14} style={{ color: "#85683A", flexShrink: 0, marginTop: 2 }} aria-hidden="true" />
           <p className="text-xs leading-relaxed" style={{ color: "var(--graphite)", margin: 0 }}>
             <strong style={{ color: "var(--ink)", fontWeight: 600 }}>Research Chemical Only:</strong> All compounds listed are for in-vitro laboratory research only. Dosing figures are drawn from published preclinical literature and are not recommendations for human use. Must be 18+ and a qualified researcher to purchase.
           </p>
@@ -475,7 +475,7 @@ export default function StacksPage() {
           className="p-5 mt-10 flex items-start gap-3"
           style={{ backgroundColor: "#F2F0EB", border: "1px solid var(--hairline)", borderRadius: 16 }}
         >
-          <AlertTriangle size={15} style={{ color: "#D97706", flexShrink: 0, marginTop: 2 }} aria-hidden="true" />
+          <AlertTriangle size={15} style={{ color: "#85683A", flexShrink: 0, marginTop: 2 }} aria-hidden="true" />
           <div>
             <p className="text-xs mb-1.5 uppercase tracking-wide" style={{ color: "var(--ink)", fontWeight: 600 }}>
               Research Use Only — Important Notice

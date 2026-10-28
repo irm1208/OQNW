@@ -18,22 +18,22 @@ type FAQCategory = {
 
 
 const CATEGORIES: FAQCategory[] = [
-  { id: "all",      label: "All Questions",   icon: <HelpCircle size={14} />,  color: "#475569" },
+  { id: "all",      label: "All Questions",   icon: <HelpCircle size={14} />,  color: "#4A5672" },
   { id: "products", label: "Products & Purity", icon: <FlaskConical size={14} />, color: "#4E68C2" },
-  { id: "research", label: "Research & Usage", icon: <BookOpen size={14} />,   color: "#059669" },
-  { id: "storage",  label: "Storage & Handling", icon: <Thermometer size={14} />, color: "#7C3AED" },
-  { id: "ordering", label: "Ordering & Payment", icon: <Banknote size={14} />, color: "#D97706" },
-  { id: "shipping", label: "Shipping & Delivery", icon: <Truck size={14} />,   color: "#0891B2" },
-  { id: "returns",  label: "Returns & Support",  icon: <Shield size={14} />,   color: "#DC2626" },
+  { id: "research", label: "Research & Usage", icon: <BookOpen size={14} />,   color: "#4F6B52" },
+  { id: "storage",  label: "Storage & Handling", icon: <Thermometer size={14} />, color: "#5E5690" },
+  { id: "ordering", label: "Ordering & Payment", icon: <Banknote size={14} />, color: "#85683A" },
+  { id: "shipping", label: "Shipping & Delivery", icon: <Truck size={14} />,   color: "#4C7376" },
+  { id: "returns",  label: "Returns & Support",  icon: <Shield size={14} />,   color: "#9C4A44" },
 ];
 
 const CAT_COLOR: Record<string, string> = {
   products: "#4E68C2",
-  research: "#059669",
-  storage:  "#7C3AED",
-  ordering: "#D97706",
-  shipping: "#0891B2",
-  returns:  "#DC2626",
+  research: "#4F6B52",
+  storage:  "#5E5690",
+  ordering: "#85683A",
+  shipping: "#4C7376",
+  returns:  "#9C4A44",
 };
 
 
@@ -215,7 +215,7 @@ export default function FAQPage() {
               ))
             )}
 
-            <div className="mt-14 flex flex-col gap-6 rounded-2xl border p-7 sm:flex-row sm:items-center sm:justify-between sm:p-8" style={{ borderColor: "rgba(59, 98, 171,0.15)", background: "#E3EEFC" }}>
+            <div className="mt-14 flex flex-col gap-6 rounded-2xl border p-7 sm:flex-row sm:items-center sm:justify-between sm:p-8" style={{ borderColor: "rgba(78, 104, 194,0.15)", background: "#EDF0F9" }}>
               <div className="flex items-start gap-4">
                 <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white" style={{ color: "var(--cobalt)" }}>
                   <MessageCircle size={20} aria-hidden="true" />
@@ -231,7 +231,7 @@ export default function FAQPage() {
                 <Link href="/contact" className="inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[13.5px] font-semibold text-white transition-opacity hover:opacity-90" style={{ background: "var(--ink)" }}>
                   Contact us <ArrowRight size={14} aria-hidden="true" />
                 </Link>
-                <Link href="/protocols" className="inline-flex items-center rounded-full border bg-white px-5 py-2.5 text-[13.5px] font-semibold transition-colors hover:bg-[#F4F6FA]" style={{ borderColor: "var(--hairline)", color: "var(--ink)" }}>
+                <Link href="/protocols" className="inline-flex items-center rounded-full border bg-white px-5 py-2.5 text-[13.5px] font-semibold transition-colors hover:bg-[#F4F5F8]" style={{ borderColor: "var(--hairline)", color: "var(--ink)" }}>
                   Protocols
                 </Link>
               </div>

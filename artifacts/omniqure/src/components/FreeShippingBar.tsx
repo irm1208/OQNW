@@ -9,8 +9,8 @@ export default function FreeShippingBar() {
     <div style={{
       borderRadius: "14px",
       padding: "14px 16px",
-      background: "linear-gradient(135deg,#E8F2DE 0%,#E8F0FF 100%)",
-      border: "1.5px solid #C8DDB4",
+      background: "#F4F5F8",
+      border: "1.5px solid #94A895",
       marginBottom: "4px",
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>

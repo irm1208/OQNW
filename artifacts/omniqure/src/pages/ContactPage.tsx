@@ -73,8 +73,8 @@ export default function ContactPage() {
   }
 
   const field = (err?: string) => ({
-    borderColor: err ? "#FCA5A5" : "var(--hairline)",
-    background: err ? "#FFF5F5" : "#fff",
+    borderColor: err ? "#C9939A" : "var(--hairline)",
+    background: err ? "#F8F2F3" : "#fff",
     color: "var(--ink)",
   });
   const fieldCls = "w-full rounded-lg border px-3.5 py-2.5 text-[14px] outline-none transition-colors focus:border-[var(--cobalt)]";
@@ -110,8 +110,8 @@ export default function ContactPage() {
             <div className="rounded-2xl border bg-white p-6 md:p-7" style={hair}>
               {submitted ? (
                 <div className="flex flex-col items-center py-12 text-center">
-                  <span className="mb-4 grid h-14 w-14 place-items-center rounded-full" style={{ background: "#F0FDF4" }}>
-                    <CheckCircle2 size={28} style={{ color: "#16A34A" }} aria-hidden="true" />
+                  <span className="mb-4 grid h-14 w-14 place-items-center rounded-full" style={{ background: "#EFF2EF" }}>
+                    <CheckCircle2 size={28} style={{ color: "#4F6B52" }} aria-hidden="true" />
                   </span>
                   <h2 className="mb-2 text-[18px] font-bold" style={{ color: "var(--ink)" }}>Message sent</h2>
                   <p className="max-w-sm text-[13px]" style={{ color: "var(--graphite)" }}>
@@ -120,7 +120,7 @@ export default function ContactPage() {
                   <button
                     type="button"
                     onClick={() => { setSubmitted(false); setFirstName(""); setLastName(""); setEmail(""); setSubject(SUBJECTS[0]); setMessage(""); }}
-                    className="mt-6 rounded-full border px-5 py-2 text-[13px] font-semibold transition-colors hover:bg-[#F4F6FA]"
+                    className="mt-6 rounded-full border px-5 py-2 text-[13px] font-semibold transition-colors hover:bg-[#F4F5F8]"
                     style={{ ...hair, color: "var(--ink)" }}
                   >
                     Send another message
@@ -134,7 +134,7 @@ export default function ContactPage() {
                       <input value={firstName} autoComplete="given-name" placeholder="James" aria-invalid={!!errors.name}
                         onChange={(e) => { setFirstName(e.target.value); setErrors(({ name: _, ...rest }) => rest); }}
                         className={fieldCls} style={field(errors.name)} />
-                      {errors.name && <span className="mt-1 block text-[11px]" style={{ color: "#DC2626" }}>{errors.name}</span>}
+                      {errors.name && <span className="mt-1 block text-[11px]" style={{ color: "#9C4A44" }}>{errors.name}</span>}
                     </label>
                     <label className="block">
                       <span className={labelCls} style={{ color: "var(--ink)" }}>Last name</span>
@@ -147,7 +147,7 @@ export default function ContactPage() {
                     <input type="email" value={email} autoComplete="email" placeholder="james@laboratory.com" aria-invalid={!!errors.email}
                       onChange={(e) => { setEmail(e.target.value); setErrors(({ email: _, ...rest }) => rest); }}
                       className={fieldCls} style={field(errors.email)} />
-                    {errors.email && <span className="mt-1 block text-[11px]" style={{ color: "#DC2626" }}>{errors.email}</span>}
+                    {errors.email && <span className="mt-1 block text-[11px]" style={{ color: "#9C4A44" }}>{errors.email}</span>}
                   </label>
                   {mode === "general" && (
                     <label className="mt-4 block">
@@ -163,10 +163,10 @@ export default function ContactPage() {
                       placeholder={mode === "wholesale" ? "Tell us about your institution, compounds and expected volumes…" : "How can we help? Order questions, compound enquiries or anything else…"}
                       onChange={(e) => { setMessage(e.target.value); setErrors(({ message: _, ...rest }) => rest); }}
                       className={`${fieldCls} resize-y`} style={field(errors.message)} />
-                    {errors.message && <span className="mt-1 block text-[11px]" style={{ color: "#DC2626" }}>{errors.message}</span>}
+                    {errors.message && <span className="mt-1 block text-[11px]" style={{ color: "#9C4A44" }}>{errors.message}</span>}
                   </label>
                   {submitError && (
-                    <p role="alert" className="mt-4 rounded-lg border px-3 py-2 text-[12px]" style={{ borderColor: "#FCA5A5", background: "#FFF5F5", color: "#DC2626" }}>{submitError}</p>
+                    <p role="alert" className="mt-4 rounded-lg border px-3 py-2 text-[12px]" style={{ borderColor: "#C9939A", background: "#F8F2F3", color: "#9C4A44" }}>{submitError}</p>
                   )}
                   <button type="submit" disabled={submitting}
                     className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg py-3.5 text-[14px] font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
@@ -209,7 +209,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border p-5" style={{ borderColor: "rgba(59, 98, 171,0.15)", background: "#E3EEFC" }}>
+            <div className="rounded-2xl border p-5" style={{ borderColor: "rgba(78, 104, 194,0.15)", background: "#EDF0F9" }}>
               <p className="mb-2 flex items-center gap-2 text-[14px] font-bold" style={{ color: "var(--ink)" }}>
                 <Building2 size={16} style={{ color: "var(--cobalt)" }} aria-hidden="true" /> Wholesale accounts
               </p>

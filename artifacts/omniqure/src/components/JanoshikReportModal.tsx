@@ -65,25 +65,25 @@ export default function JanoshikReportModal({
         {/* Header */}
         <div style={{
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "14px 18px", borderBottom: "1px solid #E5E7EB", flexShrink: 0,
+          padding: "14px 18px", borderBottom: "1px solid #D3D8E2", flexShrink: 0,
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "22px", width: "auto", borderRadius: "3px", display: "block" }} />
             <div>
-              <div style={{ fontSize: "13px", fontWeight: 700, color: "#111827" }}>Janoshik Test Report</div>
-              <div style={{ fontSize: "11px", color: "#6B7280" }}>{productName} · Task #{taskNumber}</div>
+              <div style={{ fontSize: "13px", fontWeight: 700, color: "#22252C" }}>Janoshik Test Report</div>
+              <div style={{ fontSize: "11px", color: "#4A5672" }}>{productName} · Task #{taskNumber}</div>
             </div>
           </div>
           <button
             onClick={onClose}
-            style={{ background: "none", border: "none", cursor: "pointer", padding: "4px", color: "#6B7280", lineHeight: 1 }}
+            style={{ background: "none", border: "none", cursor: "pointer", padding: "4px", color: "#4A5672", lineHeight: 1 }}
           >
             <X size={20} />
           </button>
         </div>
 
         {/* Report image — explicit calc height so it never scrolls */}
-        <div style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "#F9FAFB", padding: "8px", overflow: "hidden" }}>
+        <div style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "#F4F5F8", padding: "8px", overflow: "hidden" }}>
           <img
             src={image}
             alt={`Janoshik test report #${taskNumber} for ${productName}`}
@@ -99,12 +99,12 @@ export default function JanoshikReportModal({
 
         {/* Footer */}
         <div style={{
-          padding: "12px 18px", borderTop: "1px solid #E5E7EB",
+          padding: "12px 18px", borderTop: "1px solid #D3D8E2",
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          flexShrink: 0, background: "#F9FAFB",
+          flexShrink: 0, background: "#F4F5F8",
         }}>
-          <span style={{ fontSize: "11px", color: "#6B7280" }}>
-            Verify key: <span style={{ fontFamily: "monospace", color: "#374151" }}>{verifyKey}</span>
+          <span style={{ fontSize: "11px", color: "#4A5672" }}>
+            Verify key: <span style={{ fontFamily: "monospace", color: "#22252C" }}>{verifyKey}</span>
           </span>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "12px", flexWrap: "wrap" }}>
             {certificatePdf && (

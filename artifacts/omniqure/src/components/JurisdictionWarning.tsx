@@ -128,47 +128,47 @@ const SEVERITY_STYLES: Record<Severity, {
   headlineColor: string; bodyColor: string; btnBg: string; btnText: string;
 }> = {
   critical: {
-    bg: "#FEF2F2",
-    border: "#FCA5A5",
-    icon: "#DC2626",
-    iconBg: "#FEE2E2",
-    bar: "#DC2626",
-    headlineColor: "#7F1D1D",
-    bodyColor: "#991B1B",
-    btnBg: "#DC2626",
+    bg: "#F8F2F3",
+    border: "#C9939A",
+    icon: "#9C4A44",
+    iconBg: "#F8F2F3",
+    bar: "#9C4A44",
+    headlineColor: "#9C4A44",
+    bodyColor: "#9C4A44",
+    btnBg: "#9C4A44",
     btnText: "#fff",
   },
   high: {
-    bg: "#FFFBEB",
-    border: "#FCD34D",
-    icon: "#D97706",
-    iconBg: "#FEF3C7",
-    bar: "#D97706",
-    headlineColor: "#78350F",
-    bodyColor: "#92400E",
-    btnBg: "#D97706",
+    bg: "#F8F4EF",
+    border: "#CDB894",
+    icon: "#85683A",
+    iconBg: "#F8F4EF",
+    bar: "#85683A",
+    headlineColor: "#85683A",
+    bodyColor: "#85683A",
+    btnBg: "#85683A",
     btnText: "#fff",
   },
   medium: {
-    bg: "#FFF7ED",
-    border: "#FDBA74",
-    icon: "#EA580C",
-    iconBg: "#FFEDD5",
-    bar: "#EA580C",
-    headlineColor: "#7C2D12",
-    bodyColor: "#9A3412",
-    btnBg: "#EA580C",
+    bg: "#F8F4EF",
+    border: "#CDB894",
+    icon: "#85683A",
+    iconBg: "#F8F4EF",
+    bar: "#85683A",
+    headlineColor: "#85683A",
+    bodyColor: "#85683A",
+    btnBg: "#85683A",
     btnText: "#fff",
   },
   info: {
-    bg: "#E8F2DE",
-    border: "#C8DDB4",
-    icon: "#3D55A8",
-    iconBg: "#E8F2DE",
-    bar: "#3D55A8",
-    headlineColor: "#1E3A8A",
-    bodyColor: "#3D55A8",
-    btnBg: "#3D55A8",
+    bg: "#EFF2EF",
+    border: "#94A895",
+    icon: "#0A2472",
+    iconBg: "#EFF2EF",
+    bar: "#0A2472",
+    headlineColor: "#0A2472",
+    bodyColor: "#0A2472",
+    btnBg: "#0A2472",
     btnText: "#fff",
   },
 };
@@ -207,12 +207,12 @@ function Banner({ rule, onDismiss }: { rule: JurisdictionRule; onDismiss: () => 
     <div
       role="alert"
       className="border-b"
-      style={{ backgroundColor: rule.severity === "info" ? "#F2F0EB" : s.bg, borderColor: rule.severity === "info" ? "#E8ECF2" : s.border }}
+      style={{ backgroundColor: rule.severity === "info" ? "#F2F0EB" : s.bg, borderColor: rule.severity === "info" ? "#D3D8E2" : s.border }}
     >
       <div className="mx-auto flex max-w-[1312px] items-start gap-3 px-4 py-2.5 sm:px-6 lg:px-8">
         <Icon size={15} className="mt-[3px] shrink-0" style={{ color: s.icon }} />
         <div className="min-w-0 flex-1">
-          <p id={bodyId} className={expanded ? "" : "line-clamp-2 sm:line-clamp-none"} style={{ fontSize: 12.5, lineHeight: 1.55, color: rule.severity === "info" ? "#475569" : s.bodyColor }}>
+          <p id={bodyId} className={expanded ? "" : "line-clamp-2 sm:line-clamp-none"} style={{ fontSize: 12.5, lineHeight: 1.55, color: rule.severity === "info" ? "#4A5672" : s.bodyColor }}>
             <span className="font-semibold" style={{ color: rule.severity === "info" ? "#1D2948" : s.headlineColor }}>{rule.headline}.</span>{" "}
             {rule.body}{" "}
             {rule.learnMoreHref && (
@@ -247,13 +247,13 @@ function Banner({ rule, onDismiss }: { rule: JurisdictionRule; onDismiss: () => 
             <button
               onClick={onDismiss}
               className="hidden rounded-full border px-3 py-1 font-medium transition-colors hover:bg-white sm:inline-flex"
-              style={{ fontSize: 12, borderColor: "#D6DCE5", color: "#1D2948" }}
+              style={{ fontSize: 12, borderColor: "#D3D8E2", color: "#1D2948" }}
             >
               Acknowledge
             </button>
           )}
           {acked && (
-            <button onClick={onDismiss} aria-label="Dismiss notice" className="rounded-full p-1 hover:opacity-70" style={{ color: "#64748B" }}>
+            <button onClick={onDismiss} aria-label="Dismiss notice" className="rounded-full p-1 hover:opacity-70" style={{ color: "#4A5672" }}>
               <X size={15} />
             </button>
           )}

@@ -341,7 +341,7 @@ function ReportCard({
           <span style={{
             flexShrink: 0, display: "inline-flex", alignItems: "center", gap: "4px",
             fontSize: "9.5px", fontWeight: 600, padding: "3px 9px", borderRadius: "999px",
-            background: "#ECFDF5", color: "#047857",
+            background: "#EFF2EF", color: "#4F6B52",
             letterSpacing: "0.08em",
             whiteSpace: "nowrap",
           }}>
@@ -419,8 +419,8 @@ function ReportCard({
             <span key={method} style={{
               display: "inline-flex", alignItems: "center", gap: "4px",
               fontSize: "10px", fontWeight: 600, padding: "3px 10px", borderRadius: "999px",
-              background: method === "ESI-MS" ? "#F5F3FF" : "#EEF3FC",
-              color: method === "ESI-MS" ? "#6D28D9" : "var(--cobalt)",
+              background: method === "ESI-MS" ? "#F1F0F7" : "#EDF0F9",
+              color: method === "ESI-MS" ? "#5E5690" : "var(--cobalt)",
               letterSpacing: "0.04em",
             }}>
               {method === "HPLC" ? <BarChart2 size={9} /> : method === "ESI-MS" ? <Atom size={9} /> : <FlaskConical size={9} />}
@@ -430,7 +430,7 @@ function ReportCard({
           {isBlend && (
             <span style={{
               fontSize: "10px", fontWeight: 600, padding: "3px 10px", borderRadius: "999px",
-              background: "#F5F3FF", color: "#6D28D9", letterSpacing: "0.04em",
+              background: "#F1F0F7", color: "#5E5690", letterSpacing: "0.04em",
             }}>
               Blend
             </span>
@@ -585,7 +585,7 @@ export default function LabReportsPage() {
         }
       >
         <div style={{ display: "inline-flex", alignItems: "center", gap: "10px", background: "#fff", border: "1px solid var(--hairline)", padding: "6px 8px 6px 14px", borderRadius: "999px", marginBottom: "14px" }}>
-          <ShieldCheck size={13} color="#059669" aria-hidden="true" />
+          <ShieldCheck size={13} color="#4F6B52" aria-hidden="true" />
           <span style={{ fontSize: "10.5px", fontWeight: 600, color: "var(--ink)", letterSpacing: "0.1em" }}>INDEPENDENTLY TESTED BY</span>
           <span style={{ background: "#F2F0EB", borderRadius: "999px", padding: "4px 12px", display: "inline-flex", alignItems: "center" }}>
             <JanoshikLogo height={20} />
@@ -669,7 +669,7 @@ export default function LabReportsPage() {
           background: "#F2F0EB", border: "1px solid var(--hairline)", borderRadius: "12px",
           display: "flex", gap: "10px", alignItems: "flex-start",
         }}>
-          <AlertTriangle size={14} color="#D97706" style={{ flexShrink: 0, marginTop: "2px" }} aria-hidden="true" />
+          <AlertTriangle size={14} color="#85683A" style={{ flexShrink: 0, marginTop: "2px" }} aria-hidden="true" />
           <p style={{ margin: 0, fontSize: "12px", color: "var(--graphite)", lineHeight: 1.7 }}>
             <strong style={{ color: "var(--ink)", fontWeight: 600 }}>Research use only.</strong>{" "}
             All products are sold strictly for in-vitro research purposes only. Not approved for human or veterinary use.

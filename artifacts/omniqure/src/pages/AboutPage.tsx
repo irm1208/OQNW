@@ -57,8 +57,7 @@ export default function AboutPage() {
   return (
     <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", background: "#fff" }}>
       {/* Hero */}
-      <section className="relative overflow-hidden border-b" style={{ borderColor: "var(--hairline)", background: "linear-gradient(135deg, rgba(244,246,250,0.5), #fff 50%, #FFF6F2)" }}>
-        <div aria-hidden="true" className="pointer-events-none absolute -right-40 -top-40 h-96 w-96 rounded-full blur-3xl" style={{ background: "rgba(59, 98, 171,0.10)" }} />
+      <section className="relative overflow-hidden border-b" style={{ borderColor: "var(--hairline)", background: "#FFFFFF" }}>
         <div className={`${container} pt-14 pb-14 lg:pt-24 lg:pb-20`}>
           <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-7">
@@ -80,10 +79,10 @@ export default function AboutPage() {
             </div>
             <div className="lg:col-span-5">
               <div className="relative">
-                <div className="overflow-hidden rounded-[26px] border bg-white p-1.5" style={{ borderColor: "rgba(255,255,255,0.6)", boxShadow: "0 25px 50px -12px rgba(11,18,32,0.18)" }}>
+                <div className="overflow-hidden rounded-[26px] border bg-white p-1.5" style={{ borderColor: "rgba(255,255,255,0.6)", boxShadow: "none" }}>
                   <img src="/sunburst/hdr-about2-mobile.webp" alt="The OmniQure range: research pen kit, cartons and vials" className="block h-auto w-full rounded-[20px]" width={900} height={1125} />
                 </div>
-                <div className="absolute -left-3 bottom-5 inline-flex items-center gap-2 rounded-2xl px-3.5 py-2.5 backdrop-blur" style={{ background: "rgba(255,255,255,0.9)", boxShadow: "0 8px 24px rgba(11,18,32,0.10)" }}>
+                <div className="absolute -left-3 bottom-5 inline-flex items-center gap-2 rounded-2xl px-3.5 py-2.5 backdrop-blur" style={{ background: "rgba(255,255,255,0.9)", boxShadow: "none" }}>
                   <ShieldCheck size={16} style={{ color: "var(--cobalt)" }} aria-hidden="true" />
                   <span className="text-[12.5px] font-bold" style={ink}>99%+ HPLC purity</span>
                 </div>
@@ -115,7 +114,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-2 gap-y-9 lg:grid-cols-4 lg:divide-x lg:divide-white/10">
             {STATS.map((s) => (
               <div key={s.label} className="lg:px-10 lg:first:pl-0">
-                <p className="font-bold tracking-tight" style={{ fontSize: "clamp(38px, 3.8vw, 54px)", lineHeight: 1.5, background: "linear-gradient(to bottom, #fff, rgba(255,255,255,0.7))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                <p className="font-bold tracking-tight" style={{ fontSize: "clamp(38px, 3.8vw, 54px)", lineHeight: 1.5, background: "#FFFFFF", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                   {s.value}
                 </p>
                 <p className="mt-2 uppercase leading-relaxed" style={{ fontSize: 10.5, letterSpacing: "0.16em", color: "rgba(255,255,255,0.45)" }}>{s.label}</p>
@@ -140,9 +139,9 @@ export default function AboutPage() {
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
           {PILLARS.map((p, i) => (
-            <div key={p.title} className="relative overflow-hidden rounded-[22px] border p-8" style={{ borderColor: "rgba(11,18,32,0.07)", background: "linear-gradient(to bottom, #fff, rgba(244,246,250,0.5))" }}>
+            <div key={p.title} className="relative overflow-hidden rounded-[22px] border p-8" style={{ borderColor: "rgba(11,18,32,0.07)", background: "#FFFFFF" }}>
               <span className="absolute right-6 top-6 text-[12px] tabular-nums" style={{ color: "rgba(74,85,104,0.25)" }}>{String(i + 1).padStart(2, "0")}</span>
-              <span className="grid h-[52px] w-[52px] place-items-center rounded-2xl" style={{ background: "linear-gradient(135deg, rgba(59, 98, 171,0.15), rgba(59, 98, 171,0.05))", color: "var(--cobalt)" }}>
+              <span className="grid h-[52px] w-[52px] place-items-center rounded-2xl" style={{ background: "#EDF0F9", color: "var(--cobalt)" }}>
                 <p.icon size={23} aria-hidden="true" />
               </span>
               <h3 className="mt-5 text-[18px] font-bold tracking-tight" style={ink}>{p.title}</h3>
@@ -154,7 +153,6 @@ export default function AboutPage() {
 
       {/* Mission / standards */}
       <section className="relative overflow-hidden border-y text-white" style={{ borderColor: "var(--hairline)", background: "var(--ink)" }}>
-        <div aria-hidden="true" className="pointer-events-none absolute -left-40 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full blur-3xl" style={{ background: "rgba(59, 98, 171,0.15)" }} />
         <div className={`${container} py-16 lg:py-28`}>
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-5">
@@ -168,7 +166,7 @@ export default function AboutPage() {
               <ul className="mt-6 space-y-2.5">
                 {VALUES.map((v) => (
                   <li key={v} className="flex items-start gap-2.5 text-[13.5px]" style={{ color: "rgba(255,255,255,0.75)" }}>
-                    <CheckCircle size={16} className="mt-0.5 shrink-0" style={{ color: "#6B94D0" }} aria-hidden="true" /> {v}
+                    <CheckCircle size={16} className="mt-0.5 shrink-0" style={{ color: "#8D9BB8" }} aria-hidden="true" /> {v}
                   </li>
                 ))}
               </ul>
@@ -180,7 +178,7 @@ export default function AboutPage() {
               {TIMELINE.map((t, i) => (
                 <div key={t.title} className="rounded-[22px] p-6 ring-1 ring-inset ring-white/10" style={{ background: "rgba(255,255,255,0.04)" }}>
                   <div className="mb-4 flex items-center justify-between">
-                    <span className="grid h-12 w-12 place-items-center rounded-2xl ring-1 ring-inset ring-white/10" style={{ background: "rgba(255,255,255,0.06)", color: "#B4D89C" }}>
+                    <span className="grid h-12 w-12 place-items-center rounded-2xl ring-1 ring-inset ring-white/10" style={{ background: "rgba(255,255,255,0.06)", color: "#94A895" }}>
                       <t.icon size={22} aria-hidden="true" />
                     </span>
                     <span className="text-[12px] tabular-nums" style={{ color: "rgba(255,255,255,0.3)" }}>{String(i + 1).padStart(2, "0")}</span>
@@ -211,14 +209,14 @@ export default function AboutPage() {
             <ul className="mt-6 grid gap-3">
               {RUO.map(({ icon: Icon, text }) => (
                 <li key={text} className="flex items-center gap-3 text-[13px] font-medium" style={ink}>
-                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg" style={{ background: "rgba(59, 98, 171,0.1)", color: "var(--cobalt)" }}>
+                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg" style={{ background: "rgba(78, 104, 194,0.1)", color: "var(--cobalt)" }}>
                     <Icon size={16} aria-hidden="true" />
                   </span>
                   {text}
                 </li>
               ))}
               <li className="flex items-center gap-3 text-[13px] font-medium" style={ink}>
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg" style={{ background: "rgba(59, 98, 171,0.1)", color: "var(--cobalt)" }}>
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg" style={{ background: "rgba(78, 104, 194,0.1)", color: "var(--cobalt)" }}>
                   <Snowflake size={16} aria-hidden="true" />
                 </span>
                 Lyophilised and sealed for stability in transit
@@ -230,8 +228,7 @@ export default function AboutPage() {
 
       {/* Build a kit */}
       <section className={`${container} pb-16 lg:pb-24`}>
-        <div className="relative overflow-hidden rounded-[32px] border px-7 py-12 sm:px-12 lg:px-14 lg:py-14" style={{ borderColor: "rgba(11,18,32,0.07)", background: "linear-gradient(135deg, rgba(244,246,250,0.7), #fff 55%, #FFF6F2)" }}>
-          <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full blur-3xl" style={{ background: "rgba(59, 98, 171,0.10)" }} />
+        <div className="relative overflow-hidden rounded-[32px] border px-7 py-12 sm:px-12 lg:px-14 lg:py-14" style={{ borderColor: "rgba(11,18,32,0.07)", background: "#F4F5F8" }}>
           <div className="relative grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <div>
               <p className="mb-5 uppercase" style={eyebrow}>Bundle &amp; save</p>
@@ -251,8 +248,8 @@ export default function AboutPage() {
                 { icon: Gift, big: "1", sub: "free peptide", n: BUNDLE_FREE_ONE_THRESHOLD },
                 { icon: Gift, big: "2", sub: "free peptides", n: BUNDLE_FREE_TWO_THRESHOLD },
               ].map((t) => (
-                <div key={t.n} className="rounded-[22px] border bg-white p-4 text-center sm:p-6" style={{ borderColor: "rgba(11,18,32,0.07)", boxShadow: "0 1px 2px rgba(11,18,32,0.04)" }}>
-                  <span className="inline-grid h-11 w-11 place-items-center rounded-xl" style={{ background: "linear-gradient(135deg, rgba(59, 98, 171,0.15), rgba(59, 98, 171,0.05))", color: "var(--cobalt)" }}>
+                <div key={t.n} className="rounded-[22px] border bg-white p-4 text-center sm:p-6" style={{ borderColor: "rgba(11,18,32,0.07)", boxShadow: "none" }}>
+                  <span className="inline-grid h-11 w-11 place-items-center rounded-xl" style={{ background: "#EDF0F9", color: "var(--cobalt)" }}>
                     <t.icon size={20} aria-hidden="true" />
                   </span>
                   <p className="mt-3 font-bold leading-none tracking-tight" style={{ ...ink, fontSize: "clamp(28px, 2.6vw, 40px)" }}>{t.big}</p>
@@ -269,8 +266,7 @@ export default function AboutPage() {
 
       {/* CTA */}
       <section className={`${container} pb-16 lg:pb-24`}>
-        <div className="relative overflow-hidden rounded-[32px] px-8 py-14 text-white sm:px-12 lg:px-16 lg:py-20" style={{ background: "linear-gradient(135deg, var(--cobalt), #0E2F8A)" }}>
-          <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full blur-3xl" style={{ background: "rgba(255,255,255,0.1)" }} />
+        <div className="relative overflow-hidden rounded-[32px] px-8 py-14 text-white sm:px-12 lg:px-16 lg:py-20" style={{ background: "var(--oq-matte-navy)" }}>
           <div className="relative flex flex-col gap-9 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-xl">
               <h2 className="font-bold tracking-tight" style={{ fontSize: "clamp(32px, 3.6vw, 51px)", lineHeight: 0.98 }}>Ready to order?</h2>

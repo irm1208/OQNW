@@ -294,21 +294,21 @@ export default function OrderConfirmation() {
     <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", background: "#F2F0EB", minHeight: "70vh", padding: "48px 16px" }}>
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 28 }}>
-          <div style={{ width: 76, height: 76, borderRadius: "50%", background: "linear-gradient(135deg, #059669, #34D399)", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: "0 12px 40px rgba(5,150,105,.25)" }}>
+          <div style={{ width: 76, height: 76, borderRadius: "50%", background: "#4F6B52", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: "none" }}>
             <CheckCircle2 size={38} color="#fff" />
           </div>
           <h1 style={{ fontSize: 28, fontWeight: 900, color: "#22252C", margin: "18px 0 8px" }}>
             {isCrypto ? `Order placed — ${cryptoPayment ? statusLabel(cryptoPayment.status).toLowerCase() : "loading payment"}` : "Order received"}
           </h1>
-          <p style={{ fontSize: 15, color: "#64748B", margin: 0, lineHeight: 1.55 }}>
+          <p style={{ fontSize: 15, color: "#4A5672", margin: 0, lineHeight: 1.55 }}>
             Thank you, <strong style={{ color: "#22252C" }}>{name}</strong>. {isCrypto ? "Your order is reserved while we verify payment on-chain." : "We’ll email you with the next steps for your order."}
           </p>
         </div>
 
         {isCrypto && (
-          <section style={{ borderRadius: 16, border: `1.5px solid ${coin?.color ?? "#CBD5E1"}`, background: coin?.background ?? "#fff", padding: 22, marginBottom: 20 }}>
-            {loading && <p style={{ margin: 0, color: "#475569" }}>Loading your secure payment instructions…</p>}
-            {error && <p role="alert" style={{ margin: loading ? "12px 0 0" : 0, color: "#B91C1C", fontWeight: 700 }}>{error}</p>}
+          <section style={{ borderRadius: 16, border: `1.5px solid ${coin?.color ?? "#D3D8E2"}`, background: coin?.background ?? "#fff", padding: 22, marginBottom: 20 }}>
+            {loading && <p style={{ margin: 0, color: "#4A5672" }}>Loading your secure payment instructions…</p>}
+            {error && <p role="alert" style={{ margin: loading ? "12px 0 0" : 0, color: "#9C4A44", fontWeight: 700 }}>{error}</p>}
             {!loading && cryptoPayment && coin && (
               <>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
@@ -318,13 +318,13 @@ export default function OrderConfirmation() {
                 </div>
 
                 {cryptoPayment.status !== "rate_locked" && (
-                  <div role="status" aria-live="polite" style={{ marginBottom: 14, padding: "12px 14px", borderRadius: 10, background: cryptoPayment.status === "confirmed" ? "#ECFDF5" : cryptoPayment.status === "pending" ? "#E8F2DE" : "#FFF7ED", color: cryptoPayment.status === "confirmed" ? "#047857" : cryptoPayment.status === "pending" ? "#3D55A8" : "#9A3412", fontSize: 13, lineHeight: 1.5 }}>
+                  <div role="status" aria-live="polite" style={{ marginBottom: 14, padding: "12px 14px", borderRadius: 10, background: cryptoPayment.status === "confirmed" ? "#EFF2EF" : cryptoPayment.status === "pending" ? "#EFF2EF" : "#F8F4EF", color: cryptoPayment.status === "confirmed" ? "#4F6B52" : cryptoPayment.status === "pending" ? "#0A2472" : "#85683A", fontSize: 13, lineHeight: 1.5 }}>
                     <strong>{statusLabel(cryptoPayment.status)}.</strong> {cryptoPayment.reason ?? "Checking the submitted transaction."}
                   </div>
                 )}
 
                 {cryptoPayment.status === "confirmed" ? (
-                  <div style={{ padding: 16, borderRadius: 10, background: "#ECFDF5", color: "#065F46", fontSize: 14, lineHeight: 1.55 }}>
+                  <div style={{ padding: 16, borderRadius: 10, background: "#EFF2EF", color: "#4F6B52", fontSize: 14, lineHeight: 1.55 }}>
                     <strong>Payment confirmed.</strong> We verified {displayedObservedAmount ?? displayedExpectedAmount} {cryptoPayment.currency} with {cryptoPayment.confirmations ?? 0} confirmation(s). Your order can now be prepared for dispatch.
                   </div>
                 ) : !cryptoPayment.txHash && !rateExpired && (
@@ -332,9 +332,9 @@ export default function OrderConfirmation() {
                     <div style={{ display: "grid", gridTemplateColumns: "110px 1fr", gap: 16, alignItems: "center", background: "#fff", borderRadius: 12, padding: 16, border: "1px solid rgba(15,23,42,.1)" }}>
                       <QRCodeSVG value={qrValue} size={106} level="M" includeMargin />
                       <div>
-                        <p style={{ fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 800, color: "#64748B", margin: "0 0 4px" }}>Exact amount to send</p>
+                        <p style={{ fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 800, color: "#4A5672", margin: "0 0 4px" }}>Exact amount to send</p>
                         <p style={{ fontSize: 23, fontWeight: 900, color: "#22252C", margin: 0 }}>{displayedExpectedAmount} <span style={{ fontSize: 14 }}>{cryptoPayment.currency}</span></p>
-                        <p style={{ fontSize: 12, color: rateExpired ? "#B91C1C" : "#475569", margin: "5px 0 0" }}>
+                        <p style={{ fontSize: 12, color: rateExpired ? "#9C4A44" : "#4A5672", margin: "5px 0 0" }}>
                           {rateExpired
                             ? "The one-hour rate lock has ended."
                             : minutesRemaining >= 60
@@ -344,9 +344,9 @@ export default function OrderConfirmation() {
                       </div>
                     </div>
                     <div style={{ background: "#fff", borderRadius: 12, padding: 16, border: "1px solid rgba(15,23,42,.1)", marginTop: 12 }}>
-                      <p style={{ fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 800, color: "#64748B", margin: "0 0 6px" }}>Receiving wallet · {networkLabel(cryptoPayment.network)}</p>
+                      <p style={{ fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 800, color: "#4A5672", margin: "0 0 6px" }}>Receiving wallet · {networkLabel(cryptoPayment.network)}</p>
                       <p style={{ fontFamily: "monospace", fontSize: 12.5, fontWeight: 700, color: "#22252C", wordBreak: "break-all", lineHeight: 1.5, margin: 0 }}>{cryptoPayment.walletAddress}</p>
-                      <button type="button" onClick={() => void copyValue(cryptoPayment.walletAddress, "wallet")} style={{ marginTop: 10, border: 0, background: "#E8F2DE", color: "#4E68C2", borderRadius: 7, padding: "7px 10px", fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+                      <button type="button" onClick={() => void copyValue(cryptoPayment.walletAddress, "wallet")} style={{ marginTop: 10, border: 0, background: "#EFF2EF", color: "#4E68C2", borderRadius: 7, padding: "7px 10px", fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
                         <Copy size={13} style={{ verticalAlign: "text-bottom", marginRight: 5 }} />{copiedValue === "wallet" ? "Copied" : "Copy address"}
                       </button>
                     </div>
@@ -355,13 +355,13 @@ export default function OrderConfirmation() {
 
                 {cryptoPayment.txHash && (
                   <section style={{ background: "#fff", border: "1px solid rgba(15,23,42,.1)", borderRadius: 12, padding: 16, marginTop: 14 }}>
-                    <p style={{ margin: "0 0 13px", fontSize: 11, color: "#64748B", fontWeight: 800, letterSpacing: ".08em", textTransform: "uppercase" }}>Verified transaction details</p>
+                    <p style={{ margin: "0 0 13px", fontSize: 11, color: "#4A5672", fontWeight: 800, letterSpacing: ".08em", textTransform: "uppercase" }}>Verified transaction details</p>
                     <div style={{ display: "grid", gap: 12 }}>
                       <div>
-                        <p style={{ margin: 0, fontSize: 11, color: "#64748B", fontWeight: 700 }}>TRANSACTION HASH</p>
+                        <p style={{ margin: 0, fontSize: 11, color: "#4A5672", fontWeight: 700 }}>TRANSACTION HASH</p>
                         <div style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 4, flexWrap: "wrap" }}>
                           <code style={{ color: "#22252C", fontSize: 12.5, fontWeight: 700, wordBreak: "break-all" }}>{cryptoPayment.txHash}</code>
-                          <button type="button" onClick={() => void copyValue(cryptoPayment.txHash!, "transaction")} aria-label="Copy transaction hash" style={{ border: 0, background: "#E8F2DE", color: "#4E68C2", borderRadius: 6, padding: "5px 7px", cursor: "pointer", fontSize: 11, fontWeight: 800 }}>
+                          <button type="button" onClick={() => void copyValue(cryptoPayment.txHash!, "transaction")} aria-label="Copy transaction hash" style={{ border: 0, background: "#EFF2EF", color: "#4E68C2", borderRadius: 6, padding: "5px 7px", cursor: "pointer", fontSize: 11, fontWeight: 800 }}>
                             <Copy size={12} style={{ verticalAlign: "text-bottom", marginRight: 3 }} />{copiedValue === "transaction" ? "Copied" : "Copy"}
                           </button>
                           {explorerUrl(cryptoPayment.network, cryptoPayment.txHash) && (
@@ -379,13 +379,13 @@ export default function OrderConfirmation() {
                           { label: "Last verified", value: cryptoPayment.confirmedAt || cryptoPayment.lastCheckedAt ? new Date(cryptoPayment.confirmedAt ?? cryptoPayment.lastCheckedAt!).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" }) : "Awaiting check" },
                         ].map((item) => (
                           <div key={item.label}>
-                            <p style={{ margin: 0, fontSize: 10, color: "#94A3B8", fontWeight: 800, textTransform: "uppercase" }}>{item.label}</p>
+                            <p style={{ margin: 0, fontSize: 10, color: "#8D9BB8", fontWeight: 800, textTransform: "uppercase" }}>{item.label}</p>
                             <p style={{ margin: "3px 0 0", color: "#22252C", fontSize: 12.5, fontWeight: 700, lineHeight: 1.4 }}>{item.value}</p>
                           </div>
                         ))}
                       </div>
                       <div>
-                        <p style={{ margin: 0, fontSize: 11, color: "#64748B", fontWeight: 700 }}>RECEIVING WALLET</p>
+                        <p style={{ margin: 0, fontSize: 11, color: "#4A5672", fontWeight: 700 }}>RECEIVING WALLET</p>
                         <code style={{ display: "block", marginTop: 4, color: "#22252C", fontSize: 11.5, wordBreak: "break-all" }}>{cryptoPayment.walletAddress}</code>
                       </div>
                     </div>
@@ -399,7 +399,7 @@ export default function OrderConfirmation() {
                 ) : !cryptoPayment.txHash && cryptoPayment.status === "rate_locked" ? (
                   <div style={{ marginTop: 14 }}>
                     {rateExpired && (
-                      <div role="status" style={{ marginBottom: 12, padding: "11px 12px", borderRadius: 9, background: "#FFF7ED", border: "1px solid #FDBA74", color: "#9A3412", fontSize: 12, lineHeight: 1.5 }}>
+                      <div role="status" style={{ marginBottom: 12, padding: "11px 12px", borderRadius: 9, background: "#F8F4EF", border: "1px solid #CDB894", color: "#85683A", fontSize: 12, lineHeight: 1.5 }}>
                         <strong>Do not send payment using the expired instructions.</strong> If you already paid before the lock ended, paste the transaction hash below. We will verify it against the original locked amount even though market rates may have changed.
                       </div>
                     )}
@@ -407,7 +407,7 @@ export default function OrderConfirmation() {
                       {rateExpired ? "Paste the transaction hash for payment already sent" : "After sending, paste your transaction hash"}
                     </label>
                     <div style={{ display: "flex", gap: 8 }}>
-                      <input value={txHash} onChange={(event) => setTxHash(event.target.value)} placeholder="Transaction hash" style={{ flex: 1, minWidth: 0, border: "1px solid #CBD5E1", borderRadius: 9, padding: "11px 12px", fontFamily: "monospace", fontSize: 12 }} />
+                      <input value={txHash} onChange={(event) => setTxHash(event.target.value)} placeholder="Transaction hash" style={{ flex: 1, minWidth: 0, border: "1px solid #D3D8E2", borderRadius: 9, padding: "11px 12px", fontFamily: "monospace", fontSize: 12 }} />
                       <button type="button" onClick={() => void submitTransaction()} disabled={submitting} aria-busy={submitting} style={{ border: 0, background: coin.color, color: "#fff", borderRadius: 9, padding: "0 14px", fontWeight: 800, cursor: submitting ? "wait" : "pointer", opacity: submitting ? .6 : 1 }}>
                         {submitting ? "Checking…" : "Verify"}
                       </button>
@@ -420,7 +420,7 @@ export default function OrderConfirmation() {
                   </div>
                 ) : null}
 
-                {submissionMessage && <p aria-live="polite" style={{ margin: "10px 0 0", color: "#047857", fontSize: 12, fontWeight: 700 }}>{submissionMessage}</p>}
+                {submissionMessage && <p aria-live="polite" style={{ margin: "10px 0 0", color: "#4F6B52", fontSize: 12, fontWeight: 700 }}>{submissionMessage}</p>}
                 <p style={{ fontSize: 12, lineHeight: 1.6, color: coin.text, margin: "14px 0 0" }}>
                   Send only <strong>{cryptoPayment.currency}</strong> on <strong>{networkLabel(cryptoPayment.network)}</strong>. Payments need {cryptoPayment.confirmationsRequired} confirmation{cryptoPayment.confirmationsRequired === 1 ? "" : "s"} before dispatch.
                 </p>
@@ -429,8 +429,8 @@ export default function OrderConfirmation() {
           </section>
         )}
 
-        <section style={{ background: "#fff", borderRadius: 16, border: "1px solid #D3D8E2", overflow: "hidden", boxShadow: "0 8px 35px rgba(15,23,42,.06)" }}>
-          <div style={{ background: "linear-gradient(90deg, #22252C, #4E68C2)", padding: "18px 22px", color: "#fff" }}>
+        <section style={{ background: "#fff", borderRadius: 16, border: "1px solid #D3D8E2", overflow: "hidden", boxShadow: "none" }}>
+          <div style={{ background: "#1D2948", padding: "18px 22px", color: "#fff" }}>
             <p style={{ fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", margin: 0, opacity: .7 }}>Order reference</p>
             <p style={{ fontSize: 20, fontWeight: 900, letterSpacing: ".05em", margin: "3px 0 0" }}>{displayedOrder}</p>
           </div>
@@ -444,7 +444,7 @@ export default function OrderConfirmation() {
               <div key={item.label} style={{ display: "flex", gap: 9 }}>
                 <span style={{ color: "#4E68C2" }}>{item.icon}</span>
                 <div>
-                  <p style={{ fontSize: 10, color: "#94A3B8", textTransform: "uppercase", fontWeight: 800, margin: 0 }}>{item.label}</p>
+                  <p style={{ fontSize: 10, color: "#8D9BB8", textTransform: "uppercase", fontWeight: 800, margin: 0 }}>{item.label}</p>
                   <p style={{ fontSize: 13, fontWeight: 800, color: "#22252C", margin: "3px 0 0" }}>{item.value}</p>
                 </div>
               </div>
@@ -452,9 +452,9 @@ export default function OrderConfirmation() {
           </div>
           {orderSummary?.items.length ? (
             <div style={{ borderTop: "1px solid #D3D8E2", padding: "16px 20px 20px" }}>
-              <p style={{ margin: "0 0 10px", color: "#64748B", fontSize: 11, fontWeight: 800, letterSpacing: ".08em", textTransform: "uppercase" }}>Items in this order</p>
+              <p style={{ margin: "0 0 10px", color: "#4A5672", fontSize: 11, fontWeight: 800, letterSpacing: ".08em", textTransform: "uppercase" }}>Items in this order</p>
               {orderSummary.items.map((item, index) => (
-                <div key={`${item.productName}-${index}`} style={{ display: "flex", justifyContent: "space-between", gap: 12, fontSize: 13, color: "#334155", padding: "4px 0" }}>
+                <div key={`${item.productName}-${index}`} style={{ display: "flex", justifyContent: "space-between", gap: 12, fontSize: 13, color: "#22252C", padding: "4px 0" }}>
                   <span>{item.productName}</span><strong>×{item.quantity}</strong>
                 </div>
               ))}
@@ -468,7 +468,7 @@ export default function OrderConfirmation() {
           <button type="button" onClick={() => navigate("/all-peptides")} style={{ ...actionButton, border: 0, background: "#4E68C2", color: "#fff" }}>
             Continue shopping <ArrowRight size={15} style={{ verticalAlign: "text-bottom", marginLeft: 5 }} />
           </button>
-          <button type="button" onClick={() => navigate(`/track-order?number=${encodeURIComponent(displayedOrder)}`)} style={{ ...actionButton, flex: "0 0 auto", border: "1px solid #CBD5E1", background: "#fff", color: "#334155", padding: "13px 16px" }}>
+          <button type="button" onClick={() => navigate(`/track-order?number=${encodeURIComponent(displayedOrder)}`)} style={{ ...actionButton, flex: "0 0 auto", border: "1px solid #D3D8E2", background: "#fff", color: "#22252C", padding: "13px 16px" }}>
             Track order <ExternalLink size={14} style={{ verticalAlign: "text-bottom", marginLeft: 4 }} />
           </button>
         </div>

@@ -62,7 +62,7 @@ export default function AgeGate() {
     <div
       className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
       style={{
-        background: "linear-gradient(135deg, #0A1628 0%, #1E3A5F 100%)",
+        background: "#1D2948",
       }}
     >
       {/* Subtle grid pattern */}
@@ -84,7 +84,7 @@ export default function AgeGate() {
         }}
       >
         {/* Header */}
-        <div className="px-8 pt-10 pb-8 text-center border-b" style={{ borderColor: "#E8ECF1" }}>
+        <div className="px-8 pt-10 pb-8 text-center border-b" style={{ borderColor: "#D3D8E2" }}>
           {/* Logo */}
           <div className="flex justify-center mb-6">
             <img
@@ -101,7 +101,7 @@ export default function AgeGate() {
               width: "88px",
               height: "88px",
               borderRadius: "50%",
-              background: "linear-gradient(135deg, #2F4F8F 0%, #4E68C2 100%)",
+              background: "#4E68C2",
               boxShadow: "0 8px 24px rgba(47, 79, 140, 0.25), inset 0 1px 0 rgba(255,255,255,0.2)",
             }}
           >
@@ -145,12 +145,12 @@ export default function AgeGate() {
         <div
           className="mx-6 mt-6 rounded-xl px-4 py-3 flex items-start gap-3"
           style={{
-            background: "#FEF8F2",
-            border: "1px solid #FDE4CC",
+            background: "#F8F4EF",
+            border: "1px solid #F8F4EF",
           }}
         >
-          <AlertTriangle size={16} style={{ color: "#D97706", flexShrink: 0, marginTop: "1px" }} />
-          <p className="text-xs leading-relaxed" style={{ color: "#78350F" }}>
+          <AlertTriangle size={16} style={{ color: "#85683A", flexShrink: 0, marginTop: "1px" }} />
+          <p className="text-xs leading-relaxed" style={{ color: "#85683A" }}>
             <strong className="font-semibold">Research use only.</strong> Products are not approved for human or veterinary use. For in-vitro laboratory research purposes only.
           </p>
         </div>
@@ -160,8 +160,8 @@ export default function AgeGate() {
           <label
             className="flex items-start gap-3.5 cursor-pointer rounded-xl p-4 border-2 transition-all"
             style={{
-              background: checked18 ? "#F0F4FF" : "#FAFBFC",
-              borderColor: checked18 ? "#4E68C2" : "#E2E8F0",
+              background: checked18 ? "#EDF0F9" : "#F4F5F8",
+              borderColor: checked18 ? "#4E68C2" : "#D3D8E2",
             }}
           >
             <div className="relative flex-shrink-0 mt-[2px]">
@@ -175,7 +175,7 @@ export default function AgeGate() {
                 className="w-[22px] h-[22px] rounded-md flex items-center justify-center transition-all"
                 style={{
                   background: checked18 ? "#4E68C2" : "#fff",
-                  border: `2px solid ${checked18 ? "#4E68C2" : "#CBD5E1"}`,
+                  border: `2px solid ${checked18 ? "#4E68C2" : "#D3D8E2"}`,
                   boxShadow: checked18 ? "0 2px 8px rgba(78, 104, 194, 0.3)" : "none",
                 }}
               >
@@ -207,11 +207,11 @@ export default function AgeGate() {
               shake ? "animate-bounce" : ""
             }`}
             style={{
-              background: checked18 ? "var(--cobalt)" : "#E2E8F0",
-              color: checked18 ? "#fff" : "#94A3B8",
+              background: checked18 ? "var(--cobalt)" : "#D3D8E2",
+              color: checked18 ? "#fff" : "#8D9BB8",
               cursor: checked18 ? "pointer" : "not-allowed",
               fontSize: "15px",
-              boxShadow: checked18 ? "0 4px 16px rgba(59, 98, 171, 0.3)" : "none",
+              boxShadow: checked18 ? "0 4px 16px rgba(78, 104, 194, 0.3)" : "none",
             }}
           >
             {checked18 && <ShieldCheck size={19} strokeWidth={2.2} />}
@@ -220,12 +220,12 @@ export default function AgeGate() {
 
           <button
             onClick={handleExit}
-            className="w-full font-medium py-3.5 rounded-xl transition-colors hover:bg-slate-50"
+            className="w-full font-medium py-3.5 rounded-xl transition-colors hover:bg-[#F4F5F8]"
             style={{
               background: "transparent",
-              color: "#64748B",
+              color: "#4A5672",
               fontSize: "14px",
-              border: "1.5px solid #E2E8F0",
+              border: "1.5px solid #D3D8E2",
             }}
           >
             I am under 18 — Leave
@@ -235,7 +235,7 @@ export default function AgeGate() {
         {/* Footer */}
         <div
           className="px-6 pb-6 text-center leading-relaxed border-t pt-5"
-          style={{ fontSize: "11.5px", color: "#94A3B8", borderColor: "#F1F3F5" }}
+          style={{ fontSize: "11.5px", color: "#8D9BB8", borderColor: "#F4F5F8" }}
         >
           By entering you agree to our{" "}
           <a

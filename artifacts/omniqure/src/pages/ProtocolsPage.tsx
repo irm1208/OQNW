@@ -35,19 +35,19 @@ const CATEGORIES = [
 
 const CATEGORY_COLORS: Record<string, string> = {
   "Growth Peptides": "#4E68C2",
-  "Healing Peptides": "#059669",
-  "Weight Management": "#7C3AED",
-  "Longevity Peptides": "#B45309",
-  "Nootropics": "#0891B2",
-  "Cellular Health": "#DC2626",
-  "Hormonal Peptides": "#DB2777",
-  "Skin & Repair": "#EA580C",
-  "Immune Support": "#65A30D",
-  "Research Peptides": "#475569",
-  "Peptide Blends": "#3D55A8",
-  "Anti-Inflammatory": "#0D9488",
-  "Cognitive Peptides": "#6D28D9",
-  "Growth Hormone": "#0369A1",
+  "Healing Peptides": "#4F6B52",
+  "Weight Management": "#5E5690",
+  "Longevity Peptides": "#85683A",
+  "Nootropics": "#4C7376",
+  "Cellular Health": "#9C4A44",
+  "Hormonal Peptides": "#9C4A44",
+  "Skin & Repair": "#85683A",
+  "Immune Support": "#4F6B52",
+  "Research Peptides": "#4A5672",
+  "Peptide Blends": "#0A2472",
+  "Anti-Inflammatory": "#4C7376",
+  "Cognitive Peptides": "#5E5690",
+  "Growth Hormone": "#4C7376",
 };
 
 type ProtocolEntry = {
@@ -92,7 +92,7 @@ function ProtocolCard({ group, isMobile }: { group: GroupedProduct; isMobile?: b
   const protocols = protocolMap.get(representative.slug) ?? [];
   const extras = peptideExtras[group.baseName];
 
-  const catColor = CATEGORY_COLORS[group.category] ?? "#475569";
+  const catColor = CATEGORY_COLORS[group.category] ?? "#4A5672";
 
   const hasTabs = !!(extras || detail?.storage || protocols.length > 0);
 
@@ -134,7 +134,7 @@ function ProtocolCard({ group, isMobile }: { group: GroupedProduct; isMobile?: b
               {protocols.length > 0 && (
                 <span style={{
                   display: "inline-flex", alignItems: "center", gap: "3px",
-                  background: "#EEF3FC", color: "var(--cobalt)",
+                  background: "#EDF0F9", color: "var(--cobalt)",
                   fontSize: "10px", fontWeight: 600, padding: "2px 8px", borderRadius: "20px",
                 }}>
                   <Activity size={9} /> {protocols.length} Protocol{protocols.length > 1 ? "s" : ""}
@@ -143,7 +143,7 @@ function ProtocolCard({ group, isMobile }: { group: GroupedProduct; isMobile?: b
               {extras && (
                 <span style={{
                   display: "inline-flex", alignItems: "center", gap: "3px",
-                  background: "#ECFDF5", color: "#047857",
+                  background: "#EFF2EF", color: "#4F6B52",
                   fontSize: "10px", fontWeight: 600, padding: "2px 8px", borderRadius: "20px",
                 }}>
                   <CheckCircle2 size={9} /> Full Data
@@ -270,7 +270,7 @@ function ProtocolCard({ group, isMobile }: { group: GroupedProduct; isMobile?: b
                 {extras?.uses && extras.uses.length > 0 && (
                   <div style={{ marginBottom: "14px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "8px" }}>
-                      <ListChecks size={13} color="#059669" />
+                      <ListChecks size={13} color="#4F6B52" />
                       <span style={{ fontSize: "12px", fontWeight: 600, color: "var(--ink)" }}>Research Uses</span>
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
@@ -278,10 +278,10 @@ function ProtocolCard({ group, isMobile }: { group: GroupedProduct; isMobile?: b
                         <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "7px" }}>
                           <div style={{
                             width: "16px", height: "16px", borderRadius: "50%",
-                            background: "#ECFDF5", display: "flex", alignItems: "center", justifyContent: "center",
+                            background: "#EFF2EF", display: "flex", alignItems: "center", justifyContent: "center",
                             flexShrink: 0, marginTop: "1px",
                           }}>
-                            <CheckCircle2 size={10} color="#059669" />
+                            <CheckCircle2 size={10} color="#4F6B52" />
                           </div>
                           <span style={{ fontSize: "12px", color: "var(--graphite)", lineHeight: "1.5" }}>{use}</span>
                         </div>
@@ -304,7 +304,7 @@ function ProtocolCard({ group, isMobile }: { group: GroupedProduct; isMobile?: b
                   {detail?.solubility && (
                     <div style={{ background: "#F2F0EB", border: "1px solid var(--hairline)", borderRadius: "10px", padding: "10px" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "4px" }}>
-                        <Droplets size={11} color="#059669" />
+                        <Droplets size={11} color="#4F6B52" />
                         <span style={{ fontSize: "10px", fontWeight: 600, color: "var(--graphite)", letterSpacing: "0.08em" }}>RECONSTITUTION</span>
                       </div>
                       <p style={{ fontSize: "11px", color: "var(--graphite)", margin: 0, lineHeight: "1.5" }}>{detail.solubility}</p>
@@ -351,7 +351,7 @@ function ProtocolCard({ group, isMobile }: { group: GroupedProduct; isMobile?: b
             {activeTab === "sideEffects" && extras?.sideEffects && (
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "12px" }}>
-                  <ShieldAlert size={13} color="#D97706" />
+                  <ShieldAlert size={13} color="#85683A" />
                   <span style={{ fontSize: "12px", fontWeight: 600, color: "var(--ink)" }}>Preclinical Observations &amp; Precautions</span>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "7px", marginBottom: "12px" }}>
@@ -361,7 +361,7 @@ function ProtocolCard({ group, isMobile }: { group: GroupedProduct; isMobile?: b
                       background: "#F2F0EB", border: "1px solid var(--hairline)",
                       borderRadius: "10px", padding: "9px 11px",
                     }}>
-                      <AlertTriangle size={12} color="#D97706" style={{ flexShrink: 0, marginTop: "1px" }} />
+                      <AlertTriangle size={12} color="#85683A" style={{ flexShrink: 0, marginTop: "1px" }} />
                       <span style={{ fontSize: "12px", color: "var(--graphite)", lineHeight: "1.5" }}>{effect}</span>
                     </div>
                   ))}
@@ -445,7 +445,7 @@ function ProtocolCard({ group, isMobile }: { group: GroupedProduct; isMobile?: b
                     {detail?.solubility && (
                       <div style={{ background: "#F2F0EB", border: "1px solid var(--hairline)", borderRadius: "10px", padding: "10px" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "4px" }}>
-                          <Droplets size={11} color="#059669" />
+                          <Droplets size={11} color="#4F6B52" />
                           <span style={{ fontSize: "10px", fontWeight: 600, color: "var(--graphite)", letterSpacing: "0.08em" }}>RECONSTITUTION</span>
                         </div>
                         <p style={{ fontSize: "11px", color: "var(--graphite)", margin: 0, lineHeight: "1.5" }}>{detail.solubility}</p>
@@ -606,7 +606,7 @@ export default function ProtocolsPage() {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
             <div style={{ fontSize: "13px", color: "var(--graphite)" }}>
               Showing <strong style={{ color: "var(--ink)", fontWeight: 600 }}>{groups.length}</strong> peptides
-              {fullDataCount > 0 && <> · <span style={{ color: "#047857", fontWeight: 500 }}>{fullDataCount} with full data</span></>}
+              {fullDataCount > 0 && <> · <span style={{ color: "#4F6B52", fontWeight: 500 }}>{fullDataCount} with full data</span></>}
             </div>
             {(search || category !== "All") && (
               <button onClick={() => { setSearch(""); setCategory("All"); }}
@@ -667,7 +667,7 @@ export default function ProtocolsPage() {
             background: "#F2F0EB", border: "1px solid var(--hairline)", borderRadius: "16px",
             display: "flex", gap: "12px", alignItems: "flex-start",
           }}>
-            <AlertTriangle size={15} color="#D97706" style={{ flexShrink: 0, marginTop: "2px" }} aria-hidden="true" />
+            <AlertTriangle size={15} color="#85683A" style={{ flexShrink: 0, marginTop: "2px" }} aria-hidden="true" />
             <p style={{ fontSize: "12px", color: "var(--graphite)", margin: 0, lineHeight: "1.6" }}>
               <strong style={{ color: "var(--ink)", fontWeight: 600 }}>Research Use Only.</strong>{" "}
               All protocols, uses, benefits, and precautions listed are sourced from published preclinical research and are intended solely for in-vitro and animal model research. These are <strong style={{ color: "var(--ink)" }}>not</strong> for human or veterinary administration. OmniQure supplies these compounds exclusively for laboratory research purposes.

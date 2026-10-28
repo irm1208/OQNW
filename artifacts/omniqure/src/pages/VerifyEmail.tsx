@@ -50,7 +50,7 @@ export default function VerifyEmail() {
             <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#22252C", marginBottom: "8px" }}>
               Verifying your email…
             </h1>
-            <p style={{ color: "#64748B", fontSize: "15px" }}>Just a moment.</p>
+            <p style={{ color: "#4A5672", fontSize: "15px" }}>Just a moment.</p>
           </>
         )}
 
@@ -58,17 +58,17 @@ export default function VerifyEmail() {
           <>
             <div style={{
               width: "80px", height: "80px", borderRadius: "50%",
-              background: "linear-gradient(135deg, #059669, #34D399)",
+              background: "#4F6B52",
               display: "flex", alignItems: "center", justifyContent: "center",
               margin: "0 auto 20px",
-              boxShadow: "0 12px 40px rgba(5,150,105,0.25)",
+              boxShadow: "none",
             }}>
               <CheckCircle2 size={40} color="#fff" strokeWidth={2.5} />
             </div>
             <h1 style={{ fontSize: "26px", fontWeight: 900, color: "#22252C", letterSpacing: "-0.02em", marginBottom: "10px" }}>
               Email verified!
             </h1>
-            <p style={{ fontSize: "15px", color: "#64748B", lineHeight: 1.6, marginBottom: "28px" }}>
+            <p style={{ fontSize: "15px", color: "#4A5672", lineHeight: 1.6, marginBottom: "28px" }}>
               Your OmniQure account is fully activated. You can now browse and order.
             </p>
             <Link
@@ -76,7 +76,7 @@ export default function VerifyEmail() {
               style={{
                 display: "inline-flex", alignItems: "center", gap: "8px",
                 height: "48px", paddingLeft: "28px", paddingRight: "28px",
-                borderRadius: "12px", background: "linear-gradient(90deg, #22252C, #4E68C2)",
+                borderRadius: "12px", background: "#1D2948",
                 color: "#fff", fontWeight: 700, fontSize: "15px", textDecoration: "none",
               }}
             >
@@ -89,17 +89,17 @@ export default function VerifyEmail() {
           <>
             <div style={{
               width: "80px", height: "80px", borderRadius: "50%",
-              background: "linear-gradient(135deg, #DC2626, #F87171)",
+              background: "#9C4A44",
               display: "flex", alignItems: "center", justifyContent: "center",
               margin: "0 auto 20px",
-              boxShadow: "0 12px 40px rgba(220,38,38,0.2)",
+              boxShadow: "none",
             }}>
               <XCircle size={40} color="#fff" strokeWidth={2.5} />
             </div>
             <h1 style={{ fontSize: "24px", fontWeight: 900, color: "#22252C", marginBottom: "10px" }}>
               Verification failed
             </h1>
-            <p style={{ fontSize: "14px", color: "#64748B", lineHeight: 1.65, marginBottom: "28px" }}>
+            <p style={{ fontSize: "14px", color: "#4A5672", lineHeight: 1.65, marginBottom: "28px" }}>
               {message}
             </p>
             <Link
@@ -107,8 +107,8 @@ export default function VerifyEmail() {
               style={{
                 display: "inline-flex", alignItems: "center", gap: "8px",
                 height: "46px", paddingLeft: "24px", paddingRight: "24px",
-                borderRadius: "12px", border: "1.5px solid #E2E8F0", backgroundColor: "#fff",
-                color: "#475569", fontWeight: 700, fontSize: "14px", textDecoration: "none",
+                borderRadius: "12px", border: "1.5px solid #D3D8E2", backgroundColor: "#fff",
+                color: "#4A5672", fontWeight: 700, fontSize: "14px", textDecoration: "none",
               }}
             >
               Go to My Account

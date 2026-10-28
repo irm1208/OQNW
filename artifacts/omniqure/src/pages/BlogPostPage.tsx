@@ -94,9 +94,9 @@ export default function BlogPostPage() {
 
   if (isLoading) {
     return (
-      <div className="bg-slate-50 min-h-screen flex flex-col items-center justify-center py-32 space-y-4">
+      <div className="bg-[#F4F5F8] min-h-screen flex flex-col items-center justify-center py-32 space-y-4">
         <Loader2 className="w-10 h-10 text-secondary animate-spin" />
-        <p className="text-slate-500 font-medium tracking-wide">Loading article...</p>
+        <p className="text-[#4A5672] font-medium tracking-wide">Loading article...</p>
       </div>
     );
   }
@@ -106,12 +106,12 @@ export default function BlogPostPage() {
       return <NotFound />;
     }
     return (
-      <div className="bg-slate-50 min-h-screen py-24 flex items-center justify-center px-4">
-        <div className="bg-white border border-red-100 p-10 rounded-xl text-center shadow-sm max-w-md w-full">
-          <p className="text-red-600 font-medium mb-4">Unable to load the article at this time.</p>
+      <div className="bg-[#F4F5F8] min-h-screen py-24 flex items-center justify-center px-4">
+        <div className="bg-white border border-[#F8F2F3] p-10 rounded-xl text-center max-w-md w-full">
+          <p className="text-[#9C4A44] font-medium mb-4">Unable to load the article at this time.</p>
           <button 
             onClick={() => window.location.reload()}
-            className="px-6 py-2 bg-slate-900 text-white rounded-md hover:bg-slate-800 transition-colors"
+            className="px-6 py-2 bg-[#22252C] text-white rounded-md hover:bg-[#1D2948] transition-colors"
           >
             Retry
           </button>
@@ -127,16 +127,16 @@ export default function BlogPostPage() {
 
   return (
     <article className="bg-white min-h-screen">
-      <div className="bg-slate-50 py-12 md:py-16 border-b border-slate-200">
+      <div className="bg-[#F4F5F8] py-12 md:py-16 border-b border-[#D3D8E2]">
         <div className="container max-w-4xl mx-auto px-4 md:px-6">
-          <Link href="/blog" className="inline-flex items-center text-sm font-semibold text-slate-500 hover:text-secondary transition-colors mb-8 group">
+          <Link href="/blog" className="inline-flex items-center text-sm font-semibold text-[#4A5672] hover:text-secondary transition-colors mb-8 group">
             <ArrowLeft className="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" />
             Back to Research Blog
           </Link>
           
-          <div className="flex items-center gap-3 text-sm font-semibold tracking-wider text-slate-500 uppercase mb-6 flex-wrap">
+          <div className="flex items-center gap-3 text-sm font-semibold tracking-wider text-[#4A5672] uppercase mb-6 flex-wrap">
             {post.tags && post.tags.map(tag => (
-              <span key={tag} className="text-secondary bg-blue-50 px-3 py-1 rounded-full">{tag}</span>
+              <span key={tag} className="text-secondary bg-[#EDF0F9] px-3 py-1 rounded-full">{tag}</span>
             ))}
             {post.publishedAt && (
               <time dateTime={post.publishedAt} className="ml-2">
@@ -145,27 +145,27 @@ export default function BlogPostPage() {
             )}
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight tracking-tight mb-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#22252C] leading-tight tracking-tight mb-6">
             {post.title}
           </h1>
           
-          <div className="flex items-center justify-between py-6 border-t border-slate-200 mt-8">
+          <div className="flex items-center justify-between py-6 border-t border-[#D3D8E2] mt-8">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 font-bold text-lg">
+              <div className="w-12 h-12 rounded-full bg-[#D3D8E2] flex items-center justify-center text-[#4A5672] font-bold text-lg">
                 {(post.author || "O")[0].toUpperCase()}
               </div>
               <div>
-                <p className="font-bold text-slate-900">{post.author || "OmniQure Research Team"}</p>
-                <p className="text-sm text-slate-500">Verified Contributor</p>
+                <p className="font-bold text-[#22252C]">{post.author || "OmniQure Research Team"}</p>
+                <p className="text-sm text-[#4A5672]">Verified Contributor</p>
               </div>
             </div>
             
             <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold text-slate-400 mr-2 hidden sm:inline-block">Share:</span>
-              <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-blue-500 hover:border-blue-200 hover:bg-blue-50 transition-colors" aria-label="Share on X">
+              <span className="text-sm font-semibold text-[#8D9BB8] mr-2 hidden sm:inline-block">Share:</span>
+              <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-[#D3D8E2] flex items-center justify-center text-[#4A5672] hover:text-[#4E68C2] hover:border-[#D3D8E2] hover:bg-[#EDF0F9] transition-colors" aria-label="Share on X">
                 <Twitter className="w-4 h-4" />
               </a>
-              <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(post.title)}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-blue-700 hover:border-blue-200 hover:bg-blue-50 transition-colors" aria-label="Share on LinkedIn">
+              <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(post.title)}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-[#D3D8E2] flex items-center justify-center text-[#4A5672] hover:text-[#0A2472] hover:border-[#D3D8E2] hover:bg-[#EDF0F9] transition-colors" aria-label="Share on LinkedIn">
                 <Linkedin className="w-4 h-4" />
               </a>
             </div>
@@ -175,7 +175,7 @@ export default function BlogPostPage() {
 
       {post.featuredImageUrl && (
         <div className="container max-w-5xl mx-auto px-4 md:px-6 -mt-8 mb-12 relative z-10">
-          <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-white aspect-[21/9] max-h-[500px]">
+          <div className="rounded-2xl overflow-hidden border border-[#D3D8E2] bg-white aspect-[21/9] max-h-[500px]">
             <img 
               src={post.featuredImageUrl} 
               alt={post.title} 
@@ -190,11 +190,11 @@ export default function BlogPostPage() {
           <SafePostContent content={post.content} />
         </div>
         
-        <div className="mt-16 pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <p className="text-slate-500 font-medium">
+        <div className="mt-16 pt-8 border-t border-[#D3D8E2] flex flex-col sm:flex-row items-center justify-between gap-6">
+          <p className="text-[#4A5672] font-medium">
             © {new Date().getFullYear()} OmniQure Research Institute. For research use only.
           </p>
-          <Link href="/blog" className="px-6 py-3 bg-slate-100 text-slate-900 font-bold rounded-lg hover:bg-slate-200 transition-colors">
+          <Link href="/blog" className="px-6 py-3 bg-[#F4F5F8] text-[#22252C] font-bold rounded-lg hover:bg-[#D3D8E2] transition-colors">
             Read more articles
           </Link>
         </div>

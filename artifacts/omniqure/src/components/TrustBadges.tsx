@@ -11,9 +11,9 @@ export default function TrustBadges() {
   return (
     <div
       style={{
-        background: "linear-gradient(135deg, #FFF6F2 0%, #E8F2DE 100%)",
-        borderTop: "1px solid #E8ECF1",
-        borderBottom: "1px solid #E8ECF1",
+        background: "#F4F5F8",
+        borderTop: "1px solid #D3D8E2",
+        borderBottom: "1px solid #D3D8E2",
       }}
       className="py-3 md:py-3.5"
     >
@@ -27,14 +27,14 @@ export default function TrustBadges() {
               <badge.icon
                 size={16}
                 strokeWidth={2}
-                style={{ color: "#3B62AB" }}
+                style={{ color: "#4E68C2" }}
               />
               <span
                 style={{
                   fontSize: "10.5px",
                   textTransform: "uppercase",
                   letterSpacing: "0.1em",
-                  color: "#2B3A52",
+                  color: "#1D2948",
                   fontWeight: 600,
                 }}
               >

@@ -89,7 +89,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
             width: "32px", height: "32px", borderRadius: "50%",
             background: "rgba(15,23,42,0.08)", border: "none",
             display: "flex", alignItems: "center", justifyContent: "center",
-            cursor: "pointer", color: "#374151",
+            cursor: "pointer", color: "#22252C",
           }}
         >
           <X size={15} />
@@ -97,19 +97,19 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
 
         {/* Left — image */}
         <div style={{
-          width: "44%", flexShrink: 0, background: "linear-gradient(160deg, #F0F5FF 0%, #E8EFFE 100%)",
+          width: "44%", flexShrink: 0, background: "#EDF0F9",
           display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
           padding: "32px 24px", position: "relative", minHeight: "360px",
         }}>
           {/* Purity badge */}
           <div style={{
             position: "absolute", top: "14px", left: "14px",
-            background: "#ECFDF5", border: "1.5px solid #6EE7B7",
+            background: "#EFF2EF", border: "1.5px solid #94A895",
             borderRadius: "10px", padding: "5px 10px",
             display: "flex", alignItems: "center", gap: "6px",
           }}>
-            <Shield size={12} color="#059669" fill="none" />
-            <span style={{ fontSize: "11px", fontWeight: 800, color: "#059669" }}>{purityStr} Purity</span>
+            <Shield size={12} color="#4F6B52" fill="none" />
+            <span style={{ fontSize: "11px", fontWeight: 800, color: "#4F6B52" }}>{purityStr} Purity</span>
           </div>
 
           <img
@@ -126,7 +126,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
           {janoshikReport?.taskNumber && janoshikReport.verifyUrl && janoshikReport.image && (
             <div style={{
               marginTop: "16px", padding: "7px 14px", borderRadius: "10px",
-              background: "#F0F7FF", border: "1.5px solid #4E68C2",
+              background: "#EDF0F9", border: "1.5px solid #4E68C2",
               display: "flex", alignItems: "center", gap: "8px",
             }}>
               <img src="/janoshik/janoshik-logo.jpg" alt="Janoshik" style={{ height: "18px", width: "auto", borderRadius: "3px", display: "block" }} />
@@ -142,7 +142,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
           {/* Category + wishlist row */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span style={{
-              fontSize: "10px", fontWeight: 700, color: "#4E68C2", background: "#E8F2DE",
+              fontSize: "10px", fontWeight: 700, color: "#4E68C2", background: "#EFF2EF",
               padding: "3px 9px", borderRadius: "5px", letterSpacing: "0.05em", textTransform: "uppercase",
             }}>
               {group.category}
@@ -152,15 +152,15 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
               title={inWishlist(productIdInt) ? "Remove from wishlist" : "Save to wishlist"}
               style={{
                 width: "30px", height: "30px", borderRadius: "50%",
-                background: inWishlist(productIdInt) ? "#FEF2F2" : "#F8FAFC",
-                border: inWishlist(productIdInt) ? "1.5px solid #FECACA" : "1.5px solid #E2E8F0",
+                background: inWishlist(productIdInt) ? "#F8F2F3" : "#F4F5F8",
+                border: inWishlist(productIdInt) ? "1.5px solid #C9939A" : "1.5px solid #D3D8E2",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 cursor: "pointer",
               }}
             >
               <Heart size={14} style={{
-                color: inWishlist(productIdInt) ? "#DC2626" : "#94A3B8",
-                fill: inWishlist(productIdInt) ? "#DC2626" : "none",
+                color: inWishlist(productIdInt) ? "#9C4A44" : "#8D9BB8",
+                fill: inWishlist(productIdInt) ? "#9C4A44" : "none",
               }} />
             </button>
           </div>
@@ -169,13 +169,13 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
           <div>
             <h2 style={{
               margin: 0, fontSize: "22px", fontWeight: 900, lineHeight: 1.15,
-              background: "linear-gradient(120deg, #22252C 0%, #4E68C2 60%, #4E68C2 100%)",
+              background: "#1D2948",
               WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
             }}>
               {group.baseName}
             </h2>
             {detail?.alsoKnownAs && (
-              <p style={{ margin: "4px 0 0", fontSize: "11px", color: "#94A3B8" }}>
+              <p style={{ margin: "4px 0 0", fontSize: "11px", color: "#8D9BB8" }}>
                 Also known as: {detail.alsoKnownAs}
               </p>
             )}
@@ -183,7 +183,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
 
           {/* Description */}
           {shortDesc && (
-            <p style={{ margin: 0, fontSize: "12.5px", color: "#475569", lineHeight: 1.65 }}>
+            <p style={{ margin: 0, fontSize: "12.5px", color: "#4A5672", lineHeight: 1.65 }}>
               {shortDesc}
             </p>
           )}
@@ -191,14 +191,14 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
           {/* Key stats row */}
           <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
             {[
-              { label: "Purity", value: purityStr, color: "#059669", bg: "#ECFDF5", border: "#A7F3D0" },
-              ...(detail?.molecularWeight ? [{ label: "M.W.", value: detail.molecularWeight, color: "#4E68C2", bg: "#E8F2DE", border: "#C8DDB4" }] : []),
-              ...(detail?.casNumber ? [{ label: "CAS", value: detail.casNumber, color: "#374151", bg: "#F8FAFC", border: "#E2E8F0" }] : []),
+              { label: "Purity", value: purityStr, color: "#4F6B52", bg: "#EFF2EF", border: "#94A895" },
+              ...(detail?.molecularWeight ? [{ label: "M.W.", value: detail.molecularWeight, color: "#4E68C2", bg: "#EFF2EF", border: "#94A895" }] : []),
+              ...(detail?.casNumber ? [{ label: "CAS", value: detail.casNumber, color: "#22252C", bg: "#F4F5F8", border: "#D3D8E2" }] : []),
             ].map(s => (
               <div key={s.label} style={{
                 padding: "6px 10px", borderRadius: "8px", background: s.bg, border: `1.5px solid ${s.border}`,
               }}>
-                <div style={{ fontSize: "8.5px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
+                <div style={{ fontSize: "8.5px", fontWeight: 700, color: "#4A5672", textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
                 <div style={{ fontSize: "12px", fontWeight: 800, color: s.color, marginTop: "2px" }}>{s.value}</div>
               </div>
             ))}
@@ -207,7 +207,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
           {/* Variant pills */}
           {group.variants.length > 1 && (
             <div>
-              <p style={{ margin: "0 0 6px", fontSize: "10px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              <p style={{ margin: "0 0 6px", fontSize: "10px", fontWeight: 700, color: "#4A5672", textTransform: "uppercase", letterSpacing: "0.06em" }}>
                 Select Strength
               </p>
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
@@ -220,16 +220,16 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
                       onClick={() => setSelectedIdx(i)}
                       style={{
                         padding: "6px 14px", borderRadius: "9px", fontSize: "12.5px", fontWeight: 700,
-                        border: active ? "2px solid #4E68C2" : "1.5px solid #E2E8F0",
-                        background: active ? "#E8F2DE" : "#F8FAFC",
-                        color: active ? "#4E68C2" : "#374151",
+                        border: active ? "2px solid #4E68C2" : "1.5px solid #D3D8E2",
+                        background: active ? "#EFF2EF" : "#F4F5F8",
+                        color: active ? "#4E68C2" : "#22252C",
                         cursor: "pointer", transition: "all 0.12s",
                         display: "flex", flexDirection: "column", alignItems: "center", gap: "1px",
                       }}
                     >
                       <span>{strength}</span>
                       {v.price != null && (
-                        <span style={{ fontSize: "10.5px", fontWeight: 800, color: active ? "#059669" : "#64748B" }}>
+                        <span style={{ fontSize: "10.5px", fontWeight: 800, color: active ? "#4F6B52" : "#4A5672" }}>
                           {formatPrice(v.price)}
                         </span>
                       )}
@@ -243,14 +243,14 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
           {/* Stock indicator */}
           {isOos ? (
             <span style={{
-              fontSize: "11px", fontWeight: 700, color: "#DC2626",
-              background: "#FEF2F2", border: "1px solid #FECACA",
+              fontSize: "11px", fontWeight: 700, color: "#9C4A44",
+              background: "#F8F2F3", border: "1px solid #C9939A",
               padding: "4px 10px", borderRadius: "6px", alignSelf: "flex-start",
             }}>✗ Sold Out</span>
           ) : isLow ? (
             <span style={{
-              fontSize: "11px", fontWeight: 700, color: "#B45309",
-              background: "#FFFBEB", border: "1px solid #FDE68A",
+              fontSize: "11px", fontWeight: 700, color: "#85683A",
+              background: "#F8F4EF", border: "1px solid #CDB894",
               padding: "4px 10px", borderRadius: "6px", alignSelf: "flex-start",
             }}>⚡ Low stock</span>
           ) : null}
@@ -258,11 +258,11 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
           {/* Price */}
           {variant.price != null && (
             <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
-              <span style={{ fontSize: "26px", fontWeight: 900, color: "#059669", lineHeight: 1 }}>
+              <span style={{ fontSize: "26px", fontWeight: 900, color: "#4F6B52", lineHeight: 1 }}>
                 {formatPrice(variant.price)}
               </span>
               {group.variants.length > 1 && selectedIdx !== 0 && group.variants[0].price != null && (
-                <span style={{ fontSize: "12px", color: "#94A3B8" }}>
+                <span style={{ fontSize: "12px", color: "#8D9BB8" }}>
                   from {formatPrice(group.variants[0].price)}
                 </span>
               )}
@@ -273,7 +273,7 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
           <div className="quick-view-cta-row" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <div style={{
               display: "flex", alignItems: "center",
-              border: "1.5px solid #E2E8F0", borderRadius: "10px", overflow: "hidden",
+              border: "1.5px solid #D3D8E2", borderRadius: "10px", overflow: "hidden",
             }}>
               {(["−", qty, "+"] as const).map((v, i) => (
                 i === 1
@@ -283,12 +283,12 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
                       onClick={() => setQty(q => i === 0 ? Math.max(1, q - 1) : q + 1)}
                       style={{
                         width: "36px", height: "38px", border: "none",
-                        background: "#F8FAFC", cursor: "pointer",
-                        fontSize: "18px", color: "#64748B", display: "flex", alignItems: "center", justifyContent: "center",
+                        background: "#F4F5F8", cursor: "pointer",
+                        fontSize: "18px", color: "#4A5672", display: "flex", alignItems: "center", justifyContent: "center",
                         transition: "background 0.12s",
                       }}
-                      onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.background = "#E8F2DE"}
-                      onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.background = "#F8FAFC"}
+                      onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.background = "#EFF2EF"}
+                      onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.background = "#F4F5F8"}
                     >{v}</button>
               ))}
             </div>
@@ -299,8 +299,8 @@ export default function QuickViewModal({ group, initialIdx = 0, onClose }: Quick
               className="quick-view-add-btn"
               style={{
                 flex: 1, height: "40px", borderRadius: "10px",
-                background: isOos ? "#E2E8F0" : added ? "#059669" : "#4E68C2",
-                color: isOos ? "#94A3B8" : "#fff",
+                background: isOos ? "#D3D8E2" : added ? "#4F6B52" : "#4E68C2",
+                color: isOos ? "#8D9BB8" : "#fff",
                 border: "none", fontSize: "13.5px", fontWeight: 800,
                 cursor: isOos ? "not-allowed" : "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center", gap: "7px",

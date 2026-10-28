@@ -48,11 +48,11 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
       style={{ display: "block", maxWidth: "480px", margin: "0 auto" }}
     >
       {/* Plunger handle (left) */}
-      <rect x={0} y={by - 8} width={6} height={bh + 16} rx={2} fill="#90A4C8" />
-      <rect x={0} y={by - 14} width={28} height={7} rx={3} fill="#7090B8" />
-      <rect x={0} y={by + bh + 7} width={28} height={7} rx={3} fill="#7090B8" />
+      <rect x={0} y={by - 8} width={6} height={bh + 16} rx={2} fill="#8D9BB8" />
+      <rect x={0} y={by - 14} width={28} height={7} rx={3} fill="#8D9BB8" />
+      <rect x={0} y={by + bh + 7} width={28} height={7} rx={3} fill="#8D9BB8" />
       {/* Plunger rod */}
-      <rect x={6} y={midY - 4} width={bx - 6} height={8} rx={2} fill="#B8C8E0" />
+      <rect x={6} y={midY - 4} width={bx - 6} height={8} rx={2} fill="#8D9BB8" />
       {/* Plunger stopper (rubber tip) — sits at the current IU line */}
       {!overflowing && clamped >= 0 && (
         <rect
@@ -67,11 +67,11 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
       )}
 
       {/* Barrel background */}
-      <rect x={bx} y={by} width={bw} height={bh} rx={4} fill="#E8F2DE" stroke="#C8DDB4" strokeWidth={1.5} />
+      <rect x={bx} y={by} width={bw} height={bh} rx={4} fill="#EFF2EF" stroke="#94A895" strokeWidth={1.5} />
 
       {/* Fluid fill — from stopper to needle end */}
       {fillW > 0 && !overflowing && (
-        <rect x={fillStartX} y={by + 1} width={fillW} height={bh - 2} fill="rgba(59, 98, 171,0.18)" />
+        <rect x={fillStartX} y={by + 1} width={fillW} height={bh - 2} fill="rgba(78, 104, 194,0.18)" />
       )}
       {overflowing && (
         <rect x={bx} y={by + 1} width={bw} height={bh - 2} fill="rgba(220,38,38,0.12)" />
@@ -83,7 +83,7 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
           <line
             x1={x} y1={major ? by : by + bh * 0.45}
             x2={x} y2={by + bh}
-            stroke={major ? "#475569" : "#94A3B8"}
+            stroke={major ? "#4A5672" : "#8D9BB8"}
             strokeWidth={major ? 1.5 : 1}
           />
           {major && (
@@ -91,7 +91,7 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
               x={x} y={by - 6}
               textAnchor="middle"
               fontSize="8.5"
-              fill="#64748B"
+              fill="#4A5672"
               fontWeight="600"
               fontFamily="Inter, Arial, sans-serif"
             >
@@ -104,12 +104,12 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
       {/* Needle hub */}
       <polygon
         points={`${bx + bw},${by} ${bx + bw + 22},${midY - 5} ${bx + bw + 22},${midY + 5} ${bx + bw},${by + bh}`}
-        fill="#B8C8E0"
+        fill="#8D9BB8"
       />
       {/* Needle shaft */}
       <polygon
         points={`${bx + bw + 22},${midY - 2.5} ${W - 4},${midY} ${bx + bw + 22},${midY + 2.5}`}
-        fill="#94A3B8"
+        fill="#8D9BB8"
       />
 
       {/* Indicator label below — near needle for small doses */}
@@ -135,7 +135,7 @@ function SyringeSVG({ iuValue }: { iuValue: number }) {
       )}
 
       {overflowing && (
-        <text x={bx + bw / 2} y={H - 2} textAnchor="middle" fontSize="9" fill="#DC2626" fontWeight="700" fontFamily="Inter, Arial, sans-serif">
+        <text x={bx + bw / 2} y={H - 2} textAnchor="middle" fontSize="9" fill="#9C4A44" fontWeight="700" fontFamily="Inter, Arial, sans-serif">
           &gt;100 units — split across multiple aliquots
         </text>
       )}
@@ -258,7 +258,7 @@ export default function ReconstitutionCalculator() {
             </label>
           </div>
 
-          <div className={card} style={{ borderColor: "var(--hairline)", background: "linear-gradient(135deg, rgba(244,246,250,0.6), #fff)" }} aria-live="polite">
+          <div className={card} style={{ borderColor: "var(--hairline)", background: "#FFFFFF" }} aria-live="polite">
             <h2 className="mb-4 flex items-center gap-2 text-[15px] font-bold" style={{ color: "var(--ink)" }}>
               <Calculator size={16} style={{ color: "var(--cobalt)" }} aria-hidden="true" /> Draw this much
             </h2>

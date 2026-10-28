@@ -87,7 +87,7 @@ export default function ResetPassword() {
           <h1 style={{ fontSize: "26px", fontWeight: 800, color: "#22252C", letterSpacing: "-0.025em", marginBottom: "6px" }}>
             Set a new password
           </h1>
-          <p style={{ fontSize: "14px", color: "#64748B" }}>
+          <p style={{ fontSize: "14px", color: "#4A5672" }}>
             Choose a strong password of at least 8 characters.
           </p>
         </div>
@@ -96,16 +96,16 @@ export default function ResetPassword() {
           backgroundColor: "#fff",
           borderRadius: "20px",
           border: "1.5px solid #D3D8E2",
-          boxShadow: "0 8px 48px rgba(15,23,42,0.09)",
+          boxShadow: "none",
           padding: "36px 32px",
         }}>
           {success ? (
             <div style={{ textAlign: "center" }}>
-              <CheckCircle2 size={40} style={{ color: "#059669", margin: "0 auto 16px" }} />
+              <CheckCircle2 size={40} style={{ color: "#4F6B52", margin: "0 auto 16px" }} />
               <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#22252C", marginBottom: "10px" }}>
                 Password updated
               </h2>
-              <p style={{ fontSize: "14px", color: "#64748B", lineHeight: 1.6, marginBottom: "24px" }}>
+              <p style={{ fontSize: "14px", color: "#4A5672", lineHeight: 1.6, marginBottom: "24px" }}>
                 Your password has been changed successfully. Redirecting you to sign in…
               </p>
               <Link href="/sign-in" style={{ fontSize: "14px", color: "#4E68C2", fontWeight: 600, textDecoration: "none" }}>
@@ -114,11 +114,11 @@ export default function ResetPassword() {
             </div>
           ) : !token && error ? (
             <div style={{ textAlign: "center" }}>
-              <XCircle size={40} style={{ color: "#DC2626", margin: "0 auto 16px" }} />
+              <XCircle size={40} style={{ color: "#9C4A44", margin: "0 auto 16px" }} />
               <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#22252C", marginBottom: "10px" }}>
                 Invalid reset link
               </h2>
-              <p style={{ fontSize: "14px", color: "#64748B", lineHeight: 1.6, marginBottom: "24px" }}>
+              <p style={{ fontSize: "14px", color: "#4A5672", lineHeight: 1.6, marginBottom: "24px" }}>
                 This password reset link is invalid or has expired.
               </p>
               <Link
@@ -139,13 +139,13 @@ export default function ResetPassword() {
                 { label: "Confirm password", value: confirm, onChange: setConfirm, placeholder: "••••••••", autoComplete: "new-password" },
               ].map(({ label, value, onChange, placeholder, autoComplete }) => (
                 <div key={label}>
-                  <label style={{ fontSize: "13px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "6px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: 600, color: "#22252C", display: "block", marginBottom: "6px" }}>
                     {label}
                   </label>
                   <div style={{ position: "relative" }}>
                     <Lock size={15} style={{
                       position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)",
-                      color: "#94A3B8", pointerEvents: "none",
+                      color: "#8D9BB8", pointerEvents: "none",
                     }} />
                     <input
                       type={showPassword ? "text" : "password"}
@@ -155,20 +155,20 @@ export default function ResetPassword() {
                       autoComplete={autoComplete}
                       style={{
                         width: "100%", height: "44px", paddingLeft: "38px", paddingRight: "42px",
-                        borderRadius: "10px", border: "1.5px solid #E2E8F0",
+                        borderRadius: "10px", border: "1.5px solid #D3D8E2",
                         fontSize: "14px", color: "#22252C", outline: "none",
-                        backgroundColor: "#F8FAFC", boxSizing: "border-box",
+                        backgroundColor: "#F4F5F8", boxSizing: "border-box",
                         transition: "border-color 0.15s",
                       }}
                       onFocus={e => (e.currentTarget.style.borderColor = "#4E68C2")}
-                      onBlur={e => (e.currentTarget.style.borderColor = "#E2E8F0")}
+                      onBlur={e => (e.currentTarget.style.borderColor = "#D3D8E2")}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(s => !s)}
                       style={{
                         position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)",
-                        background: "none", border: "none", cursor: "pointer", color: "#94A3B8", padding: 0,
+                        background: "none", border: "none", cursor: "pointer", color: "#8D9BB8", padding: 0,
                         display: "flex", alignItems: "center",
                       }}
                     >
@@ -179,7 +179,7 @@ export default function ResetPassword() {
               ))}
 
               {error && (
-                <p style={{ fontSize: "13px", color: "#DC2626", backgroundColor: "#FEF2F2", border: "1px solid #FECACA", borderRadius: "8px", padding: "10px 12px", margin: 0 }}>
+                <p style={{ fontSize: "13px", color: "#9C4A44", backgroundColor: "#F8F2F3", border: "1px solid #C9939A", borderRadius: "8px", padding: "10px 12px", margin: 0 }}>
                   {error}
                 </p>
               )}

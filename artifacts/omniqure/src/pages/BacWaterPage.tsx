@@ -30,7 +30,7 @@ export default function BacWaterPage() {
   if (!selected) {
     return (
       <main className="max-w-[1100px] mx-auto px-4 py-16 text-center">
-        <p style={{ color: "#64748B" }}>Loading current Bac Water availability and pricing…</p>
+        <p style={{ color: "#4A5672" }}>Loading current Bac Water availability and pricing…</p>
       </main>
     );
   }
@@ -44,7 +44,7 @@ export default function BacWaterPage() {
   }
 
   return (
-    <div style={{ backgroundColor: "#F7FAFF", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#EDF0F9", minHeight: "100vh" }}>
       {/* Hero / product section */}
       <div className="max-w-[1100px] mx-auto px-4 py-12 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -54,8 +54,8 @@ export default function BacWaterPage() {
             className="flex items-center justify-center rounded-3xl"
             style={{
               background: "#fff",
-              border: "1.5px solid #E2E8F0",
-              boxShadow: "0 8px 40px rgba(15,23,42,0.08)",
+              border: "1.5px solid #D3D8E2",
+              boxShadow: "none",
               padding: "40px",
               minHeight: "420px",
             }}
@@ -78,10 +78,10 @@ export default function BacWaterPage() {
           <div>
             {/* Badge */}
             <div className="inline-flex items-center gap-1.5 mb-4" style={{
-              backgroundColor: "#E8F2DE", border: "1px solid #C8DDB4",
+              backgroundColor: "#EFF2EF", border: "1px solid #94A895",
               borderRadius: "6px", padding: "4px 12px",
             }}>
-              <span style={{ fontSize: "10px", fontWeight: 800, color: "#3D55A8", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+              <span style={{ fontSize: "10px", fontWeight: 800, color: "#0A2472", letterSpacing: "0.08em", textTransform: "uppercase" }}>
                 Research Accessory
               </span>
             </div>
@@ -91,11 +91,11 @@ export default function BacWaterPage() {
             </h1>
 
             {/* REF */}
-            <p style={{ fontSize: "13px", color: "#94A3B8", fontWeight: 600, marginBottom: "20px" }}>
+            <p style={{ fontSize: "13px", color: "#8D9BB8", fontWeight: 600, marginBottom: "20px" }}>
               REF&nbsp;
               <span style={{
-                border: "1.5px solid #CBD5E1", borderRadius: "4px",
-                padding: "1px 6px", fontSize: "12px", color: "#475569", fontWeight: 700,
+                border: "1.5px solid #D3D8E2", borderRadius: "4px",
+                padding: "1px 6px", fontSize: "12px", color: "#4A5672", fontWeight: 700,
               }}>
                 {selected.ref}
               </span>
@@ -103,7 +103,7 @@ export default function BacWaterPage() {
 
             {/* Size selector */}
             <div style={{ marginBottom: "24px" }}>
-              <p style={{ fontSize: "12px", fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
+              <p style={{ fontSize: "12px", fontWeight: 700, color: "#4A5672", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
                 Select Size
               </p>
               <div style={{ position: "relative" }}>
@@ -115,7 +115,7 @@ export default function BacWaterPage() {
                     padding: "11px 38px 11px 14px",
                     borderRadius: "10px",
                     border: "2px solid #4E68C2",
-                    backgroundColor: "#E8F2DE",
+                    backgroundColor: "#EFF2EF",
                     color: "#4E68C2",
                     fontSize: "15px",
                     fontWeight: 800,
@@ -125,7 +125,7 @@ export default function BacWaterPage() {
                     MozAppearance: "none",
                     cursor: "pointer",
                     outline: "none",
-                    boxShadow: "0 2px 8px rgba(59, 98, 171,0.12)",
+                    boxShadow: "none",
                   }}
                 >
                   {sizes.map((s) => (
@@ -149,7 +149,7 @@ export default function BacWaterPage() {
               <span style={{ fontSize: "36px", fontWeight: 900, color: "#22252C", lineHeight: 1 }}>
                 £{selected.price.toFixed(2)}
               </span>
-               <span style={{ fontSize: "13px", color: "#94A3B8", marginLeft: "8px" }}>per {selected.unit}</span>
+               <span style={{ fontSize: "13px", color: "#8D9BB8", marginLeft: "8px" }}>per {selected.unit}</span>
             </div>
 
             {/* Qty + Add */}
@@ -157,12 +157,12 @@ export default function BacWaterPage() {
               {/* Qty stepper */}
               <div style={{
                 display: "flex", alignItems: "center", gap: "0",
-                border: "1.5px solid #E2E8F0", borderRadius: "10px",
+                border: "1.5px solid #D3D8E2", borderRadius: "10px",
                 overflow: "hidden", backgroundColor: "#fff",
               }}>
                 <button
                   onClick={() => setQty(q => Math.max(1, q - 1))}
-                  style={{ padding: "12px 16px", background: "none", border: "none", cursor: "pointer", color: "#475569" }}
+                  style={{ padding: "12px 16px", background: "none", border: "none", cursor: "pointer", color: "#4A5672" }}
                 >
                   <Minus size={14} />
                 </button>
@@ -171,7 +171,7 @@ export default function BacWaterPage() {
                 </span>
                 <button
                   onClick={() => setQty(q => q + 1)}
-                  style={{ padding: "12px 16px", background: "none", border: "none", cursor: "pointer", color: "#475569" }}
+                  style={{ padding: "12px 16px", background: "none", border: "none", cursor: "pointer", color: "#4A5672" }}
                 >
                   <Plus size={14} />
                 </button>
@@ -183,10 +183,10 @@ export default function BacWaterPage() {
                 style={{
                   flex: 1,
                   display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-                  background: "linear-gradient(90deg, #22252C 0%, #4E68C2 100%)",
+                  background: "#1D2948",
                   color: "#fff", border: "none", borderRadius: "10px",
                   padding: "14px 24px", fontSize: "15px", fontWeight: 700, cursor: "pointer",
-                  boxShadow: "0 4px 16px rgba(13,37,101,0.3)",
+                  boxShadow: "none",
                 }}
               >
                 <ShoppingCart size={17} />
@@ -208,7 +208,7 @@ export default function BacWaterPage() {
                   <Icon size={16} style={{ color: "#4E68C2", marginTop: "2px", flexShrink: 0 }} />
                   <div>
                     <p style={{ fontSize: "12px", fontWeight: 700, color: "#22252C" }}>{label}</p>
-                    <p style={{ fontSize: "11px", color: "#64748B", marginTop: "1px" }}>{detail}</p>
+                    <p style={{ fontSize: "11px", color: "#4A5672", marginTop: "1px" }}>{detail}</p>
                   </div>
                 </div>
               ))}
@@ -220,7 +220,7 @@ export default function BacWaterPage() {
         <div
           className="mt-14 rounded-2xl"
           style={{
-            background: "linear-gradient(90deg, #22252C 0%, #4E68C2 40%, #4E68C2 75%, #3B6CE6 100%)",
+            background: "#1D2948",
             padding: "36px 40px",
             display: "flex", flexWrap: "wrap", gap: "32px", alignItems: "center", justifyContent: "space-between",
           }}
@@ -241,7 +241,7 @@ export default function BacWaterPage() {
               { num: "Sterile", label: "Filtered" },
             ].map(stat => (
               <div key={stat.num} style={{ textAlign: "center" }}>
-                <p style={{ fontSize: "22px", fontWeight: 900, color: "#FBBF24", lineHeight: 1 }}>{stat.num}</p>
+                <p style={{ fontSize: "22px", fontWeight: 900, color: "#85683A", lineHeight: 1 }}>{stat.num}</p>
                 <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.55)", marginTop: "4px", fontWeight: 600 }}>{stat.label}</p>
               </div>
             ))}
@@ -249,8 +249,8 @@ export default function BacWaterPage() {
         </div>
 
         {/* ── Disclaimer ── */}
-        <p className="text-center mt-8" style={{ fontSize: "11.5px", color: "#94A3B8", lineHeight: 1.7 }}>
-          <strong style={{ color: "#64748B" }}>Research Use Only.</strong>{" "}
+        <p className="text-center mt-8" style={{ fontSize: "11.5px", color: "#8D9BB8", lineHeight: 1.7 }}>
+          <strong style={{ color: "#4A5672" }}>Research Use Only.</strong>{" "}
           This product is intended solely for laboratory and research purposes. Not for human or veterinary use.
           OmniQure accepts no liability for misuse of this product.
         </p>

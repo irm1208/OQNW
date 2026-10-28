@@ -31,7 +31,7 @@ export const researchStacks: ResearchStack[] = [
     description:
       "BPC-157 and TB-500 are the two most researched peptides for regenerative applications. Together they demonstrate complementary mechanisms — BPC-157 promotes angiogenesis and collagen synthesis at the injury site, while TB-500 mobilises stem cells and reduces inflammation systemically. This pairing is cited in hundreds of preclinical models.",
     badge: "Most Popular",
-    badgeColor: "#059669",
+    badgeColor: "#4F6B52",
     icon: "🩹",
     difficulty: "Beginner",
     cycleLength: "8–12 weeks",
@@ -107,7 +107,7 @@ export const researchStacks: ResearchStack[] = [
     description:
       "Semax is a synthetic heptapeptide derived from ACTH that upregulates BDNF and NGF expression in the CNS. Selank is a synthetic analogue of the endogenous peptide tuftsin, with strong anxiolytic and memory-enhancing properties. Together they represent the most studied nootropic peptide pairing in Russian clinical and preclinical research.",
     badge: "CNS Research",
-    badgeColor: "#7C3AED",
+    badgeColor: "#5E5690",
     icon: "🧠",
     difficulty: "Intermediate",
     cycleLength: "4–8 weeks",
@@ -145,7 +145,7 @@ export const researchStacks: ResearchStack[] = [
     description:
       "Epithalon is a tetrapeptide studied for its ability to activate telomerase and extend telomere length in ageing cell lines. MOTS-C is a mitochondria-derived peptide (MDPs) that regulates metabolic homeostasis and mitochondrial biogenesis. Combined with NAD+, this stack represents the leading peptide combination for cellular longevity research.",
     badge: "Anti-Ageing Research",
-    badgeColor: "#B45309",
+    badgeColor: "#85683A",
     icon: "⏳",
     difficulty: "Advanced",
     cycleLength: "10–20 days (Epithalon), ongoing (MOTS-C + NAD+)",
@@ -190,7 +190,7 @@ export const researchStacks: ResearchStack[] = [
     description:
       "Thymosin Alpha-1 is the most clinically studied immunomodulatory peptide, approved in multiple countries for hepatitis and cancer adjunct therapy. LL-37 is the only human cathelicidin, with broad-spectrum antimicrobial and immunomodulatory properties. Together they cover both adaptive (TA-1) and innate (LL-37) immune pathways.",
     badge: "Immune Research",
-    badgeColor: "#0891B2",
+    badgeColor: "#4C7376",
     icon: "🛡️",
     difficulty: "Intermediate",
     cycleLength: "6–12 weeks",
@@ -228,7 +228,7 @@ export const researchStacks: ResearchStack[] = [
     description:
       "Tirzepatide (GLP-1/GIP dual agonist) is the most potent approved metabolic peptide, demonstrating up to 22% bodyweight reduction in clinical trials. AOD-9604 is a modified fragment of human growth hormone specifically studied for lipolytic activity. Together they represent complementary metabolic pathways — central appetite regulation combined with peripheral fat mobilisation.",
     badge: "Metabolic Research",
-    badgeColor: "#DC2626",
+    badgeColor: "#9C4A44",
     icon: "⚖️",
     difficulty: "Advanced",
     cycleLength: "16–24 weeks",
@@ -266,7 +266,7 @@ export const researchStacks: ResearchStack[] = [
     description:
       "GHK-Cu (copper tripeptide-1) is one of the most researched peptides in dermatology, with documented effects on collagen synthesis, wound healing, and antioxidant defence. Combined with BPC-157's angiogenic and tissue repair properties, this stack covers both dermal matrix reconstruction and vascular support for optimal wound research models.",
     badge: "Skin Research",
-    badgeColor: "#BE185D",
+    badgeColor: "#8A5560",
     icon: "✨",
     difficulty: "Beginner",
     cycleLength: "6–10 weeks",

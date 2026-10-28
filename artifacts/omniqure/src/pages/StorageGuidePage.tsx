@@ -122,7 +122,7 @@ export default function StorageGuidePage() {
       {/* Disclaimer banner */}
       <div className="bg-[#F2F0EB] border-b border-[rgba(11,18,32,0.09)] py-3">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 flex items-start gap-2 text-[var(--graphite)] text-sm">
-          <AlertTriangle size={15} className="mt-0.5 shrink-0 text-amber-600" aria-hidden="true" />
+          <AlertTriangle size={15} className="mt-0.5 shrink-0 text-[#85683A]" aria-hidden="true" />
           <span>This guide is for <strong>research purposes only</strong>. OmniQure peptides are sold exclusively for in vitro and laboratory research. All handling should comply with your institution's safety and regulatory protocols.</span>
         </div>
       </div>
@@ -343,7 +343,7 @@ export default function StorageGuidePage() {
                   { peptide: "LL-37", reason: "Cathelicidin with multiple Trp residues; photodegradation reduces antimicrobial activity" },
                 ].map(p => (
                   <div key={p.peptide} className="flex gap-3 text-sm">
-                    <AlertTriangle size={14} className="text-amber-600 mt-0.5 shrink-0" aria-hidden="true" />
+                    <AlertTriangle size={14} className="text-[#85683A] mt-0.5 shrink-0" aria-hidden="true" />
                     <span><strong className="text-[var(--ink)]">{p.peptide}</strong> — <span className="text-[var(--graphite)]">{p.reason}</span></span>
                   </div>
                 ))}
@@ -394,7 +394,7 @@ export default function StorageGuidePage() {
               </div>
             </div>
             <div className="rounded-2xl border border-[rgba(11,18,32,0.09)] bg-[#F2F0EB] p-5">
-              <h3 className="text-sm font-semibold text-[var(--ink)] mb-3 flex items-center gap-2"><AlertTriangle size={14} className="text-amber-600" aria-hidden="true" />Signs of Compromised Peptide Solutions</h3>
+              <h3 className="text-sm font-semibold text-[var(--ink)] mb-3 flex items-center gap-2"><AlertTriangle size={14} className="text-[#85683A]" aria-hidden="true" />Signs of Compromised Peptide Solutions</h3>
               <ul className="space-y-2 text-sm text-[var(--graphite)]">
                 <li className="flex gap-2"><span>•</span><span><strong>Turbidity or cloudiness</strong> after full reconstitution may indicate aggregation or microbial contamination</span></li>
                 <li className="flex gap-2"><span>•</span><span><strong>Visible particulates</strong> floating or settled at the bottom of the vial</span></li>

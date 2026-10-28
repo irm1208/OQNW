@@ -115,13 +115,13 @@ export default function Register() {
     extra?: React.ReactNode,
   ) => (
     <div>
-      <label style={{ fontSize: "13px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "6px" }}>
+      <label style={{ fontSize: "13px", fontWeight: 600, color: "#22252C", display: "block", marginBottom: "6px" }}>
         {label}
       </label>
       <div style={{ position: "relative" }}>
         <span style={{
           position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)",
-          color: "#94A3B8", pointerEvents: "none", display: "flex",
+          color: "#8D9BB8", pointerEvents: "none", display: "flex",
         }}>
           {icon}
         </span>
@@ -134,19 +134,19 @@ export default function Register() {
             width: "100%", height: "44px", paddingLeft: "38px",
             paddingRight: extra ? "42px" : "14px",
             borderRadius: "10px",
-            border: `1.5px solid ${errors[key] ? "#FCA5A5" : "#E2E8F0"}`,
+            border: `1.5px solid ${errors[key] ? "#C9939A" : "#D3D8E2"}`,
             fontSize: "14px", color: "#22252C", outline: "none",
-            backgroundColor: errors[key] ? "#FFF5F5" : "#F8FAFC",
+            backgroundColor: errors[key] ? "#F8F2F3" : "#F4F5F8",
             boxSizing: "border-box" as const,
             transition: "border-color 0.15s",
           }}
           onFocus={e => (e.currentTarget.style.borderColor = "#4E68C2")}
-          onBlur={e => (e.currentTarget.style.borderColor = errors[key] ? "#FCA5A5" : "#E2E8F0")}
+          onBlur={e => (e.currentTarget.style.borderColor = errors[key] ? "#C9939A" : "#D3D8E2")}
         />
         {extra}
       </div>
       {errors[key] && (
-        <p style={{ fontSize: "11.5px", color: "#DC2626", marginTop: "4px" }}>{errors[key]}</p>
+        <p style={{ fontSize: "11.5px", color: "#9C4A44", marginTop: "4px" }}>{errors[key]}</p>
       )}
     </div>
   );
@@ -178,7 +178,7 @@ export default function Register() {
           <h1 style={{ fontSize: "26px", fontWeight: 800, color: "#22252C", letterSpacing: "-0.025em", marginBottom: "6px" }}>
             Create your account
           </h1>
-          <p style={{ fontSize: "14px", color: "#64748B" }}>
+          <p style={{ fontSize: "14px", color: "#4A5672" }}>
             Join OmniQure and access 81 research-grade peptides.
           </p>
         </div>
@@ -204,13 +204,13 @@ export default function Register() {
 
             {/* Password */}
             <div>
-              <label style={{ fontSize: "13px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "6px" }}>
+              <label style={{ fontSize: "13px", fontWeight: 600, color: "#22252C", display: "block", marginBottom: "6px" }}>
                 Password
               </label>
               <div style={{ position: "relative" }}>
                 <Lock size={15} style={{
                   position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)",
-                  color: "#94A3B8", pointerEvents: "none",
+                  color: "#8D9BB8", pointerEvents: "none",
                 }} />
                 <input
                   type={showPassword ? "text" : "password"}
@@ -220,32 +220,32 @@ export default function Register() {
                   style={{
                     width: "100%", height: "44px", paddingLeft: "38px", paddingRight: "42px",
                     borderRadius: "10px",
-                    border: `1.5px solid ${errors.password ? "#FCA5A5" : "#E2E8F0"}`,
+                    border: `1.5px solid ${errors.password ? "#C9939A" : "#D3D8E2"}`,
                     fontSize: "14px", color: "#22252C", outline: "none",
-                    backgroundColor: errors.password ? "#FFF5F5" : "#F8FAFC",
+                    backgroundColor: errors.password ? "#F8F2F3" : "#F4F5F8",
                     boxSizing: "border-box",
                     transition: "border-color 0.15s",
                   }}
                   onFocus={e => (e.currentTarget.style.borderColor = "#4E68C2")}
-                  onBlur={e => (e.currentTarget.style.borderColor = errors.password ? "#FCA5A5" : "#E2E8F0")}
+                  onBlur={e => (e.currentTarget.style.borderColor = errors.password ? "#C9939A" : "#D3D8E2")}
                 />
                 <button type="button" onClick={() => setShowPassword(s => !s)}
-                  style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#94A3B8", padding: 0, display: "flex" }}>
+                  style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#8D9BB8", padding: 0, display: "flex" }}>
                   {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>
               </div>
-              {errors.password && <p style={{ fontSize: "11.5px", color: "#DC2626", marginTop: "4px" }}>{errors.password}</p>}
+              {errors.password && <p style={{ fontSize: "11.5px", color: "#9C4A44", marginTop: "4px" }}>{errors.password}</p>}
             </div>
 
             {/* Confirm password */}
             <div>
-              <label style={{ fontSize: "13px", fontWeight: 600, color: "#374151", display: "block", marginBottom: "6px" }}>
+              <label style={{ fontSize: "13px", fontWeight: 600, color: "#22252C", display: "block", marginBottom: "6px" }}>
                 Confirm password
               </label>
               <div style={{ position: "relative" }}>
                 <Lock size={15} style={{
                   position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)",
-                  color: "#94A3B8", pointerEvents: "none",
+                  color: "#8D9BB8", pointerEvents: "none",
                 }} />
                 <input
                   type={showConfirm ? "text" : "password"}
@@ -255,28 +255,28 @@ export default function Register() {
                   style={{
                     width: "100%", height: "44px", paddingLeft: "38px", paddingRight: "42px",
                     borderRadius: "10px",
-                    border: `1.5px solid ${errors.confirm ? "#FCA5A5" : "#E2E8F0"}`,
+                    border: `1.5px solid ${errors.confirm ? "#C9939A" : "#D3D8E2"}`,
                     fontSize: "14px", color: "#22252C", outline: "none",
-                    backgroundColor: errors.confirm ? "#FFF5F5" : "#F8FAFC",
+                    backgroundColor: errors.confirm ? "#F8F2F3" : "#F4F5F8",
                     boxSizing: "border-box",
                     transition: "border-color 0.15s",
                   }}
                   onFocus={e => (e.currentTarget.style.borderColor = "#4E68C2")}
-                  onBlur={e => (e.currentTarget.style.borderColor = errors.confirm ? "#FCA5A5" : "#E2E8F0")}
+                  onBlur={e => (e.currentTarget.style.borderColor = errors.confirm ? "#C9939A" : "#D3D8E2")}
                 />
                 <button type="button" onClick={() => setShowConfirm(s => !s)}
-                  style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#94A3B8", padding: 0, display: "flex" }}>
+                  style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#8D9BB8", padding: 0, display: "flex" }}>
                   {showConfirm ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>
               </div>
-              {errors.confirm && <p style={{ fontSize: "11.5px", color: "#DC2626", marginTop: "4px" }}>{errors.confirm}</p>}
+              {errors.confirm && <p style={{ fontSize: "11.5px", color: "#9C4A44", marginTop: "4px" }}>{errors.confirm}</p>}
             </div>
 
             {/* Age + RUO agreement */}
             <div
               style={{
-                backgroundColor: "#F8FAFF",
-                border: `1.5px solid ${errors.agreed ? "#FCA5A5" : "#E8F2DE"}`,
+                backgroundColor: "#EDF0F9",
+                border: `1.5px solid ${errors.agreed ? "#C9939A" : "#EFF2EF"}`,
                 borderRadius: "10px",
                 padding: "14px",
                 display: "flex",
@@ -287,26 +287,26 @@ export default function Register() {
             >
               <div style={{
                 width: "20px", height: "20px", borderRadius: "6px", flexShrink: 0,
-                border: `2px solid ${agreed ? "#4E68C2" : "#CBD5E1"}`,
+                border: `2px solid ${agreed ? "#4E68C2" : "#D3D8E2"}`,
                 backgroundColor: agreed ? "#4E68C2" : "#fff",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 transition: "all 0.15s",
               }}>
                 {agreed && <CheckCircle2 size={13} color="#fff" strokeWidth={3} />}
               </div>
-              <p style={{ fontSize: "12.5px", color: "#475569", lineHeight: 1.55, margin: 0 }}>
+              <p style={{ fontSize: "12.5px", color: "#4A5672", lineHeight: 1.55, margin: 0 }}>
                 I confirm I am <strong>18 years of age or older</strong> and a qualified researcher. I understand OmniQure products are for <strong>Research Use Only</strong> and not intended for human or veterinary use.
               </p>
             </div>
-            {errors.agreed && <p style={{ fontSize: "11.5px", color: "#DC2626", marginTop: "-8px" }}>{errors.agreed}</p>}
+            {errors.agreed && <p style={{ fontSize: "11.5px", color: "#9C4A44", marginTop: "-8px" }}>{errors.agreed}</p>}
 
             {errors.submit && (
-              <p style={{ fontSize: "13px", color: "#DC2626", backgroundColor: "#FEF2F2", border: "1px solid #FECACA", borderRadius: "8px", padding: "10px 12px", margin: 0 }}>
+              <p style={{ fontSize: "13px", color: "#9C4A44", backgroundColor: "#F8F2F3", border: "1px solid #C9939A", borderRadius: "8px", padding: "10px 12px", margin: 0 }}>
                 {errors.submit}{" "}
                 {errors.submit.includes("already exists") && (
                   <Link
                     href={`/sign-in${returnToAccount ? `?returnTo=account${orderNumber ? `&order=${encodeURIComponent(orderNumber)}` : ""}` : ""}`}
-                    style={{ color: "#B91C1C", fontWeight: 800 }}
+                    style={{ color: "#9C4A44", fontWeight: 800 }}
                   >
                     Sign in instead
                   </Link>
@@ -334,7 +334,7 @@ export default function Register() {
           </form>
 
           {/* Sign in link */}
-          <p style={{ textAlign: "center", fontSize: "14px", color: "#64748B", margin: "24px 0 0" }}>
+          <p style={{ textAlign: "center", fontSize: "14px", color: "#4A5672", margin: "24px 0 0" }}>
             Already have an account?{" "}
             <Link
               href={`/sign-in${returnToAccount ? `?returnTo=account${orderNumber ? `&order=${encodeURIComponent(orderNumber)}` : ""}` : ""}`}
@@ -348,10 +348,10 @@ export default function Register() {
         </div>
 
         {/* Disclaimer */}
-        <p style={{ textAlign: "center", fontSize: "11px", color: "#94A3B8", marginTop: "20px", lineHeight: 1.6 }}>
+        <p style={{ textAlign: "center", fontSize: "11px", color: "#8D9BB8", marginTop: "20px", lineHeight: 1.6 }}>
           By creating an account you agree to our{" "}
-          <a href="/terms" style={{ color: "#64748B" }}>Terms & Conditions</a> and{" "}
-          <a href="/privacy" style={{ color: "#64748B" }}>Privacy Policy</a>.
+          <a href="/terms" style={{ color: "#4A5672" }}>Terms & Conditions</a> and{" "}
+          <a href="/privacy" style={{ color: "#4A5672" }}>Privacy Policy</a>.
         </p>
       </div>
     </div>

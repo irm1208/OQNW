@@ -16,7 +16,7 @@ const CATEGORY_META: Record<string, { icon: React.ReactNode; description: string
   "Healing Peptides": {
     icon: <Heart size={15} />,
     description: "The most widely researched peptides for tissue repair, wound healing, and musculoskeletal recovery.",
-    accent: "#059669",
+    accent: "#4F6B52",
   },
   "Growth Peptides": {
     icon: <Zap size={15} />,
@@ -26,42 +26,42 @@ const CATEGORY_META: Record<string, { icon: React.ReactNode; description: string
   "Weight Management": {
     icon: <Scale size={15} />,
     description: "Next-generation GLP-1/GIP receptor agonists and lipolytic peptides leading metabolic research.",
-    accent: "#DC2626",
+    accent: "#9C4A44",
   },
   "Nootropics": {
     icon: <Brain size={15} />,
     description: "CNS-active peptides studied for BDNF upregulation, neuroprotection, and cognitive modulation.",
-    accent: "#7C3AED",
+    accent: "#5E5690",
   },
   "Cellular Health": {
     icon: <Microscope size={15} />,
     description: "Mitochondria-derived peptides and NAD+ compounds at the cutting edge of cellular longevity research.",
-    accent: "#0891B2",
+    accent: "#4C7376",
   },
   "Immune Support": {
     icon: <Shield size={15} />,
     description: "Clinically studied immunomodulatory peptides covering both innate and adaptive immune pathways.",
-    accent: "#B45309",
+    accent: "#85683A",
   },
   "Longevity Peptides": {
     icon: <Clock size={15} />,
     description: "Telomerase-activating and anti-senescence peptides at the frontier of ageing biology research.",
-    accent: "#C2410C",
+    accent: "#85683A",
   },
   "Skin & Repair": {
     icon: <Sparkles size={15} />,
     description: "Copper tripeptides and dermal repair compounds studied for collagen synthesis and wound healing.",
-    accent: "#BE185D",
+    accent: "#9C4A44",
   },
   "Peptide Blends": {
     icon: <FlaskConical size={15} />,
     description: "Pre-combined research formulations pairing synergistic compounds in a single vial.",
-    accent: "#0D9488",
+    accent: "#4C7376",
   },
   "Research Peptides": {
     icon: <Dna size={15} />,
     description: "Specialised compounds under active research investigation across multiple biological pathways.",
-    accent: "#475569",
+    accent: "#4A5672",
   },
 };
 
@@ -121,7 +121,7 @@ export default function PopularPeptides() {
     <div style={{ fontFamily: "'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif", backgroundColor: "#F2F0EB", minHeight: "100vh" }}>
       {/* Hero */}
       <div style={{
-        background: "linear-gradient(90deg, #22252C 0%, #4E68C2 40%, #4E68C2 75%, #3B6CE6 100%)",
+        background: "#1D2948",
         padding: "36px 0 30px",
         position: "relative",
         overflow: "hidden",
@@ -134,7 +134,7 @@ export default function PopularPeptides() {
         <div style={{
           position: "absolute", top: "-60px", right: "10%",
           width: "280px", height: "280px", borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)",
+          background: "transparent",
           pointerEvents: "none",
         }} />
         <div className="max-w-[1280px] mx-auto px-4" style={{ position: "relative", zIndex: 1 }}>
@@ -162,29 +162,29 @@ export default function PopularPeptides() {
       </div>
 
       {/* Bundle & Save banner */}
-      <div style={{ background: "linear-gradient(90deg, #22252C 0%, #4E68C2 40%, #4E68C2 75%, #3B6CE6 100%)", borderBottom: "1px solid rgba(255,255,255,0.08)", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: "-30px", right: "18%", width: "180px", height: "80px", borderRadius: "50%", background: "radial-gradient(circle, rgba(52,211,153,0.16) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div style={{ background: "#1D2948", borderBottom: "1px solid rgba(255,255,255,0.08)", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: "-30px", right: "18%", width: "180px", height: "80px", borderRadius: "50%", background: "transparent", pointerEvents: "none" }} />
         <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)", backgroundSize: "22px 22px", pointerEvents: "none" }} />
         <div className="max-w-[1280px] mx-auto px-4 py-3" style={{ position: "relative", zIndex: 1 }}>
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "10px", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
-              <div style={{ backgroundColor: "#34D399", borderRadius: "5px", padding: "2px 8px" }}>
-                <span style={{ fontSize: "9.5px", fontWeight: 900, letterSpacing: "0.1em", color: "#022c22", textTransform: "uppercase" }}>Bundle & Save</span>
+              <div style={{ backgroundColor: "#94A895", borderRadius: "5px", padding: "2px 8px" }}>
+                <span style={{ fontSize: "9.5px", fontWeight: 900, letterSpacing: "0.1em", color: "#4F6B52", textTransform: "uppercase" }}>Bundle & Save</span>
               </div>
               <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>Buy more, get rewards — 3-4 vials unlock a free 10ml BAC water ampule</span>
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", alignItems: "center" }}>
               {[
-                { label: "3-4 vials", freebie: "Free 10ml BAC Water Ampule",  bg: "rgba(96,165,250,0.15)",  border: "rgba(96,165,250,0.4)",  color: "#B4D89C" },
-                { label: "5-9 vials", freebie: "1 Peptide Free",  bg: "rgba(52,211,153,0.15)",  border: "rgba(52,211,153,0.4)",  color: "#6EE7B7" },
-                { label: "10+ vials", freebie: "2 Peptides Free", bg: "rgba(248,113,113,0.18)", border: "rgba(248,113,113,0.45)", color: "#FCA5A5" },
+                { label: "3-4 vials", freebie: "Free 10ml BAC Water Ampule",  bg: "rgba(96,165,250,0.15)",  border: "rgba(96,165,250,0.4)",  color: "#94A895" },
+                { label: "5-9 vials", freebie: "1 Peptide Free",  bg: "rgba(52,211,153,0.15)",  border: "rgba(52,211,153,0.4)",  color: "#94A895" },
+                { label: "10+ vials", freebie: "2 Peptides Free", bg: "rgba(248,113,113,0.18)", border: "rgba(248,113,113,0.45)", color: "#C9939A" },
               ].map(t => (
                 <div key={t.label} style={{ display: "flex", alignItems: "center", gap: "5px", backgroundColor: t.bg, border: `1px solid ${t.border}`, borderRadius: "7px", padding: "4px 10px" }}>
                   <span style={{ fontSize: "10.5px", color: "rgba(255,255,255,0.5)", fontWeight: 600 }}>{t.label}</span>
                   <span style={{ fontSize: "11.5px", fontWeight: 900, color: t.color, lineHeight: 1 }}>{t.freebie}</span>
                 </div>
               ))}
-              <Link href="/all-peptides" style={{ fontSize: "11.5px", fontWeight: 800, color: "#022c22", backgroundColor: "#34D399", padding: "5px 15px", borderRadius: "7px", textDecoration: "none", whiteSpace: "nowrap", boxShadow: "0 0 12px rgba(52,211,153,0.3)" }}>
+              <Link href="/all-peptides" style={{ fontSize: "11.5px", fontWeight: 800, color: "#4F6B52", backgroundColor: "#94A895", padding: "5px 15px", borderRadius: "7px", textDecoration: "none", whiteSpace: "nowrap", boxShadow: "0 0 12px rgba(52,211,153,0.3)" }}>
                 Build Bundle →
               </Link>
             </div>
@@ -201,8 +201,8 @@ export default function PopularPeptides() {
             className="text-sm font-semibold px-4 py-1.5 rounded-full transition-all"
             style={{
               backgroundColor: activeCategory === "All" ? "#4E68C2" : "#fff",
-              color: activeCategory === "All" ? "#fff" : "#475569",
-              border: activeCategory === "All" ? "1.5px solid #4E68C2" : "1.5px solid #E2E8F0",
+              color: activeCategory === "All" ? "#fff" : "#4A5672",
+              border: activeCategory === "All" ? "1.5px solid #4E68C2" : "1.5px solid #D3D8E2",
               cursor: "pointer",
             }}
           >
@@ -219,8 +219,8 @@ export default function PopularPeptides() {
                 className="flex items-center gap-1.5 text-sm font-semibold px-3.5 py-1.5 rounded-full transition-all"
                 style={{
                   backgroundColor: active ? (meta?.accent ?? "#4E68C2") : "#fff",
-                  color: active ? "#fff" : "#475569",
-                  border: active ? `1.5px solid ${meta?.accent ?? "#4E68C2"}` : "1.5px solid #E2E8F0",
+                  color: active ? "#fff" : "#4A5672",
+                  border: active ? `1.5px solid ${meta?.accent ?? "#4E68C2"}` : "1.5px solid #D3D8E2",
                   cursor: "pointer",
                 }}
               >
@@ -233,8 +233,8 @@ export default function PopularPeptides() {
 
         {/* Results count */}
         <div className="flex items-center justify-between mb-6">
-          <p style={{ fontSize: "13px", color: "#94A3B8" }}>
-            Showing <strong style={{ color: "#475569" }}>{totalShown}</strong> compound{totalShown !== 1 ? "s" : ""}
+          <p style={{ fontSize: "13px", color: "#8D9BB8" }}>
+            Showing <strong style={{ color: "#4A5672" }}>{totalShown}</strong> compound{totalShown !== 1 ? "s" : ""}
             {activeCategory !== "All" ? ` in ${activeCategory}` : " across all categories"}
           </p>
           {activeCategory !== "All" && (
@@ -289,7 +289,7 @@ export default function PopularPeptides() {
                         </span>
                       </div>
                       {meta?.description && (
-                        <p className="text-xs mt-0.5" style={{ color: "#94A3B8", maxWidth: "520px" }}>
+                        <p className="text-xs mt-0.5" style={{ color: "#8D9BB8", maxWidth: "520px" }}>
                           {meta.description}
                         </p>
                       )}

@@ -107,7 +107,7 @@ function AffiliateLanding({ program }: { program: any }) {
                   {i === 0 ? `Receive ${tier.commissionRatePercent}% as a monetary payment on eligible sales.` : `After reaching this level, receive ${tier.commissionRatePercent}% as a monetary payment on your next eligible sales.`}
                 </div>
                 {tier.rewardCreditGbp > 0 && (
-                  <div style={{ background: "#FFF6F2", padding: "10px 12px", borderRadius: 10, fontSize: 12.5, color: COBALT, fontWeight: 500, display: "flex", alignItems: "flex-start", gap: 6, lineHeight: 1.45 }}>
+                  <div style={{ background: "#F8F4EF", padding: "10px 12px", borderRadius: 10, fontSize: 12.5, color: COBALT, fontWeight: 500, display: "flex", alignItems: "flex-start", gap: 6, lineHeight: 1.45 }}>
                     <Gift size={14} style={{ flexShrink: 0, marginTop: 1 }} aria-hidden="true" /> Choose one eligible product up to £{tier.rewardCreditGbp}
                   </div>
                 )}
@@ -212,13 +212,13 @@ function AffiliatePending({ status }: { status: string }) {
     <div className="w-full max-w-[640px] mx-auto my-14 lg:my-20 px-6 py-10 text-center" style={{ ...card, background: "#F2F0EB" }}>
       {status === 'pending' ? (
         <>
-          <span className="mx-auto mb-5 flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#FFF6F2", color: COBALT }}><Clock size={18} aria-hidden="true" /></span>
+          <span className="mx-auto mb-5 flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#F8F4EF", color: COBALT }}><Clock size={18} aria-hidden="true" /></span>
           <h2 style={{ ...h2Style, fontSize: 24, marginBottom: 10 }}>Application Under Review</h2>
            <p style={subStyle}>We've received your application and our team is currently reviewing it. Your tracking link, discount code, payments, and rewards become available after admin approval.</p>
         </>
       ) : (
         <>
-          <span className="mx-auto mb-5 flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#FEF2F2", color: "#DC2626" }}><XCircle size={18} aria-hidden="true" /></span>
+          <span className="mx-auto mb-5 flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: "#F8F2F3", color: "#9C4A44" }}><XCircle size={18} aria-hidden="true" /></span>
           <h2 style={{ ...h2Style, fontSize: 24, marginBottom: 10 }}>Application Declined</h2>
           <p style={subStyle}>Your affiliate access is not active. Tracking links, discount codes, payments, and rewards are available only after admin approval.</p>
         </>
@@ -284,7 +284,7 @@ function AffiliateDashboard({ me, program }: { me: any, program: any }) {
           <div style={{ background: "#fff", border: HAIR, padding: "6px 8px 6px 16px", borderRadius: 9999, display: "flex", alignItems: "center", gap: 12 }}>
             <span style={{ fontSize: 12, fontWeight: 500, color: GRAPHITE }}>Discount Code:</span>
             <span style={{ fontSize: 14, fontWeight: 600, color: INK, letterSpacing: "0.05em", fontFamily: "var(--app-font-mono)" }}>{partner.discountCode}</span>
-            <button data-testid="button-copy-affiliate-code" onClick={() => copyToClipboard(partner.discountCode, 'code')} aria-label="Copy discount code" style={{ background: "#FFF6F2", border: "none", cursor: "pointer", color: COBALT, padding: 7, borderRadius: 9999, display: "inline-flex" }}>
+            <button data-testid="button-copy-affiliate-code" onClick={() => copyToClipboard(partner.discountCode, 'code')} aria-label="Copy discount code" style={{ background: "#F8F4EF", border: "none", cursor: "pointer", color: COBALT, padding: 7, borderRadius: 9999, display: "inline-flex" }}>
               {copiedCode ? <CheckCircle2 size={16} /> : <Copy size={16} />}
             </button>
           </div>
@@ -322,7 +322,7 @@ function AffiliateDashboard({ me, program }: { me: any, program: any }) {
             £{tierProgress.rollingSalesGbp.toFixed(2)} settled sales
           </p>
         </div>
-        <div style={{ height: 8, borderRadius: 999, background: "#EDF0F5", overflow: "hidden", marginTop: 16 }}>
+        <div style={{ height: 8, borderRadius: 999, background: "#F4F5F8", overflow: "hidden", marginTop: 16 }}>
           <div style={{ height: "100%", width: `${tierProgress.progressPercent}%`, background: COBALT, borderRadius: 999 }} />
         </div>
         <p style={{ color: GRAPHITE, fontSize: 12.5, margin: "8px 0 0" }}>
@@ -386,8 +386,8 @@ function AffiliateDashboard({ me, program }: { me: any, program: any }) {
                         <span style={{
                           display: "inline-flex", alignItems: "center", gap: 4,
                           padding: "3px 10px", borderRadius: 9999, fontSize: 12, fontWeight: 500,
-                          background: c.status === 'paid' ? "#ECFDF5" : c.status === 'approved' ? "#E8F2DE" : c.status === 'rejected' ? "#FEF2F2" : "#F8FAFC",
-                          color: c.status === 'paid' ? "#059669" : c.status === 'approved' ? "#3D55A8" : c.status === 'rejected' ? "#DC2626" : GRAPHITE,
+                          background: c.status === 'paid' ? "#EFF2EF" : c.status === 'approved' ? "#EFF2EF" : c.status === 'rejected' ? "#F8F2F3" : "#F4F5F8",
+                          color: c.status === 'paid' ? "#4F6B52" : c.status === 'approved' ? "#0A2472" : c.status === 'rejected' ? "#9C4A44" : GRAPHITE,
                         }}>
                           {c.status.charAt(0).toUpperCase() + c.status.slice(1)}
                         </span>
@@ -420,7 +420,7 @@ function AffiliateDashboard({ me, program }: { me: any, program: any }) {
                     </div>
                     <span style={{
                       padding: "3px 10px", borderRadius: 9999, fontSize: 10.5, fontWeight: 500, letterSpacing: "0.06em", textTransform: "uppercase",
-                      background: r.status === 'available' ? "#FFF6F2" : "#F2F0EB",
+                      background: r.status === 'available' ? "#F8F4EF" : "#F2F0EB",
                       color: r.status === 'available' ? COBALT : GRAPHITE
                     }}>
                       {r.status}

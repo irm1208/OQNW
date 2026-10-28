@@ -68,7 +68,7 @@ export default function TermsPage() {
       {/* RUO Banner */}
       <div style={{ backgroundColor: "#F2F0EB", borderBottom: "1px solid rgba(11,18,32,0.09)" }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 xl:px-12 py-3 flex items-start gap-2">
-          <AlertTriangle size={14} aria-hidden="true" className="mt-0.5" style={{ color: "#D97706", flexShrink: 0 }} />
+          <AlertTriangle size={14} aria-hidden="true" className="mt-0.5" style={{ color: "#85683A", flexShrink: 0 }} />
           <p className="text-xs leading-relaxed" style={{ color: "var(--graphite)" }}>
             <strong>Important:</strong> All products sold by {COMPANY_SHORT} are strictly for in-vitro laboratory research use only. They are not medicines, drugs, food supplements, or approved for human or veterinary use. By purchasing, you confirm you are 18 or over and a qualified researcher.
           </p>
@@ -118,7 +118,7 @@ export default function TermsPage() {
 
             <Section id="ruo" number="2" title="Research Use Only — Critical Notice">
               <div className="rounded-xl p-4" style={{ backgroundColor: "#F2F0EB", border: "1px solid rgba(11,18,32,0.09)" }}>
-                <p className="font-semibold mb-2 flex items-start gap-1.5" style={{ color: "var(--ink)" }}><AlertTriangle size={14} aria-hidden="true" className="mt-1" style={{ color: "#D97706", flexShrink: 0 }} />All products are sold strictly for in-vitro laboratory research use only.</p>
+                <p className="font-semibold mb-2 flex items-start gap-1.5" style={{ color: "var(--ink)" }}><AlertTriangle size={14} aria-hidden="true" className="mt-1" style={{ color: "#85683A", flexShrink: 0 }} />All products are sold strictly for in-vitro laboratory research use only.</p>
                 <ul className="space-y-1.5 text-sm" style={{ color: "var(--graphite)" }}>
                   {[
                     "Products are NOT approved by the FDA, MHRA, EMA, or any other regulatory authority for human or veterinary use.",

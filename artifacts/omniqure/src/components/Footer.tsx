@@ -62,7 +62,7 @@ export default function Footer() {
               Research peptides manufactured to the highest standards of quality and purity. 99%+ independently verified purity across every published result.
             </p>
             <div className="mt-6 inline-flex items-center gap-2 rounded-full px-3 py-1.5" style={{ border: `1px solid ${HAIRLINE}`, background: "rgba(239,244,252,0.4)" }}>
-              <span className="h-1.5 w-1.5 rounded-full" style={{ background: "#16A34A" }} />
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: "#4F6B52" }} />
               <span style={mono}>Janoshik verified · RUO</span>
             </div>
             <address className="mt-6 not-italic" style={{ fontSize: 12, lineHeight: 1.6, color: "rgba(74,85,104,0.8)" }}>

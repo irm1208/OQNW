@@ -168,7 +168,7 @@ function renderMarkdown(text: string): React.ReactNode {
     const bold = part.match(/^\*\*(.+)\*\*$/);
     if (bold) return <strong key={i}>{bold[1]}</strong>;
     const link = part.match(/^\[(.+)\]\((.+)\)$/);
-    if (link) return <a key={i} href={link[2]} style={{ color: "#E8A93E", textDecoration: "underline" }}>{link[1]}</a>;
+    if (link) return <a key={i} href={link[2]} style={{ color: "#85683A", textDecoration: "underline" }}>{link[1]}</a>;
     return part;
   });
 }
@@ -266,7 +266,7 @@ export default function ChatWidget() {
         >
           <div
             style={{
-              background: "linear-gradient(90deg, #22252C 0%, #4E68C2 60%, #4E68C2 100%)",
+              background: "#1D2948",
               padding: "14px 16px",
               display: "flex",
               alignItems: "center",
@@ -285,7 +285,7 @@ export default function ChatWidget() {
                 flexShrink: 0,
               }}
             >
-              <Bot size={20} color="#E8A93E" />
+              <Bot size={20} color="#85683A" />
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 700, fontSize: "13.5px", color: "#fff" }}>OmniQure Peptide Assistant</div>
@@ -309,7 +309,7 @@ export default function ChatWidget() {
               display: "flex",
               flexDirection: "column",
               gap: "10px",
-              background: "#F7F8FB",
+              background: "#F4F5F8",
             }}
           >
             {messages.map((m) => (
@@ -324,9 +324,9 @@ export default function ChatWidget() {
                   style={{
                     maxWidth: "85%",
                     background: m.role === "user"
-                      ? "linear-gradient(135deg, #4E68C2, #4E68C2)"
+                      ? "#4E68C2"
                       : "#fff",
-                    color: m.role === "user" ? "#fff" : "#1a1a2e",
+                    color: m.role === "user" ? "#fff" : "#22252C",
                     borderRadius: m.role === "user"
                       ? "16px 16px 4px 16px"
                       : "16px 16px 16px 4px",
@@ -378,7 +378,7 @@ export default function ChatWidget() {
           <div
             style={{
               padding: "10px 12px",
-              borderTop: "1px solid #E8EAF0",
+              borderTop: "1px solid #D3D8E2",
               background: "#fff",
               display: "flex",
               gap: "8px",
@@ -393,13 +393,13 @@ export default function ChatWidget() {
               placeholder="Ask about peptides, shipping, storage…"
               style={{
                 flex: 1,
-                border: "1.5px solid #DDE0EA",
+                border: "1.5px solid #D3D8E2",
                 borderRadius: "10px",
                 padding: "8px 12px",
                 fontSize: "13px",
                 outline: "none",
-                color: "#1a1a2e",
-                background: "#F7F8FB",
+                color: "#22252C",
+                background: "#F4F5F8",
               }}
             />
             <button
@@ -410,8 +410,8 @@ export default function ChatWidget() {
                 height: 36,
                 borderRadius: "10px",
                 background: input.trim()
-                  ? "linear-gradient(135deg, #4E68C2, #4E68C2)"
-                  : "#E8EAF0",
+                  ? "#4E68C2"
+                  : "#D3D8E2",
                 border: "none",
                 cursor: input.trim() ? "pointer" : "default",
                 display: "flex",
@@ -437,13 +437,13 @@ export default function ChatWidget() {
             width: "58px",
             height: "58px",
             borderRadius: "50%",
-            background: "linear-gradient(135deg, #22252C 0%, #4E68C2 100%)",
+            background: "#1D2948",
             border: "none",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            boxShadow: "0 4px 20px rgba(59, 98, 171,0.45), 0 2px 6px rgba(0,0,0,0.15)",
+            boxShadow: "0 4px 20px rgba(78, 104, 194,0.45), 0 2px 6px rgba(0,0,0,0.15)",
             zIndex: 9999,
             opacity: entered ? 1 : 0,
             transform: entered ? "scale(1) translateY(0)" : "scale(0.6) translateY(12px)",
@@ -451,11 +451,11 @@ export default function ChatWidget() {
           }}
           onMouseEnter={(e) => {
             (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.08)";
-            (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 6px 28px rgba(59, 98, 171,0.55), 0 2px 8px rgba(0,0,0,0.18)";
+            (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 6px 28px rgba(78, 104, 194,0.55), 0 2px 8px rgba(0,0,0,0.18)";
           }}
           onMouseLeave={(e) => {
             (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
-            (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 20px rgba(59, 98, 171,0.45), 0 2px 6px rgba(0,0,0,0.15)";
+            (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 20px rgba(78, 104, 194,0.45), 0 2px 6px rgba(0,0,0,0.15)";
           }}
           title="Research Assistant"
         >
