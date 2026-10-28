@@ -50,10 +50,10 @@ function HeroSection() {
    actions and four proof points. One block instead of a CTA strip plus a
    separate badge row. */
 const PROOF = [
-  { icon: FlaskConical, label: "99%+ HPLC purity" },
-  { icon: ShieldCheck, label: "Janoshik lab reports" },
-  { icon: Clock, label: "Same-day dispatch" },
-  { icon: Truck, label: "Free UK tracked delivery" },
+  { icon: FlaskConical, label: "99%+ purity", detail: "HPLC tested, every batch" },
+  { icon: ShieldCheck, label: "Lab reports", detail: "Published by Janoshik" },
+  { icon: Clock, label: "Same-day dispatch", detail: "Order by 12:00, Mon–Fri" },
+  { icon: Truck, label: "Free UK delivery", detail: "Tracked and discreet" },
 ];
 
 function BrandBand() {
@@ -72,8 +72,14 @@ function BrandBand() {
           <Link href="/bundle-and-save" className="home-btn home-btn--ghost">Build a bundle</Link>
         </div>
         <ul className="home-band__proof">
-          {PROOF.map(({ icon: Icon, label }) => (
-            <li key={label}><Icon size={16} aria-hidden="true" />{label}</li>
+          {PROOF.map(({ icon: Icon, label, detail }) => (
+            <li key={label}>
+              <span className="home-band__icon"><Icon size={17} aria-hidden="true" /></span>
+              <span className="home-band__point">
+                <span className="home-band__point-title">{label}</span>
+                <span className="home-band__point-detail">{detail}</span>
+              </span>
+            </li>
           ))}
         </ul>
       </div>
