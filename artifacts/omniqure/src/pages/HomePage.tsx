@@ -49,10 +49,10 @@ function HeroSection() {
    actions and four proof points. One block instead of a CTA strip plus a
    separate badge row. */
 const PROOF = [
-  { icon: TestTubes, label: "99%+ purity", detail: "HPLC tested, every batch" },
-  { icon: FileBadge, label: "Lab reports", detail: "Published by Janoshik" },
-  { icon: Timer, label: "Same-day dispatch", detail: "Order by 12:00, Mon–Fri" },
-  { icon: Truck, label: "Free UK delivery", detail: "Tracked and discreet" },
+  { icon: TestTubes, tone: "var(--oq-sage)", label: "99%+ purity", detail: "HPLC tested, every batch" },
+  { icon: FileBadge, tone: "var(--oq-lavender)", label: "Lab reports", detail: "Published by Janoshik" },
+  { icon: Timer, tone: "var(--oq-sand)", label: "Same-day dispatch", detail: "Order by 12:00, Mon–Fri" },
+  { icon: Truck, tone: "var(--oq-teal-grey)", label: "Free UK delivery", detail: "Tracked and discreet" },
 ];
 
 function BrandBand() {
@@ -60,8 +60,8 @@ function BrandBand() {
     <section className="home-band" aria-label="Why order from OmniQure">
       <div className="pinstripe" aria-hidden="true" />
       <ul className="home-band__proof">
-        {PROOF.map(({ icon: Icon, label, detail }) => (
-          <li key={label}>
+        {PROOF.map(({ icon: Icon, tone, label, detail }) => (
+          <li key={label} style={{ "--tone": tone } as React.CSSProperties}>
             <Icon size={18} strokeWidth={1.75} aria-hidden="true" />
             <span className="home-band__point">
               <span className="home-band__point-title">{label}</span>
