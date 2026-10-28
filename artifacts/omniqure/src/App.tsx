@@ -200,7 +200,7 @@ function PageFade({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || isInPlaceNavigation()) return;
     el.animate(
       [
         { opacity: 0, transform: "translateY(5px)" },

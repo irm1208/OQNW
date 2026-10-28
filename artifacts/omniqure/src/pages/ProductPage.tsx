@@ -63,6 +63,13 @@ function Formula({ value }: { value: string }) {
   );
 }
 
+/** The main gallery photograph for a product, as chosen in ProductPage. */
+function vialPhotoFor(v: Product): string {
+  const source = v.sourceImage ?? v.image;
+  const legacy = versionVialAsset(studioImageForProduct(v.id, source)) ?? source;
+  return getVialImage(v.slug) ?? (legacy !== source ? legacy : undefined) ?? v.image;
+}
+
 export default function ProductPage() {
   const { products, productDetails, loading: productsLoading } = useProducts();
   const params = useParams<{ id: string }>();
@@ -153,6 +160,16 @@ export default function ProductPage() {
   useEffect(() => {
     if (product) trackView(product.id);
   }, [product?.id]);
+
+  // Preload the other strengths' photographs so switching strength swaps
+  // the image at once instead of waiting on the network.
+  useEffect(() => {
+    if (!product) return;
+    const base = parseBaseName(product.name).base;
+    for (const v of products) {
+      if (v.id !== product.id && parseBaseName(v.name).base === base) new Image().src = vialPhotoFor(v);
+    }
+  }, [product?.id, products]);
 
   // On phones the main buy button can sit below the fold; show a compact
   // sticky bar once it scrolls out of view so the price and CTA stay reachable.
@@ -397,8 +414,9 @@ export default function ProductPage() {
           {/* Gallery */}
           <div className="product-gallery-col md:sticky md:top-[156px] md:self-start">
             <div className="product-gallery-media relative aspect-square overflow-hidden rounded-[14px]" style={{ background: STUDIO_BG }}>
+              {/* No key: the same element keeps showing the current photo
+                  until the next strength's photo has loaded. */}
               <img
-                key={activeImage.src}
                 src={activeImage.src}
                 onError={studioFallback(activeImage.fallback)}
                 alt={activeImage.alt}
