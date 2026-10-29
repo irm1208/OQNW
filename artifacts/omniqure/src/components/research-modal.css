@@ -1,0 +1,99 @@
+/* Research literature modal: compact, matte, Poppins; bottom sheet on phones. */
+.rlm {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+  background: rgba(29, 41, 72, 0.55);
+  font-family: 'Poppins', system-ui, sans-serif;
+  animation: rlm-fade 0.16s ease-out;
+}
+.rlm__dialog {
+  display: flex; flex-direction: column;
+  width: 100%; max-width: 560px; max-height: min(640px, calc(100dvh - 32px));
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--oq-graphite);
+  outline: none;
+  animation: rlm-rise 0.2s ease-out;
+}
+.rlm__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px 22px 14px; }
+.rlm__eyebrow { margin: 0 0 4px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--oq-slate); }
+.rlm__title { margin: 0; font-size: 20px; font-weight: 700; line-height: 1.2; letter-spacing: -0.015em; color: var(--oq-matte-navy); }
+.rlm__close {
+  display: inline-flex; flex: none; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 999px; color: var(--oq-slate);
+  transition: background 0.15s;
+}
+.rlm__close:hover { background: #F4F5F8; }
+.rlm__close:focus-visible, .rlm__tab:focus-visible, .rlm__copy:focus-visible, .rlm__paper-head:focus-visible { outline: 2px solid var(--oq-cornflower); outline-offset: 2px; }
+
+.rlm__tabs { display: flex; gap: 4px; padding: 0 22px; border-bottom: 1px solid var(--oq-mist); }
+.rlm__tab {
+  position: relative; padding: 10px 10px 12px; font-size: 13.5px; font-weight: 500; color: var(--oq-slate);
+  transition: color 0.15s;
+}
+.rlm__tab:first-child { padding-left: 0; }
+.rlm__tab:hover { color: var(--oq-matte-navy); }
+.rlm__tab[aria-selected="true"] { font-weight: 600; color: var(--oq-matte-navy); }
+.rlm__tab[aria-selected="true"]::after {
+  content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; background: var(--oq-matte-navy);
+}
+.rlm__tab:first-child[aria-selected="true"]::after { left: 0; }
+
+.rlm__body { flex: 1; min-height: 180px; overflow-y: auto; overscroll-behavior: contain; padding: 18px 22px 8px; }
+.rlm__rows { margin: 0; }
+.rlm__rows > div { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 12px; padding: 10px 0; border-bottom: 1px solid #ECEEF3; }
+.rlm__rows > div:last-child { border-bottom: 0; }
+.rlm__rows dt { font-size: 12px; font-weight: 500; color: var(--oq-slate); }
+.rlm__rows dd { margin: 0; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.5; color: var(--oq-label-blue); overflow-wrap: anywhere; }
+.rlm__label { margin: 16px 0 8px; font-size: 12px; font-weight: 500; color: var(--oq-slate); }
+.rlm__chips ul { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.rlm__chips li { max-width: 100%; padding: 4px 10px; border-radius: 999px; background: #F4F5F8; font-size: 12px; color: var(--oq-graphite); overflow-wrap: anywhere; }
+.rlm__muted { margin: 0 0 12px; font-size: 13px; line-height: 1.6; color: var(--oq-slate); }
+.rlm__count { margin: 0 0 10px; font-size: 13px; line-height: 1.6; color: var(--oq-slate); }
+.rlm__count strong { font-weight: 600; color: var(--oq-matte-navy); }
+
+.rlm__papers { margin: 0; padding: 0; list-style: none; }
+.rlm__paper { border-top: 1px solid #ECEEF3; }
+.rlm__paper-head { display: flex; width: 100%; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 12px 0; text-align: left; }
+.rlm__paper-head svg { flex: none; margin-top: 2px; color: var(--oq-slate); transition: transform 0.18s; }
+.rlm__paper-head[aria-expanded="true"] svg { transform: rotate(180deg); }
+.rlm__paper-title { display: block; font-size: 13.5px; font-weight: 600; line-height: 1.45; color: var(--oq-matte-navy); }
+.rlm__paper-head:hover .rlm__paper-title { color: var(--oq-cornflower); }
+.rlm__paper-meta { display: block; margin-top: 3px; font-size: 12px; color: var(--oq-slate); }
+.rlm__abstract { padding: 0 0 14px; }
+.rlm__abstract p { margin: 0 0 10px; font-size: 13px; line-height: 1.65; color: var(--oq-graphite); }
+.rlm__abstract .rlm__pmid { margin: 0; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; color: var(--oq-slate); }
+
+.rlm__cas { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; padding: 14px 16px; border-radius: 6px; background: #F4F5F8; }
+.rlm__cas-num { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 20px; font-weight: 500; letter-spacing: 0.02em; color: var(--oq-matte-navy); }
+.rlm__copy {
+  display: inline-flex; flex: none; align-items: center; gap: 6px; height: 32px; padding: 0 12px;
+  border: 1px solid var(--oq-mist); border-radius: 999px; background: #fff; font-size: 12.5px; font-weight: 600; color: var(--oq-matte-navy);
+  transition: border-color 0.15s;
+}
+.rlm__copy:hover { border-color: var(--oq-dusty-blue); }
+
+.rlm__loading { display: grid; gap: 10px; padding: 6px 0 12px; }
+.rlm__loading span { display: block; height: 12px; border-radius: 4px; background: linear-gradient(90deg, #EEF0F4 0%, #F6F7F9 50%, #EEF0F4 100%); background-size: 200% 100%; animation: rlm-shimmer 1.2s linear infinite; }
+.rlm__loading span:nth-child(2) { width: 80%; }
+.rlm__loading span:nth-child(3) { width: 60%; }
+
+.rlm__foot { margin: 0; padding: 12px 22px 16px; border-top: 1px solid #ECEEF3; font-size: 11px; line-height: 1.5; color: var(--oq-slate); }
+
+@keyframes rlm-fade { from { opacity: 0; } }
+@keyframes rlm-rise { from { opacity: 0; transform: translateY(8px); } }
+@keyframes rlm-shimmer { to { background-position: -200% 0; } }
+
+@media (max-width: 639px) {
+  .rlm { align-items: flex-end; padding: 0; }
+  .rlm__dialog { max-width: none; max-height: 86dvh; border-radius: 12px 12px 0 0; }
+  .rlm__head { padding: 18px 18px 12px; }
+  .rlm__tabs, .rlm__body { padding-left: 18px; padding-right: 18px; }
+  .rlm__foot { padding: 10px 18px calc(14px + env(safe-area-inset-bottom)); }
+  .rlm__rows > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rlm, .rlm__dialog, .rlm__loading span { animation: none; }
+}

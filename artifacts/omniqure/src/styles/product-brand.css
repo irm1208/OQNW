@@ -886,11 +886,12 @@
 .product-page .spec-lit__list li + li { border-top: 1px solid rgba(255, 255, 255, 0.1); }
 .product-page .spec-lit__link {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 12px 0; color: #F2F0EB; transition: color 0.18s;
+  width: 100%; padding: 12px 0; text-align: left; color: #F2F0EB; transition: color 0.18s;
 }
 .product-page .spec-lit__link > span { min-width: 0; }
 .product-page .spec-lit__link svg { flex: none; color: var(--range); transition: transform 0.18s; }
-.product-page .spec-lit__link:hover svg { transform: translate(2px, -2px); }
+.product-page .spec-lit__link:hover svg { transform: translateX(3px); }
+.product-page .spec-lit__link:hover .spec-lit__name { color: #fff; text-decoration: underline; text-decoration-color: var(--range); text-underline-offset: 3px; }
 .product-page .spec-lit__link:focus-visible { outline: 2px solid var(--range); outline-offset: 2px; border-radius: 2px; }
 .product-page .spec-lit__name { display: block; font-size: 14px; font-weight: 600; }
 .product-page .spec-lit__desc { display: block; font-size: 12.5px; color: #AEB8CC; overflow-wrap: anywhere; }

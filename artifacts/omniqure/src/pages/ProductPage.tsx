@@ -14,6 +14,7 @@ import { janoshikDataBySlug } from "@/data/janoshikData";
 import sunburstCards from "@/data/sunburstCards.json";
 import { resolveBacWaterProducts } from "@/data/bacWaterProducts";
 import JanoshikReportModal from "@/components/JanoshikReportModal";
+import ResearchLiteratureModal, { type LiteratureTab } from "@/components/ResearchLiteratureModal";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { getLotNumber } from "@/utils/productPurity";
@@ -83,6 +84,7 @@ export default function ProductPage() {
   const [showStickyCta, setShowStickyCta] = useState(false);
   const ctaRef = useRef<HTMLDivElement | null>(null);
   const [showJanoshikModal, setShowJanoshikModal] = useState(false);
+  const [literatureTab, setLiteratureTab] = useState<LiteratureTab | null>(null);
   const [imageIdx, setImageIdx] = useState(0);
   const { addToCart, items, peptideQty, freeUnitsByProductId, removeFromCart, updateQuantity } = useCart();
   const { trackView } = useRecentlyViewed();
@@ -350,10 +352,10 @@ export default function ProductPage() {
     ["Solubility", detail.solubility],
     ["Storage", detail.storage],
   ];
-  const literatureLinks = [
-    { label: "PubChem", desc: "Chemical structure, identifiers and properties", href: `https://pubchem.ncbi.nlm.nih.gov/#query=${encodeURIComponent(currentBase)}` },
-    { label: "PubMed", desc: "Peer-reviewed research mentioning this compound", href: `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(currentBase)}` },
-    ...(detail.casNumber ? [{ label: "CAS number", desc: `${detail.casNumber} — search this registry number`, href: `https://pubchem.ncbi.nlm.nih.gov/#query=${encodeURIComponent(detail.casNumber)}` }] : []),
+  const literatureLinks: { tab: LiteratureTab; label: string; desc: string }[] = [
+    { tab: "pubchem", label: "PubChem", desc: "Chemical structure, identifiers and properties" },
+    { tab: "pubmed", label: "PubMed", desc: "Peer-reviewed research mentioning this compound" },
+    ...(detail.casNumber ? [{ tab: "cas" as const, label: "CAS number", desc: `${detail.casNumber}, the registry number for this substance` }] : []),
   ];
   const specs = specRows.filter((r): r is [string, string, boolean?] => !!r[1]);
   const soldOut = product.stockLevel === 0;
@@ -373,6 +375,16 @@ export default function ProductPage() {
       className="product-page bg-white"
       style={{ "--range": rangeColour, "--range-tint": tint(rangeColour, 0.14) } as React.CSSProperties}
     >
+      {literatureTab && (
+        <ResearchLiteratureModal
+          compound={currentBase}
+          aliases={aliases}
+          casNumber={detail.casNumber}
+          fallback={{ formula: detail.formula, molecularWeight: detail.molecularWeight, sequence: detail.sequence }}
+          initialTab={literatureTab}
+          onClose={() => setLiteratureTab(null)}
+        />
+      )}
       {showJanoshikModal && hasReport && (
         <JanoshikReportModal
           taskNumber={jd!.taskNumber ?? ""}
@@ -741,18 +753,18 @@ export default function ProductPage() {
               <ul className="spec-lit__list">
                 {literatureLinks.map(l => (
                   <li key={l.label}>
-                    <a href={l.href} target="_blank" rel="noopener noreferrer" className="spec-lit__link">
+                    <button type="button" className="spec-lit__link" onClick={() => setLiteratureTab(l.tab)} aria-haspopup="dialog">
                       <span>
                         <span className="spec-lit__name">{l.label}</span>
                         <span className="spec-lit__desc">{l.desc}</span>
                       </span>
-                      <ArrowUpRight size={15} aria-hidden="true" />
-                    </a>
+                      <ChevronRight size={16} aria-hidden="true" />
+                    </button>
                   </li>
                 ))}
               </ul>
               <p className="spec-lit__note">
-                External links for research convenience only. OmniQure is not responsible for third-party content.
+                Public data from PubChem and PubMed, shown here for research reference.
               </p>
             </div>
           </Container>
@@ -875,19 +887,19 @@ export default function ProductPage() {
           <div>
             <div className="rounded-[12px] border" style={hair}>
               {literatureLinks.map((l, i, arr) => (
-                <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-[#F2F0EB]"
+                <button key={l.label} type="button" onClick={() => setLiteratureTab(l.tab)} aria-haspopup="dialog"
+                  className="flex w-full items-center justify-between gap-4 px-4 py-3 text-left transition-colors hover:bg-[#F2F0EB]"
                   style={{ borderBottom: i < arr.length - 1 ? "1px solid var(--hairline)" : undefined }}>
                   <span>
                     <span className="block font-semibold" style={{ fontSize: 14, color: "var(--ink)" }}>{l.label}</span>
                     <span className="block" style={{ fontSize: 12, color: "var(--graphite)" }}>{l.desc}</span>
                   </span>
-                  <ArrowUpRight size={15} className="accent-ink shrink-0" aria-hidden="true" />
-                </a>
+                  <ChevronRight size={16} className="accent-ink shrink-0" aria-hidden="true" />
+                </button>
               ))}
             </div>
             <p className="mt-3" style={{ fontSize: 11, lineHeight: 1.6, color: "var(--graphite)" }}>
-              External database links are provided for research convenience only. OmniQure does not control and is not responsible for third-party content.
+              Public data from PubChem and PubMed, shown here for research reference.
             </p>
           </div>
         </Container>
