@@ -97,3 +97,4 @@
 @media (prefers-reduced-motion: reduce) {
   .rlm, .rlm__dialog, .rlm__loading span { animation: none; }
 }
+.rlm__note { margin: 0 0 10px; padding: 10px 12px; border-left: 2px solid var(--oq-dusty-blue); background: #F4F5F8; font-size: 12.5px; line-height: 1.55; color: var(--oq-graphite); }

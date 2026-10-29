@@ -8,6 +8,7 @@
     "build": "NODE_ENV=production vite build --config vite.config.ts",
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "research:save": "../../scripts/node_modules/.bin/tsx scripts/save-research-literature.ts",
     "test:seo": "../../scripts/node_modules/.bin/tsx --test src/hooks/useSEO.test.ts src/seo/prerender.test.ts",
     "test:seo:production": "pnpm run build && ../../scripts/node_modules/.bin/tsx --test src/seo/static-build.test.ts"
   },

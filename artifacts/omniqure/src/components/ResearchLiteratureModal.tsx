@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Check, ChevronDown, Copy, X } from "lucide-react";
+import { literatureKey, loadLiterature, nameLike, type Paper, type PubChemRecord, type PubMedResult, type SavedLiterature } from "@/lib/researchLiterature";
 import "./research-modal.css";
 
 /*
- * Research literature, kept on OmniQure: PubChem compound data, recent
- * PubMed papers (abstracts open in place) and the CAS registry number,
- * read live from NCBI's public APIs (both send CORS headers).
+ * Research literature, kept on OmniQure: PubChem compound data, the most
+ * relevant PubMed papers (abstracts open in place) and the CAS registry
+ * number. Read from public/research/<compound>.json, saved by
+ * `pnpm run research:save`; compounds added since are looked up live.
  */
 
 export type LiteratureTab = "pubchem" | "pubmed" | "cas";
@@ -20,137 +22,20 @@ type Props = {
   onClose: () => void;
 };
 
-type PubChemRecord = {
-  cid: number;
-  title?: string;
-  iupac?: string;
-  formula?: string;
-  weight?: string;
-  synonyms: string[];
-};
-type Paper = { id: string; title: string; journal: string; year: string; authors: string };
-type PubMedResult = { count: number; papers: Paper[] };
+// Saved literature loads from our own site; the live NCBI lookup only runs
+// for compounds added since the last save.
+const cache = new Map<string, Promise<SavedLiterature>>();
 
-const PUG = "https://pubchem.ncbi.nlm.nih.gov/rest/pug";
-const EUTILS = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils";
-const cache = new Map<string, Promise<unknown>>();
-
-function cached<T>(key: string, load: () => Promise<T>): Promise<T> {
+function literatureFor(compound: string, names: string[], lookup: string[]): Promise<SavedLiterature> {
+  const key = literatureKey(compound);
   if (!cache.has(key)) {
-    const p = load();
+    const p = fetch(`${import.meta.env.BASE_URL}research/${key}.json`)
+      .then(r => (r.ok && r.headers.get("content-type")?.includes("json") ? r.json() as Promise<SavedLiterature> : Promise.reject()))
+      .catch(() => loadLiterature(compound, names, lookup));
     p.catch(() => cache.delete(key));
     cache.set(key, p);
   }
-  return cache.get(key) as Promise<T>;
-}
-
-const pause = (ms: number) => new Promise(r => setTimeout(r, ms));
-
-// NCBI rate-limits bursts (its 429s carry no CORS header, so they surface as
-// network errors); one retry after a second covers it.
-async function get(url: string): Promise<Response> {
-  for (let attempt = 0; ; attempt++) {
-    try {
-      const r = await fetch(url);
-      if (r.ok || attempt) return r;
-    } catch (e) {
-      if (attempt) throw e;
-    }
-    await pause(1100);
-  }
-}
-
-async function json(url: string) {
-  const r = await get(url);
-  if (!r.ok) throw new Error(String(r.status));
-  return r.json();
-}
-
-async function pubchemFor(query: string): Promise<PubChemRecord | null> {
-  const q = encodeURIComponent(query);
-  try {
-    const props = await json(`${PUG}/compound/name/${q}/property/Title,IUPACName,MolecularFormula,MolecularWeight/JSON`);
-    const p = props?.PropertyTable?.Properties?.[0];
-    if (!p) return null;
-    let synonyms: string[] = [];
-    try {
-      const syn = await json(`${PUG}/compound/cid/${p.CID}/synonyms/JSON`);
-      synonyms = (syn?.InformationList?.Information?.[0]?.Synonym ?? []).slice(0, 8);
-    } catch { /* synonyms are optional */ }
-    return { cid: p.CID, title: p.Title, iupac: p.IUPACName, formula: p.MolecularFormula, weight: p.MolecularWeight, synonyms };
-  } catch {
-    return null;
-  }
-}
-
-async function loadPubChem(names: string[]): Promise<PubChemRecord | null> {
-  for (const n of names) {
-    const rec = await pubchemFor(n);
-    if (rec) return rec;
-  }
-  return null;
-}
-
-// Name-like synonyms only: skip registry codes, catalogue numbers and CAS numbers.
-const nameLike = (s: string) =>
-  s.length >= 3 && s.length <= 60 && /[a-z]/i.test(s) && !/^\d+-\d+-\d$/.test(s) &&
-  !/^(MFCD|CHEMBL|SCHEMBL|DTXSID|AKOS|orb|CS-|HY-|AC-|SY|UNII)/i.test(s) && !/^[A-Z0-9]{8,}$/.test(s);
-
-// PubMed silently splits a quoted phrase it does not know into loose words
-// ("iodide"), so each name is checked on its own and kept only if it matched
-// as a whole.
-async function exactTerm(name: string): Promise<boolean> {
-  const r = await json(`${EUTILS}/esearch.fcgi?db=pubmed&retmode=json&retmax=0&term=${encodeURIComponent(`"${name.replace(/"/g, "")}"`)}`);
-  const res = r?.esearchresult ?? {};
-  const w = res.warninglist ?? {};
-  const unmatched = (w.quotedphrasesnotfound?.length ?? 0) + (w.phrasesignored?.length ?? 0);
-  return unmatched === 0 && Number(res.count ?? 0) > 0;
-}
-
-async function loadPubMed(names: string[], pubchemKey: string, lookup: string[]): Promise<PubMedResult> {
-  // PubChem's record title and synonyms catch spellings the product name misses.
-  const rec = await cached(pubchemKey, () => loadPubChem(lookup)).catch(() => null);
-  const extra = rec ? [rec.title ?? "", ...rec.synonyms].filter(nameLike) : [];
-  const candidates = [...names, ...extra]
-    .filter((n, i, a) => a.findIndex(x => x.toLowerCase() === n.toLowerCase()) === i)
-    .slice(0, 7);
-  const kept: string[] = [];
-  for (const [i, n] of candidates.entries()) {
-    if (i) await pause(350); // NCBI allows 3 requests a second
-    if (await exactTerm(n).catch(() => false)) kept.push(n);
-  }
-  if (!kept.length) return { count: 0, papers: [] };
-  const term = kept.map(n => `"${n.replace(/"/g, "")}"`).join(" OR ");
-  const search = await json(`${EUTILS}/esearch.fcgi?db=pubmed&retmode=json&retmax=6&sort=relevance&term=${encodeURIComponent(term)}`);
-  const ids: string[] = search?.esearchresult?.idlist ?? [];
-  const count = Number(search?.esearchresult?.count ?? 0);
-  if (!ids.length) return { count, papers: [] };
-  await pause(350);
-  const sum = await json(`${EUTILS}/esummary.fcgi?db=pubmed&retmode=json&id=${ids.join(",")}`);
-  const papers = ids.map(id => {
-    const d = sum?.result?.[id] ?? {};
-    const authors: { name: string }[] = d.authors ?? [];
-    return {
-      id,
-      title: String(d.title ?? "Untitled").replace(/\.$/, ""),
-      journal: d.source ?? "",
-      year: String(d.pubdate ?? "").slice(0, 4),
-      authors: authors.length ? `${authors[0].name}${authors.length > 1 ? " et al." : ""}` : "",
-    };
-  });
-  return { count, papers };
-}
-
-async function loadAbstract(id: string): Promise<string> {
-  const r = await get(`${EUTILS}/efetch.fcgi?db=pubmed&retmode=xml&id=${id}`);
-  if (!r.ok) throw new Error(String(r.status));
-  const doc = new DOMParser().parseFromString(await r.text(), "text/xml");
-  const parts = [...doc.querySelectorAll("AbstractText")].map(el => {
-    const label = el.getAttribute("Label");
-    const text = el.textContent?.trim() ?? "";
-    return label ? `${label[0]}${label.slice(1).toLowerCase()}: ${text}` : text;
-  });
-  return parts.join("\n\n");
+  return cache.get(key)!;
 }
 
 function useAsync<T>(key: string | null, load: () => Promise<T>) {
@@ -158,7 +43,7 @@ function useAsync<T>(key: string | null, load: () => Promise<T>) {
   useEffect(() => {
     if (!key) return;
     let live = true;
-    cached(key, load).then(
+    load().then(
       data => { if (live) setState({ key, data }); },
       () => { if (live) setState({ key, error: true }); },
     );
@@ -198,7 +83,6 @@ function Loading() {
 
 function PaperItem({ paper }: { paper: Paper }) {
   const [open, setOpen] = useState(false);
-  const abs = useAsync(open ? `abs:${paper.id}` : null, () => loadAbstract(paper.id));
   return (
     <li className="rlm__paper">
       <button type="button" className="rlm__paper-head" aria-expanded={open} onClick={() => setOpen(o => !o)}>
@@ -210,10 +94,8 @@ function PaperItem({ paper }: { paper: Paper }) {
       </button>
       {open && (
         <div className="rlm__abstract">
-          {abs.loading ? <Loading /> : abs.error ? (
-            <p className="rlm__muted">The abstract could not be loaded. Please try again shortly.</p>
-          ) : abs.data ? (
-            abs.data.split("\n\n").map((para, i) => <p key={i}>{para}</p>)
+          {paper.abstract ? (
+            paper.abstract.split("\n\n").map((para, i) => <p key={i}>{para}</p>)
           ) : (
             <p className="rlm__muted">No abstract is published for this paper.</p>
           )}
@@ -233,9 +115,9 @@ export default function ResearchLiteratureModal({ compound, aliases, casNumber, 
   const names = [compound, ...aliases].filter((n, i, a) => n && a.indexOf(n) === i);
   const lookup = casNumber ? [casNumber, ...names] : names;
 
-  const pubchemKey = `pc:${lookup.join("|")}`;
-  const pubchem = useAsync(tab === "pubchem" || tab === "cas" ? pubchemKey : null, () => loadPubChem(lookup));
-  const pubmed = useAsync(tab === "pubmed" ? `pm:${names.join("|")}` : null, () => loadPubMed(names, pubchemKey, lookup));
+  const lit = useAsync(`lit:${literatureKey(compound)}`, () => literatureFor(compound, names, lookup));
+  const pubchem = { loading: lit.loading, data: lit.data?.pubchem };
+  const pubmed = { loading: lit.loading, error: lit.error, data: lit.data?.pubmed };
 
   useEffect(() => {
     const prevFocus = document.activeElement as HTMLElement | null;
@@ -328,8 +210,9 @@ export default function ResearchLiteratureModal({ compound, aliases, casNumber, 
               <p className="rlm__muted">PubMed could not be reached. Please try again shortly.</p>
             ) : pm && pm.papers.length > 0 ? (
               <>
+                {pm.note && <p className="rlm__note">{pm.note}</p>}
                 <p className="rlm__count">
-                  <strong>{pm.count.toLocaleString("en-GB")}</strong> indexed paper{pm.count !== 1 ? "s" : ""} mention {compound}. The most relevant are below; open one to read its abstract.
+                  <strong>{pm.count.toLocaleString("en-GB")}</strong> indexed paper{pm.count !== 1 ? "s" : ""}{pm.note ? "" : ` mention ${compound}`}. The most relevant are below; open one to read its abstract.
                 </p>
                 <ul className="rlm__papers">{pm.papers.map(p => <PaperItem key={p.id} paper={p} />)}</ul>
               </>
